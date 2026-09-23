@@ -360,6 +360,13 @@
       const trayY = 870;
       const traySprites = [];
 
+      const trayStrip = this.add.graphics();
+      trayStrip.fillStyle(0xe6d3a8, 0.92);
+      trayStrip.fillRoundedRect(WORLD_W / 2 - 260, trayY - 95, 520, 130, 16);
+      trayStrip.lineStyle(3, 0xa87d3f, 0.9);
+      trayStrip.strokeRoundedRect(WORLD_W / 2 - 260, trayY - 95, 520, 130, 16);
+      trayStrip.setDepth(590);
+
       const renderTray = () => {
         traySprites.forEach((s) => { unregisterInteractive(`tray-${s.wordId}`); s.destroy(); });
         traySprites.length = 0;
@@ -401,6 +408,7 @@
         if (remaining.length === 0) {
           traySprites.forEach((s) => { unregisterInteractive(`tray-${s.wordId}`); s.destroy(); });
           traySprites.length = 0;
+          trayStrip.destroy();
           return this.finish();
         }
         const wid = remaining[0];
