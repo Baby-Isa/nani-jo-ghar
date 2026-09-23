@@ -64,6 +64,22 @@ def find_item(page, predicate_js, timeout_ms=8000, poll_ms=150):
     return None
 
 
+def click_go_button(page):
+    """#go-btn lives in the sidebar, which is an off-canvas drawer on
+    narrow viewports (iPad) that auto-opens when a word is added - see
+    js/ui.js. Defensive here too: nudge the drawer tab if it's still
+    closed for any reason before clicking."""
+    tab = page.query_selector("#drawer-tab")
+    if tab and tab.is_visible():
+        sidebar_visible = page.eval_on_selector(
+            "#sidebar", "el => el.getBoundingClientRect().left >= 0"
+        )
+        if not sidebar_visible:
+            tab.click()
+            page.wait_for_timeout(400)
+    page.click("#go-btn")
+
+
 def tap_screen_point(page, point, touch):
     if touch:
         page.touchscreen.tap(point["x"], point["y"])
@@ -144,7 +160,7 @@ def run_viewport(browser, viewport, console_errors):
     )
     assert_sidebar_buttons_inside(page)
     screenshot("kitchen_list_ready")
-    page.click("#go-btn")
+    click_go_button(page)
     page.wait_for_timeout(1500)
     screenshot("bazaar_arrive")
 
@@ -181,7 +197,7 @@ def run_viewport(browser, viewport, console_errors):
         timeout=15000,
     )
     screenshot("bazaar_done")
-    page.click("#go-btn")
+    click_go_button(page)
     page.wait_for_timeout(1500)
     screenshot("kitchen_fill_arrive")
 

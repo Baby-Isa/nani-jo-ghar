@@ -120,6 +120,10 @@
     row.appendChild(textCol);
     row.appendChild(playBtn);
     list.appendChild(row);
+
+    // narrow layouts: the drawer auto-opens when a word is added, so the
+    // player sees the list grow without hunting for the tab handle
+    openDrawer();
   }
 
   function markListItemDone(wordId) {
@@ -133,6 +137,7 @@
     btn.textContent = label;
     btn.disabled = !!disabled;
     btn.onclick = onClick || null;
+    if (!disabled) openDrawer(); // narrow layouts: surface the button, not just the list
   }
 
   // ---------------- basket ----------------
