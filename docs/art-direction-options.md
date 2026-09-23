@@ -201,3 +201,20 @@ The right-hand panels and speech bubbles are placeholders built in code, so they
 | R2-C | Atmospheric flat | 4 | 2 | 2 | Drop: the orange light hides the oranges and brings back "brown and orange everywhere". Kept only as an idea for an evening colour grade |
 
 **Next:** run the section 5.2 style-lock test on R2-E. Generate the six fruit in **three separate ChatGPT chats**, compare them at 90px, and blink-test an open-eyed Nani. If the fruit don't clearly look like one set, or the blink shows seams, run the same test on R2-D.
+
+## 11. R2-E style-lock test prompts
+
+Attach `docs/art-direction/round-2/r2-e-soft-3d.webp` to **every** prompt, as a style reference only. Use a **transparent background** for cut-outs rather than magenta: soft 3D edges and shadows pick up a magenta fringe that the binary-alpha slicer can't remove (see the vermicelli note in the Asset Naming Convention). Generate each numbered prompt in a **new chat**; run prompt 3 in three separate chats.
+
+**Style line** (ends every prompt): *Soft stylised 3D render like a modern animated film for children: rounded appealing shapes, matte materials, soft warm global illumination from the upper left, gentle soft shadows, clean and bright. Match the rendering style, colours and lighting of the attached image exactly, but not its composition. No text anywhere.*
+
+1. **Kitchen background (empty):** 16:9 child's-eye view of the same modern kitchen, camera slightly above counter height looking a little down onto a white marble island with a pale wood base that runs across the whole width, its top edge at about 55–60% of the image height. The island top is completely clear and evenly lit. Behind it: plain open space centre-right where a person would stand, soft limewash walls, sage green lower cabinets, four long light-wood shelves on the back wall that are completely empty, a small framed Kutch mirror-work embroidery, a brass water pot, a potted plant, a window with daylight on the left. No people, no food or fruit anywhere, no bowls on the island, no stools, no rug and no clutter in the foreground or on the right edge. + style line.
+2. **Nani (three states in one sheet):** one image on a transparent background with the same grandmother three times side by side, identical in size, pose and framing, waist up: a warm South Asian grandmother in her sixties, grey hair, a red bandhani headscarf, round gold glasses, a small red bindi, a cream kurta with red embroidery, gold bangles, arms resting forward as if on a counter. Left: eyes open, gentle closed-mouth smile, looking at the viewer. Middle: the same, mouth open mid-word. Right: eyes open, big delighted smile, one hand raised in celebration. Eyes must be open and clearly visible in all three. + style line.
+3. **Fruit (run in three separate chats):** a 3 by 2 grid of six separate fruit on a transparent background, each centred in its own cell with clear space around it, viewed straight on and slightly from above, the same size and lighting for all six, a soft contact shadow under each, no cell borders. In order: an orange, a green pear, a red apple, a ripe banana, a yellow mango, a pomegranate. + style line.
+4. **Containers:** a 2 by 1 grid on a transparent background: a round woven wicker basket, empty, viewed slightly from above so the inside is visible; a hammered brass serving bowl, empty, same angle. + style line.
+
+**Pass or fail:**
+- Put the three fruit sheets side by side at 90px. **Fail** if the same fruit changes shape, colour or lighting noticeably between chats.
+- Run `build/expressions.py` on Nani's left image. **Fail** if the blink or mouth edits show seams.
+- Place everything with `build/place_preview.py` and play `bowl-01` on a phone. **Fail** if the fruit don't stand out against the island and the basket.
+- If any check fails, run prompts 1–4 again with the R2-D style line instead.
