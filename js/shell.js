@@ -158,12 +158,33 @@
     });
   }
 
+  // Same idea as js/game.js's letterbox fill for the canvas: the hub is a
+  // separate full-viewport overlay (no sidebar column to eat the extra
+  // width on very wide screens like the Flip), so it needs its own
+  // dominant-colour sample rather than showing black bars either side.
+  let hubBgColorCache = null;
+  function setHubLetterboxColor(url) {
+    if (hubBgColorCache) { el("hub-screen").style.background = hubBgColorCache; return; }
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = 1; c.height = 1;
+      const ctx = c.getContext("2d");
+      ctx.drawImage(img, 0, 0, 1, 1);
+      const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+      hubBgColorCache = `rgb(${r},${g},${b})`;
+      el("hub-screen").style.background = hubBgColorCache;
+    };
+    img.src = url;
+  }
+
   async function showHub() {
     el("overlay-picker").style.display = "none";
     el("overlay-create").style.display = "none";
     if (!NjgData.content) await NjgGame.prepare();
     const kitchenDef = NjgData.scene("kitchen");
     el("hub-bg").style.backgroundImage = `url(${kitchenDef.background})`;
+    setHubLetterboxColor(kitchenDef.background);
     renderHubDecorations();
     el("hub-profile-name").textContent = currentProfile.name;
     const label = currentProfile.errands_done.includes(NjgGame.errandId()) ? "Play again →" : "Nani needs you →";
