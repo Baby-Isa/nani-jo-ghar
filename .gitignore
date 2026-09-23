@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+.env
+build/.venv/
+build/expr_work/

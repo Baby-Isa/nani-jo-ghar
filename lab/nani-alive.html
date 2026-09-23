@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Nani jo Ghar — Alive Nani test</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: #1a1410; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #app { display: flex; flex-direction: column; width: 100%; height: 100%; }
+  #game-wrap { flex: 1 1 auto; min-height: 0; position: relative; }
+  #game-wrap canvas { display: block; }
+
+  #controls {
+    flex: 0 0 auto;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+    padding: 6px 10px;
+    background: #14100c;
+    color: #f0e6d8;
+    font-size: 12px;
+    border-top: 1px solid #3a2e20;
+  }
+  #controls .group { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+  #controls label { display: flex; align-items: center; gap: 3px; cursor: pointer; }
+  #controls button {
+    background: #7a2020; color: #fff; border: none; border-radius: 5px;
+    padding: 6px 12px; font-size: 12px; cursor: pointer;
+  }
+  #controls button:active { background: #5a1616; }
+  #controls button:disabled { opacity: 0.5; cursor: default; }
+
+  #tap-overlay {
+    position: absolute; inset: 0; z-index: 50;
+    background: rgba(10, 8, 6, 0.88);
+    color: #f0e6d8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; text-align: center; cursor: pointer;
+  }
+  #tap-overlay.hidden { display: none; }
+
+  #raw-strip {
+    display: none;
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 8, 6, 0.8);
+    padding: 6px; gap: 6px; flex-wrap: wrap; z-index: 10;
+  }
+  #raw-strip.show { display: flex; }
+  #raw-strip figure { margin: 0; text-align: center; }
+  #raw-strip img {
+    height: 90px; display: block; background: #eee; border-radius: 4px;
+    border: 2px solid transparent;
+  }
+  #raw-strip img.active { border-color: #ffd27a; }
+  #raw-strip figcaption { color: #f0e6d8; font-size: 9px; margin-top: 2px; }
+
+  #status {
+    position: absolute; top: 6px; left: 6px; z-index: 10;
+    color: #f0e6d8; background: rgba(10,8,6,0.55);
+    padding: 3px 8px; border-radius: 4px; font-size: 11px;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="game-wrap">
+    <div id="status">loading…</div>
+    <div id="raw-strip"></div>
+    <div id="tap-overlay">Tap to start<br><span style="font-size:13px;opacity:0.7">(unlocks audio)</span></div>
+  </div>
+
+  <div id="controls">
+    <div class="group"><strong>Alive Nani test</strong></div>
+    <div class="group"><label><input type="checkbox" id="tg-breathe" checked>breathing</label></div>
+    <div class="group"><label><input type="checkbox" id="tg-sway" checked>idle sway</label></div>
+    <div class="group"><label><input type="checkbox" id="tg-blink" checked>blink</label></div>
+    <div class="group"><label><input type="checkbox" id="tg-talk" checked>mouth-sync</label></div>
+    <div class="group"><label><input type="checkbox" id="tg-hop" checked>happy hop</label></div>
+    <div class="group"><label><input type="checkbox" id="tg-raw">raw frames</label></div>
+    <div class="group"><button id="btn-say">Say line</button></div>
+    <div class="group"><button id="btn-happy">Well done</button></div>
+  </div>
+</div>
+
+<script src="../js/vendor/phaser.min.js"></script>
+<script>
+"use strict";
+
+/* ---------------------------------------------------------------------
+ * Nani jo Ghar - "Alive Nani" test page (lab/nani-alive.html)
+ *
+ * Self-contained Phaser 3 scene, independent of the main game. Proves that
+ * a single set of pixel-identical-outside-the-face expression frames
+ * (build/expressions.py, assets/characters/nani/{nani-neutral,expr/*}.png)
+ * can be swapped between with zero jump, and driven into breathing, idle
+ * sway, blinking, audio-driven talking and a happy hop.
+ *
+ * Frame set: neutral, eyes-closed, eyes-half, mouth-half, mouth-open, smile.
+ * Each frame changes only ONE region (eyes OR mouth OR eyes+mouth for
+ * smile), so a blink and a talking-mouth can't be shown at once with a
+ * single texture. Per the build brief: during a blink, show the eye frame
+ * for the blink's short duration (it interrupts whatever mouth frame is
+ * showing), then resume the mouth frame.
+ * ------------------------------------------------------------------- */
+
+const WORLD_W = 1600;
+const WORLD_H = 900;
+const CHAR_X = 1400;
+const CHAR_SCALE = 1.1;
+
+const FRAME_KEYS = {
+  neutral: "nani-neutral",
+  "eyes-closed": "nani-eyes-closed",
+  "eyes-half": "nani-eyes-half",
+  "mouth-half": "nani-mouth-half",
+  "mouth-open": "nani-mouth-open",
+  smile: "nani-smile",
+};
+
+// window.__nani: test hook for Playwright / manual debugging.
+window.__nani = {
+  textureKey: null,
+  textureChangeCount: 0,
+  blinkCount: 0,
+  lastLog: [],
+};
+
+function setNaniTexture(sprite, key) {
+  if (sprite.texture.key === key) return;
+  sprite.setTexture(key);
+  window.__nani.textureKey = key;
+  window.__nani.textureChangeCount++;
+  const log = window.__nani.lastLog;
+  log.push({ t: performance.now(), key });
+  if (log.length > 200) log.shift();
+}
+
+class AliveScene extends Phaser.Scene {
+  constructor() {
+    super("alive");
+  }
+
+  preload() {
+    this.load.image("bg-kitchen", "../assets/backgrounds/bg-nani-kitchen-v1.jpg");
+    for (const [id, key] of Object.entries(FRAME_KEYS)) {
+      this.load.image(key, `../assets/characters/nani/${id === "neutral" ? "nani-neutral.png" : `expr/${key}.png`}`);
+    }
+  }
+
+  create() {
+    this.add.image(WORLD_W / 2, WORLD_H / 2, "bg-kitchen").setDisplaySize(WORLD_W, WORLD_H);
+
+    const spriteH = 700 * CHAR_SCALE;
+    const y = WORLD_H + 0.25 * spriteH; // bottom 25% cropped by the frame edge
+    const nani = this.add.image(CHAR_X, y, FRAME_KEYS.neutral);
+    nani.setOrigin(0.5, 1).setScale(CHAR_SCALE);
+    this.nani = nani;
+    window.__nani.textureKey = FRAME_KEYS.neutral;
+
+    // --- animation state, applied every frame in update() ---
+    this.breathScale = 1.0;
+    this.swayAngle = 0;
+    this.hopOffset = 0;
+    this.baseY = y;
+
+    this.toggles = {
+      breathe: true, sway: true, blink: true, talk: true, hop: true,
+    };
+
+    this.mouthFrame = "neutral";   // what talking wants to show
+    this.blinkFrame = null;        // non-null while a blink is in progress: overrides mouthFrame
+    this.smileActive = false;      // true while the "Well done" smile is showing
+
+    this.startBreathing();
+    this.startSway();
+    this.scheduleNextBlink();
+
+    this.applyToggleState = () => this.updateToggles();
+    this.updateToggles();
+
+    document.getElementById("status").textContent = "ready";
+
+    // build the raw-frame debug strip now that keys exist
+    buildRawStrip(this);
+  }
+
+  startBreathing() {
+    if (this.breathTween) this.breathTween.stop();
+    this.breathScale = 1.0;
+    this.breathTween = this.tweens.add({
+      targets: this, breathScale: 1.012, duration: 3600,
+      yoyo: true, repeat: -1, ease: "Sine.easeInOut",
+    });
+  }
+
+  startSway() {
+    if (this.swayTween) this.swayTween.stop();
+    this.swayAngle = -0.35;
+    this.swayTween = this.tweens.add({
+      targets: this, swayAngle: 0.35, duration: 5300,
+      yoyo: true, repeat: -1, ease: "Sine.easeInOut",
+    });
+  }
+
+  updateToggles() {
+    const t = this.toggles;
+    if (this.breathTween) {
+      if (t.breathe) this.breathTween.paused = false;
+      else { this.breathTween.paused = true; this.breathScale = 1.0; }
+    }
+    if (this.swayTween) {
+      if (t.sway) this.swayTween.paused = false;
+      else { this.swayTween.paused = true; this.swayAngle = 0; }
+    }
+  }
+
+  // Blink timing uses plain setTimeout (wall-clock time), not Phaser's
+  // this.time.delayedCall: Phaser's internal clock is driven by
+  // requestAnimationFrame, which browsers (headless Chromium especially)
+  // can throttle well below real time, making game-clock delays drift
+  // far behind wall time. setTimeout doesn't have that problem.
+  scheduleNextBlink() {
+    const delay = Phaser.Math.Between(2500, 6000);
+    this.blinkTimeout = setTimeout(() => this.doBlink(), delay);
+  }
+
+  async doBlink() {
+    if (!this.toggles.blink || this.smileActive) {
+      this.scheduleNextBlink();
+      return;
+    }
+    await this.runBlinkCycle();
+    if (Math.random() < 0.15) {
+      await sleep(90);
+      await this.runBlinkCycle();
+    }
+    window.__nani.blinkCount++;
+    this.scheduleNextBlink();
+  }
+
+  runBlinkCycle() {
+    return new Promise((resolve) => {
+      const steps = [
+        ["eyes-half", 50],
+        ["eyes-closed", 80],
+        ["eyes-half", 50],
+        [null, 0],
+      ];
+      let i = 0;
+      const next = () => {
+        if (i >= steps.length) return resolve();
+        const [frame, dur] = steps[i++];
+        this.blinkFrame = frame;
+        this.refreshTexture();
+        if (dur > 0) setTimeout(next, dur);
+        else next();
+      };
+      next();
+    });
+  }
+
+  refreshTexture() {
+    const wanted = this.smileActive
+      ? "smile"
+      : (this.blinkFrame || this.mouthFrame);
+    setNaniTexture(this.nani, FRAME_KEYS[wanted]);
+  }
+
+  async sayLine(url) {
+    if (!this.toggles.talk) {
+      await playAudioSimple(url);
+      return;
+    }
+    const btn = document.getElementById("btn-say");
+    btn.disabled = true;
+    try {
+      await playAudioWithMouthSync(url, (frame) => {
+        this.mouthFrame = frame;
+        if (!this.blinkFrame) this.refreshTexture();
+      });
+    } finally {
+      this.mouthFrame = "neutral";
+      if (!this.blinkFrame) this.refreshTexture();
+      btn.disabled = false;
+    }
+  }
+
+  async wellDone() {
+    const btn = document.getElementById("btn-happy");
+    btn.disabled = true;
+    this.smileActive = true;
+    this.refreshTexture();
+    if (this.toggles.hop) {
+      this.tweens.add({
+        targets: this, hopOffset: -12, duration: 125, yoyo: true,
+        ease: "Back.easeOut",
+      });
+    }
+    await sleep(1800);
+    this.smileActive = false;
+    this.refreshTexture();
+    btn.disabled = false;
+  }
+
+  update() {
+    const s = this.nani;
+    s.scaleX = CHAR_SCALE;
+    s.scaleY = CHAR_SCALE * this.breathScale;
+    s.angle = this.swayAngle;
+    s.y = this.baseY + this.hopOffset;
+  }
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+// ---------------------------------------------------------------------
+// Audio: Web Audio + AnalyserNode, RMS envelope -> mouth frame
+// ---------------------------------------------------------------------
+
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+const audioBufferCache = new Map();
+async function loadAudioBuffer(url) {
+  if (audioBufferCache.has(url)) return audioBufferCache.get(url);
+  const ctx = getAudioCtx();
+  const resp = await fetch(url);
+  const arr = await resp.arrayBuffer();
+  const buf = await ctx.decodeAudioData(arr);
+  audioBufferCache.set(url, buf);
+  return buf;
+}
+
+async function playAudioSimple(url) {
+  const ctx = getAudioCtx();
+  const buf = await loadAudioBuffer(url);
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  src.connect(ctx.destination);
+  src.start();
+  await new Promise((resolve) => { src.onended = resolve; });
+}
+
+/** Plays url and calls onFrame("neutral"|"mouth-half"|"mouth-open") as
+ * the smoothed RMS volume crosses thresholds, holding each frame at
+ * least 60ms to avoid jitter. */
+async function playAudioWithMouthSync(url, onFrame) {
+  const ctx = getAudioCtx();
+  const buf = await loadAudioBuffer(url);
+
+  const analyser = ctx.createAnalyser();
+  analyser.fftSize = 1024;
+  const data = new Uint8Array(analyser.fftSize);
+
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  src.connect(analyser);
+  analyser.connect(ctx.destination);
+
+  let smoothed = 0;
+  let currentFrame = "neutral";
+  let lastChangeT = performance.now();
+  let lastTickT = performance.now();
+  const ATTACK_MS = 30;
+  const RELEASE_MS = 90;
+  const MIN_HOLD_MS = 60;
+  // Calibrated against this project's word/sentence clips (assets/audio/word/*.mp3):
+  // smoothed RMS from a 1024-sample time-domain analyser typically sits
+  // ~0.02-0.05 during quiet speech and ~0.06-0.10 on louder syllables.
+  const THRESH_LOW = 0.02;
+  const THRESH_HIGH = 0.06;
+
+  let rafId = null;
+  let ended = false;
+
+  function tick() {
+    if (ended) return;
+    const now = performance.now();
+    const dt = now - lastTickT;
+    lastTickT = now;
+
+    analyser.getByteTimeDomainData(data);
+    let sumSq = 0;
+    for (let i = 0; i < data.length; i++) {
+      const v = (data[i] - 128) / 128;
+      sumSq += v * v;
+    }
+    const rms = Math.sqrt(sumSq / data.length);
+    // Frame-rate-independent one-pole smoothing: coeff derived from the
+    // elapsed time and the attack/release time constants, so behaviour is
+    // the same whether the browser renders at 60fps or throttles lower.
+    const tauMs = rms > smoothed ? ATTACK_MS : RELEASE_MS;
+    const coeff = 1 - Math.exp(-dt / tauMs);
+    smoothed += (rms - smoothed) * coeff;
+
+    const wanted = smoothed < THRESH_LOW ? "neutral" : (smoothed < THRESH_HIGH ? "mouth-half" : "mouth-open");
+    if (wanted !== currentFrame && (now - lastChangeT) >= MIN_HOLD_MS) {
+      currentFrame = wanted;
+      lastChangeT = now;
+      onFrame(currentFrame);
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  src.start();
+  rafId = requestAnimationFrame(tick);
+  await new Promise((resolve) => { src.onended = resolve; });
+  ended = true;
+  if (rafId) cancelAnimationFrame(rafId);
+  onFrame("neutral");
+}
+
+// ---------------------------------------------------------------------
+// Raw-frame debug strip + wiring
+// ---------------------------------------------------------------------
+
+function buildRawStrip(scene) {
+  const strip = document.getElementById("raw-strip");
+  strip.innerHTML = "";
+  for (const [id, key] of Object.entries(FRAME_KEYS)) {
+    const fig = document.createElement("figure");
+    const img = document.createElement("img");
+    img.src = id === "neutral" ? "../assets/characters/nani/nani-neutral.png" : `../assets/characters/nani/expr/${key}.png`;
+    img.dataset.key = key;
+    const cap = document.createElement("figcaption");
+    cap.textContent = id;
+    fig.appendChild(img);
+    fig.appendChild(cap);
+    strip.appendChild(fig);
+  }
+  scene.time.addEvent({
+    delay: 80, loop: true,
+    callback: () => {
+      const active = window.__nani.textureKey;
+      strip.querySelectorAll("img").forEach((img) => {
+        img.classList.toggle("active", img.dataset.key === active);
+      });
+    },
+  });
+}
+
+let gameInstance = null;
+
+function boot() {
+  const config = {
+    type: Phaser.AUTO,
+    parent: "game-wrap",
+    width: WORLD_W,
+    height: WORLD_H,
+    backgroundColor: "#000000",
+    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+    scene: [AliveScene],
+  };
+  gameInstance = new Phaser.Game(config);
+  window.__nani.game = gameInstance;
+}
+
+function wireControls() {
+  const scene = () => gameInstance.scene.getScene("alive");
+
+  const bind = (id, key) => {
+    document.getElementById(id).addEventListener("change", (e) => {
+      const s = scene();
+      if (!s) return;
+      s.toggles[key] = e.target.checked;
+      s.updateToggles();
+    });
+  };
+  bind("tg-breathe", "breathe");
+  bind("tg-sway", "sway");
+  bind("tg-blink", "blink");
+  bind("tg-talk", "talk");
+  bind("tg-hop", "hop");
+
+  document.getElementById("tg-raw").addEventListener("change", (e) => {
+    document.getElementById("raw-strip").classList.toggle("show", e.target.checked);
+  });
+
+  document.getElementById("btn-say").addEventListener("click", () => {
+    const s = scene();
+    if (s) s.sayLine("../assets/audio/word/snt-01.mp3");
+  });
+  document.getElementById("btn-happy").addEventListener("click", () => {
+    const s = scene();
+    if (s) s.wellDone();
+  });
+}
+
+function wireTapToStart() {
+  const overlay = document.getElementById("tap-overlay");
+  overlay.addEventListener("click", async () => {
+    try {
+      const ctx = getAudioCtx();
+      if (ctx.state === "suspended") await ctx.resume();
+      // unlock with a near-silent blip
+      const buf = ctx.createBuffer(1, 1, 22050);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+    } catch (e) {
+      // audio unlock best-effort; page still works without it until a
+      // later user gesture (the Say line / Well done buttons) unlocks it
+    }
+    overlay.classList.add("hidden");
+  }, { once: true });
+}
+
+window.addEventListener("load", () => {
+  boot();
+  wireControls();
+  wireTapToStart();
+});
+</script>
+</body>
+</html>
