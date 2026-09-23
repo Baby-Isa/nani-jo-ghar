@@ -19,7 +19,8 @@
   <button id="drawer-tab">Nani's recipe &rsaquo;</button>
 
   <aside id="sidebar">
-    <h3>Nani's recipe</h3>
+    <button id="drawer-close" aria-label="Close">&times;</button>
+    <h3>Nani's recipe <span id="list-hint">To buy</span></h3>
     <div id="shopping-list"></div>
     <button id="go-btn" class="go-btn"></button>
     <div class="tab-rail">
@@ -32,11 +33,14 @@
 
   <div id="game-wrap">
     <div id="game"></div>
-    <div id="caption-band">
-      <div id="caption-gist"></div>
-      <div id="caption-kutchi"></div>
+    <div id="narration">
+      <div id="narration-gist"></div>
+      <div id="narration-line"></div>
     </div>
-    <div id="basket" title="Your basket">&#128722;<span id="basket-count">0</span></div>
+    <div id="speech-bubble">
+      <div id="bubble-gist"></div>
+      <div id="bubble-line"></div>
+    </div>
   </div>
 </div>
 

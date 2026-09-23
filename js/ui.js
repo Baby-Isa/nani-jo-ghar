@@ -1,11 +1,13 @@
 /* UI layer: plain HTML/CSS beside/over the Phaser canvas - the recipe
- * sidebar, caption band, go button, notebook/quilt overlays, drawer.
- * Scene code (js/game.js) calls into this; this file never touches
- * Phaser directly except to pass a scene through to NjgAudio.speak(). */
+ * sidebar, speech bubble, narration strip, go button, notebook/quilt
+ * overlays, drawer. Scene code (js/game.js) calls into this; this file
+ * never touches Phaser directly except to pass a scene through to
+ * NjgAudio.speak(). */
 (function (global) {
   "use strict";
 
   const QUILT_KEY = "njg_quilt_v1";
+  const WORLD_W = 1600, WORLD_H = 900;
 
   const el = (id) => document.getElementById(id);
   const qs = (sel, root) => (root || document).querySelector(sel);
@@ -13,45 +15,101 @@
   function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
   function itemImgSrc(word) { return `assets/${word.image}`; }
 
-  // ---------------- caption (shared talk/text band, English one tap away) ----------------
-  function setCaption(gistText, kutchiObj, englishFallback) {
-    el("caption-gist").textContent = gistText || "";
-    const kEl = el("caption-kutchi");
-    kEl.innerHTML = "";
+  /** Fills `target` with the Kutchi line (+ draft mark) and a tap-to-toggle
+   * "English" link; or, when there's no Kutchi yet, the English honestly
+   * (text only - English is never spoken in-game). */
+  function fillLine(target, kutchiObj, englishFallback) {
+    target.innerHTML = "";
     if (kutchiObj && kutchiObj.text) {
       const main = document.createElement("span");
-      main.textContent = kutchiObj.text + (kutchiObj.is_draft ? " *" : "");
-      kEl.appendChild(main);
+      main.className = "line-kutchi";
+      const kText = kutchiObj.text + (kutchiObj.is_draft ? "\u00a0*" : ""); // nbsp: the draft mark never wraps alone
+      main.textContent = kText;
+      target.appendChild(main);
       const toggle = document.createElement("span");
       toggle.className = "en-toggle";
       toggle.textContent = "English";
-      toggle.onclick = () => {
-        main.textContent = main.dataset.showingEnglish === "1"
-          ? kutchiObj.text + (kutchiObj.is_draft ? " *" : "")
-          : (englishFallback || "");
-        main.dataset.showingEnglish = main.dataset.showingEnglish === "1" ? "0" : "1";
+      let showing = false;
+      toggle.onclick = (e) => {
+        e.stopPropagation();
+        showing = !showing;
+        main.textContent = showing ? (englishFallback || "") : kText;
+        toggle.textContent = showing ? "Kutchi" : "English";
       };
-      kEl.appendChild(toggle);
+      target.appendChild(toggle);
     } else if (englishFallback) {
-      // No Kutchi drafted for this line - shown in English, honestly.
-      // Never spoken (English is text-only, never spoken in-game).
       const main = document.createElement("span");
       main.textContent = englishFallback;
       main.className = "eng-shown";
-      kEl.appendChild(main);
+      target.appendChild(main);
     }
   }
 
-  /** Sets the caption then plays the line through the given Phaser scene's
-   * sound manager, resolving once playback actually finishes. */
-  async function speakLine(scene, kind, id, kutchiObj, englishFallback, gist) {
-    setCaption(gist, kutchiObj, englishFallback);
+  // ---------------- speech bubble (anchored beside the speaker) ----------------
+  let bubbleAnchor = null;
+
+  /** Positions the bubble from its world-space anchor ({right, top, maxW}
+   * in background pixels) using the canvas's actual on-screen rect. */
+  function repositionBubble() {
+    const b = el("speech-bubble");
+    const canvas = qs("#game canvas");
+    if (!bubbleAnchor || !canvas) return;
+    const wrap = el("game-wrap").getBoundingClientRect();
+    const r = canvas.getBoundingClientRect();
+    const s = r.width / WORLD_W;
+    b.style.right = `${wrap.right - (r.left + bubbleAnchor.right * s)}px`;
+    b.style.top = `${r.top - wrap.top + bubbleAnchor.top * s}px`;
+    b.style.maxWidth = `${bubbleAnchor.maxW * s}px`;
+    b.style.fontSize = `${Math.max(11, Math.min(24, 30 * s))}px`;
+  }
+
+  function showBubble(anchor, gist, kutchiObj, englishFallback) {
+    bubbleAnchor = anchor;
+    el("bubble-gist").textContent = gist || "";
+    el("bubble-gist").style.display = gist ? "block" : "none";
+    fillLine(el("bubble-line"), kutchiObj, englishFallback);
+    el("speech-bubble").classList.add("show");
+    repositionBubble();
+  }
+
+  function hideBubble() {
+    el("speech-bubble").classList.remove("show");
+  }
+
+  // ---------------- narration strip (top centre; scene-setting, "You say:") ----------------
+  function showNarration(gist, kutchiObj, englishText) {
+    el("narration-gist").textContent = gist || "";
+    el("narration-gist").style.display = gist ? "block" : "none";
+    fillLine(el("narration-line"), kutchiObj, englishText);
+    el("narration").classList.add("show");
+  }
+  function hideNarration() { el("narration").classList.remove("show"); }
+
+  /** A plain scene-setting line in English, e.g. "Nani is making...". */
+  async function narrate(text, pauseMs) {
+    showNarration("", null, text);
+    await sleep(pauseMs || 1400);
+  }
+
+  /** A Kutchi line said by the player (e.g. greeting the shopkeeper). */
+  async function narrateLine(scene, kind, id, kutchiObj, englishFallback, gist) {
+    showNarration(gist, kutchiObj, englishFallback);
     await NjgAudio.speak(scene, kind, id, kutchiObj && kutchiObj.text);
   }
 
-  /** A line with NO sourced Kutchi yet: text only, never spoken. */
-  async function textOnly(gist, englishText, pauseMs) {
-    setCaption(gist, null, englishText);
+  /** A character's line: bubble beside them, then the recording (or the
+   * speech-synthesis fallback), resolving when playback finishes. */
+  async function speakLine(scene, anchor, kind, id, kutchiObj, englishFallback, gist) {
+    hideNarration();
+    showBubble(anchor, gist, kutchiObj, englishFallback);
+    await NjgAudio.speak(scene, kind, id, kutchiObj && kutchiObj.text);
+  }
+
+  /** A line with NO sourced Kutchi yet: text only, never spoken. In a
+   * bubble when a speaker anchor is given, else in the narration strip. */
+  async function textOnly(gist, englishText, pauseMs, anchor) {
+    if (anchor) showBubble(anchor, gist, null, englishText);
+    else showNarration(gist, null, englishText);
     await sleep(pauseMs || 1400);
   }
 
@@ -73,24 +131,51 @@
     return `linear-gradient(135deg, ${colors.join(", ")})`;
   }
 
-  // ---------------- shopping list (Kutchi text + play button, no picture) ----------------
+  // ---------------- recipe list (Kutchi + quantity + play button, no picture) ----------------
   function resetShoppingList() {
     el("shopping-list").innerHTML = "";
+    setListMode("buy");
   }
 
-  function addToShoppingList(scene, wordId) {
+  /** "buy" in the kitchen/bazaar, "bowl" once home: the dots then count
+   * what's gone into Nani's bowl rather than what's been bought. */
+  function setListMode(mode) {
+    el("sidebar").dataset.mode = mode;
+    el("list-hint").textContent = mode === "bowl" ? "Into the bowl" : "To buy";
+    document.querySelectorAll(".list-item").forEach((r) => r.classList.remove("done"));
+  }
+
+  function addToShoppingList(scene, wordId, qty, noCount) {
     const word = NjgData.word(wordId);
     const list = el("shopping-list");
     const row = document.createElement("div");
     row.className = "list-item";
     row.dataset.wordId = wordId;
 
+    const kText = word.kutchi ? word.kutchi.text : word.english; // never invented; falls back honestly
+    const draft = word.kutchi && word.kutchi.is_draft ? " *" : "";
+
     const kutchi = document.createElement("div");
     kutchi.className = "li-kutchi";
-    const kText = word.kutchi ? word.kutchi.text : word.english; // never invented; falls back honestly
-    kutchi.innerHTML = word.kutchi
-      ? `${kText}${word.kutchi.is_draft ? '<span class="draft-mark"> *</span>' : ""}`
-      : kText;
+    const qtyEl = document.createElement("span");
+    qtyEl.className = "li-qty";
+    qtyEl.textContent = noCount ? "" : `${qty} × `;
+    const name = document.createElement("span");
+    name.textContent = kText;
+    const draftEl = document.createElement("span");
+    draftEl.className = "draft-mark";
+    draftEl.textContent = draft;
+    kutchi.append(qtyEl, name, draftEl);
+
+    const pips = document.createElement("div");
+    pips.className = "li-pips";
+    if (!noCount) {
+      for (let i = 0; i < qty; i++) {
+        const p = document.createElement("span");
+        p.className = "pip";
+        pips.appendChild(p);
+      }
+    }
 
     const playBtn = document.createElement("button");
     playBtn.className = "li-play";
@@ -98,7 +183,7 @@
     playBtn.setAttribute("aria-label", "Play");
     playBtn.onclick = (e) => {
       e.stopPropagation();
-      NjgAudio.speak(scene, "word", wordId, kText);
+      NjgAudio.speak(scene.scene.manager.getScenes(true)[0] || scene, "word", wordId, kText);
     };
 
     const englishToggle = document.createElement("div");
@@ -108,22 +193,35 @@
     englishToggle.onclick = (e) => {
       e.stopPropagation();
       showingEnglish = !showingEnglish;
-      kutchi.textContent = showingEnglish ? word.english : kText + (word.kutchi && word.kutchi.is_draft ? " *" : "");
+      name.textContent = showingEnglish ? word.english : kText;
+      draftEl.textContent = showingEnglish ? "" : draft;
+      englishToggle.textContent = showingEnglish ? "Kutchi" : "English";
     };
 
     const textCol = document.createElement("div");
-    textCol.style.flex = "1";
-    textCol.style.minWidth = "0";
-    textCol.appendChild(kutchi);
-    textCol.appendChild(englishToggle);
+    textCol.className = "li-text";
+    textCol.append(kutchi, pips, englishToggle);
 
-    row.appendChild(textCol);
-    row.appendChild(playBtn);
+    row.append(textCol, playBtn);
     list.appendChild(row);
 
-    // narrow layouts: the drawer auto-opens when a word is added, so the
-    // player sees the list grow without hunting for the tab handle
-    openDrawer();
+    // narrow layouts: never open the drawer over the scene mid-task (it
+    // would cover the next thing to tap) - pulse its tab instead
+    nudgeDrawerTab();
+  }
+
+  function nudgeDrawerTab() {
+    const tab = el("drawer-tab");
+    tab.classList.remove("nudge");
+    void tab.offsetWidth; // restart the animation
+    tab.classList.add("nudge");
+  }
+
+  function setListProgress(wordId, n, qty, noCount) {
+    const row = qs(`.list-item[data-word-id="${wordId}"]`);
+    if (!row) return;
+    row.querySelectorAll(".pip").forEach((p, i) => p.classList.toggle("on", i < n));
+    if (noCount) row.classList.toggle("done", n >= qty);
   }
 
   function markListItemDone(wordId) {
@@ -137,16 +235,13 @@
     btn.textContent = label;
     btn.disabled = !!disabled;
     btn.onclick = onClick || null;
-    if (!disabled) openDrawer(); // narrow layouts: surface the button, not just the list
+    if (!disabled) openDrawer(); // narrow layouts: surface the button
   }
 
-  // ---------------- basket ----------------
-  function updateBasketCount(n) {
-    el("basket-count").textContent = String(n);
-  }
-
-  // ---------------- drawer (narrow layouts) ----------------
+  // ---------------- drawer (portrait / narrow layouts only) ----------------
+  const isDrawerMode = () => getComputedStyle(el("drawer-tab")).display !== "none";
   function openDrawer() {
+    if (!isDrawerMode()) return;
     el("sidebar").classList.add("open");
     el("sidebar-scrim").classList.add("open");
   }
@@ -155,7 +250,17 @@
     el("sidebar-scrim").classList.remove("open");
   }
   el("drawer-tab").addEventListener("click", openDrawer);
+  el("drawer-close").addEventListener("click", closeDrawer);
   el("sidebar-scrim").addEventListener("click", closeDrawer);
+
+  /** Every scene change: the drawer must never sit over a fresh scene. */
+  function onSceneStart() {
+    closeDrawer();
+    hideBubble();
+    hideNarration();
+  }
+
+  window.addEventListener("resize", repositionBubble);
 
   // ---------------- overlays ----------------
   function showPatchOverlay(patch, onContinue) {
@@ -219,11 +324,12 @@
 
   const NjgUI = {
     el, qs, sleep, itemImgSrc,
-    setCaption, speakLine, textOnly,
+    speakLine, textOnly, narrate, narrateLine, hideNarration,
+    showBubble, hideBubble, repositionBubble,
     loadQuilt, saveQuilt, addPatch, patchGradient,
-    resetShoppingList, addToShoppingList, markListItemDone,
-    setGoButton, updateBasketCount,
-    openDrawer, closeDrawer,
+    resetShoppingList, setListMode, addToShoppingList, setListProgress, markListItemDone,
+    setGoButton,
+    openDrawer, closeDrawer, onSceneStart,
     showPatchOverlay, renderQuiltOverlay, renderNotebookOverlay,
   };
 

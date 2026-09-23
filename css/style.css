@@ -1,11 +1,18 @@
 /* Nani jo Ghar - fruit-bowl test build, Phaser rebuild (Build Brief v3).
    Two layers: the Phaser canvas (#game, fixed 1600x900 world, Scale.FIT)
-   and this plain HTML/CSS UI layer beside/over it - the sidebar, caption
-   band, go button, overlays. Layout is a CSS grid with no JS measuring;
-   Phaser's own FIT scaling handles the canvas itself. See section 2.2. */
+   and this plain HTML/CSS UI layer beside/over it - the sidebar, speech
+   bubble, narration strip, go button, overlays. Layout is a CSS grid with
+   no JS measuring; Phaser's own FIT scaling handles the canvas itself.
+
+   The sidebar is ALWAYS its own grid column in landscape - it never sits
+   on top of the game. (Playtest 2: at exactly 16:10 the old 8/5 min and
+   max aspect-ratio queries both matched, the sidebar became an overlay
+   drawer that auto-opened and couldn't be closed, and it hid two stall
+   items.) Only portrait-ish screens (< 4:3) get an overlay drawer, and
+   its query is written so it can never overlap the others. */
 
 :root {
-  --sidebar-w: 20vw;
+  --sidebar-w: clamp(150px, 20vw, 280px);
   --ink: #2b1810;
   --cream: #fdf6e8;
   --indigo: #2f3e6b;
@@ -20,9 +27,10 @@
   :root { --sidebar-w: max(180px, calc(100dvw - 100dvh * 16 / 9)); }
 }
 
-/* narrow screens (iPad 4:3, portrait phones): sidebar becomes an
-   off-canvas drawer, game gets the full width */
-@media (max-aspect-ratio: 8/5) {
+/* narrower than 4:3 (portrait tablets): sidebar becomes an off-canvas
+   drawer, game gets the full width. 1332/1000 (not 4/3) so an exactly-4:3
+   iPad stays in the grid layout and no two layouts ever both match. */
+@media (max-aspect-ratio: 1332/1000) {
   :root { --sidebar-w: 0px; }
 }
 
@@ -91,6 +99,10 @@ html, body {
   border-bottom: 2px solid rgba(90,58,26,0.35);
   padding-bottom: 3%;
 }
+#list-hint {
+  display: block; font-size: 0.7em; font-weight: normal; color: #7a5a30;
+  margin-top: 2px; letter-spacing: 0.02em;
+}
 #shopping-list { flex: 1; overflow-y: auto; }
 .list-item {
   display: flex; align-items: center; gap: 8px;
@@ -103,7 +115,16 @@ html, body {
   color: #4a2e12;
   overflow-wrap: break-word;
 }
+.list-item .li-text { flex: 1; min-width: 0; }
 .list-item .li-kutchi .draft-mark { font-weight: normal; opacity: 0.6; }
+.list-item .li-qty { color: var(--madder); }
+.li-pips { display: flex; gap: 4px; margin: 3px 0 1px; min-height: 0; }
+.li-pips .pip {
+  width: 9px; height: 9px; border-radius: 50%;
+  border: 1.5px solid #7a5a30; background: transparent;
+  transition: background 0.2s;
+}
+.li-pips .pip.on { background: var(--leaf); border-color: var(--leaf); }
 .list-item .li-play {
   width: 36px; height: 36px; min-width: 36px; flex-shrink: 0;
   border-radius: 50%; border: none;
@@ -128,7 +149,9 @@ html, body {
   cursor: pointer;
   flex-shrink: 0;
 }
-.go-btn:disabled { background: #8a7a68; cursor: not-allowed; opacity: 0.7; }
+/* hidden (but still taking its space, so nothing jumps) until usable -
+   a greyed "..." button read as broken in playtest 2 */
+.go-btn:disabled { visibility: hidden; }
 
 .tab-rail { display: flex; justify-content: space-around; flex-shrink: 0; padding: 2% 0; }
 .tab-btn {
@@ -139,11 +162,12 @@ html, body {
 
 /* ---------- drawer mode (narrow screens): sidebar slides in from the
    left over the game, with a tab handle to pull it out ---------- */
-#drawer-tab { display: none; }
-@media (max-aspect-ratio: 8/5) {
+#drawer-tab, #drawer-close { display: none; }
+#sidebar-scrim { display: none; }
+@media (max-aspect-ratio: 1332/1000) {
   #drawer-tab {
     display: block;
-    position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+    position: fixed; left: 0; top: 8px;
     z-index: 60;
     background: var(--madder); color: var(--cream);
     border: none; border-radius: 0 8px 8px 0;
@@ -159,44 +183,66 @@ html, body {
     box-shadow: 4px 0 24px rgba(0,0,0,0.6);
   }
   #sidebar.open { transform: translateX(0); }
+  #drawer-tab.nudge { animation: nudge 0.9s ease-in-out 2; }
+  @keyframes nudge {
+    0%, 100% { transform: none; }
+    50% { transform: scale(1.12); box-shadow: 0 0 12px var(--marigold); }
+  }
+  #drawer-close {
+    display: block; position: absolute; top: 6px; right: 8px;
+    background: none; border: none; font-size: 26px; line-height: 1;
+    color: #5a3a1a; cursor: pointer; padding: 4px 8px;
+  }
   #sidebar-scrim {
-    display: none;
     position: fixed; inset: 0; z-index: 59;
     background: rgba(0,0,0,0.4);
   }
   #sidebar-scrim.open { display: block; }
   #game-wrap { grid-column: 1 / -1; }
 }
-@media (min-aspect-ratio: 8/5) {
-  #sidebar-scrim { display: none !important; }
-}
 
-/* ---------- caption band (top strip, over the canvas) ---------- */
-#caption-band {
-  position: absolute; left: 0; right: 0; top: 0; height: 9%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
-  color: var(--cream);
-  z-index: 25;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 0.5% 2%;
-  pointer-events: none;
+/* ---------- narration strip (top centre, over the canvas) ---------- */
+#narration {
+  position: absolute; left: 50%; top: 3%; transform: translateX(-50%);
+  max-width: 70%;
+  background: rgba(30, 18, 10, 0.86); color: var(--cream);
+  border-radius: 10px; padding: 0.5em 1.1em;
+  z-index: 25; text-align: center;
+  font-size: clamp(11px, 1.6vw, 18px);
+  opacity: 0; transition: opacity 0.25s; pointer-events: none;
 }
-#caption-gist { font-size: min(1.6vw, 12px); opacity: 0.85; }
-#caption-kutchi { font-size: min(2.4vw, 18px); font-weight: bold; }
-#caption-kutchi .en-toggle {
-  font-size: min(1.4vw, 11px); font-weight: normal; margin-left: 10px;
-  border-bottom: 1px dotted var(--marigold); cursor: pointer;
-  pointer-events: all;
-}
+#narration.show { opacity: 1; pointer-events: auto; }
+#narration-gist { font-size: 0.75em; opacity: 0.8; }
 
-/* ---------- basket ---------- */
-#basket {
-  position: absolute; left: 3%; bottom: 2%; z-index: 30;
-  color: var(--cream); font-size: min(2.6vw, 20px);
-  display: flex; align-items: center; gap: 4px;
-  pointer-events: none;
-  text-shadow: 0 1px 3px #000;
+/* ---------- speech bubble (positioned beside the speaker by ui.js) ---------- */
+#speech-bubble {
+  position: absolute; z-index: 26;
+  background: #fffaf0; color: var(--ink);
+  border: 2px solid #5a3a1a; border-radius: 16px;
+  padding: 0.45em 0.8em 0.5em;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  font-weight: bold;
+  opacity: 0; transform: scale(0.96); transform-origin: right center;
+  transition: opacity 0.18s, transform 0.18s; pointer-events: none;
 }
+#speech-bubble.show { opacity: 1; transform: none; pointer-events: auto; }
+/* tail pointing right, toward the speaker */
+#speech-bubble::after {
+  content: ""; position: absolute; right: -14px; top: 60%;
+  border-width: 9px 0 9px 14px; border-style: solid;
+  border-color: transparent transparent transparent #5a3a1a;
+}
+#speech-bubble::before {
+  content: ""; position: absolute; right: -10px; top: calc(60% + 2px);
+  border-width: 7px 0 7px 11px; border-style: solid;
+  border-color: transparent transparent transparent #fffaf0; z-index: 1;
+}
+#bubble-gist { font-size: 0.62em; font-weight: normal; color: #7a5a30; margin-bottom: 1px; }
+.en-toggle {
+  font-size: 0.6em; font-weight: normal; margin-left: 0.7em;
+  border-bottom: 1px dotted currentColor; cursor: pointer; opacity: 0.75;
+}
+#narration .en-toggle { color: var(--marigold); opacity: 1; }
 
 /* ---------- overlays ---------- */
 .overlay {
@@ -239,5 +285,6 @@ html, body {
   font-size: min(2.4vw, 16px); cursor: pointer;
 }
 
-/* ---------- English toggle text ---------- */
-.eng-shown { color: var(--marigold); }
+/* ---------- English-only lines (no sourced Kutchi yet) ---------- */
+#narration .eng-shown { color: var(--cream); }
+#speech-bubble .eng-shown { color: #5a3a1a; font-style: italic; }
