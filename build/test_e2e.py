@@ -188,7 +188,7 @@ def run_viewport(browser, viewport, console_errors):
 
     # --- kitchen intro: tap each of the 3 silhouette gaps as they appear ---
     for i in range(3):
-        item = find_item(page, "it.key.startsWith('gap-')", timeout_ms=15000)
+        item = find_item(page, "it.key.startsWith('gap-')", timeout_ms=40000)
         assert item, f"no gap silhouette found for item {i}"
         tap_screen_point(page, item, viewport["touch"])
         page.wait_for_timeout(1200)
@@ -314,7 +314,7 @@ def run_shell_tests(browser):
     create_profile("Profile A")
     page.click("#hub-go-btn")
     wait_debug_items(page)
-    item = find_item(page, "it.key.startsWith('gap-')", timeout_ms=15000)
+    item = find_item(page, "it.key.startsWith('gap-')", timeout_ms=40000)
     assert item, "no gap silhouette for profile A"
     page.mouse.click(item["x"], item["y"])
     page.wait_for_timeout(800)

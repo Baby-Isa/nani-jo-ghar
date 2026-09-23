@@ -211,7 +211,7 @@ html, body {
   font-size: clamp(11px, 1.6vw, 18px);
   opacity: 0; transition: opacity 0.25s; pointer-events: none;
 }
-#narration.show { opacity: 1; pointer-events: auto; }
+#narration.show { opacity: 1; }
 #narration-gist { font-size: 0.75em; opacity: 0.8; }
 
 /* ---------- speech bubble (positioned beside the speaker by ui.js) ---------- */
@@ -225,7 +225,7 @@ html, body {
   opacity: 0; transform: scale(0.96); transform-origin: right center;
   transition: opacity 0.18s, transform 0.18s; pointer-events: none;
 }
-#speech-bubble.show { opacity: 1; transform: none; pointer-events: auto; }
+#speech-bubble.show { opacity: 1; transform: none; }
 /* tail pointing right, toward the speaker */
 #speech-bubble::after {
   content: ""; position: absolute; right: -14px; top: 60%;
@@ -241,6 +241,7 @@ html, body {
 .en-toggle {
   font-size: 0.6em; font-weight: normal; margin-left: 0.7em;
   border-bottom: 1px dotted currentColor; cursor: pointer; opacity: 0.75;
+  pointer-events: auto; /* the only clickable part of an otherwise click-through bubble/narration */
 }
 #narration .en-toggle { color: var(--marigold); opacity: 1; }
 
