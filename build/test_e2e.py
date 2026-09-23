@@ -352,7 +352,8 @@ def run_shell_tests(browser):
     print("  profiles persisted across reload: OK")
 
     # --- settings: a short tap does nothing, a 3s hold opens it ---
-    page.mouse.move(1290, 733)
+    cog_box = page.eval_on_selector("#hub-cog", "el => { const r = el.getBoundingClientRect(); return {x: r.left + r.width/2, y: r.top + r.height/2}; }")
+    page.mouse.move(cog_box["x"], cog_box["y"])
     page.mouse.down()
     page.wait_for_timeout(200)
     page.mouse.up()
