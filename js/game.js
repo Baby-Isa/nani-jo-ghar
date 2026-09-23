@@ -58,6 +58,7 @@
     busy: false, // true while a tap's consequences (audio, flight) play out
     currentAsk: null, // word Nani is asking for in the fill phase
     bowlCount: 0,
+    hasCompletedOnce: false, // intro beats are skipped automatically on replay
   };
 
   function registerInteractive(key, sprite, scene) { State.interactive.set(key, { sprite, scene }); }
@@ -394,6 +395,68 @@
     flicker();
   }
 
+  /** Fills the letterbox (any part of #game-wrap the canvas doesn't cover)
+   * with the scene's own dominant colour instead of black bars - sampled
+   * once per background by shrinking it to 1x1 on an offscreen canvas. */
+  const letterboxCache = {};
+  function setLetterboxColor(scene, bgKey) {
+    if (!letterboxCache[bgKey]) {
+      const img = scene.textures.get(bgKey).getSourceImage();
+      const c = document.createElement("canvas");
+      c.width = 1; c.height = 1;
+      const ctx = c.getContext("2d");
+      ctx.drawImage(img, 0, 0, 1, 1);
+      const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+      letterboxCache[bgKey] = `rgb(${r},${g},${b})`;
+    }
+    NjgUI.el("game-wrap").style.background = letterboxCache[bgKey];
+  }
+
+  // ================= story beats =================
+  /** A small scripted moment: 3-5s, one visual, one line (Kutchi if sourced,
+   * else gist-only per "never invent Kutchi"), skippable with a tap
+   * anywhere, skipped automatically on replay. See Build Brief v4 section 4. */
+  const BEAT_VISUALS = {
+    "hang-lantern": (scene, kitchenDef) => {
+      const a = kitchenDef.eid_shelf.lantern;
+      const img = scene.add.image(a.x, a.y - 40, "eid-lantern").setOrigin(0.5, 0).setDepth(DEPTH.ambient + 1).setAlpha(0).setScale(0.32);
+      scene.tweens.add({ targets: img, y: a.y, alpha: 1, duration: 900, ease: "Bounce.easeOut" });
+      return img; // left hanging for the rest of the scene
+    },
+    "bowl-full-glow": (scene, kitchenDef) => {
+      const b = kitchenDef.island_top;
+      const glow = scene.add.circle(b.x, b.baseline - 40, 90, 0xffe08a, 0.45).setDepth(DEPTH.bowlFront + 1).setBlendMode(Phaser.BlendModes.ADD);
+      scene.tweens.add({ targets: glow, scale: 1.6, alpha: 0, duration: 1600, ease: "Sine.easeOut", onComplete: () => glow.destroy() });
+      return glow;
+    },
+  };
+
+  function playBeatVisual(scene, kitchenDef, visualName) {
+    const fn = BEAT_VISUALS[visualName];
+    if (fn) return fn(scene, kitchenDef);
+    return null;
+  }
+
+  /** Resolves once the beat's line finishes AND at least a floor duration
+   * has passed, or immediately on a tap anywhere (skippable). */
+  function runBeat(scene, kitchenDef, beat, sayFn) {
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = () => { if (done) return; done = true; catcher.destroy(); resolve(); };
+      const catcher = scene.add.rectangle(WORLD_W / 2, WORLD_H / 2, WORLD_W, WORLD_H, 0x000000, 0.001);
+      catcher.setDepth(DEPTH.flying + 10).setInteractive();
+      catcher.once("pointerdown", finish);
+
+      playBeatVisual(scene, kitchenDef, beat.visual);
+      const sentence = NjgData.sentence(beat.line_id);
+      const line = sentence && sentence.kutchi
+        ? sayFn(sentence.kutchi, sentence.english, beat.gist)
+        : NjgUI.textOnly(beat.gist, beat.gist, 3200, kitchenDef.bubble);
+      Promise.all([line, new Promise((r) => scene.time.delayedCall(3000, r))]).then(finish);
+      scene.time.delayedCall(5000, finish); // hard cap per "3 to 5 seconds"
+    });
+  }
+
   function addOccluder(scene, sceneDef, bgKey) {
     const occ = sceneDef.occluder;
     if (!occ) return null;
@@ -443,7 +506,8 @@
       const bazaar = NjgData.scene("bazaar");
       this.load.image("bg-kitchen", kitchen.background);
       this.load.image("bg-bazaar", bazaar.background);
-      this.load.image("kitchen-occluder", kitchen.occluder.image);
+      if (!kitchen.occluder.fromBackground) this.load.image("kitchen-occluder", kitchen.occluder.image);
+      ["lantern", "bunting", "crescent-star", "lights"].forEach((n) => this.load.image(`eid-${n}`, `assets/scene/eid/${n}.png`));
       this.load.image("bowl-back", kitchen.bowl.back);
       this.load.image("bowl-front", kitchen.bowl.front);
       this.load.image("basket-back", kitchen.basket.back);
@@ -474,6 +538,7 @@
       const sceneDef = NjgData.scene("kitchen");
       this.sceneDef = sceneDef;
       NjgUI.onSceneStart();
+      setLetterboxColor(this, "bg-kitchen");
       this.add.image(0, 0, "bg-kitchen").setOrigin(0, 0);
       const occY = addOccluder(this, sceneDef, "bg-kitchen");
       this.nani = new Character(this, sceneDef.character, occY);
@@ -504,6 +569,10 @@
       errand.kitchen.items.forEach((it, i) => { State.kitchenAssignment[it.word_id] = slots[i]; });
 
       await NjgUI.narrate("Nani is making a fruit bowl for tonight's guests.", 1800);
+
+      if (!State.hasCompletedOnce && errand.intro_beat) {
+        await runBeat(this, sceneDef, errand.intro_beat, (k, e, g) => this.say("word", errand.intro_beat.line_id, k, e, g));
+      }
 
       const greet = NjgData.sentence("snt-01");
       const hey = NjgData.sentence("snt-03");
@@ -671,14 +740,21 @@
     async finish() {
       this.nani.setPose("happy");
       await NjgUI.textOnly("", "Well done!", 1600, this.sceneDef.bubble);
-      const patch = { motif: State.errand.reward_patch.motif, colors: State.errand.reward_patch.colors, at: Date.now() };
+
+      const errand = State.errand;
+      if (errand.outro_beat) {
+        await runBeat(this, this.sceneDef, errand.outro_beat, (k, e, g) => this.say("word", errand.outro_beat.line_id, k, e, g));
+      }
+      State.hasCompletedOnce = true;
+
+      const patch = { motif: errand.reward_patch.motif, colors: errand.reward_patch.colors, at: Date.now() };
       NjgUI.addPatch(patch);
       NjgUI.showPatchOverlay(patch, () => {
-        NjgUI.setGoButton("Play again →", false, () => {
-          State.basketCount = 0;
-          State.basket = [];
-          this.scene.start("kitchen", { phase: "intro" });
-        });
+        State.basketCount = 0;
+        State.basket = [];
+        if (global.NjgGame && global.NjgGame.onErrandComplete) {
+          global.NjgGame.onErrandComplete(errand.id, patch);
+        }
       });
     }
   }
@@ -692,6 +768,7 @@
       NjgUI.onSceneStart();
       NjgUI.setGoButton("", true, null);
       NjgUI.hideBubble();
+      setLetterboxColor(this, "bg-bazaar");
       this.add.image(0, 0, "bg-bazaar").setOrigin(0, 0);
       const occY = addOccluder(this, sceneDef, "bg-bazaar");
       this.shopkeeper = new Character(this, sceneDef.character, occY);
@@ -822,7 +899,10 @@
     }
   }
 
-  // ================= boot sequence =================
+  // ================= boot / public API =================
+  // js/shell.js drives the launch flow (tap to start -> profile picker ->
+  // hub -> errand -> patch -> hub); this module only knows how to load its
+  // data once and how to play/leave one errand when told to.
   async function unlockAudioAndFullscreen() {
     try { const a = new Audio(); a.play().catch(() => {}); } catch (e) {}
     try {
@@ -836,17 +916,24 @@
     } catch (e) {}
   }
 
-  async function boot() {
+  let phaserGame = null;
+
+  async function prepare() {
     await NjgData.load();
     const errand = NjgData.errand("bowl-01");
     State.errand = errand;
     const existingAudio = resolveExistingAudio(buildAudioWants(errand));
+    return { errand, existingAudio };
+  }
 
-    NjgUI.el("start-btn").onclick = async () => {
-      NjgUI.el("overlay-start").style.display = "none";
+  /** First call unlocks audio (must run from the tap-to-start gesture),
+   * creates the Phaser game and preloads. Later calls just (re)start the
+   * kitchen intro - BootScene's preload already ran once. */
+  async function playErrand() {
+    if (!phaserGame) {
       await unlockAudioAndFullscreen();
-
-      const game = new Phaser.Game({
+      const { errand, existingAudio } = await prepare();
+      phaserGame = new Phaser.Game({
         type: Phaser.AUTO,
         parent: "game",
         width: WORLD_W,
@@ -861,11 +948,11 @@
         },
         scene: [BootScene, KitchenScene, BazaarScene],
       });
-      game.scene.start("boot", { errand, existingAudio });
-      game.scale.on("resize", () => NjgUI.repositionBubble());
+      phaserGame.scene.start("boot", { errand, existingAudio });
+      phaserGame.scale.on("resize", () => NjgUI.repositionBubble());
 
       global.__njg = {
-        game,
+        game: phaserGame,
         debugItems() {
           const items = [];
           State.interactive.forEach(({ sprite, scene }, key) => {
@@ -882,8 +969,31 @@
         busy() { return State.busy; },
         currentAsk() { return State.currentAsk; },
       };
-    };
+    } else {
+      State.basketCount = 0;
+      State.basket = [];
+      phaserGame.scene.start("kitchen", { phase: "intro" });
+    }
   }
 
-  boot();
+  /** Leave mid-errand: word progress already earned is kept (Progress
+   * writes as it goes); the errand itself restarts from its beginning
+   * next time, per Build Brief v4 section 2.3. Just stop rendering it -
+   * State resets naturally the next time runIntro() runs. */
+  function leaveErrand() {
+    if (!phaserGame) return;
+    ["kitchen", "bazaar"].forEach((key) => {
+      const scene = phaserGame.scene.keys[key];
+      if (scene && phaserGame.scene.isActive(key)) phaserGame.scene.stop(key);
+    });
+  }
+
+  global.NjgGame = {
+    prepare,
+    playErrand,
+    leaveErrand,
+    unlockAudioAndFullscreen,
+    errandId: () => "bowl-01",
+    onErrandComplete: null, // js/shell.js assigns this
+  };
 })(window);

@@ -1,44 +1,32 @@
 /*
- * Per-word difficulty (PlayerWordProgress), stored on-device only.
- * Stage table from the Game Design doc's "Per-word difficulty" section:
+ * Per-word difficulty (PlayerWordProgress), read and written through the
+ * ACTIVE PROFILE object (js/storage.js owns actually persisting it) - see
+ * the Technical Plan's data model and Build Brief v4 section 2.1. Progress
+ * itself never touches storage directly; js/shell.js calls
+ * Progress.attachProfile(profile, onChange) once a profile is chosen, and
+ * onChange is called (with the profile) every time a word's stage changes,
+ * per "saved every time a word's stage changes".
  *
+ * Stage table (understand_stage):
  *   1 Introduced   0 correct recalls   picture shown, word shown, audio auto
  *   2 Supported    1-2 correct         picture shown, word shown, audio auto
  *   3 Prompted     3-5 correct         picture shown, word hidden, audio auto
  *   4 Recalled     6-11 correct        picture shown, word hidden, audio tap-to-replay
  *   5 Known        12+ correct         picture hidden, word hidden, audio plays once
  *
- * Changed 23 Sep 2026 (Roadmap doc, "Learning design decisions"): a word
- * advances on a CORRECT RECALL from the Kutchi, not on being met/shown.
- * Buying three of an item from a Kutchi-only list counts once, however
- * many times it was seen. The old version bumped on every exposure, which
- * gave the answer away by glowing/showing text automatically - recordMeeting
- * now only tracks exposure (for staleness and "has this been introduced at
- * all" bookkeeping) and never changes the stage; only recordCorrect does.
+ * A word advances a stage on a CORRECT RECALL from the Kutchi, not on
+ * being met/shown - recordMeeting() only tracks exposure (for staleness
+ * and "introduced at all" bookkeeping) and never changes the stage; only
+ * recordCorrect() does. Drops a stage after two consecutive misses, or if
+ * not seen for 14 days.
  *
- * "Drops a stage if not seen for a while, or on two wrong answers" -
- * staleness is simplified for this build to a 14-day window (there's no
- * real usage history yet to tune against); the two-wrong-answers rule is
- * implemented as stated.
+ * produce_stage (Technical Plan): the same word, for speaking/writing,
+ * always at or behind understand_stage. Nothing in bowl-01 raises it yet -
+ * it exists and persists, per Build Brief v4 section 2.1, ready for a
+ * later errand that actually asks the player to produce the word.
  */
 (function (global) {
-  const STORAGE_KEY = "njg_progress_v2";
   const STALE_DAYS = 14;
-
-  function loadAll() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) {
-      return {};
-    }
-  }
-
-  function saveAll(all) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
-    } catch (e) { /* best-effort; ignore quota/private-mode errors */ }
-  }
 
   function stageForCorrectCount(correct) {
     if (correct <= 0) return 1;
@@ -48,66 +36,89 @@
     return 5;
   }
 
+  function blankRecord(wordId) {
+    return { wordId, timesMet: 0, timesCorrect: 0, understand_stage: 1, produce_stage: 1, misses: 0, last_seen: null };
+  }
+
+  // Fallback store used only if no profile is ever attached (shouldn't
+  // happen in normal play - js/shell.js always attaches one, real or
+  // temporary), so Progress never crashes callers mid-errand.
+  const fallbackWords = {};
+
   const Progress = {
-    _all: loadAll(),
+    _profile: null,
+    _onChange: null,
+
+    /** Call once a profile is chosen (real or temporary/unsaved). Every
+     * later record...() call reads/writes profile.words. */
+    attachProfile(profile, onChange) {
+      if (!profile.words) profile.words = {};
+      this._profile = profile;
+      this._onChange = onChange || null;
+    },
+
+    _words() {
+      return this._profile ? this._profile.words : fallbackWords;
+    },
+
+    _persist() {
+      if (this._profile && this._onChange) this._onChange(this._profile);
+    },
 
     get(wordId) {
-      const rec = this._all[wordId];
-      if (!rec) return { wordId, timesMet: 0, timesCorrect: 0, stage: 1, misses: 0, lastSeen: null };
-      // staleness: drop one stage if not seen in STALE_DAYS
-      let stage = rec.stage;
-      if (rec.lastSeen) {
-        const days = (Date.now() - rec.lastSeen) / 86400000;
+      const rec = this._words()[wordId];
+      if (!rec) return blankRecord(wordId);
+      let stage = rec.understand_stage;
+      if (rec.last_seen) {
+        const days = (Date.now() - rec.last_seen) / 86400000;
         if (days > STALE_DAYS && stage > 1) stage = stage - 1;
       }
-      return Object.assign({}, rec, { stage });
+      return Object.assign({}, rec, { understand_stage: stage, stage }); // `stage` kept as an alias for older call sites
     },
 
-    /** Call whenever the player meets/hears a word (introduced, seen on a
-     * shelf, etc). Exposure only - does NOT advance the stage. */
+    /** Exposure only (introduced, seen on a shelf) - never advances a stage. */
     recordMeeting(wordId) {
-      const rec = this._all[wordId] || { wordId, timesMet: 0, timesCorrect: 0, misses: 0, stage: 1 };
+      const words = this._words();
+      const rec = words[wordId] || blankRecord(wordId);
       rec.timesMet += 1;
-      rec.lastSeen = Date.now();
-      if (!rec.stage) rec.stage = 1;
-      this._all[wordId] = rec;
-      saveAll(this._all);
+      rec.last_seen = Date.now();
+      words[wordId] = rec;
+      this._persist();
       return this.get(wordId);
     },
 
-    /** Call when the player correctly recalls this word from its Kutchi
-     * (picked the right item for a spoken/written Kutchi cue, or the
-     * reverse). This is what advances the stage. */
+    /** A correct recall from the Kutchi - the only thing that advances
+     * understand_stage. */
     recordCorrect(wordId) {
-      const rec = this._all[wordId] || { wordId, timesMet: 0, timesCorrect: 0, misses: 0, stage: 1 };
+      const words = this._words();
+      const rec = words[wordId] || blankRecord(wordId);
       rec.timesCorrect = (rec.timesCorrect || 0) + 1;
       rec.timesMet += 1;
-      rec.lastSeen = Date.now();
-      rec.stage = stageForCorrectCount(rec.timesCorrect);
+      rec.last_seen = Date.now();
+      rec.understand_stage = stageForCorrectCount(rec.timesCorrect);
+      rec.produce_stage = Math.min(rec.produce_stage || 1, rec.understand_stage);
       rec.misses = 0;
-      this._all[wordId] = rec;
-      saveAll(this._all);
+      words[wordId] = rec;
+      this._persist();
       return this.get(wordId);
     },
 
-    /** Call on a wrong answer for this word. Drops a stage after 2 misses. */
+    /** A wrong answer. Drops a stage after two misses. */
     recordMiss(wordId) {
-      const rec = this._all[wordId] || { wordId, timesMet: 1, timesCorrect: 0, misses: 0, stage: 1 };
+      const words = this._words();
+      const rec = words[wordId] || blankRecord(wordId);
       rec.misses = (rec.misses || 0) + 1;
       if (rec.misses >= 2) {
-        rec.stage = Math.max(1, (rec.stage || 1) - 1);
+        rec.understand_stage = Math.max(1, (rec.understand_stage || 1) - 1);
+        rec.produce_stage = Math.min(rec.produce_stage || 1, rec.understand_stage);
         rec.misses = 0;
       }
-      rec.lastSeen = Date.now();
-      this._all[wordId] = rec;
-      saveAll(this._all);
+      rec.last_seen = Date.now();
+      words[wordId] = rec;
+      this._persist();
       return this.get(wordId);
     },
 
-    /** Display rules for a given stage, per the table above. Note: the
-     * automatic "glow at stage 1" rule from the original table is
-     * superseded - glow is now a delayed hint, driven separately by
-     * app.js's hesitation timer, not by stage. */
     rulesForStage(stage) {
       switch (stage) {
         case 1: return { showPicture: true, showText: true, audio: "auto" };

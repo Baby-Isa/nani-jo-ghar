@@ -164,6 +164,21 @@ def run_viewport(browser, viewport, console_errors):
     page.goto(BASE_URL)
     screenshot("start_overlay")
     page.click("#start-btn")
+
+    # --- thin shell: create a profile, then enter from the hub ---
+    page.wait_for_selector("#overlay-picker", state="visible", timeout=10000)
+    screenshot("profile_picker")
+    page.click("#overlay-picker .picker-tile.add")
+    page.wait_for_selector("#overlay-create", state="visible", timeout=5000)
+    page.fill("#create-name", "Isa")
+    page.click("#create-avatars .picker-avatar >> nth=2")
+    screenshot("create_profile")
+    page.click("#create-save")
+    page.wait_for_selector("#hub-screen", state="visible", timeout=10000)
+    screenshot("hub")
+    assert_no_horizontal_scroll(page)
+    page.click("#hub-go-btn")
+
     wait_debug_items(page)
     page.wait_for_timeout(1500)
     screenshot("kitchen_intro")
@@ -260,16 +275,134 @@ def run_viewport(browser, viewport, console_errors):
     assert page.evaluate("window.__njg.bowlCount()") == bowl_before + total_qty, "bowl count wrong at the end"
     assert page.evaluate("window.__njg.basketItems().length") == 0, "basket not empty at the end"
 
-    # --- patch overlay reached ---
+    # --- patch overlay reached, then back to the hub (never "play again" mid-scene) ---
     page.wait_for_selector("#overlay-patch", state="visible", timeout=15000)
     screenshot("patch_overlay")
     page.click("#patch-continue")
-    page.wait_for_timeout(500)
-    screenshot("finished")
+    page.wait_for_selector("#hub-screen", state="visible", timeout=10000)
+    screenshot("finished_back_at_hub")
+    assert "Play again" in page.inner_text("#hub-go-btn"), "hub button didn't switch to replay"
+    assert len(page.eval_on_selector_all("#hub-decorations img", "els => els")) >= 1, "no hub decoration after finishing the errand"
 
     assert not errors, f"console errors on {name}: {errors}"
     print(f"  PASS: {name}")
     context.close()
+
+
+def run_shell_tests(browser):
+    """Build Brief v4 section 8.2: profiles, leave-errand, storage
+    unavailable, settings. All at one representative viewport."""
+    print("\n=== shell tests (1366x768) ===")
+    shot = shot_dir("shell-tests")
+    context = browser.new_context(viewport={"width": 1366, "height": 768})
+    page = context.new_page()
+    errors = []
+    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.goto(BASE_URL)
+    page.click("#start-btn")
+    page.wait_for_selector("#overlay-picker", state="visible")
+
+    def create_profile(name):
+        page.click("#overlay-picker .picker-tile.add")
+        page.wait_for_selector("#overlay-create", state="visible")
+        page.fill("#create-name", name)
+        page.click("#create-save")
+        page.wait_for_selector("#hub-screen", state="visible")
+
+    # --- profile A: play partway, then leave mid-errand ---
+    create_profile("Profile A")
+    page.click("#hub-go-btn")
+    wait_debug_items(page)
+    item = find_item(page, "it.key.startsWith('gap-')", timeout_ms=15000)
+    assert item, "no gap silhouette for profile A"
+    page.mouse.click(item["x"], item["y"])
+    page.wait_for_timeout(800)
+    page.click("#tab-home")
+    page.wait_for_selector("#overlay-confirm", state="visible")
+    page.click("#confirm-yes")
+    page.wait_for_selector("#hub-screen", state="visible", timeout=10000)
+    page.screenshot(path=os.path.join(shot, "01_profileA_left_midway.png"))
+    print("  left mid-errand, back at hub: OK")
+
+    # --- switch to profile B, create it, then switch back to A ---
+    page.click("#hub-profile-name")
+    page.wait_for_selector("#overlay-picker", state="visible")
+    tiles = page.query_selector_all("#picker-grid .picker-tile:not(.add)")
+    assert len(tiles) == 1, f"expected 1 saved profile, found {len(tiles)}"
+    create_profile("Profile B")
+    page.screenshot(path=os.path.join(shot, "02_profileB_hub.png"))
+    page.click("#hub-profile-name")
+    page.wait_for_selector("#overlay-picker", state="visible")
+    tiles = page.query_selector_all("#picker-grid .picker-tile:not(.add)")
+    assert len(tiles) == 2, f"expected 2 saved profiles, found {len(tiles)}"
+    tiles[0].click()
+    page.wait_for_selector("#hub-screen", state="visible")
+    assert "Profile A" in page.inner_text("#hub-profile-name") or "Profile B" in page.inner_text("#hub-profile-name")
+    print("  two profiles listed and switchable: OK")
+
+    # --- reload: profiles persist (IndexedDB survives a reload) ---
+    page.goto(BASE_URL)
+    page.click("#start-btn")
+    page.wait_for_selector("#overlay-picker", state="visible")
+    tiles = page.query_selector_all("#picker-grid .picker-tile:not(.add)")
+    assert len(tiles) == 2, f"profiles did not persist across reload: found {len(tiles)}"
+    tiles[0].click()
+    page.wait_for_selector("#hub-screen", state="visible")
+    print("  profiles persisted across reload: OK")
+
+    # --- settings: a short tap does nothing, a 3s hold opens it ---
+    page.mouse.move(1290, 733)
+    page.mouse.down()
+    page.wait_for_timeout(200)
+    page.mouse.up()
+    assert page.eval_on_selector("#overlay-settings", "el => getComputedStyle(el).display") == "none", \
+        "a short tap on the cog opened settings"
+    page.mouse.down()
+    page.wait_for_timeout(3200)
+    page.mouse.up()
+    page.wait_for_selector("#overlay-settings", state="visible", timeout=2000)
+    page.screenshot(path=os.path.join(shot, "03_settings.png"))
+    print("  short tap ignored, 3s hold opens settings: OK")
+
+    # delete/reset both ask for confirmation before doing anything
+    page.click("#settings-delete")
+    page.wait_for_selector("#overlay-confirm", state="visible")
+    page.click("#confirm-cancel")
+    assert page.eval_on_selector("#overlay-settings", "el => getComputedStyle(el).display") != "none", \
+        "cancelling the delete confirm closed settings"
+    page.click("#settings-close")
+    print("  delete/reset require confirmation: OK")
+
+    assert not errors, f"console errors in shell tests: {errors}"
+    context.close()
+
+    # --- storage unavailable: game still plays, with a gentle notice ---
+    context2 = browser.new_context(viewport={"width": 1366, "height": 768})
+    context2.add_init_script("delete window.indexedDB; window.indexedDB = undefined;")
+    page2 = context2.new_page()
+    errors2 = []
+    page2.on("console", lambda m: errors2.append(m.text) if m.type == "error" else None)
+    page2.on("pageerror", lambda e: errors2.append(str(e)))
+    page2.goto(BASE_URL)
+    page2.click("#start-btn")
+    page2.wait_for_selector("#overlay-picker", state="visible")
+    page2.wait_for_selector("#picker-notice", state="visible", timeout=5000)
+    assert "won't be saved" in page2.inner_text("#picker-notice").lower()
+    page2.screenshot(path=os.path.join(shot, "04_storage_unavailable_notice.png"))
+    page2.click("#overlay-picker .picker-tile.add")
+    page2.fill("#create-name", "Temp")
+    page2.click("#create-save")
+    page2.wait_for_selector("#hub-screen", state="visible", timeout=10000)
+    page2.click("#hub-go-btn")
+    wait_debug_items(page2)
+    page2.wait_for_timeout(1000)
+    page2.screenshot(path=os.path.join(shot, "05_storage_unavailable_still_plays.png"))
+    assert not errors2, f"console errors with storage unavailable: {errors2}"
+    print("  storage unavailable: game still plays, notice shown: OK")
+    context2.close()
+
+    print("  PASS: shell tests")
 
 
 def main():
@@ -281,10 +414,11 @@ def main():
             browser = p.chromium.launch(executable_path="/opt/pw-browsers/chromium")
             for vp in VIEWPORTS:
                 run_viewport(browser, vp, console_errors)
+            run_shell_tests(browser)
             browser.close()
     finally:
         httpd.shutdown()
-    print("\nAll viewports passed.")
+    print("\nAll viewports and shell tests passed.")
 
 
 if __name__ == "__main__":

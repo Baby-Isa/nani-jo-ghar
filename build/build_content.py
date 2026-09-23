@@ -12,12 +12,24 @@ invented text).
 
 Adding a scene later means adding rows to the spreadsheet and re-running
 this script - no code changes here.
+
+**Never resave this xlsx with openpyxl.** The "Carrier sentences" tab's
+kutchi columns are Excel FORMULAS that pull from other tabs; openpyxl
+doesn't evaluate formulas, so `wb.save()` after `load_workbook()` (without
+data_only) discards their cached values, and the next data_only=True read
+gets back None for every one of them - happened once already (23 Sep
+2026), caught by diffing content.json before committing, reverted with
+`git checkout`. Add rows to the spreadsheet by hand in Excel/LibreOffice/
+Google Sheets (which do recalculate), or ask the content owner, never by
+scripting a write to this file.
 """
 import json
+import os
 import openpyxl
 
-XLSX = "/root/.claude/uploads/c3f105c0-81df-59cd-8106-67c359e5b821/8273f413-Nani_jo_Ghar_-_Content_Master.xlsx"
-OUT = "/home/claude/game/data/content.json"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+XLSX = os.path.join(ROOT, "content", "Nani jo Ghar - Content Master.xlsx")
+OUT = os.path.join(ROOT, "data", "content.json")
 
 wb = openpyxl.load_workbook(XLSX, data_only=True)
 
@@ -94,8 +106,7 @@ content = {
     "carriers": carriers,
 }
 
-import os
-os.makedirs("/home/claude/game/data", exist_ok=True)
+os.makedirs(os.path.dirname(OUT), exist_ok=True)
 with open(OUT, "w") as f:
     json.dump(content, f, indent=2, ensure_ascii=False)
 

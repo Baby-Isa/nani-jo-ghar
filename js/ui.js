@@ -108,17 +108,28 @@
   /** A line with NO sourced Kutchi yet: text only, never spoken. In a
    * bubble when a speaker anchor is given, else in the narration strip. */
   async function textOnly(gist, englishText, pauseMs, anchor) {
-    if (anchor) showBubble(anchor, gist, null, englishText);
+    if (anchor) { hideNarration(); showBubble(anchor, gist, null, englishText); }
     else showNarration(gist, null, englishText);
     await sleep(pauseMs || 1400);
   }
 
   // ---------------- quilt persistence ----------------
+  // Each profile keeps its own quilt (js/shell.js sets global.NjgProfile
+  // once a profile is chosen) - a shared blob would mean every profile on
+  // the device saw the same patches, defeating "each keeps their own
+  // progress". Falls back to a flat localStorage key only if no shell/
+  // profile system is wired in (e.g. a page that loads ui.js standalone).
   function loadQuilt() {
+    if (global.NjgProfile && global.NjgProfile.get()) return global.NjgProfile.get().patches || [];
     try { return JSON.parse(localStorage.getItem(QUILT_KEY) || "[]"); }
     catch (e) { return []; }
   }
   function saveQuilt(patches) {
+    if (global.NjgProfile && global.NjgProfile.get()) {
+      global.NjgProfile.get().patches = patches;
+      global.NjgProfile.save();
+      return;
+    }
     try { localStorage.setItem(QUILT_KEY, JSON.stringify(patches)); } catch (e) {}
   }
   function addPatch(patch) {

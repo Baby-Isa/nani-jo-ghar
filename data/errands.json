@@ -6,9 +6,15 @@
       "id": "bowl-01",
       "scene": "bazaar",
       "title": "Fruit bowl for the guests",
+      "intro_beat": { "visual": "hang-lantern", "line_id": "snt-story-01", "gist": "Eid is tomorrow and the guests are coming tonight!" },
+      "outro_beat": { "visual": "bowl-full-glow", "line_id": "snt-story-02", "gist": "The fruit is ready. Now help me cook dinner." },
       "kitchen": {
         "pre_exposure": ["fru-03", "fru-07"],
-        "gap_slots": ["shelf-low-1", "shelf-low-2", "shelf-low-3", "shelf-low-4", "shelf-low-5", "shelf-high-1", "shelf-high-2", "shelf-high-3"],
+        "gap_slots": [
+          "shelf-2-1", "shelf-2-2", "shelf-2-3", "shelf-2-4", "shelf-2-5", "shelf-2-6", "shelf-2-7", "shelf-2-8",
+          "shelf-3-1", "shelf-3-2", "shelf-3-3", "shelf-3-4", "shelf-3-5", "shelf-3-6", "shelf-3-7", "shelf-3-8",
+          "shelf-4-1", "shelf-4-2", "shelf-4-3", "shelf-4-4", "shelf-4-5", "shelf-4-6", "shelf-4-7", "shelf-4-8"
+        ],
         "items": [
           { "word_id": "fru-04", "qty": 2 },
           { "word_id": "fru-06", "qty": 2 },
@@ -19,7 +25,7 @@
         "slot_pool": ["counter-1", "counter-2", "counter-3", "counter-4", "counter-5", "counter-6", "counter-7", "counter-8"],
         "decoys": ["fru-02", "fru-13", "fru-15", "fru-16", "fru-09"]
       },
-      "reward_patch": { "motif": "fruit-bowl", "colors": ["#D98E2B", "#8FAE5A", "#B33A3A"] }
+      "reward_patch": { "motif": "fruit-bowl", "colors": ["#D98E2B", "#8FAE5A", "#B33A3A"], "hub_decoration": "bunting" }
     }
   ]
 }

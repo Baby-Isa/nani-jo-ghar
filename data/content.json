@@ -771,6 +771,20 @@
         "source": "handout"
       },
       "slot": null
+    },
+    {
+      "id": "snt-story-01",
+      "function": "story beat",
+      "english": "Eid is tomorrow and the guests are coming tonight!",
+      "kutchi": null,
+      "slot": null
+    },
+    {
+      "id": "snt-story-02",
+      "function": "story beat",
+      "english": "The fruit is ready. Now help me cook dinner.",
+      "kutchi": null,
+      "slot": null
     }
   ],
   "carriers": {

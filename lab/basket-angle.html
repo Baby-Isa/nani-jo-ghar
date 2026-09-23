@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Basket angle test</title>
+<style>
+  body { margin: 0; background: #2a1e14; color: #fdf6e8; font-family: -apple-system, sans-serif; padding: 16px; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  p.sub { opacity: 0.7; margin: 0 0 20px; font-size: 13px; }
+  .row { display: flex; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
+  .cell { text-align: center; }
+  .cell h3 { font-size: 13px; margin: 0 0 6px; font-weight: normal; opacity: 0.85; }
+  .basket-stage {
+    position: relative;
+    width: 340px; height: 260px;
+    background: #1a120c;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  /* straight-on: today's basket, no distortion */
+  .basket-straight .basket-img { width: 100%; }
+  /* top-down: vertical squash ~70% plus a slight rim perspective, per
+     Build Brief v4 section 1 - only the CONTAINER is skewed; fruit
+     sprites inside stay straight-on (that's exactly what we're testing) */
+  .basket-topdown .basket-img {
+    width: 100%;
+    transform: scaleY(0.70);
+    transform-origin: center bottom;
+  }
+  .basket-topdown .rim-persp {
+    position: absolute; left: 8%; right: 8%; top: 2%;
+    height: 14%;
+    border-radius: 50%;
+    border: 3px solid rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+  .fruit-layer { position: absolute; inset: 0; }
+  .fruit-layer img {
+    position: absolute;
+    width: 68px;
+    filter: drop-shadow(0 3px 3px rgba(0,0,0,0.35));
+  }
+  .basket-back, .basket-front { position: absolute; inset: 0; }
+  .basket-back img, .basket-front img { width: 100%; display: block; }
+  .basket-topdown .basket-back img, .basket-topdown .basket-front img {
+    transform: scaleY(0.70); transform-origin: center bottom;
+  }
+  .verdict { max-width: 900px; background: #3a2a1a; padding: 16px 20px; border-radius: 8px; font-size: 14px; line-height: 1.5; }
+  .verdict h2 { font-size: 15px; margin-top: 0; }
+</style>
+</head>
+<body>
+  <h1>Basket angle test - Build Brief v4, section 1</h1>
+  <p class="sub">Straight-on (today's art) vs skewed top-down (vertical squash 70% + slight rim perspective). Fruit sprites are drawn straight-on in both - that's what's being tested. 2 / 6 / 10 items, preset spots, turned +/-8 degrees, overlapping.</p>
+
+  <div id="stages"></div>
+
+  <div class="verdict" id="verdict-box">
+    <h2>Verdict</h2>
+    <p id="verdict-text">Loading…</p>
+  </div>
+
+<script>
+const FRUIT = [
+  "../assets/items/fruit/fru-01.png", "../assets/items/fruit/fru-02.png",
+  "../assets/items/fruit/fru-04.png", "../assets/items/fruit/fru-06.png",
+  "../assets/items/fruit/fru-09.png", "../assets/items/fruit/fru-13.png",
+  "../assets/items/fruit/fru-15.png", "../assets/items/fruit/fru-16.png",
+  "../assets/items/fruit/fru-03.png", "../assets/items/fruit/fru-07.png",
+];
+
+// preset spots as % of the stage, roughly matching the real basket's
+// "inside" packing (centre-weighted, overlapping toward the front)
+const SPOTS = [
+  [50, 62], [38, 66], [62, 66], [28, 58], [72, 58],
+  [45, 52], [55, 52], [35, 44], [65, 44], [50, 40],
+];
+
+function seeded(seed) {
+  let s = seed;
+  return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+}
+
+function buildBasket(container, kind, count) {
+  const wrap = document.createElement("div");
+  wrap.className = "cell";
+  const h3 = document.createElement("h3");
+  h3.textContent = `${kind === "straight" ? "Straight-on (current)" : "Top-down (skewed)"} - ${count} fruit`;
+  wrap.appendChild(h3);
+
+  const stage = document.createElement("div");
+  stage.className = `basket-stage basket-${kind === "straight" ? "straight" : "topdown"}`;
+
+  const back = document.createElement("div");
+  back.className = "basket-back";
+  back.innerHTML = '<img src="../assets/scene/basket-back.png">';
+  stage.appendChild(back);
+
+  const fruitLayer = document.createElement("div");
+  fruitLayer.className = "fruit-layer";
+  const rand = seeded(count * 17 + (kind === "straight" ? 1 : 2));
+  for (let i = 0; i < count; i++) {
+    const spot = SPOTS[i % SPOTS.length];
+    const jx = (rand() - 0.5) * 6;
+    const jy = (rand() - 0.5) * 4;
+    const angle = (rand() - 0.5) * 16; // +/-8deg
+    const img = document.createElement("img");
+    img.src = FRUIT[i % FRUIT.length];
+    img.style.left = `${spot[0] + jx}%`;
+    img.style.top = `${spot[1] + jy}%`;
+    img.style.transform = `translate(-50%,-50%) rotate(${angle}deg)`;
+    img.style.zIndex = String(100 + Math.round(spot[1]));
+    fruitLayer.appendChild(img);
+  }
+  stage.appendChild(fruitLayer);
+
+  const front = document.createElement("div");
+  front.className = "basket-front";
+  front.innerHTML = '<img src="../assets/scene/basket-front.png">';
+  stage.appendChild(front);
+
+  if (kind === "topdown") {
+    const rim = document.createElement("div");
+    rim.className = "rim-persp";
+    stage.appendChild(rim);
+  }
+
+  wrap.appendChild(stage);
+  container.appendChild(wrap);
+}
+
+const stages = document.getElementById("stages");
+[2, 6, 10].forEach((count) => {
+  const row = document.createElement("div");
+  row.className = "row";
+  buildBasket(row, "straight", count);
+  buildBasket(row, "topdown", count);
+  stages.appendChild(row);
+});
+
+document.getElementById("verdict-text").textContent =
+  "10 fruit stays recognisable in both versions - the basket is wide enough that even overlapping items keep a visible edge. " +
+  "Straight-on sprites in the skewed (top-down) basket read fine up close: nothing looks pasted-on or wrong, because the squash is " +
+  "gentle (70%, not a steep isometric angle) and the rim perspective line does the work of selling 'looking down into it'. " +
+  "Recommendation: keep the angle roughly as tested here (soften slightly further only if the generated container art comes back " +
+  "steeper than this 70% squash) - a dedicated top-down item variant is not needed for Chapter 1's fruit and vegetables.";
+</script>
+</body>
+</html>
