@@ -1,15 +1,51 @@
-# Nani jo Ghar — fruit bowl test errand
+# Nani jo Ghar — fruit bowl errand, production shopping + thin shell
 
-The single proof-of-concept errand: Nani needs a fruit bowl for tonight's
-guests. Go to the bazaar, buy from a Kutchi-only list into the basket you
-carry, come home, move everything from your basket into Nani's bowl.
+The first release-candidate slice of Arc 1: profiles, saving, a hub, and
+one errand (`bowl-01`, the fruit bowl) polished to the current layout
+contract. Nani needs a fruit bowl for tonight's guests. Go to the bazaar,
+buy from a Kutchi-only list into the basket you carry, come home, move
+everything from your basket into Nani's bowl, then back to the hub, which
+visibly fills up with Eid decorations as you go.
 
-**Playtest 2 (23 Sep 2026)** reshaped the scenes - see
-`docs/playtest-2026-09-23.md` for the full findings, decisions and future
-ideas, and the "What playtest 2 changed" table below. This is the **Build Brief v3** rebuild: the scene
-layer is now a Phaser 3 canvas driven entirely by data, after the first
-CSS/DOM version failed on a real phone (overlapping tap targets, floating
-fruit, black bars on wide phones — see "What v2 got wrong" below).
+**This is the Build Brief v4 pass** (production Shopping + thin shell) -
+see `docs/Nani jo Ghar — Roadmap and Story Structure.md` for the current
+master plan and `docs/build-briefs/` for the brief itself. Earlier history:
+`docs/playtest-2026-09-23.md` (playtest 2 findings) and the "What playtest 2
+changed" / "What v2 got wrong" tables below, from the original **Build
+Brief v3** Phaser rebuild after the first CSS/DOM version failed on a real
+phone.
+
+## What this pass added
+
+- **Kitchen v3** (`assets/backgrounds/bg-nani-kitchen-v3.png`) replaces v1:
+  a proper island (painted into the art, so its occluder crops the
+  background like the bazaar counter does, rather than a separate
+  generated `kitchen-island.png`), four real shelves (the top one reserved
+  for Eid decorations, the lower three a 24-slot pantry), a carved spice
+  cupboard, a stove. Measured and verified with `build/place_preview.py` -
+  Nani's head sits in the plain wall gap between the shelf ends and the
+  curtain, so her red headscarf never blends with it.
+- **Story beats.** Each errand can open and close with a short (3-5s),
+  skippable, once-only moment - `bowl-01` hangs a lantern on the Eid shelf
+  on the way in and glows the full bowl on the way out - defined as data
+  (`intro_beat`/`outro_beat` in `data/errands.json`) and played by
+  `js/game.js`'s `runBeat()`. A beat with no sourced Kutchi yet shows its
+  English gist only, never spoken.
+- **Thin shell**: `js/storage.js` (IndexedDB, one `profiles` store) and
+  `js/shell.js` (launch flow, profile picker, create profile, hub with a
+  press-and-hold-3s settings cog, leave-errand, switch profile). Each
+  profile keeps its own word progress (`js/progress.js`) and quilt
+  (`js/ui.js`'s `addPatch`/`loadQuilt`, now routed through
+  `global.NjgProfile` instead of one shared `localStorage` key). If
+  IndexedDB is unavailable (e.g. private browsing), the game still plays
+  with a temporary, unsaved profile and a gentle on-screen notice.
+- **The letterbox fills with the current scene's own sampled dominant
+  colour** instead of black bars, wherever the canvas doesn't exactly fill
+  `#game-wrap`.
+- `lab/basket-angle.html` - the section 1 test comparing straight-on vs a
+  skewed top-down basket with 2/6/10 fruit; verdict inline on the page and
+  in the commit history. Recommendation: the current straight-on art works
+  fine even skewed, no dedicated top-down item variant needed.
 
 ## Running it
 
@@ -97,24 +133,35 @@ user gesture.
 
 ## What's still a placeholder
 
-- **Scene art made from existing art** (`build/make_scene_art.py`): the
-  kitchen island is tiled from the bazaar counter's planks, your basket is
-  cut out of the basket painted on the bazaar counter (upscaled, so a
-  little soft), the brass bowl is procedural. Good enough to test the
-  mechanic; commission proper art for these.
-- **Mouth movement uses the talking pose's mouth only.** Blinks and extra
-  mouth shapes are planned via a ChatGPT eyes-closed pose + LivePortrait
-  (see the playtest doc). `assets/items/bowl-empty.png` and
-  `build/make_placeholder_art.py` are from v3 and no longer used by the
-  game except for the parchment texture.
+- **Scene art made from existing art** (`build/make_scene_art.py`): your
+  basket is cut out of the basket painted on the bazaar counter (upscaled,
+  so a little soft), the brass bowl is procedural. Good enough to test the
+  mechanic; commission proper art for these. The kitchen island itself is
+  now real art (kitchen v3), no longer generated.
+- **Mouth movement uses the talking pose's mouth only** in the main game
+  (the fuller LivePortrait-based blink/mouth pipeline lives in the
+  separate `lab/nani-alive.html` experiment, not yet wired into the main
+  scenes). `assets/items/bowl-empty.png` and `build/make_placeholder_art.py`
+  are from v3 and no longer used by the game except for the parchment
+  texture.
 - **Every line of Kutchi here is a draft** (marked with `*`), sourced
   from the content master's handouts, never invented. A few lines have
-  no Kutchi at all yet ("What would you like?", "Well done!") and are
-  shown in English only — never spoken, since English is text, never
-  voice, in-game.
-- **One errand only.** `data/errands.json` defines just `bowl-01`.
+  no Kutchi at all yet ("What would you like?", "Well done!", the two new
+  story-beat lines) and are shown in English only — never spoken. See
+  `build/reports/lines-needing-family.md` for the full list.
+- **One errand only.** `data/errands.json` defines just `bowl-01`, so the
+  hub's "Nani needs you" button always leads to it; `in_progress` and
+  `errands_done` are tracked per the schema regardless. Cook-along and Put
+  it there are separate future briefs.
+- **The spice cupboard and sitting-room backgrounds are in the repo**
+  (`assets/backgrounds/bg-spice-cupboard-v1.png`, `bg-sitting-room-v1.png`)
+  but their scene JSON hasn't been measured yet - out of scope for this
+  pass (their errands are separate briefs).
 - **The quilt patch is a flat colour gradient**, not real patch artwork.
 - **The notebook is a plain overlay list**, not a designed page.
+- **Avatars are coloured-initial circles**, not the ~8 illustrated
+  avatars the thin shell spec describes - placeholder until that art
+  exists.
 - **A wrong tap gets a wiggle and a spoken "Arre re!"**, but that line
   has no recording yet, so it's the on-device speech-synthesis fallback.
 
@@ -122,6 +169,17 @@ user gesture.
 
 - `build/build_content.py` — xlsx → `data/content.json`. Never invents
   Kutchi: confirmed → draft-flagged → English-only, in that order.
+  **Never resave the tracked xlsx with openpyxl** — its "Carrier
+  sentences" tab has Excel formula columns, and `wb.save()` after a plain
+  `load_workbook()` silently discards their cached values (found and
+  reverted with `git checkout` once already). Add rows by hand in
+  Excel/LibreOffice/Google Sheets, which do recalculate.
+- `build/slice_sheet.py` — keys out a sheet's flat magenta background and
+  crops each grid cell to its own transparent PNG (the art pipeline's
+  "sheets to sliced assets" step). Used for the Eid decorations sheet.
+- `build/lines_needing_family.py` — writes
+  `build/reports/lines-needing-family.md`: every sentence or word used by
+  an errand with no Kutchi yet, or still a draft, and where it's used.
 - `build/build_audio.py` — generates placeholder MP3s via `espeak-ng`.
 - `build/build_audio_manifest.py` — scans `assets/audio/` and writes
   `data/audio-manifest.json`, so the game knows what exists without
@@ -151,12 +209,23 @@ user gesture.
   the reward patch.
 - `data/audio-manifest.json` — generated; which recordings exist.
 - `js/data.js` — loads content, errands, scenes, the audio manifest.
-- `js/progress.js` — per-word stage, advances on correct recall only.
+- `js/storage.js` — the only module that touches storage: IndexedDB, one
+  `profiles` object store, one record per profile.
+- `js/progress.js` — per-word `understand_stage`/`produce_stage`, read and
+  written through the profile `js/shell.js` attaches
+  (`Progress.attachProfile`), advances on correct recall only.
 - `js/audio.js` — plays a recording through Phaser's sound manager if
   one exists, else falls back to on-device speech synthesis.
 - `js/ui.js` — the HTML/CSS UI layer: sidebar list with quantities,
-  speech bubble, narration, overlays, quilt.
-- `js/game.js` — the Phaser scenes: kitchen intro → bazaar → bowl fill
-  → patch/quilt. Also the Container (basket/bowl) and Character
-  (behind-counter, breathing, talking) classes.
+  speech bubble, narration, overlays, quilt (via `global.NjgProfile`).
+- `js/shell.js` — launch flow, profile picker, create profile, hub
+  (decorations, settings cog, quilt), leave-errand, switch profile.
+- `js/game.js` — `NjgGame` (`prepare`/`playErrand`/`leaveErrand`, driven by
+  `js/shell.js`) and the Phaser scenes: kitchen intro (with the intro
+  beat) → bazaar → bowl fill → patch (with the outro beat). Also the
+  Container (basket/bowl) and Character (behind-counter, breathing,
+  talking) classes, and `runBeat()`/`BEAT_VISUALS` for story beats.
 - `js/vendor/phaser.min.js` — vendored, no CDN at runtime.
+- `lab/basket-angle.html`, `lab/nani-alive.html` — standalone test pages,
+  not part of the main game (see the Alive Nani build brief/doc for the
+  latter).
