@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """Playwright e2e test, Build Brief v3 section 6.2. Plays the full errand
-start to finish on three viewports by tapping the screen at the
+start to finish on every viewport by tapping the screen at the
 screen-space coordinates of an opaque pixel of each target sprite -
 computed from window.__njg.debugItems(), never element centres, never
 handlers called directly. Screenshots every step.
+
+Before EVERY tap it checks that the game canvas is the topmost element at
+that point - i.e. nothing in the page (sidebar, drawer, bubble) covers the
+thing being tapped. That is the regression test for playtest 2, where the
+sidebar hid two stall items on a 16:10 laptop and the old test passed
+because it never ran at 16:10 and never checked what was on top.
 
 Usage: python3 build/test_e2e.py
 """
@@ -24,7 +30,10 @@ BASE_URL = f"http://localhost:{PORT}/index.html"
 VIEWPORTS = [
     {"name": "flip5-landscape", "width": 915, "height": 375, "touch": True},
     {"name": "laptop", "width": 1366, "height": 768, "touch": False},
+    {"name": "laptop-16x10", "width": 1440, "height": 900, "touch": False},
+    {"name": "laptop-1280x800", "width": 1280, "height": 800, "touch": False},
     {"name": "ipad", "width": 1024, "height": 768, "touch": True},
+    {"name": "ipad-portrait", "width": 768, "height": 1024, "touch": True},
 ]
 
 
@@ -34,7 +43,10 @@ class ReusableTCPServer(socketserver.TCPServer):
 
 def start_server():
     os.chdir(ROOT)
-    handler = http.server.SimpleHTTPRequestHandler
+    class QuietHandler(http.server.SimpleHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+    handler = QuietHandler
     httpd = ReusableTCPServer(("127.0.0.1", PORT), handler)
     t = threading.Thread(target=httpd.serve_forever, daemon=True)
     t.start()
@@ -80,7 +92,21 @@ def click_go_button(page):
     page.click("#go-btn")
 
 
+def assert_nothing_covers(page, point):
+    top = page.evaluate(
+        """([x, y]) => { const el = document.elementFromPoint(x, y);
+            return el ? (el.tagName + '#' + (el.id || '') + '.' + (el.className || '')) : 'nothing'; }""",
+        [point["x"], point["y"]],
+    )
+    assert top.startswith("CANVAS"), f"tap target {point.get('key')} at ({point['x']:.0f},{point['y']:.0f}) is covered by {top}"
+
+
+def wait_not_busy(page, timeout_ms=20000):
+    page.wait_for_function("window.__njg && !window.__njg.busy()", timeout=timeout_ms)
+
+
 def tap_screen_point(page, point, touch):
+    assert_nothing_covers(page, point)
     if touch:
         page.touchscreen.tap(point["x"], point["y"])
     else:
@@ -167,63 +193,72 @@ def run_viewport(browser, viewport, console_errors):
     # --- bazaar: read the target list from the game state, buy each ---
     list_state = page.evaluate("window.__njg.listState()")
     targets = list(list_state.items())
+    total_qty = sum(st["qty"] for _, st in targets)
     print("  shopping list:", list_state)
+    wait_not_busy(page)  # greeting finished
+    screenshot("bazaar_ready")
 
     # deliberately mis-tap a decoy first, to exercise the wrong-tap path
     decoy = find_item(page, "it.key.startsWith('stall-') && !%s.includes(it.wordId)" % json.dumps([w for w, _ in targets]))
-    if decoy:
-        tap_screen_point(page, decoy, viewport["touch"])
-        page.wait_for_timeout(600)
-        screenshot("bazaar_wrong_tap")
+    assert decoy, "no decoy on the stall"
+    tap_screen_point(page, decoy, viewport["touch"])
+    page.wait_for_timeout(300)
+    screenshot("bazaar_wrong_tap")
+    wait_not_busy(page)
+    assert page.evaluate("window.__njg.basketCount()") == 0, "a wrong tap put something in the basket"
 
-    basket_before = page.evaluate("window.__njg.basketCount()")
     for word_id, st in targets:
         for n in range(st["qty"]):
+            wait_not_busy(page)
             item = find_item(page, f"it.key === 'stall-{word_id}'", timeout_ms=8000)
             assert item, f"stall item missing for {word_id}"
             before = page.evaluate("window.__njg.basketCount()")
             tap_screen_point(page, item, viewport["touch"])
-            page.wait_for_function(
-                f"window.__njg.basketCount() > {before}", timeout=5000
-            )
-            page.wait_for_timeout(400)
+            page.wait_for_function(f"window.__njg.basketCount() > {before}", timeout=5000)
+        wait_not_busy(page)
         screenshot(f"bazaar_bought_{word_id}")
-    basket_after = page.evaluate("window.__njg.basketCount()")
-    assert basket_after > basket_before, "basket count never incremented"
-    assert basket_after == sum(st["qty"] for _, st in targets), "basket count wrong at end of shopping"
+    basket = page.evaluate("window.__njg.basketItems()")
+    assert len(basket) == total_qty, f"basket holds {len(basket)} items, expected {total_qty}"
+    pips_on = page.evaluate("document.querySelectorAll('.pip.on').length")
+    assert pips_on == sum(st["qty"] for _, st in targets if not st["noCount"]), f"list pips wrong: {pips_on}"
 
     page.wait_for_function(
         "document.getElementById('go-btn') && !document.getElementById('go-btn').disabled",
-        timeout=15000,
+        timeout=20000,
     )
     screenshot("bazaar_done")
     click_go_button(page)
-    page.wait_for_timeout(1500)
+    page.wait_for_function("window.__njg.currentAsk() !== null", timeout=20000)
+    page.wait_for_timeout(600)
     screenshot("kitchen_fill_arrive")
 
-    # --- fill the bowl: tap each tray item as Nani asks for it ---
-    unique_words = list(dict.fromkeys(w for w, _ in targets))
-    for i, _ in enumerate(unique_words):
-        # tap whichever tray item is asked for; a wrong tap just wiggles,
-        # so read the caption's word back out isn't necessary - instead
-        # tap tray items in the order the tray currently lists them,
-        # retrying on a still-full tray (a wrong tap doesn't shrink it)
-        item = find_item(page, "it.key.startsWith('tray-')", timeout_ms=8000)
-        assert item, f"no tray item found at fill step {i}"
-        before_count = page.evaluate("window.__njg.debugItems().filter(it => it.key.startsWith('tray-')).length")
+    # --- fill the bowl: tap the fruit Nani asks for, from YOUR basket ---
+    pre = len(page.evaluate("window.__njg.listState()"))  # noqa: F841 (kept for readability)
+    bowl_before = page.evaluate("window.__njg.bowlCount()")
+    placed = 0
+    did_wrong = False
+    while placed < total_qty:
+        page.wait_for_function("window.__njg.currentAsk() !== null && !window.__njg.busy()", timeout=20000)
+        ask = page.evaluate("window.__njg.currentAsk()")
+        if not did_wrong:
+            wrong = find_item(page, f"it.key.startsWith('basket-') && it.wordId !== '{ask}'", timeout_ms=2000)
+            if wrong:
+                tap_screen_point(page, wrong, viewport["touch"])
+                page.wait_for_timeout(300)
+                screenshot("kitchen_fill_wrong_tap")
+                wait_not_busy(page)
+                assert page.evaluate("window.__njg.bowlCount()") == bowl_before, "a wrong tap filled the bowl"
+            did_wrong = True
+        item = find_item(page, f"it.key.startsWith('basket-') && it.wordId === '{ask}'", timeout_ms=5000)
+        assert item, f"no {ask} in the basket"
+        before = page.evaluate("window.__njg.bowlCount()")
         tap_screen_point(page, item, viewport["touch"])
-        page.wait_for_timeout(300)
-        after_count = page.evaluate("window.__njg.debugItems().filter(it => it.key.startsWith('tray-')).length")
-        tries = 0
-        while after_count >= before_count and tries < 6:
-            item = find_item(page, "it.key.startsWith('tray-')", timeout_ms=4000)
-            if not item:
-                break
-            tap_screen_point(page, item, viewport["touch"])
-            page.wait_for_timeout(300)
-            after_count = page.evaluate("window.__njg.debugItems().filter(it => it.key.startsWith('tray-')).length")
-            tries += 1
-        screenshot(f"kitchen_fill_{i}")
+        page.wait_for_function(f"window.__njg.bowlCount() > {before}", timeout=5000)
+        placed += 1
+        page.wait_for_timeout(250)
+        screenshot(f"kitchen_fill_{placed}_{ask}")
+    assert page.evaluate("window.__njg.bowlCount()") == bowl_before + total_qty, "bowl count wrong at the end"
+    assert page.evaluate("window.__njg.basketItems().length") == 0, "basket not empty at the end"
 
     # --- patch overlay reached ---
     page.wait_for_selector("#overlay-patch", state="visible", timeout=15000)
