@@ -184,3 +184,20 @@ Now is the right time: Chapter 1 has only a handful of backgrounds and one erran
 - **R2-F, stylised 3D animated film:** high-quality stylised 3D like a modern animated feature film: appealing proportions, expressive eyes, soft global illumination, realistic materials (marble, brass, wicker), warm and cosy.
 
 **Then:** put the six results side by side (or send them to Claude to make a labelled comparison sheet). Pick one or two to take into the style-lock test (section 5.2).
+
+## 10. Round 2 results (23 Sept 2026)
+
+Nine images came back, but only six were different (two were duplicated). They are saved in `docs/art-direction/round-2/`, named after the style each one matches. The labelled comparison sheet, with every image, is a private claude.ai artifact: https://claude.ai/artifact/5KQzRDp2z2Hos7Z3Mt42JC
+
+The right-hand panels and speech bubbles are placeholders built in code, so they are not scored. Scores are out of 5.
+
+| | Style | Looks | Works in game | Feasible | Verdict |
+|---|---|---|---|---|---|
+| **R2-E** | Soft 3D | 5 | 4 | 3 | **Pick, if it passes the style-lock test.** The most polished and modern, and the closest to what was liked in round 1. The risk is keeping about 60 items consistent, with light baked into every sprite |
+| **R2-D** | Bright illustration | 4 | 4 | 4 | **Fallback.** Nani looks at the bowl and points, so her pose teaches the task; open eyes suit `expressions.py`; outlines keep generations consistent. Clear the busy counter |
+| R2-A | Sago Mini flat | 3 | 5 | 5 | Drop: the easiest to make, but it reads as aimed at 2–5, not 6–10 |
+| R2-B | Soft-shaded flat | 4 | 3 | 4 | Drop: low contrast (cream on cream), forgettable |
+| R2-F | Stylised 3D film | 4 | 2 | 2 | Drop: cluttered shelves compete with the items, Nani is small in frame, and it is the hardest to reproduce |
+| R2-C | Atmospheric flat | 4 | 2 | 2 | Drop: the orange light hides the oranges and brings back "brown and orange everywhere". Kept only as an idea for an evening colour grade |
+
+**Next:** run the section 5.2 style-lock test on R2-E. Generate the six fruit in **three separate ChatGPT chats**, compare them at 90px, and blink-test an open-eyed Nani. If the fruit don't clearly look like one set, or the blink shows seams, run the same test on R2-D.
