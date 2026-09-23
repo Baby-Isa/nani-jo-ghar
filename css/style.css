@@ -1,0 +1,285 @@
+/* Nani jo Ghar — fruit-bowl test build.
+   Full-viewport 16:9 stage sized with CSS min() (no JS measuring/scaling —
+   the earlier build's transform:scale() mismeasured the Claude artifact
+   viewer's container on Android; GitHub Pages + this CSS-only technique
+   fixes that). Every position inside the stage is a percentage of the
+   stage's own box, so it scales with it. Row positions below are measured
+   off the actual background art (bg-nani-kitchen-v1.jpg / bg-bazaar-stall-v2.jpg,
+   both 1600x900), not shared generic rows — see the Roadmap doc's
+   "Lessons from the first build". */
+
+:root {
+  --sidebar-w: 19%;
+  --ink: #2b1810;
+  --cream: #fdf6e8;
+  --indigo: #2f3e6b;
+  --madder: #a63b3b;
+  --marigold: #e0a63a;
+  --leaf: #6f8f4a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  background: #1a1210;
+  overflow: hidden;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+}
+
+/* ---------- rotate prompt (portrait phones) ---------- */
+#rotate-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: #1a1210;
+  color: var(--cream);
+  z-index: 500;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+@media (orientation: portrait) and (max-width: 900px) {
+  #rotate-overlay { display: flex; }
+  #stage-wrap { display: none; }
+}
+.rotate-icon { font-size: 48px; margin-bottom: 12px; }
+
+/* ---------- CSS-only responsive 16:9 stage, no JS ---------- */
+#stage-wrap {
+  position: fixed; inset: 0;
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: #000;
+}
+#stage {
+  position: relative;
+  width: min(100vw, 177.78vh);
+  height: min(100vh, 56.25vw);
+  background: #000;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+.scene { position: absolute; inset: 0; display: none; }
+.scene.active { display: block; }
+.scene .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- sidebar / recipe scroll (docked left, full height, %) ---------- */
+#sidebar {
+  position: absolute; left: 0; top: 0;
+  width: var(--sidebar-w); height: 100%;
+  background: url("../assets/ui/parchment.jpg") center/cover;
+  box-shadow: inset 0 0 30px rgba(60,36,10,0.55), 4px 0 14px rgba(0,0,0,0.4);
+  color: var(--ink);
+  z-index: 20;
+  display: flex; flex-direction: column;
+  padding: 3% 4%;
+}
+#sidebar h3 {
+  margin: 0 0 4% 0;
+  font-size: min(2.2vw, 16px);
+  font-weight: bold;
+  color: #5a3a1a;
+  border-bottom: 2px solid rgba(90,58,26,0.35);
+  padding-bottom: 3%;
+}
+#shopping-list { flex: 1; overflow-y: auto; }
+.list-item {
+  display: flex; align-items: center; gap: 6%;
+  padding: 5% 0; border-bottom: 1px dashed rgba(90,58,26,0.35);
+}
+.list-item .li-kutchi {
+  flex: 1;
+  font-size: min(2.3vw, 16px);
+  font-weight: bold;
+  color: #4a2e12;
+}
+.list-item .li-kutchi .draft-mark { font-weight: normal; opacity: 0.6; }
+.list-item .li-play {
+  width: 26px; height: 26px; min-width: 26px;
+  border-radius: 50%; border: none;
+  background: var(--indigo); color: var(--cream);
+  font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.list-item .li-english {
+  font-size: 11px; color: #7a5a30; margin-top: 2px; cursor: pointer;
+  border-bottom: 1px dotted #7a5a30; display: inline-block;
+}
+.list-item.done { opacity: 0.55; }
+.list-item.done .li-kutchi { text-decoration: line-through; }
+.list-item.done::after { content: "✓"; color: var(--leaf); font-weight: bold; margin-left: 4px; }
+
+.go-btn {
+  margin: 3% 0;
+  padding: 3.5% 6%;
+  border: none; border-radius: 8px;
+  background: var(--madder); color: var(--cream);
+  font-size: min(2vw, 14px); font-weight: bold;
+  cursor: pointer;
+}
+.go-btn:disabled { background: #8a7a68; cursor: not-allowed; opacity: 0.7; }
+
+.tab-rail { display: flex; justify-content: space-around; height: 10%; align-items: center; }
+.tab-btn {
+  background: none; border: none; color: #5a3a1a;
+  font-size: min(3vw, 22px); cursor: pointer; padding: 2% 6%; border-radius: 8px;
+}
+.tab-btn:active { background: rgba(90,58,26,0.15); }
+
+/* ---------- caption band (top strip, right of sidebar) ---------- */
+#caption-band {
+  position: absolute; left: var(--sidebar-w); right: 0; top: 0; height: 9%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
+  color: var(--cream);
+  z-index: 25;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0.5% 2%;
+  pointer-events: none;
+}
+#caption-gist { font-size: min(1.6vw, 12px); opacity: 0.85; }
+#caption-kutchi { font-size: min(2.4vw, 18px); font-weight: bold; }
+#caption-kutchi .en-toggle {
+  font-size: min(1.4vw, 11px); font-weight: normal; margin-left: 10px;
+  border-bottom: 1px dotted var(--marigold); cursor: pointer;
+  pointer-events: all;
+}
+
+/* ---------- item rows: percentages measured off each background ---------- */
+.item-row {
+  position: absolute;
+  display: flex; justify-content: space-around; align-items: flex-end;
+  z-index: 15;
+}
+
+/* Kitchen (bg-nani-kitchen-v1.jpg, 1600x900): upper shelf top edge ~205px
+   (22.8%), lower shelf top edge ~400px (44.4%). Empty shelf space is to
+   the right of the existing decorative jars. */
+#kitchen-back-row  { left: 42%; width: 22%; top: 6%;  height: 17%; }
+#kitchen-front-row { left: 30%; width: 16%; top: 24%; height: 20%; }
+
+/* Bazaar (bg-bazaar-stall-v2.jpg, 1600x900): the open counter space
+   between the two existing crate/basket clusters, x ~650-1150px
+   (40.6%-71.9%). Back row sits slightly higher/smaller (further from
+   the viewer), front row lower/bigger (closer), matching the counter's
+   own perspective. */
+#bazaar-back-row  { left: 41%; width: 32%; top: 36%; height: 17%; }
+#bazaar-front-row { left: 39%; width: 36%; top: 45%; height: 21%; }
+
+.item-slot {
+  position: relative;
+  height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.item-slot img.sprite {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.4));
+  transition: transform 0.15s ease;
+}
+.item-slot.hint-glow img.sprite,
+.item-slot.hint-glow .gap-outline {
+  animation: glow-pulse 1.4s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 2px #fff176) drop-shadow(0 3px 3px rgba(0,0,0,0.4)); }
+  50% { filter: drop-shadow(0 0 14px #fff176) drop-shadow(0 3px 3px rgba(0,0,0,0.4)); }
+}
+.item-slot.tapped img.sprite { transform: scale(0.85) translateY(6px); opacity: 0.5; }
+.item-slot.gap .gap-outline {
+  width: 60%; height: 60%; border: 2px dashed rgba(255,255,255,0.6);
+  border-radius: 10px;
+}
+
+/* ---------- characters (right side, clear of both item rows) ---------- */
+.character {
+  position: absolute; right: 3%; bottom: 2%;
+  height: 42%; width: 20%;
+  z-index: 12;
+  background-size: contain; background-repeat: no-repeat; background-position: bottom center;
+}
+
+/* ---------- recipe bowl (kitchen scene, stove counter) ---------- */
+#recipe-bowl {
+  position: absolute; right: 25%; bottom: 6%;
+  width: 13%; height: 16%;
+  z-index: 14;
+  background: url("../assets/items/bowl-empty.png") no-repeat bottom center / contain;
+  display: none;
+}
+#recipe-bowl.active { display: block; }
+#recipe-bowl .bowl-items {
+  position: absolute; inset: 8% 12% 32% 12%;
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center;
+  gap: 2%;
+}
+#recipe-bowl .bowl-items img { width: 26%; max-height: 60%; object-fit: contain; }
+
+/* ---------- basket ---------- */
+#basket {
+  position: absolute; left: calc(var(--sidebar-w) + 1%); bottom: 2%; z-index: 30;
+  color: var(--cream); font-size: min(2.6vw, 20px);
+  display: flex; align-items: center; gap: 4px;
+  pointer-events: none;
+  text-shadow: 0 1px 3px #000;
+}
+
+/* ---------- overlays ---------- */
+.overlay {
+  position: absolute; inset: 0; z-index: 100;
+  background: rgba(10, 6, 4, 0.78);
+  display: flex; align-items: center; justify-content: center;
+}
+.overlay-panel {
+  background: var(--cream); color: var(--ink);
+  border-radius: 14px; padding: 4% 5%;
+  width: 82%; max-height: 85%; overflow-y: auto;
+  text-align: center;
+}
+.overlay-panel h2 { margin: 4px 0 12px; font-size: min(2.6vw, 19px); }
+.close-btn {
+  margin-top: 12px; padding: 2.5% 5%; border: none; border-radius: 8px;
+  background: var(--indigo); color: var(--cream); font-weight: bold; cursor: pointer;
+  font-size: min(2vw, 14px);
+}
+#quilt-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.quilt-patch {
+  aspect-ratio: 1; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: rgba(0,0,0,0.5);
+}
+.quilt-patch.empty { background: repeating-linear-gradient(45deg, #ddd, #ddd 6px, #eee 6px, #eee 12px); }
+
+.patch-panel #patch-preview {
+  width: 18%; aspect-ratio: 1; margin: 0 auto 10px; border-radius: 10px;
+}
+
+.recall-panel { }
+#recall-caption { font-size: min(2vw, 15px); margin-bottom: 12px; font-weight: bold; }
+#recall-basket-items { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.recall-item {
+  width: 15%; aspect-ratio: 1; border-radius: 10px; background: #fff;
+  border: 2px solid #ddd; display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.recall-item img { max-width: 70%; max-height: 70%; }
+.recall-item.wrong { border-color: var(--madder); animation: shake 0.3s; }
+.recall-item.correct { border-color: #4a9a4a; opacity: 0.4; pointer-events: none; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ---------- start overlay (unlocks audio, requests fullscreen/landscape) ---------- */
+#overlay-start .overlay-panel { width: 70%; }
+#start-btn {
+  margin-top: 4%; padding: 4% 8%; border: none; border-radius: 10px;
+  background: var(--madder); color: var(--cream); font-weight: bold;
+  font-size: min(2.4vw, 16px); cursor: pointer;
+}
+
+/* ---------- English toggle text ---------- */
+.eng-shown { color: var(--marigold); }

@@ -1,0 +1,1066 @@
+{
+  "words": [
+    {
+      "id": "fru-01",
+      "english": "banana",
+      "category": "fruit",
+      "kutchi": {
+        "text": "kelo",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-01.png"
+    },
+    {
+      "id": "fru-02",
+      "english": "lemon",
+      "category": "fruit",
+      "kutchi": {
+        "text": "limu",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-02.png"
+    },
+    {
+      "id": "fru-03",
+      "english": "papaya",
+      "category": "fruit",
+      "kutchi": {
+        "text": "papaiyo",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-03.png"
+    },
+    {
+      "id": "fru-04",
+      "english": "orange",
+      "category": "fruit",
+      "kutchi": {
+        "text": "santra",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-04.png"
+    },
+    {
+      "id": "fru-05",
+      "english": "mango",
+      "category": "fruit",
+      "kutchi": {
+        "text": "aamo",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-05.png"
+    },
+    {
+      "id": "fru-06",
+      "english": "pear",
+      "category": "fruit",
+      "kutchi": {
+        "text": "naaspati",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-06.png"
+    },
+    {
+      "id": "fru-07",
+      "english": "kiwi",
+      "category": "fruit",
+      "kutchi": {
+        "text": "kivi",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-07.png"
+    },
+    {
+      "id": "fru-08",
+      "english": "apple",
+      "category": "fruit",
+      "kutchi": {
+        "text": "safarjan",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-08.png"
+    },
+    {
+      "id": "fru-09",
+      "english": "coconut",
+      "category": "fruit",
+      "kutchi": {
+        "text": "naariyel",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-09.png"
+    },
+    {
+      "id": "fru-10",
+      "english": "fig",
+      "category": "fruit",
+      "kutchi": {
+        "text": "anjir",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-10.png"
+    },
+    {
+      "id": "fru-11",
+      "english": "grapes",
+      "category": "fruit",
+      "kutchi": {
+        "text": "drakhu",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-11.png"
+    },
+    {
+      "id": "fru-12",
+      "english": "pineapple",
+      "category": "fruit",
+      "kutchi": {
+        "text": "ananas",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-12.png"
+    },
+    {
+      "id": "fru-13",
+      "english": "peach",
+      "category": "fruit",
+      "kutchi": {
+        "text": "peach",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-13.png"
+    },
+    {
+      "id": "fru-14",
+      "english": "cherry",
+      "category": "fruit",
+      "kutchi": {
+        "text": "cheree",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-14.png"
+    },
+    {
+      "id": "fru-15",
+      "english": "lychee",
+      "category": "fruit",
+      "kutchi": {
+        "text": "litchi",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "image": "items/fruit/fru-15.png"
+    },
+    {
+      "id": "fru-16",
+      "english": "pomegranate",
+      "category": "fruit",
+      "kutchi": {
+        "text": "daadam",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/fruit/fru-16.png"
+    },
+    {
+      "id": "veg-01",
+      "english": "potato",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "bataato",
+        "is_draft": true,
+        "source": "freelang"
+      },
+      "image": "items/vegetable/veg-01.png"
+    },
+    {
+      "id": "veg-02",
+      "english": "onion",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "dungri",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-02.png"
+    },
+    {
+      "id": "veg-03",
+      "english": "tomato",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "tameto",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-03.png"
+    },
+    {
+      "id": "veg-04",
+      "english": "carrot",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "gajar",
+        "is_draft": true,
+        "source": "freelang"
+      },
+      "image": "items/vegetable/veg-04.png"
+    },
+    {
+      "id": "veg-05",
+      "english": "cauliflower",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "phulaver",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-05.png"
+    },
+    {
+      "id": "veg-06",
+      "english": "cabbage",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "kobi",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-06.png"
+    },
+    {
+      "id": "veg-07",
+      "english": "spinach",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "bhaji",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-07.png"
+    },
+    {
+      "id": "veg-08",
+      "english": "okra",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "bhindaa",
+        "is_draft": true,
+        "source": "freelang"
+      },
+      "image": "items/vegetable/veg-08.png"
+    },
+    {
+      "id": "veg-09",
+      "english": "aubergine",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "ringraa",
+        "is_draft": true,
+        "source": "freelang"
+      },
+      "image": "items/vegetable/veg-09.png"
+    },
+    {
+      "id": "veg-10",
+      "english": "peas",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "vatana",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-10.png"
+    },
+    {
+      "id": "veg-11",
+      "english": "cucumber",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "kaakri",
+        "is_draft": true,
+        "source": "freelang"
+      },
+      "image": "items/vegetable/veg-11.png"
+    },
+    {
+      "id": "veg-12",
+      "english": "green chilli",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "marcha",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-12.png"
+    },
+    {
+      "id": "veg-13",
+      "english": "garlic",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "lasan",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-13.png"
+    },
+    {
+      "id": "veg-14",
+      "english": "ginger",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "aadu",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-14.png"
+    },
+    {
+      "id": "veg-15",
+      "english": "pumpkin",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "kolu",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-15.png"
+    },
+    {
+      "id": "veg-16",
+      "english": "green beans",
+      "category": "vegetable",
+      "kutchi": {
+        "text": "phali",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/vegetable/veg-16.png"
+    },
+    {
+      "id": "spi-01",
+      "english": "turmeric",
+      "category": "spice",
+      "kutchi": {
+        "text": "hardar",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-01.png"
+    },
+    {
+      "id": "spi-02",
+      "english": "cumin seeds",
+      "category": "spice",
+      "kutchi": {
+        "text": "jeeru",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-02.png"
+    },
+    {
+      "id": "spi-03",
+      "english": "coriander seeds",
+      "category": "spice",
+      "kutchi": {
+        "text": "dhana",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-03.png"
+    },
+    {
+      "id": "spi-04",
+      "english": "red chilli powder",
+      "category": "spice",
+      "kutchi": {
+        "text": "lal marcha",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-04.png"
+    },
+    {
+      "id": "spi-05",
+      "english": "mustard seeds",
+      "category": "spice",
+      "kutchi": {
+        "text": "rai",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-05.png"
+    },
+    {
+      "id": "spi-06",
+      "english": "fenugreek seeds",
+      "category": "spice",
+      "kutchi": {
+        "text": "methi",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-06.png"
+    },
+    {
+      "id": "spi-07",
+      "english": "garam masala",
+      "category": "spice",
+      "kutchi": {
+        "text": "garam masalo",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-07.png"
+    },
+    {
+      "id": "spi-08",
+      "english": "cloves",
+      "category": "spice",
+      "kutchi": {
+        "text": "laving",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-08.png"
+    },
+    {
+      "id": "spi-09",
+      "english": "cinnamon",
+      "category": "spice",
+      "kutchi": {
+        "text": "taj",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-09.png"
+    },
+    {
+      "id": "spi-10",
+      "english": "cardamom",
+      "category": "spice",
+      "kutchi": {
+        "text": "elchi",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-10.png"
+    },
+    {
+      "id": "spi-11",
+      "english": "black pepper",
+      "category": "spice",
+      "kutchi": {
+        "text": "mari",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-11.png"
+    },
+    {
+      "id": "spi-12",
+      "english": "bay leaf",
+      "category": "spice",
+      "kutchi": {
+        "text": "tamalpatr",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-12.png"
+    },
+    {
+      "id": "spi-13",
+      "english": "fennel seeds",
+      "category": "spice",
+      "kutchi": {
+        "text": "variyali",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-13.png"
+    },
+    {
+      "id": "spi-14",
+      "english": "asafoetida",
+      "category": "spice",
+      "kutchi": {
+        "text": "hing",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-14.png"
+    },
+    {
+      "id": "spi-15",
+      "english": "sesame seeds",
+      "category": "spice",
+      "kutchi": {
+        "text": "tal",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-15.png"
+    },
+    {
+      "id": "spi-16",
+      "english": "salt",
+      "category": "spice",
+      "kutchi": {
+        "text": "loon",
+        "is_draft": true,
+        "source": "sindhi-cognate"
+      },
+      "image": "items/spice/spi-16.png"
+    },
+    {
+      "id": "num-01",
+      "english": "one",
+      "category": "number",
+      "kutchi": {
+        "text": "hikdo",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-02",
+      "english": "two",
+      "category": "number",
+      "kutchi": {
+        "text": "bo",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-03",
+      "english": "three",
+      "category": "number",
+      "kutchi": {
+        "text": "trae",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-04",
+      "english": "four",
+      "category": "number",
+      "kutchi": {
+        "text": "char",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-05",
+      "english": "five",
+      "category": "number",
+      "kutchi": {
+        "text": "panj",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-06",
+      "english": "six",
+      "category": "number",
+      "kutchi": {
+        "text": "chh",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-07",
+      "english": "seven",
+      "category": "number",
+      "kutchi": {
+        "text": "sat",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-08",
+      "english": "eight",
+      "category": "number",
+      "kutchi": {
+        "text": "ath",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-09",
+      "english": "nine",
+      "category": "number",
+      "kutchi": {
+        "text": "no",
+        "is_draft": true,
+        "source": "handout"
+      }
+    },
+    {
+      "id": "num-10",
+      "english": "ten",
+      "category": "number",
+      "kutchi": {
+        "text": "do",
+        "is_draft": true,
+        "source": "handout"
+      }
+    }
+  ],
+  "sentences": [
+    {
+      "id": "snt-01",
+      "function": "greeting",
+      "english": "Peace be upon you",
+      "kutchi": {
+        "text": "Salamun alaykum",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "slot": "Nani, shopkeeper"
+    },
+    {
+      "id": "snt-02",
+      "function": "greeting reply",
+      "english": "And peace be upon you too",
+      "kutchi": {
+        "text": "Wa alaikum salaam",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "slot": "Shopkeeper reply"
+    },
+    {
+      "id": "snt-03",
+      "function": "call",
+      "english": "Hey!",
+      "kutchi": {
+        "text": "Hedo!",
+        "is_draft": true,
+        "source": "doc"
+      },
+      "slot": "Nani"
+    },
+    {
+      "id": "snt-04",
+      "function": "template",
+      "english": "I need {word}",
+      "kutchi": {
+        "text": "Muke {word} khape",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "slot": "{word}"
+    },
+    {
+      "id": "snt-05",
+      "function": "template",
+      "english": "And {word}",
+      "kutchi": {
+        "text": "Ne {word}",
+        "is_draft": true,
+        "source": "doc"
+      },
+      "slot": "{word}"
+    },
+    {
+      "id": "snt-06",
+      "function": "instruction",
+      "english": "Go to the market",
+      "kutchi": {
+        "text": "Bajaar mai vaan",
+        "is_draft": true,
+        "source": "doc"
+      },
+      "slot": null
+    },
+    {
+      "id": "snt-07",
+      "function": "warm failure",
+      "english": "Oh dear!",
+      "kutchi": {
+        "text": "Arre re!",
+        "is_draft": true,
+        "source": "doc"
+      },
+      "slot": null
+    },
+    {
+      "id": "snt-08",
+      "function": "shopkeeper",
+      "english": "What would you like?",
+      "kutchi": null,
+      "slot": null
+    },
+    {
+      "id": "snt-09",
+      "function": "shopkeeper",
+      "english": "How many?",
+      "kutchi": null,
+      "slot": null
+    },
+    {
+      "id": "snt-10",
+      "function": "shopkeeper",
+      "english": "Here you are / take it",
+      "kutchi": {
+        "text": "Ghan",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "slot": null
+    },
+    {
+      "id": "snt-11",
+      "function": "shopkeeper",
+      "english": "Thank you",
+      "kutchi": {
+        "text": "Aabhar aanjo",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "slot": null
+    },
+    {
+      "id": "snt-12",
+      "function": "template",
+      "english": "Give me the {word}",
+      "kutchi": {
+        "text": "Muke hikdo {word} dine",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "slot": "{word}"
+    },
+    {
+      "id": "snt-13",
+      "function": "praise",
+      "english": "Well done!",
+      "kutchi": null,
+      "slot": null
+    },
+    {
+      "id": "snt-14",
+      "function": "farewell",
+      "english": "Bye",
+      "kutchi": {
+        "text": "Achija",
+        "is_draft": true,
+        "source": "handout"
+      },
+      "slot": null
+    }
+  ],
+  "carriers": {
+    "fru-01": {
+      "english": "I need banana",
+      "kutchi_singular": "Muke kelo khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-02": {
+      "english": "I need lemon",
+      "kutchi_singular": "Muke limu khape",
+      "kutchi_plural_example": "Muke bo limu khape",
+      "is_draft": true
+    },
+    "fru-03": {
+      "english": "I need papaya",
+      "kutchi_singular": "Muke papaiyo khape",
+      "kutchi_plural_example": "Muke bo papaiya khape",
+      "is_draft": true
+    },
+    "fru-04": {
+      "english": "I need orange",
+      "kutchi_singular": "Muke santra khape",
+      "kutchi_plural_example": "Muke bo santra khape",
+      "is_draft": true
+    },
+    "fru-05": {
+      "english": "I need mango",
+      "kutchi_singular": "Muke aamo khape",
+      "kutchi_plural_example": "Muke bo aama khape",
+      "is_draft": true
+    },
+    "fru-06": {
+      "english": "I need pear",
+      "kutchi_singular": "Muke naaspati khape",
+      "kutchi_plural_example": "Muke bo naaspati khape",
+      "is_draft": true
+    },
+    "fru-07": {
+      "english": "I need kiwi",
+      "kutchi_singular": "Muke kivi khape",
+      "kutchi_plural_example": "Muke bo kivi khape",
+      "is_draft": true
+    },
+    "fru-08": {
+      "english": "I need apple",
+      "kutchi_singular": "Muke safarjan khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-09": {
+      "english": "I need coconut",
+      "kutchi_singular": "Muke naariyel khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-10": {
+      "english": "I need fig",
+      "kutchi_singular": "Muke anjir khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-11": {
+      "english": "I need grapes",
+      "kutchi_singular": "Muke drakhu khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-12": {
+      "english": "I need pineapple",
+      "kutchi_singular": "Muke ananas khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-13": {
+      "english": "I need peach",
+      "kutchi_singular": "Muke peach khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-14": {
+      "english": "I need cherry",
+      "kutchi_singular": "Muke cheree khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-15": {
+      "english": "I need lychee",
+      "kutchi_singular": "Muke litchi khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "fru-16": {
+      "english": "I need pomegranate",
+      "kutchi_singular": "Muke daadam khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-01": {
+      "english": "I need potato",
+      "kutchi_singular": "Muke bataato khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-02": {
+      "english": "I need onion",
+      "kutchi_singular": "Muke dungri khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-03": {
+      "english": "I need tomato",
+      "kutchi_singular": "Muke tameto khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-04": {
+      "english": "I need carrot",
+      "kutchi_singular": "Muke gajar khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-05": {
+      "english": "I need cauliflower",
+      "kutchi_singular": "Muke phulaver khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-06": {
+      "english": "I need cabbage",
+      "kutchi_singular": "Muke kobi khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-07": {
+      "english": "I need spinach",
+      "kutchi_singular": "Muke bhaji khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-08": {
+      "english": "I need okra",
+      "kutchi_singular": "Muke bhindaa khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-09": {
+      "english": "I need aubergine",
+      "kutchi_singular": "Muke ringraa khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-10": {
+      "english": "I need peas",
+      "kutchi_singular": "Muke vatana khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-11": {
+      "english": "I need cucumber",
+      "kutchi_singular": "Muke kaakri khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-12": {
+      "english": "I need green chilli",
+      "kutchi_singular": "Muke marcha khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-13": {
+      "english": "I need garlic",
+      "kutchi_singular": "Muke lasan khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-14": {
+      "english": "I need ginger",
+      "kutchi_singular": "Muke aadu khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-15": {
+      "english": "I need pumpkin",
+      "kutchi_singular": "Muke kolu khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "veg-16": {
+      "english": "I need green beans",
+      "kutchi_singular": "Muke phali khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-01": {
+      "english": "I need turmeric",
+      "kutchi_singular": "Muke hardar khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-02": {
+      "english": "I need cumin seeds",
+      "kutchi_singular": "Muke jeeru khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-03": {
+      "english": "I need coriander seeds",
+      "kutchi_singular": "Muke dhana khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-04": {
+      "english": "I need red chilli powder",
+      "kutchi_singular": "Muke lal marcha khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-05": {
+      "english": "I need mustard seeds",
+      "kutchi_singular": "Muke rai khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-06": {
+      "english": "I need fenugreek seeds",
+      "kutchi_singular": "Muke methi khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-07": {
+      "english": "I need garam masala",
+      "kutchi_singular": "Muke garam masalo khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-08": {
+      "english": "I need cloves",
+      "kutchi_singular": "Muke laving khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-09": {
+      "english": "I need cinnamon",
+      "kutchi_singular": "Muke taj khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-10": {
+      "english": "I need cardamom",
+      "kutchi_singular": "Muke elchi khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-11": {
+      "english": "I need black pepper",
+      "kutchi_singular": "Muke mari khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-12": {
+      "english": "I need bay leaf",
+      "kutchi_singular": "Muke tamalpatr khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-13": {
+      "english": "I need fennel seeds",
+      "kutchi_singular": "Muke variyali khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-14": {
+      "english": "I need asafoetida",
+      "kutchi_singular": "Muke hing khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-15": {
+      "english": "I need sesame seeds",
+      "kutchi_singular": "Muke tal khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    },
+    "spi-16": {
+      "english": "I need salt",
+      "kutchi_singular": "Muke loon khape",
+      "kutchi_plural_example": null,
+      "is_draft": true
+    }
+  }
+}

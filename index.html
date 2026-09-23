@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Nani jo Ghar — fruit bowl</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="rotate-overlay">
+  <div class="rotate-card">
+    <div class="rotate-icon">&#8635;</div>
+    <p>Turn your phone sideways to play</p>
+  </div>
+</div>
+
+<div id="stage-wrap">
+  <div id="stage">
+
+    <!-- ===================== KITCHEN SCENE ===================== -->
+    <div class="scene active" id="scene-kitchen">
+      <img class="bg" src="assets/backgrounds/bg-nani-kitchen-v1.jpg" alt="">
+      <div class="item-row back-row" id="kitchen-back-row"></div>
+      <div class="item-row front-row" id="kitchen-front-row"></div>
+      <div id="recipe-bowl"><div class="bowl-items" id="bowl-items"></div></div>
+      <div class="character" id="nani-sprite"></div>
+    </div>
+
+    <!-- ===================== BAZAAR SCENE ===================== -->
+    <div class="scene" id="scene-bazaar">
+      <img class="bg" src="assets/backgrounds/bg-bazaar-stall-v2.jpg" alt="">
+      <div class="item-row back-row" id="bazaar-back-row"></div>
+      <div class="item-row front-row" id="bazaar-front-row"></div>
+      <div class="character" id="shopkeeper-sprite"></div>
+    </div>
+
+    <!-- ===================== SHARED CHROME ===================== -->
+    <div id="caption-band">
+      <div id="caption-gist"></div>
+      <div id="caption-kutchi"></div>
+    </div>
+
+    <div id="sidebar">
+      <h3>Nani's recipe</h3>
+      <div id="shopping-list"></div>
+      <button id="go-btn" class="go-btn"></button>
+      <div class="tab-rail">
+        <button class="tab-btn" id="tab-notebook" title="Notebook">&#128214;</button>
+        <button class="tab-btn" id="tab-quilt" title="Quilt">&#129513;</button>
+      </div>
+    </div>
+
+    <div id="basket" title="Your basket">&#128722;<span id="basket-count">0</span></div>
+
+  </div>
+</div>
+
+<!-- ===================== OVERLAYS ===================== -->
+<div class="overlay" id="overlay-start">
+  <div class="overlay-panel">
+    <h2>Nani jo Ghar</h2>
+    <p>The fruit bowl — a Kutchi word game</p>
+    <button id="start-btn">Tap to start</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-quilt" style="display:none">
+  <div class="overlay-panel">
+    <h2>Nani's quilt</h2>
+    <div id="quilt-grid"></div>
+    <button class="close-btn" data-close="overlay-quilt">Close</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-patch" style="display:none">
+  <div class="overlay-panel patch-panel">
+    <h2>A patch for the quilt!</h2>
+    <div id="patch-preview"></div>
+    <p id="patch-caption"></p>
+    <button class="close-btn" id="patch-continue">Continue</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-recall" style="display:none">
+  <div class="overlay-panel recall-panel">
+    <div id="recall-caption"></div>
+    <div id="recall-basket-items"></div>
+  </div>
+</div>
+
+<script src="js/progress.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

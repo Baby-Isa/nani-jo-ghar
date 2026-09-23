@@ -1,0 +1,22 @@
+{
+  "_comment": "Errand definitions, kept separate from the content master spreadsheet per Zafar's instruction. This build proves ONE errand: the fruit bowl, per claude/Nani jo Ghar — Roadmap and Story Structure.md. Word ids match Scene — Bazaar in the content master. Every kutchi line used here traces to a sourced draft in content.json; nothing here invents Kutchi.",
+
+  "errands": [
+    {
+      "id": "bowl-01",
+      "scene": "bazaar",
+      "title": "Fruit bowl for the guests",
+      "items": [
+        { "word_id": "fru-04", "qty": 2 },
+        { "word_id": "fru-06", "qty": 3 },
+        { "word_id": "fru-01", "qty": 1, "no_count": true }
+      ],
+      "pre_exposure": ["fru-03", "fru-07"],
+      "pantry_back_row": ["fru-04", "fru-06"],
+      "pantry_front_row": ["fru-01"],
+      "stall_back_row": ["fru-04", "fru-06", "fru-01", "fru-02"],
+      "stall_front_row": ["fru-13", "fru-15", "fru-16", "fru-09"],
+      "reward_patch": { "motif": "fruit-bowl", "colors": ["#D98E2B", "#8FAE5A", "#B33A3A"] }
+    }
+  ]
+}
