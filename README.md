@@ -1,11 +1,11 @@
 # Nani jo Ghar — fruit bowl test errand
 
-The single proof-of-concept errand agreed on 23 Sep 2026: Nani needs a
-fruit bowl for tonight's guests. Go to the bazaar, buy from a Kutchi-only
-list, come home, put everything in the bowl. Rebuilt from scratch after
-the first version failed on a real phone — see
-`claude/Nani jo Ghar — Roadmap and Story Structure.md` in the project for
-the full diagnosis and the decisions this build follows.
+The single proof-of-concept errand: Nani needs a fruit bowl for tonight's
+guests. Go to the bazaar, buy from a Kutchi-only list, come home, put
+everything in the bowl. This is the **Build Brief v3** rebuild: the scene
+layer is now a Phaser 3 canvas driven entirely by data, after the first
+CSS/DOM version failed on a real phone (overlapping tap targets, floating
+fruit, black bars on wide phones — see "What v2 got wrong" below).
 
 ## Running it
 
@@ -14,94 +14,101 @@ Any static file server works, e.g. from this folder:
     python3 -m http.server 8000
 
 then open `http://localhost:8000/` on a phone in landscape, or on a
-laptop. Tap "Tap to start" first — that's what unlocks audio and requests
+laptop. Tap "Tap to start" first — that unlocks audio and requests
 fullscreen/landscape on mobile browsers, which can't be done without a
 user gesture.
 
-**Play it on GitHub Pages, not the Claude artifact viewer.** The artifact
-viewer isn't full screen and its container measurement broke the previous
-JS-scaled layout; this build uses a CSS-only responsive stage instead, but
-GitHub Pages is still the real test.
+## Architecture
 
-## What changed from the first build
+- **Scene layer = Phaser 3** (vendored at `js/vendor/phaser.min.js`, no
+  CDN at runtime). The world is fixed at 1600×900 — the backgrounds' own
+  pixel size — scaled with `Phaser.Scale.FIT`, centred on both axes.
+- **UI layer = plain HTML/CSS** beside/over the canvas: the recipe
+  sidebar, caption band, go button, overlays. A CSS grid (`sidebar |
+  game`), sized purely from `aspect-ratio` media queries — no JS
+  measuring. Wide screens (Flip-style 22:9) get a sidebar exactly as wide
+  as the leftover space, so the game area is a clean 16:9 with no
+  letterbox. Narrow screens (iPad 4:3, portrait) get an off-canvas
+  drawer instead of a squeezed sidebar; it auto-opens as soon as a word
+  is added to the list.
+- **Scenes are data.** `data/scenes/kitchen.json` and `data/scenes/bazaar.json`
+  hold every slot, container and character anchor as background pixel
+  coordinates, measured off the real art and verified with
+  `build/place_preview.py` (renders a labelled composite PNG per scene —
+  look at it before trusting a position). `data/errands.json` only says
+  which words go in which slot *pool*; the actual slot assignment is
+  shuffled every playthrough, so the correct answer's position is never
+  the tell.
+- **Every tappable item uses pixel-perfect hit-testing**
+  (`setInteractive({ pixelPerfect: true, alphaTolerance: 1 })`), so an
+  overlapping transparent bounding box can never steal a tap from the
+  item underneath — the exact bug that broke v2's bazaar.
+- **Audio** plays through Phaser's sound manager (handles mobile unlock
+  on the first tap) and resolves on the `complete` event, not on
+  playback start — fixes v2's overlapping lines. `data/audio-manifest.json`
+  (from `build/build_audio_manifest.py`) lists which recordings actually
+  exist, so the game never probes for a file at runtime — a HEAD 404
+  logs a console error even when the JS catches it, which would have
+  failed the "no console errors" check. Missing lines fall back to
+  on-device speech synthesis reading the romanised Kutchi (never a real
+  Kutchi voice — none exists from any vendor).
 
-Every item here was a specific failure reported after testing the first
-version on an actual Android phone:
+## What v2 got wrong (fixed in this rebuild)
 
-- **No more JS canvas scaling.** The stage is sized with CSS `min()`
-  against the viewport, not a `transform: scale()` computed from a
-  measured container — that's what broke on Android.
-- **Item positions are measured off the real backgrounds**, not shared
-  generic rows. Pantry items sit on the kitchen's actual shelves; bazaar
-  items sit in the actual open counter space, clear of the shopkeeper.
-- **The shopping list shows Kutchi text and a play button only** — no
-  picture, no English by default. English is one tap away per item.
-  Showing a picture turned the task into picture-matching with no Kutchi
-  required, which was the strongest objection to the first build.
-- **No digits anywhere.** The chalkboard and the `have/qty` badges are
-  gone. Quantity is taught by tapping once per unit while the Kutchi
-  number word for the running count plays and is shown as text.
-- **Audio is pre-baked MP3s**, not live `SpeechSynthesis`. Android's
-  in-app webview has no Web Speech support at all, which is why the first
-  build was silent on the phone but fine on a laptop. `build/build_audio.py`
-  generates a placeholder-voice MP3 per line with `espeak-ng` (a Hindi
-  voice reading the romanised draft — still a mispronunciation guide, per
-  the Technical Plan, not a real Kutchi voice, which doesn't exist for any
-  vendor). Dropping in a real family recording later is a file swap at
-  `assets/audio/<kind>/<id>.mp3` — no code change, same as before.
-- **Glow is a hint, not an announcement.** It no longer fires automatically
-  for every new word; it appears after a wrong tap or about five seconds
-  of not finding the right item.
-- **A word's stage advances on a correct recall**, not on being shown.
-  `progress.js`'s `recordMeeting()` now only tracks exposure; a new
-  `recordCorrect()` is what moves a word up the stage table.
-- **The "recall" step is no longer a full-screen quiz overlay.** Per the
-  design principle "the task is the test, no quiz screens", bought items
-  now go into a bowl in-scene: a tray of what you just bought sits over
-  the (still-visible) kitchen while Nani asks for each one back, and a
-  correct tap drops it into the bowl graphic.
-- **The chalkboard component is gone entirely** — it didn't do anything
-  the recipe-list sidebar doesn't already do better.
-- Fixed the stray `?` placeholder text and the blank/grey go-button state
-  (the button now always has a label).
+| Symptom | Root cause | Fix |
+|---|---|---|
+| Nothing tappable in the shop | Front-row item boxes overlapped the back row; taps landed on a decoy's transparent box | Pixel-perfect hit-testing per sprite |
+| Fruit floating on the wall | Positions guessed as CSS percentages | Positions measured off the real art, verified with `place_preview.py` |
+| Dashed squares as "gaps" | Placeholder CSS | Real silhouettes: the fruit's own shape, tinted and dimmed |
+| Characters floating | Full-body sprites standing mid-scene | Waist-up framing: baseline placed below the world's bottom edge, cropped by the frame |
+| Black bars on wide phones | Sidebar sat inside the 16:9 stage | Sidebar sits beside the game area in a CSS grid, sized from aspect ratio |
+| Basket count stuck at 0 | No code ever updated it | It updates on every correct bazaar tap |
+| Lines talking over each other | Audio resolved when playback *started* | Resolves on the `complete` event |
 
 ## What's still a placeholder
 
-- **The bowl and the parchment sidebar texture are procedurally generated**
-  (`build/make_placeholder_art.py`), not commissioned art — there was
-  nothing to reuse for either, per the "make up assets for the bowl and
-  stuff" instruction. Everything else (characters, fruit) is the existing
-  sliced art, untouched.
-- **Every line of Kutchi here is a draft** (marked with `*`), sourced from
-  the content master's handouts, never invented. Three lines have no
-  Kutchi at all yet ("What would you like?", "How many?", "Well done!")
-  and are shown in English only — they're never spoken, since the project
-  rule is English is text, never voice, in-game.
-- **One errand only.** `data/errands.json` defines just `bowl-01`. More
-  errands are a content job once the syllabus and story-arc planning
-  (next two steps per the Roadmap doc) are done.
+- **The bowl and the parchment sidebar/tray texture are procedurally
+  generated** (`build/make_placeholder_art.py`), not commissioned art.
+  Everything else (characters, fruit, backgrounds) is the existing art,
+  untouched.
+- **Every line of Kutchi here is a draft** (marked with `*`), sourced
+  from the content master's handouts, never invented. A few lines have
+  no Kutchi at all yet ("What would you like?", "Well done!") and are
+  shown in English only — never spoken, since English is text, never
+  voice, in-game.
+- **One errand only.** `data/errands.json` defines just `bowl-01`.
 - **The quilt patch is a flat colour gradient**, not real patch artwork.
-- **The notebook is a plain `alert()`** listing words met and their stage.
-- Tested headlessly (`build/test_playwright.py`) and should be tested on
-  an actual phone next — that's the whole point of moving this to GitHub
-  Pages.
+- **The notebook is a plain overlay list**, not a designed page.
+- **No sound effect for a wrong tap** — just the visual wiggle. A
+  procedural "nope" tone would need synthesizing; out of scope for this
+  pass.
 
 ## Files
 
 - `build/build_content.py` — xlsx → `data/content.json`. Never invents
   Kutchi: confirmed → draft-flagged → English-only, in that order.
-- `build/build_audio.py` — generates the placeholder MP3s this one errand
-  needs via `espeak-ng` + `ffmpeg`.
-- `build/make_placeholder_art.py` — generates the bowl and parchment
-  texture with PIL.
-- `build/prep_assets.py` — downscales sliced art for phone delivery.
-- `build/test_playwright.py` — headless click-through, screenshots in
-  `build/screenshots/`.
-- `data/errands.json` — the one errand, hand-written, kept separate from
-  the content spreadsheet as agreed.
+- `build/build_audio.py` — generates placeholder MP3s via `espeak-ng`.
+- `build/build_audio_manifest.py` — scans `assets/audio/` and writes
+  `data/audio-manifest.json`, so the game knows what exists without
+  probing at runtime. Re-run after adding/removing an audio file.
+- `build/make_placeholder_art.py` — the bowl and parchment texture (PIL).
+- `build/place_preview.py` — renders `build/previews/<scene>.png`: every
+  slot filled with a sample fruit, baselines drawn in red, labelled.
+  Run this after touching any `data/scenes/*.json`.
+- `build/test_e2e.py` — Playwright, three viewports (Flip 5 landscape,
+  laptop, iPad), taps the actual screen-space coordinates of opaque
+  sprite pixels via `window.__njg.debugItems()`, never element centres.
+  Screenshots every step to `build/screenshots/<viewport>/`.
+- `data/scenes/*.json` — slot, container and character positions per
+  scene, in background pixels.
+- `data/errands.json` — the one errand: which words, which slot pools,
+  the reward patch.
+- `data/audio-manifest.json` — generated; which recordings exist.
+- `js/data.js` — loads content, errands, scenes, the audio manifest.
 - `js/progress.js` — per-word stage, advances on correct recall only.
-- `js/audio.js` — plays a file if one exists at
-  `assets/audio/<kind>/<id>.mp3`, else falls back to on-device speech
-  (kept as a safety net; not exercised by this errand since every line it
-  needs is pre-baked).
-- `js/app.js` — the game: kitchen ask → bazaar buy → bowl → patch → quilt.
+- `js/audio.js` — plays a recording through Phaser's sound manager if
+  one exists, else falls back to on-device speech synthesis.
+- `js/ui.js` — the HTML/CSS UI layer: sidebar, caption, overlays, quilt.
+- `js/game.js` — the Phaser scenes: kitchen intro → bazaar → bowl fill
+  → patch/quilt.
+- `js/vendor/phaser.min.js` — vendored, no CDN at runtime.
