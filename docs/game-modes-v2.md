@@ -128,3 +128,37 @@ The arcs stay; each errand just uses the new games. Arc 1 as an example:
 ## 6. Next step
 
 Build a rough **Cook with Nani** prototype (spec in `docs/game-modes-fun-analysis.md` section 7), **including the upgrade shop with the counter-slot decision**. It's the flagship, it's in every arc, and it's the best test of whether the whole approach is fun.
+
+---
+
+## 7. Cook with Nani: stations first, recipes second (23 Sept 2026)
+
+**Principle:** pick the stations that are proven fun and cheap to build, then choose recipes that use them. Every station is a **single-finger gesture** (it works with a mouse too) and ties to language (a count, a sequence or a named item). **Main reference:** *Cooking Mama*, where every cooking step is its own mini-game.
+
+| Station | Gesture | Why it's fun | Language | Build |
+|---|---|---|---|---|
+| **Pantry fetch** | Tap the named ingredient | The core listening moment | Nouns, numbers | Easy (exists) |
+| **Chop** | Swipe across the item; it splits into pieces | *Fruit Ninja* satisfaction; counting | "Cut it into 4" (numbers) | Easy: split the sprite along the swipe |
+| **Knead** | Press repeatedly, or drag back and forth | Squishy, tactile | "Knead" (verb) | Easy: squash-and-stretch tween |
+| **Roll** (chapati) | Drag outwards from the centre until the circle fills the guide | Visible growth; aiming for "just right" | "Roll", "thin", "round" | Easy: scale the circle with drag distance |
+| **Tawa flip / puff** | Watch the colour change; tap to flip at the right moment; the roti puffs up | Timing tension and a magical payoff | "Flip it", "it's ready" | Medium: a colour gradient plus a puff tween |
+| **Tadka (spices in order)** | Drag spices into the hot oil **in the order Nani said**; it sizzles | Memory tension; sizzle sound; the Simon element | "First jeeru, then rai, then hing" (sequence) | Easy |
+| **Stir / grind** | Circle drag the named number of times | Rhythmic, calming | Numbers; "stir" or "grind" | Easy |
+| **Pour** | Hold to pour; release at the line | Precision tension | Measures: "half a cup", "to the line" | Easy |
+| **Boil watch** | Tap before it boils over (the classic chai moment) | Real tension, funny failure (a harmless foam overflow) | "It's boiling!" | Easy |
+| **Churn** (chaas, butter) | Drag back and forth quickly | Energetic; very Kutch | Verb, counting | Easy |
+| **Plate / thali** | Place each part where told | Satisfying finish; positions | "Daal in the bowl, rotis on the left" | Easy (the Tidy-up mechanic) |
+
+**Recipes these stations make:**
+- **Chai:** pour water, boil watch, spoons of sugar (count), pour milk, pour into cups.
+- **Chapati / rotli:** knead, roll, tawa flip and puff.
+- **Daal:** wash, chop onion, tadka sequence, stir.
+- **Kachumber / fruit chaat:** wash, chop (count), sprinkle, plate.
+- **Chaas (buttermilk):** pour, churn, spice.
+
+**Kutch specialities for later:**
+- **Bajra rotlo:** pat between the palms (alternate taps), then clay tawa.
+- **Khichdi and kadhi:** rinse, pour, tadka, stir.
+- **Dabeli:** a famous Kutchi street food, perfect for a later bazaar food-stall chapter.
+
+**Prototype set:** **chai, chapati and daal.** Together they cover pour, boil watch, count, knead, roll, flip, chop and the tadka sequence: the eight most distinct gestures. Drop the fruit plate from the prototype; it's only "chop".

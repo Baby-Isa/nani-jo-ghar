@@ -184,3 +184,42 @@ Now is the right time: Chapter 1 has only a handful of backgrounds and one erran
 - **R2-F, stylised 3D animated film:** high-quality stylised 3D like a modern animated feature film: appealing proportions, expressive eyes, soft global illumination, realistic materials (marble, brass, wicker), warm and cosy.
 
 **Then:** put the six results side by side (or send them to Claude to make a labelled comparison sheet). Pick one or two to take into the style-lock test (section 5.2).
+
+---
+
+## 10. Chosen direction: stylised 3D film look (23 Sept 2026). Is it workable?
+
+**The image:** a stylised 3D animated-film look. A modern limewash kitchen, marble island, sage cabinets, brass and mirror-work accents, ajrakh stool cushions, Nani behind the island, first-person hands holding the basket, and a docked cream UI panel.
+
+**Verdict: workable, if these rules are followed.** It's appealing, modern and kid-friendly, and the layer system already fits it (the island front can be cropped from the background as the occluder, exactly as in the current build).
+
+### What works
+- **The island is a clean occluder** (its top edge is nearly horizontal), and Nani is behind it.
+- **Brass, marble and wicker read well** at small sizes; contact shadows on marble are easy.
+- **ChatGPT's 3D-render style is fairly consistent between images.** It's a common house style, more stable than painterly.
+- **The expression pipeline** (`build/expressions.py`) works on rendered faces: blinks, mouth shapes and smiles as in-place edits.
+
+### Risks, and the rule for each
+
+| Risk | Rule |
+|---|---|
+| **Nani's identity drifts** between images | Lock one **canonical Nani sheet** (neutral, front-facing, arms behind or on the counter). Every other pose and expression is an *edit* of that image, never a fresh generation |
+| **Hands reaching over the counter** can't be layered correctly (the character is cropped at the counter's top edge) | Character poses keep hands **behind or resting on the counter top**. Gestures stay above the counter line |
+| **Baked-in props** (bowl, fruit, jars) can't be moved or tapped | Generate the **background empty**: no Nani, no bowl, no fruit on the tappable shelves. Everything interactive is a separate transparent PNG |
+| **Perspective:** items on a receding counter need to shrink with depth | Tappable slots go on **front-facing shelves** and **one band along the island's front edge**, not scattered over the depth of the counter |
+| **First-person hands** | Hands and basket as their own transparent layer (back and front, as now). **Skin tone:** consider a few choices per player profile |
+| **Ingredient art multiplies** (raw, washed, chopped, cooked) | Generate each state as an *edit* of the raw item image, same angle and lighting. Use effects (tint, steam, sparkle) wherever they're convincing |
+| **Other characters in the same style** | A shared "family style sheet" prompt; the shopkeeper and Nana are generated as edits of a style reference |
+
+### ⚠ Cultural accuracy check (for the family)
+In this image Nani has a **bindi** and **visible grey hair under a loosely draped dupatta**. The game's family is Muslim (Salamun alaykum, Eid), and the original Nani wears a headscarf that fully covers her hair. **A bindi is a Hindu marker and is likely wrong for this Nani.** Ask the family how Nani should look, then bake it into the canonical sheet.
+
+### The ChatGPT stress test (what the test should cover)
+1. **Canonical Nani:** 1 neutral image, then 5 edits (eyes closed, mouth open, smile, pointing *above* the counter, worried). Does she stay the same person?
+2. **Twelve ingredients** in one style, each on a transparent background, the same scale and lighting.
+3. **Ingredient states:** an onion raw, then halved, then chopped (edits of the same image).
+4. **The empty kitchen background** at 16:9: no Nani, no props on the tappable surfaces, with room behind the island.
+5. **Layers:** basket back and front, the hands, the brass bowl back and front (transparent).
+6. **A second character** (the shopkeeper) in the same style, next to Nani, so they look like one family of designs.
+
+If 1–3 hold up, the style is safe to commit to.
