@@ -1,15 +1,122 @@
 {
   "id": "bazaar",
-  "background": "assets/backgrounds/bg-bazaar-stall-v2.jpg",
-  "character": { "id": "shopkeeper", "x": 1420, "scale": 1.1, "visibleFraction": 0.75 },
+  "background": "assets/backgrounds/bg-bazaar-stall-v3.jpg",
+  "_comment": "All coordinates are background pixels (1600x900). The shopkeeper stands BEHIND the counter: the background from the counter's back edge (y=552) down is drawn again above him (occluder.fromBackground), so the counter hides his lower body. Stall items sit on the counter's top face (back edge 552, front edge 609). Verify with build/place_preview.py.",
+  "character": {
+    "id": "shopkeeper",
+    "x": 1005,
+    "top": 200,
+    "scale": 0.92
+  },
+  "occluder": {
+    "fromBackground": true,
+    "y": 552
+  },
+  "bubble": {
+    "right": 900,
+    "top": 150,
+    "maxW": 420
+  },
+  "basket": {
+    "back": "assets/scene/basket-back.png",
+    "front": "assets/scene/basket-front.png",
+    "x": 800,
+    "top": 692,
+    "w": 520,
+    "item": {
+      "maxW": 92,
+      "maxH": 96
+    },
+    "inside": [
+      {
+        "x": 720,
+        "baseline": 820
+      },
+      {
+        "x": 880,
+        "baseline": 820
+      },
+      {
+        "x": 800,
+        "baseline": 804
+      },
+      {
+        "x": 645,
+        "baseline": 810
+      },
+      {
+        "x": 955,
+        "baseline": 810
+      },
+      {
+        "x": 760,
+        "baseline": 790
+      },
+      {
+        "x": 840,
+        "baseline": 790
+      },
+      {
+        "x": 800,
+        "baseline": 776
+      }
+    ]
+  },
   "slots": {
-    "crate-1":   { "x": 265,  "baseline": 555, "w": 100 },
-    "crate-2":   { "x": 370,  "baseline": 555, "w": 100 },
-    "basket-1":  { "x": 500,  "baseline": 545, "w": 90 },
-    "basket-2":  { "x": 585,  "baseline": 545, "w": 90 },
-    "counter-1": { "x": 760,  "baseline": 592, "w": 96 },
-    "counter-2": { "x": 872,  "baseline": 592, "w": 96 },
-    "counter-3": { "x": 984,  "baseline": 592, "w": 96 },
-    "counter-4": { "x": 1096, "baseline": 592, "w": 96 }
+    "counter-1": {
+      "x": 135,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    },
+    "counter-2": {
+      "x": 250,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    },
+    "counter-3": {
+      "x": 365,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    },
+    "counter-4": {
+      "x": 480,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    },
+    "counter-5": {
+      "x": 595,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    },
+    "counter-6": {
+      "x": 705,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    },
+    "counter-7": {
+      "x": 1250,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    },
+    "counter-8": {
+      "x": 1370,
+      "baseline": 600,
+      "maxW": 95,
+      "maxH": 100
+    }
+  },
+  "ambient": {
+    "lantern": {
+      "x": 1421,
+      "y": 165,
+      "r": 70
+    }
   }
 }

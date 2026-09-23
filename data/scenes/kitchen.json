@@ -1,28 +1,170 @@
 {
   "id": "kitchen",
   "background": "assets/backgrounds/bg-nani-kitchen-v1.jpg",
-  "character": { "id": "nani", "x": 1400, "scale": 1.1, "visibleFraction": 0.75 },
-  "containers": {
-    "bowl": {
-      "image": "assets/items/bowl-empty.png",
-      "x": 430,
-      "baseline": 402,
-      "w": 280,
-      "inside": [
-        { "x": 395, "baseline": 345, "w": 75 },
-        { "x": 470, "baseline": 345, "w": 65 },
-        { "x": 430, "baseline": 330, "w": 70 },
-        { "x": 360, "baseline": 350, "w": 65 },
-        { "x": 505, "baseline": 350, "w": 65 }
-      ]
-    }
+  "_comment": "All coordinates are background pixels (1600x900). Nani stands BEHIND the island: the island image is drawn above her and hides her lower body. Shelf baselines sit on the plank's top edge (upper y=197, lower y=395) plus a few px so fruit rest on the wood. Verify with build/place_preview.py.",
+  "character": {
+    "id": "nani",
+    "x": 1265,
+    "top": 200,
+    "scale": 1.0
+  },
+  "occluder": {
+    "image": "assets/scene/kitchen-island.png",
+    "x": 455,
+    "y": 560
+  },
+  "bubble": {
+    "right": 1140,
+    "top": 30,
+    "maxW": 440
+  },
+  "bowl": {
+    "back": "assets/scene/bowl-back.png",
+    "front": "assets/scene/bowl-front.png",
+    "x": 820,
+    "baseline": 606,
+    "w": 300,
+    "item": {
+      "maxW": 78,
+      "maxH": 80
+    },
+    "inside": [
+      {
+        "x": 760,
+        "baseline": 506
+      },
+      {
+        "x": 880,
+        "baseline": 506
+      },
+      {
+        "x": 820,
+        "baseline": 500
+      },
+      {
+        "x": 715,
+        "baseline": 516
+      },
+      {
+        "x": 925,
+        "baseline": 516
+      },
+      {
+        "x": 790,
+        "baseline": 522
+      },
+      {
+        "x": 855,
+        "baseline": 522
+      },
+      {
+        "x": 820,
+        "baseline": 530
+      }
+    ]
+  },
+  "basket": {
+    "back": "assets/scene/basket-back.png",
+    "front": "assets/scene/basket-front.png",
+    "x": 800,
+    "top": 692,
+    "w": 520,
+    "item": {
+      "maxW": 92,
+      "maxH": 96
+    },
+    "inside": [
+      {
+        "x": 720,
+        "baseline": 820
+      },
+      {
+        "x": 880,
+        "baseline": 820
+      },
+      {
+        "x": 800,
+        "baseline": 804
+      },
+      {
+        "x": 645,
+        "baseline": 810
+      },
+      {
+        "x": 955,
+        "baseline": 810
+      },
+      {
+        "x": 760,
+        "baseline": 790
+      },
+      {
+        "x": 840,
+        "baseline": 790
+      },
+      {
+        "x": 800,
+        "baseline": 776
+      }
+    ]
   },
   "slots": {
-    "shelf-low-1": { "x": 640, "baseline": 398, "w": 90 },
-    "shelf-low-2": { "x": 745, "baseline": 398, "w": 90 },
-    "shelf-low-3": { "x": 850, "baseline": 398, "w": 90 },
-    "shelf-high-1": { "x": 560, "baseline": 205, "w": 85 },
-    "shelf-high-2": { "x": 670, "baseline": 205, "w": 85 },
-    "shelf-high-3": { "x": 780, "baseline": 205, "w": 85 }
+    "shelf-high-1": {
+      "x": 440,
+      "baseline": 201,
+      "maxW": 85,
+      "maxH": 92
+    },
+    "shelf-high-2": {
+      "x": 555,
+      "baseline": 201,
+      "maxW": 85,
+      "maxH": 92
+    },
+    "shelf-high-3": {
+      "x": 670,
+      "baseline": 201,
+      "maxW": 85,
+      "maxH": 92
+    },
+    "shelf-low-1": {
+      "x": 320,
+      "baseline": 399,
+      "maxW": 90,
+      "maxH": 95
+    },
+    "shelf-low-2": {
+      "x": 445,
+      "baseline": 399,
+      "maxW": 90,
+      "maxH": 95
+    },
+    "shelf-low-3": {
+      "x": 570,
+      "baseline": 399,
+      "maxW": 90,
+      "maxH": 95
+    },
+    "shelf-low-4": {
+      "x": 695,
+      "baseline": 399,
+      "maxW": 90,
+      "maxH": 95
+    },
+    "shelf-low-5": {
+      "x": 820,
+      "baseline": 399,
+      "maxW": 90,
+      "maxH": 95
+    }
+  },
+  "ambient": {
+    "motes": {
+      "x0": 1150,
+      "x1": 1530,
+      "y0": 60,
+      "y1": 560,
+      "count": 14
+    }
   }
 }
