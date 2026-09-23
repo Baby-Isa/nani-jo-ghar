@@ -218,3 +218,18 @@ Attach `docs/art-direction/round-2/r2-e-soft-3d.webp` to **every** prompt, as a 
 - Run `build/expressions.py` on Nani's left image. **Fail** if the blink or mouth edits show seams.
 - Place everything with `build/place_preview.py` and play `bowl-01` on a phone. **Fail** if the fruit don't stand out against the island and the basket.
 - If any check fails, run prompts 1–4 again with the R2-D style line instead.
+
+## 12. R2-E style-lock test: first results (23 Sept 2026)
+
+Came back: the kitchen, Nani's three states, the containers and **two** of the three fruit chats. Saved in `docs/art-direction/round-2/e-test/`, with `scene-mockup.png` (everything placed together at 1600×900) and `fruit-90px.png` (both fruit sheets at 90px).
+
+| Check | Result |
+|---|---|
+| Transparent backgrounds | **Pass.** True alpha, with the soft contact shadows kept. No magenta fringe to worry about |
+| Fruit consistency between chats | **Pass so far.** At 90px the same fruit is near-identical in shape, colour and light. The only difference is leaves (chat 2 added leaves to the orange and pear), which the prompt can fix. A third chat is still to do |
+| Fruit style vs Nani | **Acceptable.** The fruit and containers render more photographic than Nani, but together they read like one animated film (stylised character, realistic props) |
+| Nani | **Strong.** Consistent across all three states, eyes open. But the three frames don't line up (about half the pixels move between the left and middle frames, because her head tilts), so talking has to come from `expressions.py` edits of the left image, not from swapping frames |
+| Kitchen background | **Needs one regeneration.** (1) Strong sunbeam stripes on the wall and island: baked orange light, busy behind Nani. (2) The shelves run behind where Nani stands, so her head covers the pantry slots. (3) The mirror-work frame sits in the right strip the sidebar covers |
+| Hands holding the basket | Not generated yet |
+
+**Overall: E is passing.** Still to do: fruit chat 3 (no leaves), the regenerated kitchen, the hands and basket layer, the `expressions.py` run on the left Nani frame, and a playtest on a phone.
