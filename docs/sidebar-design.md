@@ -167,8 +167,14 @@ Then one per icon:
 
 **Already settled by the project docs:** no pictures on the list; romanised Kutchi; English one tap away; no points or stars; docked, never on top of the game; hints are the scene glow and replay; writing only in the Notebook.
 
+**Decided by Zafar (23 Sept 2026):**
+1. **Side: right.** When the backgrounds are redone, characters stand centre-right.
+2. **Counts: dots only**, for readers and non-readers alike. No "1/2" fraction.
+3. **Hint button:** first press replays the word slowly; second press makes the right item glow straight away (instead of waiting 5 seconds). Free for now; later it may cost pocket money.
+
 **Still to decide:**
-1. **Side:** right (recommended) or keep the left?
-2. **Count style for readers:** dots only (recommended, works for all ages), or the mockup's "1/2" as well?
-3. **Explore / magnifier:** add a no-penalty "tap anything to hear its name" mode? It's great for learning, but it could be used to cheat mid-errand. Option: allow it only before and after the shopping, not during.
-4. **Hint button:** what does a press do beyond the automatic glow? Proposal: replay the word slowly, then trigger the glow early. Free for now; later it costs pocket money (Game Design doc).
+4. **Explore / magnifier.** Press the magnifier, then tap anything in the scene (the pot, the rug, a fruit) to hear its Kutchi name. It never counts as right or wrong. The risk: mid-errand, a player could tap every fruit until they hear "santra", which skips the recall the errand is testing. Options:
+   - (a) Leave it out.
+   - (b) Explore only outside the shopping and bowl steps.
+   - (c) Allow it any time, but if you explore a list item and then pick it, that pick counts as *hinted* (the word doesn't move up a stage). Recommended: it stays honest and still rewards curiosity.
+5. **Stars and streaks.** The Game Design doc currently rules them out. Zafar is weighing whether to add them; see the pros and cons in the chat of 23 Sept 2026. If added, a star or "patch detail" slot is needed on the Mission header and the Quilt tab.
