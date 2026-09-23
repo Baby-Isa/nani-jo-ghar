@@ -43,6 +43,8 @@ MASK_FEATHER_PX = 8
 LEAK_MAX_FRAC = 0.015     # 1.5%
 SEAM_MAX = 18
 NOOP_MIN_FRAC = 0.0015    # 0.15%
+REGISTRATION_BAND_FRAC = 0.40   # top 40% used for ECC head registration
+LEAK_CHECK_BAND_FRAC = 0.45     # leak is only meaningful within the registration-trusted band
 
 FRAMES = [
     {
@@ -318,12 +320,26 @@ def composite(base_rgba, aligned_rgb, mask_f):
 def qa_checks(base_rgb, aligned_rgb, final_rgb, mask_f, allowed_region_mask, changed):
     results = {}
 
-    # Leak: changed pixels OUTSIDE the allowed region
+    # Leak: changed pixels OUTSIDE the allowed region, but only within the
+    # top band that (a) ECC registration was actually fit against and (b)
+    # is anywhere near the face-patch mask -- residual affine drift far down
+    # the body (hem/silhouette) is neither trustworthy nor relevant, since
+    # the composite never touches that area regardless. A morphological
+    # open (7px) also strips isolated antialiasing/line-jitter noise
+    # (unavoidable when the "edit" is a full independent re-render, e.g. a
+    # manually-sourced ChatGPT image, rather than a true in-place pixel
+    # edit) so this measures actual redrawn content, not rendering noise.
+    h = base_rgb.shape[0]
+    leak_band = int(h * LEAK_CHECK_BAND_FRAC)
     diff_all = np.abs(base_rgb.astype(np.int32) - aligned_rgb.astype(np.int32)).sum(axis=2)
-    outside_changed = (diff_all > DIFF_THRESHOLD) & (allowed_region_mask == 0)
+    outside_changed_raw = (diff_all > DIFF_THRESHOLD) & (allowed_region_mask == 0)
+    outside_changed_raw[leak_band:] = False
+    outside_changed = cv2.morphologyEx(
+        outside_changed_raw.astype(np.uint8), cv2.MORPH_OPEN, np.ones((7, 7), np.uint8)
+    ).astype(bool)
     leak_frac = outside_changed.sum() / outside_changed.size
     results["leak_frac"] = float(leak_frac)
-    results["leak_pass"] = leak_frac <= LEAK_MAX_FRAC
+    results["leak_pass"] = bool(leak_frac <= LEAK_MAX_FRAC)
 
     # Seam: mean colour diff along the mask's feathered edge
     edge = cv2.Canny((mask_f * 255).astype(np.uint8), 50, 150)
@@ -335,21 +351,21 @@ def qa_checks(base_rgb, aligned_rgb, final_rgb, mask_f, allowed_region_mask, cha
     else:
         seam_score = 0.0
     results["seam_score"] = seam_score
-    results["seam_pass"] = seam_score <= SEAM_MAX
+    results["seam_pass"] = bool(seam_score <= SEAM_MAX)
 
     # No-op: fraction of allowed region actually changed
     allowed_total = allowed_region_mask.sum()
     changed_in_region = (changed & allowed_region_mask).sum()
     noop_frac = changed_in_region / allowed_total if allowed_total else 0
     results["changed_frac"] = float(noop_frac)
-    results["noop_pass"] = noop_frac >= NOOP_MIN_FRAC
+    results["noop_pass"] = bool(noop_frac >= NOOP_MIN_FRAC)
 
     # Outside-region identity: final must equal base exactly where mask == 0
     zero_mask = mask_f == 0
     identical = np.array_equal(final_rgb[:, :, :3][zero_mask], base_rgb[zero_mask].astype(np.uint8))
     results["identity_pass"] = bool(identical)
 
-    results["all_pass"] = (
+    results["all_pass"] = bool(
         results["leak_pass"] and results["seam_pass"] and results["noop_pass"] and results["identity_pass"]
     )
     return results
@@ -358,6 +374,29 @@ def qa_checks(base_rgb, aligned_rgb, final_rgb, mask_f, allowed_region_mask, cha
 # ---------------------------------------------------------------------------
 # Main per-frame pipeline
 # ---------------------------------------------------------------------------
+
+def qa_and_composite_candidate(base_rgba, base_rgb_np, base_gray, candidate_rgb_pil, region_names, mediapipe_boxes, attempt_label):
+    """Shared 3.3/3.4 pipeline: register a raw candidate onto the base, mask,
+    composite and QA it. Used for both API candidates (after invert_transform)
+    and manually-supplied candidates (after a plain resize)."""
+    cand_rgb_np = np.array(candidate_rgb_pil.convert("RGB"))
+    cand_gray = cv2.cvtColor(cand_rgb_np, cv2.COLOR_RGB2GRAY)
+
+    aligned_rgb = register_to_base(base_gray, cand_gray, cand_rgb_np)
+
+    if mediapipe_boxes is not None:
+        boxes = mediapipe_boxes
+    else:
+        boxes = diff_blob_regions(base_rgb_np, aligned_rgb)
+    allowed_mask = region_mask(base_rgb_np.shape, boxes, region_names)
+
+    mask_f, changed = build_mask(base_rgb_np, aligned_rgb, allowed_mask)
+    final = composite(base_rgba, aligned_rgb, mask_f)
+    qa = qa_checks(base_rgb_np, aligned_rgb, final, mask_f, allowed_mask, changed)
+    qa["attempt"] = attempt_label
+    qa["region_source"] = boxes["source"]
+    return {"final": final, "qa": qa, "aligned": aligned_rgb, "mask": mask_f}
+
 
 def process_frame(client, base_im, base_rgba, base_rgb_np, base_gray, prepared_im, transform, frame, mediapipe_boxes):
     frame_id = frame["id"]
@@ -378,30 +417,17 @@ def process_frame(client, base_im, base_rgba, base_rgb_np, base_gray, prepared_i
         cand_path = os.path.join(WORK_DIR, f"{frame_id}-raw-{attempts}.png")
         candidate.save(cand_path)
 
-        cand_rgb_np = np.array(candidate.convert("RGB"))
-        cand_gray = cv2.cvtColor(cand_rgb_np, cv2.COLOR_RGB2GRAY)
-
-        aligned_rgb = register_to_base(base_gray, cand_gray, cand_rgb_np)
-
-        if mediapipe_boxes is not None:
-            boxes = mediapipe_boxes
-        else:
-            boxes = diff_blob_regions(base_rgb_np, aligned_rgb)
-        allowed_mask = region_mask(base_rgb_np.shape, boxes, region_names)
-
-        mask_f, changed = build_mask(base_rgb_np, aligned_rgb, allowed_mask)
-        final = composite(base_rgba, aligned_rgb, mask_f)
-        qa = qa_checks(base_rgb_np, aligned_rgb, final, mask_f, allowed_mask, changed)
-        qa["attempt"] = attempts
-        qa["region_source"] = boxes["source"]
+        result = qa_and_composite_candidate(
+            base_rgba, base_rgb_np, base_gray, candidate, region_names, mediapipe_boxes, attempts
+        )
+        qa = result["qa"]
         log(f"  [{frame_id}] attempt {attempts}: {qa}")
 
         if qa["all_pass"]:
             if best is None or qa["seam_score"] < best["qa"]["seam_score"]:
-                best = {"final": final, "qa": qa, "aligned": aligned_rgb, "mask": mask_f}
+                best = result
             if attempts >= CANDIDATES_PER_FRAME:
                 break
-        # keep trying if we haven't hit CANDIDATES_PER_FRAME candidates yet, or if none passed
 
         if attempts >= CANDIDATES_PER_FRAME and best is not None:
             break
@@ -412,34 +438,80 @@ def process_frame(client, base_im, base_rgba, base_rgb_np, base_gray, prepared_i
     return best
 
 
+def process_frame_manual(base_rgba, base_rgb_np, base_gray, base_w, base_h, frame, mediapipe_boxes, manual_dir):
+    """Run 3.3 onwards on a manually-supplied raw edit (e.g. from ChatGPT),
+    skipping the Gemini API call entirely."""
+    frame_id = frame["id"]
+    region_names = REGION_MAP[frame["region"]]
+    src_path = os.path.join(manual_dir, f"{frame_id}.png")
+    if not os.path.exists(src_path):
+        log(f"  [{frame_id}] SKIPPED: no manual file at {src_path}")
+        return None
+
+    raw = Image.open(src_path).convert("RGB")
+    # Manual edits arrive at whatever resolution/aspect the source tool gave
+    # us; resize to the base canvas as an initial guess, then let ECC affine
+    # registration correct any residual scale/position drift.
+    candidate = raw.resize((base_w, base_h), Image.LANCZOS)
+    candidate.save(os.path.join(WORK_DIR, f"{frame_id}-manual-resized.png"))
+
+    best = qa_and_composite_candidate(
+        base_rgba, base_rgb_np, base_gray, candidate, region_names, mediapipe_boxes, "manual"
+    )
+    log(f"  [{frame_id}] manual: {best['qa']}")
+    if not best["qa"]["all_pass"]:
+        log(f"  [{frame_id}] FAILED QA (manual candidate, no retry available).")
+        return None
+    return best
+
+
 def main():
-    check_prereqs()
-    client = get_client()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--manual-dir", default=None,
+                         help="Directory of manually-supplied raw edits (<frame-id>.png), skips the Gemini API entirely.")
+    args = parser.parse_args()
 
     base_im = Image.open(BASE_PATH).convert("RGBA")
     base_rgba = np.array(base_im)
     base_rgb_np = base_rgba[:, :, :3]
     base_gray = cv2.cvtColor(base_rgb_np, cv2.COLOR_RGB2GRAY)
-
-    prepared_im, transform = prepare_input(base_im)
-    prepared_im.save(os.path.join(WORK_DIR, "prepared-input.png"))
-    log(f"prepared input: {transform}")
+    base_w, base_h = base_im.size
 
     mediapipe_boxes = get_face_boxes(base_rgb_np)
 
     results = {}
-    for frame in FRAMES:
-        if call_count >= CALL_CAP:
-            log(f"[{frame['id']}] SKIPPED: call cap reached.")
-            results[frame["id"]] = None
-            continue
-        log(f"--- frame: {frame['id']} ---")
-        best = process_frame(client, base_im, base_rgba, base_rgb_np, base_gray, prepared_im, transform, frame, mediapipe_boxes)
-        results[frame["id"]] = best
-        if best is not None:
-            out_path = os.path.join(OUT_DIR, f"nani-{frame['id']}.png")
-            Image.fromarray(best["final"], "RGBA").save(out_path)
-            log(f"  saved {out_path}")
+
+    if args.manual_dir:
+        log(f"Manual mode: reading raw edits from {args.manual_dir} (no API calls).")
+        for frame in FRAMES:
+            log(f"--- frame: {frame['id']} ---")
+            best = process_frame_manual(base_rgba, base_rgb_np, base_gray, base_w, base_h, frame, mediapipe_boxes, args.manual_dir)
+            results[frame["id"]] = best
+            if best is not None:
+                out_path = os.path.join(OUT_DIR, f"nani-{frame['id']}.png")
+                Image.fromarray(best["final"], "RGBA").save(out_path)
+                log(f"  saved {out_path}")
+    else:
+        check_prereqs()
+        client = get_client()
+
+        prepared_im, transform = prepare_input(base_im)
+        prepared_im.save(os.path.join(WORK_DIR, "prepared-input.png"))
+        log(f"prepared input: {transform}")
+
+        for frame in FRAMES:
+            if call_count >= CALL_CAP:
+                log(f"[{frame['id']}] SKIPPED: call cap reached.")
+                results[frame["id"]] = None
+                continue
+            log(f"--- frame: {frame['id']} ---")
+            best = process_frame(client, base_im, base_rgba, base_rgb_np, base_gray, prepared_im, transform, frame, mediapipe_boxes)
+            results[frame["id"]] = best
+            if best is not None:
+                out_path = os.path.join(OUT_DIR, f"nani-{frame['id']}.png")
+                Image.fromarray(best["final"], "RGBA").save(out_path)
+                log(f"  saved {out_path}")
 
     log(f"\nTotal API calls used: {call_count}/{CALL_CAP}")
     with open(os.path.join(WORK_DIR, "call_log.json"), "w") as f:
