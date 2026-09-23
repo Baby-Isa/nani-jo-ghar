@@ -132,3 +132,55 @@ then drop them into the game and playtest. Only if it holds up in motion, on a p
 | **Code, logic, scene system, tests, pipelines** | **No** | Positions are re-measured per new background; everything else carries over |
 
 Now is the right time: Chapter 1 has only a handful of backgrounds and one errand built. Every errand added in the old style would be more to redo later.
+
+---
+
+## 7. Round 1 results and feedback (23 Sept 2026)
+
+**What came back:** ChatGPT produced the six-panel grid, but **all six looked nearly the same**: the same painterly render with small tweaks. Two reasons:
+- We attached the old art as a reference, and it anchored everything.
+- One image with six styles pushes the model to average them.
+
+**Lesson:** don't attach the old art for style (describe the characters in words instead), and generate each style **separately**.
+
+**What Zafar and his wife liked:**
+- **Panel D (soft 3D):** the 3D look and the "realism" of the character.
+- **Panel F (Lippan background):** the background, but as a **modern kitchen**: limewash walls, marble counter tops, with **Kutch as accents, not in your face** (the brass bowl, picture frames, a cushion, the curtain).
+- **Sago Mini:** also liked. Flat, friendly, kid-appealing.
+- **Food-making / restaurant games** (sushi and similar): some of our modes are like these, and they're fun and addictive.
+- **Venba:** Zafar liked it; his wife thought it looked old. Zafar also likes **Firewatch**: flat, but more grown-up.
+- **Top App Store games:** they look like template churn, but they're popular. The game has to win a fight for attention.
+- **Hands holding the basket** in the foreground (ChatGPT added this): keep it. It makes the first-person basket feel real.
+
+**Decision leaning, not final:**
+- **Stars, points and streaks: now a yes in principle** ("if it gets kids playing, the attention is spent in a good place"). This supersedes the Game Design doc's "no points, stars, XP or streaks" rule once designed. The softer designs (embroidered stars on quilt patches, a streak that never punishes) are in the chat of 23 Sept 2026.
+- **Setting:** home scenes become a **modern kitchen with Kutch accents**. The bazaar can stay more traditional.
+- **Rule:** modernness runs through everything; the culture is a hint. **The language is the main cultural thing.**
+
+## 8. Claude's view after round 1
+
+1. **Two separate questions are tangled together:** the rendering (flat 2D ↔ soft 3D) and the setting (traditional ↔ modern with Kutch accents). The setting is now decided: modern with accents. Round 2 only has to settle the rendering.
+2. **What makes cooking and restaurant games addictive is mostly "juice", not the art style:** satisfying bounces, pops, sounds, a clear goal, a timer, stars at the end. That's code and sound design, and it works in any style.
+3. **Best structural reference: *Good Pizza, Great Pizza*.** It's a flat-styled food game with the customer standing **behind a counter** and the player making food in front: almost our exact layout, and a proven hit.
+4. **Production reality:**
+   - **Flat** is the most consistent style for ChatGPT across about 60 items, and the only one where **characters built from separate parts** (proper animation, see the playtest doc section 4.1) become realistic later.
+   - **Soft 3D** looks richer in a still image, but animation stays limited to swapping frames (blink and mouth), and items drift in style more often.
+   - Both work with the current code.
+5. **Aim at 6–10 year olds and their parents,** not toddlers. Sago Mini is aimed at 2–5 and can feel babyish once reading and counting come in. Firewatch is for adults. The sweet spot is flat or soft-3D, *polished*, with warm light.
+
+## 9. Round 2 prompts (generate each one separately)
+
+**Don't attach the old art.** For each style, paste the shared scene text below, then that style's line.
+
+**Shared scene (paste first, every time):**
+> Create one 16:9 image: a screenshot from a polished, modern 2026 mobile game for children aged 6–10 and their parents. Child's-eye view of a grandmother's kitchen in a modern home: soft limewash walls, a white marble kitchen island with a pale wood base, clean modern shelves on the back wall with a few fruits and small jars, and gaps on the shelves. The Kutch (Gujarat, India) culture is in small accents only: a brass bowl on the island, a small framed Kutch mirror-work embroidery on the wall, an ajrakh-print cushion on a stool, a brass water pot. A warm, friendly grandmother in her sixties (South Asian, red headscarf, round glasses, cream kurta with red embroidery) stands behind the island, visible from the waist up, smiling and gesturing towards the bowl. A blank white speech bubble near her. In the foreground, bottom-centre, the player's two small hands hold a woven basket with two oranges and a pear inside. On the right edge, a slim clean cream interface panel with three rounded cards (coloured dots only, no text). Bright, clean, inviting, a clear focal point on the grandmother. No text anywhere.
+
+**Then one style line per image:**
+- **R2-A, Sago Mini flat:** ultra-simple flat vector style like Sago Mini World: bold flat colours, geometric rounded shapes, no outlines, no gradients, very simple dot-eyed friendly face.
+- **R2-B, flat with soft shading:** flat vector shapes with gentle soft shading and soft shadows, clean and polished, like *Good Pizza, Great Pizza* or Duolingo's illustrations: expressive simple faces.
+- **R2-C, atmospheric flat:** grown-up flat illustration like the game *Firewatch*: limited harmonious palette, big simple shapes, strong warm sunlight through the window with long soft light shapes, a hint of atmosphere.
+- **R2-D, bright modern illustration:** like the game *Venba*, but brighter, cleaner and more saturated: flat colour with subtle texture, crisp shapes, a contemporary palette.
+- **R2-E, soft 3D clay toy:** rounded soft-3D "toy" render like Toca Boca or Animal Crossing: chunky friendly proportions, soft studio lighting, matte materials.
+- **R2-F, stylised 3D animated film:** high-quality stylised 3D like a modern animated feature film: appealing proportions, expressive eyes, soft global illumination, realistic materials (marble, brass, wicker), warm and cosy.
+
+**Then:** put the six results side by side (or send them to Claude to make a labelled comparison sheet). Pick one or two to take into the style-lock test (section 5.2).
