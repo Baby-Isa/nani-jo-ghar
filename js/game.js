@@ -747,7 +747,12 @@
       }
       State.hasCompletedOnce = true;
 
-      const patch = { motif: errand.reward_patch.motif, colors: errand.reward_patch.colors, at: Date.now() };
+      const patch = {
+        motif: errand.reward_patch.motif,
+        colors: errand.reward_patch.colors,
+        hub_decoration: errand.reward_patch.hub_decoration,
+        at: Date.now(),
+      };
       NjgUI.addPatch(patch);
       NjgUI.showPatchOverlay(patch, () => {
         State.basketCount = 0;
