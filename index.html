@@ -15,44 +15,28 @@
   </div>
 </div>
 
-<div id="stage-wrap">
-  <div id="stage">
+<div id="app">
+  <button id="drawer-tab">Nani's recipe &rsaquo;</button>
 
-    <!-- ===================== KITCHEN SCENE ===================== -->
-    <div class="scene active" id="scene-kitchen">
-      <img class="bg" src="assets/backgrounds/bg-nani-kitchen-v1.jpg" alt="">
-      <div class="item-row back-row" id="kitchen-back-row"></div>
-      <div class="item-row front-row" id="kitchen-front-row"></div>
-      <div id="recipe-bowl"><div class="bowl-items" id="bowl-items"></div></div>
-      <div class="character" id="nani-sprite"></div>
+  <aside id="sidebar">
+    <h3>Nani's recipe</h3>
+    <div id="shopping-list"></div>
+    <button id="go-btn" class="go-btn"></button>
+    <div class="tab-rail">
+      <button class="tab-btn" id="tab-notebook" title="Notebook">&#128214;</button>
+      <button class="tab-btn" id="tab-quilt" title="Quilt">&#129513;</button>
     </div>
+  </aside>
 
-    <!-- ===================== BAZAAR SCENE ===================== -->
-    <div class="scene" id="scene-bazaar">
-      <img class="bg" src="assets/backgrounds/bg-bazaar-stall-v2.jpg" alt="">
-      <div class="item-row back-row" id="bazaar-back-row"></div>
-      <div class="item-row front-row" id="bazaar-front-row"></div>
-      <div class="character" id="shopkeeper-sprite"></div>
-    </div>
+  <div id="sidebar-scrim"></div>
 
-    <!-- ===================== SHARED CHROME ===================== -->
+  <div id="game-wrap">
+    <div id="game"></div>
     <div id="caption-band">
       <div id="caption-gist"></div>
       <div id="caption-kutchi"></div>
     </div>
-
-    <div id="sidebar">
-      <h3>Nani's recipe</h3>
-      <div id="shopping-list"></div>
-      <button id="go-btn" class="go-btn"></button>
-      <div class="tab-rail">
-        <button class="tab-btn" id="tab-notebook" title="Notebook">&#128214;</button>
-        <button class="tab-btn" id="tab-quilt" title="Quilt">&#129513;</button>
-      </div>
-    </div>
-
     <div id="basket" title="Your basket">&#128722;<span id="basket-count">0</span></div>
-
   </div>
 </div>
 
@@ -82,16 +66,19 @@
   </div>
 </div>
 
-<div class="overlay" id="overlay-recall" style="display:none">
-  <div class="overlay-panel recall-panel">
-    <div id="recall-caption"></div>
-    <div id="recall-basket-items"></div>
+<div class="overlay" id="overlay-notebook" style="display:none">
+  <div class="overlay-panel">
+    <h2>Nani's notebook</h2>
+    <div id="notebook-list"></div>
+    <button class="close-btn" data-close="overlay-notebook">Close</button>
   </div>
 </div>
 
+<script src="js/vendor/phaser.min.js"></script>
 <script src="js/progress.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/data.js"></script>
-<script src="js/app.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/game.js"></script>
 </body>
 </html>

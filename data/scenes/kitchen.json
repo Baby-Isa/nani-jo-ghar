@@ -1,0 +1,28 @@
+{
+  "id": "kitchen",
+  "background": "assets/backgrounds/bg-nani-kitchen-v1.jpg",
+  "character": { "id": "nani", "x": 1400, "scale": 1.1, "visibleFraction": 0.75 },
+  "containers": {
+    "bowl": {
+      "image": "assets/items/bowl-empty.png",
+      "x": 430,
+      "baseline": 402,
+      "w": 280,
+      "inside": [
+        { "x": 395, "baseline": 345, "w": 75 },
+        { "x": 470, "baseline": 345, "w": 65 },
+        { "x": 430, "baseline": 330, "w": 70 },
+        { "x": 360, "baseline": 350, "w": 65 },
+        { "x": 505, "baseline": 350, "w": 65 }
+      ]
+    }
+  },
+  "slots": {
+    "shelf-low-1": { "x": 640, "baseline": 398, "w": 90 },
+    "shelf-low-2": { "x": 745, "baseline": 398, "w": 90 },
+    "shelf-low-3": { "x": 850, "baseline": 398, "w": 90 },
+    "shelf-high-1": { "x": 560, "baseline": 205, "w": 85 },
+    "shelf-high-2": { "x": 670, "baseline": 205, "w": 85 },
+    "shelf-high-3": { "x": 780, "baseline": 205, "w": 85 }
+  }
+}

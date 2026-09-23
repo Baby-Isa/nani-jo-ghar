@@ -1,21 +1,24 @@
 {
-  "_comment": "Errand definitions, kept separate from the content master spreadsheet per Zafar's instruction. This build proves ONE errand: the fruit bowl, per claude/Nani jo Ghar — Roadmap and Story Structure.md. Word ids match Scene — Bazaar in the content master. Every kutchi line used here traces to a sourced draft in content.json; nothing here invents Kutchi.",
+  "_comment": "Errand definitions, kept separate from the content master spreadsheet per Zafar's instruction. This build proves ONE errand: the fruit bowl. Word ids match Scene — Bazaar in the content master. Every kutchi line used here traces to a sourced draft in content.json; nothing here invents Kutchi. Slot assignment (which gap/stall slot each word lands in) is shuffled at runtime from gap_slots/slot_pool, seeded from Date.now(), so the targets are never in the same place twice.",
 
   "errands": [
     {
       "id": "bowl-01",
       "scene": "bazaar",
       "title": "Fruit bowl for the guests",
-      "items": [
-        { "word_id": "fru-04", "qty": 2 },
-        { "word_id": "fru-06", "qty": 3 },
-        { "word_id": "fru-01", "qty": 1, "no_count": true }
-      ],
-      "pre_exposure": ["fru-03", "fru-07"],
-      "pantry_back_row": ["fru-04", "fru-06"],
-      "pantry_front_row": ["fru-01"],
-      "stall_back_row": ["fru-04", "fru-06", "fru-01", "fru-02"],
-      "stall_front_row": ["fru-13", "fru-15", "fru-16", "fru-09"],
+      "kitchen": {
+        "pre_exposure": ["fru-03", "fru-07"],
+        "gap_slots": ["shelf-low-1", "shelf-low-2", "shelf-low-3", "shelf-high-1", "shelf-high-2", "shelf-high-3"],
+        "items": [
+          { "word_id": "fru-04", "qty": 2 },
+          { "word_id": "fru-06", "qty": 3 },
+          { "word_id": "fru-01", "qty": 1, "no_count": true }
+        ]
+      },
+      "bazaar": {
+        "slot_pool": ["crate-1", "crate-2", "basket-1", "basket-2", "counter-1", "counter-2", "counter-3", "counter-4"],
+        "decoys": ["fru-02", "fru-13", "fru-15", "fru-16", "fru-09"]
+      },
       "reward_patch": { "motif": "fruit-bowl", "colors": ["#D98E2B", "#8FAE5A", "#B33A3A"] }
     }
   ]

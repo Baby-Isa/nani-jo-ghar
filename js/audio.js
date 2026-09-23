@@ -1,18 +1,20 @@
 /*
- * Audio: a family recording file if one exists, else Web Speech read by a
- * LOCAL (on-device) Hindi or Gujarati voice reading the romanised spelling.
+ * Audio: a family recording file if one exists (played through Phaser's
+ * sound manager, which handles mobile unlock on the first tap - see Build
+ * Brief v3 section 2.4), else Web Speech read by a LOCAL (on-device) Hindi
+ * or Gujarati voice reading the romanised spelling.
  *
- * This is explicitly a placeholder, per the Technical Plan's "Audio
- * pipeline" section: "Until a real recording exists, a word falls back to
- * text-to-speech reading the romanised spelling in the nearest available
- * voice... Clearly worse, clearly temporary." No Kutchi TTS exists from
- * any vendor - this is a Hindi/Gujarati voice mispronouncing Kutchi, not a
- * Kutchi voice.
+ * This is explicitly a placeholder: "Until a real recording exists, a word
+ * falls back to text-to-speech reading the romanised spelling in the
+ * nearest available voice... Clearly worse, clearly temporary." No Kutchi
+ * TTS exists from any vendor - this is a Hindi/Gujarati voice
+ * mispronouncing Kutchi, not a Kutchi voice.
  *
- * "Nothing leaves the device" (project rule 7): only voices whose
- * SpeechSynthesisVoice.localService is true are used. A voice service that
- * sends text to a remote server (localService === false, common for some
- * Chrome voices) is never used, even if it sounds better.
+ * "Nothing leaves the device" (project rule): only voices whose
+ * SpeechSynthesisVoice.localService is true are used.
+ *
+ * File convention: assets/audio/<kind>/<id>.mp3, so family recordings drop
+ * in as file swaps with no code change.
  */
 (function (global) {
   let voicesCache = null;
@@ -32,7 +34,6 @@
         }
       };
       speechSynthesis.addEventListener("voiceschanged", onVoices);
-      // fallback timeout in headless/CI environments with no voices at all
       setTimeout(() => resolve(speechSynthesis.getVoices() || []), 800);
     });
     return voicesPromise;
@@ -57,10 +58,6 @@
         done = true;
         resolve(ok);
       };
-      // Safety net: some headless/sandboxed browsers (no audio output
-      // device) silently drop an utterance without ever firing onend or
-      // onerror, which would otherwise hang every caller of speak()
-      // forever. A hard timeout keeps the game's flow moving regardless.
       const timeoutMs = Math.max(1500, Math.min(6000, (text.length || 10) * 120));
       setTimeout(() => finish(false), timeoutMs);
       try {
@@ -69,12 +66,12 @@
           utter.voice = voice;
           utter.lang = voice.lang;
         } else {
-          utter.lang = "hi-IN"; // best-effort hint even with no matching installed voice
+          utter.lang = "hi-IN";
         }
-        utter.rate = 0.85; // a little slower, this is a mispronunciation guide, not natural speech
+        utter.rate = 0.85;
         utter.onend = () => finish(true);
         utter.onerror = () => finish(false);
-        speechSynthesis.cancel(); // don't stack overlapping lines
+        speechSynthesis.cancel();
         speechSynthesis.speak(utter);
       } catch (e) {
         finish(false);
@@ -82,38 +79,48 @@
     });
   }
 
-  // Recording file existence is checked once and cached, so a missing file
-  // doesn't cost a failed network request on every play.
-  const recordingChecked = {};
-  function recordingUrl(kind, id) {
-    return `assets/audio/${kind}/${id}.mp3`;
-  }
-  async function hasRecording(kind, id) {
-    const key = kind + ":" + id;
-    if (key in recordingChecked) return recordingChecked[key];
-    try {
-      const res = await fetch(recordingUrl(kind, id), { method: "HEAD" });
-      recordingChecked[key] = res.ok;
-    } catch (e) {
-      recordingChecked[key] = false;
-    }
-    return recordingChecked[key];
+  function audioKey(kind, id) {
+    return `${kind}-${id}`;
   }
 
-  /**
-   * Speak a word or sentence. `kind` is "word" or "carrier" (matches the
-   * assets/audio/<kind>/<id>.mp3 naming convention this build expects -
-   * none exist yet, so every line falls back to speech synthesis for now).
-   */
   const NjgAudio = {
-    async speak(kind, id, fallbackText) {
-      const has = await hasRecording(kind, id);
-      if (has) {
-        const audio = new Audio(recordingUrl(kind, id));
-        return audio.play().then(() => true).catch(() => speakText(fallbackText));
+    /** The list of {key, url} every scene should preload in this.load.audio
+     * calls. Missing files simply fail to load (Phaser skips them without
+     * crashing the loader) and speak() falls back to speech synthesis. */
+    manifest(ids) {
+      return ids.map(({ kind, id }) => ({
+        key: audioKey(kind, id),
+        url: `assets/audio/${kind}/${id}.mp3`,
+      }));
+    },
+
+    /**
+     * Speak a word/carrier/sentence line in a given Phaser scene. Resolves
+     * once playback actually finishes (the `complete` event), not when it
+     * merely starts - see Build Brief v3 section 1, "lines talking over
+     * each other". A timeout safety net (clip length + 1s) covers browsers
+     * that silently drop playback.
+     */
+    speak(scene, kind, id, fallbackText) {
+      const key = audioKey(kind, id);
+      if (scene && scene.cache && scene.cache.audio.exists(key)) {
+        return new Promise((resolve) => {
+          let done = false;
+          const finish = () => {
+            if (done) return;
+            done = true;
+            resolve(true);
+          };
+          const sound = scene.sound.add(key);
+          sound.once("complete", finish);
+          const durationMs = (sound.duration || 3) * 1000 + 1000;
+          scene.time.delayedCall(durationMs, finish);
+          sound.play();
+        });
       }
       return speakText(fallbackText);
     },
+
     speakRaw: speakText,
   };
 

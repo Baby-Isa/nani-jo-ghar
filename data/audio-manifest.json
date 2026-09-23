@@ -1,0 +1,41 @@
+{
+  "carrier": [
+    "fru-01",
+    "fru-02",
+    "fru-02-plural",
+    "fru-03",
+    "fru-03-plural",
+    "fru-04",
+    "fru-04-plural",
+    "fru-06",
+    "fru-06-plural",
+    "fru-07",
+    "fru-07-plural",
+    "fru-09",
+    "fru-13",
+    "fru-15",
+    "fru-16"
+  ],
+  "word": [
+    "fru-01",
+    "fru-02",
+    "fru-03",
+    "fru-04",
+    "fru-06",
+    "fru-07",
+    "fru-09",
+    "fru-13",
+    "fru-15",
+    "fru-16",
+    "num-01",
+    "num-02",
+    "num-03",
+    "snt-01",
+    "snt-02",
+    "snt-03",
+    "snt-06",
+    "snt-10",
+    "snt-11",
+    "snt-14"
+  ]
+}

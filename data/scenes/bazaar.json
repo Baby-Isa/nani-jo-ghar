@@ -1,0 +1,15 @@
+{
+  "id": "bazaar",
+  "background": "assets/backgrounds/bg-bazaar-stall-v2.jpg",
+  "character": { "id": "shopkeeper", "x": 1420, "scale": 1.1, "visibleFraction": 0.75 },
+  "slots": {
+    "crate-1":   { "x": 265,  "baseline": 555, "w": 100 },
+    "crate-2":   { "x": 370,  "baseline": 555, "w": 100 },
+    "basket-1":  { "x": 500,  "baseline": 545, "w": 90 },
+    "basket-2":  { "x": 585,  "baseline": 545, "w": 90 },
+    "counter-1": { "x": 760,  "baseline": 592, "w": 96 },
+    "counter-2": { "x": 872,  "baseline": 592, "w": 96 },
+    "counter-3": { "x": 984,  "baseline": 592, "w": 96 },
+    "counter-4": { "x": 1096, "baseline": 592, "w": 96 }
+  }
+}
