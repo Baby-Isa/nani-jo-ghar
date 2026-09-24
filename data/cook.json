@@ -1412,28 +1412,69 @@
     "grill",
     "fry"
    ],
+   "_about": "The order says how many skewers of each kind (a tally: \"bo ghos, hikdo vegetable\"), and when there's a mixed one its pieces in order (ne poi). The Mishkaki grill station (data/stations/mishkaki-grill.json) threads, grills and plates them; the chips basket is always offered there and the chips are fried only if you put them on. A slot's `levels` change it by the order's level: 1 = one skewer (meat or veg); 2 = two (meat, veg or one of each); 3 = three or four, mixed too.",
    "lists": {
     "skewer": [
      "ph-meat",
      "veg-02",
      "ph-pepper",
      "veg-03"
+    ],
+    "veg": [
+     "ph-pepper",
+     "veg-02",
+     "veg-03"
     ]
    },
    "slots": {
-    "seq": {
+    "skewers": {
+     "type": "tally",
+     "kinds": [
+      "ph-meat",
+      "ph-veg"
+     ],
+     "total": 1,
+     "levels": [
+      {},
+      {
+       "total": 2
+      },
+      {
+       "kinds": [
+        "ph-meat",
+        "ph-veg",
+        "ph-mixed"
+       ],
+       "total": {
+        "int": [
+         3,
+         4
+        ]
+       },
+       "max": {
+        "ph-mixed": 2
+       }
+      }
+     ]
+    },
+    "vegOne": {
+     "pick": "$veg"
+    },
+    "pattern": {
      "type": "items",
      "taste": "pattern",
      "tasteChance": 0.5,
-     "first": [
-      "ph-meat"
+     "always": [
+      "ph-meat",
+      "$vegOne"
      ],
      "from": "$skewer",
      "take": [
-      3,
-      3
+      2,
+      2
      ],
      "repeats": true,
+     "shuffle": true,
      "order": "sequence"
     },
     "chips": {
@@ -1448,7 +1489,12 @@
      ]
     },
     {
-     "list": "$seq"
+     "tally": "$skewers",
+     "frame": "and"
+    },
+    {
+     "if": "skewers.ph-mixed",
+     "list": "$pattern"
     },
     {
      "if": "chips",
@@ -1466,20 +1512,18 @@
    ],
    "run": [
     {
-     "do": "thread",
-     "sequence": "$seq",
-     "pool": "$skewer"
+     "do": "mishkaki-grill",
+     "skewers": "$skewers",
+     "pattern": "$pattern",
+     "chips": "$chips",
+     "as": "grill"
     },
     {
-     "do": "grill",
-     "skewer": "$seq"
-    },
-    {
-     "if": "chips",
+     "if": "grill.chips",
      "do": "interrupt"
     },
     {
-     "if": "chips",
+     "if": "grill.chips",
      "do": "fry",
      "kind": "chips",
      "count": 1
@@ -1487,8 +1531,8 @@
     {
      "do": "serve",
      "key": "mishkaki",
-     "count": 1,
-     "seq": "$seq"
+     "count": "$grill.count",
+     "art": "$grill.art"
     }
    ]
   }
@@ -1981,33 +2025,48 @@
    ]
   },
   "thread": {
+   "_about": "The Mishkaki grill's board (js/cook/mechanics/thread.js): pieces per skewer (the mixed pattern is 4 long too), decoy bowls from decoyPool (a piece that fits no skewer), and how long after Nani's spoken hint the piece glows (being shown costs the ear star).",
    "levels": [
     {
-     "decoys": null
+     "pieces": 4,
+     "decoys": 0,
+     "decoyPool": [
+      "veg-01"
+     ],
+     "showAfterMs": 4000
+    },
+    {
+     "decoys": 1
     }
    ]
   },
   "grill": {
+   "_about": "The Mishkaki grill (js/cook/mechanics/grill.js): each skewer's ring (band, rate in rings per second, rateSpread so they drift apart), turns before the lift, how many cook at once (spots), rack slots (fixed per level, never the number ordered), burntScore, and ignoreBelow (a tap this early in a ring is ignored: no accidental double taps).",
    "levels": [
     {
      "band": [
-      0.62,
+      0.6,
       0.84
      ],
-     "rate": 0.22,
+     "rate": 0.2,
      "rateSpread": 0.3,
-     "sides": 2,
-     "skewers": 1,
-     "burntScore": 40
+     "turns": 2,
+     "spots": 2,
+     "rack": 4,
+     "burntScore": 40,
+     "ignoreBelow": 0.12
     },
     {
-     "skewers": 2
+     "spots": 3,
+     "rate": 0.22
     },
     {
-     "skewers": 3,
+     "spots": 4,
+     "rack": 5,
+     "rate": 0.26,
      "band": [
-      0.65,
-      0.82
+      0.63,
+      0.84
      ]
     }
    ]
