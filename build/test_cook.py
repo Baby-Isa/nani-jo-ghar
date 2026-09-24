@@ -204,27 +204,65 @@ class Player:
                     time.sleep(0.01)
             p.mouse.up()
         elif k == "stir":
-            cx, cy, rx, ry, target = e["sx"], e["sy"], e["srx"], e["sry"], e["target"]
-            # game laps per game-second: slow 0.25-0.75, quick 1.2-2.6; the
-            # game runs at `speed`, so real laps per second = that x speed
-            want = {"slow": 0.5, "quick": 1.8}.get(e.get("speed"), 1.0) * self.speed
-            steps = 24
-            p.mouse.move(cx + rx, cy)
-            p.mouse.down()
-            t_lap = 1.0 / want
-            start = time.time()
-            s = 0
-            while s < int(steps * (target + 0.3)):
-                s += 1
-                a = 2 * math.pi * s / steps
-                p.mouse.move(cx + rx * math.cos(a), cy + ry * math.sin(a))
-                target_t = start + t_lap * s / steps
-                delay = target_t - time.time()
-                if delay > 0:
-                    time.sleep(delay)
-            p.mouse.up()
+            self.stir(e)
         else:
             raise AssertionError(f"unknown expectation {k}")
+
+    # stir speeds in real laps per second (the dial's fixed bands are
+    # 0.12 | 0.9 | 2.2: stopped | tortoise | hare | spilling; not scaled by game speed)
+    STIR = {"slow": 0.45, "quick": 1.4, None: 0.7, "spill": 3.4}
+
+    def stir(self, e):
+        """Drag the ladle round its track, at the speed the expectation asks
+        for (it can change mid-stir), and let go at the target count. The
+        first stir of a run makes the deliberate mistakes: the wrong speed
+        until Nani says it, then a burst way too fast (it spills)."""
+        p = self.page
+        cx, cy, r, target = e["sx"], e["sy"], e["srx"], e["target"]
+        mistake = self.mistakes and "stir" not in self.made and target >= 3
+        if mistake:
+            self.made.add("stir")
+        speed = e.get("speed")
+        a = 0.0
+        p.mouse.move(cx + r, cy)
+        p.mouse.down()
+        t0 = time.time()
+        anchor_t, anchor_a = t0, 0.0
+        cur_want = None
+        count = e.get("count", 0)
+        log = []
+        while count < target and time.time() - t0 < 90:
+            now = time.time()
+            want = self.STIR[speed]
+            if mistake and count < target - 1:
+                if now - t0 < 2.6 and speed:
+                    want = self.STIR["quick" if speed == "slow" else "slow"]
+                elif now - t0 < 3.4:
+                    want = self.STIR["spill"]
+            if want != cur_want:
+                cur_want, anchor_t, anchor_a = want, now, a
+            goal = anchor_a + 2 * math.pi * want * (now - anchor_t)
+            a += min(goal - a, 1.2)  # never a jump (the game ignores those)
+            p.mouse.move(cx + r * math.cos(a), cy + r * math.sin(a))
+            cur = self.exp()
+            if not cur or cur.get("kind") != "stir":
+                break
+            count = cur.get("count", count)
+            speed = cur.get("speed")
+            if DEBUG:
+                log.append((round(now - t0, 2), round(want, 2), round(self.page.evaluate("Cook.stirSpeed ? Cook.stirSpeed() : -1"), 2), count))
+            time.sleep(0.005)
+        p.mouse.up()
+        if DEBUG:
+            print("    stir:", log[:: max(1, len(log) // 25)], flush=True)
+        # the pot finishes after a quiet moment (stir quietMs / speed): wait
+        # for the station itself, or a fast renderer stirs again and resets it
+        t0 = time.time()
+        while time.time() - t0 < 5:
+            cur = self.exp()
+            if not cur or cur.get("kind") != "stir":
+                break
+            time.sleep(0.05)
 
     def play(self, until, timeout=900):
         t0 = time.time()

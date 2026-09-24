@@ -1,0 +1,9 @@
+{
+  "_about": "The stir station's own lines and tips, merged into data/cook.json's lines and tips when the game loads (js/cook/mechanics/stir.js). Its levels are in data/cook.json (mechanics.stir.levels). English placeholders until the family gives the Kutchi.",
+  "lines": {
+    "stir-now": {"e": "Now {x}!"}
+  },
+  "tips": {
+    "hand": {"stir": "Stir smoothly so nothing spills over"}
+  }
+}
