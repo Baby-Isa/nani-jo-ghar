@@ -43,7 +43,7 @@ Zafar's wife's great-grandma. She's the warm senior pillar of the family — her
 | Relatives at the wedding (bride, groom, their families) | 2 | Generic |
 | The crow (took the ring) | 4 | — |
 | Villagers, the farm | 5 | Generic |
-| **Issa** (a baby in the family) | TBD, appears later | Generic — no design yet |
+| **Isa** (a baby in the family) | TBD, appears later | Generic — no design yet |
 
 ## The parrot (Zafar's idea, 24 Sept)
 
@@ -54,3 +54,49 @@ An **African grey**, a common East African household parrot. It gives cheap, fun
 - **Its voice is the family's own recordings**, pitch-shifted, with a squawk added. No extra recording is needed.
 - **Rule:** it speaks only in idle moments (the hub, arriving, between orders), **never during a task**, so it can't give an answer away.
 - **Name: Kasuku** (decided 24 Sept 2026) — Swahili for "parrot", a nod to East Africa.
+
+## Likeness notes (from the family's photos, 24 Sept)
+
+The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `bigma-*`, `doctor-*`, `cats-*`, `simba-*`) and are never committed. These notes are what the character sheets must keep. Stylise them in the game's 3D-film look; never caricature.
+
+**Nani** (`mum-01` to `mum-03`; `mum-02-face` is the best face reference):
+- Deep red headscarf, wrapped round the head and neck with long ends falling over the front.
+- Thin round gold wire-framed glasses.
+- A warm, closed-mouth smile.
+- **A small mole above her lip (her left side, just above the upper lip). Include it, but small and natural, never exaggerated.**
+- Signature outfit: a beige long kurta with gold and deep-red embroidery down the front and at the cuffs, with a sheer deep-red dupatta.
+- **Jewellery:**
+  - a thin diamond tennis bracelet on her right wrist;
+  - a **red and yellow gold aqiq ring on her right ring finger**;
+  - a **yellow gold and diamond ring on her left ring finger**.
+
+  The rings matter, because her hands appear in close-up in the "watch me" demos.
+
+**Big Ma** (`bigma-01` to `bigma-03`):
+- Very elderly and small.
+- Dark hair, greying, pulled back.
+- Thin metal rectangular glasses.
+- A gentle, knowing smile.
+- At home: soft cotton house dresses (maroon with a white paisley print and lace trim, or pastel florals) and thin gold bangles.
+- Going out: a black headscarf and abaya with embroidered trim.
+- In her sewing room, use the house dress.
+
+**The doctor** (`doctor-01` to `doctor-04`):
+- Bald, with a neatly trimmed white beard.
+- Clear-framed glasses.
+- A big, open, laughing smile.
+- Smart-casual: a polo shirt, a checked blazer over a white shirt for the clinic, and a steel watch.
+- Friendly and grandfatherly, not stern.
+
+**Simba** (`simba-01`, `cats-*`: the darker, bigger one):
+- A charcoal, near-black Russian Blue.
+- Solid, round-faced and heavier.
+- Pale mint-green eyes.
+- A dark collar with a small silver bell.
+
+**Zazu** (`cats-*`: the lighter one):
+- A silver-grey Russian Blue, slim, with big ears.
+- Yellow-green eyes.
+- Drawn as a kitten: bigger head and eyes, shorter legs.
+- A plain thin collar, no bell.
+- Drop the real-life tracker tags on both cats.
