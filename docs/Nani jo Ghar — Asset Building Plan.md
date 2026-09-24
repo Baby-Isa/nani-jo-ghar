@@ -126,3 +126,59 @@ Each line: pose, camera, frames, and what it's used for. Games: **C** Cook, **F*
 ## 2. Ingredients and props (to be written)
 
 The Cook with Nani asset matrix goes here: each item's views (a front view for shelves and the bazaar, top-down for stations) and states (whole, chopped, cooked, burnt). **It's shared with Find it**: the bazaar sells the same items, drawn in the same front view.
+
+---
+
+## 3. The cats (Zafar's two cats, 24 Sept)
+
+**Role:** recurring mischief-makers and part of the house's life. They're introduced in a story beat (e.g. the sweets go missing) and then show up across modes.
+
+| Where | What the cats do | The Kutchi it drives |
+|---|---|---|
+| **Hub and scenes** | Asleep in a sunbeam, washing, tail flicking on the floor or a windowsill; tap to pet (purr) | Ambient; later "come here", the cats' own words |
+| **Cook with Nani** | A scripted mischief event: a cat steals an ingredient and Nani says where it went ("on the shelf", "under the table") | Positions, nouns |
+| **Who did it?** | Suspects in "who ate the sweets?": the clues describe them (colour, big/small, tail, where they were) | Describing, past tense |
+| **Find it** | Hidden somewhere in a busy scene; find the cat and what it took | Positions |
+| **Tidy up** | Knocked everything over; put it back where Nani says | Positions, rules |
+| **Monsoon rush** | Get the cats inside before the rain | Rooms, positions |
+| **Snap** | "Take a photo of the cat asleep on the chair" | Describing |
+| **Care ritual** (optional) | Feed them each day: *bo* scoops for one, *hikdo* for the other | Numbers, names, kinship-style "whose bowl?" |
+
+**Rules:** a cat never covers a tap target and never blocks play at random. Mischief is a scripted event with its own moment; otherwise the cats live on the floor layer and in the margins.
+
+**Art:** one character sheet per cat (turnaround, sitting, lying, sleeping curled, walking, pouncing, eating, guilty face, carrying something in the mouth), made from Zafar's photos with the game's style reference. **The tail and head are separate layers** so code can flick the tail, turn the head, blink and breathe (sleeping cats rise and fall). About 15 images per cat.
+
+**Needs from Zafar:** the cats' names, 4–6 photos of each (both sides, the face, the tail, a typical pose). Keep the photos out of the public repo (a git-ignored `sources/private/` folder, or upload them straight into the chat).
+
+## 4. Making scenes feel alive (ambient motion)
+
+**Rule for every background from now on: anything that should move is its own layer with a pivot point**, not painted into the background. Code does the motion (a gentle sine sway, flicker, particles), so the art cost is mostly just separating the layers.
+
+| Motion | Art needed | Done in code |
+|---|---|---|
+| Bunting swaying (Eid) | Each flag its own small sprite on a string sprite | Per-flag sway with an offset, a gust every so often |
+| Curtain in a breeze | Curtain as a separate layer | A slow skew/wave |
+| Ceiling fan | The blades as a separate sprite | Rotation |
+| Steam (chai, daal, rain on a hot road) | One soft wisp sprite | Particles |
+| Flames on the hob | Already drawn in code | Flicker |
+| Dust in a sunbeam | One soft dot | Drifting particles in the light shaft |
+| Plants, leaf shadows on the wall | Plant and leaf-shadow layers | Sway |
+| Washing line, a kite through the window | Each item a sprite | Sway, a kite bobbing |
+| Birds on the windowsill or wire (pigeons, sparrows) | 3–4 poses (sit, peck, hop, fly off) | Occasional hop; fly off when tapped |
+| Lanterns and fairy lights (Eid) | Lantern sprite; one light-dot sprite | Glow pulse, twinkle |
+| Clock | Hands as separate sprites | Ticking |
+| Rain on the window, drips (Monsoon) | Drop and streak sprites | Particles |
+| Cats, Nani | See section 3; Nani's breathing and blinking already exist | Breathing, blinking, tail flicks |
+
+Keep it subtle: 2–4 moving things per scene, never near a tap target, and switched off by the "reduce motion" setting.
+
+## 5. Nani and the cats from real life (Zafar, 24 Sept)
+
+**It works, and it won't hurt the style if it's done in the right order:**
+1. Photos plus the style reference go in, and out comes a **character sheet** in the game's 3D-film style (turnaround and expressions). The likeness lives in the features that survive stylising: face shape, glasses, hair, the headscarf and its colours, a cat's coat pattern and eye colour.
+2. Zafar signs off the sheet.
+3. **Every later pose is generated from the sheet, never from the photos again.** That keeps Nani looking the same across hundreds of images.
+
+**Cost:** the current Nani images (poses, talking frames, the LivePortrait test) were made from a generated Nani, so moving to Mum's likeness means redoing Nani's set. Decide before the asset run, not after it.
+
+**Consent:** it's worth Mum agreeing to it, especially if the game is later shared with other communities.
