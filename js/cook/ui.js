@@ -493,17 +493,22 @@
     s.groups.forEach((g) => g.forEach((r) => !r.no && r.ids.forEach((id) => units.push(...Array(r.need || 1).fill(id)))));
     return units[i] || null;
   };
-  /** Something went wrong for this item: mark its row (shown on the result card). */
+  /** Something went wrong for this item (a word id, or a compound kind's ids): mark its row (shown on the result card). */
   M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null } = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
+    const want = [].concat(id);
+    const has = (x) => want.every((w) => x.ids.includes(w));
     const rows = Order()
       .rows(L, { all: true })
       .filter((r) => !forWho || r.for === forWho);
+    const num = (x) => x.parts && x.parts.some((p) => typeof p === "number");
     const r =
-      rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no) && !x.done) ||
-      rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no)) ||
-      (counted ? rows.find((x) => x.parts && x.parts.some((p) => typeof p === "number")) : null);
+      // a count that went wrong is the counted row ("bo maani"), not the dish's name ("maani")
+      (counted && rows.find((x) => !x.head && num(x) && has(x))) ||
+      rows.find((x) => has(x) && (no == null || !!x.no === no) && !x.done) ||
+      rows.find((x) => has(x) && (no == null || !!x.no === no)) ||
+      (counted ? rows.find(num) : null);
     if (r) r.miss = true;
     return r;
   };

@@ -892,19 +892,64 @@
    ]
   },
   "maani": {
+   "_about": "The Maani line (data/stations/maani-line.json): how many of each kind, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Level 3 adds big/small (English placeholders): a compound kind, ph-big+cook-maani, is said 'bo big maani'.",
    "name": "cook-maani",
    "english": "Maani",
    "price": 3,
    "stations": [
-    "knead",
     "roll",
-    "flip"
+    "tawa"
    ],
    "slots": {
-    "count": {
-     "int": [
-      1,
-      4
+    "maani": {
+     "byLevel": [
+      {
+       "type": "tally",
+       "kinds": [
+        "cook-maani",
+        "cook-bajrmaani"
+       ],
+       "total": {
+        "int": [
+         2,
+         3
+        ]
+       }
+      },
+      {
+       "type": "tally",
+       "kinds": [
+        "cook-maani",
+        "cook-bajrmaani"
+       ],
+       "total": {
+        "int": [
+         3,
+         4
+        ]
+       }
+      },
+      {
+       "type": "tally",
+       "kinds": [
+        "ph-big+cook-maani",
+        "ph-small+cook-maani",
+        "ph-big+cook-bajrmaani",
+        "ph-small+cook-bajrmaani"
+       ],
+       "total": {
+        "int": [
+         2,
+         4
+        ]
+       },
+       "max": {
+        "ph-big+cook-maani": 2,
+        "ph-small+cook-maani": 2,
+        "ph-big+cook-bajrmaani": 2,
+        "ph-small+cook-bajrmaani": 2
+       }
+      }
      ]
     }
    },
@@ -912,39 +957,31 @@
     {
      "frame": "order",
      "x": [
-      {
-       "n": "$count",
-       "of": "cook-maani",
-       "one": false
-      }
+      "cook-maani"
      ]
+    },
+    {
+     "tally": "$maani",
+     "frame": "and"
     }
    ],
    "need": [
-    "cook-atto"
+    "cook-bajrmaani"
    ],
    "steps": [
-    "Knead",
     "Roll",
     "Tawa"
    ],
    "run": [
     {
-     "do": "knead"
-    },
-    {
-     "do": "roll",
-     "count": "$count",
-     "as": "rolled"
-    },
-    {
-     "do": "tawa",
-     "n": "$rolled"
+     "do": "maani-line",
+     "order": "$maani",
+     "as": "made"
     },
     {
      "do": "serve",
      "key": "chapati-puffed",
-     "count": "$rolled"
+     "count": "$made"
     }
    ]
   },
@@ -2287,7 +2324,10 @@
      "dishes": [
       "daal",
       "maani"
-     ]
+     ],
+     "level": {
+      "maani": 2
+     }
     },
     {
      "who": "nana",

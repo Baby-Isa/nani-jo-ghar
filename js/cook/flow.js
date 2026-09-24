@@ -28,7 +28,12 @@
 
   /* ---------------- the order context stations report into ---------------- */
   const ID_RE = /\b(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+\b/g;
-  const wordsOf = (why) => String(why).replace(ID_RE, (id) => (Cook.data.words[id] ? Cook.display(id) : id));
+  // a compound kind as the recipes write it, "ph-big+cook-maani" (said "big maani")
+  const COMPOUND_RE = /\b(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+(?:\+(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+)+/;
+  const wordsOf = (why) =>
+    String(why)
+      .replace(/\+(?=(?:cook|veg|spi|fru|ph|num|lnk)-)/g, " ")
+      .replace(ID_RE, (id) => (Cook.data.words[id] ? Cook.display(id) : id));
   /**
    * What an ear-star report means, read from the station's own words
    * ("added X (they said no)", "tadka X before Y", "3 X, they asked for 2"),
@@ -45,16 +50,18 @@
     else if (/speed/.test(why)) kind = "speed";
     else if (/^pass me/.test(why)) kind = "passme";
     else if (/^(shown|revealed|translated)/.test(why)) kind = "shown";
-    let noun = ids[0] || null;
+    // the thing counted: one word, or a compound kind's words in turn (["ph-big", "cook-maani"])
+    const comp = COMPOUND_RE.exec(why);
+    let noun = comp ? comp[0].split("+") : ids[0] || null;
     if (!noun && /maani/.test(why)) noun = "cook-maani";
     if (!noun && /^fried/.test(why)) noun = "ph-samosa";
     return { kind, ids, did: m ? Number(m[1]) : null, asked: m ? Number(m[2]) : null, noun };
   }
-  /** A count as words: the Kutchi number (1 to 5) and the thing, never a bare digit if we can help it. */
+  /** A count as words: the Kutchi number (1 to 5) and the thing (with its size, if any), never a bare digit if we can help it. */
   function countLine(n, noun) {
     const parts = [];
     if (n >= 1 && n <= 5) parts.push(n);
-    if (noun) parts.push(noun);
+    if (noun) parts.push(...[].concat(noun));
     if (!parts.length) return { segs: [{ t: String(n), lang: null }], en: String(n) };
     const ph = Lang.phrase(parts);
     if (!(n >= 1 && n <= 5)) ph.segs.unshift({ t: `${n} `, lang: null });
@@ -243,8 +250,10 @@
   }
 
   /* ---------------- building an order ---------------- */
+  /** An order's "level": one number for every dish, or per dish ({"maani": 2}). */
   function buildOrder(spec, { usual } = {}) {
-    return { who: spec.who, dishes: spec.dishes.map((r) => R[r].make(spec.who, { usual, level: spec.level })) };
+    const levelOf = (r) => (spec.level && typeof spec.level === "object" ? spec.level[r] : spec.level);
+    return { who: spec.who, dishes: spec.dishes.map((r) => R[r].make(spec.who, { usual, level: levelOf(r) })) };
   }
   /** Step chips (data.recipes[r].steps): the same for every order of a dish, so they never answer the order. */
   const chipsFor = (d) => R[d.recipe].steps(d);

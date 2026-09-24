@@ -7,7 +7,8 @@
  *          player's word stages and chance. Types: plain values (int, pick,
  *          chance, taste), "items" (a sequence or an any-order group),
  *          "no" (leave-it-out list), "people" (per-person items: cups for
- *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg).
+ *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg;
+ *          a kind may be compound, "ph-big+cook-maani").
  *          Any value can be {"byLevel": [...]}: the order's level picks one.
  *   say    the order as spoken: frames (roles like "order", "and", "no")
  *          with phrase parts, lists and per-item lines. The words and the
@@ -288,11 +289,13 @@
       if (e.tally) {
         const t = res(e.tally, env) || {};
         const ids = Object.keys(t).filter((k) => t[k] > 0);
-        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(Lang.countParts(t[id], id))));
+        // a kind can be compound, "ph-big+cook-maani": its words said in turn ("bo big maani")
+        const partsOf = (id) => Lang.countParts(t[id], id).flatMap((p) => (typeof p === "string" ? p.split("+") : [p]));
+        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(partsOf(id))));
         if (!ls.length) return;
         if (!when) lines.push(ls.length > 1 ? Lang.join(ls) : ls[0]);
         dot++;
-        ids.forEach((id, j) => rows.push({ kind: "item", ids: [id], qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: Lang.countParts(t[id], id), sec, when }));
+        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when }));
         return;
       }
       const frame = e.frame === "order" ? Lang.orderFrame(i) : e.frame;

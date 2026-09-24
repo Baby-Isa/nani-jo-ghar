@@ -14,6 +14,7 @@
 (function (global) {
   const Cook = global.Cook;
   const UI = Cook.UI;
+  const Lang = Cook.Lang;
   const D = Cook.D;
   const St = Cook.Stations;
   const Mech = Cook.Mech;
@@ -63,54 +64,107 @@
       UI.hideCount();
       ctx.result.maani = rolled.length;
       z.listen(rolled.length === count, `made ${rolled.length} maani, they asked for ${count}`);
+      // the number word moves on (or back) with what you made (audit: counts teach numbers)
+      if (!z.guided && count >= 1 && count <= 5) (rolled.length === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
       return rolled.length;
     },
   });
 
-  function rollOne(z, k, at) {
+  /**
+   * Roll one ball on the chakla: the building block (the Maani line uses it
+   * too, as Mech.rollOne). Resolves with the score, or with {score, target,
+   * sprite, torn} when opts.keep. opts:
+   *   dough    a dough sprite already there (flown in from a bowl)
+   *   board    false: the caller draws a chakla that stays
+   *   tex      {ball, raw}: texture keys for this dough (millet dough is greyer)
+   *   targets  [{id, r}]: several dashed circles (big and small); the
+   *            nearest one to where you stop is the size you made
+   *   aim      which target the test aims for (the gauge; never shown)
+   *   quietMs  how long a pause ends the roll (default the knob)
+   *   patient  a pause only ends the roll on (or past) a circle: stop short,
+   *            or between the two, and it waits for you (to flip a maani)
+   *   onStart  called once, when the pin first moves the dough
+   *   handle   {} that gets cancel(): stop without a score (resolves null)
+   */
+  function rollOne(z, k, at, opts = {}) {
     const S = z.S;
     return new Promise((resolve) => {
       const cx = z.X(at.x);
       const cy = z.Y(at.y);
-      const R0 = z.L(k.radius);
+      const targets = (opts.targets || [{ id: null, r: k.radius }]).map((t) => Object.assign({}, t, { R: z.L(t.r) }));
+      const aimT = targets[opts.aim || 0] || targets[0];
+      const Rmax = Math.max(...targets.map((t) => t.R));
+      const Rmin = Math.min(...targets.map((t) => t.R));
+      const quietMs = opts.quietMs || k.quietMs;
       const [lo, hi] = k.band;
       let r = z.L(k.startRadius);
-      const chakla = S.flat(S.tex("chakla"), cx, cy + z.L(10), z.L(560), z.L(460), { depth: D.item - 2 });
-      const dough = S.track(S.add.image(cx, cy, "dough-ball").setDepth(D.item + 1));
+      const chakla = opts.board === false ? null : S.flat(S.tex("chakla"), cx, cy + z.L(10), z.L(560), z.L(460), { depth: D.item - 2 });
+      const dough = opts.dough || S.track(S.add.image(cx, cy, "dough-ball"));
+      dough.setPosition(cx, cy).setDepth(D.item + 1);
+      const tex = Object.assign({ ball: "dough-ball", raw: "chapati-raw" }, opts.tex);
       const setR = () => {
-        const key = r < z.L(90) ? "dough-ball" : "chapati-raw";
-        dough.setTexture(key);
+        const key = r < z.L(90) ? tex.ball : tex.raw;
+        if (dough.texture.key !== key) dough.setTexture(key);
         dough.setScale((r * 2) / S.texSize(key).w);
       };
       setR();
+      // the target you're nearest to (by ratio: 10% short of small is nearer small)
+      const nearest = () => targets.reduce((a, t) => (Math.abs(Math.log(r / t.R)) < Math.abs(Math.log(r / a.R)) ? t : a));
       const guide = S.track(S.add.graphics().setDepth(D.fx));
-      const drawGuide = (ok) => {
+      const drawGuide = () => {
         guide.clear();
-        guide.lineStyle(z.L(7), ok ? 0x4f6b4b : 0xffffff, 0.95);
-        for (let a = 0; a < 360; a += 12) {
-          guide.beginPath();
-          guide.arc(cx, cy, R0, Phaser.Math.DegToRad(a), Phaser.Math.DegToRad(a + 6));
-          guide.strokePath();
-        }
+        const near = nearest();
+        targets.forEach((t) => {
+          const ok = t === near && r >= t.R * lo && r <= t.R * hi;
+          guide.lineStyle(z.L(7), ok ? 0x4f6b4b : 0xffffff, 0.95);
+          for (let a = 0; a < 360; a += 12) {
+            guide.beginPath();
+            guide.arc(cx, cy, t.R, Phaser.Math.DegToRad(a), Phaser.Math.DegToRad(a + 6));
+            guide.strokePath();
+          }
+        });
       };
-      drawGuide(false);
+      drawGuide();
       const pin = S.hand("pin", { x: cx, y: cy + z.L(60), k: z.k });
       if (k.special) S.special(pin);
       let last = null;
       let quiet = null;
       let torn = false;
+      let started = false;
+      let over = false;
+      let ghost = null;
       const offs = [];
-      const done = () => {
+      const stop = () => {
+        over = true;
         z.expect(null);
         offs.forEach((f) => f());
         clearTimeout(quiet);
+        if (ghost) ghost.stop();
         guide.destroy();
-        const score = torn ? k.tornScore : S.bandScore(r / R0, lo, hi);
-        S.verdict(cx, cy - z.L(200), score, { bad: r < R0 * lo ? "too-small" : "too-thin" });
+      };
+      const done = () => {
+        if (over) return;
+        stop();
+        const t = nearest();
+        const score = torn ? k.tornScore : S.bandScore(r / t.R, lo, hi);
+        S.verdict(cx, cy - z.L(200), score, { bad: r < t.R * lo ? "too-small" : "too-thin" });
         Cook.sfx.right();
-        S.tweens.add({ targets: [dough, pin, chakla], alpha: 0, duration: 250, delay: 250, onComplete: () => [dough, pin, chakla].forEach((o) => o.destroy()) });
+        if (opts.keep) {
+          S.tweens.add({ targets: pin, alpha: 0, duration: 200, onComplete: () => pin.destroy() });
+          return resolve({ score, target: t.id, sprite: dough, torn });
+        }
+        S.tweens.add({ targets: [dough, pin, chakla].filter(Boolean), alpha: 0, duration: 250, delay: 250, onComplete: () => [dough, pin, chakla].forEach((o) => o && o.destroy()) });
         setTimeout(() => resolve(score), 520 / Cook.speed);
       };
+      if (opts.handle) {
+        opts.handle.cancel = () => {
+          if (over) return;
+          stop();
+          pin.destroy();
+          if (chakla) chakla.destroy();
+          resolve(null);
+        };
+      }
       const down = (p) => {
         last = { x: p.worldX, y: p.worldY };
         clearTimeout(quiet);
@@ -122,38 +176,44 @@
         const d = Math.hypot(dx, dy);
         if (d < 4) return;
         last = { x: p.worldX, y: p.worldY };
+        if (!started) {
+          started = true;
+          if (opts.onStart) opts.onStart();
+        }
         pin.y = Cook.clamp(p.worldY, cy - z.L(150), cy + z.L(150));
-        r = Math.min(R0 * k.maxSize, r + d * k.grow);
-        if (r > R0 * k.tearAt && !torn) {
+        r = Math.min(Rmax * k.maxSize, r + d * k.grow);
+        if (r > Rmax * k.tearAt && !torn) {
           torn = true;
           S.burst(cx, cy, [0xf3e1b8, 0xffffff], 10, z.L(80));
           z.oops();
         }
         setR();
-        drawGuide(r >= R0 * lo && r <= R0 * hi);
-        z.gauge({ level: r / R0, lo, hi });
+        drawGuide();
+        z.gauge({ level: r / aimT.R, lo, hi });
         if (Math.random() < 0.12) Cook.sfx.flip();
       };
       const up = () => {
         last = null;
         clearTimeout(quiet);
-        if (r >= R0 * k.doneAt) quiet = setTimeout(done, k.quietMs / Cook.speed);
+        const onCircle = targets.some((t) => r >= t.R * lo && r <= t.R * hi) || r >= Rmax * lo;
+        if (opts.patient ? onCircle : r >= Rmin * k.doneAt) quiet = setTimeout(done, quietMs / Cook.speed);
       };
       offs.push(z.on("pointerdown", down), z.on("pointermove", move), z.on("pointerup", up));
-      S.ghost([[cx, cy + z.L(110)], [cx, cy - z.L(110)], [cx, cy + z.L(110)]], { duration: 900, delay: z.guided ? 200 : 5000 });
-      z.gauge({ level: r / R0, lo, hi });
-      z.expect({ kind: "roll", x: cx, y: cy, r: R0 });
+      ghost = S.ghost([[cx, cy + z.L(110)], [cx, cy - z.L(110)], [cx, cy + z.L(110)]], { duration: 900, delay: z.guided ? 200 : 5000 });
+      z.gauge({ level: r / aimT.R, lo, hi });
+      z.expect({ kind: "roll", x: cx, y: cy, r: aimT.R });
     });
   }
+  Mech.rollOne = rollOne;
 
   Mech.lab("roll", {
     name: "Roll",
     verb: "How many?",
     async run(L) {
-      const R = Cook.Recipes;
-      const d = R.maani.make();
-      L.card(d, ["Roll"]);
-      await L.station("roll", { count: d.count });
+      // the maani recipe orders two kinds now (the Maani line); the lone roll station is "how many"
+      const n = 1 + Math.floor(Math.random() * 4);
+      L.card([Lang.line(Lang.orderFrame(0), Lang.phrase(Lang.countParts(n, "cook-maani", { one: false })))], ["Roll"]);
+      await L.station("roll", { count: n });
     },
   });
 })(window);
