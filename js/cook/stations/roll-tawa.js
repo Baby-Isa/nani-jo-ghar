@@ -52,10 +52,10 @@
     name: "Roll → Tawa",
     verb: "Combined (proof)",
     async run(L) {
-      const R = Cook.Recipes;
-      const d = R.maani.make();
-      L.card(d, ["Roll", "Tawa"]);
-      await L.station("roll-tawa", { count: d.count });
+      const Lang = Cook.Lang;
+      const n = 2 + Math.floor(Math.random() * 3);
+      L.card([Lang.line(Lang.orderFrame(0), Lang.phrase(Lang.countParts(n, "cook-maani", { one: false })))], ["Roll", "Tawa"]);
+      await L.station("roll-tawa", { count: n });
     },
   });
 })(window);

@@ -390,7 +390,7 @@
       .join("");
     if (mission.busy && mission.patience != null) paintDrain(mission.patience);
   }
-  const rowHidden = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && hideWord(s.w));
+  const rowHidden = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && (r.dots || hideWord(s.w)));
   function rowEl(L, r) {
     const li = document.createElement("div");
     li.className = ["lr", r.head ? "head" : "", r.no ? "no" : "", r.done ? "done" : ""].filter(Boolean).join(" ");
@@ -398,7 +398,7 @@
     const speakLine = r.head ? Order().speech([L]) : null;
     li.appendChild(
       UI.pill(r.line, {
-        hide: (id) => !r.done && !r.revealed && hideWord(id),
+        hide: (id) => !r.done && !r.revealed && (r.dots || hideWord(id)),
         speakLine,
         reserveSay: true,
         onHear: () => {
@@ -436,7 +436,9 @@
         const groups = mission.plain && !s.simple ? [].concat(...s.groups).map((r) => [r]) : s.groups;
         const nRows = groups.reduce((a, g) => a + g.length, 0);
         if (!nRows) return;
-        sec.className = ["lsec", s.simple ? "simple" : "", !mission.plain && s.seq && groups.length > 1 ? "lseq" : "", mission.plain && groups.length > 1 ? "lplain" : "", s.when ? "late" : ""].filter(Boolean).join(" ");
+        sec.className = ["lsec", s.simple ? "simple" : "", !mission.plain && s.seq && groups.length > 1 ? "lseq" : "", mission.plain && groups.length > 1 ? "lplain" : "", s.when ? "late" : "", s.for ? "lfor" : ""].filter(Boolean).join(" ");
+        // one person's part of the order (a cup on the Chai tray): their face, no name
+        if (s.for) sec.insertAdjacentHTML("beforeend", `<img class="lface" src="assets/cook/characters/${esc(s.for)}-badge.webp" alt="">`);
         groups.forEach((g) => {
           const ge = document.createElement("div");
           ge.className = ["lg", g.length > 1 ? "multi" : "", g.every((r) => r.done) ? "done" : ""].filter(Boolean).join(" ");
@@ -466,12 +468,12 @@
     });
   }
   /** Tick the first open row with this item on it. Returns the row, or null. */
-  M.tickItem = function (id, dish = 0) {
+  M.tickItem = function (id, dish = 0, opts = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
     const rows = Order()
       .rows(L)
-      .filter((r) => !r.done && !r.no);
+      .filter((r) => !r.done && (opts.no ? r.no : !r.no) && (!opts.for || r.for === opts.for));
     // an order row first, the dish's own name last (the pantry fetches the tea for "chai")
     const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
     if (!r) return null;
@@ -491,15 +493,22 @@
     s.groups.forEach((g) => g.forEach((r) => !r.no && r.ids.forEach((id) => units.push(...Array(r.need || 1).fill(id)))));
     return units[i] || null;
   };
-  /** Something went wrong for this item: mark its row (shown on the result card). */
-  M.missItem = function (id, dish = 0, { no = null, counted = false } = {}) {
+  /** Something went wrong for this item (a word id, or a compound kind's ids): mark its row (shown on the result card). */
+  M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null } = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
-    const rows = Order().rows(L, { all: true });
+    const want = [].concat(id);
+    const has = (x) => want.every((w) => x.ids.includes(w));
+    const rows = Order()
+      .rows(L, { all: true })
+      .filter((r) => !forWho || r.for === forWho);
+    const num = (x) => x.parts && x.parts.some((p) => typeof p === "number");
     const r =
-      rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no) && !x.done) ||
-      rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no)) ||
-      (counted ? rows.find((x) => x.parts && x.parts.some((p) => typeof p === "number")) : null);
+      // a count that went wrong is the counted row ("bo maani"), not the dish's name ("maani")
+      (counted && rows.find((x) => !x.head && num(x) && has(x))) ||
+      rows.find((x) => has(x) && (no == null || !!x.no === no) && !x.done) ||
+      rows.find((x) => has(x) && (no == null || !!x.no === no)) ||
+      (counted ? rows.find(num) : null);
     if (r) r.miss = true;
     return r;
   };
@@ -537,6 +546,22 @@
     );
     if (found) renderOrder();
     return found;
+  };
+  /**
+   * Wave 3 (tadka): a section that has appeared shows its words as dots
+   * ("dots"), or goes back off the card ("hidden": Nani's order, from
+   * memory). The rows come back when the dish is finished.
+   */
+  M.conceal = function (key, how) {
+    if (!mission || !how || how === "words") return;
+    mission.ladders.forEach((L) =>
+      L.sections.forEach((s) => {
+        if (s.key !== key) return;
+        if (how === "hidden") s.shown = false;
+        else [].concat(...s.groups).forEach((r) => (r.dots = true));
+      })
+    );
+    renderOrder();
   };
   M.ladders = () => (mission ? mission.ladders : []);
   M.isTarget = function (id) {

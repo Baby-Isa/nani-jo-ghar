@@ -7,7 +7,9 @@
  *          player's word stages and chance. Types: plain values (int, pick,
  *          chance, taste), "items" (a sequence or an any-order group),
  *          "no" (leave-it-out list), "people" (per-person items: cups for
- *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg).
+ *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg;
+ *          a kind may be compound, "ph-big+cook-maani").
+ *          Any value can be {"byLevel": [...]}: the order's level picks one.
  *   say    the order as spoken: frames (roles like "order", "and", "no")
  *          with phrase parts, lists and per-item lines. The words and the
  *          grammar come from data.lines / data.grammar, never from here.
@@ -133,15 +135,17 @@
   }
   const listOf = (v, env) => [].concat(res(v, env) || []).flat();
   /**
-   * A slot that changes with the order's level: "levels": [{…}, {…}], one
-   * entry per level, each listing only what changes (like mechanic levels).
-   * Level n applies entries 1..n over the slot.
+   * A slot that changes with the order's level: any value in it, at any
+   * depth, can be {"byLevel": [at level 1, at level 2, ...]} and the
+   * order's level picks one (the last repeats). Resolved before the slot
+   * is built, so every slot type just sees plain values.
    */
   function atLevel(spec, n) {
-    if (!isObj(spec) || !Array.isArray(spec.levels)) return spec;
-    const out = Object.assign({}, spec);
-    delete out.levels;
-    spec.levels.slice(0, Math.max(1, n)).forEach((l) => Object.assign(out, l));
+    if (Array.isArray(spec)) return spec.map((s) => atLevel(s, n));
+    if (!isObj(spec)) return spec;
+    if (Array.isArray(spec.byLevel)) return atLevel(spec.byLevel[Math.min(Math.max(n, 1), spec.byLevel.length) - 1], n);
+    const out = {};
+    Object.keys(spec).forEach((k) => (out[k] = atLevel(spec[k], n)));
     return out;
   }
   const TYPES = {
@@ -157,15 +161,16 @@
       const t = fromTaste(spec, env);
       if (t !== undefined) return t;
       const first = [].concat(value(spec.first || [], env)).flat().filter(Boolean);
-      const always = listOf(spec.always || [], env);
       const exclude = [].concat(spec.exclude || []).flatMap((s) => [].concat(env.d[s] || []));
+      // a "no X" beats a default or a usual topping (wave 3: always/tasteAdd respect `exclude`)
+      const always = listOf(spec.always || [], env).filter((x) => !exclude.includes(x));
       const pool = listOf(spec.from || [], env).filter((x) => !exclude.includes(x) && (spec.repeats || (!first.includes(x) && !always.includes(x))));
       const n = Array.isArray(spec.take) ? rand(spec.take[0], spec.take[1]) : spec.take || 0;
       const picked = spec.repeats ? Array.from({ length: n }, () => Cook.pick(pool)) : (spec.prefer === "weak" ? byWeak(pool) : Cook.shuffle(pool)).slice(0, n);
       let rest = always.concat(picked);
       (spec.tasteAdd || []).forEach((key) => {
         const v = env.taste[key];
-        if (v && !first.includes(v) && !rest.includes(v)) rest.push(v);
+        if (v && !exclude.includes(v) && !first.includes(v) && !rest.includes(v)) rest.push(v);
       });
       if (spec.shuffle) rest = Cook.shuffle(rest);
       return first.concat(rest);
@@ -284,11 +289,13 @@
       if (e.tally) {
         const t = res(e.tally, env) || {};
         const ids = Object.keys(t).filter((k) => t[k] > 0);
-        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(Lang.countParts(t[id], id))));
+        // a kind can be compound, "ph-big+cook-maani": its words said in turn ("bo big maani")
+        const partsOf = (id) => Lang.countParts(t[id], id).flatMap((p) => (typeof p === "string" ? p.split("+") : [p]));
+        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(partsOf(id))));
         if (!ls.length) return;
         if (!when) lines.push(ls.length > 1 ? Lang.join(ls) : ls[0]);
         dot++;
-        ids.forEach((id, j) => rows.push({ kind: "item", ids: [id], qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: Lang.countParts(t[id], id), sec, when }));
+        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when }));
         return;
       }
       const frame = e.frame === "order" ? Lang.orderFrame(i) : e.frame;
