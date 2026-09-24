@@ -140,16 +140,33 @@
   /**
    * HTML for a line. opts.hide: a function (wordId) -> true to hide that
    * word as dots (used by the mission card when a word is well known).
+   * Hidden words next to each other share one "•••" ("bo khun" looks like
+   * "dudh"), so the number of dot groups never tells you a row has a
+   * number in it (audit, Wave 4: the Chai tray's rows).
    */
-  Lang.html = (line, opts = {}) =>
-    line.segs
-      .map((s) => {
-        if (s.lang === null) return esc(s.t);
-        if (s.w && opts.hide && opts.hide(s.w)) return `<span class="dots" title="Tap the speaker to hear it">•••</span>`;
-        const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : ""].filter(Boolean).join(" ");
-        return cls ? `<span class="${cls}">${esc(s.t)}</span>` : esc(s.t);
-      })
-      .join("");
+  Lang.html = (line, opts = {}) => {
+    const hidden = (s) => s && s.w && opts.hide && opts.hide(s.w);
+    const out = [];
+    let dots = false; // the last thing out was "•••" (only spaces since)
+    line.segs.forEach((s, i) => {
+      if (s.lang === null) {
+        // a space between two hidden words disappears into the one "•••"
+        if (dots && /^\s*$/.test(s.t) && hidden(line.segs[i + 1])) return;
+        out.push(esc(s.t));
+        if (!/^\s*$/.test(s.t)) dots = false;
+        return;
+      }
+      if (hidden(s)) {
+        if (!dots) out.push(`<span class="dots" title="Tap the speaker to hear it">•••</span>`);
+        dots = true;
+        return;
+      }
+      dots = false;
+      const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : ""].filter(Boolean).join(" ");
+      out.push(cls ? `<span class="${cls}">${esc(s.t)}</span>` : esc(s.t));
+    });
+    return out.join("");
+  };
 
   /** Group segments into speakable chunks by language. */
   function groups(line) {
