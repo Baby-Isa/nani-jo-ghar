@@ -390,7 +390,7 @@
       .join("");
     if (mission.busy && mission.patience != null) paintDrain(mission.patience);
   }
-  const rowHidden = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && hideWord(s.w));
+  const rowHidden = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && (r.dots || hideWord(s.w)));
   function rowEl(L, r) {
     const li = document.createElement("div");
     li.className = ["lr", r.head ? "head" : "", r.no ? "no" : "", r.done ? "done" : ""].filter(Boolean).join(" ");
@@ -398,7 +398,7 @@
     const speakLine = r.head ? Order().speech([L]) : null;
     li.appendChild(
       UI.pill(r.line, {
-        hide: (id) => !r.done && !r.revealed && hideWord(id),
+        hide: (id) => !r.done && !r.revealed && (r.dots || hideWord(id)),
         speakLine,
         reserveSay: true,
         onHear: () => {
@@ -541,6 +541,22 @@
     );
     if (found) renderOrder();
     return found;
+  };
+  /**
+   * Wave 3 (tadka): a section that has appeared shows its words as dots
+   * ("dots"), or goes back off the card ("hidden": Nani's order, from
+   * memory). The rows come back when the dish is finished.
+   */
+  M.conceal = function (key, how) {
+    if (!mission || !how || how === "words") return;
+    mission.ladders.forEach((L) =>
+      L.sections.forEach((s) => {
+        if (s.key !== key) return;
+        if (how === "hidden") s.shown = false;
+        else [].concat(...s.groups).forEach((r) => (r.dots = true));
+      })
+    );
+    renderOrder();
   };
   M.ladders = () => (mission ? mission.ladders : []);
   M.isTarget = function (id) {
