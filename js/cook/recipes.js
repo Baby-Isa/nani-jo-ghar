@@ -132,6 +132,18 @@
     return v;
   }
   const listOf = (v, env) => [].concat(res(v, env) || []).flat();
+  /**
+   * A slot that changes with the order's level: "levels": [{…}, {…}], one
+   * entry per level, each listing only what changes (like mechanic levels).
+   * Level n applies entries 1..n over the slot.
+   */
+  function atLevel(spec, n) {
+    if (!isObj(spec) || !Array.isArray(spec.levels)) return spec;
+    const out = Object.assign({}, spec);
+    delete out.levels;
+    spec.levels.slice(0, Math.max(1, n)).forEach((l) => Object.assign(out, l));
+    return out;
+  }
   const TYPES = {
     /**
      * A list of word ids: `first` (fixed at the start), `always` (in,
@@ -403,7 +415,8 @@
         const usual = !!opts.usual && Object.keys(taste).length > 0;
         if (usual) d.usual = true;
         const env = { d, taste, usual, who, recipe: id, tastes: D.tastes || id, lists: D.lists || {}, vars: {} };
-        Object.keys(D.slots || {}).forEach((k) => (d[k] = value(D.slots[k], env)));
+        const lvl = opts.level || D.level || 1;
+        Object.keys(D.slots || {}).forEach((k) => (d[k] = value(atLevel(D.slots[k], lvl), env)));
         if (opts.level || D.level) d.level = opts.level || D.level;
         if (D.levels) d.levels = clone(D.levels);
         return d;
@@ -432,5 +445,5 @@
   /** The whole order as ladder rows: [{dish, kind, ids, qty, dot, group, for, line}]. */
   R.ladder = (order) => order.dishes.flatMap((d, i) => R[d.recipe].ladder(d, i).map((row) => Object.assign({ dish: i }, row)));
   // for tests and tools
-  R._engine = { value, res, cond, build, TYPES };
+  R._engine = { value, res, cond, build, TYPES, atLevel };
 })(window);

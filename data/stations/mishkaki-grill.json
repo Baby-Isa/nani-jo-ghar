@@ -1,0 +1,48 @@
+{
+ "_about": "Data for the combined station js/cook/stations/mishkaki-grill.js. `station` is its name and goal line (merged into data.stations). `words` are the skewer kinds the order names (English placeholders until the family gives the Kutchi; ghos = meat is the draft word ph-meat). `mechanic.skewer` is shared by the thread and grill mechanics: which piece is meat or veg (`classes`), which word names which kind of skewer (`kinds`), and how each piece is drawn on a skewer (`art`, placeholder). `mechanic.levels` say which level each zone's mechanic runs at (the grill's own levels in data/cook.json add spots and speed); the order's shape per level (1 skewer; 2; 3-4 with mixed) is the mishkaki recipe's `skewers` slot.",
+ "station": {
+  "name": "Mishkaki grill",
+  "verb": "Thread, grill, plate",
+  "goal": "Thread what they asked for. Grill each one: turn it on the green twice, then lift it onto the plate."
+ },
+ "words": {
+  "ph-veg": {
+   "kutchi": null,
+   "english": "vegetable",
+   "src": "placeholder",
+   "_note": "a vegetable skewer (no meat)"
+  },
+  "ph-mixed": {
+   "kutchi": null,
+   "english": "mixed",
+   "src": "placeholder",
+   "_note": "a skewer of meat and vegetables, threaded in the order said"
+  }
+ },
+ "mechanic": {
+  "skewer": {
+   "classes": {
+    "ph-meat": "meat",
+    "ph-pepper": "veg",
+    "veg-02": "veg",
+    "veg-03": "veg"
+   },
+   "kinds": {
+    "ph-meat": "meat",
+    "ph-veg": "veg",
+    "ph-mixed": "mixed"
+   },
+   "art": {
+    "ph-meat": {"style": "meat", "color": "#9c4a32"},
+    "ph-pepper": {"style": "pepper", "color": "#4f9a3a"},
+    "veg-02": {"style": "onion", "color": "#f1e2ec"},
+    "veg-03": {"style": "tomato", "color": "#d8402e"}
+   }
+  },
+  "levels": [
+   {"zones": {"thread": {"level": 1}, "grill": {"level": 1}}},
+   {"zones": {"thread": {"level": 1}, "grill": {"level": 2}}},
+   {"zones": {"thread": {"level": 2}, "grill": {"level": 3}}}
+  ]
+ }
+}
