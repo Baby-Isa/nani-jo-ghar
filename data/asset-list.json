@@ -3,12 +3,30 @@
   "style_block": "Stylised 3D animated-feature-film look: soft global illumination, gentle warm fill, believable materials (marble, brushed steel, polished brass, pale oak, cotton, food with soft subsurface), clean simplified surfaces with restrained detail, appealing slightly chunky proportions, no outlines. Warm late-morning sunlight from the upper left; soft shadows falling to the lower right; a soft contact shadow wherever something touches a surface. Bright, warm, clean palette. Match the rendering of the attached style reference exactly.",
   "config": {
     "model": "gpt-image-1",
+    "quality": "medium",
+    "_quality_note": "Cost-conservative default (24 Sept 2026): every request now sends `quality` explicitly, so the API can't silently fall back to its own default (high, ~$0.167/1024x1024 image) the way it did for the ~$30/187-request bill that prompted this. Override per entry with an entry-level 'quality', for a whole run with --quality low|medium|high, or cheaply with --draft (quality low, writes to drafts/).",
     "price_per_image": {
-      "1024x1024": 0.04,
-      "1024x1536": 0.06,
-      "1536x1024": 0.06,
-      "default": 0.04
+      "low": {
+        "1024x1024": 0.011,
+        "1024x1536": 0.016,
+        "1536x1024": 0.016,
+        "default": 0.011
+      },
+      "medium": {
+        "1024x1024": 0.042,
+        "1024x1536": 0.063,
+        "1536x1024": 0.063,
+        "default": 0.042
+      },
+      "high": {
+        "1024x1024": 0.167,
+        "1024x1536": 0.25,
+        "1536x1024": 0.25,
+        "default": 0.167
+      }
     },
+    "max_regens": 1,
+    "preflight_dollar_threshold": 5.0,
     "max_concurrency": 3,
     "min_request_gap_seconds": 20,
     "skin_normalise": {
