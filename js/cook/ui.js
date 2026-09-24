@@ -374,11 +374,13 @@
   };
 
   /* ---------------- count badge, done button, toast ---------------- */
+  // Digit only, always: this is the running tally (how many so far), never
+  // the target, and never the Kutchi number as text (that would show the
+  // word in a second place at once; the audio still says it).
   UI.count = function (n, { speak = true } = {}) {
     const b = $("#count-badge");
     b.classList.remove("hidden");
     b.querySelector(".count-digit").textContent = n;
-    b.querySelector(".count-word").textContent = n >= 1 && n <= 5 ? Cook.numWord(n) : "";
     bumpEl(b);
     if (speak && n >= 1 && n <= 5) Lang.speak(Lang.num(n) ? { segs: Lang.num(n), en: String(n) } : null);
   };

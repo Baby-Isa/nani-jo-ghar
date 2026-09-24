@@ -97,9 +97,12 @@
    *   stage 1 new:      mission card text,  item label text (+ glow)
    *   stage 2 learning: mission card text,  item label speaker only
    *   stage 3 nearly:   mission card dots,  item label speaker only
-   *   stage 4 known:    mission card dots (replaying costs the no-help star), no label */
-  Cook.labelMode = (id) => ["", "text", "speaker", "speaker", "none"][Cook.wordStage(id)];
-  Cook.cardHidden = (id) => Cook.wordStage(id) >= 3;
+   *   stage 4 known:    mission card dots (replaying costs the no-help star), item label speaker only
+   * Every item always keeps at least a speaker button, so it's never a
+   * mystery blob with nothing to tap. English placeholders are never
+   * "known" Kutchi and are never dotted out on the card. */
+  Cook.labelMode = (id) => ["", "text", "speaker", "speaker", "speaker"][Cook.wordStage(id)];
+  Cook.cardHidden = (id) => Cook.wordStage(id) >= 3 && !Cook.isPlaceholder(id);
   Cook.paused = false;
   Cook.hintDelay = function (id) {
     return [0, 4000, 5000, 8000, 12000][Cook.wordStage(id)];

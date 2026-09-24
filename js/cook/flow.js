@@ -52,6 +52,7 @@
       UI.mission.star("ear", "lost");
     };
     ctx.skill = (score, what) => {
+      score = Math.round(score);
       ctx.grades.push({ what, score });
       if (score < 55) UI.mission.star("hand", "lost");
     };
@@ -617,7 +618,17 @@
       throw e;
     }
     Cook.writeSave();
-    const skills = ctx.grades.map((g) => `${g.what} ${g.score}%`);
+    // a score can be reported more than once (e.g. one per maani rolled, one
+    // per chapati flipped): number them so "roll 82% · roll 100%" reads as
+    // "roll 1: 82% · roll 2: 100%" instead of two unlabelled repeats.
+    const counts = {};
+    ctx.grades.forEach((g) => (counts[g.what] = (counts[g.what] || 0) + 1));
+    const seen = {};
+    const skills = ctx.grades.map((g) => {
+      if (counts[g.what] <= 1) return `${g.what} ${g.score}%`;
+      seen[g.what] = (seen[g.what] || 0) + 1;
+      return `${g.what} ${seen[g.what]}: ${g.score}%`;
+    });
     const p = UI.panel(`
       <h2>${UI.esc((LAB.find((l) => l[0] === key) || [0, key])[1])}: done</h2>
       <div class="cards"><div class="ccard"><div class="cc-stars">${starsHtml({ ear: ctx.listenMiss === 0, hand: !ctx.grades.some((g) => g.score < 55), third: ctx.help === 0 })}</div>

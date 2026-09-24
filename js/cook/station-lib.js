@@ -42,9 +42,17 @@
     UI.hideCount();
     UI.hideDone();
   }
-  function row(n, { y = STRIP_Y, x0 = 160, x1 = 1440 } = {}) {
-    if (n === 1) return [{ x: (x0 + x1) / 2, y }];
-    return Array.from({ length: n }, (_, i) => ({ x: x0 + ((x1 - x0) * i) / (n - 1), y }));
+  /**
+   * Positions along a strip. Past `maxPerRow` items, labels start to
+   * overlap and truncate each other, so it splits into two rows instead —
+   * the second where the row normally sits, the first in the dead space
+   * above it (design s7: help never covers a thing to tap).
+   */
+  function row(n, { y = STRIP_Y, x0 = 160, x1 = 1440, maxPerRow = n, rowGap = 180 } = {}) {
+    const oneRow = (count, x0, x1, y) => (count === 1 ? [{ x: (x0 + x1) / 2, y }] : Array.from({ length: count }, (_, i) => ({ x: x0 + ((x1 - x0) * i) / (count - 1), y })));
+    if (n <= maxPerRow) return oneRow(n, x0, x1, y);
+    const counts = [Math.ceil(n / 2), Math.floor(n / 2)];
+    return counts.flatMap((count, r) => oneRow(count, x0, x1, y - (counts.length - 1 - r) * rowGap));
   }
   function lookalikes(id, n = 2) {
     const L = (Cook.data.lookalikes || {})[id] || [];
@@ -373,7 +381,7 @@
       Cook.expect = { kind: "count", x: c.x, y: c.y, target: n, count: () => count, doneSel: "#done-btn" };
     });
     UI.hideCount();
-    ctx.listen(count === n, `count ${word} ${count}/${n}`);
+    ctx.listen(count === n, `${count} ${word}, they asked for ${n}`);
     count === n ? Cook.markRight(`num-0${n}`) : Cook.markMiss(`num-0${n}`);
     return count;
   };
@@ -467,7 +475,7 @@
     }
     UI.hideCount();
     ctx.result.maani = rolled.length;
-    ctx.listen(rolled.length === count, `maani ${rolled.length}/${count}`);
+    ctx.listen(rolled.length === count, `made ${rolled.length} maani, they asked for ${count}`);
     end();
     return rolled.length;
   };
@@ -624,7 +632,8 @@
       img.setScale(S.fitScale(key, 170, 170));
       img.wordId = pick;
       img.vx = (800 - img.x) * (0.25 + Math.random() * 0.3);
-      img.vy = -(1050 + Math.random() * 180);
+      // peak around the upper third of the play area (gravity is 1250px/s^2)
+      img.vy = -(1300 + Math.random() * 100);
       img.spin = (Math.random() - 0.5) * 5;
       flying.push(img);
     };
@@ -789,9 +798,29 @@
       dot.destroy();
       obj.setAlpha(0.45);
     }
-    // tip it into the pot
+    // tip it into the pot: once all the spices are in, the pan itself is
+    // the cue (docs s7, "the cue is always on the object") — a pulsing
+    // highlight on the pan and a flashing arrow pointing at the pot, so
+    // it's obvious you now tap the pan to pour it in.
     if (!Cook.hasUpgrade("tadka")) {
+      S.glow(pan, true);
+      const arrow = S.track(S.add.graphics().setDepth(D.fx + 2));
+      const ax = pan.rim.x + (pot.rim.x - pan.rim.x) * 0.25;
+      const ay = pan.rim.y - pan.rimRy - 34;
+      const bx = pan.rim.x + (pot.rim.x - pan.rim.x) * 0.85;
+      const by = pot.rim.y - pot.rimRy - 34;
+      const ang = Math.atan2(by - ay, bx - ax);
+      arrow.lineStyle(9, 0xffd27a, 1).lineBetween(ax, ay, bx, by);
+      const hx = bx - Math.cos(ang) * 26;
+      const hy = by - Math.sin(ang) * 26;
+      const px = Math.cos(ang + Math.PI / 2) * 16;
+      const py = Math.sin(ang + Math.PI / 2) * 16;
+      arrow.fillStyle(0xffd27a, 1).fillTriangle(bx, by, hx + px, hy + py, hx - px, hy - py);
+      const arrowFlash = S.tweens.add({ targets: arrow, alpha: 0.2, duration: 420, yoyo: true, repeat: -1 });
       await S.step({ items: { tadka: pan }, expected: "tadka", guided: ctx.guided, sayLine: null });
+      arrowFlash.stop();
+      arrow.destroy();
+      S.glow(pan, false);
     } else S.special(pan);
     await Cook.tween(S, { targets: pan, x: BURNER.left.x + 220, y: BURNER.left.y - 140, angle: -50, duration: 420 });
     Cook.sfx.sizzle(1.4);
@@ -901,7 +930,7 @@
       Cook.expect = { kind: "stir", x: cx, y: cy, rx: 150, ry: 60, target: laps, speed: speed || null, count: () => 0 };
       Cook.stirCount = () => count;
     });
-    ctx.listen(result.count === laps, `stir ${result.count}/${laps}`);
+    ctx.listen(result.count === laps, `stirred ${result.count} times, they asked for ${laps}`);
     result.count === laps ? Cook.markRight(`num-0${laps}`) : Cook.markMiss(`num-0${laps}`);
     if (speed) {
       const ok = result.zoneFrac >= 0.5;
@@ -920,8 +949,10 @@
     const bowl = S$.vessel(S, "serving", 800, 330, 1.45);
     const ids = Cook.shuffle([...new Set(pool.concat(sequence, exclude))]);
     const items = {};
-    const pts = ids.length > 6 ? row(ids.length, { x0: 130, x1: 1470 }) : row(ids.length, { x0: 240, x1: 1360 });
-    ids.forEach((id, i) => (items[id] = S.ingredient(id, pts[i].x, pts[i].y - 30, { w: 165, h: 124 })));
+    const big = ids.length > 5;
+    const pts = row(ids.length, { x0: 240, x1: 1360, maxPerRow: 5 });
+    const size = big ? { w: 190, h: 140 } : { w: 165, h: 124 };
+    ids.forEach((id, i) => (items[id] = S.ingredient(id, pts[i].x, pts[i].y - 30, size)));
     const fast = Cook.hasUpgrade("bigspoon");
     let layerN = 0;
     for (let i = 0; i < sequence.length; i++) {
@@ -964,7 +995,8 @@
     const sheet = S.track(S.add.image(800, 330, S.tex("pastry:0")).setScale(1.1).setDepth(D.item));
     const ids = Cook.shuffle([...new Set(pool.concat(fillings, exclude))]);
     const items = {};
-    row(ids.length, { x0: 260, x1: 1340 }).forEach((p, i) => (items[ids[i]] = S.ingredient(ids[i], p.x, p.y - 30, { w: 165, h: 124 })));
+    const size = ids.length > 5 ? { w: 190, h: 140 } : { w: 165, h: 124 };
+    row(ids.length, { x0: 260, x1: 1340, maxPerRow: 5 }).forEach((p, i) => (items[ids[i]] = S.ingredient(ids[i], p.x, p.y - 30, size)));
     const remaining = fillings.slice();
     let n = 0;
     while (remaining.length) {
@@ -1164,7 +1196,7 @@
     });
     sizzle.stop();
     ctx.result.fried = doneOut.length;
-    ctx.listen(doneOut.length === count, `fried ${doneOut.length}/${count}`);
+    ctx.listen(doneOut.length === count, `fried ${doneOut.length}, they asked for ${count}`);
     end();
   };
 
