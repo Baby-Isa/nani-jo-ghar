@@ -352,7 +352,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #mission .m-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); display: none; }
 #mission .m-ring.on svg { display: block; }
 #mission .m-ring circle { fill: none; stroke-width: 5; }
-#mission .m-ring .pr-bg { stroke: #e6dac6; }
+#mission .m-ring .pr-bg { stroke: #dccbb0; }
+#mission .m-ring.low .pr-bg { stroke: #efc3b8; }
 #mission .m-ring .pr-fg { stroke: var(--sage); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p, 1) * 100); transition: stroke-dashoffset .4s linear, stroke .3s; }
 #mission .m-ring.low .pr-fg { stroke: var(--madder); }
 #mission .m-ring.low { animation: ringLow 1s ease-in-out infinite; }
