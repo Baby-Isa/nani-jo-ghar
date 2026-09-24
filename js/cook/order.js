@@ -1,12 +1,14 @@
 /*
  * Cook with Nani: the order ladder model (Wave 2).
  *
- * A small helper beside recipes.js (it reads a dish's slots, it doesn't
- * change how recipes work). It turns a dish into what the mission card
- * draws and what the customer says:
+ * One source of truth: the recipe's own ladder rows (R.<id>.ladder(d, i)
+ * in recipes.js, built from the recipe's `say` data: dots, any-order
+ * groups, quantities, "no" rows, sections that wait for a station). This
+ * file only arranges those rows into what the mission card draws and what
+ * the customer says:
  *
  *   ladder = { dish, recipe, head, sections: [{ key, seq, when, groups: [[row, ...], ...] }] }
- *   row    = { parts, ids, no, need, got, done, miss, revealed, line }
+ *   row    = { parts, ids, no, need, got, done, miss, revealed, line, phrase, said }
  *
  * A group is one dot on the card. Rows in the same group can be done in
  * any order; groups in a `seq` section are steps, joined by a dashed line,
@@ -18,40 +20,37 @@
  *   - rows that can go in any order are shuffled every time;
  *   - a section can wait for its station (`when`: the tadka order is
  *     Nani's, given at the pan).
- * Recipes it doesn't know fall back to their own `lines`, one row each.
  */
 (function (global) {
   const Cook = global.Cook;
   const Lang = Cook.Lang;
   const O = (Cook.Order = {});
 
-  function row(parts, { no = false, need = 1 } = {}) {
+  /** A card row from a recipe ladder row (recipes.js). */
+  function row(r) {
+    const parts = r.parts || r.ids;
     const phrase = Lang.phrase(parts);
-    const F = Lang.frames();
+    const no = r.kind === "no";
     return {
       parts,
-      ids: parts.filter((p) => typeof p === "string"),
+      ids: r.ids,
       no,
-      need,
+      // a merged run in a sequence ("be ghos") is ticked unit by unit
+      need: r.list ? r.qty || 1 : 1,
       got: 0,
       done: false,
       miss: false,
       revealed: false,
       phrase,
-      line: no ? Lang.line(F.no, phrase) : { segs: phrase.segs, en: phrase.en },
+      // on the card: just the words (the dot says how it links); "no X" as said
+      line: no ? r.line : { segs: phrase.segs, en: phrase.en },
+      // as the recipe data says it (its own frame: "Ne be khun.")
+      said: r.line,
+      list: !!r.list,
+      for: r.for,
     };
   }
   O.row = row;
-  /** A sequence of item ids: one group (dot) per step; the same item twice running is one row with a count. */
-  function seqGroups(ids) {
-    const runs = [];
-    ids.forEach((id) => {
-      const last = runs[runs.length - 1];
-      if (last && last.id === id) last.n++;
-      else runs.push({ id, n: 1 });
-    });
-    return runs.map((r) => [row(r.n > 1 ? [r.n, r.id] : [r.id], { need: r.n })]);
-  }
   /** "No X" rows join a random group at a random place, so where they sit says nothing. */
   function sprinkle(groups, noRows) {
     if (!groups.length && noRows.length) groups.push([]);
@@ -61,61 +60,49 @@
     });
     return groups;
   }
-  const anySection = (rows, key = "any") => ({ key, seq: false, groups: rows.length ? [Cook.shuffle(rows)] : [] });
 
   /** The ladder for one dish of an order (i: its place in the order). */
   O.ladder = function (d, i = 0) {
-    const F = Lang.frames();
-    const R = Cook.Recipes;
-    const head = (parts) => {
-      const r = row(parts);
-      r.head = true;
-      r.line = Lang.line(i === 0 ? F.first : F.more, r.phrase);
-      return r;
-    };
-    const L = { dish: i, recipe: d.recipe, sections: [] };
-    const nos = (d.no || []).map((x) => row([x], { no: true }));
-    switch (d.recipe) {
-      case "chai": {
-        L.head = head(d.cups > 1 ? [d.cups, "cook-chai"] : ["cook-chai"]);
-        if (d.usual) break;
-        const rows = [];
-        if (!d.dudh) rows.push(row(["cook-dudh"], { no: true }));
-        rows.push(d.khun ? row([d.khun, "cook-khun"]) : row(["cook-khun"], { no: true }));
-        if (d.extra) rows.push(row([d.extra]));
-        L.sections.push(anySection(rows));
-        break;
+    const L = { dish: i, recipe: d.recipe, head: null, sections: [] };
+    const lists = new Map();
+    const nos = [];
+    let any = null;
+    Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
+      if (r.kind === "dish" && !L.head) {
+        L.head = Object.assign(row(r), { head: true, line: r.line });
+        return;
       }
-      case "maani":
-        L.head = head(d.count > 1 ? [d.count, "cook-maani"] : ["cook-maani"]);
-        break;
-      case "daal":
-        L.head = head(["cook-daal"]);
-        if (d.tameto) L.sections.push(anySection([row(["veg-03"])]));
-        if (d.tadka && d.tadka.length) L.sections.push({ key: "tadka", seq: true, when: "tadka", groups: seqGroups(d.tadka) });
-        break;
-      case "chaat":
-        L.head = head(["ph-chaat"]);
-        L.sections.push({ key: "layers", seq: true, groups: sprinkle(seqGroups(d.seq || []), nos) });
-        break;
-      case "samosa":
-        L.head = head(d.count > 1 ? [d.count, "ph-samosa"] : ["ph-samosa"]);
-        L.sections.push(anySection((d.fillings || []).map((x) => row([x])).concat(nos)));
-        break;
-      case "mishkaki":
-        L.head = head(["ph-mishkaki"]);
-        L.sections.push({ key: "skewer", seq: true, groups: seqGroups(d.seq || []) });
-        if (d.chips) L.sections.push(anySection([row(["ph-chips"])], "chips"));
-        break;
-      default: {
-        // a recipe this helper doesn't know yet: its own lines, one row each
-        const lines = R && R[d.recipe] && R[d.recipe].lines ? R[d.recipe].lines(d, i) : [];
-        L.head = { head: true, parts: [], ids: [], line: lines[0] || Lang.wordLine(R.dishWord(d.recipe)), need: 1, got: 0 };
-        L.head.ids = L.head.line.segs.filter((s) => s.w).map((s) => s.w);
-        const rows = lines.slice(1).map((l) => ({ parts: [], ids: l.segs.filter((s) => s.w).map((s) => s.w), no: false, need: 1, got: 0, line: l }));
-        if (rows.length) L.sections.push({ key: "lines", seq: false, groups: rows.map((r) => [r]) });
+      const x = row(r);
+      if (x.no) return nos.push(x);
+      if (r.list) {
+        // a spoken list: its own section, one group per dot
+        let s = lists.get(r.sec);
+        if (!s) {
+          s = { key: r.when || `list${r.sec}`, seq: false, when: r.when || null, groups: [], dots: [] };
+          lists.set(r.sec, s);
+          L.sections.push(s);
+        }
+        const g = s.dots.indexOf(r.dot);
+        if (g >= 0) s.groups[g].push(x);
+        else {
+          s.dots.push(r.dot);
+          s.groups.push([x]);
+        }
+        return;
       }
-    }
+      // everything else said on its own line: one any-order group
+      if (!any) L.sections.push((any = { key: "any", seq: false, groups: [[]] }));
+      any.groups[0].push(x);
+    });
+    L.sections.forEach((s) => {
+      s.seq = s.groups.length > 1;
+      delete s.dots;
+      s.groups = s.groups.map((g) => Cook.shuffle(g));
+    });
+    // "no X": among the any-order rows, else sprinkled through the list
+    const home = any || L.sections.filter((s) => !s.when).pop();
+    if (home) sprinkle(home.groups, nos);
+    else if (nos.length) L.sections.push({ key: "any", seq: false, groups: [Cook.shuffle(nos)] });
     return L;
   };
 
@@ -148,6 +135,13 @@
           g.forEach((r) => {
             if (r.no) return lines.push(r.line);
             if (s.simple) return lines.push(r.line);
+            if (!r.list && r.said) {
+              // said on its own line in the recipe data ("Ne be khun."): keep its frame
+              lines.push(r.said);
+              first = false;
+              firstInGroup = false;
+              return;
+            }
             let frame;
             if (first) frame = heads && L.head ? F.any : null;
             else frame = s.seq && firstInGroup && gi > 0 ? F.seq : F.any;

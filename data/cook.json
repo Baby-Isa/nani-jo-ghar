@@ -476,12 +476,6 @@
    "k": "Ne {x}.",
    "en": "And {x}."
   },
-  "then": {
-   "k": "Ne poi {x}.",
-   "en": "And then {x}.",
-   "draft": true,
-   "src": "zafar-24sep-draft"
-  },
   "give": {
    "k": "Muke hikdo {x} dine.",
    "en": "Give me the {x}."
@@ -539,16 +533,56 @@
   },
   "pocket": {
    "e": "I'll give you pocket money for helping. Get it all right and be quick, and you get more!"
+  },
+  "then": {
+   "k": "Ne poi {x}.",
+   "en": "And then {x}.",
+   "draft": true,
+   "src": "zafar-24sep-draft"
   }
  },
- "order_speech": {
-  "_about": "How the order ladder says an order, as keys in 'lines' (so another language can supply its own): the first thing, 'and' for things in any order, 'and then' (draft) for the next step in a sequence, 'no' for leave-it-out rows. seq_word is the word whose progress decides when the ladder stops drawing the sequence (from word stage 3 only the spoken 'ne poi' tells you).",
-  "first": "need",
-  "more": "and",
-  "any": "and",
-  "seq": "then",
+ "grammar": {
+  "_about": "How this language builds sentences. The code only names roles (an order's first line, a list, a counted noun); the words are in `words` and the frames in `lines`. Another language (Gujarati first) swaps this block with those two. Order ladder: `order` frames start each dish, `list.next` joins things in any order, `then` (the line key) joins the next step of a sequence (\"Ne poi {x}.\", a draft from Zafar, Mum to confirm), `no` says leave-it-out rows, and `then_word` is the linker's word id: from its word stage 3 the ladder stops drawing the sequence and only the spoken linker tells you the order.",
+  "numbers": {
+   "1": "num-01",
+   "2": "num-02",
+   "3": "num-03",
+   "4": "num-04",
+   "5": "num-05"
+  },
+  "count": "{n} {x}",
+  "sep": " ",
+  "order": {
+   "first": "need",
+   "next": "and"
+  },
+  "list": {
+   "first": "{x}.",
+   "next": "and"
+  },
+  "number": "{x}!",
+  "then": "then",
   "no": "no",
-  "seq_word": "lnk-nepoi"
+  "then_word": "lnk-nepoi"
+ },
+ "verdicts": {
+  "_about": "Words shown over the action after a timing or a pour (English UI). Mechanics name them by key.",
+  "perfect": "Perfect!",
+  "good": "Good!",
+  "bad": "Oops",
+  "too-little": "Too little",
+  "too-much": "Too much!",
+  "boiled-over": "Boiled over!",
+  "too-early": "Too early",
+  "too-small": "Too small",
+  "too-thin": "Too thin!",
+  "burnt": "Burnt!",
+  "it-puffed": "It puffed!",
+  "flat": "Flat",
+  "golden": "Golden!",
+  "too-pale": "Too pale",
+  "turned": "Turned!",
+  "charred": "Charred!"
  },
  "exchanges": [
   {
@@ -682,7 +716,111 @@
     "count",
     "pour"
    ],
-   "chips": [
+   "slots": {
+    "khun": {
+     "int": [
+      1,
+      3
+     ],
+     "zero": 0.15,
+     "taste": "khun",
+     "tasteChance": 0
+    },
+    "dudh": {
+     "chance": 0.75,
+     "taste": "dudh",
+     "tasteChance": 0,
+     "usual": true
+    },
+    "extra": {
+     "pick": [
+      null,
+      null,
+      "spi-10",
+      "veg-14"
+     ],
+     "taste": "extra",
+     "tasteChance": 0,
+     "usual": null
+    },
+    "cups": {
+     "pick": [
+      1,
+      1,
+      1,
+      2
+     ],
+     "usual": 1
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      {
+       "n": "$cups",
+       "of": "cook-chai",
+       "one": false
+      }
+     ]
+    },
+    {
+     "if": [
+      "!usual",
+      "!dudh"
+     ],
+     "frame": "no",
+     "x": [
+      "cook-dudh"
+     ]
+    },
+    {
+     "if": [
+      "!usual",
+      "khun"
+     ],
+     "frame": "and",
+     "x": [
+      {
+       "n": "$khun",
+       "of": "cook-khun"
+      }
+     ]
+    },
+    {
+     "if": [
+      "!usual",
+      "!khun"
+     ],
+     "frame": "no",
+     "x": [
+      "cook-khun"
+     ]
+    },
+    {
+     "if": [
+      "!usual",
+      "extra"
+     ],
+     "frame": "and",
+     "x": [
+      "$extra"
+     ]
+    }
+   ],
+   "need": [
+    "cook-chai",
+    {
+     "if": "dudh",
+     "then": "cook-dudh"
+    },
+    {
+     "if": "khun",
+     "then": "cook-khun"
+    },
+    "$extra"
+   ],
+   "steps": [
     "Pantry",
     "Water",
     "Tea",
@@ -691,6 +829,174 @@
     "Extra",
     "Sugar",
     "Pour"
+   ],
+   "run": [
+    {
+     "do": "fetch",
+     "need": "$need"
+    },
+    {
+     "do": "interrupt"
+    },
+    {
+     "do": "view",
+     "station": "pour",
+     "view": "hob"
+    },
+    {
+     "do": "vessel",
+     "id": "pan",
+     "kind": "pan",
+     "at": [
+      "burner-left",
+      0,
+      -30
+     ],
+     "scale": 1.35,
+     "special": "machine"
+    },
+    {
+     "do": "counter",
+     "id": "shelf",
+     "items": [
+      "$basket",
+      "cook-khun",
+      "spi-16",
+      "cook-chai",
+      "spi-02",
+      "spi-10",
+      "veg-14"
+     ],
+     "except": [
+      "cook-dudh",
+      "cook-paani"
+     ],
+     "x0": 150,
+     "x1": 1100,
+     "dy": -20,
+     "w": 150,
+     "h": 115
+    },
+    {
+     "do": "pour",
+     "vessel": "@pan",
+     "liquid": "cook-paani",
+     "color": "#9fd3f0",
+     "target": [
+      0.42,
+      0.58
+     ],
+     "jugAt": [
+      1300,
+      "strip"
+     ]
+    },
+    {
+     "step": "Tea",
+     "do": "add",
+     "items": "@shelf",
+     "expected": "cook-chai",
+     "into": "@pan"
+    },
+    {
+     "do": "colour",
+     "vessel": "@pan",
+     "color": "#6b3a1c"
+    },
+    {
+     "step": "Boil",
+     "do": "boil",
+     "vessel": "@pan"
+    },
+    {
+     "if": "dudh",
+     "step": "Milk",
+     "do": "pour",
+     "vessel": "@pan",
+     "liquid": "cook-dudh",
+     "color": "#c49468",
+     "fromLevel": true,
+     "target": [
+      0.74,
+      0.9
+     ],
+     "jugAt": [
+      1470,
+      "strip"
+     ],
+     "speak": false
+    },
+    {
+     "if": "extra",
+     "step": "Extra",
+     "do": "add",
+     "items": "@shelf",
+     "expected": "$extra",
+     "into": "@pan"
+    },
+    {
+     "if": "khun",
+     "step": "Sugar",
+     "do": "count",
+     "bowl": "@shelf.cook-khun",
+     "n": "$khun",
+     "into": "@pan",
+     "word": "cook-khun"
+    },
+    {
+     "step": "Pour",
+     "repeat": "$cups",
+     "run": [
+      {
+       "do": "vessel",
+       "id": "cup",
+       "kind": "cup",
+       "at": [
+        1180,
+        420
+       ],
+       "shift": [
+        170,
+        0
+       ],
+       "scale": 1.2
+      },
+      {
+       "do": "pour",
+       "source": "@pan",
+       "vessel": "@cup",
+       "target": [
+        0.72,
+        0.9
+       ],
+       "color": {
+        "if": "dudh",
+        "then": "#c49468",
+        "else": "#7a3a1a"
+       },
+       "steam": 2
+      }
+     ]
+    },
+    {
+     "do": "result",
+     "key": "chai",
+     "slots": [
+      "dudh",
+      "khun",
+      "extra",
+      "cups"
+     ]
+    },
+    {
+     "do": "serve",
+     "key": "glass-chai",
+     "count": "$cups"
+    },
+    {
+     "do": "wait",
+     "ms": 600
+    }
    ]
   },
   "maani": {
@@ -702,10 +1008,52 @@
     "roll",
     "flip"
    ],
-   "chips": [
+   "slots": {
+    "count": {
+     "int": [
+      1,
+      4
+     ]
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      {
+       "n": "$count",
+       "of": "cook-maani",
+       "one": false
+      }
+     ]
+    }
+   ],
+   "need": [
+    "cook-atto"
+   ],
+   "steps": [
     "Knead",
     "Roll",
     "Tawa"
+   ],
+   "run": [
+    {
+     "do": "knead"
+    },
+    {
+     "do": "roll",
+     "count": "$count",
+     "as": "rolled"
+    },
+    {
+     "do": "tawa",
+     "n": "$rolled"
+    },
+    {
+     "do": "serve",
+     "key": "chapati-puffed",
+     "count": "$rolled"
+    }
    ]
   },
   "daal": {
@@ -717,10 +1065,117 @@
     "tadka",
     "stir"
    ],
-   "chips": [
+   "lists": {
+    "spices": [
+     "spi-02",
+     "spi-05",
+     "veg-13",
+     "veg-12",
+     "spi-01"
+    ],
+    "veg": [
+     "veg-02",
+     "veg-03",
+     "veg-13",
+     "veg-12",
+     "veg-01"
+    ]
+   },
+   "slots": {
+    "tadka": {
+     "type": "items",
+     "from": "$spices",
+     "take": [
+      2,
+      3
+     ],
+     "order": "sequence"
+    },
+    "tameto": {
+     "chance": 0.4
+    },
+    "onions": {
+     "int": [
+      1,
+      2
+     ]
+    },
+    "tomatoes": {
+     "int": [
+      1,
+      2
+     ]
+    },
+    "laps": {
+     "int": [
+      2,
+      4
+     ]
+    },
+    "speed": {
+     "pick": [
+      null,
+      "slow",
+      "quick"
+     ]
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "cook-daal"
+     ]
+    },
+    {
+     "if": "tameto",
+     "frame": "and",
+     "x": [
+      "veg-03"
+     ]
+    },
+    {
+     "list": "$tadka",
+     "when": "tadka"
+    }
+   ],
+   "need": [
+    "cook-daal"
+   ],
+   "steps": [
     "Chop",
     "Tadka",
     "Stir"
+   ],
+   "run": [
+    {
+     "do": "chop",
+     "targets": {
+      "veg-02": "$onions",
+      "veg-03": {
+       "if": "tameto",
+       "then": "$tomatoes"
+      }
+     },
+     "pool": "$veg"
+    },
+    {
+     "do": "interrupt"
+    },
+    {
+     "do": "tadka",
+     "order": "$tadka"
+    },
+    {
+     "do": "stir",
+     "laps": "$laps",
+     "speed": "$speed"
+    },
+    {
+     "do": "serve",
+     "key": "pot-daal",
+     "count": 1
+    }
    ]
   },
   "chaat": {
@@ -731,9 +1186,110 @@
     "chop",
     "assemble"
    ],
-   "chips": [
+   "lists": {
+    "toppings": [
+     "ph-dahi",
+     "ph-amli",
+     "ph-lili",
+     "veg-02",
+     "ph-sev",
+     "ph-dhana",
+     "veg-12",
+     "veg-03"
+    ],
+    "veg": [
+     "veg-01",
+     "veg-02",
+     "veg-03",
+     "veg-13"
+    ]
+   },
+   "slots": {
+    "no": {
+     "type": "no",
+     "else": {
+      "chance": 0.5,
+      "from": [
+       "veg-02",
+       "veg-12",
+       "ph-lili"
+      ]
+     }
+    },
+    "seq": {
+     "type": "items",
+     "first": [
+      "ph-chana"
+     ],
+     "always": [
+      "veg-01"
+     ],
+     "from": "$toppings",
+     "exclude": "no",
+     "take": [
+      2,
+      3
+     ],
+     "tasteAdd": [
+      "top",
+      "extra"
+     ],
+     "shuffle": true,
+     "order": "sequence"
+    },
+    "potatoes": {
+     "int": [
+      1,
+      2
+     ]
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "ph-chaat"
+     ]
+    },
+    {
+     "list": "$seq"
+    },
+    {
+     "forEach": "$no",
+     "frame": "no",
+     "x": [
+      "$it"
+     ]
+    }
+   ],
+   "need": [],
+   "steps": [
     "Chop",
     "Build"
+   ],
+   "run": [
+    {
+     "do": "chop",
+     "targets": {
+      "veg-01": "$potatoes"
+     },
+     "pool": "$veg"
+    },
+    {
+     "do": "interrupt"
+    },
+    {
+     "do": "assemble",
+     "sequence": "$seq",
+     "exclude": "$no",
+     "decoyPool": "$toppings"
+    },
+    {
+     "do": "serve",
+     "key": "layer",
+     "count": 1,
+     "seq": "$seq"
+    }
    ]
   },
   "samosa": {
@@ -745,11 +1301,107 @@
     "fold",
     "fry"
    ],
-   "chips": [
+   "slots": {
+    "no": {
+     "type": "no"
+    },
+    "fillings": {
+     "type": "items",
+     "first": [
+      {
+       "taste": "filling",
+       "else": {
+        "pick": [
+         "ph-keema",
+         "veg-01"
+        ]
+       }
+      }
+     ],
+     "from": [
+      "veg-10",
+      "veg-02",
+      "veg-12",
+      "ph-dhana"
+     ],
+     "exclude": "no",
+     "take": [
+      2,
+      2
+     ],
+     "order": "any"
+    },
+    "count": {
+     "int": [
+      1,
+      2
+     ]
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      {
+       "n": "$count",
+       "of": "ph-samosa",
+       "one": false
+      }
+     ]
+    },
+    {
+     "list": "$fillings"
+    },
+    {
+     "forEach": "$no",
+     "frame": "no",
+     "x": [
+      "$it"
+     ]
+    }
+   ],
+   "need": [
+    "cook-atto"
+   ],
+   "steps": [
     "Fill",
     "Fold",
     "Fry"
-   ]
+   ],
+   "run": [
+    {
+     "repeat": "$count",
+     "do": "fillFold",
+     "fillings": "$fillings",
+     "exclude": "$no",
+     "decoyPool": "$fillings_all",
+     "index": "$i",
+     "total": "$count"
+    },
+    {
+     "do": "interrupt"
+    },
+    {
+     "do": "fry",
+     "kind": "samosa",
+     "count": "$count"
+    },
+    {
+     "do": "serve",
+     "key": "samosa",
+     "count": "$count"
+    }
+   ],
+   "lists": {
+    "fillings_all": [
+     "ph-keema",
+     "veg-01",
+     "veg-10",
+     "veg-02",
+     "veg-12",
+     "ph-dhana"
+    ]
+   }
   },
   "mishkaki": {
    "name": "ph-mishkaki",
@@ -760,10 +1412,84 @@
     "grill",
     "fry"
    ],
-   "chips": [
+   "lists": {
+    "skewer": [
+     "ph-meat",
+     "veg-02",
+     "ph-pepper",
+     "veg-03"
+    ]
+   },
+   "slots": {
+    "seq": {
+     "type": "items",
+     "taste": "pattern",
+     "tasteChance": 0.5,
+     "first": [
+      "ph-meat"
+     ],
+     "from": "$skewer",
+     "take": [
+      3,
+      3
+     ],
+     "repeats": true,
+     "order": "sequence"
+    },
+    "chips": {
+     "chance": 0.6
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "ph-mishkaki"
+     ]
+    },
+    {
+     "list": "$seq"
+    },
+    {
+     "if": "chips",
+     "frame": "and",
+     "x": [
+      "ph-chips"
+     ]
+    }
+   ],
+   "need": [],
+   "steps": [
     "Skewer",
     "Grill",
     "Chips"
+   ],
+   "run": [
+    {
+     "do": "thread",
+     "sequence": "$seq",
+     "pool": "$skewer"
+    },
+    {
+     "do": "grill",
+     "skewer": "$seq"
+    },
+    {
+     "if": "chips",
+     "do": "interrupt"
+    },
+    {
+     "if": "chips",
+     "do": "fry",
+     "kind": "chips",
+     "count": 1
+    },
+    {
+     "do": "serve",
+     "key": "mishkaki",
+     "count": 1,
+     "seq": "$seq"
+    }
    ]
   }
  },
@@ -858,6 +1584,438 @@
    "verb": "Grill",
    "goal": "Turn the skewer when the ring reaches green."
   }
+ },
+ "mechanics": {
+  "_about": "Difficulty as data. Each mechanic's levels: level 1 is the Phase A game exactly; each later level lists only what changes. `profiles` hold settings for one use of a mechanic (pour into a cup). Upgrades change knobs through upgrades[].knobs. Timings are fractions of a ring (0-1) and rates are ring-fills per second. A combined station's own levels can live in data/stations/<id>.json.",
+  "fetch": {
+   "levels": [
+    {
+     "shelf": 11,
+     "minDecoys": 5,
+     "lookalikes": 2,
+     "flyMs": 520
+    },
+    {
+     "shelf": 13,
+     "lookalikes": 3
+    },
+    {
+     "shelf": 14,
+     "minDecoys": 7
+    }
+   ]
+  },
+  "passme": {
+   "levels": [
+    {
+     "options": 3
+    }
+   ]
+  },
+  "pour": {
+   "levels": [
+    {
+     "rate": 0.3,
+     "bandScale": 1,
+     "enoughUntilStage": 2,
+     "spillScore": 45,
+     "auto": false,
+     "instant": false,
+     "profiles": {
+      "cup": {
+       "rate": 0.35
+      }
+     }
+    },
+    {
+     "rate": 0.36,
+     "bandScale": 0.8,
+     "enoughUntilStage": 1,
+     "profiles": {
+      "cup": {
+       "rate": 0.42
+      }
+     }
+    },
+    {
+     "rate": 0.42,
+     "bandScale": 0.65,
+     "enoughUntilStage": 0,
+     "profiles": {
+      "cup": {
+       "rate": 0.5
+      }
+     }
+    }
+   ]
+  },
+  "add": {
+   "levels": [
+    {
+     "flyMs": 380
+    }
+   ]
+  },
+  "boil": {
+   "levels": [
+    {
+     "band": [
+      0.66,
+      0.86
+     ],
+     "rate": 0.17,
+     "rise": 0.18,
+     "passMeAfterMs": 1400,
+     "overScore": 40,
+     "instant": false,
+     "instantMs": 700
+    },
+    {
+     "band": [
+      0.7,
+      0.85
+     ],
+     "rate": 0.21
+    },
+    {
+     "band": [
+      0.72,
+      0.84
+     ],
+     "rate": 0.25
+    }
+   ]
+  },
+  "count": {
+   "levels": [
+    {
+     "max": 6
+    }
+   ]
+  },
+  "knead": {
+   "levels": [
+    {
+     "presses": 8,
+     "auto": false
+    },
+    {
+     "presses": 10
+    },
+    {
+     "presses": 12
+    }
+   ]
+  },
+  "roll": {
+   "levels": [
+    {
+     "radius": 170,
+     "startRadius": 60,
+     "band": [
+      0.92,
+      1.1
+     ],
+     "grow": 0.15,
+     "maxSize": 1.45,
+     "tearAt": 1.3,
+     "tornScore": 45,
+     "doneAt": 0.8,
+     "quietMs": 700,
+     "maxCount": 6
+    },
+    {
+     "band": [
+      0.94,
+      1.08
+     ],
+     "grow": 0.18,
+     "tearAt": 1.25
+    },
+    {
+     "band": [
+      0.95,
+      1.06
+     ],
+     "grow": 0.2,
+     "tearAt": 1.2
+    }
+   ]
+  },
+  "tawa": {
+   "levels": [
+    {
+     "band": [
+      0.6,
+      0.82
+     ],
+     "rate": 0.24,
+     "rate2": 0.26,
+     "speedUp": 0.08,
+     "burntScore": 40,
+     "tawas": 1,
+     "passMeAfterMs": 1500
+    },
+    {
+     "tawas": 2,
+     "rate": 0.26,
+     "rate2": 0.28
+    },
+    {
+     "tawas": 2,
+     "band": [
+      0.64,
+      0.8
+     ],
+     "rate": 0.3,
+     "rate2": 0.32
+    }
+   ]
+  },
+  "chop": {
+   "levels": [
+    {
+     "inAir": 3,
+     "every": 1.1,
+     "fasterPerStage": 0.12,
+     "fasterMax": 0.5,
+     "targetBias": 0.55,
+     "throwSpeed": [
+      1300,
+      1400
+     ],
+     "gravity": 1250,
+     "sharp": false
+    },
+    {
+     "inAir": 4,
+     "every": 0.95,
+     "targetBias": 0.45
+    },
+    {
+     "inAir": 5,
+     "every": 0.8,
+     "targetBias": 0.4,
+     "throwSpeed": [
+      1350,
+      1500
+     ],
+     "gravity": 1400
+    }
+   ]
+  },
+  "tadka": {
+   "levels": [
+    {
+     "shelf": [
+      "spi-02",
+      "spi-05",
+      "spi-01",
+      "veg-12",
+      "spi-16",
+      "veg-13"
+     ],
+     "autoTip": false,
+     "ladder": "words"
+    },
+    {
+     "ladder": "dots"
+    },
+    {
+     "shelf": [
+      "spi-02",
+      "spi-05",
+      "spi-01",
+      "veg-12",
+      "spi-16",
+      "veg-13",
+      "spi-04",
+      "spi-10"
+     ],
+     "ladder": "hidden"
+    }
+   ]
+  },
+  "stir": {
+   "levels": [
+    {
+     "zones": {
+      "slow": [
+       0.25,
+       0.75
+      ],
+      "quick": [
+       1.2,
+       2.6
+      ],
+      "any": [
+       0.2,
+       3
+      ]
+     },
+     "speedWords": {
+      "slow": "slowly",
+      "quick": "quickly"
+     },
+     "lap": 1,
+     "deadZone": 30,
+     "reach": 480,
+     "okFrac": 0.5,
+     "quietMs": 900
+    },
+    {
+     "zones": {
+      "slow": [
+       0.3,
+       0.7
+      ],
+      "quick": [
+       1.3,
+       2.4
+      ]
+     },
+     "okFrac": 0.6
+    },
+    {
+     "zones": {
+      "slow": [
+       0.35,
+       0.65
+      ],
+      "quick": [
+       1.4,
+       2.2
+      ]
+     },
+     "okFrac": 0.7
+    }
+   ]
+  },
+  "assemble": {
+   "levels": [
+    {
+     "decoys": 1,
+     "decoyPick": "random",
+     "flyMs": 420
+    },
+    {
+     "decoys": 2
+    },
+    {
+     "decoys": 3
+    }
+   ]
+  },
+  "fill": {
+   "levels": [
+    {
+     "decoys": 1,
+     "decoyPick": "first"
+    },
+    {
+     "decoys": 2,
+     "decoyPick": "random"
+    }
+   ]
+  },
+  "fold": {
+   "levels": [
+    {
+     "folds": 3,
+     "minLen": 0.45,
+     "minDot": 0.6
+    },
+    {
+     "minLen": 0.6,
+     "minDot": 0.75
+    }
+   ]
+  },
+  "fry": {
+   "levels": [
+    {
+     "band": [
+      0.62,
+      0.84
+     ],
+     "rate": [
+      0.13,
+      0.18
+     ],
+     "extraOnTray": 1,
+     "burnAt": 1.15,
+     "burntScore": 40,
+     "items": {
+      "samosa": {
+       "art": "pastry:3",
+       "scale": 0.36
+      },
+      "chips": {
+       "art": "bowl:ph-chips",
+       "scale": 0.6
+      }
+     }
+    },
+    {
+     "band": [
+      0.66,
+      0.82
+     ],
+     "rate": [
+      0.15,
+      0.22
+     ],
+     "extraOnTray": 2
+    },
+    {
+     "band": [
+      0.68,
+      0.8
+     ],
+     "rate": [
+      0.17,
+      0.26
+     ],
+     "extraOnTray": 2
+    }
+   ]
+  },
+  "thread": {
+   "levels": [
+    {
+     "decoys": null
+    }
+   ]
+  },
+  "grill": {
+   "levels": [
+    {
+     "band": [
+      0.62,
+      0.84
+     ],
+     "rate": 0.22,
+     "rateSpread": 0.3,
+     "sides": 2,
+     "skewers": 1,
+     "burntScore": 40
+    },
+    {
+     "skewers": 2
+    },
+    {
+     "skewers": 3,
+     "band": [
+      0.65,
+      0.82
+     ]
+    }
+   ]
+  }
+ },
+ "art": {
+  "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
+  "props": []
  },
  "days": [
   {
@@ -1121,7 +2279,13 @@
    "special": true,
    "price": 30,
    "effect": "Things fly into it twice as fast, and every order earns 2 extra coins.",
-   "idea": "A two-basket trolley: fetch for two orders in one trip (Busy mode)."
+   "idea": "A two-basket trolley: fetch for two orders in one trip (Busy mode).",
+   "knobs": {
+    "fetch": {
+     "flyMs": 260,
+     "special": true
+    }
+   }
   },
   {
    "id": "jug",
@@ -1131,7 +2295,15 @@
    "special": true,
    "price": 35,
    "effect": "Pouring stops at the line by itself.",
-   "idea": "A measuring jug with marked lines (a quarter, a half, full) that Nani names in Kutchi."
+   "idea": "A measuring jug with marked lines (a quarter, a half, full) that Nani names in Kutchi.",
+   "knobs": {
+    "pour": {
+     "auto": true,
+     "specialJug": [
+      "cook-paani"
+     ]
+    }
+   }
   },
   {
    "id": "machine",
@@ -1140,7 +2312,17 @@
    "image": "chai-machine",
    "price": 60,
    "effect": "Boils and pours the chai for you. You still add what's asked for.",
-   "idea": "A brass chai machine; a cheaper tier is a milk-watcher disc that rattles before the pan boils over."
+   "idea": "A brass chai machine; a cheaper tier is a milk-watcher disc that rattles before the pan boils over.",
+   "knobs": {
+    "boil": {
+     "instant": true
+    },
+    "pour.cup": {
+     "instant": true,
+     "instantMs": 500,
+     "instantLevel": 0.82
+    }
+   }
   },
   {
    "id": "mixer",
@@ -1150,7 +2332,12 @@
    "special": true,
    "price": 40,
    "effect": "Kneads the dough for you.",
-   "idea": "An atta-kneading machine (dough maker)."
+   "idea": "An atta-kneading machine (dough maker).",
+   "knobs": {
+    "knead": {
+     "auto": true
+    }
+   }
   },
   {
    "id": "pin",
@@ -1160,7 +2347,14 @@
    "special": true,
    "price": 30,
    "effect": "Rolls twice as fast and never goes too big.",
-   "idea": "A tapered belan, then a chapati press that makes a perfect circle in one push."
+   "idea": "A tapered belan, then a chapati press that makes a perfect circle in one push.",
+   "knobs": {
+    "roll": {
+     "grow": 0.3,
+     "maxSize": 1.02,
+     "special": true
+    }
+   }
   },
   {
    "id": "tawa",
@@ -1170,7 +2364,16 @@
    "special": true,
    "price": 40,
    "effect": "The flip window is twice as wide.",
-   "idea": "A heavy cast-iron tawa, then a roti jali (mesh) for a guaranteed puff."
+   "idea": "A heavy cast-iron tawa, then a roti jali (mesh) for a guaranteed puff.",
+   "knobs": {
+    "tawa": {
+     "band": [
+      0.5,
+      0.9
+     ],
+     "special": true
+    }
+   }
   },
   {
    "id": "knife",
@@ -1179,7 +2382,13 @@
    "image": "knife-gold",
    "price": 25,
    "effect": "Chop in 2 swipes instead of 4.",
-   "idea": "A sharp chef's knife, then a pull-cord vegetable chopper."
+   "idea": "A sharp chef's knife, then a pull-cord vegetable chopper.",
+   "knobs": {
+    "chop": {
+     "sharp": true,
+     "special": true
+    }
+   }
   },
   {
    "id": "helper",
@@ -1199,7 +2408,12 @@
    "special": true,
    "price": 30,
    "effect": "Tips itself into the daal once the spices are in. (You still add them in the order Nani says.)",
-   "idea": "A long-handled tadka ladle that pours straight into the pot."
+   "idea": "A long-handled tadka ladle that pours straight into the pot.",
+   "knobs": {
+    "tadka": {
+     "autoTip": true
+    }
+   }
   },
   {
    "id": "pot",
@@ -1209,7 +2423,14 @@
    "special": true,
    "price": 30,
    "effect": "Small, wobbly circles count as a stir.",
-   "idea": "A long wooden ladle (doi); later a pressure cooker whose whistles you count."
+   "idea": "A long wooden ladle (doi); later a pressure cooker whose whistles you count.",
+   "knobs": {
+    "stir": {
+     "lap": 0.8,
+     "deadZone": 12,
+     "special": true
+    }
+   }
   },
   {
    "id": "thali",
@@ -1230,7 +2451,16 @@
    "special": true,
    "price": 35,
    "effect": "The green window for lifting fried food is twice as wide.",
-   "idea": "A jharo (slotted spoon) and a frying basket that lifts everything at once."
+   "idea": "A jharo (slotted spoon) and a frying basket that lifts everything at once.",
+   "knobs": {
+    "fry": {
+     "band": [
+      0.5,
+      0.92
+     ],
+     "special": true
+    }
+   }
   },
   {
    "id": "bigspoon",
@@ -1240,7 +2470,12 @@
    "special": true,
    "price": 25,
    "effect": "Toppings fly into the bowl twice as fast, and every chaat order earns 2 extra coins.",
-   "idea": "A set of matching brass katoris and spoons for a chaat counter."
+   "idea": "A set of matching brass katoris and spoons for a chaat counter.",
+   "knobs": {
+    "assemble": {
+     "flyMs": 220
+    }
+   }
   }
  ],
  "no_upgrade": {

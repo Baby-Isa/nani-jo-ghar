@@ -55,6 +55,14 @@ An **African grey**, a common East African household parrot. It gives cheap, fun
 - **Rule:** it speaks only in idle moments (the hub, arriving, between orders), **never during a task**, so it can't give an answer away.
 - **Name: Kasuku** (decided 24 Sept 2026) — Swahili for "parrot", a nod to East Africa.
 
+## Skin tones (Zafar, 24 Sept)
+
+**Zafar's skin tone is the basis for every generated character**: the player's hands and all generic family members (Nana, Ma, Ali, Isa, guests, shopkeepers). That's a warm light tan: midtone about `#C49A78`, highlights `#D8B894`, shadows `#A07A60`, and a daylight face tone around `#BE826B`. Never orange, never oversaturated.
+
+- **Generic characters:** vary it only slightly between people (a little lighter or deeper, warmer or cooler) so the family reads as related, not identical.
+- **Real-likeness characters** (Nani, Big Ma, the doctor) follow their own photos, rendered in the same warm, unsaturated way.
+- **To do:** fold this into the art bible's palette and characters sections when the art branch is merged; the art pipeline's current hand work already uses it.
+
 ## Likeness notes (from the family's photos, 24 Sept)
 
 The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `bigma-*`, `doctor-*`, `cats-*`, `simba-*`) and are never committed. These notes are what the character sheets must keep. Stylise them in the game's 3D-film look; never caricature.

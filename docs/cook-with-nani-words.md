@@ -6,7 +6,7 @@
 
 ## Rules followed
 
-- **No Kutchi is invented.** Sentences only recombine frames that are already in the content master: *Muke … khape*, *Ne …*, *Salamun alaykum*, *Wa alaikum salaam*, *Aabhar aanjo*, *Achija*, *Arre re*, *Hedo*, plus Zafar's draft linker *Ne poi …* (and then). The frames an order uses live in `data/cook.json` (`order_speech`), not in the code.
+- **No Kutchi is invented.** Sentences only recombine frames that are already in the content master: *Muke … khape*, *Ne …*, *Salamun alaykum*, *Wa alaikum salaam*, *Aabhar aanjo*, *Achija*, *Arre re*, *Hedo*, plus Zafar's draft linker *Ne poi …* (and then). The frames an order uses live in `data/cook.json` (`grammar`: `order`, `list`, `no`, `then`, `then_word`), not in the code.
 - **Placeholder voice: Gujarati text-to-speech at about half speed** (Zafar, 24 Sept: "use Gujarati audio and play it half speed or slower"). Every line the game can say has a file in `assets/audio/cook-tts/`, made by `build/build_cook_tts.py`, which writes each romanised word in Gujarati script so the voice can read it. The bubble says "placeholder voice". Some Kutchi sounds will be wrong: it's a Gujarati voice. **A family recording replaces a file of the same name** (the names are the lines, e.g. `muke-chai-khape.mp3`, listed in `data/cook-tts.json`).
 - **Cooking verbs have no Kutchi yet.** Nani shows each action by making the item glow, and a short English how-to line appears in the sidebar. When the family gives the verbs, they replace those English lines.
 

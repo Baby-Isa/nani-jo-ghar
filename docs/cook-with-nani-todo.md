@@ -18,7 +18,7 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 ### Pre-wave: "can you win without the Kutchi?" audit ☑
 - ☑ Audit of the current build and the planned redesigns → `docs/cook-with-nani-kutchi-audit.md`; its fixes feed Waves 2 and 3
 
-### Wave 2: shared systems ◐
+### Wave 2: shared systems ☑
 - ☑ **Order ladder** on the mission card: dots joined by a dashed line = sequence; items that can go in any order share a dot; "no X" rows; each row has speaker, 👁 tap to reveal and translate (both cost the ear star)
 - ☑ Voice links steps with *ne poi* ("and then", draft, Mum to confirm)
 - ☑ Sidebar order: order card on top (never moves), Nani's line, then the goal (full the first time, then a small "?")
@@ -29,7 +29,10 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☑ Draft words (not confirmed): dai (yoghurt), channa (chickpeas), ghos (meat), bajr jo maani (millet chapati), ne poi (and then)
 - ☑ **Help costs** (audit fix 1): being shown the answer (hesitation glow, the highlight after two misses, 👁, translate, incl. "pass me") costs the ear star; hearing it again costs the no-help star; Busy help drains patience; from word stage 3 counts are silent digits and the target's label speaker counts as help
 - ☑ Step chips the same for every order of a dish; "pass me" choices from one look-alike group
-- ☐ **Station building blocks:** every mechanic (pour, spoon, boil, roll, flip, thread, grill-turn, …) usable on its own *or* inside a combined station; difficulty settings as data (levels 2+ come from the settings, not new code); a "how to add a recipe" guide
+- ☑ **Station building blocks:** every mechanic is one file in `js/cook/mechanics/`, usable on its own *or* inside a zone of a combined station (`js/cook/zone.js`, proof: lab-only Roll → Tawa); difficulty levels as data (`data.mechanics.<id>.levels`, Station lab level buttons); recipes wholly as data; grammar and verdict words in data; a "how to add a recipe" guide (`docs/cook-with-nani-recipes-guide.md`)
+- ☑ Waves 2a and 2b merged: the order ladder is built from the recipe data's own rows (`R.<id>.ladder` → `Cook.Order.ladder`, one source of truth); *ne poi* and the order frames live in `data.grammar`; step chips are the recipe's `steps` (the same for every order); help costs, pass-me groups and the tadka ladder ticks run in the new mechanic files; hint timers follow game speed
+- ☐ Left from Wave 2: the tadka mechanic's `ladder` knob (words / dots / hidden per level) is in the data but not yet read by the mission card (the card goes plain once *ne poi* reaches word stage 3); placeholder voices for the draft words still need a TTS run with network
+- ☐ Test note: headless Chromium here draws WebGL in software at 6-11 fps, so timing scores (tawa, fry, grill, stir speed) read low on WebGL runs and a WebGL `--days 7` takes ~40 min; `--canvas` runs at 60 fps (all seven days in ~11 min). Worth a look on a real device that timing windows still feel fair
 
 ### Wave 3: stations ☐
 - ☐ **Mishkaki grill:** skewers point away from you (wooden handle at the bottom, off the grill); the order says how many and which kind (meat, veg, mixed); tap the rack to put one on; each lands at a different time with its own ring; juggle up to 3–4. Threading feeds it

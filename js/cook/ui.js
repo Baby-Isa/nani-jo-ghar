@@ -274,9 +274,11 @@
       const w = Cook.data.words[id];
       return !!(w && (w.heap || w.image));
     };
-    const g = groups.find((x) => x.filter((id) => id !== want && drawable(id)).length >= 2);
+    // how many to choose from is the mechanic's knob (data.mechanics.passme)
+    const n = Math.max(1, options.length - 1);
+    const g = groups.find((x) => x.filter((id) => id !== want && drawable(id)).length >= n);
     if (!g) return options;
-    return [want].concat(Cook.shuffle(g.filter((id) => id !== want && drawable(id))).slice(0, 2));
+    return [want].concat(Cook.shuffle(g.filter((id) => id !== want && drawable(id))).slice(0, n));
   }
   UI.passMeOptions = passMeOptions;
   UI.passMe = function (want, options, opts = {}) {
