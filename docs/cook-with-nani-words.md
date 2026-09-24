@@ -72,7 +72,7 @@ Full orders the prototype builds, for recording as whole sentences:
 1. **Plurals.** Is it *bo maani*, or does maani change for two or more? What about *trae khun*? Would you say three *spoons* of sugar, and if so, what's the word for spoon?
 2. **Ordering food.** Is *Muke chai khape* ("I need chai") natural for someone asking for food at home? Or would they say *Muke chai dine* (the "give me" frame from the handout), or something else?
 3. **Verbs, to replace the English how-to lines.** Pour (to the line), boil, turn it down, add, knead, roll, flip, press, chop, stir, serve, enough, first/then, *It's boiling!*, *well done*, *your turn*, *watch me*, *the usual*.
-4. **Kinship.** The customers are shown as Nana, Ma and Bilal (a cousin). What does a child call their mother, and a cousin, in Kutchi?
+4. **Kinship.** The customers are shown as Nana, Ma and Ali (a cousin). What does a child call their mother, and a cousin, in Kutchi?
 5. **Nani's look.** In the new art, Nani's grey hair shows at the front of her headscarf. Is that right for the family?
 6. **Dishes.** Are chai, maani and daal (with a jeeru and rai tadka) how Nani would really cook them? What would she add?
 

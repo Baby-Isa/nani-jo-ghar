@@ -210,15 +210,28 @@ class Player:
         else:
             raise AssertionError(f"unknown expectation {k}")
 
-    def play(self, until, timeout=900):
+    def play(self, until, timeout=900, close_kitchen_after=None):
         t0 = time.time()
         last_kind = None
         last_view = None
         idle = 0
+        closed = False
         while not until():
             if time.time() - t0 > timeout:
                 self.shot("timeout")
                 raise AssertionError("timed out playing")
+            # open kitchen (free cooking): close it ourselves once enough
+            # customers have been served, instead of waiting forever
+            if close_kitchen_after is not None and not closed:
+                try:
+                    served = self.page.evaluate("__cook.state().dayCards")
+                except Exception:
+                    served = 0
+                if served >= close_kitchen_after and self.page.query_selector("#close-kitchen:not([disabled])"):
+                    self.shot("close-kitchen")
+                    self.page.click("#close-kitchen")
+                    closed = True
+                    time.sleep(0.2)
             try:
                 view = self.page.evaluate("__cook.state().view")
             except Exception:
@@ -259,7 +272,28 @@ class Player:
                 self.wait_change(e, timeout=25)
 
 
-def open_page(pw, vp, speed, busy):
+def open_kitchen_save(mode="relaxed"):
+    """A save with the story finished, so the title screen offers 'Free
+    cooking' (the open kitchen) right away, without playing six days first."""
+    recipes = ["chai", "maani", "daal", "chaat", "samosa", "mishkaki"]
+    return {
+        "v": 1,
+        "mode": mode,
+        "coins": 40,
+        "day": 7,
+        "best": {"1": 3, "2": 3, "3": 3, "4": 3, "5": 3, "6": 3},
+        "owned": [],
+        "slots": [],
+        "words": {},
+        "taught": {r: True for r in recipes},
+        "finished": True,
+        "freeRounds": 0,
+        "rulesSeen": True,
+        "playDays": [],
+    }
+
+
+def open_page(pw, vp, speed, busy, seed_save=None):
     browser = pw.chromium.launch(executable_path="/opt/pw-browsers/chromium" if os.path.exists("/opt/pw-browsers/chromium") else None, args=["--autoplay-policy=no-user-gesture-required"])
     ctx = browser.new_context(viewport={"width": vp["width"], "height": vp["height"]}, has_touch=vp["touch"])
     page = ctx.new_page()
@@ -269,7 +303,10 @@ def open_page(pw, vp, speed, busy):
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.goto(f"http://127.0.0.1:{PORT}/cook.html?speed={speed}")
-    page.evaluate("localStorage.clear()")
+    if seed_save is not None:
+        page.evaluate("(save) => localStorage.setItem('njg-cook-v1', JSON.stringify(save))", seed_save)
+    else:
+        page.evaluate("localStorage.clear()")
     page.goto(f"http://127.0.0.1:{PORT}/cook.html?speed={speed}")
     page.wait_for_selector("#panel h1", timeout=15000)
     if busy:

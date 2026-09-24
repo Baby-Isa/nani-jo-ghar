@@ -208,6 +208,7 @@ A station earns its place only if **it's fun on its own and at least one of its 
 3. **Every station has twists**, so it doesn't feel stale when it comes back.
 4. **Three or four stations per order**, about 2 minutes. Big dishes are for special days.
 5. **Looking straight down** means tools rotate and hands are reused, so new dishes are mostly ingredient art.
+6. **Every mode has a story route and a free-play route from the title screen.** The story route teaches a fixed sequence (a day, a level); the free-play route is open-ended, generates its own orders/rounds leaning towards the player's weakest words, and always gives the player an explicit way to end the session (e.g. Cook's "Close the kitchen") that leads into the same summary and pocket-money flow as the story route. Wave 3's open kitchen (below) is the first example.
 
 ## 11. Phase A checklist
 
@@ -289,9 +290,11 @@ Open `cook.html`. **Station lab** on the title screen runs any station on its ow
 | Samosa | How many, fillings, "no X" |
 | Mishkaki | Skewer order, chips or not |
 
-Customers have tastes: Nana, no chilli in his chaat; Ma, no milk and ginger in her chai; Bilal, extra sev.
+Customers have tastes: Nana, no chilli in his chaat; Ma, no milk and ginger in her chai; Ali, extra sev.
 
-**Six story days:** chai (Nani's demo first), maani, daal, chaat bowls, samosa, Eid mishkaki. Then free cooking and quick orders.
+**Six story days:** chai (Nani's demo first), maani, daal, chaat bowls, samosa, Eid mishkaki. Then free cooking (an open kitchen) and quick orders.
+
+**Free cooking is Nani's open kitchen (Wave 3):** customers keep arriving on their own — a gentle queue in Relaxed, overlapping a little sooner in Busy — each with a generated order leaning towards the player's weakest words (existing spaced-review logic, unchanged). A "Close the kitchen" button in the sidebar is always there while it's open; pressing it stops new customers arriving (finishing whoever's already ordering) and goes straight into the usual day summary and pocket money. "Quick order" is unchanged: one customer, then the summary, no closing needed.
 
 ## 13. Audit: can you win without understanding the words?
 
