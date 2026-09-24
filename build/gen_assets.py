@@ -178,9 +178,8 @@ def variant_path(base_path, i, variants):
     return f"{root}-v{i}{ext}"
 
 
-def compute_prompt_hash(prompt, mode, size, transparent, references, mask, variant_index):
-    payload = json.dumps(
-        {
+def compute_prompt_hash(prompt, mode, size, transparent, references, mask, variant_index, mirror=()):
+    fields = {
             "prompt": prompt,
             "mode": mode,
             "size": size,
@@ -188,9 +187,10 @@ def compute_prompt_hash(prompt, mode, size, transparent, references, mask, varia
             "references": references,
             "mask": mask,
             "variant": variant_index,
-        },
-        sort_keys=True,
-    )
+        }
+    if mirror:  # only when set, so existing manifest hashes stay valid
+        fields["mirror"] = sorted(mirror)
+    payload = json.dumps(fields, sort_keys=True)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
@@ -358,12 +358,22 @@ def _read_local(path, what):
         raise ConfigError(f"{what} not readable: {path} ({exc.strerror})") from None
 
 
-def api_edit(prompt, size, transparent, cfg, api_key, reference_paths, mask_path=None, pacer=None):
+def _mirrored_png(blob):
+    im = Image.open(io.BytesIO(blob)).transpose(Image.FLIP_LEFT_RIGHT)
+    buf = io.BytesIO()
+    im.save(buf, "PNG")
+    return buf.getvalue()
+
+
+def api_edit(prompt, size, transparent, cfg, api_key, reference_paths, mask_path=None, pacer=None, mirror=()):
     if requests is None:
         raise ConfigError("the 'requests' package is required for real API calls")
     # Read every local file up front: a missing reference is a config error
     # and must fail fast, not go through the network retry/backoff loop.
     refs = [(os.path.basename(p), _read_local(p, "reference image")) for p in reference_paths]
+    # `mirror_references`: flip these references left-right before upload,
+    # e.g. to start a left hand from a right-hand reference.
+    refs = [(name, _mirrored_png(blob) if i in mirror else blob) for i, (name, blob) in enumerate(refs)]
     mask = (os.path.basename(mask_path), _read_local(mask_path, "mask")) if mask_path else None
 
     def fn():
@@ -429,6 +439,153 @@ def silhouette_iou(im_a, im_b, size=256, threshold=128):
 def drift_check(candidate_path, master_path, threshold=DEFAULT_DRIFT_THRESHOLD):
     iou = silhouette_iou(Image.open(candidate_path), Image.open(master_path))
     return iou, iou >= threshold
+
+
+# --------------------------------------------------------------------------
+# Skin normaliser (hands): measure the masked skin midtone and colour-match
+# it back to the reference hand's midtone. Skin only: the white sleeve,
+# coloured sleeves, bangles and nails are kept out of (or barely touched
+# by) the soft mask, and chroma is scaled rather than shifted, so pale
+# nails keep their own hue instead of being pushed through grey to lilac.
+# --------------------------------------------------------------------------
+
+_D65 = np.array([0.95047, 1.0, 1.08883])
+_M_RGB2XYZ = np.array([[0.4124564, 0.3575761, 0.1804375],
+                       [0.2126729, 0.7151522, 0.0721750],
+                       [0.0193339, 0.1191920, 0.9503041]])
+_M_XYZ2RGB = np.linalg.inv(_M_RGB2XYZ)
+
+
+def rgb_to_lab(rgb):
+    """sRGB (0-255, [..., 3]) to CIE Lab (D65)."""
+    c = np.asarray(rgb, dtype=np.float64) / 255.0
+    lin = np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+    xyz = lin @ _M_RGB2XYZ.T / _D65
+    f = np.where(xyz > (6 / 29) ** 3, np.cbrt(xyz), xyz / (3 * (6 / 29) ** 2) + 4 / 29)
+    return np.stack([116 * f[..., 1] - 16, 500 * (f[..., 0] - f[..., 1]), 200 * (f[..., 1] - f[..., 2])], axis=-1)
+
+
+def lab_to_rgb(lab):
+    lab = np.asarray(lab, dtype=np.float64)
+    fy = (lab[..., 0] + 16) / 116
+    f = np.stack([fy + lab[..., 1] / 500, fy, fy - lab[..., 2] / 200], axis=-1)
+    xyz = np.where(f > 6 / 29, f ** 3, 3 * (6 / 29) ** 2 * (f - 4 / 29)) * _D65
+    lin = np.clip(xyz @ _M_XYZ2RGB.T, 0, 1)
+    c = np.where(lin <= 0.0031308, lin * 12.92, 1.055 * lin ** (1 / 2.4) - 0.055)
+    return np.clip(c * 255.0 + 0.5, 0, 255)
+
+
+def hex_to_rgb(h):
+    h = h.lstrip("#")
+    return np.array([int(h[i:i + 2], 16) for i in (0, 2, 4)], dtype=np.float64)
+
+
+def rgb_to_hex(rgb):
+    r, g, b = (int(round(float(v))) for v in rgb)
+    return f"#{r:02X}{g:02X}{b:02X}"
+
+
+def _ramp(x, lo, hi):
+    return np.clip((x - lo) / (hi - lo), 0.0, 1.0)
+
+
+def skin_weight(im):
+    """Soft 0..1 skin mask for a hand sprite. Skin is an opaque, mid-light,
+    moderately saturated warm colour.
+    Measured on the round-3 hand: skin Lab hue 55-65 and chroma 40-50;
+    the cream linen sleeve hue ~77 and chroma ~18. Excluded: transparent
+    pixels, white or cream fabric (low chroma, yellower hue), deep reds
+    (Nani's sleeve, hue below ~40), golds, greens, blues and very dark
+    pixels. Nails sit close to skin (hue ~56, chroma ~40) and are corrected
+    with it, proportionally."""
+    arr = np.asarray(im.convert("RGBA")).astype(np.float64)
+    lab = rgb_to_lab(arr[..., :3])
+    L, a, b = lab[..., 0], lab[..., 1], lab[..., 2]
+    C = np.hypot(a, b)
+    hue = np.degrees(np.arctan2(b, a))
+    w = _ramp(arr[..., 3], 1, 16)  # antialiased edges too, or they keep an orange fringe
+    w = w * _ramp(C, 16, 24) * (1 - _ramp(C, 60, 70))      # not white/cream fabric, not a vivid sleeve
+    w = w * _ramp(hue, 40, 48) * (1 - _ramp(hue, 67, 73))  # skin hues only: reds (sleeve) and golds/creams out
+    w = w * _ramp(L, 25, 35) * (1 - _ramp(L, 90, 96))      # not deep shadow, not specular white
+    return w, lab
+
+
+def measure_skin_midtone(im, min_pixels=400):
+    """Median Lab of the skin pixels in the middle band of lightness (30th
+    to 70th percentile), i.e. the midtone, not the highlights or shadows.
+    Returns (lab, hex, pixel_count) or (None, None, n) if too little skin."""
+    w, lab = skin_weight(im)
+    core = (w > 0.8) & (np.asarray(im.convert("RGBA"))[..., 3] >= 240)
+    n = int(core.sum())
+    if n < min_pixels:
+        return None, None, n
+    Ls = lab[..., 0][core]
+    lo, hi = np.percentile(Ls, [30, 70])
+    band = core & (lab[..., 0] >= lo) & (lab[..., 0] <= hi)
+    mid = np.median(lab[band], axis=0)
+    return mid, rgb_to_hex(lab_to_rgb(mid)), n
+
+
+def delta_e(lab1, lab2):
+    return float(np.linalg.norm(np.asarray(lab1) - np.asarray(lab2)))
+
+
+def normalise_skin(im, target_lab, tolerance=3.0):
+    """Colour-match an image's skin midtone to `target_lab` (skin only).
+    In LCh: lightness shifted, chroma scaled, hue rotated, each weighted by
+    the soft skin mask; alpha untouched. Returns (image, info dict)."""
+    target_lab = np.asarray(target_lab, dtype=np.float64)
+    mid, before_hex, n = measure_skin_midtone(im)
+    info = {"skin_before": before_hex, "skin_target": rgb_to_hex(lab_to_rgb(target_lab)), "skin_pixels": n}
+    if mid is None:
+        info.update(skin_after=None, skin_action="no skin found")
+        return im, info
+    de = delta_e(mid, target_lab)
+    info["skin_delta_e_before"] = round(de, 2)
+    if de <= tolerance:
+        info.update(skin_after=before_hex, skin_action="within tolerance")
+        return im, info
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    w, lab = skin_weight(im)
+    L, a, b = lab[..., 0], lab[..., 1], lab[..., 2]
+    C, h = np.hypot(a, b), np.arctan2(b, a)
+    mC, mh = np.hypot(mid[1], mid[2]), np.arctan2(mid[2], mid[1])
+    tC, th = np.hypot(target_lab[1], target_lab[2]), np.arctan2(target_lab[2], target_lab[1])
+    dL, kC, dh = target_lab[0] - mid[0], tC / max(mC, 1e-6), th - mh
+    L2 = L + dL * w
+    C2 = C * (1 + (kC - 1) * w)
+    h2 = h + dh * w
+    out_lab = np.stack([L2, C2 * np.cos(h2), C2 * np.sin(h2)], axis=-1)
+    rgba[..., :3] = lab_to_rgb(out_lab)
+    out = Image.fromarray(rgba.astype(np.uint8), "RGBA")
+    after_mid, after_hex, _ = measure_skin_midtone(out)
+    info.update(skin_after=after_hex, skin_action="corrected",
+                skin_delta_e_after=round(delta_e(after_mid, target_lab), 2) if after_mid is not None else None)
+    return out, info
+
+
+def skin_target_for(entry, cfg, cache={}):
+    """The skin midtone (Lab) an entry's output is normalised to, or None if
+    the entry isn't a hand or normalising is off. Order: the entry's own
+    `skin_target` hex, else the measured midtone of its `skin_reference`
+    image, else the config's `skin_normalise.reference` (the master hand).
+    Applies to groups starting with `skin_normalise.groups_prefix`, or any
+    entry with "skin_normalise": true."""
+    sk = cfg.get("skin_normalise") or {}
+    if entry.get("skin_normalise") is False or not sk:
+        return None
+    if entry.get("skin_normalise") is not True and not str(entry.get("group", "")).startswith(
+            tuple(sk.get("groups_prefix", ["hands"]))):
+        return None
+    if entry.get("skin_target"):
+        return rgb_to_lab(hex_to_rgb(entry["skin_target"]))
+    ref = resolve_path(entry.get("skin_reference") or sk.get("reference"))
+    if not ref or not os.path.exists(ref):
+        return None
+    key = (ref, os.path.getmtime(ref))
+    if key not in cache:
+        cache[key] = measure_skin_midtone(Image.open(ref))[0]
+    return cache[key]
 
 
 # --------------------------------------------------------------------------
@@ -536,6 +693,8 @@ def build_contact_sheet(group, data, out_dir, thumb=220, cols=5, label_h=24):
             im = Image.open(path).convert("RGBA") if os.path.exists(path) else None
             tiles.append((label, im))
 
+    if len(tiles) > 15:
+        cols = 8
     cell_w, cell_h = thumb, thumb + label_h
     rows = (len(tiles) + cols - 1) // cols
     canvas = Image.new("RGB", (cols * cell_w, rows * cell_h), (40, 40, 40))
@@ -554,7 +713,8 @@ def build_contact_sheet(group, data, out_dir, thumb=220, cols=5, label_h=24):
         else:
             draw.rectangle((x0, y0, x0 + thumb, y0 + thumb), outline=(200, 60, 60), width=2)
             draw.text((x0 + 8, y0 + thumb // 2 - 6), "missing", fill=(220, 120, 120), font=font)
-        draw.text((x0 + 4, y0 + thumb + 4), label, fill=(235, 235, 235), font=font)
+        short = label.replace("hand-", "").replace("nani-", "N ")
+        draw.text((x0 + 4, y0 + thumb + 4), short[:36], fill=(235, 235, 235), font=font)
 
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, f"{group}.png")
@@ -656,11 +816,12 @@ def run(args):
             print(f"[{eid}] SKIP (config error): {exc}")
             continue
         mask = entry.get("mask")
+        mirror = tuple(entry.get("mirror_references", []))
         unit_price = price_for_size(cfg, size)
 
         for i in range(variants):
             key = f"{eid}::v{i}"
-            phash = compute_prompt_hash(prompt, mode, size, transparent, references, mask, i)
+            phash = compute_prompt_hash(prompt, mode, size, transparent, references, mask, i, mirror)
             out_path = variant_path(out_base, i, variants)
             existing = manifest.get(key)
 
@@ -677,7 +838,7 @@ def run(args):
 
             planned_total += unit_price
             tasks.append(dict(key=key, eid=eid, entry=entry, mode=mode, size=size, transparent=transparent,
-                              prompt=prompt, references=references, mask=mask, unit_price=unit_price,
+                              prompt=prompt, references=references, mask=mask, mirror=mirror, unit_price=unit_price,
                               phash=phash, out_path=out_path))
 
     waves = plan_waves(tasks, assets_by_id)
@@ -715,7 +876,7 @@ def run(args):
             else:
                 ref_paths = [resolve_path(r) for r in t["references"]]
                 img = api_edit(t["prompt"], t["size"], t["transparent"], cfg, api_key, ref_paths,
-                               resolve_path(t["mask"]), pacer)
+                               resolve_path(t["mask"]), pacer, t["mirror"])
             billed = True
             os.makedirs(os.path.dirname(t["out_path"]), exist_ok=True)
             img.save(t["out_path"])
@@ -738,6 +899,15 @@ def run(args):
             return
         elapsed = time.monotonic() - t0
 
+        skin = {}
+        target = skin_target_for(entry, cfg)
+        if target is not None:
+            fixed, skin = normalise_skin(Image.open(t["out_path"]), target,
+                                         (cfg.get("skin_normalise") or {}).get("tolerance_delta_e", 3.0))
+            if skin.get("skin_action") == "corrected":
+                fixed.save(t["out_path"])
+            print(f"[{key}] skin {skin.get('skin_before')} -> {skin.get('skin_after')} ({skin.get('skin_action')})")
+
         status, iou = "done", None
         if mode == "reskin":
             master_out = resolve_path(assets_by_id[entry["master"]]["output"])
@@ -746,7 +916,7 @@ def run(args):
             print(f"[{key}] drift check {'OK' if ok else 'FAILED'} (IoU {iou:.3f})")
         record(key, {"status": status, "prompt_hash": t["phash"], "group": entry.get("group"), "mode": mode,
                      "output": t["out_path"], "cost": t["unit_price"], "iou": iou,
-                     "seconds": round(elapsed, 1)})
+                     "seconds": round(elapsed, 1), **skin})
         with stats_lock:
             stats["spent"] += t["unit_price"]
             stats["run"] += 1
@@ -789,6 +959,10 @@ def main():
     p.add_argument("--cutout", nargs=3, metavar=("BACKGROUND", "EDITED", "OUT"),
                     help="cut the added item out of an edited station image, then exit")
     p.add_argument("--shadow-out", metavar="PATH", help="with --cutout: also save the item's shadow as its own layer")
+    p.add_argument("--skin-measure", nargs="+", metavar="PNG", help="print each hand's masked skin midtone hex, then exit")
+    p.add_argument("--skin-normalise", nargs=2, metavar=("IN", "OUT"),
+                    help="colour-match a hand's skin to --skin-target (hex) or the master reference, then exit")
+    p.add_argument("--skin-target", metavar="HEX", help="with --skin-normalise: the target midtone hex")
 
     args = p.parse_args()
 
@@ -808,6 +982,23 @@ def main():
         background, edited, out = args.cutout
         item_path, shadow_path = cutout_from_diff(background, edited, out, shadow_out_path=args.shadow_out)
         print(f"wrote {item_path}" + (f" and {shadow_path}" if shadow_path else ""))
+        return
+
+    if args.skin_measure:
+        for path in args.skin_measure:
+            _, hx, n = measure_skin_midtone(Image.open(path))
+            print(f"{hx or 'no skin'}  ({n} px)  {path}")
+        return
+
+    if args.skin_normalise:
+        src, dst = args.skin_normalise
+        if args.skin_target:
+            target = rgb_to_lab(hex_to_rgb(args.skin_target))
+        else:
+            target = skin_target_for({"skin_normalise": True}, load_config(load_asset_list(args.asset_list)))
+        out, info = normalise_skin(Image.open(src), target, tolerance=0.0)
+        out.save(dst)
+        print(json.dumps(info))
         return
 
     run(args)

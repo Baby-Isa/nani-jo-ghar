@@ -10,7 +10,19 @@
       "default": 0.04
     },
     "max_concurrency": 3,
-    "min_request_gap_seconds": 20
+    "min_request_gap_seconds": 20,
+    "skin_normalise": {
+      "reference": "assets/characters/hands/hand-ref-master.png",
+      "reference_midtone": "#D69B6D",
+      "groups_prefix": [
+        "hands-master",
+        "hands-girl",
+        "hands-nani",
+        "hands-reference-eye"
+      ],
+      "tolerance_delta_e": 3.0,
+      "_note": "Every hand output's masked skin midtone is colour-matched back to the master reference's (Nani's to her own reference) when it is more than tolerance_delta_e (CIE Lab) away. build/gen_assets.py, normalise_skin()."
+    }
   },
   "defaults": {
     "size": "1024x1024",
@@ -20,10 +32,17 @@
   "templates": {
     "_comment": "Templates follow art bible section 9 (c) item, (e) hand pose, (f) reskin. {style} and {negative} are filled automatically. Hands (round 3, 24 Sept 2026): warm light tan skin (not orange, not saturated), slender hand with long fingers, no bones/knuckles/veins, plain white linen sleeve rolled back between elbow and wrist.",
     "hand_pose": "{style}\n\nThe right hand and forearm of a child of about 7, warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown (midtone about #C49A78, highlights about #D8B894, shadows about #A07A60); a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails; resting on a plain pale worktop. Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see only the BACK of the hand (palm facing down, against the worktop), never the palm; the forearm lies flat along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides, the hand is not raised or upright. Pose: {pose}. No tool or object in the hand. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern. This is the master reference hand every other hand pose and reskin is made from. Transparent background: hand and forearm only, with only a faint soft contact shadow where it touches the worktop; no other body parts.\n\n{negative}",
-    "hand_pose_from_ref": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 in a new pose: warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown (midtone about #C49A78, highlights about #D8B894, shadows about #A07A60); a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails. {camera} Pose: {pose}. No tool or object in the hand. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern, identical to the reference. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
+    "hand_pose_from_ref": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 in a new pose: warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown, exactly the skin colour of the reference; a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails. {camera} Pose: {pose}. No tool or object in the hand. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern, identical to the reference. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "hand_reskin": "{style}\n\nEdit the attached image. Change only the sleeve and accessories: {change}. Keep the hand exactly the same: identical outline, finger positions, skin, lighting, camera and size. Nothing else changes. Transparent background.\n\n{negative}",
     "ingredient": "{style}\n\nA single {item} for a cooking game. Camera: orthographic top-down view, camera directly overhead looking straight down at 90 degrees; only the top face of every object is visible; no horizon, no sides, no three-quarter angle; round things read as perfect circles, not ovals. {detail} Real size about {size_cm} cm. Only this food in frame: no hands, no fingers, no people, no utensils, no board. Centred, filling about 70% of the frame, a soft contact shadow directly under it towards the lower right. Transparent background.\n\n{negative}",
-    "hand_ref_revise": "{style}\n\nEdit the attached reference hand. Keep the camera exactly: orthographic top-down, directly overhead, BACK of the right hand up, palm down on the worktop, forearm lying flat and entering from the bottom edge of the frame. Keep the relaxed pose and the soft lighting. Change: (1) Skin: repaint it as warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown (midtone about #C49A78, highlights about #D8B894, shadows about #A07A60); the current skin is far too orange. (2) Shape: make the whole hand and forearm slimmer, and make the fingers noticeably longer relative to the palm: a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails. (3) Replace the embroidered kurta cuff entirely. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern. Transparent background: hand and forearm only, with only a faint soft contact shadow; no other body parts.\n\n{negative}"
+    "hand_ref_revise": "{style}\n\nEdit the attached reference hand. Keep the camera exactly: orthographic top-down, directly overhead, BACK of the right hand up, palm down on the worktop, forearm lying flat and entering from the bottom edge of the frame. Keep the relaxed pose and the soft lighting. Change: (1) Skin: repaint it as warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown (midtone about #C49A78, highlights about #D8B894, shadows about #A07A60); the current skin is far too orange. (2) Shape: make the whole hand and forearm slimmer, and make the fingers noticeably longer relative to the palm: a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails. (3) Replace the embroidered kurta cuff entirely. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern. Transparent background: hand and forearm only, with only a faint soft contact shadow; no other body parts.\n\n{negative}",
+    "hands_two_from_ref": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw BOTH hands and forearms of the same child of about 7 (the right hand on the right, the left hand on the left, a matching mirror-image pair), each exactly like the reference: warm light tan skin, not orange, not saturated, exactly the skin colour of the reference; slender, slim hands with long fingers relative to small, narrow palms; smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins. {camera} Both forearms enter from the bottom edge of the frame. Pose: {pose}. No tool or object in the hands. Sleeves: plain white linen shirt sleeves rolled back to between the elbow and the wrist, the roll just showing at the bottom edge (or cropped out), identical to the reference. Transparent background: two hands and forearms only, no other body parts.\n\n{negative}",
+    "hand_ref_to_eye_level": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 from a new camera. Camera: eye level, first person: we look straight ahead at our own right hand held up in front of us; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises vertically from the bottom edge of the frame; no worktop, no table. Pose: relaxed and upright, fingers gently together and pointing up towards the top of the frame, thumb relaxed at the left side, fingernails softly visible. Keep everything else identical to the reference: the same slender hand with long fingers relative to a small, narrow palm; smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins; exactly the same warm light tan skin colour (muted, slightly pinkish-beige light brown, not orange, not saturated); the same plain white linen shirt sleeve rolled back to between the elbow and the wrist, the soft roll just showing at the bottom edge of the frame. This is the master reference for every eye-level hand pose. Transparent background: hand and forearm only, no other body parts, no shadow.\n\n{negative}",
+    "hand_reskin_eid": "{style}\n\nEdit the attached image. Change only one thing: {change}. Keep the hand exactly the same: identical outline, finger positions, skin colour, sleeve, bangles, lighting, camera and size. Nothing else changes. Transparent background.\n\n{negative}",
+    "nani_ref": "{style}\n\nEdit the attached reference hand into Nani's hand: the {side} hand and forearm of a warm, graceful grandmother in her late sixties. Keep the camera, pose, framing and lighting exactly as in the reference. Change: (1) Hand: an older woman's hand, a little larger and fuller than the child's, with soft, gentle wrinkles over the knuckles and the back of the hand and a slightly looser skin texture, still smooth and stylised, never bony, no prominent veins; short, neat, natural nails, no polish. (2) Skin: warm and unsaturated, a soft muted light brown, a touch deeper than the reference, not orange, not grey. (3) Sleeve: replace the white linen with her deep-red kurta sleeve (deep madder red, about #9E1F2A), coming down to the wrist, with a narrow band of fine gold embroidery at the cuff. (4) Jewellery: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
+    "nani_ref_left": "{style}\n\nEdit the attached image of Nani's hand. It is now her LEFT hand (already flipped): keep the hand, pose, skin, camera, lighting and her deep-red sleeve with its gold-embroidered cuff exactly the same. Change only the jewellery: remove every ring, bracelet and bangle and replace them with: {jewellery}. Transparent background.\n\n{negative}",
+    "nani_pose": "{style}\n\nTwo images are attached. Image 1 is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly. Image 2 is a child's hand showing the POSE and CAMERA to copy: draw Nani's {side} hand in exactly that pose, from exactly that camera, with the same framing, the same empty gaps and the same forearm direction; ignore the child's skin and white sleeve. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. No tool or object in the hand. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
+    "nani_two_pose": "{style}\n\nThree images are attached. Image 1 is Nani's RIGHT hand and image 2 her LEFT hand: copy their older skin, deep-red sleeves with gold-embroidered cuffs and jewellery exactly. Image 3 shows a child's two hands in the POSE and CAMERA to copy: draw Nani's two hands (right hand on the right, left hand on the left) in exactly that pose, camera and framing, with the same empty gap where the rolling pin will sit; ignore the child's skin and white sleeves. Her hands are an older woman's: a little larger and fuller, soft gentle wrinkles, smooth and stylised, short natural nails. Right hand: {right}. Left hand: {left}. No tool or object in the hands. Transparent background: hands and forearms only, no other body parts.\n\n{negative}"
   },
   "assets": [
     {
@@ -63,59 +82,6 @@
       "_note": "Round 3 (24 Sept 2026): fresh generate with the updated hand_pose template."
     },
     {
-      "id": "hand-a1-flat-palm",
-      "group": "hands-master",
-      "output": "assets/characters/hands/master/hand-a1-flat-palm.png",
-      "mode": "edit",
-      "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
-      ],
-      "template": "hand_pose_from_ref",
-      "fields": {
-        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see only the BACK of the hand, palm facing down; the forearm enters from the bottom edge of the frame; no horizon, no sides.",
-        "pose": "flat palm pressed down on the worktop, fingers together and straight, as if pressing and kneading dough"
-      }
-    },
-    {
-      "id": "hand-b1-handle-grip",
-      "group": "hands-master",
-      "output": "assets/characters/hands/master/hand-b1-handle-grip.png",
-      "mode": "edit",
-      "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
-      ],
-      "template": "hand_pose_from_ref",
-      "fields": {
-        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see only the BACK of the hand, palm facing down; the forearm enters from the bottom edge of the frame; no horizon, no sides.",
-        "pose": "fingers curled around an invisible horizontal handle, as if holding a knife, thumb along the top; fist closed but hand still resting low over the worktop"
-      }
-    },
-    {
-      "id": "hand-c4-point",
-      "group": "hands-master",
-      "output": "assets/characters/hands/master/hand-c4-point.png",
-      "mode": "edit",
-      "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
-      ],
-      "template": "hand_pose_from_ref",
-      "fields": {
-        "camera": "Camera: eye level, back of the hand towards the viewer.",
-        "pose": "index finger extended pointing, other fingers curled -- the default tap/point hand"
-      }
-    },
-    {
-      "id": "hand-a1-girl",
-      "group": "hands-girl-reskin",
-      "output": "assets/characters/hands/girl/hand-a1-girl.png",
-      "mode": "reskin",
-      "master": "hand-a1-flat-palm",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      }
-    },
-    {
       "id": "ingredient-onion-whole",
       "group": "ingredients-onion",
       "output": "assets/items/cook/onion-whole.png",
@@ -139,7 +105,2652 @@
         "size_cm": "9 (the pile)"
       },
       "_comment": "A state: generated fresh, never edited from onion-whole (art bible section 8)."
+    },
+    {
+      "id": "hand-ref-eye",
+      "group": "hands-reference-eye",
+      "output": "assets/characters/hands/eye-level/hand-ref-eye.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_ref_to_eye_level",
+      "fields": {},
+      "variants": 2,
+      "_note": "Eye-level reference, an edit of the signed-off master. The chosen variant is copied to hand-ref-eye-level.png and every eye-level pose is edited from it."
+    },
+    {
+      "id": "hand-a1-flat-palm-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a1-flat-palm-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "flat palm pressed down on the worktop, fingers together and straight, thumb resting alongside, as if pressing and kneading dough"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-a2-heel-push-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a2-heel-push-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "heel of the palm pushing forwards into the worktop: the wrist bent back, the heel of the hand pressed down hard, the fingers together and lifted slightly off the worktop, angled up and forwards, as if pushing dough or an item away"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-a3-palm-up-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a3-palm-up-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; the hand is turned over, palm UP, so from above we see the palm and the inside of the fingers; the forearm lies along the worktop and enters from the bottom edge of the frame; no horizon, no sides.",
+        "pose": "palm up and open on the worktop, fingers together and relaxed, very slightly curved, thumb relaxed at the side, as if waiting to receive something ('here you are')"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-a3-palm-up-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a3-palm-up-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead and a little down at our own hand held out in front of us at chest height; the hand is turned palm UP, so we see the palm, foreshortened; the forearm enters from the bottom edge of the frame; no worktop.",
+        "pose": "palm up and open, held out forwards, fingers together and relaxed, pointing away from us, thumb relaxed at the side, as if offering or waiting to receive something"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-a4-reach-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a4-reach-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "reaching up and forwards towards a high shelf: arm extended towards the top of the frame, fingers spread and slightly curved, back of the hand towards us"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-a5-wave-f1-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a5-wave-f1-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "waving hello, frame 1 of 2: hand raised, fingers together pointing up, palm facing away from us, the whole hand tilted about 15 degrees to the LEFT at the wrist"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-a5-wave-f2-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a5-wave-f2-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "waving hello, frame 2 of 2: hand raised, fingers together pointing up, palm facing away from us, the whole hand tilted about 15 degrees to the RIGHT at the wrist"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-a6-palm-out-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a6-palm-out-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "palm pushed out forwards as for 'stop' or a high five: hand raised, wrist bent back, fingers straight up and slightly apart, palm facing away from us so we see the back of the hand"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-a7-hand-on-heart-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "right hand laid flat over our own heart (salaam, thank you): the forearm comes diagonally from the lower right corner of the frame, the hand lies flat, fingers together pointing to the left, back of the hand towards us"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-a8-cupped-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a8-cupped-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; the hand is turned over, palm UP, so from above we see the palm and the inside of the fingers; the forearm lies along the worktop and enters from the bottom edge of the frame; no horizon, no sides.",
+        "pose": "palm up with the fingers held together and curled up to make a shallow bowl, thumb pressed along the side, as if holding a small pile of seeds or spices; the inside of the cup is empty and visible from above"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-a8-cupped-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a8-cupped-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead and a little down at our own hand held out in front of us at chest height; the hand is turned palm UP, so we see the palm, foreshortened; the forearm enters from the bottom edge of the frame; no worktop.",
+        "pose": "palm up with the fingers held together and curled up to make a shallow cup, thumb along the side, held out in front as if catching drips of rain; the inside of the cup is empty"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-b1-handle-grip-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "a loose fist holding an invisible horizontal handle (knife, spatula, ladle) about 2.5 cm thick: the handle runs straight forwards through the hollow of the curled fingers and out of the front of the fist towards the top of the frame; the THUMB LIES STRAIGHT ALONG THE TOP OF THE HANDLE LINE, pointing forwards, not tucked into the fist; the curled fingers leave an open tunnel for the handle The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-b2-vertical-grip-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b2-vertical-grip-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "fist closed around an invisible vertical stick (pestle, churner) about 3 cm thick that points straight up at the camera: we look down on the top of the fist, where the curled index finger and the thumb wrapped over it make a round empty hole about 3 cm across in which the stick stands The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-b2-vertical-grip-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b2-vertical-grip-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "fist held upright in front of us around an invisible vertical handle about 3 cm thick (umbrella, broom, torch): fingers curled round the far side, thumb wrapped over the top of the index finger; a clear round tunnel through the fist from top to bottom where the handle passes The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-b3-stick-grip-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b3-stick-grip-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "a loose grip around an invisible stick about 2.5 cm thick (drumstick, racquet or bat handle) that leaves the top of the fist and points up and forwards at about 45 degrees; thumb along the side of the stick; a clear tunnel through the loosely curled fingers The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-b4-rolling-pin-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b4-rolling-pin-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "rolling a flatbread: both palms rest on the two ends of an invisible horizontal rolling pin about 3 cm thick lying across the frame, the hands about 25 cm apart; palms down, fingers extended forwards over the pin, slightly curved over it; a clear empty horizontal band under and between both hands where the pin sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-b5-hook-grip-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b5-hook-grip-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "hook grip: the four fingers curled together into a hook as if hooked through the loop of a jug handle, thumb resting on top of the handle; the hollow inside the hook, where the handle passes, is clearly empty The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-b5-hook-grip-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b5-hook-grip-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "hook grip in front of us: the four fingers curled together into a hook as if carrying a basket or bucket by its handle, thumb resting lightly against the index finger; the hollow inside the hook, where the handle passes, is clearly empty The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-c1-pinch-f1-open-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "fingertip pinch, open: thumb and index fingertips about 3 cm apart, ready to pick up something tiny; the other fingers loosely curled underneath"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-c1-pinch-f2-closed-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "fingertip pinch, closed: the thumb and index fingertips pressed together as if holding a tiny spice or bead between them (nothing drawn); the other fingers loosely curled underneath"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-c1-pinch-f1-open-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "fingertip pinch, open, held up in front of us: thumb and index fingertips about 3 cm apart, ready to pick something up; the other fingers loosely curled"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-c1-pinch-f2-closed-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "fingertip pinch, closed, held up in front of us: thumb and index fingertips pressed together as if holding a tiny bead or coin (nothing drawn); the other fingers loosely curled"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-c2-tripod-grip-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "tripod grip, as if holding a pen or teaspoon: thumb, index and middle fingertips meet around an invisible thin handle about 1 cm thick that runs forwards and slightly left out of the grip; ring and little fingers curled under The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-c3-side-pinch-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "side pinch, holding something thin and flat (a card, a chapati edge): the thumb pad pressed against the side of the curled index finger, with a thin straight slit between them where the flat edge sits; other fingers curled behind The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-c3-side-pinch-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "side pinch held up in front of us, holding something thin and flat (a card or photo) upright: the thumb pad pressed against the side of the curled index finger, with a thin straight slit between them where the flat edge sits; other fingers curled behind The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-c4-point-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c4-point-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "pointing index finger: the index finger straight and extended forwards towards the top of the frame, the other fingers curled under the palm, the thumb tucked alongside the middle finger"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-c4-point-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c4-point-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "pointing index finger: the index finger straight and pointing up and forwards, the other fingers curled into the palm, the thumb folded across them; the default tap hand"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-c5-two-hand-fold-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "folding with two hands: both hands close together in the middle of the frame, each with thumb and index fingertips pinched as if folding over the edge of a samosa or a cloth; the two pinches nearly meet in the centre; the other fingers loosely curled"
+      },
+      "camera": "T",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-d1-grab-f1-open-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "about to grab: hand hovering palm down, fingers spread and curved like a claw ready to close on something"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-d1-grab-f2-closed-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "grabbing: hand closed round an invisible object about 5 cm across (a vegetable), fingers wrapped round it and thumb against them, leaving a round empty hollow inside the grip where the object sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-d1-grab-f1-open-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "reaching to grab, in front of us: fingers spread and curved like a claw ready to close on something"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-d1-grab-f2-closed-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "grabbing, in front of us: hand closed round an invisible object about 5 cm across, fingers wrapped round it and thumb against them, leaving a round empty hollow inside the grip where the object sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-d2-c-hold-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d2-c-hold-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "C-shaped hold round an invisible upright glass about 7 cm across standing on the worktop: from above, the fingers and thumb curve round the glass in a C, leaving a clear, empty, round space 7 cm across inside the curve The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-d2-c-hold-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d2-c-hold-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "C-shaped hold round an invisible upright glass about 7 cm across held up in front of us: the fingers curve round the far side of the glass and the thumb the near side, leaving a clear, empty, upright round space inside the curve The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-d3-two-hand-bowl-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "two hands holding an invisible round bowl about 18 cm across from its two sides: palms turned in and slightly up, fingers curved under the bowl's rim; a clear, empty, round space about 18 cm across between the hands where the bowl sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-d4-squeeze-f1-half-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "squeezing, frame 1 of 2: fist half-closed round an invisible half lemon about 6 cm across, fingers curved round it, leaving a clear round hollow inside the grip The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-d4-squeeze-f2-tight-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "squeezing, frame 2 of 2: fist squeezed tight, fingers pressed hard into the palm, with only a small hollow left inside the grip The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-d5-throw-release-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d5-throw-release-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "throwing, the moment of release: the arm forwards, the wrist flicked forwards and the fingers just opening and spreading as they let go of a ball"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-d6-two-hand-catch-f1-open-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "about to catch, frame 1 of 2: both hands held out in front of us about 15 cm apart, palms facing forwards and slightly towards each other, fingers spread and curved, ready to catch a ball"
+      },
+      "camera": "E",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-d6-two-hand-catch-f2-closed-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "catching, frame 2 of 2: both hands together, cupped round an invisible ball about 8 cm across, fingers of each hand curled round it, leaving a clear round hollow between them where the ball sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-e1-thumbs-up-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e1-thumbs-up-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "thumbs up: fist closed with the thumb pointing straight up; we see the back and little-finger side of the fist"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e2-handshake-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e2-handshake-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "hand held out forwards for a handshake: the hand turned sideways, thumb up, palm facing left, fingers together pointing forwards and a little to the left"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e3-count-1-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e3-count-1-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, ONE: only the index finger straight up; the middle, ring and little fingers curled down into the palm; the thumb folded across them. Exactly one finger up"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e3-count-2-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e3-count-2-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, TWO: the index and middle fingers straight up and slightly apart; the ring and little fingers curled down; the thumb folded across them. Exactly two fingers up"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e3-count-3-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e3-count-3-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, THREE: the index, middle and ring fingers straight up and slightly apart; the little finger curled down; the thumb folded across it. Exactly three fingers up"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e3-count-4-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e3-count-4-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, FOUR: the index, middle, ring and little fingers straight up and slightly apart; only the thumb folded across the palm. Exactly four fingers up"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e3-count-5-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e3-count-5-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, FIVE: all four fingers and the thumb straight and spread wide apart. All five fingers up"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e4-clap-f1-apart-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "clapping, frame 1 of 2: both hands raised in front of us, palms facing each other about 20 cm apart, fingers together pointing up"
+      },
+      "camera": "E",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-e4-clap-f2-together-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "clapping, frame 2 of 2: both hands raised in front of us, palms pressed flat together, fingers together pointing up"
+      },
+      "camera": "E",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-e5-arm-up-fist-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "celebration: the right arm raised, elbow bent, the forearm rising vertically from the bottom edge, the hand in a closed fist at the top, back of the fist towards us (the left arm is this image mirrored)"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e6-stretch-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e6-stretch-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "stretching on waking: the right arm reaching straight up to the top of the frame, hand open with the fingers spread, back of the hand towards us (the left arm is this image mirrored)"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-e7-shrug-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-e7-shrug-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead and a little down at our own hand held out in front of us at chest height; the hand is turned palm UP, so we see the palm, foreshortened; the forearm enters from the bottom edge of the frame; no worktop.",
+        "pose": "a shrug, 'I don't know': the right hand held out to the side at chest height, palm up and open, fingers relaxed and slightly spread, the forearm coming in from the lower right (the left hand is this image mirrored)"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-f1-piano-f1-raised-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "piano hand, frame 1 of 2: the hand arched over an invisible keyboard below, seen from just behind and above, fingers curved down with the fingertips raised a little above the keys, as if about to play"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-f1-piano-f2-pressed-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "piano hand, frame 2 of 2: the hand arched over an invisible keyboard below, seen from just behind and above, fingers curved down with the fingertips pressing down onto the keys"
+      },
+      "camera": "E"
+    },
+    {
+      "id": "hand-f2-drum-cupped-t",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-f2-drum-cupped-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "hand-drum slap with a cupped hand: palm down, fingers together and slightly arched so the palm forms a shallow dome, the fingertips and the heel of the hand touching the surface (the flat-hand slap is A1)"
+      },
+      "camera": "T"
+    },
+    {
+      "id": "hand-f4-phone-two-hands-e",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "hands_two_from_ref",
+      "fields": {
+        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "holding a phone or camera up to take a photo: both hands in front of us holding an invisible horizontal phone about 15 x 7 cm, the thumbs on its near face at the two lower corners, the index fingers along its top edge behind it; the rectangular space between the hands is empty The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+      },
+      "camera": "E",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+    },
+    {
+      "id": "hand-girl-a1-flat-palm-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a1-flat-palm-t.png",
+      "mode": "reskin",
+      "master": "hand-a1-flat-palm-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a1-flat-palm-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a1-flat-palm-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-a1-flat-palm-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a2-heel-push-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a2-heel-push-t.png",
+      "mode": "reskin",
+      "master": "hand-a2-heel-push-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a2-heel-push-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a2-heel-push-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-a2-heel-push-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a3-palm-up-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a3-palm-up-t.png",
+      "mode": "reskin",
+      "master": "hand-a3-palm-up-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a3-palm-up-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a3-palm-up-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-a3-palm-up-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a3-palm-up-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a3-palm-up-e.png",
+      "mode": "reskin",
+      "master": "hand-a3-palm-up-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a3-palm-up-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a3-palm-up-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-a3-palm-up-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a4-reach-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a4-reach-e.png",
+      "mode": "reskin",
+      "master": "hand-a4-reach-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a4-reach-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a4-reach-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-a4-reach-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a5-wave-f1-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a5-wave-f1-e.png",
+      "mode": "reskin",
+      "master": "hand-a5-wave-f1-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a5-wave-f1-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a5-wave-f1-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-a5-wave-f1-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a5-wave-f2-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a5-wave-f2-e.png",
+      "mode": "reskin",
+      "master": "hand-a5-wave-f2-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a5-wave-f2-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a5-wave-f2-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-a5-wave-f2-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a6-palm-out-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a6-palm-out-e.png",
+      "mode": "reskin",
+      "master": "hand-a6-palm-out-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a6-palm-out-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a6-palm-out-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-a6-palm-out-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a7-hand-on-heart-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a7-hand-on-heart-e.png",
+      "mode": "reskin",
+      "master": "hand-a7-hand-on-heart-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a7-hand-on-heart-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a7-hand-on-heart-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-a7-hand-on-heart-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a8-cupped-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a8-cupped-t.png",
+      "mode": "reskin",
+      "master": "hand-a8-cupped-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a8-cupped-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a8-cupped-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-a8-cupped-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-a8-cupped-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-a8-cupped-e.png",
+      "mode": "reskin",
+      "master": "hand-a8-cupped-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-a8-cupped-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-a8-cupped-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-a8-cupped-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-b1-handle-grip-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-b1-handle-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-b1-handle-grip-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-b1-handle-grip-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-b1-handle-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-b1-handle-grip-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-b2-vertical-grip-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-b2-vertical-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-b2-vertical-grip-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-b2-vertical-grip-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-b2-vertical-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-b2-vertical-grip-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-b2-vertical-grip-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-b2-vertical-grip-e.png",
+      "mode": "reskin",
+      "master": "hand-b2-vertical-grip-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-b2-vertical-grip-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-b2-vertical-grip-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-b2-vertical-grip-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-b3-stick-grip-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-b3-stick-grip-e.png",
+      "mode": "reskin",
+      "master": "hand-b3-stick-grip-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-b3-stick-grip-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-b3-stick-grip-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-b3-stick-grip-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-b4-rolling-pin-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-b4-rolling-pin-t.png",
+      "mode": "reskin",
+      "master": "hand-b4-rolling-pin-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-b4-rolling-pin-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-b4-rolling-pin-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-b4-rolling-pin-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-b5-hook-grip-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-b5-hook-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-b5-hook-grip-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-b5-hook-grip-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-b5-hook-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-b5-hook-grip-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-b5-hook-grip-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-b5-hook-grip-e.png",
+      "mode": "reskin",
+      "master": "hand-b5-hook-grip-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-b5-hook-grip-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-b5-hook-grip-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-b5-hook-grip-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c1-pinch-f1-open-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f1-open-t.png",
+      "mode": "reskin",
+      "master": "hand-c1-pinch-f1-open-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c1-pinch-f1-open-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f1-open-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-c1-pinch-f1-open-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c1-pinch-f2-closed-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f2-closed-t.png",
+      "mode": "reskin",
+      "master": "hand-c1-pinch-f2-closed-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c1-pinch-f2-closed-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f2-closed-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-c1-pinch-f2-closed-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c1-pinch-f1-open-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f1-open-e.png",
+      "mode": "reskin",
+      "master": "hand-c1-pinch-f1-open-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c1-pinch-f1-open-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f1-open-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-c1-pinch-f1-open-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c1-pinch-f2-closed-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f2-closed-e.png",
+      "mode": "reskin",
+      "master": "hand-c1-pinch-f2-closed-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c1-pinch-f2-closed-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f2-closed-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-c1-pinch-f2-closed-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c2-tripod-grip-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c2-tripod-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-c2-tripod-grip-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c2-tripod-grip-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c2-tripod-grip-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-c2-tripod-grip-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c3-side-pinch-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c3-side-pinch-t.png",
+      "mode": "reskin",
+      "master": "hand-c3-side-pinch-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c3-side-pinch-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c3-side-pinch-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-c3-side-pinch-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c3-side-pinch-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c3-side-pinch-e.png",
+      "mode": "reskin",
+      "master": "hand-c3-side-pinch-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c3-side-pinch-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c3-side-pinch-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-c3-side-pinch-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c4-point-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c4-point-t.png",
+      "mode": "reskin",
+      "master": "hand-c4-point-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c4-point-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c4-point-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-c4-point-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c4-point-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c4-point-e.png",
+      "mode": "reskin",
+      "master": "hand-c4-point-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-c4-point-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c4-point-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-c4-point-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-c5-two-hand-fold-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-c5-two-hand-fold-t.png",
+      "mode": "reskin",
+      "master": "hand-c5-two-hand-fold-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-c5-two-hand-fold-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-c5-two-hand-fold-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-c5-two-hand-fold-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d1-grab-f1-open-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f1-open-t.png",
+      "mode": "reskin",
+      "master": "hand-d1-grab-f1-open-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d1-grab-f1-open-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f1-open-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-d1-grab-f1-open-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d1-grab-f2-closed-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f2-closed-t.png",
+      "mode": "reskin",
+      "master": "hand-d1-grab-f2-closed-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d1-grab-f2-closed-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f2-closed-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-d1-grab-f2-closed-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d1-grab-f1-open-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f1-open-e.png",
+      "mode": "reskin",
+      "master": "hand-d1-grab-f1-open-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d1-grab-f1-open-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f1-open-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-d1-grab-f1-open-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d1-grab-f2-closed-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f2-closed-e.png",
+      "mode": "reskin",
+      "master": "hand-d1-grab-f2-closed-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d1-grab-f2-closed-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f2-closed-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-d1-grab-f2-closed-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d2-c-hold-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d2-c-hold-t.png",
+      "mode": "reskin",
+      "master": "hand-d2-c-hold-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d2-c-hold-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d2-c-hold-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-d2-c-hold-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d2-c-hold-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d2-c-hold-e.png",
+      "mode": "reskin",
+      "master": "hand-d2-c-hold-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d2-c-hold-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d2-c-hold-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-d2-c-hold-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d3-two-hand-bowl-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d3-two-hand-bowl-t.png",
+      "mode": "reskin",
+      "master": "hand-d3-two-hand-bowl-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-d3-two-hand-bowl-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d3-two-hand-bowl-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-d3-two-hand-bowl-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d4-squeeze-f1-half-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d4-squeeze-f1-half-t.png",
+      "mode": "reskin",
+      "master": "hand-d4-squeeze-f1-half-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d4-squeeze-f1-half-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d4-squeeze-f1-half-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-d4-squeeze-f1-half-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d4-squeeze-f2-tight-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d4-squeeze-f2-tight-t.png",
+      "mode": "reskin",
+      "master": "hand-d4-squeeze-f2-tight-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d4-squeeze-f2-tight-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d4-squeeze-f2-tight-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-d4-squeeze-f2-tight-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d5-throw-release-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d5-throw-release-e.png",
+      "mode": "reskin",
+      "master": "hand-d5-throw-release-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-d5-throw-release-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d5-throw-release-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-d5-throw-release-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d6-two-hand-catch-f1-open-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d6-two-hand-catch-f1-open-e.png",
+      "mode": "reskin",
+      "master": "hand-d6-two-hand-catch-f1-open-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-d6-two-hand-catch-f1-open-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d6-two-hand-catch-f1-open-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-d6-two-hand-catch-f1-open-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-d6-two-hand-catch-f2-closed-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-d6-two-hand-catch-f2-closed-e.png",
+      "mode": "reskin",
+      "master": "hand-d6-two-hand-catch-f2-closed-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-d6-two-hand-catch-f2-closed-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-d6-two-hand-catch-f2-closed-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-d6-two-hand-catch-f2-closed-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e1-thumbs-up-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e1-thumbs-up-e.png",
+      "mode": "reskin",
+      "master": "hand-e1-thumbs-up-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e1-thumbs-up-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e1-thumbs-up-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e1-thumbs-up-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e2-handshake-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e2-handshake-e.png",
+      "mode": "reskin",
+      "master": "hand-e2-handshake-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e2-handshake-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e2-handshake-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e2-handshake-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e3-count-1-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e3-count-1-e.png",
+      "mode": "reskin",
+      "master": "hand-e3-count-1-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e3-count-1-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-1-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e3-count-1-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e3-count-2-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e3-count-2-e.png",
+      "mode": "reskin",
+      "master": "hand-e3-count-2-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e3-count-2-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-2-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e3-count-2-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e3-count-3-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e3-count-3-e.png",
+      "mode": "reskin",
+      "master": "hand-e3-count-3-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e3-count-3-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-3-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e3-count-3-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e3-count-4-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e3-count-4-e.png",
+      "mode": "reskin",
+      "master": "hand-e3-count-4-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e3-count-4-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-4-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e3-count-4-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e3-count-5-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e3-count-5-e.png",
+      "mode": "reskin",
+      "master": "hand-e3-count-5-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e3-count-5-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-5-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e3-count-5-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e4-clap-f1-apart-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e4-clap-f1-apart-e.png",
+      "mode": "reskin",
+      "master": "hand-e4-clap-f1-apart-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-e4-clap-f1-apart-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e4-clap-f1-apart-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e4-clap-f1-apart-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e4-clap-f2-together-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e4-clap-f2-together-e.png",
+      "mode": "reskin",
+      "master": "hand-e4-clap-f2-together-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-e4-clap-f2-together-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e4-clap-f2-together-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e4-clap-f2-together-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e5-arm-up-fist-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e5-arm-up-fist-e.png",
+      "mode": "reskin",
+      "master": "hand-e5-arm-up-fist-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e5-arm-up-fist-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e5-arm-up-fist-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e5-arm-up-fist-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e6-stretch-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e6-stretch-e.png",
+      "mode": "reskin",
+      "master": "hand-e6-stretch-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e6-stretch-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e6-stretch-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e6-stretch-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-e7-shrug-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-e7-shrug-e.png",
+      "mode": "reskin",
+      "master": "hand-e7-shrug-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-e7-shrug-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-e7-shrug-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-e7-shrug-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-f1-piano-f1-raised-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-f1-piano-f1-raised-e.png",
+      "mode": "reskin",
+      "master": "hand-f1-piano-f1-raised-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-f1-piano-f1-raised-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-f1-piano-f1-raised-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-f1-piano-f1-raised-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-f1-piano-f2-pressed-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-f1-piano-f2-pressed-e.png",
+      "mode": "reskin",
+      "master": "hand-f1-piano-f2-pressed-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-f1-piano-f2-pressed-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-f1-piano-f2-pressed-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-f1-piano-f2-pressed-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-f2-drum-cupped-t",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-f2-drum-cupped-t.png",
+      "mode": "reskin",
+      "master": "hand-f2-drum-cupped-t",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
+      }
+    },
+    {
+      "id": "hand-eid-f2-drum-cupped-t",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-f2-drum-cupped-t.png",
+      "mode": "reskin",
+      "master": "hand-girl-f2-drum-cupped-t",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "hand-girl-f4-phone-two-hands-e",
+      "group": "hands-girl",
+      "output": "assets/characters/hands/girl/hand-girl-f4-phone-two-hands-e.png",
+      "mode": "reskin",
+      "master": "hand-f4-phone-two-hands-e",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
+      }
+    },
+    {
+      "id": "hand-eid-f4-phone-two-hands-e",
+      "group": "hands-girl-eid",
+      "output": "assets/characters/hands/girl-eid/hand-eid-f4-phone-two-hands-e.png",
+      "mode": "reskin",
+      "master": "hand-girl-f4-phone-two-hands-e",
+      "template": "hand_reskin_eid",
+      "fields": {
+        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
+      },
+      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it."
+    },
+    {
+      "id": "nani-ref-t-right",
+      "group": "hands-nani-ref",
+      "output": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
+      "template": "nani_ref",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_target": "#BE8F6F"
+    },
+    {
+      "id": "nani-ref-t-left",
+      "group": "hands-nani-ref",
+      "output": "assets/characters/hands/nani/ref/nani-ref-t-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+      ],
+      "mirror_references": [
+        0
+      ],
+      "template": "nani_ref_left",
+      "fields": {
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_target": "#BE8F6F",
+      "_note": "Starts from Nani's right-hand reference flipped left-right, then the jewellery is redrawn for the left hand."
+    },
+    {
+      "id": "nani-ref-e-right",
+      "group": "hands-nani-ref",
+      "output": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/hand-ref-eye-level.png"
+      ],
+      "template": "nani_ref",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_target": "#BE8F6F"
+    },
+    {
+      "id": "nani-ref-e-left",
+      "group": "hands-nani-ref",
+      "output": "assets/characters/hands/nani/ref/nani-ref-e-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png"
+      ],
+      "mirror_references": [
+        0
+      ],
+      "template": "nani_ref_left",
+      "fields": {
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_target": "#BE8F6F",
+      "_note": "Starts from Nani's right-hand reference flipped left-right, then the jewellery is redrawn for the left hand."
+    },
+    {
+      "id": "nani-a1-flat-palm-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-a1-flat-palm-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-a1-flat-palm-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-a1-flat-palm-t-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-a1-flat-palm-t-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-left.png",
+        "assets/characters/hands/master/hand-a1-flat-palm-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
+    },
+    {
+      "id": "nani-a3-palm-up-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-a3-palm-up-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-a3-palm-up-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-a3-palm-up-t-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-a3-palm-up-t-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-left.png",
+        "assets/characters/hands/master/hand-a3-palm-up-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
+    },
+    {
+      "id": "nani-a3-palm-up-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-a3-palm-up-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-a3-palm-up-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-a3-palm-up-e-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-a3-palm-up-e-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-left.png",
+        "assets/characters/hands/master/hand-a3-palm-up-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
+    },
+    {
+      "id": "nani-b1-handle-grip-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-b1-handle-grip-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-b1-handle-grip-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-b4-rolling-pin-t",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-b4-rolling-pin-t.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/nani/ref/nani-ref-t-left.png",
+        "assets/characters/hands/master/hand-b4-rolling-pin-t.png"
+      ],
+      "template": "nani_two_pose",
+      "fields": {
+        "right": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings",
+        "left": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-b5-hook-grip-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-b5-hook-grip-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-b5-hook-grip-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-c1-pinch-f1-open-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-c1-pinch-f1-open-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-c1-pinch-f2-closed-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-c1-pinch-f2-closed-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-c4-point-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-c4-point-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-c4-point-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-c4-point-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-c4-point-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-c4-point-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-d2-c-hold-t-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-d2-c-hold-t-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "assets/characters/hands/master/hand-d2-c-hold-t.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-e1-thumbs-up-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e1-thumbs-up-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-e1-thumbs-up-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-e3-count-1-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-1-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-e3-count-1-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-e3-count-1-e-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-1-e-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-left.png",
+        "assets/characters/hands/master/hand-e3-count-1-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
+    },
+    {
+      "id": "nani-e3-count-2-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-2-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-e3-count-2-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-e3-count-2-e-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-2-e-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-left.png",
+        "assets/characters/hands/master/hand-e3-count-2-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
+    },
+    {
+      "id": "nani-e3-count-3-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-3-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-e3-count-3-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-e3-count-3-e-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-3-e-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-left.png",
+        "assets/characters/hands/master/hand-e3-count-3-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
+    },
+    {
+      "id": "nani-e3-count-4-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-4-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-e3-count-4-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-e3-count-4-e-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-4-e-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-left.png",
+        "assets/characters/hands/master/hand-e3-count-4-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
+    },
+    {
+      "id": "nani-e3-count-5-e-right",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-5-e-right.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "assets/characters/hands/master/hand-e3-count-5-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "RIGHT",
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+    },
+    {
+      "id": "nani-e3-count-5-e-left",
+      "group": "hands-nani",
+      "output": "assets/characters/hands/nani/nani-e3-count-5-e-left.png",
+      "mode": "edit",
+      "reference_images": [
+        "assets/characters/hands/nani/ref/nani-ref-e-left.png",
+        "assets/characters/hands/master/hand-e3-count-5-e.png"
+      ],
+      "template": "nani_pose",
+      "fields": {
+        "side": "LEFT",
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+      },
+      "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "mirror_references": [
+        1
+      ]
     }
   ],
-  "negative_block": "Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel shading, no flat vector style, no painterly brushwork, no photorealism. No depth-of-field blur, motion blur, vignette, lens flare or bloom. No second light source. No extra objects, props, people or background clutter beyond what is described. Correct anatomy: five fingers per hand. No bindi, tilak or other Hindu religious markers."
+  "negative_block": "Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel shading, no flat vector style, no painterly brushwork, no photorealism. No depth-of-field blur, motion blur, vignette, lens flare or bloom. No second light source. No extra objects, props, people or background clutter beyond what is described. Correct anatomy: five fingers per hand. No bindi, tilak or other Hindu religious markers.",
+  "hand_aliases": {
+    "_note": "Asset plan 1.3 poses with no image of their own: the game uses this image plus a tool or string sprite.",
+    "f3-racquet": "hand-b3-stick-grip-e",
+    "f5-kite-string": "hand-c1-pinch-f2-closed-e"
+  }
 }
