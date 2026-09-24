@@ -4,5 +4,7 @@ __pycache__/
 build/.venv/
 build/expr_work/
 build/screenshots/cook/
+build/contact-sheets/
+build/gen-manifest.json
 .claude/worktrees/
 sources/private/

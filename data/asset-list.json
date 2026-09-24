@@ -1,0 +1,121 @@
+{
+  "_readme": "Data for build/gen_assets.py. style_block is placeholder text; the real art bible (in progress) will replace it wholesale, which is exactly why it lives here and not inside a template string. Paths are relative to the repo root; reference_images may point into the git-ignored sources/private/.",
+
+  "style_block": "PLACEHOLDER STYLE BLOCK -- replace once the art bible is signed off. Warm storybook 3D-film look (Pixar/Laika-adjacent), soft cel-shaded lighting, clean readable silhouettes, a Kutch/Gujarat folk-embroidery palette (indigo, mirror-work silver, marigold, madder red). No text, watermark or signature anywhere in frame.",
+
+  "config": {
+    "model": "gpt-image-1",
+    "price_per_image": {
+      "1024x1024": 0.04,
+      "1024x1536": 0.06,
+      "1536x1024": 0.06,
+      "default": 0.04
+    }
+  },
+
+  "defaults": {
+    "size": "1024x1024",
+    "transparent": true,
+    "variants": 1
+  },
+
+  "templates": {
+    "hand_pose": "{style}\n\nSubject: a single human right hand and forearm only, nothing else in frame. Camera: {camera}. Pose: {pose}. Skin tone: warm medium brown. Sleeve: a boy's kurta cuff in indigo cotton with a narrow strip of Kutch mirror-work embroidery at the hem -- this is the master reference cuff every other hand pose and reskin must match. Background: flat, fully transparent, no shadow, no table, no other body parts in frame.",
+
+    "hand_pose_from_ref": "{style}\n\nUsing the attached reference hand image for exact hand shape, skin tone, proportions and cuff style, draw the SAME hand in a new pose: {pose}. Camera: {camera}. Keep the cuff and its embroidery identical to the reference. Background: flat, fully transparent, hand and forearm only, no shadow, no other body parts.",
+
+    "hand_reskin": "{style}\n\nTake the attached reference hand image exactly as given: same hand shape, same finger positions, same camera angle, same scale and position in frame. Change ONLY the sleeve and wrist: {change}. Do not alter the hand's outline, proportions or pose in any way. Background stays flat, fully transparent.",
+
+    "ingredient_state": "{style}\n\nSubject: {item}, {state}, isolated on a flat, fully transparent background. View: {view}, matching the scale and lighting of other cooking-station props. A soft contact shadow directly beneath it, nothing else in frame.",
+
+    "ingredient_state_from_ref": "{style}\n\nUsing the attached reference image for this item's exact colours, texture and style, show the SAME {item} now {state}. View: {view}. Flat, fully transparent background, a soft contact shadow directly beneath it, nothing else in frame."
+  },
+
+  "assets": [
+    {
+      "id": "hand-ref-master",
+      "group": "hands-reference",
+      "output": "assets/characters/hands/hand-ref-master.png",
+      "mode": "generate",
+      "template": "hand_pose",
+      "fields": {
+        "camera": "top-down, looking straight down at a worktop",
+        "pose": "flat relaxed hand resting palm-down on a worktop, fingers together -- the master reference every other pose and reskin is generated from"
+      }
+    },
+    {
+      "id": "hand-a1-flat-palm",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-a1-flat-palm.png",
+      "mode": "edit",
+      "reference_images": ["assets/characters/hands/hand-ref-master.png"],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "top-down",
+        "pose": "flat palm down, pressing and kneading dough"
+      }
+    },
+    {
+      "id": "hand-b1-handle-grip",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-b1-handle-grip.png",
+      "mode": "edit",
+      "reference_images": ["assets/characters/hands/hand-ref-master.png"],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "top-down",
+        "pose": "horizontal handle grip, fist closed around an invisible handle, as if holding a knife or ladle"
+      }
+    },
+    {
+      "id": "hand-c4-point",
+      "group": "hands-master",
+      "output": "assets/characters/hands/master/hand-c4-point.png",
+      "mode": "edit",
+      "reference_images": ["assets/characters/hands/hand-ref-master.png"],
+      "template": "hand_pose_from_ref",
+      "fields": {
+        "camera": "eye level, back of the hand toward the viewer",
+        "pose": "pointing index finger extended, other fingers curled -- the default tap/point hand"
+      }
+    },
+    {
+      "id": "hand-a1-girl",
+      "group": "hands-girl-reskin",
+      "output": "assets/characters/hands/girl/hand-a1-girl.png",
+      "mode": "reskin",
+      "master": "hand-a1-flat-palm",
+      "template": "hand_reskin",
+      "fields": {
+        "change": "an embroidered kurti cuff in madder red with mirror-work, plus two or three thin glass bangles at the wrist"
+      }
+    },
+    {
+      "id": "ingredient-onion-whole",
+      "group": "ingredients-onion",
+      "output": "assets/items/cook/onion-whole.png",
+      "mode": "generate",
+      "size": "512x512",
+      "template": "ingredient_state",
+      "fields": {
+        "item": "a whole red onion with papery outer skin",
+        "state": "whole, uncut",
+        "view": "top-down"
+      }
+    },
+    {
+      "id": "ingredient-onion-chopped",
+      "group": "ingredients-onion",
+      "output": "assets/items/cook/onion-chopped.png",
+      "mode": "edit",
+      "size": "512x512",
+      "reference_images": ["assets/items/cook/onion-whole.png"],
+      "template": "ingredient_state_from_ref",
+      "fields": {
+        "item": "red onion",
+        "state": "roughly diced into small pieces, scattered in a small pile",
+        "view": "top-down"
+      }
+    }
+  ]
+}
