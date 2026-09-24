@@ -19,8 +19,6 @@
   <main id="stage">
     <div id="game"></div>
 
-    <!-- Nani's head badge: shown at the stations, where Nani herself isn't in the picture -->
-    <div id="nani-badge" class="hidden"><img src="assets/cook/characters/nani-badge.webp" alt="Nani"></div>
 
     <div id="bubble" class="hidden" role="status" aria-live="polite">
       <div class="bubble-kutchi"></div>
@@ -44,6 +42,21 @@
       <span class="pill coins" title="Coins"><i class="coin-dot"></i><b id="coins">0</b></span>
       <span class="pill stars" title="Stars today">&#9733; <b id="stars">0</b></span>
     </div>
+    <!-- At the stations Nani isn't in the picture: she talks from here, so
+         her words can never cover something you need to tap -->
+    <div id="nani-card" class="card hidden" role="status" aria-live="polite">
+      <img class="nc-face" src="assets/cook/characters/nani-badge.webp" alt="Nani">
+      <div class="nc-body">
+        <div class="bubble-kutchi"></div>
+        <div class="bubble-english hidden"></div>
+        <div class="bubble-foot">
+          <button class="bubble-play hidden" aria-label="Hear it again">&#9654;</button>
+          <span class="bubble-rec hidden" title="Needs a family recording">needs recording</span>
+          <button class="bubble-en" aria-label="Show English">EN</button>
+        </div>
+      </div>
+    </div>
+    <div id="how" class="hidden"></div>
     <div id="ticket" class="card hidden">
       <div class="ticket-head">
         <img id="ticket-face" alt="">

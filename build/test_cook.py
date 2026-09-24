@@ -230,6 +230,12 @@ class Player:
             if shoot_every and (e["kind"] != last_kind or e["kind"] in ("click",)):
                 self.shot(f"{e['kind']}")
             last_kind = e["kind"]
+            key = json.dumps({k: v for k, v in e.items() if k in ("kind", "key", "x", "y", "selector")}, sort_keys=True)
+            self.repeats = self.repeats + 1 if key == getattr(self, "last_key", None) else 0
+            self.last_key = key
+            if self.repeats > 6:
+                self.shot("stuck")
+                raise AssertionError(f"stuck repeating {key}")
             self.act(e)
             self.wait_change(e, timeout=25)
 

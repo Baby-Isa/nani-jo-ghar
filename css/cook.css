@@ -101,16 +101,19 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   font-size: 22px; box-shadow: 0 2px 6px rgba(60,40,20,.12);
 }
 
-/* ---------- things over the game ---------- */
-#nani-badge {
-  position: absolute; left: 1.2%; top: 2%; width: clamp(56px, 9%, 120px); aspect-ratio: 1;
-  border-radius: 50%; overflow: hidden; background: #f3dcc2; box-shadow: var(--shadow);
-  border: 3px solid var(--cream); z-index: 5;
+/* ---------- Nani's card (stations) and the how-to hint ---------- */
+#nani-card { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; animation: pop .22s ease-out; }
+#nani-card .nc-face { width: clamp(40px, 4.4vw, 64px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; }
+#nani-card.talk .nc-face { animation: badgeTalk .45s ease-in-out infinite alternate; }
+@keyframes badgeTalk { to { transform: translateY(-3px) rotate(-3deg); } }
+#nani-card .bubble-kutchi { font-size: clamp(17px, 2vw, 28px); }
+#nani-card .bubble-foot { justify-content: flex-start; flex-wrap: wrap; }
+#how {
+  background: var(--ink); color: #fff8ec; border-radius: 14px; padding: 8px 12px;
+  font-size: clamp(12px, 1.25vw, 16px); font-weight: 700; line-height: 1.3;
 }
-#nani-badge img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-#nani-badge.talk { animation: badgeTalk .5s ease-in-out infinite alternate; }
-@keyframes badgeTalk { to { transform: translateY(-3px) rotate(-2deg); } }
 
+/* ---------- things over the game ---------- */
 #bubble {
   position: absolute; z-index: 10; max-width: min(46%, 520px); min-width: 120px;
   background: var(--cream); border-radius: 20px; padding: 10px 14px 8px;
@@ -133,11 +136,10 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .bubble-rec::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #d7b98a; }
 
 #gist {
-  position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); z-index: 9;
+  position: absolute; left: 50%; top: 3%; transform: translateX(-50%); z-index: 9; pointer-events: none;
   max-width: 80%; padding: 8px 16px; border-radius: 14px; text-align: center;
   background: rgba(45, 32, 24, 0.78); color: #fff8ec; font-size: clamp(12px, 1.5vw, 18px); font-weight: 700;
 }
-#gist.top { bottom: auto; top: 3%; }
 
 #choices {
   position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); z-index: 12;
@@ -149,6 +151,11 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   box-shadow: var(--shadow); min-height: 52px; transition: transform .1s;
 }
 #choices button:active { transform: scale(.96); }
+#choices button { display: inline-flex; align-items: center; gap: 10px; }
+#choices .hear {
+  display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%;
+  background: #efe4d2; font-size: 14px; flex: none;
+}
 #choices button.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }
 #choices button.wrong { animation: shake .35s; }
 #choices button.right { background: #e3f0dc; border-color: var(--sage); }
@@ -231,18 +238,18 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .chip small { display: block; font-family: var(--ui-font); font-size: 12px; color: var(--ink-soft); font-weight: 700; }
 .chip .dots { font-size: 10px; color: var(--sage); letter-spacing: 1px; }
 
-.shop-counter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 8px 0 14px; }
+.shop-counter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 8px 0 12px; }
 .slot {
-  aspect-ratio: 1.1; border-radius: 16px; border: 2px dashed #cdb892; background: var(--paper);
+  aspect-ratio: 1.7; border-radius: 16px; border: 2px dashed #cdb892; background: var(--paper);
   display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: var(--ink-soft);
 }
 .slot.full { border-style: solid; border-color: var(--sage); background: #eef3e8; }
-.slot img { max-width: 70%; max-height: 64%; object-fit: contain; }
-.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
-.shop-item { background: var(--paper); border-radius: 16px; padding: 10px; display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: center; }
-.shop-item img { width: 64px; height: 64px; object-fit: contain; }
-.shop-item h4 { margin: 0; font-size: 16px; }
-.shop-item p { margin: 2px 0 6px !important; font-size: 13px !important; }
+.slot img { max-width: 60%; max-height: 60%; object-fit: contain; }
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+.shop-item { background: var(--paper); border-radius: 14px; padding: 8px 10px; display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; }
+.shop-item img { width: 52px; height: 52px; object-fit: contain; }
+.shop-item h4 { margin: 0; font-size: 15px; }
+.shop-item p { margin: 1px 0 4px !important; font-size: 12.5px !important; line-height: 1.25; }
 .shop-item .tag { font-size: 11px; font-weight: 800; color: var(--indigo); }
 .shop-item.owned { outline: 2px solid var(--sage); }
 
@@ -262,7 +269,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 @media (max-aspect-ratio: 1332/1000) {
   #app { grid-template-columns: 1fr; grid-template-rows: calc(100dvw * 9 / 16) 1fr; }
   #side { border-left: none; border-top: 1px solid rgba(80,60,40,.12); display: grid; grid-template-columns: 1fr 1fr; align-content: start; }
-  .side-top, .side-rail { grid-column: 1 / -1; }
+  .side-top, .side-rail, #nani-card, #how { grid-column: 1 / -1; }
   .side-rail { margin-top: 0; }
 }
 
@@ -277,6 +284,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 /* short landscape phones: tighter sidebar */
 @media (max-height: 430px) {
   #side { padding: 6px; gap: 6px; }
+  #nani-card { padding: 6px; gap: 6px; }
+  #how { padding: 6px 8px; }
   .card { padding: 6px 8px; }
   #ticket-face { width: 32px; height: 32px; }
   .rail-btn { width: 38px; height: 38px; font-size: 18px; }

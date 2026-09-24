@@ -18,10 +18,11 @@
   const H = 900;
   const D = { bg: 0, back: 5, char: 10, occ: 20, item: 30, item2: 32, front: 34, fx: 40, top: 50 };
 
-  // where the liquid surface sits inside each vessel image (local px)
+  // where the liquid surface sits inside each vessel image, as fractions
+  // of the image size (so re-slicing the art at another scale can't break it)
   const VESSEL = {
-    saucepan: { cx: 165, cy: 138, rx: 138, ry: 50, lowY: 176 },
-    pot: { cx: 210, cy: 96, rx: 148, ry: 50, lowY: 140 },
+    saucepan: { cx: 0.346, cy: 0.43, rx: 0.293, ry: 0.15, lowY: 0.56 },
+    pot: { cx: 0.503, cy: 0.345, rx: 0.33, ry: 0.15, lowY: 0.51 },
   };
 
   const CHARS = {
@@ -249,6 +250,8 @@
         g.clear();
         g.fillStyle(0xfffaf1, 0.95);
         g.fillRoundedRect(x - w / 2 - 6, y - h - 6, w + 12, h + 12, 16);
+        g.lineStyle(3, 0x3a2410, 0.25);
+        g.strokeRoundedRect(x - w / 2 - 6, y - h - 6, w + 12, h + 12, 16);
         g.fillStyle(0x7d9a78, 0.55);
         g.fillRect(x - w / 2, y - h * state.hi, w, h * (state.hi - state.lo));
         g.fillStyle(state.color, 1);
@@ -457,6 +460,8 @@
           done = true;
           Cook.expect = null;
           this.tick = null;
+          obj.inBandGlow = false;
+          this.glow(obj, false);
           [obj, ...tapAnywhere].forEach((o) => this.untap(o));
           resolve(gauge.level);
         };
@@ -469,6 +474,13 @@
           const v = gauge.level + rate * dt;
           gauge.set(v);
           if (onLevel) onLevel(v);
+          // the target pulses while it's the right moment: a cue even a
+          // five-year-old can follow, and it's still a timing skill
+          const inBand = v >= gauge.lo && v <= gauge.hi;
+          if (inBand !== !!obj.inBandGlow) {
+            obj.inBandGlow = inBand;
+            this.glow(obj, inBand);
+          }
           if (v >= 1) hit();
         };
         const c = this.centre(obj);
@@ -476,9 +488,57 @@
       });
     }
 
+    /** A see-through fingertip that shows a gesture (tap, drag, circle)
+     * until the player starts. points: [[x,y], ...] or {circle: {x,y,rx,ry}}. */
+    ghost(points, { duration = 1100, delay = 0 } = {}) {
+      const dot = this.track(this.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top).setVisible(false));
+      let tw = null;
+      let alive = true;
+      const run = () => {
+        if (!alive || !dot.active) return;
+        dot.setVisible(true);
+        tw = this.tweens.addCounter({
+          from: 0,
+          to: 1,
+          duration,
+          onUpdate: (t) => {
+            const k = t.getValue();
+            if (points.circle) {
+              const c = points.circle;
+              const a = k * Math.PI * 2;
+              dot.setPosition(c.x + Math.cos(a) * c.rx, c.y + Math.sin(a) * c.ry);
+            } else {
+              const seg = Math.min(points.length - 2, Math.floor(k * (points.length - 1)));
+              const f = k * (points.length - 1) - seg;
+              const [x1, y1] = points[seg];
+              const [x2, y2] = points[seg + 1];
+              dot.setPosition(x1 + (x2 - x1) * f, y1 + (y2 - y1) * f);
+            }
+            dot.setAlpha(k < 0.1 ? k * 7 : k > 0.85 ? (1 - k) * 5 : 0.75);
+          },
+          onComplete: () => {
+            if (alive) this.time.delayedCall(350, run);
+          },
+        });
+      };
+      const t0 = this.time.delayedCall(delay, run);
+      const stop = () => {
+        alive = false;
+        t0.remove();
+        if (tw) tw.stop();
+        if (dot.active) dot.destroy();
+        this.input.off("pointerdown", stop);
+      };
+      this.input.once("pointerdown", stop);
+      return { stop };
+    }
+
     /** Liquid drawn inside a vessel image. */
     liquid(vessel, kind) {
-      const v = VESSEL[kind];
+      const f = VESSEL[kind];
+      const tw = vessel.width;
+      const th = vessel.height;
+      const v = { cx: f.cx * tw, cy: f.cy * th, rx: f.rx * tw, ry: f.ry * th, lowY: f.lowY * th };
       const g = this.track(this.add.graphics().setDepth(vessel.depth + 0.5));
       const s = vessel.scale;
       const ox = vessel.x - vessel.displayWidth * vessel.originX;
@@ -489,9 +549,9 @@
         g.clear();
         if (st.level <= 0.01) return;
         const L = Cook.clamp(st.level, 0, 1);
-        const cy = v.lowY - (v.lowY - v.cy - 8) * L;
-        const rx = v.rx * (0.78 + 0.2 * L);
-        const ry = v.ry * (0.7 + 0.25 * L);
+        const cy = v.lowY - (v.lowY - v.cy) * L;
+        const rx = v.rx * (0.8 + 0.2 * L);
+        const ry = v.ry * (0.75 + 0.25 * L);
         g.fillStyle(st.color, st.alpha);
         g.fillEllipse(v.cx, cy, rx * 2, ry * 2);
         g.fillStyle(0xffffff, 0.18);
@@ -505,7 +565,7 @@
       };
       st.surface = () => {
         const L = Cook.clamp(st.level, 0, 1);
-        return { x: ox + v.cx * s, y: oy + (v.lowY - (v.lowY - v.cy - 8) * L) * s };
+        return { x: ox + v.cx * s, y: oy + (v.lowY - (v.lowY - v.cy) * L) * s };
       };
       return st;
     }

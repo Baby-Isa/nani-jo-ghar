@@ -70,7 +70,7 @@
   async function greetingExchange(S, who, { farewell } = {}) {
     const key = farewell ? "bye" : "greet";
     await S.talk(who, UI.line(key));
-    const choices = (farewell ? Cook.data.farewell_choices : Cook.data.greeting_choices).map((k) => ({ key: k, kutchi: Cook.data.lines[k].kutchi }));
+    const choices = (farewell ? Cook.data.farewell_choices : Cook.data.greeting_choices).map((k) => ({ key: k, kutchi: Cook.data.lines[k].kutchi, audio: Cook.data.lines[k].audio }));
     const correct = farewell ? "bye" : "greet-reply";
     const r = await UI.choose(choices, correct, {
       glowAfter: 6000,
@@ -148,7 +148,7 @@
       const guidedDish = !!demo || !Cook.save.taught[d.recipe];
       ctx.guided = guidedDish;
       if (guidedDish && !demo) {
-        UI.gist(`First time making ${Cook.data.recipes[d.recipe].english.toLowerCase()}: Nani will show you each step.`, { top: true });
+        UI.gist(`First time making ${Cook.data.recipes[d.recipe].english.toLowerCase()}: Nani will show you each step.`);
         setTimeout(() => UI.hideGist(), 2600);
       }
       if (d.recipe === "chai") await R.chai(S, ctx, d);
@@ -201,7 +201,9 @@
     const stars = Cook.starsFor(score);
     const busy = Cook.save.mode === "busy";
     const price = order.dishes.reduce((s, d) => s + Cook.data.recipes[d.recipe].price * (d.recipe === "maani" ? d.count || 1 : 1), 0);
-    const tip = [0, 3, 6][stars - 1] + (busy ? Math.round((state.patience || 0) * 8) : 0);
+    state.combo = stars === 3 ? (state.combo || 0) + 1 : 0;
+    const comboBonus = state.combo >= 2 ? (state.combo - 1) * 3 : 0;
+    const tip = [0, 3, 6][stars - 1] + (busy ? Math.round((state.patience || 0) * 8) : 0) + comboBonus;
     const coins = price + tip;
 
     // what the customer asked for that didn't happen: say the Kutchi again
@@ -219,6 +221,7 @@
       setTimeout(() => Cook.sfx.star(i), i * 220);
     }
     S.floatText(c.x, c.top + 120, `+${coins}`, "#ffe08a");
+    if (comboBonus) setTimeout(() => UI.toast(`Perfect ×${state.combo}!`), 500);
     setTimeout(() => Cook.sfx.coin(), 700);
     Cook.save.coins += coins;
     state.dayStars += stars;
@@ -249,6 +252,12 @@
     state.free = !!free;
     state.dayLog = [];
     state.dayStars = 0;
+    state.combo = 0;
+    // cooking days: a count that only ever goes up (no streak to lose)
+    const today = new Date().toISOString().slice(0, 10);
+    Cook.save.playDays = Cook.save.playDays || [];
+    if (!Cook.save.playDays.includes(today)) Cook.save.playDays.push(today);
+    Cook.writeSave();
     UI.closePanel();
     UI.clearStage();
     UI.setStars(0);
@@ -481,7 +490,7 @@
         <img src="assets/cook/characters/nani-happy.webp" alt="Nani">
         <div>
           <h1>Cook with Nani</h1>
-          <p>The family come to Nani's kitchen and ask for food in Kutchi. Listen, fetch, cook and serve!</p>
+          <p>The family come to Nani's kitchen and ask for food in Kutchi. Listen, fetch, cook and serve!${(Cook.save.playDays || []).length > 1 ? ` <b>You've cooked with Nani on ${Cook.save.playDays.length} days.</b>` : ""}</p>
           <div class="day-dots">${dots}</div>
           <div class="seg" role="group" aria-label="Setting">
             <button data-mode="relaxed" class="${mode === "relaxed" ? "on" : ""}">Relaxed</button>
@@ -490,6 +499,7 @@
           <div class="seg-help">${mode === "relaxed" ? "No waiting. Take all the time you need." : "Customers wait with a patience bar. Quick service earns bigger tips; nobody ever leaves."}</div>
           <div class="btn-row">
             ${Cook.save.finished ? `<button class="btn primary" id="t-free">Free cooking</button>` : `<button class="btn primary" id="t-start">${Cook.save.day > 1 ? `Day ${nextDay}: ${UI.esc(days[nextDay - 1].title)}` : "Start cooking"}</button>`}
+            ${Cook.save.taught.chai ? `<button class="btn" id="t-quick" title="One customer, about two minutes">Quick order</button>` : ""}
             <button class="btn" id="t-book">Recipe book</button>
             <button class="btn" id="t-shop">Shop</button>
           </div>
@@ -516,6 +526,8 @@
     if (st) st.addEventListener("click", () => startDay(days[nextDay - 1]));
     const fr = $("#t-free");
     if (fr) fr.addEventListener("click", () => startDay(generateDay(), { free: true }));
+    const qk = $("#t-quick");
+    if (qk) qk.addEventListener("click", () => startDay(generateDay(1), { free: true }));
     $("#t-book").addEventListener("click", showBook);
     $("#t-shop").addEventListener("click", showShop);
     $("#t-reset").addEventListener("click", (e) => {
@@ -538,26 +550,33 @@
   }
 
   /* ---------------- free cooking: generated days ---------------- */
-  function generateDay() {
+  function generateDay(n = 3) {
+    // Free cooking doubles as spaced review: orders lean towards the words
+    // this player knows least (Game Design: "a word you are weak on simply
+    // appears more often, with more help, inside ordinary play").
+    const weak = (id) => Cook.wordStage(id) <= 2;
     const t = Cook.save.taught;
     const recipes = ["chai"].concat(t.maani ? ["maani"] : [], t.daal ? ["daal"] : []);
-    const orders = Cook.shuffle(["nana", "ma", "cousin"]).map((who) => {
-      const n = recipes.length > 1 && Math.random() < 0.5 ? 2 : 1;
-      const picks = Cook.shuffle(recipes).slice(0, n);
+    const weakNum = [1, 2, 3, 4].filter((k) => weak(`num-0${k}`));
+    const count = (lo, hi) => (weakNum.length && Math.random() < 0.6 ? Cook.pick(weakNum.filter((k) => k >= lo && k <= hi).concat([lo])) : lo + Math.floor(Math.random() * (hi - lo + 1)));
+    const orders = Cook.shuffle(["nana", "ma", "cousin"]).slice(0, n).map((who) => {
+      const k = recipes.length > 1 && Math.random() < 0.5 ? 2 : 1;
+      const picks = Cook.shuffle(recipes).slice(0, k);
       const usualable = who !== "cousin" && picks.includes("chai") && Math.random() < 0.35;
       const dishes = picks.map((r) => {
         if (r === "chai") {
           const u = Cook.data.customers[who].usual.chai;
           if (usualable && u) return { recipe: "chai", khun: u.khun, elchi: !!u.elchi };
-          return { recipe: "chai", khun: 1 + Math.floor(Math.random() * 3), elchi: Math.random() < 0.3 };
+          return { recipe: "chai", khun: count(1, 3), elchi: Math.random() < (weak("spi-10") ? 0.6 : 0.25) };
         }
-        if (r === "maani") return { recipe: "maani", count: 1 + Math.floor(Math.random() * 4) };
-        return { recipe: "daal", tameto: Math.random() < 0.3 };
+        if (r === "maani") return { recipe: "maani", count: count(1, 4) };
+        return { recipe: "daal", tameto: Math.random() < (weak("veg-03") ? 0.6 : 0.25) };
       });
       return { who, usual: usualable, dishes };
     });
-    const spices = Cook.shuffle(["spi-02", "spi-05", "spi-01", "veg-12"]).slice(0, 2 + Math.floor(Math.random() * 2));
-    return { id: "free", title: "Free cooking", gist: "Free cooking: the family order whatever they fancy.", new_words: [], tadka: spices, stir: 2 + Math.floor(Math.random() * 3), orders };
+    const pool = ["spi-02", "spi-05", "spi-01", "veg-12"];
+    const spices = Cook.shuffle(pool.filter(weak)).concat(Cook.shuffle(pool.filter((x) => !weak(x)))).slice(0, 2 + Math.floor(Math.random() * 2));
+    return { id: "free", title: n === 1 ? "Quick order" : "Free cooking", gist: n === 1 ? "One quick order!" : "Free cooking: the family order whatever they fancy.", new_words: [], tadka: Cook.shuffle(spices), stir: count(2, 4), orders };
   }
 
   /* ---------------- home button, book button ---------------- */

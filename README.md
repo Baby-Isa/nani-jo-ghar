@@ -15,6 +15,45 @@ changed" / "What v2 got wrong" tables below, from the original **Build
 Brief v3** Phaser rebuild after the first CSS/DOM version failed on a real
 phone.
 
+## Cook with Nani (proof of concept, 24 Sept 2026)
+
+**Open `cook.html`** (or the "Cook with Nani" button in the hub). It's a
+separate, self-contained prototype of the flagship game mode from
+`docs/game-modes-v2.md` and `docs/game-modes-fun-analysis.md`, in the new
+3D-film art style. It doesn't touch the fruit errand.
+
+- **Loop:** a family member arrives and greets you (you answer, in Kutchi).
+  They order in Kutchi (*Muke chai khape. Ne trae khun.*). You fetch from
+  the pantry into your basket, then cook at the stations:
+  - pour to the line (hold)
+  - boil watch (tap the knob in time)
+  - count spoons of sugar
+  - knead (rub), roll (drag outwards), tawa flip and puff (tap in time)
+  - chop (swipe)
+  - tadka spices in the order Nani says (memory)
+  - stir as many times as she says
+  
+  Then serve for 1 to 3 stars, coins and tips. Get something wrong and
+  Nani says "Arre re!" and the customer repeats what they asked for.
+  Nobody ever leaves.
+- **Five story days:** chai for Nana (Nani shows you once, then you make it
+  from memory), chai and maani, daal, "the usual" (remember how each person
+  likes it), and the Eid lunch finale. After that, free cooking with
+  generated orders, plus a one-customer "quick order".
+- **Nani's shop:** a counter with 4 slots (chai machine, measuring jug,
+  dough mixer, heavy tawa, Bilal as a paid helper) and a sharp knife. Every
+  upgrade automates a physical step, never the listening.
+- **Settings:** Relaxed (no waiting) or Busy (a patience bar, bigger tips
+  for speed).
+- **Art:** `sources/cook/*.webp` (ChatGPT sheets), sliced by
+  `build/make_cook_art.py` into `assets/cook/`.
+- **Words:** `data/cook.json`. Every Kutchi string, and what the family
+  needs to check or record, is in `docs/cook-with-nani-words.md`.
+- **Test:** `python3 build/test_cook.py` (all six screen sizes, day 1) or
+  `--full` (all five days and free play). It plays through real pointer
+  events and fails if anything covers a thing to tap.
+- **Build log, QA and persona reviews:** `docs/cook-with-nani-build-log.md`.
+
 ## What this pass added
 
 - **Kitchen v3** (`assets/backgrounds/bg-nani-kitchen-v3.png`) replaces v1:

@@ -149,8 +149,8 @@
     if (machine) {
       pan = S.prop("chai-machine", 470, 520, 300, 360, { depth: D.item });
     } else {
-      pan = S.track(S.add.image(470, 330, "saucepan").setOrigin(0.36, 0.5).setScale(0.95).setDepth(D.item));
-      pan.baseScale = 0.95;
+      pan = S.track(S.add.image(470, 330, "saucepan").setOrigin(0.36, 0.5).setScale(1.19).setDepth(D.item));
+      pan.baseScale = 1.19;
     }
     const liq = machine ? { set() {}, surface: () => ({ x: 470, y: 250 }), level: 0 } : S.liquid(pan, "saucepan");
     const gx = 800;
@@ -190,7 +190,7 @@
     } else {
       const boil = Cook.sfx.boilLoop();
       S.loops.push(boil);
-      g = S.gauge(gx, gy, 300, 0.66, 0.86, 0xfff4e0);
+      g = S.gauge(gx, gy, 300, 0.66, 0.86, 0xb9d6e8);
       const knob = S.track(S.add.circle(712, 555, 46, 0xffffff, 0.001).setDepth(D.fx));
       if (ctx.guided) {
         UI.gist("When the foam reaches the green band, tap the knob!");
@@ -233,7 +233,7 @@
 
     // 4. milk
     await waitFor(S, ctx, items, "cook-dudh");
-    g = S.gauge(gx, gy, 300, 0.76, 0.92, 0xf3eee6);
+    g = S.gauge(gx, gy, 300, 0.76, 0.92, 0xc9a27a);
     g.set(0.5);
     const mv = await S.pour(items["cook-dudh"], {
       gauge: g,
@@ -440,6 +440,7 @@
         S.input.on("pointermove", move);
         S.tappable(dough, onStroke);
         const c = S.centre(dough);
+        S.ghost([[c.x - 120, c.y], [c.x + 120, c.y], [c.x - 120, c.y]], { duration: 900, delay: ctx.guided ? 300 : 5000 });
         Cook.expect = { kind: "knead", x: c.x, y: c.y };
       });
     }
@@ -515,7 +516,7 @@
       ch.baseScale = ch.scale;
       if (ctx.guided && i === 0) UI.gist("Tap the maani to flip it when the bar reaches the green band.");
       let g = S.gauge(1480, 620, 300, band1[0], band1[1], 0xd9a05b);
-      const v1 = await S.timing(ch, { gauge: g, rate: 0.24, onLevel: (v) => ch.setTint(Phaser.Display.Color.GetColor(255, 255 - v * 50, 255 - v * 90)) });
+      const v1 = await S.timing(ch, { gauge: g, rate: 0.24 * (1 + i * 0.08), onLevel: (v) => ch.setTint(Phaser.Display.Color.GetColor(255, 255 - v * 50, 255 - v * 90)) });
       Cook.sfx.flip();
       await Cook.tween(S, { targets: ch, scaleY: 0.02, duration: 110 });
       ch.setTexture("chapati-half").clearTint();
@@ -527,7 +528,7 @@
       g.destroy();
       if (ctx.guided && i === 0) UI.gist("Now tap it again when it's ready: it puffs up!");
       g = S.gauge(1480, 620, 300, band1[0], band1[1], 0xc07a3a);
-      const v2 = await S.timing(ch, { gauge: g, rate: 0.26 });
+      const v2 = await S.timing(ch, { gauge: g, rate: 0.26 * (1 + i * 0.08) });
       UI.hideGist();
       Cook.sfx.puff();
       ch.setTexture("chapati-puffed");
@@ -581,7 +582,7 @@
       // squash the guide into the same perspective as the chapati image
       guide.setScale(1, 0.66);
       guide.y = cy * (1 - 0.66);
-      const pin = S.track(S.add.image(cx + 40, cy + 90, "rolling-pin").setScale(0.55).setDepth(D.fx + 1).setAngle(-20));
+      const pin = S.track(S.add.image(cx + 40, cy + 90, "rolling-pin").setScale(0.69).setDepth(D.fx + 1).setAngle(-20));
       if (ctx.guided) UI.gist("Roll it out: drag from the middle outwards until it fills the circle.");
       let last = null;
       let quiet = null;
@@ -625,6 +626,7 @@
       S.input.on("pointerdown", down);
       S.input.on("pointermove", move);
       S.input.on("pointerup", up);
+      S.ghost([[cx, cy], [cx + R0 * 1.1, cy - 20]], { duration: 800, delay: ctx.guided ? 200 : 5000 });
       Cook.gauge = { level: r / R0, lo: 0.9, hi: 1.12 };
       Cook.expect = { kind: "roll", x: cx, y: cy, r: R0 };
     });
@@ -635,7 +637,7 @@
     await S.setView("board");
     const item = S.prop(whole, 820, 650, 330, 300);
     const cuts = Cook.hasUpgrade("knife") ? 2 : 4;
-    const knife = S.track(S.add.image(1260, 430, Cook.hasUpgrade("knife") ? "knife-gold" : "knife").setScale(0.75).setAngle(-30).setDepth(D.fx));
+    const knife = S.track(S.add.image(1260, 430, Cook.hasUpgrade("knife") ? "knife-gold" : "knife").setScale(0.94).setAngle(-30).setDepth(D.fx));
     let made = 0;
     let other = null;
     const onCut = (x1, y1, x2, y2) => {
@@ -699,6 +701,7 @@
         S.input.on("pointerdown", down);
         S.input.on("pointerup", up);
         const c = S.centre(item);
+        S.ghost([[c.x - 240, c.y - 60], [c.x + 240, c.y + 10]], { duration: 600, delay: ctx.guided ? 200 : 5000 });
         Cook.expect = { kind: "swipe", x1: c.x - 260, y1: c.y - 40, x2: c.x + 260, y2: c.y + 20 };
       });
     }
@@ -731,11 +734,11 @@
     Cook.shuffle(spices).forEach((id, i) => {
       items[id] = S.prop(Cook.word(id).image, 880 + i * 150, 812, 138, 110);
     });
-    const pot = S.track(S.add.image(470, 330, "pot").setOrigin(0.5, 0.5).setScale(0.95).setDepth(D.item));
-    pot.baseScale = 0.95;
+    const pot = S.track(S.add.image(470, 330, "pot").setOrigin(0.5, 0.5).setScale(1.19).setDepth(D.item));
+    pot.baseScale = 1.19;
     const liq = S.liquid(pot, "pot");
-    const pan = S.track(S.add.image(1125, 340, "tadka-pan").setScale(0.9).setDepth(D.item));
-    pan.baseScale = 0.9;
+    const pan = S.track(S.add.image(1125, 340, "tadka-pan").setScale(1.12).setDepth(D.item));
+    pan.baseScale = 1.12;
     const flameL = S.flame(490, 390, 170);
     const flameR = S.flame(1125, 400, 150);
     S.loops.push({ stop: flameL.stop }, { stop: flameR.stop });
@@ -914,6 +917,7 @@
       };
       S.input.on("pointermove", move);
       S.input.on("pointerup", up);
+      S.ghost({ circle: { x: cx, y: cy, rx: 120, ry: 50 } }, { duration: 1200, delay: ctx.guided ? 200 : 5000 });
       Cook.expect = { kind: "stir", x: cx, y: cy, rx: 150, ry: 75, target: want, count: () => laps };
     });
   }

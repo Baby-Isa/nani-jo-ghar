@@ -69,25 +69,17 @@
     return { x: r.left + x * s, y: r.top + y * s };
   };
 
-  /* ---------- speech bubble ---------- */
+  /* ---------- speech: a bubble by a character (service view), or Nani's
+   * card in the sidebar (stations), where it can't cover anything ---------- */
   let englishOn = false;
   let bubbleAnchor = null;
   let lastLine = null;
   const bubble = () => $("#bubble");
+  const card = () => $("#nani-card");
 
   function placeBubble() {
     const b = bubble();
-    if (!bubbleAnchor || b.classList.contains("hidden")) return;
-    b.classList.remove("tail-left");
-    if (bubbleAnchor.badge) {
-      const badge = $("#nani-badge").getBoundingClientRect();
-      const stage = $("#stage").getBoundingClientRect();
-      b.style.left = `${badge.right - stage.left + 14}px`;
-      b.style.top = `${badge.top - stage.top + 6}px`;
-      b.classList.add("tail-left");
-      b.style.setProperty("--tail-y", "22px");
-      return;
-    }
+    if (!bubbleAnchor || bubbleAnchor.badge || b.classList.contains("hidden")) return;
     const p = UI.worldToStage(bubbleAnchor.x, bubbleAnchor.y);
     const stageW = p.stage ? p.stage.width : 1000;
     const w = b.offsetWidth;
@@ -101,65 +93,89 @@
   UI.placeBubble = placeBubble;
   global.addEventListener("resize", () => setTimeout(placeBubble, 60));
 
+  function fill(el, line) {
+    el.querySelector(".bubble-kutchi").innerHTML = `${line.kutchi}<span class="draft" title="Draft spelling: to check with the family">*</span>`;
+    const en = el.querySelector(".bubble-english");
+    en.textContent = line.english;
+    en.classList.toggle("hidden", !englishOn);
+    el.querySelector(".bubble-en").classList.toggle("on", englishOn);
+    const hasRec = line.audio && Cook.hasAudio(line.audio);
+    el.querySelector(".bubble-play").classList.toggle("hidden", !hasRec);
+    el.querySelector(".bubble-rec").classList.toggle("hidden", !!hasRec);
+    el.classList.remove("hidden");
+    el.style.animation = "none";
+    void el.offsetWidth;
+    el.style.animation = "";
+    return hasRec;
+  }
+
   /**
    * Show a line. anchor: {x, y, side} in world px (tail points up at it), or
-   * {badge: true} for Nani's corner badge. Resolves when the recording ends
-   * or, with no recording, after reading time. The bubble stays up until the
+   * {badge: true} for Nani's card in the sidebar. Resolves when the recording
+   * ends or, with no recording, after reading time. It stays up until the
    * next say()/hideBubble() unless opts.autoHide.
    */
   UI.say = async function (line, anchor, opts = {}) {
-    const b = bubble();
     lastLine = line;
     bubbleAnchor = anchor;
-    b.querySelector(".bubble-kutchi").innerHTML = `${line.kutchi}<span class="draft" title="Draft spelling: to check with the family">*</span>`;
-    const en = b.querySelector(".bubble-english");
-    en.textContent = line.english;
-    en.classList.toggle("hidden", !englishOn);
-    b.querySelector(".bubble-en").classList.toggle("on", englishOn);
-    const hasRec = line.audio && Cook.hasAudio(line.audio);
-    b.querySelector(".bubble-play").classList.toggle("hidden", !hasRec);
-    b.querySelector(".bubble-rec").classList.toggle("hidden", !!hasRec);
-    b.classList.remove("hidden");
-    b.style.animation = "none";
-    void b.offsetWidth;
-    b.style.animation = "";
-    placeBubble();
-    if (anchor && anchor.badge) $("#nani-badge").classList.add("talk");
+    let hasRec;
+    if (anchor && anchor.badge) {
+      bubble().classList.add("hidden");
+      hasRec = fill(card(), line);
+      card().classList.add("talk");
+    } else {
+      hasRec = fill(bubble(), line);
+      placeBubble();
+    }
     if (opts.onStart) opts.onStart();
     if (hasRec) await Cook.playRecording(line.audio);
     else await Cook.wait(opts.ms || Cook.readMs(line.plain));
-    $("#nani-badge").classList.remove("talk");
+    card().classList.remove("talk");
     if (opts.autoHide) UI.hideBubble();
   };
   UI.hideBubble = function () {
     bubble().classList.add("hidden");
-    $("#nani-badge").classList.remove("talk");
+    card().classList.add("hidden");
+    card().classList.remove("talk");
   };
-  UI.showBadge = (on) => $("#nani-badge").classList.toggle("hidden", !on);
+  UI.showBadge = () => {};
 
   function wireBubble() {
-    const b = bubble();
-    b.querySelector(".bubble-en").addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      englishOn = !englishOn;
-      b.querySelector(".bubble-english").classList.toggle("hidden", !englishOn);
-      b.querySelector(".bubble-en").classList.toggle("on", englishOn);
-      placeBubble();
-    });
-    b.querySelector(".bubble-play").addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      if (lastLine && lastLine.audio) Cook.playRecording(lastLine.audio);
+    [bubble(), card()].forEach((b) => {
+      b.querySelector(".bubble-en").addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        englishOn = !englishOn;
+        [bubble(), card()].forEach((x) => {
+          x.querySelector(".bubble-english").classList.toggle("hidden", !englishOn);
+          x.querySelector(".bubble-en").classList.toggle("on", englishOn);
+        });
+        placeBubble();
+      });
+      b.querySelector(".bubble-play").addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        if (lastLine && lastLine.audio) Cook.playRecording(lastLine.audio);
+      });
     });
   }
 
-  /* ---------- gist caption (English, for readers and the adult) ---------- */
+  /* ---------- gist caption (English, for readers and the adult). On the
+   * service view it sits across the top of the picture; at the stations the
+   * how-to line goes in the sidebar so it never covers a thing to tap. ---------- */
   UI.gist = function (text, opts = {}) {
-    const g = $("#gist");
-    g.textContent = text;
-    g.classList.toggle("top", !!opts.top);
-    g.classList.remove("hidden");
+    if (opts.top) {
+      const g = $("#gist");
+      g.textContent = text;
+      g.classList.remove("hidden");
+    } else {
+      const h = $("#how");
+      h.textContent = text;
+      h.classList.remove("hidden");
+    }
   };
-  UI.hideGist = () => $("#gist").classList.add("hidden");
+  UI.hideGist = () => {
+    $("#gist").classList.add("hidden");
+    $("#how").classList.add("hidden");
+  };
 
   /* ---------- choices (greetings) ---------- */
   UI.choose = function (options, correctKey, opts = {}) {
@@ -177,7 +193,21 @@
       Cook.shuffle(options).forEach((o) => {
         const btn = document.createElement("button");
         btn.dataset.key = o.key;
-        btn.innerHTML = o.kutchi;
+        btn.innerHTML = `<span>${o.kutchi}</span>`;
+        // non-readers hear each reply before choosing (the At the door idea)
+        if (o.audio && Cook.hasAudio(o.audio)) {
+          const hear = document.createElement("span");
+          hear.className = "hear";
+          hear.setAttribute("role", "button");
+          hear.setAttribute("aria-label", "Hear it");
+          hear.textContent = "\u25B6";
+          hear.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            Cook.unlockAudio();
+            Cook.playRecording(o.audio);
+          });
+          btn.prepend(hear);
+        }
         btn.addEventListener("click", () => {
           Cook.unlockAudio();
           if (o.key === correctKey) {
