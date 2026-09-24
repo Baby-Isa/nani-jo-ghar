@@ -42,7 +42,9 @@
     "nani_ref": "{style}\n\nEdit the attached reference hand into Nani's hand: the {side} hand and forearm of a warm, graceful grandmother in her late sixties. Keep the camera, pose, framing and lighting exactly as in the reference. Change: (1) Hand: an older woman's hand, a little larger and fuller than the child's, with soft, gentle wrinkles over the knuckles and the back of the hand and a slightly looser skin texture, still smooth and stylised, never bony, no prominent veins; short, neat, natural nails, no polish. (2) Skin: warm and unsaturated, a soft muted light brown, a touch deeper than the reference, not orange, not grey. (3) Sleeve: replace the white linen with her deep-red kurta sleeve (deep madder red, about #9E1F2A), coming down to the wrist, with a narrow band of fine gold embroidery at the cuff. (4) Jewellery: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_ref_left": "{style}\n\nEdit the attached image of Nani's hand. It is now her LEFT hand (already flipped): keep the hand, pose, skin, camera, lighting and her deep-red sleeve with its gold-embroidered cuff exactly the same. Change only the jewellery: remove every ring, bracelet and bangle and replace them with: {jewellery}. Transparent background.\n\n{negative}",
     "nani_pose": "{style}\n\nTwo images are attached. Image 1 is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly. Image 2 is a child's hand showing the POSE and CAMERA to copy: draw Nani's {side} hand in exactly that pose, from exactly that camera, with the same framing, the same empty gaps and the same forearm direction; ignore the child's skin and white sleeve. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. No tool or object in the hand. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
-    "nani_two_pose": "{style}\n\nThree images are attached. Image 1 is Nani's RIGHT hand and image 2 her LEFT hand: copy their older skin, deep-red sleeves with gold-embroidered cuffs and jewellery exactly. Image 3 shows a child's two hands in the POSE and CAMERA to copy: draw Nani's two hands (right hand on the right, left hand on the left) in exactly that pose, camera and framing, with the same empty gap where the rolling pin will sit; ignore the child's skin and white sleeves. Her hands are an older woman's: a little larger and fuller, soft gentle wrinkles, smooth and stylised, short natural nails. Right hand: {right}. Left hand: {left}. No tool or object in the hands. Transparent background: hands and forearms only, no other body parts.\n\n{negative}"
+    "nani_two_pose": "{style}\n\nThree images are attached. Image 1 is Nani's RIGHT hand and image 2 her LEFT hand: copy their older skin, deep-red sleeves with gold-embroidered cuffs and jewellery exactly. Image 3 shows a child's two hands in the POSE and CAMERA to copy: draw Nani's two hands (right hand on the right, left hand on the left) in exactly that pose, camera and framing, with the same empty gap where the rolling pin will sit; ignore the child's skin and white sleeves. Her hands are an older woman's: a little larger and fuller, soft gentle wrinkles, smooth and stylised, short natural nails. Right hand: {right}. Left hand: {left}. No tool or object in the hands. Transparent background: hands and forearms only, no other body parts.\n\n{negative}",
+    "hand_pose_from_ref_keyed": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 in a new pose: warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown, exactly the skin colour of the reference; a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails. {camera} Pose: {pose}. The only object is the magenta placeholder described in the pose; nothing else in the hand. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern, identical to the reference. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
+    "hands_two_from_ref_keyed": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw BOTH hands and forearms of the same child of about 7 (the right hand on the right, the left hand on the left, a matching mirror-image pair), each exactly like the reference: warm light tan skin, not orange, not saturated, exactly the skin colour of the reference; slender, slim hands with long fingers relative to small, narrow palms; smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins. {camera} Both forearms enter from the bottom edge of the frame. Pose: {pose}. The only object is the magenta placeholder described in the pose; nothing else in the hands. Sleeves: plain white linen shirt sleeves rolled back to between the elbow and the wrist, the roll just showing at the bottom edge (or cropped out), identical to the reference. Transparent background: two hands and forearms only, no other body parts.\n\n{negative}"
   },
   "assets": [
     {
@@ -145,7 +147,7 @@
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "heel of the palm pushing forwards into the worktop: the wrist bent back, the heel of the hand pressed down hard, the fingers together and lifted slightly off the worktop, angled up and forwards, as if pushing dough or an item away"
+        "pose": "heel of the palm pushing down and forwards: the wrist bent sharply back so the fingers point up towards the camera and are foreshortened, only the heel of the hand pressed on the worktop at the bottom of the hand, as if pushing dough away"
       },
       "camera": "T"
     },
@@ -204,8 +206,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "waving hello, frame 1 of 2: hand raised, fingers together pointing up, palm facing away from us, the whole hand tilted about 15 degrees to the LEFT at the wrist"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "waving hello, frame 1 of 2: hand raised, fingers together pointing up, the whole hand tilted about 20 degrees to the LEFT at the wrist"
       },
       "camera": "E"
     },
@@ -219,8 +221,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "waving hello, frame 2 of 2: hand raised, fingers together pointing up, palm facing away from us, the whole hand tilted about 15 degrees to the RIGHT at the wrist"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "waving hello, frame 2 of 2: hand raised, fingers together pointing up, the whole hand tilted about 20 degrees to the RIGHT at the wrist"
       },
       "camera": "E"
     },
@@ -234,8 +236,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "palm pushed out forwards as for 'stop' or a high five: hand raised, wrist bent back, fingers straight up and slightly apart, palm facing away from us so we see the back of the hand"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "palm pushed out forwards, away from us, as for 'stop' or a high five: hand raised, wrist bent back, fingers straight up and slightly apart"
       },
       "camera": "E"
     },
@@ -249,8 +251,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "right hand laid flat over our own heart (salaam, thank you): the forearm comes diagonally from the lower right corner of the frame, the hand lies flat, fingers together pointing to the left, back of the hand towards us"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "right hand laid flat over our own heart (salaam, thank you): the forearm comes diagonally from the lower right corner of the frame, the hand lies flat, fingers together pointing to the left, back of the hand towards us. Draw ONLY the hand and forearm: no chest, no shirt front, no body; the hand rests on nothing visible"
       },
       "camera": "E"
     },
@@ -292,12 +294,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-master.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "a loose fist holding an invisible horizontal handle (knife, spatula, ladle) about 2.5 cm thick: the handle runs straight forwards through the hollow of the curled fingers and out of the front of the fist towards the top of the frame; the THUMB LIES STRAIGHT ALONG THE TOP OF THE HANDLE LINE, pointing forwards, not tucked into the fist; the curled fingers leave an open tunnel for the handle The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "pose": "a loose fist holding a straight rod 2.5 cm thick that runs straight forwards, from under the wrist out through the curled fingers and 6 cm out of the front of the fist towards the top of the frame; the THUMB LIES STRAIGHT ALONG THE TOP OF THE ROD, pointing forwards, not tucked; the fingers wrap under the rod The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "T"
+      "camera": "T",
+      "key_out": "magenta"
     },
     {
       "id": "hand-b2-vertical-grip-t",
@@ -322,12 +325,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-eye-level.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "fist held upright in front of us around an invisible vertical handle about 3 cm thick (umbrella, broom, torch): fingers curled round the far side, thumb wrapped over the top of the index finger; a clear round tunnel through the fist from top to bottom where the handle passes The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "fist held upright in front of us around a vertical rod 3 cm thick (umbrella, broom, torch handle) that sticks 5 cm out of the top and bottom of the fist; fingers curled round the far side, thumb wrapped round the near side The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "E"
+      "camera": "E",
+      "key_out": "magenta"
     },
     {
       "id": "hand-b3-stick-grip-e",
@@ -337,12 +341,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-eye-level.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "a loose grip around an invisible stick about 2.5 cm thick (drumstick, racquet or bat handle) that leaves the top of the fist and points up and forwards at about 45 degrees; thumb along the side of the stick; a clear tunnel through the loosely curled fingers The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "a loose grip around a rod 2.5 cm thick (drumstick, racquet or bat handle) that leaves the top of the fist and points up and forwards at about 45 degrees, 12 cm long; thumb along the side of the rod The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "E"
+      "camera": "E",
+      "key_out": "magenta"
     },
     {
       "id": "hand-b4-rolling-pin-t",
@@ -368,12 +373,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-master.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "hook grip: the four fingers curled together into a hook as if hooked through the loop of a jug handle, thumb resting on top of the handle; the hollow inside the hook, where the handle passes, is clearly empty The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "pose": "hook grip: the four fingers curled together into a hook round a horizontal rod 2 cm thick (a jug handle) that runs left-right under the curled fingers and sticks out a few centimetres on both sides; the thumb resting on top of the rod The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "T"
+      "camera": "T",
+      "key_out": "magenta"
     },
     {
       "id": "hand-b5-hook-grip-e",
@@ -383,12 +389,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-eye-level.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "hook grip in front of us: the four fingers curled together into a hook as if carrying a basket or bucket by its handle, thumb resting lightly against the index finger; the hollow inside the hook, where the handle passes, is clearly empty The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "hook grip in front of us, carrying: the four fingers curled together into a hook round a horizontal rod 2 cm thick (a basket or bucket handle) that runs left-right through the hook and sticks out a few centimetres on both sides; thumb resting lightly on the index finger The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "E"
+      "camera": "E",
+      "key_out": "magenta"
     },
     {
       "id": "hand-c1-pinch-f1-open-t",
@@ -430,8 +437,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "fingertip pinch, open, held up in front of us: thumb and index fingertips about 3 cm apart, ready to pick something up; the other fingers loosely curled"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "fingertip pinch, OPEN, held up in front of us: the thumb and index fingertips clearly APART, with a 3 cm open gap between their tips (not touching, not an OK sign); the other fingers loosely curled"
       },
       "camera": "E"
     },
@@ -458,12 +465,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-master.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "tripod grip, as if holding a pen or teaspoon: thumb, index and middle fingertips meet around an invisible thin handle about 1 cm thick that runs forwards and slightly left out of the grip; ring and little fingers curled under The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "pose": "tripod grip, as if holding a pen or teaspoon: thumb, index and middle fingertips hold a thin rod 1 cm thick and 12 cm long that runs forwards and slightly left out of the grip; ring and little fingers curled under The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "T"
+      "camera": "T",
+      "key_out": "magenta"
     },
     {
       "id": "hand-c3-side-pinch-t",
@@ -473,12 +481,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-master.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "side pinch, holding something thin and flat (a card, a chapati edge): the thumb pad pressed against the side of the curled index finger, with a thin straight slit between them where the flat edge sits; other fingers curled behind The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "pose": "side pinch (key grip): the index finger curled round, and the flat pad of the thumb pressed onto the SIDE of the index finger's middle segment (not the fingertip, not an OK sign), clamping a flat card 6 x 9 cm that sticks out forwards from between them The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "T"
+      "camera": "T",
+      "key_out": "magenta"
     },
     {
       "id": "hand-c3-side-pinch-e",
@@ -488,12 +497,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-eye-level.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "side pinch held up in front of us, holding something thin and flat (a card or photo) upright: the thumb pad pressed against the side of the curled index finger, with a thin straight slit between them where the flat edge sits; other fingers curled behind The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "side pinch (key grip) held up in front of us: the index finger curled round, and the flat pad of the thumb pressed onto the SIDE of the index finger's middle segment (not the fingertip, not an OK sign), clamping a flat upright card 6 x 9 cm that sticks up from between them The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "E"
+      "camera": "E",
+      "key_out": "magenta"
     },
     {
       "id": "hand-c4-point-t",
@@ -564,12 +574,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-master.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "grabbing: hand closed round an invisible object about 5 cm across (a vegetable), fingers wrapped round it and thumb against them, leaving a round empty hollow inside the grip where the object sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "pose": "grabbing: hand closed round a ball 5 cm across (standing in for a vegetable), fingers wrapped round it and thumb against them; part of the ball shows between the fingers and thumb The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "T"
+      "camera": "T",
+      "key_out": "magenta"
     },
     {
       "id": "hand-d1-grab-f1-open-e",
@@ -594,12 +605,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-eye-level.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "grabbing, in front of us: hand closed round an invisible object about 5 cm across, fingers wrapped round it and thumb against them, leaving a round empty hollow inside the grip where the object sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "grabbing, in front of us: hand closed round a ball 5 cm across, fingers wrapped round it and thumb against them; part of the ball shows between the fingers and thumb The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "E"
+      "camera": "E",
+      "key_out": "magenta"
     },
     {
       "id": "hand-d2-c-hold-t",
@@ -639,12 +651,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-master.png"
       ],
-      "template": "hands_two_from_ref",
+      "template": "hands_two_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "two hands holding an invisible round bowl about 18 cm across from its two sides: palms turned in and slightly up, fingers curved under the bowl's rim; a clear, empty, round space about 18 cm across between the hands where the bowl sits The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "pose": "two hands holding a round bowl about 18 cm across from its two sides: palms turned in and slightly up, fingers curved under the bowl's rim, the hands about 18 cm apart; the bowl is a flat round disc seen from above The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
       "camera": "T",
+      "key_out": "magenta",
       "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
     },
     {
@@ -655,12 +668,13 @@
       "reference_images": [
         "assets/characters/hands/hand-ref-master.png"
       ],
-      "template": "hand_pose_from_ref",
+      "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "squeezing, frame 1 of 2: fist half-closed round an invisible half lemon about 6 cm across, fingers curved round it, leaving a clear round hollow inside the grip The tool is a separate image placed later: leave that space completely empty and clearly visible, with nothing drawn in it."
+        "pose": "squeezing, frame 1 of 2: fist half-closed round half a lemon 6 cm across, fingers curved round it, the lemon half showing between the fingers and thumb The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool."
       },
-      "camera": "T"
+      "camera": "T",
+      "key_out": "magenta"
     },
     {
       "id": "hand-d4-squeeze-f2-tight-t",
@@ -687,7 +701,7 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
         "pose": "throwing, the moment of release: the arm forwards, the wrist flicked forwards and the fingers just opening and spreading as they let go of a ball"
       },
       "camera": "E"
@@ -702,8 +716,8 @@
       ],
       "template": "hands_two_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "about to catch, frame 1 of 2: both hands held out in front of us about 15 cm apart, palms facing forwards and slightly towards each other, fingers spread and curved, ready to catch a ball"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "about to catch, frame 1 of 2: both hands held up in front of us about 15 cm apart, palms facing forwards, away from us, towards the ball, fingers spread and curved"
       },
       "camera": "E",
       "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
@@ -749,8 +763,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "hand held out forwards for a handshake: the hand turned sideways, thumb up, palm facing left, fingers together pointing forwards and a little to the left"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "hand held out for a handshake: the forearm rises from the bottom edge of the frame diagonally up and to the left, the hand turned sideways, thumb up, fingers together pointing forwards and to the left; the rolled sleeve at the bottom edge, same as the reference (no wristband)"
       },
       "camera": "E"
     },
@@ -764,8 +778,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "counting on the fingers, ONE: only the index finger straight up; the middle, ring and little fingers curled down into the palm; the thumb folded across them. Exactly one finger up"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, ONE, seen from behind: only the index finger straight up, its fingernail facing us; the middle, ring and little fingers folded down, their knuckles facing us; the thumb folded behind them. Exactly one finger up"
       },
       "camera": "E"
     },
@@ -779,8 +793,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "counting on the fingers, TWO: the index and middle fingers straight up and slightly apart; the ring and little fingers curled down; the thumb folded across them. Exactly two fingers up"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, TWO, seen from behind: the index and middle fingers straight up and slightly apart, their fingernails facing us; the ring and little fingers folded down, knuckles facing us; the thumb folded behind them. Exactly two fingers up"
       },
       "camera": "E"
     },
@@ -794,8 +808,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "counting on the fingers, THREE: the index, middle and ring fingers straight up and slightly apart; the little finger curled down; the thumb folded across it. Exactly three fingers up"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, THREE, seen from behind: the index, middle and ring fingers straight up and slightly apart, their fingernails facing us; the little finger folded down; the thumb folded behind it. Exactly three fingers up"
       },
       "camera": "E"
     },
@@ -809,8 +823,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "counting on the fingers, FOUR: the index, middle, ring and little fingers straight up and slightly apart; only the thumb folded across the palm. Exactly four fingers up"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their fingernails facing us; only the thumb folded behind the palm. Exactly four fingers up"
       },
       "camera": "E"
     },
@@ -824,8 +838,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "counting on the fingers, FIVE: all four fingers and the thumb straight and spread wide apart. All five fingers up"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting on the fingers, FIVE, seen from behind: all four fingers and the thumb straight and spread wide apart, fingernails facing us. All five fingers up"
       },
       "camera": "E"
     },
@@ -839,8 +853,8 @@
       ],
       "template": "hands_two_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "clapping, frame 1 of 2: both hands raised in front of us, palms facing each other about 20 cm apart, fingers together pointing up"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "clapping, frame 1 of 2: both hands raised in front of us, palms facing EACH OTHER about 20 cm apart (seen edge-on from behind, thumbs nearest us), fingers together pointing up"
       },
       "camera": "E",
       "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
@@ -871,8 +885,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "celebration: the right arm raised, elbow bent, the forearm rising vertically from the bottom edge, the hand in a closed fist at the top, back of the fist towards us (the left arm is this image mirrored)"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "celebration: the right arm raised, elbow bent, the forearm rising vertically from the bottom edge, the hand in a closed fist at the top; the back of the fist and its knuckles face us, the curled fingertips face away (the left arm is this image mirrored)"
       },
       "camera": "E"
     },
@@ -886,8 +900,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "stretching on waking: the right arm reaching straight up to the top of the frame, hand open with the fingers spread, back of the hand towards us (the left arm is this image mirrored)"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "stretching on waking: the right arm reaching straight up to the top of the frame, hand open with the fingers spread (the left arm is this image mirrored)"
       },
       "camera": "E"
     },
@@ -916,8 +930,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "piano hand, frame 1 of 2: the hand arched over an invisible keyboard below, seen from just behind and above, fingers curved down with the fingertips raised a little above the keys, as if about to play"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "piano hand, frame 1 of 2: the forearm rises from the bottom edge of the frame and the hand arches forwards over an invisible keyboard further down, seen from behind and above, fingers curved down, the fingertips raised a little above the keys"
       },
       "camera": "E"
     },
@@ -931,8 +945,8 @@
       ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "Camera: eye level, first person: we look straight ahead at our own hand held up in front of us, exactly as in the attached eye-level reference; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "piano hand, frame 2 of 2: the hand arched over an invisible keyboard below, seen from just behind and above, fingers curved down with the fingertips pressing down onto the keys"
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "piano hand, frame 2 of 2: the forearm rises from the bottom edge of the frame and the hand arches forwards over an invisible keyboard further down, seen from behind and above, fingers curved down, the fingertips pressing down on the keys"
       },
       "camera": "E"
     },
@@ -947,7 +961,7 @@
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "hand-drum slap with a cupped hand: palm down, fingers together and slightly arched so the palm forms a shallow dome, the fingertips and the heel of the hand touching the surface (the flat-hand slap is A1)"
+        "pose": "hand-drum slap with a cupped hand: palm down, fingers together and clearly curved so the hand forms a raised dome, the knuckles lifted high, only the fingertips and the heel of the hand touching the surface (the flat-hand slap is A1)"
       },
       "camera": "T"
     },

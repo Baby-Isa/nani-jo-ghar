@@ -1,0 +1,136 @@
+LIVE RUN -- 56 asset(s), model=gpt-image-1, concurrency 3, gap 20s
+budget cap: $12.68
+[hand-a1-flat-palm-t::v0] skip (already done)
+[hand-a3-palm-up-t::v0] skip (already done)
+[hand-a3-palm-up-e::v0] skip (already done)
+[hand-a4-reach-e::v0] skip (already done)
+[hand-a8-cupped-t::v0] skip (already done)
+[hand-a8-cupped-e::v0] skip (already done)
+[hand-b2-vertical-grip-t::v0] skip (already done)
+[hand-b4-rolling-pin-t::v0] skip (already done)
+[hand-c1-pinch-f1-open-t::v0] skip (already done)
+[hand-c1-pinch-f2-closed-t::v0] skip (already done)
+[hand-c1-pinch-f2-closed-e::v0] skip (already done)
+[hand-c4-point-t::v0] skip (already done)
+[hand-c4-point-e::v0] skip (already done)
+[hand-c5-two-hand-fold-t::v0] skip (already done)
+[hand-d1-grab-f1-open-t::v0] skip (already done)
+[hand-d1-grab-f1-open-e::v0] skip (already done)
+[hand-d2-c-hold-t::v0] skip (already done)
+[hand-d2-c-hold-e::v0] skip (already done)
+[hand-d4-squeeze-f2-tight-t::v0] skip (already done)
+[hand-d6-two-hand-catch-f2-closed-e::v0] skip (already done)
+[hand-e1-thumbs-up-e::v0] skip (already done)
+[hand-e4-clap-f2-together-e::v0] skip (already done)
+[hand-e7-shrug-e::v0] skip (already done)
+[hand-f4-phone-two-hands-e::v0] skip (already done)
+[hand-a2-heel-push-t::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-a5-wave-f1-e::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)[hand-a5-wave-f2-e::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+
+[hand-a2-heel-push-t::v0] skin #DD7C42 -> #D69B6D (corrected)
+[hand-a2-heel-push-t::v0] done in 39s -> assets/characters/hands/master/hand-a2-heel-push-t.png
+[hand-a6-palm-out-e::v0] queued edit 1024x1024 (+42s; the pacer holds the actual request start)
+[hand-a5-wave-f2-e::v0] skin #D8854C -> #D69B6D (corrected)
+[hand-a5-wave-f2-e::v0] done in 56s -> assets/characters/hands/master/hand-a5-wave-f2-e.png
+[hand-a7-hand-on-heart-e::v0] queued edit 1024x1024 (+59s; the pacer holds the actual request start)
+[hand-a5-wave-f1-e::v0] skin #E08F56 -> #C3895D (corrected)
+[hand-a5-wave-f1-e::v0] done in 76s -> assets/characters/hands/master/hand-a5-wave-f1-e.png
+[hand-b1-handle-grip-t::v0] queued edit 1024x1024 (+81s; the pacer holds the actual request start)
+[hand-a6-palm-out-e::v0] skin #D4813D -> #CF9367 (corrected)
+[hand-a6-palm-out-e::v0] done in 55s -> assets/characters/hands/master/hand-a6-palm-out-e.png
+[hand-b2-vertical-grip-e::v0] queued edit 1024x1024 (+100s; the pacer holds the actual request start)
+[hand-a7-hand-on-heart-e::v0] skin #CA7132 -> #D69B6D (corrected)
+[hand-a7-hand-on-heart-e::v0] done in 58s -> assets/characters/hands/master/hand-a7-hand-on-heart-e.png
+[hand-b3-stick-grip-e::v0] queued edit 1024x1024 (+120s; the pacer holds the actual request start)
+[hand-b2-vertical-grip-e::v0] keyed out 58903 px of magenta placeholder
+[hand-b2-vertical-grip-e::v0] skin #DA8457 -> #D19668 (corrected)
+[hand-b2-vertical-grip-e::v0] done in 34s -> assets/characters/hands/master/hand-b2-vertical-grip-e.png
+[hand-b5-hook-grip-t::v0] queued edit 1024x1024 (+139s; the pacer holds the actual request start)
+[hand-b3-stick-grip-e::v0] keyed out 79601 px of magenta placeholder
+[hand-b3-stick-grip-e::v0] skin #C8824D -> #D2976A (corrected)
+[hand-b3-stick-grip-e::v0] done in 36s -> assets/characters/hands/master/hand-b3-stick-grip-e.png
+[hand-b5-hook-grip-e::v0] queued edit 1024x1024 (+159s; the pacer holds the actual request start)
+[hand-b1-handle-grip-t::v0] keyed out 34987 px of magenta placeholder
+[hand-b1-handle-grip-t::v0] skin #D58149 -> #D69B6D (corrected)
+[hand-b1-handle-grip-t::v0] done in 97s -> assets/characters/hands/master/hand-b1-handle-grip-t.png
+[hand-c1-pinch-f1-open-e::v0] queued edit 1024x1024 (+181s; the pacer holds the actual request start)
+[hand-b5-hook-grip-e::v0] keyed out 27027 px of magenta placeholder
+[hand-b5-hook-grip-e::v0] skin #D18349 -> #D6996B (corrected)
+[hand-b5-hook-grip-e::v0] done in 37s -> assets/characters/hands/master/hand-b5-hook-grip-e.png
+[hand-c2-tripod-grip-t::v0] queued edit 1024x1024 (+200s; the pacer holds the actual request start)
+[hand-b5-hook-grip-t::v0] keyed out 34827 px of magenta placeholder
+[hand-b5-hook-grip-t::v0] skin #E58D4A -> #D69B6D (corrected)
+[hand-b5-hook-grip-t::v0] done in 77s -> assets/characters/hands/master/hand-b5-hook-grip-t.png
+[hand-c3-side-pinch-t::v0] queued edit 1024x1024 (+220s; the pacer holds the actual request start)
+[hand-c1-pinch-f1-open-e::v0] skin #C4733B -> #D4996B (corrected)
+[hand-c1-pinch-f1-open-e::v0] done in 53s -> assets/characters/hands/master/hand-c1-pinch-f1-open-e.png
+[hand-c3-side-pinch-e::v0] queued edit 1024x1024 (+238s; the pacer holds the actual request start)
+[hand-c3-side-pinch-t::v0] keyed out 91017 px of magenta placeholder
+[hand-c3-side-pinch-t::v0] skin #DC8649 -> #D59A6C (corrected)
+[hand-c3-side-pinch-t::v0] done in 33s -> assets/characters/hands/master/hand-c3-side-pinch-t.png
+[hand-d1-grab-f2-closed-t::v0] queued edit 1024x1024 (+257s; the pacer holds the actual request start)
+[hand-c3-side-pinch-e::v0] keyed out 95044 px of magenta placeholder
+[hand-c3-side-pinch-e::v0] skin #DF853A -> #CF9366 (corrected)
+[hand-c3-side-pinch-e::v0] done in 37s -> assets/characters/hands/master/hand-c3-side-pinch-e.png
+[hand-d1-grab-f2-closed-e::v0] queued edit 1024x1024 (+279s; the pacer holds the actual request start)
+[hand-d1-grab-f2-closed-t::v0] keyed out 22503 px of magenta placeholder
+[hand-d1-grab-f2-closed-t::v0] skin #D88748 -> #D69B6D (corrected)
+[hand-d1-grab-f2-closed-t::v0] done in 43s -> assets/characters/hands/master/hand-d1-grab-f2-closed-t.png
+[hand-d3-two-hand-bowl-t::v0] queued edit 1024x1024 (+303s; the pacer holds the actual request start)
+[hand-d1-grab-f2-closed-e::v0] keyed out 71086 px of magenta placeholder
+[hand-d1-grab-f2-closed-e::v0] skin #DE8D52 -> #D29669 (corrected)
+[hand-d1-grab-f2-closed-e::v0] done in 40s -> assets/characters/hands/master/hand-d1-grab-f2-closed-e.png
+[hand-d4-squeeze-f1-half-t::v0] queued edit 1024x1024 (+322s; the pacer holds the actual request start)
+[hand-c2-tripod-grip-t::v0] keyed out 24384 px of magenta placeholder
+[hand-c2-tripod-grip-t::v0] skin #CA7F4B -> #D29769 (corrected)
+[hand-c2-tripod-grip-t::v0] done in 136s -> assets/characters/hands/master/hand-c2-tripod-grip-t.png
+[hand-d5-throw-release-e::v0] queued edit 1024x1024 (+340s; the pacer holds the actual request start)
+[hand-d3-two-hand-bowl-t::v0] keyed out 215142 px of magenta placeholder
+[hand-d3-two-hand-bowl-t::v0] skin #D99054 -> #D69B6D (corrected)
+[hand-d3-two-hand-bowl-t::v0] done in 57s -> assets/characters/hands/master/hand-d3-two-hand-bowl-t.png
+[hand-d6-two-hand-catch-f1-open-e::v0] queued edit 1024x1024 (+364s; the pacer holds the actual request start)
+[hand-d4-squeeze-f1-half-t::v0] keyed out 52728 px of magenta placeholder
+[hand-d4-squeeze-f1-half-t::v0] skin #D88541 -> #D69B6D (corrected)
+[hand-d4-squeeze-f1-half-t::v0] done in 56s -> assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png
+[hand-e2-handshake-e::v0] queued edit 1024x1024 (+381s; the pacer holds the actual request start)
+[hand-d5-throw-release-e::v0] skin #E9985B -> #DA9F71 (corrected)
+[hand-d5-throw-release-e::v0] done in 61s -> assets/characters/hands/master/hand-d5-throw-release-e.png
+[hand-e3-count-1-e::v0] queued edit 1024x1024 (+404s; the pacer holds the actual request start)
+[hand-d6-two-hand-catch-f1-open-e::v0] skin #D4874A -> #D19568 (corrected)
+[hand-d6-two-hand-catch-f1-open-e::v0] done in 56s -> assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png
+[hand-e3-count-2-e::v0] queued edit 1024x1024 (+423s; the pacer holds the actual request start)
+[hand-e2-handshake-e::v0] skin #D48151 -> #D69B6D (corrected)
+[hand-e2-handshake-e::v0] done in 56s -> assets/characters/hands/master/hand-e2-handshake-e.png
+[hand-e3-count-3-e::v0] queued edit 1024x1024 (+440s; the pacer holds the actual request start)
+[hand-e3-count-1-e::v0] skin #D8844B -> #D19567 (corrected)
+[hand-e3-count-1-e::v0] done in 50s -> assets/characters/hands/master/hand-e3-count-1-e.png
+[hand-e3-count-4-e::v0] queued edit 1024x1024 (+456s; the pacer holds the actual request start)
+[hand-e3-count-3-e::v0] skin #E69A5A -> #D79C6E (corrected)
+[hand-e3-count-3-e::v0] done in 35s -> assets/characters/hands/master/hand-e3-count-3-e.png
+[hand-e3-count-5-e::v0] queued edit 1024x1024 (+478s; the pacer holds the actual request start)
+[hand-e3-count-4-e::v0] skin #D38040 -> #D29567 (corrected)
+[hand-e3-count-4-e::v0] done in 44s -> assets/characters/hands/master/hand-e3-count-4-e.png
+[hand-e4-clap-f1-apart-e::v0] queued edit 1024x1024 (+503s; the pacer holds the actual request start)
+[hand-e3-count-5-e::v0] skin #E49153 -> #D5996B (corrected)
+[hand-e3-count-5-e::v0] done in 37s -> assets/characters/hands/master/hand-e3-count-5-e.png
+[hand-e5-arm-up-fist-e::v0] queued edit 1024x1024 (+518s; the pacer holds the actual request start)
+[hand-e3-count-2-e::v0] skin #E5934F -> #D69B6D (corrected)
+[hand-e3-count-2-e::v0] done in 111s -> assets/characters/hands/master/hand-e3-count-2-e.png
+[hand-e6-stretch-e::v0] queued edit 1024x1024 (+537s; the pacer holds the actual request start)
+[hand-e5-arm-up-fist-e::v0] skin #CB7036 -> #CB9165 (corrected)
+[hand-e5-arm-up-fist-e::v0] done in 24s -> assets/characters/hands/master/hand-e5-arm-up-fist-e.png
+[hand-f1-piano-f1-raised-e::v0] queued edit 1024x1024 (+546s; the pacer holds the actual request start)
+[hand-e6-stretch-e::v0] skin #D47B37 -> #D3976A (corrected)
+[hand-e6-stretch-e::v0] done in 37s -> assets/characters/hands/master/hand-e6-stretch-e.png
+[hand-f1-piano-f2-pressed-e::v0] queued edit 1024x1024 (+576s; the pacer holds the actual request start)
+[hand-e4-clap-f1-apart-e::v0] skin #D77E39 -> #CB8F63 (corrected)
+[hand-e4-clap-f1-apart-e::v0] done in 78s -> assets/characters/hands/master/hand-e4-clap-f1-apart-e.png
+[hand-f2-drum-cupped-t::v0] queued edit 1024x1024 (+586s; the pacer holds the actual request start)
+[hand-f1-piano-f1-raised-e::v0] skin #D77739 -> #D69B6D (corrected)
+[hand-f1-piano-f1-raised-e::v0] done in 74s -> assets/characters/hands/master/hand-f1-piano-f1-raised-e.png
+[hand-f1-piano-f2-pressed-e::v0] skin #BC6D37 -> #D09569 (corrected)
+[hand-f1-piano-f2-pressed-e::v0] done in 67s -> assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png
+[hand-f2-drum-cupped-t::v0] skin #D07536 -> #D2976A (corrected)
+[hand-f2-drum-cupped-t::v0] done in 74s -> assets/characters/hands/master/hand-f2-drum-cupped-t.png
+
+spent $1.28 this run -- 32 generated, 32 done, 0 flagged for drift, 0 error(s) (0 not billed), 24 skipped (already done); wall time 663s

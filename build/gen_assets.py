@@ -504,7 +504,7 @@ def skin_weight(im):
     C = np.hypot(a, b)
     hue = np.degrees(np.arctan2(b, a))
     w = _ramp(arr[..., 3], 1, 16)  # antialiased edges too, or they keep an orange fringe
-    w = w * _ramp(C, 16, 24) * (1 - _ramp(C, 60, 70))      # not white/cream fabric, not a vivid sleeve
+    w = w * _ramp(C, 16, 24) * (1 - _ramp(C, 78, 88))      # not white/cream fabric; very orange raw skin still in
     w = w * _ramp(hue, 40, 48) * (1 - _ramp(hue, 67, 73))  # skin hues only: reds (sleeve) and golds/creams out
     w = w * _ramp(L, 25, 35) * (1 - _ramp(L, 90, 96))      # not deep shadow, not specular white
     return w, lab
@@ -530,7 +530,21 @@ def delta_e(lab1, lab2):
     return float(np.linalg.norm(np.asarray(lab1) - np.asarray(lab2)))
 
 
-def normalise_skin(im, target_lab, tolerance=3.0):
+def normalise_skin(im, target_lab, tolerance=3.0, passes=3):
+    """Run _normalise_skin_once up to `passes` times: a very orange raw
+    render sits partly outside the soft mask, so one pass can land short."""
+    out, info = _normalise_skin_once(im, target_lab, tolerance)
+    first = dict(info)
+    for _ in range(passes - 1):
+        if info.get("skin_action") != "corrected" or (info.get("skin_delta_e_after") or 0) <= tolerance:
+            break
+        out, info = _normalise_skin_once(out, target_lab, tolerance)
+    first.update(skin_after=info.get("skin_after"),
+                 skin_delta_e_after=info.get("skin_delta_e_after", info.get("skin_delta_e_before")))
+    return out, first
+
+
+def _normalise_skin_once(im, target_lab, tolerance=3.0):
     """Colour-match an image's skin midtone to `target_lab` (skin only).
     In LCh: lightness shifted, chroma scaled, hue rotated, each weighted by
     the soft skin mask; alpha untouched. Returns (image, info dict)."""
@@ -564,23 +578,106 @@ def normalise_skin(im, target_lab, tolerance=3.0):
     return out, info
 
 
-def key_out_magenta(im, hard=60.0, soft=20.0):
+def _hsv(rgb):
+    r, g, b = (rgb[..., i] / 255.0 for i in range(3))
+    mx, mn = np.maximum(np.maximum(r, g), b), np.minimum(np.minimum(r, g), b)
+    d = mx - mn + 1e-9
+    h = np.where(mx == r, ((g - b) / d) % 6, np.where(mx == g, (b - r) / d + 2, (r - g) / d + 4)) * 60
+    return h, np.where(mx > 0, (mx - mn) / (mx + 1e-9), 0), mx
+
+
+def key_out_magenta(im):
     """Remove a flat magenta placeholder (a tool drawn as a plain #FF00FF
-    rod so the fingers close round something real) and leave its exact
-    shape as a transparent gap for the separate tool sprite. Magenta-ness
-    is min(R, B) - G: strongly positive only for magenta and violet, and
-    negative for skin, cream, pinks and reds. Soft edges are despilled.
-    Returns (image, removed pixel count)."""
+    shape so the fingers close round something real) and leave its exact
+    shape as a transparent gap for the separate tool sprite. The renderer
+    shades the magenta, so its shadowed side comes out dark crimson-purple:
+    the key is by hue (270-350 degrees, i.e. magenta through crimson, far
+    from skin at 15-35) and saturation, with a soft edge. Pixels just
+    outside (magenta light bounced onto the skin) are pulled back towards
+    skin by clamping blue to green. Only run on entries with key_out, never
+    on Nani's red sleeve or the girl's pink one. Returns (image, removed)."""
     rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
-    r, g, b = rgba[..., 0], rgba[..., 1], rgba[..., 2]
-    m = np.minimum(r, b) - g
-    keep = 1.0 - _ramp(m, soft, hard)
-    removed = int(((keep < 0.5) & (rgba[..., 3] > 16)).sum())
-    spill = np.clip(m, 0, None) * (keep > 0)
-    rgba[..., 0] = r - spill
-    rgba[..., 2] = b - spill
-    rgba[..., 3] = rgba[..., 3] * keep
+    h, sat, val = _hsv(rgba[..., :3])
+    hue_w = _ramp(h, 262, 278) * (1 - _ramp(h, 346, 356))
+    kill = hue_w * _ramp(sat, 0.22, 0.35)
+    # The placeholder's specular edge renders near-white or pale pink, which
+    # the hue key misses: in a thin ring round the keyed area, also clear
+    # anything that isn't skin- or cream-coloured (hue 10-55).
+    core = Image.fromarray(((kill > 0.5) * 255).astype(np.uint8), "L")
+    ring = np.asarray(core.filter(ImageFilter.MaxFilter(9))) > 0
+    skinlike = (h >= 10) & (h <= 55) & (sat > 0.06)
+    kill = np.where(ring & ~skinlike, 1.0, kill)
+    removed = int(((kill > 0.5) & (rgba[..., 3] > 16)).sum())
+    rgba[..., 3] = rgba[..., 3] * (1 - kill)
+    spill = (kill > 0) & (kill < 1)
+    rgba[..., 2] = np.where(spill, np.minimum(rgba[..., 2], rgba[..., 1]), rgba[..., 2])
     return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), removed
+
+
+def drop_fragments(im, min_share=0.02):
+    """Clear connected opaque fragments smaller than min_share of the
+    largest one (e.g. the thin lit edge of a keyed-out placeholder).
+    Two-handed images keep both hands: each is far above the threshold."""
+    rgba = np.asarray(im.convert("RGBA")).copy()
+    mask = Image.fromarray(((rgba[..., 3] > 16) * 255).astype(np.uint8), "L")
+    # label components with repeated flood fills on a quarter-size mask
+    small = np.asarray(mask.resize((mask.width // 4, mask.height // 4), Image.NEAREST)) > 0
+    lab = np.zeros(small.shape, dtype=np.int32)
+    sizes, n = {}, 0
+    for y, x in zip(*np.nonzero(small)):
+        if lab[y, x]:
+            continue
+        n += 1
+        stack, lab[y, x], cnt = [(y, x)], n, 0
+        while stack:
+            cy, cx = stack.pop()
+            cnt += 1
+            for ny, nx in ((cy + 1, cx), (cy - 1, cx), (cy, cx + 1), (cy, cx - 1)):
+                if 0 <= ny < small.shape[0] and 0 <= nx < small.shape[1] and small[ny, nx] and not lab[ny, nx]:
+                    lab[ny, nx] = n
+                    stack.append((ny, nx))
+        sizes[n] = cnt
+    if not sizes:
+        return im, 0
+    biggest = max(sizes.values())
+    drop = [k for k, v in sizes.items() if v < min_share * biggest]
+    if not drop:
+        return im, 0
+    dmask = np.isin(lab, drop).astype(np.uint8) * 255
+    dfull = np.asarray(Image.fromarray(dmask, "L").resize(mask.size, Image.NEAREST)
+                       .filter(ImageFilter.MaxFilter(9))) > 0
+    removed = int((dfull & (rgba[..., 3] > 16)).sum())
+    rgba[..., 3] = np.where(dfull, 0, rgba[..., 3])
+    return Image.fromarray(rgba, "RGBA"), removed
+
+
+def fix_magenta_spill(im):
+    """Magenta light bounced onto the skin next to a keyed placeholder shows
+    as a pink-red streak (hue above ~330 or below ~5). Give those pixels the
+    image's own skin chroma and hue, keeping their lightness."""
+    mid = measure_skin_midtone(im)[0]
+    if mid is None:
+        return im, 0
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    h, sat, val = _hsv(rgba[..., :3])
+    spill = (((h >= 325) | (h <= 6)) & (sat > 0.12) & (rgba[..., 3] > 16))
+    lab = rgb_to_lab(rgba[..., :3])
+    lab[spill, 1] = mid[1]
+    lab[spill, 2] = mid[2]
+    rgba[..., :3] = np.where(spill[..., None], lab_to_rgb(lab), rgba[..., :3])
+    return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), int(spill.sum())
+
+
+def clean_key_residue(im):
+    """One-off repair for images keyed by the first version of
+    key_out_magenta, whose despill turned the shaded placeholder's rim
+    into saturated dark red (hue 350-10, high saturation, darker than any
+    skin). Removes those pixels."""
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    h, sat, val = _hsv(rgba[..., :3])
+    red = ((h >= 340) | (h <= 8)) & (sat > 0.55)
+    rgba[..., 3] = np.where(red, 0, rgba[..., 3])
+    return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), int((red & (np.asarray(im.convert("RGBA"))[..., 3] > 16)).sum())
 
 
 def skin_target_for(entry, cfg, cache={}):
@@ -899,6 +996,9 @@ def run(args):
             billed = True
             os.makedirs(os.path.dirname(t["out_path"]), exist_ok=True)
             img.save(t["out_path"])
+            raw = os.path.join(GAME, "build", "raw", os.path.relpath(t["out_path"], GAME))
+            os.makedirs(os.path.dirname(raw), exist_ok=True)
+            img.save(raw)  # untouched API output (git-ignored), before key-out / skin normalising
         except Exception as exc:
             # Only a request that reached generation is billed: local config
             # errors never left the machine and a 4xx is rejected before
@@ -921,6 +1021,8 @@ def run(args):
         skin = {}
         if entry.get("key_out") == "magenta":
             keyed, removed = key_out_magenta(Image.open(t["out_path"]))
+            keyed, _ = drop_fragments(keyed)
+            keyed, _ = fix_magenta_spill(keyed)
             keyed.save(t["out_path"])
             skin["keyed_out_px"] = removed
             print(f"[{key}] keyed out {removed} px of magenta placeholder")
