@@ -131,6 +131,8 @@ The Cook with Nani asset matrix goes here: each item's views (a front view for s
 
 ## 3. The cats (Zafar's two cats, 24 Sept)
 
+**Simba** (the big brother, 5, black Russian Blue) and **Zazu** (the little brother, 1, grey Russian Blue). Their size, age and coat shade tell them apart, which also makes them good "describe the cat" clues (big/small, dark/light, old/young).
+
 **Role:** recurring mischief-makers and part of the house's life. They're introduced in a story beat (e.g. the sweets go missing) and then show up across modes.
 
 | Where | What the cats do | The Kutchi it drives |
@@ -148,7 +150,7 @@ The Cook with Nani asset matrix goes here: each item's views (a front view for s
 
 **Art:** one character sheet per cat (turnaround, sitting, lying, sleeping curled, walking, pouncing, eating, guilty face, carrying something in the mouth), made from Zafar's photos with the game's style reference. **The tail and head are separate layers** so code can flick the tail, turn the head, blink and breathe (sleeping cats rise and fall). About 15 images per cat.
 
-**Needs from Zafar:** the cats' names, 4–6 photos of each (both sides, the face, the tail, a typical pose). Keep the photos out of the public repo (a git-ignored `sources/private/` folder, or upload them straight into the chat).
+**Needs from Zafar:** 4–6 photos of each (both sides, the face, the tail, a typical pose). Keep the photos out of the public repo (a git-ignored `sources/private/` folder, or upload them straight into the chat).
 
 ## 4. Making scenes feel alive (ambient motion)
 
