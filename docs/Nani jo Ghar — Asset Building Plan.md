@@ -31,7 +31,9 @@ Plan: **generate one master set, then reskin it** with the image API's edit mode
 | **Girl, Eid** (optional) | The same, with mehndi on the back of the hand and the palm |
 | **Nani** (small set, marked N below) | Older hands, gold bangles, her red sleeve. Used for the "watch me" demos and when she passes you things |
 
-**Guarding against drift:** a script compares each reskin's outline with the master's. It rejects the image if the hand shape has moved, because otherwise the tools won't sit in the grip. Skin tones could be a later option through the same reskin step (open question for Zafar).
+**Guarding against drift:** a script compares each reskin's outline with the master's. It rejects the image if the hand shape has moved, because otherwise the tools won't sit in the grip.
+
+**Skin tone (Zafar, 24 Sept):** one tone for now, Zafar's own — a light brown, a little more brown than beige, just past the generic game skin tone; hex range in the Art Bible, section 2. No skin-tone variants for now.
 
 ### 1.3 The list (condensed by grip)
 
@@ -131,7 +133,7 @@ The Cook with Nani asset matrix goes here: each item's views (a front view for s
 
 ## 3. The cats (Zafar's two cats, 24 Sept)
 
-**Simba** (the big brother, 5, black Russian Blue) and **Zazu** (the little brother, 1, grey Russian Blue). Their size, age and coat shade tell them apart, which also makes them good "describe the cat" clues (big/small, dark/light, old/young).
+**Simba** (the big brother, 5, black Russian Blue) and **Zazu** (the little brother, 1, grey Russian Blue). Both have **green eyes**. Their size and proportions tell them apart: Simba a big adult cat, **Zazu drawn as a kitten** (bigger head and eyes, shorter legs, fluffier), which also makes them good "describe the cat" clues (big/small, dark/light, old/young).
 
 **Role:** recurring mischief-makers and part of the house's life. They're introduced in a story beat (e.g. the sweets go missing) and then show up across modes.
 
@@ -167,6 +169,7 @@ The Cook with Nani asset matrix goes here: each item's views (a front view for s
 | Plants, leaf shadows on the wall | Plant and leaf-shadow layers | Sway |
 | Washing line, a kite through the window | Each item a sprite | Sway, a kite bobbing |
 | Birds on the windowsill or wire (pigeons, sparrows) | 3–4 poses (sit, peck, hop, fly off) | Occasional hop; fly off when tapped |
+| The parrot (African grey, windowsill or a perch — hub, doorway, kitchen) | Pose set: perched, head tilt, beak open "talking", wings flapping, walking along the perch. Head a separate layer | Idle tilts and the odd "talking" beat when it repeats a word (behaviour: `docs/Nani jo Ghar — Cast.md`); never during a task |
 | Lanterns and fairy lights (Eid) | Lantern sprite; one light-dot sprite | Glow pulse, twinkle |
 | Clock | Hands as separate sprites | Ticking |
 | Rain on the window, drips (Monsoon) | Drop and streak sprites | Particles |
@@ -183,4 +186,45 @@ Keep it subtle: 2–4 moving things per scene, never near a tap target, and swit
 
 **Cost:** the current Nani images (poses, talking frames, the LivePortrait test) were made from a generated Nani, so moving to Mum's likeness means redoing Nani's set. Decide before the asset run, not after it.
 
-**Consent:** it's worth Mum agreeing to it, especially if the game is later shared with other communities.
+**Consent:** Mum has agreed (24 Sept 2026), which matters especially once the game is shared with other communities.
+
+## 6. Set dressing: East African and Kutch objects
+
+The family isn't sure yet which objects say "home"; this is a list to work from, not a final choice. **Suggestions for the family to pick from**, the family's own first (marked below), then about 15 more each. Object first, then a one-line description of how it looks, then which scenes it suits.
+
+### East Africa
+
+| Object | How it looks | Suits |
+|---|---|---|
+| **Three-legged small wooden stool (kigoda)** — the family's own suggestion | Low, round-topped, three splayed legs, plain turned wood | Hub, kitchen, yard, bazaar stalls |
+| **Short straw broom (ufagio)** — the family's own suggestion | A tight bunch of stiff grass or straw bound at the top into a handle, no long shaft; used bent over | Yard, tidy-up scenes, propped by a doorway |
+| **Panga (machete)** — the family's own suggestion | A long, broad steel blade with a plain wooden handle | **Tool only**, hanging on a hook in the yard or a store; never handled, since it's a children's game |
+| **Woven sisal or reed baskets (kiondo)** — the family's own suggestion | Tightly coiled woven fibre, rounded body, often a leather or cloth trim and carry strap | Bazaar (Find it), hub shelves, carried by shoppers |
+| Charcoal jiko stove | Small hourglass-shaped metal stove, a ceramic liner, glowing coals | Yard cooking, background of a cook scene, bazaar |
+| Vacuum flask of chai | Tall metal or patterned plastic flask with a cup-lid | Hub, guests arriving, the dastarkhwan |
+| Blue-rimmed enamel mugs and plates | White enamel with a speckled dark-blue rim and edge chips | Dastarkhwan, kitchen shelves, yard meals |
+| Kanga or kitenge cloth | Bright block-printed cotton, bold border, folded stacks or worn as a wrap | Market stalls, washing line, Ma or a guest's dress |
+| Woven mkeka mat | Flat plaited palm-leaf mat, natural tan with a simple woven pattern | Floor seating, dastarkhwan, yard |
+| Coconut-grater stool (mbuzi) | Low wooden stool with a curved serrated blade fixed at one end, sat astride to grate | Kitchen background, a cook-along beat |
+| Carved Swahili-style door | Dark wood, deep geometric and floral relief carving, brass studs | Bazaar or hub exterior establishing shot |
+| Brass coffee pot (dalla-style) | Tall, long curved spout, domed lid, warm brass shine | Guests, hub shelf, serving tray |
+| Kerosene lamp | Glass chimney over a brass or tin base, small wick flame | Night lighting (Art Bible section 2), hub, yard |
+| Tin trunk | Riveted metal box, domed or flat lid, painted or plain, a hasp and padlock | Bedroom, storage corner, the Village arc |
+| Transistor radio | Boxy plastic case, a dial window, fabric-covered speaker grille, a whip aerial | Hub background, Nana's corner |
+| Mosquito net | Fine pale mesh, draped and gathered above a bed | Bedroom, monsoon scenes |
+| Crate of glass soda bottles | Wooden slatted crate, upright glass bottles with painted labels | Bazaar, yard, a shop counter |
+| Sugarcane | Long jointed green-purple stalks, sometimes bundled or peeled | Bazaar produce, yard |
+| Mango tree in the yard | Broad canopy, dark glossy leaves, clusters of green-to-orange fruit | Yard background, an establishing shot |
+| Red-checked Maasai shuka blanket | Bold red-and-black or red-and-blue check, woven wool or cotton, draped or folded | Market stalls, a throw over a stool or chair |
+
+### Kutch
+
+| Object | How it looks | Suits |
+|---|---|---|
+| Mirror-work cushions (abhla) | Embroidered cotton with small round mirror discs stitched in, bright thread borders | Hub seating, dastarkhwan, bedroom |
+| Bandhani cloth | Tie-dyed fine cotton or silk, small dot patterns in bright colours on a deep ground | Dupattas, cushion covers, folded stacks on a shelf |
+| Brass and copper vessels | Hand-hammered pots and lotas, warm gold and reddish sheen, dented and polished | Kitchen shelves, serving, the courtyard |
+| Charpai | Low wooden frame strung with woven rope or webbing in a criss-cross pattern | Yard or courtyard seating, an outdoor nap spot |
+| Clay water pots (matka) | Rounded unglazed terracotta, a narrow neck, sometimes on a stand or ring | Kitchen, yard, bazaar |
+| Rogan-painted cloth | Fine, raised, glossy castor-paint scrollwork in bright colour on dark cloth | A framed wall piece, a special cushion or cloth |
+| Carved wooden chest | Dark wood, brass corner fittings and studs, sometimes a domed lid | Bedroom, storage, the wedding arc (dowry chest) |

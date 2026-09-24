@@ -63,6 +63,7 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 | Steel | Neutral with warm reflections | `#B9B4AC` | Pans, thali, katori, dabbas |
 | Terracotta | Earth | `#B8643E` | Bazaar, clay pots, plants |
 | Green (secondary) | Ma's dupatta, leaves | `#3F7A4A` | Clothing, herbs, plants |
+| Hands (skin) | One tone, Zafar's own: light brown, a little more brown than beige, just past the generic game skin tone | `#B4754A`–`#C6885C` (approx., sample against a photo for the final match) | Every hand sprite (section 7); no variants for now |
 
 **Rules:**
 - **Reds belong to Nani.** Keep large red areas out of the backgrounds behind her head (curtains, frames), so she always pops.
@@ -71,12 +72,16 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 
 ### Light
 
-| Scene type | Time of day | Key light | Shadows fall |
+Four lighting states, planned now rather than left for later, since Arc 1 needs evening and night (the guests coming tonight, the Eid evening party) and Arc 3 needs a storm sky.
+
+| Lighting state | Key light | Fill / shadows | Used for |
 |---|---|---|---|
-| Home, eye level (island, pantry, hub) | Late morning sun | Window at frame left, upper left, warm | Down and to the right, soft; long window-shaped light patches on walls allowed away from tap areas |
-| Cooking stations, top-down | Late morning | Top-left of frame (the same window, seen from above) | Towards the lower right, short and soft |
-| Bazaar | Midday to afternoon, under an awning | Upper left, warm and bright, awning-filtered | Down-right; the awning casts a soft band at the top |
-| Eid night, monsoon (later) | Evening / grey daylight | Lantern or overhead lamp, still upper left | Same direction; cooler fill (provisional, see open questions) |
+| **Day** | Late-morning sun, upper left, warm | Soft shadows down and to the right; long window-shaped light patches on walls away from tap areas | Ordinary cook-along, pantry, hub, bazaar scenes |
+| **Golden evening** | Low warm sun, upper left, longer and more orange | Longer soft shadows, lower right; warm rim light on edges facing the window | Arc 1: guests coming tonight, the fruit-bowl and dastarkhwan errands as dusk falls |
+| **Night** | Lamp and lantern light: warm pools around each lamp, hanging lantern or overhead bulb | Cool blue fill from the windows outside the warm pools; shadows soft and short, radiating from each lamp rather than one direction | Arc 1: the Eid evening party once guests arrive, Nani hanging the lantern; Arc 3: evening lamps in Nani's day |
+| **Storm** | Flat grey daylight through cloud, no strong direction; an occasional cool lightning rim on a dramatic beat | Very soft, low-contrast shadows; cooler overall palette | Arc 3: the monsoon storm sky |
+
+**Rule: a scene's backgrounds come in every lighting state it uses.** Same camera, same layers (section 5), so a background painted for day and reused at night is a straight relight, not a redraw: the worktop, shelves and occluders stay in the same place, only the light, shadows and any lamps/lanterns change. A scene that only ever plays in daylight needs only the day background.
 
 **Shadow rules:**
 - **One light direction per scene.** Every sprite's highlights and shadows agree with its background.
@@ -238,22 +243,25 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 
 **Expressions (people):** neutral, talking (mouth half-open and open), smile, big happy (celebrating), proud, pointing (above the counter), thinking, surprised, worried, gentle "tsk" (burnt food, a wrong item), laughing, eyes closed (blink). Customers also need impatient.
 
+**Full cast list, who each character is based on, and where they appear:** `docs/Nani jo Ghar — Cast.md`.
+
 ### The cast
 
 | Character | Status | Must stay consistent |
 |---|---|---|
-| **Nani** | **To be re-based on Zafar's mum.** The current Nani (`sources/cook/nani-sheet.webp`) is a generated placeholder | From the placeholder, until the new sheet: round thin gold glasses, red Kutch-embroidered dupatta over the head, cream kurta with red embroidery, small gold drop earrings, gold bangles. Final details come from Mum's photos |
-| **Nana** | Placeholder | White knitted cap, round glasses, white beard, cream kurta, brown waistcoat |
-| **Ma** | Placeholder | Green dupatta with gold motif over the head, maroon kurta with embroidery, gold jhumka earrings |
-| **Bilal** | Placeholder (cousin, about 7) | Tousled black hair, orange T-shirt with a pocket |
+| **Nani** | **Based on Zafar's mum — she has agreed.** The current Nani (`sources/cook/nani-sheet.webp`) is a generated placeholder, to be replaced by a sheet made from Mum's photos | From the placeholder, until the new sheet: round thin gold glasses, red Kutch-embroidered dupatta over the head, cream kurta with red embroidery, small gold drop earrings, gold bangles. Final details come from Mum's photos |
+| **Nana, Ma, Bilal, other cousins, guests** | **Generic** — not based on real family members | Placeholder looks stand until each is designed: Nana in a white knitted cap, round glasses, white beard, cream kurta, brown waistcoat; Ma in a green dupatta with gold motif over the head, maroon kurta with embroidery, gold jhumka earrings; Bilal (cousin, about 7) with tousled black hair, an orange T-shirt with a pocket |
+| **The doctor** | **Based on Zafar's wife's granddad; photos to come.** Arc 3 (the Monsoon, "Nani has a cold") and Nani's clinic mode | Likeness from the photos once they arrive, kept as the sheet-first rule below; a warm, reassuring build, a doctor's bag |
 | **Shopkeeper(s)** | To be redone in the 3D look | Made as edits of a family style reference, so they look like one family of designs |
 
 **Nani from real life (asset plan, section 5):**
-1. Mum's consent first. Photos stay in the git-ignored `sources/private/`, never in the public repo.
+1. Mum's consent — **given**. Photos stay in the git-ignored `sources/private/`, never in the public repo.
 2. Photos plus the style references go in; a character sheet in the 3D-film look comes out. Likeness lives in what survives stylising: face shape, glasses, the headscarf and its colours, build.
 3. Zafar signs off the sheet.
 4. **The sheet, never the photos, is the reference for every later pose.**
 5. Then redo Nani's set: poses, talking frames, the LivePortrait test and her hand set (N).
+
+**The doctor** follows the same sheet-first rule once the photos arrive: photos in, character sheet out, Zafar signs off, every later pose from the sheet.
 
 **Cultural check for every character:** a Muslim Khoja family. No bindi, tilak, sindoor or other Hindu religious markers (the placeholder Nani in the art-direction round had a bindi; that was wrong).
 
@@ -263,12 +271,29 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 |---|---|---|
 | Role | Big brother, 5 | Little brother, 1 |
 | Coat | Black, Russian Blue build: short, dense, plush | Grey-blue (true Russian Blue) |
-| Size | Full adult, solid | About 85% of Simba, leaner and lankier, bigger ears for his head |
-| Must stay consistent | Eye colour (from the photos), wedge head, large ears, tail length, any markings | Same list |
+| Eyes | Green | Green |
+| Size and proportions | Full adult, big cat, solid | **Drawn as a kitten**: bigger head and eyes, shorter legs, fluffier coat than Simba's, about 85% of Simba's length. Size and proportion, not just size, tell them apart |
+| Must stay consistent | Green eyes, wedge head, large ears, tail length, any markings | Same list, plus kitten proportions |
 
 **Cat sheet contents:** turnaround; sitting, lying, sleeping curled, walking, pouncing, eating, guilty face, carrying something in the mouth; expressions content, curious, guilty, startled, sleepy. **Head and tail are separate layers** (pivots in section 5) so code can flick the tail, turn the head, blink and breathe. About 15 images per cat, from 4–6 photos each.
 
 **Rules:** a cat never covers a tap target, never blocks play at random, and lives on the floor layer or in the margins except in its scripted mischief moment.
+
+### The parrot
+
+An **African grey**, generic (no real-life likeness). Lives on the windowsill or a perch in the hub, the doorway or the kitchen. Behaviour and dialogue: `docs/Nani jo Ghar — Cast.md`.
+
+**Pose set (small, since it mostly sits and reacts):**
+
+| Pose | Notes |
+|---|---|
+| Perched | Base pose, neutral |
+| Head tilt | Head as a separate layer, so code can tilt it without a new body pose |
+| Beak open, "talking" | Head layer, for when it repeats a word |
+| Wings flapping | 2 frames |
+| Walking along the perch | 2 frames |
+
+**Head is a separate layer** (pivot at the base of the neck, as for the cats and characters in section 5), so tilts, the talking pose and blinks are all head-layer edits over one body.
 
 ---
 
@@ -281,7 +306,7 @@ Full list and generation order: `docs/Nani jo Ghar — Asset Building Plan.md`, 
 - **Grip plus separate tool:** hands are drawn empty in the grip pose; the tool is its own sprite placed at the grip's pivot. The list is organised by grip (A open, B handle, C pinch, D hold, E social, F play).
 - **Cameras:** a pose is drawn only in the camera it's used in (T top-down, back of the hand up; E eye level, back of the hand towards the player).
 - **The reference hand:** one right hand, top-down, relaxed and slightly open, boy cuff, 1.2× worktop scale. Zafar signs it off; every other hand is an edit of it.
-- **Skin tone:** one warm medium-brown tone matching the family placeholders; more tones later through the reskin step (open question).
+- **Skin tone:** **one tone, Zafar's own** — a light brown, a little more brown than beige, just past the generic game skin tone (hex range in section 2). No skin-tone variants for now.
 
 ### Cuffs and reskins
 
@@ -412,16 +437,13 @@ Review every contact sheet on **both a black and a white backing**, and every pl
 **Cultural accuracy (a Khoja home, Kutch and East Africa):**
 - **Clothing:** kurta, kurti, salwar, dupatta or headscarf; modest cuts; caps on men as the family confirms. No Hindu religious markers.
 - **Food:** halal, no pork, no alcohol. Dishes look like home versions: rotli and maani thin and soft with brown spots, daal yellow and loose, chai milky and orange-brown in a glass, mishkaki as small marinated cubes on a skewer.
-- **Kitchen items:** steel thali and katori, masala dabba, tawa, chakla and a thin tapered velan, vaghariyu for tadka, a chai saucepan and strainer, steel dabbas, a pressure cooker. East African touches as the family confirms (open questions).
+- **Kitchen items:** steel thali and katori, masala dabba, tawa, chakla and a thin tapered velan, vaghariyu for tadka, a chai saucepan and strainer, steel dabbas, a pressure cooker. East African and Kutch set dressing: `docs/Nani jo Ghar — Asset Building Plan.md`, "Set dressing: East African and Kutch objects".
 - **Decor:** Kutch craft as accents (mirror-work, ajrakh, bandhani, brass); no deity images, no temple items.
 
 ---
 
 ## 11. Open questions for Zafar
 
-1. **Mum's likeness:** has she agreed? How does she wear her headscarf (hair fully covered, or the front showing)? Glasses, earrings, bangles, a nose pin?
-2. **Nana, Ma, Bilal:** base them on real family members too, or keep them generic? Is Nana's white cap right for your family?
-3. **The cats:** 4–6 photos each, plus their eye colours. Should Zazu look like a kitten or a young adult cat?
-4. **Hand skin tone:** one tone for now, or pick-your-own from the start?
-5. **East African Khoja touches:** which objects say "home" to you (a chai thermos, a kikapu basket, a kanga cloth, mogo, a charcoal jiko)? Home, bazaar, or both?
-6. **Time of day:** always sunny late morning, or evening and night scenes for Eid and the monsoon?
+Answered 24 Sept 2026 and folded into the sections above: Mum's likeness and headscarf detail (section 6), which family members are generic and the doctor's likeness (section 6, `docs/Nani jo Ghar — Cast.md`), the cats' eye colour and Zazu's kitten proportions (section 6), hand skin tone (sections 2 and 7), lighting states (section 2), and East African set dressing (asset plan, "Set dressing: East African and Kutch objects").
+
+None outstanding.
