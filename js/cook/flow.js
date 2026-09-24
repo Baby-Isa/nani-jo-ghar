@@ -373,7 +373,7 @@
       const nu = Cook.data.no_upgrade;
       const p = UI.panel(`
         <h2>Nani's shop</h2>
-        <p>You have <b>${Cook.save.coins}</b> coins. Every station has an upgrade, but you can't afford them all yet, so choose what helps your cooking most. Upgrades do the fiddly jobs; you still have to understand the order.</p>
+        <p>You have <b>${Cook.save.coins}</b> coin${Cook.save.coins === 1 ? "" : "s"}. Every station has an upgrade, but you can't afford them all yet, so choose what helps your cooking most. Upgrades do the fiddly jobs; you still have to understand the order.</p>
         <div class="shop-grid">${ups.map(card).join("")}
           <div class="shop-item none"><div class="shop-img"><img src="assets/cook/props/sugar-jar.webp" alt=""></div><div><div class="station">${UI.esc(nu.station)}</div><h4>No upgrade</h4><p>${UI.esc(nu.text)}</p></div></div>
         </div>
