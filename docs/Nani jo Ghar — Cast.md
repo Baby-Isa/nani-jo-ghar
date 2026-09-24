@@ -73,10 +73,12 @@ The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `big
 - A warm, closed-mouth smile.
 - **A small mole above her lip on her right side (the viewer's left when facing her), just above the upper lip. Include it, but small and natural, never exaggerated.**
 - Signature outfit: a beige long kurta with gold and deep-red embroidery down the front and at the cuffs, with a sheer deep-red dupatta.
-- **Jewellery:**
+- **Jewellery (corrected 24 Sept): no bangles.**
   - a thin diamond tennis bracelet on her right wrist;
-  - a **red and yellow gold aqiq ring on her right ring finger**;
-  - a **yellow gold and diamond ring on her left ring finger**.
+  - **right ring finger: a yellow gold ring set with a red aqiq**: an oval/marquise red-orange cabochon, smooth and glossy, in a plain yellow gold bezel on a simple split shank;
+  - **left ring finger: a yellow gold ring with a round solitaire diamond** in a raised claw (six-prong) setting, slim band.
+
+  Reference photos are in `sources/private/nani-ring-*.jpg` (the diamond reference is rose gold; draw it in yellow gold). Simplify to what reads at game size and can be repeated consistently: a red oval stone on a gold band (right), a sparkling round stone on a gold band (left).
 
   The rings matter, because her hands appear in close-up in the "watch me" demos.
 

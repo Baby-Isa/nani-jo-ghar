@@ -61,7 +61,7 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 | Marble | Warm white | `#FAE5D4` | Worktops, island top |
 | Sage | Cabinet green | `#9CA78A` | Cabinets, doors |
 | Pale oak | Shelves, island front | `#D1874D` / `#C38355` | Wood |
-| Brass | Warm gold | `#CB9847` | Pots, knobs, handles, lanterns, Nani's bangles |
+| Brass | Warm gold | `#CB9847` | Pots, knobs, handles, lanterns, Nani's rings |
 | Steel | Neutral with warm reflections | `#B9B4AC` | Pans, thali, katori, dabbas |
 | Terracotta | Earth | `#B8643E` | Bazaar, clay pots, plants |
 | Green (secondary) | Ma's dupatta, leaves | `#3F7A4A` | Clothing, herbs, plants |
@@ -251,7 +251,7 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 
 | Character | Status | Must stay consistent |
 |---|---|---|
-| **Nani** | **Based on Zafar's mum — she has agreed.** The current Nani (`sources/cook/nani-sheet.webp`) is a generated placeholder, to be replaced by a sheet made from Mum's photos | From the placeholder, until the new sheet: round thin gold glasses, red Kutch-embroidered dupatta over the head, cream kurta with red embroidery, small gold drop earrings, gold bangles. Final details come from Mum's photos |
+| **Nani** | **Based on Zafar's mum — she has agreed.** The current Nani (`sources/cook/nani-sheet.webp`) is a generated placeholder, to be replaced by a sheet made from Mum's photos | From the placeholder, until the new sheet: round thin gold glasses, red Kutch-embroidered dupatta over the head, cream kurta with red embroidery, small gold drop earrings, no bangles; a thin diamond tennis bracelet (right wrist), a yellow gold ring with a red aqiq (right ring finger) and a yellow gold solitaire diamond ring (left ring finger); see the Cast doc. Final details come from Mum's photos |
 | **Nana, Ma, Ali, other cousins, guests** | **Generic** — not based on real family members | Placeholder looks stand until each is designed: Nana in a white knitted cap, round glasses, white beard, cream kurta, brown waistcoat; Ma in a green dupatta with gold motif over the head, maroon kurta with embroidery, gold jhumka earrings; **Ali** (cousin, renamed from the placeholder "Bilal") tall and lanky for his age, tousled black hair, an orange T-shirt with a pocket |
 | **The doctor** | **Based on Zafar's wife's granddad; photos to come.** Arc 3 (the Monsoon, "Nani has a cold") and Nani's clinic mode | Likeness from the photos once they arrive, kept as the sheet-first rule below; a warm, reassuring build, a doctor's bag |
 | **Big Ma** | **Based on Zafar's wife's great-grandma; photos to come.** "The spill" (mends the kurta in her room) and recurring at Eid, dinners and gatherings | Likeness from the photos once they arrive, kept as the sheet-first rule below; warm, senior, a soft cardigan or shawl over a plain kurta, glasses low on the nose, sewing things (needle, thread reel, small scissors) to hand |
@@ -320,7 +320,7 @@ Reskins change **only the sleeve and accessories**. A script compares each reski
 | **Master / boy** | Cream cotton kurta cuff with a band of red Kutch embroidery (small mirror-work dots allowed) |
 | **Girl** | Embroidered kurti cuff in a soft colour, 3–4 thin glass bangles |
 | **Girl, Eid** (optional) | As girl, with mehndi on the back of the hand and the palm; a simple floral pattern, rust-brown |
-| **Nani** (set N, about 10 poses) | Older hand, gentle wrinkles, gold bangles, her red sleeve with embroidery |
+| **Nani** (set N, about 10 poses) | Older hand, gentle wrinkles, no bangles; tennis bracelet (right wrist), red aqiq ring (right ring finger), solitaire diamond ring (left ring finger), both yellow gold; her red sleeve. Left hands drawn separately, never mirrored |
 
 ---
 
