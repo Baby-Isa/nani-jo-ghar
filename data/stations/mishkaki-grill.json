@@ -3,7 +3,7 @@
  "station": {
   "name": "Mishkaki grill",
   "verb": "Thread, grill, plate",
-  "goal": "Thread the skewers they asked for. Tap one on the rack to grill it, turn it on the green twice, then lift it onto the plate. Tick when the plate's ready."
+  "goal": "Thread what they asked for. Grill each one: turn it on the green twice, then lift it onto the plate."
  },
  "words": {
   "ph-veg": {

@@ -8,9 +8,10 @@
  * mixed skewer the pieces in the order they said ("ghos, ne poi tameto…").
  * Every piece bowl is always there (plus decoys at later levels), in a new
  * order each time, and nothing stops you at the number ordered: you
- * decide how many to make. A piece that fits no skewer in the order costs
- * the ear star at once; the count is graded where the skewers end up (the
- * grill's plate, or Done when threading on its own).
+ * decide how many to make. A piece that fits no skewer in the order
+ * bounces back to its bowl and costs the ear star; the count is graded
+ * where the skewers end up (the grill's plate, or Done when threading on
+ * its own).
  *
  * In a zone with an `out` channel (the Mishkaki grill station) each
  * finished skewer is sent on as {kind: "skewer", pieces, sprite} when the
@@ -122,18 +123,23 @@
         const fly = S.track(S.add.image(from.x, from.y, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k).setDepth(D.item + 3));
         Cook.sfx.pop();
         await S.fly(fly, z.X(lay.boardX), z.Y(SKY - 250), { duration: 300, arc: z.L(90) });
-        fly.destroy();
-        const img = SK.addPiece(S, sk, id, { at: -250 });
-        const slot = SK.slotY(sk.ids.length - 1, n);
-        await Cook.tween(S, { targets: [img, img.marks], y: slot, duration: 180 + (slot + 250) * 0.6, ease: "Quad.easeIn" });
-        if (exp && exp.w) sk.target = exp.w;
-        if (!ordered.some((w) => SK.fits(w, sk.ids, pattern))) {
+        if (!ordered.some((w) => SK.fits(w, sk.ids.concat(id), pattern))) {
+          // it fits no skewer they asked for: it bounces back to its bowl
           const e = exp && exp.id ? exp.id : null;
           z.listen(false, e ? `${id} instead of ${e}` : `${id}, not in the order`);
           if (!z.guided) Cook.markMiss(e || id);
           S.wiggle(sk);
           z.oops();
+          await S.fly(fly, from.x, from.y, { duration: 280, arc: z.L(60) });
+          fly.destroy();
+          busy = false;
+          return;
         }
+        fly.destroy();
+        const img = SK.addPiece(S, sk, id, { at: -250 });
+        const slot = SK.slotY(sk.ids.length - 1, n);
+        await Cook.tween(S, { targets: [img, img.marks], y: slot, duration: 180 + (slot + 250) * 0.6, ease: "Quad.easeIn" });
+        if (exp && exp.w) sk.target = exp.w;
         if (sk.ids.length >= n) await finish();
         busy = false;
       };

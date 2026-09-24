@@ -1616,12 +1616,12 @@
   "thread": {
    "name": "Skewer",
    "verb": "Thread",
-   "goal": "Make the skewers they asked for: tap a bowl to push a piece on, tap the skewer to take one off."
+   "goal": "Tap the bowls to thread the skewers they asked for."
   },
   "grill": {
    "name": "Grill",
    "verb": "Grill",
-   "goal": "Grill the skewers they asked for: tap one on the rack, turn it on the green twice, then lift it onto the plate."
+   "goal": "Tap a skewer on the rack. Turn it on the green twice, then lift it onto the plate."
   }
  },
  "mechanics": {

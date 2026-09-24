@@ -168,7 +168,12 @@
     ctx.ellipse(m + 4, m + 8, 44, 40, 0, 0, Math.PI * 2);
     ctx.fill();
     if (style === "meat") {
-      blob(ctx, m, m, 44, 42, () => 0.35 + rand() * 0.35, 14);
+      // a chunky cube of meat: rounded, a little uneven, a lighter top face
+      ctx.save();
+      ctx.translate(m, m);
+      ctx.rotate((rand() - 0.5) * 0.25);
+      rr(ctx, -40, -38, 80, 78, 16);
+      ctx.restore();
       const g = ctx.createRadialGradient(m - 12, m - 14, 6, m, m, 50);
       g.addColorStop(0, shade(col, 0.18));
       g.addColorStop(1, shade(col, -0.25));
@@ -177,6 +182,9 @@
       ctx.strokeStyle = shade(col, -0.5);
       ctx.lineWidth = 3;
       ctx.stroke();
+      ctx.fillStyle = "rgba(255,210,180,0.18)";
+      rr(ctx, m - 30, m - 32, 60, 22, 9);
+      ctx.fill();
       // marbling and a crust of spice
       ctx.strokeStyle = "rgba(255,225,200,0.45)";
       ctx.lineWidth = 3;
