@@ -316,7 +316,7 @@
       if (!pool) pool = St.decoys(decoyPool, flat.concat(exclude), knobInt(k.decoys), k.decoyPick);
       const ids = Cook.shuffle([...new Set(pool.concat(flat, exclude))]);
       // the toppings on two rows under a big glass bowl
-      const items = St.ingredients(z, ids, { y: k.rowY, x0: 260, x1: 1340, maxPerRow: Math.max(1, Math.ceil(ids.length / 2)), w: 165, h: 120 });
+      const items = St.ingredients(z, ids, { y: k.rowY, x0: 260, x1: 1250, maxPerRow: Math.max(1, Math.ceil(ids.length / 2)), w: 165, h: 120 });
       const bowl = glassBowl(z, k.bowl, 0.8 / Math.max(5, C.total + 1));
       const got = [];
       let confirmed = 0; // layers the customer has already ticked
