@@ -489,25 +489,65 @@ def _ramp(x, lo, hi):
     return np.clip((x - lo) / (hi - lo), 0.0, 1.0)
 
 
+_SKIN_CACHE = {}
+
+
 def skin_weight(im):
+    """Cached _skin_weight (it is called several times per image by the
+    post steps and takes ~2 s): keyed by a hash of the pixels."""
+    arr = np.asarray(im.convert("RGBA"))
+    key = hashlib.md5(arr.tobytes()).hexdigest()
+    if key not in _SKIN_CACHE:
+        if len(_SKIN_CACHE) > 8:
+            _SKIN_CACHE.clear()
+        _SKIN_CACHE[key] = _skin_weight(im)
+    w, lab = _SKIN_CACHE[key]
+    return w.copy(), lab.copy()
+
+
+def _skin_weight(im):
     """Soft 0..1 skin mask for a hand sprite. Skin is an opaque, mid-light,
-    moderately saturated warm colour.
-    Measured on the round-3 hand: skin Lab hue 55-65 and chroma 40-50;
-    the cream linen sleeve hue ~77 and chroma ~18. Excluded: transparent
-    pixels, white or cream fabric (low chroma, yellower hue), deep reds
-    (Nani's sleeve, hue below ~40), golds, greens, blues and very dark
-    pixels. Nails sit close to skin (hue ~56, chroma ~40) and are corrected
-    with it, proportionally."""
+    warm colour that is not part of the sleeve.
+    Skin Lab hue sits at 55-66 with chroma 30-50, but the palest lit skin
+    reaches hue ~73 at chroma ~30-35, close to the cream linen sleeve (hue
+    72-90, chroma 18-30): the sleeve is cut out as low chroma AND yellow
+    hue together (chroma under ~30 at hue over ~72, or under ~24 at hue
+    over ~66), which keeps pale lit skin in.
+    Also excluded: transparent pixels, deep reds (Nani's sleeve, the girl's
+    pink sleeve and red bangles, hue below ~40), golds and greens (hue above
+    ~82), very saturated colours and very dark pixels. Nails sit close to
+    skin and are corrected with it, proportionally."""
     arr = np.asarray(im.convert("RGBA")).astype(np.float64)
     lab = rgb_to_lab(arr[..., :3])
     L, a, b = lab[..., 0], lab[..., 1], lab[..., 2]
     C = np.hypot(a, b)
     hue = np.degrees(np.arctan2(b, a))
     w = _ramp(arr[..., 3], 1, 16)  # antialiased edges too, or they keep an orange fringe
-    w = w * _ramp(C, 16, 24) * (1 - _ramp(C, 78, 88))      # not white/cream fabric; very orange raw skin still in
-    w = w * _ramp(hue, 40, 48) * (1 - _ramp(hue, 67, 73))  # skin hues only: reds (sleeve) and golds/creams out
-    w = w * _ramp(L, 25, 35) * (1 - _ramp(L, 90, 96))      # not deep shadow, not specular white
-    return w, lab
+    w = w * _ramp(C, 10, 16) * (1 - _ramp(C, 78, 88))      # not grey/white; very orange raw skin still in
+    w = w * _ramp(hue, 40, 48) * (1 - _ramp(hue, 78, 84))  # skin hues only: reds out, golds/greens out
+    w = w * _ramp(L, 25, 35) * (1 - _ramp(L, 93, 97))      # not deep shadow, not specular white
+    # cream/white sleeve: low chroma AND a yellow hue (soft)
+    sleeve = np.maximum((1 - _ramp(C, 27, 32)) * _ramp(hue, 69, 74), (1 - _ramp(C, 21, 25)) * _ramp(hue, 63, 67))
+    base = _ramp(arr[..., 3], 1, 16) * _ramp(L, 25, 35) * _ramp(hue, 40, 48) * (1 - _ramp(hue, 84, 90))
+    w = w * (1 - sleeve)
+    # pale highlights inside the hand come out speckled: close small holes
+    # (a sleeve is far bigger than the 13 px closing) and feather slightly,
+    # so the correction never leaves blotches
+    binm = Image.fromarray(((w > 0.5) * 255).astype(np.uint8), "L")
+    closed = np.asarray(binm.filter(ImageFilter.MaxFilter(13)).filter(ImageFilter.MinFilter(13))).astype(np.float64) / 255
+    body = np.zeros(w.shape, dtype=bool)  # the sleeve itself stays out: sleeve-coloured areas
+    for comp in _components((sleeve > 0.5) & (arr[..., 3] > 128), 2500):  # touching the frame edge
+        if comp[:8].any() or comp[-8:].any() or comp[:, :8].any() or comp[:, -8:].any():
+            body |= comp
+    # a pale stripe of lit forearm can touch the cuff: open the body so thin
+    # protrusions drop out (the sleeve itself is far thicker than ~36 px)
+    small = Image.fromarray((body[::4, ::4] * 255).astype(np.uint8), "L")
+    opened = np.asarray(small.filter(ImageFilter.MinFilter(9)).filter(ImageFilter.MaxFilter(9))) > 0
+    body = body & np.kron(opened, np.ones((4, 4), dtype=bool))[:body.shape[0], :body.shape[1]]
+    closed = closed * (1 - _dilate(body, 6))
+    w = np.maximum(w, closed * base)
+    w = np.asarray(Image.fromarray((w * 255).astype(np.uint8), "L").filter(ImageFilter.GaussianBlur(1.5))).astype(np.float64) / 255
+    return w * _ramp(arr[..., 3], 1, 16), lab
 
 
 def measure_skin_midtone(im, min_pixels=400):
@@ -576,6 +616,219 @@ def _normalise_skin_once(im, target_lab, tolerance=3.0):
     info.update(skin_after=after_hex, skin_action="corrected",
                 skin_delta_e_after=round(delta_e(after_mid, target_lab), 2) if after_mid is not None else None)
     return out, info
+
+
+SKIN_PCTS = (5, 25, 50, 75, 95)
+
+
+def skin_stats(im):
+    """Percentiles (SKIN_PCTS) of the skin's Lab lightness and chroma, and
+    its median hue (radians), over the confident skin core; None if too
+    little skin. The midtone alone misses what reads as 'orange palms'
+    (a long high-chroma tail) and 'pale, lit differently' (highlights too
+    bright): both show in the percentiles."""
+    w, lab = skin_weight(im)
+    core = (w > 0.8) & (np.asarray(im.convert("RGBA"))[..., 3] >= 240)
+    if int(core.sum()) < 400:
+        return None
+    C = np.hypot(lab[..., 1], lab[..., 2])[core]
+    h = np.arctan2(lab[..., 2], lab[..., 1])[core]
+    return {"L": np.percentile(lab[..., 0][core], SKIN_PCTS), "C": np.percentile(C, SKIN_PCTS),
+            "h": float(np.median(h))}
+
+
+def _pct_map(x, src, dst):
+    """Piecewise-linear map taking the percentiles `src` to `dst`, with the
+    end segments' slopes carried on beyond the ends (clamped to 0.3-3)."""
+    src, dst = np.maximum.accumulate(np.asarray(src, float) + np.arange(len(src)) * 1e-3), np.asarray(dst, float)
+    y = np.interp(x, src, dst)
+    lo = np.clip((dst[1] - dst[0]) / (src[1] - src[0]), 0.3, 3)
+    hi = np.clip((dst[-1] - dst[-2]) / (src[-1] - src[-2]), 0.3, 3)
+    y = np.where(x < src[0], dst[0] + (x - src[0]) * lo, y)
+    return np.where(x > src[-1], dst[-1] + (x - src[-1]) * hi, y)
+
+
+def match_skin_distribution(im, ref):
+    """Skin normaliser v2 (hands v1, step 1): map the image's skin lightness
+    and chroma percentiles onto the reference's (`ref` = skin_stats of the
+    reference hand) and rotate its hue to the reference's median, weighted
+    by the soft skin mask. Fixes orange palms (the chroma tail is pulled
+    in), too-bright or flat lighting (the lightness spread is matched) and
+    the midtone at once. Returns (image, info)."""
+    st = skin_stats(im)
+    if st is None:
+        return im, {"skin_action": "no skin found"}
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    w, lab = skin_weight(im)
+    L, C, h = lab[..., 0], np.hypot(lab[..., 1], lab[..., 2]), np.arctan2(lab[..., 2], lab[..., 1])
+    L2 = L + (_pct_map(L, st["L"], ref["L"]) - L) * w
+    C2 = np.maximum(C + (_pct_map(C, st["C"], ref["C"]) - C) * w, 0)
+    h2 = h + (ref["h"] - st["h"]) * w
+    rgba[..., :3] = lab_to_rgb(np.stack([L2, C2 * np.cos(h2), C2 * np.sin(h2)], axis=-1))
+    out = Image.fromarray(rgba.astype(np.uint8), "RGBA")
+    after = skin_stats(out)
+    dist = lambda s: round(float(np.abs(s["L"] - ref["L"]).mean() + np.abs(s["C"] - ref["C"]).mean()), 2)
+    return out, {"skin_action": "distribution matched", "skin_dist_before": dist(st),
+                 "skin_dist_after": dist(after) if after else None,
+                 "skin_before": measure_skin_midtone(im)[1], "skin_after": measure_skin_midtone(out)[1]}
+
+
+# --------------------------------------------------------------------------
+# Scale normaliser (hands v1, step 1): every hand sprite is rescaled so its
+# forearm, measured just above the sleeve, is as wide as the reference's.
+# Hands are swapped in code at one fixed size, so a pose drawn bigger or
+# smaller than the reference would jump in size on screen.
+# --------------------------------------------------------------------------
+
+def sleeve_mask(im, red=False):
+    """Sleeve fabric: cream or white (light, lower chroma than skin and a
+    yellower hue: Lab hue about 75-90, skin 55-66) or Nani's deep red."""
+    arr = np.asarray(im.convert("RGBA")).astype(np.float64)
+    lab = rgb_to_lab(arr[..., :3])
+    C = np.hypot(lab[..., 1], lab[..., 2])
+    hue = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
+    cream = (lab[..., 0] > 60) & (((C < 30) & (hue > 72)) | ((C < 24) & (hue > 66))) & (hue < 110)
+    red_ = (hue > -15) & (hue < 38) & (C > 30) & (lab[..., 0] < 58)  # Nani's deep-red kurta sleeve
+    return (arr[..., 3] > 200) & ((cream | red_) if red else cream)
+
+
+def _components(mask, min_px):
+    """Connected components (4-neighbour) of a boolean mask, quarter-size
+    labelling; returns a list of full-size boolean masks, biggest first."""
+    small = mask[::4, ::4]
+    lab = np.zeros(small.shape, dtype=np.int32)
+    n, sizes = 0, {}
+    for y, x in zip(*np.nonzero(small)):
+        if lab[y, x]:
+            continue
+        n += 1
+        stack, lab[y, x], cnt = [(y, x)], n, 0
+        while stack:
+            cy, cx = stack.pop()
+            cnt += 1
+            for ny, nx in ((cy + 1, cx), (cy - 1, cx), (cy, cx + 1), (cy, cx - 1)):
+                if 0 <= ny < small.shape[0] and 0 <= nx < small.shape[1] and small[ny, nx] and not lab[ny, nx]:
+                    lab[ny, nx] = n
+                    stack.append((ny, nx))
+        sizes[n] = cnt * 16
+    full = np.kron(lab, np.ones((4, 4), dtype=np.int32))[:mask.shape[0], :mask.shape[1]]
+    keep = sorted((k for k, v in sizes.items() if v >= min_px), key=lambda k: -sizes[k])
+    return [(full == k) & mask for k in keep]
+
+
+def _dilate(mask, radius):
+    """Fast approximate dilation: a max filter on a quarter-size mask."""
+    small = Image.fromarray((mask[::4, ::4] * 255).astype(np.uint8), "L")
+    k = max(3, (radius // 4) * 2 + 1)
+    grown = np.asarray(small.filter(ImageFilter.MaxFilter(k))) > 0
+    return np.kron(grown, np.ones((4, 4), dtype=bool))[:mask.shape[0], :mask.shape[1]]
+
+
+def forearm_widths(im, band=(25, 110), red_sleeve=False):
+    """Width of each forearm just beyond its sleeve, independent of the
+    arm's direction: the arm silhouette (opaque, not sleeve) is eroded
+    until nothing is left in the band `band` px beyond the sleeve; the
+    number of erosions is half the width of the widest round section, i.e.
+    the forearm's width. One value per sleeve (two-handed images give two).
+    Returns a list of (width_px, (cx, cy)) with the band's centre."""
+    rgba = np.asarray(im.convert("RGBA"))
+    sm = sleeve_mask(im, red=red_sleeve)
+    sm = np.asarray(Image.fromarray((sm * 255).astype(np.uint8), "L")
+                    .filter(ImageFilter.MinFilter(5)).filter(ImageFilter.MaxFilter(5))) > 0
+    opaque = rgba[..., 3] > 128
+    arm = opaque & ~_dilate(sm, 8)
+    half = lambda m: m[::2, ::2]
+    out = []
+    # the rolled cuff and the sleeve below it are split by a shadow line:
+    # merge them before labelling
+    merged = _dilate(sm, 20)
+    for comp in _components(merged, 6000)[:2]:
+        sl = comp & sm
+        if sl.sum() < 3000:
+            continue
+        ring = half(_dilate(sl, band[1]) & ~_dilate(sl, band[0]) & arm)
+        if ring.sum() < 50:
+            continue
+        m = Image.fromarray((half(opaque) * 255).astype(np.uint8), "L")
+        n = 0
+        while (np.asarray(m) > 0)[ring].any() and n < 200:
+            m = m.filter(ImageFilter.MinFilter(3))
+            n += 1
+        ys, xs = np.nonzero(ring)
+        out.append((float(4 * n), (float(xs.mean() * 2), float(ys.mean() * 2))))
+    return out
+
+
+def normalise_scale(im, target_width, tolerance=0.04, limits=(0.6, 1.6), red_sleeve=False):
+    """Rescale a hand sprite so its mean forearm width matches target_width.
+    The anchor is the bottom-centre of the opaque pixels on the bottom edge
+    (where the arm leaves the frame), so the arm still enters there; the
+    canvas size is kept. When shrinking, the sleeve is extended back down
+    to the edge by repeating its last row. Returns (image, info)."""
+    widths = forearm_widths(im, red_sleeve=red_sleeve)
+    if not widths:
+        return im, {"scale_action": "no forearm found"}
+    width = float(np.mean([w for w, _ in widths]))
+    k = target_width / width
+    info = {"forearm_px": round(width, 1), "scale": round(k, 3)}
+    if abs(k - 1) <= tolerance:
+        info["scale_action"] = "within tolerance"
+        return im, info
+    if not limits[0] <= k <= limits[1]:
+        info["scale_action"] = "out of range, left as is"
+        return im, info
+    im = im.convert("RGBA")
+    W, H = im.size
+    a = np.asarray(im)[..., 3]
+    bottom = np.nonzero(a[-3:].max(axis=0) > 16)[0]
+    ax = float(bottom.mean()) if len(bottom) else W / 2
+    if k > 1:  # growing must not push the fingertips out of the frame
+        ys, xs = np.nonzero(a > 16)
+        margin = 6
+        fit = [H - margin]  # top: H - (H - y0) * k >= margin
+        if ys.min() < H:
+            fit = [(H - margin) / max(H - ys.min(), 1)]
+        if xs.min() < ax:
+            fit.append((ax - margin) / max(ax - xs.min(), 1))
+        if xs.max() > ax:
+            fit.append((W - margin - ax) / max(xs.max() - ax, 1))
+        kmax = min(fit)
+        if kmax < k:
+            info["scale_limited_by_frame"] = round(kmax, 3)
+            k = max(1.0, kmax)
+            if k - 1 <= tolerance:
+                info["scale_action"] = "needs growing but no room in the frame (check by eye)"
+                return im, info
+    big = im.resize((max(1, round(W * k)), max(1, round(H * k))), Image.LANCZOS)
+    canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ox, oy = round(ax - ax * k), round(H - H * k)
+    canvas.paste(big, (ox, oy))
+    if k < 1 and oy + big.height < H:  # pad the sleeve down to the bottom edge
+        arr = np.asarray(canvas).copy()
+        last = oy + big.height - 1
+        arr[last + 1:] = arr[last]
+        canvas = Image.fromarray(arr, "RGBA")
+    cropped = [s for s, sl in (("top", np.asarray(canvas)[:2, :, 3]), ("left", np.asarray(canvas)[:, :2, 3]),
+                                ("right", np.asarray(canvas)[:, -2:, 3])) if (sl > 16).any()]
+    info.update(scale_action="rescaled", clipped=cropped)
+    return canvas, info
+
+
+def clean_key_edges(im):
+    """After a magenta key-out: remove the dark saturated red rim the
+    shaded placeholder leaves on the skin (hue 330-15, saturation > 0.5,
+    darker than skin) and soften the cut edge by one pixel."""
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    h, sat, val = _hsv(rgba[..., :3])
+    rim = ((h >= 330) | (h <= 15)) & (sat > 0.5) & (val < 0.75) & (rgba[..., 3] > 16)
+    if not rim.any():  # nothing to clean: leave the image untouched (safe to re-run)
+        return im, 0
+    rgba[..., 3] = np.where(rim, 0, rgba[..., 3])
+    alpha = Image.fromarray(rgba[..., 3].astype(np.uint8), "L")
+    soft = np.asarray(alpha.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.7))).astype(np.float64)
+    near = np.asarray(Image.fromarray((rim * 255).astype(np.uint8), "L").filter(ImageFilter.MaxFilter(7))) > 0
+    rgba[..., 3] = np.where(near, np.minimum(rgba[..., 3], soft), rgba[..., 3])
+    return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), int(rim.sum())
 
 
 def _hsv(rgb):
@@ -702,6 +955,60 @@ def skin_target_for(entry, cfg, cache={}):
     if key not in cache:
         cache[key] = measure_skin_midtone(Image.open(ref))[0]
     return cache[key]
+
+
+def _ref_path(entry, cfg, field, default_key):
+    sec = cfg.get(field) or {}
+    return resolve_path(entry.get(default_key) or sec.get("reference"))
+
+
+def post_process_hand(entry, im, cfg, cache={}):
+    """Hands v1 post steps, in order, for an entry in a hand group:
+    (1) after a magenta key-out, clean the red rim and soften the cut;
+    (2) skin: an entry with a fixed `skin_target` hex (Nani's references)
+    gets the midtone normaliser, every other hand the distribution match
+    against its `skin_reference` (else the config's reference hand);
+    (3) scale: forearm width matched to `scale_normalise.target_forearm_px`
+    (or the entry's `scale_reference` image's). Returns (image, info)."""
+    info = {}
+    if skin_target_for(entry, cfg) is None:  # not a hand group
+        return im, info
+    if entry.get("key_out") == "magenta":
+        im, n = clean_key_edges(im)
+        info["key_rim_px"] = n
+    tol = (cfg.get("skin_normalise") or {}).get("tolerance_delta_e", 3.0)
+    if entry.get("skin_target"):
+        im, sk = normalise_skin(im, rgb_to_lab(hex_to_rgb(entry["skin_target"])), tol)
+    elif entry.get("skin_mode") == "midtone":  # e.g. mehndi: a full-range match would fade the pattern
+        im, sk = normalise_skin(im, skin_target_for(entry, cfg), tol)
+    else:
+        ref = resolve_path(entry.get("skin_reference") or (cfg.get("skin_normalise") or {}).get("reference"))
+        key = ("skin", ref, os.path.getmtime(ref))
+        if key not in cache:
+            cache[key] = skin_stats(Image.open(ref))
+        im, sk = match_skin_distribution(im, cache[key])
+    info.update(sk)
+    sc = cfg.get("scale_normalise") or {}
+    if sc and entry.get("scale_normalise", True):
+        target = sc.get("target_forearm_px")
+        nani = str(entry.get("group", "")).startswith("hands-nani")
+        if entry.get("scale_reference"):
+            ref = resolve_path(entry["scale_reference"])
+            key = ("scale", ref, os.path.getmtime(ref))
+            if key not in cache:
+                ws = forearm_widths(Image.open(ref), red_sleeve=nani)
+                cache[key] = float(np.mean([w for w, _ in ws])) if ws else None
+            target = cache[key]
+        if target:
+            ws = forearm_widths(im, red_sleeve=nani)
+            vals = [w for w, _ in ws]
+            if len(vals) == 2 and abs(vals[0] - vals[1]) > 0.15 * max(vals):
+                info.update(scale_action="arms disagree, left as is (check by eye)",
+                            forearm_px=[round(v) for v in vals])
+            else:
+                im, s = normalise_scale(im, target, sc.get("tolerance", 0.04), tuple(sc.get("limits", (0.6, 1.6))), nani)
+                info.update(s)
+    return im, info
 
 
 # --------------------------------------------------------------------------
@@ -1026,13 +1333,12 @@ def run(args):
             keyed.save(t["out_path"])
             skin["keyed_out_px"] = removed
             print(f"[{key}] keyed out {removed} px of magenta placeholder")
-        target = skin_target_for(entry, cfg)
-        if target is not None:
-            fixed, skin = normalise_skin(Image.open(t["out_path"]), target,
-                                         (cfg.get("skin_normalise") or {}).get("tolerance_delta_e", 3.0))
-            if skin.get("skin_action") == "corrected":
-                fixed.save(t["out_path"])
-            print(f"[{key}] skin {skin.get('skin_before')} -> {skin.get('skin_after')} ({skin.get('skin_action')})")
+        if skin_target_for(entry, cfg) is not None:
+            fixed, post = post_process_hand(entry, Image.open(t["out_path"]), cfg)
+            fixed.save(t["out_path"])
+            skin.update(post)
+            print(f"[{key}] skin {post.get('skin_before')} -> {post.get('skin_after')} ({post.get('skin_action')}); "
+                  f"scale {post.get('scale', '-')} ({post.get('scale_action', 'off')})")
 
         status, iou = "done", None
         if mode == "reskin":
@@ -1090,7 +1396,26 @@ def main():
                     help="colour-match a hand's skin to --skin-target (hex) or the master reference, then exit")
     p.add_argument("--skin-target", metavar="HEX", help="with --skin-normalise: the target midtone hex")
 
+    p.add_argument("--post", metavar="IDS",
+                    help="re-run the hand post steps (key-edge clean, skin match, scale) on the current outputs of "
+                         "these asset ids or groups (comma-separated), in place, then exit")
+
     args = p.parse_args()
+
+    if args.post:
+        data = load_asset_list(args.asset_list)
+        cfg = load_config(data)
+        for entry in data["assets"]:
+            if not entry_matches_only(entry, args.post):
+                continue
+            path = resolve_path(entry["output"])
+            if not os.path.exists(path):
+                print(f"[{entry['id']}] missing")
+                continue
+            out, info = post_process_hand(entry, Image.open(path), cfg)
+            out.save(path)
+            print(f"[{entry['id']}] {json.dumps(info)}", flush=True)
+        return
 
     if args.contact_sheet:
         data = load_asset_list(args.asset_list)

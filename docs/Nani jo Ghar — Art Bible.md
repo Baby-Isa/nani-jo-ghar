@@ -312,6 +312,7 @@ Full list and generation order: `docs/Nani jo Ghar — Asset Building Plan.md`, 
 - **Shape:** a slender hand: slim overall, with **long fingers relative to a small palm** (not stubby, chunky or toy-like). **No visible bones, knuckle ridges, tendons or veins**; surfaces stay smooth and simple, because the hands are rigid sprites moved in code.
 - **Skin tone:** **one tone, Zafar's own** — a warm light tan, not orange, not saturated (hex values in section 2). No skin-tone variants for now.
 - **Sleeve:** modern, not costume. The rolled sleeve is **only sometimes visible**: in the top-down set the bare forearm enters from the bottom edge and the soft rolled fabric just shows at the very bottom edge, or is cropped out.
+- **Post steps on every generated hand (hands v1, `build/gen_assets.py`, `post_process_hand()`):** (1) grips drawn round a magenta placeholder have it keyed out, leaving the tool's exact gap (the placeholder is drawn *behind* the fingers so the cut never slices a finger), and the red rim it leaves is cleaned; (2) the skin is matched to the reference hand's whole tone range (lightness and chroma percentiles and hue), not just the midtone, which is what fixes orange palms and pale, differently lit hands; (3) the hand is rescaled so its forearm, measured just above the sleeve, is as wide as the reference's (250 px on the 1024 px canvas), anchored where the arm leaves the bottom edge. Re-run on existing files with `python3 build/gen_assets.py --post <ids or group>`.
 
 ### Sleeves and reskins
 
@@ -438,6 +439,10 @@ Review every contact sheet on **both a black and a white backing**, and every pl
 | 11 | **Sleeve consistent** | Sleeve, colour, bangles or hand outline differ from the master |
 | 12 | **No text** | Any letters or numbers, even fake ones |
 | 13 | **Cultural accuracy** | See below |
+| 14 | **Finger count (hands)** | Count every digit, at full size, and write the count down for each hand. Five per hand (thumb and four fingers) unless the pose hides some behind the palm; hidden digits must be where the pose puts them, not missing. Counting frames E3 raise exactly 1, 2, 3, 4, 5 (in "4" the thumb is folded and must not stick out). Reject: a missing or extra digit, two fingers merged, two hands fused into one shape |
+| 15 | **Hand scale matches (hands)** | Forearm width just above the sleeve differs from the reference by more than about 5% after the scale normaliser (`build/gen_assets.py`, `forearm_widths()`); the hand looks bigger or smaller than its neighbours on the contact sheet; the normaliser had no room to grow it (flagged in its log) |
+| 16 | **Hand camera, light and skin (hands)** | T poses not seen from straight above; E poses showing the palm when the pose says the back of the hand; a forearm entering from the side when the pose doesn't need it; light not from the upper left like the reference; skin not matching the reference after the skin normaliser (orange palms, pale or pink hands) |
+| 17 | **Tool gaps (grips)** | A tool drawn in the hand (tools are separate sprites); no clear gap where the tool goes; a keyed-out gap that slices through a finger or leaves a red rim |
 
 **Cultural accuracy (a Khoja home, Kutch and East Africa):**
 - **Clothing:** kurta, kurti, salwar, dupatta or headscarf; modest cuts; caps on men as the family confirms. No Hindu religious markers.

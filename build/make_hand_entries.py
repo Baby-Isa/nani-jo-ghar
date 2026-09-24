@@ -38,74 +38,95 @@ GAP = " The tool is a separate image placed later: leave that space completely e
 KEY = (" The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading,"
        " no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool.")
 
+# Hands v1 step 1 (master fixes): the placeholder sits BEHIND the fingers,
+# so keying it out leaves the tool's gap without slicing through a finger
+# (the tool sprite is layered behind the hand in the game).
+BEHIND = (" Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it:"
+          " it never covers any part of the hand.")
+FIVE = " All five digits clearly visible and separate: the thumb and four fingers."
+
 # (code, slug, camera-key, pose text, two_handed, note)
 # Frames of 2-frame poses are separate rows with -f1/-f2 slugs.
 POSES = [
     # A. Open hand
     ("a1", "flat-palm", "T", "flat palm pressed down on the worktop, fingers together and straight, thumb resting alongside, as if pressing and kneading dough", False),
-    ("a2", "heel-push", "T", "heel of the palm pushing down and forwards: the wrist bent sharply back so the fingers point up towards the camera and are foreshortened, only the heel of the hand pressed on the worktop at the bottom of the hand, as if pushing dough away", False),
+    ("a2", "heel-push", "T", "heel of the palm pushing dough away, seen from directly above: the wrist bent sharply back so the whole hand is tipped up off the worktop, only the heel of the palm pressing down near the wrist; the fingers point up at the camera and are strongly foreshortened, so from above they look short, with the fingertips and nails towards us; clearly different from a flat hand lying on the worktop", False),
     ("a3", "palm-up", "T-palm", "palm up and open on the worktop, fingers together and relaxed, very slightly curved, thumb relaxed at the side, as if waiting to receive something ('here you are')", False),
     ("a3", "palm-up", "E-palm", "palm up and open, held out forwards, fingers together and relaxed, pointing away from us, thumb relaxed at the side, as if offering or waiting to receive something", False),
     ("a4", "reach", "E", "reaching up and forwards towards a high shelf: arm extended towards the top of the frame, fingers spread and slightly curved, back of the hand towards us", False),
     ("a5", "wave-f1", "E-back", "waving hello, frame 1 of 2: hand raised, fingers together pointing up, the whole hand tilted about 20 degrees to the LEFT at the wrist", False),
-    ("a5", "wave-f2", "E-back", "waving hello, frame 2 of 2: hand raised, fingers together pointing up, the whole hand tilted about 20 degrees to the RIGHT at the wrist", False),
+    ("a5", "wave-f2", "E-back", "waving hello, frame 2 of 2: EXACTLY the same hand as the second attached image (frame 1), with the fingers together pointing up and the fingernails towards us, now tilted about 20 degrees to the RIGHT at the wrist; only the tilt changes", False),
     ("a6", "palm-out", "E-back", "palm pushed out forwards, away from us, as for 'stop' or a high five: hand raised, wrist bent back, fingers straight up and slightly apart", False),
-    ("a7", "hand-on-heart", "E-back", "right hand laid flat over our own heart (salaam, thank you): the forearm comes diagonally from the lower right corner of the frame, the hand lies flat, fingers together pointing to the left, back of the hand towards us. Draw ONLY the hand and forearm: no chest, no shirt front, no body; the hand rests on nothing visible", False),
+    ("a7", "hand-on-heart", "E-back", "right hand laid flat on our own chest over the heart (salaam, thank you), seen from our own eyes looking down: the forearm rises from the BOTTOM edge of the frame just right of centre and bends at the wrist so the hand lies across the frame, fingers together pointing to the LEFT and slightly up, the back of the hand and the knuckles towards us, the thumb along the top edge of the hand. Draw ONLY the hand and forearm: no chest, no shirt front, no body, nothing behind the hand, fully transparent around it" + FIVE, False),
     ("a8", "cupped", "T-palm", "palm up with the fingers held together and curled up to make a shallow bowl, thumb pressed along the side, as if holding a small pile of seeds or spices; the inside of the cup is empty and visible from above", False),
     ("a8", "cupped", "E-palm", "palm up with the fingers held together and curled up to make a shallow cup, thumb along the side, held out in front as if catching drips of rain; the inside of the cup is empty", False),
     # B. Handle grip
-    ("b1", "handle-grip", "T", "a loose fist holding a straight rod 2.5 cm thick that runs straight forwards, from under the wrist out through the curled fingers and 6 cm out of the front of the fist towards the top of the frame; the THUMB LIES STRAIGHT ALONG THE TOP OF THE ROD, pointing forwards, not tucked; the fingers wrap under the rod" + KEY, False),
+    ("b1", "handle-grip", "T", "seen from directly above: a loose fist gripping a straight handle 2.5 cm thick that runs straight forwards, from under the heel of the hand, out past the curled index finger towards the top of the frame, sticking out 6 cm beyond the fist; we see the back of the hand and the knuckles; the THUMB lies straight along the TOP of the handle and points forwards along it, clearly separate from the fingers, never tucked into the fist; the four fingers wrap round the handle underneath" + KEY + BEHIND, False),
     ("b2", "vertical-grip", "T", "fist closed around an invisible vertical stick (pestle, churner) about 3 cm thick that points straight up at the camera: we look down on the top of the fist, where the curled index finger and the thumb wrapped over it make a round empty hole about 3 cm across in which the stick stands" + GAP, False),
-    ("b2", "vertical-grip", "E-back", "fist held upright in front of us around a vertical rod 3 cm thick (umbrella, broom, torch handle) that sticks 5 cm out of the top and bottom of the fist; fingers curled round the far side, thumb wrapped round the near side" + KEY, False),
-    ("b3", "stick-grip", "E-back", "a loose grip around a rod 2.5 cm thick (drumstick, racquet or bat handle) that leaves the top of the fist and points up and forwards at about 45 degrees, 12 cm long; thumb along the side of the rod" + KEY, False),
+    ("b2", "vertical-grip", "E-back", "fist held upright in front of us round a vertical rod 3 cm thick (umbrella, broom or torch handle) that sticks 5 cm out of the TOP of the fist (above the curled index finger and thumb) and 5 cm out of the BOTTOM of the fist (below the little finger); we see the back of the hand and the knuckles; the fingers curl round the far side of the rod, the thumb wraps round the near side" + KEY + BEHIND, False),
+    ("b3", "stick-grip", "E-back", "a loose grip round a rod 2.5 cm thick (drumstick, racquet or bat handle) held in front of us: the rod passes through the fist and leaves the top of the fist between the thumb and the index finger, pointing up and forwards at about 45 degrees for 12 cm, and sticks 2 cm out of the bottom of the fist below the little finger; we see the back of the hand; the thumb lies along the side of the rod" + KEY + BEHIND, False),
     ("b4", "rolling-pin", "T", "rolling a flatbread: both palms rest on the two ends of an invisible horizontal rolling pin about 3 cm thick lying across the frame, the hands about 25 cm apart; palms down, fingers extended forwards over the pin, slightly curved over it; a clear empty horizontal band under and between both hands where the pin sits" + GAP, True),
-    ("b5", "hook-grip", "T", "hook grip: the four fingers curled together into a hook round a horizontal rod 2 cm thick (a jug handle) that runs left-right under the curled fingers and sticks out a few centimetres on both sides; the thumb resting on top of the rod" + KEY, False),
-    ("b5", "hook-grip", "E-back", "hook grip in front of us, carrying: the four fingers curled together into a hook round a horizontal rod 2 cm thick (a basket or bucket handle) that runs left-right through the hook and sticks out a few centimetres on both sides; thumb resting lightly on the index finger" + KEY, False),
+    ("b5", "hook-grip", "T", "hook grip seen from directly above: we see the back of the hand; the four fingers curled together into a hook round a horizontal rod 2 cm thick (a jug handle) that runs left-right UNDER the curled fingers: hidden where the fingers wrap round it and sticking out 4 cm on both sides of the hand, clearly visible left and right; the thumb rests along the side of the index finger" + KEY + BEHIND, False),
+    ("b5", "hook-grip", "E-back", "hook grip in front of us, carrying a basket: we see the back of the hand; the four fingers curled together into a hook round a horizontal rod 2 cm thick (a basket or bucket handle) that runs left-right through the hook: hidden where the fingers wrap round it, sticking out 4 cm on both sides of the hand; the thumb resting lightly on the index finger; the same soft lighting from the upper left as the reference" + KEY + BEHIND, False),
     # C. Pinch and fingertip
     ("c1", "pinch-f1-open", "T", "fingertip pinch, open: thumb and index fingertips about 3 cm apart, ready to pick up something tiny; the other fingers loosely curled underneath", False),
     ("c1", "pinch-f2-closed", "T", "fingertip pinch, closed: the thumb and index fingertips pressed together as if holding a tiny spice or bead between them (nothing drawn); the other fingers loosely curled underneath", False),
     ("c1", "pinch-f1-open", "E-back", "fingertip pinch, OPEN, held up in front of us: the thumb and index fingertips clearly APART, with a 3 cm open gap between their tips (not touching, not an OK sign); the other fingers loosely curled", False),
     ("c1", "pinch-f2-closed", "E", "fingertip pinch, closed, held up in front of us: thumb and index fingertips pressed together as if holding a tiny bead or coin (nothing drawn); the other fingers loosely curled", False),
-    ("c2", "tripod-grip", "T", "tripod grip, as if holding a pen or teaspoon: thumb, index and middle fingertips hold a thin rod 1 cm thick and 12 cm long that runs forwards and slightly left out of the grip; ring and little fingers curled under" + KEY, False),
-    ("c3", "side-pinch", "T", "side pinch (key grip): the index finger curled round, and the flat pad of the thumb pressed onto the SIDE of the index finger's middle segment (not the fingertip, not an OK sign), clamping a flat card 6 x 9 cm that sticks out forwards from between them" + KEY, False),
-    ("c3", "side-pinch", "E-back", "side pinch (key grip) held up in front of us: the index finger curled round, and the flat pad of the thumb pressed onto the SIDE of the index finger's middle segment (not the fingertip, not an OK sign), clamping a flat upright card 6 x 9 cm that sticks up from between them" + KEY, False),
+    ("c2", "tripod-grip", "T", "tripod grip seen from directly above, as if holding a pencil or teaspoon: we see the back of the hand; the thumb, index and middle fingertips pinch a thin rod 1 cm thick that runs from between the fingertips forwards and slightly to the LEFT towards the top of the frame, 10 cm beyond the fingertips; the ring and little fingers curled under; the same skin colour and lighting as the reference" + KEY + BEHIND, False),
+    ("c3", "side-pinch", "T", "side pinch seen from directly above: a flat card 6 x 9 cm lies flat, held between the flat pad of the thumb on top and the side of the curled index finger underneath, and sticks out 7 cm forwards beyond the fingers towards the top of the frame, clearly visible; we see the back of the hand and the thumb lying on the card" + KEY + BEHIND, False),
+    ("c3", "side-pinch", "E-back", "side pinch held up in front of us: an upright flat card 6 x 9 cm clamped between the flat pad of the thumb (on the side towards us) and the side of the curled index finger (behind it), sticking up 7 cm above the hand, clearly visible; we see the back of the hand and the thumb pressing on the card" + KEY + BEHIND, False),
     ("c4", "point", "T", "pointing index finger: the index finger straight and extended forwards towards the top of the frame, the other fingers curled under the palm, the thumb tucked alongside the middle finger", False),
     ("c4", "point", "E", "pointing index finger: the index finger straight and pointing up and forwards, the other fingers curled into the palm, the thumb folded across them; the default tap hand", False),
     ("c5", "two-hand-fold", "T", "folding with two hands: both hands close together in the middle of the frame, each with thumb and index fingertips pinched as if folding over the edge of a samosa or a cloth; the two pinches nearly meet in the centre; the other fingers loosely curled", True),
     # D. Whole-hand hold and fist
-    ("d1", "grab-f1-open", "T", "about to grab: hand hovering palm down, fingers spread and curved like a claw ready to close on something", False),
-    ("d1", "grab-f2-closed", "T", "grabbing: hand closed round a ball 5 cm across (standing in for a vegetable), fingers wrapped round it and thumb against them; part of the ball shows between the fingers and thumb" + KEY, False),
-    ("d1", "grab-f1-open", "E", "reaching to grab, in front of us: fingers spread and curved like a claw ready to close on something", False),
+    ("d1", "grab-f1-open", "T", "about to grab, seen from directly above: we see the back of the hand, palm down, hovering over the worktop; the thumb at the left and the four fingers (index, middle, ring, little) spread apart and curved down like a claw, ready to close on something" + FIVE, False),
+    ("d1", "grab-f2-closed", "T", "grabbing, seen from directly above: we see the back of the hand and the knuckles; the fingers wrap down round a ball 5 cm across under the hand; the ball shows between the thumb and the index finger and just beyond the fingertips" + KEY + BEHIND, False),
+    ("d1", "grab-f1-open", "E", "reaching to grab, in front of us, seen from behind: the back of the hand and the knuckles towards us (the palm faces away, NOT visible); the fingers spread and curved forwards like a claw ready to close on something" + FIVE, False),
     ("d1", "grab-f2-closed", "E-back", "grabbing, in front of us: hand closed round a ball 5 cm across, fingers wrapped round it and thumb against them; part of the ball shows between the fingers and thumb" + KEY, False),
-    ("d2", "c-hold", "T", "C-shaped hold round an invisible upright glass about 7 cm across standing on the worktop: from above, the fingers and thumb curve round the glass in a C, leaving a clear, empty, round space 7 cm across inside the curve" + GAP, False),
+    ("d2", "c-hold", "T", "C-shaped hold seen from directly above, round an upright glass standing on the worktop: the glass seen from above is a flat disc 7 cm across (about as wide as the palm is long); the thumb curves round the near side of the disc and the fingers round its far side, making a wide C round it; we see the back of the hand" + KEY + BEHIND, False),
     ("d2", "c-hold", "E", "C-shaped hold round an invisible upright glass about 7 cm across held up in front of us: the fingers curve round the far side of the glass and the thumb the near side, leaving a clear, empty, upright round space inside the curve" + GAP, False),
-    ("d3", "two-hand-bowl", "T", "two hands holding a round bowl about 18 cm across from its two sides: palms turned in and slightly up, fingers curved under the bowl's rim, the hands about 18 cm apart; the bowl is a flat round disc seen from above" + KEY, True),
-    ("d4", "squeeze-f1-half", "T", "squeezing, frame 1 of 2: fist half-closed round half a lemon 6 cm across, fingers curved round it, the lemon half showing between the fingers and thumb" + KEY, False),
-    ("d4", "squeeze-f2-tight", "T", "squeezing, frame 2 of 2: fist squeezed tight, fingers pressed hard into the palm, with only a small hollow left inside the grip" + GAP, False),
+    ("d3", "two-hand-bowl", "T", "seen from DIRECTLY ABOVE, looking straight down at the worktop (a flat plan view, no perspective, no horizon): a round bowl, which from above is a flat disc 18 cm across, in the centre of the frame; the two hands hold it from its left and right sides, the fingers curling over the top of its rim and the thumbs resting on the rim; we see the backs of both hands and the tops of both forearms, which lie flat along the worktop and come in from the bottom edge, one from the lower left and one from the lower right" + KEY + BEHIND, True),
+    ("d4", "squeeze-f1-half", "T", "squeezing half a lemon, frame 1 of 2, seen from directly above: we see the back of the hand and the knuckles, the fist half-closed round a half lemon 6 cm across under the hand; the lemon shows between the thumb and the index finger; the curled fingertips are hidden under the hand; no palm visible" + KEY + BEHIND, False),
+    ("d4", "squeeze-f2-tight", "T", "squeezing, frame 2 of 2, seen from directly above: we see the back of the fist and the knuckles; the fist squeezed tight, the thumb wrapped over the index finger; the curled fingertips are hidden under the hand; no palm visible", False),
     ("d5", "throw-release", "E-back", "throwing, the moment of release: the arm forwards, the wrist flicked forwards and the fingers just opening and spreading as they let go of a ball", False),
-    ("d6", "two-hand-catch-f1-open", "E-back", "about to catch, frame 1 of 2: both hands held up in front of us about 15 cm apart, palms facing forwards, away from us, towards the ball, fingers spread and curved", True),
+    ("d6", "two-hand-catch-f1-open", "E-back", "about to catch, frame 1 of 2: both hands held up in front of us about 15 cm apart, seen from BEHIND: we see the BACKS of both hands, the knuckles and the fingernails (the palms face forwards, away from us, towards the ball, and are NOT visible); fingers spread and slightly curved; both hands exactly the same skin colour" + FIVE, True),
     ("d6", "two-hand-catch-f2-closed", "E", "catching, frame 2 of 2: both hands together, cupped round an invisible ball about 8 cm across, fingers of each hand curled round it, leaving a clear round hollow between them where the ball sits" + GAP, True),
     # E. Social and number gestures
     ("e1", "thumbs-up", "E", "thumbs up: fist closed with the thumb pointing straight up; we see the back and little-finger side of the fist", False),
-    ("e2", "handshake", "E-back", "hand held out for a handshake: the forearm rises from the bottom edge of the frame diagonally up and to the left, the hand turned sideways, thumb up, fingers together pointing forwards and to the left; the rolled sleeve at the bottom edge, same as the reference (no wristband)", False),
+    ("e2", "handshake", "E-back", "our own right hand held out for a handshake, seen from behind, from our own eyes: the forearm rises from the BOTTOM edge of the frame, a little right of centre, and points forwards and slightly to the left; the hand is turned on its side: thumb on top, fingers together pointing forwards and to the left, the palm facing left (not visible); we see the thumb side and the back of the hand", False),
     ("e3", "count-1", "E-back", "counting on the fingers, ONE, seen from behind: only the index finger straight up, its fingernail facing us; the middle, ring and little fingers folded down, their knuckles facing us; the thumb folded behind them. Exactly one finger up", False),
     ("e3", "count-2", "E-back", "counting on the fingers, TWO, seen from behind: the index and middle fingers straight up and slightly apart, their fingernails facing us; the ring and little fingers folded down, knuckles facing us; the thumb folded behind them. Exactly two fingers up", False),
     ("e3", "count-3", "E-back", "counting on the fingers, THREE, seen from behind: the index, middle and ring fingers straight up and slightly apart, their fingernails facing us; the little finger folded down; the thumb folded behind it. Exactly three fingers up", False),
-    ("e3", "count-4", "E-back", "counting on the fingers, FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their fingernails facing us; only the thumb folded behind the palm. Exactly four fingers up", False),
+    ("e3", "count-4", "E-back", "counting on the fingers, FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their fingernails facing us; the THUMB is bent across the palm behind the fingers and hidden, it must NOT stick out to the side. Exactly four digits up, never five", False),
     ("e3", "count-5", "E-back", "counting on the fingers, FIVE, seen from behind: all four fingers and the thumb straight and spread wide apart, fingernails facing us. All five fingers up", False),
-    ("e4", "clap-f1-apart", "E-back", "clapping, frame 1 of 2: both hands raised in front of us, palms facing EACH OTHER about 20 cm apart (seen edge-on from behind, thumbs nearest us), fingers together pointing up", True),
-    ("e4", "clap-f2-together", "E", "clapping, frame 2 of 2: both hands raised in front of us, palms pressed flat together, fingers together pointing up", True),
-    ("e5", "arm-up-fist", "E-back", "celebration: the right arm raised, elbow bent, the forearm rising vertically from the bottom edge, the hand in a closed fist at the top; the back of the fist and its knuckles face us, the curled fingertips face away (the left arm is this image mirrored)", False),
-    ("e6", "stretch", "E-back", "stretching on waking: the right arm reaching straight up to the top of the frame, hand open with the fingers spread (the left arm is this image mirrored)", False),
+    ("e4", "clap-f1-apart", "E-back", "clapping, frame 1 of 2: both hands raised in front of us, 20 cm APART with clear empty space between them, not touching, not overlapping; each hand upright with the fingers together pointing up and its palm facing the other hand, so each is seen edge-on from behind (its thumb side and a little of its back); the left forearm rises from the bottom left, the right from the bottom right" + FIVE, True),
+    ("e4", "clap-f2-together", "E", "clapping, frame 2 of 2: both hands raised in front of us, the palms pressed flat together in the centre, fingers together pointing up; seen from behind and a little to the right, so the two hands read clearly as two separate hands: the back of the right hand and its thumb in front, the left hand behind it; each hand has a thumb and four fingers; two forearms rising from the bottom edge", True),
+    ("e5", "arm-up-fist", "E-back", "celebration: the right forearm rising vertically from the bottom edge, the hand in a closed fist at the top, seen from BEHIND: we see the back of the fist and its four knuckles, the fingers curled away from us (fingertips hidden), the thumb wrapped round at the left side (the left arm is this image mirrored)", False),
+    ("e6", "stretch", "E-back", "stretching on waking: the right arm reaching straight up, the hand open with the fingers spread, seen from behind (back of the hand and fingernails towards us); the hand drawn at the SAME size in the frame as the reference hand, the fingertips close to the top edge (the left arm is this image mirrored)" + FIVE, False),
     ("e7", "shrug", "E-palm", "a shrug, 'I don't know': the right hand held out to the side at chest height, palm up and open, fingers relaxed and slightly spread, the forearm coming in from the lower right (the left hand is this image mirrored)", False),
     # F. Music, sport and play
-    ("f1", "piano-f1-raised", "E-back", "piano hand, frame 1 of 2: the forearm rises from the bottom edge of the frame and the hand arches forwards over an invisible keyboard further down, seen from behind and above, fingers curved down, the fingertips raised a little above the keys", False),
-    ("f1", "piano-f2-pressed", "E-back", "piano hand, frame 2 of 2: the forearm rises from the bottom edge of the frame and the hand arches forwards over an invisible keyboard further down, seen from behind and above, fingers curved down, the fingertips pressing down on the keys", False),
-    ("f2", "drum-cupped", "T", "hand-drum slap with a cupped hand: palm down, fingers together and clearly curved so the hand forms a raised dome, the knuckles lifted high, only the fingertips and the heel of the hand touching the surface (the flat-hand slap is A1)", False),
+    ("f1", "piano-f1-raised", "E-back", "piano hand, frame 1 of 2: the forearm comes up from the BOTTOM edge of the frame (not from the side) and the hand arches forwards over an invisible keyboard further down, seen from behind and a little above: we see the back of the hand and the knuckles, the fingers curved down, the fingertips raised a little above the keys" + FIVE, False),
+    ("f1", "piano-f2-pressed", "E-back", "piano hand, frame 2 of 2: the forearm comes up from the BOTTOM edge of the frame (not from the side) and the hand arches forwards over an invisible keyboard further down, seen from behind and a little above: we see the back of the hand and the knuckles, the fingers curved down, the fingertips pressing down on the keys, a little lower than in frame 1" + FIVE, False),
+    ("f2", "drum-cupped", "T", "hand-drum slap with a cupped hand, seen from DIRECTLY ABOVE looking straight down at the worktop: the back of the hand, palm down; the hand cupped into a raised dome: the fingers together and curved down so only the fingertips touch the surface, the knuckles the highest point, the forearm lying flat along the worktop from the bottom edge; from above the curved fingers look noticeably shorter than on a flat hand (the flat-hand slap is A1)", False),
     ("f4", "phone-two-hands", "E", "holding a phone or camera up to take a photo: both hands in front of us holding an invisible horizontal phone about 15 x 7 cm, the thumbs on its near face at the two lower corners, the index fingers along its top edge behind it; the rectangular space between the hands is empty" + GAP, True),
 ]
 # F3 (racquet/paddle) is B3 plus a tool sprite, and F5 (kite string) is C1
 # with a string sprite (asset plan 1.3): no new images, noted in the list.
+# Two-frame poses: the other frame is attached as a second reference so the
+# pair matches (hand size, skin, light, sleeve). Frame 2 follows frame 1,
+# or, where only frame 1 is redone, frame 1 follows the kept frame 2.
+PAIR = {
+    "hand-a5-wave-f2-e": "hand-a5-wave-f1-e",
+    "hand-d1-grab-f2-closed-t": "hand-d1-grab-f1-open-t",
+    "hand-d4-squeeze-f2-tight-t": "hand-d4-squeeze-f1-half-t",
+    "hand-d6-two-hand-catch-f1-open-e": "hand-d6-two-hand-catch-f2-closed-e",
+    "hand-e4-clap-f2-together-e": "hand-e4-clap-f1-apart-e",
+    "hand-f1-piano-f2-pressed-e": "hand-f1-piano-f1-raised-e",
+}
+PAIR_NOTE = (" A second image is attached: the other frame of this same pose. Match its hand size, hand shape,"
+             " skin colour, lighting and sleeve exactly.")
+
 ALIASES = {"f3-racquet": "hand-b3-stick-grip-e", "f5-kite-string": "hand-c1-pinch-f2-closed-e"}
 
 GIRL = ("replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink "
@@ -148,6 +169,9 @@ def build():
         }
         if KEY in pose:
             e["key_out"] = "magenta"
+        if eid in PAIR:
+            e["reference_images"].append(f"{H}/master/{PAIR[eid]}.png")
+            e["fields"]["pose"] += PAIR_NOTE
         if two:
             e["_note"] = "Two-handed: drawn as one image (the hands touch or share one object)."
         entries.append(e)
@@ -159,6 +183,7 @@ def build():
         entries.append({
             "id": gid, "group": "hands-girl", "output": f"{H}/girl/{gid}.png", "mode": "reskin",
             "master": e["id"], "template": "hand_reskin", "fields": {"change": GIRL.format(both=both)},
+            "skin_reference": e["output"], "scale_normalise": False,
         })
         palm = " (and on the palm, which shows in this pose)" if "palm" in cam else ""
         both_e = " of BOTH hands" if two else ""
@@ -166,7 +191,8 @@ def build():
         entries.append({
             "id": xid, "group": "hands-girl-eid", "output": f"{H}/girl-eid/{xid}.png", "mode": "reskin",
             "master": gid, "template": "hand_reskin_eid", "fields": {"change": EID.format(palm=palm, both=both_e)},
-            "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it.",
+            "skin_reference": e["output"], "skin_mode": "midtone", "scale_normalise": False,
+            "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast.",
         })
 
     entries += nani_entries()
@@ -217,12 +243,12 @@ def nani_entries():
         out.append({
             "id": f"nani-ref-{cam.lower()}-right", "group": "hands-nani-ref", "output": refs[(cam, "R")],
             "mode": "edit", "reference_images": [src], "template": "nani_ref",
-            "fields": {"side": "RIGHT", "jewellery": NANI_RIGHT}, "skin_target": NANI_SKIN,
+            "fields": {"side": "RIGHT", "jewellery": NANI_RIGHT}, "skin_target": NANI_SKIN, "scale_normalise": False,
         })
         out.append({
             "id": f"nani-ref-{cam.lower()}-left", "group": "hands-nani-ref", "output": refs[(cam, "L")],
             "mode": "edit", "reference_images": [refs[(cam, "R")]], "mirror_references": [0],
-            "template": "nani_ref_left", "fields": {"jewellery": NANI_LEFT}, "skin_target": NANI_SKIN,
+            "template": "nani_ref_left", "fields": {"jewellery": NANI_LEFT}, "skin_target": NANI_SKIN, "scale_normalise": False,
             "_note": "Starts from Nani's right-hand reference flipped left-right, then the jewellery is redrawn for the left hand.",
         })
     for mid, sides in NANI_POSES:
@@ -233,7 +259,7 @@ def nani_entries():
                 "id": base, "group": "hands-nani", "output": f"{n}/{base}.png", "mode": "edit",
                 "reference_images": [refs[(cam, "R")], refs[(cam, "L")], f"{H}/master/{mid}.png"],
                 "template": "nani_two_pose", "fields": {"right": NANI_RIGHT, "left": NANI_LEFT},
-                "skin_reference": refs[("T", "R")],
+                "skin_reference": refs[("T", "R")], "scale_reference": refs[(cam, "R")],
             })
             continue
         for side in sides:
@@ -243,7 +269,7 @@ def nani_entries():
                 "id": eid, "group": "hands-nani", "output": f"{n}/{eid}.png", "mode": "edit",
                 "reference_images": [refs[(cam, side)], f"{H}/master/{mid}.png"],
                 "template": "nani_pose", "fields": {"side": word, "jewellery": jew},
-                "skin_reference": refs[("T", "R")],
+                "skin_reference": refs[("T", "R")], "scale_reference": refs[(cam, "R")],
             }
             if side == "L":
                 e["mirror_references"] = [1]  # the player's pose image is a right hand
@@ -283,7 +309,13 @@ def main():
         "reference_midtone": "#D69B6D",
         "groups_prefix": ["hands-master", "hands-girl", "hands-nani", "hands-reference-eye"],
         "tolerance_delta_e": 3.0,
-        "_note": "Every hand output's masked skin midtone is colour-matched back to the master reference's (Nani's to her own reference) when it is more than tolerance_delta_e (CIE Lab) away. build/gen_assets.py, normalise_skin().",
+        "_note": "Hands v1 step 1: every hand output's skin is distribution-matched (lightness and chroma percentiles, median hue) to the reference hand's, or to its entry's skin_reference (Nani's to her own reference); entries with a fixed skin_target hex (Nani's references) get the midtone normaliser with tolerance_delta_e. build/gen_assets.py, post_process_hand().",
+    }
+    data["config"]["scale_normalise"] = {
+        "target_forearm_px": 250,
+        "tolerance": 0.04,
+        "limits": [0.6, 1.6],
+        "_note": "Every hand sprite is rescaled so its forearm, measured just beyond the sleeve, is target_forearm_px wide (the reference hands measure 244 top-down and 256 eye level), anchored where the arm leaves the bottom edge. Nani's entries use scale_reference (her own reference) instead. build/gen_assets.py, forearm_widths() and normalise_scale().",
     }
     with open(ASSET_LIST, "w") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
