@@ -109,7 +109,6 @@
       const { type, size } = split(k);
       if (params.order[k] > 0) want[keyOf(type, size)] = params.order[k];
     });
-    if (!ctx.guided) Object.keys(want).forEach((k) => k.split("+").forEach((w) => Cook.markSeen(w)));
 
     /* ---------- the scene ---------- */
     const bowlKey = parat(S);

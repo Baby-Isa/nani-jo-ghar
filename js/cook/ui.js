@@ -496,7 +496,10 @@
     const L = ladderFor(dish);
     if (!L) return null;
     const rows = Order().rows(L, { all: true });
+    const num = (x) => x.parts && x.parts.some((p) => typeof p === "number");
     const r =
+      // a count that went wrong is the counted row ("bo maani"), not the dish's name ("maani")
+      (counted && rows.find((x) => !x.head && num(x) && x.ids.includes(id))) ||
       rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no) && !x.done) ||
       rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no)) ||
       (counted ? rows.find((x) => x.parts && x.parts.some((p) => typeof p === "number")) : null);

@@ -12,7 +12,7 @@
  "mechanic": {
   "levels": [
    {
-    "doughs": {"cook-maani": {"tint": "#ffffff"}, "cook-bajrmaani": {"tint": "#a8988a"}},
+    "doughs": {"cook-maani": {"tint": "#ffffff"}, "cook-bajrmaani": {"tint": "#a9aab4"}},
     "ballsPerBowl": 5,
     "sizes": null,
     "quietMs": 700,

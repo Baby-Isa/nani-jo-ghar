@@ -64,6 +64,8 @@
       UI.hideCount();
       ctx.result.maani = rolled.length;
       z.listen(rolled.length === count, `made ${rolled.length} maani, they asked for ${count}`);
+      // the number word moves on (or back) with what you made (audit: counts teach numbers)
+      if (!z.guided && count >= 1 && count <= 5) (rolled.length === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
       return rolled.length;
     },
   });
