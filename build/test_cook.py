@@ -223,6 +223,15 @@ class Player:
                 if delay > 0:
                     time.sleep(delay)
             p.mouse.up()
+            # the pot finishes after a quiet moment (stir quietMs / speed); the
+            # expectation's live lap count changes at once, so wait for the
+            # station itself, or a fast renderer stirs again and resets it
+            t0 = time.time()
+            while time.time() - t0 < 3:
+                cur = self.exp()
+                if not cur or cur.get("kind") != "stir":
+                    break
+                time.sleep(0.05)
         else:
             raise AssertionError(f"unknown expectation {k}")
 

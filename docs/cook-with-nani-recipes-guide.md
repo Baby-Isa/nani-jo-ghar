@@ -181,5 +181,5 @@ The whole recipe is `data/examples/chips-mayai.json`; the game doesn't load it, 
 - `python3 build/test_cook.py --lab`: every station and the combined station (`--level 2` for level 2; `--zoned` runs each mechanic inside a smaller zone).
 - `python3 build/test_cook.py --orders`: the slot model and the order ladder.
 - `python3 build/test_cook.py --example`: the worked example.
-- `python3 build/test_cook.py --viewport laptop --days 7`: the whole story.
+- `python3 build/test_cook.py --viewport laptop --days 7 --canvas`: the whole story (`--canvas` uses Phaser's canvas renderer: software WebGL in headless Chromium is too slow for a full run).
 - `COOK_TEST_PORT=8960` runs a second test alongside the first.
