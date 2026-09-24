@@ -564,6 +564,25 @@ def normalise_skin(im, target_lab, tolerance=3.0):
     return out, info
 
 
+def key_out_magenta(im, hard=60.0, soft=20.0):
+    """Remove a flat magenta placeholder (a tool drawn as a plain #FF00FF
+    rod so the fingers close round something real) and leave its exact
+    shape as a transparent gap for the separate tool sprite. Magenta-ness
+    is min(R, B) - G: strongly positive only for magenta and violet, and
+    negative for skin, cream, pinks and reds. Soft edges are despilled.
+    Returns (image, removed pixel count)."""
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    r, g, b = rgba[..., 0], rgba[..., 1], rgba[..., 2]
+    m = np.minimum(r, b) - g
+    keep = 1.0 - _ramp(m, soft, hard)
+    removed = int(((keep < 0.5) & (rgba[..., 3] > 16)).sum())
+    spill = np.clip(m, 0, None) * (keep > 0)
+    rgba[..., 0] = r - spill
+    rgba[..., 2] = b - spill
+    rgba[..., 3] = rgba[..., 3] * keep
+    return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), removed
+
+
 def skin_target_for(entry, cfg, cache={}):
     """The skin midtone (Lab) an entry's output is normalised to, or None if
     the entry isn't a hand or normalising is off. Order: the entry's own
@@ -900,6 +919,11 @@ def run(args):
         elapsed = time.monotonic() - t0
 
         skin = {}
+        if entry.get("key_out") == "magenta":
+            keyed, removed = key_out_magenta(Image.open(t["out_path"]))
+            keyed.save(t["out_path"])
+            skin["keyed_out_px"] = removed
+            print(f"[{key}] keyed out {removed} px of magenta placeholder")
         target = skin_target_for(entry, cfg)
         if target is not None:
             fixed, skin = normalise_skin(Image.open(t["out_path"]), target,
