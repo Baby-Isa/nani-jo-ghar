@@ -117,8 +117,11 @@
       // tadka order, which Nani gives at the pan)
       UI.mission.reveal(name);
       // the goal: in full the first time, then a small "?" (never gone)
-      const st = Cook.data.stations[name];
-      if (st && $("#how").classList.contains("hidden")) UI.gist(st.goal);
+      // (chai's steps inside one hob view each get their own goal)
+      const stKey = { Tea: "add", Extra: "add", Boil: "watch", Milk: "pour", Sugar: "count", Pour: "pour" }[name] || name;
+      const st = Cook.data.stations[stKey];
+      const how = $("#how");
+      if (st && (how.classList.contains("hidden") || !how.textContent.includes(st.goal))) UI.gist(st.goal);
     };
     ctx.tickItem = (id) => {
       if (typeof id === "number") id = UI.mission.unitId(id, ctx.dishAt);
