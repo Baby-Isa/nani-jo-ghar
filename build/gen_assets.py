@@ -762,9 +762,11 @@ def forearm_widths(im, band=(25, 110), red_sleeve=False):
 def normalise_scale(im, target_width, tolerance=0.04, limits=(0.6, 1.6), red_sleeve=False):
     """Rescale a hand sprite so its mean forearm width matches target_width.
     The anchor is the bottom-centre of the opaque pixels on the bottom edge
-    (where the arm leaves the frame), so the arm still enters there; the
-    canvas size is kept. When shrinking, the sleeve is extended back down
-    to the edge by repeating its last row. Returns (image, info)."""
+    (where the arm leaves the frame), so the arm still enters there. When
+    growing would push the hand out of the frame, the canvas grows up or
+    sideways (to multiples of 16 px); when shrinking, the sleeve is
+    extended back down to the edge by repeating its last row. Returns
+    (image, info)."""
     widths = forearm_widths(im, red_sleeve=red_sleeve)
     if not widths:
         return im, {"scale_action": "no forearm found"}
@@ -782,34 +784,29 @@ def normalise_scale(im, target_width, tolerance=0.04, limits=(0.6, 1.6), red_sle
     a = np.asarray(im)[..., 3]
     bottom = np.nonzero(a[-3:].max(axis=0) > 16)[0]
     ax = float(bottom.mean()) if len(bottom) else W / 2
-    if k > 1:  # growing must not push the fingertips out of the frame
-        ys, xs = np.nonzero(a > 16)
-        margin = 6
-        fit = [H - margin]  # top: H - (H - y0) * k >= margin
-        if ys.min() < H:
-            fit = [(H - margin) / max(H - ys.min(), 1)]
-        if xs.min() < ax:
-            fit.append((ax - margin) / max(ax - xs.min(), 1))
-        if xs.max() > ax:
-            fit.append((W - margin - ax) / max(xs.max() - ax, 1))
-        kmax = min(fit)
-        if kmax < k:
-            info["scale_limited_by_frame"] = round(kmax, 3)
-            k = max(1.0, kmax)
-            if k - 1 <= tolerance:
-                info["scale_action"] = "needs growing but no room in the frame (check by eye)"
-                return im, info
     big = im.resize((max(1, round(W * k)), max(1, round(H * k))), Image.LANCZOS)
-    canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ox, oy = round(ax - ax * k), round(H - H * k)
-    canvas.paste(big, (ox, oy))
-    if k < 1 and oy + big.height < H:  # pad the sleeve down to the bottom edge
+    # growing can push the hand past the frame: then the canvas grows too
+    # (up and sideways, never down), keeping the arm's exit at the bottom
+    # edge, so no hand is cut or left small. The game places hands by that
+    # bottom pivot, so a bigger canvas is harmless.
+    bb = big.getbbox() or (0, 0, big.width, big.height)
+    margin = 8
+    pad_l = max(0, margin - (ox + bb[0]))
+    pad_r = max(0, (ox + bb[2]) + margin - W)
+    pad_t = max(0, margin - (oy + bb[1]))
+    pad_l, pad_r, pad_t = (-(-v // 16) * 16 for v in (pad_l, pad_r, pad_t))
+    canvas = Image.new("RGBA", (W + pad_l + pad_r, H + pad_t), (0, 0, 0, 0))
+    canvas.paste(big, (ox + pad_l, oy + pad_t))
+    if pad_l or pad_r or pad_t:
+        info["canvas"] = list(canvas.size)
+    H2 = canvas.height
+    if k < 1 and oy + pad_t + big.height < H2:  # pad the sleeve down to the bottom edge
         arr = np.asarray(canvas).copy()
-        last = oy + big.height - 1
+        last = oy + pad_t + big.height - 1
         arr[last + 1:] = arr[last]
         canvas = Image.fromarray(arr, "RGBA")
-    cropped = [s for s, sl in (("top", np.asarray(canvas)[:2, :, 3]), ("left", np.asarray(canvas)[:, :2, 3]),
-                                ("right", np.asarray(canvas)[:, -2:, 3])) if (sl > 16).any()]
+    cropped = []
     info.update(scale_action="rescaled", clipped=cropped)
     return canvas, info
 
@@ -1101,10 +1098,19 @@ def checkerboard(size, cell=12, c1=(222, 222, 222), c2=(184, 184, 184)):
     return Image.fromarray(arr.astype(np.uint8), "RGB")
 
 
-def build_contact_sheet(group, data, out_dir, thumb=220, cols=5, label_h=24):
+def build_contact_sheet(group, data, out_dir, thumb=220, cols=5, label_h=24, name=None, notes=None):
+    """Labelled contact sheet of a group's outputs on a checkerboard. Every
+    tile uses the SAME zoom (canvas pixels to sheet pixels) and sits on the
+    tile's bottom edge, where the arm leaves the frame, so a hand drawn too
+    big or too small stands out. `notes` maps asset id -> a second label
+    line (e.g. finger count and verdict); a note starting with "FAIL" is
+    drawn in red."""
     entries = [a for a in data["assets"] if a.get("group") == group]
     if not entries:
         raise ValueError(f"no assets in group {group!r}")
+    notes = notes or {}
+    if notes:
+        label_h = 36
 
     defaults = data.get("defaults", {})
     tiles = []
@@ -1114,33 +1120,37 @@ def build_contact_sheet(group, data, out_dir, thumb=220, cols=5, label_h=24):
             path = resolve_path(variant_path(entry["output"], i, variants))
             label = entry["id"] if variants <= 1 else f"{entry['id']} v{i}"
             im = Image.open(path).convert("RGBA") if os.path.exists(path) else None
-            tiles.append((label, im))
+            tiles.append((label, im, notes.get(entry["id"], "")))
 
     if len(tiles) > 15:
         cols = 8
+    biggest = max([max(im.size) for _, im, _ in tiles if im is not None] or [1024])
+    zoom = (thumb - 8) / biggest
     cell_w, cell_h = thumb, thumb + label_h
     rows = (len(tiles) + cols - 1) // cols
     canvas = Image.new("RGB", (cols * cell_w, rows * cell_h), (40, 40, 40))
     draw = ImageDraw.Draw(canvas)
     font = ImageFont.load_default()
 
-    for idx, (label, im) in enumerate(tiles):
+    for idx, (label, im, note) in enumerate(tiles):
         r, c = divmod(idx, cols)
         x0, y0 = c * cell_w, r * cell_h
         if im is not None:
-            fitted = im.copy()
-            fitted.thumbnail((thumb - 8, thumb - 8), Image.LANCZOS)
+            fitted = im.resize((max(1, round(im.width * zoom)), max(1, round(im.height * zoom))), Image.LANCZOS)
             tile_bg = checkerboard((thumb, thumb))
-            tile_bg.paste(fitted, ((thumb - fitted.width) // 2, (thumb - fitted.height) // 2), fitted)
+            tile_bg.paste(fitted, ((thumb - fitted.width) // 2, thumb - fitted.height), fitted)
             canvas.paste(tile_bg, (x0, y0))
         else:
             draw.rectangle((x0, y0, x0 + thumb, y0 + thumb), outline=(200, 60, 60), width=2)
             draw.text((x0 + 8, y0 + thumb // 2 - 6), "missing", fill=(220, 120, 120), font=font)
-        short = label.replace("hand-", "").replace("nani-", "N ")
+        short = label.replace("hand-girl-", "").replace("hand-eid-", "").replace("hand-", "").replace("nani-", "N ")
         draw.text((x0 + 4, y0 + thumb + 4), short[:36], fill=(235, 235, 235), font=font)
+        if note:
+            col = (240, 110, 110) if note.upper().startswith("FAIL") else (150, 220, 150)
+            draw.text((x0 + 4, y0 + thumb + 18), note[:36], fill=col, font=font)
 
     os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, f"{group}.png")
+    out_path = os.path.join(out_dir, f"{name or group}.png")
     canvas.save(out_path)
     return out_path
 
@@ -1386,6 +1396,8 @@ def main():
                     help="minimum silhouette IoU for a reskin to pass (default 0.9)")
 
     p.add_argument("--contact-sheet", metavar="GROUP", help="build a contact sheet PNG for this group and exit")
+    p.add_argument("--sheet-name", help="with --contact-sheet: file name (without .png) instead of the group's")
+    p.add_argument("--sheet-notes", metavar="JSON", help="with --contact-sheet: JSON file mapping asset id -> note line")
     p.add_argument("--drift-check", nargs=2, metavar=("CANDIDATE", "MASTER"),
                     help="standalone silhouette-IoU drift check between two PNGs, then exit")
     p.add_argument("--cutout", nargs=3, metavar=("BACKGROUND", "EDITED", "OUT"),
@@ -1419,7 +1431,9 @@ def main():
 
     if args.contact_sheet:
         data = load_asset_list(args.asset_list)
-        out_path = build_contact_sheet(args.contact_sheet, data, DEFAULT_CONTACT_SHEET_DIR)
+        notes = json.load(open(args.sheet_notes)) if args.sheet_notes else None
+        out_path = build_contact_sheet(args.contact_sheet, data, DEFAULT_CONTACT_SHEET_DIR,
+                                       name=args.sheet_name, notes=notes)
         print(f"wrote {out_path}")
         return
 

@@ -1008,7 +1008,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png"
     },
     {
       "id": "hand-eid-a1-flat-palm-t",
@@ -1022,7 +1022,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1036,7 +1036,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png"
     },
     {
       "id": "hand-eid-a2-heel-push-t",
@@ -1050,7 +1050,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1064,7 +1064,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png"
     },
     {
       "id": "hand-eid-a3-palm-up-t",
@@ -1078,7 +1078,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1092,7 +1092,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png"
     },
     {
       "id": "hand-eid-a3-palm-up-e",
@@ -1106,7 +1106,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1120,7 +1120,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a4-reach-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a4-reach-e.png"
     },
     {
       "id": "hand-eid-a4-reach-e",
@@ -1134,7 +1134,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a4-reach-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a4-reach-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1148,7 +1148,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png"
     },
     {
       "id": "hand-eid-a5-wave-f1-e",
@@ -1162,7 +1162,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1176,7 +1176,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png"
     },
     {
       "id": "hand-eid-a5-wave-f2-e",
@@ -1190,7 +1190,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1204,7 +1204,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png"
     },
     {
       "id": "hand-eid-a6-palm-out-e",
@@ -1218,7 +1218,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1232,7 +1232,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png"
     },
     {
       "id": "hand-eid-a7-hand-on-heart-e",
@@ -1246,7 +1246,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1260,7 +1260,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a8-cupped-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-t.png"
     },
     {
       "id": "hand-eid-a8-cupped-t",
@@ -1274,7 +1274,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a8-cupped-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1288,7 +1288,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-a8-cupped-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-e.png"
     },
     {
       "id": "hand-eid-a8-cupped-e",
@@ -1302,7 +1302,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-a8-cupped-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1316,7 +1316,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png"
     },
     {
       "id": "hand-eid-b1-handle-grip-t",
@@ -1330,7 +1330,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1344,7 +1344,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png"
     },
     {
       "id": "hand-eid-b2-vertical-grip-t",
@@ -1358,7 +1358,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1372,7 +1372,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png"
     },
     {
       "id": "hand-eid-b2-vertical-grip-e",
@@ -1386,7 +1386,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1400,7 +1400,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png"
     },
     {
       "id": "hand-eid-b3-stick-grip-e",
@@ -1414,7 +1414,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1428,7 +1428,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png"
     },
     {
       "id": "hand-eid-b4-rolling-pin-t",
@@ -1442,7 +1442,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1456,7 +1456,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png"
     },
     {
       "id": "hand-eid-b5-hook-grip-t",
@@ -1470,7 +1470,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1484,7 +1484,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png"
     },
     {
       "id": "hand-eid-b5-hook-grip-e",
@@ -1498,7 +1498,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1512,7 +1512,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png"
     },
     {
       "id": "hand-eid-c1-pinch-f1-open-t",
@@ -1526,7 +1526,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1540,7 +1540,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png"
     },
     {
       "id": "hand-eid-c1-pinch-f2-closed-t",
@@ -1554,7 +1554,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1568,7 +1568,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png"
     },
     {
       "id": "hand-eid-c1-pinch-f1-open-e",
@@ -1582,7 +1582,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1596,7 +1596,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png"
     },
     {
       "id": "hand-eid-c1-pinch-f2-closed-e",
@@ -1610,7 +1610,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1624,7 +1624,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png"
     },
     {
       "id": "hand-eid-c2-tripod-grip-t",
@@ -1638,7 +1638,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1652,7 +1652,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png"
     },
     {
       "id": "hand-eid-c3-side-pinch-t",
@@ -1666,7 +1666,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1680,7 +1680,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png"
     },
     {
       "id": "hand-eid-c3-side-pinch-e",
@@ -1694,7 +1694,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1708,7 +1708,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c4-point-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c4-point-t.png"
     },
     {
       "id": "hand-eid-c4-point-t",
@@ -1722,7 +1722,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c4-point-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c4-point-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1736,7 +1736,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-c4-point-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c4-point-e.png"
     },
     {
       "id": "hand-eid-c4-point-e",
@@ -1750,7 +1750,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c4-point-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c4-point-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1764,7 +1764,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png"
     },
     {
       "id": "hand-eid-c5-two-hand-fold-t",
@@ -1778,7 +1778,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1792,7 +1792,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png"
     },
     {
       "id": "hand-eid-d1-grab-f1-open-t",
@@ -1806,7 +1806,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1820,7 +1820,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png"
     },
     {
       "id": "hand-eid-d1-grab-f2-closed-t",
@@ -1834,7 +1834,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1848,7 +1848,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png"
     },
     {
       "id": "hand-eid-d1-grab-f1-open-e",
@@ -1862,7 +1862,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1876,7 +1876,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png"
     },
     {
       "id": "hand-eid-d1-grab-f2-closed-e",
@@ -1890,7 +1890,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1904,7 +1904,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png"
     },
     {
       "id": "hand-eid-d2-c-hold-t",
@@ -1918,7 +1918,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1932,7 +1932,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png"
     },
     {
       "id": "hand-eid-d2-c-hold-e",
@@ -1946,7 +1946,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1960,7 +1960,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png"
     },
     {
       "id": "hand-eid-d3-two-hand-bowl-t",
@@ -1974,7 +1974,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -1988,7 +1988,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png"
     },
     {
       "id": "hand-eid-d4-squeeze-f1-half-t",
@@ -2002,7 +2002,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2016,7 +2016,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png"
     },
     {
       "id": "hand-eid-d4-squeeze-f2-tight-t",
@@ -2030,7 +2030,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2044,7 +2044,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png"
     },
     {
       "id": "hand-eid-d5-throw-release-e",
@@ -2058,7 +2058,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2072,7 +2072,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png"
     },
     {
       "id": "hand-eid-d6-two-hand-catch-f1-open-e",
@@ -2086,7 +2086,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2100,7 +2100,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png"
     },
     {
       "id": "hand-eid-d6-two-hand-catch-f2-closed-e",
@@ -2114,7 +2114,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2128,7 +2128,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png"
     },
     {
       "id": "hand-eid-e1-thumbs-up-e",
@@ -2142,7 +2142,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2156,7 +2156,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e2-handshake-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e2-handshake-e.png"
     },
     {
       "id": "hand-eid-e2-handshake-e",
@@ -2170,7 +2170,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e2-handshake-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e2-handshake-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2184,7 +2184,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-1-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-1-e.png"
     },
     {
       "id": "hand-eid-e3-count-1-e",
@@ -2198,7 +2198,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-1-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-1-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2212,7 +2212,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-2-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-2-e.png"
     },
     {
       "id": "hand-eid-e3-count-2-e",
@@ -2226,7 +2226,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-2-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-2-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2240,7 +2240,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-3-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-3-e.png"
     },
     {
       "id": "hand-eid-e3-count-3-e",
@@ -2254,7 +2254,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-3-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-3-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2268,7 +2268,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-4-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-4-e.png"
     },
     {
       "id": "hand-eid-e3-count-4-e",
@@ -2282,7 +2282,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-4-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-4-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2296,7 +2296,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-5-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-5-e.png"
     },
     {
       "id": "hand-eid-e3-count-5-e",
@@ -2310,7 +2310,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e3-count-5-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e3-count-5-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2324,7 +2324,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png"
     },
     {
       "id": "hand-eid-e4-clap-f1-apart-e",
@@ -2338,7 +2338,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2352,7 +2352,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png"
     },
     {
       "id": "hand-eid-e4-clap-f2-together-e",
@@ -2366,7 +2366,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2380,7 +2380,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png"
     },
     {
       "id": "hand-eid-e5-arm-up-fist-e",
@@ -2394,7 +2394,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2408,7 +2408,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e6-stretch-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e6-stretch-e.png"
     },
     {
       "id": "hand-eid-e6-stretch-e",
@@ -2422,7 +2422,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e6-stretch-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e6-stretch-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2436,7 +2436,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-e7-shrug-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-e7-shrug-e.png"
     },
     {
       "id": "hand-eid-e7-shrug-e",
@@ -2450,7 +2450,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-e7-shrug-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-e7-shrug-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2464,7 +2464,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png"
     },
     {
       "id": "hand-eid-f1-piano-f1-raised-e",
@@ -2478,7 +2478,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2492,7 +2492,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png"
     },
     {
       "id": "hand-eid-f1-piano-f2-pressed-e",
@@ -2506,7 +2506,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2520,7 +2520,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
       },
       "skin_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png"
     },
     {
       "id": "hand-eid-f2-drum-cupped-t",
@@ -2534,7 +2534,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {
@@ -2548,7 +2548,7 @@
         "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
       },
       "skin_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png",
-      "scale_normalise": false
+      "scale_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png"
     },
     {
       "id": "hand-eid-f4-phone-two-hands-e",
@@ -2562,7 +2562,7 @@
       },
       "skin_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png",
       "skin_mode": "midtone",
-      "scale_normalise": false,
+      "scale_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png",
       "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
     },
     {

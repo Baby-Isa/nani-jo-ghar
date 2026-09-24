@@ -183,7 +183,7 @@ def build():
         entries.append({
             "id": gid, "group": "hands-girl", "output": f"{H}/girl/{gid}.png", "mode": "reskin",
             "master": e["id"], "template": "hand_reskin", "fields": {"change": GIRL.format(both=both)},
-            "skin_reference": e["output"], "scale_normalise": False,
+            "skin_reference": e["output"], "scale_reference": e["output"],
         })
         palm = " (and on the palm, which shows in this pose)" if "palm" in cam else ""
         both_e = " of BOTH hands" if two else ""
@@ -191,7 +191,7 @@ def build():
         entries.append({
             "id": xid, "group": "hands-girl-eid", "output": f"{H}/girl-eid/{xid}.png", "mode": "reskin",
             "master": gid, "template": "hand_reskin_eid", "fields": {"change": EID.format(palm=palm, both=both_e)},
-            "skin_reference": e["output"], "skin_mode": "midtone", "scale_normalise": False,
+            "skin_reference": e["output"], "skin_mode": "midtone", "scale_reference": e["output"],
             "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast.",
         })
 
