@@ -195,12 +195,13 @@
         // straight down through where it's heading; and a decoy, for one deliberate mistake
         const inView = (o) => o.active && !o.sliced && o.y < z.Y(760) && o.y > z.Y(120) && Math.abs(o.vy) < z.L(520);
         const need = phase && (cut[phase.target] || 0) < want[phase.target];
-        const tgt = need ? flying.find((o) => inView(o) && o.wordId === phase.target) : null;
+        const alone = (o) => !flying.some((x) => x !== o && x.active && !x.sliced && Math.abs(x.x - o.x) < z.L(size * 0.9) && Math.abs(x.y - o.y) < z.L(size * 1.3));
+        const tgt = need ? flying.find((o) => inView(o) && o.wordId === phase.target && alone(o)) : null;
         const dec = flying.find((o) => o.active && !o.sliced && o.y < z.Y(700) && o.y > z.Y(150) && phase && o.wordId !== phase.target && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
         const ahead = (o) => o.x + o.vx * 0.06 * Cook.speed;
         z.expect(
           tgt
-            ? { kind: "slice", x: tgt.x, y: tgt.y, x1: ahead(tgt), y1: tgt.y - z.L(170), x2: ahead(tgt), y2: tgt.y + z.L(170), wrongs: dec ? [{ x: dec.x, y: dec.y }] : [] }
+            ? { kind: "slice", x: tgt.x, y: tgt.y, x1: ahead(tgt), y1: tgt.y - z.L(size * 0.8), x2: ahead(tgt), y2: tgt.y + z.L(size * 0.8), wrongs: dec ? [{ x: dec.x, y: dec.y }] : [] }
             : { kind: "wait" }
         );
       });
