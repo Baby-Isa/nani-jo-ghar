@@ -95,7 +95,7 @@
       "group": "ingredients-onion",
       "output": "assets/items/cook/onion-whole.png",
       "mode": "generate",
-      "size": "512x512",
+      "size": "1024x1024",
       "template": "ingredient_state",
       "fields": {
         "item": "a whole red onion with papery outer skin",
@@ -108,7 +108,7 @@
       "group": "ingredients-onion",
       "output": "assets/items/cook/onion-chopped.png",
       "mode": "edit",
-      "size": "512x512",
+      "size": "1024x1024",
       "reference_images": ["assets/items/cook/onion-whole.png"],
       "template": "ingredient_state_from_ref",
       "fields": {
