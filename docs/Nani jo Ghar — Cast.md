@@ -63,7 +63,7 @@ The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `big
 - Deep red headscarf, wrapped round the head and neck with long ends falling over the front.
 - Thin round gold wire-framed glasses.
 - A warm, closed-mouth smile.
-- **A small mole above her lip (her left side, just above the upper lip). Include it, but small and natural, never exaggerated.**
+- **A small mole above her lip on her right side (the viewer's left when facing her), just above the upper lip. Include it, but small and natural, never exaggerated.**
 - Signature outfit: a beige long kurta with gold and deep-red embroidery down the front and at the cuffs, with a sheer deep-red dupatta.
 - **Jewellery:**
   - a thin diamond tennis bracelet on her right wrist;
@@ -77,8 +77,9 @@ The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `big
 - Dark hair, greying, pulled back.
 - Thin metal rectangular glasses.
 - A gentle, knowing smile.
+- **Always wears a headscarf**: a soft, plain one at home (muted or dark), black when going out.
 - At home: soft cotton house dresses (maroon with a white paisley print and lace trim, or pastel florals) and thin gold bangles.
-- Going out: a black headscarf and abaya with embroidered trim.
+- Going out: a black abaya with embroidered trim.
 - In her sewing room, use the house dress.
 
 **The doctor** (`doctor-01` to `doctor-04`):

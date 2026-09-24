@@ -81,7 +81,7 @@ CONFIG = {
         "1536x1024": 0.06,
         "default": 0.04,
     },
-    "request_delay_seconds": 1.5,
+    "request_delay_seconds": 15,
     "max_retries": 5,
     "backoff_base_seconds": 2.0,
 }
