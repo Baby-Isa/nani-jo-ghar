@@ -162,6 +162,8 @@ class Player:
                 cur = self.exp()
                 if cur and cur.get("kind") != "timing":
                     return  # Nani interrupted: answer her first
+                if cur and (cur.get("x"), cur.get("y")) != (e.get("x"), e.get("y")):
+                    return  # another ring (a second tawa) is further on: that one first
                 time.sleep(0.015)
             self.tap(e["sx"], e["sy"], "timing")
         elif k == "count":
