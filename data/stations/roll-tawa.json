@@ -1,0 +1,15 @@
+{
+ "_about": "Data for the combined station js/cook/stations/roll-tawa.js (lab-only proof). `station` is its name and goal line (merged into data.stations); `mechanic.levels` are its difficulty levels: here, which level each zone's mechanic runs at (tawa level 2 = two tawas).",
+ "station": {
+  "name": "Roll and cook",
+  "verb": "Roll, then tawa",
+  "goal": "Roll each maani on the board. It goes to the tawa: flip it on the green while you roll the next."
+ },
+ "mechanic": {
+  "levels": [
+   {"zones": {"roll": {"level": 1}, "tawa": {"level": 1}}},
+   {"zones": {"roll": {"level": 1}, "tawa": {"level": 2}}},
+   {"zones": {"roll": {"level": 2}, "tawa": {"level": 3}}}
+  ]
+ }
+}

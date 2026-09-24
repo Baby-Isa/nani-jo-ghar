@@ -16,7 +16,15 @@ Usage:
   python3 build/test_cook.py --lab --viewport flip5-landscape
   python3 build/test_cook.py --days 2               # story days, all viewports
   python3 build/test_cook.py --viewport laptop --days 7   # all six days + free cooking
+  python3 build/test_cook.py --lab --level 2        # every station at difficulty level 2
+  python3 build/test_cook.py --lab --zoned          # every mechanic inside a smaller zone
+  python3 build/test_cook.py --orders               # the recipe slot model (no playing)
+  python3 build/test_cook.py --example              # the guide's data-only recipe, played in the lab
   add --busy for the Busy setting, --speed N to change test speed (default 3)
+  add --canvas to run Phaser's canvas renderer: headless Chromium draws WebGL in
+  software at 6-11 fps here, and every pointer event waits for a frame, so a
+  --days 7 run takes ~40 min on WebGL and a fraction of that on canvas (60 fps).
+  Tints don't show on canvas; keep WebGL (the default) for the station runs.
 """
 import argparse
 import http.server
@@ -32,8 +40,13 @@ import time
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# COOK_TEST_PORT lets several test runs (or worktrees) go at once
 PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
-LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill"]
+LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa"]
+# --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
+# COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
+DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))
+ZONE = {"x": 200, "y": 100, "w": 1200, "h": 700}
 
 VIEWPORTS = [
     {"name": "flip5-landscape", "width": 915, "height": 375, "touch": True},
@@ -172,6 +185,9 @@ class Player:
                 g = self.gauge()
                 if g and g["level"] >= 0.95:
                     break
+                cur = self.exp()
+                if not cur or cur.get("kind") != "roll":
+                    break  # another zone (a tawa ring) needs a tap first
                 p.mouse.move(cx, cy + r * 0.7)
                 p.mouse.down()
                 for s in range(1, 9):
@@ -256,11 +272,18 @@ class Player:
             if shoot_after:
                 self.shot(e["kind"] + "-after")
             if e["kind"] not in ("wait", "slice"):
+                t1 = time.time()
                 self.wait_change(e, timeout=25)
+                if DEBUG and time.time() - t1 > 3:
+                    print(f"    slow: {time.time() - t1:.1f}s after {key}", flush=True)
+
+
+CANVAS = False
 
 
 def open_page(pw, vp, speed, busy):
-    browser = pw.chromium.launch(executable_path="/opt/pw-browsers/chromium" if os.path.exists("/opt/pw-browsers/chromium") else None, args=["--autoplay-policy=no-user-gesture-required"])
+    args = ["--autoplay-policy=no-user-gesture-required"] + (["--disable-webgl"] if CANVAS else [])
+    browser = pw.chromium.launch(executable_path="/opt/pw-browsers/chromium" if os.path.exists("/opt/pw-browsers/chromium") else None, args=args)
     ctx = browser.new_context(viewport={"width": vp["width"], "height": vp["height"]}, has_touch=vp["touch"])
     page = ctx.new_page()
     page.route("**/fonts.googleapis.com/**", lambda r: r.abort())
@@ -285,15 +308,27 @@ def shots_dir(root, name):
     return d
 
 
-def run_lab(vp, speed, busy, shots_root, stations, guided):
-    name = vp["name"] + "-lab" + ("-busy" if busy else "")
+EXAMPLE = "data/examples/chips-mayai.json"
+
+
+def run_lab(vp, speed, busy, shots_root, stations, guided, level=1, zoned=False, example=False):
+    name = vp["name"] + "-lab" + ("-busy" if busy else "") + (f"-level{level}" if level != 1 else "") + ("-zoned" if zoned else "") + ("-example" if example else "")
+    opts = json.dumps({"level": level, **({"region": ZONE} if zoned else {})})
     shots = shots_dir(shots_root, name)
     with sync_playwright() as pw:
         browser, page, errors = open_page(pw, vp, speed, busy)
         P = Player(page, shots, speed)
         results = {}
+        if example:
+            # a recipe that exists only as data (the recipes guide's worked example)
+            page.evaluate("""async (url) => {
+              const ex = await (await fetch(url)).json();
+              Object.assign(Cook.data.words, ex.words);
+              Cook.Recipes.add("chips-mayai", ex.recipe);
+            }""", EXAMPLE)
+            stations = ["recipe:chips-mayai"]
         for key in stations:
-            page.evaluate(f"() => {{ __cook.lab('{key}', {'true' if guided else 'false'}); }}")
+            page.evaluate(f"() => {{ __cook.lab('{key}', {'true' if guided else 'false'}, {opts}); }}")
             page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
             time.sleep(0.5)
             P.shot(f"{key}-start")
@@ -306,6 +341,90 @@ def run_lab(vp, speed, busy, shots_root, stations, guided):
     if bad:
         raise AssertionError(f"console errors: {bad[:5]}")
     return P.n
+
+
+ORDERS_JS = r"""
+() => {
+  const R = Cook.Recipes;
+  const out = { errors: [] };
+  // a recipe that uses every slot type: per-person cups, a tally, a
+  // sequence then an any-order group, and a "no" list
+  R.add("test-order", {
+    name: "cook-chai", english: "Test order", price: 0, stations: [],
+    slots: {
+      cups: { type: "people", who: ["nana", "ma", "cousin"], count: 2, tastes: "chai", each: { khun: { int: [1, 3], taste: "khun" }, dudh: { chance: 0.5, taste: "dudh" } } },
+      skewers: { type: "tally", kinds: ["ph-meat", "ph-pepper"], total: { int: [2, 3] }, min: { "ph-meat": 1 } },
+      base: { type: "items", first: ["ph-chana"], from: ["ph-dahi", "ph-amli"], take: [1, 1], order: "sequence" },
+      tops: { type: "items", from: ["ph-sev", "ph-dhana", "veg-02"], take: [2, 2], order: "any" },
+      no: { type: "no", else: { chance: 1, from: ["veg-12"] } },
+    },
+    say: [
+      { frame: "order", x: ["cook-chai"] },
+      { forEach: "$cups", for: "$it.who", say: [{ frame: "and", x: [{ n: "$it.khun", of: "cook-khun" }] }, { if: "!it.dudh", frame: "no", x: ["cook-dudh"] }] },
+      { tally: "$skewers", frame: "and" },
+      { list: ["$base", "$tops"] },
+      { forEach: "$no", frame: "no", x: ["$it"] },
+    ],
+    need: [], steps: [], run: [],
+  });
+  for (let n = 0; n < 200; n++) {
+    const d = R["test-order"].make("nana");
+    const rows = R["test-order"].ladder(d, 0);
+    const lines = R["test-order"].lines(d, 0);
+    const err = (m) => out.errors.length < 10 && out.errors.push(m + " " + JSON.stringify({ d, rows: rows.map((r) => [r.kind, r.ids, r.qty, r.dot, r.group, r.for]) }));
+    if (d.cups.length !== 2 || d.cups[0].who !== "nana") err("people: the customer first, two people");
+    d.cups.forEach((c) => c.khun !== Cook.data.customers[c.who].tastes.chai.khun && err("people: each person's own taste"));
+    const tot = Object.values(d.skewers).reduce((a, b) => a + b, 0);
+    if (tot < 2 || tot > 3 || d.skewers["ph-meat"] < 1) err("tally: total and min");
+    const forRows = rows.filter((r) => r.for);
+    if (!["nana", "ma", "cousin"].includes(forRows[0] && forRows[0].for)) err("ladder: per-person rows say who for");
+    const seq = rows.filter((r) => r.group === "seq");
+    const any = rows.filter((r) => r.kind === "item" && r.group === "any" && ["ph-sev", "ph-dhana", "veg-02"].includes(r.ids[0]) && r.qty === 1);
+    if (seq.length !== 2 || seq[0].dot === seq[1].dot) err("ladder: sequence items each get a dot");
+    if (any.length !== 2 || any[0].dot !== any[1].dot || any[0].dot <= seq[1].dot) err("ladder: an any-order group shares the next dot");
+    if (!rows.some((r) => r.kind === "no" && r.dot === null && r.ids[0] === "veg-12")) err("ladder: no rows have no dot");
+    if (rows.some((r) => !r.line || !r.line.segs)) err("ladder: every row has its line");
+    if (lines.length < 5) err("lines");
+  }
+  // every real recipe: ladder rows cover what's said
+  Object.keys(Cook.data.recipes).filter((id) => id !== "test-order").forEach((id) => {
+    for (let n = 0; n < 50; n++) {
+      const d = R[id].make(["nana", "ma", "cousin"][n % 3]);
+      const rows = R[id].ladder(d, n % 2);
+      if (!rows.length || rows[0].kind !== "dish" || rows[0].dot !== 1) out.errors.push(id + ": first row is the dish, dot 1");
+      // the mission card's ladder (js/cook/order.js) is built from those same rows
+      const L = Cook.Order.ladder(d, n % 2);
+      const cardRows = Cook.Order.rows(L, { all: true });
+      if (!L.head || cardRows.length !== rows.length) out.errors.push(id + ": the card ladder has every recipe row " + JSON.stringify([cardRows.length, rows.length]));
+      const said = Cook.Lang.plain(Cook.Order.speech([L]));
+      const seqs = L.sections.filter((s) => s.seq && !s.when);
+      const then = Cook.data.lines[Cook.Lang.frames().seq].k.split("{x}")[0].trim();
+      if (seqs.length && !said.includes(then)) out.errors.push(id + ": a sequence is said with " + then + ": " + said);
+      if (!seqs.length && said.includes(then)) out.errors.push(id + ": no sequence, no " + then + ": " + said);
+    }
+  });
+  const d = R.chaat.make("nana");
+  out.example = R.ladder({ who: "nana", dishes: [d] }).map((r) => [r.dish, r.kind, r.ids.join("+"), r.qty, r.dot, r.group, Cook.Lang.plain(r.line)]);
+  out.said = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(d, 0)]));
+  delete Cook.data.recipes["test-order"];
+  delete R["test-order"];
+  return out;
+}
+"""
+
+
+def run_orders(vp, speed):
+    with sync_playwright() as pw:
+        browser, page, errors = open_page(pw, vp, speed, False)
+        res = page.evaluate(ORDERS_JS)
+        browser.close()
+    for row in res["example"]:
+        print("  ladder:", row)
+    print("  said:", res["said"])
+    bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
+    if res["errors"] or bad:
+        raise AssertionError(f"order model: {res['errors'][:3]} console: {bad[:3]}")
+    return 0
 
 
 def run_days(vp, days, speed, busy, shots_root):
@@ -354,21 +473,30 @@ def main():
     ap.add_argument("--viewport")
     ap.add_argument("--days", type=int, default=1)
     ap.add_argument("--speed", type=float, default=3)
+    ap.add_argument("--level", type=int, default=1)
+    ap.add_argument("--zoned", action="store_true")
+    ap.add_argument("--orders", action="store_true")
+    ap.add_argument("--example", action="store_true")
+    ap.add_argument("--canvas", action="store_true")
     ap.add_argument("--shots", default=os.path.join(ROOT, "build", "screenshots", "cook"))
     args = ap.parse_args()
+    global CANVAS
+    CANVAS = args.canvas
     random.seed(7)
     httpd = start_server()
     vps = VIEWPORTS
     if args.viewport:
         vps = [v for v in VIEWPORTS if v["name"] == args.viewport]
-    elif args.lab:
+    elif args.lab or args.orders or args.example:
         vps = [VIEWPORTS[1]]
     failed = []
     for vp in vps:
         t0 = time.time()
         try:
-            if args.lab:
-                n = run_lab(vp, args.speed, args.busy, args.shots, args.stations.split(","), not args.unguided)
+            if args.orders:
+                n = run_orders(vp, args.speed)
+            elif args.lab or args.example:
+                n = run_lab(vp, args.speed, args.busy, args.shots, args.stations.split(","), not args.unguided, args.level, args.zoned, args.example)
             else:
                 n = run_days(vp, args.days, args.speed, args.busy, args.shots)
             print(f"PASS {vp['name']}: {n} screenshots, {time.time() - t0:.0f}s", flush=True)
