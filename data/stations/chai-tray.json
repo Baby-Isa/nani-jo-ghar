@@ -3,14 +3,13 @@
  "station": {
   "name": "Chai tray",
   "verb": "Listen, pour, spoon, boil",
-  "goal": "Each person tells you how they like their chai. Give every cup what its person asked for, and turn the burner down before it boils over!",
+  "goal": "Each person says how they like their chai. Give each cup what its person asked for, and turn the burner down before it boils over!",
   "phases": {
    "water": "Hold the jug: water into the pan, up to the dashed line.",
    "tea": "Add the tea to the pan.",
    "knob": "Tap the big knob to light the burner.",
-   "cups": "Tap a cup, then give it what that person asked for: hold the milk jug to pour, tap a bowl for each spoon.",
-   "boil": "It's rising! Tap the knob to turn it down when the ring is green.",
-   "pour": "The chai is ready. Tap a cup, then hold the pan to pour. Tap the tick when every cup is done."
+   "cups": "Tap a cup. Give it what that person asked for.",
+   "pour": "Tap a cup, then hold the pan to pour. Then the tick."
   }
  },
  "words": {

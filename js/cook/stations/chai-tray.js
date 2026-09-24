@@ -44,7 +44,7 @@
   const CUP_Y = 432;
   const FACE_Y = 205;
   const CUP_XS = { 1: [1210], 2: [1080, 1340], 3: [990, 1210, 1430] };
-  const STRIP = [950, 1200, 1450]; // the tray's own strip: milk jug, sugar, salt (shuffled)
+  const STRIP = [910, 1110, 1310]; // the tray's own strip: milk jug, sugar, salt (shuffled; clear of the tick)
   const COL = { milk: 0xf6f1e7, chai: 0x7a3a1a, water: 0x9fd3f0, tea: 0x6b3a1c };
 
   Mech.combined("chai-tray", {
@@ -106,6 +106,17 @@
     };
 
     /* ---------- the tray and the cups ---------- */
+    // the hob ends in a rounded edge where the worktop starts
+    [[786, 80, 36, 44], [786, 624, 36, 60]].forEach(([x, y, w, h]) => S.track(S.add.image(0, 0, Cook.Art.tex(S, "bg:marble")).setOrigin(0).setCrop(x, y, w, h).setDepth(D.bg + 1.5)));
+    const edge = S.track(S.add.graphics().setDepth(D.bg + 2));
+    edge.fillStyle(0x2b2622, 1);
+    edge.fillRoundedRect(zb.X(740), zb.Y(90), zb.L(80), zb.L(570), zb.L(30));
+    edge.lineStyle(zb.L(4), 0x4a423c, 1);
+    edge.beginPath();
+    edge.arc(zb.X(790), zb.Y(120), zb.L(30), -Math.PI / 2, 0);
+    edge.lineTo(zb.X(820), zb.Y(630));
+    edge.arc(zb.X(790), zb.Y(630), zb.L(30), 0, Math.PI / 2);
+    edge.strokePath();
     const tg = S.track(S.add.graphics().setDepth(D.item - 2));
     tg.fillStyle(0x3a2410, 0.18);
     tg.fillRoundedRect(TRAY.x + 10, TRAY.y + 14, TRAY.w, TRAY.h, 40);
@@ -121,9 +132,9 @@
     const seats = Cook.shuffle(people.map((p, i) => i));
     const cups = people.map((p, i) => {
       const x = xs[seats[i]];
-      const vessel = St.vessel(S, "cup", zt.X(x), zt.Y(CUP_Y), 1.25 * zt.k);
+      const vessel = St.vessel(S, "cup", zt.X(x), zt.Y(CUP_Y), 1.35 * zt.k);
       const face = S.flat(`${p.who}-badge`, zt.X(x), zt.Y(FACE_Y), zt.L(150), zt.L(140), { depth: D.item + 1 });
-      const chip = S.track(S.add.container(zt.X(x + 78), zt.Y(CUP_Y + 92)).setDepth(D.fx + 1).setVisible(false));
+      const chip = S.track(S.add.container(zt.X(x + 78), zt.Y(CUP_Y + 100)).setDepth(D.fx + 1).setVisible(false));
       const chipBg = S.add.circle(0, 0, zt.L(24), 0xfffaf1, 1).setStrokeStyle(zt.L(3), 0x8f9398);
       const chipT = S.add.text(0, 0, "0", { fontFamily: "Nunito, sans-serif", fontSize: `${Math.round(zt.L(30))}px`, fontStyle: "bold", color: "#2d2018" }).setOrigin(0.5);
       chip.add([chipBg, chipT]);
@@ -462,6 +473,8 @@
     phase("knob");
     let lit;
     const litP = new Promise((r) => (lit = r));
+    let allSaid;
+    const saidP = new Promise((r) => (allSaid = r));
     const boilP = Mech.run("boil", zb, {
       vessel: pan,
       knobAt: KNOB,
@@ -471,11 +484,12 @@
       quiet: 0.12,
       canPost: () => !pouring && talked,
       onLit: () => lit(),
+      ready: saidP,
     }).then((v) => {
       boiled = true;
       unglow();
-      phase("pour");
       ctx.nextStep && ctx.nextStep("Pour");
+      phase("pour");
       armPan();
       UI.done().then(() => finishUp());
       refresh();
@@ -499,6 +513,7 @@
       await Cook.wait(K.speakGapMs);
     }
     talked = true;
+    allSaid();
     phase("cups");
     refresh();
     // the boil reminds you when it needs you (its knob glows in the green)
@@ -523,7 +538,8 @@
       const lv = level(c);
       const hasMilk = c.vol.milk > 0.02;
       const got = { chai: c.chaiPours > 0, milk: hasMilk === !!p.dudh, sugar: c.sugar === (p.khun || 0) && !c.salt };
-      got.extra = p.extra ? c.extras.includes(p.extra) && c.extras.length === 1 : !c.extras.length;
+      // (an extra nobody asked for is its own mistake below; it has no row of its own)
+      got.extra = p.extra ? c.extras.includes(p.extra) : true;
       const amount = !p.amount ? null : Math.abs(lv - K.lines.half) < Math.abs(lv - K.lines.full) ? "ph-half" : "ph-full";
       got.amount = !p.amount || (got.chai && amount === p.amount);
       const why = [];
@@ -578,7 +594,8 @@
     async run(L) {
       const R = Cook.Recipes;
       const d = R.chai.make("nana", { level: L.level });
-      L.card(d, R.chai.steps(d));
+      L.ctx.steps = R.chai.steps(d);
+      L.card(d, L.ctx.steps);
       await L.station("chai-tray", { cups: d.cups });
     },
   });

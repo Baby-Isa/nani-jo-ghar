@@ -11,7 +11,7 @@
  * tray): canPost() says when it may ask for your attention, and it only
  * asks once the ring is within `quiet` of the green.
  * Params: vessel, knobAt [x, y] (design; default below-right of the pan),
- * needOn, canPost, onLit, quiet.
+ * needOn, canPost, onLit, ready (a promise: the ring starts after it), quiet.
  * Knobs (data.mechanics.boil): band, rate, rise, passMeAfterMs, overScore,
  * knobR (the knob's size), instant/instantMs (the chai machine).
  * Profiles: tray (the Chai tray's slower back-burner boil).
@@ -107,7 +107,7 @@
 
   Mech.define("boil", {
     profile: (p) => p.profile,
-    async run(z, { vessel, knobAt, needOn = false, canPost, onLit, quiet }, k) {
+    async run(z, { vessel, knobAt, needOn = false, canPost, onLit, ready, quiet }, k) {
       const S = z.S;
       const at = St.pt(knobAt, { x: vessel.rim.x / z.k - z.ox / z.k + 200, y: 588 });
       const K = knob(z, vessel, at, k.knobR);
@@ -126,6 +126,9 @@
       }
       K.set("high");
       if (onLit) onLit();
+      // the pan takes a moment to heat: the ring starts when `ready` resolves
+      // (the Chai tray: once everyone has said how they like their chai)
+      if (ready) await ready;
       if (k.instant) {
         await Cook.wait(k.instantMs);
         K.set("low");

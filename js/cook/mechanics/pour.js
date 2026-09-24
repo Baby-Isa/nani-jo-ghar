@@ -197,7 +197,7 @@
         stream.lineStyle(Math.max(4, target.rim.rx / 9), col, 0.85);
         stream.lineBetween(sp.x, sp.y, p.x + target.rim.rx * 0.2, p.y);
         if (o.onLevel) o.onLevel(level, target);
-        io.gauge({ level, lo: o.lo, hi: o.hi });
+        if (o.lo != null) io.gauge({ level, lo: o.lo, hi: o.hi });
         if (o.enough && !saidEnough && level >= o.enough.lo) {
           saidEnough = true;
           if (o.enough.say) z.say(Lang.line("enough"), { ms: 900 }).catch(() => {});
