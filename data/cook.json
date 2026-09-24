@@ -2072,6 +2072,7 @@
      "flyMs": 380,
      "rowY": 780,
      "checkMs": 800,
+     "recastSteps": 2,
      "bowl": {
       "x": 800,
       "y": 455,
@@ -2163,8 +2164,8 @@
        "word": "ph-samosa"
       },
       "chips": {
-       "art": "bowl:ph-chips",
-       "scale": 0.6,
+       "art": "layer:ph-chips",
+       "scale": 0.45,
        "word": "ph-chips"
       }
      }
@@ -2206,7 +2207,6 @@
       2,
       3
      ],
-     "others": {},
      "leave": {
       "chips": 2,
       "samosa": 2

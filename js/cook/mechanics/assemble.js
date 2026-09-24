@@ -12,7 +12,8 @@
  * (the "no" items, on the counter as traps), pool (exact decoys) or
  * decoyPool (knob `decoys` [min, max] are picked from it at random).
  * Knobs (data.mechanics.assemble): decoys, decoyPick, flyMs, bowl (the
- * glass bowl in design coords), rowY, checkMs.
+ * glass bowl in design coords), rowY, checkMs, recastSteps (how much of the
+ * order the customer says again after a mistake).
  *
  * St.freePick (below) is the shared "tap anything, or Done" step that the
  * fill mechanic uses too: nothing is refused, so nothing gives the answer
@@ -385,8 +386,9 @@
         if (got.length > m.at) await bowl.removeFrom(m.at);
         got.splice(m.at);
         Object.keys(items).forEach((id) => items[id].setAlpha(got.includes(id) ? 0.6 : 1));
-        // the recast: the rest of the order again, from the layer that went wrong
-        const rest = C.rest(m.at, got);
+        // the recast: the order again from the layer that went wrong (that step and the next, so
+        // it's short; the ladder has the rest), with "ne poi" where the order matters
+        const rest = C.rest(m.at, got).slice(0, k.recastSteps);
         if (rest.length) {
           const lines = [];
           rest.forEach((e, gi) =>
@@ -396,7 +398,6 @@
               else lines.push(Lang.line(gi === 0 && j === 0 ? (C.place(m.at).first ? F.seq : F.any) : j === 0 ? F.seq : F.any, ph));
             })
           );
-          exclude.forEach((id) => lines.push(Lang.line(F.no, Lang.phrase([id]))));
           await St.customerSay(ctx, Lang.join(lines), { hide });
         }
       }
