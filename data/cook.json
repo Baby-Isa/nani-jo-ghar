@@ -1248,58 +1248,56 @@
   "text": "No upgrade here: counting the spoons is the Kutchi. That's your job!"
  },
  "lookalike_groups": {
-  "_about": "Pass me shows three pictures from ONE group, so the answer never stands out as the odd one out (docs/cook-with-nani-kutchi-audit.md).",
+  "_about": "Pass me shows three pictures from ONE group, so the answer never stands out as the odd one out (docs/cook-with-nani-kutchi-audit.md). Groups keep photos with photos and drawn bowls with bowls, so the picture style gives nothing away either.",
   "groups": [
    [
     "cook-khun",
     "spi-16",
-    "cook-atto"
-   ],
-   [
-    "cook-paani",
-    "cook-dudh",
     "ph-dahi"
    ],
    [
     "spi-02",
     "spi-05",
-    "cook-chai"
-   ],
-   [
-    "spi-01",
-    "spi-04",
-    "cook-daal"
-   ],
-   [
-    "veg-02",
-    "veg-13",
-    "veg-14"
-   ],
-   [
-    "veg-12",
-    "ph-pepper",
-    "ph-dhana"
-   ],
-   [
-    "ph-chana",
-    "veg-10",
-    "spi-10"
+    "spi-01"
    ],
    [
     "ph-amli",
-    "ph-lili",
-    "ph-ghee"
+    "ph-ghee",
+    "spi-04"
+   ],
+   [
+    "veg-01",
+    "ph-chana",
+    "veg-10"
    ],
    [
     "ph-meat",
     "ph-keema",
-    "veg-03"
+    "veg-14"
    ],
    [
     "ph-sev",
     "ph-chips",
-    "veg-01",
     "fru-02"
+   ],
+   [
+    "ph-pepper",
+    "ph-dhana",
+    "ph-lili"
+   ],
+   [
+    "veg-02",
+    "veg-13",
+    "veg-03",
+    "veg-12",
+    "spi-10"
+   ],
+   [
+    "cook-paani",
+    "cook-dudh",
+    "cook-chai",
+    "cook-atto",
+    "cook-daal"
    ]
   ]
  },
