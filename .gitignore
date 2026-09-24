@@ -4,3 +4,4 @@ __pycache__/
 build/.venv/
 build/expr_work/
 build/screenshots/cook/
+.claude/worktrees/
