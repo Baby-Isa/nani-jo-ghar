@@ -42,7 +42,7 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☐ **Stir:** ladle on a fixed circular track inside the pan; live speed dial with red too-fast/too-slow zones; Nani says slowly/quickly when it applies; laps counted aloud
 - ☐ **Polish the keepers:** chaat (bigger bowl, visible layers, customer checks layer by layer), tadka (burns if too slow; ladder hides at later levels, so it's Nani's spoken order from memory), chop (mid-round switch: "now dungri!"), samosa + fry (count, "lift the samosas, leave the chips")
 - ☐ **"Pass me" in the pantry** and in the slower stations (a listening break where the hands have little to do)
-- ☐ **Free play everywhere:** Cook's open kitchen (customers keep arriving, you close when you like); every future mode gets a free-play entry too
+- ☑ **Free play everywhere:** Cook's open kitchen (customers keep arriving, you close when you like); every future mode gets a free-play entry too
 
 ### Wave 4: check ☐
 - ☐ "Can you win without the Kutchi?" audit, station by station
