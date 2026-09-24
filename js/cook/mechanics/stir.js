@@ -25,9 +25,13 @@
  * laps per second, the same for every order), dialMax, speedWords, lap
  * (fraction of a circle that counts), deadZone and reach (how near the
  * centre / how far out a drag still stirs, design px), track (track radius
- * over the daal's), smoothS (the dial's lag), okFrac (share of the judged
- * time on the asked side), correctMs (wrong side this long: Nani says it),
- * graceMs (time to react to a new speed), reactGapMs, spillMs, spillGapMs,
+ * over the daal's), maxStep (a bigger jump in angle isn't a stir), smoothS
+ * (the dial's lag), judgeS (the judged speed's lag), okFrac (share of the
+ * judged time on the asked side), correctMs (wrong side this long: Nani
+ * says it), startGraceMs / graceMs (time to get going / to react to a new
+ * speed), minJudgeMs (shorter than this after the grace: judge all of it),
+ * reactGapMs, afterCountMs (Nani waits for the counted number), spillMs,
+ * spillGapMs,
  * spillCost, quietMs (let go this long and you're done), ghostMs, special.
  * Speeds are real laps per second (the gesture isn't scaled by game speed).
  * Extra lines and tips: data/stations/stir.json.
@@ -110,7 +114,7 @@
     g.fillCircle(x + 24 * s, y - 10 * s, 2.2 * s);
     // speed lines
     g.lineStyle(3 * s, 0x8f7a60, 0.8);
-    [-4, 6, 16].forEach((dy) => g.lineBetween(x - 56 * s, y + dy * s, x - 38 * s, y + dy * s));
+    [-2, 8].forEach((dy) => g.lineBetween(x - 50 * s, y + dy * s, x - 36 * s, y + dy * s));
   }
   function splash(g, x, y, s) {
     g.fillStyle(0xe0a42c, 1);
@@ -146,6 +150,14 @@
       const RT = RL * k.track; // the ladle's track, just inside the rim
       const liq = S.track(S.add.graphics().setDepth(D.item + 0.3));
       const fx = S.track(S.add.graphics().setDepth(D.item + 0.5));
+      // the track, faint and dashed, just inside the rim
+      const trackG = S.track(S.add.graphics().setDepth(D.item + 0.4));
+      for (let t = 0; t < TAU; t += TAU / 36) {
+        trackG.lineStyle(z.L(5), 0xfff6dc, 0.5);
+        trackG.beginPath();
+        trackG.arc(cx, cy, RT, t, t + TAU / 72);
+        trackG.strokePath();
+      }
       const ring = S.track(S.add.circle(cx + RT, cy, z.L(48), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.hand - 1));
       S.tweens.add({ targets: ring, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
       const ladle = S.hand("ladle", { x: cx + RT, y: cy, k: z.k });
@@ -155,7 +167,7 @@
       const dx0 = z.X(k.dialX);
       const dy0 = z.Y(k.dialY);
       const DR = z.L(k.dialR);
-      const DW = z.L(46);
+      const DW = z.L(64);
       const toA = (v) => Math.PI + Cook.clamp(v / k.dialMax, 0, 1) * Math.PI;
       const dial = S.track(S.add.graphics().setDepth(D.item));
       const needle = S.track(S.add.graphics().setDepth(D.item + 1));
@@ -167,8 +179,17 @@
       ];
       (() => {
         const g = dial;
-        g.fillStyle(0x3a2410, 0.12);
-        g.fillRoundedRect(dx0 - DR - DW, dy0 - DR - DW - z.L(30), 2 * (DR + DW), DR + DW + z.L(80), z.L(28));
+        // the gauge's face: a cream card standing on the spare burner
+        const bx = dx0 - DR - DW * 1.2;
+        const by = dy0 - DR - DW * 1.4;
+        const bw = 2 * (DR + DW * 1.2);
+        const bh = DR + DW * 2.4;
+        g.fillStyle(0x000000, 0.25);
+        g.fillRoundedRect(bx + z.L(6), by + z.L(10), bw, bh, z.L(30));
+        g.fillStyle(0xfffaf1, 1);
+        g.fillRoundedRect(bx, by, bw, bh, z.L(30));
+        g.lineStyle(z.L(5), 0xc9973a, 1);
+        g.strokeRoundedRect(bx, by, bw, bh, z.L(30));
         BANDS.forEach(([a, b, col]) => {
           g.lineStyle(DW, col, 1);
           g.beginPath();
@@ -189,13 +210,13 @@
         g.arc(dx0, dy0, DR - DW / 2, Math.PI, TAU);
         g.strokePath();
         const at = (v, r) => ({ x: dx0 + Math.cos(toA(v)) * r, y: dy0 + Math.sin(toA(v)) * r });
-        const s = z.k;
-        let p = at((e1 + e2) / 2, DR - DW * 1.9);
+        const s = z.k * 1.05; // each end's picture sits on its band
+        let p = at((e1 + e2) / 2, DR);
         tortoise(g, p.x, p.y, s);
-        p = at((e2 + e3) / 2, DR - DW * 1.9);
-        hare(g, p.x, p.y + z.L(8), s);
-        p = at((e3 + k.dialMax) / 2, DR + DW * 1.35);
-        splash(g, p.x, p.y, s * 0.8);
+        p = at((e2 + e3) / 2, DR);
+        hare(g, p.x + z.L(6), p.y + z.L(10), s * 0.95);
+        p = at((e3 + k.dialMax) / 2, DR);
+        splash(g, p.x, p.y + z.L(4), s * 0.75);
       })();
 
       /* ---------- the order ---------- */
@@ -213,7 +234,8 @@
       let prog = 0; // radians round, in dir
       let back = 0; // radians the wrong way (to turn round)
       let moved = 0; // radians since the last frame
-      let spd = 0; // laps per second (real), smoothed
+      let spd = 0; // laps per second (real), smoothed for the dial
+      let spdJ = 0; // the same, less smoothed, for judging the speed
       let phase = 0; // the swirl's turn
       let count = 0;
       let spills = 0;
@@ -225,7 +247,9 @@
       let sayTok = 0;
       let finished = false;
       let started = false;
-      const phases = asked ? [{ speed: asked, judged: 0, inAsked: 0, corrected: false }] : [];
+      // each speed Nani asks for; time on the asked side, all of it and after the grace
+      const newPhase = (s) => ({ speed: s, all: 0, inAll: 0, judged: 0, inAsked: 0, corrected: false });
+      const phases = asked ? [newPhase(asked)] : [];
       const lapA = TAU * k.lap;
       const enoughAt = z.guided ? laps : laps + 1;
       const switchLap = k.switch && asked && laps >= 2 ? 1 + Math.floor(Math.random() * (laps - 1)) : 0;
@@ -257,6 +281,7 @@
         ring.setPosition(x, y);
       };
       place();
+      draw(performance.now());
 
       await z.say(current, { hide });
 
@@ -281,20 +306,25 @@
           z.progress({ laps: count });
           if (count === enoughAt) later(() => react(Lang.line("enough"), true));
           if (count === switchLap) {
-            const same = Math.random() < k.switch.sameChance;
-            asked = same ? asked : asked === "slow" ? "quick" : "slow";
-            phases.push({ speed: asked, judged: 0, inAsked: 0, corrected: false });
-            wrongT = 0;
-            graceUntil = performance.now() + k.afterCountMs + k.graceMs;
-            current = Lang.line("stir-now", speedLine(asked));
-            later(() => react(current, true));
-            setExpect();
+            // "now quickly!" (sometimes the same again, so it can't be guessed),
+            // judged from the moment she says it
+            const next = Math.random() < k.switch.sameChance ? asked : asked === "slow" ? "quick" : "slow";
+            later(() => {
+              asked = next;
+              phases.push(newPhase(asked));
+              wrongT = 0;
+              graceUntil = performance.now() + k.graceMs;
+              current = Lang.line("stir-now", speedLine(asked));
+              react(current, true);
+              setExpect();
+            });
           }
         };
         const grab = (p) => {
           const d = Math.hypot(p.worldX - cx, p.worldY - cy);
           if (d < z.L(k.deadZone) || d > z.L(k.reach)) return;
           grabbing = true;
+          if (!started) graceUntil = performance.now() + k.startGraceMs;
           started = true;
           prev = Math.atan2(p.worldY - cy, p.worldX - cx);
           clearTimeout(quiet);
@@ -319,8 +349,10 @@
           if (!dir) dir = da >= 0 ? 1 : -1;
           const fwd = da * dir;
           if (fwd >= 0) {
-            prog += fwd;
-            back = Math.max(0, back - fwd);
+            // going back over ground you've just un-stirred doesn't count twice
+            const pay = Math.min(back, fwd);
+            back -= pay;
+            prog += fwd - pay;
           } else {
             back -= fwd;
             if (back > Math.PI) {
@@ -356,19 +388,23 @@
           const raw = moved / TAU / dt;
           moved = 0;
           spd += (raw - spd) * (1 - Math.exp(-dt / k.smoothS));
-          if (!grabbing) spd *= Math.exp(-dt / k.smoothS);
+          spdJ += (raw - spdJ) * (1 - Math.exp(-dt / k.judgeS));
           phase += dir * spd * TAU * dt * 0.7;
           // the speed side (the ear): judged while you're actually stirring
           const ph = phases[phases.length - 1];
-          if (ph && grabbing && spd > e1 * 0.5 && now > graceUntil) {
-            ph.judged += dt;
-            const side = spd < e2 ? "slow" : "quick";
-            if (side === ph.speed) {
-              ph.inAsked += dt;
-              wrongT = 0;
-            } else if ((wrongT += dt) * 1000 >= k.correctMs) {
-              wrongT = 0;
-              if (react(speedLine(ph.speed))) ph.corrected = true;
+          if (ph && grabbing && spdJ > e1 * 0.5) {
+            const right = (spdJ < e2 ? "slow" : "quick") === ph.speed;
+            ph.all += dt;
+            if (right) ph.inAll += dt;
+            if (now > graceUntil) {
+              ph.judged += dt;
+              if (right) {
+                ph.inAsked += dt;
+                wrongT = 0;
+              } else if ((wrongT += dt) * 1000 >= k.correctMs) {
+                wrongT = 0;
+                if (react(speedLine(ph.speed))) ph.corrected = true;
+              }
             }
           }
           // way too fast: it slops over the rim (the hand)
@@ -420,7 +456,7 @@
         // the swirl: tighter the faster you go
         fx.clear();
         const tw = 0.3 + spd * 2.4;
-        const alpha = Cook.clamp(0.2 + spd * 0.5, 0.2, 0.75);
+        const alpha = Cook.clamp(0.3 + spd * 0.45, 0.3, 0.85);
         for (let arm = 0; arm < 3; arm++) {
           const seg = [];
           for (let i = 0; i <= 16; i++) {
@@ -429,16 +465,9 @@
             seg.push({ x: cx + Math.cos(t) * r, y: cy + Math.sin(t) * r });
           }
           for (let i = 1; i < seg.length; i++) {
-            fx.lineStyle(z.L(3 + 7 * (i / seg.length)), 0xfbe3a4, alpha * (i / seg.length));
+            fx.lineStyle(z.L(4 + 9 * (i / seg.length)), 0xfff0c8, alpha * (i / seg.length));
             fx.lineBetween(seg[i - 1].x, seg[i - 1].y, seg[i].x, seg[i].y);
           }
-        }
-        // the track, faint, just inside the rim
-        for (let t = 0; t < TAU; t += TAU / 36) {
-          fx.lineStyle(z.L(5), 0xfff6dc, 0.45);
-          fx.beginPath();
-          fx.arc(cx, cy, RT, t, t + TAU / 72);
-          fx.strokePath();
         }
         // the ladle's wake along the track: longer the faster you go
         if (dir && spd > 0.03) {
@@ -447,7 +476,7 @@
           for (let i = 0; i < n; i++) {
             const a0 = ang - dir * (len * i) / n;
             const a1 = ang - dir * (len * (i + 1)) / n;
-            fx.lineStyle(z.L(18 * (1 - i / n) + 4), 0xfff3d0, 0.7 * (1 - i / n));
+            fx.lineStyle(z.L(22 * (1 - i / n) + 4), 0xfff6dc, 0.85 * (1 - i / n));
             fx.beginPath();
             fx.arc(cx, cy, RT, Math.min(a0, a1), Math.max(a0, a1));
             fx.strokePath();
@@ -456,14 +485,13 @@
         // the dial's needle, and the band it's in lit up
         needle.clear();
         const band = BANDS.find(([a, b]) => spd < b) || BANDS[BANDS.length - 1];
-        needle.lineStyle(DW + z.L(8), 0xffffff, 0.45);
-        needle.beginPath();
-        needle.arc(dx0, dy0, DR, toA(band[0]), toA(Math.min(band[1], k.dialMax)));
-        needle.strokePath();
-        needle.lineStyle(DW, band[2], 1);
-        needle.beginPath();
-        needle.arc(dx0, dy0, DR, toA(band[0]), toA(Math.min(band[1], k.dialMax)));
-        needle.strokePath();
+        if (spd > 0.02) {
+          // a glowing edge round the band the needle is in (the picture stays visible)
+          needle.lineStyle(z.L(10), 0xf2b33d, 0.9);
+          needle.beginPath();
+          needle.arc(dx0, dy0, DR + DW / 2 + z.L(7), toA(band[0]), toA(Math.min(band[1], k.dialMax)));
+          needle.strokePath();
+        }
         const a = toA(spd);
         needle.lineStyle(z.L(11), 0xb24a3a, 1);
         needle.lineBetween(dx0, dy0, dx0 + Math.cos(a) * (DR + DW * 0.4), dy0 + Math.sin(a) * (DR + DW * 0.4));
@@ -476,8 +504,12 @@
       z.listen(got === laps, `stirred ${got} times, they asked for ${laps}`);
       got === laps ? Cook.markRight(Cook.numId(laps)) : Cook.markMiss(Cook.numId(laps));
       phases.forEach((ph, i) => {
-        const frac = ph.judged ? ph.inAsked / ph.judged : 0;
-        const ok = !ph.corrected && ph.judged > 0 && frac >= k.okFrac;
+        // the first speed, if the stir was too short to judge after the grace,
+        // is judged on all of it; a change you had no time to follow isn't judged
+        const long = ph.judged * 1000 >= k.minJudgeMs;
+        if (!ph.corrected && (i ? !long : !ph.all)) return;
+        const frac = long ? ph.inAsked / ph.judged : ph.all ? ph.inAll / ph.all : 0;
+        const ok = !ph.corrected && frac >= k.okFrac;
         z.listen(ok, `stir speed ${ph.speed}${i ? " after the change" : ""}${ph.corrected ? " (Nani had to say it)" : ""}`);
       });
       z.skill(Math.max(k.minScore, 100 - spills * k.spillCost), "stir");

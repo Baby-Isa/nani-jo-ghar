@@ -1851,23 +1851,26 @@
       "slow": "slowly",
       "quick": "quickly"
      },
-     "potX": 560,
-     "potY": 440,
+     "potX": 515,
+     "potY": 385,
      "potR": 290,
      "track": 0.8,
-     "dialX": 1180,
-     "dialY": 560,
+     "dialX": 1120,
+     "dialY": 520,
      "dialR": 190,
      "lap": 1,
      "deadZone": 40,
      "reach": 520,
      "maxStep": 1.7,
      "smoothS": 0.35,
+     "judgeS": 0.15,
+     "startGraceMs": 700,
+     "minJudgeMs": 500,
      "okFrac": 0.6,
      "correctMs": 1600,
      "graceMs": 1500,
      "reactGapMs": 2200,
-     "afterCountMs": 650,
+     "afterCountMs": 450,
      "spillMs": 250,
      "spillGapMs": 700,
      "spillCost": 20,
@@ -1883,7 +1886,8 @@
      "switch": {
       "sameChance": 0.25
      },
-     "correctMs": 1400
+     "correctMs": 1400,
+     "graceMs": 1000
     }
    ]
   },

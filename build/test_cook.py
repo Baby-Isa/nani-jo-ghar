@@ -219,7 +219,7 @@ class Player:
         until Nani says it, then a burst way too fast (it spills)."""
         p = self.page
         cx, cy, r, target = e["sx"], e["sy"], e["srx"], e["target"]
-        mistake = self.mistakes and "stir" not in self.made and target >= 3
+        mistake = self.mistakes and "stir" not in self.made
         if mistake:
             self.made.add("stir")
         speed = e.get("speed")
@@ -234,19 +234,24 @@ class Player:
         while count < target and time.time() - t0 < 90:
             now = time.time()
             want = self.STIR[speed]
-            if mistake and count < target - 1:
-                if now - t0 < 2.6 and speed:
-                    want = self.STIR["quick" if speed == "slow" else "slow"]
-                elif now - t0 < 3.4:
-                    want = self.STIR["spill"]
-            if want != cur_want:
-                cur_want, anchor_t, anchor_a = want, now, a
-            goal = anchor_a + 2 * math.pi * want * (now - anchor_t)
-            a += min(goal - a, 1.2)  # never a jump (the game ignores those)
+            wiggle = mistake and now - t0 < 1.2
+            if mistake and not wiggle and speed and count < target - 1 and now - t0 < 3.8:
+                want = self.STIR["quick" if speed == "slow" else "slow"]
+            if wiggle:
+                # slosh back and forth way too fast: it spills, but it isn't a lap
+                a = 0.9 * math.sin(2 * math.pi * 5 * (now - t0))
+                anchor_t, anchor_a, cur_want = now, a, None
+            else:
+                if want != cur_want:
+                    cur_want, anchor_t, anchor_a = want, now, a
+                goal = anchor_a + 2 * math.pi * want * (now - anchor_t)
+                a += min(goal - a, 1.2)  # never a jump (the game ignores those)
             p.mouse.move(cx + r * math.cos(a), cy + r * math.sin(a))
             cur = self.exp()
             if not cur or cur.get("kind") != "stir":
                 break
+            if cur.get("count", count) >= 1 > count:
+                self.shot("stir-mid")  # the swirl, the dial and the tally while stirring
             count = cur.get("count", count)
             speed = cur.get("speed")
             if DEBUG:
