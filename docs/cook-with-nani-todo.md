@@ -44,6 +44,9 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☐ Persona review from screenshots
 - ☐ Tests on all six screen sizes; design doc updated
 
+## After Wave 2 merges
+- ☐ Rename Bilal → Ali in `data/cook.json`, code, audio file names and docs (tall, lanky cousin)
+
 ## Then
 - ☐ Zafar plays **story mode** end to end (plus a child if possible) → Round 3 tuning
 - ☐ Family: Round 2 questions (words, recipes, tastes) and recordings

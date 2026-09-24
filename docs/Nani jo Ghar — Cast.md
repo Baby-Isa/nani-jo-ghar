@@ -6,9 +6,13 @@
 - **Nani:** Zafar's mum (she has agreed).
 - **The doctor:** Zafar's wife's granddad (photos to come).
 - **Simba and Zazu:** Zafar's cats.
-- **A role for Zafar's wife's great-grandma:** see the options at the end.
+- **Big Ma:** Zafar's wife's great-grandma (photos to come). **Decided 24 Sept 2026** — see below.
 
 Everyone else is a **generic** character.
+
+## Big Ma (decided 24 Sept 2026)
+
+Zafar's wife's great-grandma. She's the warm senior pillar of the family — her relationship to the player is never explained, the way a small child just knows "that's Big Ma". She's recurring at Eid, dinners and gatherings, and **she's the family's seamstress**: instead of a tailor's shop, the player goes to **Big Ma's room**, where her sewing things are. She solves problems there (she fixes the stained kurta in "The spill") and **sings a song while she sews** (Zafar's wife will record it). She also takes the **elders'** role on Eid morning where it fits, alongside the generic elders. This replaces the earlier "great-grandma" options list (eldest / seamstress / both) and the generic tailor.
 
 ## Arc 1: Eid at Nani's
 
@@ -18,16 +22,17 @@ Everyone else is a **generic** character.
 | **The player** | Boy or girl (hands only in first-person scenes) | Everywhere | — |
 | **Simba** (big brother, 5, black Russian Blue, green eyes) | Zafar's cat | Hub, kitchen, "The cat and the sweets", Find it | Scatters the sweets; teaches position words and describing ("the big one") |
 | **Zazu** (little brother, 1, grey Russian Blue, green eyes, drawn as a kitten) | Zafar's cat | The same | Simba's partner in crime; big/small, dark/light |
-| **The parrot** (African grey) | — | Hub, the doorway, the kitchen windowsill | Repeats words the player has heard (see below) |
+| **Kasuku** (the parrot, African grey) | — | Hub, the doorway, the kitchen windowsill | Repeats words the player has heard (see below) |
 | **Nana** | Generic | Cook (orders chai), Eid morning; the storyteller in Arc 5 | Kinship, past tense later |
 | **Ma** (the player's mum) | Generic | Cook, Eid morning | Kinship, her tastes (no milk, ginger) |
-| **Bilal** (cousin; the name is a placeholder) | Generic | Cook | Tastes (extra sev) |
+| **Ali** (cousin, tall and lanky; renamed from the placeholder "Bilal") | Generic | Cook | Tastes (extra sev) |
 | **The older cousin** | Generic | "Knock knock", later arcs | Always losing things; later the player gives *them* instructions |
 | **The fruit seller** | Generic | Bazaar (the fruit bowl errand, built) | Numbers, fruit; sometimes hands over the wrong thing, so the player corrects them |
-| **The clothes-stall keeper** | Generic | "The spill": buying a new kurta | Clothes, colours |
-| **The tailor / seamstress** | Generic, **or the great-grandma** (option B) | "The spill": thread for the tailor | Colours, "which one?", asking around |
+| **Big Ma** | Zafar's wife's great-grandma (real-life likeness) | "The spill": fixes the stained kurta in her room, sings while she sews; "Eid morning": among the elders, gives Eidi | Colours, "which one?", sewing vocab; Eid greetings, respect language |
 | **The guests** (2–4 aunties and uncles) | Generic | "Knock knock", the dastarkhwan, the sharbat spill | Greetings, respect language, "for whom?" |
-| **The elders** | Generic, **or the great-grandma** (option A) | "Eid morning": greet them, receive Eidi | Eid greetings, respect language |
+| **The elders** | Generic, **plus Big Ma** | "Eid morning": greet them, receive Eidi | Eid greetings, respect language |
+
+**The clothes-stall keeper is dropped** from "The spill": Big Ma fixes the kurta rather than a new one being bought, so there's no stall visit. Shopping already appears in Chapter 1 (the fruit bowl), so the mode isn't lost from Arc 1.
 
 ## Later arcs (for reference)
 
@@ -38,6 +43,7 @@ Everyone else is a **generic** character.
 | Relatives at the wedding (bride, groom, their families) | 2 | Generic |
 | The crow (took the ring) | 4 | — |
 | Villagers, the farm | 5 | Generic |
+| **Issa** (a baby in the family) | TBD, appears later | Generic — no design yet |
 
 ## The parrot (Zafar's idea, 24 Sept)
 
@@ -47,12 +53,4 @@ An **African grey**, a common East African household parrot. It gives cheap, fun
 - Now and then it repeats a **word the player met recently**, favouring the weakest ones. Tap it to hear the word again, which gives spaced review for free.
 - **Its voice is the family's own recordings**, pitch-shifted, with a squawk added. No extra recording is needed.
 - **Rule:** it speaks only in idle moments (the hub, arriving, between orders), **never during a task**, so it can't give an answer away.
-- Name: open. *Kasuku* is the Swahili for "parrot", if the family want a nod to East Africa.
-
-## A role for the great-grandma (for Zafar's wife to choose)
-
-| Option | Role | How significant | Why it works |
-|---|---|---|---|
-| **A. The family's eldest (recommended)** | Nani's own mother, visiting for Eid. The player greets her first on Eid morning and she gives the Eidi; she returns in Arc 5 as the one who knows Nani's village | Opens and closes Arc 1; the key to the finale | The respect language (greeting elders) is centred on her; one character carries the whole family history |
-| **B. The seamstress** | She mends the stained kurta in "The spill" and makes the wedding outfits in Arc 2; the thread and blanket quest is hers | Recurring in Arcs 1 and 2 | Colours and "which one?" come naturally; a warm, crafty character with her own corner of the story |
-| **C. Both** | Nani's mother is also the family's seamstress | The biggest | The simplest cast: fewer characters to draw, and the one the player sees most |
+- **Name: Kasuku** (decided 24 Sept 2026) — Swahili for "parrot", a nod to East Africa.

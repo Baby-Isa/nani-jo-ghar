@@ -12,6 +12,8 @@
 
 **In one paragraph:** a stylised 3D animated-feature look, the kind of frame you'd see in a modern family film. Soft global illumination and warm sunlight; believable materials (marble with warm veins, brushed steel, polished brass, pale oak, cotton with embroidery, glossy tomato skin, matte flour); no outlines. Shapes are simplified and slightly chunky, with clean surfaces and restrained micro-detail, so every item reads at 90 px on a phone. Faces are stylised, not realistic: big expressive eyes, soft rounded forms, simple readable mouths, a small nose, smooth skin with rosy cheeks. The home is a **modern kitchen with Kutch accents** (limewash, marble, sage cabinets, brass, mirror-work, ajrakh); the bazaar may be more traditional. Modern throughout, culture as a hint; the language is the main cultural thing.
 
+**Set dressing: restraint (decided with the family, 24 Sept 2026).** Zafar's wife: "don't do too much, it will look old again." The game is modern-looking with hints and nods to East Africa and Kutch, never a caricature of either. **At most 1–2 cultural nods per scene**, rotated between scenes and visits rather than all shown at once, and introduced gradually as the game goes on. Never clutter. Full object list: `docs/Nani jo Ghar — Asset Building Plan.md`, section 6.
+
 ### Canonical style references
 
 Attach these (never the old storybook art) when a prompt needs a style reference.
@@ -20,7 +22,7 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 |---|---|---|
 | `assets/cook/bg/service.jpg` | Setting, palette, light direction, material finish of the home | Camera for cooking stations (it's the eye-level island view) |
 | `sources/cook/nani-sheet.webp` | Character rendering: face stylisation, eyes, skin, fabric, embroidery detail | Nani's identity (to be replaced by the sheet made from Mum's photos) |
-| `sources/cook/customers-sheet.webp` | Family consistency: the same render style across ages and genders | Final designs of Nana, Ma or Bilal (placeholders) |
+| `sources/cook/customers-sheet.webp` | Family consistency: the same render style across ages and genders | Final designs of Nana, Ma or Ali (placeholders) |
 | `sources/cook/props-sheet.webp` | Item materials and level of detail (steel, brass, glass, dough, chopped veg) | **Camera.** Its ¾ view is exactly the mismatch that broke the proof of concept |
 
 **Anti-references (never attach for style):** everything in `assets/backgrounds/` and `assets/characters/` (the old cel-shaded storybook look), and `docs/cook-screens/03-pantry.jpg` and `08-tawa.jpg` as examples of the camera and scale faults listed in section 10.
@@ -162,7 +164,7 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 | Two-burner hob | 60 × 50 | 4.6 | |
 | Zazu (grey cat, 1) | about 38 long without tail | 3 | About 85% of Simba, leaner |
 | Simba (black cat, 5) | about 45 long without tail, 25 at the shoulder | 3.5 | |
-| Island top | 90 high | 7 | Nani (155 cm) shows from the waist up; Bilal (about 120 cm) from the chest up |
+| Island top | 90 high | 7 | Nani (155 cm) shows from the waist up; Ali (tall and lanky for his age, about 130 cm) from the chest up |
 
 **Readability rules:**
 - **Minimum tap target: about 90 px** on the 1600×900 stage. Anything smaller than that at true scale comes in a container (katori, tin, jar) or is shown as a heap.
@@ -250,8 +252,9 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 | Character | Status | Must stay consistent |
 |---|---|---|
 | **Nani** | **Based on Zafar's mum — she has agreed.** The current Nani (`sources/cook/nani-sheet.webp`) is a generated placeholder, to be replaced by a sheet made from Mum's photos | From the placeholder, until the new sheet: round thin gold glasses, red Kutch-embroidered dupatta over the head, cream kurta with red embroidery, small gold drop earrings, gold bangles. Final details come from Mum's photos |
-| **Nana, Ma, Bilal, other cousins, guests** | **Generic** — not based on real family members | Placeholder looks stand until each is designed: Nana in a white knitted cap, round glasses, white beard, cream kurta, brown waistcoat; Ma in a green dupatta with gold motif over the head, maroon kurta with embroidery, gold jhumka earrings; Bilal (cousin, about 7) with tousled black hair, an orange T-shirt with a pocket |
+| **Nana, Ma, Ali, other cousins, guests** | **Generic** — not based on real family members | Placeholder looks stand until each is designed: Nana in a white knitted cap, round glasses, white beard, cream kurta, brown waistcoat; Ma in a green dupatta with gold motif over the head, maroon kurta with embroidery, gold jhumka earrings; **Ali** (cousin, renamed from the placeholder "Bilal") tall and lanky for his age, tousled black hair, an orange T-shirt with a pocket |
 | **The doctor** | **Based on Zafar's wife's granddad; photos to come.** Arc 3 (the Monsoon, "Nani has a cold") and Nani's clinic mode | Likeness from the photos once they arrive, kept as the sheet-first rule below; a warm, reassuring build, a doctor's bag |
+| **Big Ma** | **Based on Zafar's wife's great-grandma; photos to come.** "The spill" (mends the kurta in her room) and recurring at Eid, dinners and gatherings | Likeness from the photos once they arrive, kept as the sheet-first rule below; warm, senior, a soft cardigan or shawl over a plain kurta, glasses low on the nose, sewing things (needle, thread reel, small scissors) to hand |
 | **Shopkeeper(s)** | To be redone in the 3D look | Made as edits of a family style reference, so they look like one family of designs |
 
 **Nani from real life (asset plan, section 5):**
@@ -261,7 +264,7 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 4. **The sheet, never the photos, is the reference for every later pose.**
 5. Then redo Nani's set: poses, talking frames, the LivePortrait test and her hand set (N).
 
-**The doctor** follows the same sheet-first rule once the photos arrive: photos in, character sheet out, Zafar signs off, every later pose from the sheet.
+**The doctor and Big Ma** follow the same sheet-first rule once their photos arrive: photos in, character sheet out, Zafar signs off, every later pose from the sheet.
 
 **Cultural check for every character:** a Muslim Khoja family. No bindi, tilak, sindoor or other Hindu religious markers (the placeholder Nani in the art-direction round had a bindi; that was wrong).
 
@@ -279,7 +282,7 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 
 **Rules:** a cat never covers a tap target, never blocks play at random, and lives on the floor layer or in the margins except in its scripted mischief moment.
 
-### The parrot
+### Kasuku, the parrot
 
 An **African grey**, generic (no real-life likeness). Lives on the windowsill or a perch in the hub, the doorway or the kitchen. Behaviour and dialogue: `docs/Nani jo Ghar — Cast.md`.
 
@@ -444,6 +447,6 @@ Review every contact sheet on **both a black and a white backing**, and every pl
 
 ## 11. Open questions for Zafar
 
-Answered 24 Sept 2026 and folded into the sections above: Mum's likeness and headscarf detail (section 6), which family members are generic and the doctor's likeness (section 6, `docs/Nani jo Ghar — Cast.md`), the cats' eye colour and Zazu's kitten proportions (section 6), hand skin tone (sections 2 and 7), lighting states (section 2), and East African set dressing (asset plan, "Set dressing: East African and Kutch objects").
+Answered 24 Sept 2026 and folded into the sections above: Mum's likeness and headscarf detail (section 6), which family members are generic and the doctor's likeness (section 6, `docs/Nani jo Ghar — Cast.md`), the cats' eye colour and Zazu's kitten proportions (section 6), hand skin tone (sections 2 and 7), lighting states (section 2), and East African set dressing (asset plan, "Set dressing: East African and Kutch objects"). Also answered the same day, from a family conversation: set-dressing restraint (section 1), Big Ma's role as the seamstress (section 6, `docs/Nani jo Ghar — Cast.md`), the cousin renamed Bilal → Ali (section 6), and the parrot's name, Kasuku (section 6).
 
 None outstanding.

@@ -169,7 +169,7 @@ The Cook with Nani asset matrix goes here: each item's views (a front view for s
 | Plants, leaf shadows on the wall | Plant and leaf-shadow layers | Sway |
 | Washing line, a kite through the window | Each item a sprite | Sway, a kite bobbing |
 | Birds on the windowsill or wire (pigeons, sparrows) | 3–4 poses (sit, peck, hop, fly off) | Occasional hop; fly off when tapped |
-| The parrot (African grey, windowsill or a perch — hub, doorway, kitchen) | Pose set: perched, head tilt, beak open "talking", wings flapping, walking along the perch. Head a separate layer | Idle tilts and the odd "talking" beat when it repeats a word (behaviour: `docs/Nani jo Ghar — Cast.md`); never during a task |
+| Kasuku, the parrot (African grey, windowsill or a perch — hub, doorway, kitchen) | Pose set: perched, head tilt, beak open "talking", wings flapping, walking along the perch. Head a separate layer | Idle tilts and the odd "talking" beat when it repeats a word (behaviour: `docs/Nani jo Ghar — Cast.md`); never during a task |
 | Lanterns and fairy lights (Eid) | Lantern sprite; one light-dot sprite | Glow pulse, twinkle |
 | Clock | Hands as separate sprites | Ticking |
 | Rain on the window, drips (Monsoon) | Drop and streak sprites | Particles |
@@ -190,34 +190,29 @@ Keep it subtle: 2–4 moving things per scene, never near a tap target, and swit
 
 ## 6. Set dressing: East African and Kutch objects
 
-The family isn't sure yet which objects say "home"; this is a list to work from, not a final choice. **Suggestions for the family to pick from**, the family's own first (marked below), then about 15 more each. Object first, then a one-line description of how it looks, then which scenes it suits.
+**Restraint rule (decided with the family, 24 Sept 2026): at most 1–2 cultural nods per scene**, rotated between scenes and visits rather than all shown at once, introduced gradually, never clutter. Zafar's wife: "don't do too much, it will look old again" — the game is modern-looking with hints and nods, not a caricature. See also the Art Bible, section 1. Object first, then a one-line description of how it looks, then which scenes it suits.
 
-### East Africa
+### East Africa — chosen (24 Sept 2026)
 
 | Object | How it looks | Suits |
 |---|---|---|
-| **Three-legged small wooden stool (kigoda)** — the family's own suggestion | Low, round-topped, three splayed legs, plain turned wood | Hub, kitchen, yard, bazaar stalls |
+| **Tandoor** | Large clay oven, wide mouth, set into a low brick surround | **Background only**, somewhere in the yard. Replaces the charcoal jiko stove (removed) |
+| **Vacuum flask of chai** | Tall metal or patterned plastic flask with a cup-lid | Hub, guests arriving, the dastarkhwan |
+| **Blue-rimmed enamel mugs and plates** | White enamel with a speckled dark-blue rim and edge chips | Dastarkhwan, kitchen shelves, yard meals |
+| **Kanga cloth** | Bright block-printed cotton, bold border, folded stacks or worn as a wrap | Market stalls, washing line, Ma or a guest's dress |
+| **Woven mkeka mat** | Flat plaited palm-leaf mat, natural tan with a simple woven pattern | Floor seating, dastarkhwan, yard |
+| **Mbuzi, the coconut-grater stool** | Low wooden stool with a curved serrated blade fixed at one end, sat astride to grate | Kitchen background, a cook-along beat |
+| **Carved Swahili-style door** | Dark wood, deep geometric and floral relief carving, brass studs | Bazaar or hub exterior establishing shot |
+| **Woven baskets (kiondo)** — the family's own suggestion | Tightly coiled woven fibre, rounded body, often a leather or cloth trim and carry strap | Bazaar (Find it), hub shelves, carried by shoppers |
+| **Three-legged wooden stool (kigoda)** — the family's own suggestion | Low, round-topped, three splayed legs, plain turned wood | Hub, kitchen, yard, bazaar stalls |
 | **Short straw broom (ufagio)** — the family's own suggestion | A tight bunch of stiff grass or straw bound at the top into a handle, no long shaft; used bent over | Yard, tidy-up scenes, propped by a doorway |
-| **Panga (machete)** — the family's own suggestion | A long, broad steel blade with a plain wooden handle | **Tool only**, hanging on a hook in the yard or a store; never handled, since it's a children's game |
-| **Woven sisal or reed baskets (kiondo)** — the family's own suggestion | Tightly coiled woven fibre, rounded body, often a leather or cloth trim and carry strap | Bazaar (Find it), hub shelves, carried by shoppers |
-| Charcoal jiko stove | Small hourglass-shaped metal stove, a ceramic liner, glowing coals | Yard cooking, background of a cook scene, bazaar |
-| Vacuum flask of chai | Tall metal or patterned plastic flask with a cup-lid | Hub, guests arriving, the dastarkhwan |
-| Blue-rimmed enamel mugs and plates | White enamel with a speckled dark-blue rim and edge chips | Dastarkhwan, kitchen shelves, yard meals |
-| Kanga or kitenge cloth | Bright block-printed cotton, bold border, folded stacks or worn as a wrap | Market stalls, washing line, Ma or a guest's dress |
-| Woven mkeka mat | Flat plaited palm-leaf mat, natural tan with a simple woven pattern | Floor seating, dastarkhwan, yard |
-| Coconut-grater stool (mbuzi) | Low wooden stool with a curved serrated blade fixed at one end, sat astride to grate | Kitchen background, a cook-along beat |
-| Carved Swahili-style door | Dark wood, deep geometric and floral relief carving, brass studs | Bazaar or hub exterior establishing shot |
-| Brass coffee pot (dalla-style) | Tall, long curved spout, domed lid, warm brass shine | Guests, hub shelf, serving tray |
-| Kerosene lamp | Glass chimney over a brass or tin base, small wick flame | Night lighting (Art Bible section 2), hub, yard |
-| Tin trunk | Riveted metal box, domed or flat lid, painted or plain, a hasp and padlock | Bedroom, storage corner, the Village arc |
-| Transistor radio | Boxy plastic case, a dial window, fabric-covered speaker grille, a whip aerial | Hub background, Nana's corner |
-| Mosquito net | Fine pale mesh, draped and gathered above a bed | Bedroom, monsoon scenes |
-| Crate of glass soda bottles | Wooden slatted crate, upright glass bottles with painted labels | Bazaar, yard, a shop counter |
-| Sugarcane | Long jointed green-purple stalks, sometimes bundled or peeled | Bazaar produce, yard |
-| Mango tree in the yard | Broad canopy, dark glossy leaves, clusters of green-to-orange fruit | Yard background, an establishing shot |
-| Red-checked Maasai shuka blanket | Bold red-and-black or red-and-blue check, woven wool or cotton, draped or folded | Market stalls, a throw over a stool or chair |
+| **Panga (machete)** — the family's own suggestion | A long, broad steel blade with a plain wooden handle | **Tool only, hanging**, on a hook in the yard or a store; never handled, since it's a children's game |
 
-### Kutch
+**Not now** (suggestions the family didn't pick; drop unless a later scene calls for one): brass coffee pot, kerosene lamp, tin trunk, transistor radio, mosquito net, crate of soda bottles, sugarcane, mango tree, Maasai shuka blanket.
+
+### Kutch — suggestions, same restraint rule
+
+Not yet chosen; a list to work from.
 
 | Object | How it looks | Suits |
 |---|---|---|
@@ -228,3 +223,11 @@ The family isn't sure yet which objects say "home"; this is a list to work from,
 | Clay water pots (matka) | Rounded unglazed terracotta, a narrow neck, sometimes on a stand or ring | Kitchen, yard, bazaar |
 | Rogan-painted cloth | Fine, raised, glossy castor-paint scrollwork in bright colour on dark cloth | A framed wall piece, a special cushion or cloth |
 | Carved wooden chest | Dark wood, brass corner fittings and studs, sometimes a domed lid | Bedroom, storage, the wedding arc (dowry chest) |
+
+## 7. Big Ma's room (new scene, decided 24 Sept 2026)
+
+Replaces the tailor's shop in "The spill" (Roadmap, Arc 1). Big Ma is the family's seamstress: instead of a shop, the player goes to her room to get the stained kurta fixed.
+
+- **Background:** a warm, homely room with a **sewing corner** — a sewing machine or basket, thread reels in a small rack or tin, a pin cushion, folded cloth, scissors. Restrained set dressing (section 6's rule: 1–2 nods, not more).
+- **Character sheet:** Big Ma, real-life likeness (Art Bible, section 6; `docs/Nani jo Ghar — Cast.md`). Sheet-first rule: photos in, character sheet out, Zafar signs off, every later pose from the sheet.
+- **Audio:** she **sings a song while she sews** — a new audio asset, recorded by Zafar's wife, alongside the family's other spoken-word recordings.

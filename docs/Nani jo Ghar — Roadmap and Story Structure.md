@@ -245,6 +245,7 @@ A game mode is code, built once. A scene is a background plus its tagged hotspot
 | The cat | Steals and hides things | Runs every Hide and seek errand; a running gag, no peril, endless postpositions |
 | Nana | Dozes, tells stories | The past-tense narrator, arrives in the Village arc |
 | Older cousin | Always losing things, eventually asks the player to explain | Role reversal: the player gives the instruction |
+| Big Ma | The family's seamstress; sings while she sews | Recurring at Eid, dinners and gatherings; solves problems in her room (e.g. mends the kurta in "The spill") |
 | The shopkeeper | Sometimes hands over the wrong thing | The player's first taste of correcting someone in Kutchi |
 
 ## Story arcs
@@ -260,10 +261,12 @@ Confirmed 23 Sep 2026: every Chapter 1 errand has a different main action, in th
 | The guests are coming | Guests tonight → nothing's ready → fruit out, dinner cooked, table laid, knock at the door | 1. Fruit bowl (Shopping, then fill the bowl). 2. Daal for dinner (Cook-along, from the pantry and spice cupboard). 3. Set the dastarkhwan (Put it there) |
 | Knock knock | Welcome everyone → shoes everywhere → mat is tidy | Greeting the guests (At the door), Shoe mountain left/right (Put it there) |
 | The cat and the sweets | Serve the mithai → the cat scatters them → box repacked | Find the sweets (Hide and seek), Repack the sweet box (Put it there, with counting) |
-| The spill | Pour sharbat → it goes on a guest's kurta → a new kurta | Clothes stall (Shopping), Thread for the tailor (Ask around) |
+| The spill | Pour sharbat → it goes on a guest's kurta → Big Ma fixes it in her room | Thread for Big Ma (Ask around), Big Ma's room (story beat: she mends it and sings while she sews) |
 | Eid morning | Get ready → greet the elders → Eidi, party, quilt complete | Dressing (Body/dress), Eid greetings (At the door) |
 
 Chapter 1 therefore needs three modes (Shopping, Cook-along, Put it there) before the family play-test at phase 3.
+
+**"The spill" no longer needs the clothes stall** (decided 24 Sept 2026): Big Ma mends the kurta instead of a new one being bought, so there's no stall visit. Shopping already appears in Chapter 1 (the fruit bowl), so Arc 1 doesn't lose the mode.
 
 ### Arc 2: The Wedding (S3)
 
