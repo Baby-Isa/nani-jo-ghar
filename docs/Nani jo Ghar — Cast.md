@@ -63,6 +63,12 @@ An **African grey**, a common East African household parrot. It gives cheap, fun
 - **Real-likeness characters** (Nani, Big Ma, the doctor) follow their own photos, rendered in the same warm, unsaturated way.
 - **To do:** fold this into the art bible's palette and characters sections when the art branch is merged; the art pipeline's current hand work already uses it.
 
+## Approved character sheets
+
+| Character | Sheet | Notes |
+|---|---|---|
+| **Nani** | `sources/art/characters/nani-sheet-v2-approved.png` (on the art branch; approved by Zafar, 24 Sept) | **The close-up (Nani leaning on the counter, waist up) is the canonical in-game look and framing for her:** use its style and pose as the basis for her kitchen-island scenes, where she stands behind the counter. Every later Nani image is made from this sheet, never from the photos. |
+
 ## Likeness notes (from the family's photos, 24 Sept)
 
 The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `bigma-*`, `doctor-*`, `cats-*`, `simba-*`) and are never committed. These notes are what the character sheets must keep. Stylise them in the game's 3D-film look; never caricature.
