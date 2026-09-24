@@ -174,7 +174,7 @@ The whole recipe is `data/examples/chips-mayai.json`; the game doesn't load it, 
    - `tawa` to flip it (`"art"` for the omelette, `"doneWord": "golden"`);
    - `serve`.
 5. **Art:** until it's painted, the omelette uses the drawn egg layer (`"layer:ph-mayai"`). Painted art is `assets/cook/props/omelette-raw.webp` (and `-half`, `-done`), named in `art.props` in `data/cook.json` and in the recipe's `"art"`.
-6. **Make it real:** copy the two words into `words` and the recipe into `recipes` as `chips-mayai`, add a taste or two ("Bilal: no chilli"), and put it in a day.
+6. **Make it real:** copy the two words into `words` and the recipe into `recipes` as `chips-mayai`, add a taste or two ("Ali: no chilli"), and put it in a day.
 
 ## 9. Check it
 
