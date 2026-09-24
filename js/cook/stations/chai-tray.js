@@ -162,7 +162,7 @@
       const f = t / (m + t);
       const a = Phaser.Display.Color.ValueToColor(COL.milk);
       const b = Phaser.Display.Color.ValueToColor(COL.chai);
-      const c = Phaser.Display.Color.Interpolate.ColorWithColor(a, b, 100, Math.round(Math.min(1, f * 1.25) * 100));
+      const c = Phaser.Display.Color.Interpolate.ColorWithColor(a, b, 100, Math.round(Math.min(1, f * f) * 100));
       return Phaser.Display.Color.GetColor(c.r, c.g, c.b);
     };
     const drawBits = (c) => {
