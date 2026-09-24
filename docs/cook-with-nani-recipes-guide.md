@@ -70,7 +70,7 @@ A recipe is an entry in `recipes` with five parts. Every choice the player makes
 | per person | `{"type": "people", "count": 2, "tastes": "chai", "each": {"khun": {"int": [1, 3], "taste": "khun"}}}` | `[{"who": "nana", "khun": 3}, {"who": "ma", "khun": 1}]` |
 | how many of each kind | `{"type": "tally", "kinds": ["ph-meat", "ph-pepper"], "total": {"int": [2, 3]}, "min": {"ph-meat": 1}}` | `{"ph-meat": 2, "ph-pepper": 1}` |
 
-Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`.
+Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`. Any value can be `{"byLevel": [level 1, level 2, level 3]}`: chai's `cups` has one person at level 1, two at 2, three at 3, and extras and half/full only at 3. Rows said `"for"` one person (`"forEach": "$cups", "for": "$it.who"`) become that person's own part of the mission card, with their face.
 
 **`say`: the order as spoken**, one entry per line. Frames are roles (`"order"` starts a dish: "Muke … khape" or "Ne …"; `"and"`, `"no"`, `"only"`); the words come from `lines` and the word order from `grammar`.
 
@@ -101,7 +101,7 @@ Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player k
 | `interrupt` | Nani may ask "pass me…" here |
 | `serve` | what goes on the table: `{"key": "…", "count": "$n", "art": "…"}` |
 
-Positions are on the 1600×900 design (`"strip"` is the worktop row at the bottom; `burner-left` and `burner-right` are the hob). Look at `chai` in `data/cook.json` for a full scene, and `maani` for the shortest recipe.
+Positions are on the 1600×900 design (`"strip"` is the worktop row at the bottom; `burner-left` and `burner-right` are the hob). Look at the worked example (section 8) for a full scene, and `maani` for the shortest recipe. `chai` is one combined station (the Chai tray, `js/cook/stations/chai-tray.js`): its order rows for each person wait for the tray (`"when": "chai-tray"`).
 
 To put the dish in the story, add it to a day in `days` (`{"who": "nana", "dishes": ["chips-mayai"], "level": 2}`). Free cooking offers every dish the player has been taught.
 
@@ -118,7 +118,7 @@ Every mechanic's settings are in `mechanics.<id>.levels`. Level 1 is the game as
 ```
 
 - Timing windows (`band`) are parts of the ring (0 to 1); `rate` is how many rings fill per second.
-- `profiles` are settings for one use of a mechanic (pour has `water`, `milk`, `cup`).
+- `profiles` are settings for one use of a mechanic (pour has `water`, `milk`, `cup`; boil has `tray`, the Chai tray's slower back burner).
 - Upgrades change settings too: `upgrades[].knobs`, e.g. the heavy tawa is `{"tawa": {"band": [0.5, 0.9], "special": true}}`.
 - Who picks the level: a day's order (`"level": 2`), a recipe (`"level"`, or `"levels": {"tawa": 2}` for one mechanic), a run step (`"level"`), or the Station lab's Level buttons.
 - Each mechanic file's top comment lists its settings.

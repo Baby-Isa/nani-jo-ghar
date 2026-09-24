@@ -73,7 +73,8 @@
    * opts: z, icon, vessel, art, artSize, color (number or fn(level) ->
    * number), rate, lo/hi (the gauge band for the tester), stick (levels the
    * special jug sticks at), stickMs, slideMs, minPour, maxLevel, io,
-   * onStart(vessel), onLevel(level, vessel), enough {lo, say} (Nani's
+   * onStart(vessel), onLevel(level, vessel), onCancel(vessel) (a tap too
+   * short to pour), enough {lo, say} (Nani's
    * "Enough!"), expect (post the hold expectation; default true).
    */
   function hold(z, o) {
@@ -153,6 +154,7 @@
           // a tap, not a pour: keep waiting
           if (target) target.setLiquid(from > 0.01 ? from : 0);
           level = from;
+          if (o.onCancel) o.onCancel(target);
           return;
         }
         finish();

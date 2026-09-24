@@ -251,7 +251,8 @@
       }
       if (!boiled) return null;
       for (const c of cups) {
-        if (c.chaiPours) continue;
+        // (a cup already brimming with milk can't take chai: nothing left to do there)
+        if (c.chaiPours || level(c) >= askedLine(c) - K.tolerance) continue;
         if (sel !== c) return { e: cupTap(c, `pour-${c.who}`), obj: c.vessel };
         const at = askedLine(c);
         const o = S.centre(pan);
@@ -274,6 +275,11 @@
         UI.glowDone(!!n && !n.obj);
       }
     }
+    // mid-pour the tray keeps saying "hold" (so its gauge, not the boil's, is the one that counts)
+    const holding = (obj) => {
+      const o = S.centre(obj);
+      zt.expect({ kind: "hold", x: o.x, y: o.y, key: obj === pan ? "pan" : "cook-dudh" });
+    };
     // guided glow sits on the thing to tap; clear it before anything else glows it
     const unglow = () => {
       if (glowing) S.glow(glowing, false);
@@ -380,7 +386,7 @@
         onStart: () => {
           pouring = true;
           unglow();
-          zt.expect(null);
+          holding(milkJug);
           band = milkBand(sel);
           marks = P.lines(S, sel.vessel, [{ at: band.at, strong: true }]);
           zt.gauge({ level: level(sel), lo: band.lo, hi: band.hi });
@@ -391,6 +397,13 @@
           zt.gauge({ level: lv, lo: band.lo, hi: band.hi });
         },
         enough: { lo: 1.5, say: false },
+        onCancel: (v) => {
+          pouring = false;
+          if (marks) marks.destroy();
+          const c = cups.find((x) => x.vessel === v);
+          if (c) c.vol.milk = Math.max(0, v.level - c.vol.chai);
+          refresh();
+        },
       }).then((r) => {
         pouring = false;
         if (marks) marks.destroy();
@@ -428,7 +441,7 @@
         onStart: () => {
           pouring = true;
           unglow();
-          zt.expect(null);
+          holding(pan);
           c = sel;
           marks = P.lines(S, c.vessel, lines.map((at) => ({ at, strong: true })));
           const at = askedLine(c);
@@ -443,6 +456,12 @@
           zt.gauge({ level: lv, lo: at - K.tolerance, hi: at + K.tolerance });
         },
         enough,
+        onCancel: () => {
+          pouring = false;
+          if (marks) marks.destroy();
+          if (c) c.vol.chai = Math.max(0, c.vessel.level - c.vol.milk);
+          refresh();
+        },
       }).then((r) => {
         pouring = false;
         if (marks) marks.destroy();
