@@ -43,7 +43,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # COOK_TEST_PORT lets several test runs (or worktrees) go at once
 PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
-LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa", "mishkaki-grill"]
+LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa", "mishkaki-grill", "chai-tray"]
 # --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
 # COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
 DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))
@@ -135,7 +135,8 @@ class Player:
             p.wait_for_selector(sel, state="visible", timeout=10000)
             p.click(sel)
         elif k == "tap":
-            if self.mistakes and e.get("swrongs") and e.get("key") not in self.made and random.random() < 0.2:
+            # "mistake": the station asks for one wrong tap here (the Chai tray's salt in the lab)
+            if self.mistakes and e.get("swrongs") and e.get("key") not in self.made and (e.get("mistake") or random.random() < 0.2):
                 self.made.add(e.get("key"))
                 w = random.choice(e["swrongs"])
                 self.tap(w["x"], w["y"], "wrong item")
@@ -482,6 +483,22 @@ ORDERS_JS = r"""
       const then = Cook.data.lines[Cook.Lang.frames().seq].k.split("{x}")[0].trim();
       if (seqs.length && !said.includes(then)) out.errors.push(id + ": a sequence is said with " + then + ": " + said);
       if (!seqs.length && said.includes(then)) out.errors.push(id + ": no sequence, no " + then + ": " + said);
+    }
+  });
+  // byLevel values: the order's level picks one (chai's cups, mishkaki's skewers)
+  [1, 2, 3].forEach((level) => {
+    for (let n = 0; n < 30; n++) {
+      if (R.chai) {
+        const c = R.chai.make("nana", { level });
+        if (c.cups.length !== level) out.errors.push("byLevel: chai level " + level + " has " + c.cups.length + " cups");
+        if (level < 3 && c.cups.some((p) => p.extra || p.amount)) out.errors.push("byLevel: chai extras before level 3");
+      }
+      if (R.mishkaki) {
+        const m = R.mishkaki.make("nana", { level });
+        const tot = Object.values(m.skewers).reduce((a, b) => a + b, 0);
+        const ok = level === 1 ? tot === 1 : level === 2 ? tot === 2 : tot >= 3 && tot <= 4;
+        if (!ok || (level < 3 && m.skewers["ph-mixed"])) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+      }
     }
   });
   const d = R.chaat.make("nana");

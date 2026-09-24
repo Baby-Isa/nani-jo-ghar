@@ -436,7 +436,9 @@
         const groups = mission.plain && !s.simple ? [].concat(...s.groups).map((r) => [r]) : s.groups;
         const nRows = groups.reduce((a, g) => a + g.length, 0);
         if (!nRows) return;
-        sec.className = ["lsec", s.simple ? "simple" : "", !mission.plain && s.seq && groups.length > 1 ? "lseq" : "", mission.plain && groups.length > 1 ? "lplain" : "", s.when ? "late" : ""].filter(Boolean).join(" ");
+        sec.className = ["lsec", s.simple ? "simple" : "", !mission.plain && s.seq && groups.length > 1 ? "lseq" : "", mission.plain && groups.length > 1 ? "lplain" : "", s.when ? "late" : "", s.for ? "lfor" : ""].filter(Boolean).join(" ");
+        // one person's part of the order (a cup on the Chai tray): their face, no name
+        if (s.for) sec.insertAdjacentHTML("beforeend", `<img class="lface" src="assets/cook/characters/${esc(s.for)}-badge.webp" alt="">`);
         groups.forEach((g) => {
           const ge = document.createElement("div");
           ge.className = ["lg", g.length > 1 ? "multi" : "", g.every((r) => r.done) ? "done" : ""].filter(Boolean).join(" ");
@@ -466,12 +468,12 @@
     });
   }
   /** Tick the first open row with this item on it. Returns the row, or null. */
-  M.tickItem = function (id, dish = 0) {
+  M.tickItem = function (id, dish = 0, opts = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
     const rows = Order()
       .rows(L)
-      .filter((r) => !r.done && !r.no);
+      .filter((r) => !r.done && (opts.no ? r.no : !r.no) && (!opts.for || r.for === opts.for));
     // an order row first, the dish's own name last (the pantry fetches the tea for "chai")
     const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
     if (!r) return null;
@@ -492,10 +494,12 @@
     return units[i] || null;
   };
   /** Something went wrong for this item: mark its row (shown on the result card). */
-  M.missItem = function (id, dish = 0, { no = null, counted = false } = {}) {
+  M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null } = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
-    const rows = Order().rows(L, { all: true });
+    const rows = Order()
+      .rows(L, { all: true })
+      .filter((r) => !forWho || r.for === forWho);
     const r =
       rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no) && !x.done) ||
       rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no)) ||

@@ -8,6 +8,7 @@
  *          chance, taste), "items" (a sequence or an any-order group),
  *          "no" (leave-it-out list), "people" (per-person items: cups for
  *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg).
+ *          Any value can be {"byLevel": [...]}: the order's level picks one.
  *   say    the order as spoken: frames (roles like "order", "and", "no")
  *          with phrase parts, lists and per-item lines. The words and the
  *          grammar come from data.lines / data.grammar, never from here.
@@ -133,15 +134,17 @@
   }
   const listOf = (v, env) => [].concat(res(v, env) || []).flat();
   /**
-   * A slot that changes with the order's level: "levels": [{…}, {…}], one
-   * entry per level, each listing only what changes (like mechanic levels).
-   * Level n applies entries 1..n over the slot.
+   * A slot that changes with the order's level: any value in it, at any
+   * depth, can be {"byLevel": [at level 1, at level 2, ...]} and the
+   * order's level picks one (the last repeats). Resolved before the slot
+   * is built, so every slot type just sees plain values.
    */
   function atLevel(spec, n) {
-    if (!isObj(spec) || !Array.isArray(spec.levels)) return spec;
-    const out = Object.assign({}, spec);
-    delete out.levels;
-    spec.levels.slice(0, Math.max(1, n)).forEach((l) => Object.assign(out, l));
+    if (Array.isArray(spec)) return spec.map((s) => atLevel(s, n));
+    if (!isObj(spec)) return spec;
+    if (Array.isArray(spec.byLevel)) return atLevel(spec.byLevel[Math.min(Math.max(n, 1), spec.byLevel.length) - 1], n);
+    const out = {};
+    Object.keys(spec).forEach((k) => (out[k] = atLevel(spec[k], n)));
     return out;
   }
   const TYPES = {
