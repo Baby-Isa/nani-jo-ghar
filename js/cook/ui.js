@@ -316,7 +316,7 @@
           if (id === want) {
             b.classList.add("right");
             Cook.sfx.right();
-            Cook.expect = null;
+            if (Cook.expect && String(Cook.expect.selector || "").startsWith("#passme")) Cook.expect = null;
             setTimeout(() => {
               box.classList.add("leaving");
               setTimeout(() => {

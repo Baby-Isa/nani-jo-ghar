@@ -153,7 +153,9 @@
     else Cook.markRight(want);
     ctx.listen(r.misses === 0, `pass me ${want}`);
     ctx.result.passMe = (ctx.result.passMe || 0) + 1;
-    Cook.expect = prevExpect;
+    // Busy keeps cooking during "pass me": if the station moved on (a new
+    // expectation), keep that one instead of restoring a stale one
+    if (!Cook.expect) Cook.expect = prevExpect;
   };
 
   /* ================= Pour (to the dashed line) ================= */
