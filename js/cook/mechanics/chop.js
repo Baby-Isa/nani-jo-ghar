@@ -9,10 +9,12 @@
  * few costs the ear star (graded at the end, so nothing on screen says
  * when to stop); slicing the wrong one: "Arre re!" and the ear star.
  * Kutchi: which one, how many, and the switch.
- * Params: targets {wordId: count} (zeros are left out; said in this
- * order), pool (what else gets thrown), only (keep only targets in this
- * list: the chaat chops what goes in its bowl), no (vegetables they said
- * no to), tick (tick the order rows: daal).
+ * Params: targets {wordId: count} (zeros are left out; the rounds come
+ * in a new order each time, so daal doesn't always start with onions and
+ * chaat with potatoes: only Nani's word says which is first), pool (what
+ * else gets thrown), only (keep only targets in this list: the chaat
+ * chops what goes in its bowl), no (vegetables they said no to), tick
+ * (tick the order rows: daal).
  * Knobs (data.mechanics.chop): inAir, every, fasterPerStage, fasterMax,
  * throwSpeed, gravity, decoys (decoy kinds in the air), spare (extra
  * throws of the target per round), lookalikes {id: [ids]} (always among
@@ -40,7 +42,7 @@
         const n = Number(targets[id]) || 0;
         if (n > 0 && (!only || only.includes(id))) want[id] = n;
       });
-      const ids = Object.keys(want);
+      const ids = Cook.shuffle(Object.keys(want));
       if (!ids.length) return {};
       ids.forEach((id) => Cook.markSeen(id));
       const hide = St.hideKnown(ctx);
