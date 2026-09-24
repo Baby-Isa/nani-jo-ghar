@@ -42,7 +42,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # COOK_TEST_PORT lets several test runs (or worktrees) go at once
 PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
-LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa"]
+LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa", "maani-line"]
 # --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
 # COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
 DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))
@@ -171,6 +171,10 @@ class Player:
         elif k == "more":
             if e["count"] < e["target"]:
                 self.tap(e["sx"], e["sy"], "another")
+            elif self.mistakes and e.get("extra") and "more-extra" not in self.made and random.random() < 0.5:
+                # a deliberate mistake: one more than they asked for (the Maani line)
+                self.made.add("more-extra")
+                self.tap(e["sx"], e["sy"], "one too many")
             else:
                 p.click("#done-btn")
         elif k == "knead":
@@ -188,10 +192,13 @@ class Player:
                 cur = self.exp()
                 if not cur or cur.get("kind") != "roll":
                     break  # another zone (a tawa ring) needs a tap first
+                # a full stroke grows it ~0.2-0.3 of the circle; shorter strokes near the line
+                f = min(1.0, max(0.15, (1.0 - (g["level"] if g else 0)) / 0.3))
+                n = max(2, round(8 * f))
                 p.mouse.move(cx, cy + r * 0.7)
                 p.mouse.down()
-                for s in range(1, 9):
-                    p.mouse.move(cx, cy + r * 0.7 - (r * 1.4) * s / 8)
+                for s in range(1, n + 1):
+                    p.mouse.move(cx, cy + r * 0.7 - (r * 1.4 * f) * s / n)
                 p.mouse.up()
             time.sleep(0.5)
         elif k in ("swipe", "slice"):
@@ -412,6 +419,29 @@ ORDERS_JS = r"""
       if (!seqs.length && said.includes(then)) out.errors.push(id + ": no sequence, no " + then + ": " + said);
     }
   });
+  // the Maani line: how many of each kind (sizes from level 3), the kinds said in either order
+  let both = 0;
+  let bajrFirst = 0;
+  for (let lv = 1; lv <= 3; lv++) {
+    for (let n = 0; n < 60; n++) {
+      const d = R.maani.make("nana", { level: lv });
+      const tot = Object.values(d.maani).reduce((a, b) => a + b, 0);
+      const [lo, hi] = [[2, 3], [3, 4], [2, 4]][lv - 1];
+      if (tot < lo || tot > hi) out.errors.push(`maani level ${lv}: total ${tot}`);
+      if ((lv === 3) !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes only at level 3 ${JSON.stringify(d.maani)}`);
+      const L = Cook.Order.ladder(d, 0);
+      const rows = [].concat(...L.sections.map((s) => [].concat(...s.groups)));
+      const said = Cook.Lang.plain(Cook.Order.speech([L]));
+      if (lv === 3 && !/big|small/.test(said)) out.errors.push(`maani level 3 says the size: ${said}`);
+      const kinds = new Set(rows.map((r) => r.ids[r.ids.length - 1]));
+      if (kinds.size > 1) {
+        both++;
+        if (rows[0].ids.includes("cook-bajrmaani")) bajrFirst++;
+      }
+    }
+  }
+  if (both && (bajrFirst === 0 || bajrFirst === both)) out.errors.push(`maani: the two kinds are always said in the same order (${bajrFirst}/${both})`);
+  out.maani = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.maani.make("nana", { level: 3 }), 0)]));
   const d = R.chaat.make("nana");
   out.example = R.ladder({ who: "nana", dishes: [d] }).map((r) => [r.dish, r.kind, r.ids.join("+"), r.qty, r.dot, r.group, Cook.Lang.plain(r.line)]);
   out.said = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(d, 0)]));
@@ -430,6 +460,7 @@ def run_orders(vp, speed):
     for row in res["example"]:
         print("  ladder:", row)
     print("  said:", res["said"])
+    print("  maani (level 3):", res["maani"])
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if res["errors"] or bad:
         raise AssertionError(f"order model: {res['errors'][:3]} console: {bad[:3]}")

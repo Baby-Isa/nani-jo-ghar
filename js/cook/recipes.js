@@ -7,7 +7,9 @@
  *          player's word stages and chance. Types: plain values (int, pick,
  *          chance, taste), "items" (a sequence or an any-order group),
  *          "no" (leave-it-out list), "people" (per-person items: cups for
- *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg).
+ *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg;
+ *          a kind may be compound, "ph-big+cook-maani"). Any slot can be
+ *          {"byLevel": [spec, spec, …]}: the spec for the order's level.
  *   say    the order as spoken: frames (roles like "order", "and", "no")
  *          with phrase parts, lists and per-item lines. The words and the
  *          grammar come from data.lines / data.grammar, never from here.
@@ -114,6 +116,8 @@
   }
   function value(spec, env) {
     if (spec == null || typeof spec !== "object") return isRef(spec) ? res(spec, env) : spec;
+    // a slot that changes with the order's level: {"byLevel": [level 1, level 2, …]} (past the end: the last)
+    if (spec.byLevel) return value(spec.byLevel[Math.min(spec.byLevel.length, Math.max(1, Math.round(env.level) || 1)) - 1], env);
     if (Array.isArray(spec)) return spec.map((s) => value(s, env));
     if (spec.type) return TYPES[spec.type](spec, env);
     const t = fromTaste(spec, env);
@@ -272,11 +276,13 @@
       if (e.tally) {
         const t = res(e.tally, env) || {};
         const ids = Object.keys(t).filter((k) => t[k] > 0);
-        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(Lang.countParts(t[id], id))));
+        // a kind can be compound, "ph-big+cook-maani": its words said in turn ("bo big maani")
+        const partsOf = (id) => Lang.countParts(t[id], id).flatMap((p) => (typeof p === "string" ? p.split("+") : [p]));
+        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(partsOf(id))));
         if (!ls.length) return;
         if (!when) lines.push(ls.length > 1 ? Lang.join(ls) : ls[0]);
         dot++;
-        ids.forEach((id, j) => rows.push({ kind: "item", ids: [id], qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: Lang.countParts(t[id], id), sec, when }));
+        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when }));
         return;
       }
       const frame = e.frame === "order" ? Lang.orderFrame(i) : e.frame;
@@ -402,7 +408,7 @@
         const d = { recipe: id };
         const usual = !!opts.usual && Object.keys(taste).length > 0;
         if (usual) d.usual = true;
-        const env = { d, taste, usual, who, recipe: id, tastes: D.tastes || id, lists: D.lists || {}, vars: {} };
+        const env = { d, taste, usual, who, recipe: id, tastes: D.tastes || id, lists: D.lists || {}, vars: {}, level: opts.level || D.level || 1 };
         Object.keys(D.slots || {}).forEach((k) => (d[k] = value(D.slots[k], env)));
         if (opts.level || D.level) d.level = opts.level || D.level;
         if (D.levels) d.levels = clone(D.levels);
