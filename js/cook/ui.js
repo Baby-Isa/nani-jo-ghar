@@ -501,6 +501,16 @@
     if (r) r.miss = true;
     return r;
   };
+  /** The next open step went wrong (an out-of-order pick). */
+  M.missNext = function (dish = 0) {
+    const L = ladderFor(dish);
+    if (!L) return null;
+    const r = Order()
+      .rows(L)
+      .find((x) => !x.head && !x.no && !x.done);
+    if (r) r.miss = true;
+    return r;
+  };
   /** A dish is finished: whatever is left is done (the ticks catch up). */
   M.finishDish = function (dish = 0) {
     const L = ladderFor(dish);

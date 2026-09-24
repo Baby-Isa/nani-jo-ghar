@@ -95,7 +95,11 @@
       ctx.reasons.push(wordsOf(why));
       // which row of the order it was about (highlighted on the result card)
       if (p.kind === "no") UI.mission.missItem(p.ids[0], ctx.dishAt, { no: true });
-      else if (p.kind === "order") UI.mission.missItem(p.ids[1] || p.ids[0], ctx.dishAt, { no: false });
+      else if (p.kind === "order") {
+        // the step that should have come next ("X out of order" names only the wrong one)
+        if (p.ids[1]) UI.mission.missItem(p.ids[1], ctx.dishAt, { no: false });
+        else UI.mission.missNext(ctx.dishAt);
+      }
       else if (p.kind === "count") UI.mission.missItem(p.noun, ctx.dishAt, { counted: true });
       if (["no", "order", "wrong"].includes(p.kind) && p.ids[0] && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(p.ids[0]), ok: false });
       UI.mission.star("ear", "lost");
