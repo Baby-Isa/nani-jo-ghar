@@ -1870,6 +1870,7 @@
      "correctMs": 1600,
      "graceMs": 1500,
      "reactGapMs": 2200,
+     "maxNudges": 2,
      "afterCountMs": 450,
      "spillMs": 250,
      "spillGapMs": 700,

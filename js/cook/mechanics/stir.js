@@ -30,9 +30,10 @@
  * judged time on the asked side), correctMs (wrong side this long: Nani
  * says it), startGraceMs / graceMs (time to get going / to react to a new
  * speed), minJudgeMs (shorter than this after the grace: judge all of it),
- * reactGapMs, afterCountMs (Nani waits for the counted number), spillMs,
- * spillGapMs,
- * spillCost, quietMs (let go this long and you're done), ghostMs, special.
+ * reactGapMs, maxNudges (how often she says the speed again), afterCountMs
+ * (Nani waits for the counted number), spillMs, spillGapMs, spillCost,
+ * minScore, quietMs (let go this long and you're done), ghostMs, special,
+ * and the layout: potX, potY, potR, dialX, dialY, dialR (design px).
  * Speeds are real laps per second (the gesture isn't scaled by game speed).
  * Extra lines and tips: data/stations/stir.json.
  */
@@ -248,7 +249,7 @@
       let finished = false;
       let started = false;
       // each speed Nani asks for; time on the asked side, all of it and after the grace
-      const newPhase = (s) => ({ speed: s, all: 0, inAll: 0, judged: 0, inAsked: 0, corrected: false });
+      const newPhase = (s) => ({ speed: s, all: 0, inAll: 0, judged: 0, inAsked: 0, corrected: false, nudges: 0 });
       const phases = asked ? [newPhase(asked)] : [];
       const lapA = TAU * k.lap;
       const enoughAt = z.guided ? laps : laps + 1;
@@ -263,7 +264,12 @@
         const tok = ++sayTok;
         z.say(line, { hide })
           .then(() => {
-            if (tok === sayTok && !finished) return z.say(current, { hide, silent: true, ms: 10 });
+            if (tok !== sayTok || finished) return;
+            // put her instruction back quietly, without the card popping in again
+            const back = z.say(current, { hide, silent: true, ms: 10 });
+            const card = document.getElementById("nani-card");
+            if (card) card.style.animation = "none";
+            return back;
           })
           .catch(() => {});
         return true;
@@ -403,7 +409,10 @@
                 wrongT = 0;
               } else if ((wrongT += dt) * 1000 >= k.correctMs) {
                 wrongT = 0;
-                if (react(speedLine(ph.speed))) ph.corrected = true;
+                if (ph.nudges < k.maxNudges && react(speedLine(ph.speed))) {
+                  ph.corrected = true;
+                  ph.nudges++;
+                }
               }
             }
           }
