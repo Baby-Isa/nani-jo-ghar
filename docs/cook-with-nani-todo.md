@@ -24,13 +24,16 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☐ Sidebar order: order card on top (never moves), Nani's line, then the goal (full the first time, then a small "?")
 - ☐ Result card right half: "they asked / you did" in Kutchi + one "next time" tip per missed star
 - ☐ Busy mode: visible patience ring round the customer, lightning star drains
+- ☐ **"Pass me" moves into the sidebar**: Nani never covers the play area (she covered a boiling pan in Busy mode)
+- ☐ Star icons per game mode (Cook: chef's hat for "cooked well"); pocket-money intro icon spacing; title-screen day circles aligned
 - ☐ Draft words (not confirmed): dai (yoghurt), channa (chickpeas), ghos (meat), bajr jo maani (millet chapati), ne poi (and then)
 - ☐ **Station building blocks:** every mechanic (pour, spoon, boil, roll, flip, thread, grill-turn, …) usable on its own *or* inside a combined station; difficulty settings as data (levels 2+ come from the settings, not new code); a "how to add a recipe" guide
 
 ### Wave 3: stations ☐
 - ☐ **Mishkaki grill:** skewers point away from you (wooden handle at the bottom, off the grill); the order says how many and which kind (meat, veg, mixed); tap the rack to put one on; each lands at a different time with its own ring; juggle up to 3–4. Threading feeds it
 - ☐ **Maani line:** three zones (dough bowls: maani / bajr jo maani → chakla → tawa). Production line vs "roll them all first" is a real decision (the tawa won't wait). The order sets how many of each; big/small as a later level
-- ☐ **Chai tray:** cups with family faces; each person's milk, sugars, half/full; the boil on the back burner to watch while you do the cups
+- ☐ **Chai tray:** cups with family faces; each person's milk, sugars, half/full; the boil on the back burner with a big obvious on/off knob
+- ☐ **New pour:** the jug/jar in the tray is an icon that stays put; press and hold it and a pouring jug slides in over the pan, pours while held, goes back on release
 - ☐ **Stir:** ladle on a fixed circular track inside the pan; live speed dial with red too-fast/too-slow zones; Nani says slowly/quickly when it applies; laps counted aloud
 - ☐ **Polish the keepers:** chaat (bigger bowl, visible layers, customer checks layer by layer), tadka (burns if too slow; ladder hides at later levels, so it's Nani's spoken order from memory), chop (mid-round switch: "now dungri!"), samosa + fry (count, "lift the samosas, leave the chips")
 - ☐ **"Pass me" in the pantry** and in the slower stations (a listening break where the hands have little to do)
