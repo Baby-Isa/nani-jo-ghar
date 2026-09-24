@@ -498,7 +498,7 @@
           </div>
           <div class="seg-help">${mode === "relaxed" ? "No waiting. Take all the time you need." : "Customers wait with a patience bar. Quick service earns bigger tips; nobody ever leaves."}</div>
           <div class="btn-row">
-            ${Cook.save.finished ? `<button class="btn primary" id="t-free">Free cooking</button>` : `<button class="btn primary" id="t-start">${Cook.save.day > 1 ? `Day ${nextDay}: ${UI.esc(days[nextDay - 1].title)}` : "Start cooking"}</button>`}
+            ${Cook.save.finished ? `<button class="btn primary" id="t-free">Free cooking${Cook.save.best.free ? ` · best ★${Cook.save.best.free}` : ""}</button>` : `<button class="btn primary" id="t-start">${Cook.save.day > 1 ? `Day ${nextDay}: ${UI.esc(days[nextDay - 1].title)}` : "Start cooking"}</button>`}
             ${Cook.save.taught.chai ? `<button class="btn" id="t-quick" title="One customer, about two minutes">Quick order</button>` : ""}
             <button class="btn" id="t-book">Recipe book</button>
             <button class="btn" id="t-shop">Shop</button>

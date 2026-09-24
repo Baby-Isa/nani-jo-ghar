@@ -128,8 +128,23 @@
       placeBubble();
     }
     if (opts.onStart) opts.onStart();
-    if (hasRec) await Cook.playRecording(line.audio);
-    else await Cook.wait(opts.ms || Cook.readMs(line.plain));
+    // Nothing is unskippable (Game Design): a tap anywhere that isn't a
+    // button moves on. The line stays on screen to read.
+    const token = Cook.run;
+    let skip;
+    const skipped = new Promise((resolve) => {
+      skip = (ev) => {
+        if (ev.target.closest && ev.target.closest("button, a, #overlay")) return;
+        resolve();
+      };
+      document.addEventListener("pointerdown", skip, true);
+    });
+    try {
+      await Promise.race([hasRec ? Cook.playRecording(line.audio) : Cook.wait(opts.ms || Cook.readMs(line.plain)), skipped]);
+    } finally {
+      document.removeEventListener("pointerdown", skip, true);
+    }
+    Cook.checkRun(token);
     card().classList.remove("talk");
     if (opts.autoHide) UI.hideBubble();
   };

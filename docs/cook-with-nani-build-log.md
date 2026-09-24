@@ -128,7 +128,44 @@ Personas from `docs/game-modes-fun-analysis.md`. Each one "played" the build: I 
 
 ## 5. Persona review, round 2
 
-*(after re-testing the round 1 changes; see below)*
+The same personas, after the round 1 changes, the full five-day run and the six screen sizes.
+
+| Persona | Better now | Still wrong | Fix (round 2) |
+|---|---|---|---|
+| **Aisha, 5** | Hears the greeting replies before choosing; the pulsing target tells her *now*; the fingertip shows her how to roll and stir | Counts come from the ticket's digit ("2 × khun") and the adult, until recordings exist | None needed in code: recordings (words doc, section 4) |
+| **Zayn, 8** | Combos pay; Busy mode's patience bar adds pressure without punishment | No record to beat in free cooking | **Best free-cooking score** on the title button |
+| **Maryam, 11** | Recipe book, family favourites, the finale | Still wants to decorate | Later (see section 7) |
+| **Zafar, 38** | The recast after mistakes; "the usual"; weak-word review | **Nani's reading pauses can't be skipped**, which breaks the Game Design rule "nothing is unskippable" and makes adults wait | **Tap anywhere to skip** a line (it stays on screen to read) |
+| **Farah, 34** | Quick order is about 2 minutes | The same pauses | Same fix |
+| **Nani, 68** | Clear screens, big Kutchi text to say aloud | Needs to check every line | The words doc |
+
+**Verdict against the two tests:**
+- **Fun: yes, with a caveat.** The strongest parts:
+  - the maani puff
+  - the boil-over (funny, harmless)
+  - the tadka memory moment
+  - the combo
+  - the counter-slot decision
+
+  The weakest: chai is cooked many times. The chai machine and the jug are the relief valve, which is the Good Pizza pattern.
+- **Educational: yes, structurally.** The order *is* the Kutchi, nothing tells you in English what to cook, and mistakes get a recast. But **it only becomes a listening game once the family records the lines.** Until then it's a reading game for readers and a play-along for non-readers with an adult.
+
+## 7. Next steps (for Zafar)
+
+1. **Play it:** `cook.html` on a phone in landscape (GitHub Pages: `/cook.html`). Try Relaxed with a child and Busy yourself.
+2. **Words:** answer the questions in `docs/cook-with-nani-words.md`, then do one recording session from its list. Recordings drop in as files; run `python3 build/build_audio_manifest.py` afterwards.
+3. **Wire whole-sentence recordings:** give each order its own audio id (for example `ord-chai-2khun`) and play it in `S.talk`. About 20 lines of code once the files exist.
+4. **Then decide** what carries over into the real build:
+   - the stations engine
+   - the step and hint engine
+   - the shop
+   - ChatGPT sheet slicing
+5. **Later ideas:**
+   - décor for the hub (Maryam)
+   - hide the Kutchi text for known words once the audio exists (Zafar)
+   - LivePortrait talking frames
+   - spice cupboard as its own scene
+   - more recipes (khichdi, chaas with churning, bajra rotlo)
 
 ## 6. Test results
 

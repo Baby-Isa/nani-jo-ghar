@@ -377,6 +377,7 @@
     await Cook.tween(S, { targets: jug, x: home.x, y: home.y, angle: home.a, duration: 300 });
 
     // knead: tap or rub back and forth
+    UI.hideBubble();
     if (ctx.guided) UI.gist("Knead! Tap the dough or rub it back and forth.");
     let dough = bowl;
     const need = 8;
@@ -582,6 +583,7 @@
       // squash the guide into the same perspective as the chapati image
       guide.setScale(1, 0.66);
       guide.y = cy * (1 - 0.66);
+      UI.hideBubble();
       const pin = S.track(S.add.image(cx + 40, cy + 90, "rolling-pin").setScale(0.69).setDepth(D.fx + 1).setAngle(-20));
       if (ctx.guided) UI.gist("Roll it out: drag from the middle outwards until it fills the circle.");
       let last = null;
@@ -635,6 +637,7 @@
   /* ---------------- chop (swipe across) ---------------- */
   async function chop(S, ctx, id, { whole, half, chopped }) {
     await S.setView("board");
+    UI.hideBubble();
     const item = S.prop(whole, 820, 650, 330, 300);
     const cuts = Cook.hasUpgrade("knife") ? 2 : 4;
     const knife = S.track(S.add.image(1260, 430, Cook.hasUpgrade("knife") ? "knife-gold" : "knife").setScale(0.94).setAngle(-30).setDepth(D.fx));
