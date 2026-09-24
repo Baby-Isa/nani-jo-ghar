@@ -85,6 +85,8 @@
     Cook.ctx = ctx;
     ctx.listen = (ok, why) => {
       const p = parseWhy(why);
+      const dish = ctx.order.dishes[ctx.dishAt];
+      if (p.noun === "ph-samosa" && dish && dish.recipe === "mishkaki") p.noun = "ph-chips"; // "fried 1" after the grill is chips
       if (p.kind === "count" && p.did != null && ctx.did.length < 14) ctx.did.push({ line: countLine(p.did, p.noun), ok: !!ok });
       if (ok) return;
       ctx.listenMiss++;

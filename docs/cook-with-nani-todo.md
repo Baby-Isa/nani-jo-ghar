@@ -19,14 +19,16 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☑ Audit of the current build and the planned redesigns → `docs/cook-with-nani-kutchi-audit.md`; its fixes feed Waves 2 and 3
 
 ### Wave 2: shared systems ◐
-- ☐ **Order ladder** on the mission card: dots joined by a dashed line = sequence; items that can go in any order share a dot; "no X" rows; each row has speaker, 👁 tap to reveal (costs the no-help star), translate
-- ☐ Voice links steps with *ne poi* ("and then", draft, Mum to confirm)
-- ☐ Sidebar order: order card on top (never moves), Nani's line, then the goal (full the first time, then a small "?")
-- ☐ Result card right half: "they asked / you did" in Kutchi + one "next time" tip per missed star
-- ☐ Busy mode: visible patience ring round the customer, lightning star drains
-- ☐ **"Pass me" moves into the sidebar**: Nani never covers the play area (she covered a boiling pan in Busy mode)
-- ☐ Star icons per game mode (Cook: chef's hat for "cooked well"); pocket-money intro icon spacing; title-screen day circles aligned
-- ☐ Draft words (not confirmed): dai (yoghurt), channa (chickpeas), ghos (meat), bajr jo maani (millet chapati), ne poi (and then)
+- ☑ **Order ladder** on the mission card: dots joined by a dashed line = sequence; items that can go in any order share a dot; "no X" rows; each row has speaker, 👁 tap to reveal and translate (both cost the ear star)
+- ☑ Voice links steps with *ne poi* ("and then", draft, Mum to confirm)
+- ☑ Sidebar order: order card on top (never moves), Nani's line, then the goal (full the first time, then a small "?")
+- ☑ Result card right half: "they asked / you did" in Kutchi + one "next time" tip per missed star
+- ☑ Busy mode: visible patience ring round the customer, lightning star drains
+- ☑ **"Pass me" moves into the sidebar**: Nani never covers the play area (she covered a boiling pan in Busy mode)
+- ☑ Star icons per game mode (Cook: chef's hat for "cooked well"); pocket-money intro icon spacing; title-screen day circles aligned
+- ☑ Draft words (not confirmed): dai (yoghurt), channa (chickpeas), ghos (meat), bajr jo maani (millet chapati), ne poi (and then)
+- ☑ **Help costs** (audit fix 1): being shown the answer (hesitation glow, the highlight after two misses, 👁, translate, incl. "pass me") costs the ear star; hearing it again costs the no-help star; Busy help drains patience; from word stage 3 counts are silent digits and the target's label speaker counts as help
+- ☑ Step chips the same for every order of a dish; "pass me" choices from one look-alike group
 - ☐ **Station building blocks:** every mechanic (pour, spoon, boil, roll, flip, thread, grill-turn, …) usable on its own *or* inside a combined station; difficulty settings as data (levels 2+ come from the settings, not new code); a "how to add a recipe" guide
 
 ### Wave 3: stations ☐
