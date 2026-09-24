@@ -7,7 +7,8 @@
  * the next chapati as soon as it's free. Standalone it cooks `n` chapatis;
  * in a zone with an `in` channel it cooks whatever arrives (flying the
  * rolled maani's sprite over) until the channel closes.
- * Items may carry tint (a dough colour) and size (a small maani is drawn
+ * Items may carry art {half, done} (their own textures: millet maani are
+ * greyer) and size (a small maani is drawn
  * smaller); z.progress reports {cooked, item, score} as each one lands on
  * the plate (a stack that grows). Tapping anywhere on the tawa counts.
  * Params: n, spots/plateAt/spatulaAt (design coords, to re-lay it out),
@@ -69,7 +70,9 @@
       const cookOne = async (wz, sp, item, i, tw) => {
         const x = z.X(sp.x);
         const y = z.Y(sp.y);
-        const base = item.tint != null ? item.tint : 0xffffff;
+        const base = 0xffffff;
+        const half = (item.art && item.art.half) || HALF;
+        const done = (item.art && item.art.done) || DONE;
         const sz = 0.7 * ks * (item.size || 1); // a small maani looks small on the tawa too
         let ch;
         if (item.sprite && item.sprite.active) {
@@ -86,7 +89,7 @@
         await Cook.tween(S, { targets: spat, x: x + z.L(40), y: y + z.L(30), duration: 120 });
         Cook.sfx.flip();
         await Cook.tween(S, { targets: ch, scaleY: 0.02 * ks, duration: 110 });
-        ch.setTexture(HALF).setTint(v1 >= 1 ? mul(base, BURNT) : base);
+        ch.setTexture(half).setTint(v1 >= 1 ? mul(base, BURNT) : base);
         ch.setScale(sz, 0.02 * ks);
         await Cook.tween(S, { targets: ch, scaleY: sz, duration: 110 });
         S.tweens.add({ targets: spat, x: z.X(home.x), y: z.Y(home.y), duration: 200 });
@@ -96,7 +99,7 @@
         // the puff: a good one balloons up with a whoosh of steam
         const puffed = v2 >= lo && v2 < 1;
         Cook.sfx.puff();
-        ch.setTexture(DONE).setTint(v1 >= 1 || v2 >= 1 ? mul(base, BURNT) : base);
+        ch.setTexture(done).setTint(v1 >= 1 || v2 >= 1 ? mul(base, BURNT) : base);
         const dz = sz * 0.8;
         ch.setScale(dz * 0.85);
         await Cook.tween(S, { targets: ch, scale: dz * (puffed ? 1.3 : 1.05), duration: puffed ? 260 : 180, ease: "Back.easeOut", yoyo: true });

@@ -75,6 +75,26 @@
     return key;
   }
 
+  /** A copy of texture `key` multiplied by a colour ("#a9aab4"): the same in WebGL and canvas. */
+  function tinted(S, key, hex) {
+    if (!hex || /^#?f{6}$/i.test(hex)) return key;
+    const out = `${key}@${hex}`;
+    if (S.textures.exists(out)) return out;
+    const src = S.textures.get(key).getSourceImage();
+    const c = document.createElement("canvas");
+    c.width = src.width;
+    c.height = src.height;
+    const g = c.getContext("2d");
+    g.drawImage(src, 0, 0);
+    g.globalCompositeOperation = "multiply";
+    g.fillStyle = hex;
+    g.fillRect(0, 0, c.width, c.height);
+    g.globalCompositeOperation = "destination-in";
+    g.drawImage(src, 0, 0);
+    S.textures.addCanvas(out, c);
+    return out;
+  }
+
   /** Ball spots in a bowl: a back row and a front row. */
   function ballSpots(n) {
     const back = Math.ceil(n / 2);
@@ -94,7 +114,8 @@
     const kRoll = Mech.knobs("roll", { level: zr.level });
     const kTawa = Mech.knobs("tawa", { level: zt.level });
     const types = Object.keys(K.doughs || { "cook-maani": {} });
-    const tintOf = (t) => St.color((K.doughs[t] || {}).tint || "#ffffff");
+    // each dough's colour baked into its own textures (a tint alone vanishes on the canvas renderer)
+    const texOf = (t, key) => tinted(S, key, (K.doughs[t] || {}).tint);
     const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] })) : null;
     const rMax = sizes ? Math.max(...sizes.map((s) => s.r)) : kRoll.radius;
     const keyOf = (type, size) => (size ? `${size}+${type}` : type);
@@ -136,10 +157,9 @@
       const y = zb.Y(LAY.bowlYs[i] != null ? LAY.bowlYs[i] : LAY.bowlYs[0] + i * 330);
       const img = S.flat(bowlKey, x, y, zb.L(300), zb.L(206));
       img.type = type;
-      const tint = tintOf(type);
       img.balls = ballSpots(K.ballsPerBowl).map(([dx, dy]) => {
-        const b = S.track(S.add.image(x + zb.L(dx), y + zb.L(dy), "dough-ball").setDepth(D.item + 0.2 + dy * 0.001));
-        b.setScale(zb.L(84) / S.texSize("dough-ball").w).setTint(tint);
+        const b = S.track(S.add.image(x + zb.L(dx), y + zb.L(dy), texOf(type, "dough-ball")).setDepth(D.item + 0.2 + dy * 0.001));
+        b.setScale(zb.L(84) / S.texSize("dough-ball").w);
         b.home = { x: b.x, y: b.y, scale: b.scale };
         return b;
       });
@@ -236,7 +256,7 @@
       if (!ball) return S.wiggle(bowl);
       if (chakla) putBack(chakla);
       ball.setVisible(false);
-      const sprite = S.track(S.add.image(ball.x, ball.y, "dough-ball").setScale(ball.scale).setTint(tintOf(bowl.type)).setDepth(D.item + 3));
+      const sprite = S.track(S.add.image(ball.x, ball.y, texOf(bowl.type, "dough-ball")).setScale(ball.scale).setDepth(D.item + 3));
       const c = { type: bowl.type, bowl, ball, sprite, busy: true, started: false, handle: {} };
       chakla = c;
       Cook.sfx.pop();
@@ -249,7 +269,7 @@
       const r = await Mech.rollOne(zr, kRoll, LAY.chakla, {
         dough: sprite,
         board: false,
-        tint: tintOf(c.type),
+        tex: { ball: texOf(c.type, "dough-ball"), raw: texOf(c.type, "chapati-raw") },
         targets,
         aim: aimFor(c.type),
         quietMs: K.quietMs,
@@ -302,7 +322,7 @@
         firstOn = false;
         step("Tawa");
       }
-      ch.put({ kind: "maani", sprite: top.sprite, tint: tintOf(top.type), size: top.sizeF, it: top });
+      ch.put({ kind: "maani", sprite: top.sprite, art: { half: texOf(top.type, "chapati-half"), done: texOf(top.type, "chapati-puffed") }, size: top.sizeF, it: top });
       update();
     }
     // each one that lands on the plate: the running tally (never the target)

@@ -76,7 +76,7 @@
    * sprite, torn} when opts.keep. opts:
    *   dough    a dough sprite already there (flown in from a bowl)
    *   board    false: the caller draws a chakla that stays
-   *   tint     the dough's colour (millet dough is greyer)
+   *   tex      {ball, raw}: texture keys for this dough (millet dough is greyer)
    *   targets  [{id, r}]: several dashed circles (big and small); the
    *            nearest one to where you stop is the size you made
    *   aim      which target the test aims for (the gauge; never shown)
@@ -101,9 +101,9 @@
       const chakla = opts.board === false ? null : S.flat(S.tex("chakla"), cx, cy + z.L(10), z.L(560), z.L(460), { depth: D.item - 2 });
       const dough = opts.dough || S.track(S.add.image(cx, cy, "dough-ball"));
       dough.setPosition(cx, cy).setDepth(D.item + 1);
-      if (opts.tint != null) dough.setTint(opts.tint);
+      const tex = Object.assign({ ball: "dough-ball", raw: "chapati-raw" }, opts.tex);
       const setR = () => {
-        const key = r < z.L(90) ? "dough-ball" : "chapati-raw";
+        const key = r < z.L(90) ? tex.ball : tex.raw;
         if (dough.texture.key !== key) dough.setTexture(key);
         dough.setScale((r * 2) / S.texSize(key).w);
       };
