@@ -111,7 +111,7 @@
         ch.setDepth(D.item + 2 + j * 0.01);
         const ps = 0.5 * z.k * (item.size || 1);
         S.tweens.add({ targets: ch, angle: Math.random() * 24 - 12, duration: 450 });
-        await S.fly(ch, z.X(plate.x) + z.L(Math.random() * 16 - 8), z.Y(plate.y - 24) - z.L(j * 11), { scale: ps, duration: 450 });
+        await S.fly(ch, z.X(plate.x) + z.L(Math.random() * 16 - 8), z.Y(plate.y - 24) - z.L(j * 16), { scale: ps, duration: 450 });
       };
       // one worker per tawa, each taking the next chapati when it's free
       await Promise.all(

@@ -81,6 +81,8 @@
    *            nearest one to where you stop is the size you made
    *   aim      which target the test aims for (the gauge; never shown)
    *   quietMs  how long a pause ends the roll (default the knob)
+   *   patient  a pause only ends the roll on (or past) a circle: stop short,
+   *            or between the two, and it waits for you (to flip a maani)
    *   onStart  called once, when the pin first moves the dough
    *   handle   {} that gets cancel(): stop without a score (resolves null)
    */
@@ -193,7 +195,8 @@
       const up = () => {
         last = null;
         clearTimeout(quiet);
-        if (r >= Rmin * k.doneAt) quiet = setTimeout(done, quietMs / Cook.speed);
+        const onCircle = targets.some((t) => r >= t.R * lo && r <= t.R * hi) || r >= Rmax * lo;
+        if (opts.patient ? onCircle : r >= Rmin * k.doneAt) quiet = setTimeout(done, quietMs / Cook.speed);
       };
       offs.push(z.on("pointerdown", down), z.on("pointermove", move), z.on("pointerup", up));
       ghost = S.ghost([[cx, cy + z.L(110)], [cx, cy - z.L(110)], [cx, cy + z.L(110)]], { duration: 900, delay: z.guided ? 200 : 5000 });

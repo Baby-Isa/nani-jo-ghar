@@ -164,7 +164,7 @@
       Object.keys(want)
         .filter((k) => split(k).type === type)
         .reduce((a, k) => a + Math.max(0, want[k] - count(k)), 0) - (chakla && chakla.type === type ? 1 : 0);
-    const nextType = () => bowls.map((b) => b.type).find((t) => leftOf(t) > 0) || null;
+    const nextType = () => (bowls.find((b) => leftOf(b.type) > 0 && b.balls.some((x) => x.visible)) || {}).type || null;
     const aimFor = (type) => {
       if (!sizes) return 0;
       let best = 0;
@@ -254,6 +254,7 @@
         aim: aimFor(c.type),
         quietMs: K.quietMs,
         keep: true,
+        patient: true,
         handle: c.handle,
         onStart: () => {
           c.started = true;

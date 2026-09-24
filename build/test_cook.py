@@ -43,6 +43,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # COOK_TEST_PORT lets several test runs (or worktrees) go at once
 PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
 LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa", "maani-line"]
+# stations that cook a whole order on one screen (several maani, each rolled and cooked) take longer
+LONG = {"maani-line": 600}
 # --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
 # COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
 DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))
@@ -184,7 +186,13 @@ class Player:
                 if self.exp() != e:
                     break
         elif k == "roll":
+            # hold the pin and roll back and forth (letting go for a moment
+            # ends the roll where it is: with two circles, at the small one)
             cx, cy, r = e["sx"], e["sy"], e["sr"]
+            y = cy + r * 0.7
+            p.mouse.move(cx, y)
+            p.mouse.down()
+            sign = -1
             for _ in range(20):
                 g = self.gauge()
                 if g and g["level"] >= 0.95:
@@ -195,11 +203,12 @@ class Player:
                 # a full stroke grows it ~0.2-0.3 of the circle; shorter strokes near the line
                 f = min(1.0, max(0.15, (1.0 - (g["level"] if g else 0)) / 0.3))
                 n = max(2, round(8 * f))
-                p.mouse.move(cx, cy + r * 0.7)
-                p.mouse.down()
+                y0 = y
                 for s in range(1, n + 1):
-                    p.mouse.move(cx, cy + r * 0.7 - (r * 1.4 * f) * s / n)
-                p.mouse.up()
+                    y = y0 + sign * (r * 1.4 * f) * s / n
+                    p.mouse.move(cx, y)
+                sign = -sign
+            p.mouse.up()
             time.sleep(0.5)
         elif k in ("swipe", "slice"):
             p.mouse.move(e["sx1"], e["sy1"])
@@ -348,7 +357,7 @@ def run_lab(vp, speed, busy, shots_root, stations, guided, level=1, zoned=False,
             page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
             time.sleep(0.5)
             P.shot(f"{key}-start")
-            P.play(lambda: page.evaluate("!!document.querySelector('#lab-list') && !document.querySelector('#overlay').classList.contains('hidden')"), timeout=300)
+            P.play(lambda: page.evaluate("!!document.querySelector('#lab-list') && !document.querySelector('#overlay').classList.contains('hidden')"), timeout=LONG.get(key, 300))
             P.shot(f"{key}-result")
             results[key] = page.evaluate("document.querySelector('#panel .cc-why') ? document.querySelector('#panel .cc-why').innerText : ''")
             print(f"  {name}: {key}: {results[key]!r}")

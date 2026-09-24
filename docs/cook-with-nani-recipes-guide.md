@@ -69,6 +69,8 @@ A recipe is an entry in `recipes` with five parts. Every choice the player makes
 | "no X" | `{"type": "no", "else": {"chance": 0.5, "from": ["veg-12"]}}` | the customer's dislikes, else maybe one |
 | per person | `{"type": "people", "count": 2, "tastes": "chai", "each": {"khun": {"int": [1, 3], "taste": "khun"}}}` | `[{"who": "nana", "khun": 3}, {"who": "ma", "khun": 1}]` |
 | how many of each kind | `{"type": "tally", "kinds": ["ph-meat", "ph-pepper"], "total": {"int": [2, 3]}, "min": {"ph-meat": 1}}` | `{"ph-meat": 2, "ph-pepper": 1}` |
+| a kind with a describing word | tally kinds like `"ph-big+cook-maani"` | said "bo big maani" (the Maani line, level 3) |
+| different by level | `{"byLevel": [{"int": [2, 3]}, {"int": [3, 4]}]}` | the spec for the order's level (past the end: the last) |
 
 Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`.
 
