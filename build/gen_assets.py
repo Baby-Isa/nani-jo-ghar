@@ -822,6 +822,31 @@ def clean_key_edges(im):
     return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), int(rim.sum())
 
 
+def normalise_red_sleeve(im, target_hex):
+    """Nani's sleeve: the generator paints it a bright orange-red; shift its
+    median colour (lightness, chroma, hue) to target_hex (her deep madder
+    red), weighted by a soft mask of saturated reds (Lab hue -20..50,
+    chroma over ~35). Skin (hue 55+, chroma ~35) and the gold embroidery
+    and bangles (hue 70+) stay out. Returns (image, info)."""
+    arr = np.asarray(im.convert("RGBA")).astype(np.float64)
+    lab = rgb_to_lab(arr[..., :3])
+    L, C, h = lab[..., 0], np.hypot(lab[..., 1], lab[..., 2]), np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
+    w = _ramp(arr[..., 3], 1, 16) * _ramp(C, 30, 40) * _ramp(h, -30, -20) * (1 - _ramp(h, 44, 52)) * (1 - _ramp(L, 70, 80))
+    core = w > 0.8
+    if core.sum() < 2000:
+        return im, {"sleeve_action": "no red sleeve found"}
+    mL, mC, mh = np.median(L[core]), np.median(C[core]), np.median(h[core])
+    t = rgb_to_lab(hex_to_rgb(target_hex))
+    tL, tC, th = t[0], np.hypot(t[1], t[2]), np.degrees(np.arctan2(t[2], t[1]))
+    L2 = L + (tL - mL) * w
+    C2 = C * (1 + (tC / max(mC, 1e-6) - 1) * w)
+    h2 = np.radians(h + (th - mh) * w)
+    arr[..., :3] = lab_to_rgb(np.stack([L2, C2 * np.cos(h2), C2 * np.sin(h2)], axis=-1))
+    out = Image.fromarray(arr.astype(np.uint8), "RGBA")
+    return out, {"sleeve_before": rgb_to_hex(lab_to_rgb(np.array([mL, mC * np.cos(np.radians(mh)), mC * np.sin(np.radians(mh))]))),
+                 "sleeve_target": target_hex, "sleeve_action": "corrected"}
+
+
 def _hsv(rgb):
     r, g, b = (rgb[..., i] / 255.0 for i in range(3))
     mx, mn = np.maximum(np.maximum(r, g), b), np.minimum(np.minimum(r, g), b)
@@ -989,6 +1014,9 @@ def post_process_hand(entry, im, cfg, cache={}):
             cache[key] = skin_stats(Image.open(ref))
         im, sk = match_skin_distribution(im, cache[key])
     info.update(sk)
+    if entry.get("sleeve_target"):
+        im, sl = normalise_red_sleeve(im, entry["sleeve_target"])
+        info.update(sl)
     sc = cfg.get("scale_normalise") or {}
     if sc and entry.get("scale_normalise", True):
         target = sc.get("target_forearm_px")
