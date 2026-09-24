@@ -15,6 +15,9 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ◐ Tadka: arrow and pulse from the small pan to the pot
 - ◐ Chop: vegetables thrown higher
 
+### Pre-wave: "can you win without the Kutchi?" audit ◐
+- ◐ Audit of the current build and the planned redesigns → `docs/cook-with-nani-kutchi-audit.md`; its fixes feed Waves 2 and 3
+
 ### Wave 2: shared systems ☐
 - ☐ **Order ladder** on the mission card: dots joined by a dashed line = sequence; items that can go in any order share a dot; "no X" rows; each row has speaker, 👁 tap to reveal (costs the no-help star), translate
 - ☐ Voice links steps with *ne poi* ("and then", draft, Mum to confirm)
@@ -30,6 +33,7 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☐ **Chai tray:** cups with family faces; each person's milk, sugars, half/full; the boil on the back burner to watch while you do the cups
 - ☐ **Stir:** ladle on a fixed circular track inside the pan; live speed dial with red too-fast/too-slow zones; Nani says slowly/quickly when it applies; laps counted aloud
 - ☐ **Polish the keepers:** chaat (bigger bowl, visible layers, customer checks layer by layer), tadka (burns if too slow; ladder hides at later levels, so it's Nani's spoken order from memory), chop (mid-round switch: "now dungri!"), samosa + fry (count, "lift the samosas, leave the chips")
+- ☐ **"Pass me" in the pantry** and in the slower stations (a listening break where the hands have little to do)
 - ☐ **Free play everywhere:** Cook's open kitchen (customers keep arriving, you close when you like); every future mode gets a free-play entry too
 
 ### Wave 4: check ☐
