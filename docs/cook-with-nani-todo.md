@@ -5,20 +5,20 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 
 ## Round 2 (from Zafar's Station lab playtest, 24 Sept)
 
-### Wave 1: bugs and polish ◐
-- ◐ Result cards: whole-number percentages, labelled lines ("maani 1: 82%"), plain wording ("stirred 5 times, they asked for 2")
-- ◐ Sidebar: no clipping, no horizontal scrollbar, Nani's text wraps normally
-- ◐ Item labels never overlap (two rows when there are more than 5 items, bigger props)
-- ◐ Skewer "•••. Ne tameto. Ne tameto." checked (and English placeholders never dotted out)
-- ◐ Count badges show a running tally (digit), never the target
-- ◐ Missing label on a look-alike bowl
-- ◐ Tadka: arrow and pulse from the small pan to the pot
-- ◐ Chop: vegetables thrown higher
+### Wave 1: bugs and polish ☑
+- ☑ Result cards: whole-number percentages, labelled lines ("maani 1: 82%"), plain wording ("stirred 5 times, they asked for 2")
+- ☑ Sidebar: no clipping, no horizontal scrollbar, Nani's text wraps normally
+- ☑ Item labels never overlap (two rows when there are more than 5 items, bigger props)
+- ☑ Skewer "tameto, tameto" was a real order (a duplicate pick); the bug was English placeholders being dotted out, now fixed
+- ☑ Count badges show a running tally (digit), never the target
+- ☑ Missing label on a look-alike bowl
+- ☑ Tadka: arrow and pulse from the small pan to the pot
+- ☑ Chop: vegetables thrown higher
 
 ### Pre-wave: "can you win without the Kutchi?" audit ◐
 - ◐ Audit of the current build and the planned redesigns → `docs/cook-with-nani-kutchi-audit.md`; its fixes feed Waves 2 and 3
 
-### Wave 2: shared systems ☐
+### Wave 2: shared systems ◐
 - ☐ **Order ladder** on the mission card: dots joined by a dashed line = sequence; items that can go in any order share a dot; "no X" rows; each row has speaker, 👁 tap to reveal (costs the no-help star), translate
 - ☐ Voice links steps with *ne poi* ("and then", draft, Mum to confirm)
 - ☐ Sidebar order: order card on top (never moves), Nani's line, then the goal (full the first time, then a small "?")
