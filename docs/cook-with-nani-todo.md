@@ -15,8 +15,8 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☑ Tadka: arrow and pulse from the small pan to the pot
 - ☑ Chop: vegetables thrown higher
 
-### Pre-wave: "can you win without the Kutchi?" audit ◐
-- ◐ Audit of the current build and the planned redesigns → `docs/cook-with-nani-kutchi-audit.md`; its fixes feed Waves 2 and 3
+### Pre-wave: "can you win without the Kutchi?" audit ☑
+- ☑ Audit of the current build and the planned redesigns → `docs/cook-with-nani-kutchi-audit.md`; its fixes feed Waves 2 and 3
 
 ### Wave 2: shared systems ◐
 - ☐ **Order ladder** on the mission card: dots joined by a dashed line = sequence; items that can go in any order share a dot; "no X" rows; each row has speaker, 👁 tap to reveal (costs the no-help star), translate
