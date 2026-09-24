@@ -34,14 +34,14 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☐ Left from Wave 2: the tadka mechanic's `ladder` knob (words / dots / hidden per level) is in the data but not yet read by the mission card (the card goes plain once *ne poi* reaches word stage 3); placeholder voices for the draft words still need a TTS run with network
 - ☐ Test note: headless Chromium here draws WebGL in software at 6-11 fps, so timing scores (tawa, fry, grill, stir speed) read low on WebGL runs and a WebGL `--days 7` takes ~40 min; `--canvas` runs at 60 fps (all seven days in ~11 min). Worth a look on a real device that timing windows still feel fair
 
-### Wave 3: stations ☐
-- ☐ **Mishkaki grill:** skewers point away from you (wooden handle at the bottom, off the grill); the order says how many and which kind (meat, veg, mixed); tap the rack to put one on; each lands at a different time with its own ring; juggle up to 3–4. Threading feeds it
-- ☐ **Maani line:** three zones (dough bowls: maani / bajr jo maani → chakla → tawa). Production line vs "roll them all first" is a real decision (the tawa won't wait). The order sets how many of each; big/small as a later level
-- ☐ **Chai tray:** cups with family faces; each person's milk, sugars, half/full; the boil on the back burner with a big obvious on/off knob
-- ☐ **New pour:** the jug/jar in the tray is an icon that stays put; press and hold it and a pouring jug slides in over the pan, pours while held, goes back on release
-- ☐ **Stir:** ladle on a fixed circular track inside the pan; live speed dial with red too-fast/too-slow zones; Nani says slowly/quickly when it applies; laps counted aloud
-- ☐ **Polish the keepers:** chaat (bigger bowl, visible layers, customer checks layer by layer), tadka (burns if too slow; ladder hides at later levels, so it's Nani's spoken order from memory), chop (mid-round switch: "now dungri!"), samosa + fry (count, "lift the samosas, leave the chips")
-- ☐ **"Pass me" in the pantry** and in the slower stations (a listening break where the hands have little to do)
+### Wave 3: stations ◐ (all built; stir, grill, open kitchen live; chai tray, keepers, maani line merging)
+- ☑ **Mishkaki grill:** skewers point away from you (wooden handle at the bottom, off the grill); the order says how many and which kind (meat, veg, mixed); tap the rack to put one on; each lands at a different time with its own ring; juggle up to 3–4. Threading feeds it
+- ☑ **Maani line:** three zones (dough bowls: maani / bajr jo maani → chakla → tawa). Production line vs "roll them all first" is a real decision (the tawa won't wait). The order sets how many of each; big/small as a later level
+- ☑ **Chai tray:** cups with family faces; each person's milk, sugars, half/full; the boil on the back burner with a big obvious on/off knob
+- ☑ **New pour:** the jug/jar in the tray is an icon that stays put; press and hold it and a pouring jug slides in over the pan, pours while held, goes back on release
+- ☑ **Stir:** ladle on a fixed circular track inside the pan; live speed dial with red too-fast/too-slow zones; Nani says slowly/quickly when it applies; laps counted aloud
+- ☑ **Polish the keepers:** chaat (bigger bowl, visible layers, customer checks layer by layer), tadka (burns if too slow; ladder hides at later levels, so it's Nani's spoken order from memory), chop (mid-round switch: "now dungri!"), samosa + fry (count, "lift the samosas, leave the chips")
+- ☑ **"Pass me" in the pantry** and in the slower stations (a listening break where the hands have little to do)
 - ☑ **Free play everywhere:** Cook's open kitchen (customers keep arriving, you close when you like); every future mode gets a free-play entry too
 
 ### Wave 4: check ☐
