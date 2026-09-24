@@ -1506,10 +1506,10 @@
      "minPour": 0.03,
      "profiles": {
       "cup": {
-       "rate": 0.32
+       "rate": 0.28
       },
       "milk": {
-       "rate": 0.26
+       "rate": 0.24
       }
      }
     },
@@ -1519,10 +1519,10 @@
      "enoughUntilStage": 1,
      "profiles": {
       "cup": {
-       "rate": 0.38
+       "rate": 0.32
       },
       "milk": {
-       "rate": 0.3
+       "rate": 0.27
       }
      }
     },
@@ -1532,10 +1532,10 @@
      "enoughUntilStage": 0,
      "profiles": {
       "cup": {
-       "rate": 0.44
+       "rate": 0.36
       },
       "milk": {
-       "rate": 0.34
+       "rate": 0.3
       }
      }
     }

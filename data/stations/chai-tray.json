@@ -18,7 +18,7 @@
  },
  "mechanic": {
   "levels": [
-   {"lines": {"milk": 0.24, "half": 0.52, "full": 0.86}, "tolerance": 0.07, "milkTolerance": 0.09, "halfLine": false, "showExtras": false, "extras": ["spi-10", "veg-14", "veg-13"], "decoys": ["spi-16"], "boilLevel": 1, "water": [0.42, 0.58], "teaDecoys": ["spi-02", "spi-05"], "speakGapMs": 300, "tallyMax": 6},
+   {"lines": {"milk": 0.22, "half": 0.48, "full": 0.8}, "tolerance": 0.07, "milkTolerance": 0.09, "halfLine": false, "showExtras": false, "extras": ["spi-10", "veg-14", "veg-13"], "decoys": ["spi-16"], "boilLevel": 1, "water": [0.42, 0.58], "teaDecoys": ["spi-02", "spi-05"], "speakGapMs": 300, "tallyMax": 6},
    {"tolerance": 0.06, "boilLevel": 2},
    {"tolerance": 0.055, "halfLine": true, "showExtras": true, "boilLevel": 3}
   ]
