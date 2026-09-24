@@ -1,0 +1,49 @@
+{
+ "_about": "Worked example from docs/cook-with-nani-recipes-guide.md: chips mayai from existing mechanics (fry, count, pour, tawa), data only. The game does NOT load this file; build/test_cook.py --example plays it in the Station lab. To make it real: move `words` into data/cook.json words and `recipe` into data/cook.json recipes (key chips-mayai), add painted art, and give the words their Kutchi when the family supplies it (until then they are English placeholders).",
+ "words": {
+  "ph-mayai": {
+   "kutchi": null,
+   "english": "eggs",
+   "heap": {"kind": "balls", "color": "#f6ead2"},
+   "layer": {"kind": "liquid", "color": "#f3c84b"},
+   "bowl": "ceramic",
+   "src": "placeholder"
+  },
+  "ph-chipsmayai": {
+   "kutchi": null,
+   "english": "chips mayai",
+   "src": "placeholder"
+  }
+ },
+ "recipe": {
+  "name": "ph-chipsmayai",
+  "english": "Chips mayai",
+  "price": 5,
+  "stations": ["fetch", "fry", "count", "pour", "flip"],
+  "slots": {
+   "eggs": {"int": [1, 3]},
+   "chilli": {"chance": 0.5}
+  },
+  "say": [
+   {"frame": "order", "x": ["ph-chipsmayai"]},
+   {"frame": "and", "x": [{"n": "$eggs", "of": "ph-mayai"}]},
+   {"if": "!chilli", "frame": "no", "x": ["veg-12"]}
+  ],
+  "need": ["ph-mayai", {"if": "chilli", "then": "veg-12"}],
+  "steps": ["Pantry", "Chips", "Eggs", "Pour", "Tawa"],
+  "run": [
+   {"do": "fetch", "need": "$need"},
+   {"step": "Chips", "do": "fry", "kind": "chips", "count": 1},
+   {"do": "interrupt"},
+   {"do": "view", "station": "count", "view": "hob"},
+   {"do": "vessel", "id": "bowl", "kind": "serving", "at": [560, 380], "scale": 1.1},
+   {"do": "counter", "id": "shelf", "items": ["ph-mayai", "cook-dudh", "veg-12", "spi-16"], "x0": 250, "x1": 1000, "dy": -20},
+   {"step": "Eggs", "do": "count", "bowl": "@shelf.ph-mayai", "n": "$eggs", "into": "@bowl", "word": "ph-mayai"},
+   {"if": "chilli", "do": "add", "items": "@shelf", "expected": "veg-12", "into": "@bowl"},
+   {"do": "vessel", "id": "pan", "kind": "pan", "at": ["burner-right", 0, -30], "scale": 1.35},
+   {"step": "Pour", "do": "pour", "source": "@bowl", "vessel": "@pan", "target": [0.35, 0.55], "color": "#f3c84b"},
+   {"step": "Tawa", "do": "tawa", "n": 1, "art": {"raw": "layer:ph-mayai", "half": "layer:ph-mayai", "done": "layer:ph-mayai"}, "doneWord": "golden"},
+   {"do": "serve", "key": "chips-mayai", "art": "layer:ph-mayai", "count": 1}
+  ]
+ }
+}

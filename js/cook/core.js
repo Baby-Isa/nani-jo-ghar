@@ -27,13 +27,19 @@
     Cook.data = data;
     Cook.audioManifest = manifest || {};
     Cook.tts = (tts && tts.lines) || {};
+    // modules that build themselves from the data (recipes, a combined
+    // station's own data file) run here, in the order they registered
+    for (const fn of Cook.onLoad) await fn(data);
     return data;
   };
+  Cook.onLoad = [];
 
   Cook.word = (id) => Cook.data.words[id];
   Cook.kutchi = (id) => (Cook.data.words[id] || {}).kutchi || id;
   Cook.english = (id) => (Cook.data.words[id] || {}).english || id;
-  Cook.numWord = (n) => Cook.kutchi(`num-0${n}`);
+  // number words: data.grammar.numbers maps 1 -> "num-01" (lang.js)
+  Cook.numId = (n) => (((Cook.data && Cook.data.grammar) || {}).numbers || {})[n] || `num-0${n}`;
+  Cook.numWord = (n) => Cook.kutchi(Cook.numId(n));
   Cook.hasAudio = (id) => !!id && (Cook.audioManifest.word || []).includes(id);
 
   /* ---------------- save ---------------- */
@@ -186,7 +192,9 @@
    * the file of the same name. Played through Web Audio, which is unlocked
    * by the first tap and works on phones where <audio> autoplay doesn't. */
   Cook.tts = {};
-  Cook.norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+  // letters, marks and digits of any script (romanised Kutchi today, Gujarati
+  // script later); must match norm() in build/build_cook_tts.py
+  Cook.norm = (s) => String(s || "").toLowerCase().normalize("NFC").replace(/[^\p{L}\p{M}\p{N} ]/gu, "").replace(/\s+/g, " ").trim();
   Cook.hasVoice = (plain) => !!Cook.tts[Cook.norm(plain)];
   const bufCache = {};
   let currentSrc = null;

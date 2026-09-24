@@ -10,6 +10,11 @@
  * Kutchi group plays its placeholder Gujarati-voice file if there is one,
  * otherwise each word's file in turn; an English group plays its
  * English-voice file if there is one. Files come from build/build_cook_tts.py.
+ *
+ * No language rules live here: sentence frames are data.lines, and the
+ * grammar (number words, where the number goes, how a list and an order
+ * are linked) is data.grammar, so another language (Gujarati first) is a
+ * data swap. Code only names roles: "need", "and", "no", "only"...
  */
 (function (global) {
   const Cook = global.Cook;
@@ -22,14 +27,30 @@
     return w ? w.kutchi || w.english : id;
   };
 
+  const G = () => (Cook.data && Cook.data.grammar) || {};
+  Lang.grammar = G;
   Lang.word = (id) => [{ t: Cook.display(id), lang: Cook.isPlaceholder(id) ? "e" : "k", w: id }];
-  Lang.num = (n) => [{ t: Cook.numWord(n), lang: "k", w: `num-0${n}` }];
+  Lang.numId = (n) => Cook.numId(n);
+  Lang.num = (n) => [{ t: Cook.numWord(n), lang: "k", w: Lang.numId(n) }];
+  /**
+   * Phrase parts for "n of a thing", in the language's order (grammar.count,
+   * e.g. "{n} {x}"). one: false leaves the number out when it's 1 ("chai",
+   * not "one chai"), which is how a dish is ordered.
+   */
+  Lang.countParts = (n, id, { one = true } = {}) => {
+    if (n == null || (n === 1 && !one)) return [id];
+    const t = G().count || "{n} {x}";
+    return t.indexOf("{x}") < t.indexOf("{n}") ? [id, n] : [n, id];
+  };
+  /** The frame that starts a dish in an order ("I need …") or adds one ("And …"). */
+  Lang.orderFrame = (i) => ((G().order || {})[i === 0 ? "first" : "next"] || (i === 0 ? "need" : "and"));
   /** parts: word ids and numbers, e.g. [2, "cook-maani"] */
   Lang.phrase = (parts) => {
     const segs = [];
     const en = [];
+    const sep = G().sep != null ? G().sep : " ";
     parts.forEach((p, i) => {
-      if (i) segs.push({ t: " ", lang: null });
+      if (i) segs.push({ t: sep, lang: null });
       if (typeof p === "number") {
         segs.push(...Lang.num(p));
         en.push(String(p));
@@ -55,10 +76,25 @@
     return { segs, en, key };
   };
   Lang.wordLine = (id) => ({ segs: Lang.word(id), en: Cook.english(id) });
-  /** A spoken list: "chana. Ne bataato. Ne dahi." */
-  Lang.list = (ids) =>
-    Lang.join(ids.map((id, i) => (i === 0 ? { segs: Lang.word(id).concat([{ t: ".", lang: Cook.isPlaceholder(id) ? "e" : "k" }]), en: Cook.english(id) + "." } : Lang.line("and", Lang.phrase([id])))));
-  Lang.numLine = (n) => ({ segs: Lang.num(n).concat([{ t: "!", lang: "k" }]), en: `${n}!` });
+  /**
+   * Wrap a phrase in a small template with {x} (grammar.list.first "{x}.",
+   * grammar.number "{x}!"): the text around it takes the phrase's language.
+   */
+  const wrap = (tmpl, segs, en, lang) => {
+    const [a, b] = String(tmpl || "{x}").split("{x}");
+    const out = [];
+    if (a) out.push({ t: a, lang });
+    out.push(...segs);
+    if (b) out.push({ t: b, lang });
+    return { segs: out, en: (a || "") + en + (b || "") };
+  };
+  /** A spoken list: "chana. Ne bataato. Ne dahi." (grammar.list) */
+  Lang.list = (ids) => {
+    const L = G().list || {};
+    return Lang.join(ids.map((id, i) => (i === 0 ? wrap(L.first || "{x}.", Lang.word(id), Cook.english(id), Cook.isPlaceholder(id) ? "e" : "k") : Lang.line(L.next || "and", Lang.phrase([id])))));
+  };
+  /** A number said on its own as you count ("be!"): grammar.number. */
+  Lang.numLine = (n) => wrap(G().number || "{x}!", Lang.num(n), String(n), "k");
   Lang.join = (lines) => {
     const segs = [];
     lines.forEach((l, i) => {

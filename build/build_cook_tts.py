@@ -23,6 +23,7 @@ Run: python3 build/build_cook_tts.py   (needs network, gTTS, imageio-ffmpeg)
 import json
 import os
 import re
+import unicodedata
 import subprocess
 import sys
 import tempfile
@@ -49,8 +50,9 @@ GU = {
 
 
 def norm(s):
-    s = s.lower()
-    s = re.sub(r"[^a-z0-9 ]", "", s)
+    # letters, marks and digits of any script; must match Cook.norm in js/cook/core.js
+    s = unicodedata.normalize("NFC", s.lower())
+    s = "".join(c for c in s if c == " " or unicodedata.category(c)[0] in "LMN")
     return re.sub(r"\s+", " ", s).strip()
 
 

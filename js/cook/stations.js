@@ -13,6 +13,11 @@
  * it's green"), first-person hands, a fingertip demo, particles, and a
  * pause that "pass me" uses in Relaxed mode. Cook.expect always says what
  * the player should do next, for the end-to-end test.
+ *
+ * Several things can run at once (two tawas, three skewers, a combined
+ * station's zones), so per-frame work goes through addTick() rather than
+ * one `tick` slot, and step/pour/ring report what they expect through an
+ * `io` ({expect, gauge}; see zone.js) instead of writing the globals.
  */
 (function (global) {
   const Cook = global.Cook;
@@ -47,7 +52,11 @@
         "tawa", "pot", "pot-daal", "tadka-pan", "saucepan", "milk-jug", "tea-tin", "sugar-jar", "elchi", "glass", "glass-chai",
         "knife", "knife-gold", "thali", "chai-machine", "basket", "basket-front",
       ];
-      props.forEach((p) => this.load.image(p, `assets/cook/props/${p}.webp`));
+      // plus any prop named in the data (a word's `image`, data.art.props), so
+      // new art is a file in assets/cook/props/ and a name in the data
+      const W = (Cook.data && Cook.data.words) || {};
+      const more = Object.values(W).map((w) => w.image).concat(((Cook.data && Cook.data.art) || {}).props || []);
+      [...new Set(props.concat(more.filter(Boolean)))].forEach((p) => this.load.image(p, `assets/cook/props/${p}.webp`));
     }
 
     create() {
@@ -56,6 +65,7 @@
       this.layer = [];
       this.chars = {};
       this.loops = [];
+      this.ticks = [];
       this.tweens.timeScale = Cook.speed;
       this.time.timeScale = Cook.speed;
       Cook.scene = this;
@@ -65,6 +75,7 @@
           return;
         }
         if (this.tick) this.tick();
+        if (this.ticks.length) this.ticks.slice().forEach((t) => t.fn && t.fn());
       });
       if (Cook.onSceneReady) Cook.onSceneReady(this);
     }
@@ -84,9 +95,21 @@
       this.layer = [];
       this.chars = {};
       this.tick = null;
+      this.ticks = [];
+      if (Cook.Hub) Cook.Hub.reset();
       Cook.gauge = null;
       Cook.expect = null;
       Cook.paused = false;
+    }
+    /** Run fn every frame (not while paused); returns a function that stops it. */
+    addTick(fn) {
+      const t = { fn };
+      this.ticks.push(t);
+      return () => {
+        t.fn = null;
+        const i = this.ticks.indexOf(t);
+        if (i >= 0) this.ticks.splice(i, 1);
+      };
     }
     async setView(name, { fast } = {}) {
       const cam = this.cameras.main;
@@ -297,7 +320,10 @@
     }
     /** A result word over the action: "Perfect!", "Too much", "Too early". */
     verdict(x, y, score, words = {}) {
-      const w = score >= 95 ? words.perfect || "Perfect!" : score >= 70 ? words.good || "Good!" : words.bad || "Oops";
+      // words are keys into data.verdicts (or plain text)
+      const V = (Cook.data && Cook.data.verdicts) || {};
+      const key = score >= 95 ? words.perfect || "perfect" : score >= 70 ? words.good || "good" : words.bad || "bad";
+      const w = V[key] || key;
       this.floatText(x, y, w, score >= 95 ? "#ffe08a" : score >= 70 ? "#ffffff" : "#ffd6c9", 50);
       if (score >= 95) this.sparkle(x, y);
     }
@@ -309,11 +335,11 @@
 
     /* ---------------- first-person hands ---------------- */
     /** A hand from the bottom of the screen holding a tool; call .moveTo(x, y). */
-    hand(tool, { x = 800, y = 700, angle = 0 } = {}) {
+    hand(tool, { x = 800, y = 700, angle = 0, k = 1 } = {}) {
       const key = tool === "pin" ? this.tex("pin") : this.tex(`hand:${tool || ""}`);
       const img = this.track(this.add.image(x, y, key).setDepth(D.hand));
-      if (tool === "pin") img.setOrigin(0.5, 0.58).setScale(0.85);
-      else img.setOrigin(0.5, 0.06).setScale(0.8);
+      if (tool === "pin") img.setOrigin(0.5, 0.58).setScale(0.85 * k);
+      else img.setOrigin(0.5, 0.06).setScale(0.8 * k);
       img.setAngle(angle);
       img.moveTo = (tx, ty, dur = 90) => this.tweens.add({ targets: img, x: tx, y: ty, duration: dur, ease: "Sine.easeOut" });
       return img;
@@ -382,7 +408,7 @@
      * and Nani names it at once. Otherwise Nani names it after the word's
      * hesitation delay, and it glows a little later; each counts as help.
      */
-    step({ items, expected, word, guided, sayLine, allowAny, onWrong }) {
+    step({ items, expected, word, guided, sayLine, allowAny, onWrong, io = Cook.IO }) {
       return new Promise((resolve) => {
         let misses = 0;
         const target = items[expected];
@@ -414,7 +440,7 @@
           this.tappable(obj, () => {
             if (key === expected || (allowAny && allowAny(key))) {
               cleanup();
-              Cook.expect = null;
+              io.expect(null);
               resolve({ key, misses });
             } else {
               misses++;
@@ -426,7 +452,7 @@
           });
         });
         const c = this.centre(target);
-        Cook.expect = {
+        io.expect({
           kind: "tap",
           x: c.x,
           y: c.y,
@@ -434,13 +460,14 @@
           wrongs: Object.keys(items)
             .filter((k) => k !== expected && items[k] && items[k].active)
             .map((k) => this.centre(items[k])),
-        };
+        });
       });
     }
 
     /** Hold on `obj` to pour; `onLevel(v)` as it rises; resolves with the level at release. */
-    pour(obj, { rate = 0.3, auto = false, lo, hi, onLevel, onStart, onStop } = {}) {
+    pour(obj, { rate = 0.3, auto = false, lo, hi, onLevel, onStart, onStop, io = Cook.IO } = {}) {
       return new Promise((resolve) => {
+        let off = null;
         let pouring = false;
         let level = 0;
         let loop = null;
@@ -459,8 +486,8 @@
           finish();
         };
         const finish = () => {
-          Cook.expect = null;
-          this.tick = null;
+          io.expect(null);
+          if (off) off();
           this.input.off("pointerup", stop);
           this.untap(obj);
           resolve(level);
@@ -468,7 +495,7 @@
         this.tappable(obj, start);
         this.input.on("pointerup", stop);
         let last = performance.now();
-        this.tick = () => {
+        off = this.addTick(() => {
           const now = performance.now();
           const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
           last = now;
@@ -484,17 +511,17 @@
             return finish();
           }
           onLevel && onLevel(level);
-          Cook.gauge = { level, lo, hi };
+          io.gauge({ level, lo, hi });
           if (level >= 1.08) {
             pouring = false;
             loop && loop.stop();
             onStop && onStop();
             finish();
           }
-        };
-        Cook.gauge = { level: 0, lo, hi };
+        });
+        io.gauge({ level: 0, lo, hi });
         const c = this.centre(obj);
-        Cook.expect = { kind: "hold", x: c.x, y: c.y };
+        io.expect({ kind: "hold", x: c.x, y: c.y });
       });
     }
 
@@ -504,8 +531,9 @@
      * fraction at the tap (1 if it ran out). While it's in the green, the
      * food pulses. Real cues (bubbles, colour) come from onLevel.
      */
-    ring(target, { x, y, r = 120, lo = 0.62, hi = 0.82, rate = 0.22, onLevel, alsoTap = [] } = {}) {
+    ring(target, { x, y, r = 120, lo = 0.62, hi = 0.82, rate = 0.22, onLevel, alsoTap = [], io = Cook.IO } = {}) {
       return new Promise((resolve) => {
+        let off = null;
         const c = this.centre(target);
         x = x != null ? x : c.x;
         y = y != null ? y : c.y;
@@ -537,8 +565,8 @@
         const hit = () => {
           if (done) return;
           done = true;
-          Cook.expect = null;
-          this.tick = null;
+          io.expect(null);
+          if (off) off();
           [target, ...alsoTap].forEach((o) => this.untap(o));
           this.glow(target, false);
           g.destroy();
@@ -547,7 +575,7 @@
         [target, ...alsoTap].forEach((o) => this.tappable(o, hit));
         let last = performance.now();
         let inBand = false;
-        this.tick = () => {
+        off = this.addTick(() => {
           const now = performance.now();
           const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
           last = now;
@@ -559,13 +587,13 @@
             if (nowIn) Cook.sfx.click();
           }
           onLevel && onLevel(v);
-          Cook.gauge = { level: v, lo, hi };
+          io.gauge({ level: v, lo, hi });
           draw();
           if (v >= 1) hit();
-        };
+        });
         draw();
-        Cook.gauge = { level: 0, lo, hi };
-        Cook.expect = { kind: "timing", x: c.x, y: c.y };
+        io.gauge({ level: 0, lo, hi });
+        io.expect({ kind: "timing", x: c.x, y: c.y });
       });
     }
 
