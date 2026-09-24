@@ -195,6 +195,16 @@ class Player:
                 p.mouse.up()
             time.sleep(0.5)
         elif k in ("swipe", "slice"):
+            if k == "slice" and self.mistakes and e.get("swrongs") and "slice-wrong" not in self.made:
+                # one deliberate wrong slice (a decoy in flight): the warm-failure path
+                self.made.add("slice-wrong")
+                w = e["swrongs"][0]
+                p.mouse.move(w["x"] - 60, w["y"] - 20)
+                p.mouse.down()
+                for s in range(1, 5):
+                    p.mouse.move(w["x"] - 60 + 120 * s / 4, w["y"] - 20 + 40 * s / 4)
+                p.mouse.up()
+                return
             p.mouse.move(e["sx1"], e["sy1"])
             p.mouse.down()
             steps = 4 if k == "slice" else 10

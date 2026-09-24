@@ -539,6 +539,18 @@
    "en": "And then {x}.",
    "draft": true,
    "src": "zafar-24sep-draft"
+  },
+  "now": {
+   "e": "Now {x}!"
+  },
+  "lift": {
+   "e": "Lift out the {x}."
+  },
+  "leave": {
+   "e": "Leave the {x}."
+  },
+  "burning": {
+   "e": "It's burning!"
   }
  },
  "grammar": {
@@ -1071,14 +1083,16 @@
      "spi-05",
      "veg-13",
      "veg-12",
-     "spi-01"
+     "spi-01",
+     "spi-16"
     ],
     "veg": [
      "veg-02",
      "veg-03",
      "veg-13",
      "veg-12",
-     "veg-01"
+     "veg-01",
+     "veg-14"
     ]
    },
    "slots": {
@@ -1091,20 +1105,26 @@
      ],
      "order": "sequence"
     },
-    "tameto": {
-     "chance": 0.4
-    },
     "onions": {
      "int": [
       1,
       2
-     ]
+     ],
+     "zero": 0.2
     },
     "tomatoes": {
      "int": [
       1,
       2
-     ]
+     ],
+     "zero": 0.5
+    },
+    "chillies": {
+     "int": [
+      1,
+      2
+     ],
+     "zero": 0.7
     },
     "laps": {
      "int": [
@@ -1128,10 +1148,31 @@
      ]
     },
     {
-     "if": "tameto",
+     "if": "onions",
+     "frame": "and",
+     "x": [
+      "veg-02"
+     ]
+    },
+    {
+     "if": "!onions",
+     "frame": "no",
+     "x": [
+      "veg-02"
+     ]
+    },
+    {
+     "if": "tomatoes",
      "frame": "and",
      "x": [
       "veg-03"
+     ]
+    },
+    {
+     "if": "chillies",
+     "frame": "and",
+     "x": [
+      "veg-12"
      ]
     },
     {
@@ -1152,12 +1193,59 @@
      "do": "chop",
      "targets": {
       "veg-02": "$onions",
-      "veg-03": {
-       "if": "tameto",
-       "then": "$tomatoes"
-      }
+      "veg-03": "$tomatoes",
+      "veg-12": "$chillies"
      },
-     "pool": "$veg"
+     "no": {
+      "if": "!onions",
+      "then": [
+       "veg-02"
+      ]
+     },
+     "pool": "$veg",
+     "tick": true,
+     "if": "onions"
+    },
+    {
+     "do": "chop",
+     "targets": {
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes",
+      "veg-12": "$chillies"
+     },
+     "no": {
+      "if": "!onions",
+      "then": [
+       "veg-02"
+      ]
+     },
+     "pool": "$veg",
+     "tick": true,
+     "if": [
+      "!onions",
+      "tomatoes"
+     ]
+    },
+    {
+     "do": "chop",
+     "targets": {
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes",
+      "veg-12": "$chillies"
+     },
+     "no": {
+      "if": "!onions",
+      "then": [
+       "veg-02"
+      ]
+     },
+     "pool": "$veg",
+     "tick": true,
+     "if": [
+      "!onions",
+      "!tomatoes",
+      "chillies"
+     ]
     },
     {
      "do": "interrupt"
@@ -1201,33 +1289,45 @@
      "veg-01",
      "veg-02",
      "veg-03",
-     "veg-13"
+     "veg-13",
+     "veg-12"
     ]
    },
    "slots": {
     "no": {
      "type": "no",
+     "tasteChance": 0.7,
      "else": {
       "chance": 0.5,
       "from": [
        "veg-02",
        "veg-12",
-       "ph-lili"
+       "ph-lili",
+       "ph-sev",
+       "ph-dahi",
+       "veg-03"
       ]
      }
     },
+    "base": {
+     "pick": [
+      [
+       "ph-chana",
+       "veg-01"
+      ],
+      [
+       "veg-01",
+       "ph-chana"
+      ]
+     ]
+    },
     "seq": {
      "type": "items",
-     "first": [
-      "ph-chana"
-     ],
-     "always": [
-      "veg-01"
-     ],
+     "first": "$base",
      "from": "$toppings",
      "exclude": "no",
      "take": [
-      2,
+      1,
       3
      ],
      "tasteAdd": [
@@ -1238,6 +1338,18 @@
      "order": "sequence"
     },
     "potatoes": {
+     "int": [
+      1,
+      2
+     ]
+    },
+    "onions": {
+     "int": [
+      1,
+      2
+     ]
+    },
+    "tomatoes": {
      "int": [
       1,
       2
@@ -1271,8 +1383,11 @@
     {
      "do": "chop",
      "targets": {
-      "veg-01": "$potatoes"
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
      },
+     "only": "$seq",
      "pool": "$veg"
     },
     {
@@ -1303,13 +1418,23 @@
    ],
    "slots": {
     "no": {
-     "type": "no"
+     "type": "no",
+     "tasteChance": 0.6,
+     "else": {
+      "chance": 0.4,
+      "from": [
+       "veg-12",
+       "veg-02",
+       "ph-dhana"
+      ]
+     }
     },
-    "fillings": {
+    "kinds": {
      "type": "items",
      "first": [
       {
        "taste": "filling",
+       "tasteChance": 0.6,
        "else": {
         "pick": [
          "ph-keema",
@@ -1318,23 +1443,28 @@
        }
       }
      ],
-     "from": [
-      "veg-10",
-      "veg-02",
-      "veg-12",
-      "ph-dhana"
-     ],
+     "from": "$fillings_all",
      "exclude": "no",
      "take": [
-      2,
+      1,
       2
      ],
      "order": "any"
     },
+    "fillings": {
+     "type": "tally",
+     "kinds": "$kinds",
+     "total": {
+      "int": [
+       3,
+       5
+      ]
+     }
+    },
     "count": {
      "int": [
       1,
-      2
+      3
      ]
     }
    },
@@ -1350,7 +1480,8 @@
      ]
     },
     {
-     "list": "$fillings"
+     "tally": "$fillings",
+     "frame": "and"
     },
     {
      "forEach": "$no",
@@ -1370,13 +1501,12 @@
    ],
    "run": [
     {
-     "repeat": "$count",
      "do": "fillFold",
      "fillings": "$fillings",
      "exclude": "$no",
      "decoyPool": "$fillings_all",
-     "index": "$i",
-     "total": "$count"
+     "count": "$count",
+     "as": "made"
     },
     {
      "do": "interrupt"
@@ -1384,7 +1514,8 @@
     {
      "do": "fry",
      "kind": "samosa",
-     "count": "$count"
+     "count": "$count",
+     "made": "$made"
     },
     {
      "do": "serve",
@@ -1542,12 +1673,12 @@
   "chop": {
    "name": "Chop",
    "verb": "Chop",
-   "goal": "Swipe to slice only what Nani says, as many as she says."
+   "goal": "Swipe to slice only what Nani says, as many as she says. Listen: she'll switch!"
   },
   "tadka": {
    "name": "Tadka",
    "verb": "Tadka",
-   "goal": "Add the spices to the hot oil in the order Nani says."
+   "goal": "Add the spices to the hot oil in the order Nani says. Be quick, or they burn!"
   },
   "stir": {
    "name": "Stir",
@@ -1557,22 +1688,22 @@
   "assemble": {
    "name": "Chaat bowl",
    "verb": "Assemble",
-   "goal": "Add the toppings in the order they asked. Leave out anything they don't want!"
+   "goal": "Add the toppings in the order they asked, then tap the tick. They check every layer!"
   },
   "fill": {
    "name": "Fill",
    "verb": "Fill",
-   "goal": "Put the fillings they asked for in the middle of the pastry."
+   "goal": "Spoon in the fillings they asked for, as many spoons of each as they said. Then tap the tick."
   },
   "fold": {
    "name": "Fold",
    "verb": "Fold",
-   "goal": "Swipe along each dashed line to fold the samosa."
+   "goal": "Swipe along each dashed line to fold a samosa. Make as many as they asked for, then tap the tick."
   },
   "fry": {
    "name": "Fry",
    "verb": "Fry",
-   "goal": "Drop them in, then lift each one out when its ring reaches green."
+   "goal": "Drop in what they asked for, lift each one out when its ring is green, then tap the tick."
   },
   "thread": {
    "name": "Skewer",
@@ -1593,7 +1724,8 @@
      "shelf": 11,
      "minDecoys": 5,
      "lookalikes": 2,
-     "flyMs": 520
+     "flyMs": 520,
+     "passMe": 0.5
     },
     {
      "shelf": 13,
@@ -1775,27 +1907,59 @@
   "chop": {
    "levels": [
     {
-     "inAir": 3,
-     "every": 1.1,
-     "fasterPerStage": 0.12,
-     "fasterMax": 0.5,
-     "targetBias": 0.55,
+     "inAir": 2,
+     "every": 1.15,
+     "fasterPerStage": 0.1,
+     "fasterMax": 0.4,
      "throwSpeed": [
       1300,
       1400
      ],
      "gravity": 1250,
-     "sharp": false
+     "decoys": 2,
+     "spare": 2,
+     "size": 170,
+     "phoneSize": 230,
+     "sharp": false,
+     "lookalikes": {
+      "veg-03": [
+       "veg-02"
+      ],
+      "veg-02": [
+       "veg-13",
+       "veg-03"
+      ],
+      "veg-01": [
+       "veg-13",
+       "veg-02"
+      ],
+      "veg-12": [
+       "veg-14"
+      ],
+      "veg-13": [
+       "veg-02"
+      ]
+     },
+     "variants": {
+      "veg-02": {
+       "color": "#a3244f",
+       "near": [
+        "veg-03"
+       ],
+       "chance": 0.6
+      }
+     }
+    },
+    {
+     "inAir": 3,
+     "every": 1.0,
+     "decoys": 3
     },
     {
      "inAir": 4,
-     "every": 0.95,
-     "targetBias": 0.45
-    },
-    {
-     "inAir": 5,
-     "every": 0.8,
-     "targetBias": 0.4,
+     "every": 0.85,
+     "decoys": 4,
+     "spare": 1,
      "throwSpeed": [
       1350,
       1500
@@ -1816,10 +1980,14 @@
       "veg-13"
      ],
      "autoTip": false,
-     "ladder": "words"
+     "ladder": "words",
+     "burnSec": 9,
+     "guidedBurn": 1.6,
+     "burntScore": 40
     },
     {
-     "ladder": "dots"
+     "ladder": "dots",
+     "burnSec": 7
     },
     {
      "shelf": [
@@ -1832,7 +2000,8 @@
       "spi-04",
       "spi-10"
      ],
-     "ladder": "hidden"
+     "ladder": "hidden",
+     "burnSec": 5.5
     }
    ]
   },
@@ -1894,27 +2063,60 @@
   "assemble": {
    "levels": [
     {
-     "decoys": 1,
+     "decoys": [
+      2,
+      2
+     ],
      "decoyPick": "random",
-     "flyMs": 420
+     "flyMs": 380,
+     "rowY": 780,
+     "checkMs": 800,
+     "bowl": {
+      "x": 800,
+      "y": 455,
+      "depth": 300,
+      "rx": 310,
+      "ry": 86,
+      "brx": 200,
+      "bry": 56
+     }
     },
     {
-     "decoys": 2
+     "decoys": [
+      2,
+      3
+     ]
     },
     {
-     "decoys": 3
+     "decoys": [
+      3,
+      3
+     ]
     }
    ]
   },
   "fill": {
    "levels": [
     {
-     "decoys": 1,
-     "decoyPick": "first"
+     "decoys": [
+      2,
+      2
+     ],
+     "decoyPick": "random",
+     "rowY": 780,
+     "flyMs": 340
     },
     {
-     "decoys": 2,
-     "decoyPick": "random"
+     "decoys": [
+      2,
+      3
+     ]
+    },
+    {
+     "decoys": [
+      3,
+      3
+     ]
     }
    ]
   },
@@ -1923,7 +2125,8 @@
     {
      "folds": 3,
      "minLen": 0.45,
-     "minDot": 0.6
+     "minDot": 0.6,
+     "maxExtra": 3
     },
     {
      "minLen": 0.6,
@@ -1942,17 +2145,26 @@
       0.13,
       0.18
      ],
-     "extraOnTray": 1,
+     "extras": [
+      1,
+      3
+     ],
+     "others": {},
+     "leave": {},
+     "leaveRate": 0.1,
      "burnAt": 1.15,
      "burntScore": 40,
+     "passMeAfterMs": 2500,
      "items": {
       "samosa": {
        "art": "pastry:3",
-       "scale": 0.36
+       "scale": 0.3,
+       "word": "ph-samosa"
       },
       "chips": {
        "art": "bowl:ph-chips",
-       "scale": 0.6
+       "scale": 0.5,
+       "word": "ph-chips"
       }
      }
     },
@@ -1965,7 +2177,20 @@
       0.15,
       0.22
      ],
-     "extraOnTray": 2
+     "extras": [
+      1,
+      3
+     ],
+     "others": {
+      "chips": [
+       1,
+       2
+      ],
+      "samosa": [
+       1,
+       2
+      ]
+     }
     },
     {
      "band": [
@@ -1976,7 +2201,15 @@
       0.17,
       0.26
      ],
-     "extraOnTray": 2
+     "extras": [
+      2,
+      3
+     ],
+     "others": {},
+     "leave": {
+      "chips": 2,
+      "samosa": 2
+     }
     }
    ]
   },
@@ -2605,7 +2838,9 @@
    "knead": "Keep pressing until the dough is smooth",
    "fold": "Swipe along each dashed line",
    "chop": "Slice right through each one",
-   "default": "Take your time with your hands"
+   "default": "Take your time with your hands",
+   "tadka": "Add the next spice before the oil smokes",
+   "chop missed": "Slice each one Nani names before it falls"
   },
   "third": {
    "busy": "Serve before the ring runs out",

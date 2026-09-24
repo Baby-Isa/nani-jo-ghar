@@ -145,15 +145,16 @@
       const t = fromTaste(spec, env);
       if (t !== undefined) return t;
       const first = [].concat(value(spec.first || [], env)).flat().filter(Boolean);
-      const always = listOf(spec.always || [], env);
       const exclude = [].concat(spec.exclude || []).flatMap((s) => [].concat(env.d[s] || []));
+      // a "no X" beats a default or a usual topping (wave 3: always/tasteAdd respect `exclude`)
+      const always = listOf(spec.always || [], env).filter((x) => !exclude.includes(x));
       const pool = listOf(spec.from || [], env).filter((x) => !exclude.includes(x) && (spec.repeats || (!first.includes(x) && !always.includes(x))));
       const n = Array.isArray(spec.take) ? rand(spec.take[0], spec.take[1]) : spec.take || 0;
       const picked = spec.repeats ? Array.from({ length: n }, () => Cook.pick(pool)) : (spec.prefer === "weak" ? byWeak(pool) : Cook.shuffle(pool)).slice(0, n);
       let rest = always.concat(picked);
       (spec.tasteAdd || []).forEach((key) => {
         const v = env.taste[key];
-        if (v && !first.includes(v) && !rest.includes(v)) rest.push(v);
+        if (v && !exclude.includes(v) && !first.includes(v) && !rest.includes(v)) rest.push(v);
       });
       if (spec.shuffle) rest = Cook.shuffle(rest);
       return first.concat(rest);
