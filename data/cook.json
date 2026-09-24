@@ -708,290 +708,170 @@
    "english": "Chai",
    "price": 4,
    "stations": [
-    "fetch",
     "pour",
     "add",
-    "watch",
-    "pour",
+    "boil",
     "count",
     "pour"
    ],
+   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (milk or no milk, how many sugars or none; at level 3 an extra and half or full), so those rows wait for the tray (`when`). Level 1: the customer's own cup; level 2: two people; level 3: three, plus extras and half/full. Tastes are only a bias (tasteChance).",
+   "lists": {
+    "family": [
+     "nana",
+     "ma",
+     "cousin"
+    ]
+   },
    "slots": {
-    "khun": {
-     "int": [
-      1,
-      3
-     ],
-     "zero": 0.15,
-     "taste": "khun",
-     "tasteChance": 0
-    },
-    "dudh": {
-     "chance": 0.75,
-     "taste": "dudh",
-     "tasteChance": 0,
-     "usual": true
-    },
-    "extra": {
-     "pick": [
-      null,
-      null,
-      "spi-10",
-      "veg-14"
-     ],
-     "taste": "extra",
-     "tasteChance": 0,
-     "usual": null
-    },
     "cups": {
-     "pick": [
-      1,
-      1,
-      1,
-      2
-     ],
-     "usual": 1
+     "type": "people",
+     "who": "$family",
+     "count": {
+      "byLevel": [
+       1,
+       2,
+       3
+      ]
+     },
+     "tastes": "chai",
+     "each": {
+      "dudh": {
+       "chance": 0.65,
+       "taste": "dudh",
+       "tasteChance": 0.5
+      },
+      "khun": {
+       "int": [
+        1,
+        3
+       ],
+       "zero": 0.2,
+       "taste": "khun",
+       "tasteChance": 0.5
+      },
+      "extra": {
+       "byLevel": [
+        null,
+        null,
+        {
+         "pick": [
+          null,
+          "spi-10",
+          "veg-14"
+         ],
+         "taste": "extra",
+         "tasteChance": 0.4
+        }
+       ]
+      },
+      "amount": {
+       "byLevel": [
+        null,
+        null,
+        {
+         "pick": [
+          "ph-half",
+          "ph-full"
+         ]
+        }
+       ]
+      }
+     }
     }
    },
    "say": [
     {
      "frame": "order",
      "x": [
+      "cook-chai"
+     ]
+    },
+    {
+     "forEach": "$cups",
+     "for": "$it.who",
+     "say": [
       {
-       "n": "$cups",
-       "of": "cook-chai",
-       "one": false
-      }
-     ]
-    },
-    {
-     "if": [
-      "!usual",
-      "!dudh"
-     ],
-     "frame": "no",
-     "x": [
-      "cook-dudh"
-     ]
-    },
-    {
-     "if": [
-      "!usual",
-      "khun"
-     ],
-     "frame": "and",
-     "x": [
+       "if": "it.dudh",
+       "frame": "and",
+       "x": [
+        "cook-dudh"
+       ],
+       "when": "chai-tray"
+      },
       {
-       "n": "$khun",
-       "of": "cook-khun"
+       "if": "!it.dudh",
+       "frame": "no",
+       "x": [
+        "cook-dudh"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.khun",
+       "frame": "and",
+       "x": [
+        {
+         "n": "$it.khun",
+         "of": "cook-khun"
+        }
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "!it.khun",
+       "frame": "no",
+       "x": [
+        "cook-khun"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.extra",
+       "frame": "and",
+       "x": [
+        "$it.extra"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.amount",
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
       }
-     ]
-    },
-    {
-     "if": [
-      "!usual",
-      "!khun"
-     ],
-     "frame": "no",
-     "x": [
-      "cook-khun"
-     ]
-    },
-    {
-     "if": [
-      "!usual",
-      "extra"
-     ],
-     "frame": "and",
-     "x": [
-      "$extra"
      ]
     }
    ],
-   "need": [
-    "cook-chai",
-    {
-     "if": "dudh",
-     "then": "cook-dudh"
-    },
-    {
-     "if": "khun",
-     "then": "cook-khun"
-    },
-    "$extra"
-   ],
+   "need": [],
    "steps": [
-    "Pantry",
     "Water",
     "Tea",
     "Boil",
-    "Milk",
-    "Extra",
-    "Sugar",
+    "Cups",
     "Pour"
    ],
    "run": [
     {
-     "do": "fetch",
-     "need": "$need"
-    },
-    {
      "do": "interrupt"
     },
     {
-     "do": "view",
-     "station": "pour",
-     "view": "hob"
-    },
-    {
-     "do": "vessel",
-     "id": "pan",
-     "kind": "pan",
-     "at": [
-      "burner-left",
-      0,
-      -30
-     ],
-     "scale": 1.35,
-     "special": "machine"
-    },
-    {
-     "do": "counter",
-     "id": "shelf",
-     "items": [
-      "$basket",
-      "cook-khun",
-      "spi-16",
-      "cook-chai",
-      "spi-02",
-      "spi-10",
-      "veg-14"
-     ],
-     "except": [
-      "cook-dudh",
-      "cook-paani"
-     ],
-     "x0": 150,
-     "x1": 1100,
-     "dy": -20,
-     "w": 150,
-     "h": 115
-    },
-    {
-     "do": "pour",
-     "vessel": "@pan",
-     "liquid": "cook-paani",
-     "color": "#9fd3f0",
-     "target": [
-      0.42,
-      0.58
-     ],
-     "jugAt": [
-      1300,
-      "strip"
-     ]
-    },
-    {
-     "step": "Tea",
-     "do": "add",
-     "items": "@shelf",
-     "expected": "cook-chai",
-     "into": "@pan"
-    },
-    {
-     "do": "colour",
-     "vessel": "@pan",
-     "color": "#6b3a1c"
-    },
-    {
-     "step": "Boil",
-     "do": "boil",
-     "vessel": "@pan"
-    },
-    {
-     "if": "dudh",
-     "step": "Milk",
-     "do": "pour",
-     "vessel": "@pan",
-     "liquid": "cook-dudh",
-     "color": "#c49468",
-     "fromLevel": true,
-     "target": [
-      0.74,
-      0.9
-     ],
-     "jugAt": [
-      1470,
-      "strip"
-     ],
-     "speak": false
-    },
-    {
-     "if": "extra",
-     "step": "Extra",
-     "do": "add",
-     "items": "@shelf",
-     "expected": "$extra",
-     "into": "@pan"
-    },
-    {
-     "if": "khun",
-     "step": "Sugar",
-     "do": "count",
-     "bowl": "@shelf.cook-khun",
-     "n": "$khun",
-     "into": "@pan",
-     "word": "cook-khun"
-    },
-    {
-     "step": "Pour",
-     "repeat": "$cups",
-     "run": [
-      {
-       "do": "vessel",
-       "id": "cup",
-       "kind": "cup",
-       "at": [
-        1180,
-        420
-       ],
-       "shift": [
-        170,
-        0
-       ],
-       "scale": 1.2
-      },
-      {
-       "do": "pour",
-       "source": "@pan",
-       "vessel": "@cup",
-       "target": [
-        0.72,
-        0.9
-       ],
-       "color": {
-        "if": "dudh",
-        "then": "#c49468",
-        "else": "#7a3a1a"
-       },
-       "steam": 2
-      }
-     ]
+     "do": "chai-tray",
+     "cups": "$cups",
+     "as": "tray"
     },
     {
      "do": "result",
      "key": "chai",
      "slots": [
-      "dudh",
-      "khun",
-      "extra",
       "cups"
      ]
     },
     {
      "do": "serve",
      "key": "glass-chai",
-     "count": "$cups"
+     "count": "$tray.served"
     },
     {
      "do": "wait",
@@ -1507,7 +1387,7 @@
   "pour": {
    "name": "Pour",
    "verb": "Pour",
-   "goal": "Hold to pour. Let go when it reaches the dashed line."
+   "goal": "Hold the jug to pour. Let go when it reaches the dashed line."
   },
   "add": {
    "name": "Add",
@@ -1517,7 +1397,7 @@
   "watch": {
    "name": "Boil",
    "verb": "Watch and tap",
-   "goal": "Tap when the ring reaches the green part. Don't let it boil over!"
+   "goal": "Tap the big knob when the ring reaches the green part. Don't let it boil over!"
   },
   "count": {
    "name": "Count in",
@@ -1621,9 +1501,15 @@
      "spillScore": 45,
      "auto": false,
      "instant": false,
+     "stickMs": 700,
+     "slideMs": 240,
+     "minPour": 0.03,
      "profiles": {
       "cup": {
-       "rate": 0.35
+       "rate": 0.32
+      },
+      "milk": {
+       "rate": 0.26
       }
      }
     },
@@ -1633,7 +1519,10 @@
      "enoughUntilStage": 1,
      "profiles": {
       "cup": {
-       "rate": 0.42
+       "rate": 0.38
+      },
+      "milk": {
+       "rate": 0.3
       }
      }
     },
@@ -1643,7 +1532,10 @@
      "enoughUntilStage": 0,
      "profiles": {
       "cup": {
-       "rate": 0.5
+       "rate": 0.44
+      },
+      "milk": {
+       "rate": 0.34
       }
      }
     }
@@ -1667,29 +1559,47 @@
      "rise": 0.18,
      "passMeAfterMs": 1400,
      "overScore": 40,
+     "knobR": 56,
      "instant": false,
-     "instantMs": 700
+     "instantMs": 700,
+     "profiles": {
+      "tray": {
+       "rate": 0.045,
+       "passMeAfterMs": 6000
+      }
+     }
     },
     {
      "band": [
       0.7,
       0.85
      ],
-     "rate": 0.21
+     "rate": 0.21,
+     "profiles": {
+      "tray": {
+       "rate": 0.034
+      }
+     }
     },
     {
      "band": [
       0.72,
       0.84
      ],
-     "rate": 0.25
+     "rate": 0.25,
+     "profiles": {
+      "tray": {
+       "rate": 0.026
+      }
+     }
     }
    ]
   },
   "count": {
    "levels": [
     {
-     "max": 6
+     "max": 6,
+     "spoonMs": 360
     }
    ]
   },
@@ -2052,7 +1962,8 @@
      "who": "ma",
      "dishes": [
       "chai"
-     ]
+     ],
+     "level": 2
     },
     {
      "who": "nana",
@@ -2088,7 +1999,8 @@
      "who": "nana",
      "dishes": [
       "chai"
-     ]
+     ],
+     "level": 3
     }
    ]
   },
@@ -2596,7 +2508,7 @@
   },
   "hand": {
    "pour": "Stop pouring at the dashed line",
-   "boil": "Tap when the ring reaches green",
+   "boil": "Turn the knob down when the ring is green",
    "tawa": "Flip when the ring reaches green",
    "fry": "Lift each one out when its ring is green",
    "grill": "Turn the skewer when its ring is green",

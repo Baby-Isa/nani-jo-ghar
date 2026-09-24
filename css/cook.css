@@ -545,3 +545,12 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 @media (max-aspect-ratio: 1332/1000) {
   #passme { grid-column: 1; grid-row: 2; align-self: end; }
 }
+
+/* ---- the Chai tray: one person's part of the order, with their face (no name) ---- */
+.lsec.lfor { flex-direction: row; align-items: center; gap: 5px; }
+.lsec.lfor .lface { flex: none; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; background: #f3ead9; box-shadow: 0 0 0 2px var(--cream); }
+.lsec.lfor .lg { flex: 1 1 0; min-width: 0; }
+@media (max-height: 430px) {
+  .lsec.lfor { gap: 3px; }
+  .lsec.lfor .lface { width: 22px; height: 22px; }
+}

@@ -8,6 +8,7 @@
  *          chance, taste), "items" (a sequence or an any-order group),
  *          "no" (leave-it-out list), "people" (per-person items: cups for
  *          Nana and Ma) and "tally" (quantities per kind: 2 meat, 1 veg).
+ *          Any value can be {"byLevel": [...]}: the order's level picks one.
  *   say    the order as spoken: frames (roles like "order", "and", "no")
  *          with phrase parts, lists and per-item lines. The words and the
  *          grammar come from data.lines / data.grammar, never from here.
@@ -115,6 +116,8 @@
   function value(spec, env) {
     if (spec == null || typeof spec !== "object") return isRef(spec) ? res(spec, env) : spec;
     if (Array.isArray(spec)) return spec.map((s) => value(s, env));
+    // {"byLevel": [at level 1, at level 2, ...]}: the order's level picks one (the last repeats)
+    if (spec.byLevel) return value(spec.byLevel[Cook.clamp((env.level || 1) - 1, 0, spec.byLevel.length - 1)], env);
     if (spec.type) return TYPES[spec.type](spec, env);
     const t = fromTaste(spec, env);
     if (t !== undefined) return t;
@@ -402,7 +405,7 @@
         const d = { recipe: id };
         const usual = !!opts.usual && Object.keys(taste).length > 0;
         if (usual) d.usual = true;
-        const env = { d, taste, usual, who, recipe: id, tastes: D.tastes || id, lists: D.lists || {}, vars: {} };
+        const env = { d, taste, usual, who, recipe: id, tastes: D.tastes || id, lists: D.lists || {}, vars: {}, level: opts.level || D.level || 1 };
         Object.keys(D.slots || {}).forEach((k) => (d[k] = value(D.slots[k], env)));
         if (opts.level || D.level) d.level = opts.level || D.level;
         if (D.levels) d.levels = clone(D.levels);

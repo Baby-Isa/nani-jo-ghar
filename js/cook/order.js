@@ -19,7 +19,9 @@
  *   - "no X" rows go in at random and look like the others;
  *   - rows that can go in any order are shuffled every time;
  *   - a section can wait for its station (`when`: the tadka order is
- *     Nani's, given at the pan).
+ *     Nani's, given at the pan);
+ *   - rows said for one person (`for`: the Chai tray's cups) make that
+ *     person's own section, "no X" rows included; the card shows their face.
  */
 (function (global) {
   const Cook = global.Cook;
@@ -73,6 +75,15 @@
         return;
       }
       const x = row(r);
+      // rows said for one person (the Chai tray's cups): that person's own
+      // section, "no X" rows included, drawn with their face on the card
+      if (r.for && !r.list) {
+        const key = `for:${r.for}`;
+        let s = L.sections.find((y) => y.key === key);
+        if (!s) L.sections.push((s = { key, for: r.for, seq: false, when: r.when || null, groups: [[]] }));
+        s.groups[0].push(x);
+        return;
+      }
       if (x.no) return nos.push(x);
       if (r.list) {
         // a spoken list: its own section, one group per dot
@@ -100,7 +111,7 @@
       s.groups = s.groups.map((g) => Cook.shuffle(g));
     });
     // "no X": among the any-order rows, else sprinkled through the list
-    const home = any || L.sections.filter((s) => !s.when).pop();
+    const home = any || L.sections.filter((s) => !s.when && !s.for).pop();
     if (home) sprinkle(home.groups, nos);
     else if (nos.length) L.sections.push({ key: "any", seq: false, groups: [Cook.shuffle(nos)] });
     return L;

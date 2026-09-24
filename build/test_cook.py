@@ -42,7 +42,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # COOK_TEST_PORT lets several test runs (or worktrees) go at once
 PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
-LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa"]
+LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa", "chai-tray"]
 # --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
 # COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
 DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))
@@ -134,7 +134,8 @@ class Player:
             p.wait_for_selector(sel, state="visible", timeout=10000)
             p.click(sel)
         elif k == "tap":
-            if self.mistakes and e.get("swrongs") and e.get("key") not in self.made and random.random() < 0.2:
+            # "mistake": the station asks for one wrong tap here (the Chai tray's salt in the lab)
+            if self.mistakes and e.get("swrongs") and e.get("key") not in self.made and (e.get("mistake") or random.random() < 0.2):
                 self.made.add(e.get("key"))
                 w = random.choice(e["swrongs"])
                 self.tap(w["x"], w["y"], "wrong item")
