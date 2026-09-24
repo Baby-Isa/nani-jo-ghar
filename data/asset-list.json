@@ -1,8 +1,6 @@
 {
-  "_readme": "Data for build/gen_assets.py. style_block is placeholder text; the real art bible (in progress) will replace it wholesale, which is exactly why it lives here and not inside a template string. Paths are relative to the repo root; reference_images may point into the git-ignored sources/private/.",
-
-  "style_block": "PLACEHOLDER STYLE BLOCK -- replace once the art bible is signed off. Warm storybook 3D-film look (Pixar/Laika-adjacent), soft cel-shaded lighting, clean readable silhouettes, a Kutch/Gujarat folk-embroidery palette (indigo, mirror-work silver, marigold, madder red). No text, watermark or signature anywhere in frame.",
-
+  "_readme": "Data for build/gen_assets.py. style_block, negative_block and templates are the art bible's (docs/Nani jo Ghar — Art Bible.md, section 9) with sharper camera wording for top-down items and hands; every prompt = style_block + template + negative_block. Paths are relative to the repo root; reference_images may point into the git-ignored sources/private/. RULE (art bible section 8): edit mode is only for small changes to the SAME object -- hand poses from the signed-off reference hand, reskins, adding an item into an empty station background. Item STATES (whole -> chopped, raw -> fried, ...) are always mode 'generate' with their own full prompt, never an edit of another state: a state change is a complete transformation that edit mode does not carry across. States match each other only through the shared style block, view wording and colour words.",
+  "style_block": "Stylised 3D animated-feature-film look: soft global illumination, gentle warm fill, believable materials (marble, brushed steel, polished brass, pale oak, cotton, food with soft subsurface), clean simplified surfaces with restrained detail, appealing slightly chunky proportions, no outlines. Warm late-morning sunlight from the upper left; soft shadows falling to the lower right; a soft contact shadow wherever something touches a surface. Bright, warm, clean palette. Match the rendering of the attached style reference exactly.",
   "config": {
     "model": "gpt-image-1",
     "price_per_image": {
@@ -10,27 +8,22 @@
       "1024x1536": 0.06,
       "1536x1024": 0.06,
       "default": 0.04
-    }
+    },
+    "max_concurrency": 3,
+    "min_request_gap_seconds": 20
   },
-
   "defaults": {
     "size": "1024x1024",
     "transparent": true,
     "variants": 1
   },
-
   "templates": {
-    "hand_pose": "{style}\n\nSubject: a single human right hand and forearm only, nothing else in frame. Camera: {camera}. Pose: {pose}. Skin tone: warm medium brown. Sleeve: a boy's kurta cuff in indigo cotton with a narrow strip of Kutch mirror-work embroidery at the hem -- this is the master reference cuff every other hand pose and reskin must match. Background: flat, fully transparent, no shadow, no table, no other body parts in frame.",
-
-    "hand_pose_from_ref": "{style}\n\nUsing the attached reference hand image for exact hand shape, skin tone, proportions and cuff style, draw the SAME hand in a new pose: {pose}. Camera: {camera}. Keep the cuff and its embroidery identical to the reference. Background: flat, fully transparent, hand and forearm only, no shadow, no other body parts.",
-
-    "hand_reskin": "{style}\n\nTake the attached reference hand image exactly as given: same hand shape, same finger positions, same camera angle, same scale and position in frame. Change ONLY the sleeve and wrist: {change}. Do not alter the hand's outline, proportions or pose in any way. Background stays flat, fully transparent.",
-
-    "ingredient_state": "{style}\n\nSubject: {item}, {state}, isolated on a flat, fully transparent background. View: {view}, matching the scale and lighting of other cooking-station props. A soft contact shadow directly beneath it, nothing else in frame.",
-
-    "ingredient_state_from_ref": "{style}\n\nUsing the attached reference image for this item's exact colours, texture and style, show the SAME {item} now {state}. View: {view}. Flat, fully transparent background, a soft contact shadow directly beneath it, nothing else in frame."
+    "_comment": "Templates follow art bible section 9 (c) item, (e) hand pose, (f) reskin. {style} and {negative} are filled automatically.",
+    "hand_pose": "{style}\n\nThe right hand and forearm of a child of about 7, light brown skin, a little more brown than beige (around #B4754A to #C6885C), smooth and stylised, resting on a plain pale worktop. Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see only the BACK of the hand (palm facing down, against the worktop), never the palm; the forearm lies flat along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides, the hand is not raised or upright. Pose: {pose}. No tool or object in the hand. Sleeve: a cream cotton kurta cuff with a band of red Kutch embroidery (small mirror-work dots allowed), ending at the bottom frame edge. This is the master reference hand every other hand pose and reskin is made from. Transparent background: hand and forearm only, with only a faint soft contact shadow where it touches the worktop; no other body parts.\n\n{negative}",
+    "hand_pose_from_ref": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, light brown skin, a little more brown than beige (around #B4754A to #C6885C), smooth and stylised, size and cuff, draw the SAME right hand and forearm of a child of about 7 in a new pose. {camera} Pose: {pose}. No tool or object in the hand. Sleeve: a cream cotton kurta cuff with a band of red Kutch embroidery (small mirror-work dots allowed), ending at the bottom frame edge, identical to the reference. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
+    "hand_reskin": "{style}\n\nEdit the attached image. Change only the sleeve and accessories: {change}. Keep the hand exactly the same: identical outline, finger positions, skin, lighting, camera and size. Nothing else changes. Transparent background.\n\n{negative}",
+    "ingredient": "{style}\n\nA single {item} for a cooking game. Camera: orthographic top-down view, camera directly overhead looking straight down at 90 degrees; only the top face of every object is visible; no horizon, no sides, no three-quarter angle; round things read as perfect circles, not ovals. {detail} Real size about {size_cm} cm. Only this food in frame: no hands, no fingers, no people, no utensils, no board. Centred, filling about 70% of the frame, a soft contact shadow directly under it towards the lower right. Transparent background.\n\n{negative}"
   },
-
   "assets": [
     {
       "id": "hand-ref-master",
@@ -39,20 +32,22 @@
       "mode": "generate",
       "template": "hand_pose",
       "fields": {
-        "camera": "top-down, looking straight down at a worktop",
-        "pose": "flat relaxed hand resting palm-down on a worktop, fingers together -- the master reference every other pose and reskin is generated from"
-      }
+        "pose": "relaxed and slightly open, palm flat down on the worktop, fingers gently together and extended forwards towards the top of the frame, thumb relaxed at the side, knuckles and fingernails visible from above"
+      },
+      "variants": 2
     },
     {
       "id": "hand-a1-flat-palm",
       "group": "hands-master",
       "output": "assets/characters/hands/master/hand-a1-flat-palm.png",
       "mode": "edit",
-      "reference_images": ["assets/characters/hands/hand-ref-master.png"],
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "top-down",
-        "pose": "flat palm down, pressing and kneading dough"
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see only the BACK of the hand, palm facing down; the forearm enters from the bottom edge of the frame; no horizon, no sides.",
+        "pose": "flat palm pressed down on the worktop, fingers together and straight, as if pressing and kneading dough"
       }
     },
     {
@@ -60,11 +55,13 @@
       "group": "hands-master",
       "output": "assets/characters/hands/master/hand-b1-handle-grip.png",
       "mode": "edit",
-      "reference_images": ["assets/characters/hands/hand-ref-master.png"],
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "top-down",
-        "pose": "horizontal handle grip, fist closed around an invisible handle, as if holding a knife or ladle"
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see only the BACK of the hand, palm facing down; the forearm enters from the bottom edge of the frame; no horizon, no sides.",
+        "pose": "fingers curled around an invisible horizontal handle, as if holding a knife, thumb along the top; fist closed but hand still resting low over the worktop"
       }
     },
     {
@@ -72,11 +69,13 @@
       "group": "hands-master",
       "output": "assets/characters/hands/master/hand-c4-point.png",
       "mode": "edit",
-      "reference_images": ["assets/characters/hands/hand-ref-master.png"],
+      "reference_images": [
+        "assets/characters/hands/hand-ref-master.png"
+      ],
       "template": "hand_pose_from_ref",
       "fields": {
-        "camera": "eye level, back of the hand toward the viewer",
-        "pose": "pointing index finger extended, other fingers curled -- the default tap/point hand"
+        "camera": "Camera: eye level, back of the hand towards the viewer.",
+        "pose": "index finger extended pointing, other fingers curled -- the default tap/point hand"
       }
     },
     {
@@ -87,7 +86,7 @@
       "master": "hand-a1-flat-palm",
       "template": "hand_reskin",
       "fields": {
-        "change": "an embroidered kurti cuff in madder red with mirror-work, plus two or three thin glass bangles at the wrist"
+        "change": "replace the cuff with a pale pink embroidered kurti cuff and add three thin glass bangles in red, green and gold at the wrist"
       }
     },
     {
@@ -95,27 +94,26 @@
       "group": "ingredients-onion",
       "output": "assets/items/cook/onion-whole.png",
       "mode": "generate",
-      "size": "1024x1024",
-      "template": "ingredient_state",
+      "template": "ingredient",
       "fields": {
-        "item": "a whole red onion with papery outer skin",
-        "state": "whole, uncut",
-        "view": "top-down"
+        "item": "whole red onion",
+        "detail": "Seen from straight above, the onion reads as a perfect round circle: glossy deep purple-red papery skin with faint pale lines radiating from the centre, the small dry tip at the centre of the circle; no side view, no root tuft visible.",
+        "size_cm": "8"
       }
     },
     {
       "id": "ingredient-onion-chopped",
       "group": "ingredients-onion",
       "output": "assets/items/cook/onion-chopped.png",
-      "mode": "edit",
-      "size": "1024x1024",
-      "reference_images": ["assets/items/cook/onion-whole.png"],
-      "template": "ingredient_state_from_ref",
+      "mode": "generate",
+      "template": "ingredient",
       "fields": {
-        "item": "red onion",
-        "state": "roughly diced into small pieces, scattered in a small pile",
-        "view": "top-down"
-      }
+        "item": "small loose pile of chopped red onion",
+        "detail": "Small curved, translucent, layered pieces of red onion: thin crescent-shaped slivers and small flat squares of single onion layers, each only 2-3 mm thick, lying flat so we see their broad top faces; glossy, juicy, translucent pale violet-white flesh with a thin deep magenta edge along the outer curve, some pieces showing two or three thin stacked layers. A loose, low, roughly round pile about 9 cm across, seen from directly above. Not cubes, not blocks, not two-tone candy, not solid.",
+        "size_cm": "9 (the pile)"
+      },
+      "_comment": "A state: generated fresh, never edited from onion-whole (art bible section 8)."
     }
-  ]
+  ],
+  "negative_block": "Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel shading, no flat vector style, no painterly brushwork, no photorealism. No depth-of-field blur, motion blur, vignette, lens flare or bloom. No second light source. No extra objects, props, people or background clutter beyond what is described. Correct anatomy: five fingers per hand. No bindi, tilak or other Hindu religious markers."
 }

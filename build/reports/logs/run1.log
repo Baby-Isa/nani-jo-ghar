@@ -1,0 +1,12 @@
+LIVE RUN -- 3 asset(s), model=gpt-image-1, concurrency 3, gap 20s
+budget cap: $3.00
+[hand-ref-master::v0] start generate 1024x1024 (+0s)
+[hand-ref-master::v1] start generate 1024x1024 (+0s)
+[ingredient-onion-whole::v0] start generate 1024x1024 (+0s)
+[hand-ref-master::v0] done in 44s -> assets/characters/hands/hand-ref-master-v0.png
+[ingredient-onion-chopped::v0] start generate 1024x1024 (+44s)
+[hand-ref-master::v1] done in 61s -> assets/characters/hands/hand-ref-master-v1.png
+[ingredient-onion-chopped::v0] done in 36s -> assets/items/cook/onion-chopped.png
+[ingredient-onion-whole::v0] done in 81s -> assets/items/cook/onion-whole.png
+
+spent $0.16 this run -- 4 generated, 4 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 81s

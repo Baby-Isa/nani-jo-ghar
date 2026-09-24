@@ -54,7 +54,9 @@ import json
 import os
 import random
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -81,7 +83,11 @@ CONFIG = {
         "1536x1024": 0.06,
         "default": 0.04,
     },
-    "request_delay_seconds": 15,
+    # Pacing: up to max_concurrency requests in flight, and at least
+    # min_request_gap_seconds between request starts. A 429 halves the
+    # concurrency and doubles the gap for the rest of the run (Pacer).
+    "max_concurrency": 3,
+    "min_request_gap_seconds": 20,
     "max_retries": 5,
     "backoff_base_seconds": 2.0,
 }
@@ -101,6 +107,7 @@ def load_asset_list(path):
     with open(path, "r") as f:
         data = json.load(f)
     data.setdefault("style_block", "")
+    data.setdefault("negative_block", "")
     data.setdefault("templates", {})
     data.setdefault("defaults", {})
     data.setdefault("assets", [])
@@ -131,9 +138,11 @@ def price_for_size(cfg, size):
 # Prompt resolution
 # --------------------------------------------------------------------------
 
-def resolve_prompt(entry, style_block, templates):
+def resolve_prompt(entry, style_block, templates, negative_block=""):
+    """Every prompt = style block + template (or raw prompt) + negative
+    block (art bible section 9)."""
     if entry.get("prompt"):
-        return f"{style_block}\n\n{entry['prompt']}".strip()
+        return f"{style_block}\n\n{entry['prompt']}\n\n{negative_block}".strip()
     tmpl_name = entry.get("template")
     if not tmpl_name:
         raise ValueError(f"{entry.get('id')}: needs a 'prompt' or a 'template'")
@@ -142,7 +151,14 @@ def resolve_prompt(entry, style_block, templates):
         raise ValueError(f"{entry.get('id')}: unknown template {tmpl_name!r}")
     fields = dict(entry.get("fields", {}))
     fields.setdefault("style", style_block)
-    return tmpl.format(**fields).strip()
+    fields.setdefault("negative", negative_block)
+    try:
+        prompt = tmpl.format(**fields).strip()
+    except KeyError as exc:
+        raise ValueError(f"{entry.get('id')}: template {tmpl_name!r} needs field {exc}") from None
+    if negative_block and "{negative}" not in tmpl:
+        prompt = f"{prompt}\n\n{negative_block}"
+    return prompt
 
 
 def resolve_references(entry, assets_by_id):
@@ -201,17 +217,81 @@ def save_manifest(path, manifest):
 # OpenAI Images API
 # --------------------------------------------------------------------------
 
-def request_with_retry(fn, cfg):
+class ConfigError(Exception):
+    """A local problem (missing reference file, bad parameter): retrying
+    can't fix it, so it fails fast and nothing is billed."""
+
+
+class APIRejected(Exception):
+    """OpenAI rejected the request with a 4xx (other than 429). The request
+    failed validation before generation, so it isn't billed."""
+
+    def __init__(self, status, body):
+        super().__init__(f"HTTP {status}: {body}")
+        self.status = status
+
+
+class Pacer:
+    """Thread-safe request pacing shared by every worker: at most
+    `concurrency` requests in flight and at least `gap` seconds between
+    request starts. On a 429, `slow_down()` halves the concurrency and
+    doubles the gap for the rest of the run, and holds every new start
+    until the server's Retry-After has passed."""
+
+    def __init__(self, concurrency, gap):
+        self.concurrency = max(1, int(concurrency))
+        self.gap = float(gap)
+        self.in_flight = 0
+        self.next_start = 0.0
+        self.cond = threading.Condition()
+
+    def acquire(self):
+        with self.cond:
+            while True:
+                now = time.monotonic()
+                if self.in_flight < self.concurrency and now >= self.next_start:
+                    self.in_flight += 1
+                    self.next_start = now + self.gap
+                    return
+                timeout = max(self.next_start - now, 0.05) if self.in_flight < self.concurrency else None
+                self.cond.wait(timeout)
+
+    def release(self):
+        with self.cond:
+            self.in_flight -= 1
+            self.cond.notify_all()
+
+    def slow_down(self, retry_after):
+        with self.cond:
+            self.concurrency = max(1, self.concurrency // 2)
+            self.gap = self.gap * 2 if self.gap else 5.0
+            self.next_start = max(self.next_start, time.monotonic() + retry_after)
+            print(f"    429: slowing down -- concurrency {self.concurrency}, gap {self.gap:.0f}s, "
+                  f"holding new requests for {retry_after:.0f}s")
+            self.cond.notify_all()
+
+
+def request_with_retry(fn, cfg, pacer=None):
+    """Run one API request with retries. `fn` does the network call only
+    (local files are read beforehand, so a missing file never gets here).
+    Retries network errors, 429 and 5xx; a 429 also slows the pacer."""
     max_retries = cfg["max_retries"]
     base_delay = cfg["backoff_base_seconds"]
     for attempt in range(max_retries + 1):
+        if pacer:
+            pacer.acquire()
         try:
-            resp = fn()
-        except Exception as exc:  # network error: retry like a 5xx
+            resp, net_exc = fn(), None
+        except requests.RequestException as exc:  # network error: retry like a 5xx
+            resp, net_exc = None, exc
+        finally:
+            if pacer:
+                pacer.release()
+        if net_exc is not None:
             if attempt == max_retries:
-                raise
+                raise net_exc
             delay = base_delay * (2 ** attempt) + random.uniform(0, base_delay)
-            print(f"    network error ({exc}); retrying in {delay:.1f}s ...")
+            print(f"    network error ({net_exc}); retrying in {delay:.1f}s ...")
             time.sleep(delay)
             continue
         if resp.status_code == 200:
@@ -220,10 +300,19 @@ def request_with_retry(fn, cfg):
             if attempt == max_retries:
                 resp.raise_for_status()
             retry_after = resp.headers.get("Retry-After")
-            delay = float(retry_after) if retry_after else base_delay * (2 ** attempt) + random.uniform(0, base_delay)
+            try:
+                delay = float(retry_after) if retry_after else None
+            except ValueError:
+                delay = None
+            if delay is None:
+                delay = base_delay * (2 ** attempt) + random.uniform(0, base_delay)
+            if resp.status_code == 429 and pacer:
+                pacer.slow_down(delay)
             print(f"    HTTP {resp.status_code}; retrying in {delay:.1f}s ...")
             time.sleep(delay)
             continue
+        if 400 <= resp.status_code < 500:
+            raise APIRejected(resp.status_code, resp.text[:300])
         resp.raise_for_status()
     raise RuntimeError("unreachable")  # pragma: no cover
 
@@ -239,9 +328,9 @@ def images_from_response(resp):
     return out
 
 
-def api_generate(prompt, size, transparent, cfg, api_key):
+def api_generate(prompt, size, transparent, cfg, api_key, pacer=None):
     if requests is None:
-        raise RuntimeError("the 'requests' package is required for real API calls")
+        raise ConfigError("the 'requests' package is required for real API calls")
 
     def fn():
         return requests.post(
@@ -257,45 +346,46 @@ def api_generate(prompt, size, transparent, cfg, api_key):
             timeout=180,
         )
 
-    resp = request_with_retry(fn, cfg)
+    resp = request_with_retry(fn, cfg, pacer)
     return images_from_response(resp)[0]
 
 
-def api_edit(prompt, size, transparent, cfg, api_key, reference_paths, mask_path=None):
+def _read_local(path, what):
+    try:
+        with open(path, "rb") as fh:
+            return fh.read()
+    except OSError as exc:
+        raise ConfigError(f"{what} not readable: {path} ({exc.strerror})") from None
+
+
+def api_edit(prompt, size, transparent, cfg, api_key, reference_paths, mask_path=None, pacer=None):
     if requests is None:
-        raise RuntimeError("the 'requests' package is required for real API calls")
+        raise ConfigError("the 'requests' package is required for real API calls")
+    # Read every local file up front: a missing reference is a config error
+    # and must fail fast, not go through the network retry/backoff loop.
+    refs = [(os.path.basename(p), _read_local(p, "reference image")) for p in reference_paths]
+    mask = (os.path.basename(mask_path), _read_local(mask_path, "mask")) if mask_path else None
 
     def fn():
-        opened = []
-        try:
-            files = []
-            for p in reference_paths:
-                fh = open(p, "rb")
-                opened.append(fh)
-                files.append(("image[]", (os.path.basename(p), fh, "image/png")))
-            data = {
-                "model": cfg["model"],
-                "prompt": prompt,
-                "size": size,
-                "n": "1",
-                "background": "transparent" if transparent else "opaque",
-            }
-            if mask_path:
-                mfh = open(mask_path, "rb")
-                opened.append(mfh)
-                files.append(("mask", (os.path.basename(mask_path), mfh, "image/png")))
-            return requests.post(
-                EDITS_URL,
-                headers={"Authorization": f"Bearer {api_key}"},
-                data=data,
-                files=files,
-                timeout=180,
-            )
-        finally:
-            for fh in opened:
-                fh.close()
+        files = [("image[]", (name, blob, "image/png")) for name, blob in refs]
+        if mask:
+            files.append(("mask", (mask[0], mask[1], "image/png")))
+        data = {
+            "model": cfg["model"],
+            "prompt": prompt,
+            "size": size,
+            "n": "1",
+            "background": "transparent" if transparent else "opaque",
+        }
+        return requests.post(
+            EDITS_URL,
+            headers={"Authorization": f"Bearer {api_key}"},
+            data=data,
+            files=files,
+            timeout=240,
+        )
 
-    resp = request_with_retry(fn, cfg)
+    resp = request_with_retry(fn, cfg, pacer)
     return images_from_response(resp)[0]
 
 
@@ -483,16 +573,51 @@ def entry_matches_only(entry, only):
     return entry["id"] in wanted or entry.get("group") in wanted
 
 
+def plan_waves(tasks, assets_by_id):
+    """Split tasks into dependency waves: a task whose reference images are
+    the outputs of other tasks in this run waits for a later wave. Within
+    a wave everything runs concurrently."""
+    produced = {}
+    for t in tasks:
+        produced.setdefault(os.path.normpath(t["out_path"]), set()).add(t["eid"])
+        produced.setdefault(os.path.normpath(resolve_path(t["entry"]["output"])), set()).add(t["eid"])
+    level = {}
+
+    def depth(t, seen=()):
+        if t["eid"] in level:
+            return level[t["eid"]]
+        deps = set()
+        for r in t["references"]:
+            deps |= produced.get(os.path.normpath(resolve_path(r)), set())
+        deps.discard(t["eid"])
+        deps -= set(seen)
+        d = 0
+        for dep in deps:
+            dep_task = next(x for x in tasks if x["eid"] == dep)
+            d = max(d, depth(dep_task, seen + (t["eid"],)) + 1)
+        level[t["eid"]] = d
+        return d
+
+    waves = {}
+    for t in tasks:
+        waves.setdefault(depth(t), []).append(t)
+    return [waves[k] for k in sorted(waves)]
+
+
 def run(args):
     data = load_asset_list(args.asset_list)
     cfg = load_config(data)
+    if args.max_concurrency:
+        cfg["max_concurrency"] = args.max_concurrency
     style_block = data["style_block"]
+    negative_block = data["negative_block"]
     templates = data["templates"]
     defaults = data["defaults"]
     assets = data["assets"]
     assets_by_id = {a["id"]: a for a in assets}
 
     manifest = load_manifest(args.manifest)
+    manifest_lock = threading.Lock()
     api_key = os.environ.get("OPENAI_API_KEY")
     dry_run = args.dry_run if args.dry_run is not None else not bool(api_key)
 
@@ -501,14 +626,16 @@ def run(args):
         print(f"no assets matched --only {args.only!r}")
         return
 
-    spent = 0.0
-    planned_total = 0.0
-    done_ct = skip_ct = run_ct = reject_ct = 0
-
-    print(f"{'DRY RUN' if dry_run else 'LIVE RUN'} -- {len(selected)} asset(s), model={cfg['model']}")
+    print(f"{'DRY RUN' if dry_run else 'LIVE RUN'} -- {len(selected)} asset(s), model={cfg['model']}, "
+          f"concurrency {cfg['max_concurrency']}, gap {cfg['min_request_gap_seconds']}s")
     if args.budget is not None:
         print(f"budget cap: ${args.budget:.2f}")
 
+    # Plan every request first: prompts, hashes, resume skips and the budget
+    # cap are all decided up front, so the concurrent phase can't overspend.
+    tasks = []
+    planned_total = 0.0
+    skip_ct = 0
     budget_stop = False
     for entry in selected:
         if budget_stop:
@@ -521,7 +648,9 @@ def run(args):
         out_base = resolve_path(entry["output"])
 
         try:
-            prompt = resolve_prompt(entry, style_block, templates)
+            if mode not in ("generate", "edit", "reskin"):
+                raise ValueError(f"{eid}: unknown mode {mode!r}")
+            prompt = resolve_prompt(entry, style_block, templates, negative_block)
             references = resolve_references(entry, assets_by_id)
         except ValueError as exc:
             print(f"[{eid}] SKIP (config error): {exc}")
@@ -540,10 +669,6 @@ def run(args):
                 print(f"[{key}] skip (already {existing['status']})")
                 continue
 
-            label = f"[{key}] {mode:8s} {size:11s} ${unit_price:.3f}  {eid}"
-            if references:
-                label += f"  refs={references}"
-
             if args.budget is not None and planned_total + unit_price > args.budget + 1e-9:
                 print(f"budget cap (${args.budget:.2f}) reached; stopping before {key}"
                       f"{' (dry run)' if dry_run else ''}")
@@ -551,70 +676,93 @@ def run(args):
                 break
 
             planned_total += unit_price
-            if dry_run:
-                print(f"{label}\n    prompt: {prompt[:160]}{'...' if len(prompt) > 160 else ''}")
-                continue
+            tasks.append(dict(key=key, eid=eid, entry=entry, mode=mode, size=size, transparent=transparent,
+                              prompt=prompt, references=references, mask=mask, unit_price=unit_price,
+                              phash=phash, out_path=out_path))
 
-            print(label)
-            try:
-                if mode == "generate":
-                    img = api_generate(prompt, size, transparent, cfg, api_key)
-                elif mode in ("edit", "reskin"):
-                    ref_paths = [resolve_path(r) for r in references]
-                    img = api_edit(prompt, size, transparent, cfg, api_key, ref_paths, resolve_path(mask))
-                else:
-                    raise ValueError(f"unknown mode {mode!r}")
-            except Exception as exc:
-                manifest[key] = {
-                    "status": "error",
-                    "prompt_hash": phash,
-                    "group": entry.get("group"),
-                    "mode": mode,
-                    "error": str(exc),
-                }
-                save_manifest(args.manifest, manifest)
-                print(f"    ERROR: {exc}")
-                spent += unit_price  # the API call was still made/billed
-                time.sleep(cfg["request_delay_seconds"])
-                continue
-
-            os.makedirs(os.path.dirname(out_path), exist_ok=True)
-            img.save(out_path)
-            spent += unit_price
-            run_ct += 1
-
-            status = "done"
-            iou = None
-            if mode == "reskin":
-                master_out = resolve_path(assets_by_id[entry["master"]]["output"])
-                iou, ok = drift_check(out_path, master_out, args.drift_threshold)
-                status = "done" if ok else DRIFT_REJECT_STATUS
-                if not ok:
-                    reject_ct += 1
-                    print(f"    drift check FAILED (IoU {iou:.3f} < {args.drift_threshold}) -> {DRIFT_REJECT_STATUS}")
-                else:
-                    print(f"    drift check OK (IoU {iou:.3f})")
-            else:
-                done_ct += 1
-
-            manifest[key] = {
-                "status": status,
-                "prompt_hash": phash,
-                "group": entry.get("group"),
-                "mode": mode,
-                "output": out_path,
-                "cost": unit_price,
-                "iou": iou,
-            }
-            save_manifest(args.manifest, manifest)
-            time.sleep(cfg["request_delay_seconds"])
-
+    waves = plan_waves(tasks, assets_by_id)
     if dry_run:
+        for w, wave in enumerate(waves):
+            print(f"-- wave {w} ({len(wave)} request(s), run concurrently)")
+            for t in wave:
+                label = f"[{t['key']}] {t['mode']:8s} {t['size']:11s} ${t['unit_price']:.3f}  {t['eid']}"
+                if t["references"]:
+                    label += f"  refs={t['references']}"
+                p = t["prompt"]
+                print(f"{label}\n    prompt: {p[:160]}{'...' if len(p) > 160 else ''}")
         print(f"\nestimated cost for this run: ${planned_total:.2f} "
               f"(skipped {skip_ct} already-done item(s))")
-    else:
-        print(f"\nspent ${spent:.2f} this run -- {run_ct} generated, {done_ct} done, "
-              f"{reject_ct} flagged for drift, {skip_ct} skipped (already done)")
+        return
+
+    pacer = Pacer(cfg["max_concurrency"], cfg["min_request_gap_seconds"])
+    stats = {"spent": 0.0, "run": 0, "done": 0, "reject": 0, "error": 0, "unbilled": 0}
+    stats_lock = threading.Lock()
+    run_start = time.monotonic()
+
+    def record(key, value):
+        with manifest_lock:
+            manifest[key] = value
+            save_manifest(args.manifest, manifest)
+
+    def work(t):
+        key, mode, entry = t["key"], t["mode"], t["entry"]
+        t0 = time.monotonic()
+        print(f"[{key}] queued {mode} {t['size']} (+{t0 - run_start:.0f}s; the pacer holds the actual request start)")
+        billed = False
+        try:
+            if mode == "generate":
+                img = api_generate(t["prompt"], t["size"], t["transparent"], cfg, api_key, pacer)
+            else:
+                ref_paths = [resolve_path(r) for r in t["references"]]
+                img = api_edit(t["prompt"], t["size"], t["transparent"], cfg, api_key, ref_paths,
+                               resolve_path(t["mask"]), pacer)
+            billed = True
+            os.makedirs(os.path.dirname(t["out_path"]), exist_ok=True)
+            img.save(t["out_path"])
+        except Exception as exc:
+            # Only a request that reached generation is billed: local config
+            # errors never left the machine and a 4xx is rejected before
+            # generation. Network errors / exhausted 5xx retries are counted
+            # conservatively, since we can't tell whether it was generated.
+            if not billed and not isinstance(exc, (ConfigError, APIRejected)):
+                billed = True
+            record(key, {"status": "error", "prompt_hash": t["phash"], "group": entry.get("group"),
+                         "mode": mode, "error": str(exc), "billed": billed})
+            with stats_lock:
+                stats["error"] += 1
+                if billed:
+                    stats["spent"] += t["unit_price"]
+                else:
+                    stats["unbilled"] += 1
+            print(f"[{key}] ERROR ({type(exc).__name__}, {'billed' if billed else 'not billed'}): {exc}")
+            return
+        elapsed = time.monotonic() - t0
+
+        status, iou = "done", None
+        if mode == "reskin":
+            master_out = resolve_path(assets_by_id[entry["master"]]["output"])
+            iou, ok = drift_check(t["out_path"], master_out, args.drift_threshold)
+            status = "done" if ok else DRIFT_REJECT_STATUS
+            print(f"[{key}] drift check {'OK' if ok else 'FAILED'} (IoU {iou:.3f})")
+        record(key, {"status": status, "prompt_hash": t["phash"], "group": entry.get("group"), "mode": mode,
+                     "output": t["out_path"], "cost": t["unit_price"], "iou": iou,
+                     "seconds": round(elapsed, 1)})
+        with stats_lock:
+            stats["spent"] += t["unit_price"]
+            stats["run"] += 1
+            stats["done" if status == "done" else "reject"] += 1
+        print(f"[{key}] done in {elapsed:.0f}s -> {os.path.relpath(t['out_path'], GAME)}")
+
+    for w, wave in enumerate(waves):
+        if len(waves) > 1:
+            print(f"-- wave {w}: {len(wave)} request(s)")
+        with ThreadPoolExecutor(max_workers=max(1, cfg["max_concurrency"])) as pool:
+            for fut in as_completed([pool.submit(work, t) for t in wave]):
+                fut.result()
+
+    print(f"\nspent ${stats['spent']:.2f} this run -- {stats['run']} generated, {stats['done']} done, "
+          f"{stats['reject']} flagged for drift, {stats['error']} error(s) ({stats['unbilled']} not billed), "
+          f"{skip_ct} skipped (already done); wall time {time.monotonic() - run_start:.0f}s")
 
 
 # --------------------------------------------------------------------------
@@ -627,6 +775,8 @@ def main():
     p.add_argument("--manifest", default=DEFAULT_MANIFEST)
     p.add_argument("--only", help="restrict to one group or asset id (comma-separated for several)")
     p.add_argument("--variants", type=int, default=None, help="override the variant count for every selected asset")
+    p.add_argument("--max-concurrency", type=int, default=None,
+                    help="requests in flight at once (default: config max_concurrency, 3)")
     p.add_argument("--budget", type=float, default=None, help="stop before spending more than this many dollars")
     p.add_argument("--dry-run", dest="dry_run", action="store_true", default=None,
                     help="print planned requests and cost; no network calls. Default when OPENAI_API_KEY is unset.")

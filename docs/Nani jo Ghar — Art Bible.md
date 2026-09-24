@@ -351,7 +351,7 @@ Reskins change **only the sleeve and accessories**. A script compares each reski
 | Samosa | on a plate | filled flat, folded raw, fried golden, burnt |
 | Mishkaki | on a plate | raw on the skewer, grilled, charred |
 
-**How states are made:** each state is an **edit of the raw item image** (same angle, light and scale), or an edit in place on the empty station (section 9d). Use code for anything convincing as an effect: steam, bubbles, sizzle, a golden tint, a sparkle. "Burnt" is always its own drawing.
+**How states are made:** each state is **generated fresh with its own full prompt** (template 9c), never edited from another state. Turning a whole onion into diced onion is a complete transformation that edit mode won't carry across (tested 24 Sept 2026: the edit produced solid two-tone cubes). States match each other only through the shared style block, the same view wording and the same colour words. **Edit mode is only for small changes to the same object:** hand poses from the signed-off reference hand (9e), reskins (9f), and adding an item into an empty station background (9d). Never for state changes. Use code for anything convincing as an effect: steam, bubbles, sizzle, a golden tint, a sparkle. "Burnt" is always its own drawing.
 
 **Spices:** always **heaped in open bowls** (a steel katori or a small ceramic bowl) so the colour and texture read from above and from the front. Tins and jars only in the pantry F view. The masala dabba is the natural T-view spice container.
 
@@ -389,11 +389,11 @@ Attach: the signed-off character sheet only.
 
 ### (c) An item in a given view and state
 
-Attach: `sources/cook/props-sheet.webp` (materials only); for a state, also the item's approved raw image.
+Attach: `sources/cook/props-sheet.webp` (materials only). Never the item's other states.
 
 > A single {item} {state, e.g. "chopped into small even cubes, heaped loosely"} for a cooking game. View: {F: "front view, camera at the item's mid-height looking about 10 degrees down, standing on its base" | T: "seen from directly above, straight down, round things as circles"}. Real size about {size} cm; draw it as that size would look next to a {reference item}. Centred, filling about 70% of the frame, a soft contact shadow directly under it towards the lower right. Transparent background.
 
-For a state edit add: *"This is the same {item} as the attached image: same angle, lighting, colour and scale; change only its state to {state}."*
+For a state, write the state into the prompt itself (e.g. "small curved, translucent, layered pieces of red onion in a loose pile, seen from directly above"); don't attach the raw item image or use edit mode (section 8). Keep other objects out of item prompts ("only this food in frame: no hands…"): a scale comparison like "next to a child's hand" makes the model draw the hand.
 
 ### (d) Edit in place (item onto an empty station)
 
