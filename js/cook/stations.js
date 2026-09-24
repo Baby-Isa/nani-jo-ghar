@@ -191,6 +191,7 @@
       cont.on("pointerdown", (p, lx, ly, ev) => {
         if (ev && ev.stopPropagation) ev.stopPropagation();
         Cook.unlockAudio();
+        if (Cook.onLabel) Cook.onLabel(id); // from word stage 3, hearing the target's label is help
         Lang.speakWord(id);
         this.tweens.add({ targets: cont, scale: 1.12, duration: 90, yoyo: true });
       });
@@ -405,7 +406,13 @@
               if (!target.active) return;
               if (Cook.onHelp) Cook.onHelp("hint");
               hint();
-              timers.push(setTimeout(() => target.active && this.glow(target, true), 4000));
+              timers.push(
+                setTimeout(() => {
+                  if (!target.active) return;
+                  this.glow(target, true);
+                  if (Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the ear star
+                }, 4000)
+              );
             }, d)
           );
         }
@@ -421,7 +428,10 @@
               this.wiggle(obj);
               Cook.sfx.soft();
               if (onWrong) onWrong(key, misses);
-              if (misses >= 2) this.glow(target, true);
+              if (misses >= 2) {
+                this.glow(target, true);
+                if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the ear star
+              }
             }
           });
         });

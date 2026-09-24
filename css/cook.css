@@ -71,7 +71,14 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   background: var(--cream); border-radius: var(--radius); padding: 10px 12px;
   box-shadow: var(--shadow); position: relative;
 }
-.side-rail { margin-top: auto; display: flex; gap: 8px; }
+.side-rail { display: flex; gap: 8px; flex: none; }
+/* Sidebar order (top to bottom): the order card (never moves), Nani's live
+   line (fixed max height, wraps), the goal, the menu buttons. The live slot
+   takes the spare room, so a line coming or going moves nothing else. */
+#mission { flex: none; }
+#live { flex: 1 1 auto; min-height: clamp(64px, 14vh, 120px); display: flex; flex-direction: column; }
+#live #nani-card { max-height: clamp(64px, 26vh, 220px); overflow-y: auto; }
+#how { flex: none; }
 .rail-btn {
   width: 48px; height: 48px; border-radius: 14px; border: none; background: var(--cream);
   font-size: 22px; box-shadow: 0 2px 6px rgba(60,40,20,.12);
@@ -87,7 +94,15 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #how {
   background: var(--ink); color: #fff8ec; border-radius: 14px; padding: 8px 12px;
   font-size: clamp(12px, 1.25vw, 16px); font-weight: 700; line-height: 1.3;
+  display: flex; gap: 8px; align-items: flex-start;
 }
+#how .how-q {
+  flex: none; width: 26px; height: 26px; border-radius: 50%; border: none; padding: 0;
+  background: #ffd98a; color: var(--ink); font-weight: 800; font-size: 15px; line-height: 26px;
+}
+/* after the first time: just the "?" (tap to open the goal again) */
+#how.collapsed { align-self: flex-start; padding: 5px; border-radius: 50%; }
+#how.collapsed .how-text { display: none; }
 
 /* ---------- things over the game ---------- */
 #bubble {
@@ -192,9 +207,11 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .seg button.on { background: var(--cream); box-shadow: 0 2px 6px rgba(60,40,20,.15); }
 .seg-help { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
 
-.day-dots { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
-.day-dot { width: 64px; text-align: center; font-size: 12px; font-weight: 800; color: var(--ink-soft); }
-.day-dot b { display: block; width: 44px; height: 44px; margin: 0 auto 2px; border-radius: 50%; line-height: 44px; background: #eadfcd; font-size: 18px; color: var(--ink); }
+.day-dots { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; align-items: flex-start; }
+/* circles on one baseline: the label hangs below, one line or two */
+.day-dot { width: 64px; text-align: center; font-size: 12px; font-weight: 800; color: var(--ink-soft);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0; line-height: 1.2; }
+.day-dot b { display: block; flex: none; width: 44px; height: 44px; margin: 0 auto 4px; border-radius: 50%; line-height: 44px; background: #eadfcd; font-size: 18px; color: var(--ink); }
 .day-dot.done b { background: var(--sage); color: #fff; }
 .day-dot.next b { background: var(--brass); color: #fff; box-shadow: 0 0 0 4px rgba(201,151,58,.3); }
 .day-dot .st { color: #b07d10; letter-spacing: -1px; }
@@ -251,8 +268,13 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 @media (max-aspect-ratio: 1332/1000) {
   #app { grid-template-columns: 1fr; grid-template-rows: calc(100dvw * 9 / 16) 1fr; }
   #side { border-left: none; border-top: 1px solid rgba(80,60,40,.12); display: grid; grid-template-columns: 1fr 1fr; align-content: start; }
-  .side-top, .side-rail, #nani-card, #how { grid-column: 1 / -1; }
-  .side-rail { margin-top: 0; }
+  .side-top, .side-rail { grid-column: 1 / -1; }
+  /* the order card on the left, Nani and the goal beside it */
+  #mission { grid-column: 1; grid-row: 2 / span 3; }
+  #live { grid-column: 2; grid-row: 2; min-height: 0; }
+  #how { grid-column: 2; grid-row: 3; }
+  .side-rail { grid-row: 5; }
+  #passme { grid-column: 1; grid-row: 2; }
 }
 
 /* phones held upright: ask to rotate */
@@ -320,28 +342,36 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #choices .choice.wrong { animation: shake .35s; }
 #choices .choice.right { background: #e3f0dc; border-color: var(--sage); }
 
-/* ---- the mission card ---- */
+/* ---- the mission card (the order card): always on top of the sidebar ---- */
 #mission { position: relative; overflow: hidden; }
-#mission .m-head { display: flex; gap: 10px; align-items: center; }
-#mission .m-face { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; background: #eadcc6; }
-#mission .m-name { font-weight: 800; font-size: 16px; }
-#mission .m-stars { display: flex; gap: 8px; margin: 8px 0 4px; }
+#mission .m-head { display: flex; gap: 8px; align-items: center; }
+/* the customer's face, with the Busy patience ring round it */
+#mission .m-ring { position: relative; flex: none; width: 46px; height: 46px; }
+#mission .m-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); display: none; }
+#mission .m-ring.on svg { display: block; }
+#mission .m-ring circle { fill: none; stroke-width: 4; }
+#mission .m-ring .pr-bg { stroke: #e6dac6; }
+#mission .m-ring .pr-fg { stroke: var(--sage); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p, 1) * 100); transition: stroke-dashoffset .4s linear, stroke .3s; }
+#mission .m-ring.low .pr-fg { stroke: var(--madder); }
+#mission .m-ring.low { animation: ringLow 1s ease-in-out infinite; }
+@keyframes ringLow { 50% { transform: scale(1.05); } }
+#mission .m-face { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: #eadcc6; }
+#mission .m-ring.on .m-face { inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); }
+#mission .m-who { min-width: 0; flex: 1; }
+#mission .m-name { font-weight: 800; font-size: 15px; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#mission .m-stars { display: flex; gap: 5px; margin-top: 4px; }
+#mission .m-stars .mstar { width: 30px; height: 30px; padding: 5px; border-radius: 10px; }
 .mstar {
   width: 38px; height: 38px; border-radius: 12px; padding: 7px; border: 2px dashed #cdb892; color: #b8a58a; background: transparent;
-  display: inline-flex; transition: all .25s;
+  display: inline-flex; flex: none; transition: all .25s;
 }
 .mstar svg { width: 100%; height: 100%; }
 .mstar.earned { border: 2px solid #b07d10; background: #ffd86b; color: #6b4a08; }
 .mstar.lost { border: 2px solid #ddd3c4; background: #eee6da; color: #c8baa6; opacity: .7; }
 .mstar.pop { transform: scale(1.3); }
-#mission .m-order { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-#mission .m-order li { padding: 4px 6px; border-radius: 12px; }
-#mission .m-order li.done { background: #eaf3e4; }
-#mission .m-order li.done .wp-text::after { content: " \2713"; color: var(--sage-dark); }
-#mission .m-order .wp.wp-full .wp-text { font-size: clamp(14px, 1.45vw, 20px); }
-#mission .m-order { max-height: 38vh; overflow-y: auto; }
-#mission .wp button, #nani-card .wp button { width: 30px; height: 30px; padding: 6px; }
-#mission .m-steps { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+/* Busy: the lightning star is full of gold and drains with the patience ring */
+.mstar.drain.pending { border-style: solid; border-color: #d9b45a; color: #8a6412; background: linear-gradient(to top, #ffd86b var(--fill, 100%), #f6ecdc var(--fill, 100%)); }
+#mission .m-steps { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .mstep { font-size: 11px; font-weight: 800; padding: 3px 7px; border-radius: 999px; background: #efe4d2; color: var(--ink-soft); }
 .mstep.on { background: var(--sage); color: #fff; }
 .mstep.now { background: var(--brass); color: #fff; }
@@ -352,25 +382,72 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 }
 #mission.stamped .m-stamp { opacity: .85; transform: rotate(-12deg) scale(1); }
 
-/* ---- Nani: pass me ---- */
-#passme {
-  position: absolute; left: 1.5%; top: 6%; z-index: 30; width: min(560px, 60%);
-  background: rgba(255, 250, 241, .97); border-radius: 24px; box-shadow: 0 18px 50px rgba(40,25,10,.35);
-  padding: 12px; animation: slideIn .35s cubic-bezier(.2,1.2,.4,1);
+/* ---- the order ladder ----
+   rows: [speaker] word or ••• [👁] [A/En]; a dot per group; a group of
+   rows sharing one dot = any order; dots on a dashed line = in order.
+   No pictures, no colours per item. */
+#mission .m-order { margin-top: 6px; display: flex; flex-direction: column; gap: 6px; max-height: 46vh; overflow-y: auto; overflow-x: hidden; }
+.ladder { display: flex; flex-direction: column; gap: 3px; }
+.lsec { position: relative; display: flex; flex-direction: column; gap: 3px; }
+.lsec.late { animation: pop .3s ease-out; border-top: 1px dashed #e0d2bb; padding-top: 3px; }
+.lsec.seq::before, .lsec.plain::before {
+  content: ""; position: absolute; left: 5px; top: 15px; bottom: 15px; border-left: 2px dashed #b8a58a;
 }
-#passme.leaving { animation: slideOut .35s ease-in forwards; }
-@keyframes slideIn { from { transform: translateX(-120%) rotate(-4deg); } to { transform: none; } }
-@keyframes slideOut { to { transform: translateX(-130%); } }
-#passme .pm-nani { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
-#passme .pm-nani img { width: clamp(52px, 7vw, 90px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 3px solid #fff; animation: badgeTalk .45s ease-in-out 4 alternate; }
-#passme .pm-tray { display: flex; gap: 10px; margin-top: 10px; background: #d9a877; border-radius: 18px; padding: 10px; justify-content: space-around; }
-#passme .pm-item { flex: 1; border: 3px solid transparent; background: rgba(255,255,255,.35); border-radius: 16px; padding: 6px; aspect-ratio: 1.2; }
-#passme .pm-item img { width: 100%; height: 100%; object-fit: contain; }
+.lsec.plain::before { border-left-style: solid; border-color: #cdb892; }
+.lg { position: relative; padding-left: 16px; display: flex; flex-direction: column; gap: 2px; }
+.lg .ldot {
+  position: absolute; left: 1px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%;
+  background: var(--ink-soft); box-shadow: 0 0 0 2px var(--cream); z-index: 1;
+}
+.lg.multi::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; border-left: 2px solid #cdb892; border-radius: 2px; }
+.lg.done .ldot { background: var(--sage); }
+.lr { border-radius: 10px; padding: 1px 3px; min-width: 0; }
+.lr.done { background: #eaf3e4; }
+.lr .wp { display: flex; flex-wrap: wrap; align-items: center; column-gap: 5px; row-gap: 2px; }
+.lr .wp .wp-text { flex: 1 1 0; min-width: 0; }
+.lr .wp .wp-en { flex-basis: 100%; }
+#mission .lr .wp .wp-text { font-size: clamp(14px, 1.4vw, 19px); }
+#mission .lr.head .wp .wp-text { font-size: clamp(14px, 1.5vw, 20px); }
+.lr.done .wp-text::after { content: " \2713"; color: var(--sage-dark); }
+/* "no X": the same row, with a small ✕ and nothing louder */
+.lr.no .wp-text::before { content: "\2715"; font-family: var(--ui-font); font-size: .62em; color: #b9a78d; margin-right: 4px; vertical-align: .15em; }
+#mission .wp button, #nani-card .wp button { width: 28px; height: 28px; padding: 5px; }
+.wp .wp-eye { background: #f3ead9; }
+.wp .wp-eye svg { opacity: .8; }
+
+/* ---- Nani: pass me. Her card comes forward in the sidebar column (the
+   same grid cell), never over the play area. ---- */
+#passme {
+  grid-column: 2; grid-row: 1; align-self: end; z-index: 30; margin: 8px; min-width: 0;
+  background: #fffaf1; border-radius: 20px; box-shadow: 0 -6px 30px rgba(40,25,10,.3), 0 0 0 3px var(--brass);
+  padding: 10px; animation: pmIn .3s cubic-bezier(.2,1.2,.4,1);
+}
+#passme.leaving { animation: pmOut .3s ease-in forwards; }
+@keyframes pmIn { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pmOut { to { transform: translateY(30px); opacity: 0; } }
+#passme .pm-nani { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; }
+#passme .pm-nani img { width: clamp(38px, 4.4vw, 60px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; animation: badgeTalk .45s ease-in-out 4 alternate; }
+#passme .pm-say { min-width: 0; }
+#passme .wp .wp-text { font-size: clamp(14px, 1.6vw, 21px); }
+#passme .wp button { width: 28px; height: 28px; padding: 5px; }
+/* three choice pills: picture + speaker (the picture is the meaning) */
+#passme .pm-tray { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
+#passme .pm-item {
+  border: 3px solid transparent; background: var(--paper); border-radius: 16px; padding: 4px 4px 5px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; box-shadow: 0 2px 6px rgba(60,40,20,.12);
+}
+#passme .pm-item img { width: 100%; height: clamp(40px, 7vh, 72px); object-fit: contain; }
+#passme .pm-item .wp-say {
+  width: 26px; height: 26px; border-radius: 50%; border: none; padding: 5px; background: #efe4d2; color: var(--ink);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+#passme .pm-item .wp-say.on { background: var(--ink); color: var(--cream); }
+#passme .pm-item .wp-say svg { width: 100%; height: 100%; }
 #passme .pm-item.wrong { animation: shake .35s; }
 #passme .pm-item.right { border-color: var(--sage); background: #eaf3e4; }
 #passme .pm-item.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }
 
-/* ---- receipt and completion cards (summary) ---- */
+/* ---- receipt, completion and result cards ---- */
 .receipt { font-size: 14px; background: var(--paper); border-radius: 12px; padding: 8px 12px; margin: 6px 0; }
 .receipt div { display: flex; justify-content: space-between; gap: 12px; }
 .receipt .total { border-top: 1px dashed #cdb892; margin-top: 4px; padding-top: 4px; font-weight: 800; }
@@ -383,11 +460,69 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .ccard .cc-dish { font-family: var(--kutchi-font); font-weight: 800; }
 .ccard .cc-coins { position: absolute; right: 10px; top: 10px; font-weight: 800; display: inline-flex; gap: 4px; align-items: center; }
 .ccard .cc-why { font-size: 12px; color: var(--ink-soft); }
-.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
-.rules .rule { background: var(--paper); border-radius: 14px; padding: 10px; text-align: center; font-size: 13px; }
-.rules .rule .mstar { margin: 0 auto 6px; }
+/* result card: left half the stars, right half what they asked and what you did */
+.cards .rcard { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 14px; }
+.rcard .rc-left { position: relative; min-width: 0; }
+.rc-right { min-width: 0; display: flex; flex-direction: column; gap: 8px; border-left: 2px dashed #e0d2bb; padding-left: 14px; }
+.rc-right h4 { margin: 0 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
+.rc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rc-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.kp { background: var(--cream); border-radius: 999px; padding: 2px 10px; font-family: var(--kutchi-font); font-weight: 800; font-size: 16px; line-height: 1.4; border: 2px solid transparent; }
+.kp .word { color: var(--madder); }
+.kp .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-size: .88em; }
+.kp.no::before { content: "\2715 "; font-size: .7em; color: #b9a78d; }
+.kp.bad { border-color: var(--madder); background: #fbe7e2; }
+.kp.none { color: var(--ink-soft); }
+.rc-tips .rc-tip { display: flex; gap: 8px; align-items: center; font-weight: 800; font-size: 14px; margin: 3px 0; }
+.rc-tips .rc-tip .mstar { width: 26px; height: 26px; padding: 4px; border-radius: 8px; }
+.rc-tips.all .rc-tip { color: var(--sage-dark); }
+.chip .draft { font-family: var(--ui-font); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: #8a6412; background: #fbeecb; border-radius: 6px; padding: 1px 5px; vertical-align: middle; }
+@media (max-width: 720px) {
+  .cards .rcard { grid-template-columns: 1fr; }
+  .rc-right { border-left: none; border-top: 2px dashed #e0d2bb; padding-left: 0; padding-top: 8px; }
+}
+/* the three stars, before day 1: icon centred above its name, room to breathe */
+.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; }
+.rules .rule { background: var(--paper); border-radius: 14px; padding: 14px 10px 12px; text-align: center; font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.rules .rule .mstar { width: 48px; height: 48px; padding: 9px; margin: 0; }
+.rules .rule b { font-size: 15px; }
+#panel .rules .rule p { margin: 0; font-size: 13px; line-height: 1.3; }
 
 /* ---- station lab ---- */
 .lab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 10px 0; }
 .lab-grid button { border: none; background: var(--paper); border-radius: 14px; padding: 10px; text-align: left; font-weight: 800; font-size: 15px; }
 .lab-grid button small { display: block; font-weight: 600; color: var(--ink-soft); font-size: 12px; }
+
+/* ---- short landscape phones (e.g. 915x375): a tight sidebar ---- */
+@media (max-height: 430px) {
+  #live { min-height: 40px; }
+  #live #nani-card { max-height: 32vh; }
+  #how { padding: 5px 7px; }
+  #how .how-q { width: 22px; height: 22px; line-height: 22px; font-size: 13px; }
+  .side-top .pill { padding: 2px 8px; }
+  #mission .m-steps { display: none; }
+  #mission .m-head { gap: 5px; }
+  #mission .m-ring { width: 32px; height: 32px; }
+  #mission .m-ring.on .m-face { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
+  #mission .m-name { font-size: 12px; }
+  #mission .m-stars { gap: 3px; margin-top: 2px; }
+  #mission .m-stars .mstar { width: 22px; height: 22px; padding: 3px; border-radius: 7px; }
+  #mission .m-order { margin-top: 4px; gap: 3px; max-height: none; }
+  #mission .wp button, #nani-card .wp button, #passme .wp button { width: 22px; height: 22px; padding: 4px; }
+  #mission .lr .wp { column-gap: 2px; }
+  #mission .lr .wp .wp-text, #mission .lr.head .wp .wp-text { font-size: 13px; }
+  .lg { padding-left: 13px; }
+  .lg .ldot { width: 8px; height: 8px; margin-top: -4px; }
+  .lsec.seq::before, .lsec.plain::before, .lg.multi::before { left: 4px; }
+  #passme { margin: 4px; padding: 6px; border-radius: 14px; }
+  #passme .pm-nani img { width: 30px; }
+  #passme .wp .wp-text { font-size: 13px; }
+  #passme .pm-tray { gap: 4px; margin-top: 5px; }
+  #passme .pm-item { border-radius: 10px; padding: 2px; }
+  #passme .pm-item img { height: 34px; }
+  #passme .pm-item .wp-say { width: 20px; height: 20px; padding: 3px; }
+}
+
+@media (max-aspect-ratio: 1332/1000) {
+  #passme { grid-column: 1; grid-row: 2; align-self: end; }
+}

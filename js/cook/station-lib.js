@@ -770,7 +770,7 @@
     const sizzle = Cook.sfx.sizzleLoop();
     S.loops.push(sizzle);
     order.forEach((id) => Cook.markSeen(id));
-    const line = Lang.list(order);
+    const line = Lang.list(order, { seq: true }); // "Jeeru. Ne poi rai." (and then: order matters)
     await nani(line, { hide: hideKnown(ctx) });
     const colorOf = (id) => {
       const h = (Cook.data.words[id] || {}).heap;
@@ -790,6 +790,7 @@
         },
       });
       if (!ctx.guided) r.misses ? Cook.markMiss(id) : Cook.markRight(id);
+      if (ctx.tickItem && order.includes(id)) ctx.tickItem(id); // tick its row on the order ladder
       const obj = items[id];
       const dot = S.track(S.add.circle(obj.x, obj.y - 20, 20, colorOf(id), 1).setDepth(D.fx));
       await S.fly(dot, pan.rim.x, pan.rim.y, { duration: 340, arc: 100 });

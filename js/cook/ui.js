@@ -28,8 +28,25 @@
     hand: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 12V6.5a1.5 1.5 0 0 1 3 0V11V4.5a1.5 1.5 0 0 1 3 0V11V5.5a1.5 1.5 0 0 1 3 0V12V8.5a1.5 1.5 0 0 1 3 0V14c0 4-2.5 7-6.5 7S5.5 18.5 4 15.5l-1.2-2.3A1.5 1.5 0 0 1 5.4 12L7 14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>`,
     bolt: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`,
     tick: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    chefhat: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14.2a4 4 0 0 1-.6-7.9A4.6 4.6 0 0 1 12 3.4a4.6 4.6 0 0 1 5.6 2.9 4 4 0 0 1-.6 7.9V20H7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 16.8h10M10 11v3M14 11v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    magnifier: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m14.5 14.5 6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`,
+    eye: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>`,
   };
   UI.ICON = ICON;
+
+  /**
+   * Star icons come from the game mode's star set (data.star_sets), so each
+   * mode supplies its own: in Cook the "cooked well" star is a chef's hat,
+   * in Find it (planned) a magnifying glass. k: "ear" | "hand" | "third".
+   */
+  UI.starInfo = function (k, mode = Cook.save.mode) {
+    const sets = Cook.data.star_sets || {};
+    const set = sets[Cook.gameMode || "cook"] || sets.cook || {};
+    const key = k === "third" ? (mode === "busy" ? "busy" : "relaxed") : k;
+    const fallback = { ear: "ear", hand: "hand", busy: "bolt", relaxed: "tick" }[key];
+    return Object.assign({ icon: fallback, name: key, tip: "" }, set[key] || {});
+  };
+  UI.starIcon = (k, mode) => ICON[UI.starInfo(k, mode).icon] || ICON.tick;
 
   /* ---------------- geometry: world (1600x900) -> page ---------------- */
   UI.worldToStage = function (x, y) {
@@ -56,11 +73,12 @@
   UI.pill = function (line, opts = {}) {
     const el = document.createElement("span");
     el.className = `wp wp-${opts.shape || "full"}`;
-    const voice = Lang.hasVoice(line);
+    const sayLine = opts.speakLine || line;
+    const voice = Lang.hasVoice(sayLine);
     const hideTr = opts.noTranslate || !line.en;
     el.innerHTML = `${voice ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : ""}<span class="wp-text">${Lang.html(line, opts)}</span>${
-      hideTr ? "" : `<button class="wp-tr" type="button" aria-label="Show in English">${ICON.translate}</button>`
-    }<span class="wp-en hidden">${esc(line.en || "")}</span>`;
+      opts.onReveal ? `<button class="wp-eye" type="button" aria-label="Show the word">${ICON.eye}</button>` : ""
+    }${hideTr ? "" : `<button class="wp-tr" type="button" aria-label="Show in English">${ICON.translate}</button>`}<span class="wp-en hidden">${esc(line.en || "")}</span>`;
     const say = el.querySelector(".wp-say");
     if (say)
       say.addEventListener("click", (ev) => {
@@ -68,7 +86,13 @@
         Cook.unlockAudio();
         say.classList.add("on");
         if (opts.onHear) opts.onHear();
-        Lang.speak(line).then(() => say.classList.remove("on"));
+        Lang.speak(sayLine).then(() => say.classList.remove("on"));
+      });
+    const eye = el.querySelector(".wp-eye");
+    if (eye)
+      eye.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        opts.onReveal();
       });
     const tr = el.querySelector(".wp-tr");
     if (tr)
@@ -77,7 +101,11 @@
         const en = el.querySelector(".wp-en");
         en.classList.toggle("hidden");
         tr.classList.toggle("on", !en.classList.contains("hidden"));
-        if (!en.classList.contains("hidden") && Cook.onHelp) Cook.onHelp("translate");
+        if (en.classList.contains("hidden")) return;
+        // English shows the meaning: for a line with order words in it,
+        // that's the answer (costs the ear star); otherwise it's help.
+        if (opts.onTranslate) opts.onTranslate();
+        else if (Cook.onHelp) Cook.onHelp(line.segs.some((s) => s.w) ? "translate" : "help", { line });
       });
     return el;
   };
@@ -147,21 +175,35 @@
   };
 
   /* ---------------- gist (top of the picture) and how-to (sidebar) ---------------- */
+  /*
+   * The goal sits at the bottom of the sidebar. The first time you meet a
+   * station (or while Nani is guiding) it's shown in full; after that it's
+   * a small "?" that opens on tap, so it never pushes anything around.
+   */
   UI.gist = function (text, opts = {}) {
     if (opts.top) {
       const g = $("#gist");
       g.textContent = text;
       g.classList.remove("hidden");
-    } else {
-      const h = $("#how");
-      h.innerHTML = `<b>Goal</b> ${esc(text)}`;
-      h.classList.remove("hidden");
+      return;
     }
+    const h = $("#how");
+    const stations = (Cook.data && Cook.data.stations) || {};
+    const key = Object.keys(stations).find((k) => stations[k].goal === text);
+    Cook.save.goalShown = Cook.save.goalShown || {};
+    const guided = Cook.ctx && Cook.ctx.guided;
+    const full = !key || guided || !Cook.save.goalShown[key] || opts.full;
+    if (key) Cook.save.goalShown[key] = true;
+    h.innerHTML = `<button class="how-q" type="button" aria-label="What do I do here?">?</button><span class="how-text"><b>Goal</b> ${esc(text)}</span>`;
+    h.classList.toggle("collapsed", !full);
+    h.classList.remove("hidden");
+    h.querySelector(".how-q").addEventListener("click", () => h.classList.toggle("collapsed"));
   };
   UI.hideGist = () => {
     $("#gist").classList.add("hidden");
     $("#how").classList.add("hidden");
   };
+  UI.hideTopGist = () => $("#gist").classList.add("hidden");
 
   /* ---------------- choices (small talk), as big pills ---------------- */
   UI.choose = function (options, correctKey, opts = {}) {
@@ -216,37 +258,73 @@
    * items on a tray; tap the one she named. Relaxed: the cooking pauses.
    * Resolves {misses}.
    */
+  /*
+   * Nani's card comes forward in the SIDEBAR (never over the play area: in
+   * Busy mode she once covered a boiling pan). Three look-alike choices as
+   * choice pills (picture + speaker), all from one look-alike group so the
+   * answer is never the odd one out. Relaxed: the cooking pauses (the
+   * caller sets Cook.paused). Busy: it keeps going and the play area stays
+   * tappable. The two-miss highlight and the translate button show the
+   * answer, so they cost the ear star; from word stage 3 the right
+   * picture's speaker counts as help.
+   */
+  function passMeOptions(want, options) {
+    const groups = ((Cook.data.lookalike_groups || {}).groups || []).filter((g) => g.includes(want));
+    const drawable = (id) => {
+      const w = Cook.data.words[id];
+      return !!(w && (w.heap || w.image));
+    };
+    const g = groups.find((x) => x.filter((id) => id !== want && drawable(id)).length >= 2);
+    if (!g) return options;
+    return [want].concat(Cook.shuffle(g.filter((id) => id !== want && drawable(id))).slice(0, 2));
+  }
+  UI.passMeOptions = passMeOptions;
   UI.passMe = function (want, options, opts = {}) {
     const box = $("#passme");
+    options = passMeOptions(want, options);
     const line = Lang.line("give", Lang.phrase([want]));
     box.querySelector(".pm-say").innerHTML = "";
-    box.querySelector(".pm-say").appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear }));
+    box.querySelector(".pm-say").appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, onTranslate: () => Cook.onHelp && Cook.onHelp("translate", { ids: [want], passMe: true }) }));
     const tray = box.querySelector(".pm-tray");
     tray.innerHTML = "";
+    card().classList.add("hidden");
     box.classList.remove("hidden", "leaving");
+    box.classList.toggle("busy", Cook.save.mode === "busy");
     let misses = 0;
     Lang.speak(line);
     return new Promise((resolve) => {
       Cook.shuffle(options).forEach((id) => {
-        const b = document.createElement("button");
-        b.type = "button";
+        const b = document.createElement("div");
         b.className = "pm-item";
         b.dataset.id = id;
-        b.innerHTML = `<img src="${Cook.Art.wordUrl(id)}" alt="">`;
+        b.setAttribute("role", "button");
+        b.setAttribute("aria-label", "This one");
+        const voice = Lang.hasVoice(Lang.wordLine(id));
+        b.innerHTML = `<img src="${Cook.Art.wordUrl(id)}" alt="">${voice ? `<button class="wp-say" type="button" aria-label="Hear its name">${ICON.speaker}</button>` : ""}`;
+        const say = b.querySelector(".wp-say");
+        if (say)
+          say.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            Cook.unlockAudio();
+            say.classList.add("on");
+            if (Cook.onLabel) Cook.onLabel(id, { passMe: want });
+            Lang.speakWord(id).then(() => say.classList.remove("on"));
+          });
         b.addEventListener("click", () => {
           Cook.unlockAudio();
+          if (b.parentNode !== tray || box.classList.contains("leaving")) return;
           if (id === want) {
             b.classList.add("right");
             Cook.sfx.right();
             Cook.expect = null;
-            UI.say(Lang.line("thanks"), { badge: true }, { ms: 900 }).catch(() => {});
             setTimeout(() => {
               box.classList.add("leaving");
               setTimeout(() => {
                 box.classList.add("hidden");
+                UI.say(Lang.line("thanks"), { badge: true }, { ms: 900 }).catch(() => {});
                 resolve({ misses });
-              }, 350);
-            }, 500);
+              }, 300);
+            }, 450);
           } else {
             misses++;
             b.classList.remove("wrong");
@@ -254,66 +332,207 @@
             b.classList.add("wrong");
             Cook.sfx.soft();
             Lang.speak(line);
-            if (misses >= 2) tray.querySelector(`[data-id="${want}"]`).classList.add("glow");
+            if (misses >= 2) {
+              tray.querySelector(`[data-id="${want}"]`).classList.add("glow");
+              if (Cook.onHelp) Cook.onHelp("shown", { ids: [want], passMe: true });
+            }
           }
         });
         tray.appendChild(b);
       });
-      Cook.expect = { kind: "click", selector: `#passme .pm-item[data-id="${want}"]`, wrong: `#passme .pm-item:not([data-id="${want}"])` };
+      Cook.expect = { kind: "click", selector: `#passme .pm-item[data-id="${want}"] img`, wrong: `#passme .pm-item:not([data-id="${want}"]) img` };
     });
   };
 
-  /* ---------------- the mission card ---------------- */
+  /* ---------------- the mission card: the order ladder ---------------- */
+  /*
+   * The order is drawn as a ladder (js/cook/order.js builds it): one row
+   * per thing, [speaker] word-or-••• [👁 reveal] [A/En translate]. A dot
+   * per group; rows sharing a dot go in any order; dots joined by a dashed
+   * line are steps in order. "No X" rows look like the rest apart from a
+   * small ✕. Once "ne poi" is well known (word stage 3+) every row gets its
+   * own dot on a plain line, so only the spoken "ne poi" tells you what
+   * comes in order.
+   *
+   * Help on the card: the speaker is free while a row's words are still
+   * shown as text; once they're dots, replaying costs the no-help star.
+   * 👁 shows the Kutchi (never English) and costs the ear star; so does
+   * translating a row before it's done.
+   */
   const M = (UI.mission = {});
   let mission = null;
-  M.open = function ({ who, name, lines, steps, busy }) {
-    mission = { who, lines, steps, stars: { ear: "pending", hand: "pending", third: "pending" }, done: [], stepAt: 0, busy };
+  const Order = () => Cook.Order;
+  const hideWord = (id) => Cook.cardHidden(id) && Lang.wordHasVoice(id);
+  M.open = function ({ who, name, ladders, lines, steps, busy }) {
+    if (!ladders) ladders = [Order().fromLines(lines || [])];
+    const seqWord = Lang.frames().seq_word;
+    mission = { who, ladders, steps, stars: { ear: "pending", hand: "pending", third: "pending" }, stepAt: 0, busy, plain: !!seqWord && Cook.wordStage(seqWord) >= 3 };
     const el = $("#mission");
     el.classList.remove("hidden", "stamped");
+    el.classList.toggle("busy", !!busy);
     el.querySelector(".m-face").src = who === "nani" ? "assets/cook/characters/nani-badge.webp" : `assets/cook/characters/${who}-badge.webp`;
     el.querySelector(".m-name").textContent = name;
     renderStars();
     renderOrder();
     renderSteps();
+    UI.setPatience(busy ? 1 : null);
   };
   function renderStars() {
     const box = $("#mission .m-stars");
-    const third = mission.busy ? "bolt" : "tick";
-    const tips = { ear: "Understood: everything they asked for", hand: "Cooked well: nothing spilt or burnt", bolt: "Quick: served before the patience bar ran out", tick: "No help: no hints or translations used" };
-    box.innerHTML = [
-      ["ear", "ear"],
-      ["hand", "hand"],
-      ["third", third],
-    ]
-      .map(([k, icon]) => `<span class="mstar ${mission.stars[k]}" data-k="${k}" title="${tips[icon]}">${ICON[icon]}</span>`)
+    box.innerHTML = ["ear", "hand", "third"]
+      .map((k) => {
+        const info = UI.starInfo(k, mission.busy ? "busy" : "relaxed");
+        const drain = k === "third" && mission.busy ? " drain" : "";
+        return `<span class="mstar ${mission.stars[k]}${drain}" data-k="${k}" title="${esc(info.tip)}">${ICON[info.icon] || ""}</span>`;
+      })
       .join("");
+    if (mission.busy && mission.patience != null) paintDrain(mission.patience);
+  }
+  const rowHidden = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && hideWord(s.w));
+  function rowEl(L, r) {
+    const li = document.createElement("div");
+    li.className = ["lr", r.head ? "head" : "", r.no ? "no" : "", r.done ? "done" : ""].filter(Boolean).join(" ");
+    const hidden = rowHidden(r);
+    const speakLine = r.head ? Order().speech([L]) : null;
+    li.appendChild(
+      UI.pill(r.line, {
+        hide: (id) => !r.done && !r.revealed && hideWord(id),
+        speakLine,
+        onHear: () => {
+          // hearing it again is fine while the words are on the card; once
+          // they're dots, a replay is help (the no-help star)
+          const rows = r.head ? Order().rows(L) : [r];
+          if (rows.some(rowHidden) && Cook.onHelp) Cook.onHelp("replay", { ids: r.ids });
+        },
+        onReveal: hidden
+          ? () => {
+              r.revealed = true;
+              if (Cook.onHelp) Cook.onHelp("reveal", { ids: r.ids });
+              renderOrder();
+            }
+          : null,
+        onTranslate: () => {
+          if (!r.done && Cook.onHelp) Cook.onHelp("translate", { ids: r.ids });
+          else if (Cook.onHelp) Cook.onHelp("help");
+        },
+      })
+    );
+    return li;
   }
   function renderOrder() {
-    const ul = $("#mission .m-order");
-    ul.innerHTML = "";
-    mission.lines.forEach((l, i) => {
-      const li = document.createElement("li");
-      if (mission.done[i]) li.classList.add("done");
-      li.appendChild(
-        UI.pill(l.line, {
-          hide: (id) => Cook.cardHidden(id) && !mission.done[i],
-          onHear: () => {
-            // replaying a known word's instruction counts as help
-            if (l.line.segs.some((s) => s.w && Cook.wordStage(s.w) >= 4) && Cook.onHelp) Cook.onHelp("replay");
-          },
-        })
-      );
-      ul.appendChild(li);
+    const box = $("#mission .m-order");
+    box.innerHTML = "";
+    mission.ladders.forEach((L) => {
+      const lad = document.createElement("div");
+      lad.className = "ladder";
+      if (L.head) lad.appendChild(rowEl(L, L.head));
+      L.sections.forEach((s) => {
+        if (s.when && !s.shown) return;
+        const sec = document.createElement("div");
+        // plain: every row its own dot on a plain line (only the voice marks the order)
+        const groups = mission.plain && !s.simple ? [].concat(...s.groups).map((r) => [r]) : s.groups;
+        const nRows = groups.reduce((a, g) => a + g.length, 0);
+        if (!nRows) return;
+        sec.className = ["lsec", s.simple ? "simple" : "", !mission.plain && s.seq && groups.length > 1 ? "seq" : "", mission.plain && groups.length > 1 ? "plain" : "", s.when ? "late" : ""].filter(Boolean).join(" ");
+        groups.forEach((g) => {
+          const ge = document.createElement("div");
+          ge.className = ["lg", g.length > 1 ? "multi" : "", g.every((r) => r.done) ? "done" : ""].filter(Boolean).join(" ");
+          if (!s.simple) ge.insertAdjacentHTML("beforeend", `<i class="ldot"></i>`);
+          g.forEach((r) => ge.appendChild(rowEl(L, r)));
+          sec.appendChild(ge);
+        });
+        lad.appendChild(sec);
+      });
+      box.appendChild(lad);
     });
   }
   function renderSteps() {
     const box = $("#mission .m-steps");
-    box.innerHTML = mission.steps.map((s, i) => `<span class="mstep ${i < mission.stepAt ? "on" : i === mission.stepAt ? "now" : ""}">${esc(s)}</span>`).join("");
+    box.innerHTML = (mission.steps || []).map((s, i) => `<span class="mstep ${i < mission.stepAt ? "on" : i === mission.stepAt ? "now" : ""}">${esc(s)}</span>`).join("");
   }
-  M.tick = function (i) {
-    if (!mission) return;
-    mission.done[i] = true;
+  const ladderFor = (dish) => (mission ? mission.ladders.find((L) => L.dish === dish) || mission.ladders[0] : null);
+  function markDone(r) {
+    r.done = true;
+    // a finished row shows its words again
+  }
+  /** When every step of a section is done, its "no X" rows are done too (unless one was broken). */
+  function settle(L) {
+    L.sections.forEach((s) => {
+      const rows = [].concat(...s.groups);
+      if (rows.filter((r) => !r.no).every((r) => r.done)) rows.filter((r) => r.no && !r.miss).forEach(markDone);
+    });
+  }
+  /** Tick the first open row with this item on it. Returns the row, or null. */
+  M.tickItem = function (id, dish = 0) {
+    const L = ladderFor(dish);
+    if (!L) return null;
+    const rows = Order()
+      .rows(L)
+      .filter((r) => !r.done && !r.no);
+    // an order row first, the dish's own name last (the pantry fetches the tea for "chai")
+    const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
+    if (!r) return null;
+    r.got = (r.got || 0) + 1;
+    if (r.got >= (r.need || 1)) markDone(r);
+    settle(L);
     renderOrder();
+    return r;
+  };
+  /** The i-th piece of the dish's sequence (thread reports a position, not an item). */
+  M.unitId = function (i, dish = 0) {
+    const L = ladderFor(dish);
+    if (!L) return null;
+    const s = L.sections.find((x) => x.seq);
+    if (!s) return null;
+    const units = [];
+    s.groups.forEach((g) => g.forEach((r) => !r.no && r.ids.forEach((id) => units.push(...Array(r.need || 1).fill(id)))));
+    return units[i] || null;
+  };
+  /** Something went wrong for this item: mark its row (shown on the result card). */
+  M.missItem = function (id, dish = 0, { no = null, counted = false } = {}) {
+    const L = ladderFor(dish);
+    if (!L) return null;
+    const rows = Order().rows(L, { all: true });
+    const r =
+      rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no) && !x.done) ||
+      rows.find((x) => x.ids.includes(id) && (no == null || !!x.no === no)) ||
+      (counted ? rows.find((x) => x.parts && x.parts.some((p) => typeof p === "number")) : null);
+    if (r) r.miss = true;
+    return r;
+  };
+  /** A dish is finished: whatever is left is done (the ticks catch up). */
+  M.finishDish = function (dish = 0) {
+    const L = ladderFor(dish);
+    if (!L) return;
+    L.sections.forEach((s) => (s.shown = s.shown || !s.when));
+    Order()
+      .rows(L)
+      .forEach((r) => !r.miss && markDone(r));
+    renderOrder();
+  };
+  /** A section that waits for its station appears (the tadka order when the tadka starts). */
+  M.reveal = function (key) {
+    if (!mission) return null;
+    let found = null;
+    mission.ladders.forEach((L) =>
+      L.sections.forEach((s) => {
+        if (s.when === key && !s.shown) {
+          s.shown = true;
+          found = { L, s };
+        }
+      })
+    );
+    if (found) renderOrder();
+    return found;
+  };
+  M.ladders = () => (mission ? mission.ladders : []);
+  M.isTarget = function (id) {
+    if (!mission) return false;
+    return mission.ladders.some((L) =>
+      Order()
+        .rows(L)
+        .some((r) => !r.done && !r.no && r.ids.includes(id))
+    );
   };
   M.step = function (i) {
     if (!mission) return;
@@ -351,6 +570,28 @@
     return el ? el.innerHTML : "";
   };
 
+  /* Busy: the customer's patience as a ring round their face, and the
+     lightning star drains with it (grey once it's too low to win). */
+  function paintDrain(frac) {
+    const st = $(`#mission .mstar[data-k="third"]`);
+    if (st) st.style.setProperty("--fill", `${Math.round(Cook.clamp(frac, 0, 1) * 100)}%`);
+  }
+  UI.setPatience = function (frac) {
+    const el = $("#mission");
+    const ring = el.querySelector(".m-ring");
+    if (frac == null) {
+      ring.classList.remove("on", "low");
+      if (mission) mission.patience = null;
+      return;
+    }
+    const f = Cook.clamp(frac, 0, 1);
+    ring.classList.add("on");
+    ring.classList.toggle("low", f < 0.35);
+    ring.style.setProperty("--p", f.toFixed(3));
+    if (mission) mission.patience = f;
+    paintDrain(f);
+  };
+
   /* ---------------- sidebar bits ---------------- */
   UI.setCoins = function (n, bump) {
     $("#coins").textContent = n;
@@ -365,14 +606,6 @@
     void p.offsetWidth;
     p.classList.add("bump");
   }
-  UI.setPatience = function (frac) {
-    const p = $("#patience");
-    if (frac == null) return p.classList.add("hidden");
-    p.classList.remove("hidden");
-    p.querySelector("i").style.width = `${Math.round(Cook.clamp(frac, 0, 1) * 100)}%`;
-    p.classList.toggle("low", frac < 0.35);
-  };
-
   /* ---------------- count badge, done button, toast ---------------- */
   // Digit only, always: this is the running tally (how many so far), never
   // the target, and never the Kutchi number as text (that would show the
@@ -382,7 +615,10 @@
     b.classList.remove("hidden");
     b.querySelector(".count-digit").textContent = n;
     bumpEl(b);
-    if (speak && n >= 1 && n <= 5) Lang.speak(Lang.num(n) ? { segs: Lang.num(n), en: String(n) } : null);
+    // Counting aloud teaches the number words (stages 1-2). From stage 3
+    // the count is digit-only and silent, so you can't just stop when the
+    // sound matches what you heard in the order.
+    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3) Lang.speak({ segs: Lang.num(n), en: String(n) });
   };
   UI.hideCount = () => $("#count-badge").classList.add("hidden");
   let doneResolve = null;
