@@ -147,7 +147,21 @@ The same personas, after the round 1 changes, the full five-day run and the six 
 
 ## 6. Test results
 
-*(filled in from the final runs)*
+Final runs on the finished build (Gujarati voice, station shop, round 1 and 2 fixes), `python3 build/test_cook.py` at 3× speed:
+
+| Run | Result |
+|---|---|
+| Day 1 on all six sizes: phone 915×375, 1366×768, 1440×900, 1280×800, iPad, iPad portrait | **All pass** (about 90 s each) |
+| All 5 story days, the finale and a free-cooking day (1366×768) | **Pass**: 22 orders, all 3 stars (the test knows the answers), 218 coins, 274 screenshots |
+| Days 1–2, Busy setting (iPad) | **Pass** |
+| Days 1–2 on all six sizes (before the voice and shop change) | **All pass** |
+
+The test deliberately:
+- picks a wrong greeting once
+- taps wrong pantry items and wrong steps now and then
+- skips Ma's elchi when cooking from memory
+
+So the warm-failure paths (Arre re!, Nani modelling the reply, the customer repeating what they asked for, fewer stars) run on every pass. No console errors. A curated set of screenshots is in `docs/cook-screens/`.
 
 ## 7. Next steps (for Zafar)
 
