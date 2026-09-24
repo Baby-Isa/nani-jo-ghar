@@ -32,7 +32,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PORT = 8942
+PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
 LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill"]
 
 VIEWPORTS = [

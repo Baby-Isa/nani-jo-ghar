@@ -62,6 +62,12 @@
    "image": "chapati-puffed",
    "src": "zafar-24sep"
   },
+  "cook-bajrmaani": {
+   "kutchi": "bajr jo maani",
+   "english": "millet chapati",
+   "src": "zafar-24sep-draft",
+   "draft": true
+  },
   "veg-01": {
    "kutchi": "bataato",
    "english": "potato",
@@ -262,7 +268,7 @@
    "src": "handout"
   },
   "ph-chana": {
-   "kutchi": null,
+   "kutchi": "channa",
    "english": "chickpeas",
    "heap": {
     "kind": "balls",
@@ -273,10 +279,11 @@
     "color": "#d9b77a"
    },
    "bowl": "steel",
-   "src": "placeholder"
+   "src": "zafar-24sep-draft",
+   "draft": true
   },
   "ph-dahi": {
-   "kutchi": null,
+   "kutchi": "dai",
    "english": "yoghurt",
    "heap": {
     "kind": "liquid",
@@ -287,7 +294,8 @@
     "color": "#fbf8f1"
    },
    "bowl": "ceramic",
-   "src": "placeholder"
+   "src": "zafar-24sep-draft",
+   "draft": true
   },
   "ph-amli": {
    "kutchi": null,
@@ -360,7 +368,7 @@
    "src": "placeholder"
   },
   "ph-meat": {
-   "kutchi": null,
+   "kutchi": "ghos",
    "english": "meat",
    "heap": {
     "kind": "cubes",
@@ -371,7 +379,8 @@
     "color": "#9c4a32"
    },
    "bowl": "steel",
-   "src": "placeholder"
+   "src": "zafar-24sep-draft",
+   "draft": true
   },
   "ph-pepper": {
    "kutchi": null,
@@ -421,6 +430,13 @@
    "kutchi": null,
    "english": "mishkaki",
    "src": "placeholder"
+  },
+  "lnk-nepoi": {
+   "kutchi": "ne poi",
+   "english": "and then",
+   "src": "zafar-24sep-draft",
+   "draft": true,
+   "linker": true
   }
  },
  "lines": {
@@ -459,6 +475,12 @@
   "and": {
    "k": "Ne {x}.",
    "en": "And {x}."
+  },
+  "then": {
+   "k": "Ne poi {x}.",
+   "en": "And then {x}.",
+   "draft": true,
+   "src": "zafar-24sep-draft"
   },
   "give": {
    "k": "Muke hikdo {x} dine.",
@@ -518,6 +540,15 @@
   "pocket": {
    "e": "I'll give you pocket money for helping. Get it all right and be quick, and you get more!"
   }
+ },
+ "order_speech": {
+  "_about": "How the order ladder says an order, as keys in 'lines' (so another language can supply its own): the first thing, 'and' for things in any order, 'and then' (draft) for the next step in a sequence, 'no' for leave-it-out rows. seq_word is the word whose progress decides when the ladder stops drawing the sequence (from word stage 3 only the spoken 'ne poi' tells you).",
+  "first": "need",
+  "more": "and",
+  "any": "and",
+  "seq": "then",
+  "no": "no",
+  "seq_word": "lnk-nepoi"
  },
  "exchanges": [
   {
@@ -650,6 +681,16 @@
     "pour",
     "count",
     "pour"
+   ],
+   "chips": [
+    "Pantry",
+    "Water",
+    "Tea",
+    "Boil",
+    "Milk",
+    "Extra",
+    "Sugar",
+    "Pour"
    ]
   },
   "maani": {
@@ -660,6 +701,11 @@
     "knead",
     "roll",
     "flip"
+   ],
+   "chips": [
+    "Knead",
+    "Roll",
+    "Tawa"
    ]
   },
   "daal": {
@@ -670,6 +716,11 @@
     "chop",
     "tadka",
     "stir"
+   ],
+   "chips": [
+    "Chop",
+    "Tadka",
+    "Stir"
    ]
   },
   "chaat": {
@@ -679,6 +730,10 @@
    "stations": [
     "chop",
     "assemble"
+   ],
+   "chips": [
+    "Chop",
+    "Build"
    ]
   },
   "samosa": {
@@ -689,6 +744,11 @@
     "fill",
     "fold",
     "fry"
+   ],
+   "chips": [
+    "Fill",
+    "Fold",
+    "Fry"
    ]
   },
   "mishkaki": {
@@ -699,6 +759,11 @@
     "thread",
     "grill",
     "fry"
+   ],
+   "chips": [
+    "Skewer",
+    "Grill",
+    "Chips"
    ]
   }
  },
@@ -1181,5 +1246,135 @@
  "no_upgrade": {
   "station": "Sugar",
   "text": "No upgrade here: counting the spoons is the Kutchi. That's your job!"
+ },
+ "lookalike_groups": {
+  "_about": "Pass me shows three pictures from ONE group, so the answer never stands out as the odd one out (docs/cook-with-nani-kutchi-audit.md). Groups keep photos with photos and drawn bowls with bowls, so the picture style gives nothing away either.",
+  "groups": [
+   [
+    "cook-khun",
+    "spi-16",
+    "ph-dahi"
+   ],
+   [
+    "spi-02",
+    "spi-05",
+    "spi-01"
+   ],
+   [
+    "ph-amli",
+    "ph-ghee",
+    "spi-04"
+   ],
+   [
+    "veg-01",
+    "ph-chana",
+    "veg-10"
+   ],
+   [
+    "ph-meat",
+    "ph-keema",
+    "veg-14"
+   ],
+   [
+    "ph-sev",
+    "ph-chips",
+    "fru-02"
+   ],
+   [
+    "ph-pepper",
+    "ph-dhana",
+    "ph-lili"
+   ],
+   [
+    "veg-02",
+    "veg-13",
+    "veg-03",
+    "veg-12",
+    "spi-10"
+   ],
+   [
+    "cook-paani",
+    "cook-dudh",
+    "cook-chai",
+    "cook-atto",
+    "cook-daal"
+   ]
+  ]
+ },
+ "star_sets": {
+  "_about": "Each game mode supplies its own star icons (icon names from js/cook/ui.js ICON). Cook: the 'cooked well' star is a chef's hat. Find it (planned): a magnifying glass.",
+  "cook": {
+   "ear": {
+    "icon": "ear",
+    "name": "Understood",
+    "tip": "Understood: everything they asked for"
+   },
+   "hand": {
+    "icon": "chefhat",
+    "name": "Cooked well",
+    "tip": "Cooked well: nothing spilt or burnt"
+   },
+   "relaxed": {
+    "icon": "tick",
+    "name": "No help",
+    "tip": "No help: no hints, reveals or translations"
+   },
+   "busy": {
+    "icon": "bolt",
+    "name": "Quick",
+    "tip": "Quick: served before their patience ran out"
+   }
+  },
+  "find": {
+   "ear": {
+    "icon": "ear",
+    "name": "Understood",
+    "tip": "Understood: found what they asked for"
+   },
+   "hand": {
+    "icon": "magnifier",
+    "name": "Sharp eyes",
+    "tip": "Sharp eyes: found it without a wrong pick"
+   },
+   "relaxed": {
+    "icon": "tick",
+    "name": "No help",
+    "tip": "No help"
+   },
+   "busy": {
+    "icon": "bolt",
+    "name": "Quick",
+    "tip": "Quick"
+   }
+  }
+ },
+ "tips": {
+  "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",
+  "ear": {
+   "no": "Leave out what they said no to",
+   "order": "Do them in the order they said",
+   "count": "Make as many as they asked for",
+   "speed": "Stir at the speed Nani says",
+   "shown": "Have a go before Nani shows you",
+   "passme": "Listen for what Nani asks for",
+   "wrong": "Listen for each word, then pick it"
+  },
+  "hand": {
+   "pour": "Stop pouring at the dashed line",
+   "boil": "Tap when the ring reaches green",
+   "tawa": "Flip when the ring reaches green",
+   "fry": "Lift each one out when its ring is green",
+   "grill": "Turn the skewer when its ring is green",
+   "roll": "Roll until it just fills the circle",
+   "stir speed": "Stir at the speed Nani says",
+   "knead": "Keep pressing until the dough is smooth",
+   "fold": "Swipe along each dashed line",
+   "chop": "Slice right through each one",
+   "default": "Take your time with your hands"
+  },
+  "third": {
+   "busy": "Serve before the ring runs out",
+   "relaxed": "Have a go without help first"
+  }
  }
 }

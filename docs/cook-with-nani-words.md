@@ -6,7 +6,7 @@
 
 ## Rules followed
 
-- **No Kutchi is invented.** Sentences only recombine frames that are already in the content master: *Muke … khape*, *Ne …*, *Salamun alaykum*, *Wa alaikum salaam*, *Aabhar aanjo*, *Achija*, *Arre re*, *Hedo*.
+- **No Kutchi is invented.** Sentences only recombine frames that are already in the content master: *Muke … khape*, *Ne …*, *Salamun alaykum*, *Wa alaikum salaam*, *Aabhar aanjo*, *Achija*, *Arre re*, *Hedo*, plus Zafar's draft linker *Ne poi …* (and then). The frames an order uses live in `data/cook.json` (`order_speech`), not in the code.
 - **Placeholder voice: Gujarati text-to-speech at about half speed** (Zafar, 24 Sept: "use Gujarati audio and play it half speed or slower"). Every line the game can say has a file in `assets/audio/cook-tts/`, made by `build/build_cook_tts.py`, which writes each romanised word in Gujarati script so the voice can read it. The bubble says "placeholder voice". Some Kutchi sounds will be wrong: it's a Gujarati voice. **A family recording replaces a file of the same name** (the names are the lines, e.g. `muke-chai-khape.mp3`, listed in `data/cook-tts.json`).
 - **Cooking verbs have no Kutchi yet.** Nani shows each action by making the item glow, and a short English how-to line appears in the sidebar. When the family gives the verbs, they replace those English lines.
 
@@ -31,8 +31,15 @@
 | spi-10 | elchi | cardamom | content master | needed |
 | spi-16 | loon | salt (tadka decoy) | content master | needed |
 | num-01 to num-05 | hikdo, bo, trae, char, panj | 1 to 5 | handout | needed |
+| ph-dahi | **dai** (DRAFT) | yoghurt | Zafar, 24 Sept: **draft, not confirmed** (Mum to check) | needed |
+| ph-chana | **channa** (DRAFT) | chickpeas | Zafar, 24 Sept: **draft, not confirmed** | needed |
+| ph-meat | **ghos** (DRAFT) | meat | Zafar, 24 Sept: **draft, not confirmed** | needed |
+| cook-bajrmaani | **bajr jo maani** (DRAFT) | millet chapati (not used yet: the Wave 3 maani line) | Zafar, 24 Sept: **draft, not confirmed** | needed |
+| lnk-nepoi | **ne poi** (DRAFT) | and then | Zafar, 24 Sept: **draft, Mum to confirm** | needed |
 
 The seven words confirmed on 24 Sept should be added to the content master spreadsheet. For now they live in `data/cook.json`.
+
+**Draft words (24 Sept, Zafar).** *dai*, *channa*, *ghos*, *bajr jo maani* and *ne poi* are drafts: they are in `data/cook.json` with `"draft": true` and `"src": "zafar-24sep-draft"`, marked "draft" in the game's word lists, and **not** in the content spreadsheet. They replace the English placeholders for yoghurt, chickpeas and meat. They have **no placeholder voice yet**: the TTS builder couldn't reach Google from the build machine on 24 Sept (network blocked), so their Gujarati spellings are in `build/build_cook_tts.py` ready for the next run. Until then the game reads a missing Kutchi word with the browser's own voice if it has one, and otherwise skips it, as it always has for missing lines; a word nobody can hear is never hidden as dots on the order card.
 
 ## 2. Lines used
 
@@ -41,7 +48,8 @@ The seven words confirmed on 24 Sept should be added to the content master sprea
 | Salamun alaykum! | Nani (day 1), every customer | Arriving. **The player answers** by picking *Wa alaikum salaam!* from three choices |
 | Wa alaikum salaam! | The player (a choice); Nani models it after a wrong pick | Replying to a greeting |
 | Muke {dish} khape. | Customers ordering; Nani asking for things in the pantry | Orders, pantry |
-| Ne {thing}. | Customers (extras); Nani (next thing, tadka order) | "And …" |
+| Ne {thing}. | Customers (extras, things in any order) | "And …" |
+| Ne poi {thing}. (DRAFT) | Customers (the next layer or skewer piece); Nani (the next tadka spice) | "And then …": the order matters. Draft from Zafar, Mum to confirm |
 | {number} {noun} | Inside orders: *bo maani*, *trae khun* | Quantities |
 | {number}! | Nani, before stirring | "Stir three times" |
 | Aabhar aanjo! | Customers | When served |
@@ -56,7 +64,8 @@ Full orders the prototype builds, for recording as whole sentences:
 - Muke bo maani khape. / Muke trae maani khape. / Muke char maani khape.
 - Muke daal khape. Ne bo maani. / Ne hikdo maani. / Ne trae maani.
 - Muke daal khape. Ne tameto. Ne trae maani.
-- Tadka orders: Jeeru. Ne rai. / Rai. Ne jeeru. Ne hardar. / Jeeru. Ne marcha. Ne hardar.
+- Tadka orders (Nani): Jeeru. Ne poi rai. / Rai. Ne poi jeeru. Ne poi hardar. / Jeeru. Ne poi marcha. Ne poi hardar. (*ne poi* is a draft)
+- Orders in sequence (chaat layers, skewer pieces): Muke chaat khape. Ne channa. Ne poi bataato. Ne poi dai. / Muke mishkaki khape. Ne ghos. Ne poi bo tameto. (drafts: *ne poi*, *channa*, *dai*, *ghos*)
 
 ## 3. Questions for the family
 

@@ -45,6 +45,9 @@ GU = {
     "lasan": "લસન", "hardar": "હરદર", "jeeru": "જીરુ", "rai": "રાઈ", "elchi": "એલચી",
     "loon": "લૂન", "hikdo": "હિકડો", "bo": "બો", "trae": "ત્રે", "char": "ચાર", "panj": "પંજ",
     "dine": "દિને", "bataato": "બટાટો", "vatana": "વટાણા", "aadu": "આદુ", "limu": "લીમુ", "lal": "લાલ",
+    # drafts from Zafar, 24 Sept 2026 (not confirmed): dai (yoghurt), channa
+    # (chickpeas), ghos (meat), bajr jo maani (millet chapati), ne poi (and then)
+    "dai": "દઈ", "channa": "ચન્ના", "ghos": "ઘોસ", "bajr": "બાજર", "jo": "જો", "poi": "પોઈ",
 }
 
 
@@ -71,7 +74,8 @@ def lines():
     data = json.load(open(os.path.join(GAME, "data", "cook.json")))
     W = data["words"]
     L = data["lines"]
-    kw = [w["kutchi"] for w in W.values() if w.get("kutchi")]
+    # linkers ("ne poi") are said inside frames, never ordered on their own
+    kw = [w["kutchi"] for w in W.values() if w.get("kutchi") and not w.get("linker")]
     ew = [w["english"] for w in W.values() if not w.get("kutchi")]
     nums = [W[f"num-0{n}"]["kutchi"] for n in range(1, 6)]
     k, e = set(), set()
