@@ -524,29 +524,15 @@ def _skin_weight(im):
     hue = np.degrees(np.arctan2(b, a))
     w = _ramp(arr[..., 3], 1, 16)  # antialiased edges too, or they keep an orange fringe
     w = w * _ramp(C, 10, 16) * (1 - _ramp(C, 78, 88))      # not grey/white; very orange raw skin still in
-    w = w * _ramp(hue, 40, 48) * (1 - _ramp(hue, 78, 84))  # skin hues only: reds out, golds/greens out
+    w = w * _ramp(hue, 40, 48) * (1 - _ramp(hue, 82, 88))  # skin hues only: reds out, golds/greens out
     w = w * _ramp(L, 25, 35) * (1 - _ramp(L, 93, 97))      # not deep shadow, not specular white
-    # cream/white sleeve: low chroma AND a yellow hue (soft)
-    sleeve = np.maximum((1 - _ramp(C, 27, 32)) * _ramp(hue, 69, 74), (1 - _ramp(C, 21, 25)) * _ramp(hue, 63, 67))
-    base = _ramp(arr[..., 3], 1, 16) * _ramp(L, 25, 35) * _ramp(hue, 40, 48) * (1 - _ramp(hue, 84, 90))
+    # cream/white sleeve: a yellow hue with lowish chroma. The ramps are
+    # wide and the weight is blurred, so skin that shades towards the
+    # sleeve's hue fades out of the correction gradually: a hard mask here
+    # leaves blotches on the cuff or pale patches on the hand.
+    sleeve = np.maximum(_ramp(hue, 70, 80) * (1 - _ramp(C, 40, 50)), (1 - _ramp(C, 18, 26)) * _ramp(hue, 62, 68))
     w = w * (1 - sleeve)
-    # pale highlights inside the hand come out speckled: close small holes
-    # (a sleeve is far bigger than the 13 px closing) and feather slightly,
-    # so the correction never leaves blotches
-    binm = Image.fromarray(((w > 0.5) * 255).astype(np.uint8), "L")
-    closed = np.asarray(binm.filter(ImageFilter.MaxFilter(13)).filter(ImageFilter.MinFilter(13))).astype(np.float64) / 255
-    body = np.zeros(w.shape, dtype=bool)  # the sleeve itself stays out: sleeve-coloured areas
-    for comp in _components((sleeve > 0.5) & (arr[..., 3] > 128), 2500):  # touching the frame edge
-        if comp[:8].any() or comp[-8:].any() or comp[:, :8].any() or comp[:, -8:].any():
-            body |= comp
-    # a pale stripe of lit forearm can touch the cuff: open the body so thin
-    # protrusions drop out (the sleeve itself is far thicker than ~36 px)
-    small = Image.fromarray((body[::4, ::4] * 255).astype(np.uint8), "L")
-    opened = np.asarray(small.filter(ImageFilter.MinFilter(9)).filter(ImageFilter.MaxFilter(9))) > 0
-    body = body & np.kron(opened, np.ones((4, 4), dtype=bool))[:body.shape[0], :body.shape[1]]
-    closed = closed * (1 - _dilate(body, 6))
-    w = np.maximum(w, closed * base)
-    w = np.asarray(Image.fromarray((w * 255).astype(np.uint8), "L").filter(ImageFilter.GaussianBlur(1.5))).astype(np.float64) / 255
+    w = np.asarray(Image.fromarray((w * 255).astype(np.uint8), "L").filter(ImageFilter.GaussianBlur(2.5))).astype(np.float64) / 255
     return w * _ramp(arr[..., 3], 1, 16), lab
 
 
@@ -687,7 +673,7 @@ def sleeve_mask(im, red=False):
     lab = rgb_to_lab(arr[..., :3])
     C = np.hypot(lab[..., 1], lab[..., 2])
     hue = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
-    cream = (lab[..., 0] > 60) & (((C < 30) & (hue > 72)) | ((C < 24) & (hue > 66))) & (hue < 110)
+    cream = (lab[..., 0] > 60) & (((C < 40) & (hue > 72)) | ((C < 24) & (hue > 66))) & (hue < 110)
     red_ = (hue > -15) & (hue < 38) & (C > 30) & (lab[..., 0] < 58)  # Nani's deep-red kurta sleeve
     return (arr[..., 3] > 200) & ((cream | red_) if red else cream)
 
@@ -817,7 +803,11 @@ def clean_key_edges(im):
     darker than skin) and soften the cut edge by one pixel."""
     rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
     h, sat, val = _hsv(rgba[..., :3])
-    rim = ((h >= 330) | (h <= 15)) & (sat > 0.5) & (val < 0.75) & (rgba[..., 3] > 16)
+    # near the cut, anything magenta-to-red (hue 290-12) is placeholder
+    # residue, however light or dull; further away only dark saturated red
+    cut = _dilate(rgba[..., 3] < 16, 12)
+    rim = (((h >= 330) | (h <= 15)) & (sat > 0.5) & (val < 0.75)) | (cut & ((h >= 290) | (h <= 12)) & (sat > 0.15))
+    rim &= rgba[..., 3] > 16
     if not rim.any():  # nothing to clean: leave the image untouched (safe to re-run)
         return im, 0
     rgba[..., 3] = np.where(rim, 0, rgba[..., 3])
@@ -857,8 +847,18 @@ def key_out_magenta(im):
     ring = np.asarray(core.filter(ImageFilter.MaxFilter(9))) > 0
     skinlike = (h >= 10) & (h <= 55) & (sat > 0.06)
     kill = np.where(ring & ~skinlike, 1.0, kill)
+    # the placeholder's shaded rim, where it meets the fingers, renders as a
+    # dark saturated red-brown (HSV hue 0-30 or magenta, saturation > ~0.7,
+    # value < ~0.7): clear it in a band just outside the keyed area, then
+    # soften the new edge a little
+    keyed = kill > 0.5
+    band = _dilate(keyed, 14) & ~keyed
+    rim = band & (sat > 0.68) & (val < 0.72) & ((h <= 32) | (h >= 280))
+    kill = np.where(rim, 1.0, kill)
     removed = int(((kill > 0.5) & (rgba[..., 3] > 16)).sum())
     rgba[..., 3] = rgba[..., 3] * (1 - kill)
+    soft = np.asarray(Image.fromarray(rgba[..., 3].astype(np.uint8), "L").filter(ImageFilter.GaussianBlur(0.8)))
+    rgba[..., 3] = np.where(_dilate(kill > 0.5, 4), np.minimum(rgba[..., 3], soft), rgba[..., 3])
     spill = (kill > 0) & (kill < 1)
     rgba[..., 2] = np.where(spill, np.minimum(rgba[..., 2], rgba[..., 1]), rgba[..., 2])
     return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), removed
@@ -1336,6 +1336,8 @@ def run(args):
         elapsed = time.monotonic() - t0
 
         skin = {}
+        if entry.get("flip_output"):
+            Image.open(t["out_path"]).transpose(Image.FLIP_LEFT_RIGHT).save(t["out_path"])
         if entry.get("key_out") == "magenta":
             keyed, removed = key_out_magenta(Image.open(t["out_path"]))
             keyed, _ = drop_fragments(keyed)
@@ -1408,6 +1410,8 @@ def main():
                     help="colour-match a hand's skin to --skin-target (hex) or the master reference, then exit")
     p.add_argument("--skin-target", metavar="HEX", help="with --skin-normalise: the target midtone hex")
 
+    p.add_argument("--from-raw", action="store_true",
+                    help="with --post: start from the untouched API output in build/raw/ (key-out included)")
     p.add_argument("--post", metavar="IDS",
                     help="re-run the hand post steps (key-edge clean, skin match, scale) on the current outputs of "
                          "these asset ids or groups (comma-separated), in place, then exit")
@@ -1421,10 +1425,18 @@ def main():
             if not entry_matches_only(entry, args.post):
                 continue
             path = resolve_path(entry["output"])
-            if not os.path.exists(path):
-                print(f"[{entry['id']}] missing")
+            src = os.path.join(GAME, "build", "raw", os.path.relpath(path, GAME)) if args.from_raw else path
+            if not os.path.exists(src):
+                print(f"[{entry['id']}] missing {os.path.relpath(src, GAME)}")
                 continue
-            out, info = post_process_hand(entry, Image.open(path), cfg)
+            im = Image.open(src).convert("RGBA")
+            if args.from_raw and entry.get("key_out") == "magenta":
+                im, _ = key_out_magenta(im)
+                im, _ = drop_fragments(im)
+                im, _ = fix_magenta_spill(im)
+            if args.from_raw and entry.get("flip_output"):
+                im = im.transpose(Image.FLIP_LEFT_RIGHT)
+            out, info = post_process_hand(entry, im, cfg)
             out.save(path)
             print(f"[{entry['id']}] {json.dumps(info)}", flush=True)
         return

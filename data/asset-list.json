@@ -156,7 +156,7 @@
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "heel of the palm pushing dough away, seen from directly above: the wrist bent sharply back so the whole hand is tipped up off the worktop, only the heel of the palm pressing down near the wrist; the fingers point up at the camera and are strongly foreshortened, so from above they look short, with the fingertips and nails towards us; clearly different from a flat hand lying on the worktop"
+        "pose": "heel-of-hand push, seen from directly above: the back of the hand towards the camera, the wrist bent back so the hand is tipped up on its heel; the four fingers point up towards the camera, so from above they are strongly foreshortened and look SHORT, we see mostly their tips and nails; the thumb relaxed at the left side; the forearm lies flat along the worktop from the bottom edge Nothing in or under the hand: no dough, no food, no object."
       },
       "camera": "T"
     },
@@ -264,7 +264,8 @@
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
         "pose": "right hand laid flat on our own chest over the heart (salaam, thank you), seen from our own eyes looking down: the forearm rises from the BOTTOM edge of the frame just right of centre and bends at the wrist so the hand lies across the frame, fingers together pointing to the LEFT and slightly up, the back of the hand and the knuckles towards us, the thumb along the top edge of the hand. Draw ONLY the hand and forearm: no chest, no shirt front, no body, nothing behind the hand, fully transparent around it All five digits clearly visible and separate: the thumb and four fingers."
       },
-      "camera": "E"
+      "camera": "E",
+      "flip_output": true
     },
     {
       "id": "hand-a8-cupped-t",
@@ -307,7 +308,7 @@
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "seen from directly above: a loose fist gripping a straight handle 2.5 cm thick that runs straight forwards, from under the heel of the hand, out past the curled index finger towards the top of the frame, sticking out 6 cm beyond the fist; we see the back of the hand and the knuckles; the THUMB lies straight along the TOP of the handle and points forwards along it, clearly separate from the fingers, never tucked into the fist; the four fingers wrap round the handle underneath The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "the knife-and-spatula grip, seen from directly above: a straight magenta handle 2.5 cm thick runs straight forwards from under the heel of the hand, through the fist, and out the front towards the top of the frame; the four fingers wrap round it (we see their backs and knuckles); the THUMB is NOT in the fist: it lies flat on TOP of the handle, pointing forwards along it, its whole length and its thumbnail clearly visible on top of the magenta handle, like a person pressing a knife handle with the thumb The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
       "key_out": "magenta"
@@ -402,7 +403,7 @@
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "hook grip in front of us, carrying a basket: we see the back of the hand; the four fingers curled together into a hook round a horizontal rod 2 cm thick (a basket or bucket handle) that runs left-right through the hook: hidden where the fingers wrap round it, sticking out 4 cm on both sides of the hand; the thumb resting lightly on the index finger; the same soft lighting from the upper left as the reference The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "carrying a basket, in front of us: the forearm rises vertically from the BOTTOM edge of the frame, the sleeve at the bottom; at the top the four fingers hook forwards over a horizontal magenta rod 2 cm thick that runs left-right across the frame and sticks out 4 cm on both sides of the hand; we see the back of the hand and the knuckles; the thumb rests on the side of the index finger The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "E",
       "key_out": "magenta"
@@ -478,7 +479,7 @@
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "tripod grip seen from directly above, as if holding a pencil or teaspoon: we see the back of the hand; the thumb, index and middle fingertips pinch a thin rod 1 cm thick that runs from between the fingertips forwards and slightly to the LEFT towards the top of the frame, 10 cm beyond the fingertips; the ring and little fingers curled under; the same skin colour and lighting as the reference The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "holding a pencil as if writing, seen from directly above: the back of the hand; a thin straight magenta rod 1 cm thick and 12 cm long is held between the tips of the thumb, index and middle fingers and points forwards and to the left, towards the upper left corner, well clear of the hand; the ring and little fingers curled under; the rod is the only object The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
       "key_out": "magenta"
@@ -494,7 +495,7 @@
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "side pinch seen from directly above: a flat card 6 x 9 cm lies flat, held between the flat pad of the thumb on top and the side of the curled index finger underneath, and sticks out 7 cm forwards beyond the fingers towards the top of the frame, clearly visible; we see the back of the hand and the thumb lying on the card The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "holding a photo card by its bottom edge, seen from directly above: a flat magenta rectangle 6 x 9 cm lies flat in front of the hand towards the top of the frame; its bottom edge is pinched between the thumb on top and the curled index finger underneath; the other fingers curled under the palm; we see the back of the hand and the thumb lying on the card The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
       "key_out": "magenta"
@@ -510,7 +511,7 @@
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "side pinch held up in front of us: an upright flat card 6 x 9 cm clamped between the flat pad of the thumb (on the side towards us) and the side of the curled index finger (behind it), sticking up 7 cm above the hand, clearly visible; we see the back of the hand and the thumb pressing on the card The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "holding up a photo card in front of us: a flat upright magenta rectangle 6 x 9 cm stands above the hand; its bottom edge is pinched between the thumb (on the side towards us, its nail visible) and the curled index finger behind it; the other fingers curled; we see the back of the hand and the thumb on the card; the forearm rises from the bottom edge The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "E",
       "key_out": "magenta"
@@ -666,7 +667,7 @@
       "template": "hands_two_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "seen from DIRECTLY ABOVE, looking straight down at the worktop (a flat plan view, no perspective, no horizon): a round bowl, which from above is a flat disc 18 cm across, in the centre of the frame; the two hands hold it from its left and right sides, the fingers curling over the top of its rim and the thumbs resting on the rim; we see the backs of both hands and the tops of both forearms, which lie flat along the worktop and come in from the bottom edge, one from the lower left and one from the lower right The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "seen from directly above: two hands, each the SAME size as the reference hand, hold a flat magenta disc 18 cm across (a bowl seen from above, about one and a half hand lengths across) from its left and right sides; the fingers of each hand curl over the disc's rim, the thumbs on top of the rim; we see the backs of both hands; both forearms come in from the bottom edge, one at the lower left and one at the lower right; the hands and the disc fill most of the frame The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
       "key_out": "magenta",
@@ -731,7 +732,7 @@
       "template": "hands_two_from_ref",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "about to catch, frame 1 of 2: both hands held up in front of us about 15 cm apart, seen from BEHIND: we see the BACKS of both hands, the knuckles and the fingernails (the palms face forwards, away from us, towards the ball, and are NOT visible); fingers spread and slightly curved; both hands exactly the same skin colour All five digits clearly visible and separate: the thumb and four fingers. A second image is attached: the other frame of this same pose. Match its hand size, hand shape, skin colour, lighting and sleeve exactly."
+        "pose": "about to catch a ball, frame 1 of 2, seen from our own eyes: both hands raised in front of us about 15 cm apart, fingers up and spread; we see the BACKS of both hands: the knuckles, the fingernails and the backs of the fingers; the palms face away from us towards the ball and are hidden; no palm lines visible All five digits clearly visible and separate: the thumb and four fingers. A second image is attached: the other frame of this same pose. Match its hand size, hand shape, skin colour, lighting and sleeve exactly."
       },
       "camera": "E",
       "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
@@ -838,7 +839,7 @@
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "counting on the fingers, FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their fingernails facing us; the THUMB is bent across the palm behind the fingers and hidden, it must NOT stick out to the side. Exactly four digits up, never five"
+        "pose": "counting FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their nails facing us; the THUMB is folded flat across the palm, completely HIDDEN behind the hand, not visible at all. Only four digits can be seen"
       },
       "camera": "E"
     },
@@ -901,7 +902,7 @@
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "celebration: the right forearm rising vertically from the bottom edge, the hand in a closed fist at the top, seen from BEHIND: we see the back of the fist and its four knuckles, the fingers curled away from us (fingertips hidden), the thumb wrapped round at the left side (the left arm is this image mirrored)"
+        "pose": "celebration, seen from BEHIND our own raised fist: the forearm rises vertically from the bottom edge, and at the top a closed fist; we see the BACK of the hand: the four knuckles in a row along the top, the backs of the fingers, and the thumb wrapped round at the left side; the fingertips, fingernails and palm are hidden on the far side, NOT visible (the left arm is this image mirrored)"
       },
       "camera": "E"
     },
