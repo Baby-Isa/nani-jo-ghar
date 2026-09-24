@@ -403,6 +403,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 }
 .lg.multi::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; border-left: 2px solid #cdb892; border-radius: 2px; }
 .lg.done .ldot { background: var(--sage); }
+.lsec.simple .lg { padding-left: 0; }
 .lr { border-radius: 10px; padding: 1px 3px; min-width: 0; }
 .lr.done { background: #eaf3e4; }
 .lr .wp { display: flex; flex-wrap: wrap; align-items: center; column-gap: 5px; row-gap: 2px; }
