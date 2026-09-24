@@ -20,6 +20,7 @@ Usage:
   python3 build/test_cook.py --lab --zoned          # every mechanic inside a smaller zone
   python3 build/test_cook.py --orders               # the recipe slot model (no playing)
   python3 build/test_cook.py --example              # the guide's data-only recipe, played in the lab
+  python3 build/test_cook.py --open-kitchen 2        # free cooking: serve 2 customers, then close the kitchen
   add --busy for the Busy setting, --speed N to change test speed (default 3)
   add --canvas to run Phaser's canvas renderer: headless Chromium draws WebGL in
   software at 6-11 fps here, and every pointer event waits for a frame, so a
@@ -235,15 +236,28 @@ class Player:
         else:
             raise AssertionError(f"unknown expectation {k}")
 
-    def play(self, until, timeout=900):
+    def play(self, until, timeout=900, close_kitchen_after=None):
         t0 = time.time()
         last_kind = None
         last_view = None
         idle = 0
+        closed = False
         while not until():
             if time.time() - t0 > timeout:
                 self.shot("timeout")
                 raise AssertionError("timed out playing")
+            # open kitchen (free cooking): close it ourselves once enough
+            # customers have been served, instead of waiting forever
+            if close_kitchen_after is not None and not closed:
+                try:
+                    served = self.page.evaluate("__cook.state().dayCards")
+                except Exception:
+                    served = 0
+                if served >= close_kitchen_after and self.page.query_selector("#close-kitchen:not([disabled])"):
+                    self.shot("close-kitchen")
+                    self.page.click("#close-kitchen")
+                    closed = True
+                    time.sleep(0.2)
             try:
                 view = self.page.evaluate("__cook.state().view")
             except Exception:
@@ -290,7 +304,28 @@ class Player:
 CANVAS = False
 
 
-def open_page(pw, vp, speed, busy):
+def open_kitchen_save(mode="relaxed"):
+    """A save with the story finished, so the title screen offers 'Free
+    cooking' (the open kitchen) right away, without playing six days first."""
+    recipes = ["chai", "maani", "daal", "chaat", "samosa", "mishkaki"]
+    return {
+        "v": 1,
+        "mode": mode,
+        "coins": 40,
+        "day": 7,
+        "best": {"1": 3, "2": 3, "3": 3, "4": 3, "5": 3, "6": 3},
+        "owned": [],
+        "slots": [],
+        "words": {},
+        "taught": {r: True for r in recipes},
+        "finished": True,
+        "freeRounds": 0,
+        "rulesSeen": True,
+        "playDays": [],
+    }
+
+
+def open_page(pw, vp, speed, busy, seed_save=None):
     args = ["--autoplay-policy=no-user-gesture-required"] + (["--disable-webgl"] if CANVAS else [])
     browser = pw.chromium.launch(executable_path="/opt/pw-browsers/chromium" if os.path.exists("/opt/pw-browsers/chromium") else None, args=args)
     ctx = browser.new_context(viewport={"width": vp["width"], "height": vp["height"]}, has_touch=vp["touch"])
@@ -301,7 +336,10 @@ def open_page(pw, vp, speed, busy):
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.goto(f"http://127.0.0.1:{PORT}/cook.html?speed={speed}")
-    page.evaluate("localStorage.clear()")
+    if seed_save is not None:
+        page.evaluate("(save) => localStorage.setItem('njg-cook-v1', JSON.stringify(save))", seed_save)
+    else:
+        page.evaluate("localStorage.clear()")
     page.goto(f"http://127.0.0.1:{PORT}/cook.html?speed={speed}")
     page.wait_for_selector("#panel h1", timeout=15000)
     if busy:
@@ -445,8 +483,12 @@ def run_days(vp, days, speed, busy, shots_root):
         P.shot("title")
         for d in range(1, days + 1):
             page.wait_for_selector("#t-start, #t-free", timeout=10000)
-            page.click("#t-start" if page.query_selector("#t-start") else "#t-free")
-            P.play(lambda: page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), timeout=1500)
+            free = not page.query_selector("#t-start")
+            page.click("#t-free" if free else "#t-start")
+            # free cooking is the open kitchen (customers keep coming until
+            # closed): close it ourselves after a couple of customers so the
+            # run doesn't wait forever
+            P.play(lambda: page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), timeout=1500, close_kitchen_after=2 if free else None)
             st = page.evaluate("__cook.state()")
             print(f"  {name}: day {d} done, coins {st['coins']}, cards {[(c['who'], sum(c['stars'].values()), c['reasons'][:1]) for c in st['cards']][-4:]}")
             P.shot(f"day{d}-summary")
@@ -473,6 +515,36 @@ def run_days(vp, days, speed, busy, shots_root):
     return P.n
 
 
+def run_open_kitchen(vp, speed, busy, shots_root, customers=2):
+    """Free cooking's own route: seed a finished save (skip the six story
+    days), open the kitchen, let `customers` be served, then close it and
+    check the usual summary appears."""
+    name = vp["name"] + "-open-kitchen" + ("-busy" if busy else "")
+    shots = shots_dir(shots_root, name)
+    with sync_playwright() as pw:
+        browser, page, errors = open_page(pw, vp, speed, busy, seed_save=open_kitchen_save("busy" if busy else "relaxed"))
+        P = Player(page, shots, speed)
+        page.wait_for_selector("#t-free", timeout=10000)
+        P.shot("title")
+        page.click("#t-free")
+        page.wait_for_selector("#close-kitchen", timeout=15000)
+        P.shot("kitchen-open")
+        P.play(lambda: page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), timeout=1200, close_kitchen_after=customers)
+        st = page.evaluate("__cook.state()")
+        served = len(st["cards"])
+        if served < customers:
+            raise AssertionError(f"open kitchen: only {served} of {customers} customers served before closing")
+        if page.query_selector("#close-kitchen"):
+            raise AssertionError("open kitchen: 'Close the kitchen' button still in the DOM after closing")
+        print(f"  {name}: served {served}, coins {st['coins']}")
+        P.shot("summary")
+        browser.close()
+    bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
+    if bad:
+        raise AssertionError(f"console errors: {bad[:5]}")
+    return P.n
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--lab", action="store_true")
@@ -487,6 +559,7 @@ def main():
     ap.add_argument("--orders", action="store_true")
     ap.add_argument("--example", action="store_true")
     ap.add_argument("--canvas", action="store_true")
+    ap.add_argument("--open-kitchen", type=int, default=None, metavar="N", help="free cooking's open kitchen: serve N customers, then close it")
     ap.add_argument("--shots", default=os.path.join(ROOT, "build", "screenshots", "cook"))
     args = ap.parse_args()
     global CANVAS
@@ -496,7 +569,7 @@ def main():
     vps = VIEWPORTS
     if args.viewport:
         vps = [v for v in VIEWPORTS if v["name"] == args.viewport]
-    elif args.lab or args.orders or args.example:
+    elif args.lab or args.orders or args.example or args.open_kitchen is not None:
         vps = [VIEWPORTS[1]]
     failed = []
     for vp in vps:
@@ -506,6 +579,8 @@ def main():
                 n = run_orders(vp, args.speed)
             elif args.lab or args.example:
                 n = run_lab(vp, args.speed, args.busy, args.shots, args.stations.split(","), not args.unguided, args.level, args.zoned, args.example)
+            elif args.open_kitchen is not None:
+                n = run_open_kitchen(vp, args.speed, args.busy, args.shots, args.open_kitchen)
             else:
                 n = run_days(vp, args.days, args.speed, args.busy, args.shots)
             print(f"PASS {vp['name']}: {n} screenshots, {time.time() - t0:.0f}s", flush=True)

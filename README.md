@@ -49,7 +49,7 @@ separate, self-contained prototype of the flagship game mode from
   likes it), and the Eid lunch finale. After that, free cooking with
   generated orders, plus a one-customer "quick order".
 - **Nani's shop:** a counter with 4 slots (chai machine, measuring jug,
-  dough mixer, heavy tawa, Bilal as a paid helper) and a sharp knife. Every
+  dough mixer, heavy tawa, Ali as a paid helper) and a sharp knife. Every
   upgrade automates a physical step, never the listening.
 - **Settings:** Relaxed (no waiting) or Busy (a patience bar, bigger tips
   for speed).

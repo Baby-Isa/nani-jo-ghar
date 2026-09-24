@@ -677,7 +677,7 @@
    "likes": "Chai with no milk, one sugar and ginger. Chaat with no onion. Potato samosa, no chilli."
   },
   "cousin": {
-   "name": "Bilal",
+   "name": "Ali",
    "tint": "#e0772e",
    "tastes": {
     "chai": {
@@ -2393,11 +2393,11 @@
   {
    "id": "helper",
    "station": "Chopping",
-   "name": "Bilal helps",
+   "name": "Ali helps",
    "image": "cousin-badge",
    "price": 15,
    "wage": 5,
-   "effect": "Bilal chops for you. Costs 5 coins a day.",
+   "effect": "Ali chops for you. Costs 5 coins a day.",
    "idea": "Family members as kitchen helpers with a daily wage, tycoon-style."
   },
   {

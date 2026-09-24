@@ -627,7 +627,7 @@
     UI.panel(`
       <h1>Eid Mubarak!</h1>
       <div class="finale-row">
-        <img src="assets/cook/characters/nana-happy.webp" alt="Nana"><img src="assets/cook/characters/nani-happy.webp" alt="Nani"><img src="assets/cook/characters/ma-happy.webp" alt="Ma"><img src="assets/cook/characters/cousin-happy.webp" alt="Bilal">
+        <img src="assets/cook/characters/nana-happy.webp" alt="Nana"><img src="assets/cook/characters/nani-happy.webp" alt="Nani"><img src="assets/cook/characters/ma-happy.webp" alt="Ma"><img src="assets/cook/characters/cousin-happy.webp" alt="Ali">
       </div>
       <p>The whole family ate together, and you cooked it all: chai, maani, daal, chaat, samosa and mishkaki. You earned <b>${total}</b> stars.</p>
       <div class="patch" title="A new patch for Nani's quilt"></div>
@@ -746,6 +746,7 @@
     stopPatience();
     Cook.inDay = false;
     Cook.paused = false;
+    hideCloseKitchenButton();
     UI.clearStage();
     UI.mission.close();
     if (S()) {
@@ -801,7 +802,7 @@
     const st = $("#t-start");
     if (st) st.addEventListener("click", () => startDay(days[nextDay - 1]));
     const fr = $("#t-free");
-    if (fr) fr.addEventListener("click", () => startDay(generateDay(), { free: true }));
+    if (fr) fr.addEventListener("click", () => startOpenKitchen());
     const qk = $("#t-quick");
     if (qk) qk.addEventListener("click", () => startDay(generateDay(1), { free: true }));
     $("#t-lab").addEventListener("click", () => showLab());
@@ -826,14 +827,124 @@
     });
   }
 
-  /** Free cooking: random orders from the dishes you've learned. */
-  function generateDay(n = 3) {
+  /** Quick order: one random customer order from the dishes you've learned. */
+  function generateDay(n = 1) {
     const recipes = Object.keys(Cook.data.recipes).filter((k) => Cook.save.taught[k]);
     if (!recipes.length) recipes.push("chai");
     const orders = Cook.shuffle(["nana", "ma", "cousin"])
       .slice(0, n)
       .map((who) => ({ who, dishes: Cook.shuffle(recipes).slice(0, recipes.length > 1 && Math.random() < 0.4 ? 2 : 1) }));
-    return { id: "free", title: n === 1 ? "Quick order" : "Free cooking", gist: n === 1 ? "One quick order!" : "Free cooking: the family order whatever they fancy.", orders };
+    return { id: "free", title: "Quick order", gist: "One quick order!", orders };
+  }
+
+  /* ---------------- open kitchen: free cooking's own route ----------------
+   * Customers keep arriving on their own (a gentle queue; a little sooner,
+   * so they overlap, in Busy mode), each a generated order from the dishes
+   * taught so far. Every order picks its own extras/fillings/sequence via
+   * the existing weak-word-first pool logic (station-lib.js), so orders
+   * already lean towards the words the player knows least. The player ends
+   * the session whenever they like with a "Close the kitchen" button; that
+   * stops new customers arriving (the one already ordering is finished
+   * first) and runs straight into the usual day summary and pocket money.
+   * This is the free-play route for Cook, per the phase-A design rule that
+   * every mode has both a story route and a free-play route (design doc s10).
+   */
+  let closeKitchenBtn = null;
+  function closeKitchenButton() {
+    if (!closeKitchenBtn) {
+      closeKitchenBtn = document.createElement("button");
+      closeKitchenBtn.id = "close-kitchen";
+      closeKitchenBtn.type = "button";
+      closeKitchenBtn.className = "btn small";
+      closeKitchenBtn.style.marginLeft = "auto";
+      closeKitchenBtn.addEventListener("click", requestCloseKitchen);
+    }
+    return closeKitchenBtn;
+  }
+  function showCloseKitchenButton() {
+    const btn = closeKitchenButton();
+    btn.disabled = false;
+    btn.textContent = "Close the kitchen";
+    const top = $(".side-top");
+    if (top && !top.contains(btn)) top.appendChild(btn);
+  }
+  function hideCloseKitchenButton() {
+    if (closeKitchenBtn && closeKitchenBtn.parentNode) closeKitchenBtn.parentNode.removeChild(closeKitchenBtn);
+  }
+  function requestCloseKitchen() {
+    if (!state.kitchenOpen) return;
+    state.kitchenOpen = false;
+    const btn = closeKitchenButton();
+    btn.disabled = true;
+    btn.textContent = state.orderActive ? "Finishing this order…" : "Closing…";
+  }
+
+  /** One open-kitchen customer: a random taught dish for a random family member. */
+  function generateCustomer() {
+    const recipes = Object.keys(Cook.data.recipes).filter((k) => Cook.save.taught[k]);
+    if (!recipes.length) recipes.push("chai");
+    const who = Cook.pick(["nana", "ma", "cousin"]);
+    const dishes = Cook.shuffle(recipes).slice(0, recipes.length > 1 && Math.random() < 0.4 ? 2 : 1);
+    return { who, dishes };
+  }
+
+  async function playOpenKitchen() {
+    Cook.run++;
+    const day = { id: "free", title: "Free cooking", gist: "Free cooking: Nani's kitchen is open. Customers will keep coming until you close up!" };
+    state.day = day;
+    state.free = true;
+    state.cards = [];
+    state.dayStars = 0;
+    const today = new Date().toISOString().slice(0, 10);
+    Cook.save.playDays = Cook.save.playDays || [];
+    if (!Cook.save.playDays.includes(today)) Cook.save.playDays.push(today);
+    Cook.writeSave();
+    UI.closePanel();
+    UI.clearStage();
+    UI.setStars(0);
+    if (Cook.hasUpgrade("helper")) {
+      Cook.save.coins = Math.max(0, Cook.save.coins - 5);
+      UI.setCoins(Cook.save.coins);
+    }
+    await serviceView(null);
+    if (!Cook.save.rulesSeen) {
+      await showRules();
+      Cook.save.rulesSeen = true;
+      Cook.writeSave();
+    }
+    UI.gist(day.gist, { top: true });
+    await Cook.wait(2400);
+    UI.hideGist();
+    state.kitchenOpen = true;
+    state.orderActive = false;
+    showCloseKitchenButton();
+    const busy = Cook.save.mode === "busy";
+    try {
+      while (state.kitchenOpen) {
+        state.orderActive = true;
+        await runOrder(buildOrder(generateCustomer()), day);
+        state.orderActive = false;
+        if (!state.kitchenOpen) break;
+        // a gentle queue: the next customer is on their way, a little
+        // sooner (so they start to overlap) when the day is Busy
+        UI.gist("Someone's on their way to the kitchen…", { top: true });
+        await Cook.wait(busy ? 700 + Math.random() * 500 : 1500 + Math.random() * 900);
+        UI.hideGist();
+      }
+    } finally {
+      hideCloseKitchenButton();
+    }
+    finishDay(day, { free: true });
+  }
+
+  function startOpenKitchen() {
+    Cook.unlockAudio();
+    Cook.inDay = true;
+    playOpenKitchen().catch((e) => {
+      hideCloseKitchenButton();
+      if (e instanceof Cook.Abort) return;
+      console.error(e);
+    });
   }
 
   function wireRail() {
@@ -872,7 +983,17 @@
       return g ? { level: g.level, lo: g.lo, hi: g.hi } : null;
     },
     state() {
-      return { view: Cook.scene && Cook.scene.viewName, day: state.day && state.day.id, coins: Cook.save.coins, save: Cook.save, cards: Cook.log.map((c) => ({ who: c.who, stars: c.stars, coins: c.coins, reasons: c.reasons })), panel: UI.panelOpen(), paused: Cook.paused };
+      return {
+        view: Cook.scene && Cook.scene.viewName,
+        day: state.day && state.day.id,
+        coins: Cook.save.coins,
+        save: Cook.save,
+        cards: Cook.log.map((c) => ({ who: c.who, stars: c.stars, coins: c.coins, reasons: c.reasons })),
+        panel: UI.panelOpen(),
+        paused: Cook.paused,
+        dayCards: state.cards.length,
+        kitchenOpen: !!state.kitchenOpen,
+      };
     },
     lab: (key, guided = true, opts = {}) => runLab(key, guided, opts),
     reset() {

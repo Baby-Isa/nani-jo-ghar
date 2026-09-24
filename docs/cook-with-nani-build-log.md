@@ -22,7 +22,7 @@ Zafar was asked with a 5-minute deadline. He answered the words question; the re
 | Shop | First build: 4 counter slots. **Changed at Zafar's request: one upgrade per station, bought with coins; money is the choice** (the whole shop is about 375 coins, the story pays about 175) | His suggestion; clearer for children than slots |
 | Hub link | Added, then **removed**: the fruit errand is left exactly as it was | "Create a new page for now, leave the current game" |
 | Where it lives | A separate page, `cook.html`, linked from the hub. The fruit errand is untouched | Safe to throw away; nothing else breaks |
-| Customers | Nana, Ma (the player's mum), Bilal (cousin, name is a placeholder). Nani's look as generated | Pending family check (words doc, question 5) |
+| Customers | Nana, Ma (the player's mum), Ali (cousin, tall and lanky). Nani's look as generated | Pending family check (words doc, question 5) |
 | Stars, coins, tips | Yes: 1 to 3 stars per order, coins and tips, a perfect-order combo | Zafar now leans towards these; nothing is ever lost |
 | Streaks | **No streak that can break.** Instead, "You've cooked with Nani on N days", a count that only goes up | Keeps the habit hook without the guilt |
 | Timers | Relaxed (default, no timer) or Busy (a patience bar; speed only adds tips; nobody leaves) | Fun analysis section 5 |
@@ -37,7 +37,7 @@ Zafar was asked with a 5-minute deadline. He answered the words question; the re
 | Day | Story | New words | New mechanic |
 |---|---|---|---|
 | 1 Chai for Nana | Nani greets you and makes her own chai **with you doing each step as she names it** (the demo, taught by doing, not a cutscene). Then Nana orders and you make it **from memory** | paani, chai, dudh, khun | pour, boil watch, count, pour to the line |
-| 2 Chai and maani | Ma wants hers with elchi; Bilal wants 2 maani (Nani shows you once) | elchi, atto, maani | knead, roll, tawa flip and puff, "how many?" |
+| 2 Chai and maani | Ma wants hers with elchi; Ali wants 2 maani (Nani shows you once) | elchi, atto, maani | knead, roll, tawa flip and puff, "how many?" |
 | 3 Daal for dinner | Nani teaches daal; the tadka spices go in the order she says | daal, dungri, jeeru, rai | chop, tadka sequence (Simon), stir N times; you answer "Achija" too |
 | 4 The usual, please | Nana just says *Muke chai khape*: you must remember he takes 3 sugars. Ma adds tameto | hardar, marcha, tameto | the riddle order |
 | 5 Eid lunch | Everyone, bigger orders, the finale (family together, a quilt patch) | all | everything |
@@ -103,7 +103,7 @@ Personas from `docs/game-modes-fun-analysis.md`. Each one "played" the build: I 
 
 | Persona | Fun | Learning Kutchi | What they'd say | Fix |
 |---|---|---|---|---|
-| **Aisha, 5** (can't read, plays with a parent) | Loves the sparkles, stars, puffing maani and tapping the glowing thing. Timing bars are abstract; she taps too early | Mostly from the adult reading it aloud, until recordings exist. She **can't read the greeting choices** | "Which one do I press?" "When do I tap?" | **Hear buttons** on greeting choices (▶ plays the recording). **The target pulses while it's the right moment** in every timing task. **A see-through fingertip** shows knead, roll, chop and stir |
+| **Layla, 5** (can't read, plays with a parent) | Loves the sparkles, stars, puffing maani and tapping the glowing thing. Timing bars are abstract; she taps too early | Mostly from the adult reading it aloud, until recordings exist. She **can't read the greeting choices** | "Which one do I press?" "When do I tap?" | **Hear buttons** on greeting choices (▶ plays the recording). **The target pulses while it's the right moment** in every timing task. **A see-through fingertip** shows knead, roll, chop and stir |
 | **Zayn, 8** (competitive) | Likes grades ("100%"), stars and Busy mode. Chai for the 6th time feels samey; wants a reason to be perfect | Numbers and extras matter for his score, so he listens | "What do I get for all 3-stars?" | **Perfect-order combo**: consecutive 3-star orders pay a growing bonus ("Perfect ×3!"). Tawa speeds up slightly with each maani |
 | **Maryam, 11** (aesthetics, heritage) | The modern art is a yes. She likes the recipe book and "how the family like it". Wants to make the kitchen hers | Recipe sequences in Kutchi; the family's preferences | "Can I decorate?" | Noted for later: décor in the shop (Game Design warns against pure cosmetics; décor that changes the hub is OK). Not in this build |
 | **Zafar, 38** (learner, Puzzle Pirates fan) | Upgrade choices (money is tight, so it's a real decision); "the usual" riddles; tadka order memory | Frames repeat and only words change, as designed. The recast after a mistake is the best bit. He'd want more Kutchi per minute and real recordings | "It teaches the words well, but it needs the voices." | Free cooking now leans towards **his weakest words** (spaced review). Recording list ready |
@@ -127,7 +127,7 @@ The same personas, after the round 1 changes, the full five-day run and the six 
 
 | Persona | Better now | Still wrong | Fix (round 2) |
 |---|---|---|---|
-| **Aisha, 5** | Hears the greeting replies before choosing; the pulsing target tells her *now*; the fingertip shows her how to roll and stir | Counts come from the ticket's digit ("2 × khun") and the adult, until recordings exist | None needed in code: recordings (words doc, section 4) |
+| **Layla, 5** | Hears the greeting replies before choosing; the pulsing target tells her *now*; the fingertip shows her how to roll and stir | Counts come from the ticket's digit ("2 × khun") and the adult, until recordings exist | None needed in code: recordings (words doc, section 4) |
 | **Zayn, 8** | Combos pay; Busy mode's patience bar adds pressure without punishment | No record to beat in free cooking | **Best free-cooking score** on the title button |
 | **Maryam, 11** | Recipe book, family favourites, the finale | Still wants to decorate | Later (see section 7) |
 | **Zafar, 38** | The recast after mistakes; "the usual"; weak-word review | **Nani's reading pauses can't be skipped**, which breaks the Game Design rule "nothing is unskippable" and makes adults wait | **Tap anywhere to skip** a line (it stays on screen to read) |
@@ -193,7 +193,7 @@ The prototype shows most upgrades as a gilded "special" version of the ordinary 
 | Kneading | Special atto bowl (40) | Kneads the dough for you | **An atta-kneading machine** |
 | Rolling | Special rolling pin (30) | Rolls twice as fast; never too big | **A tapered belan**, then a **chapati press** that makes a perfect circle in one push |
 | Tawa | Special tawa (40) | Flip window twice as wide | **A heavy cast-iron tawa**, then a **roti jali** (mesh) for a guaranteed puff |
-| Chopping | Special knife (25); Bilal helps (15 + 5 a day) | 2 swipes instead of 4; Bilal chops for you | **A sharp chef's knife**, then a **pull-cord vegetable chopper**. Helpers become **family staff with a daily wage** (tycoon-style), each with a personality |
+| Chopping | Special knife (25); Ali helps (15 + 5 a day) | 2 swipes instead of 4; Ali chops for you | **A sharp chef's knife**, then a **pull-cord vegetable chopper**. Helpers become **family staff with a daily wage** (tycoon-style), each with a personality |
 | Tadka | Special tadka pan (30) | Tips itself into the daal (you still add the spices in Nani's order) | **A long-handled tadka ladle** that pours straight into the pot. Later, a **masala dabba** on the counter, as décor only: it must never open the right spice for you, because that would do the listening |
 | Stirring | Special pot (30) | Small, wobbly circles count | **A long wooden ladle (doi)**; later a **pressure cooker whose whistles you count** (a new counting mini-game) |
 | Serving | Special thali (40) | +3 coins tip per order | **A brass thali with katoris**: better presentation, bigger tips, and the plating mini-game ("daal in the bowl, maani on the left") |
