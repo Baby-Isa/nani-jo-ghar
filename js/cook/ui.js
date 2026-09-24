@@ -76,7 +76,7 @@
     const sayLine = opts.speakLine || line;
     const voice = Lang.hasVoice(sayLine);
     const hideTr = opts.noTranslate || !line.en;
-    el.innerHTML = `${voice ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : ""}<span class="wp-text">${Lang.html(line, opts)}</span>${
+    el.innerHTML = `${voice ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : opts.reserveSay ? `<span class="wp-gap"></span>` : ""}<span class="wp-text">${Lang.html(line, opts)}</span>${
       opts.onReveal ? `<button class="wp-eye" type="button" aria-label="Show the word">${ICON.eye}</button>` : ""
     }${hideTr ? "" : `<button class="wp-tr" type="button" aria-label="Show in English">${ICON.translate}</button>`}<span class="wp-en hidden">${esc(line.en || "")}</span>`;
     const say = el.querySelector(".wp-say");
@@ -398,6 +398,7 @@
       UI.pill(r.line, {
         hide: (id) => !r.done && !r.revealed && hideWord(id),
         speakLine,
+        reserveSay: true,
         onHear: () => {
           // hearing it again is fine while the words are on the card; once
           // they're dots, a replay is help (the no-help star)
@@ -433,7 +434,7 @@
         const groups = mission.plain && !s.simple ? [].concat(...s.groups).map((r) => [r]) : s.groups;
         const nRows = groups.reduce((a, g) => a + g.length, 0);
         if (!nRows) return;
-        sec.className = ["lsec", s.simple ? "simple" : "", !mission.plain && s.seq && groups.length > 1 ? "seq" : "", mission.plain && groups.length > 1 ? "plain" : "", s.when ? "late" : ""].filter(Boolean).join(" ");
+        sec.className = ["lsec", s.simple ? "simple" : "", !mission.plain && s.seq && groups.length > 1 ? "lseq" : "", mission.plain && groups.length > 1 ? "lplain" : "", s.when ? "late" : ""].filter(Boolean).join(" ");
         groups.forEach((g) => {
           const ge = document.createElement("div");
           ge.className = ["lg", g.length > 1 ? "multi" : "", g.every((r) => r.done) ? "done" : ""].filter(Boolean).join(" ");
