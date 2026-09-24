@@ -776,7 +776,11 @@ def normalise_scale(im, target_width, tolerance=0.04, limits=(0.6, 1.6), red_sle
     # (up and sideways, never down), keeping the arm's exit at the bottom
     # edge, so no hand is cut or left small. The game places hands by that
     # bottom pivot, so a bigger canvas is harmless.
-    bb = big.getbbox() or (0, 0, big.width, big.height)
+    # only the hand has to stay in frame: the sleeve, in the bottom fifth
+    # of the frame, may run off the edges (the arm comes from off-screen)
+    top_part = np.asarray(big)[..., 3].copy()
+    top_part[max(0, round(H * 0.8) - oy):] = 0
+    bb = Image.fromarray(top_part).getbbox() or (0, 0, big.width, big.height)
     margin = 8
     pad_l = max(0, margin - (ox + bb[0]))
     pad_r = max(0, (ox + bb[2]) + margin - W)
@@ -1003,8 +1007,11 @@ def post_process_hand(entry, im, cfg, cache={}):
                 info.update(scale_action="arms disagree, left as is (check by eye)",
                             forearm_px=[round(v) for v in vals])
             else:
-                im, s = normalise_scale(im, target, sc.get("tolerance", 0.04), tuple(sc.get("limits", (0.6, 1.6))), nani)
+                im, s = normalise_scale(im, target, sc.get("tolerance", 0.04), tuple(sc.get("limits", (0.6, 1.8))), nani)
                 info.update(s)
+                if s.get("scale_action") == "rescaled":  # the width estimate shifts a little: one more pass
+                    im, s2 = normalise_scale(im, target, sc.get("tolerance", 0.04), (0.8, 1.25), nani)
+                    info["second_pass"] = {k: s2.get(k) for k in ("forearm_px", "scale", "scale_action")}
     return im, info
 
 

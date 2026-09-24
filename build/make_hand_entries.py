@@ -214,6 +214,9 @@ NANI_RIGHT = ("on the RIGHT wrist two thin plain gold bangles and a thin, delica
 NANI_LEFT = ("on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); "
              "on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); "
              "no other rings")
+# Masters that failed QA (hands v1): Nani's version is drawn from the pose
+# text and her own reference instead of copying the child's image.
+NANI_TEXT_ONLY = {"hand-b1-handle-grip-t", "hand-e3-count-4-e"}
 NANI_POSES = [  # (master id to copy the pose from, sides)
     ("hand-a1-flat-palm-t", "RL"),
     ("hand-a3-palm-up-t", "RL"),
@@ -256,6 +259,7 @@ def nani_entries():
             "template": "nani_ref_left", "fields": {"jewellery": NANI_LEFT}, "skin_target": NANI_SKIN, "scale_normalise": False,
             "_note": "Starts from Nani's right-hand reference flipped left-right, then the jewellery is redrawn for the left hand.",
         })
+    pose_text = {master_id(c, sl, cam): (pose, cam) for c, sl, cam, pose, two in POSES}
     for mid, sides in NANI_POSES:
         cam = mid[-1].upper()
         base = mid.replace("hand-", "nani-", 1)
@@ -276,7 +280,16 @@ def nani_entries():
                 "template": "nani_pose", "fields": {"side": word, "jewellery": jew},
                 "skin_reference": refs[("T", "R")], "scale_reference": refs[(cam, "R")],
             }
-            if side == "L":
+            if mid in NANI_TEXT_ONLY:
+                pose, pcam = pose_text[mid]
+                if side == "L":
+                    pose = pose.replace("LEFT", "@@").replace("RIGHT", "LEFT").replace("@@", "RIGHT")
+                e.update(reference_images=[refs[(cam, side)]], template="nani_pose_text",
+                         fields={"side": word, "jewellery": jew, "camera": CAM[pcam], "pose": pose},
+                         _note="The player's master for this pose failed QA, so Nani's is drawn from text and her own reference.")
+                if KEY in pose:
+                    e["key_out"] = "magenta"
+            elif side == "L":
                 e["mirror_references"] = [1]  # the player's pose image is a right hand
             out.append(e)
     return out
@@ -292,6 +305,7 @@ TEMPLATES = {
     "nani_ref": "{style}\n\nEdit the attached reference hand into Nani's hand: the {side} hand and forearm of a warm, graceful grandmother in her late sixties. Keep the camera, pose, framing and lighting exactly as in the reference. Change: (1) Hand: an older woman's hand, a little larger and fuller than the child's, with soft, gentle wrinkles over the knuckles and the back of the hand and a slightly looser skin texture, still smooth and stylised, never bony, no prominent veins; short, neat, natural nails, no polish. (2) Skin: warm and unsaturated, a soft muted light brown, a touch deeper than the reference, not orange, not grey. (3) Sleeve: replace the white linen with her deep-red kurta sleeve (deep madder red, about #9E1F2A), coming down to the wrist, with a narrow band of fine gold embroidery at the cuff. (4) Jewellery: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_ref_left": "{style}\n\nEdit the attached image of Nani's hand. It is now her LEFT hand (already flipped): keep the hand, pose, skin, camera, lighting and her deep-red sleeve with its gold-embroidered cuff exactly the same. Change only the jewellery: remove every ring, bracelet and bangle and replace them with: {jewellery}. Transparent background.\n\n{negative}",
     "nani_pose": "{style}\n\nTwo images are attached. Image 1 is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly. Image 2 is a child's hand showing the POSE and CAMERA to copy: draw Nani's {side} hand in exactly that pose, from exactly that camera, with the same framing, the same empty gaps and the same forearm direction; ignore the child's skin and white sleeve. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. No tool or object in the hand. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
+    "nani_pose_text": "{style}\n\nThe attached image is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly, and draw the SAME hand in a new pose. {camera} Pose: {pose}. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_two_pose": "{style}\n\nThree images are attached. Image 1 is Nani's RIGHT hand and image 2 her LEFT hand: copy their older skin, deep-red sleeves with gold-embroidered cuffs and jewellery exactly. Image 3 shows a child's two hands in the POSE and CAMERA to copy: draw Nani's two hands (right hand on the right, left hand on the left) in exactly that pose, camera and framing, with the same empty gap where the rolling pin will sit; ignore the child's skin and white sleeves. Her hands are an older woman's: a little larger and fuller, soft gentle wrinkles, smooth and stylised, short natural nails. Right hand: {right}. Left hand: {left}. No tool or object in the hands. Transparent background: hands and forearms only, no other body parts.\n\n{negative}",
 }
 
@@ -319,7 +333,7 @@ def main():
     data["config"]["scale_normalise"] = {
         "target_forearm_px": 250,
         "tolerance": 0.04,
-        "limits": [0.6, 1.6],
+        "limits": [0.6, 1.8],
         "_note": "Every hand sprite is rescaled so its forearm, measured just beyond the sleeve, is target_forearm_px wide (the reference hands measure 244 top-down and 256 eye level), anchored where the arm leaves the bottom edge. Nani's entries use scale_reference (her own reference) instead. build/gen_assets.py, forearm_widths() and normalise_scale().",
     }
     with open(ASSET_LIST, "w") as f:

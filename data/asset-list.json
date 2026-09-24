@@ -28,7 +28,7 @@
       "tolerance": 0.04,
       "limits": [
         0.6,
-        1.6
+        1.8
       ],
       "_note": "Every hand sprite is rescaled so its forearm, measured just beyond the sleeve, is target_forearm_px wide (the reference hands measure 244 top-down and 256 eye level), anchored where the arm leaves the bottom edge. Nani's entries use scale_reference (her own reference) instead. build/gen_assets.py, forearm_widths() and normalise_scale()."
     }
@@ -53,7 +53,8 @@
     "nani_pose": "{style}\n\nTwo images are attached. Image 1 is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly. Image 2 is a child's hand showing the POSE and CAMERA to copy: draw Nani's {side} hand in exactly that pose, from exactly that camera, with the same framing, the same empty gaps and the same forearm direction; ignore the child's skin and white sleeve. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. No tool or object in the hand. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_two_pose": "{style}\n\nThree images are attached. Image 1 is Nani's RIGHT hand and image 2 her LEFT hand: copy their older skin, deep-red sleeves with gold-embroidered cuffs and jewellery exactly. Image 3 shows a child's two hands in the POSE and CAMERA to copy: draw Nani's two hands (right hand on the right, left hand on the left) in exactly that pose, camera and framing, with the same empty gap where the rolling pin will sit; ignore the child's skin and white sleeves. Her hands are an older woman's: a little larger and fuller, soft gentle wrinkles, smooth and stylised, short natural nails. Right hand: {right}. Left hand: {left}. No tool or object in the hands. Transparent background: hands and forearms only, no other body parts.\n\n{negative}",
     "hand_pose_from_ref_keyed": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 in a new pose: warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown, exactly the skin colour of the reference; a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails. {camera} Pose: {pose}. The only object is the magenta placeholder described in the pose; nothing else in the hand. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern, identical to the reference. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
-    "hands_two_from_ref_keyed": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw BOTH hands and forearms of the same child of about 7 (the right hand on the right, the left hand on the left, a matching mirror-image pair), each exactly like the reference: warm light tan skin, not orange, not saturated, exactly the skin colour of the reference; slender, slim hands with long fingers relative to small, narrow palms; smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins. {camera} Both forearms enter from the bottom edge of the frame. Pose: {pose}. The only object is the magenta placeholder described in the pose; nothing else in the hands. Sleeves: plain white linen shirt sleeves rolled back to between the elbow and the wrist, the roll just showing at the bottom edge (or cropped out), identical to the reference. Transparent background: two hands and forearms only, no other body parts.\n\n{negative}"
+    "hands_two_from_ref_keyed": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw BOTH hands and forearms of the same child of about 7 (the right hand on the right, the left hand on the left, a matching mirror-image pair), each exactly like the reference: warm light tan skin, not orange, not saturated, exactly the skin colour of the reference; slender, slim hands with long fingers relative to small, narrow palms; smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins. {camera} Both forearms enter from the bottom edge of the frame. Pose: {pose}. The only object is the magenta placeholder described in the pose; nothing else in the hands. Sleeves: plain white linen shirt sleeves rolled back to between the elbow and the wrist, the roll just showing at the bottom edge (or cropped out), identical to the reference. Transparent background: two hands and forearms only, no other body parts.\n\n{negative}",
+    "nani_pose_text": "{style}\n\nThe attached image is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly, and draw the SAME hand in a new pose. {camera} Pose: {pose}. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}"
   },
   "assets": [
     {
@@ -2753,16 +2754,19 @@
       "output": "assets/characters/hands/nani/nani-b1-handle-grip-t-right.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
-        "assets/characters/hands/master/hand-b1-handle-grip-t.png"
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png"
       ],
-      "template": "nani_pose",
+      "template": "nani_pose_text",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings",
+        "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
+        "pose": "the knife-and-spatula grip, seen from directly above: a straight magenta handle 2.5 cm thick runs straight forwards from under the heel of the hand, through the fist, and out the front towards the top of the frame; the four fingers wrap round it (we see their backs and knuckles); the THUMB is NOT in the fist: it lies flat on TOP of the handle, pointing forwards along it, its whole length and its thumbnail clearly visible on top of the magenta handle, like a person pressing a knife handle with the thumb The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
-      "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+      "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+      "_note": "The player's master for this pose failed QA, so Nani's is drawn from text and her own reference.",
+      "key_out": "magenta"
     },
     {
       "id": "nani-b4-rolling-pin-t",
@@ -3018,16 +3022,18 @@
       "output": "assets/characters/hands/nani/nani-e3-count-4-e-right.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
-        "assets/characters/hands/master/hand-e3-count-4-e.png"
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png"
       ],
-      "template": "nani_pose",
+      "template": "nani_pose_text",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings",
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their nails facing us; the THUMB is folded flat across the palm, completely HIDDEN behind the hand, not visible at all. Only four digits can be seen"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
-      "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png"
+      "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+      "_note": "The player's master for this pose failed QA, so Nani's is drawn from text and her own reference."
     },
     {
       "id": "nani-e3-count-4-e-left",
@@ -3035,19 +3041,18 @@
       "output": "assets/characters/hands/nani/nani-e3-count-4-e-left.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/nani/ref/nani-ref-e-left.png",
-        "assets/characters/hands/master/hand-e3-count-4-e.png"
+        "assets/characters/hands/nani/ref/nani-ref-e-left.png"
       ],
-      "template": "nani_pose",
+      "template": "nani_pose_text",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings",
+        "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
+        "pose": "counting FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their nails facing us; the THUMB is folded flat across the palm, completely HIDDEN behind the hand, not visible at all. Only four digits can be seen"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
-      "mirror_references": [
-        1
-      ]
+      "_note": "The player's master for this pose failed QA, so Nani's is drawn from text and her own reference."
     },
     {
       "id": "nani-e3-count-5-e-right",
