@@ -91,6 +91,16 @@
     if (w.right >= 4) return 3;
     return 2;
   };
+  /* How a word is shown as it's learned (docs/cook-with-nani-phase-a-design.md
+   * section 4). A word shows as text in only one place at a time, so
+   * players can't just match letter shapes:
+   *   stage 1 new:      mission card text,  item label text (+ glow)
+   *   stage 2 learning: mission card text,  item label speaker only
+   *   stage 3 nearly:   mission card dots,  item label speaker only
+   *   stage 4 known:    mission card dots (replaying costs the no-help star), no label */
+  Cook.labelMode = (id) => ["", "text", "speaker", "speaker", "none"][Cook.wordStage(id)];
+  Cook.cardHidden = (id) => Cook.wordStage(id) >= 3;
+  Cook.paused = false;
   Cook.hintDelay = function (id) {
     return [0, 4000, 5000, 8000, 12000][Cook.wordStage(id)];
   };
@@ -224,6 +234,34 @@
       src.start();
     });
   };
+  /** Speak a voice file by its manifest key (see lang.js). */
+  Cook.speakKey = async function (key) {
+    const url = Cook.tts[key];
+    if (!url) return false;
+    Cook.unlockAudio();
+    if (!ctx) return false;
+    const buf = await loadBuffer(url);
+    if (!buf) return false;
+    Cook.stopVoice();
+    return new Promise((resolve) => {
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const g = ctx.createGain();
+      g.gain.value = 1.6;
+      src.connect(g).connect(ctx.destination);
+      currentSrc = src;
+      let done = false;
+      const finish = () => {
+        if (!done) {
+          done = true;
+          resolve(true);
+        }
+      };
+      src.onended = finish;
+      setTimeout(finish, (buf.duration * 1000) / Cook.speed + 150);
+      src.start();
+    });
+  };
   /** Speak several lines in a row (an order is "Muke chai khape." then "Ne bo khun."). */
   Cook.speakAll = async function (plains) {
     for (const p of plains) {
@@ -316,6 +354,12 @@
     src.connect(f).connect(g).connect(master);
     src.start();
     return {
+      // pouring rises in pitch as the vessel fills, like the real thing
+      pitch(level) {
+        try {
+          f.frequency.setTargetAtTime(freq * (0.7 + level * 1.6), ctx.currentTime, 0.05);
+        } catch (e) {}
+      },
       stop() {
         try {
           g.gain.cancelScheduledValues(ctx.currentTime);

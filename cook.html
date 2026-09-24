@@ -19,58 +19,43 @@
   <main id="stage">
     <div id="game"></div>
 
-
-    <div id="bubble" class="hidden" role="status" aria-live="polite">
-      <div class="bubble-kutchi"></div>
-      <div class="bubble-english hidden"></div>
-      <div class="bubble-foot">
-        <button class="bubble-play hidden" aria-label="Hear it again">&#9654;</button>
-        <span class="bubble-rec hidden" title="Needs a family recording">needs recording</span>
-        <button class="bubble-en" aria-label="Show English">EN</button>
-      </div>
-    </div>
+    <!-- a speech bubble beside a character (service view) -->
+    <div id="bubble" class="hidden" role="status" aria-live="polite"><div class="say-slot"></div></div>
 
     <div id="gist" class="hidden"></div>
     <div id="choices" class="hidden"></div>
     <div id="count-badge" class="hidden"><span class="count-digit"></span><span class="count-word"></span></div>
     <button id="done-btn" class="hidden" aria-label="Done">&#10003;</button>
     <div id="toast" class="hidden"></div>
+
+    <!-- Nani: "pass me…" (slides in from the edge mid-cook) -->
+    <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">
+      <div class="pm-nani"><img src="assets/cook/characters/nani-badge.webp" alt="Nani"><div class="pm-say"></div></div>
+      <div class="pm-tray"></div>
+    </div>
   </main>
 
   <aside id="side">
     <div class="side-top">
-      <span class="pill coins" title="Coins"><i class="coin-dot"></i><b id="coins">0</b></span>
+      <span class="pill coins" title="Pocket money"><i class="coin-dot"></i><b id="coins">0</b></span>
       <span class="pill stars" title="Stars today">&#9733; <b id="stars">0</b></span>
     </div>
-    <!-- At the stations Nani isn't in the picture: she talks from here, so
-         her words can never cover something you need to tap -->
+    <!-- At the stations Nani talks from here, so her words never cover a thing to tap -->
     <div id="nani-card" class="card hidden" role="status" aria-live="polite">
       <img class="nc-face" src="assets/cook/characters/nani-badge.webp" alt="Nani">
-      <div class="nc-body">
-        <div class="bubble-kutchi"></div>
-        <div class="bubble-english hidden"></div>
-        <div class="bubble-foot">
-          <button class="bubble-play hidden" aria-label="Hear it again">&#9654;</button>
-          <span class="bubble-rec hidden" title="Needs a family recording">needs recording</span>
-          <button class="bubble-en" aria-label="Show English">EN</button>
-        </div>
-      </div>
+      <div class="say-slot"></div>
     </div>
     <div id="how" class="hidden"></div>
-    <div id="ticket" class="card hidden">
-      <div class="ticket-head">
-        <img id="ticket-face" alt="">
-        <div>
-          <div id="ticket-name"></div>
-          <div id="patience" class="hidden"><i></i></div>
-        </div>
+    <!-- the mission card: becomes the completion card when the order is served -->
+    <div id="mission" class="card hidden">
+      <div class="m-head">
+        <img class="m-face" alt="">
+        <div class="m-who"><div class="m-name"></div><div id="patience" class="hidden"><i></i></div></div>
       </div>
-      <ul id="ticket-list"></ul>
-      <button id="ticket-en" class="mini">EN</button>
-    </div>
-    <div id="recipe" class="card hidden">
-      <div class="recipe-title"><span id="recipe-name"></span><small id="recipe-stage"></small></div>
-      <div id="recipe-dots"></div>
+      <div class="m-stars"></div>
+      <ul class="m-order"></ul>
+      <div class="m-steps"></div>
+      <div class="m-stamp">Served!</div>
     </div>
     <div class="side-rail">
       <button id="btn-home" class="rail-btn" title="Menu">&#8962;</button>
@@ -83,8 +68,11 @@
 
 <script src="js/vendor/phaser.min.js"></script>
 <script src="js/cook/core.js"></script>
+<script src="js/cook/lang.js"></script>
+<script src="js/cook/art.js"></script>
 <script src="js/cook/ui.js"></script>
 <script src="js/cook/stations.js"></script>
+<script src="js/cook/station-lib.js"></script>
 <script src="js/cook/recipes.js"></script>
 <script src="js/cook/flow.js"></script>
 </body>

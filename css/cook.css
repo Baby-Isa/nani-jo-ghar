@@ -67,34 +67,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   background: var(--cream); border-radius: var(--radius); padding: 10px 12px;
   box-shadow: var(--shadow); position: relative;
 }
-.ticket-head { display: flex; gap: 10px; align-items: center; }
-#ticket-face { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; background: #eadcc6; }
-#ticket-name { font-weight: 800; font-size: 16px; }
-#patience { margin-top: 4px; height: 8px; width: 90px; border-radius: 99px; background: #eadcc6; overflow: hidden; }
-#patience i { display: block; height: 100%; width: 100%; background: var(--sage); border-radius: 99px; transition: width .5s linear, background .5s; }
-#patience.low i { background: var(--madder); }
-#ticket-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-#ticket-list li { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; font-family: var(--kutchi-font); font-size: clamp(17px, 1.9vw, 24px); font-weight: 700; line-height: 1.1; }
-#ticket-list li .qty { color: var(--madder); }
-#ticket-list li .en { font-family: var(--ui-font); font-size: 13px; font-weight: 600; color: var(--ink-soft); width: 100%; }
-#ticket-list li.extra { font-size: clamp(15px, 1.6vw, 20px); padding-left: 10px; }
-#ticket-list li.done { color: var(--sage-dark); }
-#ticket-list li.done::after { content: "\2713"; font-size: .8em; }
-#ticket-list li .usual { color: var(--brass); }
-.mini {
-  position: absolute; top: 8px; right: 8px; border: 1px solid rgba(80,60,40,.2); background: transparent;
-  border-radius: 8px; font-size: 11px; font-weight: 800; padding: 2px 6px; color: var(--ink-soft);
-}
-.mini.on { background: var(--ink); color: var(--cream); }
-.draft { color: var(--brass); font-weight: 800; margin-left: 1px; }
-
-.recipe-title { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--kutchi-font); font-weight: 800; font-size: 20px; }
-.recipe-title small { font-family: var(--ui-font); font-size: 12px; color: var(--ink-soft); font-weight: 700; }
-#recipe-dots { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-#recipe-dots i { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--sage); }
-#recipe-dots i.on { background: var(--sage); }
-#recipe-dots i.now { border-color: var(--brass); box-shadow: 0 0 0 3px rgba(201,151,58,.3); }
-
 .side-rail { margin-top: auto; display: flex; gap: 8px; }
 .rail-btn {
   width: 48px; height: 48px; border-radius: 14px; border: none; background: var(--cream);
@@ -115,8 +87,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ---------- things over the game ---------- */
 #bubble {
-  position: absolute; z-index: 10; max-width: min(46%, 520px); min-width: 120px;
-  background: var(--cream); border-radius: 20px; padding: 10px 14px 8px;
+  position: absolute; z-index: 10; max-width: min(50%, 560px); min-width: 120px;
+  background: var(--cream); border-radius: 20px; padding: 8px 10px;
   box-shadow: var(--shadow); border: 2px solid rgba(80,60,40,.08);
   transform-origin: left top; animation: pop .22s ease-out;
 }
@@ -302,3 +274,113 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; }
 }
+
+/* ================= Phase A components ================= */
+
+/* ---- word pills: [speaker | Kutchi | translate] ---- */
+.wp { display: inline-grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 8px; max-width: 100%; }
+.wp > .wp-text:first-child { grid-column: 1 / 3; }
+.wp .wp-en { grid-column: 1 / -1; }
+.wp .wp-text { font-family: var(--kutchi-font); font-weight: 800; line-height: 1.15; }
+.wp .word { color: var(--madder); }
+.wp .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-weight: 700; }
+.wp .word.ph { color: #8a6a5c; }
+.wp .dots { letter-spacing: 2px; color: var(--ink-soft); }
+.wp button {
+  flex: none; width: 34px; height: 34px; border-radius: 50%; border: none; padding: 7px;
+  background: #efe4d2; color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
+}
+.wp button svg { width: 100%; height: 100%; }
+.wp button.on { background: var(--ink); color: var(--cream); }
+.wp .wp-en { width: 100%; font-family: var(--ui-font); font-size: 13px; color: var(--ink-soft); font-weight: 700; }
+.wp.full .wp-text { font-size: clamp(17px, 2vw, 28px); }
+.wp.choice .wp-text { font-size: clamp(17px, 2.2vw, 28px); }
+#bubble .wp .wp-text { font-size: clamp(18px, 2.4vw, 32px); }
+
+#nani-card { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; animation: pop .22s ease-out; }
+#nani-card .nc-face { width: clamp(40px, 4.4vw, 60px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; }
+#nani-card.talk .nc-face { animation: badgeTalk .45s ease-in-out infinite alternate; }
+#how b { color: #ffd98a; margin-right: 4px; }
+
+/* ---- choices (small talk) ---- */
+#choices .choice {
+  background: var(--cream); border: 3px solid transparent; border-radius: 22px; padding: 8px 14px 8px 10px;
+  box-shadow: var(--shadow); cursor: pointer; transition: transform .1s; min-height: 52px; display: flex; align-items: center;
+}
+#choices .choice:active { transform: scale(.96); }
+#choices .choice .wp button { padding: 7px; min-height: 0; box-shadow: none; border: none; border-radius: 50%; background: #efe4d2; width: 36px; height: 36px; font-size: 0; }
+#choices .choice.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }
+#choices .choice.wrong { animation: shake .35s; }
+#choices .choice.right { background: #e3f0dc; border-color: var(--sage); }
+
+/* ---- the mission card ---- */
+#mission { position: relative; overflow: hidden; }
+#mission .m-head { display: flex; gap: 10px; align-items: center; }
+#mission .m-face { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; background: #eadcc6; }
+#mission .m-name { font-weight: 800; font-size: 16px; }
+#mission .m-stars { display: flex; gap: 8px; margin: 8px 0 4px; }
+.mstar {
+  width: 38px; height: 38px; border-radius: 12px; padding: 7px; border: 2px dashed #cdb892; color: #b8a58a; background: transparent;
+  display: inline-flex; transition: all .25s;
+}
+.mstar svg { width: 100%; height: 100%; }
+.mstar.earned { border: 2px solid #b07d10; background: #ffd86b; color: #6b4a08; }
+.mstar.lost { border: 2px solid #ddd3c4; background: #eee6da; color: #c8baa6; opacity: .7; }
+.mstar.pop { transform: scale(1.3); }
+#mission .m-order { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+#mission .m-order li { padding: 4px 6px; border-radius: 12px; }
+#mission .m-order li.done { background: #eaf3e4; }
+#mission .m-order li.done .wp-text::after { content: " \2713"; color: var(--sage-dark); }
+#mission .m-order .wp.full .wp-text { font-size: clamp(14px, 1.45vw, 20px); }
+#mission .m-order { max-height: 38vh; overflow-y: auto; }
+#mission .wp button, #nani-card .wp button { width: 30px; height: 30px; padding: 6px; }
+#mission .m-steps { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.mstep { font-size: 11px; font-weight: 800; padding: 3px 7px; border-radius: 999px; background: #efe4d2; color: var(--ink-soft); }
+.mstep.on { background: var(--sage); color: #fff; }
+.mstep.now { background: var(--brass); color: #fff; }
+#mission .m-stamp {
+  position: absolute; right: 10px; bottom: 10px; transform: rotate(-12deg) scale(2); opacity: 0; pointer-events: none;
+  border: 3px solid var(--madder); color: var(--madder); font-family: var(--kutchi-font); font-weight: 800; padding: 0 10px; border-radius: 8px;
+  transition: all .35s cubic-bezier(.2,1.6,.4,1);
+}
+#mission.stamped .m-stamp { opacity: .85; transform: rotate(-12deg) scale(1); }
+
+/* ---- Nani: pass me ---- */
+#passme {
+  position: absolute; left: 1.5%; top: 6%; z-index: 30; width: min(560px, 60%);
+  background: rgba(255, 250, 241, .97); border-radius: 24px; box-shadow: 0 18px 50px rgba(40,25,10,.35);
+  padding: 12px; animation: slideIn .35s cubic-bezier(.2,1.2,.4,1);
+}
+#passme.leaving { animation: slideOut .35s ease-in forwards; }
+@keyframes slideIn { from { transform: translateX(-120%) rotate(-4deg); } to { transform: none; } }
+@keyframes slideOut { to { transform: translateX(-130%); } }
+#passme .pm-nani { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
+#passme .pm-nani img { width: clamp(52px, 7vw, 90px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 3px solid #fff; animation: badgeTalk .45s ease-in-out 4 alternate; }
+#passme .pm-tray { display: flex; gap: 10px; margin-top: 10px; background: #d9a877; border-radius: 18px; padding: 10px; justify-content: space-around; }
+#passme .pm-item { flex: 1; border: 3px solid transparent; background: rgba(255,255,255,.35); border-radius: 16px; padding: 6px; aspect-ratio: 1.2; }
+#passme .pm-item img { width: 100%; height: 100%; object-fit: contain; }
+#passme .pm-item.wrong { animation: shake .35s; }
+#passme .pm-item.right { border-color: var(--sage); background: #eaf3e4; }
+#passme .pm-item.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }
+
+/* ---- receipt and completion cards (summary) ---- */
+.receipt { font-size: 14px; background: var(--paper); border-radius: 12px; padding: 8px 12px; margin: 6px 0; }
+.receipt div { display: flex; justify-content: space-between; gap: 12px; }
+.receipt .total { border-top: 1px dashed #cdb892; margin-top: 4px; padding-top: 4px; font-weight: 800; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin: 10px 0; }
+.ccard { background: var(--paper); border-radius: 16px; padding: 10px; position: relative; }
+.ccard .cc-head { display: flex; gap: 8px; align-items: center; font-weight: 800; }
+.ccard .cc-head img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: top; }
+.ccard .cc-stars { display: flex; gap: 6px; margin: 6px 0; }
+.ccard .cc-stars .mstar { width: 30px; height: 30px; padding: 5px; }
+.ccard .cc-dish { font-family: var(--kutchi-font); font-weight: 800; }
+.ccard .cc-coins { position: absolute; right: 10px; top: 10px; font-weight: 800; display: inline-flex; gap: 4px; align-items: center; }
+.ccard .cc-why { font-size: 12px; color: var(--ink-soft); }
+.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
+.rules .rule { background: var(--paper); border-radius: 14px; padding: 10px; text-align: center; font-size: 13px; }
+.rules .rule .mstar { margin: 0 auto 6px; }
+
+/* ---- station lab ---- */
+.lab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 10px 0; }
+.lab-grid button { border: none; background: var(--paper); border-radius: 14px; padding: 10px; text-align: left; font-weight: 800; font-size: 15px; }
+.lab-grid button small { display: block; font-weight: 600; color: var(--ink-soft); font-size: 12px; }

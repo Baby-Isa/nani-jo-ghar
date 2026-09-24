@@ -1,611 +1,1185 @@
 {
-  "_about": "Cook with Nani proof of concept (24 Sept 2026). Every Kutchi string here is a DRAFT. Words marked source 'zafar-24sep' were confirmed by Zafar as right for now (khun, not khand). Sentences only recombine frames already in the content master (Muke {x} khape / Ne {x} / Salamun alaykum / Wa alaikum salaam / Aabhar aanjo / Achija / Arre re / Hedo / Ghan). Cooking verbs have NO Kutchi yet: they are shown as gestures, and listed in docs/cook-with-nani-words.md for the family.",
-  "words": {
-    "cook-paani": {
-      "kutchi": "paani",
-      "english": "water",
-      "image": "water-jug",
-      "source": "zafar-24sep"
-    },
-    "cook-chai": {
-      "kutchi": "chai",
-      "english": "tea (leaves)",
-      "image": "tea-tin",
-      "source": "zafar-24sep"
-    },
-    "cook-dudh": {
-      "kutchi": "dudh",
-      "english": "milk",
-      "image": "milk-jug",
-      "source": "zafar-24sep"
-    },
-    "cook-khun": {
-      "kutchi": "khun",
-      "english": "sugar",
-      "image": "sugar-jar",
-      "source": "zafar-24sep"
-    },
-    "cook-atto": {
-      "kutchi": "atto",
-      "english": "flour",
-      "image": "atto",
-      "source": "zafar-24sep"
-    },
-    "cook-daal": {
-      "kutchi": "daal",
-      "english": "lentils / daal",
-      "image": "daal-dry",
-      "source": "zafar-24sep"
-    },
-    "cook-maani": {
-      "kutchi": "maani",
-      "english": "chapati",
-      "image": "chapati-puffed",
-      "source": "zafar-24sep"
-    },
-    "veg-02": {
-      "kutchi": "dungri",
-      "english": "onion",
-      "image": "onion",
-      "source": "content master (sindhi-cognate)"
-    },
-    "veg-03": {
-      "kutchi": "tameto",
-      "english": "tomato",
-      "image": "tomato",
-      "source": "content master (sindhi-cognate)"
-    },
-    "veg-12": {
-      "kutchi": "marcha",
-      "english": "green chilli",
-      "image": "chilli",
-      "source": "content master (sindhi-cognate)"
-    },
-    "veg-13": {
-      "kutchi": "lasan",
-      "english": "garlic",
-      "image": "garlic",
-      "source": "content master (sindhi-cognate)"
-    },
-    "spi-01": {
-      "kutchi": "hardar",
-      "english": "turmeric",
-      "image": "hardar",
-      "source": "content master (sindhi-cognate)"
-    },
-    "spi-02": {
-      "kutchi": "jeeru",
-      "english": "cumin seeds",
-      "image": "jeeru",
-      "source": "content master (sindhi-cognate)"
-    },
-    "spi-05": {
-      "kutchi": "rai",
-      "english": "mustard seeds",
-      "image": "rai",
-      "source": "content master (sindhi-cognate)"
-    },
-    "spi-10": {
-      "kutchi": "elchi",
-      "english": "cardamom",
-      "image": "elchi",
-      "source": "content master (sindhi-cognate)"
-    },
-    "spi-16": {
-      "kutchi": "loon",
-      "english": "salt",
-      "image": "loon",
-      "source": "content master (sindhi-cognate)"
-    },
-    "num-01": {
-      "kutchi": "hikdo",
-      "english": "one",
-      "source": "handout"
-    },
-    "num-02": {
-      "kutchi": "bo",
-      "english": "two",
-      "source": "handout"
-    },
-    "num-03": {
-      "kutchi": "trae",
-      "english": "three",
-      "source": "handout"
-    },
-    "num-04": {
-      "kutchi": "char",
-      "english": "four",
-      "source": "handout"
-    },
-    "num-05": {
-      "kutchi": "panj",
-      "english": "five",
-      "source": "handout"
-    }
+ "_about": "Cook with Nani proof of concept (24 Sept 2026). Every Kutchi string here is a DRAFT. Words marked source 'zafar-24sep' were confirmed by Zafar as right for now (khun, not khand). Sentences only recombine frames already in the content master (Muke {x} khape / Ne {x} / Salamun alaykum / Wa alaikum salaam / Aabhar aanjo / Achija / Arre re / Hedo / Ghan). Cooking verbs have NO Kutchi yet: they are shown as gestures, and listed in docs/cook-with-nani-words.md for the family. Phase A (24 Sept 2026): words with kutchi null are ENGLISH PLACEHOLDERS shown in grey italic until the family supplies the Kutchi (see docs/Nani jo Ghar — Questions for Mum (Round 2 — Cooking).md).",
+ "words": {
+  "cook-paani": {
+   "kutchi": "paani",
+   "english": "water",
+   "image": "water-jug",
+   "src": "zafar-24sep"
   },
-  "lines": {
-    "greet": {
-      "kutchi": "Salamun alaykum!",
-      "english": "Peace be upon you!",
-      "audio": "snt-01"
-    },
-    "greet-reply": {
-      "kutchi": "Wa alaikum salaam!",
-      "english": "And peace be upon you too!",
-      "audio": "snt-02"
-    },
-    "need": {
-      "kutchi": "Muke {x} khape.",
-      "english": "I need {x}."
-    },
-    "and": {
-      "kutchi": "Ne {x}.",
-      "english": "And {x}."
-    },
-    "thanks": {
-      "kutchi": "Aabhar aanjo!",
-      "english": "Thank you!",
-      "audio": "snt-11"
-    },
-    "bye": {
-      "kutchi": "Achija!",
-      "english": "Bye!",
-      "audio": "snt-14"
-    },
-    "oops": {
-      "kutchi": "Arre re!",
-      "english": "Oh dear!",
-      "audio": "snt-07"
-    },
-    "hey": {
-      "kutchi": "Hedo!",
-      "english": "Hey!",
-      "audio": "snt-03"
-    },
-    "here": {
-      "kutchi": "Ghan.",
-      "english": "Here you are.",
-      "audio": "snt-10"
-    }
+  "cook-chai": {
+   "kutchi": "chai",
+   "english": "tea",
+   "image": "tea-tin",
+   "heap": {
+    "kind": "grains",
+    "color": "#3b2415"
+   },
+   "bowl": "steel",
+   "src": "zafar-24sep"
   },
-  "greeting_choices": [
-    "greet-reply",
-    "bye",
-    "oops"
-  ],
-  "farewell_choices": [
-    "bye",
-    "greet",
-    "oops"
-  ],
-  "customers": {
-    "nana": {
-      "name": "Nana",
-      "top": 175,
-      "tint": "#8a5a3c",
-      "usual": {
-        "chai": {
-          "khun": 3
-        }
-      },
-      "likes": "Always takes 3 sugars in his chai"
-    },
-    "ma": {
-      "name": "Ma",
-      "top": 205,
-      "tint": "#2f7d4f",
-      "usual": {
-        "chai": {
-          "khun": 1,
-          "elchi": true
-        }
-      },
-      "likes": "Chai with 1 sugar and cardamom"
-    },
-    "cousin": {
-      "name": "Bilal",
-      "top": 280,
-      "tint": "#e0772e",
-      "usual": {},
-      "likes": "Loves maani"
-    }
+  "cook-dudh": {
+   "kutchi": "dudh",
+   "english": "milk",
+   "image": "milk-jug",
+   "src": "zafar-24sep"
   },
-  "recipes": {
-    "chai": {
-      "name": "cook-chai",
-      "english": "Chai",
-      "pantry": [
-        "cook-chai",
-        "cook-dudh",
-        "cook-khun"
-      ],
-      "sequence": [
-        "cook-paani",
-        "cook-chai",
-        "boil",
-        "cook-dudh",
-        "cook-khun",
-        "pour"
-      ],
-      "price": 10
-    },
-    "maani": {
-      "name": "cook-maani",
-      "english": "Chapati",
-      "pantry": [
-        "cook-atto"
-      ],
-      "sequence": [
-        "knead",
-        "roll",
-        "tawa"
-      ],
-      "price": 5
-    },
-    "daal": {
-      "name": "cook-daal",
-      "english": "Daal",
-      "pantry": [
-        "cook-daal",
-        "veg-02"
-      ],
-      "sequence": [
-        "chop",
-        "cook-daal",
-        "cook-paani",
-        "tadka",
-        "stir"
-      ],
-      "price": 14
-    }
+  "cook-khun": {
+   "kutchi": "khun",
+   "english": "sugar",
+   "heap": {
+    "kind": "crystals",
+    "color": "#f4efe4"
+   },
+   "bowl": "ceramic",
+   "src": "zafar-24sep"
   },
-  "pantry_decoys": [
-    "cook-atto",
-    "cook-daal",
-    "cook-chai",
-    "cook-dudh",
-    "cook-khun",
-    "spi-10",
-    "veg-02",
-    "veg-03",
-    "veg-13",
-    "veg-12",
-    "spi-16"
-  ],
-  "days": [
-    {
-      "id": 1,
-      "title": "Chai for Nana",
-      "gist": "Nana is coming for chai. Watch Nani make it once, then it's your turn!",
-      "new_words": [
-        "cook-paani",
-        "cook-chai",
-        "cook-dudh",
-        "cook-khun"
-      ],
-      "teach": "chai",
-      "orders": [
-        {
-          "who": "nana",
-          "dishes": [
-            {
-              "recipe": "chai",
-              "khun": 2
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "title": "Chai and maani",
-      "gist": "Ma likes her chai with elchi. Then Nani shows you how to make maani.",
-      "new_words": [
-        "spi-10",
-        "cook-atto",
-        "cook-maani"
-      ],
-      "teach": "maani",
-      "orders": [
-        {
-          "who": "ma",
-          "dishes": [
-            {
-              "recipe": "chai",
-              "khun": 1,
-              "elchi": true
-            }
-          ]
-        },
-        {
-          "who": "cousin",
-          "dishes": [
-            {
-              "recipe": "maani",
-              "count": 2
-            }
-          ]
-        },
-        {
-          "who": "nana",
-          "dishes": [
-            {
-              "recipe": "chai",
-              "khun": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "title": "Daal for dinner",
-      "gist": "Nani teaches you daal. Listen for the order of the spices!",
-      "new_words": [
-        "cook-daal",
-        "veg-02",
-        "spi-02",
-        "spi-05"
-      ],
-      "teach": "daal",
-      "tadka": [
-        "spi-02",
-        "spi-05"
-      ],
-      "stir": 3,
-      "orders": [
-        {
-          "who": "cousin",
-          "dishes": [
-            {
-              "recipe": "daal"
-            },
-            {
-              "recipe": "maani",
-              "count": 2
-            }
-          ]
-        },
-        {
-          "who": "ma",
-          "dishes": [
-            {
-              "recipe": "chai",
-              "khun": 1,
-              "elchi": true
-            }
-          ]
-        },
-        {
-          "who": "nana",
-          "dishes": [
-            {
-              "recipe": "daal"
-            },
-            {
-              "recipe": "maani",
-              "count": 1
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "title": "The usual, please",
-      "gist": "The family expect you to remember how they like things now.",
-      "new_words": [
-        "spi-01",
-        "veg-12",
-        "veg-03"
-      ],
-      "tadka": [
-        "spi-05",
-        "spi-02",
-        "spi-01"
-      ],
-      "stir": 2,
-      "busy_bonus": true,
-      "orders": [
-        {
-          "who": "nana",
-          "usual": true,
-          "dishes": [
-            {
-              "recipe": "chai",
-              "khun": 3
-            }
-          ]
-        },
-        {
-          "who": "ma",
-          "dishes": [
-            {
-              "recipe": "daal",
-              "tameto": true
-            },
-            {
-              "recipe": "maani",
-              "count": 3
-            }
-          ]
-        },
-        {
-          "who": "cousin",
-          "dishes": [
-            {
-              "recipe": "maani",
-              "count": 4
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "title": "Eid lunch",
-      "gist": "It's Eid! Everyone is hungry. Cook the family's favourites.",
-      "new_words": [],
-      "tadka": [
-        "spi-02",
-        "veg-12",
-        "spi-01"
-      ],
-      "stir": 4,
-      "finale": true,
-      "orders": [
-        {
-          "who": "ma",
-          "usual": true,
-          "dishes": [
-            {
-              "recipe": "chai",
-              "khun": 1,
-              "elchi": true
-            }
-          ]
-        },
-        {
-          "who": "cousin",
-          "dishes": [
-            {
-              "recipe": "daal"
-            },
-            {
-              "recipe": "maani",
-              "count": 3
-            }
-          ]
-        },
-        {
-          "who": "nana",
-          "usual": true,
-          "dishes": [
-            {
-              "recipe": "chai",
-              "khun": 3
-            },
-            {
-              "recipe": "maani",
-              "count": 2
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "upgrades": [
-    {
-      "id": "basket",
-      "station": "Pantry",
-      "name": "Special basket",
-      "image": "basket",
-      "special": true,
-      "price": 30,
-      "effect": "Things fly into it twice as fast, and every order earns 2 extra coins.",
-      "idea": "A two-basket trolley: fetch for two orders in one trip (Busy mode)."
-    },
-    {
-      "id": "jug",
-      "station": "Pouring",
-      "name": "Special jug",
-      "image": "water-jug",
-      "special": true,
-      "price": 35,
-      "effect": "Pouring stops at the line by itself.",
-      "idea": "A measuring jug with marked lines (a quarter, a half, full) that Nani names in Kutchi."
-    },
-    {
-      "id": "machine",
-      "station": "Boiling",
-      "name": "Chai machine",
-      "image": "chai-machine",
-      "price": 60,
-      "effect": "Boils and pours the chai for you. You still add what's asked for.",
-      "idea": "A brass chai machine; a cheaper tier is a milk-watcher disc that rattles before the pan boils over."
-    },
-    {
-      "id": "mixer",
-      "station": "Kneading",
-      "name": "Special atto bowl",
-      "image": "atto",
-      "special": true,
-      "price": 40,
-      "effect": "Kneads the dough for you.",
-      "idea": "An atta-kneading machine (dough maker)."
-    },
-    {
-      "id": "pin",
-      "station": "Rolling",
-      "name": "Special rolling pin",
-      "image": "rolling-pin",
-      "special": true,
-      "price": 30,
-      "effect": "Rolls twice as fast and never goes too big.",
-      "idea": "A tapered belan, then a chapati press that makes a perfect circle in one push."
-    },
-    {
-      "id": "tawa",
-      "station": "Tawa",
-      "name": "Special tawa",
-      "image": "tawa",
-      "special": true,
-      "price": 40,
-      "effect": "The flip window is twice as wide.",
-      "idea": "A heavy cast-iron tawa, then a roti jali (mesh) for a guaranteed puff."
-    },
-    {
-      "id": "knife",
-      "station": "Chopping",
-      "name": "Special knife",
-      "image": "knife-gold",
-      "price": 25,
-      "effect": "Chop in 2 swipes instead of 4.",
-      "idea": "A sharp chef's knife, then a pull-cord vegetable chopper."
-    },
-    {
-      "id": "helper",
-      "station": "Chopping",
-      "name": "Bilal helps",
-      "image": "cousin-badge",
-      "price": 15,
-      "wage": 5,
-      "effect": "Bilal chops for you. Costs 5 coins a day.",
-      "idea": "Family members as kitchen helpers with a daily wage, tycoon-style."
-    },
-    {
-      "id": "tadka",
-      "station": "Tadka",
-      "name": "Special tadka pan",
-      "image": "tadka-pan",
-      "special": true,
-      "price": 30,
-      "effect": "Tips itself into the daal once the spices are in. (You still add them in the order Nani says.)",
-      "idea": "A long-handled tadka ladle that pours straight into the pot."
-    },
-    {
-      "id": "pot",
-      "station": "Stirring",
-      "name": "Special pot",
-      "image": "pot",
-      "special": true,
-      "price": 30,
-      "effect": "Small, wobbly circles count as a stir.",
-      "idea": "A long wooden ladle (doi); later a pressure cooker whose whistles you count."
-    },
-    {
-      "id": "thali",
-      "station": "Serving",
-      "name": "Special thali",
-      "image": "thali",
-      "special": true,
-      "price": 40,
-      "effect": "Customers tip 3 extra coins on every order.",
-      "idea": "Brass thali and katoris: better presentation, bigger tips."
-    }
-  ],
-  "no_upgrade": {
-    "station": "Sugar",
-    "text": "No upgrade here: counting the spoons is the Kutchi. That's your job!"
+  "cook-atto": {
+   "kutchi": "atto",
+   "english": "flour",
+   "image": "atto",
+   "heap": {
+    "kind": "powder",
+    "color": "#efe3c8"
+   },
+   "bowl": "steel",
+   "src": "zafar-24sep"
+  },
+  "cook-daal": {
+   "kutchi": "daal",
+   "english": "daal",
+   "image": "daal-dry",
+   "heap": {
+    "kind": "balls",
+    "color": "#f0b429"
+   },
+   "bowl": "clay",
+   "src": "zafar-24sep"
+  },
+  "cook-maani": {
+   "kutchi": "maani",
+   "english": "chapati",
+   "image": "chapati-puffed",
+   "src": "zafar-24sep"
+  },
+  "veg-01": {
+   "kutchi": "bataato",
+   "english": "potato",
+   "heap": {
+    "kind": "cubes",
+    "color": "#ecd18a"
+   },
+   "piece": {
+    "kind": "balls",
+    "color": "#c9a064"
+   },
+   "layer": {
+    "kind": "cubes",
+    "color": "#ecd18a"
+   },
+   "bowl": "steel",
+   "src": "content master"
+  },
+  "veg-02": {
+   "kutchi": "dungri",
+   "english": "onion",
+   "image": "onion",
+   "heap": {
+    "kind": "pieces",
+    "color": "#efd3e0"
+   },
+   "piece": {
+    "kind": "pieces",
+    "color": "#efd3e0"
+   },
+   "layer": {
+    "kind": "pieces",
+    "color": "#e9c6d8"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "veg-03": {
+   "kutchi": "tameto",
+   "english": "tomato",
+   "image": "tomato",
+   "heap": {
+    "kind": "cubes",
+    "color": "#e0453a"
+   },
+   "piece": {
+    "kind": "pieces",
+    "color": "#e0453a"
+   },
+   "layer": {
+    "kind": "cubes",
+    "color": "#e0453a"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "veg-12": {
+   "kutchi": "marcha",
+   "english": "green chilli",
+   "image": "chilli",
+   "heap": {
+    "kind": "pieces",
+    "color": "#4c9a35"
+   },
+   "layer": {
+    "kind": "leaves",
+    "color": "#3f8a2c"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "veg-13": {
+   "kutchi": "lasan",
+   "english": "garlic",
+   "image": "garlic",
+   "heap": {
+    "kind": "pieces",
+    "color": "#f1ead2"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "veg-10": {
+   "kutchi": "vatana",
+   "english": "peas",
+   "heap": {
+    "kind": "balls",
+    "color": "#7cb342"
+   },
+   "bowl": "steel",
+   "src": "content master"
+  },
+  "veg-14": {
+   "kutchi": "aadu",
+   "english": "ginger",
+   "heap": {
+    "kind": "pieces",
+    "color": "#d9b26f"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "fru-02": {
+   "kutchi": "limu",
+   "english": "lemon",
+   "heap": {
+    "kind": "pieces",
+    "color": "#f3d54a"
+   },
+   "bowl": "ceramic",
+   "src": "handout"
+  },
+  "spi-01": {
+   "kutchi": "hardar",
+   "english": "turmeric",
+   "heap": {
+    "kind": "powder",
+    "color": "#e9a313"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "spi-02": {
+   "kutchi": "jeeru",
+   "english": "cumin seeds",
+   "heap": {
+    "kind": "grains",
+    "color": "#7a5530"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "spi-05": {
+   "kutchi": "rai",
+   "english": "mustard seeds",
+   "heap": {
+    "kind": "dots",
+    "color": "#2a1d18"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "spi-10": {
+   "kutchi": "elchi",
+   "english": "cardamom",
+   "image": "elchi",
+   "heap": {
+    "kind": "pods",
+    "color": "#9bbf6a"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "spi-16": {
+   "kutchi": "loon",
+   "english": "salt",
+   "heap": {
+    "kind": "crystals",
+    "color": "#ffffff",
+    "sparkle": true
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "spi-04": {
+   "kutchi": "lal marcha",
+   "english": "red chilli powder",
+   "heap": {
+    "kind": "powder",
+    "color": "#c7361f"
+   },
+   "bowl": "ceramic",
+   "src": "content master"
+  },
+  "num-01": {
+   "kutchi": "hikdo",
+   "english": "one",
+   "src": "handout"
+  },
+  "num-02": {
+   "kutchi": "bo",
+   "english": "two",
+   "src": "handout"
+  },
+  "num-03": {
+   "kutchi": "trae",
+   "english": "three",
+   "src": "handout"
+  },
+  "num-04": {
+   "kutchi": "char",
+   "english": "four",
+   "src": "handout"
+  },
+  "num-05": {
+   "kutchi": "panj",
+   "english": "five",
+   "src": "handout"
+  },
+  "ph-chana": {
+   "kutchi": null,
+   "english": "chickpeas",
+   "heap": {
+    "kind": "balls",
+    "color": "#d9b77a"
+   },
+   "layer": {
+    "kind": "balls",
+    "color": "#d9b77a"
+   },
+   "bowl": "steel",
+   "src": "placeholder"
+  },
+  "ph-dahi": {
+   "kutchi": null,
+   "english": "yoghurt",
+   "heap": {
+    "kind": "liquid",
+    "color": "#f8f5ee"
+   },
+   "layer": {
+    "kind": "liquid",
+    "color": "#fbf8f1"
+   },
+   "bowl": "ceramic",
+   "src": "placeholder"
+  },
+  "ph-amli": {
+   "kutchi": null,
+   "english": "tamarind chutney",
+   "heap": {
+    "kind": "liquid",
+    "color": "#6b3a1e",
+    "swirl": true
+   },
+   "layer": {
+    "kind": "liquid",
+    "color": "#6b3a1e",
+    "drizzle": true
+   },
+   "bowl": "ceramic",
+   "src": "placeholder"
+  },
+  "ph-lili": {
+   "kutchi": null,
+   "english": "green chutney",
+   "heap": {
+    "kind": "liquid",
+    "color": "#5d9b3a",
+    "swirl": true
+   },
+   "layer": {
+    "kind": "liquid",
+    "color": "#4f8f30",
+    "drizzle": true
+   },
+   "bowl": "ceramic",
+   "src": "placeholder"
+  },
+  "ph-sev": {
+   "kutchi": null,
+   "english": "sev",
+   "heap": {
+    "kind": "strands",
+    "color": "#e8b23a"
+   },
+   "layer": {
+    "kind": "strands",
+    "color": "#e8b23a"
+   },
+   "bowl": "brass",
+   "src": "placeholder"
+  },
+  "ph-dhana": {
+   "kutchi": null,
+   "english": "coriander",
+   "heap": {
+    "kind": "leaves",
+    "color": "#4f8f3a"
+   },
+   "layer": {
+    "kind": "leaves",
+    "color": "#4f8f3a"
+   },
+   "bowl": "ceramic",
+   "src": "placeholder"
+  },
+  "ph-keema": {
+   "kutchi": null,
+   "english": "mince",
+   "heap": {
+    "kind": "pieces",
+    "color": "#8a5238"
+   },
+   "bowl": "steel",
+   "src": "placeholder"
+  },
+  "ph-meat": {
+   "kutchi": null,
+   "english": "meat",
+   "heap": {
+    "kind": "cubes",
+    "color": "#9c4a32"
+   },
+   "piece": {
+    "kind": "cubes",
+    "color": "#9c4a32"
+   },
+   "bowl": "steel",
+   "src": "placeholder"
+  },
+  "ph-pepper": {
+   "kutchi": null,
+   "english": "green pepper",
+   "heap": {
+    "kind": "pieces",
+    "color": "#4f9a3a"
+   },
+   "piece": {
+    "kind": "pieces",
+    "color": "#4f9a3a"
+   },
+   "bowl": "ceramic",
+   "src": "placeholder"
+  },
+  "ph-chips": {
+   "kutchi": null,
+   "english": "chips",
+   "heap": {
+    "kind": "sticks",
+    "color": "#f0c050"
+   },
+   "bowl": "steel",
+   "src": "placeholder"
+  },
+  "ph-ghee": {
+   "kutchi": null,
+   "english": "ghee",
+   "heap": {
+    "kind": "liquid",
+    "color": "#f2d27a"
+   },
+   "bowl": "brass",
+   "src": "placeholder"
+  },
+  "ph-chaat": {
+   "kutchi": null,
+   "english": "chaat",
+   "src": "placeholder"
+  },
+  "ph-samosa": {
+   "kutchi": null,
+   "english": "samosa",
+   "src": "placeholder"
+  },
+  "ph-mishkaki": {
+   "kutchi": null,
+   "english": "mishkaki",
+   "src": "placeholder"
   }
+ },
+ "lines": {
+  "greet": {
+   "k": "Salamun alaykum!",
+   "en": "Peace be upon you!"
+  },
+  "greet-reply": {
+   "k": "Wa alaikum salaam!",
+   "en": "And peace be upon you too!"
+  },
+  "thanks": {
+   "k": "Aabhar aanjo!",
+   "en": "Thank you!"
+  },
+  "bye": {
+   "k": "Achija!",
+   "en": "Bye!"
+  },
+  "oops": {
+   "k": "Arre re!",
+   "en": "Oh dear!"
+  },
+  "hey": {
+   "k": "Hedo!",
+   "en": "Hey!"
+  },
+  "here": {
+   "k": "Ghan.",
+   "en": "Here you are."
+  },
+  "need": {
+   "k": "Muke {x} khape.",
+   "en": "I need {x}."
+  },
+  "and": {
+   "k": "Ne {x}.",
+   "en": "And {x}."
+  },
+  "give": {
+   "k": "Muke hikdo {x} dine.",
+   "en": "Give me the {x}."
+  },
+  "no": {
+   "e": "no {x}"
+  },
+  "only": {
+   "e": "only {x}"
+  },
+  "enough": {
+   "e": "Enough!"
+  },
+  "more": {
+   "e": "More!"
+  },
+  "slowly": {
+   "e": "slowly"
+  },
+  "quickly": {
+   "e": "quickly"
+  },
+  "times": {
+   "e": "{x} times"
+  },
+  "howareyou": {
+   "e": "How are you?"
+  },
+  "fine": {
+   "e": "I'm fine, thank you."
+  },
+  "yes": {
+   "e": "Yes!"
+  },
+  "nope": {
+   "e": "No."
+  },
+  "canyou": {
+   "e": "Can you make me {x}?"
+  },
+  "ofcourse": {
+   "e": "Of course!"
+  },
+  "welcome": {
+   "e": "You're welcome."
+  },
+  "wait": {
+   "e": "Wait for me!"
+  },
+  "welldone": {
+   "e": "Well done!"
+  },
+  "forwho": {
+   "e": "This is for {x}."
+  },
+  "pocket": {
+   "e": "I'll give you pocket money for helping. Get it all right and be quick, and you get more!"
+  }
+ },
+ "exchanges": [
+  {
+   "id": "salaam",
+   "ask": "greet",
+   "answer": "greet-reply",
+   "wrong": [
+    "bye",
+    "oops"
+   ]
+  },
+  {
+   "id": "howareyou",
+   "ask": "howareyou",
+   "answer": "fine",
+   "wrong": [
+    "yes",
+    "bye"
+   ]
+  },
+  {
+   "id": "canyou",
+   "ask": "canyou",
+   "answer": "ofcourse",
+   "wrong": [
+    "nope",
+    "greet"
+   ],
+   "withDish": true
+  }
+ ],
+ "customers": {
+  "nana": {
+   "name": "Nana",
+   "tint": "#8a5a3c",
+   "tastes": {
+    "chai": {
+     "khun": 3,
+     "dudh": true,
+     "extra": "spi-10"
+    },
+    "chaat": {
+     "no": [
+      "veg-12"
+     ],
+     "top": "ph-sev"
+    },
+    "samosa": {
+     "filling": "ph-keema",
+     "no": []
+    },
+    "mishkaki": {
+     "pattern": [
+      "ph-meat",
+      "veg-02",
+      "ph-meat",
+      "ph-pepper"
+     ]
+    }
+   },
+   "likes": "Chai with three sugars and elchi. Chaat with no chilli. Keema samosa."
+  },
+  "ma": {
+   "name": "Ma",
+   "tint": "#2f7d4f",
+   "tastes": {
+    "chai": {
+     "khun": 1,
+     "dudh": false,
+     "extra": "veg-14"
+    },
+    "chaat": {
+     "no": [
+      "veg-02"
+     ]
+    },
+    "samosa": {
+     "filling": "veg-01",
+     "no": [
+      "veg-12"
+     ]
+    },
+    "mishkaki": {
+     "pattern": [
+      "ph-meat",
+      "ph-pepper",
+      "veg-03",
+      "ph-meat"
+     ]
+    }
+   },
+   "likes": "Chai with no milk, one sugar and ginger. Chaat with no onion. Potato samosa, no chilli."
+  },
+  "cousin": {
+   "name": "Bilal",
+   "tint": "#e0772e",
+   "tastes": {
+    "chai": {
+     "khun": 2,
+     "dudh": true
+    },
+    "chaat": {
+     "extra": "ph-sev"
+    },
+    "samosa": {
+     "filling": "ph-keema"
+    },
+    "mishkaki": {
+     "pattern": [
+      "ph-meat",
+      "ph-meat",
+      "veg-02",
+      "ph-meat"
+     ]
+    }
+   },
+   "likes": "Loves maani and sev. Keema samosa. Lots of meat on his mishkaki."
+  }
+ },
+ "recipes": {
+  "chai": {
+   "name": "cook-chai",
+   "english": "Chai",
+   "price": 4,
+   "stations": [
+    "fetch",
+    "pour",
+    "add",
+    "watch",
+    "pour",
+    "count",
+    "pour"
+   ]
+  },
+  "maani": {
+   "name": "cook-maani",
+   "english": "Maani",
+   "price": 3,
+   "stations": [
+    "knead",
+    "roll",
+    "flip"
+   ]
+  },
+  "daal": {
+   "name": "cook-daal",
+   "english": "Daal",
+   "price": 5,
+   "stations": [
+    "chop",
+    "tadka",
+    "stir"
+   ]
+  },
+  "chaat": {
+   "name": "ph-chaat",
+   "english": "Chaat bowl",
+   "price": 5,
+   "stations": [
+    "chop",
+    "assemble"
+   ]
+  },
+  "samosa": {
+   "name": "ph-samosa",
+   "english": "Samosa",
+   "price": 5,
+   "stations": [
+    "fill",
+    "fold",
+    "fry"
+   ]
+  },
+  "mishkaki": {
+   "name": "ph-mishkaki",
+   "english": "Mishkaki",
+   "price": 6,
+   "stations": [
+    "thread",
+    "grill",
+    "fry"
+   ]
+  }
+ },
+ "stations": {
+  "fetch": {
+   "name": "Pantry",
+   "verb": "Fetch",
+   "goal": "Find what the order needs and tap it into your basket."
+  },
+  "passme": {
+   "name": "Pass me",
+   "verb": "Pass me",
+   "goal": "Nani needs something! Tap the one she asks for."
+  },
+  "pour": {
+   "name": "Pour",
+   "verb": "Pour",
+   "goal": "Hold to pour. Let go when it reaches the dashed line."
+  },
+  "add": {
+   "name": "Add",
+   "verb": "Add",
+   "goal": "Add what the order says."
+  },
+  "watch": {
+   "name": "Boil",
+   "verb": "Watch and tap",
+   "goal": "Tap when the ring reaches the green part. Don't let it boil over!"
+  },
+  "count": {
+   "name": "Count in",
+   "verb": "Count",
+   "goal": "Tap once for each spoon they asked for, then the tick."
+  },
+  "knead": {
+   "name": "Knead",
+   "verb": "Knead",
+   "goal": "Press the dough until it's smooth."
+  },
+  "roll": {
+   "name": "Roll",
+   "verb": "Roll",
+   "goal": "Push the rolling pin up and down until the maani fills the circle. Make as many as they asked for."
+  },
+  "flip": {
+   "name": "Tawa",
+   "verb": "Flip",
+   "goal": "Flip when the ring reaches green, then tap again to puff it up."
+  },
+  "chop": {
+   "name": "Chop",
+   "verb": "Chop",
+   "goal": "Swipe to slice only what Nani says, as many as she says."
+  },
+  "tadka": {
+   "name": "Tadka",
+   "verb": "Tadka",
+   "goal": "Add the spices to the hot oil in the order Nani says."
+  },
+  "stir": {
+   "name": "Stir",
+   "verb": "Stir",
+   "goal": "Stir round the pot as many times as Nani says, at the right speed."
+  },
+  "assemble": {
+   "name": "Chaat bowl",
+   "verb": "Assemble",
+   "goal": "Add the toppings in the order they asked. Leave out anything they don't want!"
+  },
+  "fill": {
+   "name": "Fill",
+   "verb": "Fill",
+   "goal": "Put the fillings they asked for in the middle of the pastry."
+  },
+  "fold": {
+   "name": "Fold",
+   "verb": "Fold",
+   "goal": "Swipe along each dashed line to fold the samosa."
+  },
+  "fry": {
+   "name": "Fry",
+   "verb": "Fry",
+   "goal": "Drop them in, then lift each one out when its ring reaches green."
+  },
+  "thread": {
+   "name": "Skewer",
+   "verb": "Thread",
+   "goal": "Push the pieces onto the skewer in the order they said."
+  },
+  "grill": {
+   "name": "Grill",
+   "verb": "Grill",
+   "goal": "Turn the skewer when the ring reaches green."
+  }
+ },
+ "days": [
+  {
+   "id": 1,
+   "title": "Chai for Nana",
+   "teach": [
+    "chai"
+   ],
+   "gist": "Nana is coming for chai. Nani shows you once, then it's your turn!",
+   "orders": [
+    {
+     "who": "nana",
+     "dishes": [
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "title": "Maani",
+   "teach": [
+    "maani"
+   ],
+   "gist": "Everyone wants maani today. Listen for how many!",
+   "orders": [
+    {
+     "who": "cousin",
+     "dishes": [
+      "maani"
+     ]
+    },
+    {
+     "who": "ma",
+     "dishes": [
+      "chai"
+     ]
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "maani",
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "title": "Daal for dinner",
+   "teach": [
+    "daal"
+   ],
+   "gist": "Daal for dinner. Listen to the order of the spices!",
+   "orders": [
+    {
+     "who": "ma",
+     "dishes": [
+      "daal"
+     ]
+    },
+    {
+     "who": "cousin",
+     "dishes": [
+      "daal",
+      "maani"
+     ]
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "title": "Chaat bowls",
+   "teach": [
+    "chaat"
+   ],
+   "gist": "Everyone likes their chaat differently. Build each bowl in the order they say.",
+   "orders": [
+    {
+     "who": "cousin",
+     "dishes": [
+      "chaat"
+     ]
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "chaat"
+     ]
+    },
+    {
+     "who": "ma",
+     "dishes": [
+      "chaat",
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "title": "Samosa day",
+   "teach": [
+    "samosa"
+   ],
+   "gist": "Fill them, fold them, fry them. Listen for what goes inside!",
+   "orders": [
+    {
+     "who": "ma",
+     "dishes": [
+      "samosa"
+     ]
+    },
+    {
+     "who": "cousin",
+     "dishes": [
+      "samosa"
+     ]
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "samosa",
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "title": "Eid mishkaki",
+   "teach": [
+    "mishkaki"
+   ],
+   "finale": true,
+   "gist": "It's Eid! Mishkaki on the grill, and the whole family is hungry.",
+   "orders": [
+    {
+     "who": "nana",
+     "dishes": [
+      "mishkaki"
+     ]
+    },
+    {
+     "who": "cousin",
+     "dishes": [
+      "mishkaki",
+      "chaat"
+     ]
+    },
+    {
+     "who": "ma",
+     "dishes": [
+      "samosa",
+      "chai"
+     ]
+    }
+   ]
+  }
+ ],
+ "pantry_decoys": [
+  "cook-atto",
+  "cook-daal",
+  "cook-chai",
+  "cook-dudh",
+  "cook-khun",
+  "spi-10",
+  "veg-02",
+  "veg-03",
+  "veg-13",
+  "veg-12",
+  "spi-16",
+  "veg-14",
+  "veg-01"
+ ],
+ "lookalikes": {
+  "cook-khun": [
+   "spi-16",
+   "cook-atto"
+  ],
+  "spi-16": [
+   "cook-khun",
+   "cook-atto"
+  ],
+  "cook-dudh": [
+   "cook-paani",
+   "ph-dahi"
+  ],
+  "cook-paani": [
+   "cook-dudh"
+  ],
+  "spi-02": [
+   "spi-05",
+   "cook-chai"
+  ],
+  "spi-05": [
+   "spi-02",
+   "cook-chai"
+  ],
+  "cook-chai": [
+   "spi-02",
+   "spi-05"
+  ],
+  "spi-01": [
+   "spi-04",
+   "cook-daal"
+  ],
+  "spi-04": [
+   "spi-01"
+  ],
+  "veg-02": [
+   "veg-13",
+   "veg-01"
+  ],
+  "veg-13": [
+   "veg-02",
+   "veg-14"
+  ],
+  "veg-14": [
+   "veg-13",
+   "veg-01"
+  ],
+  "ph-dahi": [
+   "cook-dudh",
+   "spi-16"
+  ],
+  "ph-amli": [
+   "ph-lili"
+  ],
+  "ph-lili": [
+   "ph-amli",
+   "ph-dhana"
+  ],
+  "ph-chana": [
+   "veg-10",
+   "cook-daal"
+  ],
+  "veg-10": [
+   "ph-chana",
+   "ph-dhana"
+  ],
+  "ph-meat": [
+   "ph-keema"
+  ],
+  "ph-keema": [
+   "ph-meat"
+  ]
+ },
+ "upgrades": [
+  {
+   "id": "basket",
+   "station": "Pantry",
+   "name": "Special basket",
+   "image": "basket",
+   "special": true,
+   "price": 30,
+   "effect": "Things fly into it twice as fast, and every order earns 2 extra coins.",
+   "idea": "A two-basket trolley: fetch for two orders in one trip (Busy mode)."
+  },
+  {
+   "id": "jug",
+   "station": "Pouring",
+   "name": "Special jug",
+   "image": "water-jug",
+   "special": true,
+   "price": 35,
+   "effect": "Pouring stops at the line by itself.",
+   "idea": "A measuring jug with marked lines (a quarter, a half, full) that Nani names in Kutchi."
+  },
+  {
+   "id": "machine",
+   "station": "Boiling",
+   "name": "Chai machine",
+   "image": "chai-machine",
+   "price": 60,
+   "effect": "Boils and pours the chai for you. You still add what's asked for.",
+   "idea": "A brass chai machine; a cheaper tier is a milk-watcher disc that rattles before the pan boils over."
+  },
+  {
+   "id": "mixer",
+   "station": "Kneading",
+   "name": "Special atto bowl",
+   "image": "atto",
+   "special": true,
+   "price": 40,
+   "effect": "Kneads the dough for you.",
+   "idea": "An atta-kneading machine (dough maker)."
+  },
+  {
+   "id": "pin",
+   "station": "Rolling",
+   "name": "Special rolling pin",
+   "image": "rolling-pin",
+   "special": true,
+   "price": 30,
+   "effect": "Rolls twice as fast and never goes too big.",
+   "idea": "A tapered belan, then a chapati press that makes a perfect circle in one push."
+  },
+  {
+   "id": "tawa",
+   "station": "Tawa",
+   "name": "Special tawa",
+   "image": "tawa",
+   "special": true,
+   "price": 40,
+   "effect": "The flip window is twice as wide.",
+   "idea": "A heavy cast-iron tawa, then a roti jali (mesh) for a guaranteed puff."
+  },
+  {
+   "id": "knife",
+   "station": "Chopping",
+   "name": "Special knife",
+   "image": "knife-gold",
+   "price": 25,
+   "effect": "Chop in 2 swipes instead of 4.",
+   "idea": "A sharp chef's knife, then a pull-cord vegetable chopper."
+  },
+  {
+   "id": "helper",
+   "station": "Chopping",
+   "name": "Bilal helps",
+   "image": "cousin-badge",
+   "price": 15,
+   "wage": 5,
+   "effect": "Bilal chops for you. Costs 5 coins a day.",
+   "idea": "Family members as kitchen helpers with a daily wage, tycoon-style."
+  },
+  {
+   "id": "tadka",
+   "station": "Tadka",
+   "name": "Special tadka pan",
+   "image": "tadka-pan",
+   "special": true,
+   "price": 30,
+   "effect": "Tips itself into the daal once the spices are in. (You still add them in the order Nani says.)",
+   "idea": "A long-handled tadka ladle that pours straight into the pot."
+  },
+  {
+   "id": "pot",
+   "station": "Stirring",
+   "name": "Special pot",
+   "image": "pot",
+   "special": true,
+   "price": 30,
+   "effect": "Small, wobbly circles count as a stir.",
+   "idea": "A long wooden ladle (doi); later a pressure cooker whose whistles you count."
+  },
+  {
+   "id": "thali",
+   "station": "Serving",
+   "name": "Special thali",
+   "image": "thali",
+   "special": true,
+   "price": 40,
+   "effect": "Customers tip 3 extra coins on every order.",
+   "idea": "Brass thali and katoris: better presentation, bigger tips."
+  },
+  {
+   "id": "slotted",
+   "station": "Frying",
+   "name": "Special slotted spoon",
+   "image": "knife-gold",
+   "art": "hand:spoon",
+   "special": true,
+   "price": 35,
+   "effect": "The green window for lifting fried food is twice as wide.",
+   "idea": "A jharo (slotted spoon) and a frying basket that lifts everything at once."
+  },
+  {
+   "id": "bigspoon",
+   "station": "Assembling",
+   "name": "Special serving spoon",
+   "art": "hand:spoon",
+   "special": true,
+   "price": 25,
+   "effect": "Toppings fly into the bowl twice as fast, and every chaat order earns 2 extra coins.",
+   "idea": "A set of matching brass katoris and spoons for a chaat counter."
+  }
+ ],
+ "no_upgrade": {
+  "station": "Sugar",
+  "text": "No upgrade here: counting the spoons is the Kutchi. That's your job!"
+ }
 }

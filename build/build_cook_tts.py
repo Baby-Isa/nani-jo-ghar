@@ -44,6 +44,7 @@ GU = {
     "daal": "દાલ", "maani": "માની", "dungri": "ડુંગરી", "tameto": "ટમેટો", "marcha": "મરચા",
     "lasan": "લસન", "hardar": "હરદર", "jeeru": "જીરુ", "rai": "રાઈ", "elchi": "એલચી",
     "loon": "લૂન", "hikdo": "હિકડો", "bo": "બો", "trae": "ત્રે", "char": "ચાર", "panj": "પંજ",
+    "dine": "દિને", "bataato": "બટાટો", "vatana": "વટાણા", "aadu": "આદુ", "limu": "લીમુ", "lal": "લાલ",
 }
 
 
@@ -64,48 +65,82 @@ def to_gujarati(plain):
 
 
 def lines():
+    """Every Kutchi chunk the game can say (whole lines where the whole
+    line is Kutchi, single tokens for mixed lines), and every English
+    placeholder chunk. Returns (kutchi, english) sets."""
     data = json.load(open(os.path.join(GAME, "data", "cook.json")))
-    words = [w["kutchi"] for w in data["words"].values()]
-    nums = [data["words"][f"num-0{n}"]["kutchi"] for n in range(1, 6)]
+    W = data["words"]
     L = data["lines"]
-    out = set()
-    for key, line in L.items():
-        if "{x}" not in line["kutchi"]:
-            out.add(line["kutchi"])
-    phrases = list(words)
+    kw = [w["kutchi"] for w in W.values() if w.get("kutchi")]
+    ew = [w["english"] for w in W.values() if not w.get("kutchi")]
+    nums = [W[f"num-0{n}"]["kutchi"] for n in range(1, 6)]
+    k, e = set(), set()
+    for t in kw:
+        k.add(t)
+        for tok in norm(t).split(" "):
+            k.add(tok)
+    phrases = list(kw)
     for n in range(1, 6):
-        phrases.append(f"{nums[n - 1]} {data['words']['cook-khun']['kutchi']}")
-        phrases.append(f"{nums[n - 1]} {data['words']['cook-maani']['kutchi']}")
-    for p in phrases:
-        out.add(p)
-        out.add(L["need"]["kutchi"].replace("{x}", p))
-        out.add(L["and"]["kutchi"].replace("{x}", p))
-    return sorted(out)
+        phrases.append(f"{nums[n - 1]} {W['cook-khun']['kutchi']}")
+        phrases.append(f"{nums[n - 1]} {W['cook-maani']['kutchi']}")
+    for key, f in L.items():
+        if f.get("k"):
+            for tok in norm(f["k"].replace("{x}", " ")).split(" "):
+                if tok:
+                    k.add(tok)
+            if "{x}" not in f["k"]:
+                k.add(f["k"])
+            else:
+                for p in phrases:
+                    k.add(f["k"].replace("{x}", p))
+        else:
+            for part in f["e"].split("{x}"):
+                if norm(part):
+                    e.add(part.strip())
+    for t in ew:
+        e.add(t)
+    return sorted(k), sorted(e)
+
+
+def speak(text, lang, path, ffmpeg, tempo):
+    with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
+        if lang == "gu":
+            gTTS(text, lang="gu", slow=True).save(tmp.name)
+        else:
+            gTTS(text, lang="en", tld="co.uk", slow=False).save(tmp.name)
+        subprocess.run(
+            [ffmpeg, "-y", "-loglevel", "error", "-i", tmp.name, "-filter:a", f"atempo={tempo}", "-ac", "1", "-b:a", "48k", path],
+            check=True,
+        )
+        os.unlink(tmp.name)
 
 
 def main():
     os.makedirs(OUT, exist_ok=True)
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     manifest = {}
-    todo = lines()
-    for i, plain in enumerate(todo):
+    kutchi, english = lines()
+    for i, plain in enumerate(kutchi):
         key = norm(plain)
         slug = key.replace(" ", "-")
         path = os.path.join(OUT, f"{slug}.mp3")
         manifest[key] = f"assets/audio/cook-tts/{slug}.mp3"
-        if os.path.exists(path):
-            continue
-        gu = to_gujarati(plain)
-        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
-            gTTS(gu, lang="gu", slow=True).save(tmp.name)
-            subprocess.run(
-                [ffmpeg, "-y", "-loglevel", "error", "-i", tmp.name, "-filter:a", f"atempo={ATEMPO}", "-ac", "1", "-b:a", "48k", path],
-                check=True,
-            )
-            os.unlink(tmp.name)
-        print(f"{i + 1}/{len(todo)} {plain} -> {gu}")
-    json.dump({"_about": "Placeholder Gujarati TTS for Cook with Nani, built by build/build_cook_tts.py. Keys are normalised romanised lines.", "lines": manifest}, open(MANIFEST, "w"), indent=1, ensure_ascii=False)
-    print(f"{len(manifest)} lines in {MANIFEST}")
+        if not os.path.exists(path):
+            gu = to_gujarati(plain)
+            speak(gu, "gu", path, ffmpeg, ATEMPO)
+            print(f"k {i + 1}/{len(kutchi)} {plain} -> {gu}")
+    # English placeholders (words the family hasn't given yet): a UK English
+    # voice at a gentle pace, clearly different from the Kutchi voice
+    for i, plain in enumerate(english):
+        key = "en|" + norm(plain)
+        slug = "en-" + norm(plain).replace(" ", "-")
+        path = os.path.join(OUT, f"{slug}.mp3")
+        manifest[key] = f"assets/audio/cook-tts/{slug}.mp3"
+        if not os.path.exists(path):
+            speak(plain, "en", path, ffmpeg, 0.85)
+            print(f"e {i + 1}/{len(english)} {plain}")
+    json.dump({"_about": "Placeholder voices for Cook with Nani, built by build/build_cook_tts.py. Keys: normalised romanised Kutchi; 'en|' + normalised English for placeholders.", "lines": manifest}, open(MANIFEST, "w"), indent=1, ensure_ascii=False)
+    print(f"{len(manifest)} entries in {MANIFEST}")
 
 
 if __name__ == "__main__":
