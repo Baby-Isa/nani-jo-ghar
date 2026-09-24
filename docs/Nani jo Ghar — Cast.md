@@ -55,6 +55,10 @@ An **African grey**, a common East African household parrot. It gives cheap, fun
 - **Rule:** it speaks only in idle moments (the hub, arriving, between orders), **never during a task**, so it can't give an answer away.
 - **Name: Kasuku** (decided 24 Sept 2026) — Swahili for "parrot", a nod to East Africa.
 
+## The player's hands: modern, not costume (24 Sept 2026)
+
+Zafar's wife wants **modern hints and nods, not caricature**. The player's own hands wear everyday modern sleeves: the boy a plain white linen shirt sleeve rolled back between the elbow and the wrist, the girl the same kind of rolled sleeve in a soft colour with a few thin glass bangles (mehndi at Eid). Nani's hands are unchanged: her red sleeve, gold bangles and rings. Details: Art Bible section 7, Asset Building Plan section 1.2.
+
 ## Likeness notes (from the family's photos, 24 Sept)
 
 The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `bigma-*`, `doctor-*`, `cats-*`, `simba-*`) and are never committed. These notes are what the character sheets must keep. Stylise them in the game's 3D-film look; never caricature.

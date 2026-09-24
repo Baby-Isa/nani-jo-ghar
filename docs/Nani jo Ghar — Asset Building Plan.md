@@ -26,14 +26,18 @@ Plan: **generate one master set, then reskin it** with the image API's edit mode
 
 | Version | Sleeve and details |
 |---|---|
-| **Master / boy** | Kurta cuff with Kutch embroidery (the signature from the Phase A design) |
-| **Girl** | Embroidered kurti cuff, a few glass bangles |
+| **Master / boy** | Plain white linen shirt sleeve, rolled back to between the elbow and the wrist; bare forearm below. Only sometimes visible: in the top-down set the roll just shows at the bottom edge or is cropped out. No embroidery (replaces the kurta cuff, 24 Sept 2026) |
+| **Girl** | The same kind of modern rolled sleeve in a soft colour, plus a few thin glass bangles (the bangles are the main difference) |
 | **Girl, Eid** (optional) | The same, with mehndi on the back of the hand and the palm |
-| **Nani** (small set, marked N below) | Older hands, gold bangles, her red sleeve. Used for the "watch me" demos and when she passes you things |
+| **Nani** (small set, marked N below) | Unchanged: older hands, gold bangles, rings, her red sleeve (`docs/Nani jo Ghar — Cast.md`). Used for the "watch me" demos and when she passes you things |
+
+**Modern, not costume (24 Sept 2026):** Zafar's wife wants modern hints and nods to the culture, not caricature. The player's hands wear everyday modern sleeves; culture shows in small touches (glass bangles, mehndi at Eid) and in Nani's own look.
+
+**Hand shape:** slender, slim, with long fingers relative to the palm; smooth, simple surfaces with no visible bones, knuckle ridges or veins (they're rigid sprites moved in code).
 
 **Guarding against drift:** a script compares each reskin's outline with the master's. It rejects the image if the hand shape has moved, because otherwise the tools won't sit in the grip.
 
-**Skin tone (Zafar, 24 Sept):** one tone for now, Zafar's own — a light brown, a little more brown than beige, just past the generic game skin tone; hex range in the Art Bible, section 2. No skin-tone variants for now.
+**Skin tone (Zafar, 24 Sept, revised after round 3):** one tone for now, Zafar's own, sampled from his photos: a warm light tan, **not orange, not saturated** — midtone about `#C49A78`, highlights `#D8B894`, shadows `#A07A60` (daylight face sample `#BE826B`); see the Art Bible, section 2. No skin-tone variants for now.
 
 ### 1.3 The list (condensed by grip)
 

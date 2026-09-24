@@ -1,0 +1,12 @@
+LIVE RUN -- 2 asset(s), model=gpt-image-1, concurrency 3, gap 20s
+budget cap: $1.50
+[hand-ref-r3-edit::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-ref-r3-edit::v1] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-ref-r3-gen::v0] queued generate 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-ref-r3-gen::v0] done in 41s -> assets/characters/hands/round3/hand-ref-r3-gen-v0.png
+[hand-ref-r3-gen::v1] queued generate 1024x1024 (+41s; the pacer holds the actual request start)
+[hand-ref-r3-edit::v1] done in 58s -> assets/characters/hands/round3/hand-ref-r3-edit-v1.png
+[hand-ref-r3-edit::v0] done in 79s -> assets/characters/hands/round3/hand-ref-r3-edit-v0.png
+[hand-ref-r3-gen::v1] done in 57s -> assets/characters/hands/round3/hand-ref-r3-gen-v1.png
+
+spent $0.16 this run -- 4 generated, 4 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 98s
