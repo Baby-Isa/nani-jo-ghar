@@ -118,6 +118,7 @@ Each line: pose, camera, frames, and what it's used for. Games: **C** Cook, **F*
 - **Nani:** about 12.
 - **Tools** (separate sprites, generated with their station's props): knife, spatula, ladle, doi, tadka ladle, whisk, tongs, rolling pin, teaspoon, jug, pestle, grater, racquet, drumstick, umbrella, brush, mehndi cone, camera and so on.
 - **Estimate:** about 130 hand images. At the pipeline's rates that's about $10–$25, including rejected images being redone. One overnight run.
+- **Cost note (24 Sept 2026):** an early run left `quality` unset and the API defaulted to high (~$0.167/1024² image), billing ~$0.16/image instead of the assumed $0.04 (~$30 for 187 requests). `build/gen_assets.py` now always sends `quality` explicitly, prices per quality **and** size (low ~$0.011, medium ~$0.042, high ~$0.167 at 1024², more at larger sizes), and defaults to **medium**. `--draft` (quality low, writes to `drafts/`) is the cheap way to check prompts before a real run; a QA failure (the reskin drift check) auto-retries once by default (`--max-regens N`), never silently more; and any live run estimated over $5 needs `--yes`. `--dry-run` and `--self-test` still make no network calls.
 
 ### 1.5 Generation order
 

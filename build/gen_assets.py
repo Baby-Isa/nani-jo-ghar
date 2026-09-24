@@ -4,18 +4,35 @@ from a data file (`data/asset-list.json`) instead of one-off prompts, with
 resume, a spending cap, contact sheets, a reskin drift check and an
 edit-in-place cut-out helper.
 
+Cost note (24 Sept 2026): every request now sends `quality` explicitly
+(default medium; see CONFIG). An earlier run left it unset, the API quietly
+defaulted to high, and billing came in around $0.16/image instead of the
+$0.04 the script assumed. Check current gpt-image-1 pricing at
+https://platform.openai.com/docs/pricing before a large run.
+
 Usage
 -----
     # No key set, or explicit --dry-run: prints every planned request and
     # the estimated total cost. No network calls are made either way.
     python3 build/gen_assets.py --dry-run
 
-    # Real run (needs OPENAI_API_KEY in the environment and network access
-    # to api.openai.com). Stops before the cap would be exceeded.
-    OPENAI_API_KEY=sk-... python3 build/gen_assets.py --budget 20
+    # Quick offline self-test (price table, dry-run planning, one mocked API
+    # call). No network calls, no OPENAI_API_KEY needed.
+    python3 build/gen_assets.py --self-test
 
-    # Only one group or one asset id, and more variants per pose:
-    python3 build/gen_assets.py --only hands-master --variants 3
+    # Cheap prompt check before a real run: quality low, output under
+    # drafts/ instead of the real asset paths.
+    OPENAI_API_KEY=sk-... python3 build/gen_assets.py --only hands-master --draft
+
+    # Real run (needs OPENAI_API_KEY in the environment and network access
+    # to api.openai.com). Stops before the cap would be exceeded, prints a
+    # pre-flight image-count x price estimate first, and asks for --yes if
+    # that estimate is over $5.
+    OPENAI_API_KEY=sk-... python3 build/gen_assets.py --budget 20 --yes
+
+    # Only one group or one asset id, more variants per pose, and a quality
+    # override for the whole run:
+    python3 build/gen_assets.py --only hands-master --variants 3 --quality high
 
     # Build a labelled, checkerboard-backed contact sheet of a group's
     # current outputs, for review:
@@ -42,18 +59,23 @@ after generation, compared against it for shape drift.
 
 Progress is recorded in `build/gen-manifest.json` by a hash of the
 resolved prompt plus its inputs, so a re-run skips anything already done
-whose inputs haven't changed and only redoes what has. The model name and
-per-image price are the CONFIG dict below, not scattered through the
-request code.
+whose inputs haven't changed and only redoes what has. The model name,
+quality and per-quality, per-size price are the CONFIG dict below, not
+scattered through the request code. A reskin that fails its drift check
+(automated QA) is retried automatically up to `max_regens` times (default
+1, i.e. one retry); once a run gives up, that image stays "rejected" on
+resume and is not retried again without an explicit --retry-rejected.
 """
 import argparse
 import base64
+import contextlib
 import hashlib
 import io
 import json
 import os
 import random
 import sys
+import tempfile
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -75,13 +97,40 @@ DEFAULT_CONTACT_SHEET_DIR = os.path.join(GAME, "build", "contact-sheets")
 # --- Config: model, pricing, pacing. Edit here, not inline in the request
 # code. An asset list may override any of these under a top-level "config"
 # object; see load_config().
+#
+# Cost note (24 Sept 2026): the owner was billed ~$0.16/image (~$30 for 187
+# requests) because every request left `quality` unset and the API defaulted
+# to high, while this file assumed a flat $0.04. Two fixes: (1) `quality` is
+# now always sent explicitly (default "medium" below, see QUALITIES), and
+# (2) price is looked up per quality AND size, not a flat number. The prices
+# below are OpenAI's published per-image cost for gpt-image-1; check
+# https://platform.openai.com/docs/pricing before trusting them for a large
+# run, since gpt-image-1 pricing has changed before and may again.
+QUALITIES = ("low", "medium", "high")
+
 CONFIG = {
     "model": "gpt-image-1",
+    "quality": "medium",  # conservative default; override per entry ("quality": "...")
+                            # or for a whole run with --quality
     "price_per_image": {
-        "1024x1024": 0.04,
-        "1024x1536": 0.06,
-        "1536x1024": 0.06,
-        "default": 0.04,
+        "low": {
+            "1024x1024": 0.011,
+            "1024x1536": 0.016,
+            "1536x1024": 0.016,
+            "default": 0.011,
+        },
+        "medium": {
+            "1024x1024": 0.042,
+            "1024x1536": 0.063,
+            "1536x1024": 0.063,
+            "default": 0.042,
+        },
+        "high": {
+            "1024x1024": 0.167,
+            "1024x1536": 0.25,
+            "1536x1024": 0.25,
+            "default": 0.167,
+        },
     },
     # Pacing: up to max_concurrency requests in flight, and at least
     # min_request_gap_seconds between request starts. A 429 halves the
@@ -90,6 +139,17 @@ CONFIG = {
     "min_request_gap_seconds": 20,
     "max_retries": 5,
     "backoff_base_seconds": 2.0,
+    # QA regen: after an automated QA failure (currently: reskin drift
+    # check), retry generating that one image this many extra times before
+    # giving up and recording it rejected. Default is a single retry (two
+    # attempts total); raise it with --max-regens. Once a run gives up on an
+    # image it stays "rejected" on resume -- a later run won't quietly pay
+    # for a "round 2" unless it's asked to with --retry-rejected.
+    "max_regens": 1,
+    # Pre-flight guard (point 4): a live run prints its planned image count
+    # x price before spending anything; above this many dollars it refuses
+    # to proceed without --yes.
+    "preflight_dollar_threshold": 5.0,
 }
 
 GENERATIONS_URL = "https://api.openai.com/v1/images/generations"
@@ -97,6 +157,7 @@ EDITS_URL = "https://api.openai.com/v1/images/edits"
 
 DEFAULT_DRIFT_THRESHOLD = 0.9
 DRIFT_REJECT_STATUS = "rejected: shape drift"
+DRAFT_SUBDIR = "drafts"
 
 
 # --------------------------------------------------------------------------
@@ -116,10 +177,11 @@ def load_asset_list(path):
 
 def load_config(data):
     cfg = dict(CONFIG)
-    cfg["price_per_image"] = dict(CONFIG["price_per_image"])
+    cfg["price_per_image"] = {q: dict(sizes) for q, sizes in CONFIG["price_per_image"].items()}
     override = data.get("config", {})
     cfg.update({k: v for k, v in override.items() if k != "price_per_image"})
-    cfg["price_per_image"].update(override.get("price_per_image", {}))
+    for quality, sizes in override.get("price_per_image", {}).items():
+        cfg["price_per_image"].setdefault(quality, {}).update(sizes)
     return cfg
 
 
@@ -129,9 +191,21 @@ def resolve_path(p):
     return p if os.path.isabs(p) else os.path.join(GAME, p)
 
 
-def price_for_size(cfg, size):
-    prices = cfg["price_per_image"]
-    return prices.get(size, prices["default"])
+def price_for_size(cfg, quality, size):
+    """Price of one image at `quality` and `size` (point 1: price is always
+    looked up by quality AND size, never a flat number)."""
+    table = cfg["price_per_image"].get(quality)
+    if table is None:
+        raise ConfigError(f"unknown quality {quality!r}; expected one of {QUALITIES}")
+    return table.get(size, table["default"])
+
+
+def quality_for(entry, cfg, override=None):
+    """The quality an entry generates at: a --quality CLI override beats
+    the entry's own `quality` field, which beats the config default."""
+    if override:
+        return override
+    return entry.get("quality") or cfg.get("quality", "medium")
 
 
 # --------------------------------------------------------------------------
@@ -178,7 +252,7 @@ def variant_path(base_path, i, variants):
     return f"{root}-v{i}{ext}"
 
 
-def compute_prompt_hash(prompt, mode, size, transparent, references, mask, variant_index, mirror=()):
+def compute_prompt_hash(prompt, mode, size, transparent, references, mask, variant_index, mirror=(), quality=None):
     fields = {
             "prompt": prompt,
             "mode": mode,
@@ -190,6 +264,14 @@ def compute_prompt_hash(prompt, mode, size, transparent, references, mask, varia
         }
     if mirror:  # only when set, so existing manifest hashes stay valid
         fields["mirror"] = sorted(mirror)
+    # Only when it differs from the long-standing default: images already
+    # generated before quality was sent explicitly keep matching hashes (and
+    # stay skipped on resume) as long as they're being treated as "medium".
+    # An explicit non-default quality (e.g. a --draft run at "low", or an
+    # entry pinned to "high") gets its own hash, so it never collides with -
+    # or silently skips - a differently-priced image at the same path.
+    if quality and quality != "medium":
+        fields["quality"] = quality
     payload = json.dumps(fields, sort_keys=True)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
@@ -325,10 +407,13 @@ def images_from_response(resp):
         if not b64:
             raise RuntimeError("expected b64_json in the API response")
         out.append(Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGBA"))
-    return out
+    # Point 1: where the response carries a `usage` block, hand it back so
+    # the caller can record real token usage in the manifest instead of
+    # only the estimated dollar price.
+    return out, payload.get("usage")
 
 
-def api_generate(prompt, size, transparent, cfg, api_key, pacer=None):
+def api_generate(prompt, size, quality, transparent, cfg, api_key, pacer=None):
     if requests is None:
         raise ConfigError("the 'requests' package is required for real API calls")
 
@@ -340,6 +425,9 @@ def api_generate(prompt, size, transparent, cfg, api_key, pacer=None):
                 "model": cfg["model"],
                 "prompt": prompt,
                 "size": size,
+                "quality": quality,  # always explicit (point 1): the API's own
+                                       # default is "high", which is what ran up
+                                       # the original bill
                 "n": 1,
                 "background": "transparent" if transparent else "opaque",
             },
@@ -347,7 +435,8 @@ def api_generate(prompt, size, transparent, cfg, api_key, pacer=None):
         )
 
     resp = request_with_retry(fn, cfg, pacer)
-    return images_from_response(resp)[0]
+    images, usage = images_from_response(resp)
+    return images[0], usage
 
 
 def _read_local(path, what):
@@ -365,7 +454,7 @@ def _mirrored_png(blob):
     return buf.getvalue()
 
 
-def api_edit(prompt, size, transparent, cfg, api_key, reference_paths, mask_path=None, pacer=None, mirror=()):
+def api_edit(prompt, size, quality, transparent, cfg, api_key, reference_paths, mask_path=None, pacer=None, mirror=()):
     if requests is None:
         raise ConfigError("the 'requests' package is required for real API calls")
     # Read every local file up front: a missing reference is a config error
@@ -384,6 +473,7 @@ def api_edit(prompt, size, transparent, cfg, api_key, reference_paths, mask_path
             "model": cfg["model"],
             "prompt": prompt,
             "size": size,
+            "quality": quality,  # always explicit (point 1), see api_generate
             "n": "1",
             "background": "transparent" if transparent else "opaque",
         }
@@ -396,7 +486,8 @@ def api_edit(prompt, size, transparent, cfg, api_key, reference_paths, mask_path
         )
 
     resp = request_with_retry(fn, cfg, pacer)
-    return images_from_response(resp)[0]
+    images, usage = images_from_response(resp)
+    return images[0], usage
 
 
 # --------------------------------------------------------------------------
@@ -1248,14 +1339,18 @@ def run(args):
     manifest_lock = threading.Lock()
     api_key = os.environ.get("OPENAI_API_KEY")
     dry_run = args.dry_run if args.dry_run is not None else not bool(api_key)
+    draft = bool(getattr(args, "draft", False))
+    cli_quality = "low" if draft else getattr(args, "quality", None)
+    max_regens = args.max_regens if args.max_regens is not None else cfg.get("max_regens", 1)
 
     selected = [a for a in assets if entry_matches_only(a, args.only)]
     if not selected:
         print(f"no assets matched --only {args.only!r}")
         return
 
-    print(f"{'DRY RUN' if dry_run else 'LIVE RUN'} -- {len(selected)} asset(s), model={cfg['model']}, "
-          f"concurrency {cfg['max_concurrency']}, gap {cfg['min_request_gap_seconds']}s")
+    print(f"{'DRY RUN' if dry_run else 'LIVE RUN'}{' (draft, quality=low)' if draft else ''} -- "
+          f"{len(selected)} asset(s), model={cfg['model']}, concurrency {cfg['max_concurrency']}, "
+          f"gap {cfg['min_request_gap_seconds']}s, max_regens {max_regens}")
     if args.budget is not None:
         print(f"budget cap: ${args.budget:.2f}")
 
@@ -1273,7 +1368,12 @@ def run(args):
         variants = args.variants or entry.get("variants", defaults.get("variants", 1))
         size = entry.get("size", defaults.get("size", "1024x1024"))
         transparent = entry.get("transparent", defaults.get("transparent", True))
-        out_base = resolve_path(entry["output"])
+        quality = quality_for(entry, cfg, cli_quality)
+        # Point 3 (--draft): quality low, and a separate drafts/ subfolder so
+        # cheap prompt checks never land on (or get skipped in place of) a
+        # real asset path.
+        out_rel = os.path.join(DRAFT_SUBDIR, entry["output"]) if draft else entry["output"]
+        out_base = resolve_path(out_rel)
 
         try:
             if mode not in ("generate", "edit", "reskin"):
@@ -1285,17 +1385,29 @@ def run(args):
             continue
         mask = entry.get("mask")
         mirror = tuple(entry.get("mirror_references", []))
-        unit_price = price_for_size(cfg, size)
+        unit_price = price_for_size(cfg, quality, size)
+        # Point 2: automatic regen only applies to a mode with an automated
+        # QA check (today, just reskin's drift check) -- generate/edit have
+        # nothing to auto-retry against, so they always run once.
+        entry_max_regens = max_regens if mode == "reskin" else 0
 
         for i in range(variants):
-            key = f"{eid}::v{i}"
-            phash = compute_prompt_hash(prompt, mode, size, transparent, references, mask, i, mirror)
+            key = f"{eid}::v{i}" + ("::draft" if draft else "")
+            phash = compute_prompt_hash(prompt, mode, size, transparent, references, mask, i, mirror, quality)
             out_path = variant_path(out_base, i, variants)
             existing = manifest.get(key)
+            existing_status = (existing or {}).get("status", "")
+            already_done = bool(existing and existing.get("prompt_hash") == phash
+                                and existing_status.startswith(("done", "rejected")))
+            # Point 2, second half: a QA-rejected item stays rejected on
+            # resume -- no silent "round 2" -- unless --retry-rejected asks
+            # for exactly that.
+            if already_done and existing_status.startswith("rejected") and args.retry_rejected:
+                already_done = False
 
-            if existing and existing.get("prompt_hash") == phash and existing.get("status", "").startswith(("done", "rejected")):
+            if already_done:
                 skip_ct += 1
-                print(f"[{key}] skip (already {existing['status']})")
+                print(f"[{key}] skip (already {existing_status})")
                 continue
 
             if args.budget is not None and planned_total + unit_price > args.budget + 1e-9:
@@ -1306,21 +1418,31 @@ def run(args):
 
             planned_total += unit_price
             tasks.append(dict(key=key, eid=eid, entry=entry, mode=mode, size=size, transparent=transparent,
-                              prompt=prompt, references=references, mask=mask, mirror=mirror, unit_price=unit_price,
-                              phash=phash, out_path=out_path))
+                              quality=quality, prompt=prompt, references=references, mask=mask, mirror=mirror,
+                              unit_price=unit_price, max_regens=entry_max_regens, phash=phash, out_path=out_path))
 
     waves = plan_waves(tasks, assets_by_id)
     if dry_run:
         for w, wave in enumerate(waves):
             print(f"-- wave {w} ({len(wave)} request(s), run concurrently)")
             for t in wave:
-                label = f"[{t['key']}] {t['mode']:8s} {t['size']:11s} ${t['unit_price']:.3f}  {t['eid']}"
+                label = (f"[{t['key']}] {t['mode']:8s} {t['size']:11s} quality={t['quality']:6s} "
+                         f"${t['unit_price']:.3f}  {t['eid']} -> {os.path.relpath(t['out_path'], GAME)}")
                 if t["references"]:
                     label += f"  refs={t['references']}"
                 p = t["prompt"]
                 print(f"{label}\n    prompt: {p[:160]}{'...' if len(p) > 160 else ''}")
-        print(f"\nestimated cost for this run: ${planned_total:.2f} "
-              f"(skipped {skip_ct} already-done item(s))")
+        print(f"\nestimated cost for this run: {len(tasks)} image(s) x price at chosen quality = "
+              f"${planned_total:.2f} (skipped {skip_ct} already-done item(s))")
+        return
+
+    # Point 4: pre-flight estimate before any paid run. A plain image count x
+    # price total over the threshold needs an explicit --yes.
+    threshold = cfg.get("preflight_dollar_threshold", 5.0)
+    print(f"\npre-flight estimate: {len(tasks)} image(s) planned, ~${planned_total:.2f} at the chosen quality "
+          f"(a QA regen can add up to {max_regens} more attempt(s) per reskin image; skipped {skip_ct} already-done)")
+    if planned_total > threshold and not args.yes:
+        print(f"estimated spend (${planned_total:.2f}) exceeds ${threshold:.2f}; re-run with --yes to proceed.")
         return
 
     pacer = Pacer(cfg["max_concurrency"], cfg["min_request_gap_seconds"])
@@ -1335,72 +1457,91 @@ def run(args):
 
     def work(t):
         key, mode, entry = t["key"], t["mode"], t["entry"]
+        max_attempts = 1 + t["max_regens"]
         t0 = time.monotonic()
-        print(f"[{key}] queued {mode} {t['size']} (+{t0 - run_start:.0f}s; the pacer holds the actual request start)")
-        billed = False
-        try:
-            if mode == "generate":
-                img = api_generate(t["prompt"], t["size"], t["transparent"], cfg, api_key, pacer)
-            else:
-                ref_paths = [resolve_path(r) for r in t["references"]]
-                img = api_edit(t["prompt"], t["size"], t["transparent"], cfg, api_key, ref_paths,
-                               resolve_path(t["mask"]), pacer, t["mirror"])
-            billed = True
-            os.makedirs(os.path.dirname(t["out_path"]), exist_ok=True)
-            img.save(t["out_path"])
-            raw = os.path.join(GAME, "build", "raw", os.path.relpath(t["out_path"], GAME))
-            os.makedirs(os.path.dirname(raw), exist_ok=True)
-            img.save(raw)  # untouched API output (git-ignored), before key-out / skin normalising
-        except Exception as exc:
-            # Only a request that reached generation is billed: local config
-            # errors never left the machine and a 4xx is rejected before
-            # generation. Network errors / exhausted 5xx retries are counted
-            # conservatively, since we can't tell whether it was generated.
-            if not billed and not isinstance(exc, (ConfigError, APIRejected)):
-                billed = True
-            record(key, {"status": "error", "prompt_hash": t["phash"], "group": entry.get("group"),
-                         "mode": mode, "error": str(exc), "billed": billed})
-            with stats_lock:
-                stats["error"] += 1
-                if billed:
-                    stats["spent"] += t["unit_price"]
+        final = None
+        for attempt in range(1, max_attempts + 1):
+            print(f"[{key}] queued {mode} {t['size']} quality={t['quality']} attempt {attempt}/{max_attempts} "
+                  f"(+{time.monotonic() - t0:.0f}s; the pacer holds the actual request start)")
+            billed = False
+            try:
+                if mode == "generate":
+                    img, usage = api_generate(t["prompt"], t["size"], t["quality"], t["transparent"], cfg, api_key, pacer)
                 else:
-                    stats["unbilled"] += 1
-            print(f"[{key}] ERROR ({type(exc).__name__}, {'billed' if billed else 'not billed'}): {exc}")
-            return
-        elapsed = time.monotonic() - t0
+                    ref_paths = [resolve_path(r) for r in t["references"]]
+                    img, usage = api_edit(t["prompt"], t["size"], t["quality"], t["transparent"], cfg, api_key,
+                                          ref_paths, resolve_path(t["mask"]), pacer, t["mirror"])
+                billed = True
+                os.makedirs(os.path.dirname(t["out_path"]), exist_ok=True)
+                img.save(t["out_path"])
+                raw = os.path.join(GAME, "build", "raw", os.path.relpath(t["out_path"], GAME))
+                os.makedirs(os.path.dirname(raw), exist_ok=True)
+                img.save(raw)  # untouched API output (git-ignored), before key-out / skin normalising
+            except Exception as exc:
+                # Only a request that reached generation is billed: local
+                # config errors never left the machine and a 4xx is rejected
+                # before generation. Network errors / exhausted 5xx retries
+                # are counted conservatively, since we can't tell whether it
+                # was generated. A hard error stops this image entirely --
+                # only a QA failure (below) triggers an automatic regen.
+                if not billed and not isinstance(exc, (ConfigError, APIRejected)):
+                    billed = True
+                record(key, {"status": "error", "prompt_hash": t["phash"], "group": entry.get("group"),
+                             "mode": mode, "quality": t["quality"], "error": str(exc), "billed": billed,
+                             "attempt": attempt})
+                with stats_lock:
+                    stats["error"] += 1
+                    if billed:
+                        stats["spent"] += t["unit_price"]
+                    else:
+                        stats["unbilled"] += 1
+                print(f"[{key}] ERROR ({type(exc).__name__}, {'billed' if billed else 'not billed'}): {exc}")
+                return
+            elapsed = time.monotonic() - t0
 
-        skin = {}
-        if entry.get("flip_output"):
-            Image.open(t["out_path"]).transpose(Image.FLIP_LEFT_RIGHT).save(t["out_path"])
-        if entry.get("key_out") == "magenta":
-            keyed, removed = key_out_magenta(Image.open(t["out_path"]))
-            keyed, _ = drop_fragments(keyed)
-            keyed, _ = fix_magenta_spill(keyed)
-            keyed.save(t["out_path"])
-            skin["keyed_out_px"] = removed
-            print(f"[{key}] keyed out {removed} px of magenta placeholder")
-        if skin_target_for(entry, cfg) is not None:
-            fixed, post = post_process_hand(entry, Image.open(t["out_path"]), cfg)
-            fixed.save(t["out_path"])
-            skin.update(post)
-            print(f"[{key}] skin {post.get('skin_before')} -> {post.get('skin_after')} ({post.get('skin_action')}); "
-                  f"scale {post.get('scale', '-')} ({post.get('scale_action', 'off')})")
+            skin = {}
+            if entry.get("flip_output"):
+                Image.open(t["out_path"]).transpose(Image.FLIP_LEFT_RIGHT).save(t["out_path"])
+            if entry.get("key_out") == "magenta":
+                keyed, removed = key_out_magenta(Image.open(t["out_path"]))
+                keyed, _ = drop_fragments(keyed)
+                keyed, _ = fix_magenta_spill(keyed)
+                keyed.save(t["out_path"])
+                skin["keyed_out_px"] = removed
+                print(f"[{key}] keyed out {removed} px of magenta placeholder")
+            if skin_target_for(entry, cfg) is not None:
+                fixed, post = post_process_hand(entry, Image.open(t["out_path"]), cfg)
+                fixed.save(t["out_path"])
+                skin.update(post)
+                print(f"[{key}] skin {post.get('skin_before')} -> {post.get('skin_after')} "
+                      f"({post.get('skin_action')}); scale {post.get('scale', '-')} ({post.get('scale_action', 'off')})")
 
-        status, iou = "done", None
-        if mode == "reskin":
-            master_out = resolve_path(assets_by_id[entry["master"]]["output"])
-            iou, ok = drift_check(t["out_path"], master_out, args.drift_threshold)
-            status = "done" if ok else DRIFT_REJECT_STATUS
-            print(f"[{key}] drift check {'OK' if ok else 'FAILED'} (IoU {iou:.3f})")
-        record(key, {"status": status, "prompt_hash": t["phash"], "group": entry.get("group"), "mode": mode,
-                     "output": t["out_path"], "cost": t["unit_price"], "iou": iou,
-                     "seconds": round(elapsed, 1), **skin})
+            status, iou = "done", None
+            if mode == "reskin":
+                master_out = resolve_path(assets_by_id[entry["master"]]["output"])
+                iou, ok = drift_check(t["out_path"], master_out, args.drift_threshold)
+                status = "done" if ok else DRIFT_REJECT_STATUS
+                print(f"[{key}] drift check {'OK' if ok else 'FAILED'} (IoU {iou:.3f}), "
+                      f"attempt {attempt}/{max_attempts}")
+
+            with stats_lock:
+                stats["spent"] += t["unit_price"]  # every attempt is a real, billed request
+            final = {"status": status, "prompt_hash": t["phash"], "group": entry.get("group"), "mode": mode,
+                     "quality": t["quality"], "output": t["out_path"], "cost": t["unit_price"], "iou": iou,
+                     "seconds": round(elapsed, 1), "attempt": attempt, **skin}
+            if usage:  # point 1: real token usage, when the API returns it
+                final["usage"] = usage
+
+            if status == "done" or attempt == max_attempts:
+                break
+            print(f"[{key}] QA failed; auto-regenerating (regen {attempt} of {max_attempts - 1} allowed by "
+                  f"--max-regens/config) ...")
+
+        record(key, final)
         with stats_lock:
-            stats["spent"] += t["unit_price"]
             stats["run"] += 1
-            stats["done" if status == "done" else "reject"] += 1
-        print(f"[{key}] done in {elapsed:.0f}s -> {os.path.relpath(t['out_path'], GAME)}")
+            stats["done" if final["status"] == "done" else "reject"] += 1
+        print(f"[{key}] {final['status']} in {time.monotonic() - t0:.0f}s -> {os.path.relpath(t['out_path'], GAME)}")
 
     for w, wave in enumerate(waves):
         if len(waves) > 1:
@@ -1418,6 +1559,190 @@ def run(args):
 # CLI
 # --------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------
+# Self-test (point 5): a quick offline check of the cost-conservative bits
+# -- the price table, dry-run planning (including --draft and --quality),
+# and one mocked API call -- with no network access and no OPENAI_API_KEY
+# needed. `python3 build/gen_assets.py --self-test`.
+# --------------------------------------------------------------------------
+
+class _FakeAPIResponse:
+    """A stand-in for requests.Response, just enough for images_from_response
+    and request_with_retry's status_code check."""
+
+    def __init__(self, payload):
+        self.status_code = 200
+        self._payload = payload
+        self.headers = {}
+        self.text = ""
+
+    def json(self):
+        return self._payload
+
+    def raise_for_status(self):  # pragma: no cover - never hit at status 200
+        pass
+
+
+class _FakeRequests:
+    """A stand-in for the `requests` module: enough of its surface for
+    api_generate/api_edit and request_with_retry to run against, with every
+    call recorded instead of going over the network."""
+
+    class RequestException(Exception):
+        pass
+
+    def __init__(self, payload):
+        self._payload = payload
+        self.calls = []
+
+    def post(self, url, **kwargs):
+        self.calls.append((url, kwargs))
+        return _FakeAPIResponse(self._payload)
+
+
+def _self_test_png_b64():
+    buf = io.BytesIO()
+    Image.new("RGBA", (2, 2), (200, 120, 90, 255)).save(buf, "PNG")
+    return base64.b64encode(buf.getvalue()).decode("ascii")
+
+
+def self_test():
+    """Run every check; print PASS/FAIL per check and a summary. Returns
+    True iff everything passed (main() uses this as the process exit code)."""
+    results = []
+
+    def check(name, fn):
+        try:
+            fn()
+        except Exception as exc:  # noqa: BLE001 - a failed check just gets reported
+            results.append((name, False, f"{type(exc).__name__}: {exc}"))
+        else:
+            results.append((name, True, ""))
+
+    # 1) price table: known gpt-image-1 prices, by quality AND size, and the
+    # per-quality "default" fallback for an unlisted size.
+    def price_table():
+        cfg = load_config({})
+        assert price_for_size(cfg, "low", "1024x1024") == 0.011
+        assert price_for_size(cfg, "medium", "1024x1024") == 0.042
+        assert price_for_size(cfg, "high", "1024x1024") == 0.167
+        assert price_for_size(cfg, "medium", "1024x1536") == 0.063
+        assert price_for_size(cfg, "high", "1536x1024") == 0.25
+        assert price_for_size(cfg, "low", "2048x2048") == cfg["price_per_image"]["low"]["default"]
+        # medium is always noticeably cheaper than high, at every size in
+        # the table -- the whole point of this change
+        for size, med in cfg["price_per_image"]["medium"].items():
+            assert med < cfg["price_per_image"]["high"][size], f"medium not cheaper than high at {size}"
+    check("price table (low/medium/high x size)", price_table)
+
+    # 2) an asset-list "config" override merges into, rather than replacing,
+    # the built-in price table (load_config's per-quality dict merge).
+    def price_override_merge():
+        cfg = load_config({"config": {"quality": "low",
+                                       "price_per_image": {"medium": {"1024x1024": 0.05}}}})
+        assert cfg["quality"] == "low"
+        assert cfg["price_per_image"]["medium"]["1024x1024"] == 0.05
+        assert cfg["price_per_image"]["low"]["1024x1024"] == 0.011  # untouched sibling entry
+        assert cfg["price_per_image"]["high"]["1024x1024"] == 0.167  # untouched sibling quality
+    check("config price_per_image override merges (not replaces)", price_override_merge)
+
+    # 3) dry-run planning: quality defaults to medium, --quality and --draft
+    # override it, --draft writes under drafts/, and nothing touches the
+    # network (dry_run=True forces this regardless of OPENAI_API_KEY).
+    tmp_dir = tempfile.mkdtemp(prefix="gen-assets-selftest-")
+
+    def make_args(**over):
+        base = dict(asset_list=None, manifest=os.path.join(tmp_dir, "manifest.json"), only=None, variants=None,
+                     max_concurrency=None, budget=None, dry_run=True, drift_threshold=DEFAULT_DRIFT_THRESHOLD,
+                     quality=None, draft=False, max_regens=None, retry_rejected=False, yes=False)
+        base.update(over)
+        return argparse.Namespace(**base)
+
+    asset_list_path = os.path.join(tmp_dir, "asset-list.json")
+    with open(asset_list_path, "w") as f:
+        json.dump({
+            "style_block": "style", "negative_block": "", "templates": {},
+            "defaults": {"size": "1024x1024", "transparent": True, "variants": 1},
+            "assets": [{"id": "selftest-item", "group": "selftest", "mode": "generate",
+                        "output": "build/selftest/out.png", "prompt": "a single red apple"}],
+        }, f)
+
+    def dry_run_default_quality():
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            run(make_args(asset_list=asset_list_path))
+        out = buf.getvalue()
+        assert "quality=medium" in out, out
+        assert "estimated cost for this run: 1 image(s)" in out, out
+        assert "$0.04" in out, out  # 1 x medium 1024x1024 = $0.042
+    check("dry-run: defaults to quality=medium, correct estimate", dry_run_default_quality)
+
+    def dry_run_quality_flag():
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            run(make_args(asset_list=asset_list_path, quality="high"))
+        out = buf.getvalue()
+        assert "quality=high" in out, out
+        assert "$0.17" in out or "$0.167" in out, out
+    check("dry-run: --quality overrides the default", dry_run_quality_flag)
+
+    def dry_run_draft():
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            run(make_args(asset_list=asset_list_path, draft=True))
+        out = buf.getvalue()
+        assert "quality=low" in out, out
+        assert "::draft" in out, out  # draft's own manifest key, distinct from the production one
+        assert f"{DRAFT_SUBDIR}{os.sep}" in out, out  # output path is redirected under drafts/
+    check("dry-run: --draft forces quality=low and a drafts/ path", dry_run_draft)
+
+    def dry_run_no_network():
+        global requests
+        real_requests = requests
+        fake = _FakeRequests({"data": []})
+        requests = fake
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                run(make_args(asset_list=asset_list_path))
+            assert fake.calls == [], "dry run made a network call"
+        finally:
+            requests = real_requests
+    check("dry-run makes no network calls", dry_run_no_network)
+
+    # 4) a mocked API call: no real network access, but exercises the exact
+    # code path a live run uses, and checks that quality is always sent
+    # explicitly and that a returned `usage` block comes back to the caller.
+    def mocked_api_call():
+        global requests
+        real_requests = requests
+        payload = {"data": [{"b64_json": _self_test_png_b64()}],
+                   "usage": {"input_tokens": 50, "output_tokens": 1056, "total_tokens": 1106}}
+        fake = _FakeRequests(payload)
+        requests = fake
+        try:
+            cfg = load_config({})
+            img, usage = api_generate("a single red apple", "1024x1024", "low", True, cfg, "sk-fake", pacer=None)
+            assert img.size == (2, 2)
+            assert usage == payload["usage"]
+            assert len(fake.calls) == 1
+            sent = fake.calls[0][1]["json"]
+            assert sent["quality"] == "low", sent  # point 1: quality is always explicit
+            assert sent["size"] == "1024x1024"
+            assert sent["model"] == cfg["model"]
+        finally:
+            requests = real_requests
+    check("mocked API call: quality sent explicitly, usage recorded", mocked_api_call)
+
+    print("\nself-test results:")
+    ok = True
+    for name, passed, detail in results:
+        print(f"  [{'PASS' if passed else 'FAIL'}] {name}" + (f" -- {detail}" if detail else ""))
+        ok = ok and passed
+    print(f"{sum(1 for _, p, _ in results if p)}/{len(results)} passed")
+    return ok
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--asset-list", default=DEFAULT_ASSET_LIST)
@@ -1431,6 +1756,25 @@ def main():
                     help="print planned requests and cost; no network calls. Default when OPENAI_API_KEY is unset.")
     p.add_argument("--drift-threshold", type=float, default=DEFAULT_DRIFT_THRESHOLD,
                     help="minimum silhouette IoU for a reskin to pass (default 0.9)")
+    p.add_argument("--quality", choices=list(QUALITIES), default=None,
+                    help="quality for every selected asset this run, overriding each entry's own 'quality' and the "
+                         "config default (medium). gpt-image-1 prices roughly: low $0.011, medium $0.042, "
+                         "high $0.167 per 1024x1024 image; larger sizes cost more (see CONFIG.price_per_image).")
+    p.add_argument("--draft", action="store_true",
+                    help="cheap prompt check: quality low, output under a drafts/ subfolder instead of the real "
+                         "asset paths, so nothing real is overwritten or skipped by a draft run")
+    p.add_argument("--max-regens", type=int, default=None,
+                    help="extra attempts after an automated QA failure (currently: a reskin's drift check) before "
+                         "giving up on that image; default 1 (config max_regens). 0 disables auto-regen.")
+    p.add_argument("--retry-rejected", action="store_true",
+                    help="also re-plan entries a previous run's QA already gave up on (status 'rejected: ...'); "
+                         "off by default, so a rejected image never gets a silent, unattended 'round 2'")
+    p.add_argument("--yes", action="store_true",
+                    help="skip the pre-flight confirmation for a live run whose estimate exceeds "
+                         "config preflight_dollar_threshold (default $5)")
+    p.add_argument("--self-test", action="store_true",
+                    help="run a quick offline self-test (dry-run planning, the price table, a mocked API call) "
+                         "and exit; makes no network calls")
 
     p.add_argument("--contact-sheet", metavar="GROUP", help="build a contact sheet PNG for this group and exit")
     p.add_argument("--sheet-name", help="with --contact-sheet: file name (without .png) instead of the group's")
@@ -1452,6 +1796,9 @@ def main():
                          "these asset ids or groups (comma-separated), in place, then exit")
 
     args = p.parse_args()
+
+    if args.self_test:
+        sys.exit(0 if self_test() else 1)
 
     if args.post:
         data = load_asset_list(args.asset_list)
