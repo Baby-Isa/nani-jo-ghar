@@ -1917,7 +1917,7 @@
      ],
      "gravity": 1250,
      "decoys": 2,
-     "spare": 2,
+     "spare": 3,
      "size": 170,
      "phoneSize": 230,
      "sharp": false,
@@ -1953,7 +1953,8 @@
     {
      "inAir": 3,
      "every": 1.0,
-     "decoys": 3
+     "decoys": 3,
+     "spare": 2
     },
     {
      "inAir": 4,
@@ -2158,12 +2159,12 @@
      "items": {
       "samosa": {
        "art": "pastry:3",
-       "scale": 0.3,
+       "scale": 0.33,
        "word": "ph-samosa"
       },
       "chips": {
        "art": "bowl:ph-chips",
-       "scale": 0.5,
+       "scale": 0.6,
        "word": "ph-chips"
       }
      }

@@ -105,7 +105,8 @@
         const force = passMe === "always";
         if (!force && (ctx.guided || ctx.lab || !ctx.maybePassMe || (ctx.interrupts || 0) >= (ctx.maxInterrupts || 0) || Math.random() > k.passMe)) return;
         const said = inOrder(ctx);
-        const pick = Cook.shuffle(Object.keys(items)).find((id) => !remaining.includes(id) && !said.has(id) && !always.includes(id));
+        // not a word whose shelf label shows it as text (you'd just match the letters)
+        const pick = Cook.shuffle(Object.keys(items)).find((id) => !remaining.includes(id) && !said.has(id) && !always.includes(id) && (force || Cook.labelMode(id) !== "text"));
         if (!pick) return;
         ctx.interrupts = (ctx.interrupts || 0) + 1;
         await St.passMe(S, ctx, { want: pick });

@@ -89,6 +89,12 @@
       }
       // graded now: each filling, how many spoons, and nothing they said no to
       let ok = true;
+      // what shouldn't be there first (so a "no X" row is marked before the rows tick)
+      Object.keys(got).forEach((id) => {
+        if (want[id]) return;
+        ok = false;
+        z.listen(false, exclude.includes(id) ? `put ${id} in (they said no)` : `put ${id} in`);
+      });
       kinds.forEach((id) => {
         const g = got[id] || 0;
         const right = g === want[id];
@@ -100,11 +106,6 @@
           (right ? Cook.markRight : Cook.markMiss)(id);
           if (want[id] <= 5) (right ? Cook.markRight : Cook.markMiss)(Cook.numId(want[id]));
         }
-      });
-      Object.keys(got).forEach((id) => {
-        if (want[id]) return;
-        ok = false;
-        z.listen(false, exclude.includes(id) ? `put ${id} in (they said no)` : `put ${id} in`);
       });
       if (ok) {
         Cook.sfx.right();

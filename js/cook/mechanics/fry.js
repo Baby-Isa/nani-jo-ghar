@@ -48,15 +48,22 @@
       });
       const trayKinds = Cook.shuffle(onTray);
       // a steel tray on the worktop, clear of the Done button's corner
-      const perRow = Math.max(3, Math.ceil(trayKinds.length / 2));
-      const tx0 = 860;
-      const tx1 = 1250;
-      S.track(S.add.rectangle(z.X((tx0 + tx1) / 2), z.Y(785), z.L(tx1 - tx0 + 150), z.L(210), 0xc3c6ca, 1).setStrokeStyle(z.L(6), 0x8f9398).setDepth(D.item - 0.3));
+      const perRow = Math.max(2, Math.ceil(trayKinds.length / 2));
+      const rows = Math.ceil(trayKinds.length / perRow);
+      const dx = 125;
+      const tx0 = 1060 - ((perRow - 1) * dx) / 2;
+      const ty0 = rows > 1 ? 728 : 780;
+      const tw = (perRow - 1) * dx + 170;
+      const th = (rows - 1) * 100 + 130;
+      const tg = S.track(S.add.graphics().setDepth(D.item - 0.3));
+      tg.fillStyle(0x3a2410, 0.18).fillRoundedRect(z.X(1060 - tw / 2 + 6), z.Y(ty0 - 65 + 8), z.L(tw), z.L(th), z.L(22));
+      tg.fillStyle(0xaeb2b6, 1).fillRoundedRect(z.X(1060 - tw / 2), z.Y(ty0 - 65), z.L(tw), z.L(th), z.L(22));
+      tg.fillStyle(0xd6d9dc, 1).fillRoundedRect(z.X(1060 - tw / 2 + 10), z.Y(ty0 - 55), z.L(tw - 20), z.L(th - 20), z.L(16));
       const tray = trayKinds.map((kd, i) => {
         const row = Math.floor(i / perRow);
         const col = i % perRow;
-        const x = tx0 + (perRow > 1 ? ((tx1 - tx0) * col) / (perRow - 1) : 0) + (row ? 30 : 0);
-        const img = S.track(S.add.image(z.X(x), z.Y(735 + row * 100), S.tex(look(kd).art)).setScale(look(kd).scale * z.k).setDepth(D.item + row * 0.1));
+        const x = tx0 + col * dx;
+        const img = S.track(S.add.image(z.X(x), z.Y(ty0 + row * 100), S.tex(look(kd).art)).setScale(look(kd).scale * z.k).setDepth(D.item + row * 0.1));
         img.baseScale = img.scale;
         img.kind = kd;
         return img;
@@ -193,7 +200,7 @@
             UI.hideDone();
           }
           // for the test: lift anything of ours in the band, else drop another if needed
-          const ready = mine.find((f) => !f.out && f.kind === kind && f.v >= (lo + hi) / 2);
+          const ready = mine.find((f) => !f.out && f.kind === kind && f.v >= lo + (hi - lo) * 0.2);
           const next = droppedMine < count ? tray.find((t) => t.kind === kind && t.input && t.input.enabled) : null;
           const wrongs = tray.filter((t) => t.kind !== kind && t.input && t.input.enabled).map((t) => ({ x: t.x, y: t.y }));
           if (ready) z.expect({ kind: "tap", x: ready.x, y: ready.y, key: "lift" });

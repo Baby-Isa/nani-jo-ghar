@@ -144,12 +144,24 @@
       layers.forEach((L) => {
         const t1 = L.t0 + (L.t1 - L.t0) * L.grow;
         if (t1 <= L.t0 + 0.001) return;
-        bands.fillStyle(L.color, 1).fillPoints(band(L.t0, t1), true);
+        bands.fillStyle(L.liquid ? L.color : shade(L.color, -0.22), 1).fillPoints(band(L.t0, t1), true);
         bands.lineStyle(z.L(2), shade(L.color, -0.28), 0.8).strokePoints(arc(L.t0, 0, Math.PI), false);
+        // the pieces show through the glass in their own shape (cubes, balls, strands, leaves)
         L.dots.forEach((d) => {
           const t = L.t0 + (t1 - L.t0) * d.t;
           const e = at(t);
-          bands.fillStyle(d.c, 1).fillCircle(e.x + Math.cos(d.a) * e.rx * 0.985, e.y + Math.sin(d.a) * e.ry * 0.985, z.L(d.r));
+          const x = e.x + Math.cos(d.a) * e.rx * 0.985;
+          const y = e.y + Math.sin(d.a) * e.ry * 0.985;
+          const r = z.L(d.r);
+          bands.fillStyle(d.c, 1);
+          if (L.kind === "cubes") bands.fillRect(x - r, y - r * 0.8, r * 2, r * 1.6);
+          else if (L.kind === "strands") bands.lineStyle(z.L(3), d.c, 1).lineBetween(x - r * 1.8, y - r * 0.3, x + r * 1.8, y + r * 0.3);
+          else if (L.kind === "leaves") bands.fillEllipse(x, y, r * 2.6, r * 1.2);
+          else if (L.kind === "pieces") bands.fillEllipse(x, y, r * 2.2, r * 1.5);
+          else {
+            bands.fillCircle(x, y, r * 1.15);
+            bands.fillStyle(0xffffff, 0.35).fillCircle(x - r * 0.35, y - r * 0.35, r * 0.35);
+          }
         });
       });
       const L = layers[layers.length - 1];
@@ -179,7 +191,7 @@
         const liquid = spec.kind === "liquid";
         const dots = liquid ? [] : Array.from({ length: 34 }, () => ({ a: 0.12 * Math.PI + Math.random() * 0.76 * Math.PI, t: 0.15 + Math.random() * 0.7, r: 4 + Math.random() * 5, c: shade(color, (Math.random() - 0.5) * 0.5) }));
         const i = layers.length;
-        const L = { id, color, liquid, dots, t0: t0Of(i), t1: t0Of(i + 1), grow: 0 };
+        const L = { id, color, liquid, kind: spec.kind, dots, t0: t0Of(i), t1: t0Of(i + 1), grow: 0 };
         layers.push(L);
         await new Promise((resolve) =>
           S.tweens.addCounter({
@@ -340,6 +352,15 @@
         // the customer checks it, layer by layer, out loud
         const m = C.mistake(got);
         const upTo = m ? m.at : got.length;
+        const wrong = m && m.got;
+        let why = null;
+        if (m && wrong && exclude.includes(wrong)) why = `added ${wrong} (they said no)`;
+        else if (m && wrong && m.expected) why = `${wrong} instead of ${m.expected}`;
+        else if (m && wrong) why = `added ${wrong} at the end`;
+        else if (m) why = `forgot ${m.expected}`;
+        // a "no X" that went in: its row is marked before the others tick (they'd settle it as done)
+        const noFirst = !!(wrong && exclude.includes(wrong));
+        if (noFirst) z.listen(false, why);
         for (let i = confirmed; i < upTo; i++) {
           bowl.pulse(i);
           bowl.mark(i, true);
@@ -351,18 +372,12 @@
         if (!m) break;
         mistakes++;
         // the mistake: say what was wrong, scoop it out, and say the rest again from there
-        const wrong = m.got;
         if (m.at < got.length) {
           bowl.pulse(m.at, 0xb24a3a);
           const x = bowl.mark(m.at, false);
           if (x) S.tweens.add({ targets: x, alpha: 0, delay: 900, duration: 300, onComplete: () => x.destroy() });
         }
-        let why;
-        if (wrong && exclude.includes(wrong)) why = `added ${wrong} (they said no)`;
-        else if (wrong && m.expected) why = `${wrong} instead of ${m.expected}`;
-        else if (wrong) why = `added ${wrong} at the end`;
-        else why = `forgot ${m.expected}`;
-        z.listen(false, why);
+        if (!noFirst) z.listen(false, why);
         if (m.expected) Cook.markMiss(m.expected);
         const oops = [Lang.line("oops")];
         if (wrong && exclude.includes(wrong)) oops.push(Lang.line(F.no, Lang.phrase([wrong])));

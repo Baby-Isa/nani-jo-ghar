@@ -191,14 +191,16 @@
           pts.forEach((q) => trail.lineTo(q.x, q.y));
           trail.strokePath();
         }
-        // for the automated test: the nearest wanted one in flight (and a decoy, for a deliberate mistake)
-        const inView = (o) => o.active && !o.sliced && o.y < z.Y(780) && o.y > z.Y(150);
+        // for the automated test: a wanted one near the top of its throw (slow there), sliced
+        // straight down through where it's heading; and a decoy, for one deliberate mistake
+        const inView = (o) => o.active && !o.sliced && o.y < z.Y(760) && o.y > z.Y(120) && Math.abs(o.vy) < z.L(520);
         const need = phase && (cut[phase.target] || 0) < want[phase.target];
         const tgt = need ? flying.find((o) => inView(o) && o.wordId === phase.target) : null;
-        const dec = flying.find((o) => inView(o) && phase && o.wordId !== phase.target);
+        const dec = flying.find((o) => inView(o) && phase && o.wordId !== phase.target && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
+        const ahead = (o) => o.x + o.vx * 0.06 * Cook.speed;
         z.expect(
           tgt
-            ? { kind: "slice", x: tgt.x, y: tgt.y, x1: tgt.x - z.L(120), y1: tgt.y - z.L(40), x2: tgt.x + z.L(120), y2: tgt.y + z.L(40), wrongs: dec ? [{ x: dec.x, y: dec.y }] : [] }
+            ? { kind: "slice", x: tgt.x, y: tgt.y, x1: ahead(tgt), y1: tgt.y - z.L(170), x2: ahead(tgt), y2: tgt.y + z.L(170), wrongs: dec ? [{ x: dec.x, y: dec.y }] : [] }
             : { kind: "wait" }
         );
       });
@@ -208,7 +210,7 @@
         const id = ids[i];
         const kinds = bagFor(id);
         phase = { target: id, kinds, bag: [], thrown: 0 };
-        const ph = Lang.phrase(Lang.countParts(want[id], id, { one: false }));
+        const ph = Lang.phrase(Lang.countParts(want[id], id)); // "hikdo tameto": the number is always said
         UI.hideCount();
         throwing = i > 0; // the first round starts once she's said it
         await z.say(Lang.line(i === 0 ? "only" : "now", ph), { hide }).catch(() => {});
