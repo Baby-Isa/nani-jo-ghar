@@ -693,9 +693,9 @@
     "mishkaki": {
      "pattern": [
       "ph-meat",
+      "veg-03",
       "ph-meat",
-      "veg-02",
-      "ph-meat"
+      "veg-02"
      ]
     }
    },
@@ -1412,7 +1412,7 @@
     "grill",
     "fry"
    ],
-   "_about": "The order says how many skewers of each kind (a tally: \"bo ghos, hikdo vegetable\"), and when there's a mixed one its pieces in order (ne poi). The Mishkaki grill station (data/stations/mishkaki-grill.json) threads, grills and plates them; the chips basket is always offered there and the chips are fried only if you put them on. A slot's `levels` change it by the order's level: 1 = one skewer (meat or veg); 2 = two (meat, veg or one of each); 3 = three or four, mixed too.",
+   "_about": "The order says how many skewers of each kind (a tally: \"bo ghos, hikdo vegetable\"), and when there's a mixed one its pieces in order (ne poi): meat and the three vegetables, never the same piece twice running, so the list can't merge into a count that sounds like a skewer row. The Mishkaki grill station (data/stations/mishkaki-grill.json) threads, grills and plates them; the chips basket is always offered there and the chips are fried only if you put them on. A slot's `levels` change it by the order's level: 1 = one skewer (meat or veg); 2 = two (meat, veg or one of each); 3 = three or four, mixed too.",
    "lists": {
     "skewer": [
      "ph-meat",
@@ -1457,23 +1457,18 @@
       }
      ]
     },
-    "vegOne": {
-     "pick": "$veg"
-    },
     "pattern": {
      "type": "items",
      "taste": "pattern",
      "tasteChance": 0.5,
      "always": [
-      "ph-meat",
-      "$vegOne"
+      "ph-meat"
      ],
-     "from": "$skewer",
+     "from": "$veg",
      "take": [
-      2,
-      2
+      3,
+      3
      ],
-     "repeats": true,
      "shuffle": true,
      "order": "sequence"
     },
@@ -1621,12 +1616,12 @@
   "thread": {
    "name": "Skewer",
    "verb": "Thread",
-   "goal": "Push the pieces onto the skewer in the order they said."
+   "goal": "Make the skewers they asked for: tap a bowl to push a piece on, tap the skewer to take one off."
   },
   "grill": {
    "name": "Grill",
    "verb": "Grill",
-   "goal": "Turn the skewer when the ring reaches green."
+   "goal": "Grill the skewers they asked for: tap one on the rack, turn it on the green twice, then lift it onto the plate."
   }
  },
  "mechanics": {
@@ -2063,10 +2058,10 @@
     {
      "spots": 4,
      "rack": 5,
-     "rate": 0.26,
+     "rate": 0.24,
      "band": [
-      0.63,
-      0.84
+      0.62,
+      0.85
      ]
     }
    ]

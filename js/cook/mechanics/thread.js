@@ -257,7 +257,6 @@
           const m = want[w] || 0;
           z.listen(got === m, `${got} ${w} skewers, they asked for ${m}`);
           if (!z.guided) (got === m ? Cook.markRight : Cook.markMiss)(w);
-          if (got === m && m > 0 && ctx.tickItem) ctx.tickItem(w);
         });
         if (odd) z.listen(false, `${odd} skewer${odd > 1 ? "s" : ""} not in the order`);
         ctx.result.skewers = doneRow.map((s) => s.ids.slice());

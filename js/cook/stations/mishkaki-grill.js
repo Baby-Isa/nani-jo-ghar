@@ -32,8 +32,8 @@
     view: "marble",
     dataFile: "data/stations/mishkaki-grill.json",
     zones: [
-      { id: "thread", mech: "thread", region: [0, 0, 420, 900], footprint: { x: 0, y: 0, w: 420, h: 900 }, backdrop: "bg:wood", out: "skewers" },
-      { id: "grill", mech: "grill", region: [420, 0, 1180, 900], footprint: { x: 420, y: 0, w: 1180, h: 900 }, in: "skewers" },
+      { id: "thread", mech: "thread", region: [0, 0, 470, 900], footprint: { x: 0, y: 0, w: 470, h: 900 }, backdrop: "bg:wood", out: "skewers" },
+      { id: "grill", mech: "grill", region: [470, 0, 1130, 900], footprint: { x: 470, y: 0, w: 1130, h: 900 }, in: "skewers" },
     ],
     async run(host, p) {
       const ctx = host.ctx;
@@ -44,7 +44,7 @@
       if (ctx.nextStep) ctx.nextStep("Skewer");
       line.onGrill = () => ctx.nextStep && ctx.nextStep("Grill");
       const order = { skewers: p.skewers || {}, pattern: p.pattern || [] };
-      const threading = Mech.run("thread", tz, Object.assign({ line, until, layout: { bowlsX: 100, boardX: 290 } }, order));
+      const threading = Mech.run("thread", tz, Object.assign({ line, until, layout: { bowlsX: 170, boardX: 372 } }, order));
       const r = await Mech.run("grill", gz, Object.assign({ line, chips: p.chips == null ? undefined : !!p.chips, dx: 0 }, order));
       line.stop();
       await threading;

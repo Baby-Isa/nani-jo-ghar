@@ -70,7 +70,7 @@ A recipe is an entry in `recipes` with five parts. Every choice the player makes
 | per person | `{"type": "people", "count": 2, "tastes": "chai", "each": {"khun": {"int": [1, 3], "taste": "khun"}}}` | `[{"who": "nana", "khun": 3}, {"who": "ma", "khun": 1}]` |
 | how many of each kind | `{"type": "tally", "kinds": ["ph-meat", "ph-pepper"], "total": {"int": [2, 3]}, "min": {"ph-meat": 1}}` | `{"ph-meat": 2, "ph-pepper": 1}` |
 
-Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`.
+Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. A slot can change with the order's level: `"levels": [{}, {"total": 2}, {"total": {"int": [3, 4]}}]` (level n applies entries 1..n, each listing only what changes; mishkaki's `skewers` is the example). `"$name"` refers to an earlier slot or to a list in the recipe's `lists`.
 
 **`say`: the order as spoken**, one entry per line. Frames are roles (`"order"` starts a dish: "Muke … khape" or "Ne …"; `"and"`, `"no"`, `"only"`); the words come from `lines` and the word order from `grammar`.
 

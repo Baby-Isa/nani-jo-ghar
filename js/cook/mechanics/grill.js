@@ -168,7 +168,7 @@
     ctx.ellipse(m + 4, m + 8, 44, 40, 0, 0, Math.PI * 2);
     ctx.fill();
     if (style === "meat") {
-      blob(ctx, m, m, 44, 42, rand, 8);
+      blob(ctx, m, m, 44, 42, () => 0.35 + rand() * 0.35, 14);
       const g = ctx.createRadialGradient(m - 12, m - 14, 6, m, m, 50);
       g.addColorStop(0, shade(col, 0.18));
       g.addColorStop(1, shade(col, -0.25));
@@ -472,7 +472,7 @@
     marks: drawMarks,
     glow: drawGlow,
     plate: () => drawPlate(340, 190),
-    board: () => drawBoard(230, 760),
+    board: () => drawBoard(200, 760),
   };
   /** A texture key for the drawn art ("stick", "piece:ph-meat", "grill:600x500", "rack:400x480x5"…). */
   SK.tex = function (S, key) {
@@ -644,27 +644,26 @@
   /* ================= the grill mechanic ================= */
   // layout in design coords (the Mishkaki grill station's right-hand zone);
   // the standalone grill shifts it left with `dx`
-  const RACK = { x0: 440, x1: 840, y: 330, scale: 0.6 };
-  const GRILL = { x0: 868, x1: 1452, y0: 150, y1: 640, skewerY: 480 };
-  const PLATE = { x: 668, y: 720 };
-  const CHIPS = { x: 492, y: 800, onX: 790, onY: 760 };
+  const RACK = { x0: 490, x1: 880, y: 330, scale: 0.6 };
+  const GRILL = { x0: 906, x1: 1450, y0: 150, y1: 640, skewerY: 480 };
+  const PLATE = { x: 715, y: 720 };
+  const CHIPS = { x: 540, y: 800, onX: 830, onY: 760 };
 
   Mech.define("grill", {
     station: "grill",
     view: "marble",
-    footprint: { x: 200, y: 50, w: 1100, h: 820 },
+    footprint: { x: 290, y: 50, w: 1020, h: 820 },
     async run(z, params, k) {
       const S = z.S;
       const ctx = z.ctx;
       const want = params.skewers || {};
       const pattern = params.pattern || [];
       const line = params.line || {};
-      const dx = params.dx != null ? params.dx : z.in ? 0 : -200;
+      const dx = params.dx != null ? params.dx : z.in ? 0 : -170;
       const X = (x) => z.X(x + dx);
       const Y = (y) => z.Y(y);
       const L = (v) => z.L(v);
       const [lo, hi] = k.band;
-      const mid = (lo + hi) / 2;
       const nPieces = Mech.knobs("thread", { level: z.level }).pieces;
       const offerChips = params.chips != null;
 
@@ -717,9 +716,9 @@
         const i = rack.indexOf(null);
         const sk = item.sprite || SK.make(S, item.pieces, { x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, n: item.pieces.length });
         sk.setDepth(D.item + 1);
-        const r = { sk, pieces: item.pieces, cls: SK.classify(item.pieces, pattern), slot: i };
+        const r = { sk, pieces: item.pieces, cls: SK.classify(item.pieces, pattern), slot: i, settled: !item.sprite };
         rack[i] = r;
-        if (item.sprite) S.tweens.add({ targets: sk, x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut" });
+        if (item.sprite) S.tweens.add({ targets: sk, x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut", onComplete: () => (r.settled = true) });
         const hit = hitFor(sk, L(Math.min(110, rw / k.rack)), L(400));
         hit.setPosition(rackX(i), Y(RACK.y));
         S.tappable(hit, () => toGrill(r));
@@ -902,7 +901,7 @@
         // guided: the next rack skewer to grill glows
         const next = pickRack();
         rack.forEach((r) => {
-          const on = !!(r && z.guided && r === next && spots.includes(null));
+          const on = !!(r && r.settled && z.guided && r === next && spots.includes(null));
           if (r && on !== !!r.glowing) {
             r.glowing = on;
             S.glow(r.sk, on);
@@ -925,7 +924,8 @@
         return null;
       };
       const expectNext = (next) => {
-        const ready = grilling.filter((g) => !g.busy && g.v >= mid).sort((a, b) => b.v - a.v)[0];
+        // a ring nearing its green asks first (the test waits for the green itself)
+        const ready = grilling.filter((g) => !g.busy && g.v >= lo - 0.15).sort((a, b) => b.v - a.v)[0];
         if (ready) {
           z.gauge({ level: ready.v, lo, hi });
           return z.expect({ kind: "timing", x: spotX(ready.spot), y: Y(GRILL.skewerY - 60), key: ready.phase >= k.turns ? "lift" : "turn" });
@@ -965,7 +965,6 @@
           (n === m ? Cook.markRight : Cook.markMiss)(w);
           if (m >= 1 && m <= 5) (n === m ? Cook.markRight : Cook.markMiss)(Lang.numId(m));
         }
-        if (n === m && m > 0 && ctx.tickItem) ctx.tickItem(w);
       });
       const odd = plate.filter((p) => !p.cls.ok).length;
       if (odd) z.listen(false, `${odd} skewer${odd > 1 ? "s" : ""} not in the order`);
