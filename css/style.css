@@ -351,13 +351,6 @@ html, body {
   font-size: clamp(13px, 2.2vw, 18px); cursor: pointer;
   box-shadow: 0 3px 10px rgba(0,0,0,0.4);
 }
-/* link to the Cook with Nani prototype (cook.html) */
-#hub-cook-btn {
-  position: absolute; left: 16px; bottom: 14px; z-index: 91;
-  padding: 10px 16px; border-radius: 10px; text-decoration: none;
-  background: rgba(30,18,10,0.6); color: var(--cream); font-weight: bold;
-  font-size: clamp(12px, 1.8vw, 16px);
-}
 #hub-quilt {
   position: absolute; right: 16px; top: 14px; z-index: 91;
   background: rgba(30,18,10,0.55); border: none; border-radius: 50%;

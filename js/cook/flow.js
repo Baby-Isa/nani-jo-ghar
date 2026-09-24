@@ -1,7 +1,7 @@
 /*
  * Cook with Nani: the game's shape. Title -> day (customers arrive, greet,
  * order in Kutchi, you fetch and cook, serve, stars and coins) -> end of
- * day summary -> shop (4 counter slots) -> next day. Five story days end
+ * day summary -> shop (an upgrade per station) -> next day. Five story days end
  * in an Eid lunch finale; free cooking (generated orders) unlocks after.
  *
  * Pedagogy carried in (docs/Nani jo Ghar — Game Design.md, Roadmap):
@@ -70,7 +70,7 @@
   async function greetingExchange(S, who, { farewell } = {}) {
     const key = farewell ? "bye" : "greet";
     await S.talk(who, UI.line(key));
-    const choices = (farewell ? Cook.data.farewell_choices : Cook.data.greeting_choices).map((k) => ({ key: k, kutchi: Cook.data.lines[k].kutchi, audio: Cook.data.lines[k].audio }));
+    const choices = (farewell ? Cook.data.farewell_choices : Cook.data.greeting_choices).map((k) => ({ key: k, kutchi: Cook.data.lines[k].kutchi, plain: Cook.data.lines[k].kutchi }));
     const correct = farewell ? "bye" : "greet-reply";
     const r = await UI.choose(choices, correct, {
       glowAfter: 6000,
@@ -203,7 +203,8 @@
     const price = order.dishes.reduce((s, d) => s + Cook.data.recipes[d.recipe].price * (d.recipe === "maani" ? d.count || 1 : 1), 0);
     state.combo = stars === 3 ? (state.combo || 0) + 1 : 0;
     const comboBonus = state.combo >= 2 ? (state.combo - 1) * 3 : 0;
-    const tip = [0, 3, 6][stars - 1] + (busy ? Math.round((state.patience || 0) * 8) : 0) + comboBonus;
+    const upgradeTip = (Cook.hasUpgrade("basket") ? 2 : 0) + (Cook.hasUpgrade("thali") ? 3 : 0);
+    const tip = [0, 3, 6][stars - 1] + (busy ? Math.round((state.patience || 0) * 8) : 0) + comboBonus + upgradeTip;
     const coins = price + tip;
 
     // what the customer asked for that didn't happen: say the Kutchi again
@@ -316,14 +317,14 @@
     return ids
       .map((id) => {
         const st = Cook.wordStage(id);
-        return `<button class="chip" data-audio="${Cook.hasAudio(id) ? id : ""}">${UI.esc(Cook.kutchi(id))}<small>${UI.esc(Cook.english(id))} <span class="dots">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
+        return `<button class="chip" data-audio="${Cook.hasVoice(Cook.kutchi(id)) ? UI.esc(Cook.kutchi(id)) : ""}">${UI.esc(Cook.kutchi(id))}<small>${UI.esc(Cook.english(id))} <span class="dots">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
       })
       .join("");
   }
   function wireChips(root) {
     root.querySelectorAll(".chip[data-audio]").forEach((b) =>
       b.addEventListener("click", () => {
-        if (b.dataset.audio) Cook.playRecording(b.dataset.audio);
+        if (b.dataset.audio) Cook.speak(b.dataset.audio);
       })
     );
   }
@@ -356,65 +357,39 @@
   }
 
   function showShop() {
+    // One upgrade per station, bought with coins. Money is the choice: the
+    // whole shop costs far more than the story pays. Every upgrade does a
+    // physical job; none of them does the listening.
     const ups = Cook.data.upgrades;
-    const slots = Cook.data.counter_slots;
     const render = () => {
-      const counter = [];
-      for (let i = 0; i < slots; i++) {
-        const id = Cook.save.slots[i];
-        const u = ups.find((x) => x.id === id);
-        counter.push(
-          u
-            ? `<button class="slot full" data-unslot="${u.id}" title="Tap to take it off the counter"><img src="${imgFor(u)}" alt="">${UI.esc(u.name)}</button>`
-            : `<div class="slot">empty slot</div>`
-        );
-      }
-      const cards = ups
-        .map((u) => {
-          const owned = Cook.save.owned.includes(u.id);
-          const placed = Cook.save.slots.includes(u.id);
-          let action;
-          if (!owned) action = `<button class="btn small ${Cook.save.coins >= u.price ? "primary" : ""}" data-buy="${u.id}" ${Cook.save.coins >= u.price ? "" : "disabled"}>Buy · ${u.price}</button>`;
-          else if (u.slot && !placed) action = `<button class="btn small" data-place="${u.id}">Put on counter</button>`;
-          else action = `<span class="tag">${u.slot ? "On the counter" : "Yours"}</span>`;
-          return `<div class="shop-item ${owned ? "owned" : ""}"><img src="${imgFor(u)}" alt=""><div><h4>${UI.esc(u.name)}</h4><p>${UI.esc(u.effect)}</p><div class="tag">${u.slot ? "Needs a counter slot" : "No slot needed"}${u.wage ? ` · wage ${u.wage}/day` : ""}</div>${action}</div></div>`;
-        })
-        .join("");
+      const card = (u) => {
+        const owned = Cook.save.owned.includes(u.id);
+        const can = Cook.save.coins >= u.price;
+        const action = owned
+          ? `<span class="tag owned-tag">✓ In Nani's kitchen</span>`
+          : `<button class="btn small ${can ? "primary" : ""}" data-buy="${u.id}" ${can ? "" : "disabled"}>Buy · ${u.price}</button>`;
+        return `<div class="shop-item ${owned ? "owned" : ""}"><div class="shop-img ${u.special ? "special" : ""}"><img src="${imgFor(u)}" alt=""></div><div><div class="station">${UI.esc(u.station)}</div><h4>${UI.esc(u.name)}</h4><p>${UI.esc(u.effect)}</p>${u.wage ? `<div class="tag">wage ${u.wage} coins a day</div>` : ""}${action}</div></div>`;
+      };
+      const nu = Cook.data.no_upgrade;
       const p = UI.panel(`
         <h2>Nani's shop</h2>
-        <p>You have <b>${Cook.save.coins}</b> coins. Nani's counter has room for ${slots} things, so choose what suits your cooking. Upgrades do the fiddly jobs; you still have to understand the order.</p>
-        <div class="shop-counter">${counter.join("")}</div>
-        <div class="shop-grid">${cards}</div>
+        <p>You have <b>${Cook.save.coins}</b> coins. Every station has an upgrade, but you can't afford them all yet, so choose what helps your cooking most. Upgrades do the fiddly jobs; you still have to understand the order.</p>
+        <div class="shop-grid">${ups.map(card).join("")}
+          <div class="shop-item none"><div class="shop-img"><img src="assets/cook/props/sugar-jar.webp" alt=""></div><div><div class="station">${UI.esc(nu.station)}</div><h4>No upgrade</h4><p>${UI.esc(nu.text)}</p></div></div>
+        </div>
         <div class="btn-row"><button class="btn primary" id="shop-done">Done</button></div>`);
       p.querySelectorAll("[data-buy]").forEach((b) =>
         b.addEventListener("click", () => {
           const u = ups.find((x) => x.id === b.dataset.buy);
-          if (Cook.save.coins < u.price) return;
+          if (Cook.save.coins < u.price || Cook.save.owned.includes(u.id)) return;
           Cook.save.coins -= u.price;
           Cook.save.owned.push(u.id);
-          if (u.slot && Cook.save.slots.length < slots) Cook.save.slots.push(u.id);
           Cook.sfx.coin();
           UI.setCoins(Cook.save.coins, true);
           Cook.writeSave();
+          const top = p.scrollTop;
           render();
-        })
-      );
-      p.querySelectorAll("[data-place]").forEach((b) =>
-        b.addEventListener("click", () => {
-          if (Cook.save.slots.length >= slots) {
-            b.textContent = "Counter full: take something off";
-            return;
-          }
-          Cook.save.slots.push(b.dataset.place);
-          Cook.writeSave();
-          render();
-        })
-      );
-      p.querySelectorAll("[data-unslot]").forEach((b) =>
-        b.addEventListener("click", () => {
-          Cook.save.slots = Cook.save.slots.filter((x) => x !== b.dataset.unslot);
-          Cook.writeSave();
-          render();
+          $("#panel").scrollTop = top;
         })
       );
       $("#shop-done").addEventListener("click", showTitle);

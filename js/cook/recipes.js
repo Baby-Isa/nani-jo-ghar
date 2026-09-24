@@ -50,6 +50,11 @@
     const bs = S.fitScale("basket", 330, 200);
     const basket = S.track(S.add.image(800, 902, "basket").setOrigin(0.5, 1).setScale(bs).setDepth(D.front));
     const front = S.track(S.add.image(800, 902, "basket-front").setOrigin(0.5, 1).setScale(bs).setDepth(D.front + 2));
+    const fastBasket = Cook.hasUpgrade("basket");
+    if (fastBasket) {
+      S.special(basket);
+      front.setTint(0xffe2a0);
+    }
     const bw = basket.displayWidth;
     const bh = basket.displayHeight;
     const spots = [
@@ -89,7 +94,7 @@
       Cook.sfx.right();
       const spot = spots[n % spots.length];
       const s = S.fitScale(obj.texture.key, 120, 105);
-      await S.fly(obj, spot.x, spot.y + 60, { scale: s, depth: D.front + 1 });
+      await S.fly(obj, spot.x, spot.y + 60, { scale: s, depth: D.front + 1, duration: fastBasket ? 260 : 520 });
       n++;
       UI.recipeProgress(n);
       ctx.basket.push(id);
@@ -108,6 +113,7 @@
       const key = extra[id] || Cook.word(id).image;
       items[id] = S.prop(key, x0 + i * 195, 778, 165, 150);
     });
+    if (items["cook-paani"] && Cook.hasUpgrade("jug")) S.special(items["cook-paani"]);
     return items;
   }
 
@@ -282,7 +288,6 @@
       count++;
       Cook.sfx.pop();
       UI.count(count);
-      if (count <= 3) Cook.playRecording(`num-0${count}`);
       const p = liq.surface();
       const spoon = S.track(S.add.circle(sugar.x, sugar.y - 120, 14, 0xffffff, 1).setDepth(D.fx));
       await S.fly(spoon, p.x + (Math.random() - 0.5) * 80, p.y, { duration: 380, arc: 90 });
@@ -365,7 +370,9 @@
     await S.setView("board");
     UI.setRecipe(UI.phrase(["cook-maani"]).k, ctx.guided ? "Nani shows you" : "from memory", 3);
     const bowl = S.prop("atto", 820, 640, 380, 280);
+    if (Cook.hasUpgrade("mixer")) S.special(bowl);
     const jug = S.prop("water-jug", 1320, 800, 190, 230);
+    if (Cook.hasUpgrade("jug")) S.special(jug);
     // water into the flour
     await waitFor(S, ctx, { "cook-paani": jug, "cook-atto": bowl }, "cook-paani");
     const home = { x: jug.x, y: jug.y, a: jug.angle };
@@ -470,7 +477,6 @@
       const score = await rollOne(S, ctx, R0);
       rolled.push(score);
       UI.count(rolled.length);
-      if (rolled.length <= 3) Cook.playRecording(`num-0${rolled.length}`);
       if (rolled.length >= 6) break;
       // another, or done?
       showSpare(true);
@@ -503,7 +509,8 @@
     await S.setView("stove");
     UI.setRecipe(UI.phrase(["cook-maani"]).k, ctx.guided ? "Nani shows you" : "from memory", 3);
     UI.recipeProgress(2);
-    S.prop("tawa", 1125, 470, 420, 260, { depth: D.item - 1 });
+    const tawaImg = S.prop("tawa", 1125, 470, 420, 260, { depth: D.item - 1 });
+    if (Cook.hasUpgrade("tawa")) S.special(tawaImg);
     const flame = S.flame(1125, 400, 170);
     S.loops.push({ stop: flame.stop });
     const plate = S.prop("thali", 420, 800, 330, 180, { depth: D.item });
@@ -585,6 +592,8 @@
       guide.y = cy * (1 - 0.66);
       UI.hideBubble();
       const pin = S.track(S.add.image(cx + 40, cy + 90, "rolling-pin").setScale(0.69).setDepth(D.fx + 1).setAngle(-20));
+      const goodPin = Cook.hasUpgrade("pin");
+      if (goodPin) S.special(pin);
       if (ctx.guided) UI.gist("Roll it out: drag from the middle outwards until it fills the circle.");
       let last = null;
       let quiet = null;
@@ -614,7 +623,7 @@
         const d = Math.hypot(dx, dy);
         if (d < 4) return;
         last = { x: p.worldX, y: p.worldY };
-        r = Math.min(R0 * 1.45, r + d * 0.22);
+        r = Math.min(goodPin ? R0 * 1.02 : R0 * 1.45, r + d * (goodPin ? 0.44 : 0.22));
         setR();
         pin.setPosition(p.worldX, p.worldY);
         Cook.gauge = { level: r / R0, lo: 0.9, hi: 1.12 };
@@ -742,6 +751,8 @@
     const liq = S.liquid(pot, "pot");
     const pan = S.track(S.add.image(1125, 340, "tadka-pan").setScale(1.12).setDepth(D.item));
     pan.baseScale = 1.12;
+    if (Cook.hasUpgrade("tadka")) S.special(pan);
+    if (Cook.hasUpgrade("pot")) S.special(pot);
     const flameL = S.flame(490, 390, 170);
     const flameR = S.flame(1125, 400, 150);
     S.loops.push({ stop: flameL.stop }, { stop: flameR.stop });
@@ -826,7 +837,8 @@
     Object.entries(items).forEach(([k, v]) => {
       if (v.visible) potItems[k] = v;
     });
-    await waitFor(S, ctx, potItems, "tadka", { say: null });
+    if (Cook.hasUpgrade("tadka")) await Cook.wait(400);
+    else await waitFor(S, ctx, potItems, "tadka", { say: null });
     await Cook.tween(S, { targets: pan, x: 650, y: 230, angle: -60, duration: 450 });
     Cook.sfx.sizzle(1.4);
     S.steam(470, 260, 6);
@@ -887,11 +899,13 @@
         UI.hideCount();
         resolve(laps);
       };
+      const easy = Cook.hasUpgrade("pot");
+      const lap = easy ? Math.PI * 1.6 : Math.PI * 2;
       const move = (p) => {
         if (!p.isDown) return (prev = null);
         const dx = p.worldX - cx;
         const dy = (p.worldY - cy) * 2;
-        if (Math.hypot(dx, dy) < 30 || Math.hypot(dx, dy) > 420) return;
+        if (Math.hypot(dx, dy) < (easy ? 12 : 30) || Math.hypot(dx, dy) > 420) return;
         const a = Math.atan2(dy, dx);
         clearTimeout(quiet);
         if (prev != null) {
@@ -899,11 +913,10 @@
           if (d > Math.PI) d -= Math.PI * 2;
           if (d < -Math.PI) d += Math.PI * 2;
           acc += Math.abs(d);
-          if (acc >= Math.PI * 2) {
-            acc -= Math.PI * 2;
+          if (acc >= lap) {
+            acc -= lap;
             laps++;
             UI.count(laps);
-            if (laps <= 3) Cook.playRecording(`num-0${laps}`);
             Cook.sfx.bubble();
             S.burst(cx, cy, [0xe0a42c, 0xf6d27a], 8, 60);
           }
@@ -933,6 +946,7 @@
       const px = x + (i - (n - 1) / 2) * 190;
       if (d.recipe === "maani") {
         const plate = S.prop("thali", px, 712, 220, 120, { depth: Cook.D.occ + 2 });
+        if (Cook.hasUpgrade("thali")) S.special(plate);
         for (let k = 0; k < d.count; k++) {
           const c = S.track(S.add.image(px, 690 - k * 10, "chapati-puffed").setScale(S.fitScale("chapati-puffed", 150, 100)).setDepth(Cook.D.occ + 3));
           out.push(c);

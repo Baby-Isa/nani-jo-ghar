@@ -533,6 +533,24 @@
       return { stop };
     }
 
+    /** A "special" (upgraded) version of a prop: gold tint and a twinkle
+     * now and then. Stands in for real upgrade art. */
+    special(obj, on = true) {
+      if (!obj || !on) return obj;
+      obj.setTint(0xffe2a0, 0xffd27a, 0xffe9b8, 0xf6c35b);
+      const ev = this.time.addEvent({
+        delay: 1800,
+        loop: true,
+        callback: () => {
+          if (!obj.active || !obj.visible) return;
+          const b = obj.getBounds();
+          this.burst(b.x + Math.random() * b.width, b.y + Math.random() * b.height * 0.6, [0xfff3c4, 0xffffff], 5, 30);
+        },
+      });
+      obj.once("destroy", () => ev.remove());
+      return obj;
+    }
+
     /** Liquid drawn inside a vessel image. */
     liquid(vessel, kind) {
       const f = VESSEL[kind];

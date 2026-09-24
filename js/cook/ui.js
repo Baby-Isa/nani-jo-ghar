@@ -99,9 +99,12 @@
     en.textContent = line.english;
     en.classList.toggle("hidden", !englishOn);
     el.querySelector(".bubble-en").classList.toggle("on", englishOn);
-    const hasRec = line.audio && Cook.hasAudio(line.audio);
+    const plains = line.parts ? line.parts.map((p) => p.plain) : [line.plain];
+    const hasRec = plains.every((p) => Cook.hasVoice(p));
     el.querySelector(".bubble-play").classList.toggle("hidden", !hasRec);
-    el.querySelector(".bubble-rec").classList.toggle("hidden", !!hasRec);
+    // the voice is a placeholder until the family records it: say so
+    el.querySelector(".bubble-rec").classList.toggle("hidden", false);
+    el.querySelector(".bubble-rec").textContent = hasRec ? "placeholder voice" : "needs recording";
     el.classList.remove("hidden");
     el.style.animation = "none";
     void el.offsetWidth;
@@ -140,7 +143,9 @@
       document.addEventListener("pointerdown", skip, true);
     });
     try {
-      await Promise.race([hasRec ? Cook.playRecording(line.audio) : Cook.wait(opts.ms || Cook.readMs(line.plain)), skipped]);
+      const plains = line.parts ? line.parts.map((p) => p.plain) : [line.plain];
+      const talk = hasRec ? Promise.all([Cook.speakAll(plains), Cook.wait(900)]) : Cook.wait(opts.ms || Cook.readMs(line.plain));
+      await Promise.race([talk, skipped]);
     } finally {
       document.removeEventListener("pointerdown", skip, true);
     }
@@ -168,7 +173,7 @@
       });
       b.querySelector(".bubble-play").addEventListener("click", (ev) => {
         ev.stopPropagation();
-        if (lastLine && lastLine.audio) Cook.playRecording(lastLine.audio);
+        if (lastLine) Cook.speakAll(lastLine.parts ? lastLine.parts.map((p) => p.plain) : [lastLine.plain]);
       });
     });
   }
@@ -210,7 +215,7 @@
         btn.dataset.key = o.key;
         btn.innerHTML = `<span>${o.kutchi}</span>`;
         // non-readers hear each reply before choosing (the At the door idea)
-        if (o.audio && Cook.hasAudio(o.audio)) {
+        if (o.plain && Cook.hasVoice(o.plain)) {
           const hear = document.createElement("span");
           hear.className = "hear";
           hear.setAttribute("role", "button");
@@ -219,7 +224,7 @@
           hear.addEventListener("click", (ev) => {
             ev.stopPropagation();
             Cook.unlockAudio();
-            Cook.playRecording(o.audio);
+            Cook.speak(o.plain);
           });
           btn.prepend(hear);
         }
@@ -332,6 +337,7 @@
     b.classList.remove("hidden");
     b.querySelector(".count-digit").textContent = n;
     b.querySelector(".count-word").textContent = n >= 1 && n <= 5 ? Cook.numWord(n) : "";
+    if (n >= 1 && n <= 5) Cook.speak(Cook.numWord(n));
     b.classList.remove("bump");
     void b.offsetWidth;
     b.classList.add("bump");

@@ -18,7 +18,9 @@ Zafar was asked with a 5-minute deadline. He answered the words question; the re
 |---|---|---|
 | Missing Kutchi words | *paani, chai, dudh, **khun**, atto, daal, maani*, confirmed by Zafar ("khun not khand") | Everything else comes from the content master, recombined only in existing frames |
 | Cooking verbs | **No Kutchi.** Actions are shown (glow, a see-through fingertip, a short English how-to line in the sidebar) | Never invent Kutchi. Listed for the family in `docs/cook-with-nani-words.md` |
-| Audio | Existing recordings play (greetings, thanks, bye, numbers 1 to 3). Everything else is text with a "needs recording" dot. **No computer voice** | Game Design: TTS teaches the wrong pronunciation |
+| Audio | First build: recordings only, no computer voice. **Changed at Zafar's request (24 Sept, morning): a Gujarati TTS placeholder voice for every line, at about half speed** (gTTS slow mode plus ffmpeg at 0.75×, roughly 2 syllables a second) | He found the earlier placeholder "crazy fast". Family recordings replace the files one for one |
+| Shop | First build: 4 counter slots. **Changed at Zafar's request: one upgrade per station, bought with coins; money is the choice** (the whole shop is about 375 coins, the story pays about 175) | His suggestion; clearer for children than slots |
+| Hub link | Added, then **removed**: the fruit errand is left exactly as it was | "Create a new page for now, leave the current game" |
 | Where it lives | A separate page, `cook.html`, linked from the hub. The fruit errand is untouched | Safe to throw away; nothing else breaks |
 | Customers | Nana, Ma (the player's mum), Bilal (cousin, name is a placeholder). Nani's look as generated | Pending family check (words doc, question 5) |
 | Stars, coins, tips | Yes: 1 to 3 stars per order, coins and tips, a perfect-order combo | Zafar now leans towards these; nothing is ever lost |
@@ -65,14 +67,7 @@ Zafar was asked with a 5-minute deadline. He answered the words question; the re
 
 When a count or an extra is wrong, Nani says "Arre re!" and **the customer says the right Kutchi back** (a recast). That is the teaching moment, not a buzzer.
 
-**Shop.** 4 counter slots:
-- chai machine, 60 coins
-- measuring jug, 35
-- dough mixer, 45
-- heavy tawa, 40
-- Bilal helps, 15 plus 5 a day
-
-The sharp knife (25) needs no slot. Every upgrade automates a physical step, never the listening.
+**Shop.** One upgrade per station, bought with coins (see section 8 for each station's upgrade and what the real one could be). The whole shop costs about 375 coins and the story pays about 175, so you choose. Every upgrade does a physical job, never the listening. Sugar counting deliberately has no upgrade: the counting *is* the Kutchi.
 
 **Recipe book** (the notebook-lite): each learned recipe as a Kutchi sequence (*paani → chai → boil → dudh → khun → pour*), how each family member likes it, and every word met, with stage dots.
 
@@ -96,7 +91,7 @@ The sharp knife (25) needs no slot. Every upgrade automates a physical step, nev
 | 10 MB of art | WebP: 2 MB |
 
 **Known limits (not fixed, by design or for later):**
-- **Most lines have no recording yet**, so for now it is a reading game with listening where recordings exist. The family recording list is in the words doc. This is the biggest gap for non-readers.
+- **The voice is a Gujarati TTS placeholder** at about half speed: a guide, not Kutchi pronunciation. The family recording list is in the words doc.
 - Placeholder "talking" (a frame swap), until LivePortrait.
 - Upscaled art (the backgrounds are 830 px wide in the sheet): soft on a big laptop, fine on a phone.
 - No saving mid-day. Leaving restarts the day, as in the fruit errand's shell spec.
@@ -111,7 +106,7 @@ Personas from `docs/game-modes-fun-analysis.md`. Each one "played" the build: I 
 | **Aisha, 5** (can't read, plays with a parent) | Loves the sparkles, stars, puffing maani and tapping the glowing thing. Timing bars are abstract; she taps too early | Mostly from the adult reading it aloud, until recordings exist. She **can't read the greeting choices** | "Which one do I press?" "When do I tap?" | **Hear buttons** on greeting choices (▶ plays the recording). **The target pulses while it's the right moment** in every timing task. **A see-through fingertip** shows knead, roll, chop and stir |
 | **Zayn, 8** (competitive) | Likes grades ("100%"), stars and Busy mode. Chai for the 6th time feels samey; wants a reason to be perfect | Numbers and extras matter for his score, so he listens | "What do I get for all 3-stars?" | **Perfect-order combo**: consecutive 3-star orders pay a growing bonus ("Perfect ×3!"). Tawa speeds up slightly with each maani |
 | **Maryam, 11** (aesthetics, heritage) | The modern art is a yes. She likes the recipe book and "how the family like it". Wants to make the kitchen hers | Recipe sequences in Kutchi; the family's preferences | "Can I decorate?" | Noted for later: décor in the shop (Game Design warns against pure cosmetics; décor that changes the hub is OK). Not in this build |
-| **Zafar, 38** (learner, Puzzle Pirates fan) | Upgrade choices on a 4-slot counter; "the usual" riddles; tadka order memory | Frames repeat and only words change, as designed. The recast after a mistake is the best bit. He'd want more Kutchi per minute and real recordings | "It teaches the words well, but it needs the voices." | Free cooking now leans towards **his weakest words** (spaced review). Recording list ready |
+| **Zafar, 38** (learner, Puzzle Pirates fan) | Upgrade choices (money is tight, so it's a real decision); "the usual" riddles; tadka order memory | Frames repeat and only words change, as designed. The recast after a mistake is the best bit. He'd want more Kutchi per minute and real recordings | "It teaches the words well, but it needs the voices." | Free cooking now leans towards **his weakest words** (spaced review). Recording list ready |
 | **Farah, 34** (commuter, 3–5 minutes) | A full day is 5–8 minutes: too long for a quick go | Would do a daily short round | "I want one order, not a whole day." | **Quick order** (one customer, about 2 minutes) on the title once chai is learned. **"Cooked with Nani on N days"**, which never resets |
 | **Nani, 68** (the voice; plays alongside) | Big, clear screens; the Kutchi is written so she can say it to the child | Her voice *is* the game | "That's not how I'd say it." | The words doc's questions and recording list are for her |
 
@@ -148,13 +143,17 @@ The same personas, after the round 1 changes, the full five-day run and the six 
   - the counter-slot decision
 
   The weakest: chai is cooked many times. The chai machine and the jug are the relief valve, which is the Good Pizza pattern.
-- **Educational: yes, structurally.** The order *is* the Kutchi, nothing tells you in English what to cook, and mistakes get a recast. But **it only becomes a listening game once the family records the lines.** Until then it's a reading game for readers and a play-along for non-readers with an adult.
+- **Educational: yes, structurally.** The order *is* the Kutchi, nothing tells you in English what to cook, and mistakes get a recast. With the placeholder Gujarati voice every line is now heard as well as read, so non-readers can play by ear. **It becomes real Kutchi listening once the family's recordings replace the placeholder.**
+
+## 6. Test results
+
+*(filled in from the final runs)*
 
 ## 7. Next steps (for Zafar)
 
 1. **Play it:** `cook.html` on a phone in landscape (GitHub Pages: `/cook.html`). Try Relaxed with a child and Busy yourself.
-2. **Words:** answer the questions in `docs/cook-with-nani-words.md`, then do one recording session from its list. Recordings drop in as files; run `python3 build/build_audio_manifest.py` afterwards.
-3. **Wire whole-sentence recordings:** give each order its own audio id (for example `ord-chai-2khun`) and play it in `S.talk`. About 20 lines of code once the files exist.
+2. **Words:** answer the questions in `docs/cook-with-nani-words.md`, then do one recording session from its list.
+3. **Recordings drop straight in:** each one replaces the placeholder Gujarati file of the same name in `assets/audio/cook-tts/` (for example `muke-chai-khape.mp3`). No code change is needed.
 4. **Then decide** what carries over into the real build:
    - the stations engine
    - the step and hint engine
@@ -167,6 +166,22 @@ The same personas, after the round 1 changes, the full five-day run and the six 
    - spice cupboard as its own scene
    - more recipes (khichdi, chaas with churning, bajra rotlo)
 
-## 6. Test results
+## 8. Station upgrades: in the build now, and what the real upgrade could be
 
-*(filled in from the final runs)*
+The prototype shows most upgrades as a gilded "special" version of the ordinary prop (gold tint and a twinkle), because there's no art for the real thing yet. The right-hand column is what each one should become.
+
+| Station | In the build (price) | What it does now | Real upgrade to design and draw |
+|---|---|---|---|
+| Pantry fetch | Special basket (30) | Items fly in twice as fast; +2 coins per order | **A two-basket trolley**: fetch for two orders in one trip. It pays off in Busy mode, where customers queue |
+| Pouring (water, milk) | Special jug (35) | Pouring stops at the line by itself | **A measuring jug with marked lines** (a quarter, a half, full). Nani then names the mark in Kutchi, which turns the upgrade into new vocabulary |
+| Boil watch | Chai machine (60) | Boils and pours chai for you | Keep the **brass chai machine**, with a cheaper first tier: **a milk-watcher disc** that rattles just before the pan boils over (the window gets wider rather than disappearing) |
+| Sugar count | none | — | **Deliberately none.** Counting the spoons is the listening test |
+| Kneading | Special atto bowl (40) | Kneads the dough for you | **An atta-kneading machine** |
+| Rolling | Special rolling pin (30) | Rolls twice as fast; never too big | **A tapered belan**, then a **chapati press** that makes a perfect circle in one push |
+| Tawa | Special tawa (40) | Flip window twice as wide | **A heavy cast-iron tawa**, then a **roti jali** (mesh) for a guaranteed puff |
+| Chopping | Special knife (25); Bilal helps (15 + 5 a day) | 2 swipes instead of 4; Bilal chops for you | **A sharp chef's knife**, then a **pull-cord vegetable chopper**. Helpers become **family staff with a daily wage** (tycoon-style), each with a personality |
+| Tadka | Special tadka pan (30) | Tips itself into the daal (you still add the spices in Nani's order) | **A long-handled tadka ladle** that pours straight into the pot. Later, a **masala dabba** on the counter, as décor only: it must never open the right spice for you, because that would do the listening |
+| Stirring | Special pot (30) | Small, wobbly circles count | **A long wooden ladle (doi)**; later a **pressure cooker whose whistles you count** (a new counting mini-game) |
+| Serving | Special thali (40) | +3 coins tip per order | **A brass thali with katoris**: better presentation, bigger tips, and the plating mini-game ("daal in the bowl, maani on the left") |
+
+**Design rule kept:** no upgrade touches the Kutchi. Fetching the right thing, the counts, the tadka order and "the usual" are always the player's job.

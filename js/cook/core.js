@@ -19,12 +19,14 @@
   Cook.audioManifest = { word: [], carrier: [] };
 
   Cook.load = async function () {
-    const [data, manifest] = await Promise.all([
+    const [data, manifest, tts] = await Promise.all([
       fetch("data/cook.json").then((r) => r.json()),
       fetch("data/audio-manifest.json").then((r) => r.json()).catch(() => ({})),
+      fetch("data/cook-tts.json").then((r) => r.json()).catch(() => ({ lines: {} })),
     ]);
     Cook.data = data;
     Cook.audioManifest = manifest || {};
+    Cook.tts = (tts && tts.lines) || {};
     return data;
   };
 
@@ -74,11 +76,7 @@
     Cook.save.mode = mode;
     Cook.writeSave();
   };
-  Cook.hasUpgrade = (id) => {
-    const up = Cook.data.upgrades.find((u) => u.id === id);
-    if (!up) return false;
-    return up.slot ? Cook.save.slots.includes(id) : Cook.save.owned.includes(id);
-  };
+  Cook.hasUpgrade = (id) => Cook.save.owned.includes(id);
 
   /* ---------------- per-word progress (Game Design: per-word difficulty) ----
    * stage 1 introduced (first meeting) -> the item glows as it's named
@@ -169,6 +167,71 @@
       }
     });
   };
+  /* ---------------- placeholder voice (Gujarati TTS, about half speed) ----
+   * Every line the game can say has a file, keyed by its normalised
+   * romanised text (build/build_cook_tts.py). A family recording replaces
+   * the file of the same name. Played through Web Audio, which is unlocked
+   * by the first tap and works on phones where <audio> autoplay doesn't. */
+  Cook.tts = {};
+  Cook.norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+  Cook.hasVoice = (plain) => !!Cook.tts[Cook.norm(plain)];
+  const bufCache = {};
+  let currentSrc = null;
+  async function loadBuffer(url) {
+    if (!bufCache[url]) {
+      bufCache[url] = fetch(url)
+        .then((r) => r.arrayBuffer())
+        .then((ab) => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej)))
+        .catch(() => null);
+    }
+    return bufCache[url];
+  }
+  Cook.preloadVoice = (plain) => {
+    const url = Cook.tts[Cook.norm(plain)];
+    if (url && ctx) loadBuffer(url);
+  };
+  Cook.stopVoice = () => {
+    try {
+      if (currentSrc) currentSrc.stop();
+    } catch (e) {}
+    currentSrc = null;
+  };
+  /** Speak a line; resolves when it ends (or at once if there's no file). */
+  Cook.speak = async function (plain) {
+    const url = Cook.tts[Cook.norm(plain)];
+    if (!url) return false;
+    Cook.unlockAudio();
+    if (!ctx) return false;
+    const buf = await loadBuffer(url);
+    if (!buf) return false;
+    Cook.stopVoice();
+    return new Promise((resolve) => {
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const g = ctx.createGain();
+      g.gain.value = 1.6;
+      src.connect(g).connect(ctx.destination);
+      currentSrc = src;
+      let done = false;
+      const finish = () => {
+        if (!done) {
+          done = true;
+          resolve(true);
+        }
+      };
+      src.onended = finish;
+      setTimeout(finish, (buf.duration * 1000) / Cook.speed + 150);
+      src.start();
+    });
+  };
+  /** Speak several lines in a row (an order is "Muke chai khape." then "Ne bo khun."). */
+  Cook.speakAll = async function (plains) {
+    for (const p of plains) {
+      await Cook.speak(p);
+      await new Promise((r) => setTimeout(r, 180 / Cook.speed));
+    }
+  };
+
   /** How long a text-only line stays up: enough to read, not so long it drags. */
   Cook.readMs = (text) => Math.max(1400, Math.min(4200, 700 + (text || "").length * 55));
 

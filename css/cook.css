@@ -246,8 +246,15 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .slot.full { border-style: solid; border-color: var(--sage); background: #eef3e8; }
 .slot img { max-width: 60%; max-height: 60%; object-fit: contain; }
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
-.shop-item { background: var(--paper); border-radius: 14px; padding: 8px 10px; display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; }
-.shop-item img { width: 52px; height: 52px; object-fit: contain; }
+.shop-item { background: var(--paper); border-radius: 14px; padding: 8px 10px; display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: center; }
+.shop-img { position: relative; width: 56px; height: 56px; }
+.shop-img img { width: 56px; height: 56px; object-fit: contain; }
+/* "special" upgrades reuse the ordinary prop art, gilded */
+.shop-img.special img { filter: sepia(.7) saturate(2.6) hue-rotate(-8deg) brightness(1.08) drop-shadow(0 0 6px rgba(255, 200, 80, .7)); }
+.shop-img.special::after { content: "\2728"; position: absolute; right: -4px; top: -6px; font-size: 16px; }
+.shop-item .station { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--madder); }
+.shop-item.none { opacity: .8; border: 2px dashed #d9c7a8; }
+.owned-tag { color: var(--sage-dark) !important; font-size: 13px !important; }
 .shop-item h4 { margin: 0; font-size: 15px; }
 .shop-item p { margin: 1px 0 4px !important; font-size: 12.5px !important; line-height: 1.25; }
 .shop-item .tag { font-size: 11px; font-weight: 800; color: var(--indigo); }

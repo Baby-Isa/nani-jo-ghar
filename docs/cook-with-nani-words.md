@@ -7,12 +7,12 @@
 ## Rules followed
 
 - **No Kutchi is invented.** Sentences only recombine frames that are already in the content master: *Muke … khape*, *Ne …*, *Salamun alaykum*, *Wa alaikum salaam*, *Aabhar aanjo*, *Achija*, *Arre re*, *Hedo*.
-- **No computer voice.** A line plays a family recording if one exists (`assets/audio/word/<id>.mp3`). Otherwise the bubble shows a small "needs recording" dot.
+- **Placeholder voice: Gujarati text-to-speech at about half speed** (Zafar, 24 Sept: "use Gujarati audio and play it half speed or slower"). Every line the game can say has a file in `assets/audio/cook-tts/`, made by `build/build_cook_tts.py`, which writes each romanised word in Gujarati script so the voice can read it. The bubble says "placeholder voice". Some Kutchi sounds will be wrong: it's a Gujarati voice. **A family recording replaces a file of the same name** (the names are the lines, e.g. `muke-chai-khape.mp3`, listed in `data/cook-tts.json`).
 - **Cooking verbs have no Kutchi yet.** Nani shows each action by making the item glow, and a short English how-to line appears in the sidebar. When the family gives the verbs, they replace those English lines.
 
 ## 1. Words used
 
-| id | Kutchi (draft) | English | Where from | Recording? |
+| id | Kutchi (draft) | English | Where from | Family recording? (all have a placeholder voice) |
 |---|---|---|---|---|
 | cook-paani | paani | water | Zafar, 24 Sept (OK for now) | needed |
 | cook-chai | chai | tea (leaves) | Zafar, 24 Sept (OK for now) | needed |
@@ -30,7 +30,7 @@
 | spi-05 | rai | mustard seeds | content master | needed |
 | spi-10 | elchi | cardamom | content master | needed |
 | spi-16 | loon | salt (tadka decoy) | content master | needed |
-| num-01 to num-05 | hikdo, bo, trae, char, panj | 1 to 5 | handout | 1 to 3 exist (placeholder voice); 4 and 5 needed |
+| num-01 to num-05 | hikdo, bo, trae, char, panj | 1 to 5 | handout | needed |
 
 The seven words confirmed on 24 Sept should be added to the content master spreadsheet. For now they live in `data/cook.json`.
 
@@ -71,8 +71,8 @@ Full orders the prototype builds, for recording as whole sentences:
 
 1. The seven new words, each twice with a pause: paani, chai, dudh, khun, atto, daal, maani.
 2. Spices and vegetables: jeeru, rai, hardar, marcha, elchi, loon, dungri, tameto, lasan.
-3. Numbers: char, panj (hikdo, bo and trae only have a placeholder voice so far).
+3. Numbers: hikdo, bo, trae, char, panj.
 4. The whole orders in section 2, in each customer's voice if possible (Nana, a mum, a child). Different voices for the same words are good for learning.
 5. Nani: Salamun alaykum, Wa alaikum salaam, Arre re, Hedo, and the pantry lines (*Muke chai khape. Ne dudh. Ne khun.* …).
 
-Recordings drop in as files named `assets/audio/word/<id>.mp3` (for example `cook-khun.mp3`). The whole-sentence recordings need a small code change, noted in the build log.
+Recordings drop in as files in `assets/audio/cook-tts/`, one per line, replacing the placeholder of the same name: for example `khun.mp3`, `muke-chai-khape.mp3`, `ne-trae-khun.mp3`. An order plays as its sentences in a row, so each sentence is recorded on its own. The Gujarati spellings used for the placeholder voice are in `build/build_cook_tts.py` (the `GU` table), if anyone wants to improve them.

@@ -17,7 +17,7 @@ phone.
 
 ## Cook with Nani (proof of concept, 24 Sept 2026)
 
-**Open `cook.html`** (or the "Cook with Nani" button in the hub). It's a
+**Open `cook.html`** (a separate page; the fruit errand and hub are untouched). It's a
 separate, self-contained prototype of the flagship game mode from
 `docs/game-modes-v2.md` and `docs/game-modes-fun-analysis.md`, in the new
 3D-film art style. It doesn't touch the fruit errand.
