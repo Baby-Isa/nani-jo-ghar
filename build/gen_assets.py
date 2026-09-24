@@ -530,8 +530,8 @@ def delta_e(lab1, lab2):
     return float(np.linalg.norm(np.asarray(lab1) - np.asarray(lab2)))
 
 
-def normalise_skin(im, target_lab, tolerance=3.0, passes=3):
-    """Run _normalise_skin_once up to `passes` times: a very orange raw
+def normalise_skin(im, target_lab, tolerance=3.0, passes=6):
+    """Run _normalise_skin_once up to `passes` times (6 converges on every master image): a very orange raw
     render sits partly outside the soft mask, so one pass can land short."""
     out, info = _normalise_skin_once(im, target_lab, tolerance)
     first = dict(info)
