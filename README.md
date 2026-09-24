@@ -17,6 +17,14 @@ phone.
 
 ## Cook with Nani (proof of concept, 24 Sept 2026)
 
+> **Phase A (later on 24 Sept):** after the first playtest, the stations were rebuilt top-down with drawn placeholder art and first-person hands. Every choice now comes from the spoken order (see the audit). New in this phase:
+> - a mission card with ear / hand / lightning star cut-outs, and pocket money shown as a receipt
+> - Nani's "pass me" interrupts
+> - 16 stations, and six dishes: chai, maani, daal, chaat bowl, samosa, mishkaki
+> - a **Station lab** on the title screen to try each station
+>
+> Design, decisions and audit: `docs/cook-with-nani-phase-a-design.md`. Questions for the family: `docs/Nani jo Ghar — Questions for Mum (Round 2 — Cooking).md`. Test: `python3 build/test_cook.py --lab` (every station) or `--days 7` (the whole story).
+
 **Open `cook.html`** (a separate page; the fruit errand and hub are untouched). It's a
 separate, self-contained prototype of the flagship game mode from
 `docs/game-modes-v2.md` and `docs/game-modes-fun-analysis.md`, in the new

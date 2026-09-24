@@ -55,7 +55,7 @@
    */
   UI.pill = function (line, opts = {}) {
     const el = document.createElement("span");
-    el.className = `wp ${opts.shape || "full"}`;
+    el.className = `wp wp-${opts.shape || "full"}`;
     const voice = Lang.hasVoice(line);
     const hideTr = opts.noTranslate || !line.en;
     el.innerHTML = `${voice ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : ""}<span class="wp-text">${Lang.html(line, opts)}</span>${

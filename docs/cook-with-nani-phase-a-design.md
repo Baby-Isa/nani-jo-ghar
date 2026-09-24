@@ -230,3 +230,91 @@ A station earns its place only if **it's fun on its own and at least one of its 
 **After each step:** the "can you win without Kutchi?" audit and Zafar's feedback.
 
 **Words needed from the family** (English placeholders until then) are in `docs/Nani jo Ghar — Questions for Mum (Round 2 — Cooking).md`.
+
+---
+
+## 12. Phase A: what was built (24 Sept 2026)
+
+Open `cook.html`. **Station lab** on the title screen runs any station on its own, with a random order each time. Tick "Nani helps" for the first-time guidance.
+
+**Shared systems:**
+- **Word pills** `[speaker | Kutchi | translate]` everywhere: speech, the mission card, choices, "pass me". English placeholders are grey italic and spoken in an English voice; Kutchi uses the half-speed Gujarati placeholder voice.
+- **Item labels** under every ingredient bowl. They fade by word stage (text, then speaker only, then none). Tap to hear.
+- **The mission card:**
+  - the order as pills; well-known words show as "•••" so you have to listen;
+  - ticks as you add things;
+  - step chips;
+  - three star cut-outs (ear, hand, lightning in Busy or tick in Relaxed) that fill or grey out *as it happens*;
+  - stamped "Served!" at the end.
+- **Completion cards** at the end of the day, with the reasons ("Ear: 2 khun, they asked for 3").
+- **Pocket money** as a receipt: 5 for helping, then +5 ear, +3 hand, +3 lightning/tick, plus upgrades. Nani explains the three stars once, before day 1, and nobody ever loses money.
+- **Nani's "pass me"** (*Muke hikdo … dine*):
+  - she slides in with three look-alikes;
+  - she asks for any word you've met, weakest first;
+  - Relaxed pauses the cooking; Busy keeps it cooking (the pan can boil over while you help her);
+  - it happens mid-boil, mid-tawa and between stations.
+- **Small talk:** peace be upon you, how are you (placeholder), "can you make me …?" (placeholder). Phrases you've answered right 3 times are just heard, with an occasional re-test.
+- **First-time help:** a goal line per station (in the sidebar, never over the game), a see-through fingertip demonstrating the gesture, and verdict words on the action ("Perfect!", "Too much!", "Burnt!", "It puffed!").
+
+**Stations (16):**
+
+| Station | How it plays | Where the Kutchi comes in |
+|---|---|---|
+| Fetch | Pantry with look-alike decoys | The order's items |
+| Pass me | See above | Any known word |
+| Pour | Dashed fill band inside the pan, liquid rising, pitch rising | Water/milk; *no dudh* |
+| Boil | A ring around the pan; tap the knob or pan in the green | — |
+| Count in | Tap the sugar (next to look-alike salt and flour), then ✓ | *bo khun* / *no khun* |
+| Knead | Hands press the dough | — |
+| Roll | Two hands on the pin, drag up and down to the circle; overdo it and it tears; decide how many | *trae maani* |
+| Tawa | Ring on the chapati; the spatula hand flips it; tap again to puff | — |
+| Chop | Fruit Ninja: vegetables fly up; slice only those Nani named, as many as she said | *only bo dungri* |
+| Tadka | Spices (heaped bowls, labelled) into hot oil in Nani's order | The sequence |
+| Stir | Ladle hand, laps counted aloud, speedometer | Number + *slowly* / *quickly* |
+| Assemble | Chaat toppings in the customer's order; "no X" means leave it out | Sequence, *no X* |
+| Fill | Fillings named by the customer; leave out the "no" ones | Nouns, *no X* |
+| Fold | Swipe along three dashed lines | — |
+| Fry | Several in the oil at once, each with its own ring; lift each when golden; more on the tray than asked for | Count |
+| Thread | Pieces onto the skewer in order | Sequence |
+| Grill | Ring timer; turn twice | — |
+
+**Recipes (data with variable slots):**
+
+| Dish | Slots |
+|---|---|
+| Chai | Cups, milk or no milk, sugar count or none, elchi or ginger |
+| Maani | How many |
+| Daal | Onions and tomatoes to chop, tadka order, stir count and speed |
+| Chaat bowl | Topping order, "no X", potatoes to chop |
+| Samosa | How many, fillings, "no X" |
+| Mishkaki | Skewer order, chips or not |
+
+Customers have tastes: Nana, no chilli in his chaat; Ma, no milk and ginger in her chai; Bilal, extra sev.
+
+**Six story days:** chai (Nani's demo first), maani, daal, chaat bowls, samosa, Eid mishkaki. Then free cooking and quick orders.
+
+## 13. Audit: can you win without understanding the words?
+
+| Decision | Before Phase A | Now |
+|---|---|---|
+| Chai: milk? how much sugar? extra? how many cups? | Only sugar count and elchi varied | **All vary, all spoken** |
+| Pantry | Basic items were recipe memory | Every item comes from the order; look-alike decoys (sugar/salt, water/milk, cumin/mustard) |
+| Tea leaves at the stove | Fixed step | Picked from look-alike bowls |
+| Maani | Count | Count |
+| Chopping | Not language | **Which vegetable and how many** |
+| Tadka | Order | Order |
+| Stir | Count | Count **and speed** |
+| Chaat, samosa, mishkaki | — | **Sequence, fillings, "no X", counts** |
+| Nani's "pass me" | — | **Any word, any time, look-alike choices** |
+| Timing (boil, tawa, fry, grill), kneading, folding | Hands only | Hands only (by design: the fun break between listening) |
+
+**Remaining weaknesses:**
+1. **Placeholder words.** Dishes and toppings still in English (chickpeas, yoghurt, mince…) are "understood" by any English speaker. The family's Round 2 answers fix this.
+2. **Stage-1 reading.** A brand-new word is shown as text on both the card and the label, so a reader can match letters the first time. That's intended (it's how it's taught), and from stage 2 the label is speaker-only.
+3. **The placeholder voice is Gujarati**, so pronunciation isn't Kutchi yet.
+
+## 14. Open questions for Zafar
+
+- Station feel: which stations are fun, which are fiddly? The Station lab is the quickest way to judge.
+- Timing windows (boil about 1.2 s, tawa about 0.9 s) and ninja speed: too hard for a 5-year-old?
+- Should "pass me" also happen in the pantry, or only at the stove?

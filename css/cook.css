@@ -293,8 +293,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .wp button svg { width: 100%; height: 100%; }
 .wp button.on { background: var(--ink); color: var(--cream); }
 .wp .wp-en { width: 100%; font-family: var(--ui-font); font-size: 13px; color: var(--ink-soft); font-weight: 700; }
-.wp.full .wp-text { font-size: clamp(17px, 2vw, 28px); }
-.wp.choice .wp-text { font-size: clamp(17px, 2.2vw, 28px); }
+.wp.wp-full .wp-text { font-size: clamp(17px, 2vw, 28px); }
+.wp.wp-choice .wp-text { font-size: clamp(17px, 2.2vw, 28px); }
 #bubble .wp .wp-text { font-size: clamp(18px, 2.4vw, 32px); }
 
 #nani-card { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; animation: pop .22s ease-out; }
@@ -331,7 +331,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #mission .m-order li { padding: 4px 6px; border-radius: 12px; }
 #mission .m-order li.done { background: #eaf3e4; }
 #mission .m-order li.done .wp-text::after { content: " \2713"; color: var(--sage-dark); }
-#mission .m-order .wp.full .wp-text { font-size: clamp(14px, 1.45vw, 20px); }
+#mission .m-order .wp.wp-full .wp-text { font-size: clamp(14px, 1.45vw, 20px); }
 #mission .m-order { max-height: 38vh; overflow-y: auto; }
 #mission .wp button, #nani-card .wp button { width: 30px; height: 30px; padding: 6px; }
 #mission .m-steps { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
