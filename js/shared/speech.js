@@ -43,6 +43,17 @@
  *    listening.
  *  - Home-screen (standalone) PWAs re-ask mic permission per launch on
  *    some iOS versions; the button's copy should expect that.
+ *
+ * Module surface (docs/shared-api.md has the full contract):
+ *   listen({choices, timeoutMs, onState, pcm})  -> {choice, confidence} | null
+ *   cancel()                        stop a listen in progress (a pill was tapped)
+ *   status()                        "unknown" | "ok" | "refused" | "absent"
+ *   loadTemplates(id, urls)  hasTemplates(ids)  templateUrls(id, manifest)
+ *   setProfile(id)                  enrolments are per profile, per device
+ *   confirm(choice, by)             a parent / the game confirms the last take;
+ *                                   enrols it by the plan's rule (max 3 takes)
+ *   log  onLog  logMoment(entry)    the parent log (device only, no audio)
+ * Loaded as a plain <script> it is window.Speech; in Node, require() it.
  */
 (function (root, factory) {
   const Speech = factory();
@@ -473,10 +484,16 @@
   Speech.pack = pack;
   Speech.unpack = unpack;
 
+  // Enrolments are per profile (a sibling's voice must not teach Layla's
+  // recogniser) and per device. The key is versioned; "default" is used
+  // until the shell calls setProfile().
   const STORE = "njg-speech-enrol-v1";
+  let profile = "default";
+  const storeKey = () => (profile === "default" ? STORE : `${STORE}:${profile}`);
+  Speech.MAX_TAKES = 3; // per word; a new take replaces the oldest
   function loadEnrolments() {
     try {
-      const raw = typeof localStorage !== "undefined" && localStorage.getItem(STORE);
+      const raw = typeof localStorage !== "undefined" && localStorage.getItem(storeKey());
       if (!raw) return;
       const data = JSON.parse(raw);
       for (const c in data) data[c].forEach((p, i) => Speech.addTemplate(c, unpack(p), `enrol:${i}`));
@@ -491,7 +508,7 @@
         const mine = bank[c].filter((t) => t.from.startsWith("enrol:")).map((t) => pack(t.feat));
         if (mine.length) data[c] = mine;
       }
-      localStorage.setItem(STORE, JSON.stringify(data));
+      if (typeof localStorage !== "undefined") localStorage.setItem(storeKey(), JSON.stringify(data));
     } catch (e) {
       /* as above */
     }
@@ -502,10 +519,38 @@
     saveEnrolments();
   };
   Speech.enrolmentCount = (choice) => (bank[choice] || []).filter((t) => t.from.startsWith("enrol:")).length;
+  /** Switch whose enrolments are live: drops the old profile's, loads the new one's. */
+  Speech.setProfile = (id) => {
+    for (const c in bank) bank[c] = bank[c].filter((t) => !t.from.startsWith("enrol:"));
+    profile = id || "default";
+    loadEnrolments();
+  };
+  Speech.profile = () => profile;
+  /** Store enrolment features for `choice`, keeping only the newest MAX_TAKES. */
+  function addEnrolment(choice, feat) {
+    if (!feat || feat.length < 3) return false;
+    const list = (bank[choice] = bank[choice] || []);
+    const mine = list.filter((t) => t.from.startsWith("enrol:"));
+    while (mine.length >= Speech.MAX_TAKES) list.splice(list.indexOf(mine.shift()), 1);
+    list.push({ feat, from: `enrol:${Date.now()}:${mine.length}` });
+    saveEnrolments();
+    return true;
+  }
 
   /* ----------------------------------------------------- browser: audio */
   const isBrowser = typeof window !== "undefined" && typeof navigator !== "undefined";
   let ctx = null;
+  // "unknown" until the first listen; "refused" after a denied permission
+  // (the say moment hides the mic for the session); "absent" with no mic API.
+  let micStatus = isBrowser && navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? "unknown" : "absent";
+  Speech.status = () => micStatus;
+  Speech._setStatus = (s) => (micStatus = s); // tests and the parent screen's "try the mic again"
+  let cancelCurrent = null;
+  /** Stop a listen in progress; it resolves null. Safe to call any time. */
+  Speech.cancel = () => {
+    if (cancelCurrent) cancelCurrent("cancel");
+  };
+  Speech.busy = () => !!cancelCurrent;
   function audioContext() {
     if (!ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
@@ -547,9 +592,16 @@
     const onState = opts.onState || (() => {});
     if (!isBrowser || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return null;
     const ac = audioContext();
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 },
-    });
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 },
+      });
+    } catch (e) {
+      micStatus = e && (e.name === "NotAllowedError" || e.name === "SecurityError") ? "refused" : "absent";
+      throw e;
+    }
+    micStatus = "ok";
     const src = ac.createMediaStreamSource(stream);
     const chunks = [];
     let total = 0;
@@ -562,6 +614,7 @@
     let started = false;
     let finish = null;
     const done = new Promise((resolve) => (finish = resolve));
+    cancelCurrent = (why) => finish(why);
     const t0 = Date.now();
     const onAudio = (data) => {
       chunks.push(Float32Array.from(data));
@@ -608,6 +661,7 @@
     if (!worklet) node.connect(ac.destination); // ScriptProcessor only runs when connected
     onState("listening");
     const why = await done;
+    cancelCurrent = null;
     try {
       src.disconnect();
       node.disconnect();
@@ -616,7 +670,7 @@
     }
     stream.getTracks().forEach((t) => t.stop()); // give iOS its speaker volume back
     onState("done");
-    if (!started && why === "timeout") return null;
+    if (why === "cancel" || (!started && why === "timeout")) return null;
     const all = new Float32Array(total);
     let o = 0;
     for (const c of chunks) {
@@ -630,10 +684,15 @@
 
   /**
    * The call the modes are designed against.
-   *   choices: word ids (3–8), timeoutMs, onState (optional UI hook),
+   *   choices: word ids (2–8), timeoutMs, onState (optional UI hook),
    *   pcm (optional: skip the mic and classify this 16 kHz clip; for tests)
    * -> { choice, confidence } | null. Never throws for a missing mic or
    * a refused permission: that is a null too, and the mode falls back.
+   * Only one listen runs at a time; a second call while one is live is null.
+   *
+   * The audio itself is dropped here: Speech.last keeps the take's features
+   * (for confirm/enrol) and the classifier's numbers (for the parent log),
+   * never the sound.
    */
   Speech.listen = async function (opts) {
     opts = opts || {};
@@ -641,30 +700,85 @@
     if (choices.length < 2 || !Speech.hasTemplates(choices)) return null;
     let pcm = opts.pcm || null;
     if (!pcm) {
+      if (cancelCurrent || micStatus === "refused" || micStatus === "absent") return null;
       try {
         pcm = await Speech.record({ timeoutMs: opts.timeoutMs, onState: opts.onState });
       } catch (e) {
+        cancelCurrent = null;
         return null;
       }
     }
     if (!pcm || pcm.length < SR * 0.2) return null;
-    const r = classify(queryFeatures(pcm, SR), Speech.templatesFor(choices));
-    Speech.last = { pcm, result: r, choices }; // for enrol-after-confirm and the parent log
+    const q = queryFeatures(pcm, SR);
+    pcm = null;
+    const r = classify(q, Speech.templatesFor(choices));
+    Speech.last = { feat: q[0], result: r, choices, confirmed: false }; // q[0] is the unwarped take
     return r.choice ? { choice: r.choice, confidence: r.confidence } : null;
   };
 
   /**
-   * Enrol a take: the child (or a parent) says `choice`; pass the PCM from
-   * Speech.record, or nothing to enrol the last listen()'s audio once a
-   * parent/the game has confirmed what was said. Kept on this device only.
+   * The plan's enrolment rule for the last take. by: "parent" (the parent's
+   * tick, or "that was right" after a null) or "game" (the game acted on a
+   * recognition and nothing was corrected). A parent's word always enrols;
+   * the game's only on a clear win against family templates (margin >= 0.4),
+   * so a child never teaches the recogniser their mistakes.
+   */
+  Speech.ENROL_MARGIN = 0.4;
+  Speech.shouldEnrol = function (last, choice, by) {
+    if (!last || !last.feat || last.feat.length < 3) return false;
+    if (by === "parent") return true;
+    const r = last.result || {};
+    return by === "game" && r.choice === choice && (r.margin || 0) >= Speech.ENROL_MARGIN;
+  };
+  /** Confirm what the last take was; enrols it if the rule says so. -> enrolled? */
+  Speech.confirm = function (choice, by) {
+    const last = Speech.last;
+    if (!last || last.confirmed || !Speech.shouldEnrol(last, choice, by)) return false;
+    last.confirmed = true;
+    return addEnrolment(choice, last.feat);
+  };
+
+  /**
+   * Enrol a take directly: pass 16 kHz PCM from Speech.record (a parent's
+   * setup takes), or nothing to enrol the last listen()'s take.
    */
   Speech.enrol = function (choice, pcm) {
-    pcm = pcm || (Speech.last && Speech.last.pcm);
-    if (!pcm) return false;
-    const n = Speech.enrolmentCount(choice);
-    const ok = Speech.addTemplate(choice, features(pcm, SR), `enrol:${n}`);
-    if (ok) saveEnrolments();
-    return ok;
+    if (pcm) return addEnrolment(choice, features(pcm, SR));
+    if (!Speech.last || !Speech.last.feat) return false;
+    Speech.last.confirmed = true;
+    return addEnrolment(choice, Speech.last.feat);
+  };
+
+  /**
+   * The family recordings of a word id, from the audio manifest
+   * (data/audio-manifest.json: {kind: [ids]}). Family voice kinds only
+   * ("word"); the placeholder TTS voices ("cook-tts",
+   * "carrier") are never templates.
+   */
+  Speech.FAMILY_KINDS = ["word"];
+  Speech.templateUrls = function (id, manifest, base) {
+    base = base == null ? "assets/audio/" : base;
+    const out = [];
+    for (const kind of Speech.FAMILY_KINDS) {
+      const ids = (manifest && manifest[kind]) || [];
+      for (const x of ids) if (x === id || x.startsWith(`${id}__`)) out.push(`${base}${kind}/${x}.mp3`);
+    }
+    return out;
+  };
+
+  /**
+   * The parent log, device only and never audio: one entry per speaking
+   * moment, written by the say moment (js/shared/say.js). onLog(entry), if
+   * set, is called for each so the shell can persist it with the profile.
+   */
+  Speech.log = [];
+  Speech.onLog = null;
+  Speech.logMoment = function (entry) {
+    const e = Object.assign({ t: Date.now() }, entry);
+    Speech.log.push(e);
+    if (Speech.log.length > 500) Speech.log.shift();
+    if (typeof Speech.onLog === "function") Speech.onLog(e);
+    return e;
   };
 
   if (isBrowser) loadEnrolments();
