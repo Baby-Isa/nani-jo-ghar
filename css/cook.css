@@ -699,21 +699,26 @@ body.w6 #mission .m-head { grid-template-columns: auto minmax(0, 1fr); grid-temp
 .lr.empty { min-height: 1.4em; }
 /* read-along: the part being said lights up */
 .reading { background: #fff0c2 !important; box-shadow: 0 0 0 3px #ffd98a !important; border-radius: 10px; }
-.slot.reading { border-radius: 8px; }
+.pslot.reading { border-radius: 8px; }
 
 /* 3. one card per thing, a fixed shape: a person's cup, a skewer (always four dots), a maani */
 .icards { display: flex; flex-wrap: wrap; gap: 6px; }
-.icard { position: relative; background: var(--paper); border: 2px solid #eadcc6; border-radius: 14px; padding: 6px 40px 6px 8px; min-width: 0; }
+.icard { position: relative; background: var(--paper); border: 2px solid #eadcc6; border-radius: 14px; padding: 6px 6px 6px 8px; min-width: 0; }
+/* a card's speaker floats in its top-right corner: the words flow beside it, and a long word goes below it whole */
+.icard .card-say { position: relative; top: auto; right: auto; float: right; margin: -2px -2px 2px 6px; }
+.icard .ic-slots { clear: both; }
 .icard.unit { flex: 1 1 96px; }
-.icard .ic-title { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(15px, 1.3vw, 19px); line-height: 1.2; min-height: 1.2em; overflow-wrap: break-word; word-break: normal; hyphens: none; }
+/* a card that names its pieces (a mixed skewer) takes the whole row, so four words fit under four dots */
+.icard.unit.named { flex-basis: 100%; }
+.icard .ic-title { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(15px, 1.3vw, 19px); line-height: 1.2; min-height: 1.2em; overflow-wrap: normal; word-break: normal; hyphens: none; }
 .icard .ic-slots { display: flex; gap: 8px; margin-top: 5px; align-items: flex-start; }
-.icard .slot { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; }
-.icard .slot i { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--ink-soft); box-shadow: 0 0 0 2px var(--cream); }
+.icard .pslot { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; }
+.icard .pslot i { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--ink-soft); box-shadow: 0 0 0 2px var(--cream); }
 .icard .ic-slots.named { gap: 4px; }
-.icard .ic-slots.named .slot { flex: 1 1 0; }
-.icard .slot b { font-family: var(--kutchi-font); font-size: 12px; line-height: 1.1; text-align: center; overflow-wrap: anywhere; }
+.icard .ic-slots.named .pslot { flex: 1 1 auto; }
+.icard .pslot b { font-family: var(--kutchi-font); font-size: 12px; line-height: 1.1; text-align: center; overflow-wrap: normal; word-break: normal; }
 .icard.done { background: #eaf3e4; border-color: #cfe3c6; }
-.icard.done .slot i, .icard .slot.done i { background: var(--sage); }
+.icard.done .pslot i, .icard .pslot.done i { background: var(--sage); }
 .icard.person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px; align-items: start; margin-bottom: 4px; }
 .icard.person .lface { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; background: #f3ead9; box-shadow: 0 0 0 2px var(--cream); }
 .icard.person .ic-title { font-size: clamp(13px, 1.1vw, 16px); color: var(--ink-soft); }
@@ -729,14 +734,14 @@ body.w6 #mission .m-head { grid-template-columns: auto minmax(0, 1fr); grid-temp
 #intro .r6.head { padding-left: 0; }
 #intro .r6.head .lt { font-size: clamp(17px, min(2.2vw, 4.4vh), 28px); color: var(--ink-soft); }
 #intro .icards { gap: clamp(6px, 1vw, 12px); }
-#intro .icard { padding: clamp(6px, 1vh, 12px) 48px clamp(6px, 1vh, 12px) clamp(8px, 1vw, 14px); border-radius: 18px; }
+#intro .icard { padding: clamp(6px, 1vh, 12px) clamp(6px, 1vh, 12px) clamp(6px, 1vh, 12px) clamp(8px, 1vw, 14px); border-radius: 18px; }
 #intro .icard.unit { flex: 0 1 auto; min-width: min(190px, 100%); }
 #intro .icard .ic-title { font-size: clamp(18px, min(2.4vw, 5vh), 30px); }
-#intro .icard .slot i { width: clamp(16px, 1.8vw, 24px); height: clamp(16px, 1.8vw, 24px); }
-#intro .icard .slot b { font-size: clamp(12px, 1.3vw, 17px); }
+#intro .icard .pslot i { width: clamp(16px, 1.8vw, 24px); height: clamp(16px, 1.8vw, 24px); }
+#intro .icard .pslot b { font-size: clamp(12px, 1.3vw, 17px); }
 #intro .icard.person { flex: 1 1 260px; }
 #intro .icard.person .lface { width: clamp(30px, min(4vw, 8vh), 48px); height: auto; aspect-ratio: 1; }
-#intro .icard .card-say { width: clamp(32px, 3.4vw, 42px); height: clamp(32px, 3.4vw, 42px); top: 8px; right: 8px; }
+#intro .icard .card-say { width: clamp(32px, 3.4vw, 42px); height: clamp(32px, 3.4vw, 42px); }
 #intro .ladder { flex-direction: row; flex-wrap: wrap; }
 
 /* 8. the UI fades in as it's first needed: the stars from the second order, the light bulb from the third */
@@ -749,10 +754,12 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
   .card-say { width: 28px; height: 28px; padding: 5px; top: 4px; right: 4px; }
   body.w6 #mission .m-head { padding-right: 32px; }
   .r6 .lt { font-size: 16px; }
-  .icard { padding: 4px 34px 4px 6px; border-radius: 11px; }
+  .icard { padding: 4px 4px 4px 6px; border-radius: 11px; }
   .icard .ic-title { font-size: 15px; }
-  .icard .slot i { width: 11px; height: 11px; }
+  .icard .pslot i { width: 11px; height: 11px; }
   .icard.person .lface { width: 26px; height: 26px; }
+  /* a short phone: a cup's slots run along one line, so three cups fit */
+  #side .icard.person .lrows { flex-direction: row; flex-wrap: wrap; gap: 0 10px; }
   #intro .icard .card-say { width: 30px; height: 30px; }
 }
 

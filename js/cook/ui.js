@@ -813,15 +813,15 @@
     const out = [];
     for (let u = 0; u < n; u++) {
       const c = document.createElement("div");
-      c.className = ["icard", "unit", r.done || u < (r.got || 0) ? "done" : "", r.no ? "no" : ""].filter(Boolean).join(" ");
+      c.className = ["icard", "unit", pieces ? "named" : "", r.done || u < (r.got || 0) ? "done" : "", r.no ? "no" : ""].filter(Boolean).join(" ");
       const slots = [];
       for (let k = 0; k < r.cards; k++) {
         const pr = pieces && pieces[k];
-        slots.push(`<span class="slot${pr && pr.done ? " done" : ""}"><i></i>${pr ? `<b>${text6(Lang.wordLine(pr.ids[0]), rowHide(pr))}</b>` : ""}</span>`);
+        slots.push(`<span class="pslot${pr && pr.done ? " done" : ""}"><i></i>${pr ? `<b>${text6(Lang.wordLine(pr.ids[0]), rowHide(pr))}</b>` : ""}</span>`);
       }
       c.innerHTML = `<div class="ic-title">${text6(title, rowHide(r))}</div><div class="ic-slots${pieces ? " named" : ""}">${slots.join("")}</div>`;
       const rows = [r].concat(pieces || []);
-      c.appendChild(cardSay(say6(), () => [{ line: r.said || r.line, els: [c] }].concat((pieces || []).map((p) => ({ line: p.said || p.line, els: [...c.querySelectorAll(".slot")].slice(pieces.indexOf(p), pieces.indexOf(p) + 1) }))), rows));
+      c.prepend(cardSay(say6(), () => [{ line: r.said || r.line, els: [c] }].concat((pieces || []).map((p) => ({ line: p.said || p.line, els: [...c.querySelectorAll(".pslot")].slice(pieces.indexOf(p), pieces.indexOf(p) + 1) }))), rows));
       addEl(map, r, c);
       out.push(c);
     }
@@ -851,7 +851,7 @@
     });
     rows.filter((x) => !placed.has(x)).forEach((x) => list.appendChild(row6(map, x)));
     const parts = () => (forLine ? [{ line: forLine, els: [c.querySelector(".ic-title")] }] : []).concat(rows.map((x) => ({ line: x.r.no || !x.r.said ? x.r.line : x.r.said, els: map.get(x.r) || [] })));
-    c.appendChild(cardSay(say6(), parts, rows.map((x) => x.r)));
+    c.querySelector(".ic-body").prepend(cardSay(say6(), parts, rows.map((x) => x.r)));
     return c;
   }
   /** A ladder's blocks into `box`: sections as rows, person cards and unit cards. */
@@ -900,8 +900,8 @@
   function renderOrder6() {
     const box = $("#mission .m-order");
     box.innerHTML = "";
-    renderDish6();
     blocks6(box, sideEls);
+    renderDish6();
     $("#side").classList.toggle("english", !!mission.english);
     if (introOpen()) renderIntro6();
   }
@@ -996,6 +996,21 @@
     // an order row first, the dish's own name last (the pantry fetches the tea for "chai")
     const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
     if (!r) return null;
+    r.got = (r.got || 0) + 1;
+    if (r.got >= (r.need || 1)) markDone(r);
+    settle(L);
+    renderOrder();
+    return r;
+  };
+  /** Tick the i-th piece of the dish's sequence (a mixed skewer's pieces): that row, never another row with the same word. */
+  M.tickUnit = function (i, dish = 0) {
+    const L = ladderFor(dish);
+    const s = L && L.sections.find((x) => x.seq);
+    if (!s) return null;
+    const units = [];
+    s.groups.forEach((g) => g.forEach((r) => !r.no && units.push(...Array(r.need || 1).fill(r))));
+    const r = units[i];
+    if (!r || r.done) return r || null;
     r.got = (r.got || 0) + 1;
     if (r.got >= (r.need || 1)) markDone(r);
     settle(L);

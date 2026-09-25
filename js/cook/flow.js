@@ -32,6 +32,8 @@
   const COMPOUND_RE = /\b(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+(?:\+(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+)+/;
   const wordsOf = (why) =>
     String(why)
+      // a compound kind in agreement ("ph-big+cook-maani" -> "wadhi maani": maani is a she-word)
+      .replace(new RegExp(COMPOUND_RE.source, "g"), (m) => Lang.plain(Lang.phrase(m.split("+").filter((id) => Cook.data.words[id]))))
       .replace(/\+(?=(?:cook|veg|spi|fru|ph|num|lnk)-)/g, " ")
       .replace(ID_RE, (id) => (Cook.data.words[id] ? Cook.display(id) : id));
   /**
@@ -133,7 +135,12 @@
       if (st && st.goal && UI.helpText() !== st.goal) UI.gist(st.goal);
     };
     ctx.tickItem = (id) => {
-      if (typeof id === "number") id = UI.mission.unitId(id, ctx.dishAt);
+      if (typeof id === "number") {
+        // a position in the dish's sequence (a mixed skewer's piece): that row, not a count row with the same word
+        const r = UI.mission.tickUnit(id, ctx.dishAt);
+        if (r && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(r.ids[0]), ok: true });
+        return;
+      }
       if (typeof id !== "string") return;
       UI.mission.tickItem(id, ctx.dishAt);
       if (ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
