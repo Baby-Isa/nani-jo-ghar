@@ -202,20 +202,22 @@
     if (key) Cook.save.goalShown[key] = true;
     if (text !== helpText) UI.closeHelp();
     helpText = text;
-    $("#btn-help").classList.toggle("fresh", !!fresh);
+    const hb = $("#btn-help");
+    if (hb) hb.classList.toggle("fresh", !!fresh);
   };
   UI.helpText = () => helpText;
   UI.hideGist = () => {
     $("#gist").classList.add("hidden");
     UI.closeHelp();
     helpText = HELP_DEFAULT;
-    $("#btn-help").classList.remove("fresh");
+    if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
   };
   UI.hideTopGist = () => $("#gist").classList.add("hidden");
   /** The "?" pops the goal out beside itself (over the sidebar, or just into the picture on a narrow one). */
   UI.openHelp = function () {
     const pop = $("#help-pop");
     const btn = $("#btn-help");
+    if (!pop || !btn) return;
     pop.querySelector(".hp-text").textContent = helpText;
     pop.classList.remove("hidden");
     btn.classList.remove("fresh");
@@ -235,9 +237,9 @@
     const pop = $("#help-pop");
     if (!pop) return;
     pop.classList.add("hidden");
-    $("#btn-help").setAttribute("aria-expanded", "false");
+    if ($("#btn-help")) $("#btn-help").setAttribute("aria-expanded", "false");
   };
-  UI.helpOpen = () => !$("#help-pop").classList.contains("hidden");
+  UI.helpOpen = () => !!$("#help-pop") && !$("#help-pop").classList.contains("hidden");
 
   /* ---------------- choices (small talk), as big pills ---------------- */
   UI.choose = function (options, correctKey, opts = {}) {
@@ -522,7 +524,7 @@
     const r = L && L.head;
     box.innerHTML = r ? `<span class="md-text">${Lang.html(r.line, { hide: rowHide(r) })}</span>${mission.english && r.line.en ? `<span class="md-en">${esc(r.line.en)}</span>` : ""}` : `<span class="md-text">${esc(mission.name)}</span>`;
     const tr = $("#mission .m-tr");
-    tr.classList.toggle("on", !!mission.english);
+    if (tr) tr.classList.toggle("on", !!mission.english);
   }
   /** A/En: English under every row of the order (for rows still to do, that's the answer: the ear star). */
   M.translate = function () {
@@ -969,12 +971,18 @@
     UI.hideDone();
     $("#choices").classList.add("hidden");
     $("#passme").classList.add("hidden");
-    $("#intro").classList.add("hidden");
+    if ($("#intro")) $("#intro").classList.add("hidden");
     UI.closeHelp();
   };
 
   UI.init = function () {
-    $("#done-btn").addEventListener("click", () => {
+    // every page element here is optional (another page, like find.html, may not have all of them)
+    const on = (sel, fn) => {
+      const e = $(sel);
+      if (e) e.addEventListener("click", fn);
+      return e;
+    };
+    on("#done-btn", () => {
       Cook.sfx.click();
       const r = doneResolve;
       UI.hideDone();
@@ -982,7 +990,7 @@
     });
     document.addEventListener("pointerdown", () => Cook.unlockAudio(), { passive: true });
     // the "?": the goal pops out; any tap elsewhere puts it away
-    $("#btn-help").addEventListener("click", () => {
+    on("#btn-help", () => {
       Cook.sfx.click();
       if (UI.helpOpen()) UI.closeHelp();
       else UI.openHelp();
@@ -995,14 +1003,12 @@
       true
     );
     global.addEventListener("resize", () => UI.closeHelp());
-    const tr = $("#mission .m-tr");
-    tr.innerHTML = ICON.translate;
-    tr.addEventListener("click", () => UI.mission.translate());
-    const replay = $("#mission .m-replay");
-    replay.innerHTML = ICON.replay;
-    replay.addEventListener("click", () => {
+    const tr = on("#mission .m-tr", () => UI.mission.translate());
+    if (tr) tr.innerHTML = ICON.translate;
+    const replay = on("#mission .m-replay", () => {
       Cook.unlockAudio();
       UI.mission.replay();
     });
+    if (replay) replay.innerHTML = ICON.replay;
   };
 })(window);
