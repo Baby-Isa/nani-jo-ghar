@@ -82,7 +82,7 @@ Next after these: symmetric look-alike groups for "pass me" (Wave 2, data only);
 
 ## After Wave 3 (Wave 4 check, 25 Sept 2026)
 
-The same question, "can you win without the Kutchi?", asked again of the final code (Waves 1–3 merged: order ladder, help costs, building blocks and levels, Stir on a track, the Mishkaki grill, the Maani line, the Chai tray, the polished keepers, the open kitchen). I read each station's code and played every station in the Station lab at all six screen sizes.
+The same question, "can you win without the Kutchi?", asked again of the final code (Waves 1–3 merged: order ladder, help costs, building blocks and levels, Stir on a track, the Mishkaki grill, the Maani line, the Chai tray, the polished keepers, the open kitchen). I read each station's code and played every station in the Station lab at five screen sizes.
 
 **The short answer:** almost every hole the first audit found is closed. The ones still open have one main cause: **decision words that are still English placeholders.** An English speaker can read or hear those decisions without knowing any Kutchi. Code can't fix that. The family's words can.
 

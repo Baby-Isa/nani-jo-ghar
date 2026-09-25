@@ -202,7 +202,7 @@ The prototype shows most upgrades as a gilded "special" version of the ordinary 
 
 ## 9. Persona review, round 3 (Wave 4 check, 25 Sept 2026)
 
-The same six personas (section 4), after Waves 1–3: the order ladder, help costs, levels, Stir on a track, and the three combined stations (Chai tray, Maani line, Mishkaki grill), plus the polished keepers and the open kitchen. The review comes from screenshots of every station at all six screen sizes, two story days on the phone and on the iPad in portrait, and a read of the code.
+The same six personas (section 4), after Waves 1–3: the order ladder, help costs, levels, Stir on a track, and the three combined stations (Chai tray, Maani line, Mishkaki grill), plus the polished keepers and the open kitchen. The review comes from Station lab screenshots of every station at five screen sizes (phone 915×375, 1366×768, 1440×900, 1280×800, iPad; the iPad-portrait and day runs were cut short to make way for Wave 5) and a read of the code.
 
 | Persona | Fun | Learning Kutchi | What they'd say | What to fix |
 |---|---|---|---|---|
