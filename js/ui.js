@@ -13,7 +13,7 @@
   const qs = (sel, root) => (root || document).querySelector(sel);
 
   function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
-  function itemImgSrc(word) { return `assets/${word.image}`; }
+  function itemImgSrc(word) { return njgV(`assets/${word.image}`); }
 
   /** Fills `target` with the Kutchi line (+ draft mark) and a tap-to-toggle
    * "English" link; or, when there's no Kutchi yet, the English honestly

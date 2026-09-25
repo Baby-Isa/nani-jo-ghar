@@ -406,7 +406,7 @@
   let mission = null;
   const Order = () => Cook.Order;
   const hideWord = (id) => Cook.cardHidden(id) && Lang.wordHasVoice(id);
-  const faceUrl = (who) => (who === "nani" ? "assets/cook/characters/nani-badge.webp" : `assets/cook/characters/${who}-badge.webp`);
+  const faceUrl = (who) => Cook.v(`assets/cook/characters/${who}-badge.webp`);
   UI.faceUrl = faceUrl;
   M.open = function ({ who, name, ladders, lines, line, busy }) {
     if (!ladders) ladders = [Order().fromLines(lines || [])];

@@ -689,12 +689,12 @@
     const sp = SP();
     if (ref.startsWith("bg:")) {
       const stem = (sp.bg || {})[ref.slice(3)];
-      return stem ? `assets/cook/bg/${stem}.webp` : null;
+      return stem ? Cook.v(`assets/cook/bg/${stem}.webp`) : null;
     }
     const i = ref.lastIndexOf(".");
     const v = i > 0 ? ((sp.items || {})[ref.slice(0, i)] || {})[ref.slice(i + 1)] : null;
     const stem = v && (typeof v === "string" ? v : v.file);
-    return stem ? `${sp.dir || "assets/cook/items/"}${stem}.webp` : null;
+    return stem ? Cook.v(`${sp.dir || "assets/cook/items/"}${stem}.webp`) : null;
   }
   Art.refUrl = refUrl;
   const loading = {};
@@ -900,7 +900,7 @@
     const w = Cook.data.words[id];
     const u = refUrl(`${id}.bowl`);
     if (u) return u;
-    if (w && w.image) return `assets/cook/props/${w.image}.webp`;
+    if (w && w.image) return Cook.v(`assets/cook/props/${w.image}.webp`);
     return Art.url(`bowl:${id}`);
   };
 })(window);

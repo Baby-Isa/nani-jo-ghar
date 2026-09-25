@@ -94,7 +94,7 @@
     const p = UI.panel(`
       <h2>${esc(title)}</h2>
       <div class="cards"><div class="ccard rcard res-card"><div class="rc-left">
-        <div class="cc-head"><img src="assets/cook/characters/nani-badge.webp" alt="">Nani's list</div>
+        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="">Nani's list</div>
         <span class="cc-coins"><i class="coin-dot"></i>+${card.coins}</span>
         <div class="cc-stars">${starsHtml(card.stars)}</div>
         <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>In your purse</span><b>${Cook.save.coins}</b></div></div>
@@ -126,7 +126,7 @@
     const mode = Cook.save.mode;
     const p = UI.panel(
       `<div class="title-wrap">
-        <img src="assets/cook/characters/nani-happy.webp" alt="Nani">
+        <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
         <div>
           <h1>Find it with Nani</h1>
           <p>Nani tells you what she needs, in Kutchi. Listen, find the right things and the right number, and check the shopkeeper hasn't made a mistake!</p>

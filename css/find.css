@@ -3,7 +3,7 @@
    scene is a plain-HTML 1600x900 world (js/find/view.js); nothing in HTML
    sits over the stall: Done, zoom and "where?" live in the sidebar's foot. */
 
-body.find #overlay.title-mode { background: url("../assets/backgrounds/bg-bazaar-stall-v3.jpg") center / cover; }
+body.find #overlay.title-mode { background: url("../assets/backgrounds/bg-bazaar-stall-v3.jpg?v=20260925T220144Z") center / cover; }
 
 /* the letterbox: a blurred copy of the scene, never black bars */
 #letterbox { position: absolute; inset: -30px; background: center / cover no-repeat; filter: blur(18px) saturate(1.1) brightness(.92); }

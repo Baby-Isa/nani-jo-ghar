@@ -297,7 +297,7 @@
     async function personSay(c, rows) {
       const img = faceImg();
       const prev = img ? img.getAttribute("src") : null;
-      if (img) img.src = `assets/cook/characters/${c.who}-badge.webp`;
+      if (img) img.src = Cook.v(`assets/cook/characters/${c.who}-badge.webp`);
       const bob = S.tweens.add({ targets: c.face, y: c.face.y - zt.L(8), duration: 200, yoyo: true, repeat: -1 });
       const y0 = c.face.y;
       try {

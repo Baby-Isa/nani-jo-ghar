@@ -51,10 +51,10 @@
       fly: el("div", "w-fly", world),
       fx: el("div", "w-fx", world),
     };
-    layers.bg.src = scene.background;
+    layers.bg.src = Cook.v(scene.background);
     layers.bg.alt = "";
     layers.bg.draggable = false;
-    $("#letterbox").style.backgroundImage = `url("${scene.background}")`;
+    $("#letterbox").style.backgroundImage = `url("${Cook.v(scene.background)}")`;
     $("#stage").style.background = scene.letterbox || "#e9dcc4";
     // the shopkeeper stands behind the counter
     if (scene.character) {
@@ -62,7 +62,7 @@
       const img = el("img", "w-person", layers.char);
       img.alt = "";
       img.draggable = false;
-      img.src = `assets/characters/${c.id}/${c.id}-neutral.png`;
+      img.src = Cook.v(`assets/characters/${c.id}/${c.id}-neutral.png`);
       const w = 344 * (c.scale || 1);
       Object.assign(img.style, { left: `${c.x - w / 2}px`, top: `${c.top}px`, width: `${w}px` });
       V.person = { img, id: c.id, x: c.x, top: c.top, w, h: 700 * (c.scale || 1) };
@@ -70,7 +70,7 @@
     // the counter front, redrawn over him from the background
     if (scene.occluder && scene.occluder.fromBackground) {
       const y = scene.occluder.y;
-      Object.assign(layers.occ.style, { top: `${y}px`, height: `${WH - y}px`, backgroundImage: `url("${scene.background}")`, backgroundPosition: `0 ${-y}px` });
+      Object.assign(layers.occ.style, { top: `${y}px`, height: `${WH - y}px`, backgroundImage: `url("${Cook.v(scene.background)}")`, backgroundPosition: `0 ${-y}px` });
     }
     // the carried basket: back, items, front rim
     if (scene.basket) {
@@ -84,8 +84,8 @@
         i.draggable = false;
         Object.assign(i.style, { left: `${b.x - b.w / 2}px`, top: `${b.top}px`, width: `${b.w}px`, height: `${h}px` });
       });
-      back.src = b.back;
-      front.src = b.front;
+      back.src = Cook.v(b.back);
+      front.src = Cook.v(b.front);
       layers.basketItems = inside;
     }
     V.fit();
@@ -99,7 +99,7 @@
     const img = el("img", "", d);
     img.alt = "";
     img.draggable = false;
-    img.src = Find.picture(item.noun);
+    img.src = Cook.v(Find.picture(item.noun));
     V.size(d, item);
     d.style.zIndex = String(Math.round(item.baseline));
     if (item.tilt) d.style.setProperty("--tilt", `${item.tilt}deg`);
@@ -119,7 +119,7 @@
         resolve({ w: Math.round(i.naturalWidth * k), h: Math.round(i.naturalHeight * k) });
       };
       i.onerror = () => resolve({ w: size, h: size });
-      i.src = Find.picture(noun);
+      i.src = Cook.v(Find.picture(noun));
     });
   };
   V.clearItems = function () {
@@ -187,7 +187,7 @@
   };
   V.mood = function (mood) {
     if (!V.person) return;
-    V.person.img.src = `assets/characters/${V.person.id}/${V.person.id}-${mood}.png`;
+    V.person.img.src = Cook.v(`assets/characters/${V.person.id}/${V.person.id}-${mood}.png`);
   };
   V.bob = function () {
     if (!V.person) return;
