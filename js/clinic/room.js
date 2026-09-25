@@ -177,13 +177,14 @@
       mg.strokeCircle(-8, -8, 30);
       mg.lineBetween(14, 14, 40, 40);
       m.add(mg);
-      m.setSize(120, 120);
-      m.setInteractive(new Phaser.Geom.Circle(0, 0, 60), Phaser.Geom.Circle.Contains);
-      m.on("pointerdown", (p, lx, ly, ev) => {
-        if (ev && ev.stopPropagation) ev.stopPropagation();
+      // (tapped through room.tapBody: the magnifier is only live while the body is)
+      room.toggleCloseup = () => {
         Cook.sfx.click();
-        room.patient.closeup(!room.patient.isCloseup()).then(() => room.onView && room.onView());
-      });
+        const t = room.patient.closeup(!room.patient.isCloseup());
+        Cook.Hub.reset(); // nothing to tap while the zoom animates (the test waits instead of tapping again)
+        Cook.expect = null;
+        t.then(() => room.onView && room.onView());
+      };
       room.magnifier = m;
     }
 
@@ -208,7 +209,7 @@
               return;
             }
           }
-          if (room.magnifier && Phaser.Math.Distance.Between(p.worldX, p.worldY, room.magnifier.x, room.magnifier.y) < 62) return;
+          if (room.magnifier && Phaser.Math.Distance.Between(p.worldX, p.worldY, room.magnifier.x, room.magnifier.y) < 62) return room.toggleCloseup();
           if (room.trolley && room.trolley.all.some((o) => o.active && o.getBounds().contains(p.worldX, p.worldY))) return;
           if (p.worldX > 1080 && !room.patient.isCloseup()) return; // the doctor's side of the room
           const d = room.patient.toDesign(p.worldX, p.worldY);
