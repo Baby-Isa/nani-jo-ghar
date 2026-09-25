@@ -142,6 +142,17 @@ Tidy up's five solver checks, built on these calls:
 
 The generator stays in `Tidy.Rules.make`.
 
+### 1.4 Tidy up's dialect: `Rel.Tidy`
+Tidy up compiled its own board shape before this module existed. `Rel.Tidy` is that API exactly (`item`, `matches`, `where`, `at(state, spot)`, `free`, `neighbours`, `tagged`, `satisfies`, `holds`, `options`), tested for agreement with Tidy up's stub on 300 random boards. Its shapes are:
+- a board `{spots, byId}`;
+- items `{word, attrs, kind}`;
+- rows with an explicit `type`;
+- `not: {rule}`;
+- `order.along` as a list of spot ids;
+- a placed-item anchor `{item, attrs}`.
+
+**One real difference, left open for phase B:** in Tidy up's dialect "next to" a placed item means *any* neighbour (left, right, front, back, `adj`). In the board form above it means left or right only. Pick one when the words arrive: it depends on what the Kutchi phrase covers.
+
 ---
 
 ## 2. Which-one chooser: `js/shared/whichone.js`
@@ -331,7 +342,7 @@ Each swap is one line, or a few in a single adapter file. After swapping, delete
 | Mode | Stub today | Swap to |
 |---|---|---|
 | **Find it** | `Find.matches` on `item.rel`, `Find.makeWants` size rows in `gen.js`, `Find.fakeListen`, `data/find.json` `star_set` | `Rel.holds(item, want.where, scene)` (word matching is the default); `WhichOne.checkDecoys(items, row, {minValues: {size: 2}})` or `WhichOne.build` for size rows; `Say.tell({choices, actor, onChoice, speech: {listen: Find.fakeListen, hasTemplates: () => true}})` in the lab, the real `Speech` otherwise; `Stars.installInto(Cook.data)` and `Stars.voice/ear(rows, "find")` |
-| **Tidy up** | `Tidy.Rel` in `js/tidy/rules.js`, `Tidy.say(choices)`, speech stubbed to null, sidecars `kitchen-tidy.json` etc. | `Tidy.Rel = Rel` (same `holds(state, rule, scene)` / `options(state, rule, scene)`; load `data/relations.json`; build scenes with `Rel.scene(base, sidecar)`); `Tidy.say = (choices, o) => Say.moment(Object.assign({choices, mode: "tidy"}, o))`; stars `Stars.ear(rows, "tidy")` |
+| **Tidy up** | `js/tidy/stubs/rel.js` (its own board dialect), `js/tidy/stubs/say.js`, speech stubbed to null, sidecars `kitchen-tidy.json` etc. | `Tidy.Rel = Rel.Tidy` (section 1.4: the stub's API and answers exactly; converge on the board form in phase B); `Tidy.say = (choices, o) => Say.moment(Object.assign({choices, mode: "tidy"}, o))`; stars `Stars.ear(rows, "tidy")` |
 | **Who did it?** | `js/who/stubs/whichone.js` (`balance`, `blindOdds(case)`), speech URL flags, greybox overlays, `data/who.json` `star_set` | `const W = WhichOne` in `case.js`: `W.balance(suspects, dims)` returns the stub's `counts`, `distinct` and `median`, plus `ok` and `problems`. Keep the case-level `blindOdds(case)` in `case.js` (it's the case's own formula), or build it from `WhichOne.setOdds`/`product`. **Don't write `js/shared/mechanics/tell.js`**: use `Say.tell({choices, actor, onHeard})` (it reports `{choice, via}`). For the URL flags, pass `speech: {listen: stubListen, hasTemplates: () => true}`. Suspects: `Overlay.figure("grey-cat", ["ov-trace", "item:fru-01"])` with your people's anchors added as bases |
 | **Dress up** | `js/dress/stubs/pick.js`, `js/dress/mechanics/say.js`, a local `star_sets` | `Dress.Pick = WhichOne.Pick` (the same API and answers), or `WhichOne.setOdds` directly; `say.js` → `Say.moment({... mode: "dress-up"})` (it already checks `window.Shared?.speech`); `Stars.rules("dress-up")`; the doll → `Overlay` with Dress up's slots (add full-body bases to `overlays.json` in phase B) |
 | **Monsoon rush** | `js/monsoon/speech-stub.js`, a local `say.js`, sidecars, `data/monsoon-audio.json` | `Say.moment({choices, mode: "monsoon", speech: labStub \|\| Speech})`; `Stars.ear(rows, "monsoon")` (80% over ≥ 6, forecast ≥ 10), `Stars.voice(moments, "monsoon")`, and `Stars.progress(rows, "monsoon", {busy})` for the Busy stage rule; `Stars.isMenuWord`; sidecars through `Rel.scene(base, sidecar)` when G6 L2+ needs relations |

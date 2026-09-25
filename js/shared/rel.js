@@ -616,5 +616,94 @@
     return tpl.match(/\{(\w+)\}/g).map((m) => slots[m.slice(1, -1)]).filter((v) => v != null);
   };
 
+  /* ------------------------------------------ Tidy up's dialect (compat) */
+  /**
+   * Rel.Tidy: Tidy up's stub API exactly (js/tidy/stubs/rel.js), so its
+   * swap is `Tidy.Rel = Rel.Tidy`. Its dialect: a compiled board
+   * {spots: [...], byId}, items {word, attrs, kind}, rows with an explicit
+   * `type`, a placed-item anchor as {item, attrs}, and "next to" meaning ANY
+   * neighbour (nbr left/right/front/back plus adj). The main board form
+   * above reads "next to" as left/right only; which reading wins is a
+   * phase-B decision (docs/shared-api.md s1.4), and until then Tidy keeps its own.
+   */
+  const T = { TRAY: "tray" };
+  T.item = function (state, iid) {
+    if (state.items && state.items[iid]) return state.items[iid];
+    const [head] = String(iid).split("#");
+    const [word, colour] = head.split(".");
+    return { word, attrs: colour ? { colour } : {} };
+  };
+  T.matches = function (it, sel) {
+    if (!sel) return true;
+    const w = sel.item || sel.word;
+    if (w && it.word !== w) return false;
+    if (sel.kind && it.kind !== sel.kind) return false;
+    const a = sel.attrs || {};
+    return Object.keys(a).every((k) => (it.attrs || {})[k] === a[k]);
+  };
+  T.where = (state, iid) => (state.placements || {})[iid] || T.TRAY;
+  const tIids = (state) => Object.keys(state.items || state.placements || {});
+  T.at = (state, spotId) => tIids(state).filter((i) => T.where(state, i) === spotId);
+  T.free = (state, scene, spotId) => {
+    const sp = scene.byId[spotId];
+    return sp ? (sp.cap || 1) - T.at(state, spotId).length : 0;
+  };
+  T.neighbours = function (spot) {
+    const out = Object.values(spot.nbr || {}).filter(Boolean);
+    (spot.adj || []).forEach((a) => out.includes(a) || out.push(a));
+    return out;
+  };
+  const tSame = (a, b) => (a == null ? null : a) === (b == null ? null : b);
+  T.tagged = (spot, rel, anchor) => (spot.tags || []).some((t) => Rel.id(t.rel) === Rel.id(rel) && tSame(t.anchor, anchor));
+  T.satisfies = function (state, scene, spotId, rel, anchor, self) {
+    const spot = scene.byId[spotId];
+    if (!spot) return false;
+    if (anchor && typeof anchor === "object") {
+      if (Rel.id(rel) !== "next-to") return false;
+      const near = T.neighbours(spot);
+      return tIids(state).some((j) => j !== self && near.includes(T.where(state, j)) && T.matches(T.item(state, j), anchor));
+    }
+    return T.tagged(spot, rel, anchor);
+  };
+  const tMatching = (state, sel) => tIids(state).filter((i) => T.matches(T.item(state, i), sel));
+  const tSat = (state, scene, i, rel, anchor) => {
+    const p = T.where(state, i);
+    return p !== T.TRAY && T.satisfies(state, scene, p, rel, anchor, i);
+  };
+  T.holds = function (state, rule, scene) {
+    switch (rule.type) {
+      case "place":
+        return tMatching(state, rule).some((i) => tSat(state, scene, i, rule.rel, rule.anchor));
+      case "count":
+        return tMatching(state, rule).filter((i) => tSat(state, scene, i, rule.rel, rule.anchor)).length === rule.n;
+      case "leave":
+        return tMatching(state, rule).every((i) => T.where(state, i) === ((state.start || {})[i] || T.TRAY));
+      case "class": {
+        const all = tMatching(state, rule.all);
+        return all.length > 0 && all.every((i) => tSat(state, scene, i, rule.rel, rule.anchor));
+      }
+      case "not": {
+        const r = rule.rule;
+        return !tMatching(state, r.all).some((i) => tSat(state, scene, i, r.rel, r.anchor));
+      }
+      case "order": {
+        const pos = rule.items.map((w) => {
+          const i = tMatching(state, { item: w }).find((j) => rule.along.includes(T.where(state, j)));
+          return i ? rule.along.indexOf(T.where(state, i)) : -1;
+        });
+        if (pos.some((q) => q < 0)) return false;
+        return pos.every((q, k) => !k || (rule.dir === "desc" ? q < pos[k - 1] : q > pos[k - 1]));
+      }
+      default:
+        return false;
+    }
+  };
+  T.options = function (state, rule, scene) {
+    const r = rule.type === "not" ? rule.rule : rule;
+    if (!r.rel) return [];
+    return scene.spots.filter((sp) => T.free(state, scene, sp.id) > 0 && T.satisfies(state, scene, sp.id, r.rel, r.anchor, null)).map((sp) => sp.id);
+  };
+  Rel.Tidy = T;
+
   return Rel;
 });

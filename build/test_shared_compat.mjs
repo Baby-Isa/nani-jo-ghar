@@ -64,3 +64,63 @@ test("Snap: Stars.ear / voice take the stub's row shapes and options and return 
   assert.equal(Stars.voice([{ heard: "a", target: "a" }, { heard: null, target: "b" }], { minSaid: 2 }).earned, false);
   assert.equal(Stars.voice([{ heard: "a", target: "a" }], { minSaid: 2 }).offered, false);
 });
+
+test("Tidy up: Rel.Tidy has the stub's API and its dialect (compiled board, typed rows, any-neighbour next-to)", () => {
+  const Rel = require("../js/shared/rel.js");
+  const T = Rel.Tidy;
+  for (const f of ["item", "matches", "where", "at", "free", "neighbours", "tagged", "satisfies", "holds", "options"]) assert.equal(typeof T[f], "function", f);
+  const spots = [
+    { id: "a", cap: 1, tags: [{ rel: "in", anchor: "bowl" }], nbr: { right: "b", front: "c" } },
+    { id: "b", cap: 2, tags: [{ rel: "middle" }], nbr: { left: "a" } },
+    { id: "c", cap: 1, tags: [], nbr: { back: "a" } },
+  ];
+  const B = { spots, byId: Object.fromEntries(spots.map((s) => [s.id, s])) };
+  const items = { "limu#1": { word: "limu", attrs: {} }, "limu#2": { word: "limu", attrs: {} }, "cup#1": { word: "cup", attrs: { colour: "red" } } };
+  const st = { items, placements: { "limu#1": "a", "limu#2": "b", "cup#1": "c" }, start: { "cup#1": "c" } };
+  assert.ok(T.holds(st, { type: "place", item: "limu", rel: "in", anchor: "bowl" }, B));
+  assert.ok(T.holds(st, { type: "count", n: 1, item: "limu", rel: "middle", anchor: null }, B));
+  assert.ok(T.holds(st, { type: "leave", item: "cup" }, B));
+  assert.ok(T.holds(st, { type: "place", item: "cup", attrs: { colour: "red" }, rel: "next-to", anchor: { item: "limu" } }, B), "front/back count as next to in Tidy's dialect");
+  assert.ok(!T.holds(st, { type: "not", rule: { all: { item: "limu" }, rel: "in", anchor: "bowl" } }, B));
+  assert.ok(T.holds(st, { type: "order", items: ["limu", "cup"], along: ["b", "a", "c"], dir: "asc" }, B), "limu at 1, cup at 2");
+  assert.ok(!T.holds(st, { type: "order", items: ["limu", "cup"], along: ["b", "a", "c"], dir: "desc" }, B));
+  assert.deepEqual(T.options({ items, placements: {} }, { type: "place", item: "limu", rel: "in", anchor: "bowl" }, B), ["a"]);
+  assert.equal(T.free(st, B, "b"), 1);
+  assert.deepEqual(T.item({}, "fru-04.red#2"), { word: "fru-04", attrs: { colour: "red" } });
+});
+
+test("Tidy up: Rel.Tidy agrees with Tidy's own stub on random boards", async () => {
+  const fs = await import("node:fs");
+  const stubPath = "/tmp/claude-0/tidy-rel-stub.js";
+  if (!fs.existsSync(stubPath)) return; // the stub lives on Tidy's branch; the parity check runs when it's been fetched
+  const Stub = require(stubPath);
+  const T = require("../js/shared/rel.js").Tidy;
+  const W = require("../js/shared/whichone.js");
+  const rng = W.rng(9);
+  const ids = ["s1", "s2", "s3", "s4", "s5", "s6"];
+  const spots = ids.map((id, i) => ({ id, cap: 1 + (i % 2), tags: [{ rel: i < 3 ? "in" : "on", anchor: i < 3 ? "bowl" : "shelf" }].concat(i === 1 ? [{ rel: "middle" }] : []), nbr: { left: ids[i - 1] || null, right: ids[i + 1] || null } }));
+  const B = { spots, byId: Object.fromEntries(spots.map((s) => [s.id, s])) };
+  const words = ["limu", "santra", "kelo"];
+  const rules = [
+    { type: "place", item: "limu", rel: "in", anchor: "bowl" },
+    { type: "count", n: 2, item: "santra", rel: "on", anchor: "shelf" },
+    { type: "class", all: { item: "kelo" }, rel: "in", anchor: "bowl" },
+    { type: "not", rule: { all: { item: "limu" }, rel: "on", anchor: "shelf" } },
+    { type: "place", item: "kelo", rel: "next-to", anchor: { item: "limu" } },
+    { type: "count", n: 1, item: "limu", rel: "middle", anchor: null },
+  ];
+  for (let t = 0; t < 300; t++) {
+    const items = {};
+    const placements = {};
+    for (let k = 0; k < 5; k++) {
+      const iid = `${words[Math.floor(rng() * 3)]}#${k}`;
+      items[iid] = { word: iid.split("#")[0], attrs: {} };
+      placements[iid] = rng() < 0.2 ? "tray" : ids[Math.floor(rng() * ids.length)];
+    }
+    const st = { items, placements };
+    for (const r of rules) {
+      assert.equal(T.holds(st, r, B), Stub.holds(st, r, B), `holds ${JSON.stringify(r)} ${JSON.stringify(placements)}`);
+      assert.deepEqual(T.options(st, r, B), Stub.options(st, r, B));
+    }
+  }
+});
