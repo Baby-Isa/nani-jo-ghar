@@ -51,6 +51,8 @@ VIEWPORTS = [
     {"name": "laptop-1280x800", "width": 1280, "height": 800, "touch": False},
     {"name": "ipad", "width": 1024, "height": 768, "touch": True},
     {"name": "ipad-portrait", "width": 768, "height": 1024, "touch": True},
+    # a small phone on its side (the narrowest sidebar: the rail must still fit, zoom in reach)
+    {"name": "phone-se-landscape", "width": 667, "height": 375, "touch": True},
 ]
 
 
