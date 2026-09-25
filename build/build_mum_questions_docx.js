@@ -41,12 +41,16 @@ function cells(row) {
 function widthsFor(header) {
   const n = header.length;
   const h = header.map(x => x.toLowerCase());
-  if (n === 3 && h[0] === 'id' && h[1] === 'say') return [700, 5900, 3038];
-  if (n === 3) return [3600, 3600, 2438];
-  if (n === 4) return [850, 3900, 2900, 1988];
-  if (n === 5) return [700, 2500, 2338, 2400, 1700];
-  const w = Math.floor(TABLE_W / n);
-  return header.map((_, i) => (i === n - 1 ? TABLE_W - w * (n - 1) : w));
+  if (h[0] === 'id') {
+    if (n === 3 && h[1] === 'say') return [700, 5900, 3038];
+    if (n === 3) return [850, 5500, 3288];
+    if (n === 4) return [850, 3900, 2900, 1988];
+    if (n === 5) return [700, 2500, 2338, 2400, 1700];
+  }
+  // Grids and other tables: a wider first column for row labels, the rest shared equally.
+  const first = n > 1 ? Math.min(2600, Math.floor(TABLE_W * 1.4 / n)) : TABLE_W;
+  const w = n > 1 ? Math.floor((TABLE_W - first) / (n - 1)) : 0;
+  return header.map((_, i) => (i === 0 ? first : i === n - 1 ? TABLE_W - first - w * (n - 2) : w));
 }
 
 function table(rows) {
