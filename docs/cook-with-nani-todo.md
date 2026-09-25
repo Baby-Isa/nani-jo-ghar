@@ -67,3 +67,18 @@ None of these is a blocker; the one real piece of debt is item 1, and everything
 3. ☐ **"The world is the menu" instead of story/free-play buttons.** Travel on the map. Story mode = there's always a highlighted next beat ("Nani needs you at the bazaar"); free play = go anywhere you've unlocked and play what's there (the open kitchen is the first example). Needs a story-beat list as data (the fruit errand's `intro_beat`/`outro_beat` and Cook's days are the seeds). About 1–2 days after item 1.
 4. ☐ **No tutorial.** Keep the approach: level 1 of every mechanic is the onboarding (ghost finger, one-line goal on first use, then gone). Only change: on first launch, go straight into play with a default profile and ask for a name later, so a new player is playing within seconds.
 5. ☐ **Role reversal (the player gives the instruction).** Most of the groundwork is already there: orders are data with slots, grammar frames live in `data.grammar`, and `js/progress.js` already tracks a separate `produce_stage` per word. **To do now, cheaply, so it's easy later:** (a) Find it scenes store *relations* as data (the sweets are *under* the sofa, the cap is *on* the TV), not just coordinates; (b) every frame in `data.grammar` is written so it can be *built* from pills as well as spoken (slots marked). **Later:** a phrase builder (tap pills: "under" + "sofa"), a character who follows the player's instruction (and gets it hilariously wrong if the player does), speaking via a recording the parent can judge (no Kutchi speech recognition exists). About 2–3 days per mode once 5(a) and 5(b) are in place.
+
+## Wave 5: clarity and calm (Zafar's first look at the Wave 3 build, 25 Sept, late)
+
+"Hard to know what to do; lots of information all at once."
+
+- ☐ **Intro card:** when someone orders, a card flashes up in the centre with their face, saying what they want, with the order shown as a sequence. It then shrinks into the sidebar.
+- ☐ **Every order is a sequence list:** one line and one dot per item, always (also for looks). "Any order" items are shown subtly, not grouped on a shared dot.
+- ☐ **Nani says less:** silence at the start of each station so people can work it out; fewer and later hints; fewer "pass me" moments at level 1.
+- ☐ **Sidebar space and readability:** fit the text without eating the play area. Order card first, compact.
+- ☐ **Help is just a "?"** that pops out when pressed; the goal text isn't shown permanently.
+- ☐ **Remove the English step pills** (Water, Tea, Boil…).
+- ☐ **Result card:** replace "they asked / you did" with a **word review**: each Kutchi word used in the order, with its English.
+- ☐ **Coins and stars counter** at the top of the sidebar: remove it (show pocket money on the summary and title instead).
+- ☐ **Level 1 more varied and fun:** kinds of mishkaki skewer, kinds of tea, several things to chop from the start.
+- ☐ **Chop:** a visible countdown timer; level 1 = several items (what goes in the dish), with volume, decoys and time pressure as the game.
