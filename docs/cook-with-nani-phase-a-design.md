@@ -296,6 +296,25 @@ Customers have tastes: Nana, no chilli in his chaat; Ma, no milk and ginger in h
 
 **Free cooking is Nani's open kitchen (Wave 3):** customers keep arriving on their own — a gentle queue in Relaxed, overlapping a little sooner in Busy — each with a generated order leaning towards the player's weakest words (existing spaced-review logic, unchanged). A "Close the kitchen" button in the sidebar is always there while it's open; pressing it stops new customers arriving (finishing whoever's already ordering) and goes straight into the usual day summary and pocket money. "Quick order" is unchanged: one customer, then the summary, no closing needed.
 
+### 12b. What's built now (after Waves 1–3, checked in Wave 4, 25 Sept 2026)
+
+The Phase A list above is the first build. Since then the stations have become building blocks, and the story dishes run on combined stations:
+
+- **Building blocks.** Each verb is one mechanic file (`js/cook/mechanics/`). It can run on its own or inside a zone of a combined station (`js/cook/zone.js`). Difficulty levels are data (`data.mechanics.<id>.levels`; a combined station's in `data/stations/<id>.json`). Recipes are wholly data: slots, what's said, the ladder, the steps.
+- **Order ladder** on the order card: speaker · word or "•••" · 👁 · translate per row. One dot per item, never per unit. A dashed line means a sequence, and *ne poi* is said for it. "No X" rows are placed at random. A person's rows carry their face (the Chai tray). Hidden words next to each other share one "•••".
+- **Help costs.** Being shown the answer costs the ear star: the hesitation glow, the highlight after two misses, 👁, translate (including "pass me"). Hearing it again costs the no-help star. Busy help drains the patience ring.
+- **Result card:** stars on the left; on the right, "they asked / you did" in Kutchi pills and one "next time" tip per missed star.
+- **Combined stations** (one screen, several zones):
+  - **Chai tray** (chai, all levels): water, tea, then light the knob on the back burner. Each person says their cup (milk or not, sugars or none, and from level 3 an extra and half or full). Milk jug, sugar bowl and salt are there for every cup. The knob must be turned down on the green. Pour each cup to a line, then the tick. Graded per cup, per person, with a recast from that person.
+  - **Maani line** (maani): two dough bowls (maani, bajr jo maani) → chakla → tawa (two tawas from level 2, big/small from level 3). How many of each is spoken. You press the tick.
+  - **Mishkaki grill** (mishkaki): the threading board feeds a rack. Each skewer has its own ring on the grill: turn it twice, then lift it. The chips basket is always offered. The plate is graded per kind and count.
+  - Roll → Tawa: the lab's proof of zones.
+- **Keepers, polished:** the chaat glass bowl (visible layers; the customer checks layer by layer); chop with a mid-round switch, look-alikes, graded afterwards (rounds in random order since Wave 4); tadka burns if you're slow and hides the order at higher levels; samosa fill (spoons per filling) → fold as many as you decide → fry (the tray holds extra; "lift the samosas, leave the chips" at level 3); stir on a track with a fixed speed dial.
+- **Pass me** in the sidebar (never over the game), in the pantry (never a word from the order) and at the slower stations.
+- **Open kitchen** is free cooking: customers keep coming until you close it.
+- **The pantry (fetch)** is now only in the Station lab: no story recipe fetches any more (each station lays out what it needs, decoys included).
+- **Tests:** `build/test_cook.py` plays every station at levels 1–3 (`--lab`, `--level`), combined stations, the story days (`--days`, `--canvas` for speed), the open kitchen and the order model (`--orders`), at six screen sizes.
+
 ## 13. Audit: can you win without understanding the words?
 
 | Decision | Before Phase A | Now |
@@ -311,7 +330,17 @@ Customers have tastes: Nana, no chilli in his chaat; Ma, no milk and ginger in h
 | Nani's "pass me" | — | **Any word, any time, look-alike choices** |
 | Timing (boil, tawa, fry, grill), kneading, folding | Hands only | Hands only (by design: the fun break between listening) |
 
-**Remaining weaknesses:**
+**Status after Wave 3 (Wave 4 check, 25 Sept 2026):** see `docs/cook-with-nani-kutchi-audit.md`, section "After Wave 3". Every system-level leak from the pre-wave audit is closed: help costs, fixed step chips, optional steps always offered, counts never shown, fixed dial bands, random decoys, a ladder whose shape gives nothing away. Wave 4 fixed the last two small ones: the dot groups on the card, and the fixed first chop round. What's left:
+
+| Leak | Severity | Owner |
+|---|---|---|
+| Decision words still English placeholders (*no*, *slowly/quickly*, *half/full*, *big/small*, *vegetable/mixed*, *only/now*, *lift/leave*, several toppings) are readable and heard in English | High | The family's words (Round 2) |
+| Chai tray: cups only for the people ordering, and each speaks with their own face, so the count and "who" are given (kinship words decide nothing yet) | Medium | Next Chai tray pass |
+| Stage-2 label speakers are free, so you can match sounds | Medium | Later |
+| Serving to the right person is checked only on the Chai tray | Medium | Open kitchen pass |
+| Chaat always holds chickpeas and potato; tea is always *chai*; no ghee slot | Low | Data / later |
+
+**Remaining weaknesses (Phase A list, still true):**
 1. **Placeholder words.** Dishes and toppings still in English (chickpeas, yoghurt, mince…) are "understood" by any English speaker. The family's Round 2 answers fix this.
 2. **Stage-1 reading.** A brand-new word is shown as text on both the card and the label, so a reader can match letters the first time. That's intended (it's how it's taught), and from stage 2 the label is speaker-only.
 3. **The placeholder voice is Gujarati**, so pronunciation isn't Kutchi yet.

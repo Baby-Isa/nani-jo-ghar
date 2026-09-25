@@ -199,3 +199,28 @@ The prototype shows most upgrades as a gilded "special" version of the ordinary 
 | Serving | Special thali (40) | +3 coins tip per order | **A brass thali with katoris**: better presentation, bigger tips, and the plating mini-game ("daal in the bowl, maani on the left") |
 
 **Design rule kept:** no upgrade touches the Kutchi. Fetching the right thing, the counts, the tadka order and "the usual" are always the player's job.
+
+## 9. Persona review, round 3 (Wave 4 check, 25 Sept 2026)
+
+The same six personas (section 4), after Waves 1–3: the order ladder, help costs, levels, Stir on a track, and the three combined stations (Chai tray, Maani line, Mishkaki grill), plus the polished keepers and the open kitchen. The review comes from Station lab screenshots of every station at five screen sizes (phone 915×375, 1366×768, 1440×900, 1280×800, iPad; the iPad-portrait and day runs were cut short to make way for Wave 5) and a read of the code.
+
+| Persona | Fun | Learning Kutchi | What they'd say | What to fix |
+|---|---|---|---|---|
+| **Layla, 5** (can't read; plays with a parent) | The Chai tray is the best screen for her: Nana's face on his cup bobs while he talks, and tapping the face plays his order again. Big knob, a jug that slides in and pours while she holds it, a spoon that flies from the bowl. The Maani line's puff and the grill's sizzling rings are pure fun. Juggling (the tawa won't wait; two skewers at once) is too much at 5, but level 1 keeps it to one tawa and one skewer | She hears every line (placeholder voice). The per-person orders are short ("ne dudh, ne bo khun"), which suits her. Sugar and salt look the same on purpose, so only the word helps, and she'll need the label speaker | "Nana's talking!" "Which one is sugar?" "It burnt!" | On the phone the sidebar buttons (speaker, translate, 👁) are 22 px, too small for her fingers; the parent does those. The game objects themselves are all 50 px or more. Later: speaker buttons of at least 32 px on phones |
+| **Zayn, 8** (competitive) | Grill level 3 (four skewers, each its own ring), two tawas, the stir spill and the Busy patience ring are his game. The result card's "they asked / you did" shows exactly where points went | Counts decide his score (skewers, maani, spoons), so he listens for the number words | "Can I play level 3?" "Why are my tawa scores 40%?" | Each story order has a fixed level (mostly 1; day 3 has a level-3 chai), so the grill at level 3 is only in the lab. Let the open kitchen raise the level as he gets things right (orchestrator). Check the tawa and fry windows on a real device (the headless test scores them low because it runs slowly) |
+| **Maryam, 11** (aesthetics, heritage) | The glass chaat bowl with visible layers, the faces on the cups and the brass-and-wood tray look good. Code-drawn placeholder art (skewers, rack, parat bowls, the hob) is plainer than the painted 3D-film props next to it | The recipe book, and seeing each family member's cup | "The skewers look like a diagram." | The art run (hand sheets, skewer and grill props). Already on the to-do |
+| **Zafar, 38** (learner) | The Chai tray is the most Kutchi-dense screen yet: three people, each with their own line and a recast from that person when their cup is wrong. The ladder going plain once *ne poi* is known is a nice grammar test | He notices that *no*, *slowly*, *half*, *big*, *vegetable* and *mixed* are English, so he can read those decisions without any Kutchi. That's the one real hole left (audit, "After Wave 3") | "The systems are right now; it needs the words." | Family: the Kutchi for *no / without* first, then speed, amount, size and kind words. Code: done. Wave 4 also fixed the dot groups on the card that gave away which row had a number |
+| **Farah, 34** (3–5 minute sessions) | Quick order is still about 2 minutes. The open kitchen's "Close the kitchen" lets her stop whenever she likes. A level-3 Chai tray (three cups, pouring each) takes 3 minutes or more | Same as Zafar | "On my phone, the goal text is cut off mid-sentence." | Done in Wave 4: Nani's line is no longer squeezed under the goal on the phone. Still open: the phone goal box is capped at about 4 lines (it scrolls). It collapses to "?" after the first time, so it's minor |
+| **Nani, 68** (the voice) | The faces, the tray and her own card in the sidebar, never over the game | She reads the Kutchi aloud. The grey English words are the ones she'd give | "That's not how we say *no*." | The Round 2 word list: put *no / without*, *slowly / quickly*, *half / full*, *big / small*, *vegetable / mixed* at the top |
+
+**Verdict against the two tests:**
+- **Fun: yes.** The combined stations fixed the "same chai again" problem. The Chai tray, the Maani line and the Mishkaki grill each have a real decision (who gets what; roll first or line them up; which skewer goes on when) as well as the hands. The weakest spot is the phone sidebar: small buttons, and the goal cut off.
+- **Educational: yes, for every word that exists in Kutchi.** Every decision now comes from what's said, and being shown the answer costs the ear star. The remaining leak is content: about a dozen decision words are still English.
+
+**Wave 4 changes shipped:**
+- hidden words next to each other share one "•••" on the order card
+- chop rounds come in a random order
+- the phone sidebar keeps Nani's whole line visible
+- the Chai tray result card lists what you got right
+
+The larger items are listed for the orchestrator in the to-do (Wave 4).
