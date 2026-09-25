@@ -1063,3 +1063,16 @@ A monsoon mode where: a single ceiling stain swelled and dripped; Nani stood in 
 - Children's reaction times: [age-related differences in RT in young children (PubMed)](https://pubmed.ncbi.nlm.nih.gov/18359494/); [reaction time of children by age (Procedia Engineering)](https://www.sciencedirect.com/science/article/pii/S1877705817319239)
 - Accessibility: [Game Accessibility Guidelines: adjustable game speed](https://gameaccessibilityguidelines.com/include-an-option-to-adjust-the-game-speed/); [don't make precise timing essential](https://gameaccessibilityguidelines.com/do-not-make-precise-timing-essential-to-gameplay-offer-alternatives-actions-that-can-be-carried-out-while-paused-or-a-skip-mechanism/)
 - Carried over from the Find it research: Lyster and Saito 2010 (prompts beat recasts); Fritz et al. 2007 (expanding retrieval); position-word acquisition order (see `docs/find-it-design.md`, Sources)
+
+**Pipeline design research (P.4; search summaries, 25 Sept evening; the app stores are blocked from the build container, so listings weren't opened):**
+- Baby Panda's Hurricane Safety (BabyBus): [Google Play listing](https://play.google.com/store/apps/details?id=com.sinyee.babybus.typhoon&hl=en_US); [BabyBus video: safety tips when a hurricane is approaching](https://www.youtube.com/watch?v=-31Cev2DjkI)
+- Dr. Panda Home: [App Store](https://apps.apple.com/us/app/dr-panda-home/id741224942); [the iMums review (three chores, coins, the toy shelf)](https://www.bluebeepals.com/ages-3-5/kids-love-dr-panda-apps-reviewed-many-imums/)
+- Toca Life: Farm: [Common Sense Media review](https://www.commonsensemedia.org/app-reviews/toca-life-farm); [Children and Media Australia review](https://childrenandmedia.org.au/app-reviews/apps/toca-life-farm)
+- Toca Boca World's weather: [App Store story "Make It Rain (or Shine)"](https://apps.apple.com/us/iphone/story/id1843237209)
+- Pepi Bath 2: [App Store](https://apps.apple.com/app/id957345067)
+- Baby Games with Peppa (boots, puddles, sponge): [Uptodown listing](https://baby-games-with-peppa.en.uptodown.com/android); Peppa Pig: Jump and Giggle: [App Store](https://apps.apple.com/il/app/peppa-pig-jump-and-giggle/id6444779473)
+- Bluey: Keepy Uppy: [Google Play](https://play.google.com/store/apps/details?id=com.maryamber.keepballoonuppy&hl=en_US); Bluey: Let's Play: [Screenwise parent review](https://screenwiseapp.com/media/bluey-let-s-play-app)
+- Whack-a-mole for 3–7: [Whack a Mole: Hit the Beaver](https://play.google.com/store/apps/details?id=com.DeepCoonStudio.Whackamole&hl=en_GB&gl=US)
+- Daniel Tiger: [Daniel and O are Scared of the Thunder (PBS Kids)](https://pbskids.org/video/daniel-tigers-neighborhood/2365025159); [How the Grr-ific Feelings app helps kids learn (PBS Parents)](https://www.pbs.org/parents/thrive/how-daniel-tigers-grr-ific-feelings-app-helps-kids-learn)
+- Weather by Tinybop: [Common Sense Media review](https://www.commonsensemedia.org/app-reviews/weather-by-tinybop); [Tinybop's page](https://tinybop.com/apps/weather)
+- LEGO DUPLO World: [Common Sense Media review](https://www.commonsensemedia.org/app-reviews/lego-duplo-world); [Educational App Store review](https://www.educationalappstore.com/app/lego-duplo-world)
