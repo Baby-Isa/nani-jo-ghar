@@ -49,3 +49,5 @@ The old chat is finishing three things and will push them; the new chat should c
 3. **Batch 1 art wiring** (worktree branch `worktree-agent-a8c03f5aa01818f1b`): a sprite map in data (`art.sprites`), webp builds, the new hob/worktop backgrounds, with the current drawings as fallback.
 
 **Not started:** "one app, one save" (the shell). Find it is still a separate page, `find.html`. **Hands v2** (`claude/art-hands-v1`) is still waiting on Zafar's ring approval.
+
+**17:05 UTC:** Cook's tests all pass on the Wave 5A merge (laptop and flip5-landscape labs, two days, open kitchen). **But `find.html` crashes on it:** `UI.init` needs `#btn-help`, which the page doesn't have. So `main` is held back until the Find it calm-sidebar agent lands its fix. Both agents were stopped by the usage limit around 14:00; they were resumed at 17:05.
