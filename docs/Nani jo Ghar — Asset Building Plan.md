@@ -22,7 +22,7 @@ This is the master list of art to build, and in what order. Section 1 covers han
 
 ### 1.2 Boy and girl versions (Zafar, 24 Sept)
 
-Plan: **generate one master set, then reskin it** with the image API's edit mode. The instruction is "change only the sleeve and the accessories; keep the hand exactly the same".
+Plan: **generate one master set, then skin it in code** (changed 25 Sept 2026). The image API's edit mode redrew the hands when asked to reskin them, so `build/skin_hands.py` recolours the skin and sleeve of each master and places jewellery sprites at anchor points recorded per pose (`data/hand-anchors.json`); the characters are data (`data/hand-skins.json`).
 
 | Version | Sleeve and details |
 |---|---|
@@ -35,7 +35,7 @@ Plan: **generate one master set, then reskin it** with the image API's edit mode
 
 **Hand shape:** slender, slim, with long fingers relative to the palm; smooth, simple surfaces with no visible bones, knuckle ridges or veins (they're rigid sprites moved in code).
 
-**Guarding against drift:** a script compares each reskin's outline with the master's. It rejects the image if the hand shape has moved, because otherwise the tools won't sit in the grip.
+**Guarding against drift:** skinned hands keep every master pixel's position, so the outline and the tool gaps can't drift. (The API reskins drifted: 39 of 47 failed the outline check.)
 
 **Skin tone (Zafar, 24 Sept, revised after round 3):** one tone for now, Zafar's own, sampled from his photos: a warm light tan, **not orange, not saturated** — midtone about `#C49A78`, highlights `#D8B894`, shadows `#A07A60` (daylight face sample `#BE826B`); see the Art Bible, section 2. No skin-tone variants for now.
 
@@ -113,19 +113,21 @@ Each line: pose, camera, frames, and what it's used for. Games: **C** Cook, **F*
 
 ### 1.4 Totals and cost
 
-- **Player master set:** about 38 images (counting 2-frame poses twice, and a pose in both cameras twice), for 30 poses.
-- **Reskins:** boy (the master), girl, girl Eid: about 38 × 2 more, so about 115 player images.
-- **Nani:** about 12.
-- **Tools** (separate sprites, generated with their station's props): knife, spatula, ladle, doi, tadka ladle, whisk, tongs, rolling pin, teaspoon, jug, pestle, grater, racquet, drumstick, umbrella, brush, mehndi cone, camera and so on.
-- **Estimate:** about 130 hand images. At the pipeline's rates that's about $10–$25, including rejected images being redone. One overnight run.
-- **Cost note (24 Sept 2026):** an early run left `quality` unset and the API defaulted to high (~$0.167/1024² image), billing ~$0.16/image instead of the assumed $0.04 (~$30 for 187 requests). `build/gen_assets.py` now always sends `quality` explicitly, prices per quality **and** size (low ~$0.011, medium ~$0.042, high ~$0.167 at 1024², more at larger sizes), and defaults to **medium**. `--draft` (quality low, writes to `drafts/`) is the cheap way to check prompts before a real run; a QA failure (the reskin drift check) auto-retries once by default (`--max-regens N`), never silently more; and any live run estimated over $5 needs `--yes`. `--dry-run` and `--self-test` still make no network calls.
+**Actual, hands v1 (24–25 Sept 2026; full report `build/reports/art-hands-v1.md`):**
+
+- **Player master set:** 56 images (A1–F5, every camera and frame; F3 and F5 are aliases of B3 and C1). After two review rounds, **47 pass** and **9 still fail** (a2, b1, c2, c3-t, c3-e, d3, d6-f1, e3-count-4, e5). Every master is skin-matched and scaled to the reference forearm (250 px).
+- **Characters are made in code, not generated** (`build/skin_hands.py`, data in `data/hand-skins.json` and `data/hand-anchors.json`): each passing master gets its skin recoloured, its sleeve recoloured and jewellery sprites placed at per-pose anchors (wrist and ring finger). Baked: **player-boy 47**, **player-girl 47** (dusty-pink sleeve, three glass bangles), **Nani 88** (47 right hands + 41 left hands; deep-red sleeve, her skin, aqiq ring and tennis bracelet on the right, solitaire on the left, no bangles). **player-girl-eid** waits for the mehndi overlay texture. Rebuilding every character takes minutes and costs nothing.
+- **API images:** 214 in all (2 eye-level reference, 56 masters, 71 master retries, 47 girl reskins that were later deleted, 13 Nani reference hands, 25 Nani poses that were archived). The API reskins failed: 39 of 47 girl reskins redrew the hand. That's why reskins and Nani moved to code.
+- **Cost:** about **$31.70** at the real rates: 182 images at high quality (the API's silent default, ~$0.167) before the pipeline was fixed, and 32 at medium (~$0.042). The pipeline's own log says $8.63 because it assumed $0.04 an image. Future hand work needs no API calls, apart from new master poses (at medium, about $0.04 each).
+- **Still to make:** the 9 failed masters (b1, the knife/spatula grip, first; probably as a pose with the tool drawn on its own layer), the Eid mehndi overlay, and the tools (separate sprites, generated with their station's props): knife, spatula, ladle, doi, tadka ladle, whisk, tongs, rolling pin, teaspoon, jug, pestle, grater, racquet, drumstick, umbrella, brush, mehndi cone, camera and so on.
+- **Cost note (24 Sept 2026):** an early run left `quality` unset and the API defaulted to high (~$0.167/1024² image), billing ~$0.16/image instead of the assumed $0.04. `build/gen_assets.py` now always sends `quality` explicitly, prices per quality **and** size (low ~$0.011, medium ~$0.042, high ~$0.167 at 1024², more at larger sizes), and defaults to **medium**. `--draft` (quality low, writes to `drafts/`) is the cheap way to check prompts before a real run; a QA failure (the reskin drift check) auto-retries once by default (`--max-regens N`), never silently more; and any live run estimated over $5 needs `--yes`. `--dry-run` and `--self-test` still make no network calls.
 
 ### 1.5 Generation order
 
 1. **Reference hand.** One right hand, top-down, with the embroidered cuff. Zafar signs it off.
 2. **Master set**, top-down poses first (Cook needs them first), then eye level.
 3. **The code check.** Drop the hands into two stations (roll and tawa) and check that the grips line up with the tools.
-4. **Reskins:** girl, girl Eid, then Nani's set.
+4. **Characters in code** (`build/skin_hands.py`): boy, girl, girl Eid (when the mehndi texture exists) and Nani, from the passing masters; check the anchor sheet (`--check-sheet`) and each character's contact sheet.
 5. **Contact sheets** reviewed by Claude against the visual QA checklist (camera angle, scale, clean alpha, cuff consistent). Rejected images go back into the queue.
 
 ---

@@ -316,14 +316,14 @@ Full list and generation order: `docs/Nani jo Ghar — Asset Building Plan.md`, 
 
 ### Sleeves and reskins
 
-Reskins change **only the sleeve and accessories**. A script compares each reskin's hand outline with the master and rejects any drift, since tools must still sit in the grip.
+Reskins change **only the skin tone, sleeve and accessories**, and they are made **in code, not with the image API** (25 Sept 2026: API reskins redrew the hand in 39 of 47 cases). `build/skin_hands.py` recolours the masked skin and sleeve of each approved master and composites jewellery sprites (drawn in code) at anchor points recorded per pose in `data/hand-anchors.json` (wrist point, angle and width; ring-finger point, angle and view). Characters are data in `data/hand-skins.json`. Every master pixel keeps its place, so outlines and tool gaps never drift.
 
 | Version | Sleeve and details |
 |---|---|
 | **Master / boy** | Plain white linen shirt sleeve, rolled back to between the elbow and the wrist; bare forearm below the roll; no embroidery (replaces the old embroidered kurta cuff, 24 Sept 2026) |
 | **Girl** | The same kind of modern rolled sleeve in a soft colour (e.g. dusty pink), plus 3–4 thin glass bangles; the bangles are the main difference |
 | **Girl, Eid** (optional) | As girl, with mehndi on the back of the hand and the palm; a simple floral pattern, rust-brown |
-| **Nani** (set N, about 10 poses) | Older hand, gentle wrinkles, gold bangles, her red sleeve with embroidery |
+| **Nani** (every pose, left hands too) | Her warmer, unsaturated skin; deep-red sleeve; **no bangles**; right: red aqiq ring in a plain yellow gold bezel and a thin diamond tennis bracelet; left: round solitaire diamond in a six-claw yellow gold setting (Cast, corrected 24 Sept; sheet v2). The hand shape is the master's: code can't age it |
 
 ---
 

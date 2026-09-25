@@ -42,7 +42,7 @@ import os
 import sys
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_assets as ga  # noqa: E402
@@ -258,11 +258,64 @@ def apply_overlay(im, texture_path, hands, opacity=0.85):
     return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
 
 
-def skin_character(master, char, hands, camera, sprites):
+# Boxes (master pixels) where the sleeve mask is erased by hand: a5-f1's
+# forearm is so pale it reads as cream just above the cuff.
+SLEEVE_ERASE = {"hand-a5-wave-f1-e": [(540, 760, 660, 866)]}
+
+
+def clip_sleeve_to_cuff(w, master, hands):
+    """The loose cuff pass in hand_masks can take in pale, lit forearm skin
+    just above the cuff. For each arm with a wrist anchor, find the cuff's
+    top edge along the arm from unambiguous cuff pixels (cream: chroma < 28,
+    hue > 68) and drop sleeve weight beyond it, inside that arm's corridor."""
+    arr = np.asarray(master.convert("RGBA")).astype(np.float64)
+    lab = ga.rgb_to_lab(arr[..., :3])
+    C = np.hypot(lab[..., 1], lab[..., 2])
+    hue = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
+    core = (arr[..., 3] > 200) & (C < 28) & (hue > 68) & (lab[..., 0] > 60)
+    H_, W_ = core.shape
+    yy, xx = np.mgrid[0:H_, 0:W_]
+    w = w.copy()
+    for h in hands:
+        wr = h.get("wrist")
+        if not wr:
+            continue
+        a = math.radians(wr["angle_deg"])
+        ax, ay = math.sin(a), -math.cos(a)  # towards the hand
+        t = (xx - wr["x"]) * ax + (yy - wr["y"]) * ay
+        lat = np.abs(-(xx - wr["x"]) * ay + (yy - wr["y"]) * ax)
+        corridor = lat < wr["width_px"] * 1.1
+        cuff = core & corridor & (t < 0)
+        if cuff.sum() < 500:
+            continue
+        # the cuff's top edge slopes: measure it per 20 px strip across the arm
+        side = -(xx - wr["x"]) * ay + (yy - wr["y"]) * ax
+        overall = np.percentile(t[cuff], 99.5)
+        for lo in np.arange(-wr["width_px"] * 1.1, wr["width_px"] * 1.1, 20):
+            strip = corridor & (side >= lo) & (side < lo + 20)
+            cs = cuff & strip
+            top = np.percentile(t[cs], 99) if cs.sum() > 40 else overall
+            w[strip & (t > min(top, overall) + 6)] = 0.0
+    # thin tabs of very pale forearm that pass as cream: open the mask
+    # (~24 px) at half size; the sleeve itself is far thicker
+    half = Image.fromarray(((w[::2, ::2] > 0.5) * 255).astype(np.uint8), "L")
+    opened = np.asarray(half.filter(ImageFilter.MinFilter(13)).filter(ImageFilter.MaxFilter(15))) > 0
+    keep = np.kron(opened, np.ones((2, 2), dtype=bool))[:w.shape[0], :w.shape[1]]
+    keep = np.asarray(Image.fromarray((keep * 255).astype(np.uint8), "L").filter(ImageFilter.GaussianBlur(1.5))) / 255.0
+    return w * keep
+
+
+def skin_character(master, char, hands, camera, sprites, pose_id=None, mirrored=False):
     im = master
     # the sleeve mask is measured on the untouched master: after the skin
     # recolour the skin/cuff classifier would see different colours
-    sleeve_w = hm.sleeve_region(master) if char.get("sleeve") else None
+    sleeve_w = None
+    if char.get("sleeve"):
+        sleeve_w = clip_sleeve_to_cuff(hm.sleeve_region(master), master, hands)
+        for x0, y0, x1, y1 in SLEEVE_ERASE.get(pose_id, []):
+            if mirrored:
+                x0, x1 = master.width - x1, master.width - x0
+            sleeve_w[y0:y1, x0:x1] = 0.0
     if char.get("skin"):
         im, _ = ga.normalise_skin(im, ga.rgb_to_lab(ga.hex_to_rgb(char["skin"])), tolerance=0.0)
     if char.get("sleeve"):
@@ -427,13 +480,13 @@ def main():
             mid = m["id"]
             a = anchors[mid]
             master = Image.open(ga.resolve_path(m["output"])).convert("RGBA")
-            out = skin_character(master, char, a["hands"], a["camera"], sprites)
+            out = skin_character(master, char, a["hands"], a["camera"], sprites, mid)
             out.save(os.path.join(od, f"{mid}.webp"), lossless=True)
             tiles.append((mid.replace("hand-", ""), out))
             if char.get("left_variant") and len(a["hands"]) == 1:
                 mirrored = master.transpose(Image.FLIP_LEFT_RIGHT)
                 mh = mirror_hands(a["hands"], master.width)
-                out_l = skin_character(mirrored, char, mh, a["camera"], sprites)
+                out_l = skin_character(mirrored, char, mh, a["camera"], sprites, mid, mirrored=True)
                 out_l.save(os.path.join(od, f"{mid}-left.webp"), lossless=True)
                 tiles.append((mid.replace("hand-", "") + " L", out_l))
             print(f"[{name}] {mid}", flush=True)
