@@ -84,6 +84,192 @@ The counter is a belt (a sushi belt: it loops, so nothing is ever lost and nobod
 
 **Mechanics:** `belt` (new: the loop, the dishes, tap/drag, speeds as data); Cook's `count` (the tally), `handover` (built), the shared `which` module (decoy balance); Cook's `fetch` isn't used on screen but its pick-and-judge logic is the model for `belt`'s rows. **Free-play entry "The counter":** the belt alone, a shopping-style round (3, then 5, then 7 things), 60 s.
 
+### P5 Stage 4, heal: the healing library
+
+Twenty games, one per body part (two parts share the cut). Every one is comical and cartoon, never gory: a hurt is a pink line or a swirl, a bug is a beetle with eyebrows, the injection is a boing. The doctor's lines are instruction and praise; the comedy is the patient's (R2.7). **Every game carries Kutchi through the doctor's instructions**: a count, a side (*my left*, always in the patient's voice), a colour, a size (*wadho/nindho*), a direction, a speed (*aastethi/jaldi*), or an order (*pela … ne poi …*), and the tray's items are used in the order that was heard. The hands part (the gesture itself) is graded by the plaster star, never the ear. **Scores:** fun and Kutchi 1–5 (5 = best); build 1–5 (**5 = cheap**, reuses what exists). **Age** is where it lands best (5 / 8 / 11; "5+" means fine for all three).
+
+**Summary table (part → game → key Kutchi).**
+
+| # | Part | Game (the ailment) | Items on the tray | Core gesture | Key Kutchi | Age | Fun | Kutchi | Build | Set |
+|---|---|---|---|---|---|---|---|---|---|---|
+| H1 | Knee | **The kicking knee** (a bump) | hammer, bandage (colour) | tap → kick; wrap N turns; figure-of-eight | count, colour, side, path order | 5+ | 4 | 5 | **5** | 1 |
+| H2 | Hand / finger / knee | **Plaster** (a scrape) | paani, cloth, plaster (design) | pour, dab, stick | part, side, colour | 5+ | 3 | 3 | **5** | 1 (the first-ever game) |
+| H3 | Ear | **The seed in the ear** | torch, tweezers, cotton bud, drops | pluck in order, scrub, drops | *pela/ne poi*, count, side, count of drops | 5+ | 5 | 5 | 4 | 1 |
+| H4 | Tooth | **Brush up, brush down** (a sugar bug) | toothbrush, drill, filling | directional strokes, tap the tooth, fill the shape | up/down/left/right, count, big/small, colours | 5+ | 5 | 5 | 3 | 1 |
+| H5 | Tongue | **The taste test** (a coated tongue) | limu, khun, loon (three droppers), paani | pick the drop, faces, rinse and spit | *limu/khun/loon* (real), order, count | 5+ | 5 | 5 | 4 | 1 |
+| H6 | Head | **Too hot, just right** (a fever) | thermometer, cloth, blankets, fan | lay and lift, add/remove | hot/cold, *just right*, count of blankets | 5+ | 5 | 5 | **5** | 1 |
+| H7 | Throat | **Say aah and hardar dudh** | torch, honey (*chamcho*), dudh, hardar | look, spoon-count, Cook's tadka: pour, add, stir | count of spoons, *hardar, dudh*, stir count, *aastethi* | 5+ | 4 | 5 | **5** | 1 |
+| H8 | Arm / leg / hand | **Stitches** (a cut) | paani, thread (colour), needle, plaster | wipe, stitch dot to dot N times, plaster | count, colour, *pela/ne poi* | 5+ | 4 | 5 | 3 | 2 |
+| H9 | Arm | **The boing** (an injection) | cotton, the syringe (the doctor's), plaster, lollipop | wipe N times; **count down aloud** *trae, ba, hakro*; plaster | numbers spoken (S6), count, side | 5+ | 4 | 5 | 3 | 2 |
+| H10 | Tummy | **Bubbles and burps** (too many sweets) | stethoscope, paani, hot-water bottle | drag bubbles up the tube, pour, lay the bottle | count, *jaldi/aastethi*, up | 5+ | 5 | 3 | 3 | 2 |
+| H11 | Nose | **Atchoo!** (a cold) | tissues, a steam bowl, aadu, chai things | catch sneezes, hold under the towel, Chai tray | count of tissues, *aadu waari chai*, *nar khun* | 5+ | 5 | 4 | 4 | 2 |
+| H12 | Eye | **Drops and the chart** (a sore eye) | drops, the pointer, an eye patch (design) | counted drops on the side; point at what he names on the chart | side, count, known nouns (fruit), *wadho/nindho* | 5+ | 4 | 5 | 4 | 2 |
+| H13 | Foot / toe | **Sore feet** (the wedding dancing; a thorn) | tub, hot paani, loon, tweezers, bandage | pour to the band, add salt, wiggle the named toe, pluck, wrap path | hot, *loon*, big/small toe, side, path | 5+ | 4 | 4 | 4 | 2 |
+| H14 | Leg | **The cast** (a comedy break) | X-ray, cast roll (colour), stickers, crutches | swipe the bone straight, wrap N turns, decorate | colour, count, side, *pela/ne poi* | 8 | 4 | 4 | 4 | 2 |
+| H15 | Mouth | **Hic!** (hiccups) | paani, a glass, a paper bag | pour a glass, hold (count aloud to *panj*), *boo!* | numbers spoken, *paani*, *jaldi* | 5+ | 5 | 4 | 4 | 2 |
+| H16 | Hair | **The beetles** (bugs in the hair) | comb, the jar, shampoo | comb in the called direction, pop the colour called | direction, colours, count | 5+ | 5 | 4 | 4 | 3 (decision 1) |
+| H17 | Elbow | **Rub it in** (a stiff elbow) | cream, a cloth | knead-press N times at the speed called; the arm-wave test | count, *aastethi/jaldi*, side | 5+ | 3 | 4 | **5** | 3 |
+| H18 | Neck | **The stuck neck** | warm cloth, cream | turn the head as called (up, down, my left, my right), then lay the cloth | directions, side, count | 8 | 3 | 4 | 4 | 3 |
+| H19 | Chest | **Breathe in, breathe out** (a wheeze) | stethoscope, a rub, blanket | hold on *in*, release on *out*, on a ring; rub N times | in/out, *aastethi*, count | 8 | 3 | 3 | 4 | 3 |
+| H20 | Back | **The knots** (Nana lifted the sack) | hot-water bottle, oil | press the knots in the called order and place, then lay the bottle | up/down, my left/right, *pela/ne poi*, count | 8 | 3 | 4 | 2 (back view art) | 3 (art) |
+
+**Set 1** (seven games, phase 1) covers every slot type the pipeline needs (count, colour, side, order, direction, speed, hot/cold, spoken numbers come in set 2) at build cost 3–5, and gives Layla the two she'll replay (the taste test, the kicking knee). **Set 2** (phase 2) adds the two Zafar asked for (stitches, the injection) and the Cook crossovers. **Set 3** is variety and art.
+
+#### H1 Knee: the kicking knee
+*Ailment:* a bump from the puddle (Ali, in the story). *Tray:* the reflex hammer, a bandage (three colours on the belt from level 2). *Reuses:* `wrap` (built: turns on Stir's track, the figure-of-eight path), `count`; new: a `tap` reaction (a kick frame per patient, a laugh).
+1. The doctor: *[EN: Tap the knee]* (level 3: the patient first, *[EN: My left knee]*). The child taps the knee with the hammer: the leg kicks, the trolley wobbles, everyone laughs. A tap anywhere else: nothing happens, the line again.
+2. *[EN: The bandage.] Ba [EN: turns]* (level 1: *[EN: The bandage]*, any number of turns). Drag round the track; the tally shows on the badge, never the target; press the tick.
+3. Level 3: *Pela [EN: round the knee], ne poi [EN: round the leg], ne poi [EN: the knee]*: the figure-of-eight across two hotspots in the called order.
+*Levels:* 1 tap + wrap freely; 2 + count and colour (*[EN: the green] [EN: bandage]*); 3 + side and the path. *Age* 5+. *Fun 4, Kutchi 5, Build 5.*
+
+#### H2 Hand, finger or knee: the plaster
+*Ailment:* a scrape. *Tray:* paani (a jug), a cloth, a plaster in a design. *Reuses:* Cook's `pour`, `lift` (dab), `stick` (built). The **first-ever healing game**: three steps, one word each.
+1. *Pela paani*: pour the jug over the scrape until the ring is green (a squeal: *[EN: cold!]*).
+2. *Ne poi [EN: the cloth]*: dab it (tap the cloth on the spot, lift on green).
+3. *Ne poi [EN: the plaster]*: peel and drag it to the swirl; the design is the child's choice (Maryam's collection; ungraded).
+*Levels:* 1 the three steps, said one at a time; 2 said as one *pela/ne poi* list up front, the tray in order; 3 + colour of plaster and side (*my right hand*). *Age* 5+. *Fun 3, Kutchi 3, Build 5.*
+
+#### H3 Ear: the seed in the ear
+*Ailment:* the cousin's ear, always something in it (a sesame seed, a bead, a marble, a tiny sock). *Tray:* the torch, tweezers, a cotton bud, the green drops. *Reuses:* `check`'s torch beam, `drops` (built), Stir's track for the scrub; new `pluck` (Toca Doctor's splinter pull: drag the thing out along the arrow the doctor names).
+1. *[EN: Look in the ear]* (level 3: *[EN: my left ear]* from the patient): the close-up opens, an ear canal like a cartoon cave with two or three things in it.
+2. *Pela [EN: the seed], ne poi [EN: the bead]*: pull them out with the tweezers in the called order (a wrong first pull: it slips back, *Arre re!*). Level 1: one thing, no order. Each pull has its own noise; the patient says *[EN: that tickles!]*.
+3. *[EN: Clean it]*: the cotton bud goes round the track *trae* times (the count from level 2).
+4. *Ba [EN: drops]*: squeeze once per drop, press the tick.
+*Levels:* 1 one thing + clean + drops (no counts); 2 two things in order, scrub count, drop count; 3 three things, the side, the drops' count in the patient's voice (*[EN: two drops, my left ear]*). *Age* 5+. *Fun 5, Kutchi 5, Build 4.*
+
+#### H4 Tooth: brush up, brush down
+*Ailment:* a sugar bug (Arc 1's sweets) and a cracked tooth. *Tray:* a toothbrush, the tiny drill, the filling paste. *Reuses:* the face close-up (`body.js`), `count`; new `brush` (directional strokes on a tooth row: the stroke direction is judged, Little Panda ToothBrush's brushing with the direction as the row) and `fill` (Baby Panda Dental's shape puzzle: drag the paste piece that fits the crack).
+1. The mouth close-up: eight big teeth (the hotspot test's 0.5 cm tooth is fixed by drawing the mouth full-width at ×4). *[EN: Brush: up, up, down, left]*: a chain of direction words; the child strokes the brush that way; the sequence is 2 long at level 1, 4 at level 2, 6 at level 3 (a Simon chain with body-free words). Foam grows with every right stroke.
+2. *[EN: The big tooth] / nindho [EN: tooth]* (level 3: *[EN: the second from my left]*): tap it; the bug hops out, eyebrows up; tap it *ba* times with the drill to shoo it into the jar (a count).
+3. *[EN: Fill it]*: drag the paste shape that fits the crack (three shapes; the fit is visual, the ear row is done). The tooth twinkles.
+*Levels:* 1 two strokes + one bug + fill; 2 four strokes, the bug count, big/small; 3 six strokes with *my left/my right*, the crack's colour paste (*[EN: the white one]*). *Age* 5+. *Fun 5, Kutchi 5, Build 3.*
+
+#### H5 Tongue: the taste test
+*Ailment:* a tongue coated in colours from the Eid sweets ("it tastes of nothing"). *Tray:* three droppers (*limu, khun, loon*: real words), paani. *Reuses:* `drops`; new `taste` (the tongue close-up, the coating that wipes off per drop, the faces).
+1. *[EN: Stick out your tongue]*: the close-up; the tongue is striped in three colours.
+2. *Pela limu*: pick the lemon dropper and drop on the tongue: the patient's sour face (the whole screen puckers), a stripe clears. *Ne poi loon*: the salt face. *Ne poi khun*: the happy face. Level 1: one drop, the doctor names it; level 2: the three in order; level 3: the count of drops per taste (*ba limu*) and the colour of the stripe to hit (*[EN: the green stripe]*).
+3. *Paani!*: pour the cup; the patient rinses and spits into the bowl (the sound is the joke).
+*Levels* as above. *Age* 5+. *Fun 5, Kutchi 5, Build 4.* (The Sceptic: the droppers are the same shape and the three words are the only difference; the faces play only after the drop lands.)
+
+#### H6 Head: too hot, just right
+*Ailment:* a fever (or a chill). *Tray:* the thermometer, the cool cloth, blankets, a paper fan. *Reuses:* `lift` and `tuck` (built), `warm` (R3's Just right, not yet built: this is its home).
+1. *[EN: Take the temperature]*: press the strip to the forehead; the doctor reads it aloud (*[EN: Hot!]* / *[EN: Cold!]*); nothing readable on the strip.
+2. On *hot*: lay the cool cloth, lift on green; on *cold*: tuck a blanket.
+3. *[EN: How do you feel?]* The patient: *[EN: still cold]* → another blanket; *[EN: too hot]* → one off, or the fan (tap to waft, *jaldi!*); *[EN: just right]* → Done. Nana ends up under *char* blankets.
+*Levels:* 1 one exchange (hot or cold, one step); 2 two or three exchanges in either direction; 3 the count said up front (*trae [EN: blankets]*) and the fan's speed (*aastethi/jaldi*). *Age* 5+. *Fun 5, Kutchi 5, Build 5.*
+
+#### H7 Throat: say aah, and hardar dudh
+*Ailment:* a sore throat (Nani, in the story). *Tray:* the torch, honey, dudh, hardar. *Reuses:* `check` (the torch), Cook's `count` (spoons), and **Cook's tadka station unchanged** (`pour`, `add`, `stir`) on a small hob at the pharmacy counter.
+1. *[EN: Open your mouth, say aah]*: the torch on the throat; a pink glow, a tiny stuck sweet wrapper flutters (tap to lift it out).
+2. *Hakro chamcho [EN: honey]*: one tablespoon on the spoon into the mouth (the count tap; *ba chamchi* at level 3: two teaspoons, so *chamcho/chamchi* is heard as a pair).
+3. *Pela dudh, ne poi hardar, ne poi [EN: stir] trae*: pour the milk into the pan to the band, put in the turmeric (*hardar wij*), stir three times on the track, pour into the cup, hand it over (*Ghan*).
+*Levels:* 1 look + honey + the drink with each step said as it comes; 2 the drink's steps said as one list; 3 counts on every step and *adh* (half a cup: *adh cup*). *Age* 5+. *Fun 4, Kutchi 5, Build 5.*
+
+#### H8 Arm, leg or hand: stitches
+*Ailment:* a cut from the shed door (a pink zig-zag with 4–6 dots, no blood). *Tray:* paani, a thread (colours), the needle, a plaster. *Reuses:* **Dress up's `stitch`** (shared: dot-to-dot with a needle), `pour`, `stick`.
+1. *Pela paani*: pour over the cut to the green ring.
+2. *[EN: The red thread]. Trae [EN: stitches]*: drag the needle from dot to dot; each crossing is a stitch and a small "oop" from the patient; the count is the row (the tally on the badge); a bow at the end (the joke: the doctor ties it like a shoelace). Level 3: the stitches in a called order (*pela wadho, ne poi nindho*: the big gap first, then the small).
+3. *Ne poi [EN: the plaster]*: over the stitches.
+*Levels:* 1 wash + stitch freely + plaster; 2 the count and the thread colour; 3 order by size and the side (*my left arm*). *Age* 5+ (it's a lacing card on a cartoon arm). *Fun 4, Kutchi 5, Build 3.* Rejects R2.5's T3 ruling: the thread carries counts and colours, not letters, and the patient's giggles keep it a toy.
+
+#### H9 Arm: the boing (the injection)
+*Ailment:* the jab everyone needs before the village trip (Arc 5) or the flu. *Tray:* cotton, the syringe (**the doctor's**: it's on the tray but only he lifts it), a plaster, a lollipop. *Reuses:* `knead` (the wipe count), `tell` (the count-down is a speaking moment, **S6**), `stick`. The safety rule stands: the child never gives medicine.
+1. *[EN: Wipe it] trae [EN: times]*: cotton on the upper arm, three presses (a count).
+2. *[EN: Count with me!]*: the child says *trae … ba … hakro* aloud (the closed set is the five numbers; the pills as the fallback); on the last number the doctor's syringe (huge, striped, with a flag) goes *boing*, the patient's hair stands on end, and it's done: *[EN: All better!]* A wrong or missed number: the doctor waits, *[EN: Say it again?]*.
+3. *Ne poi [EN: the plaster], ne poi [EN: the lollipop]*: order words at the end.
+*Levels:* 1 wipe + count down from *ba*; 2 from *trae*, the side (*my left arm*); 3 from *panj*, and the child names the colour of plaster the patient asks for. *Age* 5+. *Fun 4, Kutchi 5 (spoken numbers), Build 3.*
+
+#### H10 Tummy: bubbles and burps
+*Ailment:* too many sweets (Ali) or too much daar (Nana). *Tray:* the stethoscope, paani, the hot-water bottle. *Reuses:* `check` (the gurgle), `pour`, `lift`; new `bubbles` (drag each bubble up a winding tube to the mouth; Toca Doctor's tummy maze).
+1. *[EN: Listen to the tummy]*: the stethoscope, a gurgle, everyone laughs; the tummy close-up shows *char* bubbles in a cartoon tube.
+2. *[EN: Up!] Char [EN: bubbles], aastethi*: drag each bubble up and out; each one ends in a burp; too fast (*jaldi* when *aastethi* was said) and the bubble pops back down. The count is the row (the badge tallies burps).
+3. *Ne poi paani*: pour a glass and hand it; *ne poi [EN: the hot-water bottle]*: lay it, lift on green.
+*Levels:* 1 the bubbles freely + water; 2 the count and the speed word; 3 + the order of the last two steps swapped at random (*pela the bottle, ne poi paani*). *Age* 5+. *Fun 5, Kutchi 3, Build 3.*
+
+#### H11 Nose: atchoo!
+*Ailment:* a cold (the wet neighbour from the monsoon). *Tray:* tissues, a steam bowl, aadu, the chai things. *Reuses:* **Monsoon's `cover`** (shared: catch it in time), `lift` (the ring), **Cook's Chai tray** unchanged.
+1. *[EN: Tissues!] Panj*: the patient sneezes at random over 20 s; tap the tissue on the nose in time for each; the doctor said how many sneezes are coming (the count row: the child stops reaching after *panj*; a sixth "reach" is a miss).
+2. *[EN: The steam bowl]*: pour hot paani (the ring), a towel over the head, *[EN: breathe] … trae*: hold the towel down for three breaths (a ring per breath).
+3. *Aadu waari chai, nar khun*: the Chai tray with ginger and no sugar (Cook's rows, with *waari* and *nar*).
+*Levels:* 1 tissues (any number) + steam; 2 the sneeze count and the breath count; 3 + the chai order with extras and a *nar* row. *Age* 5+. *Fun 5, Kutchi 4, Build 4.*
+
+#### H12 Eye: drops and the chart
+*Ailment:* a sore, itchy eye. *Tray:* the drops, the pointer, an eye patch (a design: pirate, bandhani). *Reuses:* `drops` (built: side + count in two voices), Find it's "which one" via the shared `which`; new `chart` (a picture eye chart, rows shrinking: the fruit and kitchen words the child already knows).
+1. The patient: *[EN: My left eye]*. The doctor: *Ba [EN: drops]*. Squeeze once per drop on that side; press the tick.
+2. *[EN: Cover the other eye]*: put the patch on the *right* eye (the side row, reversed: the child has to hold "the other one").
+3. *[EN: The chart. Aamo!]*: point at the mango on the chart; *[EN: Limu, the small one]* (*nindho limu*): rows get smaller; three calls at level 1, five at level 3.
+*Levels:* 1 drops (one, no side) + three chart calls; 2 the count and the side; 3 the patch on "the other" side, big/small on the chart. *Age* 5+. *Fun 4, Kutchi 5, Build 4.*
+
+#### H13 Foot and toe: sore feet
+*Ailment:* the wedding dancing (Arc 2) or a thorn from the field (Arc 5). *Tray:* the tub, hot paani, loon, tweezers, a bandage. *Reuses:* `pour` (to the band), Cook's `add` (salt), `pluck` (H3), `wrap`'s path.
+1. *Pela [EN: hot] paani*: pour into the tub to the band; *ne poi hakro chamcho loon*: one spoon of salt; the feet go in, steam, the toes wiggle (*[EN: ahh]*).
+2. *[EN: The big toe]* / *nindho [EN: toe]* (level 3: *[EN: my left, the small one]*): tap the toe; it wiggles alone; a wrong toe: all five wiggle and the patient giggles.
+3. Thorn variant: *[EN: Pull it out]*: pluck along the arrow; *ne poi* the bandage, *[EN: round the foot, round the leg, round the foot]*.
+*Levels:* 1 the bath + one toe; 2 the salt count and big/small; 3 the side and the thorn's path. *Age* 5+. *Fun 4, Kutchi 4, Build 4.*
+
+#### H14 Leg: the cast
+*Ailment:* a comedy break from the mango tree (the bone has a kink and a face). *Tray:* the X-ray plate, the cast roll (colours), stickers, crutches. *Reuses:* `wrap` (the cast is a bandage with a hard finish), `stick`; new `xray` (Dr Panda's swipe: the bone straightens with one swipe in the called direction).
+1. *[EN: The X-ray]*: hold the plate over the leg (a ring); the picture shows the kink. *[EN: Swipe up]* / *[EN: my left]*: straighten it (the direction is the row).
+2. *[EN: The blue cast.] Char [EN: turns]*: wrap; it sets with a "clonk".
+3. *Ne poi [EN: the stickers]*: decorate (free); *ne poi [EN: the crutches]*: hand them over; the patient hops off (the walk in P6 is on crutches).
+*Levels:* 1 X-ray + wrap freely; 2 colour and count; 3 the swipe direction, the side, the order of the last two. *Age* 8 (Zayn's; Layla plays it at level 1). *Fun 4, Kutchi 4, Build 4.*
+
+#### H15 Mouth: hic!
+*Ailment:* hiccups (Ali, from laughing). *Tray:* paani, a glass, a paper bag. *Reuses:* `pour`, `tell` (counting aloud, S6's set), `lift`.
+1. The patient hiccups every few seconds (they hop on the bench). *Pela paani*: pour a glass to the band and hand it; they drink; a hiccup.
+2. *[EN: Hold your breath.] [EN: Count to] panj*: the child counts aloud *hakro, ba, trae, char, panj* (spoken; the patient's cheeks swell with each number; the pills as the fallback); another hiccup.
+3. *[EN: Boo!]*: the doctor nods; the child taps the patient's shoulder hard (any tap); the patient jumps; silence; the doctor's big laugh.
+*Levels:* 1 water + count to *trae*; 2 to *panj*, the glass *adh* (half) or full; 3 *jaldi!* (count fast) or *aastethi* (slow), judged by cadence. *Age* 5+. *Fun 5, Kutchi 4, Build 4.*
+
+#### H16 Hair: the beetles
+*Ailment:* bugs in the hair (drawn as tiny beetles with eyebrows; the word "lice" is never used; decision 1). *Tray:* the comb, the jar, shampoo. *Reuses:* `brush` (H4's directional strokes on hair), `count`, the colour pick via `which`.
+1. *[EN: Comb down, down, left]*: strokes in the called directions; each stroke flushes out a beetle.
+2. *[EN: The red one!]* *[EN: Now the green one]*: tap the beetle in the named colour; it hops into the jar (a wrong colour: it waves and hides again). *Panj* beetles at level 2; the count is a row.
+3. *Ne poi [EN: shampoo]*: rub (knead) *trae* times; foam; a rinse.
+*Levels:* 1 two strokes + any beetle; 2 four strokes, colours, the count; 3 six strokes with sides, two colours per call (*the red one, ne poi the green one*). *Age* 5+. *Fun 5, Kutchi 4, Build 4.*
+
+#### H17 Elbow: rub it in
+*Ailment:* a stiff elbow (Big Ma's sewing arm). *Tray:* cream, a cloth. *Reuses:* Cook's `knead` (press count), `lift`. The cheap one.
+1. *[EN: The cream.] Trae [EN: times], aastethi*: press the elbow three times at the cadence said (a slow press when *jaldi* was said, or the reverse, misses the speed row).
+2. *[EN: Bend it!]*: tap the elbow; the patient does a silly arm-wave, the joke.
+3. *Ne poi [EN: the cloth]*: lay it, lift on green.
+*Levels:* 1 press freely + cloth; 2 the count and speed; 3 the side. *Age* 5+. *Fun 3, Kutchi 4, Build 5.*
+
+#### H18 Neck: the stuck neck
+*Ailment:* a neck stuck looking sideways (the cousin, from looking for his lost things). *Tray:* a warm cloth, cream. *Reuses:* `lift`, `knead`; new `turn` (drag the head in the called direction; a head-turn frame set per patient).
+1. *[EN: Look up] · [EN: look down] · [EN: my left] · [EN: my right]*: drag the head that way; it creaks; a wrong way and it springs back.
+2. *[EN: Rub] ba [EN: times]*; *ne poi [EN: the warm cloth]*.
+*Levels:* 1 two turns; 2 four with a count; 3 sides in the patient's voice and *aastethi* on the turns. *Age* 8 (the sides). *Fun 3, Kutchi 4, Build 4.*
+
+#### H19 Chest: breathe in, breathe out
+*Ailment:* a wheeze from the dust (Arc 5's field). *Tray:* the stethoscope, a chest rub, a blanket. *Reuses:* `check`, `lift`'s ring, `knead`, `tuck`.
+1. *[EN: Listen to the chest]*: the stethoscope; the breathing sounds; *[EN: Breathe in … breathe out]*: hold the stethoscope down on *in*, lift on *out*, three times, on a ring (a lift on *in* is a miss).
+2. *[EN: The rub.] Ba [EN: times], aastethi*; *ne poi [EN: the blanket]*.
+*Levels:* 1 two breaths; 2 four, the rub count; 3 *aastethi/jaldi* on the breaths and the side (*my left side*: a first "side" that isn't a limb). *Age* 8. *Fun 3, Kutchi 3, Build 4.* The calm one; keep it for the end of a Busy morning.
+
+#### H20 Back: the knots
+*Ailment:* Nana lifted the rice sack. *Tray:* oil, the hot-water bottle. *Reuses:* `knead`, `lift`; needs the **back view** (the swivel stool art, R2.6), so it waits for the art budget.
+1. *[EN: The top one] · [EN: the bottom one] · [EN: my left]*: press the knot named (three or four on the back), *ba* times each; the knot uncurls with a pop.
+2. *Pela [EN: oil], ne poi [EN: the hot-water bottle]*: rub, then lay and lift on green.
+*Levels:* 1 two knots by up/down; 2 counts; 3 sides and the order. *Age* 8. *Fun 3, Kutchi 4, Build 2.*
+
+**Rejected from the pool** (one line each): the pill organiser (Tidy up's; Zafar); a drip (nothing to hear); blood pressure (the reading is a number the child can't act on); bone-setting by hand (Toca's, but a swipe on an X-ray does it kindly in H14); surgery of any kind; a bottom for the injection (the joke would be at the patient's expense, and elders are patients).
+
+**The Sceptic on heal.** The gesture is hands, not ears; the ear rows inside a healing game are the counts, sides, colours, directions, orders and speeds, and each is closed the same way as Cook's: the tally never shows the target, a count never ends itself (the tick), the order is heard not drawn (the tray's dishes are blank until used), a side is the patient's own, the direction chain is random per round, the coloured things are shuffled, and a speed row needs the cadence, not a button. Level 1 of set 1 has 1–3 ear rows per game; a level-1 patient's pipeline is about 1/3 (waiting) × 1/6 (diagnosis) × 1/6 (pharmacy) × 1/2 (one heal row) ≈ **0.5%** for a blind bot's ear star, and the stopwatch punishes waiting.
+
+### P6 Stage 5, the send-off: "Is everything okay now?"
+
+The patient stands (or hops on crutches), healed. The doctor: *[EN: Is everything okay now?]* The patient answers with a feeling; the child acts on it; then the goodbye; then the sticker and the end-of-round screen.
+
+| Variant | Level | How it plays | What the Kutchi carries | Reuses |
+|---|---|---|---|---|
+| **E1 Happy or sad?** | 1 | The patient: *[EN: Yes! Now I'm happy]* (or, one time in four, *[EN: Still a bit sad]*). Two big face cards on the right (happy / sad): the child taps the one they heard. Sad → one more thing from the sidebar (Big Ma's song, a sticker, the lollipop), then the question again, always ending happy | *happy, sad* (G64–G65); *okay* (new) | `feel` (new, small: the face cards, the one-more-thing) |
+| **E2 Four feelings** | 2 | Four cards: *okay, happy, better, sad*; at level 3 *scared* (before H9's boing only, always resolved: *[EN: I was scared, now I'm happy]*, G66). The patient's line varies (*[EN: I feel better]* · *[EN: I'm okay]*) | Five feelings, a *was/now* pair at level 3 | `feel` with 4–5 cards; the shared `which` for the decoy cards |
+| **E3 Say goodbye** (speaking, S7) | 2+ | The child says the goodbye: *Achija!* / *Aabhar aanjo!* / *[EN: Get well soon]* (G84), the one the doctor cues (*[EN: Say thank you to the doctor]* on the child's behalf, or *[EN: Say bye]*); the patient waves back with the matching line | Production: a closed set of 3 | `tell` |
+| **E4 You ask** (speaking, S8) | 3 | The child asks the question: *[EN: How do you feel?]* (G83); the patient answers; the child taps the face | Production of the question frame + the feelings | `tell` + `feel` |
+
+Then: the sticker for the album (one per patient the first time; one per ailment), *Aabhar aanjo!* from the patient, the doctor's big laugh, and the **end-of-round screen** (UX 9): page 1 the stopwatch (this patient's time, personal best per ailment and level), the accuracy slots (every ear row of the five stages as one row of dots), the hints badge (light bulb taps + "?" + the belt stopper); page 2 the word review: the kind, the part, the items, the feeling, each with a tap to hear. **Next patient** → stage 1.
+
 ## Revision 3, 25 Sept 2026: mechanics, speaking and Zafar's answers
 
 **Why this revision.** Two things landed after Revision 2: Zafar's answers to its five decisions, and the deep-dive brief for every mode (`DEEP-DIVE-BRIEF.md`: each mode is a set of mini-games built from modular mechanics, one mechanic per file, reused from Cook where they fit; speaking is core, with closed-set recognition against `js/shared/speech.js`; all modes are built at once, so phases 0–1 touch only the mode's own files). Revision 2 already has the backbone (visit types), the scored library (R2.5), the ladder (R2.3) and the Sceptic's estimates, so this section doesn't repeat them. It adds what the brief asks for and what the answers change, and **supersedes Revision 2 where they conflict** (R3.8 lists the patches). It's short by design; the depth is in R2.

@@ -187,6 +187,83 @@ Round two adds the sidebar and a second row; round three the bag's swap; the lig
 
 **Story homes** are unchanged from D6, read as pipelines: Ch1 one bazaar errand (fruit); Ch2 Ali's turn; Ch3 the sweets at home (openables, the box, → Who did it?); Ch4 Big Ma's box (L10 as stage 4); Ch5 Eid morning (Nana's cap: 4c at home, then Tell Ali where).
 
+### P6 What survives from the current build
+
+The build session on `claude/build-find` has delivered phases 0–1 of section 8 (its report: `build/reports/find-build.md`; log: `docs/find-build-log.md`; leak table: `build/reports/find-leak.md`). **Almost all of it carries over.** The pipeline is a change to the *runner* and to the *data*, not to the mechanics. The Node leak bot passes at 0.0–1.8% for F1–F3 (positions hidden), and nothing below should move those numbers, which is the acceptance test for the refactor.
+
+| File (on `claude/build-find`) | Fate | What changes |
+|---|---|---|
+| `js/find/engine.js` | **Keep** | Nothing. `Find.load`, `Find.matches`, `Find.knobs`, `ladder`, `rowParts`, `Mech.define/lab` stay. Add `Find.pipeline(id)` (reads `pipelines` from `find.json`) beside `Find.knobs` |
+| `js/find/gen.js` (pure generator, UMD) | **Keep, extend** | Rows gain an owner (`want.who`, for 1b/6b) and the errand gains a place (`errand.place`, for 2a); new pure helpers `Gen.readback(rows, level)` (which line is wrong and how) and `Gen.route(level)`. The size rule, the where rule, `closedSet`, `pack` and the digit rule are untouched |
+| `js/find/round.js` (`Find.Round`) | **Keep** | It is stage 4's runner as it stands (`openList`, `sayList`, `beginSearch`, `waitDone`, `grade`, the timers, `earMiss`, `onHelp`, `warmer`, `finish`, `wordReview`). Two additions: `round.found(noun)` so stage 3b can pre-fill a tally, and `round.words` (every word heard, for stage 7's review) instead of `wordReview()` reading only the rows |
+| `js/find/view.js` | **Keep, extend** | Pan, zoom, `addItem`, `fly`, `hit`, `bowl`, the person: unchanged. Add a **fronts** layer for stage 2 (grey rectangles with a twinkle, on one scene) and a **pan-and-dial** overlay for 5c; both are small |
+| `js/find/flow.js` (`playRound`) | **Change** | `playRound({mech, level, sceneId, …})` becomes `runErrand(pipeline, level)`: for each stage in `pipelines[id].stages`, pick the variant for the level and `await` it with the carried state; the result card is replaced by the shared end-of-round screen when the foundation ships it (until then, its current card with the three badges drawn locally). The lab keeps every existing button and gains one per stage |
+| `js/find/mechanics/spot.js`, `bag.js`, `greet.js`, `where.js`, `tell.js`, `bowl.js` | **Keep, unchanged** | They already are one stage-variant each: `greet` = 3a, `spot` = 4a–4c, `bag` = 5a, `bowl` = 6a, `tell` = every speaking moment |
+| `js/find/games/list.js`, `whichone.js`, `where.js`, `ali.js` | **Change (thin them)** | Today `games/list.js` composes greet → spot → bag → bowl itself (`Find.runList`). That composition moves into the pipeline data; each game file keeps only its stage-4 `run` (the stall, the rows, the search, Done, grade). `ali.js` becomes the 1d variant: its list card is stage 1, its "Ali picks" is stages 2–4 watched, its bag check is stage 5a with `who: "ali"` (already supported by `bag.js`) |
+| `js/find/bot.js` (in-page) and `js/find/blind.js` (Node) | **Keep, extend** | New strategies: `go` (the front whose painted trade matches the list's pictures; random among look-alike fronts), `readback` (always yes; always no; alternate), `giveto` (a random face), `weigh` (the guessed count). The leak script reports per stage and for the whole errand |
+| `data/find.json` | **Keep, extend** | Everything stays (`mechanics.list/whichone/where/ali/tell/bowl/bag`, `sizes`, `scenes`, `story`). Add `stages` (the seven, with their variants and level windows), `pipelines` (`bazaar-fruit`, `home-sweets`, `morning`), `mechanics.go`, `readback`, `weigh`, `giveto`, and `first_session` (the tiny round of P5 as overrides) |
+| `data/scenes/sitting-room.json` (greybox) | **Keep** | Gains `fronts` for stage 2 at home (four doors) when the courtyard greybox exists |
+| `build/test_find.py`, `build/leak_find.mjs` | **Keep, extend** | One Playwright errand end to end at levels 1 and 3, plus the first-session script; the leak bot per stage and per errand |
+| `find.html`, `css/find.css` | **Keep** | The lab gains a "stage" row of buttons; the sidebar moves left (UX 2) when Wave 6's shared sidebar lands, not before |
+| The result card in `flow.js` | **Goes**, when the shared end-of-round screen exists | Its word review is stage 7 page 2; its stars map to the three badges as UX 9 says |
+
+**Mechanics tally after the pipeline:** built and kept 6 (`spot`, `bag`, `greet`, `where`, `tell`, `bowl`); new and small 4 (`go`, `weigh`, `giveto`, `who-wants`); shared 3 (`readback` with the clinic's `handover`, `whichone`, `tell`); from Cook 3 (`count`, `passme`, the *for {person}* frame); later 5 (`torch`, `open`, `trail`, `pay`, `change`). Nothing built is thrown away.
+
+### P7 Words needed
+
+*In the doc* means the Questions for Mum doc already asks it; nothing here edits that doc. New items are for the next round of questions.
+
+| Priority | For stage | Words or frames | Status |
+|---|---|---|---|
+| 1 | 1, 4, 5 | Fruit and numbers 1–10 confirmed; *hakro / hakri*, *ba* on screen | In the doc: E103–E123, D4; the grammar notes have *hakro / ba* (a data change in `cook.json`, not a question) |
+| 2 | 4b | Big / small with a noun, both genders | In the doc: C22–C36, C44–C49 |
+| 3 | 2 | **Stall names**: the fruit stall, the vegetable stall, the sweet shop, the cloth stall; **"whose stall"** (*Nana jo* pattern) | **New** (E14 has *jo*; the stalls are not asked) |
+| 4 | 2, 4 | Rooms (E49–E58); positions (A5, E1–E13, C12–C21); *near / by* | In the doc |
+| 5 | 3b, 3c | *[EN: What do you need?]*; *Muke {x} de*; *khanigin* confirmed as "take it yourself" | *de*, *khanigin* in the grammar notes; the question is **new** |
+| 6 | 5b | **Yes / no** as answers (*Haa*; no) | In the doc: A8.1–A8.2 |
+| 7 | 5c, 5d | *[EN: put it on the scales]*, *[EN: How much?]*, the currency word, prices | **New** (5c's line; 5d entirely) |
+| 8 | 1b, 6b | Family names; *{person} lai*, *pan* | In the doc: E85–E102; *lai / pan* in the grammar notes |
+| 9 | 4, 7 | Finding phrases: *Find the…, Here it is!, Look!, Leave that one, Bring it here, Nearly!*; *Well done!* | In the doc: E73, E77–E80, E84, B25 |
+| 10 | 4 | *[EN: not that one, the other one]*, *[EN: the same]* | H5 has *the same*; *the other one* is **new** (as D8 said) |
+| 11 | 4d, 4 (L9) | Sweet names; *Simba took it* | In the doc: E59, A6 |
+| 12 | 4 (L10, L11) | Colours; dotted / striped / flowery; thread, scissors | In the doc: E60–E71, F63, F72–F79 |
+| 13 | the recogniser | The fruit, the numbers 1–4 and *wadho / nindho* said five times each by three or more family members | **New**: a recording instruction (as D8) |
+
+### P8 Build brief (pipeline, phased, own files first)
+
+For the Find it build agent, continuing on `claude/build-find`. **Phases 0 and 1 touch only Find it's own files**: `find.html`, `css/find.css`, `js/find/**`, `data/find.json`, `data/scenes/sitting-room.json`, `build/test_find.py`, `build/leak_find.mjs`. Shared pieces assumed from the foundation, as in 8.1, plus two new ones: the **end-of-round screen** (UX 9, one shared component) and the **onboarding kit** (UX 10). Until they land, the current result card and no overlay.
+
+| Phase | What is built | Files | Acceptance |
+|---|---|---|---|
+| **0 The runner and the data** | `stages` and `pipelines` in `find.json`; `runErrand` in `flow.js` running the seven stages from data, with the carried state of P1; `games/*.js` thinned to stage 4; `greet`, `bag`, `bowl` called by the runner; `first_session` overrides; `Gen` gains `who`, `place`, `readback`, `route`; `go` as grey fronts on the bazaar; `readback` (5b); `giveto` (6b); bots per stage; the leak script per stage and per errand | Own files only | `node build/leak_find.mjs --n 1000`: F1–F3 rates unchanged within noise; the whole-errand ear rate under 5% at levels 1–3; `build/test_find.py` plays one errand end to end at seven viewports, and the ninety-second first session |
+| **1 The lane, the counter, the scales** | 2a with two look-alike fronts (whose stall); 3b Ask for one on `tell` with the pre-filled tally; 3c the doorway on `passme`; 5c the scales over `count`; 1b faces on the card; lab buttons per stage; the three badges drawn locally on the result card | Own files | Each stage runs alone from the lab at levels 1–4; a Playwright errand with a deliberate mistake at every stage; the bot never earns the ear star from stage 2 or 5b alone |
+| **2 Integration** | The shared end-of-round screen and onboarding kit; the left sidebar (Wave 6); `speech.js` with family recordings; the shell entry; the bag → Tidy up's tray (6c); `hakro / ba` from `cook.json` | Shared files, with the foundation agent | One save; the first session on a tablet with Zafar's notes; the bot rates unchanged |
+| **3 The library and art** | L4, L5, L6, L8 first (cheap, Kutchi-real today); then the Ch3 set (L2 openables, L3 trail, L9 the sweet tray) once E59 and A5 exist; L19 Bazaar run; L21; the torch; the sitting-room art from the greybox; L10 after E60–E71; 5d Pay after prices | Scene and asset files | The Kutchi audit per twist and per scene; the visual QA checklist; the onboarding script per stage written last |
+
+**The first three tasks.** (1) Phase 0's runner: move the greet → spot → bag → bowl composition out of `games/list.js` into `pipelines.bazaar-fruit` and prove the leak rates and the Playwright test are unchanged. (2) `first_session` and the ninety-second round, in the lab as a button, then `go` as taught fronts. (3) `readback` (5b) with its yes/no pills and the bot's three strategies, because it is the cheapest new Kutchi test in the mode and the shopkeeper saying the list back is the third hearing UX 1 wants.
+
+### P9 Decisions for Zafar (only what blocks the build), with defaults
+
+1. **Stage 2 (Get there) from the very first session?** Default: **yes, taught** (Ali runs ahead, the front twinkles, the ghost finger shows the tap); tested from level 2, when two fronts sell the same things. Cost: a greybox of four grey fronts.
+2. **The first ever bag check has no mistake.** Default: **yes**: the shopkeeper gets it right and says *Achija*; the swap starts on round 2. UX 7 says level 1 is the smallest possible round, and the very first round should end on a success.
+3. **Speaking at the counter (3b) from level 2**, to the shopkeeper rather than to family. Default: **yes**: the shopkeeper is the cast's Uncle, and *khanigin* is the fiction's reason the child then shops alone. The pills are live until the family recordings exist.
+4. **The scales (5c) in level 2, paying (5d) not before Arc 2.** Default: **yes**: numbers are real Kutchi today; prices and a currency word are not asked yet.
+5. **The lab keeps one button per stage as well as per errand.** Default: **yes**; it is how free play dips into single stages.
+
+**What changed below:**
+
+| Section | Change |
+|---|---|
+| D5 first set and ladder | Superseded by P2's per-stage levels and P5's first session; the built F1–F4 stand as stage variants |
+| D6 story homes and free play | Read as pipelines (P5); free play is per stage |
+| D9 | Its three decisions stand (Zafar has not answered); P9 adds five |
+| 8 Build brief | Superseded by P8; phases 0–1 of section 8 are done on `claude/build-find` |
+| Sources | The pipeline research sources are listed below |
+
+**Sources (pipeline research).** Dr. Panda Supermarket: [App Store](https://apps.apple.com/us/app/dr-panda-supermarket/id609405853), [iPad Kids review](https://ipadkids.com/dr-pandas-supermarket-app-review-easy-fun-in-aisle-one/). Baby Panda's Supermarket: [Google Play](https://play.google.com/store/apps/details?id=com.sinyee.babybus.shopping&hl=en_US), [Reviewed.app](https://reviewed.app/game/baby-pandas-supermarket/). Toca Life World: [Screenwise guide](https://screenwiseapp.com/guides/toca-life-world), [Shopping Center (Fandom)](https://toca-life-world.fandom.com/wiki/Shopping_Center). Pepi Super Stores: [Pepi Play](https://www.pepiplay.com/pepi-super-stores/). Sago Mini Town: [sagomini.com](https://sagomini.com/apps/town/), [App Store reviews](https://apps.apple.com/us/app/sago-mini-school-kids-2-5/id1483068197?see-all=reviews). Hidden Folks: [AppUnwrapper review](https://www.appunwrapper.com/2017/02/15/hidden-folks-review/), [Common Sense Media](https://www.commonsensemedia.org/game-reviews/hidden-folks), [Behind the Game (Medium)](https://medium.com/@stefanlesser/behind-the-game-hidden-folks-e6198dfa885a). Hidden Through Time: [TheSixthAxis](https://www.thesixthaxis.com/2020/03/24/hidden-through-time-review/), [GameGrin](https://www.gamegrin.com/reviews/hidden-through-time-review/), [Digitec (HTT2)](https://www.digitec.ch/en/page/hidden-through-time-2-review-the-perfect-game-for-relaxing-29831). Little Things Forever: [Jay is Games](https://jayisgames.com/review/little-things-forever.php), [AppAdvice](https://appadvice.com/appnn/2012/05/quickadvice-ltforever). 123 Kids Fun Seek and Find: [App Store](https://apps.apple.com/us/app/123-kids-fun-seek-and-find/id1475738045).
+
+---
+
 ## Deep dive, 25 Sept 2026: mini-games and mechanics
 
 **Why this section.** Zafar's principles of 25 Sept (`docs/modes/DEEP-DIVE-BRIEF.md`): each mode is a set of mini-games built from one-file mechanics, speaking is core, and every mode is built at once. Find it is the one mode with a live slice (`find.html`, `js/find/`, `data/find.json`: the engine, M1 Nani's list with M5 Check the bag, the Search lab, the non-speaker bot at 3.3%), so this section designs around what's built and says exactly what changes. The only Kutchi it relies on is what exists: the fruit, vegetable and spice drafts, numbers 1–10, *vadho / nindho* (big / small, drafts), *Muke {x} khape, Ne {x}, Nar {x}* (a draft), *Ghan, Arre re!, Hedo!, Achija*. Everything in `[EN: …]` is a placeholder.

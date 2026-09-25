@@ -307,10 +307,6 @@ Until priority 11 lands, stage 4's instructions are English placeholders except 
 
 ## Deep dive, 25 Sept 2026: mini-games and mechanics
 
-
-
-## Deep dive, 25 Sept 2026: mini-games and mechanics
-
 **Why this section.** The review (`REVIEW-2026-09-25.md`) said Snap's design was sound but its *timing* was wrong: the heaviest engine of the six (moving subjects on path graphs, herds, occlusion, parallax, a rail) for a mode that lives in Arc 5, with only the fruit counts real Kutchi today. Zafar now wants every mode built at once, one agent each. So this section keeps the design and **cuts the engine down to what a still scene can carry**: a viewfinder over a still picture, a rectangle evaluator, prints, the hand-in and the album. That is enough for two real Kutchi tests today (numbers + fruit; *vadho/nindho* + fruit), a speaking mini-game, and the collection. The moving world comes back in phase 4 as data and sprites on the same evaluator, not as a rewrite. This section supersedes sections 3, 4, 8 and 12 below where they conflict; 1, 2, 5, 6, 7, 9, 10 and 11 stand.
 
 ### D1 Pitch and the kinds of round
