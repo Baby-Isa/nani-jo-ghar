@@ -575,8 +575,11 @@
       rows.forEach((r) => {
         const id = r.ids[0];
         const ok = id === "cook-dudh" ? got.milk : id === "cook-khun" ? got.sugar : id === "ph-half" || id === "ph-full" ? got.amount : got.extra;
-        if (ok) UI.mission.tickItem(id, dish, { for: c.who, no: r.no });
-        else {
+        if (ok) {
+          UI.mission.tickItem(id, dish, { for: c.who, no: r.no });
+          // the result card's "you did" (sugar counts already come in through listen; a "no" done is nothing added)
+          if (!r.no && id !== "cook-khun" && ctx.did && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
+        } else {
           UI.mission.missItem(id, dish, { for: c.who, no: r.no });
           bad.push(r);
         }
