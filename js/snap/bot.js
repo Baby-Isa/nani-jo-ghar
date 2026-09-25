@@ -84,6 +84,11 @@
           const mine = round.rows.filter((r) => !r.ali).map((r) => r.i);
           const sub = round.game === "g4" ? Object.assign({}, v, { film: round.vf.film, shapes: mine.map((i) => v.shapes[i]), rows: v.rows ? mine.map((i) => all[i]) : null }) : Object.assign({}, v, { film: round.vf.film });
           const list = st.shoot(sub).map((f) => (round.game === "g4" && f.forRow != null ? Object.assign(f, { forRow: mine[f.forRow] }) : f));
+          // nothing to shoot (a first round's "scene memory"): one frame anywhere, so Show Nani appears
+          if (!list.length) {
+            const s = v.rng.pick(round.lay.spots);
+            list.push({ cx: s.x, cy: s.y, zoom: K.vf.zooms[0] });
+          }
           await shootList(list);
         } else if (round.asking) {
           // back for a frame: the oracle shoots the row's frame, the others anything

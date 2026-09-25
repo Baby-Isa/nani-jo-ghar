@@ -217,6 +217,12 @@ ${voice.join("\n")}
 - **rowShape**: one print per row, shaped by what the card shows (a "Nar" row gets a print with one kind alone), and at the hand-in the print made for a row of the same shape as the one Nani's line shows.
 - **freshProfile**: a new profile, so every word is at stage 1 and its fruit twinkle: the bot shoots exactly those. Stage-1 rows are taught, not tested: the ear star is not offered.
 - **sceneMemory**: last round's right frames shot again (the orchard is re-dealt from the seed).
+
+## Known limits (not in the numbers)
+
+- **Words with no voice yet stay as text.** Cook's rule is that a word fades to dots at stage 3 only if it can be heard (\`Cook.cardHidden\` needs a voice file). *aamo*, *vadho*, *nindho* and *nar* have no recording or placeholder voice yet, so they show as Kutchi text on the card and in Nani's line at every stage. The bots don't read Kutchi, so the rates above hold for a non-speaker; a player who learnt the spelling of *vadho* from earlier rounds would be reading, not listening. It closes when the family's recordings (or placeholder voices) arrive for those four words.
+- **G4 rows are handed in but never tested for the ear.** Ali's rows come from a picture card the child has seen, so they only earn the voice star (D4: his mistakes never touch the ear); the ear star in G4 rests on the child's own rows.
+- **A row can be let go.** After two trips back to the orchard for one row, Nani says "Nearly!" and moves on (the row's ear is already lost), so a round always ends.
 `;
   const dir = path.join(ROOT, "build/reports");
   fs.mkdirSync(dir, { recursive: true });

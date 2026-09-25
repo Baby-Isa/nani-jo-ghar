@@ -249,7 +249,15 @@
     for (let k = 0; k < n; k++) {
       const key = keys[k % keys.length];
       const strategy = strategies[k % strategies.length];
-      const card = await runLab(key, { bot: strategy, seed: 5000 + k });
+      // a watchdog: a stuck round is stopped and doesn't count
+      let timer;
+      const card = await Promise.race([runLab(key, { bot: strategy, seed: 5000 + k }), new Promise((res) => (timer = setTimeout(() => res("stuck"), 60000)))]);
+      clearTimeout(timer);
+      if (card === "stuck") {
+        Cook.run++;
+        (by.stuck = by.stuck || { n: 0, ear: 0, strategy: "stuck" }).n++;
+        continue;
+      }
       if (!card) break;
       i++;
       const b = (by[`${key} ${strategy}`] = by[`${key} ${strategy}`] || { n: 0, ear: 0, strategy });
@@ -257,7 +265,7 @@
       if (card.stars.ear) b.ear++;
     }
     Object.assign(state.lab, keep);
-    const blind = Object.values(by).filter((b) => b.strategy !== "oracle");
+    const blind = Object.values(by).filter((b) => b.strategy !== "oracle" && b.strategy !== "stuck");
     const oracle = Object.values(by).filter((b) => b.strategy === "oracle");
     const sum = (arr, k) => arr.reduce((a, b) => a + b[k], 0);
     return { n: i, by, blindRate: sum(blind, "ear") / Math.max(1, sum(blind, "n")), oracleRate: sum(oracle, "ear") / Math.max(1, sum(oracle, "n")) };
