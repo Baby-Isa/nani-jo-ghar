@@ -150,14 +150,15 @@
       if (!room.trolleyBg) room.trolleyBg = S.track(S.add.rectangle(t.x + t.w / 2, t.y + t.h / 2, t.w, t.h, 0xdfe7ea).setStrokeStyle(6, 0xaebcc2).setDepth(D.back));
       const items = {};
       const all = [];
-      const cols = Math.min(t.cols, Math.ceil(objs.length / t.rows));
+      // always two rows (a third would fall off the bottom): the slots narrow instead
+      const cols = Math.ceil(objs.length / t.rows);
       objs.forEach((o, i) => {
         const r = Math.floor(i / cols);
         const c = i % cols;
         const n = Math.min(cols, objs.length - r * cols);
         const x = t.x + (t.w * (c + 0.5)) / n;
         const y = t.y + 90 + r * 190;
-        const img = Clinic.Overlay.image(S, o, x, y, { w: t.slot[0], h: t.slot[1] });
+        const img = Clinic.Overlay.image(S, o, x, y, { w: Math.min(t.slot[0], (t.w / cols) * 0.92), h: t.slot[1] });
         items[o] = img;
         all.push(img);
       });

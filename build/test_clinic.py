@@ -157,7 +157,13 @@ class Player:
         elif k == "click":
             sel = e["selector"]
             if e.get("tell"):
-                if self.say == "pills" and e.get("pills"):
+                # a child whose word isn't understood twice takes the pills once they're up
+                self.tries = getattr(self, "tries", {})
+                n = self.tries[e["answer"]] = self.tries.get(e["answer"], 0) + 1
+                if self.say in ("wrong", "nothing", "low", "mumble") and e.get("pills") and n > 2:
+                    sel = f'#choices .choice[data-key="{e["answer"]}"]'
+                    self.tries[e["answer"]] = 0
+                elif self.say == "pills" and e.get("pills"):
                     sel = f'#choices .choice[data-key="{e["answer"]}"]'
                 elif self.say == "pills":
                     # the pills come once the mic has been tried (level 2+): try it (the stub hears nothing)
