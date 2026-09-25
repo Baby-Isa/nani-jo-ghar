@@ -2923,6 +2923,12 @@
    }
   }
  },
+ "calm": {
+  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1).",
+  "quietMs": 4000,
+  "hintMs": [7000, 8000, 11000, 15000],
+  "passMeChance": { "relaxed": 0.4, "busy": 0.55, "level1": 0.2 }
+ },
  "tips": {
   "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",
   "ear": {

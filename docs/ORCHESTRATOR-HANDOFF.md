@@ -38,6 +38,19 @@
 | **Art** | Batch 1 processed and merged: 108 sprites in `assets/cook/items/`, 14 backgrounds, character sheets in `sources/art/characters/` (Nani v2 approved). Batch 2 pack sent to Zafar (`docs/chatgpt-art-prompts-batch2.md`): redos, bajri maani, hob, tray and grill, samosa folds, front-view pantry items, chaat layers, and Big Ma, doctor and cats sheets with counter views. **Nothing is wired into the game yet.** That's the next art task, after Wave 5A. |
 | **Mode designs** | All six done (`docs/modes/*-design.md`, overview in `OVERVIEW.md`), all "Go with changes". Zafar is answering the 18 merged questions; then build in this order: Tidy up → Who did it? → Dress up → Monsoon rush / clinic → Snap. Each doc ends with a build brief. |
 | **Platform** | "One app, one save" is approved; start after Wave 5A merges. Then the world map and "world is the menu", no-tutorial first launch, role-reversal groundwork. See the to-do's "Platform and tech debt". |
+| **Family words** | Questions for Mum: Round 2 plus Part 7 (the priority word list for all modes) and how to record. Voice notes are to be split by silence into per-word clips. Zafar writes phonetic spellings; Claude tidies them and keeps a `say` field for the voice. The Google TTS placeholder voice is blocked in this environment. |
+
+## Update 25 Sept, 13:35 UTC (old chat, after the handoff)
+
+The old chat is finishing three things and will push them; the new chat should check `git log origin/main` before redoing any of them:
+
+1. **Wave 5A** (calm UI) is merged into `claude/funny-fermi-vyrabn` (3b7da69). Its tests were running; it goes to `main` once they pass.
+2. **Find it calm sidebar** (worktree branch `worktree-agent-a5a7f3c8f8320458c`): the calm sidebar, no target digit on rows (a leak fix), zoom buttons pinned on phones.
+3. **Batch 1 art wiring** (worktree branch `worktree-agent-a8c03f5aa01818f1b`): a sprite map in data (`art.sprites`), webp builds, the new hob/worktop backgrounds, with the current drawings as fallback.
+
+**Not started:** "one app, one save" (the shell). Find it is still a separate page, `find.html`. **Hands v2** (`claude/art-hands-v1`) is still waiting on Zafar's ring approval.
+
+**17:05 UTC:** Cook's tests all pass on the Wave 5A merge (laptop and flip5-landscape labs, two days, open kitchen). **But `find.html` crashes on it:** `UI.init` needs `#btn-help`, which the page doesn't have. So `main` is held back until the Find it calm-sidebar agent lands its fix. Both agents were stopped by the usage limit around 14:00; they were resumed at 17:05.
 | **Family words** | Questions for Mum: Rounds 1 and 2 (incl. Part 7) merged and re-prioritised by Fable on 25 Sept into `docs/Nani jo Ghar — Questions for Mum (Combined, for the visit).md` + `docs/Questions for Mum (combined).docx` (regenerate with `build/build_mum_questions_docx.js`). Core = Sections A (grammar) and B (live Cook words), ~20 min. Mum records one long voice file, saying section IDs aloud; Zafar types rough spellings into the Word doc. Voice notes are to be split by silence into per-word clips. Zafar writes phonetic spellings; Claude tidies them and keeps a `say` field for the voice. The Google TTS placeholder voice is blocked in this environment. |
 
 ## Update 25 Sept, ~14:00 UTC (new chat, branch `claude/nifty-rubin-c0d431`)
@@ -54,3 +67,7 @@
 - **Speaking is core:** every mode gets speaking moments (closed-set recognition from family recordings, with a tap/parent fallback; a voice star).
 - **Clinic:** the child never gives medicine (hands it to the doctor, who checks it as a word review); patients say "my left / my right"; pill organiser dropped for now (Tidy up may take it for days of the week); the level-4 "clue" variant is later.
 - **Running now:** Fable deep dives per mode to `docs/modes/DEEP-DIVE-BRIEF.md` (Find it, Tidy up, Who did it?, Dress up, Monsoon rush, Snap; clinic Revision 3), plus a speech plan and prototype (`docs/speech-recognition-plan.md`, `js/shared/speech.js`, `build/speech/`).
+
+### Zafar took every default, 25 Sept ~17:30 UTC
+All blocking decisions in the deep dives (top sections of each mode's design doc), the review (`docs/modes/REVIEW-2026-09-25.md`, A–F and the numbered list) and `docs/speech-recognition-plan.md` take their stated defaults. In short: Ali is the role-reversal character everywhere; parent ✓ earns the voice star, pills never do; draft words count, flagged; Monsoon owns Arc 3 Ch1, the clinic owns Ch4; rooms = kitchen, sitting room, Big Ma's room; one rotating hub daily; speech on-device only (MFCC + warping + DTW, enrolment on), no cloud path in release one; Mum says 🎤 words three times.
+**Build:** one remote build session per mode plus a foundation session, per `docs/modes/BUILD-COMMON.md`. This branch now contains the old chat's `claude/funny-fermi-vyrabn` (Wave 5A) merged in, and is the base for every build branch.

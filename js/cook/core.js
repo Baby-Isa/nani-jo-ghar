@@ -111,7 +111,10 @@
   Cook.cardHidden = (id) => Cook.wordStage(id) >= 3 && !Cook.isPlaceholder(id);
   Cook.paused = false;
   Cook.hintDelay = function (id) {
-    return [0, 4000, 5000, 8000, 12000][Cook.wordStage(id)];
+    // Wave 5 (clarity and calm): hints after a longer hesitation (data.calm.hintMs by word
+    // stage), and never in the quiet moment at the start of a station
+    const ms = ((Cook.data && Cook.data.calm) || {}).hintMs || [4000, 5000, 8000, 12000];
+    return ms[Cook.wordStage(id) - 1] + Math.max(0, (Cook.quietUntil || 0) - Date.now());
   };
   Cook.markSeen = function (id) {
     const w = (Cook.save.words[id] = Cook.save.words[id] || { seen: 0, right: 0, miss: 0, streakMiss: 0 });
