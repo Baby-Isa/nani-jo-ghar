@@ -435,7 +435,12 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .lr.done .wp-text::after { content: " \2713"; color: var(--sage-dark); }
 .lr-en { font-size: 13px; font-weight: 700; color: var(--ink-soft); line-height: 1.2; padding: 0 0 2px 35px; }
 /* "no X": the same row, with a small ✕ and nothing louder */
-.lr.no .wp-text::before, .ir.no .ir-text::before { content: "\2715"; font-family: var(--ui-font); font-size: .62em; color: #b9a78d; margin-right: 4px; vertical-align: .15em; }
+/* its marker is a small ✕ where the dot would be (it isn't a step: a sequence's line runs past it) */
+.lr.no .ldot, .ir.no .ldot { background: var(--cream); box-shadow: 0 0 0 2px var(--cream); display: flex; align-items: center; justify-content: center; }
+.lr.no .ldot::after, .ir.no .ldot::after { content: "\2715"; font-family: var(--ui-font); font-style: normal; font-weight: 800; font-size: 11px; line-height: 1; color: #a8957c; }
+.ir.no .ldot::after { font-size: .5em; }
+.lr.no.done .ldot, .ir.no.done .ldot { background: var(--cream); }
+.lr.no.done .ldot::after { color: var(--sage-dark); }
 
 /* a part that's all done, folded onto one line (a dot each) */
 .lsec.folded .lrows { flex-direction: row; flex-wrap: wrap; gap: 2px 12px; padding: 2px 0; }

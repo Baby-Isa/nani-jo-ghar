@@ -457,15 +457,21 @@
           const plain = mission.plain && !s.simple;
           const seq = !mission.plain && s.seq && s.groups.filter((g) => g.length).length > 1;
           const rows = [];
-          s.groups.forEach((g, gi) =>
-            g.forEach((r, ri) => {
-              // joined to the row before: a plain list joins every row; a
-              // sequence joins the first row of each step to the step before
-              const up = rows.length > 0 && (plain || (seq && ri === 0 && gi > 0));
-              if (up) rows[rows.length - 1].down = true;
-              rows.push({ r, up, down: false });
-            })
-          );
+          s.groups.forEach((g, gi) => g.forEach((r) => rows.push({ r, gi, up: false, down: false })));
+          // the line: a plain list joins every thing to the one before; a sequence
+          // joins the first thing of each step to the step before. "No X" rows aren't
+          // steps: the line runs past their ✕
+          let prev = -1;
+          rows.forEach((x, k) => {
+            if (x.r.no) return;
+            const first = !rows.slice(0, k).some((y) => !y.r.no && y.gi === x.gi);
+            if (prev >= 0 && (plain || (seq && first && x.gi > rows[prev].gi))) {
+              rows[prev].down = true;
+              x.up = true;
+              for (let j = prev + 1; j < k; j++) rows[j].up = rows[j].down = true;
+            }
+            prev = k;
+          });
           return { s, rows };
         }),
     }));
