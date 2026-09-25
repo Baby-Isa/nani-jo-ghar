@@ -235,10 +235,8 @@
         if (bot.name === "wait") answers = w.targets.map((tg) => ({ t: T.reveal[tg.id] + 0.1, pick: tg.cand }));
         T.end = Math.max(...Object.values(T.land)) + 2 * T.beat;
       }
-      if (storm.kind === "count" && answers.length) {
-        // drops stop once every pot is lidded or overflowed
-        T.end = Math.max(T.end, ...answers.map((a) => a.t + 1));
-      }
+      // a wave ends at T.end: a tap planned after it never happens (the next call has started)
+      answers = answers.filter((a) => a.t < T.end);
       const g = Calls.grade(w, T, answers, storm);
       const rec = S.record(w, T, answers, g);
       bot.observe(v, rec);

@@ -229,7 +229,8 @@
     const slots = (opts.scene && opts.scene.slots) || candWords.map((_, i) => ({ id: `s${i + 1}` }));
     // positions shuffle every storm, so a place never means a word
     const slotOrder = R.shuffle(slots.map((s, i) => i)).slice(0, candWords.length);
-    storm.candidates = candWords.map((w, i) => ({ id: w, word: w, slot: slotOrder[i], feat: (words[w] || {}).heap || null }));
+    const fills = (opts.scene && opts.scene.fills) || {};
+    storm.candidates = candWords.map((w, i) => ({ id: w, word: w, slot: slotOrder[i], feat: fills[w] || (words[w] || {}).heap || null }));
     storm.slots = slots;
 
     // ---- the pool of words that can be called (targets): never a menu word
@@ -435,6 +436,7 @@
     const order = wave.targets.slice();
     const ans = answers
       .filter((a) => a && a.t != null && a.t >= T.t0 - 1e-9) // nothing before the call starts
+      .filter((a) => !(kind === "say" && a.via === "voice" && !a.said)) // "didn't catch that" is not an answer
       .slice()
       .sort((a, b) => a.t - b.t);
     const first = {};
@@ -607,7 +609,8 @@
           if (r.voice) t.voiceOk++;
           continue;
         }
-        if (r.outcome === "heard" || r.outcome === "wrong" || r.outcome === "late") {
+        // a call answered after a reveal or translation ("helped") is tested, not heard
+        if (r.outcome === "heard" || r.outcome === "wrong" || r.outcome === "late" || r.outcome === "helped") {
           t.tested++;
           if (r.outcome === "heard") {
             t.heard++;
