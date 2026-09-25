@@ -1,6 +1,6 @@
 # Cook with Nani: to-do list
 
-**Updated:** 24 Sept 2026. Claude ticks things off here as each wave lands, so this file is always the current status.
+**Updated:** 25 Sept 2026. Claude ticks things off here as each wave lands, so this file is always the current status.
 Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyrabn`)
 
 ## Round 2 (from Zafar's Station lab playtest, 24 Sept)
@@ -44,10 +44,22 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☑ **"Pass me" in the pantry** and in the slower stations (a listening break where the hands have little to do)
 - ☑ **Free play everywhere:** Cook's open kitchen (customers keep arriving, you close when you like); every future mode gets a free-play entry too
 
-### Wave 4: check ☐
-- ☐ "Can you win without the Kutchi?" audit, station by station
-- ☐ Persona review from screenshots
-- ☐ Tests on all six screen sizes; design doc updated
+### Wave 4: check ☑
+- ☑ "Can you win without the Kutchi?" audit, station by station → `docs/cook-with-nani-kutchi-audit.md`, "After Wave 3". Every system-level leak is closed; the one High left is **English placeholder decision words** (*no*, *slowly/quickly*, *half/full*, *big/small*, *vegetable/mixed*, *only/now*, *lift/leave*), which needs the family's words
+- ☑ Persona review, round 3 → `docs/cook-with-nani-build-log.md` section 9
+- ☑ Station lab on all six screen sizes (the iPad portrait lab and the day runs were cut short for Wave 5); design doc sections 12b and 13 updated
+- ☑ Fixed: hidden words side by side share one "•••" (the card's shape gave away which row had a number); chop rounds in a random order; on the phone, Nani's line is no longer squeezed under the goal; the Chai tray result card lists what you got right
+- ☐ **For Wave 5 (the sidebar and order card redesign):**
+  - **iPad (1024×768), High:** the narrow sidebar breaks words letter by letter in the order card ("tr/ae/kh/un", "du/dh" next to a face on the Chai tray; "bataat/o"). The row text needs `word-break: normal` and a minimum width of its longest word, so the buttons wrap instead
+  - **Phone (915×375), Medium:** sidebar speaker, translate and 👁 buttons are 22 px (too small for a 5-year-old). The goal box is capped at about 4 lines and cut mid-sentence (it scrolls). A long order card now pushes the goal and the menu buttons below the fold
+  - **Phone, Low:** the count badge overlaps the corner of the Maani line's hob and the Chai tray. The ✓ button sits over the Maani line's resting spatula (not a tap target). The roll-tawa plate is cut off by the bottom edge
+  - **1280×800, Low:** the Maani line's spatula hand runs past the canvas edge
+- ☐ **For the orchestrator (bigger than Wave 4):**
+  - Chai tray: put every family cup on the tray and have the customer order for others by name, so kinship words decide which cups (Medium; needs a "for" frame)
+  - Serving to the right person in the open kitchen (Medium)
+  - Story orders have fixed levels, so level 3 of the grill and the Maani line is lab-only; let the open kitchen raise the level with skill (Zayn)
+  - The harness's chop slices miss on the WebGL renderer (0 chopped at every size; the game registers slices, and the harness aims at 6–11 fps). Aim from the canvas renderer or predict further ahead
+- ☐ **For the family (Round 2 words), top of the list:** *no / without*, then *slowly, quickly, half, full, big, small, vegetable, mixed*
 
 ## After Wave 2 merges
 - ☑ Rename Bilal → Ali in `data/cook.json`, code, audio file names and docs (tall, lanky cousin)
