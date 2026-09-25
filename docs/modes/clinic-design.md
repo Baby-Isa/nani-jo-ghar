@@ -1,13 +1,176 @@
 # The clinic (the doctor's clinic; formerly "Nani's clinic"): design (mode id `clinic`)
 
 **Date:** 25 Sept 2026
-**Status:** a proposal for Zafar, revised twice on 25 Sept (Revision 2 at the top is current). Nothing has been built. It follows `docs/modes/MODE-DESIGN-BRIEF.md` and builds on `docs/game-modes-v2.md` (mode 5), `docs/find-it-design.md` (the model), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md`, `docs/cook-with-nani-build-log.md` and `docs/cook-with-nani-todo.md`.
+**Status:** a proposal for Zafar, revised three times on 25 Sept (Revision 3 at the top is current; it is the clinic's deep dive under `docs/modes/DEEP-DIVE-BRIEF.md`). Nothing has been built. It follows `docs/modes/MODE-DESIGN-BRIEF.md` and builds on `docs/game-modes-v2.md` (mode 5), `docs/find-it-design.md` (the model), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md`, `docs/cook-with-nani-build-log.md` and `docs/cook-with-nani-todo.md`.
 **Placeholder rule:** there is **no Kutchi yet for any body part, feeling, care item, instrument or "it hurts" frame** (checked against `data/content.json` and `data/cook.json`). Anything written like `[EN: knee]` is an English placeholder, shown in grey italic until the family gives the word. The only Kutchi used below is what already exists: *Salamun alaykum / Wa alaikum salaam, Aabhar aanjo, Achija, Arre re!, Hedo!, Ghan, Muke {x} khape, Ne {x}, Muke hikdo {x} dine*, numbers 1–10, and the food words *dudh, paani, chai, khun, hardar, aadu*. **Never invent Kutchi.**
 **Safety rule for this mode:** it's pretend care, not medicine. No needles, no blood, no surgery, no pills or doses for the player to give, nobody gets worse, and nothing a child could copy as real medical advice (section 7.4).
 
 ---
 
+## Revision 3, 25 Sept 2026: mechanics, speaking and Zafar's answers
+
+**Why this revision.** Two things landed after Revision 2: Zafar's answers to its five decisions, and the deep-dive brief for every mode (`DEEP-DIVE-BRIEF.md`: each mode is a set of mini-games built from modular mechanics, one mechanic per file, reused from Cook where they fit; speaking is core, with closed-set recognition against `js/shared/speech.js`; all modes are built at once, so phases 0–1 touch only the mode's own files). Revision 2 already has the backbone (visit types), the scored library (R2.5), the ladder (R2.3) and the Sceptic's estimates, so this section doesn't repeat them. It adds what the brief asks for and what the answers change, and **supersedes Revision 2 where they conflict** (R3.8 lists the patches). It's short by design; the depth is in R2.
+
+### R3.1 Zafar's answers, applied
+
+| # | Decision (R2.8) | Zafar's answer | What changes |
+|---|---|---|---|
+| 1 | The check-up as about half of level 1 | Didn't follow the question; left to me | **What "level 1" means for the clinic, in plain words:** it's the game a child meets on their first day, before any word is known. The doctor's instruction carries **one word** (*the head*; *a plaster*), the patients are the six big parts only, a treatment has one slot (which item), and the only visits are you're-the-patient, the check-up with nothing wrong, and the named ailment. A level isn't a door: it follows the child's word stages, so Zayn leaves level 1 in a morning and Layla stays a while. "About half" was about **the mix of a level-1 clinic morning** (3–4 visits). **Default:** a level-1 morning is **2 check-ups and 2 named ailments**, the first visit always a check-up (the calmest: the doctor talks, nothing is found, every row is one word), the rest shuffled; from level 2 the mystery and bring-someone-in join the draw. It's a data knob (`days.mix`), so it can be retuned after the first playtest without a design change. Why half and not more: the check-up is the densest Kutchi, but every row is the doctor's voice; the named ailment is where the *patient* talks and where the hands get their payoff, and a first morning needs both feels |
+| 2 | Does the child ever give medicine? | **Never.** The child fetches (or mixes) and **hands it to the doctor, who checks their work**, and that check is a spoken word review inside the fiction: he holds up what was brought and names it, the part and the count | A new mechanic, **`handover`** (R3.3): the child puts what they fetched or mixed into the doctor's open hand; he lifts it and names it (*[EN: The green bottle. Two. For the ear.]*); right → he uses it, off-hand, closed; wrong → he names what it *is* and repeats what he asked (*[EN: This is the red one. The green bottle, please.]*), and the child goes back to the shelf. The same mechanic runs **at the end of every treatment**: he looks over the child's work and names each thing (*[EN: The bandage. The knee. Round twice.]*), one item at level 1, up to three at level 3. So every visit ends with its words heard again, from him, in order, which is the review Zafar asked for; the end-of-morning list (Kutchi → English) stays as the reader's version. T6 (the dispensary) and T5 (mix the medicine) both end in `handover`; the safety checklist gains the line "the player never gives medicine; they hand it to the doctor" (7.4) |
+| 3 | The pill organiser | **Dropped for now.** He likes it for the days of the week; the Tidy up agent is considering it as an older-children Tidy up mini-game | T4 stays rejected for the clinic (R2.5); the "decision 3" note there is closed |
+| 4 | Sides | **The patient always says "my left" / "my right"** (their own side) | Sides now come **only from the patient's mouth**, in first person; the doctor never names a side about a patient. R3.2 has the frame and the mirrored-patient difficulty designed around it; R2.6 step 2 is patched |
+| 5 | The level-4 "patient gives a clue, the child chooses what to check" | Unsure | **Not in the first set.** Noted in R3.7 as a later idea (V2b), to be tried once level 4 exists and *Who did it?* has its own deduce verb settled |
+
+### R3.2 Left and right, in the patient's words
+
+The rule: **a side is a thing a patient says about their own body.** *[EN: My left knee hurts.]* *[EN: Not that one, my other knee.]* *[EN: My right eye.]* The doctor's calls and treatment lines never carry a side; they refer back (*[EN: That knee. Round twice.]* *[EN: Two drops.]*), so there's never a "whose left?" to resolve in his voice. This also splits the family recordings cleanly: the six *my {side} {part} hurts* phrases in the patient's voice, and the doctor's lines without sides.
+
+The ladder, built on that phrasing:
+
+| Step | Level | What happens | Why it's the right difficulty |
+|---|---|---|---|
+| **A. Your own left** | 2 | In **you're the patient** (the lap view is first person, so your left is on the left of the screen) the doctor asks *[EN: Does your left knee hurt?]* and you answer; you say *[EN: my left knee]* when he asks where (R3.4, S1). Doctor Nani asks *[EN: show me your left hand]* in the room | Own-body left and right is reliable from about 6–7 (Rigal); no rotation |
+| **B. Their left, facing you** | 3 (age 7+) | The patient on the bench says *[EN: My left knee hurts]*. Their left is on the right of your screen. You tap it; the check-up's side rows work the same way (the doctor: *[EN: Now the knee]*; the patient: *[EN: My left one]*), so the side is still the patient's voice and the check-up keeps two voices per row | The mental rotation is the puzzle Zayn wanted; "my" tells the child whose side it is, every time, which is the ambiguity Zafar wanted gone |
+| **C. The twist** | 3+ | *[EN: Not that one. My other knee.]* after a wrong tap, or as a row of its own | The child has to hold "my" *and* "other" |
+| **D. On your own** | 4 | Both A and B in one morning; the doctor's away for the last patient, so the hand-over check (R3.1) is done by the patient (*[EN: Yes, my left. Thank you]*) | — |
+
+Rules that keep it honest: the patient never lifts, points at or looks at the side they name (the `mirror: true` hotspot rule and the neutral pose stand); a side miss at level 3 costs the ear star only after the recast (*[EN: My left. My other knee]*) has been ignored once; after two misses the patient touches their own knee (rung 6, shown; the star is gone). The **swivel stool** (a back view per patient, so their left is your left) remains a held art item that removes the rotation, not the word. A5 still decides whether the family says *left/right* or *this side/that side*; if the latter, the frame is *my this side* / *my other side* and step B loses the rotation but keeps the word.
+
+### R3.3 The mechanics list
+
+One mechanic = one file, difficulty levels as data and rounds as data, exactly like `js/cook/mechanics/`. Mini-games chain mechanics as zones of a combined station (`js/clinic/stations/`, like Cook's Maani line): **the visit** (`calls → where? → care → stick|wrap|lift|tuck|drops → handover`), **the dispensary** (`fetch → handover`; later `pour + count + stir → handover`). Every mechanic below is usable alone in the clinic lab.
+
+| Id | One line | Tag |
+|---|---|---|
+| `pour` | Mix the medicine (T5): the syrup from the bottle into the cup, a green band | **Reused from Cook** |
+| `stir` | Mix the medicine: *stir three times* on the circular track | **Reused from Cook** |
+| `count` | The counted tap: spoons of syrup; the counter that `wrap` (turns) and `drops` (drops) reuse | **Reused from Cook** |
+| `fetch` | The dispensary shelf (T6): *the green bottle, two of the small ones, the one on the top shelf*; look-alikes on a shelf | **Reused from Cook** |
+| `passme` | The doctor's bag mid-care (M8): three look-alikes in the sidebar | **Reused from Cook** |
+| `knead` | Cream (T15, later): *rub it in three times* | **Reused from Cook** |
+| `check` | M15: the doctor calls a part (+ an instrument from level 2; the patient adds a side at level 3); tap it with the kit; the instrument reacts; a `find` on one call in the mystery | **New** |
+| `where` | M1: the patient's line → tap the part; the sore swirl after the right tap | **New** |
+| `care` | M2: the trolley pick against the instruction: item, then + colour or count; calls the shared which-one module for the decoys | **New** |
+| `stick` | T1 plaster: peel, drag to the spot (Cook's `S.pour` drag helper, score = distance) | **New** |
+| `wrap` | T2 bandage: turns on Stir's track round a limb axis from the hotspot data, the count from `count`, never ends itself, Done; level 3 `path`: the figure-of-eight between two named hotspots in the called order | **New** |
+| `lift` | T12: lay the cold pack, cloth or hot bottle; lift on green (`S.ring`) | **New** |
+| `tuck` | T13: the blanket, a vertical drag; the code-drawn stack | **New** |
+| `warm` | M4 Just right: steps from just right; each action changes it; the patient says the new state; Done | **New** |
+| `drops` | T11: the dropper, one counted tap per drop on the sore side's spot, never ends itself | **New** |
+| `handover` | Hand the fetched or mixed thing to the doctor; he names it, the part and the count, and uses it or sends you back; also the end-of-treatment check (R3.1) | **New** |
+| `call` | M7 Who's next: the bench, the name call, comfort rings in Busy | **New** |
+| `you` | V0 You're the patient: the lap view, the leaning-in doctor, the probe, the plaster picker, and S1's speaking | **New** |
+| `ask` | The "?" rung: *[EN: The knee, or the foot?]* at a cost; never when two options are all that's left | **New** |
+| `echo` | Kasuku's echo modifier (later, needs the cast-rule exception) | **New** |
+| `tell` | Role reversal: the child says (or taps) a word and a character acts on it; wraps `speech.listen`, the pill fallback and the parent-judges toggle; every speaking moment in R3.4 runs on it | **Shared** with every mode's role-reversal moment (Find it "tell Ali", Tidy up, Dress up, Who did it, Monsoon, Snap). Built first in `js/clinic/mechanics/tell.js` against the `listen()` call, and offered to `js/shared/mechanics/tell.js` at integration if the orchestrator wants one copy |
+| `which` | The "which one?" attribute-and-decoy pick (the green bandage of three rolls; the bottle by colour, count and size; the look-alike groups' balance and blind odds) | **Shared** with Find it M3, Dress up D1, Snap M4, Who did it, Tidy up (the foundation module; the clinic calls it from `care` and `fetch`, with a local stub in phase 1) |
+
+**Count: 6 reused from Cook, 14 new, 2 shared.** Not mechanics but shared modules the clinic calls: `js/shared/speech.js` (`listen({choices, timeoutMs}) → {choice, confidence} | null`), `js/shared/rel.js` + `data/relations.json` (only for *the one on the top shelf* and the Arc 5 courtyard, phase 3), overlay-at-anchor sprites (patients' head-layer expressions and care items on `spots`, shared with Who did it and Dress up), and star sets and ear/voice rules as data. Own infrastructure, not mechanics: `body.js` (hotspots, sides, close-up, swirl), `patient.js`, `queue.js`, `visit.js` (the generator: pure logic, runs in Node for the bot).
+
+### R3.4 Speaking moments
+
+All four run on `tell`, against `listen({choices, timeoutMs})`. Rules held everywhere: the closed set is stated and never bigger than 8; a `null` or a low confidence (`voice.minConfidence`, data) gets one *[EN: Say it again?]* from the doctor, then the **audio pills** slide up (one look-alike group of 3, text only at the reads stage), and a settings toggle "**a grown-up judges speaking**" replaces the recogniser with ✓ / again for a parent or Nani; the mic never blocks progress (the pills are one tap away from the first timeout on); what the recogniser heard is always shown **by the character acting on it**, never by an error message, so a wrong hearing plays as an ordinary miss in the fiction; the **voice star** is earned when the first try is accepted (recogniser or parent), and is separate from the ear star, which speaking neither earns nor costs. Tapping a pill instead of speaking is always allowed and earns no voice star. `star_sets.clinic` becomes ear / **voice** / plaster / tick or bolt; a visit with no speaking moment shows no voice slot.
+
+| # | Moment | When | The closed set | What the character does | Fallback | Star |
+|---|---|---|---|---|---|---|
+| **S1** | **"It's my knee"** (you're the patient, V0) | **Level 1**, every V0; the story's first minute | The lap view's visible parts: hand, finger, arm, elbow, knee, foot, toe (**7**); for a cold, hot / cold / just right (**3**); at level 2 with a side: *my left knee* (the 7 parts × a side is spoken as one phrase, but the set the recogniser gets is the 7 parts, then left / right as a second `listen` of **2** only after the part is right) | The doctor asks *[EN: Where does it hurt?]*, hands folded. He presses where he heard: the right part → *[EN: Ahh, this one]* and the plaster; a wrong hearing → *[EN: Here?]* on that part and you say *no* (or say it again). The two-way *knee or hand?* pills stay as the fallback | Pills at once at level 1 (mic and pills together, since the child may not know the word yet); mic first from level 2 | **Voice star from level 1**: V0's ear rows stay ungraded (they're two-way taps), but "knee" out of seven isn't a guess, so V0 becomes the clinic's first real speaking game |
+| **S2** | **"Tell him where"** (the named ailment, V3) | **Level 2+**; from level 3 the doctor asks it on every V3 | The level's parts in play for that patient: the 6 big parts, or the 6 face parts when the close-up is open (**6**); at level 3 the side is a second `listen` of **2** | The patient says the complaint (ear); the doctor, not looking: *[EN: Where?]* The child says the part; **he checks the part he heard** (a check-kit tap on it); the right one → the swirl and *[EN: That's it]*; a wrong one → the patient giggles and the doctor: *[EN: Nothing there. Where?]* | Tapping the part yourself (the ordinary M1 tap) is always there and grades the ear star exactly as before; only the voice star needs the word said | Voice. **Honest weakness:** the child has just heard the word, so this is shadowing with a purpose (say what you heard, to the right person); it trains the mouth and the doctor's acting-on-it proves the word landed, but the ear star, not the voice star, is the comprehension test |
+| **S3** | **Bring someone in** (V4: tell the doctor what's wrong) | **Level 2+** in free play; in **Arc 3 Ch4** at level 1 with mic and pills together | Whose and where: the doctor asks *[EN: What's wrong with Nani?]*; the set is the 6 big parts (or 6 face parts for a face case) for the part (**6**), then, at level 3, *hot / cold / tired / sneezy* for the feeling (**4**). The person is never in the set (the doctor already knows who) | He examines the part he heard on the message-patient (or on the patient you walked in): a V1 call on that part; a wrong hearing → *[EN: Nothing wrong there. What else?]* and you say again; the right one → *[EN: That's it. Will you help me?]* and the treatment | The audio pills (picture → word, one look-alike group of 3); parent ✓ | Voice. This is the mode's real production moment: the child **saw** the hurt at home (nobody said it) and now says it |
+| **S4** | **"What have you brought?"** (the dispensary, T6; later T5) | **Level 2+**, phase 3 | The shelf's items that round: the green bottle, the red bottle, the small ones, the drops, the cream (**3–5**; colours and sizes are Round 1 words) | The child hands it over (`handover`); before naming it the doctor asks *[EN: What's this?]*; the child says it; he then names it himself either way (*[EN: Yes. The green bottle. Two]*), so the spoken review is heard whether or not the child spoke | Pills; parent ✓ | Voice |
+| — | **Doctor Nani, flipped** (Grandparent mode) | Any time, in the room | Parts in big text on the tablet for the child to read at the reads stage, or heard once for the child to repeat | The child tells Nani *[EN: show me your nose]*; Nani touches it; Nani taps ✓ | Parent-judged only; no recogniser | Voice (Nani's ✓) |
+
+**The Sceptic on speaking.** (1) Say anything and let the recogniser pick the closest: the confidence floor sends her to *say it again?* then the pills, and a wrong closest choice is acted on and misses like a tap; (2) mumble the same syllable for every row: the leak bot gets a **"mumble"** strategy that feeds the stub recogniser a fixed choice, and it must earn the voice star under 10% (with 6–7 choices it's under 17% a row, and a V0 has two rows); (3) tap the pills every time: allowed, no voice star; (4) a parent who ✓s everything: the parent's call, and the brief allows it.
+
+### R3.5 The review's critiques
+
+The review (`REVIEW-2026-09-25.md`) put the clinic out of scope except where it overlaps. The rows that touch it:
+
+| Critique | What I did |
+|---|---|
+| Arc 3 Ch4 is overloaded (clinic, Who did it W2's doctor at the door, Dress up D4 "wrap her up"); clinic owns it, the door is a beat | **Adopted.** Ch4 stays one errand (the clinic) with the home part as beats; a doctor-at-the-door beat is welcome as a beat; blankets stay the clinic's and are never clothing |
+| Six daily minutes; one rotating hub daily instead | **Adopted.** The clinic claims no daily. It exposes one 60-second entry, **One patient** (a V1 or V3), for the hub to rotate; You're the patient is a second 60-second entry if the hub wants a speaking one |
+| "Tell Ali" role reversal is fine but later, and needs the shared pill builder | **Overtaken by Zafar's principle 3:** speaking is core, not later. `tell` is built in the clinic's own folder against `speech.listen` in phase 1, with the pill builder inside it, and offered as the shared copy |
+| One shared ear rule (`minTested`, taught-rows excluded) | **Adopted:** the clinic's `minTested` is 3 rows per check-up and 2 per named ailment; V0's ear rows are excluded (taught); a `voicePass` rule sits beside it |
+| The "which one?" decision should be one shared module, not five | **Adopted:** `care`'s colour pick and the dispensary use it; phase 1 runs on a stub with the same call and swaps it at integration |
+| Relations file and `spots` schema: one owner (Find it), nobody else edits until merged | **Adopted:** the clinic touches relations only in phase 3 (*the top shelf*, the Arc 5 courtyard) and keeps its scene data in `data/scenes/clinic.json`, never in a shared scene file |
+| Overlay-at-anchor sprites built once (Who did it, Dress up) | **Adopted** for the patients' head-layer expressions and items on `spots`; the phase-1 greybox draws them in code and switches over in phase 3 |
+| Wave 5A must merge first; nobody edits `js/cook/*` or `css/cook.css`; each mode has its own css and test port | **Adopted:** phases 0–2 read Cook's modules and mechanics unchanged; `css/clinic.css`; `test_clinic.py` on its own port |
+| Build order by what is a real Kutchi test today: the clinic has **no** real decision word yet | **Accepted as true.** Phases 1–2 need no words (pure logic, greybox, bots) and every leak report flags placeholder rows "not yet a Kutchi test"; the first family round that makes level 1 real is the six *check the {part}* calls, the six *my {part} hurts* lines and hot/cold, all already in Section G |
+| Find it: a number beside a row may be the target, not the tally | **Checked:** clinic ladder rows never show a number; the wrap and drop counts show a digit only while the number word is at stage 1–2 (6.2) |
+
+### R3.6 Words needed, in priority order
+
+The first set's Kutchi. **QfM** = already in the Questions for Mum doc (Section G unless said); **new** = not asked yet, to go in a Round 3 supplement (that doc isn't edited here).
+
+| Priority | Words and frames | For | QfM |
+|---|---|---|---|
+| 1 | *Check the {part}* for the six big parts; the six big parts themselves | The check-up, level 1 | G108, G42–G47 |
+| 1 | *Let's check everything · Now the {part} · The {part} again · The other one · Nothing wrong there · That's it!* | The check-up's chaining words | G109, G113 |
+| 1 | *My {part} hurts* for the six big parts | The named ailment; S1 and S2's answers | G41 (asked with head, tummy, hand, knee; **arm, leg, foot** are new) |
+| 1 | Care nouns: plaster, bandage, cool cloth, blanket, ice, hot-water bottle; *Muke {x} khape* exists | The trolley, level 1 | G73–G80 |
+| 1 | hot, cold; *just right · too hot · still cold · How do you feel?* | Just right (level 2) and the thermometer's reading | Round 1 Q11; G69–G71, G83 |
+| 1 | Short answers: *The knee. · This one. · yes · no* | S1's fallback pills, "?" and V0 | G98, A8 |
+| 2 | *A bandage, round twice · The green bandage · The red one*; colours | The bandage, level 2 | G114, G115, E60–E71 |
+| 2 | The check kit: *Listen to the chest · Look in the ear · Open your mouth, say aah · Take the temperature · He's hot · She's fine*; stethoscope, torch, thermometer, dropper | Level 2 check-ups | G110, G111, G119 |
+| 2 | The face six and the neighbours: eye, ear, nose, mouth, tooth, throat; elbow, knee, finger, toe, shoulder, neck, back, chest | Levels 2–3 | G48–G61 |
+| 2 | *I don't feel well · I don't know why* | The mystery | G112 |
+| 2 | The speaking prompts: *What's wrong with {her}?* (S3) · *Where?* / *Where shall I check?* (S2; G81 *Where does it hurt?* can serve) · *What's this? / What have you brought?* (S4) · *Say it again?* | S2–S4 | **new** (G81 covers S2's) |
+| 2 | The doctor's lines: *You first · Will you help me? · Let me see · Bring me the blanket · All better! · Well done, my helper*; what the children call him | Every visit; the hand-over check reuses *Let me see* | G99–G104, E102 |
+| 2 | The hand-over check: the doctor naming an item, a part and a count in one breath (*The bandage. The knee. Twice.*) | `handover` | **new** as a frame (the nouns and counts exist; ask whether he'd chain them as three words or one sentence) |
+| 3 | **Sides in the patient's voice:** *My left knee hurts · My right eye · Not that one, my other knee*; and *my left* / *my right* on their own | Level 3 (R3.2); S1 at level 2 | **new** (G118 has the doctor's *your left*; A5 decides left/right vs this side; G109 has *the other one*) |
+| 3 | *Two drops* on its own (the game splits G116 into the patient's *my left eye* and the doctor's *two drops*) | Drops, level 3 | G116 (record as asked, plus the short form: **new**) |
+| 3 | *Bring me the green bottle · Two of the small ones · The one on the top shelf* | The dispensary, phase 3 | G117 |
+| 3 | *Who's next? · {name}, come · It's not my turn · That tickles!* | Who's next, the recasts | G85–G88 |
+| 3 | *or*; *Is it your knee, or your hand?* | The "?" rung, V0's fallback | G94, G96 |
+| Later | Animal parts (paw, tail, wing, beak) and possessives; *I fell · I bumped my {part}*; tired, better, happy, sad | Vet, Arc 4, feelings | G27–G40 partly, C50–C60; G62–G66; the past tense was removed from Round 3 |
+
+### R3.7 Later ideas (not in the first set)
+
+- **V2b, the patient's clue** (Zafar's decision 5): at level 4 the patient says *[EN: it's somewhere on my face]* and the child chooses which parts to check. Try it after level 4 exists; it edges towards *Who did it?*'s deduce verb, so it should be agreed with that mode first.
+- **The pill organiser** → Tidy up's, for the days of the week (Zafar's decision 3).
+- T5 the doctor's syrup as `pour + count + stir → handover`; T10 the reflex hammer; T15 cream; T14 the sling and the swivel stool; `echo`.
+
+### R3.8 What changed below
+
+| Section | Change |
+|---|---|
+| R2.1, R2.2, R2.3 | The V4 row tells the doctor by **saying it** (S3) with pills as the fallback; level 3's three slots now come in two voices (the patient's *my left eye*, the doctor's *two drops*) |
+| R2.5 | T4: decision 3 closed (dropped; Tidy up may take it). T5 and T6: end in `handover`; the doctor checks and gives. T11: the side from the patient's line |
+| R2.6 | Step 2 rewritten: the patient says *my left*; the doctor never names a side (R3.2) |
+| R2.8 decisions | All five answered (R3.1) |
+| 1 Borders, 4 First set, 6.6, 7.1, 7.4, 8.1, 8.4 | Fetching the medicine ends in the hand-over; the first set gains the speaking moments and `tell`; the voice star; the safety line; sides resolved; the mechanics file list |
+| 12 Build brief | The phases are now R3.9; 12.2's task details stand where R3.9 points at them, with the medicine and speaking patches noted there |
+
+### R3.9 Build brief (phased; own files first; shared pieces listed)
+
+**Files the clinic owns** (and the only files phases 0–2 touch): `clinic.html`, `js/clinic/**` (`flow.js`, `visit.js`, `body.js`, `patient.js`, `queue.js`, `mechanics/*.js` as in R3.3, `stations/visit.js`, `stations/dispensary.js`, `stubs/{speech,which,overlay}.js`), `css/clinic.css`, `data/clinic.json`, `data/patients/*.json`, `data/scenes/clinic.json` (a sidecar; no shared scene file is edited), `build/test_clinic.py` (its own port), `build/leak_clinic.mjs` (Node, no browser: the generator and bots), `build/check_hotspots.py`, `assets/clinic/`. It **reads** `js/cook/{core,lang,ui,order,zone,recipes}.js` and Cook's `pour, stir, count, fetch, passme, knead` and never edits them (Wave 5A's frozen API).
+
+| Phase | What's playable | Own files only? | Acceptance |
+|---|---|---|---|
+| **0 Prerequisites** (no code) | — | — | Section G answered (the priority-1 rows of R3.6 make level 1 real); the Round 3 supplement (R3.6's **new** rows) sent; doctor photos in `sources/private/`; Revision 1's decisions 1, 4, 5 and question 8 answered (Revision 2's five are done) |
+| **1 Pure logic, lab, bots, greybox** | `visit.js` (the generator: V0–V3 as data, with `days.mix`), `check`, `where`, `care`, `stick`, `wrap` (turns, colour, the figure-of-eight), `lift`, `tuck`, `drops`, `ask`, `handover` (the end-of-treatment check), `tell` on the **stub recogniser** (the lab's "say" dropdown: right word, wrong word, nothing, mumble), `you` with S1, S2 on V3, a grey silhouette patient with `mirror: true`, the hotspot editor; the clinic lab runs any mechanic × level 1–3 alone or a whole visit of each type | **Yes** | Fair bot 100% ear stars; every leak strategy (random, salience, frequency, slot memory, repeat, duration, wait, visual cue, sweep, leftovers, second option, echo, **mumble**) under 10% over 500 visits per type per level, placeholder rows flagged; `check_hotspots.py` passes (level-1 parts ≥ 2 cm on iPad; the phone opens zoomed); the voice bot exercises accept, wrong hearing, null → *say it again?* → pills, and the parent toggle; tap-cover at six sizes; no console errors; screenshots reviewed |
+| **2 The clinic morning** | `call` and `queue.js`, `warm` (Just right), the morning mix, One patient, You're the patient, the open clinic with "Close the clinic", the intro card, 3 s quiet, the sidebar with "?", `passme`, stars as they happen (ear / voice / plaster / tick or bolt) and the receipt, the word review, Relaxed and Busy with comfort rings; T11 drops and sides at level 3 (R3.2 step B and C) | **Yes** (star sets held in `data/clinic.json` until the shared data lands) | `test_clinic.py` plays a morning, a patient and the open clinic at six sizes with every recast path; leak bot under 10% on `warm`, `call` and `drops` (sides reported separately); a level-1 morning under 5 minutes, a check-up under 90 s, a mystery under 120 s, V0 under 60 s |
+| **3 Integration and story** | Swap the stubs for `js/shared/speech.js`, the which-one module, overlay-at-anchor sprites, `rel.js`; plug into the shell (one app, one save); Arc 3 Ch4 (the home beats, the puddle, V0 first, **S3 bring someone in**, Ali's knee, the hen, the wet neighbour, the hand-over of Nani's bottle to Nana at home, the hand-off to Cook), the Monsoon side errand "bring Ali in", the dispensary (`fetch → handover`, S4), the vet, silly finds, the map place, the album, the shelf, the shop | No: the shell, `data/relations.json` (the top shelf), `data/scenes/courtyard.json` (Arc 5 later) | Ch4 end to end in the harness; the vet passes the bot with 6+ parts per animal; the shop has no knob that touches listening or speaking; **Zafar plays it with a child** |
+| **4 Art and more** | The doctor's sheet and poses (his open hand for `handover` is A3, existing), seated patients, expressions, items, two hand poses; then T5 (`pour + count + stir → handover`), T10, T15, Doctor Nani flipped, the swivel stool, `echo`, V2b if wanted | — | Visual QA per screenshot; family recordings replace placeholders file for file; the leak report shows real Kutchi rows passing |
+
+**Shared pieces the clinic needs from the foundation agent** (assumed to arrive; not designed here):
+
+| Piece | Used for | Needed by | Until then |
+|---|---|---|---|
+| `js/shared/speech.js`: `listen({choices, timeoutMs}) → {choice, confidence} \| null` | S1–S4 via `tell` | Phase 3 | `stubs/speech.js` with the same signature, driven by the lab and the voice bot |
+| The "which one?" attribute-and-decoy module (balanced decoys, blind odds) | `care` colours, the dispensary shelf, `passme` groups | Phase 3 | `stubs/which.js`: the look-alike groups from `data/clinic.json` |
+| Overlay-at-anchor sprites | Head-layer expressions; care items on `spots` | Phase 3 (art in 4) | Code-drawn greybox |
+| Star sets and ear/voice rules as data (`star_sets.clinic`, `earPass`, `minTested`, `voicePass`, taught-rows exclusion) | The four stars | Phase 2 | The same keys inside `data/clinic.json`, moved out at integration |
+| The shell ("one app, one save"), the hub daily's 60-second entry | Story, wallet, the map place | Phase 3 | `clinic.html` on Cook's save, as Find it does |
+| `data/relations.json` + `js/shared/rel.js` + scene `spots` | *The one on the top shelf*; the Arc 5 courtyard | Phase 3 (shelf), later (courtyard) | The shelf without positions (colour, count, size only) |
+
+**Blind-bot estimates for level 1 of the first set** (principle 5): the check-up, 5 one-word calls from 6 parts, under 0.1%; the named ailment, part (1/6) × item (1/5), 3%; the bandage alone (a three-patient round: item 1/5 each) under 1%; Just right (from level 2: direction 1/2 × steps 1/2 a patient, three patients) about 1.6%; You're the patient: ear rows ungraded, voice rows 1/7 a row and two rows a visit, under 2% for the voice star by mumbling; bring someone in: 1/6 by voice or 1/3 by pills, then the check rows and the treatment multiply it down to under 1%.
+
+---
+
 ## Revision 2, 25 Sept 2026: visit types and treatment mini-games
+
+*(Superseded by Revision 3 above where they conflict: the five decisions are answered in R3.1, sides come from the patient's mouth (R3.2), fetching and mixing end in the doctor's hand-over check, and the speaking moments are in R3.4.)*
 
 **Why this revision.** Zafar's reaction to Revision 1 (below), tidied: *"Being injured is the tutorial; afterwards other people come in, or you take someone to the doctor and help with them. I'm not sure about 'is it this or that'. Maybe the doctor asks you to check: the head, the knee, the arm. A patient says 'I don't feel good, but I don't know why' and the doctor asks you to check different things until you find it; then he asks you to get medicine (one, two, the green bottle) and fix them. And a mode where you do the actual fixing: suturing in a called order, bandages, a pill organiser, mixing the medicine, syringes, left and right, a full check-up. Different mini-games that reinforce the body words. I need a better and deeper think."* This section is that think. **It supersedes Revision 1 and the sections below wherever they conflict**; R2.9 lists what was patched (the first set, the word list, the build brief) and what stands.
 

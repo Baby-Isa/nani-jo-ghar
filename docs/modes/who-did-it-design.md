@@ -4,6 +4,170 @@
 **Status:** proposal for Zafar. Nothing built yet. Follows `docs/modes/MODE-DESIGN-BRIEF.md`; modelled on `docs/find-it-design.md`; uses the lessons in `docs/cook-with-nani-kutchi-audit.md` and `docs/cook-with-nani-todo.md` (Waves 1–5).
 **Absorbs:** the old **Ask around** mode (Roadmap mode 6) and the deduction half of **At the door** (the greeting half stays a choice inside every mode, as v2 says).
 **Placeholder rule:** Kutchi here is only what's already in `data/content.json` or `data/cook.json`. Anything written `[EN: …]` has no Kutchi yet: in the game it's grey italic English until the family gives the words. **Never invent Kutchi.** Right now almost every describing word, kinship title and past-tense frame this mode needs is a placeholder (section 6.6). That's the biggest risk, and section 4 is shaped around it.
+**Current section:** "Deep dive, 25 Sept 2026" (next) supersedes sections 3, 4, 8 and 12 wherever they conflict; the rest stands.
+
+---
+
+## Deep dive, 25 Sept 2026: mini-games and mechanics
+
+Follows `docs/modes/DEEP-DIVE-BRIEF.md` and Zafar's principles of 25 Sept (mini-games; modular mechanics as files; speaking as a core part; all modes built at once; the Sceptic). Addresses every critique in `docs/modes/REVIEW-2026-09-25.md` (D7). Drafted words from `data/cook.json` (*vadho, nindho, nar*) are shown in italics with "(draft)".
+
+### D1 Pitch and the kinds of round
+
+**Pitch.** Something's happened in Nani's house and the suspects are lined up behind the sofa; every fact about who did it is *said*, in Kutchi, and you act on it: keep who fits, peek at paws, answer Nani's questions, or tell Ali what you saw. One solver runs it all: the game always knows which suspects are still possible, so it can grade a commit, catch a lucky guess, drive Nani's own line-up when she's guessing, and act out Ali's line-up when the child speaks.
+
+**The backbone: four kinds of case, one engine.** A case is `{suspects, truth, clues[]}` and the solver gives the consistent set after each clue. The kinds differ in **who gives the facts and who acts on them**, the way the clinic's visit types differ in who speaks.
+
+| Kind | Who says the Kutchi | Who acts | What the child does (60–120 s) | Where it lives |
+|---|---|---|---|---|
+| **K1 One each** (*Who ate this one?*) | Nani | The child | Three things are missing; one clue per thing; tap the one it names. Honest about itself: it's "pass me" with people, plus a caught reaction per item. The tutorial shape | L1 of every mini-game; the first minute of Arc 1 Ch3 |
+| **K2 Keep who fits** (the line-up) | Nani | The child | Clue by clue, tap everyone who fits, Done; the rest sit. From L3 you ask for clues, send people away yourself, accuse, and Prove it | The engine room; Arc 1 Ch3 replay, Arc 3 Ch3, Arc 4 |
+| **K3 Nani guesses** (reversed) | Nani asks; **the child answers aloud** | Nani | A secret card; Nani asks yes/no questions; you say *yes* or *no* (or tap ✓/✗); her mini line-up empties; she guesses | The Eid party game (Arc 1 Ch5); Grandparent mode; the hub |
+| **K4 Tell Ali** (you're the witness) | **The child** | Ali (or the older cousin) | You saw it happen (a secret card shows you the culprit); Ali stands at the line-up and asks *[EN: What was it like?]*; you **say** one word from a small set; Ali sends away whoever doesn't fit; when one is left he points. If you said the wrong word, he sends away the wrong people and you see it | Arc 1 Ch3 outro (Ali back from the shop); free play from L1; Grandparent mode with real Nani listening |
+
+A **Nani's mysteries** session is 3–4 cases mixed by kind, drawn from the player's weakest words, like a clinic morning or a Cook day. K1 and K2 test the ear; K3 tests the ear (the question) and the voice (the answer); K4 tests the voice and the craft (which clue to give). **Speaking is not a bolt-on: K3 and K4 are two of the four kinds.**
+
+### D2 The mini-game library
+
+Scored 1–5. **At 5 / at 11** is fun at that age; **Kutchi** is how hard it forces the Kutchi (the exact decision the word drives); **Distinct** from the other modes; **Build** 5 = cheap. Mechanics are named in D3.
+
+| # | Mini-game (kind) | How it plays | At 5 | At 11 | Kutchi | Distinct | Build | Mechanics | Decision |
+|---|---|---|---|---|---|---|---|---|---|
+| **G1** | **Who ate this one?** (K1) | 3 suspects, 3 missing things; Nani: *[EN: the one with the]* **limu**; tap; caught reaction; next | 4 | 2 | 4 (the noun or name decides) | 3 | **5** | lineup, accuse | **First set** (the tutorial mini-game; the L1 shape of G2 and G3) |
+| **G2** | **Keep who fits** (K2) | 4–6 suspects; 2–4 clues that combine; exact-set commits; L3 ask, send away, accuse, Prove it | 3 | **5** | **5** (which set fits this fact; no single clue solves from L2) | **5** (the only mode where clues combine) | 4 | lineup, accuse, prove, whichone (shared), passme (Busy) | **First set** |
+| **G3** | **Look closer** (K1/K2 with hidden facts) | Every suspect has a trace on paws or hands you can only see under the magnifier (yellow *hardar*, white *atto*, red *tameto*, mud); Nani names the trace; peek, then tap. From L2 traces mix with G2 clues | **5** (peeking; Zazu's yellow paws) | 3 | **5, and Kutchi-real today** (an existing food noun decides) | 4 | 4 | examine, lineup, accuse | **First set** (the Kutchi-real proof; the *Clue Jr.* peek) |
+| **G4** | **Nani guesses** (K3) | A dealt card; Nani asks *[EN: Does yours have]* **glasses**?; you say *yes*/*no* or tap ✓/✗; her line-up empties; she guesses and, if you misled her, says why | 4 | 4 | **5** (understanding the question; saying the answer) | **5** (the only mode that asks the player questions) | 4 | guesswho, yesno (shared), speech | **First set** (lab first; ear grey until yes/no exist; the voice star runs on the drafts) |
+| **G5** | **Tell Ali** (K4) | You saw who did it (a secret card). Ali at the line-up: *[EN: What was it like?]* You say **nindho** (draft); Ali: *[EN: The small one? Right.]* and sits the big ones down. 2–3 clues, then he points. Wrong word → wrong people sit → *[EN: Hm, nobody's left!]*, try again | 4 | 4 | **5** (production: the word you say is the whole clue) | **5** | 3 (Ali's acting is the solver plus lineup states; the mic is the foundation's) | tell (shared), lineup, speech | **First set** (the speaking mini-game) |
+| G6 | **You ask** (K3 reversed again: the child asks the questions) | Choose or say a question word (*glasses? big?*); Nani answers *yes*/*no*; you send people away; fewest questions wins | 2 | **5** | 5 | 4 | 3 | guesswho, tell, lineup | **G4's level 3**, not its own mini-game (Ruggeri: halving questions are an 8+ skill) |
+| G7 | Who's at the door? (W2) | Nani describes the visitor; pick from the photo wall; open; greet | 4 | 3 | 4 | 3 (Find it's rejected M10 as a photo wall) | 2 (a door scene, a wall, kinship words) | photowall, door, whichone | **Held**: after the front-door scene and kinship words (review). Its greeting choice stays with the shell's exchanges |
+| G8 | Ask around (W3) | Testimony into the notebook; then Nani's fact | 2 | 4 | 5 | 4 | 2 | notebook, lineup | **Held**: S5 words (Arc 2 Ch4, Arc 4) |
+| G9 | Who's fibbing? (W6) | Two statements that can't both be true; present the catch | 1 | **5** | 5 | 5 | 3 | notebook, prove | **Held**: Arc 4, 8+ |
+| G10 | The case board (W7) | Who + where + what chips; Nani says it back | 3 | 4 | 3 (the listening was earlier) | 3 | 3 | board | **Held**: a finale screen for Arc 4 Ch5 |
+| G11 | Who's who? (old photos, W8) | Nana describes young Nani in the past tense | 2 | 4 | 4 | 2 | 2 | lineup | **Handed to Snap** (its album owns old photos); we lend the solver |
+| G12 | What happened first? (W9) | Order 3–4 pictures | 3 | 3 | 5 | 2 | 3 | — | **Rejected here**: arranging is Tidy up's verb |
+| G13 | Kasuku heard it | Each suspect said an order at the start (*Muke chai khape*); Kasuku squawks one back; who said it? | 4 | 3 | 4 | 4 | 4 | lineup | **Rejected for now**: at 5 it tests memory more than Kutchi; revisit as a `said` clue type at L3 |
+| G14 | Empty your pockets | The caught culprit hands back *bo* sweets; count them into the box | 3 | 1 | 3 | 1 | 5 | count (Cook) | **Rejected**: it's Tidy up's repack (the Ch3 chain already ends there) |
+| G15 | Make a case (W10 in full: choose the culprit *and* the clues) | Set a whole mystery for the cousin | 2 | 4 | 4 | 4 | 2 | tell, lineup | **Folded into G5's L3** (you choose which clue to give); the culprit is dealt, not chosen |
+
+**Combined mini-games.** A full case at L2+ is a combined mini-game in Cook's sense: a line-up zone, a magnifier inset zone (examine) and the sidebar ladder, with `case.js` routing between them the way `roll-tawa` routes maani. G1–G3 are the same zones with different level data; G4 and G5 swap who is on which side of the solver.
+
+### D3 The mechanics
+
+One mechanic = one file, difficulty as data (`mechanics.<id>.levels` in `data/who.json`), usable alone in the Case lab or inside a zone.
+
+| Id | One line | Tag |
+|---|---|---|
+| `lineup` | 2–8 suspects in sofa slots; states standing / forward / sat / not-me / caught; the commit is a tap-anything-then-Done exact set | **New** (`js/who/mechanics/lineup.js`); its commit step reuses Cook's `freePick` |
+| `examine` | The magnifier follows the finger; a close-up inset shows one suspect's hidden attribute (paws, hands); free, never a hint | **New** |
+| `accuse` | Point at one (hand C4); the solver applies the lucky-guess rule; caught or not-me reaction; the recap line | **New** |
+| `prove` | Nani points at a sat-down suspect; tap the clue row that ruled them out (L3+) | **New** |
+| `guesswho` | Nani's question chain and her own mini line-up that empties as she's answered; her wrong guess explains itself | **New** |
+| `photowall` | Pick a face from 6–8 frames (G7, later) | New, held |
+| `door` | The knock, the open-door reveal, the greeting hand-off (G7, later) | New, held |
+| `notebook` | Testimony tokens onto rooms or colours (G8–G9, later) | New, held |
+| `yesno` | Answer a heard yes/no question: say it (closed set of two) or tap ✓/✗; never blocks | **Shared** with the **clinic** (V0 *does it hurt here?*); `js/shared/mechanics/yesno.js` |
+| `tell` | Say one word from a closed set of 3–8 (or tap its pill); a character acts on what was heard; awards the voice star | **Shared** with the **clinic** (V4 tell the doctor), **Cook** and **Find it** ("Tell Ali"); `js/shared/mechanics/tell.js` |
+| `whichone` | Attribute-and-decoy balance and blind odds for `is`/`has` clues (asked value on ≥2 suspects, and so on) | **Shared** (foundation module; Find it M3, Dress up D1, Snap M4, Tidy up); `case.js` calls it |
+| `passme` | Nani's look-alike interrupt from the side table (her glasses, her chai) in Busy, L2+ | **Reused from Cook** |
+| `freePick` | The "tap anything, or Done; graded afterwards" step inside `assemble.js` | **Reused from Cook** as a step inside `lineup` |
+
+Counts: **new 5 in the first set** (lineup, examine, accuse, prove, guesswho) plus 3 held; **reused from Cook 2** (passme, freePick); **shared 3** (yesno and tell with the clinic and the "Tell Ali" reversal in every mode; whichone with Find it, Dress up, Snap and Tidy up). Not mechanics but needed from the foundation: overlay-at-anchor sprites (shared with Dress up), `js/shared/speech.js`, star sets and ear/voice rules as data, the relations layer for L4 `next_to` only.
+
+### D4 Speaking moments
+
+All three design against `listen({choices, timeoutMs}) → {choice, confidence} | null`. Rules: the closed set is stated per moment; a fallback is always on screen (word pills, or a parent's "did they say it?" tick in Grandparent mode); recognition never blocks progress (a `null` or a low confidence gets one *[EN: Again?]* from the character, then the pills come up); the **voice star** is separate from the ear star and only the mic or a parent's tick can earn it (pill taps earn coins for helping).
+
+| Moment | Closed set (what the game listens for) | What the character does | Fallback | When |
+|---|---|---|---|---|
+| **G5 Tell Ali** (the core speaking mini-game) | The attribute values in play in *this* line-up, 3–6 words: L1 trace and held-item nouns (*hardar, atto, tameto, limu…*, real today) and names; L2 adds *vadho / nindho* (draft; both gender forms map to one choice); L3 adds *nar* + adjective (draft) | Ali echoes what he heard (*[EN: The small one? Right.]*), sits down everyone who doesn't fit, and points when one is left. If the wrong word was heard, the wrong people sit and Ali says *[EN: Nobody's left!]*; the child says it again. He never corrects the child's Kutchi; the echo is the model | Word pills (audio, no text before word stage 3); in Grandparent mode Nani taps ✓ or "again" | From L1 (its own mini-game); in story from Arc 1 Ch3's outro |
+| **G4 Nani guesses: the answer** | Two: *[yes]* / *[no]* (A8.1, A8.2; *nar* draft for *no* until then) | Nani hears the answer, flips down her frames, thinks aloud, guesses | ✓ / ✗ buttons always visible | From L1 of G4 (phase 2) |
+| **G1–G2 the accusation by name** | The suspects' names (3–6: Simba, Zazu, Kasuku, Ali, Nana, a guest's name as heard when tapped) | The named suspect steps forward: caught, or *[EN: Not me!]* | Point (C4 tap) | L1 only, as the mic's first outing; names carry no Kutchi, so from L2 the voice star needs G4 or G5 |
+| **G4 L3 You ask** | The feature words on the wall (4–6: *glasses, big, small, cap…*) | Nani answers *yes*/*no* and waits | Question pills | G4 level 3 (8+) |
+
+**The speaking ladder** (the voice star): L1 say the noun or name; L2 say the describing word; L3 choose *which* clue to give (a halving clue earns the craft star: "called it" for the witness) and say two words (*nar vadho*). Every moment records the child's take beside the family's recording for the word review (stage 1 shadowing), on the device only.
+
+### D5 The first set and the level ladder
+
+**First set: G3 Look closer, G1 Who ate this one?, G2 Keep who fits, G5 Tell Ali, G4 Nani guesses** (in build order). Why: G3 is the only Kutchi-real test today and the 5-year-old's hook; G1 is its L1 shape and the story's first minute; G2 is the mode's identity (clues combine) and the 11-year-old's game; G5 is the speaking core and needs nothing but the solver, the line-up and the shared `tell`; G4 is the cheapest real Guess Who and Nani's own game, and it can wait for yes/no in the lab. Held: G7 (door scene, kinship), G8–G10 (S5 words), G6 as G4's L3.
+
+**Blind-bot estimates at level 1** (the Sceptic rule; `leak_who.mjs` must reproduce):
+
+| Mini-game, L1 | Shape | Best blind strategy | Ear star |
+|---|---|---|---|
+| G1 | 3 suspects × 3 items | Random tap | **3.7%** |
+| G2 | 5 suspects, 2–3 clues, exact sets | "Tap half" (the balanced first clue leaves 2 or 3 of 5) then random | **≈4%**; random subsets under 1%; tap-all 0% (every L1–2 clue removes someone) |
+| G3 | 4 suspects, 3 items, traces all visible after peeking | Peek at all, then random | **1.6%** |
+| G4 | 4 questions, both answers present in every round | Random ✓/✗ | **6.25%**; always-✓ 0% |
+| G5 | Voice star only (no ear star awarded) | No mic, no parent: pills earn no star | **0%** for the star; the pill path is 6% for "solved", coins only |
+
+**The level ladder** (levels are data; a child moves up by word stage, per mini-game):
+
+| Level | Name | What the Kutchi instruction carries | G1/G2/G3 | G4 | G5 |
+|---|---|---|---|---|---|
+| **1** | *One word* | **A noun or a name**: the trace, the held item, who. The frame is English or absent; the noun decides (Cook's reasoning) | 3–4 suspects; one clue picks one | 4 questions on features you can see; you answer | Say the noun |
+| **2** | *The describing word* | **An adjective, with agreement** (*vadho/vadhi* per A1, draft): the line-up mixes cats, men and women, so the ending is part of picking who fits; clues **combine** (2–3) | 4–5 suspects; exact sets; no single clue solves | 5–6 questions, adjectives in | Say the adjective |
+| **3** | *Not, and two things at once* | **Negation** (*nar* draft) and **two slots** (*[EN: the small one with the glasses]*); you ask for clues, send away, accuse, Prove it; no-op clues (15%) start here | 6 suspects; ask-and-accuse | You ask the questions (G6) | Choose which clue to give; say two words |
+| **4** (Arc 4+) | *Where and whose* | **Relations and kinship** (*next to Nana*, *Ma's sister*), then testimony in the past tense | 6–8; G8 joins | Kinship cards | Tell Nana what happened (past tense, later) |
+
+A child feels it as: *she names it → she describes it → she says what it isn't → she says where it was and whose it is*; and in the mirror: *I name it → I describe it → I choose what to say.*
+
+**Busy mode** (the review's gap): from L2, the patience ring is Nani's chai going cold on the side table; it drains through the case, twice as fast during help rungs, and `passme` interrupts spend it too. Off at L1 and in every story-required round.
+
+### D6 Story home and free play
+
+| Mini-game | Story home | Cast |
+|---|---|---|
+| G1 Who ate this one? | Arc 1 Ch3 "The cat and the sweets", the first minute (3 sweets, 3 suspects) | Simba, Zazu, Kasuku (silent), Nani |
+| G3 Look closer | Arc 1 Ch3 (Nani found prints in the spilt spices: off-screen); Arc 3 Ch3 muddy prints; Arc 4 Ch4 "Footprints" (claimed, per the review's default) | The cats, a hen, Nana |
+| G2 Keep who fits | Arc 1 Ch3 on replay and at L2+; Arc 3 Ch3; Arc 4 Ch2 (with G8 later) | Adds Ali, Nana, guests |
+| G5 Tell Ali | Arc 1 Ch3's outro: Ali is back from the shop, *[EN: What happened? What was it like?]* (Ali is not in that line-up when he's the listener; `listener` is data, the older cousin otherwise); Arc 2 Ch4; Arc 4 Ch2 (tell Nana, later) | Ali, the cousin, Nana |
+| G4 Nani guesses | Arc 1 Ch5 "Eid morning", the optional party game; Grandparent mode | Nani, the elders, Big Ma |
+| G7 door (held) | Arc 1 Ch2 becomes a beat with the greeting only until G7 exists (the review: the door is a beat, not an errand) | — |
+
+**One free-play entry: "Nani's mysteries" at the sofa.** It offers a session (3–4 mixed cases), any single mini-game at any unlocked level, and a **60-second round** (one K1 or K3 case), which is what the hub's single rotating daily calls; there is no separate "Case of the day" any more. The case book, the record ("cases in a row with the ear star") and the Grandparent toggle live there.
+
+### D7 The review's critiques
+
+| Critique | What I did |
+|---|---|
+| Phases 0–1 only; `case.js` + Node bot + greybox line-up, L1–2 | Adopted; D9 is phased that way and phases 0–1 touch only `js/who/`, `data/who.json`, `data/scenes/sofa.json`, `build/` |
+| No-op clues confuse a 5–7-year-old at L2; start at L3 | Adopted. L2 clue count still varies (2–4) and every L2 clue removes someone, so "tap all" stays 0% |
+| W2 (the door) is Find it's rejected M10 reskinned; keep it out of the first set | Adopted: G7 held until the front-door scene (`front-door.json`, named as the review asks) and kinship words; Arc 1 Ch2 is a greeting beat until then |
+| W5 into the lab with a grey ear until yes/no exist | Adopted, and G4 gains a voice moment (the answer aloud) so it earns a star before yes/no arrive only through Grandparent mode's tick |
+| Prove it: keep, L3 only | Adopted (`prove`, `min_level: 3`) |
+| Busy mode appears only in loop 3; what does the ring drain on? | Defined in D5 (the chai going cold; help and pass-me spend it; off at L1 and in story) |
+| Build the overlay-at-anchor system once, shared with Dress up | Adopted as a foundation piece; the greybox draws its own circles and arcs until it lands |
+| L1 "is pass me with people" | Agreed and made honest: G1 is the tutorial mini-game and says so; G3's peek is what makes L1 fun rather than a quiz |
+| Culprit pool is data; Kasuku silent: default yes | Adopted as defaults; not a decision for Zafar any more |
+| "Which one?" as one shared module; a lucky-guess and blind-odds calculator | Adopted: `whichone` is shared and `case.js` calls it for balance and blind odds |
+| Six dailies → one hub daily; each mode exposes a 60-second round | Adopted: "Case of the day" is gone; Nani's mysteries exposes the 60-second round |
+| Footprints (Arc 4 Ch4): default Who did it | Adopted for G3 |
+| "Tell Ali" role reversal needs the shared pill builder | It's `tell`, designed here as shared, with speech first and pills as the fallback |
+
+### D8 Words needed (first set, priority order)
+
+"Asked" means it's in `docs/Nani jo Ghar — Questions for Mum (Combined, for the visit).md` already; nothing there is edited.
+
+| # | Kutchi needed | For | Status |
+|---|---|---|---|
+| 1 | Trace and held-item nouns: *hardar, atto, tameto, lal marcha, jeeru, dai, marcha, limu, aadu, dungri, bataato*, numbers 1–5 | G1, G3, G5 L1 | **Real** (`data/cook.json`); mud is `[EN]` |
+| 2 | big / small, on a he-word and a she-word | G2, G5 L2 | *vadho / nindho* **draft**; asked (B6, B7; agreement C22–C36, C44–C49) |
+| 3 | yes / no | G4 | Asked (A8.1, A8.2); *nar* draft for "no / not" (B1) |
+| 4 | Who ate the sweets? · Who did it? · It was the big one · It wasn't the small one · It had turmeric on its paws · It was holding a mango · The one with the glasses | The case card and clue frames | Asked (F23–F28, A8.9) |
+| 5 | glasses, beard, cap, headscarf, bell, collar, tail, paw, whiskers | G2 `has` clues, G4 questions | Asked (F14–F22) |
+| 6 | tall, short, old, young, dark, fair | G2 L2 `is` clues | Asked (F1–F6) |
+| 7 | Not me! · You're right! · Caught you! · Prove it! | Reactions | Asked (F29–F31, F36) |
+| 8 | Ali's echo and prompts: *What was it like? · The {x} one? Right. · Nobody's left! · Again?* | G5 | **Not asked**: add to Round 3 |
+| 9 | Nani's question frame: *Does yours have {x}? · Is yours {adj}?* | G4 | **Not asked** (A8 has the question words, not this frame): add to Round 3 |
+| 10 | Kinship titles; rooms; past tense; time words | G7–G9 (held) | Asked (E85–E102, E49–E58, F32–F34, C116–C136, F37–F43) |
+
+Recording for the closed sets (the speech agent's spec): about five takes per word from a few speakers for rows 1–3 first (about 15 words), which the family can do in an evening.
+
+### D9 Decisions for Zafar (only what blocks the build)
+
+1. **Do drafted words count as a Kutchi test?** *vadho / nindho / nar* are Zafar's phonetic drafts, unconfirmed. If they count (flagged `draft`), G2 and G5 have a real level 2 now; if not, level 2 waits for the visit. **Default: they count**, as Find it's M3-size slice already assumes, and every row carries `draft: true` for the audit.
+2. **What does Tell Ali earn?** It awards the voice star and the craft star, never the ear star (nothing is tested by ear except Ali's echo). If Zafar wants every mini-game to carry an ear star, Ali's echo becomes a tested row. **Default: voice + craft only**; the ear icon shows "not tested this time".
+3. **In Tell Ali, does the child see the culprit on a dealt card, or retell a case they've just solved?** The card is self-contained (a 60-second round, Grandparent-friendly); the retell is a better story beat but doubles the round. **Default: the dealt card**, with the retell as the Arc 1 Ch3 outro only.
 
 ---
 
