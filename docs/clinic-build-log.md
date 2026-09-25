@@ -50,4 +50,16 @@ PASS. Level-1 effective hit areas on the iPad (1024×768, canvas scale 0.487): a
 
 ## Browser (`python3 build/test_clinic.py --canvas`, port 8806)
 
-See the finish report for the runs.
+Real pointer events read from `__clinic.expectation()`, with the tap-cover check before every tap; no console errors.
+- Every lab entry (21, the hotspot editor aside) passes at level 1 (laptop, with `--mistakes`), level 2 (laptop) and level 3 (iPad).
+- The six sizes (`--all-sizes --mistakes`): V0, V1, V3 and the treatment round pass at all six; the deliberate wrong taps run the recasts and cost the ear star.
+- The speaking paths in the page (`--say`): right (voice star), wrong (acted on as a miss, then the pills), nothing (one "say it again?", then the pills), pills (no voice star), a grown-up judging (voice star).
+
+Bugs the browser run found and fixed: the mouth's spot landed on the tooth (a level-3 check-up could never finish); the magnifier's hit area was off (Phaser container); a third trolley row fell off the canvas at level 3.
+
+Screenshots are in `build/screenshots/clinic/<size>/` (not committed). Reviewed: the check-up, the lap view, the trolley at level 3, the kit. Greybox, readable; the lap view's arms are crude.
+
+## Known gaps (phase 2)
+- Word stages (stage-1 twinkle, taught rows), the intro card, 3 s quiet, the sidebar ladder and the receipt: phase 2.
+- The trolley's objects are small on the phone (about 60 design px); the tooth is under 1 cm even in the close-up.
+- The replay timer can overlap a recast line.

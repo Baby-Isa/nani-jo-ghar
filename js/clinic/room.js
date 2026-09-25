@@ -237,7 +237,9 @@
         }
         if (room.magnifier && Clinic.body.isFace(part) !== room.patient.isCloseup()) return z.expect({ kind: "tap", x: room.magnifier.x, y: room.magnifier.y, key: "magnifier" });
         const w = room.where(part, side);
-        z.expect({ kind: "tap", x: w.x, y: w.y, key: part, wrongs: (wrongs || []).map((p) => room.where(p, side)) });
+        // for the test's deliberate mistakes (the recast paths): other parts in the same view
+        const others = wrongs || lv.parts.filter((p) => p !== part && Clinic.body.isFace(p) === Clinic.body.isFace(part)).slice(0, 2);
+        z.expect({ kind: "tap", x: w.x, y: w.y, key: part, wrongs: others.map((p) => room.where(p, side)) });
       };
       room.onView = post;
       post();
