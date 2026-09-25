@@ -10,8 +10,8 @@
  *  - TRAY (right, a tray on the worktop): a cup for each person, with
  *    their face. Each person says how they like their chai, in Kutchi:
  *    milk or no milk (dudh / no dudh), how many sugars or none (khun),
- *    and at level 3 an extra (elchi, aadu) and half or full (English
- *    placeholders). Tap a cup (or its face: you hear them again), then:
+ *    which chai (plain, elchi or aadu: from level 1) and at level 3 half
+ *    or full (English placeholders). Tap a cup (or its face: you hear them again), then:
  *    hold the milk jug (the icon stays put; a jug slides in over the cup),
  *    tap the sugar bowl once per spoon (salt beside it looks the same),
  *    tap an extra. Once the chai has boiled, hold the pan to pour it into

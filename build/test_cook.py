@@ -96,6 +96,7 @@ class Player:
         return path
 
     def exp(self):
+        self.t_exp = time.time()
         return self.page.evaluate("__cook.expectation()")
 
     def gauge(self):
@@ -227,11 +228,19 @@ class Player:
                 return
             p.mouse.move(e["sx1"], e["sy1"])
             p.mouse.down()
-            steps = 4 if k == "slice" else 10
+            steps = 1 if k == "slice" else 10
             for s in range(1, steps + 1):
                 p.mouse.move(e["sx1"] + (e["sx2"] - e["sx1"]) * s / steps, e["sy1"] + (e["sy2"] - e["sy1"]) * s / steps)
                 if k == "swipe":
                     time.sleep(0.01)
+            if k == "slice":
+                # the chop aims where a vegetable will be when the cut lands: tell it how long
+                # our swipes take (the software renderer makes each mouse event slow)
+                lat = time.time() - self.t_exp
+                old = getattr(self, "lead", 0.25)
+                self.lead = old * 0.6 + lat * 0.4
+                if abs(self.lead - old) > 0.05:
+                    p.evaluate(f"() => {{ window.__cookSwipeLead = {self.lead:.3f}; }}")
             p.mouse.up()
         elif k == "stir":
             self.stir(e)
@@ -347,6 +356,10 @@ class Player:
             if not timed and e["kind"] != "wait" and e["kind"] != last_kind:
                 self.shot(e["kind"])
             shoot_after = timed and e["kind"] != last_kind
+            if e["kind"] == "slice":
+                # the chop round is timed and busy: a couple of pictures, not one per slice
+                self.slice_shots = getattr(self, "slice_shots", 0) + 1
+                shoot_after = shoot_after and self.slice_shots % 6 == 2
             last_kind = e["kind"]
             key = json.dumps({k: v for k, v in e.items() if k in ("kind", "key", "x", "y", "selector")}, sort_keys=True)
             self.repeats = self.repeats + 1 if (key == self.last_key and e["kind"] not in ("wait", "slice")) else 0
@@ -513,22 +526,34 @@ ORDERS_JS = r"""
       if (!seqs.length && said.includes(then)) out.errors.push(id + ": no sequence, no " + then + ": " + said);
     }
   });
-  // byLevel values: the order's level picks one (chai's cups, mishkaki's skewers)
+  // byLevel values: the order's level picks one (chai's cups, mishkaki's skewers).
+  // Level 1 is gentle on the hand but already varied for the ear (the owner's Wave 3 note).
+  const seen = { extra: new Set(), skew: new Set(), chopN: new Set() };
   [1, 2, 3].forEach((level) => {
     for (let n = 0; n < 30; n++) {
       if (R.chai) {
         const c = R.chai.make("nana", { level });
-        if (c.cups.length !== level) out.errors.push("byLevel: chai level " + level + " has " + c.cups.length + " cups");
-        if (level < 3 && c.cups.some((p) => p.extra || p.amount)) out.errors.push("byLevel: chai extras before level 3");
+        const want = [2, 3, 3][level - 1];
+        if (c.cups.length !== want) out.errors.push("byLevel: chai level " + level + " has " + c.cups.length + " cups");
+        if (level < 3 && c.cups.some((p) => p.amount)) out.errors.push("byLevel: chai half/full before level 3");
+        if (level === 1) c.cups.forEach((p) => seen.extra.add(p.extra || "plain"));
       }
       if (R.mishkaki) {
         const m = R.mishkaki.make("nana", { level });
         const tot = Object.values(m.skewers).reduce((a, b) => a + b, 0);
-        const ok = level === 1 ? tot === 1 : level === 2 ? tot === 2 : tot >= 3 && tot <= 4;
-        if (!ok || (level < 3 && m.skewers["ph-mixed"])) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+        const ok = level === 1 ? tot === 2 : level === 2 ? tot >= 2 && tot <= 3 : tot >= 3 && tot <= 4;
+        if (!ok || (m.skewers["ph-mixed"] || 0) > [0, 1, 2][level - 1]) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+        if (level === 1) seen.skew.add(JSON.stringify(m.skewers));
+      }
+      if (R.daal && level === 1) {
+        const dd = R.daal.make("nana", { level });
+        seen.chopN.add([dd.onions, dd.tomatoes, dd.chillies].filter(Boolean).length);
       }
     }
   });
+  if (R.chai && seen.extra.size < 3) out.errors.push("level 1 chai: plain, elchi and aadu should all come up: " + [...seen.extra]);
+  if (R.mishkaki && seen.skew.size < 2) out.errors.push("level 1 mishkaki: the skewer kinds should vary: " + [...seen.skew]);
+  if (R.daal && ![...seen.chopN].some((x) => x >= 2)) out.errors.push("level 1 daal: several vegetables to chop: " + [...seen.chopN]);
   // the Maani line: how many of each kind (sizes from level 3), the kinds said in either order
   let both = 0;
   let bajrFirst = 0;
@@ -536,8 +561,9 @@ ORDERS_JS = r"""
     for (let n = 0; n < 60; n++) {
       const d = R.maani.make("nana", { level: lv });
       const tot = Object.values(d.maani).reduce((a, b) => a + b, 0);
-      const [lo, hi] = [[2, 3], [3, 4], [2, 4]][lv - 1];
+      const [lo, hi] = [[3, 3], [3, 5], [2, 4]][lv - 1];
       if (tot < lo || tot > hi) out.errors.push(`maani level ${lv}: total ${tot}`);
+      if (lv === 1 && !(d.maani["cook-maani"] && d.maani["cook-bajrmaani"])) out.errors.push(`maani level 1 asks for both doughs ${JSON.stringify(d.maani)}`);
       if ((lv === 3) !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes only at level 3 ${JSON.stringify(d.maani)}`);
       const L = Cook.Order.ladder(d, 0);
       const rows = [].concat(...L.sections.map((s) => [].concat(...s.groups)));
