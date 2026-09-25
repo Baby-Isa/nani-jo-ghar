@@ -1,0 +1,889 @@
+{
+ "_readme": "Wrist position per master hand image (hands v1), written by build/reskin_hands.py. x, y: pixels in that image (size given), where the bangles' centre goes; angle_deg: arm direction, 0 = hand points up the frame, positive = clockwise (rotate the bangle sprites by this); wrist_px: arm width there (scale bangle sprites by wrist_px / 200). Bangle sprites: assets/characters/hands/bangles/bangle-{red,green,gold}-{e,t}-{back,front}.png, back half drawn under the hand, front half over it, stacked 13 px apart along the arm (at the reference wrist). Girl images share their master's canvas, so the same numbers apply. The girl hand = the master with the sleeve recoloured.",
+ "hand-a1-flat-palm-t": {
+  "camera": "t",
+  "size": [
+   1120,
+   1088
+  ],
+  "arms": [
+   {
+    "x": 576.9,
+    "y": 754.4,
+    "angle_deg": -2.3,
+    "wrist_px": 246.0
+   }
+  ]
+ },
+ "hand-a2-heel-push-t": {
+  "camera": "t",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 545.1,
+    "y": 786.0,
+    "angle_deg": -6.6,
+    "wrist_px": 254.0
+   }
+  ]
+ },
+ "hand-a3-palm-up-e": {
+  "camera": "e",
+  "size": [
+   1280,
+   1264
+  ],
+  "arms": [
+   {
+    "x": 466.0,
+    "y": 956.6,
+    "angle_deg": 28.7,
+    "wrist_px": 320.0
+   }
+  ]
+ },
+ "hand-a3-palm-up-t": {
+  "camera": "t",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 511.3,
+    "y": 780.3,
+    "angle_deg": -0.6,
+    "wrist_px": 262.0
+   }
+  ]
+ },
+ "hand-a4-reach-e": {
+  "camera": "e",
+  "size": [
+   1296,
+   1296
+  ],
+  "arms": [
+   {
+    "x": 704.6,
+    "y": 806.5,
+    "angle_deg": -5.4,
+    "wrist_px": 256.0
+   }
+  ]
+ },
+ "hand-a5-wave-f1-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 527.2,
+    "y": 777.4,
+    "angle_deg": -7.6,
+    "wrist_px": 242.0
+   }
+  ]
+ },
+ "hand-a5-wave-f2-e": {
+  "camera": "e",
+  "size": [
+   1104,
+   1136
+  ],
+  "arms": [
+   {
+    "x": 526.3,
+    "y": 761.0,
+    "angle_deg": -0.8,
+    "wrist_px": 244.0
+   }
+  ]
+ },
+ "hand-a6-palm-out-e": {
+  "camera": "e",
+  "size": [
+   1088,
+   1152
+  ],
+  "arms": [
+   {
+    "x": 523.8,
+    "y": 792.4,
+    "angle_deg": 2.0,
+    "wrist_px": 248.0
+   }
+  ]
+ },
+ "hand-a7-hand-on-heart-e": {
+  "camera": "e",
+  "size": [
+   1312,
+   1296
+  ],
+  "arms": [
+   {
+    "x": 894.5,
+    "y": 897.7,
+    "angle_deg": -44.3,
+    "wrist_px": 346.0
+   }
+  ]
+ },
+ "hand-a8-cupped-e": {
+  "camera": "e",
+  "size": [
+   1280,
+   1264
+  ],
+  "arms": [
+   {
+    "x": 417.7,
+    "y": 912.6,
+    "angle_deg": 33.9,
+    "wrist_px": 320.0
+   }
+  ]
+ },
+ "hand-a8-cupped-t": {
+  "camera": "t",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 511.3,
+    "y": 805.9,
+    "angle_deg": 1.2,
+    "wrist_px": 252.0
+   }
+  ]
+ },
+ "hand-b1-handle-grip-t": {
+  "camera": "t",
+  "size": [
+   1408,
+   1376
+  ],
+  "arms": [
+   {
+    "x": 779.2,
+    "y": 975.9,
+    "angle_deg": -0.3,
+    "wrist_px": 326.0
+   }
+  ]
+ },
+ "hand-b2-vertical-grip-e": {
+  "camera": "e",
+  "size": [
+   1456,
+   1424
+  ],
+  "arms": [
+   {
+    "x": 753,
+    "y": 767,
+    "angle_deg": -28,
+    "wrist_px": 250,
+    "manual": true
+   }
+  ]
+ },
+ "hand-b2-vertical-grip-t": {
+  "camera": "t",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 591.7,
+    "y": 710.4,
+    "angle_deg": 3.7,
+    "wrist_px": 238.0
+   }
+  ]
+ },
+ "hand-b3-stick-grip-e": {
+  "camera": "e",
+  "size": [
+   1264,
+   1232
+  ],
+  "arms": [
+   {
+    "x": 621.4,
+    "y": 804.9,
+    "angle_deg": -3.3,
+    "wrist_px": 270.0
+   }
+  ]
+ },
+ "hand-b4-rolling-pin-t": {
+  "camera": "t",
+  "size": [
+   1280,
+   1264
+  ],
+  "arms": [
+   {
+    "x": 286.3,
+    "y": 785.1,
+    "angle_deg": 4.7,
+    "wrist_px": 244.0
+   },
+   {
+    "x": 977.7,
+    "y": 792.9,
+    "angle_deg": -8.4,
+    "wrist_px": 250.0
+   }
+  ]
+ },
+ "hand-b5-hook-grip-e": {
+  "camera": "e",
+  "size": [
+   1216,
+   1200
+  ],
+  "arms": [
+   {
+    "x": 627.7,
+    "y": 814.9,
+    "angle_deg": 16.7,
+    "wrist_px": 288.0
+   }
+  ]
+ },
+ "hand-b5-hook-grip-t": {
+  "camera": "t",
+  "size": [
+   1392,
+   1376
+  ],
+  "arms": [
+   {
+    "x": 732.9,
+    "y": 968.9,
+    "angle_deg": 17.3,
+    "wrist_px": 354.0
+   }
+  ]
+ },
+ "hand-c1-pinch-f1-open-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 424.0,
+    "y": 816.9,
+    "angle_deg": 13.6,
+    "wrist_px": 232.0
+   }
+  ]
+ },
+ "hand-c1-pinch-f1-open-t": {
+  "camera": "t",
+  "size": [
+   1296,
+   1296
+  ],
+  "arms": [
+   {
+    "x": 767.8,
+    "y": 879.1,
+    "angle_deg": 8.3,
+    "wrist_px": 242.0
+   }
+  ]
+ },
+ "hand-c1-pinch-f2-closed-e": {
+  "camera": "e",
+  "size": [
+   1328,
+   1312
+  ],
+  "arms": [
+   {
+    "x": 549.4,
+    "y": 971.9,
+    "angle_deg": 7.1,
+    "wrist_px": 258.0
+   }
+  ]
+ },
+ "hand-c1-pinch-f2-closed-t": {
+  "camera": "t",
+  "size": [
+   1232,
+   1216
+  ],
+  "arms": [
+   {
+    "x": 773.7,
+    "y": 826.0,
+    "angle_deg": 0.6,
+    "wrist_px": 234.0
+   }
+  ]
+ },
+ "hand-c2-tripod-grip-t": {
+  "camera": "t",
+  "size": [
+   1472,
+   1456
+  ],
+  "arms": [
+   {
+    "x": 882.7,
+    "y": 1167.5,
+    "angle_deg": -2.3,
+    "wrist_px": 330.0
+   }
+  ]
+ },
+ "hand-c3-side-pinch-e": {
+  "camera": "e",
+  "size": [
+   1376,
+   1344
+  ],
+  "arms": [
+   {
+    "x": 780.1,
+    "y": 1102.0,
+    "angle_deg": -5.8,
+    "wrist_px": 268.0
+   }
+  ]
+ },
+ "hand-c3-side-pinch-t": {
+  "camera": "t",
+  "size": [
+   1744,
+   1728
+  ],
+  "arms": [
+   {
+    "x": 1161.6,
+    "y": 1224.5,
+    "angle_deg": 7.4,
+    "wrist_px": 296.0
+   }
+  ]
+ },
+ "hand-c4-point-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 550.4,
+    "y": 710.2,
+    "angle_deg": -0.8,
+    "wrist_px": 246.0
+   }
+  ]
+ },
+ "hand-c4-point-t": {
+  "camera": "t",
+  "size": [
+   1184,
+   1168
+  ],
+  "arms": [
+   {
+    "x": 645.0,
+    "y": 804.9,
+    "angle_deg": 6.8,
+    "wrist_px": 246.0
+   }
+  ]
+ },
+ "hand-c5-two-hand-fold-t": {
+  "camera": "t",
+  "size": [
+   1568,
+   1536
+  ],
+  "arms": [
+   {
+    "x": 279.2,
+    "y": 1252.5,
+    "angle_deg": 17.9,
+    "wrist_px": 296.0
+   },
+   {
+    "x": 1102,
+    "y": 918,
+    "angle_deg": -24,
+    "wrist_px": 245,
+    "manual": true
+   }
+  ]
+ },
+ "hand-d1-grab-f1-open-e": {
+  "camera": "e",
+  "size": [
+   1248,
+   1232
+  ],
+  "arms": [
+   {
+    "x": 728.1,
+    "y": 984.5,
+    "angle_deg": 1.3,
+    "wrist_px": 300.0
+   }
+  ]
+ },
+ "hand-d1-grab-f1-open-t": {
+  "camera": "t",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 574.9,
+    "y": 765.9,
+    "angle_deg": -4.3,
+    "wrist_px": 252.0
+   }
+  ]
+ },
+ "hand-d1-grab-f2-closed-e": {
+  "camera": "e",
+  "size": [
+   1216,
+   1216
+  ],
+  "arms": [
+   {
+    "x": 483.2,
+    "y": 919.1,
+    "angle_deg": 13.1,
+    "wrist_px": 284.0
+   }
+  ]
+ },
+ "hand-d1-grab-f2-closed-t": {
+  "camera": "t",
+  "size": [
+   1200,
+   1168
+  ],
+  "arms": [
+   {
+    "x": 679.6,
+    "y": 870.5,
+    "angle_deg": -1.4,
+    "wrist_px": 268.0
+   }
+  ]
+ },
+ "hand-d2-c-hold-e": {
+  "camera": "e",
+  "size": [
+   1472,
+   1456
+  ],
+  "arms": [
+   {
+    "x": 1055.4,
+    "y": 917.1,
+    "angle_deg": -26.6,
+    "wrist_px": 344.0
+   }
+  ]
+ },
+ "hand-d2-c-hold-t": {
+  "camera": "t",
+  "size": [
+   1504,
+   1488
+  ],
+  "arms": [
+   {
+    "x": 877.3,
+    "y": 1164.1,
+    "angle_deg": 3.6,
+    "wrist_px": 286.0
+   }
+  ]
+ },
+ "hand-d3-two-hand-bowl-t": {
+  "camera": "t",
+  "size": [
+   2048,
+   2016
+  ],
+  "arms": [
+   {
+    "x": 301.6,
+    "y": 1573.4,
+    "angle_deg": 4.8,
+    "wrist_px": 338.0
+   },
+   {
+    "x": 1759.6,
+    "y": 1571.5,
+    "angle_deg": -6.0,
+    "wrist_px": 344.0
+   }
+  ]
+ },
+ "hand-d4-squeeze-f1-half-t": {
+  "camera": "t",
+  "size": [
+   1088,
+   1072
+  ],
+  "arms": [
+   {
+    "x": 609.8,
+    "y": 712.7,
+    "angle_deg": 1.8,
+    "wrist_px": 270.0
+   }
+  ]
+ },
+ "hand-d4-squeeze-f2-tight-t": {
+  "camera": "t",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 506,
+    "y": 720,
+    "angle_deg": 0,
+    "wrist_px": 250,
+    "manual": true
+   }
+  ]
+ },
+ "hand-d5-throw-release-e": {
+  "camera": "e",
+  "size": [
+   1424,
+   1408
+  ],
+  "arms": [
+   {
+    "x": 706.9,
+    "y": 941.5,
+    "angle_deg": -8.4,
+    "wrist_px": 264.0
+   }
+  ]
+ },
+ "hand-d6-two-hand-catch-f1-open-e": {
+  "camera": "e",
+  "size": [
+   1392,
+   1376
+  ],
+  "arms": [
+   {
+    "x": 365.4,
+    "y": 899.9,
+    "angle_deg": 12.0,
+    "wrist_px": 262.0
+   },
+   {
+    "x": 1007.3,
+    "y": 916.2,
+    "angle_deg": -9.7,
+    "wrist_px": 268.0
+   }
+  ]
+ },
+ "hand-d6-two-hand-catch-f2-closed-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 315.7,
+    "y": 731.3,
+    "angle_deg": 22.7,
+    "wrist_px": 220.0
+   },
+   {
+    "x": 700.7,
+    "y": 731.8,
+    "angle_deg": -19.9,
+    "wrist_px": 226.0
+   }
+  ]
+ },
+ "hand-e1-thumbs-up-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 577.4,
+    "y": 709.4,
+    "angle_deg": -11.4,
+    "wrist_px": 208.0
+   }
+  ]
+ },
+ "hand-e2-handshake-e": {
+  "camera": "e",
+  "size": [
+   1328,
+   1312
+  ],
+  "arms": [
+   {
+    "x": 959.2,
+    "y": 748.3,
+    "angle_deg": -61.7,
+    "wrist_px": 282.0
+   }
+  ]
+ },
+ "hand-e3-count-1-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 542.2,
+    "y": 728.6,
+    "angle_deg": 1.5,
+    "wrist_px": 248.0
+   }
+  ]
+ },
+ "hand-e3-count-2-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 494.5,
+    "y": 700.7,
+    "angle_deg": -1.2,
+    "wrist_px": 242.0
+   }
+  ]
+ },
+ "hand-e3-count-3-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 530.7,
+    "y": 722.8,
+    "angle_deg": -1.7,
+    "wrist_px": 246.0
+   }
+  ]
+ },
+ "hand-e3-count-4-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": []
+ },
+ "hand-e3-count-5-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 518.7,
+    "y": 693.3,
+    "angle_deg": -1.8,
+    "wrist_px": 250.0
+   }
+  ]
+ },
+ "hand-e4-clap-f1-apart-e": {
+  "camera": "e",
+  "size": [
+   1488,
+   1456
+  ],
+  "arms": [
+   {
+    "x": 439.5,
+    "y": 927.6,
+    "angle_deg": 15.2,
+    "wrist_px": 272.0
+   },
+   {
+    "x": 1056.3,
+    "y": 984.0,
+    "angle_deg": -7.4,
+    "wrist_px": 272.0
+   }
+  ]
+ },
+ "hand-e4-clap-f2-together-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 477.7,
+    "y": 838.9,
+    "angle_deg": 10.9,
+    "wrist_px": 266.0
+   },
+   {
+    "x": 560,
+    "y": 716,
+    "angle_deg": -8,
+    "wrist_px": 240,
+    "manual": true
+   }
+  ]
+ },
+ "hand-e5-arm-up-fist-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 535.4,
+    "y": 723.8,
+    "angle_deg": 1.0,
+    "wrist_px": 252.0
+   }
+  ]
+ },
+ "hand-e6-stretch-e": {
+  "camera": "e",
+  "size": [
+   1168,
+   1152
+  ],
+  "arms": [
+   {
+    "x": 578.1,
+    "y": 734.3,
+    "angle_deg": 13.9,
+    "wrist_px": 250.0
+   }
+  ]
+ },
+ "hand-e7-shrug-e": {
+  "camera": "e",
+  "size": [
+   1504,
+   1488
+  ],
+  "arms": [
+   {
+    "x": 606,
+    "y": 941,
+    "angle_deg": 38,
+    "wrist_px": 240,
+    "manual": true
+   }
+  ]
+ },
+ "hand-f1-piano-f1-raised-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 704.4,
+    "y": 815.5,
+    "angle_deg": -21.7,
+    "wrist_px": 188.0
+   }
+  ]
+ },
+ "hand-f1-piano-f2-pressed-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1056
+  ],
+  "arms": [
+   {
+    "x": 642.3,
+    "y": 752.7,
+    "angle_deg": -19.0,
+    "wrist_px": 296.0
+   }
+  ]
+ },
+ "hand-f2-drum-cupped-t": {
+  "camera": "t",
+  "size": [
+   1024,
+   1024
+  ],
+  "arms": [
+   {
+    "x": 512.3,
+    "y": 873.4,
+    "angle_deg": 27.5,
+    "wrist_px": 274.0
+   }
+  ]
+ },
+ "hand-f4-phone-two-hands-e": {
+  "camera": "e",
+  "size": [
+   1744,
+   1712
+  ],
+  "arms": [
+   {
+    "x": 143.4,
+    "y": 1218.6,
+    "angle_deg": 3.8,
+    "wrist_px": 248.0
+   },
+   {
+    "x": 1506.2,
+    "y": 962.0,
+    "angle_deg": -51.1,
+    "wrist_px": 194.0
+   }
+  ]
+ }
+}

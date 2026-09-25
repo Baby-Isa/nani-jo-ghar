@@ -67,7 +67,7 @@
     "hand_ref_to_eye_level": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 from a new camera. Camera: eye level, first person: we look straight ahead at our own right hand held up in front of us; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises vertically from the bottom edge of the frame; no worktop, no table. Pose: relaxed and upright, fingers gently together and pointing up towards the top of the frame, thumb relaxed at the left side, fingernails softly visible. Keep everything else identical to the reference: the same slender hand with long fingers relative to a small, narrow palm; smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins; exactly the same warm light tan skin colour (muted, slightly pinkish-beige light brown, not orange, not saturated); the same plain white linen shirt sleeve rolled back to between the elbow and the wrist, the soft roll just showing at the bottom edge of the frame. This is the master reference for every eye-level hand pose. Transparent background: hand and forearm only, no other body parts, no shadow.\n\n{negative}",
     "hand_reskin_eid": "{style}\n\nEdit the attached image. Change only one thing: {change}. Keep the hand exactly the same: identical outline, finger positions, skin colour, sleeve, bangles, lighting, camera and size. Nothing else changes. Transparent background.\n\n{negative}",
     "nani_ref": "{style}\n\nEdit the attached reference hand into Nani's hand: the {side} hand and forearm of a warm, graceful grandmother in her late sixties. Keep the camera, pose, framing and lighting exactly as in the reference. Change: (1) Hand: an older woman's hand, a little larger and fuller than the child's, with soft, gentle wrinkles over the knuckles and the back of the hand and a slightly looser skin texture, still smooth and stylised, never bony, no prominent veins; short, neat, natural nails, no polish. (2) Skin: warm and unsaturated, a soft muted light brown, a touch deeper than the reference, not orange, not grey. (3) Sleeve: replace the white linen with her deep-red kurta sleeve (deep madder red, about #9E1F2A), coming down to the wrist, with a narrow band of fine gold embroidery at the cuff. (4) Jewellery: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
-    "nani_ref_left": "{style}\n\nEdit the attached image of Nani's hand. It is now her LEFT hand (already flipped): keep the hand, pose, skin, camera, lighting and her deep-red sleeve with its gold-embroidered cuff exactly the same: the SAME older woman's hand with the same soft wrinkles over the knuckles and the back of the hand and the same skin texture and colour; do not make it smoother, younger or paler. Change only the jewellery: remove every ring, bracelet and bangle and replace them with: {jewellery}. Transparent background.\n\n{negative}",
+    "nani_ref_left": "{style}\n\nThe first attached image is Nani's hand flipped left-right, so it now shows her LEFT hand (its thumb on the RIGHT side of the hand, seen from the back): redraw it as her LEFT hand in exactly that pose, camera, framing and size, with the light coming from the UPPER LEFT like every other image (the flip moved the light; put it back). Keep the same older woman's hand with the same soft wrinkles and skin colour (do not make it smoother, younger or paler) and the same deep-red sleeve with its gold-embroidered cuff. Replace ALL the jewellery: this left hand wears only: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_pose": "{style}\n\nTwo images are attached. Image 1 is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly. Image 2 is a child's hand showing the POSE and CAMERA to copy: draw Nani's {side} hand in exactly that pose, from exactly that camera, with the same framing, the same empty gaps and the same forearm direction; ignore the child's skin and white sleeve. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. No tool or object in the hand. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_two_pose": "{style}\n\nThree images are attached. Image 1 is Nani's RIGHT hand and image 2 her LEFT hand: copy their older skin, deep-red sleeves with gold-embroidered cuffs and jewellery exactly. Image 3 shows a child's two hands in the POSE and CAMERA to copy: draw Nani's two hands (right hand on the right, left hand on the left) in exactly that pose, camera and framing, with the same empty gap where the rolling pin will sit; ignore the child's skin and white sleeves. Her hands are an older woman's: a little larger and fuller, soft gentle wrinkles, smooth and stylised, short natural nails. Right hand: {right}. Left hand: {left}. No tool or object in the hands. Transparent background: hands and forearms only, no other body parts.\n\n{negative}",
     "hand_pose_from_ref_keyed": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 in a new pose: warm light tan skin, not orange, not saturated: a muted, slightly pinkish-beige light brown, exactly the skin colour of the reference; a slender, slim hand with long fingers relative to a small, narrow palm (not stubby, not chunky, not toy-like); smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins, only a soft hint of fingernails. {camera} Pose: {pose}. The only object is the magenta placeholder described in the pose; nothing else in the hand. Sleeve: a plain white linen shirt sleeve, rolled back to between the elbow and the wrist; the forearm is bare below the roll; the soft rolled white linen just shows at the very bottom edge of the frame (or is cropped out); no embroidery, no cuff band, no pattern, identical to the reference. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
@@ -1018,1585 +1018,18 @@
       "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
     },
     {
-      "id": "hand-girl-a1-flat-palm-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a1-flat-palm-t.png",
-      "mode": "reskin",
-      "master": "hand-a1-flat-palm-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png"
-    },
-    {
-      "id": "hand-eid-a1-flat-palm-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a1-flat-palm-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-a1-flat-palm-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a1-flat-palm-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a2-heel-push-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a2-heel-push-t.png",
-      "mode": "reskin",
-      "master": "hand-a2-heel-push-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png"
-    },
-    {
-      "id": "hand-eid-a2-heel-push-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a2-heel-push-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-a2-heel-push-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a2-heel-push-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a3-palm-up-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a3-palm-up-t.png",
-      "mode": "reskin",
-      "master": "hand-a3-palm-up-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png"
-    },
-    {
-      "id": "hand-eid-a3-palm-up-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a3-palm-up-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-a3-palm-up-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a3-palm-up-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a3-palm-up-e.png",
-      "mode": "reskin",
-      "master": "hand-a3-palm-up-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png"
-    },
-    {
-      "id": "hand-eid-a3-palm-up-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a3-palm-up-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-a3-palm-up-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a3-palm-up-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a4-reach-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a4-reach-e.png",
-      "mode": "reskin",
-      "master": "hand-a4-reach-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a4-reach-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-a4-reach-e.png"
-    },
-    {
-      "id": "hand-eid-a4-reach-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a4-reach-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-a4-reach-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a4-reach-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a4-reach-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a5-wave-f1-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a5-wave-f1-e.png",
-      "mode": "reskin",
-      "master": "hand-a5-wave-f1-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png"
-    },
-    {
-      "id": "hand-eid-a5-wave-f1-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a5-wave-f1-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-a5-wave-f1-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f1-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a5-wave-f2-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a5-wave-f2-e.png",
-      "mode": "reskin",
-      "master": "hand-a5-wave-f2-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png"
-    },
-    {
-      "id": "hand-eid-a5-wave-f2-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a5-wave-f2-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-a5-wave-f2-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a5-wave-f2-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a6-palm-out-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a6-palm-out-e.png",
-      "mode": "reskin",
-      "master": "hand-a6-palm-out-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png"
-    },
-    {
-      "id": "hand-eid-a6-palm-out-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a6-palm-out-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-a6-palm-out-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a6-palm-out-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a7-hand-on-heart-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a7-hand-on-heart-e.png",
-      "mode": "reskin",
-      "master": "hand-a7-hand-on-heart-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png"
-    },
-    {
-      "id": "hand-eid-a7-hand-on-heart-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a7-hand-on-heart-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-a7-hand-on-heart-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a7-hand-on-heart-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a8-cupped-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a8-cupped-t.png",
-      "mode": "reskin",
-      "master": "hand-a8-cupped-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a8-cupped-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-t.png"
-    },
-    {
-      "id": "hand-eid-a8-cupped-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a8-cupped-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-a8-cupped-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a8-cupped-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-a8-cupped-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-a8-cupped-e.png",
-      "mode": "reskin",
-      "master": "hand-a8-cupped-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a8-cupped-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-e.png"
-    },
-    {
-      "id": "hand-eid-a8-cupped-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-a8-cupped-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-a8-cupped-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-a8-cupped-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-a8-cupped-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-b1-handle-grip-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-b1-handle-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-b1-handle-grip-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png"
-    },
-    {
-      "id": "hand-eid-b1-handle-grip-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-b1-handle-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-b1-handle-grip-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-b2-vertical-grip-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-b2-vertical-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-b2-vertical-grip-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png"
-    },
-    {
-      "id": "hand-eid-b2-vertical-grip-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-b2-vertical-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-b2-vertical-grip-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-b2-vertical-grip-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-b2-vertical-grip-e.png",
-      "mode": "reskin",
-      "master": "hand-b2-vertical-grip-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png"
-    },
-    {
-      "id": "hand-eid-b2-vertical-grip-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-b2-vertical-grip-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-b2-vertical-grip-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-b2-vertical-grip-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-b3-stick-grip-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-b3-stick-grip-e.png",
-      "mode": "reskin",
-      "master": "hand-b3-stick-grip-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png"
-    },
-    {
-      "id": "hand-eid-b3-stick-grip-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-b3-stick-grip-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-b3-stick-grip-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-b3-stick-grip-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-b4-rolling-pin-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-b4-rolling-pin-t.png",
-      "mode": "reskin",
-      "master": "hand-b4-rolling-pin-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png"
-    },
-    {
-      "id": "hand-eid-b4-rolling-pin-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-b4-rolling-pin-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-b4-rolling-pin-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-b4-rolling-pin-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-b5-hook-grip-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-b5-hook-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-b5-hook-grip-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png"
-    },
-    {
-      "id": "hand-eid-b5-hook-grip-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-b5-hook-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-b5-hook-grip-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-b5-hook-grip-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-b5-hook-grip-e.png",
-      "mode": "reskin",
-      "master": "hand-b5-hook-grip-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png"
-    },
-    {
-      "id": "hand-eid-b5-hook-grip-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-b5-hook-grip-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-b5-hook-grip-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-b5-hook-grip-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c1-pinch-f1-open-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f1-open-t.png",
-      "mode": "reskin",
-      "master": "hand-c1-pinch-f1-open-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png"
-    },
-    {
-      "id": "hand-eid-c1-pinch-f1-open-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f1-open-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-c1-pinch-f1-open-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c1-pinch-f2-closed-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f2-closed-t.png",
-      "mode": "reskin",
-      "master": "hand-c1-pinch-f2-closed-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png"
-    },
-    {
-      "id": "hand-eid-c1-pinch-f2-closed-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f2-closed-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-c1-pinch-f2-closed-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c1-pinch-f1-open-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f1-open-e.png",
-      "mode": "reskin",
-      "master": "hand-c1-pinch-f1-open-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png"
-    },
-    {
-      "id": "hand-eid-c1-pinch-f1-open-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f1-open-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-c1-pinch-f1-open-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c1-pinch-f2-closed-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c1-pinch-f2-closed-e.png",
-      "mode": "reskin",
-      "master": "hand-c1-pinch-f2-closed-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png"
-    },
-    {
-      "id": "hand-eid-c1-pinch-f2-closed-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c1-pinch-f2-closed-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-c1-pinch-f2-closed-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c2-tripod-grip-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c2-tripod-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-c2-tripod-grip-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png"
-    },
-    {
-      "id": "hand-eid-c2-tripod-grip-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c2-tripod-grip-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-c2-tripod-grip-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c3-side-pinch-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c3-side-pinch-t.png",
-      "mode": "reskin",
-      "master": "hand-c3-side-pinch-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png"
-    },
-    {
-      "id": "hand-eid-c3-side-pinch-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c3-side-pinch-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-c3-side-pinch-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c3-side-pinch-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c3-side-pinch-e.png",
-      "mode": "reskin",
-      "master": "hand-c3-side-pinch-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png"
-    },
-    {
-      "id": "hand-eid-c3-side-pinch-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c3-side-pinch-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-c3-side-pinch-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c4-point-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c4-point-t.png",
-      "mode": "reskin",
-      "master": "hand-c4-point-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c4-point-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-c4-point-t.png"
-    },
-    {
-      "id": "hand-eid-c4-point-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c4-point-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-c4-point-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c4-point-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c4-point-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c4-point-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c4-point-e.png",
-      "mode": "reskin",
-      "master": "hand-c4-point-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c4-point-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-c4-point-e.png"
-    },
-    {
-      "id": "hand-eid-c4-point-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c4-point-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-c4-point-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c4-point-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c4-point-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-c5-two-hand-fold-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-c5-two-hand-fold-t.png",
-      "mode": "reskin",
-      "master": "hand-c5-two-hand-fold-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png"
-    },
-    {
-      "id": "hand-eid-c5-two-hand-fold-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-c5-two-hand-fold-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-c5-two-hand-fold-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-c5-two-hand-fold-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d1-grab-f1-open-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f1-open-t.png",
-      "mode": "reskin",
-      "master": "hand-d1-grab-f1-open-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png"
-    },
-    {
-      "id": "hand-eid-d1-grab-f1-open-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f1-open-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-d1-grab-f1-open-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d1-grab-f2-closed-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f2-closed-t.png",
-      "mode": "reskin",
-      "master": "hand-d1-grab-f2-closed-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png"
-    },
-    {
-      "id": "hand-eid-d1-grab-f2-closed-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f2-closed-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-d1-grab-f2-closed-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d1-grab-f1-open-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f1-open-e.png",
-      "mode": "reskin",
-      "master": "hand-d1-grab-f1-open-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png"
-    },
-    {
-      "id": "hand-eid-d1-grab-f1-open-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f1-open-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-d1-grab-f1-open-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f1-open-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d1-grab-f2-closed-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d1-grab-f2-closed-e.png",
-      "mode": "reskin",
-      "master": "hand-d1-grab-f2-closed-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png"
-    },
-    {
-      "id": "hand-eid-d1-grab-f2-closed-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d1-grab-f2-closed-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-d1-grab-f2-closed-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d2-c-hold-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d2-c-hold-t.png",
-      "mode": "reskin",
-      "master": "hand-d2-c-hold-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png"
-    },
-    {
-      "id": "hand-eid-d2-c-hold-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d2-c-hold-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-d2-c-hold-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d2-c-hold-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d2-c-hold-e.png",
-      "mode": "reskin",
-      "master": "hand-d2-c-hold-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png"
-    },
-    {
-      "id": "hand-eid-d2-c-hold-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d2-c-hold-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-d2-c-hold-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d2-c-hold-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d3-two-hand-bowl-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d3-two-hand-bowl-t.png",
-      "mode": "reskin",
-      "master": "hand-d3-two-hand-bowl-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png"
-    },
-    {
-      "id": "hand-eid-d3-two-hand-bowl-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d3-two-hand-bowl-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-d3-two-hand-bowl-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d4-squeeze-f1-half-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d4-squeeze-f1-half-t.png",
-      "mode": "reskin",
-      "master": "hand-d4-squeeze-f1-half-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png"
-    },
-    {
-      "id": "hand-eid-d4-squeeze-f1-half-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d4-squeeze-f1-half-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-d4-squeeze-f1-half-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d4-squeeze-f2-tight-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d4-squeeze-f2-tight-t.png",
-      "mode": "reskin",
-      "master": "hand-d4-squeeze-f2-tight-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png"
-    },
-    {
-      "id": "hand-eid-d4-squeeze-f2-tight-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d4-squeeze-f2-tight-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-d4-squeeze-f2-tight-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d5-throw-release-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d5-throw-release-e.png",
-      "mode": "reskin",
-      "master": "hand-d5-throw-release-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png"
-    },
-    {
-      "id": "hand-eid-d5-throw-release-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d5-throw-release-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-d5-throw-release-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d5-throw-release-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d6-two-hand-catch-f1-open-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d6-two-hand-catch-f1-open-e.png",
-      "mode": "reskin",
-      "master": "hand-d6-two-hand-catch-f1-open-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png"
-    },
-    {
-      "id": "hand-eid-d6-two-hand-catch-f1-open-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d6-two-hand-catch-f1-open-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-d6-two-hand-catch-f1-open-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-d6-two-hand-catch-f2-closed-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-d6-two-hand-catch-f2-closed-e.png",
-      "mode": "reskin",
-      "master": "hand-d6-two-hand-catch-f2-closed-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png"
-    },
-    {
-      "id": "hand-eid-d6-two-hand-catch-f2-closed-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-d6-two-hand-catch-f2-closed-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-d6-two-hand-catch-f2-closed-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e1-thumbs-up-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e1-thumbs-up-e.png",
-      "mode": "reskin",
-      "master": "hand-e1-thumbs-up-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png"
-    },
-    {
-      "id": "hand-eid-e1-thumbs-up-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e1-thumbs-up-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e1-thumbs-up-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e1-thumbs-up-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e2-handshake-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e2-handshake-e.png",
-      "mode": "reskin",
-      "master": "hand-e2-handshake-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e2-handshake-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e2-handshake-e.png"
-    },
-    {
-      "id": "hand-eid-e2-handshake-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e2-handshake-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e2-handshake-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e2-handshake-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e2-handshake-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e3-count-1-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e3-count-1-e.png",
-      "mode": "reskin",
-      "master": "hand-e3-count-1-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-1-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-1-e.png"
-    },
-    {
-      "id": "hand-eid-e3-count-1-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-1-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e3-count-1-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-1-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-1-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e3-count-2-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e3-count-2-e.png",
-      "mode": "reskin",
-      "master": "hand-e3-count-2-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-2-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-2-e.png"
-    },
-    {
-      "id": "hand-eid-e3-count-2-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-2-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e3-count-2-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-2-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-2-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e3-count-3-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e3-count-3-e.png",
-      "mode": "reskin",
-      "master": "hand-e3-count-3-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-3-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-3-e.png"
-    },
-    {
-      "id": "hand-eid-e3-count-3-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-3-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e3-count-3-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-3-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-3-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e3-count-4-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e3-count-4-e.png",
-      "mode": "reskin",
-      "master": "hand-e3-count-4-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-4-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-4-e.png"
-    },
-    {
-      "id": "hand-eid-e3-count-4-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-4-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e3-count-4-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-4-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-4-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e3-count-5-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e3-count-5-e.png",
-      "mode": "reskin",
-      "master": "hand-e3-count-5-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-5-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-5-e.png"
-    },
-    {
-      "id": "hand-eid-e3-count-5-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e3-count-5-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e3-count-5-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e3-count-5-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e3-count-5-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e4-clap-f1-apart-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e4-clap-f1-apart-e.png",
-      "mode": "reskin",
-      "master": "hand-e4-clap-f1-apart-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png"
-    },
-    {
-      "id": "hand-eid-e4-clap-f1-apart-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e4-clap-f1-apart-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e4-clap-f1-apart-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e4-clap-f2-together-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e4-clap-f2-together-e.png",
-      "mode": "reskin",
-      "master": "hand-e4-clap-f2-together-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png"
-    },
-    {
-      "id": "hand-eid-e4-clap-f2-together-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e4-clap-f2-together-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e4-clap-f2-together-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e4-clap-f2-together-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e5-arm-up-fist-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e5-arm-up-fist-e.png",
-      "mode": "reskin",
-      "master": "hand-e5-arm-up-fist-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png"
-    },
-    {
-      "id": "hand-eid-e5-arm-up-fist-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e5-arm-up-fist-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e5-arm-up-fist-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e6-stretch-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e6-stretch-e.png",
-      "mode": "reskin",
-      "master": "hand-e6-stretch-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e6-stretch-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e6-stretch-e.png"
-    },
-    {
-      "id": "hand-eid-e6-stretch-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e6-stretch-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e6-stretch-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e6-stretch-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e6-stretch-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-e7-shrug-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-e7-shrug-e.png",
-      "mode": "reskin",
-      "master": "hand-e7-shrug-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e7-shrug-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-e7-shrug-e.png"
-    },
-    {
-      "id": "hand-eid-e7-shrug-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-e7-shrug-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-e7-shrug-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers (and on the palm, which shows in this pose). Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-e7-shrug-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-e7-shrug-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-f1-piano-f1-raised-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-f1-piano-f1-raised-e.png",
-      "mode": "reskin",
-      "master": "hand-f1-piano-f1-raised-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png"
-    },
-    {
-      "id": "hand-eid-f1-piano-f1-raised-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-f1-piano-f1-raised-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-f1-piano-f1-raised-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-f1-piano-f2-pressed-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-f1-piano-f2-pressed-e.png",
-      "mode": "reskin",
-      "master": "hand-f1-piano-f2-pressed-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png"
-    },
-    {
-      "id": "hand-eid-f1-piano-f2-pressed-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-f1-piano-f2-pressed-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-f1-piano-f2-pressed-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-f2-drum-cupped-t",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-f2-drum-cupped-t.png",
-      "mode": "reskin",
-      "master": "hand-f2-drum-cupped-t",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png",
-      "scale_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png"
-    },
-    {
-      "id": "hand-eid-f2-drum-cupped-t",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-f2-drum-cupped-t.png",
-      "mode": "reskin",
-      "master": "hand-girl-f2-drum-cupped-t",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-f2-drum-cupped-t.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
-      "id": "hand-girl-f4-phone-two-hands-e",
-      "group": "hands-girl",
-      "output": "assets/characters/hands/girl/hand-girl-f4-phone-two-hands-e.png",
-      "mode": "reskin",
-      "master": "hand-f4-phone-two-hands-e",
-      "template": "hand_reskin",
-      "fields": {
-        "change": "replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink (rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles in red, green and gold at the wrist (on BOTH wrists: the same sleeve and bangles on each arm)"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png",
-      "scale_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png"
-    },
-    {
-      "id": "hand-eid-f4-phone-two-hands-e",
-      "group": "hands-girl-eid",
-      "output": "assets/characters/hands/girl-eid/hand-eid-f4-phone-two-hands-e.png",
-      "mode": "reskin",
-      "master": "hand-girl-f4-phone-two-hands-e",
-      "template": "hand_reskin_eid",
-      "fields": {
-        "change": "add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of the hand and the fingers of BOTH hands. Keep the dusty-pink sleeve and the three glass bangles exactly as they are"
-      },
-      "skin_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png",
-      "skin_mode": "midtone",
-      "scale_reference": "assets/characters/hands/master/hand-f4-phone-two-hands-e.png",
-      "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast."
-    },
-    {
       "id": "nani-ref-t-right",
       "group": "hands-nani-ref",
       "output": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
+        "assets/characters/hands/hand-ref-master.png",
+        "sources/art/characters/nani-sheet-v1.png"
       ],
       "template": "nani_ref",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings The last attached image is Nani's character sheet: copy her rings and her tennis bracelet exactly as in its hand close-up and ring close-ups (ignore the sheet's beige sleeves: her sleeve here stays deep red)."
       },
       "skin_target": "#BE8F6F",
       "scale_normalise": false,
@@ -2608,18 +1041,19 @@
       "output": "assets/characters/hands/nani/ref/nani-ref-t-left.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/nani/ref/nani-ref-t-right.png"
+        "assets/characters/hands/nani/ref/nani-ref-t-right.png",
+        "sources/art/characters/nani-sheet-v1.png"
       ],
       "mirror_references": [
         0
       ],
       "template": "nani_ref_left",
       "fields": {
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings The last attached image is Nani's character sheet: copy her rings and her tennis bracelet exactly as in its hand close-up and ring close-ups (ignore the sheet's beige sleeves: her sleeve here stays deep red)."
       },
       "skin_target": "#BE8F6F",
       "scale_normalise": false,
-      "_note": "Starts from Nani's right-hand reference flipped left-right, then the jewellery is redrawn for the left hand.",
+      "_note": "A new left-hand drawing, with Nani's right-hand reference flipped as the pose guide (the unflipped reference made the model draw a right hand again); the prompt keeps the light at the upper left and redraws the jewellery.",
       "sleeve_target": "#9E1F2A"
     },
     {
@@ -2628,12 +1062,13 @@
       "output": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-eye-level.png"
+        "assets/characters/hands/hand-ref-eye-level.png",
+        "sources/art/characters/nani-sheet-v1.png"
       ],
       "template": "nani_ref",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings The last attached image is Nani's character sheet: copy her rings and her tennis bracelet exactly as in its hand close-up and ring close-ups (ignore the sheet's beige sleeves: her sleeve here stays deep red)."
       },
       "skin_target": "#BE8F6F",
       "scale_normalise": false,
@@ -2645,18 +1080,19 @@
       "output": "assets/characters/hands/nani/ref/nani-ref-e-left.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/nani/ref/nani-ref-e-right.png"
+        "assets/characters/hands/nani/ref/nani-ref-e-right.png",
+        "sources/art/characters/nani-sheet-v1.png"
       ],
       "mirror_references": [
         0
       ],
       "template": "nani_ref_left",
       "fields": {
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings The last attached image is Nani's character sheet: copy her rings and her tennis bracelet exactly as in its hand close-up and ring close-ups (ignore the sheet's beige sleeves: her sleeve here stays deep red)."
       },
       "skin_target": "#BE8F6F",
       "scale_normalise": false,
-      "_note": "Starts from Nani's right-hand reference flipped left-right, then the jewellery is redrawn for the left hand.",
+      "_note": "A new left-hand drawing, with Nani's right-hand reference flipped as the pose guide (the unflipped reference made the model draw a right hand again); the prompt keeps the light at the upper left and redraws the jewellery.",
       "sleeve_target": "#9E1F2A"
     },
     {
@@ -2671,7 +1107,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2689,7 +1125,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2710,7 +1146,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2728,7 +1164,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2749,7 +1185,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -2767,7 +1203,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -2787,7 +1223,7 @@
       "template": "nani_pose_text",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings",
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings",
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
         "pose": "the knife-and-spatula grip, seen from directly above: a straight magenta handle 2.5 cm thick runs straight forwards from under the heel of the hand, through the fist, and out the front towards the top of the frame; the four fingers wrap round it (we see their backs and knuckles); the THUMB is NOT in the fist: it lies flat on TOP of the handle, pointing forwards along it, its whole length and its thumbnail clearly visible on top of the magenta handle, like a person pressing a knife handle with the thumb The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
@@ -2809,8 +1245,8 @@
       ],
       "template": "nani_two_pose",
       "fields": {
-        "right": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings",
-        "left": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "right": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings",
+        "left": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2828,7 +1264,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2846,7 +1282,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2864,7 +1300,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2882,7 +1318,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2900,7 +1336,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -2918,7 +1354,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
@@ -2936,7 +1372,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -2954,7 +1390,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -2972,7 +1408,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -2993,7 +1429,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -3011,7 +1447,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -3032,7 +1468,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -3050,7 +1486,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -3070,7 +1506,7 @@
       "template": "nani_pose_text",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings",
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings",
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
         "pose": "counting FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their nails facing us; the THUMB is folded flat across the palm, completely HIDDEN behind the hand, not visible at all. Only four digits can be seen"
       },
@@ -3090,7 +1526,7 @@
       "template": "nani_pose_text",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings",
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings",
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
         "pose": "counting FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their nails facing us; the THUMB is folded flat across the palm, completely HIDDEN behind the hand, not visible at all. Only four digits can be seen"
       },
@@ -3111,7 +1547,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "RIGHT",
-        "jewellery": "on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; no other rings"
+        "jewellery": "on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",
@@ -3129,7 +1565,7 @@
       "template": "nani_pose",
       "fields": {
         "side": "LEFT",
-        "jewellery": "on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); no other rings"
+        "jewellery": "NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); no other rings"
       },
       "skin_reference": "assets/characters/hands/nani/ref/nani-ref-t-right.png",
       "scale_reference": "assets/characters/hands/nani/ref/nani-ref-e-right.png",

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Writes the hand entries of data/asset-list.json (hands v1, 24 Sept 2026):
 the eye-level reference, the master set (asset plan section 1.3, A1-F5, in
-the cameras listed, every frame), the girl and girl-Eid reskins of every
-master image, and Nani's set with explicit right and left hands.
+the cameras listed, every frame) and Nani's set with explicit right and
+left hands. The girl set is made in code from the masters
+(build/reskin_hands.py), not with the image API.
 
 The poses live here, in one table, so a wording fix is one edit and a
 re-run; gen_assets.py then regenerates only the entries whose prompt
@@ -132,12 +133,6 @@ PAIR_NOTE = (" A second image is attached: the other frame of this same pose. Ma
 
 ALIASES = {"f3-racquet": "hand-b3-stick-grip-e", "f5-kite-string": "hand-c1-pinch-f2-closed-e"}
 
-GIRL = ("replace the white sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink "
-        "(rolled to between the elbow and the wrist, no embroidery) and add three thin glass bangles "
-        "in red, green and gold at the wrist{both}")
-EID = ("add mehndi: a simple, delicate rust-brown floral mehndi pattern drawn on the skin of the back of "
-       "the hand and the fingers{palm}{both}. Keep the dusty-pink sleeve and the three glass bangles exactly as they are")
-
 
 def master_id(code, slug, cam):
     return f"hand-{code}-{slug}-{cam.split('-')[0].lower()}"
@@ -182,24 +177,11 @@ def build():
         entries.append(e)
         masters.append((e, two, cam))
 
-    for e, two, cam in masters:
-        both = " (on BOTH wrists: the same sleeve and bangles on each arm)" if two else ""
-        gid = e["id"].replace("hand-", "hand-girl-", 1)
-        entries.append({
-            "id": gid, "group": "hands-girl", "output": f"{H}/girl/{gid}.png", "mode": "reskin",
-            "master": e["id"], "template": "hand_reskin", "fields": {"change": GIRL.format(both=both)},
-            "skin_reference": e["output"], "scale_reference": e["output"],
-        })
-        palm = " (and on the palm, which shows in this pose)" if "palm" in cam else ""
-        both_e = " of BOTH hands" if two else ""
-        xid = e["id"].replace("hand-", "hand-eid-", 1)
-        entries.append({
-            "id": xid, "group": "hands-girl-eid", "output": f"{H}/girl-eid/{xid}.png", "mode": "reskin",
-            "master": gid, "template": "hand_reskin_eid", "fields": {"change": EID.format(palm=palm, both=both_e)},
-            "skin_reference": e["output"], "skin_mode": "midtone", "scale_reference": e["output"],
-            "_note": "Reskinned from the girl image (so the bangles match); drift-checked against it. Midtone-only skin match, so the mehndi keeps its contrast.",
-        })
-
+    # Girl and girl-Eid reskins are no longer made with the image API (hands
+    # v1, orchestrator's change of plan, 24 Sept 2026): build/reskin_hands.py
+    # recolours each passing master's sleeve in code and the bangles are
+    # separate sprites the game places at the wrist. Eid mehndi comes later
+    # as an overlay.
     entries += nani_entries()
     return entries
 
@@ -209,11 +191,15 @@ def build():
 # explicitly, never mirrored in code.
 NANI_SLEEVE = "#9E1F2A"  # deep madder red (Cast); the generator paints it orange-red, fixed in post
 NANI_SKIN = "#BE8F6F"  # warm, unsaturated, a little deeper than the player's #D69B6D midtone
-NANI_RIGHT = ("on the RIGHT wrist two thin plain gold bangles and a thin, delicate diamond tennis bracelet; "
-              "on the RIGHT ring finger a ring with an oval deep-red aqiq (carnelian) stone set in red and yellow gold; "
-              "no other rings")
-NANI_LEFT = ("on the LEFT wrist two thin plain gold bangles only (no tennis bracelet); "
-             "on the LEFT ring finger a yellow gold ring set with small sparkling diamonds (no red stone); "
+# Jewellery (Cast, "Jewellery (corrected 24 Sept)", and Nani's character sheet):
+# NO bangles. Right wrist: a thin diamond tennis bracelet. Right ring finger:
+# an oval red aqiq cabochon in a plain yellow gold bezel. Left ring finger: a
+# round solitaire diamond in a raised six-claw setting on a slim yellow gold band.
+NANI_RIGHT = ("on the RIGHT wrist only a thin, delicate diamond tennis bracelet (a single row of small sparkling "
+              "diamonds), NO bangles; on the RIGHT ring finger (the fourth digit, between the middle and little fingers) a yellow gold ring "
+              "set with a large oval red-orange aqiq cabochon, clearly visible on top of the finger, smooth and glossy, in a plain polished yellow gold bezel on a simple band; no other rings")
+NANI_LEFT = ("NOTHING on the LEFT wrist: no bangles, no bracelet; on the LEFT ring finger a yellow gold ring with a "
+             "round brilliant-cut solitaire diamond held up in a raised six-claw setting on a slim band (no red stone); "
              "no other rings")
 # Masters that failed QA (hands v1): Nani's version is drawn from the pose
 # text and her own reference instead of copying the child's image.
@@ -239,8 +225,14 @@ NANI_POSES = [  # (master id to copy the pose from, sides)
 ]
 
 
+NANI_SHEET = "sources/art/characters/nani-sheet-v1.png"  # attached when present
+SHEET_NOTE = (" The last attached image is Nani's character sheet: copy her rings and her tennis bracelet exactly as in"
+              " its hand close-up and ring close-ups (ignore the sheet's beige sleeves: her sleeve here stays deep red).")
+
+
 def nani_entries():
     n = f"{H}/nani"
+    sheet = [NANI_SHEET] if os.path.exists(os.path.join(GAME, NANI_SHEET)) else []
     out = []
     refs = {
         ("T", "R"): f"{n}/ref/nani-ref-t-right.png",
@@ -251,14 +243,14 @@ def nani_entries():
     for cam, src in (("T", REF_T), ("E", REF_E)):
         out.append({
             "id": f"nani-ref-{cam.lower()}-right", "group": "hands-nani-ref", "output": refs[(cam, "R")],
-            "mode": "edit", "reference_images": [src], "template": "nani_ref",
-            "fields": {"side": "RIGHT", "jewellery": NANI_RIGHT}, "skin_target": NANI_SKIN, "scale_normalise": False,
+            "mode": "edit", "reference_images": [src] + sheet, "template": "nani_ref",
+            "fields": {"side": "RIGHT", "jewellery": NANI_RIGHT + (SHEET_NOTE if sheet else "")}, "skin_target": NANI_SKIN, "scale_normalise": False,
         })
         out.append({
             "id": f"nani-ref-{cam.lower()}-left", "group": "hands-nani-ref", "output": refs[(cam, "L")],
-            "mode": "edit", "reference_images": [refs[(cam, "R")]], "mirror_references": [0],
-            "template": "nani_ref_left", "fields": {"jewellery": NANI_LEFT}, "skin_target": NANI_SKIN, "scale_normalise": False,
-            "_note": "Starts from Nani's right-hand reference flipped left-right, then the jewellery is redrawn for the left hand.",
+            "mode": "edit", "reference_images": [refs[(cam, "R")]] + sheet, "mirror_references": [0],
+            "template": "nani_ref_left", "fields": {"jewellery": NANI_LEFT + (SHEET_NOTE if sheet else "")}, "skin_target": NANI_SKIN, "scale_normalise": False,
+            "_note": "A new left-hand drawing, with Nani's right-hand reference flipped as the pose guide (the unflipped reference made the model draw a right hand again); the prompt keeps the light at the upper left and redraws the jewellery.",
         })
     pose_text = {master_id(c, sl, cam): (pose, cam) for c, sl, cam, pose, two in POSES}
     for mid, sides in NANI_POSES:
@@ -306,7 +298,7 @@ TEMPLATES = {
     "hand_ref_to_eye_level": "{style}\n\nUsing the attached reference hand as the exact model for hand shape, skin, size and sleeve, draw the SAME right hand and forearm of a child of about 7 from a new camera. Camera: eye level, first person: we look straight ahead at our own right hand held up in front of us; we see the BACK of the hand, towards the viewer (the palm faces away from us); the forearm rises vertically from the bottom edge of the frame; no worktop, no table. Pose: relaxed and upright, fingers gently together and pointing up towards the top of the frame, thumb relaxed at the left side, fingernails softly visible. Keep everything else identical to the reference: the same slender hand with long fingers relative to a small, narrow palm; smooth, simple surfaces with no visible bones, knuckle ridges, tendons or veins; exactly the same warm light tan skin colour (muted, slightly pinkish-beige light brown, not orange, not saturated); the same plain white linen shirt sleeve rolled back to between the elbow and the wrist, the soft roll just showing at the bottom edge of the frame. This is the master reference for every eye-level hand pose. Transparent background: hand and forearm only, no other body parts, no shadow.\n\n{negative}",
     "hand_reskin_eid": "{style}\n\nEdit the attached image. Change only one thing: {change}. Keep the hand exactly the same: identical outline, finger positions, skin colour, sleeve, bangles, lighting, camera and size. Nothing else changes. Transparent background.\n\n{negative}",
     "nani_ref": "{style}\n\nEdit the attached reference hand into Nani's hand: the {side} hand and forearm of a warm, graceful grandmother in her late sixties. Keep the camera, pose, framing and lighting exactly as in the reference. Change: (1) Hand: an older woman's hand, a little larger and fuller than the child's, with soft, gentle wrinkles over the knuckles and the back of the hand and a slightly looser skin texture, still smooth and stylised, never bony, no prominent veins; short, neat, natural nails, no polish. (2) Skin: warm and unsaturated, a soft muted light brown, a touch deeper than the reference, not orange, not grey. (3) Sleeve: replace the white linen with her deep-red kurta sleeve (deep madder red, about #9E1F2A), coming down to the wrist, with a narrow band of fine gold embroidery at the cuff. (4) Jewellery: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
-    "nani_ref_left": "{style}\n\nEdit the attached image of Nani's hand. It is now her LEFT hand (already flipped): keep the hand, pose, skin, camera, lighting and her deep-red sleeve with its gold-embroidered cuff exactly the same: the SAME older woman's hand with the same soft wrinkles over the knuckles and the back of the hand and the same skin texture and colour; do not make it smoother, younger or paler. Change only the jewellery: remove every ring, bracelet and bangle and replace them with: {jewellery}. Transparent background.\n\n{negative}",
+    "nani_ref_left": "{style}\n\nThe first attached image is Nani's hand flipped left-right, so it now shows her LEFT hand (its thumb on the RIGHT side of the hand, seen from the back): redraw it as her LEFT hand in exactly that pose, camera, framing and size, with the light coming from the UPPER LEFT like every other image (the flip moved the light; put it back). Keep the same older woman's hand with the same soft wrinkles and skin colour (do not make it smoother, younger or paler) and the same deep-red sleeve with its gold-embroidered cuff. Replace ALL the jewellery: this left hand wears only: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_pose": "{style}\n\nTwo images are attached. Image 1 is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly. Image 2 is a child's hand showing the POSE and CAMERA to copy: draw Nani's {side} hand in exactly that pose, from exactly that camera, with the same framing, the same empty gaps and the same forearm direction; ignore the child's skin and white sleeve. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. No tool or object in the hand. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_pose_text": "{style}\n\nThe attached image is Nani's {side} hand: copy its hand, older skin, deep-red sleeve with the gold-embroidered cuff and its jewellery exactly, and draw the SAME hand in a new pose. {camera} Pose: {pose}. Her hand stays an older woman's hand: a little larger and fuller, soft gentle wrinkles, smooth and stylised, never bony, short natural nails. Her jewellery on this hand, all clearly visible where the pose allows: {jewellery}. Transparent background: hand and forearm only, no other body parts.\n\n{negative}",
     "nani_two_pose": "{style}\n\nThree images are attached. Image 1 is Nani's RIGHT hand and image 2 her LEFT hand: copy their older skin, deep-red sleeves with gold-embroidered cuffs and jewellery exactly. Image 3 shows a child's two hands in the POSE and CAMERA to copy: draw Nani's two hands (right hand on the right, left hand on the left) in exactly that pose, camera and framing, with the same empty gap where the rolling pin will sit; ignore the child's skin and white sleeves. Her hands are an older woman's: a little larger and fuller, soft gentle wrinkles, smooth and stylised, short natural nails. Right hand: {right}. Left hand: {left}. No tool or object in the hands. Transparent background: hands and forearms only, no other body parts.\n\n{negative}",
@@ -322,7 +314,7 @@ TEMPLATES["hands_two_from_ref_keyed"] = TEMPLATES["hands_two_from_ref"].replace(
 def main():
     with open(ASSET_LIST) as f:
         data = json.load(f)
-    keep = [a for a in data["assets"] if not str(a.get("group", "")).startswith(("hands-master", "hands-girl", "hands-nani", "hands-reference-eye"))]
+    keep = [a for a in data["assets"] if not str(a.get("group", "")).startswith(("hands-master", "hands-girl", "hands-nani", "hands-reference-eye"))]  # girl groups dropped too
     data["assets"] = keep + build()
     data["templates"].update(TEMPLATES)
     data["hand_aliases"] = {"_note": "Asset plan 1.3 poses with no image of their own: the game uses this image plus a tool or string sprite.", **ALIASES}

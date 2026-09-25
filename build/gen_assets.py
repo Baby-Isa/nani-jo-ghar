@@ -764,7 +764,7 @@ def sleeve_mask(im, red=False):
     lab = rgb_to_lab(arr[..., :3])
     C = np.hypot(lab[..., 1], lab[..., 2])
     hue = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
-    cream = (lab[..., 0] > 60) & (((C < 40) & (hue > 72)) | ((C < 24) & (hue > 66))) & (hue < 110)
+    cream = (lab[..., 0] > 55) & (C < 31) & (hue > 66) & (hue < 110)  # pale lit skin is chroma ~34, the cuff <= ~28
     red_ = (hue > -15) & (hue < 38) & (C > 30) & (lab[..., 0] < 58)  # Nani's deep-red kurta sleeve
     return (arr[..., 3] > 200) & ((cream | red_) if red else cream)
 

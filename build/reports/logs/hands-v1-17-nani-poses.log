@@ -1,0 +1,82 @@
+LIVE RUN -- 25 asset(s), model=gpt-image-1, concurrency 3, gap 20s, max_regens 1
+budget cap: $1.20
+
+pre-flight estimate: 25 image(s) planned, ~$1.05 at the chosen quality (a QA regen can add up to 1 more attempt(s) per reskin image; skipped 0 already-done)
+[nani-a1-flat-palm-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a1-flat-palm-t-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a3-palm-up-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a1-flat-palm-t-right::v0] skin #E08C4C -> #B9896A (distribution matched); scale 0.87 (rescaled)
+[nani-a1-flat-palm-t-right::v0] done in 33s -> assets/characters/hands/nani/nani-a1-flat-palm-t-right.png
+[nani-a3-palm-up-t-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a1-flat-palm-t-left::v0] skin #D78143 -> #BB8B6C (distribution matched); scale 0.805 (rescaled)
+[nani-a1-flat-palm-t-left::v0] done in 47s -> assets/characters/hands/nani/nani-a1-flat-palm-t-left.png
+[nani-a3-palm-up-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a3-palm-up-t-right::v0] skin #DE864C -> #BC8D6C (distribution matched); scale 0.859 (rescaled)
+[nani-a3-palm-up-t-right::v0] done in 70s -> assets/characters/hands/nani/nani-a3-palm-up-t-right.png
+[nani-a3-palm-up-e-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a3-palm-up-t-left::v0] skin #DD7B40 -> #B9896A (distribution matched); scale - (arms disagree, left as is (check by eye))
+[nani-a3-palm-up-t-left::v0] done in 51s -> assets/characters/hands/nani/nani-a3-palm-up-t-left.png
+[nani-b1-handle-grip-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a3-palm-up-e-left::v0] skin #DD894D -> #BD8F70 (distribution matched); scale 0.893 (rescaled)
+[nani-a3-palm-up-e-left::v0] done in 40s -> assets/characters/hands/nani/nani-a3-palm-up-e-left.png
+[nani-b4-rolling-pin-t::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-b1-handle-grip-t-right::v0] keyed out 22908 px of magenta placeholder
+[nani-b1-handle-grip-t-right::v0] skin #D97B44 -> #BB8B6B (distribution matched); scale - (no forearm found)
+[nani-b1-handle-grip-t-right::v0] done in 42s -> assets/characters/hands/nani/nani-b1-handle-grip-t-right.png
+[nani-b5-hook-grip-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a3-palm-up-e-right::v0] skin #DA8447 -> #BA8B6B (distribution matched); scale 0.867 (rescaled)
+[nani-a3-palm-up-e-right::v0] done in 103s -> assets/characters/hands/nani/nani-a3-palm-up-e-right.png
+[nani-c1-pinch-f1-open-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-b4-rolling-pin-t::v0] skin #DF8B52 -> #BC8E6F (distribution matched); scale 1.053 (rescaled)
+[nani-b4-rolling-pin-t::v0] done in 61s -> assets/characters/hands/nani/nani-b4-rolling-pin-t.png
+[nani-c1-pinch-f2-closed-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-c1-pinch-f1-open-t-right::v0] skin #D97D38 -> #B98A6A (distribution matched); scale 1.129 (rescaled)
+[nani-c1-pinch-f1-open-t-right::v0] done in 39s -> assets/characters/hands/nani/nani-c1-pinch-f1-open-t-right.png
+[nani-c4-point-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-b5-hook-grip-t-right::v0] skin #E28C4D -> #BA8A6A (distribution matched); scale - (arms disagree, left as is (check by eye))
+[nani-b5-hook-grip-t-right::v0] done in 78s -> assets/characters/hands/nani/nani-b5-hook-grip-t-right.png
+[nani-c4-point-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-c4-point-t-right::v0] skin #D27F46 -> #BA8A6A (distribution matched); scale 0.897 (rescaled)
+[nani-c4-point-t-right::v0] done in 41s -> assets/characters/hands/nani/nani-c4-point-t-right.png
+[nani-d2-c-hold-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-c1-pinch-f2-closed-t-right::v0] skin #D37338 -> #B78869 (distribution matched); scale 1.129 (rescaled)
+[nani-c1-pinch-f2-closed-t-right::v0] done in 78s -> assets/characters/hands/nani/nani-c1-pinch-f2-closed-t-right.png
+[nani-e1-thumbs-up-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-c4-point-e-right::v0] skin #E0843A -> #B98969 (distribution matched); scale 0.92 (rescaled)
+[nani-c4-point-e-right::v0] done in 64s -> assets/characters/hands/nani/nani-c4-point-e-right.png
+[nani-e3-count-1-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e1-thumbs-up-e-right::v0] skin #C8763D -> #B78969 (distribution matched); scale - (arms disagree, left as is (check by eye))
+[nani-e1-thumbs-up-e-right::v0] done in 34s -> assets/characters/hands/nani/nani-e1-thumbs-up-e-right.png
+[nani-e3-count-1-e-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-d2-c-hold-t-right::v0] skin #DF813D -> #B88768 (distribution matched); scale 0.966 (within tolerance)
+[nani-d2-c-hold-t-right::v0] done in 78s -> assets/characters/hands/nani/nani-d2-c-hold-t-right.png
+[nani-e3-count-2-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-1-e-left::v0] skin #C5723D -> #B68566 (distribution matched); scale 0.806 (rescaled)
+[nani-e3-count-1-e-left::v0] done in 43s -> assets/characters/hands/nani/nani-e3-count-1-e-left.png
+[nani-e3-count-2-e-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-2-e-right::v0] skin #CE7E49 -> #BD8E6D (distribution matched); scale 0.949 (rescaled)
+[nani-e3-count-2-e-right::v0] done in 37s -> assets/characters/hands/nani/nani-e3-count-2-e-right.png
+[nani-e3-count-3-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-2-e-left::v0] skin #CB783F -> #B88869 (distribution matched); scale 0.893 (rescaled)
+[nani-e3-count-2-e-left::v0] done in 38s -> assets/characters/hands/nani/nani-e3-count-2-e-left.png
+[nani-e3-count-3-e-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-3-e-right::v0] skin #D87B3E -> #BC8E6F (distribution matched); scale - (arms disagree, left as is (check by eye))
+[nani-e3-count-3-e-right::v0] done in 40s -> assets/characters/hands/nani/nani-e3-count-3-e-right.png
+[nani-e3-count-4-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-3-e-left::v0] skin #E68951 -> #B98A6B (distribution matched); scale 0.915 (rescaled)
+[nani-e3-count-3-e-left::v0] done in 42s -> assets/characters/hands/nani/nani-e3-count-3-e-left.png
+[nani-e3-count-4-e-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-1-e-right::v0] skin #D67539 -> #B88767 (distribution matched); scale 0.893 (rescaled)
+[nani-e3-count-1-e-right::v0] done in 160s -> assets/characters/hands/nani/nani-e3-count-1-e-right.png
+[nani-e3-count-5-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-4-e-right::v0] skin #D7834D -> #BC8D6D (distribution matched); scale 0.843 (rescaled)
+[nani-e3-count-4-e-right::v0] done in 66s -> assets/characters/hands/nani/nani-e3-count-4-e-right.png
+[nani-e3-count-5-e-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-e3-count-5-e-right::v0] skin #DF8A52 -> #BD8E6E (distribution matched); scale - (arms disagree, left as is (check by eye))
+[nani-e3-count-5-e-right::v0] done in 36s -> assets/characters/hands/nani/nani-e3-count-5-e-right.png
+[nani-e3-count-4-e-left::v0] skin #D46F2F -> #BA896A (distribution matched); scale - (arms disagree, left as is (check by eye))
+[nani-e3-count-4-e-left::v0] done in 80s -> assets/characters/hands/nani/nani-e3-count-4-e-left.png
+[nani-e3-count-5-e-left::v0] skin #CB7E45 -> #B78868 (distribution matched); scale - (arms disagree, left as is (check by eye))
+[nani-e3-count-5-e-left::v0] done in 54s -> assets/characters/hands/nani/nani-e3-count-5-e-left.png
+
+spent $1.05 this run -- 25 generated, 25 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 504s

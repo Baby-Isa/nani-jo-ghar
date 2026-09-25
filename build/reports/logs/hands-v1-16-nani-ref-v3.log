@@ -1,0 +1,17 @@
+LIVE RUN -- 3 asset(s), model=gpt-image-1, concurrency 2, gap 20s, max_regens 1
+budget cap: $0.15
+
+pre-flight estimate: 3 image(s) planned, ~$0.13 at the chosen quality (a QA regen can add up to 1 more attempt(s) per reskin image; skipped 0 already-done)
+-- wave 0: 2 request(s)
+[nani-ref-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-ref-e-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-ref-t-right::v0] skin #D88A48 -> #BD8E6E (corrected); scale - (off)
+[nani-ref-t-right::v0] done in 22s -> assets/characters/hands/nani/ref/nani-ref-t-right.png
+[nani-ref-e-left::v0] skin #D57F45 -> #BE8F6F (corrected); scale - (off)
+[nani-ref-e-left::v0] done in 43s -> assets/characters/hands/nani/ref/nani-ref-e-left.png
+-- wave 1: 1 request(s)
+[nani-ref-t-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-ref-t-left::v0] skin #DB8A5A -> #BE8F6F (corrected); scale - (off)
+[nani-ref-t-left::v0] done in 22s -> assets/characters/hands/nani/ref/nani-ref-t-left.png
+
+spent $0.13 this run -- 3 generated, 3 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 65s
