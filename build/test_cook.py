@@ -96,6 +96,7 @@ class Player:
         return path
 
     def exp(self):
+        self.t_exp = time.time()
         return self.page.evaluate("__cook.expectation()")
 
     def gauge(self):
@@ -227,11 +228,19 @@ class Player:
                 return
             p.mouse.move(e["sx1"], e["sy1"])
             p.mouse.down()
-            steps = 4 if k == "slice" else 10
+            steps = 1 if k == "slice" else 10
             for s in range(1, steps + 1):
                 p.mouse.move(e["sx1"] + (e["sx2"] - e["sx1"]) * s / steps, e["sy1"] + (e["sy2"] - e["sy1"]) * s / steps)
                 if k == "swipe":
                     time.sleep(0.01)
+            if k == "slice":
+                # the chop aims where a vegetable will be when the cut lands: tell it how long
+                # our swipes take (the software renderer makes each mouse event slow)
+                lat = time.time() - self.t_exp
+                old = getattr(self, "lead", 0.25)
+                self.lead = old * 0.6 + lat * 0.4
+                if abs(self.lead - old) > 0.05:
+                    p.evaluate(f"() => {{ window.__cookSwipeLead = {self.lead:.3f}; }}")
             p.mouse.up()
         elif k == "stir":
             self.stir(e)

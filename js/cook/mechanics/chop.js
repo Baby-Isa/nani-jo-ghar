@@ -224,9 +224,12 @@
       let spawnT = 0;
       let roundT = 0;
       let last = performance.now();
+      let gameRate = Cook.speed;
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000) * Cook.speed;
+        // game seconds per real second (slow frames are capped), for the test's aim below
+        if (now > last) gameRate += ((dt * 1000) / (now - last) - gameRate) * 0.2;
         last = now;
         if (running && phase) {
           roundT += dt;
@@ -269,16 +272,30 @@
         }
         // for the automated test: a wanted one near the top of its throw (slow there), sliced
         // straight down through where it's heading; and a decoy, for one deliberate mistake
-        const inView = (o) => o.active && !o.sliced && o.y < z.Y(760) && o.y > z.Y(120) && Math.abs(o.vy) < z.L(700);
+        // aimed where each one will be when the swipe lands (the tester says how long its swipes take)
+        const lead = (global.__cookSwipeLead || 0.25) * gameRate;
+        const at = (o) => ({ x: o.x + o.vx * lead, y: o.y + o.vy * lead + 0.5 * z.L(k.gravity) * lead * lead, vy: o.vy + z.L(k.gravity) * lead });
+        const inView = (o) => {
+          const p = at(o);
+          return o.active && !o.sliced && p.y < z.Y(760) && p.y > z.Y(120) && Math.abs(p.vy) < z.L(700);
+        };
         const needs = (id) => phase && phase.targets.includes(id) && (cut[id] || 0) < want[id];
         // nothing it shouldn't cut next to it (another wanted kind that still needs cutting is fine)
-        const alone = (o) => !flying.some((x) => x !== o && x.active && !x.sliced && !(x.wordId !== o.wordId && needs(x.wordId)) && Math.abs(x.x - o.x) < z.L(size * 0.9) && Math.abs(x.y - o.y) < z.L(size * 1.3));
+        const alone = (o) => {
+          const p = at(o);
+          return !flying.some((x) => {
+            if (x === o || !x.active || x.sliced || (x.wordId !== o.wordId && needs(x.wordId))) return false;
+            const q = at(x);
+            return Math.abs(q.x - p.x) < z.L(size * 0.9) && Math.abs(q.y - p.y) < z.L(size * 1.3);
+          });
+        };
         const tgt = flying.find((o) => inView(o) && needs(o.wordId) && alone(o));
-        const dec = flying.find((o) => o.active && !o.sliced && o.y < z.Y(700) && o.y > z.Y(150) && phase && !phase.targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
-        const ahead = (o) => o.x + o.vx * 0.06 * Cook.speed;
+        const dec = flying.find((o) => o.active && !o.sliced && at(o).y < z.Y(700) && at(o).y > z.Y(150) && phase && !phase.targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
+        const aim = tgt && at(tgt);
+        const decAt = dec && at(dec);
         z.expect(
           tgt
-            ? { kind: "slice", x: tgt.x, y: tgt.y, x1: ahead(tgt), y1: tgt.y - z.L(size * 0.8), x2: ahead(tgt), y2: tgt.y + z.L(size * 0.8), wrongs: dec ? [{ x: dec.x, y: dec.y }] : [] }
+            ? { kind: "slice", x: aim.x, y: aim.y, x1: aim.x, y1: aim.y - z.L(size * 0.8), x2: aim.x, y2: aim.y + z.L(size * 0.8), wrongs: dec ? [{ x: decAt.x, y: decAt.y }] : [] }
             : { kind: "wait" }
         );
       });
