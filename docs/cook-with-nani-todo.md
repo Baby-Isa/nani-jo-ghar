@@ -110,3 +110,14 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 | Who did it? | `docs/modes/who-did-it-design.md` | ☑ designed | Go with changes |
 | Monsoon rush | `docs/modes/monsoon-rush-design.md` | ☑ designed | Go with changes |
 | Snap | `docs/modes/snap-design.md` | ☑ designed | Go with changes |
+
+## Wave 6: Zafar's grill playtest, 25 Sept (see `docs/UX-PRINCIPLES.md`), after the old chat's art wiring lands
+- ☐ Request card with read-along highlighting (by recorded chunk); shrinks into the sidebar
+- ☐ Sidebar moves to the **left**; action buttons stay on the right
+- ☐ Mishkaki: one card per skewer, always four dots; speaker in each card's top-right corner, reading in order with highlighting
+- ☐ Remove per-line translate/👁 and per-line speakers; one light bulb at the top of the sidebar (tap: English for 5/3/2/1 s by level; costs the ear star)
+- ☐ Grill in two phases: thread the skewers → "Go to the barbecue" → grill. The juggle returns as an optional hard level
+- ☐ Remove chips from the grill (they stay in samosa + fry)
+- ☐ Level 1 everywhere = smallest round (one skewer, one cup, three pantry items); pantry is the first thing a new player does
+- ☐ Overlay onboarding (dim, spotlight, ghost finger, one thing at a time); UI fades in as first needed
+- ☐ Family-word changes from Mum's recordings (`docs/kutchi-grammar-notes.md`): *daar*, two = *ba* ("ber"), *hakro/hakri*, *wadho/nindho* (+ she-forms), *watana*, *dudh waari chai*, *{person} lai*, *Muke {x} de*, *pela … ne poi …*
