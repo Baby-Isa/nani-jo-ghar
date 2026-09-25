@@ -15,6 +15,8 @@
       "ph-t-middlerow": {"kutchi": null, "english": "the middle row", "ask": "E4"},
       "ph-t-bottomrow": {"kutchi": null, "english": "the bottom row", "ask": "E7"},
       "ph-t-corners": {"kutchi": null, "english": "the corners", "ask": "E5"},
+      "ph-t-tray": {"kutchi": null, "english": "the tray", "ask": "E24"},
+      "ph-t-shelf": {"kutchi": null, "english": "the shelf", "ask": "E44"},
 
       "ph-rel-in": {"kutchi": null, "english": "in", "ask": "A5"},
       "ph-rel-on": {"kutchi": null, "english": "on", "ask": "A5"},

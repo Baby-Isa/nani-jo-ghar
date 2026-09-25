@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>Tidy up with Nani</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/tidy.css">
+</head>
+<body class="tidy">
+
+<div id="rotate">
+  <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to tidy up with Nani</p></div>
+</div>
+
+<div id="app">
+  <main id="stage">
+    <!-- the board: a 1600x900 design of plain HTML (js/tidy/engine.js), fitted to the stage; zones inside it -->
+    <div id="board" aria-label="The board"></div>
+  </main>
+
+  <aside id="side">
+    <div class="side-top">
+      <span class="pill" title="Pocket money"><i class="coin-dot"></i><b id="coins">0</b></span>
+      <span class="pill" id="kind-pill" title="Kind of round"></span>
+      <div id="clock" class="hidden" title="The doorbell clock"><i></i></div>
+    </div>
+    <!-- Nani's rows (the order ladder): words only, never pictures, faces or tints (G7) -->
+    <div id="rows" class="card hidden">
+      <div class="r-head">
+        <img class="r-face" src="assets/cook/characters/nani-badge.webp" alt="Nani">
+        <div class="r-stars"></div>
+        <button class="r-replay icon-btn" type="button" aria-label="Hear it all again" title="Hear it all again"></button>
+      </div>
+      <ol class="r-list"></ol>
+    </div>
+    <div id="live">
+      <div id="nani-line" class="card hidden" role="status" aria-live="polite">
+        <img src="assets/cook/characters/nani-badge.webp" alt="Nani"><div class="say"></div>
+      </div>
+    </div>
+    <!-- Nani: "pass me…" comes forward in the sidebar, never over the board -->
+    <div id="passme" class="card hidden" role="dialog" aria-label="Nani needs something">
+      <div class="pm-say"></div><div class="pm-tray"></div>
+    </div>
+    <div class="side-rail">
+      <button id="btn-help" class="rail-btn" type="button" title="Help (costs a star)" aria-label="Help">?</button>
+      <button id="btn-done" class="rail-btn done hidden" type="button" title="Done" aria-label="Done"></button>
+      <button id="btn-home" class="rail-btn" type="button" title="The lab" aria-label="The lab">&#8962;</button>
+    </div>
+  </aside>
+
+  <!-- the help ladder (6.2): each rung costs more -->
+  <div id="help" class="hidden" role="dialog" aria-label="Help"><div class="h-card"></div></div>
+  <!-- the intro card: Nani's rows big in the middle, then they fly to the sidebar -->
+  <div id="intro" class="hidden" role="dialog" aria-label="Nani's rows">
+    <div class="ic-card">
+      <div class="ic-head"><img src="assets/cook/characters/nani-badge.webp" alt=""><div class="ic-name">Nani</div></div>
+      <ol class="ic-rows"></ol>
+      <div class="ic-go">Tap to start</div>
+    </div>
+  </div>
+  <!-- speaking: "What's this?", Ali's turn: the mic, then the pills (audio only), or a parent's tick -->
+  <div id="speak" class="hidden" role="dialog" aria-label="Say it">
+    <div class="sp-card">
+      <div class="sp-ask"></div>
+      <button class="sp-mic" type="button" aria-label="Say it"></button>
+      <div class="sp-state"></div>
+      <div class="sp-pills"></div>
+      <div class="sp-parent hidden"><span>Did they say it?</span><button class="btn yes" type="button">Yes</button><button class="btn no" type="button">Not quite</button></div>
+    </div>
+  </div>
+  <div id="overlay" class="hidden"><div id="panel"></div></div>
+  <div id="toast" class="hidden"></div>
+</div>
+
+<!-- borrowed as they are, read-only: Cook's words, voice and sounds (core, lang); the shared recogniser -->
+<script src="js/cook/core.js"></script>
+<script src="js/cook/lang.js"></script>
+<script src="js/shared/speech.js"></script>
+<!-- stubs for shared pieces the foundation will supply (same API; swap = one line each) -->
+<script src="js/tidy/stubs/rel.js"></script>
+<script src="js/tidy/stubs/say.js"></script>
+<!-- Tidy up -->
+<script src="js/tidy/rules.js"></script>
+<script src="js/tidy/bot.js"></script>
+<script src="js/tidy/engine.js"></script>
+<!-- mechanics: one verb per file (the order here is the lab's order) -->
+<script src="js/tidy/mechanics/place.js"></script>
+<script src="js/tidy/mechanics/pack.js"></script>
+<script src="js/tidy/mechanics/stack.js"></script>
+<script src="js/tidy/mechanics/check.js"></script>
+<script src="js/tidy/mechanics/paw.js"></script>
+<script src="js/tidy/stubs/fetch.js"></script>
+<script src="js/tidy/stubs/passme.js"></script>
+<script src="js/tidy/mechanics/tell.js"></script>
+<!-- the first set: one combined mini-game each -->
+<script src="js/tidy/games/putaway.js"></script>
+<script src="js/tidy/games/dastarkhwan.js"></script>
+<script src="js/tidy/games/box.js"></script>
+<script src="js/tidy/games/ali.js"></script>
+<script src="js/tidy/lab.js"></script>
+</body>
+</html>
