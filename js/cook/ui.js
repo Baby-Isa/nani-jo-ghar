@@ -416,13 +416,14 @@
       stars: { ear: "pending", hand: "pending", third: "pending" },
       busy,
       plain: !!seqWord && Cook.wordStage(seqWord) >= 3,
-      english: new Set(),
+      english: false,
     };
     const el = $("#mission");
     el.classList.remove("hidden", "stamped", "arriving");
     el.classList.toggle("busy", !!busy);
     el.querySelector(".m-face").src = faceUrl(who);
-    el.querySelector(".m-name").textContent = name;
+    el.querySelector(".m-face").alt = name;
+    el.querySelector(".m-ring").title = name;
     renderStars();
     renderOrder();
     UI.setPatience(busy ? 1 : null);
@@ -493,45 +494,47 @@
           : null,
       })
     );
-    if (mission.english.has(L.dish) && r.line.en) li.insertAdjacentHTML("beforeend", `<div class="lr-en">${esc(r.line.en)}</div>`);
+    if (mission.english && r.line.en) li.insertAdjacentHTML("beforeend", `<div class="lr-en">${esc(r.line.en)}</div>`);
     return li;
   }
-  /** The dish row: its words, and A/En (English for this dish's whole order). */
+  /** A later dish's row ("Ne samosa."): its words, no dot. The first dish sits in the card's head. */
   function headEl(L) {
     const r = L.head;
     const li = document.createElement("div");
     li.className = ["lr", "head", r.done ? "done" : ""].filter(Boolean).join(" ");
-    const pill = UI.pill(r.line, {
-      hide: rowHide(r),
-      onTranslate: () => {
-        const on = !mission.english.has(L.dish);
-        if (on) mission.english.add(L.dish);
-        else mission.english.delete(L.dish);
-        if (on && Cook.onHelp) {
-          const open = Order().rows(L).filter((x) => !x.done);
-          // English for rows still to do is the answer (the ear star); after, it's just help
-          if (open.length) Cook.onHelp("translate", { ids: [].concat(...open.map((x) => x.ids)) });
-          else Cook.onHelp("help");
-        }
-        renderOrder();
-      },
-    });
-    li.appendChild(pill);
-    if (mission.english.has(L.dish)) {
-      pill.querySelector(".wp-en").classList.remove("hidden");
-      const tr = pill.querySelector(".wp-tr");
-      if (tr) tr.classList.add("on");
-    }
+    li.appendChild(UI.pill(r.line, { hide: rowHide(r), noTranslate: true, reserveSay: true, onHear: () => rowHidden(r) && Cook.onHelp && Cook.onHelp("replay", { ids: r.ids }) }));
+    if (mission.english && r.line.en) li.insertAdjacentHTML("beforeend", `<div class="lr-en">${esc(r.line.en)}</div>`);
     return li;
   }
+  /** The card's head: the first dish's line ("Muke chai khape.") beside the face, and its English when A/En is on. */
+  function renderDish() {
+    const box = $("#mission .m-dish");
+    const L = mission.ladders[0];
+    const r = L && L.head;
+    box.innerHTML = r ? `<span class="md-text">${Lang.html(r.line, { hide: rowHide(r) })}</span>${mission.english && r.line.en ? `<span class="md-en">${esc(r.line.en)}</span>` : ""}` : `<span class="md-text">${esc(mission.name)}</span>`;
+    const tr = $("#mission .m-tr");
+    tr.classList.toggle("on", !!mission.english);
+  }
+  /** A/En: English under every row of the order (for rows still to do, that's the answer: the ear star). */
+  M.translate = function () {
+    if (!mission) return;
+    mission.english = !mission.english;
+    if (mission.english && Cook.onHelp) {
+      const open = [].concat(...mission.ladders.map((L) => Order().rows(L).filter((x) => !x.done)));
+      if (open.length) Cook.onHelp("translate", { ids: [].concat(...open.map((x) => x.ids)) });
+      else Cook.onHelp("help");
+    }
+    renderOrder();
+  };
   function renderOrder() {
     if (!mission) return;
     const box = $("#mission .m-order");
     box.innerHTML = "";
-    shape().forEach(({ L, sections }) => {
+    renderDish();
+    shape().forEach(({ L, sections }, li) => {
       const lad = document.createElement("div");
       lad.className = "ladder";
-      if (L.head) lad.appendChild(headEl(L));
+      if (L.head && li > 0) lad.appendChild(headEl(L));
       sections.forEach(({ s, rows }) => {
         const sec = document.createElement("div");
         sec.className = ["lsec", s.when ? "late" : "", s.for ? "lfor" : ""].filter(Boolean).join(" ");
@@ -971,6 +974,9 @@
       true
     );
     global.addEventListener("resize", () => UI.closeHelp());
+    const tr = $("#mission .m-tr");
+    tr.innerHTML = ICON.translate;
+    tr.addEventListener("click", () => UI.mission.translate());
     const replay = $("#mission .m-replay");
     replay.innerHTML = ICON.replay;
     replay.addEventListener("click", () => {

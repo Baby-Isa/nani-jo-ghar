@@ -79,8 +79,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
    line (one short line); the rail ("?", menu, book) at the bottom. Nothing
    else stays up. The live slot takes the spare room, so a line coming or
    going moves nothing else. */
-#mission { flex: none; }
-#live { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#live { flex: 1 0 auto; min-height: 0; display: flex; flex-direction: column; }
 .side-rail { display: flex; flex-wrap: wrap; gap: 8px; flex: none; align-items: center; }
 .rail-btn {
   width: 46px; height: 46px; border-radius: 14px; border: none; background: var(--cream);
@@ -353,7 +352,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #choices .choice.right { background: #e3f0dc; border-color: var(--sage); }
 
 /* ---- the mission card (the order card): compact, on top of the sidebar ---- */
-#mission { position: relative; overflow: hidden; padding: 8px 10px 10px; }
+/* the card gives way before Nani's line and the rail do: a very long order scrolls inside it */
+#mission { position: relative; overflow: hidden; padding: 8px 10px 10px; flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#mission.hidden { display: none; }
 /* while the big intro card is up, the small one keeps its place (the intro flies into it) */
 #mission.arriving { visibility: hidden; }
 #mission.landed { animation: landed .35s ease-out; }
@@ -373,16 +374,24 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #mission .m-face { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: #eadcc6; }
 #mission .m-ring.on .m-face { inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); }
 #mission .m-who { min-width: 0; flex: 1; }
-#mission .m-name { font-weight: 800; font-size: 15px; line-height: 1.15; overflow-wrap: break-word; }
+/* the first dish's line ("Muke chai khape.") where a name would be: the face says who */
+#mission .m-dish { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(16px, 1.4vw, 20px); line-height: 1.15; overflow-wrap: break-word; }
+#mission .m-dish .word { color: var(--madder); }
+#mission .m-dish .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-weight: 700; }
+#mission .m-dish .dots { letter-spacing: 2px; color: var(--ink-soft); }
+#mission .m-dish .md-en { display: block; font-family: var(--ui-font); font-size: 13px; font-weight: 700; color: var(--ink-soft); }
 #mission .m-stars { display: flex; gap: 4px; margin-top: 3px; }
 #mission .m-stars .mstar { width: 26px; height: 26px; padding: 4px; border-radius: 8px; }
-/* ↻: the order big again */
-#mission .m-replay {
-  flex: none; width: 38px; height: 38px; border-radius: 50%; border: none; padding: 8px;
+/* ↻ (the order big again) above A/En (English for the whole order) */
+#mission .m-tools { flex: none; display: flex; flex-direction: column; gap: 4px; align-self: flex-start; }
+#mission .m-tools button {
+  width: 34px; height: 34px; border-radius: 50%; border: none; padding: 7px;
   background: #efe4d2; color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
 }
-#mission .m-replay svg { width: 100%; height: 100%; }
-#mission.stamped .m-replay { visibility: hidden; }
+#mission .m-tools button svg { width: 100%; height: 100%; }
+#mission .m-tools .m-tr.on { background: var(--ink); color: var(--cream); }
+#mission.stamped .m-tools { visibility: hidden; }
+
 .mstar {
   width: 38px; height: 38px; border-radius: 12px; padding: 7px; border: 2px dashed #cdb892; color: #b8a58a; background: transparent;
   display: inline-flex; flex: none; transition: all .25s;
@@ -405,7 +414,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
    A line joins the dots of steps that go in order; things that can go in
    any order sit on their own dots with no line between them. No
    pictures, no colours per item. */
-#mission .m-order { margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
+#mission .m-order { margin-top: 6px; display: flex; flex-direction: column; gap: 6px; min-height: 0; overflow-y: auto; overflow-x: hidden; }
 .ladder { display: flex; flex-direction: column; gap: 4px; }
 .lsec { position: relative; display: flex; flex-direction: column; }
 .lsec.late { animation: pop .3s ease-out; border-top: 1px dashed #e0d2bb; padding-top: 4px; }
@@ -463,7 +472,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #intro .lsec.lfor { flex: 1 1 auto; gap: 10px; }
 #intro .lsec.lfor .lface { width: clamp(30px, min(4vw, 8vh), 48px); height: auto; aspect-ratio: 1; }
 #intro .lrows { gap: clamp(2px, .6vh, 6px); }
-.ir { --gap: clamp(2px, .6vh, 6px); --dot-y: .72em; position: relative; padding-left: 1.15em; font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(19px, min(2.6vw, 5vh), 34px); line-height: 1.3; }
+.ir { --gap: clamp(2px, .6vh, 6px); --dot-y: .72em; position: relative; padding-left: 1.15em; font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(20px, min(2.8vw, 6vh), 34px); line-height: 1.3; }
 .ir .ldot { width: .42em; height: .42em; margin-top: -.21em; left: .1em; }
 .ir.up::before, .ir.down::after { left: calc(.1em + .21em - 1px); border-left-width: 3px; }
 .ir.head { padding-left: 0; font-size: clamp(17px, min(2.2vw, 4.4vh), 28px); color: var(--ink-soft); }
@@ -570,9 +579,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #mission .m-head { gap: 6px; }
   #mission .m-ring { width: 36px; height: 36px; }
   #mission .m-ring.on .m-face { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
-  #mission .m-name { font-size: 14px; }
+  #mission .m-dish { font-size: 15px; }
   #mission .m-stars .mstar { width: 24px; height: 24px; padding: 3px; border-radius: 7px; }
-  #mission .m-replay { width: 34px; height: 34px; padding: 7px; }
+  #mission .m-tools button { width: 30px; height: 30px; padding: 6px; }
   #mission .m-order { margin-top: 4px; gap: 4px; }
   #mission .lr .wp .wp-text, #mission .lr.head .wp .wp-text { font-size: 16px; }
   .lr { --dot-y: 15px; padding-left: 18px; }
