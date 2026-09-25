@@ -175,10 +175,7 @@
         const dx = bowlAt.x - (bowl.rim.x - bowl.x) * 0.6 - bowl.x;
         const dy = bowlAt.y - (bowl.rim.y - bowl.y) * 0.6 - bowl.y;
         blobs.forEach((b) => S.tweens.add({ targets: b, x: bowlAt.x + (b.x - bowl.rim.x) * 0.6, y: bowlAt.y + (b.y - bowl.rim.y) * 0.6, scale: b.scale * 0.6, duration: 400 }));
-        S.tweens.add({ targets: bowl, x: bowl.x + dx, y: bowl.y + dy, scale: bowl.scale * 0.6, duration: 400 });
-        const sh = bowl.shadow; // a painted bowl's contact shadow goes with it
-        if (sh) S.tweens.add({ targets: sh, x: bowl.x + dx + (sh.x - bowl.x) * 0.6, y: bowl.y + dy + (sh.y - bowl.y) * 0.6, scaleX: sh.scaleX * 0.6, scaleY: sh.scaleY * 0.6, duration: 400 });
-        if (bowl.liqGraphics) bowl.liqGraphics.setVisible(false);
+        S.tweens.add({ targets: bowl, x: bowl.x + dx, y: bowl.y + dy, scale: bowl.scale * 0.6, duration: 400 });        if (bowl.liqGraphics) bowl.liqGraphics.setVisible(false);
         await Cook.wait(420);
       }
       const plate = { x: z.X(1330), y: z.Y(640) };

@@ -177,7 +177,8 @@
     /**
      * A soft contact shadow under a painted sprite (the drawings bake their
      * own): a little down and to the right, away from the window light.
-     * fly() hides it; it goes with the object. `box` overrides the footprint.
+     * It follows the object (moved, scaled, faded, hidden) until fly() lifts it
+     * off the surface (sh.lifted). `box` overrides the footprint.
      */
     contactShadow(img, box) {
       const b = box || img.getBounds();
@@ -187,7 +188,19 @@
           .setDisplaySize(b.width * 1.02, b.height * 0.98)
           .setDepth(img.depth - 0.6)
       );
-      img.once("destroy", () => sh.destroy());
+      const s0 = { x: img.x, y: img.y, sx: img.scaleX || 1, sy: img.scaleY || 1, dx: sh.x - img.x, dy: sh.y - img.y, kx: sh.scaleX, ky: sh.scaleY };
+      const follow = () => {
+        if (!img.active || !sh.active) return;
+        const fx = img.scaleX / s0.sx;
+        const fy = img.scaleY / s0.sy;
+        sh.setPosition(img.x + s0.dx * fx, img.y + s0.dy * fy).setScale(s0.kx * fx, s0.ky * fy);
+        sh.setVisible(img.visible && !sh.lifted).setAlpha(img.alpha);
+      };
+      this.events.on("update", follow);
+      img.once("destroy", () => {
+        this.events.off("update", follow);
+        sh.destroy();
+      });
       return sh;
     }
     /** An ingredient as a heaped bowl (or its photo), with a stage label. */
@@ -321,7 +334,10 @@
     }
     fly(obj, x, y, { scale, duration = 520, arc = 140, depth } = {}) {
       if (depth != null) obj.setDepth(depth);
-      if (obj.shadow) obj.shadow.setVisible(false);
+      if (obj.shadow) {
+        obj.shadow.lifted = true;
+        obj.shadow.setVisible(false);
+      }
       if (obj.label) obj.label.setVisible(false);
       const sx = obj.x;
       const sy = obj.y;

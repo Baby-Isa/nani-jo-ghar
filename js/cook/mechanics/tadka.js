@@ -149,7 +149,7 @@
       stopHeat();
       hot = false;
       drawHeat();
-      if (pan.shadow) pan.shadow.setVisible(false); // lifted off the hob
+      if (pan.shadow) pan.shadow.lifted = true; // lifted off the hob
       await Cook.tween(S, { targets: pan, x: z.X(B.left.x + 220), y: z.Y(B.left.y - 140), angle: -50, duration: 420 });
       Cook.sfx.sizzle(1.4);
       S.steam(pot.rim.x, pot.rim.y - z.L(30), 6);
