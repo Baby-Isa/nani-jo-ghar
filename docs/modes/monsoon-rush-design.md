@@ -94,7 +94,7 @@ Scores 1–5. "Forces Kutchi" names the decision, the leaks and how they're desi
 | Finding the chicks that hid indoors | **Find it** (search), Arc 3 Ch3, right after M3 |
 | Sorting the dry washing into baskets by owner or colour | **Tidy up** (arrange) |
 | Photographing the lightning or the rainbow | **Snap** (aim and capture) |
-| "Nani has a cold" | **Nani's clinic** (treat) |
+| "Nani has a cold" | **The doctor's clinic** (treat) |
 | Dressing for the rain | **Dress up** (style) |
 | "Who left the window open?" | **Who did it?** (deduce) |
 | Running home from the bazaar in the rain | An endless runner (rejected in the Game Design doc) |

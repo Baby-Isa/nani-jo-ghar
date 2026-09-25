@@ -1,4 +1,4 @@
-# Nani's clinic: design (mode id `clinic`)
+# The clinic (the doctor's clinic; formerly "Nani's clinic"): design (mode id `clinic`)
 
 **Date:** 25 Sept 2026
 **Status:** a proposal for Zafar. Nothing has been built. It follows `docs/modes/MODE-DESIGN-BRIEF.md` and builds on `docs/game-modes-v2.md` (mode 5), `docs/find-it-design.md` (the model), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md`, `docs/cook-with-nani-build-log.md` and `docs/cook-with-nani-todo.md`.
@@ -7,14 +7,158 @@
 
 ---
 
+## Revision, 25 Sept 2026: centred on the doctor's clinic
+
+**Why this revision.** Zafar's feedback on the design below, in his words (roughly): *"The clinic game needs work. It should centre on the actual doctor, Hannah's real-life granddad, and on his clinic. For the first game, maybe you go yourself because you're sick, or you just go and help at the clinic. Different people come in and describe their pain, and sometimes the doctor asks them 'is it this or is it that?'. Then eventually you have to listen to the patient yourself and get the right thing to fix what they said was wrong. I think that's a more fun mode."* This section is the answer: what's adopted, what's kept from the design below, and where I disagree and why. **It supersedes anything below that contradicts it**; sections 1, 3–6, 8, 9, 11 and 12 have been patched to match, and the rest stands.
+
+### R1. The verdict on the idea, in short
+
+- **Adopt the centre.** It's **the doctor's clinic**, not Nani's. He is the host, the voice of the mode and its warmth; Nani is its first patient in the story (Arc 3) and the owner of the animals in the vet corner. The mode id stays `clinic`; the display name becomes whatever the children call him (Questions for Mum, E102), with **"The clinic"** as the working title. The Cast doc lists him as Zafar's wife's granddad; his reference photos stay private.
+- **Adopt "is it this or that?" as the mode's scaffold, not a decoration.** It replaces the abstract "warmer" hint (the doctor pointing at half a body) with a line a real doctor says, and it gives the mode a progression a 5-year-old can feel: *he asks and the patient answers* → *he asks and you answer* → *nobody asks; you listen*. Section R4 has the rules that stop it leaking.
+- **Adopt "you're the patient" as the first minute** of the story round and as a one-minute free-play route, **not as the whole first game** (R5 says how it works with no speech recognition; R7 says why it can't be the core).
+- **Keep the treat loop** the design below built (*Where does it hurt?* → the care trolley → gentle hands → *Just right* → *Who's next?*). Zafar's last sentence, "listen to the patient yourself and get the right thing to fix what they said was wrong", *is* that loop. His idea changes how the player gets there, and who the game is about; it doesn't change where the player ends up.
+
+### R2. The new pitch
+
+**The clinic.** Down the lane from Nani's house is the doctor's clinic: a bench by the door, a window with the rain on it, Kasuku on a perch (he comes along in the story and stays), and the doctor, bald, white-bearded, clear glasses, a checked blazer, and a laugh you can hear from the gate. He's the family's own doctor (Hannah's granddad), and the children are welcome there. **You're his helper.** Different people come in (Nana, Ma, Ali, the cousin, neighbours, and now and then a cat) and say what's wrong, in Kutchi. The doctor asks the questions a doctor asks (*[EN: Where does it hurt? Is it the knee, or the foot? Are you hot, or cold?]*), and **you do the doing**: find the place, fetch the right thing from the trolley, put it on gently, and check it's just right. At first the doctor asks and the patient answers, so you hear everything twice; then he asks and looks at you; then he's busy with the next patient and it's all yours. Nothing in the clinic can be done without understanding what the patient said. The doctor gives any medicine himself.
+
+**Why it's more fun than the design below.** The design below had the doctor as a task-giver at the edge. Now the game's warmth comes from a real person the children know, the questions a child hears at a real clinic become the game's scaffold, and the child gets to be looked after before they look after anyone.
+
+### R3. The core loop (one patient, 60–90 s; a clinic morning is 3–4 patients, about 4 minutes)
+
+| Step | What happens | The Kutchi that decides it |
+|---|---|---|
+| 1 **Who's next?** (level 2+) | The doctor calls a name; you tap that person on the bench and greet them (respect language for elders) | Who |
+| 2 **The complaint** | The intro card (one line per complaint, ••• or text by word stage) shrinks into the sidebar. The patient says it: *[EN: My knee hurts]*. **3 s of quiet** | Part (or feeling) |
+| 3 **The doctor's question** (levels 1–2) | *[EN: Is it the knee, or the foot?]* Level 1: the patient answers, *[EN: The knee]*. Level 2: nobody answers; he looks at you | Which of two |
+| 4 **Where does it hurt?** | You tap the part on the patient. Right: the soft sore swirl and *[EN: That's it]*. Wrong: a giggle, Kasuku's *Arre re!*, the line again | Part (and side, level 3) |
+| 5 **The right thing** | The doctor: *[EN: A plaster, or a bandage?]* (level 1: the patient answers) or, from level 2, the patient says how they feel (*[EN: I'm cold]*). You pick from the trolley, which always holds every unlocked item, shuffled | Care, from the noun or the feeling |
+| 6 **Gentle hands** | Peel and stick, wrap, lay the cool cloth and lift it on green, tuck the blanket | Hands (a count from level 2) |
+| 7 **Just right** (level 2+) | The doctor: *[EN: Still cold, or just right?]* The patient: *[EN: Still cold]* → another blanket; *[EN: Too hot]* → one off; *[EN: Just right]* → Done | Add, remove or stop |
+| 8 **Thank you** | *Aabhar aanjo!*, the doctor's big laugh, a sticker; at the end of the morning: stars, pocket money, the word review | — |
+
+**One concrete round (level 1, Ali).** Ali sits on the examination bench, both hands in his lap. The card shows his face and one ••• line. Ali: *[EN: My knee hurts]*. Three seconds of quiet. The doctor, hands folded, looking at Ali: *[EN: Is it the knee, or the head?]* Ali: *[EN: The knee]*. You tap his knee: a pink swirl, *[EN: That's it!]* The doctor: *[EN: Plaster, or a blanket?]* Ali: *[EN: A plaster]*. The trolley slides up with five things in a new order; you tap the plaster tin, peel one, and drag it onto the swirl. The doctor laughs his big laugh; Ali: *Aabhar aanjo!*; a sticker of Ali's knee goes in the album. Kutchi heard: *knee* three times (once against *head*), *plaster* twice (once against *blanket*), plus *hurts*, *or*, *is it*, *that's it*, *thank you*. If you'd tapped his foot: Ali giggles (*[EN: That tickles!]*), Kasuku squawks *Arre re!*, and Ali says the line again; the ear star for that row is gone, nothing is shown, you try again.
+
+### R4. "Is it this, or that?": the scaffold and its rules
+
+**Why it's good.** The child hears the target word **three times** in one row (the complaint, the question, the answer) and once **against a wrong word**, which is how listening is taught in a classroom (minimal pairs, but in a story). The child also learns the word *or* (needed from the family, G94) by sheer frequency, and hears the doctor's question forms, which they'll hear at a real clinic one day. It models listening: watch the doctor listen, then listen like the doctor.
+
+**The progression** (levels are data; the level number is the player's, per word stage, not a fixed door):
+
+| Level | Name | What the doctor does | What you do | Bot guess rate per row |
+|---|---|---|---|---|
+| **1** | *The doctor asks, the patient answers* | Asks *X or Y?* after every complaint; the wrong option is **far** (knee vs head; hot vs a plaster); the patient answers | Act on the answer: tap the part, fetch the care | 1 in 2 (part) × 1 in 5 (care) ≈ **10%** per patient; level-1 rows are stage-1/2 words, which the design already treats as teaching |
+| **2** | *The doctor asks, you answer* | Asks *X or Y?*; the wrong option is **near** (knee vs elbow, from the look-alike groups); nobody answers | Act; plus the feeling → care, and Just right | 1 in 2 × 2 valid cares of 7 × the Just right direction and count ≈ **3%** |
+| **3** | *On your own* | Doesn't ask. A **"?" button = ask the doctor** gets the *X or Y?* question, and costs the tick (Relaxed) or the comfort ring (Busy) | Everything: sides, "not that one", Busy with two benches | as section 10's stop check (**under 1%**) |
+| **4** (Arc 4+) | *What happened?* | Asks *[EN: Did you fall, or did you bump it?]* | + a past-tense row | — |
+
+**Rules that stop it leaking** (the Sceptic's list; the leak bot gets a new **"second option"** and **"echo"** strategy for each):
+1. The option order is random; the right answer is first exactly half the time.
+2. The wrong option is drawn from the level's pool (far at level 1, a look-alike at level 2), never the previous patient's part and never a part already ruled out this visit.
+3. **The answer is always given by acting** (tapping the body, the trolley or the blanket), never by tapping a pill that repeats the sound. Matching *knee* in the complaint to *knee* in the question is possible by ear alone, so the game never rewards that match; it rewards knowing where the knee is.
+4. The doctor's gaze stays on the patient's face and his hands stay folded during the question; the sore swirl never shows before the right tap; the patient's answer is a neutral head-shot line, no pointing, no rubbing.
+5. He asks only when at least two parts (or two cares) are still possible; a question about the last remaining option is never asked, so elimination earns nothing.
+6. The question form is the same for parts, feelings and care, so it's one frame to learn and record: *[EN: Is it {X}, or {Y}?]* with the two slots filled from any word list.
+7. From level 3, the question costs a star, so no one can halve the field for free.
+
+**Honest weakness.** Two-way is 50%. At level 1 that's acceptable because (a) the ear star also needs the care right, (b) level 1 is where stage-1 and stage-2 words live, and the design already treats stage 1 as taught, not tested, and (c) the point of level 1 is the three hearings, not the test. Zafar decides whether level 1 counts for the ear star at all (R9, decision 6).
+
+### R5. "You're the patient"
+
+**How it works with no Kutchi speech recognition.** The child can't tell the doctor anything, so the hurt is **shown** to them and their answers are **choices between two heard words**, judged by what they can see:
+
+1. **First person, looking down**: your own lap, hands, knees and feet (a new "lap view" image; hands from the existing set). A soft pink scuff on your knee (drawn in code; no blood). Or, for a cold, the camera judders with two sneezes and a tissue comes up in your hand.
+2. The doctor, leaning in: *[EN: Arre! You first. Is it your knee, or your hand?]* Two **audio pills** (no text or picture until the reads stage). You tap the one that names what you can see hurts.
+3. His hand reaches to a part: *[EN: Does it hurt here?]* You answer *yes* or *no* (audio pills; *yes* and *no* are placeholders until A8.1 and A4.4 are answered). He presses a wrong part first about half the time, so *no* is a real answer.
+4. For a cold: *[EN: Are you hot, or cold?]* (the shiver or the fan-face on your own hands is the prompt).
+5. He treats you: you choose the plaster design (free, ungraded; Maryam's collection), he puts it on, *[EN: All better!]*, the big laugh.
+
+Three or four two-way rows: a blind bot earns the ear star about **6–12%** of the time; the same standing as level 1 above (R9, decision 6). Nothing is scary: he's gentle, he explains, the plaster is the prize.
+
+**Say it out loud (optional, never graded by the app).** Before tapping a pill, the child can press the microphone and say the word; the app plays their voice next to the family's recording (Game Design: speaking stage 1, shadowing), and a parent or Nani taps ✓ or "again". This is the only production in the mode until the family's few-shot keyword spotting exists (speaking stage 2), and a two-way answer is exactly the "small known set" that stage 2 could one day judge.
+
+**Where it lives.** The first minute of Arc 3 Ch4's clinic round (you slipped in the Ch2 puddle at the gate on the way; a comic tilt of the view, *Arre re!*, no fall shown), and a free-play route **"You're the patient"** (a random visible hurt each time: hand, finger, arm, elbow, knee, foot, toe; or a cold: hot/cold; or a tummy ache, where he asks *[EN: tummy, or head?]* and you can't see it, so the intro card's ••• line is the only prompt, from level 2).
+
+### R6. Story home (Arc 3 Ch4 "Nani has a cold", revised)
+
+| Beat / errand | What happens | Mechanics |
+|---|---|---|
+| Ch2 "The leak" (seed) | Ali slips in the courtyard puddle, comically, fine: "later". The puddle by the gate stays | Beat only |
+| Ch3 "The animals" (seed) | The hen hurt her foot getting into the shed: "we'll take her to the doctor" | Beat only |
+| **Ch4 intro beat** (home) | Nani in bed; she sneezes (her glasses jump), holds her head, points at her throat. **Nothing is said about where it hurts: you see it.** Nana: go and tell the doctor. The clinic appears in the fog on the map | Set-up for Tell the doctor |
+| **Ch4 errand "The clinic"** (the mode's first round, about 5 min) | On the lane you slip in the gate puddle (a tilt, *Arre re!*). At the door: the greeting (formal). **You're the patient** (60 s): knee or hand? does it hurt here? a plaster, all better. Then **Tell the doctor about Nani**, scaffolded: *[EN: Is it Nani's head, or her tummy?]* → head; *[EN: Her throat, or her ear?]* → throat (picture → word, two pills each). He'll give you something for her after morning clinic: *[EN: Will you help me?]* **Three patients at level 1:** Ali's knee ("you too!"), the hen (the cousin brings her; the vet row), a wet neighbour who's cold (feeling → blanket, one Just right exchange). He hands you a closed bottle for Nani | You're the patient, Tell the doctor (two-way), Who's next? (called, not chosen), Where does it hurt?, the trolley, Gentle hands, one Just right |
+| Ch4 outro beat (home) | Nana: *Muke hikdo [EN: medicine] dine*: the bottle from three look-alikes. Nana gives it to Nani. You tuck her blanket (one Just right exchange) | Pass me, Just right |
+| Ch5 "Chai together" | Nani's remedy in Cook; the quilt patch is a stethoscope | Hand-off to Cook |
+
+Later arcs are unchanged (section 5.1): Arc 4 past-tense rows (*[EN: Did you fall, or bump it?]*), Arc 5 the village clinic under the neem tree, Arc 2's sore feet as a side errand.
+
+### R7. Where I agree with Zafar, and where I push back
+
+| Zafar's point | Response |
+|---|---|
+| Centre it on the real doctor and his clinic | **Agree, fully.** Renamed, re-hosted, and the doctor's warmth (the big laugh) is now the mode's reward sound. The design below already had this as open question 1; the answer is yes |
+| "You go yourself because you're sick" as the first game | **Agree as the opening minute and a free-play route; disagree as the core.** As a patient the child can't say anything (no speech recognition), so every answer is a two-way tap, and they never get to touch anyone, so the tactile "gentle hands" and the blanket comedy are lost. It's a lovely first minute; it's a thin game. Also, "sick" becomes "a scuffed knee from the puddle" or "the sniffles": Layla shouldn't play at being ill |
+| "Or you just go and help" | **Agree: this is the core.** The design below had it; it stays |
+| Different people come in and describe their pain | **Agree, with one edit:** not only pain. Half the visits are feelings (*cold, hot, tired, sneezy*) and the animals, because "it hurts" alone is one frame and the S4 syllabus needs the feeling words. "Pain" is "hurt" in the game's own words |
+| "Sometimes the doctor asks 'is it this or that?'" | **Agree, and promote it from "sometimes" to the scaffold.** It's better than the "warmer" hint the design had, and it *is* the level structure: always at level 1, unanswered at level 2, on request at level 3. One rule added: the answer is given by acting, never by tapping a matching sound (R4) |
+| "Eventually you listen to the patient yourself and get the right thing" | **Agree; this is level 3 of the design below,** with the "?" button as the only way back to the doctor's question, at a cost |
+| Not said, but implied by "his clinic": drop Nani's name and Nani's bedroom | **Half agree.** The name goes. Nani's bedroom stays for the Ch4 beats (she's the reason you go), and the vet corner stays at his clinic for now, because the cats are Layla's biggest hook. Whether a real doctor wants a cat on his table is decision 5 |
+| Not said: what about *Just right* and *Who's next?* | **Kept,** and folded into his frame: both are the doctor's *or*-questions now (*[EN: Still cold, or just right?]*; *[EN: Who's next: Nana, or Ali?]* at level 2, where the call names two people and you tap the one he means) |
+
+### R8. What changed in this document, and why
+
+| Section | Change |
+|---|---|
+| Header, 1 | Name: "Nani's clinic" → **the clinic (the doctor's clinic)**; the doctor is host and voice, not a task-giver at the edge |
+| 3 Mechanic library | **M13 The doctor's question** (the *X or Y?* scaffold) and **M14 You're the patient** added; M5 folded into M14 (it's what the doctor does to you); M11 Tell the doctor now uses M13's two-way form at level 1 |
+| 4 First set | Now: M14 → M1+M13 → M2+M3 → M4 → M7. M13 is a small building block used by all of them |
+| 5 Story | Ch4 as in R6; the doctor's cast row |
+| 6 Learning | The *or* frame and the doctor's lines; rung 3 of the hint ladder is now the doctor's question; the level table has a "doctor's question" row; the family word list gains *or*, the question forms, short answers and the doctor's lines |
+| 7.4 Safety | **Likeness rules for the doctor** (below) |
+| 8, 9 | `ask` and `you` mechanics, the first-person lap view, the doctor's "leaning in" pose |
+| 11 | Open questions 1 and 3 answered; new decisions in R9 |
+| 12 | Phase 1 includes M13 and M14; the first three tasks updated |
+
+**Likeness rules for the doctor** (added to the safety checklist in 7.4):
+- He is always competent, kind and in charge. Mistakes are the player's, never his; the comedy is in the patients and the cats (Nana under four blankets, Zazu's wool), never in him.
+- No gags at his expense: no sneezing on him, no hat or hair jokes, no exaggerated features. The art bible's rule: stylised, never caricatured. Zafar and Hannah sign off his character sheet, and the sheet is the only reference after that.
+- He speaks to elders formally and they to him; the children are welcome and safe with him.
+- Medicine is his and stays closed; he never asks the child to give it.
+- His in-game name is the family's decision (E102), and whether he records his own lines is theirs too (R9, decision 2).
+
+### R9. A short persona and Sceptic check, verdict, and decisions
+
+| Persona | On the revised design |
+|---|---|
+| **Layla, 5** | The doctor talking to *her* first ("is it your knee?") is the best minute in the game; she picks the flowery plaster. Level 1 with Ali answering is right for her: she hears *knee* three times and gets it. She asks "is that really Hannah's grandad?" |
+| **Zayn, 8** | Level 1 is "too easy" (50/50): he wants level 3 and won't press "?" because it costs the tick. Right: the level follows the word stage, so he's at level 3 within a morning |
+| **Maryam, 11** | Wants the clinic to look like his real one. Careful: the art bible's "modern with hints and nods"; decision 3 |
+| **Zafar, 38** | More Kutchi per minute than before at level 1 (three hearings per row plus the doctor's frames), and *or* is a word he'll use every day. Worried level 1 is slow: it's 60–90 s per patient, the same as before |
+| **Farah, 34** | "You're the patient" is a 60 s route; one patient is 60–90 s |
+| **Nani, 68** | "Our doctor": proud, and she's the patient in the story. Asks if she has to do his voice (decision 2) |
+| **The Sceptic** | Tries: (1) always the first option → order is random; (2) matching the sound of the complaint to the sound of the question → the answer is on the body, so she still has to know which word is *knee*; (3) at level 1 she's right half the time on the part → the ear star also needs the care, and level 1 is teaching (decision 6); (4) the wrong option is always last patient's part → it's drawn from the pool; (5) pressing "?" at level 3 → costs the tick; (6) the doctor glances at the part → gaze fixed on the face; (7) in "you're the patient", waiting for his hand to show where → his hand is the *prompt* for yes/no, not the answer to *knee or hand?*, which comes first. **She can't reliably win from level 2** |
+| **The Builder** | Cheap: M13 is one line template with two slots on the existing pill and ladder; M14 is one lap-view image, the yes/no pills and the doctor's "leaning in" pose; everything else is unchanged. Net new art: one image and one pose |
+
+**Verdict: Go with changes** stands, and the changes are the same prerequisites (the family's words, the doctor's sheet, the shared engine); the revision makes the mode better without making it bigger.
+
+**Decisions for Zafar:**
+1. **The name.** "The clinic" until the family says what the children call him (E102); then his name on the map, or a title?
+2. **His voice.** Does the doctor record his own lines (about 25 frames), or does Mum voice him too? If he does, his Kutchi is the family's other Kutchi, which the Game Design counts as a feature ("multiple voices").
+3. **His likeness and his room.** The likeness rules above; and does his real clinic's look inform the room, or is it a generic lane clinic with nods?
+4. **You're the patient first.** A scuffed knee from the puddle (a pink scuff, no blood) or the sniffles: which opening, and is either too much for Layla?
+5. **The vet corner at his clinic**, or at home with his blessing ("you do the cats, helper")?
+6. **The ear star at level 1.** Two-way questions make level 1 about 10% for a blind bot. Count it, or treat level 1 (and "you're the patient") as teaching, with the ear star from level 2?
+
+---
+
 ## 1. Pitch and core loop
 
-**Why this mode exists.** Syllabus stage **S4 "How I feel"** needs a game where **body words, feelings and "it hurts"** decide what you do. Its core verb is **treat**: act gently on a person (or a cat) who tells you, in Kutchi, what's wrong. The player is **the doctor's little helper** in the village clinic. The doctor is friendly and grandfatherly (based on Zafar's wife's granddad). He does anything "medical"; the player finds where it hurts, chooses the comfort care, puts it on with gentle hands, and keeps the waiting room moving. The first patient is Nani herself (Arc 3, "Nani has a cold"), which is why the mode carries her name.
+**Why this mode exists.** Syllabus stage **S4 "How I feel"** needs a game where **body words, feelings and "it hurts"** decide what you do. Its core verb is **treat**: act gently on a person (or a cat) who tells you, in Kutchi, what's wrong. The player is **the doctor's helper** at **the doctor's clinic** down the lane (see the revision above: the doctor, Hannah's granddad, is the host and the voice of the mode). He asks the questions a doctor asks (*[EN: Where does it hurt? Is it the knee, or the foot?]*, M13) and does anything "medical"; the player finds where it hurts, chooses the comfort care, puts it on with gentle hands, and keeps the waiting room moving. In the story the first patient is the player (a scuffed knee, M14) and the reason for going is Nani (Arc 3, "Nani has a cold").
 
 **The loop (one patient, 60–90 s; a clinic morning is 3–4 patients, about 4 minutes).**
 1. **Who's next?** Patients wait on the bench. The doctor calls a name; you tap that person and they come to the examination bench. You greet them (the greeting choice every mode has; respect language for elders).
 2. **The intro card** flashes up with the patient's face and one line per complaint (••• or text by word stage), then shrinks into the sidebar. **Then 3 seconds of quiet.**
-3. **Where does it hurt?** The patient has said *[EN: My knee hurts]*. You tap that part of their body. Right: a small soft "sore" swirl appears there and the patient says "that's it". Wrong: they **giggle** ("that tickles!"), Kasuku squawks *Arre re!* from his perch, and they say it again. You try again.
+3. **Where does it hurt?** The patient has said *[EN: My knee hurts]*. At levels 1–2 the doctor asks *[EN: Is it the knee, or the foot?]* (M13; at level 1 the patient answers, at level 2 nobody does). You tap that part of their body. Right: a small soft "sore" swirl appears there and the patient says "that's it". Wrong: they **giggle** ("that tickles!"), Kasuku squawks *Arre re!* from his perch, and they say it again. You try again.
 4. **The care trolley.** They say what they need (*Muke [EN: plaster] khape*), or later how they feel (*[EN: I'm cold]*). You pick from a trolley that always holds the full set of care items, in a new order every visit.
 5. **Gentle hands.** You put it on: peel and stick a plaster on the sore spot, wrap a bandage round, lay a cool cloth and take it off when its ring goes green, tuck a blanket.
 6. **Just right?** From level 2 the doctor asks how they feel now. *[EN: Still cold]* means another blanket; *[EN: Too hot]* means take one off; *[EN: Just right]* means press **Done**. (Nana, who is always cold, can end up under four blankets.)
@@ -22,7 +166,7 @@
 
 **How it differs from Cook and Find it.**
 
-| | Cook with Nani | Find it | **Nani's clinic** |
+| | Cook with Nani | Find it | **The clinic** |
 |---|---|---|---|
 | Core verb | **Build** a dish from an order | **Search** a cluttered scene | **Treat** a person who responds to you |
 | What you act on | Ingredients and utensils on a worktop | Objects hidden in a room | **A body**: the patient's own head, hands, knees, tummy; a cat's paw |
@@ -85,7 +229,7 @@ Scoring 1–5. **Forces Kutchi** names the decision, the leaks and how each is c
 | **M2** | **The care trolley** | Pick what the patient needs. Level 1: they name it (*Muke [EN: blanket] khape*). Level 2+: they say how they feel (*[EN: I'm cold]*), and either of two cares is right (blanket or a warm drink) | **3** Quick; the fun is the patient's reaction ("ahh!") | **4** **Which care** from the noun, then from the feeling word. **Leaks:** care fixed by body part (knee = always plaster); the trolley holding only the right items; fixed trolley slots; shivering or sweating showing the feeling. **Closed:** every part accepts at least two kinds of care; the trolley always holds every unlocked item, shuffled per visit; shiver/sweat only while the feeling word is at stage 1; only the first pick counts | **4** Cook's pantry is the same tap, but here the choice comes from a feeling, not a recipe | Arc 3 Ch4 (the blanket for Nani); every visit | **4** New care items unlock with the bigger trolley; feelings × two valid cares |
 | **M3** | **Gentle hands** | Put the care on: peel and stick a plaster (drag to the spot), wrap a bandage (circle round the limb), cool cloth (lay it, lift it when its ring is green), tuck a blanket (drag up) | **4** The tactile payoff; plaster designs; a neat wrap | **2** Hands only, by design (the break between listening). From level 2, *[EN: wrap it] {n}* times: a count. **Leaks:** the wrap ending itself at N; counting aloud. **Closed:** never ends by itself, press Done; silent count from number stage 3 | **3** Wrap reuses Stir's circular track, and lifting on green reuses Cook's rings | Every visit | **3** Plaster designs (a collection); gestures stay the same |
 | **M4** | **Just right** | After the care: *[EN: How do you feel?]* → *[EN: still cold]* / *[EN: too hot]* / *[EN: just right]*. Add a blanket, take one off, cool cloth on or off, or Done | **5** The Goldilocks comedy (Nana under four blankets, Ali complaining he's boiling); a real back-and-forth | **5** **Add, remove or stop**, set by a feeling word each time. **Leaks:** visible shivering or sweating; always 1 step from right; worn shawls that correlate with the feeling; a colour thermometer. **Closed:** body-state visuals only at stage 1; the start is 1–2 steps from right, in either direction, at random; what a patient arrives wearing is random; no readable thermometer (the doctor says the reading) | **5** No other mode has a feedback loop with a person | Arc 3 Ch4 outro (Nani's blanket); Monsoon arrivals are wet and cold | **4** Start states, tendencies as a bias, two patients at once in Busy |
-| **M5** | **Does it hurt here?** | Level-1 variant for little ones. Press gently on a part; the patient says *[EN: yes]* or *[EN: no]*. On yes, treat it; on no, try elsewhere | **3** Simple, gentle, turn-taking | **3** **Treat or move on**, from yes/no. **Leaks:** a wince or "ouch" sound on yes; pressing everything. **Closed:** the yes and no recordings are neutral and the face doesn't change; the ear star grades what you do after each answer, so pressing everything doesn't help | **4** | Explore; Layla's first visits | **2** Only two words to learn |
+| **M5** | **Does it hurt here?** *(folded into M14: it's what the doctor does to you)* | Press gently on a part; the patient says *[EN: yes]* or *[EN: no]*. On yes, treat it; on no, try elsewhere | **3** Simple, gentle, turn-taking | **3** **Treat or move on**, from yes/no. **Leaks:** a wince or "ouch" sound on yes; pressing everything. **Closed:** the yes and no recordings are neutral and the face doesn't change; the ear star grades what you do after each answer, so pressing everything doesn't help | **4** | Explore; Layla's first visits | **2** Only two words to learn |
 | **M6** | **Have a look** | The doctor asks you to examine: *[EN: look in her ear]*, *[EN: listen to his chest]*. Choose the instrument and the place. The torch finds a lost bead in Ali's ear; the stethoscope plays a heartbeat you can hear speed up; the forehead strip is read aloud by the doctor | **5** Instruments are the best toys in *Toca Doctor*; finding something funny | **4** **Which instrument and where** (instrument noun + part). **Leaks:** instruments that fit only one part, so world knowledge answers. **Closed:** each instrument works on several parts (torch: ear, nose, mouth, eye; stethoscope: chest, back, tummy); what's found afterwards can be visual (the picture is the meaning once the Kutchi chose where) | **4** "Examine" is part of the verb; not a search (the body is small and known) | Arc 3 Ch4 clinic; Arc 5 village clinic | **4** Many finds; the "brighter torch" upgrade |
 | **M7** | **Who's next?** | The waiting bench: 2–4 patients. The doctor calls *[EN: {name}, come]*; you tap them. Busy mode: two examination benches and a **comfort ring** on everyone waiting | **4** The juggling of a management game (*Heart's Medicine*), gently | **4** **Who** (names and kinship: Nana, Ma, Ali, the cousin, *[EN: auntie]*). **Leaks:** only one person waiting; the called person stands or waves; their face bobbing as they speak (the Chai tray's old leak); a fixed bench order. **Closed:** at least 2 waiting when a call is made (otherwise no call and no ear credit); nobody reacts until tapped; the doctor says the call, not the patient; seats shuffled | **3** Busy juggling is Cook's too; the kinship call is new | Every clinic morning; Arc 3 Ch4 | **5** Queues, tendencies, Busy, two benches, the open clinic |
 | **M8** | **Pass me** (the doctor's bag) | Mid-care, the doctor says *Muke hikdo [EN: thermometer] dine*. Three items from one look-alike group in the sidebar | **3** A known, quick interrupt | **5** Proven in Cook: look-alike groups, no translate for free, never a word already in the current complaint | **2** Shared plumbing | Arc 3 Ch4 "fetch the medicine" (three bottles and jars at home) | **3** Any word the player has met |
@@ -93,6 +237,8 @@ Scoring 1–5. **Forces Kutchi** names the decision, the leaks and how each is c
 | **M10** | **Silly cases** | Twists on any visit: hiccups (a glass of *paani*, then count), a sneeze that blows off Nana's cap, a sesame seed in the ear, sore feet from the wedding dancing, wool round Zazu's tail | **5** The *Two Point Hospital* and *My Hospital* laugh, kept gentle | **3** The case is visual; the Kutchi is still where it hurts and what they need | **4** | Any arc as side errands | **5** A case collection in the album |
 | **M11** | **Tell the doctor** (role reversal) | You **see** the hurt (Nani holds her head, sneezes) but nobody says it. At the clinic the doctor asks you; pick the right audio chunk from three. **Grandparent mode, "Doctor Nani":** Nani sees the word in big text and asks the child; the child touches their own nose; she marks it | **3** Being trusted with Nani's message; Doctor Nani is lovely in the room | **5** **Production:** picture → word. **Leaks:** matching a sound heard earlier (so nothing is said at home); text or pictures on pills (audio only until the reads stage); the odd one out (pills from one look-alike group) | **4** The only production-first mechanic here | **Arc 3 Ch4: carrying Nani's message to the doctor** | **3** Any M1 visit flipped |
 | **M12** | **Kasuku's echo** (Doctor says) | Kasuku, on his perch in the clinic, blurts body words. Act only when **the doctor** says it | **4** A Simon Says trap; funny parrot | **4** Still which part; adds inhibitory control. **Leaks:** Kasuku always wrong (so you can rule his word out); fixed. **Closed:** he echoes the right part a third of the time. **Needs an exception to the cast rule** "Kasuku never speaks during a task" | **4** | Hub and clinic, later | **3** A modifier on any visit |
+| **M13** | **The doctor's question** (*Is it this, or that?*; revision R4) | After the complaint, the doctor asks *[EN: Is it the {X}, or the {Y}?]*: for a part, a feeling or a care. Level 1: the patient answers and you act on it. Level 2: nobody answers; you act. Level 3: only on request ("?"), at a cost | **4** A real doctor's line; the child hears the word three times, once against a wrong one; the doctor looking at *you* for the answer | **4** **Which of two**, then the act itself. **Leaks:** a fixed option order; the wrong option predictable (last patient's part); answering by matching the sound of the complaint to the sound of an option; the doctor's glance. **Closed:** random order; the wrong option from the level's pool (far, then look-alike); the answer is always an act on the body or trolley, never a pill that repeats the sound; gaze on the patient's face; never asked when one option is left; costs the tick from level 3 | **4** The scaffold is the level structure, which no other mode has | Every visit at levels 1–2; Tell the doctor at level 1 | **4** Any word list fills the two slots; far and near pairs |
+| **M14** | **You're the patient** (revision R5) | First person, looking down at your own knees, feet and hands. The hurt is shown (a pink scuff; a sneeze). The doctor: *[EN: Is it your knee, or your hand?]* → two audio pills. *[EN: Does it hurt here?]* (his hand on a part) → yes/no pills. *[EN: Hot, or cold?]* for a cold. He treats you; you choose the plaster design; *[EN: All better!]* Optional "say it" with a parent's ✓ (speaking stage 1) | **5** Being looked after by a real, kind doctor; the plaster is the prize | **3** **Which of two heard words names what you see**, then yes/no: picture → word, the mode's only production. **Leaks:** the doctor's probe hand before the question; two-way guessing (50% a row). **Closed:** the *knee or hand?* question comes before any probe; the probe hand is the prompt for yes/no only, and it's wrong first half the time; 3–4 rows per visit; treated as teaching at level 1 (decision 6) | **5** No other mode puts the player in the chair | **Arc 3 Ch4, the first minute**; a free-play route | **3** Visible parts (hand, finger, arm, elbow, knee, foot, toe), a cold; plaster designs |
 
 **Also rejected:** injections, drips, surgery and bone-setting (fear; the Teddy Bear Hospital evidence); blood; patients getting worse while they wait, or leaving; triage by "who's most ill" (judging suffering is not a game for 5-year-olds); diagnosing an illness from clues (belongs to *Who did it?*); medicine doses, pills or spoons of syrup given by the player; a body chart or labelled drawers (they'd do the listening); hospital base building (*Operate Now*'s padding); crafting cures (Cook's verb); the red cross or red crescent (protected emblems under the Geneva Conventions; developers have been asked to remove them). The clinic's sign is a stethoscope.
 
@@ -100,24 +246,26 @@ Scoring 1–5. **Forces Kutchi** names the decision, the leaks and how each is c
 
 ## 4. Recommended first set
 
-**One visit engine where a visit is data**, the way a Cook recipe is: a patient, slots (part, side, feeling, care, count), what's said, and the steps to run. M1–M4 are steps of one visit; M7 is the day around it.
+*(Revised 25 Sept 2026 with the revision at the top of this doc.)* **One visit engine where a visit is data**, the way a Cook recipe is: a patient, slots (part, side, feeling, care, count), what's said, and the steps to run. M1–M4 are steps of one visit, **M13 is the scaffold that sets the level**, M14 is the same visit with you in the chair, and M7 is the day around it.
 
 | Order | Mechanic | Why first |
 |---|---|---|
-| 1 | **M1 Where does it hurt?** | The mode's reason to exist: body words as the decision. It needs the hotspot data every later mechanic uses |
-| 2 | **M2 The care trolley + M3 Gentle hands** | Without these, M1 is a quiz. Together they're the "treat": choose, then do. M3 reuses Cook's ring, track and drag code, so it's cheap |
-| 3 | **M4 Just right** | The most fun and most Kutchi-dense part (hot, cold, just right, add, remove) and the mode's distinct feel; the hot/cold words are already asked of the family (Round 1, Q11) |
-| 4 | **M7 Who's next?** | Turns single visits into a clinic morning with time management (the v2 core verb), Busy mode and kinship review |
-| + | **M8 Pass me** and **M9 the vet corner** come with the story build (phase 3) | M8 is Cook's, reused. M9 is data (new patients and an owner line) on the same engine, and the cats are the best hook for Layla |
+| 1 | **M13 The doctor's question** | The smallest block and the one every other uses: a line with two slots, an answer at level 1, silence at level 2, a cost at level 3. Build it first so every mechanic below is played through it from day one |
+| 2 | **M1 Where does it hurt?** (through M13) | The mode's reason to exist: body words as the decision. It needs the hotspot data every later mechanic uses |
+| 3 | **M2 The care trolley + M3 Gentle hands** | Without these, M1 is a quiz. Together they're the "treat": choose (*[EN: A plaster, or a bandage?]*), then do. M3 reuses Cook's ring, track and drag code, so it's cheap |
+| 4 | **M14 You're the patient** | The story's first minute and Layla's favourite: the lap view, two-way pills, yes/no, the plaster picker. Needs M1's parts and M3's plaster only; needs *yes* and *no* from the family (A8.1, A4.4) |
+| 5 | **M4 Just right** | The most fun and most Kutchi-dense part (hot, cold, just right, add, remove) and the mode's distinct feel, now asked as *[EN: Still cold, or just right?]*; the hot/cold words are asked in the Questions for Mum (G10–G14) |
+| 6 | **M7 Who's next?** | Turns single visits into a clinic morning with time management (the v2 core verb), Busy mode and kinship review; at level 2 the call is an *or*-question too (*[EN: Nana, or Ali?]*) |
+| + | **M8 Pass me**, **M9 the vet corner** and **M11 Tell the doctor** (two-way form) come with the story build (phase 3) | M8 is Cook's, reused. M9 is data (new patients and an owner line) on the same engine, and the cats are the best hook for Layla. M11 at level 1 is M13's question with two audio pills (picture → word), which the story needs once |
 
 **Held back:**
 
 | Mechanic | When | Why wait |
 |---|---|---|
-| M11 Tell the doctor | Phase 3, for the Arc 3 Ch4 story only; more when produce stages exist | Production; the story needs one use |
+| M11 Tell the doctor, open form (three pills, no question) | When produce stages exist | Production beyond two-way |
 | M6 Have a look | Straight after the first set | Instrument words, instrument art and a few "finds" |
 | M10 Silly cases | After M6 | Twists need the base to be stable, and several need M6 (the seed in the ear) |
-| M5 Does it hurt here? | When *yes* and *no* exist in Kutchi | Both are English placeholders (`data/cook.json` lines `yes`, `nope`) |
+| M5 Does it hurt here? (as a helper mechanic) | Folded into M14; as a helper mechanic only if Layla wants it after playtest | Two words; M14 already teaches them |
 | M12 Kasuku's echo | After Zafar decides on the cast rule | Needs the exception |
 
 ---
@@ -131,7 +279,7 @@ Scoring 1–5. **Forces Kutchi** names the decision, the leaks and how each is c
 | **3 Monsoon** | Ch2 "The leak" (seed) | Ali slips in a puddle, comically. He's fine: "later". Seeds his knee for Ch4 | Beat only |
 | 3 | Ch3 "The animals" (seed) | The hen hurt her foot getting into the shed. "We'll take her to the doctor" | Beat only |
 | 3 | **Ch4 "Nani has a cold"**, intro beat | Rain on the window. Nani sneezes (her glasses jump), holds her head, points to her throat, and goes to bed. **Nothing is said about where it hurts: you see it.** Nana: "go and tell the doctor" | M11 set-up |
-| 3 | **Ch4 errand: "The clinic"** (the mode's first round) | The clinic opens on the map. Greet the doctor. **Tell the doctor** what's wrong with Nani (M11: pick the chunks). He says he'll give you something for her after morning clinic. Help him with 3 patients: Ali's knee, the hen (vet), a wet villager who's cold. He hands you a closed bottle for Nani | M11, M7, M1–M4, M9 |
+| 3 | **Ch4 errand: "The clinic"** (the mode's first round; revision R6) | On the lane you slip in the Ch2 puddle at the gate (a tilt, *Arre re!*). The clinic opens on the map. Greet the doctor (formal). **You're the patient** first (M14, 60 s): *knee or hand?*, *does it hurt here?*, a plaster. Then **Tell the doctor** what's wrong with Nani (M11 in M13's two-way form: *[EN: her head, or her tummy?]*). He says he'll give you something for her after morning clinic: *[EN: Will you help me?]* Help him with 3 patients at level 1: Ali's knee ("you too!"), the hen (vet), a wet neighbour who's cold. He hands you a closed bottle for Nani | M14, M11, M13, M7, M1–M4, M9 |
 | 3 | Ch4 outro beat | Home. Nana: *Muke hikdo [EN: medicine] dine*: pick the bottle from three look-alikes (bottle, honey jar, pickle jar). Nana gives it to Nani. You tuck her blanket (one M4 exchange) | M8, M4 |
 | 3 | Ch5 "Chai together" (Cook) | Nani's warm drink (*dudh* + *hardar*, or *aadu* chai) in Cook; Nani feels better; the quilt patch is a stethoscope (Game Design: patch motifs) | Hand-off to Cook |
 | 3 | Monsoon side errands | Wet, cold neighbours; Simba soaked; Zazu's tail in the wool basket | M4, M9, M10 |
@@ -145,7 +293,7 @@ The Roadmap lists Ch4 as two errands, "Where does it hurt (Body/dress)" and "the
 
 | Cast | Role |
 |---|---|
-| **The doctor** | Host and task-giver: calls names, asks you to examine, gives any medicine himself. Big laugh; praises you. Speaks formally to elders (respect language) |
+| **The doctor** (Hannah's granddad; real likeness) | **Host, voice and the mode's warmth:** calls names, asks *[EN: Is it this, or that?]* (M13), treats the player first (M14), asks you to examine, gives any medicine himself. Big laugh; praises you. Speaks formally to elders (respect language). Never the butt of a joke (likeness rules, 7.4) |
 | **Nani** | First patient (at home, in bed, where her *Arre re!* is the warm-failure voice); the owner of Simba, Zazu and Kasuku in the vet corner, so she speaks their complaints |
 | **Nana** | Patient with a tendency ("always cold"); gives Nani the medicine in the outro |
 | **Ma, Ali, the older cousin, baby Isa** (on Ma's lap, once designed) | Patients with tendencies (Ali: too hot, always moving; the cousin: lost something in his ear) |
@@ -166,6 +314,7 @@ The Roadmap lists Ch4 as two errands, "Where does it hurt (Body/dress)" and "the
 |---|---|
 | **Open clinic** | Patients keep arriving (family, villagers, the cats, Kasuku) with complaints drawn from the player's weakest words; **"Close the clinic"** always in the sidebar, leading to the usual summary and pocket money (Cook's open kitchen pattern) |
 | **One patient** | A single visit, 60–90 s (Farah) |
+| **You're the patient** | One minute in the chair (M14): a random visible hurt or a cold, the doctor's two-way questions, a plaster in the design you choose |
 | **Explore** (no rows) | Tap any part of any patient: they name it and react (giggle, sneeze, wiggle toes). Tapping to hear a word is free here. Layla and a parent point and name together |
 | **Doctor Nani** (Grandparent mode) | See M11 |
 | **Clinic lab** | Every mechanic, patient and level on its own, with the leak bot (section 8.3) |
@@ -178,7 +327,8 @@ The Roadmap lists Ch4 as two errands, "Where does it hurt (Body/dress)" and "the
 
 | Stage | Words | Frames (existing Kutchi or placeholder) |
 |---|---|---|
-| **S4 body** (big parts first) | head, tummy, arm, leg, hand, foot; face close-up: eye, ear, nose, mouth, tooth, throat; later: neck, shoulder, back, chest, elbow, knee, finger, toe | `[EN: My {part} hurts]` · `[EN: Where does it hurt?]` · `[EN: Does it hurt here?]` |
+| **S4 body** (big parts first) | head, tummy, arm, leg, hand, foot; face close-up: eye, ear, nose, mouth, tooth, throat; later: neck, shoulder, back, chest, elbow, knee, finger, toe | `[EN: My {part} hurts]` · `[EN: Where does it hurt?]` · `[EN: Does it hurt here?]` · **`[EN: Is it the {X}, or the {Y}?]`** (M13, one frame for parts, feelings and care) · `[EN: The {X}.]` (the short answer) · *yes* / *no* |
+| **The doctor's lines** | — | `[EN: You first]` · `[EN: Will you help me?]` · `[EN: Let me see]` · `[EN: Bring me the {care}]` · `[EN: All better!]` · `[EN: Well done, helper]` |
 | **S4 feelings and body states** | hot, cold, just right, tired, sneezy (*a cold*), better; happy, sad | `[EN: I'm {feeling}]` · `[EN: How do you feel?]` · `[EN: still {feeling}]` · `[EN: too {feeling}]` · `[EN: I feel better]` |
 | **S4 health and care** | plaster, bandage, cool cloth, blanket, hot-water bottle, ice pack, pillow, tissue, warm drink (*dudh*, *hardar*, *aadu*, *chai* exist) | *Muke {care} khape.* · *Ne {care}.* · `[EN: Get well soon]` |
 | **S4 examining** (M6) | torch, stethoscope, forehead strip, tweezers; look, listen | `[EN: look in {part}]` · `[EN: listen to {part}]` · `[EN: open your mouth]` · `[EN: say aah]` · `[EN: breathe in]` |
@@ -208,7 +358,7 @@ The Roadmap lists Ch4 as two errands, "Where does it hurt (Body/dress)" and "the
 |---|---|---|
 | 1 Replay | The patient says it again (tap the row speaker, or their face) | Free the first time; after that the tick (Relaxed) or comfort drain (Busy) |
 | 2 Slow replay | Half speed, a pause before the key word | Tick / comfort |
-| 3 Warmer | The doctor gestures at **the top or bottom half** of the body; the rest dims. Must still hold **at least 3 candidate parts** (the face close-up counts as its 6 parts) | Tick + the combo breaks |
+| 3 Ask the doctor | *[EN: Is it the {X}, or the {Y}?]* (M13). Automatic at levels 1–2 (the level's scaffold, free); from level 3 it's the **"?" button**. Replaces the old "warmer" gesture | Free at levels 1–2; from level 3: tick (Relaxed) / comfort (Busy) + the combo breaks |
 | 4 Reveal | The row's Kutchi text (never English) | That row's ear star, from stage 2 |
 | 5 Translate | English gist | That row's ear star |
 | 6 Shown | The part twinkles (automatic only at stage 1; otherwise after 2 misses on a row) | That row's ear star; the word doesn't advance |
@@ -221,6 +371,7 @@ The Roadmap lists Ch4 as two errands, "Where does it hurt (Body/dress)" and "the
 | Knob | Level 1 | Level 2 | Level 3 | Level 4 (Arc 4+) |
 |---|---|---|---|---|
 | Rows per patient | 1 (part) + care named | 2 (part + feeling) | 2–3, one can be a "not" (*[EN: not that knee, the other one]*) | + a past-tense row |
+| **The doctor's question (M13)** | Always; a **far** pair; **the patient answers** | Always; a **look-alike** pair; **nobody answers** | Only on "?", costs the tick | *[EN: Did you fall, or bump it?]* |
 | Parts in play | Big parts: head, tummy, arm, leg, hand, foot | + face close-up (6) | + neighbours (elbow/knee, finger/toe, shoulder/neck), **left/right** | all |
 | Care | Named by the patient; trolley of 5 | Chosen from the feeling (2 valid); trolley of 7 | Trolley of 9; "pass me" mid-care | — |
 | Just right (M4) | — | 1–2 steps | 1–3 steps, two patients at once in Busy | — |
@@ -241,7 +392,7 @@ A miss costs that row's ear star and marks the word as a miss (two misses in a r
 ### 6.6 Role reversal
 
 - **M11 Tell the doctor** (story and free play): you see the hurt; choose the chunk *[EN: Nani's] + [EN: head] + [EN: hurts]* from audio pills of one look-alike group. Readers see text only at the reads stage.
-- **You're the patient:** in free play the player "falls off the swing" (a first-person view of their own grazed knee) and tells the doctor.
+- **You're the patient (M14, revision R5):** the hurt is shown in first person (the lap view); the doctor asks *[EN: Is it your knee, or your hand?]* and you answer with one of two audio pills, then *yes*/*no* to his probe. The optional "say it" step is shadowing with a parent's ✓ (speaking stage 1); no speech is graded by the app.
 - **Doctor Nani** (Grandparent mode): the app shows Nani a part in big Kutchi text; she asks the child *[EN: where's your nose?]*; the child touches their own nose; she taps ✓. This is TPR in the room, and it needs no recording.
 - **Instructing the patient** (M6, later): pick *[EN: open your mouth]* or *[EN: say aah]* and the patient does it (or does the wrong funny thing if you picked wrong).
 - Relations stored as data (platform item 5): a complaint is `{who, part, side, feeling, care}`, so any visit can be flipped.
@@ -252,7 +403,10 @@ This would be **Round 3 (body and health)**. None of it has been asked yet.
 
 | Need | Priority | Notes |
 |---|---|---|
-| **"My ___ hurts"** for head, tummy, arm, leg, hand, foot | **1: blocks M1** | Does the verb or the "my" change with the body part's gender or number? Does it need a word before the part (like Gujarati *maru*)? Record whole phrases if so |
+| **"Is it the knee, or the foot?"** and the word **"or"** | **1: blocks M13** (every level-1 and level-2 visit) | One question frame with two slots, used for parts, feelings and care. Also *[EN: Is it your knee, or your hand?]* (to the child) and *[EN: Is it Nani's head, or her tummy?]* (about someone else). Questions for Mum G94–G97; the feeling and care forms (*hot or cold?*, *a blanket or a cool cloth?*, *still cold or just right?*) G105–G107 |
+| **Short answers:** *The knee.* · *This one.* · **yes** · **no** | **1: blocks M13 and M14** | The patient's answer at level 1 (G98); yes/no are still Cook's placeholders (A8.1, A4.4) |
+| **The doctor's lines:** You first · Will you help me? · Let me see · Bring me the blanket · All better! · Well done, helper | 2 | G99–G104; whose voice records them is decision 2 in the revision |
+| **"My ___ hurts"** for head, tummy, arm, leg, hand, foot | **1: blocks M1** | Does the verb or the "my" change with the body part's gender or number? Does it need a word before the part (like Gujarati *maru*)? Record whole phrases if so (G41) |
 | Body parts: eye, ear, nose, mouth, tooth, throat, neck, shoulder, back, chest, elbow, knee, finger, toe | 1 | With gender and plural (two eyes, two knees) |
 | **hot, cold** (asked: Round 1, Q11) + *just right, still, too* | **1: blocks M4** | "I'm cold" vs "it's cold": which form does a person use? |
 | Care words: plaster, bandage, cloth, blanket, pillow, tissue, hot-water bottle, ice | 2 | What the family actually uses at home |
@@ -262,10 +416,10 @@ This would be **Round 3 (body and health)**. None of it has been asked yet.
 | Possessive: "Simba's paw", "Nana's knee" | 3 | Links Round 1, Q1 |
 | Animal parts: paw, tail, wing, beak; the words for cat, parrot, hen, goat | 3 | |
 | Examining: look, listen, open your mouth, say aah, breathe in; torch, stethoscope, tweezers | 4 | M6 |
-| **What the children call the doctor** | 1 | His name or a title (question 2) |
+| **What the children call the doctor** | 1 | His name or a title (E102; revision decision 1) |
 | **Nani's own home remedy** for a cold | 2 | For the Cook hand-off (*hardar dudh*? ginger chai?) |
 | Past tense: "I fell", "I bumped my ___" | 5 | Arc 4 |
-| Recording estimate | — | About 20 parts × one "hurts" phrase each (one long take), 10 feelings, 10 care nouns, 12 frames: about 60 items, one evening |
+| Recording estimate | — | About 20 parts × one "hurts" phrase each (one long take), 10 feelings, 10 care nouns, about 25 frames (the *or*-question needs recording per pair, or as two halves the engine joins: test which sounds natural): about 70 items, one evening. The doctor's own lines are a separate short session if he records them |
 
 ---
 
@@ -314,6 +468,7 @@ Add `star_sets.clinic` to the shared star data (ear / plaster / tick / bolt), ne
 - [ ] Only the body parts listed in 6.1.
 - [ ] No red cross or red crescent anywhere.
 - [ ] A short parents' note in settings: "pretend play; for real illness, see a doctor".
+- [ ] **The doctor's likeness (revision R8):** always competent, kind and in charge; the comedy is in the patients and the cats, never in him; no gags at his expense and no exaggerated features; his sheet is signed off by Zafar and Hannah and is the only reference after that; his name in the game and his voice are the family's decisions.
 
 ---
 
@@ -330,6 +485,7 @@ Add `star_sets.clinic` to the shared star data (ear / plaster / tick / bolt), ne
     "feel-cold": {"kutchi": null, "english": "cold", "adjust": "+warmth"}
   },
   "lines": {"hurts": {"e": "My {x} hurts."}, "feel": {"e": "I'm {x}."}, "come": {"e": "{x}, come!"},
+            "ask": {"e": "Is it the {x}, or the {y}?"}, "answer": {"e": "The {x}."}, "yourAsk": {"e": "Is it your {x}, or your {y}?"},
             "need": "@cook.need", "give": "@cook.give", "oops": "@cook.oops", "thanks": "@cook.thanks"},
   "grammar": {"hurts": {"frame": "hurts", "agree": null}, "side": "{side} {x}", "owner": "{owner}'s {x}"},
   "lookalike_groups": {"groups": [["body-eye", "body-ear", "body-nose"], ["body-hand", "body-foot"],
@@ -356,7 +512,10 @@ Add `star_sets.clinic` to the shared star data (ear / plaster / tick / bolt), ne
               {"if": "feeling", "do": "warm", "start": "$start", "direction": "$feeling"}]
     }
   },
-  "mechanics": {"where": {"levels": [{"parts": "big", "closeup": false, "minHitPx": 160}, {"closeup": true}, {"sided": true, "neighbours": true}]},
+  "mechanics": {"ask": {"levels": [{"pair": "far", "answered": true}, {"pair": "lookalike", "answered": false}, {"onRequest": true, "cost": "tick"}],
+                        "frame": "ask", "order": "random", "never": ["lastPatientPart", "ruledOut", "lastOption"]},
+                "you": {"pov": "lap", "parts": "$visibleParts", "rows": ["ask-pills", "probe", "ask-feel?"], "pills": {"text": "readsStageOnly"}, "sayIt": "stage1-shadow"},
+                "where": {"levels": [{"parts": "big", "closeup": false, "minHitPx": 160}, {"closeup": true}, {"sided": true, "neighbours": true}]},
                 "care": {"levels": [{"trolley": 5}, {"trolley": 7}, {"trolley": 9, "passMe": 0.4}]},
                 "warm": {"levels": [{}, {"steps": [1, 2]}, {"steps": [1, 3]}]},
                 "queue": {"levels": [{"waiting": 1}, {"waiting": [2, 3]}, {"waiting": [3, 4], "benches": 2, "comfort": true}]},
@@ -404,7 +563,9 @@ Add `star_sets.clinic` to the shared star data (ear / plaster / tick / bolt), ne
 | **Patient** (`patient.js`) | Seated pose, head-layer expressions, reactions (giggle, ahh, sneeze, shiver at stage 1 only), a blanket stack drawn in code | Medium |
 | **Warmth loop** (`mechanics/warm.js`) | State = steps from "just right"; each action changes it; the patient speaks the new state; Done | Small |
 | **Queue** (`queue.js`) | Bench seats shuffled, calls, one or two benches, comfort rings (Busy), no one ever leaves | Medium |
-| **Chunk picker** (`mechanics/tell.js`) | M11: audio pills from one look-alike group, text only at the reads stage | Small (reuses the choice pill) |
+| **Chunk picker** (`mechanics/tell.js`) | M11: audio pills from one look-alike group, text only at the reads stage; at level 1 it's M13's two-way question with two pills | Small (reuses the choice pill) |
+| **The doctor's question** (`mechanics/ask.js`) | M13: one line frame with two slots filled from any word list; random order; the pool rules from R4 (far, then look-alike; never the last patient's part, a ruled-out option or the last option left); plays the patient's answer at level 1; bound to the "?" button with a cost at level 3; a `lastAsked` record for the leak bot | Small |
+| **You're the patient** (`mechanics/you.js`) | M14: the lap view scene, the doctor leaning into frame, the two-way audio pills, the probe hand and yes/no pills, the plaster-design picker, the optional say-it recorder (Game Design speaking stage 1: record, play back beside the family's file, a parent taps ✓; nothing leaves the device) | Small–medium |
 | Hotspot editor (lab only) and `build/check_hotspots.py` | Draw polygons on a pose; check minimum size per screen size, overlap, mirroring | Small |
 
 **Code location.** Cook's engine lives in `js/cook/` under the `Cook.*` namespace. The cheapest honest route is to build the clinic's mechanics on that engine, and move the shared parts into a common folder as part of platform item 1 ("one app, one save"), in step with whatever Find it extracts. Don't copy-paste the engine.
@@ -427,6 +588,8 @@ Add `star_sets.clinic` to the shared star data (ear / plaster / tick / bolt), ne
 | Visual cue | Reads the patient's pose and expression, the worn blankets, the thermometer |
 | Probe | In M5, presses everything |
 | Kinship | In M7, taps whoever moved or was last to speak |
+| Second option | In M13, always the first (or always the second) option the doctor names |
+| Echo | In M13, picks the option whose audio duration matches the complaint's key word (sound matching without meaning) |
 
 **Pass:** every strategy earns the ear star in **fewer than 10%** of visits, over 500 visits per mechanic per level, per strategy. A **fair bot** that knows the answers must earn it in 100%. Placeholder English rows are flagged "not yet a Kutchi test" in the report (they can't fail for the right reason).
 
@@ -440,7 +603,7 @@ js/clinic/flow.js          the clinic morning, open clinic, one patient
 js/clinic/body.js          hotspots, sides, close-up, sore swirl
 js/clinic/patient.js       pose, expressions, reactions, blanket stack
 js/clinic/queue.js         bench, calls, benches, comfort
-js/clinic/mechanics/       where.js, care.js, apply.js, warm.js, call.js, tell.js (later: look.js, probe.js, echo.js)
+js/clinic/mechanics/       ask.js, where.js, care.js, apply.js, warm.js, call.js, you.js, tell.js (later: look.js, echo.js)
 data/clinic.json           words, lines, grammar, patients, visits, levels, upgrades, stars, tips
 data/patients/<id>.json    one hotspot file per patient pose
 data/scenes/clinic.json    bench, examination bench(es), trolley, door, perch, décor slots
@@ -463,6 +626,7 @@ assets/clinic/             backgrounds, poses, items (WebP)
 | Nani's bedroom (home) | **E** | Nani in bed, upper body above the blanket; reuse Find it's Arc 4 bedroom with a bed variant | Arc 3 Ch4 beats |
 | Village clinic | **E** | Find it's courtyard + a table and charpai layer under the neem tree | Arc 5 |
 | Vet | **E**, the animal sitting on the examination table | Cats drawn large on the table (tap targets) | M9 |
+| **You're the patient (the lap view)** | **First person, looking down** | Your own knees, feet and resting hands (the existing hand set, skinned per character), the bench edge; the doctor leans into the top of the frame. The scuff and the plaster are drawn in code | M14 |
 
 The art bible's line for the clinic ("T for the table; E for the patient") changes to **E for the patient, F for the trolley**. A T table isn't needed, because care is applied on the patient. Please update the art bible (question for the orchestrator, not a file this doc edits).
 
@@ -508,7 +672,8 @@ The art bible's line for the clinic ("T for the table; E for the patient") chang
 | Nani's bed variant of the Arc 4 bedroom | 1 layer | **Reuses** Find it's bedroom | ChatGPT (free) |
 | Village clinic table + charpai layer | 1 layer | **Reuses** Find it's courtyard | ChatGPT (free) |
 | **The doctor**: character sheet from photos | 1 | Sheet-first rule | ChatGPT (free), Zafar signs off |
-| Doctor poses: neutral, talking, big laugh, pointing up/down (the warmer hint), listening with a stethoscope, holding the bottle, waving, thinking | about 8 | From the sheet | **API edit** |
+| Doctor poses: neutral, talking (the *or*-question, gaze on the patient, hands folded), big laugh, **leaning in** (M14, from below), a hand reaching to press (the probe), listening with a stethoscope, holding the bottle, waving, thinking | about 9 | From the sheet; the old "pointing up/down" pose is dropped with the warmer hint | **API edit** |
+| **The lap view** (first person, seated: knees, feet, the bench edge; boy and girl variants in the game's skin tone; hands composited from the hand set) | 2 | New | ChatGPT (free) |
 | Seated full-body patient poses: Nani (in bed), Nana, Ma, Ali, the older cousin, 2 villagers, a village child | 8 | From each sheet; Nana, Ma and Ali are waiting for their sheets anyway | API edit |
 | Patient head expressions: ouch (mild), giggle, sneeze (2 frames), ahh, cold (stage 1), hot (stage 1), happy | about 8 per patient, 64 in all | `build/expressions.py` in-place edits | API edit |
 | Animals on the table: Simba, Zazu (sitting, from the cat sheets), Kasuku (existing perched pose), the hen (Arc 3 animals sheet) | 3 new poses | **Reuses** the cat, parrot and hen sheets | API edit |
@@ -648,9 +813,9 @@ The changes are prerequisites, not redesigns:
 
 ### Open questions for Zafar
 
-1. Keep the name **"Nani's clinic"**, or call it **the doctor's clinic** (his clinic in the lane; Nani is the first patient)?
-2. What do the children call the doctor: his name, or a title?
-3. Is the player **the doctor's helper** (he gives any medicine himself) right?
+1. ~~Keep the name "Nani's clinic", or call it the doctor's clinic?~~ **Answered by the revision (R1): the doctor's clinic; "The clinic" until the family names him.**
+2. What do the children call the doctor: his name, or a title? (E102; and does he record his own lines: revision decision 2)
+3. ~~Is the player the doctor's helper right?~~ **Answered (R1, R5): the helper, after one minute as his patient.**
 4. The vet corner: cats, Kasuku and the hen **at the clinic**, or a separate corner at home?
 5. Allow **Kasuku's echo** later (a decoy voice during a task, as an exception to the cast rule)?
 6. Feelings: include **sad** and **scared**, or keep to hot, cold, tired and sneezy?
@@ -666,10 +831,10 @@ The changes are prerequisites, not redesigns:
 
 | Phase | What's playable | Acceptance |
 |---|---|---|
-| **0 Prerequisites** (not code) | — | The Round 3 list sent to the family; doctor photos in `sources/private/`; platform item 1 (one app, one save) done or scheduled; answers to questions 1, 3 and 8 |
-| **1 Greybox visit** | Clinic lab: M1 Where, M2 Care, M3 Gentle hands on a **grey silhouette patient** (one hotspot file) at levels 1–3; the hotspot editor | Fair bot 100% ear stars; leak bot under 10% for every strategy over 500 visits per level (placeholder rows flagged); `check_hotspots.py` passes (level-1 parts ≥ 2 cm on iPad; phone opens zoomed); tap-cover check at all six sizes; no console errors; screenshots reviewed |
-| **2 Clinic morning** | M4 Just right, M7 Who's next, the intro card, 3 s quiet start, sidebar with "?" help, pass me, stars as they happen, the receipt, the word review, Relaxed/Busy with comfort rings, **one patient** and **open clinic** with "Close the clinic" | `test_clinic.py` plays a full morning and the open clinic at six sizes; every recast path exercised; leak bot under 10% on M4 and M7; a level-1 morning under 5 minutes; a single patient under 90 s |
-| **3 Story and vet** | Arc 3 Ch4 (the home beat, M11 Tell the doctor, the clinic errand with Ali, the hen and a villager, the medicine "pass me" at home, the blanket, the hand-off to Cook's Ch5), M9 vet patients (Simba, Zazu, Kasuku, hen), the map place, the quilt patch, the album, the thank-you shelf, the shop and upgrades | Ch4 runs end to end in the harness; the vet passes the leak bot with 6+ parts per animal; the shop has no item that touches the listening (a test lists upgrade knobs and fails on any hint or labelling knob); **Zafar plays it with a child** |
+| **0 Prerequisites** (not code) | — | The Questions for Mum Section G (body, health, the *or*-question, yes/no) answered; doctor photos in `sources/private/`; platform item 1 (one app, one save) done or scheduled; question 8 and the revision's decisions 1, 4 and 6 answered |
+| **1 Greybox visit** | Clinic lab: **M13 The doctor's question**, M1 Where, M2 Care, M3 Gentle hands on a **grey silhouette patient** (one hotspot file) at levels 1–3 (level 1: the question answered; level 2: unanswered; level 3: "?" at a cost); the hotspot editor | Fair bot 100% ear stars; leak bot under 10% for every strategy over 500 visits per level **from level 2** (level 1 reported separately, with the two-way rate, for decision 6; placeholder rows flagged); the new "second option" and "echo" strategies included; `check_hotspots.py` passes (level-1 parts ≥ 2 cm on iPad; phone opens zoomed); tap-cover check at all six sizes; no console errors; screenshots reviewed |
+| **2 Clinic morning and the chair** | **M14 You're the patient** (greybox lap view, two-way pills, yes/no, the plaster picker), M4 Just right (*[EN: Still cold, or just right?]*), M7 Who's next, the intro card, 3 s quiet start, sidebar with "?" = ask the doctor, pass me, stars as they happen, the receipt, the word review, Relaxed/Busy with comfort rings, **one patient**, **You're the patient** and **open clinic** with "Close the clinic" | `test_clinic.py` plays a full morning, a patient visit and the open clinic at six sizes; every recast path exercised; leak bot under 10% on M4 and M7; a level-1 morning under 5 minutes; a single patient under 90 s; the patient visit under 60 s |
+| **3 Story and vet** | Arc 3 Ch4 (the home beat, the puddle on the lane, **you're the patient first**, M11 Tell the doctor in its two-way form, the clinic errand with Ali, the hen and a neighbour, the medicine "pass me" at home, the blanket, the hand-off to Cook's Ch5), M9 vet patients (Simba, Zazu, Kasuku, hen), the map place, the quilt patch, the album, the thank-you shelf, the shop and upgrades | Ch4 runs end to end in the harness; the vet passes the leak bot with 6+ parts per animal; the shop has no item that touches the listening (a test lists upgrade knobs and fails on any hint or labelling knob); **Zafar plays it with a child** |
 | **4 Art and more** | The doctor's sheet and poses, seated patient poses, expressions, items, the two new hand poses; then M6 Have a look, M10 Silly cases, M5 (when yes/no exist), Doctor Nani entry | Visual QA checklist on every screenshot; family recordings replace placeholders file for file; the leak report shows real Kutchi rows passing |
 
 ### 12.2 The first three tasks
@@ -681,17 +846,21 @@ The changes are prerequisites, not redesigns:
 - Write `build/check_hotspots.py`: at each of the six screen sizes, report each part's hit area in px and approximate cm (use 132 px/inch for iPad and 160 for a phone as defaults, configurable), overlaps between parts, and any part below the level's `minHitPx`.
 - **Done when:** the editor round-trips the file, and the checker passes at level-1 settings on iPad and flags the face parts as "close-up only" on the phone.
 
-**Task 2: the `where` mechanic (M1) with its leak bot.**
-- Implement `js/clinic/mechanics/where.js` on Cook's mechanic framework (`Cook.Mech.define("where", …)`, read every number from `k`), using `body.js` for hit-testing (padded, snap to the nearest part within the level's radius) and the close-up magnifier (player-opened only).
-- Behaviour: the patient's line plays; 3 s quiet; right tap → the sore swirl at the part's `spot`, `z.listen(true)`; wrong tap → the giggle reaction, the recast line, `z.listen(false, "part")`, retry; the stage-1 twinkle in time with the word; hesitation → replay only; the hint ladder as in 6.3 with its costs.
-- Add a clinic lab entry, and the bot modes random, salience, frequency, repeat, duration and wait to `build/test_clinic.py --lab where --bot <s> --rounds 500`.
-- **Done when:** the fair bot gets 100%; every leak strategy is under 10% at levels 1–3; the tap-cover check passes at six sizes.
+**Task 2: the `ask` block (M13) and the `where` mechanic (M1) with their leak bot.**
+- Implement `js/clinic/mechanics/ask.js`: given a target word and a pool, pick the wrong option by the level's rule (far group at level 1, the target's look-alike group at level 2; never the last patient's part, an option already ruled out this visit, or the only option left), shuffle the order, play the `ask` line with the two slots (two recorded halves joined, or one file per pair: try both and keep what sounds natural), then at level 1 play the `answer` line; at level 3 expose it as the "?" button, charging the tick / comfort. Record `lastAsked` so the harness and the bot can see it.
+- Implement `js/clinic/mechanics/where.js` on Cook's mechanic framework (`Cook.Mech.define("where", …)`, read every number from `k`), using `body.js` for hit-testing (padded, snap to the nearest part within the level's radius) and the close-up magnifier (player-opened only). The doctor's pose during the question: gaze on the patient's face, hands folded; the patient's answer is a head-shot line with no pointing.
+- Behaviour: the patient's line plays; 3 s quiet; the doctor's question by level; right tap → the sore swirl at the part's `spot`, `z.listen(true)`; wrong tap → the giggle reaction, the recast line, `z.listen(false, "part")`, retry; the stage-1 twinkle in time with the word; hesitation → replay only; the hint ladder as in 6.3 with its costs.
+- Add a clinic lab entry, and the bot modes random, salience, frequency, repeat, duration, wait, **second option** (always the first, or always the second, option) and **echo** (picks the option whose audio duration matches the complaint's key word) to `build/test_clinic.py --lab where --bot <s> --rounds 500`.
+- **Done when:** the fair bot gets 100%; every leak strategy is under 10% at levels 2–3, and level 1 reports its rate (expected about 50% on the part alone and about 10% with the care) for decision 6; the tap-cover check passes at six sizes.
 
 **Task 3: `care` and `apply` (M2 + M3).**
 - `care.js`: a trolley from `scenes/clinic.json` slots, filled with **every** unlocked care item, shuffled per visit; the first pick is graded against the named care (level 1) or the feeling's valid set (level 2+); recast and retry; "pass me" at level 3.
 - `apply.js`: four gestures, each wrapping existing Cook code: **stick** (the pour drag to the spot; score = distance from the spot), **wrap** (Stir's track around the limb axis from the hotspot data; the count graded at level 2; never ends by itself; Done), **lift on green** (`S.ring` on the cloth; score by band), **tuck** (a vertical drag). The plaster star (gentle hands) comes from `z.skill`.
-- Chain `where → care → apply` as the `hurt` visit through the recipe engine (a visit is a recipe), so one lab button runs a whole level-1 visit.
+- The care choice goes through `ask.js` too: level 1 *[EN: A plaster, or a bandage?]* answered by the patient; level 2 the feeling word instead.
+- Chain `ask → where → ask → care → apply` as the `hurt` visit through the recipe engine (a visit is a recipe), so one lab button runs a whole level-1 visit.
 - **Done when:** a level-1 visit plays end to end in the lab at six sizes; the slot-memory and visual-cue bots stay under 10%; the harness runs the wrong-care recast path; screenshots reviewed.
+
+**Task 4 (first of phase 2): `you.js` (M14).** A greybox lap view (a flat image with hotspot `spots` for hand, finger, arm, elbow, knee, foot, toe), the doctor leaning in, the `yourAsk` line with two audio pills (text only at the reads stage), the probe (his hand at a random part, wrong first half the time) with yes/no pills, the plaster picker, `[EN: All better!]`; then the say-it recorder (record, play back beside the family's file, a parent's ✓; on-device only). **Done when** the visit runs under 60 s at six sizes and the two-way bot rate is reported for decision 6.
 
 ---
 
