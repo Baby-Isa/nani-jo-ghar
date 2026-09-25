@@ -13,7 +13,7 @@ finishes. It checks that the scene never shows a word (no <text> in the
 world except Big Ma's running tally), that a round never ends by itself
 (everything right, no Done: it waits), that level 1's stitch tolerance is
 at least 28 px, and that nothing throws. Screenshots go to
-build/screenshots/dress/<viewport>/ (not committed).
+$DRESS_SHOTS/<viewport>/ (default: the system temp folder, dress-screenshots/).
 
 The leak check (--bot N): the on-screen bot (js/dress/bot.js, which sees
 only the screen) plays N rounds of each first-set game at level 1 with
@@ -37,6 +37,7 @@ import random
 import socketserver
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
@@ -44,7 +45,8 @@ from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORT = int(os.environ.get("DRESS_TEST_PORT", os.environ.get("COOK_TEST_PORT", 8804)))
-SHOTS = os.path.join(ROOT, "build", "screenshots", "dress")
+# screenshots stay out of the repo (build/screenshots/ is not ignored and this mode may not edit .gitignore)
+SHOTS = os.environ.get("DRESS_SHOTS", os.path.join(tempfile.gettempdir(), "dress-screenshots"))
 CHROMIUM = os.environ.get("CHROMIUM", "/opt/pw-browsers/chromium")
 
 VIEWPORTS = [
@@ -257,7 +259,7 @@ def run_lab(pw, vp, levels, games, rounds):
 
 
 def node_rates(rounds):
-    out = os.path.join(ROOT, "build", "screenshots", "dress", "leak.json")
+    out = os.path.join(SHOTS, "leak.json")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     subprocess.run(["node", os.path.join(ROOT, "build", "leak_dress.mjs"), "--rounds", str(rounds), "--json", out], check=False, capture_output=True)
     with open(out) as f:
