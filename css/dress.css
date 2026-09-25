@@ -92,3 +92,9 @@ table.leak tr.bad td { color: var(--madder); font-weight: 800; }
   #mission .lr { padding: 2px 6px; }
   .mo-pill { min-height: 38px; font-size: 16px; padding: 4px 10px; }
 }
+
+/* portrait tablets: the sidebar sits under the picture (cook.css); Dress up keeps it one simple column */
+@media (max-aspect-ratio: 1332/1000) {
+  body.dress #side { display: flex; flex-direction: column; }
+  body.dress .side-rail { justify-content: flex-start; }
+}
