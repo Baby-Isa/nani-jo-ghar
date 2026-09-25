@@ -110,6 +110,7 @@
       this.basket = [];
       this.phase = "setup";
       this.reasons = [];
+      this.practice = [];
       this.kinds = [];
       this.wrongTaps = [];
       this.help = 0;
@@ -251,7 +252,7 @@
       const row = this.rowFor(item);
       this.wrongTaps.push(item.noun);
       const kind = row && row.want.not ? "no" : "wrong";
-      this.earMiss(row, `tapped ${item.noun}${row ? `, not ${row.want.noun}` : ""}`, kind);
+      this.earMiss(row, kind === "no" ? `tapped ${item.noun} (Nani said no ${item.noun})` : `tapped ${item.noun}${row ? `, not ${row.want.noun}` : ""}`, kind);
       // tapping everywhere: the stall pauses for a moment, and the sharp-eyes star goes
       const [n, win] = this.knobs.slowTaps || [3, 2000];
       this.wrongTimes = this.wrongTimes.filter((t) => now - t < win / Cook.speed).concat([now]);
@@ -280,13 +281,16 @@
     }
     /** A mistake on a row: the ear star goes if the row is tested (stage 2+). */
     earMiss(row, why, kind = "wrong") {
+      if (row) row.miss = true;
+      if (row && !this.tested(row)) {
+        // a new word: taught, not tested (noted on the result card, the star stays)
+        this.practice.push(wordsOf(why));
+        return;
+      }
       this.reasons.push(wordsOf(why));
       this.kinds.push(kind);
-      if (row) row.miss = true;
-      if (!row || this.tested(row)) {
-        this.earLost = true;
-        UI.mission.star("ear", "lost");
-      }
+      this.earLost = true;
+      UI.mission.star("ear", "lost");
     }
 
     /* ---- help (design s5.3) ---- */
@@ -427,6 +431,7 @@
         coins,
         receipt,
         reasons: this.reasons.slice(),
+        practice: this.practice.slice(),
         kinds: this.kinds.slice(),
         help: this.help,
         bestCombo: this.bestCombo,
@@ -451,7 +456,7 @@
     // a digit only while the number word is being learned (stages 1-2): the Roadmap's "shown and heard"
     if (n && !r.done && !r.revealed && Cook.wordStage(Cook.numId(n)) < 3) li.querySelector(".wp-text").insertAdjacentHTML("beforeend", ` <span class="ldigit" title="How many">${n}</span>`);
     // the running tally: what's in the basket for this row (never what's left)
-    if (r.got) li.insertAdjacentHTML("beforeend", `<span class="ltally" title="In your basket">×${r.got}</span>`);
+    if (r.got) li.querySelector(".wp-text").insertAdjacentHTML("beforeend", ` <span class="ltally" title="In your basket">×${r.got}</span>`);
   }
   function showCombo(n) {
     const c = $("#combo");

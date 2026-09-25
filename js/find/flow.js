@@ -103,6 +103,7 @@
         <div class="cc-stars">${starsHtml(card.stars)}</div>
         <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>Pocket money</span><b>${card.coins}</b></div></div>
         ${card.reasons.length ? `<div class="cc-why">Ear: ${esc(card.reasons.slice(0, 3).join("; "))}</div>` : ""}
+        ${card.practice.length ? `<div class="cc-why">New words, taught not tested: ${esc(card.practice.slice(0, 3).join("; "))}</div>` : ""}
       </div>
       <div class="rc-right">
         <div class="rc-cols">
@@ -268,7 +269,11 @@
         const row = r.openRows[0];
         const live = r.items.filter((it) => !it.gone && !it.off);
         const targets = row ? live.filter((it) => Find.matches(it, row.want)) : [];
-        if (!row || !targets.length) return { kind: "click", selector: "#find-done" };
+        if (!row || !targets.length) {
+          // everything's found: Done (and, for the test's over-count mistake, one more of a listed thing)
+          const extra = live.find((it) => V.inView(centre(it).x, centre(it).y, 30) && r.rows.some((x) => !x.want.not && Find.matches(it, x.want)));
+          return { kind: "click", selector: "#find-done", sextra: extra ? V.worldToScreen(centre(extra).x, centre(extra).y) : null };
+        }
         // the nearest one in view first (so a zoomed phone pans less)
         const inView = targets.filter((it) => V.inView(centre(it).x, centre(it).y, 30));
         const t = (inView.length ? inView : targets)[0];

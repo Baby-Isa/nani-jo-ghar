@@ -64,7 +64,8 @@
       .slice(0, k.clutterKinds || 0)
       .forEach((id) => kinds.push({ noun: id, copies: Find.rint(1, 2), clutter: true }));
     // a "no X" row: X is a look-alike that is out on the stall
-    const decoys = kinds.filter((x) => x.decoy);
+    // (never a word a non-speaker could read as English: "no kivi" would give it away)
+    const decoys = kinds.filter((x) => x.decoy && (k.cognateTargets || !Find.isCognate(x.noun)));
     if (k.noRow && Math.random() < k.noRow && decoys.length) {
       const d = decoys.find((x) => targets.some((t) => Find.sameGroup(t, x.noun))) || decoys[0];
       d.no = true;
