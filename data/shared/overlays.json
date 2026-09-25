@@ -1,0 +1,44 @@
+{
+  "_about": "Overlay-at-anchor sprites (js/shared/overlay.js; spec in docs/shared-api.md s5). bases: a sprite (img, its pixel size) with named anchors as normalised [x, y] in the image, a greybox shape for when there's no image, and fit: per-layer nudges {dx, dy, w} (fractions of the base) so each overlay sits within 4 px on this base. layers: an overlay drawn with its pivot (0..1 of its own box) on an anchor, w a fraction of the drawn base width, aspect h/w (or size [w, h] of its image), z order (base is 0; negative goes behind), tint true = a neutral sprite coloured in code, slot = what it replaces when worn (Dress up's slots: head, top, layer, bottom, feet, wrap, wrist, carry), shape = its greybox. 'item:*' is the template for any held item: item:<word id> takes its picture from the mode (opts.itemImage). Anchors on the three upper-body crops are measured by eye from assets/cook/characters/*-neutral.webp (the crops end at the chest, so 'hands' sits on the bottom edge: a held item is shown held up in front); tune them in lab/shared.html. colours: placeholder hexes for code tints until the family's colour words arrive (Dress up's colour words carry their own hex, which wins).",
+  "bases": {
+    "nana-upper": {
+      "img": "assets/cook/characters/nana-neutral.webp", "size": [370, 389], "view": "upper", "shape": "person",
+      "anchors": { "head": [0.5, 0.06], "eyes": [0.5, 0.27], "neck": [0.5, 0.52], "chest": [0.5, 0.72], "hands": [0.5, 0.97] },
+      "fit": { "ov-cap": { "w": 0.46 }, "ov-glasses-round": { "w": 0.42 }, "ov-glasses-rect": { "w": 0.42 } }
+    },
+    "ma-upper": {
+      "img": "assets/cook/characters/ma-neutral.webp", "size": [341, 405], "view": "upper", "shape": "person",
+      "anchors": { "head": [0.5, 0.04], "eyes": [0.52, 0.27], "neck": [0.52, 0.5], "chest": [0.52, 0.72], "hands": [0.5, 0.97] },
+      "fit": { "ov-cap": { "w": 0.5 }, "ov-glasses-round": { "w": 0.4 }, "ov-glasses-rect": { "w": 0.4 } }
+    },
+    "cousin-upper": {
+      "img": "assets/cook/characters/cousin-neutral.webp", "size": [255, 379], "view": "upper", "shape": "person",
+      "anchors": { "head": [0.5, 0.03], "eyes": [0.5, 0.31], "neck": [0.5, 0.53], "chest": [0.5, 0.72], "hands": [0.5, 0.97] },
+      "fit": { "ov-cap": { "w": 0.64 }, "ov-glasses-round": { "w": 0.6 }, "ov-glasses-rect": { "w": 0.6 } }
+    },
+    "grey-person": {
+      "img": null, "size": [300, 400], "view": "upper", "shape": "person",
+      "anchors": { "head": [0.5, 0.06], "eyes": [0.5, 0.25], "neck": [0.5, 0.45], "chest": [0.5, 0.7], "hands": [0.5, 0.95] }
+    },
+    "grey-cat": {
+      "img": null, "size": [300, 300], "view": "full", "shape": "cat",
+      "anchors": { "head": [0.5, 0.06], "eyes": [0.5, 0.25], "neck": [0.5, 0.42], "chest": [0.5, 0.6], "hands": [0.5, 0.8], "paws": [0.5, 0.94] }
+    }
+  },
+  "layers": {
+    "ov-cap":           { "anchor": "head",  "pivot": [0.5, 0.75], "w": 0.45, "aspect": 0.45, "z": 30, "tint": true, "defaultTint": "white", "slot": "head", "shape": "arc" },
+    "ov-glasses-round": { "anchor": "eyes",  "pivot": [0.5, 0.5],  "w": 0.42, "aspect": 0.32, "z": 25, "shape": "glasses" },
+    "ov-glasses-rect":  { "anchor": "eyes",  "pivot": [0.5, 0.5],  "w": 0.42, "aspect": 0.28, "z": 25, "shape": "glasses" },
+    "ov-scarf":         { "anchor": "neck",  "pivot": [0.5, 0.25], "w": 0.7,  "aspect": 0.35, "z": 20, "tint": true, "defaultTint": "red", "slot": "wrap", "shape": "rect" },
+    "ov-shawl":         { "anchor": "chest", "pivot": [0.5, 0.35], "w": 1.0,  "aspect": 0.55, "z": 18, "tint": true, "defaultTint": "blue", "slot": "wrap", "shape": "rect" },
+    "ov-dupatta":       { "anchor": "head",  "pivot": [0.5, 0.2],  "w": 0.95, "aspect": 1.0,  "z": -5, "tint": true, "defaultTint": "green", "slot": "wrap", "shape": "rect" },
+    "ov-bangles":       { "anchor": "hands", "pivot": [0.5, 0.8],  "w": 0.3,  "aspect": 0.35, "z": 35, "tint": true, "defaultTint": "red", "slot": "wrist", "shape": "rings" },
+    "ov-collar-bell":   { "anchor": "neck",  "pivot": [0.5, 0.3],  "w": 0.3,  "aspect": 0.3,  "z": 22, "tint": true, "defaultTint": "red", "shape": "rect" },
+    "ov-trace":         { "anchor": "paws",  "pivot": [0.5, 0.5],  "w": 0.45, "aspect": 0.3,  "z": 15, "tint": true, "defaultTint": "yellow", "shape": "smudge" },
+    "item:*":           { "anchor": "hands", "pivot": [0.5, 0.75], "w": 0.3,  "aspect": 1.0,  "z": 40, "shape": "item" }
+  },
+  "colours": {
+    "_about": "Placeholder tints (no Kutchi here: colour words live in each mode's data).",
+    "white": "#f4efe6", "red": "#b72424", "green": "#2f7a3b", "blue": "#2b5aa0", "yellow": "#e3b21c", "black": "#2a2622", "orange": "#e0762b", "pink": "#d9679a", "brown": "#7a4a2a"
+  }
+}
