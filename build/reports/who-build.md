@@ -3,7 +3,7 @@
 **Branch:** `claude/build-who`. **Open:** `who.html?lab=1` (add `&game=g3|g1|g2|g5&level=1|2&seed=N&debug=1`); the story case is `who.html?case=a1c3-sweets`.
 
 ## Built
-- **`js/who/case.js`**: the engine, pure and seeded (browser and Node). It generates, solves and grades all four kinds (one each, keep who fits, Nani guesses, Tell Ali), plus the star rules. The data is in `data/who.json` and `data/scenes/sofa.json`.
+- **`js/who/case.js`**: the engine, pure and seeded. It generates, solves and grades all four kinds (one each, keep who fits, Nani guesses, Tell Ali), plus the star rules. The data is in `data/who.json` and `data/scenes/sofa.json`.
 - **Greybox Case lab, L1–2:** G3 Look closer (drag the magnifier), G1 Who ate this one?, G2 Keep who fits, and G5 Tell Ali (a dealt card; Ali acts on the word; mic, then pills, or a parent's tick). One file per mechanic (`lineup`, `examine`, `accuse`) and per game.
 - **Tests:** `node build/leak_who.mjs` and `python3 build/test_who.py --lab --viewport all` (port 8803). Everything passes on all six sizes.
 
@@ -15,8 +15,7 @@
 - G5: 0% voice star by pills (random pills solve 12–17%, coins only)
 - G4 logic: 6.3% (6.25%)
 
-Tap-all, early accuse and waiting all score 0%. Every generator rule holds, and the culprit's slot is uniform.
-UI bot, blind through the real screen: G1 4.5% and G3 1.0% (200 rounds each), G2 3.3% (60 rounds). All within 2 points of the logic bot.
+Tap-all, early accuse and waiting: 0%. Every generator rule holds. UI bot: G1 4.5% and G3 1.0% (200 rounds each), G2 3.3% (60 rounds), within 2 points of the logic bot.
 
 ## Stubs to swap
 - `js/who/stubs/whichone.js` → the foundation's "which one?" module (one line in `case.js`).
