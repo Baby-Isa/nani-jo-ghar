@@ -512,7 +512,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ---- short landscape phones (e.g. 915x375): a tight sidebar ---- */
 @media (max-height: 430px) {
-  #live { min-height: 40px; }
+  /* never squeeze Nani's line (a recast, her tadka order) under the goal:
+     with a long order the sidebar scrolls and the goal moves down instead */
+  #live { min-height: 40px; flex: 1 0 auto; }
   #live #nani-card { max-height: 32vh; }
   #how { padding: 5px 7px; font-size: 11.5px; }
   #how .how-text { max-height: 58px; overflow-y: auto; }
