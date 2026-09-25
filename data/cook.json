@@ -577,6 +577,12 @@
    "english": "Ali",
    "gender": "he",
    "src": "a name (the cousin)"
+  },
+  "ph-pantry": {
+   "kutchi": null,
+   "english": "pantry",
+   "gender": "unknown",
+   "src": "placeholder"
   }
  },
  "lines": {
@@ -886,6 +892,126 @@
   }
  },
  "recipes": {
+  "pantry": {
+   "_about": "Wave 6 (docs/UX-PRINCIPLES.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
+   "name": "ph-pantry",
+   "english": "Pantry",
+   "price": 2,
+   "stations": [
+    "fetch"
+   ],
+   "free": false,
+   "how": "Listen to what Nani needs, then tap each one into the basket.",
+   "lists": {
+    "basics": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "cook-atto",
+     "cook-daal"
+    ],
+    "shelf": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "cook-atto",
+     "cook-daal",
+     "veg-01",
+     "veg-02",
+     "veg-03",
+     "spi-10",
+     "veg-14",
+     "spi-16",
+     "spi-01"
+    ]
+   },
+   "slots": {
+    "first": {
+     "type": "items",
+     "from": {
+      "byLevel": [
+       "$basics",
+       "$shelf"
+      ]
+     },
+     "take": [
+      1,
+      1
+     ],
+     "prefer": "weak"
+    },
+    "rest": {
+     "type": "items",
+     "from": {
+      "byLevel": [
+       "$basics",
+       "$shelf"
+      ]
+     },
+     "exclude": "first",
+     "take": {
+      "byLevel": [
+       [
+        2,
+        2
+       ],
+       [
+        3,
+        3
+       ],
+       [
+        4,
+        4
+       ],
+       [
+        5,
+        5
+       ]
+      ]
+     },
+     "prefer": "weak",
+     "order": "any"
+    }
+   },
+   "say": [
+    {
+     "frame": "give",
+     "head": true,
+     "x": [
+      "$first"
+     ]
+    },
+    {
+     "forEach": "$rest",
+     "frame": "and",
+     "x": [
+      "$it"
+     ]
+    }
+   ],
+   "need": [
+    "$first",
+    "$rest"
+   ],
+   "steps": [
+    "Pantry"
+   ],
+   "run": [
+    {
+     "do": "fetch",
+     "need": [
+      "$first",
+      "$rest"
+     ],
+     "askLines": false
+    },
+    {
+     "do": "serve",
+     "key": "pantry",
+     "art": "basket"
+    }
+   ]
+  },
   "chai": {
    "name": "cook-chai",
    "english": "Chai",
@@ -897,7 +1023,7 @@
     "count",
     "pour"
    ],
-   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (milk or no milk, how many sugars or none, and which chai: plain, with elchi or with aadu; at level 3 also half or full), so those rows wait for the tray (`when`). Level 1: two people, each their own way; level 2: three; level 3: three plus half/full. The hand stays gentle at level 1 (the tray's own levels); the listening varies from the first order. Tastes are only a bias (tasteChance).",
+   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (dudh or nar dudh; Muke chai me {n} khun khape or nar khun; plain, elchi waari chai or aadu waari chai; at level 4 also half or full), so those rows wait for the tray (`when`). Wave 6 levels, each adding one thing: 1 = one cup; 2 = two; 3 = three; 4 = three plus half/full. Each cup is one card with a fixed shape (`card`). Tastes are only a bias (tasteChance).",
    "lists": {
     "family": [
      "nana",
@@ -911,6 +1037,7 @@
      "who": "$family",
      "count": {
       "byLevel": [
+       1,
        2,
        3,
        3
@@ -943,6 +1070,7 @@
       },
       "amount": {
        "byLevel": [
+        null,
         null,
         null,
         {
@@ -1054,10 +1182,33 @@
      "do": "wait",
      "ms": 600
     }
-   ]
+   ],
+   "how": "Each person says how they like their chai. Make every cup their way.",
+   "card": {
+    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them.",
+    "slots": [
+     [
+      "cook-dudh"
+     ],
+     [
+      "cook-khun"
+     ],
+     [
+      "spi-10",
+      "veg-14"
+     ],
+     [
+      "ph-half",
+      "ph-full"
+     ]
+    ],
+    "optional": [
+     3
+    ]
+   }
   },
   "maani": {
-   "_about": "The Maani line (data/stations/maani-line.json): how many of each kind, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Level 1 always asks for both doughs (three maani: one kind two, the other one, so the counts decide); level 2 asks for more, any mix. Level 3 adds big/small (English placeholders): a compound kind, ph-big+cook-maani, is said 'bo big maani'.",
+   "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, and a second tawa; 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
    "name": "cook-maani",
    "english": "Maani",
    "price": 3,
@@ -1074,11 +1225,7 @@
         "cook-maani",
         "cook-bajrmaani"
        ],
-       "total": 3,
-       "min": {
-        "cook-maani": 1,
-        "cook-bajrmaani": 1
-       }
+       "total": 1
       },
       {
        "type": "tally",
@@ -1086,11 +1233,18 @@
         "cook-maani",
         "cook-bajrmaani"
        ],
-       "total": {
-        "int": [
-         3,
-         5
-        ]
+       "total": 2
+      },
+      {
+       "type": "tally",
+       "kinds": [
+        "cook-maani",
+        "cook-bajrmaani"
+       ],
+       "total": 3,
+       "min": {
+        "cook-maani": 1,
+        "cook-bajrmaani": 1
        }
       },
       {
@@ -1126,7 +1280,8 @@
     },
     {
      "tally": "$maani",
-     "frame": "and"
+     "frame": "and",
+     "cards": 1
     }
    ],
    "need": [
@@ -1147,7 +1302,8 @@
      "key": "chapati-puffed",
      "count": "$made"
     }
-   ]
+   ],
+   "how": "Listen for which maani and how many. Roll each one, then cook it on the tawa."
   },
   "daal": {
    "name": "cook-daal",
@@ -1379,7 +1535,8 @@
      "count": 1
     }
    ],
-   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`)."
+   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`).",
+   "how": "Chop what they say, add the spices in the order Nani says, then stir."
   },
   "chaat": {
    "name": "ph-chaat",
@@ -1520,7 +1677,8 @@
      "count": 1,
      "seq": "$seq"
     }
-   ]
+   ],
+   "how": "Build the bowl in the order they say. Leave out what they say no to."
   },
   "samosa": {
    "name": "ph-samosa",
@@ -1647,7 +1805,8 @@
      "veg-12",
      "ph-dhana"
     ]
-   }
+   },
+   "how": "Fill them with what they say, fold them, then fry them."
   },
   "mishkaki": {
    "name": "ph-mishkaki",
@@ -1655,10 +1814,9 @@
    "price": 6,
    "stations": [
     "thread",
-    "grill",
-    "fry"
+    "grill"
    ],
-   "_about": "The order says how many skewers of each kind (a tally: \"bo ghos, hikdo vegetable\"), and when there's a mixed one its pieces in order (ne poi): meat and the three vegetables, never the same piece twice running, so the list can't merge into a count that sounds like a skewer row. The Mishkaki grill station (data/stations/mishkaki-grill.json) threads, grills and plates them; the chips basket is always offered there and the chips are fried only if you put them on. `byLevel` values change the skewers by the order's level: 1 = two skewers, meat or veg (two meat, two veg or one of each: listen); 2 = two or three, one may be mixed; 3 = three or four, up to two mixed.",
+   "_about": "The order says how many skewers of each kind (a tally: \"ba ghos, hakro vegetable\"), and when there's a mixed one its pieces in order (Pela ghos, ne poi …): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/UX-PRINCIPLES.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
    "lists": {
     "skewer": [
      "ph-meat",
@@ -1683,6 +1841,10 @@
        ],
        [
         "ph-meat",
+        "ph-veg"
+       ],
+       [
+        "ph-meat",
         "ph-veg",
         "ph-mixed"
        ],
@@ -1695,6 +1857,7 @@
      },
      "total": {
       "byLevel": [
+       1,
        2,
        {
         "int": [
@@ -1713,6 +1876,7 @@
      "max": {
       "ph-mixed": {
        "byLevel": [
+        0,
         0,
         1,
         2
@@ -1734,9 +1898,6 @@
      ],
      "shuffle": true,
      "order": "sequence"
-    },
-    "chips": {
-     "chance": 0.6
     }
    },
    "say": [
@@ -1748,43 +1909,26 @@
     },
     {
      "tally": "$skewers",
-     "frame": "and"
+     "frame": "and",
+     "cards": 4
     },
     {
      "if": "skewers.ph-mixed",
-     "list": "$pattern"
-    },
-    {
-     "if": "chips",
-     "frame": "and",
-     "x": [
-      "ph-chips"
-     ]
+     "list": "$pattern",
+     "cardOf": "ph-mixed"
     }
    ],
    "need": [],
    "steps": [
     "Skewer",
-    "Grill",
-    "Chips"
+    "Grill"
    ],
    "run": [
     {
      "do": "mishkaki-grill",
      "skewers": "$skewers",
      "pattern": "$pattern",
-     "chips": "$chips",
      "as": "grill"
-    },
-    {
-     "if": "grill.chips",
-     "do": "interrupt"
-    },
-    {
-     "if": "grill.chips",
-     "do": "fry",
-     "kind": "chips",
-     "count": 1
     },
     {
      "do": "serve",
@@ -1792,7 +1936,8 @@
      "count": "$grill.count",
      "art": "$grill.art"
     }
-   ]
+   ],
+   "how": "Thread each skewer the way they say. Then take them to the barbecue."
   }
  },
  "stations": {
@@ -1892,11 +2037,15 @@
   "fetch": {
    "levels": [
     {
-     "shelf": 11,
-     "minDecoys": 5,
+     "shelf": 8,
+     "minDecoys": 4,
      "lookalikes": 2,
      "flyMs": 520,
      "passMe": 0.5
+    },
+    {
+     "shelf": 11,
+     "minDecoys": 5
     },
     {
      "shelf": 13,
@@ -2593,10 +2742,17 @@
    "id": 1,
    "title": "Chai for Nana",
    "teach": [
+    "pantry",
     "chai"
    ],
-   "gist": "Nana is coming for chai. Nani shows you once, then it's your turn!",
+   "gist": "Nani needs a few things from the pantry. Then Nana is coming for chai!",
    "orders": [
+    {
+     "who": "nani",
+     "dishes": [
+      "pantry"
+     ]
+    },
     {
      "who": "nana",
      "dishes": [
@@ -2611,7 +2767,7 @@
    "teach": [
     "maani"
    ],
-   "gist": "Everyone wants maani today. Listen for how many!",
+   "gist": "Everyone wants maani today. Listen for which kind, and how many!",
    "orders": [
     {
      "who": "cousin",
@@ -2631,7 +2787,10 @@
      "dishes": [
       "maani",
       "chai"
-     ]
+     ],
+     "level": {
+      "maani": 2
+     }
     }
    ]
   },
@@ -2656,7 +2815,7 @@
       "maani"
      ],
      "level": {
-      "maani": 2
+      "maani": 3
      }
     },
     {
@@ -2746,7 +2905,10 @@
      "dishes": [
       "mishkaki",
       "chaat"
-     ]
+     ],
+     "level": {
+      "mishkaki": 2
+     }
     },
     {
      "who": "ma",
@@ -3160,7 +3322,7 @@
   }
  },
  "calm": {
-  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1).",
+  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: bulbMs = how long the light bulb shows English, by the order's level (5, 3, 2, 1 s); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
   "quietMs": 4000,
   "hintMs": [
    7000,
@@ -3172,6 +3334,17 @@
    "relaxed": 0.4,
    "busy": 0.55,
    "level1": 0.2
+  },
+  "bulbMs": [
+   5000,
+   3000,
+   2000,
+   1000
+  ],
+  "coachSteps": 4,
+  "uiAfter": {
+   "stars": 1,
+   "bulb": 2
   }
  },
  "tips": {

@@ -96,7 +96,8 @@
         x: bx + dx * bw,
         y: by - bh + dy * bh + z.L(40),
       }));
-      const ask = (id, first) => Lang.line(Lang.orderFrame(first ? 0 : 1), Lang.phrase([id]));
+      // Nani's list: "Muke atto de." (give me: the family's words), then "Ne khun."
+      const ask = (id, first) => Lang.line(first && Cook.data.lines.give ? "give" : Lang.orderFrame(1), Lang.phrase([id]));
       if (ctx.guided && askLines) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
       const remaining = need.slice();
       let n = 0;
@@ -157,9 +158,10 @@
     verb: "Fetch",
     async run(L) {
       const R = Cook.Recipes;
-      const d = R.chai.make("nana");
+      // Nani's pantry list (Wave 6: three things at level 1, one more each level)
+      const d = R.pantry.make("nani", { level: L.level });
       L.card(d, ["Pantry"]);
-      await L.station("fetch", { need: R.chai.need(d), passMe: "always" });
+      await L.station("fetch", { need: R.pantry.need(d), passMe: "always" });
     },
   });
 })(window);

@@ -21,7 +21,9 @@
  * room, "is anything cooking", a poke that resets Nani's hint timer).
  * Params: skewers ({kind: count}: the order), pattern (the mixed skewer,
  * in order), chips (ordered? omit for no basket), stock (fill the rack
- * with ready skewers: the standalone grill), line, dx (shift the layout).
+ * with ready skewers: the standalone grill), rackItems ([{pieces}]: the
+ * skewers threaded before, Wave 6's one job at a time), line, dx (shift
+ * the layout).
  * Knobs (data.mechanics.grill): band, rate, rateSpread, turns, spots, rack,
  * burntScore, ignoreBelow.
  *
@@ -887,6 +889,9 @@
         }
         Cook.shuffle(items).forEach((pieces) => placeOnRack({ pieces }));
       }
+
+      /* Wave 6: the skewers threaded before "Go to the barbecue" wait on the rack */
+      if (params.rackItems) params.rackItems.slice(0, k.rack).forEach((it) => placeOnRack({ pieces: it.pieces }));
 
       /* the thread zone's skewers arrive on the rack */
       line.room = () => rack.filter((r) => !r).length - incoming;
