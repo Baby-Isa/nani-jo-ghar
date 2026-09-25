@@ -72,8 +72,15 @@ These three badges replace the old star labels in the result card. They stay map
 
 ## 11. Show progress, not verdicts (Zafar, 25 Sept, late)
 - **A tally with pictures.** Stations where you make several things show a small tally in the top-right corner: a picture of each item with how many you've done so far (e.g. 🧅 3, 🍅 2 in the chop game). It shows what *you* did, never the target (the existing rule). Applies to every mode where you collect, chop, count, fetch or place several things.
-- **Tick off the instruction card.** A line on the card gets a tick when that part is done (chopped, in the bowl, fried…).
-  - Level 1 (onboarding): the tick appears **automatically** when the right amount is reached.
-  - From level 2: an automatic tick would give the count away (you'd chop until it ticks). So the child **ticks the line themselves** ("done"), and the tick doesn't say whether it's right.
-  - Zafar's caution: once a tick is there, players expect it. So keep the self-tick at every level rather than removing ticks later.
+- **Tick off the instruction card, automatically, at every level** (Zafar, 25 Sept, late: final). A line ticks when that part is done right (the right amount chopped, in the bowl, fried…). The challenge is doing the right things: wrong items, extra ones or the wrong order count against you in the end review.
 - **No negative feedback during play.** No red crosses or "wrong" buzzes mid-round (at least from level 2). Mistakes are shown in the end-of-round review (§9 accuracy badge, then the word review). Level 1 keeps its gentle, one-time correction as part of onboarding.
+
+## 12. One way to control things, forever (Zafar, 25 Sept, late)
+- **Tap the item.** Once a control is set, it never changes: no switching from tap to drag at a higher level, no press-and-hold in one station and tap in another. Levels make the *Kutchi* harder, never the controls. (This overrides any design default that says "drag from level 2", e.g. the clinic's belt: it's tap at every level.)
+- **Liquids pour on a tap too.** Cook's press-and-hold pour didn't land in testing. Tap the jug and it pours the right amount, like every other item.
+- The detail and the success of each mode is in its mini-games: what you do, where the challenge is, where the fun is, where the instruction is, and what's new compared with the other mini-games. Design each one against those five questions, and borrow from what's successful in popular children's games right now.
+
+## 13. The instruction card is the master; Nani is a voice
+- The **instruction/recipe card** (the request card after it shrinks into the sidebar) is the one place to look for what to do.
+- **Nani doesn't compete with it for space.** In play she's her **voice** alongside the on-screen **throbbing hints**, plus short interjections ("Arre re!", "Shabash!"). She appears on screen in story moments, the request card and the send-off.
+- Keep every screen clean and simple: one card, the play area, one light bulb.

@@ -130,7 +130,9 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 ## Wave 6b (after Wave 6 merges): UX principles §9–§11
 - ☐ Adopt the shared end-of-round screen (`js/shared/results.js`, time / accuracy / hints, then the word review)
 - ☐ Picture tally in the top-right of chop and other multi-item stations (what you did, never the target)
-- ☐ Tick-off on the instruction card: automatic at level 1, the child's own "done" tick from level 2
-- ☐ No negative feedback mid-round from level 2; mistakes surface in the end review
+- ☐ Tick-off on the instruction card: automatic at every level (UX §11)
+- ☐ No negative feedback mid-round; mistakes surface in the end review
+- ☐ **Pour becomes a tap** (tap the jug, it pours the right amount), like every other item (UX §12)
+- ☐ **The instruction card is the master; Nani leaves the sidebar in play** (voice, throbbing hints and interjections only; on screen in story moments) (UX §13)
 - ☐ Onboarding scripts per station with the shared onboarding kit
 - ☐ Wire the existing tool sprites (knife, ladle, spatula, velan, chakla, skewer) into `data/cook.json` so those stations stop drawing code placeholders (see `docs/cook-art-audit.md`); tally icons = existing ingredient sprites scaled down
