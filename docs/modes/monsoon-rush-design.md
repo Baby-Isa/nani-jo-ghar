@@ -1,8 +1,122 @@
 # Monsoon rush: design (mode 7, core verb **react**)
 
 **Date:** 25 Sept 2026
-**Status:** proposal for Zafar, deepened on 25 Sept (the "Deep dive" section at the top is current and supersedes older sections where they conflict). Nothing built. It follows `docs/modes/MODE-DESIGN-BRIEF.md` and builds on `docs/game-modes-v2.md` (mode 7), `docs/find-it-design.md` (the model), the Cook audit (`docs/cook-with-nani-kutchi-audit.md`) and Zafar's playtest waves (`docs/cook-with-nani-todo.md`).
+**Status:** proposal for Zafar, deepened on 25 Sept and **redesigned as a pipeline on 25 Sept (evening)**: the "Pipeline design" section at the top is current and supersedes the deep dive and the older sections where they conflict. Phases 0–1 of the deep dive's build brief exist (`js/monsoon/`, `build/reports/monsoon-build.md`). It follows `docs/modes/MODE-DESIGN-BRIEF.md` and builds on `docs/game-modes-v2.md` (mode 7), `docs/find-it-design.md` (the model), the Cook audit (`docs/cook-with-nani-kutchi-audit.md`) and Zafar's playtest waves (`docs/cook-with-nani-todo.md`).
 **Placeholder rule:** the only Kutchi below is what is already in `data/content.json` or `data/cook.json`. Anything written `[EN: under]` has no Kutchi yet: in the game it's an English placeholder in grey italic until the family gives the word. **Never invent Kutchi.** Section 6.6 lists every word needed.
+
+---
+
+## Pipeline design, 25 Sept 2026
+
+**What this is.** Zafar's pipeline brief (`docs/modes/PIPELINE-BRIEF.md`) applied to Monsoon rush: the mode as **one set sequence of stages**, each stage a handful of mini-games, the stages stitched into a little story with a beginning and an end, and mechanics borrowed from Cook and the other modes wherever they fit. It supersedes the deep dive (D.1–D.10) and sections 3–5 and 12 where they conflict; the engine (section 8), the stars (7), the art list (9) and the persona loops (10) stand. What's built so far (`js/monsoon/`, phases 0–1 plus G3) is **the middle of the pipeline**, and all of it survives (P.6).
+
+**The story in one line.** *Nani hears the rain coming. We get the house ready, the storm hits, we save every drop, we dry off, and then there's chai.*
+
+### P.1 The pipeline
+
+Five stages, in this order, every time. Each is one job (UX principle 5), opens with a request card (principle 1) and ends with a big button on the right that goes to the next stage. The child's work in each stage is **carried into the next**, so the day feels like one thing, not five.
+
+```
+ 1 THE FORECAST          2 GET READY               3 THE STORM                 4 DRY OFF                 5 CHAI AND A STORY
+ (gate, sky hidden)      (veranda, kitchen)        (kitchen; later the house)  (veranda, the calm)       (the sitting room)
+ Nani calls the weather  Bring in what she names:  Squalls on the beat:        Empty the buckets, dry     Chai for everyone (Cook's
+ -> the day strip        pots, washing, cats,      the leak, drip count,       whoever got wet, hang      tray), "how was it?",
+ (rain . wind . thunder) animals -> the rack       you call it, the house      the wet washing            Kasuku's echo, the
+                                                   leak, the power cut                                    rain gauge, the ending
+        |                        |                          |                          |
+        v                        v                          v                          v
+ day strip: which        the rack: what's in and   the buckets: drops saved;   dried, hung, poured:      the end-of-round screen
+ squalls, which twist    what got rained on        the puddles; who's wet      the planter waters        (time . accuracy . hints)
+```
+
+| # | Stage | Where | What the child does | What it hands to the next stage |
+|---|---|---|---|---|
+| **1** | **The forecast** | The gate. The veranda roof hides the sky; Nani at the gate can see it | Hears Nani call the weather and acts on it: the tarp, the hold, Zazu scooped (the go / no-go game); later puts the day's weathers in order on the **day strip**; later still *is* the forecaster (speaking) | **The day strip**: three fixed slots (principle 3) that say which squalls stage 3 will run (rain → the leak; wind → the flapping line and the tarp; thunder → the cats and the power cut) and in what order |
+| **2** | **Get ready** | The veranda and the kitchen door | Brings in what Nani names before the rain arrives: the food pots from the veranda shelf (Cook's fetch), the washing off the line (unpeg), the cats over the wall (catch), the animals to the shed (shoo, scoop); at level 3 the verbs (batten down) | **The rack**: what came in, in fixed slots. The pots brought in are the pots the leak drips on. The washing not brought in gets rained on and is **stage 4's work** (never a penalty: more to dry is more to play). The cats caught sit by the chai in stage 5 |
+| **3** | **The storm** | The kitchen (built); the house cross-section later | Two or three **squalls** on the beat, one mini-game each, chosen by the day strip: the kitchen leak, drip count, you call it; later the house leak, the power cut, the rain tune in the lull | **The buckets** (drops saved, for the planter and the rain gauge), **the puddles** (misses, for the mop) and **who got wet** (Ali carried the buckets; a cat that stayed out; Nana's cap) |
+| **4** | **Dry off** | The veranda in the calm; it has stopped raining | Empties the buckets where Nani says (pour), dries whoever she names (rub with the towel), hangs the wet washing back up where she says (place), mops the puddles she counts | **The planter watered**, the line full again, everyone dry: the picture stage 5 opens on |
+| **5** | **Chai and a story** | The sitting room, everyone on the charpai | Makes the chai they ask for (Cook's Chai tray, one cup at level 1), answers *how was it?* (feelings: scared, cold, happy, fine), shadows the day's words with Kasuku; the rain gauge ticks up; the end-of-round screen | The next day's forecast (a hook): *"Tomorrow… thunder, I think."* |
+
+**The rules from section 1 still hold in every stage:** audio leads, the world follows; every candidate shows the same countdown; only answers before the reveal count for the ear; one answer per target; nothing pre-placed; Nani in the sidebar, never pointing. Stages 2, 4 and 5 are **calm** (no beat: the rain is coming, or has gone); stage 3 is the beat. That alternation is the mode's rhythm: calm, storm, calm.
+
+**How the carry-forward works in data.** A **day** is one object (`Monsoon.Day`) that every stage reads and writes: `day.strip` (three weather ids), `day.rack` (what came in, with `wet: true` on what didn't), `day.buckets` (drops saved per squall), `day.puddles`, `day.wet` (who needs drying), `day.words` (every word called, for the review), `day.times` (per stage, for the stopwatch). Stages never talk to each other directly; a stage that is skipped (free play, or the first session) leaves its defaults, so every later stage still runs.
+
+**Tempo.** Drizzle and Busy apply to stage 3 only. Stages 1, 2, 4 and 5 are always Drizzle-shaped (the world waits for the answer; Nani repeats after 8 s, free the first time), because they are the calm and because a five-year-old's first three minutes should have no clock at all (principle 7).
+
+### P.2 The mini-games, stage by stage
+
+Ids are **S<stage><letter>**; the deep dive's G-numbers are given so the build report and the data map across. **Reuse** names the mechanic file: *Cook* = `js/cook/mechanics/`, *own* = `js/monsoon/mechanics/` (built or new), *shared* = `js/shared/`. Every instruction is Nani's, from the sidebar, in Kutchi where the words exist and grey-italic English until then (the placeholder rule). "Blind" is a non-speaker's chance per call at level 1.
+
+#### Stage 1: The forecast
+
+The veranda roof is an occluder across the top of the screen; Nani at the gate can see the sky and you can't. Every weather's light and sound start **at the reveal**, never before (loop 2).
+
+| Id | Mini-game | Mechanic(s) | What the Kutchi instruction carries | Levels | Reuse |
+|---|---|---|---|---|---|
+| **S1a** | **Nani's forecast** (G4). She calls the weather; you do the one thing it needs: rain → pull the tarp over the chillies; sun → roll it back; wind → press and hold it down till the gust passes; thunder → scoop Zazu, who bolts under the charpai | `tarp` (one drag over or back), `hold` (press and hold), `scoop` (cupped hands) | **The weather word** (*rain, sun, wind, thunder*), so which gesture. Blind 1 in 3 (the tarp's state leaks one option), so this game needs ≥10 tested calls (`minTested: 10`, as built) | L1 three words (rain, sun, wind), 10 calls. L2 four words plus **no-go calls** (*it's raining* when the tarp is already on: do nothing). L3 *it stopped raining*, and the calls come faster | `tarp`, `scoop` own (new); `hold` own, on Cook's knead press input. The K3 generator and grader exist in `calls.js` |
+| **S1b** | **The day strip** (new). Nani tells you the day: *"pela rain, ne poi wind, ne poi thunder."* You put the three weather tiles into the strip's three slots in that order. The strip is what stage 3 plays | `sequence` (tap tiles onto a fixed three-slot card, in order; a wrong slot bounces back) | **The order words** *pela* (first) and *ne poi* (and then), both real (grammar notes 7), around the weather words. Blind: 1 in 6 orderings at L3; at L1 1 in 3 | L1 Nani names **one** weather for slot 1 and fills the other two slots herself (they twinkle: taught, not tested). L2 two named. L3 all three in order, and the strip's dots fade with the linker's word stage (the tadka rule) | Cook's **tadka** pattern (a spoken sequence into an order ladder that fades to dots, then nothing); the card is Cook's ladder row. Own file `sequence.js`, shared with Cook when the mechanics folder converges |
+| **S1c** | **You're the forecaster** (K5; the roof view of G3 turned to the sky). You're on the roof and *can* see the sky: a cloud coming, the sun out, the tree bending. Press the mic and **say the weather**; Nani below pulls the tarp, rolls it, holds it or scoops Zazu on what she heard | `say` (shared), `callit` (own: the child's window is the call window) | **Production**: the weather word, closed set of 3–4. Fallback: the weather pills; a parent's ✓. The voice star, never the ear | From L2, once the weather words are real. L3 two in a row (*rain, ne poi wind*) | `js/shared/say.js` (`Say.moment`); own `callit.js` as built for G3 |
+
+**Hand-over:** S1b writes `day.strip`; S1a and S1c don't (they are the stage's warm-up and its speaking moment). Until S1b is unlocked (session 3, P.5) the strip is Nani's own: *"Rain today, I think"*, and it holds one slot.
+
+#### Stage 2: Get ready
+
+Calm: the rain is a grey band on the horizon that creeps in over the stage, and everything must be in before it arrives, but the band only moves when you act (Drizzle-shaped). What comes in fills **the rack**, a fixed-slot card in the sidebar.
+
+| Id | Mini-game | Mechanic(s) | What the Kutchi instruction carries | Levels | Reuse |
+|---|---|---|---|---|---|
+| **S2a** | **Pots inside** (new; the first thing a new player does). The food pots are on the veranda shelf, the same look-alike groups as the kitchen leak. Nani: *"Muke dudh de."* Tap the pot and it flies to the kitchen island. **The pots you bring in are the pots the leak drips on.** Nani brings the rest of the group herself ("and I'll bring these"), so the leak always has ≥5 candidates | `fetch` (Cook: tap the named items among look-alikes into the basket) | **The food noun** (*dudh, paani, atto, khun, loon, dai…*), all real and recorded; the frame *Muke {x} de* (real, grammar notes 9). Blind 1 in 5 (whole group on the shelf) | L1 **three pots**, one call each (principle 7). L2 the group of five, plus a *nar* row (*"Nar chai"*: leave the chai). L3 the order (*pela dudh, ne poi paani*) and the switch | Cook's `fetch.js` rules (every option always on the shelf; extras are wrong); Monsoon's own `fetch.js` mirrors them, as `count.js` does, until the shared folder lands |
+| **S2b** | **Bring the washing in** (G5). Everything on the line flaps in the same gust; Nani calls which item comes in; tap-and-pull it into the basket. What's left out **gets rained on** and is stage 4's work | `unpeg` (tap-and-pull into the basket; extras are wrong) | **The clothes noun**, then **+ colour**, then **+ whose** (Nana's cap). Blind 1 in 4 | L1 four items, one noun a call. L2 ≥2 of each noun, colour decides (*the red kurta*), via the shared which-one decoy rule. L3 whose (*Nana's*), and a double (*Ne*) | own `unpeg.js` (new); `WhichOne.checkDecoys` for the colours |
+| **S2c** | **Cats inside** (G6). The cats run behind the low wall; Nani calls where one will pop out; open your arms there and it leaps in. Cats caught sit by the chai in stage 5 | `catch` (open arms at a spot; the pop on the beat) | **Which spot** (an anchor: *the charpai, the water pot, the tree, the gate*), later + position; at L3 **which cat** (*wadho / nindho*, real) | L1 four spots. L2 six spots, doubles. L3 the big one / the small one; the speaking flip (say the spot: Ali opens his arms) | own `catch.js` (generated and graded headless already); `rel.js` for positions at L2+ |
+| **S2d** | **Into the shed** (G8). Thunder; a goat or a hen bolts; Nani calls which animal, which shelter; swipe behind it and it trots there; chicks are scooped | `shoo` (swipe behind, auto-aimed ±30° to the nearest shelter), `scoop` | **Which animal, which shelter**; later **how many** (*ba goats*). Blind 1 in 9 | L1 one bolter, three shelters. L2 two bolters, chicks. L3 counts; the two-slot speaking flip | own `shoo.js` (new), `scoop.js` (S1a). **Held** for the animal words and art |
+| **S2e** | **Batten down** (G9). Nani's call is a verb: *shut the window, cover the pot, open the door, bring the chair in*; the verb picks the gesture | `batten` (a verb → gesture dispatcher over `cover`, `unpeg`, `tarp`) | **The verb** and its object; every object accepts ≥2 verbs so the object never gives the verb away | L3 only | own `batten.js`. **Held** for the verbs (G20–G26) |
+
+**Hand-over:** `day.rack` (pots in, washing in with `wet: true` on what was left, cats in, animals in). S2a is the only one in the first session; S2b–S2c arrive as the sessions grow (P.5); S2d–S2e when the words do.
+
+#### Stage 3: The storm
+
+The beat. Two or three **squalls**, one mini-game each, picked by the day strip: **rain** → S3a or S3b; **wind** → S3d; **thunder** → S3c's flip or the **power cut** on any squall. Every four waves the tempo steps up. Between squalls, three seconds of rain on the window and a one-line request card for the next squall.
+
+| Id | Mini-game | Mechanic(s) | What the Kutchi instruction carries | Levels | Reuse |
+|---|---|---|---|---|---|
+| **S3a** | **The kitchen leak** (G1, **built**). Every ceiling stain swells together; *"Hedo! Dudh!"*; tap the pot and the lid drops; the drop plinks off it or plops in | `cover` | **Which pot** (the food noun); L2 the double (*Ne*); L3 the sequence (*Ne poi*) and the switch (*Nar dudh, paani!*, draft). Blind 1 in 5–8 | As built: L1 8 waves, one word; L2 doubles, 6+ candidates; L3 sequence and switch, 84 bpm | own `cover.js`, `M.Wave.which` |
+| **S3b** | **Drip count** (G2, **built**). One pot's lid is off. *"Trae!"*: let three drops plink in, then lid it. A fourth drop, or lidding early, is a miss | `count` | **The number** (*hakro/hakri, ba, trae, char, panj*: see P.7 on *one* and *two*); L2 which pot + how many; L3 two pots, two numbers | As built | own `count.js` (Cook's rules mirrored) |
+| **S3c** | **You call it** (G3, **built**). You're on the roof and see which stain swells; Ali is below with the lids; say the pot's name and he runs there | `say` (shared), `callit` | **Production** of the food noun, closed set 3–8; the voice star. Null never blocks: Drizzle waits and shows the pills, Busy shrugs | As built; at L3 the child calls half the waves of S3a too | `js/shared/say.js` (swap the stub); own `callit.js` |
+| **S3d** | **Gusts** (new: S1a's gestures at tempo). The tarp is on; Nani calls *wind* (hold it!), *rain* (leave it), *sun* (roll it back), *thunder* (Zazu!) on the beat; the wind is a real gust that lifts the tarp if you're late | `hold`, `tarp`, `scoop`, on the K3 grader | **The weather word** under time; the no-go (*rain* when it's on). Blind 1 in 3, ≥10 calls | L2+ only (its words are placeholders today; it counts as a Kutchi test when they land) | S1a's files; the `weather` kind in `calls.js` as built |
+| **S3e** | **The house leak** (G7). The cross-section: room, then room + anchor + position, anchors duplicated across rooms | `cover` on `rel.js` spots | **Room; anchor; position** (*in the kitchen, under the window*) | L2 rooms; L3 positions | own `cover.js` unchanged; **held** for rooms, relations, the big art item |
+| **S3f** | **The power cut** (G13, a modifier). Lightning, the lights go out; calls carry on; flashes are random, never at a call | `dark` (shared with Find it's torch mask) | Makes the audio-first rule total | Any squall from L2 when the strip has thunder | shared `dark` |
+| **S3g** | **Rain tune** (G12, the lull). Between squalls the pots ring when drops land; Nani calls a short pattern; tap it back on the beat | `tune` | **Which pot, in order** | A toy: ungraded, held for the music work | own `tune.js`, held |
+| **S3h** | **Nani calls** (G11, the family round). An adult reads the caller card aloud; the child plays any squall; a family stamp, no ear star | `caller` (the big Kutchi-text card) | The adult's Kutchi; the child's ear, unverified | Any squall, any level | own `caller.js` (cheap; next) |
+
+**Hand-over:** `day.buckets` (drops saved per squall: the craft tally, already in `Calls.stars`), `day.puddles` (misses: capped at 3 on screen, Ali mops the rest, but all are counted), `day.wet` (Ali, always; the cats not caught in S2c; Nana's cap if it was left on the line).
+
+#### Stage 4: Dry off
+
+The calm after. The sun is out, the veranda is wet, the buckets are full and everyone is dripping. Calm, one job at a time; Nani on the charpai.
+
+| Id | Mini-game | Mechanic(s) | What the Kutchi instruction carries | Levels | Reuse |
+|---|---|---|---|---|---|
+| **S4a** | **Empty the buckets** (new). The full buckets from stage 3 stand on the veranda; Nani says which one goes where: *"Wadho… into the water pot."* Press and hold the bucket over the target and it pours; the planter drinks, the water pot fills past its lines | `pour` (Cook: press-and-hold, fill lines, "enough") | **Which bucket** (*wadho / nindho*, real) and **where** (the water pot, the planter, the goats' trough: placeholders G36); L3 **how much** (*adh / bharelo*: half, full, real) | L1 two buckets (big, small), one target: the size word decides. L2 three targets. L3 *pour half into the planter, ne poi the rest into the pot* | Cook's `pour.js` rules (rate, bands, `enough` until stage 2); own `pour.js` mirrors them |
+| **S4b** | **Dry off** (new). The wet ones sit in a row on the veranda: the big cat, the small cat, Ali, a hen. Nani names who; rub them with the towel (a circular drag) until the drips stop | `rub` (circular drag on a ring; the count of rubs said aloud) | **Which one** (*wadho / nindho* for the cats, real; *Ali* is a name, so a line-up always has both cats and at least one more, and the tested calls are the size ones); L2 **how many rubs** (*trae!*); L3 the order (*pela nindho, ne poi Ali*) | L1 three wet, one call each. L2 counts. L3 order | own `rub.js`, on Cook's `stir` drag (a ladle on a track becomes a towel on a cat) |
+| **S4c** | **Hang it up** (new; shared with Tidy up). The rained-on washing goes back on the veranda line: Nani says which item and where: *"the kurta, next to the towel."* Drag it to the peg | `place` (Tidy up's drag to a spot; `rel.js` checks *next to / between*) | **The clothes noun** and **the position** (*next to, between, first, last*: E1–E13) | L2+ (needs clothes and position words; greybox from the start) | Tidy up's placing mechanic and `Rel.options`; own adapter |
+| **S4d** | **Mop the puddles** (new, small). Nani counts the puddles to mop: *"Ba!"*; drag the mop over that many and stop; a third one mopped, or stopping early, is a miss | `count` (the mop is the unit; Done is hanging the mop up) | **The number**, real | L1 1–3; L2 1–5 plus which room later | own `count.js` as built, with a different unit |
+
+**Hand-over:** the planter watered (`day.planter += drops`), the line full, everyone dry: the still picture that stage 5 opens on. If stage 3 saved nothing, S4a still runs with what Ali caught (one bucket): the stage is never empty.
+
+#### Stage 5: Chai and a story
+
+The sitting room; everyone on the charpai, the cats in the middle, the rain gauge on the wall. This is the mode's **send-off**, the clinic's *"Is everything okay now?"*
+
+| Id | Mini-game | Mechanic(s) | What the Kutchi instruction carries | Levels | Reuse |
+|---|---|---|---|---|---|
+| **S5a** | **Chai for everyone** (Cook's Chai tray, a cameo). *"Nana lai chai."* Pour the cup, add what they asked for, carry it to the right person | `pour`, `count`, `passme`, the tray (Cook) | **Who** (*{person} lai*, real), **with what** (*dudh waari*, *ba khun*, real), **how many cups** | L1 **one cup**, one person (principle 7). L2 with milk / sugars. L3 three cups in order, and the tray's pass-me between them | Cook's Chai tray station, loaded not copied (monsoon.html already loads Cook's `core.js` and `lang.js`; the tray needs Cook's zone host: see P.8 phase C) |
+| **S5b** | **How was it?** (K5, the feelings moment). Nani: *"How do you feel?"* Say (or tap) *scared / cold / happy / fine*; the cats copy the feeling (a shiver, a stretch); Nani answers in kind (*"Come here, keep warm"*) | `say` (shared) | **Production**: a feeling word from a closed set of 4 (G62–G66, G11–G12, G69); no ear star; the voice star | From L1 as **pills only** (the words are placeholders); the mic when they land | `js/shared/say.js` |
+| **S5c** | **Kasuku's echo** (G10). Say any of the day's word-review words; Kasuku repeats the one he heard | `say`, `echo` | Shadowing, ungraded | Any level | own `echo.js` (cheap; next) |
+| **S5d** | **The rain gauge** (ungraded). The day's saved drops pour into the gauge on the wall; at milestones the veranda planter flowers | a flourish on `pour` | Nothing: the reward | — | code only |
+
+Then the **end-of-round screen** (UX principle 9): page 1 the three badges (time: the stopwatch for the whole day, with a personal best per level; accuracy: the tested calls of every stage as a row of slots, green and red; hints: light-bulb presses), then page 2 the word review of the whole day. The stars underneath are unchanged (`Calls.stars`), so word stages and progress are as built.
+
+**Speaking moments in the pipeline** (the deep dive's D.4 rules stand: the caller can see; null never blocks; the voice star is its own): S1c (weather), S2c L3 (the spot), S3c (the pot, built), S3b L3 (the number), S2d L3 (animal, shelter), S5b (the feeling), S5c (echo). At least one per day from level 2; S5b's pills from level 1 so the send-off always asks the question.
 
 ---
 
