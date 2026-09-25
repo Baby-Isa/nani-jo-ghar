@@ -1,6 +1,6 @@
 # Who did it?: build report (phases 0–1)
 
-**Branch:** `claude/build-who`. **Open:** `who.html?lab=1` (add `&game=g3|g1|g2|g5&level=1|2&seed=N&debug=1`); the story case is `who.html?case=a1c3-sweets`. Details: `docs/who-build-log.md`.
+**Branch:** `claude/build-who`. **Open:** `who.html?lab=1` (add `&game=g3|g1|g2|g5&level=1|2&seed=N&debug=1`); the story case is `who.html?case=a1c3-sweets`.
 
 ## Built
 - **`js/who/case.js`**: the engine, pure and seeded (browser and Node). It generates, solves and grades all four kinds (one each, keep who fits, Nani guesses, Tell Ali), plus the star rules. The data is in `data/who.json` and `data/scenes/sofa.json`.
@@ -16,7 +16,7 @@
 - G4 logic: 6.3% (6.25%)
 
 Tap-all, early accuse and waiting all score 0%. Every generator rule holds, and the culprit's slot is uniform.
-UI bot: UIBOT_LINE
+UI bot, blind through the real screen: G1 4.5% and G3 1.0% (200 rounds each), G2 3.3% (60 rounds). All within 2 points of the logic bot.
 
 ## Stubs to swap
 - `js/who/stubs/whichone.js` → the foundation's "which one?" module (one line in `case.js`).

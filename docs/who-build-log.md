@@ -37,6 +37,16 @@ Tap-all, tap-none, tap-one, early accuse, the odd one out and waiting for the gl
 
 G1, G2, G3 at L1–2 and G5 at L1–2 (bot voice, pills and a parent's tick), plus the Arc 1 Ch3 case, pass on all six sizes through real pointer events. Each game plays a case with a deliberate mistake (the recast runs, the ear star is lost) and a clean case (the ear star is earned; for G5 the voice star, never by pills). A tap-cover check runs before every tap, and the magnifier is dragged over every suspect's paws. Screenshots are in `build/screenshots/who/` (not committed).
 
+### UI bot (`python3 build/test_who.py --bot random|half`)
+
+It plays blind through the real screen: it sees positions, who is standing, and the glow after two misses.
+
+| Game L1 | UI bot | Logic bot |
+|---|---|---|
+| G1 random | 4.5% (200 rounds) | 3.9% |
+| G3 random | 1.0% (200) | 1.7% |
+| G2 tap half | 3.3% (60) | 1.8% |
+
 ### Decisions taken on the way
 
 1. **The greybox is plain HTML in a scaled 1600×900 world, like Find it**, not Phaser. It's cheaper for grey shapes and tests; the art pass can change it.
