@@ -52,6 +52,9 @@ class ReusableTCPServer(socketserver.ThreadingTCPServer):
     allow_reuse_address = True
     daemon_threads = True
 
+    def handle_error(self, request, client_address):
+        pass  # a browser closing mid-download (broken pipe) is not a test failure
+
 
 def start_server():
     os.chdir(ROOT)
