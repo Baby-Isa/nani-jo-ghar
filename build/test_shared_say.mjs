@@ -124,7 +124,13 @@ test("machine: recognised, missed, retried, pills, parent", () => {
   M.heard({ choice: "a", confidence: 0.2 });
   assert.equal(M.state.pillsLive, true, "second miss (low confidence): pills live");
   M.pill("a");
-  assert.deepEqual([M.state.outcome.via, M.state.outcome.fallback, M.state.outcome.retried], ["pill", true, true]);
+  assert.equal(M.state.phase, "acting", "the character acts on the tap first");
+  M.rejected();
+  assert.equal(M.state.phase, "ready", "a wrong tap leaves the pills up");
+  assert.equal(M.state.misses, 2, "and is not a miss");
+  M.pill("b");
+  M.accepted();
+  assert.deepEqual([M.state.outcome.choice, M.state.outcome.via, M.state.outcome.fallback, M.state.outcome.retried], ["b", "pill", true, true]);
 
   M = Say.machine();
   M.start({ micOk: false });
@@ -141,6 +147,7 @@ test("machine: recognised, missed, retried, pills, parent", () => {
   M.parentOk();
   assert.equal(M.state.pillsLive, true, "no expected word: the parent taps which");
   M.pill("c");
+  M.accepted();
   assert.equal(M.state.outcome.via, "parent");
 
   M = Say.machine();
@@ -233,6 +240,20 @@ test("moment: the mode rejects a wrong act; it counts as a miss", async () => {
   q.mic(doc).click();
   const out = await p;
   assert.deepEqual([out.choice, out.via, out.tries], ["cook-dudh", "voice", 2]);
+});
+
+test("moment: a wrong pill tap plays out and the pills stay up (the clinic's tell)", async () => {
+  const doc = makeDoc();
+  const acts = [];
+  const p = Say.moment({ choices: CH, container: doc.body, speech: fakeSpeech([]), pillsLive: true, accept: (c) => c === "cook-khun", character: { act: (c, v) => acts.push(`${c}:${v}`) }, pillsAfterMs: 0 });
+  q.pill(doc, "cook-chai").click();
+  await tick();
+  await tick();
+  assert.ok(q.box(doc), "still open");
+  q.pill(doc, "cook-khun").click();
+  const out = await p;
+  assert.deepEqual([out.choice, out.via], ["cook-khun", "pill"]);
+  assert.deepEqual(acts, ["cook-chai:pill", "cook-khun:pill"]);
 });
 
 test("moment: a refused mic hides the button and the pills are live from the start", async () => {

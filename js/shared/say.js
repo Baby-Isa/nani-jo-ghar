@@ -52,8 +52,9 @@
    * "ready" with a hint after a miss, or "done". pillsLive turns true after
    * `retries` misses, on the timer, when the mic can't be used, or from the
    * start (opts.pillsLive). Every method returns the state.
-   *   start({micOk})  micTap()  heard(res)  rejected()  timer()
-   *   pill(id)  parentOk()  parentAgain()  skip()
+   *   start({micOk})  micTap()  heard(res)  pill(id)  -> "acting" (the
+   *   character acts), then accepted() or rejected();  timer()
+   *   parentOk()  parentAgain()  skip()
    */
   Say.machine = function (opts) {
     opts = Object.assign({}, Say.DEFAULTS, opts || {});
@@ -92,30 +93,42 @@
         if (st.phase !== "listening") return st;
         if (res && res.choice && (res.confidence == null || res.confidence >= opts.minConfidence)) {
           st.phase = "acting";
+          st.pending = { choice: res.choice, via: "voice", confidence: res.confidence };
           st.last = res;
           return st;
         }
         return miss(res);
       },
-      /** The character acted on the hearing and the mode accepted it. */
+      /** The character acted on the hearing (or the tap) and the mode accepted it. */
       accepted() {
         if (st.phase !== "acting") return st;
-        return finish({ choice: st.last.choice, via: "voice", confidence: st.last.confidence });
+        st.acted = true; // the character already acted on it
+        return finish(st.pending);
       },
-      /** The mode rejected the act (the wrong cup): a miss like any other. */
+      /**
+       * The mode rejected the act (the wrong cup, the wrong knee). A wrong
+       * hearing is a miss like any other; a wrong pill tap just leaves the
+       * pills up to try again (the clinic's tell).
+       */
       rejected() {
         if (st.phase !== "acting") return st;
-        return miss(st.last);
+        const p = st.pending;
+        st.pending = null;
+        if (p.via === "voice") return miss(st.last);
+        st.phase = "ready";
+        st.parentArmed = false;
+        return st;
       },
       timer() {
         if (st.phase !== "done") st.pillsLive = true;
         return st;
       },
       pill(id) {
-        if (st.phase === "done" || st.phase === "listening") return st;
-        if (st.parentArmed) return finish({ choice: id, via: "parent" });
-        if (!st.pillsLive) return st;
-        return finish({ choice: id, via: "pill" });
+        if (st.phase !== "ready") return st;
+        if (!st.pillsLive && !st.parentArmed) return st;
+        st.phase = "acting";
+        st.pending = { choice: id, via: st.parentArmed ? "parent" : "pill", confidence: null };
+        return st;
       },
       /** Grandparent mode: "they said it". Confirms `expected`, else arms the pills so the parent taps which word. */
       parentOk() {
@@ -247,7 +260,17 @@
     box.appendChild(mic);
     let resolveOut;
     const done = new Promise((r) => (resolveOut = r));
-    const pills = Say.pills(box, choices, { label: opts.label, onPick: (id) => step(M.pill(id)) });
+    const pills = Say.pills(box, choices, { label: opts.label, onPick: (id) => onPick(id) });
+    async function onPick(id) {
+      const st = M.pill(id);
+      if (st.phase !== "acting") return;
+      if (Speech && Speech.cancel) Speech.cancel();
+      render(st);
+      const via = st.pending.via;
+      await call(ch.act, id, via);
+      const ok = opts.accept ? await opts.accept(id, via) : true;
+      step(ok === false ? M.rejected() : M.accepted());
+    }
     if (opts.grandparent) {
       const row = doc.createElement("div");
       row.className = "parent";
@@ -296,7 +319,7 @@
         if (out.via === "parent") out.enrolled = Speech.confirm(out.choice, "parent");
         else if (out.via === "voice") out.enrolled = Speech.confirm(out.choice, "game");
       }
-      if (out.via === "pill" || out.via === "parent") await call(ch.act, out.choice, out.via);
+      if (out.via === "parent" && !st.acted) await call(ch.act, out.choice, out.via);
       log(out);
       await call(ch.done, out);
       if (opts.onHeard) opts.onHeard(out);
