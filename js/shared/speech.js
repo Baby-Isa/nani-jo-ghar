@@ -69,8 +69,11 @@
   const WARPS = [1.0, 0.88, 1.12];
   const DEFAULTS = {
     band: 0.3, // DTW Sakoe–Chiba band as a fraction of the longer length
-    accept: 0.12, // minimum margin (d2 - d1) / d1 to name a choice
-    maxDistance: 1.35, // beyond this the sound is not one of the choices
+    // Calibrated on build/voice-test + augment.py variants (see the plan):
+    // an unrelated utterance sits at d1 ≈ 5.5 with margin ≈ 0; the same
+    // take through noise/pitch/tempo sits at d1 1.4–5.3 with margin 0.2–3.
+    accept: 0.15, // minimum margin (d2 - d1) / d1 to name a choice
+    maxDistance: 5.5, // beyond this the sound is not one of the choices
     timeoutMs: 4000,
     kBest: 2, // per choice, average of the k nearest templates
   };
