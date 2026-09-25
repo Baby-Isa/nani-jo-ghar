@@ -10,7 +10,7 @@
 `snap.html?lab=1` (the Snap lab: mini-game, level, word stage, seed, bot none/leak/oracle, what Ali hears, debug boxes, print records). A direct round: `snap.html?lab=g2&level=2&bot=oracle&debug=1`.
 
 ## Numbers
-`node build/leak_snap.mjs` (500 rounds per strategy per level): oracle 100% everywhere; blind strategies pooled ≤ 1.5%, worst single strategy 2.8% (gates: <10% and <5%). G1 L1 1.1%, G2 L1 1.1% (D5 estimated <1% and ~2%). G4 voice star: oracle 100%, blind 0%. Unit fixtures and `--fair` (every row achievable, ≥3 kinds) pass. `python3 build/test_snap.py`: lab, six viewports by real taps with the tap-cover check, timing and phone performance all pass (numbers in the build log; the phone run had 5 of 742 frames over 34 ms).
+`node build/leak_snap.mjs` (500 rounds per strategy per level): oracle 100% everywhere; blind strategies pooled ≤ 1.5%, worst single strategy 2.8% (gates: <10% and <5%). G1 L1 1.1%, G2 L1 1.1% (D5 estimated <1% and ~2%). G4 voice star: oracle 100%, blind 0%. Unit fixtures and `--fair` (every row achievable, ≥3 kinds) pass. `python3 build/test_snap.py`: lab, six viewports by real taps with the tap-cover check, timing and phone performance all pass (the phone run had 5 of 742 frames over 34 ms). The in-page bots at level 1 match Node: blind pooled 1.0% in both (110 rounds).
 
 ## Stubs to swap (one edit each, in `js/snap/adapters.js`)
 `js/snap/stubs/stars.js` (ear needs 2 tested rows, voice, lens icon) and `js/snap/stubs/which-one.js` (G2 size picker). `Snap.listen` already calls the real `speech.js`, with lab stubs `?speech=oracle|null`.

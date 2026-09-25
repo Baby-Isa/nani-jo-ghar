@@ -321,6 +321,9 @@ def run_leakbot(browser, n):
     res = page.evaluate(f"Snap.leakCheck({per}, {{level: 1}})")
     node = subprocess.run(["node", "build/leak_snap.mjs", "--leakbot", "300", "--game", "g1"], cwd=ROOT, capture_output=True, text=True).stdout
     print(f"  browser: {res['n']} rounds; oracle {100 * res['oracleRate']:.1f}%, blind pooled {100 * res['blindRate']:.1f}%")
+    for k, b in sorted(res["by"].items()):
+        if b["ear"]:
+            print(f"    {k}: {b['ear']}/{b['n']}")
     for line in node.splitlines():
         if "level 1" in line:
             print("  node:  " + line.strip())

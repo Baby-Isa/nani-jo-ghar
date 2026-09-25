@@ -249,6 +249,8 @@
     for (let k = 0; k < n; k++) {
       const key = keys[k % keys.length];
       const strategy = strategies[k % strategies.length];
+      // a fresh profile means every word is new (stage 1), as in the Node bot
+      state.lab.stage = Snap.Sim.STRATEGIES[strategy].stage || stage;
       // a watchdog: a stuck round is stopped and doesn't count
       let timer;
       const card = await Promise.race([runLab(key, { bot: strategy, seed: 5000 + k }), new Promise((res) => (timer = setTimeout(() => res("stuck"), 60000)))]);

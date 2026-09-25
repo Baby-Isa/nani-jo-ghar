@@ -33,5 +33,6 @@ D5 estimated G1 L1 under 1% and G2 L1 about 2%: measured 1.1% and 1.1% pooled.
 ### Browser checks (`build/test_snap.py`, port 8807)
 - `--lab`: every mini-game and level played by the oracle bot earns the ear star (G4 the voice star too); a fresh profile gets no ear star offered; G4 with no speech finishes by tapping, no voice star.
 - `--viewport`: G1, G2, G4 level 1 by real taps at six sizes, tap-cover check clean. 1–2 "rounding aims" a round (an exact aim after a tap lands a pixel off three times) are counted, not hidden.
+- `--leakbot 5`: the in-page bots (same strategies, real viewfinder and hand-in), 110 rounds of G1 and G2 level 1: oracle 100%, blind pooled 1.0%; Node on the same levels 1.0% (brief: within 2 points). Small sample; the Node run is the gate.
 - `--timing`: a level-1 round, 2 rows, in 4.4 s of oracle play (limit 120 s).
 - `--perf`: phone 915×375 with CPU slowed ×4, a 4-row level-3 round in the 2-screen orchard: 4 prints, mean 17.3 ms a frame, 5 of 742 frames over 34 ms (worst 200 ms, around building prints and the hand-in). Not "no dropped frames"; headless Chromium is not a phone.
