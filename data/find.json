@@ -9,7 +9,34 @@
       "veg-01", "veg-04", "veg-05", "veg-06", "veg-07", "veg-08", "veg-09", "veg-10", "veg-11", "veg-14", "veg-15", "veg-16",
       "num-06", "num-07", "num-08", "num-09", "num-10"
     ],
-    "numbers": {"6": "num-06", "7": "num-07", "8": "num-08", "9": "num-09", "10": "num-10"}
+    "numbers": {"6": "num-06", "7": "num-07", "8": "num-08", "9": "num-09", "10": "num-10"},
+    "spelling": {
+      "_about": "The family's spelling wins over a draft in data/cook.json (read-only here), for Find it's screens only; the voice stays the draft's recording until the family records it. No V in Kutchi, always W (docs/kutchi-grammar-notes.md, 25 Sept).",
+      "ph-big": "wadho"
+    },
+    "placeholders": {
+      "_about": "Anchor words with no Kutchi yet (Questions for Mum E16-E48; crate is new). English placeholders, shown grey italic, never tested (placeholdersTested false). Added to the word table only if the id is missing, so a family word later wins.",
+      "ph-crate": {"kutchi": null, "english": "crate"},
+      "ph-basket": {"kutchi": null, "english": "basket"},
+      "ph-counter": {"kutchi": null, "english": "counter"},
+      "ph-scales": {"kutchi": null, "english": "scales"},
+      "ph-shelf": {"kutchi": null, "english": "shelf"},
+      "ph-board": {"kutchi": null, "english": "board"},
+      "ph-cloth": {"kutchi": null, "english": "cloth"},
+      "ph-rug": {"kutchi": null, "english": "rug"},
+      "ph-sofa": {"kutchi": null, "english": "sofa"},
+      "ph-table": {"kutchi": null, "english": "table"},
+      "ph-cushion": {"kutchi": null, "english": "cushion"},
+      "ph-curtain": {"kutchi": null, "english": "curtain"},
+      "ph-box": {"kutchi": null, "english": "box"},
+      "ph-bowl": {"kutchi": null, "english": "bowl"}
+    }
+  },
+
+  "sizes": {
+    "_about": "Which one? (F2): the same picture at two scales (design 8.2 phase 1). A size word's scale on the stall; clutter and unsized things are drawn at 1.",
+    "ph-big": 1.25,
+    "ph-small": 0.8
   },
 
   "lookalike_groups": {
@@ -35,7 +62,7 @@
     "busy": {"icon": "bolt", "name": "Quick", "tip": "Quick: done before the shopkeeper's patience ran out"}
   },
 
-  "pay": {"help": 5, "ear": 5, "hand": 3, "third": 3, "combo": {"from": 3, "each": 1, "max": 3}},
+  "pay": {"help": 5, "ear": 5, "hand": 3, "third": 3, "voice": 4, "combo": {"from": 3, "each": 1, "max": 3}},
 
   "help": {
     "_about": "Help costs (design s5.3). Hearing it again: the first replay is free, then the no-help star (Relaxed) or patience seconds (Busy). Warmer: the no-help star and the combo. Reveal, translate and 'shown': the ear star too. No upgrade ever makes these cheaper.",
@@ -52,19 +79,19 @@
       "phoneZoom": 1.5,
       "size": 96,
       "anchors": {
-        "crate-left": {"en": "crate", "rect": [172, 482, 462, 598]},
-        "basket-stall": {"en": "basket", "rect": [428, 498, 648, 598]},
-        "crate-right": {"en": "crate", "rect": [1160, 485, 1437, 598]},
-        "basket-right": {"en": "basket", "rect": [1437, 500, 1600, 600]},
-        "counter": {"en": "counter", "rect": [40, 555, 1600, 790]},
-        "scale": {"en": "scales", "rect": [458, 60, 705, 365]},
-        "floor-basket-left": {"en": "basket", "rect": [0, 738, 372, 900]},
-        "floor-basket-right": {"en": "basket", "rect": [1340, 750, 1512, 900]},
-        "shelf": {"en": "shelf", "rect": [1188, 140, 1488, 310]},
-        "board": {"en": "board", "rect": [718, 165, 932, 350]},
-        "cloth": {"en": "cloth", "rect": [0, 40, 246, 475]},
-        "veg-crates": {"en": "crate", "rect": [1385, 315, 1600, 510]},
-        "rug": {"en": "rug", "rect": [355, 825, 1340, 900]}
+        "crate-left": {"en": "crate", "word": "ph-crate", "rect": [172, 482, 462, 598]},
+        "basket-stall": {"en": "basket", "word": "ph-basket", "rect": [428, 498, 648, 598]},
+        "crate-right": {"en": "crate", "word": "ph-crate", "rect": [1160, 485, 1437, 598]},
+        "basket-right": {"en": "basket", "word": "ph-basket", "rect": [1437, 500, 1600, 600]},
+        "counter": {"en": "counter", "word": "ph-counter", "rect": [40, 555, 1600, 790]},
+        "scale": {"en": "scales", "word": "ph-scales", "rect": [458, 60, 705, 365]},
+        "floor-basket-left": {"en": "basket", "word": "ph-basket", "rect": [0, 738, 372, 900]},
+        "floor-basket-right": {"en": "basket", "word": "ph-basket", "rect": [1340, 750, 1512, 900]},
+        "shelf": {"en": "shelf", "word": "ph-shelf", "rect": [1188, 140, 1488, 310]},
+        "board": {"en": "board", "word": "ph-board", "rect": [718, 165, 932, 350]},
+        "cloth": {"en": "cloth", "word": "ph-cloth", "rect": [0, 40, 246, 475]},
+        "veg-crates": {"en": "crate", "word": "ph-crate", "rect": [1385, 315, 1600, 510]},
+        "rug": {"en": "rug", "word": "ph-rug", "rect": [355, 825, 1340, 900]}
       },
       "spots": [
         {"id": "cl-1", "anchor": "crate-left", "rel": "in", "x": 222, "baseline": 524},
@@ -97,6 +124,10 @@
         {"id": "fl-2", "anchor": "floor-basket-left", "rel": "in", "x": 256, "baseline": 796},
         {"id": "fr-1", "anchor": "floor-basket-right", "rel": "in", "x": 1425, "baseline": 806}
       ]
+    },
+    "sitting-room": {
+      "_about": "Nani's sitting room, as grey boxes (F3 level 3: under and behind). Everything is in data/scenes/sitting-room.json (the scene schema of docs/shared-api.md 1.2), including the occluders that hide part of a thing under the sofa or behind the curtain (at least 40% of it always shows: Rel.visibleFraction). The art comes later from this layout (design 4.4).",
+      "base": "data/scenes/sitting-room.json"
     }
   },
 
@@ -108,14 +139,69 @@
       "goal": "Find what Nani asked for, as many as she said, then press Done.",
       "levels": [
         {"rows": 2, "groups": 1, "count": [1, 2], "spare": [1, 1], "decoyKinds": 3, "decoyCopies": [1, 3], "clutterKinds": 0, "maxItems": 11, "maxUnits": 4, "noRow": 0, "cognateTargets": false, "parMs": 12000, "slowTaps": [3, 2000], "slowMs": 2000, "hesitateMs": 14000, "patienceSec": 120, "bag": {"errors": ["swap"]}},
-        {"rows": 3, "groups": 2, "count": [1, 3], "spare": [1, 2], "decoyKinds": 4, "decoyCopies": [1, 3], "clutterKinds": 1, "maxItems": 17, "maxUnits": 6, "parMs": 10000, "patienceSec": 150, "bag": {"errors": ["swap", "extra"]}},
-        {"rows": 3, "groups": 2, "count": [1, 4], "spare": [1, 2], "decoyKinds": 5, "decoyCopies": [2, 3], "clutterKinds": 2, "maxItems": 22, "maxUnits": 7, "noRow": 0.5, "parMs": 9000, "patienceSec": 170, "bag": {"errors": ["swap", "extra"]}}
+        {"rows": 3, "groups": 2, "count": [1, 3], "spare": [1, 2], "decoyKinds": 4, "decoyCopies": [1, 3], "sizeRows": 1, "otherSize": [1, 2], "clutterKinds": 1, "maxItems": 17, "maxUnits": 6, "parMs": 10000, "patienceSec": 150, "bag": {"errors": ["swap", "extra"]}},
+        {"rows": 3, "groups": 2, "count": [1, 4], "spare": [1, 2], "decoyKinds": 5, "decoyCopies": [2, 3], "clutterKinds": 2, "maxItems": 22, "maxUnits": 7, "noRow": 0.5, "parMs": 9000, "patienceSec": 170, "bag": {"errors": ["swap", "extra"]}},
+        {"rows": 3, "groups": 2, "count": [1, 4], "spare": [1, 2], "sizeRows": 1, "whereRows": 1, "rels": ["in", "on", "in-front"], "places": 3, "decoyKinds": 4, "decoyCopies": [2, 3], "clutterKinds": 1, "maxItems": 26, "maxUnits": 7, "noRow": 0.5, "parMs": 9000, "patienceSec": 190, "bowl": {"says": 3}}
       ]
+    },
+    "whichone": {
+      "name": "Which one?",
+      "verb": "F2: wadho / nindho",
+      "goal": "Nani says which size: find the big ones or the small ones, as many as she said, then press Done.",
+      "_about": "F2: R1 with a size on every row (sizeRows all). Every thing on the stall except the clutter is out in both sizes (the same picture at data sizes' scales); the asked thing is in both sizes, each size is on two or more things, balanced (WhichOne.checkDecoys). otherSize: copies of the asked thing in the other size. Size rows ship on the draft form (wadho santra), flagged as a draft (D9.3).",
+      "levels": [
+        {"rows": 2, "groups": 1, "count": [1, 2], "spare": [1, 1], "sizeRows": "all", "otherSize": [1, 2], "decoyKinds": 3, "decoyCopies": [2, 3], "clutterKinds": 0, "maxItems": 16, "maxUnits": 4, "noRow": 0, "cognateTargets": false, "parMs": 12000, "slowTaps": [3, 2000], "slowMs": 2000, "hesitateMs": 14000, "patienceSec": 130, "bag": {"errors": ["swap"]}},
+        {"rows": 2, "groups": 2, "count": [1, 3], "spare": [1, 2], "decoyKinds": 3, "clutterKinds": 1, "maxItems": 20, "maxUnits": 5, "parMs": 10000, "patienceSec": 150, "bag": {"errors": ["swap", "extra"]}},
+        {"rows": 3, "groups": 2, "count": [1, 3], "spare": [1, 2], "decoyKinds": 4, "clutterKinds": 1, "maxItems": 24, "maxUnits": 6, "noRow": 0.3, "parMs": 9000, "patienceSec": 170},
+        {"rows": 3, "groups": 2, "count": [1, 4], "decoyKinds": 4, "clutterKinds": 2, "maxItems": 28, "maxUnits": 7, "noRow": 0.5, "whereRows": 1, "rels": ["in", "on"], "places": 3, "maxItems": 26, "patienceSec": 190}
+      ]
+    },
+    "where": {
+      "name": "Where is it?",
+      "verb": "F3: calls, one at a time",
+      "goal": "Nani calls for one thing at a time, and where it is. Tap that one, then listen for the next.",
+      "_about": "F3: R2 calls on the relations layer (Rel.holds; anchors match by word, so both crates are 'the crate'). calls: how many; nouns: how many different things are called (the same thing is called to two places). places: a called thing is in at least this many places, so only the position separates the copies. rels: the relations a call may use (acquisition order). scene: the level's scene (the sitting room's grey boxes at level 3, with under/behind occluders). The position words are English placeholders until the family gives them (Questions for Mum A5, E1-E13): those calls are not tested for the ear star (stars rule placeholdersTested false).",
+      "levels": [
+        {"calls": [4, 4], "nouns": 2, "rels": ["in", "on"], "places": 3, "groups": 1, "decoyKinds": 3, "decoyCopies": [1, 2], "clutterKinds": 0, "maxItems": 16, "cognateTargets": false, "parMs": 12000, "slowTaps": [3, 2000], "slowMs": 2000, "hesitateMs": 14000, "patienceSec": 120},
+        {"calls": [4, 5], "nouns": 2, "rels": ["in", "on", "in-front"], "decoyKinds": 4, "clutterKinds": 1, "maxItems": 20, "parMs": 10000, "patienceSec": 140},
+        {"calls": [5, 6], "nouns": 3, "scene": "sitting-room", "rels": ["in", "on", "under", "behind"], "groups": 2, "decoyKinds": 4, "clutterKinds": 1, "maxItems": 22, "parMs": 9000, "patienceSec": 160},
+        {"calls": [6, 6], "nouns": 3, "sizeRows": "all", "otherSize": [1, 1], "decoyKinds": 3, "maxItems": 24, "patienceSec": 180}
+      ]
+    },
+    "ali": {
+      "name": "Ali's turn",
+      "verb": "F4: you say it, Ali shops",
+      "goal": "You're Nani! Tell Ali what to buy (the pictures are your list), then check his bag.",
+      "_about": "F4: role reversal (speaking moment 2). The picture list is yours; say each thing (and, from level 2, how many) and Ali picks what he heard. choices: the closed set's size (the stall's kinds, 5-8). numbers: a second moment for the count (1-4). Then Ali packs your bag with one mistake: check it against your pictures. Stars: the voice star (recognised or a parent's check, never pills), sharp eyes, no help; there is no ear star (nothing here is heard and chosen).",
+      "levels": [
+        {"rows": 1, "groups": 1, "count": [1, 1], "spare": [1, 1], "choices": 5, "numbers": false, "decoyKinds": 3, "decoyCopies": [1, 2], "clutterKinds": 0, "maxItems": 11, "maxUnits": 3, "noRow": 0, "cognateTargets": false, "parMs": 12000, "hesitateMs": 14000, "patienceSec": 120, "bag": {"errors": ["swap"]}},
+        {"rows": 2, "count": [1, 3], "choices": 6, "numbers": true, "decoyKinds": 4, "clutterKinds": 1, "maxItems": 15, "maxUnits": 5, "bag": {"errors": ["swap", "extra"]}},
+        {"rows": 3, "groups": 2, "count": [1, 4], "choices": 7, "decoyKinds": 5, "maxItems": 20, "maxUnits": 7},
+        {"rows": 3, "groups": 2, "count": [1, 4], "choices": 8, "sizeRows": 1, "decoyKinds": 4, "maxItems": 24, "maxUnits": 7}
+      ]
+    },
+    "tell": {
+      "name": "Say it",
+      "_about": "Every speaking moment (D4) through js/shared/say.js: Say.tell({choices, actor}) with the real Speech, or in the lab the picker that stands in for the microphone (Find.fakeListen). timeoutMs: the recogniser's wait; pillsAfterMs: the pills go live whatever happens; retries: misses before the pills; pillsLive: level 1 starts with pills and mic together. The voice star is Stars.voice(moments, 'find').",
+      "timeoutMs": 4000,
+      "pillsAfterMs": 8000,
+      "retries": 1,
+      "pillsLiveToLevel": 1
+    },
+    "bowl": {
+      "name": "The bowl",
+      "verb": "Speaking moment 1",
+      "goal": "Nani's hands are full. Tell her what to put in the bowl.",
+      "_about": "Speaking moment 1 (D4) at the end of Nani's list: the closed set is the basket's kinds, padded with stall things to at least min, at most max. says: how many things the child names (level 1: two). Nani takes the named thing from the basket; a thing that isn't in the basket, and she holds it up, puzzled (one retry, then the pills).",
+      "min": 3,
+      "max": 8,
+      "says": 2
     },
     "bag": {
       "name": "Check the bag",
       "verb": "Spot the mistake",
-      "goal": "The shopkeeper packed your bag. One thing is wrong: tap it."
+      "goal": "The shopkeeper packed your bag. One thing is wrong: tap it.",
+      "goalAli": "Ali packed your bag. One thing isn't on your list: tap it."
     }
   },
 
@@ -139,9 +225,12 @@
       "count": "The number is in Nani's list: count as you pick, then press Done.",
       "no": "One row says what NOT to buy. Leave that one on the stall.",
       "bag": "Check the bag against Nani's list: what didn't she ask for?",
-      "shown": "Try without the eye, the English or the glow next time."
+      "shown": "Try without the eye, the English or the glow next time.",
+      "size": "Wadho is the big one, nindho the small one: listen for which.",
+      "where": "Nani says where it is, after the thing: look there."
     },
     "hand": {"default": "Look along the crates, the counter and the baskets in order: quick finds keep the combo going.", "slow": "Slow down: tapping everywhere makes the stall pause."},
-    "third": {"relaxed": "Try it with no hints: listen, then find.", "busy": "Be quicker: the ring shows how long the shopkeeper will wait."}
+    "third": {"relaxed": "Try it with no hints: listen, then find.", "busy": "Be quicker: the ring shows how long the shopkeeper will wait."},
+    "voice": "Tap the microphone and say it out loud: the voice star is for saying it (the word buttons always work, but don't earn it)."
   }
 }

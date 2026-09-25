@@ -47,6 +47,26 @@
       W[id].picture = `assets/${cw[id].image}`;
     });
     Object.assign(Cook.data.grammar.numbers, fd.words.numbers || {});
+    // the family's spelling wins on Find it's screens (wadho, not vadho); the voice stays the draft's
+    // recording until the family records it (docs/kutchi-grammar-notes.md: no V in Kutchi, always W)
+    Object.entries(fd.words.spelling || {}).forEach(([id, k]) => {
+      if (id[0] === "_" || !W[id]) return;
+      const was = W[id].kutchi;
+      W[id] = Object.assign({}, W[id], { kutchi: k, draft: true });
+      if (was && Cook.tts[Cook.norm(was)] && !Cook.tts[Cook.norm(k)]) Cook.tts[Cook.norm(k)] = Cook.tts[Cook.norm(was)];
+    });
+    // anchor words and relation words with no Kutchi yet: grey English placeholders, never over a family word
+    Object.entries(fd.words.placeholders || {}).forEach(([id, w]) => id[0] !== "_" && !W[id] && (W[id] = Object.assign({}, w)));
+    // the shared layer (js/shared/): relations, stars (the voice star), speaking moments
+    const G = global;
+    if (G.Rel) {
+      await G.Rel.loadJSON().catch(() => null);
+      G.Rel.mergeWords(W);
+    }
+    if (G.Stars) {
+      await G.Stars.loadJSON().catch(() => null);
+      G.Stars.installInto(Cook.data);
+    }
     // a family recording of a word (assets/audio/word/<id>.mp3) is its voice
     // when the placeholder voice build has no file for it
     (Cook.audioManifest.word || []).forEach((id) => {
@@ -87,14 +107,33 @@
   };
 
   /* ---------------- rows ("wants") ---------------- */
-  /** Does this placed item answer this row? (noun, then any qualifier the row names) */
-  Find.matches = function (item, want) {
-    if (!item || !want || item.noun !== want.noun) return false;
-    if (want.colour && item.colour !== want.colour) return false;
-    if (want.size && item.size !== want.size) return false;
-    if (want.where && !(item.rel || []).some((r) => r[0] === want.where[0] && r[1] === want.where[1])) return false;
-    return true;
+  /** The scene the round is in (a row's position is read against its anchors). */
+  Find.activeScene = null;
+  /**
+   * Does this placed item answer this row? The noun, then any qualifier the
+   * row names; a position through the shared relations layer (Rel.holds),
+   * by anchor WORD, so both crates are "the crate" (js/find/gen.js).
+   */
+  Find.matches = (item, want, scene) => Find.Gen.matches(item, want, scene || Find.activeScene);
+  /** The generator's view of the page: the word table, the save's stages, Math.random. */
+  Find.env = function (scene) {
+    const painted = (scene && scene.painted) || [];
+    return {
+      rng: Math.random,
+      groups: Find.groups(),
+      clutter: Find.data.lookalike_groups.clutter || [],
+      drawable: (id) => !!Find.picture(id) && !painted.includes(id),
+      cognate: Find.isCognate,
+      stage: (id) => Cook.wordStage(id),
+      word: (id) => Cook.data.words[id] || null,
+    };
   };
+  /** Rows and the stall for a round (js/find/gen.js): {wants, kinds, units, problems}. */
+  Find.makeWants = (k, scene) => Find.Gen.makeRound(k, Find.env(scene), scene);
+  /** A size word's scale on the stall (data/find.json sizes): the same picture at two scales. */
+  Find.scaleOf = (size) => (size && Find.data.sizes && Find.data.sizes[size]) || 1;
+  /** The count's digit shows only while its number word is taught (stage <= 1): D5.2. */
+  Find.countTaught = (want) => !!want && want.count != null && !want.not && !want.call && Find.Gen.digitShown(Cook.wordStage(Cook.numId(want.count)));
   /**
    * The words of a row, in the language's order. Kutchi puts a position
    * after its noun (Roadmap syllabus): count, size, colour, noun, anchor,
@@ -105,11 +144,35 @@
   Find.rowParts = function (want) {
     if (want.not) return [want.noun];
     const parts = [];
-    if (want.count != null) parts.push(want.count);
+    if (want.count != null && !want.call) parts.push(want.count);
     if (want.size) parts.push(want.size);
     if (want.colour) parts.push(want.colour);
     parts.push(want.noun);
-    if (want.where) parts.push(want.where[1], want.where[0]);
+    if (want.where) {
+      // Kutchi puts the position after its anchor: "santra, crate [in]"; both are words (placeholders until A5)
+      const sc = Find.activeScene || {};
+      const a = (sc.anchors || {})[want.where[1]] || {};
+      parts.push(a.word || want.where[1], (global.Rel && global.Rel.info(want.where[0]).word) || want.where[0]);
+    }
+    return parts;
+  };
+  /** A row as plain text (the result card's reasons). */
+  Find.rowText = (want) => Find.rowParts(want).map((p) => Cook.display(typeof p === "number" ? Cook.numId(p) : p)).join(" ");
+  /**
+   * What you tapped, for Nani's recast: the thing, with its size when the
+   * row asked for a size, and where it is when the row asked for a place
+   * ("Nar! nindho santra." / "Nar! santra, counter [on].").
+   */
+  Find.itemParts = function (item, row) {
+    const w = (row && row.want) || {};
+    const parts = [];
+    if (w.size && item.size) parts.push(item.size);
+    parts.push(item.noun);
+    if (w.where) {
+      const sc = Find.activeScene || {};
+      const t = (item.rel || []).find((r) => (sc.anchors || {})[r[1]] && global.Rel && global.Rel.id(r[0]) === global.Rel.id(w.where[0])) || (item.rel || []).find((r) => (sc.anchors || {})[r[1]]);
+      if (t) parts.push(sc.anchors[t[1]].word || t[1], (global.Rel && global.Rel.info(t[0]).word) || t[0]);
+    }
     return parts;
   };
   /** A ladder row (js/cook/order.js's row) for a want, with the want and a running tally. */
@@ -122,7 +185,8 @@
       kind: want.not ? "no" : "item",
       line: want.not ? Lang.line(Lang.frames().no, phrase) : { segs: phrase.segs, en: phrase.en },
     });
-    return Object.assign(r, { want, got: 0, need: Infinity, misses: 0, stage: Cook.wordStage(want.noun) });
+    // stages are read now, before the list marks its words seen (a seen word is stage 2: tested)
+    return Object.assign(r, { want, got: 0, need: Infinity, misses: 0, stage: Cook.wordStage(want.noun), countTaught: Find.countTaught(want) });
   };
   /**
    * Rows in any order, one dot each (shuffled every time: the list's order
@@ -154,6 +218,43 @@
     Find.Mech.labs[key] = entry;
     if (!Find.Mech.labOrder.includes(key)) Find.Mech.labOrder.push(key);
   };
+
+  /* ---------------- the microphone's stand-in (the lab and the tests) ---------------- */
+  /**
+   * Find.fakeListen({choices}): what Speech.listen returns, from a picker
+   * ("what did the child say?") instead of a microphone. The lab passes it
+   * to Say.tell as `speech`, so a whole speaking round can be played, and
+   * the tests drive it by clicking a choice. "Nothing heard" resolves null.
+   */
+  Find.fakeListen = function ({ choices = [], timeoutMs = 4000 } = {}) {
+    void timeoutMs;
+    return new Promise((resolve) => {
+      const box = document.createElement("div");
+      box.id = "fake-mic";
+      box.setAttribute("role", "dialog");
+      box.setAttribute("aria-label", "What did the child say?");
+      box.innerHTML = `<div class="fm-q">Lab: what did the child say?</div><div class="fm-row"></div>`;
+      const row = box.querySelector(".fm-row");
+      const add = (label, val, cls = "") => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = `btn ${cls}`;
+        b.dataset.say = val == null ? "" : String(val);
+        b.textContent = label;
+        b.addEventListener("click", () => {
+          box.remove();
+          resolve(val == null ? null : { choice: val, confidence: 0.9 });
+        });
+        row.appendChild(b);
+      };
+      choices.forEach((c) => add(Find.choiceLabel(c), c));
+      add("Nothing heard", null, "ghost");
+      document.body.appendChild(box);
+    });
+  };
+  Find.fakeListen.hasTemplates = () => true;
+  /** A choice as text: a word's English (the lab picker is for the grown-up), a number as its digit. */
+  Find.choiceLabel = (c) => (typeof c === "number" ? String(c) : (Cook.data.words[c] || {}).english || c);
 
   /* ---------------- the lab can pretend the player knows the words ---------------- */
   const baseStage = Cook.wordStage;

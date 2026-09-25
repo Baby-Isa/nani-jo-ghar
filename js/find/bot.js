@@ -17,6 +17,9 @@
  * How many: the row's digit if one is ever shown (a leak: rows show only
  * the running tally now), otherwise a guess (1-3).
  * The bag: a kind it didn't pick itself, else a kind there's only one of.
+ * A speaking moment (the bowl): a random answer (it can't speak Kutchi).
+ * The headless twin, with the size and position strategies and every
+ * game, is js/find/blind.js (node build/leak_find.mjs).
  * If it earns the ear star in more than 10% of rounds, something on the
  * screen is giving the answer away.
  */
@@ -170,6 +173,17 @@
         }
         await nap(250);
         if (alive() && visible($("#find-done"))) $("#find-done").click();
+      } else if (visible(document.querySelector(".njg-say"))) {
+        // a speaking moment (the bowl): it can't speak Kutchi, so it taps (the lab's picker or a pill) at random
+        await nap(200);
+        const box = document.querySelector(".njg-say");
+        const picker = document.querySelector("#fake-mic");
+        if (!box) continue;
+        const pills = [...box.querySelectorAll(".pill")];
+        if (picker) Cook.pick([...picker.querySelectorAll("button")]).click();
+        else if (box.classList.contains("live") && pills.length) Cook.pick(pills).click();
+        else if (!box.classList.contains("listening")) (box.querySelector(".mic") || {}).click?.();
+        await nap(500);
       } else if (L.bagging && L.bag.length && bagTaps < 12) {
         await nap(200);
         const ks = kindsOf(B.look().bag);

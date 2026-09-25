@@ -17,7 +17,7 @@
   const $ = (s) => document.querySelector(s);
   const esc = UI.esc;
 
-  const state = (Find.state = { current: null, lab: { level: 1, stage: 0, bot: false } });
+  const state = (Find.state = { current: null, lab: { level: 1, stage: 0, bot: false, parent: false } });
   Find.log = [];
 
   /* ---------------- one round ---------------- */
@@ -32,7 +32,9 @@
     UI.clearStage();
     UI.mission.close();
     Find.stageOverride = lab && state.lab.stage ? state.lab.stage : null;
-    const round = new Find.Round({ mech, level, scene: Find.scenes[sceneId], lab, story, bag: opts.bag !== false, greet: !!opts.greet, bot: !!bot });
+    // a level can bring its own scene (F3 level 3: the sitting room's grey boxes)
+    const scene = Find.scenes[Find.knobs(mech, level).scene || sceneId] || Find.scenes[sceneId];
+    const round = new Find.Round({ mech, level, scene, lab, story, bag: opts.bag !== false, greet: !!opts.greet, bot: !!bot });
     state.current = round;
     Cook.onHelp = (kind, info) => round.onHelp(kind, info);
     const botRun = bot ? Find.Bot.play(round, bot) : null;
@@ -69,14 +71,26 @@
   };
 
   /* ---------------- the result card (Wave 5, shared with Cook: the word review) ---------------- */
-  const starsHtml = (st) => ["ear", "hand", "third"].map((k) => `<span class="mstar ${st[k] ? "earned" : "lost"}" data-k="${k}" title="${esc(UI.starInfo(k).tip)}">${UI.starIcon(k)}</span>`).join("");
-  const EAR = ["no", "count", "bag", "wrong", "shown"];
+  /** The stars: ear (or "not tested this time", dashed), sharp eyes, no help, and the voice star in a speaking round. */
+  const VOICE_TIP = "Said it: told them in Kutchi, out loud (a pill doesn't count, but it never loses it)";
+  const voiceIcon = () => (global.Stars && global.Stars.ICONS && global.Stars.ICONS.mic) || "🎤";
+  const starsHtml = (st) =>
+    ["ear", "hand", "third"]
+      .map((k) =>
+        k === "ear" && !("ear" in st)
+          ? `<span class="mstar untested" data-k="ear" title="Not tested this time: the words that decide are still English placeholders">${UI.starIcon(k)}</span>`
+          : `<span class="mstar ${st[k] ? "earned" : "lost"}" data-k="${k}" title="${esc(UI.starInfo(k).tip)}">${UI.starIcon(k)}</span>`
+      )
+      .concat("voice" in st ? [`<span class="mstar ${st.voice ? "earned" : "untested"}" data-k="voice" title="${esc(VOICE_TIP)}">${voiceIcon()}</span>`] : [])
+      .join("");
+  const EAR = ["no", "count", "bag", "size", "where", "wrong", "shown"];
   function tips(card) {
     const T = Find.data.tips;
     const out = [];
-    if (!card.stars.ear) out.push({ star: "ear", text: T.ear[EAR.find((k) => card.kinds.includes(k)) || "wrong"] });
+    if ("ear" in card.stars && !card.stars.ear) out.push({ star: "ear", text: T.ear[EAR.find((k) => card.kinds.includes(k)) || "wrong"] });
     if (!card.stars.hand) out.push({ star: "hand", text: card.kinds.includes("slow") ? T.hand.slow : T.hand.default });
     if (!card.stars.third) out.push({ star: "third", text: Cook.save.mode === "busy" ? T.third.busy : T.third.relaxed });
+    if ("voice" in card.stars && !card.stars.voice) out.push({ star: "voice", text: T.voice });
     return out;
   }
   /*
@@ -94,14 +108,14 @@
     const p = UI.panel(`
       <h2>${esc(title)}</h2>
       <div class="cards"><div class="ccard rcard res-card"><div class="rc-left">
-        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="">Nani's list</div>
+        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="">${esc((Find.data.mechanics[card.mech] || {}).name || "Nani's list")}</div>
         <span class="cc-coins"><i class="coin-dot"></i>+${card.coins}</span>
         <div class="cc-stars">${starsHtml(card.stars)}</div>
         <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>In your purse</span><b>${Cook.save.coins}</b></div></div>
       </div>
       <div class="rc-right">
         ${words.length ? `<div class="rc-words"><h4>Words on this list${flagged ? ` <span class="rc-key"><i class="k-missed"></i>missed <i class="k-helped"></i>needed help</span>` : ""}</h4>${UI.wordReview(words)}</div>` : ""}
-        ${t.length ? `<div class="rc-tips"><h4>Next time</h4>${t.map((x) => `<div class="rc-tip"><span class="mstar lost">${UI.starIcon(x.star)}</span>${esc(x.text)}</div>`).join("")}</div>` : `<div class="rc-tips all"><h4>Next time</h4><div class="rc-tip">Just the same. All three stars!</div></div>`}
+        ${t.length ? `<div class="rc-tips"><h4>Next time</h4>${t.map((x) => `<div class="rc-tip"><span class="mstar lost">${x.star === "voice" ? voiceIcon() : UI.starIcon(x.star)}</span>${esc(x.text)}</div>`).join("")}</div>` : `<div class="rc-tips all"><h4>Next time</h4><div class="rc-tip">Just the same. Every star!</div></div>`}
       </div></div></div>
       <div class="btn-row"><button class="btn primary" id="res-again">${spec.lab ? "Again" : "Another list"}</button><button class="btn" id="res-back">${spec.lab ? "Search lab" : "Menu"}</button></div>`);
     UI.wireWordReview(p);
@@ -176,23 +190,28 @@
     const p = UI.panel(`
       <h2>Search lab</h2>
       <p>Try any Find it mechanic on its own, with a new list and a new stall every time. Tell Zafar's Claude what feels unclear or not fun!</p>
-      <div class="lab-row"><span class="lab-lbl">Level</span><div class="seg" role="group" aria-label="Level">${[1, 2, 3].map((n) => `<button data-level="${n}" class="${n === L.level ? "on" : ""}">Level ${n}</button>`).join("")}</div></div>
+      <div class="lab-row"><span class="lab-lbl">Level</span><div class="seg" role="group" aria-label="Level">${[1, 2, 3, 4].map((n) => `<button data-level="${n}" class="${n === L.level ? "on" : ""}">Level ${n}</button>`).join("")}</div></div>
       <div class="lab-row"><span class="lab-lbl">Words</span><div class="seg" role="group" aria-label="Word stage">${STAGES.map(([n, t]) => `<button data-stage="${n}" class="${n === L.stage ? "on" : ""}">${t}</button>`).join("")}</div></div>
       <label class="lab-check"><input type="checkbox" id="lab-bot" ${L.bot ? "checked" : ""}> The non-speaker bot plays (it sees only the screen)</label>
+      <label class="lab-check"><input type="checkbox" id="lab-parent" ${L.parent ? "checked" : ""}> With a parent (a ✓ button when the child says it)</label>
+      <p class="lab-note">Speaking moments use a stand-in for the microphone here: tap the mic, then pick what the child said.</p>
       <div class="lab-grid">${Find.Mech.labOrder.map((k) => `<button data-mech="${k}">${esc(Find.Mech.labs[k].name)}<small>${esc(Find.Mech.labs[k].verb)}</small></button>`).join("")}</div>
       <h3>Leak check</h3>
-      <p>The bot plays 20 rounds of Nani's list + Check the bag at this level and word stage. It should earn the ear star in fewer than 10% of rounds.</p>
-      <div class="btn-row"><button class="btn" id="lab-leak">Bot × 20</button><button class="btn" id="lab-back">Back</button></div>
+      <p>The bot plays 20 rounds of a game at this level and word stage, seeing only the screen. It should earn the ear star in fewer than 10% of rounds. (Every game, thousands of rounds, headless: <code>node build/leak_find.mjs</code>.)</p>
+      <div class="btn-row"><button class="btn" id="lab-leak" data-game="list">Nani's list × 20</button><button class="btn" id="lab-leak-f2" data-game="whichone">Which one? × 20</button><button class="btn" id="lab-back">Back</button></div>
       <div id="lab-out"></div>`);
     p.querySelectorAll("[data-level]").forEach((b) => b.addEventListener("click", () => ((L.level = Number(b.dataset.level)), showLab())));
     p.querySelectorAll("[data-stage]").forEach((b) => b.addEventListener("click", () => ((L.stage = Number(b.dataset.stage)), showLab())));
     $("#lab-bot").addEventListener("change", (e) => (L.bot = e.target.checked));
+    $("#lab-parent").addEventListener("change", (e) => (L.parent = e.target.checked));
     p.querySelectorAll("[data-mech]").forEach((b) => b.addEventListener("click", () => runLab(b.dataset.mech).catch(report)));
-    $("#lab-leak").addEventListener("click", async () => {
-      const res = await leakCheck(20, { level: L.level, stage: L.stage || 2 });
-      showLab();
-      $("#lab-out").innerHTML = leakHtml(res);
-    });
+    p.querySelectorAll("[data-game]").forEach((b) =>
+      b.addEventListener("click", async () => {
+        const res = await leakCheck(20, { level: L.level, stage: L.stage || 2, key: b.dataset.game });
+        showLab();
+        $("#lab-out").innerHTML = leakHtml(res);
+      })
+    );
     $("#lab-back").addEventListener("click", showTitle);
     Cook.expect = null;
   }
@@ -263,8 +282,20 @@
       if (UI.panelOpen()) return Cook.expect ? Object.assign({}, Cook.expect) : null;
       if (Cook.expect && Cook.expect.kind === "click" && document.querySelector(Cook.expect.selector)) return Object.assign({}, Cook.expect);
       if (!r || !r.alive()) return null;
+      if (r.phase === "say") {
+        // a speaking moment: the mic (the lab's picker stands in for it) or the pills
+        const box = document.querySelector(".njg-say");
+        const S = r.saying;
+        if (!box || !S) return { kind: "wait" };
+        const right = S.choices.filter((c) => !S.accept || S.accept(c)).map(String);
+        const wrong = S.choices.filter((c) => S.accept && !S.accept(c)).map(String);
+        const picker = !!document.querySelector("#fake-mic");
+        const mic = box.querySelector(".mic");
+        return { kind: "say", right, wrong, picker, live: box.classList.contains("live"), mic: !!mic && !mic.hidden, listening: box.classList.contains("listening"), parent: !!box.querySelector("[data-parent=ok]") };
+      }
       if (r.phase === "search") {
         const row = r.openRows[0];
+        if (r.calls && !row) return { kind: "wait" };
         const live = r.items.filter((it) => !it.gone && !it.off);
         const targets = row ? live.filter((it) => Find.matches(it, row.want)) : [];
         if (!row || !targets.length) {
@@ -293,7 +324,9 @@
         panel: UI.panelOpen(),
         coins: Cook.save.coins,
         zoom: V.state().zoom,
-        rows: r ? r.rows.map((x) => ({ noun: x.want.noun, count: x.want.count, not: !!x.want.not, got: x.got, stage: x.stage })) : [],
+        rows: r ? r.rows.map((x) => ({ noun: x.want.noun, count: x.want.count, not: !!x.want.not, got: x.got, stage: x.stage, size: x.want.size || null, where: x.want.where || null, digit: !!x.countTaught, placeholder: !!x.placeholder })) : [],
+        mech: r ? r.mech : null,
+        moments: r ? r.moments.map((m) => ({ choice: m.choice, via: m.via })) : [],
         items: r ? r.items.length : 0,
         cards: Find.log.map((c) => ({ stars: c.stars, coins: c.coins, reasons: c.reasons, level: c.level, bot: c.bot })),
       };
@@ -301,10 +334,10 @@
     /** Relations are data: every placed item and what it is in / on / next to. */
     relations() {
       const r = state.current;
-      return r ? r.items.map((it) => ({ id: it.id, noun: it.noun, spot: it.spot, rel: it.rel })) : [];
+      return r ? r.items.map((it) => ({ id: it.id, noun: it.noun, spot: it.spot, rel: it.rel, size: it.size, w: it.w })) : [];
     },
     lab(key, opts = {}) {
-      Object.assign(state.lab, { level: opts.level || 1, stage: opts.stage || 0 });
+      Object.assign(state.lab, { level: opts.level || 1, stage: opts.stage || 0, parent: !!opts.parent });
       runLab(key, { bot: opts.bot || null }).catch(report);
     },
     story: () => storyRound(),
