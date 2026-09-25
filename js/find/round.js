@@ -55,47 +55,29 @@
   /* ---------------- placing items in hide spots ---------------- */
   const sizeCache = {};
   /**
-   * kinds: [{noun, copies, colour?, size?}]. Every unit gets its own spot,
-   * shuffled every round (no fixed positions), and records its relations:
-   * the spot's (relation, anchor), any extra ones the spot data lists,
-   * and which items sit next to it on the same anchor.
+   * Units from the generator ({noun, size?, spot}, js/find/gen.js) to things
+   * on the stall: each in its hide spot, drawn at its size's scale (the same
+   * picture at 0.8x and 1.25x for "which one?"), with its relations (the
+   * spot's relation to its anchor, any extra ones the spot lists, "next to"
+   * its neighbours on the same anchor). Given kinds instead ({noun, copies}),
+   * they are dealt to random spots, as before.
    */
-  Find.placeItems = async function (scene, kinds) {
-    const units = Cook.shuffle([].concat(...kinds.map((k) => Array.from({ length: k.copies }, () => k))));
-    const spots = Cook.shuffle(scene.spots).slice(0, units.length);
-    const items = [];
-    for (let i = 0; i < spots.length; i++) {
-      const k = units[i];
-      const sp = spots[i];
-      const size = sp.size || scene.size || 96;
-      const key = `${k.noun}@${size}`;
-      if (!sizeCache[key]) sizeCache[key] = await V.measure(k.noun, size);
-      const { w, h } = sizeCache[key];
-      items.push({
-        id: `it${i}`,
-        noun: k.noun,
-        colour: k.colour || null,
-        size: k.size || null,
-        spot: sp.id,
-        anchor: sp.anchor,
-        x: sp.x + Find.rint(-6, 6),
-        baseline: sp.baseline,
-        w,
-        h,
-        tilt: Find.rint(-7, 7),
-        rel: [[sp.rel, sp.anchor]].concat(sp.also || []),
-      });
+  Find.placeItems = async function (scene, unitsOrKinds) {
+    let units = unitsOrKinds;
+    if (units.length && units[0].copies != null) {
+      const list = Cook.shuffle([].concat(...units.map((k) => Array.from({ length: k.copies }, () => k))));
+      const spots = Cook.shuffle(scene.spots).slice(0, list.length);
+      units = spots.map((sp, i) => ({ noun: list[i].noun, size: list[i].size || null, spot: sp.id }));
     }
-    // "next to": neighbours on the same anchor
-    const byAnchor = {};
-    items.forEach((it) => (byAnchor[it.anchor] = byAnchor[it.anchor] || []).push(it));
-    Object.values(byAnchor).forEach((list) => {
-      list.sort((a, b) => a.x - b.x);
-      list.forEach((it, j) => {
-        if (list[j - 1] && it.x - list[j - 1].x < 140) it.rel.push(["next-to", list[j - 1].id]);
-        if (list[j + 1] && list[j + 1].x - it.x < 140) it.rel.push(["next-to", list[j + 1].id]);
-      });
-    });
+    const items = Find.Gen.items(units, scene, Math.random);
+    const spotById = {};
+    scene.spots.forEach((sp) => (spotById[sp.id] = sp));
+    for (const it of items) {
+      const size = Math.round((spotById[it.spot].size || scene.size || 96) * Find.scaleOf(it.size));
+      const key = `${it.noun}@${size}`;
+      if (!sizeCache[key]) sizeCache[key] = await V.measure(it.noun, size);
+      Object.assign(it, sizeCache[key], { tilt: Find.rint(-7, 7) });
+    }
     return items;
   };
 
@@ -123,13 +105,16 @@
       this.earLost = false;
       this.token = Cook.run;
       this.wrongTimes = [];
+      this.moments = []; // speaking moments (Say.tell outcomes), for the voice star
+      this.calls = false; // F3: rows are calls, one at a time
+      Find.activeScene = scene;
     }
     get openRows() {
       return this.rows.filter((r) => !r.want.not && r.got < r.want.count);
     }
     /** Rows count for the ear star from word stage 2 (stage 1 is taught, not tested). */
     tested(r) {
-      return !!r && r.stage >= 2;
+      return !!r && r.stage >= 2 && !r.placeholder;
     }
     alive() {
       return this.token === Cook.run;
@@ -138,9 +123,13 @@
     /* ---- the list on the mission card ---- */
     openList(wants) {
       this.rows = wants.map((w) => Find.ladderRow(w));
+      // a row decided by a word with no Kutchi yet (a position before A5) is readable English: not tested
+      // (the shared stars rule placeholdersTested: false)
+      const phTested = global.Stars ? global.Stars.rules("find").placeholdersTested : false;
+      this.rows.forEach((r) => (r.placeholder = !phTested && Find.rowParts(r.want).some((p) => typeof p === "string" && Cook.data.words[p] && !Cook.data.words[p].kutchi)));
       this.rows.forEach((r) => (r.decorate = (li) => decorate(r, li)));
       this.L = Find.ladder(this.rows);
-      UI.mission.open({ who: "nani", name: "Nani's list", ladders: [this.L], line: this.listLine(), busy: this.busy });
+      UI.mission.open({ who: this.who || "nani", name: this.listName || "Nani's list", ladders: [this.L], line: this.listLine(), busy: this.busy });
       if (!Find.stageOverride) this.rows.forEach((r) => r.ids.concat(r.want.count ? [Cook.numId(r.want.count)] : []).forEach((id) => Cook.markSeen(id)));
     }
     /**
@@ -169,11 +158,11 @@
     }
 
     /* ---- the search ---- */
-    beginSearch() {
+    beginSearch({ done = true } = {}) {
       this.phase = "search";
       this.t0 = this.lastFind = this.lastAct = Find.now();
       this.hesitated = false;
-      $("#find-done").classList.remove("hidden");
+      if (done) $("#find-done").classList.remove("hidden");
       $("#btn-warmer").classList.remove("hidden");
       // calm: Nani's last line goes, and the sidebar is just the list, Done and the rail
       UI.hideBubble();
@@ -203,87 +192,18 @@
       const a = V.anchorAt(x, y);
       if (a) V.ripple(x, y);
     }
+    /* the search's taps, finds and mistakes: js/find/mechanics/spot.js */
     searchTap(x, y) {
-      const now = Find.now();
-      if (now < this.slowUntil) return;
-      this.lastAct = now;
-      const item = V.hit(x, y, this.items);
-      if (!item) {
-        // scenery answers a tap, and never counts (the shopkeeper smiles)
-        const p = V.person;
-        if (p && x > p.x - p.w / 2 && x < p.x + p.w / 2 && y > p.top && y < 552) {
-          V.mood("happy");
-          setTimeout(() => this.alive() && V.mood("neutral"), 700);
-        }
-        V.ripple(x, y);
-        Cook.sfx.pop();
-        return;
-      }
-      const row = this.rows.find((r) => !r.want.not && Find.matches(item, r.want) && r.got < r.want.count) || this.rows.find((r) => !r.want.not && Find.matches(item, r.want));
-      if (row) this.collect(item, row, now);
-      else this.wrong(item, now);
+      return Find.Spot.tap(this, x, y);
     }
     collect(item, row, now) {
-      const ms = (now - this.lastFind) * Cook.speed;
-      const fast = ms <= this.knobs.parMs && !this.warmerOn;
-      this.finds.push({ noun: item.noun, ms: Math.round(ms), fast });
-      this.lastFind = now;
-      this.combo = fast ? this.combo + 1 : 0;
-      this.bestCombo = Math.max(this.bestCombo, this.combo);
-      V.combo(this.combo);
-      if (this.warmerOn) this.warmer(false);
-      item.gone = true;
-      row.got++;
-      this.basket.push(item);
-      Cook.sfx.right();
-      V.fly(item, V.basketSpot(this.basket.length - 1));
-      UI.mission.refresh();
-      // counting aloud teaches the number words (stages 1-2); from stage 3 the tally is silent
-      const n = row.got;
-      if (n <= 10 && Cook.wordStage(Cook.numId(n)) < 3 && Cook.data.grammar.numbers[n]) Lang.speak(Lang.numLine(n)).catch(() => {});
+      return Find.Spot.collect(this, item, row, now);
     }
-    /** The row a wrong tap was really about: its "no" row, a look-alike's row, or the first open one. */
     rowFor(item) {
-      return (
-        this.rows.find((r) => r.want.not && Find.matches(item, r.want)) ||
-        this.rows.find((r) => !r.want.not && r.got < r.want.count && Find.sameGroup(r.want.noun, item.noun)) ||
-        this.openRows[0] ||
-        this.rows.find((r) => !r.want.not) ||
-        null
-      );
+      return Find.Spot.rowFor(this, item);
     }
     wrong(item, now) {
-      V.wiggle(item);
-      Cook.sfx.soft();
-      this.combo = 0;
-      const row = this.rowFor(item);
-      this.wrongTaps.push(item.noun);
-      const kind = row && row.want.not ? "no" : "wrong";
-      this.earMiss(row, kind === "no" ? `tapped ${item.noun} (Nani said no ${item.noun})` : `tapped ${item.noun}${row ? `, not ${row.want.noun}` : ""}`, kind);
-      // tapping everywhere: the stall pauses for a moment, and the sharp-eyes star goes
-      const [n, win] = this.knobs.slowTaps || [3, 2000];
-      this.wrongTimes = this.wrongTimes.filter((t) => now - t < win / Cook.speed).concat([now]);
-      if (this.wrongTimes.length >= n) {
-        this.wrongTimes = [];
-        this.slowUntil = now + (this.knobs.slowMs || 2000) / Cook.speed;
-        this.slowTriggered = true;
-        this.kinds.push("slow");
-        UI.mission.star("hand", "lost");
-        UI.toast("Slow down!");
-      }
-      // the recast: what you tapped, then the row again; then you try again yourself
-      const lines = [Lang.line("oops"), Lang.bare(Lang.phrase([item.noun]))];
-      if (row) lines.push(Find.rowLine(row, true));
-      Find.sayLater("nani", Lang.join(lines));
-      // two misses on one row: its things glow (shown: costs the ear star; the word doesn't advance)
-      if (row) {
-        row.misses++;
-        if (row.misses >= 2 && !row.want.not && !row.shown) {
-          row.shown = true;
-          V.glow(this.items.filter((it) => !it.gone && Find.matches(it, row.want)));
-          this.onHelp("shown", { ids: [row.want.noun], row });
-        }
-      }
+      return Find.Spot.wrong(this, item, now);
     }
     /** A mistake on a row: the ear star goes if the row is tested (stage 2+). */
     earMiss(row, why, kind = "wrong") {
@@ -400,6 +320,8 @@
       this.rows.forEach((r) => {
         if (r.want.not || r.got === r.want.count) return;
         r.countMiss = true;
+        // the digit was on the row (the number word is taught, stage <= 1): noted, not tested
+        if (r.countTaught) return this.practice.push(wordsOf(`${r.got} ${r.want.noun}, they asked for ${r.want.count}`));
         this.earMiss(r, `${r.got} ${r.want.noun}, they asked for ${r.want.count}`, "count");
         bad.push(r);
       });
@@ -419,7 +341,13 @@
         hand: this.finds.length > 0 && fast / this.finds.length >= 0.8 && !this.slowTriggered,
         third: this.busy ? (this.patience == null ? 1 : this.patience) >= 0.35 : this.help === 0,
       };
-      Object.entries(stars).forEach(([k, v]) => UI.mission.star(k, v ? "earned" : "lost"));
+      if (this.handOverride != null) stars.hand = this.handOverride;
+      // the voice star: only in a round with a speaking moment (recognised or a parent's ✓; pills leave it open)
+      const voice = this.moments.length && global.Stars ? global.Stars.voice(this.moments, "find") : null;
+      if (voice && voice.state !== "none") stars.voice = voice.state === "earned";
+      // every row decided by a placeholder word (F3 before the position words): the ear wasn't tested
+      if (this.noEar || (this.rows.length && this.rows.every((r) => r.placeholder || r.want.not))) delete stars.ear;
+      Object.entries(stars).forEach(([k, v]) => k !== "voice" && UI.mission.star(k, v ? "earned" : "lost"));
       // rows show their words again, and the card is stamped
       this.rows.forEach((r) => (r.done = true));
       UI.mission.refresh();
@@ -428,13 +356,14 @@
       const P = Find.data.pay;
       const receipt = [["Helping Nani", P.help]];
       if (stars.ear) receipt.push(["Understood (ear star)", P.ear]);
+      if (stars.voice) receipt.push(["Said it (voice star)", P.voice || 4]);
       if (stars.hand) receipt.push([`${UI.starInfo("hand").name} star`, P.hand]);
       if (stars.third) receipt.push([`${UI.starInfo("third").name} star`, P.third]);
       const c = P.combo;
       if (this.bestCombo >= c.from) receipt.push([`Combo ×${this.bestCombo}`, Math.min(c.max, (this.bestCombo - c.from + 1) * c.each)]);
       const coins = receipt.reduce((a, [, v]) => a + v, 0);
       // word progress (not when the lab is pretending you know the words)
-      if (!Find.stageOverride) {
+      if (!Find.stageOverride && !this.noProgress) {
         this.rows.forEach((r) => {
           if (!this.tested(r)) return;
           if (r.miss || r.shown) Cook.markMiss(r.want.noun);
@@ -459,6 +388,9 @@
         finds: this.finds.slice(),
         asked: this.rows.map((r) => ({ line: r.want.not ? r.line : { segs: r.phrase.segs, en: r.phrase.en }, bad: !!r.miss, no: r.want.not })),
         words: this.wordReview(),
+        voice: voice ? voice.state : null,
+        moments: this.moments.map((m) => ({ choice: m.choice, via: m.via })),
+        untested: this.rows.filter((r) => r.placeholder).length,
         level: this.level,
         mech: this.mech,
       };
@@ -483,14 +415,17 @@
 
   /* ---------------- the row's own bit: the running tally ---------------- */
   /*
-   * Only what's in the basket for this row so far ("×2"), and only once
-   * there's something in it. Never the number asked for: the count is the
-   * number word Nani says, which is what's being taught, so a digit there
-   * would answer "how many?" without any Kutchi (the leak check's bot reads
-   * it straight off the row). Never what's left, either.
+   * What's in the basket for this row so far ("×2"), once there's something
+   * in it. The number asked for only while its number word is taught (stage
+   * <= 1, D5.2): from stage 2 the count is tested, and a digit there would
+   * answer "how many?" without any Kutchi (the leak bots read it straight
+   * off the row). A count is graded only when it's tested. Never what's left.
    */
   function decorate(r, li) {
-    if (r.want.not || !r.got) return;
+    if (r.want.not) return;
+    // the count's digit, only while its number word is taught (stage <= 1: D5.2, the review's High leak)
+    if (r.countTaught && !r.done) li.querySelector(".wp-text").insertAdjacentHTML("afterbegin", `<span class="ldigit" title="How many">${r.want.count}</span> `);
+    if (!r.got) return;
     li.querySelector(".wp-text").insertAdjacentHTML("beforeend", ` <span class="ltally" title="In your basket">×${r.got}</span>`);
   }
   const ID_RE = /\b(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+\b/g;

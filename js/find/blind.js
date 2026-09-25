@@ -77,7 +77,7 @@
       return { text: x.english || id, ph: true };
     };
     const tokens = [];
-    if (!w.not && w.count != null) tokens.push(tok(opts.numId(w.count)));
+    if (!w.not && w.count != null && !w.call) tokens.push(tok(opts.numId(w.count)));
     if (w.size) tokens.push(tok(w.size));
     tokens.push(tok(w.noun));
     if (w.where) {
@@ -85,7 +85,7 @@
       tokens.push(tok(a.word || a.en));
       tokens.push(Object.assign(tok((Gen.Rel.info(w.where[0]) || {}).word), { rel: Gen.Rel.id(w.where[0]), anchorEn: a.en }));
     }
-    return { no: !!w.not, tokens, digit: !w.not && w.count != null && Gen.digitShown(opts.numStage) ? w.count : null };
+    return { no: !!w.not, tokens, digit: !w.not && !w.call && w.count != null && Gen.digitShown(opts.numStage) ? w.count : null };
   };
 
   /* ---------------- choosing ---------------- */

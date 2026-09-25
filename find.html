@@ -91,6 +91,12 @@
 
 <div id="overlay" class="hidden"><div id="panel"></div></div>
 
+<!-- the shared layer (docs/shared-api.md): the recogniser, relations, which-one, stars, the speaking moment -->
+<script src="js/shared/speech.js"></script>
+<script src="js/shared/rel.js"></script>
+<script src="js/shared/whichone.js"></script>
+<script src="js/shared/stars.js"></script>
+<script src="js/shared/say.js"></script>
 <!-- shared with Cook with Nani: data, save, word progress, voice, word pills, the order ladder -->
 <script src="js/cook/core.js"></script>
 <script src="js/cook/lang.js"></script>
@@ -98,9 +104,20 @@
 <script src="js/cook/order.js"></script>
 <!-- Find it: the search engine, its mechanics, the non-speaker bot and the game's shape -->
 <script src="js/find/engine.js"></script>
+<script src="js/find/gen.js"></script>
 <script src="js/find/view.js"></script>
 <script src="js/find/round.js"></script>
-<script src="js/find/mechanics/list.js"></script>
+<!-- one file per mechanic (docs/find-it-design.md D3), then the mini-games built from them -->
+<script src="js/find/mechanics/spot.js"></script>
+<script src="js/find/mechanics/bag.js"></script>
+<script src="js/find/mechanics/greet.js"></script>
+<script src="js/find/mechanics/where.js"></script>
+<script src="js/find/mechanics/tell.js"></script>
+<script src="js/find/mechanics/bowl.js"></script>
+<script src="js/find/games/list.js"></script>
+<script src="js/find/games/whichone.js"></script>
+<script src="js/find/games/where.js"></script>
+<script src="js/find/games/ali.js"></script>
 <script src="js/find/bot.js"></script>
 <script src="js/find/flow.js"></script>
 </body>

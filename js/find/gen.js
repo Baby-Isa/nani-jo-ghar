@@ -155,8 +155,8 @@
     let wants;
     if (k.calls) {
       // F3: each noun called at least once, then repeats (the same noun, somewhere else)
-      wants = targets.map((noun) => ({ noun, count: 1 }));
-      while (wants.length < nCalls) wants.push({ noun: G.pick(targets, rng), count: 1 });
+      wants = targets.map((noun) => ({ noun, count: 1, call: true }));
+      while (wants.length < nCalls) wants.push({ noun: G.pick(targets, rng), count: 1, call: true });
       wants = G.shuffle(wants, rng);
     } else {
       wants = targets.map((noun) => ({ noun, count: G.rint(rng, k.count) }));
