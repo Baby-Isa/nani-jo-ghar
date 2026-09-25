@@ -71,3 +71,16 @@ The old chat is finishing three things and will push them; the new chat should c
 ### Zafar took every default, 25 Sept ~17:30 UTC
 All blocking decisions in the deep dives (top sections of each mode's design doc), the review (`docs/modes/REVIEW-2026-09-25.md`, A–F and the numbered list) and `docs/speech-recognition-plan.md` take their stated defaults. In short: Ali is the role-reversal character everywhere; parent ✓ earns the voice star, pills never do; draft words count, flagged; Monsoon owns Arc 3 Ch1, the clinic owns Ch4; rooms = kitchen, sitting room, Big Ma's room; one rotating hub daily; speech on-device only (MFCC + warping + DTW, enrolment on), no cloud path in release one; Mum says 🎤 words three times.
 **Build:** one remote build session per mode plus a foundation session, per `docs/modes/BUILD-COMMON.md`. This branch now contains the old chat's `claude/funny-fermi-vyrabn` (Wave 5A) merged in, and is the base for every build branch.
+
+### Build sessions launched 25 Sept 17:09 UTC (remote, base `claude/nifty-rubin-c0d431` @ 40e14b4)
+| Session | Branch | ID |
+|---|---|---|
+| Monsoon rush | `claude/build-monsoon` | session_01XXUbgoNx6dBxqjmrJMLtxo |
+| Who did it? | `claude/build-who` | session_01FkLSGNEs758RvckeK48Mjh |
+| Tidy up | `claude/build-tidy` | session_016WUwkcH43LgAysqffFWAst |
+| Dress up | `claude/build-dress` | session_01VLAqx6YNXH4MYSgZ15rk3v |
+| Clinic | `claude/build-clinic` | session_01DSDPTSNvrqqPdwsr6ZmAfz |
+| Snap | `claude/build-snap` | session_01HAy2YeBPBpzjVBGVifKc7G |
+| Foundation phase A (shared modules) | `claude/build-foundation` | session_01KEQtafQq6co4gYRTgpC2Ab |
+
+**Held back on purpose:** the Find it build and the foundation's phase B (the shell), until the old chat's Find it sidebar and batch 1 art wiring reach `main` (both touch the same files). Each session writes `build/reports/<mode>-build.md` on its branch.
