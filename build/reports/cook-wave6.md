@@ -18,7 +18,7 @@ All nine items from Zafar's grill playtest (`docs/UX-PRINCIPLES.md`).
 ## Tests (one at a time, `COOK_TEST_PORT=8810`)
 All pass, with no console errors or sidebar warnings: `--orders`; `--lab` laptop and flip5-landscape (WebGL); `--days 2 --canvas`; `--open-kitchen 2`; `test_find.py`; lab levels 3–4 at phone, iPad and laptop.
 
-Screenshots checked at each size; the harness now also tests read-along and the bulb.
+Screenshots checked at each size.
 
 ## Left
 - **Placeholder voice for the new words.** Google TTS is blocked here. Run `build_cook_tts.py` (it knows the new words) where there's network.
