@@ -278,7 +278,10 @@
   function expectation() {
     const r = state.current;
     if (UI.panelOpen()) return Cook.expect ? Object.assign({}, Cook.expect) : null;
-    if (!$("#intro").classList.contains("hidden")) return { kind: "click", selector: "#intro .ic-card" };
+    if (!$("#intro").classList.contains("hidden")) {
+      const card = $("#intro .ic-card");
+      return card.getAnimations && card.getAnimations().length ? { kind: "wait" } : { kind: "click", selector: "#intro .ic-card" };
+    }
     if (!r || !r.alive()) return null;
     if (r.phase === "ali") {
       const A = Snap.AliCamera;
@@ -292,10 +295,14 @@
       if (!todo || vf.film <= 0) return { kind: "click", selector: "#vf-show" };
       const f = Req.frameFor(todo.row, r.lay, r.K);
       const tz = r.K.vf.zooms.indexOf(f.zoom);
-      const fr = Snap.Photo.frameAt(f.cx, f.cy, f.zoom, r.K.vf.base, { w: r.lay.w, h: r.lay.h });
+      // centred yet? compare where the frame's centre lands at the target zoom (both kept inside the orchard)
+      const scn = { w: r.lay.w, h: r.lay.h };
+      const at = (x, y) => Snap.Photo.frameAt(x, y, f.zoom, r.K.vf.base, scn);
+      const fr = at(f.cx, f.cy);
       const cur = vf.frame();
-      const near = Math.abs(cur.x + cur.w / 2 - (fr.x + fr.w / 2)) < 5 && Math.abs(cur.y + cur.h / 2 - (fr.y + fr.h / 2)) < 5;
-      if (near || (vf.zi === tz && Math.abs(vf.cx - f.cx) < 5 && Math.abs(vf.cy - f.cy) < 5)) {
+      const now = at(vf.cx, vf.cy);
+      const near = Math.abs(now.x - fr.x) < 5 && Math.abs(now.y - fr.y) < 5;
+      if (near) {
         if (vf.zi < tz) return { kind: "click", selector: "#vf-zoom-in" };
         if (vf.zi > tz) return { kind: "click", selector: "#vf-zoom-out" };
         const ok = Snap.Photo.matches(Snap.Photo.printRecord(r.lay.spots, cur), todo.row, r.K.photo).ok;

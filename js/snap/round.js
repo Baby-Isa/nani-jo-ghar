@@ -189,6 +189,7 @@
       const p = Object.assign({ i: this.prints.length, el, used: false, by, lens: Photo.lensScore(shot.print, this.K.photo) }, shot);
       el.dataset.i = p.i;
       el.classList.add("arrive");
+      el.addEventListener("animationend", () => el.classList.remove("arrive"), { once: true });
       if (by === "ali") el.classList.add("by-ali");
       tray.appendChild(el);
       this.prints.push(p);

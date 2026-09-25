@@ -87,6 +87,7 @@
         round.asking = r;
         round.asked.push(r.i);
         let first = true;
+        let backs = 0;
         render(round);
         // a tap on a print while she's still asking counts (and cuts her short)
         let next = act();
@@ -97,6 +98,7 @@
             // nothing left to hand over: back for a frame
             if (first) round.earMiss(r, `no photo for ${Lang.plain(r.line)}`, "none");
             first = false;
+            if (backs++ >= K.handin.maxGoBacks) break;
             await round.goBack(K.handin.goBackFrames);
             $("#handin").classList.remove("hidden");
             round.vf.root.classList.add("hidden");
@@ -109,6 +111,7 @@
           if (a.kind === "back") {
             if (first) round.earMiss(r, `none of the photos was ${Lang.plain(r.line)}`, "none");
             first = false;
+            if (backs++ >= K.handin.maxGoBacks) break;
             await round.goBack(K.handin.goBackFrames);
             $("#handin").classList.remove("hidden");
             round.vf.root.classList.add("hidden");
@@ -140,6 +143,8 @@
           next = act();
           await Snap.say("nani", H.recastLine(a.p.print, r.row, K));
         }
+        // never stuck: after maxGoBacks trips back to the orchard, Nani lets that row go ("Nearly!")
+        if (!r.done) await Snap.say("nani", Lang.line("snap-nearly"), { ms: K.handin.reactMs });
       }
     } finally {
       el.removeEventListener("click", onClick);

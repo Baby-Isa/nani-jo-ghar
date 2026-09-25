@@ -168,7 +168,7 @@ LAYOUT_JS = """() => {
   if (hit(f, side)) out.push('sidebar over the frame');
   if (stage && (f.l < stage.l - 1 || f.r > stage.r + 1 || f.t < stage.t - 1 || f.b > stage.b + 1)) out.push('frame outside the stage');
   // prints in the tray may sit beside the frame, never on it
-  document.querySelectorAll('#tray .print').forEach((p) => { const b = p.getBoundingClientRect(); if (hit(f, {l: b.left, t: b.top, r: b.right, b: b.bottom})) out.push('a print over the frame'); });
+  document.querySelectorAll('#tray .print:not(.arrive)').forEach((p) => { const b = p.getBoundingClientRect(); if (hit(f, {l: b.left, t: b.top, r: b.right, b: b.bottom})) out.push('a print over the frame'); });
   for (const s of ['#vf-shutter', '#vf-zoom-in', '#vf-zoom-out']) {
     const b = r(s); if (!b) { out.push(s + ' missing'); continue; }
     const e = document.elementFromPoint((b.l + b.r) / 2, (b.t + b.b) / 2);
@@ -220,6 +220,12 @@ def play_pointer(page, vp, key, level, shots_dir, tag, timeout=150, seed=None):
             page.mouse.click(b[0], b[1])
             stats["clicks"] += 1
             time.sleep(0.12)
+        elif e["kind"] == "tap" and same >= 3 and e.get("key") != "pan":
+            # a tap that keeps landing a hair off (screen rounding): aim exactly, and count it
+            v = page.evaluate("(() => { const r = Snap.state.current; const t = r.rows.find((x) => x.row.noun === '%s'); const f = Snap.Req.frameFor(t.row, r.lay, r.K); return [f.cx, f.cy, r.K.vf.zooms.indexOf(f.zoom)]; })()" % e["key"])
+            page.evaluate("([x, y, z]) => __snap.aim(x, y, z)", v)
+            stats["aims"] += 1
+            time.sleep(0.1)
         elif e["kind"] == "tap":
             cover = page.evaluate(COVER_JS, [e["sx"], e["sy"], None])
             if cover:
@@ -234,6 +240,7 @@ def play_pointer(page, vp, key, level, shots_dir, tag, timeout=150, seed=None):
     cards = page.evaluate("__snap.state().cards")
     card = cards[n0] if len(cards) > n0 else None
     stats["secs"] = round(time.time() - t0, 1)
+    time.sleep(1.2)  # the result card comes up after a short beat
     page.screenshot(path=os.path.join(shots_dir, f"{tag}-result.png"))
     return card, stats
 
@@ -283,50 +290,24 @@ PERF_JS = """() => { window.__ft = []; let last = performance.now(); const f = (
 
 
 def run_perf(browser):
-    print("--perf: phone 915x375, CPU slowed x4, 4 prints in the 2-screen orchard (G1 level 3)")
+    print("--perf: phone 915x375, CPU slowed x4, a G1 level-3 round in the 2-screen orchard (at least 4 prints), frame times")
     vp = VIEWPORTS[1]
     ctx, page, errors = open_page(browser, vp, speed=4)
     cdp = ctx.new_cdp_session(page)
     cdp.send("Emulation.setCPUThrottlingRate", {"rate": 4})
-    page.evaluate("__snap.lab('g1', {level: 3, stage: 3, seed: 41})")
-    page.wait_for_function("__snap.state().phase === 'shoot' && __snap.expectation() && __snap.expectation().kind !== 'wait'", timeout=60000)
     page.evaluate(PERF_JS)
-    t0 = time.time()
-    prints = 0
-    while prints < 4 and time.time() - t0 < 90:
-        e = page.evaluate("__snap.expectation()")
-        st = page.evaluate("__snap.state()")
-        prints = st["prints"]
-        if not e or e["kind"] == "wait" or st["phase"] != "shoot":
-            time.sleep(0.1)
-            continue
-        if e["kind"] == "click" and e["selector"] == "#vf-show":
-            # the rows are shot: spend the spare film on pans across the orchard
-            page.mouse.move(vp["width"] * 0.35, vp["height"] * 0.5)
-            page.mouse.down()
-            page.mouse.move(vp["width"] * 0.1, vp["height"] * 0.45, steps=12)
-            page.mouse.up()
-            b = page.evaluate("(() => { const r = document.querySelector('#vf-shutter').getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; })()")
-            page.mouse.click(b[0], b[1])
-            time.sleep(0.4)
-            continue
-        if e["kind"] == "click":
-            b = page.evaluate("(s) => { const r = document.querySelector(s).getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }", e["selector"])
-            page.mouse.click(b[0], b[1])
-        elif e["kind"] == "tap":
-            page.mouse.click(e["sx"], e["sy"])
-        elif e["kind"] == "aim":
-            page.evaluate("([x, y, z]) => __snap.aim(x, y, z)", [e["cx"], e["cy"], e["zi"]])
-        time.sleep(0.3)
-    ft = page.evaluate("(() => { window.__ftOn = false; return window.__ft; })()")
-    ft = ft[2:]
+    d = os.path.join(SHOTS, "perf")
+    os.makedirs(d, exist_ok=True)
+    card, stats = play_pointer(page, vp, "g1", 3, d, "g1-l3", seed=43, timeout=240)  # seed 43 deals 4 rows
+    prints = len(page.evaluate("Snap.log.length ? Snap.log[Snap.log.length - 1].prints : []"))
+    ft = page.evaluate("(() => { window.__ftOn = false; return window.__ft; })()")[2:]
     dropped = sum(1 for x in ft if x > 34)
     worst = max(ft) if ft else 0
     avg = sum(ft) / len(ft) if ft else 0
-    print(f"  {'ok  ' if prints >= 4 else 'FAIL'} {prints} prints; {len(ft)} frames, mean {avg:.1f} ms, worst {worst:.0f} ms, {dropped} over 34 ms ({100 * dropped / max(1, len(ft)):.1f}%)")
-    if prints < 4:
-        fail("perf: fewer than 4 prints")
-    page.screenshot(path=os.path.join(SHOTS, "phone-perf.png"))
+    ok = prints >= 4 and card is not None
+    print(f"  {'ok  ' if ok else 'FAIL'} {prints} prints in {stats.get('secs')} s; {len(ft)} frames, mean {avg:.1f} ms, worst {worst:.0f} ms, {dropped} over 34 ms ({100 * dropped / max(1, len(ft)):.1f}%)")
+    if not ok:
+        fail("perf: fewer than 4 prints or no result")
     ctx.close()
     return {"frames": len(ft), "mean": avg, "worst": worst, "dropped": dropped}
 

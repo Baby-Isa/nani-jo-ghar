@@ -204,10 +204,17 @@
     return [x + (hit.x - x) * a, y + (hit.y - y) * a];
   };
   /** Can the frame's centre be put at p? With drag, anywhere; without, a tap there (or on a fruit whose centre it is). */
+  /**
+   * Without drag, a free point must be clear of every fruit by TAP_SLOP world
+   * units, so a tap a little off still lands on the branches (and doesn't
+   * snap onto a fruit); a fruit's own centre is always reachable (aim assist).
+   */
+  const TAP_SLOP = 16;
   Req.reachable = function (p, lay, K) {
     if (K.vf.drag) return true;
-    const [cx, cy] = Req.tapCentre(p[0], p[1], lay.spots, K.vf.aimAssist);
-    return Math.abs(cx - p[0]) < 1 && Math.abs(cy - p[1]) < 1;
+    const onFruit = lay.spots.find((s) => Math.abs(p[0] - s.x) <= s.w / 2 + TAP_SLOP && Math.abs(p[1] - s.y) <= s.h / 2 + TAP_SLOP);
+    if (!onFruit) return true;
+    return Math.abs(onFruit.x - p[0]) < 1 && Math.abs(onFruit.y - p[1]) < 1 && K.vf.aimAssist >= 1;
   };
   const OFFS = [-60, 0, 60];
   function centresFor(row, lay) {

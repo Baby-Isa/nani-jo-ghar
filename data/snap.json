@@ -51,9 +51,9 @@
       ]
     },
     "handin": {
-      "_about": "js/snap/mechanics/handin.js: Show Nani. Rows asked again in a new order; a wrong print gets a recast from its print record, then you choose again; none fits: back for goBackFrames more frames. The ear star needs minTested rows at word stage 2+ (js/snap/stubs/stars.js until the shared star sets arrive).",
+      "_about": "js/snap/mechanics/handin.js: Show Nani. Rows asked again in a new order; a wrong print gets a recast from its print record, then you choose again; none fits: back for goBackFrames more frames, at most maxGoBacks times a row (then Nani says 'Nearly!' and moves on, so a round always ends). The ear star needs minTested rows at word stage 2+ (js/snap/stubs/stars.js until the shared star sets arrive).",
       "levels": [
-        {"goBackFrames": 1, "minTested": 2, "reactMs": 900}
+        {"goBackFrames": 1, "maxGoBacks": 2, "minTested": 2, "reactMs": 900}
       ]
     },
     "ali-camera": {
