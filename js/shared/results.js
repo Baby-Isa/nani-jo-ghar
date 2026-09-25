@@ -107,7 +107,7 @@
    * true).
    */
   Results.toStars = function (r) {
-    const S = root.Stars || null;
+    const S = root.Stars || (typeof require === "function" && typeof module === "object" ? require("./stars.js") : null);
     let ear;
     if (r.rows && S) ear = S.ear(r.rows, r.mode).state !== "lost";
     else ear = !r.total || (r.right || 0) >= r.total;
