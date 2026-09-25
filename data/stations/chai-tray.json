@@ -1,5 +1,5 @@
 {
- "_about": "Data for the Chai tray (js/cook/stations/chai-tray.js). `station`: its name, goal and one goal line per phase. `words`: English placeholders for half and full until the family gives the Kutchi. `mechanic.levels`: the tray's own settings (who and what the order asks for is in the chai recipe's slots, by level: 1 = one cup, 2 = two people, 3 = three people plus extras and half/full). lines: where the dashed lines sit in a cup (the same on every cup, so they never answer the order); tolerance: how close to a line counts as on it; halfLine: draw the half line too (both lines, never only the asked one); extras: the bowls for elchi/ginger and their look-alike (shown whenever extras are possible, asked for or not); decoys: the look-alikes beside the sugar; boilLevel: the back burner's boil level (its tray profile is in mechanics.boil).",
+ "_about": "Data for the Chai tray (js/cook/stations/chai-tray.js). `station`: its name, goal and one goal line per phase. `words`: ph-half/ph-full are now drafted centrally in data/cook.json (Zafar, 25 Sept, phonetic, unconfirmed: adh / bharelo), so nothing is merged from here any more; left empty as a hook if a station-only word is ever needed. `mechanic.levels`: the tray's own settings (who and what the order asks for is in the chai recipe's slots, by level: 1 = one cup, 2 = two people, 3 = three people plus extras and half/full). lines: where the dashed lines sit in a cup (the same on every cup, so they never answer the order); tolerance: how close to a line counts as on it; halfLine: draw the half line too (both lines, never only the asked one); extras: the bowls for elchi/ginger and their look-alike (shown whenever extras are possible, asked for or not); decoys: the look-alikes beside the sugar; boilLevel: the back burner's boil level (its tray profile is in mechanics.boil).",
  "station": {
   "name": "Chai tray",
   "verb": "Listen, pour, spoon, boil",
@@ -12,10 +12,7 @@
    "pour": "Tap a cup, then hold the pan to pour. Then the tick."
   }
  },
- "words": {
-  "ph-half": {"kutchi": null, "english": "half", "src": "placeholder"},
-  "ph-full": {"kutchi": null, "english": "full", "src": "placeholder"}
- },
+ "words": {},
  "mechanic": {
   "levels": [
    {"lines": {"milk": 0.22, "half": 0.48, "full": 0.8}, "tolerance": 0.07, "milkTolerance": 0.09, "halfLine": false, "showExtras": false, "extras": ["spi-10", "veg-14", "veg-13"], "decoys": ["spi-16"], "boilLevel": 1, "water": [0.42, 0.58], "teaDecoys": ["spi-02", "spi-05"], "speakGapMs": 300, "tallyMax": 6},
