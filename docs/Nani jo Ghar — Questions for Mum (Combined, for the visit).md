@@ -8,13 +8,14 @@
 
 - **Record one long voice file** on the phone, in a quiet room. One sitting or several, it doesn't matter. Zafar will type what you say next to each question afterwards and send both back to you to check.
 - **Before each section, say its letter out loud** ("Section A", "Section B"…), and before a numbered question say its number ("A3"). That's how the recording gets lined up with this sheet.
-- **For a word list:** say the English, pause, say the Kutchi **twice**, then leave a gap of about two seconds. For example: *"red … laal … laal …"*. The gaps let each word be cut out on its own.
+- **For a word list:** say the English, pause, say the Kutchi **twice**, then leave a gap of about two seconds. For example: *"red … laal … laal …"*.
+- **For the words marked 🎤: say the Kutchi three times instead of twice.** These are the words the game will actually listen for when the children speak them, so the extra one helps it learn to recognise a child's voice as well as yours. The gaps let each word be cut out on its own.
 - **For a question:** answer in short, natural sentences, the way you'd actually say it to a grandchild in the kitchen. Not the textbook version, not the Gujarati or Hindi version: what our family says.
 - **For the sentences in Section C:** say each one once, naturally, with a short gap after it. Where it says *(a man says it)*, say it the way Nana would; *(a woman says it)*, the way you would; *(to a child)*, as to a grandchild; *(to Nana)*, as to him.
 - **Not sure of a word? Say "skip"** and move on. **More than one way to say it? Say them all.** **If the family just uses the English word** (chips, T-shirt, plaster), say so: that's a real answer, not a gap.
 - The two right-hand columns in every table are for Zafar to fill in afterwards. You don't need to write anything.
 
-**Rough times:** Section A about 10 minutes · B about 8 · C about 25 (the grammar sentences) · D about 6 · E about 15 · F about 15 · G about 15 · H about 8 · I about 20–30 (that one's a chat, not a list) · J one minute.
+**Rough times:** Section A about 10 minutes · B about 8 · C about 25 (the grammar sentences) · D about 6 · E about 16 · F about 16 · G about 17 · H about 8 · I about 20–30 (that one's a chat, not a list) · J one minute.
 
 ---
 
@@ -133,21 +134,21 @@ Zafar wrote these phonetically. For each one: is it the right word, and does the
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| B13 | only ("only onions") | | |
-| B14 | now ("now the tomatoes!") | | |
-| B15 | lift them out (of the oil) | | |
-| B16 | leave it (in) | | |
-| B17 | vegetable (a vegetable skewer) | | |
-| B18 | mixed (meat and vegetable) | | |
-| B19 | enough! / stop! | | |
-| B20 | more | | |
-| B21 | a little | | |
-| B22 | it's ready | | |
-| B23 | it's burning! | | |
-| B24 | it's boiling | | |
-| B25 | well done! / very good! | | |
-| B26 | a spoon (of sugar) | | |
-| B27 | a cup (of chai) | | |
+| B13 | only ("only onions") | | 🎤 |
+| B14 | now ("now the tomatoes!") | | 🎤 |
+| B15 | lift them out (of the oil) | | 🎤 |
+| B16 | leave it (in) | | 🎤 |
+| B17 | vegetable (a vegetable skewer) | | 🎤 |
+| B18 | mixed (meat and vegetable) | | 🎤 |
+| B19 | enough! / stop! | | 🎤 |
+| B20 | more | | 🎤 |
+| B21 | a little | | 🎤 |
+| B22 | it's ready | | 🎤 |
+| B23 | it's burning! | | 🎤 |
+| B24 | it's boiling | | 🎤 |
+| B25 | well done! / very good! | | 🎤 |
+| B26 | a spoon (of sugar) | | 🎤 |
+| B27 | a cup (of chai) | | 🎤 |
 
 ### B28–B38. Things still named in English in the game
 
@@ -464,15 +465,15 @@ Say each one **three ways**: to a child, to Nana, and to several children at onc
 
 | ID | Say | Notes |
 |---|---|---|
-| D1 | paani · chai · dudh · khun · atto · daal · maani | (water, tea, milk, sugar, flour, daal, chapati) |
+| D1 | paani 🎤 · chai 🎤 · dudh 🎤 · khun 🎤 · atto · daal · maani | (water, tea, milk, sugar, flour, daal, chapati) |
 | D2 | dungri · tameto · marcha · lasan · bataato · vatana · aadu · limu | (onion, tomato, green chilli, garlic, potato, peas, ginger, lemon) |
-| D3 | hardar · jeeru · rai · elchi · loon · lal marcha | (turmeric, cumin, mustard seed, cardamom, salt, chilli powder) |
-| D4 | hikdo · bo · trae · char · panj · chh · sat · ath · no · do | (1 to 10: please correct any that are off) |
+| D3 | hardar · jeeru · rai · elchi 🎤 · loon · lal marcha | (turmeric, cumin, mustard seed, cardamom, salt, chilli powder) |
+| D4 | hikdo 🎤 · bo 🎤 · trae 🎤 · char 🎤 · panj 🎤 · chh · sat · ath · no · do | (1 to 10: please correct any that are off; the first five are marked because the game listens out for them) |
 | D5 | Salamun alaykum! · Wa alaikum salaam! · Aabhar aanjo! · Achija! · Arre re! · Hedo! · Ghan. | |
 | D6 | Muke chai khape. · Muke bo maani khape. · Muke daal khape. · Ne dudh. · Ne bo khun. · Ne trae maani. · Muke hikdo chamcho dine (or however "give me a spoon" comes out in A3) | Whole sentences, one at a time. If A3 changed the frame, say the new version |
 | D7 | Jeeru. Ne poi rai. Ne poi hardar. | The tadka, in order |
 
-## Section E · Around the house: finding and tidying (about 15 minutes)
+## Section E · Around the house: finding and tidying (about 16 minutes)
 
 *The next two games are "find it" (Nani sends the child to find things round the house and the bazaar) and "tidy up" (putting the shopping away, laying the dastarkhwan, the sweet box, the shoe pile).*
 
@@ -655,7 +656,28 @@ These come from a class handout and are already in the first game. Just say the 
 | E122 | nine | | |
 | E123 | ten | | |
 
-## Section F · People, clothes and Eid morning (about 15 minutes)
+### E124. One more thing from the shopping
+
+| ID | English | Kutchi (Zafar's rough spelling) | Notes |
+|---|---|---|---|
+| E124 | crate (like a shopping crate at the stall) | | already used in the bazaar game; a shelf/anchor word |
+
+### E125–E132. The days of the week, and tomorrow
+
+For the game that teaches the week (fruit into a box, one day at a time). Say each day on its own, twice, like a word list. (Today and yesterday are already asked, at F38 and F37.)
+
+| ID | English | Kutchi (Zafar's rough spelling) | Notes |
+|---|---|---|---|
+| E125 | Monday | | |
+| E126 | Tuesday | | |
+| E127 | Wednesday | | |
+| E128 | Thursday | | |
+| E129 | Friday | | |
+| E130 | Saturday | | |
+| E131 | Sunday | | |
+| E132 | tomorrow (on its own, as a word) | | today is F38, yesterday is F37 |
+
+## Section F · People, clothes and Eid morning (about 16 minutes)
 
 *For the "who did it?" game (Nani describes the culprit: "it was the tall one", "it had turmeric on its paws") and the "dress up" game (Eid morning, Big Ma's sewing table, dressing for the rain).*
 
@@ -771,6 +793,7 @@ Answer notes:
 1. How would a child greet an elder on Eid morning, in Kutchi? And the Eid greeting itself.
 2. The words for giving, and for asking for, Eidi.
 3. How would you greet a guest at the door, and see them off?
+4. Are the Eid clothes laid out the night before, ready for the morning? If so, who lays them out, and where — on the bed, folded on a chair, somewhere else?
 
 Answer notes:
 
@@ -787,7 +810,16 @@ Answer notes:
 | F78 | pocket · sleeve · collar | | |
 | F79 | a stain | | |
 
-## Section G · The monsoon and feeling poorly (about 15 minutes)
+### F80–F81. A couple more for a guessing game
+
+For a game where someone describes a culprit and someone else guesses.
+
+| ID | English | Kutchi (Zafar's rough spelling) | Notes |
+|---|---|---|---|
+| F80 | What was it like? · The big one? Right! · Nobody's left! · Shall we go again? | | said by whoever's asking, echoing back a guess and asking for another go |
+| F81 | Does yours have glasses? · Is yours tall? | | asking about someone else's answer, one question at a time (like Guess Who) |
+
+## Section G · The monsoon and feeling poorly (about 17 minutes)
 
 *For the "monsoon" game (buckets under the drips, washing in, cats and goats into the shed) and the clinic game, which is set at the children's own doctor's clinic (Hannah's granddad's): the child is his helper. He says "check the head… now the knee… the knee again", and the child puts the stethoscope or the torch there; people come in and say what's wrong, or say "I don't feel well, I don't know why" and he has the child check until they find it; then he says how to fix it ("a bandage, round twice", "two drops in the left eye"). So we need body parts, "it hurts", hot and cold, the things he'd use, and, most of all, his little instructions (G108 onwards).*
 
@@ -969,6 +1001,21 @@ Answer notes:
 | G117 | Bring me the green bottle. · Two of the small ones. · The one on the top shelf. | | |
 | G118 | Show me your left hand. · Does your left knee hurt? (to the child; if the family says "this side / that side" rather than left and right, say it that way: see A5) | | |
 | G119 | stethoscope · torch · thermometer · dropper (if you just use the English words, say so) | | |
+
+### G120–G127. A few more for the clinic
+
+A few more phrases the doctor's game needs, now the shape of it is clearer.
+
+| ID | English | Kutchi (Zafar's rough spelling) | Notes |
+|---|---|---|---|
+| G120 | My arm hurts. · My leg hurts. · My foot hurts. | | the rest of G41's set (head, tummy, hand, knee are already asked) |
+| G121 | What's wrong with Nani? (asking about someone who isn't in the room) | | |
+| G122 | What have you brought? | | asked when the child hands something over |
+| G123 | Say it again? (a gentle re-ask, not "I didn't understand") | | |
+| G124 | The bandage. The knee. Twice. (naming what was used, the part, and the count, one after another) | | say it however sounds natural — one flowing sentence, or three short words |
+| G125 | My left knee hurts. · My right eye. · Not that one, my other knee. | | the patient naming their own side; the doctor never does (see G118) |
+| G126 | my left · my right (on their own, not in a sentence) | | |
+| G127 | Two drops. (on its own, without saying which eye or ear) | | the short form of G116 |
 
 ## Section H · Out and about, and comparing things (about 8 minutes)
 
