@@ -140,3 +140,21 @@ The same question, "can you win without the Kutchi?", asked again of the final c
 | Pass me | No | — |
 
 **Verdict:** the systems now pass the test. Wherever a real Kutchi word carries the decision, a non-speaker can't earn the ear star except by luck or by being shown (which costs the ear star). The remaining High is content, not code: about a dozen decision words the family hasn't given yet.
+
+## After Wave 6 (Zafar's grill playtest, 26 Sept 2026)
+
+Wave 6 changed how the order is shown and helped (docs/UX-PRINCIPLES.md). The same question for each change:
+
+| Change | Can you win without the Kutchi? | Severity |
+|---|---|---|
+| **One card per skewer / per maani** (one card per unit, a fixed shape) | The number of cards shows how many of each kind, so the count no longer has to be heard (the number word is still said, and read along). The kind on each card is still a word (dots once known), and a mixed skewer's pieces are words in order. This is the trade Zafar asked for: the fixed shape makes *which kind* and *which order* the thing to listen for | **Medium** (counts only, for skewers and maani) |
+| **One card per cup, fixed slots** (milk, sugar, which chai; half/full at level 4) | The slot says which question a row answers, never the answer: *dudh* or *nar dudh*, the number of *khun*, which chai are words (dots once known). A plain chai shows an empty slot, as its missing row did before | None new |
+| **Per-row speaker, 👁 and A/En removed; one light bulb** | The bulb shows English for 5/3/2/1 s by level. For rows still to do that's the answer, so it costs the ear star (as A/En did); after the order it's free | None (same cost as before, one way in) |
+| **One speaker per card, read-along** | Hearing it again once the words are dots costs the no-help star, as the row speakers did. The highlight lights the part being said, never a thing in the picture | None |
+| **The grill in two phases** | The rack still has fixed slots, every bowl is out, the plate is graded at the tick. You thread all the skewers before seeing the grill; the count is graded on the plate, not on the board | None |
+| **Chips off the grill** | One decision fewer at the grill (chips vs none). Chips stay in samosa + fry | — |
+| **Level 1 = the smallest round** | One skewer (meat or veg), one cup (their milk, sugar and chai are still said), one maani (which dough: the two bowls are always out), three pantry things among a shelf of look-alikes | None: every level-1 round still turns on a word |
+| **First-time overlay** (dim, spotlight, ghost finger) | It spotlights the next thing to do, which can be the answer. It runs only the first time at a station, which in the story is always the dish's guided first order (Nani glows the answer then anyway); in the Station lab only with "Nani helps" ticked | None in scored play |
+| **The family's words** (daar, ba, hakro/hakri, wadho/wadhi, watana, waari, lai, Muke {x} de, pela … ne poi) | Real Kutchi replaces two English placeholders' jobs: *first … and then* is now said (*pela … ne poi*), and "one" agrees with its noun, a small extra listening cue | Better |
+
+**Still open (unchanged):** the English placeholder decision words (*vegetable, mixed, half, full, chips, green pepper…*), the Chai tray's who-gets-a-cup (the "for" frame *{person} lai* now exists in data and is shown on each cup card; ordering *for* others by name is the next Chai tray pass), serving to the right person.
