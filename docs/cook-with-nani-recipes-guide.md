@@ -1,6 +1,6 @@
 # Cook with Nani: how to add ingredients, recipes, levels and stations
 
-**Updated:** 24 Sept 2026. For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
+**Updated:** 25 Sept 2026. For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
 
 Never invent Kutchi. A new word goes in with `"kutchi": null` and its English, and shows as a grey English placeholder until the family gives the Kutchi.
 
@@ -72,7 +72,7 @@ A recipe is an entry in `recipes` with five parts. Every choice the player makes
 | a kind with a describing word | tally kinds like `"ph-big+cook-maani"` | said "bo big maani" (the Maani line, level 3) |
 | different by level | `{"byLevel": [{"int": [2, 3]}, {"int": [3, 4]}]}` | the value for the order's level (past the end: the last); works at any depth in a slot |
 
-Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`. Any value in a slot, at any depth, can be `{"byLevel": [level 1, level 2, level 3]}`: the order's level picks one (the last repeats). Chai's `cups` has one person at level 1, two at 2, three at 3, and extras and half/full only at 3; mishkaki's `skewers` grows from one skewer to two, then three or four with mixed ones (`"total": {"byLevel": [1, 2, {"int": [3, 4]}]}`). Rows said `"for"` one person (`"forEach": "$cups", "for": "$it.who"`) become that person's own part of the mission card, with their face.
+Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`. Any value in a slot, at any depth, can be `{"byLevel": [level 1, level 2, level 3]}`: the order's level picks one (the last repeats). **Level 1 is gentle on the hand, not on the ear:** from the first order, what's asked varies (the owner's rule). Chai's `cups` has two people at level 1, each with their own milk, sugar and plain/elchi/aadu, three at 2, and half/full at 3; mishkaki's `skewers` is two skewers at level 1 (two meat, two veg or one of each), two or three with at most one mixed at 2, then three or four (`"total": {"byLevel": [2, {"int": [2, 3]}, {"int": [3, 4]}]}`); maani asks for both doughs at level 1 (`"min"`); daal names several vegetables to chop. The hand gets harder through `mechanics.<id>.levels` (section 5). Rows said `"for"` one person (`"forEach": "$cups", "for": "$it.who"`) become that person's own part of the mission card, with their face.
 
 **`say`: the order as spoken**, one entry per line. Frames are roles (`"order"` starts a dish: "Muke … khape" or "Ne …"; `"and"`, `"no"`, `"only"`); the words come from `lines` and the word order from `grammar`.
 
@@ -120,6 +120,7 @@ Every mechanic's settings are in `mechanics.<id>.levels`. Level 1 is the game as
 ```
 
 - Timing windows (`band`) are parts of the ring (0 to 1); `rate` is how many rings fill per second.
+- Chop: `phases` 1 slices every vegetable the order names in one round; 2 or more splits the round with Nani's switch ("now …"). `every` is the seconds between throws, and the round's countdown ring (`timer`, drawn on the board) lasts exactly as long as its throws: every wanted vegetable flies its count plus `spare`, each decoy kind as often.
 - `profiles` are settings for one use of a mechanic (pour has `water`, `milk`, `cup`; boil has `tray`, the Chai tray's slower back burner).
 - Upgrades change settings too: `upgrades[].knobs`, e.g. the heavy tawa is `{"tawa": {"band": [0.5, 0.9], "special": true}}`.
 - Who picks the level: a day's order (`"level": 2`, or per dish `{"maani": 2}`), a recipe (`"level"`, or `"levels": {"tawa": 2}` for one mechanic), a run step (`"level"`), or the Station lab's Level buttons.
