@@ -1,0 +1,141 @@
+/* Who did it? (greybox). Layout contract as Cook/Find it: the scene on the
+   left, scaled from a 1600x900 design; the sidebar on the right, never over
+   the line-up. */
+:root {
+  --paper: #f3e7d3;
+  --ink: #3b2a1e;
+  --muted: #8a7766;
+  --card: #fffaf1;
+  --accent: #c8621c;
+  --gold: #e9b52c;
+  --good: #3d8b4f;
+  --side-w: clamp(210px, 24vw, 330px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); font-family: Nunito, system-ui, sans-serif; overflow: hidden; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+.hidden { display: none !important; }
+
+#app { display: flex; height: 100vh; height: 100dvh; width: 100vw; }
+#stage { position: relative; flex: 1 1 auto; overflow: hidden; background: #e6d7bf; }
+#world { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; overflow: hidden; }
+#side { flex: 0 0 var(--side-w); width: var(--side-w); display: flex; flex-direction: column; gap: 8px; padding: 8px; overflow-y: auto; background: #f7eddc; border-left: 2px solid #e2d0b3; }
+
+#rotate { display: none; }
+@media (orientation: portrait) and (max-width: 600px) {
+  #rotate { display: flex; position: fixed; inset: 0; z-index: 99; background: var(--paper); align-items: center; justify-content: center; text-align: center; }
+  .rotate-icon { font-size: 64px; }
+}
+
+.card { background: var(--card); border-radius: 14px; padding: 8px 10px; box-shadow: 0 2px 0 #e2d0b3; }
+.pill { display: inline-flex; align-items: center; gap: 4px; background: var(--card); border-radius: 999px; padding: 2px 10px; font-weight: 800; font-size: 14px; }
+.coin-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--gold); display: inline-block; }
+.side-top { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn { font: 800 16px "Baloo 2", Nunito, sans-serif; border: 0; border-radius: 12px; padding: 8px 14px; background: #eadbc4; color: var(--ink); cursor: pointer; }
+.btn.primary { background: var(--accent); color: #fff; font-size: 20px; }
+.btn:active { transform: translateY(1px); }
+
+/* Nani's card: who's speaking and what (frame grey italic until the family's words come) */
+#nani-card { display: flex; gap: 8px; align-items: center; min-height: 56px; }
+.nc-face { flex: 0 0 40px; height: 40px; border-radius: 50%; background: #b08f7a; position: relative; }
+.nc-face.ali { background: #9aa7b8; }
+.say-slot { font-size: 17px; line-height: 1.25; }
+.en { color: var(--muted); font-style: italic; }
+.kw { font-weight: 800; color: var(--ink); font-style: normal; }
+.kw.ph { color: var(--muted); font-style: italic; font-weight: 700; }
+.kw.draft::after { content: "*"; color: var(--accent); }
+
+/* the case ladder: rows only, never pictures (leak rule 3.2) */
+#ladder { display: flex; flex-direction: column; gap: 6px; }
+.row { display: flex; align-items: center; gap: 6px; background: var(--card); border-radius: 12px; padding: 6px 8px; font-size: 16px; }
+.row .rt { flex: 1 1 auto; min-width: 0; }
+.row button { border: 0; background: #efe2cc; border-radius: 9px; min-width: 34px; height: 34px; font-size: 16px; cursor: pointer; }
+.row .dot { width: 10px; height: 10px; border-radius: 50%; background: #d7c3a3; flex: 0 0 10px; }
+.row.ok .dot { background: var(--good); }
+.row.missed .dot { background: var(--accent); }
+.row.current { outline: 3px solid var(--gold); }
+
+#box { display: flex; gap: 8px; justify-content: center; padding: 6px; background: #fff3dd; border-radius: 12px; }
+.sweet { width: 30px; height: 30px; border-radius: 50%; border: 3px dashed #c9a57a; }
+.sweet.now { border-color: var(--accent); border-style: solid; box-shadow: 0 0 0 4px #f6c89a; }
+.sweet.done { background: #f2a93b; border-style: solid; border-color: #d98a1c; }
+#dealt { text-align: center; font-size: 13px; color: var(--muted); }
+#dealt svg { width: 100%; max-height: 120px; }
+
+#actions { display: flex; flex-direction: column; gap: 6px; }
+#who-done { width: 100%; }
+#tell { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.tell-pill { font: 800 16px "Baloo 2", Nunito, sans-serif; border: 0; border-radius: 999px; min-width: 56px; height: 48px; padding: 0 12px; background: #fff; box-shadow: 0 2px 0 #d8c3a1; cursor: pointer; }
+.tell-pill.armed { background: #ffe6b8; box-shadow: 0 0 0 3px var(--gold); }
+.tell-mic { font-size: 22px; width: 100%; }
+.tell-note { width: 100%; text-align: center; font-size: 13px; color: var(--muted); }
+.tell-parent { width: 100%; font-size: 13px; }
+
+#lab summary { font-weight: 800; cursor: pointer; }
+.lab-grid { display: grid; grid-template-columns: 1fr; gap: 4px; margin-top: 6px; font-size: 13px; }
+.lab-grid label { display: flex; justify-content: space-between; gap: 6px; align-items: center; }
+.lab-grid select, .lab-grid input[type=number] { max-width: 60%; font-size: 13px; }
+.lab-btns { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.lab-btns .btn { font-size: 14px; padding: 6px 10px; }
+.lab-note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+#solver { font-size: 11px; background: #fff; border-radius: 8px; padding: 6px; white-space: pre-wrap; margin: 0; }
+
+/* overlay cards: intro, dealt card, results */
+#overlay { position: fixed; inset: 0; background: rgba(59, 42, 30, 0.35); display: flex; align-items: center; justify-content: center; z-index: 50; }
+#panel { background: var(--card); border-radius: 18px; padding: 16px 20px; max-width: min(560px, 92vw); max-height: 92vh; overflow-y: auto; text-align: center; box-shadow: 0 6px 0 #d8c3a1; }
+#panel h2 { font: 800 26px "Baloo 2", Nunito, sans-serif; margin: 4px 0 8px; }
+.faces { display: flex; gap: 6px; justify-content: center; align-items: flex-end; margin: 8px 0; }
+.faces svg { height: 70px; width: auto; }
+.crime-box { display: inline-flex; gap: 8px; padding: 8px 12px; background: #fff3dd; border-radius: 12px; }
+.starrow { display: flex; gap: 10px; justify-content: center; margin: 8px 0; flex-wrap: wrap; }
+.star { display: flex; flex-direction: column; align-items: center; font-size: 12px; width: 84px; }
+.star i { font-style: normal; font-size: 30px; filter: grayscale(1) opacity(0.35); }
+.star.on i { filter: none; }
+.star.grey { color: var(--muted); }
+.review { text-align: left; margin: 8px auto; border-collapse: collapse; }
+.review td { padding: 2px 8px; }
+.dealt-big svg { height: 180px; width: auto; }
+
+/* ------------------------------------------------------------ the scene */
+.wall { position: absolute; inset: 0; }
+.floor { position: absolute; left: 0; right: 0; bottom: 0; }
+.sofa { position: absolute; z-index: 3; border-radius: 40px 40px 0 0; }
+.sofa .ledge { position: absolute; left: 0; right: 0; top: 0; height: 26px; border-radius: 40px 40px 0 0; }
+.sofa-arm { position: absolute; z-index: 3; border-radius: 30px 30px 0 0; }
+.sus { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.sus .fig { position: absolute; z-index: 2; cursor: pointer; transition: transform 0.35s ease, filter 0.3s; }
+.sus .hands { position: absolute; z-index: 4; cursor: pointer; transition: transform 0.35s ease, opacity 0.3s; }
+.sus .paw { position: absolute; border-radius: 50%; border: 2px solid rgba(0, 0, 0, 0.18); }
+.sus .held { position: absolute; width: 84px; height: 84px; object-fit: contain; pointer-events: none; }
+.sus .held.drawn { border-radius: 50%; border: 3px solid rgba(0, 0, 0, 0.15); }
+.sus.forward .fig, .sus.forward .hands { transform: translateY(-36px); }
+.sus.forward .fig { filter: drop-shadow(0 0 10px #f3b63a) drop-shadow(0 0 4px #f3b63a); }
+.sus.sat .fig { transform: translateY(460px); }
+.sus.sat .hands { transform: translateY(80px); opacity: 0; pointer-events: none; }
+.sus.sat .fig { pointer-events: none; }
+.sus.glow .fig { animation: glow 1s ease-in-out infinite; }
+.sus.caught .fig { animation: hop 0.5s ease 2; filter: drop-shadow(0 0 12px #3d8b4f); }
+.sus.notme .fig { animation: shake 0.45s ease 2; }
+.sus.shrug .fig { animation: shake 0.3s ease 1; }
+@keyframes glow { 50% { filter: drop-shadow(0 0 16px #ffd35a) brightness(1.08); } }
+@keyframes hop { 50% { transform: translateY(-40px); } }
+@keyframes shake { 25% { transform: translateX(-10px) rotate(-3deg); } 75% { transform: translateX(10px) rotate(3deg); } }
+.nani { position: absolute; z-index: 5; pointer-events: none; }
+.side-table { position: absolute; z-index: 1; background: #a8795a; border-radius: 8px 8px 0 0; }
+.inset { position: absolute; z-index: 6; background: #fffaf1; border: 6px solid #d9c3a0; border-radius: 22px; overflow: hidden; pointer-events: none; }
+.inset .hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 60px; opacity: 0.25; }
+.lens { position: absolute; z-index: 7; border-radius: 50%; border: 10px solid #6b5a48; background: rgba(230, 245, 255, 0.35); cursor: grab; touch-action: none; box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2); }
+.lens::after { content: ""; position: absolute; width: 22px; height: 80px; background: #6b5a48; border-radius: 10px; right: -34px; bottom: -64px; transform: rotate(-40deg); }
+.lens .smudge { position: absolute; inset: 22%; border-radius: 50%; }
+.say-bubble { position: absolute; z-index: 8; background: #fff; border-radius: 18px; padding: 8px 14px; font: 800 28px "Baloo 2", Nunito, sans-serif; pointer-events: none; box-shadow: 0 3px 0 #d8c3a1; white-space: nowrap; }
+.pointer-hand { position: absolute; z-index: 9; font-size: 70px; pointer-events: none; }
+
+@media (max-height: 420px) {
+  #side { gap: 5px; padding: 5px; }
+  .say-slot { font-size: 14px; }
+  .row { font-size: 13px; padding: 3px 6px; }
+  .row button { min-width: 28px; height: 28px; font-size: 13px; }
+  #nani-card { min-height: 40px; }
+  .nc-face { flex-basis: 28px; height: 28px; }
+  .btn.primary { font-size: 16px; padding: 6px 10px; }
+  .tell-pill { height: 38px; min-width: 44px; font-size: 14px; }
+}

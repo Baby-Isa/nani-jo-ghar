@@ -153,6 +153,22 @@
     return true;
   }
 
+  // a word means one thing in a line-up: tameto in a hand and tameto on the
+  // paws would make "tameto" ambiguous (and Ali couldn't act on it)
+  function wordsClash(P, suspects, dims) {
+    const seen = {};
+    for (const d of dims)
+      for (const s of suspects) {
+        const v = s.attrs[d];
+        if (v == null) continue;
+        const a = attrOf(P, d, v);
+        if (!a) continue;
+        if (seen[a.word] && seen[a.word] !== d) return true;
+        seen[a.word] = d;
+      }
+    return false;
+  }
+
   function dimsInPlay(P, lv, realOnly) {
     return lv.dims.filter((d) => valuesFor(P, d, realOnly).length > 0);
   }
@@ -209,6 +225,7 @@
   function makeK2(P, lv, r, opts, dims) {
     const suspects = lineup(P, lv, r, opts);
     for (const d of DEALT) if (dims.includes(d) && !dealShared(P, suspects, d, r, opts.realOnly)) return null;
+    if (wordsClash(P, suspects, dims)) return null;
     const culprit = r.int(0, suspects.length - 1);
     if (!balanceOK(suspects, dims, culprit)) return null;
     const [lo, hi] = range(lv.clues);
@@ -239,6 +256,7 @@
   function makeK4(P, lv, r, opts, dims) {
     const suspects = lineup(P, lv, r, opts);
     for (const d of DEALT) if (dims.includes(d) && !dealShared(P, suspects, d, r, opts.realOnly)) return null;
+    if (wordsClash(P, suspects, dims)) return null;
     const culprit = r.int(0, suspects.length - 1);
     if (!balanceOK(suspects, dims, culprit)) return null;
     const seen = new Set();
@@ -260,6 +278,7 @@
   function makeK3(P, lv, r, opts, dims) {
     const suspects = lineup(P, lv, r, opts);
     for (const d of DEALT) if (dims.includes(d) && !dealShared(P, suspects, d, r, opts.realOnly)) return null;
+    if (wordsClash(P, suspects, dims)) return null;
     const culprit = r.int(0, suspects.length - 1); // the dealt card
     if (!balanceOK(suspects, dims, culprit)) return null;
     const st = { c: { suspects, dims, kind: "K3" }, cands: suspects.map((_, i) => i), r, halve: lv.nani === "halve" };
@@ -552,5 +571,5 @@
     return out;
   }
 
-  return { rng, prepare, makeCase, start, expectation, grade, consistent, askNext, actOn, stars, fits, valuesFor, attrOf, minWords };
+  return { rng, prepare, wordsClash, makeCase, start, expectation, grade, consistent, askNext, actOn, stars, fits, valuesFor, attrOf, minWords };
 });

@@ -166,6 +166,7 @@ function checkCase(c, lv, errs) {
   const tracesInPlay = new Set(c.suspects.map((s) => s.attrs.trace).filter(Boolean));
   const groups = [...tracesInPlay].map((v) => (C.attrOf(P, "trace", v) || {}).group).filter(Boolean);
   if (new Set(groups).size !== groups.length) errs.push("two traces from one look-alike group");
+  if (C.wordsClash(P, c.suspects, c.dims)) errs.push("one word on two dimensions (ambiguous)");
   if (c.kind === "K1") {
     for (const it of c.items) {
       const f = c.suspects.map((s, i) => (C.fits(s, it.clue) ? i : -1)).filter((i) => i >= 0);

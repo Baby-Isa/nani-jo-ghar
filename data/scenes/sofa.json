@@ -1,0 +1,15 @@
+{
+  "_about": "The sofa line-up (Nani's sitting room), camera E, on the 1600x900 design. Layout spec before art (design 9.4): suspects stand behind the sofa back and rest their hands or paws on its top edge; the occluder hides everything below it, so a suspect who sits down slides out of sight. Nothing that can be tapped sits under the magnifier inset. Greybox: every shape is drawn in code from these numbers.",
+  "size": [1600, 900],
+  "wall": { "colour": "#efe3cf", "floorY": 830, "floorColour": "#d9c3a0" },
+  "occluder": { "y": 560, "x": [190, 1510], "colour": "#8a4b3a", "ledge": "#6e3a2c", "arm": 70 },
+  "ledgeY": 556,
+  "slots": { "x": [330, 1380], "max": 8, "phoneMax": 6 },
+  "figure": { "scale": 600, "width": 180, "base": { "person": 720, "cat": 660, "bird": 650 } },
+  "hands": { "dx": 36, "w": 38, "h": 22, "item": { "dx": 58, "dy": -92, "size": 84 } },
+  "nani": { "x": 100, "base": 900, "h": 430, "fill": "#b08f7a" },
+  "listener": { "x": 100, "base": 900, "h": 390, "fill": "#9aa7b8" },
+  "sideTable": { "x": 1545, "y": 700, "w": 90, "h": 200 },
+  "inset": [1130, 640, 370, 230],
+  "lens": { "rest": [300, 790], "r": 62, "hitY": [470, 640], "hitDx": 90 }
+}
