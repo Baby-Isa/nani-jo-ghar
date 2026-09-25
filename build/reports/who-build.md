@@ -18,7 +18,7 @@
 Tap-all, early accuse and waiting: 0%. Every generator rule holds. UI bot: G1 4.5% and G3 1.0% (200 rounds each), G2 3.3% (60 rounds), within 2 points of the logic bot.
 
 ## Stubs to swap
-- `js/who/stubs/whichone.js` → the foundation's "which one?" module (one line in `case.js`).
+- `js/who/stubs/whichone.js` → the foundation's "which one?" module.
 - `js/who/stubs/tell.js` → `js/shared/mechanics/tell.js` (one `<script>` line, same API). It already calls the real `js/shared/speech.js`. Only *limu* has a recording, so the mic falls back to pills for now.
 - `star_set` in `data/who.json` is in the foundation's shape.
 
