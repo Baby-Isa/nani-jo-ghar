@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shared UI lab: results and onboarding</title>
+<link rel="stylesheet" href="../css/shared/results.css">
+<link rel="stylesheet" href="../css/shared/onboard.css">
+<style>
+  :root { --bg: #fbf5ea; --ink: #2b1810; --line: #d9bf95; --card: #fff; --indigo: #2f3e6b; --madder: #a63b3b; --leaf: #6f8f4a; --marigold: #e0a63a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 system-ui, -apple-system, sans-serif; }
+  header { padding: 12px 16px 0; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  header p { margin: 0; color: #7a6558; font-size: 13px; }
+  main { display: grid; gap: 14px; padding: 12px 16px 24px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; min-width: 0; }
+  h2 { font-size: 15px; margin: 0 0 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+  button.lab { font: inherit; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff7e8; cursor: pointer; min-height: 40px; }
+  button.lab:hover { border-color: var(--madder); }
+  pre { white-space: pre-wrap; font-size: 12px; background: #f7f0e3; padding: 8px; border-radius: 8px; max-height: 160px; overflow: auto; margin: 6px 0 0; }
+  small.note { color: #7a6558; }
+
+  /* the fake station: a greybox chai hob (sidebar left, action right) */
+  .station { position: relative; height: 300px; border-radius: 12px; background: linear-gradient(#f4e3c4 0 62%, #c9a77a 62%); overflow: hidden; touch-action: none; display: grid; grid-template-columns: 90px 1fr; }
+  .st-side { background: rgba(253, 246, 232, 0.9); border-right: 2px solid #d9bf95; padding: 10px 8px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .st-card { width: 70px; height: 54px; border-radius: 10px; background: #fff; border: 2px solid #d9bf95; display: grid; place-items: center; font-weight: 700; }
+  .st-bulb { width: 48px; height: 48px; border-radius: 50%; background: #fff3d0; border: 2px solid var(--marigold); display: grid; place-items: center; }
+  .st-bulb svg { width: 28px; height: 28px; }
+  .st-play { position: relative; }
+  #jug { position: absolute; left: 12%; top: 40%; width: 74px; height: 92px; border-radius: 16px 16px 22px 22px; background: linear-gradient(#fff, #e9e3d7); border: 3px solid #8b7b66; cursor: grab; display: grid; place-items: center; font-weight: 800; color: #5b4a3a; user-select: none; touch-action: none; }
+  #jug::before { content: ""; position: absolute; right: -18px; top: 18px; width: 18px; height: 36px; border: 3px solid #8b7b66; border-left: 0; border-radius: 0 16px 16px 0; }
+  #jug.lifted { cursor: grabbing; transform: rotate(-18deg) scale(1.05); z-index: 5; }
+  #jug.tapped { box-shadow: 0 0 0 6px rgba(224, 166, 58, 0.5); }
+  #pan { position: absolute; right: 24%; top: 46%; width: 170px; height: 110px; border-radius: 0 0 80px 80px; background: radial-gradient(ellipse at 50% 10%, #5c4a3d, #2d241e); border: 4px solid #1f1914; }
+  #pan::after { content: ""; position: absolute; right: -70px; top: 20px; width: 70px; height: 12px; background: #1f1914; border-radius: 6px; }
+  #pan .milk { position: absolute; inset: 10px 14px auto; height: 0; border-radius: 50%; background: #fbf7ee; transition: height 0.6s; }
+  #pan.full .milk { height: 36px; }
+  #pan .swirl { position: absolute; left: 50%; top: 28px; width: 60px; height: 20px; margin-left: -30px; border-radius: 50%; border: 3px dashed rgba(180, 140, 90, 0); transition: border-color 0.3s; }
+  #pan.stirring .swirl { border-color: rgba(180, 140, 90, 0.9); }
+  #done { position: absolute; right: 12px; bottom: 12px; width: 84px; height: 56px; border-radius: 28px; border: 0; background: var(--leaf); color: #fff; font: 800 18px system-ui; }
+  .st-log { font-size: 12px; color: #7a6558; min-height: 1.4em; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Shared UI lab (js/shared/results.js, js/shared/onboard.js)</h1>
+  <p>The end-of-round screen and the onboarding kit, as every mode will use them. <a href="../labs.html">All labs</a></p>
+</header>
+<main>
+  <section>
+    <h2>End-of-round screen</h2>
+    <div class="row">
+      <button class="lab" data-round="best">All right + new best</button>
+      <button class="lab" data-round="mixed">Mixed</button>
+      <button class="lab" data-round="hints">Many hints</button>
+      <button class="lab" data-round="jar">Long round (jar)</button>
+      <button class="lab" data-round="first">First ever (no best yet)</button>
+    </div>
+    <div class="row"><button class="lab" id="forget">Forget best times</button> <small class="note">Bests live on the profile (or the lab's fallback key, with no profile).</small></div>
+    <pre id="rs-out">Pick a round.</pre>
+  </section>
+  <section>
+    <h2>Onboarding: a fake chai station (3 steps)</h2>
+    <div class="station" id="station">
+      <div class="st-side">
+        <div class="st-card" id="card">chai</div>
+        <div class="st-bulb" id="bulb" aria-label="Light bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#b97c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg></div>
+      </div>
+      <div class="st-play" id="play">
+        <div id="jug">dudh</div>
+        <div id="pan"><i class="milk"></i><i class="swirl"></i></div>
+        <button id="done" type="button">✓</button>
+      </div>
+    </div>
+    <div class="row">
+      <button class="lab" id="ob-go">Start onboarding (first time)</button>
+      <button class="lab" id="ob-force">Replay it (force)</button>
+      <button class="lab" id="ob-reset">Reset: new profile</button>
+    </div>
+    <div class="st-log" id="st-log"></div>
+    <pre id="ob-out">1. tap the jug  2. drag it to the pan (pour)  3. stir the pan round. The skip button (top right) needs a one-second hold; Escape also skips. The sidebar card and light bulb fade in once the script is done.</pre>
+  </section>
+</main>
+<script src="../js/shared/uistore.js"></script>
+<script src="../js/shared/sfx.js"></script>
+<script src="../js/shared/stars.js"></script>
+<script src="../js/shared/results.js"></script>
+<script src="../js/shared/onboard.js"></script>
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  window.__lab = { ready: false, last: null, onboard: null, log: [] };
+  const W = (id, kutchi, english, rec) => ({ id, kutchi, english, audio: rec ? `../assets/audio/word/${id}.mp3` : undefined });
+  const WORDS = {
+    fruit: [W("fru-02", "limu", "lemon", true), W("num-01", "hikdo", "one", true), W("num-02", "bo", "two", true), W("num-03", "trae", "three", true)],
+    chai: [W("cook-chai", "chai", "tea"), W("cook-dudh", "dudh", "milk"), W("cook-khun", "khun", "sugar"), W("num-02", "bo", "two", true), W("cook-paani", "paani", "water")],
+    grill: [W("ph-meat", "ghos", "meat"), W("veg-02", "dungri", "onion"), W("veg-03", "tameto", "tomato"), W("num-04", "char", "four"), W("num-03", "trae", "three", true), W("veg-12", "marcha", "green chilli")],
+  };
+  const ROUNDS = {
+    // seed a slower best first, so this one is a new best
+    best: { seed: 45000, mode: "cook", game: "chai", level: 1, timeMs: 38200, right: 5, total: 5, hints: 0, words: WORDS.chai },
+    mixed: { seed: 40000, mode: "find", game: "list", level: 2, timeMs: 52400, right: 7, total: 10, hints: 1, marks: [1, 1, 0, 1, 1, 1, 0, 1, 0, 1], words: WORDS.fruit },
+    hints: { seed: 60000, mode: "cook", game: "grill", level: 3, timeMs: 71000, right: 3, total: 5, hints: 4, words: WORDS.grill },
+    jar: { seed: 150000, mode: "monsoon", game: "leak", level: 2, timeMs: 128000, right: 18, total: 24, hints: 2, words: WORDS.fruit.concat(WORDS.chai) },
+    first: { seed: null, mode: "snap", game: "big-one", level: 1, timeMs: 24000, right: 4, total: 4, hints: 0, words: [] },
+  };
+  async function play(name) {
+    const r = ROUNDS[name];
+    if (!r) return;
+    const key = Results.bestKey(r.mode, r.game, r.level);
+    if (r.seed != null) UIStore.set("bests", key, r.seed);
+    else UIStore.set("bests", key, undefined);
+    const opts = Object.assign({}, r, {
+      onAgain: () => {},
+      onDone: () => {},
+    });
+    delete opts.seed;
+    $("#rs-out").textContent = `Results.show(${JSON.stringify({ mode: r.mode, game: r.game, level: r.level, timeMs: r.timeMs, right: r.right, total: r.total, hints: r.hints, words: `[${r.words.length} words]` })})\nstars underneath: ${JSON.stringify(Results.toStars(r))}`;
+    const out = await Results.show(opts);
+    window.__lab.last = out;
+    $("#rs-out").textContent += `\n-> ${JSON.stringify({ action: out.action, best: out.best, tiers: { time: out.badges.time && out.badges.time.tier, accuracy: out.badges.accuracy.tier, hints: out.badges.hints.tier } })}`;
+  }
+  document.querySelectorAll("[data-round]").forEach((b) => b.addEventListener("click", () => play(b.dataset.round)));
+  $("#forget").addEventListener("click", () => UIStore.clear("bests"));
+  window.__lab.play = play;
+
+  /* ---------------- the fake station ---------------- */
+  const log = (t) => {
+    $("#st-log").textContent = t;
+    window.__lab.log.push(t);
+  };
+  const jug = $("#jug");
+  const pan = $("#pan");
+  const home = { left: jug.style.left, top: jug.style.top };
+  let drag = null;
+  jug.addEventListener("pointerdown", (e) => {
+    const r = jug.getBoundingClientRect();
+    drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, x0: e.clientX, y0: e.clientY, moved: false };
+    jug.setPointerCapture(e.pointerId);
+  });
+  jug.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    if (Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) > 8) drag.moved = true;
+    if (!drag.moved) return;
+    const p = $("#play").getBoundingClientRect();
+    jug.classList.add("lifted");
+    jug.style.left = `${e.clientX - p.left - drag.dx}px`;
+    jug.style.top = `${e.clientY - p.top - drag.dy}px`;
+  });
+  jug.addEventListener("pointerup", (e) => {
+    if (!drag) return;
+    const moved = drag.moved;
+    drag = null;
+    jug.classList.remove("lifted");
+    if (!moved) {
+      jug.classList.add("tapped");
+      log("tapped the jug");
+      return;
+    }
+    const pr = pan.getBoundingClientRect();
+    const hit = e.clientX > pr.left - 30 && e.clientX < pr.right + 30 && e.clientY > pr.top - 60 && e.clientY < pr.bottom;
+    jug.style.left = home.left;
+    jug.style.top = home.top;
+    if (hit) {
+      pan.classList.add("full");
+      log("poured the milk");
+      Onboard.signal("pour-done");
+    }
+  });
+  // stirring: add up the angle the finger turns round the pan's centre
+  let stir = null;
+  pan.addEventListener("pointerdown", (e) => {
+    if (!pan.classList.contains("full")) return;
+    pan.setPointerCapture(e.pointerId);
+    stir = { a: null, turned: 0 };
+    pan.classList.add("stirring");
+  });
+  pan.addEventListener("pointermove", (e) => {
+    if (!stir) return;
+    const r = pan.getBoundingClientRect();
+    const a = Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2));
+    if (stir.a != null) {
+      let d = a - stir.a;
+      if (d > Math.PI) d -= 2 * Math.PI;
+      if (d < -Math.PI) d += 2 * Math.PI;
+      stir.turned += d;
+    }
+    stir.a = a;
+    if (Math.abs(stir.turned) > 2 * Math.PI) {
+      stir = null;
+      pan.classList.remove("stirring");
+      log("stirred");
+      Onboard.signal("stirred");
+    }
+  });
+  pan.addEventListener("pointerup", () => {
+    stir = null;
+    pan.classList.remove("stirring");
+  });
+
+  const SCRIPT = [
+    { spotlight: "#jug", ghost: { gesture: "tap" } },
+    { spotlight: ["#jug", "#pan"], ghost: { from: "#jug", to: "#pan", gesture: "drag" }, wait: "pour-done" },
+    { spotlight: "#pan", ghost: { gesture: "circle-stir" }, wait: "stirred" },
+  ];
+  window.__lab.SCRIPT = SCRIPT;
+  // the sidebar and the light bulb appear only when first needed
+  Onboard.await($("#card"), "lab/card");
+  Onboard.await($("#bulb"), "lab/bulb");
+  async function onboard(force) {
+    pan.classList.remove("full");
+    jug.classList.remove("tapped");
+    $("#ob-out").textContent = "running…";
+    const how = await Onboard.run("lab/chai", SCRIPT, { force, onStep: (st, i) => log(`step ${i + 1}: ${st.ghost ? st.ghost.gesture : "wait"} -> ${st.wait}`) });
+    window.__lab.onboard = how;
+    $("#ob-out").textContent = `Onboard.run("lab/chai") -> "${how}"`;
+    Onboard.fadeIn($("#card"), "lab/card");
+    setTimeout(() => Onboard.fadeIn($("#bulb"), "lab/bulb"), 600);
+  }
+  $("#ob-go").addEventListener("click", () => onboard(false));
+  $("#ob-force").addEventListener("click", () => onboard(true));
+  $("#ob-reset").addEventListener("click", () => {
+    Onboard.reset();
+    UIStore.clear();
+    location.reload();
+  });
+  window.__lab.onboardRun = onboard;
+
+  const q = new URLSearchParams(location.search);
+  if (q.get("round")) play(q.get("round"));
+  window.__lab.ready = true;
+})();
+</script>
+</body>
+</html>
