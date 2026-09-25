@@ -1,5 +1,5 @@
 /*
- * Per-profile storage for the shared UI (docs/shared-api.md s8.3):
+ * Per-profile storage for the shared UI (docs/shared-api.md s8.1):
  * personal best times (js/shared/results.js) and which stations' onboarding
  * a child has already seen (js/shared/onboard.js).
  *

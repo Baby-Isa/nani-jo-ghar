@@ -183,7 +183,7 @@
       ? `<span class="rs-best first">${ICON.crown}<b>${esc(Results.clock(t.bestMs))}</b></span>`
       : `<span class="rs-best">${ICON.crown}<b>${esc(Results.clock(t.newBest ? t.bestMs : t.prevMs))}</b></span>`;
     return `<div class="rs-badge rs-time tier-${t.tier}" data-badge="time" aria-label="Time ${t.seconds} seconds${t.newBest ? ", a new best" : ""}">
-      <div class="rs-disc"><span class="rs-icon">${ICON.watch}</span><span class="rs-big" data-to="${t.seconds}">${esc(Results.clock(t.timeMs))}</span><span class="rs-unit">${t.seconds < 60 ? "s" : ""}</span>
+      <div class="rs-disc"><span class="rs-icon">${ICON.watch}</span><span class="rs-big${t.seconds >= 60 ? " long" : ""}" data-to="${t.seconds}">${esc(Results.clock(t.timeMs))}</span><span class="rs-unit">${t.seconds < 60 ? "s" : ""}</span>
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
       <div class="rs-foot">${bestLine}</div>
       <div class="rs-ribbon" ${t.newBest ? "" : "hidden"}>New best!</div>
@@ -302,17 +302,17 @@
     el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-label", "End of the round");
     el.innerHTML = `
-      <section class="rs-page rs-p1" data-page="1">
+      <div class="rs-page rs-p1" data-page="1">
         <div class="rs-badges n${timed ? 3 : 2}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}</div>
         <div class="rs-actions"><button class="rs-btn rs-next" type="button" aria-label="${words.length ? "Next" : "Done"}">${ICON.next}</button></div>
-      </section>
-      <section class="rs-page rs-p2" data-page="2" hidden>
+      </div>
+      <div class="rs-page rs-p2" data-page="2" hidden>
         <div class="rs-words">${wordsHtml(words)}</div>
         <div class="rs-actions">
           ${opts.onAgain ? `<button class="rs-btn rs-again" type="button" aria-label="Play again">${ICON.again}</button>` : ""}
           <button class="rs-btn rs-done" type="button" aria-label="Done">${ICON.check}</button>
         </div>
-      </section>`;
+      </div>`;
     host.appendChild(el);
     if (root.Sfx) root.Sfx.unlock();
 
