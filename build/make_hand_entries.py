@@ -3,7 +3,7 @@
 the eye-level reference, the master set (asset plan section 1.3, A1-F5, in
 the cameras listed, every frame) and Nani's set with explicit right and
 left hands. The girl set is made in code from the masters
-(build/reskin_hands.py), not with the image API.
+(build/skin_hands.py), not with the image API.
 
 The poses live here, in one table, so a wording fix is one edit and a
 re-run; gen_assets.py then regenerates only the entries whose prompt
@@ -178,11 +178,13 @@ def build():
         masters.append((e, two, cam))
 
     # Girl and girl-Eid reskins are no longer made with the image API (hands
-    # v1, orchestrator's change of plan, 24 Sept 2026): build/reskin_hands.py
+    # v1, orchestrator's change of plan, 24 Sept 2026): build/skin_hands.py
     # recolours each passing master's sleeve in code and the bangles are
     # separate sprites the game places at the wrist. Eid mehndi comes later
     # as an overlay.
-    entries += nani_entries()
+    # Nani's hands are no longer generated (25 Sept 2026): build/skin_hands.py
+    # makes them in code from the masters. nani_entries() is kept for the
+    # record; its API outputs are archived in sources/art/hands/nani-api-v1/.
     return entries
 
 
@@ -225,7 +227,34 @@ NANI_POSES = [  # (master id to copy the pose from, sides)
 ]
 
 
-NANI_SHEET = "sources/art/characters/nani-sheet-v1.png"  # attached when present
+# Retry round (hands v1): extra wording for the Nani poses that failed review,
+# appended to their jewellery line so the passing entries' prompts (and
+# manifest hashes) are unchanged.
+RING_NOT_BRACELET = (" The red aqiq stone is set in a RING worn on the ring finger (the fourth digit), never on the"
+                     " bracelet; the tennis bracelet is only a thin row of small clear diamonds.")
+PALM_UP = (" IMPORTANT: the hand is turned over, PALM UP: we see the palm and the inside of the fingers, NOT the back of"
+           " the hand; the rings show only as thin gold bands on the palm side of the ring finger.")
+NANI_FIX = {
+    "nani-a3-palm-up-t-right": PALM_UP,
+    "nani-a3-palm-up-t-left": PALM_UP,
+    "nani-a3-palm-up-e-right": PALM_UP,
+    "nani-b1-handle-grip-t-right": RING_NOT_BRACELET + " The aqiq ring must be clearly visible on the curled ring finger.",
+    "nani-b4-rolling-pin-t": " The RIGHT hand (on the right of the image) MUST show the oval red aqiq ring on its ring finger.",
+    "nani-c1-pinch-f1-open-t-right": RING_NOT_BRACELET,
+    "nani-c1-pinch-f2-closed-t-right": RING_NOT_BRACELET,
+    "nani-e3-count-2-e-right": (" The aqiq ring is on the RING finger, which is folded down (not on either raised finger);"
+                                " only the index and middle fingers are raised."),
+    "nani-e3-count-3-e-right": (" EXACTLY THREE fingers raised: index, middle and ring. The little finger AND the thumb are"
+                                " folded down across the palm and hidden; the hand must read as three, never five."),
+    "nani-e3-count-3-e-left": (" EXACTLY THREE fingers raised: index, middle and ring. The little finger AND the thumb are"
+                               " folded down across the palm and hidden; the hand must read as three, never five."),
+    "nani-e3-count-4-e-right": (" EXACTLY FOUR fingers raised; the THUMB is folded flat across the palm, hidden behind the"
+                                " fingers, not sticking out to the side; the hand must read as four, never five."),
+    "nani-e3-count-4-e-left": (" EXACTLY FOUR fingers raised; the THUMB is folded flat across the palm, hidden behind the"
+                               " fingers, not sticking out to the side; the hand must read as four, never five."),
+}
+
+NANI_SHEET = "sources/art/characters/nani-sheet-v2-approved.png"  # attached when present
 SHEET_NOTE = (" The last attached image is Nani's character sheet: copy her rings and her tennis bracelet exactly as in"
               " its hand close-up and ring close-ups (ignore the sheet's beige sleeves: her sleeve here stays deep red).")
 
@@ -287,6 +316,12 @@ def nani_entries():
             out.append(e)
     for e in out:
         e["sleeve_target"] = NANI_SLEEVE
+        if e["id"] in NANI_FIX:
+            key = "jewellery" if "jewellery" in e["fields"] else "right"
+            e["fields"][key] += NANI_FIX[e["id"]]
+            if sheet:  # the approved sheet shows both rings and the bracelet close up
+                e["reference_images"] = e["reference_images"] + sheet
+                e["fields"][key] += SHEET_NOTE
     return out
 
 

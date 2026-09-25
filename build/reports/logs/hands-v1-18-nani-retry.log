@@ -1,0 +1,15 @@
+LIVE RUN -- 12 asset(s), model=gpt-image-1, concurrency 3, gap 20s, max_regens 1
+budget cap: $0.55
+
+pre-flight estimate: 12 image(s) planned, ~$0.50 at the chosen quality (a QA regen can add up to 1 more attempt(s) per reskin image; skipped 0 already-done)
+[nani-a3-palm-up-t-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a3-palm-up-t-left::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[nani-a3-palm-up-e-right::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+    429: slowing down -- concurrency 1, gap 40s, holding new requests for 3s
+    HTTP 429; retrying in 3.4s ...
+    429: slowing down -- concurrency 1, gap 80s, holding new requests for 3s
+    HTTP 429; retrying in 3.3s ...
+    429: slowing down -- concurrency 1, gap 160s, holding new requests for 4s
+    HTTP 429; retrying in 4.4s ...
+    429: slowing down -- concurrency 1, gap 320s, holding new requests for 3s
+    HTTP 429; retrying in 3.2s ...
