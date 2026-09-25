@@ -5,8 +5,8 @@
  * It sees what a person who doesn't speak Kutchi sees: the pictures on the
  * stall (and what they are in English: anyone can tell an orange from a
  * lemon), where they are and how big they look, the rows on the list as
- * drawn (their visible text, digits, tallies and the "no" mark), the bag,
- * and the English goal line. It never reads the round's data. It plays
+ * drawn (their visible text, any digit, tallies and the "no" mark), the bag,
+ * and the English goal behind the "?". It never reads the round's data. It plays
  * with one of these strategies:
  *   salient    each row gets the biggest, most eye-catching picture left
  *   copies     each row gets the picture with the most copies out
@@ -14,7 +14,8 @@
  *   random     each row gets a random kind
  *   cognate    a row whose visible word looks like an English fruit name
  *              (kivi ~ kiwi) gets that fruit; the rest as "salient"
- * How many: the row's digit if one is shown, otherwise a guess (1-3).
+ * How many: the row's digit if one is ever shown (a leak: rows show only
+ * the running tally now), otherwise a guess (1-3).
  * The bag: a kind it didn't pick itself, else a kind there's only one of.
  * If it earns the ear star in more than 10% of rounds, something on the
  * screen is giving the answer away.
@@ -60,7 +61,8 @@
       bag: card("#world .fi-bag"),
       rows,
       searching: visible($("#find-done")),
-      bagging: visible($("#how")) && /packed your bag/i.test($("#how").innerText),
+      // the goal waits behind the "?" (Wave 5): what anyone sees by pressing it
+      bagging: /packed your bag/i.test(Cook.UI.helpText()),
       result: visible($("#overlay")) && !!$("#panel .res-card"),
     };
   };

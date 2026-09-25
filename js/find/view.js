@@ -210,6 +210,16 @@
     items.forEach((i) => i.el && i.el.classList.toggle("dimmed", i.x < a || i.x > b));
   };
 
+  /** Quick finds in a row: a "×3" rises from the basket and fades (not in the sidebar: that stays calm). */
+  V.combo = function (n) {
+    if (!layers || n < 2) return;
+    const b = (st.scene && st.scene.basket) || { x: 800, top: 690 };
+    const c = el("div", "w-combo", layers.fx);
+    c.textContent = `×${n}`;
+    Object.assign(c.style, { left: `${b.x}px`, top: `${b.top - 70}px` });
+    setTimeout(() => c.remove(), 1100);
+  };
+
   /* ---------------- fit, zoom and pan ---------------- */
   V.fit = function () {
     const r = $("#stage").getBoundingClientRect();

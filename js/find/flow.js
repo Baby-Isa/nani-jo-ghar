@@ -51,8 +51,6 @@
       Cook.writeSave();
     }
     Find.log.push(card);
-    const stars = Object.values(card.stars).filter(Boolean).length;
-    UI.setStars(Number($("#stars").textContent || 0) + stars, true);
     await Cook.wait(700).catch(() => {});
     if (round.alive()) showResult(card, spec);
     if (botRun) card.botLog = await botRun;
@@ -70,9 +68,8 @@
     if (!(e instanceof Cook.Abort)) console.error(e);
   };
 
-  /* ---------------- the result card ---------------- */
+  /* ---------------- the result card (Wave 5, shared with Cook: the word review) ---------------- */
   const starsHtml = (st) => ["ear", "hand", "third"].map((k) => `<span class="mstar ${st[k] ? "earned" : "lost"}" data-k="${k}" title="${esc(UI.starInfo(k).tip)}">${UI.starIcon(k)}</span>`).join("");
-  const kpills = (list) => list.map((x) => `<span class="kp${x.bad ? " bad" : ""}${x.no ? " no" : ""}">${Lang.html(x.line)}</span>`).join("") || `<span class="kp none">–</span>`;
   const EAR = ["no", "count", "bag", "wrong", "shown"];
   function tips(card) {
     const T = Find.data.tips;
@@ -82,18 +79,17 @@
     if (!card.stars.third) out.push({ star: "third", text: Cook.save.mode === "busy" ? T.third.busy : T.third.relaxed });
     return out;
   }
-  function wordChips(ids) {
-    return ids
-      .map((id) => {
-        const st = Cook.wordStage(id);
-        const ph = Cook.isPlaceholder(id);
-        return `<button class="chip" data-w="${id}">${ph ? `<i class="ph">${esc(Cook.display(id))}</i>` : esc(Cook.display(id))}<small>${esc(Cook.english(id))} <span class="dots">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
-      })
-      .join("");
-  }
+  /*
+   * Left: the stars and the pocket-money receipt. Right: the word review
+   * (every Kutchi word on the list as a pill: speaker, Kutchi, English; the
+   * missed ones and the helped ones marked) and one "Next time" tip per
+   * missed star. No "Nani asked / You found": the pills say it, calmly.
+   */
   function showResult(card, spec) {
     UI.clearStage();
     const t = tips(card);
+    const words = card.words || [];
+    const flagged = words.some((w) => w.state !== "ok");
     const title = spec.story ? spec.story.title : `${(Find.Mech.labs[spec.key] || {}).name || "Search lab"} · level ${card.level}`;
     const p = UI.panel(`
       <h2>${esc(title)}</h2>
@@ -101,21 +97,14 @@
         <div class="cc-head"><img src="assets/cook/characters/nani-badge.webp" alt="">Nani's list</div>
         <span class="cc-coins"><i class="coin-dot"></i>+${card.coins}</span>
         <div class="cc-stars">${starsHtml(card.stars)}</div>
-        <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>Pocket money</span><b>${card.coins}</b></div></div>
-        ${card.reasons.length ? `<div class="cc-why">Ear: ${esc(card.reasons.slice(0, 3).join("; "))}</div>` : ""}
-        ${card.practice.length ? `<div class="cc-why">New words, taught not tested: ${esc(card.practice.slice(0, 3).join("; "))}</div>` : ""}
+        <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>In your purse</span><b>${Cook.save.coins}</b></div></div>
       </div>
       <div class="rc-right">
-        <div class="rc-cols">
-          <div class="rc-col"><h4>Nani asked</h4><div class="rc-pills">${kpills(card.asked)}</div></div>
-          <div class="rc-col"><h4>You found</h4><div class="rc-pills">${kpills(card.did)}</div></div>
-        </div>
+        ${words.length ? `<div class="rc-words"><h4>Words on this list${flagged ? ` <span class="rc-key"><i class="k-missed"></i>missed <i class="k-helped"></i>needed help</span>` : ""}</h4>${UI.wordReview(words)}</div>` : ""}
         ${t.length ? `<div class="rc-tips"><h4>Next time</h4>${t.map((x) => `<div class="rc-tip"><span class="mstar lost">${UI.starIcon(x.star)}</span>${esc(x.text)}</div>`).join("")}</div>` : `<div class="rc-tips all"><h4>Next time</h4><div class="rc-tip">Just the same. All three stars!</div></div>`}
       </div></div></div>
-      <h3>Words from this round</h3>
-      <div class="chips">${wordChips(card.words)}</div>
       <div class="btn-row"><button class="btn primary" id="res-again">${spec.lab ? "Again" : "Another list"}</button><button class="btn" id="res-back">${spec.lab ? "Search lab" : "Menu"}</button></div>`);
-    p.querySelectorAll(".chip[data-w]").forEach((b) => b.addEventListener("click", () => Lang.speakWord(b.dataset.w)));
+    UI.wireWordReview(p);
     $("#res-again").addEventListener("click", () => (spec.lab ? playRound(spec).catch(report) : storyRound()));
     $("#res-back").addEventListener("click", () => (spec.lab ? showLab() : showTitle()));
     UI.mission.close();
@@ -141,6 +130,7 @@
         <div>
           <h1>Find it with Nani</h1>
           <p>Nani tells you what she needs, in Kutchi. Listen, find the right things and the right number, and check the shopkeeper hasn't made a mistake!</p>
+          <div class="purse"><span class="pill coins" title="Pocket money"><i class="coin-dot"></i>${Cook.save.coins}</span><span class="purse-total">pocket money</span></div>
           <p class="story-line"><b>${esc(s.chapter)}</b><br>${esc(s.gist)}${rounds ? ` <b>You've done ${rounds} list${rounds > 1 ? "s" : ""}.</b>` : ""}</p>
           <div class="seg" role="group" aria-label="Setting">
             <button data-mode="relaxed" class="${mode === "relaxed" ? "on" : ""}">Relaxed</button>
@@ -156,7 +146,6 @@
       </div>`,
       { title: true }
     );
-    UI.setCoins(Cook.save.coins);
     p.querySelectorAll("[data-mode]").forEach((b) =>
       b.addEventListener("click", () => {
         Cook.save.mode = b.dataset.mode;
@@ -332,7 +321,6 @@
     Cook.loadSave();
     await Find.load();
     V.init();
-    UI.setCoins(Cook.save.coins);
     $("#find-done").addEventListener("click", () => state.current && state.current.pressDone());
     $("#btn-warmer").innerHTML = UI.ICON.hand;
     $("#btn-warmer").addEventListener("click", () => state.current && state.current.warmer(true));
