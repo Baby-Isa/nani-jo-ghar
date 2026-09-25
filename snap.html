@@ -7,8 +7,8 @@
 <title>Snap with Nani</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/cook.css">
-<link rel="stylesheet" href="css/snap.css">
+<link rel="stylesheet" href="css/cook.css?v=20260925T231703Z">
+<link rel="stylesheet" href="css/snap.css?v=20260925T231703Z">
 </head>
 <body class="snap">
 
@@ -38,7 +38,7 @@
 
     <!-- Show Nani (js/snap/mechanics/handin.js): Nani on the charpai, your prints to hand her -->
     <div id="handin" class="hidden">
-      <div class="hi-nani"><img class="hi-face" src="assets/cook/characters/nani-happy.webp" alt="Nani"><div class="hi-charpai"></div><div class="hi-held"></div></div>
+      <div class="hi-nani"><img class="hi-face" src="assets/cook/characters/nani-happy.webp?v=20260925T231703Z" alt="Nani"><div class="hi-charpai"></div><div class="hi-held"></div></div>
       <div class="hi-prints"></div>
       <div class="hi-tools"><button id="hi-back" class="btn" type="button">None of these: take another</button></div>
     </div>
@@ -47,7 +47,7 @@
     <div id="ali" class="hidden">
       <div class="ali-card"><div class="ali-pic"></div></div>
       <div class="ali-side">
-        <img class="ali-face" src="assets/cook/characters/cousin-happy.webp" alt="Ali">
+        <img class="ali-face" src="assets/cook/characters/cousin-happy.webp?v=20260925T231703Z" alt="Ali">
         <button id="ali-mic" type="button" aria-label="Say it to Ali"><span class="mic"></span><span class="ali-mic-t">Say it</span></button>
         <div class="ali-pills hidden"></div>
         <div class="ali-judge hidden"><span>Did they say it?</span><button class="btn" id="ali-yes" type="button">&#10003;</button><button class="btn" id="ali-again" type="button">Again</button></div>
@@ -88,7 +88,7 @@
     </div>
     <div id="live">
       <div id="nani-card" class="card hidden" role="status" aria-live="polite">
-        <img class="nc-face" src="assets/cook/characters/nani-badge.webp" alt="Nani">
+        <img class="nc-face" src="assets/cook/characters/nani-badge.webp?v=20260925T231703Z" alt="Nani">
         <div class="say-slot"></div>
       </div>
     </div>
@@ -105,26 +105,27 @@
 <div id="overlay" class="hidden"><div id="panel"></div></div>
 
 <!-- shared with Cook with Nani (read only): data, save, word progress, voice, word pills, the order ladder -->
-<script src="js/cook/core.js"></script>
-<script src="js/cook/lang.js"></script>
-<script src="js/cook/ui.js"></script>
-<script src="js/cook/order.js"></script>
+<script src="js/version.js?v=20260925T231703Z"></script>
+<script src="js/cook/core.js?v=20260925T231703Z"></script>
+<script src="js/cook/lang.js?v=20260925T231703Z"></script>
+<script src="js/cook/ui.js?v=20260925T231703Z"></script>
+<script src="js/cook/order.js?v=20260925T231703Z"></script>
 <!-- the shared recogniser (foundation) -->
-<script src="js/shared/speech.js"></script>
+<script src="js/shared/speech.js?v=20260925T231703Z"></script>
 <!-- Snap: pure logic first (also run by build/leak_snap.mjs), then the stubs, the adapters, the mechanics and the game -->
-<script src="js/snap/photo.js"></script>
-<script src="js/snap/stubs/which-one.js"></script>
-<script src="js/snap/stubs/stars.js"></script>
-<script src="js/snap/requests.js"></script>
-<script src="js/snap/sim.js"></script>
-<script src="js/snap/core.js"></script>
-<script src="js/snap/adapters.js"></script>
-<script src="js/snap/prints.js"></script>
-<script src="js/snap/mechanics/viewfinder.js"></script>
-<script src="js/snap/mechanics/handin.js"></script>
-<script src="js/snap/mechanics/ali-camera.js"></script>
-<script src="js/snap/round.js"></script>
-<script src="js/snap/bot.js"></script>
-<script src="js/snap/flow.js"></script>
+<script src="js/snap/photo.js?v=20260925T231703Z"></script>
+<script src="js/snap/stubs/which-one.js?v=20260925T231703Z"></script>
+<script src="js/snap/stubs/stars.js?v=20260925T231703Z"></script>
+<script src="js/snap/requests.js?v=20260925T231703Z"></script>
+<script src="js/snap/sim.js?v=20260925T231703Z"></script>
+<script src="js/snap/core.js?v=20260925T231703Z"></script>
+<script src="js/snap/adapters.js?v=20260925T231703Z"></script>
+<script src="js/snap/prints.js?v=20260925T231703Z"></script>
+<script src="js/snap/mechanics/viewfinder.js?v=20260925T231703Z"></script>
+<script src="js/snap/mechanics/handin.js?v=20260925T231703Z"></script>
+<script src="js/snap/mechanics/ali-camera.js?v=20260925T231703Z"></script>
+<script src="js/snap/round.js?v=20260925T231703Z"></script>
+<script src="js/snap/bot.js?v=20260925T231703Z"></script>
+<script src="js/snap/flow.js?v=20260925T231703Z"></script>
 </body>
 </html>

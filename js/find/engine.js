@@ -28,8 +28,8 @@
   Find.load = async function () {
     await Cook.load();
     const [fd, content] = await Promise.all([
-      fetch("data/find.json").then((r) => r.json()),
-      fetch("data/content.json").then((r) => r.json()).catch(() => ({ words: [] })),
+      fetch(Cook.v("data/find.json")).then((r) => r.json()),
+      fetch(Cook.v("data/content.json")).then((r) => r.json()).catch(() => ({ words: [] })),
     ]);
     Find.data = fd;
     const W = Cook.data.words;
@@ -60,7 +60,7 @@
     Cook.data.star_sets.find = Object.assign({}, Cook.data.star_sets.find || {}, fd.star_set || {});
     // scenes: the base scene file (background, shopkeeper, basket) plus Find's spots
     for (const [id, s] of Object.entries(fd.scenes)) {
-      const base = s.base ? await fetch(s.base).then((r) => r.json()) : {};
+      const base = s.base ? await fetch(Cook.v(s.base)).then((r) => r.json()) : {};
       Find.scenes[id] = Object.assign({ id }, base, s);
     }
     return fd;

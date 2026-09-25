@@ -391,7 +391,7 @@
     Cook.Stations[def.api || id] = (S, ctx, params = {}, opts = {}) => M.host(id, S, ctx, params, opts);
     if (def.dataFile) {
       Cook.onLoad.push(async (data) => {
-        const extra = await fetch(def.dataFile)
+        const extra = await fetch(Cook.v(def.dataFile))
           .then((r) => r.json())
           .catch(() => null);
         if (extra) {

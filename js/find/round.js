@@ -38,7 +38,7 @@
   /** Someone says a line from the sidebar card (never over the stall). */
   Find.say = async function (who, line, opts = {}) {
     const face = $("#nani-card .nc-face");
-    face.src = FACES[who] || FACES.nani;
+    face.src = Cook.v(FACES[who] || FACES.nani);
     face.alt = who === "nani" ? "Nani" : "The shopkeeper";
     $("#nani-card").classList.toggle("other", who !== "nani");
     if (who !== "nani") V.bob();

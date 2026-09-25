@@ -524,7 +524,7 @@
   }
 
   /* ---------------- panels ---------------- */
-  const face = (who) => (who === "nani" ? "assets/cook/characters/nani-badge.webp" : `assets/cook/characters/${who}-badge.webp`);
+  const face = (who) => Cook.v(`assets/cook/characters/${who}-badge.webp`);
   const dishName = (d) => {
     const w = R.dishWord(d.recipe);
     const n = d.count || d.cups || 1;
@@ -628,7 +628,7 @@
     Cook.expect = { kind: "click", selector: last ? "#sum-finale" : "#sum-shop" };
   }
 
-  const imgFor = (u) => (u.art ? Cook.Art.url(u.art) : u.image && u.image.endsWith("badge") ? `assets/cook/characters/${u.image}.webp` : `assets/cook/props/${u.image}.webp`);
+  const imgFor = (u) => Cook.v(u.art ? Cook.Art.url(u.art) : u.image && u.image.endsWith("badge") ? `assets/cook/characters/${u.image}.webp` : `assets/cook/props/${u.image}.webp`);
   function showShop() {
     const ups = Cook.data.upgrades;
     const render = () => {
@@ -645,7 +645,7 @@
         <h2>Nani's shop</h2>
         <p>You have <b>${Cook.save.coins}</b> coin${Cook.save.coins === 1 ? "" : "s"}. Every station has an upgrade, but you can't afford them all, so choose what helps your cooking most. Upgrades do the fiddly jobs; you still have to understand the order.</p>
         <div class="shop-grid">${ups.map(card).join("")}
-          <div class="shop-item none"><div class="shop-img"><img src="assets/cook/props/sugar-jar.webp" alt=""></div><div><div class="station">${UI.esc(nu.station)}</div><h4>No upgrade</h4><p>${UI.esc(nu.text)}</p></div></div>
+          <div class="shop-item none"><div class="shop-img"><img src="${Cook.v("assets/cook/props/sugar-jar.webp")}" alt=""></div><div><div class="station">${UI.esc(nu.station)}</div><h4>No upgrade</h4><p>${UI.esc(nu.text)}</p></div></div>
         </div>
         <div class="btn-row"><button class="btn primary" id="shop-done">Done</button></div>`);
       p.querySelectorAll("[data-buy]").forEach((b) =>
@@ -674,7 +674,7 @@
     UI.panel(`
       <h1>Eid Mubarak!</h1>
       <div class="finale-row">
-        <img src="assets/cook/characters/nana-happy.webp" alt="Nana"><img src="assets/cook/characters/nani-happy.webp" alt="Nani"><img src="assets/cook/characters/ma-happy.webp" alt="Ma"><img src="assets/cook/characters/cousin-happy.webp" alt="Ali">
+        <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
       </div>
       <p>The whole family ate together, and you cooked it all: chai, maani, daal, chaat, samosa and mishkaki. You earned <b>${total}</b> stars.</p>
       <div class="patch" title="A new patch for Nani's quilt"></div>
@@ -822,7 +822,7 @@
     const p = UI.panel(
       `
       <div class="title-wrap">
-        <img src="assets/cook/characters/nani-happy.webp" alt="Nani">
+        <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
         <div>
           <h1>Cook with Nani</h1>
           <p>The family come to Nani's kitchen and ask for food in Kutchi. Listen, cook it the way they like it, and earn pocket money!${(Cook.save.playDays || []).length > 1 ? ` <b>You've cooked with Nani on ${Cook.save.playDays.length} days.</b>` : ""}</p>
