@@ -1,0 +1,126 @@
+{
+  "_about": "Snap (camera) mode data (docs/modes/snap-design.md, deep dive D1-D9 and the build brief s12). Phases 0-1: the still orchard, the viewfinder, prints and Show Nani, G1 Just so many, G2 The big one, G3 Show Nani, G4 Ali's camera (greybox). No Kutchi is invented here: every word a row carries is borrowed from data/content.json (fruit, numbers) or data/cook.json (vadho, nindho, nar, the frames), and new lines are English placeholders with \"kutchi\": null. Levels are data: each mini-game's `levels` list gives level 1 in full and later levels only what changes (as in Cook).",
+
+  "words": {
+    "_about": "Merged into the shared word table (Cook.data.words) when snap.html loads, as Find it does. The pool is the orchard's fruit (D8 priority 1). Numbers 1-5 and ph-big/ph-small/ph-no are already in data/cook.json.",
+    "from_content": ["fru-01", "fru-02", "fru-03", "fru-04", "fru-05", "fru-09", "fru-16"],
+    "pool": ["fru-05", "fru-01", "fru-02", "fru-04", "fru-09", "fru-16", "fru-03"],
+    "numbers": {"1": "num-01", "2": "num-02", "3": "num-03", "4": "num-04", "5": "num-05"},
+    "size": {"big": "ph-big", "small": "ph-small"},
+    "no": "ph-no"
+  },
+
+  "lines": {
+    "_about": "New lines Snap needs (D8 priority 5 and 8). None has Kutchi yet: each shows as a grey English placeholder until the family gives it. Keys are prefixed snap- so they never collide with Cook's.",
+    "snap-take": {"kutchi": null, "e": "Take a photo of {x}."},
+    "snap-show": {"kutchi": null, "e": "Show me {x}."},
+    "snap-here": {"kutchi": null, "e": "Here's the photo."},
+    "snap-what": {"kutchi": null, "e": "What's this?"},
+    "snap-ali": {"kutchi": null, "e": "Your turn, Ali."},
+    "snap-tellali": {"kutchi": null, "e": "Tell Ali."},
+    "snap-sayit": {"kutchi": null, "e": "Say it!"},
+    "snap-which": {"kutchi": null, "e": "Which one?"},
+    "snap-nearly": {"kutchi": null, "e": "Nearly!"},
+    "snap-look": {"kutchi": null, "e": "Look!"}
+  },
+
+  "kinds": {
+    "_about": "The kinds of shot (D1). K1-K3 are built; K4-K6 need the moving world or rel.js (phase 4).",
+    "K1": {"name": "The count shot", "row": "{n} {x}", "rule": "exactly n of the noun at least countVisible showing; other nouns don't matter"},
+    "K2": {"name": "The pick shot", "row": "{size} {x}", "rule": "the named one is the main subject (mechanics.photo.mainSubject), and of that size"},
+    "K3": {"name": "The leave-out shot", "row": "{K1 or K2}. Nar {y}.", "rule": "K1 or K2, and every {y} under excludeMax showing"}
+  },
+
+  "mechanics": {
+    "viewfinder": {
+      "_about": "js/snap/mechanics/viewfinder.js. `base`: the frame at zoom 1, in world units, always in the middle of the stage. `zooms`: the zoom steps (+/-). `drag`: pan by dragging (level 2+). `aimAssist`: tap-to-centre snaps to a tapped fruit's centre (1 = always; below 1 the centre moves that share of the way). `hesitateMs`: no shot for this long and Nani says the list again (free the first time). `quietMs`: the quiet after the intro card.",
+      "levels": [
+        {"base": {"w": 800, "h": 450}, "zooms": [1, 1.6], "drag": false, "aimAssist": 1, "hesitateMs": 9000, "quietMs": 3000, "shutterMs": 700},
+        {"zooms": [1, 1.6, 2.5], "drag": true, "aimAssist": 0.6},
+        {"zooms": [1, 1.6, 2.5], "drag": true, "aimAssist": 0.4}
+      ]
+    },
+    "photo": {
+      "_about": "js/snap/photo.js. Film is rows + filmSpare. The main-subject rule (K2) and the count rule (K1) and the leave-out rule (K3), all rated on the print record. The lens star is rated on the biggest thing in frame, never the wanted one.",
+      "levels": [
+        {"filmSpare": 2, "countVisible": 0.5, "excludeMax": 0.1,
+         "mainSubject": {"minArea": 0.08, "minVisible": 0.6, "middle": 0.1667, "rivalMax": 0.5},
+         "lens": {"minArea": 0.15, "maxArea": 0.7, "middle": 0.1667, "minVisible": 0.9},
+         "sizeWords": {"big": "ph-big", "small": "ph-small"},
+         "thumbW": 168}
+      ]
+    },
+    "handin": {
+      "_about": "js/snap/mechanics/handin.js: Show Nani. Rows asked again in a new order; a wrong print gets a recast from its print record, then you choose again; none fits: back for goBackFrames more frames. The ear star needs minTested rows at word stage 2+ (js/snap/stubs/stars.js until the shared star sets arrive).",
+      "levels": [
+        {"goBackFrames": 1, "minTested": 2, "reactMs": 900}
+      ]
+    },
+    "ali-camera": {
+      "_about": "js/snap/mechanics/ali-camera.js (G4). The child says the picture card; Ali frames what he heard. timeoutMs for listen(); lowConfidence below which a result counts as unsure; two unsure results or a null bring up the pills; waitMs before Ali asks 'Which one?' again, once.",
+      "levels": [
+        {"timeoutMs": 4000, "lowConfidence": 0.35, "unsureTries": 2, "waitMs": 8000, "minSaid": 2}
+      ]
+    }
+  },
+
+  "games": {
+    "_about": "The mini-games (D2) and their level ladders (D5). A level lists only what changes from level 1. rows: how many rows (or [min, max]). kinds: how many fruit kinds hang in the orchard. perKind: fruit of each kind (count scenes). clustersPerKind: size clusters per kind (size scenes). counts: the numbers asked (uniform over those achievable). sizes: 'mid' (all one size) or 'three' (big, mid, small; mid is never asked). interleave: count clusters mix two kinds. photobomber: a bunch of another kind beside every cluster. notChance: the share of rows with a leave-out ('nar {y}'). sceneWidth: screens.",
+    "g1": {
+      "name": "Just so many", "kind": "K1", "icon": "3",
+      "goal": "Frame exactly what Nani says: how many, and of what. Nothing tells you if a photo is right until you show Nani.",
+      "levels": [
+        {"label": "One thing", "rows": 2, "kinds": 4, "perKind": [4, 6], "counts": [1, 3], "sizes": "mid", "interleave": false, "photobomber": false, "notChance": 0, "sceneWidth": 1.5, "viewfinder": 1},
+        {"label": "Ne {x}", "rows": 3, "kinds": 5, "counts": [1, 5], "interleave": true, "viewfinder": 2},
+        {"label": "No bananas", "rows": [3, 4], "kinds": 6, "counts": [1, 5], "interleave": true, "photobomber": true, "notChance": 0.5, "sceneWidth": 2, "viewfinder": 3}
+      ]
+    },
+    "g2": {
+      "name": "The big one", "kind": "K2", "icon": "big",
+      "goal": "Frame the one Nani means so it fills the middle of the photo: the big one or the small one.",
+      "levels": [
+        {"label": "One thing", "rows": 2, "kinds": 4, "clustersPerKind": [1, 1], "sizes": "three", "photobomber": false, "notChance": 0, "sceneWidth": 1.5, "viewfinder": 1, "zooms": [1, 2.5]},
+        {"label": "Ne {x}", "rows": 3, "kinds": 5, "clustersPerKind": [1, 2], "viewfinder": 2, "zooms": [1, 1.6, 2.5]},
+        {"label": "No bananas", "rows": [3, 4], "kinds": 6, "clustersPerKind": [1, 1], "photobomber": true, "notChance": 0.5, "sceneWidth": 2, "viewfinder": 3}
+      ]
+    },
+    "g4": {
+      "name": "Ali's camera", "kind": "K1", "icon": "ali",
+      "goal": "Ali has the camera. Look at the card and SAY what to shoot: Ali takes the photo of what he hears. Then show Nani.",
+      "_levels": "Lab levels 1 and 2 are the design's levels 2 and 3 (Ali's rows start at level 2). Level 1: the card shows a count of one fruit and the child says the fruit (the count is Ali's, not tested). Level 2: two listens, the number, then the fruit.",
+      "levels": [
+        {"label": "Say the fruit", "designLevel": 2, "rows": 2, "kinds": 4, "perKind": [4, 6], "counts": [1, 3], "sizes": "mid", "interleave": false, "photobomber": false, "notChance": 0, "sceneWidth": 1.5, "viewfinder": 2, "listen": ["noun"]},
+        {"label": "Number, then fruit", "designLevel": 3, "rows": 3, "kinds": 5, "counts": [1, 5], "listen": ["number", "noun"]}
+      ]
+    }
+  },
+
+  "star_set": {
+    "_about": "Snap's stars (design s7). The icon names are js/cook/ui.js ICON names; 'lens' is added by js/snap/stubs/stars.js until the shared star sets arrive.",
+    "ear": {"icon": "ear", "name": "Understood", "tip": "Understood: every photo Nani asked for, picked right first time"},
+    "hand": {"icon": "lens", "name": "Good shot", "tip": "Good shot: the main thing big, whole and in the middle of every photo you handed in"},
+    "relaxed": {"icon": "tick", "name": "No help", "tip": "No help: no second replays, reveals or translations"},
+    "busy": {"icon": "bolt", "name": "Quick", "tip": "Quick: done before the daylight ran out"},
+    "voice": {"icon": "speaker", "name": "Said it", "tip": "Said it: Ali understood every card you said (or a grown-up ticked it)"}
+  },
+
+  "pay": {"help": 5, "ear": 5, "hand": 3, "third": 3, "voice": 3},
+
+  "help": {
+    "_about": "Help costs (design 6.3), as Find it: the first replay is free, then the no-help star. Reveal and translate cost the ear star for that row too.",
+    "freeReplays": 1
+  },
+
+  "tips": {
+    "ear": {"wrong": "Listen to Nani's row again (the speaker) before you shoot, and again before you pick a photo.", "count": "Count what's in the frame before you press the shutter: exactly that many.", "no": "One row says what NOT to have in the photo. Keep that fruit out of the frame.", "pick": "Make the one Nani means big and in the middle, with no other one of it beside it.", "shown": "Try without the eye or the English next time."},
+    "hand": {"default": "Zoom in so the main fruit is big, whole, and in the middle of the frame."},
+    "third": {"relaxed": "Try it with no hints: listen, then shoot.", "busy": "Be quicker: the daylight bar shows how long you have."},
+    "voice": {"default": "Say the word on Ali's card out loud; the pills are there if he can't hear you."}
+  },
+
+  "leakbot": {
+    "_about": "build/leak_snap.mjs: rounds per strategy per level, and the gates (design 8.4, build brief phase 0).",
+    "rounds": 500,
+    "gate": {"perStrategy": 0.10, "combined": 0.05, "oracle": 0.95}
+  }
+}
