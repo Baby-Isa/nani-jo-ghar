@@ -177,6 +177,7 @@
       $("#find-done").classList.add("hidden");
       $("#btn-warmer").classList.add("hidden");
       V.dimOutside(null, null, this.items);
+      UI.mission.step(1);
       this.stopTimers();
     }
     /** Resolves when the player presses Done. */

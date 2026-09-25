@@ -114,7 +114,7 @@ class Player:
             time.sleep(0.05)
         return self.exp()
 
-    def play(self, mistakes=True, overcount=False, timeout=240):
+    def play(self, mistakes=True, overcount=False, hint=False, timeout=240):
         """Play one round from its start to the result card."""
         t0 = time.time()
         last_kind = None
@@ -180,6 +180,15 @@ class Player:
                     self.shot("panned")
             elif k == "tap":
                 tag = "bag" if e.get("key") == "bag" else "stall"
+                if hint and tag == "stall" and "hint" not in self.made:
+                    # the warmer: Nani points at a third of the stall (costs the no-help star)
+                    self.made.add("hint")
+                    self.page.click("#btn-warmer")
+                    time.sleep(0.3)
+                    self.shot("warmer")
+                    e = self.exp()
+                    if not e or e.get("kind") != "tap":
+                        continue
                 if mistakes and e.get("swrongs") and f"wrong-{tag}" not in self.made:
                     self.made.add(f"wrong-{tag}")
                     w = random.choice(e["swrongs"])
@@ -273,13 +282,15 @@ def run_play(vp, speed, shots_root):
             time.sleep(0.3)
             check_relations(page)
             P.shot(f"level{level}-start")
-            P.play(mistakes=not over, overcount=over)
+            P.play(mistakes=not over, overcount=over, hint=not over)
             card = P.state()["cards"][-1]
             P.shot(f"level{level}-result")
             if over and card["stars"]["ear"]:
                 raise AssertionError("one too many should cost the ear star")
             if not over and card["stars"]["ear"]:
                 raise AssertionError("a wrong tap on a tested word should cost the ear star")
+            if not over and card["stars"]["third"]:
+                raise AssertionError("the warmer should cost the no-help star")
             print(f"  {vp['name']}: lab level {level}{' (one too many)' if over else ''}: stars {card['stars']}, reasons {card['reasons'][:3]}")
             out.append((f"level{level}", card))
         # a clean round: no mistakes, all three stars possible
@@ -292,6 +303,20 @@ def run_play(vp, speed, shots_root):
         if not card["stars"]["ear"]:
             raise AssertionError(f"a clean round lost the ear star: {card['reasons']}")
         print(f"  {vp['name']}: clean level 1: stars {card['stars']}")
+        # Busy: back to the title by real clicks, switch the setting, play the story round again
+        page.click("#res-back")
+        page.wait_for_selector("#lab-back", state="visible")
+        page.click("#lab-back")
+        page.wait_for_selector("[data-mode=busy]", state="visible")
+        page.click("[data-mode=busy]")
+        page.wait_for_selector("#t-start", state="visible")
+        P.made = set()
+        page.click("#t-start")
+        page.wait_for_function("__find.state().items > 0", timeout=15000)
+        P.play(mistakes=False)
+        card = P.state()["cards"][-1]
+        P.shot("busy-result")
+        print(f"  {vp['name']}: busy story round (level {card['level']}): stars {card['stars']}")
         browser.close()
     bad = bad_errors(errors)
     if bad:
