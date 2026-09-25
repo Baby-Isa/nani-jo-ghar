@@ -395,8 +395,13 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 /* ↻ (the order big again) above A/En (English for the whole order) */
 #mission .m-tools { display: flex; flex-direction: column; gap: 4px; align-self: start; }
 @container side (max-width: 270px) {
-  #mission .m-head { grid-template-areas: "face stars tools" "dish dish dish"; row-gap: 4px; }
+  #mission .m-head { grid-template-areas: "face stars tools" "dish dish dish"; row-gap: 4px; column-gap: 6px; }
+  #mission .m-ring { width: 36px; height: 36px; }
+  #mission .m-ring.on .m-face { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
   #mission .m-tools { flex-direction: row; align-self: center; }
+  #mission .m-tools button { width: 30px; height: 30px; padding: 6px; }
+  #mission .m-stars { gap: 3px; margin-top: 0; }
+  #mission .m-stars .mstar { width: 24px; height: 24px; padding: 3px; border-radius: 7px; }
 }
 #mission .m-tools button {
   width: 34px; height: 34px; border-radius: 50%; border: none; padding: 7px;
