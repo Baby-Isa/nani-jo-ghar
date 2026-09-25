@@ -84,3 +84,9 @@ All blocking decisions in the deep dives (top sections of each mode's design doc
 | Foundation phase A (shared modules) | `claude/build-foundation` | session_01KEQtafQq6co4gYRTgpC2Ab |
 
 **Held back on purpose:** the Find it build and the foundation's phase B (the shell), until the old chat's Find it sidebar and batch 1 art wiring reach `main` (both touch the same files). Each session writes `build/reports/<mode>-build.md` on its branch.
+
+### Paused for the usage limit, 25 Sept 18:10 UTC; resume at 21:45 UTC
+- All seven build sessions were still running and pushing to their `claude/build-*` branches (commits every few minutes). Remote sessions can't be messaged from here, so they carry on until the limit stops them; anything they hadn't pushed is lost with the turn.
+- **On resume:** for each session, `get_session`; read `build/reports/<mode>-build.md` on its branch if it exists (done). If it's not done, launch a continuation session from its branch (`source_revision` = the build branch, same `outcome_branch`) with the original prompt plus: "A previous session was cut off by a usage limit. Read `docs/<mode>-build-log.md` and `git log` on this branch, then continue from where it stopped."
+- Then: check `origin/main` for the old chat's work (Find it sidebar, batch 1 art) and, if it's there, launch the Find it build and the foundation's phase B (shell).
+- Mum's recordings: A3 done (`docs/kutchi-grammar-notes.md`); next A4–A8, then B, then C. Word changes to batch into `data/cook.json` later: *daar*, *ba* (two, said "ber"), *hakro/hakri*, *wadho/nindho* (+ she-forms), *watana*, *waari*, *lai*.
