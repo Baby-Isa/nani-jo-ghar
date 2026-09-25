@@ -121,7 +121,7 @@
       let phase = null; // the round being thrown: {targets, kinds, bag, every, secs}
 
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
-      const T = Object.assign({ x: 1490, y: 118, r: 70, warn: 3 }, k.timer || {});
+      const T = Object.assign({ x: 118, y: 124, r: 70, warn: 3 }, k.timer || {});
       const ring = S.track(S.add.graphics().setDepth(D.item + 1));
       let left = total; // seconds left on the ring
       let lastTick = Math.ceil(left);
