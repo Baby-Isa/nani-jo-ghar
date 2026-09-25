@@ -316,7 +316,10 @@ def run_bot(pw, strategy, game, level, rounds):
                 time.sleep(0.05)
                 pl.page.wait_for_function("__who.expectation().ui === null || __who.expectation().ui === 'result'", timeout=10000)
             elif ui == "commit":
-                if strategy == "half":
+                glowing = pl.page.evaluate("[...document.querySelectorAll('.sus.glow')].map(e => +e.dataset.i)")
+                if glowing:  # after two misses the fitting ones glow: on screen, so the bot may use it
+                    picks = glowing
+                elif strategy == "half":
                     k = len(standing) // 2 if rng.random() < 0.5 else (len(standing) + 1) // 2
                     picks = rng.sample(standing, k)
                 else:
