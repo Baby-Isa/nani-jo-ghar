@@ -34,9 +34,23 @@
 
   const G = () => (Cook.data && Cook.data.grammar) || {};
   Lang.grammar = G;
-  Lang.word = (id) => [{ t: Cook.display(id), lang: Cook.isPlaceholder(id) ? "e" : "k", w: id }];
+  /**
+   * Gender agreement (the family, 25 Sept: docs/kutchi-grammar-notes.md).
+   * A noun has words[id].gender ("he" | "she" | "unknown"); a word with
+   * `forms` ({he, she}: "one" hakro/hakri, describing words wadho/wadhi)
+   * takes the form for its noun. Unknown gender: the word's own `kutchi`.
+   */
+  Lang.gender = (id) => {
+    const g = (Cook.data.words[id] || {}).gender;
+    return g === "he" || g === "she" ? g : null;
+  };
+  Lang.form = (id, gender) => {
+    const w = Cook.data.words[id] || {};
+    return (gender && w.kutchi && w.forms && w.forms[gender]) || Cook.display(id);
+  };
+  Lang.word = (id, gender) => [{ t: Lang.form(id, gender), lang: Cook.isPlaceholder(id) ? "e" : "k", w: id }];
   Lang.numId = (n) => Cook.numId(n);
-  Lang.num = (n) => [{ t: Cook.numWord(n), lang: "k", w: Lang.numId(n) }];
+  Lang.num = (n, gender) => [{ t: Lang.form(Lang.numId(n), gender) || Cook.numWord(n), lang: "k", w: Lang.numId(n) }];
   /**
    * Phrase parts for "n of a thing", in the language's order (grammar.count,
    * e.g. "{n} {x}"). one: false leaves the number out when it's 1 ("chai",
@@ -54,13 +68,20 @@
     const segs = [];
     const en = [];
     const sep = G().sep != null ? G().sep : " ";
+    // the noun a number or describing word goes with: the next noun after it
+    // ("ba wadhi maani"); its gender picks their forms
+    const nounAfter = (i) => {
+      for (let j = i + 1; j < parts.length; j++) if (typeof parts[j] === "string" && (Cook.data.words[parts[j]] || {}).gender) return parts[j];
+      return null;
+    };
     parts.forEach((p, i) => {
       if (i) segs.push({ t: sep, lang: null });
+      const g = Lang.gender(nounAfter(i));
       if (typeof p === "number") {
-        segs.push(...Lang.num(p));
+        segs.push(...Lang.num(p, g));
         en.push(String(p));
       } else {
-        segs.push(...Lang.word(p));
+        segs.push(...Lang.word(p, g));
         en.push(Cook.english(p));
       }
     });
@@ -101,7 +122,8 @@
     const g = G();
     const o = g.order || {};
     const l = g.list || {};
-    return { first: o.first || "need", more: o.next || "and", any: l.next || "and", seq: g.then || "then", no: g.no || "no", seq_word: g.then_word || null };
+    // seqFirst: the first step of a sequence ("Pela {x}.", first …, ne poi …), else said bare
+    return { first: o.first || "need", more: o.next || "and", any: l.next || "and", seq: g.then || "then", seqFirst: g.then_first || null, no: g.no || "no", seq_word: g.then_word || null, for: g.for || null };
   };
   /**
    * Wrap a phrase in a small template with {x} (grammar.list.first "{x}.",
@@ -132,7 +154,7 @@
     entries.forEach((e, gi) =>
       [].concat(e).forEach((id, j) => {
         const ph = Lang.phrase([id]);
-        out.push(!out.length ? Lang.bare(ph) : Lang.line(seq && j === 0 && gi > 0 ? F.seq : F.any, ph));
+        out.push(!out.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && gi > 0 ? F.seq : F.any, ph));
       })
     );
     return Lang.join(out);
@@ -244,6 +266,9 @@
    */
   function saySpelling(token) {
     for (const w of Object.values(Cook.data.words || {})) {
+      // a gendered form ("hakri", "wadhi") has its own voice spelling, if any
+      const g = w.kutchi && w.forms && Object.keys(w.forms).find((k) => Cook.norm(w.forms[k]) === token && Cook.norm(w.forms[k]) !== Cook.norm(w.kutchi));
+      if (g) return (w.say_forms || {})[g] || token;
       if (!w.kutchi || !w.say) continue;
       const kt = Cook.norm(w.kutchi).split(" ");
       const st = String(w.say).split(" ");

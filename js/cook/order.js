@@ -154,7 +154,8 @@
               return;
             }
             let frame;
-            if (first) frame = heads && L.head ? F.any : null;
+            // a sequence starts "Pela …" (first), whatever comes before it
+            if (first) frame = s.seq && F.seqFirst ? F.seqFirst : heads && L.head ? F.any : null;
             else frame = s.seq && firstInGroup && gi > 0 ? F.seq : F.any;
             lines.push(frame ? Lang.line(frame, r.phrase) : Lang.bare(r.phrase));
             first = false;

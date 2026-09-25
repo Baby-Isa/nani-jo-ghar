@@ -4,12 +4,14 @@
   "cook-paani": {
    "kutchi": "paani",
    "english": "water",
+   "gender": "unknown",
    "image": "water-jug",
    "src": "zafar-24sep"
   },
   "cook-chai": {
    "kutchi": "chai",
    "english": "tea",
+   "gender": "she",
    "image": "tea-tin",
    "heap": {
     "kind": "grains",
@@ -21,12 +23,14 @@
   "cook-dudh": {
    "kutchi": "dudh",
    "english": "milk",
+   "gender": "unknown",
    "image": "milk-jug",
    "src": "zafar-24sep"
   },
   "cook-khun": {
    "kutchi": "khun",
    "english": "sugar",
+   "gender": "unknown",
    "heap": {
     "kind": "crystals",
     "color": "#f4efe4"
@@ -37,6 +41,7 @@
   "cook-atto": {
    "kutchi": "atto",
    "english": "flour",
+   "gender": "unknown",
    "image": "atto",
    "heap": {
     "kind": "powder",
@@ -46,8 +51,10 @@
    "src": "zafar-24sep"
   },
   "cook-daal": {
-   "kutchi": "daal",
+   "kutchi": "daar",
    "english": "daal",
+   "gender": "unknown",
+   "src_change": "was daal; Mum 25 Sept (A3 recording, docs/kutchi-grammar-notes.md): daar ends in r",
    "image": "daal-dry",
    "heap": {
     "kind": "balls",
@@ -59,18 +66,21 @@
   "cook-maani": {
    "kutchi": "maani",
    "english": "chapati",
+   "gender": "she",
    "image": "chapati-puffed",
    "src": "zafar-24sep"
   },
   "cook-bajrmaani": {
    "kutchi": "bajr jo maani",
    "english": "millet chapati",
+   "gender": "she",
    "src": "zafar-24sep-draft",
    "draft": true
   },
   "veg-01": {
    "kutchi": "bataato",
    "english": "potato",
+   "gender": "unknown",
    "heap": {
     "kind": "cubes",
     "color": "#ecd18a"
@@ -89,6 +99,7 @@
   "veg-02": {
    "kutchi": "dungri",
    "english": "onion",
+   "gender": "unknown",
    "image": "onion",
    "heap": {
     "kind": "pieces",
@@ -108,6 +119,7 @@
   "veg-03": {
    "kutchi": "tameto",
    "english": "tomato",
+   "gender": "unknown",
    "image": "tomato",
    "heap": {
     "kind": "cubes",
@@ -127,6 +139,7 @@
   "veg-12": {
    "kutchi": "marcha",
    "english": "green chilli",
+   "gender": "unknown",
    "image": "chilli",
    "heap": {
     "kind": "pieces",
@@ -142,6 +155,7 @@
   "veg-13": {
    "kutchi": "lasan",
    "english": "garlic",
+   "gender": "unknown",
    "image": "garlic",
    "heap": {
     "kind": "pieces",
@@ -151,8 +165,10 @@
    "src": "content master"
   },
   "veg-10": {
-   "kutchi": "vatana",
+   "kutchi": "watana",
+   "src_change": "was vatana; Zafar 25 Sept: no V in Kutchi, always W",
    "english": "peas",
+   "gender": "unknown",
    "heap": {
     "kind": "balls",
     "color": "#7cb342"
@@ -163,6 +179,7 @@
   "veg-14": {
    "kutchi": "aadu",
    "english": "ginger",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#d9b26f"
@@ -173,6 +190,7 @@
   "fru-02": {
    "kutchi": "limu",
    "english": "lemon",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#f3d54a"
@@ -183,6 +201,7 @@
   "spi-01": {
    "kutchi": "hardar",
    "english": "turmeric",
+   "gender": "unknown",
    "heap": {
     "kind": "powder",
     "color": "#e9a313"
@@ -193,6 +212,7 @@
   "spi-02": {
    "kutchi": "jeeru",
    "english": "cumin seeds",
+   "gender": "unknown",
    "heap": {
     "kind": "grains",
     "color": "#7a5530"
@@ -203,6 +223,7 @@
   "spi-05": {
    "kutchi": "rai",
    "english": "mustard seeds",
+   "gender": "unknown",
    "heap": {
     "kind": "dots",
     "color": "#2a1d18"
@@ -213,6 +234,7 @@
   "spi-10": {
    "kutchi": "elchi",
    "english": "cardamom",
+   "gender": "unknown",
    "image": "elchi",
    "heap": {
     "kind": "pods",
@@ -224,6 +246,7 @@
   "spi-16": {
    "kutchi": "loon",
    "english": "salt",
+   "gender": "unknown",
    "heap": {
     "kind": "crystals",
     "color": "#ffffff",
@@ -235,6 +258,7 @@
   "spi-04": {
    "kutchi": "lal marcha",
    "english": "red chilli powder",
+   "gender": "unknown",
    "heap": {
     "kind": "powder",
     "color": "#c7361f"
@@ -243,14 +267,21 @@
    "src": "content master"
   },
   "num-01": {
-   "kutchi": "hikdo",
+   "kutchi": "hakro",
    "english": "one",
-   "src": "handout"
+   "forms": {
+    "he": "hakro",
+    "she": "hakri"
+   },
+   "_forms": "\"one\" agrees with the noun's gender (words[id].gender): hakro ambo, hakri maani. A noun of unknown gender takes `kutchi` (hakro), and dishes are ordered without \"one\" (the informal frame Muke {x} khape).",
+   "src": "Mum 25 Sept (A3 recording, docs/kutchi-grammar-notes.md); was hikdo (class handout)"
   },
   "num-02": {
-   "kutchi": "bo",
+   "kutchi": "ba",
    "english": "two",
-   "src": "handout"
+   "say": "ber",
+   "src": "Mum 25 Sept (A3 recording, docs/kutchi-grammar-notes.md): said like the Ber of Bernstein; was bo (class handout). Screen spelling ba is Zafar's proposal, to confirm with the recording",
+   "draft": true
   },
   "num-03": {
    "kutchi": "trae",
@@ -270,6 +301,7 @@
   "ph-chana": {
    "kutchi": "channa",
    "english": "chickpeas",
+   "gender": "unknown",
    "heap": {
     "kind": "balls",
     "color": "#d9b77a"
@@ -285,6 +317,7 @@
   "ph-dahi": {
    "kutchi": "dai",
    "english": "yoghurt",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#f8f5ee"
@@ -300,6 +333,7 @@
   "ph-amli": {
    "kutchi": null,
    "english": "tamarind chutney",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#6b3a1e",
@@ -316,6 +350,7 @@
   "ph-lili": {
    "kutchi": null,
    "english": "green chutney",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#5d9b3a",
@@ -332,6 +367,7 @@
   "ph-sev": {
    "kutchi": null,
    "english": "sev",
+   "gender": "unknown",
    "heap": {
     "kind": "strands",
     "color": "#e8b23a"
@@ -346,6 +382,7 @@
   "ph-dhana": {
    "kutchi": null,
    "english": "coriander",
+   "gender": "unknown",
    "heap": {
     "kind": "leaves",
     "color": "#4f8f3a"
@@ -360,6 +397,7 @@
   "ph-keema": {
    "kutchi": null,
    "english": "mince",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#8a5238"
@@ -370,6 +408,7 @@
   "ph-meat": {
    "kutchi": "ghos",
    "english": "meat",
+   "gender": "unknown",
    "heap": {
     "kind": "cubes",
     "color": "#9c4a32"
@@ -385,6 +424,7 @@
   "ph-pepper": {
    "kutchi": null,
    "english": "green pepper",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#4f9a3a"
@@ -399,6 +439,7 @@
   "ph-chips": {
    "kutchi": null,
    "english": "chips",
+   "gender": "unknown",
    "heap": {
     "kind": "sticks",
     "color": "#f0c050"
@@ -409,6 +450,7 @@
   "ph-ghee": {
    "kutchi": null,
    "english": "ghee",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#f2d27a"
@@ -419,16 +461,19 @@
   "ph-chaat": {
    "kutchi": null,
    "english": "chaat",
+   "gender": "unknown",
    "src": "placeholder"
   },
   "ph-samosa": {
    "kutchi": null,
    "english": "samosa",
+   "gender": "unknown",
    "src": "placeholder"
   },
   "ph-mishkaki": {
    "kutchi": null,
    "english": "mishkaki",
+   "gender": "unknown",
    "src": "placeholder"
   },
   "lnk-nepoi": {
@@ -474,18 +519,64 @@
    "draft": true
   },
   "ph-big": {
-   "kutchi": "vadho",
+   "kutchi": "wadho",
    "english": "big",
    "say": "wudd-oar",
-   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "forms": {
+    "he": "wadho",
+    "she": "wadhi"
+   },
+   "say_forms": {
+    "she": "wudd-ee"
+   },
+   "_forms": "A describing word agrees with its noun like a he-word (-o) / she-word (-i): wadho for he-words (confirmed), wadhi for she-words like maani (draft: Mum to confirm in Section C). No V in Kutchi: was vadho.",
+   "src": "Zafar 25 Sept, phonetic; he-form confirmed by Mum 25 Sept; she-form wadhi a draft",
    "draft": true
   },
   "ph-small": {
    "kutchi": "nindho",
    "english": "small",
    "say": "nindh-oar",
-   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "forms": {
+    "he": "nindho",
+    "she": "nindhi"
+   },
+   "say_forms": {
+    "she": "nindh-ee"
+   },
+   "_forms": "As ph-big: nindho (he-words, confirmed), nindhi (she-words like maani, draft).",
+   "src": "Zafar 25 Sept, phonetic; he-form confirmed by Mum 25 Sept; she-form nindhi a draft",
    "draft": true
+  },
+  "lnk-pela": {
+   "kutchi": "pela",
+   "english": "first",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke pela daar khape, ne poi maani",
+   "draft": true
+  },
+  "cook-waari": {
+   "kutchi": "waari",
+   "english": "with (mixed in)",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, kesar waari chai",
+   "draft": true
+  },
+  "kin-nana": {
+   "kutchi": "Nana",
+   "english": "Nana",
+   "gender": "he",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai"
+  },
+  "kin-ma": {
+   "kutchi": "Ma",
+   "english": "Ma",
+   "gender": "she",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Ma lai pan hakro banai"
+  },
+  "name-ali": {
+   "kutchi": "Ali",
+   "english": "Ali",
+   "gender": "he",
+   "src": "a name (the cousin)"
   }
  },
  "lines": {
@@ -526,8 +617,10 @@
    "en": "And {x}."
   },
   "give": {
-   "k": "Muke hikdo {x} dine.",
-   "en": "Give me the {x}."
+   "k": "Muke {x} de.",
+   "en": "Give me {x}.",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke chamchi de; pass me is the same as give me. Was Muke hikdo {x} dine.",
+   "draft": true
   },
   "no": {
    "k": "Nar {x}.",
@@ -583,8 +676,31 @@
   "then": {
    "k": "Ne poi {x}.",
    "en": "And then {x}.",
+   "src": "zafar-24sep-draft; ne poi confirmed by Mum 25 Sept (A3.3-A3.6 recording)"
+  },
+  "first": {
+   "k": "Pela {x}.",
+   "en": "First {x}.",
    "draft": true,
-   "src": "zafar-24sep-draft"
+   "src": "Mum 25 Sept (A3.3-A3.6): pela = first (Muke pela daar khape, ne poi maani). As a line of its own, a draft"
+  },
+  "waari": {
+   "k": "{x} waari chai.",
+   "en": "Chai with {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, khun waari chai, kesar waari chai"
+  },
+  "sugar": {
+   "k": "Muke chai me {x} khape.",
+   "en": "In my chai I want {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke chai me ba khun khapeti (formal); khape is the informal ending the game uses everywhere"
+  },
+  "for": {
+   "k": "{x} lai.",
+   "en": "For {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai (this is for Nana); lai = for"
   },
   "now": {
    "e": "Now {x}!"
@@ -620,6 +736,12 @@
   },
   "number": "{x}!",
   "then": "then",
+  "then_first": "first",
+  "for": "for",
+  "gender": {
+   "_about": "Words agree with a noun's gender (words[id].gender: he | she | unknown). A word with `forms` ({he, she}) takes the form for the noun it goes with: \"one\" (hakro/hakri) and describing words (wadho/wadhi). Unknown gender (most nouns until the family says) takes the word's own `kutchi`; the order frame Muke {x} khape is the informal one and never changes (docs/kutchi-grammar-notes.md 1).",
+   "default": "unknown"
+  },
   "no": "no",
   "then_word": "lnk-nepoi"
  },
@@ -675,6 +797,7 @@
  "customers": {
   "nana": {
    "name": "Nana",
+   "word": "kin-nana",
    "tint": "#8a5a3c",
    "tastes": {
     "chai": {
@@ -705,6 +828,7 @@
   },
   "ma": {
    "name": "Ma",
+   "word": "kin-ma",
    "tint": "#2f7d4f",
    "tastes": {
     "chai": {
@@ -736,6 +860,7 @@
   },
   "cousin": {
    "name": "Ali",
+   "word": "name-ali",
    "tint": "#e0772e",
    "tastes": {
     "chai": {
@@ -860,7 +985,7 @@
       },
       {
        "if": "it.khun",
-       "frame": "and",
+       "frame": "sugar",
        "x": [
         {
          "n": "$it.khun",
@@ -879,7 +1004,7 @@
       },
       {
        "if": "it.extra",
-       "frame": "and",
+       "frame": "waari",
        "x": [
         "$it.extra"
        ],
@@ -3037,8 +3162,17 @@
  "calm": {
   "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1).",
   "quietMs": 4000,
-  "hintMs": [7000, 8000, 11000, 15000],
-  "passMeChance": { "relaxed": 0.4, "busy": 0.55, "level1": 0.2 }
+  "hintMs": [
+   7000,
+   8000,
+   11000,
+   15000
+  ],
+  "passMeChance": {
+   "relaxed": 0.4,
+   "busy": 0.55,
+   "level1": 0.2
+  }
  },
  "tips": {
   "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",

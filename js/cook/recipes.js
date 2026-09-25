@@ -278,7 +278,8 @@
           [].concat(st.entry).forEach((id, j) => {
             const ps = st.n > 1 ? Lang.countParts(st.n, id) : [id];
             const ph = Lang.phrase(ps);
-            const line = !said.length ? Lang.bare(ph) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
+            // "Pela channa. Ne poi bataato." (first …, and then …: the family's word order)
+            const line = !said.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
             said.push(line);
             rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when });
           });
