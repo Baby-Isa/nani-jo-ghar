@@ -47,3 +47,10 @@
 - **Modes:** Fable's critical review `docs/modes/REVIEW-2026-09-25.md` recommends "real-Kutchi-first" order (Monsoon kitchen slice, Who did it phases 0–1, Find it relations + size, then Tidy up M2; Dress up art after the visit; Snap parked). Four blocking decisions A–D await Zafar.
 - **Clinic:** redesigned twice (the real doctor's clinic; revision 2 = visit types + treatment library) in `docs/modes/clinic-design.md`; five decisions await Zafar.
 - **Art batch 2:** Zafar uploads raw ChatGPT images to `sources/art/chatgpt/` (props, backgrounds) and `sources/art/characters/` (character sheets) with the prompt pack's "save as" names; processing waits until the old chat's batch 1 wiring is on `main` (same files).
+
+### Zafar's decisions, 25 Sept ~14:30 UTC
+- **Build shape:** one build agent per mode, all concurrently, each mode as mini-games built from modular mechanics (Cook's pattern). Least rework wins: a foundation agent builds the shell ("one app, one save") and the shared pieces (relations layer, "which one?" module, overlay sprites, star/ear/voice rules as data, `js/shared/speech.js`) while mode agents do logic and greybox in their own files only; modes plug into the shell afterwards.
+- **Before any of that:** tie off the old chat's work on `main` (Wave 5A calm UI, Find it calm sidebar, batch 1 art), then the shared Cook API is frozen.
+- **Speaking is core:** every mode gets speaking moments (closed-set recognition from family recordings, with a tap/parent fallback; a voice star).
+- **Clinic:** the child never gives medicine (hands it to the doctor, who checks it as a word review); patients say "my left / my right"; pill organiser dropped for now (Tidy up may take it for days of the week); the level-4 "clue" variant is later.
+- **Running now:** Fable deep dives per mode to `docs/modes/DEEP-DIVE-BRIEF.md` (Find it, Tidy up, Who did it?, Dress up, Monsoon rush, Snap; clinic Revision 3), plus a speech plan and prototype (`docs/speech-recognition-plan.md`, `js/shared/speech.js`, `build/speech/`).
