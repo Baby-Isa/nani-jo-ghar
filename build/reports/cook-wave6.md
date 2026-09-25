@@ -8,7 +8,7 @@ All nine items from Zafar's grill playtest (`docs/UX-PRINCIPLES.md`).
 - **One card per item, fixed shape:** skewer (always four dots; a mixed one names its pieces in order), maani, cup (face, *Nana lai.*, then milk / sugar / which chai; an empty slot for plain).
 - **Help:** the per-row speaker, 👁 and A/En are gone. One **light bulb** shows English for 5/3/2/1 s by level and costs the ear star. **One speaker per card** reads the card with read-along.
 - **Grill:** thread → "Go to the barbecue" → grill. The juggle is level 4 (`juggle: true`). No chips on the grill.
-- **Level 1 is the smallest round:** one skewer, one cup, one maani, three pantry things. Each level adds one thing. A new `pantry` recipe (Nani's list, *Muke {x} de*) is the first thing a new player does; the rules come after it.
+- **Level 1 is the smallest round:** one skewer, one cup, one maani, three pantry things. Each level adds one thing. A new player starts on Nani's pantry list (*Muke {x} de*).
 - **Onboarding:** at each station, the first (guided) time dims everything but the next thing, with a ghost finger (`js/cook/coach.js`). The stars fade in from the second order, the bulb from the third.
 - **Family words:** *daar*, *ba* (voice *ber*), *hakro/hakri* by the noun's `gender`, *wadho/wadhi*, *nindhi*, *watana*, *{x} waari chai*, *Muke chai me {n} khun khape*, *{person} lai*, *Muke {x} de*, *Pela … Ne poi …*. Drafts are flagged; ids unchanged.
 
@@ -16,13 +16,7 @@ All nine items from Zafar's grill playtest (`docs/UX-PRINCIPLES.md`).
 `cook.html` → Start cooking (a fresh save opens on the pantry), or the Station lab at levels 1–4.
 
 ## Tests (one at a time, `COOK_TEST_PORT=8810`)
-All pass, with no console errors and no sidebar warnings:
-- `--orders`
-- `--lab` laptop and flip5-landscape (WebGL)
-- `--days 2 --canvas`
-- `--open-kitchen 2`
-- `test_find.py` laptop
-- lab level 3 and 4 runs at phone, iPad and laptop sizes (canvas)
+All pass, with no console errors or sidebar warnings: `--orders`; `--lab` laptop and flip5-landscape (WebGL); `--days 2 --canvas`; `--open-kitchen 2`; `test_find.py`; lab levels 3–4 at phone, iPad and laptop.
 
 Screenshots checked at each size; the harness now also tests read-along and the bulb.
 
