@@ -85,15 +85,26 @@ def draw_ring(kind, view, ss=6):
     img = _canvas(W, Hh, ss)
     d = ImageDraw.Draw(img)
     cx, cy = W / 2, Hh / 2
-    band_h = fw * 0.16
-    # the band: a shallow arc across the finger, lit on top
-    d.rounded_rectangle([(cx - fw / 2) * ss, (cy - band_h / 2) * ss, (cx + fw / 2) * ss, (cy + band_h / 2) * ss],
-                        radius=band_h / 2 * ss, fill=(196, 150, 58, 255))
-    d.rounded_rectangle([(cx - fw / 2 + 2) * ss, (cy - band_h / 2) * ss, (cx + fw / 2 - 2) * ss, (cy - band_h / 8) * ss],
-                        radius=band_h / 3 * ss, fill=(246, 214, 128, 255))
+    band_h = fw * (0.15 if view == "back" else 0.085)
+    # contact shadow on the skin, just below the band (the light is upper left)
+    d.rounded_rectangle([(cx - fw / 2 + 1) * ss, (cy - band_h / 2 + 2) * ss, (cx + fw / 2 - 1) * ss, (cy + band_h / 2 + 3) * ss],
+                        radius=band_h / 2 * ss, fill=(70, 40, 25, 60))
+    # the band across the finger: gold shaded by the cosine of the angle
+    # round the finger, so it darkens and narrows where it turns away at
+    # both sides (it wraps round, rather than lying on top like a bar)
+    x0, x1 = int((cx - fw / 2) * ss), int((cx + fw / 2) * ss)
+    for x in range(x0, x1):
+        u = ((x + 0.5) / ss - cx) / (fw / 2)  # -1..1 across the finger
+        c = math.sqrt(max(0.0, 1 - u * u))
+        lit = 0.55 + 0.45 * c + 0.12 * (-u)  # a touch brighter towards the light (left)
+        h = band_h * (0.55 + 0.45 * c)
+        col = tuple(int(min(255, v * lit)) for v in (214, 166, 64))
+        d.line([x, (cy - h / 2) * ss, x, (cy + h / 2) * ss], fill=col + (255,))
+        hi = tuple(int(min(255, v * (0.7 + 0.35 * c))) for v in (255, 226, 140))
+        d.line([x, (cy - h / 2) * ss, x, (cy - h / 2 + h * 0.3) * ss], fill=hi + (255,))
     if view == "back":
         if kind == "aqiq":
-            rx, ry = fw * 0.34, fw * 0.44  # oval along the finger
+            rx, ry = fw * 0.3, fw * 0.39  # oval along the finger
             d.ellipse([(cx - rx - 3) * ss, (cy - ry - 3) * ss, (cx + rx + 3) * ss, (cy + ry + 3) * ss],
                       fill=(200, 150, 56, 255))  # bezel
             d.ellipse([(cx - rx - 3) * ss, (cy - ry - 3) * ss, (cx + rx + 3) * ss, (cy + ry + 3) * ss],
@@ -192,19 +203,31 @@ def _paste(layer, sprite, x, y, scale, angle):
     layer.alpha_composite(sp, (int(round(x - sp.width / 2)), int(round(y - sp.height / 2))))
 
 
+RING_FW = REF_WRIST * FINGER_OF_WRIST  # the finger width ring sprites are drawn for
+
+
 def place_jewellery(hand_img, hands, items, camera, sprites):
     """Composite jewellery onto a hand image. hands: the pose's hand anchors
     (already mirrored if the image is); items: {"right": [...], "left": [...]}
     from the character, each {"type": "ring"|"wrist", "sprite": name or list
-    of names}. Wrist items are stacked along the arm, 13 px apart at the
-    reference wrist."""
+    of names}.
+
+    Rings (hands v2): on the ring finger at the landmark placement
+    (build/hand_landmarks.py), scaled to the measured finger width, turned
+    to the finger's first segment; 'back' shows band and stone, 'palm' and
+    'side' a thin band, 'hidden' nothing. The ring is clipped to the hand's
+    silhouette so it never hangs into the background or a tool gap.
+    Wrist items sit at the bracelet anchor (the wrist joint, across the
+    forearm), stacked along the arm, 13 px apart at the reference wrist;
+    poses without one fall back to the cuff anchor."""
     base = Image.new("RGBA", hand_img.size, (0, 0, 0, 0))
     over = Image.new("RGBA", hand_img.size, (0, 0, 0, 0))
+    rings = Image.new("RGBA", hand_img.size, (0, 0, 0, 0))
     for hand in hands:
-        wrist = hand.get("wrist")
-        k = (wrist["width_px"] / REF_WRIST) if wrist else 1.0
+        wrist = hand.get("bracelet") or hand.get("wrist")
         for it in items.get(hand["side"], []):
             if it["type"] == "wrist" and wrist:
+                k = wrist["width_px"] / REF_WRIST
                 names = it["sprite"] if isinstance(it["sprite"], list) else [it["sprite"]]
                 a = math.radians(wrist["angle_deg"])
                 along = np.array([math.sin(a), -math.cos(a)])
@@ -213,9 +236,18 @@ def place_jewellery(hand_img, hands, items, camera, sprites):
                     x, y = wrist["x"] + along[0] * off, wrist["y"] + along[1] * off
                     _paste(base, sprites[f"{name}-{camera}-back"], x, y, k, wrist["angle_deg"])
                     _paste(over, sprites[f"{name}-{camera}-front"], x, y, k, wrist["angle_deg"])
-            elif it["type"] == "ring" and hand.get("ring"):
-                r = hand["ring"]
-                _paste(over, sprites[f"{it['sprite']}-{r['view']}"], r["x"], r["y"], k, r["angle_deg"])
+            elif it["type"] == "ring":
+                r = hand.get("ring") or {}
+                if r.get("view") in (None, "hidden") or "x" not in r:
+                    continue
+                view = "back" if r["view"] == "back" else "palm"
+                _paste(rings, sprites[f"{it['sprite']}-{view}"], r["x"], r["y"], r["width_px"] / RING_FW, r["angle_deg"])
+    # clip the rings to the hand (the stone may stand a little proud of the
+    # finger's outline, so the silhouette is grown by a few pixels)
+    sil = hand_img.getchannel("A").filter(ImageFilter.MaxFilter(5))
+    ra = np.asarray(rings).copy()
+    ra[..., 3] = (ra[..., 3].astype(np.float64) * np.asarray(sil) / 255.0).astype(np.uint8)
+    over.alpha_composite(Image.fromarray(ra, "RGBA"))
     base.alpha_composite(hand_img)
     base.alpha_composite(over)
     return base
@@ -259,8 +291,12 @@ def apply_overlay(im, texture_path, hands, opacity=0.85):
 
 
 # Boxes (master pixels) where the sleeve mask is erased by hand: a5-f1's
-# forearm is so pale it reads as cream just above the cuff.
-SLEEVE_ERASE = {"hand-a5-wave-f1-e": [(540, 760, 660, 866)]}
+# forearm is so pale it reads as cream just above the cuff; d2-e and f4
+# kept a speck of sleeve colour on the forearm.
+SLEEVE_ERASE = {"hand-a5-wave-f1-e": [(540, 760, 660, 866)],
+                # hands v2: sleeve-colour specks on the forearm, found on the nani sheet
+                "hand-d2-c-hold-e": [(1165, 1113, 1219, 1179)],
+                "hand-f4-phone-two-hands-e": [(1683, 1273, 1731, 1323)]}
 
 
 def clip_sleeve_to_cuff(w, master, hands):
@@ -329,12 +365,17 @@ def mirror_hands(hands, width):
     out = []
     for h in hands:
         m = {"side": "left" if h["side"] == "right" else "right"}
-        for key in ("wrist", "ring"):
-            if h.get(key):
+        for key in ("wrist", "ring", "bracelet"):
+            if h.get(key) and "x" in h[key]:
                 v = dict(h[key])
                 v["x"] = round(width - 1 - v["x"], 1)
                 v["angle_deg"] = -v["angle_deg"]
+                for j in ("mcp", "pip"):
+                    if j in v:
+                        v[j] = [round(width - 1 - v[j][0], 1), v[j][1]]
                 m[key] = v
+            elif h.get(key):
+                m[key] = dict(h[key])
             else:
                 m[key] = None
         out.append(m)
@@ -395,6 +436,51 @@ def check_sheet(anchors, poses, path):
     contact_sheet(tiles, path)
 
 
+def ring_sheet(name, masters, anchors, per_sheet=12, tile=380):
+    """The baked images of one character with zooms on each ring and on the
+    wrist jewellery: the per-pose visual check of the placements."""
+    import hand_landmarks as hl
+    tiles = []
+    od = os.path.join(OUT, name)
+    for m in masters:
+        mid = m["id"]
+        a = anchors[mid]
+        variants = [("", a["hands"])]
+        if os.path.exists(os.path.join(od, f"{mid}-left.webp")):
+            variants.append(("-left", mirror_hands(a["hands"], a["size"][0] if "size" in a else
+                                                   Image.open(ga.resolve_path(m["output"])).width)))
+        for suf, hands in variants:
+            im = Image.open(os.path.join(od, f"{mid}{suf}.webp")).convert("RGBA")
+            bg = Image.new("RGBA", im.size, (118, 128, 138, 255))
+            bg.alpha_composite(im)
+            zooms = []
+            for h in hands:
+                r = h.get("ring") or {}
+                if "x" in r and r.get("view") != "hidden":
+                    z = max(150, int(r["width_px"] * 3.2))
+                    zooms.append(bg.crop((int(r["x"] - z / 2), int(r["y"] - z / 2), int(r["x"] + z / 2), int(r["y"] + z / 2))))
+                b = h.get("bracelet") or h.get("wrist")
+                if b:
+                    z = int(b["width_px"] * 1.6)
+                    zooms.append(bg.crop((int(b["x"] - z / 2), int(b["y"] - z / 2), int(b["x"] + z / 2), int(b["y"] + z / 2))))
+            k = tile / max(bg.size)
+            full = bg.resize((round(bg.width * k), round(bg.height * k)), Image.LANCZOS).convert("RGB")
+            zw = tile // 2
+            out = Image.new("RGB", (tile + 2 * zw, tile + 22), (36, 36, 36))
+            out.paste(full, (0, 0))
+            for i, zm in enumerate(zooms[:4]):
+                out.paste(zm.resize((zw, zw), Image.LANCZOS).convert("RGB"), (tile + (i % 2) * zw, (i // 2) * zw))
+            views = " ".join(f"{h['side'][0].upper()}:{(h.get('ring') or {}).get('view', '-')}" for h in hands)
+            ImageDraw.Draw(out).text((4, tile + 5), f"{mid.replace('hand-', '')}{suf}  {views}", fill=(240, 240, 240))
+            tiles.append(out)
+    paths = []
+    for k in range(0, len(tiles), per_sheet):
+        path = os.path.join(SHEETS, f"hands-{name}-rings-{k // per_sheet + 1}.png")
+        hl.debug_sheet(tiles[k:k + per_sheet], path, cols=3)
+        paths.append(path)
+    return paths
+
+
 # ---------------------------------------------------------------------------
 
 def passing_masters():
@@ -435,12 +521,42 @@ def measure_wrists(anchors, masters):
                                                  "width_px": w["wrist_px"], "source": w["source"]}
 
 
+_SPRITES = None
+
+
+def _bake_one(job):
+    """Bake one pose for one character (and its left variant); returns
+    [(label, path)]. Runs in a worker process with --jobs."""
+    global _SPRITES
+    name, mid, output = job
+    if _SPRITES is None:
+        _SPRITES = jewellery_sprites()
+    skins = json.load(open(SKINS))
+    char = skins[name]
+    a = load_anchors()[mid]
+    od = os.path.join(OUT, name)
+    master = Image.open(ga.resolve_path(output)).convert("RGBA")
+    out = skin_character(master, char, a["hands"], a["camera"], _SPRITES, mid)
+    res = [(mid.replace("hand-", ""), os.path.join(od, f"{mid}.webp"))]
+    out.save(res[0][1], lossless=True)
+    if char.get("left_variant") and len(a["hands"]) == 1:
+        mirrored = master.transpose(Image.FLIP_LEFT_RIGHT)
+        mh = mirror_hands(a["hands"], master.width)
+        out_l = skin_character(mirrored, char, mh, a["camera"], _SPRITES, mid, mirrored=True)
+        res.append((mid.replace("hand-", "") + " L", os.path.join(od, f"{mid}-left.webp")))
+        out_l.save(res[1][1], lossless=True)
+    print(f"[{name}] {mid}", flush=True)
+    return res
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--only", help="comma-separated character names (default: all in data/hand-skins.json)")
     p.add_argument("--poses", help="comma-separated master ids (default: every passing master)")
     p.add_argument("--measure-wrists", action="store_true", help="re-run the wrist finder into the anchors file, then exit")
     p.add_argument("--check-sheet", action="store_true", help="draw the anchors on the masters, then exit")
+    p.add_argument("--jobs", type=int, default=3, help="poses baked in parallel (default 3)")
+    p.add_argument("--ring-sheet", metavar="NAME", help="zoomed ring/bracelet check sheets of a baked character, then exit")
     args = p.parse_args()
 
     masters = passing_masters()
@@ -455,6 +571,10 @@ def main():
         save_anchors(anchors, readme)
         print(f"wrists measured for {len(masters)} poses -> {ANCHORS}")
         return
+    if args.ring_sheet:
+        for path in ring_sheet(args.ring_sheet, masters, anchors):
+            print(f"wrote {path}")
+        return
     if args.check_sheet:
         path = os.path.join(SHEETS, "hands-anchors-check.png")
         check_sheet(anchors, [m["id"] for m in masters], path)
@@ -464,7 +584,7 @@ def main():
     skins = json.load(open(SKINS))
     skins.pop("_readme", None)
     names = args.only.split(",") if args.only else list(skins)
-    sprites = jewellery_sprites()
+    jewellery_sprites()  # also writes the loose sprites to skins/jewellery/
     for name in names:
         char = skins[name]
         if char.get("pending"):
@@ -475,21 +595,17 @@ def main():
             continue
         od = os.path.join(OUT, name)
         os.makedirs(od, exist_ok=True)
+        jobs = [(name, m["id"], m["output"]) for m in masters]
+        if args.jobs > 1:
+            from concurrent.futures import ProcessPoolExecutor
+            with ProcessPoolExecutor(args.jobs) as ex:
+                done = list(ex.map(_bake_one, jobs))
+        else:
+            done = [_bake_one(j) for j in jobs]
         tiles = []
-        for m in masters:
-            mid = m["id"]
-            a = anchors[mid]
-            master = Image.open(ga.resolve_path(m["output"])).convert("RGBA")
-            out = skin_character(master, char, a["hands"], a["camera"], sprites, mid)
-            out.save(os.path.join(od, f"{mid}.webp"), lossless=True)
-            tiles.append((mid.replace("hand-", ""), out))
-            if char.get("left_variant") and len(a["hands"]) == 1:
-                mirrored = master.transpose(Image.FLIP_LEFT_RIGHT)
-                mh = mirror_hands(a["hands"], master.width)
-                out_l = skin_character(mirrored, char, mh, a["camera"], sprites, mid, mirrored=True)
-                out_l.save(os.path.join(od, f"{mid}-left.webp"), lossless=True)
-                tiles.append((mid.replace("hand-", "") + " L", out_l))
-            print(f"[{name}] {mid}", flush=True)
+        for outs in done:
+            for label, path in outs:
+                tiles.append((label, Image.open(path).convert("RGBA")))
         contact_sheet(tiles, os.path.join(SHEETS, f"hands-{name}.png"))
         print(f"[{name}] {len(tiles)} images -> {od}")
 
