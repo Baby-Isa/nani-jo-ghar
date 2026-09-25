@@ -1,0 +1,12 @@
+{
+  "_about": "Big Ma's room, fitting corner (greybox). Anchors are in each crop's own pixels (assets/cook/characters/<who>-neutral.webp); js/dress/doll.js draws code overlays there until the foundation's overlay-at-anchor sprites land. head: centre x, top of head y, head width w, face ellipse. torso: the box from the shoulders down. place: where the figure stands in the 1600x900 world (bottom centre) and its height.",
+  "people": {
+    "nana":   {"img": {"w": 370, "h": 389}, "head": {"x": 185, "y": 2, "w": 150, "face": {"cx": 185, "cy": 115, "rx": 62, "ry": 78}}, "torso": {"x": 18, "y": 188, "w": 334, "h": 201}},
+    "ma":     {"img": {"w": 341, "h": 405}, "head": {"x": 170, "y": 14, "w": 150, "face": {"cx": 170, "cy": 122, "rx": 68, "ry": 86}}, "torso": {"x": 28, "y": 232, "w": 286, "h": 173}},
+    "cousin": {"img": {"w": 255, "h": 379}, "head": {"x": 127, "y": 2, "w": 170, "face": {"cx": 127, "cy": 122, "rx": 58, "ry": 68}}, "torso": {"x": 8, "y": 202, "w": 239, "h": 177}}
+  },
+  "place": {"cx": 1085, "bottom": 900, "height": 600},
+  "mirror": {"x": 1392, "y": 150, "w": 196, "h": 600, "scale": 0.5},
+  "rail": {"x": 30, "y": 70, "w": 760, "rowH": 265, "rows": ["head", "top", "wrap"]},
+  "carry": {"x": 30, "y": 820, "w": 760, "h": 70}
+}

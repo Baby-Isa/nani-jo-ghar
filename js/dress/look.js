@@ -74,7 +74,7 @@
       const change = maybeChange(c, k, rows, (r) => free.filter((i) => i.kind === r.garment));
       const odds = pileOdds(c, scope, rows, people, change);
       if (odds <= c.budget || tries === 7) {
-        return { renderer: "flat", speaker: "nani", who: "nani", people, rows: Pick.shuffle(c.rng, rows), scope, change, odds, oddsReal: 1, check: k.check || "done" };
+        return { renderer: "flat", speaker: "nani", who: "nani", people, rows: Pick.shuffle(c.rng, rows), scope, change, odds, oddsReal: null, check: k.check || "done" };
       }
       // over budget: one more decoy colour if the palette has one, else one more kind
       const moreC = palette(c, k).filter((x) => !colours.includes(x));
@@ -144,7 +144,9 @@
       const parts = final.filter((r) => !r.no).map((r) => Pick.setOdds(scope.filter((i) => i.slot === r.slot), [{ kind: r.garment, colour: r.colour }], { features: ["kind", "colour"], salience: c.salience }));
       const odds = Pick.product(parts) * (opts.extraOdds || 1);
       if (odds <= c.budget || tries === 7) {
-        return { renderer: "upper", speaker: "client", who, people: [who], rows: Pick.shuffle(c.rng, rows), scope, kindsBySlot, change, odds, oddsReal: 1, check: k.check || "done" };
+        // the only real Kutchi in a fitting today is nar (a no row): wear it or not
+        const oddsReal = rows.some((r) => r.no) ? 0.5 : null;
+        return { renderer: "upper", speaker: "client", who, people: [who], rows: Pick.shuffle(c.rng, rows), scope, kindsBySlot, change, odds, oddsReal, check: k.check || "done" };
       }
       nColours++;
     }
