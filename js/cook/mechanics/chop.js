@@ -1,25 +1,37 @@
 /*
- * Mechanic: chop (Fruit Ninja style). Vegetables are tossed up; slice
- * only the one Nani names, as many as she says ("only bo tameto!"). Then
- * she switches mid-round ("now dungri!"): the next vegetable is the one
- * to slice, and the last one is now a decoy. Look-alikes fly too (a red
- * onion next to the tomatoes). Chopping never ends by itself when you
- * reach the number: each round runs until the vegetable has been thrown
- * a few more times than asked for, then Nani moves on. Too many or too
- * few costs the ear star (graded at the end, so nothing on screen says
- * when to stop); slicing the wrong one: "Arre re!" and the ear star.
- * Kutchi: which one, how many, and the switch.
- * Params: targets {wordId: count} (zeros are left out; said in this
- * order), pool (what else gets thrown), only (keep only targets in this
- * list: the chaat chops what goes in its bowl), no (vegetables they said
- * no to), tick (tick the order rows: daal).
- * Knobs (data.mechanics.chop): inAir, every, fasterPerStage, fasterMax,
- * throwSpeed, gravity, decoys (decoy kinds in the air), spare (extra
- * throws of the target per round), lookalikes {id: [ids]} (always among
- * the decoys), variants {id: {color, near, chance}} (an onion drawn red
- * when tomatoes are about), size / phoneSize (piece size, design px;
- * phoneSize on a small screen), sharp (a second target in one swipe),
- * special.
+ * Mechanic: chop (Fruit Ninja style). Vegetables are tossed up in volume;
+ * slice only the ones Nani names, as many of each as she says ("only bo
+ * dungri. Ne hikdo tameto."), before the timer ring on the board runs
+ * out. Decoys fly as often as each wanted vegetable (look-alikes among
+ * them: a red onion next to the tomatoes), so what flies never tells you
+ * what to cut.
+ *
+ * Level 1: one timed round with every vegetable the order names at once.
+ * Levels 2-3 (`phases`): the round is split and Nani switches mid-round
+ * ("now be marcha!"): the next vegetables are the ones to slice, and the
+ * last ones are now decoys; throws get faster.
+ *
+ * Chopping never ends by itself when you reach a number: the round runs
+ * until the ring is empty (each wanted vegetable is thrown a few more
+ * times than asked for). Too many or too few costs the ear star (graded at
+ * the end, so nothing on screen says when to stop); slicing the wrong one:
+ * "Arre re!" and the ear star. Kutchi: which ones, how many, and the switch.
+ *
+ * Params: targets {wordId: count} (zeros are left out), pool (what else
+ * gets thrown), only (keep only targets in this list: the chaat chops what
+ * goes in its bowl), no (vegetables they said no to), tick (tick the order
+ * rows: daal).
+ * Knobs (data.mechanics.chop): phases (1 = all at once; 2+ = that many
+ * rounds with a switch between them, at most one per vegetable), every
+ * (seconds between throws), fasterPerStage / fasterMax (throws come this
+ * fraction sooner per word stage of the vegetables, up to fasterMax),
+ * throwSpeed, gravity, decoys (at least this many decoy kinds in the air),
+ * spare (extra throws of each wanted vegetable per round), lookalikes
+ * {id: [ids]} (always among the decoys), variants {id: {color, near,
+ * chance}} (an onion drawn red when tomatoes are about), size / phoneSize
+ * (piece size, design px; phoneSize on a small screen), sharp (a second
+ * wanted one in one swipe), timer {x, y, r, warn} (the countdown ring on
+ * the board, design px; warn: the last seconds, in amber), special.
  */
 (function (global) {
   const Cook = global.Cook;
@@ -28,6 +40,14 @@
   const D = Cook.D;
   const St = Cook.Stations;
   const Mech = Cook.Mech;
+
+  /** Split the wanted vegetables into n rounds, in the order given (n <= ids). */
+  const splitRounds = (ids, n) => {
+    const out = [];
+    const per = Math.ceil(ids.length / n);
+    for (let i = 0; i < ids.length; i += per) out.push(ids.slice(i, i + per));
+    return out;
+  };
 
   Mech.define("chop", {
     station: "chop",
@@ -40,7 +60,8 @@
         const n = Number(targets[id]) || 0;
         if (n > 0 && (!only || only.includes(id))) want[id] = n;
       });
-      const ids = Object.keys(want);
+      // said in a new order every time (nothing about the order is a cue)
+      const ids = Cook.shuffle(Object.keys(want));
       if (!ids.length) return {};
       ids.forEach((id) => Cook.markSeen(id));
       const hide = St.hideKnown(ctx);
@@ -76,29 +97,68 @@
         return key;
       };
       const [v0, v1] = k.throwSpeed;
-      let phase = null; // {target, bag, thrown, kinds}
-      const bagFor = (target) => {
-        const L = (k.lookalikes || {})[target] || [];
-        const others = ids.filter((x) => x !== target);
-        const rest = Cook.shuffle(pool.filter((x) => x !== target && !L.includes(x) && !others.includes(x)).concat(no.filter((x) => x !== target)));
-        const decoys = [...new Set(L.concat(Cook.shuffle(others), rest))].filter((x) => x !== target && Cook.data.words[x]).slice(0, k.decoys);
-        return [target].concat(decoys);
+      // how long a throw is in the air (up and back below the board), in game seconds
+      const flight = (2 * v1) / k.gravity + 0.3;
+
+      /* ---------- the rounds: what flies, how often, how long ---------- */
+      const rounds = splitRounds(ids, Math.max(1, Math.min(k.phases || 1, ids.length))).map((tg, i) => {
+        // decoys: look-alikes first, then the other vegetables (earlier rounds' ones too), the pool, the "no"s
+        const L = [...new Set(tg.flatMap((t) => (k.lookalikes || {})[t] || []))];
+        const others = ids.filter((x) => !tg.includes(x));
+        const rest = Cook.shuffle(pool.filter((x) => !L.includes(x) && !others.includes(x)).concat(no));
+        const nDecoys = Math.max(k.decoys, tg.length);
+        const decoys = [...new Set(L.concat(Cook.shuffle(others), rest))].filter((x) => !tg.includes(x) && Cook.data.words[x]).slice(0, nDecoys);
+        const kinds = tg.concat(decoys);
+        // every kind once per cycle, so a wanted one never flies more often than a decoy
+        const cycles = Math.max(...tg.map((t) => want[t])) + k.spare;
+        const bag = [];
+        for (let c = 0; c < cycles; c++) bag.push(...Cook.shuffle(kinds.slice()));
+        const stage = Math.min(...tg.map((t) => Cook.wordStage(t)));
+        const every = k.every * (1 - Math.min(k.fasterMax, (stage - 1) * k.fasterPerStage));
+        return { i, targets: tg, kinds, bag, every, secs: bag.length * every + flight };
+      });
+      const total = rounds.reduce((a, r) => a + r.secs, 0);
+      let phase = null; // the round being thrown: {targets, kinds, bag, every, secs}
+
+      /* ---------- the countdown ring (on the board, never over the throws) ---------- */
+      const T = Object.assign({ x: 1490, y: 118, r: 70, warn: 3 }, k.timer || {});
+      const ring = S.track(S.add.graphics().setDepth(D.item + 1));
+      let left = total; // seconds left on the ring
+      let lastTick = Math.ceil(left);
+      const drawRing = () => {
+        const x = z.X(T.x);
+        const y = z.Y(T.y);
+        const r = z.L(T.r);
+        const f = Math.max(0, left / total);
+        const warn = left <= T.warn;
+        ring.clear();
+        ring.fillStyle(0x2a1a10, 0.18).fillCircle(x + z.L(4), y + z.L(6), r + z.L(8));
+        ring.fillStyle(0xfff6e4, 1).fillCircle(x, y, r + z.L(8));
+        ring.lineStyle(z.L(4), 0x7a5230, 1).strokeCircle(x, y, r + z.L(8));
+        if (f > 0) {
+          ring.fillStyle(warn ? 0xe0772e : 0x4f9a3a, 1);
+          ring.slice(x, y, r, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * f), false).fillPath();
+        }
+        // the knob on top, like a kitchen timer
+        ring.fillStyle(0x7a5230, 1).fillRoundedRect(x - z.L(14), y - r - z.L(26), z.L(28), z.L(16), z.L(5));
       };
+      drawRing();
+      const ringScale = (s) => ring.setScale(s).setPosition(z.X(T.x) * (1 - s), z.Y(T.y) * (1 - s));
+
+      /* ---------- throwing ---------- */
       const throwOne = () => {
-        if (!phase.bag.length) phase.bag = Cook.shuffle(phase.kinds.slice());
         const pick = phase.bag.shift();
         let key = texFor(pick);
         const v = (k.variants || {})[pick];
         if (v && phase.kinds.some((x) => (v.near || []).includes(x)) && Math.random() < v.chance) key = variantTex(pick, v.color);
-        const img = S.track(S.add.image(z.X(220 + Math.random() * 1160), z.Y(990), key).setDepth(D.item + 2));
+        const img = S.track(S.add.image(z.X(220 + Math.random() * 1120), z.Y(990), key).setDepth(D.item + 2));
         img.setScale(S.fitScale(key, z.L(size), z.L(size)));
         img.wordId = pick;
         img.phase = phase;
-        img.vx = (z.X(800) - img.x) * (0.25 + Math.random() * 0.3);
+        img.vx = (z.X(760) - img.x) * (0.25 + Math.random() * 0.3);
         // peak around the upper third of the play area
         img.vy = -z.L(v0 + Math.random() * (v1 - v0));
         img.spin = (Math.random() - 0.5) * 5;
-        if (pick === phase.target) phase.thrown++;
         flying.push(img);
       };
       const halves = (img) => {
@@ -112,7 +172,8 @@
       const sliceIt = (img) => {
         img.sliced = true;
         const id = img.wordId;
-        const ok = phase && id === phase.target;
+        // what counts is what Nani is asking for now (after a switch, the last ones are decoys)
+        const ok = !!phase && phase.targets.includes(id);
         if (ok) {
           cut[id] = (cut[id] || 0) + 1;
           // the running tally for this vegetable (said aloud only while the number is being learned)
@@ -150,8 +211,8 @@
             Cook.sfx.whoosh();
             const ok = sliceIt(img);
             if (k.sharp && ok) {
-              // the sharp knife also catches a second one near the first
-              const near = flying.find((o) => o.active && !o.sliced && o.wordId === phase.target && Phaser.Math.Distance.Between(o.x, o.y, cur.x, cur.y) < z.L(220));
+              // the sharp knife also catches a second wanted one near the first
+              const near = flying.find((o) => o.active && !o.sliced && phase.targets.includes(o.wordId) && Phaser.Math.Distance.Between(o.x, o.y, cur.x, cur.y) < z.L(220));
               if (near) sliceIt(near);
             }
           });
@@ -159,17 +220,32 @@
         prev = cur;
       };
       const offs = [z.on("pointermove", move), z.on("pointerup", () => (prev = null))];
-      let throwing = false;
+      let running = false; // the ring runs and vegetables fly (not while Nani gives the first order)
       let spawnT = 0;
+      let roundT = 0;
       let last = performance.now();
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000) * Cook.speed;
         last = now;
-        spawnT -= dt;
-        if (throwing && spawnT <= 0 && flying.filter((f) => f.active).length < k.inAir) {
-          throwOne();
-          spawnT = k.every - Math.min(k.fasterMax, (Cook.wordStage(phase.target) - 1) * k.fasterPerStage);
+        if (running && phase) {
+          roundT += dt;
+          left = Math.max(0, left - dt);
+          spawnT -= dt;
+          if (spawnT <= 0 && phase.bag.length) {
+            throwOne();
+            spawnT += phase.every;
+          }
+          drawRing();
+          const sec = Math.ceil(left);
+          if (sec < lastTick) {
+            lastTick = sec;
+            if (sec < T.warn && sec >= 0) {
+              Cook.sfx.pop();
+              ringScale(1.12);
+              S.tweens.add({ targets: { s: 1.12 }, s: 1, duration: 250, onUpdate: (tw, o) => ringScale(o.s) });
+            }
+          }
         }
         flying.forEach((img) => {
           if (!img.active) return;
@@ -194,10 +270,10 @@
         // for the automated test: a wanted one near the top of its throw (slow there), sliced
         // straight down through where it's heading; and a decoy, for one deliberate mistake
         const inView = (o) => o.active && !o.sliced && o.y < z.Y(760) && o.y > z.Y(120) && Math.abs(o.vy) < z.L(520);
-        const need = phase && (cut[phase.target] || 0) < want[phase.target];
+        const needs = (id) => phase && phase.targets.includes(id) && (cut[id] || 0) < want[id];
         const alone = (o) => !flying.some((x) => x !== o && x.active && !x.sliced && Math.abs(x.x - o.x) < z.L(size * 0.9) && Math.abs(x.y - o.y) < z.L(size * 1.3));
-        const tgt = need ? flying.find((o) => inView(o) && o.wordId === phase.target && alone(o)) : null;
-        const dec = flying.find((o) => o.active && !o.sliced && o.y < z.Y(700) && o.y > z.Y(150) && phase && o.wordId !== phase.target && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
+        const tgt = flying.find((o) => inView(o) && needs(o.wordId) && alone(o));
+        const dec = flying.find((o) => o.active && !o.sliced && o.y < z.Y(700) && o.y > z.Y(150) && phase && !phase.targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
         const ahead = (o) => o.x + o.vx * 0.06 * Cook.speed;
         z.expect(
           tgt
@@ -206,37 +282,35 @@
         );
       });
       S.ghost([[z.X(400), z.Y(450)], [z.X(1200), z.Y(380)]], { duration: 500, delay: z.guided ? 1200 : 6000 });
-      // one vegetable at a time; Nani switches when its round is over
-      for (let i = 0; i < ids.length; i++) {
-        const id = ids[i];
-        const kinds = bagFor(id);
-        phase = { target: id, kinds, bag: [], thrown: 0 };
-        const ph = Lang.phrase(Lang.countParts(want[id], id)); // "hikdo tameto": the number is always said
+      // "only bo dungri. Ne hikdo tameto.": the number is always said
+      const orderLine = (tg, first) =>
+        Lang.join(tg.map((id, j) => Lang.line(j === 0 ? (first ? "only" : "now") : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))));
+      for (const r of rounds) {
+        phase = r;
+        roundT = 0;
         UI.hideCount();
-        throwing = i > 0; // the first round starts once she's said it
-        await z.say(Lang.line(i === 0 ? "only" : "now", ph), { hide }).catch(() => {});
-        throwing = true;
-        spawnT = 0;
-        const need = want[id] + k.spare;
-        const p = phase;
+        if (r.i === 0) {
+          // the ring starts once she's said it; after that, the switch comes while things fly
+          await z.say(orderLine(r.targets, true), { hide }).catch(() => {});
+          running = true;
+          spawnT = 0;
+        } else {
+          z.say(orderLine(r.targets, false), { hide }).catch(() => {});
+        }
+        // the round lasts its share of the ring: its throws, then the air clears
         await new Promise((resolve) => {
           const off = z.tick(() => {
-            if (p.thrown < need) return;
-            if (flying.some((o) => o.active && !o.sliced && o.phase === p && o.wordId === id)) return;
+            if (roundT < r.secs || r.bag.length) return;
+            if (r.i === rounds.length - 1 && flying.some((o) => o.active && !o.sliced)) return;
             off();
             resolve();
           });
         });
       }
-      throwing = false;
+      running = false;
+      left = 0;
+      drawRing();
       z.say(Lang.line("enough"), { ms: 900 }).catch(() => {});
-      await new Promise((resolve) => {
-        const off = z.tick(() => {
-          if (flying.some((o) => o.active && !o.sliced)) return;
-          off();
-          resolve();
-        });
-      });
       stop();
       offs.forEach((f) => f());
       z.expect(null);
@@ -266,10 +340,12 @@
     verb: "Ninja slicing",
     async run(L) {
       const R = Cook.Recipes;
-      let d = R.daal.make();
-      for (let i = 0; i < 20 && !(d.onions && (d.tomatoes || d.chillies)); i++) d = R.daal.make(); // the lab shows a switch
+      // a daal order at the lab's level with at least two vegetables (level 1: all at once; 2-3: a switch)
+      let d = R.daal.make("nana", { level: L.level });
+      const many = (o) => [o.onions, o.tomatoes, o.chillies].filter(Boolean).length >= 2;
+      for (let i = 0; i < 30 && !many(d); i++) d = R.daal.make("nana", { level: L.level });
       L.card(d, ["Chop"]);
-      await L.station("chop", { targets: { "veg-02": d.onions, "veg-03": d.tomatoes, "veg-12": d.chillies }, pool: Cook.data.recipes.daal.lists.veg, tick: true });
+      await L.station("chop", { targets: { "veg-02": d.onions, "veg-03": d.tomatoes, "veg-12": d.chillies }, no: d.onions ? [] : ["veg-02"], pool: Cook.data.recipes.daal.lists.veg, tick: true });
     },
   });
 })(window);

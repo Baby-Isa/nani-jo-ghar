@@ -1673,7 +1673,7 @@
   "chop": {
    "name": "Chop",
    "verb": "Chop",
-   "goal": "Swipe to slice only what Nani says, as many as she says. Listen: she'll switch!"
+   "goal": "Swipe to slice only what Nani says, as many of each as she says, before the ring runs out. Listen: she may switch!"
   },
   "tadka": {
    "name": "Tadka",
@@ -1937,20 +1937,26 @@
   "chop": {
    "levels": [
     {
-     "inAir": 2,
-     "every": 1.15,
-     "fasterPerStage": 0.1,
-     "fasterMax": 0.4,
+     "phases": 1,
+     "every": 0.7,
+     "fasterPerStage": 0.06,
+     "fasterMax": 0.25,
      "throwSpeed": [
       1300,
       1400
      ],
      "gravity": 1250,
-     "decoys": 2,
-     "spare": 3,
+     "decoys": 3,
+     "spare": 2,
      "size": 170,
      "phoneSize": 230,
      "sharp": false,
+     "timer": {
+      "x": 1490,
+      "y": 118,
+      "r": 70,
+      "warn": 3
+     },
      "lookalikes": {
       "veg-03": [
        "veg-02"
@@ -1981,14 +1987,17 @@
      }
     },
     {
-     "inAir": 3,
-     "every": 1.0,
-     "decoys": 3,
-     "spare": 2
+     "phases": 2,
+     "every": 0.6,
+     "throwSpeed": [
+      1330,
+      1450
+     ],
+     "gravity": 1320
     },
     {
-     "inAir": 4,
-     "every": 0.85,
+     "phases": 3,
+     "every": 0.5,
      "decoys": 4,
      "spare": 1,
      "throwSpeed": [
