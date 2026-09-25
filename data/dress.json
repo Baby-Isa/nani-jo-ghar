@@ -1,0 +1,175 @@
+{
+  "_about": "Dress up (mode id dress-up): words, frames, people, levels as data. docs/modes/dress-up-design.md, the deep dive (25 Sept) and section 12. NEVER invent Kutchi: every word here is a placeholder (\"kutchi\": null + English) until the family gives it (Questions for Mum E60-E71, F44-F79). The real words this mode uses (numbers hikdo..panj, vadho/nindho, nar, and the frames Muke {x} khape / Ne {x} / Nar {x} / Muke hikdo {x} dine / Arre re) are REFERENCED by id from data/cook.json, never copied: see `real`.",
+  "real": {
+    "_about": "Ids that live in data/cook.json. The grader counts a row's decision as real Kutchi only when every attribute it checks is one of these.",
+    "numbers": ["num-01", "num-02", "num-03", "num-04", "num-05"],
+    "sizes": {"big": "ph-big", "small": "ph-small"},
+    "no": "ph-no",
+    "lines": {"need": "need", "and": "and", "no": "no", "give": "give", "oops": "oops", "here": "here"}
+  },
+  "words": {
+    "ph-red":      {"kutchi": null, "english": "red",    "kind": "colour", "hex": "#c62828", "salience": 1.0,  "focal": true},
+    "ph-green":    {"kutchi": null, "english": "green",  "kind": "colour", "hex": "#2e7d32", "salience": 0.7,  "focal": true},
+    "ph-white":    {"kutchi": null, "english": "white",  "kind": "colour", "hex": "#f4f1ea", "salience": 0.5,  "focal": true},
+    "ph-blue":     {"kutchi": null, "english": "blue",   "kind": "colour", "hex": "#1e5bb8", "salience": 0.75, "focal": true},
+    "ph-yellow":   {"kutchi": null, "english": "yellow", "kind": "colour", "hex": "#f2c230", "salience": 0.9,  "focal": true},
+    "ph-black":    {"kutchi": null, "english": "black",  "kind": "colour", "hex": "#26221f", "salience": 0.6,  "focal": true},
+    "ph-pink":     {"kutchi": null, "english": "pink",   "kind": "colour", "hex": "#e88bb0", "salience": 0.8,  "neighbours": ["ph-red", "ph-purple"]},
+    "ph-orange":   {"kutchi": null, "english": "orange", "kind": "colour", "hex": "#e8772e", "salience": 0.85, "neighbours": ["ph-red", "ph-yellow"]},
+    "ph-purple":   {"kutchi": null, "english": "purple", "kind": "colour", "hex": "#7b3fa0", "salience": 0.65, "neighbours": ["ph-blue", "ph-pink"]},
+    "ph-gold":     {"kutchi": null, "english": "gold",   "kind": "colour", "hex": "#c9a227", "salience": 0.8,  "metal": true, "neighbours": ["ph-yellow"]},
+    "ph-silver":   {"kutchi": null, "english": "silver", "kind": "colour", "hex": "#b8bcc4", "salience": 0.55, "metal": true, "neighbours": ["ph-white"]},
+
+    "ph-kurta":    {"kutchi": null, "english": "kurta",     "kind": "garment", "slot": "top",   "shape": "kurta"},
+    "ph-kurti":    {"kutchi": null, "english": "kurti",     "kind": "garment", "slot": "top",   "shape": "kurti"},
+    "ph-tshirt":   {"kutchi": null, "english": "T-shirt",   "kind": "garment", "slot": "top",   "shape": "tshirt"},
+    "ph-topi":     {"kutchi": null, "english": "cap",       "kind": "garment", "slot": "head",  "shape": "cap", "note": "topi or kofia: decision 15 / F44"},
+    "ph-scarf":    {"kutchi": null, "english": "headscarf", "kind": "garment", "slot": "head",  "shape": "scarf"},
+    "ph-hat":      {"kutchi": null, "english": "sun hat",   "kind": "garment", "slot": "head",  "shape": "hat"},
+    "ph-dupatta":  {"kutchi": null, "english": "dupatta",   "kind": "garment", "slot": "wrap",  "shape": "dupatta"},
+    "ph-shawl":    {"kutchi": null, "english": "shawl",     "kind": "garment", "slot": "wrap",  "shape": "shawl"},
+    "ph-cardigan": {"kutchi": null, "english": "cardigan",  "kind": "garment", "slot": "wrap",  "shape": "cardigan"},
+    "ph-socks":    {"kutchi": null, "english": "socks",     "kind": "garment", "slot": "feet",  "shape": "socks", "flatOnly": true},
+    "ph-bangle":   {"kutchi": null, "english": "bangles",   "kind": "garment", "slot": "wrist", "shape": "bangle"},
+    "ph-umbrella": {"kutchi": null, "english": "umbrella",  "kind": "garment", "slot": "carry", "shape": "umbrella"},
+
+    "ph-button":   {"kutchi": null, "english": "buttons",  "kind": "thing"},
+    "ph-flower":   {"kutchi": null, "english": "flower",   "kind": "motif", "shape": "flower"},
+    "ph-leaf":     {"kutchi": null, "english": "leaf",     "kind": "motif", "shape": "leaf"},
+    "ph-star":     {"kutchi": null, "english": "star",     "kind": "motif", "shape": "star"},
+    "ph-moon":     {"kutchi": null, "english": "moon",     "kind": "motif", "shape": "moon"},
+    "ph-pocket":   {"kutchi": null, "english": "pocket",   "kind": "part"},
+    "ph-sleeve":   {"kutchi": null, "english": "sleeve",   "kind": "part"},
+    "ph-collar":   {"kutchi": null, "english": "collar",   "kind": "part"},
+    "ph-hem":      {"kutchi": null, "english": "hem",      "kind": "part"},
+    "ph-left":     {"kutchi": null, "english": "left",     "kind": "side"},
+    "ph-right":    {"kutchi": null, "english": "right",    "kind": "side"},
+    "ph-needle":   {"kutchi": null, "english": "needle",   "kind": "tool", "shape": "needle"},
+    "ph-thread":   {"kutchi": null, "english": "thread",   "kind": "tool", "shape": "thread"},
+    "ph-scissors": {"kutchi": null, "english": "scissors", "kind": "tool", "shape": "scissors"},
+    "ph-pin":      {"kutchi": null, "english": "pin",      "kind": "tool", "shape": "pin"},
+
+    "ph-raining":  {"kutchi": null, "english": "it's raining", "kind": "weather", "needs": [["ph-umbrella"]], "forbids": ["ph-hat"]},
+    "ph-cold":     {"kutchi": null, "english": "it's cold",    "kind": "weather", "needs": [["ph-shawl", "ph-cardigan"]], "forbids": ["ph-hat"]},
+    "ph-hot":      {"kutchi": null, "english": "it's hot",     "kind": "weather", "needs": [["ph-hat"]], "forbids": ["ph-shawl", "ph-cardigan"]},
+    "ph-windy":    {"kutchi": null, "english": "it's windy",   "kind": "weather", "needs": [["ph-scarf", "ph-topi"]], "forbids": ["ph-umbrella", "ph-hat"]}
+  },
+  "lines": {
+    "_about": "Only frames with no Kutchi yet (English placeholders, grey italics). Real frames are data/cook.json lines, named in real.lines.",
+    "dress-for": {"e": "For {x}:"},
+    "dress-sew": {"e": "Sew on {x}."},
+    "dress-on": {"e": "on the {x}"},
+    "dress-change": {"e": "Oh, wait!"},
+    "dress-same": {"e": "Hmm… no, the first one."},
+    "dress-howmany": {"e": "How many?"},
+    "dress-lovely": {"e": "Lovely!"},
+    "dress-look": {"e": "How do I look?"}
+  },
+  "grammar": {
+    "_about": "Attribute order inside a row, in the language's order. English placeholder order until the family confirms Kutchi's (adjective before noun, number first, as Muke hikdo {x} dine and bo vadha maani suggest). Tokens: count, size, colour, garment, thing, motif, part, side.",
+    "look": ["colour", "garment"],
+    "buttons": ["count", "size", "thing", "colour"],
+    "motif": ["count", "size", "colour", "motif", "on"],
+    "on": ["side", "part"],
+    "bangles": ["count", "colour"]
+  },
+  "palettes": {
+    "focal": ["ph-red", "ph-green", "ph-white", "ph-blue", "ph-yellow", "ph-black"],
+    "neighbours": ["ph-red", "ph-pink", "ph-orange", "ph-yellow", "ph-blue", "ph-purple", "ph-green", "ph-white"],
+    "bangles": ["ph-red", "ph-green", "ph-blue", "ph-yellow", "ph-gold", "ph-silver"],
+    "bangles-neighbours": ["ph-red", "ph-pink", "ph-orange", "ph-yellow", "ph-gold", "ph-silver", "ph-white", "ph-green"]
+  },
+  "slots": {
+    "upper": ["head", "top", "wrap"],
+    "flat": ["pile"],
+    "all": ["head", "top", "wrap", "wrist", "carry", "feet"]
+  },
+  "people": {
+    "_about": "Cook's customer ids, so for-whom reuses their faces. kinds: what each person may be asked to wear per slot (F44 decides the real list). usual: a colour the bot's 'usual colour' strategy tries (tastes never decide a graded row: leak rule 6).",
+    "nana":   {"name": "Nana", "kinds": {"head": ["ph-topi", "ph-hat"], "top": ["ph-kurta", "ph-tshirt"], "wrap": ["ph-shawl", "ph-cardigan"]}, "usual": "ph-white"},
+    "ma":     {"name": "Ma",   "kinds": {"head": ["ph-scarf", "ph-hat"], "top": ["ph-kurti", "ph-tshirt"], "wrap": ["ph-dupatta", "ph-shawl", "ph-cardigan"]}, "usual": "ph-green"},
+    "cousin": {"name": "Ali",  "kinds": {"head": ["ph-topi", "ph-hat"], "top": ["ph-kurta", "ph-tshirt"], "wrap": ["ph-shawl", "ph-cardigan"]}, "usual": "ph-blue"}
+  },
+  "occasions": {
+    "eid": {"colour": "ph-white", "garments": ["ph-kurta", "ph-topi", "ph-dupatta"]}
+  },
+  "flat_kinds": ["ph-kurta", "ph-kurti", "ph-tshirt", "ph-topi", "ph-scarf", "ph-dupatta", "ph-shawl", "ph-cardigan", "ph-socks"],
+  "tools": ["ph-needle", "ph-thread", "ph-scissors", "ph-pin"],
+  "motifs": ["ph-flower", "ph-leaf", "ph-star", "ph-moon"],
+  "parts": ["ph-pocket", "ph-sleeve", "ph-collar", "ph-hem"],
+  "weather": ["ph-raining", "ph-cold", "ph-hot", "ph-windy"],
+  "kinds": {
+    "K1": {"name": "The fitting", "renderer": "upper", "speaker": "client"},
+    "K2": {"name": "Lay it out", "renderer": "flat", "speaker": "nani"},
+    "K3": {"name": "The table", "renderer": "flat", "speaker": "bigma"},
+    "K4": {"name": "Going out", "renderer": "upper", "speaker": "nani"},
+    "K5": {"name": "Tell them", "renderer": "any", "speaker": "child"}
+  },
+  "budget": {"blindOdds": 0.05, "botPass": 0.10},
+  "games": {
+    "layout": {
+      "id": "G2", "kind": "K2", "name": "Lay it out", "verb": "fetch · wear · check",
+      "goal": "Nani says what each person will wear tomorrow. Put it on their pile on the bed, then press Done.",
+      "levels": [
+        {"people": 1, "rowsEach": [2, 2], "kinds": 3, "colours": 3, "palette": "focal", "check": "live", "change": 0},
+        {"people": 2, "rowsEach": [2, 2], "kinds": 3, "colours": 4, "check": "done", "change": 0.35, "falseAlarm": 0.25},
+        {"people": 3, "rowsEach": [1, 2], "kinds": 4, "colours": 4, "palette": "neighbours", "hideCard": true}
+      ]
+    },
+    "fitting": {
+      "id": "G1", "kind": "K1", "name": "The fitting", "verb": "pick · wear · check · change",
+      "goal": "Listen to what they want to wear. Put it on them from the rail, then press Done.",
+      "levels": [
+        {"rows": 2, "kinds": 2, "colours": 3, "palette": "focal", "check": "live", "no": 0, "change": 0},
+        {"rows": 3, "kinds": 2, "colours": 4, "check": "done", "no": 0.5, "change": 0.35, "falseAlarm": 0.25},
+        {"rows": 3, "kinds": 2, "colours": 4, "palette": "neighbours", "hideCard": true}
+      ]
+    },
+    "table": {
+      "id": "G3", "kind": "K3", "name": "Big Ma's mending", "verb": "count · stitch · pass me",
+      "goal": "Big Ma says what to sew on. Take it from the tin, put it on the kurta, press Done, then stitch it.",
+      "levels": [
+        {"buttons": {"count": [1, 3]}, "sizes": true, "colours": 4, "palette": "focal", "motif": null, "spots": 5, "tools": 3},
+        {"buttons": {"count": [1, 4]}, "motif": {"count": [1, 1], "sizes": false, "motifs": 3, "colours": 3}},
+        {"buttons": null, "motif": {"count": [1, 3], "sizes": true, "motifs": 3, "colours": 4, "sides": true}, "palette": "neighbours"}
+      ]
+    },
+    "bangles": {
+      "id": "G4", "kind": "K1", "name": "Bangles", "verb": "pick · count · say",
+      "goal": "Ma says how many bangles of each colour. Slide them onto her wrist, then press Done.",
+      "levels": [
+        {"rows": 2, "count": [1, 4], "colours": 4, "each": 7, "palette": "bangles", "say": true},
+        {"rows": 3, "count": [1, 5], "colours": 5},
+        {"rows": 3, "count": [1, 5], "colours": 6, "palette": "bangles-neighbours", "hideCard": true}
+      ]
+    },
+    "going-out": {
+      "id": "G5", "kind": "K4", "name": "Going out", "verb": "pick · wear · weather", "phase": 3,
+      "goal": "Nani says what the weather is like. Dress Ali for it, then he steps out.",
+      "levels": [
+        {"rows": 1, "kinds": 2, "colours": 3, "palette": "focal", "carry": ["ph-umbrella", "ph-hat", "ph-shawl", "ph-cardigan", "ph-scarf", "ph-topi"]},
+        {"rows": 2, "colours": 4},
+        {"rows": 2, "colours": 4, "palette": "neighbours", "hideCard": true}
+      ]
+    }
+  },
+  "mechanics": {
+    "_about": "Knobs per mechanic, level 1 first, each later level lists only what changes (Cook's pattern).",
+    "stitch": {"levels": [{"tolerance": 28, "cover": 0.7, "radius": 34}, {"tolerance": 22, "cover": 0.75}, {"tolerance": 18, "cover": 0.8}]},
+    "change": {"levels": [{"afterMs": 1400}]},
+    "say": {"levels": [{"timeoutMs": 4000}]}
+  },
+  "star_sets": {
+    "dress-up": {
+      "ear": {"icon": "ear", "name": "Understood", "tip": "Understood: put on exactly what they asked for"},
+      "hand": {"icon": "hand", "name": "Neat", "tip": "Neat: nothing sent back, stitches tidy"},
+      "relaxed": {"icon": "tick", "name": "No help", "tip": "No help: no hints or replays from the ? button"},
+      "busy": {"icon": "bolt", "name": "Quick", "tip": "Quick"},
+      "voice": {"icon": "speaker", "name": "Said it", "tip": "Said it: said the number aloud (recognised, or a grown-up ticked it)"}
+    },
+    "earPass": "all-rows-first-try",
+    "earNeedsReal": false,
+    "_decision4": "D.9 decision 4 default: the ear star is judged on every row (placeholders treated as hidden Kutchi) in the lab; it is not written to word progress for placeholder words. The voice star for numbers counts from day one."
+  },
+  "coins": {"ear": 3, "hand": 2, "third": 1, "voice": 2}
+}

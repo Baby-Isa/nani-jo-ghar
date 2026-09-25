@@ -1,5 +1,7 @@
 # Nani jo Ghar — Questions for Mum (Round 2: Cooking)
 
+> **Superseded (25 Sept 2026):** merged into `docs/Nani jo Ghar — Questions for Mum (Combined, for the visit).md` (Word copy: `docs/Questions for Mum (combined).docx`). Use that one; this file is kept for history.
+
 *For the cooking game, "Cook with Nani". The family come to Nani's kitchen and ask for food in Kutchi; the player cooks it. Everything below is in English so it's easy to start. Answer in Kutchi wherever you can, or in English and we'll draft the Kutchi for you to check. A voice note is perfect: talk through it like you're telling someone how you cook.*
 
 24 Sept 2026 (Part 6 added 25 Sept 2026)

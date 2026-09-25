@@ -15,7 +15,7 @@
 | **Find it** | Search | Engine being built | Go | Nani's list (+ Check the bag), Where is it?, Which one?, Simba's mischief | Arc 1 bazaar and sweets; lost ring; chicks |
 | **Tidy up** | Arrange | Designed | Go with changes | Put the shopping away, Lay the dastarkhwan, Repack the sweet box, Shoe mountain | Arc 1 Ch1–3 |
 | **Dress up** | Style | Designed | Go with changes | The fitting (+ change of mind), Big Ma's sewing table (mend → make), Dress for the weather | Eid morning, "The spill", the wedding, the monsoon |
-| **Nani's clinic** | Treat | Designed | Go with changes | Where does it hurt?, Care trolley + Gentle hands, Just right (blankets), Who's next? | Arc 3 Ch4 |
+| **The clinic** (the doctor's clinic; was "Nani's clinic") | Treat | Designed; **revised twice on 25 Sept** (Zafar's feedback): the real doctor's clinic, then **visit types** as the backbone (check-up, "I don't know why", the named ailment, bring someone in; you're the patient as the tutorial) and a **treatment library** (bandage with turns and colour, stethoscope, torch, thermometer, plaster, cold and hot packs, blankets; drops at level 3 for left/right). "Is it this, or that?" demoted to the "?" hint. Stitches, needles and the pill organiser rejected (fear, duplication) | Go with changes | The visit engine + The check-up (with the check kit), Where does it hurt?, Care trolley + Gentle hands (plaster, bandage, packs), Just right (blankets), You're the patient, Who's next?, Drops (level 3) | Arc 3 Ch4 (you're the patient first, then his helper: Ali's knee, the hen's mystery, the neighbour's check-up); a Monsoon side errand "bring Ali in" |
 | **Who did it?** | Deduce | Designed | Go with changes | The line-up (sweets), Look closer (magnifier), Nani guesses, Who's at the door? | Arc 1 Ch2–3; Arc 4 the lost ring |
 | **Monsoon rush** | React | Designed | Go with changes | The leak (flagship), Nani's forecast (+ Unpeg it), Cats inside, Into the shed | Arc 3 |
 | **Snap** | Aim and capture | Designed | Go with changes | Snap the moment, Show Nani and the album, Just so many, The journey, Which one? | Arc 5 (the album is seeded from Arc 1) |
@@ -27,7 +27,7 @@
 - Who did it?: Nani's glasses
 - Monsoon rush: umbrella
 - Snap: lens iris
-- Clinic: to be decided
+- Clinic: a sticking plaster with a small star (proposed in the clinic design)
 
 ## What all six designs agree on
 
@@ -37,7 +37,8 @@
    - **Describing:** big/small (drafted: vadho/nindho), old/young, dark/light.
    - **Kinship titles.**
    - **Yes/no.**
-   - **Body parts and "it hurts".**
+   - **Body parts, "it hurts", and the doctor's instructions** ("check the knee", "listen to the chest", "a bandage, round twice", "two drops in the left eye": the clinic's backbone). "Or" stays, small (the "?" hint).
+
    - **Weather:** rain, sun, wind, cloud.
    - **Clothes.**
    - **Rooms.**
@@ -56,7 +57,7 @@
    Build those slices first.
 4. **New art types to test small before any art run:**
    - full-body "paper-doll" dressing (Dress up);
-   - seated patients (clinic);
+   - seated patients and a first-person "lap view" of the player's own knees (clinic);
    - scenery strips (Snap);
    - the courtyard shared by Find it and Monsoon rush.
 
@@ -65,7 +66,7 @@
 1. **Tidy up.** Its words overlap with Find it's, it shares the relations engine, and it follows the bazaar in Arc 1.
 2. **Who did it?** It serves Arc 1 Ch2–3, and Arc 4 later.
 3. **Dress up.** Eid morning and Big Ma's room, closing Arc 1.
-4. **Monsoon rush** and **Nani's clinic.** Both belong to Arc 3.
+4. **Monsoon rush** and **The clinic.** Both belong to Arc 3.
 5. **Snap.** Arc 5.
 
 ## Decisions for Zafar (merged from all six designs; duplicates removed)
@@ -73,7 +74,7 @@
 **Story and cast**
 1. Can Nana, Nani or baby Isa be culprits in Who did it? Can Kasuku be a silent suspect?
 2. Is a goat in the kitchen OK as a Monsoon rush joke? May Big Ma's song play during the leak?
-3. What do the children call the doctor? Should the player be the doctor's helper? Where does a vet corner (for the cats) go?
+3. **The clinic (revised twice, 25 Sept):** what do the children call the doctor (the mode's display name)? Does he record his own lines, or does Mum voice him? Does his real clinic's look inform the room? The opening as the patient: a scuffed knee from the puddle, or the sniffles? Where does the vet corner (for the cats) go: at his clinic, or at home with his blessing? **New from Revision 2:** is the check-up (the doctor calling each part) right as about half of level 1? Does the child ever give medicine (recommended: fetch it by colour, count and shelf; the doctor gives it)? The pill organiser: dropped, or a Tidy up board for 8+? Sides: the patient's own left, or the viewer's (and does the family say left/right at all: A5)? *(Settled: it's the doctor's clinic; the player is his patient for a minute, then his helper; stitches, needles and the pill organiser are out of the clinic.)*
 4. Should old photos in Snap include young Nani? Instant camera or phone? Which vehicle for the journey, and does Kasuku come along?
 5. Should Who's at the door become a new errand in Arc 1 Ch2? Should the photo wall hold the family's real relatives, recorded by a parent?
 6. Which sweets go in Nani's sweet box (Tidy up and Find it)?
@@ -92,4 +93,5 @@
 15. Family clothing words: *topi* or *kofia*? What does the family really wear?
 16. Rooms in Nani's house (for Monsoon rush and Find it)?
 17. Clinic: is a "sad" or "scared" feeling OK to include (always resolved gently)?
+19. ~~Clinic: the doctor's "Is it this, or that?" questions make level 1 a two-way choice; count level 1 for the ear star?~~ **Moot after Revision 2:** the question is only a "?" hint now; level 1 is the check-up (under 0.1% for a blind bot) and "You're the patient" is never graded.
 18. Who did it? for ages 8+: a "Prove it" step (tap the clue that ruled a suspect out). Right, or too school-like?

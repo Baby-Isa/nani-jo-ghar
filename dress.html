@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>Dress up with Nani</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/cook.css">
+<link rel="stylesheet" href="css/dress.css">
+</head>
+<body class="dress">
+
+<div id="rotate">
+  <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to play Dress up</p></div>
+</div>
+
+<div id="app">
+  <main id="stage">
+    <!-- the scene: one 1600x900 SVG world (js/dress/doll.js draws it); nothing in HTML sits over it except the intro card, before play starts -->
+    <svg id="world" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" aria-label="Big Ma's room">
+      <defs><filter id="grey"><feColorMatrix type="saturate" values="0.06"/><feComponentTransfer><feFuncR type="linear" slope=".92" intercept=".06"/><feFuncG type="linear" slope=".92" intercept=".06"/><feFuncB type="linear" slope=".92" intercept=".06"/></feComponentTransfer></filter></defs>
+      <g id="scene"></g>
+      <g id="fx"></g>
+    </svg>
+    <!-- the intro card: the instruction big in the middle; nothing is live until "Tap to start" -->
+    <div id="intro" class="hidden" role="dialog" aria-label="What they want">
+      <div class="ic-card">
+        <div class="ic-head"><span class="ic-face"></span><div class="ic-name"></div></div>
+        <div class="ic-order"></div>
+        <button class="ic-go" type="button">Tap to start</button>
+      </div>
+    </div>
+    <!-- shared with Cook (js/cook/ui.js expects them); Dress up doesn't use them in phase 1 -->
+    <div id="bubble" class="hidden"><div class="say-slot"></div></div>
+    <div id="gist" class="hidden"></div>
+    <div id="choices" class="hidden"></div>
+    <div id="count-badge" class="hidden"><span class="count-digit"></span></div>
+    <button id="done-btn" class="hidden" aria-label="Done">&#10003;</button>
+    <div id="toast" class="hidden"></div>
+  </main>
+
+  <aside id="side">
+    <div class="side-top">
+      <span class="pill coins" title="Pocket money"><i class="coin-dot"></i><b id="coins">0</b></span>
+    </div>
+    <div id="lab-strip" class="hidden"></div>
+    <!-- the card: one row per thing they said, and the stars as they happen -->
+    <div id="mission" class="card hidden">
+      <div class="m-head"><span class="d-face"></span><div class="m-who"><div class="m-name"></div><div class="m-stars"></div></div></div>
+      <div class="m-order"></div>
+    </div>
+    <button id="dress-done" class="btn primary hidden" type="button">Done &#10003;</button>
+    <!-- who's talking now (one line; never over the play area) -->
+    <div id="live">
+      <div id="say-card" class="card hidden" role="status" aria-live="polite"><span class="sc-face"></span><div class="say-slot"></div></div>
+    </div>
+    <!-- a moment of its own: Big Ma's "pass me", "say how many" -->
+    <div id="moment" class="card hidden"></div>
+    <div class="side-rail">
+      <button id="btn-help" class="rail-btn" title="Hear it again (costs the no-help star)" aria-label="Hear it again">?</button>
+      <button id="btn-home" class="rail-btn" title="Dress lab" aria-label="Dress lab">&#8962;</button>
+    </div>
+  </aside>
+  <div id="help-pop" class="hidden"><div class="hp-text"></div></div>
+  <div id="passme" class="hidden"></div>
+</div>
+
+<div id="overlay" class="hidden"><div id="panel"></div></div>
+
+<!-- shared with Cook with Nani: data, save, word progress, voice, word pills (read, never edited) -->
+<script src="js/cook/core.js"></script>
+<script src="js/cook/lang.js"></script>
+<script src="js/cook/ui.js"></script>
+<!-- the shared recogniser (foundation-owned) -->
+<script src="js/shared/speech.js"></script>
+<!-- Dress up: pure logic (also runs in Node: build/leak_dress.mjs) -->
+<script src="js/dress/stubs/pick.js"></script>
+<script src="js/dress/look.js"></script>
+<script src="js/dress/rack.js"></script>
+<script src="js/dress/grade.js"></script>
+<!-- Dress up: the page -->
+<script src="js/dress/core.js"></script>
+<script src="js/dress/doll.js"></script>
+<script src="js/dress/mechanics/wear.js"></script>
+<script src="js/dress/mechanics/check.js"></script>
+<script src="js/dress/mechanics/change.js"></script>
+<script src="js/dress/mechanics/count.js"></script>
+<script src="js/dress/mechanics/stitch.js"></script>
+<script src="js/dress/mechanics/passme.js"></script>
+<script src="js/dress/mechanics/say.js"></script>
+<script src="js/dress/games/layout.js"></script>
+<script src="js/dress/games/fitting.js"></script>
+<script src="js/dress/games/table.js"></script>
+<script src="js/dress/games/bangles.js"></script>
+<script src="js/dress/bot.js"></script>
+<script src="js/dress/flow.js"></script>
+<script>Dress.boot().catch((e) => { console.error(e); document.body.insertAdjacentHTML("beforeend", `<pre style="position:fixed;bottom:0;left:0;background:#fff;color:#b00;z-index:999">${e.message}</pre>`); });</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+{
+  "_about": "Tidy up (docs/modes/tidy-up-design.md, deep dive D.1-D.9 and section 12). One engine: a round is {board, start, rows, speaker}; rows are rules (place, count, leave, class, not, order) graded rule by rule at Done (or live at level 1). Levels list only what changes (Cook's shape). Every word without Kutchi is kutchi: null and shows as a grey English placeholder: no Kutchi is invented. Fruit, veg and spice nouns and numbers come from data/content.json (words.from_content).",
+
+  "words": {
+    "_about": "Placeholders: kutchi null until the family gives the word (Questions for Mum ids in `ask`). The shop nouns are borrowed from data/content.json, never copied here.",
+    "from_content": ["fru-01", "fru-02", "fru-03", "fru-04", "fru-05", "fru-06", "fru-07", "fru-08", "fru-09", "fru-10", "fru-11", "fru-12", "fru-13", "fru-14", "fru-15", "fru-16", "veg-01", "veg-02", "veg-03", "veg-04", "veg-05", "veg-06", "veg-07", "veg-08", "veg-09", "veg-10", "veg-11", "veg-12", "veg-13", "veg-14", "veg-15", "veg-16", "spi-01", "spi-02", "spi-03", "spi-04", "spi-05", "spi-06", "spi-07", "spi-08", "spi-09", "spi-10", "spi-11", "spi-12", "spi-13", "spi-14", "spi-15", "spi-16", "num-01", "num-02", "num-03", "num-04", "num-05", "num-06"],
+    "numbers": {"1": "num-01", "2": "num-02", "3": "num-03", "4": "num-04", "5": "num-05", "6": "num-06"},
+    "placeholders": {
+      "ph-t-bowl": {"kutchi": null, "english": "the bowl", "ask": "E19"},
+      "ph-t-basket": {"kutchi": null, "english": "the basket", "ask": "E31"},
+      "ph-t-box": {"kutchi": null, "english": "the box", "ask": "E30"},
+      "ph-t-topshelf": {"kutchi": null, "english": "the top shelf", "ask": "E6"},
+      "ph-t-bottomshelf": {"kutchi": null, "english": "the bottom shelf", "ask": "E7"},
+      "ph-t-toprow": {"kutchi": null, "english": "the top row", "ask": "E6"},
+      "ph-t-middlerow": {"kutchi": null, "english": "the middle row", "ask": "E4"},
+      "ph-t-bottomrow": {"kutchi": null, "english": "the bottom row", "ask": "E7"},
+      "ph-t-corners": {"kutchi": null, "english": "the corners", "ask": "E5"},
+      "ph-t-tray": {"kutchi": null, "english": "the tray", "ask": "E24"},
+      "ph-t-shelf": {"kutchi": null, "english": "the shelf", "ask": "E44"},
+
+      "ph-rel-in": {"kutchi": null, "english": "in", "ask": "A5"},
+      "ph-rel-on": {"kutchi": null, "english": "on", "ask": "A5"},
+      "ph-rel-nextto": {"kutchi": null, "english": "next to", "ask": "A5"},
+      "ph-rel-front": {"kutchi": null, "english": "in front of", "ask": "A5"},
+      "ph-rel-middle": {"kutchi": null, "english": "in the middle", "ask": "E4"},
+      "ph-rel-back": {"kutchi": null, "english": "at the back", "ask": "E10"},
+      "ph-rel-atfront": {"kutchi": null, "english": "at the front", "ask": "E11"},
+      "ph-rel-left": {"kutchi": null, "english": "on the left", "ask": "E12"},
+      "ph-rel-right": {"kutchi": null, "english": "on the right", "ask": "E13"},
+
+      "ph-plate": {"kutchi": null, "english": "plate", "ask": "E16", "shape": "plate", "stack": true},
+      "ph-cup": {"kutchi": null, "english": "cup", "ask": "E17", "shape": "cup"},
+      "ph-glass": {"kutchi": null, "english": "glass", "ask": "E18", "shape": "glass"},
+      "ph-jug": {"kutchi": null, "english": "jug", "ask": "E20", "shape": "jug"},
+      "ph-katori": {"kutchi": null, "english": "katori", "ask": "E21", "shape": "katori", "stack": true},
+      "ph-spoon": {"kutchi": null, "english": "spoon", "ask": "E22", "shape": "spoon"},
+      "ph-flask": {"kutchi": null, "english": "flask", "ask": "E23", "shape": "flask"},
+
+      "ph-p-nana": {"kutchi": null, "english": "Nana", "ask": "Q10", "face": "assets/cook/characters/nana-badge.webp"},
+      "ph-p-ma": {"kutchi": null, "english": "Ma", "ask": "Q10", "face": "assets/cook/characters/ma-badge.webp"},
+      "ph-p-ali": {"kutchi": null, "english": "Ali", "ask": "Q10", "face": "assets/cook/characters/cousin-badge.webp"},
+      "ph-p-bigma": {"kutchi": null, "english": "Big Ma", "ask": "Q10", "face": null},
+
+      "ph-col-red": {"kutchi": null, "english": "red", "ask": "E60", "hex": "#c8483c"},
+      "ph-col-blue": {"kutchi": null, "english": "blue", "ask": "E61", "hex": "#3e6fb0"},
+      "ph-col-green": {"kutchi": null, "english": "green", "ask": "E62", "hex": "#4c9a57"},
+
+      "ph-all": {"kutchi": null, "english": "all the", "ask": "E81"},
+      "ph-nothing": {"kutchi": null, "english": "nothing", "ask": "E82"},
+      "ph-leave": {"kutchi": null, "english": "leave the", "ask": "E73"},
+      "ph-c-fruit": {"kutchi": null, "english": "fruit", "ask": "E81"},
+      "ph-c-veg": {"kutchi": null, "english": "vegetables", "ask": "E81"},
+      "ph-c-spice": {"kutchi": null, "english": "spices", "ask": "E81"},
+      "ph-c-tableware": {"kutchi": null, "english": "dishes", "ask": "E81"}
+    }
+  },
+
+  "kinds": {
+    "_about": "Which class a word belongs to (class rows, the convention layouts). By id prefix, then by list.",
+    "prefix": {"fru-": "fruit", "veg-": "veg", "spi-": "spice"},
+    "list": {"tableware": ["ph-plate", "ph-cup", "ph-glass", "ph-jug", "ph-katori", "ph-spoon", "ph-flask"]},
+    "classWord": {"fruit": "ph-c-fruit", "veg": "ph-c-veg", "spice": "ph-c-spice", "tableware": "ph-c-tableware"}
+  },
+
+  "relations": {
+    "_about": "Same-API stand-in for data/relations.json (the foundation owns it). word: the placeholder said for the relation; unary: needs no anchor; derived: checked from the neighbour graph at check time; frame player: the player's own left/right.",
+    "in": {"word": "ph-rel-in"},
+    "on": {"word": "ph-rel-on"},
+    "next-to": {"word": "ph-rel-nextto", "derived": "adjacent"},
+    "in-front": {"word": "ph-rel-front"},
+    "middle": {"word": "ph-rel-middle", "unary": true},
+    "back": {"word": "ph-rel-back", "unary": true},
+    "front": {"word": "ph-rel-atfront", "unary": true},
+    "left": {"word": "ph-rel-left", "unary": true, "frame": "player"},
+    "right": {"word": "ph-rel-right", "unary": true, "frame": "player"}
+  },
+
+  "lines": {
+    "_about": "Frames (English placeholders unless Kutchi exists in data/cook.json lines). Row frames are in grammar.rows.",
+    "whatsthis": {"e": "What's this?", "ask": "A8.4"},
+    "whichone": {"e": "Which one?", "ask": "A8.6"},
+    "putback": {"e": "Put it back.", "ask": "E75"},
+    "nearly": {"e": "Nearly!", "ask": "E80"},
+    "mess": {"e": "What a mess!", "ask": "E83"},
+    "tidyup": {"e": "Tidy up!", "ask": "E74"},
+    "itis": {"e": "It's {x}.", "ask": "none: the recast's 'what it is'"},
+    "yousaid": {"e": "You said {x}.", "ask": "A7"},
+    "shoo": {"e": "Shoo, Simba!"}
+  },
+
+  "grammar": {
+    "_about": "Positions follow the noun (Roadmap syllabus). Slots: n (a number word), attr (a colour), x (the item), anchor (an object, a person or a placed item), rel (the relation word), all/nothing/leave (words below). Code only fills slots; another language swaps this block.",
+    "rows": {
+      "place": "{attr} {x} {anchor} {rel}",
+      "unary": "{attr} {x} {rel}",
+      "count": "{n} {x} {anchor} {rel}",
+      "countUnary": "{n} {x} {rel}",
+      "leave": "{leave} {attr} {x}",
+      "class": "{all} {class} {anchor} {rel}",
+      "not": "{nothing} {anchor} {rel}",
+      "notUnary": "{nothing} {rel}"
+    },
+    "words": {"all": "ph-all", "nothing": "ph-nothing", "leave": "ph-leave"}
+  },
+
+  "mechanics": {
+    "_about": "Knobs per mechanic (levels list only what changes). Read by js/tidy/mechanics/*.js; code has no tuning constants.",
+    "place": {"levels": [
+      {"dotsWhileHolding": true, "dotRadius": 22, "dragThreshold": 10, "liftScale": 1.12},
+      {},
+      {}
+    ]},
+    "pack": {"levels": [
+      {"cap": 3, "tally": true},
+      {},
+      {}
+    ]},
+    "check": {"levels": [
+      {"live": true, "hopMs": 420, "wiggleMs": 520, "sayGapMs": 350, "whatsThis": true, "whatsThisPills": 3},
+      {"live": false, "whatsThis": false},
+      {}
+    ]},
+    "stack": {"levels": [
+      {"tolerance": 26, "max": 3},
+      {"tolerance": 20},
+      {"tolerance": 16}
+    ]},
+    "paw": {"levels": [
+      {"chance": 0, "knock": [2, 3], "warnMs": 900, "stripW": 420},
+      {"chance": 0.4},
+      {"chance": 0.5}
+    ]},
+    "tell": {"levels": [
+      {"slots": ["noun"], "timeoutMs": 4000, "confidence": 0.5},
+      {"slots": ["count", "noun"]},
+      {"slots": ["noun", "place"]}
+    ]},
+    "passme": {"levels": [
+      {"afterMs": 12000},
+      {},
+      {}
+    ]},
+    "clock": {"levels": [
+      {"msPerRow": 20000},
+      {"msPerRow": 18000},
+      {"msPerRow": 16000}
+    ]},
+    "fetch": {"levels": [
+      {"lookalikes": 2},
+      {},
+      {"lookalikes": 3}
+    ]}
+  },
+
+  "games": {
+    "_about": "The first set (D.5). Each game: its boards (a scene sidecar + a board in it), the item pool, and levels (only what changes). kinds: the kinds of round allowed at that level (D.1): K1 put it there, K2 put it right, K3 pack it, K4 Nani's rules, K5 Ali's turn (T4 flips any of these).",
+    "putaway": {
+      "name": "Put it away", "code": "T1",
+      "boards": {"shelves": {"scene": "kitchen-tidy", "board": "shelves", "pool": ["fruit", "veg", "spice"]},
+                 "dabba": {"scene": "worktop-tidy", "board": "dabba", "pool": ["spice"], "minLevel": 2,
+                   "_minLevel": "from level 2: at level 1 the tin has only three places (middle, back, front), so a row can't have 3 options (G5); level 2 adds left and right",
+                   "_levels": "a tin of seven katoris, one spice each: fewer rows, no counts, no class rows (it's all spices); levels list only what changes from the game's",
+                   "levels": [{"rows": [2, 3]}, {"rows": [3, 3], "countRows": 0, "kinds": ["K1", "K2", "K5"]}, {"rows": [3, 4], "classRows": 0, "notRows": 1, "nextTo": 0, "kinds": ["K1", "K2", "K4", "K5"]}],
+                   "_nextTo": "no next-to rows in the tin: every katori touches the middle one, so a blind drop would satisfy 1 in 2 (under G5's 1 in 3). Next-to lives on the shelves and the cloth."}},
+      "defaultBoard": "shelves",
+      "levels": [
+        {"kinds": ["K1", "K5"], "rows": [2, 3], "extras": 1, "leave": 0, "countRows": 0, "count": [2, 2], "colours": false, "nextTo": 0, "classRows": 0, "notRows": 0, "liveCheck": true, "paw": false, "fetch": false, "passme": false},
+        {"kinds": ["K1", "K2", "K3", "K5"], "rows": [3, 4], "extras": 2, "leave": 1, "countRows": 1, "count": [2, 3], "liveCheck": false, "paw": true, "passme": true},
+        {"kinds": ["K1", "K2", "K3", "K4", "K5"], "rows": [4, 5], "nextTo": 1, "classRows": 1}
+      ]
+    },
+    "dastarkhwan": {
+      "name": "Lay the dastarkhwan", "code": "T2",
+      "boards": {"cloth": {"scene": "sitting-room-tidy", "board": "cloth", "pool": ["tableware"]}},
+      "defaultBoard": "cloth",
+      "people": ["ph-p-nana", "ph-p-ma", "ph-p-ali", "ph-p-bigma"],
+      "colours": ["ph-col-red", "ph-col-blue", "ph-col-green"],
+      "colourable": ["ph-cup", "ph-glass", "ph-plate"],
+      "levels": [
+        {"kinds": ["K1", "K5"], "rows": [2, 3], "people": 3, "extras": 2, "leave": 0, "countRows": 0, "count": [2, 2], "colours": false, "nextTo": 0, "classRows": 0, "notRows": 0, "liveCheck": true, "paw": false, "fetch": false},
+        {"kinds": ["K1", "K2", "K5"], "rows": [3, 4], "colours": true, "leave": 1, "liveCheck": false, "paw": true},
+        {"kinds": ["K1", "K2", "K4", "K5"], "rows": [4, 5], "people": 4, "nextTo": 1, "notRows": 1, "fetch": true}
+      ]
+    },
+    "box": {
+      "name": "The fruit box", "code": "T3",
+      "boards": {"fruit-box": {"scene": "worktop-tidy", "board": "fruit-box", "pool": ["fruit"]}},
+      "defaultBoard": "fruit-box",
+      "levels": [
+        {"kinds": ["K3", "K5"], "rows": [2, 2], "plateKinds": 4, "perKind": 4, "countRows": 2, "count": [1, 3], "leave": 0, "extras": 0, "nextTo": 0, "classRows": 0, "notRows": 0, "liveCheck": true, "paw": false},
+        {"kinds": ["K3", "K2", "K5"], "rows": [3, 3], "countRows": 3, "liveCheck": false, "paw": true},
+        {"kinds": ["K3", "K2", "K4", "K5"], "rows": [3, 4], "countRows": 3, "notRows": 1, "plateKinds": 5}
+      ]
+    },
+    "ali": {
+      "name": "Ali's turn", "code": "T4",
+      "flips": ["putaway", "dastarkhwan", "box"],
+      "_about": "Any of the three, played backwards (kind K5): the card shows the finished layout; the child says each instruction; Ali acts on what he heard (js/tidy/mechanics/tell.js)."
+    }
+  },
+
+  "lookalikes": {
+    "_about": "Pass me (Cook's rule): three pictures from ONE group, a known word not on this board.",
+    "groups": [["fru-04", "fru-02", "fru-13", "fru-05"], ["fru-01", "fru-06", "fru-08"], ["veg-02", "veg-13", "veg-03"], ["veg-11", "veg-16", "veg-08"], ["spi-01", "spi-04", "spi-07"], ["spi-02", "spi-13", "spi-03"]]
+  },
+
+  "star_sets": {
+    "tidy": {
+      "ear": {"icon": "ear", "name": "Understood", "tip": "Understood: every rule held at the first check"},
+      "hand": {"icon": "broom", "name": "Neat", "tip": "Neat: stacks straight, nothing hanging off, Simba shooed"},
+      "relaxed": {"icon": "tick", "name": "No help", "tip": "No help: no hints, reveals or translations"},
+      "busy": {"icon": "bolt", "name": "Quick", "tip": "Quick: done before the doorbell"},
+      "voice": {"icon": "mic", "name": "Said it", "tip": "Said it: Ali understood you (needs 2 said rows)"},
+      "earPass": 1.0, "minTested": 2, "voiceTested": 2
+    }
+  }
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nani jo Ghar: game labs</title>
+<style>
+  :root { --bg: #fbf5ec; --ink: #3b2a20; --muted: #7a6558; --card: #fff; --line: #e6d6c3; --accent: #8a4b2a; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { color: var(--accent); margin: 0 0 4px; font-size: 1.7rem; }
+  p.lead { color: var(--muted); margin: 0 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: inherit; }
+  a.card:hover { border-color: var(--accent); }
+  a.card b { display: block; color: var(--accent); font-size: 1.1rem; margin-bottom: 2px; }
+  a.card span { color: var(--muted); font-size: .92rem; }
+  h2 { font-size: 1.05rem; margin: 28px 0 10px; }
+  .note { font-size: .9rem; color: var(--muted); margin-top: 28px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Game labs</h1>
+  <p class="lead">Grey-box versions of the new modes, for trying the mechanics. Every lab has level and game pickers at the top. Words are mostly English placeholders until the family's recordings go in.</p>
+
+  <h2>Live games</h2>
+  <div class="grid">
+    <a class="card" href="cook.html"><b>Cook with Nani</b><span>The main game (calm UI, batch 1 art).</span></a>
+    <a class="card" href="find.html"><b>Find it</b><span>Nani's list + Check the bag.</span></a>
+  </div>
+
+  <h2>New modes (labs)</h2>
+  <div class="grid">
+    <a class="card" href="monsoon.html"><b>Monsoon rush</b><span>Kitchen leak, drip count, You call it (speaking). Drizzle and Busy.</span></a>
+    <a class="card" href="who.html?lab=1"><b>Who did it?</b><span>Look closer, Who ate this one?, Keep who fits, Tell Ali.</span></a>
+    <a class="card" href="tidy.html"><b>Tidy up</b><span>Put it away, the dastarkhwan, the fruit box, Ali's turn.</span></a>
+    <a class="card" href="dress.html"><b>Dress up</b><span>Lay it out, the fitting, Big Ma's mending, bangles.</span></a>
+    <a class="card" href="clinic.html"><b>The clinic</b><span>Check-up, mystery, named ailment, you're the patient, treatments, handover.</span></a>
+    <a class="card" href="snap.html?lab=1"><b>Snap</b><span>Just so many, The big one, Show Nani, Ali's camera.</span></a>
+  </div>
+
+  <h2>Behind the scenes</h2>
+  <div class="grid">
+    <a class="card" href="lab/shared.html"><b>Shared pieces</b><span>Speech, the "which one?" chooser, relations, stars, overlays.</span></a>
+  </div>
+
+  <p class="note">Speaking moments ask for the microphone; if you say no, word pills appear instead. Nothing you say leaves the device.</p>
+</main>
+</body>
+</html>

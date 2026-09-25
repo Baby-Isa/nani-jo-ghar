@@ -6,6 +6,159 @@
 
 ---
 
+## Deep dive, 25 Sept 2026: mini-games and mechanics
+
+**What this is.** The mode rebuilt to the shape of `docs/modes/DEEP-DIVE-BRIEF.md`: a set of mini-games (the way Cook is a set of stations), each on modular mechanics with levels and rounds as data, with speaking as a core part, built in isolation first. **It supersedes sections 3, 4, 8.2 and 12 below where they conflict**; the guards G1–G8, the data model (8.1), the hint ladder, fading, recasts, stars and the art list stand. It also answers `docs/modes/REVIEW-2026-09-25.md` (D.7) and Zafar's note on the pill organiser (T6).
+
+### D.1 Pitch and the kinds of round
+
+**Pitch.** Nani's house is always about to receive someone, and Tidy up is where the child makes a place right by doing exactly what Nani says: *santra in the bowl, the cup in front of Nana, three jalebi in the top row.* A layout is graded against her rules, not against one answer, so there are many right tables and no right table without the Kutchi.
+
+**The backbone is the kind of round, not the board.** One engine: a round is `{board, startState, rows, speaker}`; rows are rules (`place`, `count`, `class`, `not`, `order`, `leave`); the player arranges; the check grades rule by rule. The kinds differ in who speaks, what's already on the board, and what a row carries.
+
+| Kind | What happens (60–120 s) | Who speaks | What the Kutchi decides | Blind guess, level 1 | Where it lives |
+|---|---|---|---|---|---|
+| **K0 Nani shows you** | Her hand sets a neutral token by a *non-target* anchor as she says the relation; then one row for you. Teaching, never graded | Nani | — | — | Any stage-1 word; the first minute of a new board |
+| **K1 Put it there** | A tray of items (targets + extras); Nani's rows; you place; *Done*; she checks row by row and recasts the first wrong one | Nani | Which item, where, how many, which colour | 3 rows × ≥4 places: **≈1.5%** | Every mini-game; every morning |
+| **K2 Put it right** | The board is half laid and half wrong (Simba, the guests, a search). Nani says what should be true. Right items must be *left* (*[EN: leave that one]*); wrong ones moved | Nani | Which to move, which to leave, where to | Half the placed items wrong, random which: ≈(1/2)⁴ × places | Level 2+; Arc 1 Ch3 after the cat; Arc 4 (with *[EN: it was on …]*) |
+| **K3 Pack it** | Counted items into cells (a box, a tin, a week) | Nani | How many of which, into which cell | 1/3 count × 1/3 kind × 1/3 cell a row: **≈4% a row** | The box; the week (D.2) |
+| **K4 Nani's rules** | Two or three rules over sets replace item rows: *[EN: all the fruit] in the basket; [EN: nothing] next to the door* | Nani | The class word, the negative, the order | — | Level 3+ (Zayn's, Maryam's, Zafar's) |
+| **K5 Ali's turn** | You see the finished picture on Nani's card; Ali can't. **You say** each instruction; Ali does it, wrong if you were unclear; Nani's check catches it | **You** | The words you say | 0 (pills fallback: 1 in 4 a row) | Level 1 on any board; the voice star (D.4) |
+
+Why these six: K1 and K2 are one engine with a start state; K3 is K1 with a count slot and cells; K4 is K1 with rule rows; K5 is any of them backwards. A **tidy morning** is 2–3 rounds mixed by kind, drawn from the player's weakest words.
+
+**Rules that keep K2 honest** (new; the Sceptic's "everything she names is wrong" strategy): the rows cover items that are already right as well as wrong ones; the wrong half is chosen at random; nothing already placed wiggles, glows or sits crooked; a *leave* row looks like any other row.
+
+### D.2 The mini-game library
+
+Scored 1–5. **Fun 5 / Fun 11** are fit for a 5- and an 11-year-old; **Kutchi** is how much of the round's decision the words carry (5 = every slot); **Build** 5 = cheap (existing scene, art and Cook code). Each mini-game is a board with its own levels, playable alone from the lab or the map, or dropped into a story errand.
+
+| # | Mini-game | Boards / skins | How it plays | Fun 5 | Fun 11 | Kutchi | Distinct | Build | Mechanics | Decision |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **T1** | **Put it away** | The kitchen shelves (E view); the **masala dabba** (the round spice tin, T view: *hardar in the middle, khun next to the loon*); the fridge (later) | The shopping tray; nouns to shelves, the bowl, the tin's katoris. Kinds K1, K2, K5 | 3 | 3 | **5** today for the noun (fruit, veg, spices are real Kutchi); the anchor half is English until E6–E7, E44 | 3 (Find it asks the list back; Tidy up files it) | **5** | place, count, passme, tell | **First set, first**: the engine proof |
+| **T2** | **Lay the dastarkhwan** | The sitting-room cloth (H view), guests on cushions + a spare; Eid breakfast (Busy) | Tableware to people and anchors; level 3 **fetch and lay** (two zones: shelf → cloth, Cook's `out`/`in` routing). Kinds K0–K5 | **5** | 4 | **5** | **5** (a layout for people) | 3 (H-angle tableware art) | place, stack, fetch, passme, paw, which-one, tell | **First set** |
+| **T3** | **The box** | The **fruit box for the guests** (fruit nouns + counts, real today); the sweet box (E59); Big Ma's reel tin (colours) | Counted kinds into cells with a lid and ribbon at the end. Kinds K3, K2 (Simba knocked it), K5 | 4 | 4 | **5** (three slots a row) | 4 (counting *into positions*) | 4 | pack, count, place, paw | **First set** |
+| **T4** | **Ali's turn** | T1, T2 or T3 flipped: the card shows the finished layout; Ali holds the tray | The speaking round (K5): say the noun, Ali fetches it; say the place (level 3), Ali puts it. Nani checks | 4 | 4 | **5** (production) | **5** (the only production-first arrange) | 3 (needs `speech.js` and the shared pill builder) | tell, say, place | **First set**: the voice star |
+| **T5** | **Shoe mountain** | The doorway floor (T; scene `doorway-floor`) | Pair the heap (hand skill), then pairs by colour, size, kind, side | 4 | 3 | 4 | 4 | 2 (new scene, 7 shoe images, all words placeholders) | pair, place, which-one, paw (Zazu) | **Second set** (Arc 1 Ch2 is a beat until shoes and colours exist) |
+| **T6** | **The week** (see below) | **The lunchbox week** (7 cells, fruit + counts); **Nana's pill box** (7×2 cells, colour + count; 8+) | K3 on a week grid: *[EN: Monday]: bo kelo; [EN: Friday]: [EN: none]* | 2 | 4 | **5** (day + count + kind; morning/evening at level 3) | 4 (the only place time words decide where) | 4 (T3's `pack` on a new grid) | pack, count, which-one | **Second set, 7+ (lunchbox), 8+ (pill box)**: decision 1 |
+| **T7** | **Place the pattern** | Bunting (a string), the mehndi palm, the quilt grid | Pieces in a colour order along a line; a flower on the left hand | 3 | **5** | 4 | 3 (borders Dress up; kept: it's placing to relations) | 2 | place, order, which-one | Arc 2; bunting as an Arc 1 hub beat after the second set |
+| **T8** | **The family photo** | The courtyard bench (E; Find it's scene) | People to places by kinship and comparatives; the photo is kept | **5** | 4 | **5** | **5** | 3 | place, order | Arc 2 (kinship), Arc 5 (comparatives) |
+| **T9** | **The washing line** | The courtyard line | Peg clothes in a colour and owner order (*Nana's* first, *then* the red one) | 3 | 3 | 4 | 3 | 3 | peg, order, place | **Free play only** (the review: Monsoon owns Ch1); after Dress up's clothes words |
+| T10 | Line up (alone) | Pots by size | — | — | — | 2 | — | — | order | **Rejected alone**: direction × start end = 25% guess; lives as the `order` row inside T2, T8 |
+| T11 | Into the shed | Pens | — | — | — | — | 1 | — | — | **Dropped**: Monsoon's Drizzle is the calm version (review) |
+| T12 | The tea tray for the guests | Cups to people | — | — | — | — | 1 | — | — | **Rejected**: Cook's Chai tray |
+| T13 | Simba's paw | — | — | — | — | — | — | — | paw | Not a game: a twist on T2, T3, T5 from level 2 |
+| T14 | Put it back | — | — | — | — | — | — | — | — | Not a game: **kind K2** on any board |
+
+**T6, scored honestly.** Zafar likes the pill organiser as a way to teach the days of the week, and it is: a day is a *cell*, the row says the day, and there's no way to fill the box without hearing it. It's also three slots a row (day, count, colour) so the blind rate is tiny, and it's cheap: the same `pack` mechanic as the box on a 7-cell grid. Against it: (a) at 5 it scores 2, because seven unknown words at once on a grid of small discs is a wall, and the clinic's reason stands (a small child sorting bright pills is the picture poison-prevention advice warns about); (b) the day words are used nowhere else until the story does (*[EN: Friday]* prayers, Eid on *[EN: Sunday]*), so they'd fade unless the hub's calendar says the day; (c) it isn't asked in the Questions doc at all. So: **one board, two skins.** The **lunchbox week** (*[EN: Monday]: bo kelo, [EN: Tuesday]: hikdo santra …*, fruit nouns real today, no safety cost, 7+) ships first and teaches the seven words; **Nana's pill box** is the 8+ skin that lands in the story at Arc 3 Ch4's outro (the doctor sends Nana's box home; Nani reads the sheet aloud; Nana is there; the child never handles medicine anywhere else). Level 3 adds *[EN: morning / evening]* as a second row of cells. It's second set because seven new words and a new grid don't help the Arc 1 chapters, not because it's weak at 11.
+
+### D.3 The mechanics
+
+One mechanic = one file, `js/tidy/mechanics/<id>.js`, `Tidy.Mech.define(id, {run(z, params, k)})` with levels in `data/tidy.json` `mechanics.<id>.levels`, exactly Cook's shape (recipes guide §5–6). Each runs alone in the lab or as a zone of a combined mini-game (T2's fetch-and-lay is two zones with `out: "fetched"` / `in: "fetched"`).
+
+| Id | One line | Tag |
+|---|---|---|
+| `place` | Tap an item (it lifts and follows), tap a spot; drag also works; uniform dots only while holding; nothing refused, nothing snaps (G1, G2) | **New** (Monsoon may reuse it for *put the bucket there*) |
+| `pack` | `place` onto a cell grid with a cap per cell and a running tally per cell (never the target); never ends by itself | **New** |
+| `check` | The Done check: rows in random order, hop or wiggle, the recast (*Arre re!* + what it is + what was asked), the player fixes, re-check one row; the live check at level 1 | **New**; offered to Dress up (its mirror check is the same shape) |
+| `stack` | Plates and katoris stack straight or wobble (neat star only) | **New** |
+| `pair` | Two shoes dragged toe-to-toe set down as one pair (hand and eye; no Kutchi) | **New** (T5) |
+| `order` | A row type: items along an axis by size or colour, from an end (*[EN: biggest first, from the door]*) | **New** (inside T2, T7, T8) |
+| `paw` | Simba's paw sweeps a random strip and knocks 2–3 things (tap to shoo); Zazu variant carries one off (tap to stop) | **New** twist |
+| `tell` | Ali acts on an instruction: picks the item and a spot **uniformly among the spots that satisfy it**; ambiguity goes wrong on purpose | **New** (the role-reversal actor; runs on `speech.js` and the shared pill builder) |
+| `count` | Tap once per item asked for; the badge shows the tally only; look-alikes count as wrong | **Reused from Cook** (in `pack` and T3) |
+| `passme` | Nani's sidebar interruption for a known word not on this board, from a look-alike group | **Reused from Cook** |
+| `fetch` | Take the named things from a shelf among look-alikes into the tray | **Reused from Cook** (T2 level 3 fetch-and-lay; T4's Ali) |
+| `which-one` | Attribute + noun picks one of ≥3 (asked noun in ≥3 colours, asked colour on ≥2 nouns; blind-odds budget) | **Shared**: the foundation module, with Find it, Dress up, Who did it?, Snap |
+| `say` | The speaking moment: the closed set, `listen({choices, timeoutMs})`, the pill fallback, the parent's tick, the voice star | **Shared**: foundation, every mode |
+| `peg` | Peg and unpeg along a line | **Shared with Monsoon rush** (its Unpeg), T9 only |
+
+Count: **8 new, 3 reused from Cook, 3 shared** (which-one, say, peg). The relations layer (`data/relations.json`, `js/shared/rel.js`, scene `spots`) is a foundation piece, not a mechanic; phases 0–1 use a same-API stub in `js/tidy/rules.js` and swap at integration.
+
+### D.4 Speaking moments
+
+All closed-set, all with a fallback, none blocking; the **voice star** needs ≥2 said rows and is separate from the ear.
+
+| Moment | When | The closed set | What the character does | Fallback |
+|---|---|---|---|---|
+| **S1 "What's this?"** at the check | Level 1, every board, every kind | The items on the board (3–6 nouns; real Kutchi on T1 and T3's fruit box) | After ticking a row Nani holds the item up: *[EN: What's this?]* (A8.4). Right: she nods and says it back; Kasuku repeats it. Wrong or unsure: she says it, no star, on she goes | Tap one of 3 audio pills; or the parent's tick (Grandparent mode) |
+| **S2 Ali's turn** (T4) | Level 1: the **noun** only (Ali knows the place from the card). Level 2: **count, then noun** as two listens (*bo … kelo*; sets of 3 numbers, then 3–6 nouns). Level 3: **noun, then place**, once the position words exist | Numbers 1–3; the tray's items; the anchors in play (3–5) | Ali fetches what he heard and places it. If he heard *limu* he brings the lemon; Nani's check catches it (*Arre re! You said limu*) and the child says it again | Audio pills for each slot; parent's tick; after `timeoutMs` Ali asks *[EN: Which one?]* (A8.6) and shows the pills |
+| **S3 "Pass me", reversed** | Level 2, T1 and T2 | The look-alike group of the missing item + 2 (4–5) | The tray is one item short. Nani: *[EN: What do you need?]* The child: *Muke hikdo {x} dine* (a real frame; the noun is real on T1). Nani hands what she heard, and the board stays short if it was wrong | Pills; parent's tick |
+| **S4 The day** (T6) | T6 level 2 | The 7 days | Nani: *[EN: Which day?]*; the child names the cell before packing it | Pills |
+
+The recogniser is `Tidy.say(choices)` → `listen({choices, timeoutMs: 4000})`; a `null` or a confidence under the data threshold shows the pills, never a miss.
+
+### D.5 The first set and the level ladder
+
+**First set: T1 Put it away → T2 Lay the dastarkhwan → T3 The box (fruit skin) → T4 Ali's turn on T1 and T2.** Why: T1 proves the engine on the existing shelves with real nouns and no art; T2 is the Arc 1 payoff and carries every rule type; T3 proves `pack` with real fruit and counts so the sweet box is a skin drop when E59 comes back; T4 is the speaking round and needs nothing new on the board. Shoes (T5) wait for shoes and colours; the week (T6) for its seven words. Blind-bot at level 1: T1 ≈1.5–4% (3 nouns to ≥4 places, convention rejected); T2 ≈1.5% (3 rows, 3 people + a spare seat, *in the middle*); T3 ≈0.1% (two count rows); T4: 0 by voice, ≈1.5% by pills.
+
+**The ladder: what an instruction carries.**
+
+| Level | Name | A row holds | Kinds | Board | Rows | Check |
+|---|---|---|---|---|---|---|
+| **1** | *One thing, one place* | `{noun} {anchor}`: *santra: the bowl* | K0, K1, K5 (noun) | ≤6 spots visible, big; one surface | 2–3 | Live: wrong wiggles and costs the row |
+| **2** | *How many, which one* | + a count (*bo limu*), or an attribute (*[EN: the red] cup*), + one *leave* row | + K2, K3 | + a second surface; the paw | 3–4 | At *Done* |
+| **3** | *Where exactly* | + a relation to a **placed** item (*next to the plate*), *between*, own left/right; fetch-and-lay | + K4 (one rule row) | Two zones | 4–6 | At *Done*; Busy doorbell clock |
+| **4** (Arc 4+) | *Nani's rules* | Negatives, *first … then*, comparatives, *[EN: it was on …]*; Ali's turn at level 3 forms | All | All | 4–6 | Records: fewest moves |
+
+A child feels it as: *she says what → she says how many and which → she says where exactly → she gives me rules.*
+
+### D.6 Story home and free play
+
+| Mini-game | Story home | Cast |
+|---|---|---|
+| T1 | Arc 1 Ch1 after the bazaar (the Find it basket is the tray); the masala dabba after Cook's tadka; Arc 3 "bring it inside"; Arc 5 the farm | Nani |
+| T2 | **Arc 1 Ch1 errand 3** (the knock at the door is the outro); Eid morning (Busy); Arc 2 the feast (order + kinship) | Nani, guests, Simba asleep on a spare cushion |
+| T3 | Arc 1 Ch1 (the fruit box for the guests); **Ch3** as K2 after the cat (sweet skin when words exist); Arc 2 wedding sweets | Simba, Zazu, Nani |
+| T4 | The older cousin from Ch2 on; Grandparent mode | Ali |
+| T5 | Arc 1 Ch2 "Knock knock" | Guests, Zazu |
+| T6 | Arc 3 Ch4 outro (Nana's pill box, 8+); the lunchbox in free play and the hub's school morning | Nana, Nani, the doctor (off-screen) |
+| T7, T8, T9 | Arc 2 mehndi, quilt, wedding photo; Arc 5 finale; free play | Big Ma, everyone |
+
+**Free-play entry: "Tidy the house"** on the map (tap an unlocked room; a board of the weakest words; *Finish tidying* → summary). Tidy up exposes one **60-second round** to the hub's single rotating daily (review E) rather than its own daily. Explore (no rows, everything reacts) stays.
+
+### D.7 The review's critiques
+
+| Critique | What I did |
+|---|---|
+| First slice **M2 only**; hold M3/M4 | Adopted: T1 first, on the existing shelves. T3 kept in the first set only because its fruit skin is real Kutchi today and proves `pack`; the sweet skin waits. T5 held |
+| M2 is half a Kutchi test (the place is English) | Agreed and said so in the table. Level 1 leans on the noun; the masala dabba adds real spice nouns; the Reader bot is reported apart; the anchor words are top of the list (D.8) |
+| "Several layouts" is an adult's pleasure; Layla needs 2–3 rows, one surface | Level 1 is exactly that (D.5) |
+| Zayn: "it's just putting away" | Fetch-and-lay at level 3, the doorbell clock, K4 rules, K5 Ali's turn, records |
+| M2 vs Find it's recall; M1 vs the Chai tray | Kept both, and made the Find it basket *become* T1's tray; T2's people rows are never the only row type on a board |
+| Drop M8 pens | Dropped (T11) |
+| First set too big (four boards, three scenes, 30 images) | Three boards on two existing scenes plus a T worktop; shoes and the doorway scene out of the first set |
+| Edit-in-place tableware risk | Greybox; one signed-off item before the batch |
+| How the board reads at 915×375 | Level 1 ≤6 visible spots, tray ≤22%, sidebar column; `--sizes` is an acceptance gate from phase 1 |
+| Relations file has no owner | The foundation owns it (the brief); Tidy up's rule types are the spec; phases 0–1 use a same-API stub in own files |
+| Six dailies | One hub daily; Tidy up exposes a 60-second round |
+| Washing sort claims Ch1 | Free play only (T9), later |
+| Doorway scene name | `doorway-floor` |
+| Build order: Tidy up third, after the relations file | Accepted; phase 0 is pure logic and can start now regardless |
+
+### D.8 Words the first set needs (priority order)
+
+*Asked* = already in `Questions for Mum (Combined)`; *in game* = Kutchi exists.
+
+1. Fruit, veg, spice nouns; numbers 1–10: **in game**.
+2. The anchors: shelf E44, top/bottom shelf E6–E7, bowl E19, basket E31, box E30, cupboard E43, in the middle E4, corner E5, first/last E8–E9, at the back/front E10–E11: **asked**.
+3. Positions: on, in, under, next to, in front of, behind, between, on top of; left/right or this side/that side (A5, E12–E13): **asked**.
+4. Tidy phrases: *Put the cups on the shelf* E72, *Leave that one* E73, *Put it back* E75, *Where does this go?* E76, *Nearly!* E80, *all* E81, *nothing* E82, *What a mess!* E83, *Tidy up!* E74: **asked**.
+5. Speaking frames: *What's this?* A8.4, *Which one?* A8.6, *What would you like?* A8.8 (for S3), talking to a child A7 (Ali's imperatives): **asked**. *[EN: What do you need?]* for S3: **new** (A8.8 may serve).
+6. Tableware and cloth E16–E28, *Nana's* E14, *for Nana* B39: **asked**.
+7. Colours E60–E71; big/small B6–B7 (drafts in game): **asked**.
+8. *And then* B12 (*ne poi*, in game) for order rows; *only* B13: **asked**.
+9. Second set: sweets E59, shoes E33–E37: **asked**. **The seven days of the week, morning, evening: not asked; add to Section E** (the questions doc is not edited here).
+
+### D.9 Decisions for Zafar (blocking only)
+
+1. **The week (T6):** ask the family for the seven days now (the visit is the one chance), build the board once, ship the **lunchbox skin at 7+** first and **Nana's pill box at 8+** in Arc 3 Ch4. *Default: yes to all three.*
+2. **Dastarkhwan camera:** the kept high-angle sitting room with guests behind the bolster (H), which gives *in front of Nana* a real meaning, or a new top-down cloth. *Default: H.* Blocks T2's spot geometry, not T1.
+3. **Ali's turn at level 1 is the noun only**, Ali knowing the place from the card, so the voice star exists before any position word does. *Default: yes.*
+4. **The tray is the Find it basket** when T1 follows a bazaar errand (a shell question, Find it Q1). *Default: yes; phase 0–1 generates its own tray.*
+
+---
+
 ## 1. Pitch and core loop
 
 **Pitch.** Nani's house is always about to receive someone: guests tonight, the Eid box to repack, a wedding photo to take. Tidy up is where the player **makes a place right by following what Nani says**: lay the dastarkhwan, pair and line up the shoe mountain, repack the sweet box, put the shopping away. It exists because syllabus stage **S2 (Do as Nani says)** needs a game where *position phrases, colours and sizes decide where things go*, and later **S6** needs *comparatives* ("the bigger one nearer the door"). Its hits are *A Little to the Left* (rule-based tidying, a cat that messes it up) and *Unpacking* (calm placing, a check at the end, the story told by objects). Where Cook **builds** a dish with gestures and Find it **searches** for one thing that already exists, Tidy up **produces an arrangement**: the answer isn't *which one* or *what next*, it's a *layout* that must satisfy every spoken rule at once.
@@ -592,38 +745,41 @@ The Sceptic cannot win the ear star by reading (no labels, Kutchi rows), matchin
 
 ---
 
-## 12. Build brief for a future agent
+## 12. Build brief for a future agent (rewritten 25 Sept, to match the deep dive)
 
-**Read first:** this doc; `docs/cook-with-nani-recipes-guide.md`; `docs/find-it-design.md` sections 4–6; `docs/cook-with-nani-kutchi-audit.md` ("After Wave 3"); Wave 5 in `docs/cook-with-nani-todo.md`. **Never invent Kutchi.** Placeholders are `kutchi: null` with English.
+**Read first:** the deep dive at the top of this doc (D.1–D.9), then 8.1 (data model and guards), 6.2–6.4, 7; `docs/cook-with-nani-recipes-guide.md` §1, 5, 6 and `js/cook/mechanics/{count,fetch,passme}.js`; `docs/modes/REVIEW-2026-09-25.md` (Tidy up and Cross-mode); Wave 5 in `docs/cook-with-nani-todo.md`. **Never invent Kutchi**: every missing word is `kutchi: null` with its English. You are one of several build agents working at once: **phases 0–1 touch only the files below** and nothing in `js/cook/`, `js/shared/`, `data/scenes/kitchen.json`, `data/relations.json` or the shell.
+
+**Files this mode owns.** `tidy.html` · `css/tidy.css` · `js/tidy/{engine,rules,bot,lab}.js` · `js/tidy/mechanics/{place,pack,check,stack,pair,order,paw,tell}.js` · `js/tidy/games/{putaway,dastarkhwan,box,ali}.js` (one combined mini-game each, Cook's `stations/` pattern) · `data/tidy.json` · `data/scenes/kitchen-tidy.json`, `sitting-room-tidy.json`, `worktop-tidy.json` (sidecars: spots, tags, neighbours; merged into the scene files by the foundation agent later) · `build/leak_tidy.mjs` · `build/test_tidy.py` · `docs/tidy-up-build-log.md`.
+
+**Shared pieces assumed from the foundation agent (don't build them; code against the named API):** the shell ("one app, one save": profile, wallet, map, story beats); `data/relations.json` + `js/shared/rel.js` (`Rel.holds(state, rule, scene)`, `Rel.options(state, rule, scene)`) + scene `spots` schema, with 8.1's rule types as the spec; the **which-one** attribute-and-decoy module with the blind-odds budget; overlay-at-anchor sprites (Ali, guests); star sets and ear/voice rules as data (`star_sets.tidy`, `earPass`, `minTested: 2`, `voiceTested: 2`); `js/shared/speech.js` with `listen({choices, timeoutMs}) → {choice, confidence} | null` and the shared pill builder; the Cook modules Tidy loads until the shell moves them (`lang`, `ui`, `order`, the ladder, stars, receipt, `progress.js`).
 
 ### Phases
 
-| Phase | What's playable | Acceptance |
-|---|---|---|
-| **1 Engine + M2 in the Tidy lab** (greybox) | `tidy.html` → Tidy lab → *Put the shopping away* on the existing kitchen shelves, levels 1–3; intro card; ladder rows; tap-tap and drag; Done check with recasts; stars; word review | `test_tidy.py --lab` passes levels 1–3 at all six sizes with the tap-cover check; `--gen 1000` all five solver checks; `--rel` passes; **`--bot 500` <10% ear star for every strategy except Reader**; no console errors; Claude has looked at the screenshots |
-| **2 M1 dastarkhwan + paw + story errand** | Arc 1 Ch1 errand 3 end to end (intro beat → board → outro beat, the knock), Relaxed and Busy with a visible doorbell clock; Simba's paw from level 2; pass me in the sidebar | As phase 1 for M1; the story errand runs from the title; bot <10%; the laid cloth is saved for the hub |
-| **3 M4 sweet box + M3 shoe mountain + meta** | Both boards at levels 1–3; the upgrades shop; free play "Tidy the house"; Nani's daily tidy; the secrets album | As phase 1 per mechanic; pocket money and upgrades never change a rule; daily tidy repeats only after 24 h |
-| **4 Art and words** | Edit-in-place tableware, doorway and box art, shoes, mithai, placement sounds; family words dropped in as data | Visual QA checklist on every screenshot; the Kutchi audit repeated per mechanic; persona review round with Zafar's playtest notes |
-| Later | M10 rule rows; M5 (Arc 2); M7 photo; M8 pens (with Monsoon rush); M9 put it back (Arc 4); M12 You tell Ali | Each: its own audit and bot run |
+| Phase | Files touched | What's playable | Acceptance |
+|---|---|---|---|
+| **0 Pure logic** (Node, no browser) | `js/tidy/rules.js`, `js/tidy/bot.js`, `data/tidy.json`, the three scene sidecars, `build/leak_tidy.mjs` | Nothing on screen. The generator for kinds K1–K5 on T1, T2, T3; a same-API relation stub (`Tidy.Rel`) for the rule types in 8.1; the five solver checks; the leak bot (8.4's eight strategies plus **"names-are-wrong"** for K2) | `node build/leak_tidy.mjs --gen 1000 --bot 500` prints strategy × game × level → ear rate; **every strategy <10% except Reader**; all five checks pass on 1,000 boards per game per level |
+| **1 Lab and greybox** | + `tidy.html`, `css/tidy.css`, `js/tidy/{engine,lab}.js`, `js/tidy/mechanics/*`, `js/tidy/games/*`, `build/test_tidy.py` | The Tidy lab runs each mechanic alone and T1, T2, T3 at levels 1–3 on greybox surfaces (rectangles and dots; existing fruit, veg and spice art; grey tableware); intro card, ladder rows, tap-tap and drag, live check at L1, Done check with recasts, the paw at L2, fetch-and-lay at L3, stars, word review; S1 "What's this?" and T4 Ali's turn with the **pill fallback only** (`speech.js` stubbed to `null`) | `python3 build/test_tidy.py --lab --sizes` at 915×375, 1366×768, 1440×900, 1280×800, iPad both ways, tap-cover check before every tap, screenshots looked at; `--rel` ~40 table cases; no console errors; a manual run shows no text on items and no hover feedback |
+| **2 Integration** | Swap the stub for `js/shared/rel.js`; adopt which-one, star data, `speech.js`; register with the shell | The same games from the map; S1–S3 by voice; the voice star; the Find it basket as T1's tray | Phase 1 acceptance repeated; `--bot 500` repeated on the shared checker; S2 falls back to pills on `null` and never blocks |
+| **3 Story and art** | Story beats as data; `assets/tidy/*` | Arc 1 Ch1 errand 3 end to end (T1 → T2, the knock); Ch3's K2 box; Busy doorbell; free play "Tidy the house"; the 60-second hub round; secrets album | The visual QA checklist on every screenshot; one edit-in-place tableware item signed off before the batch; persona round with Zafar's notes |
+| **4 Second set** | `mechanics/{pair,peg}.js`, `games/{shoes,week,pattern,photo,line}.js`, `doorway-floor` scene | T5 shoes, T6 the week (lunchbox skin, then Nana's pill box at 8+), T7, T8, T9 | Each: its own bot run <10%, its own audit, its words present before the ear counts |
 
 ### The first 3 tasks
 
-**Task 1: the shared relation checker (`data/relations.json`, `js/shared/rel.js`).**
-- Write `data/relations.json` with the ids in 8.1 (in, on, under, behind, next-to, in-front, between, left-of, right-of, middle, corner, top-row, bottom-row, first, last), each with a placeholder word id (`ph-rel-*`, `kutchi: null`) and allowed cameras. Check `docs/find-it-design.md` 4.4 first; if Find it's builder has started a relations file, extend theirs instead.
-- `Rel.load(scene)` builds the spot graph from `spots[].tags` and `spots[].nbr`. `Rel.holds(state, rule, scene)` implements every rule type in 8.1 (place, unary, class, count, leave, not, order, compare); "next to X" for a placed item uses neighbours; left/right are always the player's.
-- `Rel.options(state, rule, scene)` returns the legal spots for a row (used by the solver, the Warmer hint and Ali in M12).
-- Tests: `build/test_tidy.py --rel` opens `tidy.html?test=rel`, which runs ~40 table-driven cases in the page (a hand-made 3×4 spot grid with two anchors) and reports pass/fail to Python.
+**Task 1: the generator, the stub checker and the leak bot (phase 0; `js/tidy/rules.js`, `js/tidy/bot.js`, `data/tidy.json`, `build/leak_tidy.mjs`).**
+- `data/tidy.json`: `mechanics.{place,pack,check,paw}.levels` (only what changes per level, Cook's shape); `games.{putaway,dastarkhwan,box}` with `boards` (shelves, masala-dabba; cloth; fruit-box) and `kinds` allowed per level (D.5); `words` for every placeholder in D.8 with `kutchi: null`; `lines` and `grammar` for the row frames (`{x} {anchor} {rel}`, `{n} {x}`, `leave`, `class`, `not`, `order`); `star_sets.tidy` with the voice star.
+- Scene sidecars: `spots[]` with `tags`, `nbr`, `cap`, `surface`, anchors and `convention` layouts, for the kitchen shelves (E), the sitting-room cloth (H) and a T worktop for the box and the masala dabba.
+- `Rules.make(game, board, kind, level, profile)` → `{tray, start, rows, people}`; runs the five checks (solvable, ≥3 options, convention fails, no forced row, flat priors) and re-rolls (cap 50, log). `Rules.ladder(rows)` and `Rules.speech(rows)` shuffled per G3. `Tidy.Rel` stub with `holds` and `options` on the same signatures as the foundation's.
+- `bot.js`: strategies from 8.4 plus names-are-wrong; sees only `{rowCount, rowShapes, tray, spots, people, start}`.
+- `build/leak_tidy.mjs` runs it headless and prints the table.
 
-**Task 2: the generator, solver checks and leak bot (`js/tidy/rules.js`, `js/tidy/bot.js`, `data/tidy.json`).**
-- `data/tidy.json`: the `pantry` mechanic's three levels (8.1 knobs), words for the placeholders in 6.6 needed by M2, and the board `shopping-away` using the existing fruit/veg/spice ids (real Kutchi drafts) as items and the kitchen's four shelves plus the fruit bowl and spice cupboard as anchors. Add `spots` with tags and neighbours to `data/scenes/kitchen.json` (only new keys; keep the existing ones intact), checked with `build/place_preview.py`.
-- `Rules.make(board, level, profile)`: picks due words (weakest first) plus up to 3 new, look-alike extras, rows by the level's rule types; runs the five checks in 8.1 and re-rolls (cap 50 tries; log a failure).
-- `Rules.ladder(rows)` → ladder rows (speaker · text or ••• · reveal · translate) and `Rules.speech(rows)` from `grammar`, shuffled per G3.
-- `bot.js`: the eight strategies in 8.4, seeing only a screen model (`{rowCount, rowShapes, tray, spots, people}`), never the rows.
-- Tests: `--gen 1000` and `--bot 500` (prints a table: strategy × level → ear-star rate).
+**Task 2: the mechanics and the engine in the lab (phase 1; `tidy.html`, `js/tidy/engine.js`, `js/tidy/mechanics/{place,pack,check,paw}.js`, `js/tidy/lab.js`, `css/tidy.css`).**
+- `engine.js`: `Tidy.Mech.define/lab/combined` mirroring `Cook.Mech` (zones with `region`, `footprint`, `out`/`in`), rounds as `{board, startState, rows, speaker}`, `z.expect` for the test harness, `z.listen(ok, why)` and `z.skill`.
+- `place.js`, `pack.js` per D.3 (dots only while holding; nothing snaps; tallies per cell; never ends itself). `check.js`: live at L1, Done from L2, random order, recast, fix, re-check one row, tap to skip animations. `paw.js`: random strip, correctness ignored, nothing replayed.
+- `lab.js`: game × board × kind × level, *New round*, *Nani helps*, *Busy*, *Paw*, *Bot*, *Show spots*, *Rule inspector*, word-stage override.
+- `build/test_tidy.py --lab --sizes --rel` as the acceptance above.
 
-**Task 3: `tidy.html`, the board and the Done check with M2 in the Tidy lab.**
-- `tidy.html` loads Phaser, the Cook shared modules it needs (lang, pills, ladder UI, stars, receipt, passme, progress) and `js/tidy/*`. Layout contract v2: sidebar column (order card on top, "?" help, no English step pills), the tray bottom centre ≤22% height.
-- `board.js`: tap an item → it lifts and follows; tap a spot → it lands (sound by material × surface); drag works too; uniform dots shown only while holding; nothing snaps or reacts differently over a right spot (G2).
-- `check.js`: level 1 live check (wrong = wiggle, row ear lost, item stays); level 2+ check at *Done* in random row order with hop/wiggle and the recast (*Arre re!* + what it is + what was asked); the player fixes; re-check that row only; stars; word review.
-- `lab.js`: the controls in 8.3.
-- Acceptance: `python3 build/test_tidy.py --lab --sizes` passes with screenshots at all six sizes; a manual run shows no text on items, no hover feedback, and a recast on every deliberate mistake.
+**Task 3: the three mini-games and Ali's turn (phase 1; `js/tidy/games/{putaway,dastarkhwan,box,ali}.js`, `js/tidy/mechanics/{stack,tell}.js`).**
+- `putaway.js`: one zone (`place`) on the shelves or the masala dabba; `passme` from Cook in the sidebar. `dastarkhwan.js`: `place` + `stack`, guests on cushions from data, the paw at L2, and at L3 a second zone running Cook's `fetch` with `out: "fetched"` into the cloth zone's `in`. `box.js`: `pack` on the fruit-box grid, lid and ribbon on Done.
+- `tell.js`: Ali picks uniformly among `Rel.options`; `ali.js` runs any of the three backwards with the card, S2's two-listen shape at L2, the pill fallback, the voice star; `speech.js` stubbed to return `null` until phase 2.
+- S1 "What's this?" in `check.js` at L1 (3 pills; parent tick in Grandparent mode).
+- Acceptance: all three games and Ali's turn at levels 1–3 in the lab at every size; `--bot 500` under 10% for every strategy except Reader; the build log records the bot table and the screenshots looked at.

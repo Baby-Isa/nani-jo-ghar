@@ -3,6 +3,178 @@
 **Date:** 24 Sept 2026
 **Status:** proposal for Zafar. **25 Sept: first playable slice on its own branch, for Zafar's review** (not live): `find.html` + `js/find/` + `data/find.json`, the engine (rows as data, relations as data, levels as data, the Search lab with the non-speaker bot) and M1 Nani's list with M5 Check the bag, in the bazaar with placeholder art. **Later on 25 Sept it moved onto Cook's calm sidebar (Wave 5A):** Nani's list comes up big as the intro card and flies into the sidebar; one row and one dot per thing; the goal behind "?"; Nani says less (new words are still taught with the twinkle); the result card is the word review; no coin/star counter (pocket money on the title and result card); the combo rises from the basket; Done and the rail (with zoom) are pinned to the sidebar's foot so zoom never falls off a phone. Tests: `build/test_find.py` (play) and `build/test_find.py --leak N` (the bot). It builds on `docs/game-modes-v2.md` (mode 2, *Find it*), `docs/cook-with-nani-phase-a-design.md` (the shared systems and the station library) and `docs/cook-with-nani-kutchi-audit.md` (the leaks).
 **Placeholder rule:** Kutchi below is limited to words and frames already in `data/content.json` or `data/cook.json`. Anything written like `[EN: under]` has no Kutchi yet. In the game it is an English placeholder in grey italic until the family gives the word. **Never invent Kutchi.**
+**25 Sept, later:** the deep dive at the top (mini-games, one-file mechanics, speaking moments, a build brief at the end) **supersedes sections 3, 5.4 and 7 where they conflict**; D9 lists the patches.
+
+---
+
+## Deep dive, 25 Sept 2026: mini-games and mechanics
+
+**Why this section.** Zafar's principles of 25 Sept (`docs/modes/DEEP-DIVE-BRIEF.md`): each mode is a set of mini-games built from one-file mechanics, speaking is core, and every mode is built at once. Find it is the one mode with a live slice (`find.html`, `js/find/`, `data/find.json`: the engine, M1 Nani's list with M5 Check the bag, the Search lab, the non-speaker bot at 3.3%), so this section designs around what's built and says exactly what changes. The only Kutchi it relies on is what exists: the fruit, vegetable and spice drafts, numbers 1–10, *vadho / nindho* (big / small, drafts), *Muke {x} khape, Ne {x}, Nar {x}* (a draft), *Ghan, Arre re!, Hedo!, Achija*. Everything in `[EN: …]` is a placeholder.
+
+### D1 Pitch, and the kinds of round
+
+**Pitch.** Someone says, in Kutchi, what to find and where; you look round a real place (a stall, Nani's sitting room, the courtyard) and tap the one they meant, among copies, look-alikes and clutter. Then you swap places: you say it, and Ali or Nani goes and finds it.
+
+**The backbone.** One engine (a row is `{noun, count?, size?, colour?, where?, not?}`, an item records its relations, `Find.matches` decides) and four kinds of round, which differ in who speaks, how much the phrase carries and how the round ends.
+
+| Kind | What happens | Who speaks | What the Kutchi decides | Ends with | Mini-games |
+|---|---|---|---|---|---|
+| **R1 The list** | Nani's rows are on the ladder up front; find them all, any order; press Done | Nani, before | Noun and count; from level 2 a size or colour on a row | Done (over and under graded), then the shopkeeper's bag | Nani's list, Which one? |
+| **R2 The calls** | One thing at a time, live, 4–6 calls, repeats allowed (*the cup again; the other one*); the called noun is in three or more places, so only the position decides | Nani (Big Ma in her room), during | Noun plus where, size or colour, per call | The last call, then the bowl | Where is it?, Kasuku's minute |
+| **R3 The trail** | Things hidden behind openables; a call names the openable; each find gives the next clue | Nani, and the cats' noises | Which openable | All found; the sweet box goes to Tidy up | Simba's mischief |
+| **R4 Your turn** (role reversal) | You can see it; you say it; a character acts on what you said | **The child** (closed set of 3–8) | What the child says | The character has it right; you check their bag | Ali's turn, the bowl, Tell Ali where |
+
+Two modifiers sit on any kind: **the torch** (dark, a beam, a battery) and **Busy** (the patience ring). "Which one?" is not a kind: it is what a row carries from level 2, and the mini-game of that name is R1 with one qualifier on every row.
+
+### D2 The mini-game library
+
+Scored 1–5. **Build:** 5 = cheap. Mechanics are named in D3.
+
+| # | Mini-game | How it plays | Fun at 5 | Fun at 11 | Forces Kutchi | Distinct | Build | Mechanics | Decision |
+|---|---|---|---|---|---|---|---|---|---|
+| **F1** | **Nani's list** (+ Check the bag) | The built slice: the list, the busy stall, Done, the shopkeeper's one mistake; now ending with the bowl (D4) | 4 | 2 | 5 | 2 (Cook's fetch on a bigger stage; the review is right) | **5** (built) | greet, spot, count, passme, warmer, bag, tell | **First set** (built; changes in D5) |
+| **F2** | **Which one?** | Every row carries a size (*vadho / nindho*) and the stall has the noun in both sizes, and another noun in both sizes too; later colours in Big Ma's box (F11) | 4 (Simba is the big one, Zazu the small one, a running joke) | 3 | 5 | 3 (the shared "which one?" decision, rendered as search) | 4 (the same picture at two scales) | spot, count, whichone | **First set** (the review's next slice) |
+| **F3** | **Where is it?** | R2 calls: *[EN: the orange, in the crate]*; the orange is in the crate, on the counter and in the basket; four to six calls, the same noun called to two places | 4 | 3 | 5 (only the position separates the copies) | 4 (positions found, not placed) | 3 (the bazaar has in/on/in-front today; under/behind need a scene with cut-out occluders) | where, spot, warmer, tell | **First set** as a greybox; Kutchi-real when A5 returns |
+| **F4** | **Ali's turn** (you're Nani) | You hold a picture list; you *say* it; Ali shops; you check his bag | 4 (with a parent) | 4 | 5 (production) | 5 (the only production-first search) | 3 (`speech.js`; Ali is a face and a hand at the stall) | tell, bag | **First set** |
+| **F5** | **Simba's mischief** | The cats hid the sweets; calls name openables; a tail, a bell, paw prints as clues (not always right) | **5** | 4 | 5 | **5** | 2 (8–12 openables per scene, cat frames, sweets art, sweet names) | where, open, trail, spot | Phase 3: the Ch3 flagship |
+| **F6** | **Torch** (a modifier) | A power cut; a beam follows the finger; sweeping blind runs the battery down, the position phrase saves it | **5** | 4 | 4 | 5 | 4 (a radial CSS mask and a bar) | torch | Level 3 free play; Arc 3 story |
+| **F7** | **Kasuku's minute** | Kasuku squawks the player's five weakest words, no list text; find them in 60 s | 3 | 3 | 5 | 3 | **5** | spot, shadow | The mode's **60-second round** for the one hub daily |
+| **F8** | **Tell Ali where** | You see the cap under the sofa; you say *sofa [EN: under]*; Ali goes and looks there | 3 | **5** | 5 | 5 | 3 | tell, where | Level 3 of F3, once positions exist |
+| **F9** | Spot the change | Lights flicker; tap what changed; choose by ear which sentence says what happened | 4 | 4 | 3 (spotting is visual; only the sentence is Kutchi) | 3 (Who did it? owns "what happened") | 3 | change | Arc 4 |
+| **F10** | Nani's day | The same courtyard at three times; the time word picks the view | 3 | 3 | 3 | 3 | 2 (three grades of every scene) | where | Arc 3, art budget allowing |
+| **F11** | Big Ma's box | F2 by colour (*[EN: the red thread]*), a T-camera close-up | 3 | 4 | 5 | 3 | 3 | spot, whichone | F2's second home, Ch4, after E60–E71 |
+
+**Rejected:** *Who has it?* (Who did it?'s W2 territory; the review agrees); *Photo* (Snap's); *Find the pair* (*bo santra* already is it: a count row in a hat); *Follow the bell* (sound localisation, no Kutchi in the decision); *Bazaar run* as its own game (it is F1 at level 4, Busy, across two stalls); *Kasuku's riddles* (needs family-written rhymes; never invented).
+
+### D3 The mechanics
+
+One file each, `js/find/mechanics/<id>.js` unless shared, levels as data in `data/find.json` `mechanics.<id>.levels`, runnable alone in the Search lab or inside a mini-game (`js/find/games/<id>.js`, the counterpart of Cook's `stations/`).
+
+| id | One line | Tag |
+|---|---|---|
+| `spot` | Find one thing in a panned scene: the padded hit box and snap, wiggle and recast, the arc into the carried container, the "tapping everywhere" pause. Today inside `round.js`; moves out | **New** |
+| `count` | Units into the container: the tally only (never the target), never ends by itself, graded at Done | **Reused from Cook** (the spoon count's rule and badge; units are items) |
+| `bag` | The odd one out in what someone packed for you; hand it back and they swap it. Today inside `list.js` | **New** |
+| `greet` | The salaam exchange at the stall | **Reused from Cook** (`exchanges.salaam`, `UI.choose`) |
+| `passme` | Nani calls from the doorway for a met word that isn't on the list | **Reused from Cook** |
+| `warmer` | The "?" hint: a third of the scene that still holds three or more candidates. Today inside `round.js` | **Shared with Tidy up** (its Warmer: the same band-and-candidates rule over `Rel.options`) |
+| `whichone` | Rows with an attribute and the decoy rule (the noun in every value, the value on two or more nouns, balanced) plus the blind-odds budget | **Shared** (foundation module, with Dress up, Snap, Who did it?, Tidy up); until it lands, `Find.makeWants` does size locally |
+| `where` | A row or call with a position: the noun in three or more (relation, anchor-word) places; anchors qualified from level 4; **matching by anchor word, not anchor id** (two crates are both "the crate" until level 4 says which). On the shared relations layer | **New** |
+| `open` | Openables with closed and open frames; a wrong open is a miss for the row; empty ones still react | **New** (offered to Who did it? for W4's peek) |
+| `trail` | A find reveals the next call: a tail, a bell, paw prints that lead to a cat, not always to the sweet | **New** |
+| `torch` | The darkness mask, the beam under the finger, a battery the position phrase saves | **New** |
+| `tell` | Role reversal on `Speech.listen({choices, timeoutMs})`: a character acts on the choice; pills fallback; parent ✓; the voice star | **Shared with every mode** (Find it builds it first, against the foundation's `js/shared/speech.js`) |
+| `shadow` | Kasuku repeats: record, play back beside the family voice, ungraded | **Shared with every mode** |
+| `change` | Something in the scene changes; choose by ear which sentence says what happened | **New** (Arc 4) |
+
+**Counts:** 7 new, 3 reused from Cook, 4 shared. Not mechanics: pan and zoom (`view.js`), the ladder, the stars, the lab, the bot.
+
+### D4 Speaking moments
+
+Designed against `Speech.listen({choices, timeoutMs}) → {choice, confidence} | null`. Rules for every moment: the closed set is what is on screen (3–8 ids); the character **acts on whatever came back**, so the child sees what they said; a wrong act gets one retry (*Nar!* and the character puts it back), then the pills; `null`, a timeout (4 s) or a confidence under `voice.minConfidence` (data, default 0.5) goes to the pills; a parent ✓ button exists in Grandparent mode; nothing ever waits on the microphone; the **voice star** is separate from the ear star and appears only in rounds with a speaking row (every speaking row recognised or ✓'d, no pills; `pay.voice` +4); recordings stay on the device.
+
+| Moment | Where | Closed set | What the character does | Fallback | Level |
+|---|---|---|---|---|---|
+| **1 The bowl** (*Nani's hands are full*) | The end of Nani's list, and the old fruit-bowl errand once it is on this engine (Q1) | The basket's kinds, padded with stall decoys to at least 3, at most 8 | Nani takes the named thing from the basket and puts it in the bowl; a wrong name and she holds up the wrong fruit, puzzled | Audio pills (text only at reads stage 3); parent ✓ | **1** |
+| **2 Ali's turn** (F4) | Ch2 onwards; free play | The stall's kinds (5–8); then, a second `listen`, the numbers 1–4 | Ali walks to the stall and picks what he heard, as many as he heard, then packs your bag; you check it | Pills; parent ✓ | **2** |
+| **3 Tell Ali where** (F8) | The sitting room | The recorded phrases of the copies on screen (3–5: *sofa [under]*, *table [on]*…) | Ali goes to that spot and looks; if it's empty he shrugs and you say it again | Pills; parent ✓ | **3**, once A5 exists |
+| **4 Kasuku repeats** (`shadow`) | Any scene: tap Kasuku | None (no recognition) | He "says it back" in the child's own voice, beak moving | Not needed | Any; ungraded |
+
+The Sceptic on speaking: she can't say the word; the pills are one in *n* and never earn the voice star; the parent ✓ is trust, by design.
+
+### D5 The first set, and the level ladder
+
+**First set: F1 (built, with the changes below), F2, F4, F3 as a greybox, and F6 as the level-3 modifier.** F1 and F2 are a Kutchi test today (fruit, numbers, *vadho / nindho*); F4 is the speaking moment and turns F1's engine round with almost no new art; F3 is the mode's S2 job and the relations layer's first customer, so its greybox should be waiting when the family's position words land; F6 costs a CSS mask and makes the same scene feel new at 11. F5 waits for openables, cats and sweet names, and is the Ch3 flagship of phase 3.
+
+**What changes in the live slice:**
+
+1. `list.js` splits into `mechanics/spot.js`, `bag.js`, `where.js` and `games/list.js`, `games/whichone.js`, `games/where.js`, `games/ali.js`; `gen.js` keeps `makeWants` until `whichone` lands.
+2. **The digit leak** (the review's High): `round.js` `decorate` shows a row's digit while the number word is at stage < 3, but stage-2 rows are tested. Change to **stage ≤ 1** (taught, not tested). The bot reads the digit, so `--leak` shows the difference.
+3. The listening recall of 5.4 becomes speaking moment 1 (the bowl).
+4. A level 4, and per-game leak checks in the lab.
+5. Where-rows match by anchor word (D3).
+
+| Level | Name | What the instruction carries | Rounds and games | Scene |
+|---|---|---|---|---|
+| **1** | *One thing* | Noun and *hikdo / bo*; two rows; the bowl (say two or three nouns) | R1 F1; R4 the bowl | One stall, at most 11 things |
+| **2** | *How many, which size* | Count 1–4; one size row; a *Nar X* row half the time; the bag can hold one too many | F1, F2, F4 (say a noun and a number) | One stall, at most 17 things, both sizes out |
+| **3** | *Where* | A position on the call (*santra, crate [in]*), the noun in three places; two stalls (pan); the torch in free play | F3 calls, F8, F6 | At most 22 things, three or more relations |
+| **4** | *Two things at once* | Size and where, colour and where; anchors qualified (*[EN: the big basket]*); *[EN: not that one, the other one]*; calls chained with *ne poi*; Busy | All | The sitting room; openables (F5) |
+
+A child feels it as: *she names it → she says how many and which → she says where → she says two things and I do them in order → I say it.*
+
+**Blind-bot estimates at level 1** (the strategies live in `bot.js`, which sees only the screen):
+
+| Game | Estimate | New bot strategies |
+|---|---|---|
+| F1 | **3.3% measured** (the review's figure, 20-round runs); lower at stage 2 after the digit fix | — |
+| F2 | The noun (1 in 4–5 kinds) × the size (1 in 2) × the count: about 1 in 25 per row; two rows about 0.5%; then the bag | bigger, smaller, odd-size |
+| F3 | Per call: 1 in the kinds × 1 in 3 copies, about 10%; four calls under 0.1% | most-visible copy, nearest copy, first copy left to right |
+| F4 | No Kutchi, no voice; pills 1 in 6 × 1 in 4 per row; never the voice star | pills-random |
+
+### D6 Story homes, and free play
+
+| Mini-game | Story home |
+|---|---|
+| F1 Nani's list + bag | Arc 1 Ch1 (built); Arc 2 *Outfits* and *The gift* (threads, bangles, later prices); Arc 4 *The crow* (something shiny) |
+| F2 Which one? | Ch1's second visit (*[EN: the big papaya]*); F11 in Ch4 *The spill* (Big Ma's box) |
+| F3 Where is it? | Ch5 *Eid morning* (Nana's cap, the Eidi envelope); Arc 3 *The animals* (the chicks); Arc 4 *It's gone* (the dressing table) |
+| F4 Ali's turn | Ch2 *Knock knock*: Ali arrives and is sent back for what's missing; you tell him (this replaces the old Q6 "cousin's lost cap" idea) |
+| F5 Simba's mischief | **Ch3 *The cat and the sweets*** (the flagship) → Who did it? → Tidy up; Arc 4 *Following clues* |
+| F6 Torch | Arc 3 *The leak* (the power cut); free play from level 3 |
+| F7 Kasuku's minute | The hub's one daily, when it rotates to Find it |
+| F8 Tell Ali where | Ch5, after the cap is found: Ali lost his; Arc 4 *Who saw it?* |
+
+**Free play:** *The bazaar*: an endless stall built from due and weakest words, a best combo, the torch after level 3, Ali's turn every third list. Plus the 60-second round (F7) as the mode's entry in the hub daily.
+
+### D7 The review's critiques
+
+| Critique | What I did |
+|---|---|
+| Thin at 11: M1 is Shopping rebuilt | F4 (speaking), F2, the torch modifier and level 4 (two slots, Busy, two stalls) are in the first set; F5 in phase 3 |
+| The "small number beside each row" may be a High leak | Confirmed: it's the count's digit at stage ≤ 2, and stage 2 is tested. Fixed to stage ≤ 1 (D5). The `×n` tally is the basket, not the target: fine |
+| Identity is M4 and M8, which come last | The torch is in the first set; the trail waits on art and words, not on design |
+| Next slice should be M3 size, not M2 | Adopted: F2 is second; F3 is a greybox until A5 |
+| Adopt Wave 5A's sidebar first | Adopted: phase 0 is pure logic and needs nothing from it; phase 1's greybox waits for the frozen API |
+| Find it should own the relations file | **Superseded by the deep-dive brief:** the foundation agent owns `data/relations.json`, `js/shared/rel.js` and the `spots` schema. Find it hands over its schema as the seed (`spots[].{anchor, rel, x, baseline, also}`) and keeps matching on `item.rel` locally until `rel.js` lands |
+| "Which one?" needs one shared module | Adopted: `whichone` is the foundation's; Find it's decoy rule and F2's size rule are its spec |
+| Panning scenes, occluders, openables, 375 px | First set stays in the built bazaar plus a sitting-room greybox; openables are phase 3; Q5 defaulted to pan with zoom, tablet-first |
+| Six dailies | F7 is the mode's 60-second round for the one hub daily |
+| Q1 fruit bowl onto the engine | Default yes; its bowl-fill is speaking moment 1 |
+
+### D8 Words needed, in priority order
+
+*In the Questions doc* means it is already asked there (`Questions for Mum (Combined, for the visit)`); nothing here edits that doc.
+
+| Priority | Words or frames | Status |
+|---|---|---|
+| 1 | Fruit and numbers 6–10 confirmed | In the doc: E103–E123 (drafts exist) |
+| 2 | *Big / small* with a noun and "the big one", agreement | In the doc: C22–C36, C49 (*vadho / nindho* drafts exist) |
+| 3 | *Not the X*, *not the red one* | In the doc: A4, C43 (*Nar {x}* is a draft) |
+| 4 | Positions: on, under, in, behind, next to, in front of, between; and whether the anchor changes shape before them | In the doc: A5, E1–E13, C12–C21 |
+| 5 | Household anchors: sofa, table, cushion, curtain, cupboard, shelf, basket, box, crate | In the doc: E16–E48 (**crate** is new) |
+| 6 | Finding phrases: *Find the…, Here it is!, Look!, Leave that one, Bring it here, Nearly!, Where is it?, Which one?, How many?, this one / that one, here / there* | In the doc: E73, E77–E80, E84, A8.5–A8.7, A8.10–A8.11 |
+| 7 | Telling someone what to do (*bring, look, put*) for Ali's turn | In the doc: C142–C151, E72, E75 |
+| 8 | *[EN: What did you bring?]*, *[EN: the other one]*, *[EN: the same]* | **New** (H5 has *the same*); the first two are not asked |
+| 9 | Colours | In the doc: E60–E71 |
+| 10 | Sweet names, *Simba took it* | In the doc: E59, A6 |
+| 11 | **For the recogniser:** the fruit, the numbers 1–4 and *vadho / nindho* said five times each by three or more family members | **New**: a recording instruction, not a word |
+
+### D9 Decisions for Zafar (only what blocks the build)
+
+1. **The fruit-bowl errand moves onto this engine**, and its bowl-fill becomes speaking moment 1. Default: **yes**.
+2. **Does a parent's ✓ earn the voice star?** Default: **yes**, in Grandparent or with-a-parent mode only; the pills never do.
+3. **Ship size rows on the draft form** (*vadho santra*) before C22–C36 confirms agreement? Default: **yes**, flagged as a draft in the row and re-recorded when the answer comes.
+
+**What changed below:**
+
+| Section | Change |
+|---|---|
+| 2.2 library | M1–M12 stand as history; D2 is the scored list; M10 and M11 stay rejected; M12 is now core (F4, F8) |
+| 3 first set | Superseded by D5 (F1, F2, F4, F3 greybox, F6) |
+| 5.4 recall | The listening recall becomes speaking moment 1 |
+| 7 questions | Q1, Q5, Q6 answered by default (D7, D6); Q2 and Q3 defaulted as the review says; Q4 yes (Kasuku speaks only in his own minute); Q7 stands |
+| Build brief | Added at the end (phased, own files first) |
 
 ---
 
@@ -282,6 +454,39 @@ On a wrong tap: the item wiggles, then *Arre re!* {the name of what you tapped} 
 5. **Scene width:** are panning scenes (1.5–2 screens) acceptable, or should every scene fit one screen with zoom only?
 6. Arc 1 Ch2: add the cousin's lost cap (M2 taste), or keep Ch2 as greetings and Tidy up only?
 7. Which sweets go in Nani's mithai box (for the Round 3 questions)?
+
+---
+
+## 8. Build brief (25 Sept 2026, matching the deep dive)
+
+For the Find it build agent, working alongside one agent per mode and a foundation agent. **Phases 0 and 1 touch only Find it's own files**: `find.html`, `css/find.css`, `js/find/**`, `data/find.json`, `data/scenes/sitting-room.json` (new), `build/test_find.py`. Nothing in `js/cook/*`, `css/cook.css`, `index.html` or any shared file. Placeholder words stay in `data/find.json`.
+
+### 8.1 Shared pieces assumed from the foundation agent (not designed here)
+
+| Piece | What Find it needs from it | Until it lands |
+|---|---|---|
+| The shell ("one app, one save") | A mode entry, one wallet, story beats and the map place | `find.html` keeps using Cook's save and progress as now |
+| `data/relations.json`, `js/shared/rel.js`, scene `spots` schema | `Rel.holds(item, where)` and `Rel.options(scene, row)` for `where` and `warmer`; the `spots[].{anchor, rel, x, baseline, also}` shape Find it uses is offered as the seed | `Find.matches` keeps matching on `item.rel`, by anchor word |
+| The "which one?" module | Attribute rows, the decoy rule, the blind-odds budget | `Find.makeWants` does size locally (`gen.js`) |
+| Star sets and ear/voice rules as data | `star_sets.find` with a fourth, voice star; `minTested`; taught-rows exclusion | `data/find.json` `star_set` as now; the voice star shown on the result card only |
+| `js/shared/speech.js` | `Speech.listen({choices, timeoutMs})` | `Find.fakeListen`: the lab's "what did the child say?" picker, which the test drives |
+| Overlay-at-anchor sprites | Ali at the stall, the cats peeking (phase 3) | A face badge and a hand from the existing hand set |
+| Wave 5A's frozen UI API | Intro card, "?" help, word review, the sidebar | Phase 0 needs none of it; phase 1's greybox uses whatever `ui.js` exports at the time |
+
+### 8.2 Phases
+
+| Phase | What is built | Files | Acceptance |
+|---|---|---|---|
+| **0 Pure logic and the bot** | Split `list.js` into `mechanics/spot.js`, `bag.js`, `where.js`; `games/list.js`, `whichone.js`, `where.js`, `ali.js`; `gen.js` (rows by level: count, size, where, not; the size rule: the noun in both sizes, both sizes on two or more nouns, balanced); the digit fix (stage ≤ 1); level 4 knobs; `mechanics.tell` with `fakeListen`; bot strategies bigger, smaller, odd-size, most-visible copy, nearest copy, first copy, pills-random; `--leak` per game | Own files only | `python3 build/test_find.py --leak 30 --game <id>` under 10% (target 5%) for F1, F2, F3 at levels 1–3, stages 2 and 3; the existing play test still passes at six viewports |
+| **1 Greybox and the lab** | F2 on the bazaar (the same picture at 0.8× and 1.25×); F3 calls on the bazaar's in/on/in-front spots, and `data/scenes/sitting-room.json` as grey boxes with under/behind occluder rectangles; F4 with the picker; F6 as a CSS mask with a battery bar; the voice star and pills on the result card; a Search lab button per game | Own files, plus the new scene file | Each game runs from the lab at levels 1–4; a Playwright round per game with deliberate mistakes; the picker stands in for the mic; no text on items; the tap-cover check before every tap |
+| **2 Integration** | Swap to `rel.js`, `whichone`, `speech.js`, the star data, the shell entry, the intro card and word review; the fruit-bowl errand onto the engine (D9.1); the bowl as speaking moment 1 | Shared files, with the foundation agent | One save; the bot rates unchanged; a real microphone round on a tablet with a family recording set |
+| **3 Story and art** | F5 (openables, cats, sweets) once E59 and A5 exist; the sitting-room art from the greybox spec (4.4); Big Ma's box (F11) after E60–E71; F7 in the hub daily; family words dropped in as data and the audit rerun per game | Scene and asset files | The Kutchi audit per game and scene; the visual QA checklist on every screenshot; the persona round with Zafar's notes |
+
+### 8.3 The first three tasks
+
+1. **Split and re-test (phase 0).** Move `Round.searchTap/collect/wrong` into `mechanics/spot.js` and `checkBag` into `mechanics/bag.js` with no change in behaviour; `games/list.js` composes greet → spot+count → bag → tell(bowl, fake). Run `build/test_find.py` and `--leak 30`; the rates must match today's within noise. Fix the digit to stage ≤ 1 and record the new stage-2 rate.
+2. **F2 Which one? (phase 0–1).** `gen.js` gains size rows and the size rule; `placeItems` takes a `size` scale per unit; the three size strategies in `bot.js`; `games/whichone.js` and its lab button; levels in `data/find.json` (`whichone.levels`: rows, sizeRows, decoyKinds, spare per size). Acceptance: bot under 5% at level 1, stage 2.
+3. **`mechanics/tell.js` and F4 (phase 1).** `tell({choices, want, actor, onChoice})`: calls `Speech.listen` if present, else `Find.fakeListen`; the actor acts on the choice; one retry, then pills; parent ✓ in Grandparent mode; the voice rows on the result card. `games/ali.js`: the picture list, tell (kinds), tell (numbers), then `bag` on Ali's packing. Acceptance: a Playwright round through the picker earns the voice star; a pills-only round never does; the round never waits on the mic longer than `timeoutMs`.
 
 ---
 

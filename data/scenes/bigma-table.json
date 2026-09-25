@@ -1,0 +1,83 @@
+{
+  "_about": "Big Ma's sewing table, top view (greybox), and Ma's wrist close-up for Bangles. World px (1600x900). The kurta is laid flat; placket spots run down its front; parts are tap regions with no labels.",
+  "kurta": {
+    "x": 520,
+    "y": 150,
+    "w": 560,
+    "h": 700
+  },
+  "placket": {
+    "x": 800,
+    "y": 300,
+    "gap": 90,
+    "n": 5
+  },
+  "parts": {
+    "ph-collar": {
+      "x": 720,
+      "y": 150,
+      "w": 160,
+      "h": 70
+    },
+    "ph-pocket": {
+      "x": 850,
+      "y": 330,
+      "w": 105,
+      "h": 110
+    },
+    "ph-sleeve:ph-left": {
+      "x": 522,
+      "y": 200,
+      "w": 106,
+      "h": 300
+    },
+    "ph-sleeve:ph-right": {
+      "x": 972,
+      "y": 200,
+      "w": 106,
+      "h": 300
+    },
+    "ph-sleeve": {
+      "x": 522,
+      "y": 200,
+      "w": 106,
+      "h": 300
+    },
+    "ph-hem": {
+      "x": 640,
+      "y": 760,
+      "w": 320,
+      "h": 80
+    }
+  },
+  "tin": {
+    "x": 40,
+    "y": 60,
+    "w": 440,
+    "h": 440
+  },
+  "tray": {
+    "x": 1120,
+    "y": 60,
+    "w": 440,
+    "h": 440
+  },
+  "tools": {
+    "x": 1120,
+    "y": 560,
+    "w": 440,
+    "h": 300
+  },
+  "wrist": {
+    "x": 820,
+    "y": 140,
+    "w": 700,
+    "h": 620
+  },
+  "bangleTray": {
+    "x": 40,
+    "y": 120,
+    "w": 720,
+    "h": 680
+  }
+}

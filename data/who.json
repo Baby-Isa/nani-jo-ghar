@@ -1,0 +1,164 @@
+{
+  "_about": "Who did it? content (docs/modes/who-did-it-design.md, deep dive + section 12). People, attributes and clue types are data; every mini-game's levels are knobs (games.<id>.levels, read by js/who/case.js). Kutchi is never written here: every attribute points at a word id in data/cook.json (words), or at a placeholder in this file's own 'words' (kutchi null, grey English in the game). 'draft' marks Zafar's unconfirmed phonetic drafts (vadho, nindho, nar), which count as a test by default (D9.1) and are flagged for the audit.",
+
+  "words": {
+    "_about": "Placeholders only (never Kutchi). The game looks a word up in data/cook.json first, then here.",
+    "ph-mud": { "kutchi": null, "english": "mud", "src": "placeholder" },
+    "ph-glasses": { "kutchi": null, "english": "glasses", "src": "placeholder" },
+    "ph-cap": { "kutchi": null, "english": "cap", "src": "placeholder" },
+    "ph-dark": { "kutchi": null, "english": "dark", "src": "placeholder" },
+    "ph-light": { "kutchi": null, "english": "light", "src": "placeholder" },
+    "ph-old": { "kutchi": null, "english": "old", "src": "placeholder" },
+    "ph-young": { "kutchi": null, "english": "young", "src": "placeholder" },
+    "ph-yes": { "kutchi": null, "english": "yes", "src": "placeholder (A8.1 asked)" },
+    "nm-simba": { "kutchi": null, "english": "Simba", "name": true },
+    "nm-zazu": { "kutchi": null, "english": "Zazu", "name": true },
+    "nm-kasuku": { "kutchi": null, "english": "Kasuku", "name": true },
+    "nm-ali": { "kutchi": null, "english": "Ali", "name": true },
+    "nm-nana": { "kutchi": null, "english": "Nana", "name": true }
+  },
+
+  "people": {
+    "_about": "The culprit pool (defaults: cats, Kasuku silent, Ali, Nana, greybox guests). 'fixed' never changes; 'variable' is rolled per case; holds and trace are dealt per case by the generator. 'grey' is the greybox figure (shape, height as a fraction of a slot, fill).",
+    "simba": { "kind": "cat", "gender": "m", "name_word": "nm-simba", "fixed": { "size": "big", "shade": "dark", "age": "old" }, "grey": { "shape": "cat", "h": 0.62, "fill": "#8c7a66" } },
+    "zazu": { "kind": "cat", "gender": "m", "name_word": "nm-zazu", "fixed": { "size": "small", "shade": "light", "age": "young" }, "grey": { "shape": "cat", "h": 0.44, "fill": "#d8c7a8" } },
+    "kasuku": { "kind": "bird", "gender": "m", "name_word": "nm-kasuku", "silent": true, "fixed": { "size": "small", "shade": "light", "age": "young" }, "grey": { "shape": "bird", "h": 0.4, "fill": "#7fb07a" } },
+    "ali": { "kind": "person", "gender": "m", "name_word": "nm-ali", "fixed": { "size": "small", "shade": "dark", "age": "young" }, "variable": { "wears": ["cap", null] }, "grey": { "shape": "person", "h": 0.64, "fill": "#9aa7b8" } },
+    "nana": { "kind": "person", "gender": "m", "name_word": "nm-nana", "fixed": { "size": "big", "shade": "light", "age": "old" }, "variable": { "wears": ["cap", "glasses", null] }, "grey": { "shape": "person", "h": 0.9, "fill": "#b9b2a6" } },
+    "guest-f1": { "kind": "person", "gender": "f", "fixed": { "size": "big", "shade": "dark", "age": "old" }, "variable": { "wears": ["glasses", null] }, "grey": { "shape": "person", "h": 0.86, "fill": "#b48ca0" } },
+    "guest-f2": { "kind": "person", "gender": "f", "fixed": { "size": "small", "shade": "light", "age": "young" }, "variable": { "wears": ["glasses", null] }, "grey": { "shape": "person", "h": 0.6, "fill": "#c9a3b6" } },
+    "guest-m1": { "kind": "person", "gender": "m", "fixed": { "size": "big", "shade": "light", "age": "young" }, "variable": { "wears": ["cap", "glasses", null] }, "grey": { "shape": "person", "h": 0.88, "fill": "#8f9fa0" } },
+    "guest-m2": { "kind": "person", "gender": "m", "fixed": { "size": "small", "shade": "dark", "age": "old" }, "variable": { "wears": ["cap", null] }, "grey": { "shape": "person", "h": 0.58, "fill": "#a09584" } }
+  },
+
+  "attributes": {
+    "_about": "One entry per value a clue can name. dim: which property; word: the word id said (data/cook.json words first, then this file's words). agrees: the adjective changes with a he/she word (A1; the she-forms are not known yet, so both map to one choice). group: look-alike group (only one trace per group in a line-up, so two white powders never appear together). colour: the greybox smudge/item colour until the overlay art lands.",
+    "size.big": { "dim": "size", "value": "big", "word": "ph-big", "agrees": true },
+    "size.small": { "dim": "size", "value": "small", "word": "ph-small", "agrees": true },
+    "shade.dark": { "dim": "shade", "value": "dark", "word": "ph-dark", "agrees": true },
+    "shade.light": { "dim": "shade", "value": "light", "word": "ph-light", "agrees": true },
+    "age.old": { "dim": "age", "value": "old", "word": "ph-old", "agrees": true },
+    "age.young": { "dim": "age", "value": "young", "word": "ph-young", "agrees": true },
+    "wears.glasses": { "dim": "wears", "value": "glasses", "word": "ph-glasses" },
+    "wears.cap": { "dim": "wears", "value": "cap", "word": "ph-cap" },
+
+    "holds.fru-02": { "dim": "holds", "value": "fru-02", "word": "fru-02", "img": "assets/items/fruit/fru-02.png", "colour": "#e8d23a" },
+    "holds.veg-03": { "dim": "holds", "value": "veg-03", "word": "veg-03", "img": "assets/items/vegetable/veg-03.png", "colour": "#d23a2a" },
+    "holds.veg-02": { "dim": "holds", "value": "veg-02", "word": "veg-02", "img": "assets/items/vegetable/veg-02.png", "colour": "#b77fa0" },
+    "holds.veg-01": { "dim": "holds", "value": "veg-01", "word": "veg-01", "img": "assets/items/vegetable/veg-01.png", "colour": "#b58a4c" },
+    "holds.veg-12": { "dim": "holds", "value": "veg-12", "word": "veg-12", "img": "assets/items/vegetable/veg-12.png", "colour": "#3a9a3a" },
+    "holds.veg-14": { "dim": "holds", "value": "veg-14", "word": "veg-14", "img": "assets/items/vegetable/veg-14.png", "colour": "#c9a66b" },
+    "holds.veg-13": { "dim": "holds", "value": "veg-13", "word": "veg-13", "img": "assets/items/vegetable/veg-13.png", "colour": "#eee6d6" },
+
+    "trace.spi-01": { "dim": "trace", "value": "spi-01", "word": "spi-01", "group": "yellow", "colour": "#f0b400" },
+    "trace.cook-atto": { "dim": "trace", "value": "cook-atto", "word": "cook-atto", "group": "white", "colour": "#f7f2e6" },
+    "trace.ph-dahi": { "dim": "trace", "value": "ph-dahi", "word": "ph-dahi", "group": "white", "colour": "#fbfbf4" },
+    "trace.veg-03": { "dim": "trace", "value": "veg-03", "word": "veg-03", "group": "red", "colour": "#d8321f" },
+    "trace.spi-04": { "dim": "trace", "value": "spi-04", "word": "spi-04", "group": "red", "colour": "#b8241a" },
+    "trace.veg-12": { "dim": "trace", "value": "veg-12", "word": "veg-12", "group": "green", "colour": "#3f9d33" },
+    "trace.spi-02": { "dim": "trace", "value": "spi-02", "word": "spi-02", "group": "brown", "colour": "#8a6331" },
+    "trace.ph-mud": { "dim": "trace", "value": "ph-mud", "word": "ph-mud", "group": "brown", "colour": "#6b4a2b" }
+  },
+
+  "clue_types": {
+    "_about": "Which clue type names which dimension, its sentence frame (lines), and the first level it may appear. Frames are English placeholders today: the noun or adjective decides, not the frame (Cook's reasoning).",
+    "holds": { "dims": ["holds"], "line": "clue-holds", "min_level": 1 },
+    "trace": { "dims": ["trace"], "line": "clue-trace", "min_level": 1, "needs_examine": true },
+    "is": { "dims": ["size", "shade", "age"], "line": "clue-is", "min_level": 1 },
+    "has": { "dims": ["wears"], "line": "clue-has", "min_level": 1 },
+    "isnt": { "dims": ["size", "shade", "age"], "line": "clue-isnt", "min_level": 3, "phase": 2 },
+    "next_to": { "dims": ["slot"], "line": "clue-nextto", "min_level": 4, "phase": 4 }
+  },
+
+  "lines": {
+    "_about": "Cook's shape: k is Kutchi (only when the family gave it), e an English placeholder, draft/src for the audit. {x} is the slot word.",
+    "who-ate": { "e": "Who ate the sweets?" },
+    "who-did": { "e": "Who did it?" },
+    "clue-holds": { "e": "The one with the {x}." },
+    "clue-trace": { "e": "It had {x} on its paws." },
+    "clue-is": { "e": "It was the {x} one." },
+    "clue-has": { "e": "The one with the {x}." },
+    "clue-isnt": { "e": "It wasn't the {x} one." },
+    "this-one": { "e": "Who ate this one?" },
+    "look-closer": { "e": "Look closer!" },
+    "oops": { "k": "Arre re!", "en": "Oh dear!" },
+    "not-me": { "e": "Not me!" },
+    "caught": { "e": "Caught you!" },
+    "you-right": { "e": "You're right!" },
+    "guessed": { "e": "You guessed!" },
+    "recap": { "e": "{x} ate the sweets!" },
+    "ali-what": { "e": "What was it like?" },
+    "ali-else": { "e": "And what else?" },
+    "ali-echo": { "e": "The {x} one? Right." },
+    "ali-nobody": { "e": "Hm, nobody's left!" },
+    "ali-again": { "e": "Again?" },
+    "ali-it-was": { "e": "It was that one!" },
+    "ali-wrong": { "e": "That one? Oh!" },
+    "q-has": { "e": "Does yours have {x}?" },
+    "q-is": { "e": "Is yours {x}?" }
+  },
+
+  "mechanics": {
+    "_about": "Tuning per mechanic, level 1 first; later levels list only what changes (Cook's shape).",
+    "lineup": { "levels": [
+      { "slotsMax": 8, "slotsPhone": 6, "sitMs": 420, "forwardPx": 36, "headPeek": false, "parMs": 7000 },
+      { "parMs": 9000 },
+      { "headPeek": true, "parMs": 12000 }
+    ] },
+    "examine": { "levels": [
+      { "lensR": 90, "inset": [1180, 70, 360, 300], "free": true },
+      {}
+    ] },
+    "accuse": { "levels": [
+      { "luckyGuessRule": true, "notMeMs": 1400, "caughtMs": 1800 },
+      {}
+    ] },
+    "prove": { "levels": [ { "min_level": 3, "phase": 2 } ] },
+    "guesswho": { "levels": [ { "cards": 6, "questions": [3, 4], "both_answers": true, "phase": 2 } ] }
+  },
+
+  "games": {
+    "_about": "The mini-games (D2). kind: K1 one clue per missing thing, K2 keep who fits (exact-set commits), K3 Nani guesses, K4 Tell Ali. Level knobs: suspects [min,max]; items (K1); clues [min,max] (K2); dims the clues may use (the realOnly filter drops dims whose words have no Kutchi); must: a dim every case uses; distinct: K1 gives every suspect a different value; shared: K2 values are dealt so each clued one is on at least two; single_clue_solves: false from L2.",
+    "g1": { "name": "Who ate this one?", "kind": "K1", "file": "one-each", "mechanics": ["lineup", "accuse"],
+      "levels": [
+        { "suspects": [3, 3], "items": 3, "dims": ["holds"] },
+        { "suspects": [4, 4], "items": 3, "dims": ["holds"] }
+      ] },
+    "g2": { "name": "Keep who fits", "kind": "K2", "file": "keep-who-fits", "mechanics": ["lineup", "accuse"],
+      "levels": [
+        { "suspects": [5, 5], "clues": [2, 3], "dims": ["holds", "size", "wears", "shade"], "single_clue_solves": true },
+        { "suspects": [5, 6], "clues": [2, 4], "dims": ["holds", "size", "trace", "wears", "shade", "age"], "single_clue_solves": false, "examine": true }
+      ] },
+    "g3": { "name": "Look closer", "kind": "K1", "file": "look-closer", "mechanics": ["examine", "lineup", "accuse"],
+      "levels": [
+        { "suspects": [4, 4], "items": 3, "dims": ["trace"], "examine": true },
+        { "kind": "K2", "suspects": [5, 5], "clues": [2, 3], "dims": ["trace", "holds", "size"], "must": "trace", "single_clue_solves": false, "examine": true }
+      ] },
+    "g4": { "name": "Nani guesses", "kind": "K3", "file": "nani-guesses", "mechanics": ["guesswho", "yesno"], "phase": 2,
+      "levels": [
+        { "suspects": [6, 6], "questions": [4, 5], "dims": ["size", "holds", "trace", "wears", "shade", "age"], "nani": "any" }
+      ] },
+    "g5": { "name": "Tell Ali", "kind": "K4", "file": "tell-ali", "mechanics": ["tell", "lineup"], "listener": "ali",
+      "levels": [
+        { "suspects": [4, 4], "dims": ["holds", "trace"], "words": [3, 6], "min_words": 2, "timeoutMs": 4000 },
+        { "suspects": [5, 6], "dims": ["holds", "trace", "size"], "words": [4, 6], "min_words": 2, "timeoutMs": 4000 }
+      ] }
+  },
+
+  "cases": {
+    "a1c3-sweets": { "game": "g1", "level": 1, "pool": ["simba", "zazu", "kasuku"], "crime": { "missing": 3, "item": "ph-mithai" }, "line": "who-ate",
+      "beats": { "intro": "beat-a1c3-box", "outro": "beat-a1c3-caught" } }
+  },
+
+  "star_set": {
+    "_about": "In the foundation's star_sets shape (data/cook.json star_sets). voice is earned only by the mic or a parent's tick (D4); craft is Nani's round glasses (Sharp thinking).",
+    "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: every clue, first time" },
+    "hand": { "icon": "glasses", "name": "Sharp thinking", "tip": "Sharp thinking: quick, or called it" },
+    "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+    "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick: before the chai went cold" },
+    "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: Ali understood you" },
+    "rules": { "minTested": 2, "taughtStage": 1 }
+  },
+
+  "coins": { "helping": 5, "ear": 5, "craft": 3, "tick": 3, "voice": 5 }
+}

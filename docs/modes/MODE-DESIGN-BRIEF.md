@@ -124,7 +124,7 @@ UK English. Tables and short bullets. No filler. Sections:
   - Find it = search;
   - Tidy up = arrange;
   - Dress up = style;
-  - Nani's clinic = treat;
+  - The doctor's clinic = treat;
   - Who did it? = deduce;
   - Monsoon rush = react;
   - Snap = aim and capture.

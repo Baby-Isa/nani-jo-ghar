@@ -1,0 +1,452 @@
+{
+ "_about": "Tidy up sidecar for the sitting room (H view, decision D.9.2 default): cushions behind the dastarkhwan, the cloth in front. A person-seat anchor gets its person per round (the kinship word comes from the person). Greybox until the H-angle tableware is painted.",
+ "id": "sitting-room-tidy",
+ "camera": "H",
+ "base": "sitting-room",
+ "boards": {
+  "cloth": {
+   "name": "The dastarkhwan",
+   "surfaces": [
+    {
+     "id": "cloth",
+     "rect": [
+      150,
+      230,
+      1300,
+      460
+     ],
+     "material": "cloth",
+     "draw": "cloth"
+    }
+   ],
+   "anchors": [
+    {
+     "id": "seat-1",
+     "kind": "person-seat",
+     "word": null,
+     "rel": "in-front",
+     "rect": [
+      150,
+      40,
+      220,
+      150
+     ],
+     "lv": 1,
+     "draw": "cushion"
+    },
+    {
+     "id": "seat-2",
+     "kind": "person-seat",
+     "word": null,
+     "rel": "in-front",
+     "rect": [
+      420,
+      40,
+      220,
+      150
+     ],
+     "lv": 1,
+     "draw": "cushion"
+    },
+    {
+     "id": "seat-3",
+     "kind": "person-seat",
+     "word": null,
+     "rel": "in-front",
+     "rect": [
+      690,
+      40,
+      220,
+      150
+     ],
+     "lv": 1,
+     "draw": "cushion"
+    },
+    {
+     "id": "seat-4",
+     "kind": "person-seat",
+     "word": null,
+     "rel": "in-front",
+     "rect": [
+      960,
+      40,
+      220,
+      150
+     ],
+     "lv": 1,
+     "draw": "cushion"
+    },
+    {
+     "id": "seat-5",
+     "kind": "person-seat",
+     "word": null,
+     "rel": "in-front",
+     "rect": [
+      1230,
+      40,
+      220,
+      150
+     ],
+     "lv": 3,
+     "draw": "cushion"
+    }
+   ],
+   "spots": [
+    {
+     "id": "f1a",
+     "x": 198,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-1"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "right": "f1b",
+      "front": "l1"
+     }
+    },
+    {
+     "id": "f1b",
+     "x": 322,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-1"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "left": "f1a"
+     },
+     "adj": [
+      "f2a"
+     ]
+    },
+    {
+     "id": "f2a",
+     "x": 468,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-2"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "right": "f2b"
+     },
+     "adj": [
+      "f1b"
+     ]
+    },
+    {
+     "id": "f2b",
+     "x": 592,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-2"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "left": "f2a"
+     },
+     "adj": [
+      "f3a"
+     ]
+    },
+    {
+     "id": "f3a",
+     "x": 738,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-3"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "right": "f3b"
+     },
+     "adj": [
+      "f2b"
+     ]
+    },
+    {
+     "id": "f3b",
+     "x": 862,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-3"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "left": "f3a"
+     },
+     "adj": [
+      "f4a"
+     ]
+    },
+    {
+     "id": "f4a",
+     "x": 1008,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-4"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "right": "f4b"
+     },
+     "adj": [
+      "f3b"
+     ]
+    },
+    {
+     "id": "f4b",
+     "x": 1132,
+     "y": 305,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-4"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "left": "f4a"
+     },
+     "adj": [
+      "f5a"
+     ]
+    },
+    {
+     "id": "f5a",
+     "x": 1278,
+     "y": 305,
+     "cap": 1,
+     "lv": 3,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-5"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "right": "f5b"
+     },
+     "adj": [
+      "f4b"
+     ]
+    },
+    {
+     "id": "f5b",
+     "x": 1402,
+     "y": 305,
+     "cap": 1,
+     "lv": 3,
+     "tags": [
+      {
+       "rel": "in-front",
+       "anchor": "seat-5"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "left": "f5a",
+      "front": "r1"
+     }
+    },
+    {
+     "id": "m1",
+     "x": 720,
+     "y": 470,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "middle"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "right": "m2",
+      "front": "n2"
+     }
+    },
+    {
+     "id": "m2",
+     "x": 880,
+     "y": 470,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "middle"
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "left": "m1"
+     }
+    },
+    {
+     "id": "l1",
+     "x": 250,
+     "y": 470,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "left",
+       "lv": 2
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "front": "l2",
+      "back": "f1a"
+     }
+    },
+    {
+     "id": "l2",
+     "x": 250,
+     "y": 620,
+     "cap": 1,
+     "lv": 2,
+     "tags": [
+      {
+       "rel": "left",
+       "lv": 2
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "back": "l1"
+     }
+    },
+    {
+     "id": "r1",
+     "x": 1350,
+     "y": 470,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "right",
+       "lv": 2
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "front": "r2",
+      "back": "f5b"
+     }
+    },
+    {
+     "id": "r2",
+     "x": 1350,
+     "y": 620,
+     "cap": 1,
+     "lv": 2,
+     "tags": [
+      {
+       "rel": "right",
+       "lv": 2
+      }
+     ],
+     "surface": "cloth",
+     "nbr": {
+      "back": "r1"
+     }
+    },
+    {
+     "id": "n1",
+     "x": 520,
+     "y": 620,
+     "cap": 1,
+     "lv": 1,
+     "tags": [],
+     "surface": "cloth",
+     "nbr": {
+      "right": "n2"
+     }
+    },
+    {
+     "id": "n2",
+     "x": 800,
+     "y": 620,
+     "cap": 1,
+     "lv": 1,
+     "tags": [],
+     "surface": "cloth",
+     "nbr": {
+      "left": "n1",
+      "right": "n3",
+      "back": "m1"
+     }
+    },
+    {
+     "id": "n3",
+     "x": 1080,
+     "y": 620,
+     "cap": 1,
+     "lv": 1,
+     "tags": [],
+     "surface": "cloth",
+     "nbr": {
+      "left": "n2"
+     }
+    }
+   ],
+   "convention": {
+    "_about": "everyone gets their things in front of them, in tray order, then the middle",
+    "fill": [
+     "f1a",
+     "f1b",
+     "f2a",
+     "f2b",
+     "f3a",
+     "f3b",
+     "f4a",
+     "f4b",
+     "f5a",
+     "f5b",
+     "m1",
+     "m2"
+    ]
+   }
+  }
+ }
+}
