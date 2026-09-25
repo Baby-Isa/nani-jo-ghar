@@ -60,8 +60,12 @@
     Cook.quietUntil = Date.now() + ((Cook.data.calm || {}).quietMs || 0);
     Cook.save.seenStation[key] = true;
     if (ctx.nextStep) ctx.nextStep(key);
+    // Wave 6: the first time here, dim all but the next thing and show the move (js/cook/coach.js).
+    // Only in a guided run (a dish's first order; the lab's "Nani helps"): the spotlight can be the answer
+    if (Cook.Coach && UI.w6() && ctx.guided) Cook.Coach.start(key);
   }
   function end() {
+    if (Cook.Coach) Cook.Coach.stop();
     UI.hideGist();
     UI.hideCount();
     UI.hideDone();

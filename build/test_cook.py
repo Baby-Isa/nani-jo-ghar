@@ -181,6 +181,31 @@ class Player:
         time.sleep(0.2)
         if self.page.query_selector("#help-pop:not(.hidden)"):
             raise AssertionError("the ? didn't close the goal again")
+        # Wave 6: the order card's one speaker reads it with read-along; the light bulb flips it to English for a moment
+        say = self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-say")
+        if say and say.is_visible():
+            say.click()
+            lit = False
+            for _ in range(30):
+                time.sleep(0.05)
+                if self.page.query_selector("#mission .reading"):
+                    lit = True
+                    self.shot("card-read-along")
+                    break
+            if not lit:
+                raise AssertionError("the order card's speaker didn't light up what it read")
+            time.sleep(0.6)
+        bulb = self.page.query_selector("#btn-bulb")
+        if bulb and bulb.is_visible() and self.page.query_selector("#mission:not(.hidden):not(.stamped)"):
+            bulb.click()
+            time.sleep(0.15)
+            if not self.page.query_selector("#side.english"):
+                raise AssertionError("the light bulb didn't flip the sidebar to English")
+            self.shot("bulb-english")
+            ms = self.page.evaluate("Cook.UI.bulbMs() / Cook.speed")
+            time.sleep(ms / 1000 + 0.4)
+            if self.page.query_selector("#side.english"):
+                raise AssertionError("the light bulb stayed on")
         if self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-replay"):
             self.page.click("#mission .m-replay")
             time.sleep(0.3)
@@ -616,23 +641,30 @@ ORDERS_JS = r"""
     }
   });
   // byLevel values: the order's level picks one (chai's cups, mishkaki's skewers).
-  // Level 1 is gentle on the hand but already varied for the ear (the owner's Wave 3 note).
+  // Wave 6: level 1 is the smallest round (one cup, one skewer, three pantry things), each level adds one thing;
+  // what's asked still varies from the first order (the owner's Wave 3 note).
   const seen = { extra: new Set(), skew: new Set(), chopN: new Set() };
-  [1, 2, 3].forEach((level) => {
+  [1, 2, 3, 4].forEach((level) => {
     for (let n = 0; n < 30; n++) {
       if (R.chai) {
         const c = R.chai.make("nana", { level });
-        const want = [2, 3, 3][level - 1];
+        const want = [1, 2, 3, 3][level - 1];
         if (c.cups.length !== want) out.errors.push("byLevel: chai level " + level + " has " + c.cups.length + " cups");
-        if (level < 3 && c.cups.some((p) => p.amount)) out.errors.push("byLevel: chai half/full before level 3");
+        if (level < 4 && c.cups.some((p) => p.amount)) out.errors.push("byLevel: chai half/full before level 4");
         if (level === 1) c.cups.forEach((p) => seen.extra.add(p.extra || "plain"));
       }
       if (R.mishkaki) {
         const m = R.mishkaki.make("nana", { level });
         const tot = Object.values(m.skewers).reduce((a, b) => a + b, 0);
-        const ok = level === 1 ? tot === 2 : level === 2 ? tot >= 2 && tot <= 3 : tot >= 3 && tot <= 4;
-        if (!ok || (m.skewers["ph-mixed"] || 0) > [0, 1, 2][level - 1]) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+        const ok = level === 1 ? tot === 1 : level === 2 ? tot === 2 : level === 3 ? tot >= 2 && tot <= 3 : tot >= 3 && tot <= 4;
+        if (!ok || (m.skewers["ph-mixed"] || 0) > [0, 0, 1, 2][level - 1]) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+        if (m.chips !== undefined) out.errors.push("mishkaki: no chips on the grill (Wave 6)");
         if (level === 1) seen.skew.add(JSON.stringify(m.skewers));
+      }
+      if (R.pantry) {
+        const pd = R.pantry.make("nani", { level });
+        const things = [].concat(pd.first, pd.rest);
+        if (things.length !== level + 2 || new Set(things).size !== things.length) out.errors.push("pantry level " + level + ": " + JSON.stringify(things));
       }
       if (R.daal && level === 1) {
         const dd = R.daal.make("nana", { level });
@@ -646,19 +678,21 @@ ORDERS_JS = r"""
   // the Maani line: how many of each kind (sizes from level 3), the kinds said in either order
   let both = 0;
   let bajrFirst = 0;
-  for (let lv = 1; lv <= 3; lv++) {
+  for (let lv = 1; lv <= 4; lv++) {
     for (let n = 0; n < 60; n++) {
       const d = R.maani.make("nana", { level: lv });
       const tot = Object.values(d.maani).reduce((a, b) => a + b, 0);
-      const [lo, hi] = [[3, 3], [3, 5], [2, 4]][lv - 1];
+      const [lo, hi] = [[1, 1], [2, 2], [3, 3], [2, 4]][lv - 1];
       if (tot < lo || tot > hi) out.errors.push(`maani level ${lv}: total ${tot}`);
-      if (lv === 1 && !(d.maani["cook-maani"] && d.maani["cook-bajrmaani"])) out.errors.push(`maani level 1 asks for both doughs ${JSON.stringify(d.maani)}`);
-      if ((lv === 3) !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes only at level 3 ${JSON.stringify(d.maani)}`);
+      if (lv === 3 && !(d.maani["cook-maani"] && d.maani["cook-bajrmaani"])) out.errors.push(`maani level 3 asks for both doughs ${JSON.stringify(d.maani)}`);
+      if ((lv === 4) !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes only at level 4 ${JSON.stringify(d.maani)}`);
       const L = Cook.Order.ladder(d, 0);
       const rows = [].concat(...L.sections.map((s) => [].concat(...s.groups)));
       const said = Cook.Lang.plain(Cook.Order.speech([L]));
-      // the size word: an English placeholder (big/small) or Zafar's draft Kutchi (vadho/nindho)
-      if (lv === 3 && !/big|small|vadho|nindho/.test(said)) out.errors.push(`maani level 3 says the size: ${said}`);
+      // the size word: an English placeholder (big/small) or the family words (wadho/wadhi, nindho/nindhi)
+      if (lv === 4 && !/big|small|wadh|nindh/.test(said)) out.errors.push(`maani level 4 says the size: ${said}`);
+      // maani is a she-word: "one" and the sizes take the she-forms (hakri, wadhi, nindhi)
+      if (/hakro|wadho |nindho /.test(said)) out.errors.push(`maani takes the she-forms: ${said}`);
       const kinds = new Set(rows.map((r) => r.ids[r.ids.length - 1]));
       if (kinds.size > 1) {
         both++;
@@ -667,7 +701,9 @@ ORDERS_JS = r"""
     }
   }
   if (both && (bajrFirst === 0 || bajrFirst === both)) out.errors.push(`maani: the two kinds are always said in the same order (${bajrFirst}/${both})`);
-  out.maani = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.maani.make("nana", { level: 3 }), 0)]));
+  out.maani = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.maani.make("nana", { level: 4 }), 0)]));
+  if (R.pantry) out.pantry = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.pantry.make("nani", { level: 1 }), 0)]));
+  out.chai = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.chai.make("nana", { level: 2 }), 0)], { withWhen: true }));
   const d = R.chaat.make("nana");
   out.example = R.ladder({ who: "nana", dishes: [d] }).map((r) => [r.dish, r.kind, r.ids.join("+"), r.qty, r.dot, r.group, Cook.Lang.plain(r.line)]);
   out.said = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(d, 0)]));
@@ -686,7 +722,9 @@ def run_orders(vp, speed):
     for row in res["example"]:
         print("  ladder:", row)
     print("  said:", res["said"])
-    print("  maani (level 3):", res["maani"])
+    print("  maani (level 4):", res["maani"])
+    print("  pantry (level 1):", res.get("pantry"))
+    print("  chai (level 2, with the tray's rows):", res.get("chai"))
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if res["errors"] or bad:
         raise AssertionError(f"order model: {res['errors'][:3]} console: {bad[:3]}")

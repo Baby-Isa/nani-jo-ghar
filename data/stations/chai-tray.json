@@ -1,5 +1,5 @@
 {
- "_about": "Data for the Chai tray (js/cook/stations/chai-tray.js). `station`: its name, goal and one goal line per phase. `words`: ph-half/ph-full are now drafted centrally in data/cook.json (Zafar, 25 Sept, phonetic, unconfirmed: adh / bharelo), so nothing is merged from here any more; left empty as a hook if a station-only word is ever needed. `mechanic.levels`: the tray's own settings (who and what the order asks for is in the chai recipe's slots, by level: 1 = two people, each with their own milk, sugar and plain/elchi/aadu; 2 = three people; 3 = three plus half/full). lines: where the dashed lines sit in a cup (the same on every cup, so they never answer the order); tolerance: how close to a line counts as on it; halfLine: draw the half line too (both lines, never only the asked one); extras: the bowls for elchi/ginger and their look-alike (on the tray from level 1, asked for or not); decoys: the look-alikes beside the sugar; boilLevel: the back burner's boil level (its tray profile is in mechanics.boil).",
+ "_about": "Data for the Chai tray (js/cook/stations/chai-tray.js). `station`: its name, goal and one goal line per phase. `words`: ph-half/ph-full are now drafted centrally in data/cook.json (Zafar, 25 Sept, phonetic, unconfirmed: adh / bharelo), so nothing is merged from here any more; left empty as a hook if a station-only word is ever needed. `mechanic.levels`: the tray's own settings (who and what the order asks for is in the chai recipe's slots, by level, Wave 6: 1 = one cup; 2 = two; 3 = three; 4 = three plus half/full, when the half line is drawn too). lines: where the dashed lines sit in a cup (the same on every cup, so they never answer the order); tolerance: how close to a line counts as on it; halfLine: draw the half line too (both lines, never only the asked one); extras: the bowls for elchi/ginger and their look-alike (on the tray from level 1, asked for or not); decoys: the look-alikes beside the sugar; boilLevel: the back burner's boil level (its tray profile is in mechanics.boil).",
  "station": {
   "name": "Chai tray",
   "verb": "Listen, pour, spoon, boil",
@@ -15,9 +15,47 @@
  "words": {},
  "mechanic": {
   "levels": [
-   {"lines": {"milk": 0.22, "half": 0.48, "full": 0.8}, "tolerance": 0.07, "milkTolerance": 0.09, "halfLine": false, "showExtras": true, "extras": ["spi-10", "veg-14", "veg-13"], "decoys": ["spi-16"], "boilLevel": 1, "water": [0.42, 0.58], "teaDecoys": ["spi-02", "spi-05"], "speakGapMs": 300, "tallyMax": 6},
-   {"tolerance": 0.06, "boilLevel": 2},
-   {"tolerance": 0.055, "halfLine": true, "boilLevel": 3}
+   {
+    "lines": {
+     "milk": 0.22,
+     "half": 0.48,
+     "full": 0.8
+    },
+    "tolerance": 0.07,
+    "milkTolerance": 0.09,
+    "halfLine": false,
+    "showExtras": true,
+    "extras": [
+     "spi-10",
+     "veg-14",
+     "veg-13"
+    ],
+    "decoys": [
+     "spi-16"
+    ],
+    "boilLevel": 1,
+    "water": [
+     0.42,
+     0.58
+    ],
+    "teaDecoys": [
+     "spi-02",
+     "spi-05"
+    ],
+    "speakGapMs": 300,
+    "tallyMax": 6
+   },
+   {
+    "tolerance": 0.06,
+    "boilLevel": 2
+   },
+   {
+    "tolerance": 0.055,
+    "boilLevel": 3
+   },
+   {
+    "halfLine": true
+   }
   ]
  }
 }

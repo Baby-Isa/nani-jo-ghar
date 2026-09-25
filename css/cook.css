@@ -189,7 +189,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
   background: rgba(45, 32, 24, 0.45); padding: 12px;
 }
-#overlay.title-mode { background: url("../assets/cook/bg/service.jpg?v=20260925T231703Z") center / cover; }
+#overlay.title-mode { background: url("../assets/cook/bg/service.jpg?v=20260925T233111Z") center / cover; }
 #panel {
   background: var(--cream); border-radius: 26px; box-shadow: 0 20px 60px rgba(40,25,10,.35);
   width: min(880px, 100%); max-height: 100%; overflow-y: auto; padding: clamp(14px, 2.5vw, 30px);
@@ -648,3 +648,152 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   /* room to spare under the picture: bigger words */
   #mission .lr .wp .wp-text, #nani-card .wp .wp-text, #mission .m-dish, #mission .lr.head .wp .wp-text { font-size: 19px; }
 }
+
+/* ================= Wave 6 (docs/UX-PRINCIPLES.md; pages with <body class="w6">: cook.html) ================= */
+/* 2. the sidebar is on the LEFT (people read left to right); Done and "Go to the barbecue" stay on the right */
+@media (min-aspect-ratio: 1333/1000) {
+  body.w6 #app { grid-template-columns: var(--side-w) 1fr; }
+  body.w6 #side { grid-column: 1; border-left: none; border-right: 1px solid rgba(80, 60, 40, 0.12); }
+  body.w6 #stage { grid-column: 2; }
+  body.w6 #passme { grid-column: 1; }
+}
+/* 4. the light bulb, top of the sidebar: English for a few seconds (the bar runs down) */
+body.w6 .side-top { display: flex; align-items: center; gap: 8px; flex: none; }
+#btn-bulb {
+  position: relative; overflow: hidden; width: 46px; height: 46px; border-radius: 14px; border: none; padding: 8px;
+  background: var(--cream); color: var(--brass); box-shadow: 0 2px 6px rgba(60,40,20,.12); display: inline-flex; align-items: center; justify-content: center;
+}
+#btn-bulb svg { width: 100%; height: 100%; position: relative; z-index: 1; }
+#btn-bulb.on { background: #ffe7a0; color: #8a6412; box-shadow: 0 0 0 4px rgba(255, 210, 90, .5); }
+#btn-bulb .bulb-t { position: absolute; left: 0; bottom: 0; width: 100%; height: 5px; background: var(--brass); transform-origin: left; transform: scaleX(0); }
+#btn-bulb.on .bulb-t { animation: bulbRun var(--bulb-ms, 3000ms) linear forwards; }
+@keyframes bulbRun { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+/* the English words while it's on */
+.en6 { font-family: var(--ui-font); font-weight: 800; color: var(--indigo); }
+body.w6 #side.english #nani-card .wp-text, body.w6 #side.english #passme .pm-say .wp-text { display: none; }
+body.w6 #side.english #nani-card .wp-en, body.w6 #side.english #passme .pm-say .wp-en { display: inline !important; font-size: clamp(15px, 1.35vw, 19px); color: var(--indigo); }
+
+/* the order card: face | dish line over the stars; one speaker in the top-right corner */
+body.w6 #mission .m-tools { display: none; }
+body.w6 #mission .m-head { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "face dish" "face stars"; padding-right: 38px; }
+@container side (max-width: 270px) {
+  body.w6 #mission .m-head { grid-template-areas: "face stars" "dish dish"; }
+}
+.card-say {
+  position: absolute; top: 6px; right: 6px; z-index: 2; width: 32px; height: 32px; border-radius: 50%; border: none; padding: 6px;
+  background: #efe4d2; color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
+}
+.card-say svg { width: 100%; height: 100%; }
+.card-say.on { background: var(--ink); color: var(--cream); }
+#mission.stamped .card-say { visibility: hidden; }
+
+/* rows: a dot and the words, nothing else */
+.r6 { padding-right: 4px; }
+.r6 .lt { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(16px, 1.4vw, 20px); line-height: 1.25; overflow-wrap: break-word; }
+.r6 .lt .word, .icard .word, #mission .md-text .word { color: var(--madder); }
+.r6 .lt .ph, .icard .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-weight: 700; }
+.r6 .lt .dots, .icard .dots { letter-spacing: 2px; color: var(--ink-soft); }
+.r6.done .lt::after { content: " \2713"; color: var(--sage-dark); }
+.r6.head { padding-left: 2px; }
+.lr.empty .ldot { background: transparent; box-shadow: inset 0 0 0 2px #cdb892; }
+.lr.empty { min-height: 1.4em; }
+/* read-along: the part being said lights up */
+.reading { background: #fff0c2 !important; box-shadow: 0 0 0 3px #ffd98a !important; border-radius: 10px; }
+.pslot.reading { border-radius: 8px; }
+
+/* 3. one card per thing, a fixed shape: a person's cup, a skewer (always four dots), a maani */
+.icards { display: flex; flex-wrap: wrap; gap: 6px; }
+.icard { position: relative; background: var(--paper); border: 2px solid #eadcc6; border-radius: 14px; padding: 6px 6px 6px 8px; min-width: 0; }
+/* a card's speaker floats in its top-right corner: the words flow beside it, and a long word goes below it whole */
+.icard .card-say { position: relative; top: auto; right: auto; float: right; margin: -2px -2px 2px 6px; }
+.icard .ic-slots { clear: both; }
+.icard.unit { flex: 1 1 96px; }
+/* a card that names its pieces (a mixed skewer) takes the whole row, so four words fit under four dots */
+.icard.unit.named { flex-basis: 100%; }
+.icard .ic-title { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(15px, 1.3vw, 19px); line-height: 1.2; min-height: 1.2em; overflow-wrap: normal; word-break: normal; hyphens: none; }
+.icard .ic-slots { display: flex; gap: 8px; margin-top: 5px; align-items: flex-start; }
+.icard .pslot { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0; }
+.icard .pslot i { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--ink-soft); box-shadow: 0 0 0 2px var(--cream); }
+.icard .ic-slots.named { gap: 4px; }
+.icard .ic-slots.named .pslot { flex: 1 1 auto; }
+.icard .pslot b { font-family: var(--kutchi-font); font-size: 12px; line-height: 1.1; text-align: center; overflow-wrap: normal; word-break: normal; }
+.icard.done { background: #eaf3e4; border-color: #cfe3c6; }
+.icard.done .pslot i, .icard .pslot.done i { background: var(--sage); }
+.icard.person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px; align-items: start; margin-bottom: 4px; }
+.icard.person .lface { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; background: #f3ead9; box-shadow: 0 0 0 2px var(--cream); }
+.icard.person .ic-title { font-size: clamp(13px, 1.1vw, 16px); color: var(--ink-soft); }
+.icard.person .lrows { margin-top: 2px; }
+
+/* 1. the request card: the same cards, big, over the picture; then it shrinks into the sidebar */
+#intro .ic-how { margin-top: clamp(6px, 1.2vh, 12px); font-weight: 700; color: var(--ink-soft); font-size: clamp(13px, min(1.5vw, 3vh), 18px); line-height: 1.3; }
+#intro .ic-how:empty { display: none; }
+#intro .r6 { --dot-y: .72em; padding-left: 1.15em; }
+#intro .r6 .lt { font-size: clamp(20px, min(2.8vw, 6vh), 34px); line-height: 1.3; }
+#intro .r6 .ldot { width: .42em; height: .42em; margin-top: -.21em; left: .1em; }
+#intro .r6.up::before, #intro .r6.down::after { left: calc(.1em + .21em - 1px); border-left-width: 3px; }
+#intro .r6.head { padding-left: 0; }
+#intro .r6.head .lt { font-size: clamp(17px, min(2.2vw, 4.4vh), 28px); color: var(--ink-soft); }
+#intro .icards { gap: clamp(6px, 1vw, 12px); }
+#intro .icard { padding: clamp(6px, 1vh, 12px) clamp(6px, 1vh, 12px) clamp(6px, 1vh, 12px) clamp(8px, 1vw, 14px); border-radius: 18px; }
+#intro .icard.unit { flex: 0 1 auto; min-width: min(190px, 100%); }
+#intro .icard .ic-title { font-size: clamp(18px, min(2.4vw, 5vh), 30px); }
+#intro .icard .pslot i { width: clamp(16px, 1.8vw, 24px); height: clamp(16px, 1.8vw, 24px); }
+#intro .icard .pslot b { font-size: clamp(12px, 1.3vw, 17px); }
+#intro .icard.person { flex: 1 1 260px; }
+#intro .icard.person .lface { width: clamp(30px, min(4vw, 8vh), 48px); height: auto; aspect-ratio: 1; }
+#intro .icard .card-say { width: clamp(32px, 3.4vw, 42px); height: clamp(32px, 3.4vw, 42px); }
+#intro .ladder { flex-direction: row; flex-wrap: wrap; }
+
+/* 8. the UI fades in as it's first needed: the stars from the second order, the light bulb from the third */
+body.w6:not(.ui-stars) #mission .m-stars { display: none; }
+body.w6:not(.ui-bulb) .side-top { display: none; }
+body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeIn .9s ease-out; }
+
+@media (max-height: 430px) {
+  #btn-bulb { width: 40px; height: 40px; padding: 7px; }
+  .card-say { width: 28px; height: 28px; padding: 5px; top: 4px; right: 4px; }
+  body.w6 #mission .m-head { padding-right: 32px; }
+  .r6 .lt { font-size: 16px; }
+  .icard { padding: 4px 4px 4px 6px; border-radius: 11px; }
+  .icard .ic-title { font-size: 15px; }
+  .icard .pslot i { width: 11px; height: 11px; }
+  .icard.person .lface { width: 26px; height: 26px; }
+  /* a short phone: a cup's slots run along one line, so three cups fit */
+  #side .icard.person .lrows { flex-direction: row; flex-wrap: wrap; gap: 0 10px; }
+  #intro .icard .card-say { width: 30px; height: 30px; }
+}
+
+/* 8. first-time onboarding (js/cook/coach.js): dim all but one thing, a ghost finger shows the move; never takes a tap */
+#coach { position: fixed; inset: 0; z-index: 40; pointer-events: none; overflow: hidden; }
+#coach .co-hole {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  box-shadow: 0 0 0 200vmax rgba(35, 24, 16, 0.55), inset 0 0 0 4px rgba(255, 217, 138, .9);
+  transition: left .35s ease, top .35s ease, width .35s ease, height .35s ease;
+  animation: fadeIn .4s ease-out;
+}
+#coach .co-finger {
+  position: absolute; width: 58px; height: 58px; margin: -8px 0 0 -18px; pointer-events: none;
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M22 30V10a5 5 0 0 1 10 0v16l2-1a5 5 0 0 1 6 2l1 1a5 5 0 0 1 7 1l1 2a5 5 0 0 1 7 3v11c0 9-6 16-15 16h-4c-6 0-10-3-13-8l-9-14a5 5 0 0 1 8-6z' fill='%23fffaf1' stroke='%232d2018' stroke-width='3' stroke-linejoin='round' opacity='.95'/%3E%3C/svg%3E");
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.35));
+  animation: coTap 2.4s ease-in-out infinite;
+}
+#coach .co-finger.m-hold { animation: coHold 2.8s ease-in-out infinite; }
+#coach .co-finger.m-swipe { animation: coSwipe 2.2s ease-in-out infinite; }
+#coach .co-finger.m-roll { animation: coRoll 2.2s ease-in-out infinite; }
+#coach .co-finger.m-stir { animation: coStir 2.4s linear infinite; }
+@keyframes coTap { 0%, 55%, 100% { transform: translate(18px, 30px) scale(1); opacity: .9; } 15% { transform: translate(0, 0) scale(.88); opacity: 1; } 25% { transform: translate(8px, 12px) scale(1); } }
+@keyframes coHold { 0%, 100% { transform: translate(18px, 30px); opacity: .85; } 15%, 70% { transform: translate(0, 0) scale(.86); opacity: 1; } }
+@keyframes coSwipe { 0% { transform: translate(calc(var(--dx) * -.5), calc(var(--dy) * -.5)); opacity: 0; } 12% { opacity: 1; } 60% { transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5)); opacity: 1; } 75%, 100% { transform: translate(calc(var(--dx) * .5), calc(var(--dy) * .5)); opacity: 0; } }
+@keyframes coRoll { 0%, 100% { transform: translate(0, calc(var(--rr) * .7)); } 50% { transform: translate(0, calc(var(--rr) * -.7)); } }
+@keyframes coStir { 0% { transform: rotate(0deg) translateX(var(--rr)) rotate(0deg); } 100% { transform: rotate(360deg) translateX(var(--rr)) rotate(-360deg); } }
+
+/* 5. the big button between two jobs ("Go to the barbecue"), bottom right under the thumb */
+#go-btn {
+  position: absolute; z-index: 8; right: 2.5%; bottom: 4%; display: inline-flex; align-items: center; gap: 10px;
+  border: none; border-radius: 999px; padding: clamp(10px, 1.6vw, 18px) clamp(16px, 2.4vw, 30px);
+  background: var(--madder); color: #fff; box-shadow: 0 5px 0 #86362a, var(--shadow);
+  font-family: var(--ui-font); font-weight: 800; font-size: clamp(17px, 2.2vw, 28px);
+}
+#go-btn .go-arrow { font-size: 1.2em; line-height: 1; }
+#go-btn.glow { animation: glowPulse 1s ease-in-out infinite; }
+#go-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #86362a, var(--shadow); }

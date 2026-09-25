@@ -32,6 +32,8 @@
   const COMPOUND_RE = /\b(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+(?:\+(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+)+/;
   const wordsOf = (why) =>
     String(why)
+      // a compound kind in agreement ("ph-big+cook-maani" -> "wadhi maani": maani is a she-word)
+      .replace(new RegExp(COMPOUND_RE.source, "g"), (m) => Lang.plain(Lang.phrase(m.split("+").filter((id) => Cook.data.words[id]))))
       .replace(/\+(?=(?:cook|veg|spi|fru|ph|num|lnk)-)/g, " ")
       .replace(ID_RE, (id) => (Cook.data.words[id] ? Cook.display(id) : id));
   /**
@@ -133,7 +135,12 @@
       if (st && st.goal && UI.helpText() !== st.goal) UI.gist(st.goal);
     };
     ctx.tickItem = (id) => {
-      if (typeof id === "number") id = UI.mission.unitId(id, ctx.dishAt);
+      if (typeof id === "number") {
+        // a position in the dish's sequence (a mixed skewer's piece): that row, not a count row with the same word
+        const r = UI.mission.tickUnit(id, ctx.dishAt);
+        if (r && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(r.ids[0]), ok: true });
+        return;
+      }
       if (typeof id !== "string") return;
       UI.mission.tickItem(id, ctx.dishAt);
       if (ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
@@ -181,6 +188,24 @@
   const S = () => Cook.scene;
   /** Wave 5 (clarity and calm): how much Nani says, from data.calm. */
   const calm = () => Cook.data.calm || {};
+  /**
+   * Wave 6: the UI appears as it's first needed (docs/UX-PRINCIPLES.md 8).
+   * A new player's first order has just the order card; the stars fade in
+   * from the second order, the light bulb from the third (data.calm.uiAfter).
+   * The Station lab, and anyone who has played before Wave 6, sees it all.
+   */
+  function uiStage({ all = false } = {}) {
+    const n = Cook.save.orders || 0;
+    const after = calm().uiAfter || { stars: 1, bulb: 2 };
+    // someone who played before Wave 6 (dishes taught, no orders counted) keeps everything
+    if (!n && Object.keys(Cook.save.taught || {}).length > 0) Cook.save.uiAll = true;
+    all = all || !!Cook.save.uiAll;
+    document.body.classList.toggle("ui-stars", all || n >= after.stars);
+    document.body.classList.toggle("ui-bulb", all || n >= after.bulb);
+  }
+  Cook.uiStage = uiStage;
+  /** The request card's instructions: what to do, in plain English (the recipe's `how`). */
+  const howFor = (dishes) => ((Cook.data.recipes[(dishes[0] || {}).recipe] || {}).how || null);
 
   /* ---------------- small talk ---------------- */
   function exMastered(id) {
@@ -294,17 +319,22 @@
     const ladders = openLadders(ctx, order.dishes);
     ctx.steps = order.dishes.flatMap(chipsFor);
     const name = who === "nani" ? "Nani" : Cook.data.customers[who].name;
+    uiStage();
 
-    if (!demo) {
+    if (!demo && who === "nani") {
+      // Nani asks herself (the pantry): she's already here, no small talk
+      await serviceView(null);
+      await Cook.wait(500);
+    } else if (!demo) {
       await serviceView(who, { enter: true });
       await Cook.wait(900);
       await exchange(who, EX("salaam"));
       if (Math.random() < 0.35) await exchange(who, EX("howareyou"));
       if (Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
     }
-    // the order comes up big in the middle while it's said, then flies into the sidebar
+    // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
     UI.hideBubble();
-    UI.mission.open({ who, name, ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy" });
+    UI.mission.open({ who, name, ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: howFor(order.dishes) });
     const stop = talking(who);
     try {
       await UI.mission.introduce();
@@ -312,6 +342,10 @@
       stop();
     }
     if (!demo) startPatience(order);
+    if (!demo) {
+      Cook.save.orders = (Cook.save.orders || 0) + 1;
+      Cook.writeSave();
+    }
     for (const [i, d] of order.dishes.entries()) {
       ctx.guided = !!demo || !Cook.save.taught[d.recipe];
       ctx.dishAt = i;
@@ -389,7 +423,7 @@
 
   async function serve(order, ctx) {
     const who = order.who;
-    await serviceView(who);
+    await serviceView(who === "nani" ? null : who);
     const busy = Cook.save.mode === "busy";
     if (busy && state.patience != null && state.patience < 0.35) S().setMood(who, "impatient");
     drawServed(ctx, Cook.CHARS[who].x);
@@ -432,11 +466,16 @@
     UI.mission.stamp();
     Cook.writeSave();
     await Cook.wait(900);
-    await S().talk(who, Lang.line("thanks"), { after: n >= 2 ? "happy" : "neutral" });
-    await S().talk("nani", Lang.line("welcome"), { ms: 900 });
-    await S().talk(who, Lang.line("bye"));
+    if (who === "nani") {
+      // Nani's own list (the pantry): just her thanks; she stays in her kitchen
+      await S().talk("nani", Lang.line("thanks"), { after: "happy" });
+    } else {
+      await S().talk(who, Lang.line("thanks"), { after: n >= 2 ? "happy" : "neutral" });
+      await S().talk("nani", Lang.line("welcome"), { ms: 900 });
+      await S().talk(who, Lang.line("bye"));
+    }
     UI.hideBubble();
-    await S().leaveChar(who);
+    if (who !== "nani") await S().leaveChar(who);
     state.ordersServed = (state.ordersServed || 0) + 1;
     const card = Object.assign({ who, dishes: order.dishes, stars, coins, receipt, reasons: ctx.reasons.slice(), help: ctx.help, lines: [Lang.plain(ctx.orderLine)] }, outcome(ctx, stars, busy));
     state.cards.push(card);
@@ -465,28 +504,40 @@
       UI.setCoins(Cook.save.coins);
     }
     await serviceView(null);
-    if (!Cook.save.rulesSeen) {
-      await showRules();
-      Cook.save.rulesSeen = true;
-      Cook.writeSave();
-    }
+    // Wave 6: no tutorial first. A new player's first thing is the smallest round there is,
+    // Nani's pantry list (three things); the pocket-money rules come after it
+    const nanisFirst = (spec) => spec.who === "nani" && !free;
+    if (!Cook.save.rulesSeen && !(day.orders[0] && nanisFirst(day.orders[0]))) await rulesOnce();
     UI.gist(day.gist, { top: true });
     await Cook.wait(2400);
     UI.hideGist();
-    if (!free && day.id === 1 && !Cook.save.taught.chai) {
-      await exchange("nani", EX("salaam"));
-      await S().talk("nani", Lang.line("pocket"), { ms: 3800 });
-      await runOrder({ who: "nani", dishes: [R.chai.make("nani")] }, day, { demo: true });
-      await serviceView(null);
-      S().prop("glass-chai", 470, 712, 100, 130, { depth: Cook.D.occ + 2 });
-      S().setMood("nani", "happy");
-      Cook.sfx.fanfare();
-      UI.gist("Now Nana wants chai. Listen carefully: he'll say how he likes it!", { top: true });
-      await Cook.wait(2600);
-      UI.hideGist();
+    for (const spec of day.orders) {
+      // Nani shows chai once before the first chai order of the story
+      if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
+      await runOrder(buildOrder(spec), day);
+      if (nanisFirst(spec)) await rulesOnce();
     }
-    for (const spec of day.orders) await runOrder(buildOrder(spec), day);
     finishDay(day, { free });
+  }
+  async function rulesOnce() {
+    if (Cook.save.rulesSeen) return;
+    await showRules();
+    Cook.save.rulesSeen = true;
+    Cook.writeSave();
+  }
+  /** Day 1: Nani makes a chai herself, then it's your turn. */
+  async function chaiDemo() {
+    await serviceView(null);
+    await exchange("nani", EX("salaam"));
+    await S().talk("nani", Lang.line("pocket"), { ms: 3800 });
+    await runOrder({ who: "nani", dishes: [R.chai.make("nani")] }, state.day, { demo: true });
+    await serviceView(null);
+    S().prop("glass-chai", 470, 712, 100, 130, { depth: Cook.D.occ + 2 });
+    S().setMood("nani", "happy");
+    Cook.sfx.fanfare();
+    UI.gist("Now Nana wants chai. Listen carefully: he'll say how he likes it!", { top: true });
+    await Cook.wait(2600);
+    UI.hideGist();
   }
 
   /** Pocket-money rules, shown once, before the first day. */
@@ -722,7 +773,7 @@
       <h2>Station lab</h2>
       <p>Try any station on its own, with a random order each time. Tell Zafar's Claude what feels unclear or not fun!</p>
       <label style="display:flex;gap:8px;align-items:center;font-weight:800"><input type="checkbox" id="lab-guided" ${guided ? "checked" : ""}> Nani helps (first-time guidance)</label>
-      <div class="seg" role="group" aria-label="Level">${[1, 2, 3].map((n) => `<button data-level="${n}" class="${n === level ? "on" : ""}">Level ${n}</button>`).join("")}</div>
+      <div class="seg" role="group" aria-label="Level">${[1, 2, 3, 4].map((n) => `<button data-level="${n}" class="${n === level ? "on" : ""}">Level ${n}</button>`).join("")}</div>
       <div class="lab-grid">${labList().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
       <h3>Whole recipes</h3>
       <div class="lab-grid">${labRecipes().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
@@ -757,7 +808,8 @@
         ctx.orderLine = Lang.join(what);
       } else openLadders(ctx, [what]);
       ctx.lines = [{ line: ctx.orderLine }];
-      UI.mission.open({ who: "nana", name: "Nana (lab)", ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy" });
+      uiStage({ all: true });
+      UI.mission.open({ who: "nana", name: "Nana (lab)", ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
       // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
       ctx.intro = UI.mission.introduce().catch(() => {});
     };
@@ -883,8 +935,9 @@
   }
 
   /** Quick order: one random customer order from the dishes you've learned. */
+  const orderable = (k) => Cook.save.taught[k] && Cook.data.recipes[k].free !== false;
   function generateDay(n = 1) {
-    const recipes = Object.keys(Cook.data.recipes).filter((k) => Cook.save.taught[k]);
+    const recipes = Object.keys(Cook.data.recipes).filter(orderable);
     if (!recipes.length) recipes.push("chai");
     const orders = Cook.shuffle(["nana", "ma", "cousin"])
       .slice(0, n)
@@ -935,7 +988,7 @@
 
   /** One open-kitchen customer: a random taught dish for a random family member. */
   function generateCustomer() {
-    const recipes = Object.keys(Cook.data.recipes).filter((k) => Cook.save.taught[k]);
+    const recipes = Object.keys(Cook.data.recipes).filter(orderable);
     if (!recipes.length) recipes.push("chai");
     const who = Cook.pick(["nana", "ma", "cousin"]);
     const dishes = Cook.shuffle(recipes).slice(0, recipes.length > 1 && Math.random() < 0.4 ? 2 : 1);

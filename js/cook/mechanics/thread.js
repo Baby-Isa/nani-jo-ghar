@@ -13,11 +13,16 @@
  * where the skewers end up (the grill's plate, or Done when threading on
  * its own).
  *
- * In a zone with an `out` channel (the Mishkaki grill station) each
- * finished skewer is sent on as {kind: "skewer", pieces, sprite} when the
- * rack has room (`line.room()`); `until` (a promise) ends it.
+ * In a zone with an `out` channel (the Mishkaki grill's juggle, level 4)
+ * each finished skewer is sent on as {kind: "skewer", pieces, sprite} when
+ * the rack has room (`line.room()`); `until` (a promise) ends it.
+ * Wave 6, one job at a time (`handoff`: {label, max}): the finished skewers
+ * wait in a row beside the board, the count isn't graded here (the plate
+ * is), and the big button ("Go to the barbecue") ends it; it returns
+ * {items: [{pieces}]} for the grill's rack. `max`: no more skewers than
+ * the rack holds.
  * Params: skewers ({kind word: count}), pattern (the mixed skewer, in
- * order), line, until, layout {bowlsX, boardX, rowX}.
+ * order), line, until, layout {bowlsX, boardX, rowX}, handoff.
  * Knobs (data.mechanics.thread): pieces (per skewer), decoys, decoyPool,
  * showAfterMs (after Nani's hint, the piece glows: being shown).
  */
@@ -41,6 +46,8 @@
       const pattern = params.pattern || [];
       const line = params.line || {};
       const lay = Object.assign({ bowlsX: 540, boardX: 800, rowX: 1010 }, params.layout || {});
+      const handoff = params.handoff || null;
+      const full = () => handoff && handoff.max && doneRow.length >= handoff.max;
       const n = k.pieces;
       const ordered = Object.keys(want).filter((w) => want[w] > 0);
       const mixedW = SK.kindWord("mixed");
@@ -82,7 +89,7 @@
 
       /** What a careful cook taps next: {w, id} (a piece for a skewer still needed), {undo}, or null. */
       const plan = () => {
-        if (!sk || sk.ids.length >= n) return null;
+        if (!sk || sk.ids.length >= n || full()) return null;
         const left = {};
         ordered.forEach((w) => (left[w] = want[w] - (made[w] || 0)));
         const cands = ordered.filter((w) => left[w] > 0 && SK.fits(w, sk.ids, pattern));
@@ -113,7 +120,7 @@
       /* a piece onto the skewer, from the tip */
       const tapPiece = async (id) => {
         poke();
-        if (busy || stopped || waiting || sk.ids.length >= n) {
+        if (busy || stopped || waiting || sk.ids.length >= n || full()) {
           S.wiggle(bowls[id]);
           return;
         }
@@ -201,8 +208,10 @@
       let doneShown = false;
       const doneBtn = () => {
         doneShown = true;
-        UI.done({ glow: false }).then(() => resolveStop());
+        if (handoff) UI.go(handoff.label, { glow: false }).then(() => resolveStop());
+        else UI.done({ glow: false }).then(() => resolveStop());
       };
+      const doneSel = handoff ? "#go-btn" : "#done-btn";
 
       /* every frame: help timers, glows, what to do next (for the test) */
       let lastT = performance.now();
@@ -220,7 +229,7 @@
             if (target) S.glow(target, true);
             glowing = target;
           }
-          if (!z.out && doneShown) UI.glowDone(!busy && !odd && !sk.ids.length && Object.keys(made).every((w) => made[w] === (want[w] || 0)) && ordered.every((w) => made[w] === want[w]));
+          if (!z.out && doneShown) (handoff ? UI.glowGo : UI.glowDone)(!busy && !odd && !sk.ids.length && Object.keys(made).every((w) => made[w] === (want[w] || 0)) && ordered.every((w) => made[w] === want[w]));
         } else if (target && !(line.cooking && line.cooking())) {
           idle += dtReal;
           if (!hinted && idle > Cook.hintDelay(p.w)) {
@@ -236,7 +245,7 @@
         }
         if (busy) return z.expect({ kind: "wait" });
         if (!p) {
-          if (!z.out && doneShown && !sk.ids.length) return z.expect({ kind: "click", selector: "#done-btn" });
+          if (!z.out && doneShown && !sk.ids.length) return z.expect({ kind: "click", selector: doneSel });
           return z.expect(null);
         }
         if (p.undo) return z.expect({ kind: "tap", x: hit.x, y: z.Y(SKY), key: "undo" });
@@ -254,6 +263,12 @@
       if (shown) S.glow(shown, false);
       ids.forEach((id) => S.untap(bowls[id]));
       S.untap(hit);
+      if (handoff) {
+        // one job at a time: the skewers go on to the barbecue's rack; the plate grades the count
+        UI.hideGo();
+        await Cook.wait(200);
+        return { items: doneRow.map((s) => ({ pieces: s.ids.slice() })) };
+      }
       if (!z.out) {
         UI.hideDone();
         // on its own, the count is graded here: the right number of each kind

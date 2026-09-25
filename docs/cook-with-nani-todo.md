@@ -116,16 +116,18 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 | Monsoon rush | `docs/modes/monsoon-rush-design.md` | ☑ designed | Go with changes |
 | Snap | `docs/modes/snap-design.md` | ☑ designed | Go with changes |
 
-## Wave 6: Zafar's grill playtest, 25 Sept (see `docs/UX-PRINCIPLES.md`), after the old chat's art wiring lands
-- ☐ Request card with read-along highlighting (by recorded chunk); shrinks into the sidebar
-- ☐ Sidebar moves to the **left**; action buttons stay on the right
-- ☐ Mishkaki: one card per skewer, always four dots; speaker in each card's top-right corner, reading in order with highlighting
-- ☐ Remove per-line translate/👁 and per-line speakers; one light bulb at the top of the sidebar (tap: English for 5/3/2/1 s by level; costs the ear star)
-- ☐ Grill in two phases: thread the skewers → "Go to the barbecue" → grill. The juggle returns as an optional hard level
-- ☐ Remove chips from the grill (they stay in samosa + fry)
-- ☐ Level 1 everywhere = smallest round (one skewer, one cup, three pantry items); pantry is the first thing a new player does
-- ☐ Overlay onboarding (dim, spotlight, ghost finger, one thing at a time); UI fades in as first needed
-- ☐ Family-word changes from Mum's recordings (`docs/kutchi-grammar-notes.md`): *daar*, two = *ba* ("ber"), *hakro/hakri*, *wadho/nindho* (+ she-forms), *watana*, *dudh waari chai*, *{person} lai*, *Muke {x} de*, *pela … ne poi …*
+## Wave 6: Zafar's grill playtest, 25 Sept (see `docs/UX-PRINCIPLES.md`) ☑ (branch `claude/build-cook-wave6`, report `build/reports/cook-wave6.md`)
+- ☑ Request card with read-along highlighting, by recorded chunk: each spoken line has its own voice file, and its row or card lights up while it plays. It shows the recipe's plain-English `how`, then shrinks into the sidebar. (Word-by-word highlighting inside a chunk waits for per-word timings from the family's recordings.)
+- ☑ Sidebar on the **left** (`<body class="w6">` in cook.html; Find it and the other pages sharing `js/cook/ui.js` keep the Wave 5 card until they opt in); Done and "Go to the barbecue" bottom right
+- ☑ One card per item, fixed shape: a card per skewer (always four dots; a mixed one names its pieces on its dots), per maani, per cup (face, *Nana lai.*, then milk / sugar / which chai; an empty slot for plain; half/full only when asked). Data: `cards`, `cardOf`, a recipe's `card`
+- ☑ Per-row speaker, 👁 and A/En removed. One light bulb at the top of the sidebar: English for 5/3/2/1 s by level (`data.calm.bulbMs`), costs the ear star like A/En did. One speaker in each card's top-right corner, reading it with read-along (a replay once it's dots costs the no-help star)
+- ☑ Grill in two phases: thread every skewer → "Go to the barbecue" → grill. The juggle is level 4 (`juggle: true` in `data/stations/mishkaki-grill.json`)
+- ☑ Chips off the grill (they stay in samosa + fry)
+- ☑ Level 1 = the smallest round (one skewer, one cup, one maani, three pantry things); each level adds one thing (level 4 in the Station lab). New `pantry` recipe (Nani's list, *Muke {x} de*); day 1 starts with it, the pocket-money rules come after it
+- ☑ First-time overlay at every station (`js/cook/coach.js`: dim, spotlight, ghost finger, one thing at a time, driven by `Cook.expect`; `data.calm.coachSteps`). The stars fade in from the second order, the bulb from the third (`data.calm.uiAfter`)
+- ☑ The family's words in `data/cook.json`: *daar*, *ba* (voice *ber*), *hakro/hakri* by the noun's `gender` (maani, chai = she; most nouns `unknown`), *wadho/wadhi*, *nindho/nindhi*, *watana*, *{x} waari chai*, *Muke chai me {n} khun khape*, *{person} lai*, *Muke {x} de*, *Pela {x}. Ne poi {y}.* Drafts keep `draft: true` and a `src`. Ids unchanged, so other modes pick them up
+- ☐ Placeholder voice for the new words: `build/build_cook_tts.py` knows them now (Gujarati spellings added) but Google TTS is blocked here; run it on a machine with network. Until then the new words use the device's own voice, or are silent
+- ☐ For Zafar: one card per skewer / maani shows the count (see the audit, "After Wave 6"); ordering *for* others by name at the Chai tray (*Nana lai*) is the next Chai tray pass
 
 ## Wave 6b (after Wave 6 merges): UX principles §9–§11
 - ☐ Adopt the shared end-of-round screen (`js/shared/results.js`, time / accuracy / hints, then the word review)

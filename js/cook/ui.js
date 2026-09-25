@@ -33,7 +33,16 @@
     replay: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M18.6 2.8v4.6H14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     eye: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>`,
   };
+  ICON.bulb = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.8.6 1.3 1.4 1.3 2.3V17h5v-.4c0-.9.5-1.7 1.3-2.3A6.5 6.5 0 0 0 12 2.5z" fill="currentColor" opacity=".9"/><path d="M9.6 19h4.8M10.4 21.3h3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9.6 9.2a2.7 2.7 0 0 1 2.4-2.3" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".8"/></svg>`;
   UI.ICON = ICON;
+  /**
+   * Wave 6 (docs/UX-PRINCIPLES.md), for pages that opt in with <body class="w6">
+   * (cook.html): the sidebar on the left, one card per thing with a fixed
+   * shape, no per-line speaker, 👁 or translate (one light bulb at the top of
+   * the sidebar instead; one speaker per card, reading it with read-along).
+   * Other pages that share this file keep the Wave 5 card.
+   */
+  UI.w6 = () => document.body.classList.contains("w6");
 
   /**
    * Star icons come from the game mode's star set (data.star_sets), so each
@@ -143,7 +152,7 @@
     other.classList.add("hidden");
     const slot = target.querySelector(".say-slot");
     slot.innerHTML = "";
-    slot.appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear }));
+    slot.appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6() }));
     target.classList.remove("hidden", "talk");
     target.style.animation = "none";
     void target.offsetWidth;
@@ -227,8 +236,9 @@
     const vh = global.innerHeight;
     const w = Math.min(340, vw - 16);
     pop.style.width = `${w}px`;
-    // above the button, its right edge on the button's right edge (so it opens towards the picture)
-    const left = Cook.clamp(b.right - w, 8, vw - w - 8);
+    // above the button, opening towards the picture (the sidebar is on the left in Wave 6)
+    const onLeft = b.left + b.width / 2 < vw / 2;
+    const left = Cook.clamp(onLeft ? b.left : b.right - w, 8, vw - w - 8);
     pop.style.left = `${left}px`;
     pop.style.bottom = `${Math.max(8, vh - b.top + 8)}px`;
     pop.style.setProperty("--tail-x", `${Cook.clamp(b.left + b.width / 2 - left - 8, 12, w - 24)}px`);
@@ -322,7 +332,7 @@
     options = passMeOptions(want, options);
     const line = Lang.line("give", Lang.phrase([want]));
     box.querySelector(".pm-say").innerHTML = "";
-    box.querySelector(".pm-say").appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, onTranslate: () => Cook.onHelp && Cook.onHelp("translate", { ids: [want], passMe: true }) }));
+    box.querySelector(".pm-say").appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6(), onTranslate: () => Cook.onHelp && Cook.onHelp("translate", { ids: [want], passMe: true }) }));
     const tray = box.querySelector(".pm-tray");
     tray.innerHTML = "";
     card().classList.add("hidden");
@@ -408,7 +418,7 @@
   const hideWord = (id) => Cook.cardHidden(id) && Lang.wordHasVoice(id);
   const faceUrl = (who) => Cook.v(`assets/cook/characters/${who}-badge.webp`);
   UI.faceUrl = faceUrl;
-  M.open = function ({ who, name, ladders, lines, line, busy }) {
+  M.open = function ({ who, name, ladders, lines, line, busy, how }) {
     if (!ladders) ladders = [Order().fromLines(lines || [])];
     const seqWord = Lang.frames().seq_word;
     mission = {
@@ -418,9 +428,14 @@
       line: line || (lines ? Lang.join(lines) : Order().speech(ladders)),
       stars: { ear: "pending", hand: "pending", third: "pending" },
       busy,
+      // the request card's instructions (Wave 6): what to do, in plain English
+      how: how || null,
       plain: !!seqWord && Cook.wordStage(seqWord) >= 3,
       english: false,
+      // the order's level: how long the light bulb shows English (data.calm.bulbMs)
+      level: orderLevel(),
     };
+    UI.bulbOff();
     const el = $("#mission");
     el.classList.remove("hidden", "stamped", "arriving");
     el.classList.toggle("busy", !!busy);
@@ -539,6 +554,7 @@
   };
   function renderOrder() {
     if (!mission) return;
+    if (UI.w6()) return renderOrder6();
     const box = $("#mission .m-order");
     box.innerHTML = "";
     renderDish();
@@ -571,6 +587,7 @@
   const intro = () => $("#intro");
   const introOpen = () => !intro().classList.contains("hidden");
   function renderIntro() {
+    if (UI.w6()) return renderIntro6();
     const box = intro().querySelector(".ic-order");
     box.innerHTML = "";
     shape().forEach(({ L, sections }) => {
@@ -599,6 +616,8 @@
     const card = el.querySelector(".ic-card");
     el.querySelector(".ic-face").src = faceUrl(m.who);
     el.querySelector(".ic-name").textContent = m.name;
+    const how = el.querySelector(".ic-how");
+    if (how) how.textContent = UI.w6() ? m.how || "" : "";
     const say = el.querySelector(".ic-say");
     say.innerHTML = ICON.speaker;
     renderIntro();
@@ -617,7 +636,7 @@
       Cook.unlockAudio();
       say.classList.add("on");
       if (m.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
-      Lang.speak(m.line).then(() => say.classList.remove("on"));
+      (UI.w6() ? readAlong(partsOf(m.line, introEls)) : Lang.speak(m.line)).then(() => say.classList.remove("on"));
     };
     el.addEventListener("click", onTap);
     say.addEventListener("click", onSay);
@@ -625,7 +644,9 @@
     Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
     card.classList.add("talk");
     const voice = opts.speak !== false && Lang.hasVoice(m.line);
-    const talk = (voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)))).then(() => {
+    // Wave 6: read along: each part lights up on the card as it's said
+    const said = UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
+    const talk = said.then(() => {
       card.classList.remove("talk");
       return Cook.wait(opts.pause != null ? opts.pause : 1400);
     });
@@ -635,6 +656,7 @@
       el.removeEventListener("click", onTap);
       say.removeEventListener("click", onSay);
       card.classList.remove("talk");
+      stopReading();
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
     }
     Cook.checkRun(token);
@@ -685,6 +707,273 @@
   };
   M.introOpen = introOpen;
 
+  /* ================= Wave 6: cards, read-along, the light bulb ================= */
+  /*
+   * docs/UX-PRINCIPLES.md 1, 3 and 4. The order card and the request card
+   * (the intro) are drawn from the same blocks:
+   *  - plain rows: a dot and the words, nothing else (no speaker, 👁 or
+   *    translate on a row any more);
+   *  - one card per thing being made, with a fixed shape: a person's cup
+   *    (their face, "{person} lai", then the same slots every time: milk,
+   *    sugar, which chai), one card per skewer (always four dots; a mixed
+   *    one names its pieces on its dots, in order), one card per maani.
+   * Every card has one speaker in its top-right corner: it reads the card
+   * in order and each part lights up as it's said (read-along, by recorded
+   * chunk: each spoken line has its own voice file). Hearing it again once
+   * its words are dots is help (the no-help star), as before.
+   * The light bulb at the top of the sidebar flips the words to English for
+   * a few seconds (data.calm.bulbMs by level: 5, 3, 2, 1 s); for rows still
+   * to do that's the answer, so it costs the ear star, like A/En did.
+   */
+  const sideEls = new Map(); // row -> [elements] on the sidebar card
+  const introEls = new Map(); // row -> [elements] on the request card
+  const addEl = (map, r, el) => r && map.set(r, (map.get(r) || []).concat(el));
+  function orderLevel() {
+    const ctx = Cook.ctx;
+    if (!ctx) return 1;
+    const ds = (ctx.order && ctx.order.dishes) || [];
+    const lv = ds.map((d) => d.level || 1);
+    return Math.max(ctx.level || 1, ...(lv.length ? lv : [1]));
+  }
+  /** Spoken parts ([{line, els}]) of a joined line whose parts know their rows (Cook.Order.speech). */
+  function partsOf(line, map) {
+    const parts = line && line.parts ? line.parts : line ? [line] : [];
+    return parts.map((l) => ({ line: l, els: (l.row && map.get(l.row)) || [] }));
+  }
+  let readToken = 0;
+  const stopReading = () => {
+    readToken++;
+    document.querySelectorAll(".reading").forEach((e) => e.classList.remove("reading"));
+  };
+  /**
+   * Read parts in turn, lighting each one's elements while it's said (the
+   * voice file of that chunk, or a reading pause if it has none). A new
+   * read stops the last one.
+   */
+  async function readAlong(parts, { min = 0 } = {}) {
+    stopReading();
+    const token = ++readToken;
+    const t0 = Date.now();
+    for (const p of parts) {
+      if (token !== readToken) return;
+      p.els.forEach((e) => e.classList.add("reading"));
+      try {
+        if (Lang.hasVoice(p.line)) await Promise.all([Lang.speak(p.line), Cook.wait(260)]);
+        else await Cook.wait(Math.max(700, Cook.readMs(Lang.plain(p.line)) * 0.55));
+      } finally {
+        p.els.forEach((e) => e.classList.remove("reading"));
+      }
+      if (token === readToken) await Cook.wait(120);
+    }
+    const left = min / Cook.speed - (Date.now() - t0);
+    if (left > 0 && token === readToken) await Cook.wait(left * Cook.speed);
+  }
+  UI.readAlong = readAlong;
+  /** A card's speaker: read these parts, and count it as help once they're dots. */
+  function cardSay(btn, parts, rows) {
+    btn.innerHTML = ICON.speaker;
+    btn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      Cook.unlockAudio();
+      const hidden = rows.filter(rowHidden);
+      if (hidden.length && Cook.onHelp) Cook.onHelp("replay", { ids: [].concat(...hidden.map((r) => r.ids)) });
+      btn.classList.add("on");
+      readAlong(parts())
+        .catch(() => {})
+        .then(() => btn.classList.remove("on"));
+    });
+    return btn;
+  }
+  const say6 = (cls = "") => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `card-say ${cls}`.trim();
+    b.setAttribute("aria-label", "Hear this card");
+    return b;
+  };
+  /** The words of a line as the card shows them: Kutchi (dots when known), or English while the bulb is on. */
+  const text6 = (line, hide) => (mission && mission.english && line.en ? `<span class="en6">${esc(line.en)}</span>` : Lang.html(line, { hide }));
+  function row6(map, { r, up, down }) {
+    const li = document.createElement("div");
+    li.className = ["lr", "r6", r.no ? "no" : "", r.done ? "done" : "", r.miss && r.done === false && mission && mission.stamped ? "miss" : "", up ? "up" : "", down ? "down" : ""].filter(Boolean).join(" ");
+    li.innerHTML = `<i class="ldot"></i><span class="lt">${text6(r.line, rowHide(r))}</span>`;
+    if (typeof r.decorate === "function") r.decorate(li);
+    addEl(map, r, li);
+    return li;
+  }
+  /** The card's title words: a row's words without its number ("ghos", "wadhi maani"). */
+  const titleOf = (r) => {
+    const parts = (r.parts || r.ids).filter((p) => typeof p === "string");
+    return Lang.phrase(parts);
+  };
+  /** One card per unit of a row: `r.cards` slots each; the mixed skewer's pieces on its slots. */
+  function unitCards(map, r, pieces) {
+    const n = r.qty || r.need || 1;
+    const title = titleOf(r);
+    const out = [];
+    for (let u = 0; u < n; u++) {
+      const c = document.createElement("div");
+      c.className = ["icard", "unit", pieces ? "named" : "", r.done || u < (r.got || 0) ? "done" : "", r.no ? "no" : ""].filter(Boolean).join(" ");
+      const slots = [];
+      for (let k = 0; k < r.cards; k++) {
+        const pr = pieces && pieces[k];
+        slots.push(`<span class="pslot${pr && pr.done ? " done" : ""}"><i></i>${pr ? `<b>${text6(Lang.wordLine(pr.ids[0]), rowHide(pr))}</b>` : ""}</span>`);
+      }
+      c.innerHTML = `<div class="ic-title">${text6(title, rowHide(r))}</div><div class="ic-slots${pieces ? " named" : ""}">${slots.join("")}</div>`;
+      const rows = [r].concat(pieces || []);
+      c.prepend(cardSay(say6(), () => [{ line: r.said || r.line, els: [c] }].concat((pieces || []).map((p) => ({ line: p.said || p.line, els: [...c.querySelectorAll(".pslot")].slice(pieces.indexOf(p), pieces.indexOf(p) + 1) }))), rows));
+      addEl(map, r, c);
+      out.push(c);
+    }
+    return out;
+  }
+  /** One person's card: face, "{person} lai.", then the card's fixed slots (an empty slot says nothing more). */
+  function personCard(map, L, s, rows) {
+    const c = document.createElement("div");
+    c.className = ["icard", "person", rows.every((x) => x.r.done) ? "done" : ""].filter(Boolean).join(" ");
+    const F = Lang.frames();
+    const cust = (Cook.data.customers || {})[s.for] || {};
+    const forLine = F.for && cust.word && Cook.data.lines[F.for] ? Lang.line(F.for, Lang.phrase([cust.word])) : null;
+    c.innerHTML = `<img class="lface" src="${faceUrl(esc(s.for))}" alt=""><div class="ic-body">${forLine ? `<div class="ic-title">${text6(forLine, () => false)}</div>` : ""}<div class="lrows"></div></div>`;
+    const list = c.querySelector(".lrows");
+    const slots = (L.card && L.card.slots) || [];
+    const optional = (L.card && L.card.optional) || [];
+    const all = Cook.Order.rows(L, { all: true });
+    // every slot, in order; an optional slot only when someone in this order has it (half/full)
+    const used = slots.map((ids, i) => ({ ids, i })).filter(({ ids, i }) => !optional.includes(i) || all.some((r) => r.ids.some((id) => ids.includes(id))));
+    const placed = new Set();
+    used.forEach(({ i }) => {
+      const x = rows.find((y) => !placed.has(y) && Cook.Order.slotOf(L, y.r) === i);
+      if (x) {
+        placed.add(x);
+        list.appendChild(row6(map, x));
+      } else list.insertAdjacentHTML("beforeend", `<div class="lr r6 empty"><i class="ldot"></i><span class="lt"></span></div>`);
+    });
+    rows.filter((x) => !placed.has(x)).forEach((x) => list.appendChild(row6(map, x)));
+    const parts = () => (forLine ? [{ line: forLine, els: [c.querySelector(".ic-title")] }] : []).concat(rows.map((x) => ({ line: x.r.no || !x.r.said ? x.r.line : x.r.said, els: map.get(x.r) || [] })));
+    c.querySelector(".ic-body").prepend(cardSay(say6(), parts, rows.map((x) => x.r)));
+    return c;
+  }
+  /** A ladder's blocks into `box`: sections as rows, person cards and unit cards. */
+  function blocks6(box, map, { big = false } = {}) {
+    map.clear();
+    shape().forEach(({ L, sections }, li) => {
+      const lad = document.createElement("div");
+      lad.className = "ladder";
+      // a later dish's line ("Ne samosa."); the first dish is the card's head
+      if (L.head && (li > 0 || big)) {
+        const h = document.createElement("div");
+        h.className = ["lr", "r6", "head", L.head.done ? "done" : ""].filter(Boolean).join(" ");
+        h.innerHTML = `<span class="lt">${text6(L.head.line, rowHide(L.head))}</span>`;
+        addEl(map, L.head, h);
+        lad.appendChild(h);
+      }
+      const pieceSec = (id) => L.sections.find((x) => x.cardOf === id);
+      sections.forEach(({ s, rows }) => {
+        if (s.cardOf) return; // drawn on its card
+        if (s.for) return lad.appendChild(personCard(map, L, s, rows));
+        const sec = document.createElement("div");
+        sec.className = ["lsec", s.when ? "late" : ""].filter(Boolean).join(" ");
+        const cards = rows.filter((x) => x.r.cards);
+        const plain = rows.filter((x) => !x.r.cards);
+        if (plain.length) {
+          const list = document.createElement("div");
+          list.className = "lrows";
+          plain.forEach((x) => list.appendChild(row6(map, x)));
+          sec.appendChild(list);
+        }
+        if (cards.length) {
+          const grid = document.createElement("div");
+          grid.className = "icards";
+          cards.forEach((x) => {
+            const ps = pieceSec(x.r.ids[x.r.ids.length - 1]);
+            const pieces = ps ? [].concat(...ps.groups).filter((p) => !p.no).flatMap((p) => Array(p.need || 1).fill(p)) : null;
+            unitCards(map, x.r, pieces).forEach((c) => grid.appendChild(c));
+          });
+          sec.appendChild(grid);
+        }
+        lad.appendChild(sec);
+      });
+      box.appendChild(lad);
+    });
+  }
+  function renderOrder6() {
+    const box = $("#mission .m-order");
+    box.innerHTML = "";
+    blocks6(box, sideEls);
+    renderDish6();
+    $("#side").classList.toggle("english", !!mission.english);
+    if (introOpen()) renderIntro6();
+  }
+  function renderDish6() {
+    const box = $("#mission .m-dish");
+    const L = mission.ladders[0];
+    const r = L && L.head;
+    box.innerHTML = r ? `<span class="md-text">${text6(r.line, rowHide(r))}</span>` : `<span class="md-text">${esc(mission.name)}</span>`;
+    if (r) {
+      sideEls.delete(r);
+      addEl(sideEls, r, box);
+    }
+  }
+  function renderIntro6() {
+    const box = intro().querySelector(".ic-order");
+    box.innerHTML = "";
+    blocks6(box, introEls, { big: true });
+  }
+  /** The order card's own speaker: the whole order, read along on the card. */
+  M.sayCard = function () {
+    if (!mission || introOpen()) return;
+    const btn = $("#mission .m-say");
+    if (mission.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
+    if (btn) btn.classList.add("on");
+    return readAlong(partsOf(mission.line, sideEls))
+      .catch(() => {})
+      .then(() => btn && btn.classList.remove("on"));
+  };
+
+  /* ---- the light bulb ---- */
+  let bulbTimer = null;
+  UI.bulbOff = function () {
+    clearTimeout(bulbTimer);
+    bulbTimer = null;
+    const b = $("#btn-bulb");
+    if (b) b.classList.remove("on");
+    const side = $("#side");
+    if (side) side.classList.remove("english");
+    if (mission && mission.english) {
+      mission.english = false;
+      renderOrder();
+    }
+  };
+  UI.bulbMs = () => {
+    const ms = ((Cook.data && Cook.data.calm) || {}).bulbMs || [5000, 3000, 2000, 1000];
+    const lv = mission ? mission.level : orderLevel();
+    return ms[Math.min(ms.length, Math.max(1, lv)) - 1];
+  };
+  UI.bulb = function () {
+    const b = $("#btn-bulb");
+    if (!b || bulbTimer) return;
+    Cook.sfx.click();
+    const ms = UI.bulbMs();
+    b.style.setProperty("--bulb-ms", `${ms}ms`);
+    b.classList.remove("on");
+    void b.offsetWidth;
+    b.classList.add("on");
+    $("#side").classList.add("english");
+    if (mission && !$("#mission").classList.contains("stamped")) {
+      mission.english = true;
+      // English for rows still to do is the answer: the ear star (Cook.onHelp "translate")
+      const open = [].concat(...mission.ladders.map((L) => Order().rows(L).filter((x) => !x.done)));
+      if (Cook.onHelp) {
+        if (open.length) Cook.onHelp("translate", { ids: [].concat(...open.map((x) => x.ids)) });
+        else Cook.onHelp("help");
+      }
+      renderOrder();
+    } else if (Cook.onHelp) Cook.onHelp("help");
+    bulbTimer = setTimeout(() => UI.bulbOff(), ms / Cook.speed);
+  };
+
+
   const ladderFor = (dish) => (mission ? mission.ladders.find((L) => L.dish === dish) || mission.ladders[0] : null);
   function markDone(r) {
     r.done = true;
@@ -707,6 +996,21 @@
     // an order row first, the dish's own name last (the pantry fetches the tea for "chai")
     const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
     if (!r) return null;
+    r.got = (r.got || 0) + 1;
+    if (r.got >= (r.need || 1)) markDone(r);
+    settle(L);
+    renderOrder();
+    return r;
+  };
+  /** Tick the i-th piece of the dish's sequence (a mixed skewer's pieces): that row, never another row with the same word. */
+  M.tickUnit = function (i, dish = 0) {
+    const L = ladderFor(dish);
+    const s = L && L.sections.find((x) => x.seq);
+    if (!s) return null;
+    const units = [];
+    s.groups.forEach((g) => g.forEach((r) => !r.no && units.push(...Array(r.need || 1).fill(r))));
+    const r = units[i];
+    if (!r || r.done) return r || null;
     r.got = (r.got || 0) + 1;
     if (r.got >= (r.need || 1)) markDone(r);
     settle(L);
@@ -827,8 +1131,11 @@
   M.stars = () => (mission ? Object.assign({}, mission.stars) : {});
   M.stamp = function () {
     $("#mission").classList.add("stamped");
+    if (mission) mission.stamped = true;
+    UI.bulbOff();
   };
   M.close = function () {
+    stopReading();
     $("#mission").classList.add("hidden");
     $("#mission").classList.remove("arriving");
     intro().classList.add("hidden");
@@ -935,6 +1242,24 @@
     });
   };
   UI.glowDone = (on) => $("#done-btn").classList.toggle("glow", on);
+  /**
+   * Wave 6: the big button between two jobs of one station ("Go to the
+   * barbecue"), bottom right under the thumb. Resolves when it's pressed.
+   */
+  let goResolve = null;
+  UI.go = function (label, opts = {}) {
+    const b = $("#go-btn");
+    if (!b) return Promise.resolve();
+    b.querySelector(".go-t").textContent = label;
+    b.classList.remove("hidden");
+    b.classList.toggle("glow", !!opts.glow);
+    return new Promise((resolve) => (goResolve = resolve));
+  };
+  UI.glowGo = (on) => $("#go-btn") && $("#go-btn").classList.toggle("glow", on);
+  UI.hideGo = function () {
+    if ($("#go-btn")) $("#go-btn").classList.add("hidden");
+    goResolve = null;
+  };
   UI.hideDone = function () {
     $("#done-btn").classList.add("hidden");
     doneResolve = null;
@@ -969,6 +1294,7 @@
     UI.hideGist();
     UI.hideCount();
     UI.hideDone();
+    UI.hideGo();
     $("#choices").classList.add("hidden");
     $("#passme").classList.add("hidden");
     if ($("#intro")) $("#intro").classList.add("hidden");
@@ -982,6 +1308,12 @@
       if (e) e.addEventListener("click", fn);
       return e;
     };
+    on("#go-btn", () => {
+      Cook.sfx.click();
+      const r = goResolve;
+      UI.hideGo();
+      if (r) r();
+    });
     on("#done-btn", () => {
       Cook.sfx.click();
       const r = doneResolve;
@@ -1005,6 +1337,16 @@
     global.addEventListener("resize", () => UI.closeHelp());
     const tr = on("#mission .m-tr", () => UI.mission.translate());
     if (tr) tr.innerHTML = ICON.translate;
+    const bulb = on("#btn-bulb", () => {
+      Cook.unlockAudio();
+      UI.bulb();
+    });
+    if (bulb) bulb.insertAdjacentHTML("afterbegin", ICON.bulb);
+    const msay = on("#mission .m-say", () => {
+      Cook.unlockAudio();
+      UI.mission.sayCard();
+    });
+    if (msay) msay.innerHTML = ICON.speaker;
     const replay = on("#mission .m-replay", () => {
       Cook.unlockAudio();
       UI.mission.replay();

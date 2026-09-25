@@ -278,9 +278,10 @@
           [].concat(st.entry).forEach((id, j) => {
             const ps = st.n > 1 ? Lang.countParts(st.n, id) : [id];
             const ph = Lang.phrase(ps);
-            const line = !said.length ? Lang.bare(ph) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
+            // "Pela channa. Ne poi bataato." (first …, and then …: the family's word order)
+            const line = !said.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
             said.push(line);
-            rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when });
+            rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null });
           });
         });
         if (said.length && !when) lines.push(Lang.join(said));
@@ -295,14 +296,16 @@
         if (!ls.length) return;
         if (!when) lines.push(ls.length > 1 ? Lang.join(ls) : ls[0]);
         dot++;
-        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when }));
+        // cards: one card per unit, each with that many slots (Wave 6: a skewer card always has four dots)
+        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null }));
         return;
       }
       const frame = e.frame === "order" ? Lang.orderFrame(i) : e.frame;
       const ps = parts(e.x, env);
       const line = Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
       if (!when) lines.push(line);
-      const kind = e.frame === "order" ? "dish" : e.frame === "no" ? "no" : "item";
+      // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list)
+      const kind = e.frame === "order" || e.head ? "dish" : e.frame === "no" ? "no" : "item";
       if (kind !== "no" && (e.dot === "next" || (kind === "dish" && !rows.length))) dot++;
       rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when });
     };
