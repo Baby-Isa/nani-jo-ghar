@@ -218,3 +218,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #call.none { display: none; }
 .roof-stain { opacity: .35; }
 .roof-stain.live { opacity: 1; background: radial-gradient(ellipse, rgba(20, 50, 85, .95) 0 42%, rgba(40, 70, 100, 0) 72%); box-shadow: 0 0 0 4px rgba(170, 215, 255, .45); }
+/* sidebar cards keep their height; the sidebar scrolls instead of squeezing them */
+#side > * { flex-shrink: 0; }
+@media (max-height: 430px) {
+  .call-text { font-size: 19px; }
+  .call-tools button { width: 38px; height: 32px; padding: 6px; }
+  #nani-card { min-height: 44px; padding: 6px 10px; }
+  #nani-card .nc-face { width: 36px; height: 36px; }
+}

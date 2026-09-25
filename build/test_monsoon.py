@@ -217,7 +217,7 @@ def run_paths(t):
     for mode, expect in [("heard", "voice"), ("wrong", "wrong pot"), ("null", "pills"), ("timeout", "pills"), ("english", "pills")]:
         for tempo in ["drizzle", "busy"]:
             t.start("g3", 1, tempo, seed=3, speech=mode)
-            st = t.state()
+            st = t.wait_phase("wave")
             t.advance_to(st["timing"]["t0"] + 0.3)
             t.click_sel("#speak .mic")
             t.ev("__monsoon.step(0.1, 50)")
@@ -331,7 +331,8 @@ def main():
                 if (a.paths or everything) and (i == 0 or a.viewport):
                     fails += run_paths(t)
                 if (a.bots or everything) and (i == 0 or a.viewport):
-                    fails += run_bots(t, [g for g in games if g != "g3"], levels, a.bots or 3)
+                    # the full default run checks level 1 (slow: every bot tap is a real click); --level widens it
+                    fails += run_bots(t, [g for g in games if g != "g3"], levels if a.level or a.bots else [1], a.bots or 3)
             except Fail as e:
                 fails.append(f"{vp['name']}: {e}")
             if t.errors:

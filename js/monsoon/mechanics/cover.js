@@ -121,7 +121,7 @@
                 // "Arre re!", then the call again; the right pot flashes after the splash
                 M.UI.nani(M.lineFor({ line: "oops" }).k || "");
                 M.sayLine("oops");
-                setTimeout(() => M.Stage.flash(tg.cand), 250);
+                setTimeout(() => run.alive() && M.Stage.flash(tg.cand), 250);
                 M.Stage.aliLook && M.Stage.aliLook();
               }
             });

@@ -378,7 +378,9 @@ function bots(N, games, levels) {
           tested += kind === "say" ? r.tally.voiceCalls : r.tally.tested;
         }
         const rate = star / N;
-        const verdict = rate >= LIM.fail ? "**FAIL**" : rate >= LIM.warn ? "warn" : "ok";
+        // the learner remembers clip -> place from the reveals: a phrase always meaning its place IS the word,
+        // so over 2% it's reported, not failed (section 8.5); 10% still fails
+        const verdict = rate >= LIM.fail ? "**FAIL**" : rate >= LIM.warn ? (name === "learner" ? "reported (learns the words)" : "warn") : "ok";
         if (rate >= LIM.fail) failed = true;
         out(`| ${game} | ${level} | ${name} | ${pct(rate)} | ${tested ? pct(heard / tested) : "–"} | ${pct(craft / N)} | ${verdict} |`);
       }

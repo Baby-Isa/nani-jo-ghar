@@ -104,7 +104,7 @@
                 M.Stage.aliLook();
                 M.UI.nani(M.lineFor({ line: "oops" }).k || "");
                 M.sayLine("oops");
-                setTimeout(() => M.Stage.flash(tg.cand), 250);
+                setTimeout(() => run.alive() && M.Stage.flash(tg.cand), 250);
               }
             });
           });
