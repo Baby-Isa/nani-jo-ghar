@@ -218,9 +218,18 @@
     const keep = Object.assign({}, state.lab);
     Object.assign(state.lab, { level, stage });
     const rows = [];
+    let stuck = 0;
     for (let i = 0; i < n; i++) {
       const strategy = strategies[i % strategies.length];
-      const card = await runLab(key, { bot: strategy });
+      // a watchdog: a bot that gets stuck (it gives up) is stopped, and the round doesn't count
+      let timer;
+      const card = await Promise.race([runLab(key, { bot: strategy }), new Promise((res) => (timer = setTimeout(() => res("stuck"), 150000 / Math.max(1, Cook.speed))))]);
+      clearTimeout(timer);
+      if (card === "stuck") {
+        stuck++;
+        Cook.run++;
+        continue;
+      }
       if (!card) break;
       rows.push({ strategy, level, stage, ear: card.stars.ear, all: Object.values(card.stars).filter(Boolean).length, picks: (card.botLog || {}).picks, asked: card.asked.map((a) => Lang.plain(a.line)), bag: (card.botLog || {}).bag });
     }
@@ -232,7 +241,7 @@
       by[r.strategy].n++;
       if (r.ear) by[r.strategy].ear++;
     });
-    return { n: rows.length, ear, rate: rows.length ? ear / rows.length : 0, by, rows };
+    return { n: rows.length, ear, rate: rows.length ? ear / rows.length : 0, by, rows, stuck };
   }
   Find.leakCheck = leakCheck;
   const leakHtml = (r) =>

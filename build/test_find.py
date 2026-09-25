@@ -312,7 +312,7 @@ def run_leak(vp, speed, n, shots_root):
                 results[(stage, level)] = res
                 page.screenshot(path=os.path.join(shots, f"stage{stage}-level{level}.png"))
                 by = ", ".join(f"{k} {v['ear']}/{v['n']}" for k, v in res["by"].items())
-                print(f"  stage {stage} level {level}: bot earned the ear star in {res['ear']}/{res['n']} rounds ({res['rate'] * 100:.0f}%) [{by}]", flush=True)
+                print(f"  stage {stage} level {level}: bot earned the ear star in {res['ear']}/{res['n']} rounds ({res['rate'] * 100:.0f}%) [{by}]{' stuck ' + str(res['stuck']) if res.get('stuck') else ''}", flush=True)
                 for r in res["rows"]:
                     if r["ear"]:
                         print(f"      won ({r['strategy']}): asked {r['asked']} picked {r['picks']} bag {r['bag']}")

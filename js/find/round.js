@@ -170,6 +170,8 @@
       $("#btn-warmer").classList.remove("hidden");
       UI.mission.step(0);
       this.startTimers();
+      // a short phone: the goal folds to its "?" once the search starts, so the rail (zoom) stays in view
+      if ($("#stage").getBoundingClientRect().height < 480) setTimeout(() => this.alive() && $("#how").classList.add("collapsed"), 2500 / Cook.speed);
     }
     endSearch() {
       $("#find-done").classList.add("hidden");

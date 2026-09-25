@@ -144,7 +144,8 @@
     const token = Cook.run;
     const alive = () => token === Cook.run;
     const log = { strategy, picks: [], bag: null };
-    let picked = new Set();
+    const picked = new Set();
+    const tried = new Set();
     let searched = false;
     let bagTaps = 0;
     const t0 = Date.now();
@@ -167,12 +168,14 @@
         }
         await nap(250);
         if (alive() && visible($("#find-done"))) $("#find-done").click();
-      } else if (L.bagging && L.bag.length && bagTaps < 6) {
+      } else if (L.bagging && L.bag.length && bagTaps < 12) {
         await nap(200);
         const ks = kindsOf(B.look().bag);
-        const choice = ks.find((k) => !picked.has(k.pic)) || ks.filter((k) => k.els.length === 1)[bagTaps % Math.max(1, ks.filter((k) => k.els.length === 1).length)] || Cook.pick(ks);
+        // a kind it didn't pick itself, then one there's only one of, then anything it hasn't tried
+        const fresh = (k) => !tried.has(k.pic);
+        const choice = ks.find((k) => fresh(k) && !picked.has(k.pic)) || ks.find((k) => fresh(k) && k.els.length === 1) || ks.find(fresh) || Cook.pick(ks);
         if (choice) {
-          picked.add(choice.pic); // don't try the same kind twice
+          tried.add(choice.pic);
           if (log.bag == null) log.bag = seen(choice.pic);
           await tap(choice.els[0].e);
         }
