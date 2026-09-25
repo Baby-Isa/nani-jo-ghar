@@ -293,13 +293,13 @@
   },
   "side-left": {
    "kutchi": null,
-   "english": "my left",
+   "english": "left",
    "src": "placeholder",
    "qfm": "new (R3.6 priority 3)"
   },
   "side-right": {
    "kutchi": null,
-   "english": "my right",
+   "english": "right",
    "src": "placeholder",
    "qfm": "new (R3.6 priority 3)"
   },
@@ -444,7 +444,7 @@
    "e": "That tickles!"
   },
   "cl-side": {
-   "e": "{x} one."
+   "e": "My {x} one."
   },
   "cl-other": {
    "e": "Not that one. My other {x}."
@@ -453,7 +453,7 @@
    "e": "{x}."
   },
   "cl-colour": {
-   "e": "The {x} one."
+   "e": "The {x}."
   },
   "cl-round": {
    "e": "Round {x} times."

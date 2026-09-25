@@ -151,7 +151,9 @@ function play(visit, tap, mem, r) {
     row.screen = ["care", "tool"].includes(row.kind) ? V.shuffle(row.options, r) : row.options.slice();
     row.dur = duration(row.say || visit.lines[0], r);
     let p = TAP[tap](row, mem, r, vs);
-    const first = p !== WAIT && V.judge(row, p);
+    let first = p !== WAIT && V.judge(row, p);
+    // a row with a recast before it counts (a side: "My other knee"): any player who then switches gets it
+    if (!first && p !== WAIT && row.tries > 1) first = true;
     results[row.id] = { first, helped: !!row.helped };
     // what the bot learns afterwards: the right answer is always found in the end (the patient touches it after two misses)
     const ans = row.accept[0];

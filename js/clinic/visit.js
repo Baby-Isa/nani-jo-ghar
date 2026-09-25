@@ -105,7 +105,8 @@
   /** Part rows: a tap on the body (the part), then, from level 3 on a sided part, the side (the patient's own). */
   function partRows(data, lv, part, side, extra) {
     const out = [row("part", Object.assign({ options: lv.parts.slice(), accept: [part], part }, extra))];
-    if (side) out.push(row("side", { options: ["side-left", "side-right"], accept: [side], part, say: extra.sideSay }));
+    // R3.2: a side miss costs the ear star only after the recast ("My left. My other knee.") is ignored once
+    if (side) out.push(row("side", { options: ["side-left", "side-right"], accept: [side], part, say: extra.sideSay, tries: 2 }));
     return out;
   }
 
@@ -146,21 +147,21 @@
     const accept = objs.filter((o) => o.split("#")[0] === t.item && (!t.colour || o.split("#")[1] === t.colour));
     const itemLine = t.colour ? line("doctor", "cl-colour", [t.colour, t.item]) : t.gesture === "tuck" && t.count != null ? line("doctor", "cl-treat", [t.count, t.item]) : line("doctor", "cl-treat", [t.item]);
     lines.push(itemLine);
-    rows.push(row("care", { options: objs, accept, item: t.item, say: itemLine }));
+    rows.push(row("care", { options: objs, accept, item: t.item, say: itemLine, phase: "treat" }));
     if (t.path) {
       const l = line("doctor", "cl-roundpath", t.path);
       lines.push(l);
-      t.path.forEach((p, i) => rows.push(row("path", { options: [...new Set(t.path)], accept: [p], step: i, say: l })));
+      t.path.forEach((p, i) => rows.push(row("path", { options: [...new Set(t.path)], accept: [p], step: i, say: l, phase: "treat" })));
     } else if (t.count != null && t.gesture === "wrap") {
       const l = line("doctor", "cl-round", [t.count]);
       lines.push(l);
-      rows.push(row("count", { options: [1, 2, 3, 4], accept: [t.count], what: "turns", say: l }));
+      rows.push(row("count", { options: [1, 2, 3, 4], accept: [t.count], what: "turns", say: l, phase: "treat" }));
     } else if (t.count != null && t.gesture === "drops") {
       const l = line("doctor", "cl-drops", [t.count]);
       lines.push(l);
-      rows.push(row("count", { options: [1, 2, 3], accept: [t.count], what: "drops", say: l }));
+      rows.push(row("count", { options: [1, 2, 3], accept: [t.count], what: "drops", say: l, phase: "treat" }));
     } else if (t.count != null && t.gesture === "tuck") {
-      rows.push(row("count", { options: [1, 2, 3], accept: [t.count], what: "blankets", say: itemLine }));
+      rows.push(row("count", { options: [1, 2, 3], accept: [t.count], what: "blankets", say: itemLine, phase: "treat" }));
     }
     return { lines, rows };
   }
@@ -170,7 +171,7 @@
     const rows = [];
     const vc = data.voice || {};
     if (lv.n >= (vc.whatsThisFromLevel || 99)) {
-      rows.push(row("voice", { moment: "S4", options: closedSet(data, t.item, lv.trolley, 5, r), accept: [t.item], say: line("doctor", "cl-whatsthis") }));
+      rows.push(row("voice", { moment: "S4", options: closedSet(data, t.item, lv.trolley, 5, r), accept: [t.item], say: line("doctor", "cl-whatsthis"), phase: "handover" }));
     }
     return { review, rows, line: line("doctor", "cl-review", review) };
   }
@@ -201,11 +202,12 @@
     }
     return makeCall(data, lv, pick(lv.parts.filter(ok), r), i, prev, r);
   }
-  function callRows(data, lv, c) {
+  function callRows(data, lv, c, idx) {
     const out = [];
     const say = line("doctor", c.frame, [c.part]);
     if (c.tool) out.push(row("tool", { options: lv.tools.slice(), accept: [c.tool], say, part: c.part }));
     partRows(data, lv, c.part, c.side, { say, sideSay: c.side ? line("patient", "cl-side", [c.side]) : null }).forEach((x) => out.push(x));
+    out.forEach((x) => (x.call = idx));
     return out;
   }
 
@@ -303,7 +305,7 @@
         visit.lines.push(line("doctor", "cl-all"));
       }
       visit.calls = calls;
-      calls.forEach((c) => add(callRows(data, lv, c)));
+      calls.forEach((c, i) => add(callRows(data, lv, c, i)));
       if (visit.find) {
         const fc = calls[calls.length - 1];
         visit.treatment = treatment(data, lv, fc.part, fc.side, r, { care: visit.find.care });
@@ -320,6 +322,7 @@
         const say = line("patient", "cl-hurts", side ? [side, part] : [part]);
         visit.lines.push(say);
         const pr = partRows(data, lv, part, side, { say, sideSay: say });
+        pr.forEach((x) => (x.phase = "where"));
         // S2 (level 2+): the doctor, not looking: "Where?" The child can say it (voice) or tap it (ear, as before)
         if (lv.n >= (vc.s2FromLevel || 99)) {
           const view = lv.parts.filter((p) => V.isFace(data, p) === V.isFace(data, part));
@@ -414,7 +417,7 @@
       if (r.kind === "voice" || !r.tested) continue;
       const res = results[r.id];
       if (!res || !res.first) return false;
-      if (!res.helped && !res.taught) tested++;
+      if (!res.helped && !res.taught && !(r.tries > 1)) tested++;
     }
     return tested >= visit.minTested;
   };
@@ -446,7 +449,7 @@
   V.words = function (visit) {
     const out = new Set();
     const walk = (l) => l && [].concat(l.x || [], l.y || []).forEach((w) => typeof w === "string" && out.add(w));
-    visit.lines.forEach(walk);
+    (visit.lines || []).forEach(walk);
     visit.rows.forEach((r) => {
       walk(r.say);
       r.accept.forEach((a) => typeof a === "string" && a.split("#").forEach((w) => out.add(w)));
