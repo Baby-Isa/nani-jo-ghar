@@ -2350,7 +2350,118 @@
  },
  "art": {
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
-  "props": []
+  "props": [],
+  "sprites": {
+   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). Left out on purpose (failed QA or pending a redo): veg-dungri-whole-t, veg-dungri-peeled-t, tool-velan-t, tool-chakla-t, vessel-thali-t.",
+   "dir": "assets/cook/items/",
+   "max": 256,
+   "items": {
+    "spi-01": { "bowl": "spice-hardar-bowl-t" },
+    "spi-02": { "bowl": "spice-jeeru-bowl-t" },
+    "spi-04": { "bowl": "spice-lal-marcha-bowl-t" },
+    "spi-05": { "bowl": "spice-rai-bowl-t" },
+    "spi-10": { "bowl": "spice-elchi-bowl-t" },
+    "spi-16": { "bowl": "spice-loon-bowl-t" },
+    "cook-khun": { "bowl": "dry-khun-bowl-t" },
+    "cook-chai": { "bowl": "dry-chai-leaves-bowl-t" },
+    "cook-atto": { "bowl": "dry-atto-bowl-t" },
+    "cook-daal": { "bowl": "dry-daal-bowl-t" },
+    "ph-ghee": { "bowl": "dry-ghee-bowl-t" },
+    "ph-chana": { "bowl": "topping-channa-bowl-t" },
+    "ph-dahi": { "bowl": "topping-dai-bowl-t" },
+    "ph-amli": { "bowl": "topping-amli-bowl-t" },
+    "ph-lili": { "bowl": "topping-lili-bowl-t" },
+    "ph-sev": { "bowl": "topping-sev-bowl-t" },
+    "ph-dhana": { "bowl": "topping-dhana-chopped-bowl-t" },
+    "ph-keema": { "bowl": "topping-keema-bowl-t" },
+    "ph-chips": { "bowl": "chips-golden-t", "raw": "chips-raw-t" },
+    "veg-01": { "bowl": "topping-bataato-boiled-bowl-t", "whole": "veg-bataato-whole-t", "cubed": "veg-bataato-cubed-t" },
+    "veg-02": { "bowl": "topping-dungri-chopped-bowl-t", "raw": "mishkaki-dungri-raw-t", "grilled": "mishkaki-dungri-grilled-t", "charred": "mishkaki-dungri-charred-t" },
+    "veg-03": { "bowl": "topping-tameto-chopped-bowl-t", "whole": "veg-tameto-whole-t", "raw": "mishkaki-tameto-raw-t", "grilled": "mishkaki-tameto-grilled-t", "charred": "mishkaki-tameto-charred-t" },
+    "veg-10": { "bowl": "topping-vatana-bowl-t" },
+    "veg-12": { "bowl": "topping-marcha-chopped-bowl-t", "whole": "veg-marcha-whole-t" },
+    "veg-13": { "bowl": "veg-lasan-chopped-t", "whole": "veg-lasan-whole-t" },
+    "veg-14": { "bowl": "veg-aadu-grated-bowl-t", "whole": "veg-aadu-whole-t" },
+    "fru-02": { "bowl": "veg-limu-whole-t", "whole": "veg-limu-whole-t" },
+    "ph-meat": { "raw": "mishkaki-meat-raw-t", "grilled": "mishkaki-meat-grilled-t", "charred": "mishkaki-meat-charred-t" },
+    "ph-pepper": { "whole": "veg-pepper-whole-t", "raw": "mishkaki-pepper-raw-t", "grilled": "mishkaki-pepper-grilled-t", "charred": "mishkaki-pepper-charred-t" },
+    "ph-samosa": { "folded": "samosa-folded-t", "fried": "samosa-fried-golden-t" },
+    "cook-maani": {
+     "dough": "dough-ball-t",
+     "raw": { "file": "maani-raw-t", "square": true },
+     "half": { "file": "maani-cooked-half-t", "square": true },
+     "done": { "file": "maani-cooked-puffed-t", "square": true }
+    },
+    "cook-paani": { "jug": "vessel-water-jug-f" },
+    "cook-dudh": { "jug": "vessel-milk-jug-f" },
+    "glass": { "empty": "vessel-glass-chai-empty-f", "full": "vessel-glass-chai-full-f" },
+    "tawa": { "top": { "file": "vessel-tawa-t", "max": 0 } },
+    "pan": { "top": { "file": "vessel-saucepan-t", "max": 0 } },
+    "pot": { "top": { "file": "vessel-pot-t", "max": 0 } },
+    "tadka-pan": { "top": { "file": "vessel-tadka-pan-t", "max": 0 } },
+    "chaat-bowl": { "empty": { "file": "chaat-bowl-empty-t", "max": 0 } },
+    "katori": { "top": "vessel-katori-t" },
+    "kadai": { "oil": { "file": "vessel-kadai-oil-t", "max": 0 } },
+    "plate": { "top": "plate-enamel-empty-t" }
+   },
+   "art": {
+    "vessel:pan": "pan.top",
+    "vessel:pot": "pot.top",
+    "vessel:tadka": "tadka-pan.top",
+    "vessel:serving": "chaat-bowl.empty",
+    "vessel:kadai": "kadai.oil",
+    "pastry:3": "ph-samosa.folded",
+    "pastry:4": "ph-samosa.fried",
+    "layer:ph-chips": "ph-chips.raw"
+   },
+   "frames": {
+    "pastry:3": [60, 50, 240, 230],
+    "pastry:4": [60, 50, 240, 230],
+    "layer:ph-chips": [40, 10, 220, 180]
+   },
+   "props": {
+    "chapati-raw": "cook-maani.raw",
+    "chapati-half": "cook-maani.half",
+    "chapati-puffed": "cook-maani.done",
+    "dough-ball": "cook-maani.dough",
+    "tawa": "tawa.top",
+    "water-jug": "cook-paani.jug",
+    "milk-jug": "cook-dudh.jug",
+    "glass": "glass.empty",
+    "glass-chai": "glass.full"
+   },
+   "vessels": {
+    "pan": { "rim": [0.34, 0.575, 0.317, 0.323], "depth": 0.075 },
+    "pot": { "rim": [0.497, 0.455, 0.372, 0.421], "depth": 0.079 },
+    "tadka": { "rim": [0.391, 0.617, 0.364, 0.306], "depth": 0.069 },
+    "serving": { "rim": [0.495, 0.5, 0.459, 0.464], "depth": 0.026 },
+    "kadai": { "rim": [0.501, 0.556, 0.303, 0.374], "depth": 0, "size": 0.78, "filled": true }
+   },
+   "bg": {
+    "marble": "bg-cook-worktop-t-v1-1600",
+    "hob": "bg-cook-hob-t-v1-1600"
+   },
+   "need": {
+    "pour": ["pan.top"],
+    "watch": ["pan.top"],
+    "boil": ["pan.top"],
+    "count": ["pan.top", "cook-khun.bowl", "spi-16.bowl", "cook-atto.bowl"],
+    "add": ["pan.top", "cook-chai.bowl", "spi-10.bowl", "veg-14.bowl", "spi-02.bowl", "spi-05.bowl"],
+    "chai-tray": ["bg:marble", "pan.top", "cook-chai.bowl", "spi-02.bowl", "spi-05.bowl", "cook-khun.bowl", "spi-16.bowl", "spi-10.bowl", "veg-14.bowl", "veg-13.bowl"],
+    "chop": ["veg-01.whole", "veg-03.whole", "veg-12.whole", "veg-13.whole", "veg-14.whole"],
+    "tadka": ["pot.top", "tadka-pan.top", "spi-02.bowl", "spi-05.bowl", "spi-01.bowl", "veg-12.bowl", "spi-16.bowl", "veg-13.bowl"],
+    "assemble": ["ph-dahi.bowl", "ph-amli.bowl", "ph-lili.bowl", "veg-02.bowl", "ph-sev.bowl", "ph-dhana.bowl", "veg-12.bowl", "veg-03.bowl", "ph-chana.bowl", "veg-01.bowl"],
+    "fill": ["chaat-bowl.empty", "ph-keema.bowl", "veg-01.bowl", "veg-10.bowl", "veg-02.bowl", "veg-12.bowl", "ph-dhana.bowl"],
+    "fold": ["ph-samosa.folded", "plate.top"],
+    "fry": ["kadai.oil", "ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],
+    "knead": ["chaat-bowl.empty"],
+    "flip": ["chaat-bowl.empty"],
+    "tawa": ["chaat-bowl.empty"],
+    "thread": ["katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
+    "grill": ["ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-meat.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-meat.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
+    "mishkaki-grill": ["bg:marble", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
+   }
+  }
  },
  "days": [
   {
