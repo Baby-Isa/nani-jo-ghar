@@ -269,9 +269,10 @@
         }
         // for the automated test: a wanted one near the top of its throw (slow there), sliced
         // straight down through where it's heading; and a decoy, for one deliberate mistake
-        const inView = (o) => o.active && !o.sliced && o.y < z.Y(760) && o.y > z.Y(120) && Math.abs(o.vy) < z.L(520);
+        const inView = (o) => o.active && !o.sliced && o.y < z.Y(760) && o.y > z.Y(120) && Math.abs(o.vy) < z.L(700);
         const needs = (id) => phase && phase.targets.includes(id) && (cut[id] || 0) < want[id];
-        const alone = (o) => !flying.some((x) => x !== o && x.active && !x.sliced && Math.abs(x.x - o.x) < z.L(size * 0.9) && Math.abs(x.y - o.y) < z.L(size * 1.3));
+        // nothing it shouldn't cut next to it (another wanted kind that still needs cutting is fine)
+        const alone = (o) => !flying.some((x) => x !== o && x.active && !x.sliced && !(x.wordId !== o.wordId && needs(x.wordId)) && Math.abs(x.x - o.x) < z.L(size * 0.9) && Math.abs(x.y - o.y) < z.L(size * 1.3));
         const tgt = flying.find((o) => inView(o) && needs(o.wordId) && alone(o));
         const dec = flying.find((o) => o.active && !o.sliced && o.y < z.Y(700) && o.y > z.Y(150) && phase && !phase.targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
         const ahead = (o) => o.x + o.vx * 0.06 * Cook.speed;

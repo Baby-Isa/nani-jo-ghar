@@ -347,6 +347,10 @@ class Player:
             if not timed and e["kind"] != "wait" and e["kind"] != last_kind:
                 self.shot(e["kind"])
             shoot_after = timed and e["kind"] != last_kind
+            if e["kind"] == "slice":
+                # the chop round is timed and busy: a couple of pictures, not one per slice
+                self.slice_shots = getattr(self, "slice_shots", 0) + 1
+                shoot_after = shoot_after and self.slice_shots % 6 == 2
             last_kind = e["kind"]
             key = json.dumps({k: v for k, v in e.items() if k in ("kind", "key", "x", "y", "selector")}, sort_keys=True)
             self.repeats = self.repeats + 1 if (key == self.last_key and e["kind"] not in ("wait", "slice")) else 0
