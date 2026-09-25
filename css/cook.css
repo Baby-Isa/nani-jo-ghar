@@ -438,6 +438,15 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 /* "no X": the same row, with a small ✕ and nothing louder */
 .lr.no .wp-text::before, .ir.no .ir-text::before { content: "\2715"; font-family: var(--ui-font); font-size: .62em; color: #b9a78d; margin-right: 4px; vertical-align: .15em; }
 
+/* a part that's all done, folded onto one line (a dot each) */
+.lsec.folded .lrows { flex-direction: row; flex-wrap: wrap; gap: 2px 12px; padding: 2px 0; }
+.lc { position: relative; padding-left: 15px; font-family: var(--kutchi-font); font-weight: 800; font-size: 14px; color: var(--sage-dark); line-height: 1.3; }
+.lc .ldot { position: absolute; left: 1px; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%; background: var(--sage); }
+.lc .word { color: var(--sage-dark); }
+.lc .ph { font-style: italic; font-family: var(--ui-font); }
+.lc.no::before { content: "\2715 "; font-size: .7em; color: #b9a78d; }
+.lsec.lfor.folded .lface { width: 22px; height: 22px; }
+
 /* ---- the Chai tray: one person's part of the order, with their face (no name) ---- */
 .lsec.lfor { flex-direction: row; align-items: flex-start; gap: 6px; }
 .lsec.lfor .lface { flex: none; width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; background: #f3ead9; box-shadow: 0 0 0 2px var(--cream); }
@@ -593,6 +602,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #nani-card .wp .wp-text { font-size: 15px; }
   .lsec.lfor { gap: 4px; }
   .lsec.lfor .lface { width: 26px; height: 26px; }
+  #count-badge { padding: 2px 12px; border-radius: 14px; }
+  #count-badge .count-digit { font-size: 24px; }
   #intro { padding: 2%; }
   #intro .ic-go { display: none; }
   #passme { margin: 4px; padding: 6px; border-radius: 14px; }

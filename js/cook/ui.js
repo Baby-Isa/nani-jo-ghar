@@ -535,14 +535,19 @@
       const lad = document.createElement("div");
       lad.className = "ladder";
       if (L.head && li > 0) lad.appendChild(headEl(L));
+      // a part that's all done folds onto one line (still a dot each) while other parts are to do,
+      // so the part you're on stays in view on a small screen
+      const open = Order().rows(L).some((r) => !r.done && !r.head);
       sections.forEach(({ s, rows }) => {
+        const fold = open && !mission.english && rows.every((x) => x.r.done);
         const sec = document.createElement("div");
-        sec.className = ["lsec", s.when ? "late" : "", s.for ? "lfor" : ""].filter(Boolean).join(" ");
+        sec.className = ["lsec", s.when ? "late" : "", s.for ? "lfor" : "", fold ? "folded" : ""].filter(Boolean).join(" ");
         // one person's part of the order (a cup on the Chai tray): their face, no name
         if (s.for) sec.insertAdjacentHTML("beforeend", `<img class="lface" src="${faceUrl(esc(s.for))}" alt="">`);
         const list = document.createElement("div");
         list.className = "lrows";
-        rows.forEach((x) => list.appendChild(rowEl(L, x)));
+        if (fold) list.innerHTML = rows.map(({ r }) => `<span class="lc${r.no ? " no" : ""}"><i class="ldot"></i>${Lang.html(r.line)}</span>`).join("");
+        else rows.forEach((x) => list.appendChild(rowEl(L, x)));
         sec.appendChild(list);
         lad.appendChild(sec);
       });
@@ -758,7 +763,12 @@
         }
       })
     );
-    if (found) renderOrder();
+    if (found) {
+      renderOrder();
+      // the part that just appeared (the tadka order) is the one to look at
+      const late = [...document.querySelectorAll("#mission .lsec.late")].pop();
+      if (late && late.scrollIntoView) late.scrollIntoView({ block: "nearest" });
+    }
     return found;
   };
   /**
