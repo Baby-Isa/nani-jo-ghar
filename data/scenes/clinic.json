@@ -1,0 +1,131 @@
+{
+ "_about": "The clinic's own scene sidecar (R3.5: never a shared scene file). Greybox layout in 1600x900 design coords: the patient on the examination bench (left of centre), the doctor (right, gaze on the patient, hands folded), the kit tray (left), the trolley (right, below the doctor). The lap view is V0's first-person camera.",
+ "bench": {
+  "x": 430,
+  "y": 560,
+  "w": 420,
+  "h": 40
+ },
+ "doctor": {
+  "x": 1300,
+  "y": 60,
+  "w": 300,
+  "h": 400,
+  "hand": [
+   1130,
+   410
+  ],
+  "bubble": [
+   1150,
+   300
+  ]
+ },
+ "patientBubble": [
+  860,
+  90
+ ],
+ "kit": {
+  "x": 70,
+  "y": 230,
+  "w": 230,
+  "slots": [
+   [
+    185,
+    300
+   ],
+   [
+    185,
+    440
+   ],
+   [
+    185,
+    580
+   ],
+   [
+    185,
+    720
+   ]
+  ]
+ },
+ "magnifier": [
+  185,
+  110
+ ],
+ "trolley": {
+  "x": 960,
+  "y": 480,
+  "w": 620,
+  "h": 400,
+  "cols": 5,
+  "rows": 2,
+  "slot": [
+   118,
+   150
+  ]
+ },
+ "lap": {
+  "_about": "V0: your own lap, looking down; your left is on the LEFT of the screen (first person).",
+  "parts": {
+   "body-toe.left": [
+    650,
+    90
+   ],
+   "body-toe.right": [
+    950,
+    90
+   ],
+   "body-foot.left": [
+    640,
+    190
+   ],
+   "body-foot.right": [
+    960,
+    190
+   ],
+   "body-knee.left": [
+    610,
+    430
+   ],
+   "body-knee.right": [
+    990,
+    430
+   ],
+   "body-finger.left": [
+    520,
+    560
+   ],
+   "body-finger.right": [
+    1080,
+    560
+   ],
+   "body-hand.left": [
+    500,
+    660
+   ],
+   "body-hand.right": [
+    1100,
+    660
+   ],
+   "body-arm.left": [
+    290,
+    720
+   ],
+   "body-arm.right": [
+    1310,
+    720
+   ],
+   "body-elbow.left": [
+    200,
+    840
+   ],
+   "body-elbow.right": [
+    1400,
+    840
+   ]
+  },
+  "r": 70
+ },
+ "shelf": {
+  "_about": "The dispensary (Cook's fetch runs in its own pantry view; this is where the hand-over happens)."
+ }
+}

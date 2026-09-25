@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>The clinic (lab)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<!-- Cook's stylesheet is read, never edited; the clinic's own rules are in css/clinic.css -->
+<link rel="stylesheet" href="css/cook.css">
+<link rel="stylesheet" href="css/clinic.css">
+</head>
+<body class="clinic">
+
+<div id="rotate">
+  <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to help the doctor</p></div>
+</div>
+
+<div id="app">
+  <main id="stage">
+    <div id="game"></div>
+    <!-- shared with Cook (js/cook/ui.js): a speech bubble by the doctor or the patient -->
+    <div id="bubble" class="hidden" role="status" aria-live="polite"><div class="say-slot"></div></div>
+    <div id="gist" class="hidden"></div>
+    <!-- the speaking panel (the mic and, when due, the pills) and small choices -->
+    <div id="choices" class="hidden"></div>
+    <div id="count-badge" class="hidden"><span class="count-digit"></span></div>
+    <button id="done-btn" class="hidden" aria-label="Done">&#10003;</button>
+    <div id="toast" class="hidden"></div>
+    <div id="intro" class="hidden" role="dialog"><div class="ic-card"><div class="ic-head"><img class="ic-face" alt=""><div class="ic-name"></div><button class="ic-say" type="button"></button></div><div class="ic-order"></div><div class="ic-go"></div></div></div>
+  </main>
+
+  <aside id="side">
+    <!-- who's being seen, and the stars as they happen: ear / voice / gentle hands / no help (R3.4) -->
+    <div id="cl-card" class="card hidden">
+      <div class="cl-title"></div>
+      <div class="cl-sub"></div>
+      <div id="cl-stars"></div>
+    </div>
+    <!-- Cook's mission card, unused by the clinic (Cook's ui.js expects it) -->
+    <div id="mission" class="card hidden">
+      <div class="m-head"><div class="m-ring"><svg viewBox="0 0 48 48"><circle class="pr-bg" cx="24" cy="24" r="22"/><circle class="pr-fg" cx="24" cy="24" r="22" pathLength="100"/></svg><img class="m-face" alt=""></div>
+        <div class="m-who"><div class="m-dish"></div><div class="m-stars"></div></div>
+        <div class="m-tools"><button class="m-replay" type="button"></button><button class="m-tr" type="button"></button></div></div>
+      <div class="m-order"></div><div class="m-stamp"></div>
+    </div>
+    <div id="live">
+      <div id="nani-card" class="card hidden" role="status" aria-live="polite">
+        <img class="nc-face" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23d6b08c'/%3E%3Cellipse cx='20' cy='31' rx='11' ry='7' fill='%23f2f0ea'/%3E%3Ccircle cx='14' cy='17' r='5' fill='none' stroke='%233a3a44' stroke-width='2'/%3E%3Ccircle cx='26' cy='17' r='5' fill='none' stroke='%233a3a44' stroke-width='2'/%3E%3C/svg%3E" alt="The doctor">
+        <div class="say-slot"></div>
+      </div>
+    </div>
+    <div class="side-rail">
+      <!-- "?": ask the doctor (the two-way rung; costs the tick) -->
+      <button id="cl-ask" class="rail-btn hidden" title="Ask the doctor (costs the no-help star)" aria-label="Ask the doctor">?</button>
+      <button id="btn-help" class="rail-btn hidden" aria-hidden="true">i</button>
+      <button id="btn-home" class="rail-btn" title="The lab" aria-label="The lab">&#8962;</button>
+    </div>
+  </aside>
+
+  <div id="help-pop" class="hidden" role="dialog"><div class="hp-text"></div></div>
+  <!-- Cook's "pass me", used as the doctor's bag (M8) -->
+  <div id="passme" class="hidden" role="dialog" aria-label="The doctor needs something">
+    <div class="pm-nani"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23d6b08c'/%3E%3Cellipse cx='20' cy='31' rx='11' ry='7' fill='%23f2f0ea'/%3E%3C/svg%3E" alt="The doctor"><div class="pm-say"></div></div>
+    <div class="pm-tray"></div>
+  </div>
+</div>
+
+<div id="overlay" class="hidden"><div id="panel"></div></div>
+
+<script src="js/vendor/phaser.min.js"></script>
+<!-- Cook's engine, read-only (Wave 5A's frozen API) -->
+<script src="js/cook/core.js"></script>
+<script src="js/cook/lang.js"></script>
+<script src="js/cook/art.js"></script>
+<script src="js/cook/ui.js"></script>
+<script src="js/cook/stations.js"></script>
+<script src="js/cook/station-lib.js"></script>
+<script src="js/cook/zone.js"></script>
+<!-- Cook's mechanics the clinic reuses (R3.3), loaded as they are and called by id -->
+<script src="js/cook/mechanics/fetch.js"></script>
+<script src="js/cook/mechanics/passme.js"></script>
+<script src="js/cook/mechanics/pour.js"></script>
+<script src="js/cook/mechanics/count.js"></script>
+<script src="js/cook/mechanics/knead.js"></script>
+<script src="js/cook/mechanics/stir.js"></script>
+<script src="js/cook/order.js"></script>
+<!-- the shared recogniser (never copied) -->
+<script src="js/shared/speech.js"></script>
+<!-- the clinic: pure logic first (these also run in Node), then the stubs, the room, the mechanics, the stations -->
+<script src="js/clinic/visit.js"></script>
+<script src="js/clinic/body.js"></script>
+<script src="js/clinic/flow.js"></script>
+<script src="js/clinic/stubs/speech.js"></script>
+<script src="js/clinic/stubs/which.js"></script>
+<script src="js/clinic/stubs/overlay.js"></script>
+<script src="js/clinic/patient.js"></script>
+<script src="js/clinic/room.js"></script>
+<script src="js/clinic/mechanics/tell.js"></script>
+<script src="js/clinic/mechanics/ask.js"></script>
+<script src="js/clinic/mechanics/check.js"></script>
+<script src="js/clinic/mechanics/where.js"></script>
+<script src="js/clinic/mechanics/care.js"></script>
+<script src="js/clinic/mechanics/stick.js"></script>
+<script src="js/clinic/mechanics/wrap.js"></script>
+<script src="js/clinic/mechanics/lift.js"></script>
+<script src="js/clinic/mechanics/tuck.js"></script>
+<script src="js/clinic/mechanics/drops.js"></script>
+<script src="js/clinic/mechanics/handover.js"></script>
+<script src="js/clinic/mechanics/you.js"></script>
+<script src="js/clinic/stations/visit.js"></script>
+<script src="js/clinic/stations/dispensary.js"></script>
+</body>
+</html>
