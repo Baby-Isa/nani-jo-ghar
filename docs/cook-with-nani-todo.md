@@ -67,8 +67,8 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 ## Then
 - ☐ Zafar plays **story mode** end to end (plus a child if possible) → Round 3 tuning
 - ☐ Family: Round 2 questions (words, recipes, tastes) and recordings
-- ☐ Art run for Cook with Nani (hand sheet in many orientations first; the ingredient library is shared with Find it)
-- ☐ Next mode: Find it (the bazaar)
+- ◐ Art run for Cook with Nani: **batch 1 wired in (25 Sept)**. The sprite map is `art.sprites` in `data/cook.json`, with drawn fallback; the painted worktop and hob; 25 ingredient bowls, vessels, maani, samosa, chips, mishkaki. Webp files are built by `build/sprites_webp.py`. **Still missing / redo** (next ChatGPT batch): whole and peeled onion, rolling pin, rolling board, thali (failed QA); worktop evening; bajri maani set; hob knob and flame ring; grill, rack and cutting board; samosa fold stages 1–2; chaat topping layers; front-view pantry items; painted chai tray and cups; a front or three-quarter pan for the pour line. Evening/night backgrounds are unused until the game has a time of day. Hands v2 (`claude/art-hands-v1`) awaits Zafar's ring approval.
+- ◐ Next mode: Find it (the bazaar): first slice at `find.html` (unlinked), now on the calm sidebar; the target digit on rows removed (a leak; the bot fell from 3.3% to 0–1.7%); zoom pinned in the sidebar foot
 
 ## Platform and tech debt (Zafar's questions, 24 Sept evening)
 
@@ -103,7 +103,7 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 | Mode | Design doc | Status | Verdict |
 |---|---|---|---|
 | Cook with Nani | `docs/cook-with-nani-phase-a-design.md` | built, iterating | — |
-| Find it | `docs/find-it-design.md` | designed; engine being built | Go |
+| Find it | `docs/find-it-design.md` | first slice live (`find.html`, unlinked), calm sidebar | Go |
 | Tidy up | `docs/modes/tidy-up-design.md` | ☑ designed | Go with changes |
 | Dress up | `docs/modes/dress-up-design.md` | ☑ designed | Go with changes |
 | Nani's clinic | `docs/modes/clinic-design.md` | ☑ designed | Go with changes |
