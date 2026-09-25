@@ -180,7 +180,11 @@
         await Cook.wait(420);
       }
       const plate = { x: z.X(1330), y: z.Y(640) };
-      if (count) S.track(S.add.ellipse(plate.x, plate.y, z.L(330), z.L(150), 0xf3eee6, 1).setStrokeStyle(z.L(6), 0xb24a3a).setDepth(D.item - 0.2));
+      const painted = Cook.Art.sprite(S, "plate.top"); // the enamel plate (data.art.sprites), else a drawn one
+      if (count && painted) {
+        S.track(S.add.ellipse(plate.x + z.L(6), plate.y + z.L(10), z.L(290), z.L(280), 0x3a2410, 0.14).setDepth(D.item - 0.3));
+        S.flat(painted, plate.x, plate.y, z.L(300), z.L(300), { depth: D.item - 0.2 });
+      } else if (count) S.track(S.add.ellipse(plate.x, plate.y, z.L(330), z.L(150), 0xf3eee6, 1).setStrokeStyle(z.L(6), 0xb24a3a).setDepth(D.item - 0.2));
       const kinds = [...new Set(blobs.map((b) => b.wordId).filter(Boolean))];
       const folds = FOLDS.slice(0, k.folds);
       const g = S.track(S.add.graphics().setDepth(D.fx));

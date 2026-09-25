@@ -158,7 +158,7 @@
     let img;
     let rim;
     if (spr) {
-      const s = (scale * info.rim[2]) / spr.rx;
+      const s = (scale * info.rim[2] * spr.size) / spr.rx;
       img = S.track(S.add.image(x, y, spr.key).setOrigin(spr.cx / spr.w, spr.cy / spr.h).setScale(s).setDepth(D.item));
       rim = { x, y, rx: spr.rx * s, ry: spr.ry * s, depth: spr.depth * s };
     } else {
@@ -187,7 +187,7 @@
       v.level = L;
       if (color != null) v.color = color;
       liq.clear();
-      if (L <= 0.01) return;
+      if (L <= 0.01 || (spr && spr.filled)) return; // a painted vessel that shows its own contents
       const p = at(L);
       liq.fillStyle(v.color, 0.95);
       liq.fillEllipse(p.x, p.y, p.rx * 2, p.ry * 2);

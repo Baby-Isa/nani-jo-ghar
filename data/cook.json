@@ -2352,7 +2352,7 @@
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
   "props": [],
   "sprites": {
-   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it). bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). Left out on purpose (failed QA or pending a redo): veg-dungri-whole-t, veg-dungri-peeled-t, tool-velan-t, tool-chakla-t, vessel-thali-t.",
+   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). Left out on purpose (failed QA or pending a redo): veg-dungri-whole-t, veg-dungri-peeled-t, tool-velan-t, tool-chakla-t, vessel-thali-t.",
    "dir": "assets/cook/items/",
    "max": 256,
    "items": {
@@ -2400,13 +2400,16 @@
     "pot": { "top": { "file": "vessel-pot-t", "max": 0 } },
     "tadka-pan": { "top": { "file": "vessel-tadka-pan-t", "max": 0 } },
     "chaat-bowl": { "empty": { "file": "chaat-bowl-empty-t", "max": 0 } },
-    "katori": { "top": "vessel-katori-t" }
+    "katori": { "top": "vessel-katori-t" },
+    "kadai": { "oil": { "file": "vessel-kadai-oil-t", "max": 0 } },
+    "plate": { "top": "plate-enamel-empty-t" }
    },
    "art": {
     "vessel:pan": "pan.top",
     "vessel:pot": "pot.top",
     "vessel:tadka": "tadka-pan.top",
     "vessel:serving": "chaat-bowl.empty",
+    "vessel:kadai": "kadai.oil",
     "pastry:3": "ph-samosa.folded",
     "pastry:4": "ph-samosa.fried",
     "layer:ph-chips": "ph-chips.raw"
@@ -2431,7 +2434,8 @@
     "pan": { "rim": [0.34, 0.575, 0.317, 0.323], "depth": 0.075 },
     "pot": { "rim": [0.497, 0.455, 0.372, 0.421], "depth": 0.079 },
     "tadka": { "rim": [0.391, 0.617, 0.364, 0.306], "depth": 0.069 },
-    "serving": { "rim": [0.495, 0.5, 0.459, 0.464], "depth": 0.026 }
+    "serving": { "rim": [0.495, 0.5, 0.459, 0.464], "depth": 0.026 },
+    "kadai": { "rim": [0.501, 0.556, 0.303, 0.374], "depth": 0, "size": 0.85, "filled": true }
    },
    "bg": {
     "marble": "bg-cook-worktop-t-v1-1600",
@@ -2448,8 +2452,8 @@
     "tadka": ["pot.top", "tadka-pan.top", "spi-02.bowl", "spi-05.bowl", "spi-01.bowl", "veg-12.bowl", "spi-16.bowl", "veg-13.bowl"],
     "assemble": ["ph-dahi.bowl", "ph-amli.bowl", "ph-lili.bowl", "veg-02.bowl", "ph-sev.bowl", "ph-dhana.bowl", "veg-12.bowl", "veg-03.bowl", "ph-chana.bowl", "veg-01.bowl"],
     "fill": ["chaat-bowl.empty", "ph-keema.bowl", "veg-01.bowl", "veg-10.bowl", "veg-02.bowl", "veg-12.bowl", "ph-dhana.bowl"],
-    "fold": ["ph-samosa.folded"],
-    "fry": ["ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],
+    "fold": ["ph-samosa.folded", "plate.top"],
+    "fry": ["kadai.oil", "ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],
     "knead": ["chaat-bowl.empty"],
     "flip": ["chaat-bowl.empty"],
     "tawa": ["chaat-bowl.empty"],

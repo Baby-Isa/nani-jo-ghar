@@ -773,7 +773,7 @@
     if (!key) return null;
     const src = scene.textures.get(key).getSourceImage();
     const [cx, cy, rx, ry] = g.rim;
-    return { key, w: src.width, h: src.height, cx: cx * src.width, cy: cy * src.height, rx: rx * src.width, ry: ry * src.height, depth: (g.depth || 0) * src.height };
+    return { key, w: src.width, h: src.height, cx: cx * src.width, cy: cy * src.height, rx: rx * src.width, ry: ry * src.height, depth: (g.depth || 0) * src.height, size: g.size || 1, filled: !!g.filled };
   };
   /**
    * A katori of cut pieces (the skewer station's bowls): the katori sprite
