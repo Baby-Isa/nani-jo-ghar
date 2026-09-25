@@ -92,5 +92,6 @@ None of these is a blocker; the one real piece of debt is item 1, and everything
 - ☑ **Remove the English step pills** (Water, Tea, Boil…)
 - ☑ **Result card:** a **word review**: every Kutchi word in the order as a pill (speaker, Kutchi, English), marked "missed" or "help"; the stars and one "next time" tip per missed star
 - ☑ **Coins and stars counter** gone from the sidebar; pocket money on the title screen and the day's summary. "Close the kitchen" moved to the rail
+- Wave 5A checks: Station lab at 915×375, 1366×768 and iPad portrait, the iPad landscape lab for four stations, `--days 2 --canvas` and `--open-kitchen 2` all pass with no console errors. The harness now pictures and taps the intro card, opens "?" and ↻ once a run, and flags any sidebar that scrolls or pushes a word out (none left). The Chai tray's intro card shows only "Muke chai khape.": each person's cup order is still said at the tray, by design
 - ☐ **Level 1 more varied and fun:** kinds of mishkaki skewer, kinds of tea, several things to chop from the start.
 - ☐ **Chop:** a visible countdown timer; level 1 = several items (what goes in the dish), with volume, decoys and time pressure as the game.
