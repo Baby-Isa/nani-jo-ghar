@@ -16,13 +16,15 @@
  * from the seed, so nothing about the scene carries over between rounds.
  */
 (function (root, factory) {
-  const Req = factory(root.Snap && root.Snap.Photo ? root.Snap.Photo : typeof require === "function" ? require("./photo.js") : null);
+  const S = root.Snap || {};
+  const node = typeof module === "object" && module.exports;
+  const Req = factory(node ? require("./photo.js") : S.Photo, node ? require("./stubs/which-one.js") : S.WhichOneStub);
   if (typeof module === "object" && module.exports) module.exports = Req;
   else {
     root.Snap = root.Snap || {};
     root.Snap.Req = Req;
   }
-})(typeof self !== "undefined" ? self : this, function (Photo) {
+})(typeof self !== "undefined" ? self : this, function (Photo, WhichOne) {
   const Req = {};
 
   /* ---------------- seeded randomness ---------------- */
@@ -100,7 +102,7 @@
         const nc = rng.range(K.clustersPerKind || 1);
         for (let c = 0; c < nc; c++) {
           const shape = rng.pick(P.sizes.shapes["3"]);
-          const sizes = rng.shuffle(["big", "mid", "small"]);
+          const sizes = rng.shuffle(WhichOne.sizes);
           clusters.push({ pat: P.sizes, members: shape.map((o, i) => ({ o, kind, size: sizes[i] })) });
         }
       });
@@ -226,18 +228,23 @@
   }
   const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const avg = (arr, k) => arr.reduce((t, s) => t + s[k], 0) / arr.length;
-  Req.frameFor = function (row, lay, K) {
+  /** opts.lens: prefer a frame that also earns the lens rating (the oracle's craft); else the first that matches. */
+  Req.frameFor = function (row, lay, K, opts = {}) {
     const zooms = K.vf.zooms.slice().reverse();
     const scene = { w: lay.w, h: lay.h };
+    let first = null;
     for (const p of centresFor(row, lay)) {
       if (!Req.reachable(p, lay, K)) continue;
       for (const zoom of zooms) {
         const frame = Photo.frameAt(p[0], p[1], zoom, K.vf.base, scene);
         const print = Photo.printRecord(lay.spots, frame);
-        if (Photo.matches(print, row, K.photo).ok) return { cx: p[0], cy: p[1], zoom, frame, print };
+        if (!Photo.matches(print, row, K.photo).ok) continue;
+        const f = { cx: p[0], cy: p[1], zoom, frame, print };
+        if (!opts.lens || Photo.lensScore(print, K.photo).ok) return f;
+        first = first || f;
       }
     }
-    return null;
+    return first;
   };
 
   /* ---------------- the rows ---------------- */
@@ -249,7 +256,7 @@
       if (rows.length >= nRows) break;
       let base = null;
       if (K.game === "g2") {
-        for (const size of rng.shuffle(["big", "small"])) {
+        for (const size of WhichOne.order(rng)) {
           const r = { kind: "pick", noun, size };
           if (Req.frameFor(r, lay, K)) {
             base = r;

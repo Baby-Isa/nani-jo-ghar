@@ -41,11 +41,11 @@
       ]
     },
     "photo": {
-      "_about": "js/snap/photo.js. Film is rows + filmSpare. The main-subject rule (K2) and the count rule (K1) and the leave-out rule (K3), all rated on the print record. The lens star is rated on the biggest thing in frame, never the wanted one.",
+      "_about": "js/snap/photo.js. Film is rows + filmSpare. The main-subject rule (K2) and the count rule (K1) and the leave-out rule (K3), all rated on the print record. The lens star is rated on the biggest thing in frame, never the wanted one. Lens numbers are tuned for still fruit (design s7 had 15-70% and the middle third for one animal): the biggest fruit at least 8% of the frame, its centre in the middle half, at least 90% showing, so a count shot of two or three can earn it when zoomed in.",
       "levels": [
         {"filmSpare": 2, "countVisible": 0.5, "excludeMax": 0.1,
          "mainSubject": {"minArea": 0.08, "minVisible": 0.6, "middle": 0.1667, "rivalMax": 0.5},
-         "lens": {"minArea": 0.15, "maxArea": 0.7, "middle": 0.1667, "minVisible": 0.9},
+         "lens": {"minArea": 0.08, "maxArea": 0.7, "middle": 0.25, "minVisible": 0.9},
          "sizeWords": {"big": "ph-big", "small": "ph-small"},
          "thumbW": 168}
       ]
