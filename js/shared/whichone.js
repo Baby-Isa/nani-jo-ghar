@@ -25,7 +25,10 @@
  *   WhichOne.consistent(items, clues)         who still fits what's been said
  *   WhichOne.lucky(items, clues)              accusing now would be a guess
  *   WhichOne.blindOdds(rows, items, opts)     {p, rows: [{p, strategy, candidates}]}
+ *   WhichOne.setOdds(scope, answers, opts)    best blind chance of picking exactly a set
  *   WhichOne.fitBudget(make, opts)            add rows/decoys until p <= budget
+ *   WhichOne.grid / rangeOdds / product       decoy grids and round odds
+ *   WhichOne.Pick                             Dress up's stub API, exactly
  *   WhichOne.estimate(trials, playOnce)       Monte Carlo rate for a leak bot
  *
  * Plain <script>: window.WhichOne (and Shared.whichone); Node: require().
@@ -62,7 +65,7 @@
     return a;
   };
 
-  W.val = (item, dim) => (dim === "noun" ? item.noun : item.attrs && item.attrs[dim] !== undefined ? item.attrs[dim] : item[dim]);
+  W.val = (item, dim) => (dim === "noun" ? (item.noun != null ? item.noun : item.kind) : item.attrs && item.attrs[dim] !== undefined ? item.attrs[dim] : item[dim]);
   /** The asked dims of a row, as {dim: value} (row.attrs, or flat keys other than noun/count/id). */
   W.asked = function (row) {
     if (row.attrs) return Object.assign({}, row.attrs);
@@ -232,16 +235,30 @@
     opts = Object.assign({ min: 2, except: [] }, opts || {});
     const probs = [];
     const pairs = [];
+    const dims = [];
     for (const u of used || []) {
-      if (typeof u === "string") new Set(items.map((it) => W.val(it, u)).filter((v) => v != null)).forEach((v) => pairs.push({ dim: u, value: v }));
-      else pairs.push(u);
+      if (typeof u === "string") {
+        dims.push(u);
+        new Set(items.map((it) => W.val(it, u)).filter((v) => v != null)).forEach((v) => pairs.push({ dim: u, value: v }));
+      } else pairs.push(u);
     }
+    const counts = {};
+    for (const it of items)
+      for (const d of dims) {
+        const v = W.val(it, d);
+        if (v != null) counts[`${d}.${v}`] = (counts[`${d}.${v}`] || 0) + 1;
+      }
     for (const { dim, value } of pairs) {
       if (opts.except.some((e) => e.dim === dim && e.value === value)) continue;
       const n = items.filter((it) => W.val(it, dim) === value).length;
       if (n < opts.min) probs.push(`${dim} ${value} on ${n}, needs ${opts.min}`);
     }
-    return { ok: !probs.length, problems: probs };
+    // Who did it's shape too: counts["dim.value"], each item's distinctiveness, their median
+    const distinct = items.map((it) => W.distinctive(it, items, dims));
+    const sorted = distinct.slice().sort((a, b) => a - b);
+    const m = sorted.length;
+    const median = !m ? 0 : m % 2 ? sorted[(m - 1) / 2] : (sorted[m / 2 - 1] + sorted[m / 2]) / 2;
+    return { ok: !probs.length, problems: probs, counts, distinct, median };
   };
   /** How many of item's values (over dims) nobody else in items shares. */
   W.distinctive = (item, items, dims) => dims.filter((d) => W.val(item, d) != null && items.filter((o) => o !== item && W.val(o, d) === W.val(item, d)).length === 0).length;
@@ -373,6 +390,109 @@
       p = odds(round);
     }
     return { round, p, steps, ok: p <= opts.budget };
+  };
+
+  /* ---------------------------------------- set picking (Dress up 8.4) */
+  const FEATS = ["noun", "kind", "colour", "size", "motif", "pattern"];
+  const sameOn = (a, b, feats) => feats.every((f) => W.val(a, f) === W.val(b, f));
+  /**
+   * The strongest blind prior for picking exactly the set `answers` (k
+   * items, any order) from `scope`, seeing only the items: uniform over the
+   * scope; uniform over the one strictly most common value of any visible
+   * feature; uniform over the most salient colour (opts.salience(colour) ->
+   * number). A strategy whose set S is smaller than k takes all of S and the
+   * rest at random. An upper bound on a blind bot, which is what a budget
+   * needs. Items match answers on opts.features (default noun/kind, colour,
+   * size, motif, pattern), so answers can be descriptions, not ids.
+   */
+  W.setOdds = function (scope, answers, opts) {
+    opts = opts || {};
+    const feats = opts.features || FEATS;
+    const k = answers.length;
+    const n = scope.length;
+    if (!k) return 1;
+    const inSet = (S) => answers.every((a) => S.some((x) => sameOn(x, a, feats)));
+    const coversAll = (S) => S.every((x) => answers.some((a) => sameOn(x, a, feats)));
+    const oddsFor = (S) => (S.length >= k ? (inSet(S) ? 1 / choose(S.length, k) : 0) : coversAll(S) ? 1 / choose(n - S.length, k - S.length) : 0);
+    let best = 1 / choose(n, k);
+    const groups = [];
+    for (const f of feats) {
+      const by = {};
+      for (const x of scope) {
+        const v = W.val(x, f);
+        if (v != null) (by[v] = by[v] || []).push(x);
+      }
+      const sizes = Object.values(by).map((g) => g.length);
+      const max = Math.max(0, ...sizes);
+      if (sizes.filter((z) => z === max).length === 1 && sizes.length > 1) groups.push(Object.values(by).find((g) => g.length === max));
+    }
+    if (opts.salience) {
+      const sal = (x) => (W.val(x, "colour") != null ? opts.salience(W.val(x, "colour")) : 0);
+      const top = Math.max(...scope.map(sal));
+      groups.push(scope.filter((x) => sal(x) === top));
+    }
+    for (const S of groups) best = Math.max(best, oddsFor(S));
+    return best;
+  };
+  /** Every noun in every colour, times every value of each extra attribute: the balanced decoy grid. */
+  W.grid = function (nouns, colours, extra) {
+    let items = [];
+    nouns.forEach((noun) => colours.forEach((colour) => items.push({ noun, kind: noun, colour })));
+    for (const [attr, vals] of Object.entries(extra || {})) {
+      const next = [];
+      items.forEach((it) => vals.forEach((v) => next.push(Object.assign({}, it, { [attr]: v }))));
+      items = next;
+    }
+    return items;
+  };
+  /** 1 / the number of values a blind guess could take (a count of 1-3: 1/3). */
+  W.rangeOdds = ([lo, hi]) => 1 / (hi - lo + 1);
+  W.product = (ps) => ps.reduce((a, b) => a * b, 1);
+
+  /**
+   * Dress up's stub API (js/dress/stubs/pick.js), exactly: rng-first
+   * helpers, grid, rules(scope, answers) -> [problems], setOdds, rangeOdds,
+   * product, C. Swap: Dress.Pick = WhichOne.Pick.
+   */
+  W.Pick = {
+    rng: W.rng,
+    int: (rng, [lo, hi]) => lo + Math.floor(rng() * (hi - lo + 1)),
+    choose: (rng, arr) => arr[Math.floor(rng() * arr.length)],
+    shuffle: (rng, arr) => W.shuffle(arr, rng),
+    sample(rng, arr, k, weight) {
+      const pool = arr.slice();
+      const out = [];
+      while (out.length < k && pool.length) {
+        const ws = pool.map((x) => (weight ? Math.max(0.0001, weight(x)) : 1));
+        let r = rng() * ws.reduce((a, b) => a + b, 0);
+        let i = 0;
+        while (i < pool.length - 1 && (r -= ws[i]) > 0) i++;
+        out.push(pool.splice(i, 1)[0]);
+      }
+      return out;
+    },
+    weighted: (rng, arr, weight) => W.Pick.sample(rng, arr, 1, weight)[0],
+    grid: (kinds, colours, extra) => W.grid(kinds, colours, extra),
+    /** Leak rules 2 and 3 for one scope, as problem strings (empty = fine). */
+    rules(scope, answers) {
+      const out = [];
+      const colours = [...new Set(scope.map((i) => W.val(i, "colour")).filter(Boolean))];
+      const kinds = [...new Set(scope.map((i) => i.noun || i.kind))];
+      for (const a of answers) {
+        const ak = a.noun || a.kind;
+        const inKind = new Set(scope.filter((i) => (i.noun || i.kind) === ak).map((i) => W.val(i, "colour")));
+        if (a.colour && inKind.size < Math.min(3, colours.length)) out.push(`asked ${ak} in only ${inKind.size} colours`);
+        const onKinds = new Set(scope.filter((i) => W.val(i, "colour") === a.colour).map((i) => i.noun || i.kind));
+        if (a.colour && onKinds.size < Math.min(2, kinds.length)) out.push(`asked ${a.colour} on only ${onKinds.size} kinds`);
+      }
+      const counts = colours.map((c) => scope.filter((i) => W.val(i, "colour") === c).length);
+      if (counts.length && Math.max(...counts) - Math.min(...counts) > 1) out.push("colours not balanced");
+      return out;
+    },
+    setOdds: (scope, answers, opts) => W.setOdds(scope, answers, opts),
+    rangeOdds: W.rangeOdds,
+    product: W.product,
+    C: choose,
   };
 
   /** Monte Carlo: the share of `trials` runs where playOnce(i) returns true (a leak bot's win rate). */

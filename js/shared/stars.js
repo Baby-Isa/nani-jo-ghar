@@ -96,13 +96,15 @@
   /** What a row counts as for the ear. */
   Stars.outcome = function (row, r) {
     r = rulesOf(r);
-    if (row.retry || row.outcome === "retry") return "retry";
+    if (row.retry || row.excluded || row.outcome === "retry") return "retry";
     if (row.taught || row.outcome === "taught" || (row.stage != null && row.stage <= r.taughtStage)) return "taught";
     const ws = wordsOf(row);
     if (ws.length && ws.every((w) => Stars.isMenuWord(w))) return "menu";
     if (row.placeholder && !r.placeholdersTested) return "placeholder";
     if (row.outcome) return row.outcome;
-    return row.ok ? "heard" : "wrong";
+    if (row.shown) return "wrong"; // the answer was revealed before the child chose
+    const ok = row.ok != null ? row.ok : row.firstRight;
+    return ok ? "heard" : "wrong";
   };
   Stars.isTested = (row, r) => ["heard", "wrong", "late"].includes(Stars.outcome(row, r));
 
@@ -122,7 +124,7 @@
     }
     const ratio = tested ? heard / tested : 0;
     const state = tested < r.minTested ? "untested" : ratio >= r.earPass - 1e-9 ? "earned" : "lost";
-    return { state, tested, heard, ratio, need: r.minTested };
+    return { state, tested, heard, ratio, need: r.minTested, offered: state !== "untested", earned: state === "earned" };
   };
 
   /**
@@ -135,9 +137,12 @@
    *   earned    counted / said >= voicePass
    *   open      otherwise
    */
+  // Snap's stub shape {heard, target, parent} -> a moment
+  const asMoment = (m) => (m && !m.via && ("heard" in m || "parent" in m) ? { via: m.parent ? "parent" : m.heard && m.heard === m.target ? "voice" : "pill", confidence: m.confidence } : m);
   Stars.voice = function (moments, mode, variant) {
+    if (mode && typeof mode === "object" && mode.minSaid != null) mode = Object.assign({}, mode, { voiceMin: mode.minSaid });
     const r = rulesOf(mode, variant);
-    const said = (moments || []).filter((m) => m && m.via && m.via !== "skip");
+    const said = (moments || []).map(asMoment).filter((m) => m && m.via && m.via !== "skip");
     const counted = said.filter((m) => {
       if (m.via === "parent") return !r.firstTry || (m.tries || 1) <= 1;
       if (m.via !== "voice") return false;
@@ -147,7 +152,7 @@
     const ratio = said.length ? counted / said.length : 0;
     let state = "none";
     if (said.length) state = said.length < r.voiceMin ? "untested" : ratio >= r.voicePass - 1e-9 ? "earned" : "open";
-    return { state, said: said.length, counted, ratio };
+    return { state, said: said.length, counted, ratio, offered: state === "earned" || state === "open", earned: state === "earned" };
   };
 
   /**
