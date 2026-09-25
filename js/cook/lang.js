@@ -102,7 +102,12 @@
     const segs = [];
     const [a, b] = tmpl.split("{x}");
     if (a) segs.push({ t: a, lang });
-    if (phrase && b !== undefined) segs.push(...phrase.segs);
+    if (phrase && b !== undefined) {
+      // a line that starts with the word ("Elchi waari chai.") starts with a capital
+      const ps = phrase.segs.slice();
+      if (!a && ps[0] && ps[0].t && /[.!?]$/.test((b || "").trim())) ps[0] = Object.assign({}, ps[0], { t: ps[0].t.charAt(0).toUpperCase() + ps[0].t.slice(1) });
+      segs.push(...ps);
+    }
     if (b) segs.push({ t: b, lang });
     const enT = f.en || f.e;
     const en = phrase ? enT.replace("{x}", phrase.en) : enT;
