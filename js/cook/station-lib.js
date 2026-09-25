@@ -41,11 +41,20 @@
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   async function begin(S, ctx, key, view) {
+    // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar
+    if (ctx && ctx.intro) {
+      await ctx.intro;
+      ctx.intro = null;
+    }
     await S.setView(view);
     const st = Cook.data.stations[key] || {};
     Cook.save.seenStation = Cook.save.seenStation || {};
-    if (st.goal && (ctx.guided || ctx.lab || !Cook.save.seenStation[key])) UI.gist(st.goal);
+    // the goal waits behind the "?" (it pulses the first time); Nani's last line goes, and she
+    // keeps quiet for a moment so the player can work it out (Cook.hintDelay adds the quiet)
+    if (st.goal) UI.gist(st.goal);
     else UI.hideGist();
+    UI.hideBubble();
+    Cook.quietUntil = Date.now() + ((Cook.data.calm || {}).quietMs || 0);
     Cook.save.seenStation[key] = true;
     if (ctx.nextStep) ctx.nextStep(key);
   }
