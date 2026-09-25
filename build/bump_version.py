@@ -12,7 +12,7 @@ It sets the one stamp in all the places that carry it:
     data fetches, pictures, backgrounds and voice, and which also stamps
     every file a Phaser scene loads;
   - every local css/js tag and <img src="assets/..."> in the pages
-    (cook.html, find.html, index.html);
+    (every *.html at the root);
   - every url("../assets/...") in css/*.css.
 """
 import datetime
@@ -22,7 +22,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGES = ["cook.html", "find.html", "index.html"]
+PAGES = sorted(os.path.basename(f) for f in glob.glob(os.path.join(ROOT, "*.html")))
 VERSION_JS = "js/version.js"
 V_RE = re.compile(r'(const V = ")([^"]*)(";)')
 
