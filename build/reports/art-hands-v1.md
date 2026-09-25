@@ -57,6 +57,7 @@ The API reskins failed: 39 of 47 girl reskins redrew the hand, and the sleeve ca
 - Eid mehndi texture not made yet.
 - Nani's left hands are lit from the wrong side, and her hands look young (above).
 - b4-rolling-pin: a thin tan sliver stays at the edge of each cuff on the girl and Nani.
+- d2-c-hold-e (girl and Nani): a small speck of sleeve colour remains on the forearm.
 - Very pale forearms (a5-wave-f1) needed a hand-set erase box (`SLEEVE_ERASE` in `skin_hands.py`); any new master should be checked on the girl or Nani sheet for sleeve colour leaking onto the arm.
 - Ring anchors were placed by eye: check them in the game at play size, especially palm and side views.
 
