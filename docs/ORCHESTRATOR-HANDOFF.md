@@ -95,3 +95,9 @@ All blocking decisions in the deep dives (top sections of each mode's design doc
 - Mum's recordings: A3 done (`docs/kutchi-grammar-notes.md`); next A4–A8, then B, then C. Word changes to batch into `data/cook.json` later: *daar*, *ba* (two, said "ber"), *hakro/hakri*, *wadho/nindho* (+ she-forms), *watana*, *waari*, *lai*.
 
 - **Also on resume:** Zafar's grill playtest → `docs/UX-PRINCIPLES.md` (applies to every mode; linked from BUILD-COMMON) and Cook **Wave 6** in the to-do. Launch Wave 6 as one Cook session once the old chat's art wiring is on `main` (same files). Continuation build sessions must be told to apply UX-PRINCIPLES in their next phase.
+
+### 25 Sept ~22:00 UTC: first build wave done, second wave launched
+- All seven phase 0–1 builds finished with reports (`build/reports/*-build.md`) and are **merged into `claude/nifty-rubin-c0d431`** together with `origin/main` (the old chat's calm UI, Find it sidebar and batch 1 art). Clean merge; shared Node tests 59/59.
+- Launched: **Cook Wave 6** (`claude/build-cook-wave6`, session_011XSUSd9KntKRw2qJKEoEjF) and **Find it** (`claude/build-find`, session_01DRSY1hWZmrqfCmkKabrRRg).
+- Held: the **shell** (foundation phase B) until Wave 6 merges (both touch `cook.html`/Cook's save); **batch 2 art** processing after Wave 6 (both touch `data/cook.json`); swapping each mode's stubs for the shared modules + UX-PRINCIPLES in each mode's phase 2.
+- `main` (the live site) has not been updated from this branch yet: waiting for Zafar's go-ahead to publish the new mode labs.
