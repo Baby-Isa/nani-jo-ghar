@@ -1,0 +1,107 @@
+{
+  "_about": "Star sets and the ear/voice rules for every mode, as data (read by js/shared/stars.js; spec in docs/shared-api.md s3). rules.defaults apply to every mode; rules.<mode> changes only what differs; rules.<mode>.variants.<name> (a visit type, a mechanic) changes it again. Keys: earPass = share of tested rows that must be heard (1 = Cook's rule, the first miss loses the ear); minTested = fewer tested rows than this and the ear shows dashed, 'not tested this time'; taughtStage = rows whose word is at this stage or below are taught, not tested (stage 1 = first meeting); placeholdersTested = whether rows whose deciding word has no Kutchi yet count for the ear (no: an English placeholder is readable); voicePass / voiceMin = share of speaking moments that must be recognised or parent-ticked, and how many there must be; firstTry = only a first-try acceptance counts (the clinic); minConfidence = below this a recognition goes to the pills and doesn't count; busyWrongWeight = how much a wrong answer in Busy counts against the word's stage (1 = a full miss); lateCounts = whether a late answer (after the reveal) counts against the word's stage (never against its meaning in Monsoon); maxMissWeightPerRound = cap on one word's miss weight in one round (2 = at most one stage lost). star_sets are Cook's shape (data/cook.json star_sets) plus a 'voice' slot; icons are names in js/cook/ui.js ICON, or in Stars.ICONS for the new ones until the shell merges them.",
+  "rules": {
+    "defaults": {
+      "earPass": 1,
+      "minTested": 2,
+      "taughtStage": 1,
+      "placeholdersTested": false,
+      "voicePass": 1,
+      "voiceMin": 1,
+      "firstTry": false,
+      "minConfidence": 0.5,
+      "busyWrongWeight": 1,
+      "lateCounts": true,
+      "maxMissWeightPerRound": null
+    },
+    "cook": { "minTested": 1 },
+    "find": { "minTested": 2 },
+    "tidy": { "minTested": 2, "voiceMin": 2 },
+    "who": { "minTested": 2 },
+    "dress-up": { "minTested": 2 },
+    "snap": { "minTested": 2, "voiceMin": 2 },
+    "clinic": {
+      "minTested": 3,
+      "firstTry": true,
+      "variants": {
+        "check-up": { "minTested": 3 },
+        "named-ailment": { "minTested": 2 }
+      }
+    },
+    "monsoon": {
+      "earPass": 0.8,
+      "minTested": 6,
+      "voicePass": 0.8,
+      "voiceMin": 4,
+      "busyWrongWeight": 0.5,
+      "lateCounts": false,
+      "maxMissWeightPerRound": 2,
+      "variants": {
+        "forecast": { "minTested": 10 }
+      }
+    }
+  },
+  "aliases": { "dress": "dress-up", "who-did-it": "who", "tidy-up": "tidy", "monsoon-rush": "monsoon" },
+  "star_sets": {
+    "cook": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: everything they asked for" },
+      "hand": { "icon": "chefhat", "name": "Cooked well", "tip": "Cooked well: nothing spilt or burnt" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help: no hints, reveals or translations" },
+      "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick: served before their patience ran out" },
+      "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: asked in Kutchi, out loud" }
+    },
+    "find": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: found what they asked for" },
+      "hand": { "icon": "magnifier", "name": "Sharp eyes", "tip": "Sharp eyes: found it without a wrong pick" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+      "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick" },
+      "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: told them in Kutchi, out loud" }
+    },
+    "tidy": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: everything where Nani said" },
+      "hand": { "icon": "broom", "name": "Neat", "tip": "Neat: tidied without a wrong move" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+      "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick" },
+      "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: told Ali in Kutchi, out loud" }
+    },
+    "who": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: followed every clue" },
+      "hand": { "icon": "nani-glasses", "name": "Sharp thinking", "tip": "Sharp thinking: caught them without a guess" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+      "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick" },
+      "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: gave the clue in Kutchi, out loud" }
+    },
+    "dress-up": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: dressed them as they asked" },
+      "hand": { "icon": "needle", "name": "Neat stitching", "tip": "Neat stitching: Big Ma's finishing done well" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+      "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick" },
+      "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: asked in Kutchi, out loud" }
+    },
+    "monsoon": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: heard Nani's calls in time" },
+      "hand": { "icon": "umbrella", "name": "Kept dry", "tip": "Kept dry: every drop caught" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+      "busy": { "icon": "bolt", "name": "Quick ears", "tip": "Quick ears: answered before the drop" },
+      "voice": { "icon": "megaphone", "name": "Called it", "tip": "Called it: gave the calls in Kutchi, out loud" }
+    },
+    "clinic": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: found what hurt" },
+      "hand": { "icon": "plaster", "name": "Gentle hands", "tip": "Gentle hands: careful with the patient" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+      "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick" },
+      "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: told the doctor in Kutchi, first time" }
+    },
+    "snap": {
+      "ear": { "icon": "ear", "name": "Understood", "tip": "Understood: the photos Nani asked for" },
+      "hand": { "icon": "lens", "name": "Good shot", "tip": "Good shot: the subject filled the frame" },
+      "relaxed": { "icon": "tick", "name": "No help", "tip": "No help" },
+      "busy": { "icon": "bolt", "name": "Quick", "tip": "Quick" },
+      "voice": { "icon": "mic", "name": "Said it", "tip": "Said it: told Ali in Kutchi, out loud" }
+    }
+  },
+  "menu_words": {
+    "_about": "Words a child already knows from an English menu (chai, daal): played, never tested, in every mode (Monsoon 6.6 default; Zafar edits the list).",
+    "ids": ["cook-chai", "cook-daal", "veg-03", "ph-chana", "spi-02"]
+  }
+}
