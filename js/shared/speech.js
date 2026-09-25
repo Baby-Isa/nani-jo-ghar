@@ -156,8 +156,14 @@
       else merged.push(r.slice());
     }
     if (!merged.length) return [0, x.length];
-    let best = merged[0];
-    for (const r of merged) if (r[1] - r[0] > best[1] - best[0]) best = r;
+    // a short phrase ("abo takiviyo ai") has stops inside it: keep first-to-
+    // last run when that is under 3 s, else the longest run (a word plus a
+    // cough or a chair scrape is longer than any phrase we ask for)
+    let best = [merged[0][0], merged[merged.length - 1][1]];
+    if (best[1] - best[0] > 300) {
+      best = merged[0];
+      for (const r of merged) if (r[1] - r[0] > best[1] - best[0]) best = r;
+    }
     const pad = 6;
     return [Math.max(0, (best[0] - pad) * HOP), Math.min(x.length, (best[1] + pad) * HOP)];
   }
