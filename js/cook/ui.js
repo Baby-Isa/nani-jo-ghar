@@ -420,6 +420,8 @@
         },
       })
     );
+    // another mode can add to a row (Find it: the running tally, the count's digit)
+    if (typeof r.decorate === "function") r.decorate(li);
     return li;
   }
   function renderOrder() {
@@ -564,6 +566,8 @@
     renderOrder();
   };
   M.ladders = () => (mission ? mission.ladders : []);
+  /** Draw the rows again (a mode that keeps its own row state, e.g. Find it's tallies). */
+  M.refresh = () => mission && renderOrder();
   M.isTarget = function (id) {
     if (!mission) return false;
     return mission.ladders.some((L) =>

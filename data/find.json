@@ -1,0 +1,147 @@
+{
+  "_about": "Find it (docs/find-it-design.md): the search engine's data. Scenes (anchors and hide spots, with the relation each spot has to its anchor), look-alike groups, mechanic levels and the story. Every Kutchi word is borrowed: from data/cook.json (shared with Cook) or from data/content.json (the content master), listed in words.from_content. Nothing here is Kutchi; nothing is invented. A word with no Kutchi yet shows as a grey English placeholder.",
+
+  "words": {
+    "_about": "Merged into the shared word table (Cook.data.words) when find.html loads: the Kutchi draft and English from the content master, and the item picture. Word progress is shared with Cook (one save, one purse).",
+    "from_content": [
+      "fru-01", "fru-02", "fru-03", "fru-04", "fru-05", "fru-06", "fru-07", "fru-08",
+      "fru-09", "fru-10", "fru-11", "fru-12", "fru-13", "fru-14", "fru-15", "fru-16",
+      "veg-01", "veg-04", "veg-05", "veg-06", "veg-07", "veg-08", "veg-09", "veg-10", "veg-11", "veg-14", "veg-15", "veg-16",
+      "num-06", "num-07", "num-08", "num-09", "num-10"
+    ],
+    "numbers": {"6": "num-06", "7": "num-07", "8": "num-08", "9": "num-09", "10": "num-10"}
+  },
+
+  "lookalike_groups": {
+    "_about": "Decoys come from the target's own group, so whichever member is asked for, the group looks the same (design s6). Grouped by what they look like at a glance: colour, size and shape.",
+    "groups": [
+      ["fru-04", "fru-13", "fru-05", "fru-02"],
+      ["fru-08", "fru-14", "fru-15", "fru-16"],
+      ["fru-06", "fru-07", "fru-10", "fru-11"],
+      ["fru-01", "fru-03", "fru-12", "fru-09"]
+    ],
+    "clutter": ["veg-01", "veg-04", "veg-05", "veg-06", "veg-07", "veg-08", "veg-09", "veg-10", "veg-11", "veg-14", "veg-15", "veg-16"]
+  },
+
+  "cognates": {
+    "_about": "Drafts that sound or read like English (peach, kivi, cheree, litchi). A non-speaker can guess these from the row, so they are not a Kutchi test: the leak check (build/test_find.py --leak) reports them, and the list never asks for them while cognateTargets is false. They still appear as decoys, and Nani names them in recasts.",
+    "ids": ["fru-13", "fru-07", "fru-14", "fru-15"]
+  },
+
+  "star_set": {
+    "ear": {"icon": "ear", "name": "Understood", "tip": "Understood: the right things, the right number, and the shopkeeper's mistake spotted"},
+    "hand": {"icon": "magnifier", "name": "Sharp eyes", "tip": "Sharp eyes: quick finds, one after another, without tapping everywhere"},
+    "relaxed": {"icon": "tick", "name": "No help", "tip": "No help: no second replays, hints, reveals or translations"},
+    "busy": {"icon": "bolt", "name": "Quick", "tip": "Quick: done before the shopkeeper's patience ran out"}
+  },
+
+  "pay": {"help": 5, "ear": 5, "hand": 3, "third": 3, "combo": {"from": 3, "each": 1, "max": 3}},
+
+  "help": {
+    "_about": "Help costs (design s5.3). Hearing it again: the first replay is free, then the no-help star (Relaxed) or patience seconds (Busy). Warmer: the no-help star and the combo. Reveal, translate and 'shown': the ear star too. No upgrade ever makes these cheaper.",
+    "busySeconds": {"replay": 5, "warmer": 8, "reveal": 8, "translate": 8, "shown": 8, "help": 5},
+    "freeReplays": 1
+  },
+
+  "scenes": {
+    "bazaar": {
+      "_about": "The fruit stall (camera E). Background, shopkeeper and the carried basket come from data/scenes/bazaar.json (the fruit errand's scene), so both errands share one layout. Anchors are tappable scenery, never targets. Spots are hide spots: each is one (anchor, relation). Painted findables in the placeholder art (tomatoes, chillies, garlic, onions) are never asked for here.",
+      "base": "data/scenes/bazaar.json",
+      "letterbox": "#d9bf95",
+      "painted": ["veg-02", "veg-03", "veg-12", "veg-13"],
+      "phoneZoom": 1.5,
+      "size": 96,
+      "anchors": {
+        "crate-left": {"en": "crate", "rect": [172, 482, 462, 598]},
+        "basket-stall": {"en": "basket", "rect": [428, 498, 648, 598]},
+        "crate-right": {"en": "crate", "rect": [1160, 485, 1437, 598]},
+        "basket-right": {"en": "basket", "rect": [1437, 500, 1600, 600]},
+        "counter": {"en": "counter", "rect": [40, 555, 1600, 790]},
+        "scale": {"en": "scales", "rect": [458, 60, 705, 365]},
+        "floor-basket-left": {"en": "basket", "rect": [0, 738, 372, 900]},
+        "floor-basket-right": {"en": "basket", "rect": [1340, 750, 1512, 900]},
+        "shelf": {"en": "shelf", "rect": [1188, 140, 1488, 310]},
+        "board": {"en": "board", "rect": [718, 165, 932, 350]},
+        "cloth": {"en": "cloth", "rect": [0, 40, 246, 475]},
+        "veg-crates": {"en": "crate", "rect": [1385, 315, 1600, 510]},
+        "rug": {"en": "rug", "rect": [355, 825, 1340, 900]}
+      },
+      "spots": [
+        {"id": "cl-1", "anchor": "crate-left", "rel": "in", "x": 222, "baseline": 524},
+        {"id": "cl-2", "anchor": "crate-left", "rel": "in", "x": 316, "baseline": 524},
+        {"id": "cl-3", "anchor": "crate-left", "rel": "in", "x": 410, "baseline": 524},
+        {"id": "bs-1", "anchor": "basket-stall", "rel": "in", "x": 492, "baseline": 528},
+        {"id": "bs-2", "anchor": "basket-stall", "rel": "in", "x": 588, "baseline": 528},
+        {"id": "cr-1", "anchor": "crate-right", "rel": "in", "x": 1212, "baseline": 524},
+        {"id": "cr-2", "anchor": "crate-right", "rel": "in", "x": 1302, "baseline": 524},
+        {"id": "cr-3", "anchor": "crate-right", "rel": "in", "x": 1392, "baseline": 524},
+        {"id": "br-1", "anchor": "basket-right", "rel": "in", "x": 1486, "baseline": 530},
+        {"id": "sc-1", "anchor": "scale", "rel": "in", "x": 510, "baseline": 332, "size": 90},
+        {"id": "sc-2", "anchor": "scale", "rel": "in", "x": 650, "baseline": 346, "size": 90},
+        {"id": "co-1", "anchor": "counter", "rel": "on", "x": 120, "baseline": 634},
+        {"id": "co-2", "anchor": "counter", "rel": "on", "x": 215, "baseline": 634, "also": [["in-front", "crate-left"]]},
+        {"id": "co-3", "anchor": "counter", "rel": "on", "x": 310, "baseline": 634, "also": [["in-front", "crate-left"]]},
+        {"id": "co-4", "anchor": "counter", "rel": "on", "x": 405, "baseline": 634, "also": [["in-front", "crate-left"]]},
+        {"id": "co-5", "anchor": "counter", "rel": "on", "x": 500, "baseline": 634, "also": [["in-front", "basket-stall"]]},
+        {"id": "co-6", "anchor": "counter", "rel": "on", "x": 595, "baseline": 634, "also": [["in-front", "basket-stall"]]},
+        {"id": "co-7", "anchor": "counter", "rel": "on", "x": 690, "baseline": 634},
+        {"id": "co-8", "anchor": "counter", "rel": "on", "x": 785, "baseline": 634},
+        {"id": "co-9", "anchor": "counter", "rel": "on", "x": 880, "baseline": 634},
+        {"id": "co-10", "anchor": "counter", "rel": "on", "x": 975, "baseline": 634},
+        {"id": "co-11", "anchor": "counter", "rel": "on", "x": 1070, "baseline": 634},
+        {"id": "co-12", "anchor": "counter", "rel": "on", "x": 1165, "baseline": 634},
+        {"id": "co-13", "anchor": "counter", "rel": "on", "x": 1260, "baseline": 634, "also": [["in-front", "crate-right"]]},
+        {"id": "co-14", "anchor": "counter", "rel": "on", "x": 1355, "baseline": 634, "also": [["in-front", "crate-right"]]},
+        {"id": "co-15", "anchor": "counter", "rel": "on", "x": 1450, "baseline": 634, "also": [["in-front", "basket-right"]]},
+        {"id": "fl-1", "anchor": "floor-basket-left", "rel": "in", "x": 150, "baseline": 796},
+        {"id": "fl-2", "anchor": "floor-basket-left", "rel": "in", "x": 256, "baseline": 796},
+        {"id": "fr-1", "anchor": "floor-basket-right", "rel": "in", "x": 1425, "baseline": 806}
+      ]
+    }
+  },
+
+  "mechanics": {
+    "_about": "Every tuning number, per level (design s3, s4.3). Level 1 is the game as it is; each later level lists only what changes. rows: list rows. groups: look-alike groups the rows come from. count/spare: how many are asked for, and how many more of that thing are on the stall (always more than asked, so 'take them all' is never the answer). decoyKinds/decoyCopies: look-alikes from the same groups (then other groups). clutterKinds: vegetables that aren't on any list. maxItems: the clutter cap. maxUnits: the basket's room. noRow: chance of a 'no X' row (its X is always on the stall). parMs: a find within this long (from the end of Nani's line or the last find) is quick, for the sharp-eyes star. slowTaps: this many wrong items within this many ms makes the stall pause for slowMs. hesitateMs: Nani says the list again (free) after this long without a find. bag.errors: what the shopkeeper gets wrong (swap: a look-alike instead of one thing; extra: one too many).",
+    "list": {
+      "name": "Nani's list",
+      "verb": "Find + count",
+      "goal": "Find what Nani asked for, as many as she said, then press Done.",
+      "levels": [
+        {"rows": 2, "groups": 1, "count": [1, 2], "spare": [1, 1], "decoyKinds": 3, "decoyCopies": [1, 3], "clutterKinds": 0, "maxItems": 11, "maxUnits": 4, "noRow": 0, "cognateTargets": false, "parMs": 12000, "slowTaps": [3, 2000], "slowMs": 2000, "hesitateMs": 9000, "patienceSec": 120, "bag": {"errors": ["swap"]}},
+        {"rows": 3, "groups": 2, "count": [1, 3], "spare": [1, 2], "decoyKinds": 4, "decoyCopies": [1, 3], "clutterKinds": 1, "maxItems": 17, "maxUnits": 6, "parMs": 10000, "patienceSec": 150, "bag": {"errors": ["swap", "extra"]}},
+        {"rows": 3, "groups": 2, "count": [1, 4], "spare": [1, 2], "decoyKinds": 5, "decoyCopies": [2, 3], "clutterKinds": 2, "maxItems": 22, "maxUnits": 7, "noRow": 0.5, "parMs": 9000, "patienceSec": 170, "bag": {"errors": ["swap", "extra"]}}
+      ]
+    },
+    "bag": {
+      "name": "Check the bag",
+      "verb": "Spot the mistake",
+      "goal": "The shopkeeper packed your bag. One thing is wrong: tap it."
+    }
+  },
+
+  "story": [
+    {
+      "id": "bazaar-fruit",
+      "chapter": "Arc 1, Chapter 1: The guests are coming",
+      "title": "Fruit from the bazaar",
+      "gist": "Guests are coming tonight! Nani has sent you to the fruit stall with her list.",
+      "mech": "list",
+      "scene": "bazaar",
+      "bag": true,
+      "greet": true,
+      "levels": [1, 1, 2, 2, 3]
+    }
+  ],
+
+  "tips": {
+    "ear": {
+      "wrong": "Listen to the list again (the speaker on each row) before you tap.",
+      "count": "The number is in Nani's list: count as you pick, then press Done.",
+      "no": "One row says what NOT to buy. Leave that one on the stall.",
+      "bag": "Check the bag against Nani's list: what didn't she ask for?",
+      "shown": "Try without the eye, the English or the glow next time."
+    },
+    "hand": {"default": "Look along the crates, the counter and the baskets in order: quick finds keep the combo going.", "slow": "Slow down: tapping everywhere makes the stall pause."},
+    "third": {"relaxed": "Try it with no hints: listen, then find.", "busy": "Be quicker: the ring shows how long the shopkeeper will wait."}
+  }
+}
