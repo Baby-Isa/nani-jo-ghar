@@ -141,3 +141,30 @@ Where these are used: "no milk" / "no sugar" / "no onion" and so on (*nar*); Nan
 Please confirm spelling and pronunciation — a voice note saying each one on its own, and in a short sentence ("nar dudh", "aastethi", "bo vadho maani"), would be perfect.
 
 Thank you! Even a ten-minute voice note on Part 2 and Part 3 would make the game feel like our kitchen.
+
+---
+
+## Part 7: Words for the next games, most important first (added 25 Sept)
+
+The six new games (tidy up, dressing up, the clinic, who did it?, the monsoon, the camera) all need these. Please go top to bottom, and stop whenever you like: the top of each list matters most.
+
+1. **Little words that change everything:** yes, no (we have *nar*), only, now, and then (we have *ne poi*), first, last, not this one.
+2. **Where things are:** on, under, in, next to, behind, in front of, between, left, right, up, down, here, there.
+3. **Colours:** red, green, yellow, white, black, blue, orange, pink, brown, gold.
+4. **Describing:** big / small (we have *vadho / nindho*), old / young, dark / light, long / short, hot / cold, clean / dirty, wet / dry, more / less.
+5. **Family** (what a child calls them): mum, dad, Nana, Nani, cousin, auntie (mum's side / dad's side), uncle (mum's side / dad's side), baby, Big Ma.
+6. **Rooms and the house:** kitchen, room, door, window, roof, table, sofa, shelf, cupboard, bed, courtyard, stairs.
+7. **Weather:** rain, sun, wind, cloud, it's raining, it's hot, it's cold.
+8. **Body and feeling unwell:** head, hand, arm, foot, leg, tummy, ear, eye, nose, mouth, tooth, back, knee; it hurts, I'm fine, tired, hot, cold, sad, happy.
+9. **Clothes:** kurta, shirt, trousers, dress, scarf / dupatta, headscarf, cap (*topi* or *kofia*?), shoes, sandals, coat, bangles.
+10. **Animals and the farm:** cat, goat, hen, chick, cow, bird, parrot, crow.
+11. **Things that happened** (for the mystery game): who saw it?, I saw, it was, he took, she ate, where was it?, yesterday, today.
+12. **Comparing:** bigger, smaller, the biggest, the same.
+13. **For cooking:** vegetable, mixed, lift it, leave it, enough, more, a little, stir, pour, roll, flip, chop.
+
+## How to record (the easiest way)
+
+- **One voice note per list above**, using a phone, in a quiet room.
+- **For each word:** say the English, pause, say the Kutchi **twice**, then pause for 2 seconds. For example: *"red … laal … laal …"*. The pauses let us cut the recording into one clip per word automatically.
+- **Spelling:** Zafar writes each word the way it sounds (like *narr*, *jal-dee*). Claude turns that into a tidy spelling, and keeps Zafar's version to guide the voice.
+- **Not sure of a word?** Say "skip" and move on. Several ways of saying it? Say them all.
