@@ -694,51 +694,57 @@ A panorama; a viewfinder the player drags over the scene; unlimited film; photos
 
 ---
 
-## 12. Build brief for a future agent
+## 12. Build brief (rewritten 25 Sept 2026 to match the deep dive)
 
 **Before you start:**
-- Read sections 1, 3, 4, 6.2–6.4 and 8.
-- Wait for Find it's scene schema, courtyard scene and non-speaker bot to land. Reuse them; don't fork them.
-- Never invent Kutchi: new words go in as `"kutchi": null` placeholders.
+- Read the deep-dive section (D1–D9), then sections 6.2–6.4, 7 and 8.4 (the leak-bot list). Sections 8.1–8.3's moving world (`paths`, `herds`, `parallax`, `subjects.js`, `rail.js`) is **phase 4–5**; don't build it first.
+- Phases 0–2 touch **only Snap's own files**: `snap.html`, `css/snap.css`, `js/snap/**`, `data/snap.json`, `data/scenes/orchard.json` (a sidecar; never edit Find it's scene files), `build/test_snap.py`, `build/leak_snap.mjs`, `build/reports/snap-*.md`. Read Cook's `lang.js`, `ui.js`, `order.js` through the frozen API (`docs/shared-api.md` once Wave 5A merges); never copy or edit them.
+- Never invent Kutchi: new words go in as `"kutchi": null` placeholders in `data/snap.json`; every word used by the first set is borrowed from `data/content.json` or `data/cook.json` and listed under `words.from_content`.
 
-### Phases
+**Shared pieces Snap needs from the foundation agent** (assume they arrive; stub them locally until then, behind one adapter file `js/snap/adapters.js` so the swap is one edit):
 
-| Phase | What's playable | Acceptance |
+| Piece | Used by | Needed from phase |
 |---|---|---|
-| **0 Spec and greybox** | Courtyard (Find it's) and farm scene JSON with `paths`, `herds`; grey subjects cycling states in the Snap lab | `--unit` evaluator tests pass; `--fair` shows every generated row satisfiable; lab screenshots at 1366×768 and phone reviewed |
-| **1 Engine + M1 + hand-in** | Pan, zoom, tap-to-centre, shutter, prints tray; M1 (state + place slots) at levels 1–3; Show Nani with recasts and reshoot; ear/lens/tick stars; receipt; word review; intro card and 3 s silence | Oracle ≥95%; **leak bot <10% per strategy** (report placeholder rows separately); all six screen sizes pass the tap-cover check; 3–4 rows in 2–3 min at level 1 |
-| **2 M2 + album + free play** | Exactly N at the farm with **real Kutchi** (`{n} {fruit}`); the album with "?" audio slots and gold corners; Photo walk; Kasuku's snapshot | Leak bot **<5%** on fruit + number rows; album persists in the profile save; Quick shot follows the look-alike rule |
-| **3 M7 journey + Arc 5 Ch1–3** | Rail with 5 biome strips, looping; lap rows up front; Busy road bar; Warmer slows the bus; story beats; the map road reveal | Leak-bot rail strategies <10%; 60–90 s laps; phone 915×375 readable; Arc 5 Ch1–3 run end to end in `--story` |
-| **4 Twists and the finale** | M4 slot (once the words arrive), M5, M6, M8 Then and now, research levels, rare behaviours, upgrades shop, Ch4–5 | Every twist gated by the leak bot; the upgrades pass the "never does the listening" review; the family photo lands in the album and the quilt |
-| **5 Art and recordings** | Painted scenes, strips, subjects; family audio | Visual QA checklist on every screenshot; scale order holds; placeholders swapped file for file |
+| The shell ("one app, one save"), the hub shelf entry and the **`Album.add()` beat-photo hook** called from every mode's story beats | G5, free play | 3 |
+| `js/shared/speech.js` `listen({choices, timeoutMs}) → {choice, confidence} \| null` | G4, Caption it | 2 (the lab stub returns a chosen id or `null`) |
+| The shared **which-one** attribute-and-decoy module (asked noun in ≥3 sizes or colours, asked attribute on ≥2 nouns, balanced, blind-odds budget) | G2 | 3 (phase 1 uses a local size-class picker with the same rules, deleted at integration) |
+| **Star sets and ear rules as data** (`star_sets.snap`: ear, lens, tick or lightning, **voice**; `minTested: 2`; taught rows excluded) | G3, G4 | 3 (phase 1 hard-codes the same rule in `handin.js`) |
+| `data/relations.json` + `js/shared/rel.js` + scene `spots` schema | K5 (G9) | 4 |
+| Find it's `lookalike_groups` (read from `data/find.json`) and scene schema | G1, G2 | 1 (read only) |
 
-### The first 3 tasks
+### 12.1 Phases
 
-**Task 1: Scene and subject data, and a greybox you can pan.**
-- Create `data/snap.json` with `subjects` (goat, sheep, hen, rooster, Simba, Zazu, Kasuku) as in 8.1. Use placeholder words `ph-goat`, `ph-eating` and so on, with `"kutchi": null`.
-- Extend the courtyard scene (Find it's file, or a copy under `data/scenes/courtyard.json` if theirs isn't merged) with `paths` and `herds`. Add a greybox `data/scenes/farm.json` (3 screens) with branch spots for fruit sprites.
-- Create `snap.html` + `js/snap/core.js`, `camera.js` and `subjects.js`:
-  - Phaser at 1600×900;
-  - drag to pan, ± zoom buttons (no pinch), tap-to-centre;
-  - grey rectangles walking the path graph and cycling states with `hold` ranges at random phases;
-  - lab-only debug text for state names.
-- **Done when:** in the lab you can pan both scenes on phone and laptop sizes, subjects visibly change state and place, and a seed reproduces the same run.
+| Phase | What's playable | Own files only? | Acceptance |
+|---|---|---|---|
+| **0 Pure logic** | `photo.js`'s `printRecord(spots, frame)` and `matches(print, row)` for K1–K3; `requests.js` generating rows from a scene's spots with a **guaranteed frame** (an achievable rectangle at some allowed zoom) and ≥3 candidate kinds; a **Node leak bot** `build/leak_snap.mjs` (no browser) with the strategies in 8.4 plus D5's four new ones, and an oracle | Yes | `--unit` fixtures pass (main subject vs a bigger same-noun decoy; exactly N with one at 49% visible; the mid size never matching; `nar` at 9% vs 11%); `--fair` 500 seeds per level: every row achievable; oracle ≥95%; **every leak strategy <10% at levels 1–3, combined <5%**, on G1 and G2 rows (all real Kutchi); report to `build/reports/snap-leakbot.md` |
+| **1 Greybox lab** | `snap.html` + `js/snap/core.js`, `mechanics/viewfinder.js`, `photo.js` (shutter, `snapshotArea` prints, tray), `mechanics/handin.js`; `data/scenes/orchard.json` greybox (1.5–2 screens, branch spots with `{kind, size}`, existing fruit sprites); **G1 and G2 at levels 1–3** with the intro card, 3 s quiet, the sidebar "?", hesitation replay, recasts from the print record, go back (+1 frame), ear/lens/tick, receipt, word review; the Snap lab (place, mini-game, level, seed, bot none/leak/oracle, show print records) | Yes | `build/test_snap.py` plays G1 and G2 headless at six sizes with the tap-cover check (sidebar, tray and hands never cover the shutter, zoom or a reachable fruit); the browser bot reproduces phase 0's rates within 2 points; **a phone (915×375) takes 4 prints in a 2-screen scene without dropped frames**; a level-1 round is 2 rows in under 2 min; screenshots reviewed |
+| **2 Speaking, Quick shot, album** | `mechanics/ali-camera.js` (G4) against the `speech` adapter (lab stub), picture cards, pills and parent-judge fallbacks, the voice star; **Quick shot** through Cook's `passme`; Relaxed/Busy with the daylight bar; `js/snap/album.js` (G5: pages, "?" audio slots, gold corners, Caption it, decoration won by pages) saved under Snap's own key until the shell | Yes | The oracle (stub returns the choice) earns the voice star ≥95%; the leak bot (stub returns `null`) earns it 0% and its ear rate is unchanged; a round always finishes by tapping (a "no speech" test run); Quick shot only names a word from a look-alike group with ≥2 members visible; album persists across reloads |
+| **3 Integration** | The shell hosts `snap` (one save, the hub shelf camera icon, Photo walk, "Ali's turn"), `Album.add()` seeds from the four arc-closing beats, the shared which-one and star-set data replace the local stubs, real `speech.js`, family recordings replace placeholders file for file; **Arc 5 Ch3** rows when the arc is built | No (a one-day merge with the shell agent) | `--story` runs Ch3 end to end once the arc exists; no Snap-local save key remains; the leak report shows real-Kutchi rows passing after the swap; **Zafar plays it with a child** |
+| **4 The moving world** | `subjects.js` (states, holds, random phase, path graphs, herds) as data on the **same** `photo.js`; G7 Snap the moment in the courtyard (cats, Kasuku, hens), G6 No bananas! with a photobomber, G9 with `rel.js`, G12 as the hub-daily entry | Courtyard sidecar until the schema owner merges it | Leak bot <10% on K4 and K5 rows (placeholders flagged); iPad and phone frame rate measured with 12 moving sprites; the "?" ladder's Warmer rung |
+| **5 The journey, Then and now, art** | `rail.js`, biome strips, laps, the map road; G11; G13 with Tidy up; painted orchard, farm, village; Arc 5 Ch1–2, Ch4–5 | — | Section 8.4's rail strategies <10%; Arc 5 end to end; visual QA checklist |
 
-**Task 2: Capture and the evaluator.**
-- `js/snap/photo.js`: on shutter, build the print record (8.1): visibility after occluders and frame clipping, area fraction, centre offset, facing, `sharp` from pan velocity, `sizeRank` on true size. It's a **pure function** of the scene state and frame.
-- Make a thumbnail with `renderer.snapshotArea` into the prints tray (bottom left, ≤22% height, outside all `paths`).
-- The lens rating is computed on the biggest subject in frame only.
-- Add `build/test_snap.py --unit`, which loads the page headless and runs fixture cases: main subject vs a bigger same-noun decoy; exactly N with one at 49% visible; an occluded subject; a parallax "in front of"; "without" at 9% vs 11%.
-- **Done when:** all fixtures pass and the lab's "show print records" matches what a person sees.
+### 12.2 The first three tasks
 
-**Task 3: Requests, Show Nani, and the first leak-bot gate.**
-- `js/snap/requests.js`:
-  - generate rows from slots with guaranteed candidates (≥3 of the noun or its look-alike group; states uniform; count N uniform in 1…herd−1);
-  - `matches()` per 8.1;
-  - use Cook's ladder logic for rows (shuffle, one `•••` per hidden group, digits only at number stage 1–2).
-- `js/snap/handin.js`: Nani asks rows in a new random order; tap a print; on a wrong print, a recast built from the print record, then choose again; "go back" with +1 frame; the ear star (≥2 tested rows), lens, tick; receipt; word review.
-- The leak bot in `test_snap.py --leakbot 500`: the strategies in 8.4, run on **farm rows using real Kutchi** (fruit + numbers) plus M1 rows marked placeholder. Add `--oracle`.
-- **Done when:** the oracle is ≥95%; every strategy is <10% on the Kutchi-only rows; results are written to `build/reports/snap-leakbot.md`.
+**Task 1: `data/snap.json`, the orchard, and the pure evaluator (phase 0).**
+- `data/snap.json`: `words.from_content` (fruit ids, `num-01…10`, `ph-big`, `ph-small`, `ph-no`), `lines` (`take` = `[EN: Take a photo of {x}]`, `show` = `[EN: Show me]`, `here` = `[EN: Here's the photo]`, `what` = `[EN: What's this?]`, `ali` = `[EN: Your turn, Ali]`, all `"kutchi": null`), `grammar` references to Cook's `count` and `no`, `kinds` (K1–K3 with their frame rules), `mechanics.viewfinder.levels`, `mechanics.photo.levels` (`film: "rows+2"`, `mainSubject: {minArea: 0.08, minVisible: 0.6, middleThird: true, rivalMax: 0.5}`, `countVisible: 0.5`, `excludeMax: 0.1`), `mechanics.handin.levels`, `star_sets.snap`, the level ladder from D5 (`rows`, `kinds`, `counts`, `sizes`, `zoom`, `aimAssist`, `sceneWidth`, `interleave`, `photobomber`).
+- `data/scenes/orchard.json`: Find it's schema plus `spots: [{id, x, y, w, h, layer: "branch", kind: "fru-05", size: "big" | "mid" | "small"}]`, 40–60 spots over 1.5–2 screens, clusters as data. Greybox: coloured rectangles until the sprites are placed.
+- `js/snap/photo.js` (pure, no Phaser import): `printRecord(scene, frame) → {frame, sprites: [{id, kind, size, visible, area, centre}]}` by rectangle intersection; `matches(print, row) → {ok, why}` for K1–K3; `lensScore(print)` on the biggest sprite. `js/snap/requests.js`: rows from a level, with the achievable-frame search and ≥3 kinds; Cook's ladder shape (shuffle, one `•••` per hidden group, **no digits**).
+- `build/leak_snap.mjs`: oracle, random, one-per-kind, fill-the-frame, middle-size, everything-alone, salience (biggest cluster), shot-order hand-in, fresh-profile; 500 rounds per level per strategy.
+- **Done when:** the fixtures and `--fair` pass and the report shows the D5 rates (G1 level 1 under 1%, G2 about 2%, all strategies <10% at levels 1–3).
+
+**Task 2: the viewfinder, the shutter, and Show Nani in the lab (phase 1).**
+- `js/snap/mechanics/viewfinder.js` (`Snap.Mech.define("viewfinder", …)` on Cook's `Mech` pattern; every number from `k`): a still scene at 1600×900 design coordinates, drag pan (level 2+), **+/−** zoom steps (no pinch), tap-to-centre with `aimAssist`, a fixed frame in the middle, the shutter on the camera body (hand pose F4, bottom right), film count on the body, `z.expect({kind: "shot", …})` for the harness.
+- `photo.js`'s Phaser half: on shutter, `printRecord` from the live spots, a thumbnail via `renderer.snapshotArea`, the print sliding into the tray (bottom left, ≤22% height). **No tick, sound or mark at the shutter beyond the click.**
+- `js/snap/mechanics/handin.js`: Nani's hand-in view; rows re-asked in a new order; tap a print; right → *Ghan!*; wrong → a recast built from the print record (`Arre re! char aamo`), the row again, choose again; none fits → back for one frame; ear (≥2 tested rows), lens, tick; receipt and word review through Cook's UI.
+- Lab entries for G1 and G2 at levels 1–3 with the seed, bot and "show print records" toggles; `build/test_snap.py --lab`, `--viewport` at six sizes, `--leakbot` driving the browser with the same strategies.
+- **Done when:** phase 1's acceptance holds, and a phone plays a 2-screen scene without dropped frames.
+
+**Task 3: Ali's camera and the album (phase 2).**
+- `js/snap/adapters.js`: `listen()` bound to `js/shared/speech.js` when present, else the lab stub (`?speech=oracle|null`).
+- `js/snap/mechanics/ali-camera.js`: the picture card (a small render of the wanted shot from the scene's own sprites, no text), the microphone button, `listen({choices, timeoutMs: 4000})` with level 2's noun set and level 3's number-then-noun sets; Ali's echo line; `viewfinder` in auto mode frames the heard kind at the card's count; the pills after `null` or two low-confidence results; the parent-judge toggle; the voice star; the print into the tray for the normal hand-in.
+- Quick shot: Cook's `passme` interrupt with the act being a shot; the look-alike rule from D3.
+- `js/snap/album.js` (HTML): pages per place of 8–10 slots, `Album.add()`, "?" slots that speak their caption, Caption it through `listen()`, gold corners, decoration on finished pages; Snap-local save key with a migration note for the shell.
+- **Done when:** phase 2's acceptance holds and the "no speech" run finishes every round by tapping.
 
 ---
 

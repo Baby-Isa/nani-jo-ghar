@@ -828,40 +828,71 @@ The brief says stop only when the Sceptic can't win. After loop 3 she can't win 
 
 ---
 
-## 12. Build brief for a future agent
+## 12. Build brief for the Who did it? build agent (rewritten 25 Sept, to match the deep dive)
 
-### 12.1 Phases
+All modes are built at once, one agent each. **Phases 0–1 touch only this mode's own files**; shared pieces come from the foundation agent and are stubbed until they land. Nobody edits `js/cook/*` or `css/cook.css`; Cook's modules are imported against the frozen API (`docs/shared-api.md` when it exists). Mechanic and level names are the deep dive's (D2, D3, D5).
 
-| Phase | Playable | Tests passing | Leak bot | Screens |
-|---|---|---|---|---|
-| **0 Logic** | Nothing visual. `case.js` + `data/who.json` (cats, Kasuku, Ali, Nana, 4 greybox guests; trace and holds attributes) | `node build/leak_who.mjs --rounds 10000` all levels: unique solutions; balance rules; culprit position uniform | Every strategy < 10%, L2+ < 5% | — |
-| **1 Line-up greybox** | Case lab: W1 L1–3 with grey figures and code-drawn overlays; W4 traces; ladder, stars, receipt, word review, Relaxed/Busy; Arc 1 Ch3 case playable from `who.html?case=a1c3-sweets` | `test_who.py --lab --level 1..3`; recast paths; tap-cover check | UI bot matches logic rates (±2 points) over 200 rounds per strategy | All six sizes; Claude checks the screenshots |
-| **2 Nani guesses + art** | W5 (Nani asks), Grandparent mode toggle; real sofa background, cats, generic bases, overlays | `test_who.py --guess`; art QA checklist on screenshots | W5 < 10% (ear grey until yes/no exist) | Six sizes |
-| **3 The door + free play** | W2 L1–3 with the greeting; free play (Nani's mysteries, Case of the day, Visitors); W5 player-asks; hooks into the shell's story beats (Arc 1 Ch2, Ch3, Ch5) | `test_who.py --door --free 3` | W2 < 5% | Six sizes |
-| **4 Ask around (S5)** | W3 notebook (Arc 2 gift; Arc 4 Ch1–2), W6, W7 finale | `test_who.py --notebook`; Arc 4 cases | All < 10% | Six sizes |
+### 12.1 Files this mode owns
 
-### 12.2 The first three tasks
+```
+who.html                          page + Case lab (?lab=1)
+js/who/case.js                    generator, solver, grader (pure; no DOM)
+js/who/mechanics/lineup.js        examine.js  accuse.js  prove.js  guesswho.js     (one mechanic per file; levels as data)
+js/who/mechanics/photowall.js     door.js  notebook.js                              (phase 4)
+js/who/games/{one-each,keep-who-fits,look-closer,nani-guesses,tell-ali}.js        (combined mini-games: zones over the mechanics, like js/cook/stations/)
+js/who/flow.js  ui.js  suspect.js
+css/who.css
+data/who.json                     people, attributes, clue types, lines, cases, mechanics.<id>.levels, games
+data/scenes/sofa.json             slots, occluder, Nani's spot, the side table
+data/scenes/front-door.json       (phase 4; named so it never collides with Tidy up's doorway-floor.json)
+build/leak_who.mjs                Node leak bot
+build/test_who.py                 Playwright tests and UI bot (its own port)
+```
+
+### 12.2 Shared pieces needed from the foundation (assumed, not designed here)
+
+| Piece | Used from | Until it lands |
+|---|---|---|
+| The shell ("one app, one save"): profiles, word progress, wallet, story beats, map places | Phase 3 | `who.html` runs alone on Cook's save, like Find it |
+| `js/shared/speech.js`: `listen({choices, timeoutMs}) → {choice, confidence} \| null` | Phase 2 (`tell`, `yesno`) | A lab stub: `?speech=pills` (the fallback path only), `?speech=parent` (a ✓/again tick), `?speech=bot:<choice>` for tests |
+| The shared "which one?" attribute-and-decoy module (balance, blind odds) | Phase 0 for `is`/`has` clues | `case.js` carries a local `balance()` with the same signature, deleted when the module lands |
+| Overlay-at-anchor sprites (shared with Dress up) | Phase 3 (art) | Greybox overlays drawn in code: circle pair, white arc, coloured smudge, held item from existing art |
+| Star sets and ear/voice rules as data (`star_sets.who`, `minTested`, taught-rows exclusion, the voice star) | Phase 2 | `data/who.json` `star_set` block, in the foundation's shape |
+| `data/relations.json` + `js/shared/rel.js` + scene `spots` | Phase 4 only (`next_to`) | Not needed before then |
+| `js/shared/mechanics/yesno.js` and `tell.js` | Phase 2 | **This agent writes them** (the clinic needs the same two); coordinate with the clinic agent on the file, not the design: the interface is D4's |
+
+### 12.3 Phases
+
+| Phase | Playable | Files touched | Tests passing | Leak bot | Screens |
+|---|---|---|---|---|---|
+| **0 Logic** | Nothing visual. `case.js` + `data/who.json` (cats, Kasuku, Ali, Nana, 4 greybox guests; trace, holds, is, has attributes; the four kinds K1–K4 as solver modes) | Own only | `node build/leak_who.mjs --rounds 10000` per game and level: unique solutions; balance; culprit position uniform; the D5 rates reproduced | Every strategy < 10%; G2 L1 ≈ 4%; L2+ < 5% | — |
+| **1 Greybox** | Case lab: **G3 Look closer, G1 One each, G2 Keep who fits** at L1–2 with grey figures; ladder, stars, receipt, word review, Relaxed; Arc 1 Ch3 case from `who.html?case=a1c3-sweets` | Own only | `test_who.py --lab --game g1,g2,g3 --level 1,2`; recast paths; tap-cover check | UI bot matches logic rates (±2 points) over 200 rounds per strategy | All six sizes; Claude checks the screenshots |
+| **2 Speaking + Nani guesses** | **G5 Tell Ali** (L1–2) and **G4 Nani guesses** (L1) in the lab; `tell` and `yesno` shared files; the voice star; Busy (the chai ring); L3 of G2 (ask, accuse, Prove it, no-op clues) | Own + `js/shared/mechanics/{tell,yesno}.js` | `test_who.py --game g4,g5 --speech bot`; `--speech pills` fallback; the null/low-confidence "Again?" path | G4 < 10% (ear grey until yes/no); G5 voice star 0% without a mic or parent | Six sizes |
+| **3 Art + story + free play** | Real sofa, cats, generic bases, overlays from the foundation system; story hooks (Arc 1 Ch3 with the Tell Ali outro, Ch5); "Nani's mysteries" with the 60-second round for the hub daily; Grandparent mode | Own + the shell's registration hook | `test_who.py --free 3 --story a1c3`; art QA checklist | Unchanged | Six sizes |
+| **4 The door and S5** | G7 (front-door scene, kinship), G8 notebook (Arc 2 Ch4, Arc 4 Ch1–2), G9, G10 finale, L4 relations | Own + `front-door.json` + relations (read only) | `test_who.py --door --notebook` | All < 10% | Six sizes |
+
+### 12.4 The first three tasks
 
 **Task 1: `js/who/case.js` and `data/who.json` (phase 0).**
-- Write `data/who.json` with the schema in 8.1: `people` (simba, zazu, kasuku, ali, nana, guest-f1…f2, guest-m1…m2), `attributes` (size, shade, age, wears, holds using `fru-*`/`veg-*`, trace using `spi-01`, `cook-atto`, `veg-03`, `veg-07` and a `ph-mud` placeholder), `clue_types` (`is`, `has`, `holds`, `trace`, `isnt`), `lines` (placeholders `e`, exactly as Cook), `mechanics.lineup.levels` (L1–3 from 8.1), one case `a1c3-sweets`.
-- `case.js` exports `makeCase(data, {mechanic, level, pool, seed, device})` → `{suspects[], culprit, clues[], expected}` and `grade(caseState, action)`. Pure JS, seeded RNG, no DOM.
-- The generator enforces: culprit uniform; line-up shuffled; each suspect's variable attributes rolled; **balance** (every clued value shared by ≥ 2 when said, except the last; culprit distinctiveness ≤ median); no single clue solves from L2; no-op clue chance; at most one trace per look-alike group; every clue row flagged `kutchi_real` from whether its deciding word has `k`.
-- The grader: L1 per item; L2 exact set per commit; L3 the accusation against the consistent set (lucky-guess rule) and Prove it (Nani asks about a suspect ruled out by exactly one clue).
-- `build/leak_who.mjs`: the strategies in 8.4; prints a table per level. **Done when** all rates are under the thresholds and 10,000 cases per level generate with unique solutions.
+- `data/who.json` per 8.1, updated: `people` (simba, zazu, kasuku, ali, nana, guest-f1…f2, guest-m1…m2, each with `gender` and anchors), `attributes` (size and shade with `agrees: true` and the drafts *vadho/nindho* flagged `draft`; wears; holds from food nouns with Kutchi; trace from `hardar`, `atto`, `tameto`, `lal marcha`, `jeeru`, `dai`, `marcha` and `ph-mud`, with `lookalike` groups white/red/green), `clue_types` (`is`, `has`, `holds`, `trace` at L1–2; `isnt` and two-slot at L3), `lines` (placeholders `e` in Cook's shape, including Ali's echo lines and Nani's question frame from D8 rows 8–9), `mechanics.<id>.levels` for lineup, examine, accuse, prove, guesswho, `games.<id>` (which mechanics, which kind, level data, `listener` for G5), `star_set` with the voice star, one case `a1c3-sweets`.
+- `case.js` exports `makeCase(data, {game, level, pool, seed, device})` → `{suspects[], truth, clues[], consistent(i)}`, `grade(state, action)`, and two solver modes the reversed kinds need: `askNext(state)` (Nani's next question, halving) and `actOn(state, word)` (what Ali does with a heard word). Pure JS, seeded RNG.
+- Generator rules: culprit uniform; line-up shuffled; variable attributes rolled; balance (every clued value shared by ≥ 2 when said, except the last; culprit distinctiveness ≤ median); no single clue solves from L2; every L1–2 clue removes someone; no-op clues only from L3 (15%); one trace per look-alike group; every clue row flagged `kutchi_real` and `draft`; G4 rounds always hold both a yes and a no.
+- `build/leak_who.mjs`: the strategies in 8.4 plus "tap half" and "peek at all then random"; a table per game and level. **Done when** every rate is under its threshold and D5's L1 numbers are reproduced within a point.
 
-**Task 2: the line-up greybox in the Case lab (phase 1).**
-- `who.html` + `js/who/{flow,lineup,suspect,closer,ui}.js`, Phaser at 1600×900 with the HTML sidebar (Cook's layout contract v2).
-- `data/scenes/sofa.json`: 8 slot x-positions, the occluder line at y≈560, Nani's position at the left end, the bubble box. Grey rounded figures (people taller, cats low on the cushions); overlays drawn in code (a circle pair for glasses, a white arc for a cap, a coloured paw smudge for traces, the held item from the existing item art).
-- Suspect states and tweens: `forward` (a 30 px step up and 1.05 scale), `sat` (slides behind the occluder, the head peeks at L3+), `not-me` (a head shake), `caught` (a hop and a laugh).
-- Flow: intro card → 3 s silence → clue (ladder row via Cook's word pill and ladder) → commit/Done → recast or sit → accuse (C4 pointer) → caught → recap → stars → word review → receipt. W4: the magnifier (a code-drawn lens for now) shows the paw inset.
-- Help costs as 6.2, word stages as 6.3 (reuse `js/cook/lang.js`), Relaxed/Busy (the patience ring). `window.__who.expectation()` for tests.
-- Lab controls: mechanic, level, seed, pool, Busy, "Nani helps", the bot strategy menu, the debug solver panel.
-- **Done when** L1–3 play end to end in the lab on all six sizes, and a player who follows the clues can't tell the greybox from a real case except for the art.
+**Task 2: the greybox mini-games in the Case lab (phase 1).**
+- `who.html`, `js/who/{flow,ui,suspect}.js`, `js/who/mechanics/{lineup,examine,accuse}.js`, `js/who/games/{one-each,keep-who-fits,look-closer}.js`, Phaser at 1600×900 with the HTML sidebar (Cook's layout contract v2); `css/who.css`.
+- `data/scenes/sofa.json`: 8 slot x-positions (5 on a phone), the occluder line at y≈560, Nani's spot at the left, the side table (Busy's chai, `passme`'s look-alikes), the magnifier inset box. Grey figures; overlays drawn in code.
+- `lineup`: states and tweens as before (`forward`, `sat` with the head peeking at L3, `not-me`, `caught`); the commit through Cook's `freePick` step. `examine`: the lens follows the finger, the inset shows the trace, free. `accuse`: C4 pointer; lucky-guess rule; the recap line.
+- Flow per game: intro card → 3 s silence → clue row (Cook's pill and ladder) → commit/Done → recast or sit → accuse → caught → recap → stars → word review → receipt. `window.__who.expectation()` for tests. Help costs as 6.2; word stages as 6.3 via `js/cook/lang.js`.
+- Lab controls: game, level, seed, pool, Relaxed/Busy, "Nani helps", the bot strategy menu, the debug solver panel, the speech stub selector (phase 2).
+- **Done when** G1–G3 at L1–2 play end to end on all six sizes, and a player who follows the clues can't tell the greybox from a real case except for the art.
 
 **Task 3: the test harness (phase 1).**
-- `build/test_who.py`, modelled on `test_cook.py`: serve the repo, open `who.html?lab=1&seed=N&speed=3`, play from `__who.expectation()` with real pointer events, check the canvas is topmost before every tap, make one deliberate wrong commit and one wrong accusation per case, cover L1–3 × W1/W4, six viewports, screenshots to `build/screenshots/who/`.
-- `--bot <strategy> --rounds 200`: the bot sees only what's on screen (suspect positions, ladder row shapes, glow states) and plays the strategy; report its ear-star rate beside `leak_who.mjs`'s.
-- **Done when** every run passes, bot rates match the logic rates within 2 points, and the screenshots have been checked (visual QA checklist: nothing covered, suspects fully visible when standing, the sidebar not over the line-up on the phone).
+- `build/test_who.py` on the `test_cook.py` pattern, own port: serve the repo, open `who.html?lab=1&game=g3&seed=N&speed=3`, play from `__who.expectation()` with real pointer events, tap-cover check before every tap, one deliberate wrong commit and one wrong accusation per case, G1–G3 × L1–2, six viewports, screenshots to `build/screenshots/who/`.
+- `--bot <strategy> --rounds 200`: the bot sees only the screen (positions, row shapes, glow states); its ear-star rate is printed beside `leak_who.mjs`'s.
+- **Done when** every run passes, bot rates match the logic rates within 2 points, and the screenshots pass the visual checklist (nothing covered; suspects fully visible when standing; the sidebar off the line-up on the phone; the inset never over a suspect).
+
+**Task 4 (phase 2, first of the next batch): `js/shared/mechanics/tell.js` and `yesno.js`, then G5 and G4.** `tell({choices, pills, character, onHeard})` calls `listen`, shows the pills after one `null` or after `timeoutMs`, and reports `{choice, via: "voice" | "pill" | "parent"}` so the star code can award the voice star only for `voice` and `parent`. G5 = `tell` + `lineup` driven by `case.actOn`; G4 = `guesswho` + `yesno` driven by `case.askNext`.
 
 ---
 

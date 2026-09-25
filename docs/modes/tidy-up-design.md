@@ -745,38 +745,41 @@ The Sceptic cannot win the ear star by reading (no labels, Kutchi rows), matchin
 
 ---
 
-## 12. Build brief for a future agent
+## 12. Build brief for a future agent (rewritten 25 Sept, to match the deep dive)
 
-**Read first:** this doc; `docs/cook-with-nani-recipes-guide.md`; `docs/find-it-design.md` sections 4–6; `docs/cook-with-nani-kutchi-audit.md` ("After Wave 3"); Wave 5 in `docs/cook-with-nani-todo.md`. **Never invent Kutchi.** Placeholders are `kutchi: null` with English.
+**Read first:** the deep dive at the top of this doc (D.1–D.9), then 8.1 (data model and guards), 6.2–6.4, 7; `docs/cook-with-nani-recipes-guide.md` §1, 5, 6 and `js/cook/mechanics/{count,fetch,passme}.js`; `docs/modes/REVIEW-2026-09-25.md` (Tidy up and Cross-mode); Wave 5 in `docs/cook-with-nani-todo.md`. **Never invent Kutchi**: every missing word is `kutchi: null` with its English. You are one of several build agents working at once: **phases 0–1 touch only the files below** and nothing in `js/cook/`, `js/shared/`, `data/scenes/kitchen.json`, `data/relations.json` or the shell.
+
+**Files this mode owns.** `tidy.html` · `css/tidy.css` · `js/tidy/{engine,rules,bot,lab}.js` · `js/tidy/mechanics/{place,pack,check,stack,pair,order,paw,tell}.js` · `js/tidy/games/{putaway,dastarkhwan,box,ali}.js` (one combined mini-game each, Cook's `stations/` pattern) · `data/tidy.json` · `data/scenes/kitchen-tidy.json`, `sitting-room-tidy.json`, `worktop-tidy.json` (sidecars: spots, tags, neighbours; merged into the scene files by the foundation agent later) · `build/leak_tidy.mjs` · `build/test_tidy.py` · `docs/tidy-up-build-log.md`.
+
+**Shared pieces assumed from the foundation agent (don't build them; code against the named API):** the shell ("one app, one save": profile, wallet, map, story beats); `data/relations.json` + `js/shared/rel.js` (`Rel.holds(state, rule, scene)`, `Rel.options(state, rule, scene)`) + scene `spots` schema, with 8.1's rule types as the spec; the **which-one** attribute-and-decoy module with the blind-odds budget; overlay-at-anchor sprites (Ali, guests); star sets and ear/voice rules as data (`star_sets.tidy`, `earPass`, `minTested: 2`, `voiceTested: 2`); `js/shared/speech.js` with `listen({choices, timeoutMs}) → {choice, confidence} | null` and the shared pill builder; the Cook modules Tidy loads until the shell moves them (`lang`, `ui`, `order`, the ladder, stars, receipt, `progress.js`).
 
 ### Phases
 
-| Phase | What's playable | Acceptance |
-|---|---|---|
-| **1 Engine + M2 in the Tidy lab** (greybox) | `tidy.html` → Tidy lab → *Put the shopping away* on the existing kitchen shelves, levels 1–3; intro card; ladder rows; tap-tap and drag; Done check with recasts; stars; word review | `test_tidy.py --lab` passes levels 1–3 at all six sizes with the tap-cover check; `--gen 1000` all five solver checks; `--rel` passes; **`--bot 500` <10% ear star for every strategy except Reader**; no console errors; Claude has looked at the screenshots |
-| **2 M1 dastarkhwan + paw + story errand** | Arc 1 Ch1 errand 3 end to end (intro beat → board → outro beat, the knock), Relaxed and Busy with a visible doorbell clock; Simba's paw from level 2; pass me in the sidebar | As phase 1 for M1; the story errand runs from the title; bot <10%; the laid cloth is saved for the hub |
-| **3 M4 sweet box + M3 shoe mountain + meta** | Both boards at levels 1–3; the upgrades shop; free play "Tidy the house"; Nani's daily tidy; the secrets album | As phase 1 per mechanic; pocket money and upgrades never change a rule; daily tidy repeats only after 24 h |
-| **4 Art and words** | Edit-in-place tableware, doorway and box art, shoes, mithai, placement sounds; family words dropped in as data | Visual QA checklist on every screenshot; the Kutchi audit repeated per mechanic; persona review round with Zafar's playtest notes |
-| Later | M10 rule rows; M5 (Arc 2); M7 photo; M8 pens (with Monsoon rush); M9 put it back (Arc 4); M12 You tell Ali | Each: its own audit and bot run |
+| Phase | Files touched | What's playable | Acceptance |
+|---|---|---|---|
+| **0 Pure logic** (Node, no browser) | `js/tidy/rules.js`, `js/tidy/bot.js`, `data/tidy.json`, the three scene sidecars, `build/leak_tidy.mjs` | Nothing on screen. The generator for kinds K1–K5 on T1, T2, T3; a same-API relation stub (`Tidy.Rel`) for the rule types in 8.1; the five solver checks; the leak bot (8.4's eight strategies plus **"names-are-wrong"** for K2) | `node build/leak_tidy.mjs --gen 1000 --bot 500` prints strategy × game × level → ear rate; **every strategy <10% except Reader**; all five checks pass on 1,000 boards per game per level |
+| **1 Lab and greybox** | + `tidy.html`, `css/tidy.css`, `js/tidy/{engine,lab}.js`, `js/tidy/mechanics/*`, `js/tidy/games/*`, `build/test_tidy.py` | The Tidy lab runs each mechanic alone and T1, T2, T3 at levels 1–3 on greybox surfaces (rectangles and dots; existing fruit, veg and spice art; grey tableware); intro card, ladder rows, tap-tap and drag, live check at L1, Done check with recasts, the paw at L2, fetch-and-lay at L3, stars, word review; S1 "What's this?" and T4 Ali's turn with the **pill fallback only** (`speech.js` stubbed to `null`) | `python3 build/test_tidy.py --lab --sizes` at 915×375, 1366×768, 1440×900, 1280×800, iPad both ways, tap-cover check before every tap, screenshots looked at; `--rel` ~40 table cases; no console errors; a manual run shows no text on items and no hover feedback |
+| **2 Integration** | Swap the stub for `js/shared/rel.js`; adopt which-one, star data, `speech.js`; register with the shell | The same games from the map; S1–S3 by voice; the voice star; the Find it basket as T1's tray | Phase 1 acceptance repeated; `--bot 500` repeated on the shared checker; S2 falls back to pills on `null` and never blocks |
+| **3 Story and art** | Story beats as data; `assets/tidy/*` | Arc 1 Ch1 errand 3 end to end (T1 → T2, the knock); Ch3's K2 box; Busy doorbell; free play "Tidy the house"; the 60-second hub round; secrets album | The visual QA checklist on every screenshot; one edit-in-place tableware item signed off before the batch; persona round with Zafar's notes |
+| **4 Second set** | `mechanics/{pair,peg}.js`, `games/{shoes,week,pattern,photo,line}.js`, `doorway-floor` scene | T5 shoes, T6 the week (lunchbox skin, then Nana's pill box at 8+), T7, T8, T9 | Each: its own bot run <10%, its own audit, its words present before the ear counts |
 
 ### The first 3 tasks
 
-**Task 1: the shared relation checker (`data/relations.json`, `js/shared/rel.js`).**
-- Write `data/relations.json` with the ids in 8.1 (in, on, under, behind, next-to, in-front, between, left-of, right-of, middle, corner, top-row, bottom-row, first, last), each with a placeholder word id (`ph-rel-*`, `kutchi: null`) and allowed cameras. Check `docs/find-it-design.md` 4.4 first; if Find it's builder has started a relations file, extend theirs instead.
-- `Rel.load(scene)` builds the spot graph from `spots[].tags` and `spots[].nbr`. `Rel.holds(state, rule, scene)` implements every rule type in 8.1 (place, unary, class, count, leave, not, order, compare); "next to X" for a placed item uses neighbours; left/right are always the player's.
-- `Rel.options(state, rule, scene)` returns the legal spots for a row (used by the solver, the Warmer hint and Ali in M12).
-- Tests: `build/test_tidy.py --rel` opens `tidy.html?test=rel`, which runs ~40 table-driven cases in the page (a hand-made 3×4 spot grid with two anchors) and reports pass/fail to Python.
+**Task 1: the generator, the stub checker and the leak bot (phase 0; `js/tidy/rules.js`, `js/tidy/bot.js`, `data/tidy.json`, `build/leak_tidy.mjs`).**
+- `data/tidy.json`: `mechanics.{place,pack,check,paw}.levels` (only what changes per level, Cook's shape); `games.{putaway,dastarkhwan,box}` with `boards` (shelves, masala-dabba; cloth; fruit-box) and `kinds` allowed per level (D.5); `words` for every placeholder in D.8 with `kutchi: null`; `lines` and `grammar` for the row frames (`{x} {anchor} {rel}`, `{n} {x}`, `leave`, `class`, `not`, `order`); `star_sets.tidy` with the voice star.
+- Scene sidecars: `spots[]` with `tags`, `nbr`, `cap`, `surface`, anchors and `convention` layouts, for the kitchen shelves (E), the sitting-room cloth (H) and a T worktop for the box and the masala dabba.
+- `Rules.make(game, board, kind, level, profile)` → `{tray, start, rows, people}`; runs the five checks (solvable, ≥3 options, convention fails, no forced row, flat priors) and re-rolls (cap 50, log). `Rules.ladder(rows)` and `Rules.speech(rows)` shuffled per G3. `Tidy.Rel` stub with `holds` and `options` on the same signatures as the foundation's.
+- `bot.js`: strategies from 8.4 plus names-are-wrong; sees only `{rowCount, rowShapes, tray, spots, people, start}`.
+- `build/leak_tidy.mjs` runs it headless and prints the table.
 
-**Task 2: the generator, solver checks and leak bot (`js/tidy/rules.js`, `js/tidy/bot.js`, `data/tidy.json`).**
-- `data/tidy.json`: the `pantry` mechanic's three levels (8.1 knobs), words for the placeholders in 6.6 needed by M2, and the board `shopping-away` using the existing fruit/veg/spice ids (real Kutchi drafts) as items and the kitchen's four shelves plus the fruit bowl and spice cupboard as anchors. Add `spots` with tags and neighbours to `data/scenes/kitchen.json` (only new keys; keep the existing ones intact), checked with `build/place_preview.py`.
-- `Rules.make(board, level, profile)`: picks due words (weakest first) plus up to 3 new, look-alike extras, rows by the level's rule types; runs the five checks in 8.1 and re-rolls (cap 50 tries; log a failure).
-- `Rules.ladder(rows)` → ladder rows (speaker · text or ••• · reveal · translate) and `Rules.speech(rows)` from `grammar`, shuffled per G3.
-- `bot.js`: the eight strategies in 8.4, seeing only a screen model (`{rowCount, rowShapes, tray, spots, people}`), never the rows.
-- Tests: `--gen 1000` and `--bot 500` (prints a table: strategy × level → ear-star rate).
+**Task 2: the mechanics and the engine in the lab (phase 1; `tidy.html`, `js/tidy/engine.js`, `js/tidy/mechanics/{place,pack,check,paw}.js`, `js/tidy/lab.js`, `css/tidy.css`).**
+- `engine.js`: `Tidy.Mech.define/lab/combined` mirroring `Cook.Mech` (zones with `region`, `footprint`, `out`/`in`), rounds as `{board, startState, rows, speaker}`, `z.expect` for the test harness, `z.listen(ok, why)` and `z.skill`.
+- `place.js`, `pack.js` per D.3 (dots only while holding; nothing snaps; tallies per cell; never ends itself). `check.js`: live at L1, Done from L2, random order, recast, fix, re-check one row, tap to skip animations. `paw.js`: random strip, correctness ignored, nothing replayed.
+- `lab.js`: game × board × kind × level, *New round*, *Nani helps*, *Busy*, *Paw*, *Bot*, *Show spots*, *Rule inspector*, word-stage override.
+- `build/test_tidy.py --lab --sizes --rel` as the acceptance above.
 
-**Task 3: `tidy.html`, the board and the Done check with M2 in the Tidy lab.**
-- `tidy.html` loads Phaser, the Cook shared modules it needs (lang, pills, ladder UI, stars, receipt, passme, progress) and `js/tidy/*`. Layout contract v2: sidebar column (order card on top, "?" help, no English step pills), the tray bottom centre ≤22% height.
-- `board.js`: tap an item → it lifts and follows; tap a spot → it lands (sound by material × surface); drag works too; uniform dots shown only while holding; nothing snaps or reacts differently over a right spot (G2).
-- `check.js`: level 1 live check (wrong = wiggle, row ear lost, item stays); level 2+ check at *Done* in random row order with hop/wiggle and the recast (*Arre re!* + what it is + what was asked); the player fixes; re-check that row only; stars; word review.
-- `lab.js`: the controls in 8.3.
-- Acceptance: `python3 build/test_tidy.py --lab --sizes` passes with screenshots at all six sizes; a manual run shows no text on items, no hover feedback, and a recast on every deliberate mistake.
+**Task 3: the three mini-games and Ali's turn (phase 1; `js/tidy/games/{putaway,dastarkhwan,box,ali}.js`, `js/tidy/mechanics/{stack,tell}.js`).**
+- `putaway.js`: one zone (`place`) on the shelves or the masala dabba; `passme` from Cook in the sidebar. `dastarkhwan.js`: `place` + `stack`, guests on cushions from data, the paw at L2, and at L3 a second zone running Cook's `fetch` with `out: "fetched"` into the cloth zone's `in`. `box.js`: `pack` on the fruit-box grid, lid and ribbon on Done.
+- `tell.js`: Ali picks uniformly among `Rel.options`; `ali.js` runs any of the three backwards with the card, S2's two-listen shape at L2, the pill fallback, the voice star; `speech.js` stubbed to return `null` until phase 2.
+- S1 "What's this?" in `check.js` at L1 (3 pills; parent tick in Grandparent mode).
+- Acceptance: all three games and Ali's turn at levels 1–3 in the lab at every size; `--bot 500` under 10% for every strategy except Reader; the build log records the bot table and the screenshots looked at.

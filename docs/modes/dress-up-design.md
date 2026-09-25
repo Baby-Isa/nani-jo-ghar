@@ -150,13 +150,11 @@ Rules: the closed set is 3–8 words the game knows; recognition never blocks (t
 
 | Section | Change |
 |---|---|
-| 1 | The pitch and loop stand; the camera line "E, full body, front" becomes "flat-lay T and upper-body E first; full body later" |
-| 3 | D1→G1, D3+D7→G3/G4, D4→G5, D6 folded into G2, D2→G8 (Arc 2); G2 Lay it out and G7 The ironing pile added |
-| 4 | The first set is D.5 |
-| 5.1 | Eid eve beat added; Arc 3 Ch1 and the Ch4 "wrap her up" rows withdrawn; the Ch4 door cameo added |
-| 6.5, 8 | Role reversal is `say` and G6; `doll.js` has three renderers; relations not needed; the blind-odds calculator moves to the shared `pick` |
-| 9 | The art run is phased: flat garments and overlays first (≈55 images), full body last |
-| 12 | Rewritten below |
+| 1, 9.1 | Cameras: flat-lay T and upper-body E first; full body later (patched) |
+| 3, 4 | D1→G1, D3+D7→G3/G4, D4→G5, D6 folded into G2, D2→G8 (Arc 2); G2 and G7 added; the first set is D.5 |
+| 5.1 | Eid-eve beat added; the Arc 3 Ch1 and Ch4 "wrap her up" rows withdrawn; the Ch4 door cameo added |
+| 6.5, 8, 9 | Role reversal is `say` and G6; `doll.js` has three renderers; no relations; blind odds move to the shared `pick`; art phased, full body last |
+| 12 | Rewritten |
 
 ---
 
@@ -177,7 +175,7 @@ Rules: the closed set is 3–8 words the game knows; recognition never blocks (t
 | | Cook with Nani | Find it | **Dress up** |
 |---|---|---|---|
 | Core verb | **Build**: gestures in sequence over time | **Search**: scan, then tap the one meant | **Style**: compose a whole look on a person, slot by slot, then finish it by hand |
-| Camera | T, straight down on a worktop | E, into a cluttered room | **E, full body, front** (fitting corner) + **T** close-up of Big Ma's sewing table |
+| Camera | T, straight down on a worktop | E, into a cluttered room | **T flat-lay** (the bed, Big Ma's table) and **E upper body** at the mirror first; E full body later (deep dive D.1) |
 | What the Kutchi decides | What, how many, what order, for whom | Which one and where in a scene | **Which garment, in which colour or pattern, on which person, for which weather**: several adjective + noun pairs that must each land on the right slot (binding) |
 | The satisfaction | Juice, timing, memory | "Found it!" | The transformation and the mirror reveal; making something with Big Ma |
 | Syllabus weight | S1, S2 verbs, S5 first/then | S1, S2 positions and colours | **S2 clothes and colours, S3 adjectives, possessives and kinship, S4 weather and feelings** |
@@ -526,7 +524,7 @@ When the shell lands, `dress.html` becomes a place (`bigma-room`) and its save m
 
 | Scene | Camera | Framing |
 |---|---|---|
-| **Big Ma's room, fitting corner** | **E, full body, front** (Art Bible: horizon at hip height) | Client centre-right on a low round rug, full body about 620 px tall; full-length mirror right; rail across the upper left, a shelf below it, a shoe rack bottom left, an accessory tray; curtain on the window. A second composition of the same room as Find it's (shared walls, window and chest) |
+| **Big Ma's room, fitting corner** | **E, upper body first** (the existing game crop at the mirror; full body, horizon at hip height, in phase 5) | Client centre-right on a low round rug, full body about 620 px tall; full-length mirror right; rail across the upper left, a shelf below it, a shoe rack bottom left, an accessory tray; curtain on the window. A second composition of the same room as Find it's (shared walls, window and chest) |
 | **Big Ma's sewing table** | **T** | Table top fills the frame; bolts and spools along the top; the work area centre; the bottom 20% clear for hands. Shared with Find it's sewing-box close-up |
 | Doorway reveal (D4) | E | **Reuse** Find it's courtyard, a short walk-out strip; weather in code |
 | Wrist close-up (D7) | E | The client's hand and a bangle tray (Arc 2) |
@@ -704,39 +702,51 @@ The fitting (D1) as the whole mode: the client says 2–4 pieces; you dress them
 
 ---
 
-## 12. Build brief for a future agent
+## 12. Build brief for a future agent (rewritten 25 Sept, to match the deep dive)
 
-**Rules that apply throughout:** never invent Kutchi (placeholders are `"kutchi": null` + English); levels are data; mechanics are reusable blocks; no labels on garments; nothing covers the play area; the leak rules in 8.4; UK English in UI text; look at every screenshot yourself.
+**Rules that apply throughout:** never invent Kutchi (placeholders are `"kutchi": null` + English); levels are data and rounds are data; one mechanic = one file in `js/dress/mechanics/`; no labels on garments; nothing covers the play area; the leak rules in 8.4; UK English in UI text; look at every screenshot yourself. **Phases 0–1 touch only the mode's own files** (`dress.html`, `js/dress/**`, `data/dress.json`, `data/scenes/bigma-*.json`, `css/dress.css`, `build/leak_dress.mjs`, `build/test_dress.py`) and read Cook's shared modules without copying or editing them.
+
+### Shared pieces this mode needs from the foundation agent (assumed to arrive; not designed here)
+
+| Piece | Used for | Until it lands |
+|---|---|---|
+| The shell ("one app, one save"; the map; the one rotating hub daily) | Big Ma's room as a place; the 60-second round entry; one wallet | `dress.html` on its own page with Cook's save, as Find it does |
+| The **which-one module** (`pick`: attribute + decoy rules + the blind-odds calculator) | Every row's choice | A local `js/dress/pick.js` with the same call shape, deleted when the shared one lands |
+| **Overlay-at-anchor sprites** (upper body first; shared with Who did it?) | The upper-body renderer's head, wrap, wrist and carry slots; tint regions for the top | Code-drawn greybox overlays (a coloured arc for a cap, a rectangle for a shawl) at anchors in `bigma-fitting.json` |
+| Star sets and ear/voice rules as data (`star_sets.dress-up`, `earPass`, `minTested`, taught-rows exclusion, the voice star) | Stars | A local `star_sets` block in `data/dress.json` |
+| `js/shared/speech.js`: `listen({choices, timeoutMs}) → {choice, confidence} | null` | The `say` mechanic | `say` runs on pills only and never awards the voice star |
+| **Not needed:** `data/relations.json`, `js/shared/rel.js`, scene `spots` | — | Garment parts and bed piles are slots, never relational positions |
 
 ### Phases
 
-| Phase | What's playable | Acceptance |
-|---|---|---|
-| **1. Logic + greybox fitting** | `dress.html` with the Fitting lab: D1 at levels 1–3 on grey silhouettes and tinted rectangles; intro card, order card, piece-by-piece and mirror checks, recasts, help costs, stars, receipt, word review | `test_dress.py --lab --level 1..3` passes at all six sizes; the tap-cover check never fails; leak bot: every strategy **< 10%** ear-star rate over 2,000 rounds per level (target ≤ 5%); no text on the rack in any screenshot |
-| **2. Big Ma's table + finishing** | Iron, stitch, pin, button mechanics (as `Cook.Mech` mechanics); D3 mend, D2 make-to-order; D5 change of mind; pass me | Each finishing task in the lab at levels 1–3; the neat star grades them; the D2/D3 leak bot < 10%; phone 915×375 stitch line usable (hit tolerance ≥ 28 px at level 1) |
-| **3. Weather + story + free play** | D4 with the doorway line, curtain and reveal; Arc 1 Ch4 and Ch5 as data days; Fittings with "Close the room"; Busy with the mosque clock; the lookbook; upgrades | `--days` plays Ch4 and Ch5 end to end; `--fittings 5` closes into the summary; the D4 hedge strategy < 10%; no weather sound before Done (checked in the audio log) |
-| **4. Art** | Alignment test (two garments on one base), then bases, clients, garments, backgrounds | Visual QA checklist on every contact sheet; garments line up within 4 px on each base; restraint and cultural checks signed off by Zafar |
-| **5. Held back** | D8 daily, D6, D7, D10, D11, D9 by arc | Each: its own leak-bot run < 10% and a persona pass |
+| Phase | Own files only? | What's playable | Acceptance |
+|---|---|---|---|
+| **0. Pure logic** | Yes | `data/dress.json`; `look.js` (renderer-agnostic generator, five kinds of round), `grade.js`, `rack.js`; `build/leak_dress.mjs` in **Node, no browser** (Who did it?'s pattern) | Every bot strategy (8.5, plus "occasion default", "hedge every carry item", "pile order = row order", "count until the tin stops") **< 10%** ear-star rate over 2,000 rounds per mini-game per level, target ≤ 5%; the report lists placeholder decisions separately and the real-Kutchi rows (count, size, *nar*) on their own |
+| **1. Greybox lab** | Yes | `dress.html` + the Dress lab: **G2 Lay it out** (flat-lay, `fetch` + `wear` + `check`), **G1 The fitting** (upper-body greybox from the existing Cook character crops with code-drawn overlays), **G3 The table** (buttons: `count` + `stitch`), **G4 Bangles**, at L1–3; intro card, 3 s silence, live checks at L1 and Done checks from L2, recasts, "?" help costs, stars, receipt, word review; `change` from L2 | `test_dress.py --lab --level 1..3` at all six sizes; the on-screen bot matches the Node bot within 2 points over 200 rounds per strategy; no label, swatch or tinted row in any screenshot; a human plays 10 level-1 rounds of each with no repeated look |
+| **2. Finishing and speaking** | Yes (reads `speech.js` if present) | `iron` (G7 The ironing pile) and `stitch` polished; the neat star; `say` with the three first-set moments (say how many, ask Big Ma, call the weather) on pills, then on `listen()` when it lands; `passme` for Big Ma | Each mechanic in the lab at L1–3; phone 915×375 stitch line usable (tolerance ≥ 28 px at L1); `say` never blocks (timeout → pills); the voice star is awarded only on a recognised or parent-ticked answer |
+| **3. Weather, story, free play** | Shell files for integration only | **G5 Going out** with the curtain, doorway and walk-out reveal on Find it's courtyard strip; Arc 1 Ch4 (one motif on the pocket), the Eid-eve beat (G2) and Eid morning (G1) as data days; the Ch4 door cameo; Fittings with "Close the room"; the 60-second round for the hub daily; G9 must-haves + free choices; the lookbook | `--days` plays Ch4, the eve and Ch5 end to end; `--fittings 5` closes into the summary; the hedge strategy < 10%; no weather sound before Done (audio log); the daily entry returns in ≤ 90 s |
+| **4. Art, first run (no full body)** | Art files only | T view of the sewing table and the bed; ~15 flat garments (tintable, one drawing each); ~14 upper-body overlays on the existing crops; Big Ma's demo hands; props | Visual QA checklist on every contact sheet; overlays sit within 4 px of their anchors on all three upper-body crops; restraint and cultural checks (F44's list, headscarves stay on) signed off by Zafar. **Starts only after E60–E71 and F44–F63 come back** |
+| **5. Full body and held-back games** | Own files + art | The full-body renderer in `doll.js` (the two-garment alignment test first), the Eid mirror walk, shoes and trousers; G6 Tell Ali, G8 Make to order, G10, G11 | Alignment within 4 px per base; each held-back game its own bot run < 10% and a persona pass |
 
 ### First three tasks
 
-**Task 1: data, generator, grader and the leak bot (pure logic, no art).**
-- Create `data/dress.json` from section 8.1: placeholder words for 10 colours, about 12 garments across 6 slots, 4 weather states, 4 people (guest, Nana, Ma, Ali) with bases and house clothes, the Eid and everyday occasions, look-alike groups, and three `fitting` levels.
-- Write `js/dress/look.js`: `Dress.Look.generate(level, profile, opts)` → a round (section 8.1), from due and weak words (reuse `js/cook/core.js` progress helpers), obeying the leak rules 2, 5, 6, 7 and the blind-odds budget (compute the best blind strategy's success as the product over testable rows of 1/candidates, given the strongest prior; add a row or decoy until ≤ 0.05).
-- Write `js/dress/rack.js`: `Dress.Rack.build(round, scene)` → items in spots, rules 1–4.
-- Write `js/dress/grade.js`: `Dress.Grade.check(round, wears)` → per row `{ok, why, recast}` and the ear verdict (binding, "no" rows, weather needs/forbids, counts).
-- Add `build/test_dress.py --bot`: loads `dress.html`, runs the generator + rack + grader via `page.evaluate` for 2,000 rounds per level and every strategy in 8.5, and prints a table of ear-star rates. **Done when** every rate is < 10% and the report lists the placeholder decisions.
+**Task 1: data, generator, grader and the Node leak bot (phase 0).**
+- `data/dress.json` from 8.1, revised: placeholder words for 11 colours, ~14 garments across the slots `head, top, wrap, wrist, carry` (upper body) and `pile` parts (flat-lay), garment parts `pocket, sleeve, collar, hem`, 4 weather states, people `nana, ma, cousin` (Cook's customer ids, so *for whom* reuses their faces), look-alike groups, `kinds` (K1–K5) and per-mini-game `levels` for G1–G5 with the ladder in D.5. Real words (`num-01..05`, `ph-big`, `ph-small`, `ph-no`) referenced by id from `data/cook.json`, never copied.
+- `js/dress/look.js`: `Dress.Look.generate({kind, game, level, profile})` → a round `{who?, renderer, rows[], change?, finish?, weather?}`; renderer-agnostic; obeys 8.4 rules 2, 5, 6, 7 and calls the blind-odds calculator (local `pick.js` until the shared one lands); adds a row or decoy until ≤ 0.05.
+- `js/dress/rack.js`: `Dress.Rack.build(round, scene)` → items in spots for a rail, a wardrobe shelf, a tin or a tray, rules 1–4.
+- `js/dress/grade.js`: `Dress.Grade.check(round, wears)` → per row `{ok, why, recast}` and the ear verdict (binding, *nar* rows, for whom, counts, sizes, weather needs/forbids), plus `realKutchi: [rowIds]`.
+- `build/leak_dress.mjs`: seeded, runs in Node, prints the rate table per strategy × game × level. **Done when** every rate is < 10% and the report shows the placeholder and real-Kutchi rows separately.
 
-**Task 2: the greybox fitting station.**
-- `dress.html` loading the Cook shared files (core, lang, ui, order, zone) and `js/dress/*`; do not copy them.
-- `js/dress/doll.js`: a grey body silhouette per base, slot rectangles tinted from the word's `hex`, a pattern overlay, the mirror as a flipped copy in a mask.
-- `js/dress/stations/fitting.js`: the rail, shelf and rack spots from `data/scenes/bigma-fitting.json` (greybox coordinates on 1600×900); tap to wear, tap to return; the intro card (face + one line per row, then it shrinks into the sidebar); 3 s silence; piece-by-piece checks at level 1, the mirror check from level 2; the recast lines; Done always present; the ear, needle and tick cut-outs filling as it happens; the receipt and word review from Cook's UI.
-- The Fitting lab on the title: mechanic × level buttons, "Big Ma helps", the blind-odds readout, the bot toggle. **Done when** a human can play 10 different level-1 rounds in a row without a repeated look, and no screenshot shows a label, swatch or tinted row.
+**Task 2: the greybox lab with G2 and G1 (phase 1).**
+- `dress.html` loading Cook's shared files (core, lang, ui, order, zone) and `js/dress/*`; `css/dress.css`.
+- `js/dress/doll.js` with two renderers: **flat** (a bed with 1–3 pile rectangles; garments as tinted flat shapes) and **upper** (the existing `assets/cook/characters/{nana,ma,cousin}-*.webp` crops; code-drawn overlays at anchors from `data/scenes/bigma-fitting.json`; a tint region for the top); the mirror as a flipped copy in a mask.
+- `js/dress/mechanics/wear.js`, `check.js`, `change.js` as `Cook.Mech.define` mechanics; `js/dress/games/layout.js` (G2: `fetch` → `wear` → `check`) and `fitting.js` (G1: `pick` → `wear` → `check`, `change` from L2, `passme`).
+- The Dress lab on the title: game × level buttons, "Big Ma helps", the blind-odds readout, the bot toggle. **Done when** the acceptance row for phase 1 holds for G2 and G1.
 
-**Task 3: the test harness and the first finishing task.**
-- `build/test_dress.py --lab --level N --viewport <size>`: plays D1 through pointer events from `z.expect(...)` hints (Cook's pattern), with a deliberate wrong piece in one round in three; the tap-cover check before every tap; screenshots to `build/screenshots/dress/`.
-- `js/dress/mechanics/iron.js` with `Cook.Mech.define("iron", …)`: 2–3 creases on a garment in a zone; rub across each until it's gone (reuse knead's rub input); knobs `creases`, `sweeps`, `special` in `data.mechanics.iron.levels`; scores the neat star with `z.skill`.
-- Wire iron as the fitting's finishing step (before Done). **Done when** the harness passes at all six sizes for levels 1–3, and Claude has looked at the phone and iPad-portrait screenshots and confirmed the rail items are at least 90 px and nothing overlaps the client.
+**Task 3: the harness, the table and bangles (phase 1, then 2).**
+- `build/test_dress.py --lab --level N --viewport <size>`: plays every game through pointer events from `z.expect(...)`, a deliberate wrong piece in one round in three, the tap-cover check before every tap, screenshots to `build/screenshots/dress/`.
+- `js/dress/mechanics/stitch.js` (fill-fold's swipe input; knobs `lines`, `tolerance`, `special`) and `js/dress/games/table.js` (G3 at L1: `count` from the tin + `stitch` per button; L2: a motif on a part; Big Ma's `passme`); `js/dress/games/bangles.js` (G4: `count` on the wrist close-up).
+- `js/dress/mechanics/say.js` stub: pills only, `listen()` when `window.Shared?.speech` exists; wired as "say how many" in G4 L1 and "ask Big Ma" in G3. **Done when** the harness passes at all six sizes for L1–3 of G1–G4, the phone stitch line is usable, and Claude has checked the phone and iPad-portrait screenshots for overlap with the client and the bed.
 
 ---
 
