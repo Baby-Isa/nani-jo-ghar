@@ -19,6 +19,9 @@
  *     pillsLive: false,                     // L1: pills and mic together from the start
  *     timeoutMs: 4000, pillsAfterMs: 8000, retries: 1, minConfidence: 0.5,
  *     label: (id) => text, container: element, caption: "Tell the cook what to make",
+ *     playWord: (id) => play it,           // audio pills: a speaker, tap to hear + select, "That one" sends
+ *     pillText: (id) => text | null,       // audio pills: text only where the word's stage allows
+ *     shrug: false,                        // Monsoon Busy: a null ends the moment (via "skip")
  *   });
  *   // -> {choice, via: "voice" | "pill" | "parent" | "skip", confidence, tries, retried, fallback, enrolled}
  *
@@ -58,14 +61,20 @@
    */
   Say.machine = function (opts) {
     opts = Object.assign({}, Say.DEFAULTS, opts || {});
+    if (opts.expected == null) opts.expected = opts.answer != null ? opts.answer : opts.target; // Tidy / Dress / clinic say "answer", Monsoon "target"
     const st = { phase: "idle", tries: 0, misses: 0, micShown: true, pillsLive: !!opts.pillsLive, hint: false, parentArmed: false, outcome: null, last: null };
     const finish = (o) => {
       st.phase = "done";
       st.outcome = Object.assign({ confidence: null, tries: st.tries, retried: st.misses > 0, fallback: o.via === "pill" }, o);
+      // the names the mode stubs used: Tidy's `by`, Dress up's `voice` (may earn the voice star)
+      st.outcome.by = st.outcome.via;
+      st.outcome.voice = st.outcome.via === "voice" || st.outcome.via === "parent";
       return st;
     };
     const miss = (res) => {
       st.misses++;
+      // Monsoon's Busy: a null is a shrug and the moment ends (Drizzle waits instead)
+      if (opts.shrug) return finish({ choice: null, via: "skip" });
       st.last = res || null;
       st.phase = "ready";
       st.hint = true;
@@ -172,6 +181,9 @@
 .njg-say.hint .pill{opacity:.6}
 .njg-say.live .pill{opacity:1;pointer-events:auto;cursor:pointer}
 .njg-say .pill.ph{font-style:italic;color:#8a7a6a}
+.njg-say .pill.sel{border-color:#c8553d;box-shadow:0 0 0 2px #c8553d inset}
+.njg-say .pill.send{background:#c8553d;color:#fff;border-color:#8e3526}
+.njg-say .pill[hidden]{display:none}
 .njg-say .parent{display:flex;gap:8px;font-size:13px}
 .njg-say .parent button{min-height:36px;padding:4px 12px;border-radius:18px;border:1px solid #b9a07a;background:#f7eedd;font:inherit}
 @keyframes njg-pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,85,61,.5),0 4px 0 #8e3526}50%{box-shadow:0 0 0 14px rgba(200,85,61,0),0 4px 0 #8e3526}}
@@ -204,20 +216,45 @@
     const wrap = doc.createElement("div");
     wrap.className = "pills";
     const buttons = {};
-    for (const id of ids) {
+    // Audio pills (Tidy, Monsoon, Who, clinic): a speaker, text only when
+    // opts.text(id) gives some (the word's stage allows reading); a tap plays
+    // the word and selects it, and "That one" sends it. A non-reader can't
+    // match letters, so the pills stay a test of the ear.
+    const audio = typeof opts.audio === "function";
+    let picked = null;
+    let send = null;
+    ids.forEach((id, k) => {
       const b = doc.createElement("button");
-      b.className = "pill" + (isPlaceholder(id) ? " ph" : "");
+      b.className = "pill" + (isPlaceholder(id) ? " ph" : "") + (audio ? " audio" : "");
       b.type = "button";
       b.setAttribute("data-choice", id);
-      b.textContent = (opts.label || defaultLabel)(id);
-      b.addEventListener("click", () => opts.onPick && opts.onPick(id));
+      const text = audio ? (opts.text ? opts.text(id) : null) : (opts.label || defaultLabel)(id);
+      b.textContent = audio ? `🔈 ${text != null ? text : k + 1}` : text;
+      b.addEventListener("click", () => {
+        if (!audio) return opts.onPick && opts.onPick(id);
+        opts.audio(id);
+        picked = id;
+        for (const x of Object.values(buttons)) x.classList.remove("sel");
+        b.classList.add("sel");
+        send.hidden = false;
+      });
       wrap.appendChild(b);
       buttons[id] = b;
-    }
+    });
     el.appendChild(wrap);
+    if (audio) {
+      send = doc.createElement("button");
+      send.className = "pill send";
+      send.type = "button";
+      send.setAttribute("data-send", "1");
+      send.textContent = opts.sendText || "✓ That one";
+      send.hidden = true;
+      send.addEventListener("click", () => picked && opts.onPick && opts.onPick(picked));
+      wrap.appendChild(send);
+    }
     const setLive = (on) => (on ? el.classList.add("live") : el.classList.remove("live"));
     if (opts.live) setLive(true);
-    return { el: wrap, setLive, buttons };
+    return { el: wrap, setLive, buttons, send };
   };
 
   /**
@@ -230,7 +267,9 @@
     opts = Object.assign({}, Say.DEFAULTS, fromRules, opts || {});
     const doc = (opts.container && opts.container.ownerDocument) || root.document;
     const Speech = opts.speech || (root && root.Speech) || null;
-    const ch = opts.character || opts.actor || {};
+    if (opts.expected == null) opts.expected = opts.answer != null ? opts.answer : opts.target;
+    // hook names the mode stubs used: Who's onAgain, Monsoon's onNull / onAnswer, Dress up's act
+    const ch = Object.assign({ miss: opts.onAgain || opts.onNull, act: opts.act, done: opts.onAnswer }, opts.character || opts.actor || {});
     const call = (fn, ...a) => {
       try {
         return fn ? fn.apply(ch, a) : undefined;
@@ -260,7 +299,7 @@
     box.appendChild(mic);
     let resolveOut;
     const done = new Promise((r) => (resolveOut = r));
-    const pills = Say.pills(box, choices, { label: opts.label, onPick: (id) => onPick(id) });
+    const pills = Say.pills(box, choices, { label: opts.label, audio: opts.playWord, text: opts.pillText, onPick: (id) => onPick(id) });
     async function onPick(id) {
       const st = M.pill(id);
       if (st.phase !== "acting") return;
@@ -359,6 +398,9 @@
     step(M.start({ micOk }));
     if (opts.pillsAfterMs > 0) timer = setTimeout(() => step(M.timer()), opts.pillsAfterMs);
     done.cancel = () => step(M.skip());
+    // Monsoon's handle shape: close() and pill(id) (a pill sent from outside, e.g. a bot)
+    done.close = done.cancel;
+    done.pill = (id) => onPick(id);
     return done;
   };
 

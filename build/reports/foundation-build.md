@@ -18,7 +18,7 @@ Each piece is one plain file, available as a global, as `window.Shared.*`, or th
 Serve the repo root and open `http://localhost:8800/lab/shared.html`.
 
 ## Tests
-- `node --test build/test_shared_*.mjs`: 59 pass. That includes a blind bot within 2% of `blindOdds`.
+- `node --test build/test_shared_*.mjs`: 62 pass. That includes a blind bot within 2% of `blindOdds`.
 - `node build/test_shared-browser.mjs` (port 8800): passes at 915×375.
 
 ## Stubs
@@ -27,6 +27,7 @@ The shared modules answer the stubs already pushed:
 - `balance()` returns Who did it's shape.
 - `Stars` takes Snap's rows.
 - `accept` covers the clinic's wrong pill.
+- `say` takes the say/tell stubs' names (Tidy, Monsoon, Who, Dress up), their audio pills and Monsoon's Busy shrug; `WhichOne.Clinic` is the clinic's `which`.
 - `Rel.Tidy` is Tidy up's board dialect, matching its stub on 300 random boards. Which "next to" wins is open for phase B.
 
 The swap table is section 6 of the doc.

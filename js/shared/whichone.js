@@ -34,13 +34,13 @@
  * Plain <script>: window.WhichOne (and Shared.whichone); Node: require().
  */
 (function (root, factory) {
-  const W = factory();
+  const W = factory(root);
   if (typeof module === "object" && module.exports) module.exports = W;
   else {
     root.WhichOne = W;
     (root.Shared = root.Shared || {}).whichone = W;
   }
-})(typeof self !== "undefined" ? self : this, function () {
+})(typeof self !== "undefined" ? self : this, function (root) {
   "use strict";
   const W = {};
 
@@ -211,6 +211,31 @@
     rest = W.shuffle(rest, opts.rng);
     if (opts.n) rest = rest.slice(0, opts.n - 1);
     return W.shuffle([id].concat(rest), opts.rng);
+  };
+  /**
+   * The choices to show for `want` from a pool: want, then its look-alikes
+   * that are in the pool, then the rest of the pool, cut to n and shuffled
+   * (so the answer is never the odd one out). opts: {rng, groups}.
+   */
+  W.choices = function (want, pool, n, opts) {
+    opts = opts || {};
+    const rnd = opts.rng || Math.random;
+    const near = [...new Set(groupsOf(opts.groups).filter((g) => g.includes(want)).flat())].filter((x) => x !== want && pool.includes(x));
+    const rest = W.shuffle(pool.filter((x) => x !== want && !near.includes(x)), rnd);
+    return W.shuffle([want].concat(W.shuffle(near, rnd), rest).slice(0, n), rnd);
+  };
+  /**
+   * The clinic's stub API (js/clinic/stubs/which.js): choices(want, pool, n,
+   * rnd) and pair(want, pool, rnd), with the look-alike groups read from
+   * Cook.data.lookalike_groups as the stub does. Swap: Clinic.Which = WhichOne.Clinic.
+   */
+  W.Clinic = {
+    groups: null, // set to override Cook's groups (tests, Node)
+    choices(want, pool, n, rnd) {
+      const g = W.Clinic.groups || (root && root.Cook && root.Cook.data && root.Cook.data.lookalike_groups) || [];
+      return W.choices(want, pool, n, { rng: rnd, groups: g });
+    },
+    pair: (want, pool, rnd) => W.Clinic.choices(want, pool, 2, rnd),
   };
   W.checkGroups = function (groups) {
     const seen = {};
