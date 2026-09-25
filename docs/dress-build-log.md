@@ -48,6 +48,8 @@ Open `dress.html` (the Dress lab is the title). `dress.html?game=fitting&level=2
 - `python3 build/test_dress.py [--viewport all]`: plays every game at L1-3 through real pointer events from `Dress.expect`, with a deliberate wrong piece in one round in three (the ear star must go; the round must still finish), the tap-cover check before every tap, no words drawn in the scene, "a round never ends by itself", the L1 stitch tolerance (28 px). Port 8804.
 - `python3 build/test_dress.py --bot 200`: the on-screen bot against the Node numbers (within 2 points).
 
+**Results, 25 Sept:** `--viewport all` passes all 72 rounds (4 games x L1-3 x 6 sizes, a deliberate mistake in every third). `--bot 200`: on screen vs Node at L1, G2 2.0/1.8%, G1 1.5/1.3%, G3 1.0/1.2%, G4 0.5/0.7%. (The first bot run read 0% for three games: the bot looked for things before the scene was drawn and pressed Done on nothing. It now waits for the scene.) Ten level-1 rounds of each game: no repeated look.
+
 ## Decisions taken while building
 
 1. **DOM/SVG, not Phaser.** Find it's pattern. Cook's `fetch`, `count` and `passme` are drawn in Cook's Phaser kitchen and can't run in a flat-lay or upper-body scene, so the greybox has small DOM ports with the same rules (`count.js`, `passme.js`; fetch is the tap-to-pile in `layout.js`). They go when the shared mechanics can draw in any renderer.

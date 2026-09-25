@@ -11,10 +11,10 @@
 
 ## Leak-bot numbers (Node, 2,000 rounds per game per level)
 Worst blind strategy, L1 / L2 / L3: G2 3.1 / 0.1 / 0.0% · G1 3.1 / 0.6 / 0.5% · G3 1.3 / 0.1 / 0.3% · G4 1.2 / 0.1 / 0.1% · G5 (logic only) 3.1 / 3.0 / 3.1%. All under 10%, and every generated round is within the 5% budget. Real-Kutchi slice, reported on its own: G3 L1 16% (count × size), G4 L1 6% (counts).
-ON-SCREEN-BOT
+On-screen bot (random, 200 rounds per game, L1) vs Node: G2 2.0 vs 1.8%, G1 1.5 vs 1.3%, G3 1.0 vs 1.2%, G4 0.5 vs 0.7%: within 0.2 points (the acceptance limit is 2). Ten level-1 rounds of each game never repeat a look.
 
 ## Tests
-`python3 build/test_dress.py --viewport all` (port 8804): every game at L1–3 at the six sizes, real pointer events, a deliberate mistake in one round in three, the tap-cover check, no words in the scene, no round ends by itself. SIX-RESULT
+`python3 build/test_dress.py --viewport all` (port 8804): every game at L1–3 at the six sizes, real pointer events, a deliberate mistake in one round in three, the tap-cover check, no words in the scene, no round ends by itself. **All 72 rounds passed** (4 games × 3 levels × 6 sizes, a mistake in every third round). Screenshots go to the system temp folder so they stay out of the repo, and I looked at the phone and iPad-portrait ones. Not done: a person playing it.
 
 ## Stubs to swap for shared pieces
 - `js/dress/stubs/pick.js` → the shared which-one module (one `<script>` line in `dress.html`, one `require` in `build/leak_dress.mjs`).

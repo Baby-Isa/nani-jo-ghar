@@ -82,6 +82,8 @@
       await until(() => visible(document.querySelector("#intro .ic-go")) && document.querySelector("#intro .ic-go"));
       click(document.querySelector("#intro .ic-go"));
       await until(() => rowsOnCard() > 0);
+      // the scene is drawn just after the card: wait for things to tap
+      await until(() => $$("#scene [data-act]").length > 0 && !r.busy);
       const game = r.spec.game;
       const n = rowsOnCard();
       if (game === "fitting") {
