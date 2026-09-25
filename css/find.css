@@ -72,6 +72,11 @@ body.find #live { flex: 1 1 auto; min-height: 0; overflow: hidden; }
 .lr { position: relative; }
 .lr .ltally { display: inline-block; font-family: var(--ui-font); font-weight: 800; font-size: .7em; color: var(--sage-dark); background: #e2efdb; border-radius: 999px; padding: 0 6px; vertical-align: .12em; white-space: nowrap; }
 
+/* the pocket-money receipt on the result card (and the leak check's table); Cook no longer draws one */
+.receipt { font-size: 14px; background: var(--cream); border-radius: 12px; padding: 8px 12px; margin: 6px 0; }
+.receipt div { display: flex; justify-content: space-between; gap: 12px; }
+.receipt .total { border-top: 1px dashed #cdb892; margin-top: 4px; padding-top: 4px; font-weight: 800; }
+
 /* the Search lab */
 .lab-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
 .lab-lbl { font-weight: 800; min-width: 52px; }

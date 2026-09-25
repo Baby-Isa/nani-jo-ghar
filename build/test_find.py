@@ -154,12 +154,13 @@ class Player:
         # the goal is behind the "?", and pops out
         if p.is_visible("#help-pop"):
             raise AssertionError("the goal shows on its own")
-        p.click("#btn-help")
+        p.click("#btn-help", force=True)  # it pulses the first time (never "stable")
         p.wait_for_selector("#help-pop", state="visible", timeout=3000)
         if "Nani" not in p.inner_text("#help-pop"):
             raise AssertionError(f"the ? shows the wrong goal: {p.inner_text('#help-pop')}")
+        time.sleep(0.25)  # past its pop-in
         self.shot("help")
-        p.click("#btn-help")
+        p.click("#btn-help", force=True)  # it pulses the first time (never "stable")
         p.wait_for_selector("#help-pop", state="hidden", timeout=3000)
         # zoom works from the rail (then back as it was, so the play goes on from the same view)
         z0 = self.state()["zoom"]
@@ -230,7 +231,7 @@ class Player:
                         self.made.add("intro")
                         self.shot("intro-card")
                     try:
-                        self.page.click(sel, timeout=1500)
+                        self.page.click(sel, force=True, timeout=1500)
                     except Exception:
                         pass
                     self.page.wait_for_selector("#intro", state="hidden", timeout=10000)
