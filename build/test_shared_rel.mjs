@@ -192,6 +192,8 @@ test("sidecars merge by id; validation catches bad data", () => {
   assert.equal(S.spots.s1.tags.length, 1);
   assert.equal(S.spots.s1.nbr.right, "s2");
   assert.deepEqual(S.monsoon, { rooms: [] });
+  const again = Rel.scene(S);
+  assert.deepEqual(again.spots.s1.tags, S.spots.s1.tags, "normalising twice changes nothing");
   assert.deepEqual(Rel.validate(S), []);
   const bad = Rel.scene({ anchors: { a: { rect: [10, 10, 5, 5] } }, spots: [{ id: "x", x: 5, y: 5, rel: "inside", anchor: "nope", nbr: { left: "ghost" } }] });
   const probs = Rel.validate(bad).join("\n");

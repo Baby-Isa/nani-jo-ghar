@@ -102,7 +102,7 @@
       const t = { rel: Rel.id(rel) };
       if (anchor != null) t.anchor = anchor;
       if (anchor2 != null) t.anchor2 = anchor2;
-      tags.push(t);
+      if (!tags.some((p) => p.rel === t.rel && p.anchor === t.anchor && p.anchor2 === t.anchor2)) tags.push(t);
     };
     if (sp.rel) push(sp.rel, sp.anchor);
     for (const a of sp.also || []) Array.isArray(a) ? push(a[0], a[1], a[2]) : push(a.rel, a.anchor, a.anchor2);
