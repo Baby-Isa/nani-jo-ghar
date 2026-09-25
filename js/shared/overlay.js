@@ -208,7 +208,7 @@
         break;
       case "arc": // a cap
         ctx.moveTo(x, y + h);
-        ctx.quadraticCurveTo(x + w / 2, y - h * 0.6, x + w, y + h);
+        ctx.quadraticCurveTo(x + w / 2, y - h, x + w, y + h); // peaks at the box's top
         ctx.closePath();
         break;
       case "glasses":

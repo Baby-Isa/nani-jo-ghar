@@ -58,7 +58,10 @@
 (function (root, factory) {
   const Speech = factory();
   if (typeof module === "object" && module.exports) module.exports = Speech;
-  else root.Speech = Speech;
+  else {
+    root.Speech = Speech;
+    (root.Shared = root.Shared || {}).speech = Speech; // Dress up checks window.Shared?.speech
+  }
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
   const Speech = {};

@@ -26,7 +26,7 @@
     }
   },
   "layers": {
-    "ov-cap":           { "anchor": "head",  "pivot": [0.5, 0.75], "w": 0.45, "aspect": 0.45, "z": 30, "tint": true, "defaultTint": "white", "slot": "head", "shape": "arc" },
+    "ov-cap":           { "anchor": "head",  "pivot": [0.5, 0.2],  "w": 0.45, "aspect": 0.32, "z": 30, "tint": true, "defaultTint": "white", "slot": "head", "shape": "arc" },
     "ov-glasses-round": { "anchor": "eyes",  "pivot": [0.5, 0.5],  "w": 0.42, "aspect": 0.32, "z": 25, "shape": "glasses" },
     "ov-glasses-rect":  { "anchor": "eyes",  "pivot": [0.5, 0.5],  "w": 0.42, "aspect": 0.28, "z": 25, "shape": "glasses" },
     "ov-scarf":         { "anchor": "neck",  "pivot": [0.5, 0.25], "w": 0.7,  "aspect": 0.35, "z": 20, "tint": true, "defaultTint": "red", "slot": "wrap", "shape": "rect" },
