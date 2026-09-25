@@ -789,7 +789,7 @@ Answer notes:
 
 ## Section G · The monsoon and feeling poorly (about 15 minutes)
 
-*For the "monsoon" game (buckets under the drips, washing in, cats and goats into the shed) and the clinic game, which is set at the children's own doctor's clinic (Hannah's granddad's): people come in and say what's wrong, the doctor asks "is it the knee, or the foot?", and the child finds the place and fetches the right thing. So we need body parts, "it hurts", hot and cold, the things he'd give, and, most of all, the little word "or" and the doctor's questions (G94 onwards).*
+*For the "monsoon" game (buckets under the drips, washing in, cats and goats into the shed) and the clinic game, which is set at the children's own doctor's clinic (Hannah's granddad's): the child is his helper. He says "check the head… now the knee… the knee again", and the child puts the stethoscope or the torch there; people come in and say what's wrong, or say "I don't feel well, I don't know why" and he has the child check until they find it; then he says how to fix it ("a bandage, round twice", "two drops in the left eye"). So we need body parts, "it hurts", hot and cold, the things he'd use, and, most of all, his little instructions (G108 onwards).*
 
 ### G1–G14. Weather
 
@@ -933,26 +933,42 @@ What do you actually give someone with a cold? Turmeric in milk, ginger chai, so
 
 Answer notes:
 
-### G94–G107. The doctor's questions, and the answers
+### G94–G104. The doctor's questions, and the answers
 
-*At the clinic the doctor asks "is it this, or that?" all the time: it's how the game teaches the children to listen, because they hear both words and then the answer. So the word "or" and these questions matter more than any single body part. Say them the way a kind doctor would to a child. (What the children call him is E102.)*
+*Say them the way a kind doctor would to a child. (What the children call him is E102.)*
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
 | G94 | or (on its own, and in "chai, or milk?") | | |
-| G95 | Is it the knee, or the foot? (the doctor, about someone's hurt) | | |
 | G96 | Is it your knee, or your hand? (the doctor, to the child) | | |
-| G97 | Is it Nani's head, or her tummy? (the doctor, asking the child about Nani) | | |
-| G98 | The knee. · This one. · Yes, this one. (short answers to those questions) | | |
+| G98 | The knee. · This one. · Yes, this one. (short answers to that question) | | |
 | G99 | You first! (the doctor to the child) | | |
 | G100 | Will you help me? | | |
 | G101 | Let me see. | | |
 | G102 | Bring me the blanket. (the doctor to his helper) | | |
 | G103 | All better! | | |
 | G104 | Well done, my helper! (or whatever he'd call the child) | | |
-| G105 | Are you hot, or cold? | | |
-| G106 | A blanket, or a cool cloth? | | |
-| G107 | Still cold, or just right? | | |
+
+*(G95, G97 and G105–G107 have been taken out: the game no longer leans on "is it this, or that?"; the doctor's instructions below do that job.)*
+
+### G108–G119. The doctor's instructions to his helper
+
+*This is the heart of the clinic game. The doctor tells the child what to check and how to fix it, one little instruction at a time, and the child does it. Say each one as you'd say it to a grandchild helping you. Where a body part sits in the sentence, we'll listen for whether the sentence changes with the part (as in G41), so please say G108 with all six parts.*
+
+| ID | English | Kutchi (Zafar's rough spelling) | Notes |
+|---|---|---|---|
+| G108 | Check the head. · Check the tummy. · Check the arm. · Check the leg. · Check the hand. · Check the foot. (or however he'd say "have a look at") | | |
+| G109 | Let's check everything. · Now the knee. · The knee again. · The other one. (the other knee) | | |
+| G110 | Listen to the chest. · Look in the ear. · Open your mouth, say aah. · Tap the knee. | | |
+| G111 | Take the temperature. · He's hot. · She's fine. | | |
+| G112 | I don't feel well. · I don't know why. (a patient, a bit sorry for themselves) | | |
+| G113 | Nothing wrong there! · That's it! / Found it! (the doctor) | | |
+| G114 | A bandage, round twice. · Round the foot, round the ankle, round the foot. | | |
+| G115 | The green bandage. · The red one. · The big one. | | |
+| G116 | Two drops in the left eye. · One drop in the right ear. | | |
+| G117 | Bring me the green bottle. · Two of the small ones. · The one on the top shelf. | | |
+| G118 | Show me your left hand. · Does your left knee hurt? (to the child; if the family says "this side / that side" rather than left and right, say it that way: see A5) | | |
+| G119 | stethoscope · torch · thermometer · dropper (if you just use the English words, say so) | | |
 
 ## Section H · Out and about, and comparing things (about 8 minutes)
 
