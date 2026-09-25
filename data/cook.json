@@ -2375,7 +2375,7 @@
     "ph-dhana": { "bowl": "topping-dhana-chopped-bowl-t" },
     "ph-keema": { "bowl": "topping-keema-bowl-t" },
     "ph-chips": { "bowl": "chips-golden-t", "raw": "chips-raw-t" },
-    "veg-01": { "bowl": "topping-bataato-boiled-bowl-t", "whole": "veg-bataato-whole-t" },
+    "veg-01": { "bowl": "topping-bataato-boiled-bowl-t", "whole": "veg-bataato-whole-t", "cubed": "veg-bataato-cubed-t" },
     "veg-02": { "bowl": "topping-dungri-chopped-bowl-t", "raw": "mishkaki-dungri-raw-t", "grilled": "mishkaki-dungri-grilled-t", "charred": "mishkaki-dungri-charred-t" },
     "veg-03": { "bowl": "topping-tameto-chopped-bowl-t", "whole": "veg-tameto-whole-t", "raw": "mishkaki-tameto-raw-t", "grilled": "mishkaki-tameto-grilled-t", "charred": "mishkaki-tameto-charred-t" },
     "veg-10": { "bowl": "topping-vatana-bowl-t" },
@@ -2399,7 +2399,8 @@
     "pan": { "top": { "file": "vessel-saucepan-t", "max": 0 } },
     "pot": { "top": { "file": "vessel-pot-t", "max": 0 } },
     "tadka-pan": { "top": { "file": "vessel-tadka-pan-t", "max": 0 } },
-    "chaat-bowl": { "empty": { "file": "chaat-bowl-empty-t", "max": 0 } }
+    "chaat-bowl": { "empty": { "file": "chaat-bowl-empty-t", "max": 0 } },
+    "katori": { "top": "vessel-katori-t" }
    },
    "art": {
     "vessel:pan": "pan.top",
@@ -2442,7 +2443,7 @@
     "boil": ["pan.top"],
     "count": ["pan.top", "cook-khun.bowl", "spi-16.bowl", "cook-atto.bowl"],
     "add": ["pan.top", "cook-chai.bowl", "spi-10.bowl", "veg-14.bowl", "spi-02.bowl", "spi-05.bowl"],
-    "chai-tray": ["pan.top", "cook-chai.bowl", "spi-02.bowl", "spi-05.bowl", "cook-khun.bowl", "spi-16.bowl", "spi-10.bowl", "veg-14.bowl", "veg-13.bowl"],
+    "chai-tray": ["bg:marble", "pan.top", "cook-chai.bowl", "spi-02.bowl", "spi-05.bowl", "cook-khun.bowl", "spi-16.bowl", "spi-10.bowl", "veg-14.bowl", "veg-13.bowl"],
     "chop": ["veg-01.whole", "veg-03.whole", "veg-12.whole", "veg-13.whole", "veg-14.whole"],
     "tadka": ["pot.top", "tadka-pan.top", "spi-02.bowl", "spi-05.bowl", "spi-01.bowl", "veg-12.bowl", "spi-16.bowl", "veg-13.bowl"],
     "assemble": ["ph-dahi.bowl", "ph-amli.bowl", "ph-lili.bowl", "veg-02.bowl", "ph-sev.bowl", "ph-dhana.bowl", "veg-12.bowl", "veg-03.bowl", "ph-chana.bowl", "veg-01.bowl"],
@@ -2452,9 +2453,9 @@
     "knead": ["chaat-bowl.empty"],
     "flip": ["chaat-bowl.empty"],
     "tawa": ["chaat-bowl.empty"],
-    "thread": ["ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw"],
+    "thread": ["katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
     "grill": ["ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-meat.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-meat.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
-    "mishkaki-grill": ["ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw"]
+    "mishkaki-grill": ["bg:marble", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
    }
   }
  },

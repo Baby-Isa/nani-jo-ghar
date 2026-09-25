@@ -4,8 +4,9 @@
  *
  * Views: "service" (the family at the island) and "pantry" use painted
  * backgrounds; every cooking station uses a top-down worktop ("marble",
- * "hob", "wood") drawn in code, so tools can rotate and hands can come up
- * from the bottom of the screen.
+ * "hob", "wood"), so tools can rotate and hands can come up from the
+ * bottom of the screen: painted for marble and hob (data.art.sprites.bg,
+ * loaded as the view fades in), drawn in code otherwise.
  *
  * Shared helpers: props with contact shadows, item labels that fade by
  * word stage, glow and wiggle, the step engine (wait for the right item,
@@ -56,7 +57,17 @@
       // new art is a file in assets/cook/props/ and a name in the data
       const W = (Cook.data && Cook.data.words) || {};
       const more = Object.values(W).map((w) => w.image).concat(((Cook.data && Cook.data.art) || {}).props || []);
-      [...new Set(props.concat(more.filter(Boolean)))].forEach((p) => this.load.image(p, `assets/cook/props/${p}.webp`));
+      // a prop that has a painted sprite (data.art.sprites.props) loads the sprite under the
+      // prop's name instead (the same width, so it draws the same size); if that fails, the prop
+      const swap = Cook.Art.propSprites();
+      [...new Set(props.concat(more.filter(Boolean)))].forEach((p) => this.load.image(p, swap[p] || `assets/cook/props/${p}.webp`));
+      this.load.on("loaderror", (file) => {
+        if (!swap[file.key] || String(file.url).includes("/props/")) return;
+        setTimeout(() => {
+          this.load.image(file.key, `assets/cook/props/${file.key}.webp`);
+          if (!this.load.isLoading()) this.load.start();
+        });
+      });
     }
 
     create() {
@@ -114,10 +125,14 @@
     async setView(name, { fast } = {}) {
       const cam = this.cameras.main;
       const dur = fast ? 120 : 220;
+      // a painted worktop (data.art.sprites.bg) loads while the old view fades
+      const bgRef = `bg:${name}`;
+      const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Cook.Art.load(this, bgRef), new Promise((r) => setTimeout(r, 2500))]) : null;
       if (this.viewName) {
         cam.fadeOut(dur, 233, 220, 196);
         await Cook.wait(dur + 20);
       }
+      if (bgLoad) await bgLoad;
       this.clearView();
       this.viewName = name;
       if (name === "service" || name === "pantry") this.bg.setTexture(`bg-${name}`);
@@ -159,8 +174,8 @@
       return img;
     }
     /** An ingredient as a heaped bowl (or its photo), with a stage label. */
-    ingredient(id, x, y, { w = 170, h = 128, label = true, depth = D.item } = {}) {
-      const key = Cook.Art.wordTex(this, id);
+    ingredient(id, x, y, { w = 170, h = 128, label = true, depth = D.item, state } = {}) {
+      const key = Cook.Art.wordTex(this, id, state);
       const img = this.flat(key, x, y, w, h, { depth });
       img.wordId = id;
       if (label) img.label = this.label(img, id);

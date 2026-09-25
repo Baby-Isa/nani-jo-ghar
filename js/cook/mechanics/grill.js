@@ -482,8 +482,35 @@
     plate: () => drawPlate(340, 190),
     board: () => drawBoard(200, 760),
   };
+  /**
+   * A piece as its painted sprite in `state` (raw, grilled, charred; data.art.sprites),
+   * baked into the drawn piece's square so every scale and slot still fits; null while
+   * the sprite isn't loaded (the drawn piece stands in).
+   */
+  SK.pieceTex = function (S, id, state = "raw") {
+    const k = `mk:spr:${id}.${state}`;
+    if (S.textures.exists(k)) return k;
+    const src = Cook.Art.sprite(S, `${id}.${state}`);
+    if (!src) return null;
+    const img = S.textures.get(src).getSourceImage();
+    const c = cv(PIECE, PIECE);
+    const ctx = c.getContext("2d");
+    const m = PIECE / 2;
+    ctx.fillStyle = "rgba(40,20,5,0.22)";
+    ctx.beginPath();
+    ctx.ellipse(m + 4, m + 8, 40, 36, 0, 0, Math.PI * 2);
+    ctx.fill();
+    const s = 92 / Math.max(img.width, img.height);
+    ctx.drawImage(img, m - (img.width * s) / 2, m - (img.height * s) / 2, img.width * s, img.height * s);
+    S.textures.addCanvas(k, c);
+    return k;
+  };
   /** A texture key for the drawn art ("stick", "piece:ph-meat", "grill:600x500", "rack:400x480x5"…). */
   SK.tex = function (S, key) {
+    if (key.startsWith("piece:")) {
+      const painted = SK.pieceTex(S, key.slice(6));
+      if (painted) return painted;
+    }
     const k = `mk:${key}`;
     if (!S.textures.exists(k)) {
       const [type, arg] = key.split(":");
@@ -514,6 +541,7 @@
     const img = S.add.image(0, at != null ? at : SK.slotY(c.ids.length, c.n), SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(c.n));
     const marks = S.add.image(img.x, img.y, SK.tex(S, "marks")).setScale(img.scale).setAlpha(0);
     img.marks = marks;
+    img.pieceId = id;
     c.add([img, marks]);
     c.ids.push(id);
     c.imgs.push(img);
@@ -531,7 +559,17 @@
   SK.cook = function (c, f, { burnt = false, marks = 0 } = {}) {
     const k = Cook.clamp(f, 0, 1);
     const col = burnt ? Phaser.Display.Color.GetColor(110, 80, 70) : Phaser.Display.Color.GetColor(255, 255 - k * 55, 255 - k * 105);
+    // painted pieces show their own states (raw, grilled once turned, charred), so they take a lighter tint
+    const state = burnt ? "charred" : marks > 0 ? "grilled" : "raw";
+    const light = Phaser.Display.Color.GetColor(255, 255 - k * 25, 255 - k * 45);
     c.imgs.forEach((img) => {
+      const painted = img.pieceId && SK.pieceTex(img.scene, img.pieceId, state);
+      if (painted) {
+        if (img.texture.key !== painted) img.setTexture(painted);
+        img.setTint(light);
+        img.marks.setAlpha(Cook.clamp(marks, 0, 1) * 0.35);
+        return;
+      }
       img.setTint(col);
       img.marks.setAlpha(Cook.clamp(marks, 0, 1));
     });
@@ -619,12 +657,13 @@
       ctx.scale(0.36, 0.36);
       ctx.drawImage(stick, -STICK.w / 2, -STICK.cy);
       p.pieces.forEach((id, i) => {
-        const img = S.textures.get(SK.tex(S, `piece:${id}`)).getSourceImage();
+        const painted = SK.pieceTex(S, id, p.burnt ? "charred" : "grilled");
+        const img = S.textures.get(painted || SK.tex(S, `piece:${id}`)).getSourceImage();
         const s = SK.pieceScale(p.pieces.length);
         ctx.save();
         ctx.translate(0, SK.slotY(i, p.pieces.length));
         ctx.scale(s, s);
-        ctx.filter = p.burnt ? "brightness(0.5)" : "brightness(0.85) sepia(0.25)";
+        if (!painted) ctx.filter = p.burnt ? "brightness(0.5)" : "brightness(0.85) sepia(0.25)";
         ctx.drawImage(img, -PIECE / 2, -PIECE / 2);
         ctx.restore();
       });

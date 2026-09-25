@@ -46,7 +46,10 @@
       await ctx.intro;
       ctx.intro = null;
     }
+    // the station's painted sprites load while the view changes (data.art.sprites.need)
+    const art = Cook.Art.need(S, key);
     await S.setView(view);
+    await art;
     const st = Cook.data.stations[key] || {};
     Cook.save.seenStation = Cook.save.seenStation || {};
     // the goal waits behind the "?" (it pulses the first time); Nani's last line goes, and she
@@ -149,12 +152,23 @@
    */
   S$.vessel = function (S, kind, x, y, scale = 1) {
     const info = Cook.Art.vesselInfo(kind);
-    const key = S.tex(`vessel:${kind}`);
-    const img = S.track(S.add.image(x, y, key).setScale(scale).setDepth(D.item));
-    const [cx, cy, rx, ry] = info.rim;
-    const ox = x - (info.w / 2) * scale;
-    const oy = y - (info.h / 2) * scale;
-    const rim = { x: ox + cx * scale, y: oy + cy * scale, rx: rx * scale, ry: ry * scale, depth: info.depth * scale };
+    // a painted vessel (data.art.sprites.vessels): its opening centred on (x, y), as wide as
+    // the drawn one's, so the liquid, the lines and everything aimed at the rim keep their size
+    const spr = Cook.Art.vesselSprite(S, kind);
+    let img;
+    let rim;
+    if (spr) {
+      const s = (scale * info.rim[2]) / spr.rx;
+      img = S.track(S.add.image(x, y, spr.key).setOrigin(spr.cx / spr.w, spr.cy / spr.h).setScale(s).setDepth(D.item));
+      rim = { x, y, rx: spr.rx * s, ry: spr.ry * s, depth: spr.depth * s };
+    } else {
+      const key = S.tex(`vessel:${kind}`);
+      img = S.track(S.add.image(x, y, key).setScale(scale).setDepth(D.item));
+      const [cx, cy, rx, ry] = info.rim;
+      const ox = x - (info.w / 2) * scale;
+      const oy = y - (info.h / 2) * scale;
+      rim = { x: ox + cx * scale, y: oy + cy * scale, rx: rx * scale, ry: ry * scale, depth: info.depth * scale };
+    }
     const liq = S.track(S.add.graphics().setDepth(D.item + 0.4));
     const tgt = S.track(S.add.graphics().setDepth(D.item + 0.6));
     const v = img;
