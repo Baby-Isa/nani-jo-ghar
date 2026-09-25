@@ -46,11 +46,11 @@ Mum has consented to her voice recordings being stored in the GitHub repo (Zafar
 
 Recordings and rough transcripts are in `sources/audio/mum-2026-09-25/` (made with `build/transcribe_family.py`).
 
-### 6. "and" in a list is *ne*; "with" (mixed in) is *{x} wari*
+### 6. "and" in a list is *ne*; "with" (mixed in) is *{x} waari*
 - A list: *ne chai, ne dudh, ne chamchi…* (and…, and…).
-- Things mixed into something take ***wari***: *dudh wari chai* (chai with milk), *khan wari chai* (with sugar), *kesar wari chai* (with saffron).
-- Two sugars is not *ba khan wari chai*; Mum corrected herself: ***Muke chai me ba khan khapeti*** ("in my tea I want two sugars"). *me* = in.
-- **Sugar is *khan*** (the game has *khun*: check). **Take** is the same word, *khan* (below).
+- Things mixed into something take ***waari***: *dudh waari chai* (chai with milk), *khun waari chai* (with sugar), *kesar waari chai* (with saffron).
+- Two sugars is not *ba khun waari chai*; Mum corrected herself: ***Muke chai me ba khun khapeti*** ("in my tea I want two sugars"). *me* = in.
+- **Sugar stays *khun***, as in the game (Zafar: a breathy k, then the "un" of *under*). **Take** is *khan* (below).
 
 ### 7. It's *daar*, not *daal*; "first … and then …" is *pela … ne poi …*
 - ***daar*** ends in r. **The game says *daal*: change it.**
@@ -60,17 +60,23 @@ Recordings and rough transcripts are in `sources/audio/mum-2026-09-25/` (made wi
 ### 8. "for" is *lai*; "also" is *pan*; "make" is *banai*
 - ***Hi Nana lai ai*** (this is for Nana): *hi* = this, *lai* = for, *ai* = is.
 - ***Ma lai pan hakro banai*** (make one for Ma too): *pan* = also, *hakro* = one, *banai* = make.
-- Spelling of *lai* / *ai* is a guess from the transcripts (heard *lay aye*, *layaay*): Zafar to confirm.
+- *lai* / *ai*: spelling confirmed by Zafar.
 
-### 9. "give me" is *muke … de*; "pass me" is the same; "put in / add" is *vij*; "take" is *khan* / *khanigin*
-- ***Muke chamchi de*** (give me the teaspoon); ***muke hi chamchi de*** (give me this teaspoon). "Pass" is the same as "give".
+### 9. "give me" is *muke … de*; "pass me" is the same; "put in / add" is *wij*; "take" is *khan* / *khanigin*
+- ***Muke chamchi de*** (give me a teaspoon); ***muke hi chamchi de*** (give me this teaspoon). "Pass" is the same as "give".
+- **Kutchi has no word for "the"** (Zafar): a bare noun is "a" or "the" by context; *hi* (this) points at one.
 - ***chamchi*** = teaspoon (she-word?), ***chamcho*** = tablespoon (he-word?): the -i/-o pattern again.
-- Add the onion: ***dungri vij***, or ***dungri pan vij*** (add onion too); *vij* = put in. Spelling a guess (heard *which*).
+- Add the onion: ***dungri wij***, or ***dungri pan wij*** (add onion too); *wij* = put in (spelling confirmed).
 - Take: ***hi ambo khan*** (take this mango, when handing it over); ***khanigin*** = take it yourself, pick one yourself (*ambo khanigin*, "take a mango"). *khan* doesn't change with gender.
 - *ke* = or (*hi ambo khan, ke hi maani khan*).
 
 ### What this means for the game (adds to the list above)
-5. The Chai tray's extras should use *wari* for mixed-in things (*dudh wari chai*), and the sugar count as *Muke chai me {n} khan khape(ti)*.
-6. Rename *daal* → *daar* everywhere, and check *khun* → *khan*.
+5. The Chai tray's extras should use *waari* for mixed-in things (*dudh waari chai*), and the sugar count as *Muke chai me {n} khun khape(ti)*.
+6. Rename *daal* → *daar* everywhere. *khun* (sugar) stays.
 7. The "for {person}" frame for the Chai tray: *{person} lai*.
 8. "Pass me" in the game: *Muke {x} de*. The tadka/steps order: *pela {x}, ne poi {y}*.
+
+## Spelling rules from Zafar (25 Sept)
+- **No V in Kutchi: always W.** So the drafts *vadho* → ***wadho***, and any *v* spelling (e.g. *vatana*, peas) → *w*. (Zafar's own voice spelling for big was already *wudd-oar*.)
+- **No "the".** Don't write English-style articles into Kutchi frames.
+- Long vowels are doubled where the family hears them long: *waari*, *daar*, *maani*.
