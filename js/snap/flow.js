@@ -80,7 +80,6 @@
     const vf = this.vf;
     vf.root.classList.remove("hidden");
     vf.layout();
-    vf.enable(true);
     const frames = this.rows.map((r) => Req.frameFor(r.row, this.lay, this.K, { lens: true })).filter(Boolean);
     while (frames.length < this.film) {
       const s = Cook.pick(this.lay.spots);
@@ -89,10 +88,12 @@
     for (const f of Cook.shuffle(frames)) {
       vf.setView(f.cx, f.cy, this.K.vf.zooms.indexOf(f.zoom), { anim: false });
       vf.cooling = false;
+      // enabled only for the instant of the shot, so nothing else can shoot meanwhile
+      vf.enable(true);
       vf.shutter();
+      vf.enable(false);
       await Cook.wait(120);
     }
-    vf.enable(false);
   };
 
   /* ---------------- the result card ---------------- */
