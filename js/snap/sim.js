@@ -183,8 +183,14 @@
     const said = [];
     let shots;
     const ali = game === "g4";
-    if (ali) shots = aliShoot(v, rows, st, listen || (st.blind === false ? "oracle" : "null"), said);
-    else shots = st.shoot(v);
+    if (ali) {
+      // G4: alternate rows are Ali's (a picture card the child says); the rest the child shoots as in G1
+      const mine = rows.map((r, i) => i).filter((i) => !Sim.isAliRow(i));
+      shots = aliShoot(v, rows, st, listen || (st.blind === false ? "oracle" : "null"), said);
+      const sub = Object.assign({}, v, { film: round.film - shots.length, shapes: mine.map((i) => v.shapes[i]), rows: v.rows ? mine.map((i) => rows[i]) : null });
+      const own = st.shoot(sub).map((f) => (f.forRow != null ? Object.assign(f, { forRow: mine[f.forRow] }) : f));
+      shots = shots.concat(own);
+    } else shots = st.shoot(v);
     const tray = shots.slice(0, round.film).map((f, i) => ({ i, forShape: f.forShape, forRow: f.forRow, print: Photo.printRecord(lay.spots, Photo.frameAt(f.cx, f.cy, f.zoom, K.vf.base, scn)) }));
     // Show Nani: every row again, in a new order
     const order = rng.shuffle(rows.map((_, i) => i));
@@ -194,8 +200,8 @@
       const row = rows[ri];
       const h = handed[ri];
       h.stage = wordStage;
-      // G4: a row Ali never shot right (film gone) doesn't count against the ear
-      if (ali && !tray.some((p) => Photo.matches(p.print, row, K.photo).ok)) h.excluded = true;
+      // G4: Ali's rows are handed in like any other, but his mistakes never touch the ear star (D4)
+      if (ali && Sim.isAliRow(ri)) h.excluded = true;
       if (!tray.length) return;
       let k = st.pick(v, tray, ri, turn);
       k = Math.max(0, Math.min(tray.length - 1, k | 0));
@@ -244,10 +250,12 @@
     for (let n = K.counts[0]; n <= K.counts[1]; n++) nums.push(n);
     const hear = (choices, target) => (typeof listen === "function" ? listen(choices, target) : listen === "oracle" ? { choice: target, confidence: 0.9 } : null);
     rows.forEach((row, ri) => {
+      if (!Sim.isAliRow(ri)) return;
       const tried = new Set();
       let spoken = true;
       const rec = { target: row.noun, heard: null };
-      const keep = () => rows.length - ri - 1; // film to keep for the rows still to come
+      // film to keep for the rows still to come: Ali's later ones and all the child's own
+      const keep = () => rows.filter((_, j) => (j > ri && Sim.isAliRow(j)) || !Sim.isAliRow(j)).length;
       for (let attempt = 0; film > keep(); attempt++) {
         let noun;
         let n = row.n;
@@ -287,6 +295,8 @@
     return null;
   }
   Sim.aliFrame = (lay, K, noun, n) => aliFrame({ lay, K }, noun, n);
+  /** In a G4 round, alternate rows (the 2nd, 4th...) are Ali's. */
+  Sim.isAliRow = (i) => i % 2 === 1;
 
   return Sim;
 });

@@ -8,6 +8,7 @@
  *   node build/leak_snap.mjs --unit          the evaluator fixtures
  *   node build/leak_snap.mjs --fair [N]      N seeds per mini-game x level: every row has an achievable frame, >= 3 kinds
  *   node build/leak_snap.mjs --leakbot [N]   every strategy, N rounds per mini-game x level; writes build/reports/snap-leakbot.md
+ *   node build/leak_snap.mjs --leakbot N --game g4   one mini-game only
  *   node build/leak_snap.mjs                 all three (N = data/snap.json leakbot.rounds, 500)
  *
  * Exit code 1 if a fixture fails, a round isn't fair, the oracle earns the
@@ -37,6 +38,7 @@ const numAfter = (f) => {
 const all = !has("--unit") && !has("--fair") && !has("--leakbot");
 const N = numAfter("--leakbot") || numAfter("--fair") || (snap.leakbot && snap.leakbot.rounds) || 500;
 const GAMES = { g1: [1, 2, 3], g2: [1, 2, 3], g4: [1, 2] };
+const only = numAfter("--game") ? null : args.includes("--game") ? args[args.indexOf("--game") + 1] : null;
 let failed = 0;
 const fail = (msg) => {
   failed++;
@@ -131,7 +133,7 @@ function leakbot(n) {
   console.log(`--leakbot: ${n} rounds per strategy x mini-game x level`);
   const G = snap.leakbot.gate;
   const table = [];
-  for (const [game, levels] of Object.entries(GAMES))
+  for (const [game, levels] of Object.entries(GAMES).filter(([g]) => !only || g === only))
     for (const level of levels) {
       const K = Req.knobs(snap, game, level);
       let pooledEar = 0;

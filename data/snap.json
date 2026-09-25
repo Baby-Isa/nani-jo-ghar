@@ -3,9 +3,9 @@
 
   "words": {
     "_about": "Merged into the shared word table (Cook.data.words) when snap.html loads, as Find it does. The pool is the orchard's fruit (D8 priority 1). Numbers 1-5 and ph-big/ph-small/ph-no are already in data/cook.json.",
-    "from_content": ["fru-01", "fru-02", "fru-03", "fru-04", "fru-05", "fru-09", "fru-16"],
+    "from_content": ["fru-01", "fru-02", "fru-03", "fru-04", "fru-05", "fru-09", "fru-16", "num-06", "num-07", "num-08", "num-09", "num-10"],
     "pool": ["fru-05", "fru-01", "fru-02", "fru-04", "fru-09", "fru-16", "fru-03"],
-    "numbers": {"1": "num-01", "2": "num-02", "3": "num-03", "4": "num-04", "5": "num-05"},
+    "numbers": {"1": "num-01", "2": "num-02", "3": "num-03", "4": "num-04", "5": "num-05", "6": "num-06", "7": "num-07", "8": "num-08", "9": "num-09", "10": "num-10"},
     "size": {"big": "ph-big", "small": "ph-small"},
     "no": "ph-no"
   },
@@ -87,10 +87,10 @@
     "g4": {
       "name": "Ali's camera", "kind": "K1", "icon": "ali",
       "goal": "Ali has the camera. Look at the card and SAY what to shoot: Ali takes the photo of what he hears. Then show Nani.",
-      "_levels": "Lab levels 1 and 2 are the design's levels 2 and 3 (Ali's rows start at level 2). Level 1: the card shows a count of one fruit and the child says the fruit (the count is Ali's, not tested). Level 2: two listens, the number, then the fruit.",
+      "_levels": "Lab levels 1 and 2 are the design's levels 2 and 3 (Ali's rows start at level 2). Rows alternate (D4): the 1st and 3rd are the child's own shots, as in G1; the 2nd and 4th are Ali's, from a picture card the child says. All are handed in to Nani; Ali's rows never touch the ear star (his mistakes are his), and they earn the voice star. Level 1: the card shows a count of one fruit and the child says the fruit (the count is Ali's, not tested). Level 2: two listens, the number, then the fruit.",
       "levels": [
-        {"label": "Say the fruit", "designLevel": 2, "rows": 2, "kinds": 4, "perKind": [4, 6], "counts": [1, 3], "sizes": "mid", "interleave": false, "photobomber": false, "notChance": 0, "sceneWidth": 1.5, "viewfinder": 2, "listen": ["noun"]},
-        {"label": "Number, then fruit", "designLevel": 3, "rows": 3, "kinds": 5, "counts": [1, 5], "listen": ["number", "noun"]}
+        {"label": "Say the fruit", "designLevel": 2, "rows": 4, "kinds": 4, "perKind": [4, 6], "counts": [1, 3], "sizes": "mid", "interleave": false, "photobomber": false, "notChance": 0, "sceneWidth": 1.5, "viewfinder": 2, "listen": ["noun"]},
+        {"label": "Number, then fruit", "designLevel": 3, "rows": 4, "kinds": 5, "counts": [1, 5], "listen": ["number", "noun"]}
       ]
     }
   },
