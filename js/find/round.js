@@ -140,15 +140,22 @@
       this.rows = wants.map((w) => Find.ladderRow(w));
       this.rows.forEach((r) => (r.decorate = (li) => decorate(r, li)));
       this.L = Find.ladder(this.rows);
-      UI.mission.open({ who: "nani", name: "Nani's list", ladders: [this.L], steps: this.bagTwist ? ["Find", "Done", "Check the bag"] : ["Find", "Done"], busy: this.busy });
+      UI.mission.open({ who: "nani", name: "Nani's list", ladders: [this.L], line: this.listLine(), busy: this.busy });
       if (!Find.stageOverride) this.rows.forEach((r) => r.ids.concat(r.want.count ? [Cook.numId(r.want.count)] : []).forEach((id) => Cook.markSeen(id)));
     }
-    /** Nani says the list, a row at a time; a stage-1 word's things twinkle as she says it. */
+    /**
+     * Wave 5 (calm, shared with Cook): Nani's list comes up big in the middle
+     * while she says it (nothing is live yet), then flies into the sidebar.
+     * Then a new word (stage 1, taught, not tested) is taught on the stall:
+     * its things twinkle as Nani says its row. Known words get no second telling.
+     */
     async sayList({ twinkle = true } = {}) {
-      const lines = Find.listLines(this.L);
-      for (const { row, line } of lines) {
-        const teach = twinkle && row.stage <= 1 && !row.want.not;
-        const targets = teach ? this.items.filter((it) => !it.gone && Find.matches(it, row.want)) : [];
+      UI.hideBubble();
+      await UI.mission.introduce();
+      if (!this.alive()) throw new Cook.Abort("left");
+      for (const { row, line } of Find.listLines(this.L)) {
+        if (!twinkle || row.stage > 1 || row.want.not) continue;
+        const targets = this.items.filter((it) => !it.gone && Find.matches(it, row.want));
         V.twinkle(targets, true);
         try {
           await Find.say("nani", line, { ms: Cook.readMs(Lang.plain(line)) });
@@ -168,16 +175,14 @@
       this.hesitated = false;
       $("#find-done").classList.remove("hidden");
       $("#btn-warmer").classList.remove("hidden");
-      UI.mission.step(0);
+      // calm: Nani's last line goes, and the sidebar is just the list, Done and the rail
+      UI.hideBubble();
       this.startTimers();
-      // a short phone: the goal folds to its "?" once the search starts, so the rail (zoom) stays in view
-      if ($("#stage").getBoundingClientRect().height < 480) setTimeout(() => this.alive() && $("#how").classList.add("collapsed"), 2500 / Cook.speed);
     }
     endSearch() {
       $("#find-done").classList.add("hidden");
       $("#btn-warmer").classList.add("hidden");
       V.dimOutside(null, null, this.items);
-      UI.mission.step(1);
       this.stopTimers();
     }
     /** Resolves when the player presses Done. */
@@ -225,7 +230,7 @@
       this.lastFind = now;
       this.combo = fast ? this.combo + 1 : 0;
       this.bestCombo = Math.max(this.bestCombo, this.combo);
-      showCombo(this.combo);
+      V.combo(this.combo);
       if (this.warmerOn) this.warmer(false);
       item.gone = true;
       row.got++;
@@ -251,7 +256,6 @@
       V.wiggle(item);
       Cook.sfx.soft();
       this.combo = 0;
-      showCombo(0);
       const row = this.rowFor(item);
       this.wrongTaps.push(item.noun);
       const kind = row && row.want.not ? "no" : "wrong";
@@ -265,8 +269,7 @@
         this.slowTriggered = true;
         this.kinds.push("slow");
         UI.mission.star("hand", "lost");
-        UI.gist("Slow down: look first, then tap.", { full: true });
-        setTimeout(() => this.alive() && this.phase === "search" && UI.gist(Find.data.mechanics[this.mech].goal), (this.knobs.slowMs || 2000) / Cook.speed);
+        UI.toast("Slow down!");
       }
       // the recast: what you tapped, then the row again; then you try again yourself
       const lines = [Lang.line("oops"), Lang.bare(Lang.phrase([item.noun]))];
@@ -284,7 +287,13 @@
     }
     /** A mistake on a row: the ear star goes if the row is tested (stage 2+). */
     earMiss(row, why, kind = "wrong") {
-      if (row) row.miss = true;
+      if (row) {
+        row.miss = true;
+        // for the word review: a wrong count is the number word's miss; anything else, the thing's
+        row.missed = row.missed || new Set();
+        if (kind === "count" && row.want.count) row.missed.add(Cook.numId(row.want.count));
+        else if (kind !== "shown") row.missed.add(row.want.noun);
+      }
       if (row && !this.tested(row)) {
         // a new word: taught, not tested (noted on the result card, the star stays)
         this.practice.push(wordsOf(why));
@@ -306,8 +315,15 @@
       else UI.mission.star("third", "lost");
       if (["reveal", "translate", "shown"].includes(kind)) {
         const ids = info.ids || [];
-        const row = info.row || this.rows.find((r) => ids.includes(r.want.noun));
-        if (row) row.shown = true;
+        // A/En translates every row still to do; the eye and the glow, one
+        const rows = info.row ? [info.row] : this.rows.filter((r) => ids.includes(r.want.noun));
+        const row = rows[0] || null;
+        rows.forEach((r) => {
+          r.shown = true;
+          // for the word review: the glow shows the thing; the eye and English show the whole row
+          r.helped = r.helped || new Set();
+          (kind === "shown" ? [r.want.noun] : r.line.segs.filter((s) => s.w).map((s) => s.w)).forEach((id) => r.helped.add(id));
+        });
         this.earMiss(row, `${kind === "shown" ? "shown" : kind === "reveal" ? "revealed" : "translated"} ${ids.join(" ") || "the list"}`, "shown");
       }
     }
@@ -333,7 +349,6 @@
       }
       this.onHelp("warmer");
       this.combo = 0;
-      showCombo(0);
       this.warmerOn = true;
       V.dimOutside(a, b, this.items.filter((it) => !it.gone));
       clearTimeout(this.warmerTimer);
@@ -355,7 +370,11 @@
           this.paintPatience();
         }
         last = now;
-        if (this.phase === "search" && !this.hesitated && (now - this.lastAct) * Cook.speed > (this.knobs.hesitateMs || 9000)) {
+        // the list up big again (↻) or paused: that's not hesitating
+        if (Cook.paused || UI.mission.introOpen()) this.lastAct = now;
+        // calm: Nani says the whole list again (never just the rows still to do: that would tell you
+        // which counts are met) only after a long hesitation, and only once
+        if (this.phase === "search" && !this.hesitated && (now - this.lastAct) * Cook.speed > (this.knobs.hesitateMs || 14000)) {
           this.hesitated = true;
           Find.sayLater("nani", this.listLine());
         }
@@ -425,7 +444,6 @@
       }
       Cook.save.coins += coins;
       Cook.writeSave();
-      UI.setCoins(Cook.save.coins, true);
       Cook.sfx.coin();
       const n = Object.values(stars).filter(Boolean).length;
       for (let i = 0; i < n; i++) setTimeout(() => Cook.sfx.star(i), 250 * i);
@@ -440,36 +458,40 @@
         bestCombo: this.bestCombo,
         finds: this.finds.slice(),
         asked: this.rows.map((r) => ({ line: r.want.not ? r.line : { segs: r.phrase.segs, en: r.phrase.en }, bad: !!r.miss, no: r.want.not })),
-        did: this.rows
-          .filter((r) => !r.want.not)
-          .map((r) => ({ line: Lang.phrase(r.got ? [r.got, r.want.noun] : [r.want.noun]), bad: r.got !== r.want.count }))
-          .concat(this.wrongTaps.slice(0, 6).map((id) => ({ line: Lang.wordLine(id), bad: true }))),
-        words: [...new Set(this.rows.map((r) => r.want.noun))],
+        words: this.wordReview(),
         level: this.level,
         mech: this.mech,
       };
     }
+    /**
+     * The word review for the result card (shared with Cook, ui.js): every
+     * Kutchi word on the list once (the things, the numbers, "no"), marked
+     * "missed" (a wrong thing, a wrong count, the bag's mistake missed) or
+     * "helped" (the eye, English, the glow).
+     */
+    wordReview() {
+      const missed = new Set();
+      const helped = new Set();
+      this.rows.forEach((r) => {
+        (r.missed || []).forEach((id) => missed.add(id));
+        (r.helped || []).forEach((id) => helped.add(id));
+      });
+      return UI.orderWords([this.L]).map((id) => ({ id, state: missed.has(id) ? "missed" : helped.has(id) ? "helped" : "ok" }));
+    }
   }
   Find.Round = Round;
 
-  /* ---------------- the row's own bits: the running tally, and the count's digit ---------------- */
+  /* ---------------- the row's own bit: the running tally ---------------- */
+  /*
+   * Only what's in the basket for this row so far ("×2"), and only once
+   * there's something in it. Never the number asked for: the count is the
+   * number word Nani says, which is what's being taught, so a digit there
+   * would answer "how many?" without any Kutchi (the leak check's bot reads
+   * it straight off the row). Never what's left, either.
+   */
   function decorate(r, li) {
-    if (r.want.not) return;
-    const n = r.want.count;
-    // a digit only while the number word is being learned (stages 1-2): the Roadmap's "shown and heard"
-    if (n && !r.done && !r.revealed && Cook.wordStage(Cook.numId(n)) < 3) li.querySelector(".wp-text").insertAdjacentHTML("beforeend", ` <span class="ldigit" title="How many">${n}</span>`);
-    // the running tally: what's in the basket for this row (never what's left)
-    if (r.got) li.querySelector(".wp-text").insertAdjacentHTML("beforeend", ` <span class="ltally" title="In your basket">×${r.got}</span>`);
-  }
-  function showCombo(n) {
-    const c = $("#combo");
-    c.classList.toggle("hidden", n < 2);
-    c.querySelector("b").textContent = n;
-    if (n >= 2) {
-      c.classList.remove("bump");
-      void c.offsetWidth;
-      c.classList.add("bump");
-    }
+    if (r.want.not || !r.got) return;
+    li.querySelector(".wp-text").insertAdjacentHTML("beforeend", ` <span class="ltally" title="In your basket">×${r.got}</span>`);
   }
   const ID_RE = /\b(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+\b/g;
   const wordsOf = (why) => String(why).replace(ID_RE, (id) => (Cook.data.words[id] ? Cook.display(id) : id));

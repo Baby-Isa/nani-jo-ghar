@@ -21,7 +21,13 @@ Usage:
   python3 build/test_find.py                         # laptop and phone (915x375)
   python3 build/test_find.py --viewport laptop
   python3 build/test_find.py --leak 30               # the leak check (laptop)
-  FIND_TEST_PORT=8980 (default) sets the port.
+  FIND_TEST_PORT (or COOK_TEST_PORT; default 8980) sets the port.
+
+The calm sidebar (Wave 5, shared with Cook): each round checks that the list
+comes up big (the intro card) and flies into the sidebar, that the goal is
+behind the "?" (and pops out), that the rows show no digit but the running
+tally (the count asked for is the Kutchi number word's job), that Done and
+the zoom buttons are on screen and tappable, and that zoom works.
 """
 import argparse
 import http.server
@@ -36,7 +42,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PORT = int(os.environ.get("FIND_TEST_PORT", 8980))
+PORT = int(os.environ.get("FIND_TEST_PORT") or os.environ.get("COOK_TEST_PORT") or 8980)
 
 VIEWPORTS = [
     {"name": "laptop", "width": 1366, "height": 768, "touch": False},
@@ -108,6 +114,72 @@ class Player:
             time.sleep(0.01)
         p.mouse.up()
 
+    def reachable(self, sel):
+        """The element is wholly on screen and a tap at its centre lands on it."""
+        r = self.page.evaluate(
+            """(sel) => { const e = document.querySelector(sel); if (!e) return {missing: true};
+              const b = e.getBoundingClientRect(); const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+              const hit = document.elementFromPoint(cx, cy);
+              return {l: b.left, t: b.top, r: b.right, b: b.bottom, w: b.width, h: b.height, vw: innerWidth, vh: innerHeight, hit: !!hit && (hit === e || e.contains(hit))}; }""",
+            sel,
+        )
+        if r.get("missing"):
+            raise AssertionError(f"{sel} is missing")
+        if r["w"] < 28 or r["h"] < 28 or r["l"] < 0 or r["t"] < 0 or r["r"] > r["vw"] + 0.5 or r["b"] > r["vh"] + 0.5 or not r["hit"]:
+            raise AssertionError(f"{sel} is not wholly on screen and tappable: {r}")
+
+    def check_sidebar(self):
+        """The calm sidebar, once per round, at the start of the search."""
+        p = self.page
+        bad = p.evaluate(
+            """() => ['#coins', '#stars', '#combo', '#how', '.m-steps', '.mstep'].filter((s) => {
+                 const e = document.querySelector(s); return e && e.getBoundingClientRect().width > 0; })"""
+        )
+        if bad:
+            raise AssertionError(f"the old sidebar is back: {bad}")
+        # the rows: no digit but the running tally (the count asked for is the Kutchi number word's job)
+        digits = p.evaluate(
+            """() => [...document.querySelectorAll('#mission .lr .wp-text')].map((t) => {
+                 const c = t.cloneNode(true); c.querySelectorAll('.ltally').forEach((x) => x.remove());
+                 return c.textContent; }).filter((s) => /[0-9]/.test(s))"""
+        )
+        if digits:
+            raise AssertionError(f"a list row shows a number (the answer without Kutchi): {digits}")
+        dots = p.evaluate("document.querySelectorAll('#mission .lr .ldot').length")
+        rows = len([r for r in self.state()["rows"]])
+        if dots != rows:
+            raise AssertionError(f"one dot per row: {dots} dots for {rows} rows")
+        for sel in ("#find-done", "#btn-help", "#btn-home", "#btn-zoom-in", "#btn-zoom-out", "#btn-warmer"):
+            self.reachable(sel)
+        # the goal is behind the "?", and pops out
+        if p.is_visible("#help-pop"):
+            raise AssertionError("the goal shows on its own")
+        p.click("#btn-help")
+        p.wait_for_selector("#help-pop", state="visible", timeout=3000)
+        if "Nani" not in p.inner_text("#help-pop"):
+            raise AssertionError(f"the ? shows the wrong goal: {p.inner_text('#help-pop')}")
+        self.shot("help")
+        p.click("#btn-help")
+        p.wait_for_selector("#help-pop", state="hidden", timeout=3000)
+        # zoom works from the rail (then back as it was, so the play goes on from the same view)
+        z0 = self.state()["zoom"]
+        if z0 < 2.25:
+            p.click("#btn-zoom-in")
+            time.sleep(0.15)
+            if self.state()["zoom"] <= z0:
+                raise AssertionError("zoom in did nothing")
+            self.shot("zoomed-in")
+            p.click("#btn-zoom-out")
+        else:
+            p.click("#btn-zoom-out")
+            time.sleep(0.15)
+            if self.state()["zoom"] >= z0:
+                raise AssertionError("zoom out did nothing")
+            p.click("#btn-zoom-in")
+        time.sleep(0.15)
+        if abs(self.state()["zoom"] - z0) > 0.01:
+            raise AssertionError("zoom didn't come back")
+
     def wait_change(self, prev, timeout=15):
         t0 = time.time()
         while time.time() - t0 < timeout:
@@ -152,6 +224,21 @@ class Player:
                 if e.get("end"):
                     return
                 sel = e["selector"]
+                if e.get("intro"):
+                    # Nani's list, big in the middle: tap it (it also goes by itself after she's said it)
+                    if "intro" not in self.made:
+                        self.made.add("intro")
+                        self.shot("intro-card")
+                    try:
+                        self.page.click(sel, timeout=1500)
+                    except Exception:
+                        pass
+                    self.page.wait_for_selector("#intro", state="hidden", timeout=10000)
+                    if "landed" not in self.made:
+                        self.made.add("landed")
+                        time.sleep(0.4)
+                        self.shot("list-in-sidebar")
+                    continue
                 if sel == "#find-done":
                     st = self.state()
                     # a list never ends by itself: all counts are met, and it still waits for Done
@@ -183,6 +270,12 @@ class Player:
                     self.shot("panned")
             elif k == "tap":
                 tag = "bag" if e.get("key") == "bag" else "stall"
+                if tag == "stall" and "sidebar" not in self.made:
+                    self.made.add("sidebar")
+                    self.check_sidebar()
+                    e = self.exp()
+                    if not e or e.get("kind") != "tap":
+                        continue
                 if hint and tag == "stall" and "hint" not in self.made:
                     # the warmer: Nani points at a third of the stall (costs the no-help star)
                     self.made.add("hint")

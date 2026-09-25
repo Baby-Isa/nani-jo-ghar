@@ -194,7 +194,8 @@
       return;
     }
     const stations = (Cook.data && Cook.data.stations) || {};
-    const key = Object.keys(stations).find((k) => stations[k].goal === text);
+    // opts.key: another mode's goal (Find it), so its "?" pulses only the first time too
+    const key = opts.key || Object.keys(stations).find((k) => stations[k].goal === text);
     Cook.save.goalShown = Cook.save.goalShown || {};
     const guided = Cook.ctx && Cook.ctx.guided;
     const fresh = !key || guided || !Cook.save.goalShown[key] || opts.full;
