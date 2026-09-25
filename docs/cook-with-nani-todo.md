@@ -84,13 +84,13 @@ None of these is a blocker; the one real piece of debt is item 1, and everything
 
 "Hard to know what to do; lots of information all at once."
 
-- ☐ **Intro card:** when someone orders, a card flashes up in the centre with their face, saying what they want, with the order shown as a sequence. It then shrinks into the sidebar.
-- ☐ **Every order is a sequence list:** one line and one dot per item, always (also for looks). "Any order" items are shown subtly, not grouped on a shared dot.
-- ☐ **Nani says less:** silence at the start of each station so people can work it out; fewer and later hints; fewer "pass me" moments at level 1.
-- ☐ **Sidebar space and readability:** fit the text without eating the play area. Order card first, compact.
-- ☐ **Help is just a "?"** that pops out when pressed; the goal text isn't shown permanently.
-- ☐ **Remove the English step pills** (Water, Tea, Boil…).
-- ☐ **Result card:** replace "they asked / you did" with a **word review**: each Kutchi word used in the order, with its English.
-- ☐ **Coins and stars counter** at the top of the sidebar: remove it (show pocket money on the summary and title instead).
+- ☑ **Intro card:** when someone orders, a card comes up in the centre with their face and the order as a list while it's said; a tap (or the end of the line and a short pause) flies it into the sidebar. ↻ on the small card opens it again (a replay once its words are dots). The Station lab shows it too, before the station starts
+- ☑ **Every order is a sequence list:** one row and one dot per item, always. Steps in order are joined dot to dot by a line; any-order items have no line between them. From *ne poi* stage 3 every dot is joined, so only the voice tells the order. A part that's all done folds onto one line (still a dot each), so the part you're on stays in view
+- ☑ **Nani says less:** each station starts with her line cleared and 4 s of quiet (no hints); hints after 7/8/11/15 s by word stage (was 4/5/8/12); no "pass me" in the first order of a session, a 20% chance and at most one per order at level 1; a wrong order is recast with only the rows that went wrong. All in `data.calm`
+- ☑ **Sidebar space and readability:** the sidebar takes the room the 16:9 picture can't use (248 px on a 915×375 phone instead of 174). Order card on top (the first dish's line beside the face, ↻ and A/En), then Nani's line, then the rail. Rows flow as text (speaker, words, 👁), so narrow columns wrap between words (fixes the iPad letter-by-letter breaks); sidebar buttons 28–34 px. A very long order scrolls inside the card and never pushes Nani or the rail away
+- ☑ **Help is just a "?"** in the rail: the goal pops out beside it; it pulses the first time you meet a station. The ghost finger stays
+- ☑ **Remove the English step pills** (Water, Tea, Boil…)
+- ☑ **Result card:** a **word review**: every Kutchi word in the order as a pill (speaker, Kutchi, English), marked "missed" or "help"; the stars and one "next time" tip per missed star
+- ☑ **Coins and stars counter** gone from the sidebar; pocket money on the title screen and the day's summary. "Close the kitchen" moved to the rail
 - ☐ **Level 1 more varied and fun:** kinds of mishkaki skewer, kinds of tea, several things to chop from the start.
 - ☐ **Chop:** a visible countdown timer; level 1 = several items (what goes in the dish), with volume, decoys and time pressure as the game.

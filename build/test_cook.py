@@ -11,6 +11,13 @@ that point (nothing in the HTML layer covers the thing being tapped). It
 makes deliberate mistakes now and then (a wrong greeting, a wrong item) to
 exercise the warm-failure paths.
 
+Wave 5: every order first comes up as the intro card in the middle (the
+expectation says `intro`); the player pictures it and taps it into the
+sidebar. Once a run it opens the "?" (the goal pops out) and ↻ (the order
+big again). After the intro card and at each new view it checks the
+sidebar never scrolls sideways or pushes a word out, and reports any
+vertical scrolling as SIDEBAR lines.
+
 Usage:
   python3 build/test_cook.py --lab                  # every station in the Station lab (laptop)
   python3 build/test_cook.py --lab --viewport flip5-landscape

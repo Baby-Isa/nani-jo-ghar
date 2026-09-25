@@ -100,7 +100,10 @@
       if (p.kind === "count" && p.did != null && ctx.did.length < 14) ctx.did.push({ line: countLine(p.did, p.noun), ok: !!ok });
       if (ok) return;
       ctx.listenMiss++;
-      if (p.kind !== "shown") [].concat(p.ids, p.noun || []).forEach((id) => ctx.wordMiss.add(id));
+      // the word the player missed: the one they should have picked ("X instead of Y", "X before Y",
+      // "added X, not Y": Y), the one they were told no to, or the thing counted
+      const missed = p.kind === "count" ? [].concat(p.noun || []) : p.kind === "no" ? p.ids.slice(0, 1) : p.kind === "shown" ? [] : [p.ids[1] || p.ids[0]];
+      missed.forEach((id) => id && ctx.wordMiss.add(id));
       ctx.kinds.push(p.kind);
       // word ids -> the words themselves, for the completion card
       ctx.reasons.push(wordsOf(why));

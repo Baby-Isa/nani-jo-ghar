@@ -270,8 +270,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #app { grid-template-columns: 1fr; grid-template-rows: calc(100dvw * 9 / 16) 1fr; }
   #side { border-left: none; border-top: 1px solid rgba(80,60,40,.12); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto 1fr; align-content: start; grid-column: 1; grid-row: 2; }
   /* the order card on the left, Nani's line and the rail beside it */
-  #mission { grid-column: 1; grid-row: 1 / span 2; }
-  #live { grid-column: 2; grid-row: 1; min-height: 0; }
+  #mission { grid-column: 1; grid-row: 1 / span 2; align-self: start; max-height: 100%; }  #live { grid-column: 2; grid-row: 1; min-height: 0; }
   .side-rail { grid-column: 2; grid-row: 2; align-self: end; justify-content: flex-end; }
   #passme { grid-column: 1; grid-row: 2; }
 }
@@ -617,4 +616,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 @media (max-aspect-ratio: 1332/1000) {
   #passme { grid-column: 1; grid-row: 2; align-self: end; }
+  /* room to spare under the picture: bigger words */
+  #mission .lr .wp .wp-text, #nani-card .wp .wp-text, #mission .m-dish, #mission .lr.head .wp .wp-text { font-size: 19px; }
 }
