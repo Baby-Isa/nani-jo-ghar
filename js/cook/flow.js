@@ -743,6 +743,10 @@
     const order = { who: "nana", dishes: [] };
     const ctx = makeCtx(order, { lab: true, guided });
     const s = S();
+    // the last station's things go before the next order card comes up over the picture
+    s.clearView();
+    s.viewName = null;
+    s.bg.setTexture("bg-service");
     // a dish's order as a ladder, or a few plain lines for stations with no dish
     const openCard = (what, steps) => {
       if (Array.isArray(what)) {

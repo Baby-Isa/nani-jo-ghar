@@ -122,11 +122,78 @@ class Player:
             time.sleep(0.06)
         return self.exp()
 
+    def check_side(self, where):
+        """The sidebar must never scroll sideways or clip a word (Wave 5)."""
+        bad = self.page.evaluate(
+            """() => {
+              const side = document.querySelector('#side');
+              const out = [];
+              if (side.scrollWidth > side.clientWidth + 1) out.push('sidebar scrolls sideways (' + side.scrollWidth + ' > ' + side.clientWidth + ')');
+              const r = side.getBoundingClientRect();
+              side.querySelectorAll('.wp-text, .m-name, .lr-en, .nc-face, button').forEach((el) => {
+                const b = el.getBoundingClientRect();
+                if (b.width && (b.right > r.right + 1 || b.left < r.left - 1)) out.push((el.className || el.tagName) + ' pokes out of the sidebar');
+              });
+              if (side.scrollHeight > side.clientHeight + 1) out.push('sidebar scrolls (' + side.scrollHeight + ' > ' + side.clientHeight + ')');
+              return out.slice(0, 3);
+            }"""
+        )
+        if bad:
+            self.side_warnings = getattr(self, "side_warnings", [])
+            self.side_warnings.append(f"{where}: {'; '.join(bad)}")
+
+    def intro(self, e):
+        """The intro order card: picture it, then tap it into the sidebar (it also goes on its own)."""
+        self.intros = getattr(self, "intros", 0) + 1
+        time.sleep(0.12)
+        if self.intros <= 3:
+            self.shot("intro-card")
+        time.sleep(0.4)
+        if self.page.query_selector("#intro:not(.hidden) .ic-card"):
+            try:
+                self.page.click("#intro .ic-card", force=True, timeout=2000)
+            except Exception:
+                pass  # it flew in by itself
+        time.sleep(0.6)
+        self.check_side("after the intro card")
+        if self.intros <= 3:
+            self.shot("order-card")
+
+    def try_help(self):
+        """Once per run: open the "?" (the goal pops out), picture it, close it;
+        then ↻ on the order card once (the order big again)."""
+        if getattr(self, "helped", False) or not self.page.query_selector("#btn-help"):
+            return
+        self.helped = True
+        self.page.click("#btn-help", force=True)
+        time.sleep(0.3)
+        if not self.page.query_selector("#help-pop:not(.hidden)"):
+            raise AssertionError("the ? didn't pop the goal out")
+        self.shot("help-open")
+        self.page.click("#btn-help", force=True)
+        time.sleep(0.2)
+        if self.page.query_selector("#help-pop:not(.hidden)"):
+            raise AssertionError("the ? didn't close the goal again")
+        if self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-replay"):
+            self.page.click("#mission .m-replay")
+            time.sleep(0.3)
+            e = self.exp()
+            if e and e.get("intro"):
+                self.shot("replay-card")
+                try:
+                    self.page.click("#intro .ic-card", force=True, timeout=2000)
+                except Exception:
+                    pass  # it flew back by itself
+                time.sleep(0.8)
+
     def act(self, e):
         k = e["kind"]
         p = self.page
         if k == "wait":
             time.sleep(0.05)
+            return
+        if e.get("intro"):
+            self.intro(e)
             return
         if k == "click":
             sel = e["selector"]
@@ -340,6 +407,7 @@ class Player:
                 ex = self.exp()
                 if not ex or ex["kind"] not in ("timing", "hold", "slice"):
                     self.shot(f"view-{view}")
+                self.check_side(f"view {view}")
             e = self.exp()
             if not e:
                 time.sleep(0.1)
@@ -353,6 +421,14 @@ class Player:
                 time.sleep(0.1)
                 continue
             timed = e["kind"] in ("timing", "hold", "slice", "stir", "roll")
+            if e["kind"] == "tap" and not getattr(self, "helped", False) and not self.page.evaluate("Cook.save.mode === 'busy'"):
+                self.try_help()
+                continue
+            if e.get("intro"):
+                last_kind = "intro"
+                self.act(e)
+                self.wait_change(e, timeout=10)
+                continue
             if not timed and e["kind"] != "wait" and e["kind"] != last_kind:
                 self.shot(e["kind"])
             shoot_after = timed and e["kind"] != last_kind
@@ -378,6 +454,11 @@ class Player:
 
 
 CANVAS = False
+
+
+def report_side(P):
+    for w in getattr(P, "side_warnings", [])[:12]:
+        print("  SIDEBAR:", w)
 
 
 def open_kitchen_save(mode="relaxed"):
@@ -460,6 +541,7 @@ def run_lab(vp, speed, busy, shots_root, stations, guided, level=1, zoned=False,
             results[key] = page.evaluate("document.querySelector('#panel .cc-why') ? document.querySelector('#panel .cc-why').innerText : ''")
             print(f"  {name}: {key}: {results[key]!r}")
         browser.close()
+    report_side(P)
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:
         raise AssertionError(f"console errors: {bad[:5]}")
@@ -638,6 +720,7 @@ def run_days(vp, days, speed, busy, shots_root):
             time.sleep(0.3)
         P.shot("end-title")
         browser.close()
+    report_side(P)
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:
         raise AssertionError(f"console errors: {bad[:5]}")
@@ -668,6 +751,7 @@ def run_open_kitchen(vp, speed, busy, shots_root, customers=2):
         print(f"  {name}: served {served}, coins {st['coins']}")
         P.shot("summary")
         browser.close()
+    report_side(P)
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:
         raise AssertionError(f"console errors: {bad[:5]}")

@@ -5,7 +5,9 @@
    game on portrait tablets; it never covers the game. */
 
 :root {
-  --side-w: clamp(170px, 19vw, 300px);
+  /* the sidebar takes the room the 16:9 picture can't use (a short, wide
+     phone has ~75px spare beside it), and never less than a readable column */
+  --side-w: min(360px, max(clamp(200px, 19vw, 300px), calc(100vw - 100dvh * 16 / 9)));
   --ink: #2d2018;
   --ink-soft: #6b5a4c;
   --cream: #fffaf1;
@@ -73,38 +75,36 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   background: var(--cream); border-radius: var(--radius); padding: 10px 12px;
   box-shadow: var(--shadow); position: relative;
 }
-.side-rail { display: flex; gap: 8px; flex: none; }
-/* Sidebar order (top to bottom): the order card (never moves), Nani's live
-   line (fixed max height, wraps), the goal, the menu buttons. The live slot
-   takes the spare room, so a line coming or going moves nothing else. */
+/* Sidebar (Wave 5, top to bottom): the order card, compact; Nani's current
+   line (one short line); the rail ("?", menu, book) at the bottom. Nothing
+   else stays up. The live slot takes the spare room, so a line coming or
+   going moves nothing else. */
 #mission { flex: none; }
-#live { flex: 1 1 auto; min-height: clamp(64px, 14vh, 120px); display: flex; flex-direction: column; }
-#live #nani-card { max-height: clamp(64px, 26vh, 220px); overflow-y: auto; }
-#how { flex: none; }
+#live { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.side-rail { display: flex; flex-wrap: wrap; gap: 8px; flex: none; align-items: center; }
 .rail-btn {
-  width: 48px; height: 48px; border-radius: 14px; border: none; background: var(--cream);
-  font-size: 22px; box-shadow: 0 2px 6px rgba(60,40,20,.12);
+  width: 46px; height: 46px; border-radius: 14px; border: none; background: var(--cream);
+  font-size: 22px; box-shadow: 0 2px 6px rgba(60,40,20,.12); padding: 0;
+}
+/* the "?": the goal pops out when pressed; it pulses the first time you meet a station */
+#btn-help { background: #ffd98a; font-family: var(--kutchi-font); font-weight: 800; font-size: 26px; line-height: 1; color: var(--ink); }
+#btn-help[aria-expanded="true"] { background: var(--ink); color: #ffd98a; }
+#btn-help.fresh { animation: helpPulse 1.4s ease-in-out infinite; }
+@keyframes helpPulse { 50% { box-shadow: 0 0 0 7px rgba(201,151,58,.35), 0 2px 6px rgba(60,40,20,.12); transform: scale(1.06); } }
+.side-rail .close-kitchen { margin-left: auto; }
+#help-pop {
+  position: fixed; z-index: 45; background: var(--ink); color: #fff8ec; border-radius: 16px;
+  padding: 12px 16px; box-shadow: var(--shadow); font-weight: 700; line-height: 1.35;
+  font-size: clamp(15px, 1.5vw, 19px); animation: pop .18s ease-out; transform-origin: bottom right;
+}
+#help-pop::after {
+  content: ""; position: absolute; bottom: -7px; left: var(--tail-x, 20px); width: 16px; height: 16px;
+  background: var(--ink); transform: rotate(45deg); border-radius: 3px;
 }
 
-/* ---------- Nani's card (stations) and the how-to hint ---------- */
-#nani-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: start; animation: pop .22s ease-out; }
-#nani-card .nc-face { width: clamp(40px, 4.4vw, 64px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; }
-#nani-card.talk .nc-face { animation: badgeTalk .45s ease-in-out infinite alternate; }
+/* ---------- Nani's card: her current line, short ---------- */
+#nani-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; animation: pop .22s ease-out; }
 @keyframes badgeTalk { to { transform: translateY(-3px) rotate(-3deg); } }
-#nani-card .bubble-kutchi { font-size: clamp(17px, 2vw, 28px); }
-#nani-card .bubble-foot { justify-content: flex-start; flex-wrap: wrap; }
-#how {
-  background: var(--ink); color: #fff8ec; border-radius: 14px; padding: 8px 12px;
-  font-size: clamp(12px, 1.25vw, 16px); font-weight: 700; line-height: 1.3;
-  display: flex; gap: 8px; align-items: flex-start;
-}
-#how .how-q {
-  flex: none; width: 26px; height: 26px; border-radius: 50%; border: none; padding: 0;
-  background: #ffd98a; color: var(--ink); font-weight: 800; font-size: 15px; line-height: 26px;
-}
-/* after the first time: just the "?" (tap to open the goal again) */
-#how.collapsed { align-self: flex-start; padding: 5px; border-radius: 50%; }
-#how.collapsed .how-text { display: none; }
 
 /* ---------- things over the game ---------- */
 #bubble {
@@ -269,13 +269,11 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 /* ---------- portrait tablets: sidebar goes under the game, never over it ---------- */
 @media (max-aspect-ratio: 1332/1000) {
   #app { grid-template-columns: 1fr; grid-template-rows: calc(100dvw * 9 / 16) 1fr; }
-  #side { border-left: none; border-top: 1px solid rgba(80,60,40,.12); display: grid; grid-template-columns: 1fr 1fr; align-content: start; grid-column: 1; grid-row: 2; }
-  .side-top, .side-rail { grid-column: 1 / -1; }
-  /* the order card on the left, Nani and the goal beside it */
-  #mission { grid-column: 1; grid-row: 2 / span 3; }
-  #live { grid-column: 2; grid-row: 2; min-height: 0; }
-  #how { grid-column: 2; grid-row: 3; }
-  .side-rail { grid-row: 5; }
+  #side { border-left: none; border-top: 1px solid rgba(80,60,40,.12); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto 1fr; align-content: start; grid-column: 1; grid-row: 2; }
+  /* the order card on the left, Nani's line and the rail beside it */
+  #mission { grid-column: 1; grid-row: 1 / span 2; }
+  #live { grid-column: 2; grid-row: 1; min-height: 0; }
+  .side-rail { grid-column: 2; grid-row: 2; align-self: end; justify-content: flex-end; }
   #passme { grid-column: 1; grid-row: 2; }
 }
 
@@ -291,11 +289,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 @media (max-height: 430px) {
   #side { padding: 6px; gap: 6px; }
   #nani-card { padding: 6px; gap: 6px; }
-  #how { padding: 6px 8px; }
   .card { padding: 6px 8px; }
-  #ticket-face { width: 32px; height: 32px; }
-  .rail-btn { width: 38px; height: 38px; font-size: 18px; }
-  #ticket-list li .en { font-size: 11px; }
+  .rail-btn { width: 40px; height: 40px; font-size: 19px; }
+  #btn-help { font-size: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -308,7 +304,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .wp { display: inline-grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 8px; width: 100%; max-width: 100%; min-width: 0; }
 .wp > .wp-text:first-child { grid-column: 1 / 3; }
 .wp .wp-en { grid-column: 1 / -1; }
-.wp .wp-text { font-family: var(--kutchi-font); font-weight: 800; line-height: 1.15; min-width: 0; overflow-wrap: break-word; word-break: break-word; }
+/* whole words wrap; a word is only ever split if it can't fit on a line by itself */
+.wp .wp-text { font-family: var(--kutchi-font); font-weight: 800; line-height: 1.15; min-width: 0; word-break: normal; overflow-wrap: break-word; }
 .wp .word { color: var(--madder); }
 .wp .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-weight: 700; }
 .wp .word.ph { color: #8a6a5c; }
@@ -323,15 +320,26 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .wp.wp-full .wp-text { font-size: clamp(17px, 2vw, 28px); }
 .wp.wp-choice .wp-text { font-size: clamp(17px, 2.2vw, 28px); }
 #bubble .wp .wp-text { font-size: clamp(18px, 2.4vw, 32px); }
-/* Nani's sidebar card is narrower than the game bubble, so its words need a
-   smaller clamp to wrap onto whole words instead of splitting mid-word. */
-#nani-card .wp .wp-text { font-size: clamp(14px, 1.6vw, 21px); }
+.wp .wp-eye { background: #f3ead9; }
+.wp .wp-eye svg { opacity: .8; }
+.wp .wp-gap { display: inline-block; flex: none; width: 30px; height: 1px; }
 
-#nani-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; animation: pop .22s ease-out; }
+/* Inline pills (the sidebar: the order rows and Nani's line): the speaker,
+   the words and the small buttons flow as one line of text, so a narrow
+   column wraps between whole words and never stacks the buttons apart. */
+.lr .wp, #nani-card .wp, #passme .pm-say .wp { display: block; width: auto; }
+.lr .wp > *, #nani-card .wp > *, #passme .pm-say .wp > * { vertical-align: middle; }
+.lr .wp .wp-text, #nani-card .wp .wp-text, #passme .pm-say .wp .wp-text { display: inline; }
+.lr .wp button, #nani-card .wp button, #passme .pm-say .wp button { display: inline-flex; width: 30px; height: 30px; padding: 6px; margin: 1px 5px 1px 0; }
+.lr .wp .wp-text + button, #nani-card .wp .wp-text + button, #passme .pm-say .wp .wp-text + button { margin: 1px 0 1px 6px; }
+.lr .wp .wp-en, #nani-card .wp .wp-en, #passme .pm-say .wp .wp-en { display: block; }
+.lr .wp .wp-en.hidden, #nani-card .wp .wp-en.hidden, #passme .pm-say .wp .wp-en.hidden { display: none; }
+
+/* ---- Nani's card: one short line (two rows at most for her usual lines) ---- */
 #nani-card .say-slot { min-width: 0; }
-#nani-card .nc-face { width: clamp(40px, 4.4vw, 60px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; }
+#nani-card .nc-face { width: clamp(34px, 3.4vw, 48px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; }
 #nani-card.talk .nc-face { animation: badgeTalk .45s ease-in-out infinite alternate; }
-#how b { color: #ffd98a; margin-right: 4px; }
+#nani-card .wp .wp-text { font-size: clamp(16px, 1.45vw, 21px); line-height: 1.25; }
 
 /* ---- choices (small talk) ---- */
 #choices .choice {
@@ -344,11 +352,15 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #choices .choice.wrong { animation: shake .35s; }
 #choices .choice.right { background: #e3f0dc; border-color: var(--sage); }
 
-/* ---- the mission card (the order card): always on top of the sidebar ---- */
-#mission { position: relative; overflow: hidden; }
+/* ---- the mission card (the order card): compact, on top of the sidebar ---- */
+#mission { position: relative; overflow: hidden; padding: 8px 10px 10px; }
+/* while the big intro card is up, the small one keeps its place (the intro flies into it) */
+#mission.arriving { visibility: hidden; }
+#mission.landed { animation: landed .35s ease-out; }
+@keyframes landed { 40% { transform: scale(1.03); box-shadow: 0 0 0 4px rgba(201,151,58,.35), var(--shadow); } }
 #mission .m-head { display: flex; gap: 8px; align-items: center; }
 /* the customer's face, with the Busy patience ring round it */
-#mission .m-ring { position: relative; flex: none; width: 46px; height: 46px; }
+#mission .m-ring { position: relative; flex: none; width: 44px; height: 44px; }
 #mission .m-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); display: none; }
 #mission .m-ring.on svg { display: block; }
 #mission .m-ring circle { fill: none; stroke-width: 5; }
@@ -361,9 +373,16 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #mission .m-face { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: #eadcc6; }
 #mission .m-ring.on .m-face { inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); }
 #mission .m-who { min-width: 0; flex: 1; }
-#mission .m-name { font-weight: 800; font-size: 15px; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#mission .m-stars { display: flex; gap: 5px; margin-top: 4px; }
-#mission .m-stars .mstar { width: 30px; height: 30px; padding: 5px; border-radius: 10px; }
+#mission .m-name { font-weight: 800; font-size: 15px; line-height: 1.15; overflow-wrap: break-word; }
+#mission .m-stars { display: flex; gap: 4px; margin-top: 3px; }
+#mission .m-stars .mstar { width: 26px; height: 26px; padding: 4px; border-radius: 8px; }
+/* ↻: the order big again */
+#mission .m-replay {
+  flex: none; width: 38px; height: 38px; border-radius: 50%; border: none; padding: 8px;
+  background: #efe4d2; color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
+}
+#mission .m-replay svg { width: 100%; height: 100%; }
+#mission.stamped .m-replay { visibility: hidden; }
 .mstar {
   width: 38px; height: 38px; border-radius: 12px; padding: 7px; border: 2px dashed #cdb892; color: #b8a58a; background: transparent;
   display: inline-flex; flex: none; transition: all .25s;
@@ -374,10 +393,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .mstar.pop { transform: scale(1.3); }
 /* Busy: the lightning star is full of gold and drains with the patience ring */
 .mstar.drain.pending { border-style: solid; border-color: #d9b45a; color: #8a6412; background: linear-gradient(to top, #ffd86b var(--fill, 100%), #f6ecdc var(--fill, 100%)); }
-#mission .m-steps { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.mstep { font-size: 11px; font-weight: 800; padding: 3px 7px; border-radius: 999px; background: #efe4d2; color: var(--ink-soft); }
-.mstep.on { background: var(--sage); color: #fff; }
-.mstep.now { background: var(--brass); color: #fff; }
 #mission .m-stamp {
   position: absolute; right: 10px; bottom: 10px; transform: rotate(-12deg) scale(2); opacity: 0; pointer-events: none;
   border: 3px solid var(--madder); color: var(--madder); font-family: var(--kutchi-font); font-weight: 800; padding: 0 10px; border-radius: 8px;
@@ -385,40 +400,78 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 }
 #mission.stamped .m-stamp { opacity: .85; transform: rotate(-12deg) scale(1); }
 
-/* ---- the order ladder ----
-   rows: [speaker] word or ••• [👁] [A/En]; a dot per group; a group of
-   rows sharing one dot = any order; dots on a dashed line = in order.
-   No pictures, no colours per item. */
-#mission .m-order { margin-top: 6px; display: flex; flex-direction: column; gap: 6px; max-height: 46vh; overflow-y: auto; overflow-x: hidden; }
-.ladder { display: flex; flex-direction: column; gap: 7px; }
-.lsec { position: relative; display: flex; flex-direction: column; gap: 3px; }
-.lsec.late { animation: pop .3s ease-out; border-top: 1px dashed #e0d2bb; padding-top: 3px; }
-.lsec.lseq::before, .lsec.lplain::before {
-  content: ""; position: absolute; left: 5px; top: 15px; bottom: 15px; border-left: 2px dashed #b8a58a;
-}
-.lsec.lplain::before { border-left-style: solid; border-color: #cdb892; }
-.lg { position: relative; padding-left: 16px; display: flex; flex-direction: column; gap: 2px; }
-.lg .ldot {
-  position: absolute; left: 1px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%;
+/* ---- the order as a sequence list ----
+   one row and one dot per thing, always: [speaker] word or ••• [👁].
+   A line joins the dots of steps that go in order; things that can go in
+   any order sit on their own dots with no line between them. No
+   pictures, no colours per item. */
+#mission .m-order { margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
+.ladder { display: flex; flex-direction: column; gap: 4px; }
+.lsec { position: relative; display: flex; flex-direction: column; }
+.lsec.late { animation: pop .3s ease-out; border-top: 1px dashed #e0d2bb; padding-top: 4px; }
+.lrows { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.lr { --gap: 3px; --dot-y: 16px; position: relative; border-radius: 10px; padding: 1px 4px 1px 20px; min-width: 0; }
+.lr.head { padding-left: 2px; margin-bottom: 2px; }
+.lr .ldot, .ir .ldot {
+  position: absolute; left: 3px; top: var(--dot-y); width: 11px; height: 11px; margin-top: -5.5px; border-radius: 50%;
   background: var(--ink-soft); box-shadow: 0 0 0 2px var(--cream); z-index: 1;
 }
-.lg.multi::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; border-left: 2px solid #cdb892; border-radius: 2px; }
-.lg.done .ldot { background: var(--sage); }
-.lsec.simple .lg { padding-left: 0; }
-.lr { border-radius: 10px; padding: 1px 3px; min-width: 0; }
+/* the line from dot to dot: the lower half of one row and the upper half of the next */
+.lr.up::before, .lr.down::after, .ir.up::before, .ir.down::after { content: ""; position: absolute; left: 7.5px; border-left: 2px solid #b8a58a; }
+.lr.up::before, .ir.up::before { top: calc(-1 * var(--gap)); height: calc(var(--dot-y) + var(--gap)); }
+.lr.down::after, .ir.down::after { top: var(--dot-y); bottom: 0; }
 .lr.done { background: #eaf3e4; }
-.lr .wp { display: flex; flex-wrap: wrap; align-items: center; column-gap: 5px; row-gap: 2px; }
-.lr .wp .wp-text { flex: 1 1 0; min-width: 0; }
-.lr .wp .wp-en { flex-basis: 100%; }
-#mission .lr .wp .wp-text { font-size: clamp(14px, 1.4vw, 19px); }
-#mission .lr.head .wp .wp-text { font-size: clamp(14px, 1.5vw, 20px); }
+.lr.done .ldot, .ir.done .ldot { background: var(--sage); }
+#mission .lr .wp .wp-text { font-size: clamp(16px, 1.4vw, 20px); }
+#mission .lr.head .wp .wp-text { font-size: clamp(16px, 1.45vw, 20px); }
 .lr.done .wp-text::after { content: " \2713"; color: var(--sage-dark); }
+.lr-en { font-size: 13px; font-weight: 700; color: var(--ink-soft); line-height: 1.2; padding: 0 0 2px 35px; }
 /* "no X": the same row, with a small ✕ and nothing louder */
-.lr.no .wp-text::before { content: "\2715"; font-family: var(--ui-font); font-size: .62em; color: #b9a78d; margin-right: 4px; vertical-align: .15em; }
-#mission .wp button, #nani-card .wp button { width: 28px; height: 28px; padding: 5px; }
-.wp .wp-gap { flex: none; width: 28px; height: 1px; }
-.wp .wp-eye { background: #f3ead9; }
-.wp .wp-eye svg { opacity: .8; }
+.lr.no .wp-text::before, .ir.no .ir-text::before { content: "\2715"; font-family: var(--ui-font); font-size: .62em; color: #b9a78d; margin-right: 4px; vertical-align: .15em; }
+
+/* ---- the Chai tray: one person's part of the order, with their face (no name) ---- */
+.lsec.lfor { flex-direction: row; align-items: flex-start; gap: 6px; }
+.lsec.lfor .lface { flex: none; width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; background: #f3ead9; box-shadow: 0 0 0 2px var(--cream); }
+.lsec.lfor .lrows { flex: 1 1 0; }
+
+/* ---- the intro card: the order, big, in the middle of the picture (nothing is live yet) ---- */
+#intro {
+  position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  background: rgba(45, 32, 24, 0.22); padding: 3%; cursor: pointer; animation: fadeIn .2s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; } }
+#intro .ic-card {
+  background: var(--cream); border-radius: 26px; box-shadow: 0 16px 50px rgba(40,25,10,.35);
+  width: min(620px, 92%); max-height: 100%; overflow-y: auto; padding: clamp(12px, 2.2vw, 26px) clamp(14px, 2.6vw, 30px);
+  transform-origin: top left; animation: introIn .3s cubic-bezier(.2,1.3,.4,1);
+}
+@keyframes introIn { from { transform: scale(.8) translateY(20px); opacity: 0; } }
+#intro .ic-head { display: flex; align-items: center; gap: clamp(8px, 1.4vw, 16px); margin-bottom: clamp(6px, 1.2vh, 14px); }
+#intro .ic-face { width: clamp(48px, min(7vw, 13vh), 96px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #eadcc6; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(60,40,20,.15); flex: none; }
+#intro .ic-card.talk .ic-face { animation: badgeTalk .45s ease-in-out infinite alternate; }
+#intro .ic-name { flex: 1; min-width: 0; font-weight: 800; font-size: clamp(16px, min(2vw, 4vh), 24px); color: var(--ink-soft); }
+#intro .ic-say {
+  flex: none; width: clamp(40px, min(4.6vw, 9vh), 56px); aspect-ratio: 1; border-radius: 50%; border: none; padding: 10px;
+  background: #efe4d2; color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
+}
+#intro .ic-say.on { background: var(--ink); color: var(--cream); }
+#intro .ic-say svg { width: 100%; height: 100%; }
+#intro .ic-order { display: flex; flex-direction: column; gap: clamp(6px, 1.4vh, 14px); }
+/* several people (the Chai tray): side by side when there's room */
+#intro .ladder { flex-direction: row; flex-wrap: wrap; gap: clamp(4px, 1vh, 10px) 28px; }
+#intro .ladder > .head, #intro .lsec { flex: 1 1 100%; }
+#intro .lsec.lfor { flex: 1 1 auto; gap: 10px; }
+#intro .lsec.lfor .lface { width: clamp(30px, min(4vw, 8vh), 48px); height: auto; aspect-ratio: 1; }
+#intro .lrows { gap: clamp(2px, .6vh, 6px); }
+.ir { --gap: clamp(2px, .6vh, 6px); --dot-y: .72em; position: relative; padding-left: 1.15em; font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(19px, min(2.6vw, 5vh), 34px); line-height: 1.3; }
+.ir .ldot { width: .42em; height: .42em; margin-top: -.21em; left: .1em; }
+.ir.up::before, .ir.down::after { left: calc(.1em + .21em - 1px); border-left-width: 3px; }
+.ir.head { padding-left: 0; font-size: clamp(17px, min(2.2vw, 4.4vh), 28px); color: var(--ink-soft); }
+.ir .word { color: var(--madder); }
+.ir .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-weight: 700; font-size: .9em; }
+.ir .dots { letter-spacing: 3px; color: var(--ink-soft); }
+.ir.done .ldot { background: var(--sage); }
+#intro .ic-go { margin-top: clamp(6px, 1.4vh, 14px); text-align: center; font-size: 13px; font-weight: 800; color: #a8957c; letter-spacing: .04em; }
 
 /* ---- Nani: pass me. Her card comes forward in the sidebar column (the
    same grid cell), never over the play area. ---- */
@@ -431,22 +484,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 @keyframes pmIn { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes pmOut { to { transform: translateY(30px); opacity: 0; } }
 #passme .pm-nani { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; }
-#passme .pm-nani img { width: clamp(38px, 4.4vw, 60px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; animation: badgeTalk .45s ease-in-out 4 alternate; }
+#passme .pm-nani img { width: clamp(38px, 4vw, 56px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: top; background: #f3dcc2; border: 2px solid #fff; animation: badgeTalk .45s ease-in-out 4 alternate; }
 #passme .pm-say { min-width: 0; }
-/* the column is narrow: buttons on one line, her words underneath, wrapping on whole words */
-#nani-card .say-slot .wp { display: flex; flex-wrap: wrap; align-items: center; column-gap: 6px; row-gap: 2px; }
-#nani-card .say-slot .wp-text { flex: 1 1 0; min-width: min(8em, 100%); word-break: normal; overflow-wrap: break-word; }
-#nani-card .say-slot .wp-en { flex-basis: 100%; }
-/* narrow sidebar: buttons on one line, her words underneath */
-@media (max-width: 1100px) {
-  #nani-card .say-slot .wp { justify-content: space-between; }
-  #nani-card .say-slot .wp-text { order: 3; flex: 1 1 100%; }
-}
-#passme .pm-say .wp { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; row-gap: 2px; }
-#passme .pm-say .wp-text { order: 3; flex: 1 1 100%; word-break: normal; overflow-wrap: break-word; }
-#passme .pm-say .wp-en { order: 4; }
-#passme .wp .wp-text { font-size: clamp(14px, 1.6vw, 21px); }
-#passme .wp button { width: 28px; height: 28px; padding: 5px; }
+#passme .wp .wp-text { font-size: clamp(16px, 1.5vw, 21px); }
 /* three choice pills: picture + speaker (the picture is the meaning) */
 #passme .pm-tray { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
 #passme .pm-item {
@@ -455,7 +495,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 }
 #passme .pm-item img { width: 100%; height: clamp(40px, 7vh, 72px); object-fit: contain; }
 #passme .pm-item .wp-say {
-  width: 26px; height: 26px; border-radius: 50%; border: none; padding: 5px; background: #efe4d2; color: var(--ink);
+  width: 32px; height: 32px; border-radius: 50%; border: none; padding: 6px; background: #efe4d2; color: var(--ink);
   display: inline-flex; align-items: center; justify-content: center;
 }
 #passme .pm-item .wp-say.on { background: var(--ink); color: var(--cream); }
@@ -464,34 +504,48 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #passme .pm-item.right { border-color: var(--sage); background: #eaf3e4; }
 #passme .pm-item.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }
 
-/* ---- receipt, completion and result cards ---- */
-.receipt { font-size: 14px; background: var(--paper); border-radius: 12px; padding: 8px 12px; margin: 6px 0; }
-.receipt div { display: flex; justify-content: space-between; gap: 12px; }
-.receipt .total { border-top: 1px dashed #cdb892; margin-top: 4px; padding-top: 4px; font-weight: 800; }
+/* ---- pocket money (title screen and the day's summary) ---- */
+.purse { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0 10px; }
+.purse .purse-total { font-weight: 800; color: var(--ink-soft); font-size: clamp(14px, 1.6vw, 18px); }
+
+/* ---- completion and result cards ---- */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin: 10px 0; }
 .ccard { background: var(--paper); border-radius: 16px; padding: 10px; position: relative; }
 .ccard .cc-head { display: flex; gap: 8px; align-items: center; font-weight: 800; }
 .ccard .cc-head img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: top; }
 .ccard .cc-stars { display: flex; gap: 6px; margin: 6px 0; }
-.ccard .cc-stars .mstar { width: 30px; height: 30px; padding: 5px; }
+.ccard .cc-stars .mstar { width: 34px; height: 34px; padding: 6px; }
 .ccard .cc-dish { font-family: var(--kutchi-font); font-weight: 800; }
 .ccard .cc-coins { position: absolute; right: 10px; top: 10px; font-weight: 800; display: inline-flex; gap: 4px; align-items: center; }
 .ccard .cc-why { font-size: 12px; color: var(--ink-soft); }
-/* result card: left half the stars, right half what they asked and what you did */
-.cards .rcard { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 14px; }
+/* result card: left the stars, right the word review and the tips */
+.cards .rcard { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 2fr); gap: 14px; }
 .rcard .rc-left { position: relative; min-width: 0; }
-.rc-right { min-width: 0; display: flex; flex-direction: column; gap: 8px; border-left: 2px dashed #e0d2bb; padding-left: 14px; }
-.rc-right h4 { margin: 0 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
-.rc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.rc-pills { display: flex; flex-wrap: wrap; gap: 5px; }
-.kp { background: var(--cream); border-radius: 999px; padding: 2px 10px; font-family: var(--kutchi-font); font-weight: 800; font-size: 16px; line-height: 1.4; border: 2px solid transparent; }
-.kp .word { color: var(--madder); }
-.kp .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-size: .88em; }
-.kp.no::before { content: "\2715 "; font-size: .7em; color: #b9a78d; }
-.kp.bad { border-color: var(--madder); background: #fbe7e2; }
-.kp.none { color: var(--ink-soft); }
-.rc-tips .rc-tip { display: flex; gap: 8px; align-items: center; font-weight: 800; font-size: 14px; margin: 3px 0; }
-.rc-tips .rc-tip .mstar { width: 26px; height: 26px; padding: 4px; border-radius: 8px; }
+.rc-right { min-width: 0; display: flex; flex-direction: column; gap: 10px; border-left: 2px dashed #e0d2bb; padding-left: 14px; }
+.rc-right h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+.rc-key { text-transform: none; letter-spacing: 0; font-weight: 700; display: inline-flex; gap: 4px; align-items: center; }
+.rc-key i { width: 12px; height: 12px; border-radius: 4px; display: inline-block; margin-left: 6px; }
+.rc-key .k-missed { background: #fbe7e2; border: 2px solid var(--madder); }
+.rc-key .k-helped { background: #fdf1d3; border: 2px solid var(--brass); }
+/* the word review: [speaker] Kutchi  English, one pill per word */
+.wr { display: flex; flex-wrap: wrap; gap: 6px; }
+.wr-pill {
+  display: inline-flex; align-items: center; gap: 8px; border: 2px solid transparent; background: var(--cream);
+  border-radius: 999px; padding: 4px 12px 4px 4px; min-height: 40px; text-align: left; max-width: 100%;
+}
+.wr-pill .wr-say { flex: none; width: 30px; height: 30px; border-radius: 50%; background: #efe4d2; padding: 6px; display: inline-flex; }
+.wr-pill.on .wr-say { background: var(--ink); color: var(--cream); }
+.wr-pill .wr-say svg { width: 100%; height: 100%; }
+.wr-pill b { font-family: var(--kutchi-font); font-weight: 800; font-size: 18px; color: var(--madder); line-height: 1.1; }
+.wr-pill b.ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); }
+.wr-pill .wr-en { font-size: 14px; font-weight: 700; color: var(--ink-soft); }
+.wr-pill .wr-tag { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; border-radius: 6px; padding: 1px 5px; }
+.wr-pill.missed { border-color: var(--madder); background: #fbe7e2; }
+.wr-pill.missed .wr-tag { background: var(--madder); color: #fff; }
+.wr-pill.helped { border-color: var(--brass); background: #fdf1d3; }
+.wr-pill.helped .wr-tag { background: var(--brass); color: #fff; }
+.rc-tips .rc-tip { display: flex; gap: 8px; align-items: center; font-weight: 800; font-size: 15px; margin: 3px 0; }
+.rc-tips .rc-tip .mstar { width: 28px; height: 28px; padding: 4px; border-radius: 8px; }
 .rc-tips.all .rc-tip { color: var(--sage-dark); }
 .chip .draft { font-family: var(--ui-font); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: #8a6412; background: #fbeecb; border-radius: 6px; padding: 1px 5px; vertical-align: middle; }
 @media (max-width: 720px) {
@@ -510,49 +564,37 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .lab-grid button { border: none; background: var(--paper); border-radius: 14px; padding: 10px; text-align: left; font-weight: 800; font-size: 15px; }
 .lab-grid button small { display: block; font-weight: 600; color: var(--ink-soft); font-size: 12px; }
 
-/* ---- short landscape phones (e.g. 915x375): a tight sidebar ---- */
+/* ---- short landscape phones (e.g. 915x375): a tight sidebar, still readable ---- */
 @media (max-height: 430px) {
-  /* never squeeze Nani's line (a recast, her tadka order) under the goal:
-     with a long order the sidebar scrolls and the goal moves down instead */
-  #live { min-height: 40px; flex: 1 0 auto; }
-  #live #nani-card { max-height: 32vh; }
-  #how { padding: 5px 7px; font-size: 11.5px; }
-  #how .how-text { max-height: 58px; overflow-y: auto; }
-  #how .how-q { width: 22px; height: 22px; line-height: 22px; font-size: 13px; }
-  .side-top .pill { padding: 2px 8px; }
-  #mission .m-steps { display: none; }
-  #mission .m-head { gap: 5px; }
+  #mission { padding: 6px 8px 8px; }
+  #mission .m-head { gap: 6px; }
   #mission .m-ring { width: 36px; height: 36px; }
   #mission .m-ring.on .m-face { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
-  #mission .m-name { font-size: 12px; }
-  #mission .m-stars { gap: 3px; margin-top: 2px; }
-  #mission .m-stars .mstar { width: 22px; height: 22px; padding: 3px; border-radius: 7px; }
-  #mission .m-order { margin-top: 4px; gap: 3px; max-height: none; }
-  #mission .wp button, #nani-card .wp button, #passme .wp button { width: 22px; height: 22px; padding: 4px; }
-  #mission .lr .wp { column-gap: 2px; }
-  #mission .wp .wp-gap { width: 22px; }
-  #mission .lr .wp .wp-text, #mission .lr.head .wp .wp-text { font-size: 13px; }
-  .lg { padding-left: 13px; }
-  .lg .ldot { width: 8px; height: 8px; margin-top: -4px; }
-  .lsec.lseq::before, .lsec.lplain::before, .lg.multi::before { left: 4px; }
+  #mission .m-name { font-size: 14px; }
+  #mission .m-stars .mstar { width: 24px; height: 24px; padding: 3px; border-radius: 7px; }
+  #mission .m-replay { width: 34px; height: 34px; padding: 7px; }
+  #mission .m-order { margin-top: 4px; gap: 4px; }
+  #mission .lr .wp .wp-text, #mission .lr.head .wp .wp-text { font-size: 16px; }
+  .lr { --dot-y: 15px; padding-left: 18px; }
+  .lr .ldot { left: 2px; width: 10px; height: 10px; margin-top: -5px; }
+  .lr.up::before, .lr.down::after { left: 6px; }
+  .lr .wp button, #nani-card .wp button, #passme .pm-say .wp button { width: 28px; height: 28px; padding: 5px; }
+  .lr .wp .wp-gap { width: 28px; }
+  #nani-card .nc-face { width: 30px; }
+  #nani-card .wp .wp-text { font-size: 15px; }
+  .lsec.lfor { gap: 4px; }
+  .lsec.lfor .lface { width: 26px; height: 26px; }
+  #intro { padding: 2%; }
+  #intro .ic-go { display: none; }
   #passme { margin: 4px; padding: 6px; border-radius: 14px; }
   #passme .pm-nani img { width: 30px; }
-  #passme .wp .wp-text { font-size: 13px; }
+  #passme .wp .wp-text { font-size: 15px; }
   #passme .pm-tray { gap: 4px; margin-top: 5px; }
   #passme .pm-item { border-radius: 10px; padding: 2px; }
   #passme .pm-item img { height: 34px; }
-  #passme .pm-item .wp-say { width: 20px; height: 20px; padding: 3px; }
+  #passme .pm-item .wp-say { width: 28px; height: 28px; padding: 5px; }
 }
 
 @media (max-aspect-ratio: 1332/1000) {
   #passme { grid-column: 1; grid-row: 2; align-self: end; }
-}
-
-/* ---- the Chai tray: one person's part of the order, with their face (no name) ---- */
-.lsec.lfor { flex-direction: row; align-items: center; gap: 5px; }
-.lsec.lfor .lface { flex: none; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; background: #f3ead9; box-shadow: 0 0 0 2px var(--cream); }
-.lsec.lfor .lg { flex: 1 1 0; min-width: 0; }
-@media (max-height: 430px) {
-  .lsec.lfor { gap: 3px; }
-  .lsec.lfor .lface { width: 22px; height: 22px; }
 }
