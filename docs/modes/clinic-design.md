@@ -270,6 +270,126 @@ The patient stands (or hops on crutches), healed. The doctor: *[EN: Is everythin
 
 Then: the sticker for the album (one per patient the first time; one per ailment), *Aabhar aanjo!* from the patient, the doctor's big laugh, and the **end-of-round screen** (UX 9): page 1 the stopwatch (this patient's time, personal best per ailment and level), the accuracy slots (every ear row of the five stages as one row of dots), the hints badge (light bulb taps + "?" + the belt stopper); page 2 the word review: the kind, the part, the items, the feeling, each with a tap to hear. **Next patient** → stage 1.
 
+### P7 Research: what the popular doctor apps do, and what's borrowed
+
+Searched 25 Sept 2026 (store pages, Common Sense Media, 148Apps, iPadKids, GeekDad, Good Play Guide, the developers' sites). The pattern across all of them: **a waiting room → a room per problem → a short tactile procedure → a sticker**, with no spoken instruction that ever decides what the child does. That last gap is exactly where this mode lives: same shapes, but the doctor's Kutchi picks the person, the part, the item, the count and the order.
+
+| App | What it does | Borrowed here |
+|---|---|---|
+| **Toca Doctor** (Toca Boca) | 21 puzzles in a body: pull splinters in the right direction, guide 3–4 gas bubbles through the tummy maze to a burp, pop bugs in the hair, clean a wound and plaster it, place bones; no text, no timers, no fail | `pluck` along an arrow (H3, H13), `bubbles` (H10), the beetles (H16), wash-then-plaster (H2); the no-fail rule (the belt loops; nothing is ever lost) |
+| **Toca Life: Hospital** | A sandbox on five floors reached by a lift; X-ray, CAT scan, casts, bandages, crutches; storytelling, not tasks | The X-ray and cast (H14), crutches as the visible "healed" state; the floors as a picture of stages, but ours run in a fixed order |
+| **Dr. Panda Hospital** | Waiting room → bed → procedure → sticker; reset a bone by swiping on an X-ray; a magnet down the throat; temperature; "no spoken instructions" is the reviewers' complaint | The pipeline shape; the one-swipe X-ray (H14); the sticker album; the complaint is our opening |
+| **Baby Panda's Hospital / Dental Care** (BabyBus) | Eye drops for sore eyes; tweezers then ointment; the waiting room where the animal *says* its problem in audio; cavity: clean, kill the bug, new crown; chipped tooth: drill smooth, then a shape puzzle to fit the resin | The patient's spoken complaint (D2); the tooth's bug and `fill` (H4); tweezers-then-ointment order (H3's *pela/ne poi*) |
+| **Pepi Hospital** | Five conditions (flu, patches after a bike fall, dentist, X-ray for a bone), a **pharmacy** room, an ambulance; role-play at your own pace | A pharmacy as its own stage (our belt); flu as a whole game (H11) |
+| **My Town: Hospital** | 15 characters, 6 rooms; bandage hands, stethoscope, fever check; every object makes a sound | The bench of many kinds of person (P2); every tray item has its own noise |
+| **Doctor Kids** (Bubadu) | 7 offices (dental, eye, skin, lab and X-ray, ear, ER); you **assign each patient to the right office**, then play its mini-game; a hearing test as a xylophone | Assigning patients = our waiting room + diagnosis seam; the ear office (H3); the eye chart as a game (H12) |
+| **Bimi Boo doctor games** | Sorting by colour, shape and size inside a doctor frame, for 2–5s | The belt's colour and size decoys at level 2–3, tuned for Layla |
+| **Little Panda ToothBrush** | Brushing as strokes; tartar, stuck food; braces | Directional brushing as the row (H4) |
+| **Little Ear Doctor / Ear Doctor Clinic** | Comedy ear canals; blocked nose and sore throat "cause" the ear | The ear as a cave with things in it (H3) |
+| Sushi-belt and *Overcooked*-style order games | Items pass; you grab what the order says; the belt loops | The pharmacy belt (P4): the loop, the tray with fixed slots, speed as the level |
+
+What none of them has, and we keep from our own design: one patient reacting live to every touch; the doctor as a real person the children know; and the seam where hearing decides.
+
+### P8 Stitching: a session, the first ever session, free play
+
+- **A clinic morning = 3 patients through the whole pipeline**, about 9–12 minutes (waiting 20 s, diagnosis 30–60 s, pharmacy 30–60 s, heal 60–120 s, send-off 20 s, the end-of-round screen). The three patients are drawn from the child's weakest words (kinds, parts, items, feelings), with the healing games from the sets the child has been shown, never the same game twice in a morning, and the morning's mix a data knob (`days.mix`, kept). The morning ends with "Close the clinic": the receipt, pocket money, and the album.
+- **The first ever session is tiny** (UX 7): one patient. The bench has two people (a girl and a boy); the doctor says *[EN: the girl]*. Diagnosis is D1 with three parts pulsing (the knee is the sore one). The pharmacy asks for **one** item (the plaster) with four decoys on a slow belt. Heal is H2 with its three one-word steps. Send-off is E1 with two faces. Under two minutes, every UI element fading in as it's first needed (UX 8's ghost finger on the first tap of each stage). Session 2 adds one thing per stage (bench of 3, D2, two items, H1). Each level adds one thing.
+- **Onboarding scripts** (UX 10) are written per stage at the end of that stage's build: the ghost finger taps the girl; taps a pulsing part; taps an item on the belt; drags the plaster; taps a face.
+- **Free play dips into single stages:** *The counter* (the belt alone, 60 s); *The healing room* (pick a body part from the album's outlines; one game at the child's level; 60–120 s); *Who's next?* (the bench alone, Busy, 60 s); *You're the patient* (V0, unchanged: the lap view and S1, 60 s); *Open clinic* (patients keep coming through the pipeline until "Close the clinic"); *Explore* (tap any part of any patient, no rows). The hub's rotating daily gets *The counter* or *The healing room*.
+- **Story:** Arc 3 Ch4 runs as before (R6) with the pipeline inside it: you're the patient first (V0, 60 s), then *Bring someone in* is the story's waiting room (Nani's message: S3 stays as designed), then three patients: Ali (D2 knee → H1), the hen (D3 the mystery → the vet's H13 thorn on a foot), the wet neighbour (D2 → H11 or H6). Ch5 hands to Cook for Nani's own remedy; H7's turmeric milk at the clinic is the doctor's, Nani's is hers.
+- **Levels follow word stages, per stage of the pipeline** (a child can be at level 3 in diagnosis and level 1 at the belt); the level number shown on the card is the lowest of the five.
+
+### P9 What survives from the current build
+
+The phase-1 build (`build/reports/clinic-build.md`, `docs/clinic-build-log.md`) is a set of mechanics and a visit generator. The pipeline keeps almost all of the mechanics, retires the visit-as-a-unit, and adds the belt and the healing games.
+
+| File | Verdict | Notes for the next build agent |
+|---|---|---|
+| `js/clinic/body.js` | **Keep** | Hotspots, mirror, snap-to-nearest, close-up, limb axes: used by D1–D3 and every healing game. Add the mouth at ×4 for H4, the ear-canal and tummy close-ups as new `views` |
+| `js/clinic/patient.js`, `js/clinic/room.js` | **Keep, extend** | The greybox patient, the doctor with folded and open hands, the kit tray, the magnifier. The trolley goes (the belt replaces it). Add: the bench (stage 1), the counter and belt view (stage 3), the kick, head-turn and hiccup frames, the "healed" states (plaster, cast, crutches) |
+| `js/clinic/visit.js` (the generator) | **Refactor into `pipeline.js`** | Its row model (`{kind, say, tested, moment}`), `judge`, `earStar`, `voiceStar`, `morning` and `days.mix` survive as is. The visit types become stage variants: V1/V2 → D3, V3 → D2, V0 → free play and the story opener, V4 → the story's stage 1 only. The treatment round becomes the heal stage's rows |
+| `mechanics/where.js` (+S2) | **Keep** | D2 unchanged |
+| `mechanics/check.js` | **Keep** | D3 unchanged; also the torch and stethoscope steps in H3, H7, H10, H19 |
+| `mechanics/care.js` (the trolley pick) | **Goes** | Its instruction-then-pick logic and decoy rules move into `belt`; the trolley view is deleted |
+| `mechanics/stick.js`, `wrap.js` (turns, colour, path), `lift.js`, `tuck.js`, `drops.js` | **Keep** | They become steps of H1, H2, H3, H6, H8, H12, H13, H14, H17–H20 |
+| `mechanics/handover.js` | **Keep, move** | Runs once, at the end of the pharmacy (the tray check), not after every treatment; the review list is the tray |
+| `mechanics/ask.js` ("?") | **Keep** | Available in every stage; plus the belt stopper as a second hint kind |
+| `mechanics/tell.js` | **Keep** | S1 (V0), S2 (D2), S3 (story), W3, H9/H15's counting aloud (S6), E3, E4 |
+| `mechanics/you.js` | **Keep** | The story opener and a free-play route; not a pipeline stage |
+| `stations/visit.js` | **Replace** with `stages/{waiting,diagnosis,pharmacy,heal,sendoff}.js` and `stations/patient.js` (the five in a row) | The `treat()` chain (say → pick → gesture → handover) is the model for a heal game's step chain |
+| `stations/dispensary.js` | **Becomes `stages/pharmacy.js`** | Its `fetch → handover` shape survives with `belt` in place of `fetch`; the small hob for H7 and H11 loads Cook's `pour`, `add`, `stir`, `count` and the Chai tray unchanged, as it already loads `fetch`, `count`, `stir` and `passme` |
+| `stubs/{speech,which,overlay}.js` | **Swap in phase 3** | `js/shared/speech.js`, `whichone.js` and `overlay.js` now exist; keep the stubs for the lab and bots |
+| `data/clinic.json` | **Keep, restructure** | `words`, `lines`, `lookalike_groups`, `salience`, `finds`, `paths`, `star_sets`, `voice`, `ask`, `bot`, `you` survive. `visits` → `stages` (each with `mix` and `levels`); `levels` → per stage; `cares` → `ailments` (part → game → items → lines); add `people` kinds and colours, `items` (the tray nouns), `feelings`, `belt` knobs, `heal.<game>` knobs |
+| `data/patients/grey-adult.json`, `data/scenes/clinic.json` | **Keep** | Add a grey child, a grey elder and a baby-on-lap silhouette (three sizes make the kinds readable in greybox) |
+| `build/leak_clinic.mjs` | **Keep, extend** | Runs the pipeline per stage and per healing game; new strategies: "first past", "grab all" (belt), "found-it always" (D1b), "same face" (send-off), "any direction" (brush/turn) |
+| `build/check_hotspots.py`, `build/test_clinic.py` | **Keep** | The hotspot check adds the mouth ×4 and the new close-ups; the browser test plays a patient and a morning at six sizes |
+| `clinic.html`, `js/clinic/flow.js`, `css/clinic.css` | **Keep** | The lab lists stages × variants × levels, every healing game alone, a patient, a morning |
+| Decisions in the build log | **Stand** | "?" rows don't count as tested; two speaking rows for the voice star (now easy: W3/S2 + E3); side misses after the recast; tools drawn tool-first; the Weber duration bot |
+
+**Mechanics, counted.** Kept from phase 1: `where, check, stick, wrap, lift, tuck, drops, handover, ask, tell, you` (11). Reused from Cook: `pour, add, stir, count, knead, passme`, the tadka and Chai tray stations (6 + 2). Shared: `tell`, `which`, **Dress up's `stitch`** (H8), **Monsoon's `cover`** (H11). New: `call` (W1–W4), `probe` (D1), `clue` (D3 level 4), `belt` (P4), `pluck` (H3, H13), `brush` (H4, H16), `fill` (H4), `taste` (H5), `warm` (H6, from R3), `bubbles` (H10), `chart` (H12), `xray` (H14), `turn` (H18), `feel` (E1–E4), `tap` (the hammer's kick, H1) (15). `care` retired.
+
+### P10 Words needed, in priority order
+
+**QfM** = already in the Questions for Mum doc; **new** = for a supplement (that doc isn't edited here). Real Kutchi already in hand is listed at the top of this section.
+
+| Priority | Words and frames | For | QfM |
+|---|---|---|---|
+| 1 | The kinds: *girl, boy, baby*; **old man, old woman** (or the polite words the family uses for an elder: *uncle, auntie, grandpa*); *[EN: Bring in] the {kind}* | Stage 1 | C8, C9, E100; **old man / old woman new**; E101 (an elder), E102 (the doctor); *Ali, come* G86; **the "bring in" frame new** |
+| 1 | The six big parts; *My {part} hurts*; *Does it hurt here?*; *yes / no* | D1, D2 | G41–G47, G82, G120; A8.1–A8.2 (*haa* heard in the A3 recording: confirm) |
+| 1 | The tray nouns for set 1: *plaster, bandage, cloth, blanket, hammer, tweezers, cotton, toothbrush, drops, honey, thermometer, fan, torch*; *hot water*; *Muke {x} khape* / *Muke {x} de* frames with a list | Stage 3 | G73–G80, G119; **hammer, tweezers, cotton (bud), toothbrush, honey, fan new** |
+| 1 | The count frames: *{n} turns · {n} times · {n} drops · {n} stitches*; whether the noun changes after *ba* (the plural rule from the grammar notes) | H1, H3, H8, H17 | G114, G116, G127; **"times", "turns", "stitches" new** |
+| 1 | *hot, cold, just right, too hot, still cold, How do you feel?* | H6 | G10–G14, G69–G71, G83 |
+| 1 | The feelings: *okay, happy, better, sad, scared*; *Is everything okay now? · Yes, now I'm happy · Get well soon* | Stage 5 | G62–G66, G84; **okay, "Is everything okay now?", "Now I'm happy" new** |
+| 1 | *Say aah · Open your mouth · Look in the ear · Listen to the chest · Take the temperature* | H3, H4, H7, D3 | G110, G111 |
+| 2 | Directions: **up, down**; *left, right* as bare words (or *this side / that side*: A5) | H4, H14, H16, H18, H20 | **up/down new**; G126 |
+| 2 | Colours (the belt, the thread, the cast, the beetles); *the {colour} one* | P4, H4, H8, H14, H16 | E60–E71, G115 |
+| 2 | *Pull it out · Clean it · Brush · Fill it · Stick out your tongue · Rinse · Wipe · Count with me · Hold your breath · Boo! · Breathe in / out · Bend it · Look up / down* | The healing games' verbs | **all new** (a short imperative list; the grammar's Grid 11 covers the form) |
+| 2 | *sweet, sour, salty* (optional: *limu, khun, loon* carry H5 without them) | H5 | **new** |
+| 2 | Body: *tooth/teeth, tongue, hair, ear, eye, nose, mouth, throat, chest, neck, back, elbow, knee, finger, toe, arm, leg* | Sets 1–3 | G48–G61; **tongue, hair new** |
+| 2 | *I don't feel well · I don't know why*; the clues *not my head · near my hand · it's up, not down* | D3 | G112; **clues new** |
+| 3 | Sides in the patient's voice; *the other one* | Level 3 everywhere | G125, G126, G109 |
+| 3 | *stitches, thread, needle, cast, crutches, X-ray, syringe, lollipop, comb, shampoo, cream, oil, steam, tissue* | Sets 2–3 | G78 (tissue); **the rest new** (say if the family just uses the English words, as G119 asks) |
+| 3 | *I fell · I bumped it · it's stuck · it itches* | D2's second line, level 3+ | Past tense held (Arc 4) |
+
+### P11 Decisions for Zafar (defaults in bold; the build takes the defaults)
+
+1. **The beetles in the hair (H16).** Toca Doctor's most-loved puzzle, but it's lice. **Default: in, set 3, drawn as cartoon beetles with eyebrows and never named; cut if the family finds it icky.**
+2. **The injection (H9).** The doctor holds the syringe; the child wipes, counts down aloud and puts the plaster on. **Default: yes, exactly that**, which keeps "the child never gives medicine" and makes the count-down a speaking game. Say if you'd rather the child pressed the plunger.
+3. **Stitches on skin (H8)** as a pink zig-zag with dots (a lacing card on a cartoon arm), or on a torn sleeve? **Default: on skin, cartoon, no blood**; Dress up keeps mending clothes.
+4. **The end-of-round screen per patient or per morning?** **Default: per patient** (a patient is a round; the stopwatch is per ailment and level), with a short receipt at "Close the clinic".
+5. **The belt's grab: tap or drag?** **Default: tap at level 1, drag from level 2**, the belt loops (a sushi belt), the belt stopper is a hint that costs the tick.
+6. **Old man / old woman.** Kinds, or the family's polite words (*uncle, auntie, grandpa*), or real names only? **Default: kinds as placeholders now; the family's polite words replace them if they exist**; family names stay on top.
+7. **The drinks at the clinic (H7, H11).** A small hob at the counter runs Cook's tadka and Chai tray unchanged, or the doctor hands off to Cook? **Default: at the counter, unchanged Cook code**; Nani's own remedy stays Cook's in Ch5.
+8. **"You're the patient" (V0)** stays the story's first minute and a free-play route, not a stage. **Default: yes.**
+
+### P12 Build brief (phased; own files first; shared pieces listed)
+
+**Files the clinic owns** (the only files phases 0–2 touch): `clinic.html`, `js/clinic/**` (`pipeline.js`, `body.js`, `patient.js`, `room.js`, `queue.js`, `mechanics/*.js`, `stages/{waiting,diagnosis,pharmacy,heal,sendoff}.js`, `stations/patient.js`, `heal/<game>.js` one file per healing game, `stubs/*`), `css/clinic.css`, `data/clinic.json`, `data/patients/*.json`, `data/scenes/clinic.json`, `build/test_clinic.py` (port 8806), `build/leak_clinic.mjs`, `build/check_hotspots.py`, `assets/clinic/`. It **reads** Cook's core and mechanics and Dress up's `stitch` and Monsoon's `cover` and never edits them; if those two aren't exposed on `Cook.Mech`, phase 1 keeps a local copy under `js/clinic/mechanics/` and swaps at integration.
+
+| Phase | What's playable | Own files only? | Acceptance |
+|---|---|---|---|
+| **0 Prerequisites** (no code) | — | — | P10's priority-1 rows recorded; P11's decisions (defaults otherwise); the doctor's sheet in `sources/private/` |
+| **1 The pipeline in greybox, set 1** | `pipeline.js` (pure; a patient's rows per stage; `judge`, stars, `days.mix`); the five stage files; `call` (W1, W2), `probe` (D1, D1b), D2 and D3 on the built `where` and `check`; `belt` at levels 1–3 with `handover`; **heal set 1**: H1, H2, H3, H4, H5, H6, H7 (H7 on Cook's tadka station); `feel` (E1, E2); the request card per stage (a title and the line; the read-along waits for recordings); the lab runs any stage × variant × level, any healing game, a patient, a morning; the bots | **Yes** | Fair bot 100% ear on every stage; every leak strategy (the phase-1 list plus first past, grab all, found-it always, same face, any direction) under 10% over 500 rounds per stage per level; the pipeline's level-1 blind bot under 1%; `check_hotspots.py` passes with the mouth ×4 and the new close-ups (level-1 targets ≥ 2 cm on the iPad); `test_clinic.py` plays a patient and a morning at six sizes with deliberate mistakes; no console errors; screenshots reviewed |
+| **2 The morning, the first session, set 2** | Three patients per morning with "Close the clinic"; the first-ever session script (P8) and the ghost-finger overlays per stage; W3, W4 (Busy, comfort rings); the end-of-round screen on the shared component (or a local copy with the same props until it lands) with the personal best per ailment and level; the word review; the sidebar tray, the light bulb, the "?" and the belt stopper as hints; **heal set 2**: H8 (Dress up's `stitch`), H9 (S6), H10, H11 (Monsoon's `cover`, the Chai tray), H12, H13, H14, H15; E3, E4; the album | **Yes** | The morning under 12 minutes at level 1, the first session under 2 minutes; the voice bot passes W3, S6, E3, E4 (accept, wrong hearing acted on, null → say it again → pills, parent ✓); leak under 10% on every set-2 game; a Busy morning's rings never empty at level 1 |
+| **3 Integration and story** | Swap the stubs for `js/shared/speech.js`, `whichone.js`, `overlay.js`; the shell (one app, one save); Arc 3 Ch4 with the pipeline inside (V0, the message as stage 1, Ali, the hen, the neighbour); the Monsoon side errand; the hub's 60-second entries; the vet's parts on the same engine; `rel.js` only for *the top shelf* | No: the shell, `data/relations.json` | Ch4 end to end in the harness; **Zafar plays it with a child**; the family's recordings replace placeholders file for file and the read-along highlights by chunk |
+| **4 Art and set 3** | The doctor's sheet and poses; seated patients of every kind (girl, boy, elder, baby on a lap) with the kick, head-turn and hiccup frames; the healed states; the belt and counter art; the close-ups (ear cave, tummy tube, mouth); **heal set 3**: H16, H17, H18, H19, H20 (H20 with the back view); Kasuku's echo; V2b clues at level 4 | — | Visual QA per screenshot; the leak report shows real Kutchi rows passing |
+
+**Shared pieces the clinic needs from the foundation agent** (assumed to arrive; not designed here): `js/shared/speech.js` (`listen({choices, timeoutMs})`, now present); the which-one module (`whichone.js`, present); overlay-at-anchor sprites (`overlay.js`, present); the **end-of-round screen** component (UX 9: three badges, the word review) and the **onboarding kit** (UX 10: dim, spotlight, ghost finger); the request card with read-along by recording chunk; star sets and ear/voice rules as data; the shell and the hub daily; `rel.js` (phase 3 only). Until each lands, the same keys sit in `data/clinic.json` and a local stub with the same props sits in `js/clinic/stubs/`.
+
+### P13 What changed below
+
+| Section | Change |
+|---|---|
+| Header | The safety rule allows cartoon stitches and the doctor's comedy injection |
+| R3.3, R3.9 | The mechanics list and phases are superseded by P9 and P12; `care` is retired, `belt` and the healing mechanics added |
+| R3.4 | S1–S4 stand; S5 (W3), S6 (counting aloud in H9/H15), S7 (E3), S8 (E4) added; S4 now happens once, at the tray check |
+| R2.2, R2.3 | Visit types become diagnosis variants (D1–D3); the level ladder is now per stage |
+| R2.5 | T3 (stitches) and T16 (the needle) are **un-rejected** as H8 and H9; the trolley (T1–T13's home) is replaced by the belt; T5 (mix the medicine) is H7 |
+| Section 3, 7.4 | M2 the care trolley → the pharmacy belt; the "no needles, no stitches" checklist line is replaced by "cartoon only; the doctor holds the syringe" |
+| Sections 4, 12 | The first set and build brief are P12 |
+
+---
+
 ## Revision 3, 25 Sept 2026: mechanics, speaking and Zafar's answers
 
 **Why this revision.** Two things landed after Revision 2: Zafar's answers to its five decisions, and the deep-dive brief for every mode (`DEEP-DIVE-BRIEF.md`: each mode is a set of mini-games built from modular mechanics, one mechanic per file, reused from Cook where they fit; speaking is core, with closed-set recognition against `js/shared/speech.js`; all modes are built at once, so phases 0–1 touch only the mode's own files). Revision 2 already has the backbone (visit types), the scored library (R2.5), the ladder (R2.3) and the Sceptic's estimates, so this section doesn't repeat them. It adds what the brief asks for and what the answers change, and **supersedes Revision 2 where they conflict** (R3.8 lists the patches). It's short by design; the depth is in R2.
