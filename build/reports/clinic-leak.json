@@ -1,0 +1,337 @@
+{
+ "visits": 500,
+ "seed": 1,
+ "ear": {
+  "checkup L1": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0.2,
+   "salience": 0,
+   "frequency": 0,
+   "slotmemory": 0,
+   "repeat": 0,
+   "duration": 0.2,
+   "wait": 0,
+   "visualcue": 0,
+   "sweep": 0,
+   "leftovers": 0,
+   "second": 0.4,
+   "echo": 0.4
+  },
+  "checkup L2": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0,
+   "salience": 0,
+   "frequency": 0,
+   "slotmemory": 0,
+   "repeat": 0,
+   "duration": 0,
+   "wait": 0,
+   "visualcue": 0,
+   "sweep": 0,
+   "leftovers": 0,
+   "second": 0,
+   "echo": 0
+  },
+  "checkup L3": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0,
+   "salience": 0,
+   "frequency": 0,
+   "slotmemory": 0,
+   "repeat": 0,
+   "duration": 0,
+   "wait": 0,
+   "visualcue": 0,
+   "sweep": 0,
+   "leftovers": 0,
+   "second": 0,
+   "echo": 0
+  },
+  "mystery L1": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0,
+   "salience": 0,
+   "frequency": 0,
+   "slotmemory": 0,
+   "repeat": 0,
+   "duration": 1.2,
+   "wait": 0,
+   "visualcue": 0.2,
+   "sweep": 0,
+   "leftovers": 0.2,
+   "second": 0,
+   "echo": 0.4
+  },
+  "mystery L2": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0,
+   "salience": 0,
+   "frequency": 0,
+   "slotmemory": 0,
+   "repeat": 0,
+   "duration": 0.4,
+   "wait": 0,
+   "visualcue": 0,
+   "sweep": 0,
+   "leftovers": 0,
+   "second": 0,
+   "echo": 0
+  },
+  "mystery L3": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0,
+   "salience": 0,
+   "frequency": 0,
+   "slotmemory": 0,
+   "repeat": 0,
+   "duration": 0,
+   "wait": 0,
+   "visualcue": 0,
+   "sweep": 0,
+   "leftovers": 0,
+   "second": 0,
+   "echo": 0
+  },
+  "hurt L1": {
+   "slots": 500,
+   "fair": 100,
+   "random": 3.8,
+   "salience": 3,
+   "frequency": 4.6,
+   "slotmemory": 3,
+   "repeat": 6.6,
+   "duration": 3.6,
+   "wait": 0,
+   "visualcue": 2.6,
+   "sweep": 3,
+   "leftovers": 4.8,
+   "second": 0,
+   "echo": 0
+  },
+  "hurt L2": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0.4,
+   "salience": 2.6,
+   "frequency": 1.2,
+   "slotmemory": 1.2,
+   "repeat": 2.6,
+   "duration": 3.8,
+   "wait": 0,
+   "visualcue": 0.2,
+   "sweep": 0.8,
+   "leftovers": 0.8,
+   "second": 0.4,
+   "echo": 1.2
+  },
+  "hurt L3": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0.4,
+   "salience": 0.8,
+   "frequency": 0.4,
+   "slotmemory": 0.4,
+   "repeat": 2,
+   "duration": 2,
+   "wait": 0,
+   "visualcue": 0.4,
+   "sweep": 0.8,
+   "leftovers": 0.4,
+   "second": 1.4,
+   "echo": 2.6
+  },
+  "round L1": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0.4,
+   "salience": 1,
+   "frequency": 3.2,
+   "slotmemory": 0.6,
+   "repeat": 2,
+   "duration": 2.8,
+   "wait": 0,
+   "visualcue": 1.8,
+   "sweep": 0.6,
+   "leftovers": 1.2,
+   "second": 1,
+   "echo": 0.4
+  },
+  "round L2": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0,
+   "salience": 0,
+   "frequency": 0.2,
+   "slotmemory": 0,
+   "repeat": 0,
+   "duration": 0.8,
+   "wait": 0,
+   "visualcue": 0.2,
+   "sweep": 0.2,
+   "leftovers": 0.2,
+   "second": 0,
+   "echo": 0
+  },
+  "round L3": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0,
+   "salience": 0,
+   "frequency": 0,
+   "slotmemory": 0,
+   "repeat": 0.4,
+   "duration": 1.2,
+   "wait": 0,
+   "visualcue": 0,
+   "sweep": 0.2,
+   "leftovers": 0,
+   "second": 0,
+   "echo": 0
+  },
+  "round:wrap L2": {
+   "slots": 500,
+   "fair": 100,
+   "random": 2.6,
+   "salience": 3.4,
+   "frequency": 3.4,
+   "slotmemory": 2.6,
+   "repeat": 2.8,
+   "duration": 3.4,
+   "wait": 0,
+   "visualcue": 2.6,
+   "sweep": 2,
+   "leftovers": 2.4,
+   "second": 2.8,
+   "echo": 2.2
+  },
+  "round:wrap L3": {
+   "slots": 500,
+   "fair": 100,
+   "random": 0.6,
+   "salience": 1,
+   "frequency": 1.4,
+   "slotmemory": 0.6,
+   "repeat": 0.8,
+   "duration": 1.2,
+   "wait": 0,
+   "visualcue": 1.4,
+   "sweep": 0.2,
+   "leftovers": 1,
+   "second": 1.2,
+   "echo": 1.4
+  },
+  "round:drops L3": {
+   "slots": 500,
+   "fair": 100,
+   "random": 3.4,
+   "salience": 4,
+   "frequency": 4.4,
+   "slotmemory": 3,
+   "repeat": 3,
+   "duration": 4.6,
+   "wait": 0,
+   "visualcue": 3.8,
+   "sweep": 4.6,
+   "leftovers": 3.2,
+   "second": 3.8,
+   "echo": 3.4
+  }
+ },
+ "voice": {
+  "hurt L2": {
+   "fair": 100,
+   "slots": 500,
+   "mumble": 1.2,
+   "randomsay": 3.2,
+   "silent": 0,
+   "pills": 0
+  },
+  "hurt L3": {
+   "fair": 100,
+   "slots": 500,
+   "mumble": 1.6,
+   "randomsay": 2.6,
+   "silent": 0,
+   "pills": 0
+  },
+  "you L1": {
+   "fair": 100,
+   "slots": 500,
+   "mumble": 3.8,
+   "randomsay": 2,
+   "silent": 0,
+   "pills": 0
+  },
+  "you L2": {
+   "fair": 100,
+   "slots": 500,
+   "mumble": 0.6,
+   "randomsay": 1.6,
+   "silent": 0,
+   "pills": 0
+  },
+  "you L3": {
+   "fair": 100,
+   "slots": 500,
+   "mumble": 1,
+   "randomsay": 1.4,
+   "silent": 0,
+   "pills": 0
+  },
+  "bring L2": {
+   "fair": 100,
+   "slots": 500,
+   "mumble": 0,
+   "randomsay": 3.6,
+   "silent": 0,
+   "pills": 0
+  },
+  "bring L3": {
+   "fair": 100,
+   "slots": 500,
+   "mumble": 3,
+   "randomsay": 4.2,
+   "silent": 0,
+   "pills": 0
+  }
+ },
+ "fails": [],
+ "placeholderRows": 537607,
+ "rows": 601664,
+ "voicePaths": [
+  {
+   "check": "accept: voice star",
+   "ok": true
+  },
+  {
+   "check": "wrong hearing: acted on as a miss, then accepted, no voice star",
+   "ok": true
+  },
+  {
+   "check": "null: one 'say it again?', then the pills; a pill earns no voice star",
+   "ok": true
+  },
+  {
+   "check": "parent judges: again then yes (no first-try star)",
+   "ok": true
+  },
+  {
+   "check": "parent judges: yes first time (voice star)",
+   "ok": true
+  },
+  {
+   "check": "level 1: pills from the start, progress without the mic",
+   "ok": true
+  },
+  {
+   "check": "a set over 8 is refused",
+   "ok": true
+  }
+ ]
+}

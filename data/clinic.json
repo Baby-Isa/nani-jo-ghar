@@ -1,0 +1,1262 @@
+{
+ "_about": "The clinic (the doctor's clinic), phase 1 data. docs/modes/clinic-design.md (Revision 3, then Revision 2). No Kutchi exists yet for any body part, care item, instrument or frame: every word and line here is an English placeholder (kutchi: null, lines with `e` only), shown in grey italics. Never invent Kutchi. This file is merged into Cook.data at load (js/clinic/flow.js) under clinic-only ids (body-, care-, tool-, feel-, side-, cl-), so Cook's mechanics (fetch, count, stir, pour, passme) run on it unchanged; data/cook.json is never edited. The pure visit engine (js/clinic/visit.js) reads the same file in Node for build/leak_clinic.mjs.",
+ "words": {
+  "body-head": {
+   "kutchi": null,
+   "english": "head",
+   "group": "big",
+   "src": "placeholder",
+   "qfm": "G42"
+  },
+  "body-tummy": {
+   "kutchi": null,
+   "english": "tummy",
+   "group": "big",
+   "src": "placeholder",
+   "qfm": "G43"
+  },
+  "body-arm": {
+   "kutchi": null,
+   "english": "arm",
+   "group": "big",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G44"
+  },
+  "body-leg": {
+   "kutchi": null,
+   "english": "leg",
+   "group": "big",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G45"
+  },
+  "body-hand": {
+   "kutchi": null,
+   "english": "hand",
+   "group": "big",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G46"
+  },
+  "body-foot": {
+   "kutchi": null,
+   "english": "foot",
+   "group": "big",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G47"
+  },
+  "body-eye": {
+   "kutchi": null,
+   "english": "eye",
+   "group": "face",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G48"
+  },
+  "body-ear": {
+   "kutchi": null,
+   "english": "ear",
+   "group": "face",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G49"
+  },
+  "body-nose": {
+   "kutchi": null,
+   "english": "nose",
+   "group": "face",
+   "src": "placeholder",
+   "qfm": "G50"
+  },
+  "body-mouth": {
+   "kutchi": null,
+   "english": "mouth",
+   "group": "face",
+   "src": "placeholder",
+   "qfm": "G51"
+  },
+  "body-tooth": {
+   "kutchi": null,
+   "english": "tooth",
+   "group": "face",
+   "src": "placeholder",
+   "qfm": "G52"
+  },
+  "body-throat": {
+   "kutchi": null,
+   "english": "throat",
+   "group": "face",
+   "src": "placeholder",
+   "qfm": "G53"
+  },
+  "body-chest": {
+   "kutchi": null,
+   "english": "chest",
+   "group": "kit",
+   "src": "placeholder",
+   "qfm": "G60"
+  },
+  "body-neck": {
+   "kutchi": null,
+   "english": "neck",
+   "group": "near",
+   "src": "placeholder",
+   "qfm": "G54"
+  },
+  "body-shoulder": {
+   "kutchi": null,
+   "english": "shoulder",
+   "group": "near",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G55"
+  },
+  "body-elbow": {
+   "kutchi": null,
+   "english": "elbow",
+   "group": "near",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G56"
+  },
+  "body-knee": {
+   "kutchi": null,
+   "english": "knee",
+   "group": "near",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G57"
+  },
+  "body-finger": {
+   "kutchi": null,
+   "english": "finger",
+   "group": "near",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G58"
+  },
+  "body-toe": {
+   "kutchi": null,
+   "english": "toe",
+   "group": "near",
+   "sided": true,
+   "src": "placeholder",
+   "qfm": "G59"
+  },
+  "care-plaster": {
+   "kutchi": null,
+   "english": "plaster",
+   "gesture": "stick",
+   "heap": {
+    "kind": "cubes",
+    "color": "#e8b98f"
+   },
+   "src": "placeholder",
+   "qfm": "G73"
+  },
+  "care-bandage": {
+   "kutchi": null,
+   "english": "bandage",
+   "gesture": "wrap",
+   "heap": {
+    "kind": "balls",
+    "color": "#f4f1ea"
+   },
+   "src": "placeholder",
+   "qfm": "G74"
+  },
+  "care-cloth": {
+   "kutchi": null,
+   "english": "cool cloth",
+   "gesture": "lift",
+   "heap": {
+    "kind": "pieces",
+    "color": "#a9d4e8"
+   },
+   "temp": "cold",
+   "src": "placeholder",
+   "qfm": "G75"
+  },
+  "care-ice": {
+   "kutchi": null,
+   "english": "ice pack",
+   "gesture": "lift",
+   "heap": {
+    "kind": "cubes",
+    "color": "#d9f0fb"
+   },
+   "temp": "cold",
+   "src": "placeholder",
+   "qfm": "G76"
+  },
+  "care-bottle": {
+   "kutchi": null,
+   "english": "hot-water bottle",
+   "gesture": "lift",
+   "heap": {
+    "kind": "balls",
+    "color": "#d9674f"
+   },
+   "temp": "hot",
+   "src": "placeholder",
+   "qfm": "G77"
+  },
+  "care-blanket": {
+   "kutchi": null,
+   "english": "blanket",
+   "gesture": "tuck",
+   "heap": {
+    "kind": "pieces",
+    "color": "#c9a24a"
+   },
+   "temp": "hot",
+   "src": "placeholder",
+   "qfm": "G78"
+  },
+  "care-tissue": {
+   "kutchi": null,
+   "english": "tissue",
+   "gesture": "lift",
+   "heap": {
+    "kind": "pieces",
+    "color": "#ffffff"
+   },
+   "decoy": true,
+   "src": "placeholder",
+   "qfm": "G79"
+  },
+  "care-pillow": {
+   "kutchi": null,
+   "english": "pillow",
+   "gesture": "tuck",
+   "heap": {
+    "kind": "balls",
+    "color": "#e9e2f5"
+   },
+   "decoy": true,
+   "src": "placeholder",
+   "qfm": "G80"
+  },
+  "care-drops": {
+   "kutchi": null,
+   "english": "dropper",
+   "gesture": "drops",
+   "heap": {
+    "kind": "pods",
+    "color": "#8fc3a9"
+   },
+   "src": "placeholder",
+   "qfm": "G116"
+  },
+  "tool-hand": {
+   "kutchi": null,
+   "english": "hand (look)",
+   "src": "placeholder"
+  },
+  "tool-stethoscope": {
+   "kutchi": null,
+   "english": "stethoscope",
+   "src": "placeholder",
+   "qfm": "G110"
+  },
+  "tool-torch": {
+   "kutchi": null,
+   "english": "torch",
+   "src": "placeholder",
+   "qfm": "G110"
+  },
+  "tool-strip": {
+   "kutchi": null,
+   "english": "thermometer",
+   "src": "placeholder",
+   "qfm": "G111"
+  },
+  "feel-hot": {
+   "kutchi": null,
+   "english": "hot",
+   "src": "placeholder",
+   "qfm": "Round 1 Q11"
+  },
+  "feel-cold": {
+   "kutchi": null,
+   "english": "cold",
+   "src": "placeholder",
+   "qfm": "Round 1 Q11"
+  },
+  "feel-right": {
+   "kutchi": null,
+   "english": "just right",
+   "src": "placeholder",
+   "qfm": "G83"
+  },
+  "side-left": {
+   "kutchi": null,
+   "english": "my left",
+   "src": "placeholder",
+   "qfm": "new (R3.6 priority 3)"
+  },
+  "side-right": {
+   "kutchi": null,
+   "english": "my right",
+   "src": "placeholder",
+   "qfm": "new (R3.6 priority 3)"
+  },
+  "col-red": {
+   "kutchi": null,
+   "english": "red",
+   "hex": "#c9483b",
+   "src": "placeholder",
+   "qfm": "E60"
+  },
+  "col-green": {
+   "kutchi": null,
+   "english": "green",
+   "hex": "#4f9a58",
+   "src": "placeholder",
+   "qfm": "E61"
+  },
+  "col-blue": {
+   "kutchi": null,
+   "english": "blue",
+   "hex": "#3f76b8",
+   "src": "placeholder",
+   "qfm": "E62"
+  },
+  "med-green": {
+   "kutchi": null,
+   "english": "green bottle",
+   "heap": {
+    "kind": "balls",
+    "color": "#4f9a58"
+   },
+   "src": "placeholder",
+   "qfm": "G117"
+  },
+  "med-red": {
+   "kutchi": null,
+   "english": "red bottle",
+   "heap": {
+    "kind": "balls",
+    "color": "#c9483b"
+   },
+   "src": "placeholder",
+   "qfm": "G117"
+  },
+  "med-blue": {
+   "kutchi": null,
+   "english": "blue bottle",
+   "heap": {
+    "kind": "balls",
+    "color": "#3f76b8"
+   },
+   "src": "placeholder",
+   "qfm": "G117"
+  },
+  "med-syrup": {
+   "kutchi": null,
+   "english": "syrup",
+   "heap": {
+    "kind": "powder",
+    "color": "#b8663a"
+   },
+   "src": "placeholder"
+  },
+  "med-honey": {
+   "kutchi": null,
+   "english": "honey",
+   "heap": {
+    "kind": "powder",
+    "color": "#e5b33d"
+   },
+   "src": "placeholder"
+  }
+ },
+ "lines": {
+  "cl-hurts": {
+   "e": "My {x} hurts."
+  },
+  "cl-check": {
+   "e": "The {x}."
+  },
+  "cl-checkfull": {
+   "e": "Check the {x}."
+  },
+  "cl-all": {
+   "e": "Let's check everything."
+  },
+  "cl-now": {
+   "e": "Now the {x}."
+  },
+  "cl-again": {
+   "e": "The {x} again."
+  },
+  "cl-listen": {
+   "e": "Listen to the {x}."
+  },
+  "cl-look": {
+   "e": "Look in the {x}."
+  },
+  "cl-temp": {
+   "e": "Take the temperature: the {x}."
+  },
+  "cl-fine": {
+   "e": "Nothing wrong there."
+  },
+  "cl-found": {
+   "e": "That's it!"
+  },
+  "cl-unwell": {
+   "e": "I don't feel well."
+  },
+  "cl-dunno": {
+   "e": "I don't know why."
+  },
+  "cl-where": {
+   "e": "Where does it hurt?"
+  },
+  "cl-whereq": {
+   "e": "Where?"
+  },
+  "cl-this": {
+   "e": "Ahh, this one."
+  },
+  "cl-here": {
+   "e": "Here?"
+  },
+  "cl-nothere": {
+   "e": "Nothing there. Where?"
+  },
+  "cl-sayagain": {
+   "e": "Say it again?"
+  },
+  "cl-whatsthis": {
+   "e": "What's this?"
+  },
+  "cl-wrong": {
+   "e": "{x}? No, my {y} hurts."
+  },
+  "cl-notool": {
+   "e": "No, the {x}."
+  },
+  "cl-tickles": {
+   "e": "That tickles!"
+  },
+  "cl-side": {
+   "e": "{x} one."
+  },
+  "cl-other": {
+   "e": "Not that one. My other {x}."
+  },
+  "cl-treat": {
+   "e": "{x}."
+  },
+  "cl-colour": {
+   "e": "The {x} one."
+  },
+  "cl-round": {
+   "e": "Round {x} times."
+  },
+  "cl-roundpath": {
+   "e": "Round the {x}."
+  },
+  "cl-drops": {
+   "e": "{x} drops."
+  },
+  "cl-bring": {
+   "e": "Bring me the {x}."
+  },
+  "cl-review": {
+   "e": "{x}."
+  },
+  "cl-isthis": {
+   "e": "This is the {x}. The {y}, please."
+  },
+  "cl-ask": {
+   "e": "Is it the {x}, or the {y}?"
+  },
+  "cl-yourask": {
+   "e": "Is it your {x}, or your {y}?"
+  },
+  "cl-whatwrong": {
+   "e": "What's wrong with {x}?"
+  },
+  "cl-nothingwrong": {
+   "e": "Nothing wrong there. What else?"
+  },
+  "cl-thatsit": {
+   "e": "That's it. Will you help me?"
+  },
+  "cl-youfirst": {
+   "e": "You first."
+  },
+  "cl-letmesee": {
+   "e": "Let me see."
+  },
+  "cl-allbetter": {
+   "e": "All better!"
+  },
+  "cl-welldone": {
+   "e": "Well done, my helper."
+  },
+  "cl-feel": {
+   "e": "I'm {x}."
+  }
+ },
+ "people": {
+  "_about": "Greybox patients. All use the grey silhouette (data/patients/grey-adult.json) until the art exists. `name` is English-only UI text, never Kutchi.",
+  "grey-1": {
+   "name": "Patient A",
+   "pose": "grey-adult"
+  },
+  "grey-2": {
+   "name": "Patient B",
+   "pose": "grey-adult"
+  },
+  "grey-3": {
+   "name": "Patient C",
+   "pose": "grey-adult"
+  },
+  "nani": {
+   "name": "Nani",
+   "pose": "grey-adult"
+  }
+ },
+ "instruments": {
+  "_about": "R2.2 rule 4: every instrument works on several parts, so the tool narrows nothing. `hand` is the plain look-and-touch check (every part). The doctor's call names the tool by its frame (listen / look / temperature / check).",
+  "tool-hand": {
+   "frame": "cl-checkfull",
+   "parts": "*"
+  },
+  "tool-stethoscope": {
+   "frame": "cl-listen",
+   "parts": [
+    "body-chest",
+    "body-tummy",
+    "body-back"
+   ],
+   "reaction": "heartbeat"
+  },
+  "tool-torch": {
+   "frame": "cl-look",
+   "parts": [
+    "body-ear",
+    "body-nose",
+    "body-mouth",
+    "body-eye",
+    "body-throat",
+    "body-tooth"
+   ],
+   "reaction": "beam"
+  },
+  "tool-strip": {
+   "frame": "cl-temp",
+   "parts": [
+    "body-head",
+    "body-hand"
+   ],
+   "reaction": "reading"
+  }
+ },
+ "cares": {
+  "_about": "Which care items fit which parts (the doctor only ever names one that fits). The trolley always holds every unlocked item for the level, shuffled per visit, so what's there never answers the instruction.",
+  "care-plaster": [
+   "body-arm",
+   "body-leg",
+   "body-hand",
+   "body-foot",
+   "body-head",
+   "body-knee",
+   "body-elbow",
+   "body-finger",
+   "body-toe"
+  ],
+  "care-bandage": [
+   "body-arm",
+   "body-leg",
+   "body-hand",
+   "body-foot",
+   "body-knee",
+   "body-elbow",
+   "body-head"
+  ],
+  "care-cloth": [
+   "body-head",
+   "body-arm",
+   "body-leg",
+   "body-knee",
+   "body-neck"
+  ],
+  "care-ice": [
+   "body-arm",
+   "body-leg",
+   "body-hand",
+   "body-foot",
+   "body-head",
+   "body-knee",
+   "body-elbow"
+  ],
+  "care-bottle": [
+   "body-tummy",
+   "body-foot",
+   "body-hand",
+   "body-back"
+  ],
+  "care-blanket": [
+   "body-tummy",
+   "body-leg",
+   "body-arm",
+   "body-foot",
+   "body-hand",
+   "body-head"
+  ],
+  "care-drops": [
+   "body-eye",
+   "body-ear"
+  ]
+ },
+ "paths": {
+  "_about": "T2's figure-of-eight at level 3: a called path between two neighbouring hotspots, said in order (round the foot, round the leg, round the foot).",
+  "body-foot": [
+   "body-foot",
+   "body-leg",
+   "body-foot"
+  ],
+  "body-hand": [
+   "body-hand",
+   "body-arm",
+   "body-hand"
+  ],
+  "body-knee": [
+   "body-knee",
+   "body-leg",
+   "body-knee"
+  ],
+  "body-elbow": [
+   "body-elbow",
+   "body-arm",
+   "body-elbow"
+  ]
+ },
+ "finds": {
+  "_about": "V2 the mystery: what the named check reveals when it's the sore part (never before). No finds that look like illness (R2.7): a pink glow, a gurgle, a reading the doctor says.",
+  "list": [
+   {
+    "part": "body-head",
+    "tool": "tool-strip",
+    "reveal": "hot",
+    "care": "care-cloth"
+   },
+   {
+    "part": "body-hand",
+    "tool": "tool-strip",
+    "reveal": "cold",
+    "care": "care-blanket"
+   },
+   {
+    "part": "body-tummy",
+    "tool": "tool-stethoscope",
+    "reveal": "gurgle",
+    "care": "care-bottle"
+   },
+   {
+    "part": "body-chest",
+    "tool": "tool-stethoscope",
+    "reveal": "fast",
+    "care": "care-blanket"
+   },
+   {
+    "part": "body-throat",
+    "tool": "tool-torch",
+    "reveal": "pink",
+    "care": "care-blanket"
+   },
+   {
+    "part": "body-eye",
+    "tool": "tool-torch",
+    "reveal": "pink",
+    "care": "care-drops",
+    "minLevel": 3
+   },
+   {
+    "part": "body-ear",
+    "tool": "tool-torch",
+    "reveal": "seed",
+    "care": "care-drops",
+    "minLevel": 3
+   }
+  ]
+ },
+ "levels": [
+  {
+   "_about": "Level 1, First day: one word per instruction; the six big parts; one treatment slot (the item); trolley of 5. R2.3, 6.4.",
+   "parts": [
+    "body-head",
+    "body-tummy",
+    "body-arm",
+    "body-leg",
+    "body-hand",
+    "body-foot"
+   ],
+   "sides": false,
+   "tools": false,
+   "calls": [
+    4,
+    5
+   ],
+   "trolley": [
+    "care-plaster",
+    "care-bandage",
+    "care-cloth",
+    "care-ice",
+    "care-blanket"
+   ],
+   "treatSlots": [
+    "item"
+   ],
+   "colours": false,
+   "wrapTurns": null,
+   "voiceFromLevel": null
+  },
+  {
+   "_about": "Level 2, The kit: a verb and a part (the instrument from the kit); + the face close-up; two treatment slots (item + count or colour); trolley of 7.",
+   "parts": [
+    "body-head",
+    "body-tummy",
+    "body-arm",
+    "body-leg",
+    "body-hand",
+    "body-foot",
+    "body-chest",
+    "body-eye",
+    "body-ear",
+    "body-nose",
+    "body-mouth",
+    "body-tooth",
+    "body-throat"
+   ],
+   "tools": [
+    "tool-hand",
+    "tool-stethoscope",
+    "tool-torch",
+    "tool-strip"
+   ],
+   "calls": [
+    4,
+    6
+   ],
+   "trolley": [
+    "care-plaster",
+    "care-bandage",
+    "care-cloth",
+    "care-ice",
+    "care-blanket",
+    "care-bottle",
+    "care-tissue"
+   ],
+   "treatSlots": [
+    "item",
+    "extra"
+   ],
+   "colours": {
+    "care-bandage": [
+     "col-red",
+     "col-green",
+     "col-blue"
+    ],
+    "care-plaster": [
+     "col-red",
+     "col-blue"
+    ]
+   },
+   "wrapTurns": [
+    1,
+    4
+   ]
+  },
+  {
+   "_about": "Level 3, Left and right (age 7+): three slots in two voices; + neighbours and sides (the patient's own, in the patient's voice: R3.2); the figure-of-eight; drops; trolley of 9.",
+   "parts": [
+    "body-head",
+    "body-tummy",
+    "body-arm",
+    "body-leg",
+    "body-hand",
+    "body-foot",
+    "body-chest",
+    "body-eye",
+    "body-ear",
+    "body-nose",
+    "body-mouth",
+    "body-tooth",
+    "body-throat",
+    "body-neck",
+    "body-shoulder",
+    "body-elbow",
+    "body-knee",
+    "body-finger",
+    "body-toe"
+   ],
+   "sides": true,
+   "calls": [
+    5,
+    6
+   ],
+   "trolley": [
+    "care-plaster",
+    "care-bandage",
+    "care-cloth",
+    "care-ice",
+    "care-blanket",
+    "care-bottle",
+    "care-tissue",
+    "care-pillow",
+    "care-drops"
+   ],
+   "treatSlots": [
+    "item",
+    "extra",
+    "side"
+   ],
+   "path": 0.5,
+   "dropCount": [
+    1,
+    3
+   ]
+  }
+ ],
+ "visits": {
+  "_about": "The visit types (R2.2). `from` is the first level the type is drawn in a morning; the lab can run any type at any level. minTested: the shared ear rule (R3.5): the ear star needs no miss AND at least this many graded rows that were neither taught (word stage 1) nor settled through the '?' rung. In V4 the doctor examines the part the child named himself (R3.4 S3), and its test is the voice star (the production moment): with only the treatment left to hear (V3's rows, measured under V3) a V4 shows no ear slot in phase 1; the leak bot found that the treatment alone is too few rows to grade fairly. A visit with fewer tested rows than minTested shows no ear slot (its rows still play), the same rule as the voice slot.",
+  "you": {
+   "name": "You're the patient",
+   "code": "V0",
+   "from": 1,
+   "minTested": 0
+  },
+  "checkup": {
+   "name": "The check-up",
+   "code": "V1",
+   "from": 1,
+   "minTested": 3
+  },
+  "mystery": {
+   "name": "The mystery",
+   "code": "V2",
+   "from": 2,
+   "minTested": 3
+  },
+  "hurt": {
+   "name": "The named ailment",
+   "code": "V3",
+   "from": 1,
+   "minTested": 2
+  },
+  "bring": {
+   "name": "Bring someone in",
+   "code": "V4",
+   "from": 2,
+   "minTested": 2,
+   "stub": true
+  }
+ },
+ "days": {
+  "_about": "R3.1 decision 1: a level-1 morning is 2 check-ups and 2 named ailments, the first always a check-up; from level 2 the mystery and bring-someone-in join the draw. A data knob.",
+  "mix": [
+   {
+    "first": "checkup",
+    "draw": {
+     "checkup": 2,
+     "hurt": 2
+    }
+   },
+   {
+    "first": "checkup",
+    "draw": {
+     "checkup": 1,
+     "hurt": 1,
+     "mystery": 1,
+     "bring": 1
+    }
+   },
+   {
+    "first": "checkup",
+    "draw": {
+     "checkup": 1,
+     "hurt": 1,
+     "mystery": 1,
+     "bring": 1
+    }
+   }
+  ]
+ },
+ "you": {
+  "_about": "V0 You're the patient (the lap view, first person: your left is on the left of the screen). S1's closed set is the lap view's visible parts (7). Two speaking rows a visit: the scuff, then a second scuff or (the cold variant) how you feel.",
+  "parts": [
+   "body-hand",
+   "body-finger",
+   "body-arm",
+   "body-elbow",
+   "body-knee",
+   "body-foot",
+   "body-toe"
+  ],
+  "feelings": [
+   "feel-hot",
+   "feel-cold",
+   "feel-right"
+  ],
+  "coldChance": 0.33,
+  "designs": [
+   "stars",
+   "stripes",
+   "dots",
+   "hearts"
+  ]
+ },
+ "voice": {
+  "_about": "R3.4: speaking moments run on `tell` (js/clinic/mechanics/tell.js) against listen({choices, timeoutMs}). minConfidence below which the doctor says 'Say it again?' once, then the pills slide up. voicePass: the voice star needs every speaking row accepted on the first try (recogniser or a grown-up's tick) and at least minRows speaking rows in the visit. From level 2 the end-of-treatment hand-over asks 'What's this?' first (S4 at the hand-over), so every treated visit has two speaking rows.",
+  "minConfidence": 0.35,
+  "timeoutMs": 4000,
+  "maxSet": 8,
+  "pillsWithMicUntilLevel": 1,
+  "whatsThisFromLevel": 2,
+  "s2FromLevel": 2,
+  "voicePass": {
+   "minRows": 2
+  }
+ },
+ "ask": {
+  "_about": "The '?' rung (M13's only form, R2.4, 6.3): the doctor narrows to two (the right one and a look-alike, random order). Costs the tick; never offered when two options are all that's left; a row settled through it is not a tested row for the ear star (minTested), so 'always ask and pick one' can't earn it.",
+  "perVisit": 1,
+  "costs": "tick"
+ },
+ "lookalike_groups": {
+  "_about": "Merged into Cook.data.lookalike_groups for Cook's pass me (the doctor's bag) and the which-one stub.",
+  "groups": [
+   [
+    "body-eye",
+    "body-ear",
+    "body-nose"
+   ],
+   [
+    "body-hand",
+    "body-foot"
+   ],
+   [
+    "body-knee",
+    "body-elbow",
+    "body-shoulder"
+   ],
+   [
+    "body-finger",
+    "body-toe"
+   ],
+   [
+    "body-arm",
+    "body-leg"
+   ],
+   [
+    "body-head",
+    "body-tummy",
+    "body-chest"
+   ],
+   [
+    "care-cloth",
+    "care-ice",
+    "care-tissue"
+   ],
+   [
+    "care-blanket",
+    "care-pillow",
+    "care-bottle"
+   ],
+   [
+    "care-plaster",
+    "care-bandage",
+    "care-drops"
+   ],
+   [
+    "med-green",
+    "med-red",
+    "med-blue"
+   ],
+   [
+    "med-syrup",
+    "med-honey",
+    "med-red"
+   ]
+  ]
+ },
+ "salience": {
+  "_about": "For the leak bot's salience/sweep strategies only: how big and central each part looks on the grey patient (0-1).",
+  "body-tummy": 1.0,
+  "body-head": 0.95,
+  "body-chest": 0.9,
+  "body-leg": 0.8,
+  "body-arm": 0.7,
+  "body-foot": 0.55,
+  "body-hand": 0.5,
+  "body-knee": 0.45,
+  "body-shoulder": 0.4,
+  "body-neck": 0.35,
+  "body-elbow": 0.3,
+  "body-mouth": 0.3,
+  "body-nose": 0.28,
+  "body-eye": 0.26,
+  "body-ear": 0.24,
+  "body-throat": 0.2,
+  "body-finger": 0.18,
+  "body-toe": 0.16,
+  "body-tooth": 0.1
+ },
+ "mechanics": {
+  "_about": "Knobs per clinic mechanic (levels list only what changes), merged into Cook.data.mechanics at load under clinic-only ids. Cook's own mechanics (fetch, count, stir, pour, knead, passme) keep Cook's knobs.",
+  "check": {
+   "levels": [
+    {
+     "quietMs": 3000,
+     "replayMs": 8000,
+     "reactMs": 900,
+     "closeupScale": 2.6
+    },
+    {},
+    {}
+   ]
+  },
+  "where": {
+   "levels": [
+    {
+     "quietMs": 3000,
+     "replayMs": 8000,
+     "minHitPx": 160,
+     "pad": 120
+    },
+    {
+     "closeup": true
+    },
+    {
+     "sided": true
+    }
+   ]
+  },
+  "care": {
+   "levels": [
+    {
+     "quietMs": 2500
+    },
+    {},
+    {}
+   ]
+  },
+  "stick": {
+   "levels": [
+    {
+     "goodPx": 40,
+     "okPx": 110
+    },
+    {},
+    {
+     "goodPx": 30,
+     "okPx": 90
+    }
+   ]
+  },
+  "wrap": {
+   "levels": [
+    {
+     "trackR": 70,
+     "maxTurns": 6,
+     "quietMs": 1600
+    },
+    {},
+    {}
+   ]
+  },
+  "lift": {
+   "levels": [
+    {
+     "band": [
+      0.55,
+      0.85
+     ],
+     "rate": 0.25
+    },
+    {},
+    {
+     "band": [
+      0.62,
+      0.8
+     ],
+     "rate": 0.3
+    }
+   ]
+  },
+  "tuck": {
+   "levels": [
+    {
+     "goodFrac": 0.2
+    },
+    {},
+    {
+     "goodFrac": 0.12
+    }
+   ]
+  },
+  "drops": {
+   "levels": [
+    {
+     "max": 6,
+     "goodPx": 50
+    },
+    {},
+    {}
+   ]
+  },
+  "handover": {
+   "levels": [
+    {
+     "flyMs": 450
+    },
+    {},
+    {}
+   ]
+  },
+  "ask": {
+   "levels": [
+    {
+     "perVisit": 1
+    },
+    {},
+    {}
+   ]
+  },
+  "tell": {
+   "levels": [
+    {
+     "pillsWithMic": true
+    },
+    {
+     "pillsWithMic": false
+    },
+    {}
+   ]
+  },
+  "you": {
+   "levels": [
+    {
+     "probeWrongChance": 0.5
+    },
+    {
+     "sides": true
+    },
+    {}
+   ]
+  }
+ },
+ "stations": {
+  "cl-check": {
+   "name": "Check-up",
+   "verb": "Check",
+   "goal": "The doctor names a part. Check that part."
+  },
+  "cl-where": {
+   "name": "Where does it hurt?",
+   "verb": "Where",
+   "goal": "Listen to the patient, then tap where it hurts."
+  },
+  "cl-care": {
+   "name": "The trolley",
+   "verb": "Care",
+   "goal": "Pick what the doctor asks for from the trolley."
+  },
+  "cl-stick": {
+   "name": "Plaster",
+   "verb": "Stick",
+   "goal": "Drag the plaster onto the sore place."
+  },
+  "cl-wrap": {
+   "name": "Bandage",
+   "verb": "Wrap",
+   "goal": "Wrap the bandage round, as many times as he says. Then press the tick."
+  },
+  "cl-lift": {
+   "name": "Cold and hot packs",
+   "verb": "Lay and lift",
+   "goal": "Lay it on the sore place; lift it off when the ring is green."
+  },
+  "cl-tuck": {
+   "name": "Blanket",
+   "verb": "Tuck",
+   "goal": "Pull the blanket up to their chin."
+  },
+  "cl-drops": {
+   "name": "Drops",
+   "verb": "Drops",
+   "goal": "Squeeze once for each drop. Then press the tick."
+  },
+  "cl-handover": {
+   "name": "Hand it over",
+   "verb": "Hand over",
+   "goal": "Put it in the doctor's hand."
+  },
+  "cl-tell": {
+   "name": "Say it",
+   "verb": "Say it",
+   "goal": "Say the word to the doctor, or tap it."
+  },
+  "cl-you": {
+   "name": "You're the patient",
+   "verb": "Say it",
+   "goal": "Tell the doctor where it hurts."
+  },
+  "cl-visit": {
+   "name": "A visit",
+   "verb": "Visit",
+   "goal": "Help the doctor."
+  },
+  "cl-disp": {
+   "name": "The dispensary",
+   "verb": "Fetch",
+   "goal": "Fetch what the doctor asks for and hand it to him."
+  }
+ },
+ "star_sets": {
+  "_about": "R3.4: star_sets.clinic becomes ear / voice / plaster / tick or bolt; a visit with no speaking moment shows no voice slot. Held here until the shared star data lands (R3.9).",
+  "clinic": {
+   "ear": {
+    "icon": "ear",
+    "name": "Understood",
+    "tip": "Understood: did what the doctor and the patient said"
+   },
+   "voice": {
+    "icon": "voice",
+    "name": "Said it",
+    "tip": "Said it: the doctor understood you first time"
+   },
+   "hand": {
+    "icon": "plaster",
+    "name": "Gentle hands",
+    "tip": "Gentle hands: put it on just right"
+   },
+   "relaxed": {
+    "icon": "tick",
+    "name": "No help",
+    "tip": "No help: no '?', replays or reveals"
+   },
+   "busy": {
+    "icon": "bolt",
+    "name": "Quick",
+    "tip": "Quick"
+   }
+  }
+ },
+ "bot": {
+  "_about": "build/leak_clinic.mjs: the audio-duration model the 'duration' strategy sees (it never sees the words). A line's length is its frame's length plus the word's letters, times a per-take jitter; three takes per line as the family would record. `weber`: a listener hears a line's length only to within this fraction (the Weber fraction for durations around a second is about 0.1-0.2), so the bot can't fingerprint a recording by milliseconds.",
+  "secPerChar": 0.075,
+  "frameSec": 0.55,
+  "jitter": 0.18,
+  "takes": 3,
+  "weber": 0.12
+ }
+}
