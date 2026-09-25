@@ -54,7 +54,7 @@
       const y1 = 770;
       ids.forEach((id, i) => {
         const y = ids.length === 1 ? 450 : y0 + ((y1 - y0) * i) / (ids.length - 1);
-        bowls[id] = S.ingredient(id, z.X(lay.bowlsX), z.Y(y), { w: z.L(150), h: z.L(ids.length > 4 ? 100 : 112) });
+        bowls[id] = S.ingredient(id, z.X(lay.bowlsX), z.Y(y), { w: z.L(150), h: z.L(ids.length > 4 ? 100 : 112), state: "pieces" });
       });
       S.track(S.add.image(z.X(lay.boardX), z.Y(430), SK.tex(S, "board")).setScale(z.k).setDepth(D.item - 2));
       const hand = S.hand(null, { x: z.X(lay.boardX + 10), y: z.Y(735), k: z.k * 0.7 });

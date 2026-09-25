@@ -125,7 +125,6 @@
     const P = V.person || { x: 1005, top: 200 };
     const at = { x: P.x, baseline: 560, w: 60, h: 60 };
     round.phase = "packing";
-    UI.mission.step(round.rows.length ? 2 : 0);
     // the stall steps back: only the bag is tappable now
     round.items.forEach((it) => {
       it.off = true;
@@ -180,7 +179,8 @@
     await Cook.wait(420);
     round.bag = { items: bag, error, wrongNoun, swapFor };
     await Find.say("shopkeeper", Lang.line("here"));
-    UI.gist(Find.data.mechanics.bag.goal, { full: true });
+    // the goal waits behind the "?" (it pulses the first time you check a bag)
+    UI.gist(Find.data.mechanics.bag.goal, { key: "find-bag" });
     round.phase = "bag";
     let misses = 0;
     await new Promise((resolve) => {
@@ -215,7 +215,8 @@
         Cook.sfx.soft();
         const row = listed.find((r) => r.want.noun === it.noun) || null;
         round.earMiss(row, `bag: ${it.noun} was on the list`, "bag");
-        Find.sayLater("nani", Lang.join([Lang.line("oops"), Lang.bare(Lang.phrase([it.noun]))].concat(Find.listLines(round.L).map((x) => x.line))));
+        // short (calm): what you tapped, then its own row (it WAS on the list); ↻ says the whole list
+        Find.sayLater("nani", Lang.join([Lang.line("oops"), Lang.bare(Lang.phrase([it.noun]))].concat(row ? [Find.rowLine(row, true)] : [])));
         if (misses >= 2) {
           V.glow(bag.filter((b) => b.wrong && !b.gone));
           round.onHelp("shown", { ids: [wrongNoun] });
@@ -242,7 +243,7 @@
     if (!round.alive()) throw new Cook.Abort("left");
     if (greet) await greeting(round);
     round.openList(wants);
-    UI.gist(Find.data.mechanics.list.goal);
+    UI.gist(Find.data.mechanics.list.goal, { key: "find-list" });
     round.phase = "listen";
     await round.sayList();
     if (!round.alive()) throw new Cook.Abort("left");

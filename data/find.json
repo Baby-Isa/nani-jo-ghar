@@ -107,7 +107,7 @@
       "verb": "Find + count",
       "goal": "Find what Nani asked for, as many as she said, then press Done.",
       "levels": [
-        {"rows": 2, "groups": 1, "count": [1, 2], "spare": [1, 1], "decoyKinds": 3, "decoyCopies": [1, 3], "clutterKinds": 0, "maxItems": 11, "maxUnits": 4, "noRow": 0, "cognateTargets": false, "parMs": 12000, "slowTaps": [3, 2000], "slowMs": 2000, "hesitateMs": 9000, "patienceSec": 120, "bag": {"errors": ["swap"]}},
+        {"rows": 2, "groups": 1, "count": [1, 2], "spare": [1, 1], "decoyKinds": 3, "decoyCopies": [1, 3], "clutterKinds": 0, "maxItems": 11, "maxUnits": 4, "noRow": 0, "cognateTargets": false, "parMs": 12000, "slowTaps": [3, 2000], "slowMs": 2000, "hesitateMs": 14000, "patienceSec": 120, "bag": {"errors": ["swap"]}},
         {"rows": 3, "groups": 2, "count": [1, 3], "spare": [1, 2], "decoyKinds": 4, "decoyCopies": [1, 3], "clutterKinds": 1, "maxItems": 17, "maxUnits": 6, "parMs": 10000, "patienceSec": 150, "bag": {"errors": ["swap", "extra"]}},
         {"rows": 3, "groups": 2, "count": [1, 4], "spare": [1, 2], "decoyKinds": 5, "decoyCopies": [2, 3], "clutterKinds": 2, "maxItems": 22, "maxUnits": 7, "noRow": 0.5, "parMs": 9000, "patienceSec": 170, "bag": {"errors": ["swap", "extra"]}}
       ]

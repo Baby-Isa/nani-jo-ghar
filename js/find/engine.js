@@ -124,9 +124,13 @@
     });
     return Object.assign(r, { want, got: 0, need: Infinity, misses: 0, stage: Cook.wordStage(want.noun) });
   };
-  /** Rows in any order, one dot each (shuffled every time: the list's order says nothing). */
+  /**
+   * Rows in any order, one dot each (shuffled every time: the list's order
+   * says nothing). `simple`: never joined by a line, even once "ne poi" is
+   * well known (a list has no steps; Nani says it herself, see listLines).
+   */
   Find.ladder = function (rows) {
-    return { dish: 0, recipe: null, head: null, sections: [{ key: "any", seq: false, groups: Cook.shuffle(rows).map((r) => [r]) }] };
+    return { dish: 0, recipe: null, head: null, sections: [{ key: "any", seq: false, simple: true, groups: Cook.shuffle(rows).map((r) => [r]) }] };
   };
   /** The list as Nani says it: "Muke bo santra khape. Ne hikdo kelo." ("no X" rows as they are). */
   Find.rowLine = function (r, first) {

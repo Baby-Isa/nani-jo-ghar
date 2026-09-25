@@ -1,7 +1,7 @@
 # Find it: design (the next mode after Cook with Nani)
 
 **Date:** 24 Sept 2026
-**Status:** proposal for Zafar. **25 Sept: first playable slice on its own branch, for Zafar's review** (not live): `find.html` + `js/find/` + `data/find.json`, the engine (rows as data, relations as data, levels as data, the Search lab with the non-speaker bot) and M1 Nani's list with M5 Check the bag, in the bazaar with placeholder art. Tests: `build/test_find.py` (play) and `build/test_find.py --leak N` (the bot). It builds on `docs/game-modes-v2.md` (mode 2, *Find it*), `docs/cook-with-nani-phase-a-design.md` (the shared systems and the station library) and `docs/cook-with-nani-kutchi-audit.md` (the leaks).
+**Status:** proposal for Zafar. **25 Sept: first playable slice on its own branch, for Zafar's review** (not live): `find.html` + `js/find/` + `data/find.json`, the engine (rows as data, relations as data, levels as data, the Search lab with the non-speaker bot) and M1 Nani's list with M5 Check the bag, in the bazaar with placeholder art. **Later on 25 Sept it moved onto Cook's calm sidebar (Wave 5A):** Nani's list comes up big as the intro card and flies into the sidebar; one row and one dot per thing; the goal behind "?"; Nani says less (new words are still taught with the twinkle); the result card is the word review; no coin/star counter (pocket money on the title and result card); the combo rises from the basket; Done and the rail (with zoom) are pinned to the sidebar's foot so zoom never falls off a phone. Tests: `build/test_find.py` (play) and `build/test_find.py --leak N` (the bot). It builds on `docs/game-modes-v2.md` (mode 2, *Find it*), `docs/cook-with-nani-phase-a-design.md` (the shared systems and the station library) and `docs/cook-with-nani-kutchi-audit.md` (the leaks).
 **Placeholder rule:** Kutchi below is limited to words and frames already in `data/content.json` or `data/cook.json`. Anything written like `[EN: under]` has no Kutchi yet. In the game it is an English placeholder in grey italic until the family gives the word. **Never invent Kutchi.**
 **25 Sept, later:** the deep dive at the top (mini-games, one-file mechanics, speaking moments, a build brief at the end) **supersedes sections 3, 5.4 and 7 where they conflict**; D9 lists the patches.
 
@@ -381,7 +381,7 @@ Each scene has 3 time grades × arc dressings × modifiers (torch, "find two"), 
 
 - **No item labels in the scene at any stage.** In Cook, labels help with the *next* step; here, a label *is* the answer. Stage-1 teaching happens through the twinkle and the voice.
 - **Tapping an item to hear its name** is allowed in **Explore** (free play with no rows) and for stage-1 words only. During a round, a tap on a findable item is an answer.
-- **Counts:** a digit on the row only while the number word is at stage 1–2 (the Roadmap's "shown and heard" rule, faded as the audit recommends); tallies count aloud at stage 1–2 and silently from stage 3; no ending by itself; press *Done*.
+- **Counts:** **no digit for the count asked for, at any stage** (25 Sept, calm sidebar: a digit beside the row answered "how many?" without the Kutchi number word, and the non-speaker bot read it off the row). The row shows only the running tally ("×2": how many are in the basket so far, never what's left). Tallies count aloud at stage 1–2 and silently from stage 3; no ending by itself; press *Done*.
 
 ### 5.3 Hint ladder and costs
 
