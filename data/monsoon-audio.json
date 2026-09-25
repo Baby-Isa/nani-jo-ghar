@@ -1,0 +1,936 @@
+{
+ "_about": "Monsoon rush audio timing sidecar (build brief task 1): each voice clip's length (dur, s) and where its key word ends (keyAt, s), keyed like data/cook-tts.json (the normalised line; 'en|' for English placeholders). Until the family's recordings are marked up, keyAt is where the clip's sound ends (trailing silence trimmed). Written by `node build/leak_monsoon.mjs --write-audio`; meant to be merged into the audio manifest by the foundation (build_audio_manifest.py is not edited). A line with no clip is timed word by word, and a word with no clip is estimated (js/monsoon/calls.js partTime).",
+ "tokenGap": 0.08,
+ "clips": {
+  "aabhar aanjo": {
+   "file": "assets/audio/cook-tts/aabhar-aanjo.mp3",
+   "dur": 2.518,
+   "keyAt": 2.07
+  },
+  "achija": {
+   "file": "assets/audio/cook-tts/achija.mp3",
+   "dur": 1.818,
+   "keyAt": 1.409
+  },
+  "arre re": {
+   "file": "assets/audio/cook-tts/arre-re.mp3",
+   "dur": 1.809,
+   "keyAt": 1.376
+  },
+  "ghan": {
+   "file": "assets/audio/cook-tts/ghan.mp3",
+   "dur": 1.658,
+   "keyAt": 1.258
+  },
+  "hedo": {
+   "file": "assets/audio/cook-tts/hedo.mp3",
+   "dur": 1.49,
+   "keyAt": 1.066
+  },
+  "muke aadu khape": {
+   "file": "assets/audio/cook-tts/muke-aadu-khape.mp3",
+   "dur": 2.935,
+   "keyAt": 2.51
+  },
+  "muke atto khape": {
+   "file": "assets/audio/cook-tts/muke-atto-khape.mp3",
+   "dur": 2.938,
+   "keyAt": 2.51
+  },
+  "muke bataato khape": {
+   "file": "assets/audio/cook-tts/muke-bataato-khape.mp3",
+   "dur": 3.346,
+   "keyAt": 2.914
+  },
+  "muke bo khape": {
+   "file": "assets/audio/cook-tts/muke-bo-khape.mp3",
+   "dur": 2.743,
+   "keyAt": 2.319
+  },
+  "muke bo khun khape": {
+   "file": "assets/audio/cook-tts/muke-bo-khun-khape.mp3",
+   "dur": 3.354,
+   "keyAt": 2.947
+  },
+  "muke bo maani khape": {
+   "file": "assets/audio/cook-tts/muke-bo-maani-khape.mp3",
+   "dur": 3.415,
+   "keyAt": 2.991
+  },
+  "muke chai khape": {
+   "file": "assets/audio/cook-tts/muke-chai-khape.mp3",
+   "dur": 2.902,
+   "keyAt": 2.478
+  },
+  "muke char khape": {
+   "file": "assets/audio/cook-tts/muke-char-khape.mp3",
+   "dur": 2.969,
+   "keyAt": 2.547
+  },
+  "muke char khun khape": {
+   "file": "assets/audio/cook-tts/muke-char-khun-khape.mp3",
+   "dur": 3.578,
+   "keyAt": 3.145
+  },
+  "muke char maani khape": {
+   "file": "assets/audio/cook-tts/muke-char-maani-khape.mp3",
+   "dur": 3.639,
+   "keyAt": 3.187
+  },
+  "muke daal khape": {
+   "file": "assets/audio/cook-tts/muke-daal-khape.mp3",
+   "dur": 2.903,
+   "keyAt": 2.478
+  },
+  "muke dudh khape": {
+   "file": "assets/audio/cook-tts/muke-dudh-khape.mp3",
+   "dur": 2.903,
+   "keyAt": 2.481
+  },
+  "muke dungri khape": {
+   "file": "assets/audio/cook-tts/muke-dungri-khape.mp3",
+   "dur": 3.258,
+   "keyAt": 2.844
+  },
+  "muke elchi khape": {
+   "file": "assets/audio/cook-tts/muke-elchi-khape.mp3",
+   "dur": 3.099,
+   "keyAt": 2.663
+  },
+  "muke hardar khape": {
+   "file": "assets/audio/cook-tts/muke-hardar-khape.mp3",
+   "dur": 3.158,
+   "keyAt": 2.721
+  },
+  "muke hikdo aadu dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-aadu-dine.mp3",
+   "dur": 3.611,
+   "keyAt": 3.174
+  },
+  "muke hikdo atto dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-atto-dine.mp3",
+   "dur": 3.667,
+   "keyAt": 3.225
+  },
+  "muke hikdo bataato dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-bataato-dine.mp3",
+   "dur": 3.926,
+   "keyAt": 3.503
+  },
+  "muke hikdo bo dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-bo-dine.mp3",
+   "dur": 3.41,
+   "keyAt": 2.965
+  },
+  "muke hikdo bo khun dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-bo-khun-dine.mp3",
+   "dur": 4.247,
+   "keyAt": 3.541
+  },
+  "muke hikdo bo maani dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-bo-maani-dine.mp3",
+   "dur": 4.306,
+   "keyAt": 3.584
+  },
+  "muke hikdo chai dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-chai-dine.mp3",
+   "dur": 3.604,
+   "keyAt": 3.168
+  },
+  "muke hikdo char dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-char-dine.mp3",
+   "dur": 3.665,
+   "keyAt": 3.221
+  },
+  "muke hikdo char khun dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-char-khun-dine.mp3",
+   "dur": 4.535,
+   "keyAt": 3.815
+  },
+  "muke hikdo char maani dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-char-maani-dine.mp3",
+   "dur": 4.602,
+   "keyAt": 3.884
+  },
+  "muke hikdo daal dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-daal-dine.mp3",
+   "dur": 3.572,
+   "keyAt": 3.144
+  },
+  "muke hikdo dudh dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-dudh-dine.mp3",
+   "dur": 3.701,
+   "keyAt": 3.262
+  },
+  "muke hikdo dungri dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-dungri-dine.mp3",
+   "dur": 3.77,
+   "keyAt": 3.359
+  },
+  "muke hikdo elchi dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-elchi-dine.mp3",
+   "dur": 3.706,
+   "keyAt": 3.281
+  },
+  "muke hikdo hardar dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-hardar-dine.mp3",
+   "dur": 3.897,
+   "keyAt": 3.485
+  },
+  "muke hikdo hikdo dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-hikdo-dine.mp3",
+   "dur": 3.703,
+   "keyAt": 3.273
+  },
+  "muke hikdo hikdo khun dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-hikdo-khun-dine.mp3",
+   "dur": 4.504,
+   "keyAt": 3.783
+  },
+  "muke hikdo hikdo maani dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-hikdo-maani-dine.mp3",
+   "dur": 4.6,
+   "keyAt": 3.874
+  },
+  "muke hikdo jeeru dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-jeeru-dine.mp3",
+   "dur": 3.641,
+   "keyAt": 3.207
+  },
+  "muke hikdo khape": {
+   "file": "assets/audio/cook-tts/muke-hikdo-khape.mp3",
+   "dur": 3.002,
+   "keyAt": 2.583
+  },
+  "muke hikdo khun dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-khun-dine.mp3",
+   "dur": 3.537,
+   "keyAt": 3.109
+  },
+  "muke hikdo khun khape": {
+   "file": "assets/audio/cook-tts/muke-hikdo-khun-khape.mp3",
+   "dur": 3.609,
+   "keyAt": 3.18
+  },
+  "muke hikdo lal marcha dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-lal-marcha-dine.mp3",
+   "dur": 4.73,
+   "keyAt": 4.021
+  },
+  "muke hikdo lasan dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-lasan-dine.mp3",
+   "dur": 3.799,
+   "keyAt": 3.368
+  },
+  "muke hikdo limu dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-limu-dine.mp3",
+   "dur": 3.636,
+   "keyAt": 3.184
+  },
+  "muke hikdo loon dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-loon-dine.mp3",
+   "dur": 3.513,
+   "keyAt": 3.1
+  },
+  "muke hikdo maani dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-maani-dine.mp3",
+   "dur": 3.607,
+   "keyAt": 3.167
+  },
+  "muke hikdo maani khape": {
+   "file": "assets/audio/cook-tts/muke-hikdo-maani-khape.mp3",
+   "dur": 3.64,
+   "keyAt": 3.206
+  },
+  "muke hikdo marcha dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-marcha-dine.mp3",
+   "dur": 3.863,
+   "keyAt": 3.431
+  },
+  "muke hikdo paani dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-paani-dine.mp3",
+   "dur": 3.67,
+   "keyAt": 3.231
+  },
+  "muke hikdo panj dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-panj-dine.mp3",
+   "dur": 3.735,
+   "keyAt": 3.304
+  },
+  "muke hikdo panj khun dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-panj-khun-dine.mp3",
+   "dur": 4.502,
+   "keyAt": 3.783
+  },
+  "muke hikdo panj maani dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-panj-maani-dine.mp3",
+   "dur": 4.6,
+   "keyAt": 3.881
+  },
+  "muke hikdo rai dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-rai-dine.mp3",
+   "dur": 3.45,
+   "keyAt": 3.023
+  },
+  "muke hikdo tameto dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-tameto-dine.mp3",
+   "dur": 3.892,
+   "keyAt": 3.459
+  },
+  "muke hikdo trae dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-trae-dine.mp3",
+   "dur": 3.483,
+   "keyAt": 3.064
+  },
+  "muke hikdo trae khun dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-trae-khun-dine.mp3",
+   "dur": 4.313,
+   "keyAt": 3.6
+  },
+  "muke hikdo trae maani dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-trae-maani-dine.mp3",
+   "dur": 4.407,
+   "keyAt": 3.683
+  },
+  "muke hikdo vatana dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-vatana-dine.mp3",
+   "dur": 3.857,
+   "keyAt": 3.417
+  },
+  "muke jeeru khape": {
+   "file": "assets/audio/cook-tts/muke-jeeru-khape.mp3",
+   "dur": 2.908,
+   "keyAt": 2.501
+  },
+  "muke khun khape": {
+   "file": "assets/audio/cook-tts/muke-khun-khape.mp3",
+   "dur": 2.836,
+   "keyAt": 2.406
+  },
+  "muke lal marcha khape": {
+   "file": "assets/audio/cook-tts/muke-lal-marcha-khape.mp3",
+   "dur": 3.832,
+   "keyAt": 3.4
+  },
+  "muke lasan khape": {
+   "file": "assets/audio/cook-tts/muke-lasan-khape.mp3",
+   "dur": 3.034,
+   "keyAt": 2.591
+  },
+  "muke limu khape": {
+   "file": "assets/audio/cook-tts/muke-limu-khape.mp3",
+   "dur": 2.903,
+   "keyAt": 2.472
+  },
+  "muke loon khape": {
+   "file": "assets/audio/cook-tts/muke-loon-khape.mp3",
+   "dur": 2.775,
+   "keyAt": 2.35
+  },
+  "muke maani khape": {
+   "file": "assets/audio/cook-tts/muke-maani-khape.mp3",
+   "dur": 2.908,
+   "keyAt": 2.494
+  },
+  "muke marcha khape": {
+   "file": "assets/audio/cook-tts/muke-marcha-khape.mp3",
+   "dur": 3.194,
+   "keyAt": 2.777
+  },
+  "muke paani khape": {
+   "file": "assets/audio/cook-tts/muke-paani-khape.mp3",
+   "dur": 3,
+   "keyAt": 2.57
+  },
+  "muke panj khape": {
+   "file": "assets/audio/cook-tts/muke-panj-khape.mp3",
+   "dur": 2.963,
+   "keyAt": 2.531
+  },
+  "muke panj khun khape": {
+   "file": "assets/audio/cook-tts/muke-panj-khun-khape.mp3",
+   "dur": 3.571,
+   "keyAt": 3.137
+  },
+  "muke panj maani khape": {
+   "file": "assets/audio/cook-tts/muke-panj-maani-khape.mp3",
+   "dur": 3.636,
+   "keyAt": 3.189
+  },
+  "muke rai khape": {
+   "file": "assets/audio/cook-tts/muke-rai-khape.mp3",
+   "dur": 2.807,
+   "keyAt": 2.375
+  },
+  "muke tameto khape": {
+   "file": "assets/audio/cook-tts/muke-tameto-khape.mp3",
+   "dur": 3.228,
+   "keyAt": 2.811
+  },
+  "muke trae khape": {
+   "file": "assets/audio/cook-tts/muke-trae-khape.mp3",
+   "dur": 2.775,
+   "keyAt": 2.348
+  },
+  "muke trae khun khape": {
+   "file": "assets/audio/cook-tts/muke-trae-khun-khape.mp3",
+   "dur": 3.382,
+   "keyAt": 2.946
+  },
+  "muke trae maani khape": {
+   "file": "assets/audio/cook-tts/muke-trae-maani-khape.mp3",
+   "dur": 3.416,
+   "keyAt": 2.983
+  },
+  "muke vatana khape": {
+   "file": "assets/audio/cook-tts/muke-vatana-khape.mp3",
+   "dur": 3.192,
+   "keyAt": 2.761
+  },
+  "ne aadu": {
+   "file": "assets/audio/cook-tts/ne-aadu.mp3",
+   "dur": 2.068,
+   "keyAt": 1.636
+  },
+  "ne atto": {
+   "file": "assets/audio/cook-tts/ne-atto.mp3",
+   "dur": 2.001,
+   "keyAt": 1.561
+  },
+  "ne bataato": {
+   "file": "assets/audio/cook-tts/ne-bataato.mp3",
+   "dur": 2.39,
+   "keyAt": 1.946
+  },
+  "ne bo khun": {
+   "file": "assets/audio/cook-tts/ne-bo-khun.mp3",
+   "dur": 2.292,
+   "keyAt": 1.882
+  },
+  "ne bo maani": {
+   "file": "assets/audio/cook-tts/ne-bo-maani.mp3",
+   "dur": 2.394,
+   "keyAt": 1.975
+  },
+  "ne bo": {
+   "file": "assets/audio/cook-tts/ne-bo.mp3",
+   "dur": 1.716,
+   "keyAt": 1.286
+  },
+  "ne chai": {
+   "file": "assets/audio/cook-tts/ne-chai.mp3",
+   "dur": 1.908,
+   "keyAt": 1.483
+  },
+  "ne char khun": {
+   "file": "assets/audio/cook-tts/ne-char-khun.mp3",
+   "dur": 2.553,
+   "keyAt": 2.151
+  },
+  "ne char maani": {
+   "file": "assets/audio/cook-tts/ne-char-maani.mp3",
+   "dur": 2.676,
+   "keyAt": 2.234
+  },
+  "ne char": {
+   "file": "assets/audio/cook-tts/ne-char.mp3",
+   "dur": 1.85,
+   "keyAt": 1.461
+  },
+  "ne daal": {
+   "file": "assets/audio/cook-tts/ne-daal.mp3",
+   "dur": 1.85,
+   "keyAt": 1.456
+  },
+  "ne dudh": {
+   "file": "assets/audio/cook-tts/ne-dudh.mp3",
+   "dur": 1.913,
+   "keyAt": 1.511
+  },
+  "ne dungri": {
+   "file": "assets/audio/cook-tts/ne-dungri.mp3",
+   "dur": 2.204,
+   "keyAt": 1.795
+  },
+  "ne elchi": {
+   "file": "assets/audio/cook-tts/ne-elchi.mp3",
+   "dur": 2.168,
+   "keyAt": 1.751
+  },
+  "ne hardar": {
+   "file": "assets/audio/cook-tts/ne-hardar.mp3",
+   "dur": 2.131,
+   "keyAt": 1.711
+  },
+  "ne hikdo khun": {
+   "file": "assets/audio/cook-tts/ne-hikdo-khun.mp3",
+   "dur": 2.548,
+   "keyAt": 2.129
+  },
+  "ne hikdo maani": {
+   "file": "assets/audio/cook-tts/ne-hikdo-maani.mp3",
+   "dur": 2.679,
+   "keyAt": 2.246
+  },
+  "ne hikdo": {
+   "file": "assets/audio/cook-tts/ne-hikdo.mp3",
+   "dur": 2.038,
+   "keyAt": 1.605
+  },
+  "ne jeeru": {
+   "file": "assets/audio/cook-tts/ne-jeeru.mp3",
+   "dur": 1.972,
+   "keyAt": 1.549
+  },
+  "ne khun": {
+   "file": "assets/audio/cook-tts/ne-khun.mp3",
+   "dur": 1.815,
+   "keyAt": 1.407
+  },
+  "ne lal marcha": {
+   "file": "assets/audio/cook-tts/ne-lal-marcha.mp3",
+   "dur": 2.769,
+   "keyAt": 2.343
+  },
+  "ne lasan": {
+   "file": "assets/audio/cook-tts/ne-lasan.mp3",
+   "dur": 2.073,
+   "keyAt": 1.659
+  },
+  "ne limu": {
+   "file": "assets/audio/cook-tts/ne-limu.mp3",
+   "dur": 1.947,
+   "keyAt": 1.527
+  },
+  "ne loon": {
+   "file": "assets/audio/cook-tts/ne-loon.mp3",
+   "dur": 1.721,
+   "keyAt": 1.316
+  },
+  "ne maani": {
+   "file": "assets/audio/cook-tts/ne-maani.mp3",
+   "dur": 2.009,
+   "keyAt": 1.585
+  },
+  "ne marcha": {
+   "file": "assets/audio/cook-tts/ne-marcha.mp3",
+   "dur": 2.138,
+   "keyAt": 1.73
+  },
+  "ne paani": {
+   "file": "assets/audio/cook-tts/ne-paani.mp3",
+   "dur": 2.103,
+   "keyAt": 1.672
+  },
+  "ne panj khun": {
+   "file": "assets/audio/cook-tts/ne-panj-khun.mp3",
+   "dur": 2.554,
+   "keyAt": 2.148
+  },
+  "ne panj maani": {
+   "file": "assets/audio/cook-tts/ne-panj-maani.mp3",
+   "dur": 2.714,
+   "keyAt": 2.286
+  },
+  "ne panj": {
+   "file": "assets/audio/cook-tts/ne-panj.mp3",
+   "dur": 2.039,
+   "keyAt": 1.598
+  },
+  "ne rai": {
+   "file": "assets/audio/cook-tts/ne-rai.mp3",
+   "dur": 1.85,
+   "keyAt": 1.431
+  },
+  "ne tameto": {
+   "file": "assets/audio/cook-tts/ne-tameto.mp3",
+   "dur": 2.295,
+   "keyAt": 1.849
+  },
+  "ne trae khun": {
+   "file": "assets/audio/cook-tts/ne-trae-khun.mp3",
+   "dur": 2.33,
+   "keyAt": 1.925
+  },
+  "ne trae maani": {
+   "file": "assets/audio/cook-tts/ne-trae-maani.mp3",
+   "dur": 2.487,
+   "keyAt": 2.063
+  },
+  "ne trae": {
+   "file": "assets/audio/cook-tts/ne-trae.mp3",
+   "dur": 1.782,
+   "keyAt": 1.345
+  },
+  "ne vatana": {
+   "file": "assets/audio/cook-tts/ne-vatana.mp3",
+   "dur": 2.17,
+   "keyAt": 1.762
+  },
+  "salamun alaykum": {
+   "file": "assets/audio/cook-tts/salamun-alaykum.mp3",
+   "dur": 3.035,
+   "keyAt": 2.636
+  },
+  "wa alaikum salaam": {
+   "file": "assets/audio/cook-tts/wa-alaikum-salaam.mp3",
+   "dur": 3.065,
+   "keyAt": 2.66
+  },
+  "aabhar": {
+   "file": "assets/audio/cook-tts/aabhar.mp3",
+   "dur": 1.625,
+   "keyAt": 1.226
+  },
+  "aadu": {
+   "file": "assets/audio/cook-tts/aadu.mp3",
+   "dur": 1.592,
+   "keyAt": 1.175
+  },
+  "aanjo": {
+   "file": "assets/audio/cook-tts/aanjo.mp3",
+   "dur": 1.719,
+   "keyAt": 1.285
+  },
+  "alaikum": {
+   "file": "assets/audio/cook-tts/alaikum.mp3",
+   "dur": 1.85,
+   "keyAt": 1.441
+  },
+  "alaykum": {
+   "file": "assets/audio/cook-tts/alaykum.mp3",
+   "dur": 1.85,
+   "keyAt": 1.441
+  },
+  "arre": {
+   "file": "assets/audio/cook-tts/arre.mp3",
+   "dur": 1.337,
+   "keyAt": 0.917
+  },
+  "atto": {
+   "file": "assets/audio/cook-tts/atto.mp3",
+   "dur": 1.553,
+   "keyAt": 1.109
+  },
+  "bataato": {
+   "file": "assets/audio/cook-tts/bataato.mp3",
+   "dur": 2.007,
+   "keyAt": 1.584
+  },
+  "bo": {
+   "file": "assets/audio/cook-tts/bo.mp3",
+   "dur": 1.463,
+   "keyAt": 1.04
+  },
+  "chai": {
+   "file": "assets/audio/cook-tts/chai.mp3",
+   "dur": 1.46,
+   "keyAt": 1.035
+  },
+  "char": {
+   "file": "assets/audio/cook-tts/char.mp3",
+   "dur": 1.492,
+   "keyAt": 1.074
+  },
+  "daal": {
+   "file": "assets/audio/cook-tts/daal.mp3",
+   "dur": 1.529,
+   "keyAt": 1.146
+  },
+  "dine": {
+   "file": "assets/audio/cook-tts/dine.mp3",
+   "dur": 1.593,
+   "keyAt": 1.171
+  },
+  "dudh": {
+   "file": "assets/audio/cook-tts/dudh.mp3",
+   "dur": 1.624,
+   "keyAt": 1.236
+  },
+  "dungri": {
+   "file": "assets/audio/cook-tts/dungri.mp3",
+   "dur": 1.879,
+   "keyAt": 1.453
+  },
+  "elchi": {
+   "file": "assets/audio/cook-tts/elchi.mp3",
+   "dur": 1.658,
+   "keyAt": 1.238
+  },
+  "hardar": {
+   "file": "assets/audio/cook-tts/hardar.mp3",
+   "dur": 1.682,
+   "keyAt": 1.266
+  },
+  "hikdo": {
+   "file": "assets/audio/cook-tts/hikdo.mp3",
+   "dur": 1.622,
+   "keyAt": 1.193
+  },
+  "jeeru": {
+   "file": "assets/audio/cook-tts/jeeru.mp3",
+   "dur": 1.75,
+   "keyAt": 1.325
+  },
+  "khape": {
+   "file": "assets/audio/cook-tts/khape.mp3",
+   "dur": 1.587,
+   "keyAt": 1.158
+  },
+  "khun": {
+   "file": "assets/audio/cook-tts/khun.mp3",
+   "dur": 1.53,
+   "keyAt": 1.111
+  },
+  "lal": {
+   "file": "assets/audio/cook-tts/lal.mp3",
+   "dur": 1.623,
+   "keyAt": 1.22
+  },
+  "lal marcha": {
+   "file": "assets/audio/cook-tts/lal-marcha.mp3",
+   "dur": 2.396,
+   "keyAt": 1.994
+  },
+  "lasan": {
+   "file": "assets/audio/cook-tts/lasan.mp3",
+   "dur": 1.719,
+   "keyAt": 1.304
+  },
+  "limu": {
+   "file": "assets/audio/cook-tts/limu.mp3",
+   "dur": 1.593,
+   "keyAt": 1.181
+  },
+  "loon": {
+   "file": "assets/audio/cook-tts/loon.mp3",
+   "dur": 1.529,
+   "keyAt": 1.113
+  },
+  "maani": {
+   "file": "assets/audio/cook-tts/maani.mp3",
+   "dur": 1.658,
+   "keyAt": 1.244
+  },
+  "marcha": {
+   "file": "assets/audio/cook-tts/marcha.mp3",
+   "dur": 1.809,
+   "keyAt": 1.396
+  },
+  "muke": {
+   "file": "assets/audio/cook-tts/muke.mp3",
+   "dur": 1.594,
+   "keyAt": 1.177
+  },
+  "ne": {
+   "file": "assets/audio/cook-tts/ne.mp3",
+   "dur": 1.43,
+   "keyAt": 1.002
+  },
+  "paani": {
+   "file": "assets/audio/cook-tts/paani.mp3",
+   "dur": 1.562,
+   "keyAt": 1.136
+  },
+  "panj": {
+   "file": "assets/audio/cook-tts/panj.mp3",
+   "dur": 1.564,
+   "keyAt": 1.148
+  },
+  "rai": {
+   "file": "assets/audio/cook-tts/rai.mp3",
+   "dur": 1.466,
+   "keyAt": 1.061
+  },
+  "re": {
+   "file": "assets/audio/cook-tts/re.mp3",
+   "dur": 1.431,
+   "keyAt": 1.004
+  },
+  "salaam": {
+   "file": "assets/audio/cook-tts/salaam.mp3",
+   "dur": 1.75,
+   "keyAt": 1.329
+  },
+  "salamun": {
+   "file": "assets/audio/cook-tts/salamun.mp3",
+   "dur": 2.071,
+   "keyAt": 1.648
+  },
+  "tameto": {
+   "file": "assets/audio/cook-tts/tameto.mp3",
+   "dur": 1.819,
+   "keyAt": 1.396
+  },
+  "trae": {
+   "file": "assets/audio/cook-tts/trae.mp3",
+   "dur": 1.361,
+   "keyAt": 0.942
+  },
+  "vatana": {
+   "file": "assets/audio/cook-tts/vatana.mp3",
+   "dur": 1.785,
+   "keyAt": 1.377
+  },
+  "wa": {
+   "file": "assets/audio/cook-tts/wa.mp3",
+   "dur": 1.431,
+   "keyAt": 1.036
+  },
+  "en|can you make me": {
+   "file": "assets/audio/cook-tts/en-can-you-make-me.mp3",
+   "dur": 1.769,
+   "keyAt": 1.488
+  },
+  "en|enough": {
+   "file": "assets/audio/cook-tts/en-enough.mp3",
+   "dur": 0.974,
+   "keyAt": 0.956
+  },
+  "en|how are you": {
+   "file": "assets/audio/cook-tts/en-how-are-you.mp3",
+   "dur": 1.404,
+   "keyAt": 1.179
+  },
+  "en|ill give you pocket money for helping get it all right and be quick and you get more": {
+   "file": "assets/audio/cook-tts/en-ill-give-you-pocket-money-for-helping-get-it-all-right-and-be-quick-and-you-get-more.mp3",
+   "dur": 6.962,
+   "keyAt": 6.71
+  },
+  "en|im fine thank you": {
+   "file": "assets/audio/cook-tts/en-im-fine-thank-you.mp3",
+   "dur": 2.308,
+   "keyAt": 2.091
+  },
+  "en|more": {
+   "file": "assets/audio/cook-tts/en-more.mp3",
+   "dur": 0.977,
+   "keyAt": 0.903
+  },
+  "en|no": {
+   "file": "assets/audio/cook-tts/en-no.mp3",
+   "dur": 1.034,
+   "keyAt": 0.727
+  },
+  "en|of course": {
+   "file": "assets/audio/cook-tts/en-of-course.mp3",
+   "dur": 1.456,
+   "keyAt": 1.215
+  },
+  "en|this is for": {
+   "file": "assets/audio/cook-tts/en-this-is-for.mp3",
+   "dur": 1.404,
+   "keyAt": 1.245
+  },
+  "en|wait for me": {
+   "file": "assets/audio/cook-tts/en-wait-for-me.mp3",
+   "dur": 1.49,
+   "keyAt": 1.274
+  },
+  "en|well done": {
+   "file": "assets/audio/cook-tts/en-well-done.mp3",
+   "dur": 1.452,
+   "keyAt": 1.161
+  },
+  "en|yes": {
+   "file": "assets/audio/cook-tts/en-yes.mp3",
+   "dur": 1.058,
+   "keyAt": 0.934
+  },
+  "en|youre welcome": {
+   "file": "assets/audio/cook-tts/en-youre-welcome.mp3",
+   "dur": 1.458,
+   "keyAt": 1.228
+  },
+  "en|chaat": {
+   "file": "assets/audio/cook-tts/en-chaat.mp3",
+   "dur": 1.173,
+   "keyAt": 0.962
+  },
+  "en|chickpeas": {
+   "file": "assets/audio/cook-tts/en-chickpeas.mp3",
+   "dur": 1.543,
+   "keyAt": 1.417
+  },
+  "en|chips": {
+   "file": "assets/audio/cook-tts/en-chips.mp3",
+   "dur": 1.202,
+   "keyAt": 1.023
+  },
+  "en|coriander": {
+   "file": "assets/audio/cook-tts/en-coriander.mp3",
+   "dur": 1.682,
+   "keyAt": 1.42
+  },
+  "en|ghee": {
+   "file": "assets/audio/cook-tts/en-ghee.mp3",
+   "dur": 0.916,
+   "keyAt": 0.776
+  },
+  "en|green chutney": {
+   "file": "assets/audio/cook-tts/en-green-chutney.mp3",
+   "dur": 1.82,
+   "keyAt": 1.534
+  },
+  "en|green pepper": {
+   "file": "assets/audio/cook-tts/en-green-pepper.mp3",
+   "dur": 1.626,
+   "keyAt": 1.518
+  },
+  "en|meat": {
+   "file": "assets/audio/cook-tts/en-meat.mp3",
+   "dur": 1.261,
+   "keyAt": 0.889
+  },
+  "en|mince": {
+   "file": "assets/audio/cook-tts/en-mince.mp3",
+   "dur": 1.259,
+   "keyAt": 1.025
+  },
+  "en|mishkaki": {
+   "file": "assets/audio/cook-tts/en-mishkaki.mp3",
+   "dur": 1.684,
+   "keyAt": 1.476
+  },
+  "en|only": {
+   "file": "assets/audio/cook-tts/en-only.mp3",
+   "dur": 1.065,
+   "keyAt": 0.847
+  },
+  "en|quickly": {
+   "file": "assets/audio/cook-tts/en-quickly.mp3",
+   "dur": 1.174,
+   "keyAt": 1.028
+  },
+  "en|samosa": {
+   "file": "assets/audio/cook-tts/en-samosa.mp3",
+   "dur": 1.486,
+   "keyAt": 1.33
+  },
+  "en|sev": {
+   "file": "assets/audio/cook-tts/en-sev.mp3",
+   "dur": 0.978,
+   "keyAt": 0.845
+  },
+  "en|slowly": {
+   "file": "assets/audio/cook-tts/en-slowly.mp3",
+   "dur": 1.405,
+   "keyAt": 1.238
+  },
+  "en|tamarind chutney": {
+   "file": "assets/audio/cook-tts/en-tamarind-chutney.mp3",
+   "dur": 2.193,
+   "keyAt": 1.944
+  },
+  "en|times": {
+   "file": "assets/audio/cook-tts/en-times.mp3",
+   "dur": 1.319,
+   "keyAt": 1.181
+  },
+  "en|yoghurt": {
+   "file": "assets/audio/cook-tts/en-yoghurt.mp3",
+   "dur": 1.484,
+   "keyAt": 1.24
+  }
+ }
+}
