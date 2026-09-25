@@ -39,3 +39,13 @@
 | **Mode designs** | All six done (`docs/modes/*-design.md`, overview in `OVERVIEW.md`), all "Go with changes". Zafar is answering the 18 merged questions; then build in this order: Tidy up → Who did it? → Dress up → Monsoon rush / clinic → Snap. Each doc ends with a build brief. |
 | **Platform** | "One app, one save" is approved; start after Wave 5A merges. Then the world map and "world is the menu", no-tutorial first launch, role-reversal groundwork. See the to-do's "Platform and tech debt". |
 | **Family words** | Questions for Mum: Round 2 plus Part 7 (the priority word list for all modes) and how to record. Voice notes are to be split by silence into per-word clips. Zafar writes phonetic spellings; Claude tidies them and keeps a `say` field for the voice. The Google TTS placeholder voice is blocked in this environment. |
+
+## Update 25 Sept, 13:35 UTC (old chat, after the handoff)
+
+The old chat is finishing three things and will push them; the new chat should check `git log origin/main` before redoing any of them:
+
+1. **Wave 5A** (calm UI) is merged into `claude/funny-fermi-vyrabn` (3b7da69). Its tests were running; it goes to `main` once they pass.
+2. **Find it calm sidebar** (worktree branch `worktree-agent-a5a7f3c8f8320458c`): the calm sidebar, no target digit on rows (a leak fix), zoom buttons pinned on phones.
+3. **Batch 1 art wiring** (worktree branch `worktree-agent-a8c03f5aa01818f1b`): a sprite map in data (`art.sprites`), webp builds, the new hob/worktop backgrounds, with the current drawings as fallback.
+
+**Not started:** "one app, one save" (the shell). Find it is still a separate page, `find.html`. **Hands v2** (`claude/art-hands-v1`) is still waiting on Zafar's ring approval.
