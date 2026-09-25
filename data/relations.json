@@ -1,0 +1,63 @@
+{
+  "_about": "The one list of position relations every mode uses (Find it, Tidy up, Monsoon rush, Snap, the clinic's courtyard). Read by js/shared/rel.js; the spec is docs/shared-api.md section 1. A relation id is what scene spots and rows carry; its word is the phrase the child hears. NO relation has Kutchi yet (Questions for Mum, section on positions): every word below is an English placeholder with kutchi null, shown grey like any other placeholder, and swapped by data when the family answers. kind: 'anchor' needs an anchor (a scene anchor, a person, or a placed item: 'in the bowl', 'next to the plate'); 'unary' needs none ('in the middle'); 'leave' is Tidy up's 'leave it where it is'. derived: how rel.js decides it between two spots when the anchor is a placed item rather than scenery (neighbour graph, never free geometry). frame 'player': left and right are the player's, as seen on screen. cams: which scene cameras (T top-down, H high angle, E eye level) can show it honestly. order: the acquisition order (in, on, under, behind, next to, in front of, between), used by generators to introduce one at a time.",
+  "relations": {
+    "in":         { "word": "ph-rel-in",     "kind": "anchor", "cams": ["T", "H", "E"], "order": 1 },
+    "on":         { "word": "ph-rel-on",     "kind": "anchor", "cams": ["H", "E"],      "order": 1 },
+    "under":      { "word": "ph-rel-under",  "kind": "anchor", "cams": ["E"],           "order": 2 },
+    "behind":     { "word": "ph-rel-behind", "kind": "anchor", "cams": ["H", "E"],      "order": 3, "derived": "back",  "inverse": "in-front" },
+    "next-to":    { "word": "ph-rel-nextto", "kind": "anchor", "cams": ["T", "H", "E"], "order": 4, "derived": "adjacent" },
+    "left-of":    { "word": "ph-rel-left",   "kind": "anchor", "cams": ["T", "H", "E"], "order": 4, "derived": "left",  "frame": "player", "inverse": "right-of" },
+    "right-of":   { "word": "ph-rel-right",  "kind": "anchor", "cams": ["T", "H", "E"], "order": 4, "derived": "right", "frame": "player", "inverse": "left-of" },
+    "in-front":   { "word": "ph-rel-front",  "kind": "anchor", "cams": ["H", "E"],      "order": 5, "derived": "front", "inverse": "behind" },
+    "between":    { "word": "ph-rel-between","kind": "anchor2","cams": ["T", "H", "E"], "order": 6, "derived": "between" },
+    "on-top":     { "word": "ph-rel-ontop",  "kind": "anchor", "cams": ["H", "E"],      "order": 6, "derived": "stack" },
+    "middle":     { "word": "ph-rel-middle", "kind": "unary",  "cams": ["T", "H", "E"], "order": 5 },
+    "corner":     { "word": "ph-rel-corner", "kind": "unary",  "cams": ["T", "H"],      "order": 6 },
+    "top-row":    { "word": "ph-rel-top",    "kind": "unary",  "cams": ["T", "E"],      "order": 5 },
+    "bottom-row": { "word": "ph-rel-bottom", "kind": "unary",  "cams": ["T", "E"],      "order": 5 },
+    "first":      { "word": "ph-rel-first",  "kind": "unary",  "cams": ["T", "H", "E"], "order": 7 },
+    "last":       { "word": "ph-rel-last",   "kind": "unary",  "cams": ["T", "H", "E"], "order": 7 },
+    "stay":       { "word": "ph-rel-stay",   "kind": "leave",  "cams": ["T", "H", "E"], "order": 1 }
+  },
+  "aliases": {
+    "_about": "Other spellings the mode designs used, mapped to the one id. rel.js normalises through this, so old data keeps working.",
+    "next-left": "left-of",
+    "next-right": "right-of",
+    "in-front-of": "in-front",
+    "front": "in-front",
+    "next": "next-to",
+    "nextto": "next-to",
+    "left": "left-of",
+    "right": "right-of",
+    "top": "top-row",
+    "bottom": "bottom-row",
+    "ontop": "on-top",
+    "leave": "stay"
+  },
+  "grammar": {
+    "_about": "Where the position goes in a row, as word slots: x = the thing, anchor = what it's by, rel = the relation word, anchor2 = the second anchor of 'between'. Kutchi puts the position after the noun (a postposition), so the placeholder order is {x} {anchor} {rel}. Until the family says whether the anchor changes shape ('table-ni niche'), each (anchor, relation) pair is recorded as one phrase (a phrase word id in the mode's data wins over building it).",
+    "place": "{x} {anchor} {rel}",
+    "unary": "{x} {rel}",
+    "between": "{x} {anchor} {anchor2} {rel}"
+  },
+  "words": {
+    "_about": "Placeholder words for Cook.data.words (merge with Rel.mergeWords). kutchi null = placeholder, shown grey.",
+    "ph-rel-in":      { "kutchi": null, "english": "in" },
+    "ph-rel-on":      { "kutchi": null, "english": "on" },
+    "ph-rel-under":   { "kutchi": null, "english": "under" },
+    "ph-rel-behind":  { "kutchi": null, "english": "behind" },
+    "ph-rel-nextto":  { "kutchi": null, "english": "next to" },
+    "ph-rel-left":    { "kutchi": null, "english": "on the left of" },
+    "ph-rel-right":   { "kutchi": null, "english": "on the right of" },
+    "ph-rel-front":   { "kutchi": null, "english": "in front of" },
+    "ph-rel-between": { "kutchi": null, "english": "between" },
+    "ph-rel-ontop":   { "kutchi": null, "english": "on top of" },
+    "ph-rel-middle":  { "kutchi": null, "english": "in the middle" },
+    "ph-rel-corner":  { "kutchi": null, "english": "in the corner" },
+    "ph-rel-top":     { "kutchi": null, "english": "on the top shelf" },
+    "ph-rel-bottom":  { "kutchi": null, "english": "on the bottom shelf" },
+    "ph-rel-first":   { "kutchi": null, "english": "first" },
+    "ph-rel-last":    { "kutchi": null, "english": "last" },
+    "ph-rel-stay":    { "kutchi": null, "english": "leave it" }
+  }
+}
