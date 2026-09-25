@@ -1,0 +1,19 @@
+{
+  "_about": "Monsoon rush sidecar for the hub kitchen (data/scenes/kitchen.json, read only; bg-nani-kitchen-v3, 1600x900). Nothing here edits the base scene. Eight pot slots in one row along the painted island (its top edge y=491, baseline 496), evenly spaced so no slot is nearer the middle than its neighbours' spacing (no spatial pattern; slots are shuffled per storm by js/monsoon/calls.js). Each pot's ceiling stain is straight above it in a code-drawn beam band at the top (drips fall straight down, camera E). Hit areas are at least 150 px wide (the brief asks for 130).",
+  "base": "kitchen",
+  "ceiling": {"y0": 0, "y1": 70, "stainY": 46},
+  "slots": [
+    {"id": "s1", "x": 145, "baseline": 496},
+    {"id": "s2", "x": 330, "baseline": 496},
+    {"id": "s3", "x": 515, "baseline": 496},
+    {"id": "s4", "x": 700, "baseline": 496},
+    {"id": "s5", "x": 885, "baseline": 496},
+    {"id": "s6", "x": 1070, "baseline": 496},
+    {"id": "s7", "x": 1255, "baseline": 496},
+    {"id": "s8", "x": 1440, "baseline": 496}
+  ],
+  "pot": {"w": 150, "h": 96, "hit": {"w": 170, "h": 230, "above": 150}},
+  "single": {"_about": "Drip count level 1: the one open pot sits in the middle of the island.", "x": 800, "baseline": 496},
+  "roof": {"_about": "You call it: the caller's view from the roof, a strip across the top where the stains are seen from above.", "y0": 0, "y1": 150},
+  "ali": {"home": [800, 800], "_about": "Greybox Ali waits in front of the island and runs to the pot the game heard."}
+}
