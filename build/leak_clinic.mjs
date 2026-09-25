@@ -322,6 +322,24 @@ async function voicePaths() {
   return checks;
 }
 
+/* ---------------- every spot the game points the test at hits its own part (levels 1-3, the close-up) ---------------- */
+{
+  const Bd = require(path.join(ROOT, "js/clinic/body.js"));
+  const body = Bd.build(JSON.parse(fs.readFileSync(path.join(ROOT, "data/patients/grey-adult.json"), "utf8")));
+  data.levels.forEach((_, i) => {
+    const parts = V.level(data, i + 1).parts;
+    parts.forEach((p) =>
+      [null, "side-left", "side-right"].forEach((sd) => {
+        if (sd && !V.sided(data, p)) return;
+        const [x, y] = body.spot(p, sd);
+        const cu = body.isFace(p);
+        const h = body.hit(x, y, { active: parts, closeup: cu, pad: 120 / (cu ? 2.6 : 1) });
+        if (!h || h.part !== p || (sd && h.side !== sd)) out.fails.push(`spot ${p} ${sd || ""} L${i + 1} hits ${h ? h.key : "nothing"}`);
+      })
+    );
+  });
+}
+
 const checks = await voicePaths();
 out.voicePaths = checks.map(([n, ok]) => ({ check: n, ok }));
 checks.forEach(([n, ok]) => !ok && out.fails.push(`voice path: ${n}`));
