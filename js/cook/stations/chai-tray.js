@@ -111,7 +111,7 @@
     const hobTex = Cook.Art.tex(S, "bg:hob");
     if (Cook.Art.isPainted(hobTex)) {
       const EDGE = 1352; // the painted panel's right edge, rim and shadow, on the 1600 stage
-      S.track(S.add.image(820 - EDGE, 0, hobTex).setOrigin(0).setCrop(EDGE - 70, 0, 70, 900).setDepth(D.bg + 1.5));
+      S.track(S.add.image(820 - EDGE, 0, hobTex).setOrigin(0).setCrop(EDGE - 70, 70, 70, 668).setDepth(D.bg + 1.5));
     } else [[786, 80, 36, 44], [786, 624, 36, 60]].forEach(([x, y, w, h]) => S.track(S.add.image(0, 0, Cook.Art.tex(S, "bg:marble")).setOrigin(0).setCrop(x, y, w, h).setDepth(D.bg + 1.5)));
     const edge = S.track(S.add.graphics().setDepth(D.bg + 2).setVisible(!Cook.Art.isPainted(hobTex)));
     edge.fillStyle(0x2b2622, 1);

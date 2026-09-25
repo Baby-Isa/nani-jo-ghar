@@ -2382,7 +2382,7 @@
     "veg-12": { "bowl": "topping-marcha-chopped-bowl-t", "whole": "veg-marcha-whole-t" },
     "veg-13": { "bowl": "veg-lasan-chopped-t", "whole": "veg-lasan-whole-t" },
     "veg-14": { "bowl": "veg-aadu-grated-bowl-t", "whole": "veg-aadu-whole-t" },
-    "fru-02": { "whole": "veg-limu-whole-t" },
+    "fru-02": { "bowl": "veg-limu-whole-t", "whole": "veg-limu-whole-t" },
     "ph-meat": { "raw": "mishkaki-meat-raw-t", "grilled": "mishkaki-meat-grilled-t", "charred": "mishkaki-meat-charred-t" },
     "ph-pepper": { "whole": "veg-pepper-whole-t", "raw": "mishkaki-pepper-raw-t", "grilled": "mishkaki-pepper-grilled-t", "charred": "mishkaki-pepper-charred-t" },
     "ph-samosa": { "folded": "samosa-folded-t", "fried": "samosa-fried-golden-t" },
