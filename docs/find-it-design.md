@@ -457,6 +457,39 @@ On a wrong tap: the item wiggles, then *Arre re!* {the name of what you tapped} 
 
 ---
 
+## 8. Build brief (25 Sept 2026, matching the deep dive)
+
+For the Find it build agent, working alongside one agent per mode and a foundation agent. **Phases 0 and 1 touch only Find it's own files**: `find.html`, `css/find.css`, `js/find/**`, `data/find.json`, `data/scenes/sitting-room.json` (new), `build/test_find.py`. Nothing in `js/cook/*`, `css/cook.css`, `index.html` or any shared file. Placeholder words stay in `data/find.json`.
+
+### 8.1 Shared pieces assumed from the foundation agent (not designed here)
+
+| Piece | What Find it needs from it | Until it lands |
+|---|---|---|
+| The shell ("one app, one save") | A mode entry, one wallet, story beats and the map place | `find.html` keeps using Cook's save and progress as now |
+| `data/relations.json`, `js/shared/rel.js`, scene `spots` schema | `Rel.holds(item, where)` and `Rel.options(scene, row)` for `where` and `warmer`; the `spots[].{anchor, rel, x, baseline, also}` shape Find it uses is offered as the seed | `Find.matches` keeps matching on `item.rel`, by anchor word |
+| The "which one?" module | Attribute rows, the decoy rule, the blind-odds budget | `Find.makeWants` does size locally (`gen.js`) |
+| Star sets and ear/voice rules as data | `star_sets.find` with a fourth, voice star; `minTested`; taught-rows exclusion | `data/find.json` `star_set` as now; the voice star shown on the result card only |
+| `js/shared/speech.js` | `Speech.listen({choices, timeoutMs})` | `Find.fakeListen`: the lab's "what did the child say?" picker, which the test drives |
+| Overlay-at-anchor sprites | Ali at the stall, the cats peeking (phase 3) | A face badge and a hand from the existing hand set |
+| Wave 5A's frozen UI API | Intro card, "?" help, word review, the sidebar | Phase 0 needs none of it; phase 1's greybox uses whatever `ui.js` exports at the time |
+
+### 8.2 Phases
+
+| Phase | What is built | Files | Acceptance |
+|---|---|---|---|
+| **0 Pure logic and the bot** | Split `list.js` into `mechanics/spot.js`, `bag.js`, `where.js`; `games/list.js`, `whichone.js`, `where.js`, `ali.js`; `gen.js` (rows by level: count, size, where, not; the size rule: the noun in both sizes, both sizes on two or more nouns, balanced); the digit fix (stage ≤ 1); level 4 knobs; `mechanics.tell` with `fakeListen`; bot strategies bigger, smaller, odd-size, most-visible copy, nearest copy, first copy, pills-random; `--leak` per game | Own files only | `python3 build/test_find.py --leak 30 --game <id>` under 10% (target 5%) for F1, F2, F3 at levels 1–3, stages 2 and 3; the existing play test still passes at six viewports |
+| **1 Greybox and the lab** | F2 on the bazaar (the same picture at 0.8× and 1.25×); F3 calls on the bazaar's in/on/in-front spots, and `data/scenes/sitting-room.json` as grey boxes with under/behind occluder rectangles; F4 with the picker; F6 as a CSS mask with a battery bar; the voice star and pills on the result card; a Search lab button per game | Own files, plus the new scene file | Each game runs from the lab at levels 1–4; a Playwright round per game with deliberate mistakes; the picker stands in for the mic; no text on items; the tap-cover check before every tap |
+| **2 Integration** | Swap to `rel.js`, `whichone`, `speech.js`, the star data, the shell entry, the intro card and word review; the fruit-bowl errand onto the engine (D9.1); the bowl as speaking moment 1 | Shared files, with the foundation agent | One save; the bot rates unchanged; a real microphone round on a tablet with a family recording set |
+| **3 Story and art** | F5 (openables, cats, sweets) once E59 and A5 exist; the sitting-room art from the greybox spec (4.4); Big Ma's box (F11) after E60–E71; F7 in the hub daily; family words dropped in as data and the audit rerun per game | Scene and asset files | The Kutchi audit per game and scene; the visual QA checklist on every screenshot; the persona round with Zafar's notes |
+
+### 8.3 The first three tasks
+
+1. **Split and re-test (phase 0).** Move `Round.searchTap/collect/wrong` into `mechanics/spot.js` and `checkBag` into `mechanics/bag.js` with no change in behaviour; `games/list.js` composes greet → spot+count → bag → tell(bowl, fake). Run `build/test_find.py` and `--leak 30`; the rates must match today's within noise. Fix the digit to stage ≤ 1 and record the new stage-2 rate.
+2. **F2 Which one? (phase 0–1).** `gen.js` gains size rows and the size rule; `placeItems` takes a `size` scale per unit; the three size strategies in `bot.js`; `games/whichone.js` and its lab button; levels in `data/find.json` (`whichone.levels`: rows, sizeRows, decoyKinds, spare per size). Acceptance: bot under 5% at level 1, stage 2.
+3. **`mechanics/tell.js` and F4 (phase 1).** `tell({choices, want, actor, onChoice})`: calls `Speech.listen` if present, else `Find.fakeListen`; the actor acts on the choice; one retry, then pills; parent ✓ in Grandparent mode; the voice rows on the result card. `games/ali.js`: the picture list, tell (kinds), tell (numbers), then `bag` on Ali's packing. Acceptance: a Playwright round through the picker earns the voice star; a pills-only round never does; the round never waits on the mic longer than `timeoutMs`.
+
+---
+
 ## Sources
 
 - Hidden Folks: [Behind the Game, Stefan Lesser](https://medium.com/@stefanlesser/behind-the-game-hidden-folks-e6198dfa885a); [SCMP review](https://www.scmp.com/culture/arts-entertainment/article/2077086/game-review-hidden-folks-searching-game-surreal-animation); [AppUnwrapper guide (clues)](https://www.appunwrapper.com/2017/02/15/hidden-folks-walkthrough-guide-hints-and-tips/)
