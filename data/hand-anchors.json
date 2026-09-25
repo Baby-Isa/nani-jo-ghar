@@ -1,5 +1,5 @@
 {
- "_readme": "Anchor points on each passing master hand image (hands v1), used by build/skin_hands.py to place jewellery and by the game to animate it. Coordinates are pixels in the master image (size given). Each hand: side (right/left; single-hand images are right hands, the game mirrors them for the left), wrist {x, y, angle_deg, width_px, source auto|manual} where wrist jewellery centres, and ring {x, y, angle_deg, view} on the ring finger (null when the pose hides it). angle_deg: the direction the hand (wrist) or finger (ring) points, 0 = up the frame, positive = clockwise. view: back (stone shows), palm or side (band only). Ring anchors were read off gridded views by eye and checked on build/contact-sheets/hands-anchors-check.png. Jewellery sprites are drawn for a wrist 200 px wide: scale by width_px / 200.",
+ "_readme": "Anchor points on each passing master hand image (hands v2, 25 Sept 2026), used by build/skin_hands.py to place jewellery and by the game to animate it. Coordinates are pixels in the master image (size given). angle_deg: the direction the hand, arm or finger points, 0 = up the frame, positive = clockwise. Each hand: side (right/left; single-hand images are right hands, the game mirrors them for the left); wrist {x, y, angle_deg, width_px, source auto|manual}: the measured wrist of the arm (hand_masks.find_wrists), also used to clip the sleeve; landmarks {points: 21 [x, y] MediaPipe hand joints, score, runs, source}: from build/hand_landmarks.py; ring {mcp, pip (the ring finger's base knuckle and middle joint, landmarks 13 and 14), x, y (the ring's centre: 35% from MCP to PIP, and at least just past the web), angle_deg, width_px (finger width measured across the segment), view back|palm|side|hidden (back: band and stone; palm/side: thin band; hidden: not drawn), facing, curl_deg, web_t, source mediapipe|manual (joints marked by eye), view_source manual (view pinned by eye), note}; bracelet {x, y, angle_deg, width_px, width_from}: where wrist jewellery (tennis bracelet, bangles) centres, at the wrist joint across the forearm. Manual joints and views live in build/hand_ring_pins.py and are applied on every run. Checked on build/contact-sheets/hands-rings-debug-*.png and hands-<character>-rings-*.png. Jewellery sprites are drawn for a wrist 200 px wide and a finger 54 px wide.",
  "hand-a1-flat-palm-t": {
   "camera": "t",
   "size": [
@@ -128,11 +128,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 595.6,
-     "y": 721.6,
-     "angle_deg": -2.3,
+     "x": 598.2,
+     "y": 721.4,
+     "angle_deg": -6.3,
      "width_px": 244.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -267,11 +267,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 520.4,
-     "y": 867.3,
-     "angle_deg": 31.3,
-     "width_px": 331.0,
-     "width_from": "measured"
+     "x": 522.0,
+     "y": 868.2,
+     "angle_deg": 28.7,
+     "width_px": 328.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -406,11 +406,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 515.6,
-     "y": 727.6,
-     "angle_deg": 4.6,
-     "width_px": 262.0,
-     "width_from": "measured"
+     "x": 518.9,
+     "y": 727.7,
+     "angle_deg": -0.6,
+     "width_px": 260.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -543,11 +543,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 709.7,
-     "y": 759.7,
-     "angle_deg": 6.2,
-     "width_px": 272.0,
-     "width_from": "measured"
+     "x": 722.9,
+     "y": 758.9,
+     "angle_deg": -13.4,
+     "width_px": 253.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -680,11 +680,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 534.5,
-     "y": 733.0,
-     "angle_deg": 9.3,
-     "width_px": 246.0,
-     "width_from": "measured"
+     "x": 544.0,
+     "y": 733.3,
+     "angle_deg": -5.6,
+     "width_px": 239.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -821,7 +821,7 @@
      "y": 728.5,
      "angle_deg": -0.8,
      "width_px": 243.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -954,11 +954,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 542.0,
-     "y": 727.9,
-     "angle_deg": 15.8,
-     "width_px": 260.0,
-     "width_from": "measured"
+     "x": 553.3,
+     "y": 729.3,
+     "angle_deg": -2.0,
+     "width_px": 246.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -1093,11 +1093,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 817.4,
-     "y": 851.0,
-     "angle_deg": -58.8,
-     "width_px": 365.0,
-     "width_from": "measured"
+     "x": 810.0,
+     "y": 860.3,
+     "angle_deg": -44.3,
+     "width_px": 348.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -1232,11 +1232,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 461.2,
-     "y": 858.9,
-     "angle_deg": 39.0,
-     "width_px": 320.0,
-     "width_from": "measured"
+     "x": 464.3,
+     "y": 861.2,
+     "angle_deg": 33.9,
+     "width_px": 319.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -1371,11 +1371,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 515.4,
+     "x": 516.6,
      "y": 767.3,
-     "angle_deg": 1.2,
+     "angle_deg": -0.8,
      "width_px": 250.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -1416,7 +1416,7 @@
      "web_t": 0.15,
      "view_source": "manual",
      "source": "mediapipe",
-     "note": "fingers wrap towards us; the first segment points away"
+     "note": "fingers wrap towards us; the first segment points away; wrist joint misread on the fingers"
     },
     "landmarks": {
      "points": [
@@ -1510,11 +1510,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 621.8,
-     "y": 644.3,
-     "angle_deg": -46.9,
-     "width_px": 93.0,
-     "width_from": "measured"
+     "x": 753,
+     "y": 767,
+     "angle_deg": -28,
+     "width_px": 237.5,
+     "width_from": "wrist anchor (pinned)"
     }
    }
   ]
@@ -1649,11 +1649,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 613.4,
+     "x": 617.5,
      "y": 699.7,
-     "angle_deg": 3.7,
-     "width_px": 239.0,
-     "width_from": "measured"
+     "angle_deg": -2.3,
+     "width_px": 240.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -1786,11 +1786,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 646.6,
-     "y": 793.1,
-     "angle_deg": -3.3,
-     "width_px": 272.0,
-     "width_from": "measured"
+     "x": 643.8,
+     "y": 793.2,
+     "angle_deg": 0.7,
+     "width_px": 270.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -1923,11 +1923,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 274.2,
-     "y": 711.2,
-     "angle_deg": -9.3,
-     "width_px": 266.0,
-     "width_from": "measured"
+     "x": 266.0,
+     "y": 711.5,
+     "angle_deg": 4.7,
+     "width_px": 240.0,
+     "width_from": "measured (narrowest cut)"
     }
    },
    {
@@ -2051,11 +2051,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 989.0,
-     "y": 716.3,
-     "angle_deg": 8.4,
-     "width_px": 270.0,
-     "width_from": "measured"
+     "x": 1001.2,
+     "y": 715.8,
+     "angle_deg": -12.4,
+     "width_px": 246.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -2188,11 +2188,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 650.6,
-     "y": 715.0,
-     "angle_deg": 12.9,
-     "width_px": 283.0,
-     "width_from": "measured"
+     "x": 661.8,
+     "y": 715.9,
+     "angle_deg": -3.3,
+     "width_px": 270.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -2325,11 +2325,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 757.5,
-     "y": 844.2,
-     "angle_deg": 11.2,
-     "width_px": 344.0,
-     "width_from": "measured"
+     "x": 769.7,
+     "y": 845.1,
+     "angle_deg": -2.7,
+     "width_px": 328.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -2464,11 +2464,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 424.8,
-     "y": 779.7,
-     "angle_deg": 1.3,
-     "width_px": 238.0,
-     "width_from": "measured"
+     "x": 418.6,
+     "y": 779.1,
+     "angle_deg": 9.6,
+     "width_px": 230.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -2603,11 +2603,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 777.5,
-     "y": 825.3,
-     "angle_deg": 10.2,
-     "width_px": 243.0,
-     "width_from": "measured"
+     "x": 788.5,
+     "y": 826.0,
+     "angle_deg": -3.7,
+     "width_px": 235.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -2742,11 +2742,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 549.1,
-     "y": 923.9,
-     "angle_deg": -0.4,
-     "width_px": 260.0,
-     "width_from": "measured"
+     "x": 540.9,
+     "y": 923.3,
+     "angle_deg": 9.1,
+     "width_px": 255.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -2881,11 +2881,428 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 777.0,
-     "y": 786.0,
-     "angle_deg": 4.7,
-     "width_px": 237.0,
-     "width_from": "measured"
+     "x": 786.6,
+     "y": 785.8,
+     "angle_deg": -7.4,
+     "width_px": 229.0,
+     "width_from": "measured (narrowest cut)"
+    }
+   }
+  ]
+ },
+ "hand-c2-tripod-grip-t": {
+  "camera": "t",
+  "size": [
+   1264,
+   1232
+  ],
+  "hands": [
+   {
+    "side": "right",
+    "wrist": {
+     "x": 830.3,
+     "y": 869.8,
+     "angle_deg": -0.7,
+     "width_px": 238.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      787.4,
+      425.5
+     ],
+     "pip": [
+      662.6,
+      336.5
+     ],
+     "x": 743.7,
+     "y": 394.4,
+     "angle_deg": -54.5,
+     "width_px": 21.0,
+     "width_from": "default",
+     "view": "hidden",
+     "facing": 0.02,
+     "curl_deg": 65.0,
+     "web_t": null,
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "pencil grip from above: ring finger curled under the palm"
+    },
+    "landmarks": {
+     "points": [
+      [
+       821.6,
+       765.7
+      ],
+      [
+       682.6,
+       687.8
+      ],
+      [
+       585.9,
+       568.9
+      ],
+      [
+       498.0,
+       473.7
+      ],
+      [
+       445.3,
+       396.0
+      ],
+      [
+       764.7,
+       376.1
+      ],
+      [
+       616.2,
+       260.2
+      ],
+      [
+       508.7,
+       290.0
+      ],
+      [
+       453.6,
+       339.8
+      ],
+      [
+       787.4,
+       400.6
+      ],
+      [
+       640.7,
+       285.4
+      ],
+      [
+       544.8,
+       326.5
+      ],
+      [
+       499.0,
+       384.4
+      ],
+      [
+       787.4,
+       425.5
+      ],
+      [
+       662.6,
+       336.5
+      ],
+      [
+       586.2,
+       378.9
+      ],
+      [
+       551.0,
+       430.7
+      ],
+      [
+       781.7,
+       443.9
+      ],
+      [
+       682.5,
+       382.5
+      ],
+      [
+       622.2,
+       405.4
+      ],
+      [
+       584.6,
+       438.5
+      ]
+     ],
+     "score": 0.83,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 829.8,
+     "y": 808.9,
+     "angle_deg": -10.7,
+     "width_px": 232.0,
+     "width_from": "measured (narrowest cut)"
+    }
+   }
+  ]
+ },
+ "hand-c3-side-pinch-e": {
+  "camera": "e",
+  "size": [
+   1376,
+   1376
+  ],
+  "hands": [
+   {
+    "side": "right",
+    "wrist": {
+     "x": 516.3,
+     "y": 1061.8,
+     "angle_deg": 15.8,
+     "width_px": 288.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      626.2,
+      639.6
+     ],
+     "pip": [
+      748.9,
+      555.1
+     ],
+     "x": 669.1,
+     "y": 610.0,
+     "angle_deg": 55.4,
+     "width_px": 100.3,
+     "width_from": "measured",
+     "view": "hidden",
+     "facing": 0.49,
+     "curl_deg": 96.0,
+     "web_t": null,
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "card held up, palm side: ring finger curled into the palm"
+    },
+    "landmarks": {
+     "points": [
+      [
+       570.9,
+       1025.0
+      ],
+      [
+       608.9,
+       852.7
+      ],
+      [
+       647.5,
+       682.1
+      ],
+      [
+       714.1,
+       530.1
+      ],
+      [
+       767.2,
+       405.0
+      ],
+      [
+       473.2,
+       530.2
+      ],
+      [
+       580.1,
+       374.0
+      ],
+      [
+       660.3,
+       399.6
+      ],
+      [
+       686.6,
+       484.2
+      ],
+      [
+       549.1,
+       589.3
+      ],
+      [
+       703.2,
+       467.9
+      ],
+      [
+       772.1,
+       567.2
+      ],
+      [
+       776.9,
+       685.8
+      ],
+      [
+       626.2,
+       639.6
+      ],
+      [
+       748.9,
+       555.1
+      ],
+      [
+       797.9,
+       645.4
+      ],
+      [
+       789.5,
+       742.6
+      ],
+      [
+       682.9,
+       677.9
+      ],
+      [
+       771.9,
+       618.2
+      ],
+      [
+       804.9,
+       685.9
+      ],
+      [
+       789.2,
+       760.6
+      ]
+     ],
+     "score": 0.95,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 558.4,
+     "y": 1075.8,
+     "angle_deg": 13.8,
+     "width_px": 288.0,
+     "width_from": "measured (narrowest cut)"
+    }
+   }
+  ]
+ },
+ "hand-c3-side-pinch-t": {
+  "camera": "t",
+  "size": [
+   1104,
+   1088
+  ],
+  "hands": [
+   {
+    "side": "right",
+    "wrist": {
+     "x": 732.8,
+     "y": 822.6,
+     "angle_deg": -1.9,
+     "width_px": 250.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      781.5,
+      395.3
+     ],
+     "pip": [
+      644.9,
+      280.7
+     ],
+     "x": 733.7,
+     "y": 355.2,
+     "angle_deg": -50.0,
+     "width_px": 21.4,
+     "width_from": "default",
+     "view": "hidden",
+     "facing": 0.24,
+     "curl_deg": 73.0,
+     "web_t": null,
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "card pinch from above: ring finger curled under the palm"
+    },
+    "landmarks": {
+     "points": [
+      [
+       748.9,
+       745.5
+      ],
+      [
+       590.6,
+       666.7
+      ],
+      [
+       506.0,
+       550.6
+      ],
+      [
+       429.7,
+       444.3
+      ],
+      [
+       370.6,
+       359.2
+      ],
+      [
+       703.5,
+       379.5
+      ],
+      [
+       577.3,
+       231.4
+      ],
+      [
+       478.5,
+       286.9
+      ],
+      [
+       440.2,
+       357.5
+      ],
+      [
+       759.8,
+       378.7
+      ],
+      [
+       612.2,
+       242.9
+      ],
+      [
+       511.2,
+       313.5
+      ],
+      [
+       477.7,
+       384.0
+      ],
+      [
+       781.5,
+       395.3
+      ],
+      [
+       644.9,
+       280.7
+      ],
+      [
+       559.2,
+       335.6
+      ],
+      [
+       527.5,
+       405.4
+      ],
+      [
+       788.1,
+       411.8
+      ],
+      [
+       684.4,
+       325.8
+      ],
+      [
+       610.4,
+       353.8
+      ],
+      [
+       572.8,
+       402.4
+      ]
+     ],
+     "score": 0.93,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 753.4,
+     "y": 789.3,
+     "angle_deg": -5.9,
+     "width_px": 248.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -3018,11 +3435,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 574.5,
-     "y": 679.5,
-     "angle_deg": -0.8,
-     "width_px": 245.0,
-     "width_from": "measured"
+     "x": 577.0,
+     "y": 679.4,
+     "angle_deg": -4.8,
+     "width_px": 244.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -3155,11 +3572,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 661.3,
-     "y": 747.7,
-     "angle_deg": 16.0,
-     "width_px": 257.0,
-     "width_from": "measured"
+     "x": 673.4,
+     "y": 749.1,
+     "angle_deg": -3.2,
+     "width_px": 243.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -3294,11 +3711,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 339.4,
-     "y": 927.7,
-     "angle_deg": 10.5,
-     "width_px": 237.0,
-     "width_from": "measured"
+     "x": 336.6,
+     "y": 927.1,
+     "angle_deg": 13.9,
+     "width_px": 235.0,
+     "width_from": "measured (narrowest cut)"
     }
    },
    {
@@ -3424,11 +3841,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 1226.6,
-     "y": 943.3,
-     "angle_deg": -24.0,
-     "width_px": 238.0,
-     "width_from": "measured"
+     "x": 1220.4,
+     "y": 945.6,
+     "angle_deg": -16.0,
+     "width_px": 235.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -3561,11 +3978,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 708.3,
-     "y": 879.1,
-     "angle_deg": -10.7,
-     "width_px": 284.0,
-     "width_from": "measured"
+     "x": 715.5,
+     "y": 877.0,
+     "angle_deg": -20.7,
+     "width_px": 280.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -3698,11 +4115,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 576.0,
-     "y": 720.2,
-     "angle_deg": 1.4,
-     "width_px": 253.0,
-     "width_from": "measured"
+     "x": 582.6,
+     "y": 719.8,
+     "angle_deg": -8.3,
+     "width_px": 250.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -3974,11 +4391,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 695.8,
+     "x": 697.2,
      "y": 841.1,
-     "angle_deg": -1.4,
+     "angle_deg": -3.4,
      "width_px": 267.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -4113,11 +4530,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 1053.2,
-     "y": 911.4,
-     "angle_deg": -26.6,
-     "width_px": 348.0,
-     "width_from": "measured"
+     "x": 1037.2,
+     "y": 916.8,
+     "angle_deg": -10.6,
+     "width_px": 325.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -4250,11 +4667,276 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 910.9,
-     "y": 1035.6,
-     "angle_deg": 14.7,
-     "width_px": 300.0,
-     "width_from": "measured"
+     "x": 924.3,
+     "y": 1037.3,
+     "angle_deg": -0.4,
+     "width_px": 287.0,
+     "width_from": "measured (narrowest cut)"
+    }
+   }
+  ]
+ },
+ "hand-d3-two-hand-bowl-t": {
+  "camera": "t",
+  "size": [
+   1376,
+   1344
+  ],
+  "hands": [
+   {
+    "side": "left",
+    "wrist": {
+     "x": 248.1,
+     "y": 931.8,
+     "angle_deg": 8.5,
+     "width_px": 252.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      171.8,
+      524.0
+     ],
+     "pip": [
+      176.7,
+      392.8
+     ],
+     "x": 173.5,
+     "y": 478.1,
+     "angle_deg": 2.1,
+     "width_px": 51.9,
+     "width_from": "measured",
+     "view": "back",
+     "facing": 0.42,
+     "curl_deg": 26.0,
+     "web_t": null,
+     "source": "mediapipe"
+    },
+    "landmarks": {
+     "points": [
+      [
+       237.5,
+       854.1
+      ],
+      [
+       393.6,
+       750.2
+      ],
+      [
+       454.7,
+       637.3
+      ],
+      [
+       485.7,
+       533.1
+      ],
+      [
+       514.5,
+       434.9
+      ],
+      [
+       292.1,
+       489.7
+      ],
+      [
+       328.6,
+       335.7
+      ],
+      [
+       360.9,
+       246.6
+      ],
+      [
+       385.6,
+       193.8
+      ],
+      [
+       216.4,
+       501.2
+      ],
+      [
+       229.0,
+       340.8
+      ],
+      [
+       267.7,
+       265.0
+      ],
+      [
+       304.3,
+       221.4
+      ],
+      [
+       171.8,
+       524.0
+      ],
+      [
+       176.7,
+       392.8
+      ],
+      [
+       213.2,
+       323.2
+      ],
+      [
+       247.2,
+       285.3
+      ],
+      [
+       148.6,
+       547.4
+      ],
+      [
+       144.7,
+       444.3
+      ],
+      [
+       163.1,
+       376.7
+      ],
+      [
+       185.7,
+       333.4
+      ]
+     ],
+     "score": 0.9,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 231.2,
+     "y": 896.1,
+     "angle_deg": 8.5,
+     "width_px": 250.0,
+     "width_from": "measured (narrowest cut)"
+    }
+   },
+   {
+    "side": "right",
+    "wrist": {
+     "x": 1123.7,
+     "y": 917.3,
+     "angle_deg": -7.5,
+     "width_px": 256.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      1220.2,
+      543.3
+     ],
+     "pip": [
+      1211.0,
+      396.6
+     ],
+     "x": 1217.0,
+     "y": 492.0,
+     "angle_deg": -3.6,
+     "width_px": 52.2,
+     "width_from": "measured",
+     "view": "back",
+     "facing": 0.42,
+     "curl_deg": 27.0,
+     "web_t": null,
+     "source": "mediapipe"
+    },
+    "landmarks": {
+     "points": [
+      [
+       1136.1,
+       883.2
+      ],
+      [
+       988.9,
+       775.7
+      ],
+      [
+       932.4,
+       647.8
+      ],
+      [
+       903.2,
+       531.0
+      ],
+      [
+       862.2,
+       433.1
+      ],
+      [
+       1095.7,
+       506.2
+      ],
+      [
+       1061.2,
+       337.8
+      ],
+      [
+       1028.8,
+       252.7
+      ],
+      [
+       997.4,
+       196.7
+      ],
+      [
+       1174.8,
+       519.4
+      ],
+      [
+       1158.6,
+       345.8
+      ],
+      [
+       1114.2,
+       274.5
+      ],
+      [
+       1070.8,
+       230.6
+      ],
+      [
+       1220.2,
+       543.3
+      ],
+      [
+       1211.0,
+       396.6
+      ],
+      [
+       1167.8,
+       323.7
+      ],
+      [
+       1123.6,
+       281.3
+      ],
+      [
+       1241.6,
+       567.4
+      ],
+      [
+       1235.8,
+       456.3
+      ],
+      [
+       1204.6,
+       393.8
+      ],
+      [
+       1168.9,
+       356.4
+      ]
+     ],
+     "score": 0.9,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 1143.3,
+     "y": 926.5,
+     "angle_deg": -9.5,
+     "width_px": 257.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -4387,11 +5069,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 639.4,
+     "x": 641.0,
      "y": 684.9,
-     "angle_deg": 1.8,
+     "angle_deg": -0.2,
      "width_px": 269.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -4524,11 +5206,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 571.2,
+     "x": 572.4,
      "y": 777.1,
-     "angle_deg": 0.0,
-     "width_px": 252.0,
-     "width_from": "measured"
+     "angle_deg": -2.0,
+     "width_px": 253.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -4661,11 +5343,276 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 712.5,
-     "y": 944.8,
-     "angle_deg": -8.4,
-     "width_px": 266.0,
-     "width_from": "measured"
+     "x": 718.5,
+     "y": 943.5,
+     "angle_deg": -16.4,
+     "width_px": 264.0,
+     "width_from": "measured (narrowest cut)"
+    }
+   }
+  ]
+ },
+ "hand-d6-two-hand-catch-f1-open-e": {
+  "camera": "e",
+  "size": [
+   1342,
+   1024
+  ],
+  "hands": [
+   {
+    "side": "left",
+    "wrist": {
+     "x": 258.9,
+     "y": 775.0,
+     "angle_deg": 11.5,
+     "width_px": 244.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      202.2,
+      416.7
+     ],
+     "pip": [
+      189.4,
+      276.3
+     ],
+     "x": 195.2,
+     "y": 340.2,
+     "angle_deg": -5.2,
+     "width_px": 77.0,
+     "width_from": "measured",
+     "view": "back",
+     "facing": 0.76,
+     "curl_deg": 2.0,
+     "web_t": 0.425,
+     "source": "mediapipe"
+    },
+    "landmarks": {
+     "points": [
+      [
+       243.9,
+       684.3
+      ],
+      [
+       397.7,
+       597.1
+      ],
+      [
+       467.4,
+       518.8
+      ],
+      [
+       492.5,
+       425.4
+      ],
+      [
+       526.1,
+       349.0
+      ],
+      [
+       372.1,
+       402.3
+      ],
+      [
+       380.5,
+       270.2
+      ],
+      [
+       383.6,
+       190.5
+      ],
+      [
+       383.4,
+       129.8
+      ],
+      [
+       279.5,
+       398.3
+      ],
+      [
+       277.0,
+       245.2
+      ],
+      [
+       273.6,
+       158.3
+      ],
+      [
+       268.8,
+       87.9
+      ],
+      [
+       202.2,
+       416.7
+      ],
+      [
+       189.4,
+       276.3
+      ],
+      [
+       184.8,
+       191.5
+      ],
+      [
+       180.8,
+       128.7
+      ],
+      [
+       131.9,
+       444.8
+      ],
+      [
+       104.5,
+       339.9
+      ],
+      [
+       93.1,
+       277.8
+      ],
+      [
+       86.6,
+       220.0
+      ]
+     ],
+     "score": 0.96,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 241.8,
+     "y": 718.8,
+     "angle_deg": 3.5,
+     "width_px": 238.0,
+     "width_from": "measured (narrowest cut)"
+    }
+   },
+   {
+    "side": "right",
+    "wrist": {
+     "x": 1081.1,
+     "y": 762.2,
+     "angle_deg": -6.2,
+     "width_px": 242.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      1139.4,
+      415.1
+     ],
+     "pip": [
+      1153.7,
+      276.0
+     ],
+     "x": 1146.8,
+     "y": 342.8,
+     "angle_deg": 5.9,
+     "width_px": 77.0,
+     "width_from": "measured",
+     "view": "back",
+     "facing": 0.76,
+     "curl_deg": 2.0,
+     "web_t": 0.4,
+     "source": "mediapipe"
+    },
+    "landmarks": {
+     "points": [
+      [
+       1097.4,
+       683.1
+      ],
+      [
+       943.8,
+       597.6
+      ],
+      [
+       874.3,
+       519.4
+      ],
+      [
+       850.0,
+       425.3
+      ],
+      [
+       815.4,
+       348.6
+      ],
+      [
+       970.7,
+       404.0
+      ],
+      [
+       962.1,
+       272.4
+      ],
+      [
+       958.7,
+       193.4
+      ],
+      [
+       958.0,
+       130.7
+      ],
+      [
+       1062.1,
+       398.4
+      ],
+      [
+       1064.8,
+       245.6
+      ],
+      [
+       1069.0,
+       158.8
+      ],
+      [
+       1073.8,
+       87.4
+      ],
+      [
+       1139.4,
+       415.1
+      ],
+      [
+       1153.7,
+       276.0
+      ],
+      [
+       1159.1,
+       191.2
+      ],
+      [
+       1163.5,
+       127.4
+      ],
+      [
+       1209.7,
+       444.3
+      ],
+      [
+       1237.3,
+       340.5
+      ],
+      [
+       1250.1,
+       278.7
+      ],
+      [
+       1256.6,
+       220.2
+      ]
+     ],
+     "score": 0.97,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 1101.1,
+     "y": 717.3,
+     "angle_deg": -6.2,
+     "width_px": 238.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -4798,11 +5745,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 352.8,
-     "y": 667.7,
-     "angle_deg": 30.3,
-     "width_px": 198.0,
-     "width_from": "default"
+     "x": 359.5,
+     "y": 670.4,
+     "angle_deg": 14.7,
+     "width_px": 226.0,
+     "width_from": "measured (narrowest cut)"
     }
    },
    {
@@ -4970,11 +5917,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 576.6,
-     "y": 655.1,
-     "angle_deg": -0.8,
-     "width_px": 187.2,
-     "width_from": "default"
+     "x": 587.1,
+     "y": 653.0,
+     "angle_deg": -21.4,
+     "width_px": 207.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -5107,11 +6054,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 892.6,
-     "y": 733.8,
-     "angle_deg": -77.7,
-     "width_px": 279.0,
-     "width_from": "measured"
+     "x": 891.5,
+     "y": 737.7,
+     "angle_deg": -71.7,
+     "width_px": 276.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -5244,11 +6191,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 573.0,
-     "y": 716.6,
-     "angle_deg": 1.5,
-     "width_px": 249.0,
-     "width_from": "measured"
+     "x": 571.8,
+     "y": 716.5,
+     "angle_deg": 3.5,
+     "width_px": 247.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -5383,11 +6330,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 483.4,
-     "y": 704.6,
-     "angle_deg": -1.2,
+     "x": 487.2,
+     "y": 704.3,
+     "angle_deg": -7.2,
      "width_px": 245.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -5520,11 +6467,148 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 554.9,
-     "y": 701.3,
-     "angle_deg": -1.7,
+     "x": 556.1,
+     "y": 701.2,
+     "angle_deg": -3.7,
      "width_px": 245.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
+    }
+   }
+  ]
+ },
+ "hand-e3-count-4-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "hands": [
+   {
+    "side": "right",
+    "wrist": {
+     "x": 518.7,
+     "y": 693.4,
+     "angle_deg": -1.8,
+     "width_px": 250.0,
+     "source": "auto"
+    },
+    "ring": {
+     "mcp": [
+      593.1,
+      377.3
+     ],
+     "pip": [
+      621.5,
+      249.5
+     ],
+     "x": 606.4,
+     "y": 317.2,
+     "angle_deg": 12.5,
+     "width_px": 81.0,
+     "width_from": "measured",
+     "view": "back",
+     "facing": 0.77,
+     "curl_deg": 2.0,
+     "web_t": 0.35,
+     "source": "mediapipe"
+    },
+    "landmarks": {
+     "points": [
+      [
+       531.5,
+       646.6
+      ],
+      [
+       415.6,
+       537.2
+      ],
+      [
+       398.5,
+       448.3
+      ],
+      [
+       424.0,
+       382.8
+      ],
+      [
+       449.9,
+       336.6
+      ],
+      [
+       416.6,
+       353.6
+      ],
+      [
+       392.3,
+       239.0
+      ],
+      [
+       379.8,
+       169.4
+      ],
+      [
+       371.7,
+       111.5
+      ],
+      [
+       511.7,
+       355.5
+      ],
+      [
+       505.2,
+       214.7
+      ],
+      [
+       508.1,
+       138.6
+      ],
+      [
+       511.6,
+       65.5
+      ],
+      [
+       593.1,
+       377.3
+      ],
+      [
+       621.5,
+       249.5
+      ],
+      [
+       637.7,
+       161.3
+      ],
+      [
+       646.0,
+       101.8
+      ],
+      [
+       665.2,
+       405.2
+      ],
+      [
+       711.9,
+       319.7
+      ],
+      [
+       741.9,
+       261.5
+      ],
+      [
+       758.5,
+       210.4
+      ]
+     ],
+     "score": 0.95,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 530.2,
+     "y": 681.6,
+     "angle_deg": 2.2,
+     "width_px": 249.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -5657,11 +6741,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 533.9,
+     "x": 535.1,
      "y": 685.2,
-     "angle_deg": -1.8,
+     "angle_deg": -3.8,
      "width_px": 250.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -5794,11 +6878,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 472.1,
-     "y": 871.0,
-     "angle_deg": 30.0,
-     "width_px": 244.8,
-     "width_from": "default"
+     "x": 485.4,
+     "y": 875.7,
+     "angle_deg": 9.2,
+     "width_px": 270.0,
+     "width_from": "measured (narrowest cut)"
     }
    },
    {
@@ -5922,11 +7006,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 1025.9,
-     "y": 927.3,
-     "angle_deg": -28.2,
-     "width_px": 244.8,
-     "width_from": "default"
+     "x": 1012.3,
+     "y": 931.7,
+     "angle_deg": -7.4,
+     "width_px": 268.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -6075,11 +7159,148 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 544.9,
-     "y": 752.2,
-     "angle_deg": -8.0,
+     "x": 539.0,
+     "y": 752.4,
+     "angle_deg": 4.0,
      "width_px": 216.0,
      "width_from": "default"
+    }
+   }
+  ]
+ },
+ "hand-e5-arm-up-fist-e": {
+  "camera": "e",
+  "size": [
+   1024,
+   1024
+  ],
+  "hands": [
+   {
+    "side": "right",
+    "wrist": {
+     "x": 506,
+     "y": 720,
+     "angle_deg": 0,
+     "width_px": 250,
+     "source": "manual"
+    },
+    "ring": {
+     "mcp": [
+      615.4,
+      455.2
+     ],
+     "pip": [
+      593.4,
+      375.0
+     ],
+     "x": 619.5,
+     "y": 428.9,
+     "angle_deg": 8.8,
+     "width_px": 70.0,
+     "width_from": "measured",
+     "view": "back",
+     "facing": 0.75,
+     "curl_deg": 150.0,
+     "web_t": 0.65,
+     "source": "mediapipe"
+    },
+    "landmarks": {
+     "points": [
+      [
+       571.2,
+       741.3
+      ],
+      [
+       428.0,
+       662.1
+      ],
+      [
+       366.9,
+       581.0
+      ],
+      [
+       361.3,
+       498.4
+      ],
+      [
+       395.5,
+       451.0
+      ],
+      [
+       433.4,
+       453.4
+      ],
+      [
+       423.7,
+       369.9
+      ],
+      [
+       426.7,
+       412.1
+      ],
+      [
+       433.3,
+       453.5
+      ],
+      [
+       530.6,
+       445.8
+      ],
+      [
+       507.7,
+       358.6
+      ],
+      [
+       503.9,
+       407.2
+      ],
+      [
+       505.7,
+       449.5
+      ],
+      [
+       615.4,
+       455.2
+      ],
+      [
+       593.4,
+       375.0
+      ],
+      [
+       581.3,
+       419.7
+      ],
+      [
+       582.6,
+       467.3
+      ],
+      [
+       685.7,
+       477.2
+      ],
+      [
+       669.4,
+       413.5
+      ],
+      [
+       645.2,
+       444.6
+      ],
+      [
+       641.5,
+       482.2
+      ]
+     ],
+     "score": 0.96,
+     "runs": 6,
+     "source": "mediapipe"
+    },
+    "bracelet": {
+     "x": 572.4,
+     "y": 777.1,
+     "angle_deg": -2.0,
+     "width_px": 253.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -6212,11 +7433,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 594.0,
-     "y": 681.1,
-     "angle_deg": 16.6,
-     "width_px": 258.0,
-     "width_from": "measured"
+     "x": 605.2,
+     "y": 682.5,
+     "angle_deg": -2.1,
+     "width_px": 239.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -6351,9 +7572,9 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 628.8,
-     "y": 939.6,
-     "angle_deg": 38.0,
+     "x": 635.3,
+     "y": 943.8,
+     "angle_deg": 28.0,
      "width_px": 216.0,
      "width_from": "default"
     }
@@ -6488,11 +7709,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 710.5,
-     "y": 795.7,
-     "angle_deg": -21.7,
-     "width_px": 203.0,
-     "width_from": "measured"
+     "x": 714.4,
+     "y": 793.9,
+     "angle_deg": -29.7,
+     "width_px": 204.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -6625,11 +7846,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 649.3,
-     "y": 716.1,
-     "angle_deg": -19.0,
+     "x": 650.8,
+     "y": 715.5,
+     "angle_deg": -21.0,
      "width_px": 293.0,
-     "width_from": "measured"
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -6762,11 +7983,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 532.6,
-     "y": 825.0,
-     "angle_deg": 22.8,
-     "width_px": 281.0,
-     "width_from": "measured"
+     "x": 549.9,
+     "y": 827.8,
+     "angle_deg": -4.5,
+     "width_px": 251.0,
+     "width_from": "measured (narrowest cut)"
     }
    }
   ]
@@ -6901,11 +8122,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 193.4,
-     "y": 969.0,
-     "angle_deg": 11.3,
-     "width_px": 262.0,
-     "width_from": "measured"
+     "x": 187.5,
+     "y": 967.4,
+     "angle_deg": 17.8,
+     "width_px": 252.0,
+     "width_from": "measured (narrowest cut)"
     }
    },
    {
@@ -7031,9 +8252,9 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 1592.0,
-     "y": 982.4,
-     "angle_deg": -51.1,
+     "x": 1566.7,
+     "y": 999.5,
+     "angle_deg": -17.1,
      "width_px": 174.6,
      "width_from": "default"
     }

@@ -170,14 +170,15 @@
       "output": "assets/characters/hands/master/hand-a2-heel-push-t.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
+        "sources/art/hands/guides/a2-heel-push-guide.png"
       ],
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "heel-of-hand push, seen from directly above: the back of the hand towards the camera, the wrist bent back so the hand is tipped up on its heel; the four fingers point up towards the camera, so from above they are strongly foreshortened and look SHORT, we see mostly their tips and nails; the thumb relaxed at the left side; the forearm lies flat along the worktop from the bottom edge Nothing in or under the hand: no dough, no food, no object."
+        "pose": "The attached image is an approved hand from this set. Redraw it faithfully: the same hand, size, skin colour, lighting, framing and sleeve. There is NO object anywhere in the image: nothing in, under or behind the hand, no ball, no dough, no cloth; the background stays empty and transparent. Change ONLY what follows: make the foreshortening read as real: the hand is tipped up on its heel, the wrist bent back, so the short fingers are rising up towards the camera: we see their fingertips and nails from above, rounded and pointing at us, with soft shadows under them on the back of the hand. Keep them as short as in the attached image. Four fingers together, the thumb at the left side."
       },
-      "camera": "T"
+      "camera": "T",
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
     },
     {
       "id": "hand-a3-palm-up-t",
@@ -322,15 +323,16 @@
       "output": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
+        "sources/art/hands/guides/b1-handle-guide.png"
       ],
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "the knife-and-spatula grip, seen from directly above: a straight magenta handle 2.5 cm thick runs straight forwards from under the heel of the hand, through the fist, and out the front towards the top of the frame; the four fingers wrap round it (we see their backs and knuckles); the THUMB is NOT in the fist: it lies flat on TOP of the handle, pointing forwards along it, its whole length and its thumbnail clearly visible on top of the magenta handle, like a person pressing a knife handle with the thumb The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "The attached image is an approved hand from this set with the new object already painted in. Redraw it faithfully: the same hand, size, skin colour, lighting, camera, framing and sleeve, and the magenta object in the same place and shape. Change ONLY what follows: the thumb. Uncurl the thumb from the side of the fist and lay it straight and flat ON TOP of the magenta handle, pointing up the frame along the handle, its whole length and its thumbnail visible, resting on the magenta just above the fist. The four fingers stay curled round the handle exactly as in the attached image: FOUR rounded knuckles in a row across the top of the fist (index, middle, ring, little). The thumb is the fifth digit, lying on the handle to the left of the index knuckle. Exactly five digits: four knuckles plus the thumb. The object is a PLACEHOLDER: keep it a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
-      "key_out": "magenta"
+      "key_out": "magenta2",
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
     },
     {
       "id": "hand-b2-vertical-grip-t",
@@ -493,15 +495,16 @@
       "output": "assets/characters/hands/master/hand-c2-tripod-grip-t.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
+        "sources/art/hands/guides/c2-tripod-guide.png"
       ],
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "holding a pencil as if writing, seen from directly above: the back of the hand; a thin straight magenta rod 1 cm thick and 12 cm long is held between the tips of the thumb, index and middle fingers and points forwards and to the left, towards the upper left corner, well clear of the hand; the ring and little fingers curled under; the rod is the only object The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "The attached image is an approved hand from this set with the new object already painted in. Redraw it faithfully: the same hand, size, skin colour, lighting, camera, framing and sleeve, and the magenta object in the same place and shape. Change ONLY what follows: the grip. The magenta rod is a pencil held as if writing: its lower end rests in the web between the thumb and the index finger, and the tips of the thumb and index finger pinch it from both sides, the middle finger supporting it underneath; the rod runs straight out to the upper left, clear of the hand. The ring and little fingers curl under. The object is a PLACEHOLDER: keep it a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
-      "key_out": "magenta"
+      "key_out": "magenta2",
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
     },
     {
       "id": "hand-c3-side-pinch-t",
@@ -509,15 +512,16 @@
       "output": "assets/characters/hands/master/hand-c3-side-pinch-t.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
+        "sources/art/hands/guides/c3-side-pinch-t-guide.png"
       ],
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "holding a photo card by its bottom edge, seen from directly above: a flat magenta rectangle 6 x 9 cm lies flat in front of the hand towards the top of the frame; its bottom edge is pinched between the thumb on top and the curled index finger underneath; the other fingers curled under the palm; we see the back of the hand and the thumb lying on the card The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "The attached image is an approved hand from this set with the new object already painted in. Redraw it faithfully: the same hand, size, skin colour, lighting, camera, framing and sleeve, and the magenta object in the same place and shape. Change ONLY what follows: the grip. The magenta rectangle is a photo card lying flat above the hand; its bottom edge is pinched between the pad of the thumb, lying ON the card, and the curled index finger under it, so the thumb's tip and nail overlap the bottom of the card. The card stays a clean sharp-cornered rectangle. The other fingers curl under. The object is a PLACEHOLDER: keep it a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
-      "key_out": "magenta"
+      "key_out": "magenta2",
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
     },
     {
       "id": "hand-c3-side-pinch-e",
@@ -525,15 +529,16 @@
       "output": "assets/characters/hands/master/hand-c3-side-pinch-e.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-eye-level.png"
+        "sources/art/hands/guides/c3-side-pinch-e-guide.png"
       ],
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "holding up a photo card in front of us: a flat upright magenta rectangle 6 x 9 cm stands above the hand; its bottom edge is pinched between the thumb (on the side towards us, its nail visible) and the curled index finger behind it; the other fingers curled; we see the back of the hand and the thumb on the card; the forearm rises from the bottom edge The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "The attached image is an approved hand from this set with the new object already painted in. Redraw it faithfully: the same hand, size, skin colour, lighting, camera, framing and sleeve, and the magenta object in the same place and shape. Change ONLY what follows: the grip. The magenta rectangle is a photo card standing upright above the hand; its bottom edge is pinched between the thumb and the side of the index finger, whose tips overlap the bottom of the card. The card stays a clean sharp-cornered rectangle. The other fingers curl. The object is a PLACEHOLDER: keep it a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "E",
-      "key_out": "magenta"
+      "key_out": "magenta2",
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
     },
     {
       "id": "hand-c4-point-t",
@@ -681,16 +686,17 @@
       "output": "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-master.png"
+        "sources/art/hands/guides/d3-bowl-guide.png"
       ],
       "template": "hands_two_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "seen from directly above: two hands, each the SAME size as the reference hand, hold a flat magenta disc 18 cm across (a bowl seen from above, about one and a half hand lengths across) from its left and right sides; the fingers of each hand curl over the disc's rim, the thumbs on top of the rim; we see the backs of both hands; both forearms come in from the bottom edge, one at the lower left and one at the lower right; the hands and the disc fill most of the frame The object is a PLACEHOLDER: draw it as a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "The attached image is an approved hand from this set with the new object already painted in. Redraw it faithfully: the same hand, size, skin colour, lighting, camera, framing and sleeve, and the magenta object in the same place and shape. Change ONLY what follows: the fingers. The magenta disc is a bowl seen from above, held between the two hands: each hand grips the rim at the disc's left or right side, the fingertips curling over the rim onto the top of the disc, the thumbs on top of the rim. Keep both hands the same size as in the attached image, with their backs towards the camera. The object is a PLACEHOLDER: keep it a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
-      "key_out": "magenta",
-      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+      "key_out": "magenta2",
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object).",
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
     },
     {
       "id": "hand-d4-squeeze-f1-half-t",
@@ -746,15 +752,17 @@
       "mode": "edit",
       "reference_images": [
         "assets/characters/hands/hand-ref-eye-level.png",
-        "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png"
+        "assets/characters/hands/master/hand-a5-wave-f1-e.png"
       ],
       "template": "hands_two_from_ref",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "about to catch a ball, frame 1 of 2, seen from our own eyes: both hands raised in front of us about 15 cm apart, fingers up and spread; we see the BACKS of both hands: the knuckles, the fingernails and the backs of the fingers; the palms face away from us towards the ball and are hidden; no palm lines visible All five digits clearly visible and separate: the thumb and four fingers. A second image is attached: the other frame of this same pose. Match its hand size, hand shape, skin colour, lighting and sleeve exactly."
+        "pose": "about to catch a ball, frame 1 of 2, seen from our own eyes: both hands raised in front of us, about a hand's width apart, fingers up and spread. Each hand is exactly the hand in the second image: the BACK of the hand towards us, with the knuckles and all four fingernails visible; the right hand on the right, and the left hand on the left as its mirror image (its thumb on the right side). The palms face away from us and are hidden: no palm lines. Five digits on each hand. A second image is attached: an approved hand from the same set. Match its hand size, hand shape, skin colour, lighting, camera and sleeve exactly; change only the pose as described."
       },
       "camera": "E",
-      "_note": "Two-handed: drawn as one image (the hands touch or share one object)."
+      "_note": "Two-handed: drawn as one image (the hands touch or share one object).",
+      "_note_v2": "25 Sept v2: made in code from hand-a5-wave-f1-e and its mirror (build/hand_guides.py make_d6); the API kept drawing palms.",
+      "generated_in_code": true
     },
     {
       "id": "hand-d6-two-hand-catch-f2-closed-e",
@@ -853,14 +861,15 @@
       "output": "assets/characters/hands/master/hand-e3-count-4-e.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-eye-level.png"
+        "sources/art/hands/guides/e3-count-4-guide.png"
       ],
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "counting FOUR, seen from behind: the index, middle, ring and little fingers straight up and slightly apart, their nails facing us; the THUMB is folded flat across the palm, completely HIDDEN behind the hand, not visible at all. Only four digits can be seen"
+        "pose": "The attached image is an approved hand from this set. Redraw it faithfully: the same hand, size, skin colour, lighting, framing and sleeve. There is NO object anywhere in the image: nothing in, under or behind the hand, no ball, no dough, no cloth; the background stays empty and transparent. Change ONLY what follows: clean up the left edge of the hand, where the thumb has been cut away: it becomes a smooth, rounded, natural outline of the palm's edge from the index finger's knuckle down to the wrist, with nothing sticking out. The thumb is folded across the palm on the far side and cannot be seen. Only four digits: the four fingers straight up, nails towards us, exactly as they are."
       },
-      "camera": "E"
+      "camera": "E",
+      "_note_v2": "25 Sept v2: try 1 was a masked edit of e3-count-5-e (the mask was ignored); try 2 edits a guide with the thumb erased in code (build/hand_guides.py)."
     },
     {
       "id": "hand-e3-count-5-e",
@@ -916,14 +925,16 @@
       "output": "assets/characters/hands/master/hand-e5-arm-up-fist-e.png",
       "mode": "edit",
       "reference_images": [
-        "assets/characters/hands/hand-ref-eye-level.png"
+        "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png"
       ],
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: eye level, first person: this is OUR OWN right hand seen from behind, from our own eyes, exactly as in the attached eye-level reference: the back of the hand, the knuckles and the fingernails face us; the palm and its lines face away from us and are NOT visible. Never show the palm. The forearm rises from the bottom edge of the frame; no worktop.",
-        "pose": "celebration, seen from BEHIND our own raised fist: the forearm rises vertically from the bottom edge, and at the top a closed fist; we see the BACK of the hand: the four knuckles in a row along the top, the backs of the fingers, and the thumb wrapped round at the left side; the fingertips, fingernails and palm are hidden on the far side, NOT visible (the left arm is this image mirrored)"
+        "pose": "The attached image is an approved hand from this set. Redraw it faithfully: the same hand, size, skin colour, lighting, framing and sleeve. There is NO object anywhere in the image: nothing in or behind the hand. Change ONLY what follows: nothing about the fist: keep this exact fist seen from the same side, its BACK towards us: the row of four rounded knuckles along the top, the smooth back of the hand below them, the thumb at the left side; the fingertips, the fingernails and the palm are on the far side and NOT visible. It is now a raised fist at eye level, the forearm rising straight up from the bottom edge into the rolled sleeve."
       },
-      "camera": "E"
+      "camera": "E",
+      "_note_v2": "25 Sept v2: made in code: a copy of the approved hand-d4-squeeze-f2-tight-t (the back of the fist, forearm from the bottom edge), which is the same view as a raised fist seen from behind. Two API attempts (a draft and a medium) drew the front of the fist.",
+      "generated_in_code": true
     },
     {
       "id": "hand-e6-stretch-e",

@@ -296,7 +296,9 @@ def apply_overlay(im, texture_path, hands, opacity=0.85):
 SLEEVE_ERASE = {"hand-a5-wave-f1-e": [(540, 760, 660, 866)],
                 # hands v2: sleeve-colour specks on the forearm, found on the nani sheet
                 "hand-d2-c-hold-e": [(1165, 1113, 1219, 1179)],
-                "hand-f4-phone-two-hands-e": [(1683, 1273, 1731, 1323)]}
+                "hand-f4-phone-two-hands-e": [(1683, 1273, 1731, 1323)],
+                # d6-f1 is a5-f1 and its mirror (build/hand_guides.py): a5's box, on both arms
+                "hand-d6-two-hand-catch-f1-open-e": [(127, 760, 247, 866), (1095, 760, 1215, 866)]}
 
 
 def clip_sleeve_to_cuff(w, master, hands):

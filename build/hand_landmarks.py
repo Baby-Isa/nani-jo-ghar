@@ -326,29 +326,37 @@ def place(arr, hand, pts, side, old=None):
         # the model misread): fall back to the wrist anchor itself
         return ring, {"x": wr["x"], "y": wr["y"], "angle_deg": wr["angle_deg"],
                       "width_px": round(wr["width_px"] * 0.95, 1), "width_from": "wrist anchor (joint rejected)"}
-    arm = hand_dir
+    # the forearm's direction at the bracelet: the narrowest cut through the
+    # arm there is square to it. Search cuts within 50 degrees of the wrist
+    # anchor's arm angle (or the hand's axis), centred a little up the arm
+    # from the wrist joint; the cut's length is the bracelet's width.
+    base = math.degrees(math.atan2(hand_dir[0], -hand_dir[1]))
     if wr:
-        # the forearm runs from the wrist anchor (measured on the arm, nearer
-        # the cuff) to the wrist joint; trust that line when it is long enough
-        # and roughly agrees with the hand's axis, else the anchor's angle if
-        # that agrees, else the hand's axis
-        a = math.radians(wr["angle_deg"])
-        anchor_dir = np.array([math.sin(a), -math.cos(a)])
-        v = w0 - np.array([wr["x"], wr["y"]])
-        cos50 = math.cos(math.radians(50))
-        if np.linalg.norm(v) > 0.3 * wr["width_px"] and np.dot(v / np.linalg.norm(v), hand_dir) > cos50:
-            arm = v / np.linalg.norm(v)
-        elif np.dot(anchor_dir, hand_dir) > cos50:
-            arm = anchor_dir
-    b = w0 - arm * BRACELET_BACK * palm_len
-    across = np.array([-arm[1], arm[0]])
+        base = wr["angle_deg"]
+    a0 = math.radians(base)
+    arm0 = np.array([math.sin(a0), -math.cos(a0)])
+    b = w0 - arm0 * BRACELET_BACK * palm_len
     cap = 1.4 * (wr["width_px"] if wr else palm_len)
+    best = None
+    for deg in np.arange(base - 50, base + 50.1, 2.0):
+        a = math.radians(deg)
+        arm = np.array([math.sin(a), -math.cos(a)])
+        bw_ = arm_width(arr, b, np.array([-arm[1], arm[0]]), cap)
+        if bw_ is not None and bw_ > 0.45 * palm_len and (best is None or bw_ < best[0] - 1e-6):
+            best = (bw_, deg)
+    if best is not None:
+        a = math.radians(best[1])
+        arm = np.array([math.sin(a), -math.cos(a)])
+        b = w0 - arm * BRACELET_BACK * palm_len  # re-centre along the measured arm
+    else:
+        arm = arm0
+    across = np.array([-arm[1], arm[0]])
     bw = arm_width(arr, b, across, cap)
     if bw is None or bw < 0.45 * palm_len or (wr and bw > 1.1 * wr["width_px"]):
         bw = wr["width_px"] * 0.9 if wr else palm_len * 0.8
         bhow = "default"
     else:
-        bhow = "measured"
+        bhow = "measured (narrowest cut)"
     bracelet = {"x": round(float(b[0]), 1), "y": round(float(b[1]), 1), "angle_deg": round(angle_of(arm), 1),
                 "width_px": round(bw, 1), "width_from": bhow}
     return ring, bracelet

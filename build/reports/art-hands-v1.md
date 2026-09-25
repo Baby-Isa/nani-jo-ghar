@@ -72,3 +72,81 @@ The API reskins failed: 39 of 47 girl reskins redrew the hand, and the sleeve ca
 | **Total** | **214** | | **≈ $31.73** |
 
 This session alone: 123 images, about $16.54. The session budget was $15; the owner approved the extra Nani spend. The first 182 images went out with `quality` unset, which the API bills as high (~$0.167 each). The pipeline logged only $8.63 because it assumed $0.04 an image. The pipeline has been fixed since: quality is always sent, medium is the default, and there's a pre-flight estimate. Building the characters in code costs nothing.
+
+---
+
+# v2: rings per pose, the failing masters (25 Sept 2026)
+
+**Brief (owner):** Nani's rings were "all over the place". Place them per pose on the actual ring finger, visible only where the finger is; finish the 9 failing masters with the API, at most 2 tries each, $5 at most.
+
+## Ring and bracelet method
+
+`build/hand_landmarks.py` (new) runs MediaPipe's hand-landmark model (`hand_landmarker.task`, fetched on first use into the git-ignored `build/models/`) on every passing master. It found 60 of the 62 hands in the 54 masters. It missed the right hand of d6-f2, whose joints are marked by hand, and the rear hand of e4-f2, which is hidden anyway. On tight fists, pinches and a ring of fingertips its joints are unreliable; those poses are pinned by eye (below). Each master is run on three backgrounds and mirrored, and the detections of one hand are merged by the median of their joints. Hands are matched to the pose's hands by the measured wrist.
+
+- **Ring:** on the ring finger's first segment, from the base knuckle (MCP, landmark 13) to the middle joint (PIP, 14): 35% along it, and at least just past the web, where the finger leaves its neighbours. On the back of the hand the MCP landmark sits on the knuckle, so 35% alone put the ring on the knuckle (a5-wave-f1). The ring is turned to the segment and scaled to the finger's width, measured across it from the alpha edge or the dark crease against the next finger and bounded by the knuckle spacing. A curled finger seen from the back (fists, grips) takes the hand's axis for its angle, because the foreshortened segment's own angle is noise.
+- **View:** read from the handedness of the wrist/index/pinky triangle against the hand's known side. *back*: band and stone; *palm* or *side*: a thin band, shaded so it wraps round the finger; *hidden*: nothing. Several AI masters are anatomically the other hand (a3 and a8 palm-ups, e7: palms drawn as left hands; a7 and e3-count-2: backs drawn as left hands), so their views are pinned by eye.
+- **Visibility pins** (`build/hand_ring_pins.py`, applied on every run; `"source": "manual"` / `"view_source": "manual"` in the anchors): the ring is hidden where the ring finger is out of sight. That covers the fists and grips seen from the palm or with the finger tucked (b2-t, b2-e, e1), the pinches and grips where it curls behind or under (c1 ×4, c2, c3 ×2, c5 ×2), the ring of fingertips (d1-f2-e), the thumb in front (d2-c-hold-e), the rear hand of the clap (e4-f2) and the phone grip (f4 ×2). The right hand of d6-f2 was not detected; its joints are marked by eye (palm view).
+- **Bracelet and bangles:** at the wrist joint, moved a little up the arm, across the forearm. The forearm's direction is the narrowest cut through the arm there, searched within 50° of the measured arm angle; that cut's length is the bracelet's width. Where the wrist joint was misread onto the fingers (d1-f2-e automatically; b2-e pinned), the measured wrist anchor is used instead.
+- **Compositing** (`build/skin_hands.py`): rings are clipped to the hand's silhouette; Nani's left hands (the mirrored masters) get the diamond ring and no bracelet, the right the aqiq and the tennis bracelet (Cast). The aqiq stone is a little smaller than v1's.
+
+**Per-pose verification:** every pose was checked on large debug sheets. `build/contact-sheets/hands-rings-debug-1…5.png` show the joints, the ring outline (green back, yellow palm/side, red cross hidden) and the bracelet line, with a zoom on each ring. The baked results were checked on `hands-nani-rings-1…9.png` and `hands-player-girl-rings-1…5.png`: every image, with zooms on each ring and on the wrist jewellery. The first bake showed six faults, fixed before the final bake:
+- rings on the knuckle instead of the finger (the web rule);
+- a flat, rod-like palm band (now shaded to wrap);
+- the bracelet on the fist in b2-e and d1-f2-e (the anchor fallback);
+- a diagonal bracelet on f2-drum (the narrowest-cut direction);
+- sleeve-colour specks on d2-c-hold-e and f4 (erase boxes);
+- the red sleeve climbing both forearms of the new d6-f1 (a5's erase box, mapped onto both arms).
+
+## The 9 failing masters
+
+| Master | Result | How |
+|---|---|---|
+| b1-handle-grip-t | **Still failing** | Draft + 2 medium tries on a guide (the approved fist with the handle painted in). Try 1 laid a digit along the handle but showed only three knuckles; try 2 pointed the index up beside it. Until it is solved, the game can draw the tool under `d4-squeeze-f2-tight-t`. |
+| a2-heel-push-t | **Still failing** | Draft + 2 medium tries on a guide (a1 foreshortened in code). Try 1 invented a ball under the hand, try 2 redrew a full-length flat hand. |
+| c2-tripod-grip-t | Pass | Guide edit, medium, try 1: a pencil in a tripod grip. |
+| c3-side-pinch-t | Pass | Guide edit, medium, try 1: card pinched, thumb pad on the card. |
+| c3-side-pinch-e | Pass | Guide edit, medium, try 1: card held up. |
+| d3-two-hand-bowl-t | Pass | Guide edit (the b4 pair plus a disc), medium, try 1: backs of both hands, fingers over the rim. |
+| d6-two-hand-catch-f1-open-e | Pass | Made in code: `a5-wave-f1-e` and its mirror, a hand's width apart. The API kept drawing palms. |
+| e3-count-4-e | Pass | Made in code from `e3-count-5-e`, with the thumb cut away along a curved palm edge, shaded. Try 1 (masked edit) and try 2 (thumbless guide) both put the thumb back. |
+| e5-arm-up-fist-e | Pass | A copy of `d4-squeeze-f2-tight-t`: a raised fist seen from behind is the same view as the back of the fist from above. Draft and try 1 drew the front of the fist. |
+
+The low-quality drafts and the first prompts (a passing master as a second reference) failed across the board: the model ignores a second reference image. What worked was an **edit of a guide image**: an approved master with the placeholder already painted in (`build/hand_guides.py`, guides in `sources/art/hands/guides/`).
+
+**Key-out v2** (`gen_assets.key_out_magenta2`, entries with `"key_out": "magenta2"`): the medium renders were good, but the v1 key-out chewed the finger edges and nails where they overlapped the magenta. The v1 key and its clean-ups work in HSV hue, where the placeholder's crimson shadow, orange skin shadow and pink nails overlap. The new key works in Lab:
+- it removes the placeholder's core (hue 290–18°, chroma > 28);
+- it unmixes a thin band round it between the image's skin colour and the placeholder's;
+- it despills red-orange bounce light;
+- it clears the placeholder's grey edge ghosts.
+
+The skin and scale normalisers ran as before. Review at full size: `build/reports/data/hands-master-v2-review.json`, sheet `build/contact-sheets/hands-master-v3.png`: **54 of 56 pass.**
+
+Lesson for next time: `build/raw/` keeps only the latest output per asset, so b1's try 1 was overwritten by try 2. Copy a promising raw aside before retrying.
+
+## Characters (re-skinned)
+
+| Set | Images |
+|---|---|
+| player-boy | 54 |
+| player-girl | 54 (bangles at the wrist joint) |
+| nani | 100 (54 poses + 46 mirrored left hands) |
+
+Sheets: `hands-player-boy.png`, `hands-player-girl.png`, `hands-nani.png`, plus the ring sheets above.
+
+## Cost (this round)
+
+| Run | Images | Quality | Cost |
+|---|---|---|---|
+| Drafts, first prompts (log 01) | 9 | low | $0.10 |
+| Drafts, guide prompts (log 02) | 8 | low | $0.09 |
+| Medium try 1 (log 03) | 8 | medium | $0.34 |
+| Medium try 2 (log 04) | 3 | medium | $0.13 |
+| **Total** | **28** | | **$0.66 images + ≈ $0.17 input tokens ≈ $0.83** |
+
+Every run's pre-flight estimate was under $1; the budget was $5. The image-output prices are the pipeline's table, and the manifest's `usage` records match them (1,056 output tokens for a medium 1024², 272 for a low one). Input tokens (one ~200-token reference image and ~700 text tokens per edit) add about $0.006 a request. Logs: `build/reports/data/hands-v2-log-0*.txt`.
+
+## Still open
+
+- b1 (knife/spatula grip, thumb on the handle) and a2 (heel push): more API tries are unlikely to help. b1 probably needs a hand-drawn or 3D-posed thumb; a2 may be better dropped for a1 with a squash animation.
+- The d6-f1 pair and e5 reuse approved hands, so they share those masters' lighting: d6-f1's left hand is lit from the right, the same known issue as Nani's mirrored left hands.
+- Ring placement is checked on stills; check it in the game at play size, especially the thin palm bands.

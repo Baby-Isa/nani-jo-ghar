@@ -984,6 +984,64 @@ def key_out_magenta(im):
     return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), removed
 
 
+def key_out_magenta2(im, band_px=7):
+    """Magenta key-out, v2 (hands v2, 25 Sept 2026). The v1 key and its
+    clean-ups work in HSV hue, where the placeholder's crimson shadow, orange
+    skin shadow and pink nails overlap: near the cut they ate finger edges
+    and nails. In Lab the three separate: the placeholder and its shadow sit
+    at hue 290-15 degrees with high chroma, skin at 40-65, nails near 30 with
+    low chroma. So: (1) the core (Lab hue 290-18, chroma > 28) goes; (2) in
+    a thin band round it, each pixel is unmixed as a blend of the image's
+    skin colour and the placeholder's colour (least squares in the a*b*
+    plane): its alpha keeps the skin share, and its colour gets the skin's
+    chroma and hue at its own lightness. Nothing outside the band changes.
+    Returns (image, removed)."""
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    lab = rgb_to_lab(rgba[..., :3])
+    a, b = lab[..., 1], lab[..., 2]
+    C = np.hypot(a, b)
+    hue = np.degrees(np.arctan2(b, a)) % 360
+    opaque = rgba[..., 3] > 16
+    core = opaque & (C > 28) & ((hue >= 290) | (hue <= 18))
+    if core.sum() < 50:
+        return im, 0
+    skin_w, _ = skin_weight(im)
+    skin = opaque & (skin_w > 0.8) & ~_dilate(core, band_px)
+    s_ab = np.array([np.median(a[skin]), np.median(b[skin])]) if skin.sum() > 500 else np.array([18.0, 28.0])
+    m_ab = np.array([np.median(a[core]), np.median(b[core])])
+    band = _dilate(core, band_px) & ~core & opaque
+    d = m_ab - s_ab
+    t = ((a - s_ab[0]) * d[0] + (b - s_ab[1]) * d[1]) / (d @ d)
+    t = np.clip(t, 0, 1)
+    t = np.where(band, t, 0.0)
+    t = np.where(t < 0.12, 0.0, t)  # ordinary skin variation, not placeholder
+    kill = np.where(core, 1.0, t)
+    removed = int((kill > 0.5).sum())
+    rgba[..., 3] = rgba[..., 3] * (1 - kill)
+    # the kept share of a blended pixel is skin: skin chroma and hue, own lightness
+    fix = band & (t > 0) & (t < 1)
+    lab2 = lab.copy()
+    lab2[fix, 1], lab2[fix, 2] = s_ab[0], s_ab[1]
+    # magenta light bounced onto the skin next to the placeholder: red-orange
+    # (hue 18-42) more saturated than the skin; give it the skin's hue and
+    # chroma at its own lightness (nails, near hue 30, have low chroma)
+    s_C = float(np.hypot(*s_ab))
+    spill = _dilate(core, band_px * 2) & opaque & ~core & (hue > 18) & (hue < 42) & (C > s_C + 8)
+    fix |= spill
+    lab2[spill, 1], lab2[spill, 2] = s_ab[0], s_ab[1]
+    rgba[..., :3] = np.where(fix[..., None], lab_to_rgb(lab2), rgba[..., :3])
+    # the placeholder's lit edge and its drop shadow leave faint grey lines
+    # just outside it: in a wider ring, clear anything grey (not skin, whose
+    # chroma is 15+) or semi-transparent
+    ring = _dilate(core, 12) & ~core
+    grey = (C < 10) & (lab[..., 0] < 80)
+    rgba[..., 3] = np.where(ring & (grey | (rgba[..., 3] < 200)) & ~(skin_w > 0.5), 0, rgba[..., 3])
+    # soften the new edge by half a pixel
+    soft = np.asarray(Image.fromarray(rgba[..., 3].astype(np.uint8), "L").filter(ImageFilter.GaussianBlur(0.6)))
+    rgba[..., 3] = np.where(_dilate(core, 2), np.minimum(rgba[..., 3], soft), rgba[..., 3])
+    return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA"), removed
+
+
 def drop_fragments(im, min_share=0.02):
     """Clear connected opaque fragments smaller than min_share of the
     largest one (e.g. the thin lit edge of a keyed-out placeholder).
@@ -1502,7 +1560,13 @@ def run(args):
             skin = {}
             if entry.get("flip_output"):
                 Image.open(t["out_path"]).transpose(Image.FLIP_LEFT_RIGHT).save(t["out_path"])
-            if entry.get("key_out") == "magenta":
+            if entry.get("key_out") == "magenta2":
+                keyed, removed = key_out_magenta2(Image.open(t["out_path"]))
+                keyed, _ = drop_fragments(keyed)
+                keyed.save(t["out_path"])
+                skin["keyed_out_px"] = removed
+                print(f"[{key}] keyed out {removed} px of magenta placeholder (v2)")
+            elif entry.get("key_out") == "magenta":
                 keyed, removed = key_out_magenta(Image.open(t["out_path"]))
                 keyed, _ = drop_fragments(keyed)
                 keyed, _ = fix_magenta_spill(keyed)
@@ -1812,7 +1876,10 @@ def main():
                 print(f"[{entry['id']}] missing {os.path.relpath(src, GAME)}")
                 continue
             im = Image.open(src).convert("RGBA")
-            if args.from_raw and entry.get("key_out") == "magenta":
+            if args.from_raw and entry.get("key_out") == "magenta2":
+                im, _ = key_out_magenta2(im)
+                im, _ = drop_fragments(im)
+            elif args.from_raw and entry.get("key_out") == "magenta":
                 im, _ = key_out_magenta(im)
                 im, _ = drop_fragments(im)
                 im, _ = fix_magenta_spill(im)
