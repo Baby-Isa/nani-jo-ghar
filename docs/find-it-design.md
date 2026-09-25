@@ -1,7 +1,7 @@
 # Find it: design (the next mode after Cook with Nani)
 
 **Date:** 24 Sept 2026
-**Status:** proposal for Zafar. Nothing built yet. It builds on `docs/game-modes-v2.md` (mode 2, *Find it*), `docs/cook-with-nani-phase-a-design.md` (the shared systems and the station library) and `docs/cook-with-nani-kutchi-audit.md` (the leaks).
+**Status:** proposal for Zafar. **25 Sept: first playable slice on its own branch, for Zafar's review** (not live): `find.html` + `js/find/` + `data/find.json`, the engine (rows as data, relations as data, levels as data, the Search lab with the non-speaker bot) and M1 Nani's list with M5 Check the bag, in the bazaar with placeholder art. Tests: `build/test_find.py` (play) and `build/test_find.py --leak N` (the bot). It builds on `docs/game-modes-v2.md` (mode 2, *Find it*), `docs/cook-with-nani-phase-a-design.md` (the shared systems and the station library) and `docs/cook-with-nani-kutchi-audit.md` (the leaks).
 **Placeholder rule:** Kutchi below is limited to words and frames already in `data/content.json` or `data/cook.json`. Anything written like `[EN: under]` has no Kutchi yet. In the game it is an English placeholder in grey italic until the family gives the word. **Never invent Kutchi.**
 
 ---

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>Find it with Nani</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/cook.css">
+<link rel="stylesheet" href="css/find.css">
+</head>
+<body class="find">
+
+<div id="rotate">
+  <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to play Find it</p></div>
+</div>
+
+<div id="app">
+  <main id="stage">
+    <!-- the scene: a 1600x900 world of plain HTML (js/find/view.js), panned and zoomed -->
+    <div id="letterbox" aria-hidden="true"></div>
+    <div id="game"><div id="world"></div></div>
+
+    <!-- shared with Cook (js/cook/ui.js); Find it only uses them before and after a search -->
+    <div id="bubble" class="hidden" role="status" aria-live="polite"><div class="say-slot"></div></div>
+    <div id="gist" class="hidden"></div>
+    <div id="choices" class="hidden"></div>
+    <div id="count-badge" class="hidden"><span class="count-digit"></span></div>
+    <button id="done-btn" class="hidden" aria-label="Done">&#10003;</button>
+    <div id="toast" class="hidden"></div>
+  </main>
+
+  <aside id="side">
+    <div class="side-top">
+      <span class="pill coins" title="Pocket money"><i class="coin-dot"></i><b id="coins">0</b></span>
+      <span class="pill stars" title="Stars today">&#9733; <b id="stars">0</b></span>
+      <span class="pill combo hidden" id="combo" title="Quick finds in a row">&times;<b>0</b></span>
+    </div>
+    <!-- the list (the order ladder, js/cook/order.js + ui.js): rows only, never pictures -->
+    <div id="mission" class="card hidden">
+      <div class="m-head">
+        <div class="m-ring" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><circle class="pr-bg" cx="24" cy="24" r="22"/><circle class="pr-fg" cx="24" cy="24" r="22" pathLength="100"/></svg>
+          <img class="m-face" alt="">
+        </div>
+        <div class="m-who"><div class="m-name"></div><div class="m-stars"></div></div>
+      </div>
+      <div class="m-order"></div>
+      <div class="m-steps"></div>
+      <div class="m-stamp">Done!</div>
+    </div>
+    <!-- Done: hand the basket over. Always there during a search, never over the stall -->
+    <button id="find-done" class="btn primary hidden" type="button">Done &#10003;</button>
+    <div id="live">
+      <div id="nani-card" class="card hidden" role="status" aria-live="polite">
+        <img class="nc-face" src="assets/cook/characters/nani-badge.webp" alt="Nani">
+        <div class="say-slot"></div>
+      </div>
+    </div>
+    <div id="how" class="hidden"></div>
+    <div class="side-rail">
+      <button id="btn-home" class="rail-btn" title="Menu">&#8962;</button>
+      <button id="btn-zoom-in" class="rail-btn" title="Zoom in" aria-label="Zoom in">+</button>
+      <button id="btn-zoom-out" class="rail-btn" title="Zoom out" aria-label="Zoom out">&minus;</button>
+      <button id="btn-warmer" class="rail-btn hidden" title="Nani, where should I look? (costs the no-help star)" aria-label="Where should I look?"></button>
+    </div>
+  </aside>
+
+  <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">
+    <div class="pm-nani"><img src="assets/cook/characters/nani-badge.webp" alt="Nani"><div class="pm-say"></div></div>
+    <div class="pm-tray"></div>
+  </div>
+</div>
+
+<div id="overlay" class="hidden"><div id="panel"></div></div>
+
+<!-- shared with Cook with Nani: data, save, word progress, voice, word pills, the order ladder -->
+<script src="js/cook/core.js"></script>
+<script src="js/cook/lang.js"></script>
+<script src="js/cook/ui.js"></script>
+<script src="js/cook/order.js"></script>
+<!-- Find it: the search engine, its mechanics, the non-speaker bot and the game's shape -->
+<script src="js/find/engine.js"></script>
+<script src="js/find/view.js"></script>
+<script src="js/find/round.js"></script>
+<script src="js/find/mechanics/list.js"></script>
+<script src="js/find/bot.js"></script>
+<script src="js/find/flow.js"></script>
+</body>
+</html>
