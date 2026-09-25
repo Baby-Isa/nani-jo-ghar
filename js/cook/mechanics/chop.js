@@ -219,7 +219,8 @@
         }
         prev = cur;
       };
-      const offs = [z.on("pointermove", move), z.on("pointerup", () => (prev = null))];
+      // a swipe starts where the finger goes down
+      const offs = [z.on("pointerdown", (p) => (prev = { x: p.worldX, y: p.worldY })), z.on("pointermove", move), z.on("pointerup", () => (prev = null))];
       let running = false; // the ring runs and vegetables fly (not while Nani gives the first order)
       let spawnT = 0;
       let roundT = 0;
