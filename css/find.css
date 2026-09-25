@@ -56,7 +56,15 @@ body.find #overlay.title-mode { background: url("../assets/backgrounds/bg-bazaar
 /* the calm sidebar (Wave 5, shared with Cook): the list on top, Nani's one line, then the foot.
    The foot (Done, then the rail: ?, menu, zoom, where?) never scrolls away: the list gives way
    first (it scrolls inside its card), then Nani's line, so zoom is always in reach on a phone */
-body.find #live { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y: auto; }
+/* the narrowest sidebar (a small phone on its side, ~200px): the card's head keeps face, stars and ↻ A/En apart */
+@container side (max-width: 210px) {
+  #mission .m-head { column-gap: 4px; }
+  #mission .m-stars { gap: 2px; }
+  #mission .m-stars .mstar { width: 20px; height: 20px; padding: 2px; border-radius: 6px; }
+  #mission .m-tools { gap: 3px; }
+  #mission .m-tools button { width: 27px; height: 27px; padding: 5px; }
+}
 .find-foot { flex: none; display: flex; flex-direction: column; gap: 8px; position: sticky; bottom: 0; background: var(--paper); z-index: 2; }
 #find-done { flex: none; width: 100%; min-height: 48px; font-size: clamp(16px, 1.8vw, 21px); }
 .find-foot .side-rail { flex-wrap: nowrap; gap: 6px; justify-content: space-between; }
