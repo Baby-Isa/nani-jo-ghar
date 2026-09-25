@@ -118,9 +118,89 @@ Then the **end-of-round screen** (UX principle 9): page 1 the three badges (time
 
 **Speaking moments in the pipeline** (the deep dive's D.4 rules stand: the caller can see; null never blocks; the voice star is its own): S1c (weather), S2c L3 (the spot), S3c (the pot, built), S3b L3 (the number), S2d L3 (animal, shelter), S5b (the feeling), S5c (echo). At least one per day from level 2; S5b's pills from level 1 so the send-off always asks the question.
 
----
+### P.3 The big library: the pool of "fun" mini-games
 
-## Deep dive, 25 Sept 2026: mini-games and mechanics
+The clinic's pool is its 15–20 healing games; Monsoon's is **the squalls and the calm-stage jobs**, 22 in all, that a day draws from. Scores 1–5: **Fun**, **Kutchi** (how much the words decide, once real), **Cost** (5 = cheap: no new art, no new words). **Age**: ✓ = fits, ~ = only with help or only as a toy, – = not for them. **Words**: real today, or the placeholder rows they wait on.
+
+| Id | Mini-game | One-line pitch | Kutchi it teaches | Mechanic | 5 | 8 | 11 | Fun | Kutchi | Cost | Words |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| S3a | The kitchen leak | Lid the pot she names before the drop falls | Food nouns; *Ne*, *Ne poi*, *Nar* | cover | ✓ | ✓ | ✓ | 4 | 5 | 5 (built) | Real |
+| S3b | Drip count | Let in exactly that many drops, then lid it | Numbers 1–5 | count | ✓ | ✓ | ~ | 5 | 5 | 5 (built) | Real |
+| S3c | You call it | You see the drip; say the pot and Ali lids it | Production of the nouns | say, callit | ~ | ✓ | ✓ | 4 | 5 | 5 (built) | Real |
+| S3d | Gusts | Hold, roll or scoop on the weather word, on the beat | Weather; the no-go | hold, tarp, scoop | ✓ | ✓ | ✓ | 4 | 5 | 3 | G1–G14 |
+| S3e | The house leak | The cross-section; room, anchor, position | Rooms, anchors, positions | cover, rel | ~ | ✓ | ✓ | 4 | 5 | 2 | E16–E58, A5 |
+| S3f | The power cut | The lights go out; the calls carry on | Everything, by ear alone | dark | ~ | ✓ | ✓ | 4 | 5 | 4 | — |
+| S3g | Rain tune | Tap the pots back in Nani's order, on the beat | Nouns in order | tune | ✓ | ✓ | – | 4 | 3 | 2 | Real |
+| S3h | Nani calls | An adult reads the card; the child plays | The adult's Kutchi | caller | ✓ | ✓ | ✓ | 5 (with Nani) | — | 5 | Real |
+| S1a | Nani's forecast | Tarp over, tarp back, hold it, scoop Zazu | Weather words; go / no-go | tarp, hold, scoop | ✓ | ✓ | ✓ | 4 | 5 | 3 | G1–G14, A6.1 |
+| S1b | The day strip | Put the day's weathers in her order | *pela*, *ne poi* + weather | sequence | ~ | ✓ | ✓ | 3 | 4 | 4 | Real linkers; G1–G6 |
+| S1c | You're the forecaster | You see the sky; say it; Nani acts | Production of weather | say, callit | ~ | ✓ | ✓ | 4 | 5 | 4 | G1–G6 |
+| S2a | Pots inside | Bring the pots she names in from the veranda | Food nouns; *Muke {x} de*; *Nar* | fetch | ✓ | ✓ | ~ | 3 | 5 | 5 | Real |
+| S2b | Bring the washing in | Pull the item she names off the line | Clothes, colours, whose | unpeg | ✓ | ✓ | ✓ | 3 | 4 | 3 | F45–F63, E60–E71 |
+| S2c | Cats inside | Open your arms where the cat will pop out | Anchors, positions; big / small | catch | ✓ | ✓ | ✓ | 5 | 4 | 3 | G36–G40, E16–E48 |
+| S2d | Into the shed | Shoo the animal she names to the door she names | Animals, shelters, counts | shoo, scoop | ✓ | ✓ | ~ | 4 | 4 | 2 | G27–G35, E57–E58 |
+| S2e | Batten down | The verb picks the gesture | Verbs | batten | ~ | ✓ | ✓ | 3 | 5 | 3 | G20–G26 |
+| S4a | Empty the buckets | Pour the big one where she says | *wadho / nindho*; *adh / bharelo*; where | pour | ✓ | ✓ | ~ | 4 | 4 | 4 | Real sizes; G36 |
+| S4b | Dry off | Towel the wet one she names till the drips stop | *wadho / nindho*; counts; order | rub | ✓ | ✓ | ~ | 5 | 4 | 4 | Real |
+| S4c | Hang it up | The wet kurta back on the line, next to the towel | Clothes; positions | place, rel | ~ | ✓ | ✓ | 3 | 5 | 3 | F45–F63, E1–E13 |
+| S4d | Mop the puddles | Mop exactly that many, then hang the mop up | Numbers | count | ✓ | ~ | – | 3 | 4 | 5 | Real |
+| S5a | Chai for everyone | One cup for who she says, with what they asked | *{x} lai*, *waari*, sugars | Cook's tray | ✓ | ✓ | ✓ | 4 | 5 | 4 (Cook's) | Real |
+| S5b | How was it? | Say how you feel; the cats copy you | Feelings; hot / cold | say | ✓ | ✓ | ✓ | 3 | 4 | 4 | G62–G72, G10–G13 |
+| S5c | Kasuku's echo | Say a word; Kasuku says what he heard | Shadowing | say, echo | ✓ | ✓ | ~ | 4 | 3 | 5 | Real |
+| **New** | **Fish it out** | Nana's slipper, his cap and a katori float in the courtyard puddle; fish out the one she names with the lota | Household nouns; *wadho / nindho* | fetch (a lota instead of a basket) | ✓ | ✓ | ~ | 4 | 4 | 4 | E16–E35 |
+| **New** | **Chillies in the sun** | After the rain, spread that many trays of chillies back on the charpai | Numbers; *bharelo* | count | ✓ | ~ | – | 3 | 3 | 5 | Real |
+
+**Rejected, again:** *Umbrella* (walking full-body characters), *Puddle hop* (this side / that side on a walker), *Thunder count* (nothing said in Kutchi decides it), *Bucket chain* (faces are visible and the names known), *Wring it out* (folded into S4b as its L2 count), *Wipe the window* (a search, Find it's job).
+
+### P.4 Research: what the children's apps in this genre do
+
+Search summaries (the app stores are blocked from here, so the pages themselves weren't opened); links under Sources at the end of this document, and the earlier table in section 2.1 still stands for Rhythm Heaven, WarioWare, *Kaboom!* and *Overcooked*.
+
+| App or game | What it does | What the pipeline takes |
+|---|---|---|
+| **Baby Panda's Hurricane Safety** (BabyBus; "Little Panda's Weather: Hurricane") | The closest thing to this mode: recognise the weather warning, then **prepare** ("help their parents bring in outdoor clothes and flower pots"), stay indoors and safe, then the aftermath. A checklist of preparations, each a small task | **The shape of stages 1–2**: a forecast, then a checklist of things to bring in before the rain, each a mini-game (pots, washing, cats, animals). Their list is preparedness; ours is Nani's voice naming each thing |
+| **Dr. Panda Home** (Dr. Panda) | Chores in a house: "a list of **three chores** which are checked off as they are completed", then five coins for the piggy bank; over 20 mini-games behind that one list; high replay years later | **Three is the number** (principle 7): the rack card holds three things at level 1, the day strip three slots. The checklist ticks off as things come in; the reward is the rain gauge and the planter, not coins |
+| **Toca Life: Farm** (Toca Boca) | Four locations (field, barn, house, store); "care for animals… feed the animals, milk the cow and gather eggs"; free form, no timer, no scores | **Animals to the barn** as a calm job (S2d in Drizzle), and the **place-to-place** structure: our five stages are five places on one screen each |
+| **Pepi Bath 2** (Pepi Play) | Seven scenes, one routine each: the sink, the bath, "taking care of clothes, dressing up, **laundry room**"; parents and children play together | **Stage 4 as a routine**: dry off, hang it up, put the buckets away; the "laundry room" as our veranda line |
+| **Baby Games with Peppa** (Peppa Pig) | A three-beat toddler pipeline: "put on rain boots, run across a field jumping in puddles, and then **wash them with a sponge** to wipe away the mud" | **Prepare → play → clean up** works at 3+, so it works at 5. The sponge rub is S4b's gesture; the mud is our puddles |
+| **Bluey: Keepy Uppy** (and *Bluey: Let's Play*) | "Tap the balloons before they touch the ground… react quickly, and survive as the challenge becomes more difficult"; one-touch; several balloons at once later | **The reveal window as a falling thing** (the drop, already built) and **more targets at higher levels** (doubles, sequences); one touch per target |
+| **Whack-a-mole** apps for 3–7 (many) | Moles pop up, tap them; faster and more at once; points by speed | **Cats inside** is whack-a-mole where Nani tells you the hole first; the pop is the reveal |
+| **Daniel Tiger's Neighborhood** ("Daniel and O are Scared of the Thunder") and *Grr-ific Feelings* | The storm is scary; the adult names the feeling and a strategy; the app's mini-games name feelings; a study found higher emotion regulation in players | **S5b How was it?**: after the storm, say the feeling (*scared, cold, happy, fine*), and Nani answers it. The send-off is emotional, not a score |
+| **Weather by Tinybop** | A sandbox: "move the sun, whip up winds, and cause rainstorms"; no guide; the child *makes* the weather | **S1c You're the forecaster**: the child is the weather's voice, the character acts. Also: no instructions on screen; showing, not telling (principle 8) |
+| **Toca Boca World** (weather update) | Rain, snow and fog as atmosphere the child switches on | The **calm stages' atmosphere** (the grey band, the drumming on the tarp, the sun coming out) is a big part of the fun; weather changes are rewards at the reveal |
+| **LEGO DUPLO World** (StoryToys) | Themed packs "built around a simple concept… **everyday routines**"; "bright but not overstimulating, animations… smooth rather than frantic, sound effects gentle" | The tone of stages 2, 4 and 5; and Zafar's playtest note that the games were "too overwhelming at the beginning" |
+| ***Overcooked*** (already cited) | A shift is a pipeline: prep, cook, serve, **wash up**; chaos plus clear roles | The wash-up is our stage 4; the couch co-op is S3h Nani calls |
+
+**Two things none of them do, and this mode does:** the instruction is a voice in another language, and the reward for hearing it fast is the game itself. Everything borrowed is the *shape* (stages, checklists of three, a pop on a beat, a feeling at the end); the *decision* in every mini-game stays Nani's word.
+
+### P.5 Stitching: how a session runs
+
+**A monsoon day** is the five stages once, with stage 3 holding two or three squalls. Length at level 1 about 5 minutes (S1a 10 calls ≈ 60 s; S2a 3 pots ≈ 30 s; two squalls ≈ 2 min; S4a ≈ 30 s; S5a one cup ≈ 40 s; cards and the end screen ≈ 40 s); level 2 about 7; level 3 about 9. Every stage opens with **the request card** (Nani's face, the ask, read aloud with the chunks lighting up) that shrinks into the **left** sidebar, and closes with a big button on the **right**: *Go inside*, *Here it comes!*, *It's stopped*, *Chai!*.
+
+**The first ever session is tiny** (principle 7). No forecast, no drying: three stages, three minutes, three words.
+
+| | Stage | What | Time |
+|---|---|---|---|
+| 1 | Get ready | S2a: three pots off the veranda shelf (*dudh, paani, atto*), Nani brings the other two | 30 s |
+| 2 | The storm | S3a: one squall of **four** waves, Drizzle, one word each, over the pots you brought in | 50 s |
+| 3 | Chai | S5a: one cup, *Nana lai*; S5b's question as pills | 40 s |
+| | End | The three badges, then three words | 30 s |
+
+The onboarding kit (principle 8) spotlights one pot and a ghost finger in S2a, one stain in S3a, the jug in S5a; the sidebar, the stars and the light bulb fade in over sessions 1–3. **Sessions grow one thing at a time:**
+
+| Session | Adds | Why then |
+|---|---|---|
+| 2 | A second squall (S3b drip count, 1–3); Busy offered after the day | Two kinds of decision (which, how many) on the same pots |
+| 3 | **Stage 1** (S1a, three weathers) and **stage 4** (S4a, two buckets) | The day now has its beginning and its calm; the strip still Nani's own |
+| 4 | S2b washing in or S2c cats (whichever has words; greybox otherwise, flagged "not yet a Kutchi test"); S1b the strip at L1 | The rack has more than pots; the child chooses the day's first squall |
+| 5+ | Level 2 as the word stages allow (doubles, no-go, colours); S3c You call it once the G1 words reach stage 3; S4b, S4d | Speaking arrives once the child can already hear the words |
+| Later | S3d gusts, S3f power cut, S2d, S3e, S4c, S2e as words, relations and art land | Held items, in the deep dive's order |
+
+**Free play: "It's raining at Nani's"** (the rain cloud on the map, or the yard). The screen is the five stages as five doors in a row. Tap one door to **play that stage alone**: its request card, its mini-games at any unlocked level, its own end-of-round badges (a stage played alone still writes its word review). *The whole day* plays the pipeline; *the endless storm* is stage 3 with the strip set to all three weathers and a tempo that rises every four waves (three misses in a row and it eases); *Nani calls* toggles the caller card in any stage. The **hub daily's 60-second entry** is one squall. Records: personal best time per level for the day and per stage; per-word fastest heard time and the raindrop badge (section 7).
+
+**The story plays the pipeline across chapters** (section 5's placements, restated as stages): Arc 3 **Ch1 Clouds coming** = stages 1–2, and the chapter ends as the first drop falls; **Ch2 The leak** = stages 3–4 (the kitchen first, the house when the art exists); **Ch3 The animals** = S2d, then Find it finds the chicks; **Ch5 Chai together** = stage 5 with Cook's chai. So the child meets the stages in order across the arc, and afterwards free play runs them in one sitting.
+
+
 
 **What this is.** The mode taken to the clinic's Revision 2 depth under Zafar's 25 Sept principles (`docs/modes/DEEP-DIVE-BRIEF.md`): a set of mini-games, one file per mechanic, speaking as a core part, a build that touches only its own files first. **It supersedes sections 3, 4, 5.4, 6.5, 8 and 12 where they conflict.** The kitchen slice (section 4 order 1; the old task 2) is kept exactly as designed, because the review picked it as the cheapest all-real-Kutchi slice in the plan; this deep dive widens the front of the build around it. D.10 lists what changed below.
 
