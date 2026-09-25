@@ -104,3 +104,9 @@ All blocking decisions in the deep dives (top sections of each mode's design doc
 - Launched: **Cook Wave 6** (`claude/build-cook-wave6`, session_011XSUSd9KntKRw2qJKEoEjF) and **Find it** (`claude/build-find`, session_01DRSY1hWZmrqfCmkKabrRRg).
 - Held: the **shell** (foundation phase B) until Wave 6 merges (both touch `cook.html`/Cook's save); **batch 2 art** processing after Wave 6 (both touch `data/cook.json`); swapping each mode's stubs for the shared modules + UX-PRINCIPLES in each mode's phase 2.
 - `main` (the live site) has not been updated from this branch yet: waiting for Zafar's go-ahead to publish the new mode labs.
+
+### 25 Sept ~23:00 UTC: Zafar's pipeline feedback; overnight plan
+- New: `docs/modes/PIPELINE-BRIEF.md` (every mode = a pipeline of stages, each with several mini-games; clinic worked example: waiting room → diagnosis → pharmacy conveyor → heal (15–20 comical body-part games; stitches/injections now OK) → send-off). UX principles §9 (end-of-round screen: time/accuracy/hints badges, then the word review) and §10 (onboarding kit now, per-station scripts once mechanics settle).
+- Running overnight: 7 Fable pipeline redesigns (clinic, Find it, Tidy up, Who did it?, Dress up, Monsoon, Snap) as in-process agents (resume by message if a limit stops them); remote sessions Cook Wave 6, Find it build, shared UI (`claude/build-shared-ui`, session_01346mVNKdg8zWmhCWoMTMKA: results screen + onboarding kit); an agent writing `docs/chatgpt-art-prompts-batch3.md`.
+- **Mode builds are paused on purpose** until the pipeline designs are approved; their phase 0–1 code stays (engines, bots, labs, tests) and each redesign lists what survives.
+- Labs are live on `main`: `labs.html` links every mode lab.

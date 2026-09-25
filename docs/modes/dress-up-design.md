@@ -1,8 +1,216 @@
 # Dress up: design (mode id `dress-up`)
 
 **Date:** 25 Sept 2026
-**Status:** proposal for Zafar. Nothing built. **The deep dive at the top (25 Sept, mini-games and mechanics) is current and supersedes the sections below wherever they conflict**; section 12 (the build brief) has been rewritten to match. Follows `docs/modes/MODE-DESIGN-BRIEF.md` and `docs/modes/DEEP-DIVE-BRIEF.md`. Builds on `docs/game-modes-v2.md` (mode 4), `docs/find-it-design.md` (the model), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md`, `docs/cook-with-nani-todo.md` (Waves 1–5) and the Art Bible.
+**Status:** proposal for Zafar; phases 0–1 of the deep dive's brief are built (`build/reports/dress-build.md`). **The pipeline design at the top (25 Sept, evening) is current and supersedes the deep dive and the sections below wherever they conflict**; its P.8 is the build brief that the next build agent follows (section 12 is kept for reference). Follows `docs/modes/MODE-DESIGN-BRIEF.md` and `docs/modes/DEEP-DIVE-BRIEF.md`. Builds on `docs/game-modes-v2.md` (mode 4), `docs/find-it-design.md` (the model), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md`, `docs/cook-with-nani-todo.md` (Waves 1–5) and the Art Bible.
 **Placeholder rule:** the Kutchi below uses only words and frames already in `data/content.json` or `data/cook.json`. Anything written `[EN: red]` has no Kutchi yet and shows in the game as a grey italic English placeholder until the family gives the word. **Never invent Kutchi.** Right now the repo has **no Kutchi for any clothes, colour, pattern or weather word**, so every decision word in this mode starts as a placeholder (section 6.6 is the ask list).
+
+---
+
+## Pipeline design, 25 Sept 2026
+
+**Why this section.** Zafar's pipeline brief (`PIPELINE-BRIEF.md`): every mode is a **factory-like sequence of stages**, each stage a set of mini-games, stitched into one story with a beginning and an end. The deep dive below already broke Dress up into mini-games on modular mechanics; what it lacked was the **process**. This section turns Big Ma's room into a tailoring line: a client comes in, is measured, their things are fetched, made or fixed at the table, put on, checked in the mirror, photographed, and sent off. It supersedes D.1–D.6 and D.9, and sections 1, 3, 4 and 5 below, where they conflict; D.7 (the review's critiques) and D.8 (words) still stand, extended by P.7. P.8 replaces section 12 as the build brief.
+
+### P.1 The pipeline
+
+```
+   the doorway bench      the tape          the rail, the shelf,        Big Ma's table            the rug by the mirror         the mirror and the camera
+                                            the bolts
+  ┌────────────────┐   ┌────────────┐   ┌──────────────────────┐   ┌─────────────────────┐   ┌──────────────────────┐   ┌─────────────────────────┐
+  │ 1 WHO'S NEXT?  │ → │ 2 MEASURE  │ → │ 3 FETCH              │ → │ 4 MAKE AND FIX      │ → │ 5 PUT IT ON          │ → │ 6 MIRROR, PHOTO, BYE    │
+  │ bring in Nana  │   │ arm, neck, │   │ the sliding rail,    │   │ cut, sew, buttons,  │   │ the fitting, going   │   │ the mirror check, "How  │
+  │ (who's who)    │   │ long/short │   │ the wardrobe shelf,  │   │ iron, embroider…    │   │ out (weather), tell  │   │ do I look?", the photo, │
+  │                │   │            │   │ bolts and spools     │   │ (the big library)   │   │ Ali                  │   │ Eidi and goodbye        │
+  └────────────────┘   └────────────┘   └──────────────────────┘   └─────────────────────┘   └──────────────────────┘   └─────────────────────────┘
+   carries forward →     the client        the sizes                  the basket               the finished pieces         the worn look → a snapshot
+                                                                                                                             in the lookbook
+```
+
+| Stage | Where | What the child does | What the Kutchi decides | Hands over |
+|---|---|---|---|---|
+| **1 Who's next?** | The bench by Big Ma's door | Big Ma says who to bring in; the child taps the right person on the bench (or calls them in aloud) | Kinship and people words (*Nana, Ma, Ali, the guest, the baby, the old man*); later colour of house clothes and *first, then* | **The client**, standing on the rug |
+| **2 Measure** | The client, tape in hand | Big Ma names a body part; the child lays the tape on it; then *long or short?*, *big or small?* | Body parts (shared with the clinic), *left, right*, *wadho/nindho*, long/short | **The sizes** on Big Ma's chalk slate: what the cut and the hem must match |
+| **3 Fetch** | The sliding rail, the wardrobe shelf, or the bolts and spools | Grabs what was asked as it passes, or from the shelf into piles, or the fabric and thread to make it | Colour + garment pairs, *not the…*, *for whom*, counts, fabric and thread colours | **The basket**: everything the next stage works on |
+| **4 Make and fix** | Big Ma's table (T view) | One to three table games from the library (P.3): cut, sew, sew on buttons, iron, embroider, patch… | Counts, sizes, colours, garment parts, sides, *first, then*, tools (*pass me*) | **The finished pieces**, which fly onto the rail |
+| **5 Put it on** | The rug by the mirror | Dresses the client from the finished pieces plus the rail's decoys; the weather variant; or tells Ali what to wear | Binding pairs, *no* rows, a change of mind, the weather set | **The worn look** (`wears[]`) |
+| **6 Mirror, photo, goodbye** | The mirror; Big Ma's camera | The client checks each piece; *How do I look?*; a photo with a pose or two; Eidi and goodbye | Recasts, *Achija!* / beautiful, *sit, stand, smile*, feelings words, the greeting | **A snapshot** in the lookbook, stars, pocket money |
+
+**Rules of the line.**
+- **One job per stage** (UX 5): each stage is its own screen or zone with a big right-hand button between them (*Measure* → *To the rail* → *To the table* → *Put it on* → *To the mirror*). Nothing overlaps.
+- **A client's route is data.** Each client card lists which stages it runs and which variants: `{who, occasion, stages: ["who", "fetch:rail", "make:iron", "wear:fitting", "mirror"]}`. The first-ever session runs three stages; a level-3 Eid client runs all six. A stage the route skips is done by Big Ma in one line ("I've measured him already").
+- **Everything carried forward is used.** What the tape says sets the cut; what the rail gave is what the table works on; what the table made is what goes on. A wrong grab at stage 3 is not corrected there (from level 2): it shows up at the mirror as the client's recast, and the child goes back one stage to fix it. That is the pipeline's version of the prompt-not-correction rule.
+- **The request card** (UX 1) opens each stage with the speaker's face and the lines for that stage only, read along, then shrinks into the left sidebar. The light bulb flips it to English.
+- **The table is the fun.** Stage 4 is where the big library lives, exactly as the clinic's healing games are the clinic's; the other five stages are short and carry most of the listening.
+
+### P.2 The mini-game variants, per stage
+
+Each variant: the mechanic, what the Kutchi instruction carries, how it gets harder, what it reuses. Mechanic tags: **new**, **Cook** (reused from Cook), **shared** (with the named mode), **built** (already in `js/dress/`).
+
+**Stage 1: Who's next? (the bench)**
+
+| Variant | Mechanic | What the instruction carries | Levels | Reuses |
+|---|---|---|---|---|
+| **1a Bring in…** (the first, easiest) | Big Ma: *[EN: bring in] Nana*; 2–5 people sit on the bench; tap the right one, who walks to the rug | A person or kinship word: *Nana, Ma, Ali (the cousin), the guest, the baby, the old lady, the little girl* | L1: two people, opposite kinds. L2: four. L3: two of a kind in different house colours: *[EN: the boy in the green]* (kinship + colour). L4: *[EN: the tall one], [EN: the one with the glasses]* (F1–F16) | **Shared** `whichone` (the clinic's waiting room, Who did it?) |
+| **1b First…, then…** | Two or three people are named in order; tap them in that order; each walks to a numbered spot on the rug | ***pela** {x}, ne poi {y}* (real Kutchi) + the people words | L2: two people. L3: three, one of them a *nar* (*not Ali*) | **Cook** tadka's sequence input, wrapped as `queue` (**new**, small) |
+| **1c Call them in** (speaking) | The child says the name; the person who was heard stands up and comes in, the wrong one comically if wrong | Closed set: the 3–5 people on the bench | From L2, after 1a has been played at L1 | **Shared** `say` |
+
+**Stage 2: Measure (the tape)**
+
+| Variant | Mechanic | What the instruction carries | Levels | Reuses |
+|---|---|---|---|---|
+| **2a Where's the tape?** | Big Ma names a part; the child drags the tape's end onto it; the tape snaps round it and a number appears on the slate | Body parts: *arm, neck, shoulder, tummy, leg* (G42–G61, the clinic's words); *left, right* | L1: the parts pulse, tap one (the clinic's "does it hurt here?" scaffold). L2: named, nothing pulses. L3: *the left arm*, then two parts in order | **Shared** `where` (the clinic's `mechanics/where.js`: a named spot on a body) |
+| **2b How long?** | A chalk line on the slate: drag it to the long or the short mark; for caps and dupattas, big or small | *wadho / nindho* (real, he-word forms), long / short (F7–F8); the result is carried into 4's cut and hem | L1: one size word. L2: two garments with different sizes. L3: *[EN: longer than Nana's]* (H1 comparatives) | **Cook** `pour`'s stop-at-the-line input, wrapped as `tape` (**new**, small) |
+| **2c Read it back** (speaking) | Big Ma, tape in hand: *[EN: long or short?]*; the child answers; she writes what she heard on the slate | Closed set 2–4: *long, short, wadho, nindho* | L2+ | **Shared** `say` |
+
+**Stage 3: Fetch (the rail, the shelf, the bolts)**
+
+| Variant | Mechanic | What the instruction carries | Levels | Reuses |
+|---|---|---|---|---|
+| **3a The wardrobe shelf** (built: G2 Lay it out) | Folded clothes on a shelf; fetch the named ones into one pile per person on the bed | Colour + garment pairs; **for whom** (*Nana lai*, real frame); *nar* | As built: L1 one person two rows; L2 two people, change of mind; L3 three people, neighbouring colours, card hidden | **Cook** `fetch`; **built** `wear` (flat), `check` |
+| **3b The sliding rail** (new; the clinic's pharmacy belt) | Big Ma's rail runs on a loop like a dry-cleaner's: hangers glide past; the child grabs the asked ones into the basket; over-grabbing costs the ear; Done stops the rail | Pairs; *not the red one*; counts (*ba dupatta*); later patterns | L1: one pair, slow rail, 6 hangers. L2: two pairs + a *nar*, 10 hangers. L3: three pairs, faster, neighbouring colours, the card hidden; Busy adds Big Ma's patience | **Shared** `belt` (the clinic's counter; the foundation builds it once) + **shared** `pick` for the decoy balance |
+| **3c Bolts and spools** (old G8 Make to order) | Bolts of cloth and spools of thread on the table's shelf; pick the bolt and the spool the client asked for; they go to the cut | Fabric colour + pattern (*plain, dotted, striped, flowery*, F62–F63), thread colour, **binding** (the fabric colour is a decoy's thread colour) | L1: bolt only. L2: bolt + spool. L3: pattern + the length from 2b | **Shared** `pick`; **built** `wear` (a tray slot) |
+| **3d Pass me** (Big Ma's tools) | During any table game Big Ma stops: *Muke [EN: scissors] de*; the child hands the right tool from four look-alikes | *Muke {x} de* (real frame) + needle, thread, scissors, pin, iron (F72–F77) | From L1 once F72–F77 are recorded. L2: role reversal, the child asks (closed set: the tools on the table) and Big Ma hands it over | **Cook** `passme` (built as `mechanics/passme.js`); **shared** `say` |
+
+**Stage 4: Make and fix (Big Ma's table).** The library is P.3. The route picks **one** table game at level 1, **two** at level 2 and **three** at level 3, matched to what the basket holds: a piece from the bolts must be **cut** and **seamed** before anything else; a fetched garment gets a finishing game (iron, buttons, a motif, the hem); a stained one gets **wash** then **patch**. The order inside the stage is itself an instruction from level 2: *pela istri, ne poi button* (first the iron, then the buttons), and doing them in the wrong order costs the ear, not the neat star.
+
+**Stage 5: Put it on (the rug by the mirror)**
+
+| Variant | Mechanic | What the instruction carries | Levels | Reuses |
+|---|---|---|---|---|
+| **5a The fitting** (built: G1) | The finished pieces hang on the rail among balanced decoys; put the asked ones on the client; live check at L1, mirror check from L2; a change of mind | Colour + garment pairs, binding, *nar* rows, *[EN: not the red one, the blue one]* | As built: L1 two rows; L2 three, binding, change; L3 neighbours, card hidden, patterns | **Built** `wear` (upper), `check`, `change`; **shared** `pick` |
+| **5b Going out** (G5, logic built) | Nani calls the weather through the doorway; the curtain is drawn; dress Ali for it plus carry items; he steps out and the weather happens | The weather set (G1–G14), *[EN: take the umbrella]* (F68), *[EN: keep warm]* (F69) | L1: one weather, one colour row. L2: two rows. L3: **the child** looks out and calls the weather to Ali (speaking, closed set of 4) | **New** `weather` (curtain, walk-out, needs/forbids); **shared** `say` |
+| **5c Tell Ali** (G6, speaking) | The look card shows a picture; the child says each pair; Ali wears exactly what was heard, comically wrong if wrong | Two closed sets per row: the palette (4–6 colours), then the kinds on the rail (3–5) | L2+; Grandparent mode (Nani reads, marks) | **Shared** `say`; **built** `wear` |
+| **5d The family set** | Dress two or three people from the piles 3a made, each at the mirror in turn; a group reveal | Kinship + pairs; the rows never carry faces; line and rows shuffled separately | L3 (Eid morning, Mehndi night) | **Built** `wear`, `check` |
+
+**Stage 6: Mirror, photo, goodbye**
+
+| Variant | Mechanic | What the instruction carries | Levels | Reuses |
+|---|---|---|---|---|
+| **6a The mirror check** (built) | The client turns to the mirror and names each piece; a sparkle for right, *Arre re!* + what you put on + what they asked for from the first wrong one; the child goes back a stage and fixes it | The recast frames; every word of the round re-heard | Live at L1; at Done from L2; from L3 only the wrong ones are named | **Built** `check` |
+| **6b How do I look?** (speaking) | The client asks (F66); the child answers; the client beams or, at *[EN: not nice]*, pretends to sulk | Closed set: *Achija!* (real), beautiful (F67), good (C44), *[EN: very nice]* | L1: shadowing only, ungraded. L2+: graded for the voice star | **Shared** `say` |
+| **6c The photo** | Big Ma holds up the camera: *Nana, [EN: sit]! Ali, [EN: stand]! [EN: Smile]!*; the child taps the pose on each person, then the shutter; the snapshot goes into the lookbook | Imperatives (C145–C147 *come here, sit down, look*), *[EN: smile]* (H20), *[EN: together]* (H26), *first, then* | L1: *smile* only, automatic photo. L2: one instruction per person. L3: two people, in order, plus *[EN: not Ali]* | **New** `pose` (tap a person, tap a pose pill; small) |
+| **6d Eidi and goodbye** | The greeting choice as in every mode; on Eid the elders give Eidi (pocket money); the client says a feelings word | *Aabhar aanjo*, the Eid greeting and the Eidi phrase (F71), *happy / better* (G62–G72) | Always; the words rotate | **Cook** greeting chooser and receipt; the shared end-of-round screen (UX 9) |
+
+### P.3 The big library: Big Ma's table (stage 4)
+
+Twenty table games, the mode's equivalent of the clinic's healing games. Every one is comical or tactile first and carries Kutchi through its instruction: at the least a count, a colour, a side or a part. Scores 1–5 (build: 5 = cheap). Age fit: which of 5 / 8 / 11 it suits. "Real today" means the decision words exist in `data/cook.json` now (numbers, *wadho/nindho*, *nar*, *pela… ne poi*, *Muke {x} de*); everything else waits for Round 3.
+
+| # | Game | One-line pitch | Kutchi it teaches | Mechanic | Age | Fun | Kutchi | Build |
+|---|---|---|---|---|---|---|---|---|
+| **T1** | **Cut along the line** | Big Ma chalks the piece on the bolt; snip along the dashed line with the scissors; a wobble leaves a ragged edge | *cut the sleeve* (part), *ba* sleeves (count, real), long/short from the slate | `cut` (**new**, on fill-fold's swipe input, like `stitch`) | 5 · 8 · 11 | 4 | 3 | 4 |
+| **T2** | **Seam it on the machine** | Guide the cloth under the needle so the seam stays on the line while the machine chatters; tap the pedal to go | *[EN: the left side], ne poi [EN: the right]* (sides + first/then) | `seam` (**new**: steer a moving line; tolerance by level) | 8 · 11 (5 with a wide lane) | 5 | 3 | 3 |
+| **T3** | **Sew on buttons** (built, G3 L1) | *Sew on ba wadha buttons, [EN: red]*: take them from the tin, place on the placket, stitch each round | Count and size (**real today**), colour | `count` (Cook) + `wear` + `stitch` (**built**) | 5 · 8 · 11 | 4 | 5 | 5 |
+| **T4** | **Embroider a motif** (built, G3 L2–3) | *[EN: two small yellow flowers on the left sleeve]*: from the tray onto the named part, stitch round | Motif, colour, part, side, count, size | `pick`, `wear` (parts as slots), `stitch` (**built**) | 8 · 11 | 4 | 5 | 5 |
+| **T5** | **Iron it** (old G7) | A pile of creased clothes; *[EN: iron] pela [EN: the red kurta], ne poi [EN: the white dupatta]*; pick it, rub the creases flat, next | Colour + garment, *first, then* (**real**) | `iron` (**new**, on knead's rub input) + `pick` | 5 · 8 | 5 | 4 | 5 |
+| **T6** | **Hem it** | Fold the hem up to the chalk mark the tape set in stage 2, then stitch it | Long / short, *wadho / nindho* (**real**) | `fold` (Cook fill-fold) + `stitch` | 8 · 11 | 3 | 4 | 4 |
+| **T7** | **Pin the dupatta** | *Ba pins, [EN: on the left shoulder]*: press and hold to push each pin in; a pin in the wrong spot pricks Big Ma ("Arre re!") | Count (**real**), sides, *shoulder* (G55) | `pin` (**new**: press-and-hold at a spot) | 5 · 8 · 11 | 3 | 4 | 4 |
+| **T8** | **Thread the needle** | Hold steady and slide the thread end through the eye; the needle drifts a little; the eye is huge at level 1 | Thread colour (*[EN: the red thread]*), *Muke {x} de* (**real** frame) | `aim` (**new**: a steady drag to a small target) | 8 · 11 | 4 | 3 | 4 |
+| **T9** | **Bandhani dots** | Pinch and tie *trae* dots on the white dupatta, dip it in the named dye, untie: the tie-dye reveal | Count (**real**), colour, *dotted* (F63) | `count` (Cook) + `dip` (**new**, a Cook `pour` variant) | 5 · 8 · 11 | 5 | 5 | 3 |
+| **T10** | **Block print** | Stamp the carved wooden block along the hem: *char [EN: flowers], [EN: on the hem]*; the rhythm sound; ink runs out if you dawdle (Busy) | Count (**real**), motif, part | `stamp` (**new**, small: tap in a row; `count` underneath) | 5 · 8 · 11 | 4 | 5 | 4 |
+| **T11** | **Dye the cloth** | White cloth into the dye pot: *[EN: make it green]*; at level 3 two pots mix (*[EN: yellow] ne [EN: blue]*) and the child must pick both | Colours; two colours make a third | `dip` (as T9) + `pick` | 5 · 8 · 11 | 4 | 5 | 4 |
+| **T12** | **Patch the hole** | A hole on a named part; pick a patch from the scraps tin (colour + size), lay it over, stitch round | Colour, size (**real**), part | `pick` + `wear` + `stitch` (**built**) | 5 · 8 | 3 | 5 | 5 |
+| **T13** | **Wash the stain** (The spill) | Soap on the sharbat stain on the named part and rub until it's gone; wring it out | Part, *dirty / clean, wet / dry* (F9–F12) | `iron`'s rub input (knead) | 5 · 8 | 4 | 3 | 5 |
+| **T14** | **Sew on the border** | Drag the gold trim along the hem's dashed line; it puckers if you rush | Trim colour, *hem*, long | `stitch` (**built**, line variant) | 8 · 11 | 3 | 4 | 5 |
+| **T15** | **Bangles** (built, G4) | *Trae [EN: red], ba [EN: gold]* onto Ma's wrist; *[EN: how many?]* and the child says it | Count (**real**), colour; the first spoken number | `count`, `wear`, `say` (**built**) | 5 · 8 | 4 | 4 | 5 |
+| **T16** | **Mirror-work** | Stick *panj* little mirrors on the waistcoat's named part, then stitch each one round (a Kutch nod) | Count (**real**), part | `count` + `wear` + `stitch` (**built**) | 8 · 11 | 4 | 4 | 5 |
+| **T17** | **The pedal** | Big Ma: *panj [EN: times]*; tap the treadle that many times and the machine sews that many stitches; nothing ends by itself | Numbers 1–5 (**real today**) | `count` (Cook) | 5 | 3 | 5 | 5 |
+| **T18** | **Wind the bobbin** | Spin the wheel round and round with the named spool on; at level 2 *trae* turns | Thread colour, count | `stir` (Cook, circular drag) | 5 · 8 | 3 | 3 | 5 |
+| **T19** | **Fold it** | Fold the finished kurta in the order said: *pela [EN: the left sleeve], ne poi [EN: the right], ne poi [EN: the bottom]* | Sides, *first, then* (**real**) | `fold` (Cook fill-fold) | 5 · 8 · 11 | 3 | 4 | 4 |
+| **T20** | **Cat bows** (toy) | A bow on Simba and one on Zazu: *Simba: [EN: red]* | Colour only; never graded for the ear | `pick` + `wear` | 5 | 5 | 2 | 5 |
+
+**First table set (build order):** T3, T4 and T15 exist; then **T5 Iron** (Layla's, cheap, real *first/then*), **T1 Cut** and **T14 Border** (the make-to-order chain, both on the swipe input), **T9 Bandhani** (the most fun and the most Kutchi per minute), **T10 Block print** and **T17 The pedal** (real numbers today). T2, T7, T8, T11 in phase 3; T6, T12, T13, T16, T18, T19, T20 as the pool grows. **T19 Fold it** is kept only if Tidy up does not build a fold of its own (Tidy up owns the wardrobe; the table only folds). **Rejected:** make-up and hair (as before), a "read the tape's number" game (numbers past five come later), the washing line (Monsoon and Tidy up own it).
+
+### P.4 Research: what children's tailor and dress-up apps do
+
+Section 2.1 below (Style Savvy's specific request, Dress to Impress's brief-and-reveal, Project Makeover's grateful client, Crafting Mama's stylus crafts) still holds. This pass looked at the tailor-shop genre for the **process** itself.
+
+| App | What it does | Worth borrowing |
+|---|---|---|
+| **Toca Tailor** (Toca Boca) | Four characters; drag a colour or pattern swatch onto a garment and the app cuts and fits it; hems and sleeves drag longer or shorter; patterns rotate and zoom; embellishments (buttons, pockets) resize and repeat; a camera makes fabric from your surroundings; **a photo at the end** to keep or send. Reviewers: calm, no fail state, "digital scissors" | The drag-the-hem length (our 2b and T6 make it a *spoken* length); swatches as tintable pattern masks (already our plan); **the photo as the ending** (6c) |
+| **Baby Panda's Fashion Dress-Up** (BabyBus) | "Different customers waiting every day"; skills named as **cutting, sewing, ironing, polishing, setting**; 54 outfits | The named skills as a **pool of table games** the customer's order draws from (P.3); one customer at a time, every day |
+| **Baby Fashion Tailor Shop**, **Royal Tailor 3**, **Little Tailor: DIY Fashion**, **Fashion Tailor Game Kids** (the genre's stock line) | The same fixed line in every one: **measure the customer → choose the fabric → cut (trace the outline) → the sewing machine → press/iron → decorate (buttons, bows) → dress up**; "alter, stitch and sew" mini-games; step-by-step blocks "so kids can learn" | The line itself is our pipeline; these apps prove a five-year-old follows a six-step process happily when each step is one gesture. What they lack (any reason for the choices) is exactly what the Kutchi supplies |
+| **Crafting Mama** (DS) | Sew, cut, pin, fold, paint, **embroider** as stylus mini-games, several per project; a practice mode per step | The one-verb-per-game rule for P.3; pin (T7) and embroider (T4) as their own games; the practice mode is our free-play table |
+| **Dr. Panda Home** | Chores as tiny tasks (hang the laundry, mop); coins for décor | Ironing and folding as short, satisfying chores (T5, T19); nothing else |
+| **My Town: Fashion Show**, **Fashion Junior** | A dress-up studio, then a **catwalk or a photo studio** with backgrounds and stickers; the picture is the reward | The photo beat (6c) with a pose instruction; backgrounds as a later lookbook upgrade, never graded |
+| A dressmaking sim (search summary) | Drag the tape across the client to record measurements; set the mannequin's dials to match; lay pattern pieces until the outline turns green | The **tape on the body** (2a) and "the cut must match the slate" (T1, T6): the measurement is carried forward and checked, not decorative |
+
+**What none of them do, and we must:** say *why* each step is done that way. In every app above the child could win blind; the fabric, the length and the decoration are taste. Our pipeline is the same line with every choice **spoken in Kutchi**, the blind-odds budget applied per stage, and a mirror that names what went wrong.
+
+Blocked pages: `play.google.com`, `apps.apple.com`, `commonsensemedia.org`, `gamezebo.com`, `ipadkids.com`, `kevin.games` and `amazon.com` were refused by the network proxy; those rows use the search summaries (sources at the end of the document, "Pipeline research").
+
+### P.5 Stitching: how a session runs
+
+- **Big Ma's morning** (story and free play alike) = **three clients** through the pipeline, one after another, about 6–8 minutes: for Eid morning, Nana, then Ma, then Ali (and the family set as the finale at level 3). Each client ends on the shared end-of-round screen (UX 9: time, accuracy, hints; then the word review); the morning ends with the lookbook page of the three snapshots and the pocket money (Eidi on Eid).
+- **Each client's route grows with the level.** L1: stages 1, 3, 4 (one table game), 5, 6, with 2 done by Big Ma in a line. L2: all six; two table games; a change of mind; the first speaking moments. L3: all six; three table games in a spoken order; the card hidden; the family set. L4: the client says only the occasion or the weather and everything follows.
+- **The first ever session is tiny** (UX 7): **one client, Nana**, already standing on the rug (no bench), **one row** (*[EN: the white kurta]*), the **shelf** (3a, three garments), **one table game (T5 Iron, one crease)**, put it on (5a, one slot), the mirror names it, *Achija!*, the photo takes itself. About 60 seconds, five taps and one rub; the bench, the tape and the rail arrive in sessions two and three, each introduced by the ghost-finger overlay (UX 8).
+- **Story homes** (unchanged from D.6, now as routes): **Arc 1 Ch4 The spill** = a guest, stages 4 (T13 wash → T12 patch, or T4 one motif) and 6 only; **the Eid eve** = 3a for three people; **Eid morning** = the full morning above; **Arc 3 Ch4's door** = 5b once, 30 seconds; Arc 2 Outfits = 3c → T1 → T14 → 5a; Arc 5 the old photo = its own route later.
+- **Free play dips into single stages.** The room is the menu: tap the **bench** (stage 1 as a quick game), the **tape** (2), the **rail** (3b on a loop, "Close the rail" ends it), the **table** (any T-game at any level: the practice mode), the **mirror** (5a fittings, clients keep coming, "Close the room"). Each single-stage game has its own personal best on the end-of-round screen. The hub's one rotating daily calls a **60-second route**: one client, one row, one table game.
+- **The Sceptic's win-without-Kutchi test, per stage.** The budget is per client, not per stage: the generator computes the blind odds of the whole route (stage 1's pick × stage 3's grabs × the table's counts and parts × the fitting) and adds a decoy or a row until it is ≤ 5%. Blind bot at level 1 of the first route (Nana, one pair, iron, fitting): stage 1 from 2 people (50%) × the shelf pair from 3 kinds × 3 colours (11%) × the crease count 1–3 (33%) × the fitting slot (33%) ≈ **0.6%**; the real-Kutchi slice on its own (count only) is 33%, and the bot reports it separately, as now.
+
+### P.6 What survives from the current build
+
+The build (`build/reports/dress-build.md`: phases 0–1, branch `claude/build-dress`) is a set of **four standalone games on one round engine**. Almost all of it carries over; what changes is the shape around it: a *route* runs stages in sequence, and each existing game becomes a stage variant.
+
+| File | Verdict | What changes |
+|---|---|---|
+| `data/dress.json` | **Keep** | Add `stages` (the six, with their variants and level knobs), `routes` (per client card: which stages and variants; the story days), `table` (the T-game pool with per-game knobs: T1, T5, T9, T10, T17 first), and the words for the bench (people), the tape (parts by id from the clinic's data once it exists) and the photo (poses). `games` stays for the lab's single-game entries. Fix *bo* → *ba* and *hikdo* → *hakro/hakri* wherever the grammar notes say (they live in `data/cook.json`; Dress references by id, so nothing to edit here) |
+| `js/dress/look.js` (generator) | **Keep, extend** | `Look.generate` grows a `Look.route({client, level})` that calls the existing per-game generators per stage and threads what is carried forward (the client from stage 1; sizes from 2 into the T1/T6 knobs; the basket from 3 as the fitting's answers). The blind-odds budget becomes per route (`Pick.product` over the stages), so the per-game budget check moves up one level |
+| `js/dress/rack.js`, `grade.js` | **Keep** | New areas: `bench` (people), `slate` (sizes), `belt` (the rail's loop order), `pool` (the table's tin, tray and bolts already exist). `Grade.check` gains `stage` results so the mirror can say which stage to go back to |
+| `js/dress/core.js` (Round, card, sidebar, Done) | **Keep, reshape** | `Dress.Round` becomes the **stage** unit; a new `Dress.Route` runs stages in order, keeps the carried state, and puts the between-stage button on the right. The card per stage is the request card (UX 1) with read-along once the chunked audio lands. The light bulb replaces "?" |
+| `js/dress/doll.js` (flat, upper renderers; code overlays) | **Keep** | Add the bench (upper-body crops sitting in a row, the clinic's waiting-room framing), the tape and slate overlay, and the camera frame for 6c. The mirror mask stays. Full body is still phase 5 |
+| `js/dress/games/layout.js` (G2) | **Keep** → stage variant **3a** | Its piles become the basket for stage 5d |
+| `js/dress/games/fitting.js` (G1) | **Keep** → stage variant **5a** | The rail's contents come from the route's basket plus decoys, not only the generator |
+| `js/dress/games/table.js` (G3) | **Keep, split** → **T3**, **T4** and the `passme` moment (3d) | The T-game runner (`Dress.Table.run(r, gameId)`) grows out of it; buttons and motifs are its first two entries |
+| `js/dress/games/bangles.js` (G4) | **Keep** → **T15** | Unchanged |
+| `mechanics/wear.js`, `check.js`, `change.js`, `stitch.js`, `passme.js`, `count.js` | **Keep** | `check` learns to name the stage to go back to (from L2). `stitch` gains the line variant for T14 |
+| `mechanics/say.js` | **Keep until** the shared `say` lands (`js/shared/say.js` now exists: swap in phase 2) | Six speaking moments now: say how many (T15), ask Big Ma (3d), read it back (2c), call them in (1c), call the weather (5b L3), how do I look (6b), tell Ali (5c) |
+| `stubs/pick.js` | **Keep until** `js/shared/whichone.js` is confirmed as the foundation's `pick` (it exists; swap in phase 2, one line in `dress.html` and one in the bot) | — |
+| `js/dress/bot.js`, `build/leak_dress.mjs`, `build/test_dress.py` | **Keep, extend** | Bot strategies per stage plus the route-level rate; new strategies: "first person on the bench", "the biggest measurement", "grab everything on the rail", "any pose". The Playwright harness plays a whole route by `Dress.expect` |
+| `js/dress/flow.js` | **Rewrite** | Becomes the route runner and the room-as-menu (bench, tape, rail, table, mirror as entries), Big Ma's morning, and the shared end-of-round screen (UX 9) instead of the local result card. The lab keeps game × level and gains route × level |
+| `dress.html`, `css/dress.css`, `data/scenes/bigma-*.json` | **Keep** | Scene files gain the bench spots, the slate, the rail loop path and the camera anchor |
+| **Goes** | The local result card in `flow.js` (replaced by the shared screen); the per-line "?" help (replaced by the light bulb); G5's "phase 3, logic only" placeholder button (5b is built in phase 3 proper) |
+
+**Mechanics count after this design:** built and kept 7 (`wear, check, change, stitch, passme, count, say`-stub); new 11 (`queue, tape, cut, seam, iron, pin, aim, dip, stamp, pose, weather` — `pose` and `queue` are a few lines each; `weather` is the only large one); reused from Cook 5 (`fetch, count, pour, stir, fold` via fill-fold); shared 4 (`whichone`/`pick`, `where` from the clinic, `belt` from the clinic, `say`).
+
+### P.7 Words needed (marking the Questions for Mum doc)
+
+D.8's list stands (colours E60–E71; clothes F44–F63; dressing phrases F64–F70; sewing F72–F79; *how many / which one* A8; *for whom* B39, C50–C55; weather G1–G14, F68–F69; patterns and lengths F62–F63, F7–F8; *first, then* F41–F43). The pipeline adds:
+
+| Priority | Words | In the Questions doc? |
+|---|---|---|
+| 1 | **The bench**: *bring in {x}*, *next!*, *come here* (C145); people words *the guest, the baby, the old man / lady, the little girl / boy* | **Partly**: C145 asked; the people words are in Who did it?'s list (F1–F4 describe them); *bring in* and *next* **not asked** (Round 3) |
+| 2 | **The tape**: body parts *arm, neck, shoulder, tummy, leg* | **Asked**: G42–G61 (the clinic's; record once, share) |
+| 3 | **The photo**: *sit down* (C146), *look* (C147), *stand up*, *smile* (H20), *together* (H26), *here's the photo* (H22) | **Asked** except *stand up* (Round 3) |
+| 4 | **The table verbs**: *cut, sew, iron (verb), fold, pin, dye, print, wash, tie*; *sewing machine, dye pot, wooden block, patch, border, mirror-work, bandhani* | **Not asked** (Round 3; *sew on* was already flagged in D.8 row 10) |
+| 5 | **Feelings at the send-off**: *happy, better* | **Asked**: G62–G72 |
+| 6 | **Tools as a speaking set** (3d role reversal): the five tools said clearly enough to be templates | **Asked**: F72–F77 (record each twice) |
+| Have | numbers (*hakro/hakri… panj*, *ba* for two), *wadho / nindho*, *nar*, *pela… ne poi*, *{x} lai*, *Muke {x} de*, *hi*, *khan*, *Achija*, *Arre re*, *Hedo*, *Aabhar aanjo* | `data/cook.json` and the grammar notes |
+
+### P.8 Build brief (rewritten for the pipeline; phased, own files first)
+
+**Rules throughout:** as section 12 (never invent Kutchi; levels and routes are data; one mechanic = one file; no labels on garments; the leak rules in 8.4; UK English), plus the UX principles: the request card per stage with read-along, the left sidebar, one light bulb, fixed-shape cards (the basket always shows the same number of slots for a client's route), one job per stage with a big right-hand button, level 1 tiny, the shared end-of-round screen, the onboarding kit's ghost finger for each stage's first appearance (the scripts written last, once mechanics settle: UX 10). **Phases 0–2 touch only the mode's own files** (`dress.html`, `js/dress/**`, `data/dress.json`, `data/scenes/bigma-*.json`, `css/dress.css`, `build/leak_dress.mjs`, `build/test_dress.py`).
+
+**Shared pieces assumed from the foundation** (not designed here): the shell and one save; `whichone` (`pick`); `where` (the clinic's named-spot-on-a-body, reusable on a client); `belt` (the clinic's pharmacy counter: a loop of items gliding past a grab zone); overlay-at-anchor sprites; star sets and ear/voice rules as data; `js/shared/say.js` on `speech.js`; the onboarding kit; the end-of-round screen component. Until each lands: the existing stubs (`stubs/pick.js`, `mechanics/say.js`), a local `belt` in `js/dress/mechanics/belt.js` with the same call shape, and the local result card.
+
+| Phase | Own files only? | What's playable | Acceptance |
+|---|---|---|---|
+| **0. Routes in logic** | Yes | `data/dress.json` gains `stages`, `routes`, `table`; `look.js` gains `Look.route`; `grade.js` per-stage results; `leak_dress.mjs` runs whole routes in Node with the per-stage strategies | Every strategy < 10% ear-star rate per route per level over 2,000 runs (target ≤ 5%); the real-Kutchi slice reported separately; the first-session route's odds printed |
+| **1. The line, greybox** | Yes | `Dress.Route` in `core.js`; `flow.js` rewritten: Big Ma's morning (3 clients) and the room as menu; stages **1a, 3a, 3b (local belt), 4 with T3/T4/T5/T15, 5a, 6a, 6c (smile only)** at L1–3; the between-stage buttons; the request card per stage; the light bulb; the first-session route | `test_dress.py --route eid --level 1..3` at six sizes; a human plays the first-session route in ≤ 90 s with no reading; the on-screen bot matches Node within 2 points; no label, swatch or tinted row in any screenshot |
+| **2. The tape, the table pool, speaking** | Yes (reads shared files if present) | Stage 2 (2a on a local `where` port or the shared one, 2b `tape`); T1 `cut`, T14, T9 `dip`, T10 `stamp`, T17; 1b `queue`; the seven speaking moments on `say` (pills first); 3d pass me in the line; swap `pick` and `say` for the shared ones when confirmed | Each new T-game in the lab at L1–3 with its own bot run; phone 915×375 usable for cut and stamp (tolerance ≥ 28 px); `say` never blocks; the voice star only on a recognised or ticked answer |
+| **3. Weather, photo, story, free play** | Shell files for integration only | 5b Going out with the curtain and walk-out; 5c Tell Ali; 5d the family set; 6b and 6c at L2–3 (`pose`); T2, T7, T8, T11; the story routes (The spill, the Eid eve, Eid morning, the Ch4 door); the hub's 60-second route; the lookbook | `--days` plays Ch4, the eve and Ch5 end to end; `--morning 3` closes into the lookbook; the hedge strategy < 10%; no weather sound before Done; the daily route returns in ≤ 90 s |
+| **4. Art, first run (no full body)** | Art files only | The bench (upper-body crops seated), the tape and slate, the rail loop, the table T view with the new props (scissors, machine, dye pots, block, camera), ~15 flat garments, ~14 overlays, Big Ma's demo hands | Visual QA per contact sheet; overlays within 4 px on all crops; the family's F44 list and modesty rules signed off. **After E60–E71 and F44–F63 come back** |
+| **5. Full body and the rest** | Own files + art | The full-body renderer (alignment test first), the mirror walk, T6, T12, T13, T16, T18, T19, T20, the old photo route | Alignment within 4 px per base; each game its own bot run < 10% and a persona pass |
+
+**First three tasks.** (1) Phase 0: `routes` and `Look.route` with the carried state, the route-level odds, and the Node bot's new strategies; done when the first-session route and Eid morning L1–3 print under budget. (2) Phase 1: `Dress.Route` and the rewritten `flow.js` with 1a, 3a, 3b, T5, 5a, 6a, 6c and the first-session route; done when a human plays the first session in under 90 s and the harness passes at six sizes. (3) Phase 2: `tape`, `cut`, `dip`, `stamp`, `queue` and the speaking moments; done when each has its own lab entry, bot run and phone screenshot checked by Claude.
+
+### P.9 Decisions for Zafar (defaults in bold; only what blocks the build)
+
+1. **Is the six-stage line right, with Measure as stage 2?** It is the genre's line and the clinic's shape, but it makes a level-2 client about two minutes. **Default: yes**; level 1 skips Measure, and free play dips into any single stage.
+2. **The sliding rail (3b) is the pharmacy belt reused.** Should the foundation build `belt` once for both, or should Dress up build its own? **Default: the foundation builds it; Dress up ships 3a (the shelf) first and takes 3b when `belt` lands.**
+3. **Going back a stage to fix a mistake** (from level 2 the mirror sends you to the rail or the table, one step back) versus fixing at the mirror as now. **Default: go back**; it is what makes it a line, and the return is one button.
+4. **The photo (6c) with a pose instruction** overlaps Snap's verbs a little. Keep the pose, or make the photo automatic and keep only *smile*? **Default: keep the pose at level 2+**; it is the only place *sit, stand, come here* (C142–C151) get used.
+5. **Bandhani (T9) and block print (T10)** are cultural nods; the earlier restraint rule said "1–2 per rack view, never costume". Are they fine as table games? **Default: yes**, two of twenty, Kutch's own crafts, made by the child rather than worn as fancy dress.
+6. **The first-ever session** runs Nana → the shelf → iron → put it on → the mirror, with no bench and no tape. Agreed as the mode's whole first minute? **Default: yes.**
+7. (Carried from D.9) Eid morning on the upper-body renderer; the Ch4 door cameo; the bed for the Eid eve pending F71.4; the ear star not judged on placeholder words. **Defaults unchanged.**
 
 ---
 
@@ -764,3 +972,13 @@ The fitting (D1) as the whole mode: the client says 2–4 pieces; you dress them
 - Colour words: [Wagner, Dobkins and Barner 2013, "Slow mapping"](https://www.sciencedirect.com/science/article/abs/pii/S0010027713000243); [Frontiers 2025, Japanese children](https://www.frontiersin.org/journals/developmental-psychology/articles/10.3389/fdpys.2025.1641593/full)
 - Adjectives: [Klibanoff and Waxman 2000, Child Development](https://srcd.onlinelibrary.wiley.com/doi/abs/10.1111/1467-8624.00173) (same-kind contrast first); [Mintz and Gleitman 2002, "Adjectives really do modify nouns"](https://sciencedirect.com/science/article/abs/pii/S0010027702000471); [Syrett 2024 review](https://compass.onlinelibrary.wiley.com/doi/full/10.1111/lnc3.70000)
 - Retrieval, feedback, barrier games, touch targets: as in `docs/find-it-design.md` (Fritz et al. 2007; Leonard et al. 2024; Lyster and Saito 2010; ASHA; NN/g)
+
+### Pipeline research (25 Sept, evening; search summaries, the pages themselves blocked by the proxy)
+
+- Toca Tailor: [The Horn Book](https://www.hbook.com/story/toca-tailor-fairy-tales-app-review), [KinderTown](https://kindertown.com/blog/show-tell-toca-tailor/), [148 Apps](https://www.148apps.com/toca-tailor/toca-tailor-review/), [Children's Technology Review](http://matthewjdimatteo.com/ctr/review.php?id=16071), [Gamezebo](https://www.gamezebo.com/reviews/toca-tailor-review/) (blocked), [Common Sense Media](https://www.commonsensemedia.org/app-reviews/toca-tailor) (blocked): swatches cut and fitted automatically, hems and sleeves dragged, patterns rotated and zoomed, embellishments, the camera fabric, the photo at the end
+- Baby Panda's Fashion Dress-Up (BabyBus): [Google Play](https://play.google.com/store/apps/details?id=com.sinyee.babybus.tailor&hl=en_US) (blocked; summary: customers every day; cutting, sewing, ironing, polishing, setting)
+- The tailor-shop line: [Baby Fashion Tailor Shop](https://kevin.games/baby-fashion-tailor-shop) (choose fabric → measure → cut → sketch → sewing machine), [Royal Tailor 3](https://play.google.com/store/apps/details?id=com.kiwigo.princesstailorboutique.free&hl=en_US) (measure the customer, fabric, cut, sew), [Little Tailor: DIY Fashion](https://play.google.com/store/apps/details?id=com.bonbongame.tailor.diy.fashion.dress.games) (measurement, cutting, sewing, pressing), [Fashion Tailor Game & Dress Up](https://play.google.com/store/apps/details?id=com.tailorgames.fashion.clothes.sewing.boutique.dressup.kids.girls&hl=en_US) (alter, stitch, sew mini-games), [Fashion Tailor Game Kids](https://play.google.com/store/apps/details?id=com.fashiontailorgames2.kids.clothes.sewing.boutique.dressup.girls.boys) (step-by-step blocks), [Tailor Shop Clothes Designer](https://www.amazon.com/Tailor-Shop-Clothes-Designer-seamstress/dp/B01LYU690R) (all blocked; search summaries)
+- Crafting Mama: [Wikipedia](https://en.wikipedia.org/wiki/Crafting_Mama), [Cooking Mama Wiki](https://cookingmama.fandom.com/wiki/Crafting_Mama) (sew, pin, cut, fold, paint, embroider as stylus mini-games)
+- Dr. Panda Home: [Amazon Appstore](https://www.amazon.com/Dr-Panda-Home/dp/B00GTR44XM), [LeapFrog collection](https://store.leapfrog.com/en-us/apps/p/dr-panda-places-to-play-app-collection/_/A-prod50066-00013) (laundry as a chore task)
+- Photo and catwalk endings: [My Town: Fashion Show](https://play.google.com/store/apps/details?id=mytown.fashion&hl=en), [Fashion Junior](https://apps.apple.com/us/app/fashion-junior-dress-up-games/id6768596320) (photo studio, backgrounds, stickers)
+- A dressmaking sim's tape and pattern mechanics: [All Things How](https://allthings.how/how-dressmaker-works-from-client-measurements-to-finished-dress/) (drag the tape across the client; the pattern outline turns green when placed right)

@@ -52,3 +52,28 @@ People read left to right. Keep the big action buttons (Done, "Go to the barbecu
 - **Keep the challenge, but move it.** You found the games addictive at their current difficulty, so don't delete the harder things: slide them up the level ladder. The juggle (thread while grilling) and the chips come back at levels 3 and 4 for Zayn and Maryam's ages.
 - **Read-along highlighting needs the recording's timings.** Record the family's lines in the chunks the Technical Plan describes (frame, noun phrase…). Each chunk then lights up as it plays, which is simple and robust. Word-by-word highlighting inside one chunk would need timings per word. Whisper's word timestamps can give those from the recordings later.
 - **The light bulb replaces a lot of UI.** Check that "hold" works for small hands: a tap that flips for N seconds is easier than press-and-hold for a five-year-old. The recommendation is **tap**, not hold.
+
+## 9. The end-of-round screen (Zafar, 25 Sept, evening)
+Two pages, big and visual, the same in every mode (one shared component).
+
+**Page 1: three big badges, side by side.**
+1. **Time.** A stopwatch with big numbers (seconds) for this round. Each mode and level keeps its own personal best. A new personal best gets a "bing", a sparkle and "New best!", with the time shown inside the stopwatch, so the child tries to beat it next time.
+2. **Accuracy.** A clear picture of right out of total: e.g. a row of slots that fill green for right and red for wrong, or a jar that fills. Not a pie chart. All right turns the badge **gold**, with a satisfying sound.
+3. **Hints.** The number of hints used, shown big: 0 hints turns it **gold**, 1 is a middling badge, 2 or more is a plain "not so good" one. The light bulb counts as a hint.
+Then a big **Next** button.
+
+**Page 2: the word review.** Just the key Kutchi words heard in the round, each with its English (and a tap to hear it). Nothing else.
+
+These three badges replace the old star labels in the result card. They stay mapped to the existing stars (craft, ear, no-help) underneath, so progress and word stages are unchanged.
+
+## 10. When onboarding gets built
+- The **onboarding kit** (dim, spotlight, ghost finger, "do it now", fade-in of UI) is a shared component, built now.
+- Each mini-game's **onboarding script** (which thing to spotlight, what the ghost finger does) is written at the end of that mini-game's build, once its mechanics have stopped changing, so it isn't redone after every playtest. Cook's stations get theirs first, since they're the most settled.
+
+## 11. Show progress, not verdicts (Zafar, 25 Sept, late)
+- **A tally with pictures.** Stations where you make several things show a small tally in the top-right corner: a picture of each item with how many you've done so far (e.g. 🧅 3, 🍅 2 in the chop game). It shows what *you* did, never the target (the existing rule). Applies to every mode where you collect, chop, count, fetch or place several things.
+- **Tick off the instruction card.** A line on the card gets a tick when that part is done (chopped, in the bowl, fried…).
+  - Level 1 (onboarding): the tick appears **automatically** when the right amount is reached.
+  - From level 2: an automatic tick would give the count away (you'd chop until it ticks). So the child **ticks the line themselves** ("done"), and the tick doesn't say whether it's right.
+  - Zafar's caution: once a tick is there, players expect it. So keep the self-tick at every level rather than removing ticks later.
+- **No negative feedback during play.** No red crosses or "wrong" buzzes mid-round (at least from level 2). Mistakes are shown in the end-of-round review (§9 accuracy badge, then the word review). Level 1 keeps its gentle, one-time correction as part of onboarding.

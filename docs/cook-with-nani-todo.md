@@ -126,3 +126,10 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 - ☐ Level 1 everywhere = smallest round (one skewer, one cup, three pantry items); pantry is the first thing a new player does
 - ☐ Overlay onboarding (dim, spotlight, ghost finger, one thing at a time); UI fades in as first needed
 - ☐ Family-word changes from Mum's recordings (`docs/kutchi-grammar-notes.md`): *daar*, two = *ba* ("ber"), *hakro/hakri*, *wadho/nindho* (+ she-forms), *watana*, *dudh waari chai*, *{person} lai*, *Muke {x} de*, *pela … ne poi …*
+
+## Wave 6b (after Wave 6 merges): UX principles §9–§11
+- ☐ Adopt the shared end-of-round screen (`js/shared/results.js`, time / accuracy / hints, then the word review)
+- ☐ Picture tally in the top-right of chop and other multi-item stations (what you did, never the target)
+- ☐ Tick-off on the instruction card: automatic at level 1, the child's own "done" tick from level 2
+- ☐ No negative feedback mid-round from level 2; mistakes surface in the end review
+- ☐ Onboarding scripts per station with the shared onboarding kit

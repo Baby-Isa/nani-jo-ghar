@@ -6,6 +6,238 @@
 
 ---
 
+## Pipeline design, 25 Sept 2026
+
+**What this is.** The mode rebuilt to `docs/modes/PIPELINE-BRIEF.md`: a **pipeline of five stages** that runs from "What a mess!" to the knock at the door, each stage a set of mini-game variants, stitched into one short story. It sits on the deep dive below (D.1–D.9) and the build that exists (`js/tidy/`, `data/tidy.json`, `build/reports/tidy-build.md`): the current engine becomes **stage 3** of the pipeline, and the kinds of round K1–K5 become that stage's variants. **It supersedes D.1's backbone, D.5's first set and ladder, D.6, D.9 and section 12 where they conflict.** The guards G1–G8, the data model (8.1), the hint ladder, word-stage fading, recasts, the stars, D.3's mechanics and D.4's speaking moments all stand, and are referred to rather than repeated. Kutchi that exists is written as such (*santra, limu, hardar, trae, Muke {x} de*); everything else is `[EN: …]` and stays a grey placeholder. **No Kutchi is invented.**
+
+### P.1 The pipeline: a tidy afternoon
+
+Nani's house is about to receive guests. The child tidies **one room** for them, and the guests arrive at the end. The five stages are one set process, the same every time, so a child learns the *shape* once and then only the words change.
+
+```
+  ARRIVE                GATHER              SORT                 PLACE               PUT IT RIGHT           SEND-OFF
+  "Arre re, what a  →   1. Bring me the  →  2. Where does    →   3. Put it there  →  4. Simba!          →   5. The knock at
+   mess! Guests at       cup, two limu,      this go?             the santra in       (the twist: he         the door: seat
+   four. Tidy up!"       the red one         fruit in the         the bowl, the       knocks three           the guests, "where's
+   (request card)        (the floor →        basket, dishes       cup in front of     things; fix only        my cup?", goodbye;
+                          the tray)          on the tray          Nana; Done +        those, leave the        end-of-round screen
+                                             (the tray → the      Nani's check        rest)
+                                             containers)          (the containers
+                                                                  → the laid place)
+  carries forward:       THE TRAY            THE CONTAINERS       THE LAYOUT          THE LAYOUT (fixed)      THE ROOM, kept in the hub
+```
+
+| Stage | What the child does | The Kutchi it carries | What it hands to the next stage |
+|---|---|---|---|
+| **0 Arrive** | The request card (UX 1): Nani's face, *[EN: What a mess!]* E83, who's coming and when, *[EN: Tidy up!]* E74; read aloud with the read-along highlight, then it shrinks into the **left** sidebar. The doorbell clock appears only in Busy | Frames only; the guests' kinship words (*Nana*, *[EN: aunty]*) | Which room, which guests, the clock |
+| **1 Gather** | The room is a mess: things on the floor, the cushions, the stairs. Nani names one thing at a time; the child taps it and it lands on the tray. Look-alikes and extras lie about | **Nouns** (real today: fruit, veg, spices), **counts** (*bo limu*), **colours** and **owners** from level 2 (*[EN: red] {cup}*, *Nana jo {cup}*) | **The tray**: exactly what was gathered, wrong picks included (Nani's check catches them later, never here) |
+| **2 Sort** | The tray's things go into **containers**: the basket, the shelf, the box, the doorway. Nani says the class rule once (*[EN: all the] fruit [EN: in the] basket*) and the child files the stream | **Class words** (fruit, veg, spices, dishes, shoes), **container nouns** (basket E31, box E30, shelf E44), *all* E81, *nothing* E82 | **The containers**: each filled one becomes a stage-3 board, in the order Nani chooses |
+| **3 Place** | The current engine: a board (shelves, cloth, box…), Nani's rows, *Done*, her rule-by-rule check with recasts | **Positions** (in, on, next to, in the middle, in front of *Nana*), **counts into cells**, **colours**, rules | **The layout** (every placement), and the row results |
+| **4 Put it right** | The twist. Simba's paw (or Zazu, or the little cousin) undoes part of it. Nani says what should be true, for right things as well as wrong ones; the child fixes **only** what's wrong and leaves the rest (*[EN: Leave that one]* E73) | *Put it back* E75, *leave* E73, *Nearly!* E80, the same positions a second time (spaced retrieval inside one session); later *[EN: it was on …]* (past tense) | **The layout, fixed**, plus the neat marks (stacks straight, pairs together) |
+| **5 Send-off** | The knock. Nana, the aunty and the cousin come in; the child **seats** them (*Nana [EN: in the middle]*); a guest asks *[EN: Where's my cup?]* and the child **says or points**; *Ghan!*, *Aabhar aanjo*, *Achija*. Then the shared end-of-round screen (UX 9): time, accuracy, hints; then the word review | **People to places** (kinship + position), the **speaking moment** (the anchors as a closed set), greetings and feelings (*[EN: okay, happy]*, shared with the clinic) | The room appears tidy in the hub as the child left it; personal bests per stage |
+
+**Why this order and not another.** Gather before Sort before Place is how a real tidy goes (pick up, rough sort, put away properly) and it is also the syllabus in order: nouns (S1) → classes and containers (S2 nouns) → positions (S2) → judgement and past tense (S5) → people and talking (S3, speaking). Each stage is one job (UX 5). Stage 1 is the smallest possible round, so **the first ever session is stage 1 alone with three things** (UX 7); stages are added one per session (P.5).
+
+### P.2 The mini-games in each stage
+
+Each variant is a data-driven round on a named mechanic; levels list only what changes (Cook's shape, `data/tidy.json`). *Reuses*: **T** = already in `js/tidy/`, **Cook** = `js/cook/mechanics/`, **shared** = `js/shared/` (with the other mode named), **new** = to build.
+
+#### Stage 1: Gather ("Bring me the …")
+
+The floor of the room is the board; 6–10 things lie about, at least three of every named kind's look-alike group (G5). Tapping a thing lifts it onto the tray; nothing is refused. Blind at level 1: ≈1 in 4 per pick, three picks ≈1.5%.
+
+| Variant | Mechanic | What the Kutchi instruction carries | Levels | Reuses |
+|---|---|---|---|---|
+| **1a Bring me the X** | Nani names one thing; the child taps it; the tray fills. Wrong picks land on the tray too and are only caught at stage 3's check (no live tick here from level 2) | The **noun** among look-alikes (*santra* with *limu*, *aamo*, *naaspati* on the floor) | L1: 3 things, noun only, live wiggle on a wrong pick. L2: 5 things, + **colour** or **owner** (*[EN: red] {cup}*; *Nana jo {cup}* E14). L3: 6–8 things, + *[EN: big / small]* and *[EN: the one under the cushion]* (a position as the picker) | **shared `whichone`** (Find it, Dress up, Snap: attribute + decoy, the blind-odds budget); `place` (T) for the tray |
+| **1b How many?** | Nani asks for a count: *bo limu*, *trae santra*; the child taps that many and stops. The tray badge shows only what's on it, never the target | The **number word** and the noun | L1: 1–2 of one kind. L2: 2–3, two kinds in one request (*bo limu ne trae santra*). L3: counts up to 5, an extra of the same kind on the floor so stopping matters | **Cook `count`** |
+| **1c What do you need?** (speaking) | The tray is one thing short of what Nani asked for; she asks *[EN: What do you need?]* (A8.8 may serve). The child **says** it: *Muke {x} de* (real Kutchi from the grammar notes, §9). Nani hands what she heard; a wrong word puts the wrong thing on the tray | The child **produces** the noun in a real frame | L1: the closed set is the 3–4 nouns on the tray's card. L2: + a count, two listens (*bo … limu*). L3: + colour | **shared `say`** (`js/shared/say.js` → `speech.js`); pills fallback; the parent's tick |
+| **1d Ali fetches** (role reversal) | Ali stands by the mess; the child tells him what to bring; he brings what he heard, choosing uniformly among things that match, so *cup* when there are three cups is a gamble | Production of the noun, then noun + attribute | L2+ only (Ali arrives in Arc 1 Ch2) | `tell` (T), `say` (shared) |
+
+Onboarding (UX 8), first time only: dim all but one santra, the ghost finger taps it, it lands on the tray; then the second thing appears.
+
+#### Stage 2: Sort ("Where does this go?")
+
+Three containers stand in the room (never two: G5). The tray's things come to the child **one at a time** (the tray hands them over in a shuffled order, G3). The child taps the container; the thing drops in with its material sound. Nothing is checked until the last one; then Nani looks in each container and recasts the first wrong one (`check`). Blind at level 1: 1 in 3 per thing; with four things tested ≈1.2%.
+
+| Variant | Mechanic | What the Kutchi instruction carries | Levels | Reuses |
+|---|---|---|---|---|
+| **2a Named container** | Per thing, Nani says where it goes: *{santra} {basket} [EN: in]* | The **container noun** (basket E31, box E30, shelf E44, *[EN: tray]* E25) | L1: 3 containers, 3–4 things, each named. L2: 4 containers, 5–6 things. L3: the container is named by **position** (*[EN: the box on the top shelf]*) | `place` (T) with containers as spots; `check` (T) |
+| **2b Nani's rule** | Nani says the rule **once**, before the stream: *[EN: all the] fruit [EN: in the] basket, [EN: the] dishes [EN: on the] tray*; then each thing arrives with no instruction and the child must apply the class | The **class word** (fruit, veg, spices, dishes, shoes) and *all* E81; a *nothing* E82 rule at L3 (*[EN: nothing in the] box*: the box stays empty and that's the test) | L1: two classes, three containers (one stays empty). L2: three classes; one thing that belongs to no class goes back on the tray (*[EN: leave it]*). L3: + a *nothing* rule, + an owner class (*Nana jo* things) | `check` (T) in K4 mode (class and not rows exist in `rules.js` today) |
+| **2c The belt** | The clinic's pharmacy counter, borrowed: things pass on a belt across the bottom of the screen; the child grabs the ones for **this room** (*[EN: the] dishes*) into the tray and lets the rest go by. Missed ones come round again once | Class word or noun, under mild time pressure | L2+: belt speed and the share of decoys are the knobs; Busy only at L3 | **shared `belt`** (the clinic owns it; Tidy stubs it in phase A) |
+| **2d Say the class** (speaking) | Before each thing drops, the child says which class it is; a wrong class and Nani puts it in the wrong container for the child to find at stage 3 | Production of the **class word** (closed set of 3–4) | L2+ | `say` (shared) |
+
+#### Stage 3: Place ("Put it there")
+
+The engine that exists, unchanged in what it grades: a board, rows, *Done*, the check. Only the containers the child filled at stage 2 become boards, in Nani's order, so a 3-container sort is one, two or three short boards, each 2–4 rows. The kinds of round from D.1 become the variants:
+
+| Variant | Kind (D.1) | What the Kutchi carries | Levels (D.5's ladder holds) | Reuses |
+|---|---|---|---|---|
+| **3a Put it there** | K1 | Noun + anchor + relation; colour from L2 | L1: 2–3 rows, one surface, live check. L2: 3–4 rows, colours, a *leave* row, check at *Done*. L3: 4–6 rows, next-to a placed thing, fetch-and-lay | `place`, `stack`, `check` (T); Cook `fetch` at L3 |
+| **3b Pack it** | K3 | Count + noun + cell (*trae jalebi [EN: top row]*) | L1: two count rows. L2: three. L3: + a *nothing* cell | `pack` (T), Cook `count` |
+| **3c Nani's rules** | K4 | Class and negative rows over the whole board | L3+ | `check` (T), the class/not rows in `rules.js` |
+| **3d Ali's turn** | K5 | The child **says** each row; Ali places it | L1 noun only (Ali knows the place from the card); L2 count then noun; L3 noun then place | `tell` (T), `say` (shared) |
+
+**K2 leaves this stage.** "Put it right" was a kind of round mixed into levels 2+; it is now **stage 4**, where it is the whole job. Stage 3 never starts half-laid.
+
+#### Stage 4: Put it right ("Simba!")
+
+The layout from stage 3 is on screen. Something undoes part of it; Nani says what should be true; the child fixes only that. **The rows cover right things as well as wrong** and a *leave* row looks like any other (the D.1 honesty rules), so the child must judge each, not move everything Nani names. Blind at level 1: three of six things knocked, Nani names all six → which three ≈5%; from L2 she names fewer than she knocked.
+
+| Variant | Mechanic | What the Kutchi carries | Levels | Reuses |
+|---|---|---|---|---|
+| **4a Simba's paw** | The paw sweeps a random strip (correctness ignored), knocks 2–3 things into a heap; tap the paw in time to shoo him and save one (hand skill, neat star). Then Nani's rows: *{cup} {Nana} [EN: in front of]* … *[EN: leave the] {jug}* | *Put it back* E75, *leave* E73, the positions again | L1: none (stage 4 is skipped at level 1). L2: 2 knocked, Nani names every row. L3: 3 knocked, she names only 2 of them plus 2 right ones; *Nearly!* E80 recasts | `paw` (T), `check` (T), `place` (T) |
+| **4b Zazu's theft** | Zazu carries one thing off and drops it somewhere else in the room. Nani: *[EN: Where was it?]*; the child says or taps the anchor it was at, then puts it back | **Past tense** *[EN: it was on …]* (Arc 4, S5), and the position as an answer | L3+ | `paw` (T, the Zazu variant), `say` (shared) |
+| **4c The swap** (deduction) | The little cousin swapped two things while nobody looked. Nani repeats her rows; nothing wiggles. The child works out which two are wrong and swaps them back. The clinic's guessing variant, tidied | Listening to every row against the board; no new words | L3+ (Zayn's and Maryam's) | `check` (T) with the recast off |
+| **4d Make it nice** | No mess: Nani wants it neat before the guests. Straighten the stack (a plate dropped off-centre wobbles), pair the shoes toe-to-toe, fold the cloth corner, tie the ribbon on the box. Hand skill for the neat star; the Kutchi is only in the instruction and its counts | *[EN: Straighten]*, *[EN: fold]*, *[EN: a pair]* E36, counts | L2+; optional at every level (UX 6: it stays because it's fun on its own and short) | `stack` (T), `pair` (new, T5), `fold`/`ribbon` (new, tiny) |
+
+#### Stage 5: Send-off ("The knock at the door")
+
+| Variant | Mechanic | What the Kutchi carries | Levels | Reuses |
+|---|---|---|---|---|
+| **5a Seat the guests** | The knock; the guests come in and stand by the door. Nani: *Nana [EN: in the middle]*, *[EN: aunty] {Nana} [EN: next to]*. Tap a guest, tap a cushion. The layout from stage 3 is the reference: *[EN: the cousin in front of the red cup]* | **Kinship words** (Q10, the family names E85–E102) + positions; people as things to place | L1: 2 guests, 4 cushions, kinship only. L2: 3 guests, a position relative to a placed thing. L3: 4 guests, *[EN: the tallest at the back]* (S6) | `place` (T) with people as items; **shared `overlay`** (guests at anchors, from the foundation) |
+| **5b Where's my cup?** (speaking) | A seated guest asks *[EN: Where's my cup?]*. The child **says** the answer (*[EN: in front of] Nana*, *{plate} [EN: next to]*) or **points** (taps the thing). The guest reaches for it: right and they drink, *Aabhar*; wrong and they hold up the wrong thing, puzzled, and ask again | Production of a **position phrase** (closed set: the 3–5 anchors on the board), or recognition by pointing at L1 | L1: point only. L2: say the anchor noun (closed set 3–4). L3: say anchor + relation (two listens) | `say` (shared), `whichone` (shared) for the point |
+| **5c Is everything okay?** | Nani: *[EN: Is everything okay?]*; the guests: *[EN: Yes, now I'm happy!]* (the clinic's feelings words, shared); then goodbye: the child says *Achija* or *Aabhar aanjo* (real Kutchi) | Feelings *[EN: okay, happy, tired]*, greetings *Aabhar aanjo*, *Achija*, *Ghan!* | Every level; the closed set is 2–3 greetings | `say` (shared); the same lines as the clinic's send-off |
+
+Then the **end-of-round screen** (UX 9, the shared component): the stopwatch for the afternoon (a personal best per room and level), the accuracy row (one slot per tested row across all stages, green or red), the hints badge (light-bulb taps), *Next*, then the word review of the Kutchi heard. The three badges map onto the ear, neat and no-help stars as before; the voice star shows on page 2 with the words the child said.
+
+### P.3 The big library: the places (stage 3 boards)
+
+The clinic has a healing game per body part; Tidy up has a **place** per container or surface in Nani's house. Each is a stage-3 board with its own rows and levels, reachable from the pipeline (stage 2 filled it) or alone from the map. Scores 1–5: **Fun** for a child, **Kutchi** = how much of the decision the words carry, **Build** 5 = cheap (existing scene, art and mechanics). Age fit is which of 5 / 8 / 11 it suits. *In build* = playable in the lab today.
+
+| # | Place | One-line pitch | The Kutchi it teaches | Mechanic | Age | Fun | Kutchi | Build |
+|---|---|---|---|---|---|---|---|---|
+| 1 | **Kitchen shelves** (in build) | The shopping onto the shelves and into the bowl: *santra* in the bowl, *loon* on the top shelf | Fruit, veg, spice nouns (real); in/on; top/bottom shelf E6–E7; the bowl E19 | `place` | 5 8 11 | 3 | 5 | **5** |
+| 2 | **Masala dabba** (in build) | Seven katoris in the round tin: *hardar* in the middle, *jeeru* next to the *rai* | Spice nouns (real); middle E4; next to; this side / that side E12–E13 | `place` | 8 11 | 3 | 5 | **5** |
+| 3 | **Fruit box for the guests** (in build) | Counted fruit into the cells, then the lid and the ribbon | *bo, trae* + fruit (real); top row, corners E5 | `pack` | 5 8 11 | 4 | 5 | **5** |
+| 4 | **Dastarkhwan** (in build, grey tableware) | Cups and plates to the people on the cushions; the Arc 1 set piece | Tableware E16–E27; in front of; *Nana jo* E14; colours E60–E71 | `place` + `stack` | 5 8 11 | **5** | 5 | 3 |
+| 5 | **The fridge** | The cold things: *dudh, dai, limu, paani* onto the fridge shelves and the door | Kitchen nouns (real from Cook); top/bottom shelf; *[EN: door]* E47; *[EN: inside]* E1 | `place` (a skin of 1) | 5 8 | 3 | 4 | 4 |
+| 6 | **The sweet box** | The fruit box with mithai: *trae jalebi* in the top row, *[EN: nothing]* in the corners | Sweets E59; counts; corners, middle; *nothing* E82 | `pack` (a skin of 3) | 5 8 11 | 4 | 5 | 4 |
+| 7 | **The lunchbox week** | Seven cells, one a day: *[EN: Monday]: bo kelo*; *[EN: Friday]: [EN: none]* | The days E125–E131; counts; fruit | `pack` on a 7-grid | 8 11 (7+) | 3 | 5 | 4 |
+| 8 | **Nana's pill box** | The 8+ skin of 7: 7×2 cells, morning and evening, colour + count; lands in Arc 3 Ch4's outro with Nana present (the safety rule in D.2 holds) | Days; *[EN: morning / evening]* (F39 has *this morning*); colours; counts | `pack` | 11 (8+) | 3 | 5 | 4 |
+| 9 | **The shoe rack** | Pair the heap by the door (hand skill), then pairs by colour, size and side onto the rack, the mat, the basket | Shoes E33–E37; colours; big/small; this side / that side | `pair` + `place` | 5 8 11 | 4 | 4 | 2 |
+| 10 | **The washing line** | Peg the dry clothes in an owner and colour order: *Nana jo* first, then the red one | Clothes (Dress up's words); *pela … ne poi* (real); owners | `peg` (shared with Monsoon rush) + `order` | 8 11 | 3 | 4 | 3 |
+| 11 | **Big Ma's thread tin** | Reels by colour into the rows of the tin while she sings | Colours; top/middle/bottom row; counts | `place` | 5 8 | 3 | 4 | 4 |
+| 12 | **Eid bunting** | Flags along the string in the colour order Nani says: *pela [EN: red], ne poi [EN: green]* | Colours; *pela, ne poi* (real); first/last E8–E9 | `order` | 5 8 11 | 4 | 4 | 3 |
+| 13 | **The quilt** | Patches in each relative's colour onto the grid (Arc 2's gift) | Kinship + colours; rows and corners | `pack` + `place` | 8 11 | 3 | 4 | 3 |
+| 14 | **Make the bed** | The pillow at the top, the folded blanket at the bottom, Simba's toy under the charpai | Bed E41, charpai E42; up/down E2–E3; *[EN: under]* (A5); *[EN: fold]* | `place` + `fold` | 5 8 | 4 | 4 | 3 |
+| 15 | **The bookshelf and the school bag** | Books by size, biggest first from the wall; then the bag: *pela* the big one | Big/small; *[EN: biggest first]*; first/last; *pela … ne poi* | `order` | 8 11 | 3 | 3 | 3 |
+| 16 | **The veranda pots** | Plants along the veranda: *[EN: the bigger one nearer the door]* (S6) | Comparatives (bigger/smaller, both asked equally); door, corner | `order` + `place` | 11 | 3 | 5 | 3 |
+| 17 | **The family photo** | Everyone onto the bench and the row behind: *Nana* in the middle, *Ali* behind *Nani*, the tallest at the back; the photo is kept | Kinship; behind/in front; superlatives | `place` (people as items) | 5 8 11 | **5** | 5 | 3 |
+| 18 | **The toy box** | The little cousin's toys away before the guests: *trae* blocks in the box, *[EN: nothing]* on the floor, *[EN: everything]* E81 | Counts; *all / nothing*; *[EN: toy]* (new) | `pack` | 5 8 | 3 | 4 | 3 |
+| 19 | **Into the shed** | The calm evening after Monsoon rush: goats to the left pen, the chicks in the basket | Animals (S4); counts; left pen / right pen | `place` + `count` | 5 8 | 3 | 4 | 2 (Monsoon's scene) |
+
+**First set of places** (P.5): 1, 3, 4 (in build), then 9 and 12 (the second art batch), then 6 and 7 as skins when E59 and E125–E131 come back from the family. Rejected as before: the tea tray for the guests (Cook's Chai tray), pens in the rain (Monsoon rush), line-up alone (a 25% guess; it lives as the `order` row inside 12, 15, 16).
+
+### P.4 Research: what the popular tidying apps do
+
+Searched 25 Sept 2026. Each line: the app, the mechanic worth borrowing, and where it goes in the pipeline (or why we refuse it).
+
+| App | The mechanic | What we take | What we refuse |
+|---|---|---|---|
+| **Toca House** (Toca Boca) | 19 chore mini-games; each opening presents a new "workday" of **ten randomly selected and ordered chores**; no points or scores, visual and audio feedback guides quietly during a task and "loudly rewards" at the finish; sorting by colour and shape and matching like things are the most common chores. A reviewer's complaint: there are **no toys to put away**, the chore children actually get asked to do | The **stitched session** (P.5: a tidy afternoon is a fixed order of stages with random content, Toca's workday made into a story); quiet feedback during, the big reward at the end (UX 9); place 18 (the toy box) answers the complaint | No fail state at all: our rows are graded, warmly |
+| **Dr. Panda Home** | Four floors, 20+ activities; the child is given **a to-do list of three chores, checked off as done**, then five coins for the piggy bank | The request card as a short **to-do list** (stage 0): the child sees the three stages of a level-1 afternoon as three ticks in the sidebar, and each stage ticks off | Coins for décor only (as now) |
+| **Baby Panda's Life: Cleanup** (BabyBus) | Rooms as episodes (kitchen, bathroom, bedroom, courtyard); in the kitchen the child **sorts bowls, plates and cups by function, then wipes and rinses them**; tap or drag; toys back into the storage basket; stacking plates and glasses | The **two-step shape** of sort → finish is our stage 2 → 4d; a room per afternoon; stacking as the neat skill | Sorting by picture alone (no words decide it) |
+| **Toca Life: All in Order** | Clear trash and cobwebs, then **every item goes back exactly where it belongs by matching each object to its shadow** | The two phases (clear, then put back) are stages 1 and 3 | **The shadow slot**: the shape tells the answer (G1 bans item-shaped gaps) |
+| **Unpacking** | Items go anywhere while unpacking; only when every box is empty do misplaced items get **a pulsing red outline and a sound**, and you fix them before the star; an accessibility toggle lets items go anywhere | The check at *Done* with the player fixing (stage 3, unchanged); an outline **plus** a wiggle and Nani's words, never colour alone | A silent outline (no recast) |
+| **A Little to the Left** | 100+ tidying puzzles, **many with several right answers**; the cat's paw; a **Daily Tidy** built from ten puzzle types (clock hands to a shadow, symmetry, constellations, **jars ordered two ways: by gradient or by contents**, trimming leaves) | Grading rules not slots; Simba's paw as stage 4; the daily 60-second round in the hub; **an `order` row with two legal orders** (by size *or* colour, whichever Nani says) for places 12, 15, 16 | Its hover straighten and rising tone (G2) |
+| **Fill the Fridge / ASMR Restock** (several near-identical hits, 2025–26) | A stream of goods stocked onto shelves; the appeal is "realistic food physics as items are placed perfectly", grouping by size and shape, ASMR sounds; levels grow to bigger fridges and freezers | The **stream** (stage 2: one thing at a time from the tray), the placement sound per material, place 5 (the fridge), levels that grow the container | The snap-into-the-perfect-gap (G2) and shape-sorting without words |
+| **Sort the Socks** (2–5), **Sock Sort** (ictgames, 5–10) | Move socks onto their matching mate by colour, pattern and size | `pair` for the shoe rack (place 9): a heap paired by hand first, then placed by the words | Pairing as the whole game (no Kutchi) |
+| **Sago Mini World** | "No wrong way to play"; exploratory tapping; calm, no pressure | Explore mode stays (no rows, everything reacts) for the first minute in a new room | Nothing else: it teaches no words |
+| **Pepi House** | Hundreds of interactable items; **an elevator carries items between floors**; pranks on the house-dwellers | The tray as the thing that carries between stages and rooms; Simba and Zazu as the prank | — |
+| **Toca World Cleaning / messy-house cleaning games** (web and store clones) | Remove trash, polish furniture, wipe stains: swipe-to-clean | Not taken: wiping teaches no word (UX 6); the neat star already covers hand skill | Swipe-to-clean as a stage |
+
+Two things the genre confirms. First, **every successful one is a fixed process** (a workday, a to-do list, clear-then-put-back, unpack-then-fix): the pipeline is the genre's own shape, not an imposition. Second, **the moment of reward is the finished room**, so stage 5 ends on the tidy room with the guests in it, and the hub keeps it.
+
+Sources: [Toca House (Common Sense Media)](https://www.commonsensemedia.org/app-reviews/toca-house), [Toca House (148Apps)](https://www.148apps.com/toca-house/toca-house-review/), [Toca House (LearningWorks for Kids)](https://learningworksforkids.com/apps/toca-house/), [Dr. Panda Home (App Store)](https://apps.apple.com/us/app/dr-panda-home/id741224942), [Dr. Panda apps reviewed (Bluebee Pals)](https://www.bluebeepals.com/ages-3-5/kids-love-dr-panda-apps-reviewed-many-imums/), [Baby Panda's Life: Cleanup (Google Play)](https://play.google.com/store/apps/details?id=com.sinyee.babybus.organizedII&hl=en_US), [Toca Life: All in Order (Playgama)](https://playgama.com/game/toca-life-all-in-order), [Unpacking review (Checkpoint Gaming)](https://checkpointgaming.net/reviews/2021/11/unpacking-review-home-sweet-home/), [Unpacking accessibility review (Can I Play That?)](https://caniplaythat.com/2021/11/01/unpacking-accessibility-review-can-i-play-that-pc/), [A Little to the Left Daily Tidy types (Steam Community)](https://steamcommunity.com/app/1629520/discussions/0/3772364735639473311/), [A Little to the Left (Steam)](https://store.steampowered.com/app/1629520/A_Little_to_the_Left/), [Fill The Fridge: Restock & Organize (Amazon Appstore)](https://www.amazon.com/Fill-Fridge-Restock-Organize-ASMR/dp/B0DVGNMDBJ), [Fridge Organizer: ASMR Restock (App Store)](https://apps.apple.com/us/app/fridge-organizer-asmr-restock/id1078926689), [Sort the Socks (App Store)](https://apps.apple.com/us/app/id438108346), [Sock Sort (ictgames)](https://ictgames.com/mobilePage/sockSort/index.html), [Sago Mini World (Screenwise)](https://screenwiseapp.com/media/sago-mini-world-game), [Pepi House (Pepi Play)](https://www.pepiplay.com/pepi-house/), [Toca World Cleaning (Playgama)](https://playgama.com/game/toca-world-cleaning).
+
+### P.5 Stitching: how a session runs
+
+**The unit is a tidy afternoon: one room, the five stages, 4–7 minutes.** The through-line is the guests: the request card says who is coming, stage 5 is their arrival, and the doorbell clock (Busy only) counts down across the whole afternoon, not per stage.
+
+| Session | Stages | Rows | Time | Notes |
+|---|---|---|---|---|
+| **The first ever** (UX 7) | **Stage 1 only**: gather three things (1a) with the ghost-finger overlay; then the end-of-round screen | 3 | ~60 s | No sidebar, no stars, no light bulb yet (they fade in over the next sessions, UX 8). *Kelo, santra, limu* on the floor of the kitchen; the tray fills; Nani says *Ghan!*; the three words on page 2 |
+| Second | 1 → **3** (place 1, shelves, 2 rows) → 5c | 5 | ~2 min | The sidebar appears with the card; the stars appear on the end screen |
+| Third | 1 → **2** (2a, three containers) → 3 → 5 (5a, two guests) | 7–8 | ~3 min | The light bulb appears |
+| **Level 1 afternoon** (from the fourth) | 1 → 2 → 3 → 5 | 8–10 | 3–4 min | Stage 4 never at level 1 |
+| **Level 2 afternoon** | 1 → 2 → 3 → **4** (4a) → 5 (5a + 5b point) | 12–15 | 5–6 min | Colours, counts, the paw, *leave* rows, one speaking moment (1c or 5b) |
+| **Level 3 afternoon** | All five with the harder variants (2b or 2c, 3a with fetch-and-lay or 3c, 4b/4c, 5b by voice); Busy on offer | 16–22 | 6–8 min | Zayn's and Maryam's |
+| **Level 4** (Arc 4+) | As 3, plus past tense in 4b, comparatives in places 16–17, Ali's turn at its level-3 form | 18–24 | 7–9 min | Records: fewest moves, best time |
+
+**Which room, which places.** An afternoon is generated from `{room, level, profile}`: the room fixes the scene (kitchen, sitting room, doorway, bedroom…), the containers standing in it, and the places in the library it can open; the profile picks the words (weakest first, up to three new). At level 1 a room has exactly **one** container that becomes a stage-3 board; at level 2, two; at level 3, three (so stage 2 is a real sort and stage 3 is two or three short boards). The story fixes the room: Arc 1 Ch1 is the kitchen then the sitting room (the dastarkhwan is the payoff and the knock is its outro); Ch2 the doorway (the shoe rack); Ch3 the sitting room again with the sweet box and a stage 4 the cat caused.
+
+**Free play dips into single stages.** On the map, *Tidy the house* offers each unlocked room as a whole afternoon, and each place in the library as a **stage-3 board alone** (the lab's `?game=…&level=…` entry, as today). The hub's single rotating daily (review E) draws one 60-second stage from Tidy up: a stage-1 gather, a stage-2 sort or one place, never a whole afternoon. Grandparent mode runs any stage with Nani (the real one) reading the card and the rows.
+
+**The Sceptic across stages.** Nothing carried forward leaks: the tray shows what was picked, not whether it was right (a wrong pick only fails at stage 3's check, or is quietly a non-target extra); stage 2's containers carry no labels; stage 4's paw is random and Nani's rows cover right things too; stage 5's guest asks about a thing whose place the child chose, so there is no fixed answer to learn. Blind-bot estimates at level 1, per stage: gather ≈1.5%, sort ≈1.2%, place ≈1.5–4% (as measured, `tidy-build.md`), send-off 5a ≈6% (two guests, four cushions, kinship only; the ear needs ≥2 tested rows so 5a alone never earns it). The afternoon's ear star needs every stage's tested rows right, so the blind rate for a whole afternoon is the product, effectively zero.
+
+### P.6 What survives from the current build
+
+Measured against `js/tidy/` (3,047 lines), `data/tidy.json`, `tidy.html`, `build/leak_tidy.mjs`, `build/test_tidy.py` and `build/reports/tidy-build.md`. The short answer: **the engine, the generator, all six mechanics and the three boards carry over as stage 3; the pipeline is a new runner above them, and stages 1, 2, 4 and 5 are mostly new rounds on existing mechanics.**
+
+| File | Verdict | What changes |
+|---|---|---|
+| `js/tidy/engine.js` (Host, zones, `Tidy.Mech.define`, `Tidy.Game.define`, `Tidy.play`, `startClock`, the intro card, ladder rows, stars, `__tidy` test hooks) | **Keeps** | `Tidy.play` runs one round; the new `js/tidy/pipeline.js` calls it once per stage and carries `{tray, containers, layout, results}` between calls. The intro card becomes the **request card** (UX 1: read-along by chunk, then shrinks into the sidebar) and the sidebar moves to the **left** (UX 2); the per-row translate/eye buttons go and the **light bulb** replaces them (UX 4); the result card is replaced by the shared **end-of-round screen** (UX 9). The clock becomes an afternoon clock |
+| `js/tidy/rules.js` (`Rules.make(game, opts)` for K1–K5, the five solver checks, `Rules.phrase`, `Rules.util`) | **Keeps** | Gains three small generators on the same checks: `Rules.gather(room, level, profile)` (the floor's things, the asks, look-alike groups), `Rules.sort(tray, containers, level)` (class rules, the empty container, the stray) and `Rules.seat(layout, guests, level)`. K2 generation moves behind `Rules.twist(layout, level)` for stage 4 and is no longer mixed into stage 3's kinds |
+| `js/tidy/mechanics/place.js`, `pack.js`, `stack.js` | **Keep as is** | `place` is also stage 2's drop (containers as spots) and stage 5a's seating (people as items, cushions as spots) |
+| `js/tidy/mechanics/check.js` (live at L1, Done, recasts, "What's this?") | **Keeps** | Runs at the end of stage 2 (containers) and stage 3 (rows) and stage 4 (with a *recast off* knob for 4c). "What's this?" (S1) stays at level 1 |
+| `js/tidy/mechanics/paw.js` | **Keeps** | Becomes stage 4's opener; it no longer fires mid-board in stage 3. Gains the Zazu variant (4b) |
+| `js/tidy/mechanics/tell.js` + `games/ali.js` | **Keep** | Variant 3d (and 1d) rather than a separate game; `ali.js` flips a stage-3 board as it does now |
+| `js/tidy/games/putaway.js`, `dastarkhwan.js`, `box.js` | **Keep** | They are places 1–4 of the library; new places are new files in `games/` with the same `Tidy.Game.define` shape. `dastarkhwan.js`'s fetch-and-lay stays as 3a's level-3 form |
+| `js/tidy/stubs/rel.js`, `stubs/say.js` | **Go** | `js/shared/rel.js` and `js/shared/say.js` exist now (the foundation landed): swap them in `tidy.html` and re-run the bot. The build report's first "next phase" item |
+| `js/tidy/stubs/fetch.js`, `stubs/passme.js` | **Keep for now** | Until Cook's are shared; `passme` moves from the stage-3 sidebar to stage 1c's speaking moment |
+| `js/tidy/bot.js`, `build/leak_tidy.mjs` | **Keep** | Add strategies for the new stages: *tap-the-nearest* and *tap-in-tray-order* (stage 1), *biggest-container* and *round-robin* (stage 2), *move-everything-Nani-names* (stage 4), *seat-left-to-right* (stage 5); the afternoon's ear as the product |
+| `js/tidy/lab.js`, `tidy.html`, `css/tidy.css` | **Keep** | The lab gains *Afternoon* (room × level, runs the pipeline) beside the existing *Game* entry; `?stage=` runs one stage; the sidebar CSS flips to the left |
+| `data/tidy.json` | **Keeps** | Adds `pipeline` (the stage order per level and the session ladder in P.5), `rooms` (scene, containers, places, guests), `stages.{gather,sort,twist,sendoff}.levels`, and the new placeholders (P.7). `games.*.levels` lose K2 from `kinds` |
+| The three scene sidecars | **Keep** | Each gains `floor` spots (where things lie at stage 1), `containers` (stage 2 drop zones) and `cushions` for stage 5; the bedroom and doorway scenes are new |
+| `build/test_tidy.py` | **Keeps** | `--afternoon` runs the pipeline at levels 1–3 in every size; the tap-cover and no-label checks apply to every stage |
+
+Mechanics count after the redesign: **T (existing) 6** (place, pack, stack, check, paw, tell) · **new 3** (pair, fold/ribbon as one tiny file, and the pipeline runner, which is not a mechanic) · **reused from Cook 3** (count, fetch, passme) · **shared 5** (whichone, say, overlay, peg with Monsoon rush, **belt with the clinic**).
+
+### P.7 Words needed (priority order)
+
+*In game* = Kutchi exists (drafts count); *asked* = in *Questions for Mum (Combined)*; *new* = not yet asked (not added here; the questions doc isn't edited).
+
+1. **Stage 1:** fruit, veg, spice nouns, numbers 1–10: **in game**. Colours E60–E71: **asked**. *Nana jo {x}* E14: **asked**. *Muke {x} de* (1c): **in game** (grammar notes §9). *[EN: What do you need?]*: **new** (A8.8 *What would you like?* may serve). Big/small: **in game** (*wadho/nindho*, spelling per the W rule).
+2. **Stage 2:** basket E31, box E30, shelf E44, tray E25, cupboard E43: **asked**. *All* E81, *nothing* E82: **asked**. **The class nouns *fruit, vegetables, spices, dishes, shoes* as words: new** (E33 gives *shoes*; the others are not asked as class words). *[EN: Where does this go?]* E76: **asked**.
+3. **Stage 3:** positions A5 (in, on, under, next to, in front of, behind, between); E1–E13 (inside, up, down, middle, corner, top/bottom shelf, first/last, back/front, this side / that side): **asked**. Tableware E16–E27: **asked**. Sweets E59: **asked**. The days E125–E131: **asked** (D.8 said they weren't; they have since been added). *[EN: morning / evening]* for place 8: **partly** (F39 *this morning*; *evening* is **new**).
+4. **Stage 4:** *Put it back* E75, *Leave that one* E73, *Nearly!* E80, *What a mess!* E83, *Tidy up!* E74: **asked**. *[EN: it was on …]* (past tense): C116–C136 cover *yesterday* frames; the *was on* frame is **new**. *[EN: fold]*, *[EN: straight]*, *a pair* E36 (**asked**), *[EN: toy]*: **new**.
+5. **Stage 5:** family names E85–E102, *[EN: aunty / uncle / cousin]*: **asked**. *[EN: Where's my cup?]*, *[EN: Sit here]*, *[EN: Is everything okay?]*, *[EN: happy / okay / tired]*: shared with the clinic's send-off; **new** unless the clinic's list has them. *Aabhar aanjo*, *Achija*, *Ghan*: **in game**.
+6. Speaking frames *What's this?* A8.4, *Which one?* A8.6, talking to a child A7: **asked**.
+
+### P.8 Decisions for Zafar (blocking only), with defaults
+
+1. **Sort is its own stage** (stage 2), never skipped from the third session on, so the class words get a job of their own. *Default: yes.* The alternative folds class rules into stage 3 (as K4) and loses the factory shape.
+2. **Stage 4 is the twist, and only from level 2.** Simba never appears at level 1; K2 leaves stage 3. *Default: yes.*
+3. **The send-off seats the guests (5a) and lets a guest ask "Where's my cup?" (5b).** This needs 3–4 guest sprites on cushions (the foundation's overlay-at-anchor) and the kinship words. *Default: yes; until the sprites exist, 5a uses the existing badge faces on the cushions.*
+4. **The belt (2c) is the clinic's mechanic, shared.** The clinic owns `js/shared/mechanics/belt.js`; Tidy up stubs it in phase A and swaps at integration, as it did with `rel.js`. *Default: yes.*
+5. **The first ever Tidy up session is stage 1 with three things**, before any pantry-style placing. *Default: yes* (it is also the mode's smallest possible round, UX 7).
+6. **Places 7 and 8 (the week, the pill box)** go ahead at 7+ and 8+ now that the days are asked. *Default: yes* (D.9.1 stands).
+7. **Dastarkhwan camera:** the kept high angle (H). *Default: H* (D.9.2 stands; stage 5's cushions need the guests behind the bolster).
+
+### P.9 Build brief (rewritten for the pipeline; phased, own files first)
+
+**Read first:** P.1–P.8, then D.3, D.4, 8.1 (guards and data model), `build/reports/tidy-build.md` and `docs/tidy-up-build-log.md`, `docs/UX-PRINCIPLES.md` (all ten points), `docs/modes/BUILD-COMMON.md`. **Never invent Kutchi.** Phases A–C touch **only** the files this mode owns; the shared pieces are assumed, not built.
+
+**Files this mode owns.** `tidy.html` · `css/tidy.css` · `js/tidy/{engine,rules,bot,lab,pipeline}.js` · `js/tidy/mechanics/{place,pack,stack,check,paw,tell,pair,fold}.js` · `js/tidy/games/*.js` (one per place) · `js/tidy/stubs/{fetch,passme,belt}.js` · `data/tidy.json` · `data/scenes/{kitchen,sitting-room,worktop,doorway-floor,bedroom}-tidy.json` · `build/leak_tidy.mjs` · `build/test_tidy.py` · `docs/tidy-up-build-log.md`.
+
+**Shared pieces assumed (code against the named API, don't build):** `js/shared/rel.js` (`Rel.holds/options/check/solve`, in the repo now), `js/shared/say.js` + `speech.js` (`listen({choices, timeoutMs})`), `js/shared/whichone.js`, `js/shared/overlay.js` (guests at anchors), `js/shared/stars.js` (star sets, `earPass`, `minTested`, `voiceTested`), the clinic's `belt`, the shell's request card with read-along, the shared end-of-round screen and the onboarding kit (UX 9–10), `progress.js` word stages.
+
+| Phase | Files | What's playable | Acceptance |
+|---|---|---|---|
+| **A Pipeline and stages 1–2** (own files) | `js/tidy/pipeline.js` (new), `rules.js` (+`gather`, `sort`, `twist`, `seat`), `data/tidy.json` (+`pipeline`, `rooms`, `stages`), the sidecars (+`floor`, `containers`, `cushions`), `lab.js` (*Afternoon*), `bot.js`, `leak_tidy.mjs` | In the lab: a **level-1 afternoon** in the kitchen, 1 → 2 → 3 → 5c, on the existing shelves; variants 1a, 1b, 2a, 2b; `stubs/belt.js` for 2c; the sidebar on the left; K2 removed from stage 3 | `--afternoon` at levels 1–2 in all six sizes; `leak_tidy.mjs --gen 1000 --bot 500` with the new strategies, every strategy <10% per stage except Reader; the carried-forward state visible in `__tidy` hooks |
+| **B Stages 4 and 5** (own files) | `paw.js` (Zazu), `check.js` (recast-off knob), `rules.seat`, `games/*` untouched, `mechanics/pair.js`, `mechanics/fold.js` | 4a, 4c, 4d; 5a with badge faces on cushions, 5b by pointing, 5c with the existing greetings; the afternoon clock; level-3 afternoons in the sitting room (T2) and the worktop (T3) | `--afternoon` at level 3; bot strategies for stages 4–5 under 10%; screenshots of every stage looked at |
+| **C Swap the stubs, UX 1–4 and 9** | `tidy.html` (drop `stubs/rel.js`, `stubs/say.js`), `engine.js` (request card with read-along, light bulb, left sidebar, end-of-round screen via the shared component), `css/tidy.css` | Speaking moments 1c, 2d, 3d, 5b by voice with the pill fallback; the voice star; the first-ever session (stage 1 alone, three things) with the onboarding overlay | Phase A and B acceptance repeated on `js/shared/rel.js`; `null` from `listen` never blocks; a first-launch run shows no sidebar, stars or light bulb |
+| **D The library** | `games/{fridge,sweetbox,week,pillbox,shoes,bunting,...}.js`, `data/scenes/doorway-floor-tidy.json`, `bedroom-tidy.json`, `assets/tidy/*` | Places 5–9 and 12 first (skins of 1 and 3, then shoes and bunting), each in the pipeline and alone; the rest in library order as words and art arrive | Each place: its own bot run, its own audit, its words present before the ear counts |
+| **E Story and integration** | Story beats as data; the shell | Arc 1 Ch1 end to end (kitchen afternoon → sitting-room afternoon → the knock); Ch2 the doorway; Ch3 the sweet box with stage 4; the hub's 60-second stage; onboarding scripts per stage (UX 10) written last | The visual QA checklist; a persona round with Zafar's notes |
+
+**The first three tasks.**
+1. **`pipeline.js` and `Rules.gather` / `Rules.sort`** (phase A): `Tidy.afternoon({room, level, profile})` builds `[{stage, round}]` from `data.pipeline.levels[level].stages`, runs each through `Tidy.play`, carries `{tray, containers, layout, results, clock}`, and ends on the end-of-round screen with the afternoon's totals. Stage 1's round is a `place` zone whose only spot is the tray; stage 2's is a `place` zone whose spots are the containers, one thing at a time from the tray; both use `check` at the end.
+2. **Bot strategies and the data** (phase A): the six new strategies in `bot.js`; `data.rooms.kitchen` (scene, containers, places [1, 2, 5], guests) and `data.stages.*.levels`; `leak_tidy.mjs` prints stage × level → ear rate and the afternoon product.
+3. **Stage 4 and 5a** (phase B): `Rules.twist(layout, level)` (which things the paw knocks, which rows Nani says, the right ones included), `paw.js` as the stage opener, `Rules.seat(layout, guests, level)` and 5a on the cloth's cushions with `place`; 5c on the existing `Cook.Lang` greetings.
+
+---
+
+
 ## Deep dive, 25 Sept 2026: mini-games and mechanics
 
 **What this is.** The mode rebuilt to the shape of `docs/modes/DEEP-DIVE-BRIEF.md`: a set of mini-games (the way Cook is a set of stations), each on modular mechanics with levels and rounds as data, with speaking as a core part, built in isolation first. **It supersedes sections 3, 4, 8.2 and 12 below where they conflict**; the guards G1–G8, the data model (8.1), the hint ladder, fading, recasts, stars and the art list stand. It also answers `docs/modes/REVIEW-2026-09-25.md` (D.7) and Zafar's note on the pill organiser (T6).
