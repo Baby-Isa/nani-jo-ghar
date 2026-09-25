@@ -1,0 +1,458 @@
+{
+ "_about": "Tidy up sidecar for the kitchen (E view), to be merged into data/scenes/kitchen.json by the foundation agent. Design coordinates are the 1600x900 board; the tray strip is y 740-890. Spots carry precomputed relation tags to fixed anchors and a neighbour graph (docs/modes/tidy-up-design.md 8.1); lv: the first level a spot (or tag) exists at. Greybox until the shelves are painted.",
+ "id": "kitchen-tidy",
+ "camera": "E",
+ "base": "kitchen",
+ "boards": {
+  "shelves": {
+   "name": "The kitchen shelves",
+   "surfaces": [
+    {
+     "id": "shelf-top",
+     "rect": [
+      120,
+      248,
+      700,
+      22
+     ],
+     "material": "wood",
+     "draw": "plank"
+    },
+    {
+     "id": "shelf-bottom",
+     "rect": [
+      120,
+      448,
+      700,
+      22
+     ],
+     "material": "wood",
+     "draw": "plank"
+    },
+    {
+     "id": "counter",
+     "rect": [
+      900,
+      630,
+      700,
+      90
+     ],
+     "material": "stone",
+     "draw": "counter"
+    },
+    {
+     "id": "counter-top",
+     "rect": [
+      880,
+      380,
+      340,
+      20
+     ],
+     "material": "wood",
+     "draw": "plank",
+     "lv": 2
+    },
+    {
+     "id": "floor",
+     "rect": [
+      0,
+      690,
+      900,
+      30
+     ],
+     "material": "floor",
+     "draw": "floor"
+    }
+   ],
+   "anchors": [
+    {
+     "id": "shelf-top",
+     "kind": "object",
+     "word": "ph-t-topshelf",
+     "rel": "on",
+     "rect": [
+      120,
+      248,
+      700,
+      22
+     ],
+     "draw": "none"
+    },
+    {
+     "id": "shelf-bottom",
+     "kind": "object",
+     "word": "ph-t-bottomshelf",
+     "rel": "on",
+     "rect": [
+      120,
+      448,
+      700,
+      22
+     ],
+     "draw": "none"
+    },
+    {
+     "id": "bowl",
+     "kind": "object",
+     "word": "ph-t-bowl",
+     "rel": "in",
+     "rect": [
+      970,
+      560,
+      260,
+      80
+     ],
+     "draw": "bowl"
+    },
+    {
+     "id": "basket",
+     "kind": "object",
+     "word": "ph-t-basket",
+     "rel": "in",
+     "rect": [
+      1290,
+      540,
+      260,
+      100
+     ],
+     "draw": "basket"
+    },
+    {
+     "id": "box",
+     "kind": "object",
+     "word": "ph-t-box",
+     "rel": "in",
+     "rect": [
+      250,
+      580,
+      300,
+      110
+     ],
+     "draw": "box",
+     "lv": 2
+    }
+   ],
+   "spots": [
+    {
+     "id": "t1",
+     "x": 240,
+     "y": 190,
+     "surface": "shelf-top",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "on",
+       "anchor": "shelf-top"
+      }
+     ],
+     "nbr": {
+      "right": "t2",
+      "front": "b1"
+     }
+    },
+    {
+     "id": "b1",
+     "x": 240,
+     "y": 390,
+     "surface": "shelf-bottom",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "on",
+       "anchor": "shelf-bottom"
+      }
+     ],
+     "nbr": {
+      "right": "b2",
+      "back": "t1"
+     }
+    },
+    {
+     "id": "t2",
+     "x": 470,
+     "y": 190,
+     "surface": "shelf-top",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "on",
+       "anchor": "shelf-top"
+      }
+     ],
+     "nbr": {
+      "left": "t1",
+      "right": "t3",
+      "front": "b2"
+     }
+    },
+    {
+     "id": "b2",
+     "x": 470,
+     "y": 390,
+     "surface": "shelf-bottom",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "on",
+       "anchor": "shelf-bottom"
+      }
+     ],
+     "nbr": {
+      "left": "b1",
+      "right": "b3",
+      "back": "t2"
+     }
+    },
+    {
+     "id": "t3",
+     "x": 700,
+     "y": 190,
+     "surface": "shelf-top",
+     "cap": 1,
+     "lv": 2,
+     "tags": [
+      {
+       "rel": "on",
+       "anchor": "shelf-top"
+      }
+     ],
+     "nbr": {
+      "left": "t2",
+      "front": "b3"
+     }
+    },
+    {
+     "id": "b3",
+     "x": 700,
+     "y": 390,
+     "surface": "shelf-bottom",
+     "cap": 1,
+     "lv": 2,
+     "tags": [
+      {
+       "rel": "on",
+       "anchor": "shelf-bottom"
+      }
+     ],
+     "nbr": {
+      "left": "b2",
+      "back": "t3"
+     }
+    },
+    {
+     "id": "w1",
+     "x": 1040,
+     "y": 565,
+     "surface": "counter",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "bowl"
+      }
+     ],
+     "nbr": {
+      "right": "w2"
+     },
+     "adj": [
+      "w3"
+     ]
+    },
+    {
+     "id": "w2",
+     "x": 1150,
+     "y": 565,
+     "surface": "counter",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "bowl"
+      }
+     ],
+     "nbr": {
+      "left": "w1"
+     },
+     "adj": [
+      "w3"
+     ]
+    },
+    {
+     "id": "k1",
+     "x": 1360,
+     "y": 560,
+     "surface": "counter",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "basket"
+      }
+     ],
+     "nbr": {
+      "right": "k2"
+     },
+     "adj": [
+      "k3"
+     ]
+    },
+    {
+     "id": "k2",
+     "x": 1470,
+     "y": 560,
+     "surface": "counter",
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "basket"
+      }
+     ],
+     "nbr": {
+      "left": "k1"
+     },
+     "adj": [
+      "k3"
+     ]
+    },
+    {
+     "id": "x1",
+     "x": 330,
+     "y": 600,
+     "surface": "floor",
+     "cap": 1,
+     "lv": 2,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "box"
+      }
+     ],
+     "nbr": {
+      "right": "x2"
+     },
+     "adj": [
+      "x3"
+     ]
+    },
+    {
+     "id": "x2",
+     "x": 470,
+     "y": 600,
+     "surface": "floor",
+     "cap": 1,
+     "lv": 2,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "box"
+      }
+     ],
+     "nbr": {
+      "left": "x1"
+     },
+     "adj": [
+      "x3"
+     ]
+    },
+    {
+     "id": "c1",
+     "x": 960,
+     "y": 330,
+     "surface": "counter-top",
+     "cap": 1,
+     "lv": 2,
+     "tags": [],
+     "nbr": {
+      "right": "c2"
+     }
+    },
+    {
+     "id": "c2",
+     "x": 1100,
+     "y": 330,
+     "surface": "counter-top",
+     "cap": 1,
+     "lv": 2,
+     "tags": [],
+     "nbr": {
+      "left": "c1"
+     }
+    },
+    {
+     "id": "w3",
+     "x": 1095,
+     "y": 520,
+     "surface": "counter",
+     "cap": 1,
+     "lv": 3,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "bowl"
+      }
+     ],
+     "nbr": {},
+     "adj": [
+      "w1",
+      "w2"
+     ]
+    },
+    {
+     "id": "k3",
+     "x": 1415,
+     "y": 510,
+     "surface": "counter",
+     "cap": 1,
+     "lv": 3,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "basket"
+      }
+     ],
+     "nbr": {},
+     "adj": [
+      "k1",
+      "k2"
+     ]
+    },
+    {
+     "id": "x3",
+     "x": 400,
+     "y": 560,
+     "surface": "floor",
+     "cap": 1,
+     "lv": 3,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "box"
+      }
+     ],
+     "nbr": {},
+     "adj": [
+      "x1",
+      "x2"
+     ]
+    }
+   ],
+   "convention": {
+    "_about": "the everyday layout (G4): fruit in the bowl, veg in the basket, spices up top",
+    "byKind": {
+     "fruit": "bowl",
+     "veg": "basket",
+     "spice": "shelf-top"
+    }
+   }
+  }
+ }
+}
