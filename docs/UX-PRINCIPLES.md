@@ -69,3 +69,11 @@ These three badges replace the old star labels in the result card. They stay map
 ## 10. When onboarding gets built
 - The **onboarding kit** (dim, spotlight, ghost finger, "do it now", fade-in of UI) is a shared component, built now.
 - Each mini-game's **onboarding script** (which thing to spotlight, what the ghost finger does) is written at the end of that mini-game's build, once its mechanics have stopped changing, so it isn't redone after every playtest. Cook's stations get theirs first, since they're the most settled.
+
+## 11. Show progress, not verdicts (Zafar, 25 Sept, late)
+- **A tally with pictures.** Stations where you make several things show a small tally in the top-right corner: a picture of each item with how many you've done so far (e.g. 🧅 3, 🍅 2 in the chop game). It shows what *you* did, never the target (the existing rule). Applies to every mode where you collect, chop, count, fetch or place several things.
+- **Tick off the instruction card.** A line on the card gets a tick when that part is done (chopped, in the bowl, fried…).
+  - Level 1 (onboarding): the tick appears **automatically** when the right amount is reached.
+  - From level 2: an automatic tick would give the count away (you'd chop until it ticks). So the child **ticks the line themselves** ("done"), and the tick doesn't say whether it's right.
+  - Zafar's caution: once a tick is there, players expect it. So keep the self-tick at every level rather than removing ticks later.
+- **No negative feedback during play.** No red crosses or "wrong" buzzes mid-round (at least from level 2). Mistakes are shown in the end-of-round review (§9 accuracy badge, then the word review). Level 1 keeps its gentle, one-time correction as part of onboarding.

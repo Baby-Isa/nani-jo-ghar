@@ -200,7 +200,99 @@ The onboarding kit (principle 8) spotlights one pot and a ghost finger in S2a, o
 
 **The story plays the pipeline across chapters** (section 5's placements, restated as stages): Arc 3 **Ch1 Clouds coming** = stages 1–2, and the chapter ends as the first drop falls; **Ch2 The leak** = stages 3–4 (the kitchen first, the house when the art exists); **Ch3 The animals** = S2d, then Find it finds the chicks; **Ch5 Chai together** = stage 5 with Cook's chai. So the child meets the stages in order across the arc, and afterwards free play runs them in one sitting.
 
+### P.6 What survives from the current build
 
+The build (`build/reports/monsoon-build.md`, `docs/monsoon-build-log.md`) is **stage 3 of the pipeline, finished to greybox**, plus the engine every other stage grades through. Nothing is thrown away; the pipeline wraps around it.
+
+| File | Verdict | What changes |
+|---|---|---|
+| `js/monsoon/clock.js` | **Keep, unchanged** | The calm stages use the same clock (Nani's repeat after 8 s, the pour's rate) |
+| `js/monsoon/calls.js` | **Keep** (the storm generator, `keyAt` timing, grading, retries, stars, the Busy stage rule, `check`) | Add: `Calls.storm(..., {candidates})` so S3a drips on the pots `day.rack` holds (Nani's own pots fill the group to ≥5); a **row grader for the calm stages** (`Calls.rowGrade`: right / wrong / helped per call, Cook's shape, feeding the same `Stars.ear` rows as the storm's outcomes), so one accuracy badge covers the day; `Calls.day(day)` pooling every stage's rows, moments and times for the end-of-round screen |
+| `js/monsoon/bots.js` | **Keep** (the bots and the headless player; the same code in Node and the lab) | Add calm-stage strategies through the same view: `random`, `odd`, `first` (always the first slot), `learner`, `wait` for `fetch`, `pour`, `rub`, `sequence`; a `day` runner that plays every stage headless |
+| `js/monsoon/core.js` | **Keep**; `Run` becomes **the squall runner** | New `js/monsoon/pipeline.js` owns the **day**: the `Day` object (P.1), the stage list from data, the request card per stage, the big right-hand button between stages, the session ladder (P.5), the end-of-round screen. `M.load` also reads `courtyard-monsoon.json` |
+| `js/monsoon/stage.js` | **Keep as the kitchen scene host** | Sibling hosts `js/monsoon/scenes/veranda.js` (stages 1, 2, 4: the shelf, the line, the low wall and hides, the charpai and tarp, the buckets and the water pot) and `scenes/room.js` (stage 5: the charpai, the tray, the gauge); the same `build / render / screenOf / tapCand` API so the bots and the test player don't care which is up |
+| `js/monsoon/fx.js` | **Keep** (mono, rain bed, creak, plink, plop) | Add the gust, the drumming on the tarp, the sun coming out, the pour trickle, the towel rub; **all weather sound starts at the reveal** (the existing test) |
+| `js/monsoon/ui.js` | **Keep** the call pill, the stars row, the hand and count badges, `nani()`, the readout | **Change** for the UX principles: the sidebar moves **left** (`css/monsoon.css`); the per-line eye and translate buttons (`.c-eye`, `.c-tr`) go, replaced by **one light bulb** at the top of the sidebar (a tap flips everything to English for 5/3/2/1 s by level; costs the ear as the eye did) and **one speaker per card**; the intro card becomes the **request card** (read-along: each chunk lights as its clip plays, timings from `monsoon-audio.json`); `UI.result` is replaced by the **end-of-round screen** (a local two-page version behind the shared component's API until the foundation's lands) |
+| `js/monsoon/lab.js` | **Keep** (the Rush lab) | Add a **stage** picker, *the whole day*, and **session presets** 1–5 (P.5), so a playtest can open exactly what a child would see |
+| `js/monsoon/mechanics/cover.js`, `count.js`, `callit.js` | **Keep, unchanged** (S3a, S3b, S3c) | `count.js` gets a `unit` knob (drop, mop) for S4d; `M.Wave.which` is what `catch.js` (S2c) builds on, as planned |
+| `js/monsoon/stubs/say.js` | **Replace** with `js/shared/say.js` (it exists: `Say.moment`, shared-api s4) | One adapter line in `callit.js`; `Stars.voice` for the star. `stubs/speech-lab.js` **stays** as the lab's fake `listen` |
+| `data/monsoon.json` | **Keep** `games.g1–g4, g6`, the rules, `star_sets` | Add `pipeline` (the five stages: id, scene, games, unlock session, the button label), `sessions` (the ladder), `games` for S1b, S2a, S4a, S4b, S4d, S5a-greybox, S5b; `count` gets `unit`. Note for the data: **numbers *one* and *two* and *daal* change in Cook's data** (grammar notes 2, 3, 7: *hakro/hakri*, *ba*, *daar*; *v → w*): nothing to do here, since Monsoon reads Cook's `words`, but the audio sidecar's clip keys follow the new spellings when the clips are re-cut |
+| `data/monsoon-audio.json` | **Keep** (`dur`, `keyAt` per clip) | Add each recorded chunk's timing for the read-along card; written by `leak_monsoon.mjs --write-audio` as now |
+| `data/scenes/kitchen-monsoon.json` | **Keep** | — |
+| `data/scenes/courtyard-monsoon.json` | **New sidecar** | The veranda crop: the shelf slots (8, like the island), the line's pegs, the hides behind the wall, the charpai and tarp rects, bucket and water-pot spots. There is no `data/scenes/courtyard.json` in the tree yet, so this sidecar carries greybox rects of its own and is re-keyed to Find it's anchors when that file lands |
+| `build/leak_monsoon.mjs`, `build/test_monsoon.py` | **Keep** (32 unit cases, χ², the bots, the six sizes, the tap-cover check) | Add `--stage`, `--day`, `--session N` and the calm-stage bots; the acceptance numbers in P.8 |
+| `monsoon.html`, `css/monsoon.css` | **Keep** | Sidebar left, action buttons right, the light bulb, the request card, the end-of-round pages |
+
+**What goes:** the result card's layout (`UI.result`), the per-line eye and translate buttons, and the deep dive's "first set in build order" as a plan (the session ladder replaces it). No mechanic, generator rule or bot is removed. The build report's open items (`passme` between Drizzle waves, G10 echo, G11 caller, the courtyard station, the latency check) all have a home below.
+
+### P.7 Words needed, in priority order
+
+Only the family's own words; grey-italic placeholders until then. **QfM** = the Questions for Mum doc (not edited). **Grammar notes** = `docs/kutchi-grammar-notes.md`, which changed some of what the game says.
+
+| Priority | Words | For | In QfM? |
+|---|---|---|---|
+| 0 | Nothing new: the food nouns, numbers 1–5, *Hedo!*, *Ne*, *Ne poi*, *Arre re!*, *wadho / nindho*, *adh / bharelo*, *Muke {x} de*, *pela*, *{x} lai*, *{x} waari*, *me* (in) | S2a, S3a–c, S4a, S4b, S4d, S5a, S5c, S1b's linkers | — (recorded, or in the grammar notes) |
+| 0′ | **Corrections from the grammar notes**, applied in Cook's data: *one* = *hakro / hakri* by gender (not *hikdo*), *two* = *ba* (said "ber", not *bo*), *daal* → *daar*, *vadho* → *wadho*; nouns need a gender and a plural | S3b, S4d, S5a; every noun | Confirmed by Zafar and Mum, 25 Sept |
+| 1 | *Ne poi* and *Nar* confirmed as the linker and the switch (*ne poi* is confirmed; *nar* is still a draft) | S3a L3, S2a L2 | Yes: A3.4, A4.2 |
+| 2 | **Weather:** sun, rain, cloud, wind, thunder, lightning; *it's raining / windy / cloudy*; *it stopped raining*; *it's hot / cold* | S1a, S1b, S1c, S3d | Yes: G1–G14, A6.1 |
+| 3 | **The monsoon calls:** *Quick! Here! Not there! Inside! Come here! Catch it! Put the bucket there! Wait! Bring the washing in!* | Every stage's recasts; the buttons between stages | Yes: G15–G26 |
+| 4 | **Feelings and the send-off:** *How do you feel?*; *happy, sad, scared, tired, better*; *I'm cold / I'm hot*; *just right*; *Keep warm*; *wet / dry* | S5b, S4b's chatter | Yes: G62–G72, G83, F69, F11–F12 |
+| 5 | **Clothes and colours:** kurta, dupatta, prayer cap, towel, socks; the colours; whose | S2b, S4c | Yes: F45–F63, E60–E71, E14 |
+| 6 | **Anchors and the yard:** charpai, water pot, washing line, tree, gate, window, door, bucket, basket | S2c, S4a, S3e | Yes: E16–E48, G36–G40 |
+| 7 | **Positions:** on, under, behind, next to, in front of, between; first, last | S4c, S2c L2+, S3e L3 | Yes: A5, E1–E13 |
+| 8 | **Rooms:** kitchen, sitting room, bedroom, courtyard, veranda, roof, shed, hen house | S3e, S2d | Yes: E49–E58 |
+| 9 | **Animals:** goat, hen, chick, cat; plurals; *two goats* | S2d | Yes: G27–G35 |
+| 10 | **Verbs:** shut the window, open the door, cover the pot, bring in | S2e | Yes: G20–G23 |
+| 11 | **New, not in QfM:** *lid*, *tarp*, *mop*, *the planter*, *the trough*, *chillies* (if not in Cook's spices), *Here it comes!*, *It's over / it's gone* (if different from *it stopped raining*), *Well done!* in Nani's voice (G104 is the doctor's); the English-menu-word tick | S2a–S4d's props; the stage buttons; praise | **No**: add to Zafar's own list (6.6) |
+
+### P.8 Build brief (rewritten for the pipeline; phased, own files first)
+
+**Rules you inherit** (unchanged from section 12): never invent Kutchi; levels are data; mechanics are files; every decision comes from something said and varies each day; help that shows costs the ear; one place for text; nothing covers the play area during a live call; upgrades never listen; look at your screenshots. Never edit `js/cook/*`, `css/cook.css`, `data/cook.json`, `data/scenes/kitchen.json`, `js/shared/*` or `build/build_audio_manifest.py`; load Cook's and the shared modules, never copy them. **Plus the UX principles:** the request card with read-along, the sidebar on the left and the big buttons on the right, fixed-shape cards (the rack, the strip, the bucket row), one light bulb and one speaker per card, one job per stage, level 1 is the smallest round, the shared end-of-round screen, onboarding scripts written last.
+
+**Own files** (phases A–C touch nothing else): `monsoon.html`, `css/monsoon.css`, `js/monsoon/{core,clock,calls,stage,fx,lab,bots,pipeline}.js`, `js/monsoon/scenes/{veranda,room}.js`, `js/monsoon/mechanics/{cover,count,callit,fetch,sequence,tarp,hold,scoop,unpeg,catch,pour,rub,echo,caller,shoo,batten,tune}.js`, `js/monsoon/stubs/speech-lab.js`, `data/monsoon.json`, `data/monsoon-audio.json`, `data/scenes/{kitchen-monsoon,courtyard-monsoon}.json`, `build/leak_monsoon.mjs`, `build/test_monsoon.py` (port 8805).
+
+**Shared pieces assumed from the foundation** (don't design them): the shell (one app, one save, the map, the hub daily); the **end-of-round screen** component (two pages; Monsoon ships a local one behind the same call, `EndScreen.show({time, best, rows, hints, words})`, until it lands); the **onboarding kit** (dim, spotlight, ghost finger, "do it now", the fade-in of UI); the **request card** with chunked read-along (Monsoon drives a local one from `monsoon-audio.json` chunk timings); `js/shared/say.js`, `stars.js`, `whichone.js`, `rel.js`, `speech.js` (all in the tree); `dur`, `keyAt` and chunk timings in the audio manifest; Cook's Chai tray under a zone host Monsoon can mount (decision 3), or a shared `pour`.
+
+| Phase | Files | What's playable | Acceptance |
+|---|---|---|---|
+| **0 Done** | `clock`, `calls`, `bots`, `core`, `stage`, `fx`, `ui`, `lab`, `cover`, `count`, `callit`, the sidecars, the two harnesses | S3a–S3c at L1–3, Drizzle and Busy, in the Rush lab | As reported: 32/32 unit cases; every bot under 2%; six sizes plus 375 px; the english bot 34/34 null |
+| **A The tiniest day** | `pipeline.js`, `data/monsoon.json` (`pipeline`, `sessions`, S2a, S5a-greybox, S5b), `scenes/veranda.js`, `scenes/room.js`, `courtyard-monsoon.json`, `mechanics/fetch.js`, `mechanics/pour.js` (Cook's rules mirrored, as `count.js` does), `ui.js` (sidebar left, the light bulb, one speaker per card, the request card with read-along, the local end-of-round screen), `lab.js` (stage / day / session presets), `calls.js` (`candidates`, `rowGrade`, `day`) | **Session 1 as P.5 describes it**: three pots → one four-wave squall over those pots → one cup of chai and the feeling pills → the badges and three words. Then sessions 2–3 (a second squall; S1a greybox with placeholders flagged; S4a two buckets) | The test player plays session 1 in under 3 minutes and sessions 2–3 under 5 at every size; the day's accuracy badge pools every stage's rows and the stars underneath match `Calls.stars` per squall; bots under 2% on S2a, S4a and the day (`random` on the day's ear: about 0.04% at session 1, see below); the light bulb flips for 5/3/2/1 s and costs the ear; the request card's chunks light in time with the clips (a virtual-clock check); a stage skipped leaves `day` defaults and every later stage still runs; no console errors; screenshots looked at |
+| **B The calm stages** | `tarp`, `hold`, `scoop`, `sequence`, `unpeg`, `catch`, `rub`; `count.js` `unit`; S1a–S1b, S2b–S2c, S4b, S4d in data; the strip driving the squalls | Sessions 4–5: the day strip choosing squalls; washing left out arriving wet in stage 4; cats caught on the charpai in stage 5; S3d gusts at L2 | Bots including `state` (S1a, S3d), `odd` and `first` (S1b, S2b) under 2%; "weather sound at the reveal" and "silent bell" checks; the placeholder report per stage; **a real-device latency check** (phone, tablet) with windows adjusted as data; the strip's three slots always drawn |
+| **C Speaking and family** | `callit.js` on `Say.moment` (delete `stubs/say.js`), `echo.js`, `caller.js`; S1c, S5b with the mic, S5c, S3h | Every speaking moment of P.2 reachable from the lab's speech panel; Nani calls in any stage | `Stars.voice` scores the day; the `english` bot mostly null on every closed set; the caller card legible at arm's length on the iPad; null never blocks anywhere |
+| **D Integration** | With the shell: one save, the map's rain cloud and the five doors, the hub daily's squall, `Stars` from `data/shared/stars.json`, the shared end-of-round screen and request card replacing the local ones, Cook's Chai tray replacing the greybox cup (decision 3), Arc 3 Ch1 / Ch2 / Ch5 as stages 1–2 / 3–4 / 5; **the onboarding scripts** for S2a, S3a, S5a (last, per UX principle 10) | The story chapters from the map; free play's five doors; the first launch with no tutorial | One save; the placeholder report; the word review lists every word of the day; Ch1 ends as the first drop falls |
+| **E The house and the yard** | S3e (the cross-section, `rel.js`), S3f dark, S2d shoo, S2e batten, S4c place, S3g tune; the art run (section 9.4) | The flagship house leak; the animals; the power cut | Bots under 2% including kind × shelter uniformity; `place_preview.py` for every spot; the art bible QA on every screenshot |
+
+**Blind-bot estimate for session 1** (principle 5): S2a three calls at 1 in 5 and S3a four calls at 1 in 5, pooled into seven tested rows; the ear needs 80% (6 of 7): about **0.04%** for `random`. A stage played alone has fewer than `minTested` rows at session 1, so its ear shows dashed ("not tested this time") rather than earned; from session 3 the day has ≥10 rows and every stage alone at L2 has ≥6.
+
+**The first three tasks for the next build agent**
+
+1. **`pipeline.js` and the data** (`js/monsoon/pipeline.js`, `data/monsoon.json`): the `Day` object; stages as data (`pipeline.stages[]`: id, scene, games, `from` session, button label); `sessions[]` (which stages and games, which level, how many waves); the between-stage button and the request card (local, chunk-lit from `monsoon-audio.json`); the local end-of-round screen (two pages: stopwatch with the level's best, the slot row green/red, the hint count; then the word review). `core.js`'s `Run` unchanged underneath. **Done when** `?session=1` in the lab plays the tiniest day end to end on the virtual clock and the screen shows three badges and three words.
+2. **S2a pots inside and the veranda host** (`scenes/veranda.js`, `mechanics/fetch.js`, `courtyard-monsoon.json`): the shelf with the whole look-alike group(s); *"Muke {x} de"* (the `give` line in Cook's `lines`, updated to the grammar notes' form); tap → the pot flies to the island; Nani brings the rest; `day.rack` written; the pots become S3a's candidates (`Calls.storm(..., {candidates})`). **Done when** bots are under 2% on S2a at L1–3 in both harnesses and S3a's χ² still passes with the carried candidates.
+3. **The UX pass on the sidebar** (`ui.js`, `css/monsoon.css`): left sidebar, right buttons, the light bulb (levels' seconds as data: `hints.bulbSec: [5, 3, 2, 1]`), one speaker per card, the eye and translate removed, the request card. **Done when** the six sizes and the 375 px phone screenshot clean, the tap-cover check passes, and the hint count on the end screen counts bulb presses.
+
+### P.9 Decisions for Zafar (blocking only; each with a default)
+
+1. **The first ever session is pots → one squall → one cup** (no forecast, no drying until session 3). Default: **yes**; the forecast is the mode's identity but it is placeholder words today, so it can't be the first thing.
+2. **Consequences carry forward but never punish:** washing left on the line gets rained on and becomes stage 4's work; a cat not caught is wet in stage 4; drops missed are puddles to mop. Default: **yes** (more to do, never less, and never a lost star).
+3. **Stage 5's chai:** mount Cook's real Chai tray inside the Monsoon page (needs Cook's Phaser zone host loaded in `monsoon.html`, a shell-sized dependency), or a **one-cup greybox on Monsoon's own `pour`** until integration? Default: **the greybox cup in phase A, Cook's tray at phase D.**
+4. **One accuracy badge for the whole day** (every stage's tested rows pooled; a stage played alone gets its own), with the stars mapped underneath as now. Default: **yes**.
+5. **The cats are called *wadho / nindho*** (the big one, the small one) in every call, never *Simba* and *Zazu* (English-known names decide nothing). Default: **yes**; the names stay in the story text and the album.
+
+### P.10 What changed below
+
+| Section | Change |
+|---|---|
+| D.1–D.2 | The kinds of round and the library stand; they are now **stage 3's squalls** plus the calm stages' games (P.2, P.3). G-numbers map to S-ids in P.2 |
+| D.5 | "The first set in build order" is replaced by **the session ladder** (P.5) and phases A–E (P.8) |
+| D.6, 5 | The story homes are the same chapters, read as stages (P.5) |
+| D.9 | Decisions 1–4 stand; P.9 adds five more |
+| 6.3 | The hint ladder's eye and translate become **the light bulb** (one press, timed by level, costs the ear); the replay is the card's one speaker |
+| 7 | The three stars stay underneath the **three badges** (time, accuracy, hints) of the end-of-round screen |
+| 8.6, 12 | File layout and phases as in P.6 and P.8 |
+
+---
+
+## Deep dive, 25 Sept 2026: mini-games and mechanics
 
 **What this is.** The mode taken to the clinic's Revision 2 depth under Zafar's 25 Sept principles (`docs/modes/DEEP-DIVE-BRIEF.md`): a set of mini-games, one file per mechanic, speaking as a core part, a build that touches only its own files first. **It supersedes sections 3, 4, 5.4, 6.5, 8 and 12 where they conflict.** The kitchen slice (section 4 order 1; the old task 2) is kept exactly as designed, because the review picked it as the cheapest all-real-Kutchi slice in the plan; this deep dive widens the front of the build around it. D.10 lists what changed below.
 
