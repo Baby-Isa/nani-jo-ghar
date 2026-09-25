@@ -110,3 +110,9 @@ All blocking decisions in the deep dives (top sections of each mode's design doc
 - Running overnight: 7 Fable pipeline redesigns (clinic, Find it, Tidy up, Who did it?, Dress up, Monsoon, Snap) as in-process agents (resume by message if a limit stops them); remote sessions Cook Wave 6, Find it build, shared UI (`claude/build-shared-ui`, session_01346mVNKdg8zWmhCWoMTMKA: results screen + onboarding kit); an agent writing `docs/chatgpt-art-prompts-batch3.md`.
 - **Mode builds are paused on purpose** until the pipeline designs are approved; their phase 0–1 code stays (engines, bots, labs, tests) and each redesign lists what survives.
 - Labs are live on `main`: `labs.html` links every mode lab.
+
+### 25 Sept ~23:35 UTC
+- Merged into the branch and **published to `main`**: Cook Wave 6, the Find it phase 0–1 build, and the shared UI (`js/shared/results.js`, `js/shared/onboard.js`, demo `lab/shared-ui.html`). Versions re-stamped with `bump_version.py`. The old chat has ended; its final state is merged.
+- Zafar's rules tonight: UX §11–§13 (auto-tick at every level; one control forever = tap, pour is a tap; the instruction card is the master and Nani is a voice).
+- Running: **Cook Wave 6b** (`claude/build-cook-wave6b`, session_01DmaAgodzuDkuXkvQN1SsNQ); 8 Fable **mini-game quality passes** (`docs/modes/MINIGAME-QUALITY-BRIEF.md`) on every mode doc including Cook's; an agent building tonight's art zip (`docs/art-run-tonight.md`).
+- Next: the **shell** (foundation phase B) after Wave 6b merges; mode builds resume after Zafar approves the quality-pass designs.
