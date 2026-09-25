@@ -617,11 +617,15 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #mission .m-tools button { width: 30px; height: 30px; padding: 6px; }
   #mission .m-order { margin-top: 4px; gap: 4px; }
   #mission .lr .wp .wp-text, #mission .lr.head .wp .wp-text { font-size: 16px; }
-  .lr { --dot-y: 15px; padding-left: 18px; }
+  /* rows a little tighter, so a level-1 Chai tray (six rows) fits without scrolling */
+  #mission .lrows { gap: 1px; }
+  .lr { --gap: 1px; --dot-y: 14px; padding: 0 4px 0 18px; }
   .lr .ldot { left: 2px; width: 10px; height: 10px; margin-top: -5px; }
   .lr.up::before, .lr.down::after { left: 6px; }
-  .lr .wp button, #nani-card .wp button, #passme .pm-say .wp button { width: 28px; height: 28px; padding: 5px; }
+  .lr .wp button, #nani-card .wp button, #passme .pm-say .wp button { width: 28px; height: 28px; padding: 5px; margin-top: 0; margin-bottom: 0; }
   .lr .wp .wp-gap { width: 28px; }
+  .lsec.late { padding-top: 2px; }
+  #mission .ladder { gap: 2px; }
   #nani-card .nc-face { width: 30px; }
   #nani-card .wp .wp-text { font-size: 15px; }
   .lsec.lfor { gap: 4px; }
