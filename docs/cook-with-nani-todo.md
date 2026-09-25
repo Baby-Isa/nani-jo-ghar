@@ -128,3 +128,4 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 - ☐ Tick-off on the instruction card: automatic at level 1, the child's own "done" tick from level 2
 - ☐ No negative feedback mid-round from level 2; mistakes surface in the end review
 - ☐ Onboarding scripts per station with the shared onboarding kit
+- ☐ Wire the existing tool sprites (knife, ladle, spatula, velan, chakla, skewer) into `data/cook.json` so those stations stop drawing code placeholders (see `docs/cook-art-audit.md`); tally icons = existing ingredient sprites scaled down
