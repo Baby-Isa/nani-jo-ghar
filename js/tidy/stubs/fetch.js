@@ -38,23 +38,25 @@
     run(z, p, k) {
       const H = z.host;
       const items = H.R.order.filter((i) => H.pl[i] === "shelf");
-      const cols = 2;
       const nodes = {};
-      // the shelf: planks, and the things on them in a grid
-      const rows = Math.ceil(items.length / cols);
-      for (let r = 0; r <= rows; r++) {
+      // the shelf: a tall zone of its own (design 380x900), planks with the things on them
+      const [W, Ht] = z.design;
+      const cols = 2;
+      const rows = Math.max(1, Math.ceil(items.length / cols));
+      const rowH = Math.min(200, (Ht - 60) / rows);
+      const size = Math.min(150, rowH * 0.85);
+      for (let r = 0; r < rows; r++) {
         const plank = Tidy.el("div", "surf plank", z.el);
-        Object.assign(plank.style, { left: "200px", top: `${140 + r * 170}px`, width: "1200px", height: "26px" });
+        Object.assign(plank.style, { left: "16px", top: `${40 + (r + 1) * rowH - 14}px`, width: `${W - 32}px`, height: "16px" });
       }
       items.forEach((iid, i) => {
         const it = H.R.items[iid];
         const n = Tidy.el("div", "item", z.el);
-        n.style.width = n.style.height = "300px";
-        n.style.margin = "-150px 0 0 -150px";
+        Object.assign(n.style, { width: `${size}px`, height: `${size}px`, margin: `${-size / 2}px 0 0 ${-size / 2}px` });
         n.dataset.iid = iid;
         n.innerHTML = Tidy.picture(it.word) ? `<img src="${Tidy.picture(it.word)}" alt="">` : Tidy.shape(it.word, it.attrs.colour);
-        n.style.left = `${500 + (i % cols) * 600}px`;
-        n.style.top = `${60 + Math.floor(i / cols) * 170}px`;
+        n.style.left = `${W * ((i % cols) + 0.5) / cols}px`;
+        n.style.top = `${40 + Math.floor(i / cols) * rowH + rowH - 14 - size / 2}px`;
         nodes[iid] = n;
       });
       z.on(z.el, "pointerdown", (e) => {

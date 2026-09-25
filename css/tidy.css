@@ -29,10 +29,21 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 #app { position: fixed; inset: 0; display: flex; }
 #stage { position: relative; flex: 1 1 auto; overflow: hidden; background: #e8d9c0; }
-#side { flex: 0 0 var(--side); display: flex; flex-direction: column; gap: 8px; padding: 8px; background: var(--cream); border-left: 2px solid #e2cfb2; overflow-y: auto; }
+#side { flex: 0 0 var(--side); display: flex; flex-direction: column; gap: 8px; padding: 8px; background: var(--cream); border-left: 2px solid #e2cfb2; overflow: hidden; min-height: 0; }
+#side > * { flex: 0 0 auto; }
+#side > #rows, #side > #ali-card, #side > #passme { flex: 0 1 auto; min-height: 0; overflow-y: auto; }
+@media (max-height: 460px) {
+  #side { gap: 4px; padding: 4px; }
+  .r-list li { padding: 2px 4px; }
+  .icon-btn { width: 28px; height: 28px; padding: 5px; }
+  .rail-btn { min-height: 40px; }
+  #nani-line { font-size: 12px; }
+  #nani-line img, .r-face { width: 26px; height: 26px; }
+}
 @media (orientation: portrait) {
   #app { flex-direction: column; }
-  #side { flex: 0 0 auto; max-height: 44vh; border-left: 0; border-top: 2px solid #e2cfb2; }
+  /* a fixed height, so the board never jumps when Nani's line comes and goes */
+  #side { flex: 0 0 40vh; border-left: 0; border-top: 2px solid #e2cfb2; }
 }
 
 /* ---------------- the board: 1600x900 design units, scaled to fit ---------------- */
@@ -66,7 +77,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #board.debug .dot { opacity: 1; border-style: solid; }
 .dot .dbg { display: none; position: absolute; left: 44px; top: -6px; white-space: nowrap; font: 700 15px "Nunito"; background: rgba(255,255,255,0.85); padding: 0 4px; border-radius: 4px; }
 #board.debug .dot .dbg { display: block; }
-.tally { position: absolute; min-width: 40px; height: 40px; border-radius: 20px; background: rgba(255,255,255,0.85); font: 800 26px "Baloo 2"; text-align: center; line-height: 40px; pointer-events: none; }
+.tally { position: absolute; z-index: 200; min-width: 40px; height: 40px; border-radius: 20px; background: rgba(255,255,255,0.85); font: 800 26px "Baloo 2"; text-align: center; line-height: 40px; pointer-events: none; }
 
 /* items: pictures or grey shapes; never a label (6.3) */
 .item { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; display: flex; align-items: center; justify-content: center; transition: left .22s ease, top .22s ease, transform .15s; touch-action: none; cursor: grab; }
@@ -83,7 +94,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .pebble { position: absolute; width: 36px; height: 30px; margin: -15px 0 0 -18px; border-radius: 50%; background: #8d8d8d; transition: left .8s ease, top .8s ease; pointer-events: none; }
 .nani-hand { position: absolute; width: 90px; height: 90px; margin: -20px 0 0 -10px; font-size: 80px; transition: left .8s ease, top .8s ease; pointer-events: none; }
 .dim { position: absolute; top: 0; bottom: 0; background: rgba(40,28,18,0.45); pointer-events: none; }
-.paw { position: absolute; height: 120px; border-radius: 60px; background: rgba(90,70,50,0.35); border: 5px dashed rgba(90,70,50,0.6); display: flex; align-items: center; justify-content: center; font-size: 70px; cursor: pointer; z-index: 40; animation: pawIn .3s ease; }
+.paw { position: absolute; height: 120px; border-radius: 60px; background: rgba(90,70,50,0.35); border: 5px dashed rgba(90,70,50,0.6); display: flex; align-items: center; justify-content: center; font-size: 70px; cursor: pointer; z-index: 150; animation: pawIn .3s ease; }
 @keyframes pawIn { from { opacity: 0; transform: translateY(-40px); } }
 .ali { position: absolute; width: 150px; height: 150px; border-radius: 50%; background: #fff center/cover no-repeat; border: 6px solid #fff; box-shadow: var(--card); transition: left .6s ease, top .6s ease; z-index: 45; pointer-events: none; }
 .card-pic { position: absolute; right: 24px; top: 24px; width: 420px; height: 236px; background: var(--paper); border-radius: 16px; box-shadow: var(--card); overflow: hidden; z-index: 30; pointer-events: none; border: 6px solid #fff; }
@@ -122,7 +133,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .rail-btn.done svg { width: 30px; height: 30px; }
 #passme .pm-say { font-weight: 700; margin-bottom: 6px; }
 #passme .pm-tray { display: flex; gap: 6px; }
-#passme .pm-tray button { flex: 1; aspect-ratio: 1; border: 0; border-radius: 12px; background: #f1e3cc; padding: 4px; }
+#passme .pm-tray button { flex: 0 1 auto; width: min(31%, 84px); aspect-ratio: 1; border: 0; border-radius: 12px; background: #f1e3cc; padding: 4px; }
 #passme .pm-tray img { width: 100%; height: 100%; object-fit: contain; }
 
 /* ---------------- overlays ---------------- */

@@ -16,8 +16,8 @@
       const lay = { id: "cloth", main: true, mechs: ["place", "stack", "check", "paw"], params: { force: H.opts.paw }, in: "fetched" };
       if (!H.kn.fetch) return [Object.assign(lay, { region: [0, 0, 1600, 900] })];
       return [
-        { id: "shelf", region: [0, 0, 400, 900], cls: "shelfzone", mechs: ["fetch"], out: "fetched" },
-        Object.assign(lay, { region: [400, 0, 1200, 900] }),
+        { id: "shelf", region: [0, 0, 380, 900], design: [380, 900], cls: "shelfzone", mechs: ["fetch"], out: "fetched" },
+        Object.assign(lay, { region: [380, 0, 1220, 900] }),
       ];
     },
   });

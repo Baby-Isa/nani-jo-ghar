@@ -135,6 +135,16 @@
       {"slots": ["count", "noun"]},
       {"slots": ["noun", "place"]}
     ]},
+    "passme": {"levels": [
+      {"afterMs": 12000},
+      {},
+      {}
+    ]},
+    "clock": {"levels": [
+      {"msPerRow": 20000},
+      {"msPerRow": 18000},
+      {"msPerRow": 16000}
+    ]},
     "fetch": {"levels": [
       {"lookalikes": 2},
       {},

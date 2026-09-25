@@ -43,9 +43,10 @@
         const c = z.toClient(x0 + k.stripW / 2, 360);
         Tidy.expect({ what: "paw", x: c.x, y: c.y, then: prev });
         const until = Date.now() + (k.warnMs * 2.5) / (global.Cook.speed || 1);
-        while (!shooed && Date.now() < until && !H.done) await Tidy.wait(50);
+        while (!shooed && Date.now() < until && !H.done && !H.dead) await Tidy.wait(50);
         paw.remove();
-        Tidy.expect(prev);
+        if (Tidy.exp.what === "paw") Tidy.expect(prev);
+        if (H.done || H.dead) return; // Done was pressed: he wanders off
         if (shooed) {
           Tidy.nani(Tidy.frame("shoo"), { speak: false, hold: 600 });
           Tidy.sfx("puff");

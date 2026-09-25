@@ -5,7 +5,7 @@
  * asks for a known word NOT on this board ("Muke hikdo {x} dine.", the
  * real frame) with three pictures from ONE look-alike group (Cook's rule),
  * in the sidebar column, never over the board. It doesn't touch the rows.
- * Knobs: none of its own; the moment comes after `afterMs`.
+ * Knobs (data/tidy.json mechanics.passme): afterMs (when she asks).
  */
 (function (global) {
   const Tidy = global.Tidy;
@@ -24,7 +24,7 @@
         if (H.done || H.dead) return;
         const box = $("#passme");
         const line = Tidy.frame("give", Cook.Lang.phrase([want]));
-        $(".pm-say", box).innerHTML = Tidy.html(line, { reveal: true });
+        $(".pm-say", box).innerHTML = Tidy.html(line); // the word fades to dots by its stage, as on the rows
         const tray = $(".pm-tray", box);
         tray.innerHTML = "";
         const sh = (a) => Tidy.Rules.util.shuffle(Math.random, a);
@@ -49,7 +49,7 @@
         });
         box.classList.remove("hidden");
         await Tidy.speak(line);
-      }, (p.afterMs || 12000) / (Cook.speed || 1));
+      }, (p.afterMs || k.afterMs) / (Cook.speed || 1));
       H.cleanup = (H.cleanup || []).concat(() => clearTimeout(t));
       H.on("done", () => $("#passme").classList.add("hidden"));
       return {};

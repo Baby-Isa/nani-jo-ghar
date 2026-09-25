@@ -187,6 +187,8 @@
     Tidy.scale = s;
   };
   global.addEventListener("resize", () => Tidy.fit());
+  // the sidebar grows and shrinks (rows, Nani's line): the stage changes size with it
+  if (global.ResizeObserver) new ResizeObserver(() => Tidy.fit()).observe(document.querySelector("#stage"));
 
   /* ---------------- expectations (what the player should do next; the test plays from it) ---------------- */
   Tidy.exp = { what: "loading" };
@@ -208,20 +210,24 @@
   /* ---------------- zones ---------------- */
   function makeZone(host, spec) {
     const [x, y, w, h] = spec.region || [0, 0, 1600, 900];
-    const s = Math.min(w / 1600, h / 900);
+    // a zone's own design space: 1600x900 (a board), or its own size (the tall fetch shelf)
+    const [dw, dh] = spec.design || [1600, 900];
+    const s = Math.min(w / dw, h / dh);
     const node = el("div", `zone ${spec.cls || ""}`, $("#board"));
-    node.style.transform = `translate(${x + (w - 1600 * s) / 2}px, ${y + (h - 900 * s) / 2}px) scale(${s})`;
+    node.style.width = `${dw}px`;
+    node.style.height = `${dh}px`;
+    node.style.transform = `translate(${x + (w - dw * s) / 2}px, ${y + (h - dh * s) / 2}px) scale(${s})`;
     el("div", "backdrop", node);
     const z = {
-      id: spec.id, host, el: node, region: [x, y, w, h], s, spec,
+      id: spec.id, host, el: node, region: [x, y, w, h], s, spec, design: [dw, dh],
       toDesign(cx, cy) {
         const r = node.getBoundingClientRect();
-        const k = r.width / 1600;
+        const k = r.width / dw;
         return { x: (cx - r.left) / k, y: (cy - r.top) / k };
       },
       toClient(dx, dy) {
         const r = node.getBoundingClientRect();
-        const k = r.width / 1600;
+        const k = r.width / dw;
         return { x: r.left + dx * k, y: r.top + dy * k };
       },
       emit: (item) => host.send(spec.out, item),
@@ -410,7 +416,7 @@
         img.alt = ""; // never a label (6.3)
         img.draggable = false;
       } else n.innerHTML = Tidy.shape(it.word, it.attrs.colour);
-      if (this.B.katori) n.classList.add("small");
+      if (this.B.katori || this.B.spots.some((s) => s.cell)) n.classList.add("small");
       this.nodes[iid] = n;
       return n;
     }
@@ -458,6 +464,11 @@
         const p = this.pos(i);
         const m = this.nodes[i];
         if (m.classList.contains("held")) return;
+        if (m.style.left === "-200px" && animate) {
+          // arriving from off the board (fetched from the shelf): appear, don't slide in
+          m.style.transition = "none";
+          requestAnimationFrame(() => (m.style.transition = ""));
+        }
         m.style.left = `${p.x}px`;
         m.style.top = `${p.y}px`;
         m.style.zIndex = String(10 + Math.round(p.y / 10) + (this.H.pl[i] === "tray" ? 0 : this.H.at(this.H.pl[i]).indexOf(i)));
@@ -726,7 +737,7 @@
     const words = new Map();
     H.R.rows.forEach((r) => Rules.phrase(r, H.R).forEach((p) => p.w && words.set(p.w, true)));
     const review = [...words.keys()]
-      .map((w) => `<div><span class="k ${Cook.isPlaceholder(w) ? "ph" : ""}">${Cook.display(w)}</span> <span class="e">${Cook.english(w)}</span></div>`)
+      .map((w) => (Cook.isPlaceholder(w) ? `<div><span class="ph">${Cook.english(w)}</span></div>` : `<div><span class="k">${Cook.display(w)}</span> <span class="e">${Cook.english(w)}</span></div>`))
       .join("");
     const panel = $("#panel");
     panel.className = "";
@@ -786,7 +797,7 @@
     if (!H.opts.busy) return;
     const c = $("#clock");
     c.classList.remove("hidden");
-    const total = 20000 * H.R.rows.length;
+    const total = Mech.knobs("clock", H.level).msPerRow * H.R.rows.length;
     const t0 = Date.now();
     H.clock = setInterval(() => {
       const left = Math.max(0, 1 - ((Date.now() - t0) * (Cook.speed || 1)) / total);

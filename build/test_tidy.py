@@ -108,6 +108,7 @@ class Player:
               if (!e) return "nothing";
               if (want.item) { const n = e.closest(".item"); return n && n.dataset.iid === want.item ? "ok" : "covered by " + (e.id || e.className); }
               if (want.zone) { return e.closest(".zone") && !e.closest("#side") ? "ok" : "covered by " + (e.id || e.className); }
+              if (want.spot) { return e.closest(".zone") && !e.closest(".paw") && !e.closest("#side") ? "ok" : "covered by " + (e.id || e.className); }
               if (want.sel) { return e.closest(want.sel) ? "ok" : "covered by " + (e.id || e.className); }
               return "ok";
             }""",
@@ -140,6 +141,7 @@ class Player:
         if top and top != iid and self.key(top) == self.key(iid):
             iid = top
         x1, y1 = self.where(spot)
+        self.handle_pop()
         self.cover(x0, y0, {"item": iid})
         self.dragging = not self.dragging and not self.vp["touch"]
         if self.dragging:
@@ -150,7 +152,8 @@ class Player:
             self.p.mouse.up()
         else:
             self.tap(x0, y0)
-            self.cover(x1, y1, {"zone": True})
+            self.handle_pop()
+            self.cover(x1, y1, {"spot": True})
             self.tap(x1, y1)
         self.p.wait_for_timeout(280)  # the slide (.22 s) settles before the next look
         return iid
@@ -202,7 +205,7 @@ class Player:
         d = os.path.join(SHOTS, self.vp["name"])
         os.makedirs(d, exist_ok=True)
         self.n += 1
-        self.p.screenshot(path=os.path.join(d, f"{self.n:02d}-{name}.jpg"), type="jpeg", quality=62)
+        self.p.screenshot(path=os.path.join(d, f"{self.n:02d}-{name}.jpg"), type="jpeg", quality=50)
 
     def wait_for(self, whats, timeout=15000):
         self.p.wait_for_function("(w) => w.includes(window.__tidy.expectation().what)", arg=whats, timeout=timeout)
@@ -262,6 +265,8 @@ def play_round(pl, game, level, kind=None, board=None, flip=None, mistakes=True,
             if s != "shelf":
                 x, y = pl.ev("(i) => { const n = document.querySelector(`#board .zone.shelfzone .item[data-iid='${i}']`); const r = n.getBoundingClientRect(); return [r.left + r.width/2, r.top + r.height/2]; }", iid)
                 pl.tap(x, y, {"item": iid})
+                pl.p.wait_for_timeout(120)
+        pl.p.wait_for_timeout(300)
         pl.log.append(f"{label}: fetched {sum(1 for s in sol.values() if s != 'shelf')}")
     named = [r for r in R["rows"] if r["type"] == "place" and not isinstance(r.get("anchor"), dict)]
     wrong = None

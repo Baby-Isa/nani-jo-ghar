@@ -78,7 +78,7 @@
     });
     return out;
   };
-  const onTray = (view, k) => k.iids.filter((i) => view.tray.find((t) => t.iid === i).at === TRAY);
+  const onTray = (view, k) => k.iids.filter((i) => [TRAY, "shelf"].includes(view.tray.find((t) => t.iid === i).at));
   const howMany = (row, fallback) => (row && row.digit != null ? row.digit : fallback);
   const leftToRight = (view) => view.places.filter((p) => p.id !== "loose").slice().sort((a, b) => a.x - b.x || a.y - b.y);
 
@@ -242,7 +242,7 @@
     known.forEach((r) => {
       if (!r.nextTo) return;
       const k = r.item ? ks.find((x) => x.word === r.item) : pick(ctx.rng, ks.filter((x) => !claimed.has(x.key)));
-      const y = view.tray.find((t) => t.word === r.nextTo && bd.pl[t.iid] !== TRAY);
+      const y = view.tray.find((t) => t.word === r.nextTo && view.spots.some((x) => x.id === bd.pl[t.iid]));
       if (!k || !y) return;
       const s = view.spots.find((x) => x.id === bd.pl[y.iid]).nbr.find((n) => bd.free(n) > 0);
       if (s) bd.pl[onTray(view, k)[0] || k.iids[0]] = s;
