@@ -94,3 +94,18 @@ None of these is a blocker; the one real piece of debt is item 1, and everything
 - ☐ **Coins and stars counter** at the top of the sidebar: remove it (show pocket money on the summary and title instead).
 - ☐ **Level 1 more varied and fun:** kinds of mishkaki skewer, kinds of tea, several things to chop from the start.
 - ☐ **Chop:** a visible countdown timer; level 1 = several items (what goes in the dish), with volume, decoys and time pressure as the game.
+
+## Game mode designs (Zafar, 25 Sept): one design agent per mode
+
+Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic library scored on fun, forcing the Kutchi, distinctness, plot and replay, then three or more persona and Sceptic review loops, a verdict, and a build brief for a future agent.
+
+| Mode | Design doc | Status | Verdict |
+|---|---|---|---|
+| Cook with Nani | `docs/cook-with-nani-phase-a-design.md` | built, iterating | — |
+| Find it | `docs/find-it-design.md` | designed; engine being built | Go |
+| Tidy up | `docs/modes/tidy-up-design.md` | ◐ designing | |
+| Dress up | `docs/modes/dress-up-design.md` | ◐ designing | |
+| Nani's clinic | `docs/modes/clinic-design.md` | ◐ designing | |
+| Who did it? | `docs/modes/who-did-it-design.md` | ◐ designing | |
+| Monsoon rush | `docs/modes/monsoon-rush-design.md` | ◐ designing | |
+| Snap | `docs/modes/snap-design.md` | ◐ designing | |
