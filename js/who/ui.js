@@ -100,8 +100,9 @@
   };
 
   // play the slot word: the family's recording, else the placeholder voice
+  UI.mute = new URLSearchParams(global.location.search).get("mute") === "1"; // tests only
   UI.playWord = async function (id) {
-    if (!id) return false;
+    if (!id || UI.mute) return false;
     const w = UI.P.word(id);
     const rec = global.Cook && Cook.playRecording(id);
     if (rec) return rec;
@@ -119,7 +120,7 @@
     const L = UI.P.who.lines[key] || {};
     const t0 = Date.now();
     let played = false;
-    if (L.k && global.Cook && Cook.hasVoice(L.k.replace("{x}", ""))) played = await Cook.speak(L.k);
+    if (!UI.mute && L.k && global.Cook && Cook.hasVoice(L.k.replace("{x}", ""))) played = await Cook.speak(L.k);
     if (wordId && !opts.silentWord) played = (await UI.playWord(wordId)) || played;
     const plain = $("nani-card").innerText || "";
     const need = played ? 500 : Cook.readMs(plain);

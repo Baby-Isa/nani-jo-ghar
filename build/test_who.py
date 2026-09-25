@@ -230,12 +230,12 @@ class Player:
                 self.page.wait_for_function("__who.expectation().ui !== 'say'", timeout=10000)
 
 
-def open_lab(page, game, level, seed, speech="bot:auto", stage=2):
-    page.goto(f"http://127.0.0.1:{PORT}/who.html?lab=1&closed=1&game={game}&level={level}&seed={seed}&speed=6&speech={speech}&stage={stage}")
+def open_lab(page, game, level, seed, speech="bot:auto", stage=2, speed=6, extra=""):
+    page.goto(f"http://127.0.0.1:{PORT}/who.html?lab=1&closed=1&game={game}&level={level}&seed={seed}&speed={speed}&speech={speech}&stage={stage}{extra}")
     page.wait_for_function("window.__who && __who.ready()", timeout=15000)
 
 
-def run_lab(pw, vps, games, levels, cases):
+def run_lab(pw, vps, games, levels, cases, story=True):
     browser = pw.chromium.launch(executable_path=CHROMIUM if os.path.exists(CHROMIUM) else None)
     failures = 0
     for vp in vps:
@@ -274,6 +274,18 @@ def run_lab(pw, vps, games, levels, cases):
                         os.makedirs(os.path.join(SHOTS, vp["name"]), exist_ok=True)
                         page.screenshot(path=os.path.join(SHOTS, vp["name"], f"FAIL-{name}.png"))
                         errors.clear()
+        if story:
+            try:
+                open_lab(page, "g1", 1, 77, extra="&case=a1c3-sweets")
+                ids = page.evaluate("__who.expectation().n")
+                pool = page.evaluate("Who.Flow.ctx.c.suspects.map(s => s.id).sort().join(',')")
+                check(pool == "kasuku,simba,zazu", f"the Arc 1 Ch3 case has the wrong line-up: {pool}")
+                stars, _ = pl.play_case(False, shot="story-a1c3")
+                check(stars["ear"] is True, f"a clean story case missed the ear star ({stars})")
+                print(f"  ok   {vp['name']:16} story a1c3-sweets")
+            except Fail as f:
+                failures += 1
+                print(f"  FAIL {vp['name']:16} story a1c3-sweets: {f}")
         ctx.close()
     browser.close()
     return failures
@@ -283,7 +295,7 @@ def run_bot(pw, strategy, game, level, rounds):
     """Blind play through the real UI: positions and who is standing, never the answer."""
     browser = pw.chromium.launch(executable_path=CHROMIUM if os.path.exists(CHROMIUM) else None)
     page = browser.new_page(viewport={"width": 1366, "height": 768})
-    open_lab(page, game, level, 5000)
+    open_lab(page, game, level, 5000, speed=20, extra="&mute=1")
     pl = Player(page, VIEWPORTS[0], print)
     rng = random.Random(7)
     wins = 0

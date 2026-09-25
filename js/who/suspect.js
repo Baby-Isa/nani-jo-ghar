@@ -100,7 +100,8 @@
       const wrap = document.createElement("div");
       wrap.innerHTML = S.heldHTML(a);
       const img = wrap.firstChild;
-      img.style.left = `${2 * (hs.dx + hs.w) - hs.item.size / 2 - 6}px`;
+      // held between its own two hands, in front of the body: it can only be theirs
+      img.style.left = `${hs.dx + hs.w - hs.item.size / 2}px`;
       img.style.top = `${hs.item.dy + hs.h}px`;
       hands.appendChild(img);
     }

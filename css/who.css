@@ -93,7 +93,7 @@ html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink
 .star.grey { color: var(--muted); }
 .review { text-align: left; margin: 8px auto; border-collapse: collapse; }
 .review td { padding: 2px 8px; }
-.dealt-big svg { height: 180px; width: auto; }
+.dealt-big svg { height: min(180px, 30vh); width: auto; }
 
 /* ------------------------------------------------------------ the scene */
 .wall { position: absolute; inset: 0; }
@@ -138,4 +138,9 @@ html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink
   .nc-face { flex-basis: 28px; height: 28px; }
   .btn.primary { font-size: 16px; padding: 6px 10px; }
   .tell-pill { height: 38px; min-width: 44px; font-size: 14px; }
+  #panel { padding: 8px 14px; }
+  #panel h2 { font-size: 20px; margin: 0 0 4px; }
+  #panel p { margin: 2px 0; }
+  .faces svg { height: 48px; }
+  .star i { font-size: 22px; }
 }
