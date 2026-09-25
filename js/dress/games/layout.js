@@ -58,7 +58,7 @@
     h += `<rect x="${BED.x}" y="${BED.y}" width="${BED.w}" height="${BED.h}" rx="30" fill="#f1e6d6" stroke="#5b4a3c" stroke-width="4"/><rect x="${BED.x + 20}" y="${BED.y + 14}" width="${BED.w - 40}" height="36" rx="18" fill="#fffaf1" stroke="#b9a58a" stroke-width="3"/>`;
     Object.entries(piles).forEach(([who, b]) => {
       const mine = r.state.wears.filter((w) => w.who === who && w.slot === "pile");
-      h += `<g class="pile" data-act="pile" data-who="${who}"><rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="20" fill="#e7d7bf" stroke="#b9a58a" stroke-width="3" stroke-dasharray="12 8"/><clipPath id="pc-${who}"><circle cx="${b.x + 44}" cy="${b.y + 44}" r="34"/></clipPath><circle cx="${b.x + 44}" cy="${b.y + 44}" r="36" fill="#fffaf1" stroke="#5b4a3c" stroke-width="3"/><image href="${Dress.face(who)}" x="${b.x + 10}" y="${b.y + 10}" width="68" height="68" clip-path="url(#pc-${who})"/></g>`;
+      h += `<g class="pile" data-act="pile" data-who="${who}"><rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="20" fill="#e7d7bf" stroke="#b9a58a" stroke-width="3" stroke-dasharray="12 8"/><clipPath id="pc-${who}"><circle cx="${b.x + 44}" cy="${b.y + 44}" r="34"/></clipPath><circle cx="${b.x + 44}" cy="${b.y + 44}" r="36" fill="#fffaf1" stroke="#5b4a3c" stroke-width="3"/><image href="${Dress.face(who)}" x="${b.x + 10}" y="${b.y + 10}" width="68" height="68" clip-path="url(#pc-${who})"/><rect class="pile-hit" x="${b.x}" y="${b.y}" width="${b.w}" height="88" fill="transparent"/></g>`;
       const cols = 3;
       const cw = Math.min(150, (b.w - 20) / cols);
       mine.forEach((w, i) => {
@@ -84,7 +84,7 @@
     const row = rows.find((x) => x.id === bad.id);
     const it = r.rack.areas.shelf.find((i) => i.kind === row.garment && i.colour === row.colour && !wears.some((w) => w.item.id === i.id));
     if (!it) return r.expect({ kind: "tap", sel: "#dress-done" });
-    if (r.round.people.length > 1 && r.held === it.id) return r.expect({ kind: "tap", sel: `#scene [data-act="pile"][data-who="${row.who}"] circle` });
+    if (r.round.people.length > 1 && r.held === it.id) return r.expect({ kind: "tap", sel: `#scene [data-act="pile"][data-who="${row.who}"] .pile-hit` });
     r.expect({ kind: "tap", sel: `#scene [data-act="take"][data-id="${it.id}"]` });
   }
 

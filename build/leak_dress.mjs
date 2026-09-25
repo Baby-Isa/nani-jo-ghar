@@ -303,7 +303,7 @@ for (const game of GAMES) {
     console.log(
       `  L${level}  generator odds mean ${pct(lr[0].oddsMean)} max ${pct(lr[0].oddsMax)} (over budget: ${lr[0].overBudget})  | ` +
         blind.map((r) => `${r.strat} ${pct(r.rate).trim()}`).join(", ") +
-        `  | worst ${worst.strat} ${pct(worst.rate).trim()}${bad.length ? "  FAIL" : ""}  | real-Kutchi slice (oracle for placeholders) ${pct(oracle.rate).trim()}`
+        `  | worst ${worst.strat} ${pct(worst.rate).trim()}${bad.length ? "  FAIL" : ""}  | real-Kutchi slice (oracle for placeholders) ${oracle.rate > 0.99 ? "none: no real-Kutchi decision" : pct(oracle.rate).trim()}`
     );
   });
   console.log(`  placeholder decisions: ${[...(placeholders[game] || [])].join(", ")}\n`);

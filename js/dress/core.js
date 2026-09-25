@@ -188,7 +188,9 @@
       const face = card.querySelector(".sc-face");
       const url = Dress.face(who);
       face.innerHTML = url ? `<img src="${url}" alt="">` : `<span class="bm">${esc(Dress.name(who).split(" ").map((w) => w[0]).join(""))}</span>`;
-      card.querySelector(".say-slot").innerHTML = `<span class="sc-who">${esc(Dress.name(who))}</span><span class="wp"><span class="wp-text">${Lang.html(line, { hide: Cook.cardHidden })}</span></span>`;
+      // when the card is hidden (level 3), the words aren't written out here either: text in one place only
+      const hide = this.cardHidden ? (id) => !!id : Cook.cardHidden;
+      card.querySelector(".say-slot").innerHTML = `<span class="sc-who">${esc(Dress.name(who))}</span><span class="wp"><span class="wp-text">${Lang.html(line, { hide })}</span></span>`;
       card.classList.remove("pop");
       void card.offsetWidth;
       card.classList.add("pop");

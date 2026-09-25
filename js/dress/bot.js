@@ -100,8 +100,8 @@
           click(el);
           if (piles.length > 1) {
             const who = piles[i % piles.length];
-            await until(() => document.querySelector(`#scene [data-act="pile"][data-who="${who}"] circle`));
-            click(document.querySelector(`#scene [data-act="pile"][data-who="${who}"] circle`));
+            await until(() => document.querySelector(`#scene [data-act="pile"][data-who="${who}"] .pile-hit`));
+            click(document.querySelector(`#scene [data-act="pile"][data-who="${who}"] .pile-hit`));
           }
         }
       }

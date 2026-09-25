@@ -13,6 +13,7 @@ body.dress #overlay.title-mode { background: #e8dcc6; }
 @keyframes dressGlow { 50% { filter: drop-shadow(0 0 14px #ffd23a) brightness(1.1); } }
 #world .client .ov { cursor: pointer; }
 #world .part { cursor: pointer; }
+#world .placed.inert { pointer-events: none; }
 #world .part.live { stroke: #b07d10; fill: rgba(255, 217, 138, .12); }
 #world .pile { cursor: pointer; }
 #world .ping { animation: dressPing .8s ease-in-out infinite alternate; }
@@ -22,7 +23,8 @@ body.dress #overlay.title-mode { background: #e8dcc6; }
 #lab-strip { font-size: 12px; font-weight: 700; color: var(--ink-soft); background: #efe4d2; border-radius: 10px; padding: 4px 8px; line-height: 1.3; }
 #lab-strip b { color: var(--ink); }
 
-/* the card */
+/* the card: never shrinks below its rows (the sidebar scrolls instead) */
+body.dress #mission { flex: none; overflow: visible; }
 #mission .m-head { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
 .d-face, .sc-face, .ic-face { flex: none; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: #eadcc6; display: inline-flex; align-items: center; justify-content: center; }
 .d-face img, .sc-face img, .ic-face img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
@@ -83,6 +85,9 @@ table.leak td, table.leak th { padding: 3px 10px; border-bottom: 1px solid #e0d2
 table.leak tr.bad td { color: var(--madder); font-weight: 800; }
 
 @media (max-height: 430px) {
+  #mission .lr .wp-text { font-size: 14px; }
+  #say-card .wp-text { font-size: 14px; }
+  #dress-done { min-height: 40px; padding: 6px 12px; }
   .d-face, .sc-face { width: 34px; height: 34px; }
   #mission .lr { padding: 2px 6px; }
   .mo-pill { min-height: 38px; font-size: 16px; padding: 4px 10px; }

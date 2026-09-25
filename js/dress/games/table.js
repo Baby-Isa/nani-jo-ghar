@@ -93,7 +93,8 @@
         const p = parts(r).find((q) => q.part === part && (q.side || null) === (side || null));
         const s = w.item.size === "small" ? 40 : 64;
         w.at = { x: p.box.x + 20 + s / 2 + (n % 3) * (s + 6), y: p.box.y + 16 + s / 2 + Math.floor(n / 3) * (s + 6) };
-        h += `<g class="it placed" data-act="back" data-n="${r.state.wears.indexOf(w)}">${Doll.flat(w.item.motif, w.item.colour, w.at.x - s / 2, w.at.y - s / 2, s, s)}</g>`;
+        // while a motif is in hand, what's on the part lets the tap through to the part
+        h += `<g class="it placed${r.held ? " inert" : ""}" data-act="back" data-n="${r.state.wears.indexOf(w)}">${Doll.flat(w.item.motif, w.item.colour, w.at.x - s / 2, w.at.y - s / 2, s, s)}</g>`;
       });
     r.draw(h);
     expectNext(r);

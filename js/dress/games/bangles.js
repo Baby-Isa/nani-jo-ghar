@@ -35,7 +35,9 @@
       h += `</g>`;
     });
     h += Doll.arm(arm);
-    onWrist.forEach((w, i) => (h += Doll.wristBangle(arm, i, w.item.colour, w.item.id).replace('class="wb"', `class="wb it" data-act="back"`)));
+    onWrist.forEach((w, i) => (h += Doll.wristBangle(arm, i, w.item.colour, w.item.id)));
+    // one tap strip per bangle on top (the rings overlap; the strips don't)
+    onWrist.forEach((w, i) => (h += `<rect class="it wb-hit" data-act="back" data-id="${w.item.id}" data-colour="${w.item.colour}" x="${arm.x + arm.w * 0.36 + i * 26 - 13}" y="${arm.y + arm.h * 0.26}" width="26" height="${arm.h * 0.48}" fill="transparent"/>`));
     if (point) {
       onWrist.forEach((w, i) => {
         if (w.item.colour !== point) return;
