@@ -161,6 +161,8 @@
       const s = (scale * info.rim[2] * spr.size) / spr.rx;
       img = S.track(S.add.image(x, y, spr.key).setOrigin(spr.cx / spr.w, spr.cy / spr.h).setScale(s).setDepth(D.item));
       rim = { x, y, rx: spr.rx * s, ry: spr.ry * s, depth: spr.depth * s };
+      // the contact shadow under its body (not the handle)
+      img.shadow = S.contactShadow(img, { centerX: x, centerY: y + rim.ry * 0.12, width: rim.rx * 2.5, height: rim.ry * 2.5 });
     } else {
       const key = S.tex(`vessel:${kind}`);
       img = S.track(S.add.image(x, y, key).setScale(scale).setDepth(D.item));

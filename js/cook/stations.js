@@ -171,7 +171,24 @@
       const s = this.fitScale(key, maxW, maxH);
       const img = this.track(this.add.image(x, y, key).setScale(s).setDepth(depth));
       img.baseScale = s;
+      if (Cook.Art.isPainted(key)) img.shadow = this.contactShadow(img);
       return img;
+    }
+    /**
+     * A soft contact shadow under a painted sprite (the drawings bake their
+     * own): a little down and to the right, away from the window light.
+     * fly() hides it; it goes with the object. `box` overrides the footprint.
+     */
+    contactShadow(img, box) {
+      const b = box || img.getBounds();
+      const sh = this.track(
+        this.add
+          .image(b.centerX + b.width * 0.035, b.centerY + b.height * 0.06, this.tex("shadow"))
+          .setDisplaySize(b.width * 1.02, b.height * 0.98)
+          .setDepth(img.depth - 0.6)
+      );
+      img.once("destroy", () => sh.destroy());
+      return sh;
     }
     /** An ingredient as a heaped bowl (or its photo), with a stage label. */
     ingredient(id, x, y, { w = 170, h = 128, label = true, depth = D.item, state } = {}) {

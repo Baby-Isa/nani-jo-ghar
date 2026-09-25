@@ -813,6 +813,8 @@
     scene.textures.addCanvas(bk, c);
     return bk;
   }
+  /** Is this texture a painted sprite (it has no shadow of its own; code draws the contact shadow)? */
+  Art.isPainted = (key) => String(key).startsWith("spr") || !!(SP().props || {})[key];
   /** The prop files to load instead of a painted prop: {prop: url}. */
   Art.propSprites = function () {
     const out = {};
@@ -842,6 +844,17 @@
     else if (type === "pastry") c = pastry(Number(arg));
     else if (type === "hand") c = hand(arg || null);
     else if (type === "pin") c = pinHands();
+    else if (type === "shadow") {
+      // a contact shadow for painted sprites: a dark core, a soft falloff
+      c = canvas(128, 128);
+      const ctx = c.getContext("2d");
+      const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      g.addColorStop(0, "rgba(58,36,16,0.42)");
+      g.addColorStop(0.55, "rgba(58,36,16,0.2)");
+      g.addColorStop(1, "rgba(58,36,16,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 128, 128);
+    }
     else if (type === "piece") {
       const w = Cook.data.words[arg];
       c = piece((w && (w.piece || w.heap)) || { color: "#ccc", kind: "balls" });
