@@ -104,7 +104,7 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 | Cook with Nani | `docs/cook-with-nani-phase-a-design.md` | built, iterating | — |
 | Find it | `docs/find-it-design.md` | designed; engine being built | Go |
 | Tidy up | `docs/modes/tidy-up-design.md` | ☑ designed | Go with changes |
-| Dress up | `docs/modes/dress-up-design.md` | ◐ designing | |
+| Dress up | `docs/modes/dress-up-design.md` | ☑ designed | Go with changes |
 | Nani's clinic | `docs/modes/clinic-design.md` | ◐ designing | |
 | Who did it? | `docs/modes/who-did-it-design.md` | ◐ designing | |
 | Monsoon rush | `docs/modes/monsoon-rush-design.md` | ◐ designing | |
