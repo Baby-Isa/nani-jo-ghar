@@ -1,0 +1,623 @@
+# Snap: design (mode id `snap`)
+
+**Date:** 25 Sept 2026
+**Status:** proposal for Zafar. Nothing built. Follows `docs/modes/MODE-DESIGN-BRIEF.md`, and builds on `docs/find-it-design.md` (whose M11 "Photo" idea and "album as a collection" are passed to this mode), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md` and `docs/cook-with-nani-todo.md` (Wave 5, calm and clarity).
+**Placeholder rule:** the only Kutchi in this doc is what's already in `data/content.json` and `data/cook.json` (fruit, veg, numbers 1–10, and the frames *Muke {x} khape*, *Ne {x}*, *Muke hikdo {x} dine*, *Hedo!*, *Arre re!*, *Ghan*). Everything written `[EN: …]` has no Kutchi yet. In the game it's a grey italic English placeholder until the family gives the word. **Never invent Kutchi.**
+
+---
+
+## 1. Pitch and core loop
+
+**Pitch.** Nani finds her old instant camera in the trunk, and the family set off for her village. Snap is the mode for **S6 (describing, nature, travel)**. Its core verb is **aim and capture**. Someone describes a *moment* in Kutchi: "the goat that's eating", "three mangoes", "the camel in front of the windmill". The player pans a wide, living scene, waits for that moment, frames it and takes the shot. Later they hand the print to Nani, and she's either delighted or says "Arre re!". Find it asks **which thing, and where**. Snap asks **which moment**: its subjects move, change what they're doing and wander in and out of places. The photo is judged by what's **inside the frame**: exactly how many, who's with whom, what's left out. Prints go into **Nani's album**, which is the collection that brings players back.
+
+**One round (2–3 minutes; a journey lap is 60–90 s).**
+1. **Intro card.** The requester's face (Nani, Ma, Ali) and one row per shot wanted, shown as a sequence, e.g. 3 rows. Nani says each row once. The card shrinks into the sidebar, then **3 s of silence**.
+2. **Shoot.** The player drags to pan a panorama 2–4 screens wide, uses **+ / −** to zoom and presses a big shutter. Tapping a subject swings the camera to centre it (aim assist; it centres whatever you tap). Subjects live on loops: the goats graze, lie down and wander, Zazu pounces, Kasuku flaps. Each shot drops a developing print into the **prints tray** (bottom left, like the basket). The film left shows on the camera. **Nothing says at the time of shooting whether a print is right.**
+3. **Show Nani** (the Game Design recall step). Nani asks for each row again, **in a new random order**. The player taps a print; she reacts to what's actually in it. If it's wrong, she recasts, then the player picks again. If no print fits, it's back to the scene with one extra frame.
+4. **Stars** fill (ear, lens, tick or lightning). Then the receipt, a **word review** (Kutchi → English) and the album stamp.
+
+**How it differs from Cook and Find it.**
+
+| | Cook | Find it | **Snap** |
+|---|---|---|---|
+| Core verb | Build | Search (tap the one meant) | **Aim and capture** (pan, zoom, wait, frame, shoot, hand in later) |
+| Camera | T, worktop | E, one still room or stall | **E wide panorama with parallax; subjects move; one scene rolls past on rails** |
+| What the Kutchi decides | What goes in, how many, what order, for whom | Which noun, where, what colour and size | **Which moment** (the state), **what's in the frame** (exactly N, together, without), **which by comparison** (bigger, taller) |
+| Time | Cooking timers | None (a hesitation replay) | **The world's own clock**: a state comes and goes; the road passes. Generous and repeating, never a reflex test |
+| When you're judged | At once | At once (the tap) | **Later, at hand-in**: a second listening pass, and the print is the memory aid |
+| Syllabus weight | S1, S2 verbs, S5 first/then | S1, S2 positions and colours | **S6 comparatives, nature, travel, the future; S4 animals; S5 actions and past tense (Then and now)**; S1 counts |
+
+---
+
+## 2. Research summary
+
+### 2.1 Games: what we borrow and why
+
+| Reference | Concrete mechanic | Why it works | What we take / don't take |
+|---|---|---|---|
+| **Pokémon Snap / New Pokémon Snap** | An on-rails course; photos scored on **pose, size, direction, placement, other subjects in shot, background**; the Photodex wants **4 photos per species (1★ ordinary to 4★ rare behaviour)**; **research levels** and **day/night** change behaviour on replay; alternate paths; **requests** from characters reward frames and stickers | Several goals per shot; the thrill of a moment passing; replaying one course keeps revealing things | **Take:** the rail (M7), the craft score (our lens star), research levels per place, time-of-day versions, requests as the round's rows, rare behaviours as collectibles. **Don't take:** "the game picks your best photo" (it would let you shoot everything; see Loop 1), and rare poses as request targets (a non-speaker would just shoot the weird thing) |
+| **Alba: A Wildlife Adventure** | A phone camera identifies 62 species; unknown animals show a **"?"**; a wildlife guide per area; calm, no fail | Low pressure; a guide by place gives a "what lives here" goal | **Take:** album pages per place, and a "?" slot. **Change:** our "?" slot is an **audio riddle** (its caption spoken in Kutchi, no silhouette), so filling the album needs the Kutchi |
+| **Umurangi Generation** | Each level is a **checklist of photo bounties** plus bonus bounties; **finishing a level unlocks lenses** (telephoto, fisheye), so old levels are worth replaying with new kit | Many ways to complete one bounty; new lenses make old places new | **Take:** the request card as a bounty list with an optional bonus row; lenses as upgrades that change how you play (zoom for "exactly N", wide for "together"). **Don't take:** open creative bounties ("anything goes"), since the Kutchi has to decide |
+| **TOEM** | You **hand photos to characters** to solve their requests and see their reaction; a compendium of creatures, some appearing only under conditions | Handing a picture to someone who reacts is warmer than a score screen | **Take:** "Show Nani" (hand-in with reactions) as the end of every round |
+| **Pupperazzi, Beasts of Maravilla Island** (the warning) | Photograph cute animals; reviewers: "doesn't test you in any meaningful way"; "interaction and creativity… limited" | Without a real test, photo games go flat fast | Our test is the Kutchi request plus framing rules (exactly N, main subject). Without them Snap would be Pupperazzi |
+| **Find it M11 "Photo"** (passed on) | Frame the described thing; graded on right subject, centring and size; the album as a collection | Handed over to avoid overlap | Built in as M1 plus the lens star, with the album as the replay hook |
+| **Collection design** (Yu-kai Chou; the endowed-progress effect) | Sets of **7–12** items feel achievable; motivation jumps once about half a set is owned; a head start raises completion (car-wash card study: 34% vs 19%) | Nearly finished pulls you back | Album pages of **8–10 slots**. Each page starts with 2 slots filled by story beat photos (the head start) |
+
+### 2.2 Learning evidence
+
+| Finding | Source | Design consequence |
+|---|---|---|
+| Preschoolers combine adjective + noun to pick one of several objects ("the tall glass"), and make **contrastive inferences when speech is slowed and size contrasts are visually clear** (visual-world eye-tracking) | Ju et al. 2023; Stanford ALPS 2018 | Snap is a visual-world task: listen, then look to the right one. The **slow replay** rung, and **big, clear size steps** in comparison sets |
+| Children get *bigger* before *smaller*, *more* before *less*; words for the size dimension (*taller*) sharpen with age; new comparison words are learnt more easily used **comparatively** than categorically | Ferry et al. 2025 (Child Development); Barner & Snedeker 2008 | M4 teaches bigger → smaller → taller → biggest, in that order, always within a set on screen (comparatively, never "the big one" in isolation) |
+| Referential communication (barrier) tasks: tell a target from **similar alternatives**; children's own descriptions tend to be **redundant, not contrastive**, until later | ScienceDirect 2017; academia.edu (redundant messages) | Every request has look-alike alternatives on screen. Role reversal (M11) comes later and is scored on *enough to tell them apart* |
+| **Photo-taking impairment**: photographing whole objects weakens memory for them; **zooming in on a detail removes the effect** | Henkel 2014, Psychological Science | The **hand-in recall step** (Nani asks again, you choose from memory) and **zoom-to-frame** requests (exactly N, a detail) make you attend, rather than offloading memory to the camera |
+| Ages 4–6: **37% could tap an object moving across the screen vs 57% a stationary place**; touch accuracy improves with age | Vatavu et al. 2015 (IJHCS); PMC 2020 gestures study | **Pan the world under a fixed frame** (no chasing a moving target with a finger); tap-to-centre; subjects slow and **hold states for 5–8 s at level 1** |
+| Interactivity helps when it's **specific to the named target**, and can distract when tapping is general | Kirkorian et al. 2016; Russo-Johnson et al. 2017 ("All Tapped Out") | Shutter spam gains nothing (limited film, a gentle "slow down"); taps on scenery do nothing mid-round |
+| Grandparent storytelling and family media support heritage language, identity and enthusiasm | T&F 2026 (Polish grandparents, digital stories); MDPI 2025 (storytelling in the heritage language) | **Then and now** (M8): Nani's memories, told in Kutchi, rebuilt as photos; Grandparent mode |
+| Retrieval practice and **prompts beat recasts** (as in Find it) | Fritz 2007; Lyster & Saito 2010 | After a wrong print: a recast, then **the player chooses again**. Nothing auto-shown |
+| Photo scavenger hunts are an established classroom vocabulary task (themes, then photograph and share) | Outschool, A World of Language Learners (practice write-ups, not trials) | Weak evidence, but a ready-made teaching shape; our version makes the listening the brief |
+
+Sources are listed at the end. Blocked pages (Game Developer's TOEM Q&A, NCBI full texts) were summarised from search results.
+
+---
+
+## 3. Mechanic library
+
+Scores are 1–5. **Every row is one engine**: a request is `{noun, state?, place?, count?, compare?, with?, without?}` checked against a print's contents, just as Find it's rows are slots.
+
+| # | Mechanic | How it plays | Fun | Forces Kutchi: the decision, the leaks and their fixes | Distinct | Plot | Replay |
+|---|---|---|---|---|---|---|---|
+| **M1** | **Snap the moment** (subject + what it's doing) | Row: `{noun} [EN: eating]`. The scene holds **≥3 of the noun plus a look-alike** (goats and sheep; hens and a rooster), all cycling through the **same** states at random phases. Shoot the right one while it's doing it | **5** Pokémon Snap's "now!" with funny animals; click, flash, reactions at hand-in | **5** *Which subject, which moment.* Leaks: the requested state is the rare or animated one → states are asked uniformly, and rare behaviours are **never** requests; one instance → ≥3; a wide shot of everything → **main-subject rule** (the target must be the biggest of its noun in frame and in the middle third); fixed loops → random phase and spot each round; told at shutter → judged only at hand-in | **4** Find it also finds a described thing, but a still one. Here the target is a passing state | **5** Arc 5 Ch1 camera test (cats, Kasuku), Ch2 journey, Ch3 farm | **5** Random phases, research levels add states, day/dusk, album slots per subject × state |
+| **M2** | **Just so many** (exactly N in the frame) | Row: `trae aamo` (three mangoes) or `[EN: two] [EN: goats]`. A branch or a herd won't hold still. Zoom and pan until **exactly N** of that noun are in frame, ≥50% visible | **4** A framing puzzle; the parakeet that eats a mango just as you shoot | **5** *N and the noun.* **Works today with real Kutchi** (fruit + numbers 1–10 at the farm). Leaks: an in-frame counter (none, ever); the digit on the row (only while the number word is at stage 1–2); N always the middle value → N uniform in 1…herd−1, herd sizes vary; mixed herds (goats + sheep) so the noun matters | **5** No other mode grades what's included and what's left out | **4** Farm (mangoes, goats), journey (camels, flamingos), Ch5 family photo ("all seven of us") | **4** Herd sizes, mixed herds, fruit eaten over time |
+| **M3** | **Right place, right time** (subject + position, timed) | Row: `{noun} {anchor} [EN: on]`. The cats and hens wander between spots (charpai, cart, well, wall). Wait for the right one at the right place | **4** Anticipation: watch Zazu's path, wait by the charpai | **5** *The position phrase.* Leaks: only one subject ever visits that spot → every subject visits ≥3 spots; walking *towards* the spot gives it away → paths are shuffled and every subject passes several spots; relation icons on rows → none | **3** Positions are Find it's M2 ground; Snap's twist is the waiting. Shares Find it's anchors and relation data | **4** Courtyard (Ch1), farm (Ch3) | **4** Spots shuffled, anchors per scene |
+| **M4** | **Which one?** (comparing) | Row: `{noun} [EN: bigger]`, `[EN: the tallest] {noun}`, `{noun} [EN: smaller than] {noun2}`. Sets of 3+ in clear size steps | **3** A thinking shot; less juicy alone, good as a slot inside M1/M7 | **5** *The comparative.* Leaks: the biggest is always the adult or the nearest → ≥3 size steps at mixed depths (parallax scale is corrected for); *bigger* and *smaller* asked equally once both are taught; the reference object in "smaller than X" varies | **4** Tidy up compares by *arranging*; here it's between moving things in depth | **4** S6's core grammar: the journey (camels, trees, windmills), farm | **3** Many sets, but the idea is the same |
+| **M5** | **Two together** (composition) | Row: `{noun} [EN: in front of] {noun2}` or `{noun} [EN: with] {noun2}`. On rails, **parallax** makes "the camel in front of the windmill" a lining-up moment | **4** Lining up near and far layers is the most photographer-like act here | **4** *Which pair and which relation.* Leaks: only one pair ever meets → each subject meets ≥2 others; the relation is always *in front of* → mixed | **5** The parallax alignment is unique to Snap | **4** Journey; Ch5 family photo ("Nana next to Nani") | **4** Pairs × relations × routes |
+| **M6** | **Not in my photo!** (without X; photobombs) | Row: `{noun} [EN: without] {noun2}`. Kasuku flaps through, Zazu leaps onto the charpai, Ali pulls faces. Keep them out, or, in "with" rows, get them in | **5** The running gag of the game's pets; funny failed prints for the album | **4** *"Without" versus "with".* Leaks: "without" always names the cat → "with the cat" rows too, 50/50; the excluded one is always there and moving (the Cook audit's "no X item always on the shelf") | **5** Only mode that grades exclusion | **3** Courtyard, farm, Ch5 (Ali photobombs the family photo) | **4** Photobomber changes per round |
+| **M7** | **The journey** (on rails) | The bus window rolls through Kutch: grassland, salt pans, windmills, a lake of flamingos, the village gate. The lap's rows are given **at the start** (3–4). You pan up and down the window and zoom; the road does the sideways motion. **Missed? The road loops** ("we'll see more on the way back") | **5** Pokémon Snap's rail: "there it is!", one pass, a new view each lap | **4** Any slot (M1–M5). Leaks: a request said just before its stretch → rows given up front in random order; each stretch holds look-alikes for several rows; the bus never slows near targets (slowing is a *hint*, which costs the tick) | **5** The only auto-scrolling scene in the game; it's also Monsoon rush's opposite (calm, predictable, repeating) | **5** Arc 5 Ch2, the chapter's whole point; the road home | **5** Route segments, time of day, alternate turnings, research level |
+| **M8** | **Then and now** (Nani's memory) | Nani (or Nana) describes an old photo from the trunk in Kutchi ("I stood by the well with two goats…", past tense). You compose it at the village today. **The old photo is shown only after you hand yours in**, side by side | **4** The reveal; the most moving moment in the mode | **4** *The composition, from a past-tense description.* Leaks: showing the old photo first (visual matching) → revealed after; one well, one tree → two wells, several trees | **5** Unique, and it's heritage made playable | **5** Arc 5 Ch1 (the trunk) and Ch4 (Nana's stories) | **2** A fixed story set of 8–10 pairs; a collection, not endless |
+| **M9** | **Show Nani and the album** (the system) | Hand-in as above. Prints can go into **Nani's album**: pages per place of 8–10 slots. An empty slot is a **"?" card that speaks its caption in Kutchi** (e.g. `[EN: goat] [EN: sleeping]`). Put the right print in to fill it; a slot won through a request with the ear star gets a **gold corner** | **4** TOEM's warm hand-in; an album filling up | **5** Second listening pass (rows asked in a new order); the "?" slots are audio riddles. Leaks: prints in row order → rows asked in random order; album captions show Kutchi text (that's learning, outside rounds); brute-forcing slots in Explore → a wrong placement rests that slot until the next visit, and brute force never earns gold | **4** The album is Snap's own; Find it keeps only a finds collection | **5** Seeded from Arc 1 by story beat photos; the finale's last page | **5** Pages per place, gold corners, best shots, rare behaviours |
+| **M10** | **Kasuku's snapshot** (daily pets) | Hub courtyard, 60 s: Simba, Zazu, Kasuku; 3 rows from the player's weakest words; rare poses to collect (Zazu asleep in Nana's cap) | **4** The pets; Wordle-sized | **4** Same slots as M1/M3. Leaks: cat *names* aren't Kutchi, so rows never tell the cats apart by name alone (size or colour words, or a state); Kasuku stays silent in the round, apart from echoing "Arre re!" after a miss (allowed by the cast rule) | **3** A skin on M1, but a daily, hub-only shape | **3** Hub, every day after the camera is found | **5** Daily, weakest words, rare poses, "days with Kasuku" |
+| **M11** | **Caption it** (role reversal) | After a shot, build its caption from audio chunks (`[EN: goat]` + `[EN: sleeping]`) for Ali, who's away; he replies with a sticker. Grandparent mode: say it aloud, Nani marks it | **3** Being the expert | **5** Production; scored on *enough to tell it apart from the others in the scene* (contrastive, not redundant) | **4** | **3** Ali at the village, Nana's stories | **3** Any print |
+| **M12** | **Sky watch** (weather) | The monsoon's coming: shoot `[EN: the dark cloud]`, `[EN: birds flying home]` | **3** Pretty but slow | **4** Weather words (S4). Leaks: only one dark cloud → several shades | **2** Overlaps Monsoon rush (weather) and Find it M9 (times of day) | **3** Arc 3 Ch1 "Clouds coming", *if* Monsoon rush doesn't take it | **2** |
+
+**Rejected or handed to other modes:**
+- **"The game picks your best photo"** (Pokémon Snap): lets you shoot everything.
+- **Silhouettes** in the album or on rows: a picture of the answer.
+- **Rare behaviours as requests**: shoot the oddest thing.
+- **Photographing people to identify them** ("match the face", "the man with the red cap"): that's Who did it's deduction and Find it's M10. Snap uses people only as *subjects* by job noun (`[EN: farmer]`).
+- **Arranging the family photo**: Tidy up's. Snap takes the shot once they're arranged.
+- **"Photograph the clues"** in Arc 4 Footprints: Who did it's.
+- **Reflex rounds with fast subjects**: Monsoon rush's.
+
+---
+
+## 4. Recommended first set
+
+One engine: a panorama camera, subjects with state machines, a photo evaluator, and requests as data. Then these on top of it:
+
+| Order | Mechanic | Why first |
+|---|---|---|
+| 1 | **M1 Snap the moment**, with **M3's place slot** | The core fun, and it proves the engine: subjects, states, capture, evaluation. Cats and Kasuku in the courtyard use existing character sheets and Find it's courtyard background |
+| 2 | **M9 Show Nani and the album** | The recall step and the ear star live here, and it's the replay hook. Without the hand-in, the Sceptic wins (Loop 1) |
+| 3 | **M2 Just so many** | The only mechanic that **forces real Kutchi today**: fruit + numbers at the farm (`trae aamo`). So the leak bot can gate on genuine words from day one |
+| 4 | **M7 The journey** | Arc 5 Ch2's whole chapter, and the most distinct thing in the mode. Parallax strips are cheap to draw |
+| 5 | **M4 Which one?** (as a slot) | S6's comparatives. Engine cost is tiny (a rank check), but it **can't pass the leak test until the family's comparative words arrive** |
+
+**Held back:**
+
+| Mechanic | When | Why wait |
+|---|---|---|
+| M10 Kasuku's snapshot | Straight after the first set | Cheap (M1 in the hub courtyard); the daily hook for Farah |
+| M5 Two together, M6 Not in my photo | Phase 4, as twists | Need `with / without / in front of` from the family; cheap once M1 exists |
+| M8 Then and now | Arc 5 Ch1 and Ch4 build | Needs past-tense recordings (S5) and old-photo art (possibly young Nani) |
+| M11 Caption it | When produce stages are live | Production, and the phrase builder is a platform piece (Cook to-do, item 5) |
+| M12 Sky watch | Only if Zafar wants it in Arc 3 | Distinctness is weak; Monsoon rush may own the sky |
+
+---
+
+## 5. Story integration
+
+### 5.1 Where Snap appears
+
+| Arc · chapter | Beat | Snap's part | Other modes in the chapter |
+|---|---|---|---|
+| **Arcs 1–4 (no mechanic)** | Each arc's closing beat is a **family photo that drops into Nani's album** automatically: Eid morning, the wedding, chai in the rain, the ring back on Nani's finger | Seeds the album with 2 filled slots per page (the endowed head start) and shows it on the hub shelf long before Snap exists. **Zero build cost beyond the album screen** | — |
+| Arc 3 · Clouds coming (optional) | Washing out, the sky changes | M12 Sky watch, *if Zafar wants it* | Tidy up (bring it in) |
+| **Arc 5 · The old trunk** | Nani opens the trunk: her **old instant camera**, a film pack, and an album with gaps where photos faded | **"Does it still work?"**: M1 + M3 in the courtyard (Simba, Zazu, Kasuku). M6 comes as a surprise when Kasuku photobombs. First Then and now pair (M8) as the outro | Who did it: *match the face* (young and old) |
+| **Arc 5 · The journey** | The bus to Nani's village | **M7** with M1/M2/M4 rows. Nana dozes against the window (a subject: `[EN: Nana] [EN: sleeping]`); Ma and Nani give the requests. The road opens on the world map as you travel | — |
+| **Arc 5 · The farm** | Mangoes up, groundnuts down, lunch | **M2** (mangoes on branches while the parakeets eat them; goats), M1 (cow, buffalo, hens), M6 (hens without the rooster) | Tidy up (pick and dig), Cook (farm lunch) |
+| **Arc 5 · Nana's stories** | Listen, then put the pictures in order | **M8 Then and now**: Nana's story of the well and the old tree, rebuilt as today's photos, with the old prints revealed | Ask around / Who did it (order the story) |
+| **Arc 5 · The family photo** (finale) | Arrange everyone | Tidy up arranges. **Snap takes the last photo**: M2 "all of us" + M5 "Kasuku too", with Ali photobombing (M6). It's the album's last page and the final quilt patch | Tidy up |
+| Road home (optional epilogue) | The bus back at dusk | M7 at the dusk grade (buffalo returning, flamingos flying) | — |
+
+### 5.2 Cast who drive it
+
+| Who | Role in Snap |
+|---|---|
+| **Nani** | The main requester; the album's keeper; her memories drive Then and now; she reacts to every print (laughs at photobombs) |
+| **Nana** | A comic subject (asleep on the bus); the storyteller for Then and now in Ch4 |
+| **Ma** | Journey requests (a second voice; the Game Design doc's "multiple voices are a feature") |
+| **Ali** | Photobomber (M6); later the one you caption photos for (M11) |
+| **Simba and Zazu** | Subjects at home: states (asleep, washing, pouncing, stretching) and places (on the charpai, under the cart). *Big/small* and *dark/light* separate them, never their names. Rare poses for the album |
+| **Kasuku** | Subject and photobomber (flies through, sits on shoulders). He echoes *"Arre re!"* after a miss, which the cast rule allows; otherwise he's silent in rounds. In the hub he may repeat a word from the last round's rows, idle only |
+| **Big Ma** | She's in the trunk's old photos; she sings on the bus (her recorded song as the journey's ambient track: an existing planned asset) |
+| **The doctor** | Cameo subject in the village (`[EN: doctor]` on his bicycle), a jobs noun (S6) |
+| **Villagers** (generic farmer, shepherd, bus driver) | S6 jobs as subjects, by noun only |
+
+### 5.3 The world map
+
+- The camera comes from the trunk (Ch1). **The journey draws the road** on the map: each stretch you pass clears its fog and drops a pin (grassland, salt pans, windmills, lake, village gate). The rail *is* the map reveal.
+- **New places:** the Road (rail), the Village, the Farm; later the Lake at dawn as a research-level unlock.
+- From then on, **every Snap place and Find it's courtyard** show a camera icon on the map for free play.
+
+### 5.4 Free-play route
+
+| Entry | What it is |
+|---|---|
+| **Photo walk** (any Snap place) | Endless rounds from due and weakest words, a best roll score per place, research level per place |
+| **Road trip** | Random route segments on the rail; best lap |
+| **Kasuku's snapshot** (hub, daily) | 60 s, 3 rows; "days with Kasuku" count that never resets |
+| **Explore** (any place, no rows) | Film is free, prints go to the album's "?" slots by ear. Tapping a subject names it (stage-1 teaching). No stars |
+
+---
+
+## 6. Learning design
+
+### 6.1 Words and frames it drives
+
+| Syllabus | Words | Frames (existing Kutchi, or a placeholder) |
+|---|---|---|
+| S1 | Fruit on the trees (*aamo, naariyel, papaiyo, daadam, kelo*), numbers 1–10 (*hikdo … do*) | Row = `{n} {x}` (Cook's `grammar.count`), e.g. `trae aamo`; *Ne {x}* between rows; *Hedo!*; *Arre re!*; *Ghan* (at hand-in); `[EN: Take a photo of…]` said once per round |
+| S2 | Positions (in, on → under → behind → next to → in front of, in that order, shared with Find it); household anchors (charpai, cart, well, wall, door); colours (the red bus) | `{x} {anchor} [EN: on]`: one recorded phrase per (anchor, relation), as in Find it |
+| S4 | **Farm animals and birds** (goat, sheep, cow, buffalo, camel, donkey, dog, hen, chick, rooster, peacock, parrot, crow, flamingo); weather, times of day (dusk grade) | `{x} [EN: is eating]`: state words |
+| S5 | **Action verbs** as states (eating, sleeping, drinking, running, flying, sitting, jumping); past tense in Then and now | `[EN: I stood by the {x}]`, `[EN: when I was small]` (heard, not produced) |
+| **S6** | **Comparatives** (bigger, smaller, taller, the biggest, smaller than); **nature** (tree, well, pond, lake, field, sky, cloud, sun, moon, hill, sand, salt); **travel** (bus, truck, bicycle, motorbike, camel cart, tractor, road, village, farm, mosque); **jobs** (farmer, shepherd, driver, doctor); **future** | `{x} [EN: bigger]`; `[EN: soon we'll see {x}]` (future, heard at the start of a lap); `[EN: because…]` heard in Nani's reactions (not tested) |
+
+**Rows grow like Find it's.** Level 1: noun (+count). Then noun + state, or noun + place. Then noun + comparative. Then two subjects + relation. Then with/without.
+
+### 6.2 Word-stage fading (text in one place)
+
+| Word stage | Request row | In the scene | Album "?" slot |
+|---|---|---|---|
+| 1 New | Text + speaker; as Nani says it, **the target twinkles once**. **Taught, not tested**: doesn't count for the ear star | Tapping a subject names it only in Explore | Caption: text + speaker |
+| 2 Learning | Text + speaker | No twinkle, no labels | Speaker + text |
+| 3 Nearly known | Speaker only, `•••` (side-by-side hidden words share one `•••`, as fixed in Cook Wave 4) | Nothing | Speaker only |
+| 4 Known | Heard once at the intro; replay costs the tick | Nothing | Speaker only |
+
+- **No labels in the scene, ever, in a round.** A label is the answer.
+- **Counts:** a digit on the row only while that number word is at stage 1–2. No counter in the viewfinder at any stage.
+- **The ear star needs ≥2 tested rows** (stage ≥2) in the round. Otherwise it shows as "new words" and pays nothing. This closes the "fresh profile every time" trick (Loop 3).
+
+### 6.3 Hint ladder and costs
+
+| Rung | What happens | Cost |
+|---|---|---|
+| 1 Replay | Tap the row's speaker | Free the first time, then the tick (Relaxed) or patience (Busy) |
+| 2 Slow replay | Half speed, a pause before the key word (supported by the adjective research) | Tick / patience |
+| 3 Warmer | Static scenes: Nani gestures to **a third of the panorama**, which must still hold ≥3 candidates. Rail: **the bus slows** for the next stretch | Tick + the combo breaks; the ear star stays |
+| 4 Reveal (eye) | Shows the row's Kutchi text | Ear star for that row, from stage 2 |
+| 5 Translate | English gist | Ear star for that row |
+| 6 Shown | Stage 1 automatically; otherwise after 2 wrong prints for the row, the target twinkles | Ear star for that row; the word doesn't advance |
+
+- Hesitation never shows the answer: after about 8 s with no shot, Nani replays the line (rung 1, free the first time).
+- **No upgrade makes a hint cheaper.**
+
+### 6.4 Mistakes: recast, then the player tries again
+
+At hand-in, the evaluator knows what's in each print, so Nani can say what the player *actually* shot: *Arre re!* `{noun in print} {its state/place/count}` … then the row again. The **player then picks another print**. If none fits: "let's go back" (+1 frame, same scene, the ear star for that row already lost). On the rail, the road loops. Kasuku echoes *"Arre re!"* (idle mimicry, allowed). Two misses on a word drop it a stage (the existing rule).
+
+**Spaced retrieval:** rows are due words plus up to 3 new ones, weakest first. **Quick shot** is Snap's version of "pass me": mid-round, Nani says *Hedo!* `{X}!`, naming a met word **not on the card**, chosen from a look-alike group with **≥2 group members visible**. One bonus frame, one chance. The hand-in is a second retrieval, and the album's "?" slots are a third, spread across days.
+
+### 6.5 Role reversal
+
+- **M11 Caption it:** pick audio chunks for a print; scored as *enough to tell it apart* in that scene.
+- **Ali shoots for you:** you give Ali the request by chunks; he shoots exactly what you said, which is funny when it's wrong.
+- **Grandparent mode:** Nani reads a row aloud from big type, the child shoots, and Nani marks the print. Or the child describes a print aloud and Nani marks it. It needs Cook to-do item 5(b) (frames with slots marked) and Find it's relations-as-data.
+
+### 6.6 Needed from the family (English placeholders until then)
+
+| Need | Status |
+|---|---|
+| "Take a photo of…", "Look!", "Smile!", "Here's the photo", "Show me" | New |
+| Can *Muke {x} khape* be used for "I want [a photo of] X", or is there a better frame? | New (links to Round 1, Q6) |
+| Animals: goat, kid (baby goat), sheep, cow, buffalo, camel, donkey, dog, hen, chick, rooster, peacock, parrot, crow, flamingo | New (S4 list) |
+| States as verbs: eating, sleeping, drinking, running, flying, sitting, jumping, "is on…". **Does the verb change with the animal's gender?** (It decides whether to record per animal or build from chunks) | New (links to Round 1, Q1) |
+| **Comparatives:** bigger, smaller, taller, the biggest, "smaller than X". How is the comparative formed? | New |
+| Nature: tree, well, pond, lake, field, sky, cloud, sun, moon, hill, sand, salt | New (weather part asked in Round 1, Q11) |
+| Travel: bus, truck, bicycle, motorbike, camel cart, tractor, road, village, farm, mosque | New |
+| Jobs: farmer, shepherd, driver, doctor | New |
+| with, without, together, all of us | New (*no/without* already top of Cook's Round 2 list) |
+| Future: "soon we'll see…", "we're going to the village" | New (S6) |
+| Past tense for Then and now: "I stood by…", "when I was small", "there were two goats" | Asked in part (Round 1, Q4) |
+| Positions and colours | Asked (Round 1, Q3, Q11); shared with Find it |
+| Plural of fruit nouns ("trae aamo"?) | Asked (Round 1, Q2) |
+| Recording shape: about 15 animals × about 6 states. If verbs are chunkable, about 30 short clips; if not, up to about 90 | For the recording session |
+
+---
+
+## 7. Stars, rewards and upgrades
+
+| Star | Earned when |
+|---|---|
+| **Ear: understood** | Every tested row handed in right first time (Find it's Q3 on half-star leniency applies here too); ≥2 tested rows needed |
+| **Lens: good shot** (this mode's own icon: a camera lens iris) | Every handed-in print frames well: main subject 15–70% of the frame, within the middle third, ≥90% visible, sharp (panning slowly enough at the shutter), and facing the camera gives a bonus. Rated at the shutter **on whatever the biggest subject in frame is**, so the rating never says which subject was wanted |
+| **Tick** (Relaxed, no help) / **Lightning** (Busy) | No help used / done before the visible **daylight bar** (static scenes) or the **road bar** (rail) runs out |
+
+- **Zayn's numbers:** each print shows points (size, placement, sharpness, facing, background) *after* hand-in, Pokémon-Snap style, with a **best shot per album slot** and a **best roll per place**.
+- **Pocket money:** 5 for helping, +5 ear, +3 lens, +3 tick or lightning, +2 per new album slot, +5 for a rare behaviour; combo for consecutive rows right first time. Money is never lost.
+- **Collectibles:**
+  - album pages of 8–10 slots per place;
+  - gold corners (won by request with the ear star);
+  - **rare behaviours** (a 4★ equivalent: the peacock dancing, Zazu asleep in Nana's cap, the camel yawning, Kasuku riding Simba), never requested;
+  - Then and now pairs (8–10).
+- **Album decoration** (for Maryam): Kutch-style photo corners, ajrakh page borders and stickers are **won by finishing pages**, not bought, in line with the Game Design rule "money that buys hats is grinding".
+
+**Upgrades** (physical only; none does the listening):
+
+| Upgrade | Effect | Why it's fair |
+|---|---|---|
+| Zoom lens (2× → 3×) | Tighter framing for "exactly N" and far subjects | Framing only |
+| Wide lens | Fits groups: "together", the family photo | Framing only. The main-subject rule still applies, so wide isn't "shoot everything" |
+| Steady strap | Wider sharpness window | Hand skill |
+| Quick winder | Shutter recovery 1.2 s → 0.6 s | Hand skill |
+| Extra film (+1, max +2) | Spare frames | Guarded by hand-in choice; leak-bot tested at max |
+| Flash | Dusk and night scenes, some rare behaviours | Light only |
+| Treats bag (grain, wool ball, mango slice) | Triggers **rare collectible behaviours only**, never a requested state | So it can't make the answer happen |
+| Front seat (rail) | A taller window, so more sky and road in view | View only |
+
+**Deliberately none:** a subject finder, focus that locks onto "the right one", a beep on a match, cheaper hints.
+
+---
+
+## 8. Engineering spec
+
+### 8.1 Data model (`data/snap.json`, plus scene files shared with Find it)
+
+```json
+{
+  "subjects": {
+    "goat": {"word": "ph-goat", "group": "hoofed", "size_cm": 70, "facing": true,
+      "states": {
+        "graze": {"word": "ph-eating",   "art": ["goat-e-graze"], "hold": [5, 8]},
+        "lie":   {"word": "ph-sleeping", "art": ["goat-e-lie"],   "hold": [5, 8]},
+        "walk":  {"word": "ph-walking",  "art": ["goat-e-walk-1", "goat-e-walk-2"], "moves": true}
+      },
+      "rare": {"jump-wall": {"art": ["goat-e-jump"], "trigger": "treat"}}}
+  },
+  "lookalike_groups": {"hoofed": ["goat", "sheep", "kid"], "birds": ["hen", "rooster", "crow"]},
+  "mechanics": {"moment": {"levels": [
+    {"rows": [2, 3], "candidates_min": 3, "hold_scale": 1.6, "speed": 0.6, "aim_assist": 1.0,
+     "zoom": [1, 2], "film_spare": 2, "twinkle_new": true},
+    {"rows": 3, "hold_scale": 1.2, "speed": 0.8, "zoom": [1, 3]},
+    {"rows": [3, 4], "hold_scale": 1.0, "speed": 1.0, "aim_assist": 0.4, "slots": ["state", "place", "compare"]}
+  ]}},
+  "requests": {"slots": {
+    "noun":    {"from": "$scene.subjects", "prefer": "weak"},
+    "state":   {"pick": "$noun.states", "uniform": true},
+    "place":   {"relation": ["on", "under", "next-to"], "anchor": "$scene.anchors"},
+    "count":   {"int": [1, "$herd-1"]},
+    "compare": {"pick": ["bigger", "smaller", "tallest"], "set_min": 3},
+    "with":    {"chance": 0.5}, "without": {"chance": 0.5}
+  }},
+  "places": {"courtyard": {"scene": "courtyard", "research": [{"add": ["kasuku"]}, {"add": ["dusk"]}]},
+             "road": {"scene": "road", "rail": {"speed": 90, "loop_s": 75, "segments": ["banni", "salt", "wind", "lake", "gate"]}}}
+}
+```
+
+**Scene files** (`data/scenes/<scene>.json`) extend Find it's schema:
+- **Existing:** `anchors`, `spots` (anchor + relation + depth), `occluders`, pan width, `safe` zones.
+- **New:** `paths` (waypoint graph between spots), `herds` (spawn region, count range, kinds), `parallax` (layers with scroll factors and scale-by-depth), `segments` (rail biomes and the subjects each can hold), `tray_safe` (no path in the bottom 22%).
+
+**Print record** (what the evaluator produces at the shutter, and all the hand-in uses):
+
+```json
+{"t": 41.2, "frame": {"x": 2210, "y": 310, "w": 800, "h": 450, "zoom": 2}, "sharp": 0.92,
+ "subjects": [{"uid": "goat#2", "kind": "goat", "state": "graze", "place": {"anchor": "well", "rel": "next-to"},
+               "visible": 0.95, "area": 0.21, "centre": [0.04, -0.1], "facing": "camera", "sizeRank": 1}]}
+```
+
+**Matcher** (a pure function): `matches(print, row, sceneAtShutter) → {ok, why}`.
+
+| Row type | Rule |
+|---|---|
+| Moment / place / compare | The target is the **main subject**: the biggest instance of its noun in frame (≥8% of frame area, ≥60% visible, centre in the middle third). No other instance of the same noun is more than half its area. The state, place or rank holds *at the shutter time* |
+| Exactly N | Count instances of the noun ≥50% visible = N exactly |
+| Together | Both subjects ≥60% visible, and the relation holds in screen space (parallax-corrected) |
+| Without | The noun is satisfied, and the excluded subject is <10% visible |
+
+### 8.2 Reuse and new building blocks
+
+| From | Reused as is |
+|---|---|
+| Cook | Word pill; order ladder rows (`Cook.Order.ladder` logic: shuffling, one `•••` per hidden group); `lang.js` frames and `grammar.count`; stars shown as they happen; receipt; word review card; Relaxed/Busy; `levels` knobs and `byLevel` slots; help costs; the ghost-finger demo; "Arre re!" recasts |
+| Find it | Scene schema (anchors, spots, occluders, safe zones); look-alike groups; hint ladder rungs 1–6; the "slow down" guard; the non-speaker bot framework; the courtyard and bazaar backgrounds (E, 1.5–2 screens) as Snap places; `place_preview.py` |
+| Shell | `js/progress.js` word stages, `js/storage.js`, `js/audio.js`, pocket money wallet, quilt, world map places as data |
+
+| New building block | Size |
+|---|---|
+| `camera.js`: a panorama camera (drag pan, ± zoom, tap-to-centre with aim assist, a fixed viewfinder, the shutter with a blur check) | M |
+| `subjects.js`: behaviour state machines (states with hold ranges, random phase, walking along path graphs, herds, rare triggers) | M |
+| `photo.js`: the evaluator (visibility against occluders and the frame; area; centre; facing; sharpness) + thumbnails via `renderer.snapshotArea` | M |
+| `requests.js`: the slot generator (candidates guaranteed) + the matcher | S |
+| `rail.js`: auto-scrolling parallax, segment spawning, loop | S |
+| `handin.js`: prints tray, "Show Nani", recasts, reshoot | S |
+| `album.js` (HTML): pages, "?" audio slots, gold corners, decoration | S–M |
+
+### 8.3 The lab (Snap lab)
+
+Pick a place, mechanic, level and seed. Toggles:
+- **debug boxes** (grey subject rectangles with state names; lab only);
+- **freeze time**, **force state**, **spawn herd**;
+- **Nani helps**;
+- **bot** (none / non-speaker / oracle);
+- **show print records** (JSON).
+
+It also plays any single row type on a greybox (the Find it process: greybox before art).
+
+### 8.4 Test harness and leak bot (`build/test_snap.py`)
+
+| Run | Pass condition |
+|---|---|
+| `--unit` | Evaluator and matcher on fixed print fixtures (main subject, exactly N, occlusion, parallax relation, without) |
+| `--fair` | For 500 seeds per mechanic × level × place: every row is satisfiable within the round (the target reaches its state ≥2 times in reachable view) and has ≥3 candidates |
+| `--oracle` | A bot that knows the answers earns the ear star in **≥95%** of rounds (rounds are winnable, and aim assist and holds are generous enough) |
+| **`--leakbot`** | The non-speaker bot sees only the screen and runs every strategy below. **Ear star in <10% of rounds per strategy and combined (target <5%)**, on **Kutchi-only content** (rows whose deciding words have Kutchi). Placeholder rows are reported separately as "not yet a Kutchi test" |
+| `--lab`, `--story` | Every mechanic at levels 1–3; Arc 5 Ch1–5 end to end |
+| `--viewport` all six sizes (phone 915×375, 1366×768, 1440×900, 1280×800, iPad, iPad portrait) | The tap-cover check before every tap (sidebar, prints tray and hands never cover the shutter, zoom or a reachable subject); screenshots that Claude looks at |
+
+| Leak-bot strategy | Why it now fails | Expected ear rate |
+|---|---|---|
+| Shoot the most salient subject (biggest, nearest, centre of the start view, moving) | ≥3 candidates; start view and phases random; target chosen uniformly | ≈ (1/3)^rows ≈ 4% |
+| Shoot the rarest or most animated state | Rare behaviours are never requested; states uniform | ≈ chance |
+| One wide shot of everything | Main-subject and exactly-N rules | 0% |
+| Shoot one of each candidate, hand in at random or in shot order | Film = rows + 2 (+2 upgrade) can't cover them; rows asked in a new random order | ≤5% |
+| Wait for a glow | Only stage-1 rows twinkle, and they aren't tested; ≥2 tested rows needed | 0% extra |
+| Rail: shoot what appears just after a row is spoken | Rows all given up front; stretches hold look-alikes | ≈ chance |
+| Row shape: length, dots, digits | One `•••` per hidden group; digits only at number stage 1–2, and the noun still decides between mixed herds | ≈ 1/2 per count row |
+| "Without" = avoid the cat | Half such rows are "with" | ≈ 1/2 per row |
+| A fresh profile every round | Ear star not offered with <2 tested rows | 0% |
+| Scene memory across rounds | Spots, paths and phases reshuffled per seed | ≈ chance |
+
+### 8.5 File layout (until the one-app shell exists)
+
+`snap.html` · `js/snap/{core,camera,subjects,photo,requests,rail,handin,album,lab}.js` · `js/snap/mechanics/{moment,count,compare,together,without,journey,thennow}.js` · `data/snap.json` · `data/scenes/{courtyard,farm,road,village}.json` · `assets/snap/{bg,strips,subjects,props}/` · `build/test_snap.py`. Mechanics register like Cook's (`Snap.Mech.define`, `Snap.Mech.lab`) so the shell can host them later.
+
+---
+
+## 9. Scenes, art and assets
+
+### 9.1 Camera per scene (all E, per Art Bible section 3: "Snap: E, wide panorama, parallax, horizon constant")
+
+| Scene | Width | Layers | Subjects | Anchors | Reuse |
+|---|---|---|---|---|---|
+| **Courtyard** (home) | 2 screens | Find it's background + occluders | Simba, Zazu, Kasuku, hens, chicks, sparrows | Charpai, cart, well/water pot, wall, doorway, washing line | **Find it's courtyard** (and Arc 3 hens) |
+| **The road** (rail) | Endless loop | 4 strips per biome: sky, far (hills, the white Rann, windmills), mid (grassland, salt pans, lake, village edge), near (bushes, posts); the bus window frame at the edges only | Camels, cattle, buffalo, goats, sheep, donkey, dog, flamingos, peacock, crows, bus, truck, bicycle, camel cart, tractor, farmer, shepherd | Windmill, tree, well, lake edge, milestone | New strips |
+| **Farm** | 3 screens | Background, occluders (shed front, wall, trough), **branch layers holding fruit sprites** | Goats, kid, cow, buffalo, hens, rooster, dog, peacock, wild parakeets | Mango trees, papaya, coconut palm, pomegranate bushes, well, trough, shed, charpai | Fruit sprites (F view) from Cook and Find it |
+| **Village lane and pond** | 2 screens | Background, pond water layer, occluders | Buffalo in the pond, cows, goats, the doctor on his bicycle, villagers | Houses (a bhunga round hut as the Kutch nod), a distant minaret, the pond, a tree, the gate | New |
+| **Old photos** | Card-size | Sepia/fade in code over normal renders of the same scenes | Young Nani (optional), goats, the well | — | Renders of the new scenes |
+| **Hand-in** | 1 screen | Nani behind the charpai or the bus seat (island framing) | Nani | — | Nani's sheet poses |
+
+**Set dressing:** 1–2 nods per scene (Art Bible restraint rule): bhunga hut and mirror-work at the village; windmills (modern Kutch) and salt pans on the road; a kanga cloth on the washing line at home.
+
+### 9.2 Layers and ambient motion
+
+- **Separate layers:** every subject (per state pose; head and tail layers for the cats and Kasuku, as the existing plan says); occluders; parallax strips; the fruit on branches; the pond water; the bus window frame (edges only, never over the play area).
+- **Ambient (code):** grass sway, windmill blades turning, clouds drifting, dust in the road's wake, water shimmer, flamingo flocks as particles. 2–4 per scene; off under "reduce motion".
+- **Motion by code, not frames:** walking = pose swap + bob; flying = 2 frames + a path; grazing = head-layer dip. That keeps animals at about 3–5 poses each.
+
+### 9.3 Hand poses
+
+| Pose | Source | Use |
+|---|---|---|
+| **F4** holding a camera, two hands, E | Existing list | Bottom right: the camera body carries the shutter and film count; hands stay below the frame |
+| F4b thumb pressing the shutter | **New** (a variant of F4), or a code offset on F4 | Shutter press feel |
+| C3 side pinch (a photo) | Existing | Handing a print to Nani |
+| C4 pointing | Existing | Tap-to-centre demo (the see-through fingertip) |
+| A3 palm up | Existing | Receiving the camera from Nani (Ch1 beat) |
+| D5 throw release | Existing | Treats for rare behaviours |
+| E1 thumbs up, E5 arms up | Existing | Reactions |
+
+### 9.4 New art and rough counts
+
+| Group | Count | Notes | Where made |
+|---|---|---|---|
+| Animals × poses | About 15 species × 3–5 poses ≈ **60** | Cats and Kasuku mostly **reuse their sheets** (+ grooming, stretching, flying across ≈ 8 new) | Sheet per species in **ChatGPT (free)** for design; final transparent poses as **API edits** of each sheet |
+| Vehicles | 6 × 1–2 ≈ 9 | Bus, truck, bicycle, motorbike, camel cart, tractor | API (transparent) |
+| People | Farmer, shepherd, driver × 2 poses ≈ 6; the doctor on a bicycle (1, from his sheet); **young Nani** (optional, 3 poses from Nani's sheet) | Generic, from the family style reference | API edits |
+| Parallax strips | 5 biomes × 4 strips ≈ 20 | Opaque, tile horizontally (code cross-fades the seams) | **ChatGPT (free)** |
+| Backgrounds | Farm, village (2 new) + dusk grades (code) | Courtyard reused | **ChatGPT (free)**, then cut the occluders |
+| Props | Nani's instant camera (held view), film pack, 8–10 old-photo renders | Prints and album are HTML/CSS | Camera: API; old photos: renders + code sepia |
+| **Total new images** | ≈ **120–140** | At the hand run's rates (about 130 images for $10–25), roughly **$15–40** with rejects | |
+
+---
+
+## 10. Persona loops
+
+### Loop 0: the draft
+
+A panorama; a viewfinder the player drags over the scene; unlimited film; photos auto-scored Pokémon-Snap style; **the game picks the best photo for each request**; the album fills automatically; requests are "photo of {noun}" or "{noun} {state}"; one scene (the farm).
+
+### Loop 1
+
+| Persona | Plays and says | Struggles |
+|---|---|---|
+| **Layla, 5** | Loves the click and the goats. "The cat moved!" | Dragging a frame onto a moving goat (the 37% moving-target finding); can't read "photo of" |
+| **Zayn, 8** | Chases the points. "Can I get a diamond?" | Scores feel random without a breakdown; nothing to beat |
+| **Maryam, 11** | "The album's cute, but it just fills up by itself" | Nothing is hers |
+| **Zafar, 38** | "One request a minute: not much Kutchi per minute" | Every request is a noun; no S6 grammar at all |
+| **Farah, 34** | A round took 4 minutes | Too long |
+| **Nani, 68** | "Where are my old photos? I want the grandchildren to see my village" | No heritage |
+| **The Sceptic** | **Won the ear star every time.** She shot everything (unlimited film); the game found the right one for her. Her wide shots of the whole herd counted for "the goat that's eating". The requested state was the animated one (the goat *jumping*), so she shot whatever did something odd | — |
+| **The Builder** | "Scoring needs subject geometry per frame; animated animals will multiply art" | A draggable frame and zoom together is fiddly on phones |
+
+| Finding → | Change |
+|---|---|
+| Unlimited film + the game picks = a free ear star | **Film = rows + 2. The player hands in each print at "Show Nani"** (the recall step), rows asked in a new random order |
+| Wide shot counts | **Main-subject rule; "exactly N" rows** (which became M2) |
+| Requested state is the salient one | **All candidates share the same states at random phases; states requested uniformly; rare behaviours are collectibles only** |
+| Layla can't track moving targets | **Pan the world under a fixed viewfinder; tap-to-centre (aim assist); level-1 holds of 5–8 s; slow subjects** |
+| Zayn: random scores | **Lens star + a points breakdown shown after hand-in; best shot per slot; best roll per place** |
+| Low Kutchi per minute | 3–4 rows per round; **Quick shot** interrupt; hand-in says every row again; recasts name what's in the print |
+| No S6 grammar | **Comparatives (M4), together (M5), without (M6), future on the rail (M7)** |
+| Nani: heritage | **Then and now (M8)** from the trunk |
+| Farah: too long | Rounds of 2–3 min; rail laps of 60–90 s |
+| Builder: geometry, art | **Per-state hit rectangles as data; motion by code over 3–5 poses; parallax strips instead of painted panoramas** |
+
+### Loop 2
+
+| Persona | Plays and says | Struggles |
+|---|---|---|
+| **Layla** | Tap the goat, it swings to the middle, click. Choosing prints for Nani is easy: they're pictures | On the rail, the stretch passes before she's ready |
+| **Zayn** | Lens points, best roll. "I've done the farm three times, same goats" | Replay sameness |
+| **Maryam** | Then and now made her go "aww". Wants to arrange her own album page | — |
+| **Zafar** | Much denser. Notices *bigger*, *with*, *eating* are grey English: "the systems are right, it needs words" (same as Cook's audit) | Placeholder words |
+| **Farah** | 2 minutes is right. Wants a daily thing | — |
+| **Nani** | Proud of the old-photos moment. "Let me say the request myself" | — |
+| **The Sceptic** | Hand-in stopped her spraying, but: **(1)** the row ticked the moment she took the right shot, so she kept that one and re-shot the others; **(2)** on the rail, each request was said just before its stretch, so she shot the first thing that appeared; **(3)** the "Quick shot" bird flew in exactly when Nani called, the only new thing on screen; **(4)** "without" rows always said the cat, so she always kept the cat out | — |
+| **The Builder** | Hand-in and album are HTML; the rail is a small parallax scroller. The evaluator must be deterministic for tests | Panoramas as one painting are hard to generate |
+
+| Finding → | Change |
+|---|---|
+| Tick at shutter tells her which print is right | **No judging until hand-in.** Shutter juice is craft only (lens sparkle rated on the biggest subject in frame, not the wanted one) |
+| Rail: request said just before its stretch | **All lap rows given at the start, in random order; stretches hold look-alikes for several rows** |
+| Quick shot target arrives on cue | **Quick shot only names something already present among ≥2 look-alikes** |
+| "Without" always the cat | **"With" and "without" 50/50, over several subjects** |
+| Layla: rail too fast | Relaxed = slower road; missed stretches **loop** ("on the way back"); Warmer hint slows the bus (costs tick) |
+| Zayn: same goats | **Research levels per place** (new subjects, behaviours, dusk grade, alternate turnings on the road), as in Pokémon Snap |
+| Maryam: make it hers | **Album decoration won by finishing pages**; she chooses which print goes on each page |
+| Farah: daily | **Kasuku's snapshot** (M10) |
+| Nani: say it herself | **Grandparent mode** (6.5) |
+| Zafar: placeholders | Family word list (6.6); **leak bot gates only on Kutchi-only rows** (fruit + numbers at the farm work today) |
+| Builder: panoramas | **Parallax strips per biome, tiled**; evaluator is a pure function over print records |
+
+### Loop 3
+
+| Persona | Plays and says | Reason to come back |
+|---|---|---|
+| **Layla** | With Mum: taps, clicks, hands prints to Nani, laughs at Kasuku's photobomb. Never reads | The pets; Kasuku's snapshot; stage-1 twinkles |
+| **Zayn** | Lens points, best roll, research levels, rare behaviours | 4★-style rare shots, best per slot, a new route at dusk |
+| **Maryam** | Decorates pages, fills Then and now pairs, the finale photo | The album as her heritage book |
+| **Zafar** | Comparatives, with/without, future lines; three listening passes per word (row, hand-in, album) | Weak-word free play; the rail at level 3 |
+| **Farah** | 60 s Kasuku's snapshot; a 90 s lap | Daily, days-with-Kasuku count |
+| **Nani** | Grandparent mode on the sofa; her village on screen | Her memories, her voice |
+| **The Sceptic** | Tried: **(1)** a new profile every round, so every row is stage 1 and twinkles; **(2)** learning where the goats graze from last round; **(3)** "the tallest" is always the adult camel, the nearest one; **(4)** memorising album captions (Kutchi text) and matching text on the rows; **(5)** the lens sparkle marking the main subject | — |
+| **The Builder** | Estimates in 12; phase 1 reuses Find it's courtyard and scene schema; the evaluator unit-testable | — |
+
+| Finding → | Change |
+|---|---|
+| New profile each round | **Ear star needs ≥2 tested rows**; otherwise "new words" |
+| Last round's grazing spot | Spots, paths and phases reshuffled per seed (already in data); the bot's "scene memory" strategy is added to the gate |
+| Tallest = nearest adult | **≥3 size steps at mixed depths**; rank computed on true size; smaller and taller asked as often |
+| Album captions → text matching | Fine: that's reading Kutchi (it's learning, and reading is the intended stage-2/3 channel). In rounds, row text fades by stage as everywhere |
+| Lens sparkle | It marks nothing: it's a score on the print, rated on the biggest subject regardless of the request |
+
+**Stop condition met:** on Kutchi-only rows, the Sceptic can't beat chance (≈4% with 3 rows), and every persona has a reason to come back. **Left open (content, not code):** placeholder decision words (states, comparatives, with/without), as in Cook's final audit.
+
+---
+
+## 11. Scorecard and verdict
+
+| Criterion | Score | Why |
+|---|---|---|
+| Fun | **4.5** | Pokémon Snap's moment + TOEM's hand-in + funny pets and photobombs; the rail is the standout |
+| Forces Kutchi | **4.5** | Every row is a moment only the words pick; the hand-in is a second pass. Today only the counts and fruit are real Kutchi |
+| Distinct | **4** | Moment, framing (exactly N, together, without) and the rail are unique; M1/M3 sit close to Find it |
+| Plot | **5** | The camera from the trunk, the journey, the farm, Nana's stories, the family photo; the album spans all arcs |
+| Replay | **4.5** | Album pages, gold corners, rare behaviours, research levels, daily Kasuku, the rail |
+
+**Is it good?** Yes, if the subjects really move and change. That's what separates it from Find it.
+**Is it complete?**
+- **Story:** it covers every Snap use named (the journey, the farm, old photos) and gives the finale its last photo.
+- **Syllabus:** S6 is covered structurally (comparatives, nature, travel, future heard, describing by state), but **not in content**: almost none of S6 exists in Kutchi yet. "Because" and describing people are only heard here; Who did it owns people.
+
+**Verdict: Go with changes.**
+1. Get the family's S4/S6 words (6.6) before building M4–M6.
+2. Seed the album from Arc 1 with story beat photos.
+3. Build after Find it and reuse its scene schema, courtyard and bot.
+4. Confirm the chapter splits with Who did it and Tidy up.
+
+**Top risks**
+1. **Vocabulary gap:** animals, verbs, comparatives, nature and travel are all placeholders. Until the words arrive, only M2 (fruit + numbers) is a real Kutchi test.
+2. **Art volume:** animated animals, strips and vehicles (about 130 images). Mitigation: 3–5 poses each, motion by code, strips not paintings.
+3. **Hands for 5-year-olds:** moving subjects and a camera could feel like a reflex game (Monsoon rush's ground). Mitigation: pan under a fixed frame, tap-to-centre, long holds, looping road.
+4. **Last in the build order:** Arc 5 is the finale, so the mode may never get reached. Mitigation: the album and beat photos from Arc 1; phase 1 reuses Find it's courtyard, so a pets-only Snap could ship early as free play.
+5. **Young Nani** in old photos is a new character sheet (likeness work) and a family decision.
+
+**Open questions for Zafar**
+1. Camera found in Arc 5 only (album seeded by beat photos from Arc 1), or give it earlier as a free-play toy?
+2. Arc 5 Ch1: Who did it takes "match the face"; Snap takes the camera and Then and now. OK?
+3. Ch5: Tidy up arranges, Snap takes the final photo. OK?
+4. Old photos: include **young Nani** (from her sheet), or places and animals only?
+5. An **instant camera** (prints develop) or a phone?
+6. The journey vehicle: bus, jeep, chhakdo (the Kutch three-wheeler) or camel cart? Does Kasuku come along?
+7. Lens iris as the craft star icon?
+8. Should Snap take Arc 3's "watch the sky", or Monsoon rush?
+
+---
+
+## 12. Build brief for a future agent
+
+**Before you start:**
+- Read sections 1, 3, 4, 6.2–6.4 and 8.
+- Wait for Find it's scene schema, courtyard scene and non-speaker bot to land. Reuse them; don't fork them.
+- Never invent Kutchi: new words go in as `"kutchi": null` placeholders.
+
+### Phases
+
+| Phase | What's playable | Acceptance |
+|---|---|---|
+| **0 Spec and greybox** | Courtyard (Find it's) and farm scene JSON with `paths`, `herds`; grey subjects cycling states in the Snap lab | `--unit` evaluator tests pass; `--fair` shows every generated row satisfiable; lab screenshots at 1366×768 and phone reviewed |
+| **1 Engine + M1 + hand-in** | Pan, zoom, tap-to-centre, shutter, prints tray; M1 (state + place slots) at levels 1–3; Show Nani with recasts and reshoot; ear/lens/tick stars; receipt; word review; intro card and 3 s silence | Oracle ≥95%; **leak bot <10% per strategy** (report placeholder rows separately); all six screen sizes pass the tap-cover check; 3–4 rows in 2–3 min at level 1 |
+| **2 M2 + album + free play** | Exactly N at the farm with **real Kutchi** (`{n} {fruit}`); the album with "?" audio slots and gold corners; Photo walk; Kasuku's snapshot | Leak bot **<5%** on fruit + number rows; album persists in the profile save; Quick shot follows the look-alike rule |
+| **3 M7 journey + Arc 5 Ch1–3** | Rail with 5 biome strips, looping; lap rows up front; Busy road bar; Warmer slows the bus; story beats; the map road reveal | Leak-bot rail strategies <10%; 60–90 s laps; phone 915×375 readable; Arc 5 Ch1–3 run end to end in `--story` |
+| **4 Twists and the finale** | M4 slot (once the words arrive), M5, M6, M8 Then and now, research levels, rare behaviours, upgrades shop, Ch4–5 | Every twist gated by the leak bot; the upgrades pass the "never does the listening" review; the family photo lands in the album and the quilt |
+| **5 Art and recordings** | Painted scenes, strips, subjects; family audio | Visual QA checklist on every screenshot; scale order holds; placeholders swapped file for file |
+
+### The first 3 tasks
+
+**Task 1: Scene and subject data, and a greybox you can pan.**
+- Create `data/snap.json` with `subjects` (goat, sheep, hen, rooster, Simba, Zazu, Kasuku) as in 8.1. Use placeholder words `ph-goat`, `ph-eating` and so on, with `"kutchi": null`.
+- Extend the courtyard scene (Find it's file, or a copy under `data/scenes/courtyard.json` if theirs isn't merged) with `paths` and `herds`. Add a greybox `data/scenes/farm.json` (3 screens) with branch spots for fruit sprites.
+- Create `snap.html` + `js/snap/core.js`, `camera.js` and `subjects.js`:
+  - Phaser at 1600×900;
+  - drag to pan, ± zoom buttons (no pinch), tap-to-centre;
+  - grey rectangles walking the path graph and cycling states with `hold` ranges at random phases;
+  - lab-only debug text for state names.
+- **Done when:** in the lab you can pan both scenes on phone and laptop sizes, subjects visibly change state and place, and a seed reproduces the same run.
+
+**Task 2: Capture and the evaluator.**
+- `js/snap/photo.js`: on shutter, build the print record (8.1): visibility after occluders and frame clipping, area fraction, centre offset, facing, `sharp` from pan velocity, `sizeRank` on true size. It's a **pure function** of the scene state and frame.
+- Make a thumbnail with `renderer.snapshotArea` into the prints tray (bottom left, ≤22% height, outside all `paths`).
+- The lens rating is computed on the biggest subject in frame only.
+- Add `build/test_snap.py --unit`, which loads the page headless and runs fixture cases: main subject vs a bigger same-noun decoy; exactly N with one at 49% visible; an occluded subject; a parallax "in front of"; "without" at 9% vs 11%.
+- **Done when:** all fixtures pass and the lab's "show print records" matches what a person sees.
+
+**Task 3: Requests, Show Nani, and the first leak-bot gate.**
+- `js/snap/requests.js`:
+  - generate rows from slots with guaranteed candidates (≥3 of the noun or its look-alike group; states uniform; count N uniform in 1…herd−1);
+  - `matches()` per 8.1;
+  - use Cook's ladder logic for rows (shuffle, one `•••` per hidden group, digits only at number stage 1–2).
+- `js/snap/handin.js`: Nani asks rows in a new random order; tap a print; on a wrong print, a recast built from the print record, then choose again; "go back" with +1 frame; the ear star (≥2 tested rows), lens, tick; receipt; word review.
+- The leak bot in `test_snap.py --leakbot 500`: the strategies in 8.4, run on **farm rows using real Kutchi** (fruit + numbers) plus M1 rows marked placeholder. Add `--oracle`.
+- **Done when:** the oracle is ≥95%; every strategy is <10% on the Kutchi-only rows; results are written to `build/reports/snap-leakbot.md`.
+
+---
+
+## Sources
+
+- Pokémon Snap scoring: [Game8 scoring guide](https://game8.co/games/New-Pokemon-Snap/archives/328684) (six criteria, star tiers); [PokéJungle star guide](https://pokejungle.net/new-pokemon-snap/rating-star-guide/) (4 photos per species, rarity of behaviour)
+- Replay design: [Pokémon.com beginner tips](https://www.pokemon.com/us/strategy/top-tips-to-begin-your-new-pokemon-snap-journey) (research levels, day/night, alternate paths); [Grindosaur requests](https://www.grindosaur.com/en/games/new-pokemon-snap/requests) and [TheGamer requests guide](https://www.thegamer.com/new-pokemon-snap-all-requests-guide/) (character requests, sticker and frame rewards)
+- Alba: [KeenGamer beginner's guide](https://www.keengamer.com/articles/guides/alba-a-wildlife-adventure-beginners-guide/) ("?" for unidentified species, identification on lock); [Wikipedia](https://en.wikipedia.org/wiki/Alba:_A_Wildlife_Adventure)
+- Umurangi Generation: [Steam achievement guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2341905480) (two unlocks per level, bonus objectives); [Wikipedia](https://en.wikipedia.org/wiki/Umurangi_Generation) (bounties, lenses unlocked per level); [Unwinnable](https://unwinnable.com/2021/10/29/urgency-and-mastery-in-umurangi-generation/) (mastery needs knowing the level)
+- TOEM: [Wikipedia](https://en.wikipedia.org/wiki/Toem) and [Pocket Gamer](https://www.pocketgamer.com/ahead-of-the-game/toem-a-photo-adventure/) (hand photos to characters for requests; compendium). Game Developer's design Q&A was blocked; summary from search results
+- The warning cases: [Game Informer on Pupperazzi](https://gameinformer.com/review/pupperazzi/pupperazzi-review-a-short-but-sweet-photography-treat); [OpenCritic, Beasts of Maravilla Island](https://opencritic.com/game/11549/beasts-of-maravilla-island/reviews) (no real test, limited photography)
+- Collections: [Yu-kai Chou, collection sets](https://yukaichou.com/advanced-gamification/game-design-technique-collection-sets/) (7–12 items; half-way tipping point); [Game Developer, endowed progress](https://www.gamedeveloper.com/game-platforms/the-psychology-of-games-the-endowed-progress-effect-and-game-quests) (head-start effect)
+- Adjectives in the visual world: [Ju et al. 2023, Child Development](https://doi.org/10.1111/cdev.13925) (preschoolers' contrastive inferences, helped by slower speech and clear size contrast); [Qing, Lassiter et al. 2018](https://alpslab.stanford.edu/papers/2018QingLassiterEtAl.pdf) ("touch the tall glass" paradigm)
+- Comparatives: [Ferry et al. 2025, Child Development](https://onlinelibrary.wiley.com/doi/10.1111/cdev.14182) (bigger before smaller; taller sharpens with age); [Barner & Snedeker 2008](https://www.harvardlds.org/wp-content/uploads/2017/01/Barner_Snedeker_2008-1.pdf) (gradable adjectives in context)
+- Referential communication: [ScienceDirect 2017](https://www.sciencedirect.com/science/article/abs/pii/S0022096517306598) (adult models; redundant vs contrastive messages)
+- Photo-taking impairment: [Henkel 2014, Psychological Science](https://journals.sagepub.com/doi/abs/10.1177/0956797613504438) (photographing weakens memory; zooming in removes the effect)
+- Children's touch: [Vatavu et al. 2015, IJHCS](https://www.sciencedirect.com/science/article/abs/pii/S1071581914001426) (touch accuracy ages 3–6); [PMC 2020, gestures and prompts](https://pmc.ncbi.nlm.nih.gov/articles/PMC7303424/) (37% moving vs 57% static targets, ages 4–6)
+- Touch interactivity and word learning: [Russo-Johnson et al. 2017, "All Tapped Out"](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00578/full); [Kirkorian et al. 2016](https://srcd.onlinelibrary.wiley.com/doi/abs/10.1111/cdev.12508) (specific vs general tapping)
+- Heritage storytelling: [Innovation in Language Learning and Teaching 2026](https://www.tandfonline.com/doi/abs/10.1080/17501229.2026.2614753) (grandparents, digital stories); [Education Sciences 2025](https://doi.org/10.3390/educsci15091221) (storytelling in the heritage language)
+- Photo scavenger hunts (practice write-ups, weak evidence): [A World of Language Learners](https://www.aworldoflanguagelearners.com/using-scavenger-hunts-with-english-language-learners/)
+- Retrieval, recasts, position-word order: see the Sources in `docs/find-it-design.md`

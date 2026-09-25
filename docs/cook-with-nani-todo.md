@@ -108,4 +108,4 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 | Nani's clinic | `docs/modes/clinic-design.md` | ◐ designing | |
 | Who did it? | `docs/modes/who-did-it-design.md` | ◐ designing | |
 | Monsoon rush | `docs/modes/monsoon-rush-design.md` | ◐ designing | |
-| Snap | `docs/modes/snap-design.md` | ◐ designing | |
+| Snap | `docs/modes/snap-design.md` | ☑ designed | Go with changes |
