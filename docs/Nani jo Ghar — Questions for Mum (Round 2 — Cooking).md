@@ -2,7 +2,7 @@
 
 *For the cooking game, "Cook with Nani". The family come to Nani's kitchen and ask for food in Kutchi; the player cooks it. Everything below is in English so it's easy to start. Answer in Kutchi wherever you can, or in English and we'll draft the Kutchi for you to check. A voice note is perfect: talk through it like you're telling someone how you cook.*
 
-24 Sept 2026
+24 Sept 2026 (Part 6 added 25 Sept 2026)
 
 **Why these questions:** the game teaches Kutchi through the orders. "Chai with two sugars, no milk" only works as a lesson if the words are real and the dishes are ones our family actually cooks. Round 1 (grammar and the first word list) still stands; this adds the kitchen.
 
@@ -121,5 +121,23 @@ The game currently uses these. Please confirm or correct them:
 - **Phrases:** Muke … khape (I need …), Ne … (and …), Aabhar aanjo (thank you), Achija (bye)
 - **Plurals:** is it *bo maani* for two maani, or does maani change?
 - **Ordering food:** is *Muke chai khape* natural when asking for food at home, or would you say something else?
+
+## Part 6: Please confirm spelling and pronunciation (Zafar, 25 Sept, written phonetically)
+
+Zafar wrote these over chat on 25 Sept, phonetically, as a temporary stand-in so the game isn't stuck waiting. They're marked "draft, unconfirmed" everywhere in the game until you've had a look. For each one: is the word right, and is the spelling close to how it's actually said?
+
+| English | We're showing on screen | Zafar's phonetic spelling (what the voice reads) |
+|---|---|---|
+| no / not | nar | narr |
+| slowly | aastethi | arse-teh-tea |
+| quickly | jaldi | jal-dee |
+| half | adh | udd |
+| full | bharelo | barr-el-or |
+| big | vadho | wudd-oar |
+| small | nindho | nindh-oar |
+
+Where these are used: "no milk" / "no sugar" / "no onion" and so on (*nar*); Nani telling you to stir slowly or quickly (*aastethi* / *jaldi*); a half or full cup of chai (*adh* / *bharelo*); a big or small maani (*vadho* / *nindho*).
+
+Please confirm spelling and pronunciation — a voice note saying each one on its own, and in a short sentence ("nar dudh", "aastethi", "bo vadho maani"), would be perfect.
 
 Thank you! Even a ten-minute voice note on Part 2 and Part 3 would make the game feel like our kitchen.

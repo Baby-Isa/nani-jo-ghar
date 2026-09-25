@@ -10,6 +10,11 @@
  * Kutchi group plays its placeholder Gujarati-voice file if there is one,
  * otherwise each word's file in turn; an English group plays its
  * English-voice file if there is one. Files come from build/build_cook_tts.py.
+ * A word can carry a `say` field (data.words[id].say) distinct from its
+ * on-screen spelling (data.words[id].kutchi), e.g. Zafar's own phonetic
+ * spelling for a word written over chat: the voice always reads `say`
+ * where it's set, both here (the on-device fallback, saySpelling()) and in
+ * build/build_cook_tts.py, never `kutchi`.
  *
  * No language rules live here: sentence frames are data.lines, and the
  * grammar (number words, where the number goes, how a list and an order
@@ -64,6 +69,13 @@
   /** A frame from data.lines, with {x} filled by a phrase. */
   Lang.line = (key, phrase) => {
     const f = Cook.data.lines[key];
+    // data can name a word id instead of a lines key, for a whole line that's
+    // just one word said on its own (e.g. a stir speed): the word-stage
+    // system then applies to it like any other word (it can fade to dots).
+    if (!f && Cook.data.words[key]) {
+      const w = Lang.wordLine(key);
+      return { segs: w.segs, en: w.en, key };
+    }
     const lang = f.k ? "k" : "e";
     const tmpl = f.k || f.e;
     const segs = [];
@@ -223,6 +235,27 @@
       }
       setTimeout(fin, (700 + 260 * text.length) / Cook.speed);
     });
+  /**
+   * A word's own phonetic spelling for the voice (data.words[id].say, e.g.
+   * ph-no: kutchi "nar", say "narr"), when it differs from what's shown on
+   * screen. Keyed by the normalised display token so it lines up with the
+   * tokens Lang.speak falls back to. Built fresh each time (small, and only
+   * used on the rare device-voice fallback path, never on the hot path).
+   */
+  function saySpelling(token) {
+    for (const w of Object.values(Cook.data.words || {})) {
+      if (!w.kutchi || !w.say) continue;
+      const kt = Cook.norm(w.kutchi).split(" ");
+      const st = String(w.say).split(" ");
+      if (kt.length !== st.length) {
+        if (Cook.norm(w.kutchi) === token) return w.say;
+        continue;
+      }
+      const i = kt.indexOf(token);
+      if (i >= 0) return st[i];
+    }
+    return token;
+  }
   const tokenVoice = (w) => !!Cook.tts[w] || !!synthVoice();
   Lang.hasVoice = (line) => {
     if (fileFor(Lang.plain(line), "k") && line.segs.every((s) => s.lang !== "e")) return true;
@@ -242,7 +275,7 @@
       else if (g.lang === "k") {
         for (const w of Cook.norm(g.t).split(" ")) {
           if (Cook.tts[w]) await Cook.speakKey(w);
-          else if (w) await synth(w);
+          else if (w) await synth(saySpelling(w));
         }
       }
       await new Promise((r) => setTimeout(r, 120 / Cook.speed));

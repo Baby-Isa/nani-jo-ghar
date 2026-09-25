@@ -1,5 +1,5 @@
 {
- "_about": "Cook with Nani proof of concept (24 Sept 2026). Every Kutchi string here is a DRAFT. Words marked source 'zafar-24sep' were confirmed by Zafar as right for now (khun, not khand). Sentences only recombine frames already in the content master (Muke {x} khape / Ne {x} / Salamun alaykum / Wa alaikum salaam / Aabhar aanjo / Achija / Arre re / Hedo / Ghan). Cooking verbs have NO Kutchi yet: they are shown as gestures, and listed in docs/cook-with-nani-words.md for the family. Phase A (24 Sept 2026): words with kutchi null are ENGLISH PLACEHOLDERS shown in grey italic until the family supplies the Kutchi (see docs/Nani jo Ghar — Questions for Mum (Round 2 — Cooking).md).",
+ "_about": "Cook with Nani proof of concept (24 Sept 2026). Every Kutchi string here is a DRAFT. Words marked source 'zafar-24sep' were confirmed by Zafar as right for now (khun, not khand). Sentences only recombine frames already in the content master (Muke {x} khape / Ne {x} / Salamun alaykum / Wa alaikum salaam / Aabhar aanjo / Achija / Arre re / Hedo / Ghan). Cooking verbs have NO Kutchi yet: they are shown as gestures, and listed in docs/cook-with-nani-words.md for the family. Phase A (24 Sept 2026): words with kutchi null are ENGLISH PLACEHOLDERS shown in grey italic until the family supplies the Kutchi (see docs/Nani jo Ghar — Questions for Mum (Round 2 — Cooking).md). 25 Sept 2026: seven more words (ph-no, ph-slowly, ph-quickly, ph-half, ph-full, ph-big, ph-small) came from Zafar written phonetically over chat, temporary and unconfirmed (Mum to confirm). Each has `kutchi` (a readable romanised spelling, shown on screen) and `say` (Zafar's own phonetic spelling, used for the voice only, never shown).",
  "words": {
   "cook-paani": {
    "kutchi": "paani",
@@ -437,6 +437,55 @@
    "src": "zafar-24sep-draft",
    "draft": true,
    "linker": true
+  },
+  "ph-no": {
+   "kutchi": "nar",
+   "english": "no / not",
+   "say": "narr",
+   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "draft": true
+  },
+  "ph-slowly": {
+   "kutchi": "aastethi",
+   "english": "slowly",
+   "say": "arse-teh-tea",
+   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "draft": true
+  },
+  "ph-quickly": {
+   "kutchi": "jaldi",
+   "english": "quickly",
+   "say": "jal-dee",
+   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "draft": true
+  },
+  "ph-half": {
+   "kutchi": "adh",
+   "english": "half",
+   "say": "udd",
+   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "draft": true
+  },
+  "ph-full": {
+   "kutchi": "bharelo",
+   "english": "full",
+   "say": "barr-el-or",
+   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "draft": true
+  },
+  "ph-big": {
+   "kutchi": "vadho",
+   "english": "big",
+   "say": "wudd-oar",
+   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "draft": true
+  },
+  "ph-small": {
+   "kutchi": "nindho",
+   "english": "small",
+   "say": "nindh-oar",
+   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "draft": true
   }
  },
  "lines": {
@@ -481,7 +530,10 @@
    "en": "Give me the {x}."
   },
   "no": {
-   "e": "no {x}"
+   "k": "Nar {x}.",
+   "en": "No {x}.",
+   "draft": true,
+   "src": "Zafar 25 Sept, phonetic, unconfirmed"
   },
   "only": {
    "e": "only {x}"
@@ -491,12 +543,6 @@
   },
   "more": {
    "e": "More!"
-  },
-  "slowly": {
-   "e": "slowly"
-  },
-  "quickly": {
-   "e": "quickly"
   },
   "times": {
    "e": "{x} times"
@@ -554,7 +600,7 @@
   }
  },
  "grammar": {
-  "_about": "How this language builds sentences. The code only names roles (an order's first line, a list, a counted noun); the words are in `words` and the frames in `lines`. Another language (Gujarati first) swaps this block with those two. Order ladder: `order` frames start each dish, `list.next` joins things in any order, `then` (the line key) joins the next step of a sequence (\"Ne poi {x}.\", a draft from Zafar, Mum to confirm), `no` says leave-it-out rows, and `then_word` is the linker's word id: from its word stage 3 the ladder stops drawing the sequence and only the spoken linker tells you the order.",
+  "_about": "How this language builds sentences. The code only names roles (an order's first line, a list, a counted noun); the words are in `words` and the frames in `lines`. Another language (Gujarati first) swaps this block with those two. Order ladder: `order` frames start each dish, `list.next` joins things in any order, `then` (the line key) joins the next step of a sequence (\"Ne poi {x}.\", a draft from Zafar, Mum to confirm), `no` says leave-it-out rows (\"Nar {x}.\", a draft from Zafar, 25 Sept, Mum to confirm: same shape as `and` so a hidden no-row isn't given away), and `then_word` is the linker's word id: from its word stage 3 the ladder stops drawing the sequence and only the spoken linker tells you the order.",
   "numbers": {
    "1": "num-01",
    "2": "num-02",
@@ -2057,8 +2103,8 @@
      ],
      "dialMax": 3,
      "speedWords": {
-      "slow": "slowly",
-      "quick": "quickly"
+      "slow": "ph-slowly",
+      "quick": "ph-quickly"
      },
      "potX": 515,
      "potY": 385,

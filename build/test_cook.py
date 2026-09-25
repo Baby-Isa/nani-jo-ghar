@@ -568,7 +568,8 @@ ORDERS_JS = r"""
       const L = Cook.Order.ladder(d, 0);
       const rows = [].concat(...L.sections.map((s) => [].concat(...s.groups)));
       const said = Cook.Lang.plain(Cook.Order.speech([L]));
-      if (lv === 3 && !/big|small/.test(said)) out.errors.push(`maani level 3 says the size: ${said}`);
+      // the size word: an English placeholder (big/small) or Zafar's draft Kutchi (vadho/nindho)
+      if (lv === 3 && !/big|small|vadho|nindho/.test(said)) out.errors.push(`maani level 3 says the size: ${said}`);
       const kinds = new Set(rows.map((r) => r.ids[r.ids.length - 1]));
       if (kinds.size > 1) {
         both++;
