@@ -6,9 +6,9 @@
 <title>The doctor's clinic</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/shared/results.css?v=20260926T095225Z">
-<link rel="stylesheet" href="css/shared/onboard.css?v=20260926T095225Z">
-<link rel="stylesheet" href="css/clinic.css?v=20260926T095225Z">
+<link rel="stylesheet" href="css/shared/results.css?v=20260926T095524Z">
+<link rel="stylesheet" href="css/shared/onboard.css?v=20260926T095524Z">
+<link rel="stylesheet" href="css/clinic.css?v=20260926T095524Z">
 <!--
   The clinic (docs/modes/clinic-design.md: the pipeline, after the quality pass).
   clinic.html                      a clinic morning (the saved session; the first ever is one tiny patient)
@@ -48,29 +48,29 @@
   <span class="grow"></span>
   <a href="lab/clinic-heal-host.html">heal host</a>
 </div>
-<pre class="cl-lab-out" id="lab-out"></pre>
+<pre class="cl-lab-out hidden" id="lab-out"></pre>
 
-<script src="js/version.js?v=20260926T095225Z"></script>
-<script src="js/shared/uistore.js?v=20260926T095225Z"></script>
-<script src="js/shared/sfx.js?v=20260926T095225Z"></script>
-<script src="js/shared/results.js?v=20260926T095225Z"></script>
-<script src="js/shared/onboard.js?v=20260926T095225Z"></script>
-<script src="js/shared/speech.js?v=20260926T095225Z"></script>
-<script src="js/shared/say.js?v=20260926T095225Z"></script>
-<script src="js/clinic/body.js?v=20260926T095225Z"></script>
-<script src="js/clinic/kit.js?v=20260926T095225Z"></script>
-<script src="js/clinic/figure.js?v=20260926T095225Z"></script>
-<script src="js/clinic/screen.js?v=20260926T095225Z"></script>
-<script src="js/clinic/pipeline.js?v=20260926T095225Z"></script>
-<script src="js/clinic/heal/registry.js?v=20260926T095225Z"></script>
-<script src="js/clinic/heal/host.js?v=20260926T095225Z"></script>
-<script src="js/clinic/stages/common.js?v=20260926T095225Z"></script>
-<script src="js/clinic/stages/waiting.js?v=20260926T095225Z"></script>
-<script src="js/clinic/stages/diagnosis.js?v=20260926T095225Z"></script>
-<script src="js/clinic/stages/pharmacy.js?v=20260926T095225Z"></script>
-<script src="js/clinic/stages/heal.js?v=20260926T095225Z"></script>
-<script src="js/clinic/stages/sendoff.js?v=20260926T095225Z"></script>
-<script src="js/clinic/run.js?v=20260926T095225Z"></script>
+<script src="js/version.js?v=20260926T095524Z"></script>
+<script src="js/shared/uistore.js?v=20260926T095524Z"></script>
+<script src="js/shared/sfx.js?v=20260926T095524Z"></script>
+<script src="js/shared/results.js?v=20260926T095524Z"></script>
+<script src="js/shared/onboard.js?v=20260926T095524Z"></script>
+<script src="js/shared/speech.js?v=20260926T095524Z"></script>
+<script src="js/shared/say.js?v=20260926T095524Z"></script>
+<script src="js/clinic/body.js?v=20260926T095524Z"></script>
+<script src="js/clinic/kit.js?v=20260926T095524Z"></script>
+<script src="js/clinic/figure.js?v=20260926T095524Z"></script>
+<script src="js/clinic/screen.js?v=20260926T095524Z"></script>
+<script src="js/clinic/pipeline.js?v=20260926T095524Z"></script>
+<script src="js/clinic/heal/registry.js?v=20260926T095524Z"></script>
+<script src="js/clinic/heal/host.js?v=20260926T095524Z"></script>
+<script src="js/clinic/stages/common.js?v=20260926T095524Z"></script>
+<script src="js/clinic/stages/waiting.js?v=20260926T095524Z"></script>
+<script src="js/clinic/stages/diagnosis.js?v=20260926T095524Z"></script>
+<script src="js/clinic/stages/pharmacy.js?v=20260926T095524Z"></script>
+<script src="js/clinic/stages/heal.js?v=20260926T095524Z"></script>
+<script src="js/clinic/stages/sendoff.js?v=20260926T095524Z"></script>
+<script src="js/clinic/run.js?v=20260926T095524Z"></script>
 <script>
 (async function () {
   const Q = new URLSearchParams(location.search);
@@ -151,7 +151,7 @@
   };
   $("lab-go").onclick = () => C.go({ what: $("lab-what").value, variant: $("lab-variant").value, game: $("lab-game").value, level: $("lab-level").value, session: $("lab-session").value, seed: $("lab-seed").value, speak: $("lab-speak").checked });
 
-  if (lab) $("lab").classList.remove("hidden");
+  if (lab) { $("lab").classList.remove("hidden"); $("lab-out").classList.remove("hidden"); }
   const what = Q.get("stage") || (Q.get("patient") ? "patient" : Q.get("morning") ? "morning" : null);
   if (Q.get("level")) $("lab-level").value = Q.get("level");
   if (Q.get("seed")) $("lab-seed").value = Q.get("seed");
