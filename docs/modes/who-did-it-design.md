@@ -213,6 +213,8 @@ One case is one run through six stages. The child does one job per stage; a big 
 
 Each variant is a file (`js/who/stages/<stage>/<variant>.js`) over one or two mechanics, with levels as data (`stages.<stage>.<variant>.levels` in `data/who.json`), playable alone from the Case lab and from free play. "Reuses" names the mechanic file. Levels follow the deep dive's ladder (L1 a noun or a name; L2 the describing word with agreement; L3 not, and two things at once; L4 where and whose). Blind-bot rates are for level 1, best blind strategy, ear star.
 
+**Quality pass (Q3 above) applied to these tables:** 1a and 1b are one mini-game, **Dust rings** (the rings tapped are the count; no number pill); **2b is cut**; 3a's "lens over paws at L2" option is removed (paws visible at every level); **4c folds into 4a** as its mic option; **5a folds into the reveals** and **5c is cut**; 1c, 2d and 4d are "maybe later". The rows stay below for their mechanics, levels and blind rates.
+
 **Stage 1: Something's missing** (the scene of the crime: the side table with the sweet box, the shelf, the hook)
 
 | Variant | Mechanic | The Kutchi it carries | Levels | Reuses | Blind |
@@ -284,7 +286,7 @@ The clinic's pool of fun is its 15–20 healing games; this mode's is the **reve
 | R17 | **The cousin's school bag** | The older cousin's bag: books, a lunchbox, the sweets | Open the pockets in the called order: the *front* one, then the *big* one | position and size words | 8, 11 | 3 | 4 | 4 |
 | R18 | **The confession chorus** | The culprit says *[sorry]*, the others say *[share!]*, Kasuku squawks it back | Say the reply (5b) | *sorry; it's okay; share* | all | 4 | 4 | 5 |
 
-**First set of reveals for the build:** R1, R2, R3, R4, R12, R18 (all Cost 4–5, all from existing sprites and Cook's `count`, `knead`, `pour`, `fetch`). R7, R11, R15 are the L3 twists. R9, R14, R16 wait for their arcs. Every reveal ends the same way: the culprit's apology line, the child's reply (5b), the sweets back (5a), goodbye. The reveal is never gory or shaming: culprits laugh, the frame is "who ate / who took / who moved", never *chor* (Nani's Loop 1 note stands).
+**First set of reveals for the build (as cut in Q4 above):** R1, R2, R3, R12 (R3 re-designed as a tap-to-stamp, no pour), then R4 and R8 (re-designed: *Muke {x} de*; size or count instead of colour). R7, R11, R15 are the L3 twists. R18 is 5b. R5, R6, R9, R10, R13, R14, R16, R17 are "maybe later". Every reveal ends the same way: the culprit's apology line, the child's reply (5b), the sweets back (5a), goodbye. The reveal is never gory or shaming: culprits laugh, the frame is "who ate / who took / who moved", never *chor* (Nani's Loop 1 note stands).
 
 ### P4 Research: what children's detective, mystery and Guess Who games do
 
@@ -316,7 +318,7 @@ Read on 25 Sept 2026 (web search; some pages only through their summaries). The 
 | 2a | The lens is already on the floor; one yellow smudge and one white; Nani: *hardar*; drag the lens onto it; it hops into the notebook's single slot | *hardar* |
 | 3a | Three cats-and-parrot at the sofa; the notebook card is read: *hardar*; tap the one whose paws are yellow (the paws are visible at L1: no lens on this screen); Done is not needed with one clue, the tap is the accusation (the K1 shape) | *hardar* again |
 | 4a | The caught hop; "Caught you!" | *Caught you!* (placeholder) |
-| 5 | R1 or R3: wipe or wash, *hikdo* time; the sweet back in the box; sorry; tap "it's okay"; *Achija!* | *hikdo*, *Achija* |
+| 5 | R1 or R3: wipe or stamp, *ba* whiskers or *ba* paws; the sweet back in the box on its own (*hakro*, heard); sorry; tap "it's okay"; *Achija!* | *ba*, *hakro*, *Achija* |
 
 Onboarding is by showing (UX 8): the ghost finger does the lens drag once, then the child does it; the sidebar, stars and light bulb fade in over the first three cases. From the second session the case has two gaps and two clue slots; each level adds one thing (a suspect, a clue, a count, a twist), never two.
 
@@ -334,7 +336,7 @@ The phases 0–1 build (`build/reports/who-build.md`, branch `claude/build-who`)
 | `js/who/flow.js` | **Change** | Today it runs one `games/<file>.run(ctx)`; it becomes `pipeline.js`: runs `plan()`'s stages in order, mounts each stage's zones, shows the stage button between them, calls the shared end-of-round screen. The lab gains a stage picker (`?stage=1a|2c|3b…`) and a "whole case" mode |
 | `js/who/games/one-each.js` | **Fold** | Its K1 loop (`runK1`, `sayClue`, `recast`, `intro`) becomes stage 3a at level 1 (`stages/3-question/keep-who-fits.js` with n = 1). The intro card becomes the request card at stage 0 (`stages/0-card.js`) with read-along |
 | `js/who/games/keep-who-fits.js` | **Keep** as `stages/3-question/keep-who-fits.js` | Reads its clue chain from the notebook (stage 2's output) instead of saying each clue fresh; `sayClue` reads the card |
-| `js/who/games/look-closer.js` | **Split** | The lens over paws at the sofa stays as a stage-3a level-2 option (`examine` in lineup mode); the lens over the *scene* is the new stage 2a (`stages/2-gather/look-closer.js`), `examine` in scene mode (targets from `data/scenes/crime.json` instead of the line-up) |
+| `js/who/games/look-closer.js` | **Move** | The lens over the *scene* is the new stage 2a (`stages/2-gather/look-closer.js`), `examine` in scene mode (targets from `data/scenes/crime.json`; smudges grey until under the lens). The lens over paws at the sofa is **gone** (the quality pass: no gesture may appear at L2 that L1 lacks); traces are visible on the line-up at every level |
 | `js/who/games/tell-ali.js` | **Keep** as `stages/3-question/tell-ali.js` | Unchanged logic; the dealt card is shown by stage 0's card instead of its own; `Who.Tell` → `Say` |
 | `js/who/mechanics/lineup.js` | **Keep** | Add the `answers` state (3b's chorus bubbles) and a `slotsPhone` of 5 when the stage button shares the right edge |
 | `js/who/mechanics/examine.js` | **Keep, add a mode** | `mount(world, targets, …)` where targets are either the line-up (today) or scene spots; the snap-into-notebook animation |
@@ -384,11 +386,11 @@ who.html                                   page + Case lab (?lab=1&stage=<id>|ca
 js/who/case.js                             generator, solver, grader, plan()        (pure; Node and browser)
 js/who/pipeline.js                         runs plan()'s stages; the stage button; the lab   (replaces flow.js)
 js/who/stages/0-card.js                    the request card (local until shared)
-js/who/stages/1-missing/{count,gap,whose}.js
-js/who/stages/2-gather/{look-closer,dropped,trail,notebook}.js
+js/who/stages/1-missing/{rings,whose}.js                   (rings = 1a+1b merged; whose is later)
+js/who/stages/2-gather/{look-closer,trail,notebook}.js     (no dropped.js: 2b is cut; notebook is later)
 js/who/stages/3-question/{keep-who-fits,you-ask,tell-ali,nani-guesses}.js
-js/who/stages/4-accuse/{point,prove,say-who,trap}.js
-js/who/stages/5-reveal/{reveal,count-back,sorry,share}.js   (reveal.js runs a library entry from data)
+js/who/stages/4-accuse/{point,prove,trap}.js               (say-who is point's mic option; trap is later)
+js/who/stages/5-reveal/{reveal,sorry}.js                   (reveal.js runs a library entry from data; no count-back or share)
 js/who/mechanics/{lineup,examine,accuse,prove,guesswho,gap,trail}.js
 js/who/{ui,suspect,roundend}.js  css/who.css
 data/who.json                              + stages, reveals, session, crime
@@ -399,16 +401,16 @@ build/leak_who.mjs  build/test_who.py
 | Phase | Playable | Files | Done when |
 |---|---|---|---|
 | **0 Logic** | `plan()` and the stage graders in `case.js`; `stages`, `reveals`, `session`, `crime` in `data/who.json`; the whole-pipeline leak bot | Own only | `node build/leak_who.mjs --case --rounds 10000`: every stage's blind rate at or under P2's figures; the pipeline ear star under 1% at L1 and under 0.5% at L2; culprit and reveal uniform; every case's clue chain still passes the deep dive's rules |
-| **1 The greybox pipeline** | One variant per stage at L1–2 through the whole case: 0 card, 1a, 2a, 3a, 4a, 5a + R1/R2/R3 + 5b (pills) + goodbye; the notebook with fixed slots; the light bulb; one speaker per card; the local end-of-round screen; the first-ever session as data | Own only | `test_who.py --case --level 1,2 --viewport all` passes with one deliberate mistake per stage; screenshots checked; a five-year-old's path is three taps, one drag, one tap, one tap |
-| **2 Variants and speaking** | 1b, 2b (Cook `fetch` in belt mode), 2c `trail`, 3c (on `Say`), 3d (`guesswho` + `yesno`), 4b `prove`, 4c, 5b said aloud, 5c; Busy (the tiptoeing shadow); L3 of 3a (ask for the next card, no-op clues) | Own only (`Say` is landed) | `--stage` runs for every variant; the `null`/"Again?" path; the voice star only by mic or parent; bot rates hold |
-| **3 Art, story, free play, the session** | Real sofa and crime scene, overlays from `Overlay`; the reveal set R4, R12, R18 then R5–R8; Arc 1 Ch3 as a full case (stage 1 the box, 2a the spilt spices, 3a, 4a, R1, then the hand-over to Tidy up's repack); Ch5 as 3d alone; "Nani's mysteries" with sessions, single stages and the 60-second round; the shared card and round-end swapped in; Grandparent mode | Own + the shell's registration | `--free 3 --story a1c3`; art QA; a session of three cases in under 5 minutes |
-| **4 S5 and the door** | 2d notebook (Arc 2 Ch4, Arc 4 Ch1–2), 1c whose, 3b at L3, R9/R14/R16, the fibbing and case-board finales from the old W6–W7, G7 the door if the front-door scene exists | Own + `front-door.json` + `Rel` (read) | All bot rates under 10% |
+| **1 The greybox pipeline** | One mini-game per stage at L1–2 through the whole case: 0 card, 1 Dust rings, 2a, 3a, 4a (mic option for the name), the reveals R1/R2/R3/R12, 5b (pills) + goodbye; the notebook with fixed slots; the light bulb; one speaker per card; the auto-tick on every card line; the local end-of-round screen; the first-ever session as data | Own only | `test_who.py --case --level 1,2 --viewport all` passes with one deliberate mistake per stage; screenshots checked; a five-year-old's first case is four taps and one drag plus the stage buttons; no gesture differs between L1 and L2 of any stage |
+| **2 Variants and speaking** | 2c `trail`, 3c (on `Say`), 3d (`guesswho` + `yesno`), 4b `prove`, 5b said aloud, R2's spoken count, the reveals R4 and R8; Busy (the tiptoeing shadow); L3 of 3a (ask for the next card, no-op clues); the twists R7, R11, R15 | Own only (`Say` is landed) | `--stage` runs for every kept mini-game; the `null`/"Again?" path; the voice star only by mic or parent; bot rates hold |
+| **3 Art, story, free play, the session** | Real sofa and crime scene, overlays from `Overlay`; Arc 1 Ch3 as a full case (stage 1 the box, 2a the spilt spices, 3a, 4a, R1, then the hand-over to Tidy up's repack); Ch5 as 3d alone; "Nani's mysteries" with sessions, single stages and the 60-second round; the shared card and round-end swapped in; Grandparent mode; 4b's L4 chips (the "case closed" stamp) | Own + the shell's registration | `--free 3 --story a1c3`; art QA; a session of three cases in under 5 minutes |
+| **4 S5 and the door** | 2d notebook (Arc 2 Ch4, Arc 4 Ch1–2), 1c whose, 3b at L3, 4d the trap, the "maybe later" reveals as their arcs arrive (R6, R9, R10, R14), the fibbing finale from the old W6, G7 the door if the front-door scene exists | Own + `front-door.json` + `Rel` (read) | All bot rates under 10% |
 
 The first three tasks are unchanged in spirit from section 12.4: task 1 is `plan()` plus the data and the bot; task 2 is the greybox pipeline with the K1-shaped first session; task 3 is the harness. Onboarding scripts per stage are written at the end of phase 2, when the mechanics have stopped moving (UX 10).
 
 ### P9 Decisions for Zafar (only what blocks the build), each with a default
 
-1. **The ending beats come back.** The deep dive rejected "empty your pockets" as Tidy up's; the pipeline needs a real end, so 5a counts the sweets back (three taps) and 5b says sorry / it's okay, and the arranging stays Tidy up's. **Default: yes, both, tiny.**
+1. **The ending beats come back.** The deep dive rejected "empty your pockets" as Tidy up's; the pipeline needs a real end, so the reveal counts the sweets back where it naturally can (R2, R12; otherwise they return on their own while Nani counts aloud) and 5b says sorry / it's okay; the arranging stays Tidy up's. (The quality pass folded the separate 5a count-back into the reveals.) **Default: yes, both, tiny.**
 2. **Stage 1 at the first session: one gap, or three?** One gap means the first case has one clue (the K1 tap) and one count; three means the deep dive's 3 × 3 shape from the start. **Default: one**, per UX 7 ("each level adds one thing"); the 3 × 3 case is the second session.
 3. **Nani guesses (3d) and Tell Ali (3c) as stage variants, or as their own games?** As variants they share the pipeline's beginning and end (the dealt card is shown by the request card; the reveal follows); as their own games they stay 60 s. **Default: variants in a session, and single-stage entries in free play**, so both are true.
 4. **Can Nani be the culprit (R15)?** A twist the older children will love; it breaks "Nani gives the clues" once. **Default: yes, from L3, at most once a session, and only in free play** (never in a story chapter).

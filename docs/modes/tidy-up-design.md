@@ -6,7 +6,230 @@
 
 ---
 
+## Mini-game quality pass, 25 Sept 2026
+
+**What this is.** `docs/modes/MINIGAME-QUALITY-BRIEF.md` applied to the pipeline design below: every mini-game in P.2 and every place in P.3 answered against the five questions (what do you do, where is the challenge, where is the fun, where is the instruction, what is novel), scored, checked against the other five modes' pipeline sections, and cut to the best. **Where this section and P.2, P.3, P.6, P.8 or P.9 disagree, this section wins**; the lines in P.6, P.8 and P.9 that the cut changes have been edited in place and say so. Kutchi is only what the family has given (`docs/kutchi-grammar-notes.md`, `data/cook.json`): *santra, limu, kelo*, the spices, *hakro/hakri* (one), *ba* (two, said "ber"), *trae, char, panj*, *ne*, *pela … ne poi …*, *Muke {x} de* (give me), *Muke {x} khape*, *hi* (this), *khan* (take), *wij* (put in, heard for the pot: whether it serves for a basket is a question for Mum), *{x} lai* (for), *saathe*, *haa*, *wadho/nindho*, *Arre re!*, *Hedo!*, *Ghan*, *Aabhar aanjo*, *Achija*. Everything in `[EN: …]` is a grey placeholder. **No Kutchi is invented.**
+
+**The result in one line.** Nine pipeline mini-games (was 19) and nine library places (was 19, plus three skins that ride on them), one control grammar for the whole mode, and the card ticking itself.
+
+### Q.1 The three rules, applied to Tidy up
+
+**1. One control grammar for the mode: tap the thing, tap where it goes.** Zafar's clarified rule (`UX-PRINCIPLES.md` §12) is consistency *inside* each mini-game and no change of gesture between levels, not tap-only. Tidy up's verb is *arrange*, and every arranging action is the same kind of action, so the whole mode uses one grammar, **tap-tap**: tap an item (it lifts and bobs; the uniform dots appear, G1), tap a spot or a container or a cushion (it lands with its material sound). Nothing in the mode drags, holds, swipes or traces. What that changes:
+
+| Mechanic | Before (D.3 / P.2) | Now | Why |
+|---|---|---|---|
+| `place` | "Tap an item, tap a spot; **drag also works**" | **Tap-tap only** | Two gestures for one action is the inconsistency the rule bans; drag also invites hover feedback (G2) |
+| `pair` (the shoe rack) | "Two shoes **dragged** toe-to-toe" | **Tap a shoe, tap its mate**: they set down together as a pair | Same kind of action as placing (choose a thing, choose where), so the same gesture |
+| `pack` / Cook `count` inside it | Tap once per item asked | **Tap the sweet, tap the cell** (a count is a series of tap-taps) | One grammar; the tally shows only what you did (§11) |
+| `paw` | Tap the paw in time to shoo Simba | Unchanged (a tap) | — |
+| `fold`, `ribbon`, `straighten` (4d Make it nice) | A swipe to fold, a drag to straighten, a tie | **Cut** as a mini-game (it teaches no word, UX 6, and mixed three gestures). The lid and the ribbon survive as **one tap each** at the end of Pack it | Consistency and the lesson rule |
+| The belt (2c, the clinic's) | The clinic's belt went tap at L1 → drag at L2 | **Cut from Tidy up** (Q.6: four modes already use the belt). The clinic fixes its own level change | Distinctness |
+| Stage 3 L3 fetch-and-lay | Cook `fetch` (tap the named things) then `place` | Unchanged: tap, then tap-tap | Already one grammar |
+| The light bulb | Tap (§4) | Unchanged | — |
+
+**Levels change the Kutchi, never the gesture.** A level adds a word to the row (a count, a colour, an owner, a relation to a placed thing, a *leave*, a negative), a container, a guest, or a knocked thing. The tap-tap is identical at level 1 and level 4 of every mini-game.
+
+**2. Auto-tick on the card; mistakes only in the end review.** Each stage's request card shrinks into the left sidebar as the instruction card and **ticks itself**: a line ticks the moment that part is right. The Sceptic's worry is that a tick tells you where to put things (move it until it ticks). Two rules close that:
+- **Every set-down is an attempt.** The tick comes on a right set-down; a wrong set-down is logged silently for the end review (a red slot on the accuracy badge) and the thing stays where it was put. Nothing wiggles, buzzes or goes red mid-stage (from level 2; level 1 keeps its single gentle wiggle-and-recast as onboarding, §11). So "try every spot" costs a red slot per try and the ear star, which is exactly what §11 asks: the challenge is doing the right thing first.
+- **A stage-4 card shows dots, not rows.** If the card at "Put it right" listed Nani's rows and ticked the ones already true, it would name the *leave* rows. So that card is a fixed-shape card of **n dots** (n = things knocked), a dot ticking when a knocked thing is back in a right place; Nani's *voice* still says the rows, right things included, and the judgement stays with the ear.
+- **The stage review.** When the child presses the stage's big button, Nani looks at the board once, by voice: right rows hop and tick again as she says them (the second hearing), and for the first unticked line she gives the recast (*Arre re!* what it is, then what she asked) and the child may fix it once. The row is already a miss in the review; fixing it keeps the word from dropping a stage (6.4). The Unpacking check survives as the review, not as mid-round feedback.
+- Blind-bot rates don't move: they were always first-attempt odds (P.5).
+
+**3. The card is the master; Nani is a voice.** Nani is on screen only on the request card, in story moments and at the send-off (she opens the door). During play she is her recorded voice, plus interjections (*Arre re!*, *Hedo!*, *Ghan!*) and the **throbbing hint**: after ~10 s of no touch, the *next thing to act on* throbs (the next thing on the tray at stage 2, the tray itself at stage 3, the heap at stage 4, the guest at the door at stage 5), never a spot, container or cushion, because those are the answer. The card has one speaker (top right) and the sidebar one light bulb. The "?" ladder in 6.2 collapses to: replay (the card's speaker), the light bulb (English for 5/3/2/1 s by level, costs the ear), and the *warmer* half-board sweep as the level-1-only rung.
+
+### Q.2 Research: what is working right now, and the mechanic taken
+
+P.4 covered the tidying genre (Toca House's workday, Dr. Panda Home's to-do list, Baby Panda's Cleanup, Unpacking, A Little to the Left, the ASMR restock hits). This pass looked at the 2024–26 charts and awards the brief names, for the *mechanic* and why it lands.
+
+| Game (2024–26) | The specific mechanic | Why it works | Where it goes in Tidy up |
+|---|---|---|---|
+| **A Little to the Left: Seeing Stars** (2024 DLC; *Stars* mobile 2025; the final "Packed" update) | Multiple-solution puzzles, "up to 5 solutions" a level, plus the cat; Daily Tidy now with hints | The player reasons about a rule rather than hunting the designer's one answer; the cat gives a calm game a comic pulse | Rules not slots (3a), the `order` row with **two legal orders** (bunting, place 12), Simba's paw as the whole of stage 4 |
+| **Good Pizza, Great Pizza** (still charting 2025) | The riddle order: the customer says it once, cryptically; pressing *What?* on the poet makes her leave | Holding an instruction in your head *is* the game; asking again has a price | **2 Where does this go?** at L2: Nani says the rule **once**, then the stream comes with no per-item instruction; the light bulb costs the ear |
+| **Cooking Mama: Let's Cook!** | One gesture per verb; every mini-game under ten seconds; Mama's face reacts | A child never wonders what gesture is wanted | One grammar (tap-tap) for the mode; each stage-1/2 round under a minute |
+| **Overcooked 2** | Stations in sequence, orders as tickets that tick, the wash-up at the end; the kitchen itself moves mid-level | Process plus one twist | The pipeline's order and **stage 4 as the twist** (the kitchen moving = the paw) |
+| **Dr. Panda Home**, **Hey Duggee badge apps** (The Counting Badge: five activities → a badge) | A short to-do list that ticks as each chore is done; a badge at the end | Visible progress with no verdict | §11's auto-tick on the instruction card; the tidy room kept in the hub is the badge |
+| **Baby Panda's House Cleaning** (BabyBus, 2025: 5 rooms, 40+ tasks; toys to the storage basket) | Each room a checklist; sort by function, then finish | Room-as-episode; sorting is the most replayed task | A room per afternoon; the containers of stage 2; the toy-box skin of Pack it |
+| **Bluey: Let's Play!** (Budge, 2023–25) | The laundry room: "tidy the missing socks"; every object picked up has one reaction | Matching pairs is instantly satisfying at 5 | `pair` by tap-tap for the shoe rack (place 9) |
+| **Pok Pok Playroom** (Apple Design Award) | Hand-drawn toys where every switch, slider and blob answers with its own sound and motion; sorting in *Islands* | Tactile responses carry the fun; no rules on screen | The material sound per item × surface (stage 2's drop, stage 3's set-down), and Explore mode |
+| **Sago Mini World** (monthly content; Kidscreen, Parents' Choice Gold) | Tap anything and it responds; no timers, no game over | Safe curiosity for a five-year-old | Explore (no rows) for the first minute in a new room; nothing refused, nothing snaps |
+| **Pepi House / Pepi Wonder World**, **My Town: Home** | Items move between rooms and combine; characters react to what they're given | Objects carrying between scenes is a story | The tray that carries from stage to stage; the guests reacting to what you hand them (5b) |
+| **Duolingo ABC** (a caution) | A reviewer's complaint: letters "magnetize to the right spot" | The slot answers for the child | G1/G2 stand: no snap, no shaped gap, no hover straighten |
+| **Khan Academy Kids**, **Lingokids** | Sort objects into categories on a spoken cue; daily-routine topics | Category words carry the sort | The class words of stage 2 (fruit, dishes, shoes), once the family gives them |
+| **Toca Boca Days** (shut down Aug 2025), a caution | An open world with no job | Without a task the novelty fades in a week (the same note Snap's research made about Toca Nature) | The pipeline gives every room a job; Explore is a minute, not the mode |
+
+Sources: [A Little to the Left: Stars (App Store)](https://apps.apple.com/us/app/a-little-to-the-left-stars/id6738784151), [ALttL final update (Bleeding Cool)](https://bleedingcool.com/games/puzzle-title-a-little-to-the-left-releases-its-final-update/), [Good Pizza, Great Pizza orders (wiki)](https://good-pizza-great-pizza.fandom.com/wiki/List_of_orders), [Cooking Mama: Let's Cook! (App Store)](https://apps.apple.com/us/app/cooking-mama-lets-cook/id987360477), [Overcooked 2 (Co-Optimus)](https://www.co-optimus.com/review/2181/overcooked-2-co-op-review.html), [Hey Duggee: The Counting Badge (App Store)](https://apps.apple.com/us/app/hey-duggee-the-counting-badge/id1276540264), [Baby Panda's House Cleaning (Google Play)](https://play.google.com/store/apps/details?id=com.sinyee.babybus.assistant), [Bluey: Let's Play! (App Store)](https://apps.apple.com/us/app/bluey-lets-play/id1669091583), [Bluey: Let's Play! guide (Talk Android)](https://www.talkandroid.com/26364-bluey-lets-play-ultimate-game-guide-with-tips/), [Pok Pok Playroom (MacStories)](https://www.macstories.net/reviews/pok-pok-playroom-a-delightful-digital-toybox-for-kids/), [Pok Pok Playroom (Common Sense Media)](https://www.commonsensemedia.org/app-reviews/pok-pok-playroom), [Sago Mini World (Screenwise)](https://screenwiseapp.com/media/sago-mini-world-game), [Pepi Wonder World (Common Sense Media)](https://www.commonsensemedia.org/app-reviews/pepi-wonder-world), [My Town: Home (App Store)](https://apps.apple.com/us/app/my-town-home-family-games/id998176001), [Duolingo ABC (Common Sense Media)](https://www.commonsensemedia.org/app-reviews/duolingo-abc-learn-to-read), [Khan Academy Kids](https://learn.khanacademy.org/khan-academy-kids/), [Lingokids review, Dec 2025](https://techsavvymama.com/2025/12/lingokids-review-effective-playlearning-app.html), [Toca Boca Days (wiki)](https://toca-boca.fandom.com/wiki/Toca_Days), [2025 Kidscreen Award winners](https://kidscreen.com/2025/02/11/breaking-news-the-2025-kidscreen-award-winners-are/). App-store pages were read through search summaries where the proxy refused them.
+
+### Q.3 The five questions, scored, for every pipeline mini-game
+
+1–5 each: **Do** (is what you do clear and one grammar), **Challenge** (does the Kutchi decide it, and grow by level), **Fun** (a real moment of delight), **Instruction** (can the card and Nani say it in Kutchi we have), **Novel** (nothing else in any mode does this). Verdicts: keep, merge (into the named one), cut.
+
+| Variant (P.2) | Do | Challenge | Fun | Instruction | Novel | Total | Verdict |
+|---|---|---|---|---|---|---|---|
+| 1a Bring me the X | 4 | 4 | 3 | 5 | 3 | 19 | **Keep** as **1 Bring me the X** (with 1b's counts as its L2) |
+| 1b How many? | 4 | 3 | 3 | 5 | 1 | 16 | **Merge into 1**: a count is a row form, not a game (Cook `count`, Monsoon's drip count, Snap's film are the same) |
+| 1c What do you need? (speaking) | 3 | 3 | 3 | 4 | 1 | 14 | **Cut**: Dress up's 3d and Cook's `passme` reversed are the same moment. Tidy up's speaking is where the *position* is said (3d, 5b) |
+| 1d Ali fetches | 3 | 3 | 4 | 4 | 1 | 15 | **Cut**: "say the noun, Ali acts" is Monsoon S3c, the clinic's W3 and Snap's 3d |
+| 2a Named container | 4 | 3 | 3 | 4 | 2 | 16 | **Merge into 2** as its level 1 |
+| 2b Nani's rule | 4 | 5 | 4 | 4 | 5 | 22 | **Keep** as **2 Where does this go?** |
+| 2c The belt | 4 | 4 | 4 | 3 | 1 | 16 | **Cut**: the clinic's, Dress up's rail, Snap's bag and Who did it?'s dropped things already run on it |
+| 2d Say the class (speaking) | 3 | 3 | 2 | 3 | 1 | 12 | **Cut**: a bare class noun said aloud; no class words exist yet |
+| 3a Put it there | 5 | 5 | 4 | 5 | 5 | 24 | **Keep** as **3 Put it there** |
+| 3b Pack it | 5 | 5 | 5 | 5 | 5 | 25 | **Keep** as **4 Pack it** (the lid and ribbon taps from 4d end it) |
+| 3c Nani's rules | 4 | 5 | 4 | 3 | 3 | 19 | **Merge into 3** as its level-4 row types (class, negative); a row type, not a game |
+| 3d Ali's turn | 4 | 5 | 5 | 4 | 5 | 23 | **Keep** as **5 Ali's turn** |
+| 4a Simba's paw | 5 | 4 | 5 | 4 | 5 | 23 | **Keep** as **6 Simba's paw** |
+| 4b Zazu's theft | 4 | 4 | 4 | 2 | 3 | 17 | **Merge into 6** as its Arc-4 form (one thing carried off; the past-tense row) |
+| 4c The swap | 4 | 5 | 4 | 3 | 4 | 20 | **Keep** as **7 The swap** (L3) |
+| 4d Make it nice | 3 | 1 | 4 | 2 | 3 | 13 | **Cut**: teaches no word, three gestures; the lid and ribbon go to Pack it |
+| 5a Seat the guests | 5 | 4 | 5 | 4 | 5 | 23 | **Keep** as **8 Seat the guests** |
+| 5b Where's my cup? | 4 | 5 | 5 | 4 | 5 | 23 | **Keep** as **9 Where's my cup?** |
+| 5c Is everything okay? | 3 | 2 | 3 | 3 | 1 | 12 | **Not a Tidy up mini-game**: the shared send-off line (the clinic's feelings set, `say`), played after 9 unscored |
+
+Kept: **9**, at most three per stage (stage 1: 1 · stage 2: 1 · stage 3: 3 · stage 4: 2 · stage 5: 2), well under the brief's 6–8.
+
+### Q.4 The kept mini-games, the five answers each
+
+**1 Bring me the X** (stage 1, Gather) · reuses Cook `fetch` (tap the named thing), `place` for the tray, shared `whichone` for the decoys
+- *What you do.* The room's floor; 3 things (first session) to 8; a tray bottom right. Nani names one; tap it; it hops onto the tray with its sound and the tray's tally shows what's on it. The card's line ticks. Next line. The big button *[EN: Done]* when the card is all ticks (or whenever the child likes: unticked lines are red slots later).
+- *Challenge.* Look-alikes on the floor (a santra among a limu and a kelo; two cups). L1: the noun. L2: + a count (*ba limu*: two taps, then stop; a third is an extra), + colour or owner (*[EN: red] {cup}*, *Nana jo {cup}*). L3: **the position is the picker**: *{cup} [EN: under the cushion]*, with a second cup on the stairs. Blind 1 in 4 a line; extras and wrong taps are red slots.
+- *Fun.* Things land with a wooden knock, a clink, a soft thud; the tally's little pictures. Simba is asleep on one thing, random which (target or not); tap it and he lifts off with a *mrrp* and stalks away. A near miss: the last of *ba limu* rolls to the tray's edge and teeters.
+- *Instruction.* The card, after *Arre re! [EN: What a mess!]*: *Muke santra de.* · *Ne limu.* · *Ne ba kelo.* (all real). Nani's voice reads the next line as the previous ticks; *Ghan!* at the end.
+- *Novel.* The only fetch in any mode where **where a thing is** picks it (from L2), so position words are *recognised* here before they are *produced* at stage 3; and the only fetch whose wrong picks travel on (an extra limu on the tray has nowhere to go at stage 2, which is how *leave it* arrives). At level 1 it is Cook's `fetch` and says so: that is the deliberate shared mechanic, because the first ever session must be the simplest thing in the game.
+
+**2 Where does this go?** (stage 2, Sort) · reuses `place` (containers as spots), `check` as the stage review
+- *What you do.* Three containers stand in the room (a basket, a box, a shelf; four at L2). The tray hands over one thing at a time (shuffled). Tap the thing (it's already lifted: one tap confirms it), tap a container; it drops in with the container's sound. Card lines tick; the big button ends it.
+- *Challenge.* L1: each thing is named to its container as it arrives (*santra … [EN: basket in]*; *wij* if it serves). L2: **Nani says the rule once** before the stream (*[EN: all the] fruit [EN: in the] basket, [EN: the] dishes [EN: on the] shelf*), then the things come with **no instruction**; and one stray that fits no rule must go **back on the tray** (*[EN: leave it]*). L3: a *nothing* rule (*[EN: nothing in the] box*: the box stays empty and that is the test) and an owner rule (*Nana jo* things in Nana's box). Blind 1 in 3 a thing; the stray is 1 in 4.
+- *Fun.* The Unpacking foley: wicker, cardboard, wood. The basket bulges, the box lid pops up and a tail (Simba's) slides out; a full shelf wobbles once and settles. The stray is the comic beat: a shoe arrives among the fruit and Nani says *Arre re!*
+- *Instruction.* L1 per thing (the card has one line per thing, ticking as it drops). L2 the card holds the **rules**, one line each, and a line ticks when *all* its things are in (the Duggee badge); the light bulb is the only way to hear the rule again in English, so holding it in your head is the game (Good Pizza). Until E30/E31/E44 and the class nouns come back it is a **teaching stage**: the real Kutchi in it is the nouns, which the tray already told you.
+- *Novel.* The only mini-game in any mode where **one instruction is given once and then applied to a stream**; and the only one where a *nothing* rule is satisfied by leaving a container empty.
+
+**3 Put it there** (stage 3, Place; the engine that exists) · `place`, `stack`, `check`; Cook `fetch` at L3
+- *What you do.* A board (the shelves, the cloth, the tin) with ≥ items + 3 uniform spots; the things from the container in a tray. Tap a thing, tap a spot. Lines tick on a right set-down. *Done*; Nani's review by voice.
+- *Challenge.* Rows are rules, so several layouts are right and none is right without the words. L1: *{noun} {anchor}*, 2–3 rows, one surface. L2: + colour or owner, + a *leave* row (a thing on the tray that must stay there). L3: + a relation to a **placed** thing (*{jug} {plate} [EN: next to]*), *between*, fetch-and-lay (Cook `fetch` from the shelf first). L4: the rule rows of the old 3c: *[EN: all the red ones] {rack} [EN: on]*, *[EN: nothing] {door} [EN: next to]*, always paired with a placement row that needs that area. Blind ≈1.5–4% (measured, `tidy-build.md`).
+- *Fun.* The set-down sounds; the bowl rocks; a plate on a plate stacks straight or wobbles (neat star); at the review each right thing **hops** as Nani says its row, so the finished board performs itself back to the child.
+- *Instruction.* The card's rows, in the family's word order (noun, then anchor, then relation): *santra [EN: bowl] [EN: in]*, *limu [EN: top shelf] [EN: on]*; *hardar [EN: in the middle]* on the tin. Nani's voice at the review; *Ghan!*
+- *Novel.* The only mini-game in the game that grades a **whole layout against rules** (Cook grades steps, Find it taps, the clinic gestures). Unchanged from P.2 apart from tap-tap and the tick.
+
+**4 Pack it** (stage 3) · `pack`, Cook `count`
+- *What you do.* A box with cells (more cells than needed); a plate of mixed things, more of each than any count. Tap a thing, tap a cell, as many times as the count; the cell's tally shows what's in it. The lines tick. Then **one tap** closes the lid and **one tap** ties the ribbon (from 4d; ungraded, the close).
+- *Challenge.* Three slots a row: which, how many, which cell. L1: two count rows (*trae kelo [EN: top row]*). L2: three, with corners and the middle. L3: a *nothing* cell (*[EN: nothing] [EN: in the corners]*) and *ba* of two kinds in one row (*ba santra ne ba limu*). Blind ≈4% a row, ≈0.1% a board.
+- *Fun.* The box fills like a gift; the lid closes with a soft clap and the ribbon pulls tight with a *zip*; the box then sits on the dastarkhwan at stage 5, so the child sees their box handed to the guests. Skins: the sweet box (E59), the toy box (*[EN: toy]*), the lunchbox week (place 7).
+- *Instruction.* *Trae kelo [EN: top row]*, *ba santra [EN: in the middle]*, *[EN: nothing] [EN: corners]*; the digit shows only while the number word is at stage 1–2.
+- *Novel.* **Counting into positions**: Cook counts into a pot and Find it into a basket; only here does *where* the count goes matter.
+
+**5 Ali's turn** (stage 3, speaking) · `tell`, shared `say` (`listen({choices, timeoutMs})`), pills fallback
+- *What you do.* Nani's card shows the finished board as a picture; Ali holds the tray and can't see it. The child **says** each row; Ali places what he heard, choosing uniformly among the spots that satisfy it. The line ticks when Ali's placement matches the picture. Nani's review as usual.
+- *Challenge.* L1: the noun only (Ali knows the place from the card): *santra!* L2: count then noun as two listens (*ba … limu*). L3: **noun then place** (*{cup} … Nana [EN: in front of]*), where an ambiguous phrase (two spots fit) makes Ali pick one at random, so precision is the lesson (the barrier game). Voice 0 blind; pills 1 in 4.
+- *Fun.* Ali's slapstick: hears *limu* for *kelo* and proudly sets the wrong fruit down; hears an ambiguous place and puts the cup in front of the wrong uncle; Nani's *Arre re!* at the review is for *him*.
+- *Instruction.* The picture card and the closed set on pills; *[EN: Which one?]* (A8.6) from Ali after the timeout; *Muke {x} de* is what Ali says back when he wants a thing.
+- *Novel.* The only speaking moment in any mode where the child **produces a position phrase** (Monsoon, the clinic, Dress up and Snap all have "say the noun, someone acts"; the mechanic is shared with them on purpose, the *content* is Tidy up's).
+
+**6 Simba's paw** (stage 4, Put it right; from level 2) · `paw`, `check`, `place`
+- *What you do.* The board from stage 3. The paw comes in from the right along a random strip; a 2 s window to **tap the paw** (it throbs: it's the action) and shoo him, saving one thing; otherwise two or three things fall into a heap. The card is **n dots**. Nani's voice says rows, for right things and knocked ones alike. Tap a heap thing, tap its spot; a dot ticks.
+- *Challenge.* Which rows matter, by ear: at L2 Nani names every row (the heap tells you *which*; the words tell you *where*); at L3 she names two of three knocked and two right ones, so one thing must be put back from memory of the row heard at stage 3 (spaced retrieval inside one session), and a *leave* line (*[EN: leave the] {jug}*) must be left. **Arc 4 form** (old 4b): Zazu carries **one** thing off and drops it elsewhere; Nani: *[EN: it was on …]* (past tense decides where it goes back). Blind ≈5% at L2.
+- *Fun.* The paw itself; the near miss when you shoo him in time and he yowls; the heap's clatter; Zazu's guilty hop.
+- *Instruction.* *[EN: Put it back]* E75 as the card's title over the dots; Nani's rows by voice; *[EN: Nearly!]* E80 at the review.
+- *Novel.* The only mini-game where the job is to **judge what to leave alone**, and the only one that re-tests the same rows twice in one session.
+
+**7 The swap** (stage 4; level 3, Zayn's and Maryam's) · `check` with the recast off
+- *What you do.* The little cousin swapped two things while nobody looked; **nothing wiggles**. Nani repeats every row by voice, in a new order; the card is **two dots**. Tap a thing, tap the other: they swap. A right swap ticks both dots; a wrong one is a silent red slot and can be swapped back.
+- *Challenge.* Listening to *every* row against the board and finding the two that fail. Six things = 15 pairs (≈7% blind); eight = 28 (≈3.6%).
+- *Fun.* The reveal: the moment both dots tick the cousin pops up from behind the bolster, caught, and Kasuku squawks *Arre re!*
+- *Instruction.* Only the rows, heard again; no new words. That is the point: it is the mode's listening test, dressed as a puzzle.
+- *Novel.* The only mini-game where **the board is the question and the rows are the answer key** (Who did it? deduces from clues to a person; this deduces from words to a layout).
+
+**8 Seat the guests** (stage 5, Send-off) · `place` with people as items, shared `overlay`
+- *What you do.* The knock; Nani opens the door; two guests stand there (four at L3); cushions round the cloth. Tap a guest (they raise a hand), tap a cushion; they walk over and sit. Lines tick.
+- *Challenge.* Kinship + position. L1: *Nana [EN: in the middle]*, *[EN: aunty] Nana [EN: next to]* (2 guests, 4 cushions). L2: a position relative to a thing the child placed at stage 3 (*[EN: the cousin] [EN: in front of the red cup]*). L3: 4 guests, *[EN: the tallest at the back]* (S6, both directions asked). Blind ≈6% at L1; it never earns the ear alone (<2 tested rows).
+- *Fun.* Nana's *ahh* as he sits; the cousin bouncing on the cushion; the cloth the child laid now has people at it. This is the Arc 1 set piece, so it has to be the prettiest screen in the mode.
+- *Instruction.* *Nana [EN: in the middle]*; the kinship words E85–E102 are asked; *Salamun alaykum* from the guests (the clinic's greeting).
+- *Novel.* **People as the things arranged** (the clinic's and Dress up's benches *pick* a person; only here is a person *placed* at a position). The family photo (place 17) is this mini-game grown up, and says so.
+
+**9 Where's my cup?** (stage 5, speaking or pointing) · shared `say`, shared `whichone` for the point
+- *What you do.* A seated guest asks *[EN: Where's my cup?]*. L1: **point**: tap the thing (the cup the child put in front of Nana at stage 3). L2: **say** the anchor (closed set: the people at the cloth: *Nana*, *Nani*, *Ma*). L3: say anchor + relation (two listens). The guest reaches for what was said.
+- *Challenge.* The answer depends on the child's own layout, so there is no fixed answer to learn; the closed set is people's names first (real), position words when they land.
+- *Fun.* Right: the guest drinks, *Aabhar aanjo*. Wrong: they lift the wrong thing (a plate, Simba), look at it, puzzled, and ask again; Kasuku repeats what the child said.
+- *Instruction.* The guest's question (placeholder; *Muke chai khape* is a real line a guest can say first); the child's answer set on pills as the fallback; the parent's tick in Grandparent mode.
+- *Novel.* The only speaking moment in any mode where the child **answers a question with a position**, about a board they made.
+
+Then the **shared send-off line** (old 5c): Nani *[EN: Is everything okay?]*, the guests' feelings word (the clinic's set), the child's *Achija!* or *Aabhar aanjo*. Unscored, the same component in every mode, then the end-of-round screen (UX 9).
+
+### Q.5 The library: 19 places → 9 (plus three skins)
+
+Scored on the five questions as above; **Novel** here means "no other place in this library, and no mini-game elsewhere, does this". *Skin* = the same board and rows with different art and words, which is not a separate place.
+
+| # | Place | Do | Challenge | Fun | Instruction | Novel | Total | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Kitchen shelves (in build) | 4 | 4 | 3 | 5 | 3 | 19 | **Keep**: the first-ever board; real nouns; in/on, top/bottom |
+| 2 | Masala dabba (in build) | 4 | 5 | 3 | 5 | 4 | 21 | **Keep**: the only round board (*in the middle*, *next to* around a ring; this side / that side); real spice nouns |
+| 3 | Fruit box (in build) | 5 | 5 | 5 | 5 | 5 | 25 | **Keep**: Pack it's home; skins 6 and 18 ride on it |
+| 4 | Dastarkhwan (in build) | 5 | 5 | 5 | 5 | 5 | 25 | **Keep**: the Arc 1 set piece; people, colours, *in front of*, *Nana jo* |
+| 5 | The fridge | 3 | 3 | 3 | 4 | 1 | 14 | *Maybe later*: a skin of 1 with the cold words; the ASMR-restock feel, if a second kitchen board is ever wanted |
+| 6 | The sweet box | — | — | — | — | — | — | **Skin of 3** (E59 and the *nothing* cell); Arc 1 Ch3's home |
+| 7 | The lunchbox week | 4 | 5 | 3 | 5 | 5 | 22 | **Keep** (7+): the only place where **time words** decide where; skin 8 rides on it |
+| 8 | Nana's pill box | — | — | — | — | — | — | **Skin of 7** (8+; Arc 3 Ch4 with Nana present; D.2's safety note stands) |
+| 9 | The shoe rack | 4 | 4 | 4 | 4 | 4 | 20 | **Keep**: the only hand-and-eye pairing (tap-tap), then colour, size and side; Arc 1 Ch2 |
+| 10 | The washing line | 3 | 4 | 3 | 4 | 1 | 15 | **Cut**: Monsoon rush's S4c *Hang it up* is the same game on the same line; Monsoon owns it |
+| 11 | Big Ma's thread tin | 3 | 3 | 3 | 4 | 1 | 14 | **Cut**: Big Ma's room is Dress up's; a colour-into-rows board is 1 with reels |
+| 12 | Eid bunting | 4 | 4 | 4 | 5 | 4 | 21 | **Keep**: the only `order` row with **two legal orders** (Seeing Stars); *pela … ne poi* real; the hub beat |
+| 13 | The quilt | 3 | 4 | 3 | 4 | 2 | 16 | *Maybe later* (Arc 2): kinship colours on a grid is Pack it with patches |
+| 14 | Make the bed | 4 | 4 | 4 | 4 | 3 | 19 | **Keep** (5s): the only board with **under** and up/down as the deciders (the pillow *up*, Simba's toy *under* the charpai); the bedroom scene; `fold` cut, the blanket is placed by tap-tap |
+| 15 | The bookshelf and the school bag | 3 | 3 | 2 | 4 | 2 | 14 | *Maybe later*: order alone is a 25% guess; lives as the `order` row inside 12 |
+| 16 | The veranda pots | 3 | 5 | 3 | 4 | 3 | 18 | *Maybe later* (Arc 5): comparatives, when S6 words exist; the row type lives in 17 |
+| 17 | The family photo | 5 | 5 | 5 | 5 | 5 | 25 | **Keep**: Seat the guests grown up (behind / in front, the tallest, kinship); the photo is kept; hands the scene to Snap's S20 *All of us* (a deliberate chain) |
+| 18 | The toy box | 3 | 4 | 3 | 4 | 2 | 16 | **Skin of 3** (*all / nothing*, *[EN: toy]*): answers Toca House's "no toys to put away" |
+| 19 | Into the shed | 3 | 3 | 3 | 4 | 1 | 14 | **Cut**: Monsoon rush's S2d *Into the shed*; the scene and animals are Monsoon's |
+
+**Kept: 1, 2, 3, 4, 7, 9, 12, 14, 17** (nine boards) with **6, 8, 18 as skins** of 3 and 7. **First set (build order):** 1, 3, 4 (in build) → 9 and 12 (the second art batch) → 14 (the bedroom scene) → 2 (needs only the tin's spots) → 6 and 7 as words land → 17 (Arc 2 kinship only, Arc 5 with comparatives) → 8.
+
+**Maybe later, one line each.** 5 the fridge: a cold-words skin of the shelves. 13 the quilt: Arc 2's gift, patches by kinship colour on Pack it's grid. 15 the bookshelf: biggest-first as a row inside the bunting until *order* can stand alone. 16 the veranda pots: the S6 comparatives board for Arc 5. 10 and 19: Monsoon's. 11: Dress up's.
+
+### Q.6 Distinctness across modes
+
+Read against the "Pipeline design" sections of the clinic, Monsoon rush, Snap, Dress up and Who did it?.
+
+| Tidy up mini-game | Nearest elsewhere | Verdict |
+|---|---|---|
+| 1 Bring me the X | Monsoon S2a *Pots inside* (*Muke dudh de*, tap the pot), the clinic's W1, Snap 1c, Dress up 3a: all Cook `fetch` | **Deliberately shared** at level 1 (the mode's simplest first session); distinct from level 2, where the **position is the picker**, which none of them has |
+| 2 Where does this go? | Monsoon S2d shoo-to-shelter (which animal, which shelter); Snap 6a (a print to the slot that speaks its caption) | Distinct: the **rule said once, then a stream**, and the *nothing* container; nowhere else |
+| 3 Put it there | Monsoon S4c *Hang it up* ("Tidy up's drag to a spot") | Monsoon reuses `place` from us; ours is now **tap-tap**, so Monsoon's line changes with it. The layout-against-rules board is only here |
+| 4 Pack it | Cook `count`; Snap's *load the film*; Who did it? 5a *count them back* | Distinct: counting **into cells** |
+| 5 Ali's turn | Monsoon S3c, clinic W3, Dress up 5c, Snap 3d: "say it, Ali acts" | Shared `say`/`tell` on purpose; distinct in **what** is said: the position |
+| 6 Simba's paw | Who did it?'s cats as culprits; Monsoon's cats behind the wall | Distinct: the **leave** judgement and the re-test of rows |
+| 7 The swap | Who did it? 3a keep-who-fits (deduction to a person) | Distinct: deduction from rows to a **layout** |
+| 8 Seat the guests | Clinic W1 / Dress up 1a "bring in Nana" (tap the person) | Distinct: the person is **placed at a position**; Snap 5b hands a print *to* a person, not a person to a place |
+| 9 Where's my cup? | Snap 5c *What's this?* (say the noun for a print); Who did it? 4c say who | Distinct: the answer is a **position**, about the child's own layout |
+| Send-off line | Every mode | The shared component; not scored here |
+| Place 17 Family photo | Snap S20 *All of us* | A **chain**, stated in both docs: Tidy up arranges the family, Snap shoots them |
+| Place 9 Shoe rack | Who did it? R13 (sweets in the big shoes) | R13 borrows our shoe pairs for a reveal; no overlap in what the child does |
+| Place 4 Dastarkhwan | Cook's Chai tray (cups to people) | Cook *serves* one cup to one person; we *lay* a table by relations; the tea tray for guests stays rejected (P.3) |
+
+### Q.7 Level-1 walkthroughs, one per stage (the first set)
+
+**Stage 1, Bring me the X: the first ever session.** The kitchen floor, cutaway, the tray bottom right, no sidebar, no stars, no light bulb yet. Three things lie about: a santra by the stove, a limu on the mat, a kelo on the stool, and Simba asleep on one of them. The request card: Nani's face, *Arre re! [EN: What a mess!]* … *Muke santra de. Ne limu. Ne kelo.*, each chunk lighting as it's said; then it shrinks to the left. Everything dims but the santra; the ghost finger taps it; it hops to the tray with a wooden knock and the first line ticks with a small *ting*; the tray's tally shows one santra. Nani's voice: *Ne limu*; the second line throbs; the child taps the limu, it lands, tick. *Ne kelo*: it's under Simba; the tap lifts Simba off with a *mrrp* and he stalks away; the kelo hops on, tick; Nani: *Ghan!* The big *[EN: Done]* button, then the end-of-round screen: three green slots, no time shown yet, *Next*, and the three words with their English. About 60 seconds.
+
+**Stage 2, Where does this go? (third session).** The tray from stage 1 sits in the left sidebar under the card; on the floor stand a basket, a box and a low shelf. The card: *[EN: Where does this go?]* with one line per thing. The tray hands over the santra (lifted, bobbing); Nani: *santra … [EN: basket]*; the child taps the santra, then the basket; it drops in with a wicker rustle, the basket bulges, the line ticks. Next the *[EN: cup]* to the shelf (a clink); then the limu the child picked by mistake at stage 1: Nani's line for it is *[EN: leave it]* and the tray is the right tap. Wrong drops make no sound of complaint: the thing sits there and Nani looks in each container at the big button, *Arre re! hi limu … [EN: the basket]*, and the child moves it once. The basket then slides off to become stage 3's board.
+
+**Stage 3, Put it there (second session, the kitchen shelves).** The shelves fill the board; the santra and the limu wait on the tray; faint uniform dots show only while something is lifted. The card: *santra [EN: bowl] [EN: in]* · *limu [EN: top shelf] [EN: on]*. Tap the santra (it lifts and bobs; the dots appear), tap the bowl; it lands with a soft thud, the bowl rocks, the line ticks. Tap the limu, tap a top-shelf dot; a clink, tick. A wrong set-down at level 1 gets one gentle wiggle and Nani's recast, once. *Done*: Nani's voice takes the rows in a new order, each thing hopping as she says it: *santra … [EN: bowl in]. Ghan!* Then the send-off line and the end screen: two green slots, the stopwatch, *Next*, the words.
+
+**Stage 4, Simba's paw (its first appearance, level 2).** The cloth from stage 3, laid. A paw slides in from the right along a random strip and throbs: the child taps it in time and Simba yowls off, or misses and two things clatter into a heap by the bolster. The card is two empty dots under *[EN: Put it back]*. Nani's voice, by rows, right ones included: *santra [EN: bowl in]* … *[EN: cup] Nana [EN: in front of]* … *[EN: leave the] {jug}*. The child taps the santra in the heap, taps the bowl: the first dot ticks; the cup in front of Nana, second dot; the jug was never knocked and stays. The big button; Nani's one-line review; on to the knock.
+
+**Stage 5, Seat the guests and Where's my cup? (third session).** A knock; Nani opens the door; Nana and the aunty stand there; four cushions round the cloth the child laid. The card: *Nana [EN: in the middle]* · *[EN: aunty] Nana [EN: next to]*. Tap Nana (he raises a hand), tap the middle cushion: he walks over, sits with an *ahh*, tick. Tap the aunty, tap the cushion beside him, tick. Nana, looking at the cloth: *[EN: Where's my cup?]*; the child taps the cup they put in front of him at stage 3; he drinks: *Aabhar aanjo*. (Wrong: he lifts the plate, puzzled, and asks again.) Nani: *[EN: Is everything okay?]*; the guests' *[EN: happy]*; the child's *Achija!*; the end-of-round screen for the whole afternoon, then the words, and the room stays tidy in the hub with the guests at the cloth.
+
+### Q.8 What this changes in the pipeline design (edited in place below)
+
+- **P.2** stands as the long-form description of the *kept* variants only; the cut and merged ones (1b, 1c, 1d, 2a, 2c, 2d, 3c, 4b, 4d, 5c) are as this section says. Speaking moments are **5 Ali's turn** and **9 Where's my cup?** (plus the shared send-off line); *passme* remains a sidebar interjection, not a mini-game.
+- **P.3** is replaced by Q.5: nine places, three skins; the first set order above.
+- **P.6**: `js/tidy/stubs/belt.js` is not built; `mechanics/fold.js` is not built; `pair` is tap-tap; `place` loses drag. Mechanics count: **T (existing) 6** (place, pack, stack, check, paw, tell) · **new 1** (pair) + the pipeline runner · **reused from Cook 3** (count, fetch, passme) · **shared 3** (whichone, say, overlay). Bot strategies gain *tick-hunt* (set down everywhere until it ticks) and *move-everything-Nani-names*, both of which must score under 10% on the ear because every set-down is an attempt.
+- **P.8** decision 4 (the belt) is withdrawn; the rest stand.
+- **P.9** phases are edited: A builds 1 and 2 (no belt stub); B builds 6, 7, 8 and 9-by-pointing; C swaps in speech for 5 and 9; D builds places 9, 12, 14, then 2, 6, 7, 17, 8. The onboarding scripts (UX 10) are written per kept mini-game only.
+- **D.3's `place` line** ("drag also works") and **D.3's `pair`** ("dragged toe-to-toe") are superseded by Q.1.
+
+---
+
 ## Pipeline design, 25 Sept 2026
+
+**Quality pass, 25 Sept 2026 (late):** the section above supersedes P.2, P.3 and the named lines of P.6, P.8 and P.9. Nine mini-games and nine places are kept; controls are tap-tap throughout; the card auto-ticks.
 
 **What this is.** The mode rebuilt to `docs/modes/PIPELINE-BRIEF.md`: a **pipeline of five stages** that runs from "What a mess!" to the knock at the door, each stage a set of mini-game variants, stitched into one short story. It sits on the deep dive below (D.1–D.9) and the build that exists (`js/tidy/`, `data/tidy.json`, `build/reports/tidy-build.md`): the current engine becomes **stage 3** of the pipeline, and the kinds of round K1–K5 become that stage's variants. **It supersedes D.1's backbone, D.5's first set and ladder, D.6, D.9 and section 12 where they conflict.** The guards G1–G8, the data model (8.1), the hint ladder, word-stage fading, recasts, the stars, D.3's mechanics and D.4's speaking moments all stand, and are referred to rather than repeated. Kutchi that exists is written as such (*santra, limu, hardar, trae, Muke {x} de*); everything else is `[EN: …]` and stays a grey placeholder. **No Kutchi is invented.**
 
@@ -102,6 +325,8 @@ Then the **end-of-round screen** (UX 9, the shared component): the stopwatch for
 
 ### P.3 The big library: the places (stage 3 boards)
 
+*Superseded by Q.5 (the quality pass): nine places kept (1, 2, 3, 4, 7, 9, 12, 14, 17), 6, 8 and 18 as skins, 10, 11 and 19 cut, the rest "maybe later". The table is kept for the pitches and the word lists.*
+
 The clinic has a healing game per body part; Tidy up has a **place** per container or surface in Nani's house. Each is a stage-3 board with its own rows and levels, reachable from the pipeline (stage 2 filled it) or alone from the map. Scores 1–5: **Fun** for a child, **Kutchi** = how much of the decision the words carry, **Build** 5 = cheap (existing scene, art and mechanics). Age fit is which of 5 / 8 / 11 it suits. *In build* = playable in the lab today.
 
 | # | Place | One-line pitch | The Kutchi it teaches | Mechanic | Age | Fun | Kutchi | Build |
@@ -191,7 +416,7 @@ Measured against `js/tidy/` (3,047 lines), `data/tidy.json`, `tidy.html`, `build
 | The three scene sidecars | **Keep** | Each gains `floor` spots (where things lie at stage 1), `containers` (stage 2 drop zones) and `cushions` for stage 5; the bedroom and doorway scenes are new |
 | `build/test_tidy.py` | **Keeps** | `--afternoon` runs the pipeline at levels 1–3 in every size; the tap-cover and no-label checks apply to every stage |
 
-Mechanics count after the redesign: **T (existing) 6** (place, pack, stack, check, paw, tell) · **new 3** (pair, fold/ribbon as one tiny file, and the pipeline runner, which is not a mechanic) · **reused from Cook 3** (count, fetch, passme) · **shared 5** (whichone, say, overlay, peg with Monsoon rush, **belt with the clinic**).
+Mechanics count after the redesign (as edited by the quality pass, Q.8): **T (existing) 6** (place, pack, stack, check, paw, tell; `place` is tap-tap only, no drag) · **new 1** (pair, by tap-tap) plus the pipeline runner, which is not a mechanic · **reused from Cook 3** (count, fetch, passme) · **shared 3** (whichone, say, overlay). *Cut by the quality pass:* `fold`/`ribbon` (the lid and ribbon are one tap each inside `pack`), `peg` (place 10 went to Monsoon rush), the clinic's `belt` (2c cut) and its stub.
 
 ### P.7 Words needed (priority order)
 
@@ -209,7 +434,7 @@ Mechanics count after the redesign: **T (existing) 6** (place, pack, stack, chec
 1. **Sort is its own stage** (stage 2), never skipped from the third session on, so the class words get a job of their own. *Default: yes.* The alternative folds class rules into stage 3 (as K4) and loses the factory shape.
 2. **Stage 4 is the twist, and only from level 2.** Simba never appears at level 1; K2 leaves stage 3. *Default: yes.*
 3. **The send-off seats the guests (5a) and lets a guest ask "Where's my cup?" (5b).** This needs 3–4 guest sprites on cushions (the foundation's overlay-at-anchor) and the kinship words. *Default: yes; until the sprites exist, 5a uses the existing badge faces on the cushions.*
-4. **The belt (2c) is the clinic's mechanic, shared.** The clinic owns `js/shared/mechanics/belt.js`; Tidy up stubs it in phase A and swaps at integration, as it did with `rel.js`. *Default: yes.*
+4. ~~**The belt (2c) is the clinic's mechanic, shared.**~~ **Withdrawn by the quality pass** (Q.3, Q.6): 2c is cut; four modes already run on the belt and Tidy up needs no fifth. No stub, no decision.
 5. **The first ever Tidy up session is stage 1 with three things**, before any pantry-style placing. *Default: yes* (it is also the mode's smallest possible round, UX 7).
 6. **Places 7 and 8 (the week, the pill box)** go ahead at 7+ and 8+ now that the days are asked. *Default: yes* (D.9.1 stands).
 7. **Dastarkhwan camera:** the kept high angle (H). *Default: H* (D.9.2 stands; stage 5's cushions need the guests behind the bolster).
@@ -218,20 +443,20 @@ Mechanics count after the redesign: **T (existing) 6** (place, pack, stack, chec
 
 **Read first:** P.1–P.8, then D.3, D.4, 8.1 (guards and data model), `build/reports/tidy-build.md` and `docs/tidy-up-build-log.md`, `docs/UX-PRINCIPLES.md` (all ten points), `docs/modes/BUILD-COMMON.md`. **Never invent Kutchi.** Phases A–C touch **only** the files this mode owns; the shared pieces are assumed, not built.
 
-**Files this mode owns.** `tidy.html` · `css/tidy.css` · `js/tidy/{engine,rules,bot,lab,pipeline}.js` · `js/tidy/mechanics/{place,pack,stack,check,paw,tell,pair,fold}.js` · `js/tidy/games/*.js` (one per place) · `js/tidy/stubs/{fetch,passme,belt}.js` · `data/tidy.json` · `data/scenes/{kitchen,sitting-room,worktop,doorway-floor,bedroom}-tidy.json` · `build/leak_tidy.mjs` · `build/test_tidy.py` · `docs/tidy-up-build-log.md`.
+**Files this mode owns** (as edited by the quality pass: no `fold`, no `belt`). `tidy.html` · `css/tidy.css` · `js/tidy/{engine,rules,bot,lab,pipeline}.js` · `js/tidy/mechanics/{place,pack,stack,check,paw,tell,pair}.js` · `js/tidy/games/*.js` (one per place) · `js/tidy/stubs/{fetch,passme}.js` · `data/tidy.json` · `data/scenes/{kitchen,sitting-room,worktop,doorway-floor,bedroom}-tidy.json` · `build/leak_tidy.mjs` · `build/test_tidy.py` · `docs/tidy-up-build-log.md`.
 
-**Shared pieces assumed (code against the named API, don't build):** `js/shared/rel.js` (`Rel.holds/options/check/solve`, in the repo now), `js/shared/say.js` + `speech.js` (`listen({choices, timeoutMs})`), `js/shared/whichone.js`, `js/shared/overlay.js` (guests at anchors), `js/shared/stars.js` (star sets, `earPass`, `minTested`, `voiceTested`), the clinic's `belt`, the shell's request card with read-along, the shared end-of-round screen and the onboarding kit (UX 9–10), `progress.js` word stages.
+**Shared pieces assumed (code against the named API, don't build):** `js/shared/rel.js` (`Rel.holds/options/check/solve`, in the repo now), `js/shared/say.js` + `speech.js` (`listen({choices, timeoutMs})`), `js/shared/whichone.js`, `js/shared/overlay.js` (guests at anchors), `js/shared/stars.js` (star sets, `earPass`, `minTested`, `voiceTested`), the shell's request card with read-along and the **auto-ticking instruction card** (§11), the shared end-of-round screen, the send-off line and the onboarding kit (UX 9–10), `progress.js` word stages. (The clinic's `belt` is no longer assumed: 2c is cut.)
 
 | Phase | Files | What's playable | Acceptance |
 |---|---|---|---|
-| **A Pipeline and stages 1–2** (own files) | `js/tidy/pipeline.js` (new), `rules.js` (+`gather`, `sort`, `twist`, `seat`), `data/tidy.json` (+`pipeline`, `rooms`, `stages`), the sidecars (+`floor`, `containers`, `cushions`), `lab.js` (*Afternoon*), `bot.js`, `leak_tidy.mjs` | In the lab: a **level-1 afternoon** in the kitchen, 1 → 2 → 3 → 5c, on the existing shelves; variants 1a, 1b, 2a, 2b; `stubs/belt.js` for 2c; the sidebar on the left; K2 removed from stage 3 | `--afternoon` at levels 1–2 in all six sizes; `leak_tidy.mjs --gen 1000 --bot 500` with the new strategies, every strategy <10% per stage except Reader; the carried-forward state visible in `__tidy` hooks |
-| **B Stages 4 and 5** (own files) | `paw.js` (Zazu), `check.js` (recast-off knob), `rules.seat`, `games/*` untouched, `mechanics/pair.js`, `mechanics/fold.js` | 4a, 4c, 4d; 5a with badge faces on cushions, 5b by pointing, 5c with the existing greetings; the afternoon clock; level-3 afternoons in the sitting room (T2) and the worktop (T3) | `--afternoon` at level 3; bot strategies for stages 4–5 under 10%; screenshots of every stage looked at |
-| **C Swap the stubs, UX 1–4 and 9** | `tidy.html` (drop `stubs/rel.js`, `stubs/say.js`), `engine.js` (request card with read-along, light bulb, left sidebar, end-of-round screen via the shared component), `css/tidy.css` | Speaking moments 1c, 2d, 3d, 5b by voice with the pill fallback; the voice star; the first-ever session (stage 1 alone, three things) with the onboarding overlay | Phase A and B acceptance repeated on `js/shared/rel.js`; `null` from `listen` never blocks; a first-launch run shows no sidebar, stars or light bulb |
-| **D The library** | `games/{fridge,sweetbox,week,pillbox,shoes,bunting,...}.js`, `data/scenes/doorway-floor-tidy.json`, `bedroom-tidy.json`, `assets/tidy/*` | Places 5–9 and 12 first (skins of 1 and 3, then shoes and bunting), each in the pipeline and alone; the rest in library order as words and art arrive | Each place: its own bot run, its own audit, its words present before the ear counts |
+| **A Pipeline and stages 1–2** (own files) | `js/tidy/pipeline.js` (new), `rules.js` (+`gather`, `sort`, `twist`, `seat`), `data/tidy.json` (+`pipeline`, `rooms`, `stages`), the sidecars (+`floor`, `containers`, `cushions`), `lab.js` (*Afternoon*), `bot.js`, `leak_tidy.mjs`; `place.js` loses drag (tap-tap only, Q.1) | In the lab: a **level-1 afternoon** in the kitchen, 1 → 2 → 3 → the send-off line, on the existing shelves; mini-games **1 Bring me the X** (counts as its L2) and **2 Where does this go?** (named per thing at L1, the rule once at L2); no belt; the sidebar on the left; the card auto-ticks and every set-down is an attempt; K2 removed from stage 3 | `--afternoon` at levels 1–2 in all six sizes; `leak_tidy.mjs --gen 1000 --bot 500` with the new strategies (incl. *tick-hunt*), every strategy <10% per stage except Reader; the carried-forward state visible in `__tidy` hooks |
+| **B Stages 4 and 5** (own files) | `paw.js` (the Zazu form for Arc 4), `check.js` (recast-off knob; the stage review), `rules.seat`, `games/*` untouched, `mechanics/pair.js` (tap-tap) | **6 Simba's paw** (the n-dot card), **7 The swap**; **8 Seat the guests** with badge faces on cushions, **9 Where's my cup?** by pointing, the shared send-off line; the afternoon clock; level-3 afternoons in the sitting room (T2) and the worktop (T3) | `--afternoon` at level 3; bot strategies for stages 4–5 (incl. *move-everything-Nani-names*) under 10%; screenshots of every stage looked at |
+| **C Swap the stubs, UX 1–4 and 9** | `tidy.html` (drop `stubs/rel.js`, `stubs/say.js`), `engine.js` (request card with read-along, light bulb, left sidebar, end-of-round screen via the shared component), `css/tidy.css` | Speaking moments **5 Ali's turn** and **9 Where's my cup?** by voice with the pill fallback; the voice star; the first-ever session (stage 1 alone, three things) with the onboarding overlay | Phase A and B acceptance repeated on `js/shared/rel.js`; `null` from `listen` never blocks; a first-launch run shows no sidebar, stars or light bulb |
+| **D The library** | `games/{shoes,bunting,bed,dabba,sweetbox,week,photo,pillbox}.js`, `data/scenes/doorway-floor-tidy.json`, `bedroom-tidy.json`, `assets/tidy/*` | Places **9, 12, 14** first (shoes by tap-tap pairs, bunting with two legal orders, the bed), then **2**, then **6 and 7** as words land (skins of 3; the week), then **17** and **8**; each in the pipeline and alone (Q.5's order) | Each place: its own bot run, its own audit, its words present before the ear counts |
 | **E Story and integration** | Story beats as data; the shell | Arc 1 Ch1 end to end (kitchen afternoon → sitting-room afternoon → the knock); Ch2 the doorway; Ch3 the sweet box with stage 4; the hub's 60-second stage; onboarding scripts per stage (UX 10) written last | The visual QA checklist; a persona round with Zafar's notes |
 
 **The first three tasks.**
-1. **`pipeline.js` and `Rules.gather` / `Rules.sort`** (phase A): `Tidy.afternoon({room, level, profile})` builds `[{stage, round}]` from `data.pipeline.levels[level].stages`, runs each through `Tidy.play`, carries `{tray, containers, layout, results, clock}`, and ends on the end-of-round screen with the afternoon's totals. Stage 1's round is a `place` zone whose only spot is the tray; stage 2's is a `place` zone whose spots are the containers, one thing at a time from the tray; both use `check` at the end.
+1. **`pipeline.js` and `Rules.gather` / `Rules.sort`** (phase A): `Tidy.afternoon({room, level, profile})` builds `[{stage, round}]` from `data.pipeline.levels[level].stages`, runs each through `Tidy.play`, carries `{tray, containers, layout, results, clock}`, and ends on the end-of-round screen with the afternoon's totals. Stage 1's round is a `place` zone whose only spot is the tray; stage 2's is a `place` zone whose spots are the containers, one thing at a time from the tray; both use `check` as the stage review. Every set-down is logged as an attempt (`results.attempts[row]`), the card line ticks on the first right one, and nothing is refused or flagged mid-stage (Q.1).
 2. **Bot strategies and the data** (phase A): the six new strategies in `bot.js`; `data.rooms.kitchen` (scene, containers, places [1, 2, 5], guests) and `data.stages.*.levels`; `leak_tidy.mjs` prints stage × level → ear rate and the afternoon product.
 3. **Stage 4 and 5a** (phase B): `Rules.twist(layout, level)` (which things the paw knocks, which rows Nani says, the right ones included), `paw.js` as the stage opener, `Rules.seat(layout, guests, level)` and 5a on the cloth's cushions with `place`; 5c on the existing `Cook.Lang` greetings.
 
