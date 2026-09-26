@@ -279,7 +279,7 @@
       src.start();
     });
   };
-  /** Speak several lines in a row (an order is "Muke chai khape." then "Ne bo khun."). */
+  /** Speak several lines in a row (an order is "Muke chai khape." then "Ne ba khun."). */
   Cook.speakAll = async function (plains) {
     for (const p of plains) {
       await Cook.speak(p);

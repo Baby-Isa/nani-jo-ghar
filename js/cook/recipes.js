@@ -262,7 +262,7 @@
       if (e.list) {
         // a spoken list; each step its own dot, an any-order group shares
         // one, and the same item twice running is one step with a count
-        // ("be ghos": one dot per item type, never per unit)
+        // ("ba gos": one dot per item type, never per unit)
         const steps = [];
         seriesOf(def, e.list, env).forEach((entry) => {
           const last = steps[steps.length - 1];
@@ -278,7 +278,7 @@
           [].concat(st.entry).forEach((id, j) => {
             const ps = st.n > 1 ? Lang.countParts(st.n, id) : [id];
             const ph = Lang.phrase(ps);
-            // "Pela channa. Ne poi bataato." (first …, and then …: the family's word order)
+            // "Pela chana. Ne poi bataato." (first …, and then …: the family's word order)
             const line = !said.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
             said.push(line);
             rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null });
@@ -290,8 +290,10 @@
       if (e.tally) {
         const t = res(e.tally, env) || {};
         const ids = Object.keys(t).filter((k) => t[k] > 0);
-        // a kind can be compound, "ph-big+cook-maani": its words said in turn ("bo big maani")
-        const partsOf = (id) => Lang.countParts(t[id], id).flatMap((p) => (typeof p === "string" ? p.split("+") : [p]));
+        // a kind can be compound, "ph-big+cook-maani": its words said in turn ("ba wadhi maani");
+        // `unit` is a word said before each kind ("ba lakri gos": lakri, the skewer), whose gender picks "one" (hakri)
+        const unit = e.unit ? res(e.unit, env) : null;
+        const partsOf = (id) => Lang.countParts(t[id], id).flatMap((p) => (typeof p === "string" ? (unit ? [unit] : []).concat(p.split("+")) : [p]));
         const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(partsOf(id))));
         if (!ls.length) return;
         if (!when) lines.push(ls.length > 1 ? Lang.join(ls) : ls[0]);

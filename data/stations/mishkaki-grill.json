@@ -1,5 +1,5 @@
 {
- "_about": "Data for the combined station js/cook/stations/mishkaki-grill.js. `station`: its name, goal and one line per phase. `words` are the skewer kinds the order names (English placeholders until the family gives the Kutchi; ghos = meat is the draft word ph-meat). `mechanic.skewer` is shared by the thread and grill mechanics: which piece is meat or veg (`classes`), which word names which kind of skewer (`kinds`), and how each piece is drawn on a skewer (`art`, placeholder). `mechanic.levels`: which level each zone's mechanic runs at (the grill's own levels in data/cook.json add spots and speed) and `juggle`. Wave 6 (docs/UX-PRINCIPLES.md 5): one job at a time: thread every skewer, press \"Go to the barbecue\", then grill them. `juggle: true` (level 4, optional, for older children) is the old two-zone screen, threading while the grill cooks. The order's shape per level (1 skewer; 2; 2-3 with a mixed one; 3-4) is the mishkaki recipe's `skewers` slot.",
+ "_about": "Data for the combined station js/cook/stations/mishkaki-grill.js. `station`: its name, goal and one line per phase. `words` are the skewer kinds the order names (the family's words, 26 Sept: gos = meat (ph-meat), boga = vegetable, mixed; each is said after lakri, the skewer: ba lakri gos). `mechanic.skewer` is shared by the thread and grill mechanics: which piece is meat or veg (`classes`), which word names which kind of skewer (`kinds`), and how each piece is drawn on a skewer (`art`, placeholder). `mechanic.levels`: which level each zone's mechanic runs at (the grill's own levels in data/cook.json add spots and speed) and `juggle`. Wave 6 (docs/UX-PRINCIPLES.md 5): one job at a time: thread every skewer, press \"Go to the barbecue\", then grill them. `juggle: true` (level 4, optional, for older children) is the old two-zone screen, threading while the grill cooks. The order's shape per level (1 skewer; 2; 2-3 with a mixed one; 3-4) is the mishkaki recipe's `skewers` slot.",
  "station": {
   "name": "Mishkaki grill",
   "verb": "Thread, grill, plate",
@@ -12,20 +12,26 @@
  },
  "words": {
   "ph-veg": {
-   "kutchi": null,
+   "kutchi": "boga",
    "english": "vegetable",
-   "src": "placeholder",
+   "gender": "unknown",
+   "src": "Mum 26 Sept (Section B, B17; docs/kutchi-grammar-notes.md §25): boga, the family's word (from Swahili)",
+   "src_change": "was an English placeholder",
    "_note": "a vegetable skewer (no meat)"
   },
   "ph-mixed": {
-   "kutchi": null,
+   "kutchi": "mixed",
    "english": "mixed",
-   "src": "placeholder",
+   "gender": "unknown",
+   "src": "Mum 26 Sept (Section B, B18; docs/kutchi-grammar-notes.md §25): mixed, the English word",
+   "src_change": "was an English placeholder",
    "_note": "a skewer of meat and vegetables, threaded in the order said"
   }
  },
  "mechanic": {
   "skewer": {
+   "unit": "ph-lakri",
+   "_unit": "the word said before a skewer's kind when Nani repeats it (hakri lakri gos, ba lakri boga): the same as the mishkaki recipe's tally `unit`",
    "classes": {
     "ph-meat": "meat",
     "ph-pepper": "veg",

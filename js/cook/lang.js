@@ -142,13 +142,13 @@
     if (b) out.push({ t: b, lang });
     return { segs: out, en: (a || "") + en + (b || "") };
   };
-  /** A phrase said on its own as the first item of a list: "channa." (grammar.list.first) */
+  /** A phrase said on its own as the first item of a list: "chana." (grammar.list.first) */
   Lang.bare = (phrase) => {
     const last = [...phrase.segs].reverse().find((s) => s.lang);
     return wrap((G().list || {}).first || "{x}.", phrase.segs, phrase.en, last ? last.lang : "k");
   };
   /**
-   * A spoken list: "chana. Ne bataato. Ne dahi." (grammar.list). Entries
+   * A spoken list: "chana. Ne bataato. Ne dai." (grammar.list). Entries
    * may be ids or any-order groups (arrays of ids). With {seq: true} the
    * next step is joined with grammar.then ("ne poi", and then: a draft), so
    * the linker tells you the order matters; things in one group with "ne".
@@ -164,7 +164,7 @@
     );
     return Lang.join(out);
   };
-  /** A number said on its own as you count ("be!"): grammar.number. */
+  /** A number said on its own as you count ("ba!"): grammar.number. */
   Lang.numLine = (n) => wrap(G().number || "{x}!", Lang.num(n), String(n), "k");
   Lang.join = (lines) => {
     const segs = [];
@@ -179,7 +179,7 @@
   /**
    * HTML for a line. opts.hide: a function (wordId) -> true to hide that
    * word as dots (used by the mission card when a word is well known).
-   * Hidden words next to each other share one "•••" ("bo khun" looks like
+   * Hidden words next to each other share one "•••" ("ba khun" looks like
    * "dudh"), so the number of dot groups never tells you a row has a
    * number in it (audit, Wave 4: the Chai tray's rows).
    */
@@ -229,7 +229,7 @@
   }
   /*
    * Missing placeholder audio. Words added after the last TTS build (the
-   * 24 Sept drafts: dai, channa, ghos, bajr jo maani, ne poi) have no file
+   * 24-26 Sept family words: dai, chana, gos, bajr ji maani, ne poi, lakri, boga) have no file
    * until build/build_cook_tts.py is run with network. A Kutchi token with
    * no file is read by the browser's own speech voice if it has one
    * (Gujarati or Hindi first), otherwise skipped, as missing lines always
@@ -264,7 +264,7 @@
     });
   /**
    * A word's own phonetic spelling for the voice (data.words[id].say, e.g.
-   * ph-no: kutchi "nar", say "narr"), when it differs from what's shown on
+   * ph-quickly: kutchi "jaldi", say "jal-dee"), when it differs from what's shown on
    * screen. Keyed by the normalised display token so it lines up with the
    * tokens Lang.speak falls back to. Built fresh each time (small, and only
    * used on the rare device-voice fallback path, never on the hot path).

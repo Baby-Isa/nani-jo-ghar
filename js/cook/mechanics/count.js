@@ -3,7 +3,7 @@
  * for, then the tick. The look-alike bowls beside it (salt next to sugar)
  * can be spooned in too: a spoon of the wrong one costs the ear star
  * ("Arre re!"). The badge shows the running tally only, never the target.
- * Kutchi: the number ("bo khun"), "no khun", and which bowl.
+ * Kutchi: the number ("ba khun"), "khun na", and which bowl.
  * Cook.Spoon.spoon(z, {bowl, into, word}) is the one-spoon animation the
  * Chai tray uses cup by cup.
  * Knobs (data.mechanics.count): max (spoons before the bowl stops giving),
