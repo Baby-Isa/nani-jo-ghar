@@ -1,0 +1,1101 @@
+{
+ "_readme": "Hands v3 QA (26 Sept 2026): every hand image viewed at full size (on grey), checked for finger count, hand scale, camera, light and skin, tool gaps/clean alpha, sleeve, and jewellery (wraps in perspective with the back half hidden, shaded in the hands' soft 3D style and light, not a flat sticker or dotted line, sized right). before = the v2 state at the start of v3; after = the final v3 state.",
+ "before": {
+  "summary": {
+   "/master/": {
+    "total": 56,
+    "pass": 39
+   },
+   "/player-boy/": {
+    "total": 56,
+    "pass": 39
+   },
+   "/player-girl/": {
+    "total": 55,
+    "pass": 0
+   },
+   "/nani/": {
+    "total": 102,
+    "pass": 0
+   }
+  },
+  "files": {
+   "assets/characters/hands/master/hand-a1-flat-palm-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; top-down back of hand; scale ok; soft 3D light; no tool"
+   },
+   "assets/characters/hands/master/hand-a2-heel-push-t.png": {
+    "verdict": "FAIL",
+    "reason": "reads as a flat, full-length palm, not a heel-of-hand push (known since v1)"
+   },
+   "assets/characters/hands/master/hand-a3-palm-up-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; palm up at eye level; clean"
+   },
+   "assets/characters/hands/master/hand-a3-palm-up-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; palm, top-down; clean"
+   },
+   "assets/characters/hands/master/hand-a4-reach-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits spread; back of hand; clean"
+   },
+   "assets/characters/hands/master/hand-a5-wave-f1-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; back of hand; clean"
+   },
+   "assets/characters/hands/master/hand-a5-wave-f2-e.png": {
+    "verdict": "FAIL",
+    "reason": "finger count: only 3 fingers + thumb (4 digits); the little finger is missing, not hidden"
+   },
+   "assets/characters/hands/master/hand-a6-palm-out-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; clean"
+   },
+   "assets/characters/hands/master/hand-a7-hand-on-heart-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; back of hand, diagonal; clean"
+   },
+   "assets/characters/hands/master/hand-a8-cupped-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; cupped palm; clean"
+   },
+   "assets/characters/hands/master/hand-a8-cupped-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; cupped palm top-down; clean"
+   },
+   "assets/characters/hands/master/hand-b1-handle-grip-t.png": {
+    "verdict": "FAIL",
+    "reason": "grip unreadable: the 'thumb' has a nail facing the camera and reads as a raised index finger; no visible handle gap or exit from the fist; a keyed-out notch between thumb and fist; the cuff is a flat, pale block unlike the set"
+   },
+   "assets/characters/hands/master/hand-b2-vertical-grip-e.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: the key-out left ragged, stair-stepped cuts along the fingertips and a straight vertical cut through the palm edge (x~690); pose itself reads (5, fist)"
+   },
+   "assets/characters/hands/master/hand-b2-vertical-grip-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (fist, top-down), clear hole for the handle; clean"
+   },
+   "assets/characters/hands/master/hand-b3-stick-grip-e.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: ragged, torn key-out edges on the index tip and the thumb's left side; pose reads (5, fist)"
+   },
+   "assets/characters/hands/master/hand-b4-rolling-pin-t.png": {
+    "verdict": "PASS",
+    "reason": "5+5 digits, backs of both hands top-down; clean"
+   },
+   "assets/characters/hands/master/hand-b5-hook-grip-e.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: the key-out chopped the thumb off with a flat horizontal cut and left stair-stepped edges down the index side; the gap slices through digits"
+   },
+   "assets/characters/hands/master/hand-b5-hook-grip-t.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: same as b5-e: thumb truncated by a straight cut, stair-stepped edges on the index and palm side"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (index and thumb open, three curled); clean"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (pinch open, top-down side view of hand); clean"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (index and thumb pinched, three curled); clean"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (pinch closed); clean"
+   },
+   "assets/characters/hands/master/hand-c2-tripod-grip-t.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: the pencil gap is a thin jagged slit between thumb and index, stair-stepped, with a dark speck at the index tip; no readable pencil-width gap; flat pale cuff block"
+   },
+   "assets/characters/hands/master/hand-c3-side-pinch-e.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: a hard-edged dark rectangle notch cut into the index top (card remnant), straight vertical edges"
+   },
+   "assets/characters/hands/master/hand-c3-side-pinch-t.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: the card slot is a small hard-edged square hole between thumb and index; no readable card gap; flat pale cuff block"
+   },
+   "assets/characters/hands/master/hand-c4-point-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (index up, three curled, thumb tucked); clean"
+   },
+   "assets/characters/hands/master/hand-c4-point-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (index up, three curled, thumb out); clean"
+   },
+   "assets/characters/hands/master/hand-c5-two-hand-fold-t.png": {
+    "verdict": "FAIL",
+    "reason": "clean alpha: a faint semi-transparent rectangular frame line round the canvas (rows 12-13 and the sides, alpha ~100); hands themselves 5+5 and fine"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f1-open-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits, claw open; clean"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f1-open-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits, claw open top-down; clean"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: the ball hole has torn, ragged edges (upper left and bottom of the hole) and a chewed index tip"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: straight vertical key-out cuts down the index and middle finger sides with stair steps; ghost pixels beside the index"
+   },
+   "assets/characters/hands/master/hand-d2-c-hold-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits in a C around the gap; clean alpha; lighter skin than the set but within the normaliser"
+   },
+   "assets/characters/hands/master/hand-d2-c-hold-t.png": {
+    "verdict": "FAIL",
+    "reason": "clean alpha / tool gap: stair-stepped cut along the thumb's underside, a notch at the web, faint ghost fringes left in the background round the thumb"
+   },
+   "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png": {
+    "verdict": "FAIL",
+    "reason": "clean alpha / tool gap: straight-cut, stepped edges on the left hand's outer side and the right hand's fingertips; faint ghost fringes; hands 5+5 otherwise read"
+   },
+   "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png": {
+    "verdict": "FAIL",
+    "reason": "tool gap: index tip chewed and a straight vertical cut down the index side; notch at the thumb web"
+   },
+   "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (fist, four knuckles, thumb tucked); clean"
+   },
+   "assets/characters/hands/master/hand-d5-throw-release-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits spread; clean"
+   },
+   "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png": {
+    "verdict": "FAIL",
+    "reason": "light: the left hand is a5-f1 mirrored, so it is lit from the right (highlights on its right side); both hands 5+5 and clean otherwise"
+   },
+   "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png": {
+    "verdict": "PASS",
+    "reason": "5+5, cupped palms together; clean"
+   },
+   "assets/characters/hands/master/hand-e1-thumbs-up-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (fist + thumb up); clean"
+   },
+   "assets/characters/hands/master/hand-e2-handshake-e.png": {
+    "verdict": "PASS",
+    "reason": "5; side entry is the pose; clean"
+   },
+   "assets/characters/hands/master/hand-e3-count-1-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 1 up, thumb tucked; clean"
+   },
+   "assets/characters/hands/master/hand-e3-count-2-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 2 up, thumb folded; clean"
+   },
+   "assets/characters/hands/master/hand-e3-count-3-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 3 up, thumb and little finger folded; clean"
+   },
+   "assets/characters/hands/master/hand-e3-count-4-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 4 up, thumb hidden, palm edge smooth; clean"
+   },
+   "assets/characters/hands/master/hand-e3-count-5-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 5 up; clean"
+   },
+   "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png": {
+    "verdict": "PASS",
+    "reason": "5+5, backs of both hands, apart; clean"
+   },
+   "assets/characters/hands/master/hand-e4-clap-f2-together-e.png": {
+    "verdict": "PASS",
+    "reason": "two hands palm to palm, front hand 5, rear hand's fingers and thumb where the pose puts them; clean"
+   },
+   "assets/characters/hands/master/hand-e5-arm-up-fist-e.png": {
+    "verdict": "PASS",
+    "reason": "back of the fist, knuckles up (same image as d4-f2, same view); clean"
+   },
+   "assets/characters/hands/master/hand-e6-stretch-e.png": {
+    "verdict": "PASS",
+    "reason": "5 spread; clean"
+   },
+   "assets/characters/hands/master/hand-e7-shrug-e.png": {
+    "verdict": "PASS",
+    "reason": "5, palm up; clean"
+   },
+   "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png": {
+    "verdict": "PASS",
+    "reason": "5, fingers raised; clean"
+   },
+   "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png": {
+    "verdict": "PASS",
+    "reason": "5, fingers pressed; clean (14 px top pad)"
+   },
+   "assets/characters/hands/master/hand-f2-drum-cupped-t.png": {
+    "verdict": "PASS",
+    "reason": "5, back of cupped hand top-down; clean"
+   },
+   "assets/characters/hands/master/hand-f4-phone-two-hands-e.png": {
+    "verdict": "PASS",
+    "reason": "5+5, clear phone gap between the hands; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a1-flat-palm-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; top-down back of hand; scale ok; soft 3D light; no tool"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a2-heel-push-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): reads as a flat, full-length palm, not a heel-of-hand push (known since v1)"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a3-palm-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; palm up at eye level; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a3-palm-up-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; palm, top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a4-reach-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits spread; back of hand; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a5-wave-f1-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; back of hand; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a5-wave-f2-e.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): finger count: only 3 fingers + thumb (4 digits); the little finger is missing, not hidden"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a6-palm-out-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a7-hand-on-heart-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; back of hand, diagonal; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a8-cupped-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; cupped palm; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a8-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; cupped palm top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b1-handle-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): grip unreadable: the 'thumb' has a nail facing the camera and reads as a raised index finger; no visible handle gap or exit from the fist; a keyed-out notch between thumb and fist; the cuff is a flat, pale block unlike the set"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b2-vertical-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: the key-out left ragged, stair-stepped cuts along the fingertips and a straight vertical cut through the palm edge (x~690); pose itself reads (5, fist)"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b2-vertical-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (fist, top-down), clear hole for the handle; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b3-stick-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: ragged, torn key-out edges on the index tip and the thumb's left side; pose reads (5, fist)"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b4-rolling-pin-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5+5 digits, backs of both hands top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b5-hook-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: the key-out chopped the thumb off with a flat horizontal cut and left stair-stepped edges down the index side; the gap slices through digits"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b5-hook-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: same as b5-e: thumb truncated by a straight cut, stair-stepped edges on the index and palm side"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (index and thumb open, three curled); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (pinch open, top-down side view of hand); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (index and thumb pinched, three curled); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f2-closed-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (pinch closed); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c2-tripod-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: the pencil gap is a thin jagged slit between thumb and index, stair-stepped, with a dark speck at the index tip; no readable pencil-width gap; flat pale cuff block"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c3-side-pinch-e.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: a hard-edged dark rectangle notch cut into the index top (card remnant), straight vertical edges"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c3-side-pinch-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: the card slot is a small hard-edged square hole between thumb and index; no readable card gap; flat pale cuff block"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c4-point-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (index up, three curled, thumb tucked); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c4-point-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (index up, three curled, thumb out); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c5-two-hand-fold-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): clean alpha: a faint semi-transparent rectangular frame line round the canvas (rows 12-13 and the sides, alpha ~100); hands themselves 5+5 and fine"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits, claw open; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits, claw open top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f2-closed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: the ball hole has torn, ragged edges (upper left and bottom of the hole) and a chewed index tip"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f2-closed-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: straight vertical key-out cuts down the index and middle finger sides with stair steps; ghost pixels beside the index"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d2-c-hold-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits in a C around the gap; clean alpha; lighter skin than the set but within the normaliser"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d2-c-hold-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): clean alpha / tool gap: stair-stepped cut along the thumb's underside, a notch at the web, faint ghost fringes left in the background round the thumb"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d3-two-hand-bowl-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): clean alpha / tool gap: straight-cut, stepped edges on the left hand's outer side and the right hand's fingertips; faint ghost fringes; hands 5+5 otherwise read"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d4-squeeze-f1-half-t.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): tool gap: index tip chewed and a straight vertical cut down the index side; notch at the thumb web"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d4-squeeze-f2-tight-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (fist, four knuckles, thumb tucked); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d5-throw-release-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits spread; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d6-two-hand-catch-f1-open-e.webp": {
+    "verdict": "FAIL",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): light: the left hand is a5-f1 mirrored, so it is lit from the right (highlights on its right side); both hands 5+5 and clean otherwise"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d6-two-hand-catch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5+5, cupped palms together; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e1-thumbs-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 (fist + thumb up); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e2-handshake-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5; side entry is the pose; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-1-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): exactly 1 up, thumb tucked; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-2-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): exactly 2 up, thumb folded; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-3-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): exactly 3 up, thumb and little finger folded; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-4-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): exactly 4 up, thumb hidden, palm edge smooth; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-5-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): exactly 5 up; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e4-clap-f1-apart-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5+5, backs of both hands, apart; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e4-clap-f2-together-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): two hands palm to palm, front hand 5, rear hand's fingers and thumb where the pose puts them; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e5-arm-up-fist-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): back of the fist, knuckles up (same image as d4-f2, same view); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e6-stretch-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 spread; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e7-shrug-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5, palm up; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f1-piano-f1-raised-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5, fingers raised; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f1-piano-f2-pressed-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5, fingers pressed; clean (14 px top pad)"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f2-drum-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5, back of cupped hand top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f4-phone-two-hands-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5+5, clear phone gap between the hands; clean"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a1-flat-palm-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: bangles are flat outline rings wider than the wrist, floating off its right side, no occlusion behind the arm, no glass shading"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a3-palm-up-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off the wrist edge, not wrapping"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a3-palm-up-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles, wire-thin, no glass shading or occlusion"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a4-reach-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist; sleeve: cream slivers left at the cuff's left edge and under the roll"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a5-wave-f1-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; sleeve: a hard pink rectangle painted on the forearm above the cuff (the erase box)"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a5-wave-f2-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; sleeve: cream edge on the cuff's left side; master has 4 digits"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a6-palm-out-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; sleeve: cream line under the cuff roll"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a7-hand-on-heart-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles crossing the wrist edge; sleeve: cream sliver at the cuff's lower left"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a8-cupped-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles, the far half drawn over the wrist instead of hidden behind it"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a8-cupped-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles wider than the wrist, floating"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b1-handle-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist; master fails (grip unreadable)"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b2-vertical-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: bangles cross the fist's heel as flat rings; sleeve: stair-stepped cream patches on the cuff's left; master key-out ragged"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b2-vertical-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b3-stick-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; master key-out ragged"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b4-rolling-pin-t.webp": {
+    "verdict": "FAIL",
+    "reason": "sleeve: large cream patches left on the left side of both cuffs (the known b4 cuff fault, bigger than a sliver); jewellery: flat outline bangles"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b5-hook-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; master thumb chopped; cream speck at the cuff's right edge"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b5-hook-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist; master thumb chopped"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f1-open-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off the wrist's left edge"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f1-open-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f2-closed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off the wrist's left edge"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f2-closed-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c2-tripod-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; master pencil gap unreadable"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c3-side-pinch-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles, far half drawn over the arm; master card notch"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c3-side-pinch-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right; master card gap unclear"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c4-point-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c4-point-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist; cream line at the cuff's left edge"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c5-two-hand-fold-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating off both wrists; sleeve: cream specks at the left corners of both cuffs; master frame line"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f1-open-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; sleeve: cream specks on the cuff's left"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f1-open-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f2-closed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; master ball-hole edges torn"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f2-closed-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right; master key-out cuts"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d2-c-hold-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off the wrist's right edge"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d2-c-hold-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right; master key-out ragged"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d3-two-hand-bowl-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles off both wrists; sleeve: stair-stepped cream patches on the left of both cuffs"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d4-squeeze-f1-half-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right; master index chewed"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d4-squeeze-f2-tight-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d5-throw-release-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; sleeve: cream patch under the cuff roll"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d6-two-hand-catch-f1-open-e.webp": {
+    "verdict": "FAIL",
+    "reason": "sleeve: hard pink rectangles painted on both forearms above the cuffs (erase boxes); jewellery: flat outline bangles; left hand lit from the right"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d6-two-hand-catch-f2-closed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off both wrists"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e1-thumbs-up-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off the wrist's right edge"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e2-handshake-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles; sleeve: cream patches on the cuff's inner edge and underside"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-1-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-2-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off both sides of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-3-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-4-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-5-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e4-clap-f1-apart-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating off both wrists; sleeve: cream line under the left cuff"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e4-clap-f2-together-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat bangles cross the other hand; sleeve: large cream patches on both cuffs"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e5-arm-up-fist-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist; cream sliver at the cuff's left"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e6-stretch-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e7-shrug-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: bangles float as a flat arc across the palm-side wrist, not wrapping; sleeve: cream band inside the cuff"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f1-piano-f1-raised-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles hanging off the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f1-piano-f2-pressed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles floating right of the wrist"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f2-drum-cupped-t.webp": {
+    "verdict": "FAIL",
+    "reason": "sleeve: large cream patches on the cuff's left and right; jewellery: flat outline bangles"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f4-phone-two-hands-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat outline bangles, the right one a thin sliver; sleeve: cream specks along the cuff edges"
+   },
+   "assets/characters/hands/skins/nani/hand-a1-flat-palm-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: aqiq ring is a flat glossy cartoon sticker on the finger face, no band wrapping; tennis bracelet a dotted white line floating off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-a1-flat-palm-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: diamond ring a flat sticker with a gold bar; light: mirrored master lit from the upper right"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: palm band a flat yellow stroke, no shading; dotted-line bracelet over the wrist, not wrapping"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow stroke band; light from the wrong side (mirrored)"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow bar band; dotted-line bracelet; sleeve: stair-stepped edges on the cuff top"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow bar band; light from the upper right; cuff edge stepped"
+   },
+   "assets/characters/hands/skins/nani/hand-a4-reach-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating off the wrist; sleeve: cream patches and stepped cuff edges"
+   },
+   "assets/characters/hands/skins/nani/hand-a4-reach-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the upper right; sleeve: cream patches, stepped cuff"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f1-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating off the wrist; sleeve: hard red rectangle on the forearm above the cuff (erase box)"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f1-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the upper right; red rectangle above the cuff"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f2-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq across two fingers; dotted bracelet; master shows 4 digits"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f2-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; 4 digits"
+   },
+   "assets/characters/hands/skins/nani/hand-a6-palm-out-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating right; sleeve: stepped cuff edge, cream under the roll"
+   },
+   "assets/characters/hands/skins/nani/hand-a6-palm-out-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the upper right; cream under the roll"
+   },
+   "assets/characters/hands/skins/nani/hand-a7-hand-on-heart-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet crossing off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-a7-hand-on-heart-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond, oversized; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: palm band a flat yellow stroke; dotted bracelet"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow stroke band; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow bar band; dotted bracelet; stepped cuff edge"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow bar band; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-b1-handle-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: oversized sticker aqiq on the knuckle; dotted bracelet floating right; master grip unreadable"
+   },
+   "assets/characters/hands/skins/nani/hand-b1-handle-grip-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: oversized sticker diamond; light from the wrong side; master grip unreadable"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet crossing off the wrist; sleeve: big cream patches and stair-stepped cuff edges; master key-out ragged"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "sleeve: cream patches, stepped cuff; light from the wrong side; master key-out ragged"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet floating right of the wrist; stepped cuff edge"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the upper right (mirrored); stepped cuff edge"
+   },
+   "assets/characters/hands/skins/nani/hand-b3-stick-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet; master key-out ragged"
+   },
+   "assets/characters/hands/skins/nani/hand-b3-stick-grip-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; master key-out ragged"
+   },
+   "assets/characters/hands/skins/nani/hand-b4-rolling-pin-t.webp": {
+    "verdict": "FAIL",
+    "reason": "sleeve: large stair-stepped cream patches on both cuffs (b4 cuff fault); jewellery: sticker rings, dotted bracelet"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet; master thumb chopped"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; master thumb chopped"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating right; master thumb chopped"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; master thumb chopped"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet off the wrist's left edge (ring correctly hidden)"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light: mirrored master lit from the upper right (no jewellery visible)"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the upper right (no jewellery visible)"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet off the wrist's left edge"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the upper right (no jewellery visible)"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the upper right (no jewellery visible)"
+   },
+   "assets/characters/hands/skins/nani/hand-c2-tripod-grip-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet; master pencil gap unreadable"
+   },
+   "assets/characters/hands/skins/nani/hand-c2-tripod-grip-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the wrong side; master pencil gap unreadable"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet with its far half over the arm; master card notch"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the wrong side; master card notch"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet floating right; master card gap unclear"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the wrong side; master card gap unclear"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: oversized sticker aqiq on the knuckle; dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-c5-two-hand-fold-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet floating off the right wrist (rings hidden correctly); sleeve: cream patches at both cuffs; master frame line; the left hand gets no diamond ring (two-hand poses keep the right-hand recipe only for its right hand)"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet; sleeve: cream patches and stepped cuff edges"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; sleeve: cream patch on the cuff"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet; master ball hole torn"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the wrong side; master ball hole torn"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet; master key-out cuts"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; master key-out cuts"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet hanging off the wrist edge (ring hidden behind the thumb, correct)"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the wrong side (no jewellery visible)"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating right; master key-out ragged"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; master key-out ragged"
+   },
+   "assets/characters/hands/skins/nani/hand-d3-two-hand-bowl-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker rings on both hands (left diamond sticks out past the hand edge); dotted bracelet; sleeve: stepped cream patches on both cuffs"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f1-half-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq on the knuckle; dotted bracelet; master index chewed"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f1-half-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; master index chewed"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f2-tight-t.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq on the knuckle; dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f2-tight-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-d5-throw-release-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet; sleeve: cream specks and stepped edges in the cuff roll"
+   },
+   "assets/characters/hands/skins/nani/hand-d5-throw-release-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; sleeve: cream specks in the roll"
+   },
+   "assets/characters/hands/skins/nani/hand-d6-two-hand-catch-f1-open-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker rings; dotted bracelet floating off the wrist; sleeve: hard red rectangles above both cuffs; left hand lit from the right"
+   },
+   "assets/characters/hands/skins/nani/hand-d6-two-hand-catch-f2-closed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: palm bands are flat yellow strokes; dotted bracelet"
+   },
+   "assets/characters/hands/skins/nani/hand-e1-thumbs-up-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted bracelet hanging off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-e1-thumbs-up-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "light from the wrong side (no jewellery visible)"
+   },
+   "assets/characters/hands/skins/nani/hand-e2-handshake-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow stroke band; dotted bracelet; sleeve: large cream patches and stepped edges on the cuff"
+   },
+   "assets/characters/hands/skins/nani/hand-e2-handshake-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat stroke band; light from the wrong side; sleeve: cream patches"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-1-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: oversized sticker aqiq on the curled knuckle; dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-1-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: oversized sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-2-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq on the curled finger; dotted bracelet"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-2-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-3-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating right"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-3-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-4-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-4-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-5-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-5-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-e4-clap-f1-apart-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat yellow bar bands drawn on the backs of the fingers (no stone, no wrap); dotted bracelet"
+   },
+   "assets/characters/hands/skins/nani/hand-e4-clap-f2-together-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet; sleeve: large cream patches and a stepped cut in the rear cuff"
+   },
+   "assets/characters/hands/skins/nani/hand-e5-arm-up-fist-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq on the knuckle; dotted bracelet floating off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-e5-arm-up-fist-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-e6-stretch-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-e6-stretch-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-e7-shrug-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat stroke band; dotted bracelet reduced to a floating arc on the palm-side wrist; sleeve: cream band in the cuff roll"
+   },
+   "assets/characters/hands/skins/nani/hand-e7-shrug-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: flat stroke band; light from the wrong side; cream band in the roll"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f1-raised-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f1-raised-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f2-pressed-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker aqiq; dotted bracelet floating off the wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f2-pressed-e-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side"
+   },
+   "assets/characters/hands/skins/nani/hand-f2-drum-cupped-t.webp": {
+    "verdict": "FAIL",
+    "reason": "sleeve: large stepped cream patches on the cuff; jewellery: sticker aqiq, dotted bracelet"
+   },
+   "assets/characters/hands/skins/nani/hand-f2-drum-cupped-t-left.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: sticker diamond; light from the wrong side; sleeve: cream patches"
+   },
+   "assets/characters/hands/skins/nani/hand-f4-phone-two-hands-e.webp": {
+    "verdict": "FAIL",
+    "reason": "jewellery: dotted-line bracelet arc on one wrist only, the far half missing; sleeve: cream specks in both cuff rolls"
+   }
+  }
+ }
+}
