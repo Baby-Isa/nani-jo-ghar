@@ -54,5 +54,68 @@
    "hand@player-boy/c1-pinch-f2-closed-t",
    "hand@player-boy/c5-two-hand-fold-t"
   ]
+ },
+ "ipad-player-girl": {
+  "fetch": [
+   "hand@nani/a3-palm-up-t",
+   "hand@player-girl/a3-palm-up-t",
+   "hand@player-girl/d1-grab-f1-open-t",
+   "hand@player-girl/d1-grab-f2-closed-t"
+  ],
+  "chai-tray": [
+   "hand@player-girl/b5-hook-grip-t",
+   "hand@player-girl/c1-pinch-f1-open-t",
+   "hand@player-girl/c1-pinch-f2-closed-t",
+   "hand@player-girl/c4-point-t",
+   "hand@player-girl/e3-count-1-e",
+   "hand@player-girl/e3-count-2-e",
+   "hand@player-girl/e3-count-3-e",
+   "hand@player-girl/e3-count-4-e",
+   "hand@player-girl/e3-count-5-e"
+  ],
+  "maani-line": [
+   "hand@nani/c4-point-t",
+   "hand@player-girl/b1-handle-grip-t",
+   "hand@player-girl/b4-rolling-pin-t",
+   "hand@player-girl/c4-point-t",
+   "hand@player-girl/d1-grab-f1-open-t",
+   "hand@player-girl/d1-grab-f2-closed-t"
+  ],
+  "mishkaki-grill": [
+   "hand@player-girl/c1-pinch-f1-open-t",
+   "hand@player-girl/c1-pinch-f2-closed-t",
+   "hand@player-girl/c4-point-t"
+  ],
+  "chop": [
+   "hand@nani/c4-point-t",
+   "hand@player-girl/b1-handle-grip-t"
+  ],
+  "tadka": [
+   "hand@player-girl/c1-pinch-f1-open-t",
+   "hand@player-girl/c1-pinch-f2-closed-t",
+   "hand@player-girl/c4-point-t"
+  ],
+  "stir": [
+   "hand@nani/c4-point-t",
+   "hand@player-girl/b1-handle-grip-t"
+  ],
+  "assemble": [
+   "hand@player-girl/c1-pinch-f1-open-t",
+   "hand@player-girl/c1-pinch-f2-closed-t"
+  ],
+  "samosa": [
+   "hand@nani/c4-point-t",
+   "hand@player-girl/b1-handle-grip-t",
+   "hand@player-girl/c1-pinch-f1-open-t",
+   "hand@player-girl/c1-pinch-f2-closed-t",
+   "hand@player-girl/c5-two-hand-fold-t"
+  ],
+  "passme": [
+   "hand@nani/a3-palm-up-t",
+   "hand@player-girl/a3-palm-up-t",
+   "hand@player-girl/b1-handle-grip-t",
+   "hand@player-girl/c1-pinch-f1-open-t",
+   "hand@player-girl/c1-pinch-f2-closed-t"
+  ]
  }
 }
