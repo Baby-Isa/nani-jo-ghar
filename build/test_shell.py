@@ -3,9 +3,10 @@
 
 At phone (915x375), iPad (1024x768) and laptop (1366x768) sizes, in a
 fresh browser (a new device):
-  1. first launch: index.html goes straight into Cook's pantry round (the
-     play button, then day 1's first order, played with Cook's own test
-     player through real taps), and lands on the house after it;
+  1. first launch: index.html goes straight into the first launch
+     (first.html: the character, Cook's pantry and chai rounds played with
+     Cook's own test player through real taps, the Eid story; the flow is
+     build/test_first_launch.py's), and lands on the house after it;
   2. house -> the clinic -> home (the corner button) -> Cook (its title,
      with the corner button) -> home;
   3. progress is kept after a reload (the one save: word stages, coins,
@@ -106,32 +107,15 @@ class Run:
 
 
 def play_first_round(R, vp):
-    """The first launch: straight from index.html into the pantry round, then home."""
+    """The first launch: straight from index.html into first.html (the character, the pantry
+    round, chai, the Eid story; build/test_first_launch.py plays it), then home."""
+    import test_first_launch as FL  # (it imports this file: import it late)
+
     page = R.page
-    page.goto(f"{BASE}/index.html?speed={SPEED}")
-    R.wait_url("cook.html")
-    assert "first=1" in page.url and "app=1" in page.url, page.url
-    page.wait_for_selector("#njg-play", timeout=10000)
-    page.wait_for_timeout(1000 * 0.8)
-    assert R.visible("#njg-first"), "the play button covers the page on a first launch"
-    assert not R.visible("#njg-home"), "no home button before the first round"
-    R.shot("first-launch-play")
-    assert R.save("Save.players().length") == 1, "a first player was made"
-    R.tap_sel("#njg-play", "the play button")
-    # Cook's own player drives the round (intro card, the pantry taps, the end-of-round screen)
-    P = TC.Player(page, R.shots, SPEED, mistakes=False)
-    P.n = 100
     t0 = time.time()
-    try:
-        P.play(lambda: "index.html" in page.url, timeout=400)
-    except Exception as e:  # the page navigating home mid-evaluate
-        try:
-            R.wait_url("index.html", 10)
-        except AssertionError:
-            raise e
-        print("   (navigated home while the player was looking:", str(e).splitlines()[0][:80], ")")
+    FL.first_launch(R, vp, picks={"body": "boy", "top": "t5"}, reloads=False)
     R.house()
-    print(f"  {vp}: first launch -> pantry round -> house in {time.time() - t0:.0f}s")
+    print(f"  {vp}: first launch -> character, pantry, chai, the Eid story -> house in {time.time() - t0:.0f}s")
     page.wait_for_timeout(1000 * 0.6)
     R.shot("house-after-first-round")
     cook = R.save("Save.get('cook')")
@@ -203,17 +187,17 @@ def run(vp_name):
         page.locator("#picker .swatches button").nth(3).click()
         R.shot("picker-add")
         page.click("#picker button[type=submit]")
-        R.wait_url("cook.html")
-        assert "first=1" in page.url, "a new player gets the first round too"
+        R.wait_url("first.html")
+        assert "app=1" in page.url, "a new player gets the first launch too"
         p2 = R.save("Save.currentId()")
         assert p2 != p1
         assert R.save("Save.current().name") == "Maryam"
         assert R.save("Save.has('cook')") is False, "Maryam starts with an empty save"
         assert R.save(f"Save.get('cook', '{p1}').coins") == cook1["coins"], "Player 1's save untouched"
         page.goto(f"{BASE}/index.html")
-        R.wait_url("cook.html")  # Maryam hasn't had her first round: the house sends her there
+        R.wait_url("first.html")  # Maryam hasn't had her first launch: the house sends her there
         page.goto(f"{BASE}/index.html?from=test")
-        R.wait_url("cook.html")
+        R.wait_url("first.html")
         # switch back to Player 1 from a mode page opened with the old URL (a tester's way)
         page.evaluate(f"Save.select('{p1}'); sessionStorage.clear()")
         page.goto(f"{BASE}/index.html")

@@ -93,7 +93,7 @@ def make_character(R, picks, name):
     assert after != before, "the big character follows the choices"
     # everything fits: no swatch or the tick off the screen
     off = page.evaluate(
-        "() => Array.from(document.querySelectorAll('.cm-sw, .cm-tab, .cm-done')).filter(e => { const r = e.getBoundingClientRect(); return r.bottom > innerHeight + 1 || r.right > innerWidth + 1 || r.width < 40; }).length"
+        "() => { const box = document.querySelector('.cm-swatches').getBoundingClientRect(); return Array.from(document.querySelectorAll('.cm-sw, .cm-tab, .cm-done')).filter(e => { const r = e.getBoundingClientRect(); return r.bottom > innerHeight + 1 || r.right > innerWidth + 1 || r.width < 40 || (e.classList.contains('cm-sw') && (r.bottom > box.bottom + 1 || r.top < box.top - 1)); }).length; }"
     )
     assert off == 0, f"{off} swatches/tabs off the screen or too small"
     R.shot(f"{name}-made")
@@ -121,6 +121,98 @@ def cook_round(R, kind, vp):
     print(f"  {vp}: Cook's {kind} round in {time.time() - t0:.0f}s")
 
 
+def first_launch(R, vp_name, picks=PICKS, reloads=True):
+    """A new player from index.html through the whole first launch to the house (steps 1-5). Returns their id."""
+    page = R.page
+    t0 = time.time()
+
+    # 1. a new device: straight to the first launch, the character first
+    page.goto(f"{BASE}/index.html?speed={SPEED}")
+    R.wait_url("first.html")
+    assert "app=1" in page.url
+    wait_scene(R, "character")
+    assert not R.visible("#njg-home"), "no home button during the first launch"
+    make_character(R, picks, "character")
+    p1 = R.save("Save.currentId()")
+    rec = R.save("Character.get()")
+    assert rec and all(rec["choices"][k] == v for k, v in picks.items()), rec
+    assert rec["hands"] == ("player-girl" if picks.get("body") == "girl" else "player-boy"), rec
+
+    # 2. arrive; the pantry round
+    wait_scene(R, "arrive")
+    page.wait_for_selector(".st-card.in")
+    ch = card_chunks(page)
+    assert [c[0] for c in ch] == ["en", "k"], f"English, then Kutchi: {ch}"
+    next_arrow(R, "arrive")
+    cook_round(R, "pantry", vp_name)
+    words = R.save("Object.keys(Save.get('cook').words || {})")
+    for w in ("cook-chai", "cook-dudh", "cook-khun"):
+        assert w in words, f"Nani's list is the chai things: {words}"
+    assert not R.save("Save.flag('firstDone')"), "not done yet"
+
+    # 3. "Can you make me chai?"; a reload comes back to the same scene
+    wait_scene(R, "ask-chai")
+    page.wait_for_selector("#st-next.in", timeout=30000)
+    assert "make-chai" in story(page)["lines"]
+    if reloads:
+        page.goto(f"{BASE}/first.html?app=1&speed={SPEED}")
+        wait_scene(R, "ask-chai")
+        print(f"  {vp_name}: a reload after the pantry round comes back to 'Can you make me chai?'")
+    next_arrow(R, "ask-chai")
+    cook_round(R, "chai", vp_name)
+    cook = R.save("Save.get('cook')")
+    assert (cook.get("taught") or {}).get("chai"), "the chai round was played"
+    wait_scene(R, "sip")
+    next_arrow(R, "sip")
+
+    # 4. the Eid picture story; a reload mid-way starts the panels again
+    wait_scene(R, "eid")
+    reloaded = not reloads
+    for i in range(4):
+        page.wait_for_selector("#st-next.in", timeout=30000)
+        assert story(page)["panel"] == i
+        if i == 2 and not reloaded:
+            page.reload()
+            wait_scene(R, "eid")
+            page.wait_for_selector("#st-next.in", timeout=30000)
+            assert story(page)["panel"] == 0, "a reload in the story starts its panels again"
+            print(f"  {vp_name}: a reload in the picture story starts it again")
+            for j in range(2):
+                next_arrow(R)
+                page.wait_for_selector("#st-next.in", timeout=30000)
+            reloaded = True
+        next_arrow(R, f"eid-panel-{i + 1}")
+
+    # Yes / No
+    wait_scene(R, "help")
+    page.wait_for_selector(".st-choice.in .st-no", timeout=30000)
+    page.wait_for_timeout(400)
+    R.shot("yes-no")
+    for k in range(2):
+        box = page.locator(".st-no").bounding_box()
+        page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
+        page.wait_for_timeout(450)
+    st = story(page)
+    assert st["dodges"] >= 2, st
+    page.wait_for_timeout(300)
+    R.shot("no-runs-away")
+    page.wait_for_function("document.querySelector('.st-no').classList.contains('gone')")
+    assert "laugh" in story(page)["lines"], "Nani laughs"
+    assert story(page)["choice"] == "asked", "No never answers"
+    R.tap_sel(".st-yes", "Yes")
+    page.wait_for_timeout(500)
+    R.shot("yes")
+
+    # 5. home
+    R.house()
+    assert R.save("Save.flag('firstDone')") is True
+    page.wait_for_selector("#who .dot.has-char svg", timeout=5000)
+    page.wait_for_timeout(400)
+    R.shot("home-with-character")
+    print(f"  {vp_name}: first launch done in {time.time() - t0:.0f}s")
+    return p1
+
+
 def run(vp_name):
     vp = TS.VIEWPORTS[vp_name]
     shots = os.path.join(SHOTS, vp_name)
@@ -138,91 +230,7 @@ def run(vp_name):
         page.on("console", lambda m: errors.append(f"{page.url}: {m.text}") if m.type == "error" else None)
         page.on("dialog", lambda d: d.accept())
         R = TS.Run(page, shots)
-        t0 = time.time()
-
-        # 1. a new device: straight to the first launch, the character first
-        page.goto(f"{BASE}/index.html?speed={SPEED}")
-        R.wait_url("first.html")
-        assert "app=1" in page.url
-        wait_scene(R, "character")
-        assert not R.visible("#njg-home"), "no home button during the first launch"
-        make_character(R, PICKS, "character")
-        p1 = R.save("Save.currentId()")
-        rec = R.save("Character.get()")
-        assert rec and rec["choices"] == PICKS, rec
-        assert rec["hands"] == "player-girl", rec
-
-        # 2. arrive; the pantry round
-        wait_scene(R, "arrive")
-        page.wait_for_selector(".st-card.in")
-        ch = card_chunks(page)
-        assert [c[0] for c in ch] == ["en", "k"], f"English, then Kutchi: {ch}"
-        next_arrow(R, "arrive")
-        cook_round(R, "pantry", vp_name)
-        words = R.save("Object.keys(Save.get('cook').words || {})")
-        for w in ("cook-chai", "cook-dudh", "cook-khun"):
-            assert w in words, f"Nani's list is the chai things: {words}"
-        assert not R.save("Save.flag('firstDone')"), "not done yet"
-
-        # 3. "Can you make me chai?"; a reload comes back to the same scene
-        wait_scene(R, "ask-chai")
-        page.wait_for_selector("#st-next.in", timeout=30000)
-        assert "make-chai" in story(page)["lines"]
-        page.goto(f"{BASE}/first.html?app=1&speed={SPEED}")
-        wait_scene(R, "ask-chai")
-        print(f"  {vp_name}: a reload after the pantry round comes back to 'Can you make me chai?'")
-        next_arrow(R, "ask-chai")
-        cook_round(R, "chai", vp_name)
-        cook = R.save("Save.get('cook')")
-        assert (cook.get("taught") or {}).get("chai"), "the chai round was played"
-        wait_scene(R, "sip")
-        next_arrow(R, "sip")
-
-        # 4. the Eid picture story; a reload mid-way starts the panels again
-        wait_scene(R, "eid")
-        for i in range(4):
-            page.wait_for_selector("#st-next.in", timeout=30000)
-            assert story(page)["panel"] == i
-            if i == 2 and not getattr(run, "reloaded", False):
-                page.reload()
-                wait_scene(R, "eid")
-                page.wait_for_selector("#st-next.in", timeout=30000)
-                assert story(page)["panel"] == 0, "a reload in the story starts its panels again"
-                print(f"  {vp_name}: a reload in the picture story starts it again")
-                for j in range(2):
-                    next_arrow(R)
-                    page.wait_for_selector("#st-next.in", timeout=30000)
-                run.reloaded = True
-            next_arrow(R, f"eid-panel-{i + 1}")
-        run.reloaded = False
-
-        # Yes / No
-        wait_scene(R, "help")
-        page.wait_for_selector(".st-choice.in .st-no", timeout=30000)
-        page.wait_for_timeout(400)
-        R.shot("yes-no")
-        for k in range(2):
-            box = page.locator(".st-no").bounding_box()
-            page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
-            page.wait_for_timeout(450)
-        st = story(page)
-        assert st["dodges"] >= 2, st
-        page.wait_for_timeout(300)
-        R.shot("no-runs-away")
-        page.wait_for_function("document.querySelector('.st-no').classList.contains('gone')")
-        assert "laugh" in story(page)["lines"], "Nani laughs"
-        assert story(page)["choice"] == "asked", "No never answers"
-        R.tap_sel(".st-yes", "Yes")
-        page.wait_for_timeout(500)
-        R.shot("yes")
-
-        # 5. home
-        R.house()
-        assert R.save("Save.flag('firstDone')") is True
-        page.wait_for_selector("#who .dot.has-char svg", timeout=5000)
-        page.wait_for_timeout(400)
-        R.shot("home-with-character")
-        print(f"  {vp_name}: first launch done in {time.time() - t0:.0f}s")
+        p1 = first_launch(R, vp_name)
 
         # 6. a second player: their own character; Story help: Kutchi only
         R.tap_sel("#who", "who's playing")
