@@ -444,6 +444,17 @@
       return n;
     };
     const later = (fn, ms) => ctx.after(ms, () => !dead && fn());
+    // the card is the master: keep the line being worked on in view (a short phone sidebar scrolls)
+    const cardNow = (id) => {
+      ctx.card.now(id);
+      const c = ctx.card.el;
+      const r = id != null && c && c.querySelector(`[data-row="${id}"]`);
+      if (!r) return;
+      const cr = c.getBoundingClientRect();
+      const rr = r.getBoundingClientRect();
+      if (rr.bottom > cr.bottom) c.scrollTop += rr.bottom - cr.bottom + 8;
+      else if (rr.top < cr.top) c.scrollTop -= cr.top - rr.top + 8;
+    };
     const base = (id) => String(id).replace(/-(red|blue|green|yellow|white|black|pink|orange|purple|brown)$/, "");
     const KNOWN = { cotton: 1, syringe: 1, plaster: 1, lollipop: 1 };
     const dishOf = (item) => ctx.tray.findIndex((t) => !t.wrong && base(t.id) === item);
@@ -493,7 +504,7 @@
           if (ctx.signal) ctx.signal(`${ID}-applied`);
         } else if (e.type === "tally") ctx.tally(e.item, e.n);
         else if (e.type === "tick") ctx.card.tick(e.rowId);
-        else if (e.type === "current") ctx.card.now(e.rowId);
+        else if (e.type === "current") cardNow(e.rowId);
         else if (e.type === "log") ctx.log(e.entry);
         else if (e.type === "syringe") showDoctor(e.arm);
         else if (e.type === "ask") ask(e);
@@ -647,7 +658,7 @@
             }
           });
         }, 900);
-        ctx.card.now("after");
+        cardNow("after");
       }, 1300);
     }
     function onDish(i) {
@@ -701,7 +712,7 @@
     }
     function finish() {
       if (moment && moment.cancel) moment.cancel();
-      ctx.card.now(null);
+      cardNow(null);
       const sc = m.score();
       const used = new Set(["pela", "nepoi", numWord(P.wipe)]);
       P.countdown.forEach((n) => used.add(numWord(n)));
@@ -778,7 +789,7 @@
         ["left", "right"].forEach((s) => ctx.patient.swirl("arm", s, false));
         // the card: the lines as they come at level 1, the whole list up front from level 2
         ctx.card.setRows(P.level === 1 ? P.card.filter((r) => r.id === "wipe" || r.id === "count") : P.card);
-        ctx.card.now(P.sided ? "side" : "wipe");
+        cardNow(P.sided ? "side" : "wipe");
         await ctx.patient.focus("chest", null, 1.35, 400);
         if (!P.sided) ctx.patient.swirl("arm", P.arm, true);
         if (ctx.level === 1 && ctx.onboard) {

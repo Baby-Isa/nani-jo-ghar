@@ -502,6 +502,17 @@
     let doneBtn = null;
     const els = {};
     const later = (fn, ms) => ctx.after(ms, () => !dead && fn());
+    // the card is the master: keep the line being worked on in view (a short phone sidebar scrolls)
+    const cardNow = (id) => {
+      ctx.card.now(id);
+      const c = ctx.card.el;
+      const r = id != null && c && c.querySelector(`[data-row="${id}"]`);
+      if (!r) return;
+      const cr = c.getBoundingClientRect();
+      const rr = r.getBoundingClientRect();
+      if (rr.bottom > cr.bottom) c.scrollTop += rr.bottom - cr.bottom + 8;
+      else if (rr.top < cr.top) c.scrollTop -= cr.top - rr.top + 8;
+    };
     const kind = (ctx.patient && ctx.patient.kind) || "girl";
     const K = (root.Clinic && root.Clinic.Figure && root.Clinic.Figure.KINDS && root.Clinic.Figure.KINDS[kind]) || {};
     const skin = K.skin || "#e8b98f";
@@ -716,7 +727,7 @@ ${bowlSvg}
             ctx.card.addRow(e.row.card);
             later(() => sayRow(e.row), 900);
           }
-          ctx.card.now(e.row.id);
+          cardNow(e.row.id);
         } else if (e.type === "end") finish();
       }
     }
@@ -756,7 +767,7 @@ ${bowlSvg}
       finished = true;
       stopThrob();
       showHeld(null);
-      ctx.card.now(null);
+      cardNow(null);
       later(() => {
         react("happy", 2000);
         if (ctx.interject) ctx.interject("shabash");
@@ -774,7 +785,7 @@ ${bowlSvg}
         doneBtn = ctx.button("✓", onDone, "done");
         doneBtn.setAttribute("aria-label", "Done");
         ctx.card.setRows(round.readAs === "each" ? [round.rows[0].card] : round.rows.map((r) => r.card));
-        ctx.card.now(round.rows[0].id);
+        cardNow(round.rows[0].id);
         if (ctx.level === 1 && ctx.onboard)
           ctx.onboard([
             { spotlight: () => els.rack, ghost: { gesture: "tap" }, wait: `${ID}-picked` },

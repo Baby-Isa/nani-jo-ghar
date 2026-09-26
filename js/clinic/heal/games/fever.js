@@ -453,6 +453,17 @@
       return n;
     };
     const later = (fn, ms) => ctx.after(ms, () => !dead && fn());
+    // the card is the master: keep the line being worked on in view (a short phone sidebar scrolls)
+    const cardNow = (id) => {
+      ctx.card.now(id);
+      const c = ctx.card.el;
+      const r = id != null && c && c.querySelector(`[data-row="${id}"]`);
+      if (!r) return;
+      const cr = c.getBoundingClientRect();
+      const rr = r.getBoundingClientRect();
+      if (rr.bottom > cr.bottom) c.scrollTop += rr.bottom - cr.bottom + 8;
+      else if (rr.top < cr.top) c.scrollTop -= cr.top - rr.top + 8;
+    };
     const kind = (ctx.patient && ctx.patient.kind) || "girl";
     const K = (root.Clinic && root.Clinic.Figure && root.Clinic.Figure.KINDS && root.Clinic.Figure.KINDS[kind]) || {};
     const base = (id) => String(id).replace(/-(red|blue|green|yellow|white|black|pink|orange|purple|brown)$/, "");
@@ -517,7 +528,7 @@
         else if (e.type === "tick") ctx.card.tick(e.rowId);
         else if (e.type === "current") {
           ctx.card.addRow(e.row);
-          ctx.card.now(e.row.id);
+          cardNow(e.row.id);
           later(() => sayLine(e.row, e.row.who), e.reading ? 700 : 900);
         } else if (e.type === "log") ctx.log(e.entry);
         else if (e.type === "wiggle") {
@@ -612,7 +623,7 @@
     }
     function finish() {
       if (fanIdle) clearTimeout(fanIdle);
-      ctx.card.now(null);
+      cardNow(null);
       carry(null);
       ctx.patient.react("happy", 0);
       later(() => ctx.interject && ctx.interject("achija"), 600);
@@ -661,7 +672,7 @@
         doneBtn.setAttribute("aria-label", "Done");
         const first = line(D, "temp", ["temp"], { who: "doctor" });
         ctx.card.setRows([first]);
-        ctx.card.now("temp");
+        cardNow("temp");
         ctx.patient.swirl("head", null, false);
         await ctx.patient.focus("chest", null, 1.25, 400);
         if (ctx.level === 1 && ctx.onboard) {
