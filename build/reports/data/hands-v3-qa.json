@@ -7,7 +7,7 @@
     "pass": 39
    },
    "/player-boy/": {
-    "total": 56,
+    "total": 55,
     "pass": 39
    },
    "/player-girl/": {
@@ -247,10 +247,6 @@
    "assets/characters/hands/skins/player-boy/hand-a1-flat-palm-t.webp": {
     "verdict": "PASS",
     "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): 5 digits; top-down back of hand; scale ok; soft 3D light; no tool"
-   },
-   "assets/characters/hands/skins/player-boy/hand-a2-heel-push-t.webp": {
-    "verdict": "FAIL",
-    "reason": "pixel-identical to the master (checked in code; the boy recipe changes nothing): reads as a flat, full-length palm, not a heel-of-hand push (known since v1)"
    },
    "assets/characters/hands/skins/player-boy/hand-a3-palm-up-e.webp": {
     "verdict": "PASS",
