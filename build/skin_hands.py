@@ -452,9 +452,13 @@ def skin_character(master, char, hands, camera, pose_id=None, mirrored=False):
     if char.get("sleeve"):
         im = recolour_sleeve(im, master, sleeve_w, char["sleeve"])
     if mirrored:
+        # the relight moves light from one side to the other but also
+        # brightens the whole hand a little: match the relit skin back to
+        # the right hand's own lightness/chroma percentiles (monotonic, so
+        # the new light direction stays)
+        stats = ga.skin_stats(im)
         im = j3.relight_mirrored(im)
-        if char.get("skin"):  # re-centre the midtone the relight moved a little
-            im, _ = ga.normalise_skin(im, ga.rgb_to_lab(ga.hex_to_rgb(char["skin"])), tolerance=1.0)
+        im, _ = ga.match_skin_distribution(im, stats)
     if char.get("overlay") and char["overlay"].get("texture"):
         im = apply_overlay(im, os.path.join(GAME, char["overlay"]["texture"]), hands)
     if sleeve_w is None and char.get("jewellery"):
