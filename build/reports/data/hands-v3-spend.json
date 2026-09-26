@@ -1,5 +1,5 @@
 {
- "total_estimate": 1.55,
+ "total_estimate": 1.8,
  "runs": [
   {
    "job": "b1",
@@ -620,6 +620,106 @@
     "total_tokens": 1439
    },
    "secs": 15.5
+  },
+  {
+   "job": "b5-hook-grip-t",
+   "file": "build/hand-v3-raw/b5-hook-grip-t-v2.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 406,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 212
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1462
+   },
+   "secs": 17.2
+  },
+  {
+   "job": "b5-hook-grip-t",
+   "file": "build/hand-v3-raw/b5-hook-grip-t-v3.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 406,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 212
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1462
+   },
+   "secs": 14.3
+  },
+  {
+   "job": "a2",
+   "file": "build/hand-v3-raw/a2-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 412,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 218
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1468
+   },
+   "secs": 18.0
+  },
+  {
+   "job": "a2",
+   "file": "build/hand-v3-raw/a2-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 412,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 218
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1468
+   },
+   "secs": 16.2
+  },
+  {
+   "job": "a2",
+   "file": "build/hand-v3-raw/a2-v2.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 412,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 218
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1468
+   },
+   "secs": 17.7
   }
  ]
 }

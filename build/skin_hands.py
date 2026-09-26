@@ -557,6 +557,9 @@ def measure_wrists(anchors, masters):
         found += [dict(w, source="manual") for w in hm.MANUAL_WRISTS.get(mid, [])]
         found.sort(key=lambda w: w["x"])
         hands = anchors[mid]["hands"]
+        manual = [dict(w, source="manual") for w in hm.MANUAL_WRISTS.get(mid, [])]
+        if len(manual) >= len(hands):  # hands v3: a full set of manual wrists wins over the finder
+            found = sorted(manual, key=lambda w: w["x"])
         if len(found) > len(hands):  # keep the ones nearest the hands' rings / the widest apart
             found = found[:len(hands)] if len(hands) == 1 else [found[0], found[-1]]
         for h, w in zip(hands, found if len(found) == len(hands) else found + [None] * (len(hands) - len(found))):

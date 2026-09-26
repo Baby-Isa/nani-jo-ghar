@@ -19,7 +19,7 @@ H = "assets/characters/hands"
 # Wrists the automatic finder misses (read off a grid by eye; "manual": true
 # in the data). Listed arms are added to what the finder found, by x order.
 MANUAL_WRISTS = {
-    "hand-b2-vertical-grip-e": [{"x": 753, "y": 767, "angle_deg": -28, "wrist_px": 250}],
+    "hand-b2-vertical-grip-e": [{"x": 610, "y": 640, "angle_deg": -28, "wrist_px": 250}],  # v3 master (blue-tool re-render)
     "hand-d4-squeeze-f2-tight-t": [{"x": 506, "y": 720, "angle_deg": 0, "wrist_px": 250}],
     "hand-e5-arm-up-fist-e": [{"x": 506, "y": 720, "angle_deg": 0, "wrist_px": 250}],  # v2: a copy of d4-f2-tight
     "hand-e7-shrug-e": [{"x": 606, "y": 941, "angle_deg": 38, "wrist_px": 240}],

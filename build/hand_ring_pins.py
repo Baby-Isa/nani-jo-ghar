@@ -41,5 +41,8 @@ PINS = {
     # hands v2 masters
     "hand-c2-tripod-grip-t": [{"view": "hidden", "note": "pencil grip from above: ring finger curled under the palm"}],
     "hand-c3-side-pinch-t": [{"view": "hidden", "note": "card pinch from above: ring finger curled under the palm"}],
+    # hands v3 masters
+    "hand-b3-stick-grip-e": [{"view": "hidden", "note": "fist round a stick, palm side: the ring finger curls into the palm (6 px edge-on)"}],
+    "hand-d2-c-hold-t": [{"view": "hidden", "note": "C from above: the ring finger's first segment is edge-on at the far side (23 px)"}],
     "hand-c3-side-pinch-e": [{"view": "hidden", "note": "card held up, palm side: ring finger curled into the palm"}],
 }
