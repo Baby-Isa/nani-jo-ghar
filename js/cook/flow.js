@@ -823,6 +823,10 @@
   // every mechanic (js/cook/mechanics/) and combined station (js/cook/stations/)
   // registers its own lab entry: [key, name, verb]
   const labList = () => Cook.Mech.labOrder.map((k) => [k, Cook.Mech.labs[k].name, Cook.Mech.labs[k].verb]);
+  // Wave 6b: the nine kept stations first (data.lab.stations); the sub-mechanics under "Parts"
+  const keptKeys = () => ((Cook.data.lab || {}).stations || []).filter((k) => Cook.Mech.labs[k]);
+  const labKept = () => keptKeys().map((k) => [k, Cook.Mech.labs[k].name, Cook.Mech.labs[k].verb]);
+  const labParts = () => labList().filter(([k]) => !keptKeys().includes(k));
   // whole recipes from the data, every station in turn: "recipe:<id>"
   const labRecipes = () => Object.keys(Cook.data.recipes).map((id) => [`recipe:${id}`, Cook.data.recipes[id].english, Cook.data.recipes[id].stations.join(", ")]);
   const labName = (key) => (labList().concat(labRecipes()).find((l) => l[0] === key) || [0, key])[1];
@@ -840,9 +844,12 @@
       <p>Try any station on its own, with a random order each time. Tell Zafar's Claude what feels unclear or not fun!</p>
       <label style="display:flex;gap:8px;align-items:center;font-weight:800"><input type="checkbox" id="lab-guided" ${guided ? "checked" : ""}> Nani helps (first-time guidance)</label>
       <div class="seg" role="group" aria-label="Level">${[1, 2, 3, 4].map((n) => `<button data-level="${n}" class="${n === level ? "on" : ""}">Level ${n}</button>`).join("")}</div>
-      <div class="lab-grid">${labList().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
+      <div class="lab-grid">${labKept().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
       <h3>Whole recipes</h3>
       <div class="lab-grid">${labRecipes().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
+      <details class="lab-parts"><summary>Parts (the pieces inside the stations, for testing)</summary>
+        <div class="lab-grid">${labParts().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
+      </details>
       <div class="btn-row"><button class="btn" id="lab-back">Back</button></div>`);
     p.querySelectorAll("[data-level]").forEach((b) =>
       b.addEventListener("click", () => {

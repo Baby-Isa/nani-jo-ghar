@@ -428,15 +428,20 @@
         b.addEventListener("click", () => {
           Cook.unlockAudio();
           if (b.parentNode !== tray || box.classList.contains("leaving")) return;
-          if (id === want) {
-            b.classList.add("right");
-            Cook.sfx.right();
+          // Wave 6b (UX 11): from level 2 a wrong pick is taken like any other (she says thanks);
+          // the end review shows it
+          const quiet = id !== want && Cook.quietMistakes && Cook.quietMistakes(Cook.ctx);
+          if (id === want || quiet) {
+            if (quiet) misses++;
+            b.classList.add(quiet ? "picked" : "right");
+            if (quiet) Cook.sfx.pop();
+            else Cook.sfx.right();
             if (Cook.expect && String(Cook.expect.selector || "").startsWith("#passme")) Cook.expect = null;
             setTimeout(() => {
               box.classList.add("leaving");
               setTimeout(() => {
                 box.classList.add("hidden");
-                UI.say(Lang.line("thanks"), { badge: true }, { ms: 900 }).catch(() => {});
+                UI.voice(Lang.line("thanks"), { ms: 900 }).catch(() => {});
                 resolve({ misses });
               }, 300);
             }, 450);

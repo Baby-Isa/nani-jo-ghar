@@ -232,6 +232,19 @@
     },
   });
 
+  // Wave 6b: the kept station, samosa + fry, in one go (fill, fold as many as they said, fry them)
+  Mech.lab("samosa", {
+    name: "Samosa + fry",
+    verb: "Fill, fold, fry",
+    async run(L) {
+      const R = Cook.Recipes;
+      const d = R.samosa.make(Cook.pick(["nana", "ma", "cousin"]), { level: L.level });
+      L.card(d, R.samosa.steps(d));
+      const made = await St.fillFold(L.S, L.ctx, { fillings: d.fillings, exclude: d.no, decoyPool: Cook.data.recipes.samosa.lists.fillings_all, count: d.count, level: L.level }, { region: L.region });
+      await L.station("fry", { kind: "samosa", count: d.count, made });
+    },
+  });
+
   Mech.lab("fry", {
     name: "Fry",
     verb: "Lift when golden",

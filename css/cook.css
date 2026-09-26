@@ -824,3 +824,6 @@ body.w6 #mission .throb { animation: throb .7s ease-in-out infinite alternate; b
   #count-badge .tl .count-digit { font-size: 20px; }
   #voice { font-size: 14px; padding: 4px 10px 4px 6px; }
 }
+/* Wave 6b: the Station lab's parts (the pieces inside the nine stations) fold away */
+.lab-parts { margin: 8px 0; }
+.lab-parts summary { cursor: pointer; font-weight: 800; color: var(--ink-soft); }

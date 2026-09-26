@@ -50,9 +50,11 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # COOK_TEST_PORT lets several test runs (or worktrees) go at once
 PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
-LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa", "mishkaki-grill", "chai-tray", "maani-line"]
+# Wave 6b: the nine kept stations first, then the parts (knead is cut: its file isn't loaded)
+KEPT = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "chop", "tadka", "stir", "assemble", "samosa"]
+LAB = KEPT + ["passme", "pour", "boil", "count", "roll", "flip", "fill", "fry", "thread", "grill", "roll-tawa"]
 # stations that cook a whole order on one screen (several maani, each rolled and cooked) take longer
-LONG = {"maani-line": 600}
+LONG = {"maani-line": 600, "samosa": 500}
 # --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
 # COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
 DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))

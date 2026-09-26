@@ -3368,6 +3368,10 @@
    "bulb": 2
   }
  },
+ "lab": {
+  "_about": "Wave 6b (the quality pass, Q4 and Q9 item 6): the Station lab lists the nine kept stations (lab entry keys, in this order); every other entry (the sub-mechanics: pour, boil, count, roll, flip, thread, grill…) sits under 'Parts' for testing. Knead is cut (its file isn't loaded).",
+  "stations": ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "chop", "tadka", "stir", "assemble", "samosa"]
+ },
  "onboard": {
   "_about": "Wave 6b (docs/UX-PRINCIPLES.md 8 and 10): the first-time onboarding script for each kept station, run by the shared kit (js/shared/onboard.js) through js/cook/coach.js. Each step is one move the overlay shows: everything dims except the next thing to do (the station's own 'what to do next', Cook.expect), a ghost hand does `do` once (tap, swipe, stir, roll, hold), the child does it, then the next. After the last step the overlay is gone at that station for good (once per profile). `what` says what the step is, for people reading this. Only the guided first time (a dish's first order; the Station lab with 'Nani helps'). Keys are the stations' own keys (Cook.Stations.begin).",
   "fetch": [
