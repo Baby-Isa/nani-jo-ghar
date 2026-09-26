@@ -1,0 +1,55 @@
+{
+  "_about": "Every line the Conversations MVP says or offers (docs/modes/conversations-design.md §8.2, with §10a applied). k = the Kutchi as shown (null for a placeholder with no Kutchi yet); en = the English (the light bulb, and the grey italic text of a placeholder); src = where the Kutchi comes from (§n = docs/kutchi-grammar-notes.md section n; B/A ids = the Section B recording; §10a = Zafar's decisions); status: family (in the grammar notes or a family clip), decided (Zafar's §10a decision; the handout phrase, spelling still to confirm with Mum), cast (a name from the Cast), placeholder. placeholder: true means NOT family-confirmed: it shows as grey italic English, it is never tested, and it's on Mum's recording list. audio = the chunks in order, as 'fam:<clip id>' from data/family-audio.json (the voice, Mum or Zafar, is chosen at run time); [] = no clip yet (text only). whole = a whole-line clip that beats the chunks for one filler. {x} is a noun from 'nouns' (the host's word id). pic = the bubble's picture (placeholder emoji until the art exists).",
+  "version": 1,
+  "lines": {
+    "salaam": { "k": "Salamun alaykum!", "en": "Hello! (peace be upon you)", "src": "hd; §10a.2 'hello stays salaam'", "status": "decided", "audio": [], "pic": "👋", "confirm": "Mum to confirm the spelling and record it (design §9.2 item 1)" },
+    "salaam-reply": { "k": "Wa alaikum salaam!", "en": "Hello! (and peace be upon you)", "src": "hd; §10a.2", "status": "decided", "audio": [], "pic": "🙋", "confirm": "Mum to record it (design §9.2 item 2)" },
+    "khudafis": { "k": "Khuda-fis!", "en": "Goodbye!", "src": "§10a.2; grammar notes 'Zafar, 26 Sept (Conversations decisions)'", "status": "family", "audio": [], "pic": "👋🚪" },
+
+    "howareyou-child": { "k": "Tu ki aiye?", "en": "How are you?", "src": "§21, §27 B43", "status": "family", "audio": ["fam:tu-ki-aiye"], "pic": "🙂❓" },
+    "howareyou-ki-ai": { "k": "Ki ai?", "en": "How are you? (casual)", "src": "§21", "status": "family", "audio": [], "pic": "🙂❓" },
+    "howareyou-elder": { "k": "Aai ki aayo?", "en": "How are you? (to an elder)", "src": "§21, §27 B43", "status": "family", "audio": ["fam:aai-ki-aayo"], "pic": "🙂❓" },
+    "fine": { "k": "Aau theek ai.", "en": "I'm fine.", "src": "§27 B43", "status": "family", "audio": ["fam:aau-theek-ai"], "pic": "👍" },
+    "fine-ask-elder": { "k": "Aau theek ai. Aai ki aayo?", "en": "I'm fine. And how are you?", "src": "§21, §27 B43", "status": "family", "audio": ["fam:aau-theek-ai", "fam:aai-ki-aayo"], "pic": "👍❓", "register": "aai" },
+    "fine-ask-child": { "k": "Aau theek ai. Tu ki aiye?", "en": "I'm fine. And how are you?", "src": "§21, §27 B43", "status": "family", "audio": ["fam:aau-theek-ai", "fam:tu-ki-aiye"], "pic": "👍❓", "register": "tu" },
+
+    "make-x": { "k": "Tu muke {x} banai dinda?", "en": "Can you make me {x}?", "src": "§27 B40 (frame confirmed with chai; other dishes built from chunks, §10a.5)", "status": "family", "audio": [], "whole": { "cook-chai": "fam:tu-muke-chai-banai-dinda" }, "pic": "🍳❓" },
+    "ha": { "k": "Ha!", "en": "Yes! (of course)", "src": "§23, §27 B41", "status": "family", "audio": ["fam:ha-of-course"], "pic": "🙆" },
+    "na": { "k": "Na.", "en": "No.", "src": "§23, §24 B1 (a bare 'na' is rude, §11)", "status": "family", "audio": ["fam:na"], "pic": "🙅" },
+    "help-cook": { "k": null, "en": "Will you help me cook?", "src": "PH (first-launch line 8)", "status": "placeholder", "placeholder": true, "audio": [], "pic": "🍲❓" },
+
+    "what-like": { "k": "Toke kuro khapeto?", "en": "What would you like?", "src": "§23 A8.8", "status": "family", "audio": ["fam:toke-kuro-khapeto"], "pic": "🍽️❓" },
+    "want-x": { "k": "Muke {x} khape.", "en": "I'd like {x}.", "src": "§1 (the informal frame; never changes)", "status": "family", "audio": [], "pic": "{x}" },
+    "na-na-khape": { "k": "Na, na khape.", "en": "No, I don't want any.", "src": "§11 (the polite no)", "status": "family", "audio": [], "pic": "🙏" },
+    "na-thank-you": { "k": "Na, thank you.", "en": "No, thank you.", "src": "§23 A8.2", "status": "family", "audio": ["fam:na-thank-you"], "pic": "🙏" },
+
+    "thank-you": { "k": "Thank you!", "en": "Thank you!", "src": "§10a.1 (the family says the English 'thank you'); §23", "status": "family", "audio": [], "pic": "🙏" },
+    "welcome": { "k": "Jara e wandho nai.", "en": "You're welcome. (no trouble at all)", "src": "§27 B42", "status": "family", "audio": ["fam:jara-e-wandho-nai"], "pic": "😊" },
+
+    "who-am-i": { "k": null, "en": "Do you know who I am?", "src": "PH (design §9.2 item 18)", "status": "placeholder", "placeholder": true, "audio": [], "pic": "🤔" },
+    "name-nana": { "k": "Nana!", "en": "Nana!", "src": "Cast; kin-nana (§8 'Hi Nana lai ai')", "status": "cast", "audio": [], "pic": "👴", "name": "nana" },
+    "name-nani": { "k": "Nani!", "en": "Nani!", "src": "Cast", "status": "cast", "audio": [], "pic": "👵", "name": "nani" },
+    "name-ali": { "k": "Ali!", "en": "Ali!", "src": "Cast (a name)", "status": "cast", "audio": [], "pic": "👦", "name": "ali" },
+    "name-bigma": { "k": null, "en": "Big Ma!", "src": "PH (what a child calls Big Ma: E89; design §9.2 item 19)", "status": "placeholder", "placeholder": true, "audio": [], "pic": "👵🏽", "name": "bigma" },
+
+    "x-kida": { "k": "{X} kida ai?", "en": "Where's the {x}?", "src": "§23 'kida ai?' + the word order of §15 (TO CONFIRM: design §9.2 item 15)", "status": "placeholder", "placeholder": true, "audio": ["{x}", "fam:kida-ai"], "pic": "🔎" },
+    "hida": { "k": "Hida!", "en": "Here! (by you)", "src": "§17, §23 A8.11", "status": "family", "audio": ["fam:hida"], "pic": "👇" },
+    "huda": { "k": "Huda!", "en": "There! (over there)", "src": "§17, §23 A8.11", "status": "family", "audio": ["fam:huda"], "pic": "👉" },
+
+    "lovely-chai": { "k": null, "en": "Mmm, lovely chai!", "src": "PH (first-launch line 3; design §9.2 item 20)", "status": "placeholder", "placeholder": true, "audio": [], "pic": "☕😋" },
+    "shabash-beta": { "k": "Shabash, beta!", "en": "Well done, dear!", "src": "§25 B25 (shabash), §22 (beta)", "status": "family", "audio": ["fam:shabash"], "pic": "⭐", "note": "the clip is 'shabash!' alone; 'beta' has no clip yet" },
+    "dhyan-rakh": { "k": "Dhyan rakh!", "en": "Careful!", "src": "§27 B49", "status": "family", "audio": ["fam:dhyan-rakh"], "pic": "⚠️" }
+  },
+  "nouns": {
+    "cook-chai": { "k": "chai", "en": "tea", "pic": "☕", "audio": [], "src": "cook.json (zafar-24sep)" },
+    "cook-paani": { "k": "paani", "en": "water", "pic": "💧", "audio": [], "src": "cook.json (zafar-24sep)" },
+    "cook-dudh": { "k": "dudh", "en": "milk", "pic": "🥛", "audio": [], "src": "cook.json; §6" },
+    "cook-maani": { "k": "maani", "en": "chapati", "pic": "🫓", "audio": [], "src": "cook.json; §1" },
+    "cook-daar": { "k": "daar", "en": "daal", "pic": "🥣", "audio": [], "src": "§7" },
+    "ph-chaat": { "k": "chaat", "en": "chaat", "pic": "🥗", "audio": ["fam:chaat"], "src": "§26 B36" },
+    "ph-samosa": { "k": "samosa", "en": "samosa", "pic": "🥟", "audio": ["fam:samosa"], "src": "§26 B37" },
+    "ph-mishkaki": { "k": "mishkaki", "en": "mishkaki", "pic": "🍢", "audio": ["fam:mishkaki"], "src": "§26 B38" },
+    "chamchi": { "k": "chamchi", "en": "teaspoon", "pic": "🥄", "audio": ["fam:chamchi"], "src": "§9, §25 B26" },
+    "cup": { "k": "cup", "en": "cup", "pic": "☕", "audio": [], "src": "§25 B27 ('cup is just cup')" }
+  }
+}
