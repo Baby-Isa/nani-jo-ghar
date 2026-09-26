@@ -271,7 +271,7 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 - **B2, slowly:** ***aste thi*** (*aste* = slow). **B3, quickly:** ***jaldi***.
 - **B4, half:** ***adh*** for amounts (half a cup of milk). ***ardo / ardi*** for a half portion, which agrees with gender. When you don't know the gender, use the he-form.
 - **B5, full:**
-  - ***ako / aki*** = whole, full: *ako cup*, *aki tanki*.
+  - ***aako / aaki*** = whole, full: ***aako cup*** (a whole cup, the usual measure in cooking), *aaki tanki*.
   - ***bharelo / bhareli*** = filled up (from *bhar*, fill): *bhareli chamchi* = a heaped teaspoonful.
 - **B7, small:** ***nindho / nindhi***. (B6, big, *wadho / wadhi*, was already confirmed.)
 - **B8, yoghurt:** ***dai***. A yoghurt starter culture is ***mervan***.
@@ -283,9 +283,9 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 | ID | English | Kutchi | Notes |
 |---|---|---|---|
 | B13 | only | ***kali*** | doesn't change with gender: *kali amba* |
-| B14 | now | ***hane*** (in a sequence, "now it's time to…": *hane tameta wij*); ***haver*** (now, generally: *haver hal*) | **cooking uses *hane*** |
+| B14 | now | ***hane*** (in a sequence, "now it's time to…": *hane tameta wij*); ***hever*** (now, generally: *hever hal*) | **cooking uses *hane*** |
 | B15 | lift them out | ***(inke) hane kadh*** | *kadh* = take out; *inke* = it |
-| B16 | leave it (in) | ***(inke) chadi de*** | "leave it be". ***thori war rakh*** = leave it a bit longer. ***hevar na*** = not now. *Samosa kadhu ke na?* → *Ha, kadh* / *Hevar na*. |
+| B16 | leave it (in) | ***(inke) chadi de*** | "leave it be". ***thori war rakh*** = leave it a bit longer. ***hever na*** = not now. *Samosa kadhu ke na?* → *Ha, kadh* / *Hever na*. |
 | B17 | vegetable | ***boga*** | the family's word, from Swahili |
 | – | skewer | ***lakri*** (a stick) | *mishkaki* is the meat pieces. One skewer: ***hakri lakri mishkaki***. Two: ***ba lakri mishkaki*** (*lakri* is a she-word, so *hakri*). |
 | B18 | mixed | ***mixed*** | the English word |
@@ -297,7 +297,7 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 | B24 | it's boiling | ***ukreto*** | |
 | B25 | well done! | ***shabash!*** | |
 | B26 | a spoon | ***hakri chamchi*** (teaspoon), ***hakro chamcho*** (tablespoon) | |
-| B27 | a cup | ***hakri cup*** ⚠ | but *bharelo cup* in B5 treats cup as a he-word, so Zafar to check |
+| B27 | a cup | ***hakri cup*** (one cup) | *cup* is just *cup*. A full (filled-up) cup is ***bharelo cup***; a whole cup, the one used most in cooking, is ***aako cup*** (Zafar) |
 
 ### 26. B28–B38: things the game still names in English
 | ID | English | Kutchi |
@@ -321,7 +321,7 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 | B40 | Can you make me some chai? | to a child: ***Tu muke chai banai dinda?*** To an elder: ***Aai muke chai banai dinda?*** No word for "can": the question is in the rising voice at the end. |
 | B41 | Of course! | ***Ha!*** |
 | B42 | You're welcome. | ***Jara e wandho nai*** ⚠ ("it's no trouble at all") |
-| B43 | How are you? I'm fine. | ***Tu ki aiye?*** / ***Aai ki aayo?*** → ***Aau thik ai*** ⚠ (I'm fine) |
+| B43 | How are you? I'm fine. | ***Tu ki aiye?*** / ***Aai ki aayo?*** → ***Aau theek ai*** (I'm fine) |
 | B44 | Wait for me! | ***Mu lai khobar!*** ⚠ |
 | B45 | Eat! | ***Kha!*** |
 | B46 | Let me taste it. | ***Muke chakhan lai de.*** Or ***Khobar, aau chakha*** (wait, I'll taste it). |
@@ -340,3 +340,9 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 ### What this means for the game
 - **The Cook word changes** are listed in `docs/cook-word-changes-B.md`.
 - **Voice clips:** each word is said several times, by Mum and then Zafar. Once cut into clips, they're the first real family voices in the game.
+
+### Zafar's corrections to A8 and Section B (26 Sept)
+- ***hane*** = now, in a sequence (cooking steps). ***hever*** (with an e) = now, generally.
+- ***chundo*** = mince, and "to mince" something in general. Zafar thinks *chundo* is the Kutchi word, so **the game uses *chundo***, and *keema* is also accepted. This replaces *chindo* above.
+- ***Aau theek ai*** = I'm fine.
+- ***cup*** is just *cup*. One cup: ***hakri cup***. A full (filled-up) cup: ***bharelo cup***. A whole cup, the one used more in cooking: ***aako cup***.
