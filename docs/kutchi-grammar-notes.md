@@ -93,7 +93,8 @@ Rough transcript: `sources/audio/mum-2026-09-26/A4.md`. Spellings follow Zafar's
 
 ### 11. "don't want" is *na khape*; a bare *na* is rude
 - "Do you want chai?" The polite no is ***na, na khape*** (no, I don't want it). A bare ***na*** is rude.
-- "No sugar" when offered it: *muke khun na te khape* (I don't want sugar; Whisper's "na te" may be one word, *nate*, so Zafar to check). Informally *khun na te khape*; very informally just ***khun na***.
+- "No sugar" when offered it: ***muke khun nati khape*** (I don't want sugar; spelling confirmed by Zafar). Informally ***khun nati khape***; very informally just ***khun na***.
+- *nati* looks like the negative form that agrees, like *khapeti*: probably *nato* for he-words. To hear in Section C.
 
 ### 12. "don't" is *na* next to the verb. Before the verb it's urgent or changes the meaning
 - In the kitchen: ***khun na wij*** (don't put sugar in); ***khun na wapur*** (don't use sugar; *wapur* = use).
@@ -108,7 +109,7 @@ Rough transcript: `sources/audio/mum-2026-09-26/A4.md`. Spellings follow Zafar's
 
 ### 14. "nothing" is *ki na*; "none left" is *ki baki nai*
 - ***ki na*** = nothing. *ki* on its own is "what" or "something" (*ke kuru* = what; *ki na ki* = something or other).
-- None left: ***ki baki nai(e)***. Also ***ki rei nai bio***, which has the feeling of "left over" (at the end of a party: any cake left?). Mum thinks *rei* may be Gujarati and *baki* more Kutchi. **Ask Masi.**
+- None left: ***ki baki nai*** (confirmed). Also ***ki rei nai vyo*** (Zafar's spelling), which has the feeling of "left over" (at the end of a party: any cake left?). Mum thinks *rei* may be Gujarati and *baki* more Kutchi. **Ask Masi.**
 
 ### Claude's check against Sindhi and Gujarati (Mum's request at 8:04)
 These match the neighbouring languages. That supports the spellings, but proves nothing about Kutchi on its own, so it's worth confirming with Masi.
@@ -118,9 +119,11 @@ These match the neighbouring languages. That supports the spellings, but proves 
 - *hi / hu* (this / that) are exactly Sindhi *hī / hū*. *hal* is Sindhi *hal* (go, walk; also Kathiawadi Gujarati *hālo*, "let's go"). *bhaj* is Sindhi *bhaj* (run; Gujarati *bhāgvũ*).
 - *ki na* matches Gujarati *kaī nahi* (nothing) and Sindhi *kujh na*.
 - ***baki*** (remaining) is in Gujarati, Sindhi and Urdu alike, so it doesn't settle the dialect question.
-- ***rei*** fits Gujarati *rahyũ* (remained, from *rahevũ*). But Sindhi has *rahyo* too, so *ki rei nai bio* could be Kutchi as well: both are plausible. Masi is the right tie-break.
+- ***rei*** fits Gujarati *rahyũ* (remained, from *rahevũ*). But Sindhi has *rahyo* too, so *ki rei nai vyo* could be Kutchi as well: both are plausible. Masi is the right tie-break.
 
 ### What this means for the game (adds to the list above)
+The game ideas below (9–13) are approved by Zafar and parked in `docs/GAME-IDEAS-TBC.md` until they're built.
+
 9. **Leaving something out of an order:** *{x} wagar ji {dish}* (*dudh wagar ji chai*, *dungri wagar ji daar*). This is a natural harder Cook level: the card says what to leave out. The Chai tray can also use *kari chai* and *mori chai* as words in their own right.
 10. **"Don't" rows** (*khun na wij*, *dungri na wij*) can be a level-3 trap. The row ticks when the step closes without that ingredient (UX §11), and adding it shows in the end review.
 11. **Choosing:** *hi na, hu* and *{colour} na* fit Find it's counter and the clinic's "is it this or that".
