@@ -33,17 +33,34 @@ ROOM_W = 1536
 # Sprite id -> ids already used in data/clinic.json / the design, for lookups.
 ALIASES = {
     "plaster": ["care-plaster"], "bandage-red": ["care-bandage"], "cloth": ["care-cloth"],
-    "ice-pack": ["care-ice"], "hot-water-bottle": ["care-bottle"], "blanket-red": ["care-blanket"],
+    "ice-pack": ["care-ice"], "hot-water-bottle": ["care-bottle"], "blanket-red": ["care-blanket", "blanket"],
     "tissues": ["care-tissue"], "pillow": ["care-pillow"], "drops-green": ["care-drops"],
-    "stethoscope": ["tool-stethoscope"], "torch": ["tool-torch"], "thermometer": ["tool-strip"],
+    "stethoscope": ["tool-stethoscope"], "torch": ["tool-torch"], "thermometer": [],
     "med-syrup": [], "syrup": ["med-syrup"], "honey-jar": ["med-honey"],
     "cotton-bud": ["cotton-bud"], "jug-water": ["paani", "jug"], "salt-pot": ["loon"],
     "sugar-pot": ["khun"], "lemon": ["limu"], "reflex-hammer": ["hammer"],
     "cotton-wool": ["cotton"], "foot-basin": ["tub"],
-    "part-knee": ["body-knee"], "part-ear": ["body-ear"], "part-mouth": ["body-mouth", "body-tooth"],
+    "part-knee": ["body-knee"], "part-ear": ["body-ear"], "part-mouth": ["body-mouth", "body-throat"],
     "part-tongue": ["tongue"], "part-eye": ["body-eye"], "part-foot": ["body-foot", "body-toe"],
-    "part-forearm": ["body-arm"], "part-head": ["body-head"], "part-hand": ["body-hand", "body-finger"],
+    "part-forearm": ["body-arm"], "part-head": ["body-head"], "part-hand": ["body-hand", "tool-hand"],
+    # round 2: the heal games' item ids (origin/claude/clinic-heal-a/-b/-c, clinic-core) and data/clinic.json items
+    "bandage-white": ["bandage"], "cast-blue": ["cast"], "xray-plate": ["xray"], "thread-blue": ["thread"],
+    "drops-green": ["care-drops", "drops"], "dental-drill": ["drill"], "filling": ["paste", "paste-white"],
+    "eye-patch-pirate": ["care-patch", "patch"], "pointer": ["tool-pointer"], "tweezers": ["tool-tweezers"],
+    "salt-pot": ["loon", "spi-16"], "lemon": ["limu", "fru-02"], "sugar-pot": ["khun", "cook-khun"],
+    "cup": ["cook-paani"], "milk-glass": ["dudh", "cook-dudh"], "chai-cup": ["chai", "cook-chai"],
+    "chilli": ["veg-12", "marcha"], "honey-jar": ["med-honey", "honey"], "tissues": ["care-tissue", "tissue"],
+    "tiny-sock": ["sock"], "bone-kink": ["bone"], "stitches": ["stitch"], "bug-jar": ["jar"],
+    "plaster-stars": ["plaster-star"], "med-green": ["bottle", "bottle-green"], "med-red": ["bottle-red"],
+    "med-blue": ["bottle-blue"], "foot-bath": ["tub-full"], "part-leg": ["body-leg"], "part-nose": ["body-nose"],
+    "part-tummy": ["body-tummy"], "part-elbow": ["body-elbow"], "part-finger": ["body-finger"],
+    "part-tooth": ["body-tooth", "tooth"], "part-chest": ["body-chest"], "part-arm": ["arm-sleeve"],
+    "exam-couch": ["couch"], "fever-strip": ["tool-strip", "strip"], "face-happy": ["feel-happy"], "face-sad": ["feel-sad"], "face-okay": ["feel-okay"],
+    "face-better": ["feel-better"], "face-scared": ["feel-scared"],
 }
+KIND_ALIASES = {"bigma": ["big-ma"]}
+# Cells the model drew as something else: ui's "tray-3"/"tray-4" came out with 2 and 3 dishes.
+RENAME = {"ui": {"tray-3": "tray-2", "tray-4": "tray-3"}}
 GROUP = {"items": "items", "parts": "parts", "overlays": "overlays", "ui": "ui"}
 
 
@@ -218,6 +235,7 @@ def main():
             sprites[s["name"]] = {"file": rel, "w": size[0], "h": size[1], "group": "rooms", "sheet": s["name"]}
             continue
         for sid, im in slice_grid(s, img).items():
+            sid = RENAME.get(s["name"], {}).get(sid, sid)
             if im is None:
                 missing.append(sid)
                 continue
@@ -234,17 +252,30 @@ def main():
                 e["aliases"] = ALIASES[sid]
             sprites[sid] = e
     missing = sorted(set(m for m in missing if m not in sprites))
-    alias = {a: sid for sid, e in sprites.items() for a in e.get("aliases", [])}
+    # a kind's bare id (and its other names) is its neutral face, for Kit.sprite("girl")
+    for pid, moods in patients.items():
+        base = moods.get("neutral")
+        if base:
+            sprites[base].setdefault("aliases", []).extend([pid] + KIND_ALIASES.get(pid, []))
+    alias = {a: sid for sid, e in sprites.items() for a in e.get("aliases", []) if a not in sprites}
+    real = len(sprites)
+    # Kit.sprite (js/clinic/kit.js) reads sprites[id] only, so every alias is also a sprite entry
+    for a, sid in alias.items():
+        e = sprites[sid]
+        sprites[a] = {"file": e["file"], "w": e["w"], "h": e["h"], "group": e["group"], "alias_of": sid}
     manifest = {
         "_about": ("Rough, throwaway placeholder art for the clinic (gpt-image-1 medium sprite sheets, "
                    "sliced by sources/art/clinic-rough/slice_sheets.py). The real art comes later. "
                    "`sprites` maps a sprite id to its trimmed transparent webp (paths from the site root, "
                    "w/h in px). `alias` maps ids used in data/clinic.json and the design (care-*, tool-*, "
                    "body-*, med-*, Kutchi item names) to a sprite id. `patients` maps a patient kind to its "
-                   "moods (neutral, ouch, giggle, relief, happy, wave); every patient sits on a small stool, "
-                   "front view. Rooms are opaque 1536x1024 backgrounds. Look up: sprites[id] || sprites[alias[id]]; "
-                   "fall back to greybox when absent."),
-        "version": 1,
+                   "moods (neutral, ouch, giggle, relief, happy, wave, and mostly sad, scared); every patient "
+                   "sits on a small stool, front view; the doctor stands (neutral, talk, point, thumbs, syringe, "
+                   "happy). A kind's bare id is its neutral face. Every alias is also written into `sprites` "
+                   "(with `alias_of`) because Kit.sprite reads sprites[id] only. Rooms are opaque 1536x1024 "
+                   "backgrounds. Look up: sprites[id] || sprites[alias[id]]; fall back to greybox when absent."),
+        "version": 2,
+        "count": {"sprites": real, "aliases": len(alias)},
         "sprites": dict(sorted(sprites.items())),
         "alias": dict(sorted(alias.items())),
         "patients": patients,
@@ -254,7 +285,8 @@ def main():
         manifest["_missing"] = missing
     os.makedirs(os.path.dirname(MANIFEST), exist_ok=True)
     json.dump(manifest, open(MANIFEST, "w"), indent=1)
-    entries = [(sid, os.path.join(GAME, e["file"])) for sid, e in sprites.items() if e["group"] != "rooms"]
+    entries = [(sid, os.path.join(GAME, e["file"])) for sid, e in sorted(sprites.items(), key=lambda kv: (kv[1]["group"], kv[0]))
+               if e["group"] != "rooms" and "alias_of" not in e]
     contact_sheet(entries, CONTACT)
     rooms = [os.path.join(GAME, e["file"]) for e in sprites.values() if e["group"] == "rooms"]
     if rooms:
@@ -264,7 +296,7 @@ def main():
             strip.paste(t, (512 * i, 0))
         strip.save(CONTACT.replace(".png", "-rooms.png"))
     print(f"sheets {len(sheets_used)}: {', '.join(sheets_used)}")
-    print(f"sprites {len(sprites)}; missing {missing}")
+    print(f"sprites {real} (+{len(alias)} aliases); missing {missing}")
 
 
 if __name__ == "__main__":

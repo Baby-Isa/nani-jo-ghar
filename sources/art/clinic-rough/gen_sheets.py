@@ -68,20 +68,28 @@ PATIENT_FACES = [("neutral", "sitting calmly, neutral friendly face, hands in la
                  ("wave", "happy, waving one hand hello/goodbye")]
 
 
-def patient_sheet(pid, who):
-    cells = [(f"{pid}-{k}", f"the same {who}, {d}") for k, d in PATIENT_FACES]
+EXTRA_FACES = [("sad", "sad, droopy eyebrows, small frown, shoulders slumped (comic, not crying)"),
+               ("scared", "a little scared, eyes wide, hands up near the chin, comic worried wobbly mouth")]
+
+
+def patient_sheet(pid, who, faces=None, cols=3, seat=True):
+    faces = faces or PATIENT_FACES
+    rows = len(faces) // cols
+    cells = [(f"{pid}-{k}", f"the same {who}, {d}") for k, d in faces]
+    pose = ("sitting on a small plain wooden stool, facing the viewer, whole figure and stool visible"
+            if seat else "standing, facing the viewer, whole figure visible from head to shoes")
     prompt = " ".join([
         STYLE, PEOPLE_STYLE,
-        "This is a CHARACTER SHEET of ONE character: a 2 x 3 grid (6 cells), the SAME character six times, "
+        f"This is a CHARACTER SHEET of ONE character: a {rows} x {cols} grid ({len(cells)} cells), the SAME "
+        f"character {len(cells)} times, "
         "identical clothes, hair and colours in every cell, each a full-body front view, symmetrical, "
-        "sitting on a small plain wooden stool, facing the viewer, whole figure and stool visible, centred "
+        f"{pose}, centred "
         "in its cell with wide empty gaps between cells so no figures touch. The background is a perfectly "
         "flat uniform plain mid-grey (#808080), no floor, no cast shadows, no grid lines, no borders, no text.",
         f"The character: {who}.",
-        "Row 1, left to right: " + "; ".join(c[1] for c in cells[:3]) + ".",
-        "Row 2, left to right: " + "; ".join(c[1] for c in cells[3:]) + ".",
+        grid(rows, cols, cells),
         NEG])
-    return {"name": f"patient-{pid}", "kind": "grid", "rows": 2, "cols": 3,
+    return {"name": f"patient-{pid}", "kind": "grid", "rows": rows, "cols": cols,
             "ids": [c[0] for c in cells], "size": "1536x1024", "prompt": prompt, "group": "patients"}
 
 
@@ -224,19 +232,144 @@ SHEETS.append(item_sheet("items-e", 3, 3, [
     ("lollipop-red", "a round red lollipop on a white stick"),
 ], extra="Nothing is grey or silver: every object is brightly coloured."))
 
+# Round 2 (coverage pass): the kinds, the doctor, the heal games' missing items.
+EIGHT = PATIENT_FACES + EXTRA_FACES
+SHEETS += [
+    patient_sheet("auntie", "an auntie in her forties, plump and smiling, black hair in a bun under a bright pink dupatta, pink and orange kameez", EIGHT, 4),
+    patient_sheet("uncle", "an uncle in his forties, black moustache, neat short black hair, sky-blue kurta, a small round belly", EIGHT, 4),
+    patient_sheet("nani", "Nani, a warm grandmother, silver hair in a bun under a white dupatta with a thin green border, green shalwar kameez, round glasses", EIGHT, 4),
+    patient_sheet("bigma", "Big Ma, a tall jolly great-aunt, grey plait, big maroon shawl over a mustard kameez, gold bangles", EIGHT, 4),
+    patient_sheet("cousin", "the cousin, a boy about 8, curly black hair, big ears, red and white striped t-shirt, grey shorts", EIGHT, 4),
+    patient_sheet("doctor", "the doctor, a friendly young man with a short neat black beard, white doctor's coat over a teal shirt, a stethoscope round his neck", [
+        ("neutral", "hands folded in front, calm friendly smile, looking at the viewer"),
+        ("talk", "talking, one open hand raised as if explaining, mouth open"),
+        ("point", "pointing to his left with one finger, friendly"),
+        ("thumbs", "big grin and a thumbs-up"),
+        ("syringe", "holding a huge comical toy syringe with red and white candy stripes (no needle), cheeky grin"),
+        ("happy", "laughing happily, arms open wide"),
+    ], 3, seat=False),
+    item_sheet("items-f", 4, 4, [
+        ("jug-hot", "a bright red enamel jug of hot water with three big curly white steam swirls rising from it"),
+        ("jug-cold", "a bright blue enamel jug of cold water with ice cubes poking out of the top and a frosty rim"),
+        ("chilli", "one bright green chilli pepper"),
+        ("milk-glass", "a tall glass of white milk"),
+        ("chai-cup", "a small glass cup of milky brown chai on a saucer"),
+        ("comb", "a bright orange plastic hair comb"),
+        ("spoon", "a shiny steel tablespoon, diagonal"),
+        ("sticker", "a round shiny sticker with a big smiling star on it, peeling up at one edge"),
+        ("plaster-red", "a plain bright red sticking plaster (band-aid), flat, seen from above"),
+        ("plaster-blue", "a plain bright blue sticking plaster (band-aid), flat, seen from above"),
+        ("plaster-green", "a plain bright green sticking plaster (band-aid), flat, seen from above"),
+        ("plaster-yellow", "a plain bright yellow sticking plaster (band-aid), flat, seen from above"),
+        ("plaster-spots", "a white sticking plaster with big colourful polka dots, seen from above"),
+        ("foot-bath", "a wide shallow turquoise foot tub full of clear blue water with bubbles"),
+        ("fever-strip", "a forehead fever strip: a flat rounded rectangle strip with a rainbow colour scale, no numbers"),
+        ("bandage-white", "a rolled white crepe bandage roll"),
+    ], extra="Nothing is grey or silver unless stated: every object is brightly coloured."),
+    item_sheet("overlays-b", 4, 4, [
+        ("foam", "a fluffy cluster of white toothpaste foam bubbles"),
+        ("sparkle", "a bright four-pointed white and yellow twinkle sparkle"),
+        ("stitches", "a short row of five neat blue criss-cross stitches, like cartoon sewing stitches, flat, no skin"),
+        ("drop-blue", "a single big glossy light-blue water droplet"),
+        ("steam", "a single soft white curly steam puff"),
+        ("beam", "a cone of pale yellow torch light, wide at the right, pointed at the left"),
+        ("sweat", "three little blue cartoon sweat drops in a fan"),
+        ("heartbeat", "a glossy red cartoon heart with little motion lines"),
+        ("face-happy", "a round yellow face card: a big happy smile"),
+        ("face-sad", "a round blue face card: a sad frown"),
+        ("face-okay", "a round green face card: a calm small smile"),
+        ("face-better", "a round orange face card: a relieved smile with closed eyes and a little sigh puff"),
+        ("face-scared", "a round purple face card: a scared face, eyes wide, wobbly mouth"),
+        ("paste-yellow", "a small blob of yellow tooth filling paste on a tiny spatula"),
+        ("paste-pink", "a small blob of pink tooth filling paste on a tiny spatula"),
+        ("bone-kink", "a cartoon white bone with a funny kink in the middle and a cute worried face, comic, clean"),
+    ], extra="Simple bold shapes, bright colours, cute and comical, nothing gory."),
+    item_sheet("parts-b", 3, 3, [
+        ("part-nose", "a close-up of a cute cartoon nose, front view, brown skin, cheeks around it"),
+        ("part-tummy", "a close-up of a child's round tummy in an orange t-shirt, front view"),
+        ("part-elbow", "a child's bare arm bent at the elbow, seen from the side, brown skin, five fingers"),
+        ("part-finger", "one pointing index finger close-up with the hand, brown skin"),
+        ("part-tooth", "one big cute cartoon white tooth with a happy face"),
+        ("part-tooth-cracked", "one big cute cartoon white tooth with a small zig-zag crack and a worried face"),
+        ("part-leg", "a child's whole bare leg, straight, standing, from the hip of the shorts down to the foot, brown skin"),
+        ("part-arm", "a child's whole straight arm with the t-shirt sleeve rolled up to the shoulder, brown skin, five fingers"),
+        ("part-chest", "a close-up of a child's chest and shoulders in a yellow t-shirt, front view, no head"),
+    ], extra="All skin is the same warm brown tone. Crisp clean edges everywhere: no blur, no fade, no vignette. Do not draw any lines or frames between cells."),
+    item_sheet("furniture", 3, 3, [
+        ("bench", "a long empty wooden waiting-room bench, front view"),
+        ("exam-couch", "a padded doctor's examination couch, mint green, front view, empty"),
+        ("trolley", "a small steel medical trolley with two shelves, empty, front view"),
+        ("belt", "a straight section of a sushi-style conveyor belt seen from the front at a slight angle, dark rubber belt with wooden sides, long and thin, horizontal"),
+        ("counter", "a long wooden pharmacy counter, front view, empty top"),
+        ("stool", "a small plain wooden stool"),
+        ("album", "an open sticker album with a few colourful star and smiley stickers"),
+        ("door", "a friendly wooden door painted blue, closed"),
+        ("plant", "a potted green plant in a terracotta pot"),
+    ]),
+]
+
+# The reference-edit mood sheets (moods-a/-b, kept as *-v1-rejected.png) came back with glowing
+# gradient backgrounds that don't key; the sad/scared moods are redrawn text-only on flat grey.
+WHO = {
+    "girl": "the little girl (two black plaits, yellow kurta, pink trousers)",
+    "boy": "the little boy (short black hair, orange t-shirt, blue shorts)",
+    "old-man": "the old man (white beard, white topi cap, cream kurta, brown waistcoat, glasses)",
+    "old-woman": "the old woman (grey hair under a cream dupatta, lilac shalwar kameez, glasses)",
+    "baby": "the mother in a teal dupatta and green kameez with a chubby baby on her lap (the BABY's face shows the mood)",
+    "nana": "Nana (grey moustache, short grey hair, navy waistcoat over a white kurta, round belly)",
+    "ma": "Ma (young mother, black hair under a mustard dupatta, maroon kameez)",
+    "ali": "Ali (boy about 9, messy black hair, green hoodie, jeans)",
+}
+
+
+def mood_sheet(name, pids):
+    cells = [(f"{p}-sad", f"{WHO[p]}, sad: droopy eyebrows, small frown, shoulders slumped, comic, not crying")
+             for p in pids] + [(f"{p}-scared", f"{WHO[p]}, a little scared: eyes wide, hands up near the chin, "
+                                "wobbly worried mouth, comic") for p in pids]
+    prompt = " ".join([
+        STYLE, PEOPLE_STYLE,
+        "This is a CHARACTER SHEET: a 2 x 4 grid (8 cells), four different characters, each shown twice (top row "
+        "sad, bottom row a little scared, same column = same character, identical clothes and colours). Each is "
+        "a full-body front view, sitting on a small plain wooden stool, whole figure and stool visible, centred "
+        "in its cell with wide empty gaps so no figures touch. The background is a perfectly flat uniform plain "
+        "mid-grey (#808080), no glow, no gradient, no floor, no cast shadows, no grid lines, no borders, no text.",
+        grid(2, 4, cells), NEG])
+    return {"name": name, "kind": "grid", "rows": 2, "cols": 4, "ids": [c[0] for c in cells],
+            "size": "1536x1024", "prompt": prompt, "group": "patients"}
+
+
+SHEETS += [
+    mood_sheet("moods-c", ["girl", "boy", "old-man", "old-woman"]),
+    mood_sheet("moods-d", ["baby", "nana", "ma", "ali"]),
+    item_sheet("items-g", 2, 2, [
+        ("fever-strip", "a forehead fever strip: a flat rounded rectangle strip with a rainbow colour scale, no numbers"),
+        ("tray-4", "an empty wooden serving tray seen from above with exactly FOUR round empty white dishes in one row"),
+        ("tray-1", "a small empty wooden serving tray seen from above with ONE round empty white dish"),
+        ("leg-cast", "a child's leg in a bright blue plaster cast from knee to toes, the bare toes peeking out, comic, brown skin"),
+    ]),
+]
+
 # The model skipped a cell on some sheets: the rows actually drawn (None = a blob to ignore).
 # Sprites from a later sheet override the same id from an earlier one.
 LAYOUT = {
     "items-b": [["syringe", "toothbrush", "toothpaste", "tissues"], ["towel", "bowl-water", "foot-basin"],
                 ["tweezers", "lemon", None, None], [None, None, None, "ice-pack"]],
+    # the fever strip merged into the bandage roll: a white roll with a rainbow band
+    "items-f": [["jug-hot", "jug-cold", "chilli", "milk-glass"], ["chai-cup", "comb", "spoon", "sticker"],
+                ["plaster-red", "plaster-blue", "plaster-green", "plaster-yellow"],
+                ["plaster-spots", "foot-bath", "bandage-white"]],
 }
 BY_NAME = {s["name"]: s for s in SHEETS}
 for _n, _o in LAYOUT.items():
     BY_NAME[_n]["layout"] = _o
 
 
+REF_TOKENS = 1600  # a guess per reference image (input image tokens at $10 / 1M)
+
+
 def estimate(sheets):
-    return sum(PRICE[s["size"]] + len(s["prompt"]) / 4 * IN_TEXT_PER_TOKEN for s in sheets)
+    return sum(PRICE[s["size"]] + len(s["prompt"]) / 4 * IN_TEXT_PER_TOKEN
+               + len(s.get("refs", [])) * REF_TOKENS * 10 / 1e6 for s in sheets)
 
 
 def load_log():
@@ -252,11 +385,20 @@ def spent(log):
 def gen(sheet, key, suffix=""):
     t0 = time.time()
     for attempt in range(4):
-        r = requests.post("https://api.openai.com/v1/images/generations",
-                          headers={"Authorization": f"Bearer {key}"},
-                          json={"model": MODEL, "prompt": sheet["prompt"], "size": sheet["size"],
-                                "quality": "medium", "n": 1, "background": "opaque"},
-                          timeout=300)
+        if sheet.get("refs"):
+            # the same characters: the earlier sheets go in as references (the edits endpoint)
+            files = [("image[]", (f"{n}.png", open(os.path.join(HERE, n + ".png"), "rb"), "image/png"))
+                     for n in sheet["refs"]]
+            r = requests.post("https://api.openai.com/v1/images/edits",
+                              headers={"Authorization": f"Bearer {key}"}, files=files,
+                              data={"model": MODEL, "prompt": sheet["prompt"], "size": sheet["size"],
+                                    "quality": "medium", "n": "1"}, timeout=300)
+        else:
+            r = requests.post("https://api.openai.com/v1/images/generations",
+                              headers={"Authorization": f"Bearer {key}"},
+                              json={"model": MODEL, "prompt": sheet["prompt"], "size": sheet["size"],
+                                    "quality": "medium", "n": 1, "background": "opaque"},
+                              timeout=300)
         if r.status_code in (429, 500, 502, 503) and attempt < 3:
             time.sleep(5 * 2 ** attempt)
             continue
