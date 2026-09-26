@@ -142,7 +142,7 @@
     const path = require("path");
     const fs = require("fs");
     Heal.IDS.forEach((id) => {
-      const f = path.join(dir, `${id}.js`);
+      const f = path.resolve(dir, `${id}.js`);
       if (!fs.existsSync(f)) return;
       const g = require(f);
       if (!Heal.has(id) && g && g.id && typeof g.mount === "function") Heal.register(g);

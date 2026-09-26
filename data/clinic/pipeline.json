@@ -1,0 +1,153 @@
+{
+  "_about": "The clinic's pipeline (docs/modes/clinic-design.md: the Mini-game quality pass Q1-Q7 over the Pipeline design P1-P13). One patient = waiting room -> diagnosis -> pharmacy (the belt) -> heal (a registered healing game, docs/clinic-heal-api.md) -> send-off. Read by js/clinic/pipeline.js in the browser and in Node (build/leak_clinic.mjs). Real Kutchi only where the family gave it (docs/kutchi-grammar-notes.md and the list at the top of the pipeline design): Muke {x} khape, ne, pela ... ne poi ..., the numbers, haa, nar (draft), wadho/nindho (he-forms), Salamun alaykum, Aabhar aanjo, Achija. Everything in [brackets] is an English placeholder, shown grey italic. Never invent Kutchi.",
+
+  "kinds": {
+    "_about": "P2: kinds of person, not names (the lesson). `he` = a he-word for wadho/nindho (the she-forms wadhi/nindhi are not confirmed, so size calls only go to he-kinds). `elder` = the formal greeting.",
+    "girl": { "english": "the girl", "he": false },
+    "boy": { "english": "the boy", "he": true },
+    "old-man": { "english": "the old man", "he": true, "elder": true },
+    "old-woman": { "english": "the old woman", "he": false, "elder": true },
+    "baby": { "english": "the baby", "he": false },
+    "auntie": { "english": "the auntie", "he": false },
+    "uncle": { "english": "the uncle", "he": true }
+  },
+  "colours": ["red", "blue", "green", "yellow"],
+  "colour_words": {
+    "red": { "english": "in red" }, "blue": { "english": "in blue" }, "green": { "english": "in green" }, "yellow": { "english": "in yellow" }
+  },
+
+  "parts": {
+    "_about": "Which parts diagnosis can land on, by the diagnosis level (P3: 6 -> 13 -> 19; the ailments decide which of them can be sore).",
+    "1": ["knee", "hand", "arm", "leg", "foot", "head", "ear"],
+    "2": ["knee", "hand", "arm", "leg", "foot", "head", "ear", "eye", "mouth", "tooth", "tummy", "chest"],
+    "3": ["knee", "hand", "arm", "leg", "foot", "head", "ear", "eye", "mouth", "tooth", "tummy", "chest", "elbow", "shoulder", "neck", "finger", "toe"]
+  },
+  "part_words": {
+    "knee": "knee", "hand": "hand", "arm": "arm", "leg": "leg", "foot": "foot", "head": "head", "ear": "ear", "eye": "eye",
+    "mouth": "mouth", "tooth": "tooth", "tummy": "tummy", "chest": "chest", "elbow": "elbow", "shoulder": "shoulder",
+    "neck": "neck", "finger": "finger", "toe": "toe"
+  },
+  "sided": ["knee", "hand", "arm", "leg", "foot", "ear", "eye", "elbow", "shoulder", "finger", "toe"],
+
+  "ailments": {
+    "_about": "P3/P4: part -> game -> the prescription. `items` is the heal tray in the game's own ids and order (what the host would default to); `ask` is what the belt asks for, in priority order (level 1 asks the first one; the rest the doctor already has on the counter). `from` = the lowest diagnosis level it's drawn at. `say` = the doctor naming it.",
+    "scrape": { "game": "cut", "part": "knee", "parts": ["knee", "hand", "arm", "leg", "elbow"], "from": 1, "items": ["paani", "cloth", "plaster"], "ask": ["plaster", "cloth", "paani"], "say": { "english": "A scrape." } },
+    "cut": { "game": "cut", "part": "arm", "parts": ["arm", "hand", "leg"], "from": 2, "items": ["paani", "thread", "plaster"], "ask": ["thread", "plaster", "paani"], "say": { "english": "A cut." } },
+    "knee-bump": { "game": "knee", "part": "knee", "parts": ["knee"], "from": 1, "items": ["hammer", "bandage"], "ask": ["bandage", "hammer"], "say": { "english": "A bump." } },
+    "leg-break": { "game": "knee", "part": "leg", "parts": ["leg"], "from": 2, "items": ["xray", "cast", "crutches"], "ask": ["cast", "crutches", "xray"], "say": { "english": "A break. Clonk!" } },
+    "seed-in-ear": { "game": "ear", "part": "ear", "parts": ["ear"], "from": 1, "items": ["torch", "tweezers", "cotton-bud", "drops"], "ask": ["tweezers", "drops", "cotton-bud", "torch"], "say": { "english": "Something in the ear!" } },
+    "sugar-bug": { "game": "tooth", "part": "tooth", "parts": ["tooth", "mouth"], "from": 2, "items": ["toothbrush", "drill"], "ask": ["toothbrush", "drill"], "say": { "english": "A sugar bug!" } },
+    "cracked-tooth": { "game": "tooth", "part": "tooth", "parts": ["tooth", "mouth"], "from": 3, "items": ["toothbrush", "drill", "paste"], "ask": ["paste", "toothbrush", "drill"], "say": { "english": "A cracked tooth." } },
+    "coated-tongue": { "game": "taste", "part": "mouth", "parts": ["mouth"], "from": 2, "items": ["fru-02", "cook-khun", "spi-16", "cook-paani"], "ask": ["fru-02", "cook-paani", "spi-16", "cook-khun"], "say": { "english": "A stripy tongue!" } },
+    "sore-eye": { "game": "eye", "part": "eye", "parts": ["eye"], "from": 2, "items": ["care-drops", "tool-pointer", "care-patch"], "ask": ["care-drops", "care-patch", "tool-pointer"], "say": { "english": "A sore eye." } },
+    "sore-feet": { "game": "foot", "part": "foot", "parts": ["foot"], "from": 1, "items": ["jug-hot", "jug-cold", "spi-16", "tool-tweezers", "care-plaster"], "ask": ["care-plaster", "tool-tweezers", "spi-16"], "say": { "english": "Sore feet!" } },
+    "thorn": { "game": "foot", "part": "foot", "parts": ["foot", "toe"], "from": 2, "items": ["jug-hot", "jug-cold", "spi-16", "tool-tweezers", "care-plaster"], "ask": ["tool-tweezers", "care-plaster", "spi-16"], "say": { "english": "A thorn!" } },
+    "fever": { "game": "fever", "part": "head", "parts": ["head"], "from": 1, "items": ["strip", "cloth", "blanket", "fan"], "ask": ["blanket", "cloth", "fan"], "say": { "english": "A fever." } },
+    "jab": { "game": "boing", "part": "arm", "parts": ["arm"], "from": 2, "items": ["cotton", "syringe", "plaster", "lollipop"], "ask": ["lollipop", "cotton", "plaster"], "say": { "english": "The jab before the trip." } }
+  },
+
+  "stages": {
+    "waiting": {
+      "_about": "P2 + Q3. mix = the variants drawn per level (weights). W3 (speaking) only when speaking moments are on.",
+      "mix": { "1": { "W1": 1 }, "2": { "W2": 3, "W3": 1 }, "3": { "W4": 3, "W2": 1, "W3": 1 } },
+      "bench": { "1": [3, 3], "2": [3, 4], "3": [4, 5] },
+      "firstBench": 2,
+      "ringsMs": { "1": 60000, "2": 45000, "3": 30000 }
+    },
+    "diagnosis": {
+      "_about": "P3 + Q3. D1 is taught (the very first sessions only: days.mix names it); D1b grades haa/nar from level 2 (Found it on haa, Next on nar); D2 the bulk; D3 the check-up detective from level 2.",
+      "mix": { "1": { "D2": 1 }, "2": { "D1b": 1, "D2": 2, "D3": 1 }, "3": { "D2": 3, "D3": 2 } },
+      "probe": { "1": 3, "2": 4, "3": 5 },
+      "tools": {
+        "hand": { "english": "Look at", "item": "tool-hand", "finds": ["knee", "hand", "arm", "leg", "foot", "elbow", "shoulder", "finger", "toe", "neck", "tummy"] },
+        "torch": { "english": "Look in", "item": "torch", "finds": ["ear", "eye", "mouth", "tooth"] },
+        "stethoscope": { "english": "Listen to", "item": "stethoscope", "finds": ["chest", "tummy"] },
+        "thermometer": { "english": "The temperature:", "item": "thermometer", "finds": ["head"] }
+      },
+      "calls": { "2": 2, "3": 3 }
+    },
+    "pharmacy": {
+      "_about": "P4 + Q1: tap at every level. `asks` = how many items the belt asks for; `onBelt` = dishes on the loop; `everyMs` = one enters every; `crossMs` = time to cross; `lookalikes` per asked item; `colourFrom` / `countFrom` / `orderFrom` = the level each joins.",
+      "levels": {
+        "1": { "asks": [1, 1], "onBelt": 6, "everyMs": 2500, "crossMs": 9000, "lookalikes": 0 },
+        "2": { "asks": [2, 3], "onBelt": 8, "everyMs": 2000, "crossMs": 7000, "lookalikes": 1, "colour": 0.5 },
+        "3": { "asks": [3, 4], "onBelt": 10, "everyMs": 1500, "crossMs": 5000, "lookalikes": 2, "colour": 0.5, "count": 0.6, "order": true, "stopper": true }
+      },
+      "firstBelt": 5,
+      "coloured": { "bandage": ["red", "blue", "green", "yellow"], "thread": ["red", "blue", "green"], "cast": ["blue", "pink", "white"], "plaster": ["red", "blue", "green"], "drops": ["red", "blue", "green", "yellow"] },
+      "countable": ["cotton", "plaster", "care-plaster", "fru-02", "spi-16", "cook-khun", "cotton-bud", "blanket"],
+      "decoys": ["paani", "cloth", "plaster", "bandage", "thread", "hammer", "torch", "tweezers", "cotton-bud", "cotton", "drops", "bottle", "toothbrush", "comb", "fan", "blanket", "lollipop", "spoon", "cup", "honey", "tissue", "stethoscope", "thermometer", "crutches", "xray"]
+    },
+    "sendoff": {
+      "_about": "P6 + Q3 (E1+E2 merged into one feel ladder). E1 is taught at level 1 (the patient's face shows the feeling; the first sessions). E3 is the goodbye (speaking); E4 the child asks.",
+      "mix": { "1": { "E1": 1 }, "2": { "E2": 3, "E3": 1 }, "3": { "E2": 2, "E3": 1, "E4": 1 } },
+      "faces": { "1": ["happy", "sad"], "2": ["happy", "sad", "okay", "better"], "3": ["happy", "sad", "okay", "better", "scared"] },
+      "sadChance": 0.25
+    }
+  },
+
+  "feelings": {
+    "happy": { "english": "happy", "line": { "english": "Yes! Now I'm happy." }, "mood": "happy", "face": "😄" },
+    "sad": { "english": "sad", "line": { "english": "Still a bit sad." }, "mood": "sad", "face": "🙁" },
+    "okay": { "english": "okay", "line": { "english": "I'm okay." }, "mood": "relief", "face": "🙂" },
+    "better": { "english": "better", "line": { "english": "I feel better." }, "mood": "relief", "face": "😌" },
+    "scared": { "english": "scared", "line": { "english": "I was scared, now I'm happy." }, "mood": "scared", "face": "😨" }
+  },
+  "goodbyes": {
+    "achija": { "kutchi": "Achija!", "english": "Good! (bye)", "cue": { "english": "Say bye." } },
+    "aabhar": { "kutchi": "Aabhar aanjo!", "english": "Thank you!", "cue": { "english": "Say thank you to the doctor." } },
+    "getwell": { "kutchi": null, "english": "Get well soon!", "cue": { "english": "Say get well soon." } }
+  },
+  "extras": {
+    "_about": "E1's one more thing on a sad answer (from the sidebar), then the question again, always ending happy.",
+    "list": ["lollipop", "sticker"]
+  },
+
+  "lines": {
+    "bring": { "kutchi": "[Bring in] {kind}", "english": "Bring in {kind}" },
+    "bring2": { "kutchi": "Pela {a}, ne poi {b}", "english": "First {a}, and then {b}" },
+    "come": { "kutchi": "{kind}, [come]", "english": "{kind}, come" },
+    "salaam": { "kutchi": "Salamun alaykum", "english": "Peace be with you (hello)" },
+    "salaam-back": { "kutchi": "Wa alaikum salaam", "english": "And peace be with you" },
+    "where": { "kutchi": "[Where does it hurt?]", "english": "Where does it hurt?" },
+    "hurts": { "kutchi": "[My {part} hurts]", "english": "My {part} hurts" },
+    "hurts-side": { "kutchi": "[My {side} {part}]", "english": "My {side} {part}" },
+    "here": { "kutchi": "[Does it hurt here?]", "english": "Does it hurt here?" },
+    "haa": { "kutchi": "Haa", "english": "Yes" },
+    "nar": { "kutchi": "Nar", "english": "No" },
+    "mypart": { "kutchi": "[My {part}]", "english": "My {part}" },
+    "thatsit": { "kutchi": "[That's it]", "english": "That's it" },
+    "unwell": { "kutchi": "[I don't feel well. I don't know why.]", "english": "I don't feel well. I don't know why." },
+    "check": { "kutchi": "[{tool}] [the {part}]", "english": "{tool} the {part}" },
+    "need1": { "kutchi": "Muke {a} khape", "english": "I need {a}" },
+    "needN": { "kutchi": "Muke {a} khape, ne {rest}", "english": "I need {a}, and {rest}" },
+    "needOrder": { "kutchi": "Muke pela {a} khape, ne poi {rest}", "english": "I need {a} first, and then {rest}" },
+    "handover-ok": { "kutchi": "[{x}.] Achija.", "english": "{x}. Good." },
+    "handover-no": { "kutchi": "[This is {x}.] Muke {y} khape", "english": "This is {x}. I need {y}" },
+    "tobench": { "kutchi": "[To the bench]", "english": "To the bench" },
+    "okay-now": { "kutchi": "[Is everything okay now?]", "english": "Is everything okay now?" },
+    "howfeel": { "kutchi": "[How do you feel?]", "english": "How do you feel?" },
+    "onemore": { "kutchi": "[One more thing]", "english": "One more thing" },
+    "thanks": { "kutchi": "Aabhar aanjo!", "english": "Thank you!" },
+    "found": { "kutchi": "[Found it]", "english": "Found it" },
+    "next": { "kutchi": "[Next]", "english": "Next" },
+    "done": { "kutchi": "[Done]", "english": "Done" },
+    "nextpatient": { "kutchi": "[Next patient]", "english": "Next patient" },
+    "close": { "kutchi": "[Close the clinic]", "english": "Close the clinic" }
+  },
+
+  "days": {
+    "_about": "P8: a clinic morning. `mix` is one entry per session (the last repeats): how many patients, each stage's level, and the healing games to draw from (set 1, then set 2), never the same game twice in a morning. Session 1 is the tiny first-ever session (UX 7): one patient, a bench of two, D1, one item on a slow belt, H2 (the scrape), E1. Each later session adds one thing per stage. After a morning, a stage whose rows were all right goes up a level (max 3), per stage.",
+    "mix": [
+      { "patients": 1, "first": true, "levels": { "waiting": 1, "diagnosis": 1, "pharmacy": 1, "heal": 1, "sendoff": 1 }, "variants": { "waiting": "W1", "diagnosis": "D1", "sendoff": "E1" }, "ailments": ["scrape"] },
+      { "patients": 2, "levels": { "waiting": 1, "diagnosis": 1, "pharmacy": 1, "heal": 1, "sendoff": 1 }, "variants": { "diagnosis": "D2" }, "asks": 2, "bench": 3, "ailments": ["knee-bump", "scrape"] },
+      { "patients": 3, "games": ["cut", "knee", "ear", "taste", "fever"] },
+      { "patients": 3, "games": ["cut", "knee", "ear", "taste", "fever", "tooth", "boing", "eye", "foot"] }
+    ]
+  },
+
+  "bot": {
+    "_about": "build/leak_clinic.mjs: 500 rounds per stage per level per strategy; the whole patient at level 1 too.",
+    "rounds": 500
+  }
+}

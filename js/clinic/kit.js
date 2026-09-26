@@ -81,13 +81,31 @@
     const a = Kit.art;
     if (!a || !id) return null;
     const pools = [a.sprites, a.items, a.people, a.kinds, a.scene, a.props, a];
-    for (const p of pools) {
-      if (!p || typeof p !== "object") continue;
-      const v = p[id];
-      if (typeof v === "string" && /\.(png|webp|svg|jpg)$/i.test(v)) return v;
-      if (v && typeof v === "object" && (v.src || v.file || v.path)) return v.src || v.file || v.path;
-    }
-    return null;
+    const find = (key) => {
+      for (const p of pools) {
+        if (!p || typeof p !== "object") continue;
+        const v = p[key];
+        if (typeof v === "string" && /\.(png|webp|svg|jpg)$/i.test(v)) return v;
+        if (v && typeof v === "object" && (v.src || v.file || v.path)) return v.src || v.file || v.path;
+      }
+      return null;
+    };
+    // the manifest's aliases (care-*, tool-*, body-*, Kutchi item names), then an item's own `sprite` or `same`
+    const d = Kit.ITEMS[id] || {};
+    return find(id) || (a.alias && a.alias[id] && find(a.alias[id])) || (d.sprite && find(d.sprite)) || (d.same && d.same !== id ? Kit.sprite(d.same) : null);
+  };
+  /** A room background (the manifest's `rooms`): "waiting" | "exam" | "pharmacy". */
+  Kit.room = function (name) {
+    const a = Kit.art;
+    const id = a && a.rooms && a.rooms[name];
+    return id ? Kit.sprite(id) : null;
+  };
+  /** A patient kind's sprite for a mood (neutral, ouch, giggle, relief, happy, wave), or null. */
+  Kit.person = function (kind, mood) {
+    const a = Kit.art;
+    const p = a && a.patients && a.patients[kind];
+    if (!p) return null;
+    return Kit.sprite(p[mood] || p.neutral);
   };
 
   Kit.ITEMS = {}; // filled from data/clinic.json items
@@ -106,7 +124,8 @@
   Kit.itemInfo = function (id) {
     const it = typeof id === "object" ? id : { id };
     const { base, colour } = Kit.itemParts(it.id);
-    const d = Kit.ITEMS[it.id] || Kit.ITEMS[base] || {};
+    let d = Kit.ITEMS[it.id] || Kit.ITEMS[base] || {};
+    if (d.same && Kit.ITEMS[d.same]) d = Object.assign({}, Kit.ITEMS[d.same], d);
     return Object.assign({ english: String(base).replace(/-/g, " "), kutchi: null, glyph: "•" }, d, {
       id: it.id,
       base,
@@ -121,7 +140,8 @@
     d.dataset.item = info.id;
     if (info.colour) d.dataset.colour = info.colour;
     if (info.size) d.dataset.size = info.size;
-    const src = Kit.sprite(info.id) || Kit.sprite(info.base);
+    const src = (info.colour && (Kit.sprite(`${info.base}-${info.colour}`) || Kit.sprite(`${info.id}-${info.colour}`))) || Kit.sprite(info.id) || Kit.sprite(info.base);
+    if (src && info.colour && (Kit.sprite(`${info.base}-${info.colour}`) || Kit.sprite(`${info.id}-${info.colour}`))) d.classList.add("own-colour");
     if (src) {
       const img = h("img", "cl-item-img", d);
       img.alt = "";

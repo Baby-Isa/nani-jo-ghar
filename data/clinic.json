@@ -1260,7 +1260,7 @@
   "weber": 0.12
  },
  "items": {
-  "_about": "The tray nouns (P4, P10): what rides the pharmacy belt and fills the tray. `kutchi` only where the family word exists (paani, limu, loon, khun, dudh from data/cook.json); everything else is an English placeholder. `glyph` is the greybox picture until data/clinic/rough-art.json names a sprite. `group` is the look-alike group (the belt draws a decoy from the same group only from level 2). Healing games may use ids not listed here: the kit then shows the id as English.",
+  "_about": "The tray nouns (P4, P10): what rides the pharmacy belt and fills the tray. `kutchi` only where the family word exists (paani, limu, loon, khun, dudh from data/cook.json); everything else is an English placeholder. `glyph` is the greybox picture until data/clinic/rough-art.json names a sprite. `group` is the look-alike group (the belt draws a decoy from the same group only from level 2). Healing games may use ids not listed here: the kit then shows the id as English. `same` names the item an id stands for (the healing games use Cook's ids for the real food words and care-/tool- ids): the belt, the tray and the review show it as that item; `sprite` names its rough-art sprite.",
   "paani": {
    "kutchi": "paani",
    "english": "water",
@@ -1531,6 +1531,113 @@
    "glyph": "⭐",
    "placeholder": true,
    "group": "sweet"
+  },
+  "fru-02": {
+   "kutchi": "limu",
+   "english": "lemon",
+   "glyph": "🍋",
+   "placeholder": false,
+   "cook": "fru-02",
+   "group": "dropper",
+   "same": "limu"
+  },
+  "spi-16": {
+   "kutchi": "loon",
+   "english": "salt",
+   "glyph": "🧂",
+   "placeholder": false,
+   "cook": "spi-16",
+   "group": "dropper",
+   "same": "loon"
+  },
+  "cook-khun": {
+   "kutchi": "khun",
+   "english": "sugar",
+   "glyph": "🍬",
+   "placeholder": false,
+   "cook": "cook-khun",
+   "group": "dropper",
+   "same": "khun"
+  },
+  "cook-paani": {
+   "kutchi": "paani",
+   "english": "water",
+   "glyph": "🫗",
+   "placeholder": false,
+   "cook": "cook-paani",
+   "group": "liquid",
+   "same": "paani"
+  },
+  "care-drops": {
+   "kutchi": null,
+   "english": "eye drops",
+   "glyph": "💧",
+   "placeholder": true,
+   "group": "bottle",
+   "same": "drops"
+  },
+  "tool-pointer": {
+   "kutchi": null,
+   "english": "pointer",
+   "glyph": "👆",
+   "placeholder": true,
+   "group": "tool",
+   "same": "pointer"
+  },
+  "care-patch": {
+   "kutchi": null,
+   "english": "eye patch",
+   "glyph": "🏴‍☠️",
+   "placeholder": true,
+   "group": "plaster",
+   "same": "patch"
+  },
+  "care-plaster": {
+   "kutchi": null,
+   "english": "plaster",
+   "glyph": "🩹",
+   "placeholder": true,
+   "group": "plaster",
+   "same": "plaster"
+  },
+  "tool-tweezers": {
+   "kutchi": null,
+   "english": "tweezers",
+   "glyph": "🥢",
+   "placeholder": true,
+   "group": "tool",
+   "same": "tweezers"
+  },
+  "jug-hot": {
+   "kutchi": null,
+   "english": "jug of hot water",
+   "glyph": "🫖",
+   "placeholder": true,
+   "group": "liquid",
+   "sprite": "jug-water"
+  },
+  "jug-cold": {
+   "kutchi": null,
+   "english": "jug of cold water",
+   "glyph": "🫗",
+   "placeholder": true,
+   "group": "liquid",
+   "sprite": "jug-water"
+  },
+  "strip": {
+   "kutchi": null,
+   "english": "thermometer",
+   "glyph": "🌡️",
+   "placeholder": true,
+   "group": "tool",
+   "same": "thermometer"
+  },
+  "tool-hand": {
+   "kutchi": null,
+   "english": "hand",
+   "glyph": "✋",
+   "placeholder": true,
+   "group": "tool"
   }
  }
 }

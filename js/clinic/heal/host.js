@@ -8,6 +8,7 @@
  *     level: 1, side: "left", seed: 7, kind: "girl", ailment: "scrape",
  *     tray: [{id: "paani"}, {id: "cloth"}, {id: "plaster"}],   // default: the game's items
  *     patient: fig,                                          // optional: an existing Clinic.Figure
+ *     part: "hand",                                          // optional: the diagnosed part (the pipeline)
  *   });
  *   const result = await run.result;   // {right, total, hints, words, log, timeMs, game, level, ailment}
  *   run.destroy();
@@ -109,7 +110,7 @@
       return (d.from || 1) <= level;
     });
     const ailmentId = opts.ailment || byLevel[byLevel.length - 1] || (def.ailments || [])[0];
-    const ailment = Object.assign({ id: ailmentId, part: def.part, side, game: def.id }, (data && data.ailments && data.ailments[ailmentId]) || {}, (HOST.clinic.ailments && HOST.clinic.ailments[ailmentId]) || {}, { side });
+    const ailment = Object.assign({ id: ailmentId, part: def.part, side, game: def.id }, (data && data.ailments && data.ailments[ailmentId]) || {}, (HOST.clinic.ailments && HOST.clinic.ailments[ailmentId]) || {}, { side }, opts.part ? { part: String(opts.part).replace(/^body-/, "") } : {});
     const defaultItems = (Array.isArray(ailment.items) && ailment.items) || (def.itemsFor && def.itemsFor[ailmentId]) || def.items || [];
     const trayItems = (opts.tray || defaultItems.map((id) => ({ id }))).map((t) => (typeof t === "string" ? { id: t } : Object.assign({}, t)));
 
