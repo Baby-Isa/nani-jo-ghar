@@ -145,3 +145,9 @@ On reports: merge into nifty-rubin → bump_version → smoke test → push → 
   - in-process agent cutting family voice clips (`assets/audio/family/`, `data/family-audio.json`, `lab/family-audio.html`);
   - shell "one app, one save" (`claude/build-shell`, session_01JZerhfa5qGNZnwu1LTq9Lp).
 - 11:15 UTC: Zafar passed the hands. `claude/art-hands-v3` merged into nifty-rubin. Wiring session `claude/cook-hands` (session_01MAs1TPaN2juaEio8CC4aon) launched. First-launch story draft: `docs/first-launch-story.md` (waiting on the rest of Zafar's thoughts; the shell continuation adds the character step and the story beat once agreed).
+- 13:00 UTC: the usage limit (~12:00–12:50) killed the shell, cook-hands and the clip agent. Relaunched:
+  - shell continuation: session_01M5e3LwxbfjVkAtRrpvuz5r;
+  - cook-hands continuation: session_01KmnJa91eMGjErxqeiPe8E2;
+  - the clip agent, resumed in-process.
+
+  ChatGPT dump 3 (69 files, 48 unique; no log in the repo) is being sorted by an in-process agent. **Lesson: 6+ parallel Opus sessions hit the 5-hour limit in about 1½ h. Keep to about 4 at once.**
