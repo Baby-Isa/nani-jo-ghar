@@ -1,0 +1,107 @@
+{
+  "_about": "The nine MVP exchanges (docs/modes/conversations-design.md §9.1, §8.3; §10a applied). type = the §2 type, and the id the tracking uses (Save 'conversations' -> types[id]). stage = the first stage it's offered. turns: asker line(s) (a list rotates, 'vary'), then the player's reply: 'byStage' answers (a missing stage falls back to the one below). An answer: line = a lines.json id; correct = true | false | {you: 'aai'|'tu'} (right when the child says that 'you' to this speaker: §10a.3) | {where: 'near'|'far'} | {name: 'self'|'other'}; each: 'offers' = one pill per offered noun (ctx.x.offers); name: 'self'|'other' = the speaker's own name line or another's; dodge = the pill slides away from the finger (a wrong it's impossible to commit, E5); words = the word ids it tests. lookalikes = pills that are always offered together (so formal never appears without informal). A last asker turn with when: 'returned' plays only if the child's reply asked back. rungs.max = the highest answer mode (R4 = spoken, only where every answer has family audio). register: fixed | by-asker. needs = ctx.x keys the host must give (or the default is used).",
+  "version": 1,
+  "exchanges": {
+    "greet.salaam": {
+      "id": "greet.salaam", "code": "E1", "type": "T1", "stage": "S1", "register": "fixed", "firstMeetingOnly": true,
+      "turns": [
+        { "who": "asker", "line": "salaam" },
+        { "who": "player", "byStage": { "S1": { "answers": [
+          { "line": "salaam-reply", "correct": true, "words": ["conv-salaam"] },
+          { "line": "khudafis", "correct": false } ] } } }
+      ],
+      "rungs": { "max": 3 }
+    },
+    "greet.bye": {
+      "id": "greet.bye", "code": "E2", "type": "T2", "stage": "S1", "register": "fixed",
+      "turns": [
+        { "who": "asker", "line": "khudafis" },
+        { "who": "player", "byStage": { "S1": { "answers": [
+          { "line": "khudafis", "correct": true, "words": ["conv-khudafis"] },
+          { "line": "salaam", "correct": false } ] } } }
+      ],
+      "rungs": { "max": 4 }
+    },
+    "wellbeing.howareyou": {
+      "id": "wellbeing.howareyou", "code": "E3", "type": "T3", "stage": "S1", "register": "by-asker",
+      "turns": [
+        { "who": "asker", "line": ["howareyou-child", "howareyou-ki-ai"], "vary": "peer", "_vary": "peers alternate 'Tu ki aiye?' and 'Ki ai?' (§6.5); adults always ask 'Tu ki aiye?'" },
+        { "who": "player", "byStage": {
+          "S1": { "answers": [
+            { "line": "fine", "correct": true, "words": ["conv-aau-theek-ai"] },
+            { "line": "khudafis", "correct": false } ] },
+          "S2": { "answers": [
+            { "line": "fine-ask-elder", "register": "aai", "correct": { "you": "aai" }, "words": ["conv-aau-theek-ai", "conv-aai"], "asksBack": true },
+            { "line": "fine-ask-child", "register": "tu", "correct": { "you": "tu" }, "words": ["conv-aau-theek-ai", "conv-tu"], "asksBack": true },
+            { "line": "khudafis", "correct": false } ] } },
+          "lookalikes": [["fine-ask-elder", "fine-ask-child"]] },
+        { "who": "asker", "line": "fine", "when": "returned" }
+      ],
+      "rungs": { "max": 3 }
+    },
+    "request.make": {
+      "id": "request.make", "code": "E4", "type": "T5", "stage": "S1", "register": "fixed", "needs": { "dish": "cook-chai" },
+      "turns": [
+        { "who": "asker", "line": "make-x", "x": "dish" },
+        { "who": "player", "byStage": { "S1": { "answers": [
+          { "line": "ha", "correct": true, "words": ["conv-ha"] },
+          { "line": "na", "correct": false } ] } } }
+      ],
+      "rungs": { "max": 4 }
+    },
+    "request.help-cook": {
+      "id": "request.help-cook", "code": "E5", "type": "T5", "stage": "S1", "register": "fixed",
+      "turns": [
+        { "who": "asker", "line": "help-cook" },
+        { "who": "player", "byStage": { "S1": { "answers": [
+          { "line": "ha", "correct": true, "words": ["conv-ha"] },
+          { "line": "na", "correct": false, "dodge": true } ] } } }
+      ],
+      "rungs": { "max": 1 }
+    },
+    "offer.what-like": {
+      "id": "offer.what-like", "code": "E6", "type": "T6", "stage": "S1", "register": "fixed", "needs": { "offers": ["cook-chai", "cook-paani", "cook-dudh"] },
+      "turns": [
+        { "who": "asker", "line": "what-like" },
+        { "who": "player", "byStage": {
+          "S1": { "answers": [
+            { "line": "want-x", "each": "offers", "max": 2, "correct": true, "words": ["conv-muke-khape"] } ] },
+          "S2": { "answers": [
+            { "line": "want-x", "each": "offers", "max": 1, "correct": true, "words": ["conv-muke-khape"] },
+            { "line": "na-na-khape", "correct": true, "words": ["conv-na-na-khape"] },
+            { "line": "na", "correct": false, "trap": "bare-na", "_trap": "a bare 'Na.' is rude (§11): the elder looks embarrassed and asks again" } ] } } }
+      ],
+      "rungs": { "max": 3 }
+    },
+    "thanks.welcome": {
+      "id": "thanks.welcome", "code": "E7", "type": "T11", "stage": "S1", "register": "fixed",
+      "turns": [
+        { "who": "asker", "line": "thank-you" },
+        { "who": "player", "byStage": { "S1": { "answers": [
+          { "line": "welcome", "correct": true, "words": ["conv-jara-e-wandho-nai"] },
+          { "line": "khudafis", "correct": false } ] } } }
+      ],
+      "rungs": { "max": 3 }
+    },
+    "kin.who-am-i": {
+      "id": "kin.who-am-i", "code": "E8", "type": "T4", "stage": "S1", "register": "fixed", "family": true,
+      "turns": [
+        { "who": "asker", "line": "who-am-i" },
+        { "who": "player", "byStage": { "S1": { "answers": [
+          { "name": "self", "correct": true },
+          { "name": "other", "correct": false } ] } } }
+      ],
+      "rungs": { "max": 2 }
+    },
+    "where.kida": {
+      "id": "where.kida", "code": "E9", "type": "T8", "stage": "S1", "register": "fixed", "needs": { "thing": "chamchi", "where": "near" },
+      "turns": [
+        { "who": "asker", "line": "x-kida", "x": "thing" },
+        { "who": "player", "byStage": { "S1": { "answers": [
+          { "line": "hida", "correct": { "where": "near" }, "words": ["conv-hida"] },
+          { "line": "huda", "correct": { "where": "far" }, "words": ["conv-huda"] } ] } } }
+      ],
+      "rungs": { "max": 4 }
+    }
+  }
+}

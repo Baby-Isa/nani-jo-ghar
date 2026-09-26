@@ -1,0 +1,22 @@
+{
+  "_about": "Who can talk (docs/modes/conversations-design.md §6.4, with §10a.3: the child says aai to EVERYONE OLDER, the older cousin included, and tu to the same age or younger). age: elder (a grown-up), older (an older child), same, younger, baby. 'you' is derived from age by the engine (elder/older -> aai; same/younger -> tu) and must agree with it (a test checks). Adults always talk TO the child in the child forms (tu, toke). voice: whose family clips speak for them until each is recorded (mum or zafar, stand-ins). canSpeak false: never starts an exchange (Isa is only talked about, §10a.12; Kasuku only repeats, §10a.10). aliases: the ids other modes use for the same person (Cook's 'cousin' is Ali; the clinic's patient kinds). face: a placeholder emoji until the host passes its own figure.",
+  "version": 1,
+  "speakers": {
+    "nani": { "name": "Nani", "word": "name-nani", "age": "elder", "you": "aai", "gender": "f", "voice": "mum", "canSpeak": true, "face": "👵" },
+    "nana": { "name": "Nana", "word": "name-nana", "age": "elder", "you": "aai", "gender": "m", "voice": "zafar", "canSpeak": true, "face": "👴" },
+    "ma": { "name": "Ma", "word": "kin-ma", "age": "elder", "you": "aai", "gender": "f", "voice": "mum", "canSpeak": true, "face": "👩" },
+    "bigma": { "name": "Big Ma", "word": "name-bigma", "age": "elder", "you": "aai", "gender": "f", "voice": "mum", "canSpeak": true, "face": "👵🏽" },
+    "ali": { "name": "Ali", "word": "name-ali", "age": "same", "you": "tu", "gender": "m", "voice": "zafar", "canSpeak": true, "face": "👦", "aliases": ["cousin"] },
+    "older-cousin": { "name": "Older cousin", "age": "older", "you": "aai", "gender": "m", "voice": "zafar", "canSpeak": true, "face": "🧑" },
+    "isa": { "name": "Isa", "age": "baby", "you": "tu", "gender": "m", "voice": null, "canSpeak": false, "face": "👶" },
+    "kasuku": { "name": "Kasuku", "age": "same", "you": "tu", "voice": "mum", "canSpeak": false, "echoOnly": true, "pitch": 1.45, "face": "🦜" },
+    "doctor": { "name": "The doctor", "age": "elder", "you": "aai", "gender": "m", "voice": "zafar", "canSpeak": true, "face": "🧑‍⚕️" },
+    "patient-girl": { "name": "A girl", "age": "same", "you": "tu", "gender": "f", "voice": "mum", "canSpeak": true, "face": "👧", "aliases": ["girl"] },
+    "patient-boy": { "name": "A boy", "age": "same", "you": "tu", "gender": "m", "voice": "zafar", "canSpeak": true, "face": "👦", "aliases": ["boy"] },
+    "patient-old-man": { "name": "An old man", "age": "elder", "you": "aai", "gender": "m", "voice": "zafar", "canSpeak": true, "face": "👴", "aliases": ["old-man"] },
+    "patient-old-woman": { "name": "An old woman", "age": "elder", "you": "aai", "gender": "f", "voice": "mum", "canSpeak": true, "face": "👵", "aliases": ["old-woman"] },
+    "patient-auntie": { "name": "An auntie", "age": "elder", "you": "aai", "gender": "f", "voice": "mum", "canSpeak": true, "face": "👩", "aliases": ["auntie"] },
+    "patient-uncle": { "name": "An uncle", "age": "elder", "you": "aai", "gender": "m", "voice": "zafar", "canSpeak": true, "face": "👨", "aliases": ["uncle"] },
+    "patient-baby": { "name": "A baby", "age": "baby", "you": "tu", "voice": null, "canSpeak": false, "face": "👶", "aliases": ["baby"] }
+  }
+}

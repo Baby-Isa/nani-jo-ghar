@@ -1,0 +1,27 @@
+{
+  "_about": "The 15 MVP placements (docs/modes/conversations-design.md §7 and §9.1) as data. A mode calls Conversations.maybe({placement: id, ...}) (or Conversations.run(id, ...) for scripted story beats: no caps). slot: before | during | after. speakers: who may ask (roster ids or a role the host fills: 'customer', 'patient'). exchanges: tried in order (the first that fits wins; 'firstMeetingOnly' ones need the speaker's first meeting today). chain: exchanges played one after another (only the first is graded; the rest are 'must get right' but untracked). scripted: the story runs it (Conversations.run). heard: lines said with no reply (Kasuku only ever repeats, §10a.10). stages: the syllabus stages it's offered in. relaxedOnly: refused in Busy. alias: a row that stands for other rows. Hook points for each are in docs/modes/conversations-wiring.md.",
+  "version": 1,
+  "placements": {
+    "FL2": { "mode": "first", "where": "arrive", "slot": "before", "speakers": ["nani"], "exchanges": ["greet.salaam"], "scripted": true, "stages": ["S1"],
+             "heard": [{ "who": "kasuku", "line": "salaam", "echo": true, "when": "after" }], "note": "Nani at the door; Kasuku repeats her salaam from the windowsill (heard only)" },
+    "FL4": { "mode": "first", "where": "ask-chai", "slot": "before", "speakers": ["nani"], "exchanges": ["request.make"], "x": { "dish": "cook-chai" }, "scripted": true, "stages": ["S1"], "note": "Nani holds up an empty glass" },
+    "FL5": { "mode": "first", "where": "sip", "slot": "after", "speakers": ["nani"], "exchanges": [], "scripted": true, "stages": ["S1"],
+             "heard": [{ "who": "nani", "line": "lovely-chai" }, { "who": "nani", "line": "shabash-beta" }], "note": "heard only: 'Mmm, lovely chai! Shabash, beta.'" },
+    "FL7": { "mode": "first", "where": "help", "slot": "before", "speakers": ["nani"], "exchanges": ["request.help-cook"], "scripted": true, "stages": ["S1"], "note": "the No pill dodges; untested until recorded" },
+    "FL8": { "mode": "cook", "where": "first-customer", "slot": "before", "speakers": ["nana"], "exchanges": ["wellbeing.howareyou"], "scripted": true, "stages": ["S1"], "note": "Cook's first day, Nana's order (day 1, after the chai demo)" },
+
+    "CK1": { "mode": "cook", "where": "order", "slot": "before", "speakers": ["customer"], "exchanges": ["greet.salaam", "wellbeing.howareyou"], "stages": ["S1", "S2", "S3"], "note": "a customer arrives at the island: salaam on the first meeting today, else how are you (register choice from S2)" },
+    "CK2": { "mode": "cook", "where": "order-ask", "slot": "before", "speakers": ["customer"], "exchanges": ["request.make"], "stages": ["S1", "S2"], "note": "the ask, before the request card" },
+    "CK7": { "mode": "cook", "where": "chai-boil", "slot": "during", "speakers": ["nani"], "exchanges": ["where.kida"], "x": { "thing": "chamchi" }, "relaxedOnly": true, "stages": ["S2"], "note": "the pan heating, before the knob's window; Relaxed only" },
+    "CK9": { "mode": "cook", "where": "serve", "slot": "after", "speakers": ["customer"], "exchanges": ["thanks.welcome"], "stages": ["S1", "S2"],
+             "heard": [{ "who": "asker", "line": "khudafis", "when": "after" }], "note": "after the hand-over; the customer says Khuda-fis as they go (heard)" },
+    "CK11": { "mode": "cook", "where": "treat", "slot": "after", "speakers": ["nani"], "exchanges": ["offer.what-like"], "stages": ["S1", "S2"], "note": "Nani's treat, before the end-of-round screen (never on it)" },
+
+    "CL1": { "mode": "clinic", "where": "arrive", "slot": "before", "speakers": ["doctor"], "exchanges": ["greet.salaam"], "chain": { "from": "S2", "then": ["wellbeing.howareyou"] }, "stages": ["S1", "S2"], "note": "the morning's first patient, before stage 1; the doctor is an elder, so aai" },
+    "CL2": { "mode": "clinic", "where": "waiting-walk", "slot": "before", "speakers": ["patient"], "exchanges": ["wellbeing.howareyou"], "stages": ["S1", "S2"], "note": "the called patient walks up; register by kind (girl/boy tu; old man, old woman, auntie, uncle aai)" },
+    "CL3": { "mode": "clinic", "where": "waiting-family", "slot": "before", "speakers": ["nana", "bigma", "ali"], "exchanges": ["kin.who-am-i"], "stages": ["S1", "S2"], "note": "a family patient on the bench; untested until the question is recorded. The clinic has no family patients yet" },
+    "CL9": { "mode": "clinic", "where": "sendoff", "slot": "after", "speakers": ["patient"], "exchanges": ["thanks.welcome", "greet.bye"], "stages": ["S1", "S2"], "note": "after the feelings (E1/E2); the clinic's E3 'Say goodbye' runs on greet.bye" },
+
+    "A1.1": { "mode": "first", "where": "arc1-ch1", "slot": "before", "alias": ["FL2", "FL4", "FL5", "FL7", "FL8"], "scripted": true, "stages": ["S1"], "note": "Arc 1 'The guests are coming' is the first launch: FL2-FL8 in order" }
+  }
+}

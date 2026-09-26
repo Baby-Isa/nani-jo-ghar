@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conversations lab</title>
+<link rel="stylesheet" href="../css/shared/conversations.css">
+<style>
+  :root { --bg: #fbf5ea; --ink: #2b1810; --line: #d9bf95; --card: #fff; --muted: #7a6558; --madder: #a63b3b; --leaf: #6f8f4a; --indigo: #2f3e6b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 system-ui, -apple-system, sans-serif; }
+  header, main { max-width: 1100px; margin: 0 auto; padding: 12px 16px; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 16px 0 6px; }
+  header p { margin: 0; color: var(--muted); font-size: 13px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+  .bar label { display: inline-flex; gap: 4px; align-items: center; font-size: 13px; color: var(--muted); }
+  button.lab, select { font: inherit; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff7e8; cursor: pointer; min-height: 38px; color: inherit; max-width: 100%; }
+  button.lab:hover { border-color: var(--madder); }
+  button.lab.go { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; background: #fff7e8; min-height: 38px; padding: 6px 10px; font: inherit; cursor: pointer; }
+  .seg button.on { background: var(--indigo); color: #fff; }
+  /* the pretend scene: people stand here, the bubbles come from their heads */
+  #scene { position: relative; height: 230px; border-radius: 16px; border: 1px solid var(--line); background: linear-gradient(#f6e7cc 0 62%, #d9b98a 62%); overflow: hidden; }
+  .who { position: absolute; bottom: 18px; width: 110px; margin-left: -55px; text-align: center; transition: opacity .3s; }
+  .who .fig { font-size: 76px; line-height: 1; display: block; transition: transform .25s; }
+  .who .nm { font-size: 12px; color: var(--muted); }
+  .who.off { opacity: .15; }
+  .who[data-mood="embarrassed"] .fig, .who[data-mood="scratch"] .fig, .who[data-mood="puzzled"] .fig, .who[data-mood="sigh"] .fig { transform: rotate(-8deg) translateY(4px); }
+  .who[data-mood="happy"] .fig { transform: translateY(-10px); }
+  .mood { font-size: 12px; font-weight: 700; color: var(--madder); min-height: 16px; }
+  #clock { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); }
+  #log { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; font: 12px/1.45 ui-monospace, Menlo, monospace; max-height: 240px; overflow: auto; white-space: pre-wrap; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-top: 1px solid #efe2cb; vertical-align: top; }
+  th { background: #fff4df; font-weight: 700; }
+  .k { font-weight: 700; }
+  .ph { color: #fff; background: var(--madder); border-radius: 6px; padding: 1px 6px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .st { font-size: 11px; border: 1px solid var(--line); border-radius: 6px; padding: 1px 5px; white-space: nowrap; }
+  .st.family { color: var(--leaf); border-color: var(--leaf); }
+  .st.decided { color: #9a6a12; border-color: #e0a63a; }
+  .clip { font-size: 11px; white-space: nowrap; }
+  .clip.yes { color: var(--leaf); }
+  .clip.no { color: var(--muted); }
+  .src { color: var(--muted); font-size: 12px; }
+  .tablewrap { overflow-x: auto; }
+  details { margin: 6px 0; }
+  pre#state { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 8px; font-size: 11px; max-height: 260px; overflow: auto; }
+  @media (max-width: 640px) {
+    #scene { height: 190px; }
+    .who .fig { font-size: 58px; }
+    .hide-sm { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Conversations lab</h1>
+  <p>Play any of the nine MVP exchanges on their own, or simulate the placements. A wrong reply shakes, the person looks embarrassed (4 cycling looks) and asks again until you pick the right one (UX §14). Tap a reply once to hear it, again to say it. Pills marked ✓ are right (lab only); <span class="ph">PH</span> marks a placeholder line (not family-confirmed: grey italic English in the game, never tested).</p>
+</header>
+<main>
+  <div id="scene" aria-label="The scene"></div>
+  <div class="mood" id="mood" aria-live="polite"></div>
+
+  <h2>Play one exchange</h2>
+  <div class="bar">
+    <select id="ex" aria-label="Exchange"></select>
+    <select id="sp" aria-label="Who asks"></select>
+    <span class="seg" id="reg" role="group" aria-label="Register"><button type="button" data-v="aai">Older: aai</button><button type="button" data-v="tu">Same age or younger: tu</button></span>
+  </div>
+  <div class="bar">
+    <span class="seg" id="gender" role="group" aria-label="The player"><button type="button" data-v="boy">Boy (Zafar's voice)</button><button type="button" data-v="girl">Girl (Mum's voice)</button></span>
+    <span class="seg" id="stage" role="group" aria-label="Stage"><button type="button" data-v="S1">S1</button><button type="button" data-v="S2">S2</button></span>
+    <span class="seg" id="rung" role="group" aria-label="Rung"><button type="button" data-v="1">R1 text</button><button type="button" data-v="2">R2 pictures</button><button type="button" data-v="3">R3 sound</button></span>
+    <button type="button" class="lab go" id="play">Play</button>
+    <button type="button" class="lab" id="bulb" title="English for a moment (the light bulb)">💡</button>
+  </div>
+
+  <h2>Simulate the placements</h2>
+  <div class="bar">
+    <button type="button" class="lab" id="sim-first">First launch (FL2–FL8)</button>
+    <button type="button" class="lab" id="sim-cook">Cook: a day (CK1, CK2, CK7, CK9, CK11)</button>
+    <button type="button" class="lab" id="sim-clinic">Clinic: a morning (CL1, CL2, CL3, CL9)</button>
+  </div>
+  <div class="bar">
+    <label>Frequency <select id="setting"><option value="sometimes">Sometimes (default)</option><option value="often">Often</option><option value="story">Story only</option><option value="off">Off</option></select></label>
+    <label><input type="checkbox" id="busy"> Cook in Busy</label>
+    <button type="button" class="lab" id="plus2">Clock +2 min</button>
+    <span id="clock"></span>
+    <button type="button" class="lab" id="reset">Reset tracking</button>
+  </div>
+  <div id="log" aria-live="polite"></div>
+
+  <h2>Every line</h2>
+  <div class="tablewrap"><table id="lines"><thead><tr><th>Line</th><th>Kutchi / English</th><th>Status</th><th class="hide-sm">Clips</th><th class="hide-sm">Source</th></tr></thead><tbody></tbody></table></div>
+
+  <details><summary>Tracking (the save, namespace "conversations")</summary><pre id="state"></pre></details>
+</main>
+
+<script src="../js/shared/save.js"></script>
+<script src="../js/shared/conversations.js"></script>
+<script>
+(async function () {
+  const C = window.Conversations;
+  const Q = new URLSearchParams(location.search);
+  C.base = "../";
+  C.speed = +Q.get("speed") || 1;
+  if (Q.get("silent")) C.silent = true;
+  let offset = 0;
+  C.now = () => Date.now() + offset;
+  const D = await C.load();
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const opt = { gender: "boy", stage: "S1", rung: "1", reg: "aai" };
+  try { Object.assign(opt, JSON.parse(localStorage.getItem("njg-conv-lab") || "{}")); } catch (e) {}
+  const keep = () => { try { localStorage.setItem("njg-conv-lab", JSON.stringify(opt)); } catch (e) {} };
+  if (Q.get("gender")) opt.gender = Q.get("gender");
+
+  /* ---- the scene: whoever might talk stands on it ---- */
+  const scene = $("scene");
+  const people = {};
+  function stand(ids) {
+    scene.innerHTML = "";
+    ids.forEach((id, i) => {
+      const sp = C.speaker(id);
+      if (!sp) return;
+      const w = document.createElement("div");
+      w.className = "who";
+      w.dataset.id = sp.id;
+      w.style.left = `${((i + 1) * 100) / (ids.length + 1)}%`;
+      w.innerHTML = `<span class="fig">${esc(sp.face)}</span><span class="nm">${esc(sp.name)}</span>`;
+      scene.appendChild(w);
+      people[sp.id] = w;
+    });
+  }
+  const anchor = (id) => {
+    const w = scene.querySelector(`.who[data-id="${id}"] .fig`);
+    if (!w) return null;
+    const r = w.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top - 4 };
+  };
+  // the bubbles are fixed to the screen: keep the pretend scene in view while one plays
+  const toScene = () => scene.scrollIntoView({ block: "start" });
+  const character = {
+    mood(id, kind) {
+      const w = scene.querySelector(`.who[data-id="${id}"]`);
+      if (w) w.dataset.mood = kind;
+      $("mood").textContent = kind === "talk" ? "" : `${(C.speaker(id) || {}).name || id}: ${kind}`;
+    },
+  };
+  const ctxBase = () => ({ gender: opt.gender, stage: opt.stage, rung: +opt.rung, anchor, character, lab: true, setting: $("setting").value, idleMs: Q.get("idle") != null ? +Q.get("idle") : undefined });
+
+  /* ---- pickers ---- */
+  const exSel = $("ex");
+  Object.values(D.exchanges).forEach((ex) => {
+    const o = document.createElement("option");
+    o.value = ex.id;
+    o.textContent = `${ex.code} ${ex.id}${C.hasPlaceholder(ex, C.speaker("nani")) || C.hasPlaceholder(ex, C.speaker("nana")) ? "  (PH: untested)" : ""}`;
+    exSel.appendChild(o);
+  });
+  const spSel = $("sp");
+  Object.entries(D.speakers).forEach(([id, sp]) => {
+    if (!sp.canSpeak) return;
+    const o = document.createElement("option");
+    o.value = id;
+    o.textContent = `${sp.face} ${sp.name} (${C.youFor(Object.assign({ id }, sp))})`;
+    spSel.appendChild(o);
+  });
+  spSel.value = "nana";
+  function seg(id, key, after) {
+    const el = $(id);
+    const paint = () => el.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.v === opt[key]));
+    el.addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (!b) return;
+      opt[key] = b.dataset.v;
+      keep();
+      paint();
+      if (after) after();
+    });
+    paint();
+    return paint;
+  }
+  seg("gender", "gender", () => {
+    // the player's character is in the save: the module reads the gender from there (§10a.11)
+    Save.set("character", Object.assign({}, Save.get("character"), { v: 1, choices: Object.assign({}, (Save.get("character") || {}).choices, { body: opt.gender }) }));
+  });
+  Save.ensurePlayer();
+  Save.set("character", Object.assign({}, Save.get("character"), { v: 1, choices: Object.assign({}, (Save.get("character") || {}).choices, { body: opt.gender }) }));
+  seg("stage", "stage");
+  seg("rung", "rung");
+  const paintReg = seg("reg", "reg", () => {
+    const cur = C.speaker(spSel.value);
+    if (C.youFor(cur) !== opt.reg) spSel.value = opt.reg === "aai" ? "nana" : "ali";
+  });
+  spSel.addEventListener("change", () => ((opt.reg = C.youFor(C.speaker(spSel.value))), paintReg()));
+  if (Q.get("ex")) exSel.value = Q.get("ex");
+  if (Q.get("sp")) spSel.value = Q.get("sp");
+
+  /* ---- log and state ---- */
+  const logEl = $("log");
+  const say = (s) => {
+    logEl.textContent += `${s}\n`;
+    logEl.scrollTop = logEl.scrollHeight;
+    paintState();
+  };
+  const fmt = (r) => {
+    if (!r) return "—";
+    if (Array.isArray(r)) return r.map(fmt).join("\n");
+    if (!r.ran) return `declined: ${r.why}`;
+    if (r.heard) return `${r.placement}: heard only`;
+    return `${r.placement || ""} ${r.exchange} · ${r.speaker} · R${r.rung} · first try ${r.firstTry ? "yes" : "no"} (${r.tries} tr${r.tries === 1 ? "y" : "ies"}) · via ${r.via}${r.register && r.register.asked ? ` · register asked ${r.register.asked}, chose ${r.register.chose}` : ""} · ${r.tested ? "tested" : "untested"}`;
+  };
+  function paintState() {
+    $("state").textContent = JSON.stringify(Save.get("conversations"), null, 1);
+    $("clock").textContent = `fake clock +${Math.round(offset / 60000)} min`;
+  }
+  let running = false;
+  const guard = (fn) => async () => {
+    if (running) return;
+    toScene();
+    running = true;
+    document.body.dataset.running = "1";
+    try {
+      await fn();
+    } catch (e) {
+      say(`error: ${e.message}`);
+    }
+    running = false;
+    delete document.body.dataset.running;
+  };
+
+  $("play").addEventListener("click", guard(async () => {
+    const ex = D.exchanges[exSel.value];
+    const sp = C.speaker(spSel.value);
+    stand([sp.id]);
+    toScene();
+    const out = await C.play(ex, sp, Object.assign(ctxBase(), { x: {} }));
+    out.tested = !C.hasPlaceholder(ex, sp, { stage: opt.stage });
+    say(fmt(out));
+  }));
+  $("bulb").addEventListener("click", () => C.bulb());
+  $("plus2").addEventListener("click", () => ((offset += 2 * 60 * 1000), paintState()));
+  $("reset").addEventListener("click", () => {
+    Save.clear("conversations");
+    offset = 0;
+    logEl.textContent = "";
+    paintState();
+  });
+
+  $("sim-first").addEventListener("click", guard(async () => {
+    say("— First launch (scripted: no caps) —");
+    stand(["nani", "kasuku"]);
+    for (const id of ["FL2", "FL4", "FL5", "FL7"]) {
+      say(`${id}: ${D.placements[id].note}`);
+      say(fmt(await C.run(id, ctxBase())));
+    }
+    stand(["nana", "nani"]);
+    say(`FL8: ${D.placements.FL8.note}`);
+    say(fmt(await C.run("FL8", ctxBase())));
+  }));
+
+  $("sim-cook").addEventListener("click", guard(async () => {
+    say("— Cook: a day with Nana, Ma and Ali —");
+    C.startVisitNow("cook");
+    const busy = $("busy").checked;
+    const orders = [["nana", "cook-chai"], ["ma", "ph-samosa"], ["cousin", "ph-chaat"]];
+    for (let i = 0; i < orders.length; i++) {
+      const [who, dish] = orders[i];
+      const round = `day1-order${i + 1}`;
+      stand([who === "cousin" ? "ali" : who, "nani"]);
+      const base = Object.assign(ctxBase(), { mode: "cook", round, busy });
+      say(`order ${i + 1} (${who}, ${dish})`);
+      say(`  CK1 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CK1", speaker: who })))}`);
+      say(`  CK2 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CK2", speaker: who, x: { dish } })))}`);
+      if (dish === "cook-chai") say(`  CK7 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CK7", x: { thing: "chamchi", where: "near" } })))}`);
+      say(`  CK9 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CK9", speaker: who })))}`);
+      say(`  CK11 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CK11" })))}`);
+      offset += 70 * 1000; // an order takes about a minute
+      paintState();
+    }
+    say("(one per visit + one every 2 minutes: press Clock +2 min and run it again to see more)");
+  }));
+
+  $("sim-clinic").addEventListener("click", guard(async () => {
+    say("— Clinic: a morning —");
+    C.startVisitNow("clinic");
+    const kinds = ["girl", "old-man", "nana", "boy"];
+    for (let i = 0; i < kinds.length; i++) {
+      const who = kinds[i];
+      const round = `morning-p${i + 1}`;
+      const sp = C.speaker(who);
+      stand(i === 0 ? ["doctor", sp.id] : [sp.id]);
+      const base = Object.assign(ctxBase(), { mode: "clinic", round });
+      say(`patient ${i + 1}: ${sp.name}`);
+      if (i === 0) say(`  CL1 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CL1", speaker: "doctor" })))}`);
+      if (who === "nana") say(`  CL3 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CL3", speaker: who })))}`);
+      else say(`  CL2 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CL2", speaker: who })))}`);
+      say(`  CL9 ${fmt(await C.maybe(Object.assign({}, base, { placement: "CL9", speaker: who })))}`);
+      offset += 130 * 1000; // a patient takes about 2 minutes
+      paintState();
+    }
+  }));
+
+  /* ---- every line, with its flags ---- */
+  const tb = $("lines").querySelector("tbody");
+  const clipCell = (L) => {
+    const chunks = (L.audio || []).concat(Object.values(L.whole || {}));
+    if (!chunks.length) return '<span class="clip no">text only</span>';
+    return chunks.map((c) => {
+      if (c === "{x}") return '<span class="clip no">{x}: the noun\'s</span>';
+      const e = D.clips[c.replace(/^fam:/, "")] || {};
+      return `<span class="clip ${e.mum || e.zafar ? "yes" : "no"}">${esc(c.replace(/^fam:/, ""))}: ${e.mum ? "Mum" : "–"} / ${e.zafar ? "Zafar" : "–"}</span>`;
+    }).join("<br>");
+  };
+  Object.entries(D.lines).forEach(([id, L]) => {
+    const tr = document.createElement("tr");
+    tr.dataset.line = id;
+    if (L.placeholder) tr.dataset.ph = "1";
+    tr.innerHTML = `<td>${esc(id)}</td><td><span class="k">${L.k ? esc(L.k) : '<i class="src">(no Kutchi yet)</i>'}</span><br><span class="src">${esc(L.en)}</span></td><td>${L.placeholder ? '<span class="ph">PH</span> ' : ""}<span class="st ${esc(L.status)}">${esc(L.status)}</span></td><td class="hide-sm">${clipCell(L)}</td><td class="hide-sm src">${esc(L.src)}${L.confirm ? `<br>${esc(L.confirm)}` : ""}</td>`;
+    tb.appendChild(tr);
+  });
+  stand(["nana"]);
+  paintState();
+  document.body.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>
