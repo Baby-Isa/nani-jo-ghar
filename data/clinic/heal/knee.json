@@ -1,0 +1,64 @@
+{
+  "_about": "H1 The kicking knee (and the cast). docs/modes/clinic-design.md Q4 H1 and the quality pass Q1-Q7; contract docs/clinic-heal-api.md. Levels are data: each row's decider (a count, a side, a path order) is drawn from the level's lists. Words: real Kutchi only from data/cook.json (same ids); everything else is an English placeholder ({\"placeholder\": true}), shown as [EN: ...] until the family gives the word. Level 1 carries two real-Kutchi counts so a blind bot stays under 10% (build/leak_clinic_heal_a.mjs).",
+  "id": "knee",
+  "part": "body-knee",
+  "words": {
+    "num-01": { "kutchi": "hakro", "english": "one", "from": "data/cook.json" },
+    "num-02": { "kutchi": "ba", "english": "two", "say": "ber", "from": "data/cook.json" },
+    "num-03": { "kutchi": "trae", "english": "three", "from": "data/cook.json" },
+    "num-04": { "kutchi": "char", "english": "four", "from": "data/cook.json" },
+    "num-05": { "kutchi": "panj", "english": "five", "from": "data/cook.json" },
+    "lnk-pela": { "kutchi": "pela", "english": "first", "from": "data/cook.json", "draft": true },
+    "lnk-nepoi": { "kutchi": "ne poi", "english": "and then", "from": "data/cook.json", "draft": true },
+    "body-knee": { "kutchi": null, "english": "knee", "placeholder": true },
+    "body-leg": { "kutchi": null, "english": "leg", "placeholder": true },
+    "side-left": { "kutchi": null, "english": "my left", "placeholder": true },
+    "side-right": { "kutchi": null, "english": "my right", "placeholder": true },
+    "w-taps": { "kutchi": null, "english": "taps", "placeholder": true },
+    "w-turns": { "kutchi": null, "english": "turns", "placeholder": true },
+    "w-tap-knee": { "kutchi": null, "english": "Tap the knee", "placeholder": true },
+    "w-bandage": { "kutchi": null, "english": "Bandage", "placeholder": true },
+    "w-xray": { "kutchi": null, "english": "X-ray the leg, clonk", "placeholder": true },
+    "w-cast": { "kutchi": null, "english": "Cast", "placeholder": true }
+  },
+  "lines": {
+    "heal-knee-kick": { "voice": "doctor", "k": "{what}. {n} {taps}", "e": "Tap the knee {n} times" },
+    "heal-knee-wrap": { "voice": "doctor", "k": "{what}. {n} {turns}", "e": "Bandage: {n} turns" },
+    "heal-knee-path": { "voice": "doctor", "k": "{what}. {pela} {a}, {nepoi} {b}, {nepoi} {c}", "e": "Bandage: first the {a}, then the {b}, then the {c}" },
+    "heal-knee-xray": { "voice": "doctor", "k": "{what}. {n} {taps}", "e": "X-ray the leg, then clonk the bone {n} times" },
+    "heal-knee-cast": { "voice": "doctor", "k": "{what}. {n} {turns}", "e": "Cast: {n} turns" },
+    "heal-knee-side": { "voice": "patient", "k": "{side} {part}", "e": "My {side} {part}" }
+  },
+  "ailments": {
+    "knee-bump": { "part": "body-knee", "items": ["hammer", "bandage"], "from_level": 1, "story": "a bump from the puddle" },
+    "leg-break": { "part": "body-leg", "items": ["xray", "cast", "crutches"], "from_level": 2, "story": "a comedy break from the mango tree" }
+  },
+  "levels": {
+    "1": {
+      "ailments": ["knee-bump"],
+      "kicks": [1, 2, 3],
+      "turns": [2, 3, 4, 5],
+      "side_heard": false,
+      "read": "line"
+    },
+    "2": {
+      "ailments": ["knee-bump", "leg-break"],
+      "kicks": [1, 2, 3, 4],
+      "turns": [2, 3, 4, 5],
+      "clonks": [1, 2, 3],
+      "side_heard": false,
+      "read": "list"
+    },
+    "3": {
+      "ailments": ["knee-bump", "leg-break"],
+      "kicks": [1, 2, 3, 4],
+      "paths": [["body-knee", "body-leg", "body-knee"], ["body-leg", "body-knee", "body-leg"], ["body-knee", "body-knee", "body-leg"], ["body-leg", "body-leg", "body-knee"], ["body-knee", "body-leg", "body-leg"], ["body-leg", "body-knee", "body-knee"]],
+      "turns": [2, 3, 4, 5],
+      "clonks": [1, 2, 3],
+      "side_heard": true,
+      "read": "list"
+    }
+  },
+  "fun": "The reflex kick: the whole leg jerks, the dishes rattle, Kasuku squawks; the bone with a face goes clonk; the hop-off on crutches.",
+  "colours": { "bandage": "#f4f1ea", "cast": "#3f76b8" }
+}
