@@ -21,7 +21,7 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | **Dress up** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. It shares art with character creation. |
 | **Monsoon rush** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. Section G has the weather words. |
 | **Snap** (parked) | 100 | 25 | 0 | 5 | 0 | 0 | 0 | **17%** | Same. |
-| **Conversations** (module) | 60 | 0 | 0 | 0 | 0 | 0 | 0 | **9%** | Zafar reviews the design (`docs/modes/conversations-design.md`). |
+| **Conversations** (module) | 60 | 0 | 0 | 0 | 0 | 0 | 0 | **9%** | Design decided (26 Sept). Build the MVP slice (9 exchanges) after the first launch; Mum records the common whole phrases. (`docs/modes/conversations-design.md`). |
 
 ## 2. Foundation and story
 | Piece | % | Next step |

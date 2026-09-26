@@ -707,7 +707,21 @@ These are only the lines the MVP needs that have **no family clip yet**. Mum say
 
 ---
 
-## 10. Open questions for Zafar
+## 10a. Zafar's decisions (26 Sept). These override the defaults below and anything above that disagrees.
+1. **Thank you:** the family says the English **"thank you"**. Not *aabhar aanjo*.
+2. **Goodbye:** ***khuda-fis*** (*khuda hafiz*). Not *achija*. Hello stays *salaam*.
+3. **Which "you":** ***aai*** for **everyone older**, including older cousins. ***tu*** for the same age or younger.
+4. Nani and Nana: the same respect form (default kept).
+5. **Recording:** Mum records the **common whole phrases**. Everything else is **built from modular chunks**: smaller phrases or single words, joined by the game.
+6. Register is graded from S2 and spoken from S3: **yes**.
+7. A spoken reply can earn the round's voice star: **yes**.
+8. **The wrong-register reaction:** no "looks behind him" joke. Nana (or whoever is spoken to) gives a **gentle head scratch or embarrassed look**, **cycling through 3–4 different "that's not quite right" expressions** so it doesn't repeat. Still no negatives mid-round; it's recorded for the end review.
+9. **Frequency:** **one conversation per game mode**, plus **one every 2 minutes** on top. Tune after playtesting. The parent setting stays.
+10. **Kasuku:** only repeats words, for now.
+11. **The model voice for the child's replies:** **Zafar's voice if the player chose a boy, Mum's if a girl** (from character creation), for now.
+12. **Isa:** only talked about, never talked to: **yes**.
+
+## 10. Open questions for Zafar (answered: see 10a)
 
 Defaults are in bold. The build takes the defaults.
 

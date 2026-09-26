@@ -351,3 +351,8 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 - **Chilli:** ***mirchi*** is one chilli, and ***marcha*** is the plural. This is an irregular pair, unlike *ambo → amba*. Red chilli powder stays *lal marcha*.
 - Spellings *vyo*, *kyo*, *anke*, *wadhare*, *thorok*, *jara e wandho nai* and *mu lai khobar* are confirmed.
 - *kere karein* (who did it?) is **not** confirmed. Zafar doesn't recognise it, so re-ask Mum for A8.9.
+
+### Zafar, 26 Sept (Conversations decisions)
+- **Thank you:** the family says the English "thank you".
+- **Goodbye:** ***khuda-fis*** (*khuda hafiz*). Hello: *salaam*.
+- **Which "you":** ***aai*** for everyone older (older cousins too). ***tu*** for the same age or younger.
