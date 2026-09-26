@@ -1,8 +1,8 @@
 # Clinic rough art: report
 
-Throwaway placeholder art. gpt-image-1, medium quality, sprite sheets sliced by `sources/art/clinic-rough/slice_sheets.py`, mapped in `data/clinic/rough-art.json`. Contact sheet: `build/contact-sheets/clinic-rough.png` (force-added, because the folder is gitignored).
+Throwaway placeholder art. gpt-image-1, medium quality, sprite sheets sliced by `sources/art/clinic-rough/slice_sheets.py`, mapped in `data/clinic/rough-art.json`. Contact sheet: `build/contact-sheets/clinic-rough.png`.
 
-**Sprites: 258** from 32 sheets. That's 13 people × 8 moods, the doctor × 6 poses, 3 rooms, and items, body parts, overlays, feeling faces, furniture and trays. There are also **100 aliases**. Each alias is written into `sprites` too (with `alias_of`), because `Kit.sprite` reads only `sprites[id]`. Every item id used by the heal games on `clinic-heal-a/-b/-c` and `clinic-core`, and every id in `data/clinic.json` items, resolves to a sprite. So do the kind ids (`girl`, `big-ma` and so on); each gives that kind's neutral face.
+**Sprites: 258** from 32 sheets. That's 13 people × 8 moods, the doctor × 6 poses, 3 rooms, items, parts, overlays, faces and furniture. There are also **100 aliases**. Each alias is written into `sprites` too (with `alias_of`), because `Kit.sprite` reads only `sprites[id]`. Every item id used by the heal games on `clinic-heal-a/-b/-c` and `clinic-core`, and every id in `data/clinic.json` items, resolves to a sprite. So do the kind ids (`girl`, `big-ma` and so on); each gives that kind's neutral face.
 
 **Spend: $2.02 of $5** ($1.11 in the first session, $0.91 in this one). The costs are logged in `sources/art/clinic-rough/cost-log.json`.
 
