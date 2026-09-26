@@ -142,6 +142,8 @@
         z.skill(score, "fry");
         S.verdict(f.x, f.y - z.L(80), score, { perfect: "golden", bad: f.v >= 1 ? "burnt" : "too-pale" });
         if (f.kind === kind) lifted++;
+        // the picture tally: what you've lifted out, by kind
+        UI.countUp(wordOf(f.kind), { state: f.kind === "samosa" ? "fried" : "bowl" });
         S.fly(f.img, z.X(250 + (doneOut.length % 4) * 80), z.Y(St.STRIP_Y - 30 + Math.floor(doneOut.length / 4) * 60), { duration: 380, arc: z.L(120) });
         doneOut.push(f);
         z.progress({ fried: doneOut.length });

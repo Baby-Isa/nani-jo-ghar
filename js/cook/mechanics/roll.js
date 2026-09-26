@@ -40,7 +40,7 @@
         z.skill(score, "roll");
         const done = S.track(S.add.image(z.X(sk.x), z.Y(sk.y) - z.L(stack.length * 10), "chapati-raw").setScale(0.36 * z.k).setDepth(D.item + stack.length));
         stack.push(done);
-        UI.count(rolled.length);
+        UI.count(rolled.length, { id: "cook-maani", state: "raw" });
         z.emit({ kind: "maani", sprite: z.out ? done : null, score, n: rolled.length });
         if (rolled.length >= k.maxCount) break;
         spare.setVisible(true);

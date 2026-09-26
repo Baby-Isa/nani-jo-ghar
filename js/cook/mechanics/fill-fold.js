@@ -49,20 +49,9 @@
       const items = St.ingredients(z, ids, { y: k.rowY, x0: 260, x1: 1250, maxPerRow: Math.max(1, Math.ceil(ids.length / 2)), w: 165, h: 120 });
       const got = {};
       const blobs = [];
-      const badges = {};
-      const badge = (id) => {
-        const obj = items[id];
-        const c = S.centre(obj);
-        if (!badges[id]) {
-          const x = c.x + c.w * 0.42;
-          const y = c.y - c.h * 0.42;
-          const bg = S.track(S.add.circle(x, y, z.L(26), 0xfffaf1, 1).setStrokeStyle(z.L(4), 0xb24a3a).setDepth(D.fx + 2));
-          const t = S.track(S.add.text(x, y, "", { fontFamily: '"Baloo 2", Nunito, sans-serif', fontSize: `${Math.round(z.L(36))}px`, fontStyle: "bold", color: "#b24a3a" }).setOrigin(0.5).setDepth(D.fx + 3));
-          badges[id] = { bg, t };
-        }
-        badges[id].t.setText(String(got[id]));
-        S.tweens.add({ targets: [badges[id].bg, badges[id].t], scale: 1.25, duration: 90, yoyo: true });
-      };
+      // Wave 6b: the picture tally in the top-right corner (spoons of each, what you did; said
+      // aloud while the number is being learned), in place of a badge on every bowl
+      const badge = (id) => UI.count(got[id], { id, state: "bowl" });
       const next = () => kinds.find((id) => (got[id] || 0) < want[id]) || null;
       let last = 0;
       for (;;) {
@@ -74,8 +63,6 @@
         const obj = items[id];
         got[id] = (got[id] || 0) + 1;
         badge(id);
-        // the running tally for this bowl, said aloud only while the number is being learned
-        if (got[id] <= 5 && Cook.wordStage(Cook.numId(got[id])) < 3) Lang.speak({ segs: Lang.num(got[id]), en: String(got[id]) });
         const blob = S.track(S.add.image(obj.x, obj.y, S.tex(`layer:${id}`)).setScale(0.26 * z.k).setDepth(D.fx));
         Cook.sfx.pop();
         const a = Math.random() * Math.PI * 2;
@@ -101,18 +88,20 @@
         if (!right) {
           ok = false;
           z.listen(false, `spooned ${g}, they asked for ${want[id]}: ${id}`);
-        } else if (ctx.tickItem) ctx.tickItem(id);
+        }
         if (!ctx.guided) {
           (right ? Cook.markRight : Cook.markMiss)(id);
           if (want[id] <= 5) (right ? Cook.markRight : Cook.markMiss)(Cook.numId(want[id]));
         }
       });
-      if (ok) {
-        Cook.sfx.right();
-        S.sparkle(bowl.rim.x, bowl.rim.y);
-      } else z.oops();
+      // the step has closed (Done): its rows tick, count rows too, right or not (UX 11)
+      if (ctx.closeItem) ctx.closeItem(kinds);
+      // a finished bowl sparkles either way: the end review says whether it was right
+      Cook.sfx.right();
+      S.sparkle(bowl.rim.x, bowl.rim.y);
+      if (!ok) z.oops();
+      UI.hideCount();
       ctx.result.fillings = Object.assign({}, got);
-      Object.values(badges).forEach((b) => (b.bg.destroy(), b.t.destroy()));
       return { bowl, items, blobs };
     },
   });
@@ -235,6 +224,7 @@
           break;
         }
         made++;
+        if (count) UI.count(made, { id: "ph-samosa", state: "folded" });
         S.sparkle(z.X(800), z.Y(330));
         z.skill(100, "fold");
         if (!count) break;

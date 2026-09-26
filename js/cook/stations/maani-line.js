@@ -332,7 +332,9 @@
       if (!p || !p.item || !p.item.it) return;
       p.item.it.where = "plate";
       onTawa--;
-      UI.count(plated().length);
+      // the picture tally: maani on the plate, by kind (what you made, never the target)
+      const kind = p.item.it.type;
+      UI.count(plated().filter((x) => x.type === kind).length, { id: kind, state: "done" });
       update();
     };
 
@@ -371,6 +373,8 @@
         [Cook.numId(w), type, size].filter(Boolean).forEach((id) => mark(id));
       }
     });
+    // the step has closed (Done): its rows tick, count rows too, right or not (UX 11)
+    if (ctx.closeItem) ctx.closeItem([], { all: true });
     ctx.result.maani = plated().length;
     ctx.result.maaniKinds = made;
     [zb, zr, zrest, zt].forEach((z) => z.close());

@@ -644,6 +644,35 @@
     }
   };
 
+  /**
+   * Wave 6b: a skewer as a small picture for the tally (a data URL): the
+   * stick with the pieces you put on it. One per kind (the first one made).
+   */
+  const icons = {};
+  SK.icon = function (kind, pieces) {
+    if (icons[kind]) return icons[kind];
+    const S = Cook.scene;
+    if (!S || !pieces) return null;
+    const c = cv(90, 150);
+    const ctx = c.getContext("2d");
+    const stick = S.textures.get(SK.tex(S, "stick")).getSourceImage();
+    ctx.translate(45, 75);
+    ctx.rotate(0.5);
+    ctx.scale(0.22, 0.22);
+    ctx.drawImage(stick, -STICK.w / 2, -STICK.cy);
+    pieces.forEach((id, i) => {
+      const img = S.textures.get(SK.tex(S, `piece:${id}`)).getSourceImage();
+      const s = SK.pieceScale(pieces.length);
+      ctx.save();
+      ctx.translate(0, SK.slotY(i, pieces.length));
+      ctx.scale(s, s);
+      ctx.drawImage(img, -PIECE / 2, -PIECE / 2);
+      ctx.restore();
+    });
+    return (icons[kind] = c.toDataURL());
+  };
+  SK.resetIcons = () => Object.keys(icons).forEach((k) => delete icons[k]);
+
   /** The served plate as one picture (for the table): the platter, the skewers you made, the chips. */
   SK.plateArt = function (S, plate, chips) {
     const w = 340;
@@ -856,6 +885,9 @@
         g.sk.setDepth(D.item + 3 + j * 0.01);
         S.tweens.add({ targets: g.sk, x: X(PLATE.x - 10), y: Y(PLATE.y - 50 + Math.min(j, 5) * 22), scale: 0.4 * z.k, angle: 84, duration: 460, ease: "Sine.easeInOut" });
         z.progress({ plated: plate.length });
+        // the picture tally: the skewers on the plate, by kind (what you made)
+        const tk = g.cls.ok ? g.cls.kind : "odd";
+        UI.countUp(tk, { icon: SK.icon(tk, g.pieces), speak: false });
         if (!grilling.length && sizzle) {
           sizzle.stop();
           sizzle = null;

@@ -457,7 +457,7 @@
      * and Nani names it at once. Otherwise Nani names it after the word's
      * hesitation delay, and it glows a little later; each counts as help.
      */
-    step({ items, expected, word, guided, sayLine, allowAny, onWrong, io = Cook.IO }) {
+    step({ items, expected, word, guided, sayLine, allowAny, onWrong, onLand, quiet = false, io = Cook.IO }) {
       return new Promise((resolve) => {
         let misses = 0;
         const target = items[expected];
@@ -469,7 +469,8 @@
             this.glow(o, false);
           });
         };
-        const hint = () => sayLine && UI.say(sayLine, { badge: true }).catch(() => {});
+        // Nani is a voice at a station; the row she names throbs on the card (UX 13)
+        const hint = () => sayLine && UI.voice(sayLine).catch(() => {});
         if (guided) {
           this.glow(target, true);
           hint();
@@ -499,6 +500,16 @@
               cleanup();
               io.expect(null);
               resolve({ key, misses });
+            } else if (quiet) {
+              // Wave 6b (UX 11), level 2 up: a wrong pick lands like any other (onLand moves it);
+              // nothing says it's wrong now, the end review does
+              misses++;
+              Cook.sfx.pop();
+              if (onWrong) onWrong(key, misses);
+              if (onLand) {
+                this.untap(obj);
+                onLand(key, obj);
+              }
             } else {
               misses++;
               this.wiggle(obj);

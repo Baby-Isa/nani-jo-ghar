@@ -3064,6 +3064,8 @@
   },
   {
    "id": "mixer",
+   "hidden": true,
+   "_hidden": "Wave 6b: knead is cut from the playable stations, so this upgrade is off the shop (kept for later).",
    "station": "Kneading",
    "name": "Special atto bowl",
    "image": "atto",

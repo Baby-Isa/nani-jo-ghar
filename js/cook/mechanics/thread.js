@@ -42,6 +42,7 @@
       const S = z.S;
       const ctx = z.ctx;
       const SK = Cook.Skewer;
+      SK.resetIcons();
       const want = params.skewers || {};
       const pattern = params.pattern || [];
       const line = params.line || {};
@@ -135,12 +136,16 @@
           const e = exp && exp.id ? exp.id : null;
           z.listen(false, e ? `${id} instead of ${e}` : `${id}, not in the order`);
           if (!z.guided) Cook.markMiss(e || id);
-          S.wiggle(sk);
-          z.oops();
-          await S.fly(fly, from.x, from.y, { duration: 280, arc: z.L(60) });
-          fly.destroy();
-          busy = false;
-          return;
+          if (!z.quiet) {
+            // level 1: it bounces back to its bowl (the one gentle correction)
+            S.wiggle(sk);
+            z.oops();
+            await S.fly(fly, from.x, from.y, { duration: 280, arc: z.L(60) });
+            fly.destroy();
+            busy = false;
+            return;
+          }
+          // level 2 up (UX 11): it goes on like any other piece; the plate and the review judge the skewer
         }
         fly.destroy();
         const img = SK.addPiece(S, sk, id, { at: -250 });
@@ -173,6 +178,9 @@
         const c = SK.classify(sk.ids, pattern);
         if (c.ok) made[c.kind] = (made[c.kind] || 0) + 1;
         else odd++;
+        // the picture tally: the skewers you've made, by kind (never how many they asked for)
+        const tk = c.kind || "odd";
+        UI.countUp(tk, { icon: SK.icon(tk, sk.ids), speak: false });
         S.sparkle(z.X(lay.boardX), z.Y(SKY - 60));
         Cook.sfx.right();
         if (c.ok && c.kind === mixedW && !tickedMixed && ctx.tickItem) {

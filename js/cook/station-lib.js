@@ -32,8 +32,9 @@
   const BURNER = { left: { x: 515, y: 375 }, right: { x: 1085, y: 375 } };
   const STRIP_Y = 790;
 
-  const nani = (line, opts = {}) => UI.say(line, { badge: true }, opts);
-  const oops = () => nani(Lang.line("oops"), { ms: 900 }).catch(() => {});
+  // at a station Nani is a voice (docs/UX-PRINCIPLES.md 13); one gentle "Arre re!" at level 1 only (UX 11)
+  const nani = (line, opts = {}) => UI.voice(line, opts);
+  const oops = () => (Cook.gentleOops(Cook.ctx) ? nani(Lang.line("oops"), { ms: 900 }).catch(() => {}) : Promise.resolve());
   const hideKnown = (ctx) => (id) => !ctx.guided && Cook.cardHidden(id);
   S$.nani = nani;
   S$.oops = oops;
@@ -57,6 +58,7 @@
     if (st.goal) UI.gist(st.goal);
     else UI.hideGist();
     UI.hideBubble();
+    Cook.inStation = true;
     Cook.quietUntil = Date.now() + ((Cook.data.calm || {}).quietMs || 0);
     Cook.save.seenStation[key] = true;
     if (ctx.nextStep) ctx.nextStep(key);
@@ -66,6 +68,8 @@
   }
   function end() {
     if (Cook.Coach) Cook.Coach.stop();
+    Cook.inStation = false;
+    UI.hideVoice();
     UI.hideGist();
     UI.hideCount();
     UI.hideDone();
@@ -122,7 +126,7 @@
    * of its own) or an array of ids (a group: any order within it), the
    * same grouping the order ladder shows as shared dots.
    */
-  S$.inOrder = async function (z, { items, series, onWrong, onPick, markSeen = true }) {
+  S$.inOrder = async function (z, { items, series, onWrong, onPick, onLand, markSeen = true }) {
     let n = 0;
     for (const entry of series) {
       const group = Array.isArray(entry) ? entry.slice() : [entry];
@@ -137,6 +141,9 @@
           sayLine: Lang.wordLine(expected),
           allowAny: group.length > 1 ? (k) => group.includes(k) : undefined,
           onWrong: (k, m) => onWrong(k, m, expected),
+          // level 2 up: a wrong pick goes in like any other (UX 11); onLand shows it
+          quiet: z.quiet && !!onLand,
+          onLand,
           io: z.io,
         });
         group.splice(group.indexOf(r.key), 1);

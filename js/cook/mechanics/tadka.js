@@ -95,31 +95,38 @@
         drawHeat();
       });
 
+      // a spice into the hot oil (the picture tally counts what went in)
+      async function intoPan(id) {
+        const obj = items[id];
+        const col = St.heapColor(id);
+        UI.countUp(id, { speak: false });
+        const dot = S.track(S.add.circle(obj.x, obj.y - z.L(20), z.L(20), col, 1).setDepth(D.fx));
+        await S.fly(dot, pan.rim.x, pan.rim.y, { duration: 340, arc: z.L(100) });
+        S.burst(pan.rim.x, pan.rim.y, [col, 0xfff0c0], 16, z.L(70));
+        Cook.sfx.sizzle(0.8);
+        dot.destroy();
+        obj.setAlpha(0.45);
+        // a fresh spice: the clock starts again
+        hot = true;
+        heat = 0;
+        drawHeat();
+        z.progress({ added: id });
+      }
       await St.inOrder(z, {
         items,
         series: order.concat(veg),
         markSeen: false,
         onWrong: (key, m, expected) => {
           z.listen(false, `tadka ${key} before ${expected}`);
-          S.burst(pan.rim.x, pan.rim.y, 0xfff0c0, 6, z.L(50));
+          if (!z.quiet) S.burst(pan.rim.x, pan.rim.y, 0xfff0c0, 6, z.L(50));
           if (m === 1) z.oops();
         },
+        // level 2 up (UX 11): the wrong spice goes into the oil like any other; the review says so
+        onLand: (id) => intoPan(id),
         onPick: async (id, r) => {
           if (!ctx.guided) r.misses ? Cook.markMiss(id) : Cook.markRight(id);
           if (ctx.tickItem && flat.includes(id)) ctx.tickItem(id); // tick its row on the order ladder
-          const obj = items[id];
-          const col = St.heapColor(id);
-          const dot = S.track(S.add.circle(obj.x, obj.y - z.L(20), z.L(20), col, 1).setDepth(D.fx));
-          await S.fly(dot, pan.rim.x, pan.rim.y, { duration: 340, arc: z.L(100) });
-          S.burst(pan.rim.x, pan.rim.y, [col, 0xfff0c0], 16, z.L(70));
-          Cook.sfx.sizzle(0.8);
-          dot.destroy();
-          obj.setAlpha(0.45);
-          // a fresh spice: the clock starts again
-          hot = true;
-          heat = 0;
-          drawHeat();
-          z.progress({ added: id });
+          await intoPan(id);
         },
       });
       // tip it into the pot: once all the spices are in, the pan itself is
