@@ -28,8 +28,8 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 |---|---|---|
 | Shared UI (end-of-round screen, onboarding kit, light bulb, request card) | 85 | Roll it into the five new modes as they're rebuilt. |
 | Shell: one app, one save, player picker | 100 | Live: Nani's house with doors for Cook, Find it and the clinic; a player picker; one save with migration. |
-| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 15 | Being built now (`claude/first-launch`). |
-| Story engine (arcs and chapters as data, picture panels, Story help) | 5 | Comes with the first launch. |
+| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 70 | Live (`first.html`). Needs Mum's story lines, real panel art and a layered character; also a way to edit a character later, and the chai station's fun pass. |
+| Story engine (arcs and chapters as data, picture panels, Story help) | 40 | `js/shared/story.js` and `data/story/*.json` exist. Next: Arc 1's chapters as data. |
 | World map and home (fog of war, "the world is the menu", role reversal) | 0 | Phase C, after the first launch. |
 | Speech recognition (on-device, closed set, voice star) | 30 | Enrol it with the family voice clips; the first speaking moments go in Cook. |
 | Arc 1: Eid at Nani's (S1 + S2) | 15 | The first launch, then its chapters mapped onto the modes. |
@@ -57,7 +57,7 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Area | Basic | Initial | Full | Final | **%** | Next step |
 |---|---|---|---|---|---|---|
 | **Cook** | ✓ | ✓ | 70 | 0 | **62%** | Dump 3 is in: velan, chakla, chai tray, chai glass, skewer rack, and new counter moods for Nana, Ma and Ali in `assets/cook/characters/next/`, waiting for approval. Still to do: Nani's moods (cook pack 1.1–1.4) and the potato cube (still reads as butter). |
-| **Hands** (player-boy, player-girl, Nani) | ✓ | ✓ | 90 | 0 | **70%** | Being put into Cook now. Eid mehndi later. |
+| **Hands** (player-boy, player-girl, Nani) | ✓ | ✓ | 90 | 0 | **80%** | Live in Cook. Fixes: the hands are too big beside small bowls, the rolling-pin hands cover the dough, and the pantry grab uses a top-down pose. Cook doesn't yet use the character's chosen hands. Eid mehndi later. |
 | **Characters** (Nani ✓, Kasuku ✓, Big Ma, the doctor, Nana, Ma, Ali, cousin, animals) | ✓ | 60 | 30 | 0 | **45%** | Dump 3 approved; the new counter moods are live. Zafar processes Big Ma and the doctor (dump 2). Still to do: Nani feelings (1.1), Isa feelings (1.5). |
 | **Player character** (layered, for character creation) | 0 | 0 | 0 | 0 | **0%** | A ChatGPT prompt for the layers (body, hair, eyes, clothing tints). |
 | **Story panels** (first launch, then arc beats) | 0 | 0 | 0 | 0 | **0%** | Four Eid panels: the calendar and moon, the guests, the empty pots, "help me?". |
