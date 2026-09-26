@@ -8153,11 +8153,11 @@
    {
     "side": "left",
     "wrist": {
-     "x": 143.4,
-     "y": 1218.6,
-     "angle_deg": 3.8,
-     "width_px": 248.0,
-     "source": "auto"
+     "x": 143,
+     "y": 1219,
+     "angle_deg": 4,
+     "width_px": 248,
+     "source": "manual"
     },
     "ring": {
      "mcp": [
@@ -8273,21 +8273,21 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 187.5,
+     "x": 187.3,
      "y": 967.4,
-     "angle_deg": 17.8,
-     "width_px": 252.0,
+     "angle_deg": 18.0,
+     "width_px": 253.0,
      "width_from": "measured (narrowest cut)"
     }
    },
    {
     "side": "right",
     "wrist": {
-     "x": 1506.2,
-     "y": 962.0,
-     "angle_deg": -51.1,
-     "width_px": 194.0,
-     "source": "auto"
+     "x": 1560,
+     "y": 1000,
+     "angle_deg": -6,
+     "width_px": 260,
+     "source": "manual"
     },
     "ring": {
      "mcp": [
@@ -8309,7 +8309,7 @@
      "web_t": null,
      "view_source": "manual",
      "source": "mediapipe",
-     "note": "fingers wrap round the phone; first segments face away"
+     "note": "fingers wrap round the phone; first segments face away; v3: bracelet on the hand-set wrist"
     },
     "landmarks": {
      "points": [
@@ -8403,11 +8403,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 1566.7,
-     "y": 999.5,
-     "angle_deg": -17.1,
-     "width_px": 174.6,
-     "width_from": "default"
+     "x": 1560,
+     "y": 1000,
+     "angle_deg": -6,
+     "width_px": 247.0,
+     "width_from": "wrist anchor (pinned)"
     }
    }
   ]

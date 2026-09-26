@@ -37,7 +37,7 @@ PINS = {
                                             "note": "not detected: joints marked by eye, mirroring the left hand; palm up, thin band"}],
     "hand-e4-clap-f2-together-e": [{"view": "hidden", "note": "behind the front hand"}, None],
     "hand-f4-phone-two-hands-e": [{"view": "hidden", "note": "fingers wrap round the phone; first segments face away"},
-                                  {"view": "hidden", "note": "fingers wrap round the phone; first segments face away"}],
+                                  {"view": "hidden", "bracelet": "anchor", "note": "fingers wrap round the phone; first segments face away; v3: bracelet on the hand-set wrist"}],
     # hands v2 masters
     "hand-c2-tripod-grip-t": [{"view": "hidden", "note": "pencil grip from above: ring finger curled under the palm"}],
     "hand-c3-side-pinch-t": [{"view": "hidden", "note": "card pinch from above: ring finger curled under the palm"}],

@@ -24,6 +24,9 @@ MANUAL_WRISTS = {
     "hand-e5-arm-up-fist-e": [{"x": 506, "y": 720, "angle_deg": 0, "wrist_px": 250}],  # v2: a copy of d4-f2-tight
     "hand-e7-shrug-e": [{"x": 610, "y": 945, "angle_deg": 25, "wrist_px": 290}],  # v3: re-read on a grid (the arm is ~300 px across at the wrist crease)
     "hand-c5-two-hand-fold-t": [{"x": 1102, "y": 918, "angle_deg": -24, "wrist_px": 245}],
+    # v3: the right arm runs to the frame edge, the finder read a diagonal cut; both set on a grid
+    "hand-f4-phone-two-hands-e": [{"x": 143, "y": 1219, "angle_deg": 4, "wrist_px": 248},
+                                  {"x": 1560, "y": 1000, "angle_deg": -6, "wrist_px": 260}],
     "hand-e4-clap-f2-together-e": [{"x": 560, "y": 716, "angle_deg": -8, "wrist_px": 240}],
 }
 

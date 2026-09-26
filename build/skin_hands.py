@@ -224,7 +224,9 @@ def apply_overlay(im, texture_path, hands, opacity=0.85):
 # Poses whose arms cross or touch, where the per-arm edge fit can't separate
 # them: no envelope fill; their cuff lining is given as a polygon instead.
 NO_ENVELOPE = {"hand-e4-clap-f2-together-e"}
-CUFF_FILL = {"hand-b5-hook-grip-t": [[(480, 846), (575, 851), (640, 856), (675, 861), (700, 869), (715, 900),
+CUFF_FILL = {"hand-f2-drum-cupped-t": [[(372, 897), (420, 895), (500, 897), (580, 903), (640, 912), (680, 920),
+                                        (700, 935), (705, 1024), (300, 1024), (304, 915), (330, 900)]],
+             "hand-b5-hook-grip-t": [[(480, 846), (575, 851), (640, 856), (675, 861), (700, 869), (715, 900),
                                       (725, 1024), (480, 1024)]],
              "hand-b2-vertical-grip-e": [[(488, 878), (550, 843), (650, 791), (770, 706), (800, 696), (1024, 696),
                                           (1024, 1024), (488, 1024)]],
