@@ -873,7 +873,7 @@
     addEl(map, r, li);
     return li;
   }
-  /** The card's title words: a row's words without its number ("ghos", "wadhi maani"). */
+  /** The card's title words: a row's words without its number ("lakri gos", "wadhi maani"). */
   const titleOf = (r) => {
     const parts = (r.parts || r.ids).filter((p) => typeof p === "string");
     return Lang.phrase(parts);
@@ -882,7 +882,7 @@
    * The card for a row of things made (skewers, maani): `r.cards` slots (a
    * skewer's four dots; a mixed one's pieces named on them, in order).
    * Wave 6b, the count leak: ONE card per kind, its title with the number
-   * as it was said ("ba ghos"), never one card per unit (the number of cards
+   * as it was said ("ba lakri gos"), never one card per unit (the number of cards
    * gave the count away). What you've made shows in the picture tally.
    */
   function unitCards(map, r, pieces) {
@@ -1147,7 +1147,7 @@
       .filter((r) => !forWho || r.for === forWho);
     const num = (x) => x.parts && x.parts.some((p) => typeof p === "number");
     const r =
-      // a count that went wrong is the counted row ("bo maani"), not the dish's name ("maani")
+      // a count that went wrong is the counted row ("ba maani"), not the dish's name ("maani")
       (counted && rows.find((x) => !x.head && num(x) && has(x))) ||
       rows.find((x) => has(x) && (no == null || !!x.no === no) && !x.done) ||
       rows.find((x) => has(x) && (no == null || !!x.no === no)) ||

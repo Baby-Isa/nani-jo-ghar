@@ -394,7 +394,7 @@
   }
   /**
    * After a wrong order the customer says it again, short: only the rows
-   * that went wrong, in their own frames ("Ne be khun."); the whole order
+   * that went wrong, in their own frames ("Ne ba khun."); the whole order
    * if we can't tell which.
    */
   function recast(ctx) {
@@ -795,7 +795,7 @@
       <div class="finale-row">
         <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
       </div>
-      <p>The whole family ate together, and you cooked it all: chai, maani, daal, chaat, samosa and mishkaki. You earned <b>${total}</b> stars.</p>
+      <p>The whole family ate together, and you cooked it all: chai, maani, daar, chaat, samosa and mishkaki. You earned <b>${total}</b> stars.</p>
       <div class="patch" title="A new patch for Nani's quilt"></div>
       <p style="text-align:center">A new patch for Nani's quilt. <b>Free cooking</b> is open: new orders every time.</p>
       <div class="btn-row" style="justify-content:center"><button class="btn primary" id="fin-shop">Nani's shop</button><button class="btn" id="fin-menu">Menu</button></div>`);

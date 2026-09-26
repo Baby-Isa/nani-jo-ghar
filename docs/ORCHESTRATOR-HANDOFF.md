@@ -135,3 +135,19 @@ On reports: merge into nifty-rubin → bump_version → smoke test → push → 
 
 ### 26 Sept ~09:50 UTC: clinic and Cook Wave 6b merged and published
 - `origin/claude/clinic-core` (with heal A/B/C and rough art) and `origin/claude/build-cook-wave6b` are merged into `claude/nifty-rubin-c0d431` and published to `main`. Conflicts were only `?v=` stamps (`clinic.html`, `cook.html`, `js/version.js`); neither branch touched `js/shared/*` or the grammar/ideas docs. `labs.html` now has a clinic section (play, lab index, lab bar, five stages, every healing game). Leak bots pass (whole patient L1 blind 0.30%; Cook count leaks 0%); smoke test clean at 390×844 and 1366×768. `claude/art-hands-v3` is still running and not merged.
+
+## 26 Sept, ~11:00 UTC
+- Merged and live: clinic (core + heal A/B/C + rough art) and Cook Wave 6b.
+- Hands v3 done (`claude/art-hands-v3`): all characters pass; masters 55/56 (a2 still fails); jewellery ray-cast in code; $1.80 spent. Review sheets sent to Zafar. **Waiting on his OK**, then merge and wire into Cook.
+- Mum's recordings A4–A8 and Section B transcribed into `docs/kutchi-grammar-notes.md` §10–§28. Approved/proposed game ideas are parked in `docs/GAME-IDEAS-TBC.md` (standing rule above).
+- Running now:
+  - in-process agent applying the Section B words to Cook (`docs/cook-word-changes-B.md`);
+  - in-process agent cutting family voice clips (`assets/audio/family/`, `data/family-audio.json`, `lab/family-audio.html`);
+  - shell "one app, one save" (`claude/build-shell`, session_01JZerhfa5qGNZnwu1LTq9Lp).
+- 11:15 UTC: Zafar passed the hands. `claude/art-hands-v3` merged into nifty-rubin. Wiring session `claude/cook-hands` (session_01MAs1TPaN2juaEio8CC4aon) launched. First-launch story draft: `docs/first-launch-story.md` (waiting on the rest of Zafar's thoughts; the shell continuation adds the character step and the story beat once agreed).
+- 13:00 UTC: the usage limit (~12:00–12:50) killed the shell, cook-hands and the clip agent. Relaunched:
+  - shell continuation: session_01M5e3LwxbfjVkAtRrpvuz5r;
+  - cook-hands continuation: session_01KmnJa91eMGjErxqeiPe8E2;
+  - the clip agent, resumed in-process.
+
+  ChatGPT dump 3 (69 files, 48 unique; no log in the repo) is being sorted by an in-process agent. **Lesson: 6+ parallel Opus sessions hit the 5-hour limit in about 1½ h. Keep to about 4 at once.**

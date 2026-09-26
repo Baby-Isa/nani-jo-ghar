@@ -1,7 +1,7 @@
 /*
  * Mechanic: fry (several at once). Drop them into the oil, then lift each
  * out when its own ring reaches green. Several cook at once, at different
- * times: juggling. The count ("bo samosa") is the Kutchi, and which ones:
+ * times: juggling. The count ("ba samosa") is the Kutchi, and which ones:
  * the tray always holds more than asked for (a random number of extras,
  * never a fixed "one more"), at level 2 other things are on the tray too
  * (chips beside the samosas), and at level 3 the pan is mixed: Nani's

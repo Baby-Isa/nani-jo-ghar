@@ -3,10 +3,10 @@
  *
  *   dough bowls (left)  ->  chakla (middle: roll)  ->  tawa (right: flip, puff)
  *
- * The order says how many of each kind, in Kutchi: "bo maani ne hikdo bajr
- * jo maani" (and, at level 3, big or small: English placeholders until the
- * family gives the words). The bowls always offer both doughs (maani, and
- * the greyer bajr jo maani), each with the same number of balls, always
+ * The order says how many of each kind, in Kutchi: "ba maani ne hakri bajr
+ * ji maani" (and, at level 4, big or small: wadhi / nindhi, the she-forms,
+ * because maani is a she-word). The bowls always offer both doughs (maani, and
+ * the greyer bajr ji maani), each with the same number of balls, always
  * more than anyone orders; nothing on screen shows the target; the count
  * badge is only a running tally of what's on the plate; you press the tick
  * when you think you're done. The ear star checks the count of each kind.
@@ -366,7 +366,7 @@
       const { type, size } = split(key);
       const w = want[key] || 0;
       const got = made[key] || 0;
-      // the kind as the order says it ("ph-big+cook-maani"): the result card shows "bo big maani"
+      // the kind as the order says it ("ph-big+cook-maani"): the result card shows "ba wadhi maani"
       zb.listen(got === w, `made ${got} ${key}, they asked for ${w}`);
       if (!ctx.guided && w) {
         const mark = got === w ? Cook.markRight : Cook.markMiss;

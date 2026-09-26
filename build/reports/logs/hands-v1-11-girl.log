@@ -1,0 +1,192 @@
+LIVE RUN -- 47 asset(s), model=gpt-image-1, concurrency 3, gap 20s
+budget cap: $2.00
+[hand-girl-a1-flat-palm-t::v0] queued reskin 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-girl-a3-palm-up-t::v0] queued reskin 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-girl-a3-palm-up-e::v0] queued reskin 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-girl-a1-flat-palm-t::v0] skin #F19B58 -> #D69B6F (distribution matched); scale - (no forearm found)
+[hand-girl-a1-flat-palm-t::v0] drift check FAILED (IoU 0.877)
+[hand-girl-a1-flat-palm-t::v0] done in 33s -> assets/characters/hands/girl/hand-girl-a1-flat-palm-t.png
+[hand-girl-a4-reach-e::v0] queued reskin 1024x1024 (+39s; the pacer holds the actual request start)
+[hand-girl-a3-palm-up-t::v0] skin #EA954B -> #D69B6E (distribution matched); scale - (no forearm found)
+[hand-girl-a3-palm-up-t::v0] drift check FAILED (IoU 0.871)
+[hand-girl-a3-palm-up-t::v0] done in 55s -> assets/characters/hands/girl/hand-girl-a3-palm-up-t.png
+[hand-girl-a5-wave-f1-e::v0] queued reskin 1024x1024 (+62s; the pacer holds the actual request start)
+[hand-girl-a3-palm-up-e::v0] skin #F4A159 -> #D69B6E (distribution matched); scale - (no forearm found)
+[hand-girl-a3-palm-up-e::v0] drift check OK (IoU 0.909)
+[hand-girl-a3-palm-up-e::v0] done in 74s -> assets/characters/hands/girl/hand-girl-a3-palm-up-e.png
+[hand-girl-a5-wave-f2-e::v0] queued reskin 1024x1024 (+82s; the pacer holds the actual request start)
+[hand-girl-a4-reach-e::v0] skin #F7A05E -> #D79C6E (distribution matched); scale - (no forearm found)
+[hand-girl-a4-reach-e::v0] drift check FAILED (IoU 0.880)
+[hand-girl-a4-reach-e::v0] done in 52s -> assets/characters/hands/girl/hand-girl-a4-reach-e.png
+[hand-girl-a6-palm-out-e::v0] queued reskin 1024x1024 (+99s; the pacer holds the actual request start)
+[hand-girl-a5-wave-f1-e::v0] skin #F7A75F -> #D89E71 (distribution matched); scale 1.051 (rescaled)
+[hand-girl-a5-wave-f1-e::v0] drift check FAILED (IoU 0.891)
+[hand-girl-a5-wave-f1-e::v0] done in 55s -> assets/characters/hands/girl/hand-girl-a5-wave-f1-e.png
+[hand-girl-a7-hand-on-heart-e::v0] queued reskin 1024x1024 (+126s; the pacer holds the actual request start)
+[hand-girl-a5-wave-f2-e::v0] skin #EE9D60 -> #D69B6E (distribution matched); scale - (no forearm found)
+[hand-girl-a5-wave-f2-e::v0] drift check OK (IoU 0.907)
+[hand-girl-a5-wave-f2-e::v0] done in 38s -> assets/characters/hands/girl/hand-girl-a5-wave-f2-e.png
+[hand-girl-a8-cupped-t::v0] queued reskin 1024x1024 (+130s; the pacer holds the actual request start)
+[hand-girl-a6-palm-out-e::v0] skin #E79148 -> #D59A6D (distribution matched); scale - (no forearm found)
+[hand-girl-a6-palm-out-e::v0] drift check FAILED (IoU 0.849)
+[hand-girl-a6-palm-out-e::v0] done in 55s -> assets/characters/hands/girl/hand-girl-a6-palm-out-e.png
+[hand-girl-a8-cupped-e::v0] queued reskin 1024x1024 (+159s; the pacer holds the actual request start)
+[hand-girl-a7-hand-on-heart-e::v0] skin #E78F50 -> #D69A6C (distribution matched); scale - (no forearm found)
+[hand-girl-a7-hand-on-heart-e::v0] drift check FAILED (IoU 0.784)
+[hand-girl-a7-hand-on-heart-e::v0] done in 51s -> assets/characters/hands/girl/hand-girl-a7-hand-on-heart-e.png
+[hand-girl-b2-vertical-grip-t::v0] queued reskin 1024x1024 (+184s; the pacer holds the actual request start)
+[hand-girl-a8-cupped-e::v0] skin #E7934C -> #D69B6D (distribution matched); scale - (no forearm found)
+[hand-girl-a8-cupped-e::v0] drift check OK (IoU 0.915)
+[hand-girl-a8-cupped-e::v0] done in 37s -> assets/characters/hands/girl/hand-girl-a8-cupped-e.png
+[hand-girl-b2-vertical-grip-e::v0] queued reskin 1024x1024 (+204s; the pacer holds the actual request start)
+[hand-girl-a8-cupped-t::v0] skin #E38C4E -> #D69B6E (distribution matched); scale - (no forearm found)
+[hand-girl-a8-cupped-t::v0] drift check OK (IoU 0.910)
+[hand-girl-a8-cupped-t::v0] done in 83s -> assets/characters/hands/girl/hand-girl-a8-cupped-t.png
+[hand-girl-b3-stick-grip-e::v0] queued reskin 1024x1024 (+218s; the pacer holds the actual request start)
+[hand-girl-b2-vertical-grip-t::v0] skin #EAA464 -> #D79D70 (distribution matched); scale - (no forearm found)
+[hand-girl-b2-vertical-grip-t::v0] drift check FAILED (IoU 0.863)
+[hand-girl-b2-vertical-grip-t::v0] done in 47s -> assets/characters/hands/girl/hand-girl-b2-vertical-grip-t.png
+[hand-girl-b4-rolling-pin-t::v0] queued reskin 1024x1024 (+237s; the pacer holds the actual request start)
+[hand-girl-b3-stick-grip-e::v0] skin #DF762E -> #D59769 (distribution matched); scale - (no forearm found)
+[hand-girl-b3-stick-grip-e::v0] drift check FAILED (IoU 0.897)
+[hand-girl-b3-stick-grip-e::v0] done in 37s -> assets/characters/hands/girl/hand-girl-b3-stick-grip-e.png
+[hand-girl-b5-hook-grip-t::v0] queued reskin 1024x1024 (+263s; the pacer holds the actual request start)
+[hand-girl-b4-rolling-pin-t::v0] skin #F2A265 -> #D69C6F (distribution matched); scale - (no forearm found)
+[hand-girl-b4-rolling-pin-t::v0] drift check OK (IoU 0.901)
+[hand-girl-b4-rolling-pin-t::v0] done in 38s -> assets/characters/hands/girl/hand-girl-b4-rolling-pin-t.png
+[hand-girl-b5-hook-grip-e::v0] queued reskin 1024x1024 (+283s; the pacer holds the actual request start)
+[hand-girl-b2-vertical-grip-e::v0] skin #E58444 -> #CE8D62 (distribution matched); scale - (no forearm found)
+[hand-girl-b2-vertical-grip-e::v0] drift check FAILED (IoU 0.811)
+[hand-girl-b2-vertical-grip-e::v0] done in 73s -> assets/characters/hands/girl/hand-girl-b2-vertical-grip-e.png
+[hand-girl-c1-pinch-f1-open-t::v0] queued reskin 1024x1024 (+289s; the pacer holds the actual request start)
+[hand-girl-b5-hook-grip-t::v0] skin #ED8E4A -> #D69A6D (distribution matched); scale - (no forearm found)
+[hand-girl-b5-hook-grip-t::v0] drift check FAILED (IoU 0.886)
+[hand-girl-b5-hook-grip-t::v0] done in 48s -> assets/characters/hands/girl/hand-girl-b5-hook-grip-t.png
+[hand-girl-c1-pinch-f2-closed-t::v0] queued reskin 1024x1024 (+320s; the pacer holds the actual request start)
+[hand-girl-c1-pinch-f1-open-t::v0] skin #E99448 -> #D89E70 (distribution matched); scale - (no forearm found)
+[hand-girl-c1-pinch-f1-open-t::v0] drift check FAILED (IoU 0.843)
+[hand-girl-c1-pinch-f1-open-t::v0] done in 42s -> assets/characters/hands/girl/hand-girl-c1-pinch-f1-open-t.png
+[hand-girl-c1-pinch-f1-open-e::v0] queued reskin 1024x1024 (+338s; the pacer holds the actual request start)
+[hand-girl-b5-hook-grip-e::v0] skin #DC8755 -> #D69A6C (distribution matched); scale - (no forearm found)
+[hand-girl-b5-hook-grip-e::v0] drift check FAILED (IoU 0.467)
+[hand-girl-b5-hook-grip-e::v0] done in 72s -> assets/characters/hands/girl/hand-girl-b5-hook-grip-e.png
+[hand-girl-c1-pinch-f2-closed-e::v0] queued reskin 1024x1024 (+362s; the pacer holds the actual request start)
+[hand-girl-c1-pinch-f1-open-e::v0] skin #E88B46 -> #D5996B (distribution matched); scale - (no forearm found)
+[hand-girl-c1-pinch-f1-open-e::v0] drift check FAILED (IoU 0.765)
+[hand-girl-c1-pinch-f1-open-e::v0] done in 36s -> assets/characters/hands/girl/hand-girl-c1-pinch-f1-open-e.png
+[hand-girl-c4-point-t::v0] queued reskin 1024x1024 (+381s; the pacer holds the actual request start)
+[hand-girl-c1-pinch-f2-closed-t::v0] skin #E9975B -> #D5996D (distribution matched); scale - (no forearm found)
+[hand-girl-c1-pinch-f2-closed-t::v0] drift check FAILED (IoU 0.880)
+[hand-girl-c1-pinch-f2-closed-t::v0] done in 77s -> assets/characters/hands/girl/hand-girl-c1-pinch-f2-closed-t.png
+[hand-girl-c4-point-e::v0] queued reskin 1024x1024 (+404s; the pacer holds the actual request start)
+[hand-girl-c1-pinch-f2-closed-e::v0] skin #DB935B -> #D79B6E (distribution matched); scale - (no forearm found)
+[hand-girl-c1-pinch-f2-closed-e::v0] drift check OK (IoU 0.916)
+[hand-girl-c1-pinch-f2-closed-e::v0] done in 55s -> assets/characters/hands/girl/hand-girl-c1-pinch-f2-closed-e.png
+[hand-girl-c5-two-hand-fold-t::v0] queued reskin 1024x1024 (+425s; the pacer holds the actual request start)
+[hand-girl-c4-point-t::v0] skin #EB9A62 -> #D89C6E (distribution matched); scale - (no forearm found)
+[hand-girl-c4-point-t::v0] drift check FAILED (IoU 0.867)
+[hand-girl-c4-point-t::v0] done in 52s -> assets/characters/hands/girl/hand-girl-c4-point-t.png
+[hand-girl-d1-grab-f1-open-t::v0] queued reskin 1024x1024 (+440s; the pacer holds the actual request start)
+[hand-girl-c4-point-e::v0] skin #D7793D -> #D5986A (distribution matched); scale - (no forearm found)
+[hand-girl-c4-point-e::v0] drift check FAILED (IoU 0.878)
+[hand-girl-c4-point-e::v0] done in 49s -> assets/characters/hands/girl/hand-girl-c4-point-e.png
+[hand-girl-d1-grab-f2-closed-t::v0] queued reskin 1024x1024 (+458s; the pacer holds the actual request start)
+[hand-girl-d1-grab-f1-open-t::v0] skin #EE9D5A -> #D89D6F (distribution matched); scale - (no forearm found)
+[hand-girl-d1-grab-f1-open-t::v0] drift check FAILED (IoU 0.875)
+[hand-girl-d1-grab-f1-open-t::v0] done in 21s -> assets/characters/hands/girl/hand-girl-d1-grab-f1-open-t.png
+[hand-girl-d1-grab-f1-open-e::v0] queued reskin 1024x1024 (+466s; the pacer holds the actual request start)
+[hand-girl-c5-two-hand-fold-t::v0] skin #DC8F4B -> #D89C6E (distribution matched); scale - (no forearm found)
+[hand-girl-c5-two-hand-fold-t::v0] drift check FAILED (IoU 0.827)
+[hand-girl-c5-two-hand-fold-t::v0] done in 70s -> assets/characters/hands/girl/hand-girl-c5-two-hand-fold-t.png
+[hand-girl-d1-grab-f2-closed-e::v0] queued reskin 1024x1024 (+509s; the pacer holds the actual request start)
+[hand-girl-d1-grab-f2-closed-t::v0] skin #F58C4C -> #D49768 (distribution matched); scale - (no forearm found)
+[hand-girl-d1-grab-f2-closed-t::v0] drift check FAILED (IoU 0.881)
+[hand-girl-d1-grab-f2-closed-t::v0] done in 56s -> assets/characters/hands/girl/hand-girl-d1-grab-f2-closed-t.png
+[hand-girl-d2-c-hold-t::v0] queued reskin 1024x1024 (+519s; the pacer holds the actual request start)
+[hand-girl-d1-grab-f1-open-e::v0] skin #E58B47 -> #D6996B (distribution matched); scale - (no forearm found)
+[hand-girl-d1-grab-f1-open-e::v0] drift check FAILED (IoU 0.695)
+[hand-girl-d1-grab-f1-open-e::v0] done in 54s -> assets/characters/hands/girl/hand-girl-d1-grab-f1-open-e.png
+[hand-girl-d2-c-hold-e::v0] queued reskin 1024x1024 (+527s; the pacer holds the actual request start)
+[hand-girl-d2-c-hold-t::v0] skin #E29255 -> #D59B6E (distribution matched); scale - (no forearm found)
+[hand-girl-d2-c-hold-t::v0] drift check FAILED (IoU 0.889)
+[hand-girl-d2-c-hold-t::v0] done in 37s -> assets/characters/hands/girl/hand-girl-d2-c-hold-t.png
+[hand-girl-d4-squeeze-f1-half-t::v0] queued reskin 1024x1024 (+567s; the pacer holds the actual request start)
+[hand-girl-d2-c-hold-e::v0] skin #DE8244 -> #D09466 (distribution matched); scale - (no forearm found)
+[hand-girl-d2-c-hold-e::v0] drift check FAILED (IoU 0.885)
+[hand-girl-d2-c-hold-e::v0] done in 49s -> assets/characters/hands/girl/hand-girl-d2-c-hold-e.png
+[hand-girl-d4-squeeze-f2-tight-t::v0] queued reskin 1024x1024 (+587s; the pacer holds the actual request start)
+[hand-girl-d1-grab-f2-closed-e::v0] skin #EA9350 -> #D69B6D (distribution matched); scale - (no forearm found)
+[hand-girl-d1-grab-f2-closed-e::v0] drift check FAILED (IoU 0.721)
+[hand-girl-d1-grab-f2-closed-e::v0] done in 90s -> assets/characters/hands/girl/hand-girl-d1-grab-f2-closed-e.png
+[hand-girl-d5-throw-release-e::v0] queued reskin 1024x1024 (+607s; the pacer holds the actual request start)
+[hand-girl-d4-squeeze-f1-half-t::v0] skin #F3974D -> #D79C6D (distribution matched); scale - (no forearm found)
+[hand-girl-d4-squeeze-f1-half-t::v0] drift check FAILED (IoU 0.865)
+[hand-girl-d4-squeeze-f1-half-t::v0] done in 48s -> assets/characters/hands/girl/hand-girl-d4-squeeze-f1-half-t.png
+[hand-girl-d6-two-hand-catch-f2-closed-e::v0] queued reskin 1024x1024 (+620s; the pacer holds the actual request start)
+[hand-girl-d4-squeeze-f2-tight-t::v0] skin #E5995A -> #DA9D70 (distribution matched); scale - (no forearm found)
+[hand-girl-d4-squeeze-f2-tight-t::v0] drift check FAILED (IoU 0.813)
+[hand-girl-d4-squeeze-f2-tight-t::v0] done in 49s -> assets/characters/hands/girl/hand-girl-d4-squeeze-f2-tight-t.png
+[hand-girl-e1-thumbs-up-e::v0] queued reskin 1024x1024 (+640s; the pacer holds the actual request start)
+[hand-girl-d6-two-hand-catch-f2-closed-e::v0] skin #E09352 -> #D79B6E (distribution matched); scale - (no forearm found)
+[hand-girl-d6-two-hand-catch-f2-closed-e::v0] drift check FAILED (IoU 0.851)
+[hand-girl-d6-two-hand-catch-f2-closed-e::v0] done in 37s -> assets/characters/hands/girl/hand-girl-d6-two-hand-catch-f2-closed-e.png
+[hand-girl-e2-handshake-e::v0] queued reskin 1024x1024 (+664s; the pacer holds the actual request start)
+[hand-girl-e1-thumbs-up-e::v0] skin #ED9245 -> #D79B6D (distribution matched); scale - (no forearm found)
+[hand-girl-e1-thumbs-up-e::v0] drift check FAILED (IoU 0.813)
+[hand-girl-e1-thumbs-up-e::v0] done in 34s -> assets/characters/hands/girl/hand-girl-e1-thumbs-up-e.png
+[hand-girl-e3-count-1-e::v0] queued reskin 1024x1024 (+681s; the pacer holds the actual request start)
+[hand-girl-d5-throw-release-e::v0] skin #EF9852 -> #CF9366 (distribution matched); scale - (no forearm found)
+[hand-girl-d5-throw-release-e::v0] drift check FAILED (IoU 0.855)
+[hand-girl-d5-throw-release-e::v0] done in 90s -> assets/characters/hands/girl/hand-girl-d5-throw-release-e.png
+[hand-girl-e3-count-2-e::v0] queued reskin 1024x1024 (+706s; the pacer holds the actual request start)
+[hand-girl-e3-count-1-e::v0] skin #E4803C -> #D49567 (distribution matched); scale 0.954 (rescaled)
+[hand-girl-e3-count-1-e::v0] drift check FAILED (IoU 0.843)
+[hand-girl-e3-count-1-e::v0] done in 35s -> assets/characters/hands/girl/hand-girl-e3-count-1-e.png
+[hand-girl-e3-count-3-e::v0] queued reskin 1024x1024 (+723s; the pacer holds the actual request start)
+[hand-girl-e2-handshake-e::v0] skin #DB6D2A -> #C88A5D (distribution matched); scale 1.0 (within tolerance)
+[hand-girl-e2-handshake-e::v0] drift check FAILED (IoU 0.600)
+[hand-girl-e2-handshake-e::v0] done in 75s -> assets/characters/hands/girl/hand-girl-e2-handshake-e.png
+[hand-girl-e3-count-5-e::v0] queued reskin 1024x1024 (+749s; the pacer holds the actual request start)
+[hand-girl-e3-count-2-e::v0] skin #DC823E -> #D49467 (distribution matched); scale 0.859 (rescaled)
+[hand-girl-e3-count-2-e::v0] drift check FAILED (IoU 0.792)
+[hand-girl-e3-count-2-e::v0] done in 51s -> assets/characters/hands/girl/hand-girl-e3-count-2-e.png
+[hand-girl-e4-clap-f1-apart-e::v0] queued reskin 1024x1024 (+765s; the pacer holds the actual request start)
+[hand-girl-e3-count-3-e::v0] skin #D78B54 -> #D69B6D (distribution matched); scale - (no forearm found)
+[hand-girl-e3-count-3-e::v0] drift check OK (IoU 0.903)
+[hand-girl-e3-count-3-e::v0] done in 50s -> assets/characters/hands/girl/hand-girl-e3-count-3-e.png
+[hand-girl-e4-clap-f2-together-e::v0] queued reskin 1024x1024 (+778s; the pacer holds the actual request start)
+[hand-girl-e3-count-5-e::v0] skin #F4A564 -> #D69B6F (distribution matched); scale - (no forearm found)
+[hand-girl-e3-count-5-e::v0] drift check FAILED (IoU 0.859)
+[hand-girl-e3-count-5-e::v0] done in 50s -> assets/characters/hands/girl/hand-girl-e3-count-5-e.png
+[hand-girl-e6-stretch-e::v0] queued reskin 1024x1024 (+804s; the pacer holds the actual request start)
+[hand-girl-e4-clap-f1-apart-e::v0] skin #EF934D -> #D4996B (distribution matched); scale 1.105 (rescaled)
+[hand-girl-e4-clap-f1-apart-e::v0] drift check FAILED (IoU 0.819)
+[hand-girl-e4-clap-f1-apart-e::v0] done in 53s -> assets/characters/hands/girl/hand-girl-e4-clap-f1-apart-e.png
+[hand-girl-e7-shrug-e::v0] queued reskin 1024x1024 (+832s; the pacer holds the actual request start)
+[hand-girl-e4-clap-f2-together-e::v0] skin #E89058 -> #D49469 (distribution matched); scale - (no forearm found)
+[hand-girl-e4-clap-f2-together-e::v0] drift check FAILED (IoU 0.793)
+[hand-girl-e4-clap-f2-together-e::v0] done in 60s -> assets/characters/hands/girl/hand-girl-e4-clap-f2-together-e.png
+[hand-girl-f1-piano-f1-raised-e::v0] queued reskin 1024x1024 (+844s; the pacer holds the actual request start)
+[hand-girl-e6-stretch-e::v0] skin #E19050 -> #D4986B (distribution matched); scale 1.051 (rescaled)
+[hand-girl-e6-stretch-e::v0] drift check FAILED (IoU 0.895)
+[hand-girl-e6-stretch-e::v0] done in 53s -> assets/characters/hands/girl/hand-girl-e6-stretch-e.png
+[hand-girl-f1-piano-f2-pressed-e::v0] queued reskin 1024x1024 (+866s; the pacer holds the actual request start)
+[hand-girl-e7-shrug-e::v0] skin #EF9D60 -> #D69B6D (distribution matched); scale - (no forearm found)
+[hand-girl-e7-shrug-e::v0] drift check FAILED (IoU 0.755)
+[hand-girl-e7-shrug-e::v0] done in 47s -> assets/characters/hands/girl/hand-girl-e7-shrug-e.png
+[hand-girl-f2-drum-cupped-t::v0] queued reskin 1024x1024 (+888s; the pacer holds the actual request start)
+[hand-girl-f1-piano-f1-raised-e::v0] skin #E6985A -> #D3966B (distribution matched); scale - (no forearm found)
+[hand-girl-f1-piano-f1-raised-e::v0] drift check FAILED (IoU 0.669)
+[hand-girl-f1-piano-f1-raised-e::v0] done in 52s -> assets/characters/hands/girl/hand-girl-f1-piano-f1-raised-e.png
+[hand-girl-f4-phone-two-hands-e::v0] queued reskin 1024x1024 (+902s; the pacer holds the actual request start)
+[hand-girl-f1-piano-f2-pressed-e::v0] skin #E89554 -> #D79B6D (distribution matched); scale - (no forearm found)
+[hand-girl-f1-piano-f2-pressed-e::v0] drift check FAILED (IoU 0.818)
+[hand-girl-f1-piano-f2-pressed-e::v0] done in 51s -> assets/characters/hands/girl/hand-girl-f1-piano-f2-pressed-e.png
+[hand-girl-f2-drum-cupped-t::v0] skin #D48853 -> #D4996C (distribution matched); scale - (no forearm found)
+[hand-girl-f2-drum-cupped-t::v0] drift check OK (IoU 0.903)
+[hand-girl-f2-drum-cupped-t::v0] done in 48s -> assets/characters/hands/girl/hand-girl-f2-drum-cupped-t.png
+[hand-girl-f4-phone-two-hands-e::v0] skin #EB995A -> #CF9467 (distribution matched); scale 1.4 (rescaled)
+[hand-girl-f4-phone-two-hands-e::v0] drift check FAILED (IoU 0.824)
+[hand-girl-f4-phone-two-hands-e::v0] done in 42s -> assets/characters/hands/girl/hand-girl-f4-phone-two-hands-e.png
+
+spent $1.88 this run -- 47 generated, 8 done, 39 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 966s

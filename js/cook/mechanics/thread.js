@@ -4,8 +4,8 @@
  * piece goes on from the tip and slides down. When it's full it's done.
  * Tap the skewer to slide the last piece back off.
  *
- * Kutchi: which kind and how many ("bo ghos, hikdo vegetable"), and for a
- * mixed skewer the pieces in the order they said ("ghos, ne poi tameto…").
+ * Kutchi: which kind and how many ("ba lakri gos, hakri lakri boga"), and for a
+ * mixed skewer the pieces in the order they said ("gos, ne poi tameto…").
  * Every piece bowl is always there (plus decoys at later levels), in a new
  * order each time, and nothing stops you at the number ordered: you
  * decide how many to make. A piece that fits no skewer in the order
@@ -116,7 +116,9 @@
         shown = null;
       };
       line.poke = line.poke || poke;
-      const hintLine = (p) => (SK.kindOfWord(p.w) === "mixed" ? Lang.wordLine(p.id) : Lang.bare(Lang.phrase(Lang.countParts(want[p.w], p.w))));
+      // said as the order said it: "Ba lakri gos." (the skewer's `unit` word before the kind)
+      const unitOf = (w) => (SK.cfg().unit ? [SK.cfg().unit, w] : [w]);
+      const hintLine = (p) => (SK.kindOfWord(p.w) === "mixed" ? Lang.wordLine(p.id) : Lang.bare(Lang.phrase(Lang.countParts(want[p.w], p.w).flatMap((x) => (typeof x === "string" ? unitOf(x) : [x])))));
 
       /* a piece onto the skewer, from the tip */
       const tapPiece = async (id) => {

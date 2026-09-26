@@ -1,0 +1,16 @@
+LIVE RUN -- 3 asset(s), model=gpt-image-1, concurrency 3, gap 20s, max_regens 1
+budget cap: $0.30
+
+pre-flight estimate: 3 image(s) planned, ~$0.13 at the chosen quality (a QA regen can add up to 1 more attempt(s) per reskin image; skipped 0 already-done)
+[hand-a2-heel-push-t::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-b1-handle-grip-t::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-e3-count-4-e::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v0] skin #EB9C5B -> #D69B6D (distribution matched); scale 0.962 (within tolerance)
+[hand-a2-heel-push-t::v0] done in 26s -> assets/characters/hands/master/hand-a2-heel-push-t.png
+[hand-b1-handle-grip-t::v0] keyed out 48390 px of magenta placeholder (v2)
+[hand-b1-handle-grip-t::v0] skin #DB8345 -> #D6996A (distribution matched); scale 0.933 (rescaled)
+[hand-b1-handle-grip-t::v0] done in 47s -> assets/characters/hands/master/hand-b1-handle-grip-t.png
+[hand-e3-count-4-e::v0] skin #E18B49 -> #D79A6C (distribution matched); scale 0.962 (within tolerance)
+[hand-e3-count-4-e::v0] done in 67s -> assets/characters/hands/master/hand-e3-count-4-e.png
+
+spent $0.13 this run -- 3 generated, 3 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 67s

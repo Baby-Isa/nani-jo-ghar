@@ -69,6 +69,10 @@ An **African grey**, a common East African household parrot. It gives cheap, fun
 |---|---|---|
 | **Nani** | `sources/art/characters/nani-sheet-v2-approved.png` (on the art branch; approved by Zafar, 24 Sept) | **The close-up (Nani leaning on the counter, waist up) is the canonical in-game look and framing for her:** use its style and pose as the basis for her kitchen-island scenes, where she stands behind the counter. Every later Nani image is made from this sheet, never from the photos. |
 
+## The player's hands: modern, not costume (24 Sept 2026)
+
+Zafar's wife wants **modern hints and nods, not caricature**. The player's own hands wear everyday modern sleeves: the boy a plain white linen shirt sleeve rolled back between the elbow and the wrist, the girl the same kind of rolled sleeve in a soft colour with a few thin glass bangles (mehndi at Eid). Nani's hands are unchanged: her red sleeve, gold bangles and rings. Details: Art Bible section 7, Asset Building Plan section 1.2.
+
 ## Likeness notes (from the family's photos, 24 Sept)
 
 The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `bigma-*`, `doctor-*`, `cats-*`, `simba-*`) and are never committed. These notes are what the character sheets must keep. Stylise them in the game's 3D-film look; never caricature.

@@ -68,6 +68,19 @@ GU = {
     "daar": "દાર", "ber": "બેર", "hakro": "હકરો", "hakri": "હકરી", "wuddee": "વડી", "nindhee": "નીંઢી",
     "watana": "વટાણા", "de": "દે", "pela": "પેલા", "waari": "વારી", "me": "મેં", "lai": "લઈ",
     "nana": "નાના", "ma": "મા", "ali": "અલી",
+    # Mum's A8 and Section B answers, 26 Sept 2026 (docs/kutchi-grammar-notes.md §23-§28,
+    # docs/cook-word-changes-B.md): na, aste thi, aako, chana, gos, bajr ji maani,
+    # the chutneys, dhania, chundo, tarela bataata, lakri, boga, the kitchen words and phrases
+    "na": "ના", "aste": "આસ્તે", "thi": "થી", "aako": "આકો", "chana": "ચણા", "gos": "ગોસ",
+    "ji": "જી", "amli": "આમલી", "chutney": "ચટણી", "fudino": "ફુદીનો", "sev": "સેવ", "dhania": "ધાણિયા",
+    "chundo": "ચુંદો", "tarela": "તરેલા", "bataata": "બટાટા", "ghee": "ઘી", "chaat": "ચાટ", "samosa": "સમોસા",
+    "mishkaki": "મિશ્કાકી", "lakri": "લકરી", "boga": "બોગા", "mixed": "મિક્સ્ડ",
+    "kali": "કલી", "hane": "હને", "kadh": "કઢ", "chadi": "છડી", "bas": "બસ", "wadhare": "વધારે",
+    "thorok": "થોરોક", "thori": "થોરી", "war": "વર", "rakh": "રખ", "tayar": "તૈયાર", "ai": "અઈ",
+    "bareto": "બરેતો", "ukreto": "ઉકરેતો", "shabash": "શાબાશ", "dhyan": "ધ્યાન", "kar": "કર", "kha": "ખા",
+    "chakhan": "ચખણ", "hi": "હી", "tu": "તું", "ki": "કી", "aiye": "અઈયે", "aau": "આઉ", "theek": "ઠીક",
+    "banai": "બનાઈ", "dinda": "દીંદા", "ha": "હા", "jara": "જરા", "e": "એ", "wandho": "વાંધો", "nai": "નઈ",
+    "mu": "મું", "khobar": "ખોબર",
 }
 
 

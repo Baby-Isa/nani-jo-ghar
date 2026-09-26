@@ -140,3 +140,6 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 - ☑ Tool sprites: knife, ladle, spatula, slotted spoon (fry), skewer stick, tawa. **Not yet:** the velan and chakla (batch 1 failed QA; batch 2 redraws them)
 - ☑ The skewer-count leak: one card per kind with the number as said ("ba ghos"), not one card per skewer (maani too); `--orders` checks it
 - ☑ Knead cut from the playable stations (file kept, not loaded; its shop upgrade hidden). The Station lab lists the nine kept stations; the sub-mechanics fold away under "Parts". Stir ends on Done (the controls audit)
+
+## From Zafar, 26 Sept: the chai station needs a fun pass
+The chai station is the second thing a new player does (pantry, then "Tu muke chai banai dinda?", then chai, in `docs/first-launch-story.md`). Zafar finds it "a bit boring". Before the first-launch story ships, give it a mini-game quality pass (`docs/modes/MINIGAME-QUALITY-BRIEF.md`): what's fun, where the challenge is, and a small delight moment (steam, the pour, Nani's sip and reaction).

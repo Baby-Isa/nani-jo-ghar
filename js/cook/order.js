@@ -15,7 +15,7 @@
  * and are said with "ne poi" (and then). Leak rules from
  * docs/cook-with-nani-kutchi-audit.md:
  *   - no pictures, only words (the card draws the rows);
- *   - one dot per item type, never per unit ("bo tameto" is one row);
+ *   - one dot per item type, never per unit ("ba tameto" is one row);
  *   - "no X" rows go in at random and look like the others;
  *   - rows that can go in any order are shuffled every time;
  *   - a section can wait for its station (`when`: the tadka order is
@@ -37,7 +37,7 @@
       parts,
       ids: r.ids,
       no,
-      // a merged run in a sequence ("be ghos") is ticked unit by unit
+      // a merged run in a sequence ("ba gos") is ticked unit by unit
       need: r.list ? r.qty || 1 : 1,
       got: 0,
       done: false,
@@ -51,7 +51,7 @@
       list: !!r.list,
       for: r.for,
       qty: r.qty || 1,
-      // Wave 6: one card per unit ("ba ghos" is two skewer cards, each with `cards` slots)
+      // Wave 6: one card per unit ("ba lakri gos" is two skewer cards, each with `cards` slots)
       cards: r.cards || null,
       // a list said for one card (a mixed skewer's pieces, in order): drawn on that card's slots
       cardOf: r.cardOf || null,
@@ -163,7 +163,7 @@
             if (r.no) return push(r.line, r);
             if (s.simple) return push(r.line, r);
             if (!r.list && r.said) {
-              // said on its own line in the recipe data ("Ne be khun."): keep its frame
+              // said on its own line in the recipe data ("Ne ba khun."): keep its frame
               push(r.said, r);
               first = false;
               firstInGroup = false;

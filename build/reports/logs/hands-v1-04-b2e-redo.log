@@ -1,0 +1,8 @@
+LIVE RUN -- 1 asset(s), model=gpt-image-1, concurrency 3, gap 20s
+budget cap: $1.00
+[hand-b2-vertical-grip-e::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-b2-vertical-grip-e::v0] keyed out 47665 px of magenta placeholder
+[hand-b2-vertical-grip-e::v0] skin #CC7133 -> #D29769 (corrected)
+[hand-b2-vertical-grip-e::v0] done in 19s -> assets/characters/hands/master/hand-b2-vertical-grip-e.png
+
+spent $0.04 this run -- 1 generated, 1 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 26s

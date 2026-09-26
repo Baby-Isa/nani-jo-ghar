@@ -1,0 +1,35 @@
+LIVE RUN (draft, quality=low) -- 8 asset(s), model=gpt-image-1, concurrency 3, gap 20s, max_regens 1
+budget cap: $0.50
+
+pre-flight estimate: 8 image(s) planned, ~$0.09 at the chosen quality (a QA regen can add up to 1 more attempt(s) per reskin image; skipped 0 already-done)
+[hand-a2-heel-push-t::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-b1-handle-grip-t::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-c2-tripod-grip-t::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-b1-handle-grip-t::v0::draft] keyed out 25393 px of magenta placeholder
+[hand-b1-handle-grip-t::v0::draft] skin #DF9B72 -> #D3996C (distribution matched); scale 1.179 (rescaled)
+[hand-b1-handle-grip-t::v0::draft] done in 27s -> drafts/assets/characters/hands/master/hand-b1-handle-grip-t.png
+[hand-c3-side-pinch-t::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-c2-tripod-grip-t::v0::draft] keyed out 39372 px of magenta placeholder
+[hand-c2-tripod-grip-t::v0::draft] skin #E8965D -> #D69B6E (distribution matched); scale 1.25 (rescaled)
+[hand-c2-tripod-grip-t::v0::draft] done in 45s -> drafts/assets/characters/hands/master/hand-c2-tripod-grip-t.png
+[hand-c3-side-pinch-e::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v0::draft] skin #D08855 -> #D69B6E (distribution matched); scale 0.672 (rescaled)
+[hand-a2-heel-push-t::v0::draft] done in 64s -> drafts/assets/characters/hands/master/hand-a2-heel-push-t.png
+[hand-d3-two-hand-bowl-t::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-c3-side-pinch-e::v0::draft] keyed out 76389 px of magenta placeholder
+[hand-c3-side-pinch-e::v0::draft] skin #E3976A -> #D4996C (distribution matched); scale 1.202 (rescaled)
+[hand-c3-side-pinch-e::v0::draft] done in 39s -> drafts/assets/characters/hands/master/hand-c3-side-pinch-e.png
+[hand-e3-count-4-e::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-d3-two-hand-bowl-t::v0::draft] keyed out 298494 px of magenta placeholder
+[hand-d3-two-hand-bowl-t::v0::draft] skin #E8A77A -> #D59B6E (distribution matched); scale 1.238 (rescaled)
+[hand-d3-two-hand-bowl-t::v0::draft] done in 46s -> drafts/assets/characters/hands/master/hand-d3-two-hand-bowl-t.png
+[hand-e5-arm-up-fist-e::v0::draft] queued edit 1024x1024 quality=low attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-e3-count-4-e::v0::draft] skin #DDA27C -> #D49B6B (distribution matched); scale 0.868 (rescaled)
+[hand-e3-count-4-e::v0::draft] done in 38s -> drafts/assets/characters/hands/master/hand-e3-count-4-e.png
+[hand-c3-side-pinch-t::v0::draft] keyed out 94602 px of magenta placeholder
+[hand-c3-side-pinch-t::v0::draft] skin #E38B4B -> #D59A6D (distribution matched); scale 1.276 (rescaled)
+[hand-c3-side-pinch-t::v0::draft] done in 120s -> drafts/assets/characters/hands/master/hand-c3-side-pinch-t.png
+[hand-e5-arm-up-fist-e::v0::draft] skin #CC8556 -> #D59B6E (distribution matched); scale 0.906 (rescaled)
+[hand-e5-arm-up-fist-e::v0::draft] done in 52s -> drafts/assets/characters/hands/master/hand-e5-arm-up-fist-e.png
+
+spent $0.09 this run -- 8 generated, 8 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 162s

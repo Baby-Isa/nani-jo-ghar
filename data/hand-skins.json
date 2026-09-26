@@ -1,0 +1,90 @@
+{
+ "_readme": "Hand characters for build/skin_hands.py (hands v1). Each is a recipe applied to every passing master pose: skin (target midtone hex, or null = the master's own), sleeve (target hex for the cream linen sleeve, or null = as is), jewellery per side, rendered in 3D by build/hand_jewellery3d.py (hands v3): {type: ring, stone: aqiq|diamond} at the ring-finger anchor, {type: wrist, style: tennis | [bangle materials: glass_red, glass_green, gold]} at the bracelet anchor, overlay (texture masked to the back of the hand), left_variant (also bake a mirrored left hand with the 'left' jewellery, for characters whose hands differ).",
+ "player-boy": {
+  "skin": null,
+  "sleeve": null,
+  "jewellery": {},
+  "_note": "The master set as is: plain white linen rolled sleeve."
+ },
+ "player-girl": {
+  "skin": null,
+  "sleeve": "#D9A5A0",
+  "jewellery": {
+   "right": [
+    {
+     "type": "wrist",
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
+     ]
+    }
+   ],
+   "left": [
+    {
+     "type": "wrist",
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
+     ]
+    }
+   ]
+  },
+  "_note": "Dusty-pink rolled sleeve, three thin bangles on each wrist: red glass, green glass, gold."
+ },
+ "player-girl-eid": {
+  "skin": null,
+  "sleeve": "#D9A5A0",
+  "jewellery": {
+   "right": [
+    {
+     "type": "wrist",
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
+     ]
+    }
+   ],
+   "left": [
+    {
+     "type": "wrist",
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
+     ]
+    }
+   ]
+  },
+  "overlay": {
+   "texture": null
+  },
+  "pending": "mehndi overlay texture not made yet (to come from ChatGPT); set overlay.texture to bake"
+ },
+ "nani": {
+  "skin": "#BE8F6F",
+  "sleeve": "#9E1F2A",
+  "left_variant": true,
+  "jewellery": {
+   "right": [
+    {
+     "type": "ring",
+     "stone": "aqiq"
+    },
+    {
+     "type": "wrist",
+     "style": "tennis"
+    }
+   ],
+   "left": [
+    {
+     "type": "ring",
+     "stone": "diamond"
+    }
+   ]
+  },
+  "_note": "Cast, 'Jewellery (corrected 24 Sept)' and sheet v2: no bangles; right: red aqiq ring in a plain yellow gold bezel, thin diamond tennis bracelet; left: round solitaire diamond in a six-claw yellow gold setting. Warm, unsaturated skin, a touch deeper than the player's; deep-red sleeve. The hand shape is the child's master: code can't age it."
+ }
+}

@@ -10,7 +10,7 @@
 
 ## 1. Style
 
-**In one paragraph:** a stylised 3D animated-feature look, the kind of frame you'd see in a modern family film. Soft global illumination and warm sunlight; believable materials (marble with warm veins, brushed steel, polished brass, pale oak, cotton with embroidery, glossy tomato skin, matte flour); no outlines. Shapes are simplified and slightly chunky, with clean surfaces and restrained micro-detail, so every item reads at 90 px on a phone. Faces are stylised, not realistic: big expressive eyes, soft rounded forms, simple readable mouths, a small nose, smooth skin with rosy cheeks. The home is a **modern kitchen with Kutch accents** (limewash, marble, sage cabinets, brass, mirror-work, ajrakh); the bazaar may be more traditional. Modern throughout, culture as a hint; the language is the main cultural thing.
+**In one paragraph:** a stylised 3D animated-feature look, the kind of frame you'd see in a modern family film. Soft global illumination and warm sunlight; believable materials (marble with warm veins, brushed steel, polished brass, pale oak, cotton and linen, glossy tomato skin, matte flour); no outlines. Shapes are simplified and slightly chunky, with clean surfaces and restrained micro-detail, so every item reads at 90 px on a phone. Faces are stylised, not realistic: big expressive eyes, soft rounded forms, simple readable mouths, a small nose, smooth skin with rosy cheeks. The home is a **modern kitchen with Kutch accents** (limewash, marble, sage cabinets, brass, mirror-work, ajrakh); the bazaar may be more traditional. Modern throughout, culture as a hint; the language is the main cultural thing.
 
 **Set dressing: restraint (decided with the family, 24 Sept 2026).** Zafar's wife: "don't do too much, it will look old again." The game is modern-looking with hints and nods to East Africa and Kutch, never a caricature of either. **At most 1–2 cultural nods per scene**, rotated between scenes and visits rather than all shown at once, and introduced gradually as the game goes on. Never clutter. Full object list: `docs/Nani jo Ghar — Asset Building Plan.md`, section 6.
 
@@ -65,7 +65,7 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 | Steel | Neutral with warm reflections | `#B9B4AC` | Pans, thali, katori, dabbas |
 | Terracotta | Earth | `#B8643E` | Bazaar, clay pots, plants |
 | Green (secondary) | Ma's dupatta, leaves | `#3F7A4A` | Clothing, herbs, plants |
-| Hands (skin) | One tone, Zafar's own: light brown, a little more brown than beige, just past the generic game skin tone | `#B4754A`–`#C6885C` (approx., sample against a photo for the final match) | Every hand sprite (section 7); no variants for now |
+| Hands (skin) | One tone, Zafar's own: a warm light tan, **not orange, not saturated** (sampled from his photos, 24 Sept 2026) | Midtone `#C49A78`, highlights `#D8B894`, shadows `#A07A60` (daylight face sample `#BE826B`) | Every hand sprite (section 7); no variants for now. The generator drifts orange (round 3 came out `#D3833E`–`#DE9351`), so check the sampled hex and colour-correct in post if needed |
 
 **Rules:**
 - **Reds belong to Nani.** Keep large red areas out of the backgrounds behind her head (curtains, frames), so she always pops.
@@ -308,19 +308,22 @@ Full list and generation order: `docs/Nani jo Ghar — Asset Building Plan.md`, 
 - **Right hands only;** left hands are mirrored in code. Two-handed images only where the hands touch (rolling pin, clap, handshake, fold).
 - **Grip plus separate tool:** hands are drawn empty in the grip pose; the tool is its own sprite placed at the grip's pivot. The list is organised by grip (A open, B handle, C pinch, D hold, E social, F play).
 - **Cameras:** a pose is drawn only in the camera it's used in (T top-down, back of the hand up; E eye level, back of the hand towards the player).
-- **The reference hand:** one right hand, top-down, relaxed and slightly open, boy cuff, 1.2× worktop scale. Zafar signs it off; every other hand is an edit of it.
-- **Skin tone:** **one tone, Zafar's own** — a light brown, a little more brown than beige, just past the generic game skin tone (hex range in section 2). No skin-tone variants for now.
+- **The reference hand:** one right hand, top-down, relaxed and slightly open, boy sleeve, 1.2× worktop scale. Zafar signs it off; every other hand is an edit of it.
+- **Shape:** a slender hand: slim overall, with **long fingers relative to a small palm** (not stubby, chunky or toy-like). **No visible bones, knuckle ridges, tendons or veins**; surfaces stay smooth and simple, because the hands are rigid sprites moved in code.
+- **Skin tone:** **one tone, Zafar's own** — a warm light tan, not orange, not saturated (hex values in section 2). No skin-tone variants for now.
+- **Sleeve:** modern, not costume. The rolled sleeve is **only sometimes visible**: in the top-down set the bare forearm enters from the bottom edge and the soft rolled fabric just shows at the very bottom edge, or is cropped out.
+- **Post steps on every generated hand (hands v1, `build/gen_assets.py`, `post_process_hand()`):** (1) grips drawn round a magenta placeholder have it keyed out, leaving the tool's exact gap (the placeholder is drawn *behind* the fingers so the cut never slices a finger), and the red rim it leaves is cleaned; (2) the skin is matched to the reference hand's whole tone range (lightness and chroma percentiles and hue), not just the midtone, which is what fixes orange palms and pale, differently lit hands; (3) the hand is rescaled so its forearm, measured just above the sleeve, is as wide as the reference's (250 px on the 1024 px canvas), anchored where the arm leaves the bottom edge. Re-run on existing files with `python3 build/gen_assets.py --post <ids or group>`.
 
-### Cuffs and reskins
+### Sleeves and reskins
 
-Reskins change **only the sleeve and accessories**. A script compares each reskin's hand outline with the master and rejects any drift, since tools must still sit in the grip.
+Reskins change **only the skin tone, sleeve and accessories**, and they are made **in code, not with the image API** (25 Sept 2026: API reskins redrew the hand in 39 of 47 cases). `build/skin_hands.py` recolours the masked skin and sleeve of each approved master and composites jewellery sprites (drawn in code) at anchor points recorded per pose in `data/hand-anchors.json` (wrist point, angle and width; ring-finger point, angle and view). Characters are data in `data/hand-skins.json`. Every master pixel keeps its place, so outlines and tool gaps never drift.
 
-| Version | Cuff and details |
+| Version | Sleeve and details |
 |---|---|
-| **Master / boy** | Cream cotton kurta cuff with a band of red Kutch embroidery (small mirror-work dots allowed) |
-| **Girl** | Embroidered kurti cuff in a soft colour, 3–4 thin glass bangles |
+| **Master / boy** | Plain white linen shirt sleeve, rolled back to between the elbow and the wrist; bare forearm below the roll; no embroidery (replaces the old embroidered kurta cuff, 24 Sept 2026) |
+| **Girl** | The same kind of modern rolled sleeve in a soft colour (e.g. dusty pink), plus 3–4 thin glass bangles; the bangles are the main difference |
 | **Girl, Eid** (optional) | As girl, with mehndi on the back of the hand and the palm; a simple floral pattern, rust-brown |
-| **Nani** (set N, about 10 poses) | Older hand, gentle wrinkles, no bangles; tennis bracelet (right wrist), red aqiq ring (right ring finger), solitaire diamond ring (left ring finger), both yellow gold; her red sleeve. Left hands drawn separately, never mirrored |
+| **Nani** (every pose, left hands too) | Her warmer, unsaturated skin; deep-red sleeve; **no bangles**; right: red aqiq ring in a plain yellow gold bezel and a thin diamond tennis bracelet; left: round solitaire diamond in a six-claw yellow gold setting (Cast, corrected 24 Sept; sheet v2). The hand shape is the master's: code can't age it |
 
 ---
 
@@ -351,7 +354,7 @@ Reskins change **only the sleeve and accessories**. A script compares each reski
 | Samosa | on a plate | filled flat, folded raw, fried golden, burnt |
 | Mishkaki | on a plate | raw on the skewer, grilled, charred |
 
-**How states are made:** each state is an **edit of the raw item image** (same angle, light and scale), or an edit in place on the empty station (section 9d). Use code for anything convincing as an effect: steam, bubbles, sizzle, a golden tint, a sparkle. "Burnt" is always its own drawing.
+**How states are made:** each state is **generated fresh with its own full prompt** (template 9c), never edited from another state. Turning a whole onion into diced onion is a complete transformation that edit mode won't carry across (tested 24 Sept 2026: the edit produced solid two-tone cubes). States match each other only through the shared style block, the same view wording and the same colour words. **Edit mode is only for small changes to the same object:** hand poses from the signed-off reference hand (9e), reskins (9f), and adding an item into an empty station background (9d). Never for state changes. Use code for anything convincing as an effect: steam, bubbles, sizzle, a golden tint, a sparkle. "Burnt" is always its own drawing.
 
 **Spices:** always **heaped in open bowls** (a steel katori or a small ceramic bowl) so the colour and texture read from above and from the front. Tins and jars only in the pantry F view. The masala dabba is the natural T-view spice container.
 
@@ -389,11 +392,11 @@ Attach: the signed-off character sheet only.
 
 ### (c) An item in a given view and state
 
-Attach: `sources/cook/props-sheet.webp` (materials only); for a state, also the item's approved raw image.
+Attach: `sources/cook/props-sheet.webp` (materials only). Never the item's other states.
 
 > A single {item} {state, e.g. "chopped into small even cubes, heaped loosely"} for a cooking game. View: {F: "front view, camera at the item's mid-height looking about 10 degrees down, standing on its base" | T: "seen from directly above, straight down, round things as circles"}. Real size about {size} cm; draw it as that size would look next to a {reference item}. Centred, filling about 70% of the frame, a soft contact shadow directly under it towards the lower right. Transparent background.
 
-For a state edit add: *"This is the same {item} as the attached image: same angle, lighting, colour and scale; change only its state to {state}."*
+For a state, write the state into the prompt itself (e.g. "small curved, translucent, layered pieces of red onion in a loose pile, seen from directly above"); don't attach the raw item image or use edit mode (section 8). Keep other objects out of item prompts ("only this food in frame: no hands…"): a scale comparison like "next to a child's hand" makes the model draw the hand.
 
 ### (d) Edit in place (item onto an empty station)
 
@@ -407,13 +410,13 @@ Attach: the empty station background; a mask covering only the placement area if
 
 Attach: the signed-off reference hand (after it exists); before that, the style reference.
 
-> The right hand and forearm of a child of about 7, {skin tone}, entering from the bottom edge of the frame, {T: "seen from directly above, back of the hand up, over a worktop" | E: "at eye level, back of the hand towards the viewer"}. Pose: {grip description, e.g. "fingers curled around an invisible horizontal handle, as if holding a knife, thumb along the top"}. No tool or object in the hand. Sleeve: a cream cotton kurta cuff with a band of red Kutch embroidery, ending at the frame edge. Same hand, skin, size and cuff as the attached reference hand. Transparent background.
+> The right hand and forearm of a child of about 7, {skin tone}, entering from the bottom edge of the frame, {T: "seen from directly above, back of the hand up, over a worktop" | E: "at eye level, back of the hand towards the viewer"}. Pose: {grip description, e.g. "fingers curled around an invisible horizontal handle, as if holding a knife, thumb along the top"}. No tool or object in the hand. Slender hand, long fingers relative to the palm, smooth, no visible bones, knuckle ridges or veins. Sleeve: a plain white linen shirt sleeve rolled back to between the elbow and the wrist, bare forearm below, the roll just showing at the frame edge (or cropped out); no embroidery. Same hand, skin, size and sleeve as the attached reference hand. Transparent background.
 
 ### (f) A reskin (sleeve and accessories only)
 
 Attach: the master hand image.
 
-> Edit the attached image. Change only the sleeve and accessories: {e.g. "replace the cuff with a pale pink embroidered kurti cuff and add three thin glass bangles in red, green and gold at the wrist"}. Keep the hand exactly the same: identical outline, finger positions, skin, lighting and size. Nothing else changes. Transparent background.
+> Edit the attached image. Change only the sleeve and accessories: {e.g. "replace the sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink and add three thin glass bangles in red, green and gold at the wrist"}. Keep the hand exactly the same: identical outline, finger positions, skin, lighting and size. Nothing else changes. Transparent background.
 
 ---
 
@@ -433,9 +436,13 @@ Review every contact sheet on **both a black and a white backing**, and every pl
 | 8 | **Light agrees** | Highlights or shadows from a second direction |
 | 9 | **Style holds** | Outlines, cel shading, photographic textures, clip-art shine, blur |
 | 10 | **Character consistent** | Face, glasses, headscarf, clothing colours or accessories differ from the sheet |
-| 11 | **Cuff consistent** | Cuff pattern, colour, bangles or hand outline differ from the master |
+| 11 | **Sleeve consistent** | Sleeve, colour, bangles or hand outline differ from the master |
 | 12 | **No text** | Any letters or numbers, even fake ones |
 | 13 | **Cultural accuracy** | See below |
+| 14 | **Finger count (hands)** | Count every digit, at full size, and write the count down for each hand. Five per hand (thumb and four fingers) unless the pose hides some behind the palm; hidden digits must be where the pose puts them, not missing. Counting frames E3 raise exactly 1, 2, 3, 4, 5 (in "4" the thumb is folded and must not stick out). Reject: a missing or extra digit, two fingers merged, two hands fused into one shape |
+| 15 | **Hand scale matches (hands)** | Forearm width just above the sleeve differs from the reference by more than about 5% after the scale normaliser (`build/gen_assets.py`, `forearm_widths()`); the hand looks bigger or smaller than its neighbours on the contact sheet; the normaliser had no room to grow it (flagged in its log) |
+| 16 | **Hand camera, light and skin (hands)** | T poses not seen from straight above; E poses showing the palm when the pose says the back of the hand; a forearm entering from the side when the pose doesn't need it; light not from the upper left like the reference; skin not matching the reference after the skin normaliser (orange palms, pale or pink hands) |
+| 17 | **Tool gaps (grips)** | A tool drawn in the hand (tools are separate sprites); no clear gap where the tool goes; a keyed-out gap that slices through a finger or leaves a red rim |
 
 **Cultural accuracy (a Khoja home, Kutch and East Africa):**
 - **Clothing:** kurta, kurti, salwar, dupatta or headscarf; modest cuts; caps on men as the family confirms. No Hindu religious markers.

@@ -10,7 +10,7 @@
  * Burnt or undercooked costs the hand star, never the ear star.
  *
  * Kutchi: what goes on the plate. The order says how many skewers of each
- * kind ("bo ghos, hikdo vegetable"); the rack never holds exactly that
+ * kind ("ba lakri gos, hakri lakri boga"); the rack never holds exactly that
  * (fixed slots per level, and standalone it's stocked with more kinds and
  * more skewers than ordered), and the plate is graded when you tick Done:
  * the right number of each kind, a mixed skewer in the spoken order, and

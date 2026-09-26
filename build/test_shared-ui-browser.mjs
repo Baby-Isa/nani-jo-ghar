@@ -89,7 +89,7 @@ try {
     await page.waitForSelector(".rs-p2:not([hidden])");
     await page.waitForTimeout(500);
     const words = await page.$$eval(".rs-word", (b) => b.map((x) => x.textContent.trim()));
-    check(words.length === 6 && words[0].includes("ghos") && words[0].includes("meat"), `${s.name}: word review lists the round's words (${words.length})`);
+    check(words.length === 6 && words[0].includes("gos") && words[0].includes("meat"), `${s.name}: word review lists the round's words (${words.length})`);
     await page.screenshot({ path: path.join(SHOTS, `results-words-${s.name}.png`) });
     await page.click(".rs-done");
     await page.waitForFunction(() => window.__lab.last && !document.querySelector(".njg-results"));

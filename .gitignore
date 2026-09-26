@@ -8,3 +8,6 @@ build/contact-sheets/
 build/gen-manifest.json
 .claude/worktrees/
 sources/private/
+build/raw/
+build/models/
+drafts/
