@@ -75,9 +75,10 @@ These three badges replace the old star labels in the result card. They stay map
 - **Tick off the instruction card, automatically, at every level** (Zafar, 25 Sept, late: final). A line ticks when that part is done right (the right amount chopped, in the bowl, fried…). The challenge is doing the right things: wrong items, extra ones or the wrong order count against you in the end review.
 - **No negative feedback during play.** No red crosses or "wrong" buzzes mid-round (at least from level 2). Mistakes are shown in the end-of-round review (§9 accuracy badge, then the word review). Level 1 keeps its gentle, one-time correction as part of onboarding.
 
-## 12. One way to control things, forever (Zafar, 25 Sept, late)
-- **Tap the item.** Once a control is set, it never changes: no switching from tap to drag at a higher level, no press-and-hold in one station and tap in another. Levels make the *Kutchi* harder, never the controls. (This overrides any design default that says "drag from level 2", e.g. the clinic's belt: it's tap at every level.)
-- **Liquids pour on a tap too.** Cook's press-and-hold pour didn't land in testing. Tap the jug and it pours the right amount, like every other item.
+## 12. Consistent controls inside each mini-game (Zafar, 25 Sept, late; clarified 26 Sept)
+- **The rule is internal consistency, not tap-only.** Swiping, stirring, dragging and so on are all fine. What matters is that **within a mini-game** the same kind of action always uses the same gesture: if you tap ingredients to add them, you also tap the liquids (a tap on the jug pours the right amount), not press-and-hold.
+- **A mini-game's controls never change between its levels.** Levels make the *Kutchi* harder, not the gestures. (E.g. the clinic's belt: whichever gesture it uses at level 1, it uses at every level.)
+- Cook's press-and-hold pour didn't land in testing: in stations where ingredients are tapped in, liquids are tapped too.
 - The detail and the success of each mode is in its mini-games: what you do, where the challenge is, where the fun is, where the instruction is, and what's new compared with the other mini-games. Design each one against those five questions, and borrow from what's successful in popular children's games right now.
 
 ## 13. The instruction card is the master; Nani is a voice

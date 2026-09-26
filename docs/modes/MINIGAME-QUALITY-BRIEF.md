@@ -3,12 +3,12 @@
 Zafar, after reading the pipeline designs: "It's the right idea, but I need help making these mini-games distinct and good. The detail and success will all be in how these mini-games work: what do you need to do, where is the challenge, where is the fun, where is the instruction, what is novel or different in this game mode. Find lots of inspiration for what is successful elsewhere right now." Also: "20 sewing mini-games might be too much; let's see the suggestions and then pick the best."
 
 ## Rules Zafar set tonight (see `docs/UX-PRINCIPLES.md` §11–§13)
-- **One control forever: tap the item.** No drag from level 2, no press-and-hold, and a tap pours liquids. Levels make the *Kutchi* harder, never the controls. Fix any mini-game that relied on dragging, holding, tracing or pouring by hand: it must work by tapping (a sequence of taps, tapping the right one, tapping in time, tapping where…).
+- **Consistent controls inside each mini-game** (clarified by Zafar: not tap-only). Swipe, stir, drag and tap are all fine, but within a mini-game the same kind of action uses the same gesture (if ingredients are tapped in, liquids are tapped too), and a mini-game's gestures never change between its levels. Fix any mini-game that mixes gestures for the same kind of action or changes them by level.
 - **Auto-tick** lines on the instruction card when done right; mistakes show only in the end review; no negative feedback mid-round.
 - **The instruction card is the master; Nani is a voice** (plus throbbing hints and interjections).
 
 ## For each mini-game in your mode's pipeline design, answer the five questions
-1. **What do you do?** (taps only, step by step)
+1. **What do you do?** (the gestures, step by step)
 2. **Where is the challenge?** (what makes it hard, and how that grows by level; the Kutchi must be what decides it)
 3. **Where is the fun?** (the moment of delight: a comic reaction, a satisfying sound or animation, a near miss, a reveal)
 4. **Where is the instruction?** (what the card and Nani's voice say, in the Kutchi the family has given us so far, `docs/kutchi-grammar-notes.md`)
@@ -20,4 +20,4 @@ Zafar, after reading the pipeline designs: "It's the right idea, but I need help
 - Check **distinctness across modes**: read the other modes' "Pipeline design" sections, and don't keep a mini-game that's the same as one elsewhere unless it's deliberately shared (then say so and reuse the mechanic).
 - For the first set of each stage, write a **one-paragraph walkthrough** of a level-1 round (what's on screen, the card, each tap, the fun moment, the tick, the end).
 
-Write a new top section **"Mini-game quality pass, 25 Sept 2026"** in the mode's design doc (above the pipeline design), updating the pipeline design's build brief where the cut changes it. Edit only your mode's doc. Don't commit or push. Save as you go. Report under 300 words: the kept mini-games per stage with the novel thing about each, what was cut, and the controls you changed to tap-only.
+Write a new top section **"Mini-game quality pass, 25 Sept 2026"** in the mode's design doc (above the pipeline design), updating the pipeline design's build brief where the cut changes it. Edit only your mode's doc. Don't commit or push. Save as you go. Report under 300 words: the kept mini-games per stage with the novel thing about each, what was cut, and any controls you changed for consistency.
