@@ -10,7 +10,7 @@ Branch `claude/build-shell`. It merges `claude/nifty-rubin-c0d431`; the only con
   - `shell`: `firstDone`.
 
   It stays on localStorage, so every mode's synchronous load and save is unchanged.
-- **Adapters.** Cook: `core.js`. Clinic, results and onboarding: `UIStore`. Speech: `speech.js`. The lab harnesses load the save too.
+- **Adapters.** Cook: `core.js`. Clinic, results and onboarding: `UIStore`. Speech: `speech.js`. Lab harnesses too.
 - **Migration** runs as versioned schema steps. Every old key (`njg-cook-v1`, `njg-shared-ui-fallback-v1`, `njg-speech-enrol-v1`, `njg_quilt_v1`) becomes "Player 1". Old keys are kept. Corrupt keys are skipped. A lost root is rebuilt.
 - **Safety.** Every storage access is in try/catch. If storage is blocked or full, play carries on in memory.
 - **Parent export/import.** Hold ⚙ for 1.5 s to open "Grown-ups": save or load a JSON copy.
@@ -18,7 +18,7 @@ Branch `claude/build-shell`. It merges `claude/nifty-rubin-c0d431`; the only con
 ## Navigation: by page
 `index.html` is Nani's house. Doors: Cook, Find it, the clinic; "coming soon" lab doors with `?labs=1`. A door opens `mode.html?app=1`.
 
-Why pages: Cook and Find it share globals, and Phaser's WebGL context and timers don't unmount cleanly. A fresh page frees everything, leaves every mode's code and tests untouched, and keeps the old URLs working on the same save.
+Why pages: Cook and Find it share globals, and Phaser's WebGL context and timers don't unmount cleanly. A fresh page frees it all, leaves every mode's code and tests untouched, and keeps the old URLs working on the same save.
 
 To avoid a flash, a render-blocking `css/shared/app.css` paints the house colour first, and pages cross-fade with view transitions. Every mode gets the same ⌂ in the player's colour. A "Who's playing?" picker appears when there are several children.
 
