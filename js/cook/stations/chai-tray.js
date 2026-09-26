@@ -2,8 +2,8 @@
  * Combined station: the Chai tray (Wave 3; the owner's design).
  *
  * One hob screen, two zones:
- *  - BOIL (left, the hob): the chai pan on its burner. Water in (hold the
- *    jug icon: a jug slides in and pours), tea in (among look-alikes),
+ *  - BOIL (left, the hob): the chai pan on its burner. Water in (tap the
+ *    jug icon: a jug slides in and pours one measure), tea in (among look-alikes),
  *    then tap the BIG knob to light it. The ring rises on this back burner
  *    while you do the cups; tap the knob in the green to turn it down.
  *    Ignore it and it boils over (foam, and the hand star).
@@ -12,10 +12,18 @@
  *    milk or no milk (dudh / no dudh), how many sugars or none (khun),
  *    which chai (plain, elchi or aadu: from level 1) and at level 3 half
  *    or full (English placeholders). Tap a cup (or its face: you hear them again), then:
- *    hold the milk jug (the icon stays put; a jug slides in over the cup),
- *    tap the sugar bowl once per spoon (salt beside it looks the same),
- *    tap an extra. Once the chai has boiled, hold the pan to pour it into
- *    each cup, up to a dashed line. The tick when you're done.
+ *    tap the milk jug (the icon stays put; a jug slides in over the cup and
+ *    pours one measure), tap the sugar bowl once per spoon (salt beside it
+ *    looks the same), tap an extra. Once the chai has boiled, tap the pan to
+ *    pour into each cup: one tap to the half line, a second to the full
+ *    line (the same two lines on every cup). The tick when you're done.
+ *
+ * Wave 6b (docs/UX-PRINCIPLES.md 12): every liquid is a tap, like every
+ * ingredient (Cook.Pour.measure): pouring is counting, the same gesture at
+ * every level. A tap can't miss a line, so the pours have no hand score:
+ * the tray's hand star is the knob alone. A cup's rows tick when that cup
+ * is finished (its chai poured to the top), right or not (UX 11); the
+ * cups are judged at the tick and in the end review.
  *
  * Learning: the milk jug and the sugar bowl are there for every cup, so
  * "no dudh" and "no khun" are real decisions; nothing shows a cup's target
@@ -157,8 +165,10 @@
       selG.fillRoundedRect(zt.X(c.x - 105), zt.Y(FACE_Y - 82), zt.L(210), zt.L(CUP_Y + 132 - FACE_Y + 82), zt.L(26));
       selG.strokeRoundedRect(zt.X(c.x - 105), zt.Y(FACE_Y - 82), zt.L(210), zt.L(CUP_Y + 132 - FACE_Y + 82), zt.L(26));
       Cook.sfx.click();
-      if (c.sugar) UI.count(c.sugar, { speak: false });
-      else UI.hideCount();
+      // the picture tally shows this cup's spoons (what you did for it)
+      UI.hideCount();
+      if (c.sugar) UI.count(c.sugar, { speak: false, id: "cook-khun" });
+      if (c.salt) UI.count(c.salt, { speak: false, id: "spi-16" });
       refresh();
     };
     const level = (c) => c.vol.milk + c.vol.chai;
@@ -228,7 +238,8 @@
       const at = Math.min(0.98, base + K.lines.milk);
       return { at, lo: at - K.milkTolerance, hi: at + K.milkTolerance };
     };
-    const chaiLines = () => (K.halfLine ? [K.lines.half, K.lines.full] : [K.lines.full]);
+    // Wave 6b: both lines on every cup, at every level (the quality pass, Q5): a tap pours to the next one
+    const chaiLines = () => [K.lines.half, K.lines.full];
     const askedLine = (c) => (c.p.amount === "ph-half" ? K.lines.half : K.lines.full);
     const cupTap = (c, key) => {
       const o = S.centre(c.vessel);
@@ -241,9 +252,8 @@
         if (!w.milk && !w.sugar && !w.extra) continue;
         if (sel !== c) return { e: cupTap(c, `cup-${c.who}`), obj: c.vessel };
         if (w.milk) {
-          const b = milkBand(c);
           const o = S.centre(milkJug);
-          return { e: { kind: "hold", x: o.x, y: o.y, key: "cook-dudh" }, gauge: { level: level(c), lo: b.lo, hi: b.hi }, obj: milkJug };
+          return { e: { kind: "tap", x: o.x, y: o.y, key: "cook-dudh", wrongs: [S.centre(sugar)] }, obj: milkJug };
         }
         if (w.sugar) {
           const o = S.centre(sugar);
@@ -256,12 +266,11 @@
       }
       if (!boiled) return null;
       for (const c of cups) {
-        // (a cup already brimming with milk can't take chai: nothing left to do there)
-        if (c.chaiPours || level(c) >= askedLine(c) - K.tolerance) continue;
+        // tap the pan until the cup is at the line they asked for (the full line unless they said half)
+        if (level(c) >= askedLine(c) - 0.02) continue;
         if (sel !== c) return { e: cupTap(c, `pour-${c.who}`), obj: c.vessel };
-        const at = askedLine(c);
         const o = S.centre(pan);
-        return { e: { kind: "hold", x: o.x, y: o.y, key: "pan" }, gauge: { level: level(c), lo: at - K.tolerance, hi: at + K.tolerance }, obj: pan };
+        return { e: { kind: "tap", x: o.x, y: o.y, key: "pan" }, obj: pan };
       }
       return { e: { kind: "click", selector: "#done-btn" }, obj: null };
     }
@@ -280,11 +289,8 @@
         UI.glowDone(!!n && !n.obj);
       }
     }
-    // mid-pour the tray keeps saying "hold" (so its gauge, not the boil's, is the one that counts)
-    const holding = (obj) => {
-      const o = S.centre(obj);
-      zt.expect({ kind: "hold", x: o.x, y: o.y, key: obj === pan ? "pan" : "cook-dudh" });
-    };
+    // mid-pour the tray waits for the jug (a tap pours one measure by itself)
+    const holding = () => zt.expect({ kind: "wait" });
     // guided glow sits on the thing to tap; clear it before anything else glows it
     const unglow = () => {
       if (glowing) S.glow(glowing, false);
@@ -342,12 +348,14 @@
         c.sugar++;
         c.chipT.setText(String(c.sugar));
         c.chip.setVisible(true);
-        UI.count(c.sugar);
+        UI.count(c.sugar, { id: "cook-khun" });
         Cook.sfx.pop();
       } else {
-        // a look-alike: salt in someone's chai
+        // a look-alike: salt in someone's chai (from level 2 it just goes in, like a spoon of sugar: UX 11)
         c.salt++;
-        Cook.sfx.soft();
+        if (zt.quiet) Cook.sfx.pop();
+        else Cook.sfx.soft();
+        UI.countUp(id, { speak: false });
         zt.listen(false, `added ${id}, not cook-khun, for ${nameOf(c.who)}`);
         zt.oops();
       }
@@ -374,51 +382,33 @@
     const armMilk = () => {
       if (finished) return;
       let marks = null;
-      let band = null;
-      P.hold(zt, {
+      P.measure(zt, {
         icon: milkJug,
-        vessel: () => (sel && !finished ? sel.vessel : null),
+        vessel: () => (sel && !finished && !pouring ? sel.vessel : null),
         art: "milk-jug",
         artSize: zt.L(190),
         color: (lv) => mixCol(lv - sel.vol.chai, sel.vol.chai),
-        rate: kMilk.rate,
-        stick: kMilk.auto ? [K.lines.milk] : [],
-        stickMs: kMilk.stickMs,
+        // one measure of milk: up to the milk line above what's in the cup
+        next: () => milkBand(sel).at,
+        pourMs: kMilk.pourMs,
         slideMs: kMilk.slideMs,
-        minPour: kMilk.minPour,
         io: gaugeIO,
         expect: false,
-        onStart: () => {
+        onStart: (v) => {
           pouring = true;
           unglow();
-          holding(milkJug);
-          band = milkBand(sel);
-          marks = P.lines(S, sel.vessel, [{ at: band.at, strong: true }]);
-          zt.gauge({ level: level(sel), lo: band.lo, hi: band.hi });
+          holding();
+          marks = P.lines(S, v, [{ at: milkBand(sel).at, strong: true }]);
         },
         onLevel: (lv) => {
           sel.vol.milk = lv - sel.vol.chai;
           drawBits(sel);
-          zt.gauge({ level: lv, lo: band.lo, hi: band.hi });
-        },
-        enough: { lo: 1.5, say: false },
-        onCancel: (v) => {
-          pouring = false;
-          if (marks) marks.destroy();
-          const c = cups.find((x) => x.vessel === v);
-          if (c) c.vol.milk = Math.max(0, v.level - c.vol.chai);
-          refresh();
         },
       }).then((r) => {
         pouring = false;
         if (marks) marks.destroy();
         const c = cups.find((x) => x.vessel === r.vessel);
-        if (c) {
-          c.vol.milk = r.level - c.vol.chai;
-          const sc = P.score(S, r.level, band.lo, band.hi, kMilk, r.vessel.spilled);
-          zt.skill(sc, "pour");
-          S.verdict(c.vessel.rim.x, c.vessel.rim.y - zt.L(150), sc, { bad: r.level < band.lo ? "too-little" : "too-much" });
-        }
+        if (c) c.vol.milk = r.level - c.vol.chai;
         armMilk();
         refresh();
       });
@@ -428,56 +418,44 @@
       let marks = null;
       let c = null;
       const lines = chaiLines();
-      // "Enough!" at the asked line only while that word is new (it's the answer)
-      const enough = { lo: 2, say: false };
-      P.hold(zt, {
+      P.measure(zt, {
         icon: pan,
-        vessel: () => (sel && !finished ? sel.vessel : null),
+        vessel: () => (sel && !finished && !pouring ? sel.vessel : null),
         art: "saucepan-chai",
         artSize: zt.L(230),
         color: (lv) => mixCol(sel.vol.milk, Math.max(0, lv - sel.vol.milk)),
-        rate: kCup.rate,
-        stick: kCup.auto || kCup.instant ? lines : [],
-        stickMs: kCup.stickMs,
+        // one tap: up to the next dashed line (half, then full); a full cup takes no more
+        next: (lv) => {
+          const n = lines.find((at) => at > lv + 0.02);
+          return n == null ? null : n;
+        },
+        pourMs: kCup.instant ? 200 : kCup.pourMs,
         slideMs: kCup.slideMs,
-        minPour: kCup.minPour,
         io: gaugeIO,
         expect: false,
-        onStart: () => {
+        onStart: (v) => {
           pouring = true;
           unglow();
-          holding(pan);
+          holding();
           c = sel;
-          marks = P.lines(S, c.vessel, lines.map((at) => ({ at, strong: true })));
-          const at = askedLine(c);
-          enough.lo = at - K.tolerance;
-          enough.say = guided || Cook.wordStage(c.p.amount || "cook-chai") <= kCup.enoughUntilStage;
-          zt.gauge({ level: level(c), lo: at - K.tolerance, hi: at + K.tolerance });
+          marks = P.lines(S, v, lines.map((at) => ({ at, strong: true })));
         },
         onLevel: (lv) => {
           c.vol.chai = lv - c.vol.milk;
           drawBits(c);
-          const at = askedLine(c);
-          zt.gauge({ level: lv, lo: at - K.tolerance, hi: at + K.tolerance });
-        },
-        enough,
-        onCancel: () => {
-          pouring = false;
-          if (marks) marks.destroy();
-          if (c) c.vol.chai = Math.max(0, c.vessel.level - c.vol.milk);
-          refresh();
         },
       }).then((r) => {
         pouring = false;
         if (marks) marks.destroy();
         c.vol.chai = r.level - c.vol.milk;
         c.chaiPours++;
-        // the hand star: on a line (whichever you aimed for; the ear star checks which)
-        const near = lines.reduce((a, b) => (Math.abs(b - r.level) < Math.abs(a - r.level) ? b : a));
-        const sc = P.score(S, r.level, near - K.tolerance, near + K.tolerance, kCup, r.vessel.spilled);
-        zt.skill(sc, "pour");
-        S.verdict(c.vessel.rim.x, c.vessel.rim.y - zt.L(150), sc, { bad: r.level < near - K.tolerance ? "too-little" : "too-much" });
         S.steam(c.vessel.rim.x, c.vessel.rim.y - zt.L(30), 2);
+        // Wave 6b (UX 11): the cup is finished once it's at the top line: its rows tick, right or
+        // not (they're judged at the tick and in the end review)
+        if (level(c) >= K.lines.full - 0.02 && !c.closed) {
+          c.closed = true;
+          UI.mission.closeItem([], ctx.dishAt || 0, { all: true, for: c.who });
+        }
         armPan();
         refresh();
       });

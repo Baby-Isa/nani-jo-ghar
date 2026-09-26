@@ -1954,7 +1954,7 @@
   "pour": {
    "name": "Pour",
    "verb": "Pour",
-   "goal": "Hold the jug to pour. Let go when it reaches the dashed line."
+   "goal": "Tap the jug: it pours up to the dashed line."
   },
   "add": {
    "name": "Add",
@@ -2075,6 +2075,8 @@
      "instant": false,
      "stickMs": 700,
      "slideMs": 240,
+     "pourMs": 650,
+     "_pourMs": "Wave 6b: a tap pours one measure (to the next dashed line) in this long; the hold knobs (rate, auto, stickMs, minPour, bandScale, spillScore) are only for Cook.Pour.hold, which Cook no longer uses",
      "minPour": 0.03,
      "profiles": {
       "cup": {
@@ -3032,11 +3034,12 @@
    "image": "water-jug",
    "special": true,
    "price": 35,
-   "effect": "Pouring stops at the line by itself.",
+   "effect": "A quick pour: every tap of the jug pours at once.",
    "idea": "A measuring jug with marked lines (a quarter, a half, full) that Nani names in Kutchi.",
    "knobs": {
     "pour": {
      "auto": true,
+     "pourMs": 280,
      "specialJug": [
       "cook-paani"
      ]
