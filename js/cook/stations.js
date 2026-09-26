@@ -275,6 +275,8 @@
         if (Cook.paused) return;
         // something was done (the first-time overlay moves on: js/cook/coach.js)
         Cook.acted = (Cook.acted || 0) + 1;
+        // the player's own hand does it (js/cook/hands.js): decoration only, it never changes the tap
+        if (Cook.Hands) Cook.Hands.tapped(this, obj, p);
         fn(p);
       });
       return obj;
@@ -387,6 +389,9 @@
     /* ---------------- first-person hands ---------------- */
     /** A hand from the bottom of the screen holding a tool; call .moveTo(x, y). */
     hand(tool, { x = 800, y = 700, angle = 0, k = 1 } = {}) {
+      // the painted hand in the grip, the painted tool in it (js/cook/hands.js); else the drawn one
+      const rig = Cook.Hands && Cook.Hands.tool(this, tool, { x, y, k });
+      if (rig) return rig;
       const key = tool === "pin" ? this.tex("pin") : this.tex(`hand:${tool || ""}`);
       const img = this.track(this.add.image(x, y, key).setDepth(D.hand));
       if (tool === "pin") img.setOrigin(0.5, 0.58).setScale(0.85 * k);
@@ -673,11 +678,14 @@
     /** A see-through fingertip that demonstrates a gesture until the player starts. */
     ghost(points, { duration = 1100, delay = 0 } = {}) {
       const dot = this.track(this.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top).setVisible(false));
+      // Nani's see-through finger shows the move (js/cook/hands.js), once her hand has loaded
+      let nh = null;
       let tw = null;
       let alive = true;
       const run = () => {
         if (!alive || !dot.active) return;
-        dot.setVisible(true);
+        if (!nh && Cook.Hands) nh = Cook.Hands.ghost(this);
+        dot.setVisible(!nh);
         tw = this.tweens.addCounter({
           from: 0,
           to: 1,
@@ -696,6 +704,7 @@
               dot.setPosition(x1 + (x2 - x1) * f, y1 + (y2 - y1) * f);
             }
             dot.setAlpha(k < 0.1 ? k * 7 : k > 0.85 ? (1 - k) * 5 : 0.75);
+            if (nh) nh.at(dot.x, dot.y, dot.alpha / 0.75);
           },
           onComplete: () => {
             if (alive) this.time.delayedCall(350, run);
@@ -707,6 +716,7 @@
         alive = false;
         t0.remove();
         if (tw) tw.stop();
+        if (nh) nh.stop();
         if (dot.active) dot.destroy();
         this.input.off("pointerdown", stop);
       };

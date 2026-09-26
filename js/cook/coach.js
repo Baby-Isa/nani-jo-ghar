@@ -117,7 +117,9 @@
       i,
     }));
     state.kit = true;
-    Onboard.run(obId(key), steps, { idleMs: 6000 }).then(() => {
+    // the ghost is the player's own hand, see-through (js/cook/hands.js); else the kit's drawn one
+    const hand = Cook.Hands ? Cook.Hands.ghostImage() : null;
+    Onboard.run(obId(key), steps, Object.assign({ idleMs: 6000 }, hand ? { hand } : {})).then(() => {
       if (live === state) C.stop(true);
     });
   }

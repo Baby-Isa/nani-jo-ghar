@@ -106,6 +106,7 @@
       const fry = (img, p, { leave = false, v = 0 } = {}) => {
         const f = { img, kind: img.kind, x: p.x, y: p.y, v, rate: leave ? k.leaveRate : r0 + Math.random() * (r1 - r0), out: false, leave };
         frying.push(f);
+        img.handAction = false; // the spoon in your hand lifts it
         S.tappable(img, () => lift(f));
         return f;
       };

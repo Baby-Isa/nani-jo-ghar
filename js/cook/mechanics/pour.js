@@ -121,7 +121,11 @@
         if (o.onStart) o.onStart(target);
         const r = target.rim;
         const size = o.artSize || Math.max(z.L(170), r.rx * 2.6);
-        if (!jug) jug = S.track(S.add.image(0, 0, o.art).setDepth(D.hand - 1));
+        if (!jug) {
+          jug = S.track(S.add.image(0, 0, o.art).setDepth(D.hand - 1));
+          // the player's hand hooks the jug's handle while it pours (js/cook/hands.js)
+          if (Cook.Hands) Cook.Hands.attach(S, jug, "pour", { at: [0.4, 0.02], k: z.k, turn: 0.5 });
+        }
         jug.setScale(S.fitScale(o.art, size, size));
         const hx = r.x + r.rx * 0.55 + jug.displayWidth * 0.36;
         const hy = r.y - r.ry - jug.displayHeight * 0.18;
@@ -180,6 +184,7 @@
         setTimeout(() => stream.destroy(), 400);
         resolve({ level, poured: level - from, vessel: target });
       };
+      o.icon.handAction = false; // the hand is on the jug instead
       S.tappable(o.icon, start);
       S.input.on("pointerup", stop);
       let last = performance.now();
@@ -276,7 +281,11 @@
         if (o.onStart) o.onStart(target);
         const r = target.rim;
         const size = o.artSize || Math.max(z.L(170), r.rx * 2.6);
-        if (!jug) jug = S.track(S.add.image(0, 0, o.art).setDepth(D.hand - 1));
+        if (!jug) {
+          jug = S.track(S.add.image(0, 0, o.art).setDepth(D.hand - 1));
+          // the player's hand hooks the jug's handle while it pours (js/cook/hands.js)
+          if (Cook.Hands) Cook.Hands.attach(S, jug, "pour", { at: [0.4, 0.02], k: z.k, turn: 0.5 });
+        }
         jug.setScale(S.fitScale(o.art, size, size));
         const hx = r.x + r.rx * 0.55 + jug.displayWidth * 0.36;
         const hy = r.y - r.ry - jug.displayHeight * 0.18;
@@ -316,6 +325,7 @@
         setTimeout(() => stream.destroy(), 400);
         resolve({ level: to, poured: to - from, vessel: target });
       };
+      o.icon.handAction = false; // the hand is on the jug instead
       S.tappable(o.icon, pour);
       if (o.expect !== false) {
         const c = S.centre(o.icon);
