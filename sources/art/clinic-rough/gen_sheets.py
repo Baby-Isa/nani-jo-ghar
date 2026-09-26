@@ -248,36 +248,6 @@ SHEETS += [
         ("syringe", "holding a huge comical toy syringe with red and white candy stripes (no needle), cheeky grin"),
         ("happy", "laughing happily, arms open wide"),
     ], 3, seat=False),
-    {**item_sheet("moods-a", 2, 4, [
-        ("girl-sad", "the girl from the first reference image, sad"),
-        ("boy-sad", "the boy from the second reference image, sad"),
-        ("old-man-sad", "the old man from the third reference image, sad"),
-        ("old-woman-sad", "the old woman from the fourth reference image, sad"),
-        ("girl-scared", "the same girl, a little scared"),
-        ("boy-scared", "the same boy, a little scared"),
-        ("old-man-scared", "the same old man, a little scared"),
-        ("old-woman-scared", "the same old woman, a little scared"),
-    ], size="1536x1024", extra=("Each cell is one of the characters from the reference images: exactly the same "
-                               "character design, clothes and colours, full body, sitting on the same small wooden "
-                               "stool, front view. 'Sad' means droopy eyebrows and a small frown, shoulders slumped, "
-                               "comic, not crying. 'A little scared' means eyes wide, hands up near the chin, a "
-                               "wobbly worried mouth, comic.")),
-     "group": "patients", "refs": ["patient-girl", "patient-boy", "patient-old-man", "patient-old-woman"]},
-    {**item_sheet("moods-b", 2, 4, [
-        ("baby-sad", "the mother and baby from the first reference image, the BABY sad"),
-        ("nana-sad", "the grandfather from the second reference image, sad"),
-        ("ma-sad", "the young mother from the third reference image, sad"),
-        ("ali-sad", "the boy from the fourth reference image, sad"),
-        ("baby-scared", "the same mother and baby, the BABY a little scared"),
-        ("nana-scared", "the same grandfather, a little scared"),
-        ("ma-scared", "the same young mother, a little scared"),
-        ("ali-scared", "the same boy, a little scared"),
-    ], size="1536x1024", extra=("Each cell is one of the characters from the reference images: exactly the same "
-                               "character design, clothes and colours, full body, sitting on the same small wooden "
-                               "stool, front view. 'Sad' means droopy eyebrows and a small frown, shoulders slumped, "
-                               "comic, not crying. 'A little scared' means eyes wide, hands up near the chin, a "
-                               "wobbly worried mouth, comic.")),
-     "group": "patients", "refs": ["patient-baby", "patient-nana", "patient-ma", "patient-ali"]},
     item_sheet("items-f", 4, 4, [
         ("jug-hot", "a bright red enamel jug of hot water with three big curly white steam swirls rising from it"),
         ("jug-cold", "a bright blue enamel jug of cold water with ice cubes poking out of the top and a frosty rim"),
@@ -338,11 +308,56 @@ SHEETS += [
     ]),
 ]
 
+# The reference-edit mood sheets (moods-a/-b, kept as *-v1-rejected.png) came back with glowing
+# gradient backgrounds that don't key; the sad/scared moods are redrawn text-only on flat grey.
+WHO = {
+    "girl": "the little girl (two black plaits, yellow kurta, pink trousers)",
+    "boy": "the little boy (short black hair, orange t-shirt, blue shorts)",
+    "old-man": "the old man (white beard, white topi cap, cream kurta, brown waistcoat, glasses)",
+    "old-woman": "the old woman (grey hair under a cream dupatta, lilac shalwar kameez, glasses)",
+    "baby": "the mother in a teal dupatta and green kameez with a chubby baby on her lap (the BABY's face shows the mood)",
+    "nana": "Nana (grey moustache, short grey hair, navy waistcoat over a white kurta, round belly)",
+    "ma": "Ma (young mother, black hair under a mustard dupatta, maroon kameez)",
+    "ali": "Ali (boy about 9, messy black hair, green hoodie, jeans)",
+}
+
+
+def mood_sheet(name, pids):
+    cells = [(f"{p}-sad", f"{WHO[p]}, sad: droopy eyebrows, small frown, shoulders slumped, comic, not crying")
+             for p in pids] + [(f"{p}-scared", f"{WHO[p]}, a little scared: eyes wide, hands up near the chin, "
+                                "wobbly worried mouth, comic") for p in pids]
+    prompt = " ".join([
+        STYLE, PEOPLE_STYLE,
+        "This is a CHARACTER SHEET: a 2 x 4 grid (8 cells), four different characters, each shown twice (top row "
+        "sad, bottom row a little scared, same column = same character, identical clothes and colours). Each is "
+        "a full-body front view, sitting on a small plain wooden stool, whole figure and stool visible, centred "
+        "in its cell with wide empty gaps so no figures touch. The background is a perfectly flat uniform plain "
+        "mid-grey (#808080), no glow, no gradient, no floor, no cast shadows, no grid lines, no borders, no text.",
+        grid(2, 4, cells), NEG])
+    return {"name": name, "kind": "grid", "rows": 2, "cols": 4, "ids": [c[0] for c in cells],
+            "size": "1536x1024", "prompt": prompt, "group": "patients"}
+
+
+SHEETS += [
+    mood_sheet("moods-c", ["girl", "boy", "old-man", "old-woman"]),
+    mood_sheet("moods-d", ["baby", "nana", "ma", "ali"]),
+    item_sheet("items-g", 2, 2, [
+        ("fever-strip", "a forehead fever strip: a flat rounded rectangle strip with a rainbow colour scale, no numbers"),
+        ("tray-4", "an empty wooden serving tray seen from above with exactly FOUR round empty white dishes in one row"),
+        ("tray-1", "a small empty wooden serving tray seen from above with ONE round empty white dish"),
+        ("leg-cast", "a child's leg in a bright blue plaster cast from knee to toes, the bare toes peeking out, comic, brown skin"),
+    ]),
+]
+
 # The model skipped a cell on some sheets: the rows actually drawn (None = a blob to ignore).
 # Sprites from a later sheet override the same id from an earlier one.
 LAYOUT = {
     "items-b": [["syringe", "toothbrush", "toothpaste", "tissues"], ["towel", "bowl-water", "foot-basin"],
                 ["tweezers", "lemon", None, None], [None, None, None, "ice-pack"]],
+    # the fever strip merged into the bandage roll: a white roll with a rainbow band
+    "items-f": [["jug-hot", "jug-cold", "chilli", "milk-glass"], ["chai-cup", "comb", "spoon", "sticker"],
+                ["plaster-red", "plaster-blue", "plaster-green", "plaster-yellow"],
+                ["plaster-spots", "foot-bath", "bandage-white"]],
 }
 BY_NAME = {s["name"]: s for s in SHEETS}
 for _n, _o in LAYOUT.items():

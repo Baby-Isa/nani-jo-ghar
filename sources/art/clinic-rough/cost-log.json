@@ -639,6 +639,66 @@
    },
    "cost": 0.044,
    "secs": 14.1
+  },
+  {
+   "sheet": "moods-c",
+   "file": "moods-c.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 567,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 567
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2135
+   },
+   "cost": 0.0656,
+   "secs": 19.5
+  },
+  {
+   "sheet": "moods-d",
+   "file": "moods-d.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 589,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 589
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2157
+   },
+   "cost": 0.0657,
+   "secs": 20.0
+  },
+  {
+   "sheet": "items-g",
+   "file": "items-g.png",
+   "size": "1024x1024",
+   "usage": {
+    "input_tokens": 299,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 299
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1355
+   },
+   "cost": 0.0437,
+   "secs": 14.0
   }
  ]
 }
