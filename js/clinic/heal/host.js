@@ -145,6 +145,22 @@
     const trayTaps = [];
     tray.onTap = (i, item) => trayTaps.forEach((fn) => fn(i, item, tray.slots[i].el));
 
+    // which host pieces the game uses: a game that draws its own tray or its own patient gets the
+    // host's hidden (additive; docs/clinic-heal-api.md "Host additions")
+    const used = { patient: false, trayUI: false };
+    const track = (obj, key) => {
+      const o = {};
+      Object.keys(obj).forEach((k) => {
+        const v = obj[k];
+        if (typeof v === "function")
+          o[k] = (...a) => {
+            used[key] = true;
+            return v(...a);
+          };
+        else o[k] = v;
+      });
+      return o;
+    };
     const card = screen.card;
     card.setTitle("", null);
     card.setRows([]);
@@ -159,7 +175,7 @@
       part: ailment.part,
       data,
       stage,
-      patient: HOST.patientApi(fig, stage, kind),
+      patient: track(HOST.patientApi(fig, stage, kind), "patient"),
       tray: trayItems,
       card: {
         setRows: (rows) => card.setRows(rows),
@@ -220,7 +236,7 @@
       text: (w, parent) => Kit.text(w, parent),
       word: (id) => HOST.word(id, data),
       line: (id) => HOST.line(id, data),
-      trayUI: {
+      trayUI: track({
         el: screen.trayEl,
         dishes: () => tray.slots.map((s) => s.el),
         onTap: (fn) => trayTaps.push(fn),
@@ -230,7 +246,7 @@
         pulse: (i, on) => tray.pulse(i, on),
         hide: () => screen.trayWrap.classList.add("hidden"),
         show: () => screen.trayWrap.classList.remove("hidden"),
-      },
+      }, "trayUI"),
       button(label, onPress, cls) {
         return screen.go(label, onPress, cls);
       },
@@ -267,8 +283,16 @@
     const started = Promise.resolve()
       .then(() => controller.start && controller.start())
       .catch((e) => console.error(`Healing game "${def.id}" failed to start`, e));
+    if (opts.autoHide !== false) {
+      setTimeout(() => {
+        if (finished) return;
+        if (!used.trayUI) screen.trayWrap.classList.add("hidden");
+        if (!used.patient) patientLayer.classList.add("hidden");
+      }, Kit.fast ? 150 : 900);
+    }
     const run = {
       ctx,
+      used,
       controller,
       result,
       started,

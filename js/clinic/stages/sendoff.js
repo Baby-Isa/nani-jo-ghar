@@ -35,6 +35,7 @@
       // E4: the child asks first
       if (plan.variant === "E4") {
         const r = rowOf("ask");
+        S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: "howfeel" }));
         const out = await S.moment(env, {
           choices: r.options,
           expected: "howfeel",
@@ -133,6 +134,7 @@
       if (plan.variant === "E3") {
         const r = rowOf("bye");
         await S.say(plan.card.find((x) => x.id === "bye"), "doctor");
+        S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: plan.goodbye }));
         const out = await S.moment(env, {
           choices: r.options,
           expected: plan.goodbye,
