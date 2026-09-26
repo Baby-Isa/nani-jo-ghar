@@ -106,9 +106,14 @@
     };
 
     /* ---------- the tray and the cups ---------- */
-    // the hob ends in a rounded edge where the worktop starts
-    [[786, 80, 36, 44], [786, 624, 36, 60]].forEach(([x, y, w, h]) => S.track(S.add.image(0, 0, Cook.Art.tex(S, "bg:marble")).setOrigin(0).setCrop(x, y, w, h).setDepth(D.bg + 1.5)));
-    const edge = S.track(S.add.graphics().setDepth(D.bg + 2));
+    // the hob ends in a rounded edge where the worktop starts: the painted hob's own right
+    // edge (data.art.sprites.bg), moved in to x 820; else a drawn one
+    const hobTex = Cook.Art.tex(S, "bg:hob");
+    if (Cook.Art.isPainted(hobTex)) {
+      const EDGE = 1352; // the painted panel's right edge, rim and shadow, on the 1600 stage
+      S.track(S.add.image(820 - EDGE, 0, hobTex).setOrigin(0).setCrop(EDGE - 70, 70, 70, 668).setDepth(D.bg + 1.5));
+    } else [[786, 80, 36, 44], [786, 624, 36, 60]].forEach(([x, y, w, h]) => S.track(S.add.image(0, 0, Cook.Art.tex(S, "bg:marble")).setOrigin(0).setCrop(x, y, w, h).setDepth(D.bg + 1.5)));
+    const edge = S.track(S.add.graphics().setDepth(D.bg + 2).setVisible(!Cook.Art.isPainted(hobTex)));
     edge.fillStyle(0x2b2622, 1);
     edge.fillRoundedRect(zb.X(740), zb.Y(90), zb.L(80), zb.L(570), zb.L(30));
     edge.lineStyle(zb.L(4), 0x4a423c, 1);
@@ -292,7 +297,7 @@
     async function personSay(c, rows) {
       const img = faceImg();
       const prev = img ? img.getAttribute("src") : null;
-      if (img) img.src = `assets/cook/characters/${c.who}-badge.webp`;
+      if (img) img.src = Cook.v(`assets/cook/characters/${c.who}-badge.webp`);
       const bob = S.tweens.add({ targets: c.face, y: c.face.y - zt.L(8), duration: 200, yoyo: true, repeat: -1 });
       const y0 = c.face.y;
       try {

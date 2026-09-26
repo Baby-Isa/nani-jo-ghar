@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>Who did it? (Case lab)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/who.css?v=20260925T233111Z">
+</head>
+<body class="who">
+
+<div id="rotate"><div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to play Who did it?</p></div></div>
+
+<div id="app">
+  <main id="stage">
+    <!-- the scene: a 1600x900 world of plain HTML (js/who/ui.js), scaled to fit; greybox shapes only -->
+    <div id="world" aria-label="The sofa line-up"></div>
+  </main>
+
+  <aside id="side">
+    <div class="side-top">
+      <span class="pill coins" title="Pocket money"><i class="coin-dot"></i><b id="coins">0</b></span>
+      <span class="pill" id="case-name"></span>
+    </div>
+    <div id="nani-card" class="card" role="status" aria-live="polite">
+      <div class="nc-face" id="speaker-face"></div>
+      <div class="say-slot"></div>
+    </div>
+    <!-- the case ladder: speaker · text/••• · reveal · translate, never pictures -->
+    <div id="box" class="hidden" aria-label="The sweet box"></div>
+    <div id="dealt" class="hidden"></div>
+    <div id="ladder"></div>
+    <div id="actions">
+      <button id="who-done" class="btn primary hidden" type="button">Done &#10003;</button>
+      <div id="tell" class="hidden"></div>
+    </div>
+    <details id="lab" class="card">
+      <summary>Case lab</summary>
+      <div class="lab-grid">
+        <label>Game <select id="lab-game">
+          <option value="g3">G3 Look closer</option>
+          <option value="g1">G1 Who ate this one?</option>
+          <option value="g2">G2 Keep who fits</option>
+          <option value="g5">G5 Tell Ali</option>
+        </select></label>
+        <label>Level <select id="lab-level"><option>1</option><option>2</option></select></label>
+        <label>Seed <input id="lab-seed" type="number" min="1"></label>
+        <label>Word stage <select id="lab-stage"><option value="1">1 new (taught)</option><option value="2" selected>2 learning</option><option value="3">3 dots</option><option value="4">4 known</option></select></label>
+        <label>Speech <select id="lab-speech"><option value="mic">mic, then pills</option><option value="pills">pills only</option><option value="parent">parent ticks</option><option value="bot:auto">bot (tests)</option></select></label>
+        <label class="chk"><input id="lab-real" type="checkbox" checked> Kutchi-real only</label>
+        <label class="chk"><input id="lab-debug" type="checkbox"> Solver panel</label>
+      </div>
+      <div class="lab-btns">
+        <button id="lab-new" class="btn" type="button">New case</button>
+        <button id="lab-story" class="btn" type="button">Arc 1 Ch3 case</button>
+      </div>
+      <div class="lab-note">Relaxed only (Busy's chai ring is phase 2). Greybox: grey figures, code-drawn overlays.</div>
+    </details>
+    <pre id="solver" class="hidden"></pre>
+  </aside>
+</div>
+
+<div id="overlay" class="hidden"><div id="panel"></div></div>
+
+<!-- shared with Cook (read only): words, the placeholder voice, recordings, sound effects -->
+<script src="js/version.js?v=20260925T233111Z"></script>
+<script src="js/cook/core.js?v=20260925T233111Z"></script>
+<!-- the shared recogniser (the foundation's; called, never copied) -->
+<script src="js/shared/speech.js?v=20260925T233111Z"></script>
+<!-- Who did it?: stubs for shared pieces, the pure engine, the scene, mechanics, mini-games -->
+<script src="js/who/stubs/whichone.js?v=20260925T233111Z"></script>
+<script src="js/who/case.js?v=20260925T233111Z"></script>
+<script src="js/who/stubs/tell.js?v=20260925T233111Z"></script>
+<script src="js/who/suspect.js?v=20260925T233111Z"></script>
+<script src="js/who/ui.js?v=20260925T233111Z"></script>
+<script src="js/who/mechanics/lineup.js?v=20260925T233111Z"></script>
+<script src="js/who/mechanics/examine.js?v=20260925T233111Z"></script>
+<script src="js/who/mechanics/accuse.js?v=20260925T233111Z"></script>
+<script src="js/who/games/one-each.js?v=20260925T233111Z"></script>
+<script src="js/who/games/keep-who-fits.js?v=20260925T233111Z"></script>
+<script src="js/who/games/look-closer.js?v=20260925T233111Z"></script>
+<script src="js/who/games/tell-ali.js?v=20260925T233111Z"></script>
+<script src="js/who/flow.js?v=20260925T233111Z"></script>
+</body>
+</html>

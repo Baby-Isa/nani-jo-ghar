@@ -4,12 +4,14 @@
   "cook-paani": {
    "kutchi": "paani",
    "english": "water",
+   "gender": "unknown",
    "image": "water-jug",
    "src": "zafar-24sep"
   },
   "cook-chai": {
    "kutchi": "chai",
    "english": "tea",
+   "gender": "she",
    "image": "tea-tin",
    "heap": {
     "kind": "grains",
@@ -21,12 +23,14 @@
   "cook-dudh": {
    "kutchi": "dudh",
    "english": "milk",
+   "gender": "unknown",
    "image": "milk-jug",
    "src": "zafar-24sep"
   },
   "cook-khun": {
    "kutchi": "khun",
    "english": "sugar",
+   "gender": "unknown",
    "heap": {
     "kind": "crystals",
     "color": "#f4efe4"
@@ -37,6 +41,7 @@
   "cook-atto": {
    "kutchi": "atto",
    "english": "flour",
+   "gender": "unknown",
    "image": "atto",
    "heap": {
     "kind": "powder",
@@ -46,8 +51,10 @@
    "src": "zafar-24sep"
   },
   "cook-daal": {
-   "kutchi": "daal",
+   "kutchi": "daar",
    "english": "daal",
+   "gender": "unknown",
+   "src_change": "was daal; Mum 25 Sept (A3 recording, docs/kutchi-grammar-notes.md): daar ends in r",
    "image": "daal-dry",
    "heap": {
     "kind": "balls",
@@ -59,18 +66,21 @@
   "cook-maani": {
    "kutchi": "maani",
    "english": "chapati",
+   "gender": "she",
    "image": "chapati-puffed",
    "src": "zafar-24sep"
   },
   "cook-bajrmaani": {
    "kutchi": "bajr jo maani",
    "english": "millet chapati",
+   "gender": "she",
    "src": "zafar-24sep-draft",
    "draft": true
   },
   "veg-01": {
    "kutchi": "bataato",
    "english": "potato",
+   "gender": "unknown",
    "heap": {
     "kind": "cubes",
     "color": "#ecd18a"
@@ -89,6 +99,7 @@
   "veg-02": {
    "kutchi": "dungri",
    "english": "onion",
+   "gender": "unknown",
    "image": "onion",
    "heap": {
     "kind": "pieces",
@@ -108,6 +119,7 @@
   "veg-03": {
    "kutchi": "tameto",
    "english": "tomato",
+   "gender": "unknown",
    "image": "tomato",
    "heap": {
     "kind": "cubes",
@@ -127,6 +139,7 @@
   "veg-12": {
    "kutchi": "marcha",
    "english": "green chilli",
+   "gender": "unknown",
    "image": "chilli",
    "heap": {
     "kind": "pieces",
@@ -142,6 +155,7 @@
   "veg-13": {
    "kutchi": "lasan",
    "english": "garlic",
+   "gender": "unknown",
    "image": "garlic",
    "heap": {
     "kind": "pieces",
@@ -151,8 +165,10 @@
    "src": "content master"
   },
   "veg-10": {
-   "kutchi": "vatana",
+   "kutchi": "watana",
+   "src_change": "was vatana; Zafar 25 Sept: no V in Kutchi, always W",
    "english": "peas",
+   "gender": "unknown",
    "heap": {
     "kind": "balls",
     "color": "#7cb342"
@@ -163,6 +179,7 @@
   "veg-14": {
    "kutchi": "aadu",
    "english": "ginger",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#d9b26f"
@@ -173,6 +190,7 @@
   "fru-02": {
    "kutchi": "limu",
    "english": "lemon",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#f3d54a"
@@ -183,6 +201,7 @@
   "spi-01": {
    "kutchi": "hardar",
    "english": "turmeric",
+   "gender": "unknown",
    "heap": {
     "kind": "powder",
     "color": "#e9a313"
@@ -193,6 +212,7 @@
   "spi-02": {
    "kutchi": "jeeru",
    "english": "cumin seeds",
+   "gender": "unknown",
    "heap": {
     "kind": "grains",
     "color": "#7a5530"
@@ -203,6 +223,7 @@
   "spi-05": {
    "kutchi": "rai",
    "english": "mustard seeds",
+   "gender": "unknown",
    "heap": {
     "kind": "dots",
     "color": "#2a1d18"
@@ -213,6 +234,7 @@
   "spi-10": {
    "kutchi": "elchi",
    "english": "cardamom",
+   "gender": "unknown",
    "image": "elchi",
    "heap": {
     "kind": "pods",
@@ -224,6 +246,7 @@
   "spi-16": {
    "kutchi": "loon",
    "english": "salt",
+   "gender": "unknown",
    "heap": {
     "kind": "crystals",
     "color": "#ffffff",
@@ -235,6 +258,7 @@
   "spi-04": {
    "kutchi": "lal marcha",
    "english": "red chilli powder",
+   "gender": "unknown",
    "heap": {
     "kind": "powder",
     "color": "#c7361f"
@@ -243,14 +267,21 @@
    "src": "content master"
   },
   "num-01": {
-   "kutchi": "hikdo",
+   "kutchi": "hakro",
    "english": "one",
-   "src": "handout"
+   "forms": {
+    "he": "hakro",
+    "she": "hakri"
+   },
+   "_forms": "\"one\" agrees with the noun's gender (words[id].gender): hakro ambo, hakri maani. A noun of unknown gender takes `kutchi` (hakro), and dishes are ordered without \"one\" (the informal frame Muke {x} khape).",
+   "src": "Mum 25 Sept (A3 recording, docs/kutchi-grammar-notes.md); was hikdo (class handout)"
   },
   "num-02": {
-   "kutchi": "bo",
+   "kutchi": "ba",
    "english": "two",
-   "src": "handout"
+   "say": "ber",
+   "src": "Mum 25 Sept (A3 recording, docs/kutchi-grammar-notes.md): said like the Ber of Bernstein; was bo (class handout). Screen spelling ba is Zafar's proposal, to confirm with the recording",
+   "draft": true
   },
   "num-03": {
    "kutchi": "trae",
@@ -270,6 +301,7 @@
   "ph-chana": {
    "kutchi": "channa",
    "english": "chickpeas",
+   "gender": "unknown",
    "heap": {
     "kind": "balls",
     "color": "#d9b77a"
@@ -285,6 +317,7 @@
   "ph-dahi": {
    "kutchi": "dai",
    "english": "yoghurt",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#f8f5ee"
@@ -300,6 +333,7 @@
   "ph-amli": {
    "kutchi": null,
    "english": "tamarind chutney",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#6b3a1e",
@@ -316,6 +350,7 @@
   "ph-lili": {
    "kutchi": null,
    "english": "green chutney",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#5d9b3a",
@@ -332,6 +367,7 @@
   "ph-sev": {
    "kutchi": null,
    "english": "sev",
+   "gender": "unknown",
    "heap": {
     "kind": "strands",
     "color": "#e8b23a"
@@ -346,6 +382,7 @@
   "ph-dhana": {
    "kutchi": null,
    "english": "coriander",
+   "gender": "unknown",
    "heap": {
     "kind": "leaves",
     "color": "#4f8f3a"
@@ -360,6 +397,7 @@
   "ph-keema": {
    "kutchi": null,
    "english": "mince",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#8a5238"
@@ -370,6 +408,7 @@
   "ph-meat": {
    "kutchi": "ghos",
    "english": "meat",
+   "gender": "unknown",
    "heap": {
     "kind": "cubes",
     "color": "#9c4a32"
@@ -385,6 +424,7 @@
   "ph-pepper": {
    "kutchi": null,
    "english": "green pepper",
+   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#4f9a3a"
@@ -399,6 +439,7 @@
   "ph-chips": {
    "kutchi": null,
    "english": "chips",
+   "gender": "unknown",
    "heap": {
     "kind": "sticks",
     "color": "#f0c050"
@@ -409,6 +450,7 @@
   "ph-ghee": {
    "kutchi": null,
    "english": "ghee",
+   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#f2d27a"
@@ -419,16 +461,19 @@
   "ph-chaat": {
    "kutchi": null,
    "english": "chaat",
+   "gender": "unknown",
    "src": "placeholder"
   },
   "ph-samosa": {
    "kutchi": null,
    "english": "samosa",
+   "gender": "unknown",
    "src": "placeholder"
   },
   "ph-mishkaki": {
    "kutchi": null,
    "english": "mishkaki",
+   "gender": "unknown",
    "src": "placeholder"
   },
   "lnk-nepoi": {
@@ -474,18 +519,70 @@
    "draft": true
   },
   "ph-big": {
-   "kutchi": "vadho",
+   "kutchi": "wadho",
    "english": "big",
    "say": "wudd-oar",
-   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "forms": {
+    "he": "wadho",
+    "she": "wadhi"
+   },
+   "say_forms": {
+    "she": "wudd-ee"
+   },
+   "_forms": "A describing word agrees with its noun like a he-word (-o) / she-word (-i): wadho for he-words (confirmed), wadhi for she-words like maani (draft: Mum to confirm in Section C). No V in Kutchi: was vadho.",
+   "src": "Zafar 25 Sept, phonetic; he-form confirmed by Mum 25 Sept; she-form wadhi a draft",
    "draft": true
   },
   "ph-small": {
    "kutchi": "nindho",
    "english": "small",
    "say": "nindh-oar",
-   "src": "Zafar 25 Sept, phonetic, unconfirmed",
+   "forms": {
+    "he": "nindho",
+    "she": "nindhi"
+   },
+   "say_forms": {
+    "she": "nindh-ee"
+   },
+   "_forms": "As ph-big: nindho (he-words, confirmed), nindhi (she-words like maani, draft).",
+   "src": "Zafar 25 Sept, phonetic; he-form confirmed by Mum 25 Sept; she-form nindhi a draft",
    "draft": true
+  },
+  "lnk-pela": {
+   "kutchi": "pela",
+   "english": "first",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke pela daar khape, ne poi maani",
+   "draft": true
+  },
+  "cook-waari": {
+   "kutchi": "waari",
+   "english": "with (mixed in)",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, kesar waari chai",
+   "draft": true
+  },
+  "kin-nana": {
+   "kutchi": "Nana",
+   "english": "Nana",
+   "gender": "he",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai"
+  },
+  "kin-ma": {
+   "kutchi": "Ma",
+   "english": "Ma",
+   "gender": "she",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Ma lai pan hakro banai"
+  },
+  "name-ali": {
+   "kutchi": "Ali",
+   "english": "Ali",
+   "gender": "he",
+   "src": "a name (the cousin)"
+  },
+  "ph-pantry": {
+   "kutchi": null,
+   "english": "pantry",
+   "gender": "unknown",
+   "src": "placeholder"
   }
  },
  "lines": {
@@ -526,8 +623,10 @@
    "en": "And {x}."
   },
   "give": {
-   "k": "Muke hikdo {x} dine.",
-   "en": "Give me the {x}."
+   "k": "Muke {x} de.",
+   "en": "Give me {x}.",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke chamchi de; pass me is the same as give me. Was Muke hikdo {x} dine.",
+   "draft": true
   },
   "no": {
    "k": "Nar {x}.",
@@ -583,8 +682,31 @@
   "then": {
    "k": "Ne poi {x}.",
    "en": "And then {x}.",
+   "src": "zafar-24sep-draft; ne poi confirmed by Mum 25 Sept (A3.3-A3.6 recording)"
+  },
+  "first": {
+   "k": "Pela {x}.",
+   "en": "First {x}.",
    "draft": true,
-   "src": "zafar-24sep-draft"
+   "src": "Mum 25 Sept (A3.3-A3.6): pela = first (Muke pela daar khape, ne poi maani). As a line of its own, a draft"
+  },
+  "waari": {
+   "k": "{x} waari chai.",
+   "en": "Chai with {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, khun waari chai, kesar waari chai"
+  },
+  "sugar": {
+   "k": "Muke chai me {x} khape.",
+   "en": "In my chai I want {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke chai me ba khun khapeti (formal); khape is the informal ending the game uses everywhere"
+  },
+  "for": {
+   "k": "{x} lai.",
+   "en": "For {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai (this is for Nana); lai = for"
   },
   "now": {
    "e": "Now {x}!"
@@ -620,6 +742,12 @@
   },
   "number": "{x}!",
   "then": "then",
+  "then_first": "first",
+  "for": "for",
+  "gender": {
+   "_about": "Words agree with a noun's gender (words[id].gender: he | she | unknown). A word with `forms` ({he, she}) takes the form for the noun it goes with: \"one\" (hakro/hakri) and describing words (wadho/wadhi). Unknown gender (most nouns until the family says) takes the word's own `kutchi`; the order frame Muke {x} khape is the informal one and never changes (docs/kutchi-grammar-notes.md 1).",
+   "default": "unknown"
+  },
   "no": "no",
   "then_word": "lnk-nepoi"
  },
@@ -675,6 +803,7 @@
  "customers": {
   "nana": {
    "name": "Nana",
+   "word": "kin-nana",
    "tint": "#8a5a3c",
    "tastes": {
     "chai": {
@@ -705,6 +834,7 @@
   },
   "ma": {
    "name": "Ma",
+   "word": "kin-ma",
    "tint": "#2f7d4f",
    "tastes": {
     "chai": {
@@ -736,6 +866,7 @@
   },
   "cousin": {
    "name": "Ali",
+   "word": "name-ali",
    "tint": "#e0772e",
    "tastes": {
     "chai": {
@@ -761,6 +892,126 @@
   }
  },
  "recipes": {
+  "pantry": {
+   "_about": "Wave 6 (docs/UX-PRINCIPLES.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
+   "name": "ph-pantry",
+   "english": "Pantry",
+   "price": 2,
+   "stations": [
+    "fetch"
+   ],
+   "free": false,
+   "how": "Listen to what Nani needs, then tap each one into the basket.",
+   "lists": {
+    "basics": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "cook-atto",
+     "cook-daal"
+    ],
+    "shelf": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "cook-atto",
+     "cook-daal",
+     "veg-01",
+     "veg-02",
+     "veg-03",
+     "spi-10",
+     "veg-14",
+     "spi-16",
+     "spi-01"
+    ]
+   },
+   "slots": {
+    "first": {
+     "type": "items",
+     "from": {
+      "byLevel": [
+       "$basics",
+       "$shelf"
+      ]
+     },
+     "take": [
+      1,
+      1
+     ],
+     "prefer": "weak"
+    },
+    "rest": {
+     "type": "items",
+     "from": {
+      "byLevel": [
+       "$basics",
+       "$shelf"
+      ]
+     },
+     "exclude": "first",
+     "take": {
+      "byLevel": [
+       [
+        2,
+        2
+       ],
+       [
+        3,
+        3
+       ],
+       [
+        4,
+        4
+       ],
+       [
+        5,
+        5
+       ]
+      ]
+     },
+     "prefer": "weak",
+     "order": "any"
+    }
+   },
+   "say": [
+    {
+     "frame": "give",
+     "head": true,
+     "x": [
+      "$first"
+     ]
+    },
+    {
+     "forEach": "$rest",
+     "frame": "and",
+     "x": [
+      "$it"
+     ]
+    }
+   ],
+   "need": [
+    "$first",
+    "$rest"
+   ],
+   "steps": [
+    "Pantry"
+   ],
+   "run": [
+    {
+     "do": "fetch",
+     "need": [
+      "$first",
+      "$rest"
+     ],
+     "askLines": false
+    },
+    {
+     "do": "serve",
+     "key": "pantry",
+     "art": "basket"
+    }
+   ]
+  },
   "chai": {
    "name": "cook-chai",
    "english": "Chai",
@@ -772,7 +1023,7 @@
     "count",
     "pour"
    ],
-   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (milk or no milk, how many sugars or none, and which chai: plain, with elchi or with aadu; at level 3 also half or full), so those rows wait for the tray (`when`). Level 1: two people, each their own way; level 2: three; level 3: three plus half/full. The hand stays gentle at level 1 (the tray's own levels); the listening varies from the first order. Tastes are only a bias (tasteChance).",
+   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (dudh or nar dudh; Muke chai me {n} khun khape or nar khun; plain, elchi waari chai or aadu waari chai; at level 4 also half or full), so those rows wait for the tray (`when`). Wave 6 levels, each adding one thing: 1 = one cup; 2 = two; 3 = three; 4 = three plus half/full. Each cup is one card with a fixed shape (`card`). Tastes are only a bias (tasteChance).",
    "lists": {
     "family": [
      "nana",
@@ -786,6 +1037,7 @@
      "who": "$family",
      "count": {
       "byLevel": [
+       1,
        2,
        3,
        3
@@ -818,6 +1070,7 @@
       },
       "amount": {
        "byLevel": [
+        null,
         null,
         null,
         {
@@ -860,7 +1113,7 @@
       },
       {
        "if": "it.khun",
-       "frame": "and",
+       "frame": "sugar",
        "x": [
         {
          "n": "$it.khun",
@@ -879,7 +1132,7 @@
       },
       {
        "if": "it.extra",
-       "frame": "and",
+       "frame": "waari",
        "x": [
         "$it.extra"
        ],
@@ -929,10 +1182,33 @@
      "do": "wait",
      "ms": 600
     }
-   ]
+   ],
+   "how": "Each person says how they like their chai. Make every cup their way.",
+   "card": {
+    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them.",
+    "slots": [
+     [
+      "cook-dudh"
+     ],
+     [
+      "cook-khun"
+     ],
+     [
+      "spi-10",
+      "veg-14"
+     ],
+     [
+      "ph-half",
+      "ph-full"
+     ]
+    ],
+    "optional": [
+     3
+    ]
+   }
   },
   "maani": {
-   "_about": "The Maani line (data/stations/maani-line.json): how many of each kind, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Level 1 always asks for both doughs (three maani: one kind two, the other one, so the counts decide); level 2 asks for more, any mix. Level 3 adds big/small (English placeholders): a compound kind, ph-big+cook-maani, is said 'bo big maani'.",
+   "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, and a second tawa; 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
    "name": "cook-maani",
    "english": "Maani",
    "price": 3,
@@ -949,11 +1225,7 @@
         "cook-maani",
         "cook-bajrmaani"
        ],
-       "total": 3,
-       "min": {
-        "cook-maani": 1,
-        "cook-bajrmaani": 1
-       }
+       "total": 1
       },
       {
        "type": "tally",
@@ -961,11 +1233,18 @@
         "cook-maani",
         "cook-bajrmaani"
        ],
-       "total": {
-        "int": [
-         3,
-         5
-        ]
+       "total": 2
+      },
+      {
+       "type": "tally",
+       "kinds": [
+        "cook-maani",
+        "cook-bajrmaani"
+       ],
+       "total": 3,
+       "min": {
+        "cook-maani": 1,
+        "cook-bajrmaani": 1
        }
       },
       {
@@ -1001,7 +1280,8 @@
     },
     {
      "tally": "$maani",
-     "frame": "and"
+     "frame": "and",
+     "cards": 1
     }
    ],
    "need": [
@@ -1022,7 +1302,8 @@
      "key": "chapati-puffed",
      "count": "$made"
     }
-   ]
+   ],
+   "how": "Listen for which maani and how many. Roll each one, then cook it on the tawa."
   },
   "daal": {
    "name": "cook-daal",
@@ -1254,7 +1535,8 @@
      "count": 1
     }
    ],
-   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`)."
+   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`).",
+   "how": "Chop what they say, add the spices in the order Nani says, then stir."
   },
   "chaat": {
    "name": "ph-chaat",
@@ -1395,7 +1677,8 @@
      "count": 1,
      "seq": "$seq"
     }
-   ]
+   ],
+   "how": "Build the bowl in the order they say. Leave out what they say no to."
   },
   "samosa": {
    "name": "ph-samosa",
@@ -1522,7 +1805,8 @@
      "veg-12",
      "ph-dhana"
     ]
-   }
+   },
+   "how": "Fill them with what they say, fold them, then fry them."
   },
   "mishkaki": {
    "name": "ph-mishkaki",
@@ -1530,10 +1814,9 @@
    "price": 6,
    "stations": [
     "thread",
-    "grill",
-    "fry"
+    "grill"
    ],
-   "_about": "The order says how many skewers of each kind (a tally: \"bo ghos, hikdo vegetable\"), and when there's a mixed one its pieces in order (ne poi): meat and the three vegetables, never the same piece twice running, so the list can't merge into a count that sounds like a skewer row. The Mishkaki grill station (data/stations/mishkaki-grill.json) threads, grills and plates them; the chips basket is always offered there and the chips are fried only if you put them on. `byLevel` values change the skewers by the order's level: 1 = two skewers, meat or veg (two meat, two veg or one of each: listen); 2 = two or three, one may be mixed; 3 = three or four, up to two mixed.",
+   "_about": "The order says how many skewers of each kind (a tally: \"ba ghos, hakro vegetable\"), and when there's a mixed one its pieces in order (Pela ghos, ne poi …): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/UX-PRINCIPLES.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
    "lists": {
     "skewer": [
      "ph-meat",
@@ -1558,6 +1841,10 @@
        ],
        [
         "ph-meat",
+        "ph-veg"
+       ],
+       [
+        "ph-meat",
         "ph-veg",
         "ph-mixed"
        ],
@@ -1570,6 +1857,7 @@
      },
      "total": {
       "byLevel": [
+       1,
        2,
        {
         "int": [
@@ -1588,6 +1876,7 @@
      "max": {
       "ph-mixed": {
        "byLevel": [
+        0,
         0,
         1,
         2
@@ -1609,9 +1898,6 @@
      ],
      "shuffle": true,
      "order": "sequence"
-    },
-    "chips": {
-     "chance": 0.6
     }
    },
    "say": [
@@ -1623,43 +1909,26 @@
     },
     {
      "tally": "$skewers",
-     "frame": "and"
+     "frame": "and",
+     "cards": 4
     },
     {
      "if": "skewers.ph-mixed",
-     "list": "$pattern"
-    },
-    {
-     "if": "chips",
-     "frame": "and",
-     "x": [
-      "ph-chips"
-     ]
+     "list": "$pattern",
+     "cardOf": "ph-mixed"
     }
    ],
    "need": [],
    "steps": [
     "Skewer",
-    "Grill",
-    "Chips"
+    "Grill"
    ],
    "run": [
     {
      "do": "mishkaki-grill",
      "skewers": "$skewers",
      "pattern": "$pattern",
-     "chips": "$chips",
      "as": "grill"
-    },
-    {
-     "if": "grill.chips",
-     "do": "interrupt"
-    },
-    {
-     "if": "grill.chips",
-     "do": "fry",
-     "kind": "chips",
-     "count": 1
     },
     {
      "do": "serve",
@@ -1667,7 +1936,8 @@
      "count": "$grill.count",
      "art": "$grill.art"
     }
-   ]
+   ],
+   "how": "Thread each skewer the way they say. Then take them to the barbecue."
   }
  },
  "stations": {
@@ -1767,11 +2037,15 @@
   "fetch": {
    "levels": [
     {
-     "shelf": 11,
-     "minDecoys": 5,
+     "shelf": 8,
+     "minDecoys": 4,
      "lookalikes": 2,
      "flyMs": 520,
      "passMe": 0.5
+    },
+    {
+     "shelf": 11,
+     "minDecoys": 5
     },
     {
      "shelf": 13,
@@ -2350,17 +2624,135 @@
  },
  "art": {
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
-  "props": []
+  "props": [],
+  "sprites": {
+   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). Left out on purpose (failed QA or pending a redo): veg-dungri-whole-t, veg-dungri-peeled-t, tool-velan-t, tool-chakla-t, vessel-thali-t.",
+   "dir": "assets/cook/items/",
+   "max": 256,
+   "items": {
+    "spi-01": { "bowl": "spice-hardar-bowl-t" },
+    "spi-02": { "bowl": "spice-jeeru-bowl-t" },
+    "spi-04": { "bowl": "spice-lal-marcha-bowl-t" },
+    "spi-05": { "bowl": "spice-rai-bowl-t" },
+    "spi-10": { "bowl": "spice-elchi-bowl-t" },
+    "spi-16": { "bowl": "spice-loon-bowl-t" },
+    "cook-khun": { "bowl": "dry-khun-bowl-t" },
+    "cook-chai": { "bowl": "dry-chai-leaves-bowl-t" },
+    "cook-atto": { "bowl": "dry-atto-bowl-t" },
+    "cook-daal": { "bowl": "dry-daal-bowl-t" },
+    "ph-ghee": { "bowl": "dry-ghee-bowl-t" },
+    "ph-chana": { "bowl": "topping-channa-bowl-t" },
+    "ph-dahi": { "bowl": "topping-dai-bowl-t" },
+    "ph-amli": { "bowl": "topping-amli-bowl-t" },
+    "ph-lili": { "bowl": "topping-lili-bowl-t" },
+    "ph-sev": { "bowl": "topping-sev-bowl-t" },
+    "ph-dhana": { "bowl": "topping-dhana-chopped-bowl-t" },
+    "ph-keema": { "bowl": "topping-keema-bowl-t" },
+    "ph-chips": { "bowl": "chips-golden-t", "raw": "chips-raw-t" },
+    "veg-01": { "bowl": "topping-bataato-boiled-bowl-t", "whole": "veg-bataato-whole-t", "cubed": "veg-bataato-cubed-t" },
+    "veg-02": { "bowl": "topping-dungri-chopped-bowl-t", "raw": "mishkaki-dungri-raw-t", "grilled": "mishkaki-dungri-grilled-t", "charred": "mishkaki-dungri-charred-t" },
+    "veg-03": { "bowl": "topping-tameto-chopped-bowl-t", "whole": "veg-tameto-whole-t", "raw": "mishkaki-tameto-raw-t", "grilled": "mishkaki-tameto-grilled-t", "charred": "mishkaki-tameto-charred-t" },
+    "veg-10": { "bowl": "topping-vatana-bowl-t" },
+    "veg-12": { "bowl": "topping-marcha-chopped-bowl-t", "whole": "veg-marcha-whole-t" },
+    "veg-13": { "bowl": "veg-lasan-chopped-t", "whole": "veg-lasan-whole-t" },
+    "veg-14": { "bowl": "veg-aadu-grated-bowl-t", "whole": "veg-aadu-whole-t" },
+    "fru-02": { "bowl": "veg-limu-whole-t", "whole": "veg-limu-whole-t" },
+    "ph-meat": { "raw": "mishkaki-meat-raw-t", "grilled": "mishkaki-meat-grilled-t", "charred": "mishkaki-meat-charred-t" },
+    "ph-pepper": { "whole": "veg-pepper-whole-t", "raw": "mishkaki-pepper-raw-t", "grilled": "mishkaki-pepper-grilled-t", "charred": "mishkaki-pepper-charred-t" },
+    "ph-samosa": { "folded": "samosa-folded-t", "fried": "samosa-fried-golden-t" },
+    "cook-maani": {
+     "dough": "dough-ball-t",
+     "raw": { "file": "maani-raw-t", "square": true },
+     "half": { "file": "maani-cooked-half-t", "square": true },
+     "done": { "file": "maani-cooked-puffed-t", "square": true }
+    },
+    "cook-paani": { "jug": "vessel-water-jug-f" },
+    "cook-dudh": { "jug": "vessel-milk-jug-f" },
+    "glass": { "empty": "vessel-glass-chai-empty-f", "full": "vessel-glass-chai-full-f" },
+    "tawa": { "top": { "file": "vessel-tawa-t", "max": 0 } },
+    "pan": { "top": { "file": "vessel-saucepan-t", "max": 0 } },
+    "pot": { "top": { "file": "vessel-pot-t", "max": 0 } },
+    "tadka-pan": { "top": { "file": "vessel-tadka-pan-t", "max": 0 } },
+    "chaat-bowl": { "empty": { "file": "chaat-bowl-empty-t", "max": 0 } },
+    "katori": { "top": "vessel-katori-t" },
+    "kadai": { "oil": { "file": "vessel-kadai-oil-t", "max": 0 } },
+    "plate": { "top": "plate-enamel-empty-t" }
+   },
+   "art": {
+    "vessel:pan": "pan.top",
+    "vessel:pot": "pot.top",
+    "vessel:tadka": "tadka-pan.top",
+    "vessel:serving": "chaat-bowl.empty",
+    "vessel:kadai": "kadai.oil",
+    "pastry:3": "ph-samosa.folded",
+    "pastry:4": "ph-samosa.fried",
+    "layer:ph-chips": "ph-chips.raw"
+   },
+   "frames": {
+    "pastry:3": [60, 50, 240, 230],
+    "pastry:4": [60, 50, 240, 230],
+    "layer:ph-chips": [40, 10, 220, 180]
+   },
+   "props": {
+    "chapati-raw": "cook-maani.raw",
+    "chapati-half": "cook-maani.half",
+    "chapati-puffed": "cook-maani.done",
+    "dough-ball": "cook-maani.dough",
+    "tawa": "tawa.top",
+    "water-jug": "cook-paani.jug",
+    "milk-jug": "cook-dudh.jug",
+    "glass": "glass.empty",
+    "glass-chai": "glass.full"
+   },
+   "vessels": {
+    "pan": { "rim": [0.34, 0.575, 0.317, 0.323], "depth": 0.075 },
+    "pot": { "rim": [0.497, 0.455, 0.372, 0.421], "depth": 0.079 },
+    "tadka": { "rim": [0.391, 0.617, 0.364, 0.306], "depth": 0.069 },
+    "serving": { "rim": [0.495, 0.5, 0.459, 0.464], "depth": 0.026 },
+    "kadai": { "rim": [0.501, 0.556, 0.303, 0.374], "depth": 0, "size": 0.78, "filled": true }
+   },
+   "bg": {
+    "marble": "bg-cook-worktop-t-v1-1600",
+    "hob": "bg-cook-hob-t-v1-1600"
+   },
+   "need": {
+    "pour": ["pan.top"],
+    "watch": ["pan.top"],
+    "boil": ["pan.top"],
+    "count": ["pan.top", "cook-khun.bowl", "spi-16.bowl", "cook-atto.bowl"],
+    "add": ["pan.top", "cook-chai.bowl", "spi-10.bowl", "veg-14.bowl", "spi-02.bowl", "spi-05.bowl"],
+    "chai-tray": ["bg:marble", "pan.top", "cook-chai.bowl", "spi-02.bowl", "spi-05.bowl", "cook-khun.bowl", "spi-16.bowl", "spi-10.bowl", "veg-14.bowl", "veg-13.bowl"],
+    "chop": ["veg-01.whole", "veg-03.whole", "veg-12.whole", "veg-13.whole", "veg-14.whole"],
+    "tadka": ["pot.top", "tadka-pan.top", "spi-02.bowl", "spi-05.bowl", "spi-01.bowl", "veg-12.bowl", "spi-16.bowl", "veg-13.bowl"],
+    "assemble": ["ph-dahi.bowl", "ph-amli.bowl", "ph-lili.bowl", "veg-02.bowl", "ph-sev.bowl", "ph-dhana.bowl", "veg-12.bowl", "veg-03.bowl", "ph-chana.bowl", "veg-01.bowl"],
+    "fill": ["chaat-bowl.empty", "ph-keema.bowl", "veg-01.bowl", "veg-10.bowl", "veg-02.bowl", "veg-12.bowl", "ph-dhana.bowl"],
+    "fold": ["ph-samosa.folded", "plate.top"],
+    "fry": ["kadai.oil", "ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],
+    "knead": ["chaat-bowl.empty"],
+    "flip": ["chaat-bowl.empty"],
+    "tawa": ["chaat-bowl.empty"],
+    "thread": ["katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
+    "grill": ["ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-meat.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-meat.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
+    "mishkaki-grill": ["bg:marble", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
+   }
+  }
  },
  "days": [
   {
    "id": 1,
    "title": "Chai for Nana",
    "teach": [
+    "pantry",
     "chai"
    ],
-   "gist": "Nana is coming for chai. Nani shows you once, then it's your turn!",
+   "gist": "Nani needs a few things from the pantry. Then Nana is coming for chai!",
    "orders": [
+    {
+     "who": "nani",
+     "dishes": [
+      "pantry"
+     ]
+    },
     {
      "who": "nana",
      "dishes": [
@@ -2375,7 +2767,7 @@
    "teach": [
     "maani"
    ],
-   "gist": "Everyone wants maani today. Listen for how many!",
+   "gist": "Everyone wants maani today. Listen for which kind, and how many!",
    "orders": [
     {
      "who": "cousin",
@@ -2395,7 +2787,10 @@
      "dishes": [
       "maani",
       "chai"
-     ]
+     ],
+     "level": {
+      "maani": 2
+     }
     }
    ]
   },
@@ -2420,7 +2815,7 @@
       "maani"
      ],
      "level": {
-      "maani": 2
+      "maani": 3
      }
     },
     {
@@ -2510,7 +2905,10 @@
      "dishes": [
       "mishkaki",
       "chaat"
-     ]
+     ],
+     "level": {
+      "mishkaki": 2
+     }
     },
     {
      "who": "ma",
@@ -2924,10 +3322,30 @@
   }
  },
  "calm": {
-  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1).",
+  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: bulbMs = how long the light bulb shows English, by the order's level (5, 3, 2, 1 s); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
   "quietMs": 4000,
-  "hintMs": [7000, 8000, 11000, 15000],
-  "passMeChance": { "relaxed": 0.4, "busy": 0.55, "level1": 0.2 }
+  "hintMs": [
+   7000,
+   8000,
+   11000,
+   15000
+  ],
+  "passMeChance": {
+   "relaxed": 0.4,
+   "busy": 0.55,
+   "level1": 0.2
+  },
+  "bulbMs": [
+   5000,
+   3000,
+   2000,
+   1000
+  ],
+  "coachSteps": 4,
+  "uiAfter": {
+   "stars": 1,
+   "bulb": 2
+  }
  },
  "tips": {
   "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",

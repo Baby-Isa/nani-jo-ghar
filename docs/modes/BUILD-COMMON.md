@@ -2,6 +2,9 @@
 
 Every build session reads this first, then its own mode's design doc (top section "Deep dive, 25 Sept 2026" or, for the clinic, "Revision 3" then "Revision 2", and the build brief at the end), `docs/modes/DEEP-DIVE-BRIEF.md` (the principles), and `docs/cook-with-nani-recipes-guide.md` (how Cook's one-file mechanics, levels-as-data and the Station lab work). Zafar has taken **every default** in the design docs.
 
+## UX principles
+Follow `docs/UX-PRINCIPLES.md` (Zafar's playtest, 25 Sept) in every greybox: request card with read-along, sidebar on the left, one fixed-shape card per item, one light bulb and one speaker per card, one job at a time, level 1 as small as possible, overlay onboarding.
+
 ## Scope
 Build **phases 0 and 1** of your mode's build brief (pure logic, data, the Node leak bot, the lab, and a greybox of the first mini-games), and phase 2 only if it touches nothing but your own files. Stop at a clean, tested point. No new art: greybox shapes or existing sprites only. No story integration and no shell work (the foundation session owns that).
 

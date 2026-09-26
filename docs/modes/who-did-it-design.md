@@ -4,7 +4,246 @@
 **Status:** proposal for Zafar. Nothing built yet. Follows `docs/modes/MODE-DESIGN-BRIEF.md`; modelled on `docs/find-it-design.md`; uses the lessons in `docs/cook-with-nani-kutchi-audit.md` and `docs/cook-with-nani-todo.md` (Waves 1–5).
 **Absorbs:** the old **Ask around** mode (Roadmap mode 6) and the deduction half of **At the door** (the greeting half stays a choice inside every mode, as v2 says).
 **Placeholder rule:** Kutchi here is only what's already in `data/content.json` or `data/cook.json`. Anything written `[EN: …]` has no Kutchi yet: in the game it's grey italic English until the family gives the words. **Never invent Kutchi.** Right now almost every describing word, kinship title and past-tense frame this mode needs is a placeholder (section 6.6). That's the biggest risk, and section 4 is shaped around it.
-**Current section:** "Deep dive, 25 Sept 2026" (next) supersedes sections 3, 4, 8 and 12 wherever they conflict; the rest stands.
+**Current section:** "Pipeline design, 25 Sept 2026" (next) supersedes the deep dive (D1–D9) and sections 3, 4, 8 and 12 wherever they conflict; the deep dive's solver, leak rules, speaking rules and scores still stand underneath it.
+
+---
+
+## Pipeline design, 25 Sept 2026
+
+Follows `docs/modes/PIPELINE-BRIEF.md` (Zafar: "almost factory-like, a set process": every mode is a pipeline of stages, each stage a set of mini-games, stitched into one story with a beginning and an end), `docs/UX-PRINCIPLES.md` (the request card, the left sidebar, fixed-shape cards, the light bulb, one job at a time, start tiny, the end-of-round screen) and the deep dive's rules (modular mechanics, closed-set speaking with a fallback, the Sceptic). The clinic's pipeline (waiting room → diagnosis → pharmacy → heal → send-off) is the worked example; this is the same shape for a mystery: **something's missing → gather clues → question the suspects → accuse → the reveal and the apology.**
+
+What changes from the deep dive: the four "kinds" (K1–K4) stop being separate mini-games and become **variants of one stage** (questioning), the magnifier moves to its own stage (gathering) before it is used at the line-up, and the case gets a real beginning (noticing what's gone) and a real end (the culprit caught, the sweets counted back, sorry said). Nothing in `js/who/case.js` is thrown away: it becomes the middle of the pipeline.
+
+### P1 The pipeline
+
+One case is one run through six stages. The child does one job per stage; a big button on the right ("Go to the sofa") moves to the next; what each stage produces is carried into the next, so the middle of the case is built from the beginning, never dealt from nowhere.
+
+```
+ [0 Request card]      [1 Something's missing]   [2 Gather clues]        [3 Question the suspects]  [4 Accuse]            [5 Reveal, sorry, goodbye]   [End-of-round]
+  Nani's face; "Who     the sweet box: how many   the magnifier, the      the sofa line-up: keep     "Who did it?"         the caught moment; count       three badges;
+  ate the sweets?";     are gone? what? whose?    dropped things, the     who fits / you ask /       point, prove it,      the sweets back; "sorry";       the word review
+  read-along; shrinks   ─────────────────────►    prints; the notebook    you're the witness         or say the name       "it's okay"; goodbye
+  into the sidebar      n missing = n clue slots  fills ──────────────►   ──────────────────────►    ──────────────────►   ──────────────────────────►
+                        the case card             the clue chain          the standing set           the culprit           coins, the case book
+```
+
+| Stage | What the child does | What the Kutchi instruction carries | What is handed to the next stage |
+|---|---|---|---|
+| **0 Request card** | Watches and listens: Nani's face, the crime as a picture (the box with gaps), the question. Each recorded chunk lights as it is spoken. Then the card shrinks into the left sidebar as the **case card** | The question frame (*Who ate the sweets?*, F23) | The case card: one fixed-shape card with **n clue slots** (empty dots) |
+| **1 Something's missing** | Looks at the scene of the crime and answers Nani's one question about it: how many are gone, or which thing is gone, or whose | Numbers (*hikdo, ba, trae*, real), the noun (*ambo, limu*, real), later the possessive (*Nana jo*) | **n**, the number of missing things, which sets how many clues the case needs (n = 1 at the first session, 2–4 later); the crime noun for the recap |
+| **2 Gather clues** | Finds the evidence and hears Nani name it: the yellow powder by the box under the magnifier, the *limu* the culprit dropped, the big prints on the floor. Each finding becomes a **clue card** in the notebook (the sidebar) | The trace noun (*hardar, atto*, real), the held-item noun, the size adjective (draft), later the past tense | The **clue chain**: n clue cards in the notebook, all heard, none yet applied. The chain is generated by `case.js` exactly as now (balanced, shared values, no single clue solves from L2); stage 2 is how the child *meets* it |
+| **3 Question the suspects** | At the sofa. Applies the clues to the line-up: keeps who fits and the rest sit; or asks the questions; or is the witness and gives the answers | The clue frames (F24–F28), yes/no (*haa* heard on 25 Sept; *nar* draft), the adjective with agreement | The **standing set** (one left at L1–2; at L3+ you stop when you are sure) |
+| **4 Accuse** | Points ("You!"); from L3 proves it; from L2 can say the name or the describing word instead of pointing | *Who did it?* (A8.9), *Not me!* (F29), *Prove it!* (F36); the names | The **culprit**, and whether it was a lucky guess (the solver knows) |
+| **5 Reveal, sorry, goodbye** | Watches the comic caught moment (the reveal library, P3), then helps: counts the sweets back into the box, wipes the whiskers, hears "sorry" and tells Nani it's okay (or says it to the culprit), goodbye | *Caught you!* (F31), numbers again, feelings words (*sorry, it's okay, happy*; G64), the goodbye (real) | The **end-of-round screen** (UX 9): time, accuracy, hints; then the word review; the case card into the case book |
+
+**The hand-overs are the design.** Stage 1's count is stage 3's clue count and stage 5's count-back (the child hears *trae* three times in one case, each time doing something with it). Stage 2's clue cards are the very rows the child applies in stage 3, so a clue is heard twice (found, then applied) before it is ever tested, which is the stage-1-taught / stage-2-tested rule falling out of the structure instead of a glow. Stage 4's culprit picks the reveal. Nothing is shown in stage 2 that gives away stage 3: the scene evidence is always something *every* suspect could have (the balance rule), which is why stage 3 is still needed.
+
+**One job at a time (UX 5).** Each stage is one screen and one verb: look, find, sort, point, help. The examine lens never appears on the line-up screen at L1–2 (the peek at paws is a stage-3 variant from L2); Done is in the sidebar; the big stage button is on the right.
+
+### P2 Per stage: the mini-game variants
+
+Each variant is a file (`js/who/stages/<stage>/<variant>.js`) over one or two mechanics, with levels as data (`stages.<stage>.<variant>.levels` in `data/who.json`), playable alone from the Case lab and from free play. "Reuses" names the mechanic file. Levels follow the deep dive's ladder (L1 a noun or a name; L2 the describing word with agreement; L3 not, and two things at once; L4 where and whose). Blind-bot rates are for level 1, best blind strategy, ear star.
+
+**Stage 1: Something's missing** (the scene of the crime: the side table with the sweet box, the shelf, the hook)
+
+| Variant | Mechanic | The Kutchi it carries | Levels | Reuses | Blind |
+|---|---|---|---|---|---|
+| **1a How many are gone?** | The box has gaps; Nani asks *[EN: how many are missing?]*; the child taps each gap (a counted tap, the counter ticks) and then the number pill, or **says the number** (closed set of 3: *hikdo/ba/trae*) | Numbers 1–3 (real), 4–5 from L2 | L1: 1 gap; L2: 2–3 gaps among a full box; L3: two boxes ("how many *jalebi*?"); L4: "how many did *Nana* bring?" (possessive) | Cook `count` (the counted tap); shared `say` for the spoken number | 33% for the pill, 0% voice; not an ear row at L1 (taught), tested from L2 |
+| **1b What's gone?** | The shelf or the hook with one empty place; Nani names what's gone (*[EN: the] limu [EN: is gone]*); tap the empty place that matches (each empty place has a faint dust ring the shape of the thing, so the noun decides: three rings, one word) | The noun (real: fruit, veg, spices; the cap and the glasses later) | L1: 3 rings, one word; L2: 4 rings, two words ("the *limu* and the *ambo*"); L3: *[EN: not the] ambo* | New `gap` (a tap on one of n outlined places; a `whichone` decoy set) | 33% |
+| **1c Whose is it?** | The thing left behind is somebody's: *[EN: whose cap is this?]*; the child taps the owner from the family faces on the case card | Kinship and the possessive (*Nana jo*, asked E85–E99) | L3+ only (needs the words) | `lineup` in card form (the faces row) | 25% |
+
+**Stage 2: Gather clues** (the kitchen floor and the side table; the notebook in the sidebar)
+
+| Variant | Mechanic | The Kutchi it carries | Levels | Reuses | Blind |
+|---|---|---|---|---|---|
+| **2a Look closer** | The magnifier is dragged over the scene; three smudges are on the floor (yellow, white, red); Nani says which one is the clue (*hardar*); drag the lens onto it and it snaps into the notebook as a clue card | The trace noun (real): *hardar, atto, tameto, marcha, dai*, mud (placeholder) | L1: one smudge named among 3; L2: two clues, look-alike groups avoided; L3: *[EN: not the]* white one | `examine` (the existing lens, in scene mode) | 33% per clue |
+| **2b The dropped things** | A conveyor of things drifts past the box (the pharmacy-counter belt): the culprit dropped a *limu*, and Nani says so; grab it into the notebook. Decoys drift too | Held-item nouns (real); counts from L2 ("two *ambo*") | L1: 1 of 4 on the belt; L2: 2 of 6, one count; L3: a colour or size on the noun | Cook `fetch` (belt mode, as the clinic's pharmacy counter) | 25% |
+| **2c Follow the prints** | Paw and foot prints lead from the box across the floor; some are big, some small; Nani: *[EN: the] wadho [EN: prints]*; tap the prints of that size in order from the box; the trail ends at the sofa (a nice hand-over: the camera pans to stage 3) | The size adjective (draft *wadho/nindho*, with agreement from L2: paws are he-words?); *first, then* (F41–42, and *pela … ne poi*, heard) | L2+: two sizes; L3: three (big, small, bird); L4: *pela* the small ones *ne poi* the big | New `trail` (tap-in-order along a path; the order is graded at the end, like `freePick`) | 12% (order of 3 among 2 sizes) |
+| **2d Ask around** | Each family member says where they were (past tense); drag their face onto the room in the notebook; Nani's fact (*the ring was in the bedroom*) makes the clue card | S5 past tense and rooms (asked F32–F34, E49–E58) | L4+ (Arc 4) | New `notebook` (held from the deep dive's G8) | see deep dive G8 |
+
+**Stage 3: Question the suspects** (the sofa line-up; the deep dive's four kinds, now four variants of one stage)
+
+| Variant | Mechanic | The Kutchi it carries | Levels | Reuses | Blind |
+|---|---|---|---|---|---|
+| **3a Keep who fits** (K2; K1 at L1) | The notebook's clue cards are applied one at a time: Nani reads the card, tap everyone who fits, Done; the rest sit down. At L1 with n = 1 this is exactly "who ate this one?" (K1): one card, one tap | The clue frames (F24–F28) with the noun or adjective that decides | L1: 3 suspects, 1 clue (the K1 shape); L2: 4–5, 2–3 clues, exact sets, agreement; L3: 6, "not", you ask for the next card, no-op clues; L4: relations | `lineup` (freePick commit), `accuse` | 3.7% (L1 with 3 items) / ≈2% at L2, as built |
+| **3b You ask** (K3 reversed) | The clue cards are gone: the child chooses a question pill from the wall (*glasses? big? hardar?*) or **says it** (closed set 4–6); every suspect answers in a bubble chorus (*haa* / *nar*); the child taps the *haa*s forward; fewest questions wins the craft star | The question words (F14–F22 features, adjectives); yes/no heard many times | L3+ (Ruggeri: halving questions are an 8+ skill); L4: two-slot questions | shared `say`, `lineup`; the chorus is a lineup state (`answers`) | 6% for the ear (four *haa/nar* sorts) |
+| **3c Tell Ali** (K4, you're the witness) | The child has the dealt card (saw who did it); Ali asks *[EN: what was it like?]*; the child says one word from the closed set; Ali sits down whoever doesn't fit and points when one is left; wrong word, wrong people sit, "nobody's left", again | The describing word or noun, **said** | L1 (its own free-play entry from day one): nouns; L2: the adjective; L3: choose which clue to give | shared `say` (`tell` stub today), `lineup` | 0% voice by pills, as built |
+| **3d Nani guesses** (K3, you're the witness) | The dealt card again, but Nani is the detective: she asks yes/no questions in Kutchi; the child says *haa* or *nar* (or taps ✓/✗); her mini line-up empties; she guesses; a wrong answer makes her guess wrong and say why | Understanding the question; saying yes/no (*haa* real from the 25 Sept recording; *nar* draft) | L1: 4 questions on visible features; L2: adjectives; Grandparent mode: the real Nani asks | new `guesswho` (Nani's question chain and mini line-up, `case.askNext`), shared `yesno` | 6.25% (random ✓/✗); 0% for always-yes |
+
+**Stage 4: Accuse**
+
+| Variant | Mechanic | The Kutchi it carries | Levels | Reuses | Blind |
+|---|---|---|---|---|---|
+| **4a Point** | Nani: *Who did it?*; tap one; caught or *Not me!*; a lucky guess (more than one still possible) never earns the ear | *Who did it?* (A8.9), *Not me!*, *Caught you!* | L1+ | `accuse` | 0% ear (the lucky-guess rule) |
+| **4b Prove it** | After the point, Nani points at someone who sat down: *Prove it!*; tap the clue card in the notebook that ruled them out | *Prove it!* (F36); the clue heard again | L3+ | new `prove` (a tap on the notebook rows) | 33% per proof; two proofs 11% |
+| **4c Say who** | Instead of pointing, say the culprit's name (closed set: the names in the line-up) or, from L2, the describing word (*nindho!*); Ali or Nani points for you | Names (no Kutchi) at L1; the adjective at L2 | L1 names for the mic's first outing; L2+ for the voice star | shared `say`, `accuse` | 0% voice by pills |
+| **4d Set the trap** (later) | Before pointing, choose the bait from a plate (the thing the culprit held or ate): the right bait and the culprit comes forward on their own (the Scooby-Doo trap beat) | The noun again | L3+, an optional flourish; not in the first build | Cook `fetch`, `whichone` | 25% |
+
+**Stage 5: Reveal, sorry, goodbye** (the reveal itself is drawn from the library in P3; then two short helping beats and the goodbye)
+
+| Variant | Mechanic | The Kutchi it carries | Levels | Reuses | Blind |
+|---|---|---|---|---|---|
+| **5a Count them back** | The culprit hands the sweets back one by one; the child taps each into the box and the count is said; the box is whole again (the hand-over to Tidy up's repack in Arc 1 Ch3, which stays Tidy up's) | Numbers (real); the sweet's name when the family gives them | L1: 1 (the first session); L2: 2–3; L3: two kinds, two counts | Cook `count` | none tested (a closing beat) |
+| **5b Sorry and it's okay** | The culprit says *[sorry]*; Nani turns to the child: the child says (or taps) the reply from a closed set of two or three: *[EN: it's okay]*, *[EN: share!]*, *[EN: naughty!]* (a joke option the cats love); the culprit reacts to whichever was said | Feelings and manners words (*sorry, it's okay, happy* G64; *share*: not asked yet) | L1: two pills; L2: three, said aloud; Grandparent mode: Nani judges | shared `say` (closed set 2–3) | none tested; the voice star only |
+| **5c Share them out** | The recovered sweets go round the family: *[EN: one for] Nana*, *ba* for Ma; tap the sweet onto the right person | Kinship names and *{person} lai* (heard 25 Sept), counts | L2+ | Cook's chai-tray pass (`assemble` serve step) | 25% per hand-out |
+| **Goodbye** | Every case ends with Nani's goodbye and the child's reply (*Achija!* real), then the end-of-round screen | The goodbye | always | shell exchanges | — |
+
+**Speaking moments in the pipeline** (all on `js/shared/say.js`, `listen({choices, timeoutMs})`; a fallback always visible; never blocking; the voice star only from the mic or a parent's tick): 1a the number (3 choices), 3b the question word (4–6), 3c the describing word (3–6), 3d yes/no (2), 4c the name or adjective (3–6), 5b the reply (2–3). At least one speaking moment is offered in every case from L1 (1a or 5b), so the voice star is reachable in the first session.
+
+### P3 The big library: the reveal (the caught moment and the confession)
+
+The clinic's pool of fun is its 15–20 healing games; this mode's is the **reveal**: what happens when the culprit is caught. Each is a 10–20 s comic beat with **one small thing for the child to do**, so it is a mini-game and not a cutscene, and each carries Kutchi through its instruction (a count, a side, a noun, a colour). The culprit chosen in stage 4 picks the reveal; every culprit has at least two, so the same culprit caught twice is not the same picture. Scores 1–5: **Fun** (would Layla laugh; would Zayn still), **Kutchi** (how much the instruction decides), **Cost** (5 = cheap: composed from existing sprites and a reused mechanic). Age fit lists the ages it lands for.
+
+| # | Reveal | One-line pitch | The child does (mechanic) | Kutchi it teaches | Age | Fun | Kutchi | Cost |
+|---|---|---|---|---|---|---|---|---|
+| R1 | **Zazu in the tiffin** | The lid lifts by itself; Zazu is inside with syrup on his whiskers | Wipe his whiskers: rub *ba* times (Cook `knead`'s rub, counted) | *ba*, *trae*; whiskers (F22) | 5, 8 | 5 | 3 | 5 |
+| R2 | **Nana's cap** | Nana insists "Not me!"; a jalebi slides out from under his cap | Tap the cap; count the sweets that fall (Cook `count`) | numbers; cap (F17); *Not me!* | 5, 8, 11 | 5 | 3 | 5 |
+| R3 | **Simba's yellow paws** | Simba sits on his paws; they are bright yellow | Wash them: pour water from the jug onto the *right* paw, then the *left* (Cook `pour`; sides as the clinic's R3.2 rule) | *hardar*; right / left; paw | 5, 8 | 4 | 4 | 4 |
+| R4 | **Ali's pockets** | Ali turns his pockets out: sweets, a *limu*, a marble, a spoon | Pick out only the sweets: *[EN: the] mithai* (Cook `fetch` from the pile) | the sweet's name; nouns as decoys | 5, 8 | 4 | 4 | 5 |
+| R5 | **Big Ma's handbag** | Big Ma opens the enormous handbag: everything is in there | Find the missing thing among ten: *[EN: the] ambo* (Cook `fetch`, look-alikes from `whichone`) | the crime noun again | 8, 11 | 4 | 5 | 4 |
+| R6 | **Baby Isa's face** | Syrup from ear to ear; he laughs | Wipe: up, down, left, right as Nani calls it (a called-direction rub; the clinic's teeth-brushing idea) | up / down / left / right (A8.11 here/there; the clinic's sides) | 5 | 5 | 4 | 4 |
+| R7 | **Kasuku the lookout** | Kasuku wasn't the eater: he was the lookout, and he squawks back the culprit's order (*muke mithai khape!*), pointing at the real one (a two-culprit twist at L3) | Tap who Kasuku is pointing at (`accuse`) | the order frame heard again | 8, 11 | 4 | 3 | 4 |
+| R8 | **The sofa cushion** | The culprit's stash is under a cushion | Lift the cushion Nani names: *[EN: the] lal [EN: one]* (colour; a lift as Tidy up's and the clinic's `lift`) | colours (asked Q11) | 5, 8 | 4 | 4 | 4 |
+| R9 | **The hen in the flour** (Arc 3) | White footprints everywhere; the hen sneezes flour | Follow her prints back to the sack (`trail`) | *atto*; *pela … ne poi* | 5, 8 | 4 | 4 | 3 |
+| R10 | **The goat and the washing** | The goat has a sock; it will not let go | Tug: three pulls, on the beat (a pull gesture on Cook's `stir` track logic; counted) | *trae*; *pull* (not asked) | 5, 8 | 5 | 2 | 3 |
+| R11 | **The cat in the milk pan** | The lid rattles; a tail | Lift the lid *slowly* (*aastethi*, draft): too fast and the cat bolts, try again (the clinic's `lift` with a speed band) | *aastethi / jaldi* (drafts) | 5, 8, 11 | 4 | 4 | 4 |
+| R12 | **The sneeze** | The culprit has chilli powder on their nose | Tickle the nose *ba* times; "achoo": the sweets fly out; catch them (tap them in the air, counted) | *marcha*; counts | 5, 8 | 5 | 3 | 4 |
+| R13 | **The shoe mountain** | A sweet in every shoe | Take the sweets out of only the *big* shoes (Tidy up's shoe pairs; `whichone` by size) | *wadho / nindho*; shoes | 8 | 3 | 5 | 3 |
+| R14 | **The crow's nest** (Arc 4) | The nest is full of shiny things; the ring is one of them | Pick the ring out from the spoons and foil (Cook `fetch`) | the ring; *shiny* (later) | 8, 11 | 4 | 3 | 3 |
+| R15 | **Nani did it** | (Rare, L3+) Nani: "I was checking they were fresh"; everyone laughs | Tap Nani's cheek; she gives you one | *[EN: fresh]*; *Achija* | 8, 11 | 5 | 1 | 5 |
+| R16 | **The muddy trail** (Monsoon) | Wet prints across the clean floor to a dripping culprit | Mop the prints in order (Monsoon rush's mop if it exists, else `trail`) | mud (placeholder), *pela … ne poi* | 5, 8 | 4 | 3 | 3 |
+| R17 | **The cousin's school bag** | The older cousin's bag: books, a lunchbox, the sweets | Open the pockets in the called order: the *front* one, then the *big* one | position and size words | 8, 11 | 3 | 4 | 4 |
+| R18 | **The confession chorus** | The culprit says *[sorry]*, the others say *[share!]*, Kasuku squawks it back | Say the reply (5b) | *sorry; it's okay; share* | all | 4 | 4 | 5 |
+
+**First set of reveals for the build:** R1, R2, R3, R4, R12, R18 (all Cost 4–5, all from existing sprites and Cook's `count`, `knead`, `pour`, `fetch`). R7, R11, R15 are the L3 twists. R9, R14, R16 wait for their arcs. Every reveal ends the same way: the culprit's apology line, the child's reply (5b), the sweets back (5a), goodbye. The reveal is never gory or shaming: culprits laugh, the frame is "who ate / who took / who moved", never *chor* (Nani's Loop 1 note stands).
+
+### P4 Research: what children's detective, mystery and Guess Who games do
+
+Read on 25 Sept 2026 (web search; some pages only through their summaries). The earlier table in section 2.1 (Cluedo, Clue Jr., Outfoxed, Carmen Sandiego, Obra Dinn, Ace Attorney, Golden Idol, Papers Please, Layton) still stands; this adds what matters for a pipeline.
+
+| Game | What it does | What we take into the pipeline |
+|---|---|---|
+| **Blue's Clues** (the show and its games) | A fixed ritual every episode: Blue leaves a paw print on three things; each is drawn into the handy-dandy notebook; after **exactly three clues** the host sits in the Thinking Chair and reasons aloud to the answer. The fixed count and the chair are the structure a pre-schooler learns to expect | The notebook that fills in stage 2 (UX 3: a case card with a fixed number of clue slots per level, so the child always knows how many are still to find); the pause before accusing (stage 4 opens with Nani sitting down: "so…"); the reasoning aloud is Nani's recap in Kutchi |
+| **Guess Who?** (Hasbro; the digital *Meet the Crew* app; WhoTF) | Yes/no questions; flip down whoever is ruled out; a visible board that empties; the child's job is to *ask*, the opponent's to *answer*. The digital versions play the computer as the opponent and ask the questions for younger players | Stage 3's two witness variants (3c, 3d) and 3b You ask; the line-up that empties is already the sofa |
+| **Clue Jr.: The Case of the Missing Cake** (3–8) | Roll, move, **look under** characters and furniture; the crumb picture under one base says who; a three-part answer (who, what time, what drink); a detective notepad | Stage 2 Look closer (the lens finds what's under things); stage 1's "what and how many" as the first parts of a three-part case; the notebook rows |
+| **Outfoxed!** (5+, co-operative) | Each turn: search for clues **or** reveal suspects; a clue token in the **decoder** shows a green or white dot for one feature of the thief; the fox moves towards escaping every failed roll, so the game has a clock; suspect cards show features openly and are eliminated by matching | Stage 2 and stage 3 are Outfoxed's two actions split into a fixed order for L1 (search, then reveal), and merged back at L3 ("ask for the next card when you want"); the decoder is "one fact per clue"; the escaping fox is **Busy mode's ring** (Nani's chai going cold, or the culprit tiptoeing towards the door); co-op with Nani |
+| **Scooby-Doo Mystery Cases** (WB, 2018) | Find clues in cluttered scenes, mini-games, **build a trap**, then **unmask** the villain; no lives, encouragement to retry; costumes as rewards | The reveal library is the unmask; 4d Set the trap as a later flourish; Scooby snacks = the case book and pocket money, never lives |
+| **Toca Mystery House** (Toca Boca) | No reading, no failure; explore rooms; everything reacts; the spooky-but-safe tone for 5–8 | Stage 1 and 2 as exploration with one question attached; every tap on the scene reacts (a smudge shimmers, a print squelches) even when it isn't the answer |
+| **Criminal Case / Suspects: Mobile Detective** (adult casual mysteries) | The genre's beats in order: scene → evidence → **interrogate** suspects → arrest; witnesses answer in short lines; the case file accumulates | The stage order itself; 3b's chorus of short answers; the case file is the notebook |
+| **Keiki, pastory and classroom "mystery for kids" lists** | For 3–5: "what's missing?" games, 2–3 step clues, footprint trails; whodunits with five suspects and one guilty for 9–13 | Stage 1 "what's missing" as the entry mini-game for 5; five suspects and "not" for 8+; footprint trails (2c) as the bridge between |
+
+**Mechanics worth borrowing, in one line each:** the fixed clue count and the notebook (Blue's Clues); search-or-reveal as a player choice at higher levels, and a clock as the villain escaping (Outfoxed); look under things (Clue Jr.); the unmask with a trap before it (Scooby-Doo); no failure, everything reacts (Toca); the interrogation chorus (Criminal Case). Not borrowed: dice and movement (Clue Jr., Outfoxed), picture clue bubbles (Outfoxed's decoder shows the feature; ours are spoken), 24 faces (Guess Who; 6 at most on a phone), lives.
+
+### P5 Stitching: a session, the first ever session, and free play
+
+**A session is an afternoon at Nani's: three cases through the whole pipeline**, about 4–5 minutes, each case 60–100 s. The three are picked from the player's weakest words and rise a little: case 1 at the player's level, case 2 with one more clue or one more suspect, case 3 with a twist reveal (R7, R11, R15) when the level allows. The culprits differ across the three (data: `session.no_repeat_culprit`). Between cases Nani's one line ("*Arre re!* Something else is gone…") is the only transition; the request card of the next case is the beat. The end-of-round screen (UX 9) comes **after every case**, not only at the end of the session, because the stopwatch and the accuracy jar are per case; the session ends with the case book page turning to show three new cards.
+
+**The first ever session is one tiny case** (UX 7), about 60 s, with nothing to learn but one word per stage:
+
+| Stage | The first time | Words heard |
+|---|---|---|
+| 0 | Nani's face; the box with **one** gap; "Who ate the sweet?" read along; the card shrinks | the question |
+| 1a | Tap the one gap; the counter says *hikdo*; nothing else on the table | *hikdo* |
+| 2a | The lens is already on the floor; one yellow smudge and one white; Nani: *hardar*; drag the lens onto it; it hops into the notebook's single slot | *hardar* |
+| 3a | Three cats-and-parrot at the sofa; the notebook card is read: *hardar*; tap the one whose paws are yellow (the paws are visible at L1: no lens on this screen); Done is not needed with one clue, the tap is the accusation (the K1 shape) | *hardar* again |
+| 4a | The caught hop; "Caught you!" | *Caught you!* (placeholder) |
+| 5 | R1 or R3: wipe or wash, *hikdo* time; the sweet back in the box; sorry; tap "it's okay"; *Achija!* | *hikdo*, *Achija* |
+
+Onboarding is by showing (UX 8): the ghost finger does the lens drag once, then the child does it; the sidebar, stars and light bulb fade in over the first three cases. From the second session the case has two gaps and two clue slots; each level adds one thing (a suspect, a clue, a count, a twist), never two.
+
+**Free play dips into single stages** from the sofa ("Nani's mysteries"): any stage variant at any unlocked level runs on its own with a generated case behind it (stage 3d Nani guesses is the Eid party game; 3c Tell Ali the witness game; 2a Look closer for Layla; 3b You ask for Zayn; the reveal library as "Catch them again!" for Maryam's case book). The hub's **60-second round** is stages 3 and 4 only (one clue chain at the sofa, then the point): the deep dive's K1/K2 case as built today. Grandparent mode runs 3d and 5b with the real Nani judging.
+
+**Busy mode** (from L2) is Outfoxed's escaping fox: the culprit's shadow tiptoes towards the door across stages 2–4; help rungs and dawdling move it; if it reaches the door the case still ends (the culprit is caught at the door, a different reveal), only the Quick star is lost.
+
+### P6 What survives from the current build
+
+The phases 0–1 build (`build/reports/who-build.md`, branch `claude/build-who`) is the middle of this pipeline. Concretely:
+
+| File | Verdict | What changes |
+|---|---|---|
+| `js/who/case.js` | **Keep, extend** | The generator, solver, grader, `askNext`, `actOn` and `stars` stay as they are. Add a `plan(P, {level, seed, session})` that returns the case's stage list with a variant per stage and the shared facts (n missing, the crime noun, the culprit, the reveal id), so stages 1, 2 and 5 are graded by the same seeded state; add graders for `count` (stage 1a, 5a), `gap` (1b), `find` (2a, 2b: the clue named among decoys), `trail` (2c), `reply` (5b). `stars()` gains the accuracy count (right out of total taps across stages) for the end-of-round badge. Ear rows come from stages 1–4; stage 5 never tests |
+| `js/who/flow.js` | **Change** | Today it runs one `games/<file>.run(ctx)`; it becomes `pipeline.js`: runs `plan()`'s stages in order, mounts each stage's zones, shows the stage button between them, calls the shared end-of-round screen. The lab gains a stage picker (`?stage=1a|2c|3b…`) and a "whole case" mode |
+| `js/who/games/one-each.js` | **Fold** | Its K1 loop (`runK1`, `sayClue`, `recast`, `intro`) becomes stage 3a at level 1 (`stages/3-question/keep-who-fits.js` with n = 1). The intro card becomes the request card at stage 0 (`stages/0-card.js`) with read-along |
+| `js/who/games/keep-who-fits.js` | **Keep** as `stages/3-question/keep-who-fits.js` | Reads its clue chain from the notebook (stage 2's output) instead of saying each clue fresh; `sayClue` reads the card |
+| `js/who/games/look-closer.js` | **Split** | The lens over paws at the sofa stays as a stage-3a level-2 option (`examine` in lineup mode); the lens over the *scene* is the new stage 2a (`stages/2-gather/look-closer.js`), `examine` in scene mode (targets from `data/scenes/crime.json` instead of the line-up) |
+| `js/who/games/tell-ali.js` | **Keep** as `stages/3-question/tell-ali.js` | Unchanged logic; the dealt card is shown by stage 0's card instead of its own; `Who.Tell` → `Say` |
+| `js/who/mechanics/lineup.js` | **Keep** | Add the `answers` state (3b's chorus bubbles) and a `slotsPhone` of 5 when the stage button shares the right edge |
+| `js/who/mechanics/examine.js` | **Keep, add a mode** | `mount(world, targets, …)` where targets are either the line-up (today) or scene spots; the snap-into-notebook animation |
+| `js/who/mechanics/accuse.js` | **Keep** | Adds the "so…" pause and hands the culprit to the reveal |
+| `js/who/suspect.js`, `js/who/ui.js` | **Keep** | `ui.js` loses the per-row translate/eye buttons (UX 4): one speaker per card, the light bulb at the top of the sidebar; the ladder becomes the notebook with fixed slots |
+| `js/who/stubs/whichone.js` | **Go** | `WhichOne.balance` landed in `js/shared/whichone.js` (the foundation report says it matches this shape) |
+| `js/who/stubs/tell.js` | **Go** | `js/shared/say.js` is finished: same rules (one retry, then pills; Grandparent ✓; `via`). Swap per `docs/shared-api.md` section 6 |
+| `data/who.json` | **Keep, extend** | `people`, `attributes`, `clue_types`, `lines`, `mechanics`, `star_set`, `coins` stay. `games` becomes `stages` (each stage: its variants with `levels`), plus `reveals` (R1–R18 with culprit, mechanic, lines), `session` (cases per session, the rise, no-repeat), `crime` (what can go missing: the sweet box, fruit from the bowl, Nana's cap) |
+| `data/scenes/sofa.json` | **Keep**; add `data/scenes/crime.json` | The side table with the box (stage 1), the floor with smudges and prints and the belt (stage 2), on the same 1600×900 camera E; the stage button moves the camera, no pan |
+| `build/leak_who.mjs` | **Keep, extend** | Adds stage 1–2 strategies (random gap, random smudge, first print) and a whole-pipeline run: the pipeline's ear star needs every tested row across stages, so blind rates **fall** (stage 1 × stage 2 × stage 3 ≈ 0.4% at L1), which the bot must reproduce |
+| `build/test_who.py` | **Keep, extend** | `--stage <id>` runs one variant; `--case` runs the whole pipeline with one deliberate mistake per stage; six sizes as now |
+| The leak rules, the lucky-guess rule, the draft flags, the K3 generator | **Keep** | Unchanged |
+
+Gone: the mini-game as the top-level unit (G1–G5 are now variants 3a-L1, 3a, 3a+2a, 3d, 3c), the per-game intro card, "Case of the day" (already gone), the per-row translate and eye buttons, `js/who/stubs/`.
+
+### P7 Words needed (priority order)
+
+"Asked" is in `docs/Nani jo Ghar — Questions for Mum (Combined, for the visit).md` (not edited). "Heard" is on the 25 Sept recordings (`docs/kutchi-grammar-notes.md`) and needs only Zafar's spelling check. Spelling rule from Zafar: no V, so the drafts are *wadho / nindho*.
+
+| # | Kutchi needed | For | Status |
+|---|---|---|---|
+| 1 | Numbers 1–5 as gendered *hakro/hakri* and *ba* (not *hikdo/bo*) | 1a, 5a, the reveals | **Heard** (grammar notes 2–3); the game's `num-01/02` need the change |
+| 2 | Trace and held-item nouns (*hardar, atto, tameto, marcha, dai, limu, ambo, dungri…*) | 2a, 2b, 3a | **Real** (`data/cook.json`) |
+| 3 | yes (*haa*) / no (*nar*) | 3b, 3d, 5b | *haa* **heard** (grammar notes 7); *nar* draft (B1); asked A8.1–A8.2 |
+| 4 | big / small with agreement (*wadho/wadhi, nindho/nindhi*) | 2c, 3a L2, 3c L2, R13 | Draft (B6, B7); agreement asked C22–C36 |
+| 5 | *this* (*hi*), *take* (*khan*), *give me* (*muke … de*), *for* (*lai*), *also* (*pan*), *first … and then* (*pela … ne poi*) | 2b, 2c, 5a, 5c | **Heard** (grammar notes 6–9) |
+| 6 | Who ate the sweets? · Who did it? · It was the big one · It wasn't … · It had turmeric on its paws · It was holding … · The one with the glasses | Stage 0 and the clue cards | Asked (F23–F28, A8.9) |
+| 7 | Not me! · You're right! · Caught you! · Prove it! | Stage 4 | Asked (F29–F31, F36) |
+| 8 | glasses, beard, cap, headscarf, bell, collar, tail, paw, whiskers | 3a `has`, 3b, R1, R3 | Asked (F14–F22) |
+| 9 | **How many are missing? · It's gone / missing · Whose is this? · Pick it up · Look! · Footprints / prints** | Stages 1–2 | **Not asked: add to Round 3** |
+| 10 | **Sorry · It's okay / never mind · Share! · Give it back · Naughty! (fond)** | 5b, R18 | **Not asked: add to Round 3** (only *happy* G64 exists) |
+| 11 | Ali's echo and prompts (*What was it like? · The {x} one? Right. · Nobody's left! · Again?*); Nani's question frame (*Does yours have {x}? · Is yours {adj}?*) | 3c, 3d | Not asked (the deep dive's rows 8–9): Round 3 |
+| 12 | right / left, up / down, slowly / quickly | R3, R6, R11 | The clinic asks sides; *aastethi / jaldi* drafts |
+| 13 | Sweet names for the box | 1b, 5a, R4 | Asked (the sweets voice note, questions doc line 567) |
+| 14 | Kinship titles, rooms, past tense, time words | 1c, 2d, later | Asked (E85–E102, E49–E58, F32–F34, F37–F43, C116–C136) |
+
+Recording for the closed sets: rows 1, 3 and 4 first (about 12 words, five takes each from two or three speakers), then row 10, which is the family's own manners and will sound like them.
+
+### P8 Build brief (rewritten for the pipeline; phased; own files first)
+
+Nobody edits `js/cook/*`, `js/shared/*` or `css/cook.css`. Shared pieces are used through `docs/shared-api.md`: `WhichOne` (landed), `Say` and `Speech` (landed), `Stars` (landed), `Overlay` (landed), `Rel` (phase 4 only). Still assumed from the foundation: the shell's one save and story beats, the **request card with read-along** and the **end-of-round screen** (UX 1 and 9 say they are shared components; until they land this mode carries a local `js/who/card.js` and `js/who/roundend.js` with the same data shape: chunks with timings; `{ms, right, total, hints}`), and the onboarding kit (UX 10).
+
+Files this mode owns:
+
+```
+who.html                                   page + Case lab (?lab=1&stage=<id>|case)
+js/who/case.js                             generator, solver, grader, plan()        (pure; Node and browser)
+js/who/pipeline.js                         runs plan()'s stages; the stage button; the lab   (replaces flow.js)
+js/who/stages/0-card.js                    the request card (local until shared)
+js/who/stages/1-missing/{count,gap,whose}.js
+js/who/stages/2-gather/{look-closer,dropped,trail,notebook}.js
+js/who/stages/3-question/{keep-who-fits,you-ask,tell-ali,nani-guesses}.js
+js/who/stages/4-accuse/{point,prove,say-who,trap}.js
+js/who/stages/5-reveal/{reveal,count-back,sorry,share}.js   (reveal.js runs a library entry from data)
+js/who/mechanics/{lineup,examine,accuse,prove,guesswho,gap,trail}.js
+js/who/{ui,suspect,roundend}.js  css/who.css
+data/who.json                              + stages, reveals, session, crime
+data/scenes/sofa.json  data/scenes/crime.json
+build/leak_who.mjs  build/test_who.py
+```
+
+| Phase | Playable | Files | Done when |
+|---|---|---|---|
+| **0 Logic** | `plan()` and the stage graders in `case.js`; `stages`, `reveals`, `session`, `crime` in `data/who.json`; the whole-pipeline leak bot | Own only | `node build/leak_who.mjs --case --rounds 10000`: every stage's blind rate at or under P2's figures; the pipeline ear star under 1% at L1 and under 0.5% at L2; culprit and reveal uniform; every case's clue chain still passes the deep dive's rules |
+| **1 The greybox pipeline** | One variant per stage at L1–2 through the whole case: 0 card, 1a, 2a, 3a, 4a, 5a + R1/R2/R3 + 5b (pills) + goodbye; the notebook with fixed slots; the light bulb; one speaker per card; the local end-of-round screen; the first-ever session as data | Own only | `test_who.py --case --level 1,2 --viewport all` passes with one deliberate mistake per stage; screenshots checked; a five-year-old's path is three taps, one drag, one tap, one tap |
+| **2 Variants and speaking** | 1b, 2b (Cook `fetch` in belt mode), 2c `trail`, 3c (on `Say`), 3d (`guesswho` + `yesno`), 4b `prove`, 4c, 5b said aloud, 5c; Busy (the tiptoeing shadow); L3 of 3a (ask for the next card, no-op clues) | Own only (`Say` is landed) | `--stage` runs for every variant; the `null`/"Again?" path; the voice star only by mic or parent; bot rates hold |
+| **3 Art, story, free play, the session** | Real sofa and crime scene, overlays from `Overlay`; the reveal set R4, R12, R18 then R5–R8; Arc 1 Ch3 as a full case (stage 1 the box, 2a the spilt spices, 3a, 4a, R1, then the hand-over to Tidy up's repack); Ch5 as 3d alone; "Nani's mysteries" with sessions, single stages and the 60-second round; the shared card and round-end swapped in; Grandparent mode | Own + the shell's registration | `--free 3 --story a1c3`; art QA; a session of three cases in under 5 minutes |
+| **4 S5 and the door** | 2d notebook (Arc 2 Ch4, Arc 4 Ch1–2), 1c whose, 3b at L3, R9/R14/R16, the fibbing and case-board finales from the old W6–W7, G7 the door if the front-door scene exists | Own + `front-door.json` + `Rel` (read) | All bot rates under 10% |
+
+The first three tasks are unchanged in spirit from section 12.4: task 1 is `plan()` plus the data and the bot; task 2 is the greybox pipeline with the K1-shaped first session; task 3 is the harness. Onboarding scripts per stage are written at the end of phase 2, when the mechanics have stopped moving (UX 10).
+
+### P9 Decisions for Zafar (only what blocks the build), each with a default
+
+1. **The ending beats come back.** The deep dive rejected "empty your pockets" as Tidy up's; the pipeline needs a real end, so 5a counts the sweets back (three taps) and 5b says sorry / it's okay, and the arranging stays Tidy up's. **Default: yes, both, tiny.**
+2. **Stage 1 at the first session: one gap, or three?** One gap means the first case has one clue (the K1 tap) and one count; three means the deep dive's 3 × 3 shape from the start. **Default: one**, per UX 7 ("each level adds one thing"); the 3 × 3 case is the second session.
+3. **Nani guesses (3d) and Tell Ali (3c) as stage variants, or as their own games?** As variants they share the pipeline's beginning and end (the dealt card is shown by the request card; the reveal follows); as their own games they stay 60 s. **Default: variants in a session, and single-stage entries in free play**, so both are true.
+4. **Can Nani be the culprit (R15)?** A twist the older children will love; it breaks "Nani gives the clues" once. **Default: yes, from L3, at most once a session, and only in free play** (never in a story chapter).
+5. **The speaking reply in 5b: two pills or three?** "Naughty!" (fond) is the joke option and the one children will choose; it needs a word the family may not want taught. **Default: two (*it's okay*, *share!*) until Mum answers row 10**; the joke waits.
 
 ---
 
@@ -917,3 +1156,12 @@ build/test_who.py                 Playwright tests and UI bot (its own port)
 - Past tense and "yesterday": [Valian 2006, present and past tense](https://www.tandfonline.com/doi/abs/10.1207/s15473341lld0204_2); [Zhang and Hudson 2018, yesterday and tomorrow](https://www.sciencedirect.com/science/article/abs/pii/S0022096517305532)
 - Recasts vs prompts: [Lyster and Saito 2010](https://www.cambridge.org/core/journals/studies-in-second-language-acquisition/article/abs/oral-feedback-in-classroom-sla/4999EE1C8379B2BF026B148EAF373CA1)
 - Leak estimates: a quick simulation in the session scratchpad (not committed); `build/leak_who.mjs` must reproduce them
+
+Pipeline design research (25 Sept 2026, web search; pages read through search summaries unless noted):
+- Blue's Clues mechanics and the Thinking Chair: [Blue's Clues Wiki, Mechanics!](https://bluesclues.fandom.com/wiki/Mechanics!); [Thinking Chair](https://bluesclues.fandom.com/wiki/Thinking_Chair); [StudyDaily, Blue's Clues mechanics](https://studydaily.blog/blues-clues-mechanics-science)
+- Guess Who digital: [Guess Who? Meet the Crew (PlayDate Digital)](https://playdatedigital.com/guess-who-meet-the-crew/); [WhoTF face guessing game](https://apps.apple.com/us/app/whotf-face-guessing-game/id6474140782); [Hasbro Guess Who rules](https://instructions.hasbro.com/en-us/instruction/guess-who-original-guessing-game-board-game-for-kids-ages-6-and-up-for-2-players)
+- Clue Jr.: [Geeky Hobbies rules](https://www.geekyhobbies.com/clue-jr-the-case-of-the-missing-cake-rules/); [LoveToKnow instructions](https://www.lovetoknow.com/parenting/kids/clue-jr-game-instructions)
+- Outfoxed!: [Official rules](https://officialgamerules.org/game-rules/outfoxed/); [Smarter Learning Guide review](https://smarterlearningguide.com/outfoxed-board-game-review/); [Outfoxed for ages 5–6](https://littlelovinglife.com/outfoxed-review/)
+- Scooby-Doo Mystery Cases: [MobyGames](https://www.mobygames.com/game/148949/scooby-doo-mystery-cases/); [The Horror Times review](https://thehorrortimes.com/2019/01/31/scooby-doo-mystery-cases-app-game-review-by-baron-craze/)
+- Toca Mystery House: [Common Sense Media review](https://www.commonsensemedia.org/app-reviews/toca-mystery-house)
+- Kids' mystery game lists: [Keiki, mystery games for kids](https://keiki.app/blog/mystery-games-kids-detective-activities); [pastory, detective activities](https://pastory.app/articles/mystery-activities-for-kids/); [Mystery Tribune, detective game apps](https://mysterytribune.com/47-best-mystery-detective-and-crime-game-apps-iphone-android-phones/)

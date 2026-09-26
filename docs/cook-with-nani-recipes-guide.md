@@ -1,6 +1,6 @@
 # Cook with Nani: how to add ingredients, recipes, levels and stations
 
-**Updated:** 25 Sept 2026. For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
+**Updated:** 26 Sept 2026 (Wave 6). For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
 
 Never invent Kutchi. A new word goes in with `"kutchi": null` and its English, and shows as a grey English placeholder until the family gives the Kutchi.
 
@@ -41,6 +41,7 @@ Add an entry to `words` in `data/cook.json`:
   - `piece`: one piece (on a skewer, thrown in the air when chopping).
   - `layer`: a spoonful in a bowl or on pastry (`"kind": "liquid"` for sauces, eggs).
 - **Audio:** a family recording goes to `assets/audio/word/<id>.mp3` and its id into `data/audio-manifest.json` (`word`). Until then `build/build_cook_tts.py` makes a placeholder voice; it needs a Gujarati spelling for any new Kutchi token (its `GU` table).
+- **Gender** (Wave 6, the family's grammar: `docs/kutchi-grammar-notes.md`): every noun has `"gender": "he" | "she" | "unknown"`. Words that agree with their noun carry `forms` (`{"he": "hakro", "she": "hakri"}`: "one", and describing words like *wadho/wadhi*) and, if the voice spelling differs, `say_forms`. The phrase builder picks the form from the next noun in the phrase ("ba wadhi maani"); unknown gender uses the word's own `kutchi`. Mark a noun `unknown` until the family says.
 - **Look-alikes:** add the word to `lookalikes` (what it's easily confused with) so the pantry and "pass me" offer a real choice. `pantry_decoys` lists spare pantry items.
 
 ## 3. Add a customer taste
@@ -88,6 +89,12 @@ Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player k
 
 `{"n": …, "of": …}` is a number and a noun in the language's order; `"one": false` leaves out "one" ("chai", not "one chai"). Each spoken thing also becomes a row of the **order ladder** (`R.ladder(order)`): its dot (a step of the sequence), its group (`"seq"`, or `"any"`: items that share a dot), its quantity, who it's for, and "no" rows (no dot). The same item twice running in a list is one row with a count ("be ghos": one dot per item type, never per unit). These rows are the one source of truth for an order: `js/cook/order.js` (`Cook.Order.ladder(d, i)`) arranges them for the mission card and `Cook.Order.speech` says them, with the audit's leak rules: rows that can go in any order are shuffled every time, "no X" rows are sprinkled among the others, and the next step of a list is said with *ne poi* ("and then"). `R.<id>.lines(d, i)` is the same order unshuffled, for tools and tests. `{"list": "$tadka", "when": "tadka"}` puts a part on the ladder that isn't said in the order: it appears when that station starts (Nani gives the tadka order at the pan).
 
+**Wave 6 extras** (docs/UX-PRINCIPLES.md):
+- `"how"`: one plain-English sentence, the request card's instructions ("Thread each skewer the way they say…").
+- One card per item, with a fixed shape. On a tally say entry, `"cards": 4` draws one card per unit, each with four slots (a skewer card always has four dots); `"cards": 1` is one card per maani. A list said for one of those cards, `{"list": "$pattern", "cardOf": "ph-mixed"}`, is drawn on that card's slots, in order. A recipe's `"card": {"slots": [["cook-dudh"], ["cook-khun"], ["spi-10", "veg-14"], ["ph-half", "ph-full"]], "optional": [3]}` gives each person's card (the Chai tray's cups) the same slots every time, in that order (an empty slot when nothing is said for it; `optional` slots only when someone in the order has them); their rows are said in that order too.
+- `"head": true` on a say entry makes that line start the order in place of a dish (Nani's pantry list: "Muke atto de.").
+- `"free": false` keeps a recipe out of customers' generated orders (the pantry is Nani's own list).
+
 **`need`** (what the pantry step fetches) is a list; `{"if": "dudh", "then": "cook-dudh"}` adds an item only sometimes. **`steps`** (the chips on the mission card) must be the **same for every order of a dish** (all the steps it could have: chai always shows Milk and Sugar), so the chips never answer the order; a step that doesn't happen is simply skipped.
 
 **`run`: the stations, in order.** Each step is `{"do": <mechanic or station>, …settings}`. Settings use `"$slot"` for slot values and `"@name"` for things made earlier in the recipe. Extra keys: `"if"`, `"step"` (move the mission card on), `"repeat": "$count"` (with `$i`), `"forEach"` (with `$it`), `"as"` (keep the result, e.g. how many were rolled), `"level"`.
@@ -109,7 +116,7 @@ To put the dish in the story, add it to a day in `days` (`{"who": "nana", "dishe
 
 ## 5. Add a difficulty level
 
-Every mechanic's settings are in `mechanics.<id>.levels`. Level 1 is the game as it is; each later level lists **only what changes**:
+Every mechanic's settings are in `mechanics.<id>.levels`. Level 1 is the game as it is; each later level lists **only what changes**. Wave 6 rule: **level 1 is the smallest possible round** (one skewer, one cup, one maani, three pantry things) and **each level adds one thing**; the hardest things (the grill's juggle, big/small maani, half/full chai) are level 4:
 
 ```json
 "tawa": {"levels": [
@@ -157,6 +164,8 @@ Cook.Mech.lab("roll-tawa", { name: "Roll → Tawa", verb: "Combined", async run(
 - read every tuning number from `k` (its levels in `data/cook.json`), never a constant.
 
 ## 7. Language
+
+Frames from the family (25 Sept, drafts flagged `draft: true` with a `src`): `give` *Muke {x} de* (pass me / give me), `first` *Pela {x}* (the first step of a sequence; the rest are *Ne poi {x}*: `grammar.then_first` and `grammar.then`), `waari` *{x} waari chai* (chai with elchi, with aadu), `sugar` *Muke chai me {x} khape* (the sugar count), `for` *{x} lai* (for a person: `grammar.for`, with the person's word from `customers.<id>.word`). The order frame *Muke {x} khape* is the informal one and doesn't agree with gender.
 
 Code never contains Kutchi or its grammar. Sentence frames are `lines` ("Muke {x} khape.", "Ne {x}."), and `grammar` says how they combine: number words (`numbers`), where the number goes (`count`: `"{n} {x}"`), how a list is said (`list`), which frame starts an order (`order`), how "no X" is said (`no`), and the "and then" linker (`then` → the draft line *Ne poi {x}.*, Mum to confirm; `then_word` is its word, `lnk-nepoi`: from word stage 3 the ladder stops drawing the sequence and only the spoken *ne poi* tells you the order). Another language (Gujarati first) swaps `words`, `lines` and `grammar`.
 

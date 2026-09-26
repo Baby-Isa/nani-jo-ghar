@@ -75,6 +75,8 @@
       let wrong = 0;
       const texFor = (id) => {
         const w = Cook.data.words[id] || {};
+        const painted = Cook.Art.sprite(S, `${id}.whole`); // data.art.sprites (loaded by the station)
+        if (painted) return painted;
         if (w.image && S.textures.exists(w.image)) return w.image;
         return S.tex(`piece:${id}`);
       };

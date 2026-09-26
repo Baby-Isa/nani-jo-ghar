@@ -7,9 +7,9 @@
 <title>Cook with Nani</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/cook.css">
+<link rel="stylesheet" href="css/cook.css?v=20260925T233111Z">
 </head>
-<body>
+<body class="w6">
 
 <div id="rotate">
   <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to cook with Nani</p></div>
@@ -26,6 +26,8 @@
     <div id="choices" class="hidden"></div>
     <div id="count-badge" class="hidden"><span class="count-digit"></span></div>
     <button id="done-btn" class="hidden" aria-label="Done">&#10003;</button>
+    <!-- Wave 6: the big button between two jobs ("Go to the barbecue"), on the right under the thumb -->
+    <button id="go-btn" class="hidden" type="button"><span class="go-t"></span><span class="go-arrow" aria-hidden="true">&#10140;</span></button>
     <div id="toast" class="hidden"></div>
 
     <!-- the intro order card: when someone orders it comes up big in the middle (nothing is live yet), then flies into the sidebar -->
@@ -33,6 +35,7 @@
       <div class="ic-card">
         <div class="ic-head"><img class="ic-face" alt=""><div class="ic-name"></div><button class="ic-say" type="button" aria-label="Hear it again"></button></div>
         <div class="ic-order"></div>
+        <div class="ic-how"></div>
         <div class="ic-go">Tap to start</div>
       </div>
     </div>
@@ -40,6 +43,11 @@
   </main>
 
   <aside id="side">
+    <!-- Wave 6: the sidebar is on the LEFT (people read left to right); the big action buttons stay on the right of the picture.
+         0. the light bulb: tap it and the words flip to English for a few seconds (5/3/2/1 s by level; it costs the ear star) -->
+    <div class="side-top">
+      <button id="btn-bulb" type="button" aria-label="Show it in English for a moment" title="Show it in English for a moment"><span class="bulb-t"></span></button>
+    </div>
     <!-- 1. the order card, always on top: compact; ↻ opens it big again (the intro card). It becomes the completion card when the order is served -->
     <div id="mission" class="card hidden">
       <div class="m-head">
@@ -49,10 +57,8 @@
         </div>
         <!-- the dish ("Muke chai khape."), then the three stars; who it is shows in the face -->
         <div class="m-who"><div class="m-dish"></div><div class="m-stars"></div></div>
-        <div class="m-tools">
-          <button class="m-replay" type="button" aria-label="Hear the order again" title="Hear the order again"></button>
-          <button class="m-tr" type="button" aria-label="Show in English" title="Show in English"></button>
-        </div>
+        <!-- Wave 6: one speaker in the card's top-right corner reads it in order, each part lighting up as it's said -->
+        <button class="m-say card-say" type="button" aria-label="Hear it again" title="Hear it again"></button>
       </div>
       <div class="m-order"></div>
       <div class="m-stamp">Served!</div>
@@ -60,7 +66,7 @@
     <!-- 2. Nani's current line: one short line; at the stations she talks from here, so her words never cover a thing to tap -->
     <div id="live">
       <div id="nani-card" class="card hidden" role="status" aria-live="polite">
-        <img class="nc-face" src="assets/cook/characters/nani-badge.webp" alt="Nani">
+        <img class="nc-face" src="assets/cook/characters/nani-badge.webp?v=20260925T233111Z" alt="Nani">
         <div class="say-slot"></div>
       </div>
     </div>
@@ -77,46 +83,51 @@
 
   <!-- Nani: "pass me…". Her card comes forward in the sidebar column, never over the play area -->
   <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">
-    <div class="pm-nani"><img src="assets/cook/characters/nani-badge.webp" alt="Nani"><div class="pm-say"></div></div>
+    <div class="pm-nani"><img src="assets/cook/characters/nani-badge.webp?v=20260925T233111Z" alt="Nani"><div class="pm-say"></div></div>
     <div class="pm-tray"></div>
   </div>
 </div>
 
 <div id="overlay" class="hidden"><div id="panel"></div></div>
 
-<script src="js/vendor/phaser.min.js"></script>
-<script src="js/cook/core.js"></script>
-<script src="js/cook/lang.js"></script>
-<script src="js/cook/art.js"></script>
-<script src="js/cook/ui.js"></script>
-<script src="js/cook/stations.js"></script>
-<script src="js/cook/station-lib.js"></script>
-<script src="js/cook/zone.js"></script>
+<!-- Wave 6: the first time at each station, everything dims but one thing and a ghost finger shows the move (js/cook/coach.js); it never takes a tap -->
+<div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div><div class="co-finger"></div></div>
+
+<script src="js/vendor/phaser.min.js?v=20260925T233111Z"></script>
+<script src="js/version.js?v=20260925T233111Z"></script>
+<script src="js/cook/core.js?v=20260925T233111Z"></script>
+<script src="js/cook/lang.js?v=20260925T233111Z"></script>
+<script src="js/cook/art.js?v=20260925T233111Z"></script>
+<script src="js/cook/ui.js?v=20260925T233111Z"></script>
+<script src="js/cook/stations.js?v=20260925T233111Z"></script>
+<script src="js/cook/station-lib.js?v=20260925T233111Z"></script>
+<script src="js/cook/zone.js?v=20260925T233111Z"></script>
 <!-- mechanics: one verb per file (the order here is the Station lab's order) -->
-<script src="js/cook/mechanics/fetch.js"></script>
-<script src="js/cook/mechanics/passme.js"></script>
-<script src="js/cook/mechanics/pour.js"></script>
-<script src="js/cook/mechanics/add.js"></script>
-<script src="js/cook/mechanics/boil.js"></script>
-<script src="js/cook/mechanics/count.js"></script>
-<script src="js/cook/mechanics/knead.js"></script>
-<script src="js/cook/mechanics/roll.js"></script>
-<script src="js/cook/mechanics/tawa.js"></script>
-<script src="js/cook/mechanics/chop.js"></script>
-<script src="js/cook/mechanics/tadka.js"></script>
-<script src="js/cook/mechanics/stir.js"></script>
-<script src="js/cook/mechanics/assemble.js"></script>
-<script src="js/cook/mechanics/fill-fold.js"></script>
-<script src="js/cook/mechanics/fry.js"></script>
-<script src="js/cook/mechanics/thread.js"></script>
-<script src="js/cook/mechanics/grill.js"></script>
+<script src="js/cook/mechanics/fetch.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/passme.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/pour.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/add.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/boil.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/count.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/knead.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/roll.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/tawa.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/chop.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/tadka.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/stir.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/assemble.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/fill-fold.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/fry.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/thread.js?v=20260925T233111Z"></script>
+<script src="js/cook/mechanics/grill.js?v=20260925T233111Z"></script>
 <!-- combined stations: one file each (the next wave fills the three stubs) -->
-<script src="js/cook/stations/roll-tawa.js"></script>
-<script src="js/cook/stations/maani-line.js"></script>
-<script src="js/cook/stations/chai-tray.js"></script>
-<script src="js/cook/stations/mishkaki-grill.js"></script>
-<script src="js/cook/recipes.js"></script>
-<script src="js/cook/order.js"></script>
-<script src="js/cook/flow.js"></script>
+<script src="js/cook/stations/roll-tawa.js?v=20260925T233111Z"></script>
+<script src="js/cook/stations/maani-line.js?v=20260925T233111Z"></script>
+<script src="js/cook/stations/chai-tray.js?v=20260925T233111Z"></script>
+<script src="js/cook/stations/mishkaki-grill.js?v=20260925T233111Z"></script>
+<script src="js/cook/recipes.js?v=20260925T233111Z"></script>
+<script src="js/cook/order.js?v=20260925T233111Z"></script>
+<script src="js/cook/coach.js?v=20260925T233111Z"></script>
+<script src="js/cook/flow.js?v=20260925T233111Z"></script>
 </body>
 </html>

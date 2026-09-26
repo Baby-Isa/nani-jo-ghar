@@ -374,3 +374,90 @@ Phase B owns the rest:
 - merging scene sidecars into `data/scenes/*`;
 - full-body bases;
 - a shared `js/shared/mechanics/` folder if two modes' mechanics converge.
+
+---
+
+## 8. The end-of-round screen: `js/shared/results.js`, `css/shared/results.css`
+
+*Added 25 Sept 2026 (UX principles §9). Load `uistore.js` and `sfx.js` first; both are optional.*
+
+| File | Global | `Shared.` | What |
+|---|---|---|---|
+| `js/shared/uistore.js` | `UIStore` | `uistore` | per-profile storage for bests and onboarding (8.1) |
+| `js/shared/sfx.js` | `Sfx` | `sfx` | synthesised sounds, no files: `bing`, `gold`, `right`, `wrong`, `tap`, `whoosh`, `pop`; `Sfx.muted`; `Sfx.unlock()` in a tap |
+| `js/shared/results.js` | `Results` | `results` | the screen |
+| `js/shared/onboard.js` | `Onboard` | `onboard` | the onboarding kit (s9) |
+
+```js
+const out = await Results.show({
+  mode: "cook", game: "chai", level: 1,       // the personal best is kept per mode + game + level, per profile
+  timeMs: 38200, right: 5, total: 5, hints: 0, // the light bulb counts as a hint
+  marks: [true, true, false, ...],            // optional: slot order (default: rights first)
+  words: [{ kutchi: "dudh", english: "milk", audio: "assets/audio/word/cook-dudh.mp3", id: "cook-dudh" }],
+  speak: (w) => Lang.speakWord(w.id),         // optional: the mode's own audio path
+  onDone(out) {}, onAgain(out) {},            // onAgain optional: shows Play again on page 2
+  sound: true, container: document.body,
+});
+// out = {action: "done" | "again", badges, best: {ms, newBest, first, key}}
+```
+
+**Page 1.** Three badges, then a big Next on the right. On a phone narrower than 560 px the badges stack as rows.
+- **Time**: a stopwatch disc showing the seconds (m:ss from a minute), with the best under a crown. A new best is faster by at least one shown second: it goes gold, with a bing, sparkles and "New best!". The first round sets the best quietly, and a slower time is never shamed (mid). Leave out `timeMs` for no Time badge.
+- **Accuracy**: `right/total`, with slots that fill green or red in turn. Up to 20 slots, then a jar. All right goes gold with a chime; 60% or more is mid, less is plain.
+- **Hints**: the count, and one small bulb per hint. 0 is gold, 1 mid, 2 or more plain.
+
+**Page 2.** The word review: one big pill per word (speaker, Kutchi, English); a tap plays it. The audio path is `speak(w)`, else `w.audio`, else Cook's `Lang.speakWord(w.id)`, else `NjgAudio.speakRaw`/local TTS. With no words, Next is Done.
+
+Reduced motion shows everything at once (sounds still play). Every target is at least 64 px.
+
+**Pure calls (Node):**
+
+| Call | Returns |
+|---|---|
+| `Results.bestKey(mode, game, level)` | `"cook/chai/L1"` |
+| `Results.judgeTime(ms, prevMs)` | `{seconds, bestMs, first, newBest, changed, tier}` |
+| `Results.recordTime(mode, game, level, ms)` / `Results.best(...)` | judge and store / the stored best |
+| `Results.accuracyTier(right, total)` / `Results.hintTier(n)` | `gold \| mid \| plain` (`none`: nothing asked) |
+| `Results.badges(round, prevMs)` | all three |
+| `Results.toStars({right, total, hints, rows?, mode?, hand?, third?})` | `{ear, hand, third}`: Accuracy gold ⇔ ear, Hints gold ⇔ no-help. With `rows` the mode's `Stars.ear` rule decides. The craft star passes through |
+| `Results.fromStars(stars, {help?, right?, total?})` | show()'s `{right, total, hints}` for a mode that only has stars, with tiers matching them |
+
+### 8.1 `UIStore`: where bests and "seen" live
+`UIStore.get/set(section, key)`, `clear(section?)`, `use(backend)`, `memory()`. With a profile attached (`Progress.attachProfile`), the data is `profile.shared_ui = {bests, onboarded, seen}`, saved through the same `onChange` as word stages, so there is nothing to migrate. With no profile (labs only), it uses one fallback key, `localStorage["njg-shared-ui-fallback-v1"]`.
+
+## 9. The onboarding kit: `js/shared/onboard.js`, `css/shared/onboard.css`
+
+```js
+const how = await Onboard.run("cook/chai-pour", [
+  { spotlight: "#jug", ghost: { gesture: "tap" } },                                            // waits for a tap in the light
+  { spotlight: ["#jug", "#pan"], ghost: { from: "#jug", to: "#pan", gesture: "drag" }, wait: "pour-done" },
+  { spotlight: () => panRectOnCanvas(), ghost: { gesture: "circle-stir" }, wait: "stirred", audio: "assets/audio/…" },
+], { force: false, idleMs: 7000, audio: (step, i) => {}, onStep: (step, i) => {} });
+// how = "done" | "skipped" | "seen" (this profile had it already: nothing shown)
+Onboard.signal("pour-done");   // the mode says the child did it (or dispatch a "njg-onboard" event, detail = name)
+```
+
+- **`spotlight`**: a selector, an element, `[x, y, w, h]` in page px (for a canvas), a function returning one, or a list of these. Everything else is dimmed, and touches outside the light are blocked.
+- **`ghost.gesture`**: `tap`, `drag` (from → to), `hold`, `swipe` (from → to, or rightwards) or `circle-stir`. `from` defaults to the spotlight. The ghost plays once, and again after `idleMs` with nothing done.
+- **`wait`**: the signal that ends the step. The default is `"tap"`: any tap in the light. A child who acts during the ghost isn't held back.
+- **No text.** Audio is an optional hook per step. A grown-up skips with the small corner button, held for 1 s (a quick tap does nothing), or with Escape.
+- **Once per profile per station**: the script id is stored under `onboarded`. `Onboard.seen(id)` checks it; `Onboard.reset(id?)` clears it.
+- **UI that appears when first needed**: `Onboard.await(el, key)` hides it. `Onboard.fadeIn(el, key)` fades it in with a glow the first time, and shows it at once after that; it returns true the first time.
+- **Pure (Node)**: `Onboard.machine(script)` (phases idle → show → wait → … → done or skipped; `start`, `ghostDone`, `signal`, `tap`, `idle`, `skip`), `Onboard.validate(script)`, `Onboard.normalize(step)`, `Onboard.path(gesture, from, to, box)`.
+
+## 10. How a mode adopts them
+
+1. **Load them.** Add `<link>`s to `css/shared/results.css` and `onboard.css`. Then add `<script>`s for `uistore.js`, `sfx.js`, `results.js` and `onboard.js`, after `progress.js` (and `stars.js` if you use it).
+2. **End of round.** Replace the result card with `Results.show({...})`:
+   - time the round from the first action to Done;
+   - `right`/`total` are your tested rows;
+   - `hints` is your help count (Cook: `ctx.help`);
+   - `words` is your word review list mapped to `{kutchi, english, id}`;
+   - pass `speak` to use your audio.
+   Keep awarding stars as now; `Results.toStars(round)` gives the same answer for ear and no-help (or pass your stars in with `fromStars`). Nothing changes in `progress.js`.
+3. **Onboarding.** At the end of each mini-game's build, write its script (UX §10):
+   - call `await Onboard.run("<mode>/<station>", script)` before the station's first round;
+   - call `Onboard.signal(name)` where your mechanic already knows the child did the thing;
+   - for canvas stations, give the spotlight rects in page px, from your stage-to-screen transform.
+4. **Fade-ins.** Mark the sidebar, stars and light bulb with `Onboard.await(el, "<mode>/sidebar")`, and call `Onboard.fadeIn(el, key)` in the round that first needs each one.
+5. **Tests.** Run `node --test build/test_shared_ui.mjs` and `node build/test_shared-ui-browser.mjs` (port 8811). The lab is `lab/shared-ui.html`.

@@ -1,0 +1,85 @@
+/* The onboarding kit (js/shared/onboard.js): the dim with its lit holes, the
+   ghost hand, the grown-up's skip, and the fade-in for UI that appears when
+   first needed. Calm: a soft dim, a slow glow on the lit thing, no motion
+   under prefers-reduced-motion. */
+.njg-onboard {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+.njg-onboard.on { opacity: 1; }
+.njg-onboard .ob-dim { position: absolute; inset: 0; width: 100%; height: 100%; }
+.njg-onboard .ob-ring { fill: none; stroke: #f7d57a; stroke-width: 4; opacity: 0.9; animation: ob-glow 1.8s ease-in-out infinite; }
+.njg-onboard.between .ob-ring { opacity: 0; }
+
+/* the ghost hand: its box's top-left is moved so the fingertip lands on the point */
+.njg-onboard .ob-ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 64px;
+  height: 80px;
+  opacity: 0;
+  transform-origin: 25px 3px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+  will-change: transform, opacity;
+}
+.njg-onboard .ob-ghost svg { width: 100%; height: 100%; display: block; position: relative; }
+.njg-onboard .ob-ghost.pressed { opacity: 0.95; transition: transform 0.4s ease-in-out; }
+.njg-onboard .ob-ripple {
+  position: absolute;
+  left: calc(25px - 36px);
+  top: calc(3px - 36px);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 4px solid #f7d57a;
+  background: rgba(247, 213, 122, 0.25);
+  opacity: 0;
+}
+.njg-onboard .ob-ghost.hold .ob-ripple { border-width: 6px; }
+
+/* skip: small, in the corner, for grown-ups (hold for a second) */
+.njg-onboard .ob-skip {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(10px, env(safe-area-inset-right));
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(253, 246, 232, 0.35);
+  color: #fdf6e8;
+  pointer-events: auto;
+  cursor: pointer;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.njg-onboard .ob-skip svg { width: 100%; height: 100%; display: block; position: relative; z-index: 1; }
+.njg-onboard .ob-hold { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(#e0a63a var(--p, 0%), transparent 0); opacity: 0.8; }
+.njg-onboard .ob-skip.holding .ob-hold { animation: ob-hold 1s linear forwards; }
+@property --p { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+
+/* UI that appears when first needed */
+.njg-await { visibility: hidden !important; opacity: 0 !important; }
+.njg-fadein { animation: ob-fadein 0.9s ease-out both, ob-shine 1.6s ease-out 0.4s 1; border-radius: inherit; }
+
+@keyframes ob-glow { 50% { stroke-opacity: 0.35; stroke-width: 7; } }
+@keyframes ob-hold { from { --p: 0%; } to { --p: 100%; } }
+@keyframes ob-fadein { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
+@keyframes ob-shine { 0% { box-shadow: 0 0 0 0 rgba(224, 166, 58, 0.7); } 100% { box-shadow: 0 0 0 18px rgba(224, 166, 58, 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .njg-onboard { transition: none; }
+  .njg-onboard .ob-ring { animation: none; }
+  .njg-onboard .ob-ghost.pressed { transition: none; }
+  .njg-onboard .ob-ghost.on,
+  .njg-onboard .ob-ghost.pressed { opacity: 0.95; }
+  .njg-fadein { animation: ob-fadein-still 0.01s both; }
+}
+@keyframes ob-fadein-still { from { opacity: 1; } to { opacity: 1; } }

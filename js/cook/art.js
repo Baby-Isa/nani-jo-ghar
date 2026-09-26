@@ -8,6 +8,12 @@
  * and simple first-person hands with an embroidered kurta cuff. The
  * asset run replaces all of this once the stations are settled.
  *
+ * It has started: data.art.sprites wires painted sprites (ChatGPT batch
+ * 1) over these drawings: the worktop and hob, ingredient bowls, the chop
+ * vegetables, pans, maani, samosas, mishkaki pieces. The drawings stay as
+ * the fallback for anything without a sprite or not loaded yet (see
+ * "painted sprites" below).
+ *
  * Every texture is a <canvas>. Cook.Art.register(scene) adds them to
  * Phaser; Cook.Art.url(key) gives a data URL for HTML (the "pass me" tray).
  */
@@ -668,6 +674,157 @@
     return c;
   }
 
+  /* ---------------- painted sprites over the drawings ----------------
+   * data.art.sprites maps an item and a state ("veg-03.whole",
+   * "cook-maani.raw", "pan.top") to a webp in assets/cook/items/, and a
+   * drawn key ("vessel:pan", "pastry:3") or a view ("bg:hob") to one of
+   * them. A sprite is used once it has loaded; until then (or if it never
+   * does) the drawing above is the fallback. Stations load only what they
+   * list in `need`, while the view fades (Art.need); a miss loads in the
+   * background for next time. */
+  const SP = () => ((Cook.data && Cook.data.art) || {}).sprites || {};
+  const sprKey = (ref) => `spr:${ref}`;
+  /** The webp for "item.state" or "bg:view", or null if there's none. */
+  function refUrl(ref) {
+    const sp = SP();
+    if (ref.startsWith("bg:")) {
+      const stem = (sp.bg || {})[ref.slice(3)];
+      return stem ? Cook.v(`assets/cook/bg/${stem}.webp`) : null;
+    }
+    const i = ref.lastIndexOf(".");
+    const v = i > 0 ? ((sp.items || {})[ref.slice(0, i)] || {})[ref.slice(i + 1)] : null;
+    const stem = v && (typeof v === "string" ? v : v.file);
+    return stem ? Cook.v(`${sp.dir || "assets/cook/items/"}${stem}.webp`) : null;
+  }
+  Art.refUrl = refUrl;
+  const loading = {};
+  /** Load one sprite into the texture manager; resolves true once it's there. */
+  function load(scene, ref) {
+    const key = sprKey(ref);
+    if (scene.textures.exists(key)) return Promise.resolve(true);
+    if (loading[ref]) return loading[ref];
+    const url = refUrl(ref);
+    if (!url) return Promise.resolve(false);
+    loading[ref] = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const add = () => {
+          if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          resolve(true);
+        };
+        // decode off the main thread where the browser can, so adding it doesn't stall a frame
+        if (img.decode) img.decode().then(add, add);
+        else add();
+      };
+      img.onerror = () => {
+        delete loading[ref];
+        resolve(false);
+      };
+      img.src = url;
+    });
+    return loading[ref];
+  }
+  Art.load = (scene, refs) => Promise.all([].concat(refs).map((r) => load(scene, r)));
+  /**
+   * Load what station or mechanic `name` lists in data.art.sprites.need.
+   * Never waits longer than `ms` (a slow connection gets the drawings and
+   * the sprites arrive for next time).
+   */
+  Art.need = function (scene, name, ms = 2500) {
+    const refs = (SP().need || {})[name] || [];
+    if (!refs.length || !scene) return Promise.resolve();
+    return Promise.race([Art.load(scene, refs), new Promise((r) => setTimeout(r, ms))]);
+  };
+  /** The texture key of a loaded sprite, else null. */
+  Art.sprite = (scene, ref) => (scene.textures.exists(sprKey(ref)) ? sprKey(ref) : null);
+  /** A sprite in place of drawn key `key`: baked into the drawing's frame when data says so. */
+  function spriteFor(scene, key, ref) {
+    const sk = Art.sprite(scene, ref);
+    if (!sk) {
+      if (refUrl(ref)) load(scene, ref);
+      return null;
+    }
+    const box = (SP().frames || {})[key];
+    if (!box) return sk;
+    const bk = `spr@${key}`;
+    if (!scene.textures.exists(bk)) {
+      const f = get(key);
+      const c = canvas(f.width, f.height);
+      const ctx = c.getContext("2d");
+      const img = scene.textures.get(sk).getSourceImage();
+      const [bx, by, bw, bh] = box;
+      const s = Math.min(bw / img.width, bh / img.height);
+      const w = img.width * s;
+      const h = img.height * s;
+      softShadow(ctx, bx + bw / 2, by + (bh + h) / 2 - h * 0.08, w * 0.46, h * 0.12, 0.2);
+      ctx.drawImage(img, bx + (bw - w) / 2, by + (bh - h) / 2, w, h);
+      scene.textures.addCanvas(bk, c);
+    }
+    return bk;
+  }
+  /**
+   * A vessel's sprite and where its opening is, in texture px: {key, w, h,
+   * cx, cy, rx, ry, depth}; null while it's the drawing.
+   */
+  Art.vesselSprite = function (scene, kind) {
+    const ref = (SP().art || {})[`vessel:${kind}`];
+    const g = (SP().vessels || {})[kind];
+    const key = ref && g && spriteFor(scene, `vessel:${kind}`, ref);
+    if (!key) return null;
+    const src = scene.textures.get(key).getSourceImage();
+    const [cx, cy, rx, ry] = g.rim;
+    return { key, w: src.width, h: src.height, cx: cx * src.width, cy: cy * src.height, rx: rx * src.width, ry: ry * src.height, depth: (g.depth || 0) * src.height, size: g.size || 1, filled: !!g.filled };
+  };
+  /**
+   * A katori of cut pieces (the skewer station's bowls): the katori sprite
+   * with three `raw` pieces in it, or the item's `cubed` heap; null (the
+   * drawn bowl) until both are loaded.
+   */
+  function katori(scene, id) {
+    const bk = `spr@pieces:${id}`;
+    if (scene.textures.exists(bk)) return bk;
+    const kat = Art.sprite(scene, "katori.top");
+    const heap = Art.sprite(scene, `${id}.cubed`);
+    const raw = !heap && Art.sprite(scene, `${id}.raw`);
+    if (!kat || !(heap || raw)) {
+      [`katori.top`, `${id}.cubed`, `${id}.raw`].forEach((r) => refUrl(r) && load(scene, r));
+      return null;
+    }
+    const K = scene.textures.get(kat).getSourceImage();
+    const c = canvas(K.width, K.height);
+    const ctx = c.getContext("2d");
+    ctx.drawImage(K, 0, 0);
+    const cx = K.width / 2;
+    const cy = K.height * 0.5;
+    const R = K.width * 0.34; // the katori's floor
+    const put = (src, x, y, size, ang) => {
+      const s = size / Math.max(src.width, src.height);
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(ang);
+      ctx.drawImage(src, (-src.width * s) / 2, (-src.height * s) / 2, src.width * s, src.height * s);
+      ctx.restore();
+    };
+    if (heap) put(scene.textures.get(heap).getSourceImage(), cx, cy, R * 1.9, 0);
+    else {
+      const P = scene.textures.get(raw).getSourceImage();
+      [[-0.42, 0.28, -0.5], [0.42, 0.22, 0.4], [0, -0.3, 0.1]].forEach(([dx, dy, a]) => put(P, cx + dx * R, cy + dy * R, R * 1.05, a));
+    }
+    scene.textures.addCanvas(bk, c);
+    return bk;
+  }
+  /** Is this texture a painted sprite (it has no shadow of its own; code draws the contact shadow)? */
+  Art.isPainted = (key) => String(key).startsWith("spr") || !!(SP().props || {})[key];
+  /** The prop files to load instead of a painted prop: {prop: url}. */
+  Art.propSprites = function () {
+    const out = {};
+    Object.entries(SP().props || {}).forEach(([prop, ref]) => {
+      const u = refUrl(ref);
+      if (u) out[prop] = u;
+    });
+    return out;
+  };
+
   /* ---------------- registry ---------------- */
   function get(key) {
     if (cache[key]) return cache[key];
@@ -687,6 +844,17 @@
     else if (type === "pastry") c = pastry(Number(arg));
     else if (type === "hand") c = hand(arg || null);
     else if (type === "pin") c = pinHands();
+    else if (type === "shadow") {
+      // a contact shadow for painted sprites: a dark core, a soft falloff
+      c = canvas(128, 128);
+      const ctx = c.getContext("2d");
+      const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      g.addColorStop(0, "rgba(30,18,8,0.4)");
+      g.addColorStop(0.55, "rgba(30,18,8,0.18)");
+      g.addColorStop(1, "rgba(30,18,8,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 128, 128);
+    }
     else if (type === "piece") {
       const w = Cook.data.words[arg];
       c = piece((w && (w.piece || w.heap)) || { color: "#ccc", kind: "balls" });
@@ -698,8 +866,11 @@
     return c;
   }
   Art.get = get;
-  /** Make sure a drawn texture exists in Phaser; returns its key. */
+  /** A texture for key: its painted sprite once loaded (data.art.sprites), else the drawing. */
   Art.tex = function (scene, key) {
+    const ref = key.startsWith("bg:") ? ((SP().bg || {})[key.slice(3)] ? key : null) : (SP().art || {})[key];
+    const sk = ref && spriteFor(scene, key, ref);
+    if (sk) return sk;
     if (!scene.textures.exists(key)) scene.textures.addCanvas(key, get(key));
     return key;
   };
@@ -707,15 +878,29 @@
     const c = get(key);
     return c ? c.toDataURL() : "";
   };
-  /** The picture for a word: a real prop image if there is one, else a drawn bowl. */
-  Art.wordTex = function (scene, id) {
+  /**
+   * The picture for a word. On a worktop: its sprite in `state` ("bowl":
+   * how it sits in a row) once loaded, else a prop, else a drawn bowl. The
+   * pantry keeps props and drawn bowls (its shelves need front views,
+   * which batch 1 didn't have). state null: never a sprite.
+   */
+  Art.wordTex = function (scene, id, state = "bowl") {
     const w = Cook.data.words[id];
+    if (state === "pieces") return katori(scene, id) || Art.tex(scene, `bowl:${id}`);
+    if (state && scene.viewName !== "pantry") {
+      const k = Art.sprite(scene, `${id}.${state}`);
+      if (k) return k;
+      if (refUrl(`${id}.${state}`)) load(scene, `${id}.${state}`);
+    }
     if (w && w.image && scene.textures.exists(w.image)) return w.image;
     return Art.tex(scene, `bowl:${id}`);
   };
+  /** The same for HTML (the "pass me" tray, over a station): the bowl sprite, a prop, a drawn bowl. */
   Art.wordUrl = function (id) {
     const w = Cook.data.words[id];
-    if (w && w.image) return `assets/cook/props/${w.image}.webp`;
+    const u = refUrl(`${id}.bowl`);
+    if (u) return u;
+    if (w && w.image) return Cook.v(`assets/cook/props/${w.image}.webp`);
     return Art.url(`bowl:${id}`);
   };
 })(window);

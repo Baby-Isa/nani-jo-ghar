@@ -73,7 +73,7 @@
     const who = ctx.order && ctx.order.who;
     if (face && who && who !== "nani") {
       face.dataset.nani = face.dataset.nani || face.getAttribute("src");
-      face.src = `assets/cook/characters/${who}-badge.webp`;
+      face.src = Cook.v(`assets/cook/characters/${who}-badge.webp`);
     }
     return UI.say(line, { badge: true }, opts).catch(() => {});
   };

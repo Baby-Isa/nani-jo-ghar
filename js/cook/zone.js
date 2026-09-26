@@ -347,10 +347,13 @@
     const def = M.defs[id];
     if (!def) throw new Error(`no mechanic ${id}`);
     const k = M.knobs(def.knobs || id, { level: params.level || z.level, profile: params.profile || (def.profile && def.profile(params)) });
-    return Promise.resolve(def.run(z, params, k)).then((r) => {
-      z.hook("onDone", r);
-      return r;
-    });
+    // its painted sprites first (data.art.sprites.need; usually already there from the station)
+    return Cook.Art.need(z.S, id)
+      .then(() => def.run(z, params, k))
+      .then((r) => {
+        z.hook("onDone", r);
+        return r;
+      });
   };
   /**
    * A mechanic as a station of its own: its view and goal (if it has
@@ -388,7 +391,7 @@
     Cook.Stations[def.api || id] = (S, ctx, params = {}, opts = {}) => M.host(id, S, ctx, params, opts);
     if (def.dataFile) {
       Cook.onLoad.push(async (data) => {
-        const extra = await fetch(def.dataFile)
+        const extra = await fetch(Cook.v(def.dataFile))
           .then((r) => r.json())
           .catch(() => null);
         if (extra) {

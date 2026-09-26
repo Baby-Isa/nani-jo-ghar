@@ -62,6 +62,12 @@ GU = {
     # the spelling and the pronunciation.
     "narr": "ના", "arsetehtea": "આસ્તેથી", "jaldee": "જલ્દી", "udd": "અડધું",
     "barrelor": "ભરેલો", "wuddoar": "વડો", "nindhoar": "નીંઢો",
+    # the family's words, 25 Sept 2026 (docs/kutchi-grammar-notes.md): daar, ba (said "ber"),
+    # hakro/hakri, wadhi/nindhi (she-forms, drafts), watana, Muke {x} de, pela, waari, me, lai;
+    # Nana, Ma and Ali for the cup cards. Best-guess Gujarati script, only so the voice can read them
+    "daar": "દાર", "ber": "બેર", "hakro": "હકરો", "hakri": "હકરી", "wuddee": "વડી", "nindhee": "નીંઢી",
+    "watana": "વટાણા", "de": "દે", "pela": "પેલા", "waari": "વારી", "me": "મેં", "lai": "લઈ",
+    "nana": "નાના", "ma": "મા", "ali": "અલી",
 }
 
 
@@ -81,6 +87,10 @@ def say_map(words):
     token; a single multi-word phrase maps as a whole otherwise."""
     m = {}
     for w in words.values():
+        # a gendered form's own voice spelling (hakri, wadhi: say_forms)
+        for g, form in (w.get("forms") or {}).items():
+            if w.get("kutchi") and (w.get("say_forms") or {}).get(g):
+                m[norm(form)] = norm(w["say_forms"][g])
         if not w.get("kutchi") or not w.get("say"):
             continue
         kt, st = norm(w["kutchi"]).split(" "), norm(w["say"]).split(" ")
@@ -115,6 +125,8 @@ def lines():
     L = data["lines"]
     # linkers ("ne poi") are said inside frames, never ordered on their own
     kw = [w["kutchi"] for w in W.values() if w.get("kutchi") and not w.get("linker")]
+    # gendered forms ("hakri", "wadhi") are said too
+    kw += [f for w in W.values() if w.get("kutchi") for f in (w.get("forms") or {}).values() if f != w["kutchi"]]
     ew = [w["english"] for w in W.values() if not w.get("kutchi")]
     nums = [W[f"num-0{n}"]["kutchi"] for n in range(1, 6)]
     k, e = set(), set()
@@ -123,9 +135,11 @@ def lines():
         for tok in norm(t).split(" "):
             k.add(tok)
     phrases = list(kw)
+    she_one = (W["num-01"].get("forms") or {}).get("she", nums[0])
     for n in range(1, 6):
         phrases.append(f"{nums[n - 1]} {W['cook-khun']['kutchi']}")
-        phrases.append(f"{nums[n - 1]} {W['cook-maani']['kutchi']}")
+        # maani is a she-word: "hakri maani" (the family, 25 Sept)
+        phrases.append(f"{she_one if n == 1 else nums[n - 1]} {W['cook-maani']['kutchi']}")
     for key, f in L.items():
         if f.get("k"):
             for tok in norm(f["k"].replace("{x}", " ")).split(" "):

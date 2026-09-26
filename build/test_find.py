@@ -21,7 +21,23 @@ Usage:
   python3 build/test_find.py                         # laptop and phone (915x375)
   python3 build/test_find.py --viewport laptop
   python3 build/test_find.py --leak 30               # the leak check (laptop)
-  FIND_TEST_PORT=8980 (default) sets the port.
+  FIND_TEST_PORT (or COOK_TEST_PORT; default 8801) sets the port.
+
+The mini-games (25 Sept deep dive): after the story round (which now ends
+with the bowl, speaking moment 1, on pills since there are no family
+recordings for the recogniser yet), each game runs from the lab: F2 Which
+one? (a wrong-size tap costs the ear star), F3 Where is it? (calls; the ear
+shows "not tested" while the positions are placeholders; level 3 in the
+sitting room's grey boxes), F4 Ali's turn through the lab's microphone
+stand-in (a wrong word first, then the right one: the voice star), a
+pills-only Ali round (never the voice star), a parent's check, and level 4
+of every game. The headless leak bot is build/leak_find.mjs.
+
+The calm sidebar (Wave 5, shared with Cook): each round checks that the list
+comes up big (the intro card) and flies into the sidebar, that the goal is
+behind the "?" (and pops out), that the rows show no digit but the running
+tally (the count asked for is the Kutchi number word's job), that Done and
+the zoom buttons are on screen and tappable, and that zoom works.
 """
 import argparse
 import http.server
@@ -36,7 +52,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PORT = int(os.environ.get("FIND_TEST_PORT", 8980))
+PORT = int(os.environ.get("FIND_TEST_PORT") or os.environ.get("COOK_TEST_PORT") or 8801)
 
 VIEWPORTS = [
     {"name": "laptop", "width": 1366, "height": 768, "touch": False},
@@ -45,6 +61,8 @@ VIEWPORTS = [
     {"name": "laptop-1280x800", "width": 1280, "height": 800, "touch": False},
     {"name": "ipad", "width": 1024, "height": 768, "touch": True},
     {"name": "ipad-portrait", "width": 768, "height": 1024, "touch": True},
+    # a small phone on its side (the narrowest sidebar: the rail must still fit, zoom in reach)
+    {"name": "phone-se-landscape", "width": 667, "height": 375, "touch": True},
 ]
 
 
@@ -108,6 +126,79 @@ class Player:
             time.sleep(0.01)
         p.mouse.up()
 
+    def reachable(self, sel):
+        """The element is wholly on screen and a tap at its centre lands on it."""
+        r = self.page.evaluate(
+            """(sel) => { const e = document.querySelector(sel); if (!e) return {missing: true};
+              const b = e.getBoundingClientRect(); const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+              const hit = document.elementFromPoint(cx, cy);
+              return {l: b.left, t: b.top, r: b.right, b: b.bottom, w: b.width, h: b.height, vw: innerWidth, vh: innerHeight, hit: !!hit && (hit === e || e.contains(hit))}; }""",
+            sel,
+        )
+        if r.get("missing"):
+            raise AssertionError(f"{sel} is missing")
+        if r["w"] < 28 or r["h"] < 28 or r["l"] < 0 or r["t"] < 0 or r["r"] > r["vw"] + 0.5 or r["b"] > r["vh"] + 0.5 or not r["hit"]:
+            raise AssertionError(f"{sel} is not wholly on screen and tappable: {r}")
+
+    def check_sidebar(self):
+        """The calm sidebar, once per round, at the start of the search."""
+        p = self.page
+        bad = p.evaluate(
+            """() => ['#coins', '#stars', '#combo', '#how', '.m-steps', '.mstep'].filter((s) => {
+                 const e = document.querySelector(s); return e && e.getBoundingClientRect().width > 0; })"""
+        )
+        if bad:
+            raise AssertionError(f"the old sidebar is back: {bad}")
+        # the rows: no digit but the running tally (the count asked for is the Kutchi number word's job)
+        digits = p.evaluate(
+            """() => [...document.querySelectorAll('#mission .lr .wp-text')].map((t) => {
+                 const c = t.cloneNode(true); c.querySelectorAll('.ltally, .ldigit').forEach((x) => x.remove());
+                 return c.textContent; }).filter((s) => /[0-9]/.test(s))"""
+        )
+        if digits:
+            raise AssertionError(f"a list row shows a number (the answer without Kutchi): {digits}")
+        # the count's digit only while its number word is taught (stage <= 1, D5.2)
+        shown = p.evaluate("document.querySelectorAll('#mission .lr .ldigit').length")
+        taught = len([r for r in self.state()["rows"] if r.get("digit")])
+        if shown != taught:
+            raise AssertionError(f"{shown} rows show their count's digit, but {taught} have a taught number word")
+        dots = p.evaluate("document.querySelectorAll('#mission .lr .ldot').length")
+        rows = len([r for r in self.state()["rows"]])
+        if dots != rows:
+            raise AssertionError(f"one dot per row: {dots} dots for {rows} rows")
+        calls = self.state().get("mech") == "where"
+        for sel in ("#btn-help", "#btn-home", "#btn-zoom-in", "#btn-zoom-out", "#btn-warmer") + (() if calls else ("#find-done",)):
+            self.reachable(sel)
+        # the goal is behind the "?", and pops out
+        if p.is_visible("#help-pop"):
+            raise AssertionError("the goal shows on its own")
+        p.click("#btn-help", force=True)  # it pulses the first time (never "stable")
+        p.wait_for_selector("#help-pop", state="visible", timeout=3000)
+        if "Nani" not in p.inner_text("#help-pop"):
+            raise AssertionError(f"the ? shows the wrong goal: {p.inner_text('#help-pop')}")
+        time.sleep(0.25)  # past its pop-in
+        self.shot("help")
+        p.click("#btn-help", force=True)  # it pulses the first time (never "stable")
+        p.wait_for_selector("#help-pop", state="hidden", timeout=3000)
+        # zoom works from the rail (then back as it was, so the play goes on from the same view)
+        z0 = self.state()["zoom"]
+        if z0 < 2.25:
+            p.click("#btn-zoom-in")
+            time.sleep(0.15)
+            if self.state()["zoom"] <= z0:
+                raise AssertionError("zoom in did nothing")
+            self.shot("zoomed-in")
+            p.click("#btn-zoom-out")
+        else:
+            p.click("#btn-zoom-out")
+            time.sleep(0.15)
+            if self.state()["zoom"] >= z0:
+                raise AssertionError("zoom out did nothing")
+            p.click("#btn-zoom-in")
+        time.sleep(0.15)
+        if abs(self.state()["zoom"] - z0) > 0.01:
+            raise AssertionError("zoom didn't come back")
+
     def wait_change(self, prev, timeout=15):
         t0 = time.time()
         while time.time() - t0 < timeout:
@@ -117,7 +208,39 @@ class Player:
             time.sleep(0.05)
         return self.exp()
 
-    def play(self, mistakes=True, overcount=False, hint=False, timeout=240):
+    def say(self, e, mistakes, via):
+        """A speaking moment: the lab's picker stands in for the microphone; else the pills.
+        via "voice": say it (one wrong word first when making mistakes); "pills": nothing heard until the
+        pills go live; "parent": a parent's check."""
+        p = self.page
+        if "say" not in self.made:
+            self.made.add("say")
+            self.shot("say-moment")
+        if via == "parent" and e.get("parent"):
+            p.click(".njg-say [data-parent=ok]")
+            return
+        wrong_first = mistakes and e.get("wrong") and f"say-wrong" not in self.made
+        if e.get("picker"):
+            if via == "pills":
+                p.click('#fake-mic [data-say=""]')
+                return
+            if wrong_first:
+                self.made.add("say-wrong")
+                p.click(f'#fake-mic [data-say="{e["wrong"][0]}"]')
+                time.sleep(0.4)
+                self.shot("said-wrong")
+                return
+            p.click(f'#fake-mic [data-say="{e["right"][0]}"]')
+            return
+        if e.get("live"):
+            p.click(f'.njg-say .pill[data-choice="{e["right"][0]}"]')
+            return
+        if e.get("mic") and not e.get("listening"):
+            p.click(".njg-say .mic")
+            return
+        time.sleep(0.1)
+
+    def play(self, mistakes=True, overcount=False, hint=False, timeout=240, via="voice"):
         """Play one round from its start to the result card."""
         t0 = time.time()
         last_kind = None
@@ -139,7 +262,7 @@ class Player:
                 continue
             idle = 0
             k = e["kind"]
-            key = json.dumps({a: e.get(a) for a in ("kind", "key", "selector", "sx", "sy")}, sort_keys=True)
+            key = json.dumps({a: e.get(a) for a in ("kind", "key", "selector", "sx", "sy", "right", "picker", "live", "listening")}, sort_keys=True)
             repeats = repeats + 1 if key == last_key else 0
             last_key = key
             if repeats > 10:
@@ -148,10 +271,29 @@ class Player:
             if k != last_kind and k != "pan":
                 self.shot(k + ("-" + e["key"] if e.get("key") == "bag" else ""))
             last_kind = k
+            if k == "say":
+                self.say(e, mistakes, via)
+                self.wait_change(e, timeout=3)
+                continue
             if k == "click":
                 if e.get("end"):
                     return
                 sel = e["selector"]
+                if e.get("intro"):
+                    # Nani's list, big in the middle: tap it (it also goes by itself after she's said it)
+                    if "intro" not in self.made:
+                        self.made.add("intro")
+                        self.shot("intro-card")
+                    try:
+                        self.page.click(sel, force=True, timeout=1500)
+                    except Exception:
+                        pass
+                    self.page.wait_for_selector("#intro", state="hidden", timeout=10000)
+                    if "landed" not in self.made:
+                        self.made.add("landed")
+                        time.sleep(0.4)
+                        self.shot("list-in-sidebar")
+                    continue
                 if sel == "#find-done":
                     st = self.state()
                     # a list never ends by itself: all counts are met, and it still waits for Done
@@ -183,6 +325,12 @@ class Player:
                     self.shot("panned")
             elif k == "tap":
                 tag = "bag" if e.get("key") == "bag" else "stall"
+                if tag == "stall" and "sidebar" not in self.made:
+                    self.made.add("sidebar")
+                    self.check_sidebar()
+                    e = self.exp()
+                    if not e or e.get("kind") != "tap":
+                        continue
                 if hint and tag == "stall" and "hint" not in self.made:
                     # the warmer: Nani points at a third of the stall (costs the no-help star)
                     self.made.add("hint")
@@ -296,6 +444,88 @@ def run_play(vp, speed, shots_root):
                 raise AssertionError("the warmer should cost the no-help star")
             print(f"  {vp['name']}: lab level {level}{' (one too many)' if over else ''}: stars {card['stars']}, reasons {card['reasons'][:3]}")
             out.append((f"level{level}", card))
+        # F2 Which one?: every asked thing is out in both sizes; a wrong tap (maybe the wrong size) costs the ear star
+        P.made = set()
+        page.evaluate("__find.lab('whichone', {level: 1, stage: 2})")
+        page.wait_for_function("__find.state().items > 0 && !__find.state().panel", timeout=15000)
+        time.sleep(0.3)
+        rel = check_relations(page)
+        rows = P.state()["rows"]
+        for r in rows:
+            sizes = {x["size"] for x in rel if x["noun"] == r["noun"]}
+            if not r["size"] or sizes != {"ph-big", "ph-small"}:
+                raise AssertionError(f"which one?: {r['noun']} asked {r['size']}, out in sizes {sizes}")
+        widths = {x["size"]: x["w"] for x in rel if x["noun"] == rows[0]["noun"]}
+        if not widths["ph-big"] > widths["ph-small"]:
+            raise AssertionError(f"which one?: the big one isn't bigger on screen: {widths}")
+        P.shot("whichone-start")
+        P.play(mistakes=True)
+        card = P.state()["cards"][-1]
+        P.shot("whichone-result")
+        if card["stars"]["ear"]:
+            raise AssertionError("which one?: a wrong tap on a tested word should cost the ear star")
+        print(f"  {vp['name']}: F2 which one? level 1: stars {card['stars']}, reasons {card['reasons'][:2]}")
+        # F3 Where is it?: calls one at a time; positions are placeholders, so the ear is "not tested"
+        for level, scene in ((1, "bazaar"), (3, "sitting room")):
+            P.made = set()
+            page.evaluate(f"__find.lab('where', {{level: {level}, stage: 2}})")
+            page.wait_for_function("__find.state().items > 0 && !__find.state().panel", timeout=15000)
+            time.sleep(0.3)
+            rel = check_relations(page)
+            P.shot(f"where{level}-start")
+            P.play(mistakes=level == 1)
+            st = P.state()
+            card = st["cards"][-1]
+            P.shot(f"where{level}-result")
+            if "ear" in card["stars"]:
+                raise AssertionError(f"where is it?: the positions are placeholders, the ear should be untested: {card['stars']}")
+            if len(st["rows"]) < 4 or not all(r["where"] for r in st["rows"]):
+                raise AssertionError(f"where is it?: expected 4+ calls with a place, got {st['rows']}")
+            print(f"  {vp['name']}: F3 where is it? level {level} ({scene}): {len(st['rows'])} calls, stars {card['stars']}")
+        # F4 Ali's turn: through the microphone's stand-in (a wrong word, then right: the voice star)
+        P.made = set()
+        page.evaluate("__find.lab('ali', {level: 2, stage: 2})")
+        page.wait_for_function("__find.state().items > 0 && !__find.state().panel", timeout=15000)
+        P.play(mistakes=True, via="voice")
+        card = P.state()["cards"][-1]
+        P.shot("ali-result")
+        if not card["stars"].get("voice"):
+            raise AssertionError(f"ali's turn said through the mic should earn the voice star: {card}")
+        if "ear" in card["stars"]:
+            raise AssertionError("ali's turn has no ear star")
+        print(f"  {vp['name']}: F4 ali's turn level 2 (voice): stars {card['stars']}")
+        # ... and by pills only: never the voice star
+        P.made = set()
+        page.evaluate("__find.lab('ali', {level: 1, stage: 2})")
+        page.wait_for_function("__find.state().items > 0 && !__find.state().panel", timeout=15000)
+        P.play(mistakes=False, via="pills")
+        st = P.state()
+        card = st["cards"][-1]
+        if card["stars"].get("voice") or any(m["via"] != "pill" for m in st["moments"]):
+            raise AssertionError(f"a pills-only round must not earn the voice star: {card['stars']} {st['moments']}")
+        print(f"  {vp['name']}: F4 ali's turn level 1 (pills only): stars {card['stars']}")
+        # ... and with a parent: their check counts
+        P.made = set()
+        page.evaluate("__find.lab('ali', {level: 1, stage: 2, parent: true})")
+        page.wait_for_function("__find.state().items > 0 && !__find.state().panel", timeout=15000)
+        P.play(mistakes=False, via="parent")
+        st = P.state()
+        card = st["cards"][-1]
+        if not card["stars"].get("voice") or any(m["via"] != "parent" for m in st["moments"]):
+            raise AssertionError(f"a parent's check should earn the voice star: {card['stars']} {st['moments']}")
+        print(f"  {vp['name']}: F4 ali's turn level 1 (a parent's check): stars {card['stars']}")
+        # level 4 of every game runs (laptop only: it's the same code at a phone's size)
+        if vp["name"] == "laptop":
+            for key in ("list", "whichone", "where", "ali"):
+                P.made = set()
+                page.evaluate(f"__find.lab('{key}', {{level: 4, stage: 3}})")
+                page.wait_for_function("__find.state().items > 0 && !__find.state().panel", timeout=15000)
+                time.sleep(0.3)
+                check_relations(page)
+                P.shot(f"{key}-level4")
+                P.play(mistakes=False)
+                card = P.state()["cards"][-1]
+                print(f"  {vp['name']}: {key} level 4: stars {card['stars']}")
         # a clean round: no mistakes, all three stars possible
         P.made = set()
         page.evaluate("__find.lab('list', {level: 1, stage: 2})")

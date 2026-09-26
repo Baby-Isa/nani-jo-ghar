@@ -90,7 +90,7 @@
     manifest(ids) {
       return ids.map(({ kind, id }) => ({
         key: audioKey(kind, id),
-        url: `assets/audio/${kind}/${id}.mp3`,
+        url: njgV(`assets/audio/${kind}/${id}.mp3`),
       }));
     },
 

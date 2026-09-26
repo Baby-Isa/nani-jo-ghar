@@ -51,18 +51,44 @@
       fly: el("div", "w-fly", world),
       fx: el("div", "w-fx", world),
     };
-    layers.bg.src = scene.background;
-    layers.bg.alt = "";
-    layers.bg.draggable = false;
-    $("#letterbox").style.backgroundImage = `url("${scene.background}")`;
+    layers.occ2 = el("div", "w-occ2", world);
+    V.person = null;
+    if (scene.background) {
+      layers.bg.src = Cook.v(scene.background);
+      layers.bg.alt = "";
+      layers.bg.draggable = false;
+      $("#letterbox").style.backgroundImage = `url("${Cook.v(scene.background)}")`;
+    } else {
+      layers.bg.remove();
+      $("#letterbox").style.backgroundImage = "none";
+    }
     $("#stage").style.background = scene.letterbox || "#e9dcc4";
+    // a greybox scene (no art yet, design 4.4): each anchor a labelled grey box on a plain floor,
+    // and the occluders (a sofa's skirt, the curtain) drawn over the things, so under and behind
+    // really hide part of them. Labels are on scenery only, never on things.
+    if (scene.greybox) {
+      world.classList.add("greybox");
+      const floor = el("div", "w-grey-floor", world);
+      floor.style.zIndex = "0";
+      Object.entries(scene.anchors || {}).forEach(([id, a]) => {
+        const [x1, y1, x2, y2] = a.rect;
+        const b = el("div", `w-grey w-grey-${id}`, world);
+        Object.assign(b.style, { left: `${x1}px`, top: `${y1}px`, width: `${x2 - x1}px`, height: `${y2 - y1}px` });
+        b.innerHTML = `<span>${a.en || id}</span>`;
+      });
+      (scene.occluders || []).forEach((o) => {
+        const [x1, y1, x2, y2] = o.rect;
+        const b = el("div", `w-grey-occ w-grey-occ-${o.id}`, layers.occ2);
+        Object.assign(b.style, { left: `${x1}px`, top: `${y1}px`, width: `${x2 - x1}px`, height: `${y2 - y1}px` });
+      });
+    } else world.classList.remove("greybox");
     // the shopkeeper stands behind the counter
     if (scene.character) {
       const c = scene.character;
       const img = el("img", "w-person", layers.char);
       img.alt = "";
       img.draggable = false;
-      img.src = `assets/characters/${c.id}/${c.id}-neutral.png`;
+      img.src = Cook.v(`assets/characters/${c.id}/${c.id}-neutral.png`);
       const w = 344 * (c.scale || 1);
       Object.assign(img.style, { left: `${c.x - w / 2}px`, top: `${c.top}px`, width: `${w}px` });
       V.person = { img, id: c.id, x: c.x, top: c.top, w, h: 700 * (c.scale || 1) };
@@ -70,7 +96,7 @@
     // the counter front, redrawn over him from the background
     if (scene.occluder && scene.occluder.fromBackground) {
       const y = scene.occluder.y;
-      Object.assign(layers.occ.style, { top: `${y}px`, height: `${WH - y}px`, backgroundImage: `url("${scene.background}")`, backgroundPosition: `0 ${-y}px` });
+      Object.assign(layers.occ.style, { top: `${y}px`, height: `${WH - y}px`, backgroundImage: `url("${Cook.v(scene.background)}")`, backgroundPosition: `0 ${-y}px` });
     }
     // the carried basket: back, items, front rim
     if (scene.basket) {
@@ -84,8 +110,8 @@
         i.draggable = false;
         Object.assign(i.style, { left: `${b.x - b.w / 2}px`, top: `${b.top}px`, width: `${b.w}px`, height: `${h}px` });
       });
-      back.src = b.back;
-      front.src = b.front;
+      back.src = Cook.v(b.back);
+      front.src = Cook.v(b.front);
       layers.basketItems = inside;
     }
     V.fit();
@@ -99,7 +125,7 @@
     const img = el("img", "", d);
     img.alt = "";
     img.draggable = false;
-    img.src = Find.picture(item.noun);
+    img.src = Cook.v(Find.picture(item.noun));
     V.size(d, item);
     d.style.zIndex = String(Math.round(item.baseline));
     if (item.tilt) d.style.setProperty("--tilt", `${item.tilt}deg`);
@@ -119,7 +145,7 @@
         resolve({ w: Math.round(i.naturalWidth * k), h: Math.round(i.naturalHeight * k) });
       };
       i.onerror = () => resolve({ w: size, h: size });
-      i.src = Find.picture(noun);
+      i.src = Cook.v(Find.picture(noun));
     });
   };
   V.clearItems = function () {
@@ -187,7 +213,7 @@
   };
   V.mood = function (mood) {
     if (!V.person) return;
-    V.person.img.src = `assets/characters/${V.person.id}/${V.person.id}-${mood}.png`;
+    V.person.img.src = Cook.v(`assets/characters/${V.person.id}/${V.person.id}-${mood}.png`);
   };
   V.bob = function () {
     if (!V.person) return;
@@ -196,6 +222,46 @@
     void i.offsetWidth;
     i.classList.add("bob");
   };
+  /* ---------------- the bowl (speaking moment 1) and Ali (F4): greybox until the art ---------------- */
+  /** Nani's bowl on the counter: returns the place a thing lands in it. */
+  V.bowl = function (on = true) {
+    const old = world && world.querySelector(".w-bowl");
+    if (old) old.remove();
+    if (!on) return null;
+    const b = (st.scene && st.scene.bowl) || { x: 330, baseline: 700, w: 230 };
+    const d = el("div", "w-bowl", layers.fx);
+    Object.assign(d.style, { left: `${b.x - b.w / 2}px`, top: `${b.baseline - b.w * 0.42}px`, width: `${b.w}px`, height: `${b.w * 0.42}px` });
+    V.bowlEl = d;
+    let n = 0;
+    return () => ({ x: b.x - b.w * 0.25 + (n++ % 3) * b.w * 0.25, baseline: b.baseline - b.w * 0.12, w: 84, h: 84 });
+  };
+  V.bowlShake = function () {
+    const d = V.bowlEl;
+    if (!d) return;
+    d.classList.remove("shake");
+    void d.offsetWidth;
+    d.classList.add("shake");
+  };
+  /** A character badge standing in the scene (Ali at the stall): a face and a name, greybox. */
+  V.actor = function (on, { img = "assets/cook/characters/cousin-neutral.webp", x = 1320, top = 250, w = 190, name = "Ali" } = {}) {
+    const old = world && world.querySelector(".w-actor");
+    if (old) old.remove();
+    if (!on) return null;
+    const d = el("div", "w-actor", layers.fx);
+    Object.assign(d.style, { left: `${x - w / 2}px`, top: `${top}px`, width: `${w}px` });
+    d.innerHTML = `<img alt="" draggable="false" src="${img}"><b>${name}</b>`;
+    V.actorEl = d;
+    return d;
+  };
+  /** The character looks puzzled (a wrong act) or pleased. */
+  V.actorMood = function (mood) {
+    const d = V.actorEl;
+    if (!d) return;
+    d.classList.remove("puzzled", "pleased");
+    void d.offsetWidth;
+    if (mood) d.classList.add(mood);
+  };
+
   /** Warmer: dim all but a band of the stall (x from a to b). */
   V.dimOutside = function (a, b, items) {
     const d = layers.dim;
@@ -208,6 +274,16 @@
     d.style.setProperty("--a", `${a}px`);
     d.style.setProperty("--b", `${b}px`);
     items.forEach((i) => i.el && i.el.classList.toggle("dimmed", i.x < a || i.x > b));
+  };
+
+  /** Quick finds in a row: a "×3" rises from the basket and fades (not in the sidebar: that stays calm). */
+  V.combo = function (n) {
+    if (!layers || n < 2) return;
+    const b = (st.scene && st.scene.basket) || { x: 800, top: 690 };
+    const c = el("div", "w-combo", layers.fx);
+    c.textContent = `×${n}`;
+    Object.assign(c.style, { left: `${b.x}px`, top: `${b.top - 70}px` });
+    setTimeout(() => c.remove(), 1100);
   };
 
   /* ---------------- fit, zoom and pan ---------------- */

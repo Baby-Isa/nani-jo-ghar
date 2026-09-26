@@ -1,0 +1,488 @@
+{
+ "_about": "Tidy up sidecar for a top-down (T) worktop: the masala dabba (T1's second board) and the fruit box for the guests (T3). Greybox until painted. adj lists extra neighbours (the round tin's middle katori touches all six).",
+ "id": "worktop-tidy",
+ "camera": "T",
+ "boards": {
+  "dabba": {
+   "name": "The masala dabba",
+   "surfaces": [
+    {
+     "id": "tin",
+     "circle": [
+      800,
+      370,
+      300
+     ],
+     "material": "steel",
+     "draw": "tin"
+    }
+   ],
+   "anchors": [],
+   "katori": 78,
+   "spots": [
+    {
+     "id": "c",
+     "x": 800,
+     "y": 370,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "middle"
+      }
+     ],
+     "surface": "tin",
+     "nbr": {
+      "left": "w",
+      "right": "e",
+      "back": "n1",
+      "front": "s2"
+     },
+     "adj": [
+      "n1",
+      "n2",
+      "s1",
+      "s2",
+      "w",
+      "e"
+     ]
+    },
+    {
+     "id": "n1",
+     "x": 690,
+     "y": 205,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "back"
+      }
+     ],
+     "surface": "tin",
+     "nbr": {
+      "right": "n2",
+      "front": "c"
+     },
+     "adj": [
+      "c"
+     ]
+    },
+    {
+     "id": "n2",
+     "x": 910,
+     "y": 205,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "back"
+      }
+     ],
+     "surface": "tin",
+     "nbr": {
+      "left": "n1",
+      "front": "e"
+     },
+     "adj": [
+      "c"
+     ]
+    },
+    {
+     "id": "s1",
+     "x": 690,
+     "y": 535,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "front"
+      }
+     ],
+     "surface": "tin",
+     "nbr": {
+      "right": "s2",
+      "back": "w"
+     },
+     "adj": [
+      "c"
+     ]
+    },
+    {
+     "id": "s2",
+     "x": 910,
+     "y": 535,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "front"
+      }
+     ],
+     "surface": "tin",
+     "nbr": {
+      "left": "s1",
+      "back": "c"
+     },
+     "adj": [
+      "c"
+     ]
+    },
+    {
+     "id": "w",
+     "x": 595,
+     "y": 370,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "left",
+       "lv": 2
+      }
+     ],
+     "surface": "tin",
+     "nbr": {
+      "right": "c",
+      "back": "n1",
+      "front": "s1"
+     }
+    },
+    {
+     "id": "e",
+     "x": 1005,
+     "y": 370,
+     "cap": 1,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "right",
+       "lv": 2
+      }
+     ],
+     "surface": "tin",
+     "nbr": {
+      "left": "c",
+      "back": "n2",
+      "front": "s2"
+     }
+    }
+   ],
+   "convention": {
+    "_about": "filled clockwise from the back left, the middle last",
+    "fill": [
+     "n1",
+     "n2",
+     "e",
+     "s2",
+     "s1",
+     "w",
+     "c"
+    ]
+   }
+  },
+  "fruit-box": {
+   "name": "The fruit box for the guests",
+   "surfaces": [
+    {
+     "id": "box",
+     "rect": [
+      480,
+      60,
+      640,
+      630
+     ],
+     "material": "cardboard",
+     "draw": "box-grid"
+    }
+   ],
+   "anchors": [
+    {
+     "id": "row-top",
+     "kind": "region",
+     "word": "ph-t-toprow",
+     "rel": "in"
+    },
+    {
+     "id": "row-mid",
+     "kind": "region",
+     "word": "ph-t-middlerow",
+     "rel": "in"
+    },
+    {
+     "id": "row-bot",
+     "kind": "region",
+     "word": "ph-t-bottomrow",
+     "rel": "in"
+    },
+    {
+     "id": "corners",
+     "kind": "region",
+     "word": "ph-t-corners",
+     "rel": "in",
+     "lv": 3
+    }
+   ],
+   "spots": [
+    {
+     "id": "r1c1",
+     "x": 586,
+     "y": 165,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-top"
+      },
+      {
+       "rel": "in",
+       "anchor": "corners",
+       "lv": 3
+      }
+     ],
+     "cell": [
+      482,
+      63,
+      208,
+      204
+     ],
+     "nbr": {
+      "right": "r1c2",
+      "front": "r2c1"
+     }
+    },
+    {
+     "id": "r1c2",
+     "x": 800,
+     "y": 165,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-top"
+      }
+     ],
+     "cell": [
+      696,
+      63,
+      208,
+      204
+     ],
+     "nbr": {
+      "left": "r1c1",
+      "right": "r1c3",
+      "front": "r2c2"
+     }
+    },
+    {
+     "id": "r1c3",
+     "x": 1013,
+     "y": 165,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-top"
+      },
+      {
+       "rel": "in",
+       "anchor": "corners",
+       "lv": 3
+      }
+     ],
+     "cell": [
+      909,
+      63,
+      208,
+      204
+     ],
+     "nbr": {
+      "left": "r1c2",
+      "front": "r2c3"
+     }
+    },
+    {
+     "id": "r2c1",
+     "x": 586,
+     "y": 375,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-mid"
+      }
+     ],
+     "cell": [
+      482,
+      273,
+      208,
+      204
+     ],
+     "nbr": {
+      "back": "r1c1",
+      "right": "r2c2",
+      "front": "r3c1"
+     }
+    },
+    {
+     "id": "r2c2",
+     "x": 800,
+     "y": 375,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-mid"
+      },
+      {
+       "rel": "middle",
+       "lv": 3
+      }
+     ],
+     "cell": [
+      696,
+      273,
+      208,
+      204
+     ],
+     "nbr": {
+      "back": "r1c2",
+      "left": "r2c1",
+      "right": "r2c3",
+      "front": "r3c2"
+     }
+    },
+    {
+     "id": "r2c3",
+     "x": 1013,
+     "y": 375,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-mid"
+      }
+     ],
+     "cell": [
+      909,
+      273,
+      208,
+      204
+     ],
+     "nbr": {
+      "back": "r1c3",
+      "left": "r2c2",
+      "front": "r3c3"
+     }
+    },
+    {
+     "id": "r3c1",
+     "x": 586,
+     "y": 585,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-bot"
+      },
+      {
+       "rel": "in",
+       "anchor": "corners",
+       "lv": 3
+      }
+     ],
+     "cell": [
+      482,
+      483,
+      208,
+      204
+     ],
+     "nbr": {
+      "back": "r2c1",
+      "right": "r3c2"
+     }
+    },
+    {
+     "id": "r3c2",
+     "x": 800,
+     "y": 585,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-bot"
+      }
+     ],
+     "cell": [
+      696,
+      483,
+      208,
+      204
+     ],
+     "nbr": {
+      "back": "r2c2",
+      "left": "r3c1",
+      "right": "r3c3"
+     }
+    },
+    {
+     "id": "r3c3",
+     "x": 1013,
+     "y": 585,
+     "surface": "box",
+     "cap": 3,
+     "lv": 1,
+     "tags": [
+      {
+       "rel": "in",
+       "anchor": "row-bot"
+      },
+      {
+       "rel": "in",
+       "anchor": "corners",
+       "lv": 3
+      }
+     ],
+     "cell": [
+      909,
+      483,
+      208,
+      204
+     ],
+     "nbr": {
+      "back": "r2c3",
+      "left": "r3c2"
+     }
+    }
+   ],
+   "convention": {
+    "_about": "a box is filled from the top left",
+    "fill": [
+     "r1c1",
+     "r1c2",
+     "r1c3",
+     "r2c1",
+     "r2c2",
+     "r2c3",
+     "r3c1",
+     "r3c2",
+     "r3c3"
+    ]
+   }
+  }
+ }
+}

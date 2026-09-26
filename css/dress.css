@@ -1,0 +1,100 @@
+/* Dress up (dress.html), greybox: on top of css/cook.css, which it shares
+   (the sidebar, cards, panels, stars, result cards, word pills). The scene
+   is one 1600x900 SVG (js/dress/doll.js). Nothing in HTML covers the play
+   area during play: Done, the speaker's line, "pass me" and "say how many"
+   live in the sidebar. */
+
+body.dress #overlay.title-mode { background: #e8dcc6; }
+#world { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; background: #d9c7a8; }
+#world .it { cursor: pointer; }
+#world .it:hover { filter: brightness(1.06); }
+#world .it.sel { filter: drop-shadow(0 0 10px #ffd98a) drop-shadow(0 0 3px #b07d10); transform-box: fill-box; transform-origin: center; transform: translateY(-10px); }
+#world .glow { animation: dressGlow 1s ease-in-out infinite; }
+@keyframes dressGlow { 50% { filter: drop-shadow(0 0 14px #ffd23a) brightness(1.1); } }
+#world .client .ov { cursor: pointer; }
+#world .part { cursor: pointer; }
+#world .placed.inert { pointer-events: none; }
+#world .part.live { stroke: #b07d10; fill: rgba(255, 217, 138, .12); }
+#world .pile { cursor: pointer; }
+#world .ping { animation: dressPing .8s ease-in-out infinite alternate; }
+@keyframes dressPing { to { transform: translateY(-8px); } }
+
+/* the lab strip: the round's blind odds (lab only) */
+#lab-strip { font-size: 12px; font-weight: 700; color: var(--ink-soft); background: #efe4d2; border-radius: 10px; padding: 4px 8px; line-height: 1.3; }
+#lab-strip b { color: var(--ink); }
+
+/* the card: never shrinks below its rows (the sidebar scrolls instead) */
+body.dress #mission { flex: none; overflow: visible; }
+#mission .m-head { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+.d-face, .sc-face, .ic-face { flex: none; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: #eadcc6; display: inline-flex; align-items: center; justify-content: center; }
+.d-face img, .sc-face img, .ic-face img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.bm { font-weight: 800; font-size: 15px; color: var(--ink-soft); }
+#mission .m-name { font-weight: 800; color: var(--ink-soft); font-size: 14px; }
+#mission .m-order { display: flex; flex-direction: column; gap: 4px; }
+#mission .lr { background: var(--paper); border-radius: 10px; padding: 4px 8px; }
+#mission .lr .wp-text { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(15px, 1.35vw, 19px); line-height: 1.2; }
+#mission .lr .word:not(.ph) { color: var(--madder); }
+#mission .lr .dots { letter-spacing: 2px; color: var(--ink-soft); }
+#mission .lr.done { background: #eaf3e4; }
+.wp-text .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-weight: 700; }
+.wp-text .word:not(.ph) { color: var(--madder); }
+
+#dress-done { width: 100%; flex: none; }
+
+/* who's talking */
+#say-card { display: flex; gap: 8px; align-items: flex-start; }
+#say-card.pop { animation: pop .25s ease-out; }
+#say-card .say-slot { min-width: 0; }
+#say-card .sc-who { display: block; font-size: 12px; font-weight: 800; color: var(--ink-soft); }
+#say-card .wp-text { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(16px, 1.45vw, 21px); line-height: 1.25; }
+
+/* a moment: pass me, say how many */
+#moment { display: flex; flex-direction: column; gap: 8px; }
+.mo-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; }
+.mo-tool { border: 3px solid #e0d2bb; background: var(--paper); border-radius: 14px; aspect-ratio: 1; padding: 6px; min-height: 56px; }
+.mo-tool svg { width: 100%; height: 100%; }
+.mo-say { display: flex; gap: 8px; align-items: center; }
+.mo-mic { display: inline-flex; gap: 8px; align-items: center; border: none; border-radius: 999px; padding: 8px 16px; min-height: 48px; background: var(--madder); color: #fff; font-weight: 800; font-size: 16px; }
+.mo-mic[disabled] { background: #cdbfa9; }
+.mic-dot { width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+.mo-note { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.mo-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.mo-pill { border: 2px solid #e0d2bb; background: var(--cream); border-radius: 999px; padding: 6px 14px; min-height: 44px; font-family: var(--kutchi-font); font-weight: 800; font-size: 19px; }
+.mo-pill .word { color: var(--madder); }
+.mo-parent { border: none; background: #eaf3e4; color: var(--sage-dark); border-radius: 12px; padding: 8px 12px; font-weight: 800; font-size: 13px; min-height: 40px; }
+
+/* the intro card */
+#intro .ic-go { display: block; margin: clamp(8px, 1.6vh, 16px) auto 0; border: none; border-radius: 14px; background: var(--madder); color: #fff; font-size: 16px; font-weight: 800; padding: 10px 22px; min-height: 46px; letter-spacing: 0; }
+#intro .ir .wp-text { font-family: var(--kutchi-font); font-weight: 800; font-size: clamp(18px, 2.2vw, 30px); line-height: 1.2; }
+
+/* the result card's pills */
+.rc-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.kp { background: var(--cream); border-radius: 10px; padding: 4px 10px; font-family: var(--kutchi-font); font-weight: 800; }
+.kp.bad { outline: 2px solid var(--madder); background: #fbe7e2; }
+.kp.none { color: var(--ink-soft); }
+.receipt div { display: flex; justify-content: space-between; font-size: 14px; }
+.receipt .total { border-top: 1px dashed #d9c7a8; margin-top: 4px; padding-top: 4px; font-weight: 800; }
+
+/* the lab */
+.lab-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
+.lab-lbl { font-weight: 800; min-width: 52px; }
+.lab-check { display: flex; gap: 8px; align-items: center; font-weight: 800; margin: 8px 0; }
+.lab-grid button[disabled] { opacity: .55; }
+table.leak { border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+table.leak td, table.leak th { padding: 3px 10px; border-bottom: 1px solid #e0d2bb; text-align: left; }
+table.leak tr.bad td { color: var(--madder); font-weight: 800; }
+
+@media (max-height: 430px) {
+  #mission .lr .wp-text { font-size: 14px; }
+  #say-card .wp-text { font-size: 14px; }
+  #dress-done { min-height: 40px; padding: 6px 12px; }
+  .d-face, .sc-face { width: 34px; height: 34px; }
+  #mission .lr { padding: 2px 6px; }
+  .mo-pill { min-height: 38px; font-size: 16px; padding: 4px 10px; }
+}
+
+/* portrait tablets: the sidebar sits under the picture (cook.css); Dress up keeps it one simple column */
+@media (max-aspect-ratio: 1332/1000) {
+  body.dress #side { display: flex; flex-direction: column; }
+  body.dress .side-rail { justify-content: flex-start; }
+}
