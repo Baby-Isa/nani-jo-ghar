@@ -237,6 +237,12 @@ class Player:
                 time.sleep(0.5)
                 self.shot("wrong-choice")
             p.wait_for_selector(sel, state="visible", timeout=10000)
+            if ".njg-results" in sel:
+                # Wave 6b: picture the end-of-round screen (badges, then the words) for the first rounds
+                self.results_shots = getattr(self, "results_shots", 0) + 1
+                if self.results_shots <= 4:
+                    time.sleep(1.8)
+                    self.shot("results-" + ("badges" if "rs-next" in sel else "words"))
             p.click(sel)
         elif k == "tap":
             # "mistake": the station asks for one wrong tap here (the Chai tray's salt in the lab)
