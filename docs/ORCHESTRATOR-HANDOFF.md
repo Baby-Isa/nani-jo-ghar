@@ -144,3 +144,4 @@ On reports: merge into nifty-rubin → bump_version → smoke test → push → 
   - in-process agent applying the Section B words to Cook (`docs/cook-word-changes-B.md`);
   - in-process agent cutting family voice clips (`assets/audio/family/`, `data/family-audio.json`, `lab/family-audio.html`);
   - shell "one app, one save" (`claude/build-shell`, session_01JZerhfa5qGNZnwu1LTq9Lp).
+- 11:15 UTC: Zafar passed the hands. `claude/art-hands-v3` merged into nifty-rubin. Wiring session `claude/cook-hands` (session_01MAs1TPaN2juaEio8CC4aon) launched. First-launch story draft: `docs/first-launch-story.md` (waiting on the rest of Zafar's thoughts; the shell continuation adds the character step and the story beat once agreed).
