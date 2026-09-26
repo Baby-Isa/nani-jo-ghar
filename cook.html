@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#f3e7d3">
 <title>Cook with Nani</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
-<link rel="stylesheet" href="css/shared/app.css?v=20260926T141949Z">
+<link rel="stylesheet" href="css/shared/app.css?v=20260926T143753Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/cook.css?v=20260926T141949Z">
+<link rel="stylesheet" href="css/cook.css?v=20260926T143753Z">
 <!-- Wave 6b: the shared end-of-round screen and onboarding kit (docs/shared-api.md 8-10) -->
-<link rel="stylesheet" href="css/shared/results.css?v=20260926T141949Z">
-<link rel="stylesheet" href="css/shared/onboard.css?v=20260926T141949Z">
+<link rel="stylesheet" href="css/shared/results.css?v=20260926T143753Z">
+<link rel="stylesheet" href="css/shared/onboard.css?v=20260926T143753Z">
 </head>
 <body class="w6">
 
@@ -74,7 +74,7 @@
     <!-- 2. Nani's current line: one short line; at the stations she talks from here, so her words never cover a thing to tap -->
     <div id="live">
       <div id="nani-card" class="card hidden" role="status" aria-live="polite">
-        <img class="nc-face" src="assets/cook/characters/nani-badge.webp?v=20260926T141949Z" alt="Nani">
+        <img class="nc-face" src="assets/cook/characters/nani-badge.webp?v=20260926T143753Z" alt="Nani">
         <div class="say-slot"></div>
       </div>
     </div>
@@ -91,7 +91,7 @@
 
   <!-- Nani: "pass me…". Her card comes forward in the sidebar column, never over the play area -->
   <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">
-    <div class="pm-nani"><img src="assets/cook/characters/nani-badge.webp?v=20260926T141949Z" alt="Nani"><div class="pm-say"></div></div>
+    <div class="pm-nani"><img src="assets/cook/characters/nani-badge.webp?v=20260926T143753Z" alt="Nani"><div class="pm-say"></div></div>
     <div class="pm-tray"></div>
   </div>
 </div>
@@ -101,50 +101,50 @@
 <!-- Wave 6: the first time at each station, everything dims but one thing and a ghost finger shows the move (js/cook/coach.js); it never takes a tap -->
 <div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div><div class="co-finger"></div></div>
 
-<script src="js/vendor/phaser.min.js?v=20260926T141949Z"></script>
-<script src="js/version.js?v=20260926T141949Z"></script>
+<script src="js/vendor/phaser.min.js?v=20260926T143753Z"></script>
+<script src="js/version.js?v=20260926T143753Z"></script>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
-<script src="js/shared/save.js?v=20260926T141949Z"></script>
-<script src="js/shared/app.js?v=20260926T141949Z"></script>
-<script src="js/shared/uistore.js?v=20260926T141949Z"></script>
-<script src="js/shared/sfx.js?v=20260926T141949Z"></script>
-<script src="js/shared/results.js?v=20260926T141949Z"></script>
-<script src="js/shared/onboard.js?v=20260926T141949Z"></script>
-<script src="js/cook/core.js?v=20260926T141949Z"></script>
-<script src="js/cook/lang.js?v=20260926T141949Z"></script>
-<script src="js/cook/art.js?v=20260926T141949Z"></script>
-<script src="js/cook/ui.js?v=20260926T141949Z"></script>
-<script src="js/cook/stations.js?v=20260926T141949Z"></script>
-<script src="js/cook/station-lib.js?v=20260926T141949Z"></script>
-<script src="js/cook/zone.js?v=20260926T141949Z"></script>
+<script src="js/shared/save.js?v=20260926T143753Z"></script>
+<script src="js/shared/app.js?v=20260926T143753Z"></script>
+<script src="js/shared/uistore.js?v=20260926T143753Z"></script>
+<script src="js/shared/sfx.js?v=20260926T143753Z"></script>
+<script src="js/shared/results.js?v=20260926T143753Z"></script>
+<script src="js/shared/onboard.js?v=20260926T143753Z"></script>
+<script src="js/cook/core.js?v=20260926T143753Z"></script>
+<script src="js/cook/lang.js?v=20260926T143753Z"></script>
+<script src="js/cook/art.js?v=20260926T143753Z"></script>
+<script src="js/cook/ui.js?v=20260926T143753Z"></script>
+<script src="js/cook/stations.js?v=20260926T143753Z"></script>
+<script src="js/cook/station-lib.js?v=20260926T143753Z"></script>
+<script src="js/cook/zone.js?v=20260926T143753Z"></script>
 <!-- mechanics: one verb per file (the order here is the Station lab's order) -->
-<script src="js/cook/mechanics/fetch.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/passme.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/pour.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/add.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/boil.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/count.js?v=20260926T141949Z"></script>
+<script src="js/cook/mechanics/fetch.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/passme.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/pour.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/add.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/boil.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/count.js?v=20260926T143753Z"></script>
 <!-- knead (js/cook/mechanics/knead.js) is cut from the playable stations (the quality pass: no word, hands only); the file stays -->
-<script src="js/cook/mechanics/roll.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/tawa.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/chop.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/tadka.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/stir.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/assemble.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/fill-fold.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/fry.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/thread.js?v=20260926T141949Z"></script>
-<script src="js/cook/mechanics/grill.js?v=20260926T141949Z"></script>
+<script src="js/cook/mechanics/roll.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/tawa.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/chop.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/tadka.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/stir.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/assemble.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/fill-fold.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/fry.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/thread.js?v=20260926T143753Z"></script>
+<script src="js/cook/mechanics/grill.js?v=20260926T143753Z"></script>
 <!-- combined stations: one file each (the next wave fills the three stubs) -->
-<script src="js/cook/stations/roll-tawa.js?v=20260926T141949Z"></script>
-<script src="js/cook/stations/maani-line.js?v=20260926T141949Z"></script>
-<script src="js/cook/stations/chai-tray.js?v=20260926T141949Z"></script>
-<script src="js/cook/stations/mishkaki-grill.js?v=20260926T141949Z"></script>
-<script src="js/cook/recipes.js?v=20260926T141949Z"></script>
-<script src="js/cook/order.js?v=20260926T141949Z"></script>
-<script src="js/cook/coach.js?v=20260926T141949Z"></script>
-<script src="js/cook/flow.js?v=20260926T141949Z"></script>
+<script src="js/cook/stations/roll-tawa.js?v=20260926T143753Z"></script>
+<script src="js/cook/stations/maani-line.js?v=20260926T143753Z"></script>
+<script src="js/cook/stations/chai-tray.js?v=20260926T143753Z"></script>
+<script src="js/cook/stations/mishkaki-grill.js?v=20260926T143753Z"></script>
+<script src="js/cook/recipes.js?v=20260926T143753Z"></script>
+<script src="js/cook/order.js?v=20260926T143753Z"></script>
+<script src="js/cook/coach.js?v=20260926T143753Z"></script>
+<script src="js/cook/flow.js?v=20260926T143753Z"></script>
 <!-- inside the app shell: the first launch (straight into the pantry) and the way home -->
-<script src="js/cook/app.js?v=20260926T141949Z"></script>
+<script src="js/cook/app.js?v=20260926T143753Z"></script>
 </body>
 </html>

@@ -26,8 +26,8 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Piece | % | Next step |
 |---|---|---|
 | Shared UI (end-of-round screen, onboarding kit, light bulb, request card) | 85 | Roll it into the five new modes as they're rebuilt. |
-| Shell: one app, one save, player picker | 50 | Finishing now; then publish. |
-| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 10 | Build it after the shell. The story is English then Kutchi (decided). |
+| Shell: one app, one save, player picker | 100 | Live: Nani's house with doors for Cook, Find it and the clinic; a player picker; one save with migration. |
+| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 15 | Being built now (`claude/first-launch`). |
 | Story engine (arcs and chapters as data, picture panels, Story help) | 5 | Comes with the first launch. |
 | World map and home (fog of war, "the world is the menu", role reversal) | 0 | Phase C, after the first launch. |
 | Speech recognition (on-device, closed set, voice star) | 30 | Enrol it with the family voice clips; the first speaking moments go in Cook. |
@@ -43,7 +43,7 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Recordings with Mum (Sections A–J, about 170 min in all) | 15 | **Section C** (the grammar sentences) next, then G (clinic and monsoon), D, E, F, H, I. Also the 10 first-launch story lines. |
 | Section A (grammar basics) and B (Cook words) | 100 | Done: grammar notes §1–§28. |
 | Grammar notes and spelling rules | 35 | Grows with each recording. Answer the open spelling questions. |
-| Voice clips (cut from the recordings, a lab page to check them) | 40 | The agent is cutting Section B now; then Zafar checks them by ear. |
+| Voice clips (cut from the recordings, a lab page to check them) | 60 | 86 Mum and 87 Zafar clips from Section B are in `lab/family-audio.html`. Zafar ticks the good ones; then wire them into the game and speech enrolment. |
 | Words in the game data | Cook 70, Find 40, the clinic 5, the others 5–10 | Each mode's words go in when its recording section is done. |
 | Syllabus word lists S1–S6 | S1 50, S2 20, S3–S6 5 | Recordings C and E–H fill S2–S4. |
 
