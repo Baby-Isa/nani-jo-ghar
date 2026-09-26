@@ -30,7 +30,7 @@ def main():
     ap.add_argument("--viewport", default="laptop")
     ap.add_argument("--hands", default="player-boy")
     ap.add_argument("--stations", default=",".join(T.KEPT))
-    ap.add_argument("--speed", type=float, default=2)
+    ap.add_argument("--speed", type=float, default=1)
     args = ap.parse_args()
     vp = next(v for v in T.VIEWPORTS if v["name"] == args.viewport)
     root = os.path.join(ROOT, "build", "screenshots", "cook-hands")
@@ -87,8 +87,17 @@ def main():
 
     def tap(self, x, y, what="tap"):
         orig_tap(self, x, y, what)
-        time.sleep(0.09)
+        time.sleep(0.07)
         snap("tap")
+
+    orig_act = T.Player.act
+
+    def act(self, e):
+        r = orig_act(self, e)
+        # a slice is played in the page (no mouse to catch): the knife stays in the hand after it
+        if e.get("kind") == "slice":
+            snap("slice")
+        return r
 
     orig_shot = T.Player.shot
 
@@ -105,6 +114,8 @@ def main():
     T.open_page = open_page
     T.Player.tap = tap
     T.Player.shot = shot
+    T.Player.act = act
+    T.Player.try_help = lambda self: None  # the ? and the bulb are test_cook.py's business
     httpd = T.start_server()
     d = T.shots_dir(root, name)
     try:
