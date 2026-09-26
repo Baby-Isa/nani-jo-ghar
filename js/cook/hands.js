@@ -429,15 +429,23 @@
     aim();
     return S.track(c);
   };
-  /** Both hands on the rolling pin (the pin is drawn: the painted velan waits for batch 2). */
+  /**
+   * Both hands on the rolling pin (the pin is drawn: the painted velan waits
+   * for batch 2). The two-hand sprite is split down the middle and each hand
+   * holds an end, outside the dough, so the circle you're rolling to stays
+   * in sight.
+   */
+  const PIN = { len: 740, thick: 50, spread: 210 };
   function pinRig(S, { x, y, k }) {
-    const hands = rig(S, "pin", { who: "player", k: 1 });
-    if (!hands) return null;
-    S.children.remove(hands);
+    const halves = [0, 1].map(() => rig(S, "pin", { who: "player", k: 1 }));
+    if (halves.some((h) => !h)) {
+      halves.forEach((h) => h && h.destroy());
+      return null;
+    }
     const c = S.add.container(x, y).setDepth(Cook.D.hand);
     const g = S.add.graphics();
-    const L = 560;
-    const T = 50;
+    const L = PIN.len;
+    const T = PIN.thick;
     g.fillStyle(0x3a2410, 0.22);
     g.fillRoundedRect(-L / 2 + 8, -T / 2 + 14, L, T, T / 2);
     g.fillStyle(0xd9a877, 1);
@@ -446,19 +454,31 @@
     g.strokeRoundedRect(-L / 2, -T / 2, L, T, T / 2);
     g.fillStyle(0xffffff, 0.25);
     g.fillRoundedRect(-L / 2 + 20, -T / 2 + 7, L - 40, 10, 5);
-    hands.setScale(1).setPosition(0, 0).setAngle(0);
-    c.add([g, hands]);
+    c.add(g);
+    const m = meta(pose("pin").file);
+    const [w, h] = m.size;
+    // the split: halfway between where the two arms leave the bottom
+    const cut = m.exits.length > 1 ? Math.round((m.exits[0][0] + m.exits[1][0]) / 2) : Math.round(w / 2);
+    halves.forEach((hd, i) => {
+      S.children.remove(hd);
+      if (i === 0) {
+        hd.img.setCrop(0, 0, cut, h);
+        hd.sleeve.setCrop(0, h - 2, cut, 2);
+      } else {
+        hd.img.setCrop(cut, 0, w - cut, h);
+        hd.sleeve.setCrop(cut, h - 2, w - cut, 2);
+      }
+      hd.setScale(1).setAngle(0).setPosition(i === 0 ? -PIN.spread : PIN.spread, 0);
+      c.add(hd);
+    });
     c.setScale(k);
-    c.hand = hands;
-    c.texKeys = hands.texKeys;
+    c.hand = halves[0];
+    c.texKeys = halves[0].texKeys;
     c.isHandRig = true;
     live.add(c);
     c.once("destroy", () => live.delete(c));
     c.moveTo = (tx, ty, dur = 90) => S.tweens.add({ targets: c, x: tx, y: ty, duration: dur, ease: "Sine.easeOut" });
-    c.setTint = (...a) => {
-      g.setAlpha(1);
-      return c;
-    };
+    c.setTint = () => c;
     return S.track(c);
   }
 

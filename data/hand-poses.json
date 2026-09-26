@@ -61,7 +61,7 @@
     "fill": { "poses": ["pinch-open", "pinch-closed"], "tap": "pinch" },
     "fold": { "poses": ["fold"], "tap": null },
     "fry": { "poses": ["grip", "pinch-open", "pinch-closed"], "tap": "pinch" },
-    "flip": { "poses": ["point"], "tap": "tap" },
+    "flip": { "poses": ["grip"], "tap": null },
     "roll": { "poses": ["pin"], "tap": null },
     "service": { "poses": ["bowl"], "tap": null },
     "passme": { "poses": ["palm-up"], "who": "nani" }
