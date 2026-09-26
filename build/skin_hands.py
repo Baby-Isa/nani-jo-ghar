@@ -224,14 +224,14 @@ def apply_overlay(im, texture_path, hands, opacity=0.85):
 # Poses whose arms cross or touch, where the per-arm edge fit can't separate
 # them: no envelope fill; their cuff lining is given as a polygon instead.
 NO_ENVELOPE = {"hand-e4-clap-f2-together-e"}
-CUFF_FILL = {"hand-b2-vertical-grip-e": [[(488, 890), (550, 853), (650, 801), (770, 716), (800, 706), (1024, 706),
+CUFF_FILL = {"hand-b2-vertical-grip-e": [[(488, 878), (550, 843), (650, 791), (770, 706), (800, 696), (1024, 696),
                                           (1024, 1024), (488, 1024)]],
              "hand-e4-clap-f2-together-e": [[(250, 770), (292, 784), (342, 806), (400, 842), (468, 876),
                                              (500, 902), (470, 960), (440, 1024), (250, 1024)],
                                             [(486, 908), (560, 887), (640, 868), (702, 853), (740, 858),
                                              (780, 1024), (500, 1024)]]}
-CUFF_CAPS = {"hand-a5-wave-f1-e": [(380, 863, 680, 869)],
-             "hand-d6-two-hand-catch-f1-open-e": [(107, 869, 407, 863), (935, 863, 1235, 869)]}  # a5 mirrored (x' = 787 - x) and a5 shifted by +555
+CUFF_CAPS = {"hand-a5-wave-f1-e": [(380, 864, 680, 887)],
+             "hand-d6-two-hand-catch-f1-open-e": [(107, 887, 407, 864), (935, 864, 1235, 887)]}  # a5 mirrored (x' = 787 - x) and a5 shifted by +555
 
 
 def clip_sleeve_to_cuff(w, master, hands):
@@ -314,11 +314,29 @@ def sleeve_weight(master, hands, pose_id=None, mirrored=False):
     closed = ndimage.binary_closing(np.pad(half, pad), structure=disc)[pad:-pad, pad:-pad]
     closed = ndimage.binary_fill_holes(closed)
     closed = (np.kron(closed, np.ones((2, 2), dtype=bool))[:w.shape[0], :w.shape[1]] & solid).astype(np.float64)
+    # additions (closing, envelope) only where the master pixel could be
+    # cloth: the skin's contact crease just above the cuff is warm and
+    # saturated, and turned into a stair-stepped band of sleeve colour
+    lab = ga.rgb_to_lab(np.asarray(master.convert("RGB")).astype(np.float64))
+    C = np.hypot(lab[..., 1], lab[..., 2])
+    hue = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
+    cloth = ndimage.gaussian_filter(((C < 30) | (hue > 74) | (lab[..., 0] > 84)).astype(np.float64), 1.0)  # the cuff's lit rim is very light
+    fringe = None
     if pose_id not in NO_ENVELOPE:
-        env, above = _envelope_fill(w, solid, hands)
+        env, above, fringe, below = _envelope_fill(w, solid, hands, cloth > 0.5)
         closed = np.maximum(closed, env)
         closed[above] = 0.0
         w = np.where(above, 0.0, w)
+    # the colour mask's own fringe along the cuff's top edge: lit skin just
+    # above the cuff reads C 33-34 at hue ~66 and passes as cuff, a
+    # stair-stepped band of sleeve colour on the forearm; there, only
+    # cloth-coloured pixels stay sleeve
+    if fringe is not None:
+        # near the edge, the fitted edge decides: sleeve below it, skin above
+        geo = ndimage.gaussian_filter(below.astype(np.float64), 0.8) * solid
+        fr = ndimage.gaussian_filter(fringe.astype(np.float64), 1.5)
+        w = w * (1 - fr) + geo * fr
+        closed = closed * (1 - fr) + geo * fr
     for poly in CUFF_FILL.get(pose_id, []):
         pts = [((master.width - 1 - x) if mirrored else x, y) for x, y in poly]
         pm = Image.new("L", master.size, 0)
@@ -329,7 +347,7 @@ def sleeve_weight(master, hands, pose_id=None, mirrored=False):
     return np.maximum(w, soft)
 
 
-def _envelope_fill(w, solid, hands):
+def _envelope_fill(w, solid, hands, cloth=None):
     """Fill each cuff up to its top edge. The arm's direction is snapped to
     the nearer image axis; across the arm, in 12 px strips, the top of the
     sleeve mask (its furthest point towards the hand) is measured and the
@@ -341,8 +359,11 @@ def _envelope_fill(w, solid, hands):
     returned as 'above', to be cut."""
     from scipy import ndimage
     m = w > 0.5
+    mc = m if cloth is None else (m & cloth)  # the edge is fitted to cloth-coloured pixels
     H_, W_ = m.shape
     above = np.zeros((H_, W_), bool)
+    fringe = np.zeros((H_, W_), bool)
+    below = np.zeros((H_, W_), bool)
     yy, xx = np.mgrid[0:H_, 0:W_]
     out = np.zeros((H_, W_), bool)
     for h in hands:
@@ -358,7 +379,7 @@ def _envelope_fill(w, solid, hands):
         W = wr["width_px"]
         band = np.abs(side - s0) < W * 1.3
         # strip tops, from the mask near this arm
-        mm = m & band
+        mm = mc & band
         if mm.sum() < 2000:
             continue
         ss, tt = [], []
@@ -393,7 +414,10 @@ def _envelope_fill(w, solid, hands):
         ids = np.unique(lbl[g & m])
         out |= np.isin(lbl, ids[ids > 0])
         above |= band & (t > top + 14)  # spikes well past the edge
-    return out.astype(np.float64), above
+        near = band & (t > top - 12) & (t < top + 14)  # the top ~12 px of the cuff and just above
+        fringe |= near
+        below |= near & (t < top) & np.isin(lbl, ids[ids > 0])
+    return out.astype(np.float64), above, fringe, below
 
 
 def recolour_sleeve(im, master, weight, target_hex):
