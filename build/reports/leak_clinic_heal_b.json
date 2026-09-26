@@ -1,0 +1,271 @@
+{
+ "seed": 1,
+ "rounds": 1000,
+ "l1Rounds": 5000,
+ "games": {
+  "taste": {
+   "1": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0.083,
+      "rowShare": 0.2908
+     },
+     "tray-order": {
+      "win": 0.0878,
+      "rowShare": 0.2892
+     },
+     "same-picture": {
+      "win": 0.0878,
+      "rowShare": 0.2985
+     },
+     "most-count": {
+      "win": 0.0902,
+      "rowShare": 0.2954
+     },
+     "wait-for-throb": {
+      "win": 0,
+      "rowShare": 0
+     }
+    },
+    "rows": 2,
+    "placeholderRows": 0
+   },
+   "2": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0.004,
+      "rowShare": 0.28925
+     },
+     "tray-order": {
+      "win": 0,
+      "rowShare": 0.2705
+     },
+     "same-picture": {
+      "win": 0,
+      "rowShare": 0.2695
+     },
+     "most-count": {
+      "win": 0.005,
+      "rowShare": 0.2605
+     },
+     "wait-for-throb": {
+      "win": 0,
+      "rowShare": 0
+     }
+    },
+    "rows": 4,
+    "placeholderRows": 0
+   },
+   "3": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0,
+      "rowShare": 0.14325
+     },
+     "tray-order": {
+      "win": 0,
+      "rowShare": 0.14625
+     },
+     "same-picture": {
+      "win": 0,
+      "rowShare": 0.15425
+     },
+     "most-count": {
+      "win": 0,
+      "rowShare": 0.14575
+     },
+     "wait-for-throb": {
+      "win": 0,
+      "rowShare": 0
+     }
+    },
+    "rows": 4,
+    "placeholderRows": 0
+   }
+  },
+  "fever": {
+   "1": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0.0424,
+      "rowShare": 0.26272993868301786
+     },
+     "blanket-every-answer": {
+      "win": 0.0486,
+      "rowShare": 0.21261277276565485
+     },
+     "cool-every-answer": {
+      "win": 0.0452,
+      "rowShare": 0.2077518001600142
+     },
+     "alternate": {
+      "win": 0.0428,
+      "rowShare": 0.31060875756496975
+     },
+     "done-early": {
+      "win": 0,
+      "rowShare": 0.11135758651286602
+     }
+    },
+    "rows": 5,
+    "placeholderRows": 5
+   },
+   "2": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0.003,
+      "rowShare": 0.19937694704049844
+     },
+     "blanket-every-answer": {
+      "win": 0,
+      "rowShare": 0.12305641936916926
+     },
+     "cool-every-answer": {
+      "win": 0.001,
+      "rowShare": 0.11641391614629795
+     },
+     "alternate": {
+      "win": 0,
+      "rowShare": 0.3309718839938012
+     },
+     "done-early": {
+      "win": 0,
+      "rowShare": 0.052020540299173926
+     }
+    },
+    "rows": 5,
+    "placeholderRows": 4
+   },
+   "3": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0.001,
+      "rowShare": 0.09769094138543517
+     },
+     "blanket-every-answer": {
+      "win": 0,
+      "rowShare": 0.12851761577664525
+     },
+     "cool-every-answer": {
+      "win": 0,
+      "rowShare": 0.02601734489659773
+     },
+     "alternate": {
+      "win": 0,
+      "rowShare": 0.17372881355932204
+     },
+     "done-early": {
+      "win": 0,
+      "rowShare": 0.026554547466253596
+     }
+    },
+    "rows": 4,
+    "placeholderRows": 3
+   }
+  },
+  "boing": {
+   "1": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0.0076,
+      "rowShare": 0.3102
+     },
+     "tray-order": {
+      "win": 0,
+      "rowShare": 0.3051
+     },
+     "max": {
+      "win": 0,
+      "rowShare": 0.30665
+     },
+     "pills-in-order": {
+      "win": 0.007,
+      "rowShare": 0.30965
+     }
+    },
+    "rows": 4,
+    "placeholderRows": 1
+   },
+   "2": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0,
+      "rowShare": 0.30866666666666664
+     },
+     "tray-order": {
+      "win": 0,
+      "rowShare": 0.3
+     },
+     "max": {
+      "win": 0,
+      "rowShare": 0.30516666666666664
+     },
+     "pills-in-order": {
+      "win": 0.001,
+      "rowShare": 0.303
+     }
+    },
+    "rows": 6,
+    "placeholderRows": 2
+   },
+   "3": {
+    "strategies": {
+     "fair": {
+      "win": 1,
+      "rowShare": 1
+     },
+     "random": {
+      "win": 0,
+      "rowShare": 0.287
+     },
+     "tray-order": {
+      "win": 0,
+      "rowShare": 0.2906666666666667
+     },
+     "max": {
+      "win": 0,
+      "rowShare": 0.2962222222222222
+     },
+     "pills-in-order": {
+      "win": 0,
+      "rowShare": 0.29344444444444445
+     }
+    },
+    "rows": 9,
+    "placeholderRows": 3
+   }
+  }
+ }
+}

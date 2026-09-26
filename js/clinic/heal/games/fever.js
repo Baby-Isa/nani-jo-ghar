@@ -659,11 +659,11 @@
         upgradeDishes(ctx);
         doneBtn = ctx.button("✓", () => !dead && m && ((lastAct = Date.now()), run(m.act({ type: "done" }))), "done");
         doneBtn.setAttribute("aria-label", "Done");
-        ctx.patient.swirl("head", null, false);
-        await ctx.patient.focus("chest", null, 1.25, 400);
         const first = line(D, "temp", ["temp"], { who: "doctor" });
         ctx.card.setRows([first]);
         ctx.card.now("temp");
+        ctx.patient.swirl("head", null, false);
+        await ctx.patient.focus("chest", null, 1.25, 400);
         if (ctx.level === 1 && ctx.onboard) {
           const dish = () => ctx.trayUI && ctx.trayUI.dishes()[dishOf("thermometer")];
           ctx.onboard([

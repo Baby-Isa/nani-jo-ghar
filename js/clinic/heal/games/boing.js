@@ -341,7 +341,7 @@
 @keyframes bng-puff{0%{transform:translate(-50%,-50%) scale(.6)}40%{transform:translate(-50%,-50%) translate(-8px,4px) scale(1)}100%{transform:translate(-50%,-50%) translate(8px,-4px) scale(.9);opacity:0}}
 .bng-sparkle{font-size:clamp(18px,2.4vw,30px);animation:bng-rise .8s ease-out forwards}
 @keyframes bng-rise{to{transform:translate(-50%,-150%);opacity:0}}
-.bng-doc{position:absolute;pointer-events:none;width:clamp(150px,22vw,300px);height:clamp(90px,13vw,180px);transform:translate(0,-50%);transition:left .6s cubic-bezier(.3,1.4,.6,1),opacity .4s}
+.bng-doc{position:absolute;pointer-events:none;transform-origin:20% 57.6%;transform:rotate(-90deg);transition:top .6s cubic-bezier(.3,1.4,.6,1),opacity .4s}
 .bng-doc svg{width:100%;height:100%;overflow:visible}
 .bng-doc .spring{transform-origin:10% 50%}
 .bng-doc.wait .spring{animation:bng-wobble 1.4s ease-in-out infinite}
@@ -378,7 +378,7 @@
     <circle cx="36" cy="58" r="12" fill="#d8e3ea" stroke="#5a7d8f" stroke-width="4"/>
     ${barrel}
     <path d="M226 58 q10 -14 20 0 q10 14 20 0" stroke="#5a7d8f" stroke-width="5" fill="none"/>
-    <g class="flag" transform="translate(236 -8)"><line x1="0" y1="0" x2="0" y2="62" stroke="#6b4a2a" stroke-width="4"/><path d="M0 0 L38 10 L0 22Z" fill="#d23b3b"/></g>
+    <g transform="translate(236 -8)"><g class="flag"><line x1="0" y1="0" x2="0" y2="62" stroke="#6b4a2a" stroke-width="4"/><path d="M0 0 L38 10 L0 22Z" fill="#d23b3b"/></g></g>
   </g>
   <g transform="translate(236 58)"><ellipse cx="18" cy="0" rx="30" ry="24" fill="#9fd4e8" stroke="#4d8aa3" stroke-width="4"/><path d="M-4 -14 q-14 -6 -18 4 M-4 0 q-16 0 -18 8 M-2 12 q-12 6 -14 14" stroke="#4d8aa3" stroke-width="5" fill="none" stroke-linecap="round"/></g>
 </svg>`;
@@ -534,15 +534,20 @@
     function showDoctor(arm) {
       const a = armSpot(arm);
       const d = els.doc;
-      d.style.opacity = "1";
-      d.style.top = `${a.y}px`;
-      // the syringe comes in from the side of the arm that's nearer the screen edge, pointing at it (never touching)
+      // the doctor's syringe comes down from above the arm, its round rubber tip pointing at it (never touching).
+      // Drawn tip-left: rotated -90deg about the tip, so the barrel, the flag and his glove go up into the free space
       const sr = stage.getBoundingClientRect();
-      const onRight = a.x > sr.width * 0.4;
-      d.style.transform = onRight ? "translate(0,-50%) scaleX(-1)" : "translate(-100%,-50%)";
-      d.style.left = onRight ? `${sr.width + 20}px` : "-20px";
+      const gap = a.r * 0.9;
+      const W = Math.max(120, Math.min(280, (a.y - gap) * 1.1, sr.width * 0.34));
+      const H = W * 0.6;
+      d.style.width = `${W}px`;
+      d.style.height = `${H}px`;
+      d.style.left = `${a.x - 0.2 * W}px`;
+      d.style.top = `${a.y - gap - 0.576 * H - W * 0.5}px`;
+      d.style.opacity = "0";
       later(() => {
-        d.style.left = onRight ? `${a.x + a.r * 1.6}px` : `${a.x - a.r * 1.6}px`;
+        d.style.opacity = "1";
+        d.style.top = `${a.y - gap - 0.576 * H}px`;
         d.classList.add("wait");
       }, 60);
       if (ctx.trayUI) ctx.trayUI.used(dishOf("syringe"));
@@ -614,12 +619,14 @@
       word.style.left = `${a.x}px`;
       word.style.top = `${a.y - a.r * 2}px`;
       later(() => word.remove(), 1200);
-      // the hair stands on end
+      // the hair stands on end (a bald Nana's last few white hairs too)
+      const K = (root.Clinic && root.Clinic.Figure && root.Clinic.Figure.KINDS && root.Clinic.Figure.KINDS[ctx.patient.kind]) || {};
+      const hairCol = K.hairCol || "#2b1d16";
       const head = ctx.patient.hotspot("head", null);
       const hair = h("div", "bng-hair", els.layer);
       hair.style.left = `${head.x}px`;
       hair.style.top = `${head.y - head.r * 0.7}px`;
-      hair.innerHTML = `<svg viewBox="0 0 120 60" width="${Math.round(head.r * 2.4)}" height="${Math.round(head.r * 1.2)}"><path d="M10 60 L18 8 L30 56 L42 2 L54 56 L62 0 L72 56 L84 4 L94 56 L104 10 L110 60Z" fill="#2b1d16"/></svg>`;
+      hair.innerHTML = `<svg viewBox="0 0 120 60" width="${Math.round(head.r * 2.4)}" height="${Math.round(head.r * 1.2)}"><path d="M10 60 L18 8 L30 56 L42 2 L54 56 L62 0 L72 56 L84 4 L94 56 L104 10 L110 60Z" fill="${hairCol}"/></svg>`;
       later(() => hair.remove(), 1500);
       ctx.patient.pose("jerk");
       ctx.patient.react("scared", 0);
@@ -728,7 +735,7 @@
         els.layer = h("div", "bng-layer", stage);
         els.carry = h("div", "bng-carry", els.layer);
         els.doc = h("div", "bng-doc", els.layer);
-        els.doc.innerHTML = doctorSvg(artUrl("syringe"));
+        els.doc.innerHTML = doctorSvg(null); // drawn (striped, a flag, a rubber tip); the rough sprite has a needle, so it stays on the tray dish
         els.doc.style.opacity = "0";
         els.choices = h("div", "bng-choices", els.layer);
         els.choices.style.display = "none";
@@ -769,11 +776,11 @@
         // both sleeves up (the patient names the arm) from level 2; one arm at level 1
         ctx.patient.swirl("arm", null, false);
         ["left", "right"].forEach((s) => ctx.patient.swirl("arm", s, false));
-        await ctx.patient.focus("chest", null, 1.35, 400);
-        if (!P.sided) ctx.patient.swirl("arm", P.arm, true);
         // the card: the lines as they come at level 1, the whole list up front from level 2
         ctx.card.setRows(P.level === 1 ? P.card.filter((r) => r.id === "wipe" || r.id === "count") : P.card);
         ctx.card.now(P.sided ? "side" : "wipe");
+        await ctx.patient.focus("chest", null, 1.35, 400);
+        if (!P.sided) ctx.patient.swirl("arm", P.arm, true);
         if (ctx.level === 1 && ctx.onboard) {
           const dish = () => ctx.trayUI && ctx.trayUI.dishes()[dishOf("cotton")];
           const spot = () => {
