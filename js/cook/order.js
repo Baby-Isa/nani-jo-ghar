@@ -50,6 +50,11 @@
       said: r.line,
       list: !!r.list,
       for: r.for,
+      qty: r.qty || 1,
+      // Wave 6: one card per unit ("ba ghos" is two skewer cards, each with `cards` slots)
+      cards: r.cards || null,
+      // a list said for one card (a mixed skewer's pieces, in order): drawn on that card's slots
+      cardOf: r.cardOf || null,
     };
   }
   O.row = row;
@@ -65,7 +70,8 @@
 
   /** The ladder for one dish of an order (i: its place in the order). */
   O.ladder = function (d, i = 0) {
-    const L = { dish: i, recipe: d.recipe, head: null, sections: [] };
+    // card: the fixed shape of one person's card (the Chai tray's cups: the same slots every time)
+    const L = { dish: i, recipe: d.recipe, head: null, sections: [], card: (Cook.data.recipes[d.recipe] || {}).card || null };
     const lists = new Map();
     const nos = [];
     let any = null;
@@ -89,7 +95,7 @@
         // a spoken list: its own section, one group per dot
         let s = lists.get(r.sec);
         if (!s) {
-          s = { key: r.when || `list${r.sec}`, seq: false, when: r.when || null, groups: [], dots: [] };
+          s = { key: r.when || `list${r.sec}`, seq: false, when: r.when || null, groups: [], dots: [], cardOf: r.cardOf || null };
           lists.set(r.sec, s);
           L.sections.push(s);
         }
@@ -108,7 +114,9 @@
     L.sections.forEach((s) => {
       s.seq = s.groups.length > 1;
       delete s.dots;
-      s.groups = s.groups.map((g) => Cook.shuffle(g));
+      // a person's card has a fixed shape: its rows in slot order (milk, sugar, which chai), said in that order too
+      if (s.for && L.card && L.card.slots) s.groups = s.groups.map((g) => g.slice().sort((a, b) => O.slotOf(L, a) - O.slotOf(L, b)));
+      else s.groups = s.groups.map((g) => Cook.shuffle(g));
     });
     // "no X": among the any-order rows, else sprinkled through the list
     const home = any || L.sections.filter((s) => !s.when && !s.for).pop();
@@ -123,6 +131,12 @@
     return { dish: 0, recipe: null, head: null, sections: [{ key: "lines", seq: false, simple: true, groups: rows.map((r) => [r]) }] };
   };
 
+  /** Which of the card's fixed slots a row fills (L.card.slots: lists of word ids), or 99. */
+  O.slotOf = (L, r) => {
+    const slots = (L.card && L.card.slots) || [];
+    const i = slots.findIndex((ids) => r.ids.some((id) => ids.includes(id)));
+    return i < 0 ? 99 : i;
+  };
   O.rows = (L, { all = false } = {}) => [L.head].concat(...L.sections.filter((s) => all || !s.when || s.shown).map((s) => [].concat(...s.groups))).filter(Boolean);
   O.hasSeq = (L) => L.sections.some((s) => s.seq && s.groups.length > 1);
 
@@ -136,27 +150,30 @@
   O.speech = function (ladders, { withWhen = false, heads = true } = {}) {
     const F = Lang.frames();
     const lines = [];
+    // each spoken part knows the row it says, so the card can light it up as it's said (read-along)
+    const push = (line, r) => lines.push(Object.assign({}, line, { row: r }));
     ladders.forEach((L) => {
-      if (heads && L.head) lines.push(L.head.line);
+      if (heads && L.head) push(L.head.line, L.head);
       L.sections.forEach((s) => {
         if (s.when && !withWhen) return;
         let first = true;
         s.groups.forEach((g, gi) => {
           let firstInGroup = true;
           g.forEach((r) => {
-            if (r.no) return lines.push(r.line);
-            if (s.simple) return lines.push(r.line);
+            if (r.no) return push(r.line, r);
+            if (s.simple) return push(r.line, r);
             if (!r.list && r.said) {
               // said on its own line in the recipe data ("Ne be khun."): keep its frame
-              lines.push(r.said);
+              push(r.said, r);
               first = false;
               firstInGroup = false;
               return;
             }
             let frame;
-            if (first) frame = heads && L.head ? F.any : null;
+            // a sequence starts "Pela …" (first), whatever comes before it
+            if (first) frame = s.seq && F.seqFirst ? F.seqFirst : heads && L.head ? F.any : null;
             else frame = s.seq && firstInGroup && gi > 0 ? F.seq : F.any;
-            lines.push(frame ? Lang.line(frame, r.phrase) : Lang.bare(r.phrase));
+            push(frame ? Lang.line(frame, r.phrase) : Lang.bare(r.phrase), r);
             first = false;
             firstInGroup = false;
           });

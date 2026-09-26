@@ -1,0 +1,323 @@
+{
+ "id": "sitting-room",
+ "_about": "Nani's sitting room as grey boxes (Find it F3 level 3; docs/find-it-design.md 4.4, 8.2 phase 1). The scene schema of docs/shared-api.md 1.2: anchors are scenery (never targets), spots are hide spots (Find it's form: anchor, rel, x, baseline), occluders are drawn over the things (the sofa's skirt, the curtain, the cushion) so a thing under or behind shows at least 40% (Rel.visibleFraction). No art yet: the page draws each anchor as a labelled grey box. The carried basket reuses the bazaar's basket sprites.",
+ "camera": "E",
+ "stage": [
+  1600,
+  900
+ ],
+ "greybox": true,
+ "background": null,
+ "letterbox": "#e4dccd",
+ "phoneZoom": 1.5,
+ "size": 90,
+ "anchors": {
+  "curtain": {
+   "en": "curtain",
+   "word": "ph-curtain",
+   "rect": [
+    70,
+    60,
+    250,
+    700
+   ]
+  },
+  "sofa": {
+   "en": "sofa",
+   "word": "ph-sofa",
+   "rect": [
+    300,
+    380,
+    820,
+    640
+   ]
+  },
+  "cushion": {
+   "en": "cushion",
+   "word": "ph-cushion",
+   "rect": [
+    560,
+    470,
+    680,
+    525
+   ]
+  },
+  "table": {
+   "en": "table",
+   "word": "ph-table",
+   "rect": [
+    1000,
+    470,
+    1420,
+    700
+   ]
+  },
+  "shelf": {
+   "en": "shelf",
+   "word": "ph-shelf",
+   "rect": [
+    1080,
+    170,
+    1460,
+    190
+   ]
+  },
+  "floor-basket": {
+   "en": "basket",
+   "word": "ph-basket",
+   "rect": [
+    90,
+    760,
+    330,
+    880
+   ]
+  },
+  "box": {
+   "en": "box",
+   "word": "ph-box",
+   "rect": [
+    1440,
+    620,
+    1580,
+    760
+   ]
+  }
+ },
+ "spots": [
+  {
+   "id": "cu-1",
+   "anchor": "curtain",
+   "rel": "behind",
+   "x": 262,
+   "baseline": 690
+  },
+  {
+   "id": "cu-2",
+   "anchor": "curtain",
+   "rel": "behind",
+   "x": 60,
+   "baseline": 690,
+   "edgeOk": true
+  },
+  {
+   "id": "so-1",
+   "anchor": "sofa",
+   "rel": "on",
+   "x": 380,
+   "baseline": 520
+  },
+  {
+   "id": "so-2",
+   "anchor": "sofa",
+   "rel": "on",
+   "x": 480,
+   "baseline": 520
+  },
+  {
+   "id": "so-3",
+   "anchor": "sofa",
+   "rel": "on",
+   "x": 750,
+   "baseline": 520
+  },
+  {
+   "id": "cs-1",
+   "anchor": "cushion",
+   "rel": "behind",
+   "x": 620,
+   "baseline": 500,
+   "also": [
+    [
+     "on",
+     "sofa"
+    ]
+   ]
+  },
+  {
+   "id": "us-1",
+   "anchor": "sofa",
+   "rel": "under",
+   "x": 370,
+   "baseline": 705,
+   "size": 80
+  },
+  {
+   "id": "us-2",
+   "anchor": "sofa",
+   "rel": "under",
+   "x": 510,
+   "baseline": 705,
+   "size": 80
+  },
+  {
+   "id": "us-3",
+   "anchor": "sofa",
+   "rel": "under",
+   "x": 720,
+   "baseline": 705,
+   "size": 80
+  },
+  {
+   "id": "ta-1",
+   "anchor": "table",
+   "rel": "on",
+   "x": 1070,
+   "baseline": 470
+  },
+  {
+   "id": "ta-2",
+   "anchor": "table",
+   "rel": "on",
+   "x": 1210,
+   "baseline": 470
+  },
+  {
+   "id": "ta-3",
+   "anchor": "table",
+   "rel": "on",
+   "x": 1350,
+   "baseline": 470
+  },
+  {
+   "id": "ut-1",
+   "anchor": "table",
+   "rel": "under",
+   "x": 1090,
+   "baseline": 700
+  },
+  {
+   "id": "ut-2",
+   "anchor": "table",
+   "rel": "under",
+   "x": 1220,
+   "baseline": 700
+  },
+  {
+   "id": "ut-3",
+   "anchor": "table",
+   "rel": "under",
+   "x": 1350,
+   "baseline": 700
+  },
+  {
+   "id": "sh-1",
+   "anchor": "shelf",
+   "rel": "on",
+   "x": 1130,
+   "baseline": 170
+  },
+  {
+   "id": "sh-2",
+   "anchor": "shelf",
+   "rel": "on",
+   "x": 1265,
+   "baseline": 170
+  },
+  {
+   "id": "sh-3",
+   "anchor": "shelf",
+   "rel": "on",
+   "x": 1400,
+   "baseline": 170
+  },
+  {
+   "id": "fb-1",
+   "anchor": "floor-basket",
+   "rel": "in",
+   "x": 160,
+   "baseline": 820
+  },
+  {
+   "id": "fb-2",
+   "anchor": "floor-basket",
+   "rel": "in",
+   "x": 262,
+   "baseline": 820
+  },
+  {
+   "id": "bx-1",
+   "anchor": "box",
+   "rel": "in",
+   "x": 1510,
+   "baseline": 690,
+   "edgeOk": true
+  }
+ ],
+ "occluders": [
+  {
+   "id": "curtain",
+   "rect": [
+    70,
+    60,
+    250,
+    700
+   ],
+   "z": 5
+  },
+  {
+   "id": "sofa-skirt",
+   "rect": [
+    300,
+    600,
+    820,
+    640
+   ],
+   "z": 5
+  },
+  {
+   "id": "cushion",
+   "rect": [
+    560,
+    470,
+    680,
+    525
+   ],
+   "z": 5
+  }
+ ],
+ "basket": {
+  "back": "assets/scene/basket-back.png",
+  "front": "assets/scene/basket-front.png",
+  "x": 800,
+  "top": 740,
+  "w": 440,
+  "item": {
+   "maxW": 92,
+   "maxH": 96
+  },
+  "inside": [
+   {
+    "x": 732,
+    "baseline": 868
+   },
+   {
+    "x": 868,
+    "baseline": 868
+   },
+   {
+    "x": 800,
+    "baseline": 852
+   },
+   {
+    "x": 669,
+    "baseline": 858
+   },
+   {
+    "x": 931,
+    "baseline": 858
+   },
+   {
+    "x": 766,
+    "baseline": 838
+   },
+   {
+    "x": 834,
+    "baseline": 838
+   },
+   {
+    "x": 800,
+    "baseline": 824
+   }
+  ]
+ }
+}

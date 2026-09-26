@@ -11,6 +11,13 @@ that point (nothing in the HTML layer covers the thing being tapped). It
 makes deliberate mistakes now and then (a wrong greeting, a wrong item) to
 exercise the warm-failure paths.
 
+Wave 5: every order first comes up as the intro card in the middle (the
+expectation says `intro`); the player pictures it and taps it into the
+sidebar. Once a run it opens the "?" (the goal pops out) and ↻ (the order
+big again). After the intro card and at each new view it checks the
+sidebar never scrolls sideways or pushes a word out, and reports any
+vertical scrolling as SIDEBAR lines.
+
 Usage:
   python3 build/test_cook.py --lab                  # every station in the Station lab (laptop)
   python3 build/test_cook.py --lab --viewport flip5-landscape
@@ -96,6 +103,7 @@ class Player:
         return path
 
     def exp(self):
+        self.t_exp = time.time()
         return self.page.evaluate("__cook.expectation()")
 
     def gauge(self):
@@ -121,11 +129,103 @@ class Player:
             time.sleep(0.06)
         return self.exp()
 
+    def check_side(self, where):
+        """The sidebar must never scroll sideways or clip a word (Wave 5)."""
+        bad = self.page.evaluate(
+            """() => {
+              const side = document.querySelector('#side');
+              const out = [];
+              if (side.scrollWidth > side.clientWidth + 1) out.push('sidebar scrolls sideways (' + side.scrollWidth + ' > ' + side.clientWidth + ')');
+              const r = side.getBoundingClientRect();
+              side.querySelectorAll('.wp-text, .m-name, .lr-en, .nc-face, button').forEach((el) => {
+                const b = el.getBoundingClientRect();
+                if (b.width && (b.right > r.right + 1 || b.left < r.left - 1)) out.push((el.className || el.tagName) + ' pokes out of the sidebar');
+              });
+              if (side.scrollHeight > side.clientHeight + 1) out.push('sidebar scrolls (' + side.scrollHeight + ' > ' + side.clientHeight + ')');
+              return out.slice(0, 3);
+            }"""
+        )
+        if bad:
+            self.side_warnings = getattr(self, "side_warnings", [])
+            self.side_warnings.append(f"{where}: {'; '.join(bad)}")
+
+    def intro(self, e):
+        """The intro order card: picture it, then tap it into the sidebar (it also goes on its own)."""
+        self.intros = getattr(self, "intros", 0) + 1
+        time.sleep(0.12)
+        if self.intros <= 3:
+            self.shot("intro-card")
+        time.sleep(0.4)
+        if self.page.query_selector("#intro:not(.hidden) .ic-card"):
+            try:
+                self.page.click("#intro .ic-card", force=True, timeout=2000)
+            except Exception:
+                pass  # it flew in by itself
+        time.sleep(0.6)
+        self.check_side("after the intro card")
+        if self.intros <= 3:
+            self.shot("order-card")
+
+    def try_help(self):
+        """Once per run: open the "?" (the goal pops out), picture it, close it;
+        then ↻ on the order card once (the order big again)."""
+        if getattr(self, "helped", False) or not self.page.query_selector("#btn-help"):
+            return
+        self.helped = True
+        self.page.click("#btn-help", force=True)
+        time.sleep(0.3)
+        if not self.page.query_selector("#help-pop:not(.hidden)"):
+            raise AssertionError("the ? didn't pop the goal out")
+        self.shot("help-open")
+        self.page.click("#btn-help", force=True)
+        time.sleep(0.2)
+        if self.page.query_selector("#help-pop:not(.hidden)"):
+            raise AssertionError("the ? didn't close the goal again")
+        # Wave 6: the order card's one speaker reads it with read-along; the light bulb flips it to English for a moment
+        say = self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-say")
+        if say and say.is_visible():
+            say.click()
+            lit = False
+            for _ in range(30):
+                time.sleep(0.05)
+                if self.page.query_selector("#mission .reading"):
+                    lit = True
+                    self.shot("card-read-along")
+                    break
+            if not lit:
+                raise AssertionError("the order card's speaker didn't light up what it read")
+            time.sleep(0.6)
+        bulb = self.page.query_selector("#btn-bulb")
+        if bulb and bulb.is_visible() and self.page.query_selector("#mission:not(.hidden):not(.stamped)"):
+            bulb.click()
+            time.sleep(0.15)
+            if not self.page.query_selector("#side.english"):
+                raise AssertionError("the light bulb didn't flip the sidebar to English")
+            self.shot("bulb-english")
+            ms = self.page.evaluate("Cook.UI.bulbMs() / Cook.speed")
+            time.sleep(ms / 1000 + 0.4)
+            if self.page.query_selector("#side.english"):
+                raise AssertionError("the light bulb stayed on")
+        if self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-replay"):
+            self.page.click("#mission .m-replay")
+            time.sleep(0.3)
+            e = self.exp()
+            if e and e.get("intro"):
+                self.shot("replay-card")
+                try:
+                    self.page.click("#intro .ic-card", force=True, timeout=2000)
+                except Exception:
+                    pass  # it flew back by itself
+                time.sleep(0.8)
+
     def act(self, e):
         k = e["kind"]
         p = self.page
         if k == "wait":
             time.sleep(0.05)
+            return
+        if e.get("intro"):
+            self.intro(e)
             return
         if k == "click":
             sel = e["selector"]
@@ -227,11 +327,19 @@ class Player:
                 return
             p.mouse.move(e["sx1"], e["sy1"])
             p.mouse.down()
-            steps = 4 if k == "slice" else 10
+            steps = 1 if k == "slice" else 10
             for s in range(1, steps + 1):
                 p.mouse.move(e["sx1"] + (e["sx2"] - e["sx1"]) * s / steps, e["sy1"] + (e["sy2"] - e["sy1"]) * s / steps)
                 if k == "swipe":
                     time.sleep(0.01)
+            if k == "slice":
+                # the chop aims where a vegetable will be when the cut lands: tell it how long
+                # our swipes take (the software renderer makes each mouse event slow)
+                lat = time.time() - self.t_exp
+                old = getattr(self, "lead", 0.25)
+                self.lead = old * 0.6 + lat * 0.4
+                if abs(self.lead - old) > 0.05:
+                    p.evaluate(f"() => {{ window.__cookSwipeLead = {self.lead:.3f}; }}")
             p.mouse.up()
         elif k == "stir":
             self.stir(e)
@@ -331,6 +439,7 @@ class Player:
                 ex = self.exp()
                 if not ex or ex["kind"] not in ("timing", "hold", "slice"):
                     self.shot(f"view-{view}")
+                self.check_side(f"view {view}")
             e = self.exp()
             if not e:
                 time.sleep(0.1)
@@ -344,9 +453,21 @@ class Player:
                 time.sleep(0.1)
                 continue
             timed = e["kind"] in ("timing", "hold", "slice", "stir", "roll")
+            if e["kind"] == "tap" and not getattr(self, "helped", False) and not self.page.evaluate("Cook.save.mode === 'busy'"):
+                self.try_help()
+                continue
+            if e.get("intro"):
+                last_kind = "intro"
+                self.act(e)
+                self.wait_change(e, timeout=10)
+                continue
             if not timed and e["kind"] != "wait" and e["kind"] != last_kind:
                 self.shot(e["kind"])
             shoot_after = timed and e["kind"] != last_kind
+            if e["kind"] == "slice":
+                # the chop round is timed and busy: a couple of pictures, not one per slice
+                self.slice_shots = getattr(self, "slice_shots", 0) + 1
+                shoot_after = shoot_after and self.slice_shots % 6 == 2
             last_kind = e["kind"]
             key = json.dumps({k: v for k, v in e.items() if k in ("kind", "key", "x", "y", "selector")}, sort_keys=True)
             self.repeats = self.repeats + 1 if (key == self.last_key and e["kind"] not in ("wait", "slice")) else 0
@@ -365,6 +486,11 @@ class Player:
 
 
 CANVAS = False
+
+
+def report_side(P):
+    for w in getattr(P, "side_warnings", [])[:12]:
+        print("  SIDEBAR:", w)
 
 
 def open_kitchen_save(mode="relaxed"):
@@ -447,6 +573,7 @@ def run_lab(vp, speed, busy, shots_root, stations, guided, level=1, zoned=False,
             results[key] = page.evaluate("document.querySelector('#panel .cc-why') ? document.querySelector('#panel .cc-why').innerText : ''")
             print(f"  {name}: {key}: {results[key]!r}")
         browser.close()
+    report_side(P)
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:
         raise AssertionError(f"console errors: {bad[:5]}")
@@ -513,36 +640,59 @@ ORDERS_JS = r"""
       if (!seqs.length && said.includes(then)) out.errors.push(id + ": no sequence, no " + then + ": " + said);
     }
   });
-  // byLevel values: the order's level picks one (chai's cups, mishkaki's skewers)
-  [1, 2, 3].forEach((level) => {
+  // byLevel values: the order's level picks one (chai's cups, mishkaki's skewers).
+  // Wave 6: level 1 is the smallest round (one cup, one skewer, three pantry things), each level adds one thing;
+  // what's asked still varies from the first order (the owner's Wave 3 note).
+  const seen = { extra: new Set(), skew: new Set(), chopN: new Set() };
+  [1, 2, 3, 4].forEach((level) => {
     for (let n = 0; n < 30; n++) {
       if (R.chai) {
         const c = R.chai.make("nana", { level });
-        if (c.cups.length !== level) out.errors.push("byLevel: chai level " + level + " has " + c.cups.length + " cups");
-        if (level < 3 && c.cups.some((p) => p.extra || p.amount)) out.errors.push("byLevel: chai extras before level 3");
+        const want = [1, 2, 3, 3][level - 1];
+        if (c.cups.length !== want) out.errors.push("byLevel: chai level " + level + " has " + c.cups.length + " cups");
+        if (level < 4 && c.cups.some((p) => p.amount)) out.errors.push("byLevel: chai half/full before level 4");
+        if (level === 1) c.cups.forEach((p) => seen.extra.add(p.extra || "plain"));
       }
       if (R.mishkaki) {
         const m = R.mishkaki.make("nana", { level });
         const tot = Object.values(m.skewers).reduce((a, b) => a + b, 0);
-        const ok = level === 1 ? tot === 1 : level === 2 ? tot === 2 : tot >= 3 && tot <= 4;
-        if (!ok || (level < 3 && m.skewers["ph-mixed"])) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+        const ok = level === 1 ? tot === 1 : level === 2 ? tot === 2 : level === 3 ? tot >= 2 && tot <= 3 : tot >= 3 && tot <= 4;
+        if (!ok || (m.skewers["ph-mixed"] || 0) > [0, 0, 1, 2][level - 1]) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+        if (m.chips !== undefined) out.errors.push("mishkaki: no chips on the grill (Wave 6)");
+        if (level === 1) seen.skew.add(JSON.stringify(m.skewers));
+      }
+      if (R.pantry) {
+        const pd = R.pantry.make("nani", { level });
+        const things = [].concat(pd.first, pd.rest);
+        if (things.length !== level + 2 || new Set(things).size !== things.length) out.errors.push("pantry level " + level + ": " + JSON.stringify(things));
+      }
+      if (R.daal && level === 1) {
+        const dd = R.daal.make("nana", { level });
+        seen.chopN.add([dd.onions, dd.tomatoes, dd.chillies].filter(Boolean).length);
       }
     }
   });
+  if (R.chai && seen.extra.size < 3) out.errors.push("level 1 chai: plain, elchi and aadu should all come up: " + [...seen.extra]);
+  if (R.mishkaki && seen.skew.size < 2) out.errors.push("level 1 mishkaki: the skewer kinds should vary: " + [...seen.skew]);
+  if (R.daal && ![...seen.chopN].some((x) => x >= 2)) out.errors.push("level 1 daal: several vegetables to chop: " + [...seen.chopN]);
   // the Maani line: how many of each kind (sizes from level 3), the kinds said in either order
   let both = 0;
   let bajrFirst = 0;
-  for (let lv = 1; lv <= 3; lv++) {
+  for (let lv = 1; lv <= 4; lv++) {
     for (let n = 0; n < 60; n++) {
       const d = R.maani.make("nana", { level: lv });
       const tot = Object.values(d.maani).reduce((a, b) => a + b, 0);
-      const [lo, hi] = [[2, 3], [3, 4], [2, 4]][lv - 1];
+      const [lo, hi] = [[1, 1], [2, 2], [3, 3], [2, 4]][lv - 1];
       if (tot < lo || tot > hi) out.errors.push(`maani level ${lv}: total ${tot}`);
-      if ((lv === 3) !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes only at level 3 ${JSON.stringify(d.maani)}`);
+      if (lv === 3 && !(d.maani["cook-maani"] && d.maani["cook-bajrmaani"])) out.errors.push(`maani level 3 asks for both doughs ${JSON.stringify(d.maani)}`);
+      if ((lv === 4) !== Object.keys(d.maani).some((k) => k.includes("+"))) out.errors.push(`maani level ${lv}: sizes only at level 4 ${JSON.stringify(d.maani)}`);
       const L = Cook.Order.ladder(d, 0);
       const rows = [].concat(...L.sections.map((s) => [].concat(...s.groups)));
       const said = Cook.Lang.plain(Cook.Order.speech([L]));
-      if (lv === 3 && !/big|small/.test(said)) out.errors.push(`maani level 3 says the size: ${said}`);
+      // the size word: an English placeholder (big/small) or the family words (wadho/wadhi, nindho/nindhi)
+      if (lv === 4 && !/big|small|wadh|nindh/.test(said)) out.errors.push(`maani level 4 says the size: ${said}`);
+      // maani is a she-word: "one" and the sizes take the she-forms (hakri, wadhi, nindhi)
+      if (/hakro|wadho |nindho /.test(said)) out.errors.push(`maani takes the she-forms: ${said}`);
       const kinds = new Set(rows.map((r) => r.ids[r.ids.length - 1]));
       if (kinds.size > 1) {
         both++;
@@ -551,7 +701,9 @@ ORDERS_JS = r"""
     }
   }
   if (both && (bajrFirst === 0 || bajrFirst === both)) out.errors.push(`maani: the two kinds are always said in the same order (${bajrFirst}/${both})`);
-  out.maani = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.maani.make("nana", { level: 3 }), 0)]));
+  out.maani = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.maani.make("nana", { level: 4 }), 0)]));
+  if (R.pantry) out.pantry = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.pantry.make("nani", { level: 1 }), 0)]));
+  out.chai = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(R.chai.make("nana", { level: 2 }), 0)], { withWhen: true }));
   const d = R.chaat.make("nana");
   out.example = R.ladder({ who: "nana", dishes: [d] }).map((r) => [r.dish, r.kind, r.ids.join("+"), r.qty, r.dot, r.group, Cook.Lang.plain(r.line)]);
   out.said = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(d, 0)]));
@@ -570,7 +722,9 @@ def run_orders(vp, speed):
     for row in res["example"]:
         print("  ladder:", row)
     print("  said:", res["said"])
-    print("  maani (level 3):", res["maani"])
+    print("  maani (level 4):", res["maani"])
+    print("  pantry (level 1):", res.get("pantry"))
+    print("  chai (level 2, with the tray's rows):", res.get("chai"))
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if res["errors"] or bad:
         raise AssertionError(f"order model: {res['errors'][:3]} console: {bad[:3]}")
@@ -612,6 +766,7 @@ def run_days(vp, days, speed, busy, shots_root):
             time.sleep(0.3)
         P.shot("end-title")
         browser.close()
+    report_side(P)
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:
         raise AssertionError(f"console errors: {bad[:5]}")
@@ -642,6 +797,7 @@ def run_open_kitchen(vp, speed, busy, shots_root, customers=2):
         print(f"  {name}: served {served}, coins {st['coins']}")
         P.shot("summary")
         browser.close()
+    report_side(P)
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:
         raise AssertionError(f"console errors: {bad[:5]}")

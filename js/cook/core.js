@@ -13,6 +13,9 @@
  */
 (function (global) {
   const Cook = (global.Cook = global.Cook || {});
+  // cache-busting (js/version.js): Cook.v(url) adds ?v=<stamp>
+  Cook.V = global.NJG_V || "";
+  Cook.v = global.njgV || ((u) => u);
 
   /* ---------------- data ---------------- */
   Cook.data = null;
@@ -20,9 +23,9 @@
 
   Cook.load = async function () {
     const [data, manifest, tts] = await Promise.all([
-      fetch("data/cook.json").then((r) => r.json()),
-      fetch("data/audio-manifest.json").then((r) => r.json()).catch(() => ({})),
-      fetch("data/cook-tts.json").then((r) => r.json()).catch(() => ({ lines: {} })),
+      fetch(Cook.v("data/cook.json")).then((r) => r.json()),
+      fetch(Cook.v("data/audio-manifest.json")).then((r) => r.json()).catch(() => ({})),
+      fetch(Cook.v("data/cook-tts.json")).then((r) => r.json()).catch(() => ({ lines: {} })),
     ]);
     Cook.data = data;
     Cook.audioManifest = manifest || {};
@@ -111,7 +114,10 @@
   Cook.cardHidden = (id) => Cook.wordStage(id) >= 3 && !Cook.isPlaceholder(id);
   Cook.paused = false;
   Cook.hintDelay = function (id) {
-    return [0, 4000, 5000, 8000, 12000][Cook.wordStage(id)];
+    // Wave 5 (clarity and calm): hints after a longer hesitation (data.calm.hintMs by word
+    // stage), and never in the quiet moment at the start of a station
+    const ms = ((Cook.data && Cook.data.calm) || {}).hintMs || [4000, 5000, 8000, 12000];
+    return ms[Cook.wordStage(id) - 1] + Math.max(0, (Cook.quietUntil || 0) - Date.now());
   };
   Cook.markSeen = function (id) {
     const w = (Cook.save.words[id] = Cook.save.words[id] || { seen: 0, right: 0, miss: 0, streakMiss: 0 });
@@ -166,7 +172,7 @@
     if (!Cook.hasAudio(id)) return null;
     return new Promise((resolve) => {
       let a = audioCache[id];
-      if (!a) a = audioCache[id] = new Audio(`assets/audio/word/${id}.mp3`);
+      if (!a) a = audioCache[id] = new Audio(Cook.v(`assets/audio/word/${id}.mp3`));
       let done = false;
       const finish = () => {
         if (!done) {
@@ -200,7 +206,7 @@
   let currentSrc = null;
   async function loadBuffer(url) {
     if (!bufCache[url]) {
-      bufCache[url] = fetch(url)
+      bufCache[url] = fetch(Cook.v(url))
         .then((r) => r.arrayBuffer())
         .then((ab) => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej)))
         .catch(() => null);

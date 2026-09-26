@@ -48,7 +48,7 @@
 
   // the stir station's own lines and tips (data, not code)
   Cook.onLoad.push(async (data) => {
-    const extra = await fetch("data/stations/stir.json")
+    const extra = await fetch(Cook.v("data/stations/stir.json"))
       .then((r) => r.json())
       .catch(() => null);
     if (!extra) return;

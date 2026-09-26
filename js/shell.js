@@ -149,7 +149,7 @@
     layer.innerHTML = "";
     (currentProfile.hub_dressing || []).forEach((name) => {
       const img = document.createElement("img");
-      img.src = `assets/scene/eid/${name === "crescent" ? "crescent-star" : name}.png`;
+      img.src = njgV(`assets/scene/eid/${name === "crescent" ? "crescent-star" : name}.png`);
       const a = decorationAnchor(kitchenDef, name);
       img.style.left = `${(a.x / 1600) * 100}%`;
       img.style.top = `${(a.y / 900) * 100}%`;

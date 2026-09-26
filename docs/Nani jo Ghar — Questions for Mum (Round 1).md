@@ -1,5 +1,7 @@
 # Nani jo Ghar — Questions for Mum (Round 1)
 
+> **Superseded (25 Sept 2026):** merged into `docs/Nani jo Ghar — Questions for Mum (Combined, for the visit).md` (Word copy: `docs/Questions for Mum (combined).docx`). Use that one; this file is kept for history.
+
 *Two jobs in one sitting (or split across a few): the grammar patterns needed to build the recording and difficulty system correctly, and a first real pass at the word list itself, grounded in the family's own cooking and home life rather than a generic list. A voice note is fine for all of it; nothing needs to be written down.*
 
 Sep 23, 2026 · @Someone

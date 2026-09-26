@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#3d4a5c">
+<title>Monsoon rush · Rush lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/monsoon.css?v=20260925T233111Z">
+</head>
+<body class="monsoon">
+
+<div id="rotate">
+  <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways for the monsoon</p></div>
+</div>
+
+<div id="app">
+  <main id="stage">
+    <!-- the scene: a 1600x900 world of plain HTML (js/monsoon/stage.js), scaled to fit; nothing covers it -->
+    <div id="game"><div id="world"></div></div>
+    <!-- the intro card: the goal as pictures and the new words, then it goes (Wave 5 rule) -->
+    <div id="intro" class="hidden" role="dialog" aria-label="The storm"><div class="ic-card"></div></div>
+    <div id="toast" class="hidden"></div>
+  </main>
+
+  <aside id="side">
+    <div id="storm-name"></div>
+    <div id="stars-row" aria-label="Stars"></div>
+    <div id="placeholder-flag" class="hidden">Not yet a Kutchi test</div>
+    <!-- the call pill: the only place a call's words are written, only while it's live -->
+    <div id="call" class="card idle" role="status" aria-live="polite">
+      <div class="call-text"></div>
+      <div class="call-tools">
+        <button class="c-say" type="button" aria-label="Hear it again" title="Hear it again (the first time is free)"></button>
+        <button class="c-eye" type="button" aria-label="Show the words" title="Show the words (costs this call's ear)"></button>
+        <button class="c-tr" type="button" aria-label="Show in English" title="Show in English (costs this call's ear)">EN</button>
+      </div>
+    </div>
+    <div id="nani-card" class="card quiet">
+      <img class="nc-face" src="assets/cook/characters/nani-badge.webp?v=20260925T233111Z" alt="Nani">
+      <div class="say-slot"></div>
+    </div>
+    <div id="hand" aria-label="Lids in your hand"></div>
+    <div id="count-badge" class="hidden" aria-label="Drops so far"><span class="count-digit"></span></div>
+    <!-- the speaking moment (You call it): mic, pills fallback, parent's tick -->
+    <div id="speak" class="card hidden">
+      <button class="mic" type="button" aria-label="Say the pot's name"></button>
+      <div class="mic-status"></div>
+      <div class="pills hidden"></div>
+      <button class="parent-ok hidden" type="button">&#10003; They said it (grown-up)</button>
+    </div>
+    <div id="readout" class="hidden"></div>
+    <div class="side-rail">
+      <button id="btn-help" class="rail-btn" title="What do I do here?" aria-label="What do I do here?">?</button>
+      <button id="btn-home" class="rail-btn" title="Rush lab" aria-label="Rush lab">&#8962;</button>
+    </div>
+  </aside>
+  <div id="help-pop" class="hidden" role="dialog" aria-label="What do I do here?"><div class="hp-text"></div></div>
+</div>
+
+<div id="overlay" class="hidden"><div id="panel"></div></div>
+
+<!-- shared with Cook with Nani (read only): data, the placeholder voice, lines -->
+<script src="js/version.js?v=20260925T233111Z"></script>
+<script src="js/cook/core.js?v=20260925T233111Z"></script>
+<script src="js/cook/lang.js?v=20260925T233111Z"></script>
+<!-- word progress (the shell attaches the real profile later) and the shared recogniser -->
+<script src="js/progress.js?v=20260925T233111Z"></script>
+<script src="js/shared/speech.js?v=20260925T233111Z"></script>
+<!-- Monsoon rush: the engine (Node and browser), the scene, the mechanics, the lab -->
+<script src="js/monsoon/clock.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/calls.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/bots.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/core.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/fx.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/stage.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/ui.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/stubs/speech-lab.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/stubs/say.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/mechanics/cover.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/mechanics/count.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/mechanics/callit.js?v=20260925T233111Z"></script>
+<script src="js/monsoon/lab.js?v=20260925T233111Z"></script>
+<script>
+  (async () => {
+    await Monsoon.load();
+    Monsoon.Stage.init();
+    Monsoon.UI.init();
+    document.querySelector("#call .c-say").innerHTML = Monsoon.UI.ICON.speaker;
+    document.querySelector("#call .c-eye").innerHTML = Monsoon.UI.ICON.eye;
+    document.querySelector("#speak .mic").innerHTML = Monsoon.UI.ICON.mic;
+    if (Monsoon.params.get("autoplay")) Monsoon.play({ game: Monsoon.params.get("game") || "g1", level: Number(Monsoon.params.get("level")) || 1, mode: Monsoon.params.get("mode") || "drizzle", words: Monsoon.params.get("words") || "known", seed: Number(Monsoon.params.get("seed")) || undefined });
+    else Monsoon.Lab.show();
+    window.__monsoon.ready = true;
+  })();
+</script>
+</body>
+</html>

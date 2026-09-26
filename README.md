@@ -221,9 +221,13 @@ user gesture.
   `load_workbook()` silently discards their cached values (found and
   reverted with `git checkout` once already). Add rows by hand in
   Excel/LibreOffice/Google Sheets, which do recalculate.
-- `build/slice_sheet.py` — keys out a sheet's flat magenta background and
-  crops each grid cell to its own transparent PNG (the art pipeline's
-  "sheets to sliced assets" step). Used for the Eid decorations sheet.
+- `build/slice_sheet.py` — keys out a sheet's flat magenta (or, with
+  `--key grey`, #808080 for steel and glass) background and cuts each grid
+  cell to its own transparent PNG with a soft, fringe-free edge (the art
+  pipeline's "sheets to sliced assets" step). Needs numpy and scipy.
+  `build/slice_chatgpt_batch1.sh` re-runs ChatGPT batch 1;
+  `build/contact_sheet.py` makes the black/white QA contact sheets;
+  `build/bg_align_check.py` checks a background's lighting states line up.
 - `build/lines_needing_family.py` — writes
   `build/reports/lines-needing-family.md`: every sentence or word used by
   an errand with no Kutchi yet, or still a draft, and where it's used.

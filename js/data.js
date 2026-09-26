@@ -14,10 +14,10 @@
 
     async load() {
       const [content, errands, audioManifest, ...scenes] = await Promise.all([
-        fetch("data/content.json").then((r) => r.json()),
-        fetch("data/errands.json").then((r) => r.json()),
-        fetch("data/audio-manifest.json").then((r) => r.json()),
-        ...SCENE_IDS.map((id) => fetch(`data/scenes/${id}.json`).then((r) => r.json())),
+        fetch(njgV("data/content.json")).then((r) => r.json()),
+        fetch(njgV("data/errands.json")).then((r) => r.json()),
+        fetch(njgV("data/audio-manifest.json")).then((r) => r.json()),
+        ...SCENE_IDS.map((id) => fetch(njgV(`data/scenes/${id}.json`)).then((r) => r.json())),
       ]);
       this.content = content;
       this.errands = errands;

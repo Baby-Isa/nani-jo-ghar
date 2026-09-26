@@ -1,25 +1,49 @@
 {
- "_about": "Data for the combined station js/cook/stations/maani-line.js: dough bowls -> chakla -> tawa on one screen. `station` is its name and goal line (merged into data.stations); `words` are merged into data.words only if missing (big/small are English placeholders until the family gives the Kutchi); `mechanic.levels` are its difficulty levels (each lists only what changes). doughs: the two bowls, always both, whatever the order (tint multiplies the dough and maani art: millet dough is greyer). ballsPerBowl: always more than any order asks for, and the same in both bowls, so the bowls never show the count. sizes: null (one dashed circle, the roll knob's radius) or {wordId: radius} (two dashed circles; the order says which size). quietMs: how long a pause ends a roll (longer with two sizes, so you can roll on past the small circle). zones: which level each zone's mechanic runs at (tawa level 2 = two tawas). The order's own levels (how many, which kinds) are in data/cook.json recipes.maani.slots.maani.byLevel.",
+ "_about": "Data for the combined station js/cook/stations/maani-line.js: dough bowls -> chakla -> tawa on one screen. `station` is its name and goal line (merged into data.stations); `words` are merged into data.words only if missing (ph-big/ph-small are in data/cook.json: wadho/nindho, with she-forms wadhi/nindhi for maani); `mechanic.levels` are its difficulty levels (each lists only what changes). doughs: the two bowls, always both, whatever the order (tint multiplies the dough and maani art: millet dough is greyer). ballsPerBowl: always more than any order asks for, and the same in both bowls, so the bowls never show the count. sizes: null (one dashed circle, the roll knob's radius) or {wordId: radius} (two dashed circles; the order says which size). quietMs: how long a pause ends a roll (longer with two sizes, so you can roll on past the small circle). zones: which level each zone's mechanic runs at (tawa level 2 = two tawas). Wave 6 levels, each adding one thing: 1 one maani, 2 two, 3 a second tawa, 4 big/small. The order's own levels (how many, which kinds) are in data/cook.json recipes.maani.slots.maani.byLevel.",
  "station": {
   "name": "Maani line",
   "verb": "Roll and cook",
   "goal": "Tap a dough bowl, roll the dough to the circle, then tap it onto the tawa. Flip on the green, tap again to puff. Tick when you've made what they asked for."
  },
- "words": {
-  "ph-big": {"kutchi": null, "english": "big", "src": "placeholder"},
-  "ph-small": {"kutchi": null, "english": "small", "src": "placeholder"}
- },
+ "words": {},
  "mechanic": {
   "levels": [
    {
-    "doughs": {"cook-maani": {"tint": "#ffffff"}, "cook-bajrmaani": {"tint": "#a9aab4"}},
+    "doughs": {
+     "cook-maani": {
+      "tint": "#ffffff"
+     },
+     "cook-bajrmaani": {
+      "tint": "#a9aab4"
+     }
+    },
     "ballsPerBowl": 5,
     "sizes": null,
     "quietMs": 700,
-    "zones": {"roll": {"level": 1}, "tawa": {"level": 1}}
+    "zones": {
+     "roll": {
+      "level": 1
+     },
+     "tawa": {
+      "level": 1
+     }
+    }
    },
-   {"zones": {"tawa": {"level": 2}}},
-   {"sizes": {"ph-big": 185, "ph-small": 118}, "quietMs": 1100}
+   {},
+   {
+    "zones": {
+     "tawa": {
+      "level": 2
+     }
+    }
+   },
+   {
+    "sizes": {
+     "ph-big": 185,
+     "ph-small": 118
+    },
+    "quietMs": 1100
+   }
   ]
  }
 }

@@ -10,6 +10,11 @@
  * Kutchi group plays its placeholder Gujarati-voice file if there is one,
  * otherwise each word's file in turn; an English group plays its
  * English-voice file if there is one. Files come from build/build_cook_tts.py.
+ * A word can carry a `say` field (data.words[id].say) distinct from its
+ * on-screen spelling (data.words[id].kutchi), e.g. Zafar's own phonetic
+ * spelling for a word written over chat: the voice always reads `say`
+ * where it's set, both here (the on-device fallback, saySpelling()) and in
+ * build/build_cook_tts.py, never `kutchi`.
  *
  * No language rules live here: sentence frames are data.lines, and the
  * grammar (number words, where the number goes, how a list and an order
@@ -29,9 +34,23 @@
 
   const G = () => (Cook.data && Cook.data.grammar) || {};
   Lang.grammar = G;
-  Lang.word = (id) => [{ t: Cook.display(id), lang: Cook.isPlaceholder(id) ? "e" : "k", w: id }];
+  /**
+   * Gender agreement (the family, 25 Sept: docs/kutchi-grammar-notes.md).
+   * A noun has words[id].gender ("he" | "she" | "unknown"); a word with
+   * `forms` ({he, she}: "one" hakro/hakri, describing words wadho/wadhi)
+   * takes the form for its noun. Unknown gender: the word's own `kutchi`.
+   */
+  Lang.gender = (id) => {
+    const g = (Cook.data.words[id] || {}).gender;
+    return g === "he" || g === "she" ? g : null;
+  };
+  Lang.form = (id, gender) => {
+    const w = Cook.data.words[id] || {};
+    return (gender && w.kutchi && w.forms && w.forms[gender]) || Cook.display(id);
+  };
+  Lang.word = (id, gender) => [{ t: Lang.form(id, gender), lang: Cook.isPlaceholder(id) ? "e" : "k", w: id }];
   Lang.numId = (n) => Cook.numId(n);
-  Lang.num = (n) => [{ t: Cook.numWord(n), lang: "k", w: Lang.numId(n) }];
+  Lang.num = (n, gender) => [{ t: Lang.form(Lang.numId(n), gender) || Cook.numWord(n), lang: "k", w: Lang.numId(n) }];
   /**
    * Phrase parts for "n of a thing", in the language's order (grammar.count,
    * e.g. "{n} {x}"). one: false leaves the number out when it's 1 ("chai",
@@ -49,13 +68,20 @@
     const segs = [];
     const en = [];
     const sep = G().sep != null ? G().sep : " ";
+    // the noun a number or describing word goes with: the next noun after it
+    // ("ba wadhi maani"); its gender picks their forms
+    const nounAfter = (i) => {
+      for (let j = i + 1; j < parts.length; j++) if (typeof parts[j] === "string" && (Cook.data.words[parts[j]] || {}).gender) return parts[j];
+      return null;
+    };
     parts.forEach((p, i) => {
       if (i) segs.push({ t: sep, lang: null });
+      const g = Lang.gender(nounAfter(i));
       if (typeof p === "number") {
-        segs.push(...Lang.num(p));
+        segs.push(...Lang.num(p, g));
         en.push(String(p));
       } else {
-        segs.push(...Lang.word(p));
+        segs.push(...Lang.word(p, g));
         en.push(Cook.english(p));
       }
     });
@@ -64,12 +90,24 @@
   /** A frame from data.lines, with {x} filled by a phrase. */
   Lang.line = (key, phrase) => {
     const f = Cook.data.lines[key];
+    // data can name a word id instead of a lines key, for a whole line that's
+    // just one word said on its own (e.g. a stir speed): the word-stage
+    // system then applies to it like any other word (it can fade to dots).
+    if (!f && Cook.data.words[key]) {
+      const w = Lang.wordLine(key);
+      return { segs: w.segs, en: w.en, key };
+    }
     const lang = f.k ? "k" : "e";
     const tmpl = f.k || f.e;
     const segs = [];
     const [a, b] = tmpl.split("{x}");
     if (a) segs.push({ t: a, lang });
-    if (phrase && b !== undefined) segs.push(...phrase.segs);
+    if (phrase && b !== undefined) {
+      // a line that starts with the word ("Elchi waari chai.") starts with a capital
+      const ps = phrase.segs.slice();
+      if (!a && ps[0] && ps[0].t && /[.!?]$/.test((b || "").trim())) ps[0] = Object.assign({}, ps[0], { t: ps[0].t.charAt(0).toUpperCase() + ps[0].t.slice(1) });
+      segs.push(...ps);
+    }
     if (b) segs.push({ t: b, lang });
     const enT = f.en || f.e;
     const en = phrase ? enT.replace("{x}", phrase.en) : enT;
@@ -89,7 +127,8 @@
     const g = G();
     const o = g.order || {};
     const l = g.list || {};
-    return { first: o.first || "need", more: o.next || "and", any: l.next || "and", seq: g.then || "then", no: g.no || "no", seq_word: g.then_word || null };
+    // seqFirst: the first step of a sequence ("Pela {x}.", first …, ne poi …), else said bare
+    return { first: o.first || "need", more: o.next || "and", any: l.next || "and", seq: g.then || "then", seqFirst: g.then_first || null, no: g.no || "no", seq_word: g.then_word || null, for: g.for || null };
   };
   /**
    * Wrap a phrase in a small template with {x} (grammar.list.first "{x}.",
@@ -120,7 +159,7 @@
     entries.forEach((e, gi) =>
       [].concat(e).forEach((id, j) => {
         const ph = Lang.phrase([id]);
-        out.push(!out.length ? Lang.bare(ph) : Lang.line(seq && j === 0 && gi > 0 ? F.seq : F.any, ph));
+        out.push(!out.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && gi > 0 ? F.seq : F.any, ph));
       })
     );
     return Lang.join(out);
@@ -140,16 +179,33 @@
   /**
    * HTML for a line. opts.hide: a function (wordId) -> true to hide that
    * word as dots (used by the mission card when a word is well known).
+   * Hidden words next to each other share one "•••" ("bo khun" looks like
+   * "dudh"), so the number of dot groups never tells you a row has a
+   * number in it (audit, Wave 4: the Chai tray's rows).
    */
-  Lang.html = (line, opts = {}) =>
-    line.segs
-      .map((s) => {
-        if (s.lang === null) return esc(s.t);
-        if (s.w && opts.hide && opts.hide(s.w)) return `<span class="dots" title="Tap the speaker to hear it">•••</span>`;
-        const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : ""].filter(Boolean).join(" ");
-        return cls ? `<span class="${cls}">${esc(s.t)}</span>` : esc(s.t);
-      })
-      .join("");
+  Lang.html = (line, opts = {}) => {
+    const hidden = (s) => s && s.w && opts.hide && opts.hide(s.w);
+    const out = [];
+    let dots = false; // the last thing out was "•••" (only spaces since)
+    line.segs.forEach((s, i) => {
+      if (s.lang === null) {
+        // a space between two hidden words disappears into the one "•••"
+        if (dots && /^\s*$/.test(s.t) && hidden(line.segs[i + 1])) return;
+        out.push(esc(s.t));
+        if (!/^\s*$/.test(s.t)) dots = false;
+        return;
+      }
+      if (hidden(s)) {
+        if (!dots) out.push(`<span class="dots" title="Tap the speaker to hear it">•••</span>`);
+        dots = true;
+        return;
+      }
+      dots = false;
+      const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : ""].filter(Boolean).join(" ");
+      out.push(cls ? `<span class="${cls}">${esc(s.t)}</span>` : esc(s.t));
+    });
+    return out.join("");
+  };
 
   /** Group segments into speakable chunks by language. */
   function groups(line) {
@@ -206,6 +262,30 @@
       }
       setTimeout(fin, (700 + 260 * text.length) / Cook.speed);
     });
+  /**
+   * A word's own phonetic spelling for the voice (data.words[id].say, e.g.
+   * ph-no: kutchi "nar", say "narr"), when it differs from what's shown on
+   * screen. Keyed by the normalised display token so it lines up with the
+   * tokens Lang.speak falls back to. Built fresh each time (small, and only
+   * used on the rare device-voice fallback path, never on the hot path).
+   */
+  function saySpelling(token) {
+    for (const w of Object.values(Cook.data.words || {})) {
+      // a gendered form ("hakri", "wadhi") has its own voice spelling, if any
+      const g = w.kutchi && w.forms && Object.keys(w.forms).find((k) => Cook.norm(w.forms[k]) === token && Cook.norm(w.forms[k]) !== Cook.norm(w.kutchi));
+      if (g) return (w.say_forms || {})[g] || token;
+      if (!w.kutchi || !w.say) continue;
+      const kt = Cook.norm(w.kutchi).split(" ");
+      const st = String(w.say).split(" ");
+      if (kt.length !== st.length) {
+        if (Cook.norm(w.kutchi) === token) return w.say;
+        continue;
+      }
+      const i = kt.indexOf(token);
+      if (i >= 0) return st[i];
+    }
+    return token;
+  }
   const tokenVoice = (w) => !!Cook.tts[w] || !!synthVoice();
   Lang.hasVoice = (line) => {
     if (fileFor(Lang.plain(line), "k") && line.segs.every((s) => s.lang !== "e")) return true;
@@ -225,7 +305,7 @@
       else if (g.lang === "k") {
         for (const w of Cook.norm(g.t).split(" ")) {
           if (Cook.tts[w]) await Cook.speakKey(w);
-          else if (w) await synth(w);
+          else if (w) await synth(saySpelling(w));
         }
       }
       await new Promise((r) => setTimeout(r, 120 / Cook.speed));

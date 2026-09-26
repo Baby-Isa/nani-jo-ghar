@@ -1,8 +1,644 @@
 # Find it: design (the next mode after Cook with Nani)
 
 **Date:** 24 Sept 2026
-**Status:** proposal for Zafar. Nothing built yet. It builds on `docs/game-modes-v2.md` (mode 2, *Find it*), `docs/cook-with-nani-phase-a-design.md` (the shared systems and the station library) and `docs/cook-with-nani-kutchi-audit.md` (the leaks).
+**Status:** proposal for Zafar. **25 Sept: first playable slice on its own branch, for Zafar's review** (not live): `find.html` + `js/find/` + `data/find.json`, the engine (rows as data, relations as data, levels as data, the Search lab with the non-speaker bot) and M1 Nani's list with M5 Check the bag, in the bazaar with placeholder art. **Later on 25 Sept it moved onto Cook's calm sidebar (Wave 5A):** Nani's list comes up big as the intro card and flies into the sidebar; one row and one dot per thing; the goal behind "?"; Nani says less (new words are still taught with the twinkle); the result card is the word review; no coin/star counter (pocket money on the title and result card); the combo rises from the basket; Done and the rail (with zoom) are pinned to the sidebar's foot so zoom never falls off a phone. Tests: `build/test_find.py` (play) and `build/test_find.py --leak N` (the bot). It builds on `docs/game-modes-v2.md` (mode 2, *Find it*), `docs/cook-with-nani-phase-a-design.md` (the shared systems and the station library) and `docs/cook-with-nani-kutchi-audit.md` (the leaks).
 **Placeholder rule:** Kutchi below is limited to words and frames already in `data/content.json` or `data/cook.json`. Anything written like `[EN: under]` has no Kutchi yet. In the game it is an English placeholder in grey italic until the family gives the word. **Never invent Kutchi.**
+**25 Sept, later:** the deep dive (mini-games, one-file mechanics, speaking moments, a build brief at the end) **supersedes sections 3, 5.4 and 7 where they conflict**; D9 lists the patches.
+**25 Sept, evening:** the **pipeline design** at the top (stages in a fixed order, each stage a set of mini-games, stitched into one errand with a beginning and an end) **supersedes the deep dive's D5 first set, D6 and section 8 where they conflict**; P9 lists the patches. Phases 0–1 of the deep dive's brief are built on `claude/build-find` (see P6); this section is written against that build.
+**25 Sept, late (26 Sept):** the **mini-game quality pass** at the very top answers Zafar's five questions for every mini-game in the pipeline, cuts the library from 21 twists to 10, merges or drops the variants that another mode already has, and applies the late rules (consistent controls inside a mini-game, auto-tick, no mid-round verdicts, the card is the master). **It supersedes P2, P3 and P8 where they conflict**; Q8 lists the patches, and P8 is edited in place.
+
+---
+
+## Mini-game quality pass, 25 Sept 2026
+
+**Why this section.** `docs/modes/MINIGAME-QUALITY-BRIEF.md`: "the detail and success will all be in how these mini-games work: what do you need to do, where is the challenge, where is the fun, where is the instruction, what is novel." For each mini-game in the pipeline (P2) and each twist in the library (P3) this section answers those five questions, scores them 1–5 each, keeps the best (at most 6–8 per stage, 8–10 for the library), checks that nothing kept is the same as a mini-game in another mode unless it is deliberately shared, and walks through a level-1 errand stage by stage. Rules applied throughout (`docs/UX-PRINCIPLES.md` §11–§13): **consistent controls inside each mini-game** (the same kind of action always uses the same gesture, and a mini-game's gestures never change between its levels); **auto-tick** on the instruction card; **no negative feedback mid-round** from level 2 (mistakes show in the end review); **the card is the master, Nani is a voice**. Kutchi below is the family's only: *Muke {n} {x} khape*, *Ne {x}*, *Nar {x}*, *hakro / hakri*, *ba*, *trae*, *char*, *panj*, *wadho / nindho*, *pela … ne poi*, *{person} lai*, *pan*, *hi*, *khan*, *khanigin*, *Muke {x} de*, *ke*, *saathe*, *Haa*, the salaam, *Ghan*, *Achija*, *Aabhar aanjo*, *Arre re!*, *Hedo!*, *Shabash!*, the fruit (*santra, limu, kelo, ambo*). `[EN: …]` is a placeholder, grey and English in the game.
+
+### Q1 The rules, applied to Find it
+
+**Controls: one convention for the whole mode.** In Find it a *thing* is always **tapped** (an item on the stall, a thing in the bag, a coin, a fruit for Nana, an openable, a stall front, a pill) and the *camera* is **dragged** to pan (with the rail's zoom buttons). That is already how the build works at every level, so the search (`spot`) needs no change. What did change, so that no mini-game mixes gestures for one kind of action or changes them by level:
+
+| Mini-game | Was | Now | Why |
+|---|---|---|---|
+| **5c The scales** | Drag each orange from the basket onto the pan | **Tap** each orange in the basket; it hops onto the pan (Cook's `count`, whose units are tapped everywhere) | The scales sit beside the bag check, where things are tapped; one gesture for "move a thing" across stage 5 |
+| **5d Pay** (later) | Drag coins to the counter | **Tap** a coin; it slides to the counter | Same reason |
+| **6b Give one to Nana** | Drag from the bag to the person | **Tap the thing, tap the face** (the same two taps as Tidy up's *Seat the guests* and Snap's *Who wants which?*: a deliberately shared mechanic) | One gesture for "give" across the three modes that have it |
+| **The torch** (L1) | The beam follows the finger | Unchanged: **drag** the beam, **tap** the thing under it. Two kinds of action, two gestures, the same at every level | Aiming a light and picking a thing are different actions, so the rule allows it |
+| **2a Which stall?** | Taught at level 1, tested from level 2 | Unchanged: a **tap** on a front at every level; only what the front shows changes | Levels change the Kutchi, not the gesture |
+| **4c Where is it?** at level 4 (qualified anchors) | Unchanged | A tap at every level | — |
+
+**Auto-tick, and the count leak (decision for Zafar, Q8.1).** A row on Nani's list ticks the moment it is right. For a **noun row** that is the first find. For a **count row** (*ba santra*) a tick at the second orange tells a non-speaker exactly when to stop, which is the digit leak (D5.2) in another shape: the blind bot would tap one fruit until its row ticks. **Default:** a count row ticks on its **first** find (the noun is right; the count is judged at Done and in the review), and the tally beside the row (×2) stays what it is now, the child's own count. If Zafar prefers the tick at the count, the leak script gains a *tap-till-tick* strategy and we measure what it costs (the stage-4 ear would then rest on the bag and the scales).
+
+**No mid-round verdicts.** From level 2 a wrong tap in the search is not wiggled or recast: **whatever you tap goes in the basket**, the row ticks only when the right thing is in, and the extras are what the shopkeeper trips over (5a) and what the accuracy badge shows (UX 9). Level 1 keeps its one-time wiggle and recast as onboarding. The "tapping everywhere" slow-down (three wrong things in two seconds) stays, since it is a pause, not a buzzer. The Warmer ("?") and the light bulb are the help; the recast lives on in the end review's word list (each missed row played again with what was tapped beside it).
+
+**The card is the master.** The request card (Nani's list; the faces in 1b; Ali's picture list in 1d) shrinks into the left sidebar and is the only place the rows live. Nani is her recorded voice, the throbbing hint on the "?" button, and the interjections (*Arre re!* at level 1 only; *Shabash!*, *Ghan!* at a tick). She is on screen at the request card, the doorway call and the send-off, never in the stall.
+
+### Q2 What's working now, and the mechanic borrowed from each
+
+| Where | The mechanic | Why it works | Where it lands in Find it |
+|---|---|---|---|
+| **The hidden-cats wave on Steam** (*Cats Hidden Around the World*, *100 hidden cats*, *FIND KITTENS*, 2023–2025, all 94–97% positive) | One hand-drawn picture, one kind of thing to find, a counter that only counts up, no timer, no fail; a cat found *reacts* (a meow, a jump) | The pleasure is purely "found it!" plus a reaction; the picture is the level. Cheap art gets hundreds of hours of play | The rule that every find reacts with its own sound and hop (already the arc into the basket); *Kasuku's minute* and the free-play stall as "one picture, count up"; Zazu's peeking is this genre in one sprite (kept out for now, see Q5) |
+| **Hidden Through Time 2** (2023–24) | A short **clue per item** that "gives the gist of where"; a **toggle that changes the scene** (day/night, rain) so some things are only findable in one state | Children of 6–8 play it on their own; the clue makes it fair; the toggle makes one scene two | The clue is Nani's sentence; the Warmer is "the gist of where" (a third of the scene); the **torch** is our scene toggle (L1) |
+| **Good Pizza, Great Pizza** | Orders built from randomised parts; the **customer's comic reaction** to a wrong pizza is the feedback, not a buzzer; tips for a right one | The wrong-order reaction is funny enough to be a reward, so mistakes don't sting; the parts make a million orders | The shopkeeper's *Arre re!* and the wrong fruit in his hand (3b), Nani's puzzled empty hand (6a), Ali's shrug (1d): the miss is always a character's reaction. Rows from parts (noun × count × size × place) are `gen.js` |
+| **Dr. Panda Supermarket / Baby Panda's Supermarket** | A **shopping list → aisles → weigh → pay → bag** sequence; items found by **opening counters and cupboards** | Five-year-olds already know the shape of a shop, so the fixed order is not a rule, it's the world | The seven stages; the scales (5c); openables as the ordinary way a stall hides things (4d, L2) |
+| **Pok Pok Playroom** (Apple Design Award; new toys through 2025) | Hand-drawn, **calm**, every object reacts to a touch, nothing flashes to hold attention; no score in the toys | Calm holds a five-year-old longer than flash; reactions are the reward | Every scenery tap reacts (the awning, the bunting, the scale's dish); no confetti except at the tick; the *khanigin* tray (3a) is a Pok Pok moment: pick any one, it's yours |
+| **Duolingo ABC** | A **repeat button** on every prompt; each word **highlights as it's spoken**; speech recognition for saying letters out loud, with the pills as the fallback | Listening support that never shows the answer; read-along makes the audio the text | The card's one speaker and the read-along (UX 1, 4); `tell` with its pills fallback (3b, 6a, 1d) |
+| **Khan Academy Kids** | A balance of **closed multiple-choice recall** ("tap the one") and **open explore** | Recall makes it stick; explore keeps it a game | Rounds (closed: the rows) and Explore mode (open: tap anything, hear its name) |
+| **Bluey Hide & Seek** (the talking toy) and **Peekaboo Barn** | The hidden thing **talks while you look**; opening a door plays the animal's sound whether or not it's the right one | Sound during the search keeps a small child looking; an empty door is still fun | Simba's bell and the cats' noises (4d, L3); empty openables react too (L2) |
+| **Toca Life World** (and the lesson of **Toca Boca Days**, shut down Aug 2025) | Shops in sections; everything reacts; the character reacts to *whatever* you hand them. The multiplayer sandbox with no ending didn't last | The story is the child's; a shop is sections. An ending matters | Stalls by trade (2a); the bowl and the counter act on whatever was said; **every stage ends** (Done, *Ghan!*, *khanigin*), and the errand ends at home |
+| **Overcooked / Cooking Mama** | Order tickets that expire; a chain of small gestures with the cook's reaction at the end | Tension from a visible clock; a verdict face at the end, never mid-step | Busy's patience ring (level 3+ only); the three badges at the end, not during |
+
+### Q3 The five questions, mini-game by mini-game
+
+Scores are **Do / Challenge / Fun / Instruction / Novel**, 1–5 each, total out of 25. *Do* is how much there is to do with your hands; *Challenge* how much the Kutchi decides and how well it ladders; *Instruction* how much of it is real Kutchi today. Gestures are listed in *Do*; none changes by level.
+
+#### Stage 1 · The errand
+
+| Mini-game | 1 What do you do? | 2 Where is the challenge? | 3 Where is the fun? | 4 Where is the instruction? | 5 What is novel? | Score | Keep? |
+|---|---|---|---|---|---|---|---|
+| **1a Nani's list** (built) | Listen. The card is over the play area: Nani's face, one row per thing (dot + text by word stage). Each chunk lights as she says it. Tap the card's one speaker to hear it again (the first replay free). Tap **Go** (right, under the thumb) and the card shrinks into the left sidebar | Holding two or three rows in your head across the whole errand. L1 one row; L2 two; L3 three, half the time with a *Nar* row; L4 a size or a position on a row. From level 3 the rows are dots (word stage 3) | The target twinkling on the stall as she says a stage-1 word (the tie between word and thing); the card flying into the sidebar | Card: *Muke hakro santra khape.* · *Ne ba limu.* · *Nar kelo.* Nani: the same, read along; *Hedo!* to start | Nothing on its own: it is the request card every mode has (UX 1), deliberately shared. It is the stage, not a twist | 3/3/3/5/2 = **16** | **Keep** (the baseline) |
+| **1b Everyone wants something** | Two or three faces on the card; each says one row in turn and its row is tagged with that face. Tap a face to hear that person's row again. L4: one face changes its mind mid-card (*Nar santra … kelo*) and its row swaps live | Who wants what, not just what: the row can't be found without remembering the face for stage 6. L2 two people, one row each; L3 three; L4 a change of mind and *pan* (*Ma lai pan hakro*) | The change of mind: Nana shakes his head and the row re-writes itself; the faces nodding as their thing lands in the basket | Card: *Nana: Muke ba santra khape.* · *Big Ma: Ne hakro limu.* · *Ma lai pan hakro.* Nani reads each in that person's voice (recorded per family member) | Several askers on **one** card, and a row that changes while you watch. Snap's *Who wants which?* has owners at the hand-in; nobody else has the *asking* by several faces | 3/4/4/5/3 = **19** | **Keep** (L2+) |
+| **1c Kasuku overheard** (F7) | (No card: Kasuku squawks five words; find them in 60 s) | — | — | — | Same as the library's *Kasuku's minute* (L14): it is a whole round, not a stage-1 variant | — | **Moved** to the library and free play |
+| **1d You're Nani** (F4, built) | The card shows pictures, no words. Say each one (the mic; pills as fallback; a parent ✓). Ali repeats what he heard, runs to the stall and picks it while you watch (stages 2–4 as a 10-second scene). You rejoin at stage 5 to check his bag | Producing the noun, then the number (L2), then the size (L4), with the stall's kinds as the closed set (5–8) then 1–4. A wrong word is *acted on*: Ali brings the wrong fruit, and you must catch it in his bag | Ali's shrug and wrong fruit; his little run; catching him out at the bag | Card: pictures with one speaker per picture (hear the model). Ali: *Santra? Achija!* Nani (voice): *Shabash!* at a right say | The **flipped run**: the child speaks the list and then watches the consequence unfold across the pipeline before checking it. The clinic's *You call them*, Tidy up's *Ali fetches* and Snap's *Ali's camera* each flip one stage; only this flips the errand | 4/4/4/4/5 = **21** | **Keep** (L2+, Ch2) |
+
+#### Stage 2 · Get there
+
+| Mini-game | 1 Do | 2 Challenge | 3 Fun | 4 Instruction | 5 Novel | Score | Keep? |
+|---|---|---|---|---|---|---|---|
+| **2a Which stall?** | Four fronts on the lane. Tap the one Nani named; the camera zooms in. L1 taught: Ali runs ahead and waves, the front twinkles, a ghost finger shows the tap once. L4: two stops (*pela …, ne poi …*), tap them in order | L1 nothing (taught). L2 two fronts sell the same things (two fruit stalls), so only the place phrase decides (*[EN: the old man's]*, *[EN: by the tree]*, *Nana jo*). L3 four doors off the courtyard (rooms E49–E58). L4 a route of two, in order | The zoom-in through the awning; Ali waving; at L4 the camera swinging from one stall to the next with Nani's *ne poi* | Card: the place line under the rows: *[EN: the fruit stall]* · *pela [EN: the fruit stall], ne poi [EN: the sweet shop]*. Nani says it once; the front twinkles at L1 | A place decided **by whose or by where**, not by what it sells; the two-stop route. Snap's *Where to?* and *Which way?* reuse this tap (Snap says so); this is where it is *tested* (two of a kind). Deliberately shared with Snap | 2/3/3/4/3 = **15** | **Keep** |
+| **2b Whose stall?** | Tap the right shopkeeper in the lane (*[EN: the old man]*, later *in red*); they walk you to their stall | Kind + colour | — | People words (F1–F13) | None: it is the clinic's waiting room (*Bring in the girl*, *The old man in red*) and Dress up's *Bring in…* on the same `whichone` decoy rule. Its "whose" survives inside 2a at L2 (*Nana jo* stall) | 2/3/3/3/1 = **12** | **Cut** (the clinic owns "tap the person named") |
+| **2c The dark lane** | (The torch on the lane) | — | — | — | It is the torch modifier (library L1), which applies to any scene | — | **Moved** to the library |
+
+#### Stage 3 · At the counter
+
+| Mini-game | 1 Do | 2 Challenge | 3 Fun | 4 Instruction | 5 Novel | Score | Keep? |
+|---|---|---|---|---|---|---|---|
+| **3a The counter: salaam and *khanigin*** (built as `greet`; absorbs L21) | The shopkeeper greets; tap the reply pill (three pills; from L2 say it, closed set 3). Then he holds out a tray: *Ambo khanigin* ("take one yourself"): tap **any** one; it's yours, ungraded, and it drops in the basket as a gift. Then he waves at the stall (*khanigin* again: the rest is yours to find) and stage 4 starts | The reply (L1 choose, L2 say, L3 the second exchange, B43). The tray is a warm-up: the first tap in the stall is never wrong | The tray: whichever you tap, he beams and it's yours (a Pok Pok moment); the *khanigin* wave that hands you the stall | Card: the greeting pills (shared `greet`). Shopkeeper: *Salamun alaykum* … *Ambo khanigin!* … *khanigin*. Nani (voice): nothing; this is the shopkeeper's beat | The ungraded **gift tap** that teaches *khanigin / khan / hi* by doing (*hi ambo khan*), and the fiction's reason a customer shops alone. The salaam itself is Cook's `greet`, deliberately shared by every mode | 2/2/4/5/3 = **16** | **Keep** |
+| **3b Ask for one** (speaking) | *[EN: What do you need?]* Say the first row (the noun; from L2 the count). He hands **exactly what he heard**: it drops in the basket and that row's tally reads 1 (or 2). If it's the wrong fruit, it's in his hand and in your basket: *Arre re!* at L1 with one retry; from L2 it simply lands and the review shows it. Then the pills if the mic gives nothing | Production with a closed set of the stall's kinds (4–8), then the numbers 1–4 (L3), then a size (L4). The Sceptic: pills never earn the voice star | The fruit arriving in your basket because you *said* it; the shopkeeper's exaggerated ear-cupping while he listens | Card: the row throbs. Shopkeeper: *[EN: What do you need?]* Child: *Muke hakro santra khape* (the model plays on the row's speaker). Shopkeeper: *Hakro santra! Achija.* | **What you say pre-fills the next stage**: stage 4 starts with that row's tally already at 1, so speaking is seen to count. Tidy up's *What do you need?* and Snap's *What's this?* are single-stage says; none carries forward | 4/4/5/5/4 = **22** | **Keep** (L2+) |
+| **3c The doorway** (home errands; Cook's `passme`) | At home there is no counter: as the search starts Nani calls from the doorway one thing that is **not** on the list (*Hedo! Muke hakro limu de*) and a row is added to the card | A met word off the list (spaced review); *de*. L2 once per errand; L4 twice | Nani's head round the door; the new row sliding onto the card | Card: the new row appears with its speaker. Nani: *Hedo! Muke hakro limu de.* | Nothing new: Cook's pass-me and Snap's *Quick shot* are the same interrupt, deliberately shared. It stays because the home skin needs a stage 3 and the fiction (Nani's second thought) is right | 2/3/3/5/2 = **15** | **Keep** (home skin, shared) |
+
+#### Stage 4 · Find it
+
+| Mini-game | 1 Do | 2 Challenge | 3 Fun | 4 Instruction | 5 Novel | Score | Keep? |
+|---|---|---|---|---|---|---|---|
+| **4a The list** (F1, built) | Drag to pan, tap the rail to zoom, **tap** each thing; it arcs into the basket with its sound and the tally rises; tap **Done** (right, under the thumb). L2+: everything you tap goes in (no wiggle); the row ticks when the right thing is in | Noun + count among look-alikes (santra / limu / peach) and copies. L1 one stall, ≤ 11 things, counts 1–2; L2 counts to 3, a size on one row; L3 a *Nar* row, counts to 4; L4 a size **and** a position, two stalls (pan). The Warmer keeps ≥ 3 candidates. Blind bot 1.7% (built) | The arc and the plink; the combo rising from the basket; the tick with *Shabash!*; the row twinkling on a new word | Card: the rows (*Muke ba santra khape. Ne hakro limu.*). Nani: replay on the speaker; *Shabash!* at a tick; nothing else in the stall | The **search itself**: a panned, zoomable scene with copies and clutter capped by level, Done, over- and under-collection graded. Tidy up's *Bring me the X* is the same tap on a floor of six with no search; it declares the `whichone` decoy rule shared with Find it, and Find it owns the scene | 4/4/4/5/3 = **20** | **Keep** (the bulk) |
+| **4b Which one?** (F2, built; absorbs L10 Big Ma's box and L11 the cloth stall as skins) | As 4a, but every row carries *wadho / nindho* and every kind is out in both sizes | The size word alone decides: the same picture at 1.25× and 0.8×, both sizes on two or more kinds (the size rule). L1 two rows; L2 two groups; L3 a *Nar* row; L4 a position too. **Skins:** colour in Big Ma's box (E60–E71, Ch4), colour + pattern on the cloth stall (F63, age 11). Blind 0.1% | Simba is the big one, Zazu the small one (the running joke on the card's speaker); the tiny lemon next to the huge one | Card: *Muke wadho santra khape. Ne nindho limu.* Nani: the same | The **same picture at two scales**, both on the stall, so the adjective is the whole decision. Dress up, Snap and the clinic use `whichone` for attributes on *different* things; here the noun is fixed and only size (later colour) moves. Shared module, distinct game | 4/5/4/4/3 = **20** | **Keep** |
+| **4c Where is it?** (F3, built as a greybox) | Calls one at a time (*santra, crate [EN: in]*); the called thing is in three places; tap the one she meant; the next call comes. Same gestures as 4a | Only the position separates the copies (matched by anchor *word*: two crates are both "the crate" until L4 qualifies them). L1 in / on, four calls; L2 in front of; L3 the sitting room: under, behind; L4 a size on each call. Not tested while the positions are English (blind 25%); 0.7% once they are Kutchi | The copy you tapped lifting out of the crate; the same orange called to two places in a row ("the other one!") | Card: the current call only (one row at a time, fixed shape). Nani: *santra, crate [EN: in]* (placeholder until A5) | **Positions found, not placed.** Tidy up tests positions by placing (its stage 3); the clinic's `where` is a body part. Nobody else has copies of one noun in three relations | 4/5/4/3/5 = **21** | **Keep** (Kutchi-real when A5 lands) |
+| **4d Simba's mischief** (F5, phase 3) | The sweets are behind openables (curtain, cushion, lid, drawer); the call names the openable; tap to open; empty ones react too; a tail, a bell, paw prints point to a cat, not always to the sweet; from L4 Zazu moves one sweet once | Which openable, from *[EN: behind] {anchor}*; the clues can lie. L3 eight openables; L4 twelve and the move. Blind about 1 in 8 per call | The reveal under a cushion (Zazu asleep on a jalebi); the bell that leads to the wrong cat; the empty tiffin's rattle | Card: the call (*[EN: behind] {curtain}*). Nani: the call; the cats' noises are the rest | **Openables plus a clue that can lie.** Who did it?'s *Follow the prints* is a tap-in-order trail with no hiding; the clinic's `lift` lifts one named thing. The trail-to-a-cat is only here | 5/4/5/3/5 = **22** | **Keep** (Ch3 flagship, phase 3) |
+
+Modifiers on any stage-4 variant (from the library, Q5): **the torch** (L1), **the other one** (L4), **find two the same** (L5), **Busy**.
+
+#### Stage 5 · Hand over
+
+| Mini-game | 1 Do | 2 Challenge | 3 Fun | 4 Instruction | 5 Novel | Score | Keep? |
+|---|---|---|---|---|---|---|---|
+| **5a Check the bag** (built; **absorbs 5b He reads it back**) | The stall dims; only the counter is live. He packs the list from the rows, lifting each thing and **naming it with its count** as it goes in (*ba santra … hakro limu*). One thing is wrong: **in his hands** (a look-alike, one too many, the wrong size) **or in his words** (he says *trae* holding two; he calls a lemon *santra*). **Tap the wrong thing** in the bag; he looks, says sorry, and swaps it or recounts. First ever round: no mistake, *Achija* | Remembering what was asked when the rows are dots (stage 3), and listening to him against what you see. L1 a look-alike swap, and he is always right in his words (the third hearing of the list); L2 a swap **or** a wrong count said; L3 the wrong size (held or said); L4 the wrong count, rows as dots. The Sceptic: a look-alike from the same group, never the odd one out; one in the bag's size (4–6) per guess | The shopkeeper's *Arre re, arre re!* and the swap; catching him say *trae* with two in his hand | Card: the rows, as dots or text by stage. Shopkeeper: *Ba santra … hakro limu … Ghan?* Child: taps. Shopkeeper: *Arre re! Hakro santra. Achija.* | The only place in any mode where the child **catches someone else's mistake**, and from L2 the mistake can be in what he **says**, not what he holds. The clinic's `handover` is the doctor catching the child (the reverse); Snap's *Nana's guess* is yes/no on one print. Merging 5b removed the yes/no pills, so stage 5 has one gesture: tap the thing | 3/4/4/4/5 = **20** | **Keep** |
+| **5b He reads it back** | (Yes / no pills per line) | — | — | — | Merged into 5a (see above) | — | **Merged** |
+| **5c The scales** | *[EN: put them on the scales]*: **tap** each orange in the basket; it hops onto the pan, which tips; the dial shows the running tally, never the target; tap **Done**. *Ghan!* if it matches; from L2 a wrong weight just gets *Achija* and the review | The count word, heard again after the search and acted on. L2 one row weighed; L3 two rows in the order he says (*pela santra, ne poi limu*); L4 he asks a **different** count from the list (*[EN: just] hakro [EN: this time]*), so the child can't reuse stage 4's memory | The pan bouncing under each orange; the dial needle swinging; the big *Ghan!* | Card: the row throbs; the order line at L3. Shopkeeper: *Pela santra, ne poi limu.* · *Ghan!* | A **weighing pan and a dial** (Dr. Panda's weigh step): the tally as a physical tip, and at L4 a count that *differs* from the list. No other mode weighs; Cook's `count` under it is shared | 3/3/4/4/3 = **17** | **Keep** (L2+) |
+| **5d Pay** (Arc 2) | Tap coins to a spoken price; change from L3 | Numbers as money | The till's ding | Needs a currency word and prices (**new**, P7) | Counting coins to a heard number is Cook's count with coins | 3/3/3/2/3 = **14** | **Maybe later** (no Kutchi for it yet) |
+
+#### Stage 6 · Home
+
+| Mini-game | 1 Do | 2 Challenge | 3 Fun | 4 Instruction | 5 Novel | Score | Keep? |
+|---|---|---|---|---|---|---|---|
+| **6a The bowl** (built; speaking moment 1) | Nani's hands are full. **Say** what to put in the bowl; she takes that from the bag and drops it in; a wrong name and she holds up an empty hand, puzzled (or the wrong fruit); one retry, then the pills. Without a mic: she names, you tap (the listening recall) | Production with the **bag's kinds** as the closed set, padded to 3–8. L1 say one; L2 two; L4 three. The Sceptic: pills never earn the voice star | Nani's puzzled empty hand; the fruit landing in the bowl in her hands because you said its name | Card: the bag's things as a row of pictures with a speaker each. Nani: *[EN: What goes in?]* … *Santra! Achija.* | Speaking with **what you actually bought** as the closed set: a wrong buy at stage 4 comes home as an empty hand here, so the pipeline's mistakes surface in the fiction. Every mode has a `tell`; only this one's set is the round's own output | 4/4/4/5/4 = **21** | **Keep** |
+| **6b Give one to Nana** | Nani: *Nana lai hakro santra*. **Tap the thing** in the bag, **tap the face** on the sofa; it flies over. The rows from 1b go home to their owners (*Big Ma lai ba limu*); L3 *pan*; L4 a *Nar* | *{person} lai* + count + family names. L1 one person, one thing; L2 two people; L3 counts; L4 *pan* and *Nar* | Nana's delighted face; the wrong recipient holding up the fruit, puzzled | Card: the row with its face. Nani: *Nana lai hakro santra. Ma lai pan hakro.* | Nothing of its own: the same two taps as Tidy up's *Seat the guests*, Snap's *Who wants which?* and Who did it?'s *Share them out*, on Cook's *{person} lai* frame. **Deliberately shared** (one `giveto`); kept only as the close of 1b | 3/3/3/5/2 = **16** | **Keep** (when 1b ran; shared) |
+| **6c Put it away** | The bag becomes Tidy up's tray | Tidy up's T1 | — | — | Tidy up's mini-game, not Find it's: a hand-over between modes | — | **Hand-over** (stays as such) |
+
+#### Stage 7 · Send-off
+
+One beat, no variants, on purpose: Nani's thanks (*Aabhar aanjo*, *Ghan!*, *Achija*), the story beat if there is one, then the shared end-of-round screen (UX 9: the three badges, then the word review of exactly the words heard). Optional coda: tap Kasuku and he says a word back in the child's own voice (`shadow`, ungraded). Score 2/1/4/5/2: it is an ending, and endings are the same every time.
+
+### Q4 The cut: what each stage keeps
+
+Find it's stages were already lean (the bulk is stage 4 plus the library), so the cut here is merges and moves rather than a long "maybe later".
+
+| Stage | Kept (score) | The novel thing | Cut, merged or moved |
+|---|---|---|---|
+| 1 The errand | **1a** Nani's list (16), **1b** Everyone wants something (19), **1d** You're Nani (21) | 1a the shared request card; 1b several askers and a live change of mind; 1d the flipped errand | 1c → the library (L14 *Kasuku's minute*) |
+| 2 Get there | **2a** Which stall? (15) | A place decided by whose or where, and the two-stop route | **2b cut** (the clinic's waiting room; "whose" lives in 2a L2); 2c → the torch (L1) |
+| 3 The counter | **3a** Salaam and *khanigin* (16), **3b** Ask for one (22), **3c** The doorway (15, home skin, shared) | 3a the ungraded gift tap; 3b what you say pre-fills the tally; 3c Cook's pass-me, shared | L21 *Pick your own* folded into 3a |
+| 4 Find it | **4a** The list (20), **4b** Which one? (20), **4c** Where is it? (21), **4d** Simba's mischief (22) | 4a the search; 4b one picture at two scales; 4c positions found; 4d openables and a lying clue | L10 Big Ma's box and L11 the cloth stall folded into 4b as skins |
+| 5 Hand over | **5a** Check the bag, with his words (20), **5c** The scales (17) | 5a catching someone else's mistake, held or said; 5c a pan and a dial | **5b merged** into 5a (its yes/no pills go); 5d Pay → maybe later |
+| 6 Home | **6a** The bowl (21), **6b** Give one to Nana (16, shared) | 6a the bag as the closed set; 6b Cook's *lai* frame on the shared give-to taps | 6c is Tidy up's (a hand-over) |
+| 7 Send-off | the one beat | — | — |
+
+Fourteen mini-games across seven stages, plus the library's ten twists.
+
+### Q5 The library, cut from 21 twists to 10
+
+Five-question scores added to P3's fun / Kutchi / build. Kept: the ten with the highest totals that are not the same as something elsewhere; merged twists are folded into the one that survives.
+
+| # | Twist | Do / Chal / Fun / Instr / Novel | Total | Decision |
+|---|---|---|---|---|
+| L1 | **The torch** (drag the beam, tap the thing; the position phrase saves the battery) | 4/4/5/3/5 | 21 | **Keep**: our scene toggle (Hidden Through Time 2's day/night); absorbs 2c |
+| L2 | **Openables** (+ **L16 Lift the layer**: a cloth over the counter or a stacked crate is an openable too) | 4/5/5/3/5 | 22 | **Keep**: the ordinary way a stall hides things (Baby Panda's counters) |
+| L3 | **The cats' trail** (+ **L18 The crow**, Arc 4: the same trail to a bird on the wall) | 3/4/5/3/5 | 20 | **Keep**: the clue that can lie |
+| L4 | **The other one** (*Nar hi … [EN: the other one]* after a wrong copy) | 2/5/3/3/4 | 17 | **Keep**: the cheapest new Kutchi test on built mechanics |
+| L5 | **Find two the same** (*ba [EN: the same]* among near-misses; Hidden City's "find 2") | 3/4/4/3/4 | 18 | **Keep** |
+| L6 | **The scales** (= 5c) | 3/3/4/4/3 | 17 | **Keep** (it is 5c; listed once) |
+| L9 | **The sweet tray** (mithai by name from look-alikes; the box has fixed cells, Tidy up's `pack`) | 4/5/5/3/4 | 21 | **Keep**: the Ch3 set, once E59 lands |
+| L14 | **Kasuku's minute** (five weakest words, no text, 60 s; the hub daily; the hidden-cats "one picture, count up") | 3/5/3/5/4 | 20 | **Keep**: the mode's daily |
+| L17 | **The chicks** (moving targets: the position is true only for a moment) | 4/4/5/3/5 | 21 | **Keep** (Arc 3; needs the courtyard and G27–G40) |
+| L20 | **Tell Ali where** (you see the cap under the sofa; you say *sofa [EN: under]*; Ali looks there) | 3/5/5/3/5 | 21 | **Keep**: the only production of a position phrase anywhere |
+
+**Maybe later** (one line each): **L7 Pay**: coins to a spoken price, when a currency word and prices exist (Arc 2). **L8 He reads it back**: merged into 5a. **L10 Big Ma's box** and **L11 The cloth stall**: skins of 4b, not games. **L12 Spot the change**: Who did it? owns "what happened" (Arc 4 at the earliest). **L13 Nani's day**: three grades of every scene for one time-of-day word (art budget). **L15 Zazu peeking**: a sharp-eye collectible with no Kutchi; UX 6 says cut what isn't the lesson, and it can return as a free-play sticker. **L19 Bazaar run**: it is 2a at L4. **L21 Pick your own**: folded into 3a. **Rejected, still:** silhouettes, fixed positions, recharging hints, bargaining, *Photo*, *Who has it?*.
+
+**Build order for the ten:** L4, L5 (cheap, on `spot`, Kutchi-real today); L1 (a CSS mask); L2, L3, L9 (the Ch3 set, after E59 and A5); L20 (after A5); L17 (Arc 3); L14 when the hub daily rotates.
+
+### Q6 Distinctness across modes
+
+Read against the "Pipeline design" sections of the clinic, Tidy up, Who did it?, Dress up, Snap and Monsoon rush.
+
+| Find it mini-game | Looks like | Verdict |
+|---|---|---|
+| 1a Nani's list | Every mode's request card | Deliberately shared (UX 1) |
+| 1b Everyone wants something | Snap 5b *Who wants which?* (owners at the hand-in) | Distinct: the asking by several faces, the change of mind; the *give* end (6b) is the shared part |
+| 1d You're Nani | Clinic W3, Tidy 1d/3d, Snap 3d, Dress up 5c (one stage flipped) | Distinct: the whole errand flipped and watched |
+| 2a Which stall? | Snap 2a *Where to?* ("Find it's tap-the-one", Snap's own words) | Deliberately shared; tested here (two of a kind), taught there |
+| 2b Whose stall? | Clinic W1/W2, Dress up 1a | **Cut**: the same game |
+| 3a Salaam | Cook's `greet`, every mode | Deliberately shared; the *khanigin* tray is Find it's |
+| 3b Ask for one | Tidy 1c *What do you need?* (*Muke {x} de*), Snap 5c | Distinct: acted on by a shopkeeper and carried into the next stage's tally |
+| 3c The doorway | Cook's pass-me, Snap 3e *Quick shot* | Deliberately shared (`passme`) |
+| 4a The list | Tidy 1a *Bring me the X* (tap the named thing among look-alikes into the tray) | Shared decoy rule (`whichone`, declared by Tidy up); Find it owns the search: pan, zoom, copies, counts, Done, the Warmer. Tidy's floor never exceeds 8 things and has no copies |
+| 4b Which one? | Dress up 3c bolts (colour + pattern), clinic W2, Snap 3b *The big one* | Shared module; distinct game (one noun, two scales, both on the stall). Snap's is the size as a *subject to frame*, not to pick among copies |
+| 4c Where is it? | Tidy 3a *Put it there* (place by position), clinic D2 (a body part) | Distinct: found, not placed; not a body |
+| 4d Simba's mischief | Who did it? 2c *Follow the prints* (`trail`), clinic `lift`, Who 5c R8 the cushion | Distinct: openables that hide and a clue that lies; Who's trail is tap-in-order. The `trail` name is shared; the rule differs (theirs graded on order, ours a pointer). Name ours `clue` if the foundation shares `trail` |
+| 5a Check the bag (with his words) | Clinic `handover` (the doctor names what's there and sends the wrong one back), Snap 5d *Nana's guess* (yes/no on a print), clinic D1b yes/no | Distinct: the child corrects the character. The clinic's is the reverse. The yes/no pills are gone with 5b |
+| 5c The scales | Cook `count`, clinic belt counts, Monsoon drip count | Shared `count`; the pan and dial are Find it's; no other mode weighs |
+| 6a The bowl | Every mode's `tell` | Distinct closed set (the bag's kinds) |
+| 6b Give one to Nana | Tidy 5a *Seat the guests*, Snap 5b, Who 5c *Share them out* | **Deliberately shared**: one `giveto` (tap the thing, tap the face) on Cook's *{person} lai*; Find it reuses whichever mode builds it first |
+| The torch | Monsoon S3f *The power cut* (shared `dark`) | Shared mask; the beam and battery are Find it's |
+| Kasuku's minute | The hub daily of every mode | Find it's entry, by design |
+
+### Q7 A level-1 errand, stage by stage (the first set: 1a, 2a, 3a, 4a, 5a, 6a, 7)
+
+This is round three or four for a new player (the first ever round is P5's ninety seconds: one row, no bag mistake, no sidebar until round two). Level 1 means one stall, one or two rows, counts of one or two, the stall with at most eleven things, the built bazaar with placeholder art.
+
+**Stage 1 · Nani's list.** The bazaar lane is behind a dim; over it the request card: Nani's face top-left, two rows with a speaker each and one dot per row, a big **Go** button bottom-right. Nani says *Muke ba santra khape* and the first row's chunks light as she says them (*Muke* … *ba santra* … *khape*); the oranges on the far stall twinkle once because *santra* is still a stage-1 word. *Ne hakro limu*; the second row lights; the lemons twinkle. The child taps the row's speaker once (free) and hears *ba santra* again. Tap **Go**: the card shrinks and flies into the left sidebar, where the two rows sit with their dots. The fun: the twinkle answering the voice. Nothing ticks yet. The end: the lane comes up in colour.
+
+**Stage 2 · Which stall?** Four grey fronts along the lane, fruit painted on one awning, vegetables on another, sweets, cloth. Ali runs ahead to the fruit stall and waves. Nani's voice: *[EN: the fruit stall]* (grey italic on the card's place line) and that front twinkles; the first time, a ghost finger taps it once and fades. The child taps the front: the camera zooms in through the awning to the counter and the shopkeeper. Taught, not tested (no ear from this at level 1). The fun: the zoom. The place line on the card ticks. About five seconds.
+
+**Stage 3 · Salaam and khanigin.** The shopkeeper folds his hands: *Salamun alaykum*. Three reply pills at the bottom right; the ghost finger rests on *Wa alaikum salaam* the first time only. Tap it; he beams. He holds out a small tray of three mangoes: *Ambo khanigin!* The child taps any one; it drops into the basket with a plink and the tally in the top-right shows 🥭 1 (no row for it: a gift). He waves at the stall: *khanigin*. The fun: whichever mango, it was the right one. The greeting line on the card ticks. The stall comes live.
+
+**Stage 4 · The list.** The stall at eye level, a screen and a half wide: oranges in a crate and on the counter, lemons in a basket, peaches and a few tomatoes as look-alikes, eleven things. On a phone it opens zoomed 1.5×; drag to pan, the rail's + / − to zoom; the sidebar holds the two rows and the "?" light bulb hasn't appeared yet. The child taps an orange: it arcs into the basket, plink, the tally reads 🍊 1 and the first row's tally ×1. A second orange: ×2 and the row **ticks** (level 1: the tick at the count, before Zafar decides Q8.1) with Nani's *Shabash!* The child taps a peach by mistake: at level 1 it wiggles, *Arre re! [EN: peach]… hakro limu*, and nothing goes in (the one-time correction). A lemon: the second row ticks. Both rows ticked, **Done** glows for the first three rounds only; the child taps it. The fun: the arc, the plink, the combo rising from the basket. The end: the stall dims and the counter lights.
+
+**Stage 5 · Check the bag.** The shopkeeper packs from the rows, naming each as it goes in: *ba santra* (two oranges drop in) … *hakro limu* (a peach drops in: the level-1 look-alike swap; he says the right word and holds the wrong thing). The bag is a fixed-shape card of three cells under his hands, the mango from stage 3 already in the first. He asks *Ghan?* The child taps the peach: *Arre re, arre re!* He swaps it for a lemon: *Hakro limu. Achija.* (If the child taps an orange, at level 1 he shakes his head once and says the list again; from level 2 he hands over the bag as it is and the review shows it.) The fun: catching him. The rows on the card are already ticked; the bag cell fills green. The end: he hands over the bag; Ali carries it home; the lane scrolls.
+
+**Stage 6 · The bowl.** Nani's kitchen, the bowl on the island, Nani with her hands in the dough. The bag's three kinds appear on the card as pictures with a speaker each (mango, orange, lemon), and the mic button glows on the right. Nani: *[EN: What goes in?]* The child says *santra* (the lab's picker; a parent's ✓ in Grandparent mode); Nani lifts an orange from the bag and drops it in the bowl. Say *limu*: the lemon. A wrong word (*kelo*, which isn't in the bag) and she holds up an empty hand, puzzled, and asks again; after one retry the pills appear. Without a mic the pills are live from the start. The fun: Nani doing what you said with her hands full. Each picture ticks as it lands. The end: the bowl is full; *Ghan!*
+
+**Stage 7 · Send-off.** Nani: *Aabhar aanjo. Achija!* The end-of-round screen: the stopwatch (this round's seconds; "New best!" with a sparkle if so), the accuracy row (three slots: two rows and the bag, all green, the badge goes gold with its sound), the hints badge (0, gold). **Next**. Page two: *santra*, *limu*, *ambo*, *ba*, *hakro*, *khanigin*, each with its English and a tap to hear it. Tap Kasuku in the corner and he squawks *santra* back in the child's voice. The end: the kitchen, and Nani's next list.
+
+### Q8 What changes below, and decisions
+
+1. **Decision for Zafar: the tick on a count row.** Default: tick on the first find, count judged at Done (no leak). Alternative: tick at the count, measured by a *tap-till-tick* bot strategy. Level 1 may tick at the count either way (it is taught).
+2. **`spot` from level 2: no wiggle, no recast; a tapped thing goes in the basket.** Over- and under-collection are graded at Done as now, and the review plays each missed row with what was tapped. The leak bot's numbers should not move (a wrong tap already cost the row).
+3. **5b is merged into 5a**: `bag` gains a *said* mistake (the shopkeeper's line names the wrong count or the wrong noun over the right thing); the yes/no pills and the shared `readback` are dropped from Find it (the clinic keeps its `handover`). The bot's strategies for it: tap the odd-looking thing; tap the last thing packed; random.
+4. **2b is cut**, and `go` needs no people; 2c is the torch. **1c** is the library's L14. **L10, L11** are skins of 4b (a `skin` field on the scene, not a game). **L16 → L2**, **L18 → L3**, **L19 → 2a L4**, **L21 → 3a**.
+5. **Controls:** 5c, 5d and 6b are taps (Q1); `weigh` is a pan overlay over `count`; `giveto` is the shared tap-tap and Find it reuses it rather than building it if Tidy up or Snap ships it first.
+6. **The library is ten** (Q5); P3's table stands as the full record, its "first ten to build" line is replaced by Q5's build order.
+
+| Section below | Change |
+|---|---|
+| P2 stage 1 | 1c moved to the library; 1a–1b–1d as scored |
+| P2 stage 2 | 2b cut; 2c moved; 2a absorbs L19 at L4 |
+| P2 stage 3 | 3a absorbs L21 (the *khanigin* tray) |
+| P2 stage 4 | 4b absorbs L10, L11 as skins; from L2 no wiggle or recast (Q8.2) |
+| P2 stage 5 | 5b merged into 5a; 5c and 5d by tap; 5d maybe later |
+| P2 stage 6 | 6b by tap-tap, shared |
+| P3 | Ten kept (Q5); the rest maybe later |
+| P6 | `bag.js` gains the said mistake; `readback` is not built by Find it; `giveto` may come from another mode; `spot.js` loses the level-2+ wiggle |
+| P8 | Edited in place: phases 0–1 and the first three tasks |
+| P9 | Adds the tick decision (Q8.1) |
+
+**Sources (this pass).** Hidden cats on Steam: [Cats Hidden Around the World](https://store.steampowered.com/app/2377970/Cats_Hidden_Around_the_World/), [100 hidden cats](https://store.steampowered.com/app/1587560/100_hidden_cats/), [FIND KITTENS](https://store.steampowered.com/app/2907010/HIDDEN_CATS_The_last_of_cats/). Hidden Through Time 2: [Movies Games and Tech](https://moviesgamesandtech.com/2024/07/29/review-hidden-through-time-2/), [Hey Poor Player](https://www.heypoorplayer.com/2023/11/09/hidden-through-time-2-myths-magic-review-pc/). Good Pizza, Great Pizza: [Common Sense Media](https://www.commonsensemedia.org/app-reviews/good-pizza-great-pizza), [Game Developer](https://www.gamedeveloper.com/design/good-pizza-great-pizza-would-not-exist-if-not-for-costco). Pok Pok: [Common Sense Media](https://www.commonsensemedia.org/app-reviews/pok-pok-playroom), [Pok Pok blog](https://playpokpok.com/blog/new-toy-phonics/). Duolingo ABC: [Common Sense Media](https://www.commonsensemedia.org/app-reviews/duolingo-abc-learn-to-read), [EducationalAppStore](https://www.educationalappstore.com/app/duolingo-abc). Khan Academy Kids: [Common Sense Education](https://www.commonsense.org/education/reviews/khan-academy-kids). Bluey Hide & Seek: [TTPM](https://ttpm.com/products/bluey-hide-seek-game/). Toca Boca Days: [Toca Boca](https://www.tocaboca.com/kids/toca-boca-days), [Fandom](https://toca-boca.fandom.com/wiki/Toca_Days). Sago Mini World: [Screenwise](https://screenwiseapp.com/media/sago-mini-world-game). Lingokids: [MyeLearningWorld](https://myelearningworld.com/lingokids-review/). Dr. Panda, Baby Panda, Toca Life World, Pepi, Hidden Folks: as listed under P9.
+
+---
+
+## Pipeline design, 25 Sept 2026
+
+**Why this section.** Zafar's steer on the clinic (`docs/modes/PIPELINE-BRIEF.md`): "what's missing is the structure and the process. It should be almost factory-like, a set process." So Find it becomes **one errand told as a pipeline of seven stages**, always in the same order, each stage a small set of mini-games that get harder or different, the stages stitched so that what one stage produces is what the next stage works on. The mini-games from the deep dive (F1–F11) don't go away: they slot into the stages, most of them into stage 4, which stays the bulk of the round. The current build (`claude/build-find`, phases 0–1: `gen.js`, one-file mechanics, F1–F4, the Node leak bot) is kept almost whole; what changes is the **runner**, from "a game is one function that calls greet, spot, bag and the bowl" to "a pipeline is data, a list of stages, and each stage picks a variant by level". It follows `docs/UX-PRINCIPLES.md` (the request card, the left sidebar, fixed-shape cards, the light bulb, one job at a time, start tiny, the end-of-round screen) and the deep-dive rules (modular mechanics, speaking with a closed set and a fallback, the Sceptic's test). Kutchi below is limited to what exists (fruit, vegetables, spices, numbers, *wadho / nindho*, *Muke {x} khape*, *Ne {x}*, *Nar {x}*, *Ghan*, *Arre re!*, *Hedo!*, *Achija*, the salaam, and the 25 Sept grammar notes: *hakro / hakri*, *ba*, *lai*, *pan*, *de*, *khan*, *khanigin*, *hi*, *ke*, *pela … ne poi*). `[EN: …]` is a placeholder.
+
+### P1 The pipeline
+
+An errand, start to finish, about three to four minutes at level 2 and about ninety seconds the first time:
+
+```
+ 1 THE ERRAND      2 GET THERE       3 AT THE COUNTER    4 FIND IT          5 HAND OVER        6 HOME              7 SEND-OFF
+ the request card  the lane or the   salaam; ask for     the bulk: spot     Done; the bag;     the bowl (say it);  Nani's thanks;
+ (Nani's list)     house: tap the    the first thing     + count, which     read it back;      give one to Nana;   the three badges;
+                   place she named   (say it); "take     one, where, not    the scales; pay    put it away         the word review
+                                     the rest yourself"  the X; the torch                      (→ Tidy up)
+   ──── rows ────▶ ── rows+scene ──▶ ─ rows, 1 found ──▶ ──── basket ─────▶ ────── bag ──────▶ ── bowl, pantry ──▶ ── words heard ──▶
+```
+
+**What each stage hands to the next.**
+
+| From → to | What is carried | Why it matters |
+|---|---|---|
+| 1 → 2 | The **rows** (`wants`), each tagged with **who asked** (Nani by default; from level 2 Nana or Big Ma too) and the **place** the errand is for | The rows are the whole round's contract; nothing later invents a new one (except the doorway call, stage 3c, which adds one row the way Cook's pass-me does) |
+| 2 → 3 | The **scene** (which stall or room), so the stall's kinds are known | The counter's closed set for speaking is the stall's kinds |
+| 3 → 4 | The rows, with **one already found** if the child asked for it aloud; the shopkeeper's *khanigin* ("take it yourself") | Stage 4 starts with a tally of one on that row: the child sees that speaking counts |
+| 4 → 5 | The **basket** (units found, over- and under-collection included) | The shopkeeper packs *from the rows*, not from the basket, so what he gets wrong is against what was asked; the basket's mistakes are graded at Done (as now) |
+| 5 → 6 | The **bag** as packed and corrected (and, later, the receipt) | The bowl's closed set is the bag's kinds; give-to takes from the bag; Tidy up's tray is the bag |
+| 6 → 7 | The **words heard** in the round (rows, recasts, the read-back) with their stages, plus the stars | The word review is exactly these, nothing else (UX 9, page 2) |
+
+**The same seven stages at home.** The sweets (Ch3), Nana's cap (Ch5) and the ring (Arc 4) run the same pipeline in a room instead of a stall: stage 1 is Nani's *[EN: the sweets are gone, Simba took them]*; stage 2 is which room; stage 3 has no shopkeeper, so it is the doorway call (3c); stage 4 is openables and the trail; stage 5 is the sweet box counted back (a fixed-shape card, Tidy up's `pack`); stage 6 hands to *Who did it?*; stage 7 is the same. So one runner, two skins.
+
+### P2 The stages and their mini-games
+
+Levels are the player's (per word stage), not doors; a stage's variant is chosen by level and by the errand's data (`pipelines[].stages[].variants`). "Reuses" names the mechanic file. Blind-bot figures are from `build/reports/find-leak.md` where a variant is built, estimates otherwise.
+
+#### Stage 1 · The errand (the request card)
+
+The card comes up over the play area with the asker's face, the rows and the read-along highlight, then shrinks into the left sidebar (UX 1, 2). One job: listen.
+
+| Variant | What the child does | The Kutchi it carries | Levels | Reuses |
+|---|---|---|---|---|
+| **1a Nani's list** (built) | Listens; the rows light up as Nani says them; taps the card's one speaker to hear it again (the first replay is free) | Noun and count (*hakro / ba …*); from level 2 a size on a row; level 3 a *Nar {x}* row; level 4 a position | L1 one row; L2 two; L3 three with a *Nar* row half the time; L4 three with a size or a position | The intro card (Wave 5A), `Find.ladder`, `count` |
+| **1b Everyone wants something** | Two or three faces on the card; each says one row (*Nana: Muke ba santra khape. Big Ma: Ne hakro limu*); a tap on a face says that person's row again. The row is tagged with the face, and stage 6b delivers it | Family names (E85–E102) and *{person} lai* (for); the count; from level 3 *pan* (*Ma lai pan hakro*, "one for Ma too") | L2 two people, one row each; L3 three people; L4 one person changes their mind (*Nar santra, kelo*) so a row is replaced live | `who-wants` (**new**, small: faces on the card, rows with an owner); the Chai tray's *for {person}* routing (**reused from Cook**) |
+| **1c Kasuku overheard** (F7) | No text: Kasuku squawks the player's five weakest words; find them in 60 s. The daily, and free play | The nouns alone | One level; the words get harder as the player does | `spot`, `shadow` |
+| **1d You're Nani** (F4, the flipped run) | The child *says* the list from pictures; Ali does stages 2–4 himself (the child watches him go to the stall and pick what he heard); the child rejoins at stage 5 to check his bag | Production: the noun, then the number (level 2), then the size (level 4); the closed set is the stall's kinds (5–8), then 1–4 | L1 one row, no number; L2 two rows with numbers; L3 three; L4 a size | `tell` (**shared**), `bag` (built) |
+
+The Sceptic: 1a–1c are listening only, tested later in stage 4 (a non-speaker learns nothing from the card's dots). 1d's pills never earn the voice star (0 in 4,000 rounds, measured).
+
+#### Stage 2 · Get there (the lane, or the house)
+
+New, cheap, and the equivalent of the clinic's waiting room ("bring in the old man"): the child taps the **place** the asker named, and the camera goes there. A greybox is four grey stall fronts on the lane (fruit, vegetables, sweets, cloth) or four doors off the courtyard.
+
+| Variant | What the child does | The Kutchi it carries | Levels | Reuses |
+|---|---|---|---|---|
+| **2a Which stall?** | Nani said where: *[EN: the fruit stall]*; tap that front; it zooms in. The fronts show their trade (fruit painted on the awning), so at level 1 the place word is *taught* (the front twinkles as she says it) and the noun on the list does the work; from level 2 two stalls sell the same things (two fruit stalls: *[EN: the old man's]*, *[EN: the one by the tree]*), so only the place phrase decides | Place nouns: stall names (new), rooms (E49–E58); *[EN: near / by]* (A5); whose (E14, *Nana jo*) | L1 taught; L2 two of a kind, told apart by whose; L3 rooms in the house; L4 a route: *pela {stall}, ne poi {stall}* (two stops, the deep dive's Bazaar run) | `go` (**new**: fronts as tappable spots on one scene) |
+| **2b Whose stall?** | The shopkeepers stand in the lane: *[EN: the old man]*, *[EN: the young woman]*, *[EN: the boy]*; tap the right one and they walk you to their stall. Later: several old men in different colours, Nani says which colour | People words and colours (F1–F13, E60–E71) | L2 one feature; L3 two people alike, colour decides; L4 a kinship word | The clinic's waiting-room call (**shared with the clinic**: the same "tap the person named" over `whichone`'s decoy rule) |
+| **2c The dark lane** (F6 modifier) | A power cut (Arc 3): the lane is dark, the beam follows the finger, Nani's place phrase saves the battery | Positions and places | L3 free play; Arc 3 story | `torch` (**new**) |
+
+The Sceptic: 2a at level 1 is taught, not tested (no ear star from it); from level 2 the bot's "the front with the list's fruit painted on it" strategy is 1 in 2 per errand, which is why stage 2 alone never earns the ear star: the ear star needs stages 2, 4 and 5 all right (`minTested` from the shared stars rule).
+
+#### Stage 3 · At the counter
+
+| Variant | What the child does | The Kutchi it carries | Levels | Reuses |
+|---|---|---|---|---|
+| **3a Salaam** (built) | The shopkeeper greets; the child picks the reply from three pills; from level 2, says it (closed set 3) | *Salamun alaykum / Wa alaikum salaam*; *[EN: How are you? Fine, thank you]* (B43) from level 3 | L1 choose; L2 say; L3 the second exchange | `greet` (**reused from Cook**), `tell` |
+| **3b Ask for one** (speaking) | *[EN: What do you need?]* The child says the first row (the noun; from level 2 the count too); the shopkeeper hands exactly what he heard (a wrong hearing shows as the wrong fruit in his hand, *Nar!*, one retry, then the pills); it drops in the basket and that row's tally reads 1. Then: ***khanigin*** ("take the rest yourself"), and stage 4 begins | Production: *Muke {n} {x} khape* with the stall's kinds as the closed set (4–8), then the numbers 1–4 | L2 the noun; L3 noun and count; L4 noun, count and size | `tell` (**shared**); the bowl's act-on-what-you-said rule |
+| **3c The doorway** (home errands, and any level-3 stall) | No counter at home: as the search starts, Nani calls from the doorway one thing that is *not* on the list (*Hedo! Muke hakro limu de*); it becomes an extra row | A met word off the list (spaced review); *de* (give me) | L1 never; L2 once per errand; L4 twice | `passme` (**reused from Cook**) |
+
+3b is where the shopkeeper's *khanigin* earns its keep: it is the fiction's reason a customer is picking things off a stall at all.
+
+#### Stage 4 · Find it (the bulk)
+
+The deep dive's F1, F2, F3 and F5, unchanged in mechanics, now as the variants of one stage. One job: search. Zoom, the "?" Warmer, recasts, the tapping-everywhere pause and the digit rule (stage ≤ 1 only) as built.
+
+| Variant | What the child does | The Kutchi it carries | Levels | Reuses | Blind bot (L1, stage 2) |
+|---|---|---|---|---|---|
+| **4a The list** (F1, built) | Find each row's things, as many as asked; press Done | Noun + count; *Nar {x}* | L1 one stall, ≤ 11 things, counts 1–2; L2 counts to 3, a size on one row; L3 a *Nar* row, counts to 4; L4 a size and a position, two stalls (pan) | `spot`, `count` | **1.7%** (worst strategy 3.2%) |
+| **4b Which one?** (F2, built) | Every row carries *wadho / nindho*; everything on the stall is out in both sizes | Size + noun + count | L1 two rows, one group; L2 two groups; L3 a *Nar* row; L4 a position too | `spot`, `whichone` (**shared**) | **0.1%** |
+| **4c Where is it?** (F3, built as a greybox) | Calls, one at a time: *santra, crate [in]*; the called thing is in three places; the same thing called to two places | Noun + position; anchors matched by word | L1 in/on, four calls; L2 in front of; L3 the sitting room: under, behind; L4 a size on each call | `where` (**new**, on `Rel`), `spot` | **0.7%** with positions hidden; not tested while they are English (25% if it counted) |
+| **4d Simba's mischief** (F5, phase 3) | The sweets are behind openables; the call names the openable; a tail, a bell, paw prints as clues, not always right | *[EN: behind] {anchor}*; sweet names (E59) | L3 eight openables; L4 twelve, and Zazu moves one sweet once | `open`, `trail` (**new**), `where` | est. 1 in 8 per call |
+
+Modifiers on any variant: **the torch** (F6, level 3 free play, Arc 3), **Busy** (the patience ring), **"the other one"** (*[EN: not that one, the other one]* after a wrong copy, level 4). The two-jobs-at-once juggle the UX principles talk about is level 4's "size and where" row, never level 1.
+
+#### Stage 5 · Hand over (Done, and what the shopkeeper does with it)
+
+One job at a time (UX 5): the stall dims; only the counter is live.
+
+| Variant | What the child does | The Kutchi it carries | Levels | Reuses |
+|---|---|---|---|---|
+| **5a Check the bag** (built) | The shopkeeper packs the list and gets one thing wrong; tap it; he swaps it | Remembering what was asked (the rows are dots from stage 3) | **First ever round: no mistake** (decision 2); L1 a look-alike swap; L2 swap or one too many; L3 the wrong size; L4 the wrong count, and the rows are dots | `bag` (built) |
+| **5b He reads it back** | The shopkeeper lifts each thing and names it with its count (*ba santra … hakro limu …*). One line is wrong (he says *trae* holding two; he calls a lemon *santra*); the child answers each line **yes or no** on two pills (audio only until the reads stage) | Listening to noun + count said by someone else; *Haa* / *[EN: no]* (A8) | L1 he is always right (taught: the child just hears the list a third time); L2 one line wrong; L3 the wrong is the count; L4 the wrong is the size | `readback` (**shared with the clinic**: its `handover`, where the doctor names what was brought) |
+| **5c The scales** | *[EN: put them on the scales]*: drag the oranges from the basket onto the pan one by one; the dial shows the running tally, never the target; he says *Ghan!* when it matches what was asked, *Arre re!* and the count again if not | The count word, heard again, acted on with the hands | L2 one row weighed; L3 two rows in the order he says (*pela santra, ne poi limu*); L4 he asks for a different count from the list (*[EN: just one this time]*) | `weigh` (**new**, thin: a pan with a dial) over `count` (**reused from Cook**) |
+| **5d Pay** (Arc 2) | He says the price; drag coins to the counter until it matches; from level 3 he gives change and says how much | Numbers 1–10 as money; *[EN: How much?]*, *[EN: shillings]* | L2 one price under 10; L3 change; L4 two prices added | `pay` (**new**) over `count`; needs prices and a currency word from the family |
+
+Held back from stage 5: bargaining (Game Design's rejected gamble). The Sceptic on 5b: yes/no is 1 in 2 per line; with three lines and the bag, 1 in 16 before the search is counted.
+
+#### Stage 6 · Home
+
+| Variant | What the child does | The Kutchi it carries | Levels | Reuses |
+|---|---|---|---|---|
+| **6a The bowl** (built; speaking moment 1) | Nani's hands are full: the child *says* what to put in the bowl; she takes that from the bag (a wrong name and she holds up an empty hand, puzzled); one retry, then the pills | Production: the bag's kinds padded to 3–8 | L1 say one; L2 two; L4 three | `bowl` (built) on `tell` |
+| **6b Give one to Nana** | Nani: *Nana lai hakro santra* ("one orange for Nana"); drag from the bag to the person on the sofa; the rows from 1b come home to their owners (*Big Ma lai ba limu*) | *{person} lai*, the count, family names; *pan* (also) at level 3 | L1 one person, one thing; L2 two people; L3 counts; L4 *pan* and a *Nar* | `giveto` (**new**, thin: drag to a face) over the Chai tray's *for {person}* frame (**reused from Cook**) |
+| **6c Put it away** | The bag becomes Tidy up's tray: *santra* in the bowl, *dungri* on the shelf | Noun + place | Tidy up's T1 levels | **Tidy up's** `place` (a hand-over between modes; not Find it's build) |
+
+6a without a microphone (pills live outside the lab until the family recordings exist) is the old listening recall of section 5.4: Nani names, the child taps.
+
+#### Stage 7 · Send-off
+
+Nani's thanks (*Aabhar aanjo*; *Ghan!*; *Achija*), the story beat if there is one (the guests arrive; Eid morning goes on), then the shared **end-of-round screen** (UX 9): page 1 the three badges (time, accuracy, hints), page 2 the word review built from what stage 6 handed over. Optional coda: tap Kasuku and he says a word back in the child's own voice (`shadow`, ungraded). No variants: the ending is the same every time on purpose, which is what makes it an ending.
+
+### P3 The big library: the twists (Find it's pool of fun)
+
+The clinic's pool is 15–20 healing games. Find it's is **the twists**: the ways a place hides things, and the specials each stall or room has, each one a stage-4 variant or a stage-5/6 special that drops into the pipeline as data. Scores 1–5: **fun**, **Kutchi** (how much the decision rests on the words), **build** (5 = cheapest). Age fit is which persona it lands with first.
+
+| # | Twist | One-line pitch | The Kutchi it teaches | Mechanic | Stage | Age | Fun | Kutchi | Build |
+|---|---|---|---|---|---|---|---|---|---|
+| L1 | **The torch** | A power cut; a beam under the finger; the position phrase saves the battery | Positions | `torch` | 2, 4 | 8 | 5 | 4 | 4 |
+| L2 | **Openables** | Curtains, cushions, lids, drawers: the call names which to open; empty ones react too | *[EN: behind / in]* + anchor | `open` | 4 | 5 | 5 | 5 | 2 |
+| L3 | **The cats' trail** | A tail, a bell, paw prints lead to a cat, not always to the sweet | *[EN: Simba took it]*, positions | `trail` | 4 | 5 | 4 | 4 | 3 |
+| L4 | **The other one** | After a wrong copy: *[EN: not that one, the other one]*; the child must hold "not" and "other" | *Nar*, *[EN: the other one]* | `spot` + a row rule | 4 | 8 | 3 | 5 | 5 |
+| L5 | **Find two the same** | *[EN: two the same]*: tap a matching pair among near-misses (Hidden City's "find 2") | *ba*, *[EN: the same]* (H5) | `spot` + a pair rule | 4 | 5 | 4 | 4 | 4 |
+| L6 | **The scales** | Weigh what was asked; the dial is the tally; *Ghan!* | Counts, *pela … ne poi* | `weigh` on `count` | 5 | 5 | 4 | 4 | 4 |
+| L7 | **Pay** | Coins to a spoken price; change at level 3 | Numbers as money | `pay` on `count` | 5 | 8 | 4 | 5 | 3 |
+| L8 | **He reads it back** | The shopkeeper names what he packed, one line wrong; yes or no | Noun + count heard; *Haa* / no | `readback` | 5 | 5 | 3 | 5 | 4 |
+| L9 | **The sweet tray** | The sweet shop's stage 4: mithai by name from a tray of look-alikes; the box has fixed cells | Sweet names (E59), counts | `spot`, Tidy up's `pack` | 4, 5 | 5 | 5 | 5 | 3 |
+| L10 | **Big Ma's box** (F11) | Which one? by colour, a T-camera close-up of the sewing box | Colours (E60–E71), *[EN: thread, scissors]* (F72–F79) | `whichone`, `spot` | 4 | 8 | 3 | 5 | 3 |
+| L11 | **The cloth stall** | Bolts by colour and pattern: *[EN: the dotted red one]* | Colours; dotted / striped / flowery (F63) | `whichone` (two attributes) | 4 | 11 | 3 | 5 | 3 |
+| L12 | **Spot the change** (F9) | The lights flicker; tap what changed; choose by ear which sentence says what happened | *[EN: Simba took the X]*, past tense (A6) | `change` | 4 | 11 | 4 | 3 | 3 |
+| L13 | **Nani's day** (F10) | The same courtyard at three times; the time word picks the view | Times of day (F37–F43) | `where` + a grade layer | 2, 4 | 8 | 3 | 3 | 2 |
+| L14 | **Kasuku's minute** (F7) | Five weakest words, no text, 60 s; the hub daily | The weakest nouns | `spot`, `shadow` | 1, 4 | 8 | 3 | 5 | 5 |
+| L15 | **Zazu's peeking** | Zazu hides somewhere in every scene; find him for a sticker (ungraded, the sharp-eye badge) | None (a collectible that rewards looking) | `spot` (no row) | 4 | 5 | 4 | 1 | 5 |
+| L16 | **Lift the layer** | Crates stacked, cloth over the counter: *[EN: under the cloth]*; lift it and the things below are live | *[EN: under]*, *[EN: on top]* | `open` (a layer) | 4 | 8 | 4 | 4 | 3 |
+| L17 | **The chicks** (Arc 3) | Moving targets in the courtyard: *[EN: the one by the water pot]*; they walk, so the position is true only for a moment | Animals (G27–G40), positions | `where` + motion | 4 | 8 | 5 | 4 | 2 |
+| L18 | **The crow** (Arc 4) | Something shiny is gone; the crow has it on the wall; *[EN: the crow took it]* | *[EN: shiny]*, past tense | `trail`, `where` | 4 | 11 | 4 | 3 | 3 |
+| L19 | **Bazaar run** | Two stops in one errand: *pela santra jo stall, ne poi mithai* | *pela … ne poi*, place names | `go` (a route) | 2 | 8 | 4 | 5 | 4 |
+| L20 | **Tell Ali where** (F8) | You see the cap under the sofa; you say *sofa [under]*; Ali looks there | Production of position phrases | `tell`, `where` | 4 (flipped) | 11 | 5 | 5 | 3 |
+| L21 | **Pick your own** | *Ambo khanigin*: the shopkeeper holds out a tray and the child picks any one; ungraded, warm | *khanigin*, *khan*, *hi* | none (a beat) | 3 | 5 | 3 | 2 | 5 |
+
+**Rejected, still:** silhouettes, fixed positions, recharging hints, bargaining, *Photo* (Snap's), *Who has it?* as a whole game (its person-picking was 2b, cut in the quality pass: the clinic owns it). **The library is cut to ten in Q5** (L1, L2 + L16, L3 + L18, L4, L5, L6, L9, L14, L17, L20), with Q5's build order; the rest are "maybe later" there. This table stands as the full record.
+
+### P4 Research: what popular children's shopping and seek-and-find apps do
+
+Section 2.1 already covers the hidden-object genre (June's Journey, Hidden City, Hidden Folks, Where's Wally, Tiny Lands). This pass looked at **children's shopping games**, since the pipeline's beginning and end are a shop, and re-read the seek-and-find ones for process rather than mechanics.
+
+| App | What it does | Worth borrowing | Not borrowed |
+|---|---|---|---|
+| **Dr. Panda Supermarket** (Dr. Panda) | Ten store minigames in a fixed sequence a shop implies: use a shopping list, help animals find the foods they need, **weigh** fruit and vegetables, then **scan and pay**, sort the money in the till; also arrange crates in the back | The **weigh → scan → pay** ending is a whole hand-over stage that a five-year-old already understands; it is 5c and 5d. Arranging crates is Tidy up's | The till's money sorting (no Kutchi; Arc 2 prices at most) |
+| **Baby Panda's Supermarket** (BabyBus) | A shopping list; to find an item you **tap counters and cupboards** to open them; then the cash register: scan, pay | Openables as the ordinary way to find things in a shop, not a special case: it makes L2/L16 cheap to justify in the fiction; the register as the ending | 40 counters and 300 goods (our clutter is capped by level) |
+| **Toca Life World** (Toca Boca) | No levels, no fail; a shopping centre split into **sections** (food, pets, home, toys); everything reacts; the child makes the story | The lane split into stalls by trade (stage 2's fronts); every tap reacts; the free-play "explore" entry; the character reacting to *whatever* you hand them (3b, the bowl) | Sandbox with no ending (the pipeline needs its send-off) |
+| **Pepi Super Stores** (Pepi Play) | Many shops in one mall; the juice machine takes any item, with results from "unexpected to spectacular" | The shopkeeper's reaction to the wrong thing as a reward in itself (5a's "sorry", 6a's puzzled hand, Ali's shrug): the miss must be funny, never a buzzer | — |
+| **Sago Mini Town** (Sago Mini) | A grocery checkout where the child tallies; a reviewer notes the checkout **never ends**, which confused them | A warning: **every stage ends**, with a Done or a character closing it (*Ghan!*, *khanigin*) | — |
+| **Hidden Folks** (Adriaan de Jongh) | Targets hidden **behind interactions** (blinds, garage doors, tents); a short clue per target; almost every tap makes a mouth-made sound; swipe to pan, drag some things | The clue is Nani's sentence; openables and layers (L2, L16); every scenery tap reacts (already the rule) | Text riddles (never invented Kutchi) |
+| **Hidden Through Time** (Crazy Monkey Studios) | A clue per item gives "the gist of where it was last seen"; no punishment for misclicks; children as young as eight build their own scenes in the map editor | The Warmer as "the gist of where" (a third of the scene, ≥ 3 candidates); no misclick penalty at level 1, just the slow-down pause; later, a **child-made scene** (place the fruit, record the list for a sibling) as an 11-year-old's free play | — |
+| **Little Things Forever** (KlickTock) | A zoomable picture made of small things; two modes: a list with no timer, or a **timer with one thing listed, a new one when found** | The second mode is exactly stage 4c's calls and Kasuku's minute: one at a time, live; zoom as the way to make small things fair | Pictures as the list (a silhouette leak) |
+| **123 Kids Fun Seek and Find** | Twelve "worlds" for toddlers; hidden meerkats and surprises; every object animates when tapped | A **per-scene collectible** (Zazu peeking, L15) rewards looking without being a language test | No list at all (nothing to listen for) |
+
+Two process lessons across all of them. First, the shopping games that work are **already pipelines**: list → aisles → scales → till → bag, and children accept the fixed order because it's how a shop works; the pipeline brief's "factory-like" is a shop's own rhythm, not an imposition. Second, none of them has a *home* stage: the errand ends at the till. Ours ends at Nani's, which is where the speaking (the bowl) and the family (give-to) live, and it's the part the family game has that a supermarket app never will.
+
+### P5 Stitching: sessions, the first session, free play
+
+**A bazaar morning** (a story session) is **three errands** through the whole pipeline: Nani's list (fruit), then Nana's (or Big Ma's, from 1b), then one with a twist from P3. Each errand ends at home and on the end-of-round screen; the morning's third send-off is the chapter beat (the guests arrive). About ten minutes at level 2. `pipelines.morning.errands` is data, like the clinic's `days.mix`: level 1 is **two plain errands and one with the bag's swap**, level 2 adds 1b and 3b, level 3 the twists.
+
+**The first ever session** (UX 7, "start super, super simple"), about ninety seconds:
+
+| Stage | The first time |
+|---|---|
+| 1 | One face, **one row**, one noun, count one (*Muke hakro santra khape*); the card reads along; no sidebar yet (it fades in on round 2) |
+| 2 | Ali runs to the fruit stall and waves; the front twinkles; the ghost finger taps it once; the child taps it (taught) |
+| 3 | The salaam, with the ghost finger on the right pill the first time |
+| 4 | The stall has the orange out twice and one look-alike group; the child finds one; Done glows after the first find (the only time Done is ever prompted) |
+| 5 | The shopkeeper packs it **right**, says *Achija*; no bag check (decision 2) |
+| 6 | The bowl with pills live, closed set of 3; Nani takes what the child chose |
+| 7 | *Ghan!*; the three badges (time and accuracy gold; hints gold); the word review is two words |
+
+Round two adds the sidebar and a second row; round three the bag's swap; the light bulb appears the first time a replay is asked for. The onboarding script per stage (spotlight, ghost finger) is written at the end of the build, once the mechanics have stopped changing (UX 10).
+
+**Free play dips into single stages.** The Search lab already runs any game at any level; the free-play menu exposes the same entries by stage, with a picture each: *The stall* (stage 4 alone, endless, best combo), *The scales* (5c alone, ten weighings), *The bowl* (6a alone, with a parent), *Kasuku's minute* (1c + 4a, the hub daily), *The dark lane* (2c, from level 3), *Ali's turn* (the flipped run). A stage played alone ends on the same end-of-round screen with one badge row.
+
+**Story homes** are unchanged from D6, read as pipelines: Ch1 one bazaar errand (fruit); Ch2 Ali's turn; Ch3 the sweets at home (openables, the box, → Who did it?); Ch4 Big Ma's box (L10 as stage 4); Ch5 Eid morning (Nana's cap: 4c at home, then Tell Ali where).
+
+### P6 What survives from the current build
+
+The build session on `claude/build-find` has delivered phases 0–1 of section 8 (its report: `build/reports/find-build.md`; log: `docs/find-build-log.md`; leak table: `build/reports/find-leak.md`). **Almost all of it carries over.** The pipeline is a change to the *runner* and to the *data*, not to the mechanics. The Node leak bot passes at 0.0–1.8% for F1–F3 (positions hidden), and nothing below should move those numbers, which is the acceptance test for the refactor.
+
+| File (on `claude/build-find`) | Fate | What changes |
+|---|---|---|
+| `js/find/engine.js` | **Keep** | Nothing. `Find.load`, `Find.matches`, `Find.knobs`, `ladder`, `rowParts`, `Mech.define/lab` stay. Add `Find.pipeline(id)` (reads `pipelines` from `find.json`) beside `Find.knobs` |
+| `js/find/gen.js` (pure generator, UMD) | **Keep, extend** | Rows gain an owner (`want.who`, for 1b/6b) and the errand gains a place (`errand.place`, for 2a); new pure helpers `Gen.readback(rows, level)` (which line is wrong and how) and `Gen.route(level)`. The size rule, the where rule, `closedSet`, `pack` and the digit rule are untouched |
+| `js/find/round.js` (`Find.Round`) | **Keep** | It is stage 4's runner as it stands (`openList`, `sayList`, `beginSearch`, `waitDone`, `grade`, the timers, `earMiss`, `onHelp`, `warmer`, `finish`, `wordReview`). Two additions: `round.found(noun)` so stage 3b can pre-fill a tally, and `round.words` (every word heard, for stage 7's review) instead of `wordReview()` reading only the rows |
+| `js/find/view.js` | **Keep, extend** | Pan, zoom, `addItem`, `fly`, `hit`, `bowl`, the person: unchanged. Add a **fronts** layer for stage 2 (grey rectangles with a twinkle, on one scene) and a **pan-and-dial** overlay for 5c; both are small |
+| `js/find/flow.js` (`playRound`) | **Change** | `playRound({mech, level, sceneId, …})` becomes `runErrand(pipeline, level)`: for each stage in `pipelines[id].stages`, pick the variant for the level and `await` it with the carried state; the result card is replaced by the shared end-of-round screen when the foundation ships it (until then, its current card with the three badges drawn locally). The lab keeps every existing button and gains one per stage |
+| `js/find/mechanics/spot.js`, `bag.js`, `greet.js`, `where.js`, `tell.js`, `bowl.js` | **Keep, unchanged** | They already are one stage-variant each: `greet` = 3a, `spot` = 4a–4c, `bag` = 5a, `bowl` = 6a, `tell` = every speaking moment |
+| `js/find/games/list.js`, `whichone.js`, `where.js`, `ali.js` | **Change (thin them)** | Today `games/list.js` composes greet → spot → bag → bowl itself (`Find.runList`). That composition moves into the pipeline data; each game file keeps only its stage-4 `run` (the stall, the rows, the search, Done, grade). `ali.js` becomes the 1d variant: its list card is stage 1, its "Ali picks" is stages 2–4 watched, its bag check is stage 5a with `who: "ali"` (already supported by `bag.js`) |
+| `js/find/bot.js` (in-page) and `js/find/blind.js` (Node) | **Keep, extend** | New strategies: `go` (the front whose painted trade matches the list's pictures; random among look-alike fronts), `readback` (always yes; always no; alternate), `giveto` (a random face), `weigh` (the guessed count). The leak script reports per stage and for the whole errand |
+| `data/find.json` | **Keep, extend** | Everything stays (`mechanics.list/whichone/where/ali/tell/bowl/bag`, `sizes`, `scenes`, `story`). Add `stages` (the seven, with their variants and level windows), `pipelines` (`bazaar-fruit`, `home-sweets`, `morning`), `mechanics.go`, `readback`, `weigh`, `giveto`, and `first_session` (the tiny round of P5 as overrides) |
+| `data/scenes/sitting-room.json` (greybox) | **Keep** | Gains `fronts` for stage 2 at home (four doors) when the courtyard greybox exists |
+| `build/test_find.py`, `build/leak_find.mjs` | **Keep, extend** | One Playwright errand end to end at levels 1 and 3, plus the first-session script; the leak bot per stage and per errand |
+| `find.html`, `css/find.css` | **Keep** | The lab gains a "stage" row of buttons; the sidebar moves left (UX 2) when Wave 6's shared sidebar lands, not before |
+| The result card in `flow.js` | **Goes**, when the shared end-of-round screen exists | Its word review is stage 7 page 2; its stars map to the three badges as UX 9 says |
+
+**Mechanics tally after the pipeline:** built and kept 6 (`spot`, `bag`, `greet`, `where`, `tell`, `bowl`); new and small 4 (`go`, `weigh`, `giveto`, `who-wants`); shared 3 (`readback` with the clinic's `handover`, `whichone`, `tell`); from Cook 3 (`count`, `passme`, the *for {person}* frame); later 5 (`torch`, `open`, `trail`, `pay`, `change`). Nothing built is thrown away.
+
+### P7 Words needed
+
+*In the doc* means the Questions for Mum doc already asks it; nothing here edits that doc. New items are for the next round of questions.
+
+| Priority | For stage | Words or frames | Status |
+|---|---|---|---|
+| 1 | 1, 4, 5 | Fruit and numbers 1–10 confirmed; *hakro / hakri*, *ba* on screen | In the doc: E103–E123, D4; the grammar notes have *hakro / ba* (a data change in `cook.json`, not a question) |
+| 2 | 4b | Big / small with a noun, both genders | In the doc: C22–C36, C44–C49 |
+| 3 | 2 | **Stall names**: the fruit stall, the vegetable stall, the sweet shop, the cloth stall; **"whose stall"** (*Nana jo* pattern) | **New** (E14 has *jo*; the stalls are not asked) |
+| 4 | 2, 4 | Rooms (E49–E58); positions (A5, E1–E13, C12–C21); *near / by* | In the doc |
+| 5 | 3b, 3c | *[EN: What do you need?]*; *Muke {x} de*; *khanigin* confirmed as "take it yourself" | *de*, *khanigin* in the grammar notes; the question is **new** |
+| 6 | 5b | **Yes / no** as answers (*Haa*; no) | In the doc: A8.1–A8.2 |
+| 7 | 5c, 5d | *[EN: put it on the scales]*, *[EN: How much?]*, the currency word, prices | **New** (5c's line; 5d entirely) |
+| 8 | 1b, 6b | Family names; *{person} lai*, *pan* | In the doc: E85–E102; *lai / pan* in the grammar notes |
+| 9 | 4, 7 | Finding phrases: *Find the…, Here it is!, Look!, Leave that one, Bring it here, Nearly!*; *Well done!* | In the doc: E73, E77–E80, E84, B25 |
+| 10 | 4 | *[EN: not that one, the other one]*, *[EN: the same]* | H5 has *the same*; *the other one* is **new** (as D8 said) |
+| 11 | 4d, 4 (L9) | Sweet names; *Simba took it* | In the doc: E59, A6 |
+| 12 | 4 (L10, L11) | Colours; dotted / striped / flowery; thread, scissors | In the doc: E60–E71, F63, F72–F79 |
+| 13 | the recogniser | The fruit, the numbers 1–4 and *wadho / nindho* said five times each by three or more family members | **New**: a recording instruction (as D8) |
+
+### P8 Build brief (pipeline, phased, own files first)
+
+For the Find it build agent, continuing on `claude/build-find`. **Phases 0 and 1 touch only Find it's own files**: `find.html`, `css/find.css`, `js/find/**`, `data/find.json`, `data/scenes/sitting-room.json`, `build/test_find.py`, `build/leak_find.mjs`. Shared pieces assumed from the foundation, as in 8.1, plus two new ones: the **end-of-round screen** (UX 9, one shared component) and the **onboarding kit** (UX 10). Until they land, the current result card and no overlay.
+
+| Phase | What is built | Files | Acceptance |
+|---|---|---|---|
+| **0 The runner and the data** | `stages` and `pipelines` in `find.json`; `runErrand` in `flow.js` running the seven stages from data, with the carried state of P1; `games/*.js` thinned to stage 4; `greet`, `bag`, `bowl` called by the runner; `first_session` overrides; `Gen` gains `who`, `place`, `said` (the bag's spoken mistake, Q8.3), `route`; `go` as grey fronts on the bazaar; `bag` gains the said mistake (5a, replacing 5b); `giveto` (6b, tap-tap; skipped if Tidy up or Snap ships it first); `spot` from level 2 without the wiggle and recast (Q8.2); the count row's tick per Q8.1; bots per stage (incl. *tap-till-tick* if Q8.1 goes the other way, and the three bag strategies); the leak script per stage and per errand | Own files only | `node build/leak_find.mjs --n 1000`: F1–F3 rates unchanged within noise; the whole-errand ear rate under 5% at levels 1–3; `build/test_find.py` plays one errand end to end at seven viewports, and the ninety-second first session |
+| **1 The lane, the counter, the scales** | 2a with two look-alike fronts (whose stall) and the two-stop route at L4; 3a's *khanigin* tray; 3b Ask for one on `tell` with the pre-filled tally; 3c the doorway on `passme`; 5c the scales over `count` (tap); 1b faces on the card; L4 *The other one* and L5 *Find two the same* on `spot`; lab buttons per stage; the three badges drawn locally on the result card | Own files | Each stage runs alone from the lab at levels 1–4; a Playwright errand with a deliberate mistake at every stage; the bot never earns the ear star from stage 2 or the bag's said mistake alone; no gesture in any mini-game differs between its levels (a test that reads each mechanic's declared `gestures` per level) |
+| **2 Integration** | The shared end-of-round screen and onboarding kit; the left sidebar (Wave 6); `speech.js` with family recordings; the shell entry; the bag → Tidy up's tray (6c); `hakro / ba` from `cook.json` | Shared files, with the foundation agent | One save; the first session on a tablet with Zafar's notes; the bot rates unchanged |
+| **3 The library and art** | The ten of Q5, in Q5's order: L1 the torch (a CSS mask); the Ch3 set (L2 openables with layers, L3 the trail, L9 the sweet tray) once E59 and A5 exist; L20 Tell Ali where after A5; L17 the chicks with the courtyard; L14 when the hub daily rotates; the 4b colour and pattern skins after E60–E71; the sitting-room art from the greybox; 5d Pay only after prices and a currency word | Scene and asset files | The Kutchi audit per twist and per scene; the visual QA checklist; the onboarding script per stage written last |
+
+**The first three tasks.** (1) Phase 0's runner: move the greet → spot → bag → bowl composition out of `games/list.js` into `pipelines.bazaar-fruit` and prove the leak rates and the Playwright test are unchanged; at the same time take the level-2+ wiggle and recast out of `spot` (Q8.2) and apply the tick rule of Q8.1. (2) `first_session` and the ninety-second round, in the lab as a button, then `go` as taught fronts. (3) The bag's **said mistake** (5a, Q8.3): the shopkeeper names each thing with its count as he packs, and from level 2 the mistake can be in his words; the bot's three strategies (the odd-looking thing, the last thing packed, random). It is the cheapest new Kutchi test in the mode, and the shopkeeper saying the list back is the third hearing UX 1 wants, now without a second gesture.
+
+### P9 Decisions for Zafar (only what blocks the build), with defaults
+
+1. **Stage 2 (Get there) from the very first session?** Default: **yes, taught** (Ali runs ahead, the front twinkles, the ghost finger shows the tap); tested from level 2, when two fronts sell the same things. Cost: a greybox of four grey fronts.
+2. **The first ever bag check has no mistake.** Default: **yes**: the shopkeeper gets it right and says *Achija*; the swap starts on round 2. UX 7 says level 1 is the smallest possible round, and the very first round should end on a success.
+3. **Speaking at the counter (3b) from level 2**, to the shopkeeper rather than to family. Default: **yes**: the shopkeeper is the cast's Uncle, and *khanigin* is the fiction's reason the child then shops alone. The pills are live until the family recordings exist.
+4. **The scales (5c) in level 2, paying (5d) not before Arc 2.** Default: **yes**: numbers are real Kutchi today; prices and a currency word are not asked yet.
+5. **The lab keeps one button per stage as well as per errand.** Default: **yes**; it is how free play dips into single stages.
+6. **(Quality pass, Q8.1) A count row's tick: on the first find, or at the count?** Default: **on the first find** (the count is judged at Done), because a tick at the count tells a non-speaker when to stop. The alternative is measured by a *tap-till-tick* bot strategy before it ships.
+
+**What changed below:**
+
+| Section | Change |
+|---|---|
+| D5 first set and ladder | Superseded by P2's per-stage levels and P5's first session; the built F1–F4 stand as stage variants |
+| D6 story homes and free play | Read as pipelines (P5); free play is per stage |
+| D9 | Its three decisions stand (Zafar has not answered); P9 adds five |
+| 8 Build brief | Superseded by P8; phases 0–1 of section 8 are done on `claude/build-find` |
+| Sources | The pipeline research sources are listed below |
+
+**Sources (pipeline research).** Dr. Panda Supermarket: [App Store](https://apps.apple.com/us/app/dr-panda-supermarket/id609405853), [iPad Kids review](https://ipadkids.com/dr-pandas-supermarket-app-review-easy-fun-in-aisle-one/). Baby Panda's Supermarket: [Google Play](https://play.google.com/store/apps/details?id=com.sinyee.babybus.shopping&hl=en_US), [Reviewed.app](https://reviewed.app/game/baby-pandas-supermarket/). Toca Life World: [Screenwise guide](https://screenwiseapp.com/guides/toca-life-world), [Shopping Center (Fandom)](https://toca-life-world.fandom.com/wiki/Shopping_Center). Pepi Super Stores: [Pepi Play](https://www.pepiplay.com/pepi-super-stores/). Sago Mini Town: [sagomini.com](https://sagomini.com/apps/town/), [App Store reviews](https://apps.apple.com/us/app/sago-mini-school-kids-2-5/id1483068197?see-all=reviews). Hidden Folks: [AppUnwrapper review](https://www.appunwrapper.com/2017/02/15/hidden-folks-review/), [Common Sense Media](https://www.commonsensemedia.org/game-reviews/hidden-folks), [Behind the Game (Medium)](https://medium.com/@stefanlesser/behind-the-game-hidden-folks-e6198dfa885a). Hidden Through Time: [TheSixthAxis](https://www.thesixthaxis.com/2020/03/24/hidden-through-time-review/), [GameGrin](https://www.gamegrin.com/reviews/hidden-through-time-review/), [Digitec (HTT2)](https://www.digitec.ch/en/page/hidden-through-time-2-review-the-perfect-game-for-relaxing-29831). Little Things Forever: [Jay is Games](https://jayisgames.com/review/little-things-forever.php), [AppAdvice](https://appadvice.com/appnn/2012/05/quickadvice-ltforever). 123 Kids Fun Seek and Find: [App Store](https://apps.apple.com/us/app/123-kids-fun-seek-and-find/id1475738045).
+
+---
+
+## Deep dive, 25 Sept 2026: mini-games and mechanics
+
+**Why this section.** Zafar's principles of 25 Sept (`docs/modes/DEEP-DIVE-BRIEF.md`): each mode is a set of mini-games built from one-file mechanics, speaking is core, and every mode is built at once. Find it is the one mode with a live slice (`find.html`, `js/find/`, `data/find.json`: the engine, M1 Nani's list with M5 Check the bag, the Search lab, the non-speaker bot at 3.3%), so this section designs around what's built and says exactly what changes. The only Kutchi it relies on is what exists: the fruit, vegetable and spice drafts, numbers 1–10, *vadho / nindho* (big / small, drafts), *Muke {x} khape, Ne {x}, Nar {x}* (a draft), *Ghan, Arre re!, Hedo!, Achija*. Everything in `[EN: …]` is a placeholder.
+
+### D1 Pitch, and the kinds of round
+
+**Pitch.** Someone says, in Kutchi, what to find and where; you look round a real place (a stall, Nani's sitting room, the courtyard) and tap the one they meant, among copies, look-alikes and clutter. Then you swap places: you say it, and Ali or Nani goes and finds it.
+
+**The backbone.** One engine (a row is `{noun, count?, size?, colour?, where?, not?}`, an item records its relations, `Find.matches` decides) and four kinds of round, which differ in who speaks, how much the phrase carries and how the round ends.
+
+| Kind | What happens | Who speaks | What the Kutchi decides | Ends with | Mini-games |
+|---|---|---|---|---|---|
+| **R1 The list** | Nani's rows are on the ladder up front; find them all, any order; press Done | Nani, before | Noun and count; from level 2 a size or colour on a row | Done (over and under graded), then the shopkeeper's bag | Nani's list, Which one? |
+| **R2 The calls** | One thing at a time, live, 4–6 calls, repeats allowed (*the cup again; the other one*); the called noun is in three or more places, so only the position decides | Nani (Big Ma in her room), during | Noun plus where, size or colour, per call | The last call, then the bowl | Where is it?, Kasuku's minute |
+| **R3 The trail** | Things hidden behind openables; a call names the openable; each find gives the next clue | Nani, and the cats' noises | Which openable | All found; the sweet box goes to Tidy up | Simba's mischief |
+| **R4 Your turn** (role reversal) | You can see it; you say it; a character acts on what you said | **The child** (closed set of 3–8) | What the child says | The character has it right; you check their bag | Ali's turn, the bowl, Tell Ali where |
+
+Two modifiers sit on any kind: **the torch** (dark, a beam, a battery) and **Busy** (the patience ring). "Which one?" is not a kind: it is what a row carries from level 2, and the mini-game of that name is R1 with one qualifier on every row.
+
+### D2 The mini-game library
+
+Scored 1–5. **Build:** 5 = cheap. Mechanics are named in D3.
+
+| # | Mini-game | How it plays | Fun at 5 | Fun at 11 | Forces Kutchi | Distinct | Build | Mechanics | Decision |
+|---|---|---|---|---|---|---|---|---|---|
+| **F1** | **Nani's list** (+ Check the bag) | The built slice: the list, the busy stall, Done, the shopkeeper's one mistake; now ending with the bowl (D4) | 4 | 2 | 5 | 2 (Cook's fetch on a bigger stage; the review is right) | **5** (built) | greet, spot, count, passme, warmer, bag, tell | **First set** (built; changes in D5) |
+| **F2** | **Which one?** | Every row carries a size (*vadho / nindho*) and the stall has the noun in both sizes, and another noun in both sizes too; later colours in Big Ma's box (F11) | 4 (Simba is the big one, Zazu the small one, a running joke) | 3 | 5 | 3 (the shared "which one?" decision, rendered as search) | 4 (the same picture at two scales) | spot, count, whichone | **First set** (the review's next slice) |
+| **F3** | **Where is it?** | R2 calls: *[EN: the orange, in the crate]*; the orange is in the crate, on the counter and in the basket; four to six calls, the same noun called to two places | 4 | 3 | 5 (only the position separates the copies) | 4 (positions found, not placed) | 3 (the bazaar has in/on/in-front today; under/behind need a scene with cut-out occluders) | where, spot, warmer, tell | **First set** as a greybox; Kutchi-real when A5 returns |
+| **F4** | **Ali's turn** (you're Nani) | You hold a picture list; you *say* it; Ali shops; you check his bag | 4 (with a parent) | 4 | 5 (production) | 5 (the only production-first search) | 3 (`speech.js`; Ali is a face and a hand at the stall) | tell, bag | **First set** |
+| **F5** | **Simba's mischief** | The cats hid the sweets; calls name openables; a tail, a bell, paw prints as clues (not always right) | **5** | 4 | 5 | **5** | 2 (8–12 openables per scene, cat frames, sweets art, sweet names) | where, open, trail, spot | Phase 3: the Ch3 flagship |
+| **F6** | **Torch** (a modifier) | A power cut; a beam follows the finger; sweeping blind runs the battery down, the position phrase saves it | **5** | 4 | 4 | 5 | 4 (a radial CSS mask and a bar) | torch | Level 3 free play; Arc 3 story |
+| **F7** | **Kasuku's minute** | Kasuku squawks the player's five weakest words, no list text; find them in 60 s | 3 | 3 | 5 | 3 | **5** | spot, shadow | The mode's **60-second round** for the one hub daily |
+| **F8** | **Tell Ali where** | You see the cap under the sofa; you say *sofa [EN: under]*; Ali goes and looks there | 3 | **5** | 5 | 5 | 3 | tell, where | Level 3 of F3, once positions exist |
+| **F9** | Spot the change | Lights flicker; tap what changed; choose by ear which sentence says what happened | 4 | 4 | 3 (spotting is visual; only the sentence is Kutchi) | 3 (Who did it? owns "what happened") | 3 | change | Arc 4 |
+| **F10** | Nani's day | The same courtyard at three times; the time word picks the view | 3 | 3 | 3 | 3 | 2 (three grades of every scene) | where | Arc 3, art budget allowing |
+| **F11** | Big Ma's box | F2 by colour (*[EN: the red thread]*), a T-camera close-up | 3 | 4 | 5 | 3 | 3 | spot, whichone | F2's second home, Ch4, after E60–E71 |
+
+**Rejected:** *Who has it?* (Who did it?'s W2 territory; the review agrees); *Photo* (Snap's); *Find the pair* (*bo santra* already is it: a count row in a hat); *Follow the bell* (sound localisation, no Kutchi in the decision); *Bazaar run* as its own game (it is F1 at level 4, Busy, across two stalls); *Kasuku's riddles* (needs family-written rhymes; never invented).
+
+### D3 The mechanics
+
+One file each, `js/find/mechanics/<id>.js` unless shared, levels as data in `data/find.json` `mechanics.<id>.levels`, runnable alone in the Search lab or inside a mini-game (`js/find/games/<id>.js`, the counterpart of Cook's `stations/`).
+
+| id | One line | Tag |
+|---|---|---|
+| `spot` | Find one thing in a panned scene: the padded hit box and snap, wiggle and recast, the arc into the carried container, the "tapping everywhere" pause. Today inside `round.js`; moves out | **New** |
+| `count` | Units into the container: the tally only (never the target), never ends by itself, graded at Done | **Reused from Cook** (the spoon count's rule and badge; units are items) |
+| `bag` | The odd one out in what someone packed for you; hand it back and they swap it. Today inside `list.js` | **New** |
+| `greet` | The salaam exchange at the stall | **Reused from Cook** (`exchanges.salaam`, `UI.choose`) |
+| `passme` | Nani calls from the doorway for a met word that isn't on the list | **Reused from Cook** |
+| `warmer` | The "?" hint: a third of the scene that still holds three or more candidates. Today inside `round.js` | **Shared with Tidy up** (its Warmer: the same band-and-candidates rule over `Rel.options`) |
+| `whichone` | Rows with an attribute and the decoy rule (the noun in every value, the value on two or more nouns, balanced) plus the blind-odds budget | **Shared** (foundation module, with Dress up, Snap, Who did it?, Tidy up); until it lands, `Find.makeWants` does size locally |
+| `where` | A row or call with a position: the noun in three or more (relation, anchor-word) places; anchors qualified from level 4; **matching by anchor word, not anchor id** (two crates are both "the crate" until level 4 says which). On the shared relations layer | **New** |
+| `open` | Openables with closed and open frames; a wrong open is a miss for the row; empty ones still react | **New** (offered to Who did it? for W4's peek) |
+| `trail` | A find reveals the next call: a tail, a bell, paw prints that lead to a cat, not always to the sweet | **New** |
+| `torch` | The darkness mask, the beam under the finger, a battery the position phrase saves | **New** |
+| `tell` | Role reversal on `Speech.listen({choices, timeoutMs})`: a character acts on the choice; pills fallback; parent ✓; the voice star | **Shared with every mode** (Find it builds it first, against the foundation's `js/shared/speech.js`) |
+| `shadow` | Kasuku repeats: record, play back beside the family voice, ungraded | **Shared with every mode** |
+| `change` | Something in the scene changes; choose by ear which sentence says what happened | **New** (Arc 4) |
+
+**Counts:** 7 new, 3 reused from Cook, 4 shared. Not mechanics: pan and zoom (`view.js`), the ladder, the stars, the lab, the bot.
+
+### D4 Speaking moments
+
+Designed against `Speech.listen({choices, timeoutMs}) → {choice, confidence} | null`. Rules for every moment: the closed set is what is on screen (3–8 ids); the character **acts on whatever came back**, so the child sees what they said; a wrong act gets one retry (*Nar!* and the character puts it back), then the pills; `null`, a timeout (4 s) or a confidence under `voice.minConfidence` (data, default 0.5) goes to the pills; a parent ✓ button exists in Grandparent mode; nothing ever waits on the microphone; the **voice star** is separate from the ear star and appears only in rounds with a speaking row (every speaking row recognised or ✓'d, no pills; `pay.voice` +4); recordings stay on the device.
+
+| Moment | Where | Closed set | What the character does | Fallback | Level |
+|---|---|---|---|---|---|
+| **1 The bowl** (*Nani's hands are full*) | The end of Nani's list, and the old fruit-bowl errand once it is on this engine (Q1) | The basket's kinds, padded with stall decoys to at least 3, at most 8 | Nani takes the named thing from the basket and puts it in the bowl; a wrong name and she holds up the wrong fruit, puzzled | Audio pills (text only at reads stage 3); parent ✓ | **1** |
+| **2 Ali's turn** (F4) | Ch2 onwards; free play | The stall's kinds (5–8); then, a second `listen`, the numbers 1–4 | Ali walks to the stall and picks what he heard, as many as he heard, then packs your bag; you check it | Pills; parent ✓ | **2** |
+| **3 Tell Ali where** (F8) | The sitting room | The recorded phrases of the copies on screen (3–5: *sofa [under]*, *table [on]*…) | Ali goes to that spot and looks; if it's empty he shrugs and you say it again | Pills; parent ✓ | **3**, once A5 exists |
+| **4 Kasuku repeats** (`shadow`) | Any scene: tap Kasuku | None (no recognition) | He "says it back" in the child's own voice, beak moving | Not needed | Any; ungraded |
+
+The Sceptic on speaking: she can't say the word; the pills are one in *n* and never earn the voice star; the parent ✓ is trust, by design.
+
+### D5 The first set, and the level ladder
+
+**First set: F1 (built, with the changes below), F2, F4, F3 as a greybox, and F6 as the level-3 modifier.** F1 and F2 are a Kutchi test today (fruit, numbers, *vadho / nindho*); F4 is the speaking moment and turns F1's engine round with almost no new art; F3 is the mode's S2 job and the relations layer's first customer, so its greybox should be waiting when the family's position words land; F6 costs a CSS mask and makes the same scene feel new at 11. F5 waits for openables, cats and sweet names, and is the Ch3 flagship of phase 3.
+
+**What changes in the live slice:**
+
+1. `list.js` splits into `mechanics/spot.js`, `bag.js`, `where.js` and `games/list.js`, `games/whichone.js`, `games/where.js`, `games/ali.js`; `gen.js` keeps `makeWants` until `whichone` lands.
+2. **The digit leak** (the review's High): `round.js` `decorate` shows a row's digit while the number word is at stage < 3, but stage-2 rows are tested. Change to **stage ≤ 1** (taught, not tested). The bot reads the digit, so `--leak` shows the difference.
+3. The listening recall of 5.4 becomes speaking moment 1 (the bowl).
+4. A level 4, and per-game leak checks in the lab.
+5. Where-rows match by anchor word (D3).
+
+| Level | Name | What the instruction carries | Rounds and games | Scene |
+|---|---|---|---|---|
+| **1** | *One thing* | Noun and *hikdo / bo*; two rows; the bowl (say two or three nouns) | R1 F1; R4 the bowl | One stall, at most 11 things |
+| **2** | *How many, which size* | Count 1–4; one size row; a *Nar X* row half the time; the bag can hold one too many | F1, F2, F4 (say a noun and a number) | One stall, at most 17 things, both sizes out |
+| **3** | *Where* | A position on the call (*santra, crate [in]*), the noun in three places; two stalls (pan); the torch in free play | F3 calls, F8, F6 | At most 22 things, three or more relations |
+| **4** | *Two things at once* | Size and where, colour and where; anchors qualified (*[EN: the big basket]*); *[EN: not that one, the other one]*; calls chained with *ne poi*; Busy | All | The sitting room; openables (F5) |
+
+A child feels it as: *she names it → she says how many and which → she says where → she says two things and I do them in order → I say it.*
+
+**Blind-bot estimates at level 1** (the strategies live in `bot.js`, which sees only the screen):
+
+| Game | Estimate | New bot strategies |
+|---|---|---|
+| F1 | **3.3% measured** (the review's figure, 20-round runs); lower at stage 2 after the digit fix | — |
+| F2 | The noun (1 in 4–5 kinds) × the size (1 in 2) × the count: about 1 in 25 per row; two rows about 0.5%; then the bag | bigger, smaller, odd-size |
+| F3 | Per call: 1 in the kinds × 1 in 3 copies, about 10%; four calls under 0.1% | most-visible copy, nearest copy, first copy left to right |
+| F4 | No Kutchi, no voice; pills 1 in 6 × 1 in 4 per row; never the voice star | pills-random |
+
+### D6 Story homes, and free play
+
+| Mini-game | Story home |
+|---|---|
+| F1 Nani's list + bag | Arc 1 Ch1 (built); Arc 2 *Outfits* and *The gift* (threads, bangles, later prices); Arc 4 *The crow* (something shiny) |
+| F2 Which one? | Ch1's second visit (*[EN: the big papaya]*); F11 in Ch4 *The spill* (Big Ma's box) |
+| F3 Where is it? | Ch5 *Eid morning* (Nana's cap, the Eidi envelope); Arc 3 *The animals* (the chicks); Arc 4 *It's gone* (the dressing table) |
+| F4 Ali's turn | Ch2 *Knock knock*: Ali arrives and is sent back for what's missing; you tell him (this replaces the old Q6 "cousin's lost cap" idea) |
+| F5 Simba's mischief | **Ch3 *The cat and the sweets*** (the flagship) → Who did it? → Tidy up; Arc 4 *Following clues* |
+| F6 Torch | Arc 3 *The leak* (the power cut); free play from level 3 |
+| F7 Kasuku's minute | The hub's one daily, when it rotates to Find it |
+| F8 Tell Ali where | Ch5, after the cap is found: Ali lost his; Arc 4 *Who saw it?* |
+
+**Free play:** *The bazaar*: an endless stall built from due and weakest words, a best combo, the torch after level 3, Ali's turn every third list. Plus the 60-second round (F7) as the mode's entry in the hub daily.
+
+### D7 The review's critiques
+
+| Critique | What I did |
+|---|---|
+| Thin at 11: M1 is Shopping rebuilt | F4 (speaking), F2, the torch modifier and level 4 (two slots, Busy, two stalls) are in the first set; F5 in phase 3 |
+| The "small number beside each row" may be a High leak | Confirmed: it's the count's digit at stage ≤ 2, and stage 2 is tested. Fixed to stage ≤ 1 (D5). The `×n` tally is the basket, not the target: fine |
+| Identity is M4 and M8, which come last | The torch is in the first set; the trail waits on art and words, not on design |
+| Next slice should be M3 size, not M2 | Adopted: F2 is second; F3 is a greybox until A5 |
+| Adopt Wave 5A's sidebar first | Adopted: phase 0 is pure logic and needs nothing from it; phase 1's greybox waits for the frozen API |
+| Find it should own the relations file | **Superseded by the deep-dive brief:** the foundation agent owns `data/relations.json`, `js/shared/rel.js` and the `spots` schema. Find it hands over its schema as the seed (`spots[].{anchor, rel, x, baseline, also}`) and keeps matching on `item.rel` locally until `rel.js` lands |
+| "Which one?" needs one shared module | Adopted: `whichone` is the foundation's; Find it's decoy rule and F2's size rule are its spec |
+| Panning scenes, occluders, openables, 375 px | First set stays in the built bazaar plus a sitting-room greybox; openables are phase 3; Q5 defaulted to pan with zoom, tablet-first |
+| Six dailies | F7 is the mode's 60-second round for the one hub daily |
+| Q1 fruit bowl onto the engine | Default yes; its bowl-fill is speaking moment 1 |
+
+### D8 Words needed, in priority order
+
+*In the Questions doc* means it is already asked there (`Questions for Mum (Combined, for the visit)`); nothing here edits that doc.
+
+| Priority | Words or frames | Status |
+|---|---|---|
+| 1 | Fruit and numbers 6–10 confirmed | In the doc: E103–E123 (drafts exist) |
+| 2 | *Big / small* with a noun and "the big one", agreement | In the doc: C22–C36, C49 (*vadho / nindho* drafts exist) |
+| 3 | *Not the X*, *not the red one* | In the doc: A4, C43 (*Nar {x}* is a draft) |
+| 4 | Positions: on, under, in, behind, next to, in front of, between; and whether the anchor changes shape before them | In the doc: A5, E1–E13, C12–C21 |
+| 5 | Household anchors: sofa, table, cushion, curtain, cupboard, shelf, basket, box, crate | In the doc: E16–E48 (**crate** is new) |
+| 6 | Finding phrases: *Find the…, Here it is!, Look!, Leave that one, Bring it here, Nearly!, Where is it?, Which one?, How many?, this one / that one, here / there* | In the doc: E73, E77–E80, E84, A8.5–A8.7, A8.10–A8.11 |
+| 7 | Telling someone what to do (*bring, look, put*) for Ali's turn | In the doc: C142–C151, E72, E75 |
+| 8 | *[EN: What did you bring?]*, *[EN: the other one]*, *[EN: the same]* | **New** (H5 has *the same*); the first two are not asked |
+| 9 | Colours | In the doc: E60–E71 |
+| 10 | Sweet names, *Simba took it* | In the doc: E59, A6 |
+| 11 | **For the recogniser:** the fruit, the numbers 1–4 and *vadho / nindho* said five times each by three or more family members | **New**: a recording instruction, not a word |
+
+### D9 Decisions for Zafar (only what blocks the build)
+
+1. **The fruit-bowl errand moves onto this engine**, and its bowl-fill becomes speaking moment 1. Default: **yes**.
+2. **Does a parent's ✓ earn the voice star?** Default: **yes**, in Grandparent or with-a-parent mode only; the pills never do.
+3. **Ship size rows on the draft form** (*vadho santra*) before C22–C36 confirms agreement? Default: **yes**, flagged as a draft in the row and re-recorded when the answer comes.
+
+**What changed below:**
+
+| Section | Change |
+|---|---|
+| 2.2 library | M1–M12 stand as history; D2 is the scored list; M10 and M11 stay rejected; M12 is now core (F4, F8) |
+| 3 first set | Superseded by D5 (F1, F2, F4, F3 greybox, F6) |
+| 5.4 recall | The listening recall becomes speaking moment 1 |
+| 7 questions | Q1, Q5, Q6 answered by default (D7, D6); Q2 and Q3 defaulted as the review says; Q4 yes (Kasuku speaks only in his own minute); Q7 stands |
+| Build brief | Added at the end (phased, own files first) |
 
 ---
 
@@ -209,7 +845,7 @@ Each scene has 3 time grades × arc dressings × modifiers (torch, "find two"), 
 
 - **No item labels in the scene at any stage.** In Cook, labels help with the *next* step; here, a label *is* the answer. Stage-1 teaching happens through the twinkle and the voice.
 - **Tapping an item to hear its name** is allowed in **Explore** (free play with no rows) and for stage-1 words only. During a round, a tap on a findable item is an answer.
-- **Counts:** a digit on the row only while the number word is at stage 1–2 (the Roadmap's "shown and heard" rule, faded as the audit recommends); tallies count aloud at stage 1–2 and silently from stage 3; no ending by itself; press *Done*.
+- **Counts:** **no digit for the count asked for, at any stage** (25 Sept, calm sidebar: a digit beside the row answered "how many?" without the Kutchi number word, and the non-speaker bot read it off the row). The row shows only the running tally ("×2": how many are in the basket so far, never what's left). Tallies count aloud at stage 1–2 and silently from stage 3; no ending by itself; press *Done*.
 
 ### 5.3 Hint ladder and costs
 
@@ -282,6 +918,39 @@ On a wrong tap: the item wiggles, then *Arre re!* {the name of what you tapped} 
 5. **Scene width:** are panning scenes (1.5–2 screens) acceptable, or should every scene fit one screen with zoom only?
 6. Arc 1 Ch2: add the cousin's lost cap (M2 taste), or keep Ch2 as greetings and Tidy up only?
 7. Which sweets go in Nani's mithai box (for the Round 3 questions)?
+
+---
+
+## 8. Build brief (25 Sept 2026, matching the deep dive)
+
+For the Find it build agent, working alongside one agent per mode and a foundation agent. **Phases 0 and 1 touch only Find it's own files**: `find.html`, `css/find.css`, `js/find/**`, `data/find.json`, `data/scenes/sitting-room.json` (new), `build/test_find.py`. Nothing in `js/cook/*`, `css/cook.css`, `index.html` or any shared file. Placeholder words stay in `data/find.json`.
+
+### 8.1 Shared pieces assumed from the foundation agent (not designed here)
+
+| Piece | What Find it needs from it | Until it lands |
+|---|---|---|
+| The shell ("one app, one save") | A mode entry, one wallet, story beats and the map place | `find.html` keeps using Cook's save and progress as now |
+| `data/relations.json`, `js/shared/rel.js`, scene `spots` schema | `Rel.holds(item, where)` and `Rel.options(scene, row)` for `where` and `warmer`; the `spots[].{anchor, rel, x, baseline, also}` shape Find it uses is offered as the seed | `Find.matches` keeps matching on `item.rel`, by anchor word |
+| The "which one?" module | Attribute rows, the decoy rule, the blind-odds budget | `Find.makeWants` does size locally (`gen.js`) |
+| Star sets and ear/voice rules as data | `star_sets.find` with a fourth, voice star; `minTested`; taught-rows exclusion | `data/find.json` `star_set` as now; the voice star shown on the result card only |
+| `js/shared/speech.js` | `Speech.listen({choices, timeoutMs})` | `Find.fakeListen`: the lab's "what did the child say?" picker, which the test drives |
+| Overlay-at-anchor sprites | Ali at the stall, the cats peeking (phase 3) | A face badge and a hand from the existing hand set |
+| Wave 5A's frozen UI API | Intro card, "?" help, word review, the sidebar | Phase 0 needs none of it; phase 1's greybox uses whatever `ui.js` exports at the time |
+
+### 8.2 Phases
+
+| Phase | What is built | Files | Acceptance |
+|---|---|---|---|
+| **0 Pure logic and the bot** | Split `list.js` into `mechanics/spot.js`, `bag.js`, `where.js`; `games/list.js`, `whichone.js`, `where.js`, `ali.js`; `gen.js` (rows by level: count, size, where, not; the size rule: the noun in both sizes, both sizes on two or more nouns, balanced); the digit fix (stage ≤ 1); level 4 knobs; `mechanics.tell` with `fakeListen`; bot strategies bigger, smaller, odd-size, most-visible copy, nearest copy, first copy, pills-random; `--leak` per game | Own files only | `python3 build/test_find.py --leak 30 --game <id>` under 10% (target 5%) for F1, F2, F3 at levels 1–3, stages 2 and 3; the existing play test still passes at six viewports |
+| **1 Greybox and the lab** | F2 on the bazaar (the same picture at 0.8× and 1.25×); F3 calls on the bazaar's in/on/in-front spots, and `data/scenes/sitting-room.json` as grey boxes with under/behind occluder rectangles; F4 with the picker; F6 as a CSS mask with a battery bar; the voice star and pills on the result card; a Search lab button per game | Own files, plus the new scene file | Each game runs from the lab at levels 1–4; a Playwright round per game with deliberate mistakes; the picker stands in for the mic; no text on items; the tap-cover check before every tap |
+| **2 Integration** | Swap to `rel.js`, `whichone`, `speech.js`, the star data, the shell entry, the intro card and word review; the fruit-bowl errand onto the engine (D9.1); the bowl as speaking moment 1 | Shared files, with the foundation agent | One save; the bot rates unchanged; a real microphone round on a tablet with a family recording set |
+| **3 Story and art** | F5 (openables, cats, sweets) once E59 and A5 exist; the sitting-room art from the greybox spec (4.4); Big Ma's box (F11) after E60–E71; F7 in the hub daily; family words dropped in as data and the audit rerun per game | Scene and asset files | The Kutchi audit per game and scene; the visual QA checklist on every screenshot; the persona round with Zafar's notes |
+
+### 8.3 The first three tasks
+
+1. **Split and re-test (phase 0).** Move `Round.searchTap/collect/wrong` into `mechanics/spot.js` and `checkBag` into `mechanics/bag.js` with no change in behaviour; `games/list.js` composes greet → spot+count → bag → tell(bowl, fake). Run `build/test_find.py` and `--leak 30`; the rates must match today's within noise. Fix the digit to stage ≤ 1 and record the new stage-2 rate.
+2. **F2 Which one? (phase 0–1).** `gen.js` gains size rows and the size rule; `placeItems` takes a `size` scale per unit; the three size strategies in `bot.js`; `games/whichone.js` and its lab button; levels in `data/find.json` (`whichone.levels`: rows, sizeRows, decoyKinds, spare per size). Acceptance: bot under 5% at level 1, stage 2.
+3. **`mechanics/tell.js` and F4 (phase 1).** `tell({choices, want, actor, onChoice})`: calls `Speech.listen` if present, else `Find.fakeListen`; the actor acts on the choice; one retry, then pills; parent ✓ in Grandparent mode; the voice rows on the result card. `games/ali.js`: the picture list, tell (kinds), tell (numbers), then `bag` on Ali's packing. Acceptance: a Playwright round through the picker earns the voice star; a pills-only round never does; the round never waits on the mic longer than `timeoutMs`.
 
 ---
 

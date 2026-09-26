@@ -41,15 +41,31 @@
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   async function begin(S, ctx, key, view) {
+    // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar
+    if (ctx && ctx.intro) {
+      await ctx.intro;
+      ctx.intro = null;
+    }
+    // the station's painted sprites load while the view changes (data.art.sprites.need)
+    const art = Cook.Art.need(S, key);
     await S.setView(view);
+    await art;
     const st = Cook.data.stations[key] || {};
     Cook.save.seenStation = Cook.save.seenStation || {};
-    if (st.goal && (ctx.guided || ctx.lab || !Cook.save.seenStation[key])) UI.gist(st.goal);
+    // the goal waits behind the "?" (it pulses the first time); Nani's last line goes, and she
+    // keeps quiet for a moment so the player can work it out (Cook.hintDelay adds the quiet)
+    if (st.goal) UI.gist(st.goal);
     else UI.hideGist();
+    UI.hideBubble();
+    Cook.quietUntil = Date.now() + ((Cook.data.calm || {}).quietMs || 0);
     Cook.save.seenStation[key] = true;
     if (ctx.nextStep) ctx.nextStep(key);
+    // Wave 6: the first time here, dim all but the next thing and show the move (js/cook/coach.js).
+    // Only in a guided run (a dish's first order; the lab's "Nani helps"): the spotlight can be the answer
+    if (Cook.Coach && UI.w6() && ctx.guided) Cook.Coach.start(key);
   }
   function end() {
+    if (Cook.Coach) Cook.Coach.stop();
     UI.hideGist();
     UI.hideCount();
     UI.hideDone();
@@ -140,12 +156,25 @@
    */
   S$.vessel = function (S, kind, x, y, scale = 1) {
     const info = Cook.Art.vesselInfo(kind);
-    const key = S.tex(`vessel:${kind}`);
-    const img = S.track(S.add.image(x, y, key).setScale(scale).setDepth(D.item));
-    const [cx, cy, rx, ry] = info.rim;
-    const ox = x - (info.w / 2) * scale;
-    const oy = y - (info.h / 2) * scale;
-    const rim = { x: ox + cx * scale, y: oy + cy * scale, rx: rx * scale, ry: ry * scale, depth: info.depth * scale };
+    // a painted vessel (data.art.sprites.vessels): its opening centred on (x, y), as wide as
+    // the drawn one's, so the liquid, the lines and everything aimed at the rim keep their size
+    const spr = Cook.Art.vesselSprite(S, kind);
+    let img;
+    let rim;
+    if (spr) {
+      const s = (scale * info.rim[2] * spr.size) / spr.rx;
+      img = S.track(S.add.image(x, y, spr.key).setOrigin(spr.cx / spr.w, spr.cy / spr.h).setScale(s).setDepth(D.item));
+      rim = { x, y, rx: spr.rx * s, ry: spr.ry * s, depth: spr.depth * s };
+      // the contact shadow under its body (not the handle)
+      img.shadow = S.contactShadow(img, { centerX: x, centerY: y + rim.ry * 0.12, width: rim.rx * 2.5, height: rim.ry * 2.5 });
+    } else {
+      const key = S.tex(`vessel:${kind}`);
+      img = S.track(S.add.image(x, y, key).setScale(scale).setDepth(D.item));
+      const [cx, cy, rx, ry] = info.rim;
+      const ox = x - (info.w / 2) * scale;
+      const oy = y - (info.h / 2) * scale;
+      rim = { x: ox + cx * scale, y: oy + cy * scale, rx: rx * scale, ry: ry * scale, depth: info.depth * scale };
+    }
     const liq = S.track(S.add.graphics().setDepth(D.item + 0.4));
     const tgt = S.track(S.add.graphics().setDepth(D.item + 0.6));
     const v = img;
@@ -164,7 +193,7 @@
       v.level = L;
       if (color != null) v.color = color;
       liq.clear();
-      if (L <= 0.01) return;
+      if (L <= 0.01 || (spr && spr.filled)) return; // a painted vessel that shows its own contents
       const p = at(L);
       liq.fillStyle(v.color, 0.95);
       liq.fillEllipse(p.x, p.y, p.rx * 2, p.ry * 2);

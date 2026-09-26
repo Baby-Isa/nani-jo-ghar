@@ -1,6 +1,6 @@
 # Cook with Nani: to-do list
 
-**Updated:** 24 Sept 2026. Claude ticks things off here as each wave lands, so this file is always the current status.
+**Updated:** 25 Sept 2026. Claude ticks things off here as each wave lands, so this file is always the current status.
 Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyrabn`)
 
 ## Round 2 (from Zafar's Station lab playtest, 24 Sept)
@@ -44,10 +44,22 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 - ☑ **"Pass me" in the pantry** and in the slower stations (a listening break where the hands have little to do)
 - ☑ **Free play everywhere:** Cook's open kitchen (customers keep arriving, you close when you like); every future mode gets a free-play entry too
 
-### Wave 4: check ☐
-- ☐ "Can you win without the Kutchi?" audit, station by station
-- ☐ Persona review from screenshots
-- ☐ Tests on all six screen sizes; design doc updated
+### Wave 4: check ☑
+- ☑ "Can you win without the Kutchi?" audit, station by station → `docs/cook-with-nani-kutchi-audit.md`, "After Wave 3". Every system-level leak is closed; the one High left is **English placeholder decision words** (*no*, *slowly/quickly*, *half/full*, *big/small*, *vegetable/mixed*, *only/now*, *lift/leave*), which needs the family's words
+- ☑ Persona review, round 3 → `docs/cook-with-nani-build-log.md` section 9
+- ☑ Station lab on all six screen sizes (the iPad portrait lab and the day runs were cut short for Wave 5); design doc sections 12b and 13 updated
+- ☑ Fixed: hidden words side by side share one "•••" (the card's shape gave away which row had a number); chop rounds in a random order; on the phone, Nani's line is no longer squeezed under the goal; the Chai tray result card lists what you got right
+- ☐ **For Wave 5 (the sidebar and order card redesign):**
+  - **iPad (1024×768), High:** the narrow sidebar breaks words letter by letter in the order card ("tr/ae/kh/un", "du/dh" next to a face on the Chai tray; "bataat/o"). The row text needs `word-break: normal` and a minimum width of its longest word, so the buttons wrap instead
+  - **Phone (915×375), Medium:** sidebar speaker, translate and 👁 buttons are 22 px (too small for a 5-year-old). The goal box is capped at about 4 lines and cut mid-sentence (it scrolls). A long order card now pushes the goal and the menu buttons below the fold
+  - **Phone, Low:** the count badge overlaps the corner of the Maani line's hob and the Chai tray. The ✓ button sits over the Maani line's resting spatula (not a tap target). The roll-tawa plate is cut off by the bottom edge
+  - **1280×800, Low:** the Maani line's spatula hand runs past the canvas edge
+- ☐ **For the orchestrator (bigger than Wave 4):**
+  - Chai tray: put every family cup on the tray and have the customer order for others by name, so kinship words decide which cups (Medium; needs a "for" frame)
+  - Serving to the right person in the open kitchen (Medium)
+  - Story orders have fixed levels, so level 3 of the grill and the Maani line is lab-only; let the open kitchen raise the level with skill (Zayn)
+  - The harness's chop slices miss on the WebGL renderer (0 chopped at every size; the game registers slices, and the harness aims at 6–11 fps). Aim from the canvas renderer or predict further ahead
+- ☐ **For the family (Round 2 words), top of the list:** *no / without*, then *slowly, quickly, half, full, big, small, vegetable, mixed*
 
 ## After Wave 2 merges
 - ☑ Rename Bilal → Ali in `data/cook.json`, code, audio file names and docs (tall, lanky cousin)
@@ -55,8 +67,13 @@ Key: ☐ to do · ◐ in progress · ☑ done (pushed to `claude/funny-fermi-vyr
 ## Then
 - ☐ Zafar plays **story mode** end to end (plus a child if possible) → Round 3 tuning
 - ☐ Family: Round 2 questions (words, recipes, tastes) and recordings
-- ☐ Art run for Cook with Nani (hand sheet in many orientations first; the ingredient library is shared with Find it)
-- ☐ Next mode: Find it (the bazaar)
+- ◐ Art run for Cook with Nani: **batch 1 wired in (25 Sept)**. The sprite map is `art.sprites` in `data/cook.json`, with drawn fallback; the painted worktop and hob; 25 ingredient bowls, vessels, maani, samosa, chips, mishkaki. Webp files are built by `build/sprites_webp.py`. **Still missing / redo** (next ChatGPT batch): whole and peeled onion, rolling pin, rolling board, thali (failed QA); worktop evening; bajri maani set; hob knob and flame ring; grill, rack and cutting board; samosa fold stages 1–2; chaat topping layers; front-view pantry items; painted chai tray and cups; a front or three-quarter pan for the pour line. Evening/night backgrounds are unused until the game has a time of day. Hands v2 (`claude/art-hands-v1`) awaits Zafar's ring approval.
+- ◐ **Characters: new approved art wired in (25 Sept).** `build/cut_characters.py` cuts every `assets/cook/characters/*.webp` from the batch 1 sheets (the old placeholders are in `assets/cook/characters/old/` for rollback): Nani from the approved v2 close-up (leaning on the counter, all four moods), Nana, Ma and Ali from their game crops (neutral), the talking head of the expressions sheet swapped onto the same body (happy, also used when they talk), the impatient sheets (arms folded), and head-and-shoulders badges; plus `isa-badge` and `kasuku-badge` for later. **Next art batch (characters):**
+  - **Nani expressions: happy, talk, point** (edits of the v2 close-up, same framing and counter line, so she changes face without jumping), and a blink frame. Until then all four Nani moods are one image.
+  - Waist-up "happy/talking" for Nana, Ma and Ali behind the counter (today's happy is a head swap; it reads well at game size, but a real pose is better).
+  - Impatient faces: the impatient sheets' arms are folded but the faces smile smugly; a "tsk"/impatient face on that pose.
+  - Big Ma, the doctor, Simba and Zazu sheets (not in batch 1).
+- ◐ Next mode: Find it (the bazaar): first slice at `find.html` (unlinked), now on the calm sidebar; the target digit on rows removed (a leak; the bot fell from 3.3% to 0–1.7%); zoom pinned in the sidebar foot
 
 ## Platform and tech debt (Zafar's questions, 24 Sept evening)
 
@@ -72,13 +89,52 @@ None of these is a blocker; the one real piece of debt is item 1, and everything
 
 "Hard to know what to do; lots of information all at once."
 
-- ☐ **Intro card:** when someone orders, a card flashes up in the centre with their face, saying what they want, with the order shown as a sequence. It then shrinks into the sidebar.
-- ☐ **Every order is a sequence list:** one line and one dot per item, always (also for looks). "Any order" items are shown subtly, not grouped on a shared dot.
-- ☐ **Nani says less:** silence at the start of each station so people can work it out; fewer and later hints; fewer "pass me" moments at level 1.
-- ☐ **Sidebar space and readability:** fit the text without eating the play area. Order card first, compact.
-- ☐ **Help is just a "?"** that pops out when pressed; the goal text isn't shown permanently.
-- ☐ **Remove the English step pills** (Water, Tea, Boil…).
-- ☐ **Result card:** replace "they asked / you did" with a **word review**: each Kutchi word used in the order, with its English.
-- ☐ **Coins and stars counter** at the top of the sidebar: remove it (show pocket money on the summary and title instead).
+- ☑ **Intro card:** when someone orders, a card comes up in the centre with their face and the order as a list while it's said; a tap (or the end of the line and a short pause) flies it into the sidebar. ↻ on the small card opens it again (a replay once its words are dots). The Station lab shows it too, before the station starts
+- ☑ **Every order is a sequence list:** one row and one dot per item, always. Steps in order are joined dot to dot by a line; any-order items have no line between them. From *ne poi* stage 3 every dot is joined, so only the voice tells the order. A part that's all done folds onto one line (still a dot each), so the part you're on stays in view
+- ☑ **Nani says less:** each station starts with her line cleared and 4 s of quiet (no hints); hints after 7/8/11/15 s by word stage (was 4/5/8/12); no "pass me" in the first order of a session, a 20% chance and at most one per order at level 1; a wrong order is recast with only the rows that went wrong. All in `data.calm`
+- ☑ **Sidebar space and readability:** the sidebar takes the room the 16:9 picture can't use (248 px on a 915×375 phone instead of 174). Order card on top (the first dish's line beside the face, ↻ and A/En), then Nani's line, then the rail. Rows flow as text (speaker, words, 👁), so narrow columns wrap between words (fixes the iPad letter-by-letter breaks); sidebar buttons 28–34 px. A very long order scrolls inside the card and never pushes Nani or the rail away
+- ☑ **Help is just a "?"** in the rail: the goal pops out beside it; it pulses the first time you meet a station. The ghost finger stays
+- ☑ **Remove the English step pills** (Water, Tea, Boil…)
+- ☑ **Result card:** a **word review**: every Kutchi word in the order as a pill (speaker, Kutchi, English), marked "missed" or "help"; the stars and one "next time" tip per missed star
+- ☑ **Coins and stars counter** gone from the sidebar; pocket money on the title screen and the day's summary. "Close the kitchen" moved to the rail
+- Wave 5A checks: Station lab at 915×375, 1366×768 and iPad portrait, the iPad landscape lab for four stations, `--days 2 --canvas` and `--open-kitchen 2` all pass with no console errors. The harness now pictures and taps the intro card, opens "?" and ↻ once a run, and flags any sidebar that scrolls or pushes a word out (none left). The Chai tray's intro card shows only "Muke chai khape.": each person's cup order is still said at the tray, by design
 - ☐ **Level 1 more varied and fun:** kinds of mishkaki skewer, kinds of tea, several things to chop from the start.
 - ☐ **Chop:** a visible countdown timer; level 1 = several items (what goes in the dish), with volume, decoys and time pressure as the game.
+
+## Game mode designs (Zafar, 25 Sept): one design agent per mode
+
+Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic library scored on fun, forcing the Kutchi, distinctness, plot and replay, then three or more persona and Sceptic review loops, a verdict, and a build brief for a future agent.
+
+| Mode | Design doc | Status | Verdict |
+|---|---|---|---|
+| Cook with Nani | `docs/cook-with-nani-phase-a-design.md` | built, iterating | — |
+| Find it | `docs/find-it-design.md` | first slice live (`find.html`, unlinked), calm sidebar | Go |
+| Tidy up | `docs/modes/tidy-up-design.md` | ☑ designed | Go with changes |
+| Dress up | `docs/modes/dress-up-design.md` | ☑ designed | Go with changes |
+| Nani's clinic | `docs/modes/clinic-design.md` | ☑ designed | Go with changes |
+| Who did it? | `docs/modes/who-did-it-design.md` | ☑ designed | Go with changes |
+| Monsoon rush | `docs/modes/monsoon-rush-design.md` | ☑ designed | Go with changes |
+| Snap | `docs/modes/snap-design.md` | ☑ designed | Go with changes |
+
+## Wave 6: Zafar's grill playtest, 25 Sept (see `docs/UX-PRINCIPLES.md`) ☑ (branch `claude/build-cook-wave6`, report `build/reports/cook-wave6.md`)
+- ☑ Request card with read-along highlighting, by recorded chunk: each spoken line has its own voice file, and its row or card lights up while it plays. It shows the recipe's plain-English `how`, then shrinks into the sidebar. (Word-by-word highlighting inside a chunk waits for per-word timings from the family's recordings.)
+- ☑ Sidebar on the **left** (`<body class="w6">` in cook.html; Find it and the other pages sharing `js/cook/ui.js` keep the Wave 5 card until they opt in); Done and "Go to the barbecue" bottom right
+- ☑ One card per item, fixed shape: a card per skewer (always four dots; a mixed one names its pieces on its dots), per maani, per cup (face, *Nana lai.*, then milk / sugar / which chai; an empty slot for plain; half/full only when asked). Data: `cards`, `cardOf`, a recipe's `card`
+- ☑ Per-row speaker, 👁 and A/En removed. One light bulb at the top of the sidebar: English for 5/3/2/1 s by level (`data.calm.bulbMs`), costs the ear star like A/En did. One speaker in each card's top-right corner, reading it with read-along (a replay once it's dots costs the no-help star)
+- ☑ Grill in two phases: thread every skewer → "Go to the barbecue" → grill. The juggle is level 4 (`juggle: true` in `data/stations/mishkaki-grill.json`)
+- ☑ Chips off the grill (they stay in samosa + fry)
+- ☑ Level 1 = the smallest round (one skewer, one cup, one maani, three pantry things); each level adds one thing (level 4 in the Station lab). New `pantry` recipe (Nani's list, *Muke {x} de*); day 1 starts with it, the pocket-money rules come after it
+- ☑ First-time overlay at every station (`js/cook/coach.js`: dim, spotlight, ghost finger, one thing at a time, driven by `Cook.expect`; `data.calm.coachSteps`). The stars fade in from the second order, the bulb from the third (`data.calm.uiAfter`)
+- ☑ The family's words in `data/cook.json`: *daar*, *ba* (voice *ber*), *hakro/hakri* by the noun's `gender` (maani, chai = she; most nouns `unknown`), *wadho/wadhi*, *nindho/nindhi*, *watana*, *{x} waari chai*, *Muke chai me {n} khun khape*, *{person} lai*, *Muke {x} de*, *Pela {x}. Ne poi {y}.* Drafts keep `draft: true` and a `src`. Ids unchanged, so other modes pick them up
+- ☐ Placeholder voice for the new words: `build/build_cook_tts.py` knows them now (Gujarati spellings added) but Google TTS is blocked here; run it on a machine with network. Until then the new words use the device's own voice, or are silent
+- ☐ For Zafar: one card per skewer / maani shows the count (see the audit, "After Wave 6"); ordering *for* others by name at the Chai tray (*Nana lai*) is the next Chai tray pass
+
+## Wave 6b (after Wave 6 merges): UX principles §9–§11
+- ☐ Adopt the shared end-of-round screen (`js/shared/results.js`, time / accuracy / hints, then the word review)
+- ☐ Picture tally in the top-right of chop and other multi-item stations (what you did, never the target)
+- ☐ Tick-off on the instruction card: automatic at every level (UX §11)
+- ☐ No negative feedback mid-round; mistakes surface in the end review
+- ☐ **Pour becomes a tap** (tap the jug, it pours the right amount), like every other item (UX §12)
+- ☐ **The instruction card is the master; Nani leaves the sidebar in play** (voice, throbbing hints and interjections only; on screen in story moments) (UX §13)
+- ☐ Onboarding scripts per station with the shared onboarding kit
+- ☐ Wire the existing tool sprites (knife, ladle, spatula, velan, chakla, skewer) into `data/cook.json` so those stations stop drawing code placeholders (see `docs/cook-art-audit.md`); tally icons = existing ingredient sprites scaled down

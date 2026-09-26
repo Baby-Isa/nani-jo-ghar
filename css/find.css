@@ -1,0 +1,155 @@
+/* Find it (find.html): on top of css/cook.css, which it shares (the sidebar,
+   the mission card and its ladder, word pills, panels, result cards). The
+   scene is a plain-HTML 1600x900 world (js/find/view.js); nothing in HTML
+   sits over the stall: Done, zoom and "where?" live in the sidebar's foot. */
+
+body.find #overlay.title-mode { background: url("../assets/backgrounds/bg-bazaar-stall-v3.jpg?v=20260925T233111Z") center / cover; }
+
+/* the letterbox: a blurred copy of the scene, never black bars */
+#letterbox { position: absolute; inset: -30px; background: center / cover no-repeat; filter: blur(18px) saturate(1.1) brightness(.92); }
+#game { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: pointer; }
+#world { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; }
+#world img { -webkit-user-drag: none; user-select: none; }
+.w-bg { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; z-index: 0; }
+.w-char { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
+.w-person { position: absolute; transform-origin: 50% 100%; }
+.w-person.bob { animation: personBob .5s ease-in-out 2 alternate; }
+@keyframes personBob { to { transform: translateY(-8px) rotate(1deg); } }
+.w-occ { position: absolute; left: 0; width: 1600px; z-index: 20; background-repeat: no-repeat; background-size: 1600px 900px; pointer-events: none; }
+.w-dim { position: absolute; inset: 0; z-index: 25; pointer-events: none;
+  background: linear-gradient(to right, rgba(30, 20, 12, .5) var(--a), transparent var(--a), transparent var(--b), rgba(30, 20, 12, .5) var(--b)); }
+.w-items { position: absolute; inset: 0; z-index: 30; }
+.w-basket { position: absolute; inset: 0; z-index: 40; pointer-events: none; }
+.w-basket img { position: absolute; }
+.wb-back { z-index: 1; }
+.wb-items { position: absolute; inset: 0; z-index: 2; pointer-events: auto; }
+.wb-front { z-index: 3; }
+.w-fly { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+.w-fx { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
+
+/* an item: its picture, a contact shadow, sunk a few px into the surface */
+.fi-item { position: absolute; transform: rotate(var(--tilt, 0deg)); transform-origin: 50% 100%; }
+.fi-item img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(40, 25, 10, .25)); }
+.fi-shadow { position: absolute; left: 12%; right: 12%; bottom: -5px; height: 12px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(40, 25, 10, .38), rgba(40, 25, 10, 0) 70%); }
+.fi-item.gone { visibility: hidden; }
+.fi-item.flying { transition: none; }
+.fi-item.off { filter: saturate(.55) brightness(.88); }
+.fi-item.dimmed { filter: brightness(.55) saturate(.6); }
+.fi-item.wiggle { animation: fiWiggle .45s ease-in-out; }
+@keyframes fiWiggle { 20% { transform: rotate(calc(var(--tilt, 0deg) - 12deg)); } 45% { transform: rotate(calc(var(--tilt, 0deg) + 10deg)); } 70% { transform: rotate(calc(var(--tilt, 0deg) - 6deg)); } }
+/* stage 1: the thing twinkles as Nani says its name (taught, not tested) */
+.fi-item.twinkle img { animation: fiTwinkle .5s ease-in-out infinite alternate; }
+@keyframes fiTwinkle { to { filter: drop-shadow(0 0 10px #fff4b0) drop-shadow(0 0 18px #ffd86b) brightness(1.12); transform: scale(1.06); } }
+/* shown (after two misses on a row): costs the ear star */
+.fi-item.glow img { animation: fiGlow 1s ease-in-out infinite; }
+@keyframes fiGlow { 50% { filter: drop-shadow(0 0 12px #ffd86b) drop-shadow(0 0 22px rgba(201, 151, 58, .9)); } }
+
+/* scenery answers a tap (and never counts) */
+.w-ripple { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; border: 5px solid rgba(255, 250, 235, .85); animation: ripple .55s ease-out forwards; }
+@keyframes ripple { from { transform: scale(.2); opacity: 1; } to { transform: scale(1.3); opacity: 0; } }
+
+/* the combo: a quick "×3" rising from the basket (in the world, never over the stall; no pointer events) */
+.w-combo { position: absolute; transform: translate(-50%, 0); font-family: var(--kutchi-font); font-weight: 800; font-size: 54px; color: #fff;
+  text-shadow: 0 3px 0 rgba(120, 50, 30, .55), 0 0 16px rgba(80, 30, 10, .35); pointer-events: none; white-space: nowrap; animation: comboUp 1s ease-out forwards; }
+@keyframes comboUp { from { opacity: 0; transform: translate(-50%, 20px) scale(.7); } 25% { opacity: 1; transform: translate(-50%, 0) scale(1.08); } to { opacity: 0; transform: translate(-50%, -60px); } }
+
+/* the calm sidebar (Wave 5, shared with Cook): the list on top, Nani's one line, then the foot.
+   The foot (Done, then the rail: ?, menu, zoom, where?) never scrolls away: the list gives way
+   first (it scrolls inside its card), then Nani's line, so zoom is always in reach on a phone */
+body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y: auto; }
+/* the narrowest sidebar (a small phone on its side, ~200px): the card's head keeps face, stars and ↻ A/En apart */
+@container side (max-width: 210px) {
+  #mission .m-head { column-gap: 4px; }
+  #mission .m-stars { gap: 2px; }
+  #mission .m-stars .mstar { width: 20px; height: 20px; padding: 2px; border-radius: 6px; }
+  #mission .m-tools { gap: 3px; }
+  #mission .m-tools button { width: 27px; height: 27px; padding: 5px; }
+}
+.find-foot { flex: none; display: flex; flex-direction: column; gap: 8px; position: sticky; bottom: 0; background: var(--paper); z-index: 2; }
+#find-done { flex: none; width: 100%; min-height: 48px; font-size: clamp(16px, 1.8vw, 21px); }
+.find-foot .side-rail { flex-wrap: nowrap; gap: 6px; justify-content: space-between; }
+.find-foot .rail-btn { flex: 0 1 46px; min-width: 32px; }
+#btn-zoom-in, #btn-zoom-out { font-weight: 800; font-size: 26px; line-height: 1; }
+.rail-btn:disabled { opacity: .4; }
+#btn-warmer { padding: 10px; }
+#btn-warmer svg { width: 100%; height: 100%; }
+#nani-card.other .nc-face { background: #e7d3b8; }
+
+/* list rows: the running tally (how many are in your basket so far). Never the number asked
+   for: the number word is what's being taught, so a digit would give the answer without Kutchi */
+.lr { position: relative; }
+.lr .ltally { display: inline-block; font-family: var(--ui-font); font-weight: 800; font-size: .7em; color: var(--sage-dark); background: #e2efdb; border-radius: 999px; padding: 0 6px; vertical-align: .12em; white-space: nowrap; }
+
+/* the pocket-money receipt on the result card (and the leak check's table); Cook no longer draws one */
+.receipt { font-size: 14px; background: var(--cream); border-radius: 12px; padding: 8px 12px; margin: 6px 0; }
+.receipt div { display: flex; justify-content: space-between; gap: 12px; }
+.receipt .total { border-top: 1px dashed #cdb892; margin-top: 4px; padding-top: 4px; font-weight: 800; }
+
+/* the Search lab */
+.lab-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
+.lab-lbl { font-weight: 800; min-width: 52px; }
+.lab-check { display: flex; gap: 8px; align-items: center; font-weight: 800; margin: 8px 0; }
+.story-line { background: var(--paper); border-radius: 12px; padding: 8px 12px; }
+
+@media (max-height: 430px) {
+  .find-foot { gap: 5px; }
+  #find-done { min-height: 36px; padding: 6px 10px; font-size: 15px; }
+  .find-foot .rail-btn { height: 36px; font-size: 18px; }
+  #btn-zoom-in, #btn-zoom-out { font-size: 22px; }
+  #btn-warmer { padding: 7px; }
+  .w-combo { font-size: 64px; }
+}
+/* portrait tablets: the sidebar sits under the picture; the list on the left, Nani's line and the foot on the right */
+@media (max-aspect-ratio: 1332/1000) {
+  .find-foot { grid-column: 2; grid-row: 2; align-self: end; position: static; }
+}
+
+/* ---------------- phase 1 greyboxes (docs/find-it-design.md 8.2) ---------------- */
+/* a greybox scene: anchors as labelled boxes on a plain floor; occluders over the things */
+#world.greybox { background: linear-gradient(#efe6d6 0 62%, #d8c7aa 62% 100%); }
+.w-grey-floor { position: absolute; inset: 0; pointer-events: none; }
+.w-grey { position: absolute; z-index: 5; background: #b9ab96; border: 3px solid #8c7d68; border-radius: 10px; box-sizing: border-box; pointer-events: none; }
+.w-grey span { position: absolute; left: 8px; top: 6px; font: 700 20px/1 Nunito, system-ui, sans-serif; color: #5b4d3b; opacity: .8; text-transform: lowercase; }
+.w-grey-curtain { background: repeating-linear-gradient(90deg, #a99178 0 18px, #bba58b 18px 36px); }
+.w-grey-cushion { background: #c49a74; border-radius: 26px; }
+.w-grey-shelf, .w-grey-table { background: #9c8467; }
+.w-occ2 { position: absolute; inset: 0; z-index: 35; pointer-events: none; }
+.w-grey-occ { position: absolute; background: #a8977f; border-radius: 6px; }
+.w-grey-occ-curtain { background: repeating-linear-gradient(90deg, #a99178 0 18px, #bba58b 18px 36px); opacity: .97; }
+.w-grey-occ-cushion { background: #c49a74; border-radius: 26px; }
+
+/* the bowl (speaking moment 1): greybox on the counter */
+.w-bowl { position: absolute; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: linear-gradient(#e8d2a8, #c79e62); border-top: 8px solid #f3e3c2; box-shadow: 0 8px 14px rgba(60, 35, 10, .3); }
+.w-bowl.shake { animation: fiWiggle .5s ease-in-out; }
+
+/* Ali at the stall (F4): a face badge, greybox until the overlay sprite */
+.w-actor { position: absolute; text-align: center; transform-origin: 50% 100%; }
+.w-actor img { width: 100%; display: block; filter: drop-shadow(0 4px 6px rgba(40, 25, 10, .3)); }
+.w-actor b { display: inline-block; margin-top: -8px; padding: 2px 12px; border-radius: 12px; background: #fff7e6; font: 800 20px/1.3 Nunito, system-ui, sans-serif; color: #6b3d1f; }
+.w-actor.puzzled { animation: fiWiggle .6s ease-in-out; }
+.w-actor.pleased { animation: personBob .4s ease-in-out 2 alternate; }
+
+/* the count's digit, only while the number word is taught (stage <= 1) */
+#mission .ldigit { display: inline-block; min-width: 1.3em; padding: 0 4px; margin-right: 2px; border-radius: 8px; background: #fff0c9; color: #7a4a17; font-weight: 800; text-align: center; }
+
+/* the lab's stand-in for the microphone ("what did the child say?") */
+#fake-mic { position: fixed; left: 50%; top: 14px; transform: translateX(-50%); z-index: 80; padding: 10px 14px; border-radius: 16px; background: #2f2419; color: #fff; box-shadow: 0 8px 24px rgba(0, 0, 0, .35); max-width: calc(100vw - 24px); }
+#fake-mic .fm-q { font: 700 14px/1.2 Nunito, system-ui, sans-serif; margin-bottom: 8px; opacity: .85; }
+#fake-mic .fm-row { display: flex; flex-wrap: wrap; gap: 6px; }
+#fake-mic .btn { min-height: 38px; padding: 4px 12px; font-size: 15px; }
+
+/* Ali's picture list: pictures, because here YOU are Nani (you say it) */
+.ali-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 2px; }
+.ali-pic { position: relative; width: 74px; height: 74px; border-radius: 14px; background: #fffaf0; border: 2px solid #e2cfa9; display: grid; place-items: center; }
+.ali-pic img { width: 60px; height: 60px; object-fit: contain; }
+.ali-pic .ap-n { position: absolute; right: -6px; bottom: -6px; min-width: 26px; height: 26px; border-radius: 13px; background: #c8553d; color: #fff; font: 800 15px/26px Nunito, system-ui, sans-serif; text-align: center; }
+.ali-pic.ap-big img { width: 68px; height: 68px; }
+.ali-pic.ap-small img { width: 42px; height: 42px; }
+.ali-pic.done { opacity: .5; }
+.ali-pic.now { border-color: #c8553d; box-shadow: 0 0 0 3px rgba(200, 85, 61, .25); }
+
+/* the result card: the voice star; a star that wasn't tested this time */
+.mstar.untested { opacity: .45; border: 2px dashed #b9a07a; border-radius: 50%; }
+#ali-card { padding: 10px 12px; }
+#ali-card .ac-head { display: flex; align-items: center; gap: 8px; font: 800 15px/1.2 Nunito, system-ui, sans-serif; color: #5b3a22; }
+#ali-card .ac-face { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; flex: none; }

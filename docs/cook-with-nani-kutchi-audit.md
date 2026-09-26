@@ -77,3 +77,84 @@ Severity: **High** means a non-speaker keeps the ear star or plays well almost e
 8. **Counting aloud and label speakers fade by word stage.** At number stage 3+ count silently; track number words in every counted station. At stage 3+, tapping the target's label speaker counts as help. *(Wave 2, small.)* The ear star then needs the meaning, not just matching sounds.
 
 Next after these: symmetric look-alike groups for "pass me" (Wave 2, data only); tastes as a bias, with "not today" changes; the ear star checking who each dish is for (Chai tray first).
+
+---
+
+## After Wave 3 (Wave 4 check, 25 Sept 2026)
+
+The same question, "can you win without the Kutchi?", asked again of the final code (Waves 1–3 merged: order ladder, help costs, building blocks and levels, Stir on a track, the Mishkaki grill, the Maani line, the Chai tray, the polished keepers, the open kitchen). I read each station's code and played every station in the Station lab at five screen sizes.
+
+**The short answer:** almost every hole the first audit found is closed. The ones still open have one main cause: **decision words that are still English placeholders.** An English speaker can read or hear those decisions without knowing any Kutchi. Code can't fix that. The family's words can.
+
+### What's fixed
+
+| Pre-wave finding | Now |
+|---|---|
+| Waiting for the glow keeps the ear star (High) | Being shown the answer costs the ear star: the hesitation glow, the highlight after two misses, 👁, and translate, including in "pass me" and the threading board. Hearing it again costs only the no-help star. Busy help drains patience |
+| Step chips give away milk, sugar, extra and chips (High) | Every order of a dish shows the same chips |
+| "With milk" never said (High) | Each person says *ne dudh* or *no dudh*, and *ne N khun* or *no khun* |
+| Chai stove skips "no milk" / "no sugar" (High) | Chai tray: the milk jug and the sugar bowl are there for every cup. Adding what they said no to, or leaving out what they asked for, costs the ear star. Checked per cup, per person |
+| Sugar vs salt not tappable (Medium) | Salt sits beside the sugar on the tray and can be spooned in ("added loon"). It costs the ear star |
+| Number of cups poured for you (High) | Partly fixed: every cup must be poured by hand. See "Still leaks" for the count |
+| Extras a coin flip (Medium) | From level 3 the extras shelf (elchi, ginger and a garlic look-alike) is out for everyone, asked for or not. "No extra" is possible |
+| Pantry: "no X" item missing by chance (Medium) | Always on the shelf. Nani's "pass me" in the pantry never asks for a word in the order. (The pantry is now only in the Station lab; no recipe fetches any more.) |
+| Pass-me decoys asymmetric; translate free (Medium/High) | Three from one look-alike group; translate costs the ear star |
+| Chop: fixed target, ends by itself, targets thrown more often (High) | Daal says onion / tomato / chilli, each yes or no. Targets are thrown no more often than decoys, with look-alikes. It never ends at the number: graded afterwards. **Wave 4:** the rounds now come in a random order (daal always started with onions and chaat with potatoes) |
+| Tadka: waiting for the glow; salt never chosen (Medium) | It burns if you dawdle (the glow trick stops paying). Salt is in the daal spice list. From level 2 the card shows the order as dots, and from level 3 hides it |
+| Stir: the dial's green zone is the answer (High) | Fixed bands (stopped · tortoise · hare · spill), the same for every order. Only Nani's word says which one |
+| Chaat: fixed first layer, one decoy, fixed "no" (Medium) | The first layer varies. 2–3 random decoys. "No X" is drawn from six toppings. Tastes are only a bias. The customer checks it layer by layer and recasts from the first wrong layer |
+| Samosa: "2 of 2", fixed decoy, second samosa repeats (Medium) | One spoon count per filling (3–5 spoons in all), graded at the tick. Random decoys. You decide how many to fold. No "N of M" |
+| Fry: tray = count + 1 (High) | The tray holds 1–3 extra. Level 2 adds other things, level 3 "lift the samosas, leave the chips" |
+| Mishkaki: fixed length, no decoys, chips decided for you (Medium/High) | The order names each kind and count (meat, vegetable, mixed), 1–4 skewers by level. Every piece bowl is always out. The rack has fixed slots per level. The chips basket is always offered. The plate is graded at the tick |
+| Maani line risks: slots per maani, auto-stop, fixed kind order (High if built that way) | Both bowls always hold the same number of balls, more than any order. You press the tick. Counts are graded per kind. The kinds are said in either order. Sizes come in at level 3 |
+| Order ladder shape (High if built that way) | No pictures. One dot per item, never per unit. "No" rows placed at random. Any-order rows shuffled. At *ne poi* stage 3 the sequence line goes. **Wave 4:** hidden words next to each other now share one "•••". Before, "bo khun" drew two dot groups and "dudh" one, so the Chai tray card still showed which row had a number |
+| Counting aloud lets you match sounds (Medium) | From number stage 3 counting is silent and digit-only. Number words progress in chop, fill, the grill, the Maani line and the Chai tray |
+| Fixed customer tastes (Medium) | Tastes set the odds only (`tasteChance` 0.4–0.7), and the order always says everything |
+
+### What still leaks
+
+| Where | Leak | Severity | Fix | Owner |
+|---|---|---|---|---|
+| **English placeholder decision words** (every station that uses them) | The words that carry the decision are still English, shown as grey text and spoken in English. English placeholders are never dotted out, so the card always shows them: *no* (every "no X" row), *slowly / quickly* (stir), *half / full* (Chai tray, level 3), *big / small* (Maani line, level 3), *vegetable / mixed* (skewer kinds), *only / now* (chop: the noun and number are Kutchi), *lift / leave* (fry, level 3), and the nouns *chips, sev, coriander, tamarind / green chutney, mince, green pepper*. An English speaker reads these decisions without knowing any Kutchi | **High** (for these decisions) | The family's words. Highest value first: **"no / without"**, then *slowly, quickly, half, full, big, small, vegetable, mixed*. They drop in as data (`data.lines.no`, the `ph-*` words); no code change | Family (Round 2 words) |
+| **Chai tray: cups and who** | Only the people ordering get a cup, and each one speaks with their own face bobbing. So how many cups, and whose they are, is given. Kinship words decide nothing | Medium | Put every family cup on the tray (spares get nothing). The customer orders for others by name ("Nana ne Ma maate…"), so the kinship word says which cups to fill. Needs a frame for "for" (the English placeholder `forwho` exists) and a design pass | Orchestrator (next Chai tray pass) |
+| **Label speakers at word stage 2** | The card shows the word as text and the shelf labels are speaker-only, and tapping them is free. So you can play the row, then tap labels until one sounds the same (matching sounds) | Medium | As planned: stage 2 is teaching. Consider limiting free label taps per step to 2 | Later |
+| **Serving: who it's for** (story, quick order, open kitchen) | Every dish goes to the one customer automatically. Only the Chai tray checks the person | Medium | In the open kitchen, sometimes two plates wait and "this is for Nana" decides | Orchestrator |
+| **Tastes as a bias** | Guessing a person's usual (Nana: milk, 3 sugars) gets a level-1 cup completely right about half the time | Medium (by design) | Fine at 0.5. Lower `tasteChance` if playtests show guessing | Data |
+| **Chaat** | Chickpeas and potato are both in every bowl, and one of them is always first | Low | Let the base be one of them, or both | Data |
+| **Chai: tea leaves** | Always *chai* (among cumin and mustard look-alikes) | Low | Masala chai later | Later |
+| **Maani: ghee** | Not built | Low | Brush or don't, from level 2 | Later |
+| **"Enough!" at the asked line** (pour, the Chai tray) | Said while the word is new (stage ≤ 2 by level), so it tells you when to stop | Low (intended: teaching) | — | — |
+| **Chop: the test slice** | The first correct slice bursts white and bumps the tally, so after one slice you know which one it is. A wrong guess costs the ear star, so guessing doesn't pay | Low | — | — |
+| **Timing stations** (boil, tawa, fry, grill turns) | Hands only | Low (by design) | From stage 3, Nani's cue a moment early | Later |
+
+### Station by station: could a non-speaker earn the ear star?
+
+| Station | Level 1 | Level 3 |
+|---|---|---|
+| Chai tray | Partly. Milk or not, and sugar or none, can be read (*no* is English). The sugar count needs the Kutchi. The number of cups and who they're for are given | Half/full is English |
+| Maani line | No: the count and kind per bowl are Kutchi | Big/small is English |
+| Mishkaki grill | Meat skewers: no (*ghos*, draft) | Vegetable/mixed are English, so kind is readable; counts are Kutchi |
+| Daal: chop, tadka, stir | No (which vegetable, how many, the spice order) | Stir speed is English |
+| Chaat bowl | Mostly no (sequence in Kutchi, but four toppings are English) | — |
+| Samosa: fill, fold, fry | Partly: *mince* is English. Counts are Kutchi | Fry lift/leave is English |
+| Pass me | No | — |
+
+**Verdict:** the systems now pass the test. Wherever a real Kutchi word carries the decision, a non-speaker can't earn the ear star except by luck or by being shown (which costs the ear star). The remaining High is content, not code: about a dozen decision words the family hasn't given yet.
+
+## After Wave 6 (Zafar's grill playtest, 26 Sept 2026)
+
+Wave 6 changed how the order is shown and helped (docs/UX-PRINCIPLES.md). The same question for each change:
+
+| Change | Can you win without the Kutchi? | Severity |
+|---|---|---|
+| **One card per skewer / per maani** (one card per unit, a fixed shape) | The number of cards shows how many of each kind, so the count no longer has to be heard (the number word is still said, and read along). The kind on each card is still a word (dots once known), and a mixed skewer's pieces are words in order. This is the trade Zafar asked for: the fixed shape makes *which kind* and *which order* the thing to listen for | **Medium** (counts only, for skewers and maani) |
+| **One card per cup, fixed slots** (milk, sugar, which chai; half/full at level 4) | The slot says which question a row answers, never the answer: *dudh* or *nar dudh*, the number of *khun*, which chai are words (dots once known). A plain chai shows an empty slot, as its missing row did before | None new |
+| **Per-row speaker, 👁 and A/En removed; one light bulb** | The bulb shows English for 5/3/2/1 s by level. For rows still to do that's the answer, so it costs the ear star (as A/En did); after the order it's free | None (same cost as before, one way in) |
+| **One speaker per card, read-along** | Hearing it again once the words are dots costs the no-help star, as the row speakers did. The highlight lights the part being said, never a thing in the picture | None |
+| **The grill in two phases** | The rack still has fixed slots, every bowl is out, the plate is graded at the tick. You thread all the skewers before seeing the grill; the count is graded on the plate, not on the board | None |
+| **Chips off the grill** | One decision fewer at the grill (chips vs none). Chips stay in samosa + fry | — |
+| **Level 1 = the smallest round** | One skewer (meat or veg), one cup (their milk, sugar and chai are still said), one maani (which dough: the two bowls are always out), three pantry things among a shelf of look-alikes | None: every level-1 round still turns on a word |
+| **First-time overlay** (dim, spotlight, ghost finger) | It spotlights the next thing to do, which can be the answer. It runs only the first time at a station, which in the story is always the dish's guided first order (Nani glows the answer then anyway); in the Station lab only with "Nani helps" ticked | None in scored play |
+| **The family's words** (daar, ba, hakro/hakri, wadho/wadhi, watana, waari, lai, Muke {x} de, pela … ne poi) | Real Kutchi replaces two English placeholders' jobs: *first … and then* is now said (*pela … ne poi*), and "one" agrees with its noun, a small extra listening cue | Better |
+
+**Still open (unchanged):** the English placeholder decision words (*vegetable, mixed, half, full, chips, green pepper…*), the Chai tray's who-gets-a-cup (the "for" frame *{person} lai* now exists in data and is shown on each cup card; ordering *for* others by name is the next Chai tray pass), serving to the right person.

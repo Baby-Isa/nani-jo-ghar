@@ -1,0 +1,41 @@
+{
+  "_about": "Snap's orchard (docs/modes/snap-design.md D5, D9.2): a Snap-owned sidecar scene, greybox. Nani's fruit trees as a still picture 1.5-2 screens wide (world units on the 1600x900 design; this file is the full 2-screen width and a level uses the first `sceneWidth` screens). Fruit hang in clusters on branch bands. The clusters themselves are data (the `patterns` below), but WHICH fruit hangs WHERE is dealt per round from the seed (js/snap/requests.js layout), so a round's scene can't be learnt from the last one (design 10, loop 3: scene memory). Every spot the layout makes carries {id, kind, size, x, y, w, h, layer: 'branch'}. Size classes are the fruit's true size, never its size on screen. The fruit are the game's existing item sprites (assets/items/fruit/<id>.png) drawn into their box; the evaluator (js/snap/photo.js) only ever sees the boxes. The frame always sits in the middle of the stage, so no fruit is ever under the prints tray (no tray_safe band is needed for a still scene).",
+  "id": "orchard",
+  "name": "Nani's orchard",
+  "w": 3200,
+  "h": 900,
+  "screen": 1600,
+  "sky": "#dcebf2",
+  "ground": {"y": 800, "color": "#c9b98f"},
+  "trunks": [{"x": 360, "w": 70}, {"x": 1180, "w": 80}, {"x": 2020, "w": 70}, {"x": 2860, "w": 80}],
+  "bands": {
+    "_about": "Branch bands (the y of each row of clusters). Count clusters are two fruit tall, so two bands; size clusters are one row, so three.",
+    "count": [{"y": 235}, {"y": 575}],
+    "sizes": [{"y": 165}, {"y": 445}, {"y": 725}]
+  },
+  "margin": 120,
+  "gap": [150, 250],
+  "jitter": 6,
+  "sizes": {"big": 150, "mid": 110, "small": 76},
+  "patterns": {
+    "_about": "Offsets in units of `spacing` [x, y] from the cluster's centre. A count cluster holds one to six fruit of one kind (two kinds when a level interleaves); a size cluster is one kind in three clear sizes, spaced wider so each can be the main subject on its own.",
+    "count": {
+      "spacing": [175, 176],
+      "shapes": {
+        "1": [[[0, 0]]],
+        "2": [[[-0.5, 0], [0.5, 0]], [[0, -0.5], [0, 0.5]]],
+        "3": [[[-1, 0], [0, 0], [1, 0]], [[-0.5, -0.5], [0.5, -0.5], [0, 0.5]]],
+        "4": [[[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]], [[-1, -0.5], [0, -0.5], [1, -0.5], [0, 0.5]]],
+        "5": [[[-1, -0.5], [0, -0.5], [1, -0.5], [-0.5, 0.5], [0.5, 0.5]]],
+        "6": [[[-1, -0.5], [0, -0.5], [1, -0.5], [-1, 0.5], [0, 0.5], [1, 0.5]]]
+      }
+    },
+    "sizes": {"spacing": [235, 176], "shapes": {"3": [[[-1, 0], [0, 0], [1, 0]], [[-1, -0.25], [0, 0.25], [1, -0.25]]]}},
+    "photobomber": {
+      "_about": "Level 3: a bunch of another kind hung close beside a cluster, on either side, so leaving it out ('nar kelo') is a framing choice.",
+      "spacing": [120, 120],
+      "gap": 34,
+      "shapes": {"2": [[[0, -0.5], [0, 0.5]], [[-0.5, 0], [0.5, 0]]]}
+    }
+  }
+}

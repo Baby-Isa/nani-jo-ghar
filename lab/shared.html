@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shared pieces lab</title>
+<style>
+  :root { --bg: #fbf5ea; --ink: #3b2415; --line: #d9bf95; --card: #fff; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 system-ui, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+  h1 { font-size: 20px; margin: 16px 16px 0; }
+  h2 { font-size: 16px; margin: 0 0 8px; }
+  canvas { width: 100%; height: auto; background: #f3ead9; border-radius: 10px; display: block; }
+  label { display: inline-flex; gap: 4px; align-items: center; margin: 2px 8px 2px 0; }
+  pre { white-space: pre-wrap; font-size: 12px; background: #f7f0e3; padding: 8px; border-radius: 8px; max-height: 220px; overflow: auto; }
+  button { font: inherit; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff7e8; }
+</style>
+</head>
+<body>
+<h1>Shared pieces lab (js/shared/)</h1>
+<main>
+  <section>
+    <h2>Overlay-at-anchor sprites</h2>
+    <div>
+      <label>Base <select id="ov-base"></select></label>
+      <label><input type="checkbox" id="ov-mirror"> mirror</label>
+      <label><input type="checkbox" id="ov-anchors" checked> anchors</label>
+    </div>
+    <div id="ov-layers"></div>
+    <canvas id="ov-canvas" width="720" height="480"></canvas>
+    <pre id="ov-out"></pre>
+  </section>
+  <section>
+    <h2>Say moment</h2>
+    <p>The closed set is Cook's chai tray. With no family recordings loaded the mic hides and the pills are live, which is exactly the fallback.</p>
+    <label><input type="checkbox" id="say-gp"> Grandparent mode (✓)</label>
+    <label><input type="checkbox" id="say-live"> pills live from the start (L1)</label>
+    <p><button id="say-go">Start a moment</button></p>
+    <pre id="say-out"></pre>
+  </section>
+  <section>
+    <h2>Relations and stars</h2>
+    <pre id="rel-out"></pre>
+  </section>
+</main>
+<script src="../js/shared/speech.js"></script>
+<script src="../js/shared/rel.js"></script>
+<script src="../js/shared/whichone.js"></script>
+<script src="../js/shared/stars.js"></script>
+<script src="../js/shared/say.js"></script>
+<script src="../js/shared/overlay.js"></script>
+<script>
+(async function () {
+  const j = (u) => fetch(u).then((r) => r.json());
+  const [ovData, relData, starData, find] = await Promise.all([j("../data/shared/overlays.json"), j("../data/relations.json"), j("../data/shared/stars.json"), j("../data/find.json")]);
+  Overlay.load(ovData);
+  Rel.load(relData);
+  Stars.load(starData);
+  // images resolve relative to the repo root
+  for (const b of Object.values(ovData.bases)) if (b.img) b.img = "../" + b.img;
+
+  /* overlay */
+  const baseSel = document.getElementById("ov-base");
+  Object.keys(ovData.bases).forEach((b) => baseSel.add(new Option(b, b)));
+  const layerBox = document.getElementById("ov-layers");
+  const tints = Object.keys(ovData.colours).filter((c) => c[0] !== "_");
+  for (const id of Object.keys(ovData.layers)) {
+    const lid = id === "item:*" ? "item:fru-01" : id;
+    const l = document.createElement("label");
+    l.innerHTML = `<input type="checkbox" data-layer="${lid}"> ${lid} ${ovData.layers[id].tint ? `<select data-tint="${lid}">${tints.map((t) => `<option>${t}</option>`).join("")}</select>` : ""}`;
+    layerBox.appendChild(l);
+  }
+  const cv = document.getElementById("ov-canvas");
+  const ctx = cv.getContext("2d");
+  let images = {};
+  async function drawOv() {
+    let fig = Overlay.figure(baseSel.value, [], { mirror: document.getElementById("ov-mirror").checked });
+    layerBox.querySelectorAll("[data-layer]").forEach((c) => {
+      if (!c.checked) return;
+      const t = layerBox.querySelector(`[data-tint="${c.dataset.layer}"]`);
+      fig = Overlay.wear(fig, c.dataset.layer, t ? { tint: t.value } : {});
+    });
+    images = await Overlay.preload([fig], { images });
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const rect = { x: 40, y: 20, w: 640, h: 440 };
+    const list = Overlay.draw(ctx, fig, rect, { images });
+    if (document.getElementById("ov-anchors").checked) {
+      for (const n of Object.keys(ovData.bases[fig.base].anchors)) {
+        const [x, y] = Overlay.anchorAt(fig, rect, n);
+        ctx.fillStyle = "#c8553d";
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 7);
+        ctx.fill();
+        ctx.fillText(n, x + 8, y + 4);
+      }
+    }
+    document.getElementById("ov-out").textContent = JSON.stringify({ figure: fig, skipped: list.skipped }, null, 1);
+    window.__lab.lastList = list;
+  }
+  document.body.addEventListener("change", (e) => { if (e.target.closest("section")?.contains(cv)) drawOv(); });
+  cv.addEventListener("click", (e) => {
+    const r = cv.getBoundingClientRect();
+    const hit = Overlay.hit(window.__lab.lastList || [], ((e.clientX - r.left) * cv.width) / r.width, ((e.clientY - r.top) * cv.height) / r.height);
+    document.getElementById("ov-out").textContent = "tapped: " + (hit ? hit.id : "nothing");
+  });
+
+  /* say */
+  const out = document.getElementById("say-out");
+  document.getElementById("say-go").onclick = async () => {
+    const res = await Say.moment({
+      choices: ["cook-chai", "cook-dudh", "cook-khun", "cook-paani"],
+      label: (id) => id.replace("cook-", ""),
+      mode: "cook",
+      caption: "Nana wants his chai. Tell the cook what to make.",
+      grandparent: document.getElementById("say-gp").checked,
+      pillsLive: document.getElementById("say-live").checked,
+      character: { miss: (n) => (out.textContent += `miss ${n}\n`), act: (c, v) => (out.textContent += `the cook makes ${c} (${v})\n`) },
+    });
+    out.textContent += JSON.stringify(res) + "\n" + JSON.stringify(Stars.voice([res], "cook")) + "\n";
+    window.__lab.lastSay = res;
+  };
+
+  /* relations and stars */
+  const scene = Rel.scene(find.scenes.bazaar);
+  document.getElementById("rel-out").textContent = [
+    `bazaar: ${Object.keys(scene.spots).length} spots, ${Object.keys(scene.anchors).length} anchors, problems: ${JSON.stringify(Rel.validate(scene))}`,
+    `"in the crate" could be ${Rel.options(scene, { where: ["in", "crate-left"] }).length} spots`,
+    `phrase: ${Rel.phrase({ item: "fru-01", rel: "in", anchor: "crate-left" }, scene).join(" ")}`,
+    `star slots (monsoon, busy, voice): ${Stars.set("monsoon", { busy: true, voice: true }).map((s) => s.name).join(", ")}`,
+    `speech: status ${Speech.status()}`,
+  ].join("\n");
+
+  window.__lab = Object.assign(window.__lab || {}, { ready: true, drawOv });
+  await drawOv();
+})();
+</script>
+</body>
+</html>
