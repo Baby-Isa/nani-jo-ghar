@@ -1,0 +1,1212 @@
+{
+ "_about": "Rough, throwaway placeholder art for the clinic (gpt-image-1 medium sprite sheets, sliced by sources/art/clinic-rough/slice_sheets.py). The real art comes later. `sprites` maps a sprite id to its trimmed transparent webp (paths from the site root, w/h in px). `alias` maps ids used in data/clinic.json and the design (care-*, tool-*, body-*, med-*, Kutchi item names) to a sprite id. `patients` maps a patient kind to its moods (neutral, ouch, giggle, relief, happy, wave); every patient sits on a small stool, front view. Rooms are opaque 1536x1024 backgrounds. Look up: sprites[id] || sprites[alias[id]]; fall back to greybox when absent.",
+ "version": 1,
+ "sprites": {
+  "ali-giggle": {
+   "file": "assets/clinic/rough/patients/ali/giggle.webp",
+   "w": 252,
+   "h": 489,
+   "group": "patients",
+   "sheet": "patient-ali"
+  },
+  "ali-happy": {
+   "file": "assets/clinic/rough/patients/ali/happy.webp",
+   "w": 253,
+   "h": 477,
+   "group": "patients",
+   "sheet": "patient-ali"
+  },
+  "ali-neutral": {
+   "file": "assets/clinic/rough/patients/ali/neutral.webp",
+   "w": 253,
+   "h": 484,
+   "group": "patients",
+   "sheet": "patient-ali"
+  },
+  "ali-ouch": {
+   "file": "assets/clinic/rough/patients/ali/ouch.webp",
+   "w": 269,
+   "h": 477,
+   "group": "patients",
+   "sheet": "patient-ali"
+  },
+  "ali-relief": {
+   "file": "assets/clinic/rough/patients/ali/relief.webp",
+   "w": 251,
+   "h": 476,
+   "group": "patients",
+   "sheet": "patient-ali"
+  },
+  "ali-wave": {
+   "file": "assets/clinic/rough/patients/ali/wave.webp",
+   "w": 312,
+   "h": 484,
+   "group": "patients",
+   "sheet": "patient-ali"
+  },
+  "baby-giggle": {
+   "file": "assets/clinic/rough/patients/baby/giggle.webp",
+   "w": 274,
+   "h": 511,
+   "group": "patients",
+   "sheet": "patient-baby"
+  },
+  "baby-happy": {
+   "file": "assets/clinic/rough/patients/baby/happy.webp",
+   "w": 272,
+   "h": 477,
+   "group": "patients",
+   "sheet": "patient-baby"
+  },
+  "baby-neutral": {
+   "file": "assets/clinic/rough/patients/baby/neutral.webp",
+   "w": 273,
+   "h": 509,
+   "group": "patients",
+   "sheet": "patient-baby"
+  },
+  "baby-ouch": {
+   "file": "assets/clinic/rough/patients/baby/ouch.webp",
+   "w": 275,
+   "h": 511,
+   "group": "patients",
+   "sheet": "patient-baby"
+  },
+  "baby-relief": {
+   "file": "assets/clinic/rough/patients/baby/relief.webp",
+   "w": 271,
+   "h": 477,
+   "group": "patients",
+   "sheet": "patient-baby"
+  },
+  "baby-wave": {
+   "file": "assets/clinic/rough/patients/baby/wave.webp",
+   "w": 272,
+   "h": 477,
+   "group": "patients",
+   "sheet": "patient-baby"
+  },
+  "bandage-blue": {
+   "file": "assets/clinic/rough/items/bandage-blue.webp",
+   "w": 194,
+   "h": 209,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "bandage-green": {
+   "file": "assets/clinic/rough/items/bandage-green.webp",
+   "w": 195,
+   "h": 206,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "bandage-red": {
+   "file": "assets/clinic/rough/items/bandage-red.webp",
+   "w": 196,
+   "h": 209,
+   "group": "items",
+   "sheet": "items-a",
+   "aliases": [
+    "care-bandage"
+   ]
+  },
+  "bandage-yellow": {
+   "file": "assets/clinic/rough/items/bandage-yellow.webp",
+   "w": 195,
+   "h": 206,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "bead": {
+   "file": "assets/clinic/rough/overlays/bead.webp",
+   "w": 198,
+   "h": 196,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "blanket-blue": {
+   "file": "assets/clinic/rough/items/blanket-blue.webp",
+   "w": 208,
+   "h": 177,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "blanket-green": {
+   "file": "assets/clinic/rough/items/blanket-green.webp",
+   "w": 221,
+   "h": 177,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "blanket-red": {
+   "file": "assets/clinic/rough/items/blanket-red.webp",
+   "w": 218,
+   "h": 176,
+   "group": "items",
+   "sheet": "items-c",
+   "aliases": [
+    "care-blanket"
+   ]
+  },
+  "bowl-water": {
+   "file": "assets/clinic/rough/items/bowl-water.webp",
+   "w": 275,
+   "h": 194,
+   "group": "items",
+   "sheet": "items-b"
+  },
+  "boy-giggle": {
+   "file": "assets/clinic/rough/patients/boy/giggle.webp",
+   "w": 268,
+   "h": 481,
+   "group": "patients",
+   "sheet": "patient-boy"
+  },
+  "boy-happy": {
+   "file": "assets/clinic/rough/patients/boy/happy.webp",
+   "w": 267,
+   "h": 486,
+   "group": "patients",
+   "sheet": "patient-boy"
+  },
+  "boy-neutral": {
+   "file": "assets/clinic/rough/patients/boy/neutral.webp",
+   "w": 266,
+   "h": 479,
+   "group": "patients",
+   "sheet": "patient-boy"
+  },
+  "boy-ouch": {
+   "file": "assets/clinic/rough/patients/boy/ouch.webp",
+   "w": 274,
+   "h": 481,
+   "group": "patients",
+   "sheet": "patient-boy"
+  },
+  "boy-relief": {
+   "file": "assets/clinic/rough/patients/boy/relief.webp",
+   "w": 265,
+   "h": 478,
+   "group": "patients",
+   "sheet": "patient-boy"
+  },
+  "boy-wave": {
+   "file": "assets/clinic/rough/patients/boy/wave.webp",
+   "w": 322,
+   "h": 485,
+   "group": "patients",
+   "sheet": "patient-boy"
+  },
+  "bug-jar": {
+   "file": "assets/clinic/rough/items/bug-jar.webp",
+   "w": 158,
+   "h": 218,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "bulb": {
+   "file": "assets/clinic/rough/ui/bulb.webp",
+   "w": 213,
+   "h": 291,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "bump": {
+   "file": "assets/clinic/rough/overlays/bump.webp",
+   "w": 245,
+   "h": 194,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "cast-blue": {
+   "file": "assets/clinic/rough/items/cast-blue.webp",
+   "w": 164,
+   "h": 189,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "cast-pink": {
+   "file": "assets/clinic/rough/items/cast-pink.webp",
+   "w": 165,
+   "h": 188,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "cast-white": {
+   "file": "assets/clinic/rough/items/cast-white.webp",
+   "w": 162,
+   "h": 185,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "cloth": {
+   "file": "assets/clinic/rough/items/cloth.webp",
+   "w": 310,
+   "h": 254,
+   "group": "items",
+   "sheet": "items-e",
+   "aliases": [
+    "care-cloth"
+   ]
+  },
+  "cotton-bud": {
+   "file": "assets/clinic/rough/items/cotton-bud.webp",
+   "w": 284,
+   "h": 296,
+   "group": "items",
+   "sheet": "items-e",
+   "aliases": [
+    "cotton-bud"
+   ]
+  },
+  "cotton-wool": {
+   "file": "assets/clinic/rough/items/cotton-wool.webp",
+   "w": 206,
+   "h": 198,
+   "group": "items",
+   "sheet": "items-c",
+   "aliases": [
+    "cotton"
+   ]
+  },
+  "crutches": {
+   "file": "assets/clinic/rough/items/crutches.webp",
+   "w": 198,
+   "h": 223,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "cup": {
+   "file": "assets/clinic/rough/items/cup.webp",
+   "w": 300,
+   "h": 270,
+   "group": "items",
+   "sheet": "items-e"
+  },
+  "cut": {
+   "file": "assets/clinic/rough/overlays/cut.webp",
+   "w": 214,
+   "h": 134,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "dental-drill": {
+   "file": "assets/clinic/rough/items/dental-drill.webp",
+   "w": 183,
+   "h": 193,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "dental-mirror": {
+   "file": "assets/clinic/rough/items/dental-mirror.webp",
+   "w": 275,
+   "h": 288,
+   "group": "items",
+   "sheet": "items-e"
+  },
+  "dish": {
+   "file": "assets/clinic/rough/ui/dish.webp",
+   "w": 246,
+   "h": 215,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "doctor-bag": {
+   "file": "assets/clinic/rough/items/doctor-bag.webp",
+   "w": 214,
+   "h": 218,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "dropper": {
+   "file": "assets/clinic/rough/items/dropper.webp",
+   "w": 200,
+   "h": 205,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "drops-blue": {
+   "file": "assets/clinic/rough/items/drops-blue.webp",
+   "w": 145,
+   "h": 240,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "drops-green": {
+   "file": "assets/clinic/rough/items/drops-green.webp",
+   "w": 144,
+   "h": 239,
+   "group": "items",
+   "sheet": "items-a",
+   "aliases": [
+    "care-drops"
+   ]
+  },
+  "drops-red": {
+   "file": "assets/clinic/rough/items/drops-red.webp",
+   "w": 143,
+   "h": 239,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "drops-yellow": {
+   "file": "assets/clinic/rough/items/drops-yellow.webp",
+   "w": 144,
+   "h": 239,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "eye-chart": {
+   "file": "assets/clinic/rough/ui/eye-chart.webp",
+   "w": 238,
+   "h": 281,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "eye-patch-bandhani": {
+   "file": "assets/clinic/rough/items/eye-patch-bandhani.webp",
+   "w": 208,
+   "h": 156,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "eye-patch-pirate": {
+   "file": "assets/clinic/rough/items/eye-patch-pirate.webp",
+   "w": 212,
+   "h": 142,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "fan": {
+   "file": "assets/clinic/rough/items/fan.webp",
+   "w": 245,
+   "h": 191,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "filling": {
+   "file": "assets/clinic/rough/items/filling.webp",
+   "w": 207,
+   "h": 171,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "foot-basin": {
+   "file": "assets/clinic/rough/items/foot-basin.webp",
+   "w": 296,
+   "h": 191,
+   "group": "items",
+   "sheet": "items-b",
+   "aliases": [
+    "tub"
+   ]
+  },
+  "girl-giggle": {
+   "file": "assets/clinic/rough/patients/girl/giggle.webp",
+   "w": 266,
+   "h": 476,
+   "group": "patients",
+   "sheet": "patient-girl"
+  },
+  "girl-happy": {
+   "file": "assets/clinic/rough/patients/girl/happy.webp",
+   "w": 266,
+   "h": 474,
+   "group": "patients",
+   "sheet": "patient-girl"
+  },
+  "girl-neutral": {
+   "file": "assets/clinic/rough/patients/girl/neutral.webp",
+   "w": 266,
+   "h": 478,
+   "group": "patients",
+   "sheet": "patient-girl"
+  },
+  "girl-ouch": {
+   "file": "assets/clinic/rough/patients/girl/ouch.webp",
+   "w": 273,
+   "h": 479,
+   "group": "patients",
+   "sheet": "patient-girl"
+  },
+  "girl-relief": {
+   "file": "assets/clinic/rough/patients/girl/relief.webp",
+   "w": 262,
+   "h": 471,
+   "group": "patients",
+   "sheet": "patient-girl"
+  },
+  "girl-wave": {
+   "file": "assets/clinic/rough/patients/girl/wave.webp",
+   "w": 329,
+   "h": 477,
+   "group": "patients",
+   "sheet": "patient-girl"
+  },
+  "honey-jar": {
+   "file": "assets/clinic/rough/items/honey-jar.webp",
+   "w": 205,
+   "h": 217,
+   "group": "items",
+   "sheet": "items-d",
+   "aliases": [
+    "med-honey"
+   ]
+  },
+  "hot-water-bottle": {
+   "file": "assets/clinic/rough/items/hot-water-bottle.webp",
+   "w": 175,
+   "h": 216,
+   "group": "items",
+   "sheet": "items-c",
+   "aliases": [
+    "care-bottle"
+   ]
+  },
+  "ice-pack": {
+   "file": "assets/clinic/rough/items/ice-pack.webp",
+   "w": 156,
+   "h": 151,
+   "group": "items",
+   "sheet": "items-b",
+   "aliases": [
+    "care-ice"
+   ]
+  },
+  "jug-water": {
+   "file": "assets/clinic/rough/items/jug-water.webp",
+   "w": 277,
+   "h": 282,
+   "group": "items",
+   "sheet": "items-e",
+   "aliases": [
+    "paani",
+    "jug"
+   ]
+  },
+  "lemon": {
+   "file": "assets/clinic/rough/items/lemon.webp",
+   "w": 174,
+   "h": 183,
+   "group": "items",
+   "sheet": "items-b",
+   "aliases": [
+    "limu"
+   ]
+  },
+  "lollipop": {
+   "file": "assets/clinic/rough/items/lollipop.webp",
+   "w": 182,
+   "h": 230,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "lollipop-red": {
+   "file": "assets/clinic/rough/items/lollipop-red.webp",
+   "w": 236,
+   "h": 293,
+   "group": "items",
+   "sheet": "items-e"
+  },
+  "ma-giggle": {
+   "file": "assets/clinic/rough/patients/ma/giggle.webp",
+   "w": 248,
+   "h": 495,
+   "group": "patients",
+   "sheet": "patient-ma"
+  },
+  "ma-happy": {
+   "file": "assets/clinic/rough/patients/ma/happy.webp",
+   "w": 252,
+   "h": 491,
+   "group": "patients",
+   "sheet": "patient-ma"
+  },
+  "ma-neutral": {
+   "file": "assets/clinic/rough/patients/ma/neutral.webp",
+   "w": 248,
+   "h": 495,
+   "group": "patients",
+   "sheet": "patient-ma"
+  },
+  "ma-ouch": {
+   "file": "assets/clinic/rough/patients/ma/ouch.webp",
+   "w": 265,
+   "h": 498,
+   "group": "patients",
+   "sheet": "patient-ma"
+  },
+  "ma-relief": {
+   "file": "assets/clinic/rough/patients/ma/relief.webp",
+   "w": 255,
+   "h": 487,
+   "group": "patients",
+   "sheet": "patient-ma"
+  },
+  "ma-wave": {
+   "file": "assets/clinic/rough/patients/ma/wave.webp",
+   "w": 311,
+   "h": 489,
+   "group": "patients",
+   "sheet": "patient-ma"
+  },
+  "marble": {
+   "file": "assets/clinic/rough/overlays/marble.webp",
+   "w": 232,
+   "h": 240,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "med-blue": {
+   "file": "assets/clinic/rough/items/med-blue.webp",
+   "w": 151,
+   "h": 223,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "med-green": {
+   "file": "assets/clinic/rough/items/med-green.webp",
+   "w": 149,
+   "h": 224,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "med-red": {
+   "file": "assets/clinic/rough/items/med-red.webp",
+   "w": 150,
+   "h": 226,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "nana-giggle": {
+   "file": "assets/clinic/rough/patients/nana/giggle.webp",
+   "w": 294,
+   "h": 488,
+   "group": "patients",
+   "sheet": "patient-nana"
+  },
+  "nana-happy": {
+   "file": "assets/clinic/rough/patients/nana/happy.webp",
+   "w": 294,
+   "h": 479,
+   "group": "patients",
+   "sheet": "patient-nana"
+  },
+  "nana-neutral": {
+   "file": "assets/clinic/rough/patients/nana/neutral.webp",
+   "w": 275,
+   "h": 489,
+   "group": "patients",
+   "sheet": "patient-nana"
+  },
+  "nana-ouch": {
+   "file": "assets/clinic/rough/patients/nana/ouch.webp",
+   "w": 306,
+   "h": 487,
+   "group": "patients",
+   "sheet": "patient-nana"
+  },
+  "nana-relief": {
+   "file": "assets/clinic/rough/patients/nana/relief.webp",
+   "w": 278,
+   "h": 474,
+   "group": "patients",
+   "sheet": "patient-nana"
+  },
+  "nana-wave": {
+   "file": "assets/clinic/rough/patients/nana/wave.webp",
+   "w": 351,
+   "h": 476,
+   "group": "patients",
+   "sheet": "patient-nana"
+  },
+  "needle": {
+   "file": "assets/clinic/rough/items/needle.webp",
+   "w": 200,
+   "h": 206,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "old-man-giggle": {
+   "file": "assets/clinic/rough/patients/old-man/giggle.webp",
+   "w": 257,
+   "h": 463,
+   "group": "patients",
+   "sheet": "patient-old-man"
+  },
+  "old-man-happy": {
+   "file": "assets/clinic/rough/patients/old-man/happy.webp",
+   "w": 256,
+   "h": 465,
+   "group": "patients",
+   "sheet": "patient-old-man"
+  },
+  "old-man-neutral": {
+   "file": "assets/clinic/rough/patients/old-man/neutral.webp",
+   "w": 252,
+   "h": 464,
+   "group": "patients",
+   "sheet": "patient-old-man"
+  },
+  "old-man-ouch": {
+   "file": "assets/clinic/rough/patients/old-man/ouch.webp",
+   "w": 278,
+   "h": 462,
+   "group": "patients",
+   "sheet": "patient-old-man"
+  },
+  "old-man-relief": {
+   "file": "assets/clinic/rough/patients/old-man/relief.webp",
+   "w": 255,
+   "h": 463,
+   "group": "patients",
+   "sheet": "patient-old-man"
+  },
+  "old-man-wave": {
+   "file": "assets/clinic/rough/patients/old-man/wave.webp",
+   "w": 336,
+   "h": 467,
+   "group": "patients",
+   "sheet": "patient-old-man"
+  },
+  "old-woman-giggle": {
+   "file": "assets/clinic/rough/patients/old-woman/giggle.webp",
+   "w": 276,
+   "h": 482,
+   "group": "patients",
+   "sheet": "patient-old-woman"
+  },
+  "old-woman-happy": {
+   "file": "assets/clinic/rough/patients/old-woman/happy.webp",
+   "w": 320,
+   "h": 493,
+   "group": "patients",
+   "sheet": "patient-old-woman"
+  },
+  "old-woman-neutral": {
+   "file": "assets/clinic/rough/patients/old-woman/neutral.webp",
+   "w": 252,
+   "h": 482,
+   "group": "patients",
+   "sheet": "patient-old-woman"
+  },
+  "old-woman-ouch": {
+   "file": "assets/clinic/rough/patients/old-woman/ouch.webp",
+   "w": 321,
+   "h": 483,
+   "group": "patients",
+   "sheet": "patient-old-woman"
+  },
+  "old-woman-relief": {
+   "file": "assets/clinic/rough/patients/old-woman/relief.webp",
+   "w": 284,
+   "h": 489,
+   "group": "patients",
+   "sheet": "patient-old-woman"
+  },
+  "old-woman-wave": {
+   "file": "assets/clinic/rough/patients/old-woman/wave.webp",
+   "w": 328,
+   "h": 497,
+   "group": "patients",
+   "sheet": "patient-old-woman"
+  },
+  "part-ear": {
+   "file": "assets/clinic/rough/parts/part-ear.webp",
+   "w": 208,
+   "h": 258,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-ear"
+   ]
+  },
+  "part-eye": {
+   "file": "assets/clinic/rough/parts/part-eye.webp",
+   "w": 255,
+   "h": 250,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-eye"
+   ]
+  },
+  "part-foot": {
+   "file": "assets/clinic/rough/parts/part-foot.webp",
+   "w": 209,
+   "h": 276,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-foot",
+    "body-toe"
+   ]
+  },
+  "part-forearm": {
+   "file": "assets/clinic/rough/parts/part-forearm.webp",
+   "w": 298,
+   "h": 132,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-arm"
+   ]
+  },
+  "part-hand": {
+   "file": "assets/clinic/rough/parts/part-hand.webp",
+   "w": 259,
+   "h": 282,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-hand",
+    "body-finger"
+   ]
+  },
+  "part-head": {
+   "file": "assets/clinic/rough/parts/part-head.webp",
+   "w": 289,
+   "h": 286,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-head"
+   ]
+  },
+  "part-knee": {
+   "file": "assets/clinic/rough/parts/part-knee.webp",
+   "w": 189,
+   "h": 238,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-knee"
+   ]
+  },
+  "part-mouth": {
+   "file": "assets/clinic/rough/parts/part-mouth.webp",
+   "w": 286,
+   "h": 221,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "body-mouth",
+    "body-tooth"
+   ]
+  },
+  "part-tongue": {
+   "file": "assets/clinic/rough/parts/part-tongue.webp",
+   "w": 263,
+   "h": 237,
+   "group": "parts",
+   "sheet": "parts-a",
+   "aliases": [
+    "tongue"
+   ]
+  },
+  "pillow": {
+   "file": "assets/clinic/rough/items/pillow.webp",
+   "w": 215,
+   "h": 160,
+   "group": "items",
+   "sheet": "items-c",
+   "aliases": [
+    "care-pillow"
+   ]
+  },
+  "plaster": {
+   "file": "assets/clinic/rough/items/plaster.webp",
+   "w": 217,
+   "h": 140,
+   "group": "items",
+   "sheet": "items-a",
+   "aliases": [
+    "care-plaster"
+   ]
+  },
+  "plaster-cat": {
+   "file": "assets/clinic/rough/items/plaster-cat.webp",
+   "w": 214,
+   "h": 143,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "plaster-hearts": {
+   "file": "assets/clinic/rough/items/plaster-hearts.webp",
+   "w": 216,
+   "h": 143,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "plaster-stars": {
+   "file": "assets/clinic/rough/items/plaster-stars.webp",
+   "w": 214,
+   "h": 140,
+   "group": "items",
+   "sheet": "items-a"
+  },
+  "pointer": {
+   "file": "assets/clinic/rough/items/pointer.webp",
+   "w": 205,
+   "h": 204,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "reflex-hammer": {
+   "file": "assets/clinic/rough/items/reflex-hammer.webp",
+   "w": 200,
+   "h": 180,
+   "group": "items",
+   "sheet": "items-a",
+   "aliases": [
+    "hammer"
+   ]
+  },
+  "room-exam": {
+   "file": "assets/clinic/rough/rooms/exam.webp",
+   "w": 1536,
+   "h": 1024,
+   "group": "rooms",
+   "sheet": "room-exam"
+  },
+  "room-pharmacy": {
+   "file": "assets/clinic/rough/rooms/pharmacy.webp",
+   "w": 1536,
+   "h": 1024,
+   "group": "rooms",
+   "sheet": "room-pharmacy"
+  },
+  "room-waiting": {
+   "file": "assets/clinic/rough/rooms/waiting.webp",
+   "w": 1536,
+   "h": 1024,
+   "group": "rooms",
+   "sheet": "room-waiting"
+  },
+  "salt-pot": {
+   "file": "assets/clinic/rough/items/salt-pot.webp",
+   "w": 251,
+   "h": 327,
+   "group": "items",
+   "sheet": "items-e",
+   "aliases": [
+    "loon"
+   ]
+  },
+  "scrape": {
+   "file": "assets/clinic/rough/overlays/scrape.webp",
+   "w": 209,
+   "h": 179,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "seed": {
+   "file": "assets/clinic/rough/overlays/seed.webp",
+   "w": 172,
+   "h": 190,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "soap": {
+   "file": "assets/clinic/rough/items/soap.webp",
+   "w": 206,
+   "h": 175,
+   "group": "items",
+   "sheet": "items-d"
+  },
+  "sore-swirl": {
+   "file": "assets/clinic/rough/overlays/sore-swirl.webp",
+   "w": 278,
+   "h": 261,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "star": {
+   "file": "assets/clinic/rough/ui/star.webp",
+   "w": 275,
+   "h": 262,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "stethoscope": {
+   "file": "assets/clinic/rough/items/stethoscope.webp",
+   "w": 225,
+   "h": 176,
+   "group": "items",
+   "sheet": "items-a",
+   "aliases": [
+    "tool-stethoscope"
+   ]
+  },
+  "sugar-bug": {
+   "file": "assets/clinic/rough/overlays/sugar-bug.webp",
+   "w": 221,
+   "h": 246,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "sugar-pot": {
+   "file": "assets/clinic/rough/items/sugar-pot.webp",
+   "w": 224,
+   "h": 286,
+   "group": "items",
+   "sheet": "items-e",
+   "aliases": [
+    "khun"
+   ]
+  },
+  "syringe": {
+   "file": "assets/clinic/rough/items/syringe.webp",
+   "w": 253,
+   "h": 259,
+   "group": "items",
+   "sheet": "items-b"
+  },
+  "syrup": {
+   "file": "assets/clinic/rough/items/syrup.webp",
+   "w": 144,
+   "h": 230,
+   "group": "items",
+   "sheet": "items-d",
+   "aliases": [
+    "med-syrup"
+   ]
+  },
+  "tally-frame": {
+   "file": "assets/clinic/rough/ui/tally-frame.webp",
+   "w": 303,
+   "h": 232,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "thermometer": {
+   "file": "assets/clinic/rough/items/thermometer.webp",
+   "w": 235,
+   "h": 160,
+   "group": "items",
+   "sheet": "items-a",
+   "aliases": [
+    "tool-strip"
+   ]
+  },
+  "thorn": {
+   "file": "assets/clinic/rough/ui/thorn.webp",
+   "w": 206,
+   "h": 202,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "thread-blue": {
+   "file": "assets/clinic/rough/items/thread-blue.webp",
+   "w": 158,
+   "h": 199,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "thread-green": {
+   "file": "assets/clinic/rough/items/thread-green.webp",
+   "w": 154,
+   "h": 199,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "thread-red": {
+   "file": "assets/clinic/rough/items/thread-red.webp",
+   "w": 156,
+   "h": 199,
+   "group": "items",
+   "sheet": "items-c"
+  },
+  "tick": {
+   "file": "assets/clinic/rough/ui/tick.webp",
+   "w": 287,
+   "h": 234,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "tiny-sock": {
+   "file": "assets/clinic/rough/overlays/tiny-sock.webp",
+   "w": 206,
+   "h": 255,
+   "group": "overlays",
+   "sheet": "overlays"
+  },
+  "tissues": {
+   "file": "assets/clinic/rough/items/tissues.webp",
+   "w": 249,
+   "h": 241,
+   "group": "items",
+   "sheet": "items-b",
+   "aliases": [
+    "care-tissue"
+   ]
+  },
+  "toothbrush": {
+   "file": "assets/clinic/rough/items/toothbrush.webp",
+   "w": 200,
+   "h": 235,
+   "group": "items",
+   "sheet": "items-b"
+  },
+  "toothpaste": {
+   "file": "assets/clinic/rough/items/toothpaste.webp",
+   "w": 150,
+   "h": 250,
+   "group": "items",
+   "sheet": "items-b"
+  },
+  "torch": {
+   "file": "assets/clinic/rough/items/torch.webp",
+   "w": 200,
+   "h": 169,
+   "group": "items",
+   "sheet": "items-a",
+   "aliases": [
+    "tool-torch"
+   ]
+  },
+  "towel": {
+   "file": "assets/clinic/rough/items/towel.webp",
+   "w": 264,
+   "h": 215,
+   "group": "items",
+   "sheet": "items-b"
+  },
+  "tray-3": {
+   "file": "assets/clinic/rough/ui/tray-3.webp",
+   "w": 293,
+   "h": 205,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "tray-4": {
+   "file": "assets/clinic/rough/ui/tray-4.webp",
+   "w": 307,
+   "h": 204,
+   "group": "ui",
+   "sheet": "ui"
+  },
+  "tweezers": {
+   "file": "assets/clinic/rough/items/tweezers.webp",
+   "w": 284,
+   "h": 266,
+   "group": "items",
+   "sheet": "items-e"
+  },
+  "xray-plate": {
+   "file": "assets/clinic/rough/items/xray-plate.webp",
+   "w": 203,
+   "h": 219,
+   "group": "items",
+   "sheet": "items-c"
+  }
+ },
+ "alias": {
+  "body-arm": "part-forearm",
+  "body-ear": "part-ear",
+  "body-eye": "part-eye",
+  "body-finger": "part-hand",
+  "body-foot": "part-foot",
+  "body-hand": "part-hand",
+  "body-head": "part-head",
+  "body-knee": "part-knee",
+  "body-mouth": "part-mouth",
+  "body-toe": "part-foot",
+  "body-tooth": "part-mouth",
+  "care-bandage": "bandage-red",
+  "care-blanket": "blanket-red",
+  "care-bottle": "hot-water-bottle",
+  "care-cloth": "cloth",
+  "care-drops": "drops-green",
+  "care-ice": "ice-pack",
+  "care-pillow": "pillow",
+  "care-plaster": "plaster",
+  "care-tissue": "tissues",
+  "cotton": "cotton-wool",
+  "cotton-bud": "cotton-bud",
+  "hammer": "reflex-hammer",
+  "jug": "jug-water",
+  "khun": "sugar-pot",
+  "limu": "lemon",
+  "loon": "salt-pot",
+  "med-honey": "honey-jar",
+  "med-syrup": "syrup",
+  "paani": "jug-water",
+  "tongue": "part-tongue",
+  "tool-stethoscope": "stethoscope",
+  "tool-strip": "thermometer",
+  "tool-torch": "torch",
+  "tub": "foot-basin"
+ },
+ "patients": {
+  "girl": {
+   "neutral": "girl-neutral",
+   "ouch": "girl-ouch",
+   "giggle": "girl-giggle",
+   "relief": "girl-relief",
+   "happy": "girl-happy",
+   "wave": "girl-wave"
+  },
+  "boy": {
+   "neutral": "boy-neutral",
+   "ouch": "boy-ouch",
+   "giggle": "boy-giggle",
+   "relief": "boy-relief",
+   "happy": "boy-happy",
+   "wave": "boy-wave"
+  },
+  "old-man": {
+   "neutral": "old-man-neutral",
+   "ouch": "old-man-ouch",
+   "giggle": "old-man-giggle",
+   "relief": "old-man-relief",
+   "happy": "old-man-happy",
+   "wave": "old-man-wave"
+  },
+  "old-woman": {
+   "neutral": "old-woman-neutral",
+   "ouch": "old-woman-ouch",
+   "giggle": "old-woman-giggle",
+   "relief": "old-woman-relief",
+   "happy": "old-woman-happy",
+   "wave": "old-woman-wave"
+  },
+  "baby": {
+   "neutral": "baby-neutral",
+   "ouch": "baby-ouch",
+   "giggle": "baby-giggle",
+   "relief": "baby-relief",
+   "happy": "baby-happy",
+   "wave": "baby-wave"
+  },
+  "nana": {
+   "neutral": "nana-neutral",
+   "ouch": "nana-ouch",
+   "giggle": "nana-giggle",
+   "relief": "nana-relief",
+   "happy": "nana-happy",
+   "wave": "nana-wave"
+  },
+  "ma": {
+   "neutral": "ma-neutral",
+   "ouch": "ma-ouch",
+   "giggle": "ma-giggle",
+   "relief": "ma-relief",
+   "happy": "ma-happy",
+   "wave": "ma-wave"
+  },
+  "ali": {
+   "neutral": "ali-neutral",
+   "ouch": "ali-ouch",
+   "giggle": "ali-giggle",
+   "relief": "ali-relief",
+   "happy": "ali-happy",
+   "wave": "ali-wave"
+  }
+ },
+ "rooms": {
+  "waiting": "room-waiting",
+  "exam": "room-exam",
+  "pharmacy": "room-pharmacy"
+ }
+}
