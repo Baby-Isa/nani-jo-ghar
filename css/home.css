@@ -1,0 +1,177 @@
+/* Nani's house: the app shell's home screen (index.html, js/home.js).
+   A placeholder house of doors until the world map (phase C). */
+:root {
+  --ink: #3b2a20; --muted: #7a6558; --cream: #fffaf2; --paper: #f3e7d3;
+  --wall: #f4dcb6; --wall2: #ecd0a4; --roof: #b5523b; --roof2: #93402d; --wood: #7a4a2a; --wood2: #5d3620;
+  --accent: #b5523b;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body.home {
+  background: linear-gradient(#cfe6ef, #e8efe0 55%, var(--paper) 56%);
+  color: var(--ink);
+  font-family: "Nunito", system-ui, sans-serif;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+}
+body.is-loading #house, body.is-loading #topbar { visibility: hidden; }
+button { font: inherit; color: inherit; }
+
+/* ---------- top bar: who's playing (left), the name, grown-ups (right) ---------- */
+#topbar {
+  flex: none; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 8px 12px 0;
+}
+#topbar h1 { margin: 0; font: 800 clamp(20px, 3.4vw, 34px)/1 "Baloo 2", system-ui, sans-serif; color: var(--roof2); letter-spacing: .5px; }
+#who {
+  display: flex; align-items: center; gap: 8px; min-height: 44px;
+  padding: 4px 14px 4px 4px; border: none; border-radius: 999px;
+  background: var(--cream); box-shadow: 0 2px 8px rgba(60, 35, 20, .18); cursor: pointer;
+}
+.dot {
+  width: 36px; height: 36px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  color: #fff; font: 800 18px/1 "Baloo 2", system-ui, sans-serif;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .15);
+}
+#who .nm { font-weight: 800; max-width: 30vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#grownups {
+  position: relative; width: 44px; height: 44px; border: none; border-radius: 50%;
+  background: transparent; cursor: pointer; opacity: .55; touch-action: none;
+}
+#grownups .cog { font-size: 24px; line-height: 44px; }
+#grownups svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+#grownups .ring { fill: none; stroke: var(--roof); stroke-width: 3; stroke-dasharray: 100; stroke-dashoffset: 100; }
+#grownups.holding { opacity: 1; }
+#grownups.holding .ring { stroke-dashoffset: 0; transition: stroke-dashoffset 1.5s linear; }
+
+/* ---------- the house ---------- */
+#house {
+  flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 4px 12px 0;
+}
+.roof {
+  flex: none; width: min(96%, 1060px); height: clamp(56px, 15vh, 140px);
+  background: linear-gradient(var(--roof), var(--roof2));
+  clip-path: polygon(6% 100%, 50% 0, 94% 100%);
+  display: grid; place-items: end center;
+  position: relative;
+}
+.window {
+  height: 62%; aspect-ratio: 1; margin-bottom: 3px;
+  border-radius: 50%; overflow: hidden;
+  background: #f7efe0; border: 3px solid var(--wood);
+}
+.window img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.wall {
+  flex: none; width: min(92%, 980px);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(122, 74, 42, .08) 22px 24px),
+    linear-gradient(var(--wall), var(--wall2));
+  border-left: 6px solid #d9b98b; border-right: 6px solid #d9b98b;
+  padding: clamp(8px, 2.5vh, 26px) clamp(8px, 2vw, 26px) 0;
+  display: flex; flex-direction: column; gap: clamp(8px, 2vh, 20px);
+}
+.step { flex: none; width: min(96%, 1040px); height: 10px; background: #c9a67a; border-radius: 3px; margin-bottom: 8px; }
+
+.doors { display: flex; justify-content: center; align-items: flex-end; gap: clamp(10px, 3vw, 40px); }
+.door {
+  flex: 0 1 220px; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  text-decoration: none; color: var(--ink);
+  -webkit-touch-callout: none;
+}
+.door .arch {
+  position: relative; display: block; width: 100%;
+  /* sized by the height left over, so three doors always fit a phone held sideways */
+  height: clamp(120px, calc(100vh - 232px), 360px);
+  border: clamp(5px, 1vw, 9px) solid var(--wood);
+  border-bottom: none;
+  border-radius: 999px 999px 0 0;
+  overflow: hidden; background: #e9d8bd;
+  box-shadow: inset 0 0 0 3px var(--wood2), 0 6px 0 var(--wood2);
+  transition: transform .12s ease-out;
+}
+.door .arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.door:active .arch, .door:focus-visible .arch { transform: translateY(-3px) scale(1.02); }
+.door:focus-visible { outline: none; }
+.door:focus-visible .label { outline: 3px solid var(--accent); }
+.door .label {
+  font: 800 clamp(15px, 2.1vw, 22px)/1.1 "Baloo 2", system-ui, sans-serif;
+  background: var(--cream); border-radius: 10px; padding: 4px 12px 2px;
+  box-shadow: 0 2px 6px rgba(60, 35, 20, .15);
+  text-align: center; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+  margin-top: 6px;
+}
+.doors.soon { flex-wrap: wrap; padding-bottom: 12px; }
+.doors.soon .door { flex: 0 1 150px; }
+.doors.soon .arch { height: clamp(100px, 22vh, 190px); filter: saturate(.35) brightness(.95); }
+.doors.soon .label { font-size: clamp(13px, 1.6vw, 17px); }
+.ribbon {
+  position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
+  background: var(--roof); color: #fff; font-weight: 800; font-size: 12px; white-space: nowrap;
+  padding: 3px 10px; border-radius: 999px;
+}
+/* upright tablets and phones: the doors grow taller */
+@media (orientation: portrait) {
+  .door .arch { height: clamp(140px, 34vh, 380px); }
+}
+
+#notice {
+  position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%);
+  margin: 0; padding: 6px 14px; border-radius: 999px;
+  background: var(--cream); color: var(--muted); font-size: 13px; box-shadow: 0 2px 8px rgba(60, 35, 20, .18);
+}
+
+/* ---------- sheets: who's playing, grown-ups ---------- */
+.sheet {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(59, 42, 32, .45);
+  display: grid; place-items: center; padding: 12px;
+}
+.sheet[hidden] { display: none; }
+.sheet .card {
+  width: min(680px, 100%); max-height: 100%; overflow-y: auto;
+  background: var(--cream); border-radius: 20px; padding: 16px 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .3);
+}
+.sheet h2 { margin: 0 0 10px; font: 800 26px/1.1 "Baloo 2", system-ui, sans-serif; color: var(--roof2); }
+.sheet h3 { margin: 16px 0 4px; font-size: 17px; }
+.tiles { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.tile {
+  width: 110px; padding: 10px 6px; border: 3px solid transparent; border-radius: 16px;
+  background: #f5ebdc; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.tile.on { border-color: var(--accent); }
+.tile .dot { width: 64px; height: 64px; font-size: 30px; }
+.tile .dot.plus { background: #cdbba2; }
+.tile .nm { font-weight: 800; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.add { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.add[hidden] { display: none; }
+.add input, .prow input {
+  font: 700 20px/1.2 "Nunito", system-ui, sans-serif; padding: 8px 12px; border-radius: 10px;
+  border: 2px solid #d9c3a3; background: #fff; width: min(320px, 100%); -webkit-user-select: text; user-select: text;
+}
+.for-grownups { margin: 0; color: var(--muted); font-size: 14px; }
+.swatches { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.swatches button { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px #d9c3a3; cursor: pointer; padding: 0; }
+.swatches button[aria-checked="true"] { box-shadow: 0 0 0 3px var(--ink); }
+.swatches.small button { width: 24px; height: 24px; border-width: 2px; }
+.row { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.row.wrap { flex-wrap: wrap; }
+.btn {
+  border: none; border-radius: 12px; padding: 10px 18px; min-height: 44px;
+  background: #eadcc6; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center;
+}
+.btn.primary { background: var(--accent); color: #fff; }
+.btn.small { padding: 6px 10px; min-height: 36px; font-size: 14px; }
+.prow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px solid #eadcc6; }
+.prow input { width: 170px; font-size: 17px; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.sheet a { color: var(--roof2); }

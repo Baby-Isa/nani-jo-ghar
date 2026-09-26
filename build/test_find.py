@@ -371,7 +371,8 @@ def open_page(pw, vp, speed, save=None):
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.goto(f"http://127.0.0.1:{PORT}/find.html?speed={speed}")
     if save is not None:
-        page.evaluate("(s) => localStorage.setItem('njg-cook-v1', JSON.stringify(s))", save)
+        # a device from before the one save: js/shared/save.js migrates the old key on the next load
+        page.evaluate("(s) => { localStorage.clear(); localStorage.setItem('njg-cook-v1', JSON.stringify(s)); }", save)
     else:
         page.evaluate("localStorage.clear()")
     page.goto(f"http://127.0.0.1:{PORT}/find.html?speed={speed}")
