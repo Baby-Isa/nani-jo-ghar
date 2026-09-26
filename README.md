@@ -229,6 +229,11 @@ user gesture.
   `build/slice_chatgpt_batch3.sh` re-runs batch 3's cook sheets (with
   `build/cut_glow.py` for the gas flames and `build/fit_sprites.py` for
   sizes);
+  `build/slice_chatgpt_batch3_dump3.sh` re-runs batch 3's third dump
+  (`build/cut_boxes.py` cuts off-grid poses by hand-set boxes,
+  `build/cut_counter_moods.py` cuts the cook counter moods into
+  `assets/cook/characters/next/`, `build/clinic_final_art.py` adds the
+  clinic's final art to `data/clinic/rough-art.json` beside the rough);
   `build/contact_sheet.py` makes the black/white QA contact sheets;
   `build/bg_align_check.py` checks a background's lighting states line up.
 - `build/lines_needing_family.py` — writes

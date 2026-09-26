@@ -3,7 +3,8 @@
  "version": 2,
  "count": {
   "sprites": 258,
-  "aliases": 100
+  "aliases": 100,
+  "final": 59
  },
  "sprites": {
   "album": {
@@ -2774,6 +2775,478 @@
    "aliases": [
     "xray"
    ]
+  },
+  "bg-clinic-waiting-e": {
+   "file": "assets/clinic/rooms/bg-clinic-waiting-e-v1.webp",
+   "w": 1536,
+   "h": 1024,
+   "group": "final-rooms",
+   "sheet": "bg-clinic-waiting-e-v1",
+   "final": true
+  },
+  "bg-clinic-room-e": {
+   "file": "assets/clinic/rooms/bg-clinic-room-e-v1.webp",
+   "w": 1536,
+   "h": 1024,
+   "group": "final-rooms",
+   "sheet": "bg-clinic-room-e-v1",
+   "final": true
+  },
+  "bg-clinic-pharmacy-e": {
+   "file": "assets/clinic/rooms/bg-clinic-pharmacy-e-v1.webp",
+   "w": 1536,
+   "h": 1024,
+   "group": "final-rooms",
+   "sheet": "bg-clinic-pharmacy-e-v1",
+   "final": true
+  },
+  "nana-sit": {
+   "file": "assets/clinic/patients/nana/nana-sit.webp",
+   "w": 262,
+   "h": 508,
+   "group": "final-patients",
+   "sheet": "char-nana-hurts-v1",
+   "final": true
+  },
+  "nana-sit-head": {
+   "file": "assets/clinic/patients/nana/nana-sit-head.webp",
+   "w": 279,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-nana-hurts-v1",
+   "final": true
+  },
+  "nana-sit-tummy": {
+   "file": "assets/clinic/patients/nana/nana-sit-tummy.webp",
+   "w": 278,
+   "h": 510,
+   "group": "final-patients",
+   "sheet": "char-nana-hurts-v1",
+   "final": true
+  },
+  "nana-sit-knee": {
+   "file": "assets/clinic/patients/nana/nana-sit-knee.webp",
+   "w": 253,
+   "h": 498,
+   "group": "final-patients",
+   "sheet": "char-nana-hurts-v1",
+   "final": true
+  },
+  "nana-feeling-happy": {
+   "file": "assets/characters/nana/nana-feeling-happy.png",
+   "w": 377,
+   "h": 341,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-sad": {
+   "file": "assets/characters/nana/nana-feeling-sad.png",
+   "w": 376,
+   "h": 334,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-scared": {
+   "file": "assets/characters/nana/nana-feeling-scared.png",
+   "w": 384,
+   "h": 337,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-poorly": {
+   "file": "assets/characters/nana/nana-feeling-poorly.png",
+   "w": 381,
+   "h": 340,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-tired": {
+   "file": "assets/characters/nana/nana-feeling-tired.png",
+   "w": 384,
+   "h": 337,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-better": {
+   "file": "assets/characters/nana/nana-feeling-better.png",
+   "w": 370,
+   "h": 338,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-ouch": {
+   "file": "assets/characters/nana/nana-feeling-ouch.png",
+   "w": 383,
+   "h": 334,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-sneeze": {
+   "file": "assets/characters/nana/nana-feeling-sneeze.png",
+   "w": 386,
+   "h": 335,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-hot": {
+   "file": "assets/characters/nana/nana-feeling-hot.png",
+   "w": 416,
+   "h": 349,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-cold": {
+   "file": "assets/characters/nana/nana-feeling-cold.png",
+   "w": 329,
+   "h": 342,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-notme": {
+   "file": "assets/characters/nana/nana-feeling-notme.png",
+   "w": 411,
+   "h": 346,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "nana-feeling-caught": {
+   "file": "assets/characters/nana/nana-feeling-caught.png",
+   "w": 389,
+   "h": 344,
+   "group": "final-feelings",
+   "sheet": "char-nana-feelings-v1",
+   "final": true
+  },
+  "ma-sit": {
+   "file": "assets/clinic/patients/ma/ma-sit.webp",
+   "w": 236,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-ma-hurts-v1",
+   "final": true
+  },
+  "ma-sit-head": {
+   "file": "assets/clinic/patients/ma/ma-sit-head.webp",
+   "w": 244,
+   "h": 511,
+   "group": "final-patients",
+   "sheet": "char-ma-hurts-v1",
+   "final": true
+  },
+  "ma-sit-tummy": {
+   "file": "assets/clinic/patients/ma/ma-sit-tummy.webp",
+   "w": 241,
+   "h": 509,
+   "group": "final-patients",
+   "sheet": "char-ma-hurts-v1",
+   "final": true
+  },
+  "ma-sit-knee": {
+   "file": "assets/clinic/patients/ma/ma-sit-knee.webp",
+   "w": 245,
+   "h": 494,
+   "group": "final-patients",
+   "sheet": "char-ma-hurts-v1",
+   "final": true
+  },
+  "ma-feeling-happy": {
+   "file": "assets/characters/ma/ma-feeling-happy.png",
+   "w": 346,
+   "h": 341,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-sad": {
+   "file": "assets/characters/ma/ma-feeling-sad.png",
+   "w": 347,
+   "h": 341,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-scared": {
+   "file": "assets/characters/ma/ma-feeling-scared.png",
+   "w": 333,
+   "h": 339,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-poorly": {
+   "file": "assets/characters/ma/ma-feeling-poorly.png",
+   "w": 349,
+   "h": 340,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-tired": {
+   "file": "assets/characters/ma/ma-feeling-tired.png",
+   "w": 349,
+   "h": 343,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-better": {
+   "file": "assets/characters/ma/ma-feeling-better.png",
+   "w": 350,
+   "h": 345,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-ouch": {
+   "file": "assets/characters/ma/ma-feeling-ouch.png",
+   "w": 340,
+   "h": 338,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-sneeze": {
+   "file": "assets/characters/ma/ma-feeling-sneeze.png",
+   "w": 349,
+   "h": 329,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-hot": {
+   "file": "assets/characters/ma/ma-feeling-hot.png",
+   "w": 360,
+   "h": 366,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-cold": {
+   "file": "assets/characters/ma/ma-feeling-cold.png",
+   "w": 337,
+   "h": 365,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-notme": {
+   "file": "assets/characters/ma/ma-feeling-notme.png",
+   "w": 404,
+   "h": 365,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ma-feeling-caught": {
+   "file": "assets/characters/ma/ma-feeling-caught.png",
+   "w": 361,
+   "h": 361,
+   "group": "final-feelings",
+   "sheet": "char-ma-feelings-v1",
+   "final": true
+  },
+  "ali-sit": {
+   "file": "assets/clinic/patients/ali/ali-sit.webp",
+   "w": 220,
+   "h": 509,
+   "group": "final-patients",
+   "sheet": "char-ali-hurts-v1",
+   "final": true
+  },
+  "ali-sit-head": {
+   "file": "assets/clinic/patients/ali/ali-sit-head.webp",
+   "w": 234,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-ali-hurts-v1",
+   "final": true
+  },
+  "ali-sit-tummy": {
+   "file": "assets/clinic/patients/ali/ali-sit-tummy.webp",
+   "w": 221,
+   "h": 510,
+   "group": "final-patients",
+   "sheet": "char-ali-hurts-v1",
+   "final": true
+  },
+  "ali-sit-knee": {
+   "file": "assets/clinic/patients/ali/ali-sit-knee.webp",
+   "w": 222,
+   "h": 498,
+   "group": "final-patients",
+   "sheet": "char-ali-hurts-v1",
+   "final": true
+  },
+  "ali-feeling-happy": {
+   "file": "assets/characters/ali/ali-feeling-happy.png",
+   "w": 316,
+   "h": 353,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-sad": {
+   "file": "assets/characters/ali/ali-feeling-sad.png",
+   "w": 316,
+   "h": 348,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-scared": {
+   "file": "assets/characters/ali/ali-feeling-scared.png",
+   "w": 317,
+   "h": 346,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-poorly": {
+   "file": "assets/characters/ali/ali-feeling-poorly.png",
+   "w": 321,
+   "h": 353,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-tired": {
+   "file": "assets/characters/ali/ali-feeling-tired.png",
+   "w": 349,
+   "h": 350,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-better": {
+   "file": "assets/characters/ali/ali-feeling-better.png",
+   "w": 326,
+   "h": 353,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-ouch": {
+   "file": "assets/characters/ali/ali-feeling-ouch.png",
+   "w": 327,
+   "h": 354,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-sneeze": {
+   "file": "assets/characters/ali/ali-feeling-sneeze.png",
+   "w": 355,
+   "h": 343,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-hot": {
+   "file": "assets/characters/ali/ali-feeling-hot.png",
+   "w": 378,
+   "h": 368,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-cold": {
+   "file": "assets/characters/ali/ali-feeling-cold.png",
+   "w": 292,
+   "h": 364,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-notme": {
+   "file": "assets/characters/ali/ali-feeling-notme.png",
+   "w": 407,
+   "h": 365,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "ali-feeling-caught": {
+   "file": "assets/characters/ali/ali-feeling-caught.png",
+   "w": 330,
+   "h": 360,
+   "group": "final-feelings",
+   "sheet": "char-ali-feelings-v1",
+   "final": true
+  },
+  "clinic-oldman-waist-blue": {
+   "file": "assets/clinic/patients/old-man/clinic-oldman-waist-blue.webp",
+   "w": 379,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldman-colours-v1",
+   "final": true
+  },
+  "clinic-oldman-waist-green": {
+   "file": "assets/clinic/patients/old-man/clinic-oldman-waist-green.webp",
+   "w": 382,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldman-colours-v1",
+   "final": true
+  },
+  "clinic-oldman-waist-yellow": {
+   "file": "assets/clinic/patients/old-man/clinic-oldman-waist-yellow.webp",
+   "w": 378,
+   "h": 511,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldman-colours-v1",
+   "final": true
+  },
+  "clinic-oldman-waist-red": {
+   "file": "assets/clinic/patients/old-man/clinic-oldman-waist-red.webp",
+   "w": 383,
+   "h": 511,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldman-colours-v1",
+   "final": true
+  },
+  "clinic-oldwoman-waist-blue": {
+   "file": "assets/clinic/patients/old-woman/clinic-oldwoman-waist-blue.webp",
+   "w": 339,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldwoman-colours-v1",
+   "final": true
+  },
+  "clinic-oldwoman-waist-green": {
+   "file": "assets/clinic/patients/old-woman/clinic-oldwoman-waist-green.webp",
+   "w": 336,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldwoman-colours-v1",
+   "final": true
+  },
+  "clinic-oldwoman-waist-yellow": {
+   "file": "assets/clinic/patients/old-woman/clinic-oldwoman-waist-yellow.webp",
+   "w": 336,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldwoman-colours-v1",
+   "final": true
+  },
+  "clinic-oldwoman-waist-purple": {
+   "file": "assets/clinic/patients/old-woman/clinic-oldwoman-waist-purple.webp",
+   "w": 335,
+   "h": 512,
+   "group": "final-patients",
+   "sheet": "char-clinic-oldwoman-colours-v1",
+   "final": true
   }
  },
  "alias": {
@@ -3022,5 +3495,97 @@
   "waiting": "room-waiting",
   "exam": "room-exam",
   "pharmacy": "room-pharmacy"
+ },
+ "final": {
+  "_about": "Final art (ChatGPT batch 3, dump 3: build/reports/chatgpt-batch-3-dump-3.md), added beside the rough placeholders, which stay as they are. Not wired: `rooms`, `patients` and `alias` above still name the rough art. rooms: as `rooms`. patients: kind -> pose -> sprite id (seated full body on an invisible seat: sit, sit-head, sit-tummy, sit-knee, for after the answer only; waist-<colour>: the waiting room's waist-up crop in one colour). feelings: kind -> feeling -> a head-and-shoulders layer. replaces: rough sprite id -> the final sprite that can stand in for it.",
+  "rooms": {
+   "waiting": "bg-clinic-waiting-e",
+   "exam": "bg-clinic-room-e",
+   "pharmacy": "bg-clinic-pharmacy-e"
+  },
+  "patients": {
+   "nana": {
+    "sit": "nana-sit",
+    "sit-head": "nana-sit-head",
+    "sit-tummy": "nana-sit-tummy",
+    "sit-knee": "nana-sit-knee"
+   },
+   "ma": {
+    "sit": "ma-sit",
+    "sit-head": "ma-sit-head",
+    "sit-tummy": "ma-sit-tummy",
+    "sit-knee": "ma-sit-knee"
+   },
+   "ali": {
+    "sit": "ali-sit",
+    "sit-head": "ali-sit-head",
+    "sit-tummy": "ali-sit-tummy",
+    "sit-knee": "ali-sit-knee"
+   },
+   "old-man": {
+    "waist-blue": "clinic-oldman-waist-blue",
+    "waist-green": "clinic-oldman-waist-green",
+    "waist-yellow": "clinic-oldman-waist-yellow",
+    "waist-red": "clinic-oldman-waist-red"
+   },
+   "old-woman": {
+    "waist-blue": "clinic-oldwoman-waist-blue",
+    "waist-green": "clinic-oldwoman-waist-green",
+    "waist-yellow": "clinic-oldwoman-waist-yellow",
+    "waist-purple": "clinic-oldwoman-waist-purple"
+   }
+  },
+  "feelings": {
+   "nana": {
+    "happy": "nana-feeling-happy",
+    "sad": "nana-feeling-sad",
+    "scared": "nana-feeling-scared",
+    "poorly": "nana-feeling-poorly",
+    "tired": "nana-feeling-tired",
+    "better": "nana-feeling-better",
+    "ouch": "nana-feeling-ouch",
+    "sneeze": "nana-feeling-sneeze",
+    "hot": "nana-feeling-hot",
+    "cold": "nana-feeling-cold",
+    "notme": "nana-feeling-notme",
+    "caught": "nana-feeling-caught"
+   },
+   "ma": {
+    "happy": "ma-feeling-happy",
+    "sad": "ma-feeling-sad",
+    "scared": "ma-feeling-scared",
+    "poorly": "ma-feeling-poorly",
+    "tired": "ma-feeling-tired",
+    "better": "ma-feeling-better",
+    "ouch": "ma-feeling-ouch",
+    "sneeze": "ma-feeling-sneeze",
+    "hot": "ma-feeling-hot",
+    "cold": "ma-feeling-cold",
+    "notme": "ma-feeling-notme",
+    "caught": "ma-feeling-caught"
+   },
+   "ali": {
+    "happy": "ali-feeling-happy",
+    "sad": "ali-feeling-sad",
+    "scared": "ali-feeling-scared",
+    "poorly": "ali-feeling-poorly",
+    "tired": "ali-feeling-tired",
+    "better": "ali-feeling-better",
+    "ouch": "ali-feeling-ouch",
+    "sneeze": "ali-feeling-sneeze",
+    "hot": "ali-feeling-hot",
+    "cold": "ali-feeling-cold",
+    "notme": "ali-feeling-notme",
+    "caught": "ali-feeling-caught"
+   }
+  },
+  "replaces": {
+   "room-waiting": "bg-clinic-waiting-e",
+   "room-exam": "bg-clinic-room-e",
+   "room-pharmacy": "bg-clinic-pharmacy-e",
+   "nana-neutral": "nana-sit",
+   "ma-neutral": "ma-sit",
+   "ali-neutral": "ali-sit"
+  }
  }
 }

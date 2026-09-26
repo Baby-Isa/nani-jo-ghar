@@ -7,7 +7,7 @@ whenever a new sheet is generated.
 Usage:
   python3 build/slice_sheet.py <sheet.png> <cols> <rows> <out_dir> <name1> <name2> ...
       [--key magenta|grey] [--pad 16] [--glass name,name] [--sheer name,name]
-      [--keep-purple name,name]
+      [--keep-purple name,name] [--fluffy name,name]
 
 Names are given left to right, top to bottom; "-" skips a cell.
 
@@ -32,6 +32,9 @@ up to the 3D look, which has no outlines to hide a hard edge in):
   4. Magenta caught in gaps inside an item (between coriander stalks) is
      found by colour (on the line from the local item colour to the key)
      and made transparent in proportion; --keep-purple skips red onion.
+  4b. --fluffy cells (a chick's down) widen the soft edge band from 2 px to
+     8 px, so wisps that are half backdrop get their alpha from the
+     projection onto the nearest solid colour instead of keeping grey.
   5. --glass cells (and --sheer cells: wire mesh) use a difference matte
      inside their filled silhouette: alpha grows with the distance from the
      key, and colour is un-mixed from the key, so glass keeps its
@@ -180,11 +183,13 @@ def main():
     ap.add_argument("--glass", default="", help="comma-separated names cut as glass")
     ap.add_argument("--sheer", default="", help="comma-separated names cut as wire mesh")
     ap.add_argument("--keep-purple", default="", help="comma-separated names (red onion) to skip the magenta despill")
+    ap.add_argument("--fluffy", default="", help="comma-separated names (down, fur) cut with an 8 px soft edge band")
     args = ap.parse_args()
 
     glass = set(filter(None, args.glass.split(",")))
     sheer = set(filter(None, args.sheer.split(",")))
     keep_purple = set(filter(None, args.keep_purple.split(",")))
+    fluffy = set(filter(None, args.fluffy.split(",")))
     rgb = np.asarray(Image.open(args.sheet).convert("RGB")).astype(float)
     h, w, _ = rgb.shape
     K = measure_key(rgb, KEYS[args.key])
@@ -232,7 +237,7 @@ def main():
             a, col_ = difference_matte(sub, K, d[Y0:Y1, X0:X1], region,
                                        a_min=0.06 if name in glass else 0.0)
         else:
-            a, col_ = soft_alpha(sub, K, msk)
+            a, col_ = soft_alpha(sub, K, msk, band=8 if name in fluffy else 2)
             if args.key == "magenta" and name not in keep_purple:
                 for _ in range(2):  # the second pass catches the edge band
                     a, col_ = despill_magenta(np.where(msk[..., None], col_, sub), K, msk, a, col_)
