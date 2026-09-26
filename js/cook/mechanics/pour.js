@@ -124,7 +124,7 @@
         if (!jug) {
           jug = S.track(S.add.image(0, 0, o.art).setDepth(D.hand - 1));
           // the player's hand hooks the jug's handle while it pours (js/cook/hands.js)
-          if (Cook.Hands) Cook.Hands.attach(S, jug, "pour", { at: [0.4, 0.02], k: z.k, turn: 0.5 });
+          if (Cook.Hands) Cook.Hands.attach(S, jug, "pour", { at: [0.4, 0.02], k: z.k * 0.8, turn: 0.12 });
         }
         jug.setScale(S.fitScale(o.art, size, size));
         const hx = r.x + r.rx * 0.55 + jug.displayWidth * 0.36;
@@ -284,7 +284,7 @@
         if (!jug) {
           jug = S.track(S.add.image(0, 0, o.art).setDepth(D.hand - 1));
           // the player's hand hooks the jug's handle while it pours (js/cook/hands.js)
-          if (Cook.Hands) Cook.Hands.attach(S, jug, "pour", { at: [0.4, 0.02], k: z.k, turn: 0.5 });
+          if (Cook.Hands) Cook.Hands.attach(S, jug, "pour", { at: [0.4, 0.02], k: z.k * 0.8, turn: 0.12 });
         }
         jug.setScale(S.fitScale(o.art, size, size));
         const hx = r.x + r.rx * 0.55 + jug.displayWidth * 0.36;
