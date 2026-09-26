@@ -154,3 +154,9 @@ On reports: merge into nifty-rubin → bump_version → smoke test → push → 
   ChatGPT dump 3 (69 files, 48 unique; no log in the repo) is being sorted by an in-process agent. **Lesson: 6+ parallel Opus sessions hit the 5-hour limit in about 1½ h. Keep to about 4 at once.**
 - 14:40 UTC: shell merged and live. First launch launched (`claude/first-launch`, session_01PLdXGEiy7YBMWGHWw5Nurd). Voice clips done (`lab/family-audio.html`).
 - 16:30 UTC: cook-hands and first-launch merged and live. Yes/No was switched to UX §14 (shake, embarrassed, ask again). Open fixes: hand scale near small bowls, the pin hands cover the dough, the pantry grab pose, Cook reading the character's chosen hands. The first launch's placeholder Kutchi (e.g. 'Arre re! Khaanu taiyaar nai') is NOT family-confirmed: replace it with Mum's recordings.
+
+## 26 Sept, ~19:10 UTC: new orchestrator chat (branch `claude/nifty-rubin-c0d431`)
+Launched (remote, Opus, from nifty-rubin):
+- Cook hands fixes + phone ⌂ fix `claude/cook-hands-fix`: session_013jck82TVZgaG3wyx9fLQf8 (Next-up items 1 and 7).
+- Conversations engine + 9-exchange MVP lab `claude/conversations-mvp`: session_01JRrBDonr8rCpNzwEo7xC8r (new files only; wiring into first launch, Cook and the clinic comes after merge, per `docs/modes/conversations-wiring.md`).
+Held until Zafar's mode feedback: the chai-station fun pass, the clinic iteration, first-launch changes. Held until Zafar ticks the clips: wiring the family clips, and the next Questions-for-Mum Word doc.

@@ -8,6 +8,10 @@
 
 **Focus now (Zafar, 26 Sept): Cook, the clinic, the first launch (story walkthrough and character creation), Cook and character art, and recordings with Mum.** The other five modes are parked, and their designs aren't reviewed yet.
 
+## Now (26 Sept, evening)
+- **Running:** Cook hands fixes + phone ⌂ fix (`claude/cook-hands-fix`); the Conversations engine and MVP lab (`claude/conversations-mvp`).
+- **Waiting on Zafar:** detailed feedback on Cook, the clinic and the first launch (then the chai fun pass and clinic iteration start); ticks on the voice clips (then wiring the clips and a new Word doc for Mum).
+
 ## 1. Game modes
 The stages are: design → build the MVP → iterate from Zafar's feedback → Kutchi words in → family voice in → onboarding → story hooks.
 
