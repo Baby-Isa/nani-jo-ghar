@@ -39,7 +39,16 @@ Only the hold pour changed (Chai tray: ingredients are tapped, so liquids are to
 - Cook (`test_cook.py --orders`): tap-till-it-ticks 0% (0/820 count rows); counting cards 0% at every level (was 100% for any count above one).
 
 ## Tests
-TESTS
+One at a time, `COOK_TEST_PORT=8830`; screenshots checked at each size. All pass, with no console errors and no sidebar warnings:
+- `--lab`: every station and part at laptop (level 1), then the nine kept stations at level 2 (the quiet-mistake paths), phone (flip5-landscape) and iPad;
+- `--days 2`: laptop and phone, on the canvas renderer;
+- `--open-kitchen 2`;
+- `--orders`, including the new leak checks;
+- `test_find.py`, since Find it shares `js/cook/ui.js`.
+
+The harness now pictures the end-of-round screen and waits for the first-time overlay.
+
+`js/shared/` is unchanged: no bug fixes were needed there.
 
 ## What's left
 - Velan and chakla sprites (batch 2); the fillable chai glass and the skewer rack are still drawn.
