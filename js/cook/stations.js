@@ -276,7 +276,11 @@
         // something was done (the first-time overlay moves on: js/cook/coach.js)
         Cook.acted = (Cook.acted || 0) + 1;
         // the player's own hand does it (js/cook/hands.js): decoration only, it never changes the tap
-        if (Cook.Hands) Cook.Hands.tapped(this, obj, p);
+        try {
+          if (Cook.Hands) Cook.Hands.tapped(this, obj, p);
+        } catch (e) {
+          console.warn("hands:", e);
+        }
         fn(p);
       });
       return obj;
