@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Nani jo Ghar — fruit bowl</title>
+<link rel="stylesheet" href="css/style.css?v=20260926T095524Z">
+</head>
+<body>
+
+<div id="rotate-overlay">
+  <div class="rotate-card">
+    <div class="rotate-icon">&#8635;</div>
+    <p>Turn your phone sideways to play</p>
+  </div>
+</div>
+
+<div id="app">
+  <button id="drawer-tab">Nani's recipe &rsaquo;</button>
+
+  <aside id="sidebar">
+    <button id="drawer-close" aria-label="Close">&times;</button>
+    <h3>Nani's recipe <span id="list-hint">To buy</span></h3>
+    <div id="shopping-list"></div>
+    <button id="go-btn" class="go-btn"></button>
+    <div class="tab-rail">
+      <button class="tab-btn" id="tab-home" title="Leave and go home">&#127968;</button>
+      <button class="tab-btn" id="tab-notebook" title="Notebook">&#128214;</button>
+      <button class="tab-btn" id="tab-quilt" title="Quilt">&#129513;</button>
+    </div>
+  </aside>
+
+  <div id="sidebar-scrim"></div>
+
+  <div id="game-wrap">
+    <div id="game"></div>
+    <div id="narration">
+      <div id="narration-gist"></div>
+      <div id="narration-line"></div>
+    </div>
+    <div id="speech-bubble">
+      <div id="bubble-gist"></div>
+      <div id="bubble-line"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== OVERLAYS ===================== -->
+<div class="overlay" id="overlay-start">
+  <div class="overlay-panel">
+    <h2>Nani jo Ghar</h2>
+    <p>The fruit bowl — a Kutchi word game</p>
+    <button id="start-btn">Tap to start</button>
+  </div>
+</div>
+
+<!-- ===================== THIN SHELL: profile picker ===================== -->
+<div class="overlay" id="overlay-picker" style="display:none">
+  <div class="overlay-panel wide">
+    <h2>Who's playing?</h2>
+    <p id="picker-notice" class="shell-notice" style="display:none"></p>
+    <div id="picker-grid" class="picker-grid"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-create" style="display:none">
+  <div class="overlay-panel wide">
+    <h2>New player</h2>
+    <label class="shell-field">
+      Name
+      <input type="text" id="create-name" maxlength="20" placeholder="Name">
+    </label>
+    <div class="shell-field">
+      Avatar
+      <div id="create-avatars" class="avatar-grid"></div>
+    </div>
+    <label class="shell-toggle">
+      <input type="checkbox" id="create-reads"> Can read
+    </label>
+    <label class="shell-toggle">
+      <input type="checkbox" id="create-writes"> Can type
+    </label>
+    <div class="shell-actions">
+      <button class="close-btn" id="create-cancel">Cancel</button>
+      <button class="go-btn" id="create-save" style="visibility:visible">Start playing</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== THIN SHELL: hub ===================== -->
+<div id="hub-screen" style="display:none">
+  <div id="hub-stage">
+    <div id="hub-bg"></div>
+    <div id="hub-decorations"></div>
+  </div>
+  <button id="hub-cog" title="Hold for settings">&#9881;</button>
+  <div id="hub-cog-ring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"></circle></svg></div>
+  <button id="hub-quilt" title="Nani's quilt">&#129513;</button>
+  <button id="hub-profile-name" title="Switch player"></button>
+  <button id="hub-go-btn">Nani needs you →</button>
+</div>
+
+<div class="overlay" id="overlay-settings" style="display:none">
+  <div class="overlay-panel">
+    <h2>Settings</h2>
+    <label class="shell-field">
+      Volume
+      <input type="range" id="settings-volume" min="0" max="100" value="80">
+    </label>
+    <label class="shell-field">
+      Rename
+      <input type="text" id="settings-rename" maxlength="20">
+    </label>
+    <div class="shell-actions">
+      <button class="close-btn" id="settings-reset">Reset this profile's progress</button>
+      <button class="close-btn danger" id="settings-delete">Delete profile</button>
+    </div>
+    <button class="close-btn" id="settings-close">Close</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-confirm" style="display:none">
+  <div class="overlay-panel">
+    <p id="confirm-message"></p>
+    <div class="shell-actions">
+      <button class="close-btn" id="confirm-cancel">Cancel</button>
+      <button class="close-btn danger" id="confirm-yes">Yes</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-quilt" style="display:none">
+  <div class="overlay-panel">
+    <h2>Nani's quilt</h2>
+    <div id="quilt-grid"></div>
+    <button class="close-btn" data-close="overlay-quilt">Close</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-patch" style="display:none">
+  <div class="overlay-panel patch-panel">
+    <h2>A patch for the quilt!</h2>
+    <div id="patch-preview"></div>
+    <p id="patch-caption"></p>
+    <button class="close-btn" id="patch-continue">Continue</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-notebook" style="display:none">
+  <div class="overlay-panel">
+    <h2>Nani's notebook</h2>
+    <div id="notebook-list"></div>
+    <button class="close-btn" data-close="overlay-notebook">Close</button>
+  </div>
+</div>
+
+<script src="js/vendor/phaser.min.js?v=20260926T095524Z"></script>
+<script src="js/version.js?v=20260926T095524Z"></script>
+<script src="js/storage.js?v=20260926T095524Z"></script>
+<script src="js/progress.js?v=20260926T095524Z"></script>
+<script src="js/audio.js?v=20260926T095524Z"></script>
+<script src="js/data.js?v=20260926T095524Z"></script>
+<script src="js/ui.js?v=20260926T095524Z"></script>
+<script src="js/game.js?v=20260926T095524Z"></script>
+<script src="js/shell.js?v=20260926T095524Z"></script>
+</body>
+</html>

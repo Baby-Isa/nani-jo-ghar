@@ -155,7 +155,7 @@
             <button class="btn primary" id="t-start">${esc(s.title)}</button>
             <button class="btn" id="t-lab">Search lab</button>
           </div>
-          <p style="margin-top:14px;font-size:13px"><a href="cook.html">Cook with Nani</a> · <a href="index.html">Fruit bowl errand</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
+          <p style="margin-top:14px;font-size:13px"><a href="cook.html">Cook with Nani</a> · <a href="bowl.html">Fruit bowl errand</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
         </div>
       </div>`,
       { title: true }

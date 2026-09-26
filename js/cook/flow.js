@@ -580,6 +580,8 @@
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
       await runOrder(buildOrder(spec), day);
+      // the app shell (js/cook/app.js): a first launch goes home after Nani's pantry round
+      if (Cook.afterOrder && (await Cook.afterOrder(spec, day, { free })) === "leave") return;
       if (nanisFirst(spec)) await rulesOnce();
     }
     finishDay(day, { free });
@@ -973,7 +975,7 @@
             <button class="btn" id="t-book">Recipe book</button>
             <button class="btn" id="t-shop">Shop</button>
           </div>
-          <p style="margin-top:14px;font-size:13px"><a href="index.html">Fruit bowl errand</a> · <a href="#" id="t-reset">Start over</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
+          <p style="margin-top:14px;font-size:13px"><a href="bowl.html">Fruit bowl errand</a> · <a href="#" id="t-reset">Start over</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
         </div>
       </div>`,
       { title: true }
