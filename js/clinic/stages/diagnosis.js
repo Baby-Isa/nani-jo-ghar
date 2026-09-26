@@ -18,12 +18,14 @@
   const h = Kit.h;
   const PL = () => global.ClinicPipeline;
 
+  const FACE = ["eye", "ear", "nose", "mouth", "tooth", "throat"];
   const FINDS = { hand: "👀", torch: "✨", stethoscope: "〰️", thermometer: "🔥" };
 
   S.diagnosis = {
     async run(env, plan) {
       const { screen, data } = env;
       const res = S.result("diagnosis");
+      S.env = env;
       const stage = S.room(screen, "exam");
       stage.dataset.variant = plan.variant;
       const layer = h("div", "cl-patient-layer", stage);
@@ -35,7 +37,26 @@
       Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       const top = h("div", "cl-fx", stage);
       const at = (part, side) => fig.hotspot(part, side, stage);
-      const tapPart = (e, active) => fig.partAt(e.clientX, e.clientY, { active: active || data.parts[plan.level] || data.parts[3] });
+      // the face parts answer only in the close-up: the magnifier toggles it (the head frames the face)
+      const zoom = { on: false, busy: false, el: null };
+      const levelParts = data.parts[plan.level] || data.parts[3];
+      if (plan.variant !== "D1" && plan.variant !== "D1b" && levelParts.some((p) => FACE.includes(p))) {
+        zoom.el = h("button", "cl-mag", stage, "🔍");
+        zoom.el.type = "button";
+        zoom.el.setAttribute("aria-label", "Look closer at the face");
+        zoom.el.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          if (zoom.busy) return;
+          zoom.busy = true;
+          zoom.on = !zoom.on;
+          zoom.el.classList.toggle("on", zoom.on);
+          await fig.focus(zoom.on ? "head" : null, null, zoom.on ? 2.4 : 1, Kit.fast ? 60 : 350);
+          zoom.busy = false;
+        });
+      }
+      zoom.need = (part) => (zoom.el && FACE.includes(part) !== zoom.on ? { kind: "tap", target: ".cl-mag" } : null);
+      env.zoom = zoom;
+      const tapPart = (e, active) => (e.target.closest && e.target.closest(".cl-mag, .cl-kit") ? null : fig.partAt(e.clientX, e.clientY, { active: active || levelParts, closeup: zoom.on }));
       const partW = (p) => ({ english: data.part_words[p] || p });
 
       if (plan.variant === "D1" || plan.variant === "D1b") await d1(env, plan, res, { stage, top, fig, at });
@@ -44,6 +65,8 @@
 
       // the doctor names the ailment and says the prescription (the seam into the pharmacy)
       S.current = null;
+      if (zoom.on) await fig.focus(null, null, 1, Kit.fast ? 60 : 350);
+      if (zoom.el) zoom.el.remove();
       fig.swirl(plan.part, plan.side, true);
       await S.say(plan.name, "doctor");
       const btn = await S.button(screen, { kutchi: "[To the counter]", english: "To the counter" });
@@ -153,8 +176,10 @@
     const done = new Promise((r) => (finish = r));
     let corrected = false;
     S.setExpect("diagnosis", () => {
-      if (busy) return { stage: "diagnosis", kind: "wait" };
-      const q = fig.hotspot(row.answer.part, row.answer.side || plan.side, null);
+      if (busy || env.zoom.busy) return { stage: "diagnosis", kind: "wait" };
+      const z = env.zoom.need(row.answer.part);
+      if (z) return Object.assign({ stage: "diagnosis" }, z);
+      const q = fig.hotspot(row.answer.part, row.answer.side || plan.side, stage);
       const r = stage.getBoundingClientRect();
       return { stage: "diagnosis", kind: "point", x: Math.round(r.left + q.x), y: Math.round(r.top + q.y), part: row.answer.part, side: row.answer.side };
     });
@@ -213,13 +238,15 @@
     screen.card.now(plan.calls[0].id);
     S.setExpect("diagnosis", () => {
       const c = plan.calls[i];
-      if (!c || busy) return { stage: "diagnosis", kind: "wait" };
+      if (!c || busy || env.zoom.busy) return { stage: "diagnosis", kind: "wait" };
+      const z = tool === c.tool && env.zoom.need(c.part);
+      if (z) return Object.assign({ stage: "diagnosis" }, z);
       if (tool !== c.tool) return { stage: "diagnosis", kind: "tap", target: `.cl-kit-tool[data-tool="${c.tool}"]` };
-      const q = fig.hotspot(c.part, c.side || (c.sore ? plan.side : "left"), null);
+      const q = fig.hotspot(c.part, c.side || (c.sore ? plan.side : "left"), stage);
       const r = stage.getBoundingClientRect();
       return { stage: "diagnosis", kind: "point", x: Math.round(r.left + q.x), y: Math.round(r.top + q.y), part: c.part };
     });
-    const allParts = data.parts[3];
+    const allParts = data.parts[plan.level] || data.parts[3];
     stage.addEventListener("click", async (e) => {
       if (busy || e.target.closest(".cl-kit")) return;
       const c = plan.calls[i];
