@@ -234,3 +234,15 @@ button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-c
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* UX §14: the wrong reply shakes; Nani's embarrassed reactions cycle */
+.st-choice .st-no.shake { animation: stNoShake .4s ease-in-out; }
+@keyframes stNoShake { 20%, 60% { transform: translateX(-9px); } 40%, 80% { transform: translateX(9px); } }
+.st-nani.embarrassed { animation: stEmb .7s ease-in-out; filter: saturate(1.15) hue-rotate(-8deg); }
+.st-nani.scratch { animation: stScratch .7s ease-in-out; }
+.st-nani.puzzled { animation: stPuzzle .7s ease-in-out; }
+.st-nani.sigh { animation: stSigh .7s ease-in-out; }
+@keyframes stEmb { 30%, 70% { transform: translateY(4px) rotate(-3deg) scale(.97); } }
+@keyframes stScratch { 25% { transform: rotate(6deg); } 50% { transform: rotate(-4deg); } 75% { transform: rotate(5deg); } }
+@keyframes stPuzzle { 40%, 70% { transform: rotate(-9deg) translateX(-4px); } }
+@keyframes stSigh { 40%, 60% { transform: translateY(6px) scaleY(.96); } }

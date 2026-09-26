@@ -15,7 +15,7 @@
  *   scene      a background, Nani, the child, props; its lines; then the big arrow
  *   cook       a Cook round: opens scene.url + &then=<this page>&done=<id>; Cook comes back
  *   panels     a picture story, one line per panel, the arrow between them
- *   choice     Yes / No; only Yes works (No runs away and Nani laughs)
+ *   choice     Yes / No; only Yes works (No shakes, Nani looks embarrassed and asks again: UX §14)
  *   end        sets the story's flag (firstDone) and goes home
  *
  * Voices: a family recording (data/family-audio.json) where the line has a clip, else
@@ -288,32 +288,28 @@
       const no = box.querySelector(".st-no");
       const yes = box.querySelector(".st-yes");
       const nani = s.querySelector(".st-nani");
-      const max = (sc.no && sc.no.dodges) || 2;
-      let laughing = false;
-      const dodge = async (e) => {
+      // UX §14 (Zafar, 26 Sept): a wrong reply shakes, Nani looks embarrassed
+      // (cycling through a few reactions) and asks again, until the child taps Yes.
+      const reactions = ["embarrassed", "scratch", "puzzled", "sigh"];
+      let busy = false;
+      const wrong = async (e) => {
         if (e) e.preventDefault();
-        if (no.classList.contains("gone")) return;
+        if (busy) return;
+        busy = true;
         state.dodges++;
-        // No runs away: somewhere else on the right, never under Yes
-        const spots = [
-          [-120, -30],
-          [-40, 90],
-          [-150, 70],
-          [-70, -80],
-        ];
-        const [dx, dy] = spots[state.dodges % spots.length];
-        no.style.transform = `translate(${dx}%, ${dy}%) rotate(${state.dodges % 2 ? -14 : 12}deg)`;
-        if (state.dodges >= max && !laughing) {
-          laughing = true;
-          if (nani) nani.classList.add("laugh");
-          no.classList.add("gone");
-          await Story.say((sc.no && sc.no.laugh) || "laugh", { card: c });
-          if (nani) nani.classList.remove("laugh");
-          await Story.say(sc.line, { card: c });
-        }
+        no.classList.remove("shake");
+        void no.offsetWidth;
+        no.classList.add("shake");
+        try { if (navigator.vibrate) navigator.vibrate(120); } catch (err) {}
+        const r = reactions[(state.dodges - 1) % reactions.length];
+        if (nani) nani.classList.add(r);
+        await wait(700);
+        if (nani) nani.classList.remove(r);
+        no.classList.remove("shake");
+        await Story.say(sc.line, { card: c });
+        busy = false;
       };
-      no.addEventListener("pointerdown", dodge);
-      no.addEventListener("click", (e) => (e.preventDefault(), dodge()));
+      no.addEventListener("click", wrong);
       await new Promise((resolve) => yes.addEventListener("click", resolve, { once: true }));
       state.choice = "yes";
       yes.classList.add("chosen");

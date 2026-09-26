@@ -12,7 +12,7 @@ fresh browser (a new device):
   3. "Can you make me chai?" (a reload here comes back to the same scene);
      Cook's chai round (one cup, Nani's); Nani sips;
   4. the Eid picture story, four panels (a reload in the middle starts the
-     panels again); Yes / No: No runs away twice and Nani laughs, Yes works;
+     panels again); Yes / No: No shakes twice, Nani looks embarrassed and asks again (UX §14), Yes works;
   5. home, with firstDone, the character in the save (with the Cook hands
      skin) and on the player badge;
   6. a second player gets their own character (defaults, not the first
@@ -192,15 +192,15 @@ def first_launch(R, vp_name, picks=PICKS, reloads=True):
     page.wait_for_timeout(400)
     R.shot("yes-no")
     for k in range(2):
-        box = page.locator(".st-no").bounding_box()
-        page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
-        page.wait_for_timeout(450)
+        page.locator(".st-no").click()
+        page.wait_for_timeout(150)
+        assert "shake" in page.locator(".st-no").get_attribute("class"), "a wrong reply shakes (UX §14)"
+        # Nani reacts, then asks again before No can be tapped once more
+        page.wait_for_timeout(2600)
     st = story(page)
     assert st["dodges"] >= 2, st
-    page.wait_for_timeout(300)
-    R.shot("no-runs-away")
-    page.wait_for_function("document.querySelector('.st-no').classList.contains('gone')")
-    assert "laugh" in story(page)["lines"], "Nani laughs"
+    R.shot("no-shakes-nani-asks-again")
+    assert page.locator(".st-no").is_visible(), "No stays; the child must choose Yes"
     assert story(page)["choice"] == "asked", "No never answers"
     R.tap_sel(".st-yes", "Yes")
     page.wait_for_timeout(500)
