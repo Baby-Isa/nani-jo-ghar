@@ -129,3 +129,61 @@ The game ideas below (9–13) are approved by Zafar and parked in `docs/GAME-IDE
 11. **Choosing:** *hi na, hu* and *{colour} na* fit Find it's counter and the clinic's "is it this or that".
 12. **Warnings:** *na ad!* (hot!) and *bhaj na, hal* suit Monsoon rush and Nani's interjections, alongside "Arre re!".
 13. **Polite refusals:** use *na khape*, not a bare *na*, whenever a character turns something down.
+
+## 26 Sept 2026: Mum and Zafar, Question A5 (Where things are; 7½ min, `sources/audio/mum-2026-09-26/A5.m4a`)
+
+Rough transcript: `sources/audio/mum-2026-09-26/A5.md`. *ai* (is) is written as already confirmed; Whisper heard "aayi". Spellings are guesses until Zafar checks them.
+
+### 15. "Where" is: thing, place-thing, *je*, a place word, *ai*
+- ***cup table je mathe ai***: the cup is on the table. The everyday, shorter version drops *je*: ***cup table mathe ai***.
+- ***cup table je niche ai***: under the table.
+- ***cup kabaat je andar ai***: in the cupboard (*kabaat* = cupboard).
+- ***chawi darwaje je putiya ai***: the key is behind the door (*chawi* = key).
+- ***sani je bajume***: next to the plate (*sani* = plate).
+- ***Nana je aagiya***: in front of Nana; ***cup je aagiya***: in front of the cup.
+- ***chamchi ba cup je wich me ai***: the teaspoon is between the two cups.
+- ***shelf je mathe ai***: on top of the shelf.
+- Mum's explanation: *je* means "belonging to". The place belongs to the object, so *kabaat je andar* is "the cupboard's inside", and *table je niche* is "the table's underside".
+
+| English | Kutchi |
+|---|---|
+| on, on top of, above (all the same word) | ***mathe*** |
+| under, underneath | ***niche*** |
+| in, inside | ***andar*** |
+| behind | ***putiya*** (Zafar to check) |
+| next to, beside | ***bajume*** |
+| in front of (anywhere in front) | ***aagiya*** |
+| opposite, facing you | ***same*** |
+| between, in the middle | ***wich me*** |
+
+### 16. *same* is "facing me"; *aagiya* is just "in front"
+- ***munje same rak***: put it in front of me, facing me, so I can see it (*rak* = put, place; *munje* = my, of me).
+- ***munje same we***: sit opposite me (*we* = sit).
+- ***munje aagiya jagai ida we***: sit here, in the space in front of me (*jagai* = space or place; *ida* = here or there, Zafar to check).
+- Putting something down is ***rak***: ***sani je aagiya rak*** (put it in front of the plate). Compare *wij* (put **in**, add, from A4).
+
+### 17. The family says "this side / that side" more than left and right
+- At home they point: ***hida*** (here, near you) and ***huda*** (there), or ***hi baju*** (this side) and ***hu baju*** (that side). These match *hi* (this) and *hu* (that) from A4.
+- There are words for left and right: ***dabo hath*** (the left hand), ***jamni baju*** (on the right; *jamni* is the she-word form, because *baju* is a she-word, so the right hand is probably *jamno hath*).
+- In the middle: ***wich me***. In the corner: Mum said "corner me" for now. The Kutchi word is unknown (Gujarati has *khuno*), so **ask Masi**.
+
+### 18. The noun doesn't change before *je*, but -o words look as if they do (a question for C12–C16)
+- Mum: in *table je niche*, *table* doesn't change; *je* is its own word.
+- But the door came out as ***darwaje*** je putiya. If the door is *darwajo* (a he-word), then -o changes to -e before *je*, like Gujarati *darvaja ni pachhal*. Section C12–C16 will settle it.
+- *je / ji / jo* look like one "of" word that agrees:
+  - *jo* for he-words (*munjo*, "mine", Mum's gloss);
+  - *ji* for she-words (*dudh wagar ji chai*, and chai is a she-word);
+  - *je* before a place word (*table je mathe*, *munje same*).
+
+  That's the Sindhi pattern exactly (*jo / ji / je*).
+
+### Claude's check against Sindhi and Gujarati
+- *mathe* matches Sindhi *mathe* (on top) and Gujarati *māthe*. *niche* matches Gujarati *nīche* (under). *andar* is shared by all three. *wich me* matches Sindhi *vich mẽ* (between).
+- *aagiya* matches Sindhi *aggiyā̃* and Gujarati *āgaḷ* (in front). *same* matches Gujarati *sāme* (opposite, facing). *bajume* matches Gujarati *bājue* (beside), from *baju* (side).
+- *dabo* (left) is Gujarati *ḍābo*. *jamno* (right) is Gujarati *jamṇo*. *rak* (put) is Gujarati *rākh*.
+- *putiya* (behind) is probably the same root as Sindhi *puṭhiyā̃* (behind, from *puṭhi*, the back).
+
+### What this means for the game (proposed; approved ideas go in `docs/GAME-IDEAS-TBC.md`)
+14. **Tidy up's "place" stage gets its whole word set:** *mathe, niche, andar, putiya, bajume, aagiya, wich me*. The frame is ***{thing} {place-thing} je {where} rak*** ("put the cup in the cupboard"). One place word per round at level 1.
+15. **The clinic's sides:** use ***dabo*** / ***jamno*** (left/right, always the patient's own side) as designed. The family's everyday *hi baju / hu baju* is a good level-1 alternative when the doctor points.
+16. **Nani's lines:** *munje same we* (come and sit opposite me) and *munje same rak* (put it in front of me) fit the Cook send-off and the serve step.
