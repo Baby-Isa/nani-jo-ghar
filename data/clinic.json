@@ -990,7 +990,7 @@
  },
  "salience": {
   "_about": "For the leak bot's salience/sweep strategies only: how big and central each part looks on the grey patient (0-1).",
-  "body-tummy": 1.0,
+  "body-tummy": 1,
   "body-head": 0.95,
   "body-chest": 0.9,
   "body-leg": 0.8,
@@ -1258,5 +1258,279 @@
   "jitter": 0.18,
   "takes": 3,
   "weber": 0.12
+ },
+ "items": {
+  "_about": "The tray nouns (P4, P10): what rides the pharmacy belt and fills the tray. `kutchi` only where the family word exists (paani, limu, loon, khun, dudh from data/cook.json); everything else is an English placeholder. `glyph` is the greybox picture until data/clinic/rough-art.json names a sprite. `group` is the look-alike group (the belt draws a decoy from the same group only from level 2). Healing games may use ids not listed here: the kit then shows the id as English.",
+  "paani": {
+   "kutchi": "paani",
+   "english": "water",
+   "glyph": "🫗",
+   "placeholder": false,
+   "cook": "cook-paani",
+   "group": "liquid"
+  },
+  "cloth": {
+   "kutchi": null,
+   "english": "cloth",
+   "glyph": "🧽",
+   "placeholder": true,
+   "group": "cloth"
+  },
+  "plaster": {
+   "kutchi": null,
+   "english": "plaster",
+   "glyph": "🩹",
+   "placeholder": true,
+   "group": "plaster"
+  },
+  "bandage": {
+   "kutchi": null,
+   "english": "bandage",
+   "glyph": "🧻",
+   "placeholder": true,
+   "group": "plaster"
+  },
+  "thread": {
+   "kutchi": null,
+   "english": "thread",
+   "glyph": "🧵",
+   "placeholder": true,
+   "group": "thread"
+  },
+  "needle": {
+   "kutchi": null,
+   "english": "needle",
+   "glyph": "🪡",
+   "placeholder": true,
+   "group": "thread"
+  },
+  "hammer": {
+   "kutchi": null,
+   "english": "hammer",
+   "glyph": "🔨",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "xray": {
+   "kutchi": null,
+   "english": "X-ray",
+   "glyph": "🩻",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "cast": {
+   "kutchi": null,
+   "english": "cast",
+   "glyph": "🦴",
+   "placeholder": true,
+   "group": "plaster"
+  },
+  "crutches": {
+   "kutchi": null,
+   "english": "crutches",
+   "glyph": "🩼",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "torch": {
+   "kutchi": null,
+   "english": "torch",
+   "glyph": "🔦",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "tweezers": {
+   "kutchi": null,
+   "english": "tweezers",
+   "glyph": "🥢",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "cotton-bud": {
+   "kutchi": null,
+   "english": "cotton bud",
+   "glyph": "🦯",
+   "placeholder": true,
+   "group": "cotton"
+  },
+  "cotton": {
+   "kutchi": null,
+   "english": "cotton",
+   "glyph": "☁️",
+   "placeholder": true,
+   "group": "cotton"
+  },
+  "drops": {
+   "kutchi": null,
+   "english": "drops",
+   "glyph": "💧",
+   "placeholder": true,
+   "group": "bottle"
+  },
+  "bottle": {
+   "kutchi": null,
+   "english": "bottle",
+   "glyph": "🧴",
+   "placeholder": true,
+   "group": "bottle"
+  },
+  "toothbrush": {
+   "kutchi": null,
+   "english": "toothbrush",
+   "glyph": "🪥",
+   "placeholder": true,
+   "group": "brush"
+  },
+  "comb": {
+   "kutchi": null,
+   "english": "comb",
+   "glyph": "🪮",
+   "placeholder": true,
+   "group": "brush"
+  },
+  "drill": {
+   "kutchi": null,
+   "english": "drill",
+   "glyph": "🔩",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "paste": {
+   "kutchi": null,
+   "english": "filling",
+   "glyph": "🦷",
+   "placeholder": true,
+   "group": "bottle"
+  },
+  "limu": {
+   "kutchi": "limu",
+   "english": "lemon",
+   "glyph": "🍋",
+   "placeholder": false,
+   "cook": "fru-02",
+   "group": "dropper"
+  },
+  "loon": {
+   "kutchi": "loon",
+   "english": "salt",
+   "glyph": "🧂",
+   "placeholder": false,
+   "cook": "spi-16",
+   "group": "dropper"
+  },
+  "khun": {
+   "kutchi": "khun",
+   "english": "sugar",
+   "glyph": "🍬",
+   "placeholder": false,
+   "cook": "cook-khun",
+   "group": "dropper"
+  },
+  "dudh": {
+   "kutchi": "dudh",
+   "english": "milk",
+   "glyph": "🥛",
+   "placeholder": false,
+   "cook": "cook-dudh",
+   "group": "liquid"
+  },
+  "cup": {
+   "kutchi": null,
+   "english": "cup",
+   "glyph": "🥤",
+   "placeholder": true,
+   "group": "liquid"
+  },
+  "thermometer": {
+   "kutchi": null,
+   "english": "thermometer",
+   "glyph": "🌡️",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "blanket": {
+   "kutchi": null,
+   "english": "blanket",
+   "glyph": "🛏️",
+   "placeholder": true,
+   "group": "cloth"
+  },
+  "fan": {
+   "kutchi": null,
+   "english": "fan",
+   "glyph": "🪭",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "syringe": {
+   "kutchi": null,
+   "english": "the doctor’s syringe",
+   "glyph": "💉",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "lollipop": {
+   "kutchi": null,
+   "english": "lollipop",
+   "glyph": "🍭",
+   "placeholder": true,
+   "group": "sweet"
+  },
+  "pointer": {
+   "kutchi": null,
+   "english": "pointer",
+   "glyph": "👆",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "patch": {
+   "kutchi": null,
+   "english": "eye patch",
+   "glyph": "🏴‍☠️",
+   "placeholder": true,
+   "group": "plaster"
+  },
+  "tub": {
+   "kutchi": null,
+   "english": "tub",
+   "glyph": "🛁",
+   "placeholder": true,
+   "group": "liquid"
+  },
+  "spoon": {
+   "kutchi": null,
+   "english": "spoon",
+   "glyph": "🥄",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "honey": {
+   "kutchi": null,
+   "english": "honey",
+   "glyph": "🍯",
+   "placeholder": true,
+   "group": "bottle"
+  },
+  "tissue": {
+   "kutchi": null,
+   "english": "tissue",
+   "glyph": "🤧",
+   "placeholder": true,
+   "group": "cloth"
+  },
+  "stethoscope": {
+   "kutchi": null,
+   "english": "stethoscope",
+   "glyph": "🩺",
+   "placeholder": true,
+   "group": "tool"
+  },
+  "sticker": {
+   "kutchi": null,
+   "english": "sticker",
+   "glyph": "⭐",
+   "placeholder": true,
+   "group": "sweet"
+  }
  }
 }
