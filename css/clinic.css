@@ -27,6 +27,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-app { position: absolute; inset: 0; display: grid; grid-template-columns: var(--cl-side-w) 1fr var(--cl-act-w); gap: 0; }
 .cl-side { background: var(--cl-paper); border-right: 3px solid #e6d6bd; display: flex; flex-direction: column; gap: 8px; padding: 8px; overflow: hidden; min-height: 0; }
 .cl-side-top { display: flex; align-items: center; gap: 8px; }
+/* the ⌂ home button (css/shared/app.css) takes the sidebar's top-left corner: the hint row keeps
+   its height and starts to the right of it, so the task card begins below the button */
+html.njg-app .cl-side-top { min-height: calc(var(--njg-home-safe) - 8px); padding-left: calc(var(--njg-home-safe) - 8px); }
 .cl-main { position: relative; overflow: hidden; min-width: 0; }
 .cl-play { position: absolute; inset: 0; }
 .cl-stage { position: absolute; inset: 0; }
@@ -259,6 +262,9 @@ body.clinic button { font-family: inherit; color: inherit; }
   .cl-actions { flex-direction: row; justify-content: flex-end; padding: 8px; }
   .cl-go { min-width: 140px; }
   .cl-lab-bar { left: 0; right: 0; }
+  /* one row on top here: the whole sidebar starts to the right of the ⌂ button */
+  html.njg-app .cl-side { padding-left: var(--njg-home-safe); }
+  html.njg-app .cl-side-top { min-height: 0; padding-left: 0; }
 }
 .cl-mag { position: absolute; left: 3%; top: 4%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: #fff; font-size: 30px; cursor: pointer; z-index: 25; }
 .cl-mag.on { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .3); }

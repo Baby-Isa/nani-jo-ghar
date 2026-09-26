@@ -190,6 +190,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   background: rgba(45, 32, 24, 0.45); padding: 12px;
 }
 #overlay.title-mode { background: url("../assets/cook/bg/service.jpg?v=20260926T155957Z") center / cover; }
+/* the ⌂ home button (css/shared/app.css) sits in the top-left corner: the title card keeps clear of it */
+html.njg-app #overlay.title-mode { padding-left: max(12px, var(--njg-home-safe)); }
 #panel {
   background: var(--cream); border-radius: 26px; box-shadow: 0 20px 60px rgba(40,25,10,.35);
   width: min(880px, 100%); max-height: 100%; overflow-y: auto; padding: clamp(14px, 2.5vw, 30px);

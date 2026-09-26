@@ -33,6 +33,14 @@ html.njg-leaving body { opacity: 0; transition: opacity 150ms ease-out; }
   #njg-home { width: 52px; height: 52px; }
   #njg-home svg { width: 26px; height: 26px; }
 }
+/* the corner the button takes (its size, its 6px from the edge and a 6px gap): a mode's card
+   that sits in the top-left corner keeps clear of it with this (Cook's title card, the
+   clinic's task card); 0 when the page isn't opened from the house (no button) */
+:root { --njg-home-safe: 0px; }
+html.njg-app { --njg-home-safe: calc(max(6px, env(safe-area-inset-left)) + 50px); }
+@media (min-width: 1100px) and (min-height: 700px) {
+  html.njg-app { --njg-home-safe: calc(max(6px, env(safe-area-inset-left)) + 58px); }
+}
 
 /* a first launch (js/cook/app.js): Nani's kitchen and one big play button, before anything else */
 html.njg-first #njg-home { display: none; }
