@@ -199,6 +199,7 @@
   P.judgeWho = (row, i) => row.answer === i;
 
   /* ================= stage 2: diagnosis ================= */
+  P.REGIONS = [["knee", "leg"], ["foot", "toe"], ["hand", "finger"], ["arm", "elbow", "shoulder"], ["head", "ear", "eye", "mouth", "tooth", "neck", "nose", "throat"], ["tummy"], ["chest"]];
   P.ailmentsFor = function (data, level, games) {
     return Object.keys(data.ailments)
       .filter((k) => k !== "_about")
@@ -227,7 +228,17 @@
     let card = [];
     if (variant === "D1" || variant === "D1b") {
       const n = S.probe[L] || 3;
-      probes = shuffle([part].concat(shuffle(pool, rng).slice(0, n - 1)), rng);
+      // one probe per body region, so no two pulsing targets sit on top of each other on a phone
+      const region = (p) => P.REGIONS.findIndex((g) => g.includes(p));
+      const taken = new Set([region(part)]);
+      const picks = [];
+      shuffle(pool, rng).forEach((p) => {
+        if (picks.length < n - 1 && !taken.has(region(p))) {
+          taken.add(region(p));
+          picks.push(p);
+        }
+      });
+      probes = shuffle([part].concat(picks), rng);
       card = [Object.assign(P.line(data, "here"), { id: "probe" })];
       if (variant === "D1b") rows.push({ id: "probe", stage: "diagnosis", kind: "probe", answer: part, options: probes, tested: true, word: data.part_words[part] });
     } else if (variant === "D2") {
