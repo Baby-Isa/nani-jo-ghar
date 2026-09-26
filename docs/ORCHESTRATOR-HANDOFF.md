@@ -135,3 +135,12 @@ On reports: merge into nifty-rubin → bump_version → smoke test → push → 
 
 ### 26 Sept ~09:50 UTC: clinic and Cook Wave 6b merged and published
 - `origin/claude/clinic-core` (with heal A/B/C and rough art) and `origin/claude/build-cook-wave6b` are merged into `claude/nifty-rubin-c0d431` and published to `main`. Conflicts were only `?v=` stamps (`clinic.html`, `cook.html`, `js/version.js`); neither branch touched `js/shared/*` or the grammar/ideas docs. `labs.html` now has a clinic section (play, lab index, lab bar, five stages, every healing game). Leak bots pass (whole patient L1 blind 0.30%; Cook count leaks 0%); smoke test clean at 390×844 and 1366×768. `claude/art-hands-v3` is still running and not merged.
+
+## 26 Sept, ~11:00 UTC
+- Merged and live: clinic (core + heal A/B/C + rough art) and Cook Wave 6b.
+- Hands v3 done (`claude/art-hands-v3`): all characters pass; masters 55/56 (a2 still fails); jewellery ray-cast in code; $1.80 spent. Review sheets sent to Zafar. **Waiting on his OK**, then merge and wire into Cook.
+- Mum's recordings A4–A8 and Section B transcribed into `docs/kutchi-grammar-notes.md` §10–§28. Approved/proposed game ideas are parked in `docs/GAME-IDEAS-TBC.md` (standing rule above).
+- Running now:
+  - in-process agent applying the Section B words to Cook (`docs/cook-word-changes-B.md`);
+  - in-process agent cutting family voice clips (`assets/audio/family/`, `data/family-audio.json`, `lab/family-audio.html`);
+  - shell "one app, one save" (`claude/build-shell`, session_01JZerhfa5qGNZnwu1LTq9Lp).
