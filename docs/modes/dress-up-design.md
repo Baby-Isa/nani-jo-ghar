@@ -286,7 +286,7 @@ Each variant: the mechanic, what the Kutchi instruction carries, how it gets har
 
 ### P.3 The big library: Big Ma's table (stage 4)
 
-Twenty table games, the mode's equivalent of the clinic's healing games. Every one is comical or tactile first and carries Kutchi through its instruction: at the least a count, a colour, a side or a part. Scores 1–5 (build: 5 = cheap). Age fit: which of 5 / 8 / 11 it suits. "Real today" means the decision words exist in `data/cook.json` now (numbers, *wadho/nindho*, *nar*, *pela… ne poi*, *Muke {x} de*); everything else waits for Round 3.
+**Superseded by the quality pass (Q.4): the library is the eight games kept there (T1, T3, T4, T5, T9, T10, T15, The pedal = T2 + T17); the rest of this table is the scored pool it was cut from, kept for reference.** Twenty table games, the mode's equivalent of the clinic's healing games. Every one is comical or tactile first and carries Kutchi through its instruction: at the least a count, a colour, a side or a part. Scores 1–5 (build: 5 = cheap). Age fit: which of 5 / 8 / 11 it suits. "Real today" means the decision words exist in `data/cook.json` now (numbers, *wadho/nindho*, *nar*, *pela… ne poi*, *Muke {x} de*); everything else waits for Round 3.
 
 | # | Game | One-line pitch | Kutchi it teaches | Mechanic | Age | Fun | Kutchi | Build |
 |---|---|---|---|---|---|---|---|---|
@@ -311,7 +311,7 @@ Twenty table games, the mode's equivalent of the clinic's healing games. Every o
 | **T19** | **Fold it** | Fold the finished kurta in the order said: *pela [EN: the left sleeve], ne poi [EN: the right], ne poi [EN: the bottom]* | Sides, *first, then* (**real**) | `fold` (Cook fill-fold) | 5 · 8 · 11 | 3 | 4 | 4 |
 | **T20** | **Cat bows** (toy) | A bow on Simba and one on Zazu: *Simba: [EN: red]* | Colour only; never graded for the ear | `pick` + `wear` | 5 | 5 | 2 | 5 |
 
-**First table set (build order):** T3, T4 and T15 exist; then **T5 Iron** (Layla's, cheap, real *first/then*), **T1 Cut** and **T14 Border** (the make-to-order chain, both on the swipe input), **T9 Bandhani** (the most fun and the most Kutchi per minute), **T10 Block print** and **T17 The pedal** (real numbers today). T2, T7, T8, T11 in phase 3; T6, T12, T13, T16, T18, T19, T20 as the pool grows. **T19 Fold it** is kept only if Tidy up does not build a fold of its own (Tidy up owns the wardrobe; the table only folds). **Rejected:** make-up and hair (as before), a "read the tape's number" game (numbers past five come later), the washing line (Monsoon and Tidy up own it).
+**First table set (build order; as amended by Q.4):** T3, T4 and T15 exist; then **T5 Iron** (Layla's, cheap, real *first/then*; the first session), **T9 Bandhani** (the most fun and the most Kutchi per minute; absorbs T11), **T10 Block print**, **The pedal** (T2 + T17, real numbers today), then **T1 Cut** (needs the slate). T14, T7, T8, T6, T13, T18, T19 are in Q.7's maybe-later list; T12 and T16 are T4 variants; T20's cats are 5a clients. **Rejected:** make-up and hair (as before), a "read the tape's number" game (numbers past five come later), the washing line (Monsoon and Tidy up own it).
 
 ### P.4 Research: what children's tailor and dress-up apps do
 
