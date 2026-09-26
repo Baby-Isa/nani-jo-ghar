@@ -363,7 +363,7 @@ The build (`build/reports/dress-build.md`: phases 0–1, branch `claude/build-dr
 | `dress.html`, `css/dress.css`, `data/scenes/bigma-*.json` | **Keep** | Scene files gain the bench spots, the slate, the rail loop path and the camera anchor |
 | **Goes** | The local result card in `flow.js` (replaced by the shared screen); the per-line "?" help (replaced by the light bulb); G5's "phase 3, logic only" placeholder button (5b is built in phase 3 proper) |
 
-**Mechanics count after this design:** built and kept 7 (`wear, check, change, stitch, passme, count, say`-stub); new 11 (`queue, tape, cut, seam, iron, pin, aim, dip, stamp, pose, weather` — `pose` and `queue` are a few lines each; `weather` is the only large one); reused from Cook 5 (`fetch, count, pour, stir, fold` via fill-fold); shared 4 (`whichone`/`pick`, `where` from the clinic, `belt` from the clinic, `say`).
+**Mechanics count after this design (as amended by Q.8):** built and kept 7 (`wear, check, change, stitch, passme, count, say`-stub); new **7** (`cut, iron, dip, stamp, pose, weather`, plus `pedal` as Cook's `count` with a prop and a side tap; `pose` is a few lines; `weather` is the only large one; `queue`, `tape`, `seam`, `pin`, `aim` are gone: 1b lives in `call`'s order knob, the slate's two taps live inside `where`); reused from Cook **2** (`fetch, count`; `pour`, `stir` and `fold` are no longer needed); shared 4 (`whichone`/`pick`, `where` from the clinic, `belt` from the clinic, `say`).
 
 ### P.7 Words needed (marking the Questions for Mum doc)
 
