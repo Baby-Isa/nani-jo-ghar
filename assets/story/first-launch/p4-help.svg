@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600">
+  <!-- placeholder art: can you help me cook? Nani and you, a big wooden spoon held out, a heart -->
+  <rect width="1000" height="600" fill="#f3e2c7"/>
+  <rect y="470" width="1000" height="130" fill="#e3c9a3"/>
+  <circle cx="540" cy="200" r="150" fill="#ffe7a0" opacity=".45"/>
+  <g transform="rotate(-28 520 260)">
+    <ellipse cx="520" cy="150" rx="46" ry="62" fill="#c79560"/>
+    <ellipse cx="520" cy="150" rx="30" ry="44" fill="#b07f4d"/>
+    <rect x="510" y="200" width="20" height="210" rx="10" fill="#c79560"/>
+  </g>
+  <path d="M520 470 c-40 -30 -70 -55 -70 -85 c0 -22 18 -38 38 -38 c14 0 26 8 32 20 c6 -12 18 -20 32 -20 c20 0 38 16 38 38 c0 30 -30 55 -70 85z" fill="#c0503a"/>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400">
+  <!-- skin: neck, arms, hands, legs (tinted with the skin choice: fill="currentColor") -->
+  <rect x="104" y="160" width="32" height="36" rx="12" fill="currentColor"/>
+  <rect x="104" y="176" width="32" height="14" fill="#000" fill-opacity=".10"/>
+  <path d="M84 196 C66 212 58 250 56 286" stroke="currentColor" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <path d="M156 196 C174 212 182 250 184 286" stroke="currentColor" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <circle cx="56" cy="292" r="15" fill="currentColor"/>
+  <circle cx="184" cy="292" r="15" fill="currentColor"/>
+  <rect x="94" y="296" width="22" height="80" rx="10" fill="currentColor"/>
+  <rect x="124" y="296" width="22" height="80" rx="10" fill="currentColor"/>
+  <!-- shoes (not tinted) -->
+  <path d="M84 372 q0 -12 16 -12 h14 q6 0 6 8 v8 q0 4 -4 4 h-28 q-4 0 -4 -8z" fill="#5a3e2e"/>
+  <path d="M156 372 q0 -12 -16 -12 h-14 q-6 0 -6 8 v8 q0 4 4 4 h28 q4 0 4 -8z" fill="#5a3e2e"/>
+</svg>

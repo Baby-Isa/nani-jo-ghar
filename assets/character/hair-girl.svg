@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400">
+  <!-- the front of long hair, parted at the side, and eyebrows: the hair colour -->
+  <path d="M52 124 Q44 42 122 36 Q198 42 188 124 Q182 96 168 84 Q140 88 108 66 Q98 88 66 92 Q56 104 52 124 Z" fill="currentColor"/>
+  <path d="M52 110 Q48 150 56 176 L66 172 Q60 140 62 104 Z" fill="currentColor"/>
+  <path d="M188 110 Q192 150 184 176 L174 172 Q180 140 178 104 Z" fill="currentColor"/>
+  <path d="M112 62 Q136 58 166 76" stroke="#fff" stroke-opacity=".18" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M84 92 Q96 86 108 91" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <path d="M132 91 Q144 86 156 92" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+</svg>

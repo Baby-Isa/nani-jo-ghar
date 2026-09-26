@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400">
+  <!-- the face and ears (skin tint); cheeks, nose and mouth are fixed -->
+  <circle cx="54" cy="116" r="15" fill="currentColor"/>
+  <circle cx="186" cy="116" r="15" fill="currentColor"/>
+  <circle cx="54" cy="116" r="7" fill="#000" fill-opacity=".10"/>
+  <circle cx="186" cy="116" r="7" fill="#000" fill-opacity=".10"/>
+  <ellipse cx="120" cy="108" rx="66" ry="68" fill="currentColor"/>
+  <ellipse cx="86" cy="140" rx="12" ry="8" fill="#e0706a" fill-opacity=".32"/>
+  <ellipse cx="154" cy="140" rx="12" ry="8" fill="#e0706a" fill-opacity=".32"/>
+  <path d="M116 128 q4 6 8 0" stroke="#000" stroke-opacity=".22" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M104 146 q16 16 32 0" stroke="#6b2b22" stroke-width="5" stroke-linecap="round" fill="none"/>
+</svg>

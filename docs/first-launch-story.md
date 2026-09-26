@@ -123,3 +123,6 @@ The chai station "is a bit boring", and it'll be the second thing every new play
 
 ## Status
 **The flow is agreed, and so is the language: English, then Kutchi (Zafar, 26 Sept).** The shell build (`claude/build-shell`) currently does: first launch → pantry → home screen. When this is agreed, the shell's continuation adds the character step and the story beat. The panels use placeholder art until the ChatGPT art run makes them.
+
+**Built (26 Sept, branch `claude/first-launch`):** the character step, Zafar's flow and English-then-Kutchi, as data (`data/story/first-launch.json`, `data/character-options.json`). Decisions are in `docs/first-launch-build-log.md`; the report is `build/reports/first-launch.md`. The story's Kutchi is placeholder until Mum records lines 1 and 3–10 above.
+

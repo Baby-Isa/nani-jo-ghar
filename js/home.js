@@ -4,10 +4,11 @@
  *
  * LAUNCH
  *   - nobody on this device yet (a first launch): make "Player 1" and go
- *     straight into Cook's pantry round (cook.html?app=1&first=1). No menu,
- *     no tutorial (docs/UX-PRINCIPLES.md 7). The house appears after it.
- *   - a player who hasn't had that first round yet (a child a grown-up just
- *     added) goes the same way the moment they're picked.
+ *     straight into the first launch (first.html: the character, the pantry
+ *     round, chai, the Eid story). No menu, no tutorial (docs/UX-PRINCIPLES.md
+ *     7). The house appears after it.
+ *   - a player who hasn't had it yet (a child a grown-up just added) goes the
+ *     same way the moment they're picked.
  *   - two or more players: "Who's playing?" first, once per visit.
  *   - otherwise the house: a door per mode. Cook, Find it and the clinic now;
  *     with ?labs=1 the lab modes too, as "coming soon" doors.
@@ -36,12 +37,11 @@
     { id: "snap", url: "snap.html?lab=1", name: "Snap" },
   ];
   // THE FIRST-LAUNCH HOOK. A player without the "firstDone" flag is sent here (a brand-new
-  // device, or a child a grown-up just added). For now it's Cook's pantry round (js/cook/app.js).
-  // Character creation and the Eid story (docs/first-launch-story.md, a later session) replace
-  // just this URL with their own page; that page ends with Save.setFlag("firstDone", true) and
-  // NjgApp.home("first"). docs/shared-api.md section 12 has the contract.
-  // (?speed= is passed on for the browser tests, which play the pantry round fast)
-  const FIRST = "cook.html?app=1&first=1" + (params.get("speed") ? `&speed=${encodeURIComponent(params.get("speed"))}` : "");
+  // device, or a child a grown-up just added): first.html, the first launch (make your character,
+  // the pantry round, chai for Nani, the Eid picture story; docs/first-launch-story.md). It ends
+  // with Save.setFlag("firstDone", true) and NjgApp.home("first"). docs/shared-api.md sections 12-13.
+  // (?speed= is passed on for the browser tests, which play the Cook rounds fast)
+  const FIRST = "first.html?app=1" + (params.get("speed") ? `&speed=${encodeURIComponent(params.get("speed"))}` : "");
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const initial = (name) => (String(name || "?").trim()[0] || "?").toUpperCase();
@@ -93,6 +93,9 @@
     if (p) {
       $("#who .dot").textContent = initial(p.name);
       $("#who .dot").style.background = p.colour;
+      $("#who .dot").classList.remove("has-char");
+      // the player's own character, once they've made one (js/shared/character.js)
+      if (global.Character) global.Character.badge($("#who .dot"), p.id);
       $("#who .nm").textContent = p.name;
     }
     $("#doors").innerHTML = DOORS.map((d) => door(d)).join("");
@@ -131,6 +134,7 @@
           <span class="dot" style="background:${esc(p.colour)}">${esc(initial(p.name))}</span><span class="nm">${esc(p.name)}</span></button>`
         )
         .join("") + `<button type="button" class="tile add-tile" aria-label="Add a player"><span class="dot plus">+</span><span class="nm">Add</span></button>`;
+    if (global.Character) sheet.querySelectorAll(".tile[data-id] .dot").forEach((d) => global.Character.badge(d, d.closest(".tile").dataset.id));
     sheet.querySelectorAll(".tile[data-id]").forEach((t) =>
       t.addEventListener("click", () => {
         sheet.hidden = true;
@@ -204,6 +208,7 @@
         .join("");
       list.querySelectorAll(".prow").forEach((row) => {
         const id = row.dataset.id;
+        if (global.Character) global.Character.badge($(".dot", row), id);
         const p = Save.player(id);
         swatches($(".swatches", row), p.colour, (c) => {
           Save.updatePlayer(id, { colour: c });
@@ -225,6 +230,14 @@
       });
     };
     draw();
+    // Story help (docs/first-launch-story.md): English then Kutchi (the default), or Kutchi only
+    const helpBtns = sheet.querySelectorAll("#story-help [data-help]");
+    const showHelp = () => {
+      const h = Save.setting("storyHelp") === "k" ? "k" : "en-k";
+      helpBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.help === h)));
+    };
+    helpBtns.forEach((b) => (b.onclick = () => (Save.setSetting("storyHelp", b.dataset.help), showHelp())));
+    showHelp();
     status(Save.persistent() ? "" : "This browser is blocking storage: progress lasts until the page is closed.");
     $("#export").onclick = () => {
       const blob = new Blob([Save.exportJSON()], { type: "application/json" });

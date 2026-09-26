@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#f3e7d3">
 <title>Nani jo Ghar</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
-<link rel="stylesheet" href="css/shared/app.css?v=20260926T155455Z">
+<link rel="stylesheet" href="css/shared/app.css?v=20260926T155509Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/home.css?v=20260926T155455Z">
+<link rel="stylesheet" href="css/home.css?v=20260926T155509Z">
 </head>
 <!--
   The app shell: Nani's house is the menu ("one app, one save", phase B).
@@ -30,7 +30,7 @@
 </header>
 
 <main id="house">
-  <div class="roof"><div class="window"><img src="assets/cook/characters/nani-badge.webp?v=20260926T155455Z" alt="Nani"></div></div>
+  <div class="roof"><div class="window"><img src="assets/cook/characters/nani-badge.webp?v=20260926T155509Z" alt="Nani"></div></div>
   <div class="wall">
     <nav id="doors" class="doors" aria-label="Where to play"></nav>
     <nav id="lab-doors" class="doors soon" aria-label="Coming soon" hidden></nav>
@@ -59,6 +59,12 @@
   <div class="card">
     <h2>Grown-ups</h2>
     <div class="players"></div>
+    <h3>Story help</h3>
+    <p class="muted">In story moments Nani says each line in English, then in Kutchi. Games are always Kutchi only.</p>
+    <div class="seg" id="story-help" role="group" aria-label="Story help">
+      <button type="button" data-help="en-k" aria-pressed="true">English, then Kutchi</button>
+      <button type="button" data-help="k" aria-pressed="false">Kutchi only</button>
+    </div>
     <h3>The save</h3>
     <p class="muted">Progress is kept on this device only. Save a copy to move it to another device, or to keep it safe.</p>
     <div class="row wrap">
@@ -72,9 +78,10 @@
   </div>
 </div>
 
-<script src="js/version.js?v=20260926T155455Z"></script>
-<script src="js/shared/save.js?v=20260926T155455Z"></script>
-<script src="js/shared/app.js?v=20260926T155455Z"></script>
-<script src="js/home.js?v=20260926T155455Z"></script>
+<script src="js/version.js?v=20260926T155509Z"></script>
+<script src="js/shared/save.js?v=20260926T155509Z"></script>
+<script src="js/shared/app.js?v=20260926T155509Z"></script>
+<script src="js/shared/character.js?v=20260926T155509Z"></script>
+<script src="js/home.js?v=20260926T155509Z"></script>
 </body>
 </html>

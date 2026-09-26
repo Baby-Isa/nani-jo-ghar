@@ -335,6 +335,16 @@
   Save.flag = (name, playerId) => Save.get("shell", playerId)[name];
   Save.setFlag = (name, value, playerId) => Save.update("shell", (d) => ((d[name] = value), d), playerId);
 
+  // grown-ups' settings for the whole device (e.g. "storyHelp"), kept in the root
+  Save.setting = (name) => (R().settings || {})[name];
+  Save.setSetting = function (name, value) {
+    const r = R();
+    r.settings = Object.assign({}, r.settings, { [name]: value });
+    saveRoot();
+    emit("data", "settings");
+    return value;
+  };
+
   /* ---------------- export / import (a file for a parent) ---------------- */
   Save.exportJSON = function () {
     const r = R();

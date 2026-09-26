@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400">
+  <!-- long hair behind the head and shoulders: the hair colour -->
+  <path d="M50 110 Q46 40 120 34 Q194 40 190 110 L196 236 Q176 250 156 236 L150 170 L90 170 L84 236 Q64 250 44 236 Z" fill="currentColor"/>
+  <path d="M50 110 Q46 40 120 34 Q194 40 190 110 L196 236 Q176 250 156 236 L150 170 L90 170 L84 236 Q64 250 44 236 Z" fill="#000" fill-opacity=".12"/>
+</svg>

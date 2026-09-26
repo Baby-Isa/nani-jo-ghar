@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600">
+  <!-- placeholder art: tomorrow is Eid. A wall, the calendar (today, then tomorrow with the crescent moon), a night window -->
+  <rect width="1000" height="600" fill="#f3e2c7"/>
+  <rect y="470" width="1000" height="130" fill="#e3c9a3"/>
+  <rect x="690" y="60" width="250" height="210" rx="16" fill="#1f2f55"/>
+  <rect x="690" y="60" width="250" height="210" rx="16" fill="none" stroke="#8a5a3c" stroke-width="14"/>
+  <line x1="815" y1="60" x2="815" y2="270" stroke="#8a5a3c" stroke-width="10"/>
+  <circle cx="770" cy="130" r="40" fill="#ffe7a0"/>
+  <circle cx="788" cy="118" r="36" fill="#1f2f55"/>
+  <circle cx="880" cy="110" r="5" fill="#ffe7a0"/><circle cx="860" cy="200" r="4" fill="#ffe7a0"/><circle cx="905" cy="170" r="3" fill="#ffe7a0"/>
+  <!-- today: a plain page, crossed off -->
+  <rect x="380" y="120" width="190" height="220" rx="12" fill="#fffaf2" stroke="#caa57a" stroke-width="6"/>
+  <rect x="380" y="120" width="190" height="50" rx="12" fill="#c0503a"/>
+  <circle cx="430" cy="120" r="9" fill="#6b3b24"/><circle cx="520" cy="120" r="9" fill="#6b3b24"/>
+  <path d="M420 210 L530 310 M530 210 L420 310" stroke="#c0503a" stroke-width="12" stroke-linecap="round" opacity=".55"/>
+  <!-- the arrow to tomorrow -->
+  <path d="M586 250 q40 -40 80 0" stroke="#6b3b24" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path d="M654 226 l14 26 l-28 6z" fill="#6b3b24"/>
+  <!-- tomorrow: Eid, the crescent moon and a star, glowing -->
+  <circle cx="555" cy="440" r="110" fill="#ffe7a0" opacity=".35"/>
+  <rect x="450" y="320" width="210" height="240" rx="14" fill="#fffaf2" stroke="#e0b040" stroke-width="10"/>
+  <rect x="450" y="320" width="210" height="54" rx="14" fill="#3f8f6b"/>
+  <circle cx="505" cy="320" r="10" fill="#6b3b24"/><circle cx="605" cy="320" r="10" fill="#6b3b24"/>
+  <circle cx="545" cy="465" r="62" fill="#e0b040"/>
+  <circle cx="570" cy="448" r="56" fill="#fffaf2"/>
+  <path d="M612 420 l7 16 17 1 -13 11 4 17 -15 -9 -15 9 4 -17 -13 -11 17 -1z" fill="#e0b040"/>
+</svg>

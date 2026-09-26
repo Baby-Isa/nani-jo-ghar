@@ -1025,6 +1025,9 @@
     });
   }
 
+  // the app shell's entry hook (js/cook/app.js): the first launch plays one order of its own (Nani's chai)
+  Cook.startDay = startDay;
+
   /** Quick order: one random customer order from the dishes you've learned. */
   const orderable = (k) => Cook.save.taught[k] && Cook.data.recipes[k].free !== false;
   function generateDay(n = 1) {

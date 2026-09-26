@@ -1,0 +1,94 @@
+{
+  "_about": "Character creation (docs/first-launch-story.md, 'Character creation'; js/shared/character.js). The character is drawn from layers, bottom to top; each layer is an SVG file (placeholder art) whose fill=\"currentColor\" parts take the colour of one category's choice (tint). {body} in a file name is the body choice (boy/girl). A category is a row of picture swatches: a colour (color) or, for 'body', a whole figure. 'focus' is the part of the picture a swatch and its tab show (a viewBox), so no reading is needed. A new category (hairstyle, glasses, hijab, Eid clothes) is a new entry here plus its layer files, with no code change: a category with 'variant' picks files ({<category id>} in a layer's file name) instead of a colour. Skin tones follow the Cast's rule (docs/Nani jo Ghar — Cast.md, 'Skin tones'): warm and unsaturated around Zafar's #C49A78, never orange.",
+  "version": 1,
+  "viewBox": "0 0 240 400",
+  "categories": [
+    {
+      "id": "body",
+      "label": "Boy or girl",
+      "variant": true,
+      "focus": "20 20 200 370",
+      "default": "boy",
+      "swatches": [
+        { "id": "boy", "label": "Boy", "hands": "player-boy" },
+        { "id": "girl", "label": "Girl", "hands": "player-girl" }
+      ]
+    },
+    {
+      "id": "skin",
+      "label": "Skin",
+      "focus": "36 36 168 150",
+      "default": "s3",
+      "swatches": [
+        { "id": "s1", "color": "#E2C3A0" },
+        { "id": "s2", "color": "#D3AD89" },
+        { "id": "s3", "color": "#C49A78", "_note": "Zafar's tone: the basis for every character" },
+        { "id": "s4", "color": "#A97C5C" },
+        { "id": "s5", "color": "#8A5F44" }
+      ]
+    },
+    {
+      "id": "hair",
+      "label": "Hair",
+      "focus": "36 26 168 150",
+      "default": "h1",
+      "swatches": [
+        { "id": "h1", "color": "#221813" },
+        { "id": "h2", "color": "#3E2819" },
+        { "id": "h3", "color": "#6A4327" },
+        { "id": "h4", "color": "#8E4E2C" },
+        { "id": "h5", "color": "#B08A55" }
+      ]
+    },
+    {
+      "id": "eyes",
+      "label": "Eyes",
+      "focus": "76 90 88 48",
+      "default": "e1",
+      "swatches": [
+        { "id": "e1", "color": "#3A2414" },
+        { "id": "e2", "color": "#6B4423" },
+        { "id": "e3", "color": "#8A6A33" },
+        { "id": "e4", "color": "#5B7A4A" },
+        { "id": "e5", "color": "#5D7B93" }
+      ]
+    },
+    {
+      "id": "top",
+      "label": "Top",
+      "focus": "44 170 152 176",
+      "default": "t1",
+      "swatches": [
+        { "id": "t1", "color": "#B5523B" },
+        { "id": "t2", "color": "#D9A5A0" },
+        { "id": "t3", "color": "#E0B040" },
+        { "id": "t4", "color": "#3F8F6B" },
+        { "id": "t5", "color": "#3D6FA8" },
+        { "id": "t6", "color": "#F4EFE4" }
+      ]
+    },
+    {
+      "id": "bottom",
+      "label": "Trousers",
+      "focus": "60 280 120 110",
+      "default": "b1",
+      "swatches": [
+        { "id": "b1", "color": "#2F3B52" },
+        { "id": "b2", "color": "#F4EFE4" },
+        { "id": "b3", "color": "#6B4A3A" },
+        { "id": "b4", "color": "#3F8F6B" },
+        { "id": "b5", "color": "#7D4F8F" }
+      ]
+    }
+  ],
+  "layers": [
+    { "id": "hair-back", "file": "assets/character/hair-back-{body}.svg", "tint": "hair" },
+    { "id": "body", "file": "assets/character/body.svg", "tint": "skin" },
+    { "id": "bottom", "file": "assets/character/bottom-{body}.svg", "tint": "bottom" },
+    { "id": "top", "file": "assets/character/top-{body}.svg", "tint": "top" },
+    { "id": "head", "file": "assets/character/head.svg", "tint": "skin" },
+    { "id": "eyes", "file": "assets/character/eyes.svg", "tint": "eyes" },
+    { "id": "hair", "file": "assets/character/hair-{body}.svg", "tint": "hair" }
+  ],
+  "badge": "30 22 180 170"
+}
