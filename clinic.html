@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>The doctor's clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/shared/results.css">
+<link rel="stylesheet" href="css/shared/onboard.css">
+<link rel="stylesheet" href="css/clinic.css">
+<!--
+  The clinic (docs/modes/clinic-design.md: the pipeline, after the quality pass).
+  clinic.html                      a clinic morning (the saved session; the first ever is one tiny patient)
+  clinic.html?lab=1                the lab bar: any stage x variant x level, any healing game in the pipeline, a patient, a morning
+  Direct lab entries (all take &seed=N &quiet=1 &fast=1 &speak=0 &onboard=0 &results=0):
+    ?stage=waiting&variant=W2&level=2      one stage alone (waiting | diagnosis | pharmacy | heal | sendoff)
+    ?stage=heal&game=ear&level=1           one healing game, mounted by the pipeline's heal stage
+    ?patient=1&level=2                     one patient through all five stages
+    ?morning=1&session=3                   a morning (session 1 = the first-ever session); &nosave=1 keeps progress
+  window.__clinic for tests: {Run, Stages, expect(), finishHeal(), last, ready}.
+-->
+</head>
+<body class="clinic">
+<div id="clinic-root"></div>
+<div class="cl-lab-bar hidden" id="lab">
+  <button class="cl-lab-toggle" id="lab-min" title="Hide the lab bar">&#9776;</button>
+  <b>Clinic lab</b>
+  <select id="lab-what">
+    <option value="morning">a morning</option>
+    <option value="patient">a patient</option>
+    <option value="waiting">1 waiting room</option>
+    <option value="diagnosis">2 diagnosis</option>
+    <option value="pharmacy">3 pharmacy (belt)</option>
+    <option value="heal">4 heal</option>
+    <option value="sendoff">5 send-off</option>
+  </select>
+  <label>variant <select id="lab-variant"><option value="">draw</option></select></label>
+  <label>game <select id="lab-game"><option value="">draw</option></select></label>
+  <label>L <select id="lab-level"><option>1</option><option>2</option><option>3</option></select></label>
+  <label>session <select id="lab-session"><option value="">saved</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+  <label>seed <input id="lab-seed" size="6"></label>
+  <label><input type="checkbox" id="lab-speak" checked> speaking</label>
+  <button id="lab-go">Go</button>
+  <button id="lab-reset" title="Forget this device's clinic progress">reset</button>
+  <span class="grow"></span>
+  <a href="lab/clinic-heal-host.html">heal host</a>
+</div>
+<pre class="cl-lab-out" id="lab-out"></pre>
+
+<script src="js/version.js"></script>
+<script src="js/shared/uistore.js"></script>
+<script src="js/shared/sfx.js"></script>
+<script src="js/shared/results.js"></script>
+<script src="js/shared/onboard.js"></script>
+<script src="js/shared/speech.js"></script>
+<script src="js/shared/say.js"></script>
+<script src="js/clinic/body.js"></script>
+<script src="js/clinic/kit.js"></script>
+<script src="js/clinic/figure.js"></script>
+<script src="js/clinic/screen.js"></script>
+<script src="js/clinic/pipeline.js"></script>
+<script src="js/clinic/heal/registry.js"></script>
+<script src="js/clinic/heal/host.js"></script>
+<script src="js/clinic/stages/common.js"></script>
+<script src="js/clinic/stages/waiting.js"></script>
+<script src="js/clinic/stages/diagnosis.js"></script>
+<script src="js/clinic/stages/pharmacy.js"></script>
+<script src="js/clinic/stages/heal.js"></script>
+<script src="js/clinic/stages/sendoff.js"></script>
+<script src="js/clinic/run.js"></script>
+<script>
+(async function () {
+  const Q = new URLSearchParams(location.search);
+  const Kit = Clinic.Kit, Run = Clinic.Run, S = Clinic.Stages, P = ClinicPipeline;
+  Kit.Voice.quiet = Q.get("quiet") === "1";
+  Kit.fast = Q.get("fast") === "1";
+  const $ = (id) => document.getElementById(id);
+  const out = $("lab-out");
+  const print = (s) => { out.textContent = (out.textContent + s + "\n").split("\n").slice(-30).join("\n"); };
+  const C = (window.__clinic = { Run, Stages: S, expect: () => S.expect(), finishHeal: () => S.heal.finish(), last: null, ready: false, errors: [] });
+  window.addEventListener("error", (e) => C.errors.push(String(e.message)));
+
+  // every healing game that exists
+  const load = (src) => new Promise((res) => {
+    const s = document.createElement("script");
+    s.src = njgV(src);
+    s.onload = () => res(true);
+    s.onerror = () => res(false);
+    document.body.appendChild(s);
+  });
+  await Promise.all(Clinic.Heal.IDS.map((id) => load(`js/clinic/heal/games/${id}.js`)));
+  await Run.load();
+  const screen = Clinic.Screen.build($("clinic-root"), { level: 1 });
+  C.screen = screen;
+  Run.opts.speak = Q.get("speak") !== "0";
+  Run.opts.onboard = Q.get("onboard") !== "0";
+  const results = Q.get("results") !== "0";
+
+  // ---- the lab bar ----
+  const lab = Q.get("lab") === "1";
+  const VARIANTS = { waiting: ["W1", "W2", "W3", "W4"], diagnosis: ["D1", "D1b", "D2", "D3"], sendoff: ["E1", "E2", "E3", "E4"] };
+  const fillVariants = () => {
+    const w = $("lab-what").value;
+    $("lab-variant").innerHTML = '<option value="">draw</option>' + (VARIANTS[w] || []).map((v) => `<option>${v}</option>`).join("");
+  };
+  $("lab-game").innerHTML = '<option value="">draw</option>' + Run.games().map((g) => `<option>${g}</option>`).join("");
+  $("lab-what").onchange = fillVariants;
+  $("lab-min").onclick = () => $("lab").classList.toggle("min");
+  $("lab-reset").onclick = () => { Run.reset(); if (window.Onboard) Onboard.reset(); print("progress reset"); };
+
+  const levelsAll = (L) => ({ waiting: L, diagnosis: L, pharmacy: L, heal: L, sendoff: L });
+  C.go = async function (o) {
+    const seed = +o.seed || Math.floor(Math.random() * 1e5);
+    const rng = P.rng(seed);
+    const L = +o.level || 1;
+    print(`-- ${o.what} L${L} seed ${seed}${o.variant ? " " + o.variant : ""}${o.game ? " " + o.game : ""}`);
+    Run.opts.speak = o.speak !== false && Q.get("speak") !== "0";
+    try {
+      if (o.what === "morning") {
+        const r = await Run.morning(screen, { session: +o.session || null, seed, noSave: Q.get("nosave") === "1", results });
+        C.last = r;
+        print(`morning done: ${r.outs.map((x) => `${x.plan.kind}/${x.plan.ailment} ${x.right}/${x.total}`).join(", ")}`);
+        return r;
+      }
+      const games = Run.games();
+      const ailment = o.game ? P.ailmentsFor(Run.data, 3, [o.game]).find((a) => (Run.data.ailments[a].from || 1) <= L) || P.ailmentsFor(Run.data, 3, [o.game])[0] : null;
+      const plan = P.patient(Run.data, { rng, levels: levelsAll(L), variants: o.variant ? { [o.what]: o.variant } : {}, ailment, games, speak: Run.opts.speak });
+      C.plan = plan;
+      if (o.what === "patient") {
+        const r = await Run.patient(screen, plan, { seed, results });
+        C.last = r;
+        print(`patient done: ${plan.kind}/${plan.ailment} ${r.right}/${r.total} in ${Math.round(r.timeMs / 1000)} s`);
+        return r;
+      }
+      const env = Run.env(screen, plan, { seed });
+      const r = await Run.stage(screen, o.what, plan, env);
+      C.last = r;
+      const hl = r.heal ? ` heal ${r.heal.right}/${r.heal.total}` : "";
+      print(`${o.what} done: ${r.rows.map((x) => `${x.id}:${x.ok ? "✓" : "✗"}${x.tested ? "" : "(taught)"}`).join(" ")}${hl}`);
+      env.fig.destroy();
+      return r;
+    } catch (e) {
+      console.error(e);
+      print(`error: ${e.message}`);
+      C.errors.push(String(e.message));
+    }
+  };
+  $("lab-go").onclick = () => C.go({ what: $("lab-what").value, variant: $("lab-variant").value, game: $("lab-game").value, level: $("lab-level").value, session: $("lab-session").value, seed: $("lab-seed").value, speak: $("lab-speak").checked });
+
+  if (lab) $("lab").classList.remove("hidden");
+  const what = Q.get("stage") || (Q.get("patient") ? "patient" : Q.get("morning") ? "morning" : null);
+  if (Q.get("level")) $("lab-level").value = Q.get("level");
+  if (Q.get("seed")) $("lab-seed").value = Q.get("seed");
+  C.ready = true;
+  if (what) {
+    $("lab-what").value = what;
+    fillVariants();
+    if (Q.get("variant")) $("lab-variant").value = Q.get("variant");
+    if (Q.get("game")) $("lab-game").value = Q.get("game");
+    C.go({ what, variant: Q.get("variant"), game: Q.get("game"), level: Q.get("level"), session: Q.get("session"), seed: Q.get("seed") });
+  } else if (!lab) {
+    // the game: a clinic morning, then another
+    for (;;) await C.go({ what: "morning" });
+  } else fillVariants();
+})();
+</script>
+</body>
+</html>

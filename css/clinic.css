@@ -159,3 +159,104 @@ body.clinic button { font-family: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .cl-row.pulse, .cl-dish.pulse, .cl-go.throb, .cl-fig .fig-swirl { animation: none; }
 }
+
+/* ================= the pipeline's stages (js/clinic/stages/*.js) ================= */
+.cl-face { width: 100%; height: 100%; display: grid; place-items: center; font-size: 26px; overflow: hidden; border-radius: 50%; background: #f1e3cc; }
+.cl-face img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+.cl-face svg { width: 100%; height: 100%; }
+
+/* the rooms */
+.cl-room { background: #efe2cb; }
+.cl-room-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .55; }
+.cl-room.room-exam .cl-room-bg { opacity: .45; }
+.cl-fx { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+.cl-fx > * { pointer-events: auto; }
+
+/* the request card: a big copy over the play area, then it flies into the sidebar (UX s1) */
+.cl-card-big { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -55%); width: min(86%, 560px); max-height: 80%; z-index: 120; font-size: 1.25em; box-shadow: 0 10px 40px rgba(60, 40, 20, .25); }
+.cl-card-big:not([style*="transform"]) { animation: cl-card-in .3s ease-out; }
+.cl-card-big .cl-row { font-size: clamp(20px, 3vw, 34px); }
+.cl-card-big .cl-card-face { width: 64px; height: 64px; }
+.cl-card-waiting { visibility: hidden; }
+@keyframes cl-card-in { from { opacity: 0; transform: translate(-50%, -45%) scale(.9); } }
+.cl-card-face .cl-face { border-radius: 50%; }
+
+/* stage 1: the bench */
+.cl-bench { position: absolute; left: 3%; right: 26%; bottom: 4%; height: 58%; display: flex; align-items: flex-end; justify-content: center; gap: 1.5%; }
+.cl-bench::after { content: ""; position: absolute; left: -2%; right: -2%; bottom: 0; height: 14%; background: #b98b5c; border-radius: 12px; box-shadow: 0 6px 0 #8f6841; z-index: -1; }
+.cl-seat { position: relative; flex: 0 1 22%; height: 100%; min-width: 64px; border: none; background: none; padding: 0; cursor: pointer; transition: transform .9s ease-in-out, opacity .9s; }
+.cl-seat-who { position: absolute; inset: 0 0 6% 0; display: flex; align-items: flex-end; justify-content: center; }
+.cl-seat-img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
+.cl-seat .cl-fig { height: 100%; }
+.cl-seat.size-small .cl-seat-who { transform: scale(.78); transform-origin: 50% 100%; }
+.cl-seat.puzzled .cl-seat-who { animation: cl-shake .7s; }
+.cl-seat.standing .cl-seat-who { transform: translateY(-8%); }
+.cl-seat.walking { transform: translate(var(--dx), var(--dy)) scale(.9); z-index: 5; pointer-events: none; }
+.cl-seat.rock .cl-seat-who { animation: cl-shiver .5s 2; }
+.cl-ring { position: absolute; left: 50%; top: -2%; width: 34px; height: 34px; margin-left: -17px; border-radius: 50%; background: conic-gradient(#e2a33a var(--p, 100%), #f1e3cc 0); animation: cl-ring var(--t, 30s) linear infinite; }
+@property --p { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
+@keyframes cl-ring { from { --p: 100%; } to { --p: 0%; } }
+.cl-exam-spot { position: absolute; right: 2%; bottom: 6%; width: 22%; height: 40%; }
+.cl-exam-bench { position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: #d7ecef; border: 4px solid #9cc7cd; border-radius: 14px; }
+
+/* stage 2: probes, the kit, finds */
+.cl-probe { position: absolute; width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%; border: 4px solid rgba(226, 163, 58, .9); background: rgba(255, 226, 150, .35); cursor: pointer; animation: cl-probe 1.4s ease-in-out infinite; }
+.cl-probe.sel { border-color: var(--cl-accent); background: rgba(46, 139, 122, .25); animation: none; }
+.cl-probe.done { opacity: .35; animation: none; }
+@keyframes cl-probe { 50% { transform: scale(1.18); box-shadow: 0 0 0 8px rgba(226, 163, 58, .25); } }
+.cl-kit { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 25; }
+.cl-kit-tool { width: clamp(58px, 7vw, 84px); height: clamp(58px, 7vw, 84px); border-radius: 18px; border: 3px solid #d8c6a8; background: #fff; display: grid; place-items: center; cursor: pointer; padding: 0; }
+.cl-kit-tool.sel { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); transform: scale(1.06); }
+.cl-find { position: absolute; transform: translate(-50%, -50%); font-size: 34px; pointer-events: none; animation: cl-pop .2s; }
+.cl-find.sore { font-size: 46px; filter: drop-shadow(0 0 8px #ffb347); }
+
+/* stage 3: the belt and the counter tray */
+.cl-pharmacy .cl-belt { position: absolute; left: 0; right: 0; top: 8%; height: 30%; }
+.cl-belt-track { position: absolute; inset: 18% 0; background: repeating-linear-gradient(90deg, #6f7a86 0 26px, #5f6a75 26px 52px); border-top: 6px solid #4b545e; border-bottom: 6px solid #4b545e; overflow: hidden; }
+.cl-belt.stopped .cl-belt-track { filter: saturate(.4); }
+.cl-belt-dish { position: absolute; left: 0; top: 50%; margin-top: calc(clamp(64px, 9vw, 104px) / -2); width: clamp(64px, 9vw, 104px); height: clamp(64px, 9vw, 104px); border-radius: 50%; border: 4px solid #e9e1d2; background: #fffaf1; display: grid; place-items: center; padding: 0; cursor: pointer; will-change: transform; box-shadow: 0 4px 0 rgba(0, 0, 0, .18); touch-action: none; }
+.cl-fly { position: fixed; z-index: 300; border-radius: 50%; border: 4px solid #e9e1d2; background: #fffaf1; display: grid; place-items: center; transition: transform .3s ease-in; pointer-events: none; }
+.cl-counter-tray { position: absolute; right: 3%; bottom: 6%; padding: 12px 14px; background: #caa46f; border-radius: 22px; box-shadow: 0 6px 0 #9c7a4a; display: flex; gap: 10px; }
+.cl-counter-tray .cl-dish { cursor: default; }
+.cl-dish.lifted { transform: translateY(-18px) scale(1.08); box-shadow: 0 10px 18px rgba(0, 0, 0, .2); }
+.cl-stopper { position: absolute; left: 3%; bottom: 8%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: #fff6d8; font-size: 30px; cursor: pointer; }
+.cl-item.own-colour { border-color: rgba(0, 0, 0, .08); }
+
+/* stage 5: faces, the one more thing, the sticker */
+.cl-faces { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 10px; width: min(38%, 300px); z-index: 25; }
+.cl-face-card { min-height: 88px; border-radius: 20px; border: 4px solid #e2d3bb; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; padding: 6px; }
+.cl-face-emoji { font-size: clamp(34px, 5vw, 54px); line-height: 1; }
+.cl-face-word { font: 700 15px var(--cl-head); }
+.cl-face-card.yes { border-color: var(--cl-good); box-shadow: 0 0 0 5px rgba(63, 163, 91, .3); }
+.cl-face-card.nope { animation: cl-shake .45s; }
+.cl-extra { margin-top: auto; width: 100%; height: 76px; border-radius: 18px; border: 4px solid var(--cl-accent-2); background: #fff; display: grid; place-items: center; cursor: pointer; animation: cl-throb-dish 1s ease-in-out infinite; }
+.cl-sticker { position: absolute; right: 8%; top: 8%; width: 96px; height: 96px; border-radius: 50%; border: 5px solid #fff; box-shadow: 0 4px 14px rgba(0, 0, 0, .2); animation: cl-sticker 1s ease-out forwards; z-index: 30; }
+@keyframes cl-sticker { 0% { transform: scale(0) rotate(-30deg); } 60% { transform: scale(1.2) rotate(8deg); } 100% { transform: scale(1) rotate(-6deg); } }
+
+/* speaking: the pills without a mic (the shared Say panel draws its own) */
+.cl-pills { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 92%; z-index: 90; background: rgba(255, 250, 241, .95); padding: 12px; border-radius: 22px; box-shadow: 0 6px 20px rgba(0, 0, 0, .15); }
+.cl-pills-cap { width: 100%; text-align: center; font: 700 16px var(--cl-head); color: var(--cl-soft); }
+.cl-pill { min-height: 64px; padding: 8px 18px; border-radius: 32px; border: 3px solid #d8c6a8; background: #fff; font: 800 clamp(16px, 2vw, 22px) var(--cl-head); cursor: pointer; }
+
+/* close the clinic: the receipt */
+.cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: #fff; border-radius: 22px; padding: 16px 20px; box-shadow: 0 8px 30px rgba(0, 0, 0, .15); text-align: center; }
+.cl-receipt-title { font-size: 44px; }
+.cl-receipt-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; border-bottom: 2px dashed #eadcc6; }
+.cl-receipt-row .cl-face { width: 56px; height: 56px; flex: none; }
+.cl-receipt-item { width: 56px; height: 56px; display: grid; place-items: center; }
+.cl-receipt-mark { margin-left: auto; font-size: 34px; color: #cdb996; }
+.cl-receipt-mark.gold { color: #e2a33a; }
+.cl-receipt-coins { margin-top: 10px; font: 800 30px var(--cl-head); }
+
+/* narrow and short screens */
+@media (max-width: 700px) and (orientation: portrait) {
+  .cl-app { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+  .cl-side { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 3px solid #e6d6bd; max-height: 34vh; }
+  .cl-side .cl-card { flex: 1 1 60%; }
+  .cl-side-tray { flex: 1 1 100%; }
+  .cl-side .cl-tray { flex-direction: row; }
+  .cl-side .cl-tray .cl-dish { width: 64px; height: 56px; }
+  .cl-actions { flex-direction: row; justify-content: flex-end; padding: 8px; }
+  .cl-go { min-width: 140px; }
+  .cl-lab-bar { left: 0; right: 0; }
+}
