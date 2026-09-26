@@ -354,7 +354,7 @@
       const f = headG;
       // long hair falls behind the face (Ma, the aunties)
       if (KIND.hair === "long") S("path", { d: "M70 250 Q40 520 150 540 L450 540 Q560 520 530 250 Z", fill: HAIR }, f);
-      if (KIND.hair === "bunches") [[46, 320], [554, 320]].forEach(([x, y]) => {
+      if (KIND.hair === "bunches") [[58, 322], [542, 322]].forEach(([x, y]) => {
         S("circle", { cx: x, cy: y, r: 48, fill: HAIR }, f);
         S("circle", { cx: x + (x < 300 ? 26 : -26), cy: y - 34, r: 12, fill: "#e46d8f" }, f);
       });
@@ -519,8 +519,9 @@
       } else if (ctx.card.now) ctx.card.now(rowsOf(use).find((id) => !ticked.has(id)) || rowsOf(use)[0]);
       if (use === "comb") {
         const p = toView(300, 20);
+        // the comb shows itself over the mop, then gets out of the way
         els.comb.setAttribute("transform", `translate(${p.x} ${p.y})`);
-        els.comb.setAttribute("opacity", 1);
+        anim(els.comb, [{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.75 }, { opacity: 0 }], { duration: 1400 });
       }
     }
 
@@ -543,6 +544,7 @@
         /* synthetic pointers */
       }
       els.comb.setAttribute("transform", `translate(${swipe.p.x} ${swipe.p.y - 20})`);
+      els.comb.setAttribute("opacity", 1);
     }
     function moveSwipe(e) {
       if (!swipe) return;
@@ -554,6 +556,7 @@
       }
     }
     function endSwipe() {
+      if (swipe && !swipe.done) els.comb.setAttribute("opacity", 0);
       swipe = null;
     }
     function stroke(a, b) {
@@ -566,8 +569,8 @@
       const bot = toView(300, 215).y; // down to the hairline, never over the eyes
       const x = Math.max(toView(110, 0).x, Math.min(toView(490, 0).x, a.x));
       const down = b.y >= a.y;
-      anim(els.comb, [{ transform: `translate(${x}px, ${down ? top : bot}px)` }, { transform: `translate(${x}px, ${down ? bot : top}px)`, offset: 0.7 }, { transform: `translate(${x}px, ${top}px)` }], { duration: 600, easing: "ease-in-out" });
-      els.comb.setAttribute("transform", `translate(${x} ${top})`); // parked on top of the mop between strokes
+      anim(els.comb, [{ transform: `translate(${x}px, ${down ? top : bot}px)`, opacity: 1 }, { transform: `translate(${x}px, ${down ? bot : top}px)`, opacity: 1, offset: 0.75 }, { transform: `translate(${x}px, ${down ? bot : top}px)`, opacity: 0 }], { duration: 560, easing: "ease-in-out" });
+      els.comb.setAttribute("opacity", 0); // out of the way between strokes (it never hides a beetle)
       els.beetles.forEach((e, k) => !e.caught && jump(e, 40 + k * 35));
       anim(els.mop, [{ transform: "translateY(0)" }, { transform: "translateY(4px)" }, { transform: "translateY(0)" }], { duration: 400 });
       lookAt(0, -6);

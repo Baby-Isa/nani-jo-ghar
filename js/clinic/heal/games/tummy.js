@@ -348,7 +348,7 @@
       els.belly = belly;
       els.bellyHit = S("ellipse", { cx: B.cx, cy: B.cy, rx: B.rx, ry: B.ry, fill: SKIN, stroke: SKIN_D, "stroke-width": 6 }, belly);
       S("path", { d: `M${B.cx - B.rx * 0.8} ${B.cy + B.ry * 0.45} Q${B.cx} ${B.cy + B.ry * 1.02} ${B.cx + B.rx * 0.8} ${B.cy + B.ry * 0.45}`, stroke: SKIN_D, "stroke-width": 5, fill: "none", opacity: 0.45 }, belly);
-      S("ellipse", { cx: B.cx - B.rx * 0.45, cy: B.cy - B.ry * 0.05, rx: 30, ry: 18, fill: "#fff", opacity: 0.18 }, belly);
+      S("ellipse", { cx: B.cx - 200, cy: B.cy + 40, rx: 26, ry: 16, fill: "#fff", opacity: 0.18, transform: `rotate(-35 ${B.cx - 200} ${B.cy + 40})` }, belly);
       // the belly button with a face
       const bx = B.cx;
       const by = B.cy + 95;
@@ -674,7 +674,7 @@
       ctx.signal && ctx.signal("heal-tummy-pour");
       ctx.sfx("whoosh");
       const j = els.jug[id];
-      anim(j.body, [{ transform: "rotate(0)" }, { transform: "rotate(-28deg)" }, { transform: "rotate(0)" }], { duration: 600 });
+      anim(j.body, [{ transform: "rotate(0)" }, { transform: "rotate(28deg)" }, { transform: "rotate(0)" }], { duration: 600 });
       const G = L.glass;
       const stream = S("path", { d: `M${G.x + 6} ${G.y - 130} Q${G.x + 2} ${G.y - 80} ${G.x} ${G.y - 20}`, stroke: DRINK[id].fill, "stroke-width": 12, fill: "none", "stroke-linecap": "round", opacity: 0.9, "pointer-events": "none" }, els.splash);
       if (id === "dudh") stream.setAttribute("stroke", "#fffdf8");
