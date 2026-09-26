@@ -1,7 +1,7 @@
 # Monsoon rush: design (mode 7, core verb **react**)
 
 **Date:** 25 Sept 2026
-**Status:** proposal for Zafar, deepened on 25 Sept and **redesigned as a pipeline on 25 Sept (evening)**: the "Pipeline design" section at the top is current and supersedes the deep dive and the older sections where they conflict. Phases 0–1 of the deep dive's build brief exist (`js/monsoon/`, `build/reports/monsoon-build.md`). It follows `docs/modes/MODE-DESIGN-BRIEF.md` and builds on `docs/game-modes-v2.md` (mode 7), `docs/find-it-design.md` (the model), the Cook audit (`docs/cook-with-nani-kutchi-audit.md`) and Zafar's playtest waves (`docs/cook-with-nani-todo.md`).
+**Status:** proposal for Zafar, deepened on 25 Sept, **redesigned as a pipeline on 25 Sept (evening)** and **sharpened by the mini-game quality pass (written 26 Sept)**: the quality pass at the top is current where it and the pipeline design conflict; the pipeline design supersedes the deep dive and the older sections where they conflict. Phases 0–1 of the deep dive's build brief exist (`js/monsoon/`, `build/reports/monsoon-build.md`). It follows `docs/modes/MODE-DESIGN-BRIEF.md` and builds on `docs/game-modes-v2.md` (mode 7), `docs/find-it-design.md` (the model), the Cook audit (`docs/cook-with-nani-kutchi-audit.md`) and Zafar's playtest waves (`docs/cook-with-nani-todo.md`).
 **Placeholder rule:** the only Kutchi below is what is already in `data/content.json` or `data/cook.json`. Anything written `[EN: under]` has no Kutchi yet: in the game it's an English placeholder in grey italic until the family gives the word. **Never invent Kutchi.** Section 6.6 lists every word needed.
 
 ---
