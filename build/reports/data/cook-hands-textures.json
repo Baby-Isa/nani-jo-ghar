@@ -1,0 +1,13 @@
+{
+ "laptop-player-boy": {
+  "fetch": [
+   "hand@nani/a3-palm-up-t",
+   "hand@player-boy/d1-grab-f1-open-t",
+   "hand@player-boy/d1-grab-f2-closed-t"
+  ],
+  "stir": [
+   "hand@nani/c4-point-t",
+   "hand@player-boy/b1-handle-grip-t"
+  ]
+ }
+}
