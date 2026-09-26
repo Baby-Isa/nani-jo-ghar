@@ -14,6 +14,8 @@ Every module is one plain file with no dependencies. As a `<script>` it sets a g
 | `js/shared/stars.js` | `Stars` | `stars` | `data/shared/stars.json` |
 | `js/shared/say.js` | `Say` | `say` | uses `Speech`, and `Stars` if loaded |
 | `js/shared/overlay.js` | `Overlay` | `overlay` | `data/shared/overlays.json` |
+| `js/shared/save.js` | `Save` | `save` | localStorage (section 11) |
+| `js/shared/app.js` | `NjgApp` | none | none (section 12; browser only) |
 
 ```html
 <script src="js/shared/speech.js"></script>
@@ -413,7 +415,7 @@ Reduced motion shows everything at once (sounds still play). Every target is at 
 | `Results.fromStars(stars, {help?, right?, total?})` | show()'s `{right, total, hints}` for a mode that only has stars, with tiers matching them |
 
 ### 8.1 `UIStore`: where bests and "seen" live
-`UIStore.get/set(section, key)`, `clear(section?)`, `use(backend)`, `memory()`. With a profile attached (`Progress.attachProfile`), the data is `profile.shared_ui = {bests, onboarded, seen}`, saved through the same `onChange` as word stages, so there is nothing to migrate. With no profile (labs only), it uses one fallback key, `localStorage["njg-shared-ui-fallback-v1"]`.
+`UIStore.get/set(section, key)`, `clear(section?)`, `use(backend)`, `memory()`. **Phase B:** with `js/shared/save.js` loaded (every game page loads it), the data is the current player's `"ui"` namespace in the one save (section 11): `{bests, onboarded, seen, clinic: {state}}`; `UIStore.kind()` is `"save"`. Without it (Node, the old fruit-bowl errand): with a profile attached (`Progress.attachProfile`) the data is `profile.shared_ui`; with neither, one fallback key, `localStorage["njg-shared-ui-fallback-v1"]` (migrated into the one save the first time a device runs it).
 
 ## 9. The onboarding kit: `js/shared/onboard.js`, `css/shared/onboard.css`
 
@@ -451,3 +453,57 @@ Onboard.signal("pour-done");   // the mode says the child did it (or dispatch a 
    - for canvas stations, give the spotlight rects in page px, from your stage-to-screen transform.
 4. **Fade-ins.** Mark the sidebar, stars and light bulb with `Onboard.await(el, "<mode>/sidebar")`, and call `Onboard.fadeIn(el, key)` in the round that first needs each one.
 5. **Tests.** Run `node --test build/test_shared_ui.mjs` and `node build/test_shared-ui-browser.mjs` (port 8811). The lab is `lab/shared-ui.html`.
+
+## 11. The one save: `js/shared/save.js` (phase B, 26 Sept 2026)
+
+Every mode reads and writes progress through it, through a small adapter in that mode. Load it right after `js/version.js` on every game page (before anything that saves).
+
+**Layout (localStorage).** Synchronous on purpose: every mode's load/save was already synchronous, so the adapters are a few lines each and no mode's boot changes.
+
+| Key | Holds |
+|---|---|
+| `njg-save` | the root: `{schema: 1, current, players: [{id, name, colour, created, auto?}], migrated: {oldKey: {player, ns, at}}}` |
+| `njg-save:<player>:cook` | `Cook.save` exactly as before: coins, day, **word stages** (`words`), **stars** (`best`), `taught`, and the `find` / `dress` / `snap` sub-saves that share it. The star and stage rules are Cook's, unchanged |
+| `njg-save:<player>:ui` | `UIStore`: personal bests (`results.js`), onboarding "seen" flags (`onboard.js`), `seen`, the clinic's `state` |
+| `njg-save:<player>:speech` | voice enrolment (`speech.js`): `{choice: [packed takes]}` |
+| `njg-save:<player>:shell` | the shell's flags: `firstDone` (had the first pantry round) |
+
+A new mode picks a namespace name (`[\w-]+`) and calls `Save.get(ns)` / `Save.set(ns, obj)`; nothing else to register.
+
+| Call | Does |
+|---|---|
+| `Save.init()` | load the root; the first time on a device, migrate (below). Every call below runs it |
+| `Save.players()` / `Save.current()` / `Save.currentId()` / `Save.player(id)` | copies of the player list and records |
+| `Save.addPlayer({name, colour, auto?})` | a new player, made current; asks `navigator.storage.persist()` the first time |
+| `Save.select(id)` / `Save.updatePlayer(id, {name, colour})` / `Save.removePlayer(id)` | switch, rename or recolour, remove (with every key of theirs) |
+| `Save.ensurePlayer()` | the current player, making "Player 1" if there's nobody (a mode page opened on its own) |
+| `Save.get(ns, id?)` / `Save.has(ns, id?)` / `Save.set(ns, obj, id?)` / `Save.update(ns, fn, id?)` / `Save.clear(ns, id?)` | a namespace of the current (or named) player. `get` returns a copy, `{}` when empty; `set` returns false if it could only keep it in memory |
+| `Save.flag(name)` / `Save.setFlag(name, value)` | the `shell` namespace |
+| `Save.exportJSON()` / `Save.importJSON(text)` | the parent's save file: `{format: "nani-jo-ghar-save", schema, exported, root, data: {player: {ns: …}}}`. Import adds players, or replaces the player with the same id; everyone else stays. Throws on a file that isn't a save or is from a newer schema |
+| `Save.persistent()` | false when storage is blocked or full: play carries on from memory for the visit |
+| `Save.onChange(fn)` | `fn("player" \| "data", what)`; returns an unsubscribe |
+| `Save.use(storage)` / `Save.memoryStore()` | tests: any Storage-like object |
+
+**Migration.** `schema` 0 is "before the shell". The first `init()` on a device with no root copies each old key that exists into a first player, "Player 1": `njg-cook-v1` → `cook`, `njg-shared-ui-fallback-v1` → `ui`, `njg-speech-enrol-v1` → `speech`. The old keys are never deleted (a way back). A corrupt old key is skipped. A missing or corrupt root with players' keys present is rebuilt from the keys. Later schema changes add a step to `Save.MIGRATIONS[n]`. Not migrated: the old fruit-bowl errand (`bowl.html`) keeps its own IndexedDB profiles (`js/storage.js`); it is a prototype outside the app.
+
+**Adapters** (the whole of each mode's change):
+- Cook (`js/cook/core.js`, `loadSave`/`writeSave`): `Cook.save` ⇄ `Save.get/set("cook")`, falling back to the old key if a page doesn't load `save.js`. Find it, Dress up and Snap use `Cook.save`, so they follow with no change.
+- `UIStore` (`js/shared/uistore.js`): a `"save"` backend, used whenever `Save` is loaded. The clinic, results and onboarding follow with no change.
+- `speech.js`: enrolments load from and save to `Save` `"speech"`.
+
+Every storage access is wrapped in try/catch. Tests: `node --test build/test_shared_save.mjs`.
+
+## 12. The app frame: `js/shared/app.js`, `css/shared/app.css`
+
+What makes the separate pages one app. Load `css/shared/app.css` first in the `<head>` (render-blocking: the house colour is the first paint) and `js/shared/app.js` right after `save.js`.
+
+- **Navigation is by page.** The house (`index.html`) opens a mode with `?app=1`; the way home goes back to `index.html?from=<page>`. Pages cross-fade (cross-document view transitions where the browser has them, else a 150 ms fade-out). Why pages and not in-page mounting: `build/reports/shell.md`.
+- **The way home.** With `?app=1`, the mode's own ⌂ rail button (`#btn-home`) goes home instead of to the mode's menu, and a ⌂ in the player's colour (`#njg-home`) sits in the top-left corner whenever the mode isn't mid-round (always, where a mode has no rail ⌂). Mid-round, leaving asks first. Both are handled on the window in the capture phase, so the onboarding kit's blocker can't swallow them. Without `?app=1` a page behaves as before.
+
+| Call | Does |
+|---|---|
+| `NjgApp.isApp()` | opened from the house |
+| `NjgApp.go(url)` / `NjgApp.home(from?)` / `NjgApp.link(url)` | open a page of the app / back to the house / add `app=1` |
+| `NjgApp.mount({busy, rest, confirm})` | a mode's own rules: `busy()` mid-round (default `Cook.inDay`), `rest()` when the corner ⌂ shows, the confirm text |
+
+**A mode's first launch** is its own adapter's job: Cook's is `js/cook/app.js` (`?first=1`: one play button, then day 1's pantry order, then home), hooked into `flow.js` by `Cook.afterOrder(spec, day, {free})`, which may return `"leave"`.
