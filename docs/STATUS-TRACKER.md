@@ -46,10 +46,10 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 ## 3. Language
 | Piece | % | Next step |
 |---|---|---|
-| Recordings with Mum (Sections A–J, about 170 min in all) | 15 | **Section C** (the grammar sentences) next, then G (clinic and monsoon), D, E, F, H, I. Also the 10 first-launch story lines. |
+| Recordings with Mum (Sections A–J, about 170 min in all) | 15 | **Next session: `docs/Questions for Mum (Round 3).docx`** (re-takes, Conversations, story lines, one/many nouns, then G, C, E, F, H, D, I, J). Was: | **Section C** (the grammar sentences) next, then G (clinic and monsoon), D, E, F, H, I. Also the 10 first-launch story lines. |
 | Section A (grammar basics) and B (Cook words) | 100 | Done: grammar notes §1–§28. |
 | Grammar notes and spelling rules | 35 | Grows with each recording. Answer the open spelling questions. |
-| Voice clips (cut from the recordings, a lab page to check them) | 60 | 86 Mum and 87 Zafar clips from Section B are in `lab/family-audio.html`. Zafar ticks the good ones; then wire them into the game and speech enrolment. |
+| Voice clips (cut from the recordings, a lab page to check them) | 75 | **Checked by Zafar (26 Sept):** 146 OK, 27 to redo (`checked` field in `data/family-audio.json`), 21 not yet checked. Next: wire the OK clips into the game and speech enrolment. Was: | 86 Mum and 87 Zafar clips from Section B are in `lab/family-audio.html`. Zafar ticks the good ones; then wire them into the game and speech enrolment. |
 | Words in the game data | Cook 70, Find 40, the clinic 5, the others 5–10 | Each mode's words go in when its recording section is done. |
 | Syllabus word lists S1–S6 | S1 50, S2 20, S3–S6 5 | Recordings C and E–H fill S2–S4. |
 
