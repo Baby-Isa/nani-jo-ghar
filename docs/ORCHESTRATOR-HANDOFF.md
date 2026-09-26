@@ -132,3 +132,6 @@ All seven sessions died mid-work. Relaunched (continuations resume from their br
 - Cook Wave 6b `claude/build-cook-wave6b` (from nifty-rubin, with the clarified §12: consistency within a mini-game, not tap-only): session_01Eas3sw63Nh9b3GA6NEw5BV
 - hands v3 `claude/art-hands-v3` (from art-hands-v1; QA every hand pass/fail, 3D jewellery, 9 failed masters b1 first, ≤ $8): session_015ho7YCkDF3zNcXC2bhmRkB
 On reports: merge into nifty-rubin → bump_version → smoke test → push → publish main → update MORNING-SUMMARY.
+
+### 26 Sept ~09:50 UTC: clinic and Cook Wave 6b merged and published
+- `origin/claude/clinic-core` (with heal A/B/C and rough art) and `origin/claude/build-cook-wave6b` are merged into `claude/nifty-rubin-c0d431` and published to `main`. Conflicts were only `?v=` stamps (`clinic.html`, `cook.html`, `js/version.js`); neither branch touched `js/shared/*` or the grammar/ideas docs. `labs.html` now has a clinic section (play, lab index, lab bar, five stages, every healing game). Leak bots pass (whole patient L1 blind 0.30%; Cook count leaks 0%); smoke test clean at 390×844 and 1366×768. `claude/art-hands-v3` is still running and not merged.
