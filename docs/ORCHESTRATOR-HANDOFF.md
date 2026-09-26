@@ -120,3 +120,14 @@ All blocking decisions in the deep dives (top sections of each mode's design doc
 ### 26 Sept ~04:45 UTC: the clinic is the main focus; clinic build team launched (Opus)
 Contract: `docs/clinic-heal-api.md`. Sessions: core `claude/clinic-core` (session_015nuiYSYyy9PEjhTGM9ThVV), healing A knee/ear/tooth `claude/clinic-heal-a` (session_01JjgCWxwQMX4wUf2exczNqr), B taste/fever/boing `claude/clinic-heal-b` (session_01KvDuC9Yvy62LacWFvh7T2t), C eye/foot (+ extras) `claude/clinic-heal-c` (session_01YVNTUEysNinFPfLmLo2nL9), rough art via the OpenAI API ≤ $5 medium `claude/clinic-rough-art` (session_01MsFHeo1j7wwn5iGSJnb1FY). The core merges the others; orchestrator merges `claude/clinic-core` when its report lands. Also still running: Cook Wave 6b.
 Hands ("arms") for Cook: `claude/art-hands-v1` still awaits Zafar's ring approval (contact sheets on that branch in `build/contact-sheets/hands-*.png`); 9 masters still fail, incl. the knife/spatula grip.
+
+## 26 Sept, 08:00 UTC: relaunch after the usage limit (limit hit ~05:05, reset 07:50)
+All seven sessions died mid-work. Relaunched (continuations resume from their branch's pushed work; 6b and hands v3 had pushed nothing so restarted fresh):
+- clinic core `claude/clinic-core`: session_01BLkRpA1wXMkhSdjSp9JQHt
+- heal A `claude/clinic-heal-a`: session_01GajdZViFJPvo2NsmHDYZyQ
+- heal B `claude/clinic-heal-b`: session_01GTRPavnYUQ1Chjet7f5q3L
+- heal C `claude/clinic-heal-c`: session_01DCJfKSxuK2tsXS7XURa9bq
+- clinic rough art `claude/clinic-rough-art` (≤ $5 total incl. earlier spend): session_01RenYyPsQPppsiwA18j2C8f
+- Cook Wave 6b `claude/build-cook-wave6b` (from nifty-rubin, with the clarified §12: consistency within a mini-game, not tap-only): session_01Eas3sw63Nh9b3GA6NEw5BV
+- hands v3 `claude/art-hands-v3` (from art-hands-v1; QA every hand pass/fail, 3D jewellery, 9 failed masters b1 first, ≤ $8): session_015ho7YCkDF3zNcXC2bhmRkB
+On reports: merge into nifty-rubin → bump_version → smoke test → push → publish main → update MORNING-SUMMARY.
