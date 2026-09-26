@@ -93,6 +93,10 @@ def main():
     orig_act = T.Player.act
 
     def act(self, e):
+        # Nani's palm is out while "pass me" is up (the answer is a click on its panel)
+        if e.get("kind") == "click" and "#passme" in (e.get("selector") or ""):
+            time.sleep(0.4)
+            snap("nani")
         r = orig_act(self, e)
         # a slice is played in the page (no mouse to catch): the knife stays in the hand after it
         if e.get("kind") == "slice":

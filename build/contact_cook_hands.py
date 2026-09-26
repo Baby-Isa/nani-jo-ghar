@@ -16,8 +16,8 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SHOTS = os.path.join(ROOT, "build", "screenshots", "cook-hands")
 OUT = os.path.join(ROOT, "build", "contact-sheets", "cook-hands-in-game.png")
-STATIONS = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "chop", "tadka", "stir", "assemble", "samosa"]
-ORDER = ["drag", "slice", "tap", "onboard"]
+STATIONS = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "chop", "tadka", "stir", "assemble", "samosa", "passme"]
+ORDER = ["drag", "slice", "tap", "nani", "onboard"]
 # (run, station) -> file, where the first picture isn't the telling one
 PICK = {}
 CELL_H = 300
