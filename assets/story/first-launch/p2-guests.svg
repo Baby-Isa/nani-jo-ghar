@@ -5,8 +5,7 @@
   <circle cx="330" cy="330" r="16" fill="#fffaf2" stroke="#caa57a" stroke-width="5"/>
   <circle cx="370" cy="280" r="24" fill="#fffaf2" stroke="#caa57a" stroke-width="5"/>
   <path d="M430 150 Q420 40 560 40 Q640 0 720 40 Q880 30 900 140 Q990 200 920 290 Q930 400 790 390 Q700 440 600 400 Q470 420 450 330 Q370 270 430 150 Z" fill="#fffaf2" stroke="#caa57a" stroke-width="6"/>
-  <!-- the door they come through, and a garland -->
-  <rect x="560" y="210" width="190" height="170" rx="10" fill="#4f7fb5" opacity=".55"/>
+  <!-- a garland for Eid -->
   <path d="M470 70 Q665 150 860 70" stroke="#e0b040" stroke-width="6" fill="none"/>
   <circle cx="530" cy="92" r="9" fill="#c0503a"/><circle cx="600" cy="112" r="9" fill="#3f8f6b"/><circle cx="665" cy="118" r="9" fill="#e0b040"/><circle cx="730" cy="112" r="9" fill="#c0503a"/><circle cx="800" cy="92" r="9" fill="#3f8f6b"/>
 </svg>

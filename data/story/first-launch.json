@@ -93,7 +93,7 @@
       "bg": "assets/backgrounds/bg-sitting-room-e-v1.webp",
       "child": { "x": 8 },
       "nani": { "img": "assets/cook/characters/nani-happy.webp", "x": 50, "sip": true },
-      "props": [{ "img": "assets/cook/items/vessel-glass-chai-full-f.png", "x": 60, "y": 55, "w": 9, "cls": "sip" }],
+      "props": [{ "img": "assets/cook/items/vessel-glass-chai-full-f.png", "x": 70, "y": 62, "w": 7, "cls": "sip" }],
       "hearts": true,
       "lines": ["lovely-chai"]
     },

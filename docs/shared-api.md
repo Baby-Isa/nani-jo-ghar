@@ -508,8 +508,21 @@ What makes the separate pages one app. Load `css/shared/app.css` first in the `<
 
 **A mode's first launch** is its own adapter's job: Cook's is `js/cook/app.js` (`?first=1`: one play button, then day 1's pantry order, then home), hooked into `flow.js` by `Cook.afterOrder(spec, day, {free})`, which may return `"leave"`.
 
-**The first-launch hook** (for character creation and the Eid story, `docs/first-launch-story.md`, built later on top of the shell). `js/home.js` sends any player without the `firstDone` flag (a brand-new device, or a child just added in "Who's playing?") to one URL, `FIRST` (today `cook.html?app=1&first=1`). The later flow:
+**The first-launch hook** (for character creation and the Eid story, `docs/first-launch-story.md`, built later on top of the shell). `js/home.js` sends any player without the `firstDone` flag (a brand-new device, or a child just added in "Who's playing?") to one URL, `FIRST` (now `first.html?app=1`: section 13). The later flow:
 1. points `FIRST` at its own page (say `first.html?app=1`), which loads `css/shared/app.css`, `save.js` and `app.js` like any mode;
 2. keeps what it makes in the current player's save: a name and colour through `Save.updatePlayer(Save.currentId(), {name, colour})`, the character's layers in a new namespace (`Save.set("character", {...})`);
 3. may still hand over to Cook's pantry round (`NjgApp.go("cook.html?app=1&first=1")`: Cook sets `firstDone` and goes home), or ends itself with `Save.setFlag("firstDone", true)` then `NjgApp.home("first")`.
 A save migrated from before the shell (any Cook orders, words or UI data) counts as started and never sees the first launch.
+
+## 13. The first launch: `first.html`, `js/shared/story.js`, `js/shared/character.js` (26 Sept 2026)
+
+`FIRST` in `js/home.js` is now `first.html?app=1`: make your character, arrive at Nani's, Cook's pantry round, "Can you make me chai?", Cook's chai round, Nani sips, the Eid picture story, Yes/No, home (`docs/first-launch-story.md`; report `build/reports/first-launch.md`).
+
+**The save.** New namespaces: `character` (`{v: 1, choices: {body, skin, hair, eyes, top, bottom}, hands: "player-boy" | "player-girl", updated}`: swatch ids, not colours, so the palette can be retuned) and `story` (`{"first-launch": {at: <scene id> | null, started, done?}}`). `firstDone` is set by the story's `end` scene. Device-wide grown-ups' settings live in the root: `Save.setting(name)` / `Save.setSetting(name, value)` (`storyHelp`: `"en-k"`, the default, or `"k"`); a save file carries players, not settings.
+
+**`Character`** (`js/shared/character.js`): `load()`, `defaults()`, `normalize(choices)`, `svg(choices, {view})` (view: a viewBox, a category id, or `"badge"`), `hands(choices)`, `get(id?)` / `put(choices, id?)`, `badge(el, id?)`. Options and layers are `data/character-options.json`; the layers are SVG files whose `fill="currentColor"` parts take a category's colour, and `{body}` in a file name picks the file. A new category is a data entry plus layer files. `js/shared/charmaker.js`: `CharMaker.open(host, {choices}) -> Promise<choices>`.
+
+**`Story`** (`js/shared/story.js`): `Story.play(url, {el, kinds})` runs a story file from where the current player left it; `Story.say(line)` puts a line on the read-along card (English, then Kutchi; or Kutchi only). Scene kinds: `character` (the page's own), `scene`, `cook`, `panels`, `choice`, `end`; the data file's `_about` gives the fields. Voices: a family clip (`data/family-audio.json`, only where it says exactly the Kutchi shown), else the browser's speech, else timing only; a blocked autoplay makes the card's speaker pulse. Test hook: `__story.state()`.
+
+**Cook's entry hooks** (`js/cook/app.js`): `cook.html?app=1&first=pantry&then=<page>` (day 1's pantry round with Nani's list fixed to chai, dudh, khun) and `&first=chai&then=<page>` (one order of Nani's own: one cup, chai tray level 1). Both go to `<page>` (a page of the app only) after the round and don't set `firstDone`. `first=1` (the shell's old first launch) still works. The only line added to Cook's flow is `Cook.startDay = startDay`.
+
