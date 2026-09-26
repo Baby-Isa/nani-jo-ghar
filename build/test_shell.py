@@ -79,10 +79,15 @@ class Run:
 
     def tap_sel(self, sel, what=None):
         """Tap the middle of an element, checking nothing covers it."""
-        box = self.page.locator(sel).first.bounding_box()
-        assert box, f"{what or sel} not on screen"
-        x, y = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
-        top = self.page.evaluate("([x,y,s]) => { const e = document.elementFromPoint(x,y); return !!(e && e.closest(s)); }", [x, y, sel])
+        # (right after a page change the cross-fade covers everything for ~180ms: wait it out)
+        for _ in range(20):
+            box = self.page.locator(sel).first.bounding_box()
+            assert box, f"{what or sel} not on screen"
+            x, y = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
+            top = self.page.evaluate("([x,y,s]) => { const e = document.elementFromPoint(x,y); return !!(e && e.closest(s)); }", [x, y, sel])
+            if top:
+                break
+            self.page.wait_for_timeout(150)
         assert top, f"{what or sel} is covered at ({x:.0f},{y:.0f})"
         self.page.mouse.click(x, y)
 
@@ -167,6 +172,7 @@ def run(vp_name):
         R.shot("clinic")
         R.tap_sel("#njg-home", "the clinic's home button")
         R.house()
+        page.wait_for_timeout(400)
         R.shot("house-from-clinic")
         R.tap_sel('a.door[data-door="cook"]', "the Cook door")
         R.wait_url("cook.html")
