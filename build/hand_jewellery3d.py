@@ -440,6 +440,15 @@ def composite(base, items, jobs_alpha_ref=None):
         s_img = Image.fromarray((sil[y0:y1, x0:x1] * 255).astype(np.uint8), "L")
         allow = np.asarray(s_img.filter(ImageFilter.MaxFilter(2 * (grow // 2) + 1))).astype(np.float64) / 255.0
         rgba[..., 3] *= allow[:rgba.shape[0], :rgba.shape[1]]
+        # drop stray fragments: bits of a back arc that show in a narrow
+        # gap between the occluder and the silhouette edge
+        from scipy import ndimage as _nd
+        lbl, n = _nd.label(rgba[..., 3] > 0.08)
+        if n > 1:
+            sizes = _nd.sum(np.ones(lbl.shape), lbl, range(1, n + 1))
+            small = [i + 1 for i, sz in enumerate(sizes) if sz < 0.04 * sizes.max()]
+            if small:
+                rgba[..., 3] *= ~_nd.binary_dilation(np.isin(lbl, small), iterations=1)
         if it.get("hide") is not None:  # behind another arm
             rgba[..., 3] *= ~it["hide"][y0:y0 + rgba.shape[0], x0:x0 + rgba.shape[1]]
         # light it like the skin under it
