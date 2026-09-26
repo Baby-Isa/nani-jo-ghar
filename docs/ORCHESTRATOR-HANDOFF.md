@@ -116,3 +116,7 @@ All blocking decisions in the deep dives (top sections of each mode's design doc
 - Zafar's rules tonight: UX §11–§13 (auto-tick at every level; one control forever = tap, pour is a tap; the instruction card is the master and Nani is a voice).
 - Running: **Cook Wave 6b** (`claude/build-cook-wave6b`, session_01DmaAgodzuDkuXkvQN1SsNQ); 8 Fable **mini-game quality passes** (`docs/modes/MINIGAME-QUALITY-BRIEF.md`) on every mode doc including Cook's; an agent building tonight's art zip (`docs/art-run-tonight.md`).
 - Next: the **shell** (foundation phase B) after Wave 6b merges; mode builds resume after Zafar approves the quality-pass designs.
+
+### 26 Sept ~04:45 UTC: the clinic is the main focus; clinic build team launched (Opus)
+Contract: `docs/clinic-heal-api.md`. Sessions: core `claude/clinic-core` (session_015nuiYSYyy9PEjhTGM9ThVV), healing A knee/ear/tooth `claude/clinic-heal-a` (session_01JjgCWxwQMX4wUf2exczNqr), B taste/fever/boing `claude/clinic-heal-b` (session_01KvDuC9Yvy62LacWFvh7T2t), C eye/foot (+ extras) `claude/clinic-heal-c` (session_01YVNTUEysNinFPfLmLo2nL9), rough art via the OpenAI API ≤ $5 medium `claude/clinic-rough-art` (session_01MsFHeo1j7wwn5iGSJnb1FY). The core merges the others; orchestrator merges `claude/clinic-core` when its report lands. Also still running: Cook Wave 6b.
+Hands ("arms") for Cook: `claude/art-hands-v1` still awaits Zafar's ring approval (contact sheets on that branch in `build/contact-sheets/hands-*.png`); 9 masters still fail, incl. the knife/spatula grip.
