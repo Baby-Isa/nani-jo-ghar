@@ -26,7 +26,7 @@
 
   <h2>Live games</h2>
   <div class="grid">
-    <a class="card" href="cook.html"><b>Cook with Nani</b><span>The main game (calm UI, batch 1 art).</span></a>
+    <a class="card" href="cook.html"><b>Cook with Nani</b><span>The main game (calm UI, batch 1 art, Wave 6b: end-of-round screen, tap-measure pour, onboarding per station).</span></a>
     <a class="card" href="find.html"><b>Find it</b><span>Nani's list + Check the bag.</span></a>
   </div>
 
@@ -36,8 +36,43 @@
     <a class="card" href="who.html?lab=1"><b>Who did it?</b><span>Look closer, Who ate this one?, Keep who fits, Tell Ali.</span></a>
     <a class="card" href="tidy.html"><b>Tidy up</b><span>Put it away, the dastarkhwan, the fruit box, Ali's turn.</span></a>
     <a class="card" href="dress.html"><b>Dress up</b><span>Lay it out, the fitting, Big Ma's mending, bangles.</span></a>
-    <a class="card" href="clinic.html"><b>The clinic</b><span>Check-up, mystery, named ailment, you're the patient, treatments, handover.</span></a>
     <a class="card" href="snap.html?lab=1"><b>Snap</b><span>Just so many, The big one, Show Nani, Ali's camera.</span></a>
+  </div>
+
+  <h2>The clinic: full build, rough placeholder art</h2>
+  <p class="lead">The whole pipeline: waiting room, diagnosis, the pharmacy belt, heal, send-off. Words are English placeholders until the family's recordings go in; the art is throwaway.</p>
+  <div class="grid">
+    <a class="card" href="clinic.html"><b>The clinic</b><span>Play a clinic morning (the first ever is one tiny patient). Saves your progress.</span></a>
+    <a class="card" href="lab/clinic-core.html"><b>Clinic lab index</b><span>Every stage &times; variant &times; level, and every healing game in the pipeline.</span></a>
+    <a class="card" href="clinic.html?lab=1"><b>Clinic lab bar</b><span>Pick a morning, a patient, one stage or one healing game.</span></a>
+  </div>
+  <h2>Clinic stages</h2>
+  <div class="grid">
+    <a class="card" href="clinic.html?lab=1&amp;stage=waiting&amp;level=1&amp;variant=W1"><b>1 Waiting room</b><span>W1&ndash;W4 (W3 is spoken).</span></a>
+    <a class="card" href="clinic.html?lab=1&amp;stage=diagnosis&amp;level=1&amp;variant=D1"><b>2 Diagnosis</b><span>D1, D1b, D2, D3, with the face magnifier.</span></a>
+    <a class="card" href="clinic.html?lab=1&amp;stage=pharmacy&amp;level=1"><b>3 Pharmacy belt</b><span>Tap what the doctor needs; the handover.</span></a>
+    <a class="card" href="clinic.html?lab=1&amp;stage=heal&amp;game=cut&amp;level=1"><b>4 Heal</b><span>Mounts one healing game (the scrape here).</span></a>
+    <a class="card" href="clinic.html?lab=1&amp;stage=sendoff&amp;level=1&amp;variant=E1"><b>5 Send-off</b><span>E1&ndash;E4 (E3 and E4 are spoken).</span></a>
+    <a class="card" href="clinic.html?lab=1&amp;patient=1&amp;level=1"><b>One patient</b><span>All five stages, then the end-of-round screen.</span></a>
+  </div>
+  <h2>Clinic healing games (labs)</h2>
+  <div class="grid">
+    <a class="card" href="lab/clinic-heal-host.html?game=cut&amp;level=1"><b>Heal: cut</b><span>the scrape (core). Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=knee&amp;level=1"><b>Heal: knee</b><span>knee: tap, then wrap. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=ear&amp;level=1"><b>Heal: ear</b><span>ear: torch, pluck, drops. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=tooth&amp;level=1"><b>Heal: tooth</b><span>tooth: brush, drill, sugar bug. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=taste&amp;level=1"><b>Heal: taste</b><span>taste: droppers and cups. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=fever&amp;level=1"><b>Heal: fever</b><span>fever: the conversation. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=boing&amp;level=1"><b>Heal: boing</b><span>boing: the comic injection. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=eye&amp;level=1"><b>Heal: eye</b><span>eye: drops and the pirate patch. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=foot&amp;level=1"><b>Heal: foot</b><span>foot: hot or cold, the thorn. Levels 1&ndash;3 in the lab bar.</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=tummy&amp;level=1&amp;src=js%2Fclinic%2Fheal%2Fgames%2Ftummy.js&amp;src=js%2Fclinic%2Fheal%2Fgames%2Fhic.js&amp;src=js%2Fclinic%2Fheal%2Fgames%2Fhair.js"><b>Heal extra: tummy</b><span>bubbles and burps (maybe later; lab only).</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=hic&amp;level=1&amp;src=js%2Fclinic%2Fheal%2Fgames%2Ftummy.js&amp;src=js%2Fclinic%2Fheal%2Fgames%2Fhic.js&amp;src=js%2Fclinic%2Fheal%2Fgames%2Fhair.js"><b>Heal extra: hic</b><span>hiccups (maybe later; lab only).</span></a>
+    <a class="card" href="lab/clinic-heal-host.html?game=hair&amp;level=1&amp;src=js%2Fclinic%2Fheal%2Fgames%2Ftummy.js&amp;src=js%2Fclinic%2Fheal%2Fgames%2Fhic.js&amp;src=js%2Fclinic%2Fheal%2Fgames%2Fhair.js"><b>Heal extra: hair</b><span>the beetles (maybe later; lab only).</span></a>
+    <a class="card" href="lab/clinic-heal-a.html"><b>Heal dev page A</b><span>knee, ear, tooth: every option.</span></a>
+    <a class="card" href="lab/clinic-heal-b.html"><b>Heal dev page B</b><span>taste, fever, boing.</span></a>
+    <a class="card" href="lab/clinic-heal-c.html"><b>Heal dev page C</b><span>eye, foot and the extras.</span></a>
+    <a class="card" href="clinic-phase1.html"><b>Clinic phase 1 (old)</b><span>The first grey-box clinic, kept for reference.</span></a>
   </div>
 
   <h2>Behind the scenes</h2>
