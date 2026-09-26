@@ -72,7 +72,7 @@ These three badges replace the old star labels in the result card. They stay map
 
 ## 11. Show progress, not verdicts (Zafar, 25 Sept, late)
 - **A tally with pictures.** Stations where you make several things show a small tally in the top-right corner: a picture of each item with how many you've done so far (e.g. 🧅 3, 🍅 2 in the chop game). It shows what *you* did, never the target (the existing rule). Applies to every mode where you collect, chop, count, fetch or place several things.
-- **Tick off the instruction card, automatically, at every level** (Zafar, 25 Sept, late: final). A line ticks when that part is done right (the right amount chopped, in the bowl, fried…). The challenge is doing the right things: wrong items, extra ones or the wrong order count against you in the end review.
+- **Tick off the instruction card, automatically, at every level** (Zafar, 25 Sept, late: final). **Count rows tick when that step closes** (the item is put down, finished or served), never the moment the number is reached, so a tick can't give the count away; the count is judged in the end review (Zafar agreed, 26 Sept). A line ticks when that part is done right (the right amount chopped, in the bowl, fried…). The challenge is doing the right things: wrong items, extra ones or the wrong order count against you in the end review.
 - **No negative feedback during play.** No red crosses or "wrong" buzzes mid-round (at least from level 2). Mistakes are shown in the end-of-round review (§9 accuracy badge, then the word review). Level 1 keeps its gentle, one-time correction as part of onboarding.
 
 ## 12. Consistent controls inside each mini-game (Zafar, 25 Sept, late; clarified 26 Sept)

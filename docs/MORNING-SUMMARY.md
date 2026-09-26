@@ -54,11 +54,14 @@ Every mode now has two new top sections in its design doc:
 
   Its brief went out before you clarified the controls rule ("consistent within a mini-game", not "tap only"), so I'll check that it hasn't removed gestures it should have kept.
 
+## Decided (26 Sept, morning)
+- Zafar agreed all the suggestions put to him, including: count rows tick when the step closes, and the count is judged in the end review.
+- **Hands:** approach approved, output not good enough (flat sticker rings, a dotted-line bracelet). A hands v3 session (`claude/art-hands-v3`) is QA-ing every image pass/fail, redoing the jewellery in the hands' 3D style, fixing the failed masters (knife grip first), ≤ $8. It gets wired into Cook after Wave 6b.
+
 ## Waiting on you
-1. **The hands for Cook.** Review sheets sent last night; say yes or what to change. Then they get plugged in, and the 9 failing poses are redone, including the knife grip.
-2. **Tonight's art run.** Unzip `nani-art-part1.zip` and `nani-art-part2.zip` into one folder, add `mum-01.jpg` to `private-photos/`, and paste `RUN-ME.md` into Claude in Chrome.
-3. **Your mum's recordings.** A4–A8, then Section B (the cooking game's words), then Section C (grammar sentences).
-4. **Your review of the designs above.** Then the other modes' builds restart, one agent per mode.
+1. **Tonight's art run.** Unzip `nani-art-part1.zip` and `nani-art-part2.zip` into one folder, add `mum-01.jpg` to `private-photos/`, and paste `RUN-ME.md` into Claude in Chrome.
+2. **Your mum's recordings.** A4–A8, then Section B (the cooking game's words), then Section C (grammar sentences).
+3. **Your review of the designs above.** Then the other modes' builds restart, one agent per mode.
 
 ## Next, in order
 1. Merge Wave 6b and the clinic build.
