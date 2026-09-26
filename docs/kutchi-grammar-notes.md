@@ -80,3 +80,49 @@ Recordings and rough transcripts are in `sources/audio/mum-2026-09-25/` (made wi
 - **No V in Kutchi: always W.** So the drafts *vadho* → ***wadho***, and any *v* spelling (e.g. *vatana*, peas) → *w*. (Zafar's own voice spelling for big was already *wudd-oar*.)
 - **No "the".** Don't write English-style articles into Kutchi frames.
 - Long vowels are doubled where the family hears them long: *waari*, *daar*, *maani*.
+
+## 26 Sept 2026: Mum and Zafar, Question A4 (No, not, without, don't; 8½ min, `sources/audio/mum-2026-09-26/A4.m4a`)
+
+Rough transcript: `sources/audio/mum-2026-09-26/A4.md`. Spellings follow Zafar's rules (w, not v; doubled long vowels) and are still guesses until he checks them. Whisper wrote sugar as "khan" again; the game keeps ***khun*** (Zafar's spelling).
+
+### 10. "without" is *wagar ji*: it's how you leave something out
+- ***dudh wagar ji chai***: chai without milk (*dudh* milk, *wagar* without, *ji* linking the two, like "of").
+- ***khun wagar ji chai***: chai without sugar.
+- ***dungri wagar ji daar***: daar without onion. There's no shorter way to say it.
+- **Chai has its own words.** ***kari chai*** is black tea (no milk). ***mori chai*** is unsweetened tea (no sugar). *kari* and *mori* are the she-word forms (chai is a she-word), so the he-word forms are probably *karo* and *moro*.
+
+### 11. "don't want" is *na khape*; a bare *na* is rude
+- "Do you want chai?" The polite no is ***na, na khape*** (no, I don't want it). A bare ***na*** is rude.
+- "No sugar" when offered it: *muke khun na te khape* (I don't want sugar; Whisper's "na te" may be one word, *nate*, so Zafar to check). Informally *khun na te khape*; very informally just ***khun na***.
+
+### 12. "don't" is *na* next to the verb. Before the verb it's urgent or changes the meaning
+- In the kitchen: ***khun na wij*** (don't put sugar in); ***khun na wapur*** (don't use sugar; *wapur* = use).
+- **Don't touch:** ***ad na*** is the everyday "don't touch that". ***na ad*** is urgent (it's hot, you'll burn!). So *na* after the verb is a normal "don't", and *na* first is a sharp warning.
+- **Walk and come** are the same verb, ***hal***: *hal na* (don't walk); *na hal* (don't come with me, a different meaning); ***hal mu saathe*** (come along with me).
+- ***bhaj na, hal***: don't run, walk (*bhaj* = run).
+- ***bol na***: don't speak. ***watu na kar***: don't chat (*watu* = talk, chatting; *kar* = do). Zafar's own *na watu korishad* isn't a real phrase.
+
+### 13. "not this one, that one" is *hi na, hu*; "this" is *hi* and "that" is *hu*
+- ***hi*** = this, ***hu*** = that (that one). There's no separate word for "one": ***hi na, hu***.
+- Not the red one: ***laal na***.
+
+### 14. "nothing" is *ki na*; "none left" is *ki baki nai*
+- ***ki na*** = nothing. *ki* on its own is "what" or "something" (*ke kuru* = what; *ki na ki* = something or other).
+- None left: ***ki baki nai(e)***. Also ***ki rei nai bio***, which has the feeling of "left over" (at the end of a party: any cake left?). Mum thinks *rei* may be Gujarati and *baki* more Kutchi. **Ask Masi.**
+
+### Claude's check against Sindhi and Gujarati (Mum's request at 8:04)
+These match the neighbouring languages. That supports the spellings, but proves nothing about Kutchi on its own, so it's worth confirming with Masi.
+- *wagar* = Gujarati *vagar* (without, from Persian *baghair*, Urdu *baghair*). *ji* matches the Sindhi/Kutchi "of" ending (*jo/ji*), where Gujarati says *vagar **ni** chai*. So *dudh wagar ji chai* is the Kutchi shape of Gujarati *dudh vagar ni chai*.
+- *kari* = black (Sindhi *kāro/kārī*, Gujarati *kāḷu*). *mori* = Gujarati *moḷu* (bland, unsalted, unsweetened).
+- *wapur* = Gujarati *vāparvũ* (to use). *ad* = Gujarati *aḍvũ* (to touch). *watu* = Gujarati *vāt/vāto* (talk).
+- *hi / hu* (this / that) are exactly Sindhi *hī / hū*. *hal* is Sindhi *hal* (go, walk; also Kathiawadi Gujarati *hālo*, "let's go"). *bhaj* is Sindhi *bhaj* (run; Gujarati *bhāgvũ*).
+- *ki na* matches Gujarati *kaī nahi* (nothing) and Sindhi *kujh na*.
+- ***baki*** (remaining) is in Gujarati, Sindhi and Urdu alike, so it doesn't settle the dialect question.
+- ***rei*** fits Gujarati *rahyũ* (remained, from *rahevũ*). But Sindhi has *rahyo* too, so *ki rei nai bio* could be Kutchi as well: both are plausible. Masi is the right tie-break.
+
+### What this means for the game (adds to the list above)
+9. **Leaving something out of an order:** *{x} wagar ji {dish}* (*dudh wagar ji chai*, *dungri wagar ji daar*). This is a natural harder Cook level: the card says what to leave out. The Chai tray can also use *kari chai* and *mori chai* as words in their own right.
+10. **"Don't" rows** (*khun na wij*, *dungri na wij*) can be a level-3 trap. The row ticks when the step closes without that ingredient (UX §11), and adding it shows in the end review.
+11. **Choosing:** *hi na, hu* and *{colour} na* fit Find it's counter and the clinic's "is it this or that".
+12. **Warnings:** *na ad!* (hot!) and *bhaj na, hal* suit Monsoon rush and Nani's interjections, alongside "Arre re!".
+13. **Polite refusals:** use *na khape*, not a bare *na*, whenever a character turns something down.
