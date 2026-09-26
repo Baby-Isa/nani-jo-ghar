@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>Nani jo Ghar</title>
+<!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
+<link rel="stylesheet" href="css/shared/app.css?v=20260926T143753Z">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/first.css?v=20260926T143753Z">
+</head>
+<!--
+  The first launch (docs/first-launch-story.md): make your character, arrive at
+  Nani's house, the pantry round (Cook), "Can you make me chai?", the chai
+  round (Cook), Nani sips, the Eid picture story, Yes/No, then home.
+  The house (js/home.js, FIRST) sends every player without "firstDone" here.
+  Scenes are data (data/story/first-launch.json), played by js/shared/story.js.
+-->
+<body class="first">
+<main id="story" aria-live="polite"></main>
+<script src="js/version.js?v=20260926T143753Z"></script>
+<script src="js/shared/save.js?v=20260926T143753Z"></script>
+<script src="js/shared/app.js?v=20260926T143753Z"></script>
+<script src="js/shared/character.js?v=20260926T143753Z"></script>
+<script src="js/shared/charmaker.js?v=20260926T143753Z"></script>
+<script src="js/shared/story.js?v=20260926T143753Z"></script>
+<script src="js/first.js?v=20260926T143753Z"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+{
+  "_about": "The first launch (docs/first-launch-story.md, 'Zafar's flow'), played by js/shared/story.js on first.html. Scenes run in order; where the player is is kept in their save (namespace 'story', {\"first-launch\": {at, started}}), so a reload picks up at the same scene (a panel story from its first panel; a Cook round starts again). Kinds: character (make your character), scene (a picture, Nani, the child, one or more lines, then the big arrow), cook (a Cook round, which comes back here with done=<scene id>), panels (a picture story, one line per panel), choice (Yes/No: only Yes works; No dodges and Nani laughs), end (sets the flag and goes home). Lines are said in English, then Kutchi (the 'Story help' parent setting can make it Kutchi only). Kutchi marked placeholder: true is Claude's or Zafar's draft until Mum records it; 'clip' is a family recording (data/family-audio.json id, 'speaker' default mum) and is only given where it says exactly the Kutchi shown.",
+  "id": "first-launch",
+  "flag": "firstDone",
+  "lines": {
+    "pantry-ask": {
+      "en": "Can you get me the chai things from the pantry?",
+      "kutchi": "Muke chai, dudh ne khun de.",
+      "placeholder": true,
+      "note": "Built from Cook's own frames (Muke {x} de = give me; ne = and). To record: Questions for Mum, first-launch line 1."
+    },
+    "make-chai": {
+      "en": "Can you make me chai?",
+      "kutchi": "Tu muke chai banai dinda?",
+      "clip": "tu-muke-chai-banai-dinda",
+      "note": "Mum, B40 (docs/kutchi-grammar-notes.md)."
+    },
+    "lovely-chai": {
+      "en": "Mmm, lovely chai! Well done, beta.",
+      "kutchi": "Shabash!",
+      "clip": "shabash",
+      "note": "Mum, B25. The full line ('Mmm, lovely chai! Shabash, beta.') is first-launch line 3 to record."
+    },
+    "eid-tomorrow": {
+      "en": "Tomorrow is Eid.",
+      "kutchi": "Kaale Eid ai.",
+      "placeholder": true,
+      "note": "Claude's guess: 'ai' (is) is the family's (Aau theek ai); 'kaale' (tomorrow) is from Gujarati and not checked. Line 4 to record."
+    },
+    "everyone-coming": {
+      "en": "Everyone is coming.",
+      "kutchi": "Magani acheto.",
+      "placeholder": true,
+      "note": "Zafar from memory ('guests are coming': magani acheto / achanto), not checked with Mum. Line 5 to record."
+    },
+    "food-not-ready": {
+      "en": "Oh no, the food is not ready.",
+      "kutchi": "Arre re! Khaanu taiyaar nai.",
+      "placeholder": true,
+      "note": "Claude's guess except 'Arre re!' (Nani's interjection in Cook). Line 6 to record."
+    },
+    "help-cook": {
+      "en": "Can you help me cook?",
+      "kutchi": "Tu muke khaanu banai dinda?",
+      "placeholder": true,
+      "note": "Mum's B40 frame (Tu muke chai banai dinda?) with 'khaanu' (food) for chai: a guess. Line 8 to record."
+    },
+    "yes": {
+      "en": "Yes!",
+      "kutchi": "Ha!",
+      "clip": "ha",
+      "speaker": "zafar",
+      "who": "child",
+      "note": "A8.1 (the child's reply; Zafar's voice so it isn't Nani's). Line 9 to record in a child's voice."
+    },
+    "laugh": {
+      "en": "Ha ha ha!",
+      "kutchi": "Ha ha ha!",
+      "sound": true,
+      "note": "Nani laughs when No runs away."
+    },
+    "lets-cook": {
+      "en": "Shabash! Let's cook!",
+      "kutchi": "Shabash!",
+      "clip": "shabash",
+      "note": "Line 10 ('Come, let's go to the kitchen') to record."
+    }
+  },
+  "scenes": [
+    { "id": "character", "kind": "character" },
+    {
+      "id": "arrive",
+      "kind": "scene",
+      "bg": "assets/backgrounds/bg-courtyard-e-v1.webp",
+      "child": { "x": 8, "walk": true },
+      "nani": { "img": "assets/cook/characters/nani-happy.webp", "x": 56 },
+      "lines": ["pantry-ask"]
+    },
+    { "id": "pantry", "kind": "cook", "url": "cook.html?app=1&first=pantry" },
+    {
+      "id": "ask-chai",
+      "kind": "scene",
+      "bg": "assets/backgrounds/bg-nani-kitchen-e-v1.webp",
+      "child": { "x": 8 },
+      "nani": { "img": "assets/cook/characters/nani-talk.webp", "x": 50 },
+      "props": [{ "img": "assets/cook/props/saucepan.webp", "x": 40, "y": 70, "w": 16 }],
+      "lines": ["make-chai"]
+    },
+    { "id": "chai", "kind": "cook", "url": "cook.html?app=1&first=chai" },
+    {
+      "id": "sip",
+      "kind": "scene",
+      "bg": "assets/backgrounds/bg-sitting-room-e-v1.webp",
+      "child": { "x": 8 },
+      "nani": { "img": "assets/cook/characters/nani-happy.webp", "x": 50, "sip": true },
+      "props": [{ "img": "assets/cook/items/vessel-glass-chai-full-f.png", "x": 60, "y": 55, "w": 9, "cls": "sip" }],
+      "hearts": true,
+      "lines": ["lovely-chai"]
+    },
+    {
+      "id": "eid",
+      "kind": "panels",
+      "panels": [
+        {
+          "art": "assets/story/first-launch/p1-calendar.svg",
+          "items": [{ "img": "assets/cook/characters/nani-point.webp", "x": 0, "y": 34, "w": 36 }],
+          "line": "eid-tomorrow"
+        },
+        {
+          "art": "assets/story/first-launch/p2-guests.svg",
+          "items": [
+            { "img": "assets/cook/characters/nani-happy.webp", "x": 0, "y": 34, "w": 36 },
+            { "img": "assets/cook/characters/nana-badge.webp", "x": 46, "y": 12, "w": 13, "cls": "bob" },
+            { "img": "assets/cook/characters/ma-badge.webp", "x": 60, "y": 8, "w": 13, "cls": "bob d1" },
+            { "img": "assets/cook/characters/cousin-badge.webp", "x": 74, "y": 12, "w": 13, "cls": "bob d2" },
+            { "img": "assets/cook/characters/isa-badge.webp", "x": 60, "y": 32, "w": 12, "cls": "bob d3" }
+          ],
+          "line": "everyone-coming"
+        },
+        {
+          "art": "assets/story/first-launch/p3-pots.svg",
+          "items": [
+            { "img": "assets/cook/characters/nani-neutral.webp", "x": 0, "y": 34, "w": 36, "cls": "shake" },
+            { "img": "assets/cook/props/pot.webp", "x": 44, "y": 52, "w": 22 },
+            { "img": "assets/cook/props/saucepan.webp", "x": 70, "y": 56, "w": 22 }
+          ],
+          "line": "food-not-ready"
+        },
+        {
+          "art": "assets/story/first-launch/p4-help.svg",
+          "items": [{ "img": "assets/cook/characters/nani-point.webp", "x": 0, "y": 34, "w": 36 }],
+          "child": { "x": 62, "y": 18, "w": 26 },
+          "line": "help-cook"
+        }
+      ]
+    },
+    {
+      "id": "help",
+      "kind": "choice",
+      "bg": "assets/backgrounds/bg-nani-kitchen-e-v1.webp",
+      "child": { "x": 8 },
+      "nani": { "img": "assets/cook/characters/nani-talk.webp", "x": 50 },
+      "line": "help-cook",
+      "yes": "yes",
+      "no": { "laugh": "laugh", "dodges": 2 },
+      "after": "lets-cook"
+    },
+    { "id": "end", "kind": "end", "home": "first" }
+  ]
+}

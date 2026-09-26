@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600">
+  <!-- placeholder art: the food is not ready. The kitchen counter with empty pots (Cook's pot art, placed by the story data), no steam, a question mark -->
+  <rect width="1000" height="600" fill="#f3e2c7"/>
+  <rect x="360" y="60" width="560" height="200" rx="10" fill="#e9d6b8"/>
+  <path d="M400 110 h480 M400 160 h480 M400 210 h480" stroke="#d6bf9b" stroke-width="6"/>
+  <rect x="330" y="440" width="670" height="160" fill="#b98b5e"/>
+  <rect x="330" y="430" width="670" height="22" fill="#9c7048"/>
+  <text x="890" y="200" font-family="Georgia, serif" font-size="150" font-weight="700" fill="#c0503a" opacity=".85">?</text>
+  <path d="M560 330 q12 -30 0 -60 M760 340 q12 -30 0 -60" stroke="#8a7560" stroke-width="6" fill="none" stroke-dasharray="4 14" stroke-linecap="round" opacity=".5"/>
+</svg>
