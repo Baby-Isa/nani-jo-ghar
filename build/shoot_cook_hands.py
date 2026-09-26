@@ -115,7 +115,7 @@ def main():
     T.Player.tap = tap
     T.Player.shot = shot
     T.Player.act = act
-    T.Player.try_help = lambda self: None  # the ? and the bulb are test_cook.py's business
+    T.Player.try_help = lambda self: setattr(self, "helped", True)  # the ? and the bulb are test_cook.py's business
     httpd = T.start_server()
     d = T.shots_dir(root, name)
     try:
