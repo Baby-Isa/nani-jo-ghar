@@ -245,3 +245,98 @@ They aren't related: Kutchi is Indo-Aryan, next to Sindhi, and Japanese is its o
 - He or she: ***e***. So *e achi vyo* / *e achi vya* (came: child / elder) and *e achdo* / *e achda* (will come).
 - ***achindo*** = will come. ***nar*** = look, with different endings.
 - Zafar on the sound of Kutchi: the one-syllable words feel like Kutchi, and a word like *ach-in-do* sounds Japanese to him.
+
+## 26 Sept 2026: Mum and Zafar, A8 and all of Section B (32 min, `sources/audio/mum-2026-09-26/B.m4a`)
+
+Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said several times: Mum first, then Zafar**, "two different sound examples for future use". So the recording doubles as a source of voice clips for the game. Spellings are guesses until Zafar checks them; ⚠ marks the doubtful ones.
+
+### 23. A8: yes, no and the question words
+| English | Kutchi |
+|---|---|
+| yes | ***ha*** |
+| no, thank you | ***na, thank you*** (the English "thank you") |
+| who's there? | ***ker ai?*** |
+| what's this? | ***hi kuro ai?*** (*kuro* = what) |
+| where is it? | ***kida ai?*** |
+| which one? | ***kyo?*** ⚠ |
+| how many? | ***kitla?*** |
+| what would you like? (to a child) | ***toke kuro khapeto?*** |
+| what would you like? (to an adult) | ***anke kuro khapeto?*** ⚠ (*anke*: the respectful *aai* as an object, as *toke* is to *tu* and *muke* to "I") |
+| who did it? | ***kere karein?*** ⚠ (*kere* = who, as the doer) |
+| this one / that one | ***hi / hu*** (no word for "one") |
+| here / there | ***hida / huda*** |
+
+### 24. B1–B12: Zafar's spellings checked
+- **B1, no:** it's ***na***, not *nar* (*nar* = look). "No milk" on its own is short and sharp. The polite way is ***muke na khape***, or in full ***muke nato khape*** (I don't want it). So the negative agrees: *nato* (he), *nati* (she, as in *khun nati khape*).
+- **B2, slowly:** ***aste thi*** (*aste* = slow). **B3, quickly:** ***jaldi***.
+- **B4, half:** ***adh*** for amounts (half a cup of milk). ***ardo / ardi*** for a half portion, which agrees with gender. When you don't know the gender, use the he-form.
+- **B5, full:**
+  - ***ako / aki*** = whole, full: *ako cup*, *aki tanki*.
+  - ***bharelo / bhareli*** = filled up (from *bhar*, fill): *bhareli chamchi* = a heaped teaspoonful.
+- **B7, small:** ***nindho / nindhi***. (B6, big, *wadho / wadhi*, was already confirmed.)
+- **B8, yoghurt:** ***dai***. A yoghurt starter culture is ***mervan***.
+- **B9, chickpeas:** ***chana***. **B10, meat:** ***gos***.
+- **B11:** ***bajr ji maani***. It's *ji*, not *jo*, because *maani* is a she-word: this confirms the *jo / ji* agreement from §18.
+- **B12, and then:** ***ne poi***.
+
+### 25. B13–B27: the words that decide what the player does
+| ID | English | Kutchi | Notes |
+|---|---|---|---|
+| B13 | only | ***kali*** | doesn't change with gender: *kali amba* |
+| B14 | now | ***hane*** (in a sequence, "now it's time to…": *hane tameta wij*); ***haver*** (now, generally: *haver hal*) | **cooking uses *hane*** |
+| B15 | lift them out | ***(inke) hane kadh*** | *kadh* = take out; *inke* = it |
+| B16 | leave it (in) | ***(inke) chadi de*** | "leave it be". ***thori war rakh*** = leave it a bit longer. ***hevar na*** = not now. *Samosa kadhu ke na?* → *Ha, kadh* / *Hevar na*. |
+| B17 | vegetable | ***boga*** | the family's word, from Swahili |
+| – | skewer | ***lakri*** (a stick) | *mishkaki* is the meat pieces. One skewer: ***hakri lakri mishkaki***. Two: ***ba lakri mishkaki*** (*lakri* is a she-word, so *hakri*). |
+| B18 | mixed | ***mixed*** | the English word |
+| B19 | enough! | ***bas!*** | "stop" is the English *stop*, or *gadi ke ubhi rakh* (stop the car) |
+| B20 | more | ***wadhare*** ⚠ | |
+| B21 | a little | ***thorok*** ⚠ | Whisper: "torok"; compare *thori war* |
+| B22 | it's ready | ***tayar ai*** | |
+| B23 | it's burning! | ***bareto!*** | |
+| B24 | it's boiling | ***ukreto*** | |
+| B25 | well done! | ***shabash!*** | |
+| B26 | a spoon | ***hakri chamchi*** (teaspoon), ***hakro chamcho*** (tablespoon) | |
+| B27 | a cup | ***hakri cup*** ⚠ | but *bharelo cup* in B5 treats cup as a he-word, so Zafar to check |
+
+### 26. B28–B38: things the game still names in English
+| ID | English | Kutchi |
+|---|---|---|
+| B28 | chips | ***chips***, or ***tarela bataata*** (fried potatoes) |
+| B29 | sev | ***sev*** |
+| B30 | fresh coriander | ***dhania*** (mint is ***fudino***) |
+| B31 | tamarind / tamarind chutney | ***amli*** / ***amli ji chutney*** |
+| B32 | green chutney | **no general word.** Coconut chutney is ***nair ji chutney***; mint chutney is ***fudino ji chutney***. |
+| B33 | mince | ***keema*** and ***chindo***, both used in the family (see Claude's view below) |
+| B34 | green pepper | **no word known.** Capsicum isn't a traditional ingredient; ***mirchi*** = chilli. Green is ***lilo***. |
+| B35 | ghee | ***ghee*** |
+| B36 | chaat | ***chaat***: the mixture in the bowl (samosa chaat, papdi chaat), not the bowl itself |
+| B37 | samosa | ***samosa*** |
+| B38 | mishkaki | ***mishkaki*** (use Mum's recording) |
+
+### 27. B39–B49: little phrases in the kitchen
+| ID | English | Kutchi |
+|---|---|---|
+| B39 | This is for Nana. | ***Hi Nana lai ai.*** |
+| B40 | Can you make me some chai? | to a child: ***Tu muke chai banai dinda?*** To an elder: ***Aai muke chai banai dinda?*** No word for "can": the question is in the rising voice at the end. |
+| B41 | Of course! | ***Ha!*** |
+| B42 | You're welcome. | ***Jara e wandho nai*** ⚠ ("it's no trouble at all") |
+| B43 | How are you? I'm fine. | ***Tu ki aiye?*** / ***Aai ki aayo?*** → ***Aau thik ai*** ⚠ (I'm fine) |
+| B44 | Wait for me! | ***Mu lai khobar!*** ⚠ |
+| B45 | Eat! | ***Kha!*** |
+| B46 | Let me taste it. | ***Muke chakhan lai de.*** Or ***Khobar, aau chakha*** (wait, I'll taste it). |
+| B47 | Pass me the spoon. | ***Muke chamchi de*** / ***Muke chamcho de*** |
+| B48 | Hurry up! | ***Jaldi kar!*** (child) / ***Jaldi karo!*** (elder) |
+| B49 | Careful! | ***Dhyan rakh!*** ("keep care") |
+
+### 28. Zafar's refined V rule
+**Kutchi words don't *start* with V, but V can appear inside a word** (*sev*). So the notes keep *vyo* (Zafar's spelling) and *sev*, and use W at the start of a word (*wadho*, *wagar*, *watu*).
+
+### Claude's view on *keema* vs *chindo* (Zafar asked Claude to arbitrate)
+- ***keema*** is the word across the whole region: Urdu and Hindi *qīma*, Gujarati *khīmo*, Sindhi *qīmo*, all from Persian. On its own, it can't tell you whether a speaker is using Kutchi.
+- ***chindo*** is the one that stands out. It looks like a native word from a root meaning "cut" or "chop", and it's what Zafar's dad and Ma said.
+- **Recommendation:** in the game, Nani says ***chindo***, and ***keema*** is accepted as well. Masi is still the tie-break.
+
+### What this means for the game
+- **The Cook word changes** are listed in `docs/cook-word-changes-B.md`.
+- **Voice clips:** each word is said several times, by Mum and then Zafar. Once cut into clips, they're the first real family voices in the game.

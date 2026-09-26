@@ -1,0 +1,393 @@
+# Transcript: B.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** Section A8 English followed by Kutchi for my mum followed by Kutchi for me for two different sound examples for potential future use.
+- **0:19** Section A8. A8.1 Yes.
+- **0:25** Ha. Ha. Ha. Ha.
+- **0:33** A8.2 No, thank you.
+- **0:37** Na, thank you. Na, thank you.
+- **0:42** Na, thank you. Na, thank you.
+- **0:47** A8.3 Who's there?
+- **0:50** Kerai. Kerai. Kerai. Kerai.
+- **0:58** A8.5
+- **1:01** Wait, no. A8.4
+- **1:04** What's this?
+- **1:06** Hikuroai. Hikuroai.
+- **1:10** Hikuroai. Hikuroai.
+- **1:15** A8.5 Where is it? Kidaai. Kidaai. Kidaai. Kidaai.
+- **1:26** A8.6 Which one? Kyo. Kyo. Kyo. Kyo.
+- **1:36** A8.7 How many? Kitla.
+- **1:41** Kitla. Kitla. Kitla. A8.8 What would you like? For a child, toke kuro kapeto. For an adult,
+- **1:55** anke kuro kapeto. I'll repeat. Toke kuro kapeto. Anke kuro kapeto.
+- **2:02** Toke kuro kapeto.
+- **2:07** Toke kuro kapeto.
+- **2:11** Anke kuro kapeto.
+- **2:14** Kapeto.
+- **2:15** Kapeto. OK, I'm going to do mine again.
+- **2:18** What would you like addressed to a child?
+- **2:23** Toke kuro kapeto.
+- **2:33** Toke kuro kapeto.
+- **2:35** Toke kuro kapeto.
+- **2:38** Addressed to an adult?
+- **2:40** Anke kuro kapeto.
+- **2:43** Anke kuro kapeto.
+- **2:46** Anke kuro kapeto.
+- **2:52** I don't know the difference.
+- **2:53** You didn't finish.
+- **2:55** A8.9. Who did it?
+- **2:59** Kere karein. Kere karein. Kere being who and karein is did it.
+- **3:06** Kere karein. Kere karein. Karein. One more time. Kere karein. Kere.
+- **3:17** Like you're taking care of somebody.
+- **3:19** Kere karein. Kere karein.
+- **3:24** Kere karein. Kere karein. Kere karein. Take the last ones.
+- **3:37** A 8.10. This one, that one. He, who.
+- **3:47** He, who. That's like this and that. There's no one in there.
+- **3:51** He, who. He, who. A 8.11. Here, there. Hida, huda. Hida, huda. Hida, huda.
+- **4:18** Hida, huda.
+- **4:20** You're getting better.
+- **4:26** Section B, B1.
+- **4:31** No, as in no milk.
+- **4:39** Na.
+- **4:43** Na.
+- **4:44** Na. Na. That said a little short and sharp you'd normally say I don't want it
+- **4:56** which is muke na khape. muke na khape or sorry a fuller version would be muke na to khape
+- **5:05** which is I don't want it rather than don't want it.
+- **5:10** muke na to khape. muke na khape. I was giving both. Yeah. Yeah. That's true.
+- **5:20** Be too. Slowly. Aste ti. Aste ti. And just to add that slow is aste.
+- **5:32** Aste ti. Aste ti.
+- **5:37** Aste. Quickly. Jaldi. Jaldi. Jaldi. Jaldi. Before. Half. Ardo. Ardo. What's ardo?
+- **5:57** I'm wondering if this is a Kutchi and Gujarati thing.
+- **6:06** Before. Before. Half. Half comes in two variations. Half for quantities is ad. Ad. Ad.
+- **6:20** Half for portions is ardo. Ardo. Ardo. Ardo.
+- **6:30** Is that ardi? No.
+- **6:32** Yeah, the feminine version would be ardi, but in Kutchi you use the masculine if you don't know what the gender is.
+- **6:44** So, ardo is masculine, ardi is feminine.
+- **6:49** Ardo. Ardi.
+- **6:53** Hani.
+- **6:58** B5.
+- **6:59** Full.
+- **7:00** Full cup would be aqo cup, which means the whole cup, but if you were filling it, you
+- **7:08** would say barelo cup, as in a filled up cup.
+- **7:13** So you'd use barelo more for like fill up the tank of gas.
+- **7:17** Yeah, so you'd say fill up petrol bar, as in fill petrol.
+- **7:21** So the root word is bar.
+- **7:23** Bar.
+- **7:24** Bar.
+- **7:24** Bar. Bar. But full in the context of a full saucepan, a full cup, would be ako.
+- **7:35** Ako cup, as in the whole cup. Filled up everything, the whole cup.
+- **7:40** Does that have a gender? Akitanki?
+- **7:44** Yeah, there would be a gender as well. Akitanki.
+- **7:48** You wouldn't say Bareli cup because that's masculine. Barelo cup.
+- **7:52** You would say Bareli chamchi, as in a teaspoon full would be Bareli chamchi.
+- **7:57** Bareli chamchi. Bareli, Barelo, Aki, Ako.
+- **8:04** B7, small.
+- **8:08** Nindo for masculine, Nindi for feminine.
+- **8:12** Nindo, Nindi.
+- **8:15** Nindo, Nindi.
+- **8:19** Nindo, Nindi.
+- **8:25** B8, yogurt.
+- **8:28** Day, day.
+- **8:31** Day, day.
+- **8:35** B9, chickpeas.
+- **8:37** Chana, chana.
+- **8:40** Chana, chana.
+- **8:43** B10, meat.
+- **8:44** Gose, gose. Gose, gose. B11, millet, chapati. Bajrji maani. Bajrji maani. Bajrji maani, bajrji maani and then sorry B12 and then
+- **9:11** Ne poi. Ne poi. Ne poi. Ne poi.
+- **9:21** Cool. I'm going to come back to B8.
+- **9:26** Correction on B8. Sorry, addition on B8.
+- **9:30** If you are using yogurt as a, not marinade, but as a
+- **9:37** What do you call it? Curd? No, to infuse milk and make more yogurt out of it. Then you use the sample.
+- **9:46** Sorry, what do you call it? So yogurt starter culture has a special word and it's called mervan.
+- **9:53** So if you're using a yogurt starter culture to make more yogurt, you'd call it mervan. You'd ask somebody for mervan.
+- **10:00** Mervan. Yeah.
+- **10:02** In case you want to use that in the cooking to get somebody to use a starter culture to make yogurt.
+- **10:09** B13 only. Kali. Kali. Kali. Kali. Is that gendered? No.
+- **10:22** How do you say only mangoes? Kali ambakianti.
+- **10:30** Kali.
+- **10:32** It's not, okay, so it's not gendered then.
+- **10:34** No, I don't think it is.
+- **10:36** Not gendered. Kali. B14. Now.
+- **10:38** Haver.
+- **10:40** Haver.
+- **10:42** Haver.
+- **10:44** So now the tomatoes.
+- **10:46** Have a tomato which you should.
+- **10:48** Now put the tomatoes.
+- **10:50** No, then you would say
+- **10:52** Hane Tomato Wij.
+- **10:55** So what's the difference between have a and hane?
+- **10:58** Hane I think is time related. You're saying like this is the time to do it.
+- **11:03** Have a is almost like if you...
+- **11:07** You wouldn't say have a tomato which but you would say have a raj, come now.
+- **11:13** I don't know, I'd have to think what the difference is.
+- **11:17** Okay, if we say we're leaving now?
+- **11:20** But have a renota.
+- **11:26** Hane is almost when you use it sequentially.
+- **11:28** You're doing a sequence of things
+- **11:30** and you would say hane wij.
+- **11:32** So it's as if you're waiting on something.
+- **11:34** You say okay, now's the time to put it.
+- **11:36** So then you'd say hane.
+- **11:38** So in a cooking mode you would say hane?
+- **11:40** Yeah, cooking mode you would say hane wij.
+- **11:42** Hane.
+- **11:44** Yeah, hane.
+- **11:46** Other times you would say hevar. Yeah, hevar.
+- **11:52** B15, lift them out, like take it out of the oil now.
+- **11:58** Inke hane kad. Inke, hane kad. Inke being it. Hane is now and kad is take out.
+- **12:07** Could you just say hane kad? Yeah, hane kad. You could just say hane kad.
+- **12:12** Hane kad. Hane kad.
+- **12:17** What was the full one? Inke hane kad. Take this out now.
+- **12:21** Inke hane kad. Kad. Inke. Inke hane kad. Kad.
+- **12:26** Inke hane kad.
+- **12:29** B16, leave it in. Leave it. Doesn't leave it in.
+- **12:34** Chadi day is the short version. If you want to say leave it in, you say inke chadi day.
+- **12:40** Inke means it, that thing. So chadi day and inke chadi day.
+- **12:49** What about chadi chad?
+- **12:52** Chadi chad.
+- **12:53** Chadi chad.
+- **12:54** Chadi chad.
+- **12:56** No. Chadi day.
+- **13:01** It's fine.
+- **13:02** Chadi is underwear.
+- **13:04** I know but like.
+- **13:05** Chadi.
+- **13:06** I know but like.
+- **13:08** Chadi day.
+- **13:10** Okay, Chadi day.
+- **13:12** That's one of your mixes.
+- **13:14** Fine.
+- **13:16** Okay, leave.
+- **13:18** We wouldn't say lucky should.
+- **13:20** How would you tell someone to keep it in there for longer?
+- **13:22** Kutchi would be chadi.
+- **13:24** How do you say take it out?
+- **13:26** Ronde.
+- **13:28** Ronde would be leave it for now.
+- **13:30** Okay, so.
+- **13:32** What would you say?
+- **13:34** How would I ask you?
+- **13:36** Should take out the samosas.
+- **13:38** Samosa kadakke na.
+- **13:40** Samosa kadakke na. How would you answer?
+- **13:42** Haakad, hevar na.
+- **13:44** Naakad.
+- **13:46** Or I would probably say haakad or I would say thori warak. Leave it for a bit still.
+- **13:56** So, to answer the question leave it is.
+- **14:00** Chadide.
+- **14:01** Hever na, not now. I don't think it's chadide. Chadide is like leave it. Yeah, it is. Chadide is leave it. It's like don't bother it.
+- **14:10** Don't touch it. Just leave it.
+- **14:14** Okay, but in cooking sometimes you say like keep it in there almost in a way. It's more like rakhi.
+- **14:19** Yes, you would say chadide. Rakhi is a bit more Gujarati and used in different places. Okay fine.
+- **14:25** Chadide. Chadide.
+- **14:27** Chadide. Chadide is a generic leave it. Okay. I feel like someone is saying rakhi shud.
+- **14:35** Now talk about rakhi shud. With our rakhi shud.
+- **14:43** Yeah, maybe rakhi is more place wise. Yeah. Hida rakh.
+- **14:47** Put it in this place. Okay. Huda rakh would be put it in that place.
+- **14:52** Vegetables would be 17. Vegetable, we don't know the word for vegetable, but skewer.
+- **14:57** We use the Swahili word boga for now. I think that's what we tend to say. We say boga.
+- **15:02** Boga. Boga. Boga. Boga.
+- **15:11** But skewer is actually probably a lakri, which is a stick. Mishkaki is specifically a meat skewer or meat piece.
+- **15:19** Like a wooden barbecue sticks.
+- **15:21** So, you say lakri for stick. So, if you want a skewer of meat, you say hakri, mishkaki, lakri.
+- **15:29** So, one skewer of mishkaki.
+- **15:32** Hakri, mishkaki, jo, lakri.
+- **15:35** Or probably hakri, lakri, mishkaki.
+- **15:38** And if you wanted two, you would say ba lakri, mishkaki.
+- **15:41** Hakho lakri, mishkaki.
+- **15:44** Hakho lakri, mishkaki.
+- **15:47** Hakri lakri, mishkaki.
+- **15:50** Ba lakri.
+- **15:51** Ba lakri, mishkaki.
+- **15:54** B18 mixed. Mixed. I'm not sure I know mixed for Kutchi, I think we just say mixed. Mixed.
+- **16:08** Mixed. Mixed. Mixed. Yeah, I'm sure you should say mixed Kutchi.
+- **16:16** B19 enough or stop.
+- **16:21** It's gotta be bas now. Bas. Bas. Bas. Bas.
+- **16:33** But bas is enough, it's not stop. Bas. I'll say stop then.
+- **16:40** No, bas is like saying enough. Yeah, so what's stop then? If you're driving a car.
+- **16:46** Stop. Stop car.
+- **16:47** Or ubhi rakhi chad, make it stand.
+- **16:52** So you'd use the expression stop, make the car stand.
+- **16:55** Gadi ke ubhi rakh.
+- **16:57** But most times you just say stop, stop car.
+- **17:01** Okay. Stop.
+- **17:04** Stop is stop.
+- **17:05** Enough is what we'd use if you're pouring something and someone says that's enough.
+- **17:11** You'd say bas. Bas.
+- **17:13** Bas. Do you want exclamation? Well, only if it's an urgent stop. No, I'm saying do you want bas? No, bas. I know, but do you want exclaimed one? Or do I want to do an exclamation? Say the word bas as if you're exclaiming it. Bas. Bas. Bas.
+- **17:35** Ask me if I want it. No, I'm not asking if you want it. I'm saying exclaim it. Like exclamation mark. No. Okay. B20. More.
+- **17:50** Wadare. Wadare. Wadare. Wadare. Wadare. Wadare. Wadare.
+- **18:06** B21. A little.
+- **18:09** Torok. Torok. Torok.
+- **18:16** B22. It's ready. Tayarai. Tayarai. Tayarai. Tayarai. It's burning. Bareto. Bareto. One
+- **18:35** exclaimed one. That was an explained one. No, exclaimed. Do a significantly more exclaimed
+- **18:42** one. Bareto.
+- **18:43** Bareto. Bareto. Bareto. Bareto. Bareto. B24. It's boiling. Ukreto. Ukreto. Ukreto. Ukreto.
+- **19:05** B25. Well done or very good. It has to be shabash.
+- **19:10** Shabash. Shabash. And one exclaimed one. Shabash. Shabash. Shabash. Shabash. B26. Teaspoon.
+- **19:28** Hakri chamchi. If you wanted a teaspoon, you'd say chamchi. Hakri chamchi is one teaspoon.
+- **19:35** And tablespoon? Chamcho. Chamchi. Chamcho. Hakri chamchi. Hakri chamcho.
+- **19:43** B27. A cup. Cup. Hakri cup or cup? Cup. Hakri cup. It's not a touch screen. I'm old. You need more than...
+- **19:58** B28. Chips.
+- **20:01** Chips or terela batata, which means fried potatoes.
+- **20:07** Chips or terela batata.
+- **20:09** Would you say chips or chips though, no?
+- **20:11** Yeah, chips probably easier.
+- **20:13** Chips. Terela batata. Terela batata.
+- **20:19** B29. Sev.
+- **20:21** Sev. Sev.
+- **20:24** Sev. Sev.
+- **20:28** I think the rule is words don't start with V in Kutchi, but they can be V within the word.
+- **20:38** B30. Fresh coriander. The leaves.
+- **20:43** Dhania. No, fudino is mint. Dhania. But I think dhania is a Swahili word.
+- **20:52** See you, dhania.
+- **20:53** Dhania.
+- **20:55** Dhania.
+- **20:57** Dhania.
+- **21:05** B31. Tamarind chutney.
+- **21:09** Amli.
+- **21:11** Amli ji chutney.
+- **21:13** Amli ji chutney.
+- **21:15** Wouldn't you just say Amli? If you're making chana, a bowl of chana patata, you would just say Amli.
+- **21:21** But then you say tamarind. That means pass me the tamarind. Tamarind chutney is Amli ji chutney. Do you want tamarind or do you want tamarind chutney?
+- **21:33** Tamarind chutney. Like you can have coconut and coconut chutney.
+- **21:41** What about the chutney though?
+- **21:43** Chutney. Chutney is an Indian word adopted into English.
+- **21:48** Amli. Amli. Amli ji chutney. Amli ji chutney. B32 green chutney.
+- **21:57** There's no generic green chutney now.
+- **22:00** No.
+- **22:00** There's no such thing.
+- **22:02** Yes, coconut.
+- **22:04** You have a pudina ji chutney.
+- **22:06** Okay.
+- **22:08** B32 coconut chutney.
+- **22:10** Nair ji chutney.
+- **22:12** Nair ji chutney.
+- **22:14** Nair ji chutney.
+- **22:16** Nair ji chutney.
+- **22:18** Nair ji chutney.
+- **22:20** And...
+- **22:24** Let's just stick with that.
+- **22:26** That's what would be the most common green chutney now.
+- **22:28** Or mint is the other one. Mint is the other common one.
+- **22:30** OK. Mint chutney.
+- **22:32** Fudino ji chutney.
+- **22:34** Fudino ji chutney.
+- **22:36** Fudino ji chutney.
+- **22:38** Fudino ji chutney.
+- **22:42** Um...
+- **22:44** Mints. B33.
+- **22:46** Mints.
+- **22:48** Keema.
+- **22:50** Chindo.
+- **22:52** Again it's two, yeah.
+- **22:54** We always say chindo. Yeah, it's because again dad and your ma used to say chindo.
+- **22:59** I grew up saying keema. So some say keema, some say chindo. We'll have to look up if one is Kutchi and one is Gujarati.
+- **23:08** I think I tend to use Gujarati because my mum used to say that. Keema is Kutchi.
+- **23:16** Okay, Claude, could you help arbitrate?
+- **23:20** Say both.
+- **23:21** Keema, chindo.
+- **23:24** Keema, chindo.
+- **23:26** Keema, chindo.
+- **23:28** Keema, chindo.
+- **23:33** B34, green pepper.
+- **23:37** I forgot what green is. Lilo? No. Lilo is yellow. No, lilo is green.
+- **23:44** I've forgotten what green is.
+- **23:47** Why do you use green pepper? It's a pepper. I don't know. I'm not sure it's a pepper.
+- **23:54** I don't think capsicum is like naturally grown in India.
+- **23:59** We just have mirchi there, which is chillies.
+- **24:04** Okay, we don't know about green pepper. We're going to move on.
+- **24:07** B35, ghee.
+- **24:10** Ghee.
+- **24:11** Ghee.
+- **24:12** Ghee.
+- **24:14** Ghee.
+- **24:16** B36, chaat, the bowl.
+- **24:19** We don't really say chaat, do we?
+- **24:21** No, chaat is the mixture that you have in the bowl.
+- **24:23** When you have a mixture of lots of different foods, you call it a chaat.
+- **24:26** Like papti chaat, samosa chaat.
+- **24:28** Because you've mixed chana batata and chevro and something else.
+- **24:31** So do you say chaat?
+- **24:32** Yeah, chaat is not the bowl.
+- **24:34** No, I know it's saying like the bowl.
+- **24:36** Yeah, so you call it chaat, yeah.
+- **24:38** Chaat is a mixture of different foods in a bowl.
+- **24:41** Chaat, chaat.
+- **24:44** Chaat.
+- **24:46** Chaat.
+- **24:49** Interrupt my one, I'm quiet for your one.
+- **24:52** B37.
+- **24:54** Okay, this is, people say it differently. You say how you say it, B37.
+- **25:01** It said samosa, but as a kid I grew up saying samosa.
+- **25:05** So, it's a bit of both. So, just say how you say it though.
+- **25:09** Samosa. That's how I say it. Samosa. Okay, so just say it twice clearly for the recording.
+- **25:15** Samosa. Samosa.
+- **25:18** Samosa. Samosa.
+- **25:22** B38.
+- **25:25** Mishkaki. Mishkaki.
+- **25:28** Mishkaki.
+- **25:31** Mishkaki. Actually I also heard it called mishkaki. But this is how you say it. I would have said mishkaki actually.
+- **25:42** Okay so overwrite mishkaki with Nani's recording one more time. Mishkaki.
+- **25:50** Mishkaki. I squashed it. I said mishkaki.
+- **25:56** Mishkaki. B39. Whole phrases said naturally. This is for Nana. What is it? B39. This is for Nana.
+- **26:11** He, Nana, Lai, Ai. He, Nana, Lai, Ai. He, Nana, Lai, Ai. He, Nana, Lai, Ai.
+- **26:22** He, Nana, Lai, Ai.
+- **26:25** Take the last one.
+- **26:27** B40. Can you make me some chai?
+- **26:31** If it's a child I would say, tu muke chai banai dinda.
+- **26:35** Tu muke chai banai dinda. For an elder person I would say, aai muke chai banai dinda.
+- **26:43** Aai muke chai banai dinda.
+- **26:47** It needs these phrases said naturally. It knows the composite words now, but these are common phrases. So it needs it.
+- **26:52** It needs to place the whole word. So just say the whole sentence naturally.
+- **26:57** Aai muke chai banai dinda. Aai muke chai banai dinda.
+- **27:03** Aai muke chai banai dinda. Aai muke chai banai dinda.
+- **27:06** Yeah, so you don't explicitly say the can, it's in the way you lift the last word they
+- **27:12** which makes it a question mark. Aai muke chai banai dinda. That makes it a
+- **27:18** can you make me tea. It's finished learning now, now it just needs needs recording phrases now so you have to say it say one one last time naturally to a child and to an adult.
+- **27:29** Muke chai banai dinda. Muke chai banai dinda. Muke chai banai dinda. Muke chai banai dinda.
+- **27:41** B41 of course.
+- **27:43** Ha. Ha. Ha. Ha. B42 you're welcome.
+- **27:53** Oh. No idea.
+- **28:02** Is there an equivalent any time no problem? What did you say?
+- **28:06** No you'd probably just say sit down I'll speak for you.
+- **28:09** No, Wando Nhai? Thank you, thank you. Wando Nhai, Wando Nhai. No?
+- **28:15** No, you'd probably, Wando Nhai would almost imply assuming that don't worry it's not a burden.
+- **28:20** You'd probably say have a Raj Banayati or I was just making it anyway just to make them feel as if it wasn't a burden or something.
+- **28:29** Or you'd say just sit down I'll make you some.
+- **28:31** I think it wouldn't so apply to thank you.
+- **28:35** Then just say thank you.
+- **28:36** So it says thank you, apply to thank you.
+- **28:38** Yeah. Or reply to thank you.
+- **28:40** We're saying you're welcome, right? In English that's just to apply to thank you.
+- **28:45** You know?
+- **28:46** Then you'd say jarae waan doonai. It's not a problem at all. Jarae waan doonai.
+- **28:52** Jarae waan doonai. Jarae waan doonai.
+- **28:59** B43, how are you?
+- **29:02** I'm fine, thank you.
+- **29:04** Tuki aye, au tiki aye.
+- **29:07** Ae ki ayo, au tiki aye.
+- **29:11** My version. My mum's going to coach me through this.
+- **29:15** Tuki aye. Tuki aye.
+- **29:18** Au tiki aye. Au tiki aye.
+- **29:21** Ae ki ayo. Ae ki aye.
+- **29:24** Au tiki aye. Au tiki aye.
+- **29:26** You need to practice these a bit. They don't sound right.
+- **29:29** Okay, try again. Dung ki aye. Dung ki aye. Making the dung dung short. Dung ki aye. The emphasis is on dung. That's how I talk though. Dung ki aye. Dung ki aye. Dung ki aye. Ae ki aye. Ae ki aye. Au tiki aye. Au tiki aye. Okay, take the later ones. B44. Wait for me.
+- **29:54** Mulai khobar. Mulai khobar. Mulai khobar. Mulai khobar.
+- **30:02** B45. Eat. Ka.
+- **30:06** If you wanted an exclamation mark, you would say ka. Ka. Ka.
+- **30:13** B46. Let me taste it.
+- **30:17** You'd say, wait, let me taste it. Say, kobar a chaka.
+- **30:20** Or you could, yeah, you'd say kobar a chaka, so as in wait, I'll taste it.
+- **30:28** Kobar a chaka. Sorry, sorry. If you want to say let me taste it, you would say muke chakan laide.
+- **30:33** Let me taste it. Muke chakan laide. Say it naturally. Muke chakan laide.
+- **30:40** Muke chakan laide. Muke chakan laide. Muke chakan laide.
+- **30:46** B47. Pass me the spoon. Muke chamchi de. Muke chamcho de. Muke chamchi de. Muke chamcho de.
+- **31:01** B48. Hurry up. Jaldi kar. Jaldi kar. Jaldi kar. Jaldi kar. You want to say jaldi karo?
+- **31:13** Jaldi karo. Yeah, for an elder you would say jaldi karo. Jaldi karo. Jaldi karo. Jaldi
+- **31:21** karo. B49. Careful. Dyaan rak. Dyaan rak. Not hastati. That's slowly. Dyaan rak. Dyaan
+- **31:35** rak. So dyaan rak is like take care. Place care. Place care. Be careful.
+- **31:41** Dyaan rak. I suppose it's keep care. That concludes the B section. That's all for today.
