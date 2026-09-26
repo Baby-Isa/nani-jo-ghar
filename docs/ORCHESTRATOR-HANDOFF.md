@@ -152,3 +152,4 @@ On reports: merge into nifty-rubin → bump_version → smoke test → push → 
   - the clip agent, resumed in-process.
 
   ChatGPT dump 3 (69 files, 48 unique; no log in the repo) is being sorted by an in-process agent. **Lesson: 6+ parallel Opus sessions hit the 5-hour limit in about 1½ h. Keep to about 4 at once.**
+- 14:40 UTC: shell merged and live. First launch launched (`claude/first-launch`, session_01PLdXGEiy7YBMWGHWw5Nurd). Voice clips done (`lab/family-audio.html`).
