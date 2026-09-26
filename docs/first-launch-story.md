@@ -97,6 +97,15 @@ Zafar's idea: in the story, Nani says each line in English first, then Kutchi. H
 - **Gameplay lines never get English** (the light bulb stays the help there), so the lesson isn't given away.
 - **A parent setting, "Story help"**, offers English, off (pictures only) or later another language. That covers non-English families: the lines are one file per language.
 
+### Decided (Zafar, 26 Sept): English, then Kutchi, with no sandwich
+In the story, Nani says each line **in English first, then in Kutchi**. The lines are very short and simple:
+- "Tomorrow is Eid."
+- "Everyone is coming."
+- "Oh no, the food is not ready."
+- "Can you help me cook?"
+
+Gameplay lines stay Kutchi only, with the light bulb as the help. The "Story help" setting can still turn the English off, or later switch it to another language.
+
 ### Lines to record (add to the next Questions for Mum; Mum says each three times)
 1. "Can you get me the chai things from the pantry?"
 2. "Can you make me chai?" (B40, already recorded)
@@ -113,4 +122,4 @@ Zafar's idea: in the story, Nani says each line in English first, then Kutchi. H
 The chai station "is a bit boring", and it'll be the second thing every new player sees. Give it a fun pass before the first-launch story ships (added to `docs/cook-with-nani-todo.md`).
 
 ## Status
-**The flow is agreed (Zafar, 26 Sept); the English-first question is open.** The shell build (`claude/build-shell`) currently does: first launch → pantry → home screen. When this is agreed, the shell's continuation adds the character step and the story beat. The panels use placeholder art until the ChatGPT art run makes them.
+**The flow is agreed, and so is the language: English, then Kutchi (Zafar, 26 Sept).** The shell build (`claude/build-shell`) currently does: first launch → pantry → home screen. When this is agreed, the shell's continuation adds the character step and the story beat. The panels use placeholder art until the ChatGPT art run makes them.

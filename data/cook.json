@@ -138,7 +138,9 @@
   },
   "veg-12": {
    "kutchi": "marcha",
+   "kutchi_one": "mirchi",
    "english": "green chilli",
+   "note": "Zafar 26 Sept: mirchi = one chilli, marcha = plural. The game has no singular/plural switch yet (see cook-with-nani-todo: noun plurals), so marcha stays for counts; mirchi is kept for when one chilli is asked for.",
    "gender": "unknown",
    "image": "chilli",
    "heap": {

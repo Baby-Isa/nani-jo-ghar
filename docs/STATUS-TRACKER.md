@@ -6,6 +6,8 @@
 
 **Overall: about 20%.**
 
+**Focus now (Zafar, 26 Sept): Cook, the clinic, the first launch (story walkthrough and character creation), Cook and character art, and recordings with Mum.** The other five modes are parked, and their designs aren't reviewed yet.
+
 ## 1. Game modes
 The stages are: design → build the MVP → iterate from Zafar's feedback → Kutchi words in → family voice in → onboarding → story hooks.
 
@@ -14,18 +16,18 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | **Cook with Nani** | 100 | 100 | 60 | 70 | 10 | 70 | 10 | **65%** | Merge the hands. A fun pass on the chai station. Zafar decides the next wave (chop level 1, customer reactions). |
 | **Find it** | 100 | 90 | 30 | 40 | 5 | 50 | 10 | **45%** | Into the shell. Rebuild to the quality-pass design (the library cut from 21 to 10). |
 | **The clinic** | 100 | 85 | 0 | 5 | 0 | 60 | 0 | **35%** | Zafar's first play. Record Section G (the clinic words). Build D3 clues, the album and free play. |
-| **Tidy up** | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Zafar reviews the quality-pass design, then a rebuild. |
-| **Who did it?** | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Same. The family's A6 lines are ready for it. |
-| **Dress up** | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. It shares art with character creation. |
-| **Monsoon rush** | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. Section G has the weather words. |
-| **Snap** | 100 | 25 | 0 | 5 | 0 | 0 | 0 | **17%** | Same. |
+| **Tidy up** (parked) | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Zafar reviews the quality-pass design, then a rebuild. |
+| **Who did it?** (parked) | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Same. The family's A6 lines are ready for it. |
+| **Dress up** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. It shares art with character creation. |
+| **Monsoon rush** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. Section G has the weather words. |
+| **Snap** (parked) | 100 | 25 | 0 | 5 | 0 | 0 | 0 | **17%** | Same. |
 
 ## 2. Foundation and story
 | Piece | % | Next step |
 |---|---|---|
 | Shared UI (end-of-round screen, onboarding kit, light bulb, request card) | 85 | Roll it into the five new modes as they're rebuilt. |
 | Shell: one app, one save, player picker | 50 | Finishing now; then publish. |
-| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 10 | Build it after the shell. Zafar picks English-first or the sandwich. |
+| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 10 | Build it after the shell. The story is English then Kutchi (decided). |
 | Story engine (arcs and chapters as data, picture panels, Story help) | 5 | Comes with the first launch. |
 | World map and home (fog of war, "the world is the menu", role reversal) | 0 | Phase C, after the first launch. |
 | Speech recognition (on-device, closed set, voice star) | 30 | Enrol it with the family voice clips; the first speaking moments go in Cook. |
@@ -55,7 +57,7 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 |---|---|---|---|---|---|---|
 | **Cook** | ✓ | ✓ | 70 | 0 | **62%** | Dump 3 is in: velan, chakla, chai tray, chai glass, skewer rack, and new counter moods for Nana, Ma and Ali in `assets/cook/characters/next/`, waiting for approval. Still to do: Nani's moods (cook pack 1.1–1.4) and the potato cube (still reads as butter). |
 | **Hands** (player-boy, player-girl, Nani) | ✓ | ✓ | 90 | 0 | **70%** | Being put into Cook now. Eid mehndi later. |
-| **Characters** (Nani ✓, Kasuku ✓, Big Ma, the doctor, Nana, Ma, Ali, cousin, animals) | ✓ | 55 | 25 | 0 | **42%** | Approve the new family sheets and animals (dump 3). Zafar processes Big Ma and the doctor (dump 2). Still to do: Nani feelings (1.1), Isa feelings (1.5). |
+| **Characters** (Nani ✓, Kasuku ✓, Big Ma, the doctor, Nana, Ma, Ali, cousin, animals) | ✓ | 60 | 30 | 0 | **45%** | Dump 3 approved; the new counter moods are live. Zafar processes Big Ma and the doctor (dump 2). Still to do: Nani feelings (1.1), Isa feelings (1.5). |
 | **Player character** (layered, for character creation) | 0 | 0 | 0 | 0 | **0%** | A ChatGPT prompt for the layers (body, hair, eyes, clothing tints). |
 | **Story panels** (first launch, then arc beats) | 0 | 0 | 0 | 0 | **0%** | Four Eid panels: the calendar and moon, the guests, the empty pots, "help me?". |
 | **Find it** | ✓ | 45 | 10 | 0 | **33%** | Backgrounds from dump 3 are in. Relights 8.1–8.3 need redoing (8.2 and 8.3 were redrawn, not relit). The sitting room (3.2) needs the sofa lower. |
@@ -73,9 +75,7 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Store listing (screenshots, text, age rating) | 0 | Near the end. |
 
 ## Waiting on Zafar (open questions)
-1. Story language: English first, or the sandwich (Kutchi, English, Kutchi)?
-2. *marcha* → *mirchi*? Drop the green pepper from the mishkaki?
-3. The proposed game ideas 10–17 in `docs/GAME-IDEAS-TBC.md`.
-4. Review the quality-pass designs for Tidy up, Who did it?, Dress up, Monsoon rush and Snap. They're in `docs/modes/*-design.md`, and they unblock the rebuilds.
-5. Spellings: *vyo* or *wyo*; *kyo*, *anke*, *kere karein*, *wadhare*, *thorok*, *jara e wandho nai*, *mu lai khobar*.
-6. Approve the new character sheets from dump 3 (`build/contact-sheets/chatgpt-batch3-dump3-family.png`). Approved counter moods move up from `assets/cook/characters/next/`.
+1. Game ideas 10–17 in `docs/GAME-IDEAS-TBC.md`: yes or no to each.
+2. A8.9 "Who did it?": re-ask Mum. Whisper heard *kere karein*, and Zafar doesn't recognise it.
+
+Decided on 26 Sept: the story is English then Kutchi; *mirchi* is one chilli and *marcha* the plural; the dump 3 art is approved; the spellings are confirmed; the other modes' designs are parked.

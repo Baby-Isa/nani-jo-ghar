@@ -143,3 +143,12 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 
 ## From Zafar, 26 Sept: the chai station needs a fun pass
 The chai station is the second thing a new player does (pantry, then "Tu muke chai banai dinda?", then chai, in `docs/first-launch-story.md`). Zafar finds it "a bit boring". Before the first-launch story ships, give it a mini-game quality pass (`docs/modes/MINIGAME-QUALITY-BRIEF.md`): what's fun, where the challenge is, and a small delight moment (steam, the pour, Nani's sip and reaction).
+
+## Noun singular and plural forms (Zafar, 26 Sept)
+Nouns need a singular and a plural form in the data, and the game should say the right one for the count:
+- *mirchi* / *marcha* (chilli, irregular);
+- *ambo* / *amba*;
+- *bataato* / *bataata*;
+- -i she-words don't change.
+
+`veg-12` already carries `kutchi_one: "mirchi"`. Add a `plural` field (or a `kutchi_one`) across the nouns, and use it wherever a count of 1 is spoken or shown.

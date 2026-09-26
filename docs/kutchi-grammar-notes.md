@@ -346,3 +346,8 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 - ***chundo*** = mince, and "to mince" something in general. Zafar thinks *chundo* is the Kutchi word, so **the game uses *chundo***, and *keema* is also accepted. This replaces *chindo* above.
 - ***Aau theek ai*** = I'm fine.
 - ***cup*** is just *cup*. One cup: ***hakri cup***. A full (filled-up) cup: ***bharelo cup***. A whole cup, the one used more in cooking: ***aako cup***.
+
+### Zafar, 26 Sept (afternoon)
+- **Chilli:** ***mirchi*** is one chilli, and ***marcha*** is the plural. This is an irregular pair, unlike *ambo → amba*. Red chilli powder stays *lal marcha*.
+- Spellings *vyo*, *kyo*, *anke*, *wadhare*, *thorok*, *jara e wandho nai* and *mu lai khobar* are confirmed.
+- *kere karein* (who did it?) is **not** confirmed. Zafar doesn't recognise it, so re-ask Mum for A8.9.
