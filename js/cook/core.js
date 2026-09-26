@@ -63,10 +63,21 @@
   Cook.save = blankSave();
   Cook.storageOK = true;
 
+  // "One app, one save" (js/shared/save.js): every page loads the one save, and
+  // Cook.save is the current player's "cook" namespace (the old njg-cook-v1 key was
+  // migrated into it). Find it, Dress up and Snap share Cook.save, so they follow.
+  // Without save.js (an old lab page) it falls back to the old key.
+  const oneSave = () => (global.Save && typeof global.Save.get === "function" ? global.Save : null);
   Cook.loadSave = function () {
     try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (raw) Cook.save = Object.assign(blankSave(), JSON.parse(raw));
+      const S = oneSave();
+      if (S) {
+        Cook.save = Object.assign(blankSave(), S.get("cook"));
+        Cook.storageOK = S.persistent();
+      } else {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (raw) Cook.save = Object.assign(blankSave(), JSON.parse(raw));
+      }
     } catch (e) {
       Cook.storageOK = false;
     }
@@ -74,7 +85,9 @@
   };
   Cook.writeSave = function () {
     try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(Cook.save));
+      const S = oneSave();
+      if (S) Cook.storageOK = S.set("cook", Cook.save) && S.persistent();
+      else localStorage.setItem(SAVE_KEY, JSON.stringify(Cook.save));
     } catch (e) {
       Cook.storageOK = false;
     }

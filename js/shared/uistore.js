@@ -3,10 +3,11 @@
  * personal best times (js/shared/results.js) and which stations' onboarding
  * a child has already seen (js/shared/onboard.js).
  *
- * STORAGE ADAPTER. js/storage.js is the only module that persists, and it
- * saves whole profile objects; js/progress.js holds the active profile once
- * the shell calls Progress.attachProfile(profile, onChange). So:
- *   - with a profile attached, everything lives on profile.shared_ui
+ * STORAGE ADAPTER. Phase B ("one app, one save"): when js/shared/save.js is
+ * loaded (every game page loads it), everything lives in the one save, in
+ * the current player's "ui" namespace (Save.get("ui")); the old fallback key
+ * below was migrated into it. Without Save (Node, the old fruit-bowl errand):
+ *   - with a profile attached (js/progress.js), everything lives on profile.shared_ui
  *     ({bests: {...}, onboarded: {...}, seen: {...}}) and is saved through
  *     the same onChange the word stages use: nothing new to migrate;
  *   - with no profile (the labs, a page opened on its own), it falls back
@@ -80,14 +81,31 @@
       } catch (e) { /* private mode: memory only */ }
     },
   };
-  const backend = () => custom || (profile() ? profileBackend : fallbackBackend);
+  // Phase B: the one save (js/shared/save.js), the current player's "ui" namespace
+  const saveBackend = {
+    kind: "save",
+    read() {
+      try {
+        return root.Save.get("ui");
+      } catch (e) {
+        return {};
+      }
+    },
+    write(d) {
+      try {
+        root.Save.set("ui", d);
+      } catch (e) { /* the save keeps itself in memory when storage is blocked */ }
+    },
+  };
+  const hasSave = () => !!(root && root.Save && typeof root.Save.get === "function");
+  const backend = () => custom || (hasSave() ? saveBackend : profile() ? profileBackend : fallbackBackend);
 
   UIStore.use = (b) => {
     custom = b || null;
     return UIStore;
   };
   UIStore.kind = () => backend().kind || "custom";
-  UIStore.profileId = () => (profile() ? profile()._profile.id || null : null);
+  UIStore.profileId = () => (custom ? null : hasSave() ? root.Save.currentId() : profile() ? profile()._profile.id || null : null);
   UIStore.get = function (section, key) {
     const d = backend().read() || {};
     return d[section] ? d[section][key] : undefined;

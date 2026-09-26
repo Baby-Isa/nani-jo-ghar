@@ -493,12 +493,22 @@
   const STORE = "njg-speech-enrol-v1";
   let profile = "default";
   const storeKey = () => (profile === "default" ? STORE : `${STORE}:${profile}`);
+  // Phase B ("one app, one save"): with js/shared/save.js loaded, enrolments live in the
+  // current player's "speech" namespace (the old default key was migrated there)
+  const oneSave = () => {
+    const S = typeof self !== "undefined" ? self.Save : null;
+    return S && typeof S.get === "function" ? S : null;
+  };
+  function savedEnrolments() {
+    if (oneSave()) return oneSave().has("speech") ? oneSave().get("speech") : null;
+    const raw = typeof localStorage !== "undefined" && localStorage.getItem(storeKey());
+    return raw ? JSON.parse(raw) : null;
+  }
   Speech.MAX_TAKES = 3; // per word; a new take replaces the oldest
   function loadEnrolments() {
     try {
-      const raw = typeof localStorage !== "undefined" && localStorage.getItem(storeKey());
-      if (!raw) return;
-      const data = JSON.parse(raw);
+      const data = savedEnrolments();
+      if (!data) return;
       for (const c in data) data[c].forEach((p, i) => Speech.addTemplate(c, unpack(p), `enrol:${i}`));
     } catch (e) {
       /* private mode, or blocked storage: enrolments just don't persist */
@@ -511,7 +521,8 @@
         const mine = bank[c].filter((t) => t.from.startsWith("enrol:")).map((t) => pack(t.feat));
         if (mine.length) data[c] = mine;
       }
-      if (typeof localStorage !== "undefined") localStorage.setItem(storeKey(), JSON.stringify(data));
+      if (oneSave()) oneSave().set("speech", data);
+      else if (typeof localStorage !== "undefined") localStorage.setItem(storeKey(), JSON.stringify(data));
     } catch (e) {
       /* as above */
     }
