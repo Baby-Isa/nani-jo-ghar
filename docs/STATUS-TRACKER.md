@@ -75,7 +75,6 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Store listing (screenshots, text, age rating) | 0 | Near the end. |
 
 ## Waiting on Zafar (open questions)
-1. Game ideas 10–17 in `docs/GAME-IDEAS-TBC.md`: yes or no to each.
-2. A8.9 "Who did it?": re-ask Mum. Whisper heard *kere karein*, and Zafar doesn't recognise it.
+1. A8.9 "Who did it?": re-ask Mum. Whisper heard *kere karein*, and Zafar doesn't recognise it.
 
-Decided on 26 Sept: the story is English then Kutchi; *mirchi* is one chilli and *marcha* the plural; the dump 3 art is approved; the spellings are confirmed; the other modes' designs are parked.
+Decided on 26 Sept: the story is English then Kutchi; *mirchi* is one chilli and *marcha* the plural; the dump 3 art is approved; the spellings are confirmed; the other modes' designs are parked; game ideas 10–17 have their verdicts (17 dropped, 12 folded into the placing game, new idea 20: the how-are-you greeting exchange).
