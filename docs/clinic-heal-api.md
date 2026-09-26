@@ -59,3 +59,9 @@ The host is `js/clinic/heal/host.js`; the dev page is **`lab/clinic-heal-host.ht
 - **Results.** `ctx.done({right, total, hints, words, taught?})`. The host adds `timeMs`, `log`, `hints` (light-bulb uses during the game) and the tray. A level that is teaching only may return `taught: true`.
 - **Bot.** `bot(level, rng)` → `{rows, solve(strategy), strategies?}`; `solve` returns `{right, total}` (or booleans per row). `Clinic.Heal.botRun(id, level, strategy, rng)` normalises it for `build/leak_clinic.mjs`. List your strategies in `strategies` (the leak bot runs each 500 times per level); `"fair"` must win 100%.
 - **Controller.** `mount` returns `{start(), destroy(), expect()?}`; `start` may be async (the host doesn't wait for it). `expect()` (optional) tells the browser tests what the game wants next.
+
+## Core additions, 26 Sept (pipeline integration; additive only)
+- **The pipeline mounts every game** through `js/clinic/stages/heal.js` with `{level, side, kind, ailment, part (the diagnosed part), tray (the pharmacy's tray, prescription order; asked items may carry `colour`/`count`), patient (the figure from diagnosis), seed}`. The tray ids are the game's own (`data/clinic/pipeline.json` `ailments[id].items`).
+- **Own tray / own patient.** If a game never calls a `ctx.trayUI` method (or a `ctx.patient` method) in its first second, the host hides the sidebar tray (or its figure) so nothing is drawn twice. Call `ctx.trayUI.show()` to bring the tray back.
+- **Node.** `Clinic.Heal.loadAll(dir)` requires every game file and registers its export (for wrappers that only register in the browser). A bot's own `fair()` method is used for the `"fair"` strategy.
+- **Tests.** `window.__clinic.finishHeal()` (clinic.html) ends the mounted game with its bot's fair result; the heal agents' own tests still play the games.

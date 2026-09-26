@@ -199,7 +199,8 @@
   P.judgeWho = (row, i) => row.answer === i;
 
   /* ================= stage 2: diagnosis ================= */
-  P.REGIONS = [["knee", "leg"], ["foot", "toe"], ["hand", "finger"], ["arm", "elbow", "shoulder"], ["head", "ear", "eye", "mouth", "tooth", "neck", "nose", "throat"], ["tummy"], ["chest"]];
+  // the hands rest on the knees; the chest and tummy are close: one probe per region
+  P.REGIONS = [["knee", "leg", "hand", "finger"], ["foot", "toe"], ["arm", "elbow", "shoulder"], ["head", "ear", "eye", "mouth", "tooth", "neck", "nose", "throat"], ["tummy", "chest"]];
   P.ailmentsFor = function (data, level, games) {
     return Object.keys(data.ailments)
       .filter((k) => k !== "_about")

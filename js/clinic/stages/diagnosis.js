@@ -82,7 +82,7 @@
     const graded = plan.variant === "D1b";
     const row = plan.rows[0];
     await S.request(screen, { title: "", rows: plan.card });
-    const dots = plan.probes.map((p) => {
+    let dots = plan.probes.map((p) => {
       const side = p === plan.part ? plan.side : data.sided.includes(p) ? (env.rng() < 0.5 ? "left" : "right") : null;
       const d = h("button", "cl-probe", top);
       d.type = "button";
@@ -95,6 +95,19 @@
       place();
       return { el: d, part: p, side, place, done: false };
     });
+    // on a small screen two decoys can land on top of each other (or of the sore one): keep the sore
+    // part, drop any decoy closer than a dot's width to one already kept (the row judges only the sore part)
+    {
+      const size = (dots[0] && dots[0].el.offsetWidth) || 50;
+      const kept = [];
+      dots.slice().sort((a, b) => (b.part === plan.part) - (a.part === plan.part)).forEach((d) => {
+        const x = parseFloat(d.el.style.left);
+        const y = parseFloat(d.el.style.top);
+        if (d.part !== plan.part && kept.some((k) => Math.hypot(k.x - x, k.y - y) < size * 1.1)) d.el.remove();
+        else kept.push({ d, x, y });
+      });
+      dots = dots.filter((d) => d.el.isConnected);
+    }
     const onResize = () => dots.forEach((d) => d.place());
     global.addEventListener("resize", onResize);
     let busy = false;
