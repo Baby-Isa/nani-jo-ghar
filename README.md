@@ -226,6 +226,9 @@ user gesture.
   cell to its own transparent PNG with a soft, fringe-free edge (the art
   pipeline's "sheets to sliced assets" step). Needs numpy and scipy.
   `build/slice_chatgpt_batch1.sh` re-runs ChatGPT batch 1;
+  `build/slice_chatgpt_batch3.sh` re-runs batch 3's cook sheets (with
+  `build/cut_glow.py` for the gas flames and `build/fit_sprites.py` for
+  sizes);
   `build/contact_sheet.py` makes the black/white QA contact sheets;
   `build/bg_align_check.py` checks a background's lighting states line up.
 - `build/lines_needing_family.py` — writes
