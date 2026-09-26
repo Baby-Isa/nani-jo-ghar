@@ -1,0 +1,36 @@
+{
+ "_about": "H2/H8 Wash, stitch, plaster (docs/modes/clinic-design.md, quality pass Q4 and Q5). The reference healing game for docs/clinic-heal-api.md (js/clinic/heal/games/cut.js). Real Kutchi only where it exists: pela, ne poi, paani, the numbers hakro/ba/trae/char/panj, wadho/nindho. Everything in [brackets] is an English placeholder (grey italic on screen). Level 1 is taught (the first-ever healing game: three one-word steps, said one at a time, the tray in that order); from level 2 the counts, the plaster's colour and (level 3) the order by size are the ear rows.",
+ "ailments": {
+  "scrape": { "name": "a scrape", "parts": ["knee", "hand", "elbow", "leg", "arm"], "items": ["paani", "cloth", "plaster"], "from": 1 },
+  "cut": { "name": "a cut", "parts": ["arm", "leg", "hand", "knee"], "items": ["paani", "thread", "plaster"], "from": 2 }
+ },
+ "knobs": {
+  "zoom": 2.2,
+  "throbMs": 8000,
+  "dabCounts": { "2": [1, 2, 3, 4], "3": [1, 2, 3, 4] },
+  "stitchCounts": { "1": null, "2": [2, 3, 4, 5], "3": { "big": [2, 3, 4], "small": [1, 2] } },
+  "stitchDots": { "1": 3, "2": 6, "3": { "big": 5, "small": 3 } },
+  "plasterColours": { "2": ["red", "blue", "green"], "3": ["red", "blue", "green", "yellow"] },
+  "designs": ["cat", "star", "spots"]
+ },
+ "numbers": { "1": "hakro", "2": "ba", "3": "trae", "4": "char", "5": "panj" },
+ "lines": {
+  "cold": { "kutchi": null, "english": "Cold!", "who": "patient", "placeholder": true },
+  "oop": { "kutchi": null, "english": "Oop!", "who": "patient", "placeholder": true },
+  "tickles": { "kutchi": null, "english": "That tickles!", "who": "patient", "placeholder": true },
+  "bow": { "kutchi": null, "english": "A bow, like a shoelace!", "who": "doctor", "placeholder": true },
+  "look": { "kutchi": null, "english": "Look at that!", "who": "patient", "placeholder": true }
+ },
+ "words": {
+  "paani": { "kutchi": "paani", "english": "water" },
+  "cloth": { "kutchi": null, "english": "cloth", "placeholder": true },
+  "plaster": { "kutchi": null, "english": "plaster", "placeholder": true },
+  "thread": { "kutchi": null, "english": "thread", "placeholder": true },
+  "stitches": { "kutchi": null, "english": "stitches", "placeholder": true },
+  "dabs": { "kutchi": null, "english": "dabs", "placeholder": true },
+  "pela": { "kutchi": "pela", "english": "first" },
+  "ne-poi": { "kutchi": "ne poi", "english": "and then" },
+  "wadho": { "kutchi": "wadho", "english": "big" },
+  "nindho": { "kutchi": "nindho", "english": "small" }
+ }
+}

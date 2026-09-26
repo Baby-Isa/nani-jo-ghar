@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser test for the clinic lab (clinic.html), phase 1.
+"""Browser test for the clinic phase-1 lab (clinic-phase1.html).
 
 Plays every lab entry through REAL pointer events at screen coordinates,
 read from window.__clinic.expectation() (what the game wants next): taps
@@ -234,7 +234,7 @@ def main():
             # the fonts are blocked on purpose (offline): their failed loads are not errors
             page.on("console", lambda m: errors.append(m.text) if m.type == "error" and "net::ERR_FAILED" not in m.text else None)
             page.on("pageerror", lambda e: errors.append(str(e)))
-            page.goto(f"http://127.0.0.1:{PORT}/clinic.html?speed={a.speed}")
+            page.goto(f"http://127.0.0.1:{PORT}/clinic-phase1.html?speed={a.speed}")
             page.wait_for_selector("#panel h1", timeout=20000)
             keys = page.evaluate("__clinic.labs()")
             keys = [k for k in keys if (not a.only or k in a.only) and k not in a.skip]
@@ -253,7 +253,7 @@ def main():
                     fails.append(f"{vp['name']} {key}: {ex}")
                     print(f"  {vp['name']:16} L{a.level} {key:18} FAIL {str(ex)[:200]}", flush=True)
                     pl.shot(f"FAIL-{key.replace(':', '-')}")
-                    page.goto(f"http://127.0.0.1:{PORT}/clinic.html?speed={a.speed}")
+                    page.goto(f"http://127.0.0.1:{PORT}/clinic-phase1.html?speed={a.speed}")
                     page.wait_for_selector("#panel h1", timeout=20000)
                 if errors:
                     fails.append(f"{vp['name']} {key}: console errors: {errors[:3]}")

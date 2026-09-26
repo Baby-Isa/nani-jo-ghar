@@ -1,0 +1,21 @@
+/* The clinic (phase 1 greybox). Cook's css/cook.css is loaded first and never edited; these are the clinic's own rules. */
+body.clinic #cl-card { display: grid; gap: 4px; }
+body.clinic #cl-card .cl-title { font: 800 20px "Baloo 2", Nunito, sans-serif; color: #2d2018; }
+body.clinic #cl-card .cl-sub { font: 700 13px Nunito, sans-serif; color: #6b5a4c; }
+body.clinic #cl-stars { display: flex; gap: 6px; flex-wrap: wrap; }
+body.clinic .cl-star { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #e6ddd0; font-size: 20px; opacity: .45; filter: grayscale(1); }
+body.clinic .cl-star.on { background: #ffe7a8; opacity: 1; filter: none; }
+body.clinic .cl-result { display: flex; gap: 10px; margin: 8px 0; }
+body.clinic .cl-result .cl-star { width: 54px; height: 54px; font-size: 28px; }
+body.clinic .cl-review { font-style: italic; color: #6b5a4c; }
+body.clinic .cl-opts { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 8px 0; font: 700 14px Nunito, sans-serif; }
+body.clinic .cl-opts select { font: inherit; padding: 4px 6px; border-radius: 8px; }
+/* the speaking panel: bottom-left of the stage, never over the patient's body */
+body.clinic #choices.cl-tell { left: 1.5%; right: auto; bottom: 3%; top: auto; transform: none; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 30%; }
+body.clinic #choices.cl-tell.hidden { display: none; }
+body.clinic .cl-mic { display: grid; place-items: center; width: 92px; height: 92px; border-radius: 50%; border: 0; background: #fffaf1; box-shadow: 0 4px 0 rgba(58,36,16,.25); font-size: 38px; cursor: pointer; }
+body.clinic .cl-mic small { font: 800 12px Nunito, sans-serif; color: #3a2410; }
+body.clinic .cl-parent { background: #fffaf1; border-radius: 16px; padding: 10px; display: grid; gap: 6px; }
+body.clinic .cl-design { text-transform: capitalize; }
+body.clinic #cl-ask { font-weight: 800; }
+body.clinic #btn-help { display: none; }
