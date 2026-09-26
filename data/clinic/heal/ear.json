@@ -22,7 +22,7 @@
     "w-drops-please": { "kutchi": null, "english": "drops, please", "placeholder": true }
   },
   "lines": {
-    "heal-ear-side": { "voice": "patient", "k": "{side} {part}", "e": "My {side} {part}" },
+    "heal-ear-side": { "voice": "patient", "k": "{side} {part}", "e": "{side} {part}" },
     "heal-ear-pluck2": { "voice": "doctor", "k": "{pela} {a}, {nepoi} {b}", "e": "First {a}, then {b}" },
     "heal-ear-pluck3": { "voice": "doctor", "k": "{pela} {a}, {nepoi} {b}, {nepoi} {c}", "e": "First {a}, then {b}, then {c}" },
     "heal-ear-clean": { "voice": "doctor", "k": "{what}. {n} {times}", "e": "Clean it {n} times" },
@@ -35,7 +35,7 @@
     "sock": { "word": "th-sock", "kind": "sock", "size": 0.9, "noise": "SQUEAK!" }
   },
   "ailments": {
-    "seed-in-ear": { "part": "body-ear", "items": ["torch", "tweezers", "cotton-bud", "drops"], "from_level": 1, "story": "the cousin's ear, always something in it" }
+    "seed-in-ear": { "part": "body-ear", "items": ["torch", "tweezers", "cotton-bud", "drops"], "from": 1, "from_level": 1, "story": "the cousin's ear, always something in it" }
   },
   "levels": {
     "1": { "things": ["big", "small"], "clean": [2, 3, 4], "drops": [1, 2, 3], "side_heard": false, "drops_voice": "doctor" },
