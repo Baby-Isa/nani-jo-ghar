@@ -1,0 +1,77 @@
+{
+  "_about": "Clinic heal game `eye` (H12 Drops and the chart; docs/modes/clinic-design.md Q4, the quality pass). Levels are data. Real Kutchi only where the family or Cook already has it (numbers, wadho/nindho, nar, the fruit and veg nouns from data/content.json, which are drafts); everything in [EN: ...] is a grey placeholder. Sides are always the patient's own (they face you: their left eye is on the right of your screen).",
+  "id": "eye",
+  "ailments": {
+    "sore-eye": { "english": "a sore, itchy eye" }
+  },
+  "items": {
+    "care-drops": { "english": "eye drops", "use": "drops" },
+    "tool-pointer": { "english": "the pointer", "use": "pointer" },
+    "care-patch": { "english": "eye patch", "use": "patch" }
+  },
+  "numbers": [
+    { "n": 1, "id": "num-01", "kutchi": "Hakro", "english": "one" },
+    { "n": 2, "id": "num-02", "kutchi": "Ba", "english": "two" },
+    { "n": 3, "id": "num-03", "kutchi": "Trae", "english": "three" }
+  ],
+  "words": {
+    "drop": { "english": "drop", "placeholder": true },
+    "drops": { "english": "drops", "placeholder": true },
+    "big": { "id": "ph-big", "kutchi": "wadho", "english": "big" },
+    "small": { "id": "ph-small", "kutchi": "nindho", "english": "small" },
+    "no": { "id": "ph-no", "kutchi": "nar", "english": "not", "draft": true }
+  },
+  "lines": {
+    "side-left": { "who": "patient", "kutchi": "[EN: My left eye]", "english": "My left eye", "placeholder": true },
+    "side-right": { "who": "patient", "kutchi": "[EN: My right eye]", "english": "My right eye", "placeholder": true },
+    "patch": { "who": "doctor", "kutchi": "[EN: Cover the other eye]", "english": "Cover the other eye", "placeholder": true },
+    "chart": { "who": "doctor", "kutchi": "[EN: The chart.]", "english": "The chart.", "placeholder": true },
+    "arr": { "who": "patient", "kutchi": "[EN: Arrr!]", "english": "Arrr! A pirate!", "placeholder": true },
+    "squint": { "who": "patient", "kutchi": "[EN: Hmmm...]", "english": "Hmmm... (squints)", "placeholder": true },
+    "blink": { "who": "patient", "kutchi": "[EN: Ooh, cold!]", "english": "Ooh, cold!", "placeholder": true },
+    "squawk": { "who": "kasuku", "kutchi": "[EN: Squawk!]", "english": "Squawk!", "placeholder": true }
+  },
+  "chart_nouns": [
+    { "id": "fru-01", "kutchi": "kelo", "english": "banana", "img": "assets/items/fruit/fru-01.png", "he": true, "audio": "assets/audio/word/fru-01.mp3" },
+    { "id": "fru-02", "kutchi": "limu", "english": "lemon", "img": "assets/items/fruit/fru-02.png", "audio": "assets/audio/word/fru-02.mp3" },
+    { "id": "fru-04", "kutchi": "santra", "english": "orange", "img": "assets/items/fruit/fru-04.png", "audio": "assets/audio/word/fru-04.mp3" },
+    { "id": "fru-05", "kutchi": "aamo", "english": "mango", "img": "assets/items/fruit/fru-05.png", "he": true },
+    { "id": "fru-11", "kutchi": "drakhu", "english": "grapes", "img": "assets/items/fruit/fru-11.png" },
+    { "id": "fru-08", "kutchi": "safarjan", "english": "apple", "img": "assets/items/fruit/fru-08.png" },
+    { "id": "veg-01", "kutchi": "bataato", "english": "potato", "img": "assets/items/vegetable/veg-01.png", "he": true, "audio": "assets/audio/cook-tts/bataato.mp3" },
+    { "id": "veg-02", "kutchi": "dungri", "english": "onion", "img": "assets/items/vegetable/veg-02.png", "audio": "assets/audio/cook-tts/dungri.mp3" },
+    { "id": "veg-03", "kutchi": "tameto", "english": "tomato", "img": "assets/items/vegetable/veg-03.png", "he": true, "audio": "assets/audio/cook-tts/tameto.mp3" },
+    { "id": "veg-04", "kutchi": "gajar", "english": "carrot", "img": "assets/items/vegetable/veg-04.png" },
+    { "id": "veg-12", "kutchi": "marcha", "english": "green chilli", "img": "assets/items/vegetable/veg-12.png", "audio": "assets/audio/cook-tts/marcha.mp3" },
+    { "id": "veg-14", "kutchi": "aadu", "english": "ginger", "img": "assets/items/vegetable/veg-14.png", "audio": "assets/audio/cook-tts/aadu.mp3" }
+  ],
+  "levels": {
+    "1": {
+      "_note": "Drops (the count; the sore eye shows, so no side row) + three chart calls, rows of 3, 4, 5. Lines come one at a time.",
+      "drops": [1, 2],
+      "side": false,
+      "sore_visible": true,
+      "patch": false,
+      "list": false,
+      "chart": [{ "kind": "noun", "n": 3 }, { "kind": "noun", "n": 4 }, { "kind": "noun", "n": 5 }]
+    },
+    "2": {
+      "_note": "+ the side, in the patient's voice (no eye looks sorer than the other); four calls. Said as one list.",
+      "drops": [1, 2, 3],
+      "side": true,
+      "sore_visible": false,
+      "patch": false,
+      "list": true,
+      "chart": [{ "kind": "noun", "n": 3 }, { "kind": "noun", "n": 4 }, { "kind": "noun", "n": 5 }, { "kind": "noun", "n": 6 }]
+    },
+    "3": {
+      "_note": "+ the patch on THE OTHER eye (the only reversed side in any mode); five calls with wadho/nindho and a nar row.",
+      "drops": [1, 2, 3],
+      "side": true,
+      "sore_visible": false,
+      "patch": "other",
+      "list": true,
+      "chart": [{ "kind": "noun", "n": 4 }, { "kind": "size", "n": 4 }, { "kind": "noun", "n": 5 }, { "kind": "nar", "n": 4 }, { "kind": "noun", "n": 6 }]
+    }
+  }
+}
