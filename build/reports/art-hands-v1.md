@@ -101,7 +101,7 @@ This session alone: 123 images, about $16.54. The session budget was $15; the ow
 
 | Master | Result | How |
 |---|---|---|
-| b1-handle-grip-t | **Still failing** | Draft + 2 medium tries on a guide (the approved fist with the handle painted in). Try 1 laid a digit along the handle but showed only three knuckles; try 2 pointed the index up beside it. Until it is solved, the game can draw the tool under `d4-squeeze-f2-tight-t`. |
+| b1-handle-grip-t | Pass (round 3, see v3 below) | Draft + 2 medium tries on a guide (the approved fist with the handle painted in) failed: try 1 laid a digit along the handle but showed only three knuckles; try 2 pointed the index up beside it. Round 3's collage guide worked. |
 | a2-heel-push-t | **Still failing** | Draft + 2 medium tries on a guide (a1 foreshortened in code). Try 1 invented a ball under the hand, try 2 redrew a full-length flat hand. |
 | c2-tripod-grip-t | Pass | Guide edit, medium, try 1: a pencil in a tripod grip. |
 | c3-side-pinch-t | Pass | Guide edit, medium, try 1: card pinched, thumb pad on the card. |
@@ -119,7 +119,7 @@ The low-quality drafts and the first prompts (a passing master as a second refer
 - it despills red-orange bounce light;
 - it clears the placeholder's grey edge ghosts.
 
-The skin and scale normalisers ran as before. Review at full size: `build/reports/data/hands-master-v2-review.json`, sheet `build/contact-sheets/hands-master-v3.png`: **54 of 56 pass.**
+The skin and scale normalisers ran as before. Review at full size: `build/reports/data/hands-master-v2-review.json`, sheet `build/contact-sheets/hands-master-v3.png`: **54 of 56 pass** (55 after round 3, below).
 
 Lesson for next time: `build/raw/` keeps only the latest output per asset, so b1's try 1 was overwritten by try 2. Copy a promising raw aside before retrying.
 
@@ -127,9 +127,11 @@ Lesson for next time: `build/raw/` keeps only the latest output per asset, so b1
 
 | Set | Images |
 |---|---|
-| player-boy | 54 |
-| player-girl | 54 (bangles at the wrist joint) |
-| nani | 100 (54 poses + 46 mirrored left hands) |
+| player-boy | 55 |
+| player-girl | 55 (bangles at the wrist joint) |
+| nani | 102 (55 poses + 47 mirrored left hands) |
+
+(Counts after round 3, which added b1.)
 
 Sheets: `hands-player-boy.png`, `hands-player-girl.png`, `hands-nani.png`, plus the ring sheets above.
 
@@ -147,6 +149,31 @@ Every run's pre-flight estimate was under $1; the budget was $5. The image-outpu
 
 ## Still open
 
-- b1 (knife/spatula grip, thumb on the handle) and a2 (heel push): more API tries are unlikely to help. b1 probably needs a hand-drawn or 3D-posed thumb; a2 may be better dropped for a1 with a squash animation.
+- a2 (heel push): the model undoes any foreshortening (six tries across three rounds). Better dropped for a1 with a squash animation in the game, or drawn by hand.
 - The d6-f1 pair and e5 reuse approved hands, so they share those masters' lighting: d6-f1's left hand is lit from the right, the same known issue as Nani's mirrored left hands.
 - Ring placement is checked on stills; check it in the game at play size, especially the thin palm bands.
+
+---
+
+# v3: paid round for b1 and a2 (26 Sept 2026)
+
+The owner asked for another paid round on the two masters left. The lesson from v2: the model repairs a nearly-right image faithfully but won't make a pose change on its own. So each guide already showed the pose, and each ran as 4 medium variants (variants save as `-v0…-v3`, each with its own raw copy, so nothing is overwritten).
+
+| Master | Guide (`build/hand_guides.py`) | Result |
+|---|---|---|
+| b1-handle-grip-t | `make_b1_collage`: the approved top-down fist (d4-f2-tight) with the magenta handle leaving it at the index side, and a thumb made from the extended index finger of c4-point-t (back view, nail), thickened, shortened, turned to the handle and rooted at the side of the palm | **Pass: v1 of 4.** Four knuckles in a row, the thumb straight along the handle from the side of the palm, nail up, the handle running from under the fist. v3 was close (thumb short and tucked); v0 and v2 put the thumb beside the handle or pointed the index up. |
+| a2-heel-push-t | `make_a2_perspective`: a1 foreshortened, the finger rows widened towards the tips (nearer the camera) and slightly brightened | **Fail, all 4.** Each redrew a full-length flat hand. |
+
+**Key-out v2, two additions** (`key_out_magenta2`): dark red-orange bounce light in shadowed crevices (b1: the crevice between thumb and index) is now despilled too, and faint traces of the placeholder's lit edge (alpha < 40, away from the hand) are cleared. The five placeholder masters (b1, c2, c3 ×2, d3) were re-keyed from their raw outputs with it, then re-skinned.
+
+**Rings on b1:** detected cleanly. It's a back view with the ring finger curled, so the ring sits across the ring-finger knuckle, as on the other top-down fists; the bracelet sits across the wrist. Checked on the debug and Nani ring sheets.
+
+**Masters: 55 of 56 pass.** Only a2 is left.
+
+## Cost (round 3)
+
+| Run | Images | Quality | Cost |
+|---|---|---|---|
+| Round 3 (log 05) | 8 | medium | $0.34 + ≈ $0.05 input tokens ≈ $0.39 |
+
+Pre-flight estimate $0.34. **Running total for v2 + v3: 36 images, ≈ $1.22 of the $5 budget.**

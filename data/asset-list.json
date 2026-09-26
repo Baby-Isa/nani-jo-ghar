@@ -170,15 +170,16 @@
       "output": "assets/characters/hands/master/hand-a2-heel-push-t.png",
       "mode": "edit",
       "reference_images": [
-        "sources/art/hands/guides/a2-heel-push-guide.png"
+        "sources/art/hands/guides/a2-heel-push-perspective-guide.png"
       ],
       "template": "hand_pose_from_ref",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "The attached image is an approved hand from this set. Redraw it faithfully: the same hand, size, skin colour, lighting, framing and sleeve. There is NO object anywhere in the image: nothing in, under or behind the hand, no ball, no dough, no cloth; the background stays empty and transparent. Change ONLY what follows: make the foreshortening read as real: the hand is tipped up on its heel, the wrist bent back, so the short fingers are rising up towards the camera: we see their fingertips and nails from above, rounded and pointing at us, with soft shadows under them on the back of the hand. Keep them as short as in the attached image. Four fingers together, the thumb at the left side."
+        "pose": "The attached image is this set's approved flat hand, already distorted into the right pose: the hand is tipped up on its heel, seen from directly above, so the fingers rise up towards the camera. Redraw it as ONE clean, natural right hand with real perspective, keeping its exact outline and proportions: the fingers stay SHORT and FORESHORTENED exactly as in the attached image, their tips nearer the camera and a little wider, the fingernails seen almost end-on, a soft shadow where each finger rises from the knuckles; the thumb relaxed at the left; the heel of the hand and the forearm flat on the worktop. Same size, skin colour, lighting, framing and sleeve. There is NO object anywhere: nothing in, under or behind the hand; the background stays empty and transparent."
       },
       "camera": "T",
-      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py.",
+      "_note_v3": "26 Sept round 3: edit of a perspective guide (a1 foreshortened, tips widened), build/hand_guides.py make_a2_perspective."
     },
     {
       "id": "hand-a3-palm-up-t",
@@ -323,16 +324,17 @@
       "output": "assets/characters/hands/master/hand-b1-handle-grip-t.png",
       "mode": "edit",
       "reference_images": [
-        "sources/art/hands/guides/b1-handle-guide.png"
+        "sources/art/hands/guides/b1-thumb-collage-guide.png"
       ],
       "template": "hand_pose_from_ref_keyed",
       "fields": {
         "camera": "Camera: orthographic top-down view, camera directly overhead looking straight down at the worktop at 90 degrees; we see the BACK of the hand (palm facing down, towards the worktop), never the palm; the forearm lies along the worktop and enters from the bottom edge of the frame, pointing up towards the top edge; no horizon, no sides.",
-        "pose": "The attached image is an approved hand from this set with the new object already painted in. Redraw it faithfully: the same hand, size, skin colour, lighting, camera, framing and sleeve, and the magenta object in the same place and shape. Change ONLY what follows: the thumb. Uncurl the thumb from the side of the fist and lay it straight and flat ON TOP of the magenta handle, pointing up the frame along the handle, its whole length and its thumbnail visible, resting on the magenta just above the fist. The four fingers stay curled round the handle exactly as in the attached image: FOUR rounded knuckles in a row across the top of the fist (index, middle, ring, little). The thumb is the fifth digit, lying on the handle to the left of the index knuckle. Exactly five digits: four knuckles plus the thumb. The object is a PLACEHOLDER: keep it a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
+        "pose": "The attached image is a rough collage of this set's approved hand, already in the right pose: redraw it as ONE clean, natural right hand, the same size, skin colour, lighting, top-down camera, framing and sleeve, and the magenta handle in the same place and shape. Keep the pose exactly: the four fingers curled round the handle, seen from above as a row of FOUR rounded knuckles; the THUMB straight and flat ON TOP of the magenta handle, growing from the side of the palm near the wrist and pointing up the frame along the handle, its thumbnail visible on top. Smooth the join where the thumb meets the palm so the thumb is clearly part of the hand. Exactly five digits: four knuckles and the thumb along the handle. The object is a PLACEHOLDER: keep it a plain, flat, pure magenta (#FF00FF) shape with no shading, no texture and no highlights, so it can be cut out afterwards to leave the exact gap for the real tool. Wherever the fingers or the thumb overlap the magenta shape they are IN FRONT of it: it never covers any part of the hand."
       },
       "camera": "T",
       "key_out": "magenta2",
-      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py."
+      "_note_v2": "25 Sept v2: edited from a guide (an approved master with the object painted in, or a mask); see build/hand_guides.py.",
+      "_note_v3": "26 Sept round 3: edit of a collage guide (d4 fist + a thumb made from c4-point-t's index finger laid on the handle), build/hand_guides.py make_b1_collage."
     },
     {
       "id": "hand-b2-vertical-grip-t",

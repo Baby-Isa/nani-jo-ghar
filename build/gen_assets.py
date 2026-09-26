@@ -1027,6 +1027,9 @@ def key_out_magenta2(im, band_px=7):
     # chroma at its own lightness (nails, near hue 30, have low chroma)
     s_C = float(np.hypot(*s_ab))
     spill = _dilate(core, band_px * 2) & opaque & ~core & (hue > 18) & (hue < 42) & (C > s_C + 8)
+    # ...and in the shadowed crevices next to it the bounce reads as a dark
+    # red-orange (lightness under 45, hue up to 60, chroma above the skin's)
+    spill |= _dilate(core, band_px * 2) & opaque & ~core & (lab[..., 0] < 45) & (hue > 18) & (hue < 60) & (C > s_C)
     fix |= spill
     lab2[spill, 1], lab2[spill, 2] = s_ab[0], s_ab[1]
     rgba[..., :3] = np.where(fix[..., None], lab_to_rgb(lab2), rgba[..., :3])
@@ -1036,6 +1039,10 @@ def key_out_magenta2(im, band_px=7):
     ring = _dilate(core, 12) & ~core
     grey = (C < 10) & (lab[..., 0] < 80)
     rgba[..., 3] = np.where(ring & (grey | (rgba[..., 3] < 200)) & ~(skin_w > 0.5), 0, rgba[..., 3])
+    # faint traces of the placeholder's lit edge further out (alpha < 40,
+    # away from the hand itself)
+    hand = _dilate(rgba[..., 3] > 200, 6)
+    rgba[..., 3] = np.where(_dilate(core, 40) & ~core & (rgba[..., 3] < 40) & ~hand, 0, rgba[..., 3])
     # soften the new edge by half a pixel
     soft = np.asarray(Image.fromarray(rgba[..., 3].astype(np.uint8), "L").filter(ImageFilter.GaussianBlur(0.6)))
     rgba[..., 3] = np.where(_dilate(core, 2), np.minimum(rgba[..., 3], soft), rgba[..., 3])

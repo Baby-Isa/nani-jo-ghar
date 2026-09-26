@@ -96,6 +96,55 @@ def make_d6():
     return c.crop((max(0, bb[0] - pad), 0, min(c.width, bb[2] + pad), c.height))
 
 
+def make_b1_collage():
+    """b1 retry (round 3): the approved top-down fist (d4-squeeze-f2-tight-t)
+    with the magenta handle leaving it at the index side, and a thumb laid
+    ON the handle: the extended index finger of the approved top-down point
+    (c4-point-t, back view with its nail) made thicker and shorter, turned to
+    the handle's angle, its root blended into the side of the fist. A collage
+    for the edit to redraw as one hand."""
+    fist = master("d4-squeeze-f2-tight-t")
+    g = behind(fist, lambda d: (
+        d.line([(372, 640), (318, 60)], fill=MAGENTA, width=66),
+        d.ellipse([285, 27, 351, 93], fill=MAGENTA)))
+    src = master("c4-point-t").crop((505, 60, 598, 400))
+    a = np.asarray(src).copy()
+    ys = np.arange(a.shape[0])[:, None]
+    fade = np.clip((a.shape[0] - 1 - ys) / 90.0, 0, 1)  # fade the root into the fist
+    a[..., 3] = (a[..., 3] * fade).astype(np.uint8)
+    thumb = Image.fromarray(a, "RGBA").resize((int(93 * 1.25), int(340 * 0.95)), Image.LANCZOS)
+    angle = np.degrees(np.arctan2(54, 580))  # the handle leans left going up
+    thumb = thumb.rotate(angle, resample=Image.BICUBIC, expand=True)
+    # root at the side of the fist, tip along the handle
+    g.alpha_composite(thumb, (338 - thumb.width // 2, 610 - thumb.height))
+    return g
+
+
+def make_a2_perspective(knuckles_y=370, wrist_y=690, fingers=0.42, palm=0.78, tip_grow=0.3, cx=None):
+    """a2 retry (round 3): a1-flat-palm-t tipped up on its heel. As in
+    foreshorten(), but with perspective: rows nearer the fingertips (closer
+    to the camera) are widened about the hand's centre, up to 1 + tip_grow
+    at the tips, and brightened a little, so the fingers read as rising
+    towards the viewer rather than as short fingers."""
+    im = foreshorten(master("a1-flat-palm-t"), knuckles_y, wrist_y, fingers, palm)
+    a = np.asarray(im).astype(np.float64)
+    ys = np.where(a[..., 3].max(1) > 16)[0]
+    top = int(ys[0])
+    k_out = int(wrist_y - (wrist_y - knuckles_y) * palm)
+    if cx is None:
+        cx = float(np.average(np.arange(a.shape[1]), weights=a[k_out, :, 3] + 1e-6))
+    out = a.copy()
+    xs = np.arange(a.shape[1], dtype=np.float64)
+    for y in range(top, k_out + 40):
+        t = np.clip((k_out + 40 - y) / (k_out + 40 - top), 0, 1)  # 0 at the knuckles, 1 at the tips
+        k = 1 + tip_grow * t ** 1.3
+        src = cx + (xs - cx) / k
+        for c in range(4):
+            out[y, :, c] = np.interp(src, xs, a[y, :, c], left=0, right=0)
+        out[y, :, :3] *= 1 + 0.08 * t
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGBA")
+
+
 def make_count4():
     """e3-count-4 (the thumb folded away behind the hand), after two API
     attempts put the thumb back: the approved count-5 with the thumb cut
@@ -134,7 +183,9 @@ def main():
         d.line([(385, 470), (330, 60)], fill=MAGENTA, width=66),
         d.ellipse([297, 27, 363, 93], fill=MAGENTA)))
     g.save(os.path.join(G, "b1-handle-guide.png"))
+    make_b1_collage().save(os.path.join(G, "b1-thumb-collage-guide.png"))
     foreshorten(master("a1-flat-palm-t"), knuckles_y=370, wrist_y=690).save(os.path.join(G, "a2-heel-push-guide.png"))
+    make_a2_perspective().save(os.path.join(G, "a2-heel-push-perspective-guide.png"))
     g = behind(master("c1-pinch-f2-closed-t"), lambda d: (
         d.line([(430, 300), (130, 40)], fill=MAGENTA, width=26),
         d.line([(430, 300), (640, 480)], fill=MAGENTA, width=26)))

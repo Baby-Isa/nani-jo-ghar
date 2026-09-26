@@ -1,6 +1,6 @@
 {
  "hand-a1-flat-palm-t": "PASS 5 digits",
- "hand-a2-heel-push-t": "FAIL v2: try 1 invented a ball under the hand, try 2 redrew a full-length flat hand; the foreshortened heel push still owed",
+ "hand-a2-heel-push-t": "FAIL v3: round 3 (perspective guide, 4 medium variants) all redrew a full-length flat hand; the model undoes foreshortening",
  "hand-a3-palm-up-t": "PASS 5 digits",
  "hand-a3-palm-up-e": "PASS 5 digits",
  "hand-a4-reach-e": "PASS 5 digits",
@@ -10,7 +10,7 @@
  "hand-a7-hand-on-heart-e": "PASS 5 (flipped in post)",
  "hand-a8-cupped-t": "PASS 5 digits",
  "hand-a8-cupped-e": "PASS 5 digits",
- "hand-b1-handle-grip-t": "FAIL v2: try 1 put a digit along the handle but showed three knuckles; try 2 pointed the index up beside it; thumb-on-handle still owed",
+ "hand-b1-handle-grip-t": "PASS v3 5 digits: four knuckles, thumb straight along the handle, nail up; top-down; clean handle gap (collage guide edit, medium, round 3 v1 of 4)",
  "hand-b2-vertical-grip-t": "PASS 5 (fist)",
  "hand-b2-vertical-grip-e": "PASS 5 (fist)",
  "hand-b3-stick-grip-e": "PASS 5 (fist)",

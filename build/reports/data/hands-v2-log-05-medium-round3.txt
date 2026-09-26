@@ -1,0 +1,34 @@
+LIVE RUN -- 2 asset(s), model=gpt-image-1, concurrency 3, gap 20s, max_regens 1
+budget cap: $0.50
+
+pre-flight estimate: 8 image(s) planned, ~$0.34 at the chosen quality (a QA regen can add up to 1 more attempt(s) per reskin image; skipped 0 already-done)
+[hand-a2-heel-push-t::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v1] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v2] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v0] skin #DF925A -> #D79B6D (distribution matched); scale 0.992 (within tolerance)
+[hand-a2-heel-push-t::v0] done in 23s -> assets/characters/hands/master/hand-a2-heel-push-t-v0.png
+[hand-a2-heel-push-t::v3] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v1] skin #E29A6C -> #D69B6D (distribution matched); scale 1.096 (rescaled)
+[hand-a2-heel-push-t::v1] done in 43s -> assets/characters/hands/master/hand-a2-heel-push-t-v1.png
+[hand-b1-handle-grip-t::v0] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v2] skin #D99766 -> #D69B6E (distribution matched); scale 1.042 (rescaled)
+[hand-a2-heel-push-t::v2] done in 64s -> assets/characters/hands/master/hand-a2-heel-push-t-v2.png
+[hand-b1-handle-grip-t::v1] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-a2-heel-push-t::v3] skin #EB9757 -> #D69A6C (distribution matched); scale 0.962 (within tolerance)
+[hand-a2-heel-push-t::v3] done in 59s -> assets/characters/hands/master/hand-a2-heel-push-t-v3.png
+[hand-b1-handle-grip-t::v2] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-b1-handle-grip-t::v1] keyed out 23317 px of magenta placeholder (v2)
+[hand-b1-handle-grip-t::v1] skin #E29659 -> #D69B6D (distribution matched); scale 0.992 (within tolerance)
+[hand-b1-handle-grip-t::v1] done in 38s -> assets/characters/hands/master/hand-b1-handle-grip-t-v1.png
+[hand-b1-handle-grip-t::v3] queued edit 1024x1024 quality=medium attempt 1/1 (+0s; the pacer holds the actual request start)
+[hand-b1-handle-grip-t::v0] keyed out 42986 px of magenta placeholder (v2)
+[hand-b1-handle-grip-t::v0] skin #DA874B -> #D79B6B (distribution matched); scale 1.008 (within tolerance)
+[hand-b1-handle-grip-t::v0] done in 80s -> assets/characters/hands/master/hand-b1-handle-grip-t-v0.png
+[hand-b1-handle-grip-t::v2] keyed out 38023 px of magenta placeholder (v2)
+[hand-b1-handle-grip-t::v2] skin #D48751 -> #D5996A (distribution matched); scale 1.025 (within tolerance)
+[hand-b1-handle-grip-t::v2] done in 63s -> assets/characters/hands/master/hand-b1-handle-grip-t-v2.png
+[hand-b1-handle-grip-t::v3] keyed out 33047 px of magenta placeholder (v2)
+[hand-b1-handle-grip-t::v3] skin #E09160 -> #D69B6C (distribution matched); scale 1.042 (rescaled)
+[hand-b1-handle-grip-t::v3] done in 62s -> assets/characters/hands/master/hand-b1-handle-grip-t-v3.png
+
+spent $0.34 this run -- 8 generated, 8 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 164s
