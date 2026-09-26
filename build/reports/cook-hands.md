@@ -1,6 +1,6 @@
 # Cook with Nani: the player's hands (`claude/cook-hands`)
 
-`js/cook/hands.js` shows the child's own hands in the game: `player-boy` by default, or `player-girl`, chosen on the title screen ("Your hands") and stored in `Cook.save.hands`. Nani's hands appear only when she asks you to pass her something and when she demonstrates a move. The hands never take input.
+`js/cook/hands.js` shows the child's own hands in the game: `player-boy` by default, or `player-girl`, chosen on the title screen ("Your hands") and stored in `Cook.save.hands`. Nani's hands appear only when she asks you to pass her something and when she demonstrates a move.
 
 ## Pose map (`data/hand-poses.json`)
 - **Player:**
@@ -35,7 +35,7 @@ Only the current station's poses are loaded, and the previous station's are drop
 |---|---|---|---|---|---|---|---|---|
 | 2 | 9 | 5 | 3 | 1 | 3 | 1 | 2 | 4 |
 
-The Chai tray's 9 include the five counting hands. Nani's poses load the first time she needs them. The full list is in `build/reports/data/cook-hands-textures.json`.
+The Chai tray's 9 include five counting hands. Nani's load when first needed (`build/reports/data/cook-hands-textures.json`).
 
 ## Tests
 - Cook's leak bot (`--orders`) is still 0%.
