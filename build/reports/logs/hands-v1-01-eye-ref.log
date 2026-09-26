@@ -1,0 +1,10 @@
+LIVE RUN -- 1 asset(s), model=gpt-image-1, concurrency 3, gap 20s
+budget cap: $15.00
+[hand-ref-eye::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-ref-eye::v1] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[hand-ref-eye::v0] skin #DB8C51 -> #D69B6D (corrected)
+[hand-ref-eye::v0] done in 36s -> assets/characters/hands/eye-level/hand-ref-eye-v0.png
+[hand-ref-eye::v1] skin #E9934C -> #D59A6C (corrected)
+[hand-ref-eye::v1] done in 54s -> assets/characters/hands/eye-level/hand-ref-eye-v1.png
+
+spent $0.08 this run -- 2 generated, 2 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 58s

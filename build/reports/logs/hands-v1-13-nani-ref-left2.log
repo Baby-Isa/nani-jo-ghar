@@ -1,0 +1,10 @@
+LIVE RUN -- 2 asset(s), model=gpt-image-1, concurrency 3, gap 20s
+budget cap: $0.10
+[nani-ref-t-left::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[nani-ref-e-left::v0] queued edit 1024x1024 (+0s; the pacer holds the actual request start)
+[nani-ref-e-left::v0] skin #D77A3B -> #BB8B6B (corrected); scale - (off)
+[nani-ref-e-left::v0] done in 36s -> assets/characters/hands/nani/ref/nani-ref-e-left.png
+[nani-ref-t-left::v0] skin #D06F30 -> #BC8D6D (corrected); scale - (off)
+[nani-ref-t-left::v0] done in 60s -> assets/characters/hands/nani/ref/nani-ref-t-left.png
+
+spent $0.08 this run -- 2 generated, 2 done, 0 flagged for drift, 0 error(s) (0 not billed), 0 skipped (already done); wall time 64s
