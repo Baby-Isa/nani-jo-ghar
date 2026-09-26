@@ -10,7 +10,7 @@
 
 ## Now (26 Sept, evening)
 - **Paused (Zafar, 26 Sept eve):** Cook hands fixes + phone ⌂ fix (`claude/cook-hands-fix`). Zafar is reviewing whether the hands stay at all (long thin arms add clutter); maybe only where the hands sit near the bottom of the screen, e.g. turning the skewers.
-- **Running:** the Conversations engine and MVP lab (`claude/conversations-mvp`).
+- **Live (26 Sept, 20:40 UTC):** the Conversations engine and lab (`lab/conversations.html`, linked from `labs.html`). Not wired into any mode yet (hook points: `docs/modes/conversations-wiring.md`). Mum's recording list: `build/reports/conversations-mvp.md`.
 - **Waiting on Zafar:** detailed feedback on Cook, the clinic and the first launch (then the chai fun pass and clinic iteration start); ticks on the voice clips (then wiring the clips and a new Word doc for Mum).
 
 ## 1. Game modes
@@ -26,7 +26,7 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | **Dress up** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. It shares art with character creation. |
 | **Monsoon rush** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. Section G has the weather words. |
 | **Snap** (parked) | 100 | 25 | 0 | 5 | 0 | 0 | 0 | **17%** | Same. |
-| **Conversations** (module) | 60 | 0 | 0 | 0 | 0 | 0 | 0 | **9%** | **Building (26 Sept eve):** engine + MVP lab. Design decided (26 Sept). Build the MVP slice (9 exchanges) after the first launch; Mum records the common whole phrases. (`docs/modes/conversations-design.md`). |
+| **Conversations** (module) | 80 | 70 | 0 | 0 | 0 | 0 | 0 | **25%** | **Engine + lab live (26 Sept eve); 23/23 tests.** Next: wire the 15 placements after Zafar's mode feedback; Mum records the list in `build/reports/conversations-mvp.md`. Design decided (26 Sept). Build the MVP slice (9 exchanges) after the first launch; Mum records the common whole phrases. (`docs/modes/conversations-design.md`). |
 
 ## 2. Foundation and story
 | Piece | % | Next step |
