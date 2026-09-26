@@ -124,6 +124,11 @@
     return global.Onboard.run(`clinic/${id}`, script, { idleMs: 6000 });
   };
   S.signal = (name) => global.Onboard && global.Onboard.signal(name);
+  /** A stage has ended: close any onboarding still open for it (its spotlight's element is gone). */
+  S.endOnboard = function () {
+    if (!global.Onboard || !global.Onboard.active || !global.Onboard.active()) return;
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+  };
 
   /** A result collector for a stage. */
   S.result = function (stage) {

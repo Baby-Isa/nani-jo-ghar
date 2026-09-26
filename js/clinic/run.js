@@ -75,6 +75,7 @@
     env.level = sp.level;
     const t0 = Date.now();
     const res = await S[name].run(env, sp, plan);
+    S.endOnboard();
     res.timeMs = Date.now() - t0;
     R.log.push({ stage: name, variant: sp.variant || null, level: sp.level, rows: res.rows.map((r) => ({ id: r.id, ok: r.ok, tested: r.tested })) });
     return res;
