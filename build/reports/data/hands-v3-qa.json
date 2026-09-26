@@ -1093,5 +1093,1099 @@
     "reason": "jewellery: dotted-line bracelet arc on one wrist only, the far half missing; sleeve: cream specks in both cuff rolls"
    }
   }
+ },
+ "after": {
+  "summary": {
+   "/master/": {
+    "total": 56,
+    "pass": 55
+   },
+   "/player-boy/": {
+    "total": 55,
+    "pass": 55
+   },
+   "/player-girl/": {
+    "total": 55,
+    "pass": 55
+   },
+   "/nani/": {
+    "total": 102,
+    "pass": 102
+   }
+  },
+  "files": {
+   "assets/characters/hands/master/hand-a2-heel-push-t.png": {
+    "verdict": "FAIL",
+    "reason": "v3 edit (3 medium variants) came back as a fist seen from the fingertip side, not a heel push with lifted fingers; the model still won't foreshorten (now 9 tries)"
+   },
+   "assets/characters/hands/master/hand-a5-wave-f2-e.png": {
+    "verdict": "PASS",
+    "reason": "v3 masked edit: 5 digits now (little finger added), back of hand, clean, scale 252 px"
+   },
+   "assets/characters/hands/master/hand-b1-handle-grip-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: four knuckles in a row, thumb straight along the handle line; clean alpha on dark and light; the handle sprite goes under the fist and along the thumb"
+   },
+   "assets/characters/hands/master/hand-b2-vertical-grip-e.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: 5 (fist), fingers curl round a clean straight handle slot; the wedge below is the heel of the hand behind the handle"
+   },
+   "assets/characters/hands/master/hand-b3-stick-grip-e.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: 5 (fist, thumb over), clean straight stick slot, no torn edges"
+   },
+   "assets/characters/hands/master/hand-b5-hook-grip-e.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: 4 fingers hooked over a clean horizontal handle gap, thumb at the side; smooth edges"
+   },
+   "assets/characters/hands/master/hand-b5-hook-grip-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render (round 2): back of the hand, four fingers curled over the handle line, thumb ends cleanly where the handle sprite crosses it; clean alpha"
+   },
+   "assets/characters/hands/master/hand-c2-tripod-grip-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: tripod grip reads, clean smooth pencil slot between thumb and index"
+   },
+   "assets/characters/hands/master/hand-c3-side-pinch-e.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: card held between thumb and index side, clean straight card slot; rim light cleaned"
+   },
+   "assets/characters/hands/master/hand-c3-side-pinch-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: pinch from above, card gap under the thumb pad, clean"
+   },
+   "assets/characters/hands/master/hand-c5-two-hand-fold-t.png": {
+    "verdict": "PASS",
+    "reason": "5+5; v3 cleared the faint frame line round the canvas"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f2-closed-e.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: 5 digits round a clean round ball hole, no torn edges"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f2-closed-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: claw closing from above, 5 digits, clean edges"
+   },
+   "assets/characters/hands/master/hand-d2-c-hold-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: C round a round gap, 5 digits; the dark shadow rim along the gap cleaned (a faint texture remains on the thumb's inner edge at 100%, not visible at play size)"
+   },
+   "assets/characters/hands/master/hand-d3-two-hand-bowl-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: both hands, thumbs and fingers over the rim, clean curved edges; the notch at each heel is under the bowl sprite"
+   },
+   "assets/characters/hands/master/hand-d4-squeeze-f1-half-t.png": {
+    "verdict": "PASS",
+    "reason": "v3 blue-tool render: hand half-closed round a ball, 5 digits, clean curved gap"
+   },
+   "assets/characters/hands/master/hand-d6-two-hand-catch-f1-open-e.png": {
+    "verdict": "PASS",
+    "reason": "5+5 backs of both hands; v3 re-lit the mirrored left hand from the upper left"
+   },
+   "assets/characters/hands/master/hand-a1-flat-palm-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; top-down back of hand; scale ok; soft 3D light; no tool (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a3-palm-up-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; palm up at eye level; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a3-palm-up-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; palm, top-down; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a4-reach-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits spread; back of hand; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a5-wave-f1-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; back of hand; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a6-palm-out-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a7-hand-on-heart-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; back of hand, diagonal; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a8-cupped-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; cupped palm; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-a8-cupped-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits; cupped palm top-down; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-b2-vertical-grip-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (fist, top-down), clear hole for the handle; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-b4-rolling-pin-t.png": {
+    "verdict": "PASS",
+    "reason": "5+5 digits, backs of both hands top-down; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f1-open-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (index and thumb open, three curled); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f1-open-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (pinch open, top-down side view of hand); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f2-closed-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (index and thumb pinched, three curled); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-c1-pinch-f2-closed-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (pinch closed); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-c4-point-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (index up, three curled, thumb tucked); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-c4-point-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (index up, three curled, thumb out); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f1-open-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits, claw open; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-d1-grab-f1-open-t.png": {
+    "verdict": "PASS",
+    "reason": "5 digits, claw open top-down; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-d2-c-hold-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits in a C around the gap; clean alpha; lighter skin than the set but within the normaliser (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-d4-squeeze-f2-tight-t.png": {
+    "verdict": "PASS",
+    "reason": "5 (fist, four knuckles, thumb tucked); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-d5-throw-release-e.png": {
+    "verdict": "PASS",
+    "reason": "5 digits spread; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-d6-two-hand-catch-f2-closed-e.png": {
+    "verdict": "PASS",
+    "reason": "5+5, cupped palms together; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e1-thumbs-up-e.png": {
+    "verdict": "PASS",
+    "reason": "5 (fist + thumb up); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e2-handshake-e.png": {
+    "verdict": "PASS",
+    "reason": "5; side entry is the pose; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e3-count-1-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 1 up, thumb tucked; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e3-count-2-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 2 up, thumb folded; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e3-count-3-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 3 up, thumb and little finger folded; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e3-count-4-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 4 up, thumb hidden, palm edge smooth; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e3-count-5-e.png": {
+    "verdict": "PASS",
+    "reason": "exactly 5 up; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e4-clap-f1-apart-e.png": {
+    "verdict": "PASS",
+    "reason": "5+5, backs of both hands, apart; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e4-clap-f2-together-e.png": {
+    "verdict": "PASS",
+    "reason": "two hands palm to palm, front hand 5, rear hand's fingers and thumb where the pose puts them; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e5-arm-up-fist-e.png": {
+    "verdict": "PASS",
+    "reason": "back of the fist, knuckles up (same image as d4-f2, same view); clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e6-stretch-e.png": {
+    "verdict": "PASS",
+    "reason": "5 spread; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-e7-shrug-e.png": {
+    "verdict": "PASS",
+    "reason": "5, palm up; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-f1-piano-f1-raised-e.png": {
+    "verdict": "PASS",
+    "reason": "5, fingers raised; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-f1-piano-f2-pressed-e.png": {
+    "verdict": "PASS",
+    "reason": "5, fingers pressed; clean (14 px top pad) (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-f2-drum-cupped-t.png": {
+    "verdict": "PASS",
+    "reason": "5, back of cupped hand top-down; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/master/hand-f4-phone-two-hands-e.png": {
+    "verdict": "PASS",
+    "reason": "5+5, clear phone gap between the hands; clean (unchanged since v2)"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a1-flat-palm-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; top-down back of hand; scale ok; soft 3D light; no tool"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a3-palm-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; palm up at eye level; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a3-palm-up-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; palm, top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a4-reach-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits spread; back of hand; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a5-wave-f1-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; back of hand; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a5-wave-f2-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 masked edit: 5 digits now (little finger added), back of hand, clean, scale 252 px"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a6-palm-out-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a7-hand-on-heart-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; back of hand, diagonal; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a8-cupped-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; cupped palm; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-a8-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits; cupped palm top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b1-handle-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: four knuckles in a row, thumb straight along the handle line; clean alpha on dark and light; the handle sprite goes under the fist and along the thumb"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b2-vertical-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: 5 (fist), fingers curl round a clean straight handle slot; the wedge below is the heel of the hand behind the handle"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b2-vertical-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (fist, top-down), clear hole for the handle; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b3-stick-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: 5 (fist, thumb over), clean straight stick slot, no torn edges"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b4-rolling-pin-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5+5 digits, backs of both hands top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b5-hook-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: 4 fingers hooked over a clean horizontal handle gap, thumb at the side; smooth edges"
+   },
+   "assets/characters/hands/skins/player-boy/hand-b5-hook-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render (round 2): back of the hand, four fingers curled over the handle line, thumb ends cleanly where the handle sprite crosses it; clean alpha"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (index and thumb open, three curled); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (pinch open, top-down side view of hand); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (index and thumb pinched, three curled); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c1-pinch-f2-closed-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (pinch closed); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c2-tripod-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: tripod grip reads, clean smooth pencil slot between thumb and index"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c3-side-pinch-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: card held between thumb and index side, clean straight card slot; rim light cleaned"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c3-side-pinch-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: pinch from above, card gap under the thumb pad, clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c4-point-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (index up, three curled, thumb tucked); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c4-point-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (index up, three curled, thumb out); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-c5-two-hand-fold-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5+5; v3 cleared the faint frame line round the canvas"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits, claw open; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits, claw open top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: 5 digits round a clean round ball hole, no torn edges"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d1-grab-f2-closed-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: claw closing from above, 5 digits, clean edges"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d2-c-hold-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits in a C around the gap; clean alpha; lighter skin than the set but within the normaliser"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d2-c-hold-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: C round a round gap, 5 digits; the dark shadow rim along the gap cleaned (a faint texture remains on the thumb's inner edge at 100%, not visible at play size)"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d3-two-hand-bowl-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: both hands, thumbs and fingers over the rim, clean curved edges; the notch at each heel is under the bowl sprite"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d4-squeeze-f1-half-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): v3 blue-tool render: hand half-closed round a ball, 5 digits, clean curved gap"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d4-squeeze-f2-tight-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (fist, four knuckles, thumb tucked); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d5-throw-release-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 digits spread; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d6-two-hand-catch-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5+5 backs of both hands; v3 re-lit the mirrored left hand from the upper left"
+   },
+   "assets/characters/hands/skins/player-boy/hand-d6-two-hand-catch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5+5, cupped palms together; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e1-thumbs-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 (fist + thumb up); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e2-handshake-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5; side entry is the pose; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-1-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): exactly 1 up, thumb tucked; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-2-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): exactly 2 up, thumb folded; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-3-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): exactly 3 up, thumb and little finger folded; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-4-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): exactly 4 up, thumb hidden, palm edge smooth; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e3-count-5-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): exactly 5 up; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e4-clap-f1-apart-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5+5, backs of both hands, apart; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e4-clap-f2-together-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): two hands palm to palm, front hand 5, rear hand's fingers and thumb where the pose puts them; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e5-arm-up-fist-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): back of the fist, knuckles up (same image as d4-f2, same view); clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e6-stretch-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5 spread; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-e7-shrug-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5, palm up; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f1-piano-f1-raised-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5, fingers raised; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f1-piano-f2-pressed-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5, fingers pressed; clean (14 px top pad)"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f2-drum-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5, back of cupped hand top-down; clean"
+   },
+   "assets/characters/hands/skins/player-boy/hand-f4-phone-two-hands-e.webp": {
+    "verdict": "PASS",
+    "reason": "pixel-identical to the master (checked in code): 5+5, clear phone gap between the hands; clean"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a1-flat-palm-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a3-palm-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a3-palm-up-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a4-reach-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a5-wave-f1-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; pale forearm above the cuff cut along a hand-set line (no erase box)"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a5-wave-f2-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a6-palm-out-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a7-hand-on-heart-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a8-cupped-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-a8-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b1-handle-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b2-vertical-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; cuff lining filled by a hand-set polygon"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b2-vertical-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b3-stick-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b4-rolling-pin-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; the b4 cuff sliver is gone"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b5-hook-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-b5-hook-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; cuff lining filled by a hand-set polygon"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c1-pinch-f2-closed-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c2-tripod-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c3-side-pinch-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c3-side-pinch-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c4-point-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c4-point-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-c5-two-hand-fold-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d1-grab-f2-closed-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d2-c-hold-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; cuff top capped along a hand-set line (the d2 speck is gone)"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d2-c-hold-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d3-two-hand-bowl-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d4-squeeze-f1-half-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d4-squeeze-f2-tight-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d5-throw-release-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d6-two-hand-catch-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; as a5-f1 on both arms; left hand re-lit"
+   },
+   "assets/characters/hands/skins/player-girl/hand-d6-two-hand-catch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e1-thumbs-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e2-handshake-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-1-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-2-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-3-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-4-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e3-count-5-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e4-clap-f1-apart-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e4-clap-f2-together-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; rear wrist's bangles hidden behind the front forearm; cuff linings by polygon"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e5-arm-up-fist-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e6-stretch-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-e7-shrug-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; wrist set by hand"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f1-piano-f1-raised-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f1-piano-f2-pressed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f2-drum-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; cuff filled by a hand-set polygon"
+   },
+   "assets/characters/hands/skins/player-girl/hand-f4-phone-two-hands-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D bangles (red glass, green glass, gold) wrap the wrist in perspective, back arcs hidden behind the arm, lit from the upper left with a contact shadow, clear of the cuff; dusty-pink sleeve with no cream patches or bands; right wrist set by hand"
+   },
+   "assets/characters/hands/skins/nani/hand-a1-flat-palm-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a1-flat-palm-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a3-palm-up-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a4-reach-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a4-reach-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f1-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f1-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f2-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a5-wave-f2-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a6-palm-out-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a6-palm-out-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a7-hand-on-heart-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a7-hand-on-heart-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-a8-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-b1-handle-grip-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-b1-handle-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-b2-vertical-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-b3-stick-grip-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-b3-stick-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-b4-rolling-pin-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; aqiq right, solitaire left; the b4 cuff sliver is gone"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-b5-hook-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c1-pinch-f2-closed-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c2-tripod-grip-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c2-tripod-grip-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c3-side-pinch-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-c4-point-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-c5-two-hand-fold-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; rings hidden in the fold"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f1-open-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d1-grab-f2-closed-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d2-c-hold-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d3-two-hand-bowl-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; rings pinned hidden (ring fingers behind, over the rim)"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f1-half-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin; ring pinned hidden (finger edge-on)"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f1-half-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; ring pinned hidden (finger edge-on)"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f2-tight-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d4-squeeze-f2-tight-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d5-throw-release-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-d5-throw-release-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-d6-two-hand-catch-f1-open-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; left hand re-lit and tone-matched"
+   },
+   "assets/characters/hands/skins/nani/hand-d6-two-hand-catch-f2-closed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e1-thumbs-up-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e1-thumbs-up-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e2-handshake-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e2-handshake-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-1-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-1-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-2-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-2-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-3-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-3-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-4-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-4-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-5-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e3-count-5-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e4-clap-f1-apart-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; both backs of hands: aqiq right, solitaire left"
+   },
+   "assets/characters/hands/skins/nani/hand-e4-clap-f2-together-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e5-arm-up-fist-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e5-arm-up-fist-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e6-stretch-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-e6-stretch-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-e7-shrug-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin; wrist set by hand; bracelet crosses the palm-side wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-e7-shrug-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet (palm view: the band wraps the finger, stone behind it); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; wrist set by hand; bracelet crosses the palm-side wrist"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f1-raised-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f1-raised-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f2-pressed-e-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-f1-piano-f2-pressed-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-f2-drum-cupped-t-left.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, left hand: round solitaire in six claws; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; mirrored hand re-lit from the upper left and matched to the right hand's skin"
+   },
+   "assets/characters/hands/skins/nani/hand-f2-drum-cupped-t.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, right hand: red aqiq cabochon in a gold bezel, diamond tennis bracelet; bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean"
+   },
+   "assets/characters/hands/skins/nani/hand-f4-phone-two-hands-e.webp": {
+    "verdict": "PASS",
+    "reason": "master passes; 3D jewellery, two hands: aqiq ring and tennis bracelet on the right, solitaire on the left (ring hidden: the ring finger is out of sight in this pose); bands wrap the finger with the back half hidden, shaded with the hand's upper-left light and a contact shadow, sized to the measured finger/wrist; deep-red sleeve clean; right wrist set by hand"
+   }
+  }
  }
 }
