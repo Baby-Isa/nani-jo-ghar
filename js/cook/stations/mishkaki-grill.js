@@ -14,7 +14,7 @@
  * the threading board on the left feeds the rack on the right.
  *
  * The order (recipes.mishkaki in data/cook.json) says how many skewers of
- * each kind, in Kutchi ("ba ghos, hakro vegetable"), and a mixed skewer's
+ * each kind, in Kutchi ("ba lakri gos, hakri lakri boga"), and a mixed skewer's
  * pieces in order. Nothing on screen shows the count or the kinds: every
  * piece bowl is always there and the rack has fixed slots per level. The
  * ear star: pieces that fit the order, the right number of each kind on the

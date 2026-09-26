@@ -1,8 +1,8 @@
 /*
  * Mechanics: fill and fold (samosa; later dahi puri, dabeli…).
  *  fill: spoon the fillings the customer named into the mixing bowl, as
- *        many spoons of each as they said ("ne bo keema, ne hikdo
- *        vatana"), in any order. Any bowl can be spooned (decoys and the
+ *        many spoons of each as they said ("ne ba chundo, ne hakro
+ *        watana"), in any order. Any bowl can be spooned (decoys and the
  *        "no X" item too); nothing is refused and a running tally sits on
  *        each bowl, so you press Done when you think it's right, and it's
  *        graded then. Kutchi: the nouns, the counts, "no X".

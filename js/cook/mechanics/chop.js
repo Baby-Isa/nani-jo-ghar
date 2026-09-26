@@ -1,14 +1,14 @@
 /*
  * Mechanic: chop (Fruit Ninja style). Vegetables are tossed up in volume;
- * slice only the ones Nani names, as many of each as she says ("only bo
- * dungri. Ne hikdo tameto."), before the timer ring on the board runs
+ * slice only the ones Nani names, as many of each as she says ("Kali ba
+ * dungri. Ne hakro tameto."), before the timer ring on the board runs
  * out. Decoys fly as often as each wanted vegetable (look-alikes among
  * them: a red onion next to the tomatoes), so what flies never tells you
  * what to cut.
  *
  * Level 1: one timed round with every vegetable the order names at once.
  * Levels 2-3 (`phases`): the round is split and Nani switches mid-round
- * ("now be marcha!"): the next vegetables are the ones to slice, and the
+ * ("Hane ba marcha!"): the next vegetables are the ones to slice, and the
  * last ones are now decoys; throws get faster.
  *
  * Chopping never ends by itself when you reach a number: the round runs
@@ -309,7 +309,7 @@
         );
       });
       S.ghost([[z.X(400), z.Y(450)], [z.X(1200), z.Y(380)]], { duration: 500, delay: z.guided ? 1200 : 6000 });
-      // "only bo dungri. Ne hikdo tameto.": the number is always said
+      // "Kali ba dungri. Ne hakro tameto.": the number is always said
       const orderLine = (tg, first) =>
         Lang.join(tg.map((id, j) => Lang.line(j === 0 ? (first ? "only" : "now") : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))));
       for (const r of rounds) {
