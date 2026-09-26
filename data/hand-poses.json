@@ -1,0 +1,69 @@
+{
+  "_about": "Cook with Nani: which hand pose goes with which action (js/cook/hands.js). The hands are the baked character skins (assets/characters/hands/skins/<character>/hand-<file>.webp, hands v3); build/hands_webp.py makes the game-sized copies in assets/cook/hands/<character>/ (trimmed, scaled by `scale`, webp) and data/hand-sprites.json (crop, size and where the arm leaves the bottom edge). Coordinates here are pixels in the skin image. poses: id -> {file, tip: the action point (a fingertip, the gap of a pinch or grab, the grip of a tool), tool: for a grip, {at: where the tool's grip sits, dir: the direction the tool points from there, degrees, 0 = up the frame, clockwise}}. actions: what a mechanic asks for -> the frames it plays (one pose, or a sequence played frame to frame). stations: the poses a station preloads (only those load, so a phone keeps a few textures) and the action a tap on a station's thing gets by default (`tap`: an action name; null = no hand). Nani's hands (her skins, `nani`) come in from the top edge: she's across the worktop. Where no pose fits, there is no hand (the behaviour before hands).",
+  "scale": 0.4,
+  "scale_note": "master px -> 1600x900 design px: the 250 px master forearm is 100 design px, about a bowl's width over 1.7",
+  "characters": {
+    "player": ["player-boy", "player-girl"],
+    "default": "player-boy",
+    "nani": "nani"
+  },
+  "poses": {
+    "point": { "file": "c4-point-t", "tip": [555, 75] },
+    "grab-open": { "file": "d1-grab-f1-open-t", "tip": [440, 330] },
+    "grab-closed": { "file": "d1-grab-f2-closed-t", "tip": [430, 335] },
+    "pinch-open": { "file": "c1-pinch-f1-open-t", "tip": [440, 320] },
+    "pinch-closed": { "file": "c1-pinch-f2-closed-t", "tip": [400, 285] },
+    "grip": { "file": "b1-handle-grip-t", "tip": [620, 585], "tool": { "at": [620, 585], "dir": -90 } },
+    "hook": { "file": "b5-hook-grip-t", "tip": [500, 560] },
+    "pin": { "file": "b4-rolling-pin-t", "tip": [640, 470], "tool": { "at": [640, 470], "dir": -90, "both": true } },
+    "bowl": { "file": "d3-two-hand-bowl-t", "tip": [656, 330] },
+    "fold": { "file": "c5-two-hand-fold-t", "tip": [780, 500] },
+    "palm-up": { "file": "a3-palm-up-t", "tip": [490, 420] },
+    "count-1": { "file": "e3-count-1-e", "tip": [512, 60] },
+    "count-2": { "file": "e3-count-2-e", "tip": [512, 60] },
+    "count-3": { "file": "e3-count-3-e", "tip": [512, 60] },
+    "count-4": { "file": "e3-count-4-e", "tip": [512, 60] },
+    "count-5": { "file": "e3-count-5-e", "tip": [512, 60] }
+  },
+  "actions": {
+    "tap": { "frames": ["point"], "_what": "a tap on a thing, a knob, a timing ring: the pointing finger presses it" },
+    "pick": { "frames": ["grab-open", "grab-closed"], "_what": "pick up an item (the pantry, a dough bowl): open hand, then it closes on the item" },
+    "pinch": { "frames": ["pinch-open", "pinch-closed"], "_what": "a pinch of sugar, masala, a topping; a piece to thread" },
+    "pour": { "frames": ["hook"], "tilt": -28, "_what": "a tap on the jug: the hand hooks its handle and tilts" },
+    "carry": { "frames": ["bowl"], "_what": "carry a bowl or a cup: two hands" },
+    "give": { "frames": ["bowl"], "_what": "hand the dish to a customer (two hands up to them)" },
+    "fold": { "frames": ["fold"], "_what": "the samosa fold swipe: the two-hand pinch fold follows the finger" },
+    "count": { "frames": ["count-1", "count-2", "count-3", "count-4", "count-5"], "_what": "counting on fingers: frame n shows n (what you've done, never the target)" },
+    "tool": { "frames": ["grip"], "_what": "a knife, ladle, spatula or slotted spoon in the b1 handle grip, the tool on its own layer under the fingers" },
+    "roll": { "frames": ["pin"], "_what": "two hands on the rolling pin (the pin is still drawn: the velan failed batch 1's QA)" },
+    "nani-receive": { "frames": ["palm-up"], "who": "nani", "_what": "Nani holds her hand out for what she asked for (pass me)" },
+    "nani-show": { "frames": ["point"], "who": "nani", "_what": "Nani's see-through finger shows a move (the hint demo when you haven't started)" }
+  },
+  "tools": {
+    "_about": "Tools held in the grip (S.hand(tool)): the painted tool (data.art.sprites.tools) lies along the grip's handle axis, `len` design px long, gripped `grip` of the way from its tip; `angle` is added to the angle the mechanic asks for (the old drawn hand held its tool straight up; the painted grip holds it across, to the thumb side).",
+    "knife": { "len": 300, "grip": 0.8, "angle": 25 },
+    "ladle": { "len": 300, "grip": 0.84, "angle": 0 },
+    "spatula": { "len": 290, "grip": 0.84, "angle": 20 },
+    "spoon": { "len": 290, "grip": 0.84, "angle": 15 }
+  },
+  "stations": {
+    "fetch": { "poses": ["grab-open", "grab-closed"], "tap": "pick" },
+    "chai-tray": { "poses": ["point", "pinch-open", "pinch-closed", "hook", "count-1", "count-2", "count-3", "count-4", "count-5"], "tap": "tap" },
+    "maani-line": { "poses": ["point", "grab-open", "grab-closed", "grip", "pin"], "tap": "tap" },
+    "roll-tawa": { "poses": ["point", "grab-open", "grab-closed", "grip", "pin"], "tap": "tap" },
+    "mishkaki-grill": { "poses": ["point", "pinch-open", "pinch-closed"], "tap": "tap" },
+    "thread": { "poses": ["point", "pinch-open", "pinch-closed"], "tap": "pinch" },
+    "grill": { "poses": ["point"], "tap": "tap" },
+    "chop": { "poses": ["grip"], "tap": null },
+    "tadka": { "poses": ["point", "pinch-open", "pinch-closed"], "tap": "pinch" },
+    "stir": { "poses": ["grip"], "tap": "tap" },
+    "assemble": { "poses": ["pinch-open", "pinch-closed"], "tap": "pinch" },
+    "fill": { "poses": ["pinch-open", "pinch-closed"], "tap": "pinch" },
+    "fold": { "poses": ["fold"], "tap": null },
+    "fry": { "poses": ["grip", "pinch-open", "pinch-closed"], "tap": "pinch" },
+    "flip": { "poses": ["grip"], "tap": null },
+    "roll": { "poses": ["pin"], "tap": null },
+    "service": { "poses": ["bowl"], "tap": null },
+    "passme": { "poses": ["palm-up"], "who": "nani" }
+  }
+}

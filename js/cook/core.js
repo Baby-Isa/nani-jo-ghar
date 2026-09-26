@@ -94,8 +94,10 @@
   };
   Cook.resetSave = function () {
     const mode = Cook.save.mode;
+    const hands = Cook.save.hands;
     Cook.save = blankSave();
     Cook.save.mode = mode;
+    if (hands) Cook.save.hands = hands;
     Cook.writeSave();
   };
   Cook.hasUpgrade = (id) => Cook.save.owned.includes(id);

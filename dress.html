@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#f3e7d3">
 <title>Dress up with Nani</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
-<link rel="stylesheet" href="css/shared/app.css?v=20260926T143753Z">
+<link rel="stylesheet" href="css/shared/app.css?v=20260926T155455Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/cook.css?v=20260926T143753Z">
-<link rel="stylesheet" href="css/dress.css?v=20260926T143753Z">
+<link rel="stylesheet" href="css/cook.css?v=20260926T155455Z">
+<link rel="stylesheet" href="css/dress.css?v=20260926T155455Z">
 </head>
 <body class="dress">
 
@@ -72,36 +72,36 @@
 <div id="overlay" class="hidden"><div id="panel"></div></div>
 
 <!-- shared with Cook with Nani: data, save, word progress, voice, word pills (read, never edited) -->
-<script src="js/version.js?v=20260926T143753Z"></script>
+<script src="js/version.js?v=20260926T155455Z"></script>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
-<script src="js/shared/save.js?v=20260926T143753Z"></script>
-<script src="js/shared/app.js?v=20260926T143753Z"></script>
-<script src="js/cook/core.js?v=20260926T143753Z"></script>
-<script src="js/cook/lang.js?v=20260926T143753Z"></script>
-<script src="js/cook/ui.js?v=20260926T143753Z"></script>
+<script src="js/shared/save.js?v=20260926T155455Z"></script>
+<script src="js/shared/app.js?v=20260926T155455Z"></script>
+<script src="js/cook/core.js?v=20260926T155455Z"></script>
+<script src="js/cook/lang.js?v=20260926T155455Z"></script>
+<script src="js/cook/ui.js?v=20260926T155455Z"></script>
 <!-- the shared recogniser (foundation-owned) -->
-<script src="js/shared/speech.js?v=20260926T143753Z"></script>
+<script src="js/shared/speech.js?v=20260926T155455Z"></script>
 <!-- Dress up: pure logic (also runs in Node: build/leak_dress.mjs) -->
-<script src="js/dress/stubs/pick.js?v=20260926T143753Z"></script>
-<script src="js/dress/look.js?v=20260926T143753Z"></script>
-<script src="js/dress/rack.js?v=20260926T143753Z"></script>
-<script src="js/dress/grade.js?v=20260926T143753Z"></script>
+<script src="js/dress/stubs/pick.js?v=20260926T155455Z"></script>
+<script src="js/dress/look.js?v=20260926T155455Z"></script>
+<script src="js/dress/rack.js?v=20260926T155455Z"></script>
+<script src="js/dress/grade.js?v=20260926T155455Z"></script>
 <!-- Dress up: the page -->
-<script src="js/dress/core.js?v=20260926T143753Z"></script>
-<script src="js/dress/doll.js?v=20260926T143753Z"></script>
-<script src="js/dress/mechanics/wear.js?v=20260926T143753Z"></script>
-<script src="js/dress/mechanics/check.js?v=20260926T143753Z"></script>
-<script src="js/dress/mechanics/change.js?v=20260926T143753Z"></script>
-<script src="js/dress/mechanics/count.js?v=20260926T143753Z"></script>
-<script src="js/dress/mechanics/stitch.js?v=20260926T143753Z"></script>
-<script src="js/dress/mechanics/passme.js?v=20260926T143753Z"></script>
-<script src="js/dress/mechanics/say.js?v=20260926T143753Z"></script>
-<script src="js/dress/games/layout.js?v=20260926T143753Z"></script>
-<script src="js/dress/games/fitting.js?v=20260926T143753Z"></script>
-<script src="js/dress/games/table.js?v=20260926T143753Z"></script>
-<script src="js/dress/games/bangles.js?v=20260926T143753Z"></script>
-<script src="js/dress/bot.js?v=20260926T143753Z"></script>
-<script src="js/dress/flow.js?v=20260926T143753Z"></script>
+<script src="js/dress/core.js?v=20260926T155455Z"></script>
+<script src="js/dress/doll.js?v=20260926T155455Z"></script>
+<script src="js/dress/mechanics/wear.js?v=20260926T155455Z"></script>
+<script src="js/dress/mechanics/check.js?v=20260926T155455Z"></script>
+<script src="js/dress/mechanics/change.js?v=20260926T155455Z"></script>
+<script src="js/dress/mechanics/count.js?v=20260926T155455Z"></script>
+<script src="js/dress/mechanics/stitch.js?v=20260926T155455Z"></script>
+<script src="js/dress/mechanics/passme.js?v=20260926T155455Z"></script>
+<script src="js/dress/mechanics/say.js?v=20260926T155455Z"></script>
+<script src="js/dress/games/layout.js?v=20260926T155455Z"></script>
+<script src="js/dress/games/fitting.js?v=20260926T155455Z"></script>
+<script src="js/dress/games/table.js?v=20260926T155455Z"></script>
+<script src="js/dress/games/bangles.js?v=20260926T155455Z"></script>
+<script src="js/dress/bot.js?v=20260926T155455Z"></script>
+<script src="js/dress/flow.js?v=20260926T155455Z"></script>
 <script>Dress.boot().catch((e) => { console.error(e); document.body.insertAdjacentHTML("beforeend", `<pre style="position:fixed;bottom:0;left:0;background:#fff;color:#b00;z-index:999">${e.message}</pre>`); });</script>
 </body>
 </html>

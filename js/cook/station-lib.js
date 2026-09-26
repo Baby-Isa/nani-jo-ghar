@@ -50,7 +50,8 @@
     // the station's painted sprites load while the view changes (data.art.sprites.need)
     const art = Cook.Art.need(S, key);
     await S.setView(view);
-    await art;
+    // only this station's hand poses (js/cook/hands.js): the last station's go
+    await Promise.all([art, Cook.Hands ? Cook.Hands.need(S, key) : null]);
     const st = Cook.data.stations[key] || {};
     Cook.save.seenStation = Cook.save.seenStation || {};
     // the goal waits behind the "?" (it pulses the first time); Nani's last line goes, and she

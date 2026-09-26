@@ -31,10 +31,13 @@
       Cook.sfx.pop();
       Cook.markSeen(want);
       Cook.interrupting = true;
+      // Nani holds her hand out for it, across the worktop (js/cook/hands.js)
+      const palm = Cook.Hands ? Cook.Hands.nani(z.S, "nani-receive", { x: 1180, y: 250, k: 0.8 }) : null;
       let r;
       try {
         r = await UI.passMe(want, options, { hide: St.hideKnown(ctx) });
       } finally {
+        if (palm) palm.then((h) => h && h.hide && h.hide(260));
         Cook.interrupting = false;
         Cook.paused = false;
       }

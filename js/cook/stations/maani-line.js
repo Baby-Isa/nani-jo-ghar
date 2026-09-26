@@ -339,6 +339,8 @@
     };
 
     bowls.forEach((b) => {
+      // the hand picks the dough up (js/cook/hands.js)
+      [b, ...b.balls].forEach((o) => (o.handAction = "pick"));
       S.tappable(b, () => pick(b));
       b.balls.forEach((ball) => S.tappable(ball, () => pick(b)));
     });

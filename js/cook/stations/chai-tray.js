@@ -353,6 +353,8 @@
         c.chipT.setText(String(c.sugar));
         c.chip.setVisible(true);
         UI.count(c.sugar, { id: "cook-khun" });
+        // and the fingers count the spoons (what you've done, never the target)
+        if (Cook.Hands) Cook.Hands.count(S, c.sugar);
         Cook.sfx.pop();
       } else {
         // a look-alike: salt in someone's chai (from level 2 it just goes in, like a spoon of sugar: UX 11)
@@ -367,12 +369,14 @@
       refresh();
     };
     const armBowls = () => {
+      // a pinch of it (js/cook/hands.js)
+      [sugar, ...decoys.map((id) => shelf[id])].forEach((b) => b && (b.handAction = "pinch"));
       S.tappable(sugar, () => !pouring && spoon(sugar, "cook-khun"));
       decoys.forEach((id) => S.tappable(shelf[id], () => !pouring && spoon(shelf[id], id)));
     };
     const armExtras = () =>
       Object.entries(extrasShelf).forEach(([id, obj]) =>
-        S.tappable(obj, () => {
+        S.tappable(Object.assign(obj, { handAction: "pinch" }), () => {
           const c = sel;
           if (!c || pouring || finished) return;
           if (!c.extras.includes(id)) c.extras.push(id);

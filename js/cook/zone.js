@@ -382,12 +382,23 @@
     if (!def) throw new Error(`no mechanic ${id}`);
     const k = M.knobs(def.knobs || id, { level: params.level || z.level, profile: params.profile || (def.profile && def.profile(params)) });
     // its painted sprites first (data.art.sprites.need; usually already there from the station)
+    // which hand a tap here gets (js/cook/hands.js): the mechanic's station's tap action
+    const station = typeof def.station === "function" ? def.station(params) : def.station;
+    if (Cook.Hands) Cook.Hands.enter(z, station || id);
+    const leave = () => Cook.Hands && Cook.Hands.leave(z);
     return Cook.Art.need(z.S, id)
       .then(() => def.run(z, params, k))
-      .then((r) => {
-        z.hook("onDone", r);
-        return r;
-      });
+      .then(
+        (r) => {
+          leave();
+          z.hook("onDone", r);
+          return r;
+        },
+        (e) => {
+          leave();
+          throw e;
+        }
+      );
   };
   /**
    * A mechanic as a station of its own: its view and goal (if it has

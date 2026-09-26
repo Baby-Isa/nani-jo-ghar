@@ -231,11 +231,24 @@
     layer.innerHTML = `
       <svg class="ob-dim" aria-hidden="true"><defs><mask id="ob-mask-${id}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes"></g></mask></defs>
         <rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${id})"/><g class="ob-rings"></g></svg>
-      <div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${HAND}</div>
+      <div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${opts.hand ? `<img alt="" src="${opts.hand.src}">` : HAND}</div>
       <button class="ob-skip" type="button" aria-label="Skip (grown-ups: hold)"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l9 7-9 7zM18 5v14"/></svg><i class="ob-hold"></i></button>`;
     host.appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
     const ghost = layer.querySelector(".ob-ghost");
+    // opts.hand: a picture hand instead of the drawn one ({src, w, h, hot: the fingertip [x, y], opacity})
+    const hot = opts.hand ? opts.hand.hot : HOTSPOT;
+    if (opts.hand) {
+      const hd = opts.hand;
+      Object.assign(ghost.style, { width: `${hd.w}px`, height: `${hd.h}px`, transformOrigin: `${hot[0]}px ${hot[1]}px` });
+      ghost.classList.add("picture");
+      const im = ghost.querySelector("img");
+      Object.assign(im.style, { width: "100%", height: "100%", display: "block", position: "relative", opacity: String(hd.opacity != null ? hd.opacity : 1) });
+      // the forearm fades out below the wrist (the see-through hand has no screen edge to come from)
+      im.style.webkitMaskImage = im.style.maskImage = "linear-gradient(to bottom, #000 62%, transparent 92%)";
+      const rp = ghost.querySelector(".ob-ripple");
+      Object.assign(rp.style, { left: `${hot[0] - 36}px`, top: `${hot[1] - 36}px`, zIndex: 1 });
+    }
     const holes = layer.querySelector(".ob-holes");
     const rings = layer.querySelector(".ob-rings");
     const idleMs = (st) => (st.idleMs != null ? st.idleMs : opts.idleMs != null ? opts.idleMs : 7000);
@@ -296,7 +309,7 @@
       }
       const keys = Onboard.path(st.ghost.gesture, centre(fromR), centre(toR), fromR);
       const dur = st.ghost.ms || DUR[st.ghost.gesture];
-      const tf = (p) => `translate(${p.x - HOTSPOT[0]}px, ${p.y - HOTSPOT[1]}px) scale(${p.press ? 0.88 : 1})`;
+      const tf = (p) => `translate(${p.x - hot[0]}px, ${p.y - hot[1]}px) scale(${p.press ? 0.88 : 1})`;
       ghost.classList.add("on");
       ghost.classList.toggle("hold", st.ghost.gesture === "hold");
       if (anim) anim.cancel();
