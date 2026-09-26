@@ -53,13 +53,13 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 
 | Area | Basic | Initial | Full | Final | **%** | Next step |
 |---|---|---|---|---|---|---|
-| **Cook** | ✓ | ✓ | 60 | 0 | **55%** | Velan, chakla, evening worktop; regenerate the potato cube and the chai tray. Dump 3 is being sorted. |
+| **Cook** | ✓ | ✓ | 70 | 0 | **62%** | Dump 3 is in: velan, chakla, chai tray, chai glass, skewer rack, and new counter moods for Nana, Ma and Ali in `assets/cook/characters/next/`, waiting for approval. Still to do: Nani's moods (cook pack 1.1–1.4) and the potato cube (still reads as butter). |
 | **Hands** (player-boy, player-girl, Nani) | ✓ | ✓ | 90 | 0 | **70%** | Being put into Cook now. Eid mehndi later. |
-| **Characters** (Nani ✓, Kasuku ✓, Big Ma, the doctor, Nana, Ali, guests) | ✓ | 40 | 20 | 0 | **35%** | Zafar processes the family images in dumps 2–3. |
+| **Characters** (Nani ✓, Kasuku ✓, Big Ma, the doctor, Nana, Ma, Ali, cousin, animals) | ✓ | 55 | 25 | 0 | **42%** | Approve the new family sheets and animals (dump 3). Zafar processes Big Ma and the doctor (dump 2). Still to do: Nani feelings (1.1), Isa feelings (1.5). |
 | **Player character** (layered, for character creation) | 0 | 0 | 0 | 0 | **0%** | A ChatGPT prompt for the layers (body, hair, eyes, clothing tints). |
 | **Story panels** (first launch, then arc beats) | 0 | 0 | 0 | 0 | **0%** | Four Eid panels: the calendar and moon, the guests, the empty pots, "help me?". |
-| **Find it** | ✓ | 40 | 10 | 0 | **30%** | Its batch-3 prompts. |
-| **The clinic** | ✓ (143 rough sprites) | 15 | 0 | 0 | **25%** | Batch-3 clinic prompts; add neck, back and hair parts. |
+| **Find it** | ✓ | 45 | 10 | 0 | **33%** | Backgrounds from dump 3 are in. Relights 8.1–8.3 need redoing (8.2 and 8.3 were redrawn, not relit). The sitting room (3.2) needs the sofa lower. |
+| **The clinic** | ✓ (143 rough sprites) | 40 | 5 | 0 | **32%** | Dump 3's patients and clinic art are in the manifest's `final` block. Still to do: 7.1 "where it hurts"; neck, back and hair parts; the belt and rail sit too high. |
 | **Tidy up, Who, Dress, Monsoon, Snap** | ✓ | 10 | 0 | 0 | **12%** each | Batch-3 prompts; more once their rebuilds settle. |
 | **UI and app icon** | ✓ | 40 | 10 | 0 | **30%** | Store icon and splash screen. |
 
@@ -78,4 +78,4 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 3. The proposed game ideas 10–17 in `docs/GAME-IDEAS-TBC.md`.
 4. Review the quality-pass designs for Tidy up, Who did it?, Dress up, Monsoon rush and Snap. They're in `docs/modes/*-design.md`, and they unblock the rebuilds.
 5. Spellings: *vyo* or *wyo*; *kyo*, *anke*, *kere karein*, *wadhare*, *thorok*, *jara e wandho nai*, *mu lai khobar*.
-6. The dump 3 art-run log, if there is one.
+6. Approve the new character sheets from dump 3 (`build/contact-sheets/chatgpt-batch3-dump3-family.png`). Approved counter moods move up from `assets/cook/characters/next/`.
