@@ -47,6 +47,7 @@
   const SHOULDER = { player: { x: 1060, y: 1350 }, nani: { x: 560, y: -520 } };
   const MAX_TILT = 38;
   const TAP_K = 0.9;
+  const LEAN = 0.3;
 
   let spec = null;
   let sprites = null;
@@ -168,7 +169,10 @@
     if (action === undefined && zn) action = tapAction(zn.mech);
     if (action === undefined) action = tapAction(H.station);
     if (!action) return;
-    H.play(S, action, x, y, { k: TAP_K * Math.max(0.7, zn ? zn.k : 1) });
+    // sized to the thing: a small bowl gets a smaller hand (in design px; the hand at TAP_K suits ~150 px things)
+    const size = b ? Math.max(b.width, b.height) : 150;
+    const k = Cook.clamp(0.45 + size / 330, 0.62, TAP_K) * Math.max(0.75, zn ? zn.k : 1);
+    H.play(S, action, x, y, { k });
   };
 
   /* ---------------- the rig: one hand image, its sleeve to the edge ---------------- */
@@ -225,7 +229,10 @@
     c.aim = (fixed) => {
       if (fixed != null) return c.setAngle(fixed);
       const sh = SHOULDER[who === "nani" ? "nani" : "player"];
-      const want = Math.atan2(sh.y - c.y, sh.x - c.x);
+      // the arm reaches nearly straight in (leaning a little towards the shoulder), so it
+      // lies along the thing's own row instead of across the rest of the worktop
+      const sx = c.x + (sh.x - c.x) * LEAN;
+      const want = Math.atan2(sh.y - c.y, sx - c.x);
       let a = ((want - c.arm) * 180) / Math.PI;
       const base = who === "nani" ? 180 : 0;
       a = ((((a - base) % 360) + 540) % 360) - 180;
