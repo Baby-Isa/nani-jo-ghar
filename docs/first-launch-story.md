@@ -43,6 +43,32 @@
 - "Will you help me cook?"
 - "Come, let's go to the kitchen."
 
+## Character creation (Zafar, 26 Sept: approved)
+**Quick and lightweight for now, with a few simple choices, built to scale** so more can be added later.
+
+**Layout:**
+- **The child's character on the left**, large and updating live.
+- **The choices on the right**, as picture swatches: no reading needed, big tap targets.
+
+**Choices for now:**
+- boy or girl (this also picks the player's hands: player-boy / player-girl);
+- skin tone (a few warm tones, following the Cast's skin rules);
+- hair colour;
+- eye colour;
+- clothing colours: **colours only, not the clothes themselves** (e.g. top and bottom colours).
+
+**Then:**
+- A big ✓ on the right (under the thumb, UX §2).
+- The name is optional and typed by a parent (on the player picker), or skipped.
+
+**Built to scale:**
+- The options are data (`data/character-options.json`: categories, each with swatches and tint or layer ids).
+- The character is drawn from layers: a body base, then tinted hair, eyes and clothing layers.
+- A new category (hairstyle, glasses, hijab, outfits, Eid clothes) is a new data entry plus art layers, with no code change.
+- The choices are saved in the player's save (`js/shared/save.js`), and the hands, the home screen and later the world use them.
+
+**Placeholder art:** simple layered shapes (SVG or greybox) until the ChatGPT art makes a proper layered character.
+
 ## Zafar's flow (26 Sept, agreed shape; this replaces Claude's order above)
 1. **Make your character** (quick, pictures only).
 2. **Arrive at Nani's house.**
