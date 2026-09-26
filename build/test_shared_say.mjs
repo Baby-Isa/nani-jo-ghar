@@ -302,3 +302,48 @@ test("tell: the Who did it / Find it names work; cancel resolves as a skip", asy
   p2.cancel();
   assert.equal((await p2).via, "skip");
 });
+
+/* ---------------- the mode stubs' shapes (Tidy, Monsoon, Who, Dress up, clinic) ---------------- */
+test("audio pills: a speaker each, text only where allowed, a tap plays and selects, 'That one' sends", async () => {
+  const doc = makeDoc();
+  const played = [];
+  const p = Say.moment({ choices: CH, container: doc.body, speech: fakeSpeech([], "refused"), pillsAfterMs: 0, playWord: (id) => played.push(id), pillText: (id) => (id === "cook-chai" ? "chai" : null) });
+  assert.equal(q.pill(doc, "cook-chai").textContent, "🔈 chai");
+  assert.equal(q.pill(doc, "cook-dudh").textContent, "🔈 2", "no text below the reading stage: a number");
+  const send = doc.body.find((e) => e.getAttribute("data-send"));
+  assert.equal(send.hidden, true);
+  q.pill(doc, "cook-dudh").click();
+  assert.deepEqual(played, ["cook-dudh"]);
+  assert.ok(q.box(doc), "hearing a pill doesn't send it");
+  assert.equal(send.hidden, false);
+  q.pill(doc, "cook-khun").click();
+  send.click();
+  const out = await p;
+  assert.deepEqual([out.choice, out.via, out.by, out.voice], ["cook-khun", "pill", "pill", false]);
+});
+
+test("stub names: answer/target = expected, onAgain / act / onAnswer hooks, shrug, close() and pill()", async () => {
+  const doc = makeDoc();
+  const seen = [];
+  const p = Say.moment({ choices: CH, container: doc.body, speech: fakeSpeech([null]), grandparent: true, answer: "cook-dudh", onAgain: (n) => seen.push("again" + n), act: (c) => seen.push("act:" + c), onAnswer: (o) => seen.push("answer:" + o.via), pillsAfterMs: 0 });
+  q.mic(doc).click();
+  await tick();
+  q.parent(doc, "ok").click();
+  const out = await p;
+  assert.deepEqual([out.choice, out.by, out.voice], ["cook-dudh", "parent", true]);
+  assert.deepEqual(seen, ["again1", "act:cook-dudh", "answer:parent"]);
+
+  const doc2 = makeDoc();
+  const busy = Say.moment({ choices: CH, container: doc2.body, speech: fakeSpeech([null]), shrug: true, target: "cook-chai", pillsAfterMs: 0 });
+  q.mic(doc2).click();
+  assert.equal((await busy).via, "skip", "Busy: a null is a shrug");
+
+  const doc3 = makeDoc();
+  const h = Say.moment({ choices: CH, container: doc3.body, speech: fakeSpeech([], "refused"), pillsAfterMs: 0 });
+  h.pill("cook-khun");
+  assert.equal((await h).choice, "cook-khun", "a pill sent through the handle (a bot)");
+  const doc4 = makeDoc();
+  const h2 = Say.moment({ choices: CH, container: doc4.body, speech: fakeSpeech([]), pillsAfterMs: 0 });
+  h2.close();
+  assert.equal((await h2).via, "skip");
+});

@@ -124,3 +124,16 @@ test("Tidy up: Rel.Tidy agrees with Tidy's own stub on random boards", async () 
     }
   }
 });
+
+test("clinic: WhichOne.Clinic.choices / pair put look-alikes first and keep the answer", () => {
+  const W = require("../js/shared/whichone.js");
+  W.Clinic.groups = { groups: [["body-knee", "body-elbow", "body-shoulder"], ["body-hand", "body-foot"]] };
+  const pool = ["body-elbow", "body-shoulder", "body-hand", "body-foot", "body-eye"];
+  for (let s = 1; s < 50; s++) {
+    const c = W.Clinic.choices("body-knee", pool, 3, W.rng(s));
+    assert.deepEqual(c.slice().sort(), ["body-elbow", "body-knee", "body-shoulder"], "the whole look-alike group before the rest");
+  }
+  const pr = W.Clinic.pair("body-hand", pool, W.rng(3));
+  assert.deepEqual(pr.slice().sort(), ["body-foot", "body-hand"]);
+  W.Clinic.groups = null;
+});
