@@ -138,9 +138,9 @@ Rough transcript: `sources/audio/mum-2026-09-26/A5.md`. *ai* (is) is written as 
 - ***cup table je mathe ai***: the cup is on the table. The everyday, shorter version drops *je*: ***cup table mathe ai***.
 - ***cup table je niche ai***: under the table.
 - ***cup kabaat je andar ai***: in the cupboard (*kabaat* = cupboard).
-- ***chawi darwaje je putiya ai***: the key is behind the door (*chawi* = key).
-- ***sani je bajume***: next to the plate (*sani* = plate).
-- ***Nana je aagiya***: in front of Nana; ***cup je aagiya***: in front of the cup.
+- ***chawi darwaje je puthiya ai***: the key is behind the door (*chawi* = key).
+- ***saani je bajume***: next to the plate (*saani* = plate).
+- ***Nana je agiya***: in front of Nana; ***cup je agiya***: in front of the cup.
 - ***chamchi ba cup je wich me ai***: the teaspoon is between the two cups.
 - ***shelf je mathe ai***: on top of the shelf.
 - Mum's explanation: *je* means "belonging to". The place belongs to the object, so *kabaat je andar* is "the cupboard's inside", and *table je niche* is "the table's underside".
@@ -150,17 +150,17 @@ Rough transcript: `sources/audio/mum-2026-09-26/A5.md`. *ai* (is) is written as 
 | on, on top of, above (all the same word) | ***mathe*** |
 | under, underneath | ***niche*** |
 | in, inside | ***andar*** |
-| behind | ***putiya*** (Zafar to check) |
+| behind | ***puthiya*** (a soft h after the t; confirmed) |
 | next to, beside | ***bajume*** |
-| in front of (anywhere in front) | ***aagiya*** |
+| in front of (anywhere in front) | ***agiya*** |
 | opposite, facing you | ***same*** |
 | between, in the middle | ***wich me*** |
 
-### 16. *same* is "facing me"; *aagiya* is just "in front"
-- ***munje same rak***: put it in front of me, facing me, so I can see it (*rak* = put, place; *munje* = my, of me).
+### 16. *same* is "facing me"; *agiya* is just "in front"
+- ***munje same rakh***: put it in front of me, facing me, so I can see it (*rakh* = put, place; *munje* = my, of me).
 - ***munje same we***: sit opposite me (*we* = sit).
-- ***munje aagiya jagai ida we***: sit here, in the space in front of me (*jagai* = space or place; *ida* = here or there, Zafar to check).
-- Putting something down is ***rak***: ***sani je aagiya rak*** (put it in front of the plate). Compare *wij* (put **in**, add, from A4).
+- ***munje agiya jagai hida we***: sit here, in the space in front of me (*jagai* = space or place; *hida* = here).
+- Putting something down is ***rakh***: ***saani je agiya rakh*** (put it in front of the plate). Compare *wij* (put **in**, add, from A4).
 
 ### 17. The family says "this side / that side" more than left and right
 - At home they point: ***hida*** (here, near you) and ***huda*** (there), or ***hi baju*** (this side) and ***hu baju*** (that side). These match *hi* (this) and *hu* (that) from A4.
@@ -169,7 +169,7 @@ Rough transcript: `sources/audio/mum-2026-09-26/A5.md`. *ai* (is) is written as 
 
 ### 18. The noun doesn't change before *je*, but -o words look as if they do (a question for C12–C16)
 - Mum: in *table je niche*, *table* doesn't change; *je* is its own word.
-- But the door came out as ***darwaje*** je putiya. If the door is *darwajo* (a he-word), then -o changes to -e before *je*, like Gujarati *darvaja ni pachhal*. Section C12–C16 will settle it.
+- But the door came out as ***darwaje*** je puthiya. If the door is *darwajo* (a he-word), then -o changes to -e before *je*, like Gujarati *darvaja ni pachhal*. Section C12–C16 will settle it.
 - *je / ji / jo* look like one "of" word that agrees:
   - *jo* for he-words (*munjo*, "mine", Mum's gloss);
   - *ji* for she-words (*dudh wagar ji chai*, and chai is a she-word);
@@ -179,14 +179,14 @@ Rough transcript: `sources/audio/mum-2026-09-26/A5.md`. *ai* (is) is written as 
 
 ### Claude's check against Sindhi and Gujarati
 - *mathe* matches Sindhi *mathe* (on top) and Gujarati *māthe*. *niche* matches Gujarati *nīche* (under). *andar* is shared by all three. *wich me* matches Sindhi *vich mẽ* (between).
-- *aagiya* matches Sindhi *aggiyā̃* and Gujarati *āgaḷ* (in front). *same* matches Gujarati *sāme* (opposite, facing). *bajume* matches Gujarati *bājue* (beside), from *baju* (side).
-- *dabo* (left) is Gujarati *ḍābo*. *jamno* (right) is Gujarati *jamṇo*. *rak* (put) is Gujarati *rākh*.
-- *putiya* (behind) is probably the same root as Sindhi *puṭhiyā̃* (behind, from *puṭhi*, the back).
+- *agiya* matches Sindhi *aggiyā̃* and Gujarati *āgaḷ* (in front). *same* matches Gujarati *sāme* (opposite, facing). *bajume* matches Gujarati *bājue* (beside), from *baju* (side).
+- *dabo* (left) is Gujarati *ḍābo*. *jamno* (right) is Gujarati *jamṇo*. *rakh* (put) is Gujarati *rākh*.
+- *puthiya* (behind) is probably the same root as Sindhi *puṭhiyā̃* (behind, from *puṭhi*, the back).
 
 ### What this means for the game (proposed; approved ideas go in `docs/GAME-IDEAS-TBC.md`)
-14. **Tidy up's "place" stage gets its whole word set:** *mathe, niche, andar, putiya, bajume, aagiya, wich me*. The frame is ***{thing} {place-thing} je {where} rak*** ("put the cup in the cupboard"). One place word per round at level 1.
+14. **Tidy up's "place" stage gets its whole word set:** *mathe, niche, andar, puthiya, bajume, agiya, wich me*. The frame is ***{thing} {place-thing} je {where} rakh*** ("put the cup in the cupboard"). One place word per round at level 1.
 15. **The clinic's sides:** use ***dabo*** / ***jamno*** (left/right, always the patient's own side) as designed. The family's everyday *hi baju / hu baju* is a good level-1 alternative when the doctor points.
-16. **Nani's lines:** *munje same we* (come and sit opposite me) and *munje same rak* (put it in front of me) fit the Cook send-off and the serve step.
+16. **Nani's lines:** *munje same we* (come and sit opposite me) and *munje same rakh* (put it in front of me) fit the Cook send-off and the serve step.
 
 ## 26 Sept 2026: Mum and Zafar, Questions A6 and A7 (one recording, 8 min, `sources/audio/mum-2026-09-26/A7.m4a`)
 
@@ -194,26 +194,26 @@ The file is called A7, but its first 3½ minutes are A6. Rough transcript: `sour
 
 ### 19. Three kinds of "finished": *band thai vyo*, *khalas thai vyo*, *pati vyo*
 - ***warsaad band thai vyo***: the rain stopped. *warsaad* = rain; *band* = closed; *thai vyo* = became, happened. It's "closed" rather than "finished", because the rain will come again, like a tap.
-- ***film khalas thai vyo***: the film has finished, completely, and won't go on.
+- ***film khalas thai vai***: the film has finished, completely, and won't go on.
 - ***pati vyo***: that's enough, it's over (*time pati vyo*: time's up, the time for that has come and gone). Mum thinks it may come from Gujarati, but the family does use it, with an "enough now" feeling.
 - Have you finished work? ***kam kari vya?*** or ***kam khalas thai vyo?*** (*kam* = work).
 
 ### 20. "Who", "where", and something happened: *ker*, *kida*, *-i vyo*
 - ***ker mitai khai vyo?***: who ate the sweets? (*ker* = who; *mitai* = sweets; *khai vyo* = ate).
 - ***Simba khai vyo***: Simba ate it. ***Simba khani vyo***: Simba took it (*khan* = take, from A3).
-- ***Simba ke rasore me nares***: I saw Simba in the kitchen. *ke* marks who was seen, like Sindhi *khe* and Hindi *ko*. The verb *nares* (saw) is as heard, so Zafar to check.
+- ***Simba ke rasore me nares***: I saw Simba in the kitchen. *ke* marks who was seen, like Sindhi *khe* and Hindi *ko*. The verb comes from ***nar*** (look), which takes different endings; *nares* is Whisper's hearing of the "saw" form. (So *nar* is "look", not "no": "no" is *na*.)
 - **Kitchen:** ***rasoro*** is the proper Kutchi word. The family also says ***jikoni***, probably borrowed from Swahili (*jiko* = stove or kitchen, *jikoni* = in the kitchen), from the family's time in East Africa.
 - ***kida wo?***: where was it? ***table je mathe wo***: it was on the table. It's *wo*, not *weo* (Mum's correction).
 - ***hida / huda / kida*** make a set: here / there / where.
 
 ### 21. Elders get the respectful "you", and the verb changes to the plural
-- How are you, to a child: ***tu ki ai?*** (*tu* = you, to a child; *ki* = how). To anyone, informally: *ki ai?*
-- How are you, to an elder: ***ai ki aayo?*** Here the first *ai* is the respectful "you" (Zafar to check the spelling), and the verb changes from *ai* to ***aayo***.
+- How are you, to a child: ***tu ki aiye?*** (*tu* = you, to a child; *ki* = how). To anyone, informally: *ki ai?*
+- How are you, to an elder: ***aai ki aayo?*** Here ***aai*** is the respectful "you" (spelling confirmed), and the verb changes from *ai* to ***aayo***.
 - Come here, to a child or someone your own age: ***hida ach***. To an elder: ***hida acho***. It's the same for a man or a woman.
-- He or she came: ***i achi vyo*** (about a child) and ***i achi vya*** (about an elder).
-- He or she will come: ***i achdo*** (child) and ***i achda*** (elder).
+- He or she came: ***e achi vyo*** (about a child) and ***e achi vya*** (about an elder).
+- He or she will come: ***e achdo*** (child) and ***e achda*** (elder).
 - **The rule:** respect for an elder uses the **plural** ending (-o → -a, as in *amba*), like Gujarati and Hindi.
-- ***achindo***: Mum first glossed this as "welcome", then as another tense of *ach* (come). To confirm.
+- ***achindo*** = will come (Zafar, confirmed).
 
 ### 22. What to call a grandchild: *beta*
 - The family uses ***beta*** for boys and girls alike. Strictly a girl is *beti*, but *beta* is used for both. *dikra* sounds more Gujarati to Mum.
@@ -233,6 +233,15 @@ They aren't related: Kutchi is Indo-Aryan, next to Sindhi, and Japanese is its o
     - *kida wo?* (where was it?);
     - *{place} je mathe wo* (it was on the {place});
     - *{name} ke {room} me nares* (I saw {name} in the {room}).
-18. **Speaking to elders.** In a speaking moment, the child calls Nana with *hida acho*, not *hida ach*, and asks *ai ki aayo?* This is the respect lesson, at stage S3.
+18. **Speaking to elders.** In a speaking moment, the child calls Nana with *hida acho*, not *hida ach*, and asks *aai ki aayo?* This is the respect lesson, at stage S3.
 19. **Time's up and finished:** *time pati vyo* when a timed round ends; *khalas!* at the end-of-round screen; *warsaad band thai vyo* at the end of a Monsoon rush storm.
 20. **Nani calls the child *beta*** in her lines, for boys and girls alike.
+
+### Zafar's corrections to A5–A7 (26 Sept)
+- ***agiya*** (in front) has one *a*. ***puthiya*** (behind) has a soft h after the t. ***rakh*** (put) has a soft h. It's ***hida*** (here), not *ida*.
+- ***saani*** = a ceramic plate (the word is the sound of ceramic).
+- **"Finished" agrees with gender:** ***film khalas thai vai***, because *film* is a she-word. So *vyo* is for he-words and *vai* for she-words, like *khapeto* / *khapeti*.
+- To a child: ***tu ki aiye?*** To an elder: ***aai ki aayo?*** (*aai* = the respectful "you").
+- He or she: ***e***. So *e achi vyo* / *e achi vya* (came: child / elder) and *e achdo* / *e achda* (will come).
+- ***achindo*** = will come. ***nar*** = look, with different endings.
+- Zafar on the sound of Kutchi: the one-syllable words feel like Kutchi, and a word like *ach-in-do* sounds Japanese to him.
