@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400">
+  <!-- shalwar under the kurta: the bottom colour, gathered at the ankle -->
+  <path d="M84 318 L156 318 L160 356 Q150 366 128 364 L120 336 L112 364 Q90 366 80 356 Z" fill="currentColor"/>
+  <path d="M84 352 Q98 360 112 356 M128 356 Q142 360 156 352" stroke="#000" stroke-opacity=".15" stroke-width="3" fill="none"/>
+</svg>

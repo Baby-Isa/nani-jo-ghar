@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400">
+  <!-- trousers: the bottom colour -->
+  <path d="M80 296 L160 296 L156 364 L126 364 L120 318 L114 364 L84 364 Z" fill="currentColor"/>
+  <path d="M120 300 L120 318" stroke="#000" stroke-opacity=".15" stroke-width="3"/>
+</svg>

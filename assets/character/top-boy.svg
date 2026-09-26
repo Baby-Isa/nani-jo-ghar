@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400">
+  <!-- a plain kurta-shirt: the top colour; the placket and shading are fixed -->
+  <path d="M86 186 Q120 176 154 186 L176 204 Q186 214 184 236 L166 238 L162 222 L164 306 Q120 314 76 306 L78 222 L74 238 L56 236 Q54 214 64 204 Z" fill="currentColor"/>
+  <path d="M104 186 Q120 206 136 186" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="4"/>
+  <rect x="117" y="196" width="6" height="44" rx="3" fill="#000" fill-opacity=".12"/>
+  <circle cx="120" cy="208" r="2.6" fill="#fff" fill-opacity=".7"/>
+  <circle cx="120" cy="222" r="2.6" fill="#fff" fill-opacity=".7"/>
+  <path d="M78 290 Q120 300 164 290 L164 306 Q120 314 76 306 Z" fill="#000" fill-opacity=".10"/>
+</svg>
