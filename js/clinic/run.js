@@ -62,7 +62,7 @@
       bodyFile: R.bodyFile,
       speak: o.speak != null ? o.speak : R.opts.speak,
       onboard: o.onboard != null ? o.onboard : R.opts.onboard,
-      grandparent: !!o.grandparent,
+      grandparent: o.grandparent != null ? !!o.grandparent : !!R.opts.grandparent,
       first: !!plan.first,
       rng: o.rng || PL().rng(o.seed || Math.floor(Math.random() * 1e9)),
     };
@@ -135,6 +135,10 @@
     const m = PL().morning(R.data, { session, levels: o.levels || st.levels, rng, games: R.games(), speak: o.speak != null ? o.speak : R.opts.speak });
     R.morningPlan = m;
     const outs = [];
+    // UI that appears when first needed (UX s8): the light bulb stays hidden through the first-ever patient
+    const bulbKey = "clinic/bulb";
+    if (global.Onboard && m.entry.first) global.Onboard.await(screen.bulb.btn, bulbKey);
+    else if (global.Onboard) global.Onboard.fadeIn(screen.bulb.btn, bulbKey);
     for (let i = 0; i < m.patients.length; i++) {
       const plan = m.patients[i];
       const out = await R.patient(screen, plan, Object.assign({}, o, { rng }));

@@ -18,6 +18,8 @@
     ?stage=heal&game=ear&level=1           one healing game, mounted by the pipeline's heal stage
     ?patient=1&level=2                     one patient through all five stages
     ?morning=1&session=3                   a morning (session 1 = the first-ever session); &nosave=1 keeps progress
+    &grandparent=1                         the speaking moments show the grown-up's tick ("They said it")
+  The index of every entry: lab/clinic-core.html.
   window.__clinic for tests: {Run, Stages, expect(), finishHeal(), last, ready}.
 -->
 </head>
@@ -95,6 +97,7 @@
   C.screen = screen;
   Run.opts.speak = Q.get("speak") !== "0";
   Run.opts.onboard = Q.get("onboard") !== "0";
+  Run.opts.grandparent = Q.get("grandparent") === "1"; // a grown-up's tick in the speaking moments
   const results = Q.get("results") !== "0";
 
   // ---- the lab bar ----
