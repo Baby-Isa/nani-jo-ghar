@@ -1,0 +1,160 @@
+{
+ "n": 2000,
+ "limit": 0.1,
+ "games": {
+  "eye": {
+   "problems": [],
+   "levels": {
+    "1": {
+     "fair": {
+      "win": 1,
+      "rows": 1
+     },
+     "random": {
+      "win": 0.001,
+      "rows": 0.229
+     },
+     "best": {
+      "win": 0.0085,
+      "rows": 0.325
+     },
+     "first": {
+      "win": 0.0075,
+      "rows": 0.323
+     },
+     "biggest": {
+      "win": 0.0085,
+      "rows": 0.329
+     }
+    },
+    "2": {
+     "fair": {
+      "win": 1,
+      "rows": 1
+     },
+     "random": {
+      "win": 0,
+      "rows": 0.275
+     },
+     "best": {
+      "win": 0.0005,
+      "rows": 0.294
+     },
+     "first": {
+      "win": 0.001,
+      "rows": 0.294
+     },
+     "biggest": {
+      "win": 0.0005,
+      "rows": 0.301
+     }
+    },
+    "3": {
+     "fair": {
+      "win": 1,
+      "rows": 1
+     },
+     "random": {
+      "win": 0,
+      "rows": 0.288
+     },
+     "best": {
+      "win": 0,
+      "rows": 0.31
+     },
+     "first": {
+      "win": 0,
+      "rows": 0.306
+     },
+     "biggest": {
+      "win": 0,
+      "rows": 0.304
+     }
+    }
+   }
+  },
+  "foot": {
+   "problems": [],
+   "levels": {
+    "1": {
+     "fair": {
+      "win": 1,
+      "rows": 1
+     },
+     "random": {
+      "win": 0,
+      "rows": 0.224
+     },
+     "best": {
+      "win": 0.069,
+      "rows": 0.598
+     },
+     "big-toes": {
+      "win": 0.0605,
+      "rows": 0.597
+     },
+     "first": {
+      "win": 0.055,
+      "rows": 0.597
+     },
+     "alternate": {
+      "win": 0.0605,
+      "rows": 0.595
+     }
+    },
+    "2": {
+     "fair": {
+      "win": 1,
+      "rows": 1
+     },
+     "random": {
+      "win": 0,
+      "rows": 0.207
+     },
+     "best": {
+      "win": 0.015,
+      "rows": 0.556
+     },
+     "big-toes": {
+      "win": 0.01,
+      "rows": 0.55
+     },
+     "first": {
+      "win": 0.013,
+      "rows": 0.549
+     },
+     "alternate": {
+      "win": 0.0125,
+      "rows": 0.546
+     }
+    },
+    "3": {
+     "fair": {
+      "win": 1,
+      "rows": 1
+     },
+     "random": {
+      "win": 0,
+      "rows": 0.18
+     },
+     "best": {
+      "win": 0.003,
+      "rows": 0.428
+     },
+     "big-toes": {
+      "win": 0.0045,
+      "rows": 0.428
+     },
+     "first": {
+      "win": 0.0025,
+      "rows": 0.43
+     },
+     "alternate": {
+      "win": 0.002,
+      "rows": 0.433
+     }
+    }
+   }
+  }
+ }
+}

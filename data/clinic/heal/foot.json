@@ -1,41 +1,148 @@
 {
-  "_about": "Clinic heal game `foot` (H13 The foot bath; docs/modes/clinic-design.md Q4, the quality pass). Size x side on ten toes: wadho/nindho (he-forms, confirmed by Mum) and the patient's own left/right (placeholders). The feet face you: the patient's left foot is on the right of your screen, and each big toe is on the inside. Levels are data.",
+  "_about": "Clinic heal game `foot` (H13 The foot bath; docs/modes/clinic-design.md Q4, the quality pass). Size x side on ten toes: wadho/nindho (he-forms, confirmed by Mum) and the patient's own left/right (placeholders). The feet face you: the patient's left foot is on the right of your screen, and each big toe is on the inside. Levels are data. The tray ids are data/clinic.json's (paani, loon, tweezers, plaster); tapping the paani dish shows the same jug twice, one steaming and one with ice, in a shuffled order.",
   "id": "foot",
   "ailments": {
-    "sore-feet": { "english": "sore feet from the wedding dancing (and a splinter from the dance floor)" },
-    "thorn": { "english": "a thorn from the field" }
+    "sore-feet": {
+      "english": "sore feet from dancing all night at the wedding (and a thorn from the garden)"
+    }
   },
   "items": {
-    "jug-hot": { "english": "a jug of hot paani", "use": "jug", "temp": "hot" },
-    "jug-cold": { "english": "a jug of cold paani", "use": "jug", "temp": "cold" },
-    "spi-16": { "english": "the loon (salt) spoon", "use": "salt" },
-    "tool-tweezers": { "english": "tweezers", "use": "tweezers" },
-    "care-plaster": { "english": "a plaster", "use": "plaster" }
+    "paani": {
+      "english": "paani (the jug: hot or cold is chosen in the game)",
+      "use": "paani",
+      "art": "jug-water"
+    },
+    "loon": {
+      "english": "loon (the salt pot and its spoon)",
+      "use": "loon",
+      "art": "salt-pot"
+    },
+    "tweezers": {
+      "english": "tweezers",
+      "use": "tweezers",
+      "art": "tweezers"
+    },
+    "plaster": {
+      "english": "a plaster",
+      "use": "plaster",
+      "art": "plaster"
+    }
   },
   "numbers": [
-    { "n": 1, "id": "num-01", "kutchi": "Hakro", "english": "one", "spoon": "chamcho" },
-    { "n": 2, "id": "num-02", "kutchi": "Ba", "english": "two", "spoon": "chamcha" },
-    { "n": 3, "id": "num-03", "kutchi": "Trae", "english": "three", "spoon": "chamcha" }
+    {
+      "n": 1,
+      "id": "num-01",
+      "kutchi": "Hakro",
+      "english": "one",
+      "spoon": "chamcho"
+    },
+    {
+      "n": 2,
+      "id": "num-02",
+      "kutchi": "Ba",
+      "english": "two",
+      "spoon": "chamcha"
+    },
+    {
+      "n": 3,
+      "id": "num-03",
+      "kutchi": "Trae",
+      "english": "three",
+      "spoon": "chamcha"
+    }
   ],
   "words": {
-    "paani": { "id": "cook-paani", "kutchi": "paani", "english": "water", "audio": "assets/audio/cook-tts/paani.mp3" },
-    "loon": { "id": "spi-16", "kutchi": "loon", "english": "salt", "audio": "assets/audio/cook-tts/loon.mp3" },
-    "hot": { "id": "feel-hot", "english": "hot", "placeholder": true },
-    "cold": { "id": "feel-cold", "english": "cold", "placeholder": true },
-    "big": { "id": "ph-big", "kutchi": "wadho", "english": "big" },
-    "small": { "id": "ph-small", "kutchi": "nindho", "english": "small" },
-    "toe": { "id": "body-toe", "english": "toe", "placeholder": true },
-    "pela": { "id": "lnk-pela", "kutchi": "Pela", "english": "first" },
-    "nepoi": { "id": "lnk-nepoi", "kutchi": "Ne poi", "english": "and then" }
+    "paani": {
+      "id": "cook-paani",
+      "kutchi": "paani",
+      "english": "water",
+      "audio": "assets/audio/cook-tts/paani.mp3"
+    },
+    "loon": {
+      "id": "spi-16",
+      "kutchi": "loon",
+      "english": "salt",
+      "audio": "assets/audio/cook-tts/loon.mp3"
+    },
+    "hot": {
+      "id": "feel-hot",
+      "english": "hot",
+      "placeholder": true
+    },
+    "cold": {
+      "id": "feel-cold",
+      "english": "cold",
+      "placeholder": true
+    },
+    "big": {
+      "id": "ph-big",
+      "kutchi": "wadho",
+      "english": "big"
+    },
+    "small": {
+      "id": "ph-small",
+      "kutchi": "nindho",
+      "english": "small"
+    },
+    "toe": {
+      "id": "body-toe",
+      "english": "toe",
+      "placeholder": true
+    },
+    "pela": {
+      "id": "lnk-pela",
+      "kutchi": "Pela",
+      "english": "first"
+    },
+    "nepoi": {
+      "id": "lnk-nepoi",
+      "kutchi": "Ne poi",
+      "english": "and then"
+    }
   },
   "lines": {
-    "ahh": { "who": "patient", "kutchi": "[EN: Ahhh...]", "english": "Ahhh...", "placeholder": true },
-    "brr": { "who": "patient", "kutchi": "[EN: Brrr!]", "english": "Brrr!", "placeholder": true },
-    "tickle": { "who": "patient", "kutchi": "[EN: Hee hee!]", "english": "Hee hee! That tickles!", "placeholder": true },
-    "ow": { "who": "patient", "kutchi": "[EN: Ow!]", "english": "Ow! There's a thorn!", "placeholder": true },
-    "phew": { "who": "patient", "kutchi": "[EN: Phew!]", "english": "Phew!", "placeholder": true },
-    "side-left": { "who": "patient", "kutchi": "[EN: My left,]", "english": "My left", "placeholder": true },
-    "side-right": { "who": "patient", "kutchi": "[EN: My right,]", "english": "My right", "placeholder": true }
+    "ahh": {
+      "who": "patient",
+      "kutchi": "[EN: Ahhh...]",
+      "english": "Ahhh...",
+      "placeholder": true
+    },
+    "brr": {
+      "who": "patient",
+      "kutchi": "[EN: Brrr!]",
+      "english": "Brrr!",
+      "placeholder": true
+    },
+    "tickle": {
+      "who": "patient",
+      "kutchi": "[EN: Hee hee!]",
+      "english": "Hee hee! That tickles!",
+      "placeholder": true
+    },
+    "ow": {
+      "who": "patient",
+      "kutchi": "[EN: Ow!]",
+      "english": "Ow! There's a thorn!",
+      "placeholder": true
+    },
+    "phew": {
+      "who": "patient",
+      "kutchi": "[EN: Phew!]",
+      "english": "Phew!",
+      "placeholder": true
+    },
+    "side-left": {
+      "who": "patient",
+      "kutchi": "[EN: My left,]",
+      "english": "My left",
+      "placeholder": true
+    },
+    "side-right": {
+      "who": "patient",
+      "kutchi": "[EN: My right,]",
+      "english": "My right",
+      "placeholder": true
+    }
   },
   "levels": {
     "1": {
@@ -47,14 +154,22 @@
     },
     "2": {
       "_note": "+ the salt count (hakro/ba/trae chamcho loon); three toe calls. Said as one list.",
-      "salt": [1, 2, 3],
+      "salt": [
+        1,
+        2,
+        3
+      ],
       "calls": 3,
       "side": false,
       "list": true
     },
     "3": {
       "_note": "+ the side, in the patient's voice, on every toe (size x side: one toe of ten); no swirl shows which foot.",
-      "salt": [1, 2, 3],
+      "salt": [
+        1,
+        2,
+        3
+      ],
       "calls": 2,
       "side": true,
       "list": true
