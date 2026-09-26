@@ -1638,6 +1638,20 @@
    "glyph": "✋",
    "placeholder": true,
    "group": "tool"
+  },
+  "shampoo": {
+   "kutchi": null,
+   "english": "shampoo",
+   "glyph": "🧴",
+   "placeholder": true,
+   "group": "bottle"
+  },
+  "bug-jar": {
+   "kutchi": null,
+   "english": "jar",
+   "glyph": "🫙",
+   "placeholder": true,
+   "group": "bottle"
   }
  }
 }

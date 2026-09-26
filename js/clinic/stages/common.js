@@ -43,8 +43,15 @@
   };
 
   /** The doctor's face for the card (no sprite yet: a greybox face). */
-  S.doctorFace = function () {
+  S.doctorFace = function (mood) {
     const f = h("div", "cl-face doctor");
+    const src = Kit.person("doctor", mood || "neutral");
+    if (src) {
+      const img = h("img", "", f);
+      img.alt = "";
+      img.src = Kit.url(src);
+      return f;
+    }
     f.innerHTML = '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#c99a74"/><path d="M5 14 Q20 -2 35 14 L35 10 Q20 -6 5 10Z" fill="#2b1d16"/><circle cx="14" cy="18" r="4.5" fill="none" stroke="#333" stroke-width="1.6"/><circle cx="26" cy="18" r="4.5" fill="none" stroke="#333" stroke-width="1.6"/><path d="M18.5 18 h3" stroke="#333" stroke-width="1.6"/><path d="M13 28 Q20 33 27 28" fill="none" stroke="#5a3a33" stroke-width="2" stroke-linecap="round"/><path d="M12 26 Q20 22 28 26" fill="#2b1d16"/></svg>';
     return f;
   };

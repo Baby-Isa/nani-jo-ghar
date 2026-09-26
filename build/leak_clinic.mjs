@@ -77,7 +77,8 @@ for (const stage of ["waiting", "diagnosis", "pharmacy", "sendoff"]) {
 }
 
 // ---- the healing games ----
-console.log("\n== heal (each game's own bot, via Clinic.Heal.botRun)");
+const NH = N * 4; // the healing games' cells: four times the rounds (a game near 10% needs the tighter estimate)
+console.log(`\n== heal (each game's own bot, via Clinic.Heal.botRun; ${NH} rounds per cell)`);
 for (const id of games) {
   out.heal[id] = {};
   for (const L of [1, 2, 3]) {
@@ -87,12 +88,12 @@ for (const id of games) {
       const rng = P.rng(SEED * 104729 + L * 17 + s.length);
       let won = 0;
       let taught = 0;
-      for (let i = 0; i < N; i++) {
+      for (let i = 0; i < NH; i++) {
         const r = Heal.botRun(id, L, s, rng);
         if (!r || r.total === 0) taught++;
         else if (r.win) won++;
       }
-      cell[s] = taught === N ? "taught" : won / N;
+      cell[s] = taught === NH ? "taught" : won / NH;
     }
     out.heal[id][`L${L}`] = cell;
     // "reader" reads the English placeholders (every word is English until the family records it): reported, not a blind leak

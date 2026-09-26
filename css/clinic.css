@@ -262,3 +262,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 }
 .cl-mag { position: absolute; left: 3%; top: 4%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: #fff; font-size: 30px; cursor: pointer; z-index: 25; }
 .cl-mag.on { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .3); }
+/* sidebar dishes on short screens: the picture stays inside its dish (heal B's note at 915x375) */
+.cl-side .cl-dish { overflow: hidden; }
+.cl-side .cl-dish .cl-item { max-height: 88%; max-width: 88%; }
+.cl-side .cl-dish .cl-item-img { max-height: 100%; }

@@ -266,7 +266,7 @@ def main():
             lv = {"W1": 1, "W2": 2, "W3": 2, "W4": 3, "D1": 1, "D1b": 2, "D2": 1, "D3": 2, "E1": 1, "E2": 2, "E3": 2, "E4": 3}.get(v)
             for L in ([lv] if lv else [1, 2, 3]):
                 cases.append({"name": f"{st}-{v or 'L' + str(L)}", "q": f"stage={st}&level={L}&seed={s}" + (f"&variant={v}" if v else "")})
-    for g in ("cut", "knee", "ear", "tooth", "taste", "eye", "foot"):
+    for g in ("cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"):
         cases.append({"name": f"heal-{g}", "q": f"stage=heal&game={g}&level=1&seed={s}"})
     for L in (1, 2, 3):
         cases.append({"name": f"patient-L{L}", "q": f"patient=1&level={L}&seed={s}&results=1"})

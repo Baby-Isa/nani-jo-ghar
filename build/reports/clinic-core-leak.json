@@ -1,0 +1,450 @@
+{
+ "rounds": 500,
+ "seed": 1,
+ "games": [
+  "cut",
+  "knee",
+  "ear",
+  "tooth",
+  "taste",
+  "fever",
+  "boing",
+  "eye",
+  "foot"
+ ],
+ "stages": {
+  "waiting": {
+   "L1 W1": {
+    "fair": 1,
+    "random": 0.334,
+    "first-seat": 0.33,
+    "middle": 0.32,
+    "biggest": 0.352
+   },
+   "L2 W2": {
+    "fair": 1,
+    "random": 0.302,
+    "first-seat": 0.274,
+    "middle": 0.292,
+    "biggest": 0.262
+   },
+   "L2 W3": {
+    "fair": 1,
+    "random": 0.28,
+    "first-seat": 0.288,
+    "middle": 0.288,
+    "biggest": 0.29
+   },
+   "L3 W4": {
+    "fair": 1,
+    "random": 0.038,
+    "first-seat": 0.066,
+    "middle": 0,
+    "biggest": 0
+   },
+   "L3 W2": {
+    "fair": 1,
+    "random": 0.212,
+    "first-seat": 0.236,
+    "middle": 0.22,
+    "biggest": 0.204
+   },
+   "L3 W3": {
+    "fair": 1,
+    "random": 0.244,
+    "first-seat": 0.236,
+    "middle": 0.212,
+    "biggest": 0.244
+   }
+  },
+  "diagnosis": {
+   "L1 D2": {
+    "fair": 1,
+    "random": 0.144,
+    "salient": 0.148,
+    "found-always": 0.128,
+    "next-then-found": 0.146,
+    "sore-only": 0.154
+   },
+   "L2 D1b": {
+    "fair": 1,
+    "random": 0.224,
+    "salient": 0.25,
+    "found-always": 0.23,
+    "next-then-found": 0.258,
+    "sore-only": 0.244
+   },
+   "L2 D2": {
+    "fair": 1,
+    "random": 0.074,
+    "salient": 0,
+    "found-always": 0.082,
+    "next-then-found": 0.098,
+    "sore-only": 0.06
+   },
+   "L2 D3": {
+    "fair": 1,
+    "random": 0.002,
+    "salient": 0.002,
+    "found-always": 0.002,
+    "next-then-found": 0.004,
+    "sore-only": 0
+   },
+   "L3 D2": {
+    "fair": 1,
+    "random": 0.024,
+    "salient": 0,
+    "found-always": 0.038,
+    "next-then-found": 0.028,
+    "sore-only": 0.028
+   },
+   "L3 D3": {
+    "fair": 1,
+    "random": 0,
+    "salient": 0,
+    "found-always": 0,
+    "next-then-found": 0,
+    "sore-only": 0
+   }
+  },
+  "pharmacy": {
+   "L1": {
+    "fair": 1,
+    "random": 0.182,
+    "grab-all": 0.182,
+    "first-past": 0.172,
+    "same-group": 0.148
+   },
+   "L2": {
+    "fair": 1,
+    "random": 0.026,
+    "grab-all": 0.04,
+    "first-past": 0.02,
+    "same-group": 0.03
+   },
+   "L3": {
+    "fair": 1,
+    "random": 0,
+    "grab-all": 0,
+    "first-past": 0.002,
+    "same-group": 0
+   }
+  },
+  "sendoff": {
+   "L1 E1": {
+    "fair": 0,
+    "random": 0,
+    "same-face": 0
+   },
+   "L2 E2": {
+    "fair": 1,
+    "random": 0.244,
+    "same-face": 0.242
+   },
+   "L2 E3": {
+    "fair": 1,
+    "random": 0.082,
+    "same-face": 0.072
+   },
+   "L3 E2": {
+    "fair": 1,
+    "random": 0.244,
+    "same-face": 0.232
+   },
+   "L3 E3": {
+    "fair": 1,
+    "random": 0.08,
+    "same-face": 0.072
+   },
+   "L3 E4": {
+    "fair": 1,
+    "random": 0.066,
+    "same-face": 0.232
+   }
+  }
+ },
+ "heal": {
+  "cut": {
+   "L1": {
+    "fair": "taught",
+    "random": "taught",
+    "tray-order": "taught",
+    "max": "taught",
+    "most-common": "taught",
+    "first-option": "taught"
+   },
+   "L2": {
+    "fair": 1,
+    "random": 0.0825,
+    "tray-order": 0.088,
+    "max": 0.089,
+    "most-common": 0.089,
+    "first-option": 0.085
+   },
+   "L3": {
+    "fair": 1,
+    "random": 0.022,
+    "tray-order": 0.0185,
+    "max": 0.0195,
+    "most-common": 0.0235,
+    "first-option": 0.0155
+   }
+  },
+  "knee": {
+   "L1": {
+    "fair": 1,
+    "reader": 0.065,
+    "random": 0.065,
+    "tray-order": 0,
+    "fixed-1": 0,
+    "fixed-2": 0.057,
+    "fixed-3": 0.0605,
+    "fixed-4": 0.058,
+    "fixed-5": 0
+   },
+   "L2": {
+    "fair": 1,
+    "reader": 0.0715,
+    "random": 0.0715,
+    "tray-order": 0,
+    "fixed-1": 0,
+    "fixed-2": 0.075,
+    "fixed-3": 0.066,
+    "fixed-4": 0.032,
+    "fixed-5": 0
+   },
+   "L3": {
+    "fair": 1,
+    "reader": 0.1735,
+    "random": 0.032,
+    "tray-order": 0.0095,
+    "fixed-1": 0.0105,
+    "fixed-2": 0.0345,
+    "fixed-3": 0.0365,
+    "fixed-4": 0.0075,
+    "fixed-5": 0
+   }
+  },
+  "ear": {
+   "L1": {
+    "fair": 1,
+    "reader": 0.054,
+    "random": 0.058,
+    "tray-order": 0,
+    "big-first": 0.06,
+    "small-first": 0.0555,
+    "fixed-1": 0,
+    "fixed-2": 0.051,
+    "fixed-3": 0.063,
+    "fixed-4": 0,
+    "fixed-5": 0
+   },
+   "L2": {
+    "fair": 1,
+    "reader": 0.033,
+    "random": 0.0145,
+    "tray-order": 0,
+    "big-first": 0.007,
+    "small-first": 0.011,
+    "fixed-1": 0,
+    "fixed-2": 0.0125,
+    "fixed-3": 0.009,
+    "fixed-4": 0.009,
+    "fixed-5": 0
+   },
+   "L3": {
+    "fair": 1,
+    "reader": 0.035,
+    "random": 0.004,
+    "tray-order": 0,
+    "big-first": 0.0065,
+    "small-first": 0.0055,
+    "fixed-1": 0,
+    "fixed-2": 0.0025,
+    "fixed-3": 0.009,
+    "fixed-4": 0.0045,
+    "fixed-5": 0
+   }
+  },
+  "tooth": {
+   "L1": {
+    "fair": 1,
+    "reader": 0.16,
+    "random": 0.038,
+    "tray-order": 0.0365,
+    "alternate": 0.0395,
+    "small-first": 0.0395,
+    "fixed-1": 0.0395,
+    "fixed-2": 0.039,
+    "fixed-3": 0.034,
+    "fixed-4": 0,
+    "fixed-5": 0
+   },
+   "L2": {
+    "fair": 1,
+    "reader": 0.1535,
+    "random": 0.001,
+    "tray-order": 0,
+    "alternate": 0.001,
+    "small-first": 0,
+    "fixed-1": 0,
+    "fixed-2": 0,
+    "fixed-3": 0,
+    "fixed-4": 0,
+    "fixed-5": 0
+   },
+   "L3": {
+    "fair": 1,
+    "reader": 0.1225,
+    "random": 0,
+    "tray-order": 0,
+    "alternate": 0,
+    "small-first": 0,
+    "fixed-1": 0,
+    "fixed-2": 0,
+    "fixed-3": 0,
+    "fixed-4": 0,
+    "fixed-5": 0
+   }
+  },
+  "taste": {
+   "L1": {
+    "fair": 1,
+    "random": 0.092,
+    "tray-order": 0.084,
+    "same-picture": 0.0775,
+    "most-count": 0.0895,
+    "wait-for-throb": 0
+   },
+   "L2": {
+    "fair": 1,
+    "random": 0.0025,
+    "tray-order": 0,
+    "same-picture": 0,
+    "most-count": 0.006,
+    "wait-for-throb": 0
+   },
+   "L3": {
+    "fair": 1,
+    "random": 0,
+    "tray-order": 0,
+    "same-picture": 0,
+    "most-count": 0,
+    "wait-for-throb": 0
+   }
+  },
+  "fever": {
+   "L1": {
+    "fair": 1,
+    "random": 0.0505,
+    "blanket-every-answer": 0.039,
+    "cool-every-answer": 0.04,
+    "alternate": 0.043,
+    "done-early": 0
+   },
+   "L2": {
+    "fair": 1,
+    "random": 0.0015,
+    "blanket-every-answer": 0,
+    "cool-every-answer": 0.0045,
+    "alternate": 0,
+    "done-early": 0
+   },
+   "L3": {
+    "fair": 1,
+    "random": 0,
+    "blanket-every-answer": 0,
+    "cool-every-answer": 0.0005,
+    "alternate": 0,
+    "done-early": 0
+   }
+  },
+  "boing": {
+   "L1": {
+    "fair": 1,
+    "random": 0.0075,
+    "tray-order": 0,
+    "max": 0,
+    "pills-in-order": 0.007
+   },
+   "L2": {
+    "fair": 1,
+    "random": 0,
+    "tray-order": 0,
+    "max": 0,
+    "pills-in-order": 0
+   },
+   "L3": {
+    "fair": 1,
+    "random": 0,
+    "tray-order": 0,
+    "max": 0,
+    "pills-in-order": 0
+   }
+  },
+  "eye": {
+   "L1": {
+    "fair": 1,
+    "random": 0.0005,
+    "best": 0.007,
+    "first": 0.011,
+    "biggest": 0.0075
+   },
+   "L2": {
+    "fair": 1,
+    "random": 0,
+    "best": 0.0005,
+    "first": 0.001,
+    "biggest": 0
+   },
+   "L3": {
+    "fair": 1,
+    "random": 0,
+    "best": 0,
+    "first": 0,
+    "biggest": 0
+   }
+  },
+  "foot": {
+   "L1": {
+    "fair": 1,
+    "random": 0.0005,
+    "best": 0.06,
+    "big-toes": 0.0575,
+    "first": 0.049,
+    "alternate": 0.0715
+   },
+   "L2": {
+    "fair": 1,
+    "random": 0,
+    "best": 0.0105,
+    "big-toes": 0.0125,
+    "first": 0.008,
+    "alternate": 0.018
+   },
+   "L3": {
+    "fair": 1,
+    "random": 0,
+    "best": 0.002,
+    "big-toes": 0.0015,
+    "first": 0.0025,
+    "alternate": 0.0025
+   }
+  }
+ },
+ "patient": {
+  "L1": {
+   "fair": 1,
+   "blind": 0.003
+  },
+  "L2": {
+   "fair": 1,
+   "blind": 0
+  },
+  "L3": {
+   "fair": 1,
+   "blind": 0
+  }
+ },
+ "first": 0.13
+}
