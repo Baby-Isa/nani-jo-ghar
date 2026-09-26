@@ -53,6 +53,13 @@
    "hand@player-boy/c1-pinch-f1-open-t",
    "hand@player-boy/c1-pinch-f2-closed-t",
    "hand@player-boy/c5-two-hand-fold-t"
+  ],
+  "passme": [
+   "hand@nani/a3-palm-up-t",
+   "hand@player-boy/a3-palm-up-t",
+   "hand@player-boy/b1-handle-grip-t",
+   "hand@player-boy/c1-pinch-f1-open-t",
+   "hand@player-boy/c1-pinch-f2-closed-t"
   ]
  },
  "ipad-player-girl": {
