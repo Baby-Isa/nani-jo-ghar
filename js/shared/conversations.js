@@ -366,7 +366,8 @@
   C.blankState = () => ({
     v: 1,
     stage: "S1",
-    session: { index: 0, last: 0, day: null, skips: 0, skipRow: 0, quiet: false, waitRounds: 0, played: {}, reg: { aai: 0, tu: 0 } },
+    session: { index: 0, last: 0, day: null, skips: 0, skipRow: 0, quiet: false, waitRounds: 0, played: {} },
+    reg: { aai: 0, tu: 0 }, // graded register moments so far, by who asked (the balance, §6.5)
     visit: { mode: null, count: 0 },
     round: { id: null, count: 0 },
     lastAt: 0,
@@ -376,13 +377,15 @@
     speakers: {},
     onboarded: false,
   });
+  /** Fill in anything missing, in place (so update() changes the object it's given). */
   C.normalize = function (s) {
     const b = C.blankState();
-    s = Object.assign(b, s || {});
-    s.session = Object.assign(C.blankState().session, s.session || {});
-    s.session.reg = Object.assign({ aai: 0, tu: 0 }, s.session.reg || {});
-    s.visit = Object.assign({ mode: null, count: 0 }, s.visit || {});
-    s.round = Object.assign({ id: null, count: 0 }, s.round || {});
+    if (!s || typeof s !== "object") return b;
+    Object.keys(b).forEach((k) => s[k] === undefined && (s[k] = b[k]));
+    s.session = Object.assign(b.session, s.session);
+    s.reg = Object.assign({ aai: 0, tu: 0 }, s.reg);
+    s.visit = Object.assign(b.visit, s.visit);
+    s.round = Object.assign(b.round, s.round);
     return s;
   };
   /** A new session after 30 minutes idle or on a new day (§5.1). */
@@ -457,8 +460,10 @@
       if (!C.answers(ex, sp, Object.assign({}, ctx, { stage }), () => 0).some((a) => a.correct)) continue;
       if (!scripted && ex.register === "by-asker" && stageIx(stage) >= 1) {
         const side = C.youFor(sp);
-        const r = s.session.reg;
-        if (r[side] - r[side === "aai" ? "tu" : "aai"] >= 2) continue; // keep "always formal" from winning (§6.5)
+        const r = s.reg; // kept across sessions, so a session's odd one out evens up later
+        // about half the graded register moments from elders, half from peers (§6.5), so that
+        // "always formal" can't win: the heavier side waits until the other catches up
+        if (r[side] > r[side === "aai" ? "tu" : "aai"]) continue;
       }
       fits.push(ex);
     }
@@ -491,7 +496,7 @@
     }
     s.speakers[o.speaker] = { lastDay: dayOf(now), lastExchange: o.exchange, lastType: o.type };
     s.session.played[o.exchange] = now;
-    if (o.register && o.register.asked) s.session.reg[o.register.asked]++;
+    if (o.register && o.register.asked && o.tested) s.reg[o.register.asked]++;
     if (o.via === "skip") {
       s.session.skips++;
       s.session.skipRow++;

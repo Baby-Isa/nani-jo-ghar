@@ -5,3 +5,8 @@ Branch `claude/conversations-mvp` (from `claude/nifty-rubin-c0d431`). Design: `d
 ## 26 Sept 2026
 - Started. Read the handover, the design (all of it, §10a), UX §14, the grammar notes, save.js, story.js (its `choice` kind already does the §14 shake + 4 cycling reactions: embarrassed, scratch, puzzled, sigh; the module reuses those names), character.js (gender = `Save.get("character").choices.body`), family-audio.json (86 Mum + 87 Zafar clips).
 - §10a applied to the MVP lines: goodbye is *Khuda-fis!* (replaces *Achija* everywhere); thanks is the English "Thank you!" (replaces *Aabhar aanjo*); *aai* for anyone older (older cousin included), *tu* for same age or younger.
+- Data: `data/conversations/{lines,exchanges,speakers,placements}.json`. Chains live inside placements (`CL1.chain`), so no separate `chains.json` for the MVP.
+- Engine `js/shared/conversations.js`: pure half (resolve, answers, machine/step, allow, pick, update, migrateCook) + bubbles (maybe, run, hear, play). R4/R5 (speaking) are capped to R3 in the bubbles until Say.moment + family speech templates are wired.
+- Register balance is kept across sessions (`state.reg`), not per session: per session let "longest/always formal" reach 55.7% on the clinic's 4-elder/2-child bench. Now every blind strategy is at 50% or below.
+- Variety beats the first-meeting salaam (the same exchange never twice in a row, §6.5), as the design says.
+- Tests: `node --test build/test_shared_conversations.mjs`: 23 pass. All shared tests: 106 pass.
