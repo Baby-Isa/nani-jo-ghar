@@ -72,6 +72,7 @@
       const size = small ? k.phoneSize || k.size : k.size;
       const flying = [];
       const cut = {};
+      const sliced = {};
       let wrong = 0;
       const texFor = (id) => {
         const w = Cook.data.words[id] || {};
@@ -176,17 +177,22 @@
         const id = img.wordId;
         // what counts is what Nani is asking for now (after a switch, the last ones are decoys)
         const ok = !!phase && phase.targets.includes(id);
+        // the picture tally (top right): every slice you made, by kind; what you did, never the target
+        sliced[id] = (sliced[id] || 0) + 1;
+        UI.count(sliced[id], { id, state: "whole", speak: ok });
         if (ok) {
           cut[id] = (cut[id] || 0) + 1;
-          // the running tally for this vegetable (said aloud only while the number is being learned)
-          UI.count(cut[id]);
           S.burst(img.x, img.y, [0xffffff, 0xf6d27a], 10, z.L(70));
           z.progress({ cut: id, n: cut[id] });
         } else {
           wrong++;
           z.listen(false, no.includes(id) ? `sliced ${id} (they said no)` : `sliced ${id}`);
-          if (wrong === 1 || wrong % 3 === 0) z.oops();
-          S.burst(img.x, img.y, [0xb24a3a, 0xffd6c9], 10, z.L(60));
+          // level 1: one gentle "Arre re!" and a red burst; from level 2 the halves just fall grey (UX 11)
+          if (z.quiet) S.burst(img.x, img.y, [0xd8d2c8, 0xb8b0a4], 10, z.L(60));
+          else {
+            z.oops();
+            S.burst(img.x, img.y, [0xb24a3a, 0xffd6c9], 10, z.L(60));
+          }
         }
         halves(img);
         img.destroy();
@@ -309,7 +315,6 @@
       for (const r of rounds) {
         phase = r;
         roundT = 0;
-        UI.hideCount();
         if (r.i === 0) {
           // the ring starts once she's said it; after that, the switch comes while things fly
           await z.say(orderLine(r.targets, true), { hide }).catch(() => {});
@@ -331,7 +336,8 @@
       running = false;
       left = 0;
       drawRing();
-      z.say(Lang.line("enough"), { ms: 900 }).catch(() => {});
+      // the ring's own "time's up" (not a verdict on the count)
+      z.say(Lang.line("enough"), { ms: 900, caption: true }).catch(() => {});
       stop();
       offs.forEach((f) => f());
       z.expect(null);
@@ -346,8 +352,9 @@
           else Cook.markMiss(id);
           if (want[id] <= 5) (ok ? Cook.markRight : Cook.markMiss)(Cook.numId(want[id]));
         }
-        if (ok && tick && ctx.tickItem) ctx.tickItem(id);
       });
+      // the step has closed (the ring ran out): its rows tick, count rows too, right or not (UX 11)
+      if (tick && ctx.closeItem) ctx.closeItem(ids);
       ctx.result.chopped = cut;
       z.skill(100, "chop");
       S.sparkle(z.X(800), z.Y(450));

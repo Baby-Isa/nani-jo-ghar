@@ -1,6 +1,17 @@
 /*
- * Mechanic: pour (Wave 3: the owner's jug design).
+ * Mechanic: pour.
  *
+ * Wave 6b (docs/UX-PRINCIPLES.md 12; the quality pass, Q5): where things
+ * are tapped in, liquids are tapped in too. A TAP on the jug (or the pan)
+ * pours ONE measure: the pouring jug slides in over the target, the liquid
+ * rises to the next dashed line with the pour sound and its rising pitch,
+ * and stops there by itself; the jug slides back (Cook.Pour.measure). So
+ * pouring is counting, like the sugar spoons, and it's the same gesture at
+ * every level. A tap can't miss the line, so a pour has no hand score (the
+ * Chai tray's hand star is the knob alone). The press-and-hold pour below
+ * (Cook.Pour.hold) stays for any mode that still wants it.
+ *
+ * Wave 3 (the owner's jug design, the hold):
  * The jug, jar or pan you press is an ICON that never moves. Press and
  * hold it: a pouring copy slides in from above over the target (a pan, a
  * cup), tilts and pours while you hold; let go and it slides back up. The
@@ -222,10 +233,101 @@
     });
   }
 
+  /**
+   * Wave 6b: tap `icon` to pour ONE measure into `vessel` (or vessel() at
+   * the tap): the jug `art` slides in from above, the liquid rises from
+   * where it is to next(level, vessel) (the next dashed line; null: nothing
+   * to pour, the tap does nothing), then the jug slides away. Resolves
+   * {level, poured, vessel} when that pour is done (tap again for another
+   * measure: call measure() again).
+   * opts: z, icon, vessel, art, artSize, color (number or fn(level) -> number),
+   * next(level, vessel) -> level | null, pourMs (one measure's pour), slideMs,
+   * io, expect (post the tap expectation; default true), key, onStart(vessel),
+   * onLevel(level, vessel).
+   */
+  function measure(z, o) {
+    const S = z.S;
+    const io = o.io || z.io;
+    return new Promise((resolve) => {
+      let busy = false;
+      let jug = null;
+      const stream = S.track(S.add.graphics().setDepth(D.fx));
+      const colorAt = (lv, target) => St.color(typeof o.color === "function" ? o.color(lv, target) : o.color);
+      const spout = () => {
+        const a = Phaser.Math.DegToRad(jug.angle);
+        const lx = -jug.displayWidth * 0.42;
+        const ly = -jug.displayHeight * 0.34;
+        return { x: jug.x + lx * Math.cos(a) - ly * Math.sin(a), y: jug.y + lx * Math.sin(a) + ly * Math.cos(a) };
+      };
+      const tween = (cfg) => new Promise((r) => S.tweens.add(Object.assign({}, cfg, { onComplete: r })));
+      const pour = async () => {
+        if (busy) return;
+        const target = typeof o.vessel === "function" ? o.vessel() : o.vessel;
+        if (!target) return;
+        const from = target.level || 0;
+        const to = o.next ? o.next(from, target) : null;
+        if (to == null || to <= from + 0.005) {
+          // nothing more to pour here: the jug just bobs (never a "wrong")
+          S.tweens.add({ targets: o.icon, y: o.icon.y - z.L(10), duration: 90, yoyo: true });
+          return;
+        }
+        busy = true;
+        if (o.expect !== false) io.expect({ kind: "wait" });
+        if (o.onStart) o.onStart(target);
+        const r = target.rim;
+        const size = o.artSize || Math.max(z.L(170), r.rx * 2.6);
+        if (!jug) jug = S.track(S.add.image(0, 0, o.art).setDepth(D.hand - 1));
+        jug.setScale(S.fitScale(o.art, size, size));
+        const hx = r.x + r.rx * 0.55 + jug.displayWidth * 0.36;
+        const hy = r.y - r.ry - jug.displayHeight * 0.18;
+        jug.setPosition(hx + z.L(60), -jug.displayHeight).setAngle(0).setVisible(true);
+        Cook.sfx.whoosh();
+        await tween({ targets: jug, x: hx, y: hy, angle: -52, duration: o.slideMs || 240, ease: "Cubic.easeOut" });
+        const loop = Cook.sfx.pourLoop();
+        const ms = o.pourMs || 650;
+        await new Promise((done) => {
+          S.tweens.addCounter({
+            from: 0,
+            to: 1,
+            duration: ms,
+            ease: "Sine.easeInOut",
+            onUpdate: (tw) => {
+              const lv = from + (to - from) * tw.getValue();
+              const col = colorAt(lv, target);
+              target.setLiquid(lv, col);
+              if (loop && loop.pitch) loop.pitch(lv);
+              const p = surfaceAt(target, lv);
+              const sp = spout();
+              stream.clear();
+              stream.lineStyle(Math.max(4, target.rim.rx / 9), col, 0.85);
+              stream.lineBetween(sp.x, sp.y, p.x + target.rim.rx * 0.2, p.y);
+              if (o.onLevel) o.onLevel(lv, target);
+            },
+            onComplete: done,
+          });
+        });
+        stream.clear();
+        if (loop) loop.stop();
+        Cook.sfx.click();
+        S.tweens.add({ targets: jug, x: jug.x + z.L(80), y: -jug.displayHeight, angle: 0, duration: o.slideMs || 240, ease: "Cubic.easeIn", onComplete: () => jug && jug.setVisible(false) });
+        S.untap(o.icon);
+        S.glow(o.icon, false);
+        if (o.expect !== false) io.expect(null);
+        setTimeout(() => stream.destroy(), 400);
+        resolve({ level: to, poured: to - from, vessel: target });
+      };
+      S.tappable(o.icon, pour);
+      if (o.expect !== false) {
+        const c = S.centre(o.icon);
+        io.expect({ kind: "tap", x: c.x, y: c.y, key: o.key || "pour" });
+      }
+    });
+  }
+
   /** The hand score for a pour that stopped at `v`, aiming at [lo, hi]. */
   const pourScore = (S, v, lo, hi, k, spilled) => (spilled || v > 1 ? k.spillScore : S.bandScore(v, lo, hi));
 
-  Cook.Pour = { hold, lines, surfaceAt, band, score: pourScore };
+  Cook.Pour = { hold, measure, lines, surfaceAt, band, score: pourScore };
 
   Mech.define("pour", {
     api: "pourInto",
@@ -262,24 +364,18 @@
       const m = Phaser.Display.Color.Interpolate.ColorWithColor(baseCol, newCol, 100, Math.round(Cook.clamp((lv - base) / Math.max(0.05, lv), 0, 1) * 100));
       return Phaser.Display.Color.GetColor(m.r, m.g, m.b);
     };
-    const r = await hold(z, {
+    // Wave 6b: a tap pours one measure, up to the line (no hold, no "too much!": a tap can't miss)
+    const r = await measure(z, {
       icon: jug,
       vessel,
       art: jugKey,
       color: blend,
-      rate: k.rate,
-      lo,
-      hi,
-      stick: k.auto ? [line] : [],
-      stickMs: k.stickMs,
+      next: (lv) => (lv < line - 0.02 ? line : null),
+      pourMs: k.pourMs,
       slideMs: k.slideMs,
-      minPour: k.minPour,
-      enough: { lo, say: ctx.guided || Cook.wordStage(liquid) <= k.enoughUntilStage },
+      key: liquid,
     });
     const v = r.level;
-    const score = pourScore(S, v, lo, hi, k, vessel.spilled);
-    z.skill(score, "pour");
-    S.verdict(vessel.rim.x, vessel.rim.y - vessel.rimRy - z.L(90), score, { bad: v < lo ? "too-little" : "too-much" });
     marks.destroy();
     z.progress({ poured: liquid, level: v });
     await Cook.wait(450);
@@ -302,26 +398,21 @@
       vessel.setLiquid(v, color);
       z.skill(100, "pour");
     } else {
+      // Wave 6b: a tap pours one measure, to the line
       const line = (lo + hi) / 2;
       const marks = lines(S, vessel, [{ at: line, strong: true }]);
-      const r = await hold(z, {
+      const r = await measure(z, {
         icon: source,
         vessel,
         art: art || (S.textures.exists("saucepan-chai") ? "saucepan-chai" : source.texture.key),
         color,
-        rate: k.rate,
-        lo,
-        hi,
-        stick: k.auto ? [line] : [],
-        stickMs: k.stickMs,
+        next: (lv) => (lv < line - 0.02 ? line : null),
+        pourMs: k.pourMs,
         slideMs: k.slideMs,
-        minPour: k.minPour,
+        key: "pan",
       });
       v = r.level;
       marks.destroy();
-      const sc = pourScore(S, v, lo, hi, k, vessel.spilled);
-      z.skill(sc, "pour");
-      S.verdict(vessel.rim.x, vessel.rim.y - z.L(90), sc, { bad: v < lo ? "too-little" : "too-much" });
     }
     if (steam) S.steam(vessel.rim.x, vessel.rim.y - z.L(30), steam);
     z.progress({ poured: "cup", level: v });
@@ -330,7 +421,7 @@
 
   Mech.lab("pour", {
     name: "Pour",
-    verb: "Hold the jug",
+    verb: "Tap the jug",
     async run(L) {
       L.card([Lang.wordLine("cook-paani")], ["pour"]);
       const z = await L.scene("pour", "hob");

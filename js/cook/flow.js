@@ -93,6 +93,10 @@
       // for the word review on the result card: the words you got wrong, and the ones you needed help with
       wordMiss: new Set(),
       wordHelp: new Set(),
+      // Wave 6b, the end-of-round screen: mistakes that aren't a row of the order (a wrong
+      // item, an extra one), each a red slot on the accuracy badge; when the round started
+      strays: 0,
+      t0: null,
     };
     Cook.ctx = ctx;
     ctx.listen = (ok, why) => {
@@ -110,13 +114,16 @@
       // word ids -> the words themselves, for the completion card
       ctx.reasons.push(wordsOf(why));
       // which row of the order it was about (highlighted on the result card)
-      if (p.kind === "no") UI.mission.missItem(p.ids[0], ctx.dishAt, { no: true });
+      let row = null;
+      if (p.kind === "no") row = UI.mission.missItem(p.ids[0], ctx.dishAt, { no: true });
       else if (p.kind === "order") {
         // the step that should have come next ("X out of order" names only the wrong one)
-        if (p.ids[1]) UI.mission.missItem(p.ids[1], ctx.dishAt, { no: false });
-        else UI.mission.missNext(ctx.dishAt);
+        if (p.ids[1]) row = UI.mission.missItem(p.ids[1], ctx.dishAt, { no: false });
+        else row = UI.mission.missNext(ctx.dishAt);
       }
-      else if (p.kind === "count") UI.mission.missItem(p.noun, ctx.dishAt, { counted: true });
+      else if (p.kind === "count") row = UI.mission.missItem(p.noun, ctx.dishAt, { counted: true });
+      // a mistake with no row of its own (a wrong thing picked, an extra): its own red slot at the end
+      if (!row && !["shown", "passme"].includes(p.kind)) ctx.strays++;
       if (["no", "order", "wrong"].includes(p.kind) && p.ids[0] && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(p.ids[0]), ok: false });
       UI.mission.star("ear", "lost");
     };
@@ -125,6 +132,8 @@
       ctx.grades.push({ what, score });
       if (score < 55) UI.mission.star("hand", "lost");
     };
+    // a step has closed: its rows tick, count rows too, right or not (UX 11; UI.mission.closeItem)
+    ctx.closeItem = (ids, opts = {}) => UI.mission.closeItem(ids, ctx.dishAt, opts);
     ctx.nextStep = (name) => {
       // a part of the order that waits for its station appears now (the
       // tadka order, which Nani gives at the pan)
@@ -342,6 +351,7 @@
       stop();
     }
     if (!demo) startPatience(order);
+    ctx.t0 = Date.now();
     if (!demo) {
       Cook.save.orders = (Cook.save.orders || 0) + 1;
       Cook.writeSave();
@@ -397,6 +407,58 @@
     return missed.length && missed.length <= 3 ? Lang.join(missed) : ctx.orderLine;
   }
 
+  /* ---------------- the end of a round: the shared screen (UX 9) ----------------
+   * js/shared/results.js: page 1 is three badges (time with the personal best
+   * per game and level, accuracy as slots, hints), page 2 the word review.
+   * Accuracy is the order's rows (green unless the row went wrong) plus one
+   * red slot per mistake that isn't a row (a wrong thing, an extra one).
+   * The badges stay mapped to the stars: accuracy gold <=> the ear star
+   * (a lost ear with every row green gets one red slot), hints gold <=> no
+   * help (ctx.help: hints, the light bulb, hearing it again).
+   */
+  function accuracyMarks(ctx, stars) {
+    const marks = [];
+    (ctx.ladders || []).forEach((L) =>
+      Cook.Order.rows(L, { all: true }).forEach((r) => {
+        if (r.head || (r.simple && !r.ids.length)) return;
+        marks.push(!r.miss);
+      })
+    );
+    for (let i = 0; i < Math.min(ctx.strays || 0, 8); i++) marks.push(false);
+    if (!marks.length) marks.push(!!stars.ear);
+    if (!stars.ear && marks.every(Boolean)) marks.push(false);
+    return marks;
+  }
+  Cook.accuracyMarks = accuracyMarks;
+  async function roundEnd(ctx, { game, level, stars, end }) {
+    const R = global.Results;
+    if (!R || Cook.noResults) return null;
+    UI.hideCount();
+    const marks = accuracyMarks(ctx, stars);
+    const words = UI.orderWords(ctx.ladders).map((id) => ({ id, kutchi: Cook.display(id), english: Cook.english(id) }));
+    const shown = R.show({
+      mode: "cook",
+      game,
+      level,
+      timeMs: ctx.t0 ? Math.max(0, (end || Date.now()) - ctx.t0) : undefined,
+      right: marks.filter(Boolean).length,
+      total: marks.length,
+      marks,
+      hints: ctx.help || 0,
+      words,
+      speak: (w) => Lang.speakWord(w.id),
+      sound: true,
+    });
+    // what to press next (for the test harness and the first-time overlay)
+    Cook.expect = { kind: "click", selector: ".njg-results .rs-next" };
+    const next = shown.el && shown.el.querySelector(".rs-next");
+    if (next) next.addEventListener("click", () => (Cook.expect = { kind: "click", selector: ".njg-results .rs-done" }));
+    const out = await shown;
+    Cook.expect = null;
+    ctx.results = out;
+    return out;
+  }
+
   /* ---------------- serve: stars, pocket money, the completion card ---------------- */
   function drawServed(ctx, x) {
     const s = S();
@@ -423,6 +485,7 @@
 
   async function serve(order, ctx) {
     const who = order.who;
+    const tServed = Date.now();
     await serviceView(who === "nani" ? null : who);
     const busy = Cook.save.mode === "busy";
     if (busy && state.patience != null && state.patience < 0.35) S().setMood(who, "impatient");
@@ -437,7 +500,7 @@
       hand: avg >= 75 && (skills.length ? Math.min(...skills) : 100) >= 55,
       third: busy ? (state.patience || 0) >= 0.35 : ctx.help === 0,
     };
-    Object.entries(stars).forEach(([k, v]) => UI.mission.star(k, v ? "earned" : "lost"));
+    Object.entries(stars).forEach(([k, v]) => UI.mission.star(k, v ? "earned" : "lost", { final: true }));
     const n = Object.values(stars).filter(Boolean).length;
     // what they asked for that didn't happen: Nani says "Arre re" and the
     // customer says the Kutchi again (the teaching moment)
@@ -476,6 +539,8 @@
     }
     UI.hideBubble();
     if (who !== "nani") await S().leaveChar(who);
+    // Wave 6b: the shared end-of-round screen (time, accuracy, hints; then the words)
+    await roundEnd(ctx, { game: order.dishes.map((d) => d.recipe).join("+"), level: Math.max(...order.dishes.map((d) => d.level || 1)), stars, end: tServed });
     state.ordersServed = (state.ordersServed || 0) + 1;
     const card = Object.assign({ who, dishes: order.dishes, stars, coins, receipt, reasons: ctx.reasons.slice(), help: ctx.help, lines: [Lang.plain(ctx.orderLine)] }, outcome(ctx, stars, busy));
     state.cards.push(card);
@@ -548,7 +613,7 @@
         <p>"I'll give you pocket money for helping. Get it all right and be quick, and you get more!" Every order has three stars to win:</p>
         <div class="rules">
           <div class="rule"><span class="mstar earned">${UI.starIcon("ear")}</span><b>${UI.esc(UI.starInfo("ear").name)}</b><p>Everything they asked for, the right number, the right order.</p></div>
-          <div class="rule"><span class="mstar earned">${UI.starIcon("hand")}</span><b>${UI.esc(UI.starInfo("hand").name)}</b><p>Pour to the line, nothing spilt or burnt.</p></div>
+          <div class="rule"><span class="mstar earned">${UI.starIcon("hand")}</span><b>${UI.esc(UI.starInfo("hand").name)}</b><p>Cook it just right: nothing burnt, boiled over or spilt.</p></div>
           <div class="rule"><span class="mstar earned">${UI.starIcon("third")}</span><b>${UI.esc(UI.starInfo("third").name)}</b><p>${Cook.save.mode === "busy" ? "Serve before the ring round their face runs out." : "No hints, no peeking and no translations."}</p></div>
         </div>
         <p>You always get ${PAY.help} coins for helping, plus ${PAY.ear}, ${PAY.hand} and ${PAY.third} for the stars. Nobody ever loses money.</p>
@@ -681,7 +746,8 @@
 
   const imgFor = (u) => Cook.v(u.art ? Cook.Art.url(u.art) : u.image && u.image.endsWith("badge") ? `assets/cook/characters/${u.image}.webp` : `assets/cook/props/${u.image}.webp`);
   function showShop() {
-    const ups = Cook.data.upgrades;
+    // an upgrade for a station that's been cut (knead, Wave 6b) is off the shop
+    const ups = Cook.data.upgrades.filter((u) => !u.hidden);
     const render = () => {
       const card = (u) => {
         const owned = Cook.save.owned.includes(u.id);
@@ -757,6 +823,10 @@
   // every mechanic (js/cook/mechanics/) and combined station (js/cook/stations/)
   // registers its own lab entry: [key, name, verb]
   const labList = () => Cook.Mech.labOrder.map((k) => [k, Cook.Mech.labs[k].name, Cook.Mech.labs[k].verb]);
+  // Wave 6b: the nine kept stations first (data.lab.stations); the sub-mechanics under "Parts"
+  const keptKeys = () => ((Cook.data.lab || {}).stations || []).filter((k) => Cook.Mech.labs[k]);
+  const labKept = () => keptKeys().map((k) => [k, Cook.Mech.labs[k].name, Cook.Mech.labs[k].verb]);
+  const labParts = () => labList().filter(([k]) => !keptKeys().includes(k));
   // whole recipes from the data, every station in turn: "recipe:<id>"
   const labRecipes = () => Object.keys(Cook.data.recipes).map((id) => [`recipe:${id}`, Cook.data.recipes[id].english, Cook.data.recipes[id].stations.join(", ")]);
   const labName = (key) => (labList().concat(labRecipes()).find((l) => l[0] === key) || [0, key])[1];
@@ -774,9 +844,12 @@
       <p>Try any station on its own, with a random order each time. Tell Zafar's Claude what feels unclear or not fun!</p>
       <label style="display:flex;gap:8px;align-items:center;font-weight:800"><input type="checkbox" id="lab-guided" ${guided ? "checked" : ""}> Nani helps (first-time guidance)</label>
       <div class="seg" role="group" aria-label="Level">${[1, 2, 3, 4].map((n) => `<button data-level="${n}" class="${n === level ? "on" : ""}">Level ${n}</button>`).join("")}</div>
-      <div class="lab-grid">${labList().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
+      <div class="lab-grid">${labKept().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
       <h3>Whole recipes</h3>
       <div class="lab-grid">${labRecipes().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
+      <details class="lab-parts"><summary>Parts (the pieces inside the stations, for testing)</summary>
+        <div class="lab-grid">${labParts().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
+      </details>
       <div class="btn-row"><button class="btn" id="lab-back">Back</button></div>`);
     p.querySelectorAll("[data-level]").forEach((b) =>
       b.addEventListener("click", () => {
@@ -805,13 +878,16 @@
     const openCard = (what, steps) => {
       if (Array.isArray(what)) {
         ctx.ladders = [Cook.Order.fromLines(what)];
-        ctx.orderLine = Lang.join(what);
+        // said from the rows, so the card's speaker lights each one as it's read (read-along)
+        ctx.orderLine = Cook.Order.speech(ctx.ladders);
       } else openLadders(ctx, [what]);
       ctx.lines = [{ line: ctx.orderLine }];
       uiStage({ all: true });
       UI.mission.open({ who: "nana", name: "Nana (lab)", ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
       // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
-      ctx.intro = UI.mission.introduce().catch(() => {});
+      ctx.intro = UI.mission.introduce()
+        .catch(() => {})
+        .then(() => (ctx.t0 = Date.now()));
     };
     try {
       await Cook.Mech.runLab(key, s, ctx, { card: openCard, level, region });
@@ -820,6 +896,11 @@
       throw e;
     }
     Cook.writeSave();
+    const tEnd = Date.now();
+    // Wave 6b: the shared end-of-round screen first (the stars as badges, then the words)
+    const labStars = { ear: ctx.listenMiss === 0, hand: !ctx.grades.some((g) => g.score < 55), third: ctx.help === 0 };
+    UI.mission.stamp();
+    await roundEnd(ctx, { game: key, level, stars: labStars, end: tEnd });
     // a score can be reported more than once (e.g. one per maani rolled, one
     // per chapati flipped): number them so "roll 82% · roll 100%" reads as
     // "roll 1: 82% · roll 2: 100%" instead of two unlabelled repeats.
@@ -1111,6 +1192,8 @@
 
   /* ---------------- boot ---------------- */
   global.addEventListener("load", async () => {
+    // Wave 6b (UX 11): the stars don't grey out mid-round; they're shown when the order is served
+    Cook.deferStars = true;
     UI.init();
     wireRail();
     Cook.loadSave();

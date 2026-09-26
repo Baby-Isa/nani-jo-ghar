@@ -13,6 +13,15 @@
   Mech.define("add", {
     async run(z, { items, expected, into, say, allowAny }, k) {
       const S = z.S;
+      async function flyIn(key, obj) {
+        const col = St.heapColor(key);
+        const dot = S.track(S.add.circle(obj.x, obj.y - z.L(20), z.L(18), col, 1).setDepth(D.fx));
+        Cook.sfx.pop();
+        const p = into.surface ? into.surface() : into;
+        await S.fly(dot, p.x, p.y, { duration: k.flyMs, arc: z.L(110) });
+        S.burst(p.x, p.y, col, 10, z.L(50));
+        dot.destroy();
+      }
       const r = await S.step({
         items,
         expected,
@@ -21,21 +30,15 @@
         sayLine: say || Lang.wordLine(expected),
         allowAny,
         io: z.io,
+        quiet: z.quiet,
         onWrong: (key, m) => {
           z.listen(false, `added ${key}`);
           if (m === 1) z.oops();
         },
+        // level 2 up (UX 11): a wrong one goes into the pan like any other; the review says so
+        onLand: (key, obj) => flyIn(key, obj),
       });
-      const obj = items[r.key];
-      const blob = S.track(S.add.circle(obj.x, obj.y - z.L(20), z.L(16), 0xffffff, 0.001).setDepth(D.fx));
-      const col = St.heapColor(r.key);
-      const dot = S.track(S.add.circle(obj.x, obj.y - z.L(20), z.L(18), col, 1).setDepth(D.fx));
-      Cook.sfx.pop();
-      const p = into.surface ? into.surface() : into;
-      await S.fly(dot, p.x, p.y, { duration: k.flyMs, arc: z.L(110) });
-      S.burst(p.x, p.y, col, 10, z.L(50));
-      dot.destroy();
-      blob.destroy();
+      await flyIn(r.key, items[r.key]);
       if (!z.guided && Cook.data.words[r.key]) Cook.markRight(r.key);
       z.progress({ added: r.key });
       return r.key;

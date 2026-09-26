@@ -44,13 +44,16 @@
     async run(z, { bowl, n, into, word, items }, k) {
       const S = z.S;
       let count = 0;
-      UI.count(0, { speak: false });
+      UI.count(0, { speak: false, id: word });
       const others = Object.entries(items || {}).filter(([id, obj]) => obj && obj !== bowl && id !== word);
       const add = async (from, id) => {
         const p = spoon(z, { bowl: from, into, word: id, ms: k.spoonMs });
-        if (id !== word) return p;
+        if (id !== word) {
+          UI.countUp(id, { speak: false });
+          return p;
+        }
         count++;
-        UI.count(count);
+        UI.count(count, { id: word });
         z.progress({ count });
         return p;
       };
@@ -82,7 +85,9 @@
         // the look-alikes are real choices: a spoon of salt goes in too
         others.forEach(([id, obj]) =>
           S.tappable(obj, () => {
-            Cook.sfx.soft();
+            // level 2 up it just goes in, like any spoon (UX 11): the review says so
+            if (z.quiet) Cook.sfx.pop();
+            else Cook.sfx.soft();
             add(obj, id);
             z.listen(false, `added ${id}, not ${word}`);
             z.oops();

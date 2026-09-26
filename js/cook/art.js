@@ -525,12 +525,32 @@
     ctx.stroke();
     ctx.restore();
   }
-  function hand(tool) {
+  /**
+   * Wave 6b: a painted tool (data.art.sprites.tools) drawn upright. The
+   * sprites lie corner to corner, the business end top-left and the handle
+   * bottom-right: turn that diagonal to `angle` (radians: -PI/2 = tip up,
+   * 0 = lying flat) and scale it to `len` px along it, centred on (cx, cy).
+   */
+  function toolSprite(ctx, img, { cx, cy, len, angle }) {
+    const diag = Math.hypot(img.width, img.height);
+    const s = len / diag;
+    const a0 = Math.atan2(img.height, img.width); // the tool's axis in the sprite (tip -> handle)
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle + Math.PI - a0);
+    ctx.drawImage(img, (-img.width * s) / 2, (-img.height * s) / 2, img.width * s, img.height * s);
+    ctx.restore();
+  }
+  Art.toolSprite = toolSprite;
+  function hand(tool, painted) {
     const c = canvas(300, 520);
     const ctx = c.getContext("2d");
     const x = 150;
     // the tool first (held in the fingers), then the hand over it
-    if (tool === "knife") {
+    if (painted) {
+      // the painted tool, tip up, its handle running down into the palm
+      toolSprite(ctx, painted, { cx: x, cy: 175, len: 380, angle: -Math.PI / 2 });
+    } else if (tool === "knife") {
       ctx.fillStyle = "#3b2a20";
       roundRect(ctx, x - 14, 150, 28, 120, 10);
       ctx.fill();
@@ -868,6 +888,17 @@
   Art.get = get;
   /** A texture for key: its painted sprite once loaded (data.art.sprites), else the drawing. */
   Art.tex = function (scene, key) {
+    // Wave 6b: a painted tool in a drawn hand (data.art.sprites.tools), baked once it's loaded
+    const tool = key.startsWith("hand:") ? (SP().tools || {})[key] : null;
+    if (tool) {
+      const sk = Art.sprite(scene, tool);
+      if (sk) {
+        const bk = `spr@${key}`;
+        if (!scene.textures.exists(bk)) scene.textures.addCanvas(bk, hand(key.slice(5) || null, scene.textures.get(sk).getSourceImage()));
+        return bk;
+      }
+      if (refUrl(tool)) load(scene, tool);
+    }
     const ref = key.startsWith("bg:") ? ((SP().bg || {})[key.slice(3)] ? key : null) : (SP().art || {})[key];
     const sk = ref && spriteFor(scene, key, ref);
     if (sk) return sk;

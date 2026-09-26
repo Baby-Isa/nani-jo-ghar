@@ -32,7 +32,7 @@
  * speed), minJudgeMs (shorter than this after the grace: judge all of it),
  * reactGapMs, maxNudges (how often she says the speed again), afterCountMs
  * (Nani waits for the counted number), spillMs, spillGapMs, spillCost,
- * minScore, quietMs (let go this long and you're done), ghostMs, special,
+ * minScore, quietMs (unused since Wave 6b: Done ends the stir), ghostMs, special,
  * and the layout: potX, potY, potR, dialX, dialY, dialR (design px).
  * Speeds are real laps per second (the gesture isn't scaled by game speed).
  * Extra lines and tips: data/stations/stir.json.
@@ -225,7 +225,9 @@
       if (asked) parts.push(speedLine(asked));
       let current = Lang.join(parts); // what the sidebar shows between reactions
       Cook.markSeen(Cook.numId(laps));
-      UI.count(0, { speak: false });
+      // the picture tally: the laps you've stirred (a ladle), never the target
+      const tallyIcon = Cook.Art.refUrl("ladle.tool");
+      UI.count(0, { speak: false, id: "laps", icon: tallyIcon });
 
       /* ---------- the stirring state ---------- */
       let ang = 0; // the ladle's angle on the track
@@ -252,7 +254,9 @@
       const newPhase = (s) => ({ speed: s, all: 0, inAll: 0, judged: 0, inAsked: 0, corrected: false, nudges: 0 });
       const phases = asked ? [newPhase(asked)] : [];
       const lapA = TAU * k.lap;
-      const enoughAt = z.guided ? laps : laps + 1;
+      // "enough!" only while she's teaching (level 1, or guided): from level 2 nothing
+      // says you went past the count mid-round (UX 11); the review does
+      const enoughAt = z.guided ? laps : z.quiet ? Infinity : laps + 1;
       const switchLap = k.switch && asked && laps >= 2 ? 1 + Math.floor(Math.random() * (laps - 1)) : 0;
       const drops = [];
 
@@ -306,7 +310,7 @@
         };
         const lapDone = () => {
           count++;
-          UI.count(count);
+          UI.count(count, { id: "laps", icon: tallyIcon });
           Cook.sfx.bubble();
           S.burst(cx + Math.cos(ang) * RT, cy + Math.sin(ang) * RT, [0xe0a42c, 0xf6d27a], 8, z.L(50));
           z.progress({ laps: count });
@@ -335,6 +339,7 @@
           prev = Math.atan2(p.worldY - cy, p.worldX - cx);
           clearTimeout(quiet);
           UI.hideDone();
+          setExpect();
           ring.setVisible(false);
         };
         const move = (p) => {
@@ -370,14 +375,16 @@
           }
           while (prog >= (count + 1) * lapA) lapDone();
         };
+        // Wave 6b (the controls audit): the pot is finished with Done, like every
+        // other station, never by letting go for a moment (children did that by accident)
         const release = () => {
           if (!grabbing) return;
           grabbing = false;
           prev = null;
           clearTimeout(quiet);
           if (count >= 1) {
-            quiet = setTimeout(finish, k.quietMs / Cook.speed);
-            UI.done().then(finish);
+            UI.done({ glow: z.guided && count >= laps }).then(finish);
+            z.expect({ kind: "click", selector: "#done-btn" });
           }
         };
         z.on("pointerdown", grab);
@@ -423,7 +430,7 @@
               lastSpill = now;
               spills++;
               spill();
-              if (spills === 1) react(Lang.line("oops"), true);
+              if (spills === 1 && Cook.gentleOops(ctx)) react(Lang.line("oops"), true);
             }
           } else overT = 0;
           draw(now);

@@ -142,6 +142,8 @@
         z.skill(score, "fry");
         S.verdict(f.x, f.y - z.L(80), score, { perfect: "golden", bad: f.v >= 1 ? "burnt" : "too-pale" });
         if (f.kind === kind) lifted++;
+        // the picture tally: what you've lifted out, by kind
+        UI.countUp(wordOf(f.kind), { state: f.kind === "samosa" ? "fried" : "bowl" });
         S.fly(f.img, z.X(250 + (doneOut.length % 4) * 80), z.Y(St.STRIP_Y - 30 + Math.floor(doneOut.length / 4) * 60), { duration: 380, arc: z.L(120) });
         doneOut.push(f);
         z.progress({ fried: doneOut.length });
@@ -227,6 +229,19 @@
       if (!ctx.guided && count >= 1 && count <= 5) (lifted === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
       await Cook.wait(300);
       return lifted;
+    },
+  });
+
+  // Wave 6b: the kept station, samosa + fry, in one go (fill, fold as many as they said, fry them)
+  Mech.lab("samosa", {
+    name: "Samosa + fry",
+    verb: "Fill, fold, fry",
+    async run(L) {
+      const R = Cook.Recipes;
+      const d = R.samosa.make(Cook.pick(["nana", "ma", "cousin"]), { level: L.level });
+      L.card(d, R.samosa.steps(d));
+      const made = await St.fillFold(L.S, L.ctx, { fillings: d.fillings, exclude: d.no, decoyPool: Cook.data.recipes.samosa.lists.fillings_all, count: d.count, level: L.level }, { region: L.region });
+      await L.station("fry", { kind: "samosa", count: d.count, made });
     },
   });
 

@@ -11,6 +11,7 @@
  */
 (function (global) {
   const Cook = global.Cook;
+  const UI = Cook.UI;
   const Lang = Cook.Lang;
   const D = Cook.D;
   const St = Cook.Stations;
@@ -119,6 +120,13 @@
           obj.destroy();
         }
       };
+      // Wave 6b: into the basket (a wrong one too, from level 2: nothing says it's wrong until the review)
+      const intoBasket = async (id, obj) => {
+        const spot = spots[n % spots.length];
+        n++;
+        UI.countUp(id);
+        await S.fly(obj, spot.x, spot.y + z.L(60), { scale: S.fitScale(obj.texture.key, z.L(120), z.L(105)), depth: D.front + 1, duration: k.flyMs });
+      };
       while (remaining.length) {
         const expected = remaining[0];
         const guided = ctx.guided || Cook.wordStage(expected) === 1;
@@ -130,9 +138,15 @@
           guided,
           sayLine: ask(expected, n === 0),
           allowAny: (key) => remaining.includes(key),
+          quiet: z.quiet,
           onWrong: (key, m) => {
             z.listen(false, always.includes(key) && !need.includes(key) && inOrder(ctx).has(key) ? `fetched ${key} (they said no)` : `fetched ${key}`);
             if (m === 1) z.oops();
+          },
+          onLand: (key, obj) => {
+            if (obj.label) obj.label.destroy();
+            delete items[key];
+            intoBasket(key, obj);
           },
           io: z.io,
         });
@@ -143,7 +157,9 @@
         const obj = items[id];
         delete items[id];
         Cook.sfx.right();
+        if (obj.label) obj.label.destroy();
         const spot = spots[n % spots.length];
+        UI.countUp(id);
         z.progress({ fetched: id });
         await S.fly(obj, spot.x, spot.y + z.L(60), { scale: S.fitScale(obj.texture.key, z.L(120), z.L(105)), depth: D.front + 1, duration: k.flyMs });
         n++;

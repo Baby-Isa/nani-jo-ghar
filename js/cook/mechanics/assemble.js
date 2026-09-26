@@ -346,6 +346,7 @@
           await S.fly(spoon, p.x + (Math.random() - 0.5) * z.L(30), p.y, { scale: 0.5 * z.k, duration: k.flyMs, arc: z.L(120) });
           spoon.destroy();
           got.push(id);
+          UI.countUp(id, { speak: false }); // the picture tally: what went in
           obj.setAlpha(0.6); // used (it can still go in again)
           await bowl.add(id);
           z.progress({ layer: id, n: got.length });

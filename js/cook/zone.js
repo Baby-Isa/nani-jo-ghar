@@ -41,6 +41,30 @@
   const FULL = { x: 0, y: 0, w: W, h: H };
   const M = (Cook.Mech = { defs: {}, combos: {}, labs: {}, labOrder: [] });
 
+  /* ---------------- mistakes mid-round (Wave 6b, UX 11) ----------------
+   * The round's level is the order's (the lab's level, or the dish's), not a
+   * zone's own knob level (the grill's threading runs at knob level 1 at
+   * every station level). quietMistakes(ctx): from level 2 nothing says
+   * "wrong" while you play (no "Arre re!", no wiggle, no bounce, no red
+   * burst); the mistake is logged and shown in the end review.
+   * gentleOops(ctx): level 1 keeps one gentle correction per round (true the
+   * first time only). */
+  Cook.roundLevel = function (ctx) {
+    const c = ctx || Cook.ctx;
+    if (!c) return 1;
+    const d = c.order && c.order.dishes && c.order.dishes[c.dishAt || 0];
+    return Math.max(1, Number(c.level) || 0, Number(d && d.level) || 0);
+  };
+  Cook.quietMistakes = (ctx) => Cook.roundLevel(ctx) >= 2;
+  Cook.gentleOops = function (ctx) {
+    const c = ctx || Cook.ctx;
+    if (Cook.quietMistakes(c)) return false;
+    if (!c) return true;
+    if (c.oopsed) return false;
+    c.oopsed = true;
+    return true;
+  };
+
   /* ---------------- knobs (difficulty as data) ---------------- */
   const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
   const clone = (v) => (v == null || typeof v !== "object" ? v : JSON.parse(JSON.stringify(v)));
@@ -272,6 +296,7 @@
       this.hook("onScore", score, what);
     }
     progress(p) {
+      Cook.acted = (Cook.acted || 0) + 1;
       this.hook("onProgress", p);
     }
     hook(name, ...args) {
@@ -280,11 +305,20 @@
     get result() {
       return this.ctx.result;
     }
-    /* Nani */
+    /* Nani: at a station she's a voice (UI.voice, docs/UX-PRINCIPLES.md 13) */
     say(line, opts = {}) {
-      return UI.say(line, { badge: true }, opts);
+      return UI.voice(line, opts);
+    }
+    /**
+     * Wave 6b (UX 11): no negative feedback mid-round. From level 2 a
+     * mistake lands like any other move (it's logged for the end review);
+     * level 1 keeps one gentle correction per round, the first "Arre re!".
+     */
+    get quiet() {
+      return Cook.quietMistakes(this.ctx);
     }
     oops() {
+      if (!Cook.gentleOops(this.ctx)) return Promise.resolve();
       return this.say(Lang.line("oops"), { ms: 900 }).catch(() => {});
     }
     /** Nani may interrupt after ms (she decides; Busy keeps cooking). */

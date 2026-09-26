@@ -50,9 +50,11 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # COOK_TEST_PORT lets several test runs (or worktrees) go at once
 PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
-LAB = ["fetch", "passme", "pour", "boil", "count", "knead", "roll", "flip", "chop", "tadka", "stir", "assemble", "fill", "fry", "thread", "grill", "roll-tawa", "mishkaki-grill", "chai-tray", "maani-line"]
+# Wave 6b: the nine kept stations first, then the parts (knead is cut: its file isn't loaded)
+KEPT = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "chop", "tadka", "stir", "assemble", "samosa"]
+LAB = KEPT + ["passme", "pour", "boil", "count", "roll", "flip", "fill", "fry", "thread", "grill", "roll-tawa"]
 # stations that cook a whole order on one screen (several maani, each rolled and cooked) take longer
-LONG = {"maani-line": 600}
+LONG = {"maani-line": 600, "samosa": 500}
 # --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
 # COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
 DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))
@@ -235,6 +237,12 @@ class Player:
                 time.sleep(0.5)
                 self.shot("wrong-choice")
             p.wait_for_selector(sel, state="visible", timeout=10000)
+            if ".njg-results" in sel:
+                # Wave 6b: picture the end-of-round screen (badges, then the words) for the first rounds
+                self.results_shots = getattr(self, "results_shots", 0) + 1
+                if self.results_shots <= 4:
+                    time.sleep(1.8)
+                    self.shot("results-" + ("badges" if "rs-next" in sel else "words"))
             p.click(sel)
         elif k == "tap":
             # "mistake": the station asks for one wrong tap here (the Chai tray's salt in the lab)
@@ -453,7 +461,8 @@ class Player:
                 time.sleep(0.1)
                 continue
             timed = e["kind"] in ("timing", "hold", "slice", "stir", "roll")
-            if e["kind"] == "tap" and not getattr(self, "helped", False) and not self.page.evaluate("Cook.save.mode === 'busy'"):
+            # (not while the first-time overlay is up: it blocks everything but the thing to do)
+            if e["kind"] == "tap" and not getattr(self, "helped", False) and not self.page.evaluate("Cook.save.mode === 'busy' || !!document.querySelector('.njg-onboard')"):
                 self.try_help()
                 continue
             if e.get("intro"):
@@ -707,6 +716,47 @@ ORDERS_JS = r"""
   const d = R.chaat.make("nana");
   out.example = R.ladder({ who: "nana", dishes: [d] }).map((r) => [r.dish, r.kind, r.ids.join("+"), r.qty, r.dot, r.group, Cook.Lang.plain(r.line)]);
   out.said = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(d, 0)]));
+  // Wave 6b leak checks (a player who knows no Kutchi):
+  //  "count the cards": make as many of each kind as the order card shows cards (one card per unit gave the count away);
+  //  "tap till it ticks": keep adding one until the count row ticks (a live tick gave the count away).
+  const leak = { tick: { n: 0, win: 0 } };
+  [1, 2, 3, 4].forEach((lv) => (leak[`cards L${lv}`] = { n: 0, win: 0 }));
+  Cook.deferStars = true;
+  ["mishkaki", "maani"].forEach((rid) => {
+    if (!R[rid]) return;
+    [1, 2, 3, 4].forEach((level) => {
+      for (let n = 0; n < 60; n++) {
+        const d = R[rid].make("nana", { level });
+        const L = Cook.Order.ladder(d, 0);
+        Cook.UI.mission.open({ who: "nana", name: "Nana", ladders: [L], busy: false });
+        const rows = Cook.Order.rows(L).filter((r) => !r.head && !r.no && r.cards);
+        rows.forEach((r) => {
+          const want = r.qty || 1;
+          // the cards drawn for this row on the order card
+          const cards = [...document.querySelectorAll("#mission .icard.unit")].filter((c) => c.querySelector(".ic-title") && c.querySelector(".ic-title").textContent.trim() === Cook.Lang.plain(r.line).trim()).length || 1;
+          // only a count above one is information (one is also what a blind player guesses anyway)
+          if (want > 1) {
+            leak[`cards L${level}`].n++;
+            if (cards === want) leak[`cards L${level}`].win++;
+          }
+        });
+        // tap till it ticks: add one at a time; a live tick at the number would stop the player exactly there
+        Cook.Order.rows(L).filter((r) => Cook.UI.mission.isCount(r)).forEach((r) => {
+          const want = (r.parts || []).find((p) => typeof p === "number") || 1;
+          let taps = 0;
+          while (!r.done && taps < 8) {
+            taps++;
+            Cook.UI.mission.tickItem(r.ids[r.ids.length - 1], 0);
+          }
+          leak.tick.n++;
+          if (r.done && taps === want) leak.tick.win++;
+        });
+        Cook.UI.mission.close();
+      }
+    });
+  });
+  out.leak = leak;
+  if (leak.tick.win) out.errors.push("a count row ticked when its number was reached: " + JSON.stringify(leak.tick));
   delete Cook.data.recipes["test-order"];
   delete R["test-order"];
   return out;
@@ -725,6 +775,9 @@ def run_orders(vp, speed):
     print("  maani (level 4):", res["maani"])
     print("  pantry (level 1):", res.get("pantry"))
     print("  chai (level 2, with the tray's rows):", res.get("chai"))
+    lk = res.get("leak") or {}
+    for k, v in lk.items():
+        print(f"  leak '{k}': {v['win']}/{v['n']} = {100 * v['win'] / max(1, v['n']):.1f}% of count rows (count > 1) given away" if k.startswith("cards") else f"  leak '{k}': {v['win']}/{v['n']} = {100 * v['win'] / max(1, v['n']):.1f}% of count rows ticked at their number")
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if res["errors"] or bad:
         raise AssertionError(f"order model: {res['errors'][:3]} console: {bad[:3]}")

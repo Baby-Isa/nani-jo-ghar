@@ -116,7 +116,7 @@
   }
   // the skewer, pointing up: tip at the top, the wooden handle at the bottom
   const STICK = { w: 70, h: 640, cy: 320 };
-  function drawStick() {
+  function drawStick(painted) {
     const c = cv(STICK.w, STICK.h);
     const ctx = c.getContext("2d");
     const x = STICK.w / 2;
@@ -124,19 +124,23 @@
     ctx.fillStyle = "rgba(40,20,5,0.18)";
     rr(ctx, x - 3, 30, 12, 450, 6);
     ctx.fill();
+    // Wave 6b: the painted bamboo stick (data.art.sprites.tools.stick), upright, its point at the top
+    if (painted) Cook.Art.toolSprite(ctx, painted, { cx: x, cy: 250, len: 535, angle: -Math.PI / 2 });
     // the stick (bamboo) and its point
     const g = ctx.createLinearGradient(x - 6, 0, x + 6, 0);
     g.addColorStop(0, "#b8915c");
     g.addColorStop(0.5, "#e2c48f");
     g.addColorStop(1, "#a07a48");
     ctx.fillStyle = g;
-    ctx.fillRect(x - 6, 26, 12, 460);
-    ctx.beginPath();
-    ctx.moveTo(x - 6, 27);
-    ctx.lineTo(x, 2);
-    ctx.lineTo(x + 6, 27);
-    ctx.closePath();
-    ctx.fill();
+    if (!painted) {
+      ctx.fillRect(x - 6, 26, 12, 460);
+      ctx.beginPath();
+      ctx.moveTo(x - 6, 27);
+      ctx.lineTo(x, 2);
+      ctx.lineTo(x + 6, 27);
+      ctx.closePath();
+      ctx.fill();
+    }
     // the handle: a turned wooden grip with two rings
     const hg = ctx.createLinearGradient(x - 22, 0, x + 22, 0);
     hg.addColorStop(0, "#5b3a1e");
@@ -513,6 +517,14 @@
       const painted = SK.pieceTex(S, key.slice(6));
       if (painted) return painted;
     }
+    // Wave 6b: the painted stick once it's loaded (data.art.sprites.tools.stick)
+    const tool = key === "stick" ? ((((Cook.data.art || {}).sprites || {}).tools || {}).stick) : null;
+    const spr = tool && Cook.Art.sprite(S, tool);
+    if (spr) {
+      const k = "mk:stick:spr";
+      if (!S.textures.exists(k)) S.textures.addCanvas(k, drawStick(S.textures.get(spr).getSourceImage()));
+      return k;
+    }
     const k = `mk:${key}`;
     if (!S.textures.exists(k)) {
       const [type, arg] = key.split(":");
@@ -643,6 +655,35 @@
       g.fillTriangle(ex - L(6), ey - L(4), ex + L(6), ey - L(4), ex, ey + L(6));
     }
   };
+
+  /**
+   * Wave 6b: a skewer as a small picture for the tally (a data URL): the
+   * stick with the pieces you put on it. One per kind (the first one made).
+   */
+  const icons = {};
+  SK.icon = function (kind, pieces) {
+    if (icons[kind]) return icons[kind];
+    const S = Cook.scene;
+    if (!S || !pieces) return null;
+    const c = cv(90, 150);
+    const ctx = c.getContext("2d");
+    const stick = S.textures.get(SK.tex(S, "stick")).getSourceImage();
+    ctx.translate(45, 75);
+    ctx.rotate(0.5);
+    ctx.scale(0.22, 0.22);
+    ctx.drawImage(stick, -STICK.w / 2, -STICK.cy);
+    pieces.forEach((id, i) => {
+      const img = S.textures.get(SK.tex(S, `piece:${id}`)).getSourceImage();
+      const s = SK.pieceScale(pieces.length);
+      ctx.save();
+      ctx.translate(0, SK.slotY(i, pieces.length));
+      ctx.scale(s, s);
+      ctx.drawImage(img, -PIECE / 2, -PIECE / 2);
+      ctx.restore();
+    });
+    return (icons[kind] = c.toDataURL());
+  };
+  SK.resetIcons = () => Object.keys(icons).forEach((k) => delete icons[k]);
 
   /** The served plate as one picture (for the table): the platter, the skewers you made, the chips. */
   SK.plateArt = function (S, plate, chips) {
@@ -856,6 +897,9 @@
         g.sk.setDepth(D.item + 3 + j * 0.01);
         S.tweens.add({ targets: g.sk, x: X(PLATE.x - 10), y: Y(PLATE.y - 50 + Math.min(j, 5) * 22), scale: 0.4 * z.k, angle: 84, duration: 460, ease: "Sine.easeInOut" });
         z.progress({ plated: plate.length });
+        // the picture tally: the skewers on the plate, by kind (what you made)
+        const tk = g.cls.ok ? g.cls.kind : "odd";
+        UI.countUp(tk, { icon: SK.icon(tk, g.pieces), speak: false });
         if (!grilling.length && sizzle) {
           sizzle.stop();
           sizzle = null;

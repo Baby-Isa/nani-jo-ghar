@@ -184,6 +184,73 @@
     card().classList.add("hidden");
   };
 
+  /*
+   * Wave 6b (docs/UX-PRINCIPLES.md 13): the instruction card is the master;
+   * at a station Nani is a VOICE. Her card doesn't take sidebar space: her
+   * line plays, and the rows of the order card it names throb while she
+   * says it (the throbbing hint). A line about something that isn't on the
+   * card (a short interjection, "Arre re!", or a switch, "now marcha!")
+   * shows as a small caption over the top of the picture that never takes a
+   * tap. Outside a station (story moments, the send-off) she talks as before.
+   *   UI.voice(line, opts) -> resolves when it ends (a tap skips, as UI.say)
+   */
+  const lineWords = (line) => {
+    const parts = line && line.parts ? line.parts : [line];
+    const ids = [];
+    parts.forEach((p) => ((p && p.segs) || []).forEach((s) => s.w && !ids.includes(s.w) && ids.push(s.w)));
+    return ids;
+  };
+  let voiceTok = 0;
+  UI.voice = async function (line, opts = {}) {
+    if (!UI.w6() || !Cook.inStation || !$("#voice")) return UI.say(line, { badge: true }, opts);
+    const tok = ++voiceTok;
+    card().classList.add("hidden");
+    bubble().classList.add("hidden");
+    // the rows she's talking about: every row (on the small card) with one of her words on it
+    const ids = lineWords(line).filter((id) => !String(id).startsWith("num-") && !String(id).startsWith("lnk-"));
+    const els = [];
+    sideEls.forEach((list, r) => {
+      if (r && r.ids && r.ids.some((id) => ids.includes(id))) els.push(...list);
+    });
+    const cap = $("#voice");
+    const onCard = els.length > 0 && !opts.caption;
+    document.querySelectorAll(".throb").forEach((e) => e.classList.remove("throb"));
+    els.forEach((e) => e.classList.add("throb"));
+    if (!onCard) {
+      cap.innerHTML = `<span class="vc-say">${ICON.speaker}</span><span class="vc-t">${Lang.html(line, { hide: opts.hide })}</span>`;
+      cap.classList.remove("hidden");
+      cap.style.animation = "none";
+      void cap.offsetWidth;
+      cap.style.animation = "";
+    }
+    const token = Cook.run;
+    let skip;
+    const skipped = new Promise((resolve) => {
+      skip = (ev) => {
+        if (ev.target.closest && ev.target.closest("button, a, #overlay")) return;
+        resolve();
+      };
+      document.addEventListener("pointerdown", skip, true);
+    });
+    try {
+      const voice = !opts.silent && Lang.hasVoice(line);
+      const talk = voice ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(opts.ms || Math.min(2600, Cook.readMs(Lang.plain(line))));
+      await Promise.race([talk, skipped]);
+    } finally {
+      document.removeEventListener("pointerdown", skip, true);
+      if (tok === voiceTok) {
+        els.forEach((e) => e.classList.remove("throb"));
+        cap.classList.add("hidden");
+      }
+    }
+    Cook.checkRun(token);
+  };
+  UI.hideVoice = () => {
+    voiceTok++;
+    if ($("#voice")) $("#voice").classList.add("hidden");
+    document.querySelectorAll(".throb").forEach((e) => e.classList.remove("throb"));
+  };
+
   /* ---------------- gist (top of the picture) and help ("?" in the sidebar) ---------------- */
   /*
    * Wave 5 (clarity and calm): the goal is never shown on its own. It sits
@@ -361,15 +428,20 @@
         b.addEventListener("click", () => {
           Cook.unlockAudio();
           if (b.parentNode !== tray || box.classList.contains("leaving")) return;
-          if (id === want) {
-            b.classList.add("right");
-            Cook.sfx.right();
+          // Wave 6b (UX 11): from level 2 a wrong pick is taken like any other (she says thanks);
+          // the end review shows it
+          const quiet = id !== want && Cook.quietMistakes && Cook.quietMistakes(Cook.ctx);
+          if (id === want || quiet) {
+            if (quiet) misses++;
+            b.classList.add(quiet ? "picked" : "right");
+            if (quiet) Cook.sfx.pop();
+            else Cook.sfx.right();
             if (Cook.expect && String(Cook.expect.selector || "").startsWith("#passme")) Cook.expect = null;
             setTimeout(() => {
               box.classList.add("leaving");
               setTimeout(() => {
                 box.classList.add("hidden");
-                UI.say(Lang.line("thanks"), { badge: true }, { ms: 900 }).catch(() => {});
+                UI.voice(Lang.line("thanks"), { ms: 900 }).catch(() => {});
                 resolve({ misses });
               }, 300);
             }, 450);
@@ -470,12 +542,12 @@
     return mission.ladders.map((L) => ({
       L,
       sections: L.sections
-        .filter((s) => (!s.when || s.shown) && s.groups.some((g) => g.length))
+        .filter((s) => (!s.when || s.shown) && s.groups.some((g) => g.some((r) => !s.concealed || r.done)))
         .map((s) => {
           const plain = mission.plain && !s.simple;
           const seq = !mission.plain && s.seq && s.groups.filter((g) => g.length).length > 1;
           const rows = [];
-          s.groups.forEach((g, gi) => g.forEach((r) => rows.push({ r, gi, up: false, down: false })));
+          s.groups.forEach((g, gi) => g.forEach((r) => (!s.concealed || r.done) && rows.push({ r, gi, up: false, down: false })));
           // the line: a plain list joins every thing to the one before; a sequence
           // joins the first thing of each step to the step before. "No X" rows aren't
           // steps: the line runs past their ✕
@@ -806,14 +878,20 @@
     const parts = (r.parts || r.ids).filter((p) => typeof p === "string");
     return Lang.phrase(parts);
   };
-  /** One card per unit of a row: `r.cards` slots each; the mixed skewer's pieces on its slots. */
+  /**
+   * The card for a row of things made (skewers, maani): `r.cards` slots (a
+   * skewer's four dots; a mixed one's pieces named on them, in order).
+   * Wave 6b, the count leak: ONE card per kind, its title with the number
+   * as it was said ("ba ghos"), never one card per unit (the number of cards
+   * gave the count away). What you've made shows in the picture tally.
+   */
   function unitCards(map, r, pieces) {
-    const n = r.qty || r.need || 1;
-    const title = titleOf(r);
+    const n = 1;
+    const title = r.line || titleOf(r);
     const out = [];
     for (let u = 0; u < n; u++) {
       const c = document.createElement("div");
-      c.className = ["icard", "unit", pieces ? "named" : "", r.done || u < (r.got || 0) ? "done" : "", r.no ? "no" : ""].filter(Boolean).join(" ");
+      c.className = ["icard", "unit", pieces ? "named" : "", r.done ? "done" : "", r.no ? "no" : ""].filter(Boolean).join(" ");
       const slots = [];
       for (let k = 0; k < r.cards; k++) {
         const pr = pieces && pieces[k];
@@ -986,7 +1064,18 @@
       if (rows.filter((r) => !r.no).every((r) => r.done)) rows.filter((r) => r.no && !r.miss).forEach(markDone);
     });
   }
-  /** Tick the first open row with this item on it. Returns the row, or null. */
+  /**
+   * A count row ("ba dungri", "trae maani"): it ticks when its step closes
+   * (the item is put down, finished or served), never the moment the number
+   * is reached, so a tick can't give the count away (UX 11, agreed 26 Sept).
+   */
+  const isCount = (r) => !r.head && !r.no && ((r.parts || []).some((p) => typeof p === "number") || (!r.list && (r.need || 1) > 1));
+  M.isCount = isCount;
+  /**
+   * Tick the first open row with this item on it. Returns the row, or null.
+   * A count row only counts up here; it ticks when its step closes (M.closeItem),
+   * unless opts.close.
+   */
   M.tickItem = function (id, dish = 0, opts = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
@@ -997,10 +1086,30 @@
     const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
     if (!r) return null;
     r.got = (r.got || 0) + 1;
-    if (r.got >= (r.need || 1)) markDone(r);
+    if (isCount(r) && !opts.close) return r;
+    if (r.got >= (r.need || 1) || isCount(r)) markDone(r);
     settle(L);
     renderOrder();
     return r;
+  };
+  /**
+   * A step has closed (the chop ring ran out, the cup is poured, Done): its
+   * rows with these items tick, count rows included, right or not (the count
+   * is judged in the end review). opts.for: one person's rows only.
+   */
+  M.closeItem = function (ids, dish = 0, opts = {}) {
+    const L = ladderFor(dish);
+    if (!L) return [];
+    const want = [].concat(ids);
+    const rows = Order()
+      .rows(L)
+      .filter((r) => !r.done && !r.head && (!opts.for || r.for === opts.for) && (opts.all || r.ids.some((id) => want.includes(id))));
+    rows.forEach(markDone);
+    if (rows.length) {
+      settle(L);
+      renderOrder();
+    }
+    return rows;
   };
   /** Tick the i-th piece of the dish's sequence (a mixed skewer's pieces): that row, never another row with the same word. */
   M.tickUnit = function (i, dish = 0) {
@@ -1060,7 +1169,10 @@
   M.finishDish = function (dish = 0) {
     const L = ladderFor(dish);
     if (!L) return;
-    L.sections.forEach((s) => (s.shown = s.shown || !s.when));
+    L.sections.forEach((s) => {
+      s.shown = s.shown || !s.when;
+      s.concealed = false;
+    });
     Order()
       .rows(L)
       .forEach((r) => !r.miss && markDone(r));
@@ -1096,7 +1208,8 @@
     mission.ladders.forEach((L) =>
       L.sections.forEach((s) => {
         if (s.key !== key) return;
-        if (how === "hidden") s.shown = false;
+        // "hidden": off the card, but each one comes back as it's done (the card still ticks off, UX 11)
+        if (how === "hidden") s.concealed = true;
         else [].concat(...s.groups).forEach((r) => (r.dots = true));
       })
     );
@@ -1117,8 +1230,11 @@
   M.step = () => {};
   M.setSteps = () => {};
   /** state: "earned" | "lost" | "pending" */
-  M.star = function (k, state) {
+  M.star = function (k, state, { final = false } = {}) {
     if (!mission || mission.stars[k] === state) return;
+    // Wave 6b (UX 11): no verdicts mid-round. A page that opts in (Cook.deferStars) keeps its
+    // stars as they are while you play; they're shown when the order is served (final)
+    if (state === "lost" && Cook.deferStars && !final && !mission.stamped) return;
     if (mission.stars[k] === "lost" && state !== "earned") return;
     mission.stars[k] = state;
     renderStars();
@@ -1217,21 +1333,63 @@
       })
     );
 
-  /* ---------------- count badge, done button, toast ---------------- */
-  // Digit only, always: this is the running tally (how many so far), never
-  // the target, and never the Kutchi number as text (that would show the
-  // word in a second place at once; the audio still says it).
-  UI.count = function (n, { speak = true } = {}) {
+  /* ---------------- the picture tally, done button, toast ---------------- */
+  /*
+   * Wave 6b (docs/UX-PRINCIPLES.md 11): a small tally in the top-right
+   * corner of every station where you make several things: a picture of
+   * each thing with how many YOU have done so far (🧅 3, 🍅 2). It shows
+   * what you did, never the target, and never the Kutchi number as text
+   * (the audio says it while the number is being learned).
+   *   UI.count(n, {id, icon, state, speak})  set one thing's count (id: a
+   *     word id or any key; icon: a picture URL, else the word's sprite)
+   *   UI.hideCount()                          clear the tally
+   * It never takes a tap (pointer-events: none), so it can't cover a thing to tap.
+   */
+  const tally = new Map(); // key -> {n, icon}
+  function iconFor(id, state) {
+    if (!id || !Cook.Art) return null;
+    const url = Cook.Art.refUrl;
+    for (const st of [state, "whole", "done", "raw", "bowl"].filter(Boolean)) {
+      const u = url && url(`${id}.${st}`);
+      if (u) return u;
+    }
+    return Cook.data.words[id] ? Cook.Art.wordUrl(id) : null;
+  }
+  UI.tallyIcon = iconFor;
+  function drawTally() {
     const b = $("#count-badge");
+    if (!b) return;
+    if (!tally.size) {
+      b.classList.add("hidden");
+      return;
+    }
     b.classList.remove("hidden");
-    b.querySelector(".count-digit").textContent = n;
-    bumpEl(b);
+    b.innerHTML = [...tally.entries()]
+      .map(([key, t]) => `<span class="tl" data-k="${esc(key)}">${t.icon ? `<img src="${esc(t.icon)}" alt="">` : ""}<b class="count-digit">${t.n}</b></span>`)
+      .join("");
+  }
+  UI.count = function (n, { speak = true, id = "_", icon = null, state = null } = {}) {
+    const prev = tally.get(id);
+    tally.set(id, { n, icon: icon || (prev && prev.icon) || iconFor(id === "_" ? null : id, state) });
+    drawTally();
+    const el = $(`#count-badge .tl[data-k="${CSS.escape(id)}"]`);
+    if (el) bumpEl(el);
     // Counting aloud teaches the number words (stages 1-2). From stage 3
-    // the count is digit-only and silent, so you can't just stop when the
-    // sound matches what you heard in the order.
+    // the count is silent, so you can't just stop when the sound matches
+    // what you heard in the order.
     if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3) Lang.speak({ segs: Lang.num(n), en: String(n) });
   };
-  UI.hideCount = () => $("#count-badge").classList.add("hidden");
+  /** One more of `id` on the tally (returns the new count). */
+  UI.countUp = function (id, opts = {}) {
+    const n = ((tally.get(id) || {}).n || 0) + 1;
+    UI.count(n, Object.assign({ id }, opts));
+    return n;
+  };
+  UI.countOf = (id) => (tally.get(id) || {}).n || 0;
+  UI.hideCount = () => {
+    tally.clear();
+    drawTally();
+  };
   let doneResolve = null;
   UI.done = function (opts = {}) {
     const b = $("#done-btn");
@@ -1291,6 +1449,7 @@
 
   UI.clearStage = function () {
     UI.hideBubble();
+    UI.hideVoice();
     UI.hideGist();
     UI.hideCount();
     UI.hideDone();

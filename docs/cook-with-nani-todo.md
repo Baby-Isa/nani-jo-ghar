@@ -129,12 +129,14 @@ Brief: `docs/modes/MODE-DESIGN-BRIEF.md`. Each agent does research, a mechanic l
 - ☐ Placeholder voice for the new words: `build/build_cook_tts.py` knows them now (Gujarati spellings added) but Google TTS is blocked here; run it on a machine with network. Until then the new words use the device's own voice, or are silent
 - ☐ For Zafar: one card per skewer / maani shows the count (see the audit, "After Wave 6"); ordering *for* others by name at the Chai tray (*Nana lai*) is the next Chai tray pass
 
-## Wave 6b (after Wave 6 merges): UX principles §9–§11
-- ☐ Adopt the shared end-of-round screen (`js/shared/results.js`, time / accuracy / hints, then the word review)
-- ☐ Picture tally in the top-right of chop and other multi-item stations (what you did, never the target)
-- ☐ Tick-off on the instruction card: automatic at every level (UX §11)
-- ☐ No negative feedback mid-round; mistakes surface in the end review
-- ☐ **Pour becomes a tap** (tap the jug, it pours the right amount), like every other item (UX §12)
-- ☐ **The instruction card is the master; Nani leaves the sidebar in play** (voice, throbbing hints and interjections only; on screen in story moments) (UX §13)
-- ☐ Onboarding scripts per station with the shared onboarding kit
-- ☐ Wire the existing tool sprites (knife, ladle, spatula, velan, chakla, skewer) into `data/cook.json` so those stations stop drawing code placeholders (see `docs/cook-art-audit.md`); tally icons = existing ingredient sprites scaled down
+## Wave 6b: UX principles §9–§13 ☑ (branch `claude/build-cook-wave6b`, report `build/reports/cook-wave6b.md`)
+- ☑ The shared end-of-round screen (`js/shared/results.js`) after every order and every Station lab round: time with a personal best per game and level, accuracy (the order's rows, plus one red slot per mistake that isn't a row), hints (`ctx.help`, the bulb counts); then the word review. Mapped to the stars (accuracy gold ⇔ ear, hints gold ⇔ no help)
+- ☑ Picture tally, top right, in every station where you make several things (pantry, chop, the Chai tray per cup, maani, skewers threaded and plated, tadka, chaat layers, samosa fillings, folds and fried, stir laps): what you did, never the target; it never takes a tap
+- ☑ Auto-tick at every level: count rows tick when their step closes (the chop ring runs out, Done, the cup is full), right or not; the tadka's hidden order comes back row by row as it's ticked. `--orders` checks it: 0% of count rows tick at their number
+- ☑ No negative feedback mid-round from level 2 (a wrong pick lands like any other: into the basket, the pan, the oil, onto the skewer; halves fall grey; no "Arre re!", no wiggle, no bounce, no "enough!" past the count); level 1 keeps one gentle correction per round. The stars don't grey out mid-round at any level
+- ☑ Pour is a tap-measure (`Cook.Pour.measure`): one tap, one dashed line. Water, milk, and the chai (half line, then full, both lines on every cup). The tray's hand star is the knob alone
+- ☑ The instruction card is the master; Nani is a voice at the stations (`UI.voice`): her card leaves the sidebar, the rows she names throb, and a line that isn't on the card shows as a small caption that never takes a tap
+- ☑ Onboarding scripts for the nine kept stations (`data.onboard`, run by `js/shared/onboard.js` through `js/cook/coach.js`)
+- ☑ Tool sprites: knife, ladle, spatula, slotted spoon (fry), skewer stick, tawa. **Not yet:** the velan and chakla (batch 1 failed QA; batch 2 redraws them)
+- ☑ The skewer-count leak: one card per kind with the number as said ("ba ghos"), not one card per skewer (maani too); `--orders` checks it
+- ☑ Knead cut from the playable stations (file kept, not loaded; its shop upgrade hidden). The Station lab lists the nine kept stations; the sub-mechanics fold away under "Parts". Stir ends on Done (the controls audit)
