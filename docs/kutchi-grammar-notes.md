@@ -187,3 +187,52 @@ Rough transcript: `sources/audio/mum-2026-09-26/A5.md`. *ai* (is) is written as 
 14. **Tidy up's "place" stage gets its whole word set:** *mathe, niche, andar, putiya, bajume, aagiya, wich me*. The frame is ***{thing} {place-thing} je {where} rak*** ("put the cup in the cupboard"). One place word per round at level 1.
 15. **The clinic's sides:** use ***dabo*** / ***jamno*** (left/right, always the patient's own side) as designed. The family's everyday *hi baju / hu baju* is a good level-1 alternative when the doctor points.
 16. **Nani's lines:** *munje same we* (come and sit opposite me) and *munje same rak* (put it in front of me) fit the Cook send-off and the serve step.
+
+## 26 Sept 2026: Mum and Zafar, Questions A6 and A7 (one recording, 8 min, `sources/audio/mum-2026-09-26/A7.m4a`)
+
+The file is called A7, but its first 3½ minutes are A6. Rough transcript: `sources/audio/mum-2026-09-26/A7.md`. *vyo* is spelled as Zafar wrote it (*ki rei nai vyo*); Whisper heard "biyo/viyo". Spellings are guesses until Zafar checks them.
+
+### 19. Three kinds of "finished": *band thai vyo*, *khalas thai vyo*, *pati vyo*
+- ***warsaad band thai vyo***: the rain stopped. *warsaad* = rain; *band* = closed; *thai vyo* = became, happened. It's "closed" rather than "finished", because the rain will come again, like a tap.
+- ***film khalas thai vyo***: the film has finished, completely, and won't go on.
+- ***pati vyo***: that's enough, it's over (*time pati vyo*: time's up, the time for that has come and gone). Mum thinks it may come from Gujarati, but the family does use it, with an "enough now" feeling.
+- Have you finished work? ***kam kari vya?*** or ***kam khalas thai vyo?*** (*kam* = work).
+
+### 20. "Who", "where", and something happened: *ker*, *kida*, *-i vyo*
+- ***ker mitai khai vyo?***: who ate the sweets? (*ker* = who; *mitai* = sweets; *khai vyo* = ate).
+- ***Simba khai vyo***: Simba ate it. ***Simba khani vyo***: Simba took it (*khan* = take, from A3).
+- ***Simba ke rasore me nares***: I saw Simba in the kitchen. *ke* marks who was seen, like Sindhi *khe* and Hindi *ko*. The verb *nares* (saw) is as heard, so Zafar to check.
+- **Kitchen:** ***rasoro*** is the proper Kutchi word. The family also says ***jikoni***, probably borrowed from Swahili (*jiko* = stove or kitchen, *jikoni* = in the kitchen), from the family's time in East Africa.
+- ***kida wo?***: where was it? ***table je mathe wo***: it was on the table. It's *wo*, not *weo* (Mum's correction).
+- ***hida / huda / kida*** make a set: here / there / where.
+
+### 21. Elders get the respectful "you", and the verb changes to the plural
+- How are you, to a child: ***tu ki ai?*** (*tu* = you, to a child; *ki* = how). To anyone, informally: *ki ai?*
+- How are you, to an elder: ***ai ki aayo?*** Here the first *ai* is the respectful "you" (Zafar to check the spelling), and the verb changes from *ai* to ***aayo***.
+- Come here, to a child or someone your own age: ***hida ach***. To an elder: ***hida acho***. It's the same for a man or a woman.
+- He or she came: ***i achi vyo*** (about a child) and ***i achi vya*** (about an elder).
+- He or she will come: ***i achdo*** (child) and ***i achda*** (elder).
+- **The rule:** respect for an elder uses the **plural** ending (-o → -a, as in *amba*), like Gujarati and Hindi.
+- ***achindo***: Mum first glossed this as "welcome", then as another tense of *ach* (come). To confirm.
+
+### 22. What to call a grandchild: *beta*
+- The family uses ***beta*** for boys and girls alike. Strictly a girl is *beti*, but *beta* is used for both. *dikra* sounds more Gujarati to Mum.
+
+### Zafar's side question: "Is Kutchi like Japanese?"
+They aren't related: Kutchi is Indo-Aryan, next to Sindhi, and Japanese is its own family. But they're built in similar ways, which is why it feels familiar:
+- **The verb comes last**: *Simba ke rasore me nares* is "Simba-(object) kitchen-in saw".
+- **Place words come after the noun**: *table je mathe* is shaped exactly like Japanese *tēburu no ue*, "table's top".
+- **Politeness is built into the verb**: *hida ach* vs *hida acho*, like Japanese plain vs polite verbs.
+- **"I" and "you" are often dropped**: *khai vyo*, "ate it".
+- **An object marker**: *ke*, like Japanese *o*.
+
+### What this means for the game (proposed; approved ideas go in `docs/GAME-IDEAS-TBC.md`)
+17. **Who did it?** gets its core lines from the family:
+    - *ker mitai khai vyo?* (who ate the sweets?);
+    - *{name} khai vyo / khani vyo* ({name} ate it / took it);
+    - *kida wo?* (where was it?);
+    - *{place} je mathe wo* (it was on the {place});
+    - *{name} ke {room} me nares* (I saw {name} in the {room}).
+18. **Speaking to elders.** In a speaking moment, the child calls Nana with *hida acho*, not *hida ach*, and asks *ai ki aayo?* This is the respect lesson, at stage S3.
+19. **Time's up and finished:** *time pati vyo* when a timed round ends; *khalas!* at the end-of-round screen; *warsaad band thai vyo* at the end of a Monsoon rush storm.
+20. **Nani calls the child *beta*** in her lines, for boys and girls alike.
