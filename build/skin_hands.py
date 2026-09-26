@@ -114,7 +114,34 @@ OCCLUDERS = {"hand-e4-clap-f2-together-e": {"left": [[(452, 560), (700, 560), (7
                                                       (478, 1024), (470, 900), (448, 700)]]}}
 
 
-def place_jewellery(hand_img, hands, items, camera, pose_id=None, mirrored=False):
+def clear_of_sleeve(anchor, sleeve, style, camera):
+    """Move a wrist anchor up the arm (towards the hand) until the wrist
+    piece's lower edge clears the sleeve: bangles stack towards the elbow
+    and the ellipse of each drops below its centre line by about
+    R sin(tilt), so without this they can lie on the cuff (b1, b3)."""
+    if sleeve is None:
+        return anchor
+    W = anchor["width_px"]
+    reach = (0.47 if style != "tennis" else 0.17) * W + (0.03 * W if camera == "e" else 0.0)
+    a = math.radians(anchor["angle_deg"])
+    ax, ay = math.sin(a), -math.cos(a)  # towards the hand
+    px, py = math.cos(a), math.sin(a)
+    H_, W_ = sleeve.shape
+    out = dict(anchor)
+    for _ in range(40):
+        bx, by = out["x"] - ax * reach, out["y"] - ay * reach
+        vals = []
+        for u in np.linspace(-0.35, 0.35, 15) * W:
+            xi, yi = int(round(bx + px * u)), int(round(by + py * u))
+            if 0 <= xi < W_ and 0 <= yi < H_:
+                vals.append(sleeve[yi, xi])
+        if not vals or np.mean(vals) < 0.15:
+            break
+        out["x"], out["y"] = out["x"] + ax * 4, out["y"] + ay * 4
+    return out
+
+
+def place_jewellery(hand_img, hands, items, camera, pose_id=None, mirrored=False, sleeve=None):
     """Composite 3D jewellery onto a hand image. hands: the pose's hand
     anchors (already mirrored if the image is); items: {"right": [...],
     "left": [...]} from the character, each {"type": "ring", "stone":
@@ -133,7 +160,7 @@ def place_jewellery(hand_img, hands, items, camera, pose_id=None, mirrored=False
         wrist = hand.get("bracelet") or hand.get("wrist")
         for it in items.get(hand["side"], []):
             if it["type"] == "wrist" and wrist:
-                job = j3.wrist_item(alpha, wrist, it["style"], camera)
+                job = j3.wrist_item(alpha, clear_of_sleeve(wrist, sleeve, it["style"], camera), it["style"], camera)
                 side = hand["side"]
                 if mirrored:
                     side = "left" if side == "right" else "right"
@@ -197,12 +224,14 @@ def apply_overlay(im, texture_path, hands, opacity=0.85):
 # Poses whose arms cross or touch, where the per-arm edge fit can't separate
 # them: no envelope fill; their cuff lining is given as a polygon instead.
 NO_ENVELOPE = {"hand-e4-clap-f2-together-e"}
-CUFF_FILL = {"hand-e4-clap-f2-together-e": [[(250, 770), (292, 784), (342, 806), (400, 842), (468, 876),
+CUFF_FILL = {"hand-b2-vertical-grip-e": [[(488, 890), (550, 853), (650, 801), (770, 716), (800, 706), (1024, 706),
+                                          (1024, 1024), (488, 1024)]],
+             "hand-e4-clap-f2-together-e": [[(250, 770), (292, 784), (342, 806), (400, 842), (468, 876),
                                              (500, 902), (470, 960), (440, 1024), (250, 1024)],
                                             [(486, 908), (560, 887), (640, 868), (702, 853), (740, 858),
                                              (780, 1024), (500, 1024)]]}
-CUFF_CAPS = {"hand-a5-wave-f1-e": [(380, 872, 680, 888)],
-             "hand-d6-two-hand-catch-f1-open-e": [(107, 888, 407, 872), (935, 872, 1235, 888)]}  # a5 mirrored (x' = 787 - x) and a5 shifted by +555
+CUFF_CAPS = {"hand-a5-wave-f1-e": [(380, 863, 680, 869)],
+             "hand-d6-two-hand-catch-f1-open-e": [(107, 869, 407, 863), (935, 863, 1235, 869)]}  # a5 mirrored (x' = 787 - x) and a5 shifted by +555
 
 
 def clip_sleeve_to_cuff(w, master, hands):
@@ -401,7 +430,9 @@ def skin_character(master, char, hands, camera, pose_id=None, mirrored=False):
             im, _ = ga.normalise_skin(im, ga.rgb_to_lab(ga.hex_to_rgb(char["skin"])), tolerance=1.0)
     if char.get("overlay") and char["overlay"].get("texture"):
         im = apply_overlay(im, os.path.join(GAME, char["overlay"]["texture"]), hands)
-    return place_jewellery(im, hands, char.get("jewellery", {}), camera, pose_id, mirrored)
+    if sleeve_w is None and char.get("jewellery"):
+        sleeve_w = sleeve_weight(master, hands, pose_id, mirrored)
+    return place_jewellery(im, hands, char.get("jewellery", {}), camera, pose_id, mirrored, sleeve_w)
 
 
 def mirror_hands(hands, width):
