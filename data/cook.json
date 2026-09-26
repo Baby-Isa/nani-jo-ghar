@@ -2628,7 +2628,7 @@
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
   "props": [],
   "sprites": {
-   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). Left out on purpose (failed QA or pending a redo): veg-dungri-whole-t, veg-dungri-peeled-t, tool-velan-t, tool-chakla-t, vessel-thali-t.",
+   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). Left out on purpose (failed QA or pending a redo): veg-dungri-whole-t, veg-dungri-peeled-t, tool-velan-t, tool-chakla-t, vessel-thali-t. tools: a painted tool drawn into a drawn hand (Wave 6b).",
    "dir": "assets/cook/items/",
    "max": 256,
    "items": {
@@ -2678,7 +2678,12 @@
     "chaat-bowl": { "empty": { "file": "chaat-bowl-empty-t", "max": 0 } },
     "katori": { "top": "vessel-katori-t" },
     "kadai": { "oil": { "file": "vessel-kadai-oil-t", "max": 0 } },
-    "plate": { "top": "plate-enamel-empty-t" }
+    "plate": { "top": "plate-enamel-empty-t" },
+    "knife": { "tool": { "file": "tool-knife-t", "max": 400 } },
+    "ladle": { "tool": { "file": "tool-ladle-t", "max": 400 } },
+    "spatula": { "tool": { "file": "tool-spatula-t", "max": 400 } },
+    "slotted-spoon": { "tool": { "file": "tool-slotted-spoon-t", "max": 400 } },
+    "skewer": { "tool": { "file": "skewer-empty-t", "max": 0 } }
    },
    "art": {
     "vessel:pan": "pan.top",
@@ -2688,7 +2693,16 @@
     "vessel:kadai": "kadai.oil",
     "pastry:3": "ph-samosa.folded",
     "pastry:4": "ph-samosa.fried",
-    "layer:ph-chips": "ph-chips.raw"
+    "layer:ph-chips": "ph-chips.raw",
+    "tawa": "tawa.top"
+   },
+   "tools": {
+    "_about": "Wave 6b: a painted tool in a drawn hand (js/cook/art.js): a drawn Art key -> item.state. The sprite (drawn corner to corner, tip top-left) is turned upright into the hand's own canvas, so every scale and angle in the code stays the same; the skewer's bamboo stick replaces the drawn one above its wooden handle (js/cook/mechanics/grill.js). Not yet: the velan and chakla (batch 1 failed QA: a Western pin with handles, a 3/4-view board; batch 2 redraws them).",
+    "hand:knife": "knife.tool",
+    "hand:ladle": "ladle.tool",
+    "hand:spatula": "spatula.tool",
+    "hand:spoon": "slotted-spoon.tool",
+    "stick": "skewer.tool"
    },
    "frames": {
     "pastry:3": [60, 50, 240, 230],
@@ -2724,18 +2738,20 @@
     "count": ["pan.top", "cook-khun.bowl", "spi-16.bowl", "cook-atto.bowl"],
     "add": ["pan.top", "cook-chai.bowl", "spi-10.bowl", "veg-14.bowl", "spi-02.bowl", "spi-05.bowl"],
     "chai-tray": ["bg:marble", "pan.top", "cook-chai.bowl", "spi-02.bowl", "spi-05.bowl", "cook-khun.bowl", "spi-16.bowl", "spi-10.bowl", "veg-14.bowl", "veg-13.bowl"],
-    "chop": ["veg-01.whole", "veg-03.whole", "veg-12.whole", "veg-13.whole", "veg-14.whole"],
+    "chop": ["knife.tool", "veg-01.whole", "veg-03.whole", "veg-12.whole", "veg-13.whole", "veg-14.whole"],
     "tadka": ["pot.top", "tadka-pan.top", "spi-02.bowl", "spi-05.bowl", "spi-01.bowl", "veg-12.bowl", "spi-16.bowl", "veg-13.bowl"],
     "assemble": ["ph-dahi.bowl", "ph-amli.bowl", "ph-lili.bowl", "veg-02.bowl", "ph-sev.bowl", "ph-dhana.bowl", "veg-12.bowl", "veg-03.bowl", "ph-chana.bowl", "veg-01.bowl"],
     "fill": ["chaat-bowl.empty", "ph-keema.bowl", "veg-01.bowl", "veg-10.bowl", "veg-02.bowl", "veg-12.bowl", "ph-dhana.bowl"],
     "fold": ["ph-samosa.folded", "plate.top"],
-    "fry": ["kadai.oil", "ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],
+    "fry": ["slotted-spoon.tool", "kadai.oil", "ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],
     "knead": ["chaat-bowl.empty"],
-    "flip": ["chaat-bowl.empty"],
-    "tawa": ["chaat-bowl.empty"],
-    "thread": ["katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
-    "grill": ["ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-meat.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-meat.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
-    "mishkaki-grill": ["bg:marble", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
+    "flip": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
+    "tawa": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
+    "stir": ["ladle.tool"],
+    "maani-line": ["spatula.tool", "tawa.top"],
+    "thread": ["skewer.tool", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
+    "grill": ["skewer.tool", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-meat.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-meat.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
+    "mishkaki-grill": ["bg:marble", "skewer.tool", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
    }
   }
  },
@@ -3351,6 +3367,65 @@
    "stars": 1,
    "bulb": 2
   }
+ },
+ "onboard": {
+  "_about": "Wave 6b (docs/UX-PRINCIPLES.md 8 and 10): the first-time onboarding script for each kept station, run by the shared kit (js/shared/onboard.js) through js/cook/coach.js. Each step is one move the overlay shows: everything dims except the next thing to do (the station's own 'what to do next', Cook.expect), a ghost hand does `do` once (tap, swipe, stir, roll, hold), the child does it, then the next. After the last step the overlay is gone at that station for good (once per profile). `what` says what the step is, for people reading this. Only the guided first time (a dish's first order; the Station lab with 'Nani helps'). Keys are the stations' own keys (Cook.Stations.begin).",
+  "fetch": [
+   {"do": "tap", "what": "the first thing on Nani's list, on the shelf"},
+   {"do": "tap", "what": "the next thing"},
+   {"do": "tap", "what": "the last thing"}
+  ],
+  "chai-tray": [
+   {"do": "tap", "what": "the water jug: one tap pours water into the pan, up to the line"},
+   {"do": "tap", "what": "the tea leaves (among look-alikes)"},
+   {"do": "tap", "what": "the big knob: the burner lights"},
+   {"do": "tap", "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"}
+  ],
+  "maani-line": [
+   {"do": "tap", "what": "the dough bowl they asked for"},
+   {"do": "roll", "what": "roll the ball up and down until it fills the circle"},
+   {"do": "tap", "what": "the maani onto the tawa"},
+   {"do": "tap", "what": "flip it on the green"}
+  ],
+  "thread": [
+   {"do": "tap", "what": "a bowl: the piece slides down the skewer"},
+   {"do": "tap", "what": "the next piece"},
+   {"do": "tap", "what": "the next piece"},
+   {"do": "tap", "what": "the last piece: the skewer is full"}
+  ],
+  "grill": [
+   {"do": "tap", "what": "a skewer on the rack: onto the grill"},
+   {"do": "tap", "what": "turn it on the green"},
+   {"do": "tap", "what": "turn it again on the green"},
+   {"do": "tap", "what": "lift it onto the plate on the green"}
+  ],
+  "chop": [
+   {"do": "swipe", "what": "slice a vegetable Nani named"},
+   {"do": "swipe", "what": "and another"}
+  ],
+  "tadka": [
+   {"do": "tap", "what": "the first spice she said, into the hot oil"},
+   {"do": "tap", "what": "the next spice"},
+   {"do": "tap", "what": "the next one (or the pan: tip it into the pot)"}
+  ],
+  "stir": [
+   {"do": "stir", "what": "drag the ladle round the pot, counting the laps"},
+   {"do": "tap", "what": "the tick when it's done"}
+  ],
+  "assemble": [
+   {"do": "tap", "what": "the first topping they said: the bottom layer"},
+   {"do": "tap", "what": "the next layer"},
+   {"do": "tap", "what": "the next layer"}
+  ],
+  "fill": [
+   {"do": "tap", "what": "a spoon of the first filling they said"},
+   {"do": "tap", "what": "the next spoon"},
+   {"do": "tap", "what": "the next spoon"}
+  ],
+  "fry": [
+   {"do": "tap", "what": "a samosa into the oil"},
+   {"do": "tap", "what": "lift it out on the green"}
+  ]
  },
  "tips": {
   "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",

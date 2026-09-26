@@ -871,7 +871,8 @@
     const openCard = (what, steps) => {
       if (Array.isArray(what)) {
         ctx.ladders = [Cook.Order.fromLines(what)];
-        ctx.orderLine = Lang.join(what);
+        // said from the rows, so the card's speaker lights each one as it's read (read-along)
+        ctx.orderLine = Cook.Order.speech(ctx.ladders);
       } else openLadders(ctx, [what]);
       ctx.lines = [{ line: ctx.orderLine }];
       uiStage({ all: true });

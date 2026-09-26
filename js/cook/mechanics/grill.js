@@ -116,7 +116,7 @@
   }
   // the skewer, pointing up: tip at the top, the wooden handle at the bottom
   const STICK = { w: 70, h: 640, cy: 320 };
-  function drawStick() {
+  function drawStick(painted) {
     const c = cv(STICK.w, STICK.h);
     const ctx = c.getContext("2d");
     const x = STICK.w / 2;
@@ -124,19 +124,23 @@
     ctx.fillStyle = "rgba(40,20,5,0.18)";
     rr(ctx, x - 3, 30, 12, 450, 6);
     ctx.fill();
+    // Wave 6b: the painted bamboo stick (data.art.sprites.tools.stick), upright, its point at the top
+    if (painted) Cook.Art.toolSprite(ctx, painted, { cx: x, cy: 250, len: 535, angle: -Math.PI / 2 });
     // the stick (bamboo) and its point
     const g = ctx.createLinearGradient(x - 6, 0, x + 6, 0);
     g.addColorStop(0, "#b8915c");
     g.addColorStop(0.5, "#e2c48f");
     g.addColorStop(1, "#a07a48");
     ctx.fillStyle = g;
-    ctx.fillRect(x - 6, 26, 12, 460);
-    ctx.beginPath();
-    ctx.moveTo(x - 6, 27);
-    ctx.lineTo(x, 2);
-    ctx.lineTo(x + 6, 27);
-    ctx.closePath();
-    ctx.fill();
+    if (!painted) {
+      ctx.fillRect(x - 6, 26, 12, 460);
+      ctx.beginPath();
+      ctx.moveTo(x - 6, 27);
+      ctx.lineTo(x, 2);
+      ctx.lineTo(x + 6, 27);
+      ctx.closePath();
+      ctx.fill();
+    }
     // the handle: a turned wooden grip with two rings
     const hg = ctx.createLinearGradient(x - 22, 0, x + 22, 0);
     hg.addColorStop(0, "#5b3a1e");
@@ -512,6 +516,14 @@
     if (key.startsWith("piece:")) {
       const painted = SK.pieceTex(S, key.slice(6));
       if (painted) return painted;
+    }
+    // Wave 6b: the painted stick once it's loaded (data.art.sprites.tools.stick)
+    const tool = key === "stick" ? ((((Cook.data.art || {}).sprites || {}).tools || {}).stick) : null;
+    const spr = tool && Cook.Art.sprite(S, tool);
+    if (spr) {
+      const k = "mk:stick:spr";
+      if (!S.textures.exists(k)) S.textures.addCanvas(k, drawStick(S.textures.get(spr).getSourceImage()));
+      return k;
     }
     const k = `mk:${key}`;
     if (!S.textures.exists(k)) {

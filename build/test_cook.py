@@ -453,7 +453,8 @@ class Player:
                 time.sleep(0.1)
                 continue
             timed = e["kind"] in ("timing", "hold", "slice", "stir", "roll")
-            if e["kind"] == "tap" and not getattr(self, "helped", False) and not self.page.evaluate("Cook.save.mode === 'busy'"):
+            # (not while the first-time overlay is up: it blocks everything but the thing to do)
+            if e["kind"] == "tap" and not getattr(self, "helped", False) and not self.page.evaluate("Cook.save.mode === 'busy' || !!document.querySelector('.njg-onboard')"):
                 self.try_help()
                 continue
             if e.get("intro"):

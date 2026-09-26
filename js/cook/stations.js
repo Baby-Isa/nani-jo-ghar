@@ -273,6 +273,8 @@
       obj.on("pointerdown", (p) => {
         Cook.unlockAudio();
         if (Cook.paused) return;
+        // something was done (the first-time overlay moves on: js/cook/coach.js)
+        Cook.acted = (Cook.acted || 0) + 1;
         fn(p);
       });
       return obj;

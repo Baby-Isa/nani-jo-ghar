@@ -296,6 +296,7 @@
       this.hook("onScore", score, what);
     }
     progress(p) {
+      Cook.acted = (Cook.acted || 0) + 1;
       this.hook("onProgress", p);
     }
     hook(name, ...args) {
