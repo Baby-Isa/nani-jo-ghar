@@ -319,12 +319,12 @@
         S("path", { d: "M92 230 Q86 150 118 118 L128 230 Z M488 230 Q494 150 462 118 L452 230 Z", fill: hair }, f);
         S("path", { d: "M180 60 Q290 30 400 60", stroke: "rgba(255,255,255,.35)", "stroke-width": 16, fill: "none", "stroke-linecap": "round" }, f); // the shine
       } else if (KIND.hair !== "none") S("path", { d: "M95 205 Q110 30 290 33 Q470 30 485 205 Q440 100 290 97 Q140 100 95 205 Z", fill: hair }, f);
-      if (KIND.cap) S("path", { d: "M130 110 Q290 -10 450 110 L450 132 L130 132 Z", fill: "#f4f1ea", stroke: "#cfc8b8", "stroke-width": 4 }, f);
+      if (KIND.cap) S("path", { d: "M150 78 Q290 -8 430 78 Q290 50 150 78 Z", fill: "#f4f1ea", stroke: "#cfc8b8", "stroke-width": 4 }, f); // the topi, pushed back
       if (KIND.glasses) {
         // the doctor pushed the glasses up onto the forehead (comic)
         const gl = S("g", { "pointer-events": "none" }, f);
-        [205, 375].forEach((x) => S("circle", { cx: x, cy: 120, r: 42, fill: "rgba(255,255,255,.35)", stroke: "#3a3a44", "stroke-width": 6 }, gl));
-        S("path", { d: "M247 120 Q290 104 333 120", stroke: "#3a3a44", "stroke-width": 6, fill: "none" }, gl);
+        [218, 362].forEach((x) => S("circle", { cx: x, cy: 104, r: 36, fill: "rgba(255,255,255,.35)", stroke: "#3a3a44", "stroke-width": 6 }, gl));
+        S("path", { d: "M254 104 Q290 90 326 104", stroke: "#3a3a44", "stroke-width": 6, fill: "none" }, gl);
       }
       // eyes
       ["right", "left"].forEach((side) => {
@@ -744,8 +744,8 @@
     id: ID,
     part: "eye",
     ailments: ["sore-eye"],
-    items: ["drops", "pointer", "patch"],
-    itemsFor: { "sore-eye": ["drops", "pointer", "patch"] },
+    items: ["drops-green", "pointer", "patch"],
+    itemsFor: { "sore-eye": ["drops-green", "pointer", "patch"] },
     gestures: ["tap"],
     levels: [1, 2, 3],
     mount,

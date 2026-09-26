@@ -1,5 +1,5 @@
 {
-  "_about": "Clinic heal game `eye` (H12 Drops and the chart; docs/modes/clinic-design.md Q4, the quality pass). Levels are data. Real Kutchi only where the family or Cook already has it (numbers, wadho/nindho, nar, the fruit and veg nouns from data/content.json, which are drafts); everything in [EN: ...] is a grey placeholder. Sides are always the patient's own (they face you: their left eye is on the right of your screen). The tray ids are data/clinic.json's (drops, pointer, patch); the patch rides the tray at every level, but only level 3 has a patch row (at levels 1-2 it is ungraded pirate fun).",
+  "_about": "Clinic heal game `eye` (H12 Drops and the chart; docs/modes/clinic-design.md Q4, the quality pass). Levels are data. Real Kutchi only where the family or Cook already has it (numbers, wadho/nindho, nar, the fruit and veg nouns from data/content.json, which are drafts); everything in [EN: ...] is a grey placeholder. Sides are always the patient's own (they face you: their left eye is on the right of your screen). The tray ids are data/clinic.json's (drops-green = the drops in green, pointer, patch); the patch rides the tray at every level, but only level 3 has a patch row (at levels 1-2 it is ungraded pirate fun).",
   "id": "eye",
   "ailments": {
     "sore-eye": {
@@ -7,7 +7,7 @@
     }
   },
   "items": {
-    "drops": {
+    "drops-green": {
       "english": "eye drops",
       "use": "drops",
       "art": "drops-green"

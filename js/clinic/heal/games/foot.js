@@ -227,7 +227,7 @@
     if (figLayer) figLayer.style.visibility = "hidden";
     const box = stage.getBoundingClientRect();
     const tall = box.height > box.width * 1.05;
-    const svg = S("svg", { viewBox: tall ? "130 -40 720 760" : "100 -10 870 500", preserveAspectRatio: "xMidYMid meet" }, wrap);
+    const svg = S("svg", { viewBox: tall ? "175 -60 620 720" : "100 20 870 470", preserveAspectRatio: "xMidYMid meet" }, wrap);
 
     let holding = null; // a use: "paani" | "loon" | "tweezers" | "plaster"
     let finished = false;
@@ -321,7 +321,7 @@
           const y = FOOT_Y + TOES.dy[k];
           const r = TOES.r[k];
           const tg = S("g", { "data-heal": `toe-${side}-${k}` }, feet);
-          S("circle", { cx: x, cy: y, r: r + 9, fill: "transparent" }, tg); // a generous hit area
+          S("circle", { cx: x, cy: y, r: r + 13, fill: "transparent" }, tg); // a generous hit area
           const toe = S("g", { style: "transform-box:fill-box;transform-origin:50% 20%" }, tg);
           S("ellipse", { cx: x, cy: y, rx: r, ry: r * 1.15, fill: SKIN, stroke: SKIN_D, "stroke-width": 3 }, toe);
           S("ellipse", { cx: x, cy: y + r * 0.45, rx: r * 0.55, ry: r * 0.4, fill: "#f0d6c4", stroke: "#d8b8a0", "stroke-width": 1.5 }, toe); // the nail
@@ -353,8 +353,8 @@
       // the two jugs (shown while the paani dish is up): the same jug, hot or cold
       els.jugs = S("g", { class: "hc-jugs", opacity: 0, "pointer-events": "none" }, svg);
       const jsrc = sprite("jug-water");
-      const JX = tall ? { hot: 300, cold: 670 } : { hot: 900, cold: 900 };
-      const JY = tall ? { hot: -8, cold: -8 } : { hot: 70, cold: 225 };
+      const JX = tall ? { hot: 330, cold: 640 } : { hot: 885, cold: 885 };
+      const JY = tall ? { hot: 500, cold: 500 } : { hot: 80, cold: 250 };
       // which jug sits where is shuffled, so the place gives nothing away
       const order = rng() < 0.5 ? ["hot", "cold"] : ["cold", "hot"];
       els.jug = {};
@@ -363,7 +363,7 @@
         const x = JX[slot];
         const y = JY[slot];
         const g = S("g", { "data-heal": "jug-" + t }, els.jugs);
-        S("circle", { cx: x, cy: y + 40, r: 74, fill: "#fffdf6", stroke: t === "hot" ? "#e0876a" : "#7fb6d6", "stroke-width": 6 }, g);
+        S("circle", { cx: x, cy: y + 40, r: 68, fill: "#fffdf6", stroke: t === "hot" ? "#e0876a" : "#7fb6d6", "stroke-width": 6 }, g);
         if (jsrc) S("image", { href: jsrc, x: x - 48, y: y - 8, width: 96, height: 98 }, g);
         else S("path", { d: `M${x - 30} ${y} L${x + 26} ${y} L${x + 32} ${y + 80} L${x - 36} ${y + 80} Z`, fill: "#8fc6e6", stroke: "#5a4a3a", "stroke-width": 4 }, g);
         if (t === "hot") [-22, 0, 22].forEach((d, j) => {
@@ -708,7 +708,7 @@
           const dish = () => ctx.trayUI && ctx.trayUI.dishes()[dishOf("paani")];
           ctx.onboard([
             { spotlight: dish, ghost: { gesture: "tap" }, wait: "heal-foot-lift" },
-            { spotlight: () => [els.jug.hot.g, els.jug.cold.g], ghost: { gesture: "tap" }, wait: "heal-foot-pour" },
+            { spotlight: [() => els.jug.hot.g, () => els.jug.cold.g], ghost: { gesture: "tap" }, wait: "heal-foot-pour" },
             { spotlight: () => els.feetBox, ghost: { gesture: "tap" }, wait: "heal-foot-in" },
           ]);
         }
@@ -738,6 +738,7 @@
           holding,
           feetIn,
           callIdx,
+          callReady: feetIn && callIdx < R.calls.length && shownOrList("call" + callIdx),
           thornSaid,
           ticked: [...ticked],
           finished,
