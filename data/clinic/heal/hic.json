@@ -1,0 +1,143 @@
+{
+  "_about": "Clinic heal game `hic` (H15 Mouth: hic!; docs/modes/clinic-design.md, the maybe-later list, built on the quality pass rules Q1). Ali laughed so much he has hiccups. Levels are data. Real Kutchi only where the family or Cook already has it: the numbers hakro, ba, trae, char, panj (docs/kutchi-grammar-notes.md, data/cook.json), paani, adh (half; Zafar 25 Sept, draft), pela and ne poi. Everything in [brackets] or [EN: ...] is a grey English placeholder. The tray ids are data/clinic.json's (cup, paani). The glass holds 8 sips (half = 4). The scare (tap the shoulder: Boo!) is ungraded fun at every level and doubles as Done once every row has been worked.",
+  "id": "hic",
+  "ailments": {
+    "hiccups": {
+      "english": "hiccups (from laughing too much)",
+      "from": 1
+    }
+  },
+  "items": {
+    "cup": {
+      "english": "a glass (for the paani)",
+      "use": "cup",
+      "art": "cup"
+    },
+    "paani": {
+      "english": "paani (the jug: one tap fills half the glass)",
+      "use": "paani",
+      "art": "jug-water"
+    }
+  },
+  "glass": {
+    "units": 8,
+    "half": 4
+  },
+  "numbers": [
+    { "n": 1, "id": "num-01", "kutchi": "Hakro", "english": "one" },
+    { "n": 2, "id": "num-02", "kutchi": "Ba", "english": "two" },
+    { "n": 3, "id": "num-03", "kutchi": "Trae", "english": "three" },
+    { "n": 4, "id": "num-04", "kutchi": "Char", "english": "four" },
+    { "n": 5, "id": "num-05", "kutchi": "Panj", "english": "five" }
+  ],
+  "words": {
+    "paani": {
+      "id": "cook-paani",
+      "kutchi": "paani",
+      "english": "water",
+      "audio": "assets/audio/cook-tts/paani.mp3"
+    },
+    "adh": {
+      "id": "ph-half",
+      "kutchi": "adh",
+      "english": "half",
+      "draft": true
+    },
+    "pela": {
+      "id": "lnk-pela",
+      "kutchi": "Pela",
+      "english": "first"
+    },
+    "nepoi": {
+      "id": "lnk-nepoi",
+      "kutchi": "Ne poi",
+      "english": "and then"
+    },
+    "sip": { "english": "sip", "placeholder": true },
+    "sips": { "english": "sips", "placeholder": true },
+    "hold": { "english": "Hold your breath!", "placeholder": true },
+    "count": { "english": "Count to", "placeholder": true }
+  },
+  "lines": {
+    "hic": {
+      "who": "patient",
+      "kutchi": "[EN: Hic!]",
+      "english": "Hic!",
+      "placeholder": true
+    },
+    "glug": {
+      "who": "patient",
+      "kutchi": "[EN: Glug!]",
+      "english": "Glug!",
+      "placeholder": true
+    },
+    "slurp": {
+      "who": "patient",
+      "kutchi": "[EN: Slurrrp... it's empty!]",
+      "english": "Slurrrp... it's empty!",
+      "placeholder": true
+    },
+    "splash": {
+      "who": "patient",
+      "kutchi": "[EN: Oops! Splash!]",
+      "english": "Oops! Splash!",
+      "placeholder": true
+    },
+    "mmph": {
+      "who": "patient",
+      "kutchi": "[EN: Mmmph!]",
+      "english": "Mmmph! (cheeks full)",
+      "placeholder": true
+    },
+    "boo": {
+      "who": "doctor",
+      "kutchi": "[EN: Boo!]",
+      "english": "Boo!",
+      "placeholder": true
+    },
+    "eek": {
+      "who": "patient",
+      "kutchi": "[EN: Eeek!]",
+      "english": "Eeek!",
+      "placeholder": true
+    },
+    "laugh": {
+      "who": "doctor",
+      "kutchi": "[EN: Ha ha ha! All gone!]",
+      "english": "Ha ha ha! All gone!",
+      "placeholder": true
+    },
+    "back": {
+      "who": "patient",
+      "kutchi": "[EN: ...hic! Still there!]",
+      "english": "...hic! Still there!",
+      "placeholder": true
+    }
+  },
+  "levels": {
+    "1": {
+      "_note": "A full glass is by the mouth: {Num} [sips of] paani (the cup dish, then one tap on the glass per sip), then [Hold your breath!] [Count to] {Num} (one tap on the puffed cheeks per count). Lines one at a time. Blind: 1/5 x 1/3 = 6.7%.",
+      "sips": [1, 2, 3, 4, 5],
+      "hold": [3, 4, 5],
+      "fill": false,
+      "order": false,
+      "list": false
+    },
+    "2": {
+      "_note": "+ the glass starts empty: Pela adh paani (one tap of the jug) or Pela paani (two taps, full); Ne poi {num} [sips]; the count. One list up front.",
+      "sips": [1, 2, 3],
+      "hold": [2, 3, 4, 5],
+      "fill": ["half", "full"],
+      "order": false,
+      "list": true
+    },
+    "3": {
+      "_note": "+ the order: the drink (fill + sips) and the count come as Pela ... ne poi ... in a random order; the row that says ne poi is right only if its step was started second.",
+      "sips": [1, 2, 3],
+      "hold": [2, 3, 4, 5],
+      "fill": ["half", "full"],
+      "order": true,
+      "list": true
+    }
+  }
+}

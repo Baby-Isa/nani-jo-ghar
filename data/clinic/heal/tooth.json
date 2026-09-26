@@ -1,0 +1,43 @@
+{
+  "_about": "H4 Brush up, brush down. docs/modes/clinic-design.md Q4 H4 and the quality pass Q1-Q7; contract docs/clinic-heal-api.md. Levels are data. The direction chain is random per round (2 words at level 1, 4 at level 2, 6 at level 3 with the patient's own left/right, which is mirrored on screen); the tooth by size (wadho/nindho, data/cook.json ids) and the bug count (numbers) are real Kutchi; the paste colour (level 3) and the directions are English placeholders.",
+  "id": "tooth",
+  "part": "body-tooth",
+  "words": {
+    "num-01": { "kutchi": "hakro", "english": "one", "from": "data/cook.json" },
+    "num-02": { "kutchi": "ba", "english": "two", "say": "ber", "from": "data/cook.json" },
+    "num-03": { "kutchi": "trae", "english": "three", "from": "data/cook.json" },
+    "num-04": { "kutchi": "char", "english": "four", "from": "data/cook.json" },
+    "num-05": { "kutchi": "panj", "english": "five", "from": "data/cook.json" },
+    "ph-big": { "kutchi": "wadho", "english": "big", "from": "data/cook.json" },
+    "ph-small": { "kutchi": "nindho", "english": "small", "from": "data/cook.json" },
+    "body-tooth": { "kutchi": null, "english": "tooth", "placeholder": true },
+    "dir-up": { "kutchi": null, "english": "up", "placeholder": true, "screen": "up" },
+    "dir-down": { "kutchi": null, "english": "down", "placeholder": true, "screen": "down" },
+    "dir-left": { "kutchi": null, "english": "left", "placeholder": true, "screen": "left" },
+    "dir-right": { "kutchi": null, "english": "right", "placeholder": true, "screen": "right" },
+    "dir-my-left": { "kutchi": null, "english": "my left", "placeholder": true, "screen": "right", "_screen": "the patient faces us: their left is our right" },
+    "dir-my-right": { "kutchi": null, "english": "my right", "placeholder": true, "screen": "left" },
+    "w-brush": { "kutchi": null, "english": "Brush", "placeholder": true },
+    "w-taps": { "kutchi": null, "english": "taps", "placeholder": true },
+    "w-fill": { "kutchi": null, "english": "Fill it", "placeholder": true },
+    "col-white": { "kutchi": null, "english": "the white one", "placeholder": true, "hex": "#f7f5ee" },
+    "col-yellow": { "kutchi": null, "english": "the yellow one", "placeholder": true, "hex": "#f0cf5a" },
+    "col-pink": { "kutchi": null, "english": "the pink one", "placeholder": true, "hex": "#ef9fbf" }
+  },
+  "lines": {
+    "heal-tooth-brush": { "voice": "doctor", "k": "{what}: {dirs}", "e": "Brush: {dirs}" },
+    "heal-tooth-brush-patient": { "voice": "patient", "k": "{what}: {dirs}", "e": "Brush: {dirs}" },
+    "heal-tooth-drill": { "voice": "doctor", "k": "{size} {tooth}. {n} {taps}", "e": "The {size} tooth: {n} taps" },
+    "heal-tooth-fill": { "voice": "doctor", "k": "{what}: {colour}", "e": "Fill it: {colour}" }
+  },
+  "ailments": {
+    "sugar-bug": { "part": "body-tooth", "items": ["toothbrush", "drill"], "from": 1, "from_level": 1, "story": "a sugar bug from Arc 1's sweets" },
+    "cracked-tooth": { "part": "body-tooth", "items": ["toothbrush", "drill", "paste"], "from": 3, "from_level": 3, "story": "a sugar bug and a cracked tooth" }
+  },
+  "levels": {
+    "1": { "ailments": ["sugar-bug"], "dirs": ["dir-up", "dir-down"], "chain": 2, "shoo": [1, 2, 3], "brush_voice": "doctor" },
+    "2": { "ailments": ["sugar-bug"], "dirs": ["dir-up", "dir-down", "dir-left", "dir-right"], "chain": 4, "shoo": [2, 3, 4], "brush_voice": "doctor" },
+    "3": { "ailments": ["sugar-bug", "cracked-tooth"], "dirs": ["dir-up", "dir-down", "dir-my-left", "dir-my-right"], "chain": 6, "shoo": [2, 3, 4, 5], "colours": ["col-white", "col-yellow", "col-pink"], "brush_voice": "patient" }
+  },
+  "fun": "The foam grows with every stroke; the sugar bug has eyebrows and hops to the jar one tap at a time; the filled tooth twinkles."
+}

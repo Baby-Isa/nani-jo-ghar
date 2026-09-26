@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic heal B (lab)</title>
+<!--
+  Healing-game agent B's dev page (docs/clinic-heal-api.md): taste (H5),
+  fever (H6), boing (H9), each mounted on the core's real host
+  (lab/clinic-heal-host.html). Tests: build/test_clinic_heal_b.py (browser),
+  build/leak_clinic_heal_b.mjs (the blind bot).
+-->
+<style>
+  body { font: 16px/1.4 system-ui, sans-serif; margin: 16px; background: #fbf4e6; color: #3b2415; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p { margin: 4px 0 14px; max-width: 60em; }
+  table { border-collapse: collapse; }
+  td, th { padding: 6px 10px; border-bottom: 1px solid #e6d6bd; text-align: left; vertical-align: top; }
+  a { display: inline-block; margin: 2px 4px 2px 0; padding: 6px 12px; border-radius: 14px; background: #fff; border: 2px solid #d8c6a8; color: #2e6b5f; text-decoration: none; font-weight: 700; }
+  a:hover { border-color: #2e8b7a; }
+  small { color: #7a6a58; }
+</style>
+</head>
+<body>
+<h1>Clinic heal B: taste, fever, boing</h1>
+<p>Each link mounts the game on the core's host with a real <code>ctx</code>. Add <code>&amp;quiet=1</code> for no device voice, <code>&amp;fast=1</code> for short waits, <code>&amp;results=1</code> for the end-of-round screen, <code>&amp;onboard=1</code> to see the level-1 onboarding again.</p>
+<table id="t">
+  <tr><th>Game</th><th>Levels</th><th>What decides it</th></tr>
+</table>
+<script>
+  const games = [
+    ["taste", "H5 The taste test", "nana", "limu / khun / loon / marcha, then paani / dudh / chai (Cook's words); pela … ne poi …; counts of drops at level 3"],
+    ["fever", "H6 Too hot, just right", "nana", "the reading and the patient's answers (English placeholders until the family's words); counts at 2; jaldi / aastethi at 3"],
+    ["boing", "H9 The boing", "girl", "the wipe count and the spoken count-down (hakro … panj); pela … ne poi …; the arm and the plaster colour from level 2–3"],
+  ];
+  const t = document.getElementById("t");
+  games.forEach(([id, name, kind, what]) => {
+    const tr = t.insertRow();
+    tr.insertCell().innerHTML = `<b>${name}</b><br><small>${id}</small>`;
+    const c = tr.insertCell();
+    [1, 2, 3].forEach((l) => {
+      const a = document.createElement("a");
+      a.href = `clinic-heal-host.html?game=${id}&level=${l}&kind=${kind}&results=1`;
+      a.textContent = `L${l}`;
+      c.appendChild(a);
+    });
+    tr.insertCell().textContent = what;
+  });
+</script>
+</body>
+</html>

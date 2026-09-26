@@ -1,0 +1,32 @@
+{
+ "_about": "H6 Too hot, just right (docs/modes/clinic-design.md Q4 H6; contract docs/clinic-heal-api.md; js/clinic/heal/games/fever.js). The conversation game: the thermometer's reading, then the patient's answers, decide each step and when to stop. The patient's face never shows hot or cold (it would give the answer away); only the words do. A wrong step changes nothing (he says it again); a step after 'just right' tips him over the other way. Level 1 is three or four exchanges (not the design's one: one binary exchange is 50% blind); blind odds about 1/2 per exchange x 1/2 for when to stop. There is no Kutchi yet for hot, cold, still cold, too hot or just right: those rows are English placeholders (grey italic) until the family gives the words; the counts (Cook's numbers) and jaldi/aastethi (Cook's drafts) are real.",
+ "id": "fever",
+ "ailments": {
+  "fever": { "name": "a fever, or a chill", "part": "head", "items": ["thermometer", "cloth", "blanket", "fan"], "from": 1 }
+ },
+ "throbMs": 8000,
+ "words": {
+  "temp": { "english": "Take the temperature", "placeholder": true },
+  "hot": { "english": "Hot!", "placeholder": true },
+  "cold": { "english": "Cold!", "placeholder": true },
+  "still-cold": { "english": "Still cold!", "placeholder": true },
+  "too-hot": { "english": "Too hot!", "placeholder": true },
+  "too-cold": { "english": "Now too cold!", "placeholder": true },
+  "just-right": { "english": "Just right!", "placeholder": true },
+  "feel": { "english": "How do you feel?", "placeholder": true },
+  "blankets": { "english": "blankets", "placeholder": true },
+  "fan": { "english": "fan", "placeholder": true },
+  "times": { "english": "times", "placeholder": true },
+  "jaldi": { "cook": "ph-quickly", "english": "quickly!" },
+  "aastethi": { "cook": "ph-slowly", "english": "slowly" },
+  "n2": { "cook": "num-02", "english": "two" },
+  "n3": { "cook": "num-03", "english": "three", "audio": "assets/audio/cook-tts/trae.mp3" },
+  "n4": { "cook": "num-04", "english": "four", "audio": "assets/audio/cook-tts/char.mp3" }
+ },
+ "speed": { "jaldiMaxMs": 420, "aastethiMinMs": 650, "minWafts": 3 },
+ "levels": {
+  "1": { "steps": [3, 4], "count": null, "speed": false, "note": "The reading, then two or three answers in either direction, then Done on just right. Every step is one tap-tap (the fan: a few wafts, then it's put down or rests)." },
+  "2": { "steps": [3, 4], "count": [2, 3, 4], "speed": false, "note": "The reading comes with a count (Cold! trae [blankets] / Hot! [fan], ba [times]); the count closes when the item is put down or Done is pressed." },
+  "3": { "steps": [3, 4], "count": [2, 3, 4], "speed": true, "note": "Plus the fan's speed on every later too-hot step ([fan], jaldi! / aastethi), judged by the rhythm of the taps (at least three wafts)." }
+ }
+}

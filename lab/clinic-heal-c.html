@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Clinic heal lab C</title>
+<!--
+  Heal agent C's dev page: its games on the REAL host (lab/clinic-heal-host.html),
+  one click per game and level. The host auto-loads eye.js and foot.js (they are
+  in Clinic.Heal.IDS); the maybe-later extras (tummy, hic, hair) are passed with &src=.
+-->
+<style>
+  :root { --bg: #f4ecdf; --ink: #3a2e28; --line: #d8c6a8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 15px/1.35 system-ui, sans-serif; }
+  body { display: flex; flex-direction: column; }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding: 6px 10px; border-bottom: 2px solid var(--line); }
+  nav b { margin-right: 4px; }
+  nav span { white-space: nowrap; }
+  nav a { display: inline-block; padding: 2px 8px; border: 2px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none; background: #fff; }
+  nav a.on { border-color: #2e8b7a; background: #e2f3ee; }
+  iframe { flex: 1; width: 100%; border: 0; }
+</style>
+</head>
+<body>
+<nav id="nav"><b>Heal lab C</b></nav>
+<iframe id="f" title="The heal host"></iframe>
+<script>
+  const GAMES = [
+    { id: "eye", name: "eye (H12)" },
+    { id: "foot", name: "foot (H13)" },
+    { id: "tummy", name: "tummy (H10)", src: "js/clinic/heal/games/tummy.js" },
+    { id: "hic", name: "hic (H15)", src: "js/clinic/heal/games/hic.js" },
+    { id: "hair", name: "hair (H16)", src: "js/clinic/heal/games/hair.js" },
+  ];
+  const Q = new URLSearchParams(location.search);
+  const nav = document.getElementById("nav");
+  const f = document.getElementById("f");
+  const kinds = ["girl", "boy", "nana", "old-woman", "ma", "ali"];
+  const extras = GAMES.filter((g) => g.src).map((g) => "&src=" + encodeURIComponent(g.src)).join("");
+  const links = [];
+  GAMES.forEach((g, gi) => {
+    const s = document.createElement("span");
+    s.textContent = g.name + " ";
+    [1, 2, 3].forEach((l) => {
+      const a = document.createElement("a");
+      a.textContent = "L" + l;
+      const seed = 1 + Math.floor(Math.random() * 9999);
+      a.href = `clinic-heal-host.html?game=${g.id}&level=${l}&kind=${kinds[(gi + l) % kinds.length]}&seed=${seed}${extras}`;
+      a.target = "f";
+      a.onclick = () => links.forEach((x) => x.classList.toggle("on", x === a));
+      links.push(a);
+      s.appendChild(a);
+    });
+    nav.appendChild(s);
+  });
+  const first = links[Math.max(0, GAMES.findIndex((g) => g.id === (Q.get("game") || "eye"))) * 3 + (Number(Q.get("level") || 1) - 1)];
+  first.classList.add("on");
+  f.src = first.href;
+</script>
+</body>
+</html>

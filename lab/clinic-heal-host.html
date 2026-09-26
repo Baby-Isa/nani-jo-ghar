@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Clinic heal host (lab)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="../css/shared/results.css">
+<link rel="stylesheet" href="../css/shared/onboard.css">
+<link rel="stylesheet" href="../css/clinic.css">
+<!--
+  The healing-game dev page (docs/clinic-heal-api.md): mounts any registered
+  game on the real clinic screen with a real ctx (js/clinic/heal/host.js).
+
+  URL:  ?game=cut&level=2&side=left&kind=girl&seed=7
+        &tray=paani,cloth,plaster-red     (override the tray; default: the game's items)
+        &src=js/clinic/heal/games/ear.js   (load an extra script; repeatable; path from the site root)
+        &go=1 (mount at once) &quiet=1 (no device voice) &fast=1 (short waits) &results=1 (the end-of-round screen)
+        &onboard=1 (run the game's onboarding script even if seen)
+  Every js/clinic/heal/games/<id>.js that exists is loaded automatically.
+  window.__heal = {run, result, log, mount()} for tests.
+-->
+</head>
+<body class="clinic">
+<div id="clinic-root"></div>
+<div class="cl-lab-bar" id="lab">
+  <button class="cl-lab-toggle" id="lab-min" title="Hide the lab bar">&#9776;</button>
+  <b>Heal host</b>
+  <select id="lab-game"></select>
+  <label>L <select id="lab-level"><option>1</option><option>2</option><option>3</option></select></label>
+  <label>side <select id="lab-side"><option value="">none</option><option>left</option><option>right</option></select></label>
+  <label>who <select id="lab-kind"><option>girl</option><option>boy</option><option>old-man</option><option>old-woman</option><option>auntie</option><option>uncle</option><option>nana</option><option>ali</option><option>cousin</option><option>baby</option></select></label>
+  <label>seed <input id="lab-seed" size="6"></label>
+  <label>tray <input id="lab-tray" size="18" placeholder="the game's items"></label>
+  <button id="lab-go">Mount</button>
+  <label><input type="checkbox" id="lab-results"> end screen</label>
+  <span class="grow"></span>
+  <a href="../clinic.html?lab=1">clinic lab</a>
+</div>
+<pre class="cl-lab-out" id="lab-out"></pre>
+
+<script src="../js/version.js"></script>
+<script src="../js/shared/uistore.js"></script>
+<script src="../js/shared/sfx.js"></script>
+<script src="../js/shared/results.js"></script>
+<script src="../js/shared/onboard.js"></script>
+<script src="../js/shared/speech.js"></script>
+<script src="../js/shared/say.js"></script>
+<script src="../js/clinic/body.js"></script>
+<script src="../js/clinic/kit.js"></script>
+<script src="../js/clinic/figure.js"></script>
+<script src="../js/clinic/screen.js"></script>
+<script src="../js/clinic/heal/registry.js"></script>
+<script src="../js/clinic/heal/host.js"></script>
+<script>
+(async function () {
+  const Q = new URLSearchParams(location.search);
+  const Kit = Clinic.Kit;
+  Kit.root = "../";
+  Kit.Voice.quiet = Q.get("quiet") === "1";
+  Kit.fast = Q.get("fast") === "1";
+  const $ = (id) => document.getElementById(id);
+  const out = $("lab-out");
+  const print = (s) => { out.textContent = (out.textContent + s + "\n").split("\n").slice(-40).join("\n"); out.scrollTop = 1e9; };
+
+  // every game file that exists, then any ?src= extras
+  const load = (src) => new Promise((res) => {
+    const s = document.createElement("script");
+    s.src = njgV("../" + src.replace(/^\//, ""));
+    s.onload = () => res(true);
+    s.onerror = () => res(false);
+    document.body.appendChild(s);
+  });
+  await Promise.all(Clinic.Heal.IDS.map((id) => load(`js/clinic/heal/games/${id}.js`)));
+  for (const src of Q.getAll("src")) {
+    const ok = await load(src);
+    print(ok ? `loaded ${src}` : `could not load ${src}`);
+  }
+
+  const sel = $("lab-game");
+  const refresh = () => {
+    const cur = sel.value || Q.get("game");
+    sel.innerHTML = "";
+    Clinic.Heal.list().forEach((d) => {
+      const o = document.createElement("option");
+      o.value = d.id;
+      o.textContent = `${d.id} (${d.part})${d.problems && d.problems.length ? " ⚠" : ""}`;
+      sel.appendChild(o);
+    });
+    if (cur && Clinic.Heal.has(cur)) sel.value = cur;
+  };
+  Clinic.Heal.onRegister(refresh);
+  refresh();
+  if (Q.get("level")) $("lab-level").value = Q.get("level");
+  if (Q.get("side")) $("lab-side").value = Q.get("side");
+  if (Q.get("kind")) $("lab-kind").value = Q.get("kind");
+  $("lab-seed").value = Q.get("seed") || String(Math.floor(Math.random() * 1e5));
+  if (Q.get("tray")) $("lab-tray").value = Q.get("tray");
+  $("lab-results").checked = Q.get("results") === "1";
+  $("lab-min").onclick = () => $("lab").classList.toggle("min");
+
+  await Clinic.HealHost.loadBase();
+  const screen = Clinic.Screen.build($("clinic-root"), { level: 1 });
+  const H = (window.__heal = { run: null, result: null, log: [], screen });
+
+  H.mount = async function () {
+    if (H.run) H.run.destroy();
+    H.result = null;
+    H.log = [];
+    out.textContent = "";
+    const game = sel.value;
+    if (!game) return print("No healing game is registered yet: add js/clinic/heal/games/<id>.js or ?src=");
+    const def = Clinic.Heal.get(game);
+    if (def.problems && def.problems.length) print(`contract: ${def.problems.join("; ")}`);
+    const level = +$("lab-level").value;
+    const side = $("lab-side").value || null;
+    const seed = +$("lab-seed").value || 1;
+    const trayTxt = $("lab-tray").value.trim();
+    const tray = trayTxt ? trayTxt.split(/[,\s]+/).filter(Boolean).map((id) => ({ id })) : null;
+    if (Q.get("onboard") === "1" && window.Onboard) Onboard.reset(`clinic/heal-${game}`);
+    screen.resetHints();
+    const run = (H.run = await Clinic.HealHost.mount(screen, game, {
+      level, side, seed, kind: $("lab-kind").value, tray,
+      onLog: (e) => { H.log.push(e); print(`log ${JSON.stringify(e)}`); },
+    }));
+    print(`mounted ${game} L${level} side=${side} seed=${seed} tray=[${run.ctx.tray.map((t) => t.id).join(", ")}]`);
+    const r = await run.result;
+    H.result = r;
+    print(`done ${JSON.stringify(Object.assign({}, r, { log: r.log.length + " entries" }))}`);
+    if ($("lab-results").checked && window.Results) {
+      await Results.show({ mode: "clinic", game: `lab-${game}`, level, timeMs: r.timeMs, right: r.right, total: r.total, hints: r.hints, words: r.words || [], sound: !Kit.fast });
+    }
+  };
+  $("lab-go").onclick = () => H.mount();
+  if (Q.get("go") === "1" || Q.get("game")) H.mount();
+})();
+</script>
+</body>
+</html>

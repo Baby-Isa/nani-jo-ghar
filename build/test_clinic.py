@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
-"""Browser test for the clinic lab (clinic.html), phase 1.
+"""Browser test for the clinic's pipeline (clinic.html; docs/modes/clinic-design.md).
 
-Plays every lab entry through REAL pointer events at screen coordinates,
-read from window.__clinic.expectation() (what the game wants next): taps
-(the body, the kit, the magnifier, the trolley, the hand-over), drags (the
-plaster, the blanket), circles (the bandage, and Cook's stir), counted taps
-then the tick (drops, blankets, Cook's count), timing rings (lay and lift),
-clicks (the speaking panel's mic, pills, the grown-up's tick). Before every
-tap it checks the canvas is the topmost element there (nothing in the HTML
-covers the thing being tapped). With --mistakes it makes one deliberate
-wrong tap per row kind so every recast path runs.
+Plays lab entries through REAL pointer events at screen coordinates, read
+from window.__clinic.expect() (what the current stage wants next): taps on the
+bench, the pulsing parts and the Found it / Next buttons, points on the
+patient's body, taps on the belt as the right dish passes, the Done/next
+buttons, the face cards, the pills of the speaking moments, and the shared
+end-of-round screen. Before every tap it checks that the element under the
+point is the one being tapped (nothing covers it). With --mistakes it makes
+one deliberate wrong tap per stage so the gentle-correction and no-verdict
+paths run. The healing games are played by their own tests (the heal
+agents' labs); here the heal stage is ended the way a fair player would
+(window.__clinic.finishHeal()) unless --play-cut and the game is cut.
 
 Usage:
-  python3 build/test_clinic.py                       # every entry, level 1, laptop
-  python3 build/test_clinic.py --level 2 --viewport ipad
-  python3 build/test_clinic.py --all-sizes --only visit:hurt
-  python3 build/test_clinic.py --say wrong            # the stub recogniser mishears first
-  add --canvas for Phaser's canvas renderer (fast in headless Chromium)
-Port: CLINIC_TEST_PORT (default 8806).
+  python3 build/test_clinic.py                              # every stage at levels 1-3, a patient per level, the first-ever morning; laptop
+  python3 build/test_clinic.py --viewport ipad --mistakes
+  python3 build/test_clinic.py --sizes phone,ipad,laptop    # the three sizes
+  python3 build/test_clinic.py --only morning --session 3
+Port: COOK_TEST_PORT (default 8820). Run one browser test at a time.
+Screenshots: build/screenshots/clinic-core/<viewport>/.
 """
 import argparse
 import http.server
 import json
-import math
 import os
 import socketserver
 import sys
@@ -32,16 +33,15 @@ import time
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PORT = int(os.environ.get("CLINIC_TEST_PORT", os.environ.get("COOK_TEST_PORT", 8806)))
-VIEWPORTS = [
-    {"name": "flip5-landscape", "width": 915, "height": 375, "touch": True},
-    {"name": "laptop", "width": 1366, "height": 768, "touch": False},
-    {"name": "laptop-16x10", "width": 1440, "height": 900, "touch": False},
-    {"name": "laptop-1280x800", "width": 1280, "height": 800, "touch": False},
-    {"name": "ipad", "width": 1024, "height": 768, "touch": True},
-    {"name": "ipad-portrait", "width": 768, "height": 1024, "touch": True},
-]
-SHOTS = os.path.join(ROOT, "build", "screenshots", "clinic")
+PORT = int(os.environ.get("COOK_TEST_PORT", os.environ.get("CLINIC_TEST_PORT", 8820)))
+VIEWPORTS = {
+    "phone": {"width": 915, "height": 412, "touch": True},  # a phone held landscape (Galaxy Z Flip5 class)
+    "phone-portrait": {"width": 412, "height": 915, "touch": True},
+    "ipad": {"width": 1024, "height": 768, "touch": True},
+    "ipad-portrait": {"width": 768, "height": 1024, "touch": True},
+    "laptop": {"width": 1366, "height": 768, "touch": False},
+}
+SHOTS = os.path.join(ROOT, "build", "screenshots", "clinic-core")
 
 
 class Server(socketserver.ThreadingTCPServer):
@@ -56,215 +56,233 @@ def start_server():
         def log_message(self, *a):
             pass
 
-    try:
-        httpd = Server(("127.0.0.1", PORT), Quiet)
-    except OSError:
-        return None  # already served (a dev server on the same port)
+    httpd = Server(("127.0.0.1", PORT), Quiet)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd
 
 
+def chromium(p):
+    for c in ("/opt/pw-browsers/chromium-1194/chrome-linux/chrome", "/opt/pw-browsers/chromium"):
+        if os.path.exists(c) and os.path.isfile(c):
+            return p.chromium.launch(executable_path=c)
+    return p.chromium.launch()
+
+
 class Player:
-    def __init__(self, page, shots, mistakes, say):
-        self.page, self.shots, self.mistakes, self.say = page, shots, mistakes, say
-        self.n = 0
-        self.made = set()
+    def __init__(self, page, vp, mistakes, shots, play_cut=False):
+        self.page, self.vp, self.mistakes, self.shots, self.play_cut = page, vp, mistakes, shots, play_cut
+        self.wrong_done = set()
+        self.taps = 0
+        self.shot_stages = set()
+
+    def ev(self, js, arg=None):
+        return self.page.evaluate(js, arg)
+
+    def tap_xy(self, x, y):
+        if self.vp["touch"]:
+            self.page.touchscreen.tap(x, y)
+        else:
+            self.page.mouse.click(x, y)
+        self.taps += 1
+
+    def centre(self, sel):
+        return self.ev(
+            """(sel) => { const els = Array.from(document.querySelectorAll(sel)).filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && !e.disabled; });
+              if (!els.length) return null; const e = els[0]; const r = e.getBoundingClientRect();
+              const x = Math.round(r.left + r.width / 2), y = Math.round(r.top + r.height / 2);
+              const top = document.elementFromPoint(x, y); const ok = !!top && (top === e || e.contains(top));
+              return {x, y, ok, w: r.width, h: r.height, onscreen: x > 0 && y > 0 && x < innerWidth && y < innerHeight, cover: top ? (top.className && top.className.baseVal !== undefined ? top.className.baseVal : top.className) : null}; }""",
+            sel,
+        )
+
+    def tap_sel(self, sel, need_clear=True):
+        c = self.centre(sel)
+        if not c or not c["onscreen"]:
+            return False
+        if need_clear and not c["ok"]:
+            raise AssertionError(f"{sel} is covered by {c['cover']} at {c['x']},{c['y']}")
+        self.tap_xy(c["x"], c["y"])
+        return True
 
     def shot(self, name):
-        self.n += 1
-        self.page.screenshot(path=os.path.join(self.shots, f"{self.n:03d}-{name}.png"))
+        os.makedirs(self.shots, exist_ok=True)
+        self.page.screenshot(path=os.path.join(self.shots, f"{name}.png"))
 
-    def exp(self):
-        return self.page.evaluate("__clinic.expectation()")
-
-    def uncovered(self, x, y, what):
-        tag = self.page.evaluate("([x,y]) => { const e = document.elementFromPoint(x,y); return e ? (e.tagName + '#' + e.id + '.' + e.className) : 'none'; }", [x, y])
-        if not tag.startswith("CANVAS"):
-            raise AssertionError(f"{what} at ({x:.0f},{y:.0f}) is covered by {tag}")
-
-    def tap(self, x, y, what="tap"):
-        self.uncovered(x, y, what)
-        self.page.mouse.click(x, y)
-
-    def click(self, sel):
-        self.page.click(sel, timeout=2000)
-
-    def act(self, e):
-        p = self.page
-        k = e.get("kind")
-        key = e.get("key")
-        if k == "tap":
-            # one deliberate wrong tap per kind of target, so the recast runs
-            wr = e.get("swrongs") or []
-            tag = f"tap:{'trolley' if key and key.startswith('care') else 'body' if key and key.startswith('body') else key}"
-            if self.mistakes and wr and tag not in self.made:
-                self.made.add(tag)
-                self.tap(wr[0]["x"], wr[0]["y"], "wrong " + tag)
-                time.sleep(0.4)
-                return
-            self.tap(e["sx"], e["sy"], key or "tap")
-        elif k == "drag":
-            f, t = e["sfrom"], e["sto"]
-            self.uncovered(f["x"], f["y"], "drag")
-            p.mouse.move(f["x"], f["y"])
-            p.mouse.down()
-            for i in range(1, 13):
-                p.mouse.move(f["x"] + (t["x"] - f["x"]) * i / 12, f["y"] + (t["y"] - f["y"]) * i / 12)
-                time.sleep(0.02)
-            p.mouse.up()
-        elif k == "circle":
-            cx, cy, rx, ry, turns = e["sx"], e["sy"], e["srx"], e["sry"], e.get("turns") or 2
-            p.mouse.move(cx + rx, cy)
-            p.mouse.down()
-            steps = 24
-            for i in range(1, int(turns * steps) + 4):
-                a = 2 * math.pi * i / steps
-                p.mouse.move(cx + rx * math.cos(a), cy + ry * math.sin(a))
-                time.sleep(0.012)
-            p.mouse.up()
-            time.sleep(0.2)
-            self.click(e.get("doneSel", "#done-btn"))
-        elif k == "stir":
-            cx, cy, r = e["sx"], e["sy"], e["srx"]
-            p.mouse.move(cx + r, cy)
-            p.mouse.down()
-            a = 0.0
-            t0 = time.time()
-            while time.time() - t0 < 40:
-                a += 0.12
-                p.mouse.move(cx + r * math.cos(a), cy + r * math.sin(a))
-                time.sleep(0.016)
-                cur = self.exp()
-                if not cur or cur.get("kind") != "stir" or cur.get("count", 0) >= e["target"]:
-                    break
-            p.mouse.up()
-            time.sleep(1.2)
-        elif k == "count":
-            have = e.get("count", 0)
-            for _ in range(max(0, e["target"] - have)):
-                self.tap(e["sx"], e["sy"], "count")
+    def results_screen(self):
+        # the shared end-of-round screen: page 1 (badges) -> Next -> page 2 (words) -> Done
+        for sel in (".rs-next", ".rs-done"):
+            c = self.centre(sel)
+            if c:
+                self.tap_xy(c["x"], c["y"])
                 time.sleep(0.25)
-            time.sleep(0.3)
-            self.click(e.get("doneSel", "#done-btn"))
-        elif k == "timing":
-            t0 = time.time()
-            while time.time() - t0 < 15:
-                g = p.evaluate("__clinic.gauge()")
-                if g and g["lo"] + 0.02 <= g["level"] <= g["hi"] - 0.02:
-                    break
-                time.sleep(0.02)
-            self.tap(e["sx"], e["sy"], "timing")
-        elif k == "click":
-            sel = e["selector"]
-            if e.get("tell"):
-                # a child whose word isn't understood twice takes the pills once they're up
-                self.tries = getattr(self, "tries", {})
-                n = self.tries[e["answer"]] = self.tries.get(e["answer"], 0) + 1
-                if self.say in ("wrong", "nothing", "low", "mumble") and e.get("pills") and n > 2:
-                    sel = f'#choices .choice[data-key="{e["answer"]}"]'
-                    self.tries[e["answer"]] = 0
-                elif self.say == "pills" and e.get("pills"):
-                    sel = f'#choices .choice[data-key="{e["answer"]}"]'
-                elif self.say == "pills":
-                    # the pills come once the mic has been tried (level 2+): try it (the stub hears nothing)
-                    p.evaluate("Clinic.Speech.mode = 'nothing'")
-            if e.get("parent"):
-                sel = "#cl-parent-yes"
-            self.click(sel)
-        else:
-            raise AssertionError(f"unknown expectation {e}")
+                return True
+        return False
 
-    def play(self, key, level, timeout=240):
-        p = self.page
-        p.evaluate("([k, l, s, pj]) => __clinic.lab(k, l, {say: s === 'pills' ? 'nothing' : s, parent: pj})", [key, level, self.say, self.say == "parent"])
+    def play(self, label, done_js="() => !!(window.__clinic && window.__clinic.last)", timeout=240):
         t0 = time.time()
-        shots = 0
-        last = None
+        last_stage = None
         while time.time() - t0 < timeout:
-            st = p.evaluate("__clinic.last()")
-            if st and st["done"] and st["key"] == key:
-                self.shot(f"{key.replace(':', '-')}-L{level}-result")
-                return st
-            e = self.exp()
-            if e and e.get("kind") != "click" or (e and e.get("selector") != "#lab-list"):
-                if e and shots < 3 and json.dumps(e, sort_keys=True) != last:
-                    shots += 1
-                    self.shot(f"{key.replace(':', '-')}-L{level}-{shots}")
-                last = json.dumps(e, sort_keys=True) if e else None
-                if e:
-                    try:
-                        self.act(e)
-                    except AssertionError:
-                        raise
-                    except Exception as ex:  # a moving target (the expectation changed under us): look again
-                        print("   (retry)", str(ex)[:120])
-                    time.sleep(0.15)
+            errs = self.ev("() => window.__clinic ? window.__clinic.errors : []")
+            if errs:
+                raise AssertionError(f"{label}: page errors {errs}")
+            if self.ev(done_js):
+                # a results screen may still be open
+                if self.centre(".rs-next") or self.centre(".rs-done"):
+                    self.results_screen()
                     continue
-            # no expectation: a line is being said; a tap on the stage skips it
-            time.sleep(0.2)
-        raise AssertionError(f"{key} level {level}: timed out; last expectation {self.exp()}")
+                return time.time() - t0
+            if self.centre(".rs-next") or self.centre(".rs-done"):
+                self.shot(f"{label}-results")
+                self.results_screen()
+                continue
+            # onboarding overlay: tap the light (the ghost finger's target)
+            if self.centre(".ob-root, .njg-ob, .ob-layer"):
+                pass
+            e = self.ev("() => window.__clinic && window.__clinic.expect ? window.__clinic.expect() : null")
+            stage = e and e.get("stage")
+            if stage and stage != last_stage:
+                last_stage = stage
+                time.sleep(0.2)
+                if f"{label}-{stage}" not in self.shot_stages:
+                    self.shot_stages.add(f"{label}-{stage}")
+                    self.shot(f"{label}-{stage}")
+            if not e:
+                # between stages: the big button on the right, or a speaking panel's pills
+                if self.tap_say(None):
+                    continue
+                c = self.centre(".cl-go.throb, .cl-go")
+                if c and c["onscreen"]:
+                    self.tap_xy(c["x"], c["y"])
+                time.sleep(0.15)
+                continue
+            k = e.get("kind")
+            wrong_key = f"{label}:{stage}"
+            if self.mistakes and e.get("wrong") and wrong_key not in self.wrong_done and k in ("tap", "act", "belt"):
+                if self.tap_sel(e["wrong"], need_clear=(k != "belt")):
+                    self.wrong_done.add(wrong_key)
+                    time.sleep(0.9)
+                    continue
+            if k in ("tap", "act"):
+                if not self.tap_sel(e["target"]):
+                    time.sleep(0.1)
+                else:
+                    time.sleep(0.25)
+            elif k == "point":
+                self.tap_xy(e["x"], e["y"])
+                time.sleep(0.3)
+            elif k == "belt":
+                c = self.centre(e["target"])
+                # tap it once it's well inside the track
+                if c and c["onscreen"] and c["x"] < self.vp["width"] * 0.85:
+                    self.tap_xy(c["x"], c["y"])
+                    time.sleep(0.4)
+                else:
+                    time.sleep(0.05)
+            elif k == "say":
+                self.tap_say(e.get("choice"))
+                time.sleep(0.3)
+            elif k == "game":
+                if self.play_cut and e.get("game") == "cut":
+                    pass  # the reference game's own driver lives in its lab test
+                time.sleep(0.4)
+                self.shot(f"{label}-heal-{e.get('game')}")
+                self.ev("() => window.__clinic.finishHeal()")
+                time.sleep(0.4)
+            elif k == "button":
+                c = self.centre(".cl-go")
+                if c:
+                    self.tap_xy(c["x"], c["y"])
+                time.sleep(0.2)
+            else:
+                time.sleep(0.1)
+        raise AssertionError(f"{label}: timed out (last expect {self.ev('() => window.__clinic.expect()')})")
+
+    def tap_say(self, choice):
+        # the shared Say panel (pills), or the clinic's own pills
+        sel = None
+        if choice:
+            for s in (f'.njg-say .pill[data-choice="{choice}"]', f'.cl-pill[data-choice="{choice}"]'):
+                if self.centre(s):
+                    sel = s
+                    break
+        else:
+            for s in (".njg-say.live .pill", ".njg-say .pill", ".cl-pill"):
+                if self.centre(s):
+                    sel = s
+                    break
+        if not sel:
+            return False
+        return self.tap_sel(sel, need_clear=False)
+
+
+def run_case(p, vp_name, case, args):
+    vp = VIEWPORTS[vp_name]
+    b = chromium(p)
+    ctx = b.new_context(viewport={"width": vp["width"], "height": vp["height"]}, has_touch=vp["touch"], is_mobile=vp["touch"])
+    page = ctx.new_page()
+    logs = []
+    page.on("console", lambda m: logs.append(f"{m.type}: {m.text}") if m.type in ("error", "warning") else None)
+    page.on("pageerror", lambda e: logs.append(f"PAGEERROR: {e}"))
+    q = case["q"] + "&quiet=1&fast=1" + ("" if case.get("onboard") else "&onboard=0")
+    page.goto(f"http://127.0.0.1:{PORT}/clinic.html?{q}")
+    page.wait_for_function("() => window.__clinic && window.__clinic.ready", timeout=30000)
+    pl = Player(page, vp, args.mistakes, os.path.join(SHOTS, vp_name), args.play_cut)
+    try:
+        secs = pl.play(case["name"], case.get("done", "() => !!(window.__clinic && window.__clinic.last)"))
+        last = page.evaluate("() => { const l = window.__clinic.last; if (!l) return null; if (l.outs) return {outs: l.outs.map((o) => ({who: o.plan.kind, ail: o.plan.ailment, right: o.right, total: o.total}))}; if (l.rows) return {rows: l.rows.map((r) => [r.id, r.ok, r.tested])}; return {right: l.right, total: l.total}; }")
+        bad = [l for l in logs if "PAGEERROR" in l or ("error" in l and "Failed to load resource" not in l)]
+        pl.shot(f"{case['name']}-end")
+        status = "ok" if not bad else "console errors"
+        print(f"  {vp_name:14} {case['name']:28} {status:6} {secs:5.1f}s taps={pl.taps} {json.dumps(last)}")
+        if bad:
+            for l in bad[:5]:
+                print("     ", l)
+        return not bad
+    except Exception as e:
+        pl.shot(f"{case['name']}-FAIL")
+        print(f"  {vp_name:14} {case['name']:28} FAIL  {e}")
+        for l in logs[-6:]:
+            print("     ", l)
+        return False
+    finally:
+        b.close()
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--level", type=int, default=1)
     ap.add_argument("--viewport", default="laptop")
-    ap.add_argument("--all-sizes", action="store_true")
-    ap.add_argument("--only", action="append")
-    ap.add_argument("--skip", action="append", default=["tools:hotspots"])
+    ap.add_argument("--sizes", default=None, help="comma list, e.g. phone,ipad,laptop")
     ap.add_argument("--mistakes", action="store_true")
-    ap.add_argument("--say", default="right", choices=["right", "wrong", "nothing", "low", "mumble", "pills", "parent"])
-    ap.add_argument("--speed", type=float, default=4)
-    ap.add_argument("--canvas", action="store_true")
-    a = ap.parse_args()
+    ap.add_argument("--only", default=None, help="substring of a case name")
+    ap.add_argument("--session", default=None)
+    ap.add_argument("--seed", default="7")
+    ap.add_argument("--play-cut", action="store_true")
+    args = ap.parse_args()
+    sizes = args.sizes.split(",") if args.sizes else [args.viewport]
+    s = args.seed
+    cases = []
+    for st, vs in (("waiting", ["W1", "W2", "W3", "W4"]), ("diagnosis", ["D1", "D1b", "D2", "D3"]), ("pharmacy", [None]), ("sendoff", ["E1", "E2", "E3", "E4"])):
+        for v in vs:
+            lv = {"W1": 1, "W2": 2, "W3": 2, "W4": 3, "D1": 1, "D1b": 2, "D2": 1, "D3": 2, "E1": 1, "E2": 2, "E3": 2, "E4": 3}.get(v)
+            for L in ([lv] if lv else [1, 2, 3]):
+                cases.append({"name": f"{st}-{v or 'L' + str(L)}", "q": f"stage={st}&level={L}&seed={s}" + (f"&variant={v}" if v else "")})
+    for g in ("cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"):
+        cases.append({"name": f"heal-{g}", "q": f"stage=heal&game={g}&level=1&seed={s}"})
+    for L in (1, 2, 3):
+        cases.append({"name": f"patient-L{L}", "q": f"patient=1&level={L}&seed={s}&results=1"})
+    sess = args.session or "1"
+    cases.append({"name": f"morning-s{sess}", "q": f"morning=1&session={sess}&seed={s}&nosave=1", "onboard": sess == "1", "done": "() => !!(window.__clinic && window.__clinic.last && window.__clinic.last.outs)"})
+    if args.only:
+        cases = [c for c in cases if args.only in c["name"]]
     start_server()
-    os.makedirs(SHOTS, exist_ok=True)
-    vps = VIEWPORTS if a.all_sizes else [v for v in VIEWPORTS if v["name"] == a.viewport]
-    fails = []
-    with sync_playwright() as pw:
-        exe = "/opt/pw-browsers/chromium" if os.path.exists("/opt/pw-browsers/chromium") else None
-        args = ["--autoplay-policy=no-user-gesture-required"] + (["--disable-webgl"] if a.canvas else [])
-        browser = pw.chromium.launch(executable_path=exe, args=args)
-        for vp in vps:
-            ctx = browser.new_context(viewport={"width": vp["width"], "height": vp["height"]}, has_touch=vp["touch"])
-            page = ctx.new_page()
-            page.route("**/fonts.googleapis.com/**", lambda r: r.abort())
-            page.route("**/fonts.gstatic.com/**", lambda r: r.abort())
-            errors = []
-            # the fonts are blocked on purpose (offline): their failed loads are not errors
-            page.on("console", lambda m: errors.append(m.text) if m.type == "error" and "net::ERR_FAILED" not in m.text else None)
-            page.on("pageerror", lambda e: errors.append(str(e)))
-            page.goto(f"http://127.0.0.1:{PORT}/clinic.html?speed={a.speed}")
-            page.wait_for_selector("#panel h1", timeout=20000)
-            keys = page.evaluate("__clinic.labs()")
-            keys = [k for k in keys if (not a.only or k in a.only) and k not in a.skip]
-            d = os.path.join(SHOTS, vp["name"])
-            os.makedirs(d, exist_ok=True)
-            for f in os.listdir(d):
-                os.remove(os.path.join(d, f))
-            pl = Player(page, d, a.mistakes, a.say)
-            for key in keys:
-                t0 = time.time()
-                try:
-                    st = pl.play(key, a.level)
-                    stars = st.get("stars") or {}
-                    print(f"  {vp['name']:16} L{a.level} {key:18} ok {time.time() - t0:5.1f}s  stars {json.dumps(stars)}  misses {len(st['misses'])}  voice {[v['path'] for v in st['voice']]}", flush=True)
-                except Exception as ex:
-                    fails.append(f"{vp['name']} {key}: {ex}")
-                    print(f"  {vp['name']:16} L{a.level} {key:18} FAIL {str(ex)[:200]}", flush=True)
-                    pl.shot(f"FAIL-{key.replace(':', '-')}")
-                    page.goto(f"http://127.0.0.1:{PORT}/clinic.html?speed={a.speed}")
-                    page.wait_for_selector("#panel h1", timeout=20000)
-                if errors:
-                    fails.append(f"{vp['name']} {key}: console errors: {errors[:3]}")
-                    print("    console:", errors[:3])
-                    errors.clear()
-            ctx.close()
-        browser.close()
-    if fails:
-        print("\nFAIL:\n  " + "\n  ".join(fails))
-        sys.exit(1)
-    print("\nPASS")
+    ok = True
+    with sync_playwright() as p:
+        for vp in sizes:
+            print(f"== {vp} ({VIEWPORTS[vp]['width']}x{VIEWPORTS[vp]['height']}){' with mistakes' if args.mistakes else ''}")
+            for c in cases:
+                ok = run_case(p, vp, c, args) and ok
+    print("PASS" if ok else "FAIL")
+    sys.exit(0 if ok else 1)
 
 
 if __name__ == "__main__":
