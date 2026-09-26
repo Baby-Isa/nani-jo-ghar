@@ -1,0 +1,85 @@
+{
+ "total_estimate": 0.2,
+ "runs": [
+  {
+   "job": "b1",
+   "file": "build/hand-v3-raw/b1-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 436,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 242
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1492
+   },
+   "secs": 18.3
+  },
+  {
+   "job": "b1",
+   "file": "build/hand-v3-raw/b1-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 436,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 242
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1492
+   },
+   "secs": 16.7
+  },
+  {
+   "job": "b1",
+   "file": "build/hand-v3-raw/b1-v2.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 436,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 242
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1492
+   },
+   "secs": 18.8
+  },
+  {
+   "job": "b1",
+   "file": "build/hand-v3-raw/b1-v3.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 436,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 242
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1492
+   },
+   "secs": 17.7
+  }
+ ]
+}

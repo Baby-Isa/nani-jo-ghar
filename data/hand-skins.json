@@ -1,5 +1,5 @@
 {
- "_readme": "Hand characters for build/skin_hands.py (hands v1). Each is a recipe applied to every passing master pose: skin (target midtone hex, or null = the master's own), sleeve (target hex for the cream linen sleeve, or null = as is), jewellery per side (ring sprites on the ring-finger anchor, wrist sprites stacked at the wrist anchor; sprite names are files in assets/characters/hands/skins/jewellery/ without the -view / -camera-half suffix), overlay (texture masked to the back of the hand), left_variant (also bake a mirrored left hand with the 'left' jewellery, for characters whose hands differ).",
+ "_readme": "Hand characters for build/skin_hands.py (hands v1). Each is a recipe applied to every passing master pose: skin (target midtone hex, or null = the master's own), sleeve (target hex for the cream linen sleeve, or null = as is), jewellery per side, rendered in 3D by build/hand_jewellery3d.py (hands v3): {type: ring, stone: aqiq|diamond} at the ring-finger anchor, {type: wrist, style: tennis | [bangle materials: glass_red, glass_green, gold]} at the bracelet anchor, overlay (texture masked to the back of the hand), left_variant (also bake a mirrored left hand with the 'left' jewellery, for characters whose hands differ).",
  "player-boy": {
   "skin": null,
   "sleeve": null,
@@ -13,25 +13,25 @@
    "right": [
     {
      "type": "wrist",
-     "sprite": [
-      "bangle-red",
-      "bangle-green",
-      "bangle-gold"
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
      ]
     }
    ],
    "left": [
     {
      "type": "wrist",
-     "sprite": [
-      "bangle-red",
-      "bangle-green",
-      "bangle-gold"
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
      ]
     }
    ]
   },
-  "_note": "Dusty-pink rolled sleeve, three thin glass bangles on each wrist."
+  "_note": "Dusty-pink rolled sleeve, three thin bangles on each wrist: red glass, green glass, gold."
  },
  "player-girl-eid": {
   "skin": null,
@@ -40,20 +40,20 @@
    "right": [
     {
      "type": "wrist",
-     "sprite": [
-      "bangle-red",
-      "bangle-green",
-      "bangle-gold"
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
      ]
     }
    ],
    "left": [
     {
      "type": "wrist",
-     "sprite": [
-      "bangle-red",
-      "bangle-green",
-      "bangle-gold"
+     "style": [
+      "glass_red",
+      "glass_green",
+      "gold"
      ]
     }
    ]
@@ -71,17 +71,17 @@
    "right": [
     {
      "type": "ring",
-     "sprite": "ring-aqiq"
+     "stone": "aqiq"
     },
     {
      "type": "wrist",
-     "sprite": "tennis-bracelet"
+     "style": "tennis"
     }
    ],
    "left": [
     {
      "type": "ring",
-     "sprite": "ring-diamond"
+     "stone": "diamond"
     }
    ]
   },

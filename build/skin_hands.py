@@ -47,6 +47,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_assets as ga  # noqa: E402
 import hand_masks as hm  # noqa: E402
+import hand_jewellery3d as j3  # noqa: E402
 
 GAME = ga.GAME
 H = "assets/characters/hands"
@@ -58,199 +59,80 @@ SHEETS = os.path.join(GAME, "build", "contact-sheets")
 
 REF_WRIST = 200  # jewellery sprites are drawn for a wrist this wide; scaled by wrist_px / REF_WRIST
 FINGER_OF_WRIST = 0.27  # ring-finger width as a share of the wrist width
-ELLIPSE = {"e": 0.34, "t": 0.14}  # wrist-ring ellipse height / width, by camera
 
 
 # ---------------------------------------------------------------------------
-# Jewellery sprites (drawn at REF_WRIST, supersampled)
+# Jewellery (hands v3: ray-cast 3D, build/hand_jewellery3d.py)
 # ---------------------------------------------------------------------------
-
-def _canvas(w, h, ss):
-    return Image.new("RGBA", (int(w * ss), int(h * ss)), (0, 0, 0, 0))
-
-
-def _gold(d, box, ss, width, shade=1.0):
-    col = tuple(int(c * shade) for c in (214, 170, 74))
-    d.ellipse([v * ss for v in box], outline=col + (255,), width=max(1, int(width * ss)))
-
-
-def draw_ring(kind, view, ss=6):
-    """A ring for a finger pointing up the sprite (the band runs across).
-    kind: 'aqiq' (oval red-orange cabochon in a plain yellow gold bezel) or
-    'diamond' (round solitaire in a raised six-claw setting). view: 'back'
-    shows the stone, 'palm' and 'side' the band only. Sprite centre = the
-    ring's centre on the finger."""
-    fw = REF_WRIST * FINGER_OF_WRIST  # finger width, 54 px at the reference wrist
-    W, Hh = fw * 1.6, fw * 1.6
-    img = _canvas(W, Hh, ss)
-    d = ImageDraw.Draw(img)
-    cx, cy = W / 2, Hh / 2
-    band_h = fw * (0.15 if view == "back" else 0.085)
-    # contact shadow on the skin, just below the band (the light is upper left)
-    d.rounded_rectangle([(cx - fw / 2 + 1) * ss, (cy - band_h / 2 + 2) * ss, (cx + fw / 2 - 1) * ss, (cy + band_h / 2 + 3) * ss],
-                        radius=band_h / 2 * ss, fill=(70, 40, 25, 60))
-    # the band across the finger: gold shaded by the cosine of the angle
-    # round the finger, so it darkens and narrows where it turns away at
-    # both sides (it wraps round, rather than lying on top like a bar)
-    x0, x1 = int((cx - fw / 2) * ss), int((cx + fw / 2) * ss)
-    for x in range(x0, x1):
-        u = ((x + 0.5) / ss - cx) / (fw / 2)  # -1..1 across the finger
-        c = math.sqrt(max(0.0, 1 - u * u))
-        lit = 0.55 + 0.45 * c + 0.12 * (-u)  # a touch brighter towards the light (left)
-        h = band_h * (0.55 + 0.45 * c)
-        col = tuple(int(min(255, v * lit)) for v in (214, 166, 64))
-        d.line([x, (cy - h / 2) * ss, x, (cy + h / 2) * ss], fill=col + (255,))
-        hi = tuple(int(min(255, v * (0.7 + 0.35 * c))) for v in (255, 226, 140))
-        d.line([x, (cy - h / 2) * ss, x, (cy - h / 2 + h * 0.3) * ss], fill=hi + (255,))
-    if view == "back":
-        if kind == "aqiq":
-            rx, ry = fw * 0.3, fw * 0.39  # oval along the finger
-            d.ellipse([(cx - rx - 3) * ss, (cy - ry - 3) * ss, (cx + rx + 3) * ss, (cy + ry + 3) * ss],
-                      fill=(200, 150, 56, 255))  # bezel
-            d.ellipse([(cx - rx - 3) * ss, (cy - ry - 3) * ss, (cx + rx + 3) * ss, (cy + ry + 3) * ss],
-                      outline=(250, 222, 140, 255), width=int(1.4 * ss))
-            d.ellipse([(cx - rx) * ss, (cy - ry) * ss, (cx + rx) * ss, (cy + ry) * ss], fill=(178, 40, 22, 255))
-            d.ellipse([(cx - rx * 0.8) * ss, (cy - ry * 0.85) * ss, (cx + rx * 0.7) * ss, (cy + ry * 0.6) * ss],
-                      fill=(214, 70, 36, 255))
-            d.ellipse([(cx - rx * 0.55) * ss, (cy - ry * 0.7) * ss, (cx - rx * 0.05) * ss, (cy - ry * 0.2) * ss],
-                      fill=(255, 190, 160, 200))  # glossy highlight, upper left (the light)
-        else:
-            r = fw * 0.27
-            for k in range(6):  # six claws
-                a = math.radians(k * 60 + 30)
-                px, py = cx + math.cos(a) * r * 1.02, cy + math.sin(a) * r * 1.02
-                d.ellipse([(px - 2.6) * ss, (py - 2.6) * ss, (px + 2.6) * ss, (py + 2.6) * ss], fill=(236, 196, 96, 255))
-            d.ellipse([(cx - r) * ss, (cy - r) * ss, (cx + r) * ss, (cy + r) * ss], fill=(226, 236, 244, 255))
-            for k in range(8):  # facets
-                a = math.radians(k * 45)
-                d.line([cx * ss, cy * ss, (cx + math.cos(a) * r) * ss, (cy + math.sin(a) * r) * ss],
-                       fill=(170, 190, 210, 255), width=int(0.8 * ss))
-            d.ellipse([(cx - r * 0.45) * ss, (cy - r * 0.45) * ss, (cx + r * 0.45) * ss, (cy + r * 0.45) * ss],
-                      fill=(250, 252, 255, 255))
-            d.ellipse([(cx - r * 0.7) * ss, (cy - r * 0.75) * ss, (cx - r * 0.25) * ss, (cy - r * 0.3) * ss],
-                      fill=(255, 255, 255, 255))
-    img = img.resize((int(W), int(Hh)), Image.LANCZOS)
-    return img
-
-
-def draw_wrist_ring(style, camera, ss=4):
-    """A ring round the wrist, split into (back, front) halves of one
-    sprite (back drawn under the hand, front over it). style: a bangle
-    colour name ('red', 'green', 'gold') or 'tennis' (a thin row of small
-    diamonds in white gold)."""
-    rx = REF_WRIST * (0.53 if style == "tennis" else 0.58)  # the bracelet sits close; bangles hang loose
-    ry = max(rx * ELLIPSE[camera], 6)
-    pad = 12
-    W, Hh = int(2 * rx + 2 * pad), int(2 * ry + 2 * pad)
-    img = Image.new("RGBA", (W * ss, Hh * ss), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    cx, cy = W * ss / 2, Hh * ss / 2
-    if style == "tennis":
-        # a thin white-gold line of settings, then close-set small diamonds
-        d.ellipse([cx - rx * ss, cy - ry * ss, cx + rx * ss, cy + ry * ss], outline=(150, 150, 160, 255), width=int(6.5 * ss))
-        d.ellipse([cx - rx * ss, cy - ry * ss + 1.5 * ss, cx + rx * ss, cy + ry * ss + 1.5 * ss],
-                  outline=(90, 80, 70, 110), width=int(2 * ss))  # contact shadow on the skin
-        n = 54
-        for k in range(n):
-            a = 2 * math.pi * k / n
-            px, py = cx + math.cos(a) * rx * ss, cy + math.sin(a) * ry * ss
-            r = 3.6 * ss
-            d.ellipse([px - r, py - r, px + r, py + r], fill=(222, 228, 236, 255))
-            d.ellipse([px - r * 0.6, py - r * 0.75, px + r * 0.15, py - r * 0.1], fill=(255, 255, 255, 255))
-    else:
-        colour, hi = {"red": ((200, 38, 48), (255, 170, 170)), "green": ((40, 150, 70), (170, 240, 180)),
-                      "gold": ((214, 168, 72), (255, 236, 170))}[style]
-        thick = 7.0
-
-        def ring(col, alpha, grow=0.0, width=thick, dy=0.0):
-            box = [cx - (rx + grow) * ss, cy - (ry + grow) * ss + dy * ss,
-                   cx + (rx + grow) * ss, cy + (ry + grow) * ss + dy * ss]
-            d.ellipse(box, outline=col + (alpha,), width=max(1, int(width * ss)))
-
-        ring(tuple(int(c * 0.72) for c in colour), 235)
-        ring(colour, 225, grow=-0.8, width=thick - 2.5)
-        ring(hi, 200, grow=-0.6, width=1.6, dy=-1.6)
-    img = img.resize((W, Hh), Image.LANCZOS)
-    arr = np.asarray(img).copy()
-    back, front = arr.copy(), arr.copy()
-    back[Hh // 2:] = 0
-    front[:Hh // 2] = 0
-    return Image.fromarray(back, "RGBA"), Image.fromarray(front, "RGBA")
-
 
 def jewellery_sprites():
-    """Every sprite, keyed as it is named in data/hand-skins.json, saved to
-    skins/jewellery/ as well."""
-    out = {}
-    for kind in ("aqiq", "diamond"):
-        for view in ("back", "palm", "side"):
-            out[f"ring-{kind}-{view}"] = draw_ring(kind, view)
-    for style in ("red", "green", "gold", "tennis"):
-        for cam in ("e", "t"):
-            back, front = draw_wrist_ring(style, cam)
-            name = f"bangle-{style}" if style != "tennis" else "tennis-bracelet"
-            out[f"{name}-{cam}-back"], out[f"{name}-{cam}-front"] = back, front
+    """Loose 3D-rendered sprites for the game to animate at the anchors,
+    saved to skins/jewellery/: rings on an invisible finger (the finger
+    still hides the back of the band) for each stone and view, and wrist
+    pieces as -front (what shows over the arm) and -back (the parts that
+    peep out behind it) for each camera. Drawn for a 54 px finger and a
+    200 px wrist."""
     jd = os.path.join(OUT, "jewellery")
     os.makedirs(jd, exist_ok=True)
+    for f in os.listdir(jd):
+        if f.endswith(".png"):
+            os.remove(os.path.join(jd, f))
+    out = {}
+    fw = RING_FW
+    for kind in ("aqiq", "diamond"):
+        for view in ("back", "palm", "side"):
+            prims, _, _ = j3.ring_prims(fw, fw, 0.0, fw, kind, view)
+            out[f"ring-{kind}-{view}"] = _to_img(j3.render(prims, (0, 0, 2 * fw, 2 * fw)))
+    for name, style in (("tennis-bracelet", "tennis"), ("bangles-glass", ["glass_red", "glass_green", "gold"])):
+        for cam in ("e", "t"):
+            c = REF_WRIST
+            prims, _, _ = j3.wrist_prims(c, c, 0.0, REF_WRIST, style, cam)
+            box = (0, 0, 2 * c, 2 * c)
+            front = j3.render(prims, box)
+            full = j3.render([p for p in prims if p.mat != "occ"], box)
+            back = full.copy()
+            back[..., 3] = np.clip(full[..., 3] - front[..., 3], 0, 1)
+            out[f"{name}-{cam}-front"] = _to_img(front)
+            out[f"{name}-{cam}-back"] = _to_img(back)
     for k, im in out.items():
-        im.save(os.path.join(jd, f"{k}.png"))
+        bb = im.getbbox()
+        (im.crop(bb) if bb else im).save(os.path.join(jd, f"{k}.png"))
     return out
 
 
-def _paste(layer, sprite, x, y, scale, angle):
-    sp = sprite.resize((max(1, round(sprite.width * scale)), max(1, round(sprite.height * scale))), Image.LANCZOS)
-    sp = sp.rotate(-angle, resample=Image.BICUBIC, expand=True)
-    layer.alpha_composite(sp, (int(round(x - sp.width / 2)), int(round(y - sp.height / 2))))
+def _to_img(rgba):
+    return Image.fromarray(np.clip(rgba * 255 + 0.5, 0, 255).astype(np.uint8), "RGBA")
 
 
-RING_FW = REF_WRIST * FINGER_OF_WRIST  # the finger width ring sprites are drawn for
+RING_FW = REF_WRIST * FINGER_OF_WRIST  # the finger width the loose ring sprites are drawn for
 
 
-def place_jewellery(hand_img, hands, items, camera, sprites):
-    """Composite jewellery onto a hand image. hands: the pose's hand anchors
-    (already mirrored if the image is); items: {"right": [...], "left": [...]}
-    from the character, each {"type": "ring"|"wrist", "sprite": name or list
-    of names}.
+def place_jewellery(hand_img, hands, items, camera):
+    """Composite 3D jewellery onto a hand image. hands: the pose's hand
+    anchors (already mirrored if the image is); items: {"right": [...],
+    "left": [...]} from the character, each {"type": "ring", "stone":
+    "aqiq"|"diamond"} or {"type": "wrist", "style": "tennis" | [bangle
+    materials]}.
 
-    Rings (hands v2): on the ring finger at the landmark placement
-    (build/hand_landmarks.py), scaled to the measured finger width, turned
-    to the finger's first segment; 'back' shows band and stone, 'palm' and
-    'side' a thin band, 'hidden' nothing. The ring is clipped to the hand's
-    silhouette so it never hangs into the background or a tool gap.
-    Wrist items sit at the bracelet anchor (the wrist joint, across the
-    forearm), stacked along the arm, 13 px apart at the reference wrist;
-    poses without one fall back to the cuff anchor."""
-    base = Image.new("RGBA", hand_img.size, (0, 0, 0, 0))
-    over = Image.new("RGBA", hand_img.size, (0, 0, 0, 0))
-    rings = Image.new("RGBA", hand_img.size, (0, 0, 0, 0))
+    Rings sit at the ring anchor (hands v2 landmark placement), scaled to
+    the measured finger width, turned to the finger's first segment and
+    tipped out of the picture plane by its curl; the view (back / palm /
+    side) turns the stone to the camera, behind the finger or onto its
+    edge; 'hidden' draws nothing. Wrist pieces sit at the bracelet anchor
+    (wrist anchor as a fallback), re-measured across the silhouette."""
+    alpha = np.asarray(hand_img.convert("RGBA"))[..., 3]
+    jobs = []
     for hand in hands:
         wrist = hand.get("bracelet") or hand.get("wrist")
         for it in items.get(hand["side"], []):
             if it["type"] == "wrist" and wrist:
-                k = wrist["width_px"] / REF_WRIST
-                names = it["sprite"] if isinstance(it["sprite"], list) else [it["sprite"]]
-                a = math.radians(wrist["angle_deg"])
-                along = np.array([math.sin(a), -math.cos(a)])
-                for j, name in enumerate(names):
-                    off = (j - (len(names) - 1) / 2) * 13 * k
-                    x, y = wrist["x"] + along[0] * off, wrist["y"] + along[1] * off
-                    _paste(base, sprites[f"{name}-{camera}-back"], x, y, k, wrist["angle_deg"])
-                    _paste(over, sprites[f"{name}-{camera}-front"], x, y, k, wrist["angle_deg"])
+                jobs.append(j3.wrist_item(alpha, wrist, it["style"], camera))
             elif it["type"] == "ring":
                 r = hand.get("ring") or {}
                 if r.get("view") in (None, "hidden") or "x" not in r:
                     continue
-                view = "back" if r["view"] == "back" else "palm"
-                _paste(rings, sprites[f"{it['sprite']}-{view}"], r["x"], r["y"], r["width_px"] / RING_FW, r["angle_deg"])
-    # clip the rings to the hand (the stone may stand a little proud of the
-    # finger's outline, so the silhouette is grown by a few pixels)
-    sil = hand_img.getchannel("A").filter(ImageFilter.MaxFilter(5))
-    ra = np.asarray(rings).copy()
-    ra[..., 3] = (ra[..., 3].astype(np.float64) * np.asarray(sil) / 255.0).astype(np.uint8)
-    over.alpha_composite(Image.fromarray(ra, "RGBA"))
-    base.alpha_composite(hand_img)
-    base.alpha_composite(over)
-    return base
+                jobs.append(j3.ring_item(r, it["stone"], r["view"], r.get("facing", 0.0), r.get("curl_deg", 0.0)))
+    return j3.composite(hand_img, jobs) if jobs else hand_img
 
 
 # ---------------------------------------------------------------------------
@@ -290,15 +172,20 @@ def apply_overlay(im, texture_path, hands, opacity=0.85):
     return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
 
 
-# Boxes (master pixels) where the sleeve mask is erased by hand: a5-f1's
-# forearm is so pale it reads as cream just above the cuff; d2-e and f4
-# kept a speck of sleeve colour on the forearm.
-SLEEVE_ERASE = {"hand-a5-wave-f1-e": [(540, 760, 660, 866)],
-                # hands v2: sleeve-colour specks on the forearm, found on the nani sheet
-                "hand-d2-c-hold-e": [(1165, 1113, 1219, 1179)],
-                "hand-f4-phone-two-hands-e": [(1683, 1273, 1731, 1323)],
-                # d6-f1 is a5-f1 and its mirror (build/hand_guides.py): a5's box, on both arms
-                "hand-d6-two-hand-catch-f1-open-e": [(127, 760, 247, 866), (1095, 760, 1215, 866)]}
+# Lines (master pixels, x0, y0, x1, y1) along the top edge of a cuff where
+# pale forearm skin reads as cream: sleeve weight on the hand's side of the
+# line (above it) is dropped, feathered over a few pixels. This replaces
+# v1/v2's rectangular erase boxes, which left hard-edged blocks of sleeve
+# colour on the forearm.
+# Poses whose arms cross or touch, where the per-arm edge fit can't separate
+# them: no envelope fill; their cuff lining is given as a polygon instead.
+NO_ENVELOPE = {"hand-e4-clap-f2-together-e"}
+CUFF_FILL = {"hand-e4-clap-f2-together-e": [[(250, 770), (292, 784), (342, 806), (400, 842), (468, 876),
+                                             (500, 902), (470, 960), (440, 1024), (250, 1024)],
+                                            [(486, 908), (560, 887), (640, 868), (702, 853), (740, 858),
+                                             (780, 1024), (500, 1024)]]}
+CUFF_CAPS = {"hand-a5-wave-f1-e": [(380, 872, 680, 888)],
+             "hand-d6-two-hand-catch-f1-open-e": [(107, 888, 407, 872), (935, 872, 1235, 888)]}  # a5 mirrored (x' = 787 - x) and a5 shifted by +555
 
 
 def clip_sleeve_to_cuff(w, master, hands):
@@ -343,24 +230,161 @@ def clip_sleeve_to_cuff(w, master, hands):
     return w * keep
 
 
-def skin_character(master, char, hands, camera, sprites, pose_id=None, mirrored=False):
+
+
+def _cap(w, lines, width, mirrored):
+    H_, W_ = w.shape
+    yy, xx = np.mgrid[0:H_, 0:W_]
+    for x0, y0, x1, y1 in lines:
+        if mirrored:
+            x0, x1 = width - 1 - x0, width - 1 - x1
+        yl = y0 + (xx - x0) * (y1 - y0) / (x1 - x0)
+        inside = (xx >= min(x0, x1) - 40) & (xx <= max(x0, x1) + 40)
+        keep = np.clip((yy - yl) / 4.0 + 0.5, 0, 1)
+        w = np.where(inside, w * keep, w)
+    return w
+
+
+def sleeve_weight(master, hands, pose_id=None, mirrored=False):
+    """Soft 0..1 sleeve mask (hands v3). The colour mask (hand_masks,
+    clipped at the cuff's top edge along each arm) misses the cuff's
+    warm-shaded sides and its lining, which read as skin: they came out as
+    stair-stepped cream patches on the girl and Nani (the b4 cuff sliver
+    among them). v3 closes those notches: the mask is morphologically
+    closed with a disc about an eighth of the wrist wide and its holes are
+    filled, inside the silhouette; the closing can only fill concave bites
+    out of the sleeve, never grow it past its straight top edge. Pale
+    forearm that reads as cream is cut along CUFF_CAPS lines."""
+    from scipy import ndimage
+    w = clip_sleeve_to_cuff(hm.sleeve_region(master), master, hands)
+    w = _cap(w, CUFF_CAPS.get(pose_id, []), master.width, mirrored)
+    solid = np.asarray(master.convert("RGBA"))[..., 3] > 40
+    widths = [h["wrist"]["width_px"] for h in hands if h.get("wrist")] or [240]
+    r = max(6, int(min(widths) * 0.13 / 2))  # at half resolution
+    half = w[::2, ::2] > 0.5
+    yy, xx = np.mgrid[-r:r + 1, -r:r + 1]
+    disc = (xx * xx + yy * yy) <= r * r
+    pad = r + 2
+    closed = ndimage.binary_closing(np.pad(half, pad), structure=disc)[pad:-pad, pad:-pad]
+    closed = ndimage.binary_fill_holes(closed)
+    closed = (np.kron(closed, np.ones((2, 2), dtype=bool))[:w.shape[0], :w.shape[1]] & solid).astype(np.float64)
+    if pose_id not in NO_ENVELOPE:
+        env, above = _envelope_fill(w, solid, hands)
+        closed = np.maximum(closed, env)
+        closed[above] = 0.0
+        w = np.where(above, 0.0, w)
+    for poly in CUFF_FILL.get(pose_id, []):
+        pts = [((master.width - 1 - x) if mirrored else x, y) for x, y in poly]
+        pm = Image.new("L", master.size, 0)
+        ImageDraw.Draw(pm).polygon(pts, fill=255)
+        closed = np.maximum(closed, (np.asarray(pm) > 0) & solid)
+    closed = _cap(closed, CUFF_CAPS.get(pose_id, []), master.width, mirrored)
+    soft = ndimage.gaussian_filter(closed, 1.0) * solid
+    return np.maximum(w, soft)
+
+
+def _envelope_fill(w, solid, hands):
+    """Fill each cuff up to its top edge. The arm's direction is snapped to
+    the nearer image axis; across the arm, in 12 px strips, the top of the
+    sleeve mask (its furthest point towards the hand) is measured and the
+    upper envelope of the strips' tops fitted (a line, then a gentle
+    quadratic), rejecting strips that fall short of it (those are the bites
+    where the cuff's shaded side read as skin, which is what this fills).
+    Everything in the silhouette on the elbow side of the fitted edge, and
+    connected to the sleeve, is sleeve; mask spikes well past the edge are
+    returned as 'above', to be cut."""
+    from scipy import ndimage
+    m = w > 0.5
+    H_, W_ = m.shape
+    above = np.zeros((H_, W_), bool)
+    yy, xx = np.mgrid[0:H_, 0:W_]
+    out = np.zeros((H_, W_), bool)
+    for h in hands:
+        wr = h.get("wrist")
+        if not wr:
+            continue
+        a = math.radians(wr["angle_deg"])
+        ax, ay = math.sin(a), -math.cos(a)
+        if abs(ax) > abs(ay):
+            t, side, s0 = xx * np.sign(ax), yy, wr["y"]
+        else:
+            t, side, s0 = yy * np.sign(ay), xx, wr["x"]
+        W = wr["width_px"]
+        band = np.abs(side - s0) < W * 1.3
+        # strip tops, from the mask near this arm
+        mm = m & band
+        if mm.sum() < 2000:
+            continue
+        ss, tt = [], []
+        for lo in np.arange(s0 - W * 1.3, s0 + W * 1.3, 12):
+            cs = mm & (side >= lo) & (side < lo + 12)
+            if cs.sum() > 30:
+                ss.append(lo + 6)
+                tt.append(np.percentile(t[cs], 99.5))
+        if len(ss) < 5:
+            continue
+        ss, tt = np.array(ss), np.array(tt)
+        # upper envelope: a line through the strips first (rejecting the
+        # ones that fall short: the bites), then a gentle quadratic through
+        # what is left, for the cuff's curved edge
+        keep = np.ones(len(ss), bool)
+        for _ in range(5):
+            cf1 = np.polyfit(ss[keep], tt[keep], 1)
+            res = tt - np.polyval(cf1, ss)
+            keep = res > -max(6.0, 0.5 * np.std(res[keep]))
+        cf = np.polyfit(ss[keep], tt[keep], 2) if keep.sum() >= 5 else np.array([0.0, *cf1])
+        span = (ss[keep].max() - ss[keep].min()) / 2
+        if abs(cf[0]) * span * span > 0.12 * W:  # too bent: keep the line
+            cf = np.array([0.0, *cf1])
+        lo_s, hi_s = ss[keep].min() - 6, ss[keep].max() + 6
+        inside = (side >= lo_s) & (side <= hi_s)
+        # the curve inside the measured span, its end tangent's line beyond it
+        edge = np.clip(side, lo_s, hi_s)
+        slope = 2 * cf[0] * edge + cf[1]
+        top = np.polyval(cf, edge) + np.where(inside, 0.0, slope * (side - edge))
+        g = solid & band & (t < top)
+        lbl, _ = ndimage.label(g)
+        ids = np.unique(lbl[g & m])
+        out |= np.isin(lbl, ids[ids > 0])
+        above |= band & (t > top + 14)  # spikes well past the edge
+    return out.astype(np.float64), above
+
+
+def recolour_sleeve(im, master, weight, target_hex):
+    """Recolour the sleeve to target_hex, keeping its shading, with the
+    lightness read off the untouched master (so cuff pixels the skin pass
+    recoloured don't come out as darker patches)."""
+    rgba = np.asarray(im.convert("RGBA")).astype(np.float64)
+    L = ga.rgb_to_lab(np.asarray(master.convert("RGB")).astype(np.float64))[..., 0]
+    core = weight > 0.8
+    if core.sum() < 2000:
+        return im
+    mL = np.median(L[core])
+    t = ga.rgb_to_lab(ga.hex_to_rgb(target_hex))
+    tC, th = np.hypot(t[1], t[2]), np.arctan2(t[2], t[1])
+    L2 = t[0] + (L - mL) * 0.95
+    C2 = tC * np.clip(1.0 + (mL - L) / 120.0, 0.8, 1.35)
+    new = ga.lab_to_rgb(np.stack([L2, C2 * np.cos(th), C2 * np.sin(th)], axis=-1))
+    rgba[..., :3] = rgba[..., :3] * (1 - weight[..., None]) + new * weight[..., None]
+    return Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA")
+
+
+def skin_character(master, char, hands, camera, pose_id=None, mirrored=False):
+    """mirrored: the master was flipped for a left hand; it is re-lit from
+    the upper left (hand_jewellery3d.relight_mirrored) after recolouring."""
     im = master
-    # the sleeve mask is measured on the untouched master: after the skin
-    # recolour the skin/cuff classifier would see different colours
-    sleeve_w = None
-    if char.get("sleeve"):
-        sleeve_w = clip_sleeve_to_cuff(hm.sleeve_region(master), master, hands)
-        for x0, y0, x1, y1 in SLEEVE_ERASE.get(pose_id, []):
-            if mirrored:
-                x0, x1 = master.width - x1, master.width - x0
-            sleeve_w[y0:y1, x0:x1] = 0.0
+    sleeve_w = sleeve_weight(master, hands, pose_id, mirrored) if char.get("sleeve") else None
     if char.get("skin"):
         im, _ = ga.normalise_skin(im, ga.rgb_to_lab(ga.hex_to_rgb(char["skin"])), tolerance=0.0)
     if char.get("sleeve"):
-        im, _ = hm.recolour_sleeve(im, char["sleeve"], weight=sleeve_w)
+        im = recolour_sleeve(im, master, sleeve_w, char["sleeve"])
+    if mirrored:
+        im = j3.relight_mirrored(im)
+        if char.get("skin"):  # re-centre the midtone the relight moved a little
+            im, _ = ga.normalise_skin(im, ga.rgb_to_lab(ga.hex_to_rgb(char["skin"])), tolerance=1.0)
     if char.get("overlay") and char["overlay"].get("texture"):
         im = apply_overlay(im, os.path.join(GAME, char["overlay"]["texture"]), hands)
-    return place_jewellery(im, hands, char.get("jewellery", {}), camera, sprites)
+    return place_jewellery(im, hands, char.get("jewellery", {}), camera)
 
 
 def mirror_hands(hands, width):
@@ -523,28 +547,22 @@ def measure_wrists(anchors, masters):
                                                  "width_px": w["wrist_px"], "source": w["source"]}
 
 
-_SPRITES = None
-
-
 def _bake_one(job):
     """Bake one pose for one character (and its left variant); returns
     [(label, path)]. Runs in a worker process with --jobs."""
-    global _SPRITES
     name, mid, output = job
-    if _SPRITES is None:
-        _SPRITES = jewellery_sprites()
     skins = json.load(open(SKINS))
     char = skins[name]
     a = load_anchors()[mid]
     od = os.path.join(OUT, name)
     master = Image.open(ga.resolve_path(output)).convert("RGBA")
-    out = skin_character(master, char, a["hands"], a["camera"], _SPRITES, mid)
+    out = skin_character(master, char, a["hands"], a["camera"], mid)
     res = [(mid.replace("hand-", ""), os.path.join(od, f"{mid}.webp"))]
     out.save(res[0][1], lossless=True)
     if char.get("left_variant") and len(a["hands"]) == 1:
         mirrored = master.transpose(Image.FLIP_LEFT_RIGHT)
         mh = mirror_hands(a["hands"], master.width)
-        out_l = skin_character(mirrored, char, mh, a["camera"], _SPRITES, mid, mirrored=True)
+        out_l = skin_character(mirrored, char, mh, a["camera"], mid, mirrored=True)
         res.append((mid.replace("hand-", "") + " L", os.path.join(od, f"{mid}-left.webp")))
         out_l.save(res[1][1], lossless=True)
     print(f"[{name}] {mid}", flush=True)

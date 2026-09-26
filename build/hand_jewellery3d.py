@@ -466,7 +466,7 @@ def composite(base, items, jobs_alpha_ref=None):
 
 def ring_item(anchor, kind, view, facing=0.0, curl=0.0):
     w = anchor["width_px"]
-    tilt = min(55.0, 12.0 + 0.5 * max(0.0, curl))
+    tilt = 12.0 + 0.3 * min(50.0, max(0.0, curl))  # curled fingers: a gentle tip, else the far arc hangs below
     prims, C, A = ring_prims(anchor["x"], anchor["y"], anchor["angle_deg"], w, kind, view, tilt,
                              side_sign=1.0 if facing >= 0 else -1.0)
     half = 0.9 * w
