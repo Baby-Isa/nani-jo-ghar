@@ -263,6 +263,8 @@ Nani's house is about to receive guests. The child tidies **one room** for them,
 
 ### P.2 The mini-games in each stage
 
+*Superseded by Q.3–Q.4 (the quality pass) for which variants exist: kept are 1a (+1b), 2b (+2a as its L1), 3a (+3c as L4 rows), 3b, 3d, 4a (+4b), 4c, 5a, 5b; cut are 1c, 1d, 2c, 2d, 4d; 5c is the shared send-off line. All controls are tap-tap. The tables below remain for the level detail of the kept ones.*
+
 Each variant is a data-driven round on a named mechanic; levels list only what changes (Cook's shape, `data/tidy.json`). *Reuses*: **T** = already in `js/tidy/`, **Cook** = `js/cook/mechanics/`, **shared** = `js/shared/` (with the other mode named), **new** = to build.
 
 #### Stage 1: Gather ("Bring me the …")
