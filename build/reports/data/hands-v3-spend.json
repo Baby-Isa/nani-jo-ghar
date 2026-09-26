@@ -1,5 +1,5 @@
 {
- "total_estimate": 0.2,
+ "total_estimate": 1.55,
  "runs": [
   {
    "job": "b1",
@@ -80,6 +80,546 @@
     "total_tokens": 1492
    },
    "secs": 17.7
+  },
+  {
+   "job": "b2-vertical-grip-e",
+   "file": "build/hand-v3-raw/b2-vertical-grip-e-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 409,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 215
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1465
+   },
+   "secs": 15.5
+  },
+  {
+   "job": "b2-vertical-grip-e",
+   "file": "build/hand-v3-raw/b2-vertical-grip-e-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 409,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 215
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1465
+   },
+   "secs": 18.2
+  },
+  {
+   "job": "b3-stick-grip-e",
+   "file": "build/hand-v3-raw/b3-stick-grip-e-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 408,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 214
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1464
+   },
+   "secs": 14.8
+  },
+  {
+   "job": "b3-stick-grip-e",
+   "file": "build/hand-v3-raw/b3-stick-grip-e-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 408,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 214
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1464
+   },
+   "secs": 15.6
+  },
+  {
+   "job": "b5-hook-grip-e",
+   "file": "build/hand-v3-raw/b5-hook-grip-e-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 411,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 217
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1467
+   },
+   "secs": 16.7
+  },
+  {
+   "job": "b5-hook-grip-e",
+   "file": "build/hand-v3-raw/b5-hook-grip-e-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 411,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 217
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1467
+   },
+   "secs": 14.4
+  },
+  {
+   "job": "b5-hook-grip-t",
+   "file": "build/hand-v3-raw/b5-hook-grip-t-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 411,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 217
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1467
+   },
+   "secs": 17.0
+  },
+  {
+   "job": "b5-hook-grip-t",
+   "file": "build/hand-v3-raw/b5-hook-grip-t-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 411,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 217
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1467
+   },
+   "secs": 16.7
+  },
+  {
+   "job": "c2-tripod-grip-t",
+   "file": "build/hand-v3-raw/c2-tripod-grip-t-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 408,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 214
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1464
+   },
+   "secs": 15.0
+  },
+  {
+   "job": "c2-tripod-grip-t",
+   "file": "build/hand-v3-raw/c2-tripod-grip-t-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 408,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 214
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1464
+   },
+   "secs": 16.7
+  },
+  {
+   "job": "c3-side-pinch-e",
+   "file": "build/hand-v3-raw/c3-side-pinch-e-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 414,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 220
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1470
+   },
+   "secs": 15.1
+  },
+  {
+   "job": "c3-side-pinch-e",
+   "file": "build/hand-v3-raw/c3-side-pinch-e-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 414,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 220
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1470
+   },
+   "secs": 15.8
+  },
+  {
+   "job": "c3-side-pinch-t",
+   "file": "build/hand-v3-raw/c3-side-pinch-t-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 414,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 220
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1470
+   },
+   "secs": 14.0
+  },
+  {
+   "job": "c3-side-pinch-t",
+   "file": "build/hand-v3-raw/c3-side-pinch-t-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 414,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 220
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1470
+   },
+   "secs": 16.1
+  },
+  {
+   "job": "d1-grab-f2-closed-e",
+   "file": "build/hand-v3-raw/d1-grab-f2-closed-e-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 406,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 212
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1462
+   },
+   "secs": 17.2
+  },
+  {
+   "job": "d1-grab-f2-closed-e",
+   "file": "build/hand-v3-raw/d1-grab-f2-closed-e-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 406,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 212
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1462
+   },
+   "secs": 15.1
+  },
+  {
+   "job": "d1-grab-f2-closed-t",
+   "file": "build/hand-v3-raw/d1-grab-f2-closed-t-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 406,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 212
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1462
+   },
+   "secs": 15.3
+  },
+  {
+   "job": "d1-grab-f2-closed-t",
+   "file": "build/hand-v3-raw/d1-grab-f2-closed-t-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 406,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 212
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1462
+   },
+   "secs": 17.4
+  },
+  {
+   "job": "d2-c-hold-t",
+   "file": "build/hand-v3-raw/d2-c-hold-t-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 416,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 222
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1472
+   },
+   "secs": 15.4
+  },
+  {
+   "job": "d2-c-hold-t",
+   "file": "build/hand-v3-raw/d2-c-hold-t-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 416,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 222
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1472
+   },
+   "secs": 17.6
+  },
+  {
+   "job": "d3-two-hand-bowl-t",
+   "file": "build/hand-v3-raw/d3-two-hand-bowl-t-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 415,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 221
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1471
+   },
+   "secs": 15.3
+  },
+  {
+   "job": "d3-two-hand-bowl-t",
+   "file": "build/hand-v3-raw/d3-two-hand-bowl-t-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 415,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 221
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1471
+   },
+   "secs": 17.5
+  },
+  {
+   "job": "d4-squeeze-f1-half-t",
+   "file": "build/hand-v3-raw/d4-squeeze-f1-half-t-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 407,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 213
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1463
+   },
+   "secs": 14.2
+  },
+  {
+   "job": "d4-squeeze-f1-half-t",
+   "file": "build/hand-v3-raw/d4-squeeze-f1-half-t-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 407,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 213
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1463
+   },
+   "secs": 14.6
+  },
+  {
+   "job": "a5f2",
+   "file": "build/hand-v3-raw/a5f2-v0.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 383,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 189
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1439
+   },
+   "secs": 15.1
+  },
+  {
+   "job": "a5f2",
+   "file": "build/hand-v3-raw/a5f2-v1.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 383,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 189
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1439
+   },
+   "secs": 14.0
+  },
+  {
+   "job": "a5f2",
+   "file": "build/hand-v3-raw/a5f2-v2.png",
+   "quality": "medium",
+   "cost_estimate": 0.05,
+   "usage": {
+    "input_tokens": 383,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 189
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1439
+   },
+   "secs": 15.5
   }
  ]
 }

@@ -107,7 +107,14 @@ def _to_img(rgba):
 RING_FW = REF_WRIST * FINGER_OF_WRIST  # the finger width the loose ring sprites are drawn for
 
 
-def place_jewellery(hand_img, hands, items, camera):
+# Where a hand's jewellery passes behind the other arm (master pixels): its
+# wrist items are hidden inside these polygons. e4-f2: the rear (left)
+# wrist lies behind the front forearm.
+OCCLUDERS = {"hand-e4-clap-f2-together-e": {"left": [[(452, 560), (700, 560), (722, 900), (770, 1024),
+                                                      (478, 1024), (470, 900), (448, 700)]]}}
+
+
+def place_jewellery(hand_img, hands, items, camera, pose_id=None, mirrored=False):
     """Composite 3D jewellery onto a hand image. hands: the pose's hand
     anchors (already mirrored if the image is); items: {"right": [...],
     "left": [...]} from the character, each {"type": "ring", "stone":
@@ -126,7 +133,17 @@ def place_jewellery(hand_img, hands, items, camera):
         wrist = hand.get("bracelet") or hand.get("wrist")
         for it in items.get(hand["side"], []):
             if it["type"] == "wrist" and wrist:
-                jobs.append(j3.wrist_item(alpha, wrist, it["style"], camera))
+                job = j3.wrist_item(alpha, wrist, it["style"], camera)
+                side = hand["side"]
+                if mirrored:
+                    side = "left" if side == "right" else "right"
+                polys = OCCLUDERS.get(pose_id, {}).get(side, [])
+                if polys:
+                    pm = Image.new("L", hand_img.size, 0)
+                    for poly in polys:
+                        ImageDraw.Draw(pm).polygon([((hand_img.width - 1 - x) if mirrored else x, y) for x, y in poly], fill=255)
+                    job["hide"] = np.asarray(pm) > 0
+                jobs.append(job)
             elif it["type"] == "ring":
                 r = hand.get("ring") or {}
                 if r.get("view") in (None, "hidden") or "x" not in r:
@@ -384,7 +401,7 @@ def skin_character(master, char, hands, camera, pose_id=None, mirrored=False):
             im, _ = ga.normalise_skin(im, ga.rgb_to_lab(ga.hex_to_rgb(char["skin"])), tolerance=1.0)
     if char.get("overlay") and char["overlay"].get("texture"):
         im = apply_overlay(im, os.path.join(GAME, char["overlay"]["texture"]), hands)
-    return place_jewellery(im, hands, char.get("jewellery", {}), camera)
+    return place_jewellery(im, hands, char.get("jewellery", {}), camera, pose_id, mirrored)
 
 
 def mirror_hands(hands, width):

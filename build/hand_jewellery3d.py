@@ -440,6 +440,8 @@ def composite(base, items, jobs_alpha_ref=None):
         s_img = Image.fromarray((sil[y0:y1, x0:x1] * 255).astype(np.uint8), "L")
         allow = np.asarray(s_img.filter(ImageFilter.MaxFilter(2 * (grow // 2) + 1))).astype(np.float64) / 255.0
         rgba[..., 3] *= allow[:rgba.shape[0], :rgba.shape[1]]
+        if it.get("hide") is not None:  # behind another arm
+            rgba[..., 3] *= ~it["hide"][y0:y0 + rgba.shape[0], x0:x0 + rgba.shape[1]]
         # light it like the skin under it
         f = np.clip(0.52 + 0.50 * illum[y0:y1, x0:x1] / ref, 0.62, 1.06)[:rgba.shape[0], :rgba.shape[1]]
         rgba[..., :3] *= f[..., None]

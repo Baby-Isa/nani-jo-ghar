@@ -59,12 +59,13 @@ def key_blue(im):
     near = ndimage.binary_dilation(w > 0.5, iterations=5)
     chroma = np.hypot(lab[..., 1], lab[..., 2])
     alpha = np.where(near & (chroma < 14), 0, alpha)
-    # drop specks and fragments of the tool's shadow that survive (tiny blobs)
+    # drop specks and fragments of the tool's shadow that survive (blobs
+    # under 3% of the largest; a second hand is far bigger)
     lbl, n = ndimage.label(alpha > 0.1)
     if n > 1:
         sizes = ndimage.sum(np.ones_like(alpha), lbl, range(1, n + 1))
-        big = np.argmax(sizes) + 1
-        alpha = np.where((lbl == big) | (lbl == 0), alpha, 0)
+        keep_ids = [i + 1 for i, sz in enumerate(sizes) if sz >= 0.03 * sizes.max()]
+        alpha = np.where(np.isin(lbl, keep_ids) | (lbl == 0), alpha, 0)
     # the tool's contact shadow on the (transparent) ground: faint pixels
     # well away from the hand
     far = ndimage.distance_transform_edt(alpha < 0.6) > 8
@@ -127,11 +128,13 @@ def clear_frame(im, margin=24):
 
 def main():
     cmd = sys.argv[1]
-    if cmd == "b1":
-        raw = Image.open(sys.argv[2]).convert("RGBA")
-        im, info = normalise(key_blue(raw), "hand-b1-handle-grip-t")
-        im.save(os.path.join(MASTER, "hand-b1-handle-grip-t.png"))
-        print(json.dumps({k: v for k, v in info.items() if not isinstance(v, (list, dict))}))
+    if cmd in ("b1", "key"):
+        # key POSE RAW: a blue-tool render keyed and normalised into the master
+        pose, raw_path = ("b1-handle-grip-t", sys.argv[2]) if cmd == "b1" else (sys.argv[2], sys.argv[3])
+        raw = Image.open(raw_path).convert("RGBA")
+        im, info = normalise(key_blue(raw), f"hand-{pose}")
+        im.save(os.path.join(MASTER, f"hand-{pose}.png"))
+        print(pose, json.dumps({k: v for k, v in info.items() if not isinstance(v, (list, dict))}))
     elif cmd == "edges":
         for pose in sys.argv[2:]:
             p = os.path.join(MASTER, f"{pose}.png")

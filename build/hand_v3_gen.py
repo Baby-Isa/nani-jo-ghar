@@ -84,6 +84,20 @@ for _k, (_shape, _obj) in TOOLS.items():
         "no cuts, notches or jagged edges; keep the pose, the finger positions and the camera exactly as they are. No "
         f"other object. {KEEP}"))
 
+JOBS["b5-hook-grip-t"]["n"] = 2
+JOBS["b5-hook-grip-t"]["prompt"] = (
+    f"{STYLE}\n\nEdit the attached image. Seen from directly above, a child's right hand carries a bucket by its "
+    "handle: the handle is a plain, smooth, matte, bright pure cobalt-blue rod running straight across the frame from "
+    "left to right, BELOW the knuckles, and the four fingers hook round it and curl under it, so we see the backs of "
+    "the fingers bent over the rod and the rod coming out on both sides of the hand. The thumb rests alongside, "
+    f"relaxed. Only the blue rod, no bucket, no other object. {KEEP}")
+JOBS["a2"] = dict(guide="a2-guide.png", n=3, prompt=(
+    f"{STYLE}\n\nEdit the attached image. Seen from directly above, the child's right hand presses down on dough "
+    "with the HEEL of the hand: the heel and the back of the palm stay where they are, but the four fingers and the "
+    "thumb are lifted and bent back UP towards the camera, so they are strongly foreshortened: we see them short, "
+    "from their tips, pointing at us, only the fingertips and nails and the tops of the knuckles showing, much "
+    f"shorter than in the image. The hand is not flat. No dough, no other object. {KEEP}"))
+
 
 def square_1024(im):
     """Pad to a square (centred) and resize to 1024: the edit size."""
@@ -119,6 +133,7 @@ def make_guides():
         g.alpha_composite(lay)
         g.alpha_composite(m)
         square_1024(g).save(os.path.join(GUIDES, f"{pose}-blue-guide.png"))
+    square_1024(Image.open(os.path.join(M, "hand-a1-flat-palm-t.png")).convert("RGBA")).save(os.path.join(GUIDES, "a2-guide.png"))
     # a5-f2: the missing little finger, a masked edit (transparent = edit here)
     m = Image.open(os.path.join(M, "hand-a5-wave-f2-e.png")).convert("RGBA")
     square_1024(m).save(os.path.join(GUIDES, "a5f2-guide.png"))
