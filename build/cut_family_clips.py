@@ -7,32 +7,43 @@ sound examples for future use"). This script turns such a recording into:
 
   assets/audio/family/mum/<id>.mp3     Mum's best take (the main voice)
   assets/audio/family/zafar/<id>.mp3   Zafar's best take (the second voice)
-  data/family-audio.json               the manifest: one row per clip
+  data/family-audio.json               the manifest: a flat list of
+      {id, qid, kutchi, english, speaker, file, start, end, source,
+       confidence, note}. A word that couldn't be cut is a row too, with
+      file/start/end null and confidence "skipped", so read rows with a file.
 
 How it works:
  1. Words. Whisper (OpenAI API, whisper-1) transcribes ~25 s pieces cut in
     pauses, with 2 s of overlap, asking for word timestamps. Whole-file
     transcription drops the Kutchi; short pieces keep it. Cached.
  2. Takes. A 10 ms energy gate finds the speech; spans closer than a gap
-    (0.3 s for a word, 0.5 s for a phrase) join into one take.
+    join into takes at several gaps (0.15-0.75 s), and long takes are also
+    split at their deepest dip, so a word said twice quickly and a phrase
+    with pauses inside it both turn up as one candidate each.
  3. Speakers. Each take gets a pitch (autocorrelation), a peak level and a
     mean MFCC. Takes that are clearly one speaker (Mum: high pitch, further
     from the phone; Zafar: low pitch, close to it) train a two-class Fisher
-    discriminant that labels the rest. Order is the tie-break: Mum first.
+    discriminant that labels the rest.
  4. Candidates. Each item's window runs from its question ("A8.8") to the
     next question. Every take in it that could be the word (the right length,
-    not English talk) is transcribed on its own by Whisper, prompted with the
-    window's Kutchi words, and scored by how closely it matches.
+    not English talk) is transcribed on its own by Whisper, as Swahili (its
+    spelling is phonetic Latin, like the family's Kutchi), prompted with the
+    window's Kutchi words, and scored by how closely it matches. The prompt
+    can make Whisper "hear" the word in a fragment, so promising takes are
+    heard again without it and the weaker hearing counts.
  5. Best take per speaker: the closest match, then quality (not clipped, a
-    clear pause either side, no one else talking), then the later take when
-    the item says "take the last one". A pin in the item list overrides.
+    clear pause either side, no one else talking, not two takes in one),
+    then the later take when the item says "take the last one". A pin in
+    the item list overrides; B_PINS holds this recording's, with reasons.
  6. Clip. Trimmed to 80 ms of silence each side (less if a neighbour is
     closer), 5 ms fades, K-weighted loudness to -16 LUFS with a -1 dBFS peak
     ceiling, mono MP3 64 kbps 44.1 kHz.
  7. Check. Each final clip is re-transcribed with no prompt ("listening by
     proxy"); a clip whose transcript doesn't resemble the word is flagged in
-    the manifest (confidence "low" plus a note). Flagged clips are kept for
-    Zafar to judge by ear in lab/family-audio.html; skipped items are listed.
+    the manifest (confidence "low", with "FLAG" in the note); "high" and
+    "medium" resemble it. Whisper doesn't know Kutchi, so this is only a
+    proxy: flagged clips are kept for Zafar to judge by ear in
+    lab/family-audio.html, which also lists what was skipped and why.
 
 The item list says what to look for. B.m4a's list is built in (B_ITEMS
 below, with the pins this recording needed). For the next recording, write a
@@ -45,12 +56,14 @@ JSON list in the same shape and pass it with --items:
                "alias": ["hakro kap"],  # optional: Whisper's spellings
                "mum": [s, e],           # optional pin: exact take times
                "zafar": "skip: reason", # optional: don't cut this speaker
-               "note": "..."}]}]
+               "note": "...", "note_mum": "..."}]}]  # notes for all / one speaker
 
 Usage:
   python3 build/cut_family_clips.py sources/audio/mum-2026-09-26/B.m4a
   python3 build/cut_family_clips.py <recording> --items items.json [--review]
-  --review prints every candidate and the choice, and writes nothing.
+  --review prints every candidate and the choice, and writes nothing
+  (-v prints them on a real run too). Work through the review, pin or skip
+  what the scores got wrong, and run again.
 The manifest is merged: rows from other recordings are kept, rows from this
 one are replaced. Needs OPENAI_API_KEY, numpy, scipy, requests, wordfreq,
 and ffmpeg (or imageio-ffmpeg). Caches Whisper results in --cache
@@ -145,6 +158,7 @@ B_ITEMS = [
     {"qid": "B5", "at": 420.0, "items": [
         {"id": "aako-cup", "kutchi": "aako cup", "english": "a whole cup (the cooking measure)", "alias": ["ako cup", "aqo cup", "akho cup"]},
         {"id": "aaki-tanki", "kutchi": "aaki tanki", "english": "a full tank", "alias": ["aki tanki", "akitanki"]},
+        {"id": "bharelo-cup", "kutchi": "bharelo cup", "english": "a filled-up cup", "alias": ["barelo cup", "berelo cup"]},
         {"id": "bhareli-chamchi", "kutchi": "bhareli chamchi", "english": "a heaped teaspoonful",
          "alias": ["bareli chamchi", "bereli chamchi"]},
         {"id": "bhareli", "kutchi": "bhareli", "english": "filled up (she-word)", "alias": ["bareli", "bereli"]},
@@ -257,7 +271,10 @@ B_ITEMS = [
          "alias": ["tum muke chai banay din de", "tu muke chai banai dinde"]},
         {"id": "aai-muke-chai-banai-dinda", "kutchi": "Aai muke chai banai dinda?",
          "english": "Can you make me some chai? (to an elder)",
-         "alias": ["ayn muke chai banay din de", "aai muke chai banai dinde"]}]},
+         "alias": ["ayn muke chai banay din de", "aai muke chai banai dinde"]},
+        {"id": "muke-chai-banai-dinda", "kutchi": "Muke chai banai dinda?",
+         "english": "Can you make me some chai? (said naturally, without 'you')",
+         "alias": ["muke chai banay din de", "muke chai banai dinde"]}]},
     {"qid": "B41", "at": 1661.8, "items": [
         {"id": "ha-of-course", "kutchi": "Ha!", "english": "Of course!", "alias": ["haa", "ha"]}]},
     {"qid": "B42", "at": 1670.2, "items": [
@@ -292,6 +309,64 @@ B_ITEMS = [
     {"qid": "B49", "at": 1883.7, "items": [
         {"id": "dhyan-rakh", "kutchi": "Dhyan rakh!", "english": "Careful!", "alias": ["dianrak", "dyaan rak", "dhyan rak"]}]},
 ]
+# Choices made by hand for B.m4a, after listening by proxy (per-take Whisper
+# with and without a prompt, pitch and level, and what's said around each
+# take in B.md). [start, end] pins a take; a string skips that speaker.
+COACHED = "from the coached retakes (\"take the later ones\"), where Mum and Zafar alternate: check the speaker"
+INSIDE = "skip: only said inside a sentence, never cleanly on its own"
+B_PINS = {
+    "kere-karein": {"zafar": [212.75, 213.44]},          # "take the last ones"
+    "hi": {"zafar": [235.30, 235.80]},
+    "hu": {"mum": [225.14, 225.44]},                     # her later "hu" runs into the explanation
+    "aste-thi": {"zafar": [333.05, 333.70]},             # the next take runs into "quickly"
+    "aako-cup": {"mum": [455.62, 456.26], "zafar": INSIDE},
+    "aaki-tanki": {"mum": [466.14, 466.88], "note_mum": "the end of a sentence, 0.1 s after 'as well'"},
+    "bharelo-cup": {"mum": [471.19, 471.96], "zafar": "skip: Zafar didn't say it"},
+    "bhareli-chamchi": {"mum": INSIDE},
+    "bhareli": {"mum": INSIDE}, "bharelo": {"mum": INSIDE}, "aaki": {"mum": INSIDE},
+    "aako": {"mum": INSIDE, "zafar": [482.30, 482.78]},
+    "nindho": {"mum": [493.80, 494.32]}, "nindhi": {"mum": [494.82, 495.34]},
+    "bajr-ji-maani": {"zafar": [545.70, 546.72]},
+    "mervan": {"mum": INSIDE},
+    "hane": {"mum": [704.19, 704.55], "note_mum": "follows her 'yeah' closely"},
+    "ha-kadh": {"zafar": "skip: Zafar didn't repeat it"},
+    "hever-na": {"zafar": "skip: Zafar didn't repeat it"},
+    "hakri-lakri-mishkaki": {"zafar": [948.90, 950.88], "note_zafar": "his third take: the first two sound like 'hakho'"},
+    "ba-lakri-mishkaki": {"mum": "skip: only inside a sentence, and the 'ba' runs into 'say'"},
+    "shabash": {"zafar": [1157.29, 1158.10]},
+    "hakri-chamchi": {"note_zafar": "Whisper hears 'hakro chamchi': check which he says"},
+    "chamchi": {"mum": INSIDE},
+    "hakri-cup": {"zafar": [1193.48, 1194.15]},
+    "chips": {"mum": [1207.95, 1208.45], "note_mum": "followed 0.1 s later by 'or'"},
+    "sev": {"zafar": [1225.52, 1226.02]},
+    "dhania": {"zafar": [1256.42, 1257.00]},
+    "amli": {"mum": [1270.04, 1270.42], "note_mum": "said low: check it's her"},
+    "amli-ji-chutney": {"zafar": [1313.34, 1314.56]},
+    "nair-ji-chutney": {"mum": [1332.08, 1333.58]},
+    "mishkaki": {"mum": [1550.08, 1550.86], "zafar": [1529.74, 1530.54]},  # Mum's retake, as asked
+    "tu-muke-chai-banai-dinda": {"zafar": "skip: Zafar said it without 'tu' (cut as muke-chai-banai-dinda)"},
+    "aai-muke-chai-banai-dinda": {"zafar": "skip: Zafar said it without 'aai' (cut as muke-chai-banai-dinda)"},
+    "muke-chai-banai-dinda": {"mum": [1650.03, 1651.46], "zafar": [1655.37, 1656.80]},
+    "tu-ki-aiye": {"mum": [1744.56, 1745.42], "note_zafar": COACHED},
+    "aai-ki-aayo": {"note_zafar": COACHED},
+    "aau-theek-ai": {"zafar": [1786.82, 1788.02], "note_zafar": COACHED},
+    "mu-lai-khobar": {"mum": [1796.62, 1797.48], "zafar": [1798.58, 1799.39],
+                      "note": "Whisper can't hear this phrase; the takes are chosen by their place"},
+    "khobar-aau-chakha": {"mum": INSIDE, "zafar": "skip: Zafar didn't say it"},
+}
+
+
+def apply_pins(groups, pins):
+    for g in groups:
+        for it in g["items"]:
+            for k, v in pins.get(it["id"], {}).items():
+                if k == "note":
+                    it["note"] = "; ".join(filter(None, [it.get("note"), v]))
+                else:
+                    it[k] = v
+    return groups
+
+
 B_END = 1906.5  # "That concludes the B section"
 B_SKIPPED = [
     {"qid": "B6", "kutchi": "wadho / wadhi", "english": "big", "why": "not in this recording (confirmed earlier)"},
@@ -623,9 +698,6 @@ class Recording:
         a = np.abs(self.x48[int(s * 48000):int(e * 48000)])
         return int((a > 0.99).sum())
 
-    def words_in(self, s, e):
-        return " ".join(w["w"] for w in self.words if w["e"] > s - 0.1 and w["s"] < e + 0.1)
-
     def hear(self, s, e, prompt=""):
         """Whisper's hearing of one take (padded with 0.3 s of silence).
         Asked as Swahili: its spelling is phonetic Latin, close to how the
@@ -640,23 +712,36 @@ class Recording:
                 self.cache.put(key, "" if SENTINEL.lower() in text.lower() else text)
         return self.cache.get(key)
 
+    def quiet_pad(self, t, direction):
+        """How much of PAD beyond t (before it for -1, after for +1) is quiet."""
+        i = int(round(t / HOP))
+        n = 0
+        while n < int(PAD / HOP):
+            j = i - n - 1 if direction < 0 else i + n
+            if j < 0 or j >= len(self.db) or self.db[j] > self.thresh:
+                break
+            n += 1
+        return max(0.01, n * HOP)
+
     def tighten(self, s, e):
-        """Exact onset and offset of the speech inside a take, and the pad
-        that fits before the neighbours."""
+        """Exact onset and offset of the speech inside a take: the frames
+        within 40 dB of the take's own peak, widened over soft starts and
+        fading ends (up to 0.15 s / 0.2 s) but never into a neighbour."""
         i0, i1 = int(s / HOP), int(e / HOP)
-        seg = self.db[max(0, i0 - 30):i1 + 30]
+        seg = self.db[i0:i1]
         if not len(seg):
             return s, e
-        gate = max(self.thresh - 6, seg.max() - 45)
-        on = np.flatnonzero(self.db[i0:i1] > gate)
+        gate = max(self.thresh - 8, seg.max() - 40)
+        on = np.flatnonzero(seg > gate)
         if len(on):
-            s, e = (i0 + on[0]) * HOP, (i0 + on[-1] + 1) * HOP
-        # extend over the soft onset/offset (breathy starts, fading vowels)
-        j = int(s / HOP)
-        while j > 0 and self.db[j - 1] > gate - 8 and s - j * HOP < 0.08:
+            i0, i1 = i0 + on[0], i0 + on[-1] + 1
+        before, after = self.neighbours(i0 * HOP, i1 * HOP)
+        soft = max(self.thresh - 15, seg.max() - 50)
+        j = i0
+        while j > 0 and self.db[j - 1] > soft and (i0 - j) * HOP < min(0.15, before - 0.05):
             j -= 1
-        k = int(e / HOP)
-        while k < len(self.db) and self.db[k] > gate - 8 and k * HOP - e < 0.12:
+        k = i1
+        while k < len(self.db) and self.db[k] > soft and (k - i1) * HOP < min(0.2, after - 0.05):
             k += 1
         return j * HOP, k * HOP
 
@@ -727,7 +812,8 @@ def choose(rec, group, item, lo, hi, review):
     gaps = (0.15, 0.3, 0.5, 0.75) if nwords >= 3 else (0.15, 0.3, 0.5)
     todo = {t for g in gaps for t in rec.takes(lo, hi, g)}
     todo |= {part for t in list(todo) for part in rec.split_at_dip(*t)}
-    todo = sorted(t for t in todo if 0.2 <= t[1] - t[0] <= 1.2 + 0.9 * nwords)
+    syll = len(re.findall(r"[aeiou]+", item["kutchi"].lower()))
+    todo = sorted(t for t in todo if max(0.2, 0.09 * syll + 0.05) <= t[1] - t[0] <= 1.2 + 0.9 * nwords)
     with cf.ThreadPoolExecutor(8) as ex:
         heard = dict(zip(todo, ex.map(lambda t: rec.hear(t[0], t[1], prompt), todo)))
     rec.cache.save()
@@ -839,7 +925,7 @@ def main():
     if a.items:
         groups, skipped, end = json.load(open(a.items)), [], a.end
     elif os.path.basename(a.recording) == "B.m4a":
-        groups, skipped, end = json.loads(json.dumps(B_ITEMS)), B_SKIPPED, a.end or B_END
+        groups, skipped, end = apply_pins(json.loads(json.dumps(B_ITEMS)), B_PINS), B_SKIPPED, a.end or B_END
     else:
         sys.exit("Give --items for a recording other than B.m4a")
 
@@ -875,10 +961,15 @@ def main():
     manifest = []
     for r in rows:
         item, spk, p = r["item"], r["spk"], r["p"]
-        s, e = rec.tighten(p["s"], p["e"])
-        before, after = rec.neighbours(s, e)
-        pb = min(PAD, max(0.01, before - 0.02))
-        pa = min(PAD, max(0.01, after - 0.02))
+        if p.get("pinned"):
+            # A pin is the speech itself; pad only into quiet.
+            s, e = p["s"], p["e"]
+            pb, pa = rec.quiet_pad(s, -1), rec.quiet_pad(e, 1)
+        else:
+            s, e = rec.tighten(p["s"], p["e"])
+            before, after = rec.neighbours(s, e)
+            pb = min(PAD, max(0.01, before - 0.02))
+            pa = min(PAD, max(0.01, after - 0.02))
         rel = f"assets/audio/family/{spk}/{item['id']}.mp3"
         start, stop, lufs, gain = render(rec, s, e, os.path.join(a.out, rel), pb, pa)
         r.update(rel=rel, start=start, stop=stop)
@@ -890,8 +981,7 @@ def main():
         forms = [item["kutchi"]] + item.get("alias", [])
         sim = similarity(heard, forms)
         notes = []
-        if item.get("note"):
-            notes.append(item["note"])
+        notes += [n for n in (item.get("note"), item.get(f"note_{spk}")) if n]
         conf = "high" if sim >= 0.75 else "medium" if sim >= 0.55 else "low"
         if p.get("clip", 0) > 20:
             notes.append(f"{p['clip']} near-full-scale samples in the source")
