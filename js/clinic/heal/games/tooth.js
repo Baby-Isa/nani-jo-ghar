@@ -1,22 +1,24 @@
 /*
- * H1 The kicking knee (and the cast): a healing game for the clinic.
- * docs/clinic-heal-api.md (the contract), docs/modes/clinic-design.md Q4 H1.
+ * H4 Brush up, brush down: a healing game for the clinic.
+ * docs/clinic-heal-api.md (the contract), docs/modes/clinic-design.md Q4 H4.
  *
- * Gestures (fixed at every level, UX s12): tap the dish, tap the spot
- * (the hammer kicks, the X-ray plate goes on, the bone clonks, the crutches
- * go under); wrap = drag round the track, one lap = one turn.
+ * Gestures (fixed at every level, UX s12): brush = swipe on the teeth in a
+ * direction (one swipe, one stroke); tap the dish, tap the spot (the drill on
+ * a tooth; the bug, one hop per tap; the paste colour, then the crack).
  *
- * The Kutchi decides every row: the kick count and the turns (level 1), plus
- * the break's clonks (level 2), plus the side in the patient's voice and the
- * wrap path pela ... ne poi ... (level 3). A step closes when the item is put
- * down (the next dish, or Done): only then does its line tick, whatever the
- * count (a count never ends itself). Mistakes are logged silently.
+ * The Kutchi decides every row: the direction chain (random per round), the
+ * tooth by size (wadho / nindho) and the bug's hop count (level 1); longer
+ * chains with left/right (level 2); the patient's own left/right, mirrored on
+ * screen, and the paste colour on a cracked tooth (level 3). A step's line
+ * ticks when the item is put down, whatever was done; mistakes are logged
+ * silently. The bug never reaches the jar by itself: it jumps in when the
+ * step closes, so the hops never show the count.
  *
  * Pure core (plan, judge, bot) runs in Node for build/leak_clinic_heal_a.mjs.
  */
 (function (root) {
   "use strict";
-  const ID = "knee";
+  const ID = "tooth";
   let DATA = null;
   let dataP = null;
   const isNode = typeof module === "object" && module.exports && typeof window === "undefined";
@@ -359,66 +361,63 @@
   /* KIT-A:END */
 
   /* ---------------- the pure core ---------------- */
+  // eight teeth: the top row and the bottom row, small at the sides, big in the middle
+  const TEETH = ["u0", "u1", "u2", "u3", "l0", "l1", "l2", "l3"].map((id) => ({ id, size: /[12]$/.test(id) ? "big" : "small" }));
+  const sizeWord = { big: "ph-big", small: "ph-small" };
+
   function plan(D, level, rng, opts = {}) {
     const L = D.levels[String(level)] || D.levels["1"];
     const ailment = opts.ailment && L.ailments.includes(opts.ailment) ? opts.ailment : pick(rng, L.ailments);
-    const side = opts.side === "left" || opts.side === "right" ? opts.side : pick(rng, ["left", "right"]);
     const rows = [];
     const words = [];
-    const add = (row, deciders) => {
-      rows.push(row);
-      deciders.forEach((d) => words.push(d));
-    };
-    if (L.side_heard) {
-      const part = ailment === "knee-bump" ? "body-knee" : "body-leg";
-      add(Object.assign({ id: "side", kind: "side", want: { side }, placeholder: true }, fill(D, "heal-knee-side", { side: "side-" + side, part })), ["side-" + side]);
+    // the direction chain: random per round, never the same word three times running
+    const chain = [];
+    while (chain.length < L.chain) {
+      const d = pick(rng, L.dirs);
+      if (chain.length >= 2 && chain[chain.length - 1] === d && chain[chain.length - 2] === d) continue;
+      chain.push(d);
     }
-    if (ailment === "knee-bump") {
-      const n = pick(rng, L.kicks);
-      add(Object.assign({ id: "kick", kind: "kick", item: "hammer", want: { n, part: "body-knee", side } }, fill(D, "heal-knee-kick", { what: "w-tap-knee", n: NUM(n), taps: "w-taps" })), [NUM(n)]);
-      if (L.paths) {
-        const path = pick(rng, L.paths);
-        const r = fill(D, "heal-knee-path", { what: "w-bandage", pela: "lnk-pela", nepoi: "lnk-nepoi", a: path[0], b: path[1], c: path[2] });
-        add(Object.assign({ id: "wrap", kind: "path", item: "bandage", want: { path, side } }, r), ["lnk-pela", "lnk-nepoi"]);
-      } else {
-        const n2 = pick(rng, L.turns);
-        add(Object.assign({ id: "wrap", kind: "laps", item: "bandage", want: { n: n2, part: "body-knee", side } }, fill(D, "heal-knee-wrap", { what: "w-bandage", n: NUM(n2), turns: "w-turns" })), [NUM(n2)]);
-      }
-    } else {
-      const c = pick(rng, L.clonks);
-      add(Object.assign({ id: "xray", kind: "xray", item: "xray", want: { n: c, part: "body-leg", side } }, fill(D, "heal-knee-xray", { what: "w-xray", n: NUM(c), taps: "w-taps" })), [NUM(c)]);
-      const t = pick(rng, L.turns);
-      add(Object.assign({ id: "cast", kind: "laps", item: "cast", want: { n: t, part: "body-leg", side } }, fill(D, "heal-knee-cast", { what: "w-cast", n: NUM(t), turns: "w-turns" })), [NUM(t)]);
+    const list = chain.map((d) => D.words[d].english).join(", ");
+    const DD = Object.assign({}, D, { words: Object.assign({}, D.words, { _dirs: { kutchi: null, english: list } }) });
+    const bv = L.brush_voice === "patient" ? "heal-tooth-brush-patient" : "heal-tooth-brush";
+    rows.push(Object.assign({ id: "brush", kind: "brush", item: "toothbrush", want: { chain, screen: chain.map((d) => D.words[d].screen) }, placeholder: true }, fill(DD, bv, { what: "w-brush", dirs: "_dirs" })));
+    words.push(...new Set(chain));
+    // the spotted teeth: one big, one small (shuffled seats); the doctor names one by size
+    const bigs = TEETH.filter((t) => t.size === "big");
+    const smalls = TEETH.filter((t) => t.size === "small");
+    const spots = [pick(rng, bigs).id, pick(rng, smalls).id];
+    const size = pick(rng, ["big", "small"]);
+    const target = spots[size === "big" ? 0 : 1];
+    const n = pick(rng, L.shoo);
+    rows.push(Object.assign({ id: "drill", kind: "drill", item: "drill", want: { tooth: target, n }, placeholder: false }, fill(D, "heal-tooth-drill", { size: sizeWord[size], tooth: "body-tooth", n: NUM(n), taps: "w-taps" })));
+    words.push(sizeWord[size], NUM(n));
+    let crack = null;
+    if (ailment === "cracked-tooth") {
+      crack = pick(rng, TEETH.filter((t) => !spots.includes(t.id))).id;
+      const colour = pick(rng, L.colours);
+      rows.push(Object.assign({ id: "fill", kind: "fill", item: "paste", want: { colour, tooth: crack }, placeholder: true }, fill(D, "heal-tooth-fill", { what: "w-fill", colour })));
+      words.push(colour);
     }
-    rows.forEach((r) => {
-      if (r.placeholder === undefined) r.placeholder = false;
-    });
-    return { id: ID, level: Number(level), ailment, side, cue: !L.side_heard, rows, words: wordsOf(D, words), items: D.ailments[ailment].items };
+    return { id: ID, level: Number(level), ailment, side: null, rows, spots, crack, colours: L.colours || [], words: wordsOf(D, words), items: D.ailments[ailment].items };
   }
 
-  /** Grade each row from the step events: [{row, kind, part, side}]. */
+  /** Grade each row from the step events: [{row, kind, dir?, tooth?, colour?}]. */
   function judge(P, events) {
     const out = {};
-    const of = (id) => events.filter((e) => e.row === id);
     P.rows.forEach((r) => {
-      const ev = of(r.id);
+      const ev = events.filter((e) => e.row === r.id);
       const w = r.want;
       let ok = false;
-      if (r.kind === "side") {
-        const sided = events.filter((e) => e.side);
-        ok = sided.length > 0 && sided.every((e) => e.side === w.side);
-      } else if (r.kind === "kick") {
-        ok = ev.length === w.n && ev.every((e) => e.kind === "kick" && e.part === w.part && e.side === w.side);
-      } else if (r.kind === "laps") {
-        const laps = ev.filter((e) => e.kind === "lap");
-        ok = laps.length === w.n && laps.every((e) => e.part === w.part && e.side === w.side);
-      } else if (r.kind === "path") {
-        const laps = ev.filter((e) => e.kind === "lap");
-        ok = laps.length === w.path.length && laps.every((e, i) => e.part === w.path[i] && e.side === w.side);
-      } else if (r.kind === "xray") {
-        const plates = ev.filter((e) => e.kind === "plate");
-        const clonks = ev.filter((e) => e.kind === "clonk");
-        ok = plates.length >= 1 && plates.every((e) => e.part === w.part && e.side === w.side) && clonks.length === w.n;
+      if (r.kind === "brush") {
+        const got = ev.filter((e) => e.kind === "stroke").map((e) => e.dir);
+        ok = got.length === w.screen.length && got.every((d, i) => d === w.screen[i]);
+      } else if (r.kind === "drill") {
+        const drills = ev.filter((e) => e.kind === "drill");
+        const shoo = ev.filter((e) => e.kind === "shoo");
+        ok = drills.length >= 1 && drills.every((e) => e.tooth === w.tooth) && shoo.length === w.n;
+      } else if (r.kind === "fill") {
+        const fills = ev.filter((e) => e.kind === "fill");
+        ok = fills.length >= 1 && fills.every((e) => e.colour === w.colour && e.tooth === w.tooth);
       }
       out[r.id] = ok;
     });
@@ -426,27 +425,28 @@
     return { rows: out, right, total: P.rows.length, ear: right === P.rows.length };
   }
 
-  /** Events a player would make: fair (knows the words) or a blind strategy. */
+  /** Events a player would make: fair, or blind (sees the teeth, the spots and the chain's length; never hears). */
   function play(D, P, strategy, rng) {
     const L = D.levels[String(P.level)];
     const ev = [];
     const fair = strategy === "fair";
-    const reader = strategy === "reader"; // reads the English placeholders, guesses the real Kutchi
+    const reader = strategy === "reader"; // reads the English placeholders (directions, colours), guesses the real Kutchi
     const fixed = /^fixed-(\d)$/.exec(strategy);
-    const count = (list) => (fair ? null : fixed ? Number(fixed[1]) : strategy === "tray-order" ? 1 : pick(rng, list));
-    // the side: seen on screen at levels 1-2 (the bump, the swirl); a guess at level 3 (a placeholder today)
-    const side = fair || reader || P.cue ? P.side : strategy === "random" ? pick(rng, ["left", "right"]) : "left";
+    const screens = L.dirs.map((d) => D.words[d].screen);
     P.rows.forEach((r) => {
       const w = r.want;
-      const n = (list) => (fair ? w.n : count(list));
-      if (r.kind === "kick") for (let i = 0; i < n(L.kicks); i++) ev.push({ row: r.id, kind: "kick", part: "body-knee", side });
-      else if (r.kind === "laps") for (let i = 0; i < n(L.turns); i++) ev.push({ row: r.id, kind: "lap", part: w.part, side });
-      else if (r.kind === "path") {
-        const path = fair || reader ? w.path : strategy === "random" ? pick(rng, L.paths) : L.paths[0];
-        path.forEach((p) => ev.push({ row: r.id, kind: "lap", part: p, side }));
-      } else if (r.kind === "xray") {
-        ev.push({ row: r.id, kind: "plate", part: "body-leg", side });
-        for (let i = 0; i < n(L.clonks); i++) ev.push({ row: r.id, kind: "clonk" });
+      if (r.kind === "brush") {
+        const len = w.screen.length; // the card line's length is visible
+        const dirs = fair || reader ? w.screen : Array.from({ length: len }, (_, i) => (strategy === "random" ? pick(rng, screens) : strategy === "alternate" ? screens[i % 2] : screens[0]));
+        dirs.forEach((d) => ev.push({ row: r.id, kind: "stroke", dir: d }));
+      } else if (r.kind === "drill") {
+        const tooth = fair ? w.tooth : strategy === "random" || reader ? pick(rng, P.spots) : strategy === "small-first" ? P.spots[1] : P.spots[0];
+        ev.push({ row: r.id, kind: "drill", tooth });
+        const n = fair ? w.n : fixed ? Number(fixed[1]) : strategy === "tray-order" ? 1 : pick(rng, L.shoo);
+        for (let i = 0; i < n; i++) ev.push({ row: r.id, kind: "shoo" });
+      } else if (r.kind === "fill") {
+        const colour = fair || reader ? w.colour : strategy === "random" ? pick(rng, P.colours) : P.colours[0];
+        ev.push({ row: r.id, kind: "fill", colour, tooth: P.crack });
       }
     });
     return ev;
@@ -457,37 +457,27 @@
     return {
       rows: P.rows.map((r) => ({ id: r.id, kutchi: r.kutchi, english: r.english, placeholder: r.placeholder })),
       plan: P,
-      strategies: ["fair", "reader", "random", "tray-order", "fixed-1", "fixed-2", "fixed-3", "fixed-4", "fixed-5"],
+      strategies: ["fair", "reader", "random", "tray-order", "alternate", "small-first", "fixed-1", "fixed-2", "fixed-3", "fixed-4", "fixed-5"],
       solve(strategy) {
         return judge(P, play(DATA, P, strategy, rng));
       },
     };
   }
 
+  /* ---------------- greybox item icons (drawn at 90 units) ---------------- */
   const ICON = {
-    hammer(g) {
-      S("rect", { x: -8, y: -8, width: 16, height: 46, rx: 4, fill: "#a0703f" }, g);
-      S("rect", { x: -26, y: -30, width: 52, height: 24, rx: 8, fill: "#e46d8f", stroke: "#8a3a52", "stroke-width": 3 }, g);
+    toothbrush(g) {
+      S("rect", { x: -40, y: -6, width: 70, height: 14, rx: 7, fill: "#5aa0d8", stroke: "#2f6a98", "stroke-width": 3, transform: "rotate(-30)" }, g);
+      S("rect", { x: 22, y: -22, width: 22, height: 16, rx: 3, fill: "#fff", stroke: "#9ab", "stroke-width": 2, transform: "rotate(-30)" }, g);
     },
-    bandage(g, c) {
-      S("ellipse", { cx: 0, cy: 4, rx: 30, ry: 26, fill: c || "#f4f1ea", stroke: "#b8b0a0", "stroke-width": 3 }, g);
-      S("ellipse", { cx: 0, cy: 4, rx: 10, ry: 9, fill: "#d8d0c0" }, g);
-      S("path", { d: "M28 8 L44 30 L34 34 Z", fill: c || "#f4f1ea", stroke: "#b8b0a0", "stroke-width": 2 }, g);
+    drill(g) {
+      S("rect", { x: -34, y: -10, width: 46, height: 20, rx: 10, fill: "#b9c0c9", stroke: "#6a717b", "stroke-width": 3 }, g);
+      S("path", { d: "M12 -5 L40 0 L12 5 Z", fill: "#6a717b" }, g);
+      S("circle", { cx: -20, cy: 0, r: 4, fill: "#e46d8f" }, g);
     },
-    xray(g) {
-      S("rect", { x: -30, y: -34, width: 60, height: 68, rx: 6, fill: "#26303a", stroke: "#8fa3b5", "stroke-width": 3 }, g);
-      S("path", { d: "M-6 -24 L4 0 L-4 24", stroke: "#eef", "stroke-width": 8, fill: "none", "stroke-linecap": "round" }, g);
-    },
-    cast(g, c) {
-      S("rect", { x: -26, y: -30, width: 52, height: 60, rx: 12, fill: c || "#3f76b8", stroke: "#1e3a5c", "stroke-width": 3 }, g);
-      S("line", { x1: -26, y1: -10, x2: 26, y2: -10, stroke: "#fff", "stroke-width": 3, opacity: 0.5 }, g);
-      S("line", { x1: -26, y1: 10, x2: 26, y2: 10, stroke: "#fff", "stroke-width": 3, opacity: 0.5 }, g);
-    },
-    crutches(g) {
-      [-12, 12].forEach((dx) => {
-        S("line", { x1: dx, y1: -34, x2: dx * 0.6, y2: 36, stroke: "#8a8f99", "stroke-width": 7, "stroke-linecap": "round" }, g);
-        S("line", { x1: dx - 9, y1: -34, x2: dx + 9, y2: -34, stroke: "#5a5f69", "stroke-width": 7, "stroke-linecap": "round" }, g);
-      });
+    paste(g) {
+      S("path", { d: "M-30 -14 H22 L34 -6 V6 L22 14 H-30 Z", fill: "#fff", stroke: "#8fa3b5", "stroke-width": 3 }, g);
+      [-18, -4, 10].forEach((x, i) => S("circle", { cx: x, cy: 0, r: 5, fill: ["#f7f5ee", "#f0cf5a", "#ef9fbf"][i], stroke: "#999", "stroke-width": 1 }, g));
     },
     other(g) {
       S("circle", { r: 26, fill: "#d8d2c8", stroke: "#a09a90", "stroke-width": 3 }, g);
@@ -498,10 +488,10 @@
   /* ---------------- the game ---------------- */
   const game = {
     id: ID,
-    part: "body-knee",
-    ailments: ["knee-bump", "leg-break"],
-    items: ["hammer", "bandage", "xray", "cast", "crutches"],
-    gestures: ["tap", "drag"],
+    part: "body-tooth",
+    ailments: ["sugar-bug", "cracked-tooth"],
+    items: ["toothbrush", "drill", "paste"],
+    gestures: ["tap", "swipe"],
     levels: [1, 2, 3],
     plan: (level, rng, opts) => plan(DATA, level, rng, opts),
     judge,
@@ -528,150 +518,143 @@
   };
 
   function run(stage, ctx, D) {
-    const P = plan(D, ctx.level || 1, ctx.rng || Math.random, { side: ctx.side, ailment: ctx.ailment });
-    const K = kit(stage, ctx, { P, icons: ICON, judge, onPick: (d) => trackOn(d.useful ? d.item : "none"), onFinish: finale });
+    const P = plan(D, ctx.level || 1, ctx.rng || Math.random, { ailment: ctx.ailment });
+    const K = kit(stage, ctx, { P, icons: ICON, judge, onPick, onClose, onFinish: finale });
     const { sceneG, fxG } = K;
 
-    /* the scene: the patient's legs on the bench, facing us (their left is on our right) */
-    const X = { right: 420, left: 660 };
-    const KY = 250;
-    const SHIN = [300, 460];
-    const skin = "#c89f84";
-    S("rect", { x: 190, y: 130, width: 690, height: 90, rx: 14, fill: "#b98a5a" }, sceneG);
-    S("rect", { x: 190, y: 214, width: 690, height: 16, fill: "#8d6540" }, sceneG);
-    const legs = {};
-    ["right", "left"].forEach((side) => {
-      const x = X[side];
-      const g = S("g", {}, sceneG);
-      S("rect", { x: x - 54, y: 150, width: 108, height: 110, fill: skin }, g);
-      const shin = S("g", {}, g);
-      shin.style.transformBox = "view-box";
-      shin.style.transformOrigin = x + "px " + KY + "px";
-      S("rect", { x: x - 46, y: SHIN[0] - 30, width: 92, height: SHIN[1] - SHIN[0] + 30, rx: 32, fill: skin }, shin);
-      const toe = side === "right" ? -1 : 1;
-      S("ellipse", { cx: x + toe * 22, cy: SHIN[1] + 16, rx: 66, ry: 28, fill: "#e8e2d6", stroke: "#a09a90", "stroke-width": 3 }, shin);
-      const layers = S("g", {}, shin);
-      const knee = S("circle", { cx: x, cy: KY, r: 60, fill: skin, stroke: "#a9826a", "stroke-width": 3 }, g);
-      const kneeLayers = S("g", {}, g);
-      legs[side] = { g, shin, layers, knee, kneeLayers, x };
-    });
-    S("path", { d: "M300 36 H780 Q800 36 800 66 V200 H588 L560 168 L520 168 L492 200 H280 V66 Q280 36 300 36 Z", fill: "#5d86b8", stroke: "#3f5f87", "stroke-width": 4 }, sceneG);
-    // the visible cue at levels 1-2: a bump on the sore knee, or a sore swirl on the sore leg
-    if (P.cue) {
-      const x = X[P.side];
-      if (P.ailment === "knee-bump") S("circle", { cx: x + 8, cy: KY - 12, r: 22, fill: "#e59a8a", stroke: "#c46f62", "stroke-width": 3, "pointer-events": "none" }, legs[P.side].kneeLayers);
-      else {
-        const d = [];
-        for (let t = 0; t < Math.PI * 4; t += 0.25) d.push((d.length ? "L" : "M") + (x + Math.cos(t) * (4 + t * 3)).toFixed(1) + " " + (385 + Math.sin(t) * (4 + t * 3) * 0.8).toFixed(1));
-        S("path", { d: d.join(" "), stroke: "#e46d8f", "stroke-width": 5, fill: "none", "pointer-events": "none" }, legs[P.side].layers);
-      }
-    }
-    // the wrap tracks (shown while the bandage or the cast is in hand)
-    const tracks = [];
-    ["right", "left"].forEach((side) => {
-      [
-        ["body-knee", KY, 82, 46],
-        ["body-leg", 385, 70, 40],
-      ].forEach(([part, cy, rx, ry]) => {
-        const parent = part === "body-knee" ? legs[side].kneeLayers : legs[side].layers;
-        const el = S("ellipse", { cx: X[side], cy, rx, ry, class: "hA-track", visibility: "hidden", "pointer-events": "none" }, parent);
-        tracks.push({ part, side, cx: X[side], cy, rx, ry, el, acc: 0, laps: 0, live: false });
+    /* the mouth, wide open, close up */
+    const CX = 560;
+    const CY = 300;
+    S("ellipse", { cx: CX, cy: CY, rx: 350, ry: 250, fill: "#c89f84" }, sceneG);
+    S("ellipse", { cx: CX, cy: CY, rx: 320, ry: 215, fill: "#d9707e", stroke: "#b04e5e", "stroke-width": 10 }, sceneG);
+    S("ellipse", { cx: CX, cy: CY + 10, rx: 280, ry: 170, fill: "#5a2733" }, sceneG);
+    S("ellipse", { cx: CX, cy: CY + 100, rx: 150, ry: 60, fill: "#d9707e" }, sceneG); // the tongue
+    const foamG = S("g", { "pointer-events": "none" }, sceneG);
+    const teethG = S("g", {}, sceneG);
+    const W = { big: 118, small: 84 };
+    const H = { big: 104, small: 78 };
+    const tooth = {};
+    ["u", "l"].forEach((row) => {
+      const ids = [0, 1, 2, 3].map((i) => row + i);
+      const total = ids.reduce((a, id) => a + W[TEETH.find((t) => t.id === id).size] + 10, -10);
+      let x = CX - total / 2;
+      ids.forEach((id) => {
+        const size = TEETH.find((t) => t.id === id).size;
+        const w = W[size];
+        const h = H[size];
+        const y = row === "u" ? CY - 150 : CY + 150 - h;
+        const g = S("g", { "data-tooth": id }, teethG);
+        const body = S("rect", { x, y, width: w, height: h, rx: 22, fill: "#fbf8ef", stroke: "#d6cfbf", "stroke-width": 4 }, g);
+        tooth[id] = { id, size, x, y, w, h, cx: x + w / 2, cy: y + h / 2, g, body };
+        x += w + 10;
       });
     });
-    function trackOn(item) {
-      const want = item === "cast" ? ["body-leg"] : item === "bandage" ? (P.rows.some((r) => r.kind === "path") ? ["body-knee", "body-leg"] : ["body-knee"]) : [];
-      tracks.forEach((t) => {
-        t.live = want.includes(t.part) && (!P.cue || t.side === P.side);
-        t.el.setAttribute("visibility", t.live ? "visible" : "hidden");
+    P.spots.forEach((id) => {
+      const t = tooth[id];
+      t.spot = S("ellipse", { cx: t.cx + 6, cy: t.cy + 4, rx: t.w * 0.2, ry: t.h * 0.17, fill: "#8a5a2a", opacity: 0.85, "pointer-events": "none" }, t.g);
+    });
+    if (P.crack) {
+      const t = tooth[P.crack];
+      t.crackEl = S("path", { d: `M${t.cx - 16} ${t.y + 12} l12 18 l-10 14 l14 16 l-8 14`, stroke: "#6a5a4a", "stroke-width": 5, fill: "none", "stroke-linecap": "round", "pointer-events": "none" }, t.g);
+    }
+    // the jar the bug hops into
+    const jar = S("g", { transform: "translate(900,110)", "pointer-events": "none" }, sceneG);
+    S("rect", { x: -44, y: -50, width: 88, height: 100, rx: 16, fill: "#dff0f7", stroke: "#8fb3c5", "stroke-width": 4, opacity: 0.9 }, jar);
+    S("rect", { x: -50, y: -62, width: 100, height: 18, rx: 6, fill: "#c9483b" }, jar);
+    const JAR = [900, 120];
+    // the brush, which follows the finger while a swipe is on
+    const brushEl = S("g", { visibility: "hidden", "pointer-events": "none" }, fxG);
+    ICON.toothbrush(S("g", { transform: "scale(1.8)" }, brushEl));
+    // the paste palette (level 3, cracked tooth)
+    const palette = S("g", { visibility: "hidden" }, sceneG);
+    let colourPicked = null;
+    const blobs = {};
+    (P.colours || []).forEach((c, i) => {
+      const x = CX - 130 + i * 130;
+      const g = S("g", { "data-colour": c }, palette);
+      S("circle", { cx: x, cy: 548, r: 44, fill: "#fff", stroke: "#cdbfa8", "stroke-width": 3 }, g);
+      S("path", { d: `M${x - 26} ${556} q0 -34 26 -40 q26 6 26 40 q-26 12 -52 0z`, fill: D.words[c].hex, stroke: "#999", "stroke-width": 2 }, g);
+      blobs[c] = g;
+    });
+    if (P.colours && P.colours.length) S("rect", { x: CX - 190, y: 496, width: 380, height: 104, rx: 20, fill: "#fffaf2", stroke: "#cdbfa8", "stroke-width": 3 }, palette).parentNode.insertBefore(palette.lastChild, palette.firstChild);
+
+    function onPick(d) {
+      palette.setAttribute("visibility", d.item === "paste" && P.crack ? "visible" : "hidden");
+    }
+    function inMouth(p) {
+      return Math.hypot((p.x - CX) / 340, (p.y - CY) / 240) < 1.1;
+    }
+    function toothAt(p) {
+      return Object.values(tooth).find((t) => p.x > t.x - 8 && p.x < t.x + t.w + 8 && p.y > t.y - 8 && p.y < t.y + t.h + 8) || null;
+    }
+
+    /* the brush: one swipe, one stroke; foam grows */
+    function foam(a, b) {
+      for (let i = 0; i < 5; i++) {
+        const f = i / 4;
+        const x = a.x + (b.x - a.x) * f + (Math.random() - 0.5) * 30;
+        const y = a.y + (b.y - a.y) * f + (Math.random() - 0.5) * 30;
+        const c = S("circle", { cx: x, cy: y, r: 10 + Math.random() * 14, fill: "#ffffff", opacity: 0.9, stroke: "#dfe8f0", "stroke-width": 2 }, foamG);
+        c.animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 250 });
+      }
+    }
+    /* the bug */
+    let bug = null;
+    function hatch(t) {
+      const g = S("g", { "pointer-events": "all", "data-bug": "1" }, fxG);
+      g.style.cursor = "pointer";
+      const b = S("g", {}, g);
+      S("ellipse", { cx: 0, cy: 0, rx: 34, ry: 26, fill: "#6ab04c", stroke: "#3d7a2a", "stroke-width": 4 }, b);
+      S("circle", { cx: -10, cy: -6, r: 5, fill: "#222" }, b);
+      S("circle", { cx: 10, cy: -6, r: 5, fill: "#222" }, b);
+      S("path", { d: "M-20 -20 l14 5 M20 -20 l-14 5", stroke: "#222", "stroke-width": 5, "stroke-linecap": "round" }, b); // the eyebrows
+      S("path", { d: "M-8 10 q8 6 16 0", stroke: "#222", "stroke-width": 3, fill: "none" }, b);
+      [-24, 0, 24].forEach((x) => S("line", { x1: x, y1: 20, x2: x * 1.3, y2: 36, stroke: "#3d7a2a", "stroke-width": 4 }, b));
+      S("circle", { r: 58, fill: "transparent" }, g); // a bigger tap target
+      const start = [t.cx, t.y + (t.id[0] === "u" ? t.h + 40 : -40)];
+      bug = { g, b, x: start[0], y: start[1], sx: start[0], sy: start[1], k: 0 };
+      g.setAttribute("transform", `translate(${bug.x},${bug.y})`);
+      g.animate([{ transform: `translate(${t.cx}px,${t.cy}px) scale(0.2)` }, { transform: `translate(${bug.x}px,${bug.y - 40}px) scale(1.1)` }, { transform: `translate(${bug.x}px,${bug.y}px) scale(1)` }], { duration: 450 });
+      K.pop("BZZZ!", t.cx, t.y - 10, 700);
+      if (t.spot) t.spot.remove();
+      K.react("ouch");
+    }
+    function hop() {
+      bug.k++;
+      // a hop towards the jar, never into it (the count must not show)
+      const f = 1 - Math.pow(0.62, bug.k);
+      const nx = bug.sx + (JAR[0] - 60 - bug.sx) * f + (bug.k % 2 ? 24 : -24);
+      const ny = bug.sy + (JAR[1] + 110 - bug.sy) * f;
+      bug.g.animate([{ transform: `translate(${bug.x}px,${bug.y}px)` }, { transform: `translate(${(bug.x + nx) / 2}px,${Math.min(bug.y, ny) - 60}px)` }, { transform: `translate(${nx}px,${ny}px)` }], { duration: 320, easing: "ease-out" });
+      bug.x = nx;
+      bug.y = ny;
+      bug.g.setAttribute("transform", `translate(${nx},${ny})`);
+      K.pop("hop!", nx, ny - 50, 500);
+    }
+    function onClose(d) {
+      if (d.item === "drill" && bug) {
+        const g = bug.g;
+        g.animate([{ transform: `translate(${bug.x}px,${bug.y}px)` }, { transform: `translate(${JAR[0]}px,${JAR[1] - 90}px)` }, { transform: `translate(${JAR[0]}px,${JAR[1]}px) scale(0.6)` }], { duration: 500, fill: "forwards" });
+        g.setAttribute("pointer-events", "none");
+        K.pop("plop!", JAR[0], JAR[1] - 70, 700);
+        bug = null;
+      }
+      if (d.item === "toothbrush") foamG.animate([{ opacity: 1 }, { opacity: 0.35 }], { duration: 600, fill: "forwards" });
+    }
+
+    async function finale() {
+      palette.setAttribute("visibility", "hidden");
+      if (bug) onClose({ item: "drill" });
+      Object.values(tooth).forEach((t, i) => {
+        const s = S("path", { d: `M${t.cx} ${t.cy - 20} l6 14 l14 6 l-14 6 l-6 14 l-6 -14 l-14 -6 l14 -6 z`, fill: "#fff6a8", "pointer-events": "none" }, fxG);
+        s.animate([{ opacity: 0, transform: "scale(0.2)" }, { opacity: 1, transform: "scale(1.2)" }, { opacity: 0, transform: "scale(0.6)" }], { duration: 900, delay: i * 60 });
       });
-    }
-    // Kasuku, who squawks at every kick
-    const kasuku = S("g", { opacity: 0 }, fxG);
-    S("ellipse", { cx: 930, cy: 70, rx: 26, ry: 34, fill: "#3fae5a" }, kasuku);
-    S("ellipse", { cx: 918, cy: 84, rx: 12, ry: 22, fill: "#2f8a46" }, kasuku);
-    S("circle", { cx: 936, cy: 52, r: 6, fill: "#fff" }, kasuku);
-    S("circle", { cx: 937, cy: 52, r: 3, fill: "#222" }, kasuku);
-    S("path", { d: "M948 58 l16 7 l-16 7 z", fill: "#e5b33d" }, kasuku);
-
-    function hit(x, y) {
-      for (const side of ["right", "left"]) {
-        const lx = X[side];
-        if (Math.hypot(x - lx, y - KY) < 82) return { part: "body-knee", side };
-        if (Math.abs(x - lx) < 80 && y > SHIN[0] - 10 && y < SHIN[1] + 60) return { part: "body-leg", side };
-      }
-      return null;
+      K.pop("twinkle!", CX, 60, 1100);
+      await wait(1100);
     }
 
-    /* the kick: the fun */
-    function kick(side) {
-      const L = legs[side];
-      const dir = side === "right" ? 1 : -1;
-      L.shin.animate([{ transform: "rotate(0deg)" }, { transform: `rotate(${62 * dir}deg)`, offset: 0.3 }, { transform: `rotate(${-12 * dir}deg)`, offset: 0.65 }, { transform: "rotate(0deg)" }], { duration: 560, easing: "ease-out" });
-      sceneG.animate([{ transform: "translateY(0)" }, { transform: "translateY(-16px)" }, { transform: "translateY(0)" }], { duration: 300 });
-      K.dishes.forEach((dd, i) => dd.g.animate([{ transform: "rotate(0deg)" }, { transform: `rotate(${i % 2 ? 7 : -7}deg)` }, { transform: `rotate(${i % 2 ? -4 : 4}deg)` }, { transform: "rotate(0deg)" }], { duration: 380 }));
-      kasuku.animate([{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "translateY(0)", offset: 0.25 }, { opacity: 1, transform: "translateY(4px)", offset: 0.8 }, { opacity: 0, transform: "translateY(30px)" }], { duration: 900 });
-      K.pop("SQUAWK!", 880, 150, 700);
-      K.pop("BOING!", L.x - dir * 150, 470, 700);
-      K.react("giggle");
-    }
-
-    /* the X-ray: a bone with a face and a kink; each tap on it is a clonk */
-    let xr = null;
-    function plate(side) {
-      if (xr) xr.g.remove();
-      const L = legs[side];
-      const g = S("g", { "pointer-events": "none" }, L.layers);
-      S("rect", { x: L.x - 60, y: 296, width: 120, height: 178, rx: 12, fill: "#26303a", stroke: "#8fa3b5", "stroke-width": 4, opacity: 0.95 }, g);
-      const bone = S("path", { d: `M${L.x} 318 L${L.x + 18} 385 L${L.x - 4} 452`, stroke: "#eef2ff", "stroke-width": 22, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, g);
-      S("circle", { cx: L.x + 3, cy: 360, r: 4, fill: "#26303a" }, g);
-      S("circle", { cx: L.x + 19, cy: 362, r: 4, fill: "#26303a" }, g);
-      const mouth = S("ellipse", { cx: L.x + 12, cy: 376, rx: 5, ry: 7, fill: "#26303a" }, g);
-      xr = { g, bone, mouth, side, straight: false };
-      K.pop("ooh!", L.x, 290, 600);
-      K.react("ouch");
-    }
-    function clonk() {
-      const L = legs[xr.side];
-      if (!xr.straight) {
-        xr.straight = true;
-        xr.bone.setAttribute("d", `M${L.x} 318 L${L.x} 385 L${L.x} 452`);
-        xr.mouth.setAttribute("rx", 9);
-        xr.mouth.setAttribute("ry", 2.5);
-      }
-      xr.g.animate([{ transform: "translateY(0)" }, { transform: "translateY(5px)" }, { transform: "translateY(0)" }], { duration: 160 });
-      K.pop("CLONK!", L.x, 300, 600);
-      K.react("ouch");
-    }
-
-    /* wrapping: laps round a track, one lap = one turn */
-    const bandColour = (item) => {
-      const d = K.dishOf(item);
-      return (d && COLOURS[d.colour]) || D.colours[item] || "#f4f1ea";
-    };
-    function band(t, item, k) {
-      const parent = t.part === "body-knee" ? legs[t.side].kneeLayers : legs[t.side].layers;
-      const w = t.part === "body-knee" ? 126 : 98;
-      const y = t.cy - 36 + ((k * 19) % 64);
-      S("rect", { x: t.cx - w / 2, y, width: w, height: 24, rx: 9, fill: bandColour(item), stroke: "#00000033", "stroke-width": 2, transform: `rotate(${k % 2 ? 7 : -7} ${t.cx} ${y + 12})`, "pointer-events": "none" }, parent);
-    }
-
-    async function finale(opts) {
-      trackOn("none");
-      if (opts.hop) {
-        const cg = S("g", {}, sceneG);
-        ICON.crutches(S("g", { transform: `translate(${X.right - 100},400) scale(2.4)` }, cg));
-        ICON.crutches(S("g", { transform: `translate(${X.left + 100},400) scale(2.4)` }, cg));
-        K.pop("hop!", 540, 120, 900);
-        await wait(300);
-        await sceneG.animate([{ transform: "translate(0,0)" }, { transform: "translate(70px,-40px)" }, { transform: "translate(140px,0)" }, { transform: "translate(210px,-40px)" }, { transform: "translate(280px,0)" }, { transform: "translate(760px,-40px)" }], { duration: 1500, fill: "forwards" }).finished.catch(() => {});
-      } else {
-        K.pop("all better!", 540, 110, 1000);
-        await sceneG.animate([{ transform: "translateY(0)" }, { transform: "translateY(-30px)" }, { transform: "translateY(0)" }, { transform: "translateY(-16px)" }, { transform: "translateY(0)" }], { duration: 900 }).finished.catch(() => {});
-      }
-    }
-
-    /* the pointer on the scene */
-    let drag = null;
+    /* the pointer */
+    let swipe = null;
     K.svg.addEventListener("pointerdown", (ev) => {
       if (!K.alive || K.ending) return;
       K.poke();
@@ -679,66 +662,75 @@
       if (!d) return;
       const p = K.toSvg(ev);
       const row = d.row;
-      const h = hit(p.x, p.y);
       if (!d.useful || !row) {
-        if (d.item === "crutches" && h) K.finish({ hop: true });
-        else if (h) K.react("giggle"); // an item that isn't for this: nothing happens on the patient
+        if (inMouth(p)) K.react("giggle");
         return;
       }
-      if (d.item === "bandage" || d.item === "cast") {
-        const o = tracks
-          .filter((t) => t.live)
-          .map((t) => ({ t, d: Math.hypot((p.x - t.cx) / t.rx, (p.y - t.cy) / t.ry) }))
-          .filter((o) => o.d < 2)
-          .sort((a, b) => a.d - b.d)[0];
-        if (!o) return K.gentle(row);
-        drag = { t: o.t, prev: Math.atan2(p.y - o.t.cy, p.x - o.t.cx), id: ev.pointerId };
+      if (d.item === "toothbrush") {
+        if (!inMouth(p)) return;
+        swipe = { a: p, id: ev.pointerId };
+        brushEl.setAttribute("visibility", "visible");
+        brushEl.setAttribute("transform", `translate(${p.x},${p.y})`);
         try {
           K.svg.setPointerCapture(ev.pointerId);
         } catch (e) {}
-      } else if (d.item === "hammer") {
-        if (!h || h.part !== "body-knee") return K.gentle(row);
-        K.record({ kind: "kick", part: h.part, side: h.side });
-        if (P.cue && h.side !== P.side) K.gentle(row);
-        kick(h.side);
-        K.tally(d.item, K.stepEvents(row).length);
-      } else if (d.item === "xray") {
-        if (!h) return K.gentle(row);
-        if (xr && h.side === xr.side) {
-          K.record({ kind: "clonk" });
-          clonk();
-          K.tally(d.item, K.stepEvents(row, "clonk").length);
-        } else {
-          K.record({ kind: "plate", part: "body-leg", side: h.side, counts: false });
-          plate(h.side);
-          if (P.cue && h.side !== P.side) K.gentle(row);
+      } else if (d.item === "drill") {
+        const onBug = bug && Math.hypot(p.x - bug.x, p.y - bug.y) < 64;
+        if (onBug) {
+          K.record({ kind: "shoo" });
+          hop();
+          K.tally("drill", K.stepEvents(row, "shoo").length);
+          return;
         }
+        const t = toothAt(p);
+        if (!t) return K.gentle(row);
+        K.record({ kind: "drill", tooth: t.id, counts: false });
+        t.g.animate([{ transform: "translateX(0)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0)" }], { duration: 120, iterations: 3 });
+        K.pop("brrr", t.cx, t.cy, 500);
+        if (P.spots.includes(t.id) && !t.drilled) {
+          t.drilled = true;
+          if (bug) onClose({ item: "drill" });
+          K.later(() => hatch(t), 380);
+        }
+      } else if (d.item === "paste") {
+        const blob = ev.target.closest && ev.target.closest("[data-colour]");
+        if (blob) {
+          colourPicked = blob.getAttribute("data-colour");
+          Object.entries(blobs).forEach(([c, g]) => g.firstChild.setAttribute("stroke", c === colourPicked ? "#e2a33b" : "#cdbfa8"));
+          Object.entries(blobs).forEach(([c, g]) => g.firstChild.setAttribute("stroke-width", c === colourPicked ? 8 : 3));
+          return;
+        }
+        const t = toothAt(p);
+        if (!t || !colourPicked) return K.gentle(row);
+        K.record({ kind: "fill", colour: colourPicked, tooth: t.id });
+        const hex = D.words[colourPicked].hex;
+        if (t.crackEl) t.crackEl.setAttribute("stroke", hex);
+        if (t.crackEl) t.crackEl.setAttribute("stroke-width", 12);
+        K.pop("✨", t.cx, t.cy - 30, 700);
+        K.react("relief");
       }
     });
     K.svg.addEventListener("pointermove", (ev) => {
-      if (!drag || ev.pointerId !== drag.id) return;
+      if (!swipe || ev.pointerId !== swipe.id) return;
       const p = K.toSvg(ev);
-      const t = drag.t;
-      const a = Math.atan2(p.y - t.cy, p.x - t.cx);
-      let dd = a - drag.prev;
-      if (dd > Math.PI) dd -= 2 * Math.PI;
-      if (dd < -Math.PI) dd += 2 * Math.PI;
-      drag.prev = a;
-      if (Math.hypot(p.x - t.cx, p.y - t.cy) < 12) return;
-      t.acc += dd;
-      const d = K.active;
-      while (d && d.row && Math.abs(t.acc) >= 2 * Math.PI * (t.laps + 1)) {
-        t.laps++;
-        K.record({ kind: "lap", part: t.part, side: t.side });
-        const k = K.stepEvents(d.row).length;
-        band(t, d.item, k);
-        K.tally(d.item, k);
-        K.react("giggle");
-        if (P.cue && t.side !== P.side) K.gentle(d.row);
-      }
+      brushEl.setAttribute("transform", `translate(${p.x},${p.y})`);
     });
     const up = (ev) => {
-      if (drag && ev.pointerId === drag.id) drag = null;
+      if (!swipe || ev.pointerId !== swipe.id) return;
+      const a = swipe.a;
+      swipe = null;
+      brushEl.setAttribute("visibility", "hidden");
+      const b = K.toSvg(ev);
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      if (Math.hypot(dx, dy) < 45 || ev.type === "pointercancel") return;
+      const dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up";
+      const d = K.active;
+      if (!d || !d.row) return;
+      K.record({ kind: "stroke", dir });
+      foam(a, b);
+      K.tally("toothbrush", K.stepEvents(d.row, "stroke").length);
+      K.react("giggle");
     };
     K.svg.addEventListener("pointerup", up);
     K.svg.addEventListener("pointercancel", up);
@@ -751,14 +743,16 @@
         get result() {
           return K.result;
         },
-        /** Screen points for tests: a dish, Done, a part, a track (centre and radii). */
-        where(what, a, b) {
-          if (what === "part") return a === "body-knee" ? K.toScreen(X[b], KY) : K.toScreen(X[b], 400);
-          if (what === "track") {
-            const t = tracks.find((t) => t.part === a && t.side === b);
-            const c = K.toScreen(t.cx, t.cy);
-            return { c, rx: K.toScreen(t.cx + t.rx, t.cy).x - c.x, ry: K.toScreen(t.cx, t.cy + t.ry).y - c.y };
+        /** Screen points for tests: a dish, Done, a tooth, the bug, a colour blob, the mouth. */
+        where(what, a) {
+          if (what === "tooth") return K.toScreen(tooth[a].cx, tooth[a].cy);
+          if (what === "bug") return bug ? K.toScreen(bug.x, bug.y) : null;
+          if (what === "mouth") return K.toScreen(CX, CY);
+          if (what === "blob") {
+            const r = blobs[a].getBoundingClientRect();
+            return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
           }
+          if (what === "scale") return K.toScreen(100, 0).x - K.toScreen(0, 0).x;
           return K.where(what, a);
         },
       },

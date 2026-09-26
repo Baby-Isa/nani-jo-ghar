@@ -36,7 +36,7 @@
   "levels": {
     "1": {
       "ailments": ["knee-bump"],
-      "kicks": [1, 2, 3],
+      "kicks": [1, 2, 3, 4],
       "turns": [2, 3, 4, 5],
       "side_heard": false,
       "read": "line"
