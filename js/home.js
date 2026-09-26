@@ -35,6 +35,11 @@
     { id: "monsoon", url: "monsoon.html", name: "Monsoon rush" },
     { id: "snap", url: "snap.html?lab=1", name: "Snap" },
   ];
+  // THE FIRST-LAUNCH HOOK. A player without the "firstDone" flag is sent here (a brand-new
+  // device, or a child a grown-up just added). For now it's Cook's pantry round (js/cook/app.js).
+  // Character creation and the Eid story (docs/first-launch-story.md, a later session) replace
+  // just this URL with their own page; that page ends with Save.setFlag("firstDone", true) and
+  // NjgApp.home("first"). docs/shared-api.md section 12 has the contract.
   // (?speed= is passed on for the browser tests, which play the pantry round fast)
   const FIRST = "cook.html?app=1&first=1" + (params.get("speed") ? `&speed=${encodeURIComponent(params.get("speed"))}` : "");
 

@@ -507,3 +507,9 @@ What makes the separate pages one app. Load `css/shared/app.css` first in the `<
 | `NjgApp.mount({busy, rest, confirm})` | a mode's own rules: `busy()` mid-round (default `Cook.inDay`), `rest()` when the corner ⌂ shows, the confirm text |
 
 **A mode's first launch** is its own adapter's job: Cook's is `js/cook/app.js` (`?first=1`: one play button, then day 1's pantry order, then home), hooked into `flow.js` by `Cook.afterOrder(spec, day, {free})`, which may return `"leave"`.
+
+**The first-launch hook** (for character creation and the Eid story, `docs/first-launch-story.md`, built later on top of the shell). `js/home.js` sends any player without the `firstDone` flag (a brand-new device, or a child just added in "Who's playing?") to one URL, `FIRST` (today `cook.html?app=1&first=1`). The later flow:
+1. points `FIRST` at its own page (say `first.html?app=1`), which loads `css/shared/app.css`, `save.js` and `app.js` like any mode;
+2. keeps what it makes in the current player's save: a name and colour through `Save.updatePlayer(Save.currentId(), {name, colour})`, the character's layers in a new namespace (`Save.set("character", {...})`);
+3. may still hand over to Cook's pantry round (`NjgApp.go("cook.html?app=1&first=1")`: Cook sets `firstDone` and goes home), or ends itself with `Save.setFlag("firstDone", true)` then `NjgApp.home("first")`.
+A save migrated from before the shell (any Cook orders, words or UI data) counts as started and never sees the first launch.
