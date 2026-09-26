@@ -142,7 +142,8 @@
   H.enter = function (z, mech) {
     zones.push({ z, mech });
     // a part inside a station (the samosa's fold after its fill) brings its own poses
-    if (H.ready() && z.S && stationPoses(mech).length) loadPoses(z.S, H.who(), stationPoses(mech));
+    const st = H.ready() && spec.stations[mech];
+    if (st && z.S && stationPoses(mech).length) loadPoses(z.S, st.who === "nani" ? charOf("nani") : H.who(), stationPoses(mech));
   };
   H.leave = function (z) {
     for (let i = zones.length - 1; i >= 0; i--) if (zones[i].z === z) zones.splice(i, 1);
