@@ -30,8 +30,8 @@
     "heal-knee-side": { "voice": "patient", "k": "{side} {part}", "e": "My {side} {part}" }
   },
   "ailments": {
-    "knee-bump": { "part": "body-knee", "items": ["hammer", "bandage"], "from_level": 1, "story": "a bump from the puddle" },
-    "leg-break": { "part": "body-leg", "items": ["xray", "cast", "crutches"], "from_level": 2, "story": "a comedy break from the mango tree" }
+    "knee-bump": { "part": "body-knee", "items": ["hammer", "bandage"], "from": 1, "from_level": 1, "story": "a bump from the puddle" },
+    "leg-break": { "part": "body-leg", "items": ["xray", "cast", "crutches"], "from": 2, "from_level": 2, "story": "a comedy break from the mango tree" }
   },
   "levels": {
     "1": {

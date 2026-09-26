@@ -102,32 +102,33 @@
 `;
     document.head.appendChild(st);
   }
-  /** Rough placeholder art (data/clinic/rough-art.json) when present: {id: url}. */
+  /** Rough placeholder art (data/clinic/rough-art.json): sprites[id] || sprites[alias[id]]; greybox when absent. */
   let ART = null;
   function loadArt(base) {
     if (ART) return Promise.resolve(ART);
     return fetch(base + "data/clinic/rough-art.json")
       .then((r) => (r.ok ? r.json() : {}))
       .catch(() => ({}))
-      .then((j) => {
-        const out = {};
-        const walk = (o) => {
-          Object.entries(o || {}).forEach(([k, v]) => {
-            if (k.startsWith("_")) return;
-            if (typeof v === "string" && /\.(png|webp|svg|jpe?g)$/i.test(v)) out[k] = /^(https?:|\/)/.test(v) ? v : base + v;
-            else if (v && typeof v === "object" && typeof v.src === "string") out[k] = /^(https?:|\/)/.test(v.src) ? v.src : base + v.src;
-            else if (v && typeof v === "object") walk(v);
-          });
-        };
-        walk(j);
-        return (ART = out);
-      });
+      .then((j) => (ART = Object.assign({ sprites: {}, alias: {}, patients: {}, base }, j, { base })));
   }
-  /** An item's picture on a dish: the rough sprite if there is one, else the greybox icon. */
-  function drawItem(g, item, colour, icons, size) {
-    const key = ["item-" + item, "clinic-" + item, item].find((k) => ART && ART[k]);
-    if (key) {
-      S("image", { href: ART[key], x: -size / 2, y: -size / 2, width: size, height: size, preserveAspectRatio: "xMidYMid meet" }, g);
+  /** A sprite's URL for the first id that has one, or null. */
+  function spriteUrl(...ids) {
+    if (!ART) return null;
+    for (const id of ids) {
+      if (!id) continue;
+      const sp = ART.sprites[id] || ART.sprites[ART.alias[id]];
+      if (sp && sp.file) return /^(https?:|\/)/.test(sp.file) ? sp.file : ART.base + sp.file;
+    }
+    return null;
+  }
+  const baseOf = (id) => String(id || "").replace(/-(red|blue|green|yellow|white|black|pink|orange|purple|brown)$/, "");
+  const colourOf = (id) => (/-(red|blue|green|yellow|white|black|pink|orange|purple|brown)$/.exec(String(id || "")) || [])[1] || null;
+  /** An item's picture: the rough sprite if there is one (its colour first), else the greybox icon. */
+  function drawItem(g, item, colour, icons, size, artIds) {
+    const alt = (artIds && artIds[item]) || [];
+    const url = spriteUrl(colour && item + "-" + colour, ...alt.map((a) => (colour ? [a + "-" + colour, a] : [a])).flat(), item);
+    if (url) {
+      S("image", { href: url, x: -size / 2, y: -size / 2, width: size, height: size, preserveAspectRatio: "xMidYMid meet" }, g);
       return;
     }
     (icons[item] || icons.other)(S("g", { transform: `scale(${size / 90})` }, g), COLOURS[colour] || colour);
@@ -180,6 +181,7 @@
     };
     K.react = (mood) => {
       try {
+        if (K.faceMood) K.faceMood(mood);
         if (ctx.patient && ctx.patient.react) ctx.patient.react(mood);
       } catch (e) {}
     };
@@ -188,9 +190,12 @@
         if (ctx.patient && ctx.patient.pose) ctx.patient.pose(name);
       } catch (e) {}
     };
-    K.say = (id) => {
+    /** Say a row's line: the filled words (never the data's template), in its speaker's voice. */
+    K.say = (row) => {
       try {
-        if (ctx.say) ctx.say(id);
+        if (!ctx.say || !row) return;
+        if (typeof row === "string") return ctx.say(row);
+        ctx.say({ kutchi: row.kutchi, english: row.english, who: row.voice, placeholder: row.placeholder }, { who: row.voice });
       } catch (e) {}
     };
     const safe = (fn) => {
@@ -199,41 +204,104 @@
       } catch (e) {}
     };
 
-    /* the tray: the child's dishes in the pharmacy's order; a needed item missing from it is the doctor's spare, at the end */
+    /* the tray: the child's dishes in the pharmacy's order. With the real host they are the sidebar's
+       dishes (ctx.trayUI); a needed item missing from the tray is the doctor's spare, drawn on our stage. */
+    const hostTray = !!(ctx.trayUI && ctx.trayUI.onTap && ctx.trayUI.dishes);
     const tray = (ctx.tray || []).map((t) => (typeof t === "string" ? { id: t } : t));
     const dishes = [];
-    tray.forEach((t) => dishes.push({ item: t.id, colour: t.colour, count: t.count, useful: P.items.includes(t.id) }));
-    P.items.forEach((id) => {
-      if (!dishes.some((d) => d.item === id)) dishes.push({ item: id, useful: true, spare: true });
+    tray.forEach((t, i) => {
+      const item = baseOf(t.id);
+      dishes.push({ item, colour: t.colour || colourOf(t.id), count: t.count, useful: !t.wrong && P.items.includes(item), host: hostTray ? i : null });
     });
-    const dishH = Math.min(118, Math.floor((560 - (dishes.length - 1) * 8) / Math.max(3, dishes.length)));
-    dishes.forEach((d, i) => {
+    P.items.forEach((id) => {
+      if (!dishes.some((d) => d.item === id && d.useful)) dishes.push({ item: id, useful: true, spare: true, host: null });
+    });
+    const own = dishes.filter((d) => d.host == null);
+    const dishH = Math.min(118, Math.floor((560 - (own.length - 1) * 8) / Math.max(3, own.length)));
+    own.forEach((d, i) => {
       const gg = S("g", { transform: `translate(18,${20 + i * (dishH + 8)})` }, trayG);
-      const g = S("g", { class: "hA-dish", id: "hA-dish-" + i, "data-item": d.item }, gg);
-      S("rect", { x: 0, y: 0, width: 128, height: dishH, rx: 18, fill: "#fffaf2", stroke: "#cdbfa8", "stroke-width": 3 }, g);
-      drawItem(S("g", { transform: `translate(64,${dishH / 2})` }, g), d.item, d.colour, icons, Math.min(96, dishH - 16));
+      const g = S("g", { class: "hA-dish", id: "hA-dish-" + dishes.indexOf(d), "data-item": d.item }, gg);
+      S("rect", { x: 0, y: 0, width: 128, height: dishH, rx: 18, fill: "#fffaf2", stroke: d.spare && hostTray ? "#e2a33b" : "#cdbfa8", "stroke-width": 3, "stroke-dasharray": d.spare && hostTray ? "8 6" : "none" }, g);
+      drawItem(S("g", { transform: `translate(64,${dishH / 2})` }, g), d.item, d.colour, icons, Math.min(96, dishH - 16), spec.art);
       d.g = g;
-      d.row = P.rows.find((r) => r.item === d.item && d.useful) || null;
+      d.el = g;
       g.addEventListener("pointerdown", (ev) => {
         ev.stopPropagation();
         choose(d);
       });
     });
+    if (hostTray) {
+      const els = ctx.trayUI.dishes();
+      dishes.forEach((d) => {
+        if (d.host != null) d.el = els[d.host];
+      });
+      ctx.trayUI.onTap((i) => {
+        const d = dishes.find((x) => x.host === i);
+        if (d) choose(d);
+      });
+      // no dishes of our own: the scene gets the room
+      if (!own.length) svg.setAttribute("viewBox", "150 0 850 600");
+    }
+    dishes.forEach((d) => (d.row = P.rows.find((r) => r.item === d.item && d.useful) || null));
+    const dishUI = (d, what, on = true) =>
+      safe(() => {
+        if (d.host != null) {
+          if (what === "lift") ctx.trayUI.select(on ? d.host : -1);
+          else if (what === "used") ctx.trayUI.used(d.host, on);
+          else if (what === "throb") ctx.trayUI.pulse(d.host, on);
+        } else d.g.classList.toggle(what, on);
+      });
+    K.dishUI = dishUI;
     K.dishes = dishes;
-    K.dishOf = (item) => dishes.find((d) => d.item === item);
-    const doneG = S("g", { class: "hA-done", id: "hA-done", transform: "translate(866,466)" }, svg);
-    const doneIn = S("g", {}, doneG);
-    S("rect", { x: 0, y: 0, width: 120, height: 116, rx: 24, fill: "#4f9a58", stroke: "#2f6a38", "stroke-width": 4 }, doneIn);
-    S("path", { d: "M30 58 L52 82 L92 36", stroke: "#fff", "stroke-width": 12, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, doneIn);
-    doneG.addEventListener("pointerdown", (ev) => {
-      ev.stopPropagation();
-      K.finish();
-    });
-    K.doneG = doneG;
+    K.dishOf = (item) => dishes.find((d) => d.item === item && d.useful) || dishes.find((d) => d.item === item);
+    /* Done: the host's big button on the right, else our own */
+    let doneEl;
+    if (ctx.button) {
+      doneEl = ctx.button("✓", () => K.finish(), "done");
+      safe(() => doneEl.setAttribute("aria-label", "Done"));
+    } else {
+      doneEl = S("g", { class: "hA-done", id: "hA-done", transform: "translate(866,466)" }, svg);
+      const doneIn = S("g", {}, doneEl);
+      S("rect", { x: 0, y: 0, width: 120, height: 116, rx: 24, fill: "#4f9a58", stroke: "#2f6a38", "stroke-width": 4 }, doneIn);
+      S("path", { d: "M30 58 L52 82 L92 36", stroke: "#fff", "stroke-width": 12, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, doneIn);
+      doneEl.addEventListener("pointerdown", (ev) => {
+        ev.stopPropagation();
+        K.finish();
+      });
+    }
+    const doneThrob = (on) => safe(() => doneEl.classList.toggle("throb", on));
+    K.doneEl = doneEl;
+
+    /* the patient's face in the corner (our close-up covers the host's figure): the rough sprite per mood, else a greybox face */
+    const kind = (ctx.patient && ctx.patient.kind) || "girl";
+    const moods = (ART && ART.patients && ART.patients[kind]) || null;
+    const face = S("g", { class: "hA-face", transform: ctx.button ? "translate(870,440)" : "translate(870,20)", "pointer-events": "none" }, svg);
+    const faceIn = S("g", {}, face);
+    let faceImg = null;
+    let faceMouth = null;
+    if (moods && spriteUrl(moods.neutral)) faceImg = S("image", { href: spriteUrl(moods.neutral), x: 0, y: 0, width: 124, height: 150, preserveAspectRatio: "xMidYMax meet" }, faceIn);
+    else {
+      S("circle", { cx: 62, cy: 70, r: 52, fill: "#c89f84", stroke: "#a9826a", "stroke-width": 4 }, faceIn);
+      S("path", { d: "M14 60 Q20 8 62 12 Q104 8 110 60 Q84 30 62 34 Q40 30 14 60 Z", fill: "#3a2a22" }, faceIn);
+      S("circle", { cx: 44, cy: 70, r: 6, fill: "#3a2e28" }, faceIn);
+      S("circle", { cx: 80, cy: 70, r: 6, fill: "#3a2e28" }, faceIn);
+      faceMouth = S("path", { d: "M44 96 q18 10 36 0", stroke: "#6a3a33", "stroke-width": 5, fill: "none", "stroke-linecap": "round" }, faceIn);
+    }
+    const MOUTH = { neutral: "M44 96 q18 10 36 0", ouch: "M50 102 q12 -14 24 0 q-12 8 -24 0", giggle: "M40 92 q22 26 44 0 z", relief: "M44 98 q18 6 36 0", happy: "M38 90 q24 30 48 0 z", wave: "M40 92 q22 26 44 0 z" };
+    let faceT = null;
+    K.face = face;
+    K.faceMood = (mood) => {
+      const m = { ouch: "ouch", giggle: "giggle", relief: "relief", happy: "happy", wave: "wave", sad: "ouch", scared: "ouch", yuck: "ouch", sour: "ouch" }[mood] || "neutral";
+      if (faceImg && moods[m]) faceImg.setAttribute("href", spriteUrl(moods[m]) || spriteUrl(moods.neutral));
+      if (faceMouth) faceMouth.setAttribute("d", MOUTH[m]);
+      safe(() => faceIn.animate([{ transform: "translateY(0)" }, { transform: "translateY(-12px)" }, { transform: "translateY(0)" }], { duration: 260 }));
+      clearTimeout(faceT);
+      if (m !== "neutral" && !K.ending) faceT = setTimeout(() => K.alive && !K.ending && K.faceMood("neutral"), 1300);
+    };
 
     /* the card */
     safe(() => ctx.card.setRows(P.rows.map((r) => ({ id: r.id, kutchi: r.kutchi, english: r.english, parts: r.parts, voice: r.voice, placeholder: r.placeholder, line: r.line }))));
-    P.rows.filter((r) => r.voice === "patient" && r.kind === "side").forEach((r) => K.later(() => K.say(r.line), 300));
+    P.rows.filter((r) => r.voice === "patient" && r.kind === "side").forEach((r) => K.later(() => K.say(r), 300));
 
     /* steps */
     let active = null;
@@ -258,8 +326,8 @@
     function close(d) {
       if (!d || !d.row || closed.has(d.row.id)) return;
       closed.add(d.row.id);
-      d.g.classList.add("used");
-      d.g.classList.remove("lift");
+      dishUI(d, "lift", false);
+      dishUI(d, "used");
       sideRows().forEach((r) => tick(r.id));
       tick(d.row.id);
       const J = judge(P, events);
@@ -276,12 +344,13 @@
       }
       if (active && active !== d) {
         if (active.row && K.stepEvents(active.row).length) close(active);
-        else active.g.classList.remove("lift");
+        else dishUI(active, "lift", false);
       }
       active = d;
-      d.g.classList.add("lift");
-      dishes.forEach((x) => x.g.classList.remove("throb"));
-      if (d.row && level === 1) K.say(d.row.line);
+      dishUI(d, "lift");
+      safe(() => ctx.card.pulse(null, false));
+      dishes.forEach((x) => x.throbbing && ((x.throbbing = false), dishUI(x, "throb", false)));
+      if (d.row && level === 1) K.say(d.row);
       if (d.row) K.tally(d.item, K.stepEvents(d.row).filter((e) => e.counts !== false).length);
       if (spec.onPick) spec.onPick(d);
     }
@@ -291,14 +360,14 @@
     K.gentle = (row) => {
       if (level !== 1 || corrected || !row) return;
       corrected = true;
-      K.say(row.line);
+      K.say(row);
     };
 
     /* the idle hint: after 8 s of nothing, the next dish (or Done) throbs; free */
     let idleT = null;
     K.poke = () => {
       clearTimeout(idleT);
-      doneG.classList.remove("throb");
+      doneThrob(false);
       idleT = setTimeout(() => {
         if (!K.alive || K.ending) return;
         const cur = active && active.row && !closed.has(active.row.id) ? active : null;
@@ -306,9 +375,10 @@
         if (cur && !K.stepEvents(cur.row).length) {
           safe(() => ctx.card.pulse(cur.row.id));
         } else if (next) {
-          next.g.classList.add("throb");
+          next.throbbing = true;
+          dishUI(next, "throb");
           if (next.row) safe(() => ctx.card.pulse(next.row.id));
-        } else doneG.classList.add("throb");
+        } else doneThrob(true);
         K.poke();
       }, 8000);
     };
@@ -339,15 +409,15 @@
     };
 
     // onboarding (first time only, the core's kit): tap the first dish
-    safe(() => ctx.onboard && dishes[0] && ctx.onboard([{ spotlight: dishes[0].g, ghost: { gesture: "tap" } }]));
+    safe(() => ctx.onboard && dishes[0] && ctx.onboard([{ spotlight: dishes[0].el, ghost: { gesture: "tap" } }]));
 
     K.where = (what, a) => {
       const box = (el) => {
         const r = el.getBoundingClientRect();
         return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
       };
-      if (what === "dish") return box(K.dishOf(a).g);
-      if (what === "done") return box(doneG);
+      if (what === "dish") return box(K.dishOf(a).el);
+      if (what === "done") return box(doneEl);
       return null;
     };
     K.destroy = () => {
@@ -517,9 +587,12 @@
     },
   };
 
+  /** Rough-art sprite ids per tray item (the colour is tried first). */
+  const ART_IDS = { toothbrush: ["toothbrush"], drill: ["dental-drill"], paste: ["filling"] };
+
   function run(stage, ctx, D) {
-    const P = plan(D, ctx.level || 1, ctx.rng || Math.random, { ailment: ctx.ailment });
-    const K = kit(stage, ctx, { P, icons: ICON, judge, onPick, onClose, onFinish: finale });
+    const P = plan(D, ctx.level || 1, ctx.rng || Math.random, { ailment: ctx.ailment && (ctx.ailment.id || ctx.ailment) });
+    const K = kit(stage, ctx, { P, icons: ICON, art: ART_IDS, judge, onPick, onClose, onFinish: finale });
     const { sceneG, fxG } = K;
 
     /* the mouth, wide open, close up */

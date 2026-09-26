@@ -35,7 +35,7 @@
     "sock": { "word": "th-sock", "kind": "sock", "size": 0.9, "noise": "SQUEAK!" }
   },
   "ailments": {
-    "seed-in-ear": { "part": "body-ear", "items": ["torch", "tweezers", "cotton-bud", "drops"], "from_level": 1, "story": "the cousin's ear, always something in it" }
+    "seed-in-ear": { "part": "body-ear", "items": ["torch", "tweezers", "cotton-bud", "drops"], "from": 1, "from_level": 1, "story": "the cousin's ear, always something in it" }
   },
   "levels": {
     "1": { "things": ["big", "small"], "clean": [2, 3, 4], "drops": [1, 2, 3], "side_heard": false, "drops_voice": "doctor" },

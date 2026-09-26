@@ -31,8 +31,8 @@
     "heal-tooth-fill": { "voice": "doctor", "k": "{what}: {colour}", "e": "Fill it: {colour}" }
   },
   "ailments": {
-    "sugar-bug": { "part": "body-tooth", "items": ["toothbrush", "drill"], "from_level": 1, "story": "a sugar bug from Arc 1's sweets" },
-    "cracked-tooth": { "part": "body-tooth", "items": ["toothbrush", "drill", "paste"], "from_level": 3, "story": "a sugar bug and a cracked tooth" }
+    "sugar-bug": { "part": "body-tooth", "items": ["toothbrush", "drill"], "from": 1, "from_level": 1, "story": "a sugar bug from Arc 1's sweets" },
+    "cracked-tooth": { "part": "body-tooth", "items": ["toothbrush", "drill", "paste"], "from": 3, "from_level": 3, "story": "a sugar bug and a cracked tooth" }
   },
   "levels": {
     "1": { "ailments": ["sugar-bug"], "dirs": ["dir-up", "dir-down"], "chain": 2, "shoo": [1, 2, 3], "brush_voice": "doctor" },
