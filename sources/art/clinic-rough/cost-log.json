@@ -399,6 +399,246 @@
    },
    "cost": 0.0439,
    "secs": 15.7
+  },
+  {
+   "sheet": "patient-auntie",
+   "file": "patient-auntie.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 671,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 671
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2239
+   },
+   "cost": 0.0661,
+   "secs": 21.0
+  },
+  {
+   "sheet": "patient-uncle",
+   "file": "patient-uncle.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 617,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 617
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2185
+   },
+   "cost": 0.0658,
+   "secs": 19.4
+  },
+  {
+   "sheet": "patient-nani",
+   "file": "patient-nani.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 689,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 689
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2257
+   },
+   "cost": 0.0662,
+   "secs": 20.7
+  },
+  {
+   "sheet": "patient-bigma",
+   "file": "patient-bigma.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 662,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 662
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2230
+   },
+   "cost": 0.066,
+   "secs": 21.2
+  },
+  {
+   "sheet": "patient-cousin",
+   "file": "patient-cousin.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 617,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 617
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2185
+   },
+   "cost": 0.0658,
+   "secs": 19.2
+  },
+  {
+   "sheet": "patient-doctor",
+   "file": "patient-doctor.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 540,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 540
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2108
+   },
+   "cost": 0.0654,
+   "secs": 17.8
+  },
+  {
+   "sheet": "moods-a",
+   "file": "moods-a.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 1772,
+    "input_tokens_details": {
+     "image_tokens": 1292,
+     "text_tokens": 480
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 3340
+   },
+   "cost": 0.078,
+   "secs": 25.4
+  },
+  {
+   "sheet": "moods-b",
+   "file": "moods-b.png",
+   "size": "1536x1024",
+   "usage": {
+    "input_tokens": 1780,
+    "input_tokens_details": {
+     "image_tokens": 1292,
+     "text_tokens": 488
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 3348
+   },
+   "cost": 0.0781,
+   "secs": 25.5
+  },
+  {
+   "sheet": "items-f",
+   "file": "items-f.png",
+   "size": "1024x1024",
+   "usage": {
+    "input_tokens": 475,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 475
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1531
+   },
+   "cost": 0.0446,
+   "secs": 15.7
+  },
+  {
+   "sheet": "overlays-b",
+   "file": "overlays-b.png",
+   "size": "1024x1024",
+   "usage": {
+    "input_tokens": 467,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 467
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1523
+   },
+   "cost": 0.0446,
+   "secs": 15.8
+  },
+  {
+   "sheet": "parts-b",
+   "file": "parts-b.png",
+   "size": "1024x1024",
+   "usage": {
+    "input_tokens": 425,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 425
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1481
+   },
+   "cost": 0.0444,
+   "secs": 15.4
+  },
+  {
+   "sheet": "furniture",
+   "file": "furniture.png",
+   "size": "1024x1024",
+   "usage": {
+    "input_tokens": 349,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 349
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1405
+   },
+   "cost": 0.044,
+   "secs": 14.1
   }
  ]
 }
