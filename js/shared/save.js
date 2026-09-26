@@ -19,7 +19,8 @@
  * A namespace is any short name; a new mode just picks one.
  *
  * MIGRATION: the first time Save runs on a device with no root, the old
- * per-mode keys (njg-cook-v1, njg-shared-ui-fallback-v1, njg-speech-enrol-v1)
+ * per-mode keys (njg-cook-v1, njg-shared-ui-fallback-v1, njg-speech-enrol-v1,
+ * njg_quilt_v1)
  * are copied into a first player, so nobody loses progress. The old keys are
  * left where they are (never deleted), as a way back.
  *
@@ -55,6 +56,8 @@
     { key: "njg-cook-v1", ns: "cook" },
     { key: "njg-shared-ui-fallback-v1", ns: "ui" },
     { key: "njg-speech-enrol-v1", ns: "speech" },
+    // the fruit-bowl prototype's quilt when it ran without a profile (bowl.html keeps its own IndexedDB profiles)
+    { key: "njg_quilt_v1", ns: "bowl" },
   ];
   const COLOURS = ["#c0392b", "#2e86c1", "#27ae60", "#8e44ad", "#e67e22", "#16a085", "#d35486", "#7f6a4d"];
 

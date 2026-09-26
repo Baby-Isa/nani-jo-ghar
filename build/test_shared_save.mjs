@@ -71,6 +71,12 @@ test("migration: only the keys that exist; a clean device has nobody until a pla
   assert.equal(Save.ensurePlayer().id, p.id, "and only one");
 });
 
+test("migration: the fruit-bowl quilt key comes along too", () => {
+  device({ njg_quilt_v1: [{ fruit: "keri" }] });
+  Save.init();
+  assert.deepEqual(Save.get("bowl"), [{ fruit: "keri" }]);
+});
+
 test("migration: a corrupt old key is skipped, not fatal", () => {
   device({ "njg-cook-v1": "{not json", "njg-shared-ui-fallback-v1": OLD_UI });
   Save.init();
