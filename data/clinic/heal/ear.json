@@ -1,0 +1,46 @@
+{
+  "_about": "H3 The seed in the ear. docs/modes/clinic-design.md Q4 H3 and the quality pass Q1-Q7; contract docs/clinic-heal-api.md. Levels are data. The order row is decided by the real Kutchi pela ... ne poi ... with wadho/nindho (data/cook.json ids); the counts by the numbers. Level 1 carries the order (1 in 2) and two counts (1 in 3 each) so a blind bot stays under 10%. Things' names (seed, bead, sock) are English placeholders.",
+  "id": "ear",
+  "part": "body-ear",
+  "words": {
+    "num-01": { "kutchi": "hakro", "english": "one", "from": "data/cook.json" },
+    "num-02": { "kutchi": "ba", "english": "two", "say": "ber", "from": "data/cook.json" },
+    "num-03": { "kutchi": "trae", "english": "three", "from": "data/cook.json" },
+    "num-04": { "kutchi": "char", "english": "four", "from": "data/cook.json" },
+    "num-05": { "kutchi": "panj", "english": "five", "from": "data/cook.json" },
+    "lnk-pela": { "kutchi": "pela", "english": "first", "from": "data/cook.json", "draft": true },
+    "lnk-nepoi": { "kutchi": "ne poi", "english": "and then", "from": "data/cook.json", "draft": true },
+    "ph-big": { "kutchi": "wadho", "english": "the big one", "from": "data/cook.json" },
+    "ph-small": { "kutchi": "nindho", "english": "the small one", "from": "data/cook.json" },
+    "th-sock": { "kutchi": null, "english": "sock", "placeholder": true },
+    "body-ear": { "kutchi": null, "english": "ear", "placeholder": true },
+    "side-left": { "kutchi": null, "english": "my left", "placeholder": true },
+    "side-right": { "kutchi": null, "english": "my right", "placeholder": true },
+    "w-clean": { "kutchi": null, "english": "Clean it", "placeholder": true },
+    "w-times": { "kutchi": null, "english": "times", "placeholder": true },
+    "w-drops": { "kutchi": null, "english": "drops", "placeholder": true },
+    "w-drops-please": { "kutchi": null, "english": "drops, please", "placeholder": true }
+  },
+  "lines": {
+    "heal-ear-side": { "voice": "patient", "k": "{side} {part}", "e": "My {side} {part}" },
+    "heal-ear-pluck2": { "voice": "doctor", "k": "{pela} {a}, {nepoi} {b}", "e": "First {a}, then {b}" },
+    "heal-ear-pluck3": { "voice": "doctor", "k": "{pela} {a}, {nepoi} {b}, {nepoi} {c}", "e": "First {a}, then {b}, then {c}" },
+    "heal-ear-clean": { "voice": "doctor", "k": "{what}. {n} {times}", "e": "Clean it {n} times" },
+    "heal-ear-drops": { "voice": "doctor", "k": "{n} {drops}", "e": "{n} drops" },
+    "heal-ear-drops-patient": { "voice": "patient", "k": "{n} {drops}", "e": "{n} drops, please" }
+  },
+  "things": {
+    "big": { "word": "ph-big", "kind": "seed", "size": 1.0, "noise": "POP!" },
+    "small": { "word": "ph-small", "kind": "seed", "size": 0.55, "noise": "pip!" },
+    "sock": { "word": "th-sock", "kind": "sock", "size": 0.9, "noise": "SQUEAK!" }
+  },
+  "ailments": {
+    "seed-in-ear": { "part": "body-ear", "items": ["torch", "tweezers", "cotton-bud", "drops"], "from_level": 1, "story": "the cousin's ear, always something in it" }
+  },
+  "levels": {
+    "1": { "things": ["big", "small"], "clean": [2, 3, 4], "drops": [1, 2, 3], "side_heard": false, "drops_voice": "doctor" },
+    "2": { "things": ["big", "small", "sock"], "clean": [2, 3, 4, 5], "drops": [1, 2, 3, 4], "side_heard": false, "drops_voice": "doctor" },
+    "3": { "things": ["big", "small", "sock"], "clean": [2, 3, 4, 5], "drops": [1, 2, 3, 4], "side_heard": true, "drops_voice": "patient" }
+  },
+  "fun": "Each pull has its own noise (the sock squeaks); the patient giggles 'that tickles!'; the torch beam lights the cave; at the end the cousin shakes his head and hears again."
+}
