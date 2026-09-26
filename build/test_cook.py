@@ -710,6 +710,47 @@ ORDERS_JS = r"""
   const d = R.chaat.make("nana");
   out.example = R.ladder({ who: "nana", dishes: [d] }).map((r) => [r.dish, r.kind, r.ids.join("+"), r.qty, r.dot, r.group, Cook.Lang.plain(r.line)]);
   out.said = Cook.Lang.plain(Cook.Order.speech([Cook.Order.ladder(d, 0)]));
+  // Wave 6b leak checks (a player who knows no Kutchi):
+  //  "count the cards": make as many of each kind as the order card shows cards (one card per unit gave the count away);
+  //  "tap till it ticks": keep adding one until the count row ticks (a live tick gave the count away).
+  const leak = { tick: { n: 0, win: 0 } };
+  [1, 2, 3, 4].forEach((lv) => (leak[`cards L${lv}`] = { n: 0, win: 0 }));
+  Cook.deferStars = true;
+  ["mishkaki", "maani"].forEach((rid) => {
+    if (!R[rid]) return;
+    [1, 2, 3, 4].forEach((level) => {
+      for (let n = 0; n < 60; n++) {
+        const d = R[rid].make("nana", { level });
+        const L = Cook.Order.ladder(d, 0);
+        Cook.UI.mission.open({ who: "nana", name: "Nana", ladders: [L], busy: false });
+        const rows = Cook.Order.rows(L).filter((r) => !r.head && !r.no && r.cards);
+        rows.forEach((r) => {
+          const want = r.qty || 1;
+          // the cards drawn for this row on the order card
+          const cards = [...document.querySelectorAll("#mission .icard.unit")].filter((c) => c.querySelector(".ic-title") && c.querySelector(".ic-title").textContent.trim() === Cook.Lang.plain(r.line).trim()).length || 1;
+          // only a count above one is information (one is also what a blind player guesses anyway)
+          if (want > 1) {
+            leak[`cards L${level}`].n++;
+            if (cards === want) leak[`cards L${level}`].win++;
+          }
+        });
+        // tap till it ticks: add one at a time; a live tick at the number would stop the player exactly there
+        Cook.Order.rows(L).filter((r) => Cook.UI.mission.isCount(r)).forEach((r) => {
+          const want = (r.parts || []).find((p) => typeof p === "number") || 1;
+          let taps = 0;
+          while (!r.done && taps < 8) {
+            taps++;
+            Cook.UI.mission.tickItem(r.ids[r.ids.length - 1], 0);
+          }
+          leak.tick.n++;
+          if (r.done && taps === want) leak.tick.win++;
+        });
+        Cook.UI.mission.close();
+      }
+    });
+  });
+  out.leak = leak;
+  if (leak.tick.win) out.errors.push("a count row ticked when its number was reached: " + JSON.stringify(leak.tick));
   delete Cook.data.recipes["test-order"];
   delete R["test-order"];
   return out;
@@ -728,6 +769,9 @@ def run_orders(vp, speed):
     print("  maani (level 4):", res["maani"])
     print("  pantry (level 1):", res.get("pantry"))
     print("  chai (level 2, with the tray's rows):", res.get("chai"))
+    lk = res.get("leak") or {}
+    for k, v in lk.items():
+        print(f"  leak '{k}': {v['win']}/{v['n']} = {100 * v['win'] / max(1, v['n']):.1f}% of count rows (count > 1) given away" if k.startswith("cards") else f"  leak '{k}': {v['win']}/{v['n']} = {100 * v['win'] / max(1, v['n']):.1f}% of count rows ticked at their number")
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if res["errors"] or bad:
         raise AssertionError(f"order model: {res['errors'][:3]} console: {bad[:3]}")

@@ -167,11 +167,15 @@
       Cook.sfx.click();
       // the picture tally shows this cup's spoons (what you did for it)
       UI.hideCount();
+      if (c.milkTaps) UI.count(c.milkTaps, { speak: false, id: "cook-dudh", icon: jugIcon() });
       if (c.sugar) UI.count(c.sugar, { speak: false, id: "cook-khun" });
       if (c.salt) UI.count(c.salt, { speak: false, id: "spi-16" });
+      c.extras.forEach((id) => UI.count(1, { speak: false, id }));
       refresh();
     };
     const level = (c) => c.vol.milk + c.vol.chai;
+    // the milk jug's picture for the tally
+    const jugIcon = () => Cook.Art.refUrl("cook-dudh.jug") || null;
     const mixCol = (m, t) => {
       if (m + t <= 0.001) return COL.milk;
       const f = t / (m + t);
@@ -372,6 +376,7 @@
           const c = sel;
           if (!c || pouring || finished) return;
           if (!c.extras.includes(id)) c.extras.push(id);
+          UI.count(1, { speak: false, id });
           Cook.sfx.pop();
           Cook.Spoon.spoon(zt, { bowl: obj, into: c.vessel, word: id, ms: kCount.spoonMs }).then(() => drawBits(c));
           refresh();
@@ -408,7 +413,11 @@
         pouring = false;
         if (marks) marks.destroy();
         const c = cups.find((x) => x.vessel === r.vessel);
-        if (c) c.vol.milk = r.level - c.vol.chai;
+        if (c) {
+          c.vol.milk = r.level - c.vol.chai;
+          c.milkTaps = (c.milkTaps || 0) + 1;
+          if (c === sel) UI.count(c.milkTaps, { speak: false, id: "cook-dudh", icon: jugIcon() });
+        }
         armMilk();
         refresh();
       });
