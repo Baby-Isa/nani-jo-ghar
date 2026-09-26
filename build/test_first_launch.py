@@ -117,7 +117,10 @@ def cook_round(R, kind, vp):
             R.wait_url("first.html", 15)
         except AssertionError:
             raise e
-    R.wait_url("first.html")
+    # (Cook's own URL has then=first.html in it: wait for the page itself, and its scripts)
+    page.wait_for_url(lambda u: on_page(page, "first.html") or u.split("?")[0].endswith("/first.html"), timeout=20000)
+    page.wait_for_load_state("load")
+    page.wait_for_function("window.Save && window.__story", timeout=20000)
     print(f"  {vp}: Cook's {kind} round in {time.time() - t0:.0f}s")
 
 

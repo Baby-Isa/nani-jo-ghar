@@ -15,6 +15,9 @@
   document.documentElement.classList.add("njg-first");
 
   let choices = (C.get() || {}).choices || null;
+  let leaving = false;
+  global.addEventListener("beforeunload", () => (leaving = true));
+  global.addEventListener("pagehide", () => (leaving = true));
   Story.setChild((view) => (C.options() ? C.svg(choices || C.defaults(), { view: view === "badge" ? "badge" : undefined }) : ""));
 
   // the character is drawn in every scene: have its pictures ready first
@@ -33,6 +36,9 @@
         },
       }),
     )
-    .catch((e) => console.error(e));
+    .catch((e) => {
+      // (a fetch cut off because the page is going somewhere else isn't an error)
+      if (!leaving) console.error(e);
+    });
   global.__first = { player: () => me.id };
 })(window);

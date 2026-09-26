@@ -208,6 +208,7 @@
         .join("");
       list.querySelectorAll(".prow").forEach((row) => {
         const id = row.dataset.id;
+        if (global.Character) global.Character.badge($(".dot", row), id);
         const p = Save.player(id);
         swatches($(".swatches", row), p.colour, (c) => {
           Save.updatePlayer(id, { colour: c });
