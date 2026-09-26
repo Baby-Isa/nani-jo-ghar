@@ -1,0 +1,76 @@
+{
+  "_about": "Clinic heal game `tummy` (H10 Bubbles and burps; docs/modes/clinic-design.md). Ali ate too many sweets at the wedding. A close-up of a round comic belly with six coloured bubbles and a see-through tube up to the mouth: drag a bubble up out of the belly and it floats up the tube to a BURP. The count is Kutchi (hakro to panj; six bubbles are always there). Then a drink: paani / dudh / chai (Cook's confirmed words), three unlabelled pitchers in a shuffled order, one tap = half a glass (adh, level 2+), two = full, a third overflows. Level 3 adds the hot-water bottle and the order (pela ... ne poi ...). Levels are data. English placeholders are marked placeholder: true or [bracketed]; the Kutchi words are reused from data/cook.json and docs/kutchi-grammar-notes.md, nothing invented.",
+  "id": "tummy",
+  "ailments": {
+    "too-many-sweets": {
+      "english": "a tummy ache from too many sweets at the wedding (Ali)"
+    }
+  },
+  "items": {
+    "cup": {
+      "english": "a cup (the glass: the drink is chosen in the game from three pitchers)",
+      "use": "cup",
+      "art": "cup"
+    },
+    "hot-water-bottle": {
+      "english": "the hot-water bottle",
+      "use": "bottle",
+      "art": "hot-water-bottle"
+    }
+  },
+  "numbers": [
+    { "n": 1, "id": "num-01", "kutchi": "Hakro", "english": "one" },
+    { "n": 2, "id": "num-02", "kutchi": "Ba", "english": "two" },
+    { "n": 3, "id": "num-03", "kutchi": "Trae", "english": "three", "audio": "assets/audio/cook-tts/trae.mp3" },
+    { "n": 4, "id": "num-04", "kutchi": "Char", "english": "four", "audio": "assets/audio/cook-tts/char.mp3" },
+    { "n": 5, "id": "num-05", "kutchi": "Panj", "english": "five", "audio": "assets/audio/cook-tts/panj.mp3" }
+  ],
+  "drinks": [
+    { "id": "paani", "word": "paani", "fill": "#8fcbee", "jug": "#dff1fb", "stroke": "#5a9cc4" },
+    { "id": "dudh", "word": "dudh", "fill": "#fbfaf4", "jug": "#ffffff", "stroke": "#b9b3a4" },
+    { "id": "chai", "word": "chai", "fill": "#b07a4a", "jug": "#e9d3bb", "stroke": "#7a4f2c" }
+  ],
+  "words": {
+    "paani": { "id": "cook-paani", "kutchi": "paani", "english": "water", "audio": "assets/audio/cook-tts/paani.mp3" },
+    "dudh": { "id": "cook-dudh", "kutchi": "dudh", "english": "milk", "audio": "assets/audio/cook-tts/dudh.mp3" },
+    "chai": { "id": "cook-chai", "kutchi": "chai", "english": "tea", "audio": "assets/audio/cook-tts/chai.mp3" },
+    "adh": { "id": "ph-half", "kutchi": "adh", "english": "half" },
+    "pela": { "id": "lnk-pela", "kutchi": "Pela", "english": "first" },
+    "nepoi": { "id": "lnk-nepoi", "kutchi": "Ne poi", "english": "and then" },
+    "bubble": { "id": "ph-bubble", "english": "bubble", "placeholder": true },
+    "bubbles": { "id": "ph-bubbles", "english": "bubbles", "placeholder": true },
+    "bottle": { "id": "care-bottle", "english": "the hot-water bottle", "placeholder": true }
+  },
+  "lines": {
+    "burp": { "who": "patient", "kutchi": "[EN: Burp!]", "english": "Burp!", "placeholder": true },
+    "giggle": { "who": "patient", "kutchi": "[EN: Hee hee!]", "english": "Hee hee! That tickles!", "placeholder": true },
+    "gurgle": { "who": "patient", "kutchi": "[EN: My tummy!]", "english": "Ooh, my tummy! Too many sweets!", "placeholder": true },
+    "glug": { "who": "patient", "kutchi": "[EN: Glug glug... ahh!]", "english": "Glug glug... ahh!", "placeholder": true },
+    "splash": { "who": "patient", "kutchi": "[EN: Whoops!]", "english": "Whoops! It's spilling!", "placeholder": true },
+    "ahh": { "who": "patient", "kutchi": "[EN: Ahhh, warm...]", "english": "Ahhh, that's warm...", "placeholder": true },
+    "better": { "who": "patient", "kutchi": "[EN: Much better!]", "english": "Much better!", "placeholder": true }
+  },
+  "levels": {
+    "1": {
+      "_note": "The bubbles (a count of six) + the drink by name (any amount). Lines one at a time: the drink row appears when the bubbles close.",
+      "bubbles": [2, 3, 4, 5],
+      "amount": false,
+      "bottle": false,
+      "list": false
+    },
+    "2": {
+      "_note": "+ the amount: 'Ne poi adh {drink}' (half: one tap) or 'Ne poi {drink}' (full: two taps). All rows as one list up front.",
+      "bubbles": [2, 3, 4, 5],
+      "amount": true,
+      "bottle": false,
+      "list": true
+    },
+    "3": {
+      "_note": "+ the hot-water bottle and a random order of the last two steps: 'Pela [the bottle]', 'Ne poi {drink}' or 'Pela {drink}', 'Ne poi [the bottle]'. The second row is right only if its step was done second.",
+      "bubbles": [2, 3, 4, 5],
+      "amount": true,
+      "bottle": true,
+      "list": true
+    }
+  }
+}

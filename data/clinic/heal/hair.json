@@ -1,0 +1,77 @@
+{
+  "_about": "Clinic heal game `hair` (H16 The beetles; docs/modes/clinic-design.md, H16 and decision 1: tiny round beetles with big eyebrows, never called lice). A close-up of the patient's head with a big mop of hair (a bald patient gets Ali's hair), nine beetles peeking out of it, three of each colour. Rows: [Comb it] {num} [times] (a swipe on the hair is one stroke); {num} [red ones] (tap them into the jar); level 2 a second colour, ne poi; level 3 ne poi [shampoo], {num} [rubs]. Real Kutchi is only the numbers (num-01..05, screen spelling hakro, ba, trae, char, panj: docs/kutchi-grammar-notes.md, data/cook.json) and ne poi; hakro is the he-form (the beetle's word is still a placeholder, so its gender is unknown: check with the family). Colours have no Kutchi word yet: they are placeholders. The tray ids: comb (data/clinic.json), bug-jar (a rough sprite), shampoo (placeholder). Levels are data.",
+  "id": "hair",
+  "ailments": {
+    "beetles": {
+      "english": "beetles in the hair (tiny, round, with big eyebrows)"
+    }
+  },
+  "items": {
+    "comb": {
+      "english": "the comb",
+      "use": "comb"
+    },
+    "bug-jar": {
+      "english": "the jar",
+      "use": "jar",
+      "art": "bug-jar"
+    },
+    "shampoo": {
+      "english": "shampoo",
+      "use": "shampoo",
+      "placeholder": true
+    }
+  },
+  "numbers": [
+    { "n": 1, "id": "num-01", "kutchi": "Hakro", "english": "one" },
+    { "n": 2, "id": "num-02", "kutchi": "Ba", "english": "two" },
+    { "n": 3, "id": "num-03", "kutchi": "Trae", "english": "three" },
+    { "n": 4, "id": "num-04", "kutchi": "Char", "english": "four" },
+    { "n": 5, "id": "num-05", "kutchi": "Panj", "english": "five" }
+  ],
+  "colours": {
+    "red": { "english": "red", "hex": "#d8403a", "placeholder": true },
+    "green": { "english": "green", "hex": "#3fa35b", "placeholder": true },
+    "blue": { "english": "blue", "hex": "#3b73d6", "placeholder": true }
+  },
+  "words": {
+    "comb": { "english": "Comb it", "placeholder": true },
+    "times": { "english": "times", "placeholder": true },
+    "one": { "english": "one", "placeholder": true },
+    "ones": { "english": "ones", "placeholder": true },
+    "shampoo": { "english": "shampoo", "placeholder": true },
+    "rub": { "english": "rub", "placeholder": true },
+    "rubs": { "english": "rubs", "placeholder": true },
+    "nepoi": { "id": "lnk-nepoi", "kutchi": "Ne poi", "english": "and then" }
+  },
+  "lines": {
+    "itchy": { "who": "patient", "kutchi": "[EN: Itchy, itchy!]", "english": "Itchy, itchy! Something's in my hair!", "placeholder": true },
+    "tickle": { "who": "patient", "kutchi": "[EN: Hee hee!]", "english": "Hee hee! That tickles!", "placeholder": true },
+    "boing": { "who": "patient", "kutchi": "[EN: Boing!]", "english": "Boing! In you go!", "placeholder": true },
+    "bubbles": { "who": "patient", "kutchi": "[EN: Bubbles!]", "english": "Bubbles! Hee hee!", "placeholder": true },
+    "wave": { "who": "patient", "kutchi": "[EN: Bye bye, beetle!]", "english": "Bye bye, beetle!", "placeholder": true }
+  },
+  "levels": {
+    "1": {
+      "_note": "The comb (a count) + one colour caught into the jar (a count of a colour). Lines one at a time. Blind: 1/3 x 1/3 x 1/3.",
+      "comb": [2, 3, 4],
+      "catches": [[1, 2, 3]],
+      "shampoo": null,
+      "list": false
+    },
+    "2": {
+      "_note": "The comb + two colours in order (ne poi): the second colour's beetles after the first's. Said as one list.",
+      "comb": [2, 3, 4, 5],
+      "catches": [[1, 2, 3], [1, 2, 3]],
+      "shampoo": null,
+      "list": true
+    },
+    "3": {
+      "_note": "+ ne poi [shampoo], a count of rubs (tap the head).",
+      "comb": [2, 3, 4, 5],
+      "catches": [[1, 2, 3], [1, 2, 3]],
+      "shampoo": [2, 3, 4, 5],
+      "list": true
+    }
+  }
+}
