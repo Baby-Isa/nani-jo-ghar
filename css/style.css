@@ -83,7 +83,7 @@ html, body {
 #sidebar {
   position: relative;
   width: 100%; height: 100%;
-  background: url("../assets/ui/parchment.jpg?v=20260925T233111Z") center/cover;
+  background: url("../assets/ui/parchment.jpg?v=20260926T082920Z") center/cover;
   box-shadow: inset 0 0 30px rgba(60,36,10,0.55), 4px 0 14px rgba(0,0,0,0.4);
   color: var(--ink);
   z-index: 20;
