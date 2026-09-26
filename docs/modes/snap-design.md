@@ -1,8 +1,212 @@
 # Snap: design (mode id `snap`)
 
 **Date:** 25 Sept 2026
-**Status:** proposal for Zafar, deepened on 25 Sept 2026 and **redesigned as a pipeline on 25 Sept 2026 (evening)**. The "Pipeline design" section at the top is current and supersedes the "Deep dive" (D1–D9) and sections 3, 4, 8 and 12 where they conflict; the deep dive's kinds of shot (D1), matcher rules, leak-bot list and speaking rules still stand and are referred to from it. Phases 0–1 are built (`build/reports/snap-build.md`). Follows `docs/modes/MODE-DESIGN-BRIEF.md` and `docs/modes/DEEP-DIVE-BRIEF.md`, and builds on `docs/find-it-design.md` (whose M11 "Photo" idea and "album as a collection" are passed to this mode), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md` and `docs/cook-with-nani-todo.md` (Wave 5, calm and clarity).
+**Status:** proposal for Zafar, deepened on 25 Sept 2026 and **redesigned as a pipeline on 25 Sept 2026 (evening)**, then **cut and sharpened by the "Mini-game quality pass" (25–26 Sept)**, which is the top section and wins where it and the pipeline design differ. The "Pipeline design" section under it is current and supersedes the "Deep dive" (D1–D9) and sections 3, 4, 8 and 12 where they conflict; the deep dive's kinds of shot (D1), matcher rules, leak-bot list and speaking rules still stand and are referred to from it. Phases 0–1 are built (`build/reports/snap-build.md`). Follows `docs/modes/MODE-DESIGN-BRIEF.md` and `docs/modes/DEEP-DIVE-BRIEF.md`, and builds on `docs/find-it-design.md` (whose M11 "Photo" idea and "album as a collection" are passed to this mode), `docs/cook-with-nani-phase-a-design.md`, `docs/cook-with-nani-kutchi-audit.md` and `docs/cook-with-nani-todo.md` (Wave 5, calm and clarity).
 **Placeholder rule:** the only Kutchi in this doc is what's already in `data/content.json` and `data/cook.json` (fruit, veg, numbers 1–10, and the frames *Muke {x} khape*, *Ne {x}*, *Muke hikdo {x} dine*, *Hedo!*, *Arre re!*, *Ghan*). Everything written `[EN: …]` has no Kutchi yet. In the game it's a grey italic English placeholder until the family gives the word. **Never invent Kutchi.**
+
+---
+
+## Mini-game quality pass, 25 Sept 2026
+
+**Why this section.** Zafar, after reading the pipeline designs (`MINIGAME-QUALITY-BRIEF.md`): "the detail and success will all be in how these mini-games work: what do you need to do, where is the challenge, where is the fun, where is the instruction, what is novel." This pass takes every mini-game in the pipeline design below (P2's stage variants, P3's shot library and darkroom crafts), answers those five questions for each, scores them, cuts to the best, checks them against the other five modes' pipeline sections, and writes a level-1 walkthrough for each stage's first set. It also applies the three rules Zafar set that night (`docs/UX-PRINCIPLES.md` §11–§13): **consistent controls inside each mini-game, fixed across its levels** (clarified 26 Sept: not tap-only; swipe, stir, drag and tap are all fine, but the same kind of action always uses the same gesture, and a mini-game's gestures never change by level); **auto-tick** on the card, mistakes only in the end review, no negative feedback mid-round from level 2; **the card is the master, Nani is a voice**. Where this section and the pipeline design disagree, this section wins; P2, P5, P6, P8 and P9 below have been edited to match (Q8 lists the edits).
+
+**Kutchi in this section.** As the pipeline design: only what is in the game (fruit, numbers, *wadho/nindho*, *nar*, *Ghan*, *Hedo!*, *Arre re!*, the frames *Muke {x} khape*, *Ne {x}*, *Muke hikdo {x} dine*) and what Mum's 25 Sept recordings gave (*pela … ne poi …*, *ne*, *{x} lai*, *hi … ai*, *muke {x} de*, *hi {x} khan*, *saathe*, *Haa*). Numbers are written as Zafar spelled them (*hakro/hakri*, *ba*; `data/content.json` still holds the handout drafts *hikdo* and *bo*, a Cook/foundation data change). `[EN: …]` is a placeholder. Never invent Kutchi.
+
+### Q0 The controls, fixed per mini-game
+
+The rule is per mini-game: one gesture per kind of action, the same at every level. Snap broke it in three places, all in the viewfinder: **drag to pan arrived at level 2** (`viewfinder.levels[1].drag: true`), **aim assist weakened by level** (1 → 0.6 → 0.4) and **the zoom had one step at level 1 and three from level 2**. All three were "the hands get harder", which is exactly what the rule forbids. The fix, and the full table so nothing drifts later:
+
+| Mini-game | Kind of action | The gesture, at every level | Notes |
+|---|---|---|---|
+| **Viewfinder** (3a, 3b, 3c, 3e, 3i) | Aim | **Drag the world** under the fixed frame | From level 1. A tap on the scene does nothing (Q9 decision 1 offers tap-to-jump as an *additional* gesture if Zafar wants it; the default is one aiming gesture). **Aim assist** becomes a *settle on release*: when the drag ends, the view eases part of the way (one fixed share, 0.6) towards the nearest fruit cluster's centre; the same at every level. The ghost finger shows a drag at the first walk |
+| | Zoom | **Tap + / −** | Three steps (1, 1.6, 2.5) at every level; level 1's scene (clusters of one kind, 1.5 screens) makes the second step enough, so the child *can* ignore the third |
+| | Shoot | **Tap the shutter** | The click, the flash, a pale print into the tray. Never a judgement |
+| **1a Load the film** | Load a frame | **Tap the film pack** once per frame (Cook `count`'s tap-tally) | The winder clicks; a dot lights in the camera's window. Tap the camera back to close it (the commit) |
+| **2a Where to?** | Choose the place | **Tap the place** | One tap; the walk plays |
+| **3d Ali's camera** | Say the card | **Speak** (the mic), or tap a pill as the fallback | No camera gestures at all: Ali holds the camera |
+| **4a Rub it up** | Develop | **Rub in circles** on the print (Cook `stir`'s circular drag) | Stop on *Ghan!* |
+| **4e Shake it** | Develop | **Flick the print up and down** (a vertical drag, counted) | The instant-camera ritual; the alternative to 4a from level 2, never both in one walk |
+| **4b Count them through the tray** | Count in | **Tap each print** into the tray, and **say** the number | The listen is the test; the tap is the beat |
+| **4c Peg them up** | Hang | **Drag a print to a peg** | Any peg accepts any print; the order is what's graded, at the commit |
+| **5a Show Nani** | Hand over | **Tap the print** | It floats to her lap |
+| **5b Who wants which?** | Give to a person | **Tap the print, then tap the person** | The clinic's waiting-room and Tidy up's "seat the guests" tap-tap, deliberately shared |
+| **5c What's this? / Nana's guess** | Answer | **Speak**, or tap a pill | |
+| **6a Fill the gap** | Place in the album | **Drag the print to the slot** | The corners snap with a click |
+| **6d Show the family** | Turn the page | **One tap** | |
+
+Two more rules that follow from §11 and the Sceptic together:
+- **A card line ticks at the commit of its job, never live**, so a tick can never be fished for. The film row ticks when the camera back closes (not on the *n*th tap); the shot rows tick at the **hand-in** (stage 5), not at the shutter, because the shutter must stay silent (decision 1 and the leak rules: a tick at the shutter would let the Sceptic spray film and watch for ticks); the order row (4c) ticks when *Develop* is pressed; the album slot ticks when the print lands.
+- **No verdicts mid-round from level 2.** The hand-in's *Arre re! Char aamo* becomes a **neutral naming**: Nani takes the print she is given and says what is in it (*Char aamo!*, warmly, from the print record), and keeps it; if it fits the row, the row ticks with a soft chime; if not, nothing ticks and she asks the next row. Rows left unticked are asked **once more at the end** with the prints left (a second chance, no verdict), and the review shows the result. That keeps the deep dive's recast (she says the true form of what she sees) and drops the "wrong" framing. *Arre re!* is kept for comic events only: a print going black, Kasuku in the frame. Level 1 keeps its one-time gentle correction as onboarding. The "go back for one frame" path stays at level 1 only.
+
+### Q1 The five questions, per mini-game
+
+Scores 1–5 for each question (Do = is the doing clear and satisfying in itself; Challenge = does the Kutchi decide it, and does it grow; Fun = the moment of delight; Instruction = is the card + Nani's voice real Kutchi today; Novel = has no other mini-game in any mode). Total out of 25. **Keep** ≥ 17 unless it duplicates another mode; **Merge** folds it into a kept one; **Later** goes to the maybe-later list.
+
+#### Stage 1: The shot list
+
+| # | Mini-game | 1 What do you do | 2 Where is the challenge | 3 Where is the fun | 4 Where is the instruction | 5 What is novel | Do | Ch | Fun | Ins | Nov | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **1a** | **Load the film** | Nani hands over the camera (*Hi khan!*) and the film pack, says a number; tap the pack once per frame (a winder click and a dot in the camera window each time); tap the back to close it | Hearing a number and producing it by action with **no digit anywhere**; L2 to *panj*; L3 two packs, *pela trae, ne poi ba*: two counts in one line, in order | The winder's click-click; closing the back with a clunk; the loaded count is *your film for the walk*, so a short load is felt later (one frame fewer) | Card: the film row as dots-hidden (`•••`). Nani: *Trae.* L3: *Pela trae, ne poi ba.* All real | The count you produce is your **ammunition**: the only count in any mode whose consequence is spent later in the same round | 4 | 4 | 3 | 5 | 4 | **Keep** (level 1) |
+| 1b | Which page? | Tap the album page Nani names; its "?" slots become the shot list | Which noun among two or three pages | Hearing the slots speak | *Aamo* (the mango page) | None: tap-the-one (Find it, the clinic's bench, Dress up's bench, Who did it's gap) | 3 | 3 | 2 | 4 | 1 | **Merge** into 1a's card: from L2 the request card *is* the album page, and its "?" slots speak their captions when tapped (the second hearing). Not a test |
+| 1c | Pack the bag | Grab camera, film, fruit from a passing belt | Counts and nouns under time | The belt | *Ba aamo* | None: the belt is already the clinic's counter, Tidy up 2c, Dress up 3b, Who did it 2b | 3 | 4 | 3 | 3 | 1 | **Cut** (a fifth belt) |
+| 1d | Say the list to Ali | Repeat each row to Ali, who draws it on the card | Production | Ali's wrong drawing | Fruit nouns | None: Tidy up 1d, Dress up 5c, Who did it 3c and Monsoon S3c all "tell Ali"; Snap already has 3d, where Ali *shoots* | 3 | 4 | 3 | 4 | 1 | **Merge** into 3d |
+
+#### Stage 2: Set off
+
+| # | Mini-game | 1 | 2 | 3 | 4 | 5 | Do | Ch | Fun | Ins | Nov | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **2a** | **Where to?** | Tap the place Nani names at the gate; the walk plays (sandals, Kasuku flying ahead) and the camera opens there | Which place noun; L1 taught (one lit), L2 two, L3 three | The walk itself: ten seconds of "off we go" | *Aamo!* (the tree by its fruit) until place words land | Little: it is tap-the-one. Kept as the pipeline's **beat**, not as a test: it is the only home for place nouns and the chosen place *is the scene* | 3 | 3 | 3 | 3 | 2 | **Keep as a beat** (ten seconds; never more than one tap) |
+| 2b | Which way? | Left/right at a fork; a goat blocks a wrong turn | Left vs right | The goat | Placeholders | The clinic owns left/right; the dead end is mid-round negative feedback (§11) | 3 | 3 | 3 | 1 | 2 | **Later** |
+| 2c | The bus window | The rail | Any | The road | — | Yes (the only auto-scrolling scene) | — | — | — | — | 5 | **Later** (phase 6, unchanged) |
+
+#### Stage 3: Spot and frame
+
+| # | Mini-game | 1 | 2 | 3 | 4 | 5 | Do | Ch | Fun | Ins | Nov | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **3a** | **Just so many** (K1) | Drag the orchard under the frame, tap + until exactly N of the fruit are in it, tap the shutter | Exactly N, no counter, no digit; the fourth mango is always just off the edge; L2 kinds interleaved (the third zoom step), L3 a leave-out, L4 counts 6–10 | The "click" and the pale print sliding into the tray; the near miss you only discover at the hand-in | Card: `•••` rows. Nani: *Trae aamo.* Real | **The only mini-game in any mode that grades what is included and what is left out of a rectangle** | 4 | 5 | 4 | 5 | 5 | **Keep** (built) |
+| **3b** | **The big one** (K2) | Frame the big (or small) one so it fills the middle | *wadho/nindho* with a mid-size decoy beside it; L4 colours and comparatives | Filling the frame with one huge mango | *Wadho aamo.* Real (drafts) | Find it's "which one" done by **framing**: the main-subject rule, no tap on the answer | 4 | 4 | 3 | 5 | 4 | **Keep** (built) |
+| **3c** | **No bananas** (K3) | 3a or 3b with a photobomber bunch beside every cluster to keep out (or, 50/50, to get in: *saathe*) | *nar {y}* vs *{y} saathe* | The photobomber; later Kasuku's beak at the edge of the frame | *Trae aamo, nar kelo.* Real | **The only mini-game that grades exclusion** | 4 | 5 | 5 | 4 | 5 | **Keep** (L3+) |
+| **3d** | **Ali's camera** (speaking) | A picture card; say it; Ali swings and shoots what he heard; his print joins the tray | Production; L3 number then noun | Ali's wrong print (four lemons for "three mangoes") turning up at the hand-in | *[EN: Tell Ali]*; the pills as fallback | Every mode has a "tell Ali", but only here **his output is a picture judged later**, so a mishearing is a comic object, not a buzz | 4 | 4 | 4 | 4 | 4 | **Keep** (built; absorbs 1d) |
+| **3e** | **Quick shot** | Mid-stage Nani: *Hedo! Limu!*; one bonus frame, one chance | A met noun by surprise from a look-alike group | The scramble; the bonus print | *Hedo! {x}!* Real | Cook's `passme`, **deliberately shared** (same timing, same one-chance rule); Snap's twist is that the act is a shot | 4 | 4 | 4 | 5 | 2 | **Keep** (shared) |
+| **3i** | **The self-timer** (new) | Frame the row as usual; then Nani says a number (*Panj!*) and the camera counts aloud *hakro, ba, trae, char, panj, chh…* to *das* (once a second); tap the shutter **on her number** | Which number you heard, held in mind through a spoken count; L3+ only, one row a walk; L4 numbers 6–10 (their only home in Snap) | The countdown itself: "say cheese" tension, slow and calm, then the click and the flash on the beat | *Panj!* then the count. Real | **The only timed press in the game that is a listening test, not a reflex** (Monsoon's beat is a reflex); nothing else has a countdown | 4 | 4 | 4 | 5 | 5 | **Keep** (L3+, new, cheap: a count and a window on the shutter) |
+| 3f–3h | Snap the moment, Right place, Two together | The moving world | States, positions, pairs | Very | Placeholders | Yes | — | — | — | — | 5 | **Later** (phase 5–6, unchanged) |
+
+#### Stage 4: Develop the prints (the darkroom crafts C1–C10 are this stage's pool)
+
+| # | Mini-game | 1 | 2 | 3 | 4 | 5 | Do | Ch | Fun | Ins | Nov | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **4a / C1** | **Rub it up** | Rub the pale print in circles; the picture comes up under your finger; stop on *Ghan!* | The stop word; L3 *pela aamo, ne poi kelo*: which pale ghost to rub first | The reveal under the finger; over-rub and it goes black with two comic eyes (*Arre re!*), and still counts at the hand-in by what's in it | *[EN: rub]… Ghan!* The stop word is real | Cooking Mama's stop-on-the-mark on a **reveal**: the only craft where the thing you are making is your own earlier work appearing | 5 | 3 | 5 | 4 | 3 | **Keep** (level 1) |
+| **4b / C2** | **Count them through the tray** (speaking) | Tap each print into the developer and count aloud with Nani; lift them out | Saying the number words in order; L2 alone; L3 Nani says a wrong number on purpose and you say the right one | Nani's deliberate mistake (*Char?* … *Trae!*), and her *Haa!* | *Hakro, ba, trae.* Real; the smallest closed set in the game | The count-aloud chain is the clinic's (H9's countdown, H15's count to *panj*): **deliberately shared** on `say.js`; Snap's L3 "correct Nani" twist is its own | 4 | 4 | 3 | 5 | 2 | **Keep** (shared; the first speaking moment) |
+| **4c / C3** | **Peg them up** | Drag each print to a peg on the line in the order Nani says | *pela … ne poi …* over nouns you must recognise in half-developed prints; L4 by size | The line filling; a print swinging on its peg | *Pela aamo, ne poi kelo.* Real | Tidy up's washing line (#10) and Monsoon S4c hang things in an order too: **deliberately shared** (`peg` + `order` when Tidy ships them); Snap's twist is that the things are **your own prints**, so the noun test is "which print is that?" | 4 | 4 | 3 | 5 | 2 | **Keep** (shared; L2+) |
+| **4e / C4** | **Shake it** (Layla's) | Flick the print up and down; it comes up a little per shake; Nani said how many | The count of shakes (no counter); L3 *aastethi* / *jaldi* when recorded | The ritual itself; a print shaken too hard flies off the charpai and Kasuku brings it back | *Trae!* Real | The instant-camera shake: **nothing else in the game shakes** | 4 | 3 | 4 | 5 | 4 | **Keep** (the L2 alternative to 4a; one per walk) |
+| 4d / C5 | The spoilt one | Tap the dark print to throw it away | Adjectives | The lens-cap print | Placeholders | Tap-the-one by adjective (Find it) | 3 | 3 | 2 | 1 | 1 | **Later** (colours) |
+| C6 | Wash and dry | Dip, then hold to the sun | *pela … ne poi* | Steam | *water, sun* placeholders | Cook `pour` + a timer | 3 | 3 | 2 | 2 | 2 | **Later** |
+| C7 | Stick the corners | Corners from the tin by colour or count | Colours, counts | The tin | Colours are placeholders | Tidy up's place + Cook `count` | 3 | 3 | 2 | 2 | 2 | **Later** (was 6b) |
+| C8 | Cut it straight | Swipe along the dotted edge | Sides | The snip | Placeholders | Dress up's T1 *Cut along the line* owns cutting | 4 | 2 | 3 | 1 | 1 | **Cut** |
+| C9 | Write the date | Tap the number stamp Nani says | Numbers 1–10 | Little | Real | Tap-the-one | 3 | 3 | 1 | 5 | 2 | **Cut** (3i now gives 6–10 a better home) |
+| **C10** | **The photobomb fix** | Kasuku got in: drag a sticker over him, or leave him (*Kasuku saathe*) | *saathe* vs *nar*, heard after the fact | The sticker; Kasuku's outrage | *Nar Kasuku* / *Kasuku saathe* | The only craft whose instruction re-tests a stage-3 row on the finished print | 4 | 4 | 5 | 3 | 4 | **Keep** for phase 5 (needs Kasuku) |
+
+#### Stage 5: Show the family
+
+| # | Mini-game | 1 | 2 | 3 | 4 | 5 | Do | Ch | Fun | Ins | Nov | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **5a** | **Show Nani** | Nani asks each row again in a new order; tap a print; she names what is in it and keeps it; the row ticks if it fits | The second listening pass; a print's contents from memory (photo-taking impairment, 2.2) | Nani's naming of a near miss (*Char aamo!*) and the child's face | *[EN: Show me] trae aamo* (H21); later *muke … de* | The hand-in that **reacts to what is really in the print** (a recast from the print record): no other mode judges later, from an object the child made | 4 | 5 | 4 | 4 | 4 | **Keep** (built; verdicts removed per Q0) |
+| **5b** | **Who wants which?** | Nani says whose each print is (*Hi Nana lai ai*); tap the print, then the person | *{person} lai* + kinship + the row; L4 three people | Nana's puzzled look at the wrong print; Ma's *Wah!* when recorded | *Hi Nana lai ai. Ma lai ba kelo.* Real | The tap-thing-tap-person is the clinic's waiting room, Tidy up 5a and Who did it 5c (*{person} lai*): **deliberately shared**; Snap's twist is that the *content* of the print decides the person | 4 | 4 | 3 | 5 | 2 | **Keep** (shared; L3+) |
+| **5c** | **What's this? / Nana's guess** (speaking) | Nani holds up one of your prints: say what it is; from L3 **Nana guesses it wrong first** (*Panj kelo?*) and you put him right (*Ba kelo!*); *Haa!* | Production from your own print; number + noun at L3 | Nana half asleep, guessing five bananas at two | *[EN: What's this?]*; Nana's *Panj kelo?*; *Haa* | Yes/no guessing is Who did it 3d's and the clinic D1's, so 5d is folded in here as the **prompt** for production, which is Snap's own (speaking about a picture you took) | 4 | 4 | 4 | 4 | 3 | **Keep** (absorbs 5d) |
+| 5d | Nana's guess | Say yes or no to Nana's guess | Yes/no | Nana | *Haa* | Same shape as Who did it 3d, the clinic D1 | 3 | 3 | 4 | 3 | 1 | **Merge** into 5c |
+
+#### Stage 6: The album
+
+| # | Mini-game | 1 | 2 | 3 | 4 | 5 | Do | Ch | Fun | Ins | Nov | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **6a** | **Fill the gap** | Tap a "?" slot to hear its caption; drag the accepted print onto the slot that spoke its row; the corners snap; a first-time-right print gets a gold corner | The third listening pass, now from the page; L3 the whole page including earlier walks' slots (match, not fill) | The snap of the corners; the gold corner; the page filling over days | The slot speaks *trae aamo*. Real | Alba's "?" turned into an **audio riddle**: the only collection in the game whose gaps are heard, not seen | 4 | 4 | 4 | 5 | 5 | **Keep** |
+| 6b | Stick the corners | Corners by colour or count | Colours | The tin | Placeholders | = C7 | 3 | 3 | 2 | 2 | 2 | **Later** (as C7) |
+| 6c | Caption it | Say the caption before placing | Production | — | — | = 5c outside the round | 3 | 3 | 2 | 4 | 1 | **Merge**: free-play album only (P9 decision 6), no star |
+| **6d** | **Show the family** | One tap turns the page to the family; each reacts to a print; Nani's send-off line; a finished page earns an ajrakh border | None: listening only | Kasuku echoing *Arre re!* at a photobombed print; the cheer for a finished page | *[EN: tomorrow we'll go to…]* placeholder | The send-off as a **page turn to an audience** (TOEM's reactions, Hey Duggee's badge) | 3 | 1 | 4 | 2 | 3 | **Keep as the send-off beat** |
+
+### Q2 The cut: what each stage keeps
+
+| Stage | Kept (first set in bold) | Cut or merged | Count |
+|---|---|---|---|
+| 1 Shot list | **1a Load the film**; from L2 the card is the album page whose "?" slots speak (1b's idea, not a test) | 1b merged into the card; 1c cut (belt); 1d merged into 3d | 1 |
+| 2 Set off | **2a Where to?** as a ten-second beat | 2b later; 2c phase 6 | 1 |
+| 3 Spot and frame | **3a Just so many**, **3b The big one**, 3c No bananas, 3d Ali's camera, 3e Quick shot (Cook's), 3i The self-timer (new) | 3f–3h phase 5–6 | 6 |
+| 4 Develop | **4a Rub it up**, 4b Count them through, 4c Peg them up, 4e Shake it, C10 The photobomb fix (phase 5) | 4d/C5, C6, C7 later; C8, C9 cut | 5 |
+| 5 Show the family | **5a Show Nani**, 5b Who wants which?, 5c What's this? with Nana's guess | 5d merged into 5c | 3 |
+| 6 Album | **6a Fill the gap**, **6d Show the family** (the beat) | 6b later; 6c free play only | 2 |
+
+**Maybe later**, one line each: 2b *Which way?* (when left/right land and the clinic wants a second home for them; the dead end must become a comic loop, not a correction); 2c the bus window (phase 6); 3f–3h the moving world (phase 5–6); 4d *The spoilt one* (when colours and *dark/light* land); C6 *Wash and dry* (when *water* and *sun* land; a *pela … ne poi* skin of Cook `pour`); C7 *Stick the corners* (colours); 1c *Pack the bag* (only if the shared belt wants a Snap skin; not before); 1d and 6c (absorbed; nothing lost); S21 *Say cheese* (Dress up's 6c already has "smile and shoot").
+
+### Q3 The big library: shots and crafts, cut to ten and six
+
+The shot library (P3) was 21. It stays the list of *rows* a page can ask for, but the first-class entries are cut to **ten**, scored on the five questions (Do, Challenge, Fun, Instruction, Novel; total /25). The rest are skins of a kept shot or wait for their words, and are listed once below.
+
+| # | Shot | Stage-3 variant | Do | Ch | Fun | Ins | Nov | Total | Keep? |
+|---|---|---|---|---|---|---|---|---|---|
+| S1 | **Three mangoes** (with S7's *chh*–*das* counts as its L4) | 3a | 4 | 5 | 4 | 5 | 5 | 23 | **Keep** (built) |
+| S2 | **The big mango** | 3b | 4 | 4 | 3 | 5 | 4 | 20 | **Keep** (built) |
+| S3 | **Mangoes, no bananas** | 3c | 4 | 5 | 4 | 4 | 5 | 22 | **Keep** (built at L3) |
+| S4 | **Kasuku's in it!** (*nar* / *saathe*) | 3c + a still sprite | 4 | 5 | 5 | 3 | 5 | 22 | **Keep** (phase 5) |
+| S5 | **Ali shoots on your word** | 3d | 4 | 4 | 4 | 4 | 4 | 20 | **Keep** (built) |
+| S6 | **Hedo! A lemon!** | 3e | 4 | 4 | 4 | 5 | 2 | 19 | **Keep** (shared) |
+| S22 | **On panj!** (new: the self-timer) | 3i | 4 | 4 | 4 | 5 | 5 | 22 | **Keep** (L3+) |
+| S8 | **Two big, one small** (*ba wadha aamo, ne hakro nindho*) | 3a + 3b in one frame | 4 | 5 | 3 | 5 | 4 | 21 | **Keep** (L4) |
+| S19 | **Then and now** | 3a/3g + the reveal | 4 | 4 | 5 | 2 | 5 | 20 | **Keep** (Arc 5 Ch4) |
+| S20 | **All of us** | 3a + 3c | 4 | 4 | 5 | 3 | 4 | 20 | **Keep** (the finale) |
+| S7 | Six lemons | = S1 at L4 | | | | | | | Merged into S1 |
+| S14, S15 | The tallest tree; The red bus | 3b via `whichone.js` | 3 | 4 | 3 | 1 | 2 | 13 | Later: skins of S2 when comparatives and colours land |
+| S9, S12, S17 | The little goat; Nana asleep; Hens, not the rooster | 3b / 3f / 3c with animals | 4 | 4 | 5 | 1 | 3 | 17 | Later: animal words and sprites (phase 5) |
+| S10, S11, S13, S16, S18 | The moving world and the rail | 3f–3h | | | | 1 | 5 | | Later (phase 5–6) |
+| S21 | Say cheese | 3d-style listen | 4 | 3 | 4 | 1 | 2 | 14 | Cut (Dress up 6c owns "smile and shoot") |
+
+The darkroom crafts are cut from ten to **six**: C1 Rub, C2 Count through, C3 Peg up, C4 Shake, C10 Photobomb fix (all scored in Q1 under stage 4) and, for the album, nothing until colours land. C8 and C9 are cut; C5, C6, C7 wait for words.
+
+### Q4 Research: what is working now, and the mechanic borrowed
+
+The pipeline design's P4 covers the photo games (Pokémon Snap, TOEM, Alba, Beasts of Maravilla, Afrika, Snapimals, Toca Nature, Seek, real instant cameras); those borrowings stand. This pass looked at the *children's* charts and the casual hits Zafar named, for the mini-game feel rather than the photo idea:
+
+| Game (2024–2026 charts, or a still-selling classic) | The specific mechanic | Why it works | Where it lands in Snap |
+|---|---|---|---|
+| **Cooking Mama: Let's Cook!** (still on the charts) | The **stop-the-needle gauge**: a band on a moving bar, release inside it; no game over, a medal at the end | The tension is one second long and forgiving; a miss is a laugh, not a loss | **4a's *Ghan!* window** (a spoken band instead of a drawn one, so the ear decides); the end-of-round badges as the medal |
+| **Good Pizza, Great Pizza** | The **order is words only**, and the customer **reacts to the pizza you hand over, in character**, naming what is off; tips scale, nobody fails | Handing your work to a person who describes it is warmer and more memorable than a score; the order (not a picture) is the only source of truth | **5a's neutral naming** (*Char aamo!*) and no verdict mid-round; the card as the only truth (no silhouettes, no digit) |
+| **Overcooked** | An **icon step-list** per recipe that ticks as steps are done; instructions shown before the clock starts | The tick is the feedback; nothing else nags; the quiet start lets you read | **Auto-tick at the commit** (Q0); the three seconds of quiet after the card |
+| **Pok Pok Playroom** (Apple Design Award; a low-stimulation staple) | **Sound-first toys**: every touch answers with a sound and a small motion; no scores, no instructions | Small hands play for the sound alone; calm sells to parents | The **winder click** (1a), the shutter, the peg click, the corner snap; the darkroom and album as no-star toys in free play |
+| **Sago Mini World** | **One short, clear activity per screen**, with a visible start and end | Under-sixes hold one job at a time; the "done" is unmistakable | The six beats, each with one job and one big button; 2a and 6d kept as ten-second beats, not tests |
+| **Toca Boca** (Toca Kitchen 2, Toca Life World) | **No fail, comic consequences**: the character makes a face at what you did | A consequence you can see is a lesson; a buzzer is a verdict | The **black print with eyes**, Nana's puzzled look, Ali's wrong print, Kasuku's outrage; never a cross |
+| **Khan Academy Kids** | **Read-along highlighting** of every instruction | Pre-readers follow the voice with the text | UX 1 (the request card), already in the design |
+| **Hey Duggee** apps | **A badge per finished set** | Finishing a small set is the pull | A finished page earns the ajrakh border (6d) |
+| **Kids' instant cameras** (Instax Mini, KidiZoom Print) | The **blank print that develops in your hand**, and the shake ritual | Waiting for your own picture is the delight; the ritual is the play | Stage 4 whole: pale prints, rub or shake, the washing line |
+| **Toca Boca Days** (2024; servers closed Aug 2025) | Multiplayer as the hook | A caution: it did not hold. The company in the room (Nani, Grandparent mode) is the multiplayer that lasts | Nothing borrowed; the family on the charpai is the audience (5b, 6d) |
+
+### Q5 Distinctness across modes
+
+Read against the other five modes' "Pipeline design" sections. Snap's identity is **framing**: the rectangle decides (how many, which one, what is left out), and the judging comes later from an object the child made. Everything that is not that must be either Snap's own flourish or deliberately shared.
+
+| Overlap found | Where else | What this pass did |
+|---|---|---|
+| The belt (1c) | Clinic P4 (the counter), Tidy up 2c, Dress up 3b, Who did it 2b | **Cut** 1c: a fifth belt teaches nothing new |
+| Tap-the-one (1b, 2a) | Every mode's stage 1 | 1b **merged** into the card; 2a **kept as a beat** (taught at L1, one tap, never more) |
+| "Tell Ali" speaking (1d) | Tidy up 1d, Dress up 5c, Who did it 3c, Monsoon S3c | **Merged** into 3d, which is distinct: Ali's hearing becomes a *picture judged later* |
+| Count aloud (4b) | Clinic H9 (*count with me*), H15 (count to *panj*) | **Kept, deliberately shared** on `say.js`'s number set; Snap's own L3 twist (correct Nani's wrong number) |
+| Hang in an order (4c) | Tidy up place #10 (the washing line), Monsoon S4c | **Kept, deliberately shared**: reuses Tidy's `peg` + `order` when they ship (Cook `assemble` until then); Snap's twist is that the things are the child's own half-developed prints |
+| Rub with a count (4a, 4e) | Monsoon S4b (dry off), Clinic H17, Dress up T13 | 4a kept for the **reveal** and the stop word (not the count); 4e's shake is nobody else's |
+| Tap thing, tap person with *{person} lai* (5b) | Clinic W1 (the bench), Tidy up 5a, Who did it 5c (share them out) | **Kept, deliberately shared** grammar; the print's content is what decides the person |
+| Yes/no guessing (5d) | Who did it 3d (Nani guesses), Clinic D1 | **Merged** into 5c as the prompt for production |
+| Cutting (C8), a "smile and shoot" photo (S21) | Dress up T1 (cut along the line), Dress up 6c (the photo) | **Cut** both; Dress up owns them. Snap's S20 stays because it is framed (who is in, who is out), which Dress up's photo never grades |
+| Quick shot (3e) | Cook `passme` | **Kept, deliberately shared** (the design already said so) |
+| Snap's own, found nowhere else | — | 3a exactly-N framing, 3b main-subject framing, 3c exclusion, 3i the self-timer, 1a's spent count, 4a's reveal, 6a's audio-riddle slots, 5a's judge-later hand-in |
+
+### Q6 Level-1 walkthroughs, one per stage's first set
+
+**Stage 1, 1a Load the film.** The charpai under the tree; Nani with the old camera on her lap and the album open at a page with one "?" slot. The request card slides over the play area: her face, then the row *trae aamo* with each chunk lighting as she says it (the card reads `••• aamo`, no digit). The card shrinks into the left sidebar. Nani holds out the camera: *Hi khan!* (take this), and a film pack: *Ba.* The ghost finger taps the pack once: a frame slides in with a winder click and one dot lights in the camera's little window. The child taps once more: click, second dot. They tap the camera back; it clunks shut and the film row on the card ticks (the commit). If they had tapped a third time, level 1's one-time correction: Nani says *Ba* again and the extra frame slides back out; from level 2 nothing is said and the review shows it. Big button on the right: **Set off**.
+
+**Stage 2, 2a Where to?** The gate view: the mango tree (lit, throbbing gently), the well and the shed (dim). Nani, off screen: *Aamo!* The ghost finger taps the tree once; the child taps it. Sandals on the path, Kasuku flaps ahead, the scene scrolls right and stops under the mango branches, and the viewfinder frame fades in over it. Under ten seconds, one tap, nothing tested.
+
+**Stage 3, 3a Just so many.** The orchard, one and a half screens wide, under the fixed frame: a mango branch with two clusters (three and four), bananas in a bunch, lemons, oranges. Everything is dimmed except the shutter and the three-mango cluster, which throbs. The ghost finger drags the world so the cluster sits in the frame, taps **+** once, taps the shutter: click, flash, a pale rectangle slides into the tray with a ghost of mangoes in it (fruit tellable, not countable). The dim lifts and the child does it on the four-mango cluster if they like, or the same one: they drag (the view settles a little onto the nearest cluster when they let go), tap **+** once or twice, tap the shutter. Two frames; both may be used. The card says nothing; the tray says nothing. Nine seconds without a shot and Nani says the row again, free the first time. Big button: **Develop**.
+
+**Stage 4, 4a Rub it up.** Back on the charpai, one pale print big in the middle. Nani: *[EN: rub]*. The ghost finger circles once; the child rubs in circles and the mangoes come up under their finger, colour spreading from the touch. Nani: *Ghan!* They lift their finger; the print is bright. (Rub past *Ghan* and it darkens to a black square with two blinking eyes, *Arre re!*, and Nani keeps it anyway: the hand-in rates it on what it holds, which is now nothing.) Big button: **Show Nani**.
+
+**Stage 5, 5a Show Nani.** Nani on the charpai with her hands out; the tray's prints (one or two) in a row at the bottom. She asks: *[EN: Show me] trae aamo.* The child taps a print; it floats to her lap; she looks and names it: *Trae aamo!* and the row on the card ticks with a soft chime; or *Char aamo!*, just as warmly, and no tick. With one row and a second print left she asks once more at the end: *Trae aamo?*; the child may hand the other. Nothing is called wrong. Big button: **Into the album**.
+
+**Stage 6, 6a Fill the gap, then 6d.** The album page with its one "?" slot. Tap the slot and it says *trae aamo*. The child drags the accepted print onto it; the corners snap with a click, gold if the row was ticked first time. One tap turns the page towards Nani: she looks, says *[EN: tomorrow, more]*, and the shared end-of-round screen opens: the stopwatch (this walk's time), one accuracy slot, no hints badge yet; then page 2, the words heard: *aamo, trae, ba, Ghan*. The whole first walk is under a minute.
+
+### Q7 What the cut changes in the build
+
+- **Viewfinder** (`js/snap/mechanics/viewfinder.js`, `data/snap.json mechanics.viewfinder`): `drag: true` at every level; `zooms: [1, 1.6, 2.5]` at every level; `aimAssist` becomes one value (0.6) applied **on drag release** as a settle, not on tap; `tapWorld` is no longer bound to a tap on the scene (kept as an API for the bot and the ghost finger). The level-1 scene keeps clusters of one kind so two zoom steps suffice. P6's "Keep, unchanged" for `viewfinder.js` becomes "Keep, one edit".
+- **Hand-in** (`handin.js`): the recast line loses *Arre re!* and the re-choose loop from level 2; unticked rows are re-asked once at the end; the "go back for one frame" path is level 1 only. The ear star's rule (right first time) is unchanged.
+- **New**: `mechanics/self-timer.js` (3i): a spoken count with a shutter window; **`mechanics/shake.js`** (4e) beside `develop.js`.
+- **Dropped from phase 2–3**: `load-film` stays but is a tap-tally (Cook `count`) not a slide; no `pack-bag`, no `say-list`, no `which-way`, no `spoilt-one`, no `corners`, no `caption-it` in the round; `who-wants.js` (5b) and 5c stay; 5d is a line set inside 5c.
+- **Auto-tick**: the card ticks at commits (Q0); `walk.js` owns the tick, stages report `commit(row, ok)`.
+- **Leak bot**: one new strategy, **random shutter time** for 3i (1 in 10); random film count, random place, random peg order and random slot as before.
+
+### Q8 Edits made to the pipeline design below
+
+P2's stage-3 intro (drag from level 2 → drag at every level; the self-timer added; the cut marked per stage); P5's first walk (the ghost finger drags) and level ladder (the kept variants only); P6's viewfinder row; P8's phase 2–3 lists and acceptance; P9 gains decisions 8–9. The deep dive's D3 `viewfinder` line and D5 "Hands" column are superseded by Q0 and left as history.
+
+### Q9 Decisions for Zafar from this pass (each with a default)
+
+8. **Aiming: drag only, or drag plus tap-to-jump?** Tap-to-centre is built and tested and helps five-year-olds land on a cluster; the rule reads as one gesture per kind of action. Default: **drag only, with the settle-on-release assist**; if the first playtest shows small hands struggling, add tap-to-jump at *every* level (never as a level-1-only crutch).
+9. **The hand-in without verdicts.** Nani names what is in the print and keeps it; unticked rows are re-asked once at the end. Default: **yes from level 2**, level 1 keeps the one gentle correction; the ear star still needs right-first-time.
 
 ---
 
@@ -54,7 +258,7 @@ The request card opens over the charpai: Nani's face, her line (*[EN: Take a pho
 | **1c Pack the bag** | The clinic's counter belt: things pass on the charpai's cloth (camera, film, *aamo*, *kelo*, *[EN: hat]*, *[EN: water]*). Nani says what to pack, with counts: *ba aamo* (two mangoes for the road), *[EN: the camera]*, *[EN: the film]*. Grab as they pass. Everything packed is used later: the mangoes are the picnic in stage 6 | **Counts + fruit**, and the camera nouns once recorded (`[EN: camera]`, `[EN: film]`) | L2+: fruit and counts only (the real Kutchi). L4: the camera words | **Clinic's pharmacy belt** (shared once the clinic ships it; Cook `fetch` until then) | 1 in 4 per item |
 | **1d Say the list to Ali** (speaking) | Nani says a row; the child repeats it to Ali, who writes it on the shot list (a picture appears on the card as he hears it). A wrong hearing draws the wrong picture, which the child can say again or tap to fix | **Production**: the fruit noun (closed set = the fruit in the orchard, 3–6); L4 number then noun | L3+; alternate rows only, never all | **Shared `say.js` + `speech.js`** (`listen({choices})`, pills and the Grandparent tick as fallback) | Voice 0 (pills credit nothing) |
 
-Level 1 runs **1a only** (*ba*: two frames). 1b arrives at level 2 as the way the list is given; 1c and 1d are level 3–4 alternatives dealt one per walk, never both.
+Level 1 runs **1a only** (*ba*: two frames; a **tap** per frame on the pack, the back tapped shut as the commit). **Quality pass:** 1b is not a mini-game: from level 2 the request card *is* the album page and its "?" slots speak when tapped; **1c is cut** (a fifth belt) and **1d is merged into 3d**. Level 3's stage 1 is 1a with two packs (*pela trae, ne poi ba*).
 
 #### Stage 2: Set off
 
@@ -66,11 +270,11 @@ A ten-second stage whose only point is the place nouns and the story's "off we g
 | **2b Which way?** | A fork on the path; Nani says *[EN: left]* / *[EN: right]*, later *[EN: straight on]*. Two forks at level 3. A wrong turn reaches a dead end (a goat blocks it) and Nani says it again | **Left and right**, shared with the clinic's "does it hurt here?" thread | L2+ (placeholders until the clinic's left/right words land; taught not tested until then) | **Clinic's left/right** (data; the tap is the same) | 1 in 2 per fork |
 | **2c The bus window** | Arc 5: the rail. The lap's rows were given in stage 1; the road passes | As section 8 (the journey) | Phase 5 | `js/snap/rail.js` (new, later) | see 8.4 |
 
-Level 1 runs **2a with one place lit**: a single tap, the ghost finger shows it the first time (UX 8), and the child has "set off".
+Level 1 runs **2a with one place lit**: a single tap, the ghost finger shows it the first time (UX 8), and the child has "set off". **Quality pass:** 2a is kept as a ten-second beat at every level (one tap, never more); **2b goes to maybe-later** (a dead end is mid-round negative feedback, and left/right is the clinic's); 2c is phase 6 as before.
 
 #### Stage 3: Spot and frame
 
-The built core, unchanged in its rules: a still scene under a fixed frame, tap-to-centre, +/− zoom steps, drag from level 2, film as loaded, nothing said at the shutter. The variants are the kinds of shot (D1) and who holds the camera.
+The built core, unchanged in its rules: a still scene under a fixed frame, film as loaded, nothing said at the shutter. **Controls (quality pass Q0, the same at every level):** drag the world to aim (with a settle-on-release towards the nearest cluster, one fixed strength), tap +/− for three zoom steps, tap the shutter. No tap-to-centre, no "drag from level 2", no aim assist that weakens by level. The variants are the kinds of shot (D1) and who holds the camera, plus the self-timer (3i).
 
 | Variant | Mechanic | The Kutchi it carries | Levels | Reuses | Blind odds |
 |---|---|---|---|---|---|
@@ -79,9 +283,10 @@ The built core, unchanged in its rules: a still scene under a fixed frame, tap-t
 | **3c No bananas** (K3, built inside G1/G2 L3) | K1 or K2 with a leave-out: *trae aamo, nar kelo*; a photobomber bunch beside every cluster; Kasuku as the photobomber when *parrot* lands | **nar {y}**; *{y} saathe* (with) as the 50/50 twin once recorded | L3+ | as 3a + the photobomber sprite | 1 in 8 |
 | **3d Ali's camera** (speaking, built as G4) | A picture card; the child says it; Ali frames what he heard and shoots. His print goes in the tray with the others | **Production**: fruit; L3 number then fruit | L2+, alternate rows | Snap `ali-camera`, shared `speech.js` | Voice 0 |
 | **3e Quick shot** | Mid-stage, Nani: *Hedo! {x}!* for a met word not on the list, from a look-alike group with ≥2 members visible; one bonus frame | A met noun, by surprise | L2+ | **Cook `passme`** | 1 in 2 |
+| **3i The self-timer** (quality pass, new) | Frame the row as usual; then Nani says a number (*Panj!*) and the camera counts aloud *hakro, ba, trae…* to *das*, once a second; tap the shutter on her number. One row a walk at most | **A number heard and held** through a spoken count; L4 numbers 6–10 (their only home in Snap) | L3+ | Snap `self-timer` (new, small: a count and a shutter window) | 1 in 10 |
 | 3f Snap the moment (K4), 3g Right place (K5), 3h Two together (K6) | The moving world and `rel.js` (deep dive G7, G9, G10) | States, positions, pairs | Phase 4+ | `subjects.js` (new), shared `rel.js` | 8.4 |
 
-Level 1: **one row of 3a, one spare frame**, tap-to-centre and one zoom step. The tray shows each print as a pale rectangle with a ghost of the picture (the shot is visible enough to tell fruit from fruit, not enough to count; see decision 1).
+Level 1: **one row of 3a, one spare frame**, the same drag, +/− and shutter as every level (the level-1 scene's single-kind clusters make two zoom steps enough). The tray shows each print as a pale rectangle with a ghost of the picture (the shot is visible enough to tell fruit from fruit, not enough to count; see decision 1).
 
 #### Stage 4: Develop the prints
 
@@ -94,7 +299,7 @@ New. The instant camera's prints come out pale; this stage brings them up. It is
 | **4c Peg them up** | A washing line with as many pegs as prints (a fixed-shape card: four pegs even for two prints). Nani says the order: *pela aamo, ne poi kelo*. The child drags prints to pegs. Wrong order: she says it again. From level 3 with three prints; from level 4 by size: *pela wadho aamo* | **First … and then …** (from Mum's recording) with the nouns, and *nar* for "not that one" | L2: two prints. L3: three. L4: with a size word | **Cook `assemble`** (slots in order) and its sequence check; the pegs are Cook's fixed dots | 1 in 2 (two prints), 1 in 6 (three) |
 | **4d The spoilt one** | One print came out wrong (dark, or the lens cap: a fixed comic sprite, never one of the child's real prints). Nani: *[EN: throw away the dark one]*; from level 4 by colour. The good ones stay | **Adjectives** (dark, light; colours) | L4+, when colours land | **Find it's tap-the-one** | 1 in 3 |
 
-Level 1: **4a on one print**, stop on *Ghan*. Level 2 runs 4a on all prints then 4b; level 3 adds 4c. Only ever two variants in one walk (one job at a time; the stage stays under 40 s).
+Level 1: **4a on one print**, stop on *Ghan*. Level 2 runs 4a **or 4e Shake it** (C4: flick the print up and down the number of times Nani says; the instant-camera ritual; one of the two per walk) on all prints, then 4b; level 3 adds 4c. Only ever two variants in one walk (one job at a time; the stage stays under 40 s). **Quality pass:** 4d goes to maybe-later (colours); wrong orders in 4c are not corrected live from level 2 (the line ticks at *Develop* or not; the review shows it); C10 the photobomb fix joins this pool in phase 5.
 
 #### Stage 5: Show the family
 
@@ -107,7 +312,7 @@ The built hand-in (G3), with the family joining from level 3 so the rows are ask
 | **5c What's this?** (speaking) | Nani holds up one of the child's own prints: *[EN: What's this?]* The child says it (closed set: the nouns in the print + 2 look-alikes from the scene; level 3 the count too). Nani repeats it back. Then the normal hand-in for the rest | **Production from a print** (the deep dive's Caption it, moved from the album to the hand-in so it is inside the round) | L2+: one print a walk. L3: number + noun | **Shared `say.js` + `speech.js`** | Voice 0 |
 | **5d Nana's guess** | Nana, half asleep, guesses what a print is (*Panj kelo?*); the child says yes or no (*Haa* / *[EN: no]*), and if no, hands it to Nani who says it right. A comic listening check | **Yes/no and the counts**, *Haa* (from the recording) | L3+, one print a walk | the clinic's "does it hurt here?" yes/no pattern | 1 in 2 |
 
-Level 1: **5a with one row.** Nana joins at level 3.
+Level 1: **5a with one row.** Nana joins at level 3. **Quality pass:** from level 2 the hand-in gives no verdict: Nani names what is in the print (*Char aamo!*) and keeps it; a fitting print ticks its row; unticked rows are asked once more at the end; "go back for one frame" is level 1 only. **5d is merged into 5c** as Nana's wrong guess that the child puts right.
 
 #### Stage 6: The album
 
@@ -120,7 +325,7 @@ The send-off. The prints go into the page's "?" slots, the page is shown, and Na
 | **6c Caption it** (speaking) | Before a print is placed, Nani asks the child to say the caption; a spoken caption gives the slot a small speaker mark (the gold corner still needs the ear) | **Production** | L3+ | shared `say.js` | Voice 0 |
 | **6d Show the family** | Nani turns the page to Nana, Ma, Ali, Kasuku; each reacts to one print (*Wah!*-style lines when recorded, laughs, Kasuku echoing *Arre re!* at a photobombed print); then Nani's send-off: *[EN: tomorrow we'll go to the farm]*. **A finished page** (all slots) unlocks a decoration (an ajrakh border) and the family all cheer. No input except one tap to turn the page | **Listening only: reactions, the future line** | Every level (a page turn) | the request-card component (a card per family member), `Album.add()` | — |
 
-Level 1: **6a with one slot, then 6d** with Nani alone and one line. Together stages 4–6 at level 1 are three taps and one rub: the first ever walk, all six stages, is under a minute.
+Level 1: **6a with one slot, then 6d** with Nani alone and one line. Together stages 4–6 at level 1 are three taps, one drag and one rub: the first ever walk, all six stages, is under a minute. **Quality pass:** 6b waits for colours (as C7); 6c is the free-play album's only (P9 decision 6); the stage is 6a and the 6d beat.
 
 ### P3 The big library: the shots, and the darkroom crafts
 
@@ -191,9 +396,9 @@ The deep dive's section 2.1 already took the rail, the craft score, requests-as-
 **A walk** is the six stages once, for one page. **A session** ("a day out with Nani") is 1–3 walks: at the end of a walk Nani turns the page and the child chooses *Another walk* or *Home*. Each walk in a session is a new deal (new fruit layout, new rows) at the player's level, and a session ends with the end-of-round screen for the last walk and a small "the album today" card (pages touched, gold corners won). Personal bests (UX 9) are per stage-3 mini-game and level, timed over the whole walk.
 
 **The very first walk** (UX 7 and 8: tiny, shown not told):
-1. Stage 1: the request card, one row (*trae aamo*), read along. Nani holds out the film: *ba*. The ghost finger slides one frame; the child slides the second. No sidebar yet: the row sits on the card until the child sets off, then the card shrinks into the sidebar and the sidebar fades in.
+1. Stage 1: the request card, one row (*trae aamo*), read along. Nani hands over the camera (*Hi khan!*) and holds out the film: *ba*. The ghost finger taps the pack once (a frame clicks in); the child taps the second, then taps the back shut. No sidebar yet: the row sits on the card until the child sets off, then the card shrinks into the sidebar and the sidebar fades in.
 2. Stage 2: one place lit. The ghost finger taps it once; the child taps it.
-3. Stage 3: the viewfinder, dimmed except the shutter and one mango cluster. The ghost finger taps the cluster (the view swings), presses **+**, presses the shutter. The child does the same on their own cluster. One spare frame, unused or used; either is fine. The light bulb and the stars do not exist yet.
+3. Stage 3: the viewfinder, dimmed except the shutter and one mango cluster. The ghost finger drags the world until the cluster sits in the frame (the view settles onto it on release), presses **+**, presses the shutter. The child does the same on their own cluster, with the same controls as every later level. One spare frame, unused or used; either is fine. The light bulb and the stars do not exist yet.
 4. Stage 4: one pale print on the charpai. Rub; *Ghan!*
 5. Stage 5: Nani: *trae aamo*. Two prints at most; tap one. (With one tested row the ear star is not offered, so nothing is lost either way.)
 6. Stage 6: one "?" slot; drag the print in; Nani shows it to nobody but says *[EN: tomorrow, more]*; the end-of-round screen shows the time and one accuracy slot, no hint badge yet (it appears with the light bulb at walk 3).
