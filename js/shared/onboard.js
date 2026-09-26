@@ -244,6 +244,8 @@
       ghost.classList.add("picture");
       const im = ghost.querySelector("img");
       Object.assign(im.style, { width: "100%", height: "100%", display: "block", position: "relative", opacity: String(hd.opacity != null ? hd.opacity : 1) });
+      // the forearm fades out below the wrist (the see-through hand has no screen edge to come from)
+      im.style.webkitMaskImage = im.style.maskImage = "linear-gradient(to bottom, #000 62%, transparent 92%)";
       const rp = ghost.querySelector(".ob-ripple");
       Object.assign(rp.style, { left: `${hot[0] - 36}px`, top: `${hot[1] - 36}px`, zIndex: 1 });
     }
