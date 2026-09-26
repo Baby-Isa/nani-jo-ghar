@@ -720,6 +720,16 @@ These are only the lines the MVP needs that have **no family clip yet**. Mum say
 10. **Kasuku:** only repeats words, for now.
 11. **The model voice for the child's replies:** **Zafar's voice if the player chose a boy, Mum's if a girl** (from character creation), for now.
 12. **Isa:** only talked about, never talked to: **yes**.
+13. **You must get it right to move on (Zafar, 26 Sept).**
+    - When the child picks a wrong reply pill, the pill **shakes** (and the phone vibrates briefly where supported).
+    - The person reacts: an embarrassed look or head scratch, from the 3–4 cycling reactions in point 8.
+    - They **ask again**, and the conversation doesn't continue until the child taps the right reply.
+
+    Example: Nana asks "will you make me chai?" and the child taps *na*. The *na* pill shakes, Nana looks embarrassed and asks again, and the child taps *ha*. So the child is always shown, and made to choose, the right response. That matters little for yes/no, but a lot as the replies get more complex.
+    - **It stays for the whole game** for tap replies.
+    - **Speaking moments (TBC):** the child may skip speaking ("tap instead"). Tapping then follows the same must-get-it-right rule.
+    - This is the Conversations exception to UX §11's "no negatives mid-round": the reaction is gentle and social, never a red cross. It's still logged: the first-try result feeds the difficulty ladder (section 5) and the end review.
+
 
 ## 10. Open questions for Zafar (answered: see 10a)
 

@@ -80,7 +80,7 @@
    - a thought bubble shows the guests coming;
    - the pots are empty: "Oh no, there's no food!";
    - "Can you help me cook?"
-7. **The child answers with Yes / No buttons, but only Yes works.** The No button playfully dodges, or Nani just laughs. The reply is "Yes, I'll help you cook", or simply "Yes". Later this becomes a speaking moment.
+7. **The child answers with Yes / No buttons, but only Yes works.** Following the Conversations rule (Zafar, 26 Sept): a tap on No makes the No button **shake**, Nani looks embarrassed, and she **asks again**, until the child taps Yes. The reply is "Yes, I'll help you cook", or simply "Yes". Later this becomes a speaking moment.
 8. **The game opens up from there:** the home screen, and Cook's first day.
 
 Zafar's rough Kutchi for the story lines, from memory (**not yet checked with Mum**): "Guests are coming" ≈ *magani acheto / achanto*; "we need to make food" ≈ *pakendro malai no kape*. These spellings are unknown, so they're recorded as heard.

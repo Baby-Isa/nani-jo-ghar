@@ -85,3 +85,6 @@ These three badges replace the old star labels in the result card. They stay map
 - The **instruction/recipe card** (the request card after it shrinks into the sidebar) is the one place to look for what to do.
 - **Nani doesn't compete with it for space.** In play she's her **voice** alongside the on-screen **throbbing hints**, plus short interjections ("Arre re!", "Shabash!"). She appears on screen in story moments, the request card and the send-off.
 - Keep every screen clean and simple: one card, the play area, one light bulb.
+
+## 14. Conversations: you get it right before you move on (Zafar, 26 Sept)
+In a conversation, a wrong reply pill **shakes** (with a short vibration where supported). The person looks **embarrassed**, cycling through 3–4 gentle reactions, and **asks again**. The conversation only continues when the child picks the right reply. This holds for the whole game for tap replies, and is TBC for speaking (the child may skip speaking, then taps under the same rule). It's the one deliberate exception to §11's "no negatives mid-round": it's social and gentle, never a red cross, and the first-try result is still logged for the end review and the difficulty ladder. Details: `docs/modes/conversations-design.md` §10a.
