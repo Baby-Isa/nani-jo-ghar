@@ -19,6 +19,7 @@
   - never run several at once; wrap each in `flock -w 1800 /tmp/cook-test-$((RANDOM % 2)).lock timeout 1200 …`;
   - use `--canvas` for `--days` runs (software WebGL here is 6–11 fps);
   - use `COOK_TEST_PORT` per agent.
+- **`docs/STATUS-TRACKER.md` is the master tracker (Zafar, 26 Sept).** Update its percentages and next steps at every milestone (a merge, a recording processed, an art dump sorted), and work to it.
 - **Parked game ideas (`docs/GAME-IDEAS-TBC.md`): before any mode or station is called finished, remind Zafar of its open ideas there and decide with him whether they go in** (Zafar, 26 Sept). Add new approved-but-unbuilt ideas to that file, not only to design docs.
 - **Cache-busting: every push to main runs `python3 build/bump_version.py` first.** GitHub Pages caches files, so without it returning players keep stale art and code. It stamps `?v=<UTC time>` on every css/js/img tag in the pages, every CSS `url()`, and `js/version.js` (code wraps the URLs it builds in `Cook.v()` / `njgV()`; Phaser loads are stamped automatically). New asset URLs built in code must go through `Cook.v()`.
 - **Parallel agents only on disjoint files.** Wave 2's two-agent split cost a 2-hour merge. Combined stations each have their own file, which is why Wave 3 merged cleanly.

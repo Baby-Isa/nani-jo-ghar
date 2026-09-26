@@ -1,0 +1,81 @@
+# Nani jo Ghar: status tracker
+
+**The end point:** the app is live on the store with Arcs 1–5, and every game mode appears at least once. User testing is tracked by Zafar, not here.
+
+**Updated:** 26 Sept 2026. Percentages are Claude's estimates. The orchestrator updates this file at every milestone.
+
+**Overall: about 20%.**
+
+## 1. Game modes
+The stages are: design → build the MVP → iterate from Zafar's feedback → Kutchi words in → family voice in → onboarding → story hooks.
+
+| Mode | Design | MVP build | Iterate | Words | Voice | Onboard | Story | **Overall** | Next step |
+|---|---|---|---|---|---|---|---|---|---|
+| **Cook with Nani** | 100 | 100 | 60 | 70 | 10 | 70 | 10 | **65%** | Merge the hands. A fun pass on the chai station. Zafar decides the next wave (chop level 1, customer reactions). |
+| **Find it** | 100 | 90 | 30 | 40 | 5 | 50 | 10 | **45%** | Into the shell. Rebuild to the quality-pass design (the library cut from 21 to 10). |
+| **The clinic** | 100 | 85 | 0 | 5 | 0 | 60 | 0 | **35%** | Zafar's first play. Record Section G (the clinic words). Build D3 clues, the album and free play. |
+| **Tidy up** | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Zafar reviews the quality-pass design, then a rebuild. |
+| **Who did it?** | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Same. The family's A6 lines are ready for it. |
+| **Dress up** | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. It shares art with character creation. |
+| **Monsoon rush** | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. Section G has the weather words. |
+| **Snap** | 100 | 25 | 0 | 5 | 0 | 0 | 0 | **17%** | Same. |
+
+## 2. Foundation and story
+| Piece | % | Next step |
+|---|---|---|
+| Shared UI (end-of-round screen, onboarding kit, light bulb, request card) | 85 | Roll it into the five new modes as they're rebuilt. |
+| Shell: one app, one save, player picker | 50 | Finishing now; then publish. |
+| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 10 | Build it after the shell. Zafar picks English-first or the sandwich. |
+| Story engine (arcs and chapters as data, picture panels, Story help) | 5 | Comes with the first launch. |
+| World map and home (fog of war, "the world is the menu", role reversal) | 0 | Phase C, after the first launch. |
+| Speech recognition (on-device, closed set, voice star) | 30 | Enrol it with the family voice clips; the first speaking moments go in Cook. |
+| Arc 1: Eid at Nani's (S1 + S2) | 15 | The first launch, then its chapters mapped onto the modes. |
+| Arc 2: The Wedding (S3) | 5 | Outline only. |
+| Arc 3: The Monsoon (S4) | 5 | Outline only. |
+| Arc 4: Nani's Lost Ring (S5) | 5 | Outline only. |
+| Arc 5: Nani's Village (S6) | 5 | Outline only. |
+
+## 3. Language
+| Piece | % | Next step |
+|---|---|---|
+| Recordings with Mum (Sections A–J, about 170 min in all) | 15 | **Section C** (the grammar sentences) next, then G (clinic and monsoon), D, E, F, H, I. Also the 10 first-launch story lines. |
+| Section A (grammar basics) and B (Cook words) | 100 | Done: grammar notes §1–§28. |
+| Grammar notes and spelling rules | 35 | Grows with each recording. Answer the open spelling questions. |
+| Voice clips (cut from the recordings, a lab page to check them) | 40 | The agent is cutting Section B now; then Zafar checks them by ear. |
+| Words in the game data | Cook 70, Find 40, the clinic 5, the others 5–10 | Each mode's words go in when its recording section is done. |
+| Syllabus word lists S1–S6 | S1 50, S2 20, S3–S6 5 | Recordings C and E–H fill S2–S4. |
+
+## 4. Artwork (basic → initial → full → final)
+- **Basic:** greybox or rough placeholder.
+- **Initial:** the first real art, enough to play.
+- **Full:** every asset exists.
+- **Final:** polished, consistent, store-ready.
+
+| Area | Basic | Initial | Full | Final | **%** | Next step |
+|---|---|---|---|---|---|---|
+| **Cook** | ✓ | ✓ | 60 | 0 | **55%** | Velan, chakla, evening worktop; regenerate the potato cube and the chai tray. Dump 3 is being sorted. |
+| **Hands** (player-boy, player-girl, Nani) | ✓ | ✓ | 90 | 0 | **70%** | Being put into Cook now. Eid mehndi later. |
+| **Characters** (Nani ✓, Kasuku ✓, Big Ma, the doctor, Nana, Ali, guests) | ✓ | 40 | 20 | 0 | **35%** | Zafar processes the family images in dumps 2–3. |
+| **Player character** (layered, for character creation) | 0 | 0 | 0 | 0 | **0%** | A ChatGPT prompt for the layers (body, hair, eyes, clothing tints). |
+| **Story panels** (first launch, then arc beats) | 0 | 0 | 0 | 0 | **0%** | Four Eid panels: the calendar and moon, the guests, the empty pots, "help me?". |
+| **Find it** | ✓ | 40 | 10 | 0 | **30%** | Its batch-3 prompts. |
+| **The clinic** | ✓ (143 rough sprites) | 15 | 0 | 0 | **25%** | Batch-3 clinic prompts; add neck, back and hair parts. |
+| **Tidy up, Who, Dress, Monsoon, Snap** | ✓ | 10 | 0 | 0 | **12%** each | Batch-3 prompts; more once their rebuilds settle. |
+| **UI and app icon** | ✓ | 40 | 10 | 0 | **30%** | Store icon and splash screen. |
+
+## 5. Release (store)
+| Piece | % | Next step |
+|---|---|---|
+| Wrapper (PWA, then Capacitor for iOS and Android) | 0 | Decide once the shell has landed. |
+| Offline play and asset caching | 10 | A service worker after the shell. |
+| Children's privacy (Kids category, no tracking, on-device speech only) | 20 | The speech design already keeps everything on the device. A privacy policy is still to write. |
+| Performance on older phones | 20 | Budget each station's textures. |
+| Store listing (screenshots, text, age rating) | 0 | Near the end. |
+
+## Waiting on Zafar (open questions)
+1. Story language: English first, or the sandwich (Kutchi, English, Kutchi)?
+2. *marcha* → *mirchi*? Drop the green pepper from the mishkaki?
+3. The proposed game ideas 10–17 in `docs/GAME-IDEAS-TBC.md`.
+4. Review the quality-pass designs for Tidy up, Who did it?, Dress up, Monsoon rush and Snap. They're in `docs/modes/*-design.md`, and they unblock the rebuilds.
+5. Spellings: *vyo* or *wyo*; *kyo*, *anke*, *kere karein*, *wadhare*, *thorok*, *jara e wandho nai*, *mu lai khobar*.
+6. The dump 3 art-run log, if there is one.
