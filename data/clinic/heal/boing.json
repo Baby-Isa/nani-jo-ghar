@@ -1,35 +1,39 @@
 {
-  "_about": "H9 The boing (docs/modes/clinic-design.md Q4 H9; contract docs/clinic-heal-api.md). The doctor holds the syringe (the child hands it to him; the child never touches it). Wipe the arm the count of times, count DOWN aloud with the doctor (a speaking moment: shared Say.moment, pills as the fallback, a grown-up's tick), boing, then the plaster and the lollipop in the called order. Blind level 1: 1/3 (wipe count) x 1/4 (the next number) x 1/2 (the order).",
-  "id": "boing",
-  "words": {
-    "wipe": { "english": "Wipe it", "placeholder": true },
-    "times": { "english": "times", "placeholder": true },
-    "count": { "english": "Count with me!", "placeholder": true },
-    "plaster": { "clinic": "care-plaster", "english": "plaster", "placeholder": true },
-    "lollipop": { "english": "lollipop", "placeholder": true },
-    "my-left-arm": { "english": "My left arm", "placeholder": true },
-    "my-right-arm": { "english": "My right arm", "placeholder": true },
-    "red": { "clinic": "col-red", "english": "red", "placeholder": true },
-    "green": { "clinic": "col-green", "english": "green", "placeholder": true },
-    "blue": { "clinic": "col-blue", "english": "blue", "placeholder": true },
-    "nepoi": { "cook": "lnk-nepoi" },
-    "n1": { "cook": "num-01" },
-    "n2": { "cook": "num-02" },
-    "n3": { "cook": "num-03", "audio": "assets/audio/cook-tts/trae.mp3" },
-    "n4": { "cook": "num-04", "audio": "assets/audio/cook-tts/char.mp3" },
-    "n5": { "cook": "num-05", "audio": "assets/audio/cook-tts/panj.mp3" }
-  },
-  "items": {
-    "cotton": { "item": "cotton" },
-    "syringe": { "item": "syringe", "doctors": true },
-    "plaster": { "item": "care-plaster" },
-    "lollipop": { "item": "lollipop" }
-  },
-  "colours": { "red": "#e0584a", "green": "#5fae5a", "blue": "#4a86d8" },
-  "levels": {
-    "1": { "wipe": [2, 3, 4], "from": 2, "side": false, "colour": false, "note": "One arm, sleeve up. Wipe ba/trae/char times, count down from ba, then the plaster and the lollipop in the called order." },
-    "2": { "wipe": [2, 3, 4, 5], "from": 3, "side": true, "colour": false, "note": "Both sleeves up: the patient says which arm (their own left or right). Count down from trae." },
-    "3": { "wipe": [2, 3, 4, 5], "from": 5, "side": true, "colour": true, "note": "Count down from panj; the plaster's colour from three." }
-  },
-  "voice": { "pillsLiveAtLevel1": true, "pillsAfterMs": 8000 }
+ "_about": "H9 The boing (docs/modes/clinic-design.md Q4 H9; contract docs/clinic-heal-api.md; js/clinic/heal/games/boing.js). The doctor holds the syringe: the child never touches it (tapping its dish only gets a finger wag). Wipe the arm the count of times (the step closes when the cotton is put down), count DOWN aloud with the doctor (a speaking moment: the shared Say.moment, the five numbers as the closed set in a shuffled order, the pills as the fallback; a wrong or missed number just waits), BOING, then the plaster and the lollipop in the called order. Blind level 1: 1/3 (wipe count) x 1/5 x 1/5 (the numbers, first try) x 1/2 (the order). The numbers and pela/ne poi are real (Cook's ids); plaster, lollipop, the arms and the colours are English placeholders until the family gives the words.",
+ "id": "boing",
+ "ailments": {
+  "jab": { "name": "the jab before the village trip", "part": "arm", "items": ["cotton", "syringe", "plaster", "lollipop"], "from": 1 }
+ },
+ "throbMs": 8000,
+ "words": {
+  "wipe": { "english": "Wipe it", "placeholder": true },
+  "times": { "english": "times", "placeholder": true },
+  "count": { "english": "Count with me!", "placeholder": true },
+  "again": { "english": "Say it again?", "placeholder": true },
+  "all-done": { "english": "All done!", "placeholder": true },
+  "all-better": { "english": "All better!", "placeholder": true },
+  "mine": { "english": "That's mine!", "placeholder": true },
+  "boing": { "english": "BOING!", "placeholder": true },
+  "plaster": { "english": "plaster", "placeholder": true },
+  "lollipop": { "english": "lollipop", "placeholder": true },
+  "my-left-arm": { "english": "My left arm", "placeholder": true },
+  "my-right-arm": { "english": "My right arm", "placeholder": true },
+  "the-red-one": { "english": "The red one!", "placeholder": true },
+  "the-green-one": { "english": "The green one!", "placeholder": true },
+  "the-blue-one": { "english": "The blue one!", "placeholder": true },
+  "pela": { "cook": "lnk-pela", "english": "first" },
+  "nepoi": { "cook": "lnk-nepoi", "english": "and then" },
+  "n1": { "cook": "num-01", "english": "one" },
+  "n2": { "cook": "num-02", "english": "two" },
+  "n3": { "cook": "num-03", "english": "three", "audio": "assets/audio/cook-tts/trae.mp3" },
+  "n4": { "cook": "num-04", "english": "four", "audio": "assets/audio/cook-tts/char.mp3" },
+  "n5": { "cook": "num-05", "english": "five", "audio": "assets/audio/cook-tts/panj.mp3" }
+ },
+ "colours": { "red": "#e0584a", "green": "#5fae5a", "blue": "#4a86d8" },
+ "levels": {
+  "1": { "wipe": [2, 3, 4], "from": 2, "side": false, "colour": false, "note": "One arm, sleeve up. Wipe ba/trae/char times, count down from ba, then the plaster and the lollipop in the called order. Each line read as it comes; pills live from the start." },
+  "2": { "wipe": [2, 3, 4, 5], "from": 3, "side": true, "colour": false, "note": "Both sleeves up: the patient says which arm (their own left or right). Count down from trae. The lines up front." },
+  "3": { "wipe": [2, 3, 4, 5], "from": 5, "side": true, "colour": true, "note": "Count down from panj; the patient asks for the plaster's colour, chosen from three." }
+ },
+ "voice": { "pillsLiveAtLevel1": true, "pillsAfterMs": 8000 }
 }

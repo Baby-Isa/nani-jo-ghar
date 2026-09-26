@@ -1,79 +1,71 @@
 /*
  * The clinic's healing game H5: the taste test (id "taste").
  * docs/modes/clinic-design.md Q4 H5 (the quality pass) on P5; the plug-in
- * contract is docs/clinic-heal-api.md.
+ * contract is docs/clinic-heal-api.md (and its "Host additions").
  *
- * A tongue coated from the Eid sweets. Four droppers of the same shape,
- * each with a picture on its label (lemon, sugar, salt, chilli), and three
- * cups (water, milk, chai). The card says which, in real Kutchi from
- * Cook's words: "Pela limu", "Ne poi loon", "Ne poi paani". The face plays
- * only after a drop lands: sour puckers the whole screen, khun is hearts,
- * loon is "bleh", marcha is steam out of the ears; paani is rinse and spit
- * into the bowl (the sound is the joke).
+ * A tongue coated from the Eid sweets, in close-up. Four droppers of the
+ * same shape on the doctor's rack, each with a picture on its label (lemon,
+ * sugar, salt, chilli), and three cups (water, milk, chai). The card says
+ * which, in real Kutchi from Cook's words: "Pela limu", "Ne poi loon",
+ * "Ne poi paani". The face plays only after a drop lands: limu puckers the
+ * whole screen, khun is hearts, loon is "bleh", marcha is steam out of the
+ * ears; paani is a gargle and a spit into the bowl (the sound is the joke),
+ * dudh leaves a milk moustache, chai a slurp.
+ *
+ * Why its own rack (not the sidebar's dishes): the pharmacy's tray arrives
+ * in the called order, which would give the order row away, and the three
+ * decoys (marcha, dudh, chai: already on the doctor's shelf) are what keep
+ * level 1 under 10% blind. The sidebar tray is hidden; anything the child
+ * brought that this game can't use sits on the rack greyed out.
  *
  * Gestures (UX s12, fixed at every level): tap the dish, tap the mouth.
  * One drop per tap. No second gesture.
- * Levels (data/clinic/heal/taste.json): 1 one taste then a drink; 2 three
- * tastes in the called order; 3 three tastes with a count of drops each
- * (the count closes when the dropper is put down, never on the Nth drop).
- * A wrong dropper still drops and its face plays; it's logged, never
- * judged on screen (UX s11). A right step ticks when it closes.
+ * Levels (data/clinic/heal/taste.json): 1 one taste then a drink, each line
+ * read as it comes; 2 three tastes in the called order, read as one list;
+ * 3 the same with a count of drops each (the count closes when the dropper
+ * is put down or Done is pressed, never on the Nth drop).
+ * A wrong dropper still drops and its face plays; it's logged, never judged
+ * on screen (UX s11). The throbbing hint (8 s of nothing) lights the card
+ * line and the right dish; a line finished after that counts as hinted.
  *
- * The model (makeRound / Model) is pure and shared with bot() so the leak
- * bot plays exactly the game's rules. Node: module.exports = the game.
+ * The model (makeRound / Model) is pure and shared with bot(), so the leak
+ * bot plays exactly the game's rules. Runs in Node for the bot.
  */
-(function (root, factory) {
-  const game = factory(root);
-  if (typeof module === "object" && module.exports) module.exports = game;
-  else {
-    const H = root.Clinic && root.Clinic.Heal;
-    if (H && H.register) H.register(game);
-    else ((root.Clinic = root.Clinic || {}).__healPending = root.Clinic.__healPending || []).push(game);
-  }
-})(typeof self !== "undefined" ? self : this, function (root) {
+(function (root) {
   "use strict";
+  const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const ID = "taste";
 
   /* ------------------------------------------------------------ data */
   const NODE = typeof module === "object" && !!module.exports && typeof require === "function" && typeof __dirname === "string";
-  const BASE = (() => {
-    try {
-      const s = root.document && root.document.currentScript;
-      return s && s.src ? new URL("../../../../", s.src).href : "";
-    } catch (e) {
-      return "";
-    }
-  })();
   let DATA = null;
-  let loading = null;
+  /** Resolve the game's words through Cook's ids (data/cook.json is the source of the Kutchi). */
   function resolve(raw, cook) {
     const words = {};
     Object.entries(raw.words || {}).forEach(([k, w]) => {
       const c = w.cook && cook && cook.words ? cook.words[w.cook] : null;
       const kutchi = c ? c.kutchi || null : w.kutchi || null;
-      words[k] = { id: k, ref: w.cook ? `cook:${w.cook}` : w.clinic ? `clinic:${w.clinic}` : null, kutchi, english: (c && c.english) || w.english || k, placeholder: !kutchi, audio: w.audio || null };
+      words[k] = { id: k, ref: w.cook ? `cook:${w.cook}` : null, kutchi, english: (c && c.english) || w.english || k, placeholder: !kutchi, audio: w.audio || null };
     });
     return Object.assign({}, raw, { words });
   }
-  function load() {
-    if (DATA) return Promise.resolve(DATA);
-    if (NODE) {
+  function nodeData() {
+    if (!DATA && NODE) {
       const fs = require("fs");
       const path = require("path");
       const R = path.join(__dirname, "../../../..");
       DATA = resolve(JSON.parse(fs.readFileSync(path.join(R, `data/clinic/heal/${ID}.json`), "utf8")), JSON.parse(fs.readFileSync(path.join(R, "data/cook.json"), "utf8")));
-      return Promise.resolve(DATA);
     }
-    if (!loading) {
-      const get = (p) => fetch(BASE + p).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-      loading = Promise.all([get(`data/clinic/heal/${ID}.json`), get("data/cook.json")]).then(([raw, cook]) => (DATA = resolve(raw, cook)));
-    }
-    return loading;
-  }
-  const data = () => {
-    if (!DATA && NODE) load();
     return DATA;
-  };
+  }
+  async function browserData(ctx) {
+    if (DATA) return DATA;
+    const Kit = root.Clinic && root.Clinic.Kit;
+    const raw = ctx.data || (Kit ? await Kit.loadJSON(`data/clinic/heal/${ID}.json`) : null);
+    const cook = Kit ? await Kit.loadJSON("data/cook.json") : null;
+    DATA = resolve(raw || {}, cook);
+    return DATA;
+  }
 
   /* ------------------------------------------------------------ rows */
   const pick = (a, rng) => a[Math.floor(rng() * a.length) % a.length];
@@ -86,26 +78,23 @@
     return b;
   };
   const cap = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
-  /** A card row from word ids: the Kutchi where the family has given it, else the English placeholder. */
+  /** A card row from word ids: the Kutchi where the family has given it, else "[english]" (grey italic on screen). */
   function cardRow(D, id, wordIds, extra) {
     const ws = wordIds.map((k) => D.words[k]);
-    const parts = ws.map((w) => ({ word: w.id, text: w.placeholder ? w.english : w.kutchi, placeholder: w.placeholder }));
     return Object.assign(
       {
         id,
-        kutchi: cap(parts.map((p) => p.text).join(" ")),
+        kutchi: cap(ws.map((w) => (w.placeholder ? `[${w.english}]` : w.kutchi)).join(" ")),
         english: cap(ws.map((w) => w.english).join(" ")),
-        placeholder: parts.some((p) => p.placeholder),
-        parts,
-        audio: ws.map((w) => w.audio).filter(Boolean),
-        line: `${ID}:${parts.map((p) => p.text.toLowerCase().replace(/[^a-z0-9]+/g, "-")).join("-")}`,
+        placeholder: ws.every((w) => w.placeholder),
+        words: wordIds.slice(),
       },
       extra || {}
     );
   }
 
   /* ----------------------------------------------------------- model */
-  /** One round: rows [{id, kind: "taste"|"cup", taste, count, cup}] and the kit's display order. */
+  /** One round: rows [{id, kind: "taste"|"cup", taste, count, cup}] and the rack's display order. */
   function makeRound(D, level, rng) {
     const L = D.levels[String(level)] || D.levels["1"];
     const tastes = shuffle(Object.keys(D.droppers), rng).slice(0, L.tastes);
@@ -123,8 +112,8 @@
 
   /**
    * The rules. act({type: "pick", item}) | act({type: "apply"}) (on the
-   * mouth) | act({type: "done"}) -> events: lift, putdown, face, drop,
-   * tally, tick, log, current, end. Items are the kit keys (limu, paani…).
+   * mouth) | act({type: "done"}) | act({type: "hint"}) -> events: lift,
+   * putdown, face, drop, tally, tick, log, current, end. Items are rack keys.
    */
   function Model(D, round) {
     const rows = round.rows;
@@ -133,12 +122,13 @@
     let cnt = 0;
     let ended = false;
     const wrong = {};
+    const hinted = {};
     const closed = {};
     let out = [];
     const ev = (e) => out.push(e);
     const isDrop = (k) => !!D.droppers[k];
     const log = (r, type, detail) => {
-      if (type !== "right") wrong[r.id] = true;
+      if (type === "wrong" || type === "extra") wrong[r.id] = true;
       ev({ type: "log", entry: { type, rowId: r.id, detail } });
     };
     const advance = () => {
@@ -150,17 +140,18 @@
     };
     const close = (r) => {
       closed[r.id] = true;
-      if (!wrong[r.id]) log(r, "right");
+      if (!wrong[r.id] && !hinted[r.id]) log(r, "right");
       ev({ type: "tick", rowId: r.id });
       advance();
     };
-    // a counted step closes when the dropper is put down (or another dish is tapped), never on the Nth drop
+    // a counted step closes when the dropper is put down (or another dish is tapped, or Done), never on the Nth drop
     const closeCount = () => {
       const r = rows[i];
-      if (!r || r.kind !== "taste" || !r.count || cnt === 0) return;
+      if (!r || r.kind !== "taste" || !r.count || cnt === 0) return false;
       if (cnt !== r.count) log(r, "wrong", `${cnt} drops of ${r.taste}, not ${r.count}`);
       cnt = 0;
       close(r);
+      return true;
     };
     const M = {
       rows,
@@ -169,6 +160,9 @@
       },
       get holding() {
         return holding;
+      },
+      get counting() {
+        return cnt;
       },
       get ended() {
         return ended;
@@ -201,17 +195,26 @@
             else if (t === r.taste) {
               if (r.count) {
                 cnt++;
-                ev({ type: "tally", item: D.droppers[t].item, n: cnt });
+                ev({ type: "tally", item: t, n: cnt });
               } else close(r);
             } else log(r, "wrong", `${t} for ${r.taste}`);
           } else {
             const c = holding;
             ev({ type: "face", face: D.cups[c].face, item: c });
-            if (r.kind === "cup" && c === r.cup) close(r);
-            else log(r, "wrong", r.kind === "cup" ? `${c} for ${r.cup}` : `${c} before ${r.taste}`);
+            if (r.kind === "cup" && c === r.cup) {
+              holding = null;
+              ev({ type: "putdown", item: c });
+              close(r);
+            } else log(r, "wrong", r.kind === "cup" ? `${c} for ${r.cup}` : `${c} before ${r.taste}`);
+          }
+        } else if (a.type === "hint") {
+          if (r && !hinted[r.id]) {
+            hinted[r.id] = true;
+            ev({ type: "log", entry: { type: "hint", rowId: r.id, detail: "the dish throbbed" } });
           }
         } else if (a.type === "done") {
-          closeCount();
+          if (closeCount()) return out;
+          // the whole round ends only from the last line's Done (the game ignores it earlier)
           while (!ended) {
             log(rows[i], "wrong", "not done");
             i++;
@@ -224,7 +227,7 @@
         return out;
       },
       score() {
-        const right = rows.filter((r) => closed[r.id] && !wrong[r.id]).length;
+        const right = rows.filter((r) => closed[r.id] && !wrong[r.id] && !hinted[r.id]).length;
         return { right, total: rows.length };
       },
     };
@@ -233,10 +236,11 @@
 
   /* ------------------------------------------------------------- bot */
   /**
-   * Strategies see only what's on screen: the kit (pictures), which card
+   * Strategies see only what's on screen: the rack (pictures), which card
    * line is current and whether it's the drink (the last line), what's
    * ticked, and what they already tried on this line. Never the words.
-   * A strategy returns a move {item, times}.
+   * A strategy returns a move {item, times} (or {wait: true}: sit until
+   * the dish throbs, then take the throbbing one).
    */
   const STRATEGIES = {
     fair: (o) => ({ item: o.answer.item, times: o.answer.times }),
@@ -244,9 +248,10 @@
     "tray-order": (o) => ({ item: o.options[o.tried.length % o.options.length], times: o.counts ? o.counts[0] : 1 }),
     "same-picture": (o) => ({ item: o.options.slice().sort()[o.tried.length % o.options.length], times: o.counts ? o.counts[Math.floor(o.counts.length / 2)] : 1 }),
     "most-count": (o, rng) => ({ item: pick(o.options, rng), times: o.counts ? o.counts[o.counts.length - 1] : 1 }),
+    "wait-for-throb": (o) => ({ wait: true, item: o.answer.item, times: o.counts ? o.counts[1] : 1 }),
   };
   function bot(level, rng) {
-    const D = data();
+    const D = nodeData();
     const round = makeRound(D, level, rng);
     return {
       rows: round.rows.map((r) => r.card),
@@ -266,6 +271,7 @@
           const options = round.kit.filter((k) => (drink ? !!D.cups[k] : !!D.droppers[k]));
           const answer = { item: drink ? r.cup : r.taste, times: r.count || 1 };
           const mv = s({ level: round.level, line: m.i, lines: round.rows.length, drink, options, tried: tried.slice(), counts: !drink && L.counts ? L.counts : null, answer }, R);
+          if (mv.wait) m.act({ type: "hint" }); // the throb shows the dish, never the count
           tried.push(mv.item);
           if (m.holding !== mv.item) m.act({ type: "pick", item: mv.item });
           for (let k = 0; k < (mv.times || 1) && !m.ended; k++) m.act({ type: "apply" });
@@ -281,45 +287,41 @@
   /* ------------------------------------------------------------ view */
   const SVGNS = "http://www.w3.org/2000/svg";
   const CSS = `
-.hbb{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:8px;box-sizing:border-box;container-type:size;font-family:system-ui,sans-serif;user-select:none;-webkit-user-select:none;touch-action:manipulation}
-.hbb-scene{position:relative;min-width:0;min-height:0;border-radius:16px;overflow:hidden;background:#f6ead6}
-.hbb-scene>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hbb-tray{display:grid;grid-auto-flow:row;grid-template-columns:repeat(var(--cols,2),auto);align-content:center;gap:8px;padding:8px;border-radius:16px;background:#e9d6b4;box-shadow:inset 0 2px 6px rgba(80,50,20,.18)}
-.hbb-dish{width:var(--dish,72px);height:var(--dish,72px);border-radius:50%;border:3px solid #fff8ea;background:radial-gradient(circle at 50% 40%,#fffdf6,#efe2c8);box-shadow:0 3px 0 #c9ad82;padding:4px;cursor:pointer;display:grid;place-items:center;transition:transform .15s,box-shadow .15s}
-.hbb-dish svg{width:100%;height:100%;pointer-events:none}
-.hbb-dish.held{transform:translateY(-6px) scale(1.08);box-shadow:0 0 0 4px #f2b134,0 8px 10px rgba(80,50,20,.25)}
-.hbb-dish.used{opacity:.55}
-.hbb-dish.dead{opacity:.35;filter:grayscale(1);cursor:default}
-.hbb-dish.doctor{border-color:#cfe3f4}
-.hbb-dish:focus-visible{outline:3px solid #2f3e6b}
-.hbb-shake{animation:hbb-shake .35s}
-@keyframes hbb-shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-@container (aspect-ratio < 1){.hbb{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto}.hbb-tray{grid-auto-flow:column;grid-template-columns:none;grid-template-rows:repeat(var(--rows,1),auto);justify-content:center}}
-@media (prefers-reduced-motion:reduce){.hbb *{animation-duration:.01ms!important;transition:none!important}}
-.hbb-taste .hbb-scene.pucker{animation:hbb-pucker .7s ease}
-@keyframes hbb-pucker{0%{transform:none}25%{transform:scale(.9,1.06);filter:saturate(1.6) hue-rotate(-12deg)}55%{transform:scale(1.04,.96)}100%{transform:none}}
-.hbb-taste .hbb-scene.burn{animation:hbb-burn .9s ease}
-@keyframes hbb-burn{0%,100%{box-shadow:none}30%{box-shadow:inset 0 0 60px 20px rgba(255,90,40,.55)}}
-.hbb-taste .face-g{transition:transform .2s}
-.hbb-taste .coat{transition:opacity .5s}
-.hbb-taste .rise{animation:hbb-rise 1.1s ease-out forwards}
-@keyframes hbb-rise{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-60px)}}
-.hbb-taste .held-item{transition:opacity .2s}
+.tst{position:absolute;inset:0;z-index:5;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:8px 8px 8px 0;box-sizing:border-box;container-type:size;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.tst-scene{position:relative;min-width:0;min-height:0;border-radius:22px;overflow:hidden;background:#f6ead6;box-shadow:0 4px 0 rgba(120,90,50,.18)}
+.tst-scene>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tst-rack{display:grid;grid-template-columns:repeat(2,auto);grid-auto-rows:auto;align-content:center;gap:clamp(4px,1.4cqh,10px);padding:clamp(4px,1.4cqh,10px);border-radius:18px;background:#e9d6b4;box-shadow:inset 0 2px 6px rgba(80,50,20,.18)}
+.tst-sep{grid-column:1/-1;height:3px;border-radius:2px;background:#d4bc93}
+.tst-dish{position:relative;width:var(--dish);height:var(--dish);border-radius:50%;border:3px solid #fff8ea;background:radial-gradient(circle at 50% 40%,#fffdf6,#efe2c8);box-shadow:0 3px 0 #c9ad82;padding:3px;cursor:pointer;display:grid;place-items:center;transition:transform .15s,box-shadow .15s}
+.tst-dish>svg,.tst-dish>.tst-pic{width:100%;height:100%;pointer-events:none}
+.tst-pic{position:relative}
+.tst-pic img{position:absolute;pointer-events:none;object-fit:contain}
+.tst-pic .bottle{left:14%;top:4%;width:72%;height:92%}
+.tst-pic .label{left:30%;top:46%;width:40%;height:40%;border-radius:50%;background:#fffaf0;border:2px solid #d7c7a7;box-sizing:border-box;padding:2px}
+.tst-pic .label img,.tst-pic .label svg{position:static;width:100%;height:100%}
+.tst-dish.held{transform:translateY(-6px) scale(1.08);box-shadow:0 0 0 4px #f2b134,0 8px 10px rgba(80,50,20,.25)}
+.tst-dish.throb{animation:tst-throb 1s ease-in-out infinite}
+@keyframes tst-throb{50%{transform:scale(1.1);box-shadow:0 0 0 6px rgba(242,177,52,.6)}}
+.tst-dish.dead{opacity:.4;filter:grayscale(1);cursor:default}
+.tst-dish:focus-visible{outline:3px solid #2f3e6b}
+.tst-shake{animation:tst-shake .35s}
+@keyframes tst-shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@container (aspect-ratio < 1.05){.tst{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;padding:0 0 8px 0}.tst-rack{grid-template-columns:none;grid-auto-flow:column;grid-template-rows:auto;justify-content:center}.tst-sep{grid-column:auto;width:3px;height:auto}}
+@media (prefers-reduced-motion:reduce){.tst *{animation-duration:.01ms!important;transition:none!important}}
+.tst-scene.pucker{animation:tst-pucker .7s ease}
+@keyframes tst-pucker{0%{transform:none}25%{transform:scale(.9,1.06);filter:saturate(1.6) hue-rotate(-12deg)}55%{transform:scale(1.04,.96)}100%{transform:none}}
+.tst-scene.burn{animation:tst-burn .9s ease}
+@keyframes tst-burn{0%,100%{box-shadow:none}30%{box-shadow:inset 0 0 60px 20px rgba(255,90,40,.55)}}
+.tst .coat{transition:opacity .5s}
+.tst .rise{animation:tst-rise 1.1s ease-out forwards}
+@keyframes tst-rise{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-60px)}}
 `;
-  function injectCss(doc) {
-    if (doc.getElementById("hbb-css-" + ID)) return;
-    const s = doc.createElement("style");
-    s.id = "hbb-css-" + ID;
-    s.textContent = CSS;
-    doc.head.appendChild(s);
-  }
-  const S = (tag, attrs, html) => {
-    const e = root.document.createElementNS(SVGNS, tag);
+  const S = (doc, tag, attrs, html) => {
+    const e = doc.createElementNS(SVGNS, tag);
     Object.entries(attrs || {}).forEach(([k, v]) => e.setAttribute(k, v));
     if (html != null) e.innerHTML = html;
     return e;
   };
-  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
   /* tiny synthesised sounds (Web Audio; silent without it, or when Sfx.muted) */
   const Snd = (() => {
@@ -385,17 +387,60 @@
     };
   })();
 
-  /* item pictures (the dish icons; no text anywhere) */
-  function dropperIcon(label) {
-    const pic = {
-      lemon: `<ellipse cx="50" cy="66" rx="12" ry="9" fill="#f5d33b" stroke="#c9a51a" stroke-width="2"/><circle cx="62" cy="66" r="2.5" fill="#c9a51a"/>`,
-      sugar: `<rect x="40" y="58" width="11" height="11" rx="2" fill="#fff" stroke="#b9b2a4" stroke-width="2"/><rect x="51" y="62" width="11" height="11" rx="2" fill="#fff" stroke="#b9b2a4" stroke-width="2"/>`,
-      salt: `<path d="M43 76 L45 58 Q50 52 55 58 L57 76Z" fill="#fff" stroke="#8aa2b0" stroke-width="2"/><circle cx="48" cy="61" r="1.3" fill="#8aa2b0"/><circle cx="52" cy="61" r="1.3" fill="#8aa2b0"/>`,
-      chilli: `<path d="M40 60 Q52 58 60 72 Q54 76 44 68 Q40 64 40 60Z" fill="#3fa63a" stroke="#27722a" stroke-width="2"/><path d="M40 60 q-3 -4 1 -7" stroke="#27722a" stroke-width="2.5" fill="none"/>`,
-    }[label];
-    return `<svg viewBox="0 0 100 100"><rect x="30" y="44" width="40" height="44" rx="10" fill="#e8f1f5" stroke="#7d8f99" stroke-width="3"/><rect x="36" y="54" width="28" height="26" rx="5" fill="#fffaf0" stroke="#d7c7a7" stroke-width="1.5"/>${pic}<rect x="42" y="30" width="16" height="16" rx="3" fill="#b3c3cc" stroke="#7d8f99" stroke-width="3"/><path d="M44 30 Q44 10 50 8 Q56 10 56 30Z" fill="#e55d4a" stroke="#a63b3b" stroke-width="3"/></svg>`;
+  /** A rough-art sprite by id, alias or `aliases` entry (data/clinic/rough-art.json), or null. */
+  function artUrl(id) {
+    const Kit = root.Clinic && root.Clinic.Kit;
+    const a = Kit && Kit.art;
+    if (!a || !a.sprites) return null;
+    let s = a.sprites[id] || (a.alias && a.sprites[a.alias[id]]);
+    if (!s) s = Object.values(a.sprites).find((v) => (v.aliases || []).includes(id));
+    return s && s.file ? Kit.url(s.file) : null;
   }
-  function cupIcon(fill, kind) {
+
+  /* item pictures (no text anywhere): the dropper bottle and its label picture */
+  const LABEL_SVG = {
+    lemon: `<svg viewBox="0 0 40 40"><ellipse cx="20" cy="21" rx="13" ry="10" fill="#f5d33b" stroke="#c9a51a" stroke-width="2"/><circle cx="33" cy="21" r="2.5" fill="#c9a51a"/></svg>`,
+    sugar: `<svg viewBox="0 0 40 40"><rect x="7" y="14" width="12" height="12" rx="2" fill="#fff" stroke="#b9b2a4" stroke-width="2"/><rect x="19" y="18" width="12" height="12" rx="2" fill="#fff" stroke="#b9b2a4" stroke-width="2"/></svg>`,
+    salt: `<svg viewBox="0 0 40 40"><path d="M12 34 L14 12 Q20 5 26 12 L28 34Z" fill="#fff" stroke="#8aa2b0" stroke-width="2"/><circle cx="18" cy="15" r="1.4" fill="#8aa2b0"/><circle cx="22" cy="15" r="1.4" fill="#8aa2b0"/></svg>`,
+    chilli: `<svg viewBox="0 0 40 40"><path d="M8 14 Q22 12 32 30 Q25 35 13 25 Q8 20 8 14Z" fill="#3fa63a" stroke="#27722a" stroke-width="2"/><path d="M8 14 q-3 -4 1 -8" stroke="#27722a" stroke-width="2.5" fill="none"/></svg>`,
+  };
+  const LABEL_ART = { lemon: "lemon", sugar: "sugar-pot", salt: "salt-pot" };
+  function dropperSvg(label) {
+    return `<svg viewBox="0 0 100 100"><rect x="30" y="44" width="40" height="44" rx="10" fill="#e8f1f5" stroke="#7d8f99" stroke-width="3"/><rect x="42" y="30" width="16" height="16" rx="3" fill="#b3c3cc" stroke="#7d8f99" stroke-width="3"/><path d="M44 30 Q44 10 50 8 Q56 10 56 30Z" fill="#e55d4a" stroke="#a63b3b" stroke-width="3"/><g transform="translate(32 52) scale(.9)">${LABEL_SVG[label].replace(/^<svg[^>]*>|<\/svg>$/g, "")}</g></svg>`;
+  }
+  /** The dish picture: the rough dropper sprite with a label disc, or the drawn dropper; cups are drawn (their fill is the point). */
+  function dishPic(doc, D, k) {
+    const wrap = doc.createElement("div");
+    wrap.className = "tst-pic";
+    if (D.droppers[k]) {
+      const label = D.droppers[k].label;
+      const bottle = artUrl("dropper");
+      if (!bottle) {
+        wrap.innerHTML = dropperSvg(label);
+        return wrap;
+      }
+      const img = doc.createElement("img");
+      img.className = "bottle";
+      img.alt = "";
+      img.draggable = false;
+      img.src = bottle;
+      wrap.appendChild(img);
+      const lab = doc.createElement("div");
+      lab.className = "label";
+      const pic = LABEL_ART[label] && artUrl(LABEL_ART[label]);
+      if (pic) {
+        const li = doc.createElement("img");
+        li.alt = "";
+        li.src = pic;
+        lab.appendChild(li);
+      } else lab.innerHTML = LABEL_SVG[label];
+      wrap.appendChild(lab);
+      return wrap;
+    }
+    wrap.innerHTML = cupSvg(D.cups[k].fill, k);
+    return wrap;
+  }
+  function cupSvg(fill, kind) {
     const handle = kind === "chai" ? `<path d="M70 52 q14 2 10 16 q-3 8 -12 6" fill="none" stroke="#9a7b5a" stroke-width="5"/>` : "";
     const steam = kind === "chai" ? `<path d="M42 30 q-6 -8 0 -16 M54 30 q-6 -8 0 -16" stroke="#c8b8a4" stroke-width="3" fill="none"/>` : "";
     const glass = kind === "chai" ? "#f4efe6" : "#eef6fa";
@@ -450,35 +495,51 @@
     let D = null;
     let round = null;
     let m = null;
-    let busyEnd = false;
-    let idleT = null;
+    let finished = false;
     let corrected = false;
+    let lastAct = Date.now();
+    let throbbing = null;
+    let doneBtn = null;
     const els = {};
-    const timers = new Set();
-    const later = (fn, ms) => {
-      const t = setTimeout(() => (timers.delete(t), dead || fn()), ms);
-      timers.add(t);
+    const later = (fn, ms) => ctx.after(ms, () => !dead && fn());
+    // the card is the master: keep the line being worked on in view (a short phone sidebar scrolls)
+    const cardNow = (id) => {
+      ctx.card.now(id);
+      const c = ctx.card.el;
+      const r = id != null && c && c.querySelector(`[data-row="${id}"]`);
+      if (!r) return;
+      const cr = c.getBoundingClientRect();
+      const rr = r.getBoundingClientRect();
+      if (rr.bottom > cr.bottom) c.scrollTop += rr.bottom - cr.bottom + 8;
+      else if (rr.top < cr.top) c.scrollTop -= cr.top - rr.top + 8;
     };
-    const cardRows = () => round.rows.map((r) => r.card);
+    const kind = (ctx.patient && ctx.patient.kind) || "girl";
+    const K = (root.Clinic && root.Clinic.Figure && root.Clinic.Figure.KINDS && root.Clinic.Figure.KINDS[kind]) || {};
+    const skin = K.skin || "#e8b98f";
+    const hair = K.hair === "bald" ? skin : K.hairCol || "#3b2a20";
 
     function build() {
-      injectCss(doc);
-      stage.innerHTML = "";
+      const css = doc.createElement("style");
+      css.textContent = CSS;
+      stage.appendChild(css);
+      els.css = css;
       const wrap = doc.createElement("div");
-      wrap.className = "hbb hbb-taste";
+      wrap.className = "tst";
       const scene = doc.createElement("div");
-      scene.className = "hbb-scene";
-      const svg = S("svg", { viewBox: "0 0 480 300", preserveAspectRatio: "xMidYMid meet", role: "img", "aria-label": "The patient's tongue" });
+      scene.className = "tst-scene";
+      const svg = S(doc, "svg", { viewBox: "0 0 480 300", preserveAspectRatio: "xMidYMid meet", role: "img", "aria-label": "The patient's tongue" });
       svg.innerHTML = `
 <rect x="0" y="0" width="480" height="300" fill="#f6ead6"/>
 <rect x="0" y="232" width="480" height="68" fill="#ead7b7"/>
 ${bowlSvg}
 <g class="face-g">
-  <ellipse cx="72" cy="150" rx="22" ry="34" fill="#e2ad83" stroke="#c98f68" stroke-width="3"/>
-  <ellipse cx="368" cy="150" rx="22" ry="34" fill="#e2ad83" stroke="#c98f68" stroke-width="3"/>
-  <ellipse cx="220" cy="150" rx="150" ry="140" fill="#e8b98f" stroke="#c98f68" stroke-width="4"/>
-  <path d="M78 110 Q90 10 220 12 Q350 10 362 110 Q330 50 220 56 Q110 50 78 110Z" fill="#3b2a20"/>
+  <ellipse cx="72" cy="150" rx="22" ry="34" fill="${skin}" stroke="#c98f68" stroke-width="3"/>
+  <ellipse cx="368" cy="150" rx="22" ry="34" fill="${skin}" stroke="#c98f68" stroke-width="3"/>
+  <ellipse cx="220" cy="150" rx="150" ry="140" fill="${skin}" stroke="#c98f68" stroke-width="4"/>
+  <path d="M78 110 Q90 10 220 12 Q350 10 362 110 Q330 50 220 56 Q110 50 78 110Z" fill="${hair}"/>
+  ${K.cap ? `<path d="M96 70 Q220 -20 344 70 Q220 40 96 70Z" fill="#f4f1ea" stroke="#c9c2b4" stroke-width="3"/>` : ""}
   <path d="M212 132 Q206 162 214 170 Q222 174 230 168" stroke="#c98f68" stroke-width="4" fill="none" stroke-linecap="round"/>
+  ${K.moustache ? `<path d="M168 182 Q194 164 220 180 Q246 164 272 182 Q246 192 220 186 Q194 192 168 182Z" fill="${K.hairCol || "#3b2a20"}" stroke="#8d8a84" stroke-width="2"/>` : ""}
   <g class="eyes"></g><g class="brows"></g>
   <g class="mouth-open"><ellipse cx="220" cy="212" rx="56" ry="34" fill="#6b2630" stroke="#3a2e28" stroke-width="4"/>
     <path class="tongue" d="M178 214 Q176 290 220 292 Q264 290 262 214 Q220 226 178 214Z" fill="#ef8a95" stroke="#b9535f" stroke-width="4"/>
@@ -490,40 +551,45 @@ ${bowlSvg}
 <g class="fx"></g>
 <g class="held-item" opacity="0"></g>
 <ellipse class="hit" data-target="mouth" cx="220" cy="236" rx="96" ry="72" fill="transparent" style="cursor:pointer"/>
-<ellipse class="hit-face" cx="220" cy="120" rx="150" ry="90" fill="transparent"/>`;
+<ellipse class="hit-face" cx="220" cy="100" rx="150" ry="70" fill="transparent"/>`;
       scene.appendChild(svg);
-      const tray = doc.createElement("div");
-      tray.className = "hbb-tray";
-      tray.setAttribute("role", "toolbar");
-      tray.style.setProperty("--cols", "2");
-      tray.style.setProperty("--rows", "2");
-      tray.style.setProperty("--dish", "clamp(46px, 21cqh, 92px)");
-      round.kit.forEach((k) => {
+      const rack = doc.createElement("div");
+      rack.className = "tst-rack";
+      rack.setAttribute("role", "toolbar");
+      rack.style.setProperty("--dish", "clamp(44px, min(19cqh, 11cqw), 88px)");
+      const addDish = (k) => {
         const b = doc.createElement("button");
         b.type = "button";
-        b.className = "hbb-dish";
+        b.className = "tst-dish";
         b.dataset.item = k;
         b.setAttribute("aria-label", D.droppers[k] ? "a dropper" : "a cup");
-        b.innerHTML = D.droppers[k] ? dropperIcon(D.droppers[k].label) : cupIcon(D.cups[k].fill, k);
+        b.appendChild(dishPic(doc, D, k));
         b.addEventListener("pointerdown", (e) => (e.preventDefault(), onPick(k)));
-        tray.appendChild(b);
-      });
-      // what the pharmacy tray brought that this game can't use stays in the tray, unusable
+        rack.appendChild(b);
+      };
+      const drops = round.kit.filter((k) => D.droppers[k]);
+      const cups = round.kit.filter((k) => D.cups[k]);
+      drops.forEach(addDish);
+      const sep = doc.createElement("div");
+      sep.className = "tst-sep";
+      rack.appendChild(sep);
+      cups.forEach(addDish);
+      // what the pharmacy brought that this game can't use sits on the rack, unusable (it shows in the review)
+      const known = new Set(Object.keys(D.droppers).concat(Object.keys(D.cups)));
       (ctx.tray || []).forEach((t) => {
-        const known = Object.values(D.droppers).concat(Object.values(D.cups)).some((x) => x.item === t.id);
-        if (known) return;
+        if (!t.wrong && known.has(String(t.id))) return;
         const b = doc.createElement("button");
         b.type = "button";
-        b.className = "hbb-dish dead";
+        b.className = "tst-dish dead";
         b.dataset.extra = t.id;
         b.setAttribute("aria-label", "not for this");
-        b.innerHTML = `<svg viewBox="0 0 100 100"><rect x="26" y="30" width="48" height="44" rx="10" fill="#d8d2c6" stroke="#9c9486" stroke-width="3"/></svg>`;
-        b.addEventListener("pointerdown", (e) => (e.preventDefault(), b.classList.remove("hbb-shake"), void b.offsetWidth, b.classList.add("hbb-shake")));
-        tray.appendChild(b);
+        if (ctx.icon) ctx.icon(t, b, "tiny");
+        b.addEventListener("pointerdown", (e) => (e.preventDefault(), b.classList.remove("tst-shake"), void b.offsetWidth, b.classList.add("tst-shake")));
+        rack.appendChild(b);
       });
-      wrap.append(scene, tray);
+      wrap.append(scene, rack);
       stage.appendChild(wrap);
-      Object.assign(els, { wrap, scene, svg, tray });
+      Object.assign(els, { wrap, scene, svg, rack });
       svg.querySelector(".hit").addEventListener("pointerdown", (e) => (e.preventDefault(), onApply()));
       svg.querySelector(".hit-face").addEventListener("pointerdown", (e) => (e.preventDefault(), react("giggle")));
       drawCoats(6);
@@ -565,7 +631,8 @@ ${bowlSvg}
       if (faceT) clearTimeout(faceT);
       setFace(expr);
       Snd.play(expr);
-      const mood = { sour: "ouch", salty: "ouch", fire: "ouch", sweet: "happy", moustache: "happy", slurp: "relief", spit: "relief", giggle: "giggle" }[expr];
+      // the figure under the close-up mirrors the face (the host's moods)
+      const mood = { sour: "sour", salty: "salty", fire: "ouch", sweet: "happy", moustache: "happy", slurp: "relief", spit: "relief", giggle: "giggle" }[expr];
       if (mood && ctx.patient && ctx.patient.react) ctx.patient.react(mood);
       if (expr === "sour") (els.scene.classList.remove("pucker"), void els.scene.offsetWidth, els.scene.classList.add("pucker"));
       if (expr === "fire") (els.scene.classList.remove("burn"), void els.scene.offsetWidth, els.scene.classList.add("burn"));
@@ -573,18 +640,20 @@ ${bowlSvg}
     }
     function showHeld(k) {
       const g = els.svg.querySelector(".held-item");
-      Array.from(els.tray.children).forEach((b) => b.classList.toggle("held", b.dataset.item === k));
+      Array.from(els.rack.children).forEach((b) => b.classList.toggle("held", b.dataset.item === k));
       if (!k) return g.setAttribute("opacity", "0");
-      g.innerHTML = `<g transform="translate(296 96) scale(.9)">${(D.droppers[k] ? dropperIcon(D.droppers[k].label) : cupIcon(D.cups[k].fill, k)).replace(/^<svg[^>]*>|<\/svg>$/g, "")}</g>`;
+      const inner = D.droppers[k] ? dropperSvg(D.droppers[k].label) : cupSvg(D.cups[k].fill, k);
+      g.innerHTML = `<g transform="translate(296 96) scale(.9)">${inner.replace(/^<svg[^>]*>|<\/svg>$/g, "")}</g>`;
       g.setAttribute("opacity", "1");
     }
     function dropFx(k) {
       const fx = els.svg.querySelector(".fx");
-      const d = S("circle", { cx: 342, cy: 186, r: 7, fill: D.droppers[k].drop, stroke: "#7d8f99", "stroke-width": 2 });
+      const d = S(doc, "circle", { cx: 342, cy: 186, r: 7, fill: D.droppers[k].drop, stroke: "#7d8f99", "stroke-width": 2 });
       fx.appendChild(d);
-      d.animate([{ transform: "translate(0,0)" }, { transform: "translate(-110px,60px)" }], { duration: 320, easing: "cubic-bezier(.5,0,1,1)", fill: "forwards" });
+      if (d.animate) d.animate([{ transform: "translate(0,0)" }, { transform: "translate(-110px,60px)" }], { duration: 320, easing: "cubic-bezier(.5,0,1,1)", fill: "forwards" });
       later(() => d.remove(), 360);
       Snd.play("drop");
+      if (ctx.sfx) ctx.sfx("pop");
     }
     function drinkFx(k) {
       const face = D.cups[k].face;
@@ -596,15 +665,14 @@ ${bowlSvg}
           Snd.play("spit");
           const fx = els.svg.querySelector(".fx");
           for (let n = 0; n < 7; n++) {
-            const d = S("circle", { cx: 250, cy: 214, r: 5 + (n % 3), fill: "#bfe3f5", stroke: "#6f9fc4", "stroke-width": 1.5 });
+            const d = S(doc, "circle", { cx: 250, cy: 214, r: 5 + (n % 3), fill: "#bfe3f5", stroke: "#6f9fc4", "stroke-width": 1.5 });
             fx.appendChild(d);
-            d.animate([{ transform: "translate(0,0)" }, { transform: `translate(${80 + n * 12}px,${-50 + n * 4}px)` }, { transform: `translate(${150 + n * 4}px,${30 + (n % 3) * 3}px)` }], { duration: 520 + n * 30, easing: "ease-in", fill: "forwards" });
+            if (d.animate) d.animate([{ transform: "translate(0,0)" }, { transform: `translate(${80 + n * 12}px,${-50 + n * 4}px)` }, { transform: `translate(${150 + n * 4}px,${30 + (n % 3) * 3}px)` }], { duration: 520 + n * 30, easing: "ease-in", fill: "forwards" });
             later(() => d.remove(), 700);
           }
           later(() => {
             const w = els.svg.querySelector(".bowl-water");
             w.setAttribute("opacity", "1");
-            w.animate([{ transform: "scale(.4)" }, { transform: "scale(1.2)" }, { transform: "scale(1)" }], { duration: 400 });
           }, 620);
           react("giggle", 900);
         }, 700);
@@ -613,20 +681,28 @@ ${bowlSvg}
         els.svg.querySelector(".extra").insertAdjacentHTML("beforeend", `<path d="M170 188 Q196 170 220 186 Q244 170 270 188 Q246 200 220 192 Q194 200 170 188Z" fill="#fff" stroke="#ddd" stroke-width="2"/>`);
       } else react(face, 1500);
     }
-    function publishRows() {
-      if (ctx.card && ctx.card.setRows) ctx.card.setRows(cardRows());
-    }
+    const rowLine = (r) => ({ kutchi: r.card.kutchi, english: r.card.english, who: "doctor" });
     function sayRow(r) {
-      if (ctx.say) return ctx.say(r.card.line);
+      if (ctx.say) return ctx.say(rowLine(r));
     }
-    function resetIdle() {
-      if (idleT) clearTimeout(idleT);
-      idleT = setTimeout(() => {
-        if (dead || !m || m.ended) return;
-        const r = round.rows[m.i];
-        if (ctx.card && ctx.card.pulse) ctx.card.pulse(r.id);
-        resetIdle();
-      }, 8000);
+    const current = () => (m && !m.ended ? round.rows[m.i] : null);
+    function throb() {
+      if (dead || finished) return;
+      const r = current();
+      if (r && !throbbing && Date.now() - lastAct > ((ctx.data && ctx.data.throbMs) || 8000)) {
+        // the free throbbing hint: the line, and the dish it names (a line finished after it counts as hinted)
+        throbbing = r.id;
+        ctx.card.pulse(r.id, true);
+        const dish = els.rack.querySelector(`[data-item="${r.kind === "cup" ? r.cup : r.taste}"]`);
+        if (dish) dish.classList.add("throb");
+        run(m.act({ type: "hint" }));
+      }
+      later(throb, 1000);
+    }
+    function stopThrob() {
+      throbbing = null;
+      ctx.card.pulse(null, false);
+      els.rack.querySelectorAll(".throb").forEach((d) => d.classList.remove("throb"));
     }
     function run(events) {
       for (const e of events) {
@@ -635,104 +711,122 @@ ${bowlSvg}
         else if (e.type === "drop") (dropFx(e.item), clearCoat(), signal("applied"));
         else if (e.type === "face") {
           const it = e.item;
-          if (it && D.cups[it]) drinkFx(it);
+          if (it && D.cups[it]) (drinkFx(it), signal("applied"));
           else later(() => react(e.face), it ? 300 : 0);
         } else if (e.type === "tally") ctx.tally && ctx.tally(e.item, e.n);
-        else if (e.type === "tick") ctx.card && ctx.card.tick(e.rowId);
+        else if (e.type === "tick") (ctx.card.tick(e.rowId), stopThrob());
         else if (e.type === "log") {
           ctx.log && ctx.log(e.entry);
           // level 1's one gentle correction: the doctor says the line once more (onboarding, not a verdict)
-          if (e.entry.type !== "right" && round.level === 1 && !corrected) {
+          if ((e.entry.type === "wrong" || e.entry.type === "extra") && round.level === 1 && !corrected) {
             corrected = true;
-            later(() => sayRow(round.rows[m.ended ? round.rows.length - 1 : m.i]), 1500);
+            later(() => current() && sayRow(current()), 1500);
           }
         } else if (e.type === "current") {
-          if (round.readAs === "each") later(() => sayRow(e.row), 1400);
+          if (round.readAs === "each") {
+            ctx.card.addRow(e.row.card);
+            later(() => sayRow(e.row), 900);
+          }
+          cardNow(e.row.id);
         } else if (e.type === "end") finish();
       }
     }
     function onPick(k) {
       if (dead || !m || m.ended) return;
-      resetIdle();
-      if (m.holding && m.holding !== k && m.holding) showHeld(null);
+      lastAct = Date.now();
+      if (ctx.sfx) ctx.sfx("tap");
       run(m.act({ type: "pick", item: k }));
-      if (m.holding) showHeld(m.holding);
     }
     function onApply() {
       if (dead || !m || m.ended) return;
-      resetIdle();
+      lastAct = Date.now();
       run(m.act({ type: "apply" }));
     }
-    function signal(name) {
-      try {
-        doc.dispatchEvent(new CustomEvent("njg-onboard", { detail: `${ID}-${name}` }));
-      } catch (e) {}
-    }
-    function finish() {
-      if (busyEnd) return;
-      busyEnd = true;
-      if (idleT) clearTimeout(idleT);
-      showHeld(null);
+    function onDone() {
+      if (dead || !m) return;
+      lastAct = Date.now();
+      if (!m.ended) {
+        if (m.counting) run(m.act({ type: "done" })); // closes an open count; otherwise nothing to close yet
+        return;
+      }
+      if (!finished) return;
       const sc = m.score();
       const used = new Set(["pela", "nepoi"]);
       round.rows.forEach((r) => (used.add(r.kind === "cup" ? r.cup : r.taste), r.count && used.add(`n${r.count}`)));
       const words = Array.from(used)
         .map((k) => D.words[k])
         .filter(Boolean)
-        .map((w) => ({ kutchi: w.placeholder ? null : w.kutchi, english: w.english, audio: w.audio || undefined, placeholder: w.placeholder || undefined }));
+        .map((w) => ({ kutchi: w.placeholder ? null : w.kutchi, english: w.english, audio: w.audio || undefined, placeholder: w.placeholder || undefined, id: w.ref ? w.ref.replace(/^cook:/, "") : w.id }));
+      ctx.done({ right: sc.right, total: sc.total, hints: 0, words });
+    }
+    function signal(name) {
+      if (ctx.signal) ctx.signal(`${ID}-${name}`);
+    }
+    function finish() {
+      if (finished) return;
+      finished = true;
+      stopThrob();
+      showHeld(null);
+      cardNow(null);
       later(() => {
+        react("happy", 2000);
         if (ctx.interject) ctx.interject("shabash");
-        later(() => ctx.done && ctx.done({ right: sc.right, total: sc.total, hints: 0, words }), 900);
-      }, 1700);
+        if (doneBtn) doneBtn.classList.add("throb");
+      }, 1500);
     }
     return {
       async start() {
-        D = await load();
+        D = await browserData(ctx);
         if (dead) return;
         round = makeRound(D, ctx.level || 1, ctx.rng || Math.random);
         m = Model(D, round);
+        if (ctx.trayUI) ctx.trayUI.hide();
         build();
-        publishRows();
-        if (ctx.onboard)
-          ctx.onboard({
-            id: `clinic/heal-${ID}`,
-            steps: [
-              { spotlight: () => els.tray, ghost: { gesture: "tap" }, wait: `${ID}-picked` },
-              { spotlight: () => els.svg.querySelector(".hit"), ghost: { gesture: "tap" }, wait: `${ID}-applied` },
-            ],
-          });
+        doneBtn = ctx.button("✓", onDone, "done");
+        doneBtn.setAttribute("aria-label", "Done");
+        ctx.card.setRows(round.readAs === "each" ? [round.rows[0].card] : round.rows.map((r) => r.card));
+        cardNow(round.rows[0].id);
+        if (ctx.level === 1 && ctx.onboard)
+          ctx.onboard([
+            { spotlight: () => els.rack, ghost: { gesture: "tap" }, wait: `${ID}-picked` },
+            { spotlight: () => els.svg.querySelector(".hit"), ghost: { gesture: "tap" }, wait: `${ID}-applied` },
+          ]);
+        await ctx.say({ english: "Stick out your tongue", kutchi: null, placeholder: true }, { who: "doctor" });
         if (round.readAs === "each") await sayRow(round.rows[0]);
-        else for (const r of round.rows) await sayRow(r);
-        resetIdle();
+        else await ctx.card.speak();
+        lastAct = Date.now();
+        throb();
       },
       destroy() {
         dead = true;
-        timers.forEach((t) => clearTimeout(t));
-        if (idleT) clearTimeout(idleT);
         if (faceT) clearTimeout(faceT);
-        stage.innerHTML = "";
+        if (els.wrap) els.wrap.remove();
+        if (els.css) els.css.remove();
+        if (ctx.trayUI && ctx.trayUI.show) ctx.trayUI.show();
       },
-      /** For tests: what the game wants next (the answer), and where things are. */
-      expectation() {
+      /** For tests: what the game wants next (the answer). */
+      expect() {
         if (!m) return null;
-        if (m.ended) return { ended: true };
+        if (m.ended) return { action: "done", finished };
         const r = round.rows[m.i];
         return { row: r.id, kind: r.kind, item: r.kind === "cup" ? r.cup : r.taste, count: r.count || null, holding: m.holding, level: round.level };
       },
     };
   }
 
-  return {
+  const def = {
     id: ID,
     part: "mouth",
     ailments: ["coated-tongue"],
-    items: ["fru-02", "cook-khun", "spi-16", "cook-paani"],
+    items: ["limu", "khun", "loon", "paani"],
     gestures: ["tap"],
     levels: [1, 2, 3],
     mount,
     bot,
-    load,
     makeRound,
     Model,
+    data: nodeData,
   };
-});
+  if (Heal) Heal.register(def);
+  if (typeof module === "object" && module.exports) module.exports = def;
+})(typeof globalThis !== "undefined" ? globalThis : this);
