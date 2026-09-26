@@ -22,7 +22,7 @@
     "w-drops-please": { "kutchi": null, "english": "drops, please", "placeholder": true }
   },
   "lines": {
-    "heal-ear-side": { "voice": "patient", "k": "{side} {part}", "e": "My {side} {part}" },
+    "heal-ear-side": { "voice": "patient", "k": "{side} {part}", "e": "{side} {part}" },
     "heal-ear-pluck2": { "voice": "doctor", "k": "{pela} {a}, {nepoi} {b}", "e": "First {a}, then {b}" },
     "heal-ear-pluck3": { "voice": "doctor", "k": "{pela} {a}, {nepoi} {b}, {nepoi} {c}", "e": "First {a}, then {b}, then {c}" },
     "heal-ear-clean": { "voice": "doctor", "k": "{what}. {n} {times}", "e": "Clean it {n} times" },

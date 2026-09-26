@@ -210,6 +210,9 @@ class Play:
         page.evaluate(
             """([g, L, seed, kind]) => {
               if (window.Onboard) Onboard.run = () => Promise.resolve("skipped");
+              // the lab's debug log is dev chrome, not the game: keep it off the play area
+              const out = document.getElementById("lab-out");
+              if (out) out.style.display = "none";
               document.getElementById("lab-game").value = g;
               document.getElementById("lab-level").value = String(L);
               document.getElementById("lab-seed").value = String(seed);

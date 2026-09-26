@@ -27,7 +27,7 @@
     "heal-knee-path": { "voice": "doctor", "k": "{what}. {pela} {a}, {nepoi} {b}, {nepoi} {c}", "e": "Bandage: first the {a}, then the {b}, then the {c}" },
     "heal-knee-xray": { "voice": "doctor", "k": "{what}. {n} {taps}", "e": "X-ray the leg, then clonk the bone {n} times" },
     "heal-knee-cast": { "voice": "doctor", "k": "{what}. {n} {turns}", "e": "Cast: {n} turns" },
-    "heal-knee-side": { "voice": "patient", "k": "{side} {part}", "e": "My {side} {part}" }
+    "heal-knee-side": { "voice": "patient", "k": "{side} {part}", "e": "{side} {part}" }
   },
   "ailments": {
     "knee-bump": { "part": "body-knee", "items": ["hammer", "bandage"], "from": 1, "from_level": 1, "story": "a bump from the puddle" },
