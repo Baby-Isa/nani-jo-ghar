@@ -22,7 +22,7 @@ MANUAL_WRISTS = {
     "hand-b2-vertical-grip-e": [{"x": 610, "y": 640, "angle_deg": -28, "wrist_px": 250}],  # v3 master (blue-tool re-render)
     "hand-d4-squeeze-f2-tight-t": [{"x": 506, "y": 720, "angle_deg": 0, "wrist_px": 250}],
     "hand-e5-arm-up-fist-e": [{"x": 506, "y": 720, "angle_deg": 0, "wrist_px": 250}],  # v2: a copy of d4-f2-tight
-    "hand-e7-shrug-e": [{"x": 606, "y": 941, "angle_deg": 38, "wrist_px": 240}],
+    "hand-e7-shrug-e": [{"x": 610, "y": 945, "angle_deg": 25, "wrist_px": 290}],  # v3: re-read on a grid (the arm is ~300 px across at the wrist crease)
     "hand-c5-two-hand-fold-t": [{"x": 1102, "y": 918, "angle_deg": -24, "wrist_px": 245}],
     "hand-e4-clap-f2-together-e": [{"x": 560, "y": 716, "angle_deg": -8, "wrist_px": 240}],
 }

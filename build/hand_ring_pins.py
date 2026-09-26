@@ -15,7 +15,7 @@ PINS = {
     "hand-a3-palm-up-e": [{"view": "palm", "note": "palm up, no nails: drawn as a left hand"}],
     "hand-a8-cupped-t": [{"view": "palm", "note": "cupped palm up"}],
     "hand-a8-cupped-e": [{"view": "palm", "note": "cupped palm up"}],
-    "hand-e7-shrug-e": [{"view": "palm", "note": "open palm up"}],
+    "hand-e7-shrug-e": [{"view": "palm", "bracelet": "anchor", "note": "open palm up; bracelet on the hand-set wrist (v3: the joint-based cut was too narrow)"}],
     # backs drawn as anatomical left hands: chirality reads 'palm', nails show
     "hand-a7-hand-on-heart-e": [{"view": "back", "note": "nails and knuckles show: back of the hand"}],
     "hand-e3-count-2-e": [{"view": "back", "note": "nails on the raised fingers, knuckles on the curled ones"}],
@@ -42,6 +42,11 @@ PINS = {
     "hand-c2-tripod-grip-t": [{"view": "hidden", "note": "pencil grip from above: ring finger curled under the palm"}],
     "hand-c3-side-pinch-t": [{"view": "hidden", "note": "card pinch from above: ring finger curled under the palm"}],
     # hands v3 masters
+    "hand-e4-clap-f1-apart-e": [{"view": "back", "note": "nails show on both hands: backs towards us (chirality read palm)"},
+                                {"view": "back", "note": "nails show on both hands: backs towards us (chirality read palm)"}],
+    "hand-d3-two-hand-bowl-t": [{"view": "hidden", "note": "hands on the bowl's sides, seen edge-on: ring fingers behind, curled over the rim (detection put the ring on the thumb)"},
+                                {"view": "hidden", "note": "hands on the bowl's sides, seen edge-on: ring fingers behind, curled over the rim (detection put the ring on the thumb)"}],
+    "hand-d4-squeeze-f1-half-t": [{"view": "hidden", "note": "half-closed round a ball: the ring finger's first segment is edge-on at the hand's outer edge"}],
     "hand-b3-stick-grip-e": [{"view": "hidden", "note": "fist round a stick, palm side: the ring finger curls into the palm (6 px edge-on)"}],
     "hand-d2-c-hold-t": [{"view": "hidden", "note": "C from above: the ring finger's first segment is edge-on at the far side (23 px)"}],
     "hand-c3-side-pinch-e": [{"view": "hidden", "note": "card held up, palm side: ring finger curled into the palm"}],

@@ -210,7 +210,13 @@ def main():
         im = Image.open(p).convert("RGBA")
         region = np.zeros((im.height, im.width), bool)
         region[:, : im.width // 2] = True
-        j3.relight_mirrored(im, region=region).save(p)
+        im = j3.relight_mirrored(im, region=region)
+        # match the relit half's skin back to the other hand's
+        W = im.width // 2
+        left, right = im.crop((0, 0, W, im.height)), im.crop((W, 0, im.width, im.height))
+        left, _ = ga.match_skin_distribution(left, ga.skin_stats(right))
+        im.paste(left, (0, 0))
+        im.save(p)
 
 
 if __name__ == "__main__":

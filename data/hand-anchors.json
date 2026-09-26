@@ -4847,11 +4847,13 @@
      "angle_deg": 5.4,
      "width_px": 47.5,
      "width_from": "default",
-     "view": "palm",
+     "view": "hidden",
      "facing": -0.29,
      "curl_deg": 27.0,
      "web_t": null,
-     "source": "mediapipe"
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "hands on the bowl's sides, seen edge-on: ring fingers behind, curled over the rim (detection put the ring on the thumb)"
     },
     "landmarks": {
      "points": [
@@ -4975,11 +4977,13 @@
      "angle_deg": -4.8,
      "width_px": 53.3,
      "width_from": "default",
-     "view": "palm",
+     "view": "hidden",
      "facing": -0.27,
      "curl_deg": 30.0,
      "web_t": null,
-     "source": "mediapipe"
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "hands on the bowl's sides, seen edge-on: ring fingers behind, curled over the rim (detection put the ring on the thumb)"
     },
     "landmarks": {
      "points": [
@@ -5107,16 +5111,18 @@
       673.8,
       358.4
      ],
-     "x": 713.4,
-     "y": 433.9,
-     "angle_deg": 20.9,
+     "x": 692.5,
+     "y": 425.9,
+     "angle_deg": -15.5,
      "width_px": 52.5,
      "width_from": "measured",
-     "view": "back",
+     "view": "hidden",
      "facing": 0.45,
      "curl_deg": 80.0,
      "web_t": null,
-     "source": "mediapipe"
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "half-closed round a ball: the ring finger's first segment is edge-on at the hand's outer edge"
     },
     "landmarks": {
      "points": [
@@ -6921,11 +6927,13 @@
      "angle_deg": 9.4,
      "width_px": 86.0,
      "width_from": "measured",
-     "view": "palm",
+     "view": "back",
      "facing": -0.74,
      "curl_deg": 5.0,
      "web_t": 0.325,
-     "source": "mediapipe"
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "nails show on both hands: backs towards us (chirality read palm)"
     },
     "landmarks": {
      "points": [
@@ -7049,11 +7057,13 @@
      "angle_deg": -6.5,
      "width_px": 79.0,
      "width_from": "measured",
-     "view": "palm",
+     "view": "back",
      "facing": -0.72,
      "curl_deg": 5.0,
      "web_t": 0.25,
-     "source": "mediapipe"
+     "view_source": "manual",
+     "source": "mediapipe",
+     "note": "nails show on both hands: backs towards us (chirality read palm)"
     },
     "landmarks": {
      "points": [
@@ -7593,10 +7603,10 @@
    {
     "side": "right",
     "wrist": {
-     "x": 606,
-     "y": 941,
-     "angle_deg": 38,
-     "width_px": 240,
+     "x": 610,
+     "y": 945,
+     "angle_deg": 25,
+     "width_px": 290,
      "source": "manual"
     },
     "ring": {
@@ -7619,7 +7629,7 @@
      "web_t": 0.375,
      "view_source": "manual",
      "source": "mediapipe",
-     "note": "open palm up"
+     "note": "open palm up; bracelet on the hand-set wrist (v3: the joint-based cut was too narrow)"
     },
     "landmarks": {
      "points": [
@@ -7713,11 +7723,11 @@
      "source": "mediapipe"
     },
     "bracelet": {
-     "x": 635.3,
-     "y": 943.8,
-     "angle_deg": 28.0,
-     "width_px": 216.0,
-     "width_from": "default"
+     "x": 610,
+     "y": 945,
+     "angle_deg": 25,
+     "width_px": 275.5,
+     "width_from": "wrist anchor (pinned)"
     }
    }
   ]
