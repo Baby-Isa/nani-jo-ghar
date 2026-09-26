@@ -54,6 +54,8 @@
   border-bottom: 2px solid var(--cv-line);
   transform: translateX(-50%) rotate(45deg);
 }
+.cv-bubble.cv-below, .cv-bubble.cv-below.in { transform: translate(-50%, 14px); }
+.cv-bubble.cv-below::after { bottom: auto; top: -11px; transform: translateX(-50%) rotate(225deg); }
 .cv-free .cv-bubble { left: 50%; top: max(16px, env(safe-area-inset-top)); transform: translate(-50%, -8px) scale(.9); }
 .cv-free .cv-bubble.in { transform: translate(-50%, 0) scale(1); }
 .cv-face { font-size: 34px; line-height: 1; flex: none; white-space: nowrap; }
@@ -112,7 +114,7 @@
   transition: transform .18s, box-shadow .18s, opacity .25s;
   touch-action: manipulation;
 }
-.cv-pill .cv-pic { font-size: 30px; line-height: 1; }
+.cv-pill .cv-pic { font-size: 30px; line-height: 1; white-space: nowrap; flex: none; }
 .cv-pill .cv-words { font-size: 20px; font-weight: 800; }
 .cv-pill .cv-glyph svg { width: 26px; height: 26px; color: #2f4f7f; }
 .cv-pill.lifted { transform: translateY(-6px) scale(1.04); box-shadow: 0 10px 20px rgba(30, 50, 90, .24); border-color: #3f6fb0; }

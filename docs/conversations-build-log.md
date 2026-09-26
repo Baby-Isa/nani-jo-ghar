@@ -10,3 +10,5 @@ Branch `claude/conversations-mvp` (from `claude/nifty-rubin-c0d431`). Design: `d
 - Register balance is kept across sessions (`state.reg`), not per session: per session let "longest/always formal" reach 55.7% on the clinic's 4-elder/2-child bench. Now every blind strategy is at 50% or below.
 - Variety beats the first-meeting salaam (the same exchange never twice in a row, §6.5), as the design says.
 - Tests: `node --test build/test_shared_conversations.mjs`: 23 pass. All shared tests: 106 pass.
+- Bubbles + lab `lab/conversations.html` (linked from `labs.html`). A second tap during the preview playback is queued, not dropped (a quick child's tap-tap was being ignored). A bubble with no room above the head hangs below it.
+- Browser smoke `node build/test_conversations-browser.mjs`: all pass at 1366x768 and 390x844 (the §14 shake/buzz/4 reactions/ask-again, throb after 2 wrongs, the bulb, the skip hand, register logged, FL2–FL8 incl. the dodging No, Cook's day with the frequency rule declining extras, the clinic morning). Screenshots in `build/reports/conversations-mvp/`.

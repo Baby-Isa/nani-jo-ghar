@@ -81,7 +81,8 @@
     return out;
   };
   let loading = null;
-  C.load = function (base = "") {
+  C.base = ""; // the path to the game's root from this page ("../" from lab/)
+  C.load = function (base = C.base) {
     if (D) return Promise.resolve(D);
     if (loading) return loading;
     const v = (u) => (root.njgV ? root.njgV(u) : u);
@@ -560,6 +561,7 @@
   /* ================= the browser half ================= */
   const doc = root.document;
   C.speed = 1; // tests speed the waits up
+  C.now = () => Date.now(); // the lab's fake clock replaces this
   C.silent = false; // no audio at all (tests); the read-along timing still runs
   const wait = (ms) => new Promise((r) => setTimeout(r, ms / (C.speed || 1)));
   const log = []; // this page's moments, for roundMoments / roundWords
@@ -591,8 +593,8 @@
     s.stage = STAGES.includes(stage) ? stage : "S1";
     C.saveState(s);
   };
-  C.startVisitNow = (mode) => C.saveState(C.startVisit(C.touchSession(C.loadState(), Date.now()), mode));
-  C.startRoundNow = (roundId) => C.saveState(C.startRound(C.touchSession(C.loadState(), Date.now()), roundId));
+  C.startVisitNow = (mode) => C.saveState(C.startVisit(C.touchSession(C.loadState(), C.now()), mode));
+  C.startRoundNow = (roundId) => C.saveState(C.startRound(C.touchSession(C.loadState(), C.now()), roundId));
   C.roundMoments = (roundId) => log.filter((o) => o.round === roundId && (o.via === "voice" || o.via === "pill")).map((o) => ({ ok: o.firstTry, via: o.via, mode: o.mode }));
   C.roundWords = function (roundId) {
     const seen = {};
@@ -691,10 +693,14 @@
     }
     const W = root.innerWidth || 800;
     if (pt && isFinite(pt.x) && isFinite(pt.y)) {
+      const H = root.innerHeight || 600;
       const x = Math.max(150, Math.min(W - 150, pt.x));
       b.style.left = `${x}px`;
-      b.style.top = `${Math.max(8, pt.y)}px`;
+      b.style.top = `${Math.max(8, Math.min(H - 160, pt.y))}px`;
       b.classList.add("cv-anchored");
+      // no room above the head (or the head is off screen): the bubble hangs below it instead
+      const r = b.getBoundingClientRect();
+      if (r.top < 8 || pt.y < 0) b.classList.add("cv-below");
     } else layer.classList.add("cv-free");
   }
 
@@ -869,8 +875,14 @@
     };
     const played = {};
     const m0Played = (key) => played[key];
+    let pending = null;
     const handle = async (ev) => {
-      if (busy || m.state === "done") return;
+      if (m.state === "done") return;
+      if (busy) {
+        // the second tap on a pill that's still being heard says it (a quick child isn't ignored)
+        if (ev.type === "tap" && ev.key === m.lifted) pending = ev;
+        return;
+      }
       busy = true;
       clearTimeout(idle);
       const r = C.step(m, ev);
@@ -878,8 +890,13 @@
       if (ev.type === "tap" && r.fx.some((f) => f.fx === "play")) played[ev.key] = true;
       await run(r.fx);
       busy = false;
-      if (m.state === "done") resolveDone();
-      else armIdle();
+      if (m.state === "done") return resolveDone();
+      armIdle();
+      if (pending) {
+        const p = pending;
+        pending = null;
+        handle(p);
+      }
     };
     box.addEventListener("click", (e) => {
       const b = e.target.closest(".cv-pill");
@@ -959,7 +976,7 @@
 
   function record(o, ctx) {
     log.push(o);
-    const s = C.update(C.loadState(), o, Date.now());
+    const s = C.update(C.loadState(), o, C.now());
     C.saveState(s);
     return o;
   }
@@ -967,7 +984,7 @@
   /** A mode offers a slot; the module decides (§8.5). Control comes back when the moment ends. */
   C.maybe = async function (ctx = {}) {
     await C.load(ctx.base);
-    const now = Date.now();
+    const now = C.now();
     let s = C.touchSession(C.loadState(), now);
     const P = D.placements[ctx.placement] || {};
     const mode = ctx.mode || P.mode;
@@ -1013,8 +1030,8 @@
       return { ran: true, heard: true, placement: id };
     }
     const c = Object.assign({ scripted: true }, ctx, P ? { placement: id, mode: ctx.mode || P.mode } : { exchanges: [id] });
-    const s = C.touchSession(C.loadState(), Date.now());
-    const pk = C.pick(s, c, Date.now());
+    const s = C.touchSession(C.loadState(), C.now());
+    const pk = C.pick(s, c, C.now());
     if (!pk) return { ran: false, why: "nothing-fits" };
     const out = await C.runPicked(pk, c);
     for (const h of (P && P.heard) || []) if (h.when !== "after") await C.hear(h.line, Object.assign({}, ctx, { speaker: h.who }));
