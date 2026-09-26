@@ -102,7 +102,8 @@
     if (!d || !d.bot) return null;
     const b = d.bot(level, rng);
     const rows = (b && b.rows) || [];
-    let r = b.solve(strategy);
+    // a bot may give the fair player as its own method (heal C's shape)
+    let r = strategy === "fair" && typeof b.fair === "function" ? b.fair() : b.solve(strategy);
     let right;
     let total;
     if (r && typeof r === "object" && !Array.isArray(r) && "right" in r) {
@@ -130,7 +131,26 @@
     let seed = 1;
     const rng = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
     const b = d.bot(level, rng);
-    return (b && b.strategies) || d.strategies || ["fair", "random"];
+    return (b && b.strategies) || d.strategies || (b && typeof b.fair === "function" ? ["fair", "random", "best"] : ["fair", "random"]);
   };
+
+  /**
+   * Node: require every game file under `dir` and register what it exports
+   * (a game whose wrapper only registers in the browser still counts).
+   */
+  Heal.loadAll = function (dir) {
+    const path = require("path");
+    const fs = require("fs");
+    Heal.IDS.forEach((id) => {
+      const f = path.join(dir, `${id}.js`);
+      if (!fs.existsSync(f)) return;
+      const g = require(f);
+      if (!Heal.has(id) && g && g.id && typeof g.mount === "function") Heal.register(g);
+    });
+    return Heal.ids();
+  };
+  // games that loaded before the registry (a browser page with the scripts out of order)
+  const pending = (typeof globalThis !== "undefined" && globalThis.Clinic && globalThis.Clinic.__healPending) || [];
+  setTimeout(() => pending.splice(0).forEach((g) => !Heal.has(g.id) && Heal.register(g)), 0);
   return Heal;
 });
