@@ -3403,7 +3403,7 @@
    "scared": "baby-scared"
   },
   "nana": {
-   "neutral": "nana-neutral",
+   "neutral": "nana-sit",
    "ouch": "nana-ouch",
    "giggle": "nana-giggle",
    "relief": "nana-relief",
@@ -3413,7 +3413,7 @@
    "scared": "nana-scared"
   },
   "ma": {
-   "neutral": "ma-neutral",
+   "neutral": "ma-sit",
    "ouch": "ma-ouch",
    "giggle": "ma-giggle",
    "relief": "ma-relief",
@@ -3423,7 +3423,7 @@
    "scared": "ma-scared"
   },
   "ali": {
-   "neutral": "ali-neutral",
+   "neutral": "ali-sit",
    "ouch": "ali-ouch",
    "giggle": "ali-giggle",
    "relief": "ali-relief",
@@ -3492,12 +3492,12 @@
   }
  },
  "rooms": {
-  "waiting": "room-waiting",
-  "exam": "room-exam",
-  "pharmacy": "room-pharmacy"
+  "waiting": "bg-clinic-waiting-e",
+  "exam": "bg-clinic-room-e",
+  "pharmacy": "bg-clinic-pharmacy-e"
  },
  "final": {
-  "_about": "Final art (ChatGPT batch 3, dump 3: build/reports/chatgpt-batch-3-dump-3.md), added beside the rough placeholders, which stay as they are. Not wired: `rooms`, `patients` and `alias` above still name the rough art. rooms: as `rooms`. patients: kind -> pose -> sprite id (seated full body on an invisible seat: sit, sit-head, sit-tummy, sit-knee, for after the answer only; waist-<colour>: the waiting room's waist-up crop in one colour). feelings: kind -> feeling -> a head-and-shoulders layer. replaces: rough sprite id -> the final sprite that can stand in for it.",
+  "_about": "Final art (ChatGPT batch 3, dump 3: build/reports/chatgpt-batch-3-dump-3.md), added beside the rough placeholders, which stay as they are. Wired (26/27 Sept): the top `rooms` now point at the three final backgrounds, and nana/ma/ali's `neutral` mood (above) now points at their `sit` pose (per `replaces`). Still rough: old-man/old-woman/girl/boy/baby, and every other nana/ma/ali mood. rooms: as `rooms`. patients: kind -> pose -> sprite id (seated full body on an invisible seat: sit, sit-head, sit-tummy, sit-knee, for after the answer only; waist-<colour>: the waiting room's waist-up crop in one colour, not yet wired: it needs a colour-keyed lookup, not just kind+mood). feelings: kind -> feeling -> a head-and-shoulders layer (no clinic screen shows these yet: the sendoff stage uses an emoji per data.feelings, not art). replaces: rough sprite id -> the final sprite that can stand in for it.",
   "rooms": {
    "waiting": "bg-clinic-waiting-e",
    "exam": "bg-clinic-room-e",

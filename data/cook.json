@@ -2724,7 +2724,7 @@
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
   "props": [],
   "sprites": {
-   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). Left out on purpose (failed QA or pending a redo): veg-dungri-whole-t, veg-dungri-peeled-t, tool-velan-t, tool-chakla-t, vessel-thali-t. tools: a painted tool drawn into a drawn hand (Wave 6b).",
+   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). tool-chakla-t now wired (art.chakla, batch 2's redraw). Left out on purpose (no station reads that state yet, or a design call): veg-dungri-whole-t, veg-dungri-peeled-t (no chop or peel step uses veg-02 yet), tool-velan-t (the rolling pin is part of the two-hand grip, js/cook/hands.js), vessel-thali-t (vessel:serving already uses chaat-bowl; swapping to a flat thali needs Zafar's call on dishes other than chaat). tools: a painted tool drawn into a drawn hand (Wave 6b).",
    "dir": "assets/cook/items/",
    "max": 256,
    "items": {
@@ -2768,6 +2768,7 @@
     "cook-dudh": { "jug": "vessel-milk-jug-f" },
     "glass": { "empty": "vessel-glass-chai-empty-f", "full": "vessel-glass-chai-full-f" },
     "tawa": { "top": { "file": "vessel-tawa-t", "max": 0 } },
+    "tool-chakla": { "top": { "file": "tool-chakla-t", "max": 0 } },
     "pan": { "top": { "file": "vessel-saucepan-t", "max": 0 } },
     "pot": { "top": { "file": "vessel-pot-t", "max": 0 } },
     "tadka-pan": { "top": { "file": "vessel-tadka-pan-t", "max": 0 } },
@@ -2790,10 +2791,11 @@
     "pastry:3": "ph-samosa.folded",
     "pastry:4": "ph-samosa.fried",
     "layer:ph-chips": "ph-chips.raw",
-    "tawa": "tawa.top"
+    "tawa": "tawa.top",
+    "chakla": "tool-chakla.top"
    },
    "tools": {
-    "_about": "Wave 6b: a painted tool in a drawn hand (js/cook/art.js): a drawn Art key -> item.state. The sprite (drawn corner to corner, tip top-left) is turned upright into the hand's own canvas, so every scale and angle in the code stays the same; the skewer's bamboo stick replaces the drawn one above its wooden handle (js/cook/mechanics/grill.js). Not yet: the velan and chakla (batch 1 failed QA: a Western pin with handles, a 3/4-view board; batch 2 redraws them).",
+    "_about": "Wave 6b: a painted tool in a drawn hand (js/cook/art.js): a drawn Art key -> item.state. The sprite (drawn corner to corner, tip top-left) is turned upright into the hand's own canvas, so every scale and angle in the code stays the same; the skewer's bamboo stick replaces the drawn one above its wooden handle (js/cook/mechanics/grill.js). The chakla now uses batch 2's redraw (data.art.sprites.art.chakla, js/cook/art.js). Not yet: the velan (the rolling pin is drawn as part of the two-hand grip, js/cook/hands.js).",
     "hand:knife": "knife.tool",
     "hand:ladle": "ladle.tool",
     "hand:spatula": "spatula.tool",

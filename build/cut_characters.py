@@ -102,7 +102,11 @@ SPEC = {
         "badge": dict(sheet="char-isa-expressions-v1.png", box=(0, 0, 384, 341), eyes=None, crown=None, chin=None),
     },
     "kasuku": {
-        "badge": dict(sheet="char-kasuku-poses-v1.png", box=(780, 560, 1130, 950), eyes=None, crown=None, chin=None,
+        # v2 (ChatGPT batch 3, dump 2): a fresh render, approved to replace v1. Its sheet is laid out
+        # differently (perched full-body poses on both rows, no close-up row), so the badge crops the
+        # front-on perched pose (top row, second column) instead of v1's close-up headshot row.
+        "badge": dict(sheet="../chatgpt-batch3/char-kasuku-v2.png", box=(420, 10, 780, 440), eyes=None, crown=None,
+                      chin=None,
                       # grey bird on a pale grey backdrop: the backdrop is very flat, so cut close to it
                       fit_tol=5.0, matte=dict(t0=4.0, t1=13.0)),
     },
