@@ -8,7 +8,8 @@
 
 **Focus now (Zafar, 26 Sept): Cook, the clinic, the first launch (story walkthrough and character creation), Cook and character art, and recordings with Mum.** The other five modes are parked, and their designs aren't reviewed yet.
 
-## Now (26 Sept, evening)
+## Now (27 Sept)
+- **Art fold-in (27 Sept):** Kasuku v2, the painted chakla, bajri's own maani art, the onion's whole sprite, and the clinic's final rooms + Nana/Ma/Ali seated pose are live (`build/reports/art-fold-in.md`). Still waiting on a cutting pass: the new clinic patients (girl/boy/old-man/old-woman/dad+baby) and old-man/old-woman's colour variants. The 6 family/private-photo raw images left in the dump-2 folder are still Zafar's to process.
 - **Paused (Zafar, 26 Sept eve):** Cook hands fixes + phone ⌂ fix (`claude/cook-hands-fix`). Zafar is reviewing whether the hands stay at all (long thin arms add clutter); maybe only where the hands sit near the bottom of the screen, e.g. turning the skewers.
 - **Live (26 Sept, 20:40 UTC):** the Conversations engine and lab (`lab/conversations.html`, linked from `labs.html`). Not wired into any mode yet (hook points: `docs/modes/conversations-wiring.md`). Mum's recording list: `build/reports/conversations-mvp.md`.
 - **Waiting on Zafar:** detailed feedback on Cook, the clinic and the first launch (then the chai fun pass and clinic iteration start); ticks on the voice clips (then wiring the clips and a new Word doc for Mum).
