@@ -114,8 +114,14 @@
     const kRoll = Mech.knobs("roll", { level: zr.level });
     const kTawa = Mech.knobs("tawa", { level: zt.level });
     const types = Object.keys(K.doughs || { "cook-maani": {} });
+    // bajri has its own painted art (batch 2): use it in place of a tint where it's loaded
+    const BAJR_TEX = { "dough-ball": "dough-ball-bajr", "chapati-raw": "chapati-raw-bajr", "chapati-half": "chapati-half-bajr", "chapati-puffed": "chapati-puffed-bajr" };
     // each dough's colour baked into its own textures (a tint alone vanishes on the canvas renderer)
-    const texOf = (t, key) => tinted(S, key, (K.doughs[t] || {}).tint);
+    const texOf = (t, key) => {
+      const painted = t === "cook-bajrmaani" && BAJR_TEX[key];
+      if (painted && S.textures.exists(painted)) return painted;
+      return tinted(S, key, (K.doughs[t] || {}).tint);
+    };
     const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] })) : null;
     const rMax = sizes ? Math.max(...sizes.map((s) => s.r)) : kRoll.radius;
     const keyOf = (type, size) => (size ? `${size}+${type}` : type);
