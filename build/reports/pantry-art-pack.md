@@ -1,9 +1,7 @@
-# Pantry art pack (28 Sept)
+# Pantry art pack (28 Sept, reworked)
 
-`docs/chatgpt-art-prompts-pantry-jars.md` rewritten as pantry v2. One pasted block at the top lets Claude in Chrome fetch the pack and references, generate in ChatGPT, upload to `sources/art/pantry-v2` and commit to main.
+`docs/chatgpt-art-prompts-pantry-jars.md` is pantry v2. One pasted block lets Claude in Chrome read the pack, fetch the references and generate in ChatGPT, downloading each image as it passes. Zafar uploads the 16 files as they are; Claude renames and processes them.
 
-- **8 images:** 1 background (straight-on shelves, glass-door fridge, tray on the counter; 1536×1024) + 7 sprite sheets, 3×3 each, one container type per sheet: tall jars, spice jars, bottles, tubs, veg crates, fruit crates, packets.
-- **63 items:** 33 used by Cook stations now (including oil and samosa pastry) + 30 planned extras, each justified by an arc (Birthday, beach, garden/farm, boat, clinic, "pack your bag").
-- Each cell lists English name, game id (existing ids reused; new ones flagged) and cut-to file.
-- A Claude section covers cutting (cut_tick_v2 method, registered canvases), shelf/fridge slots and the tray spaces.
-- The old R5 metal tick prompt moved to the results-badges pack.
+- **16 images:** 1 background (straight-on shelves, glass-door fridge, tray), 7 bare-container sheets (3×3, one container type each, no labels, 5/8–7/8 full), 1 blank sticker, 7 single-item sheets (same cell order).
+- **Labels are composited by Claude:** a single-item icon on the one sticker, placed at a fixed anchor per container type. Both labelled and bare sprites are kept, and the icons double as UI pictures.
+- **63 items:** 33 used by Cook now + 30 arc extras (Birthday, beach, farm, boat, clinic, "pack your bag").
