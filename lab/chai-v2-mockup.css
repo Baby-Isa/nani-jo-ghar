@@ -1,0 +1,209 @@
+/* Chai v2 mock-up (docs/design/cook-design-system-v1.md §9 step 1). A static page at 1366x768:
+   only the §2 tokens below, the §3 grid, the §4 slots. Nothing here is wired to the game. */
+:root {
+  /* §2 colours */
+  --page: #F4ECDF;
+  --panel: #EFE5D6;
+  --card: #FFFFFF;
+  --text: #2A2522;
+  --kutchi: #8C2F2F;
+  --gold: #C9962E;
+  --grey: #D9D2C7;
+  --sage: #DDE6D5;
+  --sage-band: #7E9A76;
+  /* §2 spacing (8-pt) */
+  --s4: 4px; --s8: 8px; --s12: 12px; --s16: 16px; --s24: 24px; --s32: 32px; --s40: 40px;
+  --r: 12px;
+  --shadow: 0 2px 8px rgba(40, 25, 10, .10);
+  --tap: 48px;
+  --font: "Nunito", system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { background: #d8d0c4; }
+body { font-family: var(--font); color: var(--text); padding: 24px; }
+
+/* the stage is the laptop screen; the state switcher lives outside it */
+.stage {
+  position: relative; width: 1366px; height: 768px; overflow: hidden;
+  background: var(--page); display: grid; grid-template-columns: 300px 1fr;
+}
+.switcher { display: flex; gap: var(--s8); margin-top: var(--s16); font: 700 14px var(--font); align-items: center; }
+.switcher a {
+  padding: var(--s8) var(--s16); border-radius: var(--r); background: var(--card); color: var(--text);
+  text-decoration: none; box-shadow: var(--shadow);
+}
+.switcher a[aria-current] { outline: 2px solid var(--gold); }
+.switcher span { margin-left: var(--s16); font-weight: 600; opacity: .7; }
+body.shot { padding: 0; }
+body.shot .switcher { display: none; }
+
+/* ---------- §3 left panel: one continuous surface ---------- */
+.panel {
+  background: var(--panel); padding: var(--s16); display: flex; flex-direction: column; gap: var(--s12);
+  border-right: 1px solid var(--grey);
+}
+.round {
+  width: var(--tap); height: var(--tap); border-radius: 50%; border: 0; background: var(--card);
+  display: grid; place-items: center; box-shadow: var(--shadow); color: var(--text); cursor: pointer; padding: 0;
+}
+.round svg { width: 24px; height: 24px; }
+.round img { width: 28px; height: 28px; object-fit: contain; }
+
+.nani { position: relative; background: var(--sage); border-radius: var(--r); overflow: hidden; padding: var(--s16) var(--s16) var(--s16) 22px; }
+.nani::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--sage-band); }
+.nani-top { display: flex; align-items: flex-end; gap: var(--s12); }
+.nani-face {
+  width: 112px; height: 120px; border-radius: var(--r); overflow: hidden; background: var(--card);
+  border: 0; padding: 0; cursor: pointer; flex: none;
+}
+.nani-face img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 6%; display: block; }
+.nani-tools { display: flex; flex-direction: column; gap: var(--s12); margin-left: auto; }
+.nani-line { margin-top: var(--s12); font: 800 22px/1.25 var(--font); }
+.k { color: var(--kutchi); }
+
+.person { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); padding: var(--s16); }
+.person-head { display: flex; align-items: center; gap: var(--s8); }
+.face {
+  width: var(--tap); height: var(--tap); border-radius: 50%; overflow: hidden; flex: none; border: 0; padding: 0;
+  background: var(--panel); cursor: pointer;
+}
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.headline { font: 800 20px/1.2 var(--font); white-space: nowrap; }
+.pills { display: flex; flex-wrap: wrap; gap: var(--s8); margin-top: var(--s12); }
+.pill {
+  height: 36px; padding: 0 var(--s12); border-radius: var(--r); border: 2px solid var(--grey);
+  display: inline-flex; align-items: center; gap: var(--s4); font: 700 17px var(--font); color: var(--kutchi);
+  white-space: nowrap; background: var(--card);
+}
+.pill .check { display: none; width: 18px; height: 18px; color: var(--gold); }
+.pill.done { border-color: var(--gold); }
+.pill.done .check { display: block; }
+
+.dock { margin-top: auto; display: flex; gap: var(--s12); }
+.dock .round { box-shadow: none; border: 1px solid var(--grey); background: var(--panel); color: #6f655d; }
+
+/* ---------- §3 play area: scene 74% / shelf 26% ---------- */
+.play { position: relative; display: grid; grid-template-rows: 568px 200px; }
+.scene { position: relative; overflow: hidden; }
+.scene::before { /* the marble, softened so it doesn't compete (§7) */
+  content: ""; position: absolute; inset: 0;
+  background: url(../assets/cook/bg/bg-cook-worktop-t-v1-1600.webp) center / cover;
+  opacity: .45;
+}
+.obj { position: absolute; }
+.obj > img { display: block; width: 100%; height: auto; }
+.quiet { filter: saturate(.7); opacity: .55; }
+.dim { filter: saturate(.9); opacity: .9; }
+
+/* the hob: exactly as many burners as people (level 2 = 2) */
+.hob { left: 102px; top: 130px; width: 500px; }
+.hob > img, .tray > img { filter: drop-shadow(0 6px 10px rgba(40, 25, 10, .22)); } /* the one object shadow (§7), same as the pans' */
+.knob { position: absolute; width: 48px; height: 48px; top: 252px; margin-left: -24px; display: grid; place-items: center; } /* 48 px to tap, 36 px to see */
+.knob img { width: 36px; }
+
+.flame { position: absolute; width: 200px; height: 200px; margin: -100px 0 0 -100px; opacity: 0; }
+.flame img { width: 100%; }
+.flame.on { opacity: 1; }
+.flame.low { transform: scale(.96); }
+
+/* a pan (vessel-saucepan-t): bowl centre at (34%, 58%) of the sprite */
+.pan { position: absolute; width: 230px; height: 210px; margin: -122px 0 0 -78px; }
+.pan > img { width: 100%; display: block; filter: drop-shadow(0 6px 10px rgba(40, 25, 10, .22)); }
+.pan.flip { margin-left: -152px; }
+.pan.flip > img { transform: scaleX(-1); }
+.pan .liquid {
+  position: absolute; left: 8.3%; top: 34.6%; width: 52.6%; height: 56.2%; border-radius: 50%;
+  opacity: 0; overflow: hidden;
+}
+.pan.flip .liquid { left: 39.1%; }
+.pan .liquid.water { opacity: 1; background: rgba(214, 228, 232, .55); box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .25); }
+.pan .liquid.brew { opacity: 1; background: #7a4a2a; box-shadow: inset 0 -6px 18px rgba(0, 0, 0, .25); }
+.pan .liquid.chai { opacity: 1; background: #b9794a; box-shadow: inset 0 -6px 18px rgba(80, 40, 10, .25); }
+.liquid .swirl { /* the milk going in: a pale cloud where the pour lands */
+  position: absolute; left: 30%; top: 28%; width: 46%; height: 42%; border-radius: 50%;
+  background: rgba(244, 236, 223, .85); filter: blur(6px);
+}
+.liquid .bubble { position: absolute; border-radius: 50%; background: rgba(255, 240, 220, .55); border: 1.5px solid rgba(255, 255, 255, .55); }
+.pan .badge { /* whose pan: the face by the handle */
+  position: absolute; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: var(--card);
+  box-shadow: var(--shadow); border: 3px solid var(--card); left: 76%; top: -6%;
+}
+.pan.flip .badge { left: calc(24% - 44px); }
+.badge img { width: 100%; height: 100%; object-fit: cover; }
+
+/* steam: three soft wisps over a boiling pan */
+/* rising from the bowl (its centre is 78 px in, 122 px down) */
+.steam { position: absolute; left: 18px; top: -60px; width: 120px; height: 170px; pointer-events: none; z-index: 2; }
+.pan.flip .steam { left: auto; right: 18px; }
+.steam i {
+  position: absolute; bottom: 0; width: 34px; height: 120px; border-radius: 50%;
+  background: rgba(255, 255, 255, .8); filter: blur(9px); animation: rise 3.2s ease-in-out infinite;
+}
+.steam i:nth-child(1) { left: 12px; animation-delay: -1s; height: 104px; }
+.steam i:nth-child(2) { left: 44px; animation-delay: -2.1s; }
+.steam i:nth-child(3) { left: 76px; animation-delay: -.4s; height: 92px; }
+@keyframes rise { 0%, 100% { transform: translateY(6px) scaleX(.9); opacity: .55; } 50% { transform: translateY(-10px) scaleX(1.1); opacity: .9; } }
+
+/* the milk carton mid-pour, and its stream */
+.pour { position: absolute; width: 74px; transform-origin: 50% 50%; }
+.pour img { width: 100%; display: block; filter: drop-shadow(0 6px 10px rgba(40, 25, 10, .22)); }
+.stream { position: absolute; width: 8px; border-radius: 4px; background: #fbf7ee; box-shadow: 0 0 0 1px rgba(40, 25, 10, .06); }
+
+/* §6 the word pop, by the action */
+.pop {
+  position: absolute; display: inline-flex; align-items: center; gap: var(--s8); height: 48px; padding: 0 var(--s16);
+  border-radius: var(--r); background: var(--card); box-shadow: var(--shadow); font: 800 22px var(--font); color: var(--kutchi);
+  animation: pop 2.4s ease-out infinite;
+}
+.pop svg { width: 22px; height: 22px; color: var(--text); }
+@keyframes pop { 0% { transform: translateY(6px) scale(.9); opacity: 0; } 12%, 80% { transform: none; opacity: 1; } 100% { transform: translateY(-6px); opacity: 0; } }
+body.shot .pop, body.shot .steam i { animation: none; }
+
+/* the tray: small, square, 4 round cut-outs; quiet until pouring */
+.tray { left: 674px; top: 141px; width: 290px; transition: filter .3s, opacity .3s; }
+.well { position: absolute; width: 92px; height: 92px; margin: -46px 0 0 -46px; }
+.well .glass { position: absolute; inset: 0; }
+.well .who {
+  position: absolute; left: 50%; bottom: -18px; width: 36px; height: 36px; margin-left: -18px; border-radius: 50%;
+  overflow: hidden; background: var(--card); border: 3px solid var(--card); box-shadow: var(--shadow);
+}
+.well .who img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- §4 the inventory shelf ---------- */
+.shelf { position: relative; background: var(--panel); border-top: 1px solid var(--grey); }
+.shelf::before { /* the shelf's lip: objects stand on it */
+  content: ""; position: absolute; left: 32px; right: 32px; top: 122px; height: 8px; border-radius: 4px; background: var(--grey);
+}
+.slots { position: absolute; left: 0; right: 0; top: 18px; display: flex; justify-content: center; gap: var(--s40); }
+.group { display: flex; gap: var(--s12); }
+.slot {
+  width: 112px; display: flex; flex-direction: column; align-items: center; gap: 12px;
+  background: none; border: 0; padding: 0; cursor: pointer; font: inherit; color: inherit;
+}
+.art { width: 104px; height: 104px; display: flex; align-items: flex-end; justify-content: center; position: relative; }
+/* one scale for every object: a 384 px tall sprite is 104 px, so a 256 px spice jar is ~69 px (it IS smaller) */
+.art img { display: block; height: auto; position: relative; z-index: 1; }
+.art img.tall { width: 69px; }
+.art img.sq { width: 69px; }
+.chip {
+  width: 104px; height: 40px; border-radius: var(--r); background: var(--card); box-shadow: var(--shadow);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s8); font: 700 17px var(--font); color: var(--kutchi);
+  border: 0; cursor: pointer;
+}
+.chip svg { width: 20px; height: 20px; color: var(--text); flex: none; }
+.chip.hear-only span { display: none; }
+.chip.hear-only svg { width: 24px; height: 24px; }
+
+/* §3 the focal rule: the next object pulses; the rest sit about 10% quieter */
+.slots.focus .slot:not(.next) .art img { filter: saturate(.85); opacity: .88; }
+.slot.next .art::before {
+  content: ""; position: absolute; left: 50%; bottom: -6px; width: 104px; height: 104px; margin-left: -52px; border-radius: 50%;
+  background: rgba(201, 150, 46, .16); animation: halo 1.8s ease-in-out infinite;
+}
+.slot.next .art img { animation: nudge 1.8s ease-in-out infinite; }
+@keyframes halo { 0%, 100% { transform: scale(.94); opacity: .7; } 50% { transform: scale(1.02); opacity: 1; } }
+@keyframes nudge { 0%, 100% { transform: none; } 50% { transform: translateY(-3px) scale(1.03); } }
+body.shot .slot.next .art::before, body.shot .slot.next .art img { animation: none; }
+.shelf.quiet-all .slot { opacity: .55; filter: saturate(.7); }
+.stream.chai { background: #b9794a; z-index: 4; }
+.slots .slot.used:not(.next) .art img { opacity: .3; filter: saturate(.6); } /* in the hand: a ghost stays in its slot */

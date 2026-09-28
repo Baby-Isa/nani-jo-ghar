@@ -36,4 +36,4 @@ Still open: -o → -e before *je/sathe*, the -yu plurals, and everything from C2
 - *ambo* / *ambe je mathe*
 - the she-goat plural *bakra*
 
-**To tick:** 182 new clips (102 Mum, 80 Zafar) in `lab/family-audio.html`. Whisper's re-check flags 8 of them.
+**Ticked (28 Sept):** 157 of the 182 OK; 11 of 18 second takes OK. **Re-record:** Mum's *cup*, *ambo/amba je mathe*, *chokra/chokri/Nana sathe*; 9 of Zafar's (tracker).
