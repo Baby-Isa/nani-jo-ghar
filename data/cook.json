@@ -2160,30 +2160,33 @@
  "mechanics": {
   "_about": "Difficulty as data. Each mechanic's levels: level 1 is the Phase A game exactly; each later level lists only what changes. `profiles` hold settings for one use of a mechanic (pour into a cup). Upgrades change knobs through upgrades[].knobs. Timings are fractions of a ring (0-1) and rates are ring-fills per second. A combined station's own levels can live in data/stations/<id>.json.",
   "fetch": {
-   "_about": "Pantry v2 (28 Sept): positions measured from assets/cook/bg/bg-pantry-v2-1600.webp in the 1600x900 world. slots: where an item stands (x centre, y its base, w/h its box before the item's shelf size); zone shelf or fridge (the top shelf's two right-hand places are left out: the tally sits over them; the fridge's low bottom level is left out too, too small to tap on a phone). fridge: the items that only ever go in the fridge (everything else goes on the shelves). tray: the row of spaces on the tray (x centres, y the base, w/h an item's box there, gap between spaces; front: the tray's front edge [x, y, w, h] in the picture, drawn again over what's on the tray). fridgeMin: the smallest size a thing is drawn at in the fridge.",
+   "_about": "Pantry v3 (29 Sept): positions measured from assets/cook/bg/bg-pantry-v3-1600.webp in the 1600x900 world (the shelves, the fridge's three levels and the long tray laid out from sources/art/pantry-v2/pantry-v3-layout-sketch.png). slots: where an item stands (x centre, y its base, w/h its box before the item's shelf size); zone shelf or fridge. fridge: the items that only ever go in the fridge (everything else goes on the shelves). tray: the row of spaces on the tray (x0/x1 its inside, y the base, w/h an item's box there, gap between spaces; front: the tray's front edge [x, y, w, h] in the picture, drawn again over what's on the tray). tally: the tally's centre in the pantry, on the fridge's steel base, clear of everything. fridgeMin: the smallest size a thing is drawn at in the fridge.",
    "slots": [
-    {"x": 175, "y": 141, "w": 170, "h": 135, "zone": "shelf"},
-    {"x": 405, "y": 141, "w": 170, "h": 135, "zone": "shelf"},
-    {"x": 636, "y": 141, "w": 170, "h": 135, "zone": "shelf"},
-    {"x": 175, "y": 338, "w": 170, "h": 150, "zone": "shelf"},
-    {"x": 405, "y": 338, "w": 170, "h": 150, "zone": "shelf"},
-    {"x": 636, "y": 338, "w": 170, "h": 150, "zone": "shelf"},
-    {"x": 866, "y": 338, "w": 170, "h": 150, "zone": "shelf"},
-    {"x": 1097, "y": 338, "w": 170, "h": 150, "zone": "shelf"},
-    {"x": 175, "y": 534, "w": 170, "h": 155, "zone": "shelf"},
-    {"x": 405, "y": 534, "w": 170, "h": 155, "zone": "shelf"},
-    {"x": 636, "y": 534, "w": 170, "h": 155, "zone": "shelf"},
-    {"x": 866, "y": 534, "w": 170, "h": 155, "zone": "shelf"},
-    {"x": 1097, "y": 534, "w": 170, "h": 155, "zone": "shelf"},
-    {"x": 1365, "y": 294, "w": 125, "h": 150, "zone": "fridge"},
-    {"x": 1490, "y": 294, "w": 125, "h": 150, "zone": "fridge"},
-    {"x": 1365, "y": 466, "w": 125, "h": 140, "zone": "fridge"},
-    {"x": 1490, "y": 466, "w": 125, "h": 140, "zone": "fridge"},
-    {"x": 1365, "y": 617, "w": 125, "h": 130, "zone": "fridge"},
-    {"x": 1490, "y": 617, "w": 125, "h": 130, "zone": "fridge"}
+    {"x": 143, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 378, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 612, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 847, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 1082, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 143, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 378, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 612, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 847, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 1082, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 143, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 378, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 612, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 847, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 1082, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
+    {"x": 1335, "y": 202, "w": 140, "h": 140, "zone": "fridge"},
+    {"x": 1482, "y": 202, "w": 140, "h": 140, "zone": "fridge"},
+    {"x": 1335, "y": 416, "w": 140, "h": 175, "zone": "fridge"},
+    {"x": 1482, "y": 416, "w": 140, "h": 175, "zone": "fridge"},
+    {"x": 1335, "y": 620, "w": 140, "h": 175, "zone": "fridge"},
+    {"x": 1482, "y": 620, "w": 140, "h": 175, "zone": "fridge"}
    ],
    "fridge": ["cook-dudh", "ph-juice", "ph-dahi", "ph-keema", "ph-meat", "ph-chicken", "ph-fish", "ph-butter", "ph-cheese", "ph-cream", "ph-eggs"],
-   "tray": {"x0": 421, "x1": 1175, "y": 792, "w": 112, "h": 105, "gap": 125.7, "front": [404, 784, 790, 44]},
+   "tray": {"x0": 46, "x1": 1182, "y": 850, "w": 150, "h": 150, "gap": 160, "front": [29, 842, 1172, 46]},
+   "tally": [1406, 776],
    "fridgeMin": 0.9,
    "levels": [
     {
@@ -2892,7 +2895,7 @@
    "bg": {
     "marble": "bg-cook-worktop-t-v1-1600",
     "hob": "bg-cook-hob-t-v1-1600",
-    "pantry": "bg-pantry-v2-1600"
+    "pantry": "bg-pantry-v3-1600"
    },
    "shelf": {
     "_about": "Pantry v2 (28 Sept, docs/chatgpt-art-prompts-pantry-jars.md): each item as a side-on container for the pantry's shelves and fridge, `<id>.shelf` -> [file stem, size]. size is the container's real height against a tall jar (1), so a spice jar never shows as big as the flour; the fetch mechanic multiplies its slot's box by it. Cut by build/cut_pantry_v2.py; bare (no label) until Zafar decides on labels.",

@@ -415,6 +415,8 @@ Cell order matches P7: I7 cell *k* is the label for P7 cell *k* (same game id).
 
 - **28 Sept evening (Zafar's play feedback):** the tray's front edge (`mechanics.fetch.tray.front`, cut from the picture) is drawn again over what's on the tray; each outlined space fades as its thing lands; fridge things are drawn at least `fridgeMin` (0.9) so the yoghurt reads; the tally is a grid at most three across (2 × 3 for six), in every Cook station; the pass-me pop-up shows the side-on containers in the pantry. Waiting on the v3 background (P0) for bigger items.
 
+- **Pantry v3 in (29 Sept):** `sources/art/pantry-v2/pantry-v3-bg.png` (Zafar's original from ChatGPT: the v3 layout with the P0-F fridge) → `assets/cook/bg/bg-pantry-v3-1600.webp`. 15 shelf places and 6 fridge places (three levels, level with the wooden shelves), items up to 175 px tall (was 135-150), the tray's six spaces 160 apart with its new front edge, and the tally moved onto the fridge's steel base in the pantry (`mechanics.fetch.tally`, `UI.tallyAt`), a size smaller there so it fits.
+
 ### Wiring
 - Today the pantry skips sprites and uses props or drawn bowls (`Cook.Art.wordTex`, `js/cook/art.js`). Add a `shelf` state to `art.sprites.items` for every word above and have `wordTex` use it when `scene.viewName === "pantry"`. The old `-f` files (`jar-atto-f`, `jug-dudh-f`, `tin-chai-f`, `veg-*-whole-f` …) retire once nothing reads them.
 - New ids are added to `data/cook.json`'s `words` only when a round first uses them (Kutchi from the family; English placeholder until then).

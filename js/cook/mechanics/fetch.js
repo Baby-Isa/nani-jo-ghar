@@ -106,6 +106,8 @@
         return g;
       };
       const outlines = need.map((id, i) => outline(i, id));
+      // the tally sits on the fridge's steel base, clear of the shelves and the fridge's top level
+      if (P.tally && UI.tallyAt) UI.tallyAt(P.tally);
       // the tray's front edge, cut from the painted pantry itself, goes in front of what's on the tray,
       // so things stand in it rather than over it
       if (T.front && S.bg && S.bg.texture) {

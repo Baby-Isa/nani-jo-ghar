@@ -1595,6 +1595,31 @@
     return n;
   };
   UI.countOf = (id) => (tally.get(id) || {}).n || 0;
+  /**
+   * Where the tally sits: its usual corner (null), or centred on a point of
+   * the picture ([x, y] in the 1600x900 world), e.g. the pantry's fridge base,
+   * so it covers nothing you need. Follows the picture when the window resizes.
+   */
+  let tallyPt = null;
+  function placeTally() {
+    const b = $("#count-badge");
+    if (!b) return;
+    if (!tallyPt) {
+      b.classList.remove("at");
+      b.style.left = b.style.top = "";
+      return;
+    }
+    const st = $("#stage").getBoundingClientRect();
+    const p = UI.worldToScreen(tallyPt[0], tallyPt[1]);
+    b.classList.add("at");
+    b.style.left = `${p.x - st.left}px`;
+    b.style.top = `${p.y - st.top}px`;
+  }
+  UI.tallyAt = function (pt) {
+    tallyPt = pt || null;
+    placeTally();
+  };
+  global.addEventListener("resize", () => tallyPt && placeTally());
   UI.hideCount = () => {
     tally.clear();
     drawTally();

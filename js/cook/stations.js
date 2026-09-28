@@ -135,6 +135,8 @@
       if (bgLoad) await bgLoad;
       this.clearView();
       this.viewName = name;
+      // the tally goes back to its corner (a view may place it: the pantry puts it on the fridge)
+      if (UI.tallyAt) UI.tallyAt(null);
       // a painted view (data.art.sprites.bg) once loaded; the service and the old pantry photo otherwise
       if ((name === "service" || name === "pantry") && !Cook.Art.sprite(this, bgRef)) this.bg.setTexture(`bg-${name}`);
       else this.bg.setTexture(Cook.Art.tex(this, `bg:${name}`));
