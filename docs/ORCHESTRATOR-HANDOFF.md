@@ -160,3 +160,6 @@ Launched (remote, Opus, from nifty-rubin):
 - Cook hands fixes + phone ⌂ fix `claude/cook-hands-fix`: session_013jck82TVZgaG3wyx9fLQf8 (Next-up items 1 and 7).
 - Conversations engine + 9-exchange MVP lab `claude/conversations-mvp`: session_01JRrBDonr8rCpNzwEo7xC8r (new files only; wiring into first launch, Cook and the clinic comes after merge, per `docs/modes/conversations-wiring.md`).
 Held until Zafar's mode feedback: the chai-station fun pass, the clinic iteration, first-launch changes. Held until Zafar ticks the clips: wiring the family clips, and the next Questions-for-Mum Word doc.
+
+### Lesson, 28 Sept: visual work isn't done until someone has looked at it
+The end-of-round badges took five rounds: grey fringes, holes, mismatched sizes, a wrong fill mapping, and a live site that hadn't rebuilt. The sessions passed their tests and saved screenshots but didn't judge them, and the orchestrator passed on "done" unseen. **Follow `docs/VISUAL-QA.md` for every visual change, and link it from every brief.** Visual work goes to the top model.
