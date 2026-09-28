@@ -57,3 +57,23 @@ Style: exactly as the attached style anchor: stylised 3D animated-feature-film l
 **check:** both read clearly when shrunk to thumbnail size.
 
 **Cuts to (Claude):** R1 → `assets/ui/results/stopwatch-{pb,good,plain}.webp`; R2 → `tick-{empty,green,red,gold}.webp` (the game masks green over red by the share right, over the empty tick); R3 → `bulb-{0,1,2,3}.webp`; R4 → `icon-crown.webp`, `icon-bulb.webp`. Remove the circles behind all three badges; objects sit straight in the square cards. Glow, buzz, shimmer and party lines stay in CSS.
+
+---
+
+*R5 moved here from the pantry pack on 28 Sept.*
+
+## R5. A new results tick: two metal finishes
+
+For the end-of-round screen's tick badge (`docs/chatgpt-art-prompts-results-badges.md` R2, already live). Zafar wants an alternative, more polished pair alongside the flat-colour fills already in the game, in the same semi-realistic material style as the stopwatch and bulb (sources for those: `sources/art/chatgpt-results/`).
+
+```
+A sprite sheet for a children's game, 1024x512, two equal cells side by side on a flat mid-grey #808080 background. No floor, no shadows, no text, no numbers, no circle behind the tick.
+Each cell holds the same big, chunky, rounded tick (check mark), identical shape and size in both cells, filling about 80% of its cell, rendered as a solid metal object rather than a flat colour.
+Left: polished gold metal, like a small trophy, with soft specular highlights and a warm glow, catching the light the way the stopwatch's gold rim does.
+Right: matte grey pewter, softly brushed metal, no shine and no glow, the way the bulb's switched-off glass reads cool and quiet.
+Style: exactly as the attached style anchor: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, semi-realistic metal shading to match the stopwatch and the bulb, no outlines.
+```
+**save as:** `ui-results-tick-metal-v1.png`
+**check:** two identical tick shapes differing only in material and finish · the gold cell shows visible specular highlights, the pewter cell is flat matte with no shine · no circle or background shape behind either.
+
+**Cuts to (Claude):** `tick-gold-metal.webp`, `tick-pewter.webp`. Zafar decides where these sit alongside the existing flat-fill tick states (`docs/chatgpt-art-prompts-results-badges.md` R2) before wiring.
