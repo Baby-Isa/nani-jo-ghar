@@ -103,3 +103,18 @@ The same camera for everything in a scene (top-down for the counter and hob; fro
   It replaces the old "{Station}: done" card with its star badges, the "words in this order" and "next time" text.
 - **Word review speaker buttons:** a neutral colour (charcoal icon on a light cream circle) for both right and wrong words. The colour stays only in the card outline (gold = right, red = wrong).
 - **(28 Sept, late)** A single line of text next to a character icon (e.g. a collapsed card's headline) is **vertically centred on the icon**. The inventory shelf keeps **true relative heights** (bottle and carton tall, jars medium, spice jars short, as in the pantry), each standing on the shelf line. Slightly more breathing space between the cooking area and the shelf than chai v2's first build, less than the mock-up. The end pop-up sits over the game scene only (the old "Cook with Nani" menu card must not show behind it), and the word review is vertically balanced in its card.
+
+## 11. The maani station v2 (Zafar approved, 28 Sept, late)
+- **Layout: a two-zone grid**, everything aligned on shared top and bottom lines:
+  - **Left (prep):** a row of dough plates along the top (bajri, wheat, plus an empty third place for later, e.g. puri), with the chakla (rolling board) centred under the row.
+  - **Right (cook):** a compact top-down hob with the tawa centred on the burner, with the finished-maani plates beneath it.
+  - Equal sizes and even spacing.
+- **Everything centred:** the tawa on its burner, the timer ring on the tawa, the dough on the board.
+- **No hands anywhere.** The rolling pin rolls on its own. The flip is a **chimta** (tongs), or a spatula with no hand: tap the maani and the tool flips it.
+- **The rolling target:** a faint gold ring etched on the board that glows when the maani reaches the right size (it replaces the white dashed circle).
+- **Maani puff:** only a slight puff when cooked, not a puri ball.
+- **Art:**
+  - use what's already made: `sources/art/chatgpt-batch3/tool-chakla-t-v2.png`, `tool-velan-t-v2.png`, `sheet-bajr-maani-t-v2.png`, `vessel-thali-t-v2.png`, and the chai v2 compact hob;
+  - still needed: dough balls (bajri, wheat) on plates, maani cooking states (raw, cooking, slight puff, done) and a chimta. Generate via the API if the total is under $2, otherwise write a ChatGPT paste-block pack.
+- **Timers by level (all Cook stations):** flip, boil and fry timers get about 15% quicker per level, set in the game data (e.g. `data/cook.json` → `timing.levelSpeed`) so they can be tuned.
+- The sidebar, cards, Nani box and end pop-up are shared, so they already apply here. Just check that the maani pills tick as each maani is done.
