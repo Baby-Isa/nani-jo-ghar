@@ -2,13 +2,14 @@
 
 **The end point:** the app is live on the store with Arcs 1–5, and every game mode appears at least once. User testing is tracked by Zafar, not here.
 
-**Updated:** 26 Sept 2026. Percentages are Claude's estimates. The orchestrator updates this file at every milestone.
+**Updated:** 28 Sept 2026. Percentages are Claude's estimates. The orchestrator updates this file at every milestone.
 
 **Overall: about 20%.**
 
 **Focus now (Zafar, 26 Sept): Cook, the clinic, the first launch (story walkthrough and character creation), Cook and character art, and recordings with Mum.** The other five modes are parked, and their designs aren't reviewed yet.
 
 ## Now (28 Sept)
+- **Reworked (28 Sept, docs only):** the story arcs, per Zafar's decisions (`docs/ideas-2026-09-28-arcs-and-focus.md`). Nani is now written as the child's guide, not a kitchen-bound character. Arc 1 is now **The Birthday** (guests order their own food, set the table, sweets hide-and-seek and counting, blow out the candles), not Eid; Eid moves to a later, not-yet-designed arc. Arc 2 onward is now a repeatable **"day out with Nani"** template (pack the bag, cook the packed lunch, travel with a new spot-it window game, a three-game food stall, one or two place games, then the fire), sketched for the beach, the garden/farm, the safari and the boat. Two standalone repeatable arcs are placed in the sequence: **volunteering at the clinic** and **making clothes with Big Ma**. Every arc now ends with **the Story by the Fire**: a fireside scene, then a picture book built from records of what the child actually did that day (not screenshots), voiced by Nani, with tap-to-fill-in-the-word gaps that grow as the child improves. Full rewrite: `docs/Nani jo Ghar — Roadmap and Story Structure.md` (old five-arc plan kept as a short "Replaced 28 Sept" note); new design and data model: `docs/modes/story-by-the-fire-design.md`; new pantry art direction (every pantry item redrawn as a side-on jar or tub, one consistent family, replacing today's top-down-on-a-side-on-shelf mismatch): `docs/chatgpt-art-prompts-pantry-jars.md`. New approved-but-unbuilt ideas logged in `docs/GAME-IDEAS-TBC.md`.
 - **Redrawn (28 Sept):** the end-of-round screen's three badges (`js/shared/results.js`, `docs/UX-PRINCIPLES.md` s9a) — a stopwatch outline with the time inside (gold/dim-gold/grey), a chunky tick that fills green/red as a gauge (gold + shimmer when all right), a light bulb that dims and cracks with each hint — all inline SVG with CSS animation, reduced-motion respected. Page 2's word review now groups right words (green) on the right and wrong ones (red) on the left; Cook passes real per-word right/wrong, the clinic doesn't track it yet so its words default to right. Same API, so every caller picks it up unchanged. Verified: `build/test_shared_ui.mjs`, `build/test_shared-ui-browser.mjs`, a Cook grill round, screenshots in `build/reports/results-9a.md`.
 - **Wired (28 Sept):** the family voice clips play in the game. A shared lookup, `js/shared/family-voice.js` (mum "ok" > zafar "ok" > either unchecked, "redo" never used), used by Cook (`js/cook/lang.js`'s `Lang.speak`, whole line/frame/word, mixed with the placeholder voice where there's no clip), `first.html` (`js/shared/story.js`, by a line's `clip` id or its Kutchi text) and the clinic (`js/clinic/kit.js`'s `Kit.Voice.say`). Coverage: `build/reports/voice-coverage.md` (18 Cook words now Mum, 2 Zafar, 34 still fallback; the clinic's own words aren't recorded yet, so it's wired but silent there for now).
 - **Fixed (28 Sept):** family clips playing no sound on the live site — `lab/conversations.html` never loaded `js/version.js` (so `njgV` was undefined) and `build/bump_version.py` only stamped root-level pages, so returning players on GitHub Pages kept a stale, cache-busted-nothing copy of the lab and its data/audio fetches; `js/shared/conversations.js`'s `C.say` also built clip URLs without `njgV`. `bump_version.py` now stamps every `lab/*.html` too. Verified with Playwright served from a subdirectory (404-free, `readyState > 0`, `play()` resolves after a click).
@@ -41,11 +42,13 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Story engine (arcs and chapters as data, picture panels, Story help) | 40 | `js/shared/story.js` and `data/story/*.json` exist. Next: Arc 1's chapters as data. |
 | World map and home (fog of war, "the world is the menu", role reversal) | 0 | Phase C, after the first launch. |
 | Speech recognition (on-device, closed set, voice star) | 30 | Enrol it with the family voice clips; the first speaking moments go in Cook. |
-| Arc 1: Eid at Nani's (S1 + S2) | 15 | The first launch, then its chapters mapped onto the modes. |
-| Arc 2: The Wedding (S3) | 5 | Outline only. |
-| Arc 3: The Monsoon (S4) | 5 | Outline only. |
-| Arc 4: Nani's Lost Ring (S5) | 5 | Outline only. |
-| Arc 5: Nani's Village (S6) | 5 | Outline only. |
+| Arc 1: The Birthday (S1 + S2) | 15 | Reworked 28 Sept from Eid to a birthday party (Roadmap "Story arcs"); same % as before, since it's the same modes reflavoured. Next: the first launch (needs its own hook updated off Eid), then Cook's order errand, Put it there and Hide and seek mapped onto the modes. |
+| Story by the fire (every arc's ending) | 0 | Design written 28 Sept: `docs/modes/story-by-the-fire-design.md` (the day-log API, page templates, gap ladder). Buildable in one session; not started. |
+| Day-out trips: the repeatable arc template (beach, garden/farm, safari, boat sketched) | 0 | Design written 28 Sept (Roadmap "Story arcs"). Next: build the template once Arc 1 lands, starting with the beach. |
+| Volunteering at the clinic (standalone, repeatable arc) | 0 | Approved 28 Sept; introduced after the first or second day-out trip. Shares its build with the clinic mode above. |
+| Making clothes with Big Ma (standalone, repeatable arc) | 0 | Approved 28 Sept; exact placement TBC. Shares its build with Dress up. |
+| Eid (a later arc) | 0 | Moved out of Arc 1 on 28 Sept; not yet designed. |
+| ~~Arc 2: The Wedding~~ / ~~Arc 3: The Monsoon~~ / ~~Arc 4: Nani's Lost Ring~~ / ~~Arc 5: Nani's Village~~ | – | **Superseded 28 Sept.** Folded into the rows above and the cross-arc vocabulary spine; see the Roadmap's "Replaced 28 Sept" note for where each idea went. |
 
 ## 3. Language
 | Piece | % | Next step |

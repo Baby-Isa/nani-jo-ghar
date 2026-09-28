@@ -1,6 +1,10 @@
 # Nani jo Ghar — Roadmap and Story Structure
 
-*Decisions and direction agreed on 23 Sep 2026, after two playtests of the fruit-bowl errand on a phone and a laptop, and the same day's game-mode, story-arc and syllabus work. Companion to the Brief, Game Design and Technical Plan. Where this doc and the Game Design doc disagree, this doc is newer. The full playtest findings live in "Nani jo Ghar playtest review, 23 Sept 2026" in the repo; the rules from it are summarised in "Lessons" below.*
+*Decisions and direction agreed on 23 Sep 2026, after two playtests of the fruit-bowl errand on a phone and a laptop, and the same day's game-mode, story-arc and syllabus work. The story arcs were reworked on 28 Sept 2026 (Nani's role, the Birthday, the day-out template, the two standalone arcs); see "Nani's role" and "Story arcs" below. Companion to the Brief, Game Design and Technical Plan. Where this doc and the Game Design doc disagree, this doc is newer. The full playtest findings live in "Nani jo Ghar playtest review, 23 Sept 2026" in the repo; the rules from it are summarised in "Lessons" below. The source thinking for the 28 Sept changes is `docs/ideas-2026-09-28-arcs-and-focus.md`.*
+
+## Nani's role
+
+**Nani is the child's guide**, not a character confined to her kitchen (decided 28 Sept 2026). She helps the child learn, grow and explore, and she appears everywhere: cooking, travelling, the clinic, the sewing room, and the fire at the end of every arc. The kitchen is still home base and still teaches the most words, but it's her house, not her cage.
 
 ## Where we are
 
@@ -34,6 +38,8 @@ Four workstreams, mostly running in parallel.
 | **4. Spec all Arc 1 scenes, then batch the art** | Write every remaining Arc 1 scene spec in one pass (each drawn around its mode's needs: hide spots, doorway, clothes stall), then generate backgrounds and characters together | Style consistency; "scenes are data" |
 | **5. Remaining Arc 1 modes, one per chapter** | At the door, Hide and seek, Ask around, Get dressed | Each mode is a template, not a one-off |
 | **6. Recordings, polish, store wrap** | Family audio in, quilt finished, App Store and Google Play submission | The MVP |
+
+Phases 4–5 are a 23 Sept snapshot and pre-date the 28 Sept rework: Arc 1 no longer has a doorway or clothes stall, and Ask around/Get dressed are no longer Arc 1 modes (see "Story arcs" above for Arc 1's actual scope, and STATUS-TRACKER.md for where each mode really stands now).
 
 **Spec early, generate late.** All Arc 1 scenes get specified in phase 4, but not generated until Chapter 1 has tested the layout contract in real play, so a batch doesn't need regenerating.
 
@@ -128,7 +134,7 @@ flowchart LR
 | **Tap to start** | Kept from the current build: unlocks audio, requests fullscreen and landscape lock |
 | **Profile picker** | Up to 6 profiles on a device, each a large avatar tile with a name. "+" to add |
 | **Create profile** | Name (typed by an adult), avatar from a set of ~8 illustrations, and two toggles set by the adult: "Can read" (reads) and "Can type" (writes). Neither is a difficulty setting |
-| **Hub** | Nani's kitchen with the quilt on the wall, Eid decorations that accumulate as errands are finished, and one clearly lit "Nani needs you" button to the next errand. No map yet |
+| **Hub** | Nani's kitchen with the quilt on the wall, party decorations that accumulate as errands are finished, and one clearly lit "Nani needs you" button to the next errand. No map yet |
 | **Replay** | Tapping a quilt patch replays that errand, per the Game Design doc |
 | **Leave an errand** | A home tab on the sidebar rail, with a one-tap confirm. Word progress already earned is kept; the errand restarts from its beginning next time |
 | **Settings** (behind an adult hold, press for 3 seconds) | Volume, rename or delete a profile, reset a profile's progress |
@@ -159,9 +165,9 @@ First-run onboarding, a map once there are more places, Grandparent mode entry (
 
 | Level | What it is | Example | Progress object |
 |---|---|---|---|
-| **Story** (arc) | A whole season with a finale | *Eid at Nani's*: the family gathers, there's food, a mishap, a party, the mosque on Eid morning | Finishing it completes a quilt |
-| **Chapter** | One event in the story with its own goal, complication and payoff | *The guests are coming*, then *Knock knock* | One quilt patch per chapter |
-| **Errand** | One play session, 5–8 minutes. This is "the level" | *Fruit bowl for the guests*, *Daal for dinner*, *Set the dastarkhwan* | Words mastered go into their container |
+| **Story** (arc) | A whole season with a finale | *The Birthday*: guests arrive, food is cooked, the table is set, the sweets are found and packed, the candles are blown out | Finishing it completes a quilt |
+| **Chapter** | One event in the story with its own goal, complication and payoff | *The guests are coming*, then *The cat and the sweets* | One quilt patch per chapter |
+| **Errand** | One play session, 5–8 minutes. This is "the level" | *Cook each guest's order*, *Set the table*, *Find the sweets* | Words mastered go into their container |
 | **Game mode** | A reusable mechanic that errands are built from | Shopping, put-it-there, hide and seek, cook-along, at-the-door, ask-around, spot-it, body/dress | None of its own, see Game modes below |
 | **Container** | A long-running collection that fills as words are mastered | Nani's pantry (food), the spice cupboard, the sewing kit (colours/threads), the wardrobe (clothes) | Is the progress |
 
@@ -191,22 +197,15 @@ Each errand opens and closes with a **beat**: 3 to 5 seconds, one visual moment,
 
 Story lines are recorded like any other sentence. Until the family has given the Kutchi, a beat shows the gist caption only, with no audio. Never invented Kutchi.
 
-### The hub fills up with Eid
+### The hub fills up with the story
 
-The kitchen is the hub, and it **changes as the story moves**: a lantern after the first errand, bunting after the second, lights and the laid dastarkhwan after the third, then the quilt patch. A returning player sees at a glance where they are in the story without reading anything. This is the cozy-game principle: progress shows up as a changed place.
+The kitchen is the hub, and it **changes as the story moves**: decorations build up errand by errand (for the Birthday: balloons, then streamers, then the laid table, then the cake), and the same idea carries into every later arc (a day out leaves a souvenir on the shelf; the clinic arc adds a certificate; a day's sewing adds a finished garment to the wardrobe). A returning player sees at a glance where they are in the story without reading anything. This is the cozy-game principle: progress shows up as a changed place.
 
-### Chapter 1 beat script
+### Arc 1's beat script: TBC
 
-| Moment | What you see | Nani says (Kutchi, from the family) | Gist caption |
-| --- | --- | --- | --- |
-| Errand 1 intro | Nani hangs a lantern, then points at the empty bowl on the island | [needs family] | Eid is tomorrow and the guests are coming tonight! |
-| Errand 1 outro | The full bowl glows; Nani pats the stove | [needs family] | The fruit is ready. Now help me cook dinner. |
-| Errand 2 intro | A pot on the stove, pantry gaps pulse | [needs family] | Let's make daal. |
-| Errand 2 outro | Steam rises; Nani tastes and smiles, then points to the next room | [needs family] | Delicious! Now let's lay the dastarkhwan. |
-| Errand 3 intro | The empty cloth; Nani hands you the tray | [needs family] | Plates first, then the cups. |
-| Errand 3 outro and chapter end | Everything laid; lights come on; a knock at the door, Nani turns to it | [needs family] | They're here! |
+The Birthday's own beat-by-beat script (what you see, what Nani says, the gist caption, for each errand) is written the same way as the worked example that used to sit here for the old Eid chapter — see "Replaced 28 Sept" below for that example's shape. It's written once the guest dialogue for Cook's ordering round is confirmed with the family, so it isn't duplicated here yet.
 
-The knock is the hook into Chapter 2 (Knock knock), so the chapter ends on a question rather than a full stop.
+**Every arc's last beat is the Story by the Fire** (decided 28 Sept 2026): a short scene of Nani by the fire in the living room, then a picture book built from what the child actually did that day, which she voices while the child fills in gaps. It replaces a plain "chapter end" beat wherever an arc or chapter finishes. Full design: `docs/modes/story-by-the-fire-design.md`.
 
 ## Design research behind the game modes
 
@@ -241,86 +240,87 @@ A game mode is code, built once. A scene is a background plus its tagged hotspot
 
 | Character | Trait | What it's for |
 | --- | --- | --- |
-| Nani | Warm, says "Arre re!" on a miss | The instruction-giver; her fixed frames are the grammar backbone |
+| Nani | Warm, says "Arre re!" on a miss | **The child's guide, not a kitchen-bound character** (28 Sept): she leads every arc and every place, not only Cook. Her fixed frames are still the grammar backbone |
 | The cat | Steals and hides things | Runs every Hide and seek errand; a running gag, no peril, endless postpositions |
-| Nana | Dozes, tells stories | The past-tense narrator, arrives in the Village arc |
+| Nana | Dozes, tells stories | The past-tense narrator; arrives once a trip needs retelling a past event |
 | Older cousin | Always losing things, eventually asks the player to explain | Role reversal: the player gives the instruction |
 | Big Ma | The family's seamstress; sings while she sews | Recurring at Eid, dinners and gatherings; solves problems in her room (e.g. mends the kurta in "The spill") |
 | The shopkeeper | Sometimes hands over the wrong thing | The player's first taste of correcting someone in Kutchi |
 
 ## Story arcs
 
-Five arcs, ordered as a grammar ladder (see Syllabus), about five chapters each, two or three errands per chapter, roughly 50 errands in total.
+**Reworked 28 Sept 2026.** The sequence is now: the first launch, then **Arc 1: The Birthday**, then a run of **day-out trips** (a repeatable template, new places each time), with two **standalone, repeatable arcs** — Volunteering at the clinic and Making clothes with Big Ma — slotted in once the day-out template is established. Eid moves to a later arc (there's more to explain about it, so it suits a more prepared player). See "Replaced 28 Sept" at the end of this section for what the old five-arc plan looked like and what became of its content.
 
-### Arc 1: Eid at Nani's (the MVP, syllabus stages S1 + S2)
+### Arc 1: The Birthday (the MVP, syllabus stages S1 + S2)
 
-Confirmed 23 Sep 2026: every Chapter 1 errand has a different main action, in the order a real evening goes (buy, cook, lay the table), so a new player's first impression is three different things to do, not one thing twice.
+A birthday party at Nani's house. Every errand still has a different main action, in the order a real party goes, so a new player's first impression is several different things to do, not one thing twice.
 
 | Chapter | Goal → complication → payoff | Errands (mode) |
 | --- | --- | --- |
-| The guests are coming | Guests tonight → nothing's ready → fruit out, dinner cooked, table laid, knock at the door | 1. Fruit bowl (Shopping, then fill the bowl). 2. Daal for dinner (Cook-along, from the pantry and spice cupboard). 3. Set the dastarkhwan (Put it there) |
-| Knock knock | Welcome everyone → shoes everywhere → mat is tidy | Greeting the guests (At the door), Shoe mountain left/right (Put it there) |
-| The cat and the sweets | Serve the mithai → the cat scatters them → box repacked | Find the sweets (Hide and seek), Repack the sweet box (Put it there, with counting) |
-| The spill | Pour sharbat → it goes on a guest's kurta → Big Ma fixes it in her room | Thread for Big Ma (Ask around), Big Ma's room (story beat: she mends it and sings while she sews) |
-| Eid morning | Get ready → greet the elders → Eidi, party, quilt complete | Dressing (Body/dress), Eid greetings (At the door) |
+| The guests are coming | Guests are due → nothing's ready → each guest fed, the table set | Cook each guest's order (Cook: each guest asks for their own dish by name, like Cook's existing customer flow). Set the table (Put it there: place words for plates, cups, a spot for each guest) |
+| The cat and the sweets | The mithai's out → the cat scatters it | Find the sweets (Hide and seek). Pack the sweet box (Put it there, with counting: the right number in each layer) |
+| The party | Everyone's fed and seated | Blow out the candles (a short finale beat), then the Story by the Fire |
 
-Chapter 1 therefore needs three modes (Shopping, Cook-along, Put it there) before the family play-test at phase 3.
+**Explicitly dropped from Arc 1** (decided 28 Sept 2026): clothes-making (it's now its own standalone arc, Making clothes with Big Ma), greeting guests at the door (folds into the Conversations module's Knock-knock chain instead, later), and the shoe mountain.
 
-**"The spill" no longer needs the clothes stall** (decided 24 Sept 2026): Big Ma mends the kurta instead of a new one being bought, so there's no stall visit. Shopping already appears in Chapter 1 (the fruit bowl), so Arc 1 doesn't lose the mode.
+Arc 1 needs Cook (already built) and Put it there and Hide and seek (both still to build), the same mode set the old Chapter 1–3 needed, so the build cost doesn't change.
 
-### Arc 2: The Wedding (S3)
+### Arc 2 onward: "A day out with Nani" (a repeatable template)
 
-Placed second because kinship, colours and adjectives are exactly S3's content, and the thread/blanket quest slots in as the gift chapter.
+Each arc from here is a trip, built mostly from existing modes, with new words each time. The template, in order:
 
-| Chapter | Beat | Errands |
+1. **Pack your bag** — a small fetch-style round (shaped like the pantry round), different items each trip.
+2. **Cook your packed lunch** — Cook, reusing its stations.
+3. **Travel** — by bus, car or motorbike. One new game: **spot it out of the window**. The only new art is the view out of the window; Nani says "spot the …", and the child taps or photographs things as they pass (shaped like the clinic's pharmacy conveyor).
+4. **A food stall at the place** — three Cook-style mini-games (for example, at the beach: corn on the cob, mishkaki, fried doughnuts).
+5. **One or two place-specific games** — for example the beach's sandcastle and kite.
+6. **The Story by the Fire** — every arc's ending (see below and `docs/modes/story-by-the-fire-design.md`).
+
+**First trips to sketch**, in the order Zafar gave them:
+
+| Trip | The stall (3 Cook-style games) | Place games | Vocabulary (English; all Kutchi to record) | Art needed |
+| --- | --- | --- | --- | --- |
+| **The beach** | Corn on the cob, mishkaki (already in the game), fried doughnuts | Build a sandcastle; fly a kite; collect shells | sand, sea, wave, shell, bucket, spade, kite, sun hat, towel, swim | New background(s); sandcastle and kite art; the beach stall's three dishes |
+| **The garden / farm** | Fresh vegetables from the patch; a farm lunch; fresh milk | Feed the hens and goats; find the chicks | hen, goat, chick, egg, feed, fence, vegetable patch, watering can, dig, plant | Reuses the existing hen/goat/chick character art; new background(s) |
+| **The safari** | Local food-stall snacks (TBC with the family) | Spot the animals from the jeep (the trip's own "spot it" moment, doubled up with travel); a photo game | jeep, binoculars, lion, elephant, giraffe, zebra, watering hole, camera | New animal art, a safari background, a jeep |
+| **The boat** | Fresh fish, coconut water, a stall snack (TBC) | Fishing; spot things in the water | boat, oar, life jacket, fish, net, jetty, wave | A boat, a jetty/harbour background, fish art |
+
+These are a first sketch, not locked: exact stall dishes and games are confirmed with the family and against what art already exists before each trip is built.
+
+**The cross-arc vocabulary spine.** Some words appear on every trip regardless of destination, and are taught once, then reinforced everywhere: the bag's contents, travel verbs (go, arrive, look, point), numbers and colours (carried over from Arc 1), and the Conversations module's thanks/greetings/well-being exchanges, which every new person met on a trip can use.
+
+### Standalone, repeatable arcs
+
+Two arcs that aren't day-out trips, placed into the sequence rather than tied to one story spine:
+
+- **Volunteering at the clinic.** Nani introduces it after the child's first or second day out. Across the arc's run the child helps 4–5 patients; it teaches body parts and uses all of the clinic's existing mini-game designs (`docs/modes/clinic-design.md`).
+- **Making clothes with Big Ma.** The Dress up mode's home (`docs/modes/dress-up-design.md`), placed later in the sequence once a story reason for new clothes comes up (a trip, an occasion). Exact placement is TBC.
+
+Both are repeatable: like the day-out template, they're built once and replayed with new patients or new garments.
+
+### Eid: moved later
+
+Eid is no longer Arc 1. It becomes its own arc later in the sequence, once the day-out trips and the two standalone arcs have built up enough vocabulary and story weight to carry it properly. Not yet designed.
+
+**Known follow-up:** the first launch's own story hook (`docs/first-launch-story.md`) currently ends with Nani saying "Tomorrow is Eid, guests are coming" to lead into cooking. That line now needs to lead into the Birthday instead. Not changed in this pass — flagged for whoever next touches the first launch.
+
+### Replaced 28 Sept: the earlier five-arc plan
+
+The previous plan (23 Sept) was five arcs as a grammar ladder — Arc 1 *Eid at Nani's* (S1–S2), Arc 2 *The Wedding* (S3), Arc 3 *The Monsoon* (S4), Arc 4 *Nani's Lost Ring* (S5), Arc 5 *Nani's Village* (S6) — about five chapters each, roughly 50 errands in total. The full chapter-by-chapter detail is in git history (this file, before 28 Sept 2026); the shape of it, for reference:
+
+| Old arc | Was about | Its content's new home |
 | --- | --- | --- |
-| The invitation | Who's getting married, and who's who to them? | Ask around (kinship) |
-| Outfits | Everyone needs something | Clothes and bangles (Shopping), Dress up (Body/dress) |
-| Mehndi night | A flower on the left hand, dots on the right | Place the pattern (Put it there), dhol toy interlude |
-| The gift (the thread/blanket quest) | Ask each relative their favourite colour, buy the threads, Nani asks for each colour back | Ask around, Shopping |
-| The feast | Serve guests in the order they arrived, as they like it | Put it there |
+| Arc 1: Eid at Nani's | Guests coming, cooking, the table, a spill, Eid morning | Split: the cooking/table/sweets beats became the Birthday; Eid itself moves later; the spill and Big Ma's mending became the Making clothes arc's kind of story |
+| Arc 2: The Wedding | Kinship, colours, outfits, a gift quest, the feast | Kinship and the gift-asking pattern fit the cross-arc vocabulary spine; outfits fit Making clothes; the feast's serving-in-order pattern fits any trip's food stall |
+| Arc 3: The Monsoon | Weather, illness, farm animals sheltering, chai | The clinic content becomes the standalone clinic arc; the farm-animal content fits the garden/farm trip; weather could become a future trip variant |
+| Arc 4: Nani's Lost Ring | Past tense, a search, asking around | Not carried forward yet; a mystery chapter could return inside a future trip |
+| Arc 5: Nani's Village | The farm, the journey, family photos, Nana's stories | The farm and journey became the garden/farm and travel template; family photos and Nana's stories fit any trip's Story by the Fire |
 
-### Arc 3: The Monsoon (S4)
-
-A real Kutch monsoon. Illness replaces the original "Nani slips" idea: gentler, same body and feelings words.
-
-| Chapter | Beat | Errands |
-| --- | --- | --- |
-| Clouds coming | Washing's out, the sky changes | Watch the sky (Spot it), bring it inside (Put it there) |
-| The leak | Drips everywhere, comically, never actually flooding | Buckets under the drips (Put it there) |
-| The animals | Goats and hens caught outside; chicks hide indoors | Into the shed (Put it there), find the chicks (Hide and seek) |
-| Nani has a cold | Say what hurts, fetch the medicine | Where does it hurt (Body/dress), the clinic (Shopping) |
-| Chai together | The payoff | Make chai (Cook-along) |
-
-### Arc 4: Nani's Lost Ring (S5)
-
-The mystery is the past tense: "who saw it, what were you doing?"
-
-| Chapter | Beat | Errands |
-| --- | --- | --- |
-| It's gone | Nani says where she last had it | Search the dressing table (Hide and seek) |
-| Who saw it? | Each relative says what they were doing | Ask around |
-| Following clues | Jars, quilts, the sofa: funny lost objects turn up | Search the house (Hide and seek) |
-| Footprints | Big prints, small prints: the cat's, or a person's? | Follow the trail (Spot it) |
-| The crow | The ring is in a nest; trade the crow something shiny | Trade (Shopping), Nani tells the ring's story (short, skippable, Kutchi with captions) |
-
-### Arc 5: Nani's Village (S6, the finale)
-
-Nani's own village in Kutch. Folds in the farm and family-tree ideas.
-
-| Chapter | Beat | Errands |
-| --- | --- | --- |
-| The old trunk | Old photos: who's who, young and old | Match the face (Spot it) |
-| The journey | Things spotted on the road | Spot it |
-| The farm | Mangoes up, groundnuts down, lunch | Pick and dig (Put it there), farm lunch (Cook-along) |
-| Nana's stories | Listen, then put the pictures in order | Ask around |
-| The family photo | Arrange everyone: next to, behind, in front, tallest | Put it there, a full recap of kinship and position |
-
-**Folded rather than dropped from the original brainstorm:** the clinic sits inside the Monsoon; the kitchen workshop is spread across every arc via Cook-along; the craft fair becomes the Wedding's gift chapter; the farm and family tree become the Village. School is cut: it sits outside Nani's world, and its core ideas (script tracing, rhymes) are non-goals.
+The syllabus's S1–S6 grammar stages (below) still hold as a ladder; which trip or arc carries which stage is TBC and gets settled as each trip is actually built, rather than fixed in advance the way the old plan fixed it.
 
 ## MVP and release scope
 
-**Arc 1, Eid at Nani's, finished end to end, is the first release candidate.** If it lands well (a child in the family asks to play it again unprompted, and the recording sessions stay a good evening for Zafar's mother), Arc 2 onward gets built the same way. Each later arc should be faster to build, because the modes, the chunked-recording pipeline and the errand generator all exist by then; only new backgrounds, words and story beats are new work.
+**Arc 1, The Birthday, finished end to end, is the first release candidate.** If it lands well (a child in the family asks to play it again unprompted, and the recording sessions stay a good evening for Zafar's mother), the day-out trips get built the same way, one at a time. Each later trip should be faster to build, because the modes, the chunked-recording pipeline, the errand generator and the day-out template all exist by then; only new backgrounds, words and stall dishes are new work.
 
 ## Learning design decisions
 
@@ -379,12 +379,14 @@ Cambridge's Pre A1 Starters expects over 500 words and A1 Movers adds roughly 40
 
 | Stage | Can-do | Grammar and frames | Vocabulary domains | ~New words | Carried by |
 | --- | --- | --- | --- | --- | --- |
-| S1 Arrive and fetch | Greet, understand a request, count what's asked for | Greetings; "I need X"; "give me X"; number + noun; yes/no | Greetings, numbers 1–10, fruit, veg, spices, staples | 60 (first release) | Arc 1, chapters 1–2 |
-| S2 Do as Nani says | Follow two-part commands, put things in places | Imperatives; position phrases; this/that | Rooms, household objects, utensils, clothes (nouns), colours, sweets and dishes | 80 | Arc 1, chapters 3–5 |
-| S3 Who's who | Name family, ask simple questions, say likes | Possessives; who/what/where/how many; "I like" chunk; adjective agreement | Kinship, people and jobs, jewellery, sizes and shapes, basic adjectives | 70 | Arc 2 |
-| S4 How I feel | Say what hurts and how you feel | Present and habitual; "it hurts"; "I'm cold"; "it's raining" | Body, health, feelings, weather, times of day, farm animals and birds | 70 | Arc 3 |
-| S5 What happened | Follow and retell a simple event | Past tense, intransitive then transitive; yesterday/today; first/then | Actions, materials, household (extended), place words | 60 | Arc 4 |
-| S6 Tell and plan | Describe people, compare, say what will happen | Future; comparatives; "because"; short narrative | Nature, travel, places, describing people, cultural and religious life | 60 | Arc 5 |
+| S1 Arrive and fetch | Greet, understand a request, count what's asked for | Greetings; "I need X"; "give me X"; number + noun; yes/no | Greetings, numbers 1–10, fruit, veg, spices, staples | 60 (first release) | Arc 1: The Birthday |
+| S2 Do as Nani says | Follow two-part commands, put things in places | Imperatives; position phrases; this/that | Rooms, household objects, utensils, clothes (nouns), colours, sweets and dishes | 80 | Arc 1: The Birthday, then the early day-out trips |
+| S3 Who's who | Name family, ask simple questions, say likes | Possessives; who/what/where/how many; "I like" chunk; adjective agreement | Kinship, people and jobs, jewellery, sizes and shapes, basic adjectives | 70 | TBC: likely Making clothes with Big Ma and/or the clinic arc |
+| S4 How I feel | Say what hurts and how you feel | Present and habitual; "it hurts"; "I'm cold"; "it's raining" | Body, health, feelings, weather, times of day, farm animals and birds | 70 | TBC: likely Volunteering at the clinic |
+| S5 What happened | Follow and retell a simple event | Past tense, intransitive then transitive; yesterday/today; first/then | Actions, materials, household (extended), place words | 60 | TBC: a later day-out trip |
+| S6 Tell and plan | Describe people, compare, say what will happen | Future; comparatives; "because"; short narrative | Nature, travel, places, describing people, cultural and religious life | 60 | TBC: a later day-out trip, or Eid |
+
+**This mapping is provisional** (28 Sept 2026 rework): the old plan fixed one arc per stage; the new plan fixes the *trip template* and lets each trip's vocabulary and grammar load settle as it's actually built. Revisit this table once two or three trips exist.
 
 Two strands run through every stage: **numbers** (1–10 in S1, larger with prices from Arc 2) and **respect language** (formal and familiar "you", honorific kinship titles).
 
@@ -394,9 +396,9 @@ Chapter 1's restructure pulls a little S2 forward (the dastarkhwan's position ph
 
 | Gap | Fix |
 | --- | --- |
-| Times of day and days | The Monsoon opens with Nani's day: morning chai, midday, evening lamps |
-| Money | Prices at the Wedding's bazaar, adding coins to the quantity mechanic |
-| Jobs and people | The Village: the farmer, the driver, the imam |
+| Times of day and days | TBC which trip opens with Nani's day: morning chai, midday, evening lamps |
+| Money | A future trip's food stall or shop, adding coins to the quantity mechanic |
+| Jobs and people | The safari and boat trips bring in the driver, the guide, the boatman |
 | ~150 to 200 story-carried words against a ~400 target | Generated side errands (Nani's everyday requests) carry the long tail; adaptive pacing lets faster players clear it sooner |
 
 ## Platform decisions
@@ -425,7 +427,7 @@ Chapter 1's restructure pulls a little S2 forward (the dastarkhwan's position ph
 
 ## First test errand: Fruit bowl for the guests
 
-Arc 1, Chapter 1's first errand. Nani is expecting guests tonight and wants a fruit bowl ready.
+The first Shopping errand built and playtested (23 Sept), proving the core loop. It was written for the old Eid Chapter 1 and isn't part of Arc 1's errand list any more (see "Story arcs" above), but the mechanic and its Kutchi are sound and it stays useful as a Shopping-mode reference, and as an easy fit for a future trip's own shopping moment.
 
 | Role | Word | Kutchi draft (source) | Phrase |
 |---|---|---|---|
