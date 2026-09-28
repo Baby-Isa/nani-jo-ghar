@@ -29,20 +29,22 @@ You're making 16 images in ChatGPT for a children's game called Nani jo Ghar. Wo
 
 **Rules on every sheet:** 3×3 grid (nine cells, better quality per item than 4×4), flat mid-grey `#808080` background, no floor, no shadows, no text, numbers, letters or logos anywhere, each thing centred in its own equal cell with clear grey all round it. Container sheets: **the same container, the same size, in every cell**, no label or print on it, filled with the item itself to a natural, slightly varied level between five-eighths and seven-eighths full (crates heaped). Style: the attached style anchor.
 
-## P0. The pantry background
+## P0. The pantry background (v2 prompt, after the first try)
+The first try (28 Sept) was straight on and empty, as asked, but had vertical uprights making cubbies, a pine counter that doesn't match the kitchen's marble, strong sunbeam patches across the shelves, and a counter taking the bottom third. This prompt fixes those.
 ```
-A background for a children's game: Nani's home pantry. Make it at the largest landscape size you can (1536x1024), crisp and highly detailed, HD quality, no blur or softness.
-The camera is at eye level, looking dead straight at the back wall: a flat front-on view with no perspective tilt, no angled shelves, no side walls visible. Every shelf edge is perfectly horizontal and every upright perfectly vertical.
-Left three-quarters of the picture: open wooden shelves fixed to a warm plastered wall. Three long, plain, deep wooden shelf boards, evenly spaced one above another, divided into five equal bays by four slim wooden uprights, so there are fifteen equal empty spaces.
+A background for a children's game: Nani's home pantry, the room next door to the attached kitchen. Make it at the largest landscape size you can (1536x1024), crisp and highly detailed, HD quality, no blur or softness.
+The camera is at eye level, looking dead straight at the back wall: a flat front-on view with no perspective tilt, no side walls visible. Every shelf edge is perfectly horizontal.
+Left three-quarters of the picture: three long, thick, plain wooden shelves fixed to a warm plastered wall, in exactly the same wood as the floating shelves in the attached kitchen. Each shelf is one single unbroken board running the whole width of that area, with NO vertical uprights, dividers, brackets, cubbies or frames anywhere. The shelves are evenly spaced, with the height of a tall storage jar and some room above it between one shelf and the next, and the lowest shelf sits well above the counter.
 Right quarter: a tall, slim fridge with a clear glass door and a slim silver frame, softly lit inside with a cool white light, three empty glass shelves inside.
-Across the whole bottom of the picture: a wooden counter top, just below eye level so a little of its surface shows. On the counter, in the middle of the picture, a large empty rectangular wooden tray with a low raised rim, its flat base clearly visible.
+Across the bottom fifth of the picture: the same counter as in the attached kitchen, a cream marble top with soft golden veins over a front of vertical wooden panelling, running the full width, just below eye level so a strip of its surface shows. On the counter, centred, a long, empty rectangular wooden tray with a low raised rim, wide enough for six jars standing side by side in one row.
+Lighting: soft, even, warm daylight from the upper left, matching the kitchen's warmth, but with no sunbeams, no window-shaped patches of light and no hard shadows falling across the shelves or the wall (things will be placed on the shelves and must all be lit the same).
 Everything is empty: no jars, no food, no bottles, no items at all on the shelves, in the fridge or on the tray. No people, no text.
 Keep the top 8% of the picture plain wall and the bottom 8% plain counter front, with nothing important in either (the game trims them).
-Style: exactly as the attached style anchor, and the same wood, plaster, colours and warm light as the attached kitchen picture, so it reads as the next room of the same house: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Style: exactly as the attached style anchor, and the same plaster, wood, marble, colours and warm light as the attached kitchen picture, so it reads as the next room of the same house: stylised 3D animated-feature-film look, soft global illumination, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `bg-nani-kitchen-e-v1.png`
-**Claude renames it to:** `pantry-v2-bg.png`
-**check:** shelves perfectly horizontal and seen straight on (no angle) · shelves on the left about three-quarters, a glass-door fridge on the right about a quarter · the tray sits on the counter in the middle · nothing at all on the shelves, in the fridge or on the tray · no text.
+**Claude renames it to:** `pantry-v2-bg.png` (the first try becomes `pantry-v2-bg-try1.png`)
+**check:** shelves perfectly horizontal and seen straight on · no vertical uprights or cubbies, three long unbroken shelves · a glass-door fridge on the right about a quarter · the counter is cream marble over wooden panelling, like the kitchen, and only about the bottom fifth · the tray sits centred on the counter, wide enough for six jars in a row · no sunbeam patches or hard shadows on the shelves or wall · nothing at all on the shelves, in the fridge or on the tray · no text.
 
 ## P1. Tall jars: flour, grains, sugar, tea, lentils
 ```
@@ -355,7 +357,8 @@ Cell order matches P7: I7 cell *k* is the label for P7 cell *k* (same game id).
   - measure the background from the sheet's edges (the median of the outer 6 px);
   - find the nine cells from the grey gutters (column and row projections of `d > 8`), not by dividing the image by three: ChatGPT rarely spaces cells exactly;
   - the object is everything **not connected** to the flat background, holes filled, largest piece kept, so clear glass and the grey-ish water stay solid instead of turning into holes;
-  - edges use colour-to-alpha against the measured background (the eroded core stays alpha 1), which removes the grey baked into the antialiasing.
+  - edges use colour-to-alpha against the measured background (the eroded core stays alpha 1), which removes the grey baked into the antialiasing;
+  - **clear glass:** the first spice sheet shows grey through the empty glass above the contents and at the jar's sides. Don't make those parts solid: give glass-only pixels (close to the background colour, inside the object) colour-to-alpha too, keeping the lid, rims, highlights and contents solid, so the glass shows the shelf behind it rather than baked-in grey.
 - **One canvas per container type, registered.** Per sheet: take every cell's object bounding box, then scale the whole sheet by **one** factor (so the nine containers stay the same size as each other) and place each object on an identical canvas, centred horizontally, **its base on the same line** (a fixed bottom margin). Canvas sizes: tall jars and bottles 256×384; spice jars, tubs, crates and packets 256×256.
 - Cut the I sheets the same way into `assets/cook/items/icon-<id>.webp` (trimmed, centred on a square canvas, one scale per sheet), and S into one `sticker-blank.webp`.
 - Record each type's real height relative to the tall jar in `data/cook.json` (`art.sprites`), e.g. tall jar and bottle 1.0, packet 0.75, crate 0.6, tub 0.55, spice jar 0.5, so a spice jar never shows as big as a flour jar.
@@ -375,12 +378,12 @@ Cell order matches P7: I7 cell *k* is the label for P7 cell *k* (same game id).
 ### The background and the slots
 - Serve `pantry-v2-bg.png` at full quality: trim the top and bottom 8% to 16:9, upscale to 1600×900 and, if still soft on a laptop at 2×, keep a 3200×1800 version (`docs/cook-ui-feedback-2026-09-28.md` §4).
 - Measure the real positions from the delivered picture (shelf-board tops, bay centres, fridge shelves, tray), in the game's 1600×900 world, and replace `rows`/`xs` in `js/cook/mechanics/fetch.js` with a `slots` list in `data/cook.json` (`mechanics.fetch.slots`), each `{x, y, h, zone}`. Expected shape:
-  - **shelves:** 3 rows × 5 bays = 15 slots, `zone: "shelf"`, the item's base on the board;
+  - **shelves:** 3 unbroken shelves × 5 evenly spaced positions = 15 slots, `zone: "shelf"`, the item's base on the board;
   - **fridge:** 3 glass shelves × 2 = 6 slots, `zone: "fridge"`.
 - **What goes where:** the fridge holds milk, yoghurt, meat, mince, chicken, fish, butter, cheese, cream, eggs and juice; everything else goes on the shelves (crates on the bottom shelf where possible, spice jars on the top). A fridge item is never placed on a shelf, or the other way round; decoys follow the same rule. If a round needs more fridge slots than there are, it takes fewer fridge decoys.
 
 ### The tray
-- The basket goes. The tray is painted into the background; the game measures its top surface and draws **one outlined space per item needed** (3 at level 1, up to 6), in at most two rows of three, spaced evenly and centred.
+- The basket goes. The tray is painted into the background; the game measures its top surface and draws **one outlined space per item needed** (3 at level 1, up to 6), in one row along the tray, spaced evenly and centred (the tray is seen almost edge on, so there's no room for a second row).
 - Each space is a soft rounded outline in the shape of the needed item's container type (a tall-jar space is tall, a crate space is wide), drawn at tray scale (about 0.6 of shelf size), with no picture inside: you can see how many things are still missing, but not which.
 - A tapped item flies into the next free space and sits on its outline's base line. Mid-round, spaces only fill (UX §11); a wrong item still takes a space and only shows as wrong in the end review.
 - Before calling it done: screenshots at 390×844 and 1366×768 of an empty tray, a half-full tray and a full tray, looked at on the cream background (`docs/VISUAL-QA.md` §1).
