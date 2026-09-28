@@ -135,7 +135,8 @@
       if (bgLoad) await bgLoad;
       this.clearView();
       this.viewName = name;
-      if (name === "service" || name === "pantry") this.bg.setTexture(`bg-${name}`);
+      // a painted view (data.art.sprites.bg) once loaded; the service and the old pantry photo otherwise
+      if ((name === "service" || name === "pantry") && !Cook.Art.sprite(this, bgRef)) this.bg.setTexture(`bg-${name}`);
       else this.bg.setTexture(Cook.Art.tex(this, `bg:${name}`));
       UI.hideBubble();
       cam.fadeIn(dur, 233, 220, 196);

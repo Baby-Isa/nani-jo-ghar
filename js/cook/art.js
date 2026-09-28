@@ -712,6 +712,11 @@
       return stem ? Cook.v(`assets/cook/bg/${stem}.webp`) : null;
     }
     const i = ref.lastIndexOf(".");
+    // pantry v2: "<id>.shelf" is a side-on container (data.art.sprites.shelf: [stem, size])
+    if (i > 0 && ref.slice(i + 1) === "shelf") {
+      const e = (sp.shelf || {})[ref.slice(0, i)];
+      return e ? Cook.v(`${sp.dir || "assets/cook/items/"}${e[0]}.webp`) : null;
+    }
     const v = i > 0 ? ((sp.items || {})[ref.slice(0, i)] || {})[ref.slice(i + 1)] : null;
     const stem = v && (typeof v === "string" ? v : v.file);
     return stem ? Cook.v(`${sp.dir || "assets/cook/items/"}${stem}.webp`) : null;
@@ -755,6 +760,8 @@
     if (!refs.length || !scene) return Promise.resolve();
     return Promise.race([Art.load(scene, refs), new Promise((r) => setTimeout(r, ms))]);
   };
+  /** A pantry container's real height against a tall jar (data.art.sprites.shelf), 1 if unknown. */
+  Art.shelfSize = (id) => (((SP().shelf || {})[id] || [])[1] || 1);
   /** The texture key of a loaded sprite, else null. */
   Art.sprite = (scene, ref) => (scene.textures.exists(sprKey(ref)) ? sprKey(ref) : null);
   /** A sprite in place of drawn key `key`: baked into the drawing's frame when data says so. */
@@ -911,13 +918,18 @@
   };
   /**
    * The picture for a word. On a worktop: its sprite in `state` ("bowl":
-   * how it sits in a row) once loaded, else a prop, else a drawn bowl. The
-   * pantry keeps props and drawn bowls (its shelves need front views,
-   * which batch 1 didn't have). state null: never a sprite.
+   * how it sits in a row) once loaded, else a prop, else a drawn bowl. In
+   * the pantry: its side-on container ("shelf", pantry v2) once loaded,
+   * else a prop or a drawn bowl. state null: never a sprite.
    */
   Art.wordTex = function (scene, id, state = "bowl") {
     const w = Cook.data.words[id];
     if (state === "pieces") return katori(scene, id) || Art.tex(scene, `bowl:${id}`);
+    if (state && scene.viewName === "pantry") {
+      const k = Art.sprite(scene, `${id}.shelf`);
+      if (k) return k;
+      if (refUrl(`${id}.shelf`)) load(scene, `${id}.shelf`);
+    }
     if (state && scene.viewName !== "pantry") {
       const k = Art.sprite(scene, `${id}.${state}`);
       if (k) return k;
