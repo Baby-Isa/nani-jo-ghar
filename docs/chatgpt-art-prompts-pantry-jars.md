@@ -65,6 +65,22 @@ Style: exactly as the attached style anchor: stylised 3D animated-feature-film l
 
 v2's prompt is in git history (this file, 28 Sept); v2 is what the game shows until v3 is in.
 
+## P0-F. The pantry v3 fridge (29 Sept: only the fridge changes)
+v3 from Try A (the painted sketch) is right for the shelves and the tray (Zafar, with the items in: "looks much better"). The fridge needs three glass shelves, each level with a wooden shelf (not four levels), a solid fridge base below the third, and a top. Only the fridge is repainted: `sources/art/pantry-v2/pantry-v3-fridge-sketch.png` is the v3 picture with the fridge replaced by a flat sketch of the new one; ChatGPT paints it, and Claude takes **only the fridge** from the result and blends it into the approved v3 picture, so the shelves and tray can't move.
+```
+The attached picture is a finished background for a children's game (Nani's home pantry), except for the flat grey and pale blue shape on the right, which is a sketch of a fridge. Paint that fridge properly, exactly where the sketch has it and exactly the same size, and keep the rest of the picture as it is. Keep the size 1536x1024 (landscape).
+The fridge: a tall, slim, modern fridge with a brushed-steel body, seen dead straight on at eye level, with no perspective tilt.
+- The darker band at the top: the fridge's steel top, a plain solid panel.
+- The pale blue area: the fridge's clear glass door, through which you see the empty inside, softly lit with a cool white light.
+- The three thin lines inside: three empty glass shelves at exactly those heights (level with the three wooden shelves on the left).
+- Below the third glass shelf: the fridge's solid steel base, with one wide drawer front with a slim horizontal handle, and a slim ventilation grille at the very bottom, just above the marble counter.
+The door is closed. Soft, even, warm daylight from the upper left on the steel. Nothing inside the fridge. No text, no logos, no brand name.
+Style: exactly as the attached style anchor and the rest of the picture: stylised 3D animated-feature-film look, soft global illumination, no outlines.
+```
+**attach:** `pantry-v3-fridge-sketch.png` (https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/pantry-v2/pantry-v3-fridge-sketch.png), `style-anchor-v1.png`
+**Claude renames it to:** `pantry-v3-fridge.png` (the fridge is cut from it; the rest is ignored)
+**check:** the fridge is where the sketch has it, the same width and height · a solid steel top · exactly three glass shelves, level with the three wooden shelves · a solid steel base with a drawer and a grille below the third shelf · the door closed, nothing inside · no text or logo.
+
 ## P1. Tall jars: flour, grains, sugar, tea, lentils
 ```
 A sprite sheet for a children's game, 1024x1536 portrait, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos.
