@@ -894,6 +894,8 @@
         Cook.sfx.pop();
         const j = plate.length;
         plate.push({ pieces: g.pieces, cls: g.cls, burnt: g.burnt });
+        // Sidebar v3 (UX 11): a skewer from the stocked rack (no threading here) is made once it's plated: its mini card ticks
+        if (params.stock && g.cls.ok && ctx.tickCard) ctx.tickCard(g.cls.kind);
         g.sk.setDepth(D.item + 3 + j * 0.01);
         S.tweens.add({ targets: g.sk, x: X(PLATE.x - 10), y: Y(PLATE.y - 50 + Math.min(j, 5) * 22), scale: 0.4 * z.k, angle: 84, duration: 460, ease: "Sine.easeInOut" });
         z.progress({ plated: plate.length });
@@ -1048,6 +1050,8 @@
       UI.hideDone();
       [...rack, ...grilling].forEach((r) => r && r.sk.hit && r.sk.hit.active && S.untap(r.sk.hit));
       if (chips) S.untap(chips);
+      // the grilling step has closed: the kinds' rows tick (the counts, right or not: judged in the review)
+      if (ctx.closeItem) ctx.closeItem([].concat(...Object.keys(want).map((w) => w.split("+"))));
 
       /* the ear star: the right number of each kind, mixed in order, chips or not */
       const got = {};
