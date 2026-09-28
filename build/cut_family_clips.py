@@ -843,15 +843,6 @@ def choose(rec, group, item, lo, hi, review):
         for c in cands:
             if c["e"] - c["s"] > 1.6 * typical + 0.2:
                 c["score"] -= 0.3
-    # Prefer the tightest take: one that holds a shorter, equally good take
-    # by the same speaker probably holds two.
-    for c in cands:
-        for d in cands:
-            if d is not c and c["s"] <= d["s"] + 0.01 and d["e"] <= c["e"] + 0.01 and (d["e"] - d["s"]) < 0.8 * (
-                    c["e"] - c["s"]) and d["sim"] >= c["sim"] - 0.1 and d["sim"] >= 0.8 and (
-                    d["p_mum"] >= 0.5) == (c["p_mum"] >= 0.5):
-                c["score"] -= 0.2
-                break
     # The prompt helps Whisper spell Kutchi but also lets it "hear" the word
     # in a fragment. So the promising takes are heard again with no prompt,
     # and the score takes the weaker of the two hearings.
@@ -865,6 +856,29 @@ def choose(rec, group, item, lo, hi, review):
         if ps < c["sim"]:
             c["score"] -= (c["sim"] - ps) * 0.7
         c["psim"] = ps
+    # Nested takes by the same speaker, compared on the plain hearing (the
+    # prompted one "hears" the whole word even in a piece of it). A longer take
+    # that holds a shorter, equally good one probably holds two repeats; but a
+    # shorter take that hears less of the word than the longer one around it
+    # has lost its ending (or start). Mum's soft last syllables were being cut
+    # off like this ("toke kuro khape-" for "toke kuro khapeto").
+    ph = lambda c: c.get("psim", c["sim"])
+    for c in cands:
+        for d in cands:
+            if d is c or not (c["s"] <= d["s"] + 0.01 and d["e"] <= c["e"] + 0.01) or (d["p_mum"] >= 0.5) != (
+                    c["p_mum"] >= 0.5):
+                continue
+            if (d["e"] - d["s"]) < 0.8 * (c["e"] - c["s"]) and ph(d) >= ph(c) - 0.05 and ph(d) >= 0.8:
+                c["score"] -= 0.2
+                break
+    for d in cands:
+        for c in cands:
+            if c is not d and c["s"] <= d["s"] + 0.01 and d["e"] <= c["e"] + 0.01 and (c["e"] - c["s"]) > (
+                    d["e"] - d["s"]) + 0.08 and (d["p_mum"] >= 0.5) == (c["p_mum"] >= 0.5) and ph(c) > ph(d) + 0.05 \
+                    and c.get("rep", 1) < 1.7:
+                d["score"] -= 0.3
+                d["cut"] = True
+                break
     picks = {}
     for spk in ("mum", "zafar"):
         pin = item.get(spk)
