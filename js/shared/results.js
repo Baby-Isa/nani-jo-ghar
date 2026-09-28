@@ -183,7 +183,10 @@
    * clipped to the share right (CSS clip-path by percentage; gold+grey, never
    * red/green), or the shining gold-with-glow art when all right. */
   function tickImg(rw) {
-    return img("rs-tick-base", "tick-grey") + img("rs-tick-right", "tick-gold", `--rw:${rw}%`) + img("rs-tick-gold", "tick-gold-glow");
+    // The tick art sits in a canvas with ~10.9% transparent margin each side
+    // (build/cut_tick_v2.py), so map the share right onto the tick's own width.
+    const eff = 10.9 + (rw * 78.2) / 100;
+    return img("rs-tick-base", "tick-grey") + img("rs-tick-right", "tick-gold", `--rw:${eff.toFixed(1)}%`) + img("rs-tick-gold", "tick-gold-glow");
   }
   /** A big light bulb: which art shows is set by CSS off data-hn (0, 1, 2, 3+). */
   function bulbImgs() {

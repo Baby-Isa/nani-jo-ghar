@@ -120,16 +120,24 @@
 /* ---------- accuracy: a grey pewter tick underneath, a gold tick clipped over it
    as a gauge by the share right (never red/green), the shining gold+glow art
    swapped in when all right ---------- */
-.rs-tick-base, .rs-tick-right, .rs-tick-gold { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.rs-tick-right, .rs-tick-gold { clip-path: inset(0 100% 0 0); transition: clip-path 0.8s cubic-bezier(0.2, 0.7, 0.3, 1); }
-.rs-tick-right.filled { clip-path: inset(0 calc(100% - var(--rw, 0%)) 0 0); }
-.rs-acc.tier-gold .rs-tick-right.filled { clip-path: inset(0 100% 0 0); }
-.rs-acc.tier-gold .rs-tick-gold { clip-path: inset(0 0 0 0); }
+@property --rs-fill { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+.rs-tick-base, .rs-tick-right, .rs-tick-gold { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transform: scale(1.12); }
+/* The gold fills over the pewter like a gauge, left to right, with a soft edge (no hard cut line). */
+.rs-tick-right {
+  --rs-fill: 0%;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--rs-fill) - 3%), transparent calc(var(--rs-fill) + 3%));
+  mask-image: linear-gradient(90deg, #000 calc(var(--rs-fill) - 3%), transparent calc(var(--rs-fill) + 3%));
+  transition: --rs-fill 0.9s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.rs-tick-right.filled { --rs-fill: var(--rw, 0%); }
+.rs-tick-gold { opacity: 0; transition: opacity 0.5s; }
+.rs-acc.tier-gold .rs-tick-base, .rs-acc.tier-gold .rs-tick-right { visibility: hidden; }
+.rs-acc.tier-gold .rs-tick-gold { opacity: 1; }
 .rs-acc .rs-foot { font-size: clamp(20px, 4.2vh, 30px); font-weight: 800; font-variant-numeric: tabular-nums; }
 .rs-acc .rs-foot .rs-of { opacity: 0.6; font-weight: 600; margin-left: 2px; }
 
 /* ---------- hints: the bulb art for the hint count (0, 1, 2, 3+), cross-faded ---------- */
-.rs-lamp { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.4s; }
+.rs-lamp { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transform: scale(1.25); opacity: 0; transition: opacity 0.4s; }
 .rs-badge[data-hn="0"] .rs-lamp-0,
 .rs-badge[data-hn="1"] .rs-lamp-1,
 .rs-badge[data-hn="2"] .rs-lamp-2,
@@ -265,5 +273,3 @@
 @media (max-width: 560px) and (prefers-reduced-motion: reduce) {
   .rs-badge.celebrate .rs-ribbon { transform: rotate(-3deg); }
 }
-/* All right: only the shining gold tick shows (no pewter or clipped layer behind it). */
-.rs-acc.tier-gold .rs-tick-base, .rs-acc.tier-gold .rs-tick-right { visibility: hidden; }

@@ -20,15 +20,19 @@ def cut(x0, x1, glow, a=a, bg=bg, solid=False):
     border = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
     obj = ~np.isin(lab, list(border))
     if glow:  # the body only: strongly different from the grey, holes filled, largest piece
-        body = ndi.binary_fill_holes(d > (60 if solid else 90))
+        body = ndi.binary_fill_holes(d > (120 if solid else 90))
         lb, n = ndi.label(body)
         body = lb == (np.argmax(np.bincount(lb.ravel())[1:]) + 1)
-        core = ndi.binary_erosion(body, iterations=3)
+        core = ndi.binary_erosion(body, iterations=6)
+        reg = ndi.binary_fill_holes(d > 60)  # the whole glass/metal, for sizing only
+        lr, _ = ndi.label(reg)
+        reg = lr == (np.argmax(np.bincount(lr.ravel())[1:]) + 1)
     else:
         obj = ndi.binary_fill_holes(obj)
         lb, n = ndi.label(obj)
         obj = lb == (np.argmax(np.bincount(lb.ravel())[1:]) + 1)
         core = ndi.binary_erosion(obj, iterations=3)
+        reg = obj
     up = np.where(c > bg, (c - bg) / (255 - bg), (bg - c) / bg)
     alpha = np.clip(up.max(2), 0, 1)
     if not glow:
@@ -38,7 +42,7 @@ def cut(x0, x1, glow, a=a, bg=bg, solid=False):
     safe = np.maximum(alpha, 1e-3)[..., None]
     rgb = np.where(core[..., None], c, np.clip((c - bg) / safe + bg, 0, 255))
     img = np.dstack([rgb, alpha * 255]).astype(np.uint8)
-    ys, xs = np.nonzero(core)
+    ys, xs = np.nonzero(reg)
     return Image.fromarray(img, 'RGBA'), (xs.min(), ys.min(), xs.max(), ys.max())
 
 if __name__ == '__main__':
