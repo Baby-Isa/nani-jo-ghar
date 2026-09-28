@@ -54,7 +54,7 @@
   Mech.define("fetch", {
     station: "fetch",
     view: "pantry",
-    footprint: { x: 0, y: 40, w: 1600, h: 860 },
+    footprint: { x: 0, y: 0, w: 1600, h: 900 },
     async run(z, { need, askLines = true, passMe }, k) {
       const S = z.S;
       const ctx = z.ctx;
@@ -79,7 +79,8 @@
         const slot = free[fridge.has(id) ? "fridge" : "shelf"].pop();
         if (!slot) return;
         const key = Cook.Art.wordTex(S, id);
-        const f = Cook.Art.shelfSize(id);
+        // in the fridge the small things (a yoghurt tub) come up nearer a milk carton's size, to be seen
+        const f = slot.zone === "fridge" ? Math.max(Cook.Art.shelfSize(id), P.fridgeMin || 0) : Cook.Art.shelfSize(id);
         items[id] = S.prop(key, z.X(slot.x), z.Y(slot.y), z.L(slot.w * f), z.L(slot.h * f));
         items[id].label = S.label(items[id], id);
       });
@@ -97,14 +98,20 @@
         // the container's own shape, a little inside its canvas: a soft rounded box
         const bw = w * sc * 0.86;
         const bh = h * sc * 0.9;
-        const g = S.track(S.add.graphics().setDepth(D.front));
+        const g = S.track(S.add.graphics().setDepth(D.front - 1));
         g.fillStyle(0xfffaf1, 0.22);
         g.fillRoundedRect(at.x - bw / 2, at.y - bh, bw, bh, Math.min(18, bw / 4));
         g.lineStyle(z.L(3), k.special ? 0xf6c35b : 0x6b4a2a, 0.55);
         g.strokeRoundedRect(at.x - bw / 2, at.y - bh, bw, bh, Math.min(18, bw / 4));
         return g;
       };
-      need.forEach((id, i) => outline(i, id));
+      const outlines = need.map((id, i) => outline(i, id));
+      // the tray's front edge, cut from the painted pantry itself, goes in front of what's on the tray,
+      // so things stand in it rather than over it
+      if (T.front && S.bg && S.bg.texture) {
+        const [fx, fy, fw, fh] = T.front;
+        S.track(S.add.image(S.bg.x, S.bg.y, S.bg.texture.key).setOrigin(0).setScale(S.bg.scaleX, S.bg.scaleY).setCrop(fx, fy, fw, fh).setDepth(D.front + 3));
+      }
       // Nani's list: "Muke atto de." (give me: the family's words), then "Ne khun."
       const ask = (id, first) => Lang.line(first && Cook.data.lines.give ? "give" : Lang.orderFrame(1), Lang.phrase([id]));
       if (ctx.guided && askLines) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
@@ -130,12 +137,16 @@
       };
       // Wave 6b: onto the tray, into the next space (a wrong one too, from level 2: nothing says it's wrong until the review)
       const onTray = (id, obj) => {
-        if (n >= need.length) outline(n, id);
+        if (n >= need.length) outlines.push(outline(n, id));
         const at = spaceAt(n);
+        const space = outlines[n];
         n++;
         UI.countUp(id);
         const f = Cook.Art.shelfSize(id);
-        return S.fly(obj, at.x, at.y + z.L(4), { scale: S.fitScale(obj.texture.key, z.L(T.w * f), z.L(T.h * f)), depth: D.front + 1, duration: k.flyMs });
+        // its space's outline goes as it lands
+        return S.fly(obj, at.x, at.y + z.L(4), { scale: S.fitScale(obj.texture.key, z.L(T.w * f), z.L(T.h * f)), depth: D.front + 1, duration: k.flyMs }).then(() => {
+          if (space && space.active) S.tweens.add({ targets: space, alpha: 0, duration: 160, onComplete: () => space.destroy() });
+        });
       };
       while (remaining.length) {
         const expected = remaining[0];

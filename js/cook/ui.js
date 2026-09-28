@@ -497,7 +497,9 @@
         b.setAttribute("role", "button");
         b.setAttribute("aria-label", "This one");
         const voice = Lang.hasVoice(Lang.wordLine(id));
-        b.innerHTML = `<img src="${Cook.Art.wordUrl(id)}" alt="">${voice ? `<button class="wp-say" type="button" aria-label="Hear its name">${ICON.speaker}</button>` : ""}`;
+        // in the pantry, the thing as it stands on the shelf (pantry v2), not its top-down bowl
+        const shelf = Cook.scene && Cook.scene.viewName === "pantry" && Cook.Art.refUrl(`${id}.shelf`);
+        b.innerHTML = `<img src="${shelf || Cook.Art.wordUrl(id)}" alt="">${voice ? `<button class="wp-say" type="button" aria-label="Hear its name">${ICON.speaker}</button>` : ""}`;
         const say = b.querySelector(".wp-say");
         if (say)
           say.addEventListener("click", (ev) => {
@@ -1525,6 +1527,8 @@
       return;
     }
     b.classList.remove("hidden");
+    // a grid, at most three across (css/cook.css)
+    b.style.setProperty("--cols", Math.min(3, tally.size));
     b.innerHTML = [...tally.entries()]
       .map(([key, t]) => `<span class="tl" data-k="${esc(key)}">${t.icon ? `<img src="${esc(t.icon)}" alt="">` : ""}<b class="count-digit">${t.n}</b></span>`)
       .join("");
