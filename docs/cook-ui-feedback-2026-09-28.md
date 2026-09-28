@@ -66,3 +66,11 @@ Zafar's feedback, with Claude's recommendations. Items marked **(decide)** are w
   - label pills in one style;
   - items without a word show no empty speaker pill.
 - **Art still to request:** pot-content states and a pour stream, the ingredient containers (from the pantry-v2 pack), and any missing chai-glass fill levels.
+- **Remove the fill line** from the chai glass and the pot: it's a relic. Nothing fills to a line any more.
+- **Ingredients:** stations where you pick from a supply (the hob, chai) use the bottom strip of front-on containers. Stations where the items are part of the scene (the mishkaki tray, rolling) keep them in the scene. The rule is consistency within each station.
+- **People behind the counter** use the character art of them leaning on the counter, or with an arm on it (the `char-*-counter` art already made), at least when they're sitting or waiting. No floating cut-out heads.
+- **The Done button (every mode): decide** between:
+  - (A) the new gold-metal tick art on a round cream button, the same tick as the end-of-round screen; recommended;
+  - (B) a brass service bell for Cook ("order's ready!", with a ding), plus A everywhere else;
+  - (C) a big gold arrow.
+- **The opening game screen** is weak; that's parked until later (Zafar).
