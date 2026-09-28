@@ -911,6 +911,9 @@
       throw e;
     }
     Cook.writeSave();
+    // Sidebar v3 (UX 11): a part tried on its own (boil, roll, flip...) has no station around it to
+    // close its rows: they tick now it's finished, as a dish's do (the kept stations tick their own)
+    if (!keptKeys().includes(key)) (ctx.ladders || []).forEach((L, i) => UI.mission.finishDish(i));
     const tEnd = Date.now();
     // Wave 6b: the shared end-of-round screen first (the stars as badges, then the words)
     const labStars = { ear: ctx.listenMiss === 0, hand: !ctx.grades.some((g) => g.score < 55), third: ctx.help === 0 };

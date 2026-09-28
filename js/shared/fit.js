@@ -31,7 +31,16 @@
       const lh = px(getComputedStyle(el).lineHeight) || px(getComputedStyle(el).fontSize) * 1.2;
       return el.scrollHeight > lh * 2 + 1;
     };
-    const over = () => el.scrollWidth > el.clientWidth + 0.5 || (two && lines());
+    // sub-pixel: scrollWidth and clientWidth are whole pixels, so text a fraction too wide got the "..."
+    const room = () => el.getBoundingClientRect().width - px(cs.paddingLeft) - px(cs.paddingRight) - px(cs.borderLeftWidth) - px(cs.borderRightWidth);
+    const wide = () => {
+      if (el.scrollWidth > el.clientWidth + 0.5) return true;
+      if (two || typeof document === "undefined" || !document.createRange) return false;
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      return r.getBoundingClientRect().width > room() + 0.1;
+    };
+    const over = () => wide() || (two && lines());
     if (!over()) return max;
     let lo = min;
     let hi = max;

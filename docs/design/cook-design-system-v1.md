@@ -1,6 +1,6 @@
 # Cook design system v1, and the chai station v2 (28 Sept 2026)
 
-The single source of truth for how Cook looks and behaves. It merges Zafar's feedback (and his wife's), two external reviews (`external-review-*.md` in this folder), and Claude's own review. Where it disagrees with an older doc, this wins. **Status: waiting on Zafar's answers to §8, then the mock-up (§9).**
+The single source of truth for how Cook looks and behaves. It merges Zafar's feedback (and his wife's), two external reviews (`external-review-*.md` in this folder), and Claude's own review. Where it disagrees with an older doc, this wins. **Status: §8 answered by Zafar (28 Sept): one pan per person YES; masala dabba NO; tap object = use, tap chip = hear YES. Mock-up (§9) next.**
 
 ## 1. The diagnosis (what makes it "okay, not amazing")
 1. **No focal point.** The pot, a second empty burner, a big shiny tray and seven ingredients all shout equally.
@@ -49,11 +49,11 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 
 ## 4. The inventory (every supply station)
 - **Identical slots:** fixed footprint (artwork box about 96 px, scaled to fit), evenly spaced, sitting on the shelf band.
-- **Under each object, one component:** `🔊 word`, a single tappable chip. **Tap the object = use it; tap the chip = hear it.** Where the level hides the word, the slot shows no chip at all (never a lone speaker).
+- **Under each object, one component:** `🔊 word`, a single tappable chip. **Tap the object = use it; tap the chip = hear it.** As the levels go up, the words disappear, **but the speaker stays** (Zafar, 28 Sept): the chip becomes a speaker-only chip, the same size, shape and position, so the child can still hear the word.
 - **Grouped by kind, with a small gap between groups:**
   - **liquids:** water bottle, milk carton;
   - **jars:** chai leaves, sugar;
-  - **a masala dabba**, a round steel spice tin seen from the top with small bowls inside: elchi, aadu, rai, jeeru, and so on. It's authentic and one clean object instead of five loose bowls. Tap a bowl to use that spice.
+  - **spices:** small identical spice jars (the pantry-v2 small square jar family), grouped together. No masala dabba (Zafar, 28 Sept).
 - **Learning happens during the action:** when something is used, its Kutchi word pops briefly by the pour or sprinkle and the family clip plays.
 
 ## 5. The chai station v2 (the logic Zafar set)

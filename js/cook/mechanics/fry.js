@@ -226,6 +226,8 @@
       frying.filter((f) => f.leave && !f.out).forEach((f) => S.fly(f.img, z.X(250), z.Y(120), { duration: 380, arc: z.L(80) }));
       sizzle.stop();
       ctx.result.fried = lifted;
+      // Sidebar v3 (UX 11): the frying step has closed (Done): its row ticks (the count, right or not)
+      if (ctx.closeItem) ctx.closeItem([wordOf(kind)]);
       z.listen(lifted === count, `fried ${lifted}, they asked for ${count}: ${wordOf(kind)}`);
       if (!ctx.guided && count >= 1 && count <= 5) (lifted === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
       await Cook.wait(300);
