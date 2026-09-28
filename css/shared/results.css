@@ -3,9 +3,11 @@
    no motion under prefers-reduced-motion. Sizes follow the smaller of the
    viewport's width and height, so a landscape phone (915x375), an iPad and
    a laptop all fit without scrolling; a narrow portrait phone stacks.
-   UX 9a redraws all three badges as inline SVG: a stopwatch outline (time
-   drawn inside it), a chunky tick that fills as a green/red gauge, and a
-   light bulb that dims and cracks as hints climb. */
+   UX 9a: the three badges are ChatGPT-drawn art (assets/ui/results/, cut by
+   build/slice_sheet.py), no circle behind them -- each sits straight in its
+   square card. The stopwatch's time is drawn over its empty face; the tick
+   is a green/red gauge layered by clip-path over the empty art, with its
+   own gold art when all right; the bulb swaps art by hint count. */
 .njg-results {
   --rs-ink: #2b1810;
   --rs-cream: #fdf6e8;
@@ -66,34 +68,17 @@
 }
 .rs-badge.pre { opacity: 0; transform: scale(0.85) translateY(10px); }
 .rs-badge.in { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1), border-color 0.4s, box-shadow 0.4s; }
-.rs-disc {
-  position: relative;
-  width: var(--rs-disc);
-  height: var(--rs-disc);
-  border-radius: 50%;
-  display: block;
-  background: radial-gradient(circle at 35% 30%, #fff, var(--rs-plain));
-  border: 5px solid #fff;
-  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.06), 0 3px 8px rgba(60, 35, 15, 0.18);
-}
+/* UX 9a: no circle behind the badge -- the object sits straight in the
+   square card (.rs-badge is the card; .rs-disc just sizes and stacks it). */
+.rs-disc { position: relative; width: var(--rs-disc); height: var(--rs-disc); display: block; }
 .rs-foot { min-height: clamp(26px, 6vh, 44px); display: flex; align-items: center; justify-content: center; width: 100%; }
 
 /* tiers: the badge card's frame (gold border always means "the best of it") */
 .rs-badge.tier-gold { border-color: var(--rs-gold); box-shadow: 0 0 0 4px rgba(224, 166, 58, 0.25), 0 8px 24px rgba(185, 124, 28, 0.35); }
 .rs-badge.tier-plain { opacity: 0.94; }
 
-/* ---------- time: a stopwatch outline, the time drawn inside it ---------- */
-.rs-watch, .rs-tick, .rs-lamp { position: absolute; inset: 0; }
-.rs-watch-face { fill: var(--rs-paper); stroke: var(--rs-grey); stroke-width: 6; transition: stroke 0.4s, fill 0.4s; }
-.rs-watch-crown, .rs-watch-stem, .rs-watch-btn { fill: none; stroke: var(--rs-grey); stroke-width: 7; stroke-linecap: round; transition: stroke 0.4s; }
-.rs-time.tier-mid .rs-watch-face,
-.rs-time.tier-mid .rs-watch-crown,
-.rs-time.tier-mid .rs-watch-stem,
-.rs-time.tier-mid .rs-watch-btn { stroke: var(--rs-gold-dim); }
-.rs-time.tier-gold .rs-watch-face { fill: #fff8e2; stroke: var(--rs-gold); }
-.rs-time.tier-gold .rs-watch-crown,
-.rs-time.tier-gold .rs-watch-stem,
-.rs-time.tier-gold .rs-watch-btn { stroke: var(--rs-gold); }
+/* ---------- time: the stopwatch art, the time drawn over its empty face ---------- */
+.rs-watch { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .rs-time .rs-big {
   position: absolute;
   left: 50%;
@@ -111,9 +96,8 @@
 .rs-time.tier-plain .rs-big { color: var(--rs-grey); }
 .rs-big.long { font-size: calc(var(--rs-disc) * 0.2); }
 
-/* time: the best line (crown) and the ribbon */
+/* time: the best line (crown icon) and the ribbon */
 .rs-best { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; background: #f6ead6; font-size: clamp(15px, 3.2vh, 22px); }
-.rs-best svg { width: 1.1em; height: 1.1em; color: var(--rs-gold-lo); }
 .rs-ribbon {
   position: absolute;
   top: -12px;
@@ -131,38 +115,27 @@
 }
 .rs-badge.celebrate .rs-ribbon { animation: rs-ribbon 0.5s cubic-bezier(0.3, 1.6, 0.6, 1) both; }
 
-/* ---------- accuracy: a big chunky tick, masked so it fills as a gauge ---------- */
-.rs-tick-bg { fill: #efe4d2; }
-.rs-tick-right { fill: var(--rs-leaf); x: 0; width: 0; transition: width 0.8s cubic-bezier(0.2, 0.7, 0.3, 1); }
-.rs-tick-right.filled { width: var(--rw); }
-.rs-tick-wrong { fill: var(--rs-madder); x: var(--rw); width: 0; transition: width 0.8s cubic-bezier(0.2, 0.7, 0.3, 1); }
-.rs-tick-wrong.filled { width: var(--ww); }
-.rs-tick-shine { fill: rgba(255, 255, 255, 0.65); opacity: 0; transform: translateX(-40px) skewX(-18deg); }
-.rs-badge.rs-acc.tier-gold .rs-tick-right { fill: var(--rs-gold); }
-.rs-badge.rs-acc.tier-gold .rs-tick-shine { opacity: 1; animation: rs-shine 1.8s ease-in-out infinite; }
+/* ---------- accuracy: the empty tick art, green/red layers clipped over it as a
+   gauge by the share right/wrong, the gold art swapped in when all right ---------- */
+.rs-tick-base, .rs-tick-right, .rs-tick-wrong, .rs-tick-gold { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.rs-tick-right, .rs-tick-wrong, .rs-tick-gold { clip-path: inset(0 100% 0 0); transition: clip-path 0.8s cubic-bezier(0.2, 0.7, 0.3, 1); }
+.rs-tick-right.filled { clip-path: inset(0 calc(100% - var(--rw, 0%)) 0 0); }
+.rs-tick-wrong.filled { clip-path: inset(0 0 0 var(--rw, 0%)); }
+.rs-acc.tier-gold .rs-tick-right.filled,
+.rs-acc.tier-gold .rs-tick-wrong.filled { clip-path: inset(0 100% 0 0); }
+.rs-acc.tier-gold .rs-tick-gold { clip-path: inset(0 0 0 0); }
 .rs-acc .rs-foot { font-size: clamp(20px, 4.2vh, 30px); font-weight: 800; font-variant-numeric: tabular-nums; }
 .rs-acc .rs-foot .rs-of { opacity: 0.6; font-weight: 600; margin-left: 2px; }
 
-/* ---------- hints: a big light bulb, dimmer and cracked as hints climb ---------- */
-.rs-lamp-base { fill: none; stroke: #8b7458; stroke-width: 6; stroke-linecap: round; }
-.rs-lamp-glass { fill: #efe4d2; stroke: #b39a72; stroke-width: 5; transition: fill 0.4s, stroke 0.4s, opacity 0.4s; }
-.rs-lamp-filament { fill: none; stroke: #9c8464; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity 0.4s; }
-.rs-lamp-crack { fill: none; stroke: #a68f6c; stroke-width: 2.5; stroke-linecap: round; opacity: 0; transition: opacity 0.4s; }
-.rs-lamp-glow { fill: var(--rs-gold); opacity: 0; filter: blur(7px); transition: opacity 0.4s; }
-.rs-badge[data-hn="0"] .rs-lamp-glass { fill: #fff3c2; stroke: var(--rs-gold-lo); }
-.rs-badge[data-hn="0"] .rs-lamp-glow { opacity: 0.6; animation: rs-flicker 1.3s ease-in-out infinite; }
-.rs-badge[data-hn="1"] .rs-lamp-glass { fill: #fbeecb; stroke: var(--rs-gold-lo); }
-.rs-badge[data-hn="1"] .rs-lamp-glow { opacity: 0.22; }
-.rs-badge[data-hn="1"] .rs-lamp-filament { opacity: 0.85; }
-.rs-badge[data-hn="1"] .rs-lamp-crack.c1 { opacity: 0.9; }
-.rs-badge[data-hn="2"] .rs-lamp-glass { fill: #efe4d2; stroke: #b39a72; opacity: 0.85; }
-.rs-badge[data-hn="2"] .rs-lamp-glow { opacity: 0.06; }
-.rs-badge[data-hn="2"] .rs-lamp-filament { opacity: 0.9; stroke: #8b7458; }
-.rs-badge[data-hn="2"] .rs-lamp-crack.c1,
-.rs-badge[data-hn="2"] .rs-lamp-crack.c2 { opacity: 0.9; }
-.rs-badge[data-hn="off"] .rs-lamp-glass { fill: #e6dbc6; stroke: #c9b89f; opacity: 0.75; }
+/* ---------- hints: the bulb art for the hint count (0, 1, 2, 3+), cross-faded ---------- */
+.rs-lamp { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.4s; }
+.rs-badge[data-hn="0"] .rs-lamp-0,
+.rs-badge[data-hn="1"] .rs-lamp-1,
+.rs-badge[data-hn="2"] .rs-lamp-2,
+.rs-badge[data-hn="3"] .rs-lamp-3 { opacity: 1; }
+.rs-badge[data-hn="0"] .rs-lamp-0 { animation: rs-flicker 1.3s ease-in-out infinite; }
 .rs-hint-count { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; background: #f6ead6; font-size: clamp(15px, 3.2vh, 22px); }
-.rs-hint-count svg { width: 1.1em; height: 1.1em; color: var(--rs-gold-lo); }
+.rs-cap-icon { width: 1.1em; height: 1.1em; object-fit: contain; vertical-align: -0.15em; }
 
 /* sparkles around a gold disc ("party lines") */
 .rs-sparkles { position: absolute; inset: -14%; pointer-events: none; }
@@ -279,8 +252,7 @@
 @keyframes rs-twinkle { 0%, 100% { opacity: 0; transform: scale(0.4) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(30deg); } }
 @keyframes rs-nudge { 0%, 80%, 100% { transform: none; } 88% { transform: translateX(6px); } 94% { transform: translateX(-2px); } }
 @keyframes rs-pulse { 50% { transform: scale(1.12); } }
-@keyframes rs-shine { 0% { transform: translateX(-10px) skewX(-18deg); } 100% { transform: translateX(150px) skewX(-18deg); } }
-@keyframes rs-flicker { 0%, 100% { opacity: 0.6; } 45% { opacity: 0.85; } 55% { opacity: 0.45; } 80% { opacity: 0.7; } }
+@keyframes rs-flicker { 0%, 100% { opacity: 1; } 45% { opacity: 0.88; } 55% { opacity: 1; } 80% { opacity: 0.94; } }
 
 @media (prefers-reduced-motion: reduce) {
   .njg-results,
@@ -288,8 +260,6 @@
   .njg-results *::before { animation: none !important; transition: none !important; }
   .rs-badge.celebrate .rs-ribbon { opacity: 1; }
   .rs-badge.celebrate .rs-sparkles svg { opacity: 0.9; }
-  .rs-badge.rs-acc.tier-gold .rs-tick-shine { opacity: 0.9; }
-  .rs-badge[data-hn="0"] .rs-lamp-glow { opacity: 0.6; }
 }
 @media (max-width: 560px) and (prefers-reduced-motion: reduce) {
   .rs-badge.celebrate .rs-ribbon { transform: rotate(-3deg); }

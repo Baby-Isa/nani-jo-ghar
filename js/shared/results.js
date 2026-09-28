@@ -147,11 +147,9 @@
   const svg = (body, vb = "0 0 24 24") => `<svg viewBox="${vb}" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
   const ICON = {
     check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
-    bulb: svg('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'),
     speaker: svg('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
     next: svg('<path d="M5 12h13M13 6l6 6-6 6"/>'),
     again: svg('<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4.5h4.5"/>'),
-    crown: svg('<path d="M4 17.5 3 7.5l5 4 4-6 4 6 5-4-1 10z"/>'),
     spark: svg('<path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z" fill="currentColor"/>'),
   };
   Results.ICONS = ICON;
@@ -159,46 +157,36 @@
   const sfx = (name, o) => root.Sfx && root.Sfx.play(name, o);
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  // a small, unique id for an inline SVG mask (several badges can be on
-  // screen at once mid-transition, so ids must never collide)
-  let uidN = 0;
-  const uid = () => `rs${Date.now().toString(36)}${(uidN++).toString(36)}`;
+  // this script's own folder (however deep the page that loaded it sits),
+  // so assets/ui/results/*.webp resolves from any page; njgV()/Cook.v()
+  // then stamps it for cache-busting (UX 9a: no more inline-SVG badges).
+  const scriptBase = (() => {
+    try {
+      const src = document.currentScript && document.currentScript.getAttribute("src");
+      const m = src && src.match(/^(.*?)js\/shared\/results\.js(?:[?#].*)?$/);
+      return m ? m[1] : "";
+    } catch (e) {
+      return "";
+    }
+  })();
+  const v = root.njgV || ((u) => u);
+  const IMG = (name) => v(`${scriptBase}assets/ui/results/${name}.webp`);
+  const img = (cls, name, style) => `<img class="${cls}" src="${esc(IMG(name))}" alt=""${style ? ` style="${style}"` : ""}>`;
 
-  /* -------- the big drawn badges (UX 9a): stopwatch, tick and bulb -------- */
-  function watchSvg() {
-    return `<svg class="rs-watch" viewBox="0 0 100 100" aria-hidden="true">
-      <line class="rs-watch-crown" x1="42" y1="16" x2="58" y2="16"/>
-      <line class="rs-watch-stem" x1="50" y1="22" x2="50" y2="16"/>
-      <line class="rs-watch-btn" x1="75" y1="27" x2="83" y2="19"/>
-      <circle class="rs-watch-face" cx="50" cy="58" r="36"/>
-    </svg>`;
+  /* -------- the big badges (UX 9a): photoreal stopwatch, tick and bulb art,
+     no circle behind them -- each sits straight in its square card. -------- */
+  /** The stopwatch: gold+glow (new best), dim gold (good) or grey (plain), by tier. */
+  function watchImg(tier) {
+    return img("rs-watch", tier === "gold" ? "stopwatch-pb" : tier === "mid" ? "stopwatch-good" : "stopwatch-plain");
   }
-  /** A big chunky tick, masked so a gauge can fill it green (right) then red (wrong). */
-  function tickSvg(rw, ww) {
-    const id = uid();
-    return `<svg class="rs-tick" viewBox="0 0 100 100" aria-hidden="true">
-      <defs><mask id="${id}" maskUnits="userSpaceOnUse">
-        <path d="M22 54 L42 74 L80 26" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
-      </mask></defs>
-      <g mask="url(#${id})">
-        <rect class="rs-tick-bg" x="0" y="0" width="100" height="100"/>
-        <rect class="rs-tick-right" x="0" y="0" width="0" height="100" style="--rw:${rw}%"/>
-        <rect class="rs-tick-wrong" x="0" y="0" width="0" height="100" style="--rw:${rw}%;--ww:${ww}%"/>
-        <rect class="rs-tick-shine" x="-30" y="0" width="22" height="100"/>
-      </g>
-    </svg>`;
+  /** A big chunky tick: the empty face, a green layer clipped to the share right and a
+   * red layer for the rest (CSS clip-path by percentage), or the gold art when all right. */
+  function tickImg(rw, ww) {
+    return img("rs-tick-base", "tick-empty") + img("rs-tick-right", "tick-green", `--rw:${rw}%`) + img("rs-tick-wrong", "tick-red", `--rw:${rw}%;--ww:${ww}%`) + img("rs-tick-gold", "tick-gold");
   }
-  /** A big light bulb: brightness, filament and cracks are set by CSS off data-hn. */
-  function bulbSvg() {
-    return `<svg class="rs-lamp" viewBox="0 0 100 100" aria-hidden="true">
-      <circle class="rs-lamp-glow" cx="50" cy="44" r="34"/>
-      <path class="rs-lamp-base" d="M38 76h24M42 88h16"/>
-      <path class="rs-lamp-glass" d="M50 10a26 26 0 0 0-15 47c2.6 2.2 4.4 5.2 4.4 9h21c0-3.8 1.8-6.8 4.4-9A26 26 0 0 0 50 10z"/>
-      <path class="rs-lamp-filament" d="M43 47l4-9 3 9 4-9 3 9"/>
-      <path class="rs-lamp-crack c1" d="M34 30l10 12"/>
-      <path class="rs-lamp-crack c2" d="M68 34l-9 13"/>
-      <path class="rs-lamp-crack c3" d="M53 13l3 17"/>
-    </svg>`;
+  /** A big light bulb: which art shows is set by CSS off data-hn (0, 1, 2, 3+). */
+  function bulbImgs() {
+    return ["0", "1", "2", "3"].map((n) => img(`rs-lamp rs-lamp-${n}`, `bulb-${n}`)).join("");
   }
 
   /** Play one word: the mode's hook, else its own recording, else Cook's audio path (Lang), else the local TTS placeholder. */
@@ -233,10 +221,10 @@
   function timeBadge(t) {
     if (!t) return "";
     const bestLine = t.first
-      ? `<span class="rs-best first">${ICON.crown}<b>${esc(Results.clock(t.bestMs))}</b></span>`
-      : `<span class="rs-best">${ICON.crown}<b>${esc(Results.clock(t.newBest ? t.bestMs : t.prevMs))}</b></span>`;
+      ? `<span class="rs-best first">${img("rs-cap-icon", "icon-crown")}<b>${esc(Results.clock(t.bestMs))}</b></span>`
+      : `<span class="rs-best">${img("rs-cap-icon", "icon-crown")}<b>${esc(Results.clock(t.newBest ? t.bestMs : t.prevMs))}</b></span>`;
     return `<div class="rs-badge rs-time tier-${t.tier}" data-badge="time" aria-label="Time ${t.seconds} seconds${t.newBest ? ", a new best" : ""}">
-      <div class="rs-disc">${watchSvg()}<span class="rs-big${t.seconds >= 100 ? " long" : ""}" data-to="${t.seconds}">${esc(Results.clock(t.timeMs))}</span>
+      <div class="rs-disc">${watchImg(t.tier)}<span class="rs-big${t.seconds >= 100 ? " long" : ""}" data-to="${t.seconds}">${esc(Results.clock(t.timeMs))}</span>
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
       <div class="rs-foot">${bestLine}</div>
       <div class="rs-ribbon" ${t.newBest ? "" : "hidden"}>New best!</div>
@@ -246,17 +234,17 @@
     const rw = a.total ? (100 * a.right) / a.total : 0;
     const ww = a.total ? 100 - rw : 0;
     return `<div class="rs-badge rs-acc tier-${a.tier === "none" ? "mid" : "pending"}" data-badge="accuracy" data-tier="${a.tier}" aria-label="${a.right} right out of ${a.total}">
-      <div class="rs-disc">${tickSvg(rw, ww)}
+      <div class="rs-disc">${tickImg(rw, ww)}
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
       <div class="rs-foot">${a.total ? `<b class="rs-n">0</b><span class="rs-of">/${a.total}</span>` : "&ndash;"}</div>
     </div>`;
   }
   function hintsBadge(h) {
-    const hn = h.count === 0 ? "0" : h.count === 1 ? "1" : h.count === 2 ? "2" : "off";
+    const hn = h.count >= 3 ? "3" : String(h.count);
     return `<div class="rs-badge rs-hints tier-${h.tier}" data-badge="hints" data-hn="${hn}" aria-label="${h.count} hints">
-      <div class="rs-disc">${bulbSvg()}
+      <div class="rs-disc">${bulbImgs()}
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
-      <div class="rs-foot"><span class="rs-hint-count">${ICON.bulb}<b>&times; ${h.count}</b></span></div>
+      <div class="rs-foot"><span class="rs-hint-count">${img("rs-cap-icon", "icon-bulb")}<b>&times; ${h.count}</b></span></div>
     </div>`;
   }
   /** Page 2: right words glow green, grouped right; wrong words glow red, grouped left (UX 9a). */
