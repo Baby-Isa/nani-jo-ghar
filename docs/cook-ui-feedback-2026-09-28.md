@@ -74,3 +74,24 @@ Zafar's feedback, with Claude's recommendations. Items marked **(decide)** are w
   - (B) a brass service bell for Cook ("order's ready!", with a ding), plus A everywhere else;
   - (C) a big gold arrow.
 - **The opening game screen** is weak; that's parked until later (Zafar).
+
+## 9. Sidebar v2 (Zafar's review of the first build, 28 Sept evening). Supersedes §1–3 wherever they differ.
+Aim: as crisp and premium as the new jar art. Flat, modern, straight, organised. **Nothing wraps onto two lines**: every headline and every item fits one line; shrink the text to fit, with a readable minimum.
+- **Cards use the short form only:** *Muke chai khape.* / *Muke mishkaki khape.* The polite long form belongs in Conversations, not the cards.
+- **The face is the replay button** on every card, Nani's included: tap the face to hear it again, with a small speaker badge on the face's corner. There's no separate speaker button, which leaves more room for the headline.
+- **Nani's box:** a brighter red tint that contrasts with the sidebar panel (e.g. a pale rose background with a deep red embroidery band). Her face = replay; on the right, only the light bulb and the mute button.
+- **The sidebar panel:** a different, slightly deeper tone than the cards; straight edges; a crisp thin divider line against the play area. The cards inside are rounded, flat, with a 1 px border and a soft shadow.
+- **Items are self-contained pills:** one per item, all the same width, in a straight stack, clearly separate from the card's headline.
+  - Done = true metallic gold (a gold gradient, not flat yellow) with the gold tick art.
+  - Next (ordered jobs) = a gold outline on a light grey fill.
+  - Pending = a plain white pill with a light border.
+  - No floating, no bullets, no empty circles.
+- **Groups (e.g. several skewers):** the headline gives the summary (e.g. one mixed, two meat, using the recorded *hakri lakri mishkaki* / *ba lakri mishkaki* clips where they exist). Each skewer is a small group box of pills, with alternate groups tinted differently so they're distinct. No label per group.
+- **No English in the item pills** (e.g. "green pepper"): if the Kutchi is missing, flag it "to record", list it in the report, and use the nearest recorded word or leave the item out of the level.
+- **The Done button (every mode), decided: option A.** The gold-metal tick art (`assets/ui/results/tick-gold.webp`) on a round cream button. It replaces the green tick button.
+- **The hands:** one still shows in the skewer station (at the bottom of the board). Remove it.
+- **The word review:**
+  - true gold (a metallic gradient, like the tick; not yellow) for right, red for wrong;
+  - a thin vertical divider between wrong (left) and right (right);
+  - both sides' rows **top-aligned** to the same line, not each centred on its own;
+  - the cards restyled to match the sidebar pills: flat, modern, crisp.
