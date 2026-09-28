@@ -341,6 +341,8 @@
       // the picture tally: maani on the plate, by kind (what you made, never the target)
       const kind = p.item.it.type;
       UI.count(plated().filter((x) => x.type === kind).length, { id: kind, state: "done" });
+      // its mini card on the order ticks (28 Sept: one card per maani asked for)
+      if (ctx.tickCard) ctx.tickCard(p.item.it.key || kind);
       update();
     };
 

@@ -183,6 +183,8 @@
         // the picture tally: the skewers you've made, by kind (never how many they asked for)
         const tk = c.kind || "odd";
         UI.countUp(tk, { icon: SK.icon(tk, sk.ids), speak: false });
+        // that skewer's mini card on the order ticks (28 Sept); a wrong one ticks nothing (no verdicts mid-round)
+        if (c.ok && ctx.tickCard) ctx.tickCard(c.kind);
         S.sparkle(z.X(lay.boardX), z.Y(SKY - 60));
         Cook.sfx.right();
         if (c.ok && c.kind === mixedW && !tickedMixed && ctx.tickItem) {

@@ -169,7 +169,8 @@
       document.addEventListener("pointerdown", skip, true);
     });
     try {
-      const voice = !opts.silent && Lang.hasVoice(line);
+      const naniQuiet = (target === card() || opts.nani) && UI.naniMuted();
+      const voice = !opts.silent && !naniQuiet && Lang.hasVoice(line);
       const talk = voice ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(opts.ms || Cook.readMs(Lang.plain(line)));
       await Promise.race([talk, skipped]);
     } finally {
@@ -216,7 +217,12 @@
     const onCard = els.length > 0 && !opts.caption;
     document.querySelectorAll(".throb").forEach((e) => e.classList.remove("throb"));
     els.forEach((e) => e.classList.add("throb"));
-    if (!onCard) {
+    // 28 Sept: her line shows in her own box at the top of the sidebar (no caption over the picture)
+    if (guide) {
+      guideLine = line;
+      guide.set(Lang.html(line, { hide: opts.hide }));
+      guide.talk(true);
+    } else if (!onCard) {
       cap.innerHTML = `<span class="vc-say">${ICON.speaker}</span><span class="vc-t">${Lang.html(line, { hide: opts.hide })}</span>`;
       cap.classList.remove("hidden");
       cap.style.animation = "none";
@@ -233,7 +239,8 @@
       document.addEventListener("pointerdown", skip, true);
     });
     try {
-      const voice = !opts.silent && Lang.hasVoice(line);
+      // Nani muted (her box): she still shows the line, silently
+      const voice = !opts.silent && !UI.naniMuted() && Lang.hasVoice(line);
       const talk = voice ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(opts.ms || Math.min(2600, Cook.readMs(Lang.plain(line))));
       await Promise.race([talk, skipped]);
     } finally {
@@ -241,6 +248,7 @@
       if (tok === voiceTok) {
         els.forEach((e) => e.classList.remove("throb"));
         cap.classList.add("hidden");
+        if (guide) guide.talk(false);
       }
     }
     Cook.checkRun(token);
@@ -249,7 +257,78 @@
     voiceTok++;
     if ($("#voice")) $("#voice").classList.add("hidden");
     document.querySelectorAll(".throb").forEach((e) => e.classList.remove("throb"));
+    if (guide) {
+      guide.talk(false);
+      showGuide();
+    }
   };
+
+  /* ---------------- Nani's guide box (28 Sept; js/shared/guide.js) ---------------- */
+  /*
+   * At the top of the sidebar in every station: her face and what to do now. The instruction
+   * comes from data.guide (by station, or station:phase); none is recorded yet, so each shows
+   * its English flagged "to record" until it gets a `line`. While she says one of her own lines
+   * (UI.voice), the box shows that line. Tap the box to mute or unmute her (every mode, saved);
+   * her speaker hears the line again; the light bulb lives here too.
+   */
+  let guide = null;
+  let guideKey = null;
+  let guideLine = null; // what the box shows now: a line (Kutchi) or null (the instruction)
+  UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
+  const guideEntry = () => {
+    const G = (Cook.data && Cook.data.guide) || {};
+    const k = guideKey || "";
+    return G[k] || G[k.split(":")[0]] || G.default || null;
+  };
+  function showGuide() {
+    if (!guide) return;
+    guideLine = null;
+    const g = guideEntry();
+    if (g && g.line && Cook.data.lines[g.line]) {
+      guideLine = Lang.line(g.line);
+      guide.set(Lang.html(guideLine));
+    } else guide.set(esc((g && g.en) || ""), { rec: !!(g && g.en) });
+  }
+  /** The station (or station:phase) whose instruction the box shows. */
+  UI.guideFor = function (key) {
+    guideKey = key || null;
+    if (guide && !guide.el.classList.contains("talk")) showGuide();
+  };
+  /** Which data.guide key a goal text belongs to (a station's goal, or one of its phases). */
+  function guideKeyOf(text) {
+    const st = (Cook.data && Cook.data.stations) || {};
+    for (const k of Object.keys(st)) {
+      if (st[k].goal === text) return k;
+      const ph = st[k].phases || {};
+      const p = Object.keys(ph).find((x) => ph[x] === text);
+      if (p) return `${k}:${p}`;
+    }
+    return null;
+  }
+  function mountGuide() {
+    const el = $("#guide");
+    if (!el || !global.NaniGuide) return;
+    guide = global.NaniGuide.mount(el, {
+      face: Cook.v("assets/cook/characters/nani-badge.webp"),
+      bulb: Cook.v("assets/ui/results/icon-bulb.webp"),
+      bulbId: "btn-bulb",
+      onBulb: () => {
+        Cook.unlockAudio();
+        UI.bulb();
+      },
+      onReplay: (btn) => {
+        Cook.unlockAudio();
+        const line = guideLine;
+        if (!line || !Lang.hasVoice(line)) return;
+        if (Cook.onHelp && line.segs.some((x) => x.w)) Cook.onHelp("replay", { line });
+        btn.classList.add("on");
+        Lang.speak(line)
+          .catch(() => {})
+          .then(() => btn.classList.remove("on"));
+      },
+    });
+    showGuide();
+  }
 
   /* ---------------- gist (top of the picture) and help ("?" in the sidebar) ---------------- */
   /*
@@ -270,6 +349,9 @@
       return;
     }
     const stations = (Cook.data && Cook.data.stations) || {};
+    // Nani's box: the instruction for this station (or this phase of it)
+    const gk = guideKeyOf(text);
+    if (gk) UI.guideFor(gk);
     // opts.key: another mode's goal (Find it), so its "?" pulses only the first time too
     const key = opts.key || Object.keys(stations).find((k) => stations[k].goal === text);
     Cook.save.goalShown = Cook.save.goalShown || {};
@@ -406,7 +488,7 @@
     box.classList.remove("hidden", "leaving");
     box.classList.toggle("busy", Cook.save.mode === "busy");
     let misses = 0;
-    Lang.speak(line);
+    if (!UI.naniMuted()) Lang.speak(line);
     return new Promise((resolve) => {
       Cook.shuffle(options).forEach((id) => {
         const b = document.createElement("div");
@@ -451,7 +533,7 @@
             void b.offsetWidth;
             b.classList.add("wrong");
             Cook.sfx.soft();
-            Lang.speak(line);
+            if (!UI.naniMuted()) Lang.speak(line);
             if (misses >= 2) {
               tray.querySelector(`[data-id="${want}"]`).classList.add("glow");
               if (Cook.onHelp) Cook.onHelp("shown", { ids: [want], passMe: true });
@@ -508,6 +590,8 @@
       level: orderLevel(),
     };
     UI.bulbOff();
+    // Nani's box: a new order, so no station's instruction yet
+    if (UI.guideFor) UI.guideFor(null);
     const el = $("#mission");
     el.classList.remove("hidden", "stamped", "arriving");
     el.classList.toggle("busy", !!busy);
@@ -562,7 +646,8 @@
             }
             prev = k;
           });
-          return { s, rows };
+          // 28 Sept: an ordered job (skewer pieces, chaat layers, tadka) gets the sequence line and its next row
+          return { s, rows, seq, plain };
         }),
     }));
   }
@@ -687,9 +772,11 @@
     const el = intro();
     const card = el.querySelector(".ic-card");
     el.querySelector(".ic-face").src = faceUrl(m.who);
-    el.querySelector(".ic-name").textContent = m.name;
+    const nameEl = el.querySelector(".ic-name");
+    if (nameEl) nameEl.textContent = m.name;
+    // 28 Sept (Zafar): no English instructions on a pop-up; the card itself shows the task
     const how = el.querySelector(".ic-how");
-    if (how) how.textContent = UI.w6() ? m.how || "" : "";
+    if (how) how.textContent = "";
     const say = el.querySelector(".ic-say");
     say.innerHTML = ICON.speaker;
     renderIntro();
@@ -865,13 +952,40 @@
   };
   /** The words of a line as the card shows them: Kutchi (dots when known), or English while the bulb is on. */
   const text6 = (line, hide) => (mission && mission.english && line.en ? `<span class="en6">${esc(line.en)}</span>` : Lang.html(line, { hide }));
-  function row6(map, { r, up, down }) {
+  /*
+   * 28 Sept (Zafar, docs/cook-ui-feedback-2026-09-28.md 1-2): one row format everywhere, on the
+   * request pop-up and the sidebar card alike. No pictures (they'd give the Kutchi away), no dots:
+   *   [word ........................ tick]
+   * A row that's done gets a light gold band and a small gold tick on the right. In an ordered job
+   * (a skewer's pieces, the chaat layers, the tadka) the row to do next has a light grey band and
+   * one thin line runs down the left joining the rows (the same component for every ordered job, no
+   * numbers, no arrows); an any-order list (the pantry) has no "next". Rows still to do are plain:
+   * no empty circles. Rows tick when that step closes (UX 11); nothing goes red until the review.
+   */
+  const TICK = () => Cook.v("assets/ui/results/tick-gold.webp");
+  const tickHtml = (on) => `<span class="tk" aria-hidden="true">${on ? `<img src="${TICK()}" alt="">` : ""}</span>`;
+  function row6(map, { r }, { next = false, key = null } = {}) {
     const li = document.createElement("div");
-    li.className = ["lr", "r6", r.no ? "no" : "", r.done ? "done" : "", r.miss && r.done === false && mission && mission.stamped ? "miss" : "", up ? "up" : "", down ? "down" : ""].filter(Boolean).join(" ");
-    li.innerHTML = `<i class="ldot"></i><span class="lt">${text6(r.line, rowHide(r))}</span>`;
+    li.className = ["lr", "r6", r.no ? "no" : "", r.done ? "done" : "", next && !r.done ? "next" : "", r.miss && r.done === false && mission && mission.stamped ? "miss" : ""].filter(Boolean).join(" ");
+    li.innerHTML = `<span class="lt">${text6(r.line, rowHide(r))}</span>${tickHtml(r.done)}`;
     if (typeof r.decorate === "function") r.decorate(li);
-    addEl(map, r, li);
+    addEl(map, key || r, li);
     return li;
+  }
+  /** Rows into a list; an ordered one gets the sequence line and its next step marked. */
+  function rowList(map, rows, { seq = false, line = false, at = 0 } = {}) {
+    const list = document.createElement("div");
+    list.className = ["lrows", seq || line ? "lseq" : ""].filter(Boolean).join(" ");
+    // the next step: the first group with something still to do (the whole group, if it's any-order),
+    // at or after `at` steps taken (a station whose rows tick later, at the check, moves it on: M.advance)
+    let open = null;
+    if (seq) {
+      const steps = [];
+      rows.filter((x) => !x.r.no).forEach((x) => steps.push(...Array(Math.max(1, x.r.need || 1)).fill(x)));
+      open = steps.slice(at).find((x) => !x.r.done) || null;
+    }
+    rows.forEach((x) => list.appendChild(row6(map, x, { next: !!open && x.gi === open.gi && !x.r.no, key: x.key || null })));
+    return list;
   }
   /** The card's title words: a row's words without its number ("lakri gos", "wadhi maani"). */
   const titleOf = (r) => {
@@ -879,57 +993,74 @@
     return Lang.phrase(parts);
   };
   /**
-   * The card for a row of things made (skewers, maani): `r.cards` slots (a
-   * skewer's four dots; a mixed one's pieces named on them, in order).
-   * Wave 6b, the count leak: ONE card per kind, its title with the number
-   * as it was said ("ba lakri gos"), never one card per unit (the number of cards
-   * gave the count away). What you've made shows in the picture tally.
+   * Things made several times (skewers, maani): the kind as it was said, once ("ba lakri gos",
+   * with its speaker), then a mini card per unit (28 Sept, Zafar: "two skewers" = two mini cards).
+   * A mini card is one row ("lakri gos") that ticks when that one is made; a mixed skewer's card
+   * lists its pieces in order, as an ordered job (the sequence line, the next piece marked).
    */
-  function unitCards(map, r, pieces) {
-    const n = 1;
-    const title = r.line || titleOf(r);
-    const out = [];
+  function unitGroup(map, r, pieces) {
+    const g = document.createElement("div");
+    g.className = ["ugroup", r.done ? "done" : ""].filter(Boolean).join(" ");
+    const head = document.createElement("div");
+    head.className = ["ug-title", r.done ? "done" : ""].filter(Boolean).join(" ");
+    head.innerHTML = `<span class="lt">${text6(r.line, rowHide(r))}</span>`;
+    addEl(map, r, head);
+    g.appendChild(head);
+    const grid = document.createElement("div");
+    grid.className = "icards";
+    const n = Math.max(1, r.qty || 1);
+    const units = r.units || [];
+    const unitDone = (u) => !!(r.done || units[u]);
+    // which unit's card is being made now (its next piece is marked)
+    const now = pieces ? [...Array(n).keys()].find((u) => !unitDone(u)) : -1;
+    const seen = new Map();
+    const pieceDone = pieces
+      ? pieces.map((p) => {
+          const k = seen.get(p) || 0;
+          seen.set(p, k + 1);
+          return !!(p.done || k < (p.got || 0));
+        })
+      : [];
+    const cards = [];
     for (let u = 0; u < n; u++) {
       const c = document.createElement("div");
-      c.className = ["icard", "unit", pieces ? "named" : "", r.done ? "done" : "", r.no ? "no" : ""].filter(Boolean).join(" ");
-      const slots = [];
-      for (let k = 0; k < r.cards; k++) {
-        const pr = pieces && pieces[k];
-        slots.push(`<span class="pslot${pr && pr.done ? " done" : ""}"><i></i>${pr ? `<b>${text6(Lang.wordLine(pr.ids[0]), rowHide(pr))}</b>` : ""}</span>`);
+      c.className = ["icard", "unit", pieces ? "named" : "", unitDone(u) ? "done" : ""].filter(Boolean).join(" ");
+      if (pieces) {
+        const list = document.createElement("div");
+        list.className = "lrows lseq";
+        const done = (k) => unitDone(u) || (u === now && u === 0 && pieceDone[k]);
+        const next = u === now ? pieces.findIndex((p, k) => !done(k)) : -1;
+        pieces.forEach((p, k) => {
+          const li = row6(u === 0 ? map : new Map(), { r: Object.assign(Object.create(p), { done: done(k) }) }, { next: k === next, key: p });
+          list.appendChild(li);
+        });
+        c.appendChild(list);
+      } else {
+        // the mini card names the kind ("gos", "wadhi maani"): the count and "lakri" are in the title above
+        const one = { line: Lang.phrase(r.ids), done: unitDone(u), ids: r.ids, no: false };
+        c.appendChild(row6(new Map(), { r: Object.assign(Object.create(r), one) }));
       }
-      c.innerHTML = `<div class="ic-title">${text6(title, rowHide(r))}</div><div class="ic-slots${pieces ? " named" : ""}">${slots.join("")}</div>`;
-      const rows = [r].concat(pieces || []);
-      c.prepend(cardSay(say6(), () => [{ line: r.said || r.line, els: [c] }].concat((pieces || []).map((p) => ({ line: p.said || p.line, els: [...c.querySelectorAll(".pslot")].slice(pieces.indexOf(p), pieces.indexOf(p) + 1) }))), rows));
-      addEl(map, r, c);
-      out.push(c);
+      cards.push(c);
+      grid.appendChild(c);
     }
-    return out;
+    g.appendChild(grid);
+    const rows = [r].concat(pieces || []);
+    head.prepend(cardSay(say6(), () => [{ line: r.said || r.line, els: [head] }].concat((pieces || []).map((p, k) => ({ line: p.said || p.line, els: cards.length ? [cards[0].querySelectorAll(".r6")[k]].filter(Boolean) : [] }))), rows));
+    return g;
   }
-  /** One person's card: face, "{person} lai.", then the card's fixed slots (an empty slot says nothing more). */
+  /** One person's card (a cup on the Chai tray): their face, "{person} lai.", then their rows. */
   function personCard(map, L, s, rows) {
     const c = document.createElement("div");
     c.className = ["icard", "person", rows.every((x) => x.r.done) ? "done" : ""].filter(Boolean).join(" ");
     const F = Lang.frames();
     const cust = (Cook.data.customers || {})[s.for] || {};
     const forLine = F.for && cust.word && Cook.data.lines[F.for] ? Lang.line(F.for, Lang.phrase([cust.word])) : null;
-    c.innerHTML = `<img class="lface" src="${faceUrl(esc(s.for))}" alt=""><div class="ic-body">${forLine ? `<div class="ic-title">${text6(forLine, () => false)}</div>` : ""}<div class="lrows"></div></div>`;
-    const list = c.querySelector(".lrows");
-    const slots = (L.card && L.card.slots) || [];
-    const optional = (L.card && L.card.optional) || [];
-    const all = Cook.Order.rows(L, { all: true });
-    // every slot, in order; an optional slot only when someone in this order has it (half/full)
-    const used = slots.map((ids, i) => ({ ids, i })).filter(({ ids, i }) => !optional.includes(i) || all.some((r) => r.ids.some((id) => ids.includes(id))));
-    const placed = new Set();
-    used.forEach(({ i }) => {
-      const x = rows.find((y) => !placed.has(y) && Cook.Order.slotOf(L, y.r) === i);
-      if (x) {
-        placed.add(x);
-        list.appendChild(row6(map, x));
-      } else list.insertAdjacentHTML("beforeend", `<div class="lr r6 empty"><i class="ldot"></i><span class="lt"></span></div>`);
-    });
-    rows.filter((x) => !placed.has(x)).forEach((x) => list.appendChild(row6(map, x)));
+    c.innerHTML = `<div class="pc-head"><img class="lface" src="${faceUrl(esc(s.for))}" alt="">${forLine ? `<div class="ic-title">${text6(forLine, () => false)}</div>` : ""}</div>`;
+    // the card's fixed slots, in order (milk, sugar, which chai); an empty slot draws nothing (no empty circles)
+    const placed = rows.slice().sort((a, b) => Cook.Order.slotOf(L, a.r) - Cook.Order.slotOf(L, b.r));
+    c.appendChild(rowList(map, placed));
     const parts = () => (forLine ? [{ line: forLine, els: [c.querySelector(".ic-title")] }] : []).concat(rows.map((x) => ({ line: x.r.no || !x.r.said ? x.r.line : x.r.said, els: map.get(x.r) || [] })));
-    c.querySelector(".ic-body").prepend(cardSay(say6(), parts, rows.map((x) => x.r)));
+    c.querySelector(".pc-head").appendChild(cardSay(say6(), parts, rows.map((x) => x.r)));
     return c;
   }
   /** A ladder's blocks into `box`: sections as rows, person cards and unit cards. */
@@ -939,7 +1070,7 @@
       const lad = document.createElement("div");
       lad.className = "ladder";
       // a later dish's line ("Ne samosa."); the first dish is the card's head
-      if (L.head && (li > 0 || big)) {
+      if (L.head && li > 0) {
         const h = document.createElement("div");
         h.className = ["lr", "r6", "head", L.head.done ? "done" : ""].filter(Boolean).join(" ");
         h.innerHTML = `<span class="lt">${text6(L.head.line, rowHide(L.head))}</span>`;
@@ -947,29 +1078,21 @@
         lad.appendChild(h);
       }
       const pieceSec = (id) => L.sections.find((x) => x.cardOf === id);
-      sections.forEach(({ s, rows }) => {
+      sections.forEach(({ s, rows, seq, plain }) => {
         if (s.cardOf) return; // drawn on its card
         if (s.for) return lad.appendChild(personCard(map, L, s, rows));
         const sec = document.createElement("div");
         sec.className = ["lsec", s.when ? "late" : ""].filter(Boolean).join(" ");
         const cards = rows.filter((x) => x.r.cards);
-        const plain = rows.filter((x) => !x.r.cards);
-        if (plain.length) {
-          const list = document.createElement("div");
-          list.className = "lrows";
-          plain.forEach((x) => list.appendChild(row6(map, x)));
-          sec.appendChild(list);
-        }
-        if (cards.length) {
-          const grid = document.createElement("div");
-          grid.className = "icards";
-          cards.forEach((x) => {
-            const ps = pieceSec(x.r.ids[x.r.ids.length - 1]);
-            const pieces = ps ? [].concat(...ps.groups).filter((p) => !p.no).flatMap((p) => Array(p.need || 1).fill(p)) : null;
-            unitCards(map, x.r, pieces).forEach((c) => grid.appendChild(c));
-          });
-          sec.appendChild(grid);
-        }
+        const flat = rows.filter((x) => !x.r.cards);
+        if (flat.length) sec.appendChild(rowList(map, flat, { seq, line: plain && flat.length > 1, at: s.at || 0 }));
+        cards.forEach((x) => {
+          const ps = pieceSec(x.r.ids[x.r.ids.length - 1]);
+          const pieces = ps ? [].concat(...ps.groups).filter((p) => !p.no).flatMap((p) => Array(p.need || 1).fill(p)) : null;
+          // just one of a plain kind ("hakri lakri gos"): a row like any other, ticked when it's made
+          if (!pieces && (x.r.qty || 1) === 1) return sec.appendChild(rowList(map, [{ r: Object.assign(Object.create(x.r), { done: !!(x.r.done || (x.r.units && x.r.units[0])) }), gi: 0, key: x.r }]));
+          sec.appendChild(unitGroup(map, x.r, pieces));
+        });
         lad.appendChild(sec);
       });
       box.appendChild(lad);
@@ -983,11 +1106,17 @@
     $("#side").classList.toggle("english", !!mission.english);
     if (introOpen()) renderIntro6();
   }
+  /** The headline (the overall request) as the card's head shows it; a line still to record is flagged. */
+  function headline6(r) {
+    if (!r) return `<span class="md-text">${esc(mission.name)}</span>`;
+    if (r.rec) return `<span class="md-text rec">${esc(r.line.en || Lang.plain(r.line))}<small class="md-rec">to record</small></span>`;
+    return `<span class="md-text">${text6(r.line, rowHide(r))}</span>`;
+  }
   function renderDish6() {
     const box = $("#mission .m-dish");
     const L = mission.ladders[0];
     const r = L && L.head;
-    box.innerHTML = r ? `<span class="md-text">${text6(r.line, rowHide(r))}</span>` : `<span class="md-text">${esc(mission.name)}</span>`;
+    box.innerHTML = headline6(r);
     if (r) {
       sideEls.delete(r);
       addEl(sideEls, r, box);
@@ -997,6 +1126,13 @@
     const box = intro().querySelector(".ic-order");
     box.innerHTML = "";
     blocks6(box, introEls, { big: true });
+    // 28 Sept: the headline sits in the pop-up's head, beside the face (no name)
+    const dish = intro().querySelector(".ic-dish");
+    const L = mission.ladders[0];
+    if (dish) {
+      dish.innerHTML = headline6(L && L.head);
+      if (L && L.head) addEl(introEls, L.head, dish);
+    }
   }
   /** The order card's own speaker: the whole order, read along on the card. */
   M.sayCard = function () {
@@ -1125,6 +1261,31 @@
     settle(L);
     renderOrder();
     return r;
+  };
+  /**
+   * 28 Sept: one of the things made several times is finished (a skewer threaded): its kind's
+   * next mini card ticks. The kind's own row (the count, "ba lakri gos") still ticks only when
+   * the step closes (UX 11). kind: a word id, or a compound kind ("ph-big+cook-maani").
+   */
+  M.tickCard = function (kind, dish = 0) {
+    const L = ladderFor(dish);
+    if (!L || !kind) return null;
+    const want = String(kind).split("+");
+    const r = Order()
+      .rows(L)
+      .find((x) => x.units && want.every((id) => x.ids.includes(id)) && x.units.some((u) => !u));
+    if (!r) return null;
+    r.units[r.units.indexOf(false)] = true;
+    renderOrder();
+    return r;
+  };
+  /** A step of the dish's ordered job was taken (a chaat layer went in): its "next" row moves on. */
+  M.advance = function (dish = 0) {
+    const L = ladderFor(dish);
+    const s = L && L.sections.find((x) => x.seq && (!x.when || x.shown) && !x.cardOf);
+    if (!s) return;
+    s.at = (s.at || 0) + 1;
+    renderOrder();
   };
   /** The i-th piece of the dish's sequence (thread reports a position, not an item). */
   M.unitId = function (i, dish = 0) {
@@ -1377,8 +1538,21 @@
     // Counting aloud teaches the number words (stages 1-2). From stage 3
     // the count is silent, so you can't just stop when the sound matches
     // what you heard in the order.
-    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3) Lang.speak({ segs: Lang.num(n), en: String(n) });
+    // 28 Sept (Zafar): the voice says the count AND the thing ("hakri dungri", "ba dungri"), the number
+    // agreeing with the noun (hakro/hakri). A later level (3+) or Nani on mute stays silent.
+    const lv = mission ? mission.level : orderLevel();
+    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3 && lv <= 2 && !UI.naniMuted()) Lang.speak(tallyLine(n, id));
   };
+  /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
+  function tallyLine(n, id) {
+    const ws = id && id !== "_" ? String(id).split("+") : [];
+    if (!ws.length || !ws.every((w) => Cook.data.words[w]) || ws.some((w) => Cook.isPlaceholder(w))) return { segs: Lang.num(n), en: String(n) };
+    const parts = Lang.countParts(n, ws[ws.length - 1]);
+    const at = parts.indexOf(ws[ws.length - 1]);
+    parts.splice(at, 1, ...ws);
+    return Lang.phrase(parts);
+  }
+  UI.tallyLine = tallyLine;
   /** One more of `id` on the tally (returns the new count). */
   UI.countUp = function (id, opts = {}) {
     const n = ((tally.get(id) || {}).n || 0) + 1;
@@ -1496,11 +1670,15 @@
     global.addEventListener("resize", () => UI.closeHelp());
     const tr = on("#mission .m-tr", () => UI.mission.translate());
     if (tr) tr.innerHTML = ICON.translate;
-    const bulb = on("#btn-bulb", () => {
-      Cook.unlockAudio();
-      UI.bulb();
-    });
-    if (bulb) bulb.insertAdjacentHTML("afterbegin", ICON.bulb);
+    // 28 Sept: Nani's guide box carries the light bulb (a page without it keeps its own #btn-bulb)
+    mountGuide();
+    if (!guide) {
+      const bulb = on("#btn-bulb", () => {
+        Cook.unlockAudio();
+        UI.bulb();
+      });
+      if (bulb) bulb.insertAdjacentHTML("afterbegin", ICON.bulb);
+    }
     const msay = on("#mission .m-say", () => {
       Cook.unlockAudio();
       UI.mission.sayCard();

@@ -347,6 +347,8 @@
           spoon.destroy();
           got.push(id);
           UI.countUp(id, { speak: false }); // the picture tally: what went in
+          // the card's "next" row moves on a layer (its ticks wait for the check, UX 11)
+          if (UI.mission.advance) UI.mission.advance(ctx.dishAt || 0);
           obj.setAlpha(0.6); // used (it can still go in again)
           await bowl.add(id);
           z.progress({ layer: id, n: got.length });

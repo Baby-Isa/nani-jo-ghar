@@ -294,7 +294,7 @@
         // `unit` is a word said before each kind ("ba lakri gos": lakri, the skewer), whose gender picks "one" (hakri)
         const unit = e.unit ? res(e.unit, env) : null;
         const partsOf = (id) => Lang.countParts(t[id], id).flatMap((p) => (typeof p === "string" ? (unit ? [unit] : []).concat(p.split("+")) : [p]));
-        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i) : e.frame || "and") : "and", Lang.phrase(partsOf(id))));
+        const ls = ids.map((id, j) => Lang.line(j === 0 ? (e.frame === "order" ? Lang.orderFrame(i, d.level) : e.frame || "and") : "and", Lang.phrase(partsOf(id))));
         if (!ls.length) return;
         if (!when) lines.push(ls.length > 1 ? Lang.join(ls) : ls[0]);
         dot++;
@@ -302,14 +302,17 @@
         ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null }));
         return;
       }
-      const frame = e.frame === "order" ? Lang.orderFrame(i) : e.frame;
+      const frame = e.frame === "order" ? Lang.orderFrame(i, d.level) : e.frame;
       const ps = parts(e.x, env);
       const line = Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
       if (!when) lines.push(line);
-      // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list)
-      const kind = e.frame === "order" || e.head ? "dish" : e.frame === "no" ? "no" : "item";
-      if (kind !== "no" && (e.dot === "next" || (kind === "dish" && !rows.length))) dot++;
-      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when });
+      // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list).
+      // 28 Sept (Zafar): a recipe with its own `headline` (the pantry's "bring me these for …")
+      // keeps that line as the card's head, so what's fetched is all rows, the first one leading
+      const lead = !!(e.head && def.headline);
+      const kind = e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
+      if (kind !== "no" && (e.dot === "next" || (kind === "dish" && !rows.length) || lead)) dot++;
+      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead });
     };
     (def.say || []).forEach((e, k) => walk(e, e.for ? res(e.for, env) : undefined, k));
     return { lines, rows };
