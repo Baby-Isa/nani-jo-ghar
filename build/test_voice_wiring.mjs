@@ -71,7 +71,9 @@ for (const url of ["index.html", "first.html", "cook.html", "clinic.html", "lab/
     if (/assets\/audio\/family\//.test(r.url())) famRequests.push(r.url());
   });
   await page.goto(`http://localhost:${PORT}/cook.html?speed=4`);
-  await page.waitForFunction(() => !!(window.__cook && window.Cook && window.Cook.data), null, { timeout: 20000 });
+  await page.evaluate(() => localStorage.clear());
+  await page.goto(`http://localhost:${PORT}/cook.html?speed=4`);
+  await page.waitForSelector("#panel h1", { timeout: 20000 });
   await page.evaluate(() => window.__cook.lab("grill", true, { level: 1 }));
   await page.waitForSelector("#intro:not(.hidden) .ic-say", { timeout: 15000 });
   await sleep(400);
