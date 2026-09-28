@@ -283,7 +283,28 @@
     // left to right, the back one between (the order they speak and the tester fills)
     cups.sort((a, b) => a.x - b.x || a.y - b.y);
     let sel = null;
+    /*
+     * Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10): a person's pills tick as
+     * each step for their glass closes (UX 11), not only when it's full: the milk once it's poured,
+     * the sugar (a count) once you move on from their glass or pour their chai, an extra once it's in.
+     * Right or not: the check at the end and the review judge it.
+     */
+    const dishNo = () => ctx.dishAt || 0;
+    const closeSpoons = (c) => {
+      if (!c || c.closed || c.spoonsClosed || !(c.sugar > 0)) return;
+      c.spoonsClosed = true;
+      UI.mission.closeItem(["cook-khun"], dishNo(), { for: c.who });
+    };
+    // leaving a glass its chai is already in: that glass is finished (all its pills tick)
+    const closeGlass = (c) => {
+      closeSpoons(c);
+      if (c.closed || !(c.chaiPours > 0)) return;
+      c.closed = true;
+      UI.mission.closeItem([], dishNo(), { all: true, for: c.who });
+    };
     const select = (c) => {
+      // Sidebar v3 (UX 11): moving to another glass closes the spoons you put in this one
+      if (sel && sel !== c) closeGlass(sel);
       sel = c;
       selG.clear();
       if (!c) return;
@@ -456,7 +477,9 @@
       const bob = S.tweens.add({ targets: c.face, y: c.face.y - zt.L(8), duration: 200, yoyo: true, repeat: -1 });
       const y0 = c.face.y;
       try {
-        await UI.say(personLine(L(), c.who, rows), { badge: true }, { hide: St.hideKnown(ctx) });
+        // Sidebar v3: they say it from their own card in the sidebar (no second, full-sentence card)
+        const said = UI.mission.sayPerson ? await UI.mission.sayPerson(c.who, rows) : false;
+        if (!said) await UI.say(personLine(L(), c.who, rows), { badge: true }, { hide: St.hideKnown(ctx) });
       } finally {
         bob.stop();
         if (c.face.active) c.face.y = y0;
@@ -525,6 +548,7 @@
           const c = sel;
           if (!c || pouring || finished) return;
           if (!c.extras.includes(id)) c.extras.push(id);
+          if (id === c.p.extra && !c.closed) UI.mission.tickItem(id, dishNo(), { for: c.who });
           UI.count(1, { speak: false, id });
           Cook.sfx.pop();
           Cook.Spoon.spoon(zt, { bowl: obj, into: c.vessel, word: id, ms: kCount.spoonMs }).then(() => drawBits(c));
@@ -564,6 +588,7 @@
         if (c) {
           c.vol.milk = r.level - c.vol.chai;
           c.milkTaps = (c.milkTaps || 0) + 1;
+          if (c.p.dudh && !c.closed) UI.mission.tickItem("cook-dudh", dishNo(), { for: c.who });
           if (c === sel) UI.count(c.milkTaps, { speak: false, id: "cook-dudh", icon: jugIcon() });
         }
         armMilk();
@@ -603,6 +628,7 @@
         pouring = false;
         c.vol.chai = r.level - c.vol.milk;
         c.chaiPours++;
+        closeSpoons(c);
         // hot chai steams in the glass; the pan has a little less in it
         S.wisps(c.vessel.rim.x, c.vessel.surface().y - zt.L(20), 2, zt.L(46));
         pan.setLiquid(Math.max(0.2, pan.level - 0.035), COL.tea);

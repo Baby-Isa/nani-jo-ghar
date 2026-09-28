@@ -6,23 +6,29 @@
    The face is the replay button on every card (a small speaker badge on its corner).
    Pills: pending = white; next (ordered jobs) = gold outline on light grey; done = metallic gold
    with the gold tick. Several of one thing (skewers, maani, cups) are group boxes, alternately tinted.
+   Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10) supersedes v2 where they differ:
+   flat material UI against the 3D art. Pills are white with a 1px border; done = the same white pill
+   with a flat 2px gold outline and a small flat gold check; next = a light grey fill. One clean rounded
+   sans (Nunito 700/800) for all the text; no gradients, no bevels. One white card per person.
    Selectors use :is(#side, .sb2) so the Sidebar lab (lab/sidebar-v2.html) can show several
    sidebars at once with the same weight as the game's ids. Loaded after css/cook.css.
    ===================================================================================== */
 :root {
   --sb-panel: #efe5d6;
   --sb-divider: #d2bf9f;
-  --sb-card: #fffdf9;
   --sb-line: #e6dac7;
   --sb-ink: #2d2018;
   --sb-soft: #7a6857;
   --sb-word: #a33a2c;
-  --sb-shadow: 0 1px 2px rgba(70, 45, 20, 0.06), 0 4px 12px rgba(70, 45, 20, 0.07);
-  --sb-gold: linear-gradient(180deg, #fdf0c4 0%, #f3d27a 34%, #dcaa45 60%, #e9bf5e 82%, #f6dc93 100%);
-  --sb-gold-edge: #c1912f;
-  --sb-gold-ink: #4a2e08;
-  --sb-next-fill: #efece7;
-  --sb-next-edge: #d09a2e;
+  --sb-shadow: 0 1px 2px rgba(70, 45, 20, 0.07);
+  --sb-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sb-card: #ffffff;
+  --sb-pill-line: #e2d8c9;
+  --sb-gold-edge: #c99a2e;
+  --sb-gold-ink: var(--sb-ink);
+  --sb-next-fill: #eeebe6;
+  --sb-next-line: #d9d3ca;
+  --sb-next-edge: #c99a2e;
   --sb-tint-a: #f6eee1;
   --sb-tint-a-edge: #e8dac3;
   --sb-tint-b: #eaf0ee;
@@ -50,7 +56,7 @@ body.w6 :is(#side, .sb2) {
 @media (max-height: 430px) { body.w6 :is(#side, .sb2) { padding: 6px; gap: 6px; } }
 
 /* ---------- one line, shrunk to fit ---------- */
-:is(#side, .sb2) .fit, #intro .fit, .njg-guide .fit { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+:is(#side, .sb2) .fit:not(.fit2), #intro .fit:not(.fit2), .njg-guide .fit:not(.fit2) { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
 /* ---------- the face = replay: a small speaker badge on its corner ---------- */
 .face-say { position: relative; flex: none; border: none; padding: 0; margin: 0; background: none; border-radius: 50%; cursor: pointer; display: block; -webkit-tap-highlight-color: transparent; }
@@ -88,7 +94,7 @@ body.w6 :is(#mission, .m-card) .m-order:empty { display: none; }
 @media (max-height: 430px) { body.w6 :is(#mission, .m-card) .m-head { gap: 7px; } body.w6 :is(#mission, .m-card) .m-order { gap: 5px; } }
 
 /* the headline: the request, one line */
-.md-text { font-family: var(--kutchi-font); font-weight: 800; color: var(--sb-ink); line-height: 1.25; }
+.md-text { font-family: var(--sb-font); font-weight: 800; color: var(--sb-ink); line-height: 1.25; }
 .md-text .word { color: var(--sb-word); }
 body.w6 .md-text.rec { display: flex; flex-direction: column; align-items: flex-start; white-space: normal; overflow: visible; font-family: var(--ui-font); font-style: italic; font-weight: 700; font-size: 0.86em; color: var(--sb-soft); }
 body.w6 .md-text.rec .md-line { display: block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -100,9 +106,9 @@ body.w6 .md-text.rec .md-rec {
 /* several of one thing: the summary under the headline ("hakri lakri mixed", "ba lakri gos"), one line each */
 .m-sum { display: flex; flex-direction: column; gap: 1px; margin-top: 1px; min-width: 0; }
 .m-sum:empty { display: none; }
-.m-sum .sum-line { font-family: var(--kutchi-font); font-weight: 700; font-size: var(--sb-s); line-height: 1.25; color: var(--sb-soft); }
+.m-sum .sum-line { font-family: var(--sb-font); font-weight: 700; font-size: var(--sb-s); line-height: 1.25; color: var(--sb-soft); }
 .m-sum .sum-line .word { color: var(--sb-word); }
-.m-sum .sum-line.done { color: #9b7a35; }
+.m-sum .sum-line.done { color: var(--sb-soft); }
 
 /* ---------- the stack of pills ---------- */
 body.w6 :is(#side, .sb2, #intro) .ladder { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
@@ -120,36 +126,32 @@ body.w6 :is(#side, .sb2, #intro) .r6::after { content: none; display: none; }
 body.w6 :is(#side, .sb2, #intro) .r6 {
   position: relative; display: flex; align-items: center; gap: 6px; width: 100%; min-width: 0;
   height: var(--sb-pill-h); min-height: 0; margin: 0; padding: 0 8px 0 12px;
-  border-radius: 10px; background: #fff; border: 1px solid var(--sb-line);
-  box-shadow: 0 1px 1px rgba(70, 45, 20, 0.04);
-  transition: background-color .25s, border-color .25s, box-shadow .25s;
+  border-radius: 10px; background: #fff; border: 1px solid var(--sb-pill-line);
+  box-shadow: none;
+  transition: background-color .2s, border-color .2s, box-shadow .2s;
 }
 body.w6 :is(#side, .sb2, #intro) .r6 .lt {
-  flex: 1 1 auto; min-width: 0; font-family: var(--kutchi-font); font-weight: 800; font-size: var(--sb-p);
-  line-height: 1.2; padding-top: .08em; color: var(--sb-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  flex: 1 1 auto; min-width: 0; font-family: var(--sb-font); font-weight: 800; font-size: var(--sb-p);
+  line-height: 1.2; color: var(--sb-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 body.w6 :is(#side, .sb2, #intro) .r6 .lt .word { color: var(--sb-word); }
 body.w6 :is(#side, .sb2, #intro) .r6 .lt .dots { letter-spacing: 2px; color: var(--sb-soft); }
-body.w6 :is(#side, .sb2, #intro) .r6 .tk { flex: none; width: calc(var(--sb-pill-h) * 0.72); height: calc(var(--sb-pill-h) * 0.72); display: inline-flex; align-items: center; justify-content: center; }
+/* the check: a small flat gold disc with a white check (js/cook/ui.js tickHtml) */
+body.w6 :is(#side, .sb2, #intro) .r6 .tk { flex: none; width: calc(var(--sb-pill-h) * 0.56); height: calc(var(--sb-pill-h) * 0.56); display: inline-flex; align-items: center; justify-content: center; }
 body.w6 :is(#side, .sb2, #intro) .r6 .tk:empty { display: none; }
-body.w6 :is(#side, .sb2, #intro) .r6 .tk img { width: 118%; height: 118%; object-fit: contain; filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.5)); }
-/* next (ordered jobs only): a gold outline on light grey */
-body.w6 :is(#side, .sb2, #intro) .r6.next { background: var(--sb-next-fill); border: 1.5px solid var(--sb-next-edge); box-shadow: 0 0 0 3px rgba(208, 154, 46, 0.14); }
-/* done: true metallic gold, the gold tick */
-body.w6 :is(#side, .sb2, #intro) .r6.done {
-  background: var(--sb-gold); border: 1px solid var(--sb-gold-edge);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 -1px 0 rgba(140, 95, 20, 0.25), 0 1px 2px rgba(140, 95, 20, 0.22);
-}
-body.w6 :is(#side, .sb2, #intro) .r6.done .lt,
-body.w6 :is(#side, .sb2, #intro) .r6.done .lt .word { color: var(--sb-gold-ink); }
-body.w6 :is(#side, .sb2, #intro) .r6.done .tk img { animation: tickIn .35s cubic-bezier(.2, 1.6, .4, 1); }
+body.w6 :is(#side, .sb2, #intro) .r6 .tk svg { width: 100%; height: 100%; display: block; }
+/* next (ordered jobs only): a light grey fill */
+body.w6 :is(#side, .sb2, #intro) .r6.next { background: var(--sb-next-fill); border-color: var(--sb-next-line); box-shadow: none; }
+/* done: the same white pill, a flat 2px gold outline (1px border + 1px ring, so nothing shifts), the check */
+body.w6 :is(#side, .sb2, #intro) .r6.done { background: #fff; border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
+body.w6 :is(#side, .sb2, #intro) .r6.done .lt { color: var(--sb-ink); }
+body.w6 :is(#side, .sb2, #intro) .r6.done .tk svg { animation: tickIn .3s cubic-bezier(.2, 1.5, .4, 1); }
 /* a "no" row ("Dudh na.") is a pill like any other */
 body.w6 :is(#side, .sb2, #intro) .r6.no .ldot, body.w6 :is(#side, .sb2, #intro) .r6 .ldot { display: none; }
 /* English (the bulb) */
 body.w6 :is(#side, .sb2, #intro) .r6 .en6 { color: var(--indigo); font-family: var(--ui-font); }
 /* read-along: the part being said lights up */
-body.w6 :is(#side, .sb2, #intro) .r6.reading { background: #fff4d2 !important; border-color: var(--sb-next-edge) !important; box-shadow: 0 0 0 3px rgba(255, 217, 138, 0.8) !important; }
-body.w6 :is(#side, .sb2, #intro) .r6.done.reading { background: var(--sb-gold) !important; }
+body.w6 :is(#side, .sb2, #intro) .r6.reading { background: #fff4d2 !important; border-color: var(--sb-next-edge) !important; box-shadow: 0 0 0 2px rgba(255, 217, 138, 0.9) !important; }
 
 /* ---------- group boxes: one per skewer / maani / cup, alternately tinted; no label per group ---------- */
 body.w6 :is(#side, .sb2, #intro) .ugroup { display: contents; }
@@ -171,16 +173,30 @@ body.w6 :is(#side, .sb2, #intro) .icard .card-say:not(.face-say) { display: none
   body.w6 :is(#side, .sb2) .icards, body.w6 :is(#side, .sb2) .ugroup .icards { gap: 5px; }
   body.w6 :is(#side, .sb2) .icard, body.w6 :is(#side, .sb2) .ugroup .icard.unit { padding: 4px; border-radius: 10px; }
 }
-/* a person's group (a cup on the Chai tray): their face (= replay) and "Nana lai.", then their pills */
-body.w6 :is(#side, .sb2, #intro) .icard.person { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
-body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 0 2px; }
-body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head .face-say { width: calc(var(--sb-face) * 0.72); height: calc(var(--sb-face) * 0.72); }
+/* Sidebar v3: one white card per person (the Chai tray): their face (= replay), the short headline,
+   their pills. The request card itself steps back (no box, no shared head): the person cards are the cards. */
+body.w6 #mission.people { background: none; border: none; box-shadow: none; padding: 0; overflow: visible; }
+body.w6 #mission.people > .m-head { display: none; }
+body.w6 :is(#mission, .m-card).people .m-order, body.w6 :is(#mission, .m-card).people .ladder, body.w6 :is(#mission, .m-card).people .lsec { gap: 10px; }
+body.w6 :is(#side, .sb2, #intro) .icard.person {
+  display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding: 10px; border-radius: 14px;
+  background: var(--sb-card); border: 1px solid var(--sb-line); box-shadow: var(--sb-shadow);
+}
+body.w6 :is(#side, .sb2, #intro) .icard.person.done { background: var(--sb-card); border-color: var(--sb-line); }
+body.w6 :is(#side, .sb2, #intro) .icard.person.speaking { border-color: var(--sb-next-edge); box-shadow: 0 0 0 1px var(--sb-next-edge), var(--sb-shadow); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head .face-say { width: var(--sb-face); height: var(--sb-face); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .lface { width: 100%; height: 100%; box-shadow: 0 0 0 1px var(--sb-line); }
-body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title { flex: 1 1 auto; min-width: 0; font-family: var(--kutchi-font); font-weight: 800; font-size: var(--sb-s); line-height: 1.25; color: var(--sb-soft); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title { flex: 1 1 auto; min-width: 0; font-size: var(--sb-h); line-height: 1.2; color: var(--sb-ink); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title .word { color: var(--sb-word); }
-body.w6 :is(#side, .sb2, #intro) .icard.person .lrows { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 5px; margin: 0; }
+body.w6 :is(#side, .sb2, #intro) .icard.person .lrows { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 6px; margin: 0; }
+/* the pop-up: the same person cards, flat inside it (its own head goes, as in the sidebar) */
+body.w6 #intro .ic-card.people .ic-head { display: none; }
+body.w6 #intro .ic-card.people .icard.person { box-shadow: none; }
 @media (max-height: 430px) {
-  body.w6 :is(#side, .sb2) .icard.person { gap: 4px; }
+  body.w6 #mission.people .m-order, body.w6 #mission.people .ladder, body.w6 #mission.people .lsec { gap: 6px; }
+  body.w6 :is(#side, .sb2) .icard.person { gap: 4px; padding: 6px; border-radius: 12px; }
+  body.w6 :is(#side, .sb2) .icard.person .pc-head { gap: 7px; }
   body.w6 :is(#side, .sb2) .icard.person .lrows { flex-direction: column; gap: 3px; }
 }
 
@@ -211,6 +227,7 @@ body.w6 #intro .icards, body.w6 #intro .ugroup .icards { gap: 10px; }
 body.w6 #intro .icard, body.w6 #intro .ugroup .icard.unit { padding: 8px; border-radius: 14px; }
 body.w6 #intro .r6 { padding: 0 10px 0 16px; border-radius: 12px; }
 body.w6 #intro .r6 .lt, body.w6 #intro .r6.head .lt { font-size: var(--sb-p); color: var(--sb-ink); }
+body.w6 #intro .ic-card.people .icard.person .ic-title { font-size: var(--sb-h); }
 body.w6 #intro .r6 .lt .word { color: var(--sb-word); }
 body.w6 #intro .m-sum .sum-line { font-size: var(--sb-s); }
 body.w6 #intro .ic-go { display: none; }
@@ -243,13 +260,12 @@ body.w6 #passme .pm-face { width: var(--sb-face); height: var(--sb-face); }
 body.w6 #passme .pm-nani .pm-face img { width: 100%; height: 100%; border: none; animation: badgeTalk .45s ease-in-out 4 alternate; }
 body.w6 #passme .pm-item { background: #fff; border: 1px solid var(--sb-line); border-radius: 12px; box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
 body.w6 #passme .pm-item .wp-say { width: 26px; height: 26px; padding: 5px; background: #f3ece1; border: 1px solid var(--sb-line); }
-body.w6 #passme .pm-item.right { background: var(--sb-gold); border-color: var(--sb-gold-edge); }
+body.w6 #passme .pm-item.right { background: #fff; border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
 body.w6 #passme .pm-item.glow { border: 1.5px solid var(--sb-next-edge); }
 
 /* short landscape phones: every gap tighter, so a full order and the rail fit the 390px-high sidebar */
 @media (max-height: 430px) {
   body.w6 :is(#side, .sb2) .r6 { padding: 0 6px 0 9px; border-radius: 8px; }
-  body.w6 :is(#side, .sb2) .icard.person .pc-head { gap: 6px; }
   body.w6 :is(#side, .sb2) .rail-btn { width: 38px; height: 38px; font-size: 18px; border-radius: 10px; }
   body.w6 #btn-help { font-size: 22px; }
   body.w6 #nani-card { padding: 6px; gap: 6px; border-radius: 12px; }

@@ -2,14 +2,16 @@
  * Nani's guide box (Zafar, 28 Sept 2026; docs/cook-ui-feedback-2026-09-28.md 3).
  * One shared component, so every mode can put Nani at the top of its sidebar:
  *
- *   [face)] what to do now, in Kutchi, one line          [bulb] [mute]
+ *   [face)] what to do now, in Kutchi, up to 2 lines       [bulb] [mute]
  *
- *  - Sidebar v2 (Zafar, 28 Sept evening; docs/cook-ui-feedback-2026-09-28.md 9): a pale rose box
- *    with a deep red embroidery band down the left, so she stands apart from the panel and the cards;
+ *  - Sidebar v3 (Zafar, 28 Sept late; docs/cook-ui-feedback-2026-09-28.md 10): a calm sage green box
+ *    with a darker sage band down the left (one CSS variable, --nani-sage), so she stands apart from
+ *    the panel and the cards;
  *  - her face is the replay button (a small speaker badge on its corner), as on every card
  *    (hearing her again works even when she's muted: you asked);
  *  - the text is what to do NOW (a line of hers, or an English placeholder flagged "to record"
- *    until the family records it), always one line (shrunk to fit: js/shared/fit.js when loaded);
+ *    until the family records it), up to 2 lines, shrunk to fit, never cut off with "..."
+ *    (js/shared/fit.js "fit2" when loaded);
  *  - the mute button mutes or unmutes her voice. It's remembered for every mode, per player, in the
  *    one save (Save flag "naniMuted"); muted, she still shows what she'd say;
  *  - the light bulb (translate) lives here too, drawn with the results art.
@@ -117,7 +119,7 @@
       set(html, { rec = false } = {}) {
         if (html === text && say.classList.contains("rec") === !!rec) return;
         text = html;
-        say.innerHTML = `<span class="ng-line fit">${html}</span>${rec ? `<small class="ng-rec">to record</small>` : ""}`;
+        say.innerHTML = `<span class="ng-line fit fit2">${html}</span>${rec ? `<small class="ng-rec">to record</small>` : ""}`;
         say.classList.toggle("rec", !!rec);
         fit();
         el.classList.remove("new");

@@ -950,14 +950,15 @@
    * 28 Sept (Zafar, docs/cook-ui-feedback-2026-09-28.md 1-2): one row format everywhere, on the
    * request pop-up and the sidebar card alike. No pictures (they'd give the Kutchi away), no dots:
    *   [word ........................ tick]
-   * A row that's done gets a light gold band and a small gold tick on the right. In an ordered job
+   * A row that's done gets a flat gold outline and a small flat gold check on the right (Sidebar v3). In an ordered job
    * (a skewer's pieces, the chaat layers, the tadka) the row to do next has a light grey band and
    * one thin line runs down the left joining the rows (the same component for every ordered job, no
    * numbers, no arrows); an any-order list (the pantry) has no "next". Rows still to do are plain:
    * no empty circles. Rows tick when that step closes (UX 11); nothing goes red until the review.
    */
-  const TICK = () => Cook.v("assets/ui/results/tick-gold.webp");
-  const tickHtml = (on) => `<span class="tk" aria-hidden="true">${on ? `<img src="${TICK()}" alt="">` : ""}</span>`;
+  // Sidebar v3 (28 Sept, late): a small flat gold check (a gold disc, a white check), not the 3D tick art
+  const CHECK = `<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#c99a2e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const tickHtml = (on) => `<span class="tk" aria-hidden="true">${on ? CHECK : ""}</span>`;
   function row6(map, { r }, { next = false, key = null } = {}) {
     const li = document.createElement("div");
     li.className = ["lr", "r6", r.no ? "no" : "", r.done ? "done" : "", next && !r.done ? "next" : "", r.miss && r.done === false && mission && mission.stamped ? "miss" : ""].filter(Boolean).join(" ");
@@ -1044,22 +1045,50 @@
     g.appendChild(grid);
     return g;
   }
-  /** One person's card (a cup on the Chai tray): their face, "{person} lai.", then their rows. */
+  /**
+   * One person's card (a cup on the Chai tray). Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10):
+   * one white card per person: their face (= replay), the short headline ("Muke chai khape."), then
+   * their pills. No "{name} lai." sub-header: the card is theirs. A second person has their own card.
+   */
   function personCard(map, L, s, rows) {
     const c = document.createElement("div");
     c.className = ["icard", "person", rows.every((x) => x.r.done) ? "done" : ""].filter(Boolean).join(" ");
-    const F = Lang.frames();
-    const cust = (Cook.data.customers || {})[s.for] || {};
-    const forLine = F.for && cust.word && Cook.data.lines[F.for] ? Lang.line(F.for, Lang.phrase([cust.word])) : null;
-    // Sidebar v2: the face is the card's replay button (a speaker badge on its corner)
-    c.innerHTML = `<div class="pc-head"><button class="card-say face-say" type="button" aria-label="Hear it again"><img class="lface" src="${faceUrl(esc(s.for))}" alt=""><span class="say-badge" aria-hidden="true"></span></button>${forLine ? `<div class="ic-title fit">${text6(forLine, () => false)}</div>` : ""}</div>`;
+    c.dataset.who = s.for;
+    const head = L.head || null;
+    c.innerHTML = `<div class="pc-head"><button class="card-say face-say" type="button" aria-label="Hear it again"><img class="lface" src="${faceUrl(esc(s.for))}" alt=""><span class="say-badge" aria-hidden="true"></span></button>${head ? `<div class="ic-title md-text fit">${text6(head.line, rowHide(head))}</div>` : ""}</div>`;
+    const title = c.querySelector(".ic-title");
+    if (head && title) addEl(map, head, title);
     // the card's fixed slots, in order (milk, sugar, which chai); an empty slot draws nothing (no empty circles)
     const placed = rows.slice().sort((a, b) => Cook.Order.slotOf(L, a.r) - Cook.Order.slotOf(L, b.r));
     c.appendChild(rowList(map, placed));
-    const parts = () => (forLine ? [{ line: forLine, els: [c.querySelector(".ic-title")] }] : []).concat(rows.map((x) => ({ line: x.r.no || !x.r.said ? x.r.line : x.r.said, els: map.get(x.r) || [] })));
+    const parts = () => (head && title ? [{ line: head.line, els: [title] }] : []).concat(placed.map((x) => ({ row: x.r, line: x.r.no || !x.r.said ? x.r.line : x.r.said, els: (map.get(x.r) || []).filter((e) => c.contains(e)) })));
+    c._parts = parts;
     cardSay(c.querySelector(".pc-head .face-say"), parts, rows.map((x) => x.r));
     return c;
   }
+  /** Does this order have person cards (the Chai tray)? Then each person's card is the card (no shared head). */
+  const hasPeople = () => !!mission && mission.ladders.some((L) => L.sections.some((s) => s.for && (!s.when || s.shown)));
+  /**
+   * Sidebar v3: a person says their line from their own card in the sidebar (it lights up as it's
+   * read, their face's badge glows), never from a second, full-sentence card below it. rows: only
+   * these (a recast). Resolves when it's said; false when there's no card for them.
+   */
+  M.sayPerson = async function (who, rows) {
+    const c = [...document.querySelectorAll("#mission .icard.person")].find((x) => x.dataset.who === who);
+    if (!c || !c._parts || $("#mission").classList.contains("hidden")) return false;
+    const face = c.querySelector(".face-say");
+    const parts = rows ? c._parts().filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : c._parts();
+    c.classList.add("speaking");
+    if (face) face.classList.add("on");
+    if (c.scrollIntoView) c.scrollIntoView({ block: "nearest" });
+    try {
+      await readAlong(parts);
+    } finally {
+      c.classList.remove("speaking");
+      if (face) face.classList.remove("on");
+    }
+    return true;
+  };
   /** A ladder's blocks into `box`: sections as rows, person cards and unit cards. */
   function blocks6(box, map, { big = false, sum = null } = {}) {
     map.clear();
@@ -1095,13 +1124,15 @@
       box.appendChild(lad);
     });
     // Sidebar v2: alternate group boxes are tinted differently, so each skewer or cup stands apart
-    box.querySelectorAll(".icard").forEach((c, i) => c.classList.toggle("tint-b", i % 2 === 1));
+    box.querySelectorAll(".icard:not(.person)").forEach((c, i) => c.classList.toggle("tint-b", i % 2 === 1));
   }
   function renderOrder6() {
     const box = $("#mission .m-order");
     box.innerHTML = "";
     blocks6(box, sideEls, { sum: $("#mission .m-sum") });
     renderDish6();
+    // Sidebar v3: one white card per person; the shared head goes (each person's card has the headline)
+    $("#mission").classList.toggle("people", hasPeople());
     $("#side").classList.toggle("english", !!mission.english);
     if (introOpen()) renderIntro6();
   }
@@ -1127,6 +1158,7 @@
     blocks6(box, introEls, { big: true, sum: intro().querySelector(".m-sum") });
     // a long order: the pop-up lays its group boxes out in two columns rather than running off the screen
     intro().querySelector(".ic-card").classList.toggle("wide", box.querySelectorAll(".r6").length > 8);
+    intro().querySelector(".ic-card").classList.toggle("people", hasPeople());
     // 28 Sept: the headline sits in the pop-up's head, beside the face (no name)
     const dish = intro().querySelector(".ic-dish");
     const L = mission.ladders[0];

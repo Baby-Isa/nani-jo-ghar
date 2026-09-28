@@ -224,8 +224,9 @@
     label(obj, id, { mode } = {}) {
       mode = mode || Cook.labelMode(id);
       if (mode === "none") return null;
-      // a word with no voice yet shows no empty speaker pill (28 Sept, s8)
-      if (mode !== "text" && !Lang.wordHasVoice(id)) return null;
+      // Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10): an item whose word is
+      // hidden shows no label at all, never a lone speaker bubble (its word is on the card's face = replay)
+      if (mode !== "text") return null;
       const c = this.centre(obj);
       const ph = Cook.isPlaceholder(id);
       const text = mode === "text" ? Cook.display(id) : "";

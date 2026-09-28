@@ -4,6 +4,9 @@
  * FitText shrinks its font until it fits, never below a readable minimum (CSS var --fit-min,
  * default 12px; past that the CSS ellipsis takes over). A group of lines (the pills on one card)
  * can share one size, so a card never mixes sizes.
+ * Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10): Nani narrates, so her line may
+ * take up to 2 lines: class "fit fit2" (white-space: normal in its CSS) shrinks until the text fits in
+ * two lines, and it's never cut off with "..." (at the minimum it may take a third line).
  *
  *   FitText.fit(el)                    one element (its CSS font-size is the largest it may be)
  *   FitText.run(root)                  every .fit under root; elements with a data-fit-group share its smallest size
@@ -22,7 +25,13 @@
     const cs = getComputedStyle(el);
     const max = px(cs.fontSize);
     const min = Math.min(max, px(cs.getPropertyValue("--fit-min")) || 12);
-    const over = () => el.scrollWidth > el.clientWidth + 0.5;
+    const two = el.classList.contains("fit2");
+    // two lines: taller than 2 line-heights (the line-height follows the size), or a word wider than the box
+    const lines = () => {
+      const lh = px(getComputedStyle(el).lineHeight) || px(getComputedStyle(el).fontSize) * 1.2;
+      return el.scrollHeight > lh * 2 + 1;
+    };
+    const over = () => el.scrollWidth > el.clientWidth + 0.5 || (two && lines());
     if (!over()) return max;
     let lo = min;
     let hi = max;
