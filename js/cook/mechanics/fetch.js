@@ -1,5 +1,5 @@
 /*
- * Mechanic: fetch (the pantry). Tap the named items into the basket, in
+ * Mechanic: fetch (the pantry). Tap the named items onto the tray, in
  * any order, among look-alike decoys. Kutchi: the nouns and counts.
  * Every item the order could have asked for is on the shelf every time
  * (milk whether or not they want it, the "no X" item too), so what you
@@ -54,7 +54,7 @@
   Mech.define("fetch", {
     station: "fetch",
     view: "pantry",
-    footprint: { x: 220, y: 60, w: 1160, h: 845 },
+    footprint: { x: 0, y: 40, w: 1600, h: 860 },
     async run(z, { need, askLines = true, passMe }, k) {
       const S = z.S;
       const ctx = z.ctx;
@@ -64,39 +64,47 @@
       const decoys = [...new Set(always.concat(need.flatMap((id) => St.lookalikes(id, k.lookalikes)), Cook.shuffle(Cook.data.pantry_decoys)))]
         .filter((d) => !need.includes(d))
         .slice(0, Math.max(k.minDecoys, always.length, k.shelf - need.length));
-      // the painted pantry's shelves
-      const rows = [
-        { y: 196, h: 118 },
-        { y: 452, h: 170 },
-        { y: 712, h: 170 },
-      ];
-      const xs = [330, 565, 800, 1035, 1270];
-      const slots = [];
-      rows.forEach((r) => xs.forEach((x) => slots.push({ x, y: r.y, h: r.h })));
-      const usable = Cook.shuffle(slots.filter((s) => !(s.y === 712 && s.x === 800)));
-      const all = Cook.shuffle(need.concat(decoys)).slice(0, usable.length);
+      // pantry v2 (28 Sept): the shelves and the fridge, measured from the painted
+      // pantry (data.mechanics.fetch.slots). A fridge thing only goes in the fridge,
+      // everything else only on the shelves; what's needed is placed first, so a full
+      // fridge only ever leaves out a decoy.
+      const P = Cook.data.mechanics.fetch;
+      const fridge = new Set(P.fridge || []);
+      const free = { shelf: Cook.shuffle(P.slots.filter((s) => s.zone === "shelf")), fridge: Cook.shuffle(P.slots.filter((s) => s.zone === "fridge")) };
+      // a plain decoy needs its side-on container (data.art.sprites.shelf): no top-down plate of chips on a
+      // shelf (what the order could ask for always goes up, drawn or not)
+      const all = need.concat(Cook.shuffle(decoys).filter((id) => always.includes(id) || Cook.Art.refUrl(`${id}.shelf`)));
       const items = {};
-      all.forEach((id, i) => {
-        const slot = usable[i];
+      all.forEach((id) => {
+        const slot = free[fridge.has(id) ? "fridge" : "shelf"].pop();
+        if (!slot) return;
         const key = Cook.Art.wordTex(S, id);
-        items[id] = S.prop(key, z.X(slot.x), z.Y(slot.y), z.L(170), z.L(slot.h));
+        const f = Cook.Art.shelfSize(id);
+        items[id] = S.prop(key, z.X(slot.x), z.Y(slot.y), z.L(slot.w * f), z.L(slot.h * f));
         items[id].label = S.label(items[id], id);
       });
-      const bs = S.fitScale("basket", z.L(330), z.L(200));
-      const bx = z.X(800);
-      const by = z.Y(902);
-      const basket = S.track(S.add.image(bx, by, "basket").setOrigin(0.5, 1).setScale(bs).setDepth(D.front));
-      const front = S.track(S.add.image(bx, by, "basket-front").setOrigin(0.5, 1).setScale(bs).setDepth(D.front + 2));
-      if (k.special) {
-        S.special(basket);
-        front.setTint(0xffe2a0);
-      }
-      const bw = basket.displayWidth;
-      const bh = basket.displayHeight;
-      const spots = [[-0.2, 0.34], [0.12, 0.3], [-0.02, 0.4], [0.26, 0.4], [-0.3, 0.44], [0.08, 0.46], [0.3, 0.3], [-0.12, 0.28]].map(([dx, dy]) => ({
-        x: bx + dx * bw,
-        y: by - bh + dy * bh + z.L(40),
-      }));
+      // the tray on the counter: one outlined space per thing on the list, in a row, so you
+      // can see how many are still missing (not which). A wrong pick takes a space too (UX 11),
+      // so a space is added after the last one if the row runs out.
+      const T = P.tray;
+      const spaceAt = (i) => ({ x: z.X((T.x0 + T.x1) / 2 + (i - (need.length - 1) / 2) * T.gap), y: z.Y(T.y) });
+      const outline = (i, id) => {
+        const at = spaceAt(i);
+        const key = Cook.Art.wordTex(S, id);
+        const { w, h } = S.texSize(key);
+        const f = Cook.Art.shelfSize(id);
+        const sc = S.fitScale(key, z.L(T.w * f), z.L(T.h * f));
+        // the container's own shape, a little inside its canvas: a soft rounded box
+        const bw = w * sc * 0.86;
+        const bh = h * sc * 0.9;
+        const g = S.track(S.add.graphics().setDepth(D.front));
+        g.fillStyle(0xfffaf1, 0.22);
+        g.fillRoundedRect(at.x - bw / 2, at.y - bh, bw, bh, Math.min(18, bw / 4));
+        g.lineStyle(z.L(3), k.special ? 0xf6c35b : 0x6b4a2a, 0.55);
+        g.strokeRoundedRect(at.x - bw / 2, at.y - bh, bw, bh, Math.min(18, bw / 4));
+        return g;
+      };
+      need.forEach((id, i) => outline(i, id));
       // Nani's list: "Muke atto de." (give me: the family's words), then "Ne khun."
       const ask = (id, first) => Lang.line(first && Cook.data.lines.give ? "give" : Lang.orderFrame(1), Lang.phrase([id]));
       if (ctx.guided && askLines) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
@@ -120,12 +128,14 @@
           obj.destroy();
         }
       };
-      // Wave 6b: into the basket (a wrong one too, from level 2: nothing says it's wrong until the review)
-      const intoBasket = async (id, obj) => {
-        const spot = spots[n % spots.length];
+      // Wave 6b: onto the tray, into the next space (a wrong one too, from level 2: nothing says it's wrong until the review)
+      const onTray = (id, obj) => {
+        if (n >= need.length) outline(n, id);
+        const at = spaceAt(n);
         n++;
         UI.countUp(id);
-        await S.fly(obj, spot.x, spot.y + z.L(60), { scale: S.fitScale(obj.texture.key, z.L(120), z.L(105)), depth: D.front + 1, duration: k.flyMs });
+        const f = Cook.Art.shelfSize(id);
+        return S.fly(obj, at.x, at.y + z.L(4), { scale: S.fitScale(obj.texture.key, z.L(T.w * f), z.L(T.h * f)), depth: D.front + 1, duration: k.flyMs });
       };
       while (remaining.length) {
         const expected = remaining[0];
@@ -146,7 +156,7 @@
           onLand: (key, obj) => {
             if (obj.label) obj.label.destroy();
             delete items[key];
-            intoBasket(key, obj);
+            onTray(key, obj);
           },
           io: z.io,
         });
@@ -158,11 +168,8 @@
         delete items[id];
         Cook.sfx.right();
         if (obj.label) obj.label.destroy();
-        const spot = spots[n % spots.length];
-        UI.countUp(id);
         z.progress({ fetched: id });
-        await S.fly(obj, spot.x, spot.y + z.L(60), { scale: S.fitScale(obj.texture.key, z.L(120), z.L(105)), depth: D.front + 1, duration: k.flyMs });
-        n++;
+        await onTray(id, obj);
         ctx.basket.push(id);
         if (n === 1 && remaining.length) await pantryPassMe();
       }
