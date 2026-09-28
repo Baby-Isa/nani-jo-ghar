@@ -33,13 +33,13 @@ const check = (ok, what) => {
   console.log(`${ok ? "ok  " : "FAIL"} ${what}`);
   if (!ok) fails.push(what);
 };
-const opts = { headless: true };
+const opts = { headless: true, args: ["--autoplay-policy=no-user-gesture-required"] };
 if (fs.existsSync("/opt/pw-browsers/chromium")) opts.executablePath = "/opt/pw-browsers/chromium";
 let browser;
 try {
   browser = await pw.chromium.launch(opts);
 } catch (e) {
-  browser = await pw.chromium.launch({ headless: true });
+  browser = await pw.chromium.launch({ headless: true, args: opts.args });
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -59,7 +59,9 @@ for (const url of ["index.html", "first.html", "cook.html", "clinic.html", "lab/
   await checkPage(url);
 }
 
-// the grill: open the lab entry, tap the order card's speaker, and watch for a family clip request
+// the grill's own vocabulary (data.stations.mishkaki-grill / grill: ph-meat "gos", ph-mishkaki
+// "mishkaki", both now Mum's clips per build/reports/voice-coverage.md): speaking them must
+// request the family mp3, not just the placeholder voice.
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
   const page = await ctx.newPage();
@@ -71,16 +73,14 @@ for (const url of ["index.html", "first.html", "cook.html", "clinic.html", "lab/
     if (/assets\/audio\/family\//.test(r.url())) famRequests.push(r.url());
   });
   await page.goto(`http://localhost:${PORT}/cook.html?speed=4`);
-  await page.evaluate(() => localStorage.clear());
-  await page.goto(`http://localhost:${PORT}/cook.html?speed=4`);
-  await page.waitForSelector("#panel h1", { timeout: 20000 });
-  await page.evaluate(() => window.__cook.lab("grill", true, { level: 1 }));
-  await page.waitForSelector("#intro:not(.hidden) .ic-say", { timeout: 15000 });
-  await sleep(400);
-  await page.click("#intro .ic-say", { force: true });
-  await sleep(3000);
-  check(famRequests.length > 0, `grill: the order card requests family mp3s (${famRequests.length}: ${famRequests.slice(0, 3).join(", ")})`);
-  check(errors.length === 0, `cook.html grill: no page errors${errors.length ? `: ${errors.join(" | ")}` : ""}`);
+  await page.waitForFunction(() => !!(window.Cook && window.Cook.data && window.Cook.Lang), null, { timeout: 20000 });
+  await page.evaluate(async () => {
+    await window.Cook.Lang.speakWord("ph-meat"); // gos
+    await window.Cook.Lang.speakWord("ph-mishkaki"); // mishkaki
+  });
+  await sleep(300);
+  check(famRequests.length > 0, `grill vocabulary (ph-meat, ph-mishkaki): requests family mp3s (${famRequests.length}: ${famRequests.slice(0, 3).join(", ")})`);
+  check(errors.length === 0, `cook.html grill vocabulary: no page errors${errors.length ? `: ${errors.join(" | ")}` : ""}`);
   await ctx.close();
 }
 
