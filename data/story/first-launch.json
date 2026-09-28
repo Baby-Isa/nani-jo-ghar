@@ -3,11 +3,17 @@
   "id": "first-launch",
   "flag": "firstDone",
   "lines": {
+    "help-me": {
+      "en": "Can you help me?",
+      "kutchi": "Tu muke help kar de?",
+      "clip": "tu-muke-help-kar-de",
+      "note": "Mum 28 Sept, Round 3 S1, first half (Mum split the line in two) (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+    },
     "pantry-ask": {
-      "en": "Can you get me the chai things from the pantry?",
-      "kutchi": "Muke chai, dudh ne khun de.",
-      "placeholder": true,
-      "note": "Built from Cook's own frames (Muke {x} de = give me; ne = and). To record: Questions for Mum, first-launch line 1."
+      "en": "Can you bring me the chai things?",
+      "kutchi": "Muke chai ji chiju khanechi dinde?",
+      "clip": "muke-chai-ji-chiju-khanechi-dinde",
+      "note": "Mum 28 Sept, Round 3 S1, second half ('pantry' isn't needed) (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "make-chai": {
       "en": "Can you make me chai?",
@@ -17,33 +23,33 @@
     },
     "lovely-chai": {
       "en": "Mmm, lovely chai! Well done, beta.",
-      "kutchi": "Shabash!",
-      "clip": "shabash",
-      "note": "Mum, B25. The full line ('Mmm, lovely chai! Shabash, beta.') is first-launch line 3 to record."
+      "kutchi": "Mmm, chai bo fine ai. Shabash, beta.",
+      "clip": "mmm-chai-bo-fine-ai-shabash-beta",
+      "note": "Mum 28 Sept, Round 3 S2 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "eid-tomorrow": {
-      "en": "Tomorrow is Eid.",
-      "kutchi": "Kaale Eid ai.",
-      "placeholder": true,
-      "note": "Claude's guess: 'ai' (is) is the family's (Aau theek ai); 'kaale' (tomorrow) is from Gujarati and not checked. Line 4 to record."
+      "en": "Tomorrow is Eid!",
+      "kutchi": "Saware Eid ai.",
+      "clip": "saware-eid-ai",
+      "note": "Mum 28 Sept, Round 3 S3 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check. Saware (tomorrow), not kale."
     },
     "everyone-coming": {
-      "en": "Everyone is coming.",
-      "kutchi": "Magani acheto.",
-      "placeholder": true,
-      "note": "Zafar from memory ('guests are coming': magani acheto / achanto), not checked with Mum. Line 5 to record."
+      "en": "Guests are coming.",
+      "kutchi": "Mageni achenta.",
+      "clip": "mageni-achenta",
+      "note": "Mum 28 Sept, Round 3 S4 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "food-not-ready": {
-      "en": "Oh no, the food is not ready.",
-      "kutchi": "Arre re! Khaanu taiyaar nai.",
-      "placeholder": true,
-      "note": "Claude's guess except 'Arre re!' (Nani's interjection in Cook). Line 6 to record."
+      "en": "Oh no, there's no food!",
+      "kutchi": "Oho, kenjo nai!",
+      "clip": "oho-kenjo-nai",
+      "note": "Mum 28 Sept, Round 3 S5 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "help-cook": {
-      "en": "Can you help me cook?",
-      "kutchi": "Tu muke khaanu banai dinda?",
-      "placeholder": true,
-      "note": "Mum's B40 frame (Tu muke chai banai dinda?) with 'khaanu' (food) for chai: a guess. Line 8 to record."
+      "en": "Will you help me cook?",
+      "kutchi": "Tu muke randhan lai madad kar de?",
+      "clip": "tu-muke-randhan-lai-madad-kar-de",
+      "note": "Mum 28 Sept, Round 3 S7 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "yes": {
       "en": "Yes!",
@@ -51,7 +57,7 @@
       "clip": "ha",
       "speaker": "zafar",
       "who": "child",
-      "note": "A8.1 (the child's reply; Zafar's voice so it isn't Nani's). Line 9 to record in a child's voice."
+      "note": "A8.1 (the child's reply; Zafar's voice so it isn't Nani's). Mum 28 Sept (S8) also recorded the whole reply, 'Ha, aau randhan lai madad kar dis' (a girl) / '... kar dos' (a boy), for when the story can pick by the character."
     },
     "laugh": {
       "en": "Ha ha ha!",
@@ -60,10 +66,10 @@
       "note": "Nani laughs when No runs away."
     },
     "lets-cook": {
-      "en": "Shabash! Let's cook!",
-      "kutchi": "Shabash!",
-      "clip": "shabash",
-      "note": "Line 10 ('Come, let's go to the kitchen') to record."
+      "en": "Come, let's go to the kitchen!",
+      "kutchi": "Hal, rasore me winja.",
+      "clip": "hal-rasore-me-winja",
+      "note": "Mum 28 Sept, Round 3 S9 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     }
   },
   "scenes": [
@@ -74,7 +80,7 @@
       "bg": "assets/backgrounds/bg-courtyard-e-v1.webp",
       "child": { "x": 8, "walk": true },
       "nani": { "img": "assets/cook/characters/nani-happy.webp", "x": 56 },
-      "lines": ["pantry-ask"]
+      "lines": ["help-me", "pantry-ask"]
     },
     { "id": "pantry", "kind": "cook", "url": "cook.html?app=1&first=pantry" },
     {

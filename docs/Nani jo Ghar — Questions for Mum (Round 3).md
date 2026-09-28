@@ -26,18 +26,18 @@
 
 | ID | English | Kutchi (as said last time) | Notes |
 |---|---|---|---|
-| R1 | What's this? | *hi kuro ai?* | |
-| R2 | What would you like? (to a child) | *toke kuro khapeto?* | |
-| R3 | a whole cup (the cooking measure) | *aako cup* | |
-| R4 | a full tank | *aaki tanki* | |
-| R5 | and then | *ne poi* | on its own, then in *pela … ne poi …* |
-| R6 | lift it out now | *hane kadh* | |
-| R7 | one skewer of mishkaki | *hakri lakri mishkaki* | |
-| R8 | a cup | *hakri cup* | |
-| R9 | tamarind | *amli* | on its own, not *amli ji chutney* |
-| R10 | Can you make me some chai? (to an elder) | *Aai muke chai banai dinda?* | |
-| R11 | I'm fine | *Aau theek ai* | on its own |
-| R12 | Who did it? | | Last time it sounded like *kere karein*. Is that right? How would you ask the children "who did it?" when something's been eaten or spilt? |
+| R1 | What's this? | *hi kuro ai?* | 28 Sept: *hi kuro ai?* ✓ |
+| R2 | What would you like? (to a child) | *toke kuro khapeto?* | 28 Sept: *toke kuro khapeto?* ✓ |
+| R3 | a whole cup (the cooking measure) | *aako cup* | 28 Sept: *aako cup* ✓ |
+| R4 | a full tank | *aaki tanki* | 28 Sept: *aaki tanki* ✓ |
+| R5 | and then | *ne poi* | on its own, then in *pela … ne poi …* · 28 Sept: *ne poi* ✓ (on its own only) |
+| R6 | lift it out now | *hane kadh* | 28 Sept: changed to ***hever kadh*** ✗ (was *hane*): Zafar to decide |
+| R7 | one skewer of mishkaki | *hakri lakri mishkaki* | 28 Sept: *hakri lakri mishkaki* ✓ |
+| R8 | a cup | *hakri cup* | 28 Sept: ***hakro cup*** ("it's hakro, not hakri") ✗ |
+| R9 | tamarind | *amli* | on its own, not *amli ji chutney* · 28 Sept: *amli* ✓ |
+| R10 | Can you make me some chai? (to an elder) | *Aai muke chai banai dinda?* | 28 Sept: *Aai muke chai banai dinda?* ✓ |
+| R11 | I'm fine | *Aau theek ai* | on its own · 28 Sept: *Aau theek ai* ✓ |
+| R12 | Who did it? | | Last time it sounded like *kere karein*. Is that right? How would you ask the children "who did it?" when something's been eaten or spilt? · 28 Sept: *kere karein?* again (the n is "a half end") ⚠ still to check; the eaten/spilt question not asked |
 
 ## Part 2 · Conversations: little exchanges between people (about 10 minutes)
 
@@ -45,21 +45,21 @@
 
 | ID | English | Kutchi (what we think it is) | Notes |
 |---|---|---|---|
-| K1 | Hello (as Nani greets a grandchild at the door) | *Salamun alaykum!* | |
-| K2 | Hello back (as a child answers) 🎤 | *Wa alaikum salaam!* | |
-| K3 | Goodbye 🎤 | *Khuda-fis!* | as a visitor leaving, and as the child's reply |
-| K4 | How are you? (informally, one cousin to another) | *Ki ai?* | |
-| K5 | I'm fine. And how are you? (a child answering Nana) | *Aau theek ai. Aai ki aayo?* | one natural line |
-| K6 | I'm fine. And you? (a child answering a cousin) | *Aau theek ai. Tu ki aiye?* | one natural line |
-| K7 | Can you make me daar? | *Tu muke daar banai dinda?* | |
-| K8 | Can you make me maani? | *Tu muke maani banai dinda?* | |
-| K9 | Can you make me chaat / samosa / mishkaki? | *Tu muke chaat / samosa / mishkaki banai dinda?* | each one separately |
-| K10 | I'd like chai. / I'd like water. / I'd like milk. 🎤 | *Muke chai khape. · Muke paani khape. · Muke dudh khape.* | the child answering "what would you like?" |
-| K11 | No, I don't want it (the polite no, as a child says it) 🎤 | *Na, na khape.* | |
-| K12 | Where's the teaspoon? · Where's the cup? | *Chamchi kida ai? · Cup kida ai?* | Nani looking for something. Is the word order right? |
-| K13 | Do you know who I am? | | said to a grandchild: as Nani, and as Nana would say it |
-| K14 | Nana! · Nani! · Big Ma! · Ali! 🎤 | | called out, as the answer to "who am I?". What do the children really call Big Ma? |
-| K15 | Son / dear (to a grandchild, boy or girl) | *beta* | on its own |
+| K1 | Hello (as Nani greets a grandchild at the door) | *Salamun alaykum!* | 28 Sept: *Salamun alaykum!* ✓ |
+| K2 | Hello back (as a child answers) 🎤 | *Wa alaikum salaam!* | 28 Sept: *Alaikum salaam!* ⚠ no *wa* heard |
+| K3 | Goodbye 🎤 | *Khuda-fis!* | as a visitor leaving, and as the child's reply · 28 Sept: *Khuda hafiz!* ✓ |
+| K4 | How are you? (informally, one cousin to another) | *Ki ai?* | 28 Sept: ***Ki aiye?*** ⚠ |
+| K5 | I'm fine. And how are you? (a child answering Nana) | *Aau theek ai. Aai ki aayo?* | one natural line · 28 Sept: *Aau theek ai. Aai ki aayo?* ✓ |
+| K6 | I'm fine. And you? (a child answering a cousin) | *Aau theek ai. Tu ki aiye?* | one natural line · 28 Sept: *Aau theek ai. Tu ki aiye?* ✓ |
+| K7 | Can you make me daar? | *Tu muke daar banai dinda?* | 28 Sept: ✓ (just *daar*, not *daar ji saag*) |
+| K8 | Can you make me maani? | *Tu muke maani banai dinda?* | 28 Sept: ✓ |
+| K9 | Can you make me chaat / samosa / mishkaki? | *Tu muke chaat / samosa / mishkaki banai dinda?* | each one separately · 28 Sept: ✓ all three |
+| K10 | I'd like chai. / I'd like water. / I'd like milk. 🎤 | *Muke chai khape. · Muke paani khape. · Muke dudh khape.* | the child answering "what would you like?" · 28 Sept: *Muke chai khapeti · Muke paani khapeto · Muke dudh khapeto* (formal endings: paani, dudh are he-words) |
+| K11 | No, I don't want it (the polite no, as a child says it) 🎤 | *Na, na khape.* | 28 Sept: ***Na, muke na khape.*** |
+| K12 | Where's the teaspoon? · Where's the cup? | *Chamchi kida ai? · Cup kida ai?* | Nani looking for something. Is the word order right? · 28 Sept: ✓ the order is right |
+| K13 | Do you know who I am? | | said to a grandchild: as Nani, and as Nana would say it · 28 Sept: *Toke khabar ai, aau ker aiya?* ⚠ (Nani only; Nana's not recorded) |
+| K14 | Nana! · Nani! · Big Ma! · Ali! 🎤 | | called out, as the answer to "who am I?". What do the children really call Big Ma? · 28 Sept: *Nana! Nani! Ali!* ✓. Big Ma: children say **Big Ma**; Kutchi *Wadima*; traditional *Maji*: Zafar to choose |
+| K15 | Son / dear (to a grandchild, boy or girl) | *beta* | on its own · 28 Sept: *beta* ✓ |
 
 ## Part 3 · The first story: Nani asks for help (about 5 minutes)
 
@@ -67,15 +67,15 @@
 
 | ID | English | Kutchi (Zafar's guess, if any) | Notes |
 |---|---|---|---|
-| S1 | Can you get me the chai things from the pantry? | | |
-| S2 | Mmm, lovely chai! Well done, dear. | *… Shabash, beta.* | |
-| S3 | Tomorrow is Eid! | | |
-| S4 | Guests are coming. | *magani acheto / achanto?* | |
-| S5 | Oh no, there's no food! | | |
-| S6 | We need to cook. | *pakendro … khape?* | |
-| S7 | Will you help me cook? | | |
-| S8 | Yes, I'll help you cook. (the child's reply) | | and just "Yes" |
-| S9 | Come, let's go to the kitchen. | | |
+| S1 | Can you get me the chai things from the pantry? | | 28 Sept, two lines: *Tu muke help kar de?* + *Muke chai ji chiju khanechi dinde?* ⚠ |
+| S2 | Mmm, lovely chai! Well done, dear. | *… Shabash, beta.* | 28 Sept: *Mmm, chai bo fine ai. Shabash, beta.* ⚠ |
+| S3 | Tomorrow is Eid! | | 28 Sept: *Saware Eid ai.* ⚠ (*kale* disputed) |
+| S4 | Guests are coming. | *magani acheto / achanto?* | 28 Sept: *Mageni achenta.* ⚠ |
+| S5 | Oh no, there's no food! | | 28 Sept: *O / Oho, kenjo nai!* ⚠ |
+| S6 | We need to cook. | *pakendro … khape?* | 28 Sept: *Panke randhnu khapdo.* ⚠ |
+| S7 | Will you help me cook? | | 28 Sept: *Tu muke randhan lai madad kar de?* ⚠ |
+| S8 | Yes, I'll help you cook. (the child's reply) | | and just "Yes" · 28 Sept: *Ha, aau randhan lai madad kar dis* (girl) / *… kar dos* (boy); *Ha* ⚠ |
+| S9 | Come, let's go to the kitchen. | | 28 Sept: *Hal, rasore me winja.* ⚠ |
 
 ## Part 4 · One and more than one, for the cooking game (about 8 minutes)
 
@@ -83,19 +83,19 @@
 
 | ID | English | One | More than one | Notes |
 |---|---|---|---|---|
-| P1 | potato | | *trae …* | |
-| P2 | onion | | *trae …* | |
-| P3 | tomato | | *trae …* | |
-| P4 | green chilli | *hakri mirchi* | *trae marcha* | (just to check) |
-| P5 | lemon | | *trae …* | |
-| P6 | chapati | *hakri maani* | *trae …* | |
-| P7 | samosa | | *trae …* | |
-| P8 | skewer | *hakri lakri* | *trae …* | |
-| P9 | teaspoon / big spoon | *hakri chamchi / hakro chamcho* | *trae …* | |
-| P10 | cup | | *trae …* | |
-| P11 | pea | | *watana* | is there a word for just one? |
-| P12 | green pepper | | | the Kutchi word (the game has none yet) |
-| P13 | pantry / the cupboard where food is kept | | | the Kutchi word (the game has none yet) |
+| P1 | potato | | *trae …* | 28 Sept: *bateto · trae bateta* ⚠ spelling |
+| P2 | onion | | *trae …* | 28 Sept: *dungri · trae dungri* (no change) |
+| P3 | tomato | | *trae …* | 28 Sept: *tameto*? doesn't change ⚠ spelling |
+| P4 | green chilli | *hakri mirchi* | *trae marcha* | (just to check) · 28 Sept: *mirchi*, no plural (*trae mirchi*); *marcha* maybe Gujarati ✗ Zafar to decide |
+| P5 | lemon | | *trae …* | 28 Sept: *limu · char limu* (no change) |
+| P6 | chapati | *hakri maani* | *trae …* | 28 Sept: *maani* (no change) |
+| P7 | samosa | | *trae …* | 28 Sept: *samosa* (no change); Nani says ***sambusa*** |
+| P8 | skewer | *hakri lakri* | *trae …* | 28 Sept: *hakri lakri · char lakri* (no change) |
+| P9 | teaspoon / big spoon | *hakri chamchi / hakro chamcho* | *trae …* | 28 Sept: *chamchi* (no change) · *chamcho → chamcha* |
+| P10 | cup | | *trae …* | 28 Sept: *cup* (no change) |
+| P11 | pea | | *watana* | is there a word for just one? · 28 Sept: green peas = *matar*; *watana* = fried peas (one: *watano*, rarely) |
+| P12 | green pepper | | | the Kutchi word (the game has none yet) · 28 Sept: no word; *wadi mirchi* suggested as a stand-in |
+| P13 | pantry / the cupboard where food is kept | | | the Kutchi word (the game has none yet) · 28 Sept: ***kabaat*** (also *pinjro*, the old netted food cage) |
 
 ---
 
@@ -311,17 +311,17 @@ Say each pair: one thing, then two of them.
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C1 | one cup · two cups | | |
-| C2 | one mango · two mangoes | | |
-| C3 | one door · two doors | | |
-| C4 | one dupatta · two dupattas | | |
-| C5 | one maani · two maani | | |
-| C6 | one table · two tables | | |
-| C7 | one goat · two goats | | |
-| C8 | one boy · two boys | | |
-| C9 | one girl · two girls | | |
-| C10 | one eye · two eyes | | |
-| C11 | one knee · two knees | | |
+| C1 | one cup · two cups | *hakro cup, ba cup* | 28 Sept |
+| C2 | one mango · two mangoes | *hakro ambo, ba amba* | 28 Sept |
+| C3 | one door · two doors | *hakro darwajo, ba darwaja* | 28 Sept |
+| C4 | one dupatta · two dupattas | *hakri pacheri, ba pacheri* | 28 Sept: the family says *pacheri* |
+| C5 | one maani · two maani | *hakri maani, ba maani* | 28 Sept |
+| C6 | one table · two tables | *hakro table, ba table* | 28 Sept |
+| C7 | one goat · two goats | *hakri bakri, ba bakri · hakro bakro, ba bakra* | 28 Sept |
+| C8 | one boy · two boys | | 28 Sept: not asked on its own (see C18) |
+| C9 | one girl · two girls | *hakri chokri, ba chokri* (fuller: *ba chokriyu*) | 28 Sept |
+| C10 | one eye · two eyes | *hakri akh, ba akhyu* | 28 Sept ⚠ |
+| C11 | one knee · two knees | *hakro gutan, ba gutan* | 28 Sept ⚠ |
 
 ### C12–C21. The thing on its own, then after "in", "on", "with"
 
@@ -329,16 +329,16 @@ Say the thing by itself, then the little phrase; then the same with more than on
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C12 | the cup · in the cup · the cups · in the cups | | |
-| C13 | the mango · on the mango · the mangoes · on the mangoes | | |
-| C14 | the door · behind the door · the doors · behind the doors | | |
-| C15 | the maani · on the maani · the maani (more than one) · on the maani (more than one) | | |
-| C16 | the table · under the table · the tables · under the tables | | |
-| C17 | the goat · with the goat · the goats · with the goats | | |
-| C18 | the boy · with the boy · the boys · with the boys | | |
-| C19 | the girl · with the girl · the girls · with the girls | | |
-| C20 | Nana · with Nana · to Nana · Nani · with Nani · to Nani | | |
-| C21 | Calling out to get someone's attention: "Boy!" (a boy) · "Girl!" · "Boys!" (several) · "Nana!" · "Nani!" | | |
+| C12 | the cup · in the cup · the cups · in the cups | *cup · cup je andar* (plural the same) | 28 Sept |
+| C13 | the mango · on the mango · the mangoes · on the mangoes | *ambo · ambo je mathe · amba · amba je mathe* | 28 Sept: Mum first said *ambe je mathe* ⚠ |
+| C14 | the door · behind the door · the doors · behind the doors | *darwajo · darwaje je puthiya* (plural the same) | 28 Sept |
+| C15 | the maani · on the maani · the maani (more than one) · on the maani (more than one) | *maani · maani je mathe* | 28 Sept |
+| C16 | the table · under the table · the tables · under the tables | *table · table je niche* | 28 Sept |
+| C17 | the goat · with the goat · the goats · with the goats | *bakri · bakri sathe · bakra · bakra sathe*; *bakro · bakro sathe* | 28 Sept: she-goat plural *bakra*? ⚠ |
+| C18 | the boy · with the boy · the boys · with the boys | *chokro · chokre sathe · chokra · chokra sathe* | 28 Sept: never *chokro sathe* |
+| C19 | the girl · with the girl · the girls · with the girls | *chokri · chokri sathe · chokriyu · chokriyu sathe* | 28 Sept |
+| C20 | Nana · with Nana · to Nana · Nani · with Nani · to Nani | *Nana · Nana sathe · Nani · Nani sathe* | 28 Sept: "to Nana / Nani" not said |
+| C21 | Calling out to get someone's attention: "Boy!" (a boy) · "Girl!" · "Boys!" (several) · "Nana!" · "Nani!" | *E chokro! · E chokri! · Nana! · Nani!* | 28 Sept: "Boys!" not said ⚠ *e* |
 
 ### C22–C36. "Big"
 

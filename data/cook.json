@@ -3,8 +3,9 @@
  "words": {
   "cook-paani": {
    "kutchi": "paani",
+   "_gender": "Mum 28 Sept (Round 3 K10; docs/kutchi-grammar-notes.md §31): muke paani/dudh khapeto (the he-word ending)",
    "english": "water",
-   "gender": "unknown",
+   "gender": "he",
    "image": "water-jug",
    "src": "zafar-24sep"
   },
@@ -22,8 +23,9 @@
   },
   "cook-dudh": {
    "kutchi": "dudh",
+   "_gender": "Mum 28 Sept (Round 3 K10; docs/kutchi-grammar-notes.md §31): muke paani/dudh khapeto (the he-word ending)",
    "english": "milk",
-   "gender": "unknown",
+   "gender": "he",
    "image": "milk-jug",
    "src": "zafar-24sep"
   },
@@ -65,6 +67,9 @@
   },
   "cook-maani": {
    "kutchi": "maani",
+   "kutchi_one": "maani",
+   "kutchi_many": "maani",
+   "_count": "Mum 28 Sept (Round 3 P6, C5; docs/kutchi-grammar-notes.md §34): hakri maani, ba maani, no change",
    "english": "chapati",
    "gender": "she",
    "image": "chapati-puffed",
@@ -79,6 +84,9 @@
   },
   "veg-01": {
    "kutchi": "bataato",
+   "kutchi_one": "bataato",
+   "kutchi_many": "bataata",
+   "_count": "Mum 28 Sept (Round 3 P1; docs/kutchi-grammar-notes.md §34): one bateto, three bateta (Whisper's spelling, kept in the game's bataato/bataata spelling for Zafar to check); a he-word in -o, -o -> -a",
    "english": "potato",
    "gender": "unknown",
    "heap": {
@@ -98,6 +106,9 @@
   },
   "veg-02": {
    "kutchi": "dungri",
+   "kutchi_one": "dungri",
+   "kutchi_many": "dungri",
+   "_count": "Mum 28 Sept (Round 3 P2; docs/kutchi-grammar-notes.md §34): trae dungri, no change",
    "english": "onion",
    "gender": "unknown",
    "image": "onion",
@@ -138,6 +149,7 @@
   },
   "veg-12": {
    "kutchi": "marcha",
+   "_count_mum": "Mum 28 Sept (Round 3 P4; docs/kutchi-grammar-notes.md §34): Mum says mirchi for one and for more (trae mirchi de, 'like salt'); she thinks marcha may be Gujarati or the whole dried chilli. Contradicts Zafar's 26 Sept note: Zafar to decide. Not changed.",
    "kutchi_one": "mirchi",
    "english": "green chilli",
    "note": "Zafar 26 Sept: mirchi = one chilli, marcha = plural. The game has no singular/plural switch yet (see cook-with-nani-todo: noun plurals), so marcha stays for counts; mirchi is kept for when one chilli is asked for.",
@@ -168,6 +180,7 @@
   },
   "veg-10": {
    "kutchi": "watana",
+   "_count_mum": "Mum 28 Sept (Round 3 P11; docs/kutchi-grammar-notes.md §34): watana are FRIED peas (the snack); green peas are matar. Zafar to check which one this is. Not changed.",
    "src_change": "was vatana; Zafar 25 Sept: no V in Kutchi, always W",
    "english": "peas",
    "gender": "unknown",
@@ -191,6 +204,9 @@
   },
   "fru-02": {
    "kutchi": "limu",
+   "kutchi_one": "limu",
+   "kutchi_many": "limu",
+   "_count": "Mum 28 Sept (Round 3 P5; docs/kutchi-grammar-notes.md §34): char limu, no change",
    "english": "lemon",
    "gender": "unknown",
    "heap": {
@@ -478,6 +494,9 @@
   },
   "ph-samosa": {
    "kutchi": "samosa",
+   "kutchi_one": "samosa",
+   "kutchi_many": "samosa",
+   "_count": "Mum 28 Sept (Round 3 P7; docs/kutchi-grammar-notes.md §34): no change. Zafar asked for Nani to say 'sambusa' (the family's word; clip sambusa-r3): not changed here yet",
    "english": "samosa",
    "gender": "unknown",
    "src": "Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §26, B37)",
@@ -492,6 +511,9 @@
   },
   "ph-lakri": {
    "kutchi": "lakri",
+   "kutchi_one": "lakri",
+   "kutchi_many": "lakri",
+   "_count": "Mum 28 Sept (Round 3 P8; docs/kutchi-grammar-notes.md §34): hakri lakri, char lakri, no change",
    "english": "skewer",
    "gender": "she",
    "_use": "Said before a skewer's kind in the mishkaki order (the tally's `unit`, and data/stations/mishkaki-grill.json mechanic.skewer.unit): hakri lakri gos, ba lakri boga. Mum said it with mishkaki (hakri lakri mishkaki, ba lakri mishkaki); with gos, boga and mixed it's Claude's extension, to check.",

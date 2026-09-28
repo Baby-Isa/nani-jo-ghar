@@ -53,10 +53,10 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 ## 3. Language
 | Piece | % | Next step |
 |---|---|---|
-| Recordings with Mum (Sections A–J, about 170 min in all) | 15 | **Next session: `docs/Questions for Mum (Round 3).docx`** (re-takes, Conversations, story lines, one/many nouns, then G, C, E, F, H, D, I, J). Was: | **Section C** (the grammar sentences) next, then G (clinic and monsoon), D, E, F, H, I. Also the 10 first-launch story lines. |
+| Recordings with Mum (Sections A–J, about 170 min in all) | 25 | **28 Sept: Round 3 Parts 1–4 and C1–C21 recorded** (41 min, `sources/audio/mum-2026-09-28/`, report `build/reports/recording-2026-09-28.md`). **Next session: C22 onwards** (describing words, my/your, verbs and tenses), then G, E, F, H, D, I, J. Was: | **Next session: `docs/Questions for Mum (Round 3).docx`** (re-takes, Conversations, story lines, one/many nouns, then G, C, E, F, H, D, I, J). Was: | **Section C** (the grammar sentences) next, then G (clinic and monsoon), D, E, F, H, I. Also the 10 first-launch story lines. |
 | Section A (grammar basics) and B (Cook words) | 100 | Done: grammar notes §1–§28. |
-| Grammar notes and spelling rules | 35 | Grows with each recording. Answer the open spelling questions. |
-| Voice clips (cut from the recordings, a lab page to check them) | 75 | **Checked by Zafar (26 Sept):** 146 OK, 27 to redo (`checked` field in `data/family-audio.json`), 21 not yet checked. Next: wire the OK clips into the game and speech enrolment. Was: | 86 Mum and 87 Zafar clips from Section B are in `lab/family-audio.html`. Zafar ticks the good ones; then wire them into the game and speech enrolment. |
+| Grammar notes and spelling rules | 45 | §29–§36 added 28 Sept (one/two, -o → -a plurals, -yu plurals, -e before *je/sathe*, the verb agreeing with the speaker). ⚠ spellings for Zafar to check. Was: | Grows with each recording. Answer the open spelling questions. |
+| Voice clips (cut from the recordings, a lab page to check them) | 80 | **28 Sept: 182 new clips (102 Mum, 80 Zafar) to tick** in `lab/family-audio.html`; re-takes R1–R11 replace the redo clips; the Conversations and first-launch lines use them. Was: | **Checked by Zafar (26 Sept):** 146 OK, 27 to redo (`checked` field in `data/family-audio.json`), 21 not yet checked. Next: wire the OK clips into the game and speech enrolment. Was: | 86 Mum and 87 Zafar clips from Section B are in `lab/family-audio.html`. Zafar ticks the good ones; then wire them into the game and speech enrolment. |
 | Words in the game data | Cook 70, Find 40, the clinic 5, the others 5–10 | Each mode's words go in when its recording section is done. |
 | Syllabus word lists S1–S6 | S1 50, S2 20, S3–S6 5 | Recordings C and E–H fill S2–S4. |
 
@@ -88,6 +88,7 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Store listing (screenshots, text, age rating) | 0 | Near the end. |
 
 ## Waiting on Zafar (open questions)
-1. A8.9 "Who did it?": re-ask Mum. Whisper heard *kere karein*, and Zafar doesn't recognise it.
+1. A8.9 "Who did it?": re-asked 28 Sept (R12); Mum said *kere karein* again, the final n "a half end". Zafar to judge by ear.
+2. From 28 Sept (docs/kutchi-grammar-notes.md §29–§36): *hever kadh* or *hane kadh* (R6); *hakro cup* (R8); *mirchi* with no plural vs *marcha* (P4); *watana* (fried) vs *matar* (green peas) for Cook's peas (P11); Big Ma's name (*Big Ma / Wadima / Maji*); whether Nani says *sambusa*; *Ki aiye?* vs *Ki ai?* (K4); *Alaikum salaam* without *wa* (K2); the ⚠ spellings of the story lines S1–S9.
 
 Decided on 26 Sept: the story is English then Kutchi; *mirchi* is one chilli and *marcha* the plural; the dump 3 art is approved; the spellings are confirmed; the other modes' designs are parked; game ideas 10–17 have their verdicts (17 dropped, 12 folded into the placing game, new idea 20: the how-are-you greeting exchange).

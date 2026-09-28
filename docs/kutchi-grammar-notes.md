@@ -356,3 +356,163 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 - **Thank you:** the family says the English "thank you".
 - **Goodbye:** ***khuda-fis*** (*khuda hafiz*). Hello: *salaam*.
 - **Which "you":** ***aai*** for everyone older (older cousins too). ***tu*** for the same age or younger.
+
+## 28 Sept 2026: Mum and Zafar, Round 3 Parts 1–4 and Section C1–C21 (41 min, `sources/audio/mum-2026-09-28/Kutchi.260928.m4a`)
+
+Rough transcript: `sources/audio/mum-2026-09-28/Kutchi.260928.md`. The recording follows *Questions for Mum (Round 3)*. For each line Zafar reads the English, Mum says the Kutchi twice, then Zafar says it twice. Zafar skipped Section G on purpose and went straight to the grammar (C1–C21), "so we don't have to restructure things later".
+
+**Confidence:** *clear* = Whisper and the English transcript agree, and it matches earlier notes. *heard* = Whisper's spelling, so the Kutchi is rough. ⚠ = **heard, to check** (Zafar). ✗ = contradicts an earlier note. The clips are in `data/family-audio.json` (qid R1…, K1…, S1…, P1…, C1…), unchecked, for ticking in `lab/family-audio.html`.
+
+### 29. Part 1, the re-takes (R1–R12)
+| ID | English | What Mum said | Confidence |
+|---|---|---|---|
+| R1 | What's this? | *hi kuro ai?* | clear |
+| R2 | What would you like? (child) | *toke kuro khapeto?* | clear |
+| R3 | a whole cup | *aako cup* | clear |
+| R4 | a full tank | *aaki tanki* | clear |
+| R5 | and then | *ne poi* (only said on its own, not inside *pela … ne poi …*) | clear |
+| R6 | lift it out now | ***hever kadh*** (Zafar: "we've specifically changed it to *hever kadh*") | ✗ §25 B14 and Zafar's correction said cooking steps use ***hane***; Cook's line is *{x} hane kadh*. **Zafar to decide** |
+| R7 | one skewer of mishkaki | *hakri lakri mishkaki* | clear |
+| R8 | a cup | ***hakro cup*** (Mum: "it's hakro, not hakri") | ✗ §25 B27 had *hakri cup*. So **cup is a he-word** (C1 agrees: *hakro cup*) |
+| R9 | tamarind | *amli* | clear |
+| R10 | Can you make me some chai? (elder) | *Aai muke chai banai dinda?* | clear |
+| R11 | I'm fine | *Aau theek ai* | clear |
+| R12 | Who did it? | *kere karein?* again, slowly. Mum: the final *n* is "a half end", barely said | ⚠ still the same sound; Zafar didn't recognise it (26 Sept). It stays out of the game |
+
+The "said to children when something's been eaten or spilt" part of R12 wasn't answered; §20's *ker mitai khai vyo?* still covers that.
+
+### 30. Part 2, conversations (K1–K15)
+| ID | English | What Mum said | Confidence |
+|---|---|---|---|
+| K1 | Hello (Nani at the door) | *Salamun alaykum!* | clear |
+| K2 | Hello back 🎤 | *Alaikum salaam!* | ⚠ no *wa* heard at the start (the sheet had *Wa alaikum salaam*) |
+| K3 | Goodbye 🎤 | *Khuda hafiz!* (Zafar's spelling: *khuda-fis*) | clear |
+| K4 | How are you? (cousins) | ***Ki aiye?*** | ⚠ the sheet had *Ki ai?*; Mum and Zafar both said *ki aiye*, like *tu ki aiye* without the *tu* |
+| K5 | I'm fine. And how are you? (to Nana) | *Aau theek ai. Aai ki aayo?* (Whisper: *aiyo*) | clear |
+| K6 | I'm fine. And you? (to a cousin) | *Aau theek ai. Tu ki aiye?* | clear |
+| K7 | Can you make me daar? | *Tu muke daar banai dinda?* Mum: just *daar*, not *daar ji saag* | clear |
+| K8 | Can you make me maani? | *Tu muke maani banai dinda?* | clear |
+| K9 | … chaat / samosa / mishkaki? | *Tu muke chaat / samosa / mishkaki banai dinda?* | clear (Mum sometimes ends *dinde*) |
+| K10 | I'd like chai / water / milk 🎤 | *Muke chai khape**ti**. Muke paani khape**to**. Muke dudh khape**to**.* | heard, see §31 |
+| K11 | No, I don't want it (polite) 🎤 | ***Na, muke na khape.*** | clear. The sheet had *Na, na khape* (§11) |
+| K12 | Where's the teaspoon / cup? | *Chamchi kida ai? · Cup kida ai?* | clear: **the word order is right** |
+| K13 | Do you know who I am? | *Toke khabar ai, aau ker aiya?* ("to-you knowledge is, I who am?") | ⚠ whole line. Only Nani's version recorded; not Nana's |
+| K14 | Nana! · Nani! · Big Ma! · Ali! 🎤 | *Nana! Nani! Ali!* Big Ma: see below | clear |
+| K15 | son / dear | *beta* | clear |
+
+**Big Ma (K14):** the children really just say ***Big Ma***, in English. The Kutchi is ***Wadima*** ("big mother", *wadi* = big, she-form). ***Maji*** is the traditional name for a great-grandmother. ***Dadima*** is what the family uses for a grandmother (father's mother). All three were recorded; **Zafar to choose** (Mum: "we'll decide later").
+
+### 31. "I want" agrees with the thing, and water and milk are he-words
+- Asked for the child's answer, Mum gave the agreeing forms (§1), not the informal *khape*: *chai khape**ti*** (she), *paani khape**to***, *dudh khape**to***.
+- So **paani and dudh are he-words** (Cook had them as "unknown"). Chai stays a she-word (§5).
+- The game's *Muke {x} khape* frame is still the family's informal form (§1). But Mum's natural answer to Nani here was the formal one. **Zafar to decide** which the child says in Conversations (E6).
+
+### 32. The verb agrees with whoever is speaking: *kar dis* (girl) / *kar dos* (boy)
+- S8, "Yes, I'll help you cook": a girl says ***Ha, aau randhan lai madad kar dis***, a boy says ***… kar dos***.
+- Zafar's insight (20:17): endings follow the gender of the noun, *and sometimes you're the noun*. "I will" agrees with the speaker. That's why he used to mix up *chamchi/chamcho*.
+- For the game: a child's reply that says "I will …" needs a boy form and a girl form, picked from the character (like `C.childVoice`). Mum's clip gives both forms; Zafar's gives the boy's.
+
+### 33. Part 3, the first story (S1–S9)
+| ID | English | What Mum said | Confidence |
+|---|---|---|---|
+| S1 | Can you get me the chai things from the pantry? | Split into two short lines. ***Tu muke help kar de?*** (can you help me?) then ***Muke chai ji chiju khanechi dinde?*** (will you bring me the chai things?). "Pantry" isn't needed | ⚠ *khanechi* (Mum: "*khanechi* is bring it, *dinde* is will you"); *chiju* = things. *help* is the English word |
+| S2 | Mmm, lovely chai! Well done, dear. | ***Mmm, chai bo fine ai. Shabash, beta.*** | ⚠ *bo fine ai* (Whisper: *bo faine*); "very fine"? |
+| S3 | Tomorrow is Eid! | ***Saware Eid ai.*** | ⚠ *saware* = tomorrow. They discussed *kale*: the Kutchi teacher said *kale* is Gujarati. Unsettled; Mum said "take what we've said" |
+| S4 | Guests are coming. | ***Mageni achenta.*** | ⚠ *mageni* (guests); *achenta* = are coming, a plural like *khapanta* |
+| S5 | Oh no, there's no food! | ***O, kenjo nai!*** and more dramatic, ***Oho, kenjo nai!*** | ⚠ *kenjo* (food? no word like this in the notes yet) |
+| S6 | We need to cook. | ***Panke randhnu khapdo.*** (Zafar also tried *randhnu no khapdo*) | ⚠ *panke* = to us (like *muke*, *toke*); *randhnu* = to cook |
+| S7 | Will you help me cook? | ***Tu muke randhan lai madad kar de?*** | heard: *randhan* = cooking, *lai* = for (§8), *madad* = help |
+| S8 | Yes, I'll help you cook. / Yes | *Ha, aau randhan lai madad kar dis / dos* (§32) · ***Ha*** | heard |
+| S9 | Come, let's go to the kitchen. | ***Hal, rasore me winja.*** | ⚠ *hal* = come (§12), *rasore me* = in the kitchen (§20), *winja* = let's go |
+
+### 34. Part 4, one and more than one (P1–P13)
+Only "one" (*hakro/hakri*) changes with gender (§2). The noun changes only if it's a **he-word ending in -o**:
+
+| ID | English | One | More than one | Confidence |
+|---|---|---|---|---|
+| P1 | potato | *bateto* | *trae bateta* | ⚠ Whisper hears *bateto/bateta*; the game spells *bataato* |
+| P2 | onion | *dungri* | *trae dungri* (no change) | clear |
+| P3 | tomato | *tameto*? | the same ("tomato doesn't change") | ⚠ Whisper hears *tumata/tomato*. If it's a he-word in -o it should change, so the spelling needs Zafar's ear |
+| P4 | chilli | ***mirchi*** | ***mirchi*** ("no plural, it's like salt"; *trae mirchi de*) | ✗ Zafar's note (26 Sept) had *marcha* as the plural. Mum thinks *marcha* is Gujarati, or maybe the whole dried chilli (*aakha marcha*). *Aakhi mirchi* = a whole (not powdered) chilli. Nobody says "green chilli". **Zafar to decide** |
+| P5 | lemon | *limu* | *char limu* (no change) | clear |
+| P6 | chapati | *maani* | *maani* | clear |
+| P7 | samosa | *samosa* · **Nani says *sambusa*** (Zafar's instruction: the family grew up with *sambusa*) | the same | clear |
+| P8 | skewer | *hakri lakri* | *char lakri* (no change) | clear |
+| P9 | teaspoon / tablespoon | *chamchi* / *chamcho* | *chamchi* / ***chamcha*** | clear |
+| P10 | cup | *cup* | *cup* | clear |
+| P11 | pea | green peas are ***matar***. ***watana*** are *fried* peas (the snack); one would be *watano*, "but you'd almost never use that" | | ✗ the game's veg-10 *watana* is "peas". Check which one Cook means |
+| P12 | green pepper | no word. *wadi mirchi* / *wada marcha* ("big chilli") came up as a stand-in | | not recorded as an answer: a game decision |
+| P13 | pantry | ***kabaat*** (cupboard, as in §15). Also *khanje jo kabaat* (a food cupboard) ⚠, and ***pinjro*** (the old netted food cage; the same word as a bird cage) | | clear for *kabaat* |
+
+### 35. Section C1–C11: one and two
+| ID | Kutchi | Note |
+|---|---|---|
+| C1 | *hakro cup, ba cup* | cup is a he-word (R8) |
+| C2 | *hakro ambo, ba amba* | §4 confirmed |
+| C3 | *hakro darwajo, ba darwaja* | door is a he-word, -o → -a |
+| C4 | *hakri pacheri, ba pacheri* | the family says ***pacheri***, not *dupatta*. Mum: "it can be *hakro*" too ⚠ |
+| C5 | *hakri maani, ba maani* | (Zafar read it out as "C8") |
+| C6 | *hakro table, ba table* | table is a he-word; it doesn't change |
+| C7 | *hakri bakri, ba bakri* · *hakro bakro, ba bakra* | goat: *bakri* (she-goat) and *bakro* (billy goat) |
+| C8 | not recorded as its own item | boy is *chokro*, plural *chokra* (C18) |
+| C9 | *hakri chokri, ba chokri* · fuller: ***ba chokriyu*** | Mum: "probably correctly it's *chokriyu*, but we make it short" |
+| C10 | *hakri akh, ba akhyu* | ⚠ eye = *akh*; Mum first said *ba akh*, then *ba akhyu* |
+| C11 | *hakro gutan, ba gutan* | ⚠ knee = *gutan*, a he-word. *Gutanyu* is kneeling |
+
+**Rule, as far as it goes:** he-words in -o → -a (*ambo, darwajo, bakro, chokro, bateto, chamcho*). She-words in -i usually stay the same (*maani, dungri, mirchi, chamchi, lakri, pacheri, bakri*). A she-word that **doesn't** end in -i takes ***-yu*** (*akh → akhyu*; Zafar's guess, and Mum's "we'll find out"). *chokri → chokriyu* shows -yu can also go on -i words in careful speech. Words that end in neither (*cup, table, limu, gutan*) don't change. **Two** is ***ba*** (Whisper sometimes hears "bur"), confirming §3.
+
+### 36. Section C12–C21: after "in", "on", "with", and calling out
+| ID | Kutchi | Note |
+|---|---|---|
+| C12 | *cup · cup je andar* (the same for more than one) | |
+| C13 | *ambo · ambo je mathe · amba · amba je mathe* | ⚠ Mum first said ***ambe*** *je mathe*, then settled on *ambo je mathe* |
+| C14 | *darwajo · darwaje je puthiya* (the same for more than one) | -o → -e before *je*, as §18 guessed |
+| C15 | *maani · maani je mathe* (no plural) | |
+| C16 | *table · table je niche* (the same) | |
+| C17 | *bakri · bakri sathe · bakra · bakra sathe* · *bakro · bakro sathe · bakra · bakra sathe* | ⚠ Mum's she-goat plural came out as *bakra* (expected *bakri* or *bakriyu*). *bakro sathe*, not *bakre sathe* |
+| C18 | *chokro · **chokre sathe** · chokra · chokra sathe* (or *chokre sathe*) | Mum was clear: never *chokro sathe*. With the boys: "*E chokra sathe biyein*" ("he went with the boys") ⚠, or *chokre* in some sentences |
+| C19 | *chokri · chokri sathe · chokriyu · chokriyu sathe* | |
+| C20 | *Nana · Nana sathe · Nani · Nani sathe* | "to Nana / to Nani" wasn't said |
+| C21 | *E chokro! · E chokri! · Nana! · Nani!* | ⚠ calling out puts ***e*** before the word (the same sound as *e* = he/she, §21). "Boys!" wasn't said separately |
+
+**Rule, as far as it goes:** *sathe* = with; *je* + a place word as in §15. A he-word in -o **usually** changes -o → -e before *sathe* or *je* (*chokre sathe*, *darwaje je puthiya*), which confirms the §18 hint. But *ambo je mathe* and *bakro sathe* didn't change (Mum hesitated over *ambe*). So it's a tendency, not yet a rule. Everything else stays the same.
+
+### Is the grammar "nailed down"? (Zafar asked for this in the report)
+**Not yet: roughly half of it is.** Now solid:
+- the gender of *one* (*hakro/hakri*), *ba* (two), and the -o → -a plural of he-words (every he-word in -o recorded follows it);
+- she-words in -i not changing;
+- *je / sathe* after the noun;
+- the *khapeto / khapeti* agreement (§1, §31), and the verb agreeing with the speaker (§32).
+
+Still open:
+- the **-o → -e form** before *je / sathe* (*chokre* but *ambo*, *bakro*);
+- the **-yu plural** (*akhyu, chokriyu*): when it's required, and whether *bakra* for she-goats is right;
+- everything from C22 on (describing words, *my/your*, verbs and tenses), which is what shapes sentence data most.
+
+Recording C22–C154 before building more sentence frames still makes sense.
+
+### Claude's check against Sindhi and Gujarati
+These fit the neighbours, which supports the hearings, but isn't proof. The family's recording decides.
+- *akh → akhyu* is exactly Sindhi *akh → akhiyūn* (eye, eyes). Sindhi she-words take *-ūn* plurals like this, so the *-yu* rule looks real.
+- *khanechi* fits Sindhi ***khaṇī ach*** (bring, literally "take and come"): *khan* (take, §9) + *achi* (come, §21).
+- *winja* matches Sindhi *vañjūn* (let's go). *panke* matches Sindhi *pāṇa* (we, ourselves). *randhan / randhnu* match Gujarati *rāndhaṇ* / *rāndhvũ* (cooking, to cook).
+- *saware* matches Gujarati *savāre* (in the morning), which suits "tomorrow" in Kutchi. *kale* is Gujarati *kāle*, which means both yesterday and tomorrow; that fits Mum's doubt.
+- *mageni* looks like Swahili ***mgeni*** (guest), like *boga* and *jikoni* (§20, §25). It's worth asking whether the family's Kutchi took it from East Africa.
+- *pacheri* matches Gujarati *pachhedī* (a shawl or cloth). *wadima* matches Gujarati *vaḍīmā*. *chokro/chokri* match Gujarati *chhokro/chhokrī*. *bakro/bakri* match Sindhi *bakiro/bakirī*. *sathe* is Gujarati *sāthe*. *gutan* is close to Gujarati *ghūṇṭaṇ* (knee).
+- *matar* is the Hindi/Urdu word for peas. *watana* is Gujarati *vaṭāṇā* (peas), which the family uses for the fried snack.
+
+### What this means for the game (proposed; approved ideas go in `docs/GAME-IDEAS-TBC.md`)
+21. **Wired now, from Mum's recording:**
+    - "Will you help me cook?" = *Tu muke randhan lai madad kar de?*
+    - "Do you know who I am?" = *Toke khabar ai, aau ker aiya?* (Nani's version)
+    - "Mmm, lovely chai!" = the S2 line
+    - Chamchi/Cup *kida ai?* (order confirmed)
+    - the first-launch story lines S1–S9
+    - *daar / maani / chaat / samosa / mishkaki banai dinda?* clips
+
+    These all still carry ⚠ spellings until Zafar checks them.
+22. **Big Ma's name** (*Big Ma / Wadima / Maji*) is Zafar's call. The Conversations line stays a placeholder until then.
+23. **Cup and paani/dudh are he-words** (*hakro cup*). Cook's gender data is updated, so "one cup" says *hakro*.
+24. **Cook plurals:** *bateto → bateta*, *chamcho → chamcha*; *dungri, mirchi, limu, lakri, maani, samosa, cup, chamchi* don't change. These are in `data/cook.json` (`kutchi_one` / `kutchi_many`). *mirchi vs marcha*, *watana vs matar* and the tomato spelling wait for Zafar.
+25. **"I will" replies need a boy form and a girl form** (§32).
+26. ***hever* or *hane* in "lift it out now"** (R6) is Zafar's call. Cook keeps *hane kadh* until then.

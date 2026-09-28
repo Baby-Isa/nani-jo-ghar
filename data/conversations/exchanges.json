@@ -86,7 +86,7 @@
     "kin.who-am-i": {
       "id": "kin.who-am-i", "code": "E8", "type": "T4", "stage": "S1", "register": "fixed", "family": true,
       "turns": [
-        { "who": "asker", "line": "who-am-i" },
+        { "who": "asker", "line": "who-am-i", "bySpeaker": { "nani": "who-am-i-nani" }, "_bySpeaker": "Nani's own wording (Mum 28 Sept, K13); Nana's is still to record" },
         { "who": "player", "byStage": { "S1": { "answers": [
           { "name": "self", "correct": true },
           { "name": "other", "correct": false } ] } } }

@@ -77,7 +77,8 @@ test("every audio chunk is a real family clip; lines with no clip stay text-only
     const f = D.clips[c.replace(/^fam:/, "")];
     if (f) Object.values(f).forEach((file) => assert.ok(fs.existsSync(path.join(ROOT, file)), `${file} exists`));
   }));
-  assert.equal(C.resolve("salaam").complete, false, "the salaam has no family clip yet");
+  assert.equal(C.resolve("salaam").complete, true, "Mum recorded the salaam (28 Sept, K1)");
+  assert.equal(C.resolve("salaam-reply").complete, false, "the reply's 'wa' is still to check: no clip yet");
   assert.equal(C.resolve("fine").complete, true);
 });
 
@@ -98,15 +99,18 @@ test("every exchange's lines resolve for every speaker it can meet (no invented 
   assert.equal(C.resolve("make-x", {}), null);
   assert.equal(C.resolve("make-x", { noun: "cook-daar" }).k, "Tu muke daar banai dinda?");
   assert.deepEqual(C.resolve("make-x", { noun: "cook-chai" }).chunks, ["fam:tu-muke-chai-banai-dinda"], "the whole-line clip beats the chunks");
-  assert.equal(C.resolve("make-x", { noun: "cook-daar" }).complete, false, "no clip for daar yet: text only");
+  assert.deepEqual(C.resolve("make-x", { noun: "cook-daar" }).chunks, ["fam:tu-muke-daar-banai-dinda"], "Mum's whole line for daar (28 Sept, K7)");
+  assert.deepEqual(C.resolve("x-kida", { noun: "cup" }).chunks, ["fam:cup-kida-ai"], "Mum's whole line (K12)");
   assert.equal(C.resolve("x-kida", { noun: "chamchi" }).k, "Chamchi kida ai?");
 });
 
-test("placeholders make an exchange untested (E5, E8, E9 today)", () => {
+test("placeholders make an exchange untested (E8 for Nana today)", () => {
   const nani = C.speaker("nani");
-  assert.equal(C.hasPlaceholder(D.exchanges["request.help-cook"], nani), true);
+  assert.equal(C.hasPlaceholder(D.exchanges["request.help-cook"], nani), false, "Mum recorded it (S7)");
   assert.equal(C.hasPlaceholder(D.exchanges["kin.who-am-i"], C.speaker("nana")), true);
-  assert.equal(C.hasPlaceholder(D.exchanges["where.kida"], nani), true);
+  assert.equal(C.hasPlaceholder(D.exchanges["kin.who-am-i"], nani), false, "Nani asks in her own words (K13)");
+  assert.equal(C.askLine(D.exchanges["kin.who-am-i"], nani).line, "who-am-i-nani");
+  assert.equal(C.hasPlaceholder(D.exchanges["where.kida"], nani), false, "the word order is confirmed (K12)");
   assert.equal(C.hasPlaceholder(D.exchanges["wellbeing.howareyou"], nani, { stage: "S2" }), false);
   assert.equal(C.hasPlaceholder(D.exchanges["greet.salaam"], nani), false);
 });
@@ -299,7 +303,7 @@ test("pick: never the same exchange twice in a row; stage gates; placeholders un
   s.lastType = "T11";
   assert.equal(C.pick(s, { placement: "CL9", speaker: "girl" }, T0).exchange.id, "greet.bye");
   const p = C.pick(C.touchSession(C.blankState(), T0), { placement: "FL7" }, T0);
-  assert.equal(p.tested, false, "E5's question is a placeholder");
+  assert.equal(p.tested, true, "E5's question is recorded now (S7)");
   assert.equal(C.pick(C.touchSession(C.blankState(), T0), { placement: "FL4" }, T0).tested, true);
 });
 

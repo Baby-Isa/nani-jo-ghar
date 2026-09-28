@@ -70,13 +70,16 @@
     };
     return C;
   };
-  /** data/family-audio.json -> {clipId: {mum: file, zafar: file}} (the first take per speaker that has a file). */
+  /** data/family-audio.json -> {clipId: {mum: file, zafar: file}}: per speaker an "ok" take over an unchecked one; a "redo" take is never used. */
   C.indexClips = function (list) {
     const out = {};
+    const rank = {};
     (list || []).forEach((e) => {
-      if (!e || !e.id || !e.file || !e.speaker) return;
+      if (!e || !e.id || !e.file || !e.speaker || e.checked === "redo") return;
       const o = (out[e.id] = out[e.id] || {});
-      if (!o[e.speaker]) o[e.speaker] = e.file;
+      const r = e.checked === "ok" ? 2 : 1;
+      const k = e.id + "|" + e.speaker;
+      if (!o[e.speaker] || r > rank[k]) (o[e.speaker] = e.file), (rank[k] = r);
     });
     return out;
   };
@@ -200,7 +203,7 @@
   /** The asker's line for this exchange and speaker: {line, nounId}. Peers vary 'Tu ki aiye?' / 'Ki ai?' (§6.5). */
   C.askLine = function (ex, sp, ctx = {}, rng = Math.random) {
     const t = ex.turns[0];
-    let id = t.line;
+    let id = (t.bySpeaker && sp && t.bySpeaker[sp.id]) || t.line;
     if (Array.isArray(id)) id = t.vary === "peer" && C.youFor(sp) === "tu" && sp && sp.age !== "elder" ? id[Math.floor(rng() * id.length) % id.length] : id[0];
     const x = xFor(ex, ctx);
     return { line: id, noun: t.x ? x[t.x] : null };

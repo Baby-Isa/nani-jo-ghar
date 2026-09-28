@@ -6,8 +6,8 @@
              "heard": [{ "who": "kasuku", "line": "salaam", "echo": true, "when": "after" }], "note": "Nani at the door; Kasuku repeats her salaam from the windowsill (heard only)" },
     "FL4": { "mode": "first", "where": "ask-chai", "slot": "before", "speakers": ["nani"], "exchanges": ["request.make"], "x": { "dish": "cook-chai" }, "scripted": true, "stages": ["S1"], "note": "Nani holds up an empty glass" },
     "FL5": { "mode": "first", "where": "sip", "slot": "after", "speakers": ["nani"], "exchanges": [], "scripted": true, "stages": ["S1"],
-             "heard": [{ "who": "nani", "line": "lovely-chai" }, { "who": "nani", "line": "shabash-beta" }], "note": "heard only: 'Mmm, lovely chai! Shabash, beta.'" },
-    "FL7": { "mode": "first", "where": "help", "slot": "before", "speakers": ["nani"], "exchanges": ["request.help-cook"], "scripted": true, "stages": ["S1"], "note": "the No pill dodges; untested until recorded" },
+             "heard": [{ "who": "nani", "line": "lovely-chai" }], "note": "heard only: 'Mmm, lovely chai! Shabash, beta.' (one line and one clip since Mum's 28 Sept recording)" },
+    "FL7": { "mode": "first", "where": "help", "slot": "before", "speakers": ["nani"], "exchanges": ["request.help-cook"], "scripted": true, "stages": ["S1"], "note": "the No pill dodges; Mum recorded the question 28 Sept (S7)" },
     "FL8": { "mode": "cook", "where": "first-customer", "slot": "before", "speakers": ["nana"], "exchanges": ["wellbeing.howareyou"], "scripted": true, "stages": ["S1"], "note": "Cook's first day, Nana's order (day 1, after the chai demo)" },
 
     "CK1": { "mode": "cook", "where": "order", "slot": "before", "speakers": ["customer"], "exchanges": ["greet.salaam", "wellbeing.howareyou"], "stages": ["S1", "S2", "S3"], "note": "a customer arrives at the island: salaam on the first meeting today, else how are you (register choice from S2)" },

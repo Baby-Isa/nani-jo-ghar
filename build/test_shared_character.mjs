@@ -91,5 +91,5 @@ test("the story data: every line a scene uses exists, placeholder Kutchi is mark
       assert.ok(!l.placeholder, `${id}: a recording isn't a placeholder`);
     } else if (!l.sound) assert.ok(l.placeholder, `${id}: unrecorded Kutchi is marked placeholder`);
   }
-  assert.deepEqual(["eid-tomorrow", "everyone-coming", "food-not-ready", "help-cook"].map((k) => s.lines[k].en), ["Tomorrow is Eid.", "Everyone is coming.", "Oh no, the food is not ready.", "Can you help me cook?"]);
+  assert.deepEqual(["eid-tomorrow", "everyone-coming", "food-not-ready", "help-cook"].map((k) => s.lines[k].en), ["Tomorrow is Eid!", "Guests are coming.", "Oh no, there's no food!", "Will you help me cook?"]);
 });

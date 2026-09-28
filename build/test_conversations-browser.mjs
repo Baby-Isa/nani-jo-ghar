@@ -108,7 +108,7 @@ for (const [w, h] of [[1366, 768], [390, 844]]) {
 
   // the line table flags placeholders
   const ph = await page.$$eval("#lines tr[data-ph]", (rows) => rows.map((r) => r.dataset.line));
-  check(ph.includes("help-cook") && ph.includes("who-am-i") && ph.includes("x-kida"), `${tag}: placeholder lines flagged in the lab (${ph.join(", ")})`);
+  check(ph.includes("who-am-i") && ph.includes("name-bigma") && !ph.includes("help-cook") && !ph.includes("x-kida"), `${tag}: placeholder lines flagged in the lab (${ph.join(", ")})`);
   check(!(await page.$('#lines tr[data-line="fine"][data-ph]')), `${tag}: family lines are not flagged`);
 
   // the voice: boy -> Zafar, girl -> Mum, read from the save
@@ -177,7 +177,7 @@ for (const [w, h] of [[1366, 768], [390, 844]]) {
   check(/via skip/.test(l3), `${tag}: the skip hand (${l3})`);
 
   if (w === 1366) {
-    // the first launch: FL2..FL8, the No that dodges at FL7
+    // the first launch: FL2..FL8, the No that dodges at FL7 (Nani asks in Kutchi since Mum's 28 Sept recording)
     await page.click('#stage button[data-v="S1"]');
     await page.click("#sim-first");
     let dodged = false;
@@ -190,7 +190,7 @@ for (const [w, h] of [[1366, 768], [390, 844]]) {
         await box.evaluate((b) => (b.dataset.handled = "1"));
         await sleep(250);
         const lines = await page.$$eval(".cv-pill", (ps) => ps.map((p) => p.dataset.line));
-        const isHelp = await page.$eval(".cv-bubble .cv-text", (e) => /help me cook/i.test(e.textContent)).catch(() => false);
+        const isHelp = await page.$eval(".cv-bubble .cv-text", (e) => /help me cook|randhan lai madad/i.test(e.textContent)).catch(() => false);
         if (isHelp) {
           const no = await page.$('.cv-pill[data-line="na"]');
           const bb = await no.boundingBox();
@@ -209,7 +209,7 @@ for (const [w, h] of [[1366, 768], [390, 844]]) {
     const log = await page.$eval("#log", (e) => e.textContent);
     check(/FL2[\s\S]*greet\.salaam/.test(log) && /FL4[\s\S]*request\.make/.test(log) && /FL5: /.test(log) && /request\.help-cook/.test(log) && /FL8[\s\S]*wellbeing\.howareyou/.test(log), `${tag}: the first launch runs FL2, FL4, FL5, FL7, FL8`);
     check(dodged, `${tag}: FL7's No dodges the finger`);
-    check(/request\.help-cook[^\n]*untested/.test(log), `${tag}: FL7 is untested (placeholder question)`);
+    check(/request\.help-cook[^\n]*· tested/.test(log), `${tag}: FL7 is tested now that Mum recorded the question (S7)`);
 
     // Cook: one per visit, then the 2-minute clock declines the rest
     await page.click("#reset");
