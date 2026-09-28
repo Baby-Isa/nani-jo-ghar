@@ -265,3 +265,5 @@
 @media (max-width: 560px) and (prefers-reduced-motion: reduce) {
   .rs-badge.celebrate .rs-ribbon { transform: rotate(-3deg); }
 }
+/* All right: only the shining gold tick shows (no pewter or clipped layer behind it). */
+.rs-acc.tier-gold .rs-tick-base, .rs-acc.tier-gold .rs-tick-right { visibility: hidden; }
