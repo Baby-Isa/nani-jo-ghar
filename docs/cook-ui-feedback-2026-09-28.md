@@ -95,3 +95,15 @@ Aim: as crisp and premium as the new jar art. Flat, modern, straight, organised.
   - a thin vertical divider between wrong (left) and right (right);
   - both sides' rows **top-aligned** to the same line, not each centred on its own;
   - the cards restyled to match the sidebar pills: flat, modern, crisp.
+
+## 10. Sidebar v3 (Zafar's review of v2 in the chai station, 28 Sept, late). Supersedes §9 where they differ.
+- **Nani's box is not red or rose** (too alarming). Use a calm **sage green** tint with a darker sage band (it echoes the kitchen cabinets), distinct from the cream panel and the white cards. Keep the colour in one CSS variable so it's easy to change. Nani's box may use **up to 2 lines** (she narrates); the cards stay at 1 line. The placeholder lines must not be cut off with "…".
+- **One white card per person.** The person's card = their face + short headline (e.g. *Muke chai khape.*) + their item pills. A second person (Ali) gets their **own separate card**. Remove the redundant sub-header inside the card ("Nana lai.") when the card already belongs to Nana; "{name} lai" only makes sense on a shared order card, which we no longer use. Mini groups inside a card are only for several of the same thing from one person (e.g. two skewers). **Remove the extra Nana card at the bottom of the sidebar** (the full-sentence repeat); the full line was heard in the pop-up.
+- **Bug: the pills don't tick** in the chai station (and possibly elsewhere) as items go in. Every station must tick its pills when that step closes (UX §11). Verify in EVERY station by playing it through.
+- **The style is flat material UI, not 3D.** The UI and text are flat and modern, which contrasts well with the 3D art:
+  - Pills are white with a 1px border.
+  - Done = the same white pill with a **flat gold outline (2px)** and a small **flat gold check icon** (not the 3D tick art, not a gold gradient fill).
+  - Next = a light grey fill.
+  - Word review: flat white cards with a **flat outline**: gold for right, red for wrong. No gradients, no bevels, no 3D text.
+  - One clean rounded sans for the UI (e.g. Nunito 700/800). No chunky 3D-looking display text in pills.
+- **Items without their word** (e.g. khun or dudh at some levels) show no lone speaker bubble (still happening).
