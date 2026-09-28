@@ -9,7 +9,8 @@ sound examples for future use"). This script turns such a recording into:
   assets/audio/family/zafar/<id>.mp3   Zafar's best take (the second voice)
   data/family-audio.json               the manifest: a flat list of
       {id, qid, kutchi, english, speaker, file, start, end, source,
-       confidence, note}. A word that couldn't be cut is a row too, with
+       confidence, note, checked}. `checked` is Zafar's verdict by ear
+      (ok / redo), kept across re-runs while the clip's cut is unchanged. A word that couldn't be cut is a row too, with
       file/start/end null and confidence "skipped", so read rows with a file.
 
 How it works:
@@ -1020,6 +1021,13 @@ def main():
     out = os.path.join(a.out, "data", "family-audio.json")
     old = json.load(open(out)) if os.path.exists(out) else []
     keep = [c for c in old if c.get("source") != source]
+    # Zafar's verdict ("checked": ok / redo, from lab/family-audio.html) stays with a clip
+    # whose cut hasn't moved; a re-cut clip has to be heard again, so it loses it.
+    was = {(c["id"], c["speaker"]): c for c in old if c.get("source") == source and c.get("file")}
+    for m in manifest:
+        o = was.get((m["id"], m["speaker"]))
+        if o and o.get("checked") and abs(o["start"] - m["start"]) < 0.005 and abs(o["end"] - m["end"]) < 0.005:
+            m["checked"] = o["checked"]
     for sk in skips:
         manifest.append({"id": sk.get("id"), "qid": sk["qid"], "kutchi": sk["kutchi"], "english": sk.get("english"),
                          "speaker": sk.get("speaker"), "file": None, "start": None, "end": None, "source": source,
