@@ -106,4 +106,4 @@ Aim: as crisp and premium as the new jar art. Flat, modern, straight, organised.
   - Next = a light grey fill.
   - Word review: flat white cards with a **flat outline**: gold for right, red for wrong. No gradients, no bevels, no 3D text.
   - One clean rounded sans for the UI (e.g. Nunito 700/800). No chunky 3D-looking display text in pills.
-- **Items without their word** (e.g. khun or dudh at some levels) show no lone speaker bubble (still happening).
+- **Items without their word** (higher levels) keep a **speaker-only chip** of the same size and position (Zafar, 28 Sept: the words go, the speaker stays).
