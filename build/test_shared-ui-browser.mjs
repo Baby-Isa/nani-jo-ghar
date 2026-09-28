@@ -86,7 +86,7 @@ try {
     }
     // Next -> the word review -> Done
     await page.click(".rs-next");
-    await page.waitForSelector(".rs-p2:not([hidden])");
+    await page.waitForSelector(".rs-card[data-step=\"2\"] .rs-p2:not([aria-hidden])");
     await page.waitForTimeout(500);
     const words = await page.$$eval(".rs-word", (b) => b.map((x) => x.textContent.trim()));
     check(words.length === 6 && words[0].includes("gos") && words[0].includes("meat"), `${s.name}: word review lists the round's words (${words.length})`);

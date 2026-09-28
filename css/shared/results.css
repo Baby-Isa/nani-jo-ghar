@@ -30,7 +30,7 @@
   --rs-madder: #a63b3b;
   --rs-indigo: #2f3e6b;
   --rs-disc: clamp(72px, min(28vh, 16vw), 200px);
-  --rs-btn: clamp(56px, min(11vh, 8vw), 72px);
+  --rs-btn: clamp(60px, min(11vh, 8vw), 72px);
   position: fixed;
   inset: 0;
   z-index: 900;
@@ -208,6 +208,7 @@
 .rs-btn svg { width: calc(var(--rs-btn) * 0.5); height: calc(var(--rs-btn) * 0.5); stroke-width: 2.6; flex: none; }
 .rs-btn.labelled { width: auto; min-width: calc(var(--rs-btn) * 1.7); }
 .rs-btn.labelled svg { width: 26px; height: 26px; }
+.rs-btn span { white-space: nowrap; }
 .rs-btn:active { transform: scale(0.97); }
 .rs-btn:focus-visible { outline: 3px solid #c9962e; outline-offset: 3px; }
 /* the main action: charcoal; the others: white with a grey outline */
@@ -307,7 +308,8 @@
   .rs-foot { justify-content: flex-start; flex: 1; }
   .rs-ribbon { top: -10px; left: auto; right: 10px; transform: rotate(-3deg); }
   .rs-actions .rs-btn:last-child { flex: 0 1 60%; }
-  .rs-actions .rs-btn.labelled { flex: 1 1 0; min-width: 0; padding: 0 12px; }
+  .rs-actions .rs-btn.labelled { flex: 1 1 auto; min-width: 0; padding: 0 12px; gap: 8px; font-size: 17px; }
+  .rs-actions .rs-btn.labelled svg { width: 22px; height: 22px; }
   .rs-actions .rs-btn.rs-done { flex: none; width: var(--rs-btn); }
   .rs-words { flex-direction: column; align-items: stretch; gap: 14px; }
   .rs-words-col { padding: 0; }

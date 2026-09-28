@@ -387,18 +387,22 @@ const out = await Results.show({
   marks: [true, true, false, ...],            // optional: slot order (default: rights first)
   words: [{ kutchi: "dudh", english: "milk", audio: "assets/audio/word/cook-dudh.mp3", id: "cook-dudh" }],
   speak: (w) => Lang.speakWord(w.id),         // optional: the mode's own audio path
-  onDone(out) {}, onAgain(out) {},            // onAgain optional: shows Play again on page 2
+  onDone(out) {}, onAgain(out) {},            // onAgain optional: shows Play again on the last step
+  actions: [{ id: "again", label: "Again", icon: "again" }, { id: "list", label: "All stations", icon: "grid", primary: true }],
+                                              // optional: the last step's own buttons (replace Play again / Done); elId sets a button's id
   sound: true, container: document.body,
 });
-// out = {action: "done" | "again", badges, best: {ms, newBest, first, key}}
+// out = {action: "done" | "again" | an actions id, badges, best: {ms, newBest, first, key}}
 ```
+
+**One pop-up card** (design system §10, 28 Sept): a white card over the dimmed game that steps through the badges (→ Next), then the word review in the same card, with the action buttons at its foot on that last step. Both steps keep the card's size.
 
 **Page 1.** Three badges, then a big Next on the right. On a phone narrower than 560 px the badges stack as rows.
 - **Time**: a stopwatch disc showing the seconds (m:ss from a minute), with the best under a crown. A new best is faster by at least one shown second: it goes gold, with a bing, sparkles and "New best!". The first round sets the best quietly, and a slower time is never shamed (mid). Leave out `timeMs` for no Time badge.
 - **Accuracy**: `right/total`, with slots that fill green or red in turn. Up to 20 slots, then a jar. All right goes gold with a chime; 60% or more is mid, less is plain.
 - **Hints**: the count, and one small bulb per hint. 0 is gold, 1 mid, 2 or more plain.
 
-**Page 2.** The word review: one big pill per word (speaker, Kutchi, English); a tap plays it. The audio path is `speak(w)`, else `w.audio`, else Cook's `Lang.speakWord(w.id)`, else `NjgAudio.speakRaw`/local TTS. With no words, Next is Done.
+**Page 2.** The word review: one card per word (Kutchi, then a neutral speaker and the English), outlined gold when right and red when missed; a tap plays it. The audio path is `speak(w)`, else `w.audio`, else Cook's `Lang.speakWord(w.id)`, else `NjgAudio.speakRaw`/local TTS. With no words, the actions sit under the badges.
 
 Reduced motion shows everything at once (sounds still play). Every target is at least 64 px.
 

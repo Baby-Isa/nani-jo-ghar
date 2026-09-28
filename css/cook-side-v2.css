@@ -226,6 +226,8 @@ body.w6 #intro .ic-card.people .icard.person { box-shadow: none; }
 
 /* the card once served: its stamp stays as it was */
 body.w6 #mission.stamped .face-say .say-badge { display: none; }
+/* (the old round speaker hid once served; the face is that button now, and a face stays) */
+body.w6 #mission.stamped .face-say.card-say { visibility: visible; }
 
 /* ---------- the request pop-up: the same card, bigger ---------- */
 body.w6 #intro .ic-card {
