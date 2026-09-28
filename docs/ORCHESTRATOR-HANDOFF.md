@@ -15,6 +15,8 @@
 
 ## Lessons (don't repeat)
 
+- **Follow-ups go to the same session** (Zafar, 28 Sept), to avoid paying the start-up cost again. The orchestrator can't message cloud sessions directly (`ListAgents` doesn't list them), so give Zafar a ready-to-paste message for the running session instead of launching a new one.
+
 - **Never start a build while a question to Zafar is open** (Zafar, 28 Sept). If a message ends with questions for him, wait for his answers before launching anything that depends on them. On 28 Sept the chai mock-up was started with a masala dabba he then declined, and had to be stopped and restarted.
 
 - **Browser tests:**
