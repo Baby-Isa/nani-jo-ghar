@@ -55,6 +55,7 @@ JSON list in the same shape and pass it with --items:
     "prefer": "last",                   # optional: the family said "take the last one"
     "items": [{"id": "hakro-cup", "kutchi": "hakro cup", "english": "one cup",
                "alias": ["hakro kap"],  # optional: Whisper's spellings
+               "avoid": [[s, e]],       # optional: never these takes (a redo clip's own)
                "mum": [s, e],           # optional pin: exact take times
                "zafar": "skip: reason", # optional: don't cut this speaker
                "note": "...", "note_mum": "..."}]}]  # notes for all / one speaker
@@ -818,6 +819,9 @@ def choose(rec, group, item, lo, hi, review):
     with cf.ThreadPoolExecutor(8) as ex:
         heard = dict(zip(todo, ex.map(lambda t: rec.hear(t[0], t[1], prompt), todo)))
     rec.cache.save()
+    # "avoid": takes already cut (a clip heard and marked redo), so another repeat is found
+    avoid = item.get("avoid", [])
+    todo = [t for t in todo if not any(min(t[1], b) - max(t[0], a) > 0.1 for a, b in avoid)]
     cands = []
     for s, e in todo:
         h = heard[(s, e)]

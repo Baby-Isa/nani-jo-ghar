@@ -224,6 +224,9 @@
     label(obj, id, { mode } = {}) {
       mode = mode || Cook.labelMode(id);
       if (mode === "none") return null;
+      // Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10): an item whose word is
+      // hidden shows no label at all, never a lone speaker bubble (its word is on the card's face = replay)
+      if (mode !== "text") return null;
       const c = this.centre(obj);
       const ph = Cook.isPlaceholder(id);
       const text = mode === "text" ? Cook.display(id) : "";
@@ -393,6 +396,21 @@
           ease: "Cubic.easeOut",
           onComplete: () => dot.destroy(),
         });
+      }
+    }
+    /** A small soft puff where something lands in a pot or a glass (28 Sept, s8). */
+    puff(x, y, color = 0xffffff, size = 40) {
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2 + Math.random() * 0.6;
+        const c = this.track(this.add.ellipse(x, y, size * 0.6, size * 0.4, i % 2 ? 0xffffff : color, 0.45).setDepth(D.fx));
+        this.tweens.add({ targets: c, x: x + Math.cos(a) * size * 0.8, y: y + Math.sin(a) * size * 0.35 - size * 0.3, scale: 1.8, alpha: 0, duration: 420 + Math.random() * 160, ease: "Cubic.easeOut", onComplete: () => c.destroy() });
+      }
+    }
+    /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */
+    wisps(x, y, n = 2, w = 60) {
+      for (let i = 0; i < n; i++) {
+        const s = this.track(this.add.ellipse(x + (Math.random() - 0.5) * w, y, w * 0.4, w * 0.55, 0xffffff, 0.2).setDepth(D.fx));
+        this.tweens.add({ targets: s, y: y - w * (1.6 + Math.random()), x: s.x + (Math.random() - 0.5) * w * 0.6, scaleX: 2.2, scaleY: 1.6, alpha: 0, duration: 1500 + Math.random() * 600, delay: i * 220, ease: "Sine.easeOut", onComplete: () => s.destroy() });
       }
     }
     sparkle(x, y) {

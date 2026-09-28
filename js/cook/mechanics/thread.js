@@ -65,8 +65,7 @@
         bowls[id] = S.ingredient(id, z.X(lay.bowlsX), z.Y(y), { w: z.L(150), h: z.L(ids.length > 4 ? 100 : 112), state: "pieces" });
       });
       S.track(S.add.image(z.X(lay.boardX), z.Y(430), SK.tex(S, "board")).setScale(z.k).setDepth(D.item - 2));
-      const hand = S.hand(null, { x: z.X(lay.boardX + 10), y: z.Y(735), k: z.k * 0.7 });
-      hand.setDepth(D.item + 1.5);
+      // (Sidebar v2, 28 Sept: the hand under the board is gone; hands are out of the game for now)
 
       /* the skewer on the board */
       let sk = null;

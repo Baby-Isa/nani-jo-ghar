@@ -158,6 +158,119 @@
     return (how === "first" ? left : Cook.shuffle(left)).slice(0, n == null ? left.length : n);
   };
 
+  /** A colour mixed toward another: mix(0xrrggbb, 0xrrggbb, 0..1). */
+  const mix = (a, b, f) => {
+    const A = Phaser.Display.Color.ValueToColor(a);
+    const B = Phaser.Display.Color.ValueToColor(b);
+    const c = Phaser.Display.Color.Interpolate.ColorWithColor(A, B, 1000, Math.round(Cook.clamp(f, 0, 1) * 1000));
+    return Phaser.Display.Color.GetColor(c.r, c.g, c.b);
+  };
+  S$.mix = mix;
+  // water is see-through (the pan's steel shows through it); everything else is opaque
+  const WATER = 0x9fd3f0;
+  /**
+   * A liquid's surface in a top-down vessel, lit like the painted art (the window light
+   * from the top left): a shaded edge where the vessel's wall shadows it, the body, a
+   * soft sheen, and a bright meniscus on the lit far side. boil (0..1) rolls the surface.
+   */
+  function shade(g, p, color, boil = 0) {
+    const a = color === WATER ? 0.5 : 0.97;
+    g.fillStyle(mix(color, 0x1a0e06, 0.28), a);
+    g.fillEllipse(p.x, p.y, p.rx * 2, p.ry * 2);
+    g.fillStyle(color, a);
+    g.fillEllipse(p.x + p.rx * 0.04, p.y + p.ry * 0.05, p.rx * 1.86, p.ry * 1.84);
+    g.fillStyle(mix(color, 0xffffff, 0.12), a * 0.6);
+    g.fillEllipse(p.x + p.rx * 0.1, p.y + p.ry * 0.12, p.rx * 1.3, p.ry * 1.2);
+    // the sheen: the window's reflection, soft (two layers)
+    g.fillStyle(0xffffff, color === WATER ? 0.2 : 0.1);
+    g.fillEllipse(p.x - p.rx * 0.28, p.y - p.ry * 0.3, p.rx * 0.8, p.ry * 0.36);
+    g.fillStyle(0xffffff, color === WATER ? 0.18 : 0.1);
+    g.fillEllipse(p.x - p.rx * 0.32, p.y - p.ry * 0.34, p.rx * 0.4, p.ry * 0.16);
+    // the meniscus: a thin bright line round the near, lit side
+    g.lineStyle(Math.max(1.5, p.rx / 45), 0xffffff, 0.28);
+    g.beginPath();
+    g.arc(p.x, p.y, p.rx * 0.985, 0.25, 2.3, false);
+    g.strokePath();
+    if (boil > 0) {
+      // a rolling boil: rings of froth that come and go
+      const t = performance.now() / 1000;
+      for (let i = 0; i < 9; i++) {
+        const u = (t * 0.9 + i * 0.37) % 1;
+        const ang = i * 2.4 + Math.floor(t * 0.9 + i * 0.37) * 1.7;
+        const d = 0.25 + ((i * 0.31) % 0.6);
+        const bx = p.x + Math.cos(ang) * p.rx * d;
+        const by = p.y + Math.sin(ang) * p.ry * d;
+        const r = p.rx * (0.05 + 0.09 * boil) * (0.4 + u);
+        g.lineStyle(Math.max(1, r * 0.25), mix(color, 0xffffff, 0.55), (1 - u) * 0.8 * boil);
+        g.strokeEllipse(bx, by, r * 2, r * 1.4);
+      }
+    }
+  }
+  S$.shade = shade;
+  S$.WATER = WATER;
+  /** Load textures the scene hasn't got yet: [[key, url], ...] (urls cache-busted through Cook.v). */
+  S$.load = (S, list) => {
+    const missing = list.filter(([key]) => !S.textures.exists(key));
+    if (!missing.length) return Promise.resolve();
+    return new Promise((resolve) => {
+      missing.forEach(([key, url]) => S.load.image(key, Cook.v ? Cook.v(url) : url));
+      S.load.once("complete", resolve);
+      S.load.start();
+    });
+  };
+  /**
+   * A spoon stir in a vessel (anything with a rim and a surface): a spoon dips in,
+   * goes round twice with a swirl on the liquid, and lifts out.
+   */
+  S$.stirIn = (S, vessel, { ms = 700, turns = 2 } = {}) => {
+    if (!vessel || !vessel.rim || !vessel.active || vessel.stirring) return Promise.resolve();
+    vessel.stirring = true;
+    const p = vessel.surface ? vessel.surface() : vessel.rim;
+    const rx = vessel.rim.rx * 0.45;
+    const ry = vessel.rim.ry * 0.45;
+    const L = vessel.rim.rx / 60;
+    const sp = S.track(S.add.graphics().setDepth(D.fx - 1));
+    const sw = S.track(S.add.graphics().setDepth(D.item + 0.5));
+    return new Promise((resolve) => {
+      S.tweens.addCounter({
+        from: 0,
+        to: 1,
+        duration: ms,
+        ease: "Sine.easeInOut",
+        onUpdate: (tw) => {
+          const u = tw.getValue();
+          const a = -Math.PI / 2 + u * turns * Math.PI * 2;
+          const x = p.x + Math.cos(a) * rx;
+          const y = p.y + Math.sin(a) * ry;
+          const lift = Math.max(0, 1 - Math.min(u, 1 - u) * 8); // dips in, lifts out
+          sp.clear().setAlpha(1 - lift * 0.7);
+          // the handle leans out to the lower right (the hand's side), the bowl in the liquid
+          sp.lineStyle(Math.max(3, L * 7), 0xb9bcc2, 1);
+          sp.lineBetween(x, y - lift * L * 20, x + L * 70, y + L * 38 - lift * L * 20);
+          sp.fillStyle(0xd7d9dd, 1);
+          sp.fillEllipse(x, y - lift * L * 20, L * 26, L * 16);
+          // the swirl it leaves on the surface
+          sw.clear();
+          for (let i = 0; i < 3; i++) {
+            const b = a - 0.6 - i * 0.5;
+            sw.lineStyle(Math.max(1, L * 2), 0xffffff, 0.22 - i * 0.06);
+            sw.beginPath();
+            sw.arc(p.x, p.y, rx * (0.7 + i * 0.2), b - 0.9, b, false);
+            sw.strokePath();
+          }
+          // squash the swirl to the surface's ellipse
+          sw.setScale(1, ry / rx).setPosition(0, p.y - p.y * (ry / rx));
+        },
+        onComplete: () => {
+          vessel.stirring = false;
+          sp.destroy();
+          S.tweens.add({ targets: sw, alpha: 0, duration: 300, onComplete: () => sw.destroy() });
+          resolve();
+        },
+      });
+    });
+  };
+
   /**
    * A drawn vessel (pan, pot, kadai, cup, serving bowl, tadka pan) with a
    * liquid surface that rises inside it, and target rings.
@@ -202,11 +315,7 @@
       if (color != null) v.color = color;
       liq.clear();
       if (L <= 0.01 || (spr && spr.filled)) return; // a painted vessel that shows its own contents
-      const p = at(L);
-      liq.fillStyle(v.color, 0.95);
-      liq.fillEllipse(p.x, p.y, p.rx * 2, p.ry * 2);
-      liq.fillStyle(0xffffff, 0.22);
-      liq.fillEllipse(p.x - p.rx * 0.3, p.y - p.ry * 0.3, p.rx * 0.7, p.ry * 0.4);
+      shade(liq, at(L), v.color, v.boiling || 0);
     };
     v.surface = () => {
       const p = at(Math.max(v.level, 0.1));

@@ -57,6 +57,7 @@
 <main>
   <div class="bar">
     <select id="filter" aria-label="Show">
+      <option value="new">Not checked yet (no verdict in the data)</option>
       <option value="all">All clips</option>
       <option value="check">Needs checking (low or medium)</option>
       <option value="low">Flagged (low)</option>
@@ -146,6 +147,7 @@
     const f = document.getElementById("filter").value;
     const shown = words.filter((w) => {
       const ts = Object.values(w.takes).filter((t) => t.file);
+      if (f === "new") return ts.some((t) => !t.checked);
       if (f === "low") return ts.some((t) => t.confidence === "low");
       if (f === "check") return ts.some((t) => t.confidence !== "high");
       if (f === "unticked") return ts.some((t) => !ok[t.file]);
@@ -179,6 +181,8 @@
     save();
     render();
   });
+  // Clips with no verdict yet (new cuts) come first; with none left, show everything.
+  if (!clips.some((c) => !c.checked)) document.getElementById("filter").value = "all";
   document.getElementById("filter").addEventListener("change", render);
   document.getElementById("stop").addEventListener("click", stop);
   document.getElementById("playall").addEventListener("click", async () => {

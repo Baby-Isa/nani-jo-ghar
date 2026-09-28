@@ -54,6 +54,42 @@
   }
 
   /**
+   * The pour stream (28 Sept, s8): a short tapered stream from the spout that falls in a
+   * curve onto the surface, with a light core and a small splash ring where it lands.
+   */
+  function drawStream(g, sp, p, col, w, t) {
+    g.clear();
+    const midX = (sp.x + p.x) / 2 - (p.x - sp.x) * 0.15;
+    const midY = sp.y + (p.y - sp.y) * 0.35;
+    const pts = [];
+    for (let i = 0; i <= 12; i++) {
+      const u = i / 12;
+      const x = (1 - u) * (1 - u) * sp.x + 2 * (1 - u) * u * midX + u * u * p.x;
+      const y = (1 - u) * (1 - u) * sp.y + 2 * (1 - u) * u * midY + u * u * p.y;
+      pts.push({ x, y, w: w * (1 - 0.45 * u) * (1 + 0.08 * Math.sin(t * 30 + u * 9)) });
+    }
+    const side = (k) => pts.map((q, i) => {
+      const n = pts[Math.min(i + 1, pts.length - 1)];
+      const m = pts[Math.max(i - 1, 0)];
+      const dx = n.x - m.x;
+      const dy = n.y - m.y;
+      const l = Math.hypot(dx, dy) || 1;
+      return { x: q.x + (-dy / l) * (q.w / 2) * k, y: q.y + (dx / l) * (q.w / 2) * k };
+    });
+    const poly = side(1).concat(side(-1).reverse());
+    g.fillStyle(col, 0.9);
+    g.fillPoints(poly, true);
+    g.lineStyle(Math.max(1, w * 0.18), 0xffffff, 0.35);
+    g.strokePoints(side(0.3), false);
+    // the splash where it lands
+    const r = w * (1.4 + 0.3 * Math.sin(t * 20));
+    g.lineStyle(Math.max(1, w * 0.2), 0xffffff, 0.45);
+    g.strokeEllipse(p.x, p.y, r * 2.2, r * 0.9);
+    g.fillStyle(col, 0.9);
+    g.fillEllipse(p.x, p.y, w * 1.3, w * 0.5);
+  }
+
+  /**
    * Dashed fill lines drawn inside a vessel: [{at, strong}]. The same
    * lines on every cup, so where they sit never answers the order.
    */
@@ -258,11 +294,19 @@
       let jug = null;
       const stream = S.track(S.add.graphics().setDepth(D.fx));
       const colorAt = (lv, target) => St.color(typeof o.color === "function" ? o.color(lv, target) : o.color);
+      // the pouring lip, as a fraction of the art from its centre (o.spout; default: a jug's
+      // lip, top left), turned with it
+      const lip = o.spout || [-0.42, -0.34];
+      const tilt = o.tilt != null ? o.tilt : -52;
+      const offAt = (deg) => {
+        const a = Phaser.Math.DegToRad(deg);
+        const lx = jug.displayWidth * lip[0];
+        const ly = jug.displayHeight * lip[1];
+        return { x: lx * Math.cos(a) - ly * Math.sin(a), y: lx * Math.sin(a) + ly * Math.cos(a) };
+      };
       const spout = () => {
-        const a = Phaser.Math.DegToRad(jug.angle);
-        const lx = -jug.displayWidth * 0.42;
-        const ly = -jug.displayHeight * 0.34;
-        return { x: jug.x + lx * Math.cos(a) - ly * Math.sin(a), y: jug.y + lx * Math.sin(a) + ly * Math.cos(a) };
+        const d = offAt(jug.angle);
+        return { x: jug.x + d.x, y: jug.y + d.y };
       };
       const tween = (cfg) => new Promise((r) => S.tweens.add(Object.assign({}, cfg, { onComplete: r })));
       const pour = async () => {
@@ -287,11 +331,17 @@
           if (Cook.Hands) Cook.Hands.attach(S, jug, "pour", { at: [0.4, 0.02], k: z.k * 0.8, turn: 0.12 });
         }
         jug.setScale(S.fitScale(o.art, size, size));
-        const hx = r.x + r.rx * 0.55 + jug.displayWidth * 0.36;
-        const hy = r.y - r.ry - jug.displayHeight * 0.18;
+        let hx = r.x + r.rx * 0.55 + jug.displayWidth * 0.36;
+        let hy = r.y - r.ry - jug.displayHeight * 0.18;
+        if (o.spout) {
+          // a bottle or carton: its spout held just above the rim, a little in from the right
+          const d = offAt(tilt);
+          hx = r.x + r.rx * 0.35 - d.x;
+          hy = r.y - r.ry * 0.9 - z.L(50) - d.y;
+        }
         jug.setPosition(hx + z.L(60), -jug.displayHeight).setAngle(0).setVisible(true);
         Cook.sfx.whoosh();
-        await tween({ targets: jug, x: hx, y: hy, angle: -52, duration: o.slideMs || 240, ease: "Cubic.easeOut" });
+        await tween({ targets: jug, x: hx, y: hy, angle: tilt, duration: o.slideMs || 240, ease: "Cubic.easeOut" });
         const loop = Cook.sfx.pourLoop();
         const ms = o.pourMs || 650;
         await new Promise((done) => {
@@ -307,9 +357,7 @@
               if (loop && loop.pitch) loop.pitch(lv);
               const p = surfaceAt(target, lv);
               const sp = spout();
-              stream.clear();
-              stream.lineStyle(Math.max(4, target.rim.rx / 9), col, 0.85);
-              stream.lineBetween(sp.x, sp.y, p.x + target.rim.rx * 0.2, p.y);
+              drawStream(stream, sp, { x: p.x + target.rim.rx * 0.2, y: p.y }, col, Math.max(6, target.rim.rx / 7), tw.getValue() * ms / 1000);
               if (o.onLevel) o.onLevel(lv, target);
             },
             onComplete: done,
@@ -337,7 +385,7 @@
   /** The hand score for a pour that stopped at `v`, aiming at [lo, hi]. */
   const pourScore = (S, v, lo, hi, k, spilled) => (spilled || v > 1 ? k.spillScore : S.bandScore(v, lo, hi));
 
-  Cook.Pour = { hold, measure, lines, surfaceAt, band, score: pourScore };
+  Cook.Pour = { hold, measure, lines, surfaceAt, band, score: pourScore, stream: drawStream };
 
   Mech.define("pour", {
     api: "pourInto",
@@ -348,7 +396,7 @@
   });
 
   /** A jug (the icon at jugAt, which never moves) into params.vessel. */
-  async function fromJug(z, { vessel, liquid = "cook-paani", color = 0x9fd3f0, from, fromLevel = false, target = [0.45, 0.62], jugAt, speak = true, icon }, k) {
+  async function fromJug(z, { vessel, liquid = "cook-paani", color = 0x9fd3f0, from, fromLevel = false, target = [0.45, 0.62], jugAt, speak = true, icon, art, spout, tilt, artSize }, k) {
     const S = z.S;
     const ctx = z.ctx;
     color = St.color(color);
@@ -363,7 +411,7 @@
     if ((k.specialJug || []).includes(liquid)) S.special(jug);
     const [lo, hi] = band(target, k);
     const line = (lo + hi) / 2;
-    const marks = lines(S, vessel, [{ at: line, strong: true }]);
+    // 28 Sept (s8): no fill line: a tap pours one measure, and nothing fills to a line any more
     if (speak) z.say(Lang.wordLine(liquid), { hide: St.hideKnown(ctx) }).catch(() => {});
     // pouring onto something already in the pan (milk into chai) blends the colours
     const base = vessel.level || 0;
@@ -378,7 +426,10 @@
     const r = await measure(z, {
       icon: jug,
       vessel,
-      art: jugKey,
+      art: art || jugKey,
+      spout,
+      tilt,
+      artSize,
       color: blend,
       next: (lv) => (lv < line - 0.02 ? line : null),
       pourMs: k.pourMs,
@@ -386,7 +437,6 @@
       key: liquid,
     });
     const v = r.level;
-    marks.destroy();
     z.progress({ poured: liquid, level: v });
     await Cook.wait(450);
     return v;
@@ -410,7 +460,6 @@
     } else {
       // Wave 6b: a tap pours one measure, to the line
       const line = (lo + hi) / 2;
-      const marks = lines(S, vessel, [{ at: line, strong: true }]);
       const r = await measure(z, {
         icon: source,
         vessel,
@@ -422,7 +471,6 @@
         key: "pan",
       });
       v = r.level;
-      marks.destroy();
     }
     if (steam) S.steam(vessel.rim.x, vessel.rim.y - z.L(30), steam);
     z.progress({ poured: "cup", level: v });
