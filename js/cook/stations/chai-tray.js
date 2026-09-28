@@ -69,7 +69,7 @@
   const CUP_AT = {
     1: [[0, 20, Math.PI]],
     2: [[-92, 20], [92, 20]],
-    3: [[-105, -62], [105, -62], [0, 92]],
+    3: [[-105, -62], [105, -62], [0, 92, 2.2]],
   };
   // the ingredient strip: seven slots along the counter edge, the jars' bases on one line
   const SLOTS = [90, 290, 490, 690, 890, 1090, 1290]; // clear of the tick, bottom right
