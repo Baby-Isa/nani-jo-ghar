@@ -207,19 +207,23 @@
     return out.join("");
   };
 
-  /** Group segments into speakable chunks by language. */
+  /** Group segments into speakable chunks by language; `raw` keeps each original seg (frame text or one filled word), for the family voice. */
   function groups(line) {
     const out = [];
     line.segs.forEach((s) => {
       if (s.lang === null) {
-        if (out.length) out[out.length - 1].t += s.t;
+        if (out.length) {
+          out[out.length - 1].t += s.t;
+          out[out.length - 1].raw.push({ t: s.t, w: null });
+        }
         return;
       }
       const last = out[out.length - 1];
       if (last && last.lang === s.lang) {
         last.t += s.t;
         last.words.push(s.w);
-      } else out.push({ t: s.t, lang: s.lang, words: [s.w] });
+        last.raw.push({ t: s.t, w: s.w });
+      } else out.push({ t: s.t, lang: s.lang, words: [s.w], raw: [{ t: s.t, w: s.w }] });
     });
     return out;
   }
@@ -227,6 +231,17 @@
     const key = (lang === "e" ? "en|" : "") + Cook.norm(text);
     return Cook.tts[key] ? key : null;
   }
+  /**
+   * A family recording (js/shared/family-voice.js) for a Kutchi text: tries the text itself,
+   * then (for one word) its own `say` spelling too, since the family clip's transcription
+   * sometimes matches that instead.
+   */
+  function famMatch(text, wordId) {
+    if (!global.FamilyVoice) return null;
+    const say = wordId && (Cook.data.words[wordId] || {}).say;
+    return global.FamilyVoice.match(text, say);
+  }
+  const famFile = (fam) => global.FamilyVoice.url(fam);
   /*
    * Missing placeholder audio. Words added after the last TTS build (the
    * 24-26 Sept family words: dai, chana, gos, bajr ji maani, ne poi, lakri, boga) have no file
@@ -286,26 +301,62 @@
     }
     return token;
   }
-  const tokenVoice = (w) => !!Cook.tts[w] || !!synthVoice();
+  const tokenVoice = (w) => !!Cook.tts[w] || !!famMatch(w) || !!synthVoice();
   Lang.hasVoice = (line) => {
-    if (fileFor(Lang.plain(line), "k") && line.segs.every((s) => s.lang !== "e")) return true;
-    return groups(line).some((g) => fileFor(g.t, g.lang) || (g.lang === "k" && Cook.norm(g.t).split(" ").some(tokenVoice)));
+    const purelyK = line.segs.every((s) => s.lang !== "e");
+    if (purelyK && (fileFor(Lang.plain(line), "k") || famMatch(Lang.plain(line).trim()))) return true;
+    return groups(line).some((g) => {
+      if (fileFor(g.t, g.lang)) return true;
+      if (g.lang !== "k") return false;
+      if (famMatch(g.t.trim())) return true;
+      return g.raw.some((part) => {
+        const text = part.t.trim();
+        if (!text) return false;
+        if (famMatch(text, part.w)) return true;
+        return Cook.norm(text).split(" ").some(tokenVoice);
+      });
+    });
   };
   /** Can this word be heard at all? (A word you can't hear is never dotted out.) */
   Lang.wordHasVoice = (id) => {
     const t = Cook.display(id);
-    return Cook.isPlaceholder(id) ? !!fileFor(t, "e") : !!fileFor(t, "k") || Cook.norm(t).split(" ").every(tokenVoice);
+    if (Cook.isPlaceholder(id)) return !!fileFor(t, "e");
+    return !!fileFor(t, "k") || !!famMatch(t, id) || Cook.norm(t).split(" ").every(tokenVoice);
   };
+  /** Speak one chunk of a Kutchi group (a frame's own text, or one filled word): a family
+   * recording first, else the placeholder TTS file, else its tokens one by one (a family
+   * clip if any, else the TTS token, else the on-device voice, saySpelling()'s pronunciation). */
+  async function speakChunk(text, wordId) {
+    const fam = famMatch(text, wordId);
+    if (fam) return Cook.speakFile(famFile(fam));
+    const k = fileFor(text, "k");
+    if (k) return Cook.speakKey(k);
+    for (const w of Cook.norm(text).split(" ")) {
+      if (!w) continue;
+      const famW = famMatch(w);
+      if (famW) await Cook.speakFile(famFile(famW));
+      else if (Cook.tts[w]) await Cook.speakKey(w);
+      else await synth(saySpelling(w));
+    }
+  }
   Lang.speak = async (line) => {
-    const whole = Lang.plain(line);
-    if (line.segs.every((s) => s.lang !== "e") && fileFor(whole, "k")) return Cook.speakKey(fileFor(whole, "k"));
+    const whole = Lang.plain(line).trim();
+    if (line.segs.every((s) => s.lang !== "e")) {
+      const fam = famMatch(whole);
+      if (fam) return Cook.speakFile(famFile(fam));
+      if (fileFor(whole, "k")) return Cook.speakKey(fileFor(whole, "k"));
+    }
     for (const g of groups(line)) {
-      const k = fileFor(g.t, g.lang);
-      if (k) await Cook.speakKey(k);
-      else if (g.lang === "k") {
-        for (const w of Cook.norm(g.t).split(" ")) {
-          if (Cook.tts[w]) await Cook.speakKey(w);
-          else if (w) await synth(saySpelling(w));
+      const fam = g.lang === "k" ? famMatch(g.t.trim()) : null;
+      if (fam) await Cook.speakFile(famFile(fam));
+      else {
+        const k = fileFor(g.t, g.lang);
+        if (k) await Cook.speakKey(k);
+        else if (g.lang === "k") {
+          for (const part of g.raw) {
+            const text = part.t.trim();
+            if (text) await speakChunk(text, part.w);
+          }
         }
       }
       await new Promise((r) => setTimeout(r, 120 / Cook.speed));

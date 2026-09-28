@@ -211,6 +211,12 @@
       const t0 = Date.now();
       let played = false;
       if (w.audio) played = await Voice.audio(w.audio);
+      // a family recording of this Kutchi line (js/shared/family-voice.js), else the device voice
+      if (!played && w.kutchi && w.placeholder !== true && global.FamilyVoice) {
+        await global.FamilyVoice.load(Kit.root);
+        const fam = global.FamilyVoice.match(w.kutchi);
+        if (fam) played = await Voice.audio(fam.file);
+      }
       if (!played) await Voice.tts(Kit.plain(w));
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
       if (left > 0) await new Promise((r) => setTimeout(r, left));

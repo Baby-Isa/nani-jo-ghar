@@ -18,9 +18,10 @@
  *   choice     Yes / No; only Yes works (No shakes, Nani looks embarrassed and asks again: UX §14)
  *   end        sets the story's flag (firstDone) and goes home
  *
- * Voices: a family recording (data/family-audio.json) where the line has a clip, else
- * the browser's speech (English; Kutchi read from its spelling until Mum records it),
- * else just the timing, so the read-along still moves on a device with no voices.
+ * Voices: a family recording (js/shared/family-voice.js) where the line names one
+ * (`clip`) or its Kutchi text matches one, else the browser's speech (English; Kutchi
+ * read from its spelling until Mum records it), else just the timing, so the
+ * read-along still moves on a device with no voices.
  * If the browser won't play sound before a tap, the card's speaker pulses.
  */
 (function (global) {
@@ -49,20 +50,12 @@
   Story.setHelp = (h) => Save.setSetting("storyHelp", HELP.includes(h) ? h : "en-k");
 
   /* ---------------- voices ---------------- */
-  let clips = null;
-  function loadClips() {
-    if (clips) return clips;
-    clips = global
-      .fetch(v("data/family-audio.json"))
-      .then((r) => (r.ok ? r.json() : []))
-      .catch(() => []);
-    return clips;
-  }
-  async function clipFile(id, speaker) {
-    const all = await loadClips();
-    const has = all.filter((c) => c.id === id && c.file);
-    const c = has.find((x) => x.speaker === (speaker || "mum")) || has[0];
-    return c ? c.file : null;
+  const FamilyVoice = global.FamilyVoice;
+  /** A line's clip, by its data-given id first, else by its Kutchi text (js/shared/family-voice.js). */
+  async function clipFor(k) {
+    if (!FamilyVoice) return null;
+    await FamilyVoice.load();
+    return (k.clip && FamilyVoice.byId(k.clip, k.speaker)) || FamilyVoice.match(k.text);
   }
   let blocked = false;
   let current = null; // the <audio> or utterance playing, to stop it
@@ -166,8 +159,8 @@
         state.speaking = k.lang;
         const t0 = Date.now();
         let ok = false;
-        const file = k.clip ? await clipFile(k.clip, k.speaker) : null;
-        if (file) ok = await playFile(file);
+        const clip = k.lang === "k" ? await clipFor(k) : null;
+        if (clip) ok = await playFile(clip.file);
         if (!ok && !blocked) ok = await tts(k.text, k.lang);
         const left = estimate(k.text) - (Date.now() - t0) * speed;
         if (!ok && left > 0) await wait(left);
@@ -337,7 +330,7 @@
     speed = Number(params.get("speed")) || 1;
     const data = await global.fetch(v(url)).then((r) => r.json());
     lines = data.lines || {};
-    loadClips();
+    if (FamilyVoice) FamilyVoice.load();
     const scenes = data.scenes;
     const host = o.el;
     const kinds = Object.assign({}, KINDS, o.kinds || {});

@@ -26,6 +26,7 @@
       fetch(Cook.v("data/cook.json")).then((r) => r.json()),
       fetch(Cook.v("data/audio-manifest.json")).then((r) => r.json()).catch(() => ({})),
       fetch(Cook.v("data/cook-tts.json")).then((r) => r.json()).catch(() => ({ lines: {} })),
+      global.FamilyVoice ? global.FamilyVoice.load() : Promise.resolve(),
     ]);
     Cook.data = data;
     Cook.audioManifest = manifest || {};
@@ -238,62 +239,39 @@
     } catch (e) {}
     currentSrc = null;
   };
+  /** Play a file's buffer through Web Audio; resolves when it ends (or at once if it can't load). */
+  async function playURL(url) {
+    if (!url) return false;
+    Cook.unlockAudio();
+    if (!ctx) return false;
+    const buf = await loadBuffer(url);
+    if (!buf) return false;
+    Cook.stopVoice();
+    return new Promise((resolve) => {
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const g = ctx.createGain();
+      g.gain.value = 1.6;
+      src.connect(g).connect(ctx.destination);
+      currentSrc = src;
+      let done = false;
+      const finish = () => {
+        if (!done) {
+          done = true;
+          resolve(true);
+        }
+      };
+      src.onended = finish;
+      setTimeout(finish, (buf.duration * 1000) / Cook.speed + 150);
+      src.start();
+    });
+  }
   /** Speak a line; resolves when it ends (or at once if there's no file). */
-  Cook.speak = async function (plain) {
-    const url = Cook.tts[Cook.norm(plain)];
-    if (!url) return false;
-    Cook.unlockAudio();
-    if (!ctx) return false;
-    const buf = await loadBuffer(url);
-    if (!buf) return false;
-    Cook.stopVoice();
-    return new Promise((resolve) => {
-      const src = ctx.createBufferSource();
-      src.buffer = buf;
-      const g = ctx.createGain();
-      g.gain.value = 1.6;
-      src.connect(g).connect(ctx.destination);
-      currentSrc = src;
-      let done = false;
-      const finish = () => {
-        if (!done) {
-          done = true;
-          resolve(true);
-        }
-      };
-      src.onended = finish;
-      setTimeout(finish, (buf.duration * 1000) / Cook.speed + 150);
-      src.start();
-    });
-  };
+  Cook.speak = (plain) => playURL(Cook.tts[Cook.norm(plain)]);
   /** Speak a voice file by its manifest key (see lang.js). */
-  Cook.speakKey = async function (key) {
-    const url = Cook.tts[key];
-    if (!url) return false;
-    Cook.unlockAudio();
-    if (!ctx) return false;
-    const buf = await loadBuffer(url);
-    if (!buf) return false;
-    Cook.stopVoice();
-    return new Promise((resolve) => {
-      const src = ctx.createBufferSource();
-      src.buffer = buf;
-      const g = ctx.createGain();
-      g.gain.value = 1.6;
-      src.connect(g).connect(ctx.destination);
-      currentSrc = src;
-      let done = false;
-      const finish = () => {
-        if (!done) {
-          done = true;
-          resolve(true);
-        }
-      };
-      src.onended = finish;
-      setTimeout(finish, (buf.duration * 1000) / Cook.speed + 150);
-      src.start();
-    });
-  };
+  Cook.speakKey = (key) => playURL(Cook.tts[key]);
+  /** Speak a family recording by its own URL (js/shared/family-voice.js), relative to the game root. */
+  Cook.speakFile = (url) => playURL(url);
   /** Speak several lines in a row (an order is "Muke chai khape." then "Ne ba khun."). */
   Cook.speakAll = async function (plains) {
     for (const p of plains) {
