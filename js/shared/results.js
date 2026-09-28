@@ -381,6 +381,8 @@
         ${words.length ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
       </div>`;
     host.appendChild(el);
+    // a page can hide what must not show behind the pop-up (Cook: the old menu card; design system 10)
+    document.documentElement.classList.add("njg-results-open");
     if (root.Sfx) root.Sfx.unlock();
     const card = el.querySelector(".rs-card");
 
@@ -400,15 +402,20 @@
       el.classList.add("leaving");
       setTimeout(() => el.remove(), reduced() ? 0 : 220);
       if (current && current.el === el) current = null;
+      if (!current) document.documentElement.classList.remove("njg-results-open");
     };
     current = { el, close, page: () => +card.dataset.step };
 
     const toWords = () => {
       const p1 = el.querySelector(".rs-p1");
       const p2 = el.querySelector(".rs-p2");
+      // the card takes the words' own height (balanced, no empty band above the buttons), easing from the badges' height
+      const h0 = card.getBoundingClientRect().height;
       card.dataset.step = "2";
       p1.setAttribute("aria-hidden", "true");
       p2.removeAttribute("aria-hidden");
+      const h1 = card.getBoundingClientRect().height;
+      if (!reduced() && card.animate && Math.abs(h1 - h0) > 2) card.animate([{ height: `${h0}px` }, { height: `${h1}px` }], { duration: 280, easing: "cubic-bezier(.3,.7,.2,1)" });
       p2.classList.add("enter");
       el.querySelector(".rs-first").hidden = true;
       const last = el.querySelector(".rs-last");

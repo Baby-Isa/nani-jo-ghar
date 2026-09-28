@@ -51,6 +51,13 @@ def popup(pw, vpname):
     try:
         # a stored best, so the stopwatch reads as a plain (not first-ever) time
         page.evaluate("UIStore.set('bests', Results.bestKey('cook', 'shoot', 1), 30000)")
+        # over a station's scene, as a player sees it (the pantry), not over the title menu
+        if vpname == "laptop":
+            V.lab(page, "fetch", 1)
+            page.wait_for_selector("#intro:not(.hidden) .ic-card", timeout=15000)
+            time.sleep(0.6)
+            page.click("#intro .ic-card", force=True)
+            time.sleep(1.5)
         page.evaluate(POPUP_JS)
         page.wait_for_function("[...document.querySelectorAll('.rs-badge')].every((b) => b.classList.contains('in')) && !document.querySelector('.rs-acc.tier-pending')", timeout=15000)
         time.sleep(1.2)

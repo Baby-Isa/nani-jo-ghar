@@ -937,3 +937,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
   body.w6 #side .r6 { min-height: 1.4em; }
   body.w6 #side .lrows { gap: 1px; }
 }
+
+/* Design system 10: the end-of-station pop-up sits over the game scene only; the menu card never shows behind it */
+.njg-results-open #overlay { display: none !important; }
