@@ -50,3 +50,19 @@ Zafar's feedback, with Claude's recommendations. Items marked **(decide)** are w
 
 ## 7. Also noted
 - The end-of-round screen in Cook still showed the old drawn badges. That's the live site not having rebuilt (GitHub Pages); check Cook after the next build.
+
+## 8. The chai station (Zafar, 28 Sept, evening), with Claude's recommendations
+- **Layout:** the hob and the chai tray sit side by side along the top, level top and bottom. The hob is turned to be wider (about 5/8 of the width) and the tray takes about 3/8. Below them runs a clean strip for the ingredients, and **nothing overlaps the hob**.
+- **The ingredient row reuses the pantry's front-on containers** (the jar, carton and bottle family from the pantry-v2 art), standing on the counter edge. The child sees the same jars they fetched from the pantry, and liquids read clearly, which a top-down view can't manage. The hob, the pot and the tray stay top-down. There's no need to redo everything at 45°.
+- **Liquids in the pot:** new art for the pot's contents: water, milk, light chai, dark chai, and a boiling-bubbles overlay. The level rises as liquid is added, with steam when hot. No more flat blue disc.
+- **Pouring:** the jug or carton tilts over the pot (a rotation), a short pour-stream sprite plays, and the level rises. It's simple and convincing; no full liquid simulation is needed.
+- **The chai tray:** use the real art that's already filed: `sources/art/chatgpt-batch3/tray-chai-t-v2.png` and the top-down chai glass `vessel-glass-chai-top-t-v1.png`. Each glass has the person's small round face badge on the tray rim beside it, so it's clear whose chai is whose.
+- **The hob knobs:** `sheet-hob-parts-t-v1.png` is filed but not used; wire it in.
+- **Polish, across the stations:**
+  - the same soft shadow under every object;
+  - the same glow-and-bounce highlight as the pantry;
+  - a small puff or sprinkle when an ingredient goes in;
+  - a spoon stir;
+  - label pills in one style;
+  - items without a word show no empty speaker pill.
+- **Art still to request:** pot-content states and a pour stream, the ingredient containers (from the pantry-v2 pack), and any missing chai-glass fill levels.
