@@ -89,6 +89,6 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 
 ## Waiting on Zafar (open questions)
 1. A8.9 "Who did it?": re-asked 28 Sept (R12); Mum said *kere karein* again, the final n "a half end". Zafar to judge by ear.
-2. From 28 Sept (docs/kutchi-grammar-notes.md §29–§36): *hever kadh* or *hane kadh* (R6); *hakro cup* (R8); *mirchi* with no plural vs *marcha* (P4); *watana* (fried) vs *matar* (green peas) for Cook's peas (P11); Big Ma's name (*Big Ma / Wadima / Maji*); whether Nani says *sambusa*; *Ki aiye?* vs *Ki ai?* (K4); *Alaikum salaam* without *wa* (K2); the ⚠ spellings of the story lines S1–S9.
+2. From 28 Sept (docs/kutchi-grammar-notes.md §29–§37): *hakro cup* (R8); *mirchi* with no plural vs *marcha* (P4); *watana* (fried) vs *matar* (green peas) for Cook's peas (P11); Big Ma's name (*Big Ma / Wadima / Maji*); whether Nani says *sambusa*; *Ki aiye?* vs *Ki ai?* (K4); *Alaikum salaam* without *wa* (K2); the ⚠ spellings of the story lines S1–S9. For Mum: which of *dinda / dinde* is for an elder; *khanij* (bring along) vs *khan* (take). Settled 28 Sept: *hever kadh* (urgent) and *hane kadh* (in a sequence) are both right; "in" is *me*; yesterday is *gaykal* for now.
 
 Decided on 26 Sept: the story is English then Kutchi; *mirchi* is one chilli and *marcha* the plural; the dump 3 art is approved; the spellings are confirmed; the other modes' designs are parked; game ideas 10–17 have their verdicts (17 dropped, 12 folded into the placing game, new idea 20: the how-are-you greeting exchange).

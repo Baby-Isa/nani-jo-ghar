@@ -22,7 +22,6 @@
 Still open: -o → -e before *je/sathe*, the -yu plurals, and everything from C22 on.
 
 **For Zafar to check (⚠ in the notes):**
-- *hever kadh* vs *hane kadh* (R6)
 - *hakro cup* (R8)
 - *kere karein* (R12)
 - K2 without *wa*

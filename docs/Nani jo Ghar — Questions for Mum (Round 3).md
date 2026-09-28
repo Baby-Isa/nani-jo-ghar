@@ -31,7 +31,7 @@
 | R3 | a whole cup (the cooking measure) | *aako cup* | 28 Sept: *aako cup* ✓ |
 | R4 | a full tank | *aaki tanki* | 28 Sept: *aaki tanki* ✓ |
 | R5 | and then | *ne poi* | on its own, then in *pela … ne poi …* · 28 Sept: *ne poi* ✓ (on its own only) |
-| R6 | lift it out now | *hane kadh* | 28 Sept: changed to ***hever kadh*** ✗ (was *hane*): Zafar to decide |
+| R6 | lift it out now | *hane kadh* | 28 Sept: ***hever kadh*** (urgent, on its own); *hane kadh* stays for a gentle sequence (Zafar) |
 | R7 | one skewer of mishkaki | *hakri lakri mishkaki* | 28 Sept: *hakri lakri mishkaki* ✓ |
 | R8 | a cup | *hakri cup* | 28 Sept: ***hakro cup*** ("it's hakro, not hakri") ✗ |
 | R9 | tamarind | *amli* | on its own, not *amli ji chutney* · 28 Sept: *amli* ✓ |

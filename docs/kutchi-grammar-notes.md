@@ -371,7 +371,7 @@ Rough transcript: `sources/audio/mum-2026-09-28/Kutchi.260928.md`. The recording
 | R3 | a whole cup | *aako cup* | clear |
 | R4 | a full tank | *aaki tanki* | clear |
 | R5 | and then | *ne poi* (only said on its own, not inside *pela … ne poi …*) | clear |
-| R6 | lift it out now | ***hever kadh*** (Zafar: "we've specifically changed it to *hever kadh*") | ✗ §25 B14 and Zafar's correction said cooking steps use ***hane***; Cook's line is *{x} hane kadh*. **Zafar to decide** |
+| R6 | lift it out now | ***hever kadh*** (Zafar: "we've specifically changed it to *hever kadh*") | clear. Not a contradiction: *hever kadh* is the urgent "take it out now!"; *hane kadh* is the gentle "now, take it out" in a sequence (§37) |
 | R7 | one skewer of mishkaki | *hakri lakri mishkaki* | clear |
 | R8 | a cup | ***hakro cup*** (Mum: "it's hakro, not hakri") | ✗ §25 B27 had *hakri cup*. So **cup is a he-word** (C1 agrees: *hakro cup*) |
 | R9 | tamarind | *amli* | clear |
@@ -515,4 +515,19 @@ These fit the neighbours, which supports the hearings, but isn't proof. The fami
 23. **Cup and paani/dudh are he-words** (*hakro cup*). Cook's gender data is updated, so "one cup" says *hakro*.
 24. **Cook plurals:** *bateto → bateta*, *chamcho → chamcha*; *dungri, mirchi, limu, lakri, maani, samosa, cup, chamchi* don't change. These are in `data/cook.json` (`kutchi_one` / `kutchi_many`). *mirchi vs marcha*, *watana vs matar* and the tomato spelling wait for Zafar.
 25. **"I will" replies need a boy form and a girl form** (§32).
-26. ***hever* or *hane* in "lift it out now"** (R6) is Zafar's call. Cook keeps *hane kadh* until then.
+26. ~~*hever* or *hane* in "lift it out now"~~ Settled (§37): Cook's step-by-step *hane kadh* stays; *hever kadh!* is for an urgent moment (a Monsoon rush, something about to burn).
+
+### 37. More from the 28 Sept recording, with Zafar's answers (28 Sept, evening)
+Things Claude noticed in the recording, checked with Zafar. Two of Claude's readings were wrong and are left out: a "went" form (*biyein*, a mishearing) and *khanech* as a pantry word (a red herring).
+
+1. **"To me" words carry wanting, knowing and needing.** *muke khape* = "to me is wanted"; ***Toke khabar ai*** (K13) = "to you is knowledge", i.e. "do you know"; ***panke*** = "to us" (*panke randhnu khapdo*, S6). The set so far: *muke* (me), *toke* (you, to a child), *anke* (the respectful you, §23), *panke* (us).
+2. **"In" is *me*.** Mum's "*maa* means in" (S9) is the same word; the notes and the game keep ***me*** (*rasore me*, *wich me*, *chai me*).
+3. **The -u plural of she-words turns up again:** *chai ji **chiju*** (the chai things; *chij* = thing), after *akh → akhyu* and *chokri → chokriyu* (§35).
+4. **The future agrees in gender:** *achdo* (he will come, §21), *khapdo* (will be needed, S6), *kar dis / kar dos* ("I'll do", a girl / a boy, §32).
+5. **Mum's rule for unknown gender, again:** use the he-form (*pacheri* "can be *hakro*"; *ardo*, §24).
+6. ***hever kadh* vs *hane kadh* (Zafar):** it's context, not a correction. On its own, urgent and direct, "take it out now!" is ***hever kadh***. In a gentle sequence of cooking steps, "now, take it out" is ***hane kadh***. That matches §25: *hane* = now in a sequence, *hever* = now in general. **Cook keeps *hane kadh*.**
+7. ***dinda* / *dinde* (Zafar):** one is for an elder and one for someone younger. Which is which is **to confirm with Mum**. So far Mum said *banai dinda* with *aai* (R10) and with *tu* (K7–K9), and *khanechi dinde* as Nani to a grandchild (S1).
+8. ***khan* / *khanij* (Zafar, Mum to confirm):** *khan* = take; *khanij* = bring along, take with you. S1's *khanechi* ("bring it", Mum) looks like the same family (*khan* + *achi*, take and come), so its spelling may follow once Mum confirms.
+9. **Yesterday:** use ***gaykal*** for now (Mum: *kale* alone is Gujarati for both yesterday and tomorrow; *saware* = tomorrow, S3).
+
+Still open from this list: whether *randhnu no khapdo* (Zafar's try in S6) is a real "of" word *no/ni/nu* or a slip.
