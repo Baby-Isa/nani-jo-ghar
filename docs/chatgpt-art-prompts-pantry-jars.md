@@ -4,7 +4,7 @@
 ```
 You're making 8 images in ChatGPT for a children's game called Nani jo Ghar, then committing them to GitHub. Work through these steps in order, in new tabs, and don't change any ChatGPT, GitHub or Chrome settings.
 
-1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/nifty-rubin-c0d431/docs/chatgpt-art-prompts-pantry-jars.md (if that page is missing, use the same path on main: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/chatgpt-art-prompts-pantry-jars.md). Read the whole page. It has 8 prompts, P0 to P7, each in a grey code box, each followed by "attach", "save as" and "check" lines.
+1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/nifty-rubin-c0d431/docs/chatgpt-art-prompts-pantry-jars.md. Read the whole page. It has 8 prompts, P0 to P7, each in a grey code box, each followed by "attach", "save as" and "check" lines.
 
 2. Download the two reference images yourself. Open each page below and click its "Download raw file" button (the download-arrow icon at the top right of the image):
    - https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/style-anchor-v1.png
@@ -21,7 +21,7 @@ You're making 8 images in ChatGPT for a children's game called Nani jo Ghar, the
 
 **Coverage:** every ingredient used by any Cook station today (33 items, from `data/cook.json`'s `words`, `recipes` and `pantry`, plus oil and samosa pastry, which the stations use without a word yet), plus 30 planned extras for the new arcs (`docs/Nani jo Ghar — Roadmap and Story Structure.md`): 63 items on 7 sprite sheets, and the background. Existing ids are reused from `data/content.json` where they exist (fruit, carrot, spices); anything marked **new id** needs a word adding to `data/cook.json` when it's first used.
 
-**Rules on every sheet:** 3×3 grid (nine cells, better quality per item than 4×4), flat mid-grey `#808080` background, no floor, no shadows, no text, numbers, letters or logos anywhere (the stickers are pictures only, no Kutchi or English words), each container centred in its own equal cell with clear grey all round it, **the same container, the same size, on every cell of a sheet**, each container at least three-quarters full so little grey shows through the glass. Style: the attached style anchor.
+**Rules on every sheet:** 3×3 grid (nine cells, better quality per item than 4×4), flat mid-grey `#808080` background, no floor, no shadows, no text, numbers, letters or logos anywhere (the stickers are pictures only, no Kutchi or English words), each container centred in its own equal cell with clear grey all round it, **the same container, the same size, on every cell of a sheet**, each container filled with the item itself to a natural, slightly varied level between five-eighths and seven-eighths full, and a label sticker showing ONE single piece of the item drawn big (one chickpea, one potato). Style: the attached style anchor.
 
 ## P0. The pantry background
 ```
@@ -41,16 +41,16 @@ Style: exactly as the attached style anchor, and the same wood, plaster, colours
 ## P1. Tall jars: flour, grains, sugar, tea, lentils
 ```
 A sprite sheet for a children's game, 1024x1536 portrait, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos.
-Each cell holds the same tall clear glass storage jar with a round wooden lid, standing upright, seen straight on from the side at eye level, filling about 80% of its cell height, centred, with clear grey all round it. All nine jars are exactly the same shape and size; only what's inside and the sticker differ. Each jar is at least three-quarters full, the glass faintly tinted pale blue with soft highlights, so the food inside is easy to see.
-On the front of each jar, a round cream paper label sticker, about a third of the jar's height, showing a big, simple picture of the item (a picture, never words).
-Row 1: (1) fine pale cream wheat flour; sticker: a scoop of flour. (2) grey-beige millet flour, slightly speckled; sticker: a head of millet grain. (3) sparkling white sugar crystals; sticker: a sugar cube.
-Row 2: (4) dark loose tea leaves; sticker: a sprig of green tea leaves. (5) small orange split lentils; sticker: a heap of orange lentils. (6) round beige chickpeas; sticker: one big chickpea.
-Row 3: (7) crunchy golden thin noodle strands (sev); sticker: a tangle of golden strands. (8) long white rice grains; sticker: a bowl of white rice. (9) dark brown cocoa powder; sticker: a slice of chocolate cake.
+Each cell holds the same tall clear glass storage jar with a round wooden lid, standing upright, seen straight on from the side at eye level, filling about 80% of its cell height, centred, with clear grey all round it. All nine jars are exactly the same shape and size; only what's inside and the sticker differ. Each is filled with the item itself to a slightly different, natural level, somewhere between five-eighths and seven-eighths full (about four-fifths on average), so they don't look copy-pasted. The glass is faintly tinted pale blue with soft highlights, so the food inside is easy to see.
+On the front of each, a round cream paper label sticker, about a third of its height, showing ONE single piece of the item, drawn big and simple (one chickpea, one cumin seed, one potato), so it's easy to see what's inside at a glance. A picture, never words.
+Row 1: (1) fine pale cream wheat flour; sticker: one ear of golden wheat. (2) grey-beige millet flour, slightly speckled; sticker: one head of millet. (3) sparkling white sugar crystals; sticker: one sugar cube.
+Row 2: (4) dark loose tea leaves; sticker: one green tea leaf. (5) small orange split lentils; sticker: one orange lentil. (6) round beige chickpeas; sticker: one big chickpea.
+Row 3: (7) crunchy golden thin noodle strands (sev); sticker: one curl of golden sev. (8) long white rice grains; sticker: one grain of rice. (9) dark brown cocoa powder; sticker: one cocoa pod.
 Style: exactly as the attached style anchor: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`
 **save as:** `pantry-v2-sheet1-tall-jars.png`
-**check:** nine identical jars, same size, on matching base lines · every filling easy to tell apart through the glass (the two flours differ in colour) · every sticker is a picture, no words · nothing crosses from one cell into the next.
+**check:** nine identical jars, same size, on matching base lines · every filling easy to tell apart through the glass (the two flours differ in colour) · every sticker is a picture, no words · nothing crosses from one cell into the next · each sticker shows one single item, drawn big · fill levels vary a little from one container to the next (roughly five-eighths to seven-eighths full), none nearly empty or overflowing
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
@@ -67,16 +67,16 @@ Style: exactly as the attached style anchor: stylised 3D animated-feature-film l
 ## P2. Spice jars
 ```
 A sprite sheet for a children's game, 1024x1024, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos.
-Each cell holds the same small square clear glass spice jar with a round silver metal screw lid, standing upright, seen straight on from the side at eye level, filling about 70% of its cell height, centred, with clear grey all round it. All nine jars are exactly the same shape and size, like a matched spice-rack set; only what's inside and the sticker differ. Each jar is at least three-quarters full.
-On the front of each jar, a round cream paper label sticker, about a third of the jar's height, showing a big, simple picture of the item (a picture, never words).
-Row 1: (1) bright yellow turmeric powder; sticker: a knobbly turmeric root. (2) small brown cumin seeds; sticker: one big cumin seed. (3) tiny round dark mustard seeds; sticker: one big round mustard seed.
-Row 2: (4) green cardamom pods; sticker: one big cardamom pod. (5) coarse white salt crystals; sticker: a salt crystal. (6) bright red chilli powder; sticker: a red chilli.
-Row 3: (7) black peppercorns; sticker: one big black peppercorn. (8) rolled cinnamon sticks standing upright; sticker: a cinnamon stick. (9) tiny rainbow-coloured sugar sprinkles; sticker: a cupcake with sprinkles.
+Each cell holds the same small square clear glass spice jar with a round silver metal screw lid, standing upright, seen straight on from the side at eye level, filling about 70% of its cell height, centred, with clear grey all round it. All nine jars are exactly the same shape and size, like a matched spice-rack set; only what's inside and the sticker differ. Each is filled with the item itself to a slightly different, natural level, somewhere between five-eighths and seven-eighths full (about four-fifths on average), so they don't look copy-pasted.
+On the front of each, a round cream paper label sticker, about a third of its height, showing ONE single piece of the item, drawn big and simple (one chickpea, one cumin seed, one potato), so it's easy to see what's inside at a glance. A picture, never words.
+Row 1: (1) bright yellow turmeric powder; sticker: one turmeric root. (2) small brown cumin seeds; sticker: one big cumin seed. (3) tiny round dark mustard seeds; sticker: one big round mustard seed.
+Row 2: (4) green cardamom pods; sticker: one big cardamom pod. (5) coarse white salt crystals; sticker: one salt crystal. (6) bright red chilli powder; sticker: one dried red chilli.
+Row 3: (7) black peppercorns; sticker: one big black peppercorn. (8) rolled cinnamon sticks standing upright; sticker: one cinnamon stick. (9) tiny rainbow-coloured sugar sprinkles; sticker: one sprinkle.
 Style: exactly as the attached style anchor, and the same glass, light and sticker style as the attached jar sheet: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `pantry-v2-sheet1-tall-jars.png`
 **save as:** `pantry-v2-sheet2-spice-jars.png`
-**check:** nine identical small square jars with the same lid · every filling easy to tell apart by colour and texture alone (salt vs sugar-like sprinkles, cumin vs mustard) · stickers are pictures, no words.
+**check:** nine identical small square jars with the same lid · every filling easy to tell apart by colour and texture alone (salt vs sugar-like sprinkles, cumin vs mustard) · stickers are pictures, no words. · each sticker shows one single item, drawn big · fill levels vary a little from one container to the next (roughly five-eighths to seven-eighths full), none nearly empty or overflowing
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
@@ -93,16 +93,16 @@ Style: exactly as the attached style anchor, and the same glass, light and stick
 ## P3. Bottles and the milk carton
 ```
 A sprite sheet for a children's game, 1024x1536 portrait, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos.
-Each cell holds one bottle or carton standing upright, seen straight on from the side at eye level, filling about 80% of its cell height, centred, with clear grey all round it. All nine are exactly the same height and the same width, so they line up like a row on a shelf; only their shape details, contents and sticker differ. The bottles are clear, so you can see the liquid inside, at least three-quarters full.
-On the front of each, a round cream paper label sticker, about a third of its height, showing a big, simple picture of the item (a picture, never words).
-Row 1: (1) a white gable-top milk carton with a pale blue top; sticker: a glass of milk. (2) a clear plastic bottle of clear water with a blue cap; sticker: a big water drop. (3) a clear glass bottle of golden cooking oil with a cork; sticker: a golden oil drop.
-Row 2: (4) a clear squeezy bottle of thick dark brown tamarind chutney; sticker: a brown tamarind pod. (5) a clear squeezy bottle of thick bright green mint chutney; sticker: a sprig of mint leaves. (6) a clear bottle of orange juice; sticker: a slice of orange.
-Row 3: (7) a clear squeezy bottle of red tomato ketchup; sticker: a red tomato. (8) a clear squeezy bottle of golden honey; sticker: a honey dipper dripping honey. (9) a clear glass bottle of bright pink rose syrup; sticker: a pink rose.
+Each cell holds one bottle or carton standing upright, seen straight on from the side at eye level, filling about 80% of its cell height, centred, with clear grey all round it. All nine are exactly the same height and the same width, so they line up like a row on a shelf; only their shape details, contents and sticker differ. The bottles are clear, so you can see the liquid inside. Each is filled with the item itself to a slightly different, natural level, somewhere between five-eighths and seven-eighths full (about four-fifths on average), so they don't look copy-pasted.
+On the front of each, a round cream paper label sticker, about a third of its height, showing ONE single piece of the item, drawn big and simple (one chickpea, one cumin seed, one potato), so it's easy to see what's inside at a glance. A picture, never words.
+Row 1: (1) a white gable-top milk carton with a pale blue top; sticker: one glass of milk. (2) a clear plastic bottle of clear water with a blue cap; sticker: one water drop. (3) a clear glass bottle of golden cooking oil with a cork; sticker: one golden oil drop.
+Row 2: (4) a clear squeezy bottle of thick dark brown tamarind chutney; sticker: one tamarind pod. (5) a clear squeezy bottle of thick bright green mint chutney; sticker: one mint leaf. (6) a clear bottle of orange juice; sticker: one orange.
+Row 3: (7) a clear squeezy bottle of red tomato ketchup; sticker: one tomato. (8) a clear squeezy bottle of golden honey; sticker: one bee. (9) a clear glass bottle of bright pink rose syrup; sticker: one pink rose.
 Style: exactly as the attached style anchor, and the same glass, light and sticker style as the attached jar sheet: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `pantry-v2-sheet1-tall-jars.png`
 **save as:** `pantry-v2-sheet3-bottles.png`
-**check:** all nine the same height and width · water reads as clear (not grey), oil as golden, juice as orange, honey as amber, rose syrup as pink · the milk is a carton, not a jug · stickers are pictures, no words.
+**check:** all nine the same height and width · water reads as clear (not grey), oil as golden, juice as orange, honey as amber, rose syrup as pink · the milk is a carton, not a jug · stickers are pictures, no words. · each sticker shows one single item, drawn big · fill levels vary a little from one container to the next (roughly five-eighths to seven-eighths full), none nearly empty or overflowing
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
@@ -119,16 +119,16 @@ Style: exactly as the attached style anchor, and the same glass, light and stick
 ## P4. Lidded tubs: dairy, meat and fish
 ```
 A sprite sheet for a children's game, 1024x1024, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos.
-Each cell holds the same round clear plastic food tub with a flat clip-on lid, wider than it is tall, standing upright, seen straight on from the side at eye level, filling about 70% of its cell width, centred, with clear grey all round it. All nine tubs are exactly the same shape and size; only what's inside and the sticker differ. Each tub is at least three-quarters full, the plastic clear, so the food inside is easy to see.
-On the front of each tub, a round cream paper label sticker, about a third of the tub's height, showing a big, simple picture of the item (a picture, never words).
-Row 1: (1) thick white yoghurt; sticker: a spoonful of yoghurt. (2) raw pink-red minced meat; sticker: a little meatball. (3) raw red meat cubes; sticker: a meat cube on a skewer.
-Row 2: (4) smooth pale golden ghee; sticker: a spoonful of golden ghee. (5) raw pink chicken pieces; sticker: a chicken drumstick. (6) raw silver-skinned fish fillets; sticker: a whole fish.
-Row 3: (7) a pale yellow block of butter; sticker: a butter curl. (8) a wedge of yellow cheese; sticker: a cheese wedge with holes. (9) thick white whipped cream; sticker: a swirl of cream on a strawberry.
+Each cell holds the same round clear plastic food tub with a flat clip-on lid, wider than it is tall, standing upright, seen straight on from the side at eye level, filling about 70% of its cell width, centred, with clear grey all round it. All nine tubs are exactly the same shape and size; only what's inside and the sticker differ. Each is filled with the item itself to a slightly different, natural level, somewhere between five-eighths and seven-eighths full (about four-fifths on average), so they don't look copy-pasted. The plastic is clear, so the food inside is easy to see.
+On the front of each, a round cream paper label sticker, about a third of its height, showing ONE single piece of the item, drawn big and simple (one chickpea, one cumin seed, one potato), so it's easy to see what's inside at a glance. A picture, never words.
+Row 1: (1) thick white yoghurt; sticker: one spoonful of yoghurt. (2) raw pink-red minced meat; sticker: one meatball. (3) raw red meat cubes; sticker: one meat cube.
+Row 2: (4) smooth pale golden ghee; sticker: one spoonful of golden ghee. (5) raw pink chicken pieces; sticker: one chicken drumstick. (6) raw silver-skinned fish fillets; sticker: one fish.
+Row 3: (7) a pale yellow block of butter; sticker: one butter curl. (8) a wedge of yellow cheese; sticker: one cheese wedge. (9) thick white whipped cream; sticker: one swirl of cream.
 Style: exactly as the attached style anchor, and the same clear plastic, light and sticker style as the attached jar sheet: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `pantry-v2-sheet1-tall-jars.png`
 **save as:** `pantry-v2-sheet4-tubs.png`
-**check:** nine identical tubs · yoghurt, cream and butter clearly different (white wet, white fluffy, yellow block) · mince, meat cubes and chicken clearly different textures · stickers are pictures, no words.
+**check:** nine identical tubs · yoghurt, cream and butter clearly different (white wet, white fluffy, yellow block) · mince, meat cubes and chicken clearly different textures · stickers are pictures, no words. · each sticker shows one single item, drawn big · fill levels vary a little from one container to the next (roughly five-eighths to seven-eighths full), none nearly empty or overflowing
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
@@ -146,15 +146,15 @@ Style: exactly as the attached style anchor, and the same clear plastic, light a
 ```
 A sprite sheet for a children's game, 1024x1024, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos.
 Each cell holds the same small, low-sided wooden crate of pale slatted wood, seen straight on from the side at eye level, filling about 75% of its cell width, centred, with clear grey all round it. All nine crates are exactly the same shape and size; only the contents and the sticker differ. The crate is piled up above its rim so the vegetables are easy to see.
-On the front slat of each crate, a round cream paper label sticker, about a third of the crate's height, showing a big, simple picture of the item (a picture, never words).
+On the front slat of each crate, a round cream paper label sticker, about a third of its height, showing ONE single piece of the item, drawn big and simple (one chickpea, one cumin seed, one potato), so it's easy to see what's inside at a glance. A picture, never words.
 Row 1: (1) whole brown potatoes; sticker: one big potato. (2) whole red onions; sticker: one big red onion. (3) whole red tomatoes; sticker: one big tomato.
 Row 2: (4) whole green chillies; sticker: one big green chilli. (5) whole white garlic bulbs; sticker: one big garlic bulb. (6) knobbly pieces of fresh ginger; sticker: one big piece of ginger.
-Row 3: (7) fresh green pea pods, a few split open to show the peas; sticker: an open pea pod. (8) whole green bell peppers; sticker: one big green pepper. (9) fresh coriander bunches standing up, leaves on top; sticker: a coriander leaf.
+Row 3: (7) fresh green pea pods, a few split open to show the peas; sticker: one pea pod. (8) whole green bell peppers; sticker: one big green pepper. (9) fresh coriander bunches standing up, leaves on top; sticker: one coriander leaf.
 Style: exactly as the attached style anchor, and the same light and sticker style as the attached jar sheet: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `pantry-v2-sheet1-tall-jars.png`
 **save as:** `pantry-v2-sheet5-veg-crates.png`
-**check:** nine identical crates · every vegetable recognisable without its sticker (green chilli vs green pepper, garlic vs onion) · stickers are pictures, no words.
+**check:** nine identical crates · every vegetable recognisable without its sticker (green chilli vs green pepper, garlic vs onion) · stickers are pictures, no words. · each sticker shows one single item, drawn big
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
@@ -172,15 +172,15 @@ Style: exactly as the attached style anchor, and the same light and sticker styl
 ```
 A sprite sheet for a children's game, 1024x1024, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos.
 Each cell holds the same small, low-sided wooden crate as in the attached vegetable crate sheet (same pale slatted wood, same shape and size), seen straight on from the side at eye level, filling about 75% of its cell width, centred, with clear grey all round it. The crate is piled up above its rim so the food is easy to see.
-On the front slat of each crate, a round cream paper label sticker, about a third of the crate's height, showing a big, simple picture of the item (a picture, never words).
-Row 1: (1) whole yellow lemons; sticker: a lemon cut in half. (2) a bunch of yellow bananas; sticker: one banana. (3) whole oranges; sticker: an orange cut in half.
-Row 2: (4) whole ripe mangoes, yellow-orange with a red blush; sticker: one mango. (5) whole green-yellow pears; sticker: one pear. (6) whole shiny red apples; sticker: one apple with a leaf.
-Row 3: (7) whole brown hairy coconuts; sticker: a coconut cut in half. (8) fresh orange carrots with green tops; sticker: one carrot. (9) corn on the cob in pale green husks, a few peeled back to show the yellow kernels; sticker: one yellow corn cob.
+On the front slat of each crate, a round cream paper label sticker, about a third of its height, showing ONE single piece of the item, drawn big and simple (one chickpea, one cumin seed, one potato), so it's easy to see what's inside at a glance. A picture, never words.
+Row 1: (1) whole yellow lemons; sticker: one lemon. (2) a bunch of yellow bananas; sticker: one banana. (3) whole oranges; sticker: one orange.
+Row 2: (4) whole ripe mangoes, yellow-orange with a red blush; sticker: one mango. (5) whole green-yellow pears; sticker: one pear. (6) whole shiny red apples; sticker: one apple.
+Row 3: (7) whole brown hairy coconuts; sticker: one coconut. (8) fresh orange carrots with green tops; sticker: one carrot. (9) corn on the cob in pale green husks, a few peeled back to show the yellow kernels; sticker: one yellow corn cob.
 Style: exactly as the attached style anchor, and the same light and sticker style as the attached sheets: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `pantry-v2-sheet1-tall-jars.png`, `pantry-v2-sheet5-veg-crates.png`
 **save as:** `pantry-v2-sheet6-fruit-crates.png`
-**check:** nine crates identical to P5's · lemon vs orange vs mango clearly different in colour and shape · stickers are pictures, no words.
+**check:** nine crates identical to P5's · lemon vs orange vs mango clearly different in colour and shape · stickers are pictures, no words. · each sticker shows one single item, drawn big
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
@@ -198,15 +198,15 @@ Style: exactly as the attached style anchor, and the same light and sticker styl
 ```
 A sprite sheet for a children's game, 1024x1024, nine equal cells in three rows of three, on a flat mid-grey #808080 background. No floor, no shadows, no text, no letters, no numbers, no logos, no brand names.
 Each cell holds one packet or box standing upright, seen straight on from the side at eye level, filling about 75% of its cell, centred, with clear grey all round it. All nine are the same overall height and width, so they line up like a row on a shelf; only their details, contents and sticker differ. Every one is clear or has a big clear window, so the food inside is easy to see.
-On the front of each, a round cream paper label sticker, about a third of its height, showing a big, simple picture of the item (a picture, never words).
+On the front of each, a round cream paper label sticker, about a third of its height, showing ONE single piece of the item, drawn big and simple (one chickpea, one cumin seed, one potato), so it's easy to see what's inside at a glance. A picture, never words.
 Row 1: (1) a carton of six brown eggs with a clear lid, standing upright; sticker: one egg. (2) a loaf of sliced bread in a clear bag with a twist tie; sticker: one slice of bread. (3) a clear packet of round golden biscuits; sticker: one biscuit.
 Row 2: (4) a box of colourful Indian sweets (mithai: round yellow ladoos, pink and white squares) with a clear lid; sticker: one round yellow ladoo. (5) a clear packet of thin, flat, pale pastry sheets; sticker: one golden samosa. (6) a clear packet of crinkly golden potato crisps; sticker: one crisp.
-Row 3: (7) a box of thin striped birthday candles with a clear window; sticker: a lit candle. (8) a clear glass jar of red strawberry jam with a checked cloth lid; sticker: a strawberry. (9) a bar of chocolate in a clear wrapper, some squares showing; sticker: one chocolate square.
+Row 3: (7) a box of thin striped birthday candles with a clear window; sticker: one lit candle. (8) a clear glass jar of red strawberry jam with a checked cloth lid; sticker: one strawberry. (9) a bar of chocolate in a clear wrapper, some squares showing; sticker: one chocolate square.
 Style: exactly as the attached style anchor, and the same light and sticker style as the attached jar sheet: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `pantry-v2-sheet1-tall-jars.png`
 **save as:** `pantry-v2-sheet7-packets.png`
-**check:** all nine the same height and width · the food shows through every packet · no brand names or words anywhere · stickers are pictures.
+**check:** all nine the same height and width · the food shows through every packet · no brand names or words anywhere · stickers are pictures. · each sticker shows one single item, drawn big
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
