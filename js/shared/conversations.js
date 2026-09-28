@@ -626,9 +626,10 @@
       await wait(o.ms || textMs(line.k || line.en));
       return { played: false };
     }
+    const v = (u) => (root.njgV ? root.njgV(u) : u);
     for (const f of got.files) {
       await new Promise((resolve) => {
-        const a = new root.Audio((o.base || C.base || "") + f);
+        const a = new root.Audio(v((o.base || C.base || "") + f));
         current = a;
         if (o.rate) {
           a.playbackRate = o.rate;

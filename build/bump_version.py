@@ -12,7 +12,7 @@ It sets the one stamp in all the places that carry it:
     data fetches, pictures, backgrounds and voice, and which also stamps
     every file a Phaser scene loads;
   - every local css/js tag and <img src="assets/..."> in the pages
-    (every *.html at the root);
+    (every *.html at the root, and every *.html under lab/);
   - every url("../assets/...") in css/*.css.
 """
 import datetime
@@ -22,7 +22,10 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGES = sorted(os.path.basename(f) for f in glob.glob(os.path.join(ROOT, "*.html")))
+PAGES = sorted(
+    os.path.relpath(f, ROOT)
+    for f in glob.glob(os.path.join(ROOT, "*.html")) + glob.glob(os.path.join(ROOT, "lab", "*.html"))
+)
 VERSION_JS = "js/version.js"
 V_RE = re.compile(r'(const V = ")([^"]*)(";)')
 
@@ -52,7 +55,8 @@ def main():
     changed = [VERSION_JS]
 
     # pages: <script src>, <link href>, <img src> pointing at local files
-    tag = re.compile(r'(<(?:script|link|img)\b[^>]*?\b(?:src|href)=")((?:js|css|assets)/[^"]+)(")')
+    # (lab/*.html reaches them as "../js/..." etc, so the leading "../" is optional)
+    tag = re.compile(r'(<(?:script|link|img)\b[^>]*?\b(?:src|href)=")((?:\.\./)?(?:js|css|assets)/[^"]+)(")')
     for page in PAGES:
         p = os.path.join(ROOT, page)
         if not os.path.exists(p):

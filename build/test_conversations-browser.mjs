@@ -3,7 +3,9 @@
 // buzzes, the speaker cycles embarrassed looks and asks again until the right pill); the dodging
 // No (E5); the boy/girl reply voice read from the save; placeholder flags in the line table; and
 // the three placement simulations (first launch, Cook, the clinic) run to the end, with the
-// frequency rule declining the extra moments. Screenshots: build/reports/conversations-mvp/.
+// frequency rule declining the extra moments; and (not silent, served from a subdirectory like
+// GitHub Pages) that family clips actually load and play on a click. Screenshots:
+// build/reports/conversations-mvp/.
 // One browser, port 8812 (CONV_TEST_PORT overrides).
 // Run: node build/test_conversations-browser.mjs   (needs the global playwright; Chromium in /opt/pw-browsers)
 import http from "node:http";
@@ -234,6 +236,69 @@ for (const [w, h] of [[1366, 768], [390, 844]]) {
   }
   check(errors.length === 0, `${tag}: no page errors${errors.length ? `: ${errors.join(" | ")}` : ""}`);
   await ctx.close();
+}
+
+// GitHub Pages serves this site under a subdirectory (baby-isa.github.io/nani-jo-ghar/); a second
+// server mounted at /nani-jo-ghar/ catches paths that only work from the site root by accident.
+// Not silent: real family clips must actually fetch (no 404) and play (readyState > 0, play()
+// resolves) after a click, the way a player's first tap on a reply pill triggers one.
+{
+  const SUBPORT = PORT + 1;
+  const SUBDIR = "/nani-jo-ghar";
+  const subServer = http.createServer((req, res) => {
+    let url = req.url.split("?")[0];
+    if (!url.startsWith(SUBDIR)) {
+      res.writeHead(404);
+      return res.end();
+    }
+    url = url.slice(SUBDIR.length) || "/";
+    const p = path.join(ROOT, decodeURIComponent(url));
+    if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) {
+      res.writeHead(404);
+      return res.end();
+    }
+    res.writeHead(200, { "content-type": TYPES[path.extname(p)] || "application/octet-stream" });
+    fs.createReadStream(p).pipe(res);
+  });
+  await new Promise((r) => subServer.listen(SUBPORT, r));
+
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  const page = await ctx.newPage();
+  const audioErrors = [];
+  page.on("response", (r) => {
+    if (/\.mp3(\?|$)/.test(r.url()) && !r.ok()) audioErrors.push(`${r.status()} ${r.url()}`);
+  });
+  await page.addInitScript(() => {
+    window.__audioLog = [];
+    const OrigAudio = window.Audio;
+    window.Audio = function (src) {
+      const a = new OrigAudio(src);
+      const rec = { src, readyState: 0, playResolved: false, playRejected: null };
+      window.__audioLog.push(rec);
+      a.addEventListener("canplay", () => (rec.readyState = a.readyState));
+      const origPlay = a.play.bind(a);
+      a.play = function () {
+        const p = origPlay();
+        if (p && p.then) p.then(() => (rec.playResolved = true)).catch((e) => (rec.playRejected = e.message));
+        return p;
+      };
+      return a;
+    };
+  });
+  await page.goto(`http://localhost:${SUBPORT}${SUBDIR}/lab/conversations.html?speed=4&idle=60000`);
+  await page.waitForSelector("body[data-ready]");
+  await page.selectOption("#ex", "wellbeing.howareyou");
+  await page.click('#gender button[data-v="girl"]'); // Mum's voice, which has an "ok" clip
+  await page.click("#play"); // a click: the ask line plays at once, same as a family member's turn
+  await page.waitForTimeout(1500);
+  const log = await page.evaluate(() => window.__audioLog);
+  check(log.length > 0, `subdirectory: at least one family clip loaded (${log.length})`);
+  check(audioErrors.length === 0, `subdirectory: no 404s on family clips${audioErrors.length ? `: ${audioErrors.join(" | ")}` : ""}`);
+  check(log.every((r) => r.readyState > 0), `subdirectory: every clip reaches readyState > 0 (${log.map((r) => r.readyState).join(",")})`);
+  check(log.every((r) => r.playResolved && !r.playRejected), `subdirectory: play() resolves after the click (${log.map((r) => r.playRejected || "ok").join(",")})`);
+  check(log.every((r) => /\?v=/.test(r.src)), `subdirectory: clip URLs carry the cache-bust stamp (${log.map((r) => r.src).join(",")})`);
+  await ctx.close();
+  subServer.close();
 }
 
 await browser.close();
