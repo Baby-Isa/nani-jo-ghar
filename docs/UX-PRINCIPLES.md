@@ -88,3 +88,21 @@ These three badges replace the old star labels in the result card. They stay map
 
 ## 14. Conversations: you get it right before you move on (Zafar, 26 Sept)
 In a conversation, a wrong reply pill **shakes** (with a short vibration where supported). The person looks **embarrassed**, cycling through 3–4 gentle reactions, and **asks again**. The conversation only continues when the child picks the right reply. This holds for the whole game for tap replies, and is TBC for speaking (the child may skip speaking, then taps under the same rule). It's the one deliberate exception to §11's "no negatives mid-round": it's social and gentle, never a red cross, and the first-try result is still logged for the end review and the difficulty ladder. Details: `docs/modes/conversations-design.md` §10a.
+
+## 9a. The end-of-round screen, redrawn (Zafar, 28 Sept; overrides §9's visuals)
+**The rule:** each badge's big picture must tell a child who can't read or count how well they did. Numbers go in small captions underneath, except the time, which can't avoid them. **One colour language:** gold = perfect (it glows, buzzes or shimmers with party lines); the other states step down from there.
+
+**Page 1: three badges.**
+1. **Time: a big stopwatch outline** (plain inside, drawn like the small stopwatch icon), with the time written inside it. Show seconds (e.g. "52s") up to 100 s; above that, minutes and seconds ("1m 52s"). Caption underneath: the crown plus the personal best, in the same format.
+   - **New personal best:** bright gold, buzzing, with party lines.
+   - **Good time** (within about 25% of the best): dim gold.
+   - **Average or slower:** grey.
+2. **Accuracy: a big chunky tick** (no circle, no numbers inside). It fills up like a gauge: green for the share right, **red** for the share wrong (Zafar is deliberately allowing red here: children want to fix red things). **All right:** the whole tick turns gold and vibrates or shimmers. Caption underneath: "7/10".
+3. **Hints: a big light bulb** (no number inside).
+   - **0 hints:** bright, gold and shining, glowing and buzzing with electricity.
+   - **1 hint:** duller; you can see the filament, a faint glow, and a slight crack.
+   - **2 hints:** very dim, with a few cracks.
+   - **3 or more:** off.
+   Caption underneath, in the same style as the stopwatch's crown: a small bulb icon "× N".
+
+**Page 2: the word review.** Each word is a card with the Kutchi and the English underneath. Words you got **right** have a **green** outline or glow and are grouped on the **right**. Words you got **wrong** have a **red** outline and are grouped on the **left**, so the child can see at a glance what to work on.
