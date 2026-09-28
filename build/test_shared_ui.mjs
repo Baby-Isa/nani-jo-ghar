@@ -34,16 +34,19 @@ test("badge tiers: accuracy and hints", () => {
 
 test("time: seconds, clock and the best-time rule", () => {
   assert.equal(Results.seconds(12499), 12);
-  assert.equal(Results.clock(42400), "42");
-  assert.equal(Results.clock(65000), "1:05");
+  assert.equal(Results.clock(42400), "42s");
+  assert.equal(Results.clock(65000), "65s", "under 100s stays plain seconds (UX 9a)");
+  assert.equal(Results.clock(125000), "2m 05s", "100s and over: minutes and seconds");
   const first = Results.judgeTime(40000, null);
-  assert.ok(first.first && !first.newBest && first.changed && first.bestMs === 40000, "the first time is the best, quietly");
+  assert.ok(first.first && !first.newBest && first.changed && first.bestMs === 40000 && first.tier === "gold", "the first time is the best, quietly, shown gold");
   const faster = Results.judgeTime(38000, 40000);
   assert.ok(faster.newBest && faster.tier === "gold" && faster.bestMs === 38000);
   const sameSecond = Results.judgeTime(39800, 40100);
   assert.ok(!sameSecond.newBest && sameSecond.changed && sameSecond.bestMs === 39800, "faster in ms but the same shown second: stored, no fanfare");
-  const slower = Results.judgeTime(45000, 40000);
-  assert.ok(!slower.newBest && !slower.changed && slower.bestMs === 40000 && slower.tier === "mid", "slower is never shamed");
+  const good = Results.judgeTime(45000, 40000);
+  assert.ok(!good.newBest && !good.changed && good.bestMs === 40000 && good.tier === "mid", "within ~25% of the best: dim gold, never shamed");
+  const average = Results.judgeTime(60000, 40000);
+  assert.ok(!average.newBest && average.tier === "plain", "more than ~25% slower: grey");
 });
 
 test("bests are per profile, per mode + game + level", () => {

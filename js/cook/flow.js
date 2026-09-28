@@ -435,7 +435,8 @@
     if (!R || Cook.noResults) return null;
     UI.hideCount();
     const marks = accuracyMarks(ctx, stars);
-    const words = UI.orderWords(ctx.ladders).map((id) => ({ id, kutchi: Cook.display(id), english: Cook.english(id) }));
+    const missed = missedWordIds(ctx);
+    const words = UI.orderWords(ctx.ladders).map((id) => ({ id, kutchi: Cook.display(id), english: Cook.english(id), right: !missed.has(id) }));
     const shown = R.show({
       mode: "cook",
       game,
@@ -672,6 +673,17 @@
     if (!stars.third) out.push({ star: "third", text: busy ? T.third.busy : T.third.relaxed });
     return out;
   }
+  /** Every word id touched by a row that went wrong (plus ctx.wordMiss), for the word review and Results.show's per-word right/wrong (UX 9a). */
+  function missedWordIds(ctx) {
+    const missed = new Set(ctx.wordMiss);
+    (ctx.ladders || []).forEach((L) =>
+      Cook.Order.rows(L, { all: true }).forEach((r) => {
+        if (!r.miss) return;
+        r.line.segs.filter((s) => s.w).map((s) => s.w).concat(r.ids).forEach((id) => missed.add(id));
+      })
+    );
+    return missed;
+  }
   /**
    * Wave 5: the word review. Every Kutchi word in the order as a pill
    * (speaker, Kutchi, English), marked where it went wrong ("missed": a
@@ -680,13 +692,11 @@
    * again once it was dots).
    */
   function outcome(ctx, stars, busy) {
-    const missed = new Set(ctx.wordMiss);
+    const missed = missedWordIds(ctx);
     const helped = new Set(ctx.wordHelp);
     (ctx.ladders || []).forEach((L) =>
       Cook.Order.rows(L, { all: true }).forEach((r) => {
-        const ids = r.line.segs.filter((s) => s.w).map((s) => s.w).concat(r.ids);
-        if (r.miss) ids.forEach((id) => missed.add(id));
-        if (r.revealed) ids.forEach((id) => helped.add(id));
+        if (r.revealed) r.line.segs.filter((s) => s.w).map((s) => s.w).concat(r.ids).forEach((id) => helped.add(id));
       })
     );
     const words = UI.orderWords(ctx.ladders).map((id) => ({ id, state: missed.has(id) ? "missed" : helped.has(id) ? "helped" : "ok" }));

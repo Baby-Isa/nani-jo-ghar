@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Shared UI lab: results and onboarding</title>
-<link rel="stylesheet" href="../css/shared/results.css?v=20260928T091118Z">
-<link rel="stylesheet" href="../css/shared/onboard.css?v=20260928T091118Z">
+<link rel="stylesheet" href="../css/shared/results.css?v=20260928T105201Z">
+<link rel="stylesheet" href="../css/shared/onboard.css?v=20260928T105201Z">
 <style>
   :root { --bg: #fbf5ea; --ink: #2b1810; --line: #d9bf95; --card: #fff; --indigo: #2f3e6b; --madder: #a63b3b; --leaf: #6f8f4a; --marigold: #e0a63a; }
   * { box-sizing: border-box; }
@@ -54,8 +54,11 @@
     <h2>End-of-round screen</h2>
     <div class="row">
       <button class="lab" data-round="best">All right + new best</button>
+      <button class="lab" data-round="good">Good time (dim gold)</button>
+      <button class="lab" data-round="average">Average time (grey)</button>
       <button class="lab" data-round="mixed">Mixed</button>
-      <button class="lab" data-round="hints">Many hints</button>
+      <button class="lab" data-round="hints">Many hints (off)</button>
+      <button class="lab" data-round="hints2">2 hints (very dim)</button>
       <button class="lab" data-round="jar">Long round (jar)</button>
       <button class="lab" data-round="first">First ever (no best yet)</button>
     </div>
@@ -85,12 +88,12 @@
   </section>
 </main>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
-<script src="../js/shared/save.js?v=20260928T091118Z"></script>
-<script src="../js/shared/uistore.js?v=20260928T091118Z"></script>
-<script src="../js/shared/sfx.js?v=20260928T091118Z"></script>
-<script src="../js/shared/stars.js?v=20260928T091118Z"></script>
-<script src="../js/shared/results.js?v=20260928T091118Z"></script>
-<script src="../js/shared/onboard.js?v=20260928T091118Z"></script>
+<script src="../js/shared/save.js?v=20260928T105201Z"></script>
+<script src="../js/shared/uistore.js?v=20260928T105201Z"></script>
+<script src="../js/shared/sfx.js?v=20260928T105201Z"></script>
+<script src="../js/shared/stars.js?v=20260928T105201Z"></script>
+<script src="../js/shared/results.js?v=20260928T105201Z"></script>
+<script src="../js/shared/onboard.js?v=20260928T105201Z"></script>
 <script>
 (function () {
   const $ = (s) => document.querySelector(s);
@@ -104,8 +107,14 @@
   const ROUNDS = {
     // seed a slower best first, so this one is a new best
     best: { seed: 45000, mode: "cook", game: "chai", level: 1, timeMs: 38200, right: 5, total: 5, hints: 0, words: WORDS.chai },
-    mixed: { seed: 40000, mode: "find", game: "list", level: 2, timeMs: 52400, right: 7, total: 10, hints: 1, marks: [1, 1, 0, 1, 1, 1, 0, 1, 0, 1], words: WORDS.fruit },
+    // within ~25% of the seeded best: dim gold, never shamed (UX 9a)
+    good: { seed: 40000, mode: "cook", game: "tray", level: 1, timeMs: 48000, right: 5, total: 5, hints: 0, words: WORDS.chai },
+    // more than ~25% slower: grey
+    average: { seed: 40000, mode: "cook", game: "pour", level: 1, timeMs: 60000, right: 7, total: 10, hints: 1, words: WORDS.fruit },
+    mixed: { seed: 40000, mode: "find", game: "list", level: 2, timeMs: 52400, right: 7, total: 10, hints: 1, marks: [1, 1, 0, 1, 1, 1, 0, 1, 0, 1], words: WORDS.fruit.map((w, i) => Object.assign({}, w, { right: i !== 1 })) },
     hints: { seed: 60000, mode: "cook", game: "grill", level: 3, timeMs: 71000, right: 3, total: 5, hints: 4, words: WORDS.grill },
+    // 2 hints: very dim, a few cracks (between "1: faint glow" and "3+: off")
+    hints2: { seed: null, mode: "clinic", game: "seed-in-ear", level: 1, timeMs: 30000, right: 3, total: 4, hints: 2, words: WORDS.grill.slice(0, 3).map((w, i) => Object.assign({}, w, { right: i !== 0 })) },
     jar: { seed: 150000, mode: "monsoon", game: "leak", level: 2, timeMs: 128000, right: 18, total: 24, hints: 2, words: WORDS.fruit.concat(WORDS.chai) },
     first: { seed: null, mode: "snap", game: "big-one", level: 1, timeMs: 24000, right: 4, total: 4, hints: 0, words: [] },
   };

@@ -80,7 +80,7 @@ try {
       check(!fit.bad.length, `${s.name} ${round}: badges and Next fit ${s.width}x${s.height} ${fit.bad.join(",")}`);
       check(fit.btn[0] >= 60 && fit.btn[1] >= 60, `${s.name} ${round}: Next is a big target (${fit.btn.map(Math.round).join("x")})`);
       if (round === "best") check(fit.tiers.join() === "gold,gold,gold" && fit.ribbon, `${s.name}: all right + new best -> gold, gold, gold, "New best!" (${fit.tiers})`);
-      if (round === "mixed") check(fit.tiers.join() === "mid,mid,mid" && !fit.ribbon, `${s.name}: mixed -> mid tiers, no ribbon (${fit.tiers})`);
+      if (round === "mixed") check(fit.tiers.join() === "plain,mid,mid" && !fit.ribbon, `${s.name}: mixed -> average time, mid accuracy/hints, no ribbon (${fit.tiers})`);
       if (round === "hints") check(fit.tiers[2] === "plain", `${s.name}: 4 hints -> plain (${fit.tiers})`);
       await page.screenshot({ path: path.join(SHOTS, `results-${round}-${s.name}.png`) });
     }

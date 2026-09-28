@@ -1,19 +1,28 @@
 /*
- * The end-of-round screen (docs/UX-PRINCIPLES.md s9; docs/shared-api.md s8).
- * The same two pages in every mode:
- *   page 1: three big badges side by side (stacked on a narrow phone),
- *           Time (a stopwatch, per-profile best per mode+game+level),
- *           Accuracy (right out of total as slots that fill green or red; a
- *           jar for long rounds) and Hints (0 gold, 1 middling, 2+ plain),
- *           then a big Next;
+ * The end-of-round screen (docs/UX-PRINCIPLES.md s9, redrawn by s9a). The
+ * same two pages in every mode:
+ *   page 1: three big badges side by side (stacked on a narrow phone).
+ *           Time: a stopwatch outline with the time drawn inside it (per-
+ *           profile best per mode+game+level); gold+buzzing on a new best,
+ *           dim gold within ~25% of it, grey otherwise. Accuracy: a big
+ *           chunky tick that fills green (right) / red (wrong) like a
+ *           gauge; gold+shimmer when every row is right. Hints: a big
+ *           light bulb, brighter with fewer hints, off at 3+. Then a big
+ *           Next.
  *   page 2: the word review (each key Kutchi word with its English, tap to
- *           hear it), then Done (and Play again when the mode offers it).
+ *           hear it) -- right words glow green and group on the right,
+ *           wrong ones glow red and group on the left -- then Done (and
+ *           Play again when the mode offers it).
  *
  *   await Results.show({mode, game, level, timeMs, right, total, hints,
- *                       words: [{kutchi, english, audio?, id?}],
+ *                       words: [{kutchi, english, audio?, id?, right?}],
  *                       onDone(out), onAgain?(out), speak?(word), container?,
  *                       sound?: true, store?: UIStore})
  *     -> out = {action: "done" | "again", badges, best: {ms, newBest, first}}
+ *
+ * A word's `right` (true/omitted = got it, false = missed it) decides which
+ * side of page 2 it groups on. A caller with no per-word verdict (nothing
+ * passed) just shows every word on the right, green -- same as before.
  *
  * The badges stay mapped to the existing stars underneath (s9): Accuracy
  * gold <=> the ear star, Hints gold <=> the no-help star. Results.toStars
@@ -44,10 +53,11 @@
   Results.bestKey = (mode, game, level) => `${mode || "?"}/${game || "-"}/L${level == null ? 1 : level}`;
   /** Whole seconds, as the stopwatch shows them. */
   Results.seconds = (ms) => Math.max(0, Math.round((ms || 0) / 1000));
-  /** "42", or "1:05" from a minute. */
+  /** "52s" up to 100s, then minutes and seconds: "1m 52s" (UX 9a). */
   Results.clock = function (ms) {
     const s = Results.seconds(ms);
-    return s < 60 ? String(s) : `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    if (s < 100) return `${s}s`;
+    return `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, "0")}s`;
   };
 
   /**
@@ -55,15 +65,17 @@
    *   first    no best yet: this time becomes the best, quietly (nothing beaten)
    *   newBest  faster by at least one whole shown second: bing, sparkle, "New best!"
    * A time that ties the shown seconds but is faster in ms updates the
-   * stored best without a fanfare. Time is never shamed: the tier is gold
-   * for a new best, else mid.
+   * stored best without a fanfare. Time is never shamed: tier is gold for
+   * a new best (or the first-ever time, shown quietly), "mid" (dim gold)
+   * within about 25% of the best, else "plain" (grey) (UX 9a).
    */
   Results.judgeTime = function (timeMs, prevMs) {
     const has = prevMs != null && isFinite(prevMs);
     const first = !has;
     const newBest = has && Results.seconds(timeMs) < Results.seconds(prevMs);
     const bestMs = has ? Math.min(prevMs, timeMs) : timeMs;
-    return { seconds: Results.seconds(timeMs), timeMs, prevMs: has ? prevMs : null, bestMs, first, newBest, changed: bestMs !== prevMs, tier: newBest ? "gold" : "mid" };
+    const tier = first || newBest ? "gold" : timeMs <= prevMs * 1.25 ? "mid" : "plain";
+    return { seconds: Results.seconds(timeMs), timeMs, prevMs: has ? prevMs : null, bestMs, first, newBest, changed: bestMs !== prevMs, tier };
   };
   /** gold = all right; mid = at least 60% right; plain below; none = nothing was asked. */
   Results.accuracyTier = function (right, total) {
@@ -134,7 +146,6 @@
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const svg = (body, vb = "0 0 24 24") => `<svg viewBox="${vb}" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
   const ICON = {
-    watch: svg('<circle cx="12" cy="13.5" r="8"/><path d="M12 13.5V9.5M10 2.5h4M12 2.5v3M18.5 6.5l1.5-1.5"/>'),
     check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
     bulb: svg('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'),
     speaker: svg('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
@@ -147,6 +158,48 @@
   const reduced = () => !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const sfx = (name, o) => root.Sfx && root.Sfx.play(name, o);
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  // a small, unique id for an inline SVG mask (several badges can be on
+  // screen at once mid-transition, so ids must never collide)
+  let uidN = 0;
+  const uid = () => `rs${Date.now().toString(36)}${(uidN++).toString(36)}`;
+
+  /* -------- the big drawn badges (UX 9a): stopwatch, tick and bulb -------- */
+  function watchSvg() {
+    return `<svg class="rs-watch" viewBox="0 0 100 100" aria-hidden="true">
+      <line class="rs-watch-crown" x1="42" y1="16" x2="58" y2="16"/>
+      <line class="rs-watch-stem" x1="50" y1="22" x2="50" y2="16"/>
+      <line class="rs-watch-btn" x1="75" y1="27" x2="83" y2="19"/>
+      <circle class="rs-watch-face" cx="50" cy="58" r="36"/>
+    </svg>`;
+  }
+  /** A big chunky tick, masked so a gauge can fill it green (right) then red (wrong). */
+  function tickSvg(rw, ww) {
+    const id = uid();
+    return `<svg class="rs-tick" viewBox="0 0 100 100" aria-hidden="true">
+      <defs><mask id="${id}" maskUnits="userSpaceOnUse">
+        <path d="M22 54 L42 74 L80 26" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+      </mask></defs>
+      <g mask="url(#${id})">
+        <rect class="rs-tick-bg" x="0" y="0" width="100" height="100"/>
+        <rect class="rs-tick-right" x="0" y="0" width="0" height="100" style="--rw:${rw}%"/>
+        <rect class="rs-tick-wrong" x="0" y="0" width="0" height="100" style="--rw:${rw}%;--ww:${ww}%"/>
+        <rect class="rs-tick-shine" x="-30" y="0" width="22" height="100"/>
+      </g>
+    </svg>`;
+  }
+  /** A big light bulb: brightness, filament and cracks are set by CSS off data-hn. */
+  function bulbSvg() {
+    return `<svg class="rs-lamp" viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="rs-lamp-glow" cx="50" cy="44" r="34"/>
+      <path class="rs-lamp-base" d="M38 76h24M42 88h16"/>
+      <path class="rs-lamp-glass" d="M50 10a26 26 0 0 0-15 47c2.6 2.2 4.4 5.2 4.4 9h21c0-3.8 1.8-6.8 4.4-9A26 26 0 0 0 50 10z"/>
+      <path class="rs-lamp-filament" d="M43 47l4-9 3 9 4-9 3 9"/>
+      <path class="rs-lamp-crack c1" d="M34 30l10 12"/>
+      <path class="rs-lamp-crack c2" d="M68 34l-9 13"/>
+      <path class="rs-lamp-crack c3" d="M53 13l3 17"/>
+    </svg>`;
+  }
 
   /** Play one word: the mode's hook, else its own recording, else Cook's audio path (Lang), else the local TTS placeholder. */
   Results.speakWord = function (w, speak) {
@@ -183,48 +236,40 @@
       ? `<span class="rs-best first">${ICON.crown}<b>${esc(Results.clock(t.bestMs))}</b></span>`
       : `<span class="rs-best">${ICON.crown}<b>${esc(Results.clock(t.newBest ? t.bestMs : t.prevMs))}</b></span>`;
     return `<div class="rs-badge rs-time tier-${t.tier}" data-badge="time" aria-label="Time ${t.seconds} seconds${t.newBest ? ", a new best" : ""}">
-      <div class="rs-disc"><span class="rs-icon">${ICON.watch}</span><span class="rs-big${t.seconds >= 60 ? " long" : ""}" data-to="${t.seconds}">${esc(Results.clock(t.timeMs))}</span><span class="rs-unit">${t.seconds < 60 ? "s" : ""}</span>
+      <div class="rs-disc">${watchSvg()}<span class="rs-big${t.seconds >= 100 ? " long" : ""}" data-to="${t.seconds}">${esc(Results.clock(t.timeMs))}</span>
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
       <div class="rs-foot">${bestLine}</div>
       <div class="rs-ribbon" ${t.newBest ? "" : "hidden"}>New best!</div>
     </div>`;
   }
   function accuracyBadge(a) {
-    const slots = [];
-    const marks = a.marks && a.marks.length === a.total ? a.marks.map(Boolean) : Array.from({ length: a.total }, (_, i) => i < a.right);
-    let foot;
-    if (a.total <= 20) {
-      marks.forEach((ok) => slots.push(`<i class="rs-slot" data-ok="${ok ? 1 : 0}"></i>`));
-      foot = `<div class="rs-slots ${a.total > 10 ? "two-rows" : ""}">${slots.join("")}</div>`;
-    } else {
-      // a long round: a jar that fills, green then red
-      foot = `<div class="rs-jar"><i class="rs-jar-right" style="--w:${(100 * a.right) / a.total}%"></i><i class="rs-jar-wrong" style="--w:${(100 * a.wrong) / a.total}%"></i></div>`;
-    }
+    const rw = a.total ? (100 * a.right) / a.total : 0;
+    const ww = a.total ? 100 - rw : 0;
     return `<div class="rs-badge rs-acc tier-${a.tier === "none" ? "mid" : "pending"}" data-badge="accuracy" data-tier="${a.tier}" aria-label="${a.right} right out of ${a.total}">
-      <div class="rs-disc"><span class="rs-icon">${ICON.check}</span><span class="rs-big"><b class="rs-n">${a.total ? 0 : "–"}</b>${a.total ? `<small>/${a.total}</small>` : ""}</span>
+      <div class="rs-disc">${tickSvg(rw, ww)}
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
-      <div class="rs-foot">${a.total ? foot : ""}</div>
+      <div class="rs-foot">${a.total ? `<b class="rs-n">0</b><span class="rs-of">/${a.total}</span>` : "&ndash;"}</div>
     </div>`;
   }
   function hintsBadge(h) {
-    const shown = Math.min(h.count, 5);
-    const bulbs = h.count ? `${`<i class="rs-bulb">${ICON.bulb}</i>`.repeat(shown)}${h.count > 5 ? `<b class="rs-more">+${h.count - 5}</b>` : ""}` : `<i class="rs-bulb off">${ICON.bulb}</i>`;
-    return `<div class="rs-badge rs-hints tier-${h.tier}" data-badge="hints" aria-label="${h.count} hints">
-      <div class="rs-disc"><span class="rs-icon">${ICON.bulb}</span><span class="rs-big">${h.count}</span>
+    const hn = h.count === 0 ? "0" : h.count === 1 ? "1" : h.count === 2 ? "2" : "off";
+    return `<div class="rs-badge rs-hints tier-${h.tier}" data-badge="hints" data-hn="${hn}" aria-label="${h.count} hints">
+      <div class="rs-disc">${bulbSvg()}
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
-      <div class="rs-foot"><div class="rs-bulbs">${bulbs}</div></div>
+      <div class="rs-foot"><span class="rs-hint-count">${ICON.bulb}<b>&times; ${h.count}</b></span></div>
     </div>`;
   }
+  /** Page 2: right words glow green, grouped right; wrong words glow red, grouped left (UX 9a). */
   function wordsHtml(words) {
-    return words
-      .map(
-        (w, i) => `<button class="rs-word" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
-          <span class="rs-say">${ICON.speaker}</span><b>${esc(w.kutchi)}</b><span class="rs-en">${esc(w.english)}</span></button>`
-      )
-      .join("");
+    const card = (w, i) => `<button class="rs-word ${w.right === false ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
+          <span class="rs-say">${ICON.speaker}</span><b>${esc(w.kutchi)}</b><span class="rs-en">${esc(w.english)}</span></button>`;
+    const bad = [];
+    const ok = [];
+    words.forEach((w, i) => (w.right === false ? bad : ok).push(card(w, i)));
+    return `<div class="rs-words-col rs-words-bad">${bad.join("")}</div><div class="rs-words-col rs-words-ok">${ok.join("")}</div>`;
   }
 
-  // the page-1 show: badges pop in one by one; the stopwatch counts up; slots fill
+  // the page-1 show: badges pop in one by one; the stopwatch counts up; the tick gauge fills
   async function animate(el, b, opts) {
     const calm = reduced();
     const beat = calm ? 0 : 1;
@@ -238,7 +283,7 @@
       const kind = x.dataset.badge;
       if (kind === "time" && b.time) {
         const big = x.querySelector(".rs-big");
-        if (!calm && b.time.seconds < 60) {
+        if (!calm && b.time.seconds < 100) {
           const n = b.time.seconds;
           const steps = Math.min(n, 20);
           for (let i = 1; i <= steps; i++) {
@@ -255,21 +300,22 @@
       } else if (kind === "accuracy") {
         const a = b.accuracy;
         const n = x.querySelector(".rs-n");
-        let got = 0;
-        const slots = [...x.querySelectorAll(".rs-slot")];
-        for (const s of slots) {
-          const ok = s.dataset.ok === "1";
-          s.classList.add(ok ? "right" : "wrong");
-          if (ok) got++;
-          if (n) n.textContent = got;
-          if (!calm) {
-            if (sound) sfx(ok ? "right" : "wrong", { volume: 0.6 });
-            await wait(Math.max(60, 600 / slots.length));
-          }
+        const right = x.querySelector(".rs-tick-right");
+        const wrong = x.querySelector(".rs-tick-wrong");
+        if (right) right.classList.add("filled");
+        if (wrong) wrong.classList.add("filled");
+        if (a.total && !calm) {
+          if (a.right) {
+            const steps = Math.min(a.right, 12);
+            for (let i = 1; i <= steps; i++) {
+              if (n) n.textContent = Math.round((a.right * i) / steps);
+              if (sound) sfx("right", { volume: 0.5 });
+              await wait(600 / steps);
+            }
+          } else await wait(300);
+          if (a.wrong && sound) sfx("wrong", { volume: 0.5 });
         }
-        x.querySelectorAll(".rs-jar i").forEach((j) => j.classList.add("full"));
-        if (n && a.total) n.textContent = a.right;
-        if (!slots.length && !calm) await wait(500);
+        if (n) n.textContent = a.right;
         x.classList.remove("tier-pending");
         x.classList.add(`tier-${a.tier === "none" ? "mid" : a.tier}`);
         if (a.tier === "gold") {
