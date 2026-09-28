@@ -1,0 +1,123 @@
+{
+ "calls": [
+  {
+   "name": "pan-top",
+   "usage": {
+    "input_tokens": 772,
+    "input_tokens_details": {
+     "image_tokens": 517,
+     "text_tokens": 255
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1828
+   },
+   "usd": 0.0487
+  },
+  {
+   "name": "pan-pour",
+   "usage": {
+    "input_tokens": 793,
+    "input_tokens_details": {
+     "image_tokens": 517,
+     "text_tokens": 276
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1849
+   },
+   "usd": 0.0488
+  },
+  {
+   "name": "glasses",
+   "usage": {
+    "input_tokens": 787,
+    "input_tokens_details": {
+     "image_tokens": 517,
+     "text_tokens": 270
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2355
+   },
+   "usd": 0.0692
+  },
+  {
+   "name": "liquids",
+   "usage": {
+    "input_tokens": 824,
+    "input_tokens_details": {
+     "image_tokens": 517,
+     "text_tokens": 307
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2392
+   },
+   "usd": 0.0694
+  },
+  {
+   "name": "jar-aadu",
+   "usage": {
+    "input_tokens": 379,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 185
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1435
+   },
+   "usd": 0.0451
+  },
+  {
+   "name": "jar-lasan",
+   "usage": {
+    "input_tokens": 370,
+    "input_tokens_details": {
+     "image_tokens": 194,
+     "text_tokens": 176
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1426
+   },
+   "usd": 0.0451
+  },
+  {
+   "name": "glasses2",
+   "usage": {
+    "input_tokens": 836,
+    "input_tokens_details": {
+     "image_tokens": 517,
+     "text_tokens": 319
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2404
+   },
+   "usd": 0.0695
+  }
+ ]
+}
