@@ -16,8 +16,7 @@
 **To record:**
 - the pantry headline, "Bring me these for {dish}";
 - Nani's 29 instructions (`cook.json` → `guide`);
-- single-word *hakro*, *hakri*, *ba*, *trae*;
-- plurals (Part 4 isn't in the data);
+- the tally's count phrases: Round 3's clips play where the phrase matches (*trae dungri*, *hakri lakri*). *hakri maani, ba maani* and the like are paired in one clip, so they need splitting; the rest are missing;
 - *Tu muke {dish} banai dinda?* for dishes other than chai;
 - noun genders (the tally defaults to *hakro*).
 
