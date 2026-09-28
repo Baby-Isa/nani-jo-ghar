@@ -26,8 +26,17 @@
    * The burner's knob: a big dial with a pointer and a flame mark, plus
    * the flames under the pan. set("off" | "high" | "low") turns it.
    */
+  // the painted hob parts (sources/art/chatgpt-batch3/sheet-hob-parts-t-v1.png, cut by
+  // build/cut_chai_station.py): the knob off and on, and the flame ring high and low
+  const ART = [
+    ["hob-knob-off", "assets/cook/items/chai-station/knob-off.webp"],
+    ["hob-knob-on", "assets/cook/items/chai-station/knob-on.webp"],
+    ["hob-flame-high", "assets/cook/items/chai-station/flame-high.webp"],
+    ["hob-flame-low", "assets/cook/items/chai-station/flame-low.webp"],
+  ];
   function knob(z, vessel, at, r) {
     const S = z.S;
+    if (ART.every(([key]) => S.textures.exists(key))) return paintedKnob(z, vessel, at, r);
     const x = z.X(at.x);
     const y = z.Y(at.y);
     const R = z.L(r);
@@ -105,10 +114,76 @@
     return k;
   }
 
+  /**
+   * The painted knob (28 Sept, s8): the metal-ringed knob turns from off (grip upright) to
+   * high and low, its amber ring lights when it's on, and the painted flame ring burns
+   * under the pan (the big ring on high, the small one on low), flickering.
+   */
+  function paintedKnob(z, vessel, at, r) {
+    const S = z.S;
+    const x = z.X(at.x);
+    const y = z.Y(at.y);
+    const R = z.L(r);
+    const size = R * 2.5;
+    const base = S.track(S.add.image(x + R * 0.08, y + R * 0.14, S.tex("shadow")).setDisplaySize(size * 1.02, size * 0.98).setDepth(D.item - 1));
+    const dial = S.track(S.add.container(x, y).setDepth(D.item + 1));
+    const off = S.add.image(0, 0, "hob-knob-off").setDisplaySize(size, size);
+    // the "on" art has its grip across: turned back a quarter so both grips line up
+    const on = S.add.image(0, 0, "hob-knob-on").setDisplaySize(size, size).setAngle(-90).setAlpha(0);
+    dial.add([off, on]);
+    // small marks round the knob: off (a dot), high (a big flame), low (a small one)
+    const marks = S.track(S.add.graphics().setDepth(D.item + 0.5));
+    const ANG = { off: 0, high: 90, low: 180 };
+    const markAt = (deg, d) => ({ x: x + Math.sin(Phaser.Math.DegToRad(deg)) * d, y: y - Math.cos(Phaser.Math.DegToRad(deg)) * d });
+    const flameMark = (p, s) => {
+      marks.fillStyle(0x5aa0e8, 0.95);
+      marks.fillTriangle(p.x - s * 0.45, p.y + s * 0.35, p.x + s * 0.45, p.y + s * 0.35, p.x, p.y - s * 0.85);
+      marks.fillCircle(p.x, p.y + s * 0.22, s * 0.45);
+    };
+    const o = markAt(ANG.off, size * 0.62);
+    marks.fillStyle(0xf3ede2, 0.95);
+    marks.fillCircle(o.x, o.y, z.L(6));
+    flameMark(markAt(ANG.high, size * 0.64), z.L(18));
+    flameMark(markAt(ANG.low, size * 0.62), z.L(11));
+    // the flames under the pan, round its base
+    const r0 = vessel.rim;
+    const fx = r0.x;
+    const fy = r0.y + r0.depth + r0.ry * 0.1;
+    const ring = (key) => S.track(S.add.image(fx, fy, key).setDepth(D.item - 0.5).setAlpha(0));
+    const hi = ring("hob-flame-high");
+    const lo = ring("hob-flame-low");
+    let power = 0;
+    let t = 0;
+    z.tick(() => {
+      t += 0.016 * Cook.speed;
+      const f = 1 + 0.025 * Math.sin(t * 17) + 0.015 * Math.sin(t * 29);
+      hi.setScale((r0.rx * 3 / hi.width) * f, (r0.ry * 3 / hi.height) * f);
+      lo.setScale((r0.rx * 3 / lo.width) * f, (r0.ry * 3 / lo.height) * f);
+    });
+    const hit = S.track(S.add.circle(x, y, R * 1.35, 0xffffff, 0.001).setDepth(D.item + 2));
+    hit.baseScale = 1;
+    return {
+      hit,
+      dial,
+      x,
+      y,
+      set(state, dur = 260) {
+        power = { off: 0, high: 1, low: 0.35 }[state];
+        S.tweens.add({ targets: dial, angle: ANG[state], duration: dur, ease: "Back.easeOut" });
+        S.tweens.add({ targets: on, alpha: power > 0 ? 1 : 0, duration: dur });
+        S.tweens.add({ targets: hi, alpha: state === "high" ? 0.95 : 0, duration: dur * 1.4 });
+        S.tweens.add({ targets: lo, alpha: state === "low" ? 0.95 : 0, duration: dur * 1.4 });
+        Cook.sfx.click();
+      },
+      parts: [base, dial, marks, hi, lo, hit],
+    };
+  }
+
   Mech.define("boil", {
     profile: (p) => p.profile,
     async run(z, { vessel, knobAt, needOn = false, canPost, onLit, ready, quiet }, k) {
       const S = z.S;
+      await Promise.race([St.load(S, ART), Cook.wait(2500)]);
       const at = St.pt(knobAt, { x: vessel.rim.x / z.k - z.ox / z.k + 200, y: 588 });
       const K = knob(z, vessel, at, k.knobR);
       if (needOn) {
@@ -220,7 +295,7 @@
       return v;
     },
   });
-  Cook.Boil = { knob };
+  Cook.Boil = { knob, ART };
 
   Mech.lab("boil", {
     name: "Boil",

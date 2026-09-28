@@ -1,22 +1,28 @@
 /*
  * Combined station: the Chai tray (Wave 3; the owner's design).
  *
- * One hob screen, two zones:
- *  - BOIL (left, the hob): the chai pan on its burner. Water in (tap the
- *    jug icon: a jug slides in and pours one measure), tea in (among look-alikes),
- *    then tap the BIG knob to light it. The ring rises on this back burner
- *    while you do the cups; tap the knob in the green to turn it down.
- *    Ignore it and it boils over (foam, and the hand star).
- *  - TRAY (right, a tray on the worktop): a cup for each person, with
- *    their face. Each person says how they like their chai, in Kutchi:
+ * One screen, two zones (28 Sept, docs/cook-ui-feedback-2026-09-28.md s8): the hob
+ * (about 5/8 of the width) and the round chai tray (3/8) side by side along
+ * the top, level top and bottom; below them one strip of the pantry's
+ * front-on jars standing on the counter edge (nothing overlaps the hob).
+ *  - BOIL (the hob, painted from bg:hob): the chai pan on its burner. Water in
+ *    (tap the water bottle: it tilts over the pot, a stream pours and the
+ *    water rises), tea in (among look-alike jars: a puff, a stir, and it turns
+ *    to light chai), then tap the knob to light it (the painted knob and flame
+ *    ring). The chai steams and darkens while you do the glasses, and rolls
+ *    near the boil; tap the knob in the green to turn it down. Ignore it and
+ *    it boils over (foam, and the hand star).
+ *  - TRAY (the real chai tray, sources/art/chatgpt-batch3/tray-chai-t-v2.png):
+ *    a chai glass for each person, their small round face on the rim beside
+ *    it. Each person says how they like their chai, in Kutchi:
  *    milk or no milk (dudh / no dudh), how many sugars or none (khun),
- *    which chai (plain, elchi or aadu: from level 1) and at level 3 half
- *    or full (English placeholders). Tap a cup (or its face: you hear them again), then:
- *    tap the milk jug (the icon stays put; a jug slides in over the cup and
- *    pours one measure), tap the sugar bowl once per spoon (salt beside it
- *    looks the same), tap an extra. Once the chai has boiled, tap the pan to
- *    pour into each cup: one tap to the half line, a second to the full
- *    line (the same two lines on every cup). The tick when you're done.
+ *    which chai (plain, elchi or aadu: from level 1) and at level 4 half
+ *    or full. Tap a glass (or its face: you hear them again), then:
+ *    tap the milk carton (it tilts over the glass and pours one measure),
+ *    tap the sugar jar once per spoon (salt beside it looks the same), tap
+ *    an extra. Once the chai has boiled, tap the pan to pour into each glass:
+ *    one tap to half, a second to full. No fill lines (s8). The tick when
+ *    you're done.
  *
  * Wave 6b (docs/UX-PRINCIPLES.md 12): every liquid is a tap, like every
  * ingredient (Cook.Pour.measure): pouring is counting, the same gesture at
@@ -44,37 +50,88 @@
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
-  // the drawing (design coords; both zones map 1:1 onto the screen)
-  const PAN = { x: 515, y: 330, scale: 1.35 };
-  const KNOB = [712, 592];
-  const LEFT_ROW = [260, 420, 580]; // the left worktop: tea shelf, then extras
-  const TRAY = { x: 850, y: 112, w: 720, h: 480 };
-  const CUP_Y = 432;
-  const FACE_Y = 205;
-  const CUP_XS = { 1: [1210], 2: [1080, 1340], 3: [990, 1210, 1430] };
-  const STRIP = [910, 1110, 1310]; // the tray's own strip: milk jug, sugar, salt (shuffled; clear of the tick)
-  const COL = { milk: 0xf6f1e7, chai: 0x7a3a1a, water: 0x9fd3f0, tea: 0x6b3a1c };
+  // the drawing (design coords; both zones map 1:1 onto the screen). 28 Sept (s8): the hob
+  // and the chai tray side by side along the top, level top and bottom (the hob about 5/8 of
+  // the width, the tray 3/8); below them one clean strip of front-on jars on the counter edge
+  const HOB = { src: [240, 70, 1116, 668], x: 40, y: 34, h: 572 }; // the painted hob panel, cut from bg:hob
+  const HK = HOB.h / HOB.src[3];
+  const hobPt = (sx, sy) => ({ x: HOB.x + (sx - HOB.src[0]) * HK, y: HOB.y + (sy - HOB.src[1]) * HK });
+  const BURNER = hobPt(515, 375);
+  const PAN = { x: BURNER.x, y: BURNER.y - 38, scale: 1.35 * HK };
+  const KNOB = [520, 500];
+  const TRAY = { x: 1300, y: 322, d: 560 }; // the round chai tray (its art)
+  const RIM_R = TRAY.d * 0.445; // where the face badges sit on the rim
+  const GLASS_W = { 1: 176, 2: 158, 3: 140 }; // a chai glass (its art is 3:4): bigger when there are fewer
+  const BADGE = 84;
+  // where the glasses stand on the tray (from its centre): one; two side by side; three in a
+  // triangle (two at the back, one in front). Each person's face sits on the rim beside their
+  // glass, straight out from the centre (never on the top of the rim, where the tally is)
+  const CUP_AT = {
+    1: [[0, 20, Math.PI]],
+    2: [[-92, 20], [92, 20]],
+    3: [[-105, -62], [105, -62], [0, 92]],
+  };
+  // the ingredient strip: seven slots along the counter edge, the jars' bases on one line
+  const SLOTS = [90, 290, 490, 690, 890, 1090, 1290]; // clear of the tick, bottom right
+  const JAR_BASE = 790;
+  const JAR_K = 0.5; // every jar at one scale (the pantry-v2 canvases are 256 wide)
+  const COL = { milk: 0xf6f1e7, chai: 0x7a3a1a, water: St.WATER, tea: 0x6b3a1c, light: 0xa8703f };
+  // the pantry-v2 jars (assets/cook/items/shelf-<id>-bare-f.webp, build/cut_pantry_v2.py)
+  const jarUrl = (id) => `assets/cook/items/shelf-${id}-bare-f.webp`;
+  // a bottle or carton tilted over a pot or a glass: its cap is the spout
+  const CAP = { spout: [0, -0.42], tilt: -115 };
+  const ART = [
+    ["chai-tray-top", "assets/cook/items/chai-station/tray.webp"],
+    ["chai-glass", "assets/cook/items/chai-station/glass.webp"],
+  ];
 
   Mech.combined("chai-tray", {
     station: "chai-tray",
-    view: "hob",
+    view: "marble",
     dataFile: "data/stations/chai-tray.json",
     zones: [
-      { id: "boil", mech: "boil", region: [0, 0, 820, 900], footprint: { x: 0, y: 0, w: 820, h: 900 } },
-      { id: "tray", mech: "pour", region: [820, 0, 780, 900], footprint: { x: 820, y: 0, w: 780, h: 900 }, backdrop: "bg:marble" },
+      { id: "boil", mech: "boil", region: [0, 0, 1010, 900], footprint: { x: 0, y: 0, w: 1010, h: 900 } },
+      { id: "tray", mech: "pour", region: [1010, 0, 590, 900], footprint: { x: 1010, y: 0, w: 590, h: 900 } },
     ],
     run: (host, params) => tray(host, params),
   });
 
-  /** Textures the scene doesn't preload: the family's faces, the pouring pan. */
-  function ensure(S, list) {
-    const missing = list.filter(([key]) => !S.textures.exists(key));
-    if (!missing.length) return Promise.resolve();
-    return new Promise((resolve) => {
-      missing.forEach(([key, url]) => S.load.image(key, url));
-      S.load.once("complete", resolve);
-      S.load.start();
-    });
+  /**
+   * A person's small round face badge for the tray rim: their badge art on a cream disc
+   * with a light ring (a canvas texture, made once).
+   */
+  function roundBadge(S, who) {
+    const key = `${who}-badge`;
+    const out = `${key}-round`;
+    if (S.textures.exists(out) || !S.textures.exists(key)) return S.textures.exists(out) ? out : key;
+    const src = S.textures.get(key).getSourceImage();
+    const N = 192;
+    const cv = S.textures.createCanvas(out, N, N);
+    const g = cv.getContext();
+    g.save();
+    g.beginPath();
+    g.arc(N / 2, N / 2, N / 2 - 6, 0, Math.PI * 2);
+    g.closePath();
+    const bg = g.createRadialGradient(N * 0.4, N * 0.35, 4, N / 2, N / 2, N / 2);
+    bg.addColorStop(0, "#fff8ec");
+    bg.addColorStop(1, "#efe2cc");
+    g.fillStyle = bg;
+    g.fill();
+    g.clip();
+    g.drawImage(src, 6, 10, N - 12, N - 12);
+    g.restore();
+    g.lineWidth = 7;
+    g.strokeStyle = "#fffaf1";
+    g.beginPath();
+    g.arc(N / 2, N / 2, N / 2 - 5, 0, Math.PI * 2);
+    g.stroke();
+    g.lineWidth = 2;
+    g.strokeStyle = "rgba(90,60,30,0.25)";
+    g.beginPath();
+    g.arc(N / 2, N / 2, N / 2 - 1.5, 0, Math.PI * 2);
+    g.stroke();
+    cv.refresh();
+    return out;
   }
   const nameOf = (who) => (who === "nani" ? "Nani" : (Cook.data.customers[who] || {}).name || who);
 
@@ -104,7 +161,14 @@
     const kMilk = Mech.knobs("pour", { level: zt.level, profile: "milk" });
     const kCup = Mech.knobs("pour", { level: zt.level, profile: "cup" });
     const kCount = Mech.knobs("count", { level: zt.level });
-    await ensure(S, people.map((p) => [`${p.who}-badge`, `assets/cook/characters/${p.who}-badge.webp`]).concat([["saucepan-chai", "assets/cook/props/saucepan-chai.webp"]]));
+    const jarIds = ["cook-paani", "cook-dudh", "cook-chai", "cook-khun"].concat(K.teaDecoys || [], K.decoys || [], K.extras || []);
+    await Promise.race([
+      Promise.all([
+        St.load(S, people.map((p) => [`${p.who}-badge`, `assets/cook/characters/${p.who}-badge.webp`]).concat([["saucepan-chai", "assets/cook/props/saucepan-chai.webp"]], ART, jarIds.map((id) => [`jar-${id}`, jarUrl(id)]))),
+        Cook.Art.load(S, "bg:hob"),
+      ]),
+      Cook.wait(4000),
+    ]);
     const phase = (key) => {
       const text = ((Cook.data.stations["chai-tray"] || {}).phases || {})[key];
       Cook.save.seenStation = Cook.save.seenStation || {};
@@ -114,57 +178,126 @@
       Cook.save.seenStation[seenKey] = true;
     };
 
-    /* ---------- the tray and the cups ---------- */
-    // the hob ends in a rounded edge where the worktop starts: the painted hob's own right
-    // edge (data.art.sprites.bg), moved in to x 820; else a drawn one
+    /* ---------- the hob, the tray and the glasses ---------- */
+    // the hob: the painted panel (bg:hob's own), turned wide and set on the marble; else a drawn one
     const hobTex = Cook.Art.tex(S, "bg:hob");
-    if (Cook.Art.isPainted(hobTex)) {
-      const EDGE = 1352; // the painted panel's right edge, rim and shadow, on the 1600 stage
-      S.track(S.add.image(820 - EDGE, 0, hobTex).setOrigin(0).setCrop(EDGE - 70, 70, 70, 668).setDepth(D.bg + 1.5));
-    } else [[786, 80, 36, 44], [786, 624, 36, 60]].forEach(([x, y, w, h]) => S.track(S.add.image(0, 0, Cook.Art.tex(S, "bg:marble")).setOrigin(0).setCrop(x, y, w, h).setDepth(D.bg + 1.5)));
-    const edge = S.track(S.add.graphics().setDepth(D.bg + 2).setVisible(!Cook.Art.isPainted(hobTex)));
-    edge.fillStyle(0x2b2622, 1);
-    edge.fillRoundedRect(zb.X(740), zb.Y(90), zb.L(80), zb.L(570), zb.L(30));
-    edge.lineStyle(zb.L(4), 0x4a423c, 1);
-    edge.beginPath();
-    edge.arc(zb.X(790), zb.Y(120), zb.L(30), -Math.PI / 2, 0);
-    edge.lineTo(zb.X(820), zb.Y(630));
-    edge.arc(zb.X(790), zb.Y(630), zb.L(30), 0, Math.PI / 2);
-    edge.strokePath();
-    const tg = S.track(S.add.graphics().setDepth(D.item - 2));
-    tg.fillStyle(0x3a2410, 0.18);
-    tg.fillRoundedRect(TRAY.x + 10, TRAY.y + 14, TRAY.w, TRAY.h, 40);
-    tg.fillStyle(0x8a5a2e, 1);
-    tg.fillRoundedRect(TRAY.x, TRAY.y, TRAY.w, TRAY.h, 40);
-    tg.fillStyle(0xb57f47, 1);
-    tg.fillRoundedRect(TRAY.x + 18, TRAY.y + 18, TRAY.w - 36, TRAY.h - 36, 28);
-    tg.lineStyle(3, 0x6b4221, 0.35);
-    for (let i = 1; i < 6; i++) tg.lineBetween(TRAY.x + 30, TRAY.y + 18 + (i * (TRAY.h - 36)) / 6, TRAY.x + TRAY.w - 30, TRAY.y + 18 + (i * (TRAY.h - 36)) / 6);
+    const [sx, sy, sw, sh] = HOB.src;
+    if (Cook.Art.isPainted(hobTex)) S.track(S.add.image(HOB.x - sx * HK, HOB.y - sy * HK, hobTex).setOrigin(0).setScale(HK).setCrop(sx, sy, sw, sh).setDepth(D.bg + 1.5));
+    else {
+      const hg = S.track(S.add.graphics().setDepth(D.bg + 1.5));
+      hg.fillStyle(0x2b2622, 1);
+      hg.fillRoundedRect(HOB.x, HOB.y, sw * HK, HOB.h, 26);
+    }
+    // the tray: the real chai tray, round, with a soft shadow
+    const trayImg = S.track(S.add.image(zt.X(TRAY.x), zt.Y(TRAY.y), "chai-tray-top").setDepth(D.item - 2));
+    trayImg.setDisplaySize(zt.L(TRAY.d), zt.L(TRAY.d));
+    trayImg.shadow = S.contactShadow(trayImg);
     const selG = S.track(S.add.graphics().setDepth(D.item - 1));
-    const xs = CUP_XS[Math.max(1, Math.min(3, people.length))] || CUP_XS[1];
+    const nGlass = Math.max(1, Math.min(3, people.length));
+    const spots = CUP_AT[nGlass];
+    const gw = GLASS_W[nGlass];
+    // a chai glass on the tray: the glass art over its chai, which rises inside it (no fill line)
+    const glassVessel = (x, y, dz) => {
+      const w = zt.L(gw);
+      const h = (w * 4) / 3;
+      // the glass, the chai over it, then the glass's reflections again on top (faint), so the
+      // chai reads strongly but still sits inside the glass
+      const img = S.track(S.add.image(x, y, "chai-glass").setDisplaySize(w, h).setDepth(D.item + 0.6 + dz));
+      const front = S.track(S.add.image(x, y, "chai-glass").setDisplaySize(w, h).setDepth(D.item + 0.8 + dz).setAlpha(0.45));
+      img.once("destroy", () => front.destroy());
+      img.baseScale = img.scaleX;
+      img.shadow = S.contactShadow(img, { centerX: x, centerY: y + h * 0.33, width: w * 0.95, height: w * 0.62 });
+      const X0 = x - w / 2;
+      const Y0 = y - h / 2;
+      // the glass's inside, measured on its art (build/cut_chai_station.py): the chai's top at
+      // full and its bottom, as fractions of the art
+      const cx = X0 + 0.497 * w;
+      const topY = Y0 + 0.235 * h;
+      const botY = Y0 + 0.795 * h;
+      const rt = 0.37 * w;
+      const rb = 0.265 * w;
+      const H = botY - topY;
+      const liq = S.track(S.add.graphics().setDepth(D.item + 0.7 + dz));
+      // the chai at a cup level (0..1; "full" is 0.8): its surface ellipse
+      const surf = (L) => {
+        const u = Cook.clamp(L / 0.86, 0, 1);
+        const rx = rb + (rt - rb) * u;
+        return { x: cx, y: botY - H * u, rx, ry: rx * (0.52 + 0.08 * u) };
+      };
+      const v = img;
+      v.level = 0;
+      v.color = COL.milk;
+      v.rim = { x: cx, y: topY + H - H / 0.86, rx: rt, ry: rt * 0.6, depth: H / 0.86 / 0.85 };
+      v.rimRx = rt;
+      v.rimRy = rt * 0.6;
+      v.setLiquid = (L, color) => {
+        v.level = L;
+        if (color != null) v.color = color;
+        liq.clear();
+        if (L <= 0.01) return;
+        const p = surf(L);
+        const b = surf(0.001);
+        // the body of the chai, seen through the glass: a little darker than its top
+        liq.fillStyle(St.mix(v.color, 0x2a160a, 0.18), 0.93);
+        const pts = [{ x: p.x - p.rx, y: p.y }];
+        for (let i = 0; i <= 16; i++) {
+          const t = Math.PI - (i / 16) * Math.PI;
+          pts.push({ x: b.x + Math.cos(t) * b.rx, y: b.y + Math.sin(t) * b.ry });
+        }
+        pts.push({ x: p.x + p.rx, y: p.y });
+        for (let i = 0; i <= 16; i++) {
+          const t = (i / 16) * Math.PI;
+          pts.push({ x: p.x + Math.cos(t) * p.rx, y: p.y + Math.sin(t) * p.ry });
+        }
+        liq.fillPoints(pts, true);
+        St.shade(liq, p, v.color);
+      };
+      v.surface = () => {
+        const p = surf(Math.max(v.level, 0.1));
+        return { x: p.x, y: p.y };
+      };
+      return v;
+    };
     // who sits where changes every order
     const seats = Cook.shuffle(people.map((p, i) => i));
     const cups = people.map((p, i) => {
-      const x = xs[seats[i]];
-      const vessel = St.vessel(S, "cup", zt.X(x), zt.Y(CUP_Y), 1.35 * zt.k);
-      const face = S.flat(`${p.who}-badge`, zt.X(x), zt.Y(FACE_Y), zt.L(150), zt.L(140), { depth: D.item + 1 });
-      const chip = S.track(S.add.container(zt.X(x + 78), zt.Y(CUP_Y + 100)).setDepth(D.fx + 1).setVisible(false));
-      const chipBg = S.add.circle(0, 0, zt.L(24), 0xfffaf1, 1).setStrokeStyle(zt.L(3), 0x8f9398);
-      const chipT = S.add.text(0, 0, "0", { fontFamily: "Nunito, sans-serif", fontSize: `${Math.round(zt.L(30))}px`, fontStyle: "bold", color: "#2d2018" }).setOrigin(0.5);
+      const [dx, dy, at] = spots[seats[i]];
+      const x = TRAY.x + dx;
+      const y = TRAY.y + dy;
+      const vessel = glassVessel(zt.X(x), zt.Y(y), dy * 0.0005);
+      // their small round face on the tray's rim, beside their glass
+      const ang = at != null ? at : Math.atan2(dy, dx);
+      const fx = TRAY.x + Math.cos(ang) * RIM_R;
+      const fy = TRAY.y + Math.sin(ang) * RIM_R;
+      const face = S.track(S.add.image(zt.X(fx), zt.Y(fy), roundBadge(S, p.who)).setDisplaySize(zt.L(BADGE), zt.L(BADGE)).setDepth(D.item + 1));
+      face.baseScale = face.scaleX;
+      face.shadow = S.contactShadow(face);
+      // their spoon count: a small bubble on their face badge (the count is theirs)
+      const chip = S.track(S.add.container(zt.X(fx + BADGE * 0.4), zt.Y(fy + BADGE * 0.36)).setDepth(D.fx + 1).setVisible(false));
+      const chipBg = S.add.circle(0, 0, zt.L(22), 0xfffaf1, 1).setStrokeStyle(zt.L(3), 0xc9a560);
+      const chipT = S.add.text(0, 0, "0", { fontFamily: "Nunito, sans-serif", fontSize: `${Math.round(zt.L(28))}px`, fontStyle: "bold", color: "#2d2018" }).setOrigin(0.5);
       chip.add([chipBg, chipT]);
-      const bits = S.track(S.add.graphics().setDepth(D.item + 0.5));
-      return { i, p, who: p.who, x, vessel, face, chip, chipT, bits, vol: { milk: 0, chai: 0 }, sugar: 0, salt: 0, extras: [], chaiPours: 0 };
+      const bits = S.track(S.add.graphics().setDepth(D.item + 0.75));
+      return { i, p, who: p.who, x, y, fx, fy, vessel, face, chip, chipT, bits, vol: { milk: 0, chai: 0 }, sugar: 0, salt: 0, extras: [], chaiPours: 0 };
     });
-    cups.sort((a, b) => a.x - b.x);
+    // left to right, the back one between (the order they speak and the tester fills)
+    cups.sort((a, b) => a.x - b.x || a.y - b.y);
     let sel = null;
     const select = (c) => {
       sel = c;
       selG.clear();
       if (!c) return;
-      selG.fillStyle(0xfff3c4, 0.28);
-      selG.lineStyle(zt.L(6), 0xfff3c4, 1);
-      selG.fillRoundedRect(zt.X(c.x - 105), zt.Y(FACE_Y - 82), zt.L(210), zt.L(CUP_Y + 132 - FACE_Y + 82), zt.L(26));
-      selG.strokeRoundedRect(zt.X(c.x - 105), zt.Y(FACE_Y - 82), zt.L(210), zt.L(CUP_Y + 132 - FACE_Y + 82), zt.L(26));
+      // the chosen glass: a warm pool of light on the tray under it, and a gold ring round their face
+      const gx = zt.X(c.x);
+      const gy = zt.Y(c.y + gw * 0.46);
+      for (let i = 0; i < 4; i++) {
+        selG.fillStyle(0xffd98a, 0.12);
+        selG.fillEllipse(gx, gy, zt.L(gw + 10 + i * 22), zt.L(gw * 0.47 + i * 12));
+      }
+      selG.lineStyle(zt.L(5), 0xf2c35b, 1);
+      selG.strokeCircle(zt.X(c.fx), zt.Y(c.fy), zt.L(BADGE / 2 + 5));
+      selG.lineStyle(zt.L(2), 0xfff3c4, 0.8);
+      selG.strokeCircle(zt.X(c.fx), zt.Y(c.fy), zt.L(BADGE / 2 + 9));
       Cook.sfx.click();
       // the picture tally shows this cup's spoons (what you did for it)
       UI.hideCount();
@@ -175,15 +308,12 @@
       refresh();
     };
     const level = (c) => c.vol.milk + c.vol.chai;
-    // the milk jug's picture for the tally
-    const jugIcon = () => Cook.Art.refUrl("cook-dudh.jug") || null;
+    // the milk carton's picture for the tally
+    const jugIcon = () => Cook.v(jarUrl("cook-dudh"));
     const mixCol = (m, t) => {
       if (m + t <= 0.001) return COL.milk;
       const f = t / (m + t);
-      const a = Phaser.Display.Color.ValueToColor(COL.milk);
-      const b = Phaser.Display.Color.ValueToColor(COL.chai);
-      const c = Phaser.Display.Color.Interpolate.ColorWithColor(a, b, 100, Math.round(Math.min(1, f * f) * 100));
-      return Phaser.Display.Color.GetColor(c.r, c.g, c.b);
+      return St.mix(COL.milk, COL.chai, Math.min(1, Math.pow(f, 0.8)));
     };
     const drawBits = (c) => {
       c.bits.clear();
@@ -191,35 +321,48 @@
       const p = P.surfaceAt(c.vessel, Math.max(0.12, level(c)));
       c.extras.concat(c.salt ? ["spi-16"] : []).forEach((id, j) => {
         c.bits.fillStyle(St.heapColor(id), 1);
-        for (let q = 0; q < 3; q++) c.bits.fillEllipse(p.x - p.rx * 0.5 + (j * 3 + q) * p.rx * 0.16, p.y + ((q % 2) - 0.5) * p.ry * 0.5, zt.L(12), zt.L(8));
+        for (let q = 0; q < 3; q++) c.bits.fillEllipse(p.x - p.rx * 0.5 + (j * 3 + q) * p.rx * 0.16, p.y + ((q % 2) - 0.5) * p.ry * 0.5, zt.L(10), zt.L(7));
       });
     };
 
-    /* ---------- the left worktop and the pan ---------- */
+    /* ---------- the ingredient strip: front-on jars standing on the counter edge ---------- */
+    // every jar at one scale, base on one line, the same soft shadow; its label below it
+    const jar = (id, slot, z = zb) => {
+      const key = `jar-${id}`;
+      const x = z.X(SLOTS[slot]);
+      if (!S.textures.exists(key)) return S.ingredient(id, x, z.Y(JAR_BASE - 60), { w: z.L(140), h: z.L(108) }); // no jar art yet: its bowl
+      const { w, h } = S.texSize(key);
+      const img = S.prop(key, x, z.Y(JAR_BASE), z.L(w * JAR_K), z.L(h * JAR_K), { depth: D.item + 1, shadow: false });
+      img.shadow = S.contactShadow(img, { centerX: x, centerY: z.Y(JAR_BASE - 4), width: z.L(w * JAR_K * 0.72), height: z.L(30) });
+      img.wordId = id;
+      img.isJar = true;
+      img.label = S.label(img, id);
+      if (img.label) img.label.y = z.Y(JAR_BASE + 34);
+      img.setAlpha(0);
+      S.tweens.add({ targets: img, alpha: 1, duration: 260 });
+      return img;
+    };
     const pan = St.vessel(S, "pan", zb.X(PAN.x), zb.Y(PAN.y), PAN.scale * zb.k);
-    const waterJug = S.prop("water-jug", zb.X(110), zb.Y(St.STRIP_Y + 60), zb.L(150), zb.L(190), { depth: D.item + 1 });
-    waterJug.label = S.label(waterJug, "cook-paani");
-    const teaIds = Cook.shuffle(["cook-chai"].concat(K.teaDecoys || []));
+    const waterJug = jar("cook-paani", 0);
+    const teaIds = Cook.shuffle(["cook-chai"].concat(K.teaDecoys || [])).slice(0, 3);
     const teaShelf = {};
-    teaIds.forEach((id, i) => (teaShelf[id] = S.ingredient(id, zb.X(LEFT_ROW[i]), zb.Y(St.STRIP_Y - 10), { w: zb.L(140), h: zb.L(108) })));
+    teaIds.forEach((id, i) => (teaShelf[id] = jar(id, i + 1)));
     const fade = (objs) =>
       objs.forEach((o) => {
         if (!o || !o.active) return;
         S.untap(o);
         if (o.label) o.label.destroy();
-        if (o.shadow) o.shadow.destroy();
-        S.tweens.add({ targets: o, alpha: 0, duration: 300, onComplete: () => o.destroy() });
+        S.tweens.add({ targets: o, alpha: 0, y: o.y + zt.L(10), duration: 300, onComplete: () => o.destroy() });
       });
 
-    /* ---------- the tray's strip: milk jug, sugar, its look-alikes ---------- */
-    const stripIds = Cook.shuffle(["jug", "cook-khun"].concat(K.decoys || []).slice(0, STRIP.length));
+    // the glasses' jars on the right: the milk carton, sugar, its look-alikes
+    const stripIds = Cook.shuffle(["cook-dudh", "cook-khun"].concat(K.decoys || []).slice(0, 3));
     const shelf = {};
     let milkJug = null;
     stripIds.forEach((id, i) => {
-      if (id === "jug") {
-        milkJug = S.prop("milk-jug", zt.X(STRIP[i]), zt.Y(St.STRIP_Y + 60), zt.L(160), zt.L(170), { depth: D.item + 1 });
-        milkJug.label = S.label(milkJug, "cook-dudh");
-      } else shelf[id] = S.ingredient(id, zt.X(STRIP[i]), zt.Y(St.STRIP_Y - 10), { w: zt.L(150), h: zt.L(115) });
+      const o = jar(id, 4 + i, zt);
+      if (id === "cook-dudh") milkJug = o;
+      else shelf[id] = o;
     });
     const sugar = shelf["cook-khun"];
     const decoys = Object.keys(shelf).filter((id) => id !== "cook-khun");
@@ -288,7 +431,8 @@
         const obj = n && n.obj;
         if (glowing !== obj) {
           if (glowing) S.glow(glowing, false);
-          if (obj) S.glow(obj, true);
+          // the pantry's highlight: a glow, and a small bounce for a jar (not a glass or the pan: their chai stays put)
+          if (obj) S.glow(obj, true, { bounce: !!obj.isJar });
           glowing = obj;
         }
         UI.glowDone(!!n && !n.obj);
@@ -391,12 +535,13 @@
     const gaugeIO = { expect: () => {}, gauge: (g) => zt.gauge(g) };
     const armMilk = () => {
       if (finished) return;
-      let marks = null;
       P.measure(zt, {
         icon: milkJug,
         vessel: () => (sel && !finished && !pouring ? sel.vessel : null),
-        art: "milk-jug",
-        artSize: zt.L(190),
+        // the carton itself tilts over the glass (28 Sept, s8)
+        art: S.textures.exists("jar-cook-dudh") ? "jar-cook-dudh" : "milk-jug",
+        ...(S.textures.exists("jar-cook-dudh") ? CAP : {}),
+        artSize: zt.L(200),
         color: (lv) => mixCol(lv - sel.vol.chai, sel.vol.chai),
         // one measure of milk: up to the milk line above what's in the cup
         next: () => milkBand(sel).at,
@@ -408,7 +553,6 @@
           pouring = true;
           unglow();
           holding();
-          marks = P.lines(S, v, [{ at: milkBand(sel).at, strong: true }]);
         },
         onLevel: (lv) => {
           sel.vol.milk = lv - sel.vol.chai;
@@ -416,7 +560,6 @@
         },
       }).then((r) => {
         pouring = false;
-        if (marks) marks.destroy();
         const c = cups.find((x) => x.vessel === r.vessel);
         if (c) {
           c.vol.milk = r.level - c.vol.chai;
@@ -429,7 +572,6 @@
     };
     const armPan = () => {
       if (finished) return;
-      let marks = null;
       let c = null;
       const lines = chaiLines();
       P.measure(zt, {
@@ -452,7 +594,6 @@
           unglow();
           holding();
           c = sel;
-          marks = P.lines(S, v, lines.map((at) => ({ at, strong: true })));
         },
         onLevel: (lv) => {
           c.vol.chai = lv - c.vol.milk;
@@ -460,10 +601,11 @@
         },
       }).then((r) => {
         pouring = false;
-        if (marks) marks.destroy();
         c.vol.chai = r.level - c.vol.milk;
         c.chaiPours++;
-        S.steam(c.vessel.rim.x, c.vessel.rim.y - zt.L(30), 2);
+        // hot chai steams in the glass; the pan has a little less in it
+        S.wisps(c.vessel.rim.x, c.vessel.surface().y - zt.L(20), 2, zt.L(46));
+        pan.setLiquid(Math.max(0.2, pan.level - 0.035), COL.tea);
         // Wave 6b (UX 11): the cup is finished once it's at the top line: its rows tick, right or
         // not (they're judged at the tick and in the end review)
         if (level(c) >= K.lines.full - 0.02 && !c.closed) {
@@ -478,13 +620,43 @@
     /* ---------- 1. water, 2. tea, 3. light the burner ---------- */
     ctx.nextStep && ctx.nextStep("Water");
     phase("water");
-    await Mech.run("pour", zb, { vessel: pan, liquid: "cook-paani", color: COL.water, target: K.water, icon: waterJug, speak: true });
+    // the water bottle tilts over the pot and the water rises in it
+    const bottle = waterJug.isJar ? Object.assign({ art: "jar-cook-paani", artSize: zb.L(210) }, CAP) : {};
+    await Mech.run("pour", zb, Object.assign({ vessel: pan, liquid: "cook-paani", color: COL.water, target: K.water, icon: waterJug, speak: true }, bottle));
     fade([waterJug]);
     ctx.nextStep && ctx.nextStep("Tea");
     phase("tea");
     await Mech.run("add", zb, { items: teaShelf, expected: "cook-chai", into: pan });
-    pan.setLiquid(pan.level, COL.tea);
     fade(Object.values(teaShelf));
+    // the tea goes in: a stir, and the water turns to light chai
+    St.stirIn(S, pan, { ms: 800 });
+    await new Promise((done) =>
+      S.tweens.addCounter({ from: 0, to: 1, duration: 900, onUpdate: (tw) => pan.setLiquid(pan.level, St.mix(COL.water, COL.light, tw.getValue())), onComplete: done })
+    );
+    pan.setLiquid(pan.level, COL.light);
+    // hot: steam from the pot, more as it nears the boil; the chai darkens as it boils,
+    // and the surface rolls near the top (the boil state)
+    let hot = 0;
+    const steamLoop = S.time.addEvent({
+      delay: 260,
+      loop: true,
+      callback: () => {
+        if (!pan.active || !hot) return;
+        const g = boiled ? 0.5 : zb._gauge ? Math.min(1, zb._gauge.level) : 0.1;
+        if (Math.random() < 0.25 + g * 0.6) S.wisps(pan.rim.x + (Math.random() - 0.5) * pan.rimRx, pan.surface().y - zb.L(10), 1, zb.L(70));
+      },
+    });
+    const stopHeat = S.addTick(() => {
+      if (!hot || !pan.active) return;
+      if (boiled) {
+        pan.boiling = 0.2;
+        pan.setLiquid(pan.level, COL.tea);
+        return;
+      }
+      const g = zb._gauge ? Math.min(1, zb._gauge.level) : 0;
+      pan.boiling = Cook.clamp((g - 0.45) / 0.45, 0, 1);
+      pan.setLiquid(pan.level, St.mix(COL.light, COL.tea, g));
+    });
     ctx.nextStep && ctx.nextStep("Boil");
     phase("knob");
     let lit;
@@ -512,11 +684,12 @@
       return v;
     });
     await litP;
+    hot = 1;
 
     /* ---------- 4. the cups: each person says how they like it ---------- */
     ctx.nextStep && ctx.nextStep("Cups");
     const extraIds = K.showExtras || people.some((p) => p.extra) ? Cook.shuffle((K.extras || []).slice()) : [];
-    extraIds.forEach((id, i) => (extrasShelf[id] = S.ingredient(id, zb.X(LEFT_ROW[i]), zb.Y(St.STRIP_Y - 10), { w: zb.L(140), h: zb.L(108) })));
+    extraIds.slice(0, 3).forEach((id, i) => (extrasShelf[id] = jar(id, i)));
     armCups();
     armBowls();
     armExtras();
@@ -540,6 +713,8 @@
     await boilP;
     finished = true;
     clearInterval(nudge);
+    stopHeat();
+    steamLoop.remove();
     unglow();
     UI.hideDone();
     UI.hideCount();
