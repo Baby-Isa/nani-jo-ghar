@@ -347,7 +347,9 @@
           spoon.destroy();
           got.push(id);
           UI.countUp(id, { speak: false }); // the picture tally: what went in
-          // the card's "next" row moves on a layer (its ticks wait for the check, UX 11)
+          // Sidebar v3 (28 Sept, late; UX 11): the layer is in, so its step has closed: its pill ticks now
+          // (right or not: the customer's check and the review judge the order), and "next" moves on
+          UI.mission.tickItem(id, ctx.dishAt || 0);
           if (UI.mission.advance) UI.mission.advance(ctx.dishAt || 0);
           obj.setAlpha(0.6); // used (it can still go in again)
           await bowl.add(id);

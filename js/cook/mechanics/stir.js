@@ -517,8 +517,6 @@
 
       /* ---------- the stars ---------- */
       const got = result.count;
-      // Sidebar v3 (UX 11): the pot is finished (Done): the stir's rows tick (the count and the speed, right or not)
-      if (ctx.closeItem) ctx.closeItem([], { all: true });
       z.listen(got === laps, `stirred ${got} times, they asked for ${laps}`);
       got === laps ? Cook.markRight(Cook.numId(laps)) : Cook.markMiss(Cook.numId(laps));
       phases.forEach((ph, i) => {

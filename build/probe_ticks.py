@@ -11,6 +11,7 @@ mid-round moment with a ticked pill: build/reports/sidebar-v3/ticks-{station}.jp
 import argparse
 import os
 import sys
+import tempfile
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ PILLS = """() => { const m = document.querySelector('#mission:not(.hidden)'); if
 
 def probe(pw, key, level, seed=4):
     browser, page, errors = V.open_page(pw, V.VIEWPORTS["laptop"], seed)
-    P = T.Player(page, V.OUT, 3, mistakes=False)
+    P = T.Player(page, tempfile.mkdtemp(), 3, mistakes=False)
     trace, shot = [], None
     try:
         V.lab(page, key, level)
