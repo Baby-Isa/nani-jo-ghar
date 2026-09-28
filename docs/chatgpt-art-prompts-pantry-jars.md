@@ -29,23 +29,39 @@ You're making 16 images in ChatGPT for a children's game called Nani jo Ghar. Wo
 
 **Rules on every sheet:** 3×3 grid (nine cells, better quality per item than 4×4), flat mid-grey `#808080` background, no floor, no shadows, no text, numbers, letters or logos anywhere, each thing centred in its own equal cell with clear grey all round it. Container sheets: **the same container, the same size, in every cell**, no label or print on it, filled with the item itself to a natural, slightly varied level between five-eighths and seven-eighths full (crates heaped). Style: the attached style anchor.
 
-## P0. The pantry background (v3 prompt, 28 Sept evening)
-v2 (in the game now) was right in style, but in play the items came out small: the shelves sit high with little room between them, and the tray is short and shallow. v3 moves the shelves down and spaces them further apart, lines the fridge's shelves up with them, and makes the tray run the whole length of the shelves and deeper, with a front rim tall enough to hide the bottoms of what stands in it.
+## P0. The pantry background (v3, second try: paint a layout sketch)
+The first v3 prompt was wrong, not just ChatGPT: it left the counter and tray a third of the way up, with nowhere for the things on the tray. Worked out from the game instead: four rows of things (shelf 1, shelf 2, shelf 3, the tray), each with room for the tallest (a tall jar, about 175 px of the game's 900), the counter's front off the bottom of the picture, the tray the length of the shelves, and the fridge with four levels lined up with them. That's too exact for words, so ChatGPT gets a flat colour sketch of the layout (`sources/art/pantry-v2/pantry-v3-layout-sketch.png`, made by the script in the commit that added it) and paints it. The top 80 px and bottom 80 px of the 1536x1024 image are trimmed by the game.
+
+**Try A (preferred): paint the sketch.**
 ```
-A background for a children's game: Nani's home pantry, the room next door to the attached kitchen. Make it at the largest landscape size you can (1536x1024), crisp and highly detailed, HD quality, no blur or softness.
-The camera is at eye level, looking dead straight at the back wall: a flat front-on view with no perspective tilt, no side walls visible. Every shelf edge is perfectly horizontal.
-Left three-quarters of the picture: three long, thick, plain wooden floating shelves fixed to a warm plastered wall, in exactly the same wood as the shelves in the attached pantry picture. Each shelf is one single unbroken board, with NO vertical uprights, dividers, brackets or cubbies. Place them lower and further apart than in the attached pantry: the top edge of the first shelf about 30% of the way down the picture, the second about 52% down, the third about 74% down, so there is a tall, clear space above each shelf for big jars.
-Right quarter: a tall, slim fridge with a clear glass door and a slim silver frame, softly lit inside with a cool white light, with three empty glass shelves inside at the same heights as the three wooden shelves (about 30%, 52% and 74% down), so the fridge's shelves line up with the wooden ones.
-Along the bottom of the picture: the same counter as in the attached kitchen, a cream marble top with soft golden veins over a front of vertical wooden panelling, running the full width, its top edge about 82% of the way down, just below eye level so a strip of its surface shows.
-On the counter: a long, empty rectangular wooden tray, as long as the wooden shelves above it (from their left end to their right end), deeper front to back so its flat base shows clearly, with a plain front rim about as tall as a small cup, so anything standing in the tray has its bottom hidden behind that rim.
-Lighting: soft, even, warm daylight from the upper left, matching the attached kitchen, with no sunbeams, no window-shaped patches of light and no hard shadows across the shelves or the wall.
-Everything is empty: no jars, no food, no bottles, no items at all on the shelves, in the fridge or on the tray. No people, no text.
-Keep the top 8% of the picture plain wall and the bottom 8% plain counter front, with nothing important in either (the game trims them).
-Style: exactly as the attached style anchor, and the same plaster, wood, marble, colours and warm light as the attached pantry picture, so it's the same room rearranged: stylised 3D animated-feature-film look, soft global illumination, no outlines.
+Paint the attached flat-colour layout sketch as a finished background for a children's game: Nani's home pantry. Keep the size exactly 1536x1024 (landscape), and keep every shape exactly where it is in the sketch and exactly the same size: the same positions, heights and gaps. Only the materials and lighting change. Crisp and highly detailed, HD quality.
+What each shape is:
+- The beige background: a warm plastered wall with a very soft texture.
+- The three long brown bars on the left: three thick, plain, warm oak floating shelves, each one unbroken board, perfectly horizontal, with no uprights, brackets or dividers. The empty wall above each shelf stays empty (big jars will stand there later).
+- The grey and pale blue shape on the right: a tall, slim glass-door fridge with a slim brushed-steel frame. It runs off the top of the picture. Inside, soft cool white light and three empty glass shelves at exactly the heights of the thin lines in the sketch, level with the wooden shelves.
+- The cream band near the bottom: the top of a cream marble counter with soft golden veins. The ribbed brown band below it: the counter's front, vertical oak panelling, mostly off the bottom of the picture.
+- The brown shape on the counter: a long, empty oak tray as long as the shelves, seen straight on: a thin back rim, its flat light base showing, and a tall plain front rim (the darker brown band) that would hide the bottom of anything standing in the tray.
+The camera is at eye level, looking dead straight at the wall: flat front-on, no perspective tilt, no side walls. Soft, even, warm daylight from the upper left, no sunbeams, no patches of light and no hard shadows on the wall or shelves.
+Everything is empty: nothing on the shelves, in the fridge or on the tray. No people, no text.
+Style: exactly as the attached style anchor: stylised 3D animated-feature-film look, soft global illumination, no outlines.
 ```
-**attach:** `style-anchor-v1.png`, `bg-nani-kitchen-e-v1.png`, `pantry-v2-bg.png` (https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/pantry-v2/pantry-v2-bg.png)
+**attach:** `pantry-v3-layout-sketch.png` (https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/pantry-v2/pantry-v3-layout-sketch.png), `style-anchor-v1.png`
 **Claude renames it to:** `pantry-v3-bg.png`
-**check:** three long unbroken shelves, perfectly horizontal, lower and further apart than v2 (tops at about 30%, 52% and 74% down) · the fridge's glass shelves line up with the wooden ones · the tray runs the length of the shelves, its base visible and its front rim clearly taller than v2's · no sunbeams or hard shadows · nothing on the shelves, in the fridge or on the tray · no text.
+**check:** lay it over the sketch in your head: the three shelves, the fridge's glass shelves, the counter and the tray are where the sketch has them, the same heights and gaps (the shelves nearly evenly filling the height, the tray at the very bottom) · the tray is as long as the shelves, with a tall front rim · the fridge runs off the top · no sunbeams or hard shadows · nothing on the shelves, in the fridge or on the tray · no text.
+
+**Try B (if A keeps changing the layout): words only, no sketch.**
+```
+A background for a children's game: Nani's home pantry, 1536x1024 landscape, crisp and highly detailed, HD quality.
+The camera is at eye level, looking dead straight at a warm plastered wall: flat front-on, no perspective tilt, no side walls. The picture is almost all shelves: the counter is only a strip at the very bottom.
+Left three-quarters: three thick, plain, warm oak floating shelves, each one unbroken board, perfectly horizontal, no uprights or brackets, spanning from near the left edge to three-quarters of the way across. Space them evenly down the picture: the top of the first shelf 29% of the way down, the second 49% down, the third 68% down. The wall above each shelf is empty and tall enough for a big storage jar.
+Right quarter: a tall, slim glass-door fridge with a brushed-steel frame, running off the top of the picture and down to the counter, lit inside with soft cool white light, with three empty glass shelves level with the three wooden shelves.
+At the very bottom: the top of a cream marble counter with soft golden veins, its front edge at 92% of the way down, the counter's front below that, off the picture. On the counter, a long, empty oak tray exactly as long as the shelves above it, seen straight on: a thin back rim at 86% down, a flat light base, and a tall plain front rim from 88% to 92% down that hides the bottom of anything standing in it.
+Soft, even, warm daylight from the upper left; no sunbeams, no patches of light, no hard shadows. Everything empty: nothing on the shelves, in the fridge or on the tray. No people, no text.
+Style: exactly as the attached style anchor: stylised 3D animated-feature-film look, soft global illumination, no outlines.
+```
+**attach:** `style-anchor-v1.png`
+**Claude renames it to:** `pantry-v3-bg.png`
+**check:** as for A.
 
 v2's prompt is in git history (this file, 28 Sept); v2 is what the game shows until v3 is in.
 
