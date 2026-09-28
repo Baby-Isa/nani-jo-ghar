@@ -175,7 +175,8 @@ body.w6 :is(#side, .sb2, #intro) .icard .card-say:not(.face-say) { display: none
 }
 /* Sidebar v3: one white card per person (the Chai tray): their face (= replay), the short headline,
    their pills. The request card itself steps back (no box, no shared head): the person cards are the cards. */
-body.w6 #mission.people { background: none; border: none; box-shadow: none; padding: 0; overflow: visible; }
+/* (it still clips, so its "Served!" stamp never pushes the sidebar sideways; a little room keeps the cards' shadows) */
+body.w6 #mission.people { background: none; border: none; box-shadow: none; padding: 1px 3px 3px; margin: -1px -3px -3px; border-radius: 0; overflow: hidden; }
 body.w6 #mission.people > .m-head { display: none; }
 body.w6 :is(#mission, .m-card).people .m-order, body.w6 :is(#mission, .m-card).people .ladder, body.w6 :is(#mission, .m-card).people .lsec { gap: 10px; }
 body.w6 :is(#side, .sb2, #intro) .icard.person {
