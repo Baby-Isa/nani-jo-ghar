@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Card options mock-up</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#fffaf0; --paper:#f7ecdc; --ink:#2b1a12; --muted:#8a7667; --gold:#e3a93a; --gold2:#f6d58a; --madder:#a8323a; --line:#ead9c2; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#efe2cf; font-family:Nunito,sans-serif; color:var(--ink); padding:24px; }
+  h1 { font-family:'Baloo 2'; font-size:26px; margin:0 0 4px; }
+  .note { color:var(--muted); margin:0 0 18px; }
+  .cols { display:flex; gap:22px; align-items:flex-start; }
+  .col { width:330px; background:var(--paper); border-radius:18px; padding:14px; }
+  .col h2 { font-family:'Baloo 2'; font-size:20px; margin:0 0 10px; }
+  .col h2 small { font-family:Nunito; font-weight:600; color:var(--muted); font-size:13px; display:block; }
+
+  /* Nani's guide box: kurta cream + red embroidery band */
+  .guide { display:flex; align-items:center; gap:10px; background:#fbf1e1; border-radius:14px; padding:8px 10px 8px 16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:0 2px 6px rgba(80,40,10,.1); }
+  .guide::before { content:""; position:absolute; left:0; top:0; bottom:0; width:7px;
+    background:repeating-linear-gradient(180deg,var(--madder) 0 6px,#d9a441 6px 8px,var(--madder) 8px 14px,#fbf1e1 14px 16px); }
+  .guide img.face { width:44px; height:44px; border-radius:50%; object-fit:cover; object-position:top; background:#fff; border:2px solid #fff; }
+  .guide .say { flex:1; font-family:'Baloo 2'; font-weight:700; font-size:17px; line-height:1.15; }
+  .icon { width:34px; height:34px; border-radius:50%; background:#fff; display:grid; place-items:center; font-size:17px; box-shadow:0 1px 3px rgba(0,0,0,.12); }
+  .icon img { width:26px; height:26px; object-fit:contain; }
+
+  /* the request card */
+  .card { background:var(--cream); border-radius:16px; padding:10px 12px 12px; box-shadow:0 2px 8px rgba(80,40,10,.12); }
+  .head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .head img.face { width:48px; height:48px; border-radius:50%; object-fit:cover; object-position:top; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  .head .ask { flex:1; font-family:'Baloo 2'; font-weight:800; font-size:21px; line-height:1.1; }
+  .head .ask b { color:var(--madder); }
+  .rows { display:flex; flex-direction:column; gap:6px; }
+  .word { font-family:'Baloo 2'; font-weight:700; font-size:20px; color:var(--madder); }
+
+  /* A: tick rows */
+  .A .row { display:flex; align-items:center; gap:10px; padding:5px 10px; border-radius:12px; }
+  .A .slot { width:24px; height:24px; border-radius:50%; border:2.5px solid #d8c6ae; flex:none; display:grid; place-items:center; }
+  .A .row.done { background:linear-gradient(90deg,#fdf0cf,#fff6e2); }
+  .A .row.done .slot { border:0; background:none; }
+  .A .row.done .slot img { width:26px; }
+
+  /* B: chips */
+  .B .rows { flex-direction:row; flex-wrap:wrap; gap:8px; }
+  .B .chip { padding:6px 16px; border-radius:999px; background:#efe6da; border:2px solid #e2d4c1; }
+  .B .chip .word { color:#6d5a4c; }
+  .B .chip.done { background:linear-gradient(180deg,#fbe3a1,#f0c05a); border-color:#dca33d; box-shadow:0 2px 0 #c98d2c; }
+  .B .chip.done .word { color:#4a2c0c; }
+
+  /* C: picture rows */
+  .C .row { display:flex; align-items:center; gap:10px; padding:4px 8px; border-radius:12px; }
+  .C .pic { width:42px; height:42px; object-fit:contain; flex:none; }
+  .C .row .word { flex:1; }
+  .C .slot { width:24px; height:24px; border-radius:50%; border:2.5px solid #d8c6ae; flex:none; }
+  .C .row.done { background:linear-gradient(90deg,#fdf0cf,#fff6e2); }
+  .C .row.done .slot { border:0; }
+  .C .row.done .slot img { width:26px; }
+
+  /* sequence: one generic stepper for every ordered job (skewer, chaat layers, tadka) */
+  .sub { margin-top:8px; background:#fff; border-radius:12px; padding:6px 8px 6px 10px; border:1.5px solid var(--line); }
+  .sub .title { font-size:12px; color:var(--muted); font-weight:700; margin:0 0 2px 2px; }
+  .seq { position:relative; }
+  .seq::before { content:""; position:absolute; left:11px; top:14px; bottom:14px; width:3px; border-radius:2px; background:#e0cfb8; }
+  .seq .row { position:relative; padding-top:2px; padding-bottom:2px; }
+  .seq .row + .row .slot::after { content:""; }
+  .sec { font-family:'Baloo 2'; font-weight:700; font-size:14px; color:var(--muted); margin:14px 0 6px; }
+</style>
+</head>
+<body>
+<h1>Request card: three options</h1>
+<p class="note">A mock-up with the game's own art. Nana wants chai; milk is fetched (done), the chai leaves and sugar aren't yet. Below each: the same option for an ordered job (two skewers), using one shared "sequence line" that also works for chaat layers or a tadka.</p>
+<div class="cols" id="cols"></div>
+
+<script>
+const F = (n) => `../assets/cook/characters/${n}.webp`;
+const I = (n) => `../assets/cook/items/${n}`;
+const TICK = '../assets/ui/results/tick-gold.webp';
+const BULB = '../assets/ui/results/icon-bulb.webp';
+const items = [
+  { w:'dudh', pic:I('jug-dudh-f.png'), done:true },
+  { w:'chai', pic:I('dry-chai-leaves-bowl-t.webp'), done:false },
+  { w:'khun', pic:I('dry-khun-bowl-t.webp'), done:false },
+];
+const skewer = [
+  { w:'gos', pic:I('mishkaki-meat-raw-t.webp'), done:true },
+  { w:'dungri', pic:I('mishkaki-dungri-raw-t.webp'), done:true },
+  { w:'tameto', pic:I('mishkaki-tameto-raw-t.webp'), done:false },
+  { w:'gos', pic:I('mishkaki-meat-raw-t.webp'), done:false },
+];
+const slot = (d) => `<span class="slot">${d ? `<img src="${TICK}" alt="">` : ''}</span>`;
+const rowsFor = (opt, list, seq) => {
+  if (opt === 'B') return `<div class="rows${seq ? ' seq-b' : ''}">${list.map((x, i) => `${seq && i ? '<span style="align-self:center;color:#c9b69c;font-weight:800">›</span>' : ''}<span class="chip${x.done ? ' done' : ''}"><span class="word">${x.w}</span></span>`).join('')}</div>`;
+  if (opt === 'C') return `<div class="rows${seq ? ' seq' : ''}">${list.map(x => `<div class="row${x.done ? ' done' : ''}"><img class="pic" src="${x.pic}" alt=""><span class="word">${x.w}</span>${slot(x.done)}</div>`).join('')}</div>`;
+  return `<div class="rows${seq ? ' seq' : ''}">${list.map(x => `<div class="row${x.done ? ' done' : ''}">${slot(x.done)}<span class="word">${x.w}</span></div>`).join('')}</div>`;
+};
+const guide = `<div class="guide"><img class="face" src="${F('nani-talk')}" alt=""><div class="say" style="font-style:italic;color:#8a7667;font-weight:600">Nani's instruction (to record)</div><span class="icon"><img src="${BULB}" alt=""></span><span class="icon">🔊</span></div>`;
+const opts = [['A','Tick rows','a slot on the left fills with a gold tick'],['B','Chips','each word is a chip that turns gold'],['C','Picture rows','picture, word, tick slot']];
+document.getElementById('cols').innerHTML = opts.map(([k, name, sub]) => `
+  <div class="col ${k}">
+    <h2>${k}: ${name}<small>${sub}</small></h2>
+    ${guide}
+    <div class="card">
+      <div class="head"><img class="face" src="${F('nana-happy')}" alt=""><div class="ask">Muke <b>chai</b> khape.</div><span class="icon">🔊</span></div>
+      ${rowsFor(k, items)}
+    </div>
+    <div class="sec">Two skewers (an ordered job)</div>
+    <div class="card">
+      <div class="head"><img class="face" src="${F('cousin-happy')}" alt=""><div class="ask">Muke <b>ba mishkaki</b> khape.</div><span class="icon">🔊</span></div>
+      <div class="sub">${rowsFor(k, skewer, true)}</div>
+      <div class="sub">${rowsFor(k, skewer.map(x => ({...x, done:false})), true)}</div>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>
