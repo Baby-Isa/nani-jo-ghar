@@ -371,6 +371,11 @@ Cell order matches P7: I7 cell *k* is the label for P7 cell *k* (same game id).
 - Write both versions: `shelf-<id>-f.webp` (labelled, what the pantry uses) and `shelf-<id>-bare-f.webp` (no label, for other views later).
 - **Check** every labelled item on the cream background, zoomed: the label's the same size and place across the type, the picture reads at shelf size, no fringe.
 
+### Status (28 Sept, evening)
+- All 16 images came back and passed; Zafar uploaded them (ChatGPT dump 3) and they're renamed in `sources/art/pantry-v2/` (the first background try wasn't uploaded, so there's no `-try1`).
+- Cut with `build/cut_pantry_v2.py`: 63 bare containers (`shelf-<id>-bare-f.webp`), 63 icons (`icon-<id>.webp`) and `sticker-blank.webp` in `assets/cook/items/`. Checked by eye on cream and shelf wood (`build/previews/pantry-v2/`): glass is see-through, lids solid, no grey fringe.
+- Labels tested on the spice jars (`build/label_pantry_v2.py --preview 2`, `build/previews/pantry-v2/labels-test-spice.jpg`). They sit well, but at phone size the jar's colour reads better than the label, and white-on-cream icons (salt) vanish. **Decision (Zafar): bare for now, labels decided later.** The labelling script stays ready; if labels come back, give the salt, rice and sugar icons a darker sticker or an outline first.
+
 ### Wiring
 - Today the pantry skips sprites and uses props or drawn bowls (`Cook.Art.wordTex`, `js/cook/art.js`). Add a `shelf` state to `art.sprites.items` for every word above and have `wordTex` use it when `scene.viewName === "pantry"`. The old `-f` files (`jar-atto-f`, `jug-dudh-f`, `tin-chai-f`, `veg-*-whole-f` …) retire once nothing reads them.
 - New ids are added to `data/cook.json`'s `words` only when a round first uses them (Kutchi from the family; English placeholder until then).
