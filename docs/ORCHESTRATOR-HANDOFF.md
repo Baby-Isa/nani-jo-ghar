@@ -15,6 +15,8 @@
 
 ## Lessons (don't repeat)
 
+- **Never start a build while a question to Zafar is open** (Zafar, 28 Sept). If a message ends with questions for him, wait for his answers before launching anything that depends on them. On 28 Sept the chai mock-up was started with a masala dabba he then declined, and had to be stopped and restarted.
+
 - **Browser tests:**
   - never run several at once; wrap each in `flock -w 1800 /tmp/cook-test-$((RANDOM % 2)).lock timeout 1200 …`;
   - use `--canvas` for `--days` runs (software WebGL here is 6–11 fps);
