@@ -11,7 +11,12 @@
    its own shining gold+glow art when all right; the bulb swaps art by hint
    count. */
 .njg-results {
-  --rs-ink: #2b1810;
+  --rs-ink: #2a2522;
+  --rs-card: #ffffff;
+  --rs-tile: #faf6ef;
+  --rs-tile-line: #e7ded0;
+  --rs-say-bg: #f4ecdf;
+  --rs-pad: clamp(16px, 3.2vh, 24px);
   --rs-cream: #fdf6e8;
   --rs-paper: #fffaf0;
   --rs-line: #e6d2b0;
@@ -24,8 +29,8 @@
   --rs-leaf: #6f8f4a;
   --rs-madder: #a63b3b;
   --rs-indigo: #2f3e6b;
-  --rs-disc: clamp(78px, min(32vh, 19vw), 220px);
-  --rs-btn: clamp(64px, min(17vh, 11vw), 96px);
+  --rs-disc: clamp(72px, min(28vh, 16vw), 200px);
+  --rs-btn: clamp(56px, min(11vh, 8vw), 72px);
   position: fixed;
   inset: 0;
   z-index: 900;
@@ -34,9 +39,10 @@
   justify-content: center;
   padding: max(10px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
   box-sizing: border-box;
-  background: radial-gradient(ellipse at 50% 30%, #fdf6e8, #f0dec0);
+  /* Design system 10: a pop-up card over the (dimmed) game, not a page of its own */
+  background: rgba(42, 37, 34, 0.42);
   color: var(--rs-ink);
-  font: 600 16px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 600 16px/1.2 Nunito, system-ui, -apple-system, "Segoe UI", sans-serif;
   animation: rs-fade 0.25s ease-out both;
   -webkit-user-select: none;
   user-select: none;
@@ -48,23 +54,41 @@
 .njg-results svg { width: 100%; height: 100%; display: block; }
 .njg-results [hidden] { display: none !important; }
 
-.rs-page { margin: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; width: min(100%, 1100px); height: 100%; display: flex; flex-direction: column; justify-content: center; gap: clamp(8px, 3vh, 28px); }
-.rs-page.enter { animation: rs-slide 0.3s ease-out both; }
-
+/* ---------- the pop-up card (design system 10): one white card that steps badges -> words -> actions.
+   Both steps share one grid cell, so the card keeps one size from step to step; the actions sit at its foot. */
+.rs-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-pad);
+  width: min(100%, 1000px);
+  max-height: 100%;
+  padding: var(--rs-pad);
+  border-radius: 12px;
+  background: var(--rs-card);
+  box-shadow: 0 2px 8px rgba(40, 25, 10, 0.1), 0 18px 48px rgba(40, 25, 10, 0.22);
+  animation: rs-rise 0.3s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+.rs-steps { display: grid; grid-template-rows: minmax(0, 1fr); flex: 1 1 auto; min-height: 0; }
+.rs-page { grid-area: 1 / 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+.rs-card:focus { outline: none; }
+.rs-page[aria-hidden="true"] { visibility: hidden; pointer-events: none; }
+.rs-page.enter, .rs-actions.enter { animation: rs-slide 0.3s ease-out both; }
 /* ---------- page 1: the three badges ---------- */
 .rs-badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(8px, 2.4vw, 28px); align-items: stretch; }
 .rs-badges.n2 { grid-template-columns: repeat(2, minmax(0, 340px)); justify-content: center; }
+/* inside the card, each badge is a flat light tile (no card-in-card shadow); gold outline = the best of it */
 .rs-badge {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(6px, 1.6vh, 14px);
-  padding: clamp(10px, 2.4vh, 22px) 10px;
-  border-radius: 26px;
-  background: var(--rs-paper);
-  border: 3px solid var(--rs-line);
-  box-shadow: 0 6px 18px rgba(80, 50, 20, 0.12);
+  gap: clamp(6px, 1.4vh, 12px);
+  padding: clamp(10px, 2.2vh, 20px) 10px;
+  border-radius: 12px;
+  background: var(--rs-tile);
+  border: 1px solid var(--rs-tile-line);
+  box-shadow: none;
   transition: border-color 0.4s, box-shadow 0.4s, transform 0.3s;
   min-width: 0;
 }
@@ -76,7 +100,7 @@
 .rs-foot { min-height: clamp(26px, 6vh, 44px); display: flex; align-items: center; justify-content: center; width: 100%; }
 
 /* tiers: the badge card's frame (gold border always means "the best of it") */
-.rs-badge.tier-gold { border-color: var(--rs-gold); box-shadow: 0 0 0 4px rgba(224, 166, 58, 0.25), 0 8px 24px rgba(185, 124, 28, 0.35); }
+.rs-badge.tier-gold { border-color: #c9962e; box-shadow: 0 0 0 1px #c9962e; }
 .rs-badge.tier-plain { opacity: 0.94; }
 
 /* ---------- time: the stopwatch art, the time drawn over its empty face ---------- */
@@ -160,57 +184,62 @@
 .rs-badge.celebrate .rs-sparkles svg:nth-child(3n) { animation-delay: 0.8s; }
 .rs-badge.celebrate .rs-disc { animation: rs-pop 0.45s cubic-bezier(0.3, 1.6, 0.6, 1), rs-buzz 0.16s linear 0.45s 6; }
 
-/* ---------- the buttons: big, on the right (under the thumb) ---------- */
-.rs-actions { display: flex; justify-content: flex-end; gap: 16px; }
+/* ---------- the buttons at the card's foot: flat (design system 2), big, on the right (under the thumb) ---------- */
+.rs-actions { display: flex; justify-content: flex-end; align-items: center; gap: 12px; flex: none; }
 .rs-btn {
   width: calc(var(--rs-btn) * 1.7);
   height: var(--rs-btn);
-  border: 0;
-  border-radius: calc(var(--rs-btn) / 2);
-  background: var(--rs-indigo);
-  color: var(--rs-cream);
-  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--rs-card);
+  color: var(--rs-ink);
+  padding: 0 20px;
   cursor: pointer;
-  align-items: center;
-  box-shadow: 0 5px 0 #1d284a, 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 10px;
+  font: 800 clamp(17px, 2.6vh, 20px)/1 Nunito, system-ui, sans-serif;
+  box-shadow: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s;
 }
-.rs-btn svg { width: calc(var(--rs-btn) * 0.55); height: calc(var(--rs-btn) * 0.55); stroke-width: 2.6; }
-.rs-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #1d284a; }
-.rs-btn:focus-visible { outline: 4px solid var(--rs-gold); outline-offset: 3px; }
+.rs-btn svg { width: calc(var(--rs-btn) * 0.5); height: calc(var(--rs-btn) * 0.5); stroke-width: 2.6; flex: none; }
+.rs-btn.labelled { width: auto; min-width: calc(var(--rs-btn) * 1.7); }
+.rs-btn.labelled svg { width: 26px; height: 26px; }
+.rs-btn:active { transform: scale(0.97); }
+.rs-btn:focus-visible { outline: 3px solid #c9962e; outline-offset: 3px; }
+/* the main action: charcoal; the others: white with a grey outline */
+.rs-btn.primary { background: var(--rs-ink); color: #fff; }
+.rs-btn:not(.primary):not(.rs-done) { border-color: #d9d2c7; }
 .rs-next { animation: rs-nudge 2.4s ease-in-out 2.2s infinite; }
-.rs-again { background: #fff; color: var(--rs-indigo); box-shadow: 0 5px 0 #c9b89f, 0 8px 16px rgba(0, 0, 0, 0.12); width: var(--rs-btn); }
-.rs-done { background: var(--rs-leaf); box-shadow: 0 5px 0 #4d6531, 0 8px 16px rgba(0, 0, 0, 0.2); }
+.rs-again { width: var(--rs-btn); padding: 0; }
 /* Sidebar v2 (Zafar, 28 Sept evening; docs/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
    option A, the gold-metal tick on a round cream button (it replaces the green tick) */
 .rs-done {
-  width: var(--rs-btn); border-radius: 50%;
+  width: var(--rs-btn); border-radius: 50%; padding: 0;
   background: #fffaf0 no-repeat center 54% / 66% url("../../assets/ui/results/tick-gold.webp");
-  border: 1px solid #e6d5b8; box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.2);
+  border: 1px solid #e6d5b8;
 }
 .rs-done svg { display: none; }
-.rs-done:active { box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
 
 /* ---------- page 2: the word review ----------
    Zafar 28 Sept: centred on the page; wrong words on the left, right words on the right; each side's
    width in proportion to its words, one to three columns (--rs-cols, set per side by results.js), then
    more rows. Sidebar v2 (28 Sept evening): a thin vertical divider between the two sides, both sides'
    rows top-aligned to the same line. Sidebar v3: flat white cards outlined gold (right) or red (wrong). */
-.rs-p2 { justify-content: space-between; }
-/* a spacer as tall as the buttons, so the words sit in the middle of the page, not of what's above the buttons */
-.rs-p2::before { content: ""; flex: none; height: var(--rs-btn); }
+.rs-p2 { justify-content: center; }
 .rs-words {
   flex: 0 1 auto;
   min-height: 0;
+  max-height: 100%;
   overflow-y: auto;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  padding: 14px;
+  padding: 4px;
 }
 .rs-words-col {
   flex: var(--rs-cols, 1) 1 0;
@@ -251,18 +280,19 @@
 }
 /* Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10): flat material cards, no gradients,
    no bevels, no 3D text: a white card with a flat 2px outline, gold for right, red for wrong */
-.rs-word.ok { --rs-edge: #c99a2e; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
-.rs-word.bad { --rs-edge: #cf3b2e; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
+.rs-word.ok { --rs-edge: #c9962e; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
+.rs-word.bad { --rs-edge: #c0443c; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
 .rs-word:active { transform: scale(0.97); }
-.rs-word:focus-visible { outline: 3px solid var(--rs-indigo); outline-offset: 2px; }
+.rs-word:focus-visible { outline: 3px solid var(--rs-ink); outline-offset: 2px; }
 .rs-word.on { background: #fffaf0; box-shadow: 0 0 0 3px rgba(255, 217, 138, 0.9); }
 .rs-word b { overflow-wrap: normal; word-break: keep-all; hyphens: none; white-space: nowrap; }
-/* the word big and centred; a small speaker beside its English underneath */
-.rs-p2 .rs-word .rs-en { display: inline-flex; align-items: center; gap: 6px; }
-.rs-p2 .rs-word .rs-say { flex: none; width: 22px; height: 22px; padding: 5px; }
-.rs-say { grid-row: 1 / 3; width: 44px; height: 44px; padding: 9px; border-radius: 50%; background: var(--rs-indigo); color: #fff; }
-.rs-word.ok .rs-say { background: var(--rs-edge); color: #fff; }
-.rs-word.bad .rs-say { background: var(--rs-edge); color: #fff; }
+/* the word big and centred; a small speaker beside its English underneath.
+   Design system 10: the speaker is neutral (a charcoal icon on a light cream circle) for right and wrong
+   words alike; the colour stays only in the card's outline (gold right, red wrong). */
+.rs-p2 .rs-word .rs-en { display: inline-flex; align-items: center; gap: 8px; }
+.rs-p2 .rs-word .rs-say { flex: none; width: 26px; height: 26px; padding: 5px; }
+.rs-say { grid-row: 1 / 3; width: 44px; height: 44px; padding: 9px; border-radius: 50%; background: var(--rs-say-bg); color: var(--rs-ink); }
+.rs-word.ok .rs-say, .rs-word.bad .rs-say { background: var(--rs-say-bg); color: var(--rs-ink); }
 .rs-word.on .rs-say { animation: rs-pulse 0.8s ease-in-out infinite; }
 .rs-word b { font-family: Nunito, system-ui, sans-serif; font-size: clamp(21px, 4.4vh, 28px); font-weight: 800; line-height: 1.15; letter-spacing: -0.005em; }
 .rs-en { font-family: Nunito, system-ui, sans-serif; font-size: clamp(13px, 2.8vh, 16px); color: #7a6558; font-weight: 700; }
@@ -270,13 +300,14 @@
 
 /* ---------- narrow portrait phones: badges stack as rows ---------- */
 @media (max-width: 560px) {
-  .njg-results { --rs-disc: clamp(70px, min(15vh, 28vw), 120px); --rs-btn: 72px; }
+  .njg-results { --rs-disc: clamp(70px, min(14vh, 26vw), 116px); --rs-btn: 60px; --rs-pad: 16px; padding-left: 16px; padding-right: 16px; }
   .rs-badges,
   .rs-badges.n2 { grid-template-columns: 1fr; gap: 10px; }
   .rs-badge { flex-direction: row; justify-content: flex-start; gap: 18px; padding: 10px 16px; }
   .rs-foot { justify-content: flex-start; flex: 1; }
   .rs-ribbon { top: -10px; left: auto; right: 10px; transform: rotate(-3deg); }
   .rs-actions .rs-btn:last-child { flex: 0 1 60%; }
+  .rs-actions .rs-btn.labelled { flex: 1 1 0; min-width: 0; padding: 0 12px; }
   .rs-actions .rs-btn.rs-done { flex: none; width: var(--rs-btn); }
   .rs-words { flex-direction: column; align-items: stretch; gap: 14px; }
   .rs-words-col { padding: 0; }
@@ -287,11 +318,12 @@
 /* short landscape phones: tighter */
 @media (max-height: 430px) and (orientation: landscape) {
   .rs-badge { padding: 8px; gap: 6px; border-radius: 20px; }
-  .rs-page { gap: 10px; }
+  .njg-results { --rs-pad: 12px; }
 }
 
 @keyframes rs-fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes rs-slide { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+@keyframes rs-rise { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes rs-slide { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
 @keyframes rs-pop { 0% { transform: scale(1); } 45% { transform: scale(1.14); } 100% { transform: scale(1); } }
 @keyframes rs-buzz { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(0.6px, -0.5px); } 50% { transform: translate(-0.5px, 0.5px); } 75% { transform: translate(0.4px, 0.4px); } }
 @keyframes rs-ribbon { from { opacity: 0; transform: translateX(-50%) scale(0.4) rotate(-12deg); } to { opacity: 1; transform: translateX(-50%) rotate(-3deg); } }

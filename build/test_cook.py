@@ -457,7 +457,7 @@ class Player:
                     raise AssertionError("no expectation for 70s")
                 continue
             idle = 0
-            if e["kind"] == "click" and e["selector"] in ("#sum-shop", "#sum-finale", "#shop-done", "#t-start", "#t-free", "#fin-menu", "#lab-list"):
+            if e["kind"] == "click" and e["selector"] in ("#sum-shop", "#sum-finale", "#shop-done", "#t-start", "#t-free", "#fin-menu", "#lab-list", ".njg-results #lab-list"):
                 time.sleep(0.1)
                 continue
             timed = e["kind"] in ("timing", "hold", "slice", "stir", "roll")
@@ -578,9 +578,11 @@ def run_lab(vp, speed, busy, shots_root, stations, guided, level=1, zoned=False,
             page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
             time.sleep(0.5)
             P.shot(f"{key}-start")
-            P.play(lambda: page.evaluate("!!document.querySelector('#lab-list') && !document.querySelector('#overlay').classList.contains('hidden')"), timeout=LONG.get(key, 300))
+            # the end-of-station pop-up's last step: Again / All stations at the card's foot (design system 10)
+            P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=LONG.get(key, 300))
+            time.sleep(0.4)
             P.shot(f"{key}-result")
-            results[key] = page.evaluate("document.querySelector('#panel .cc-why') ? document.querySelector('#panel .cc-why').innerText : ''")
+            results[key] = page.evaluate("Cook.labResult ? Cook.labResult.why + ' ' + Cook.labResult.skills.join(' · ') : ''")
             print(f"  {name}: {key}: {results[key]!r}")
         browser.close()
     report_side(P)

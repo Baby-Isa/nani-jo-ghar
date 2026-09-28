@@ -191,12 +191,35 @@ body.w6 :is(#side, .sb2, #intro) .icard.person .lface { width: 100%; height: 100
 body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title { flex: 1 1 auto; min-width: 0; font-size: var(--sb-h); line-height: 1.2; color: var(--sb-ink); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title .word { color: var(--sb-word); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .lrows { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 6px; margin: 0; }
+/* Design system 10: the pills sit in a body that can fold away (grid rows 1fr -> 0fr, so the height animates
+   smoothly to and from its content); the gap above the pills lives inside it, so it folds too */
+body.w6 :is(#side, .sb2, #intro) .icard.person { gap: 0; }
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-body { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .42s cubic-bezier(.3, .7, .2, 1); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-in { min-height: 0; overflow: hidden; padding-top: 8px; transition: opacity .3s ease; }
+/* the small flat gold check on the head line: only on a folded card */
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-tk { flex: none; width: 20px; height: 20px; display: none; opacity: 0; transform: scale(.6); transition: opacity .25s ease .2s, transform .3s cubic-bezier(.2, 1.5, .4, 1) .2s; }
+body.w6 :is(#side, .sb2) .icard.person.foldable .pc-tk { display: block; }
+body.w6 :is(#side, .sb2) .icard.person .pc-tk .tk, body.w6 :is(#side, .sb2) .icard.person .pc-tk svg { display: block; width: 100%; height: 100%; }
+body.w6 :is(#side, .sb2) .icard.person.foldable { cursor: pointer; transition: padding .42s cubic-bezier(.3, .7, .2, 1); }
+body.w6 :is(#side, .sb2) .icard.person.folded { padding-top: 6px; padding-bottom: 6px; }
+body.w6 :is(#side, .sb2) .icard.person.folded .pc-body { grid-template-rows: 0fr; }
+body.w6 :is(#side, .sb2) .icard.person.folded .pc-in { opacity: 0; }
+body.w6 :is(#side, .sb2) .icard.person.folded .pc-tk { opacity: 1; transform: none; }
+/* already folded when drawn (a redraw): no animation */
+body.w6 :is(#side, .sb2) .icard.person.still,
+body.w6 :is(#side, .sb2) .icard.person.still * { transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  body.w6 :is(#side, .sb2) .icard.person,
+  body.w6 :is(#side, .sb2) .icard.person * { transition: none !important; }
+}
 /* the pop-up: the same person cards, flat inside it (its own head goes, as in the sidebar) */
 body.w6 #intro .ic-card.people .ic-head { display: none; }
 body.w6 #intro .ic-card.people .icard.person { box-shadow: none; }
 @media (max-height: 430px) {
   body.w6 #mission.people .m-order, body.w6 #mission.people .ladder, body.w6 #mission.people .lsec { gap: 6px; }
-  body.w6 :is(#side, .sb2) .icard.person { gap: 4px; padding: 6px; border-radius: 12px; }
+  body.w6 :is(#side, .sb2) .icard.person { gap: 0; padding: 6px; border-radius: 12px; }
+  body.w6 :is(#side, .sb2) .icard.person .pc-in { padding-top: 4px; }
+  body.w6 :is(#side, .sb2) .icard.person.folded { padding-top: 4px; padding-bottom: 4px; }
   body.w6 :is(#side, .sb2) .icard.person .pc-head { gap: 7px; }
   body.w6 :is(#side, .sb2) .icard.person .lrows { flex-direction: column; gap: 3px; }
 }

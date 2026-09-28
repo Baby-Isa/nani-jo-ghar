@@ -1,6 +1,6 @@
 /*
- * The end-of-round screen (docs/UX-PRINCIPLES.md s9, redrawn by s9a). The
- * same two pages in every mode:
+ * The end-of-round pop-up (docs/UX-PRINCIPLES.md s9, redrawn by s9a; one stepped
+ * card since docs/design/cook-design-system-v1.md s10). The same steps in every mode:
  *   page 1: three big badges side by side (stacked on a narrow phone).
  *           Time: a stopwatch outline with the time drawn inside it (per-
  *           profile best per mode+game+level); gold+buzzing on a new best,
@@ -11,14 +11,16 @@
  *           Next.
  *   page 2: the word review (each key Kutchi word with its English, tap to
  *           hear it) -- right words outlined gold and grouped on the right,
- *           wrong ones outlined red and grouped on the left -- then Done (and
- *           Play again when the mode offers it).
+ *           wrong ones outlined red and grouped on the left -- in the same
+ *           card, with the actions at its foot: Done (and Play again when the
+ *           mode offers it), or the mode's own opts.actions.
  *
  *   await Results.show({mode, game, level, timeMs, right, total, hints,
  *                       words: [{kutchi, english, audio?, id?, right?}],
  *                       onDone(out), onAgain?(out), speak?(word), container?,
+ *                       actions?: [{id, label?, icon?, primary?, elId?}], onAction?(out),
  *                       sound?: true, store?: UIStore})
- *     -> out = {action: "done" | "again", badges, best: {ms, newBest, first}}
+ *     -> out = {action: "done" | "again" | an actions id, badges, best: {ms, newBest, first}}
  *
  * A word's `right` (true/omitted = got it, false = missed it) decides which
  * side of page 2 it groups on. A caller with no per-word verdict (nothing
@@ -150,6 +152,7 @@
     speaker: svg('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
     next: svg('<path d="M5 12h13M13 6l6 6-6 6"/>'),
     again: svg('<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4.5h4.5"/>'),
+    grid: svg('<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>'),
     spark: svg('<path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z" fill="currentColor"/>'),
   };
   Results.ICONS = ICON;
@@ -326,7 +329,29 @@
   }
 
   let current = null;
-  /** Show the end-of-round screen. Resolves when Done or Play again is tapped. */
+  /** The buttons on the last step: the mode's own actions, else Play again (when offered) and Done. */
+  function actionsHtml(opts) {
+    if (opts.actions && opts.actions.length) {
+      return opts.actions
+        .map((a) => {
+          const icon = ICON[a.icon] || "";
+          const cls = ["rs-btn", "rs-act", `rs-act-${esc(a.id)}`, a.primary ? "primary" : "", a.label ? "labelled" : ""].filter(Boolean).join(" ");
+          return `<button class="${cls}" type="button" data-act="${esc(a.id)}"${a.elId ? ` id="${esc(a.elId)}"` : ""} aria-label="${esc(a.label || a.id)}">${icon}${a.label ? `<span>${esc(a.label)}</span>` : ""}</button>`;
+        })
+        .join("");
+    }
+    return `${opts.onAgain ? `<button class="rs-btn rs-again" type="button" data-act="again" aria-label="Play again">${ICON.again}</button>` : ""}
+          <button class="rs-btn rs-done" type="button" data-act="done" aria-label="Done">${ICON.check}</button>`;
+  }
+  /**
+   * Show the end-of-round pop-up. Resolves when an action is tapped.
+   * Design system 10 (Zafar, 28 Sept, late): ONE pop-up card that steps through
+   *   1. the three badges -> Next;
+   *   2. the word review, inside the same card (same surface, same padding);
+   *   3. on that last step, the action buttons at the bottom of the card.
+   * opts.actions: [{id, label?, icon? ("again", "next", "check", "grid"), primary?, elId?}] replaces the
+   * default Play again / Done; the promise resolves with out.action = the tapped action's id.
+   */
   Results.show = function (opts) {
     opts = opts || {};
     if (current) current.close();
@@ -342,20 +367,22 @@
     el.setAttribute("role", "dialog");
     el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-label", "End of the round");
+    // no words: the badges step is the last one, so the actions sit under the badges
+    const acts = `<div class="rs-actions rs-last">${actionsHtml(opts)}</div>`;
     el.innerHTML = `
-      <div class="rs-page rs-p1" data-page="1">
-        <div class="rs-badges n${timed ? 3 : 2}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}</div>
-        <div class="rs-actions"><button class="rs-btn rs-next" type="button" aria-label="${words.length ? "Next" : "Done"}">${ICON.next}</button></div>
-      </div>
-      <div class="rs-page rs-p2" data-page="2" hidden>
-        <div class="rs-words">${wordsHtml(words)}</div>
-        <div class="rs-actions">
-          ${opts.onAgain ? `<button class="rs-btn rs-again" type="button" aria-label="Play again">${ICON.again}</button>` : ""}
-          <button class="rs-btn rs-done" type="button" aria-label="Done">${ICON.check}</button>
+      <div class="rs-card" data-step="1">
+        <div class="rs-steps">
+          <div class="rs-page rs-p1" data-page="1">
+            <div class="rs-badges n${timed ? 3 : 2}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}</div>
+          </div>
+          ${words.length ? `<div class="rs-page rs-p2" data-page="2" aria-hidden="true"><div class="rs-words">${wordsHtml(words)}</div></div>` : ""}
         </div>
+        ${words.length ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
+        ${words.length ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
       </div>`;
     host.appendChild(el);
     if (root.Sfx) root.Sfx.unlock();
+    const card = el.querySelector(".rs-card");
 
     let resolveOut;
     const done = new Promise((r) => (resolveOut = r));
@@ -364,7 +391,8 @@
       const o = out(action);
       close();
       if (action === "again" && opts.onAgain) opts.onAgain(o);
-      else if (opts.onDone) opts.onDone(o);
+      else if (action === "done" && opts.onDone) opts.onDone(o);
+      if (opts.onAction) opts.onAction(o);
       resolveOut(o);
     };
     const close = () => {
@@ -373,25 +401,30 @@
       setTimeout(() => el.remove(), reduced() ? 0 : 220);
       if (current && current.el === el) current = null;
     };
-    current = { el, close, page: () => (el.querySelector(".rs-p2").hidden ? 1 : 2) };
+    current = { el, close, page: () => +card.dataset.step };
 
     const toWords = () => {
-      el.querySelector(".rs-p1").hidden = true;
+      const p1 = el.querySelector(".rs-p1");
       const p2 = el.querySelector(".rs-p2");
-      p2.hidden = false;
+      card.dataset.step = "2";
+      p1.setAttribute("aria-hidden", "true");
+      p2.removeAttribute("aria-hidden");
       p2.classList.add("enter");
+      el.querySelector(".rs-first").hidden = true;
+      const last = el.querySelector(".rs-last");
+      last.hidden = false;
+      last.classList.add("enter");
       if (opts.sound !== false) sfx("whoosh");
-      // focus goes to Done (what to press next), so no word card looks picked out
-      const first = p2.querySelector(".rs-done") || p2.querySelector(".rs-word");
-      if (first) first.focus({ preventScroll: true });
+      // focus stays on the card (tabbing reaches the words, then the actions), so nothing looks picked out
+      card.focus({ preventScroll: true });
     };
-    el.querySelector(".rs-next").addEventListener("click", () => {
-      if (opts.sound !== false) sfx("tap");
-      words.length ? toWords() : finish("done");
-    });
-    el.querySelector(".rs-done").addEventListener("click", () => finish("done"));
-    const again = el.querySelector(".rs-again");
-    if (again) again.addEventListener("click", () => finish("again"));
+    const next = el.querySelector(".rs-next");
+    if (next)
+      next.addEventListener("click", () => {
+        if (opts.sound !== false) sfx("tap");
+        toWords();
+      });
+    el.querySelectorAll(".rs-last [data-act]").forEach((btn) => btn.addEventListener("click", () => finish(btn.dataset.act)));
     el.querySelectorAll(".rs-word").forEach((btn) =>
       btn.addEventListener("click", () => {
         const w = words[+btn.dataset.i];
@@ -401,7 +434,9 @@
           .then(() => btn.classList.remove("on"));
       })
     );
-    el.querySelector(".rs-next").focus({ preventScroll: true });
+    // focus into the dialog (the card itself, so no button shows a ring before it's needed)
+    card.setAttribute("tabindex", "-1");
+    card.focus({ preventScroll: true });
     animate(el, b, opts);
     done.el = el;
     return done;

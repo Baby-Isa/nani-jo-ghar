@@ -33,7 +33,7 @@ def probe(pw, key, level, seed=4):
         t0 = time.time()
         while time.time() - t0 < 240:
             e = P.exp()
-            if page.evaluate("!!document.querySelector('#lab-list') && !document.querySelector('#overlay').classList.contains('hidden')"):
+            if page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"):
                 break
             if not e or e["kind"] == "wait":
                 time.sleep(0.1)

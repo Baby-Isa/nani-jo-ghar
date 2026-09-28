@@ -433,7 +433,7 @@
     return marks;
   }
   Cook.accuracyMarks = accuracyMarks;
-  async function roundEnd(ctx, { game, level, stars, end }) {
+  async function roundEnd(ctx, { game, level, stars, end, actions }) {
     const R = global.Results;
     if (!R || Cook.noResults) return null;
     UI.hideCount();
@@ -452,11 +452,13 @@
       words,
       speak: (w) => Lang.speakWord(w.id),
       sound: true,
+      actions,
     });
-    // what to press next (for the test harness and the first-time overlay)
-    Cook.expect = { kind: "click", selector: ".njg-results .rs-next" };
+    // what to press next (for the test harness and the first-time overlay); the last step's main action
+    const last = actions ? `.njg-results #${(actions.find((a) => a.primary) || actions[0]).elId}` : ".njg-results .rs-done";
     const next = shown.el && shown.el.querySelector(".rs-next");
-    if (next) next.addEventListener("click", () => (Cook.expect = { kind: "click", selector: ".njg-results .rs-done" }));
+    Cook.expect = { kind: "click", selector: next ? ".njg-results .rs-next" : last };
+    if (next) next.addEventListener("click", () => (Cook.expect = { kind: "click", selector: last }));
     const out = await shown;
     Cook.expect = null;
     ctx.results = out;
@@ -877,6 +879,7 @@
   }
   async function runLab(key, guided, { level = Cook.labLevel || 1, region } = {}) {
     Cook.run++;
+    closeResults();
     Cook.unlockAudio();
     Cook.inDay = true;
     Cook.labGuided = guided;
@@ -915,13 +918,11 @@
     // close its rows: they tick now it's finished, as a dish's do (the kept stations tick their own)
     if (!keptKeys().includes(key)) (ctx.ladders || []).forEach((L, i) => UI.mission.finishDish(i));
     const tEnd = Date.now();
-    // Wave 6b: the shared end-of-round screen first (the stars as badges, then the words)
+    // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
+    // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)
     const labStars = { ear: ctx.listenMiss === 0, hand: !ctx.grades.some((g) => g.score < 55), third: ctx.help === 0 };
     UI.mission.stamp();
-    await roundEnd(ctx, { game: key, level, stars: labStars, end: tEnd });
-    // a score can be reported more than once (e.g. one per maani rolled, one
-    // per chapati flipped): number them so "roll 82% · roll 100%" reads as
-    // "roll 1: 82% · roll 2: 100%" instead of two unlabelled repeats.
+    // what the station scored, for the test harness (it was the old card's small print)
     const counts = {};
     ctx.grades.forEach((g) => (counts[g.what] = (counts[g.what] || 0) + 1));
     const seen = {};
@@ -930,24 +931,30 @@
       seen[g.what] = (seen[g.what] || 0) + 1;
       return `${g.what} ${seen[g.what]}: ${g.score}%`;
     });
-    const stars = { ear: ctx.listenMiss === 0, hand: !ctx.grades.some((g) => g.score < 55), third: ctx.help === 0 };
-    const res = outcome(ctx, stars, false);
-    const p = UI.panel(`
-      <h2>${UI.esc(labName(key))}: done</h2>
-      <div class="cards"><div class="ccard rcard"><div class="rc-left"><div class="cc-stars">${starsHtml(stars)}</div>
-      <div class="cc-why">${ctx.listenMiss ? `Ear: ${UI.esc(ctx.reasons.join("; "))}` : "Understood everything."}<br>${UI.esc(skills.join(" · ") || "")}${ctx.help ? `<br>${ctx.help} hint(s), reveals or translations` : ""}</div></div>${resultRight(res)}</div></div>
-      <div class="btn-row"><button class="btn primary" id="lab-again">Again</button><button class="btn" id="lab-list">All stations</button></div>`);
-    UI.wireWordReview(p);
-    $("#lab-again").addEventListener("click", () => runLab(key, guided, { level, region }));
-    $("#lab-list").addEventListener("click", () => showLab({ guided }));
+    Cook.labResult = { key, stars: labStars, why: ctx.listenMiss ? `Ear: ${ctx.reasons.join("; ")}` : "Understood everything.", skills, help: ctx.help };
+    const actions = [
+      { id: "again", label: "Again", icon: "again", elId: "lab-again" },
+      { id: "list", label: "All stations", icon: "grid", elId: "lab-list", primary: true },
+    ];
+    const run = Cook.run;
+    const out = await roundEnd(ctx, { game: key, level, stars: labStars, end: tEnd, actions });
+    if (run !== Cook.run) return; // something else started while the pop-up was up
     UI.mission.close();
-    Cook.expect = { kind: "click", selector: "#lab-list" };
+    if (out && out.action === "again") return runLab(key, guided, { level, region });
+    showLab({ guided });
   }
   Cook.runLab = runLab;
+
+  /** An end-of-round pop-up still up (a station started from the harness or a menu over it) goes. */
+  function closeResults() {
+    const cur = global.Results && global.Results.current && global.Results.current();
+    if (cur) cur.close();
+  }
 
   /* ---------------- title ---------------- */
   function showTitle() {
     Cook.run++;
+    closeResults();
     stopPatience();
     Cook.inDay = false;
     Cook.paused = false;

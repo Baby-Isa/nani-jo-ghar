@@ -1046,21 +1046,59 @@
     return g;
   }
   /**
+   * Design system 10 (Zafar, 28 Sept, late): a person's card in the sidebar collapses once all its pills are
+   * done: it animates up into one line (face + headline + a small flat gold check), a beat after the last
+   * pill ticks so that tick is seen. Tapping a collapsed card re-opens it (and tapping it again folds it).
+   * The cards are redrawn often, so the state lives on the order (mission.folds), keyed by dish and person.
+   */
+  const FOLD_AFTER = 700;
+  function foldCard(c, key, done) {
+    if (!mission) return;
+    const folds = (mission.folds = mission.folds || {});
+    const st = folds[key] || (folds[key] = { doneAt: 0, open: false });
+    c.dataset.fold = key;
+    if (!done) {
+      st.doneAt = 0;
+      st.open = false;
+      return;
+    }
+    if (!st.doneAt) st.doneAt = Date.now();
+    const due = st.doneAt + FOLD_AFTER / (Cook.speed || 1) - Date.now();
+    c.classList.add("foldable");
+    if (st.open) c.classList.add("reopened");
+    else if (due <= 0) c.classList.add("folded", "still");
+    else
+      setTimeout(() => {
+        // the card as it is now (it may have been redrawn since)
+        const cur = [...document.querySelectorAll("#mission .icard.person")].find((x) => x.dataset.fold === key);
+        if (cur && !st.open && cur.classList.contains("done")) cur.classList.add("folded");
+      }, due);
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".face-say")) return; // the face is replay
+      st.open = !st.open;
+      c.classList.remove("still");
+      c.classList.toggle("folded", !st.open);
+      c.classList.toggle("reopened", st.open);
+    });
+  }
+  /**
    * One person's card (a cup on the Chai tray). Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10):
    * one white card per person: their face (= replay), the short headline ("Muke chai khape."), then
    * their pills. No "{name} lai." sub-header: the card is theirs. A second person has their own card.
    */
   function personCard(map, L, s, rows) {
     const c = document.createElement("div");
-    c.className = ["icard", "person", rows.every((x) => x.r.done) ? "done" : ""].filter(Boolean).join(" ");
+    const allDone = rows.every((x) => x.r.done);
+    c.className = ["icard", "person", allDone ? "done" : ""].filter(Boolean).join(" ");
     c.dataset.who = s.for;
     const head = L.head || null;
-    c.innerHTML = `<div class="pc-head"><button class="card-say face-say" type="button" aria-label="Hear it again"><img class="lface" src="${faceUrl(esc(s.for))}" alt=""><span class="say-badge" aria-hidden="true"></span></button>${head ? `<div class="ic-title md-text fit">${text6(head.line, rowHide(head))}</div>` : ""}</div>`;
+    c.innerHTML = `<div class="pc-head"><button class="card-say face-say" type="button" aria-label="Hear it again"><img class="lface" src="${faceUrl(esc(s.for))}" alt=""><span class="say-badge" aria-hidden="true"></span></button>${head ? `<div class="ic-title md-text fit">${text6(head.line, rowHide(head))}</div>` : ""}<span class="pc-tk">${tickHtml(true)}</span></div><div class="pc-body"><div class="pc-in"></div></div>`;
     const title = c.querySelector(".ic-title");
     if (head && title) addEl(map, head, title);
     // the card's fixed slots, in order (milk, sugar, which chai); an empty slot draws nothing (no empty circles)
     const placed = rows.slice().sort((a, b) => Cook.Order.slotOf(L, a.r) - Cook.Order.slotOf(L, b.r));
-    c.appendChild(rowList(map, placed));
+    c.querySelector(".pc-in").appendChild(rowList(map, placed));
+    if (map === sideEls) foldCard(c, `${L.dish || 0}:${s.for}`, allDone);
     const parts = () => (head && title ? [{ line: head.line, els: [title] }] : []).concat(placed.map((x) => ({ row: x.r, line: x.r.no || !x.r.said ? x.r.line : x.r.said, els: (map.get(x.r) || []).filter((e) => c.contains(e)) })));
     c._parts = parts;
     cardSay(c.querySelector(".pc-head .face-say"), parts, rows.map((x) => x.r));
