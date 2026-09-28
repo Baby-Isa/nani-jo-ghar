@@ -5,8 +5,8 @@
  *           Time: a stopwatch outline with the time drawn inside it (per-
  *           profile best per mode+game+level); gold+buzzing on a new best,
  *           dim gold within ~25% of it, grey otherwise. Accuracy: a big
- *           chunky tick that fills green (right) / red (wrong) like a
- *           gauge; gold+shimmer when every row is right. Hints: a big
+ *           chunky tick that fills gold (right) / grey (wrong) like a
+ *           gauge (the app's theme, never red/green); gold+shimmer when every row is right. Hints: a big
  *           light bulb, brighter with fewer hints, off at 3+. Then a big
  *           Next.
  *   page 2: the word review (each key Kutchi word with its English, tap to
@@ -179,10 +179,11 @@
   function watchImg(tier) {
     return img("rs-watch", tier === "gold" ? "stopwatch-pb" : tier === "mid" ? "stopwatch-good" : "stopwatch-plain");
   }
-  /** A big chunky tick: the empty face, a green layer clipped to the share right and a
-   * red layer for the rest (CSS clip-path by percentage), or the gold art when all right. */
+  /** A big chunky tick: the empty face, a gold layer clipped to the share right and a
+   * grey layer for the rest (CSS clip-path by percentage; gold+grey, never red/green),
+   * or the shining gold-with-glow art when all right. */
   function tickImg(rw, ww) {
-    return img("rs-tick-base", "tick-empty") + img("rs-tick-right", "tick-green", `--rw:${rw}%`) + img("rs-tick-wrong", "tick-red", `--rw:${rw}%;--ww:${ww}%`) + img("rs-tick-gold", "tick-gold");
+    return img("rs-tick-base", "tick-empty") + img("rs-tick-right", "tick-gold-fill", `--rw:${rw}%`) + img("rs-tick-wrong", "tick-grey", `--rw:${rw}%;--ww:${ww}%`) + img("rs-tick-gold", "tick-gold");
   }
   /** A big light bulb: which art shows is set by CSS off data-hn (0, 1, 2, 3+). */
   function bulbImgs() {

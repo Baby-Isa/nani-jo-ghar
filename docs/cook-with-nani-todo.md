@@ -152,3 +152,6 @@ Nouns need a singular and a plural form in the data, and the game should say the
 - -i she-words don't change.
 
 `veg-12` already carries `kutchi_one: "mirchi"`. Add a `plural` field (or a `kutchi_one`) across the nouns, and use it wherever a count of 1 is spoken or shown.
+
+## Hands taken out (Zafar, 28 Sept)
+Player/Nani hand sprites are disabled: `cook.html` no longer loads `js/cook/hands.js` (commented out, file and art kept). Every call site already guards on `Cook.Hands ? … : …`, so the game plays the same minus the hands. Re-enable by uncommenting the `<script src="js/cook/hands.js…">` tag in `cook.html`.
