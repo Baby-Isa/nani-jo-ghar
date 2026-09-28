@@ -183,8 +183,8 @@ class Player:
         time.sleep(0.2)
         if self.page.query_selector("#help-pop:not(.hidden)"):
             raise AssertionError("the ? didn't close the goal again")
-        # Wave 6: the order card's one speaker reads it with read-along; the light bulb flips it to English for a moment
-        say = self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-say")
+        # Sidebar v2: the order card's face is its replay button: it reads the card with read-along; the light bulb flips it to English for a moment
+        say = self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-ring.face-say")
         if say and say.is_visible():
             say.click()
             lit = False

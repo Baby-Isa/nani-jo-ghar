@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sidebar v2 lab</title>
+<!-- Sidebar v2 (docs/cook-ui-feedback-2026-09-28.md 9): every card state with real orders from the game
+     (the words below are the game's own, from data/cook.json; nothing here is new Kutchi).
+     Each column is a sidebar at the laptop's width (1366x768: 260px). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="../css/cook.css?v=20260928T185204Z">
+<link rel="stylesheet" href="../css/shared/results.css?v=20260928T185204Z">
+<link rel="stylesheet" href="../css/shared/guide.css?v=20260928T185204Z">
+<link rel="stylesheet" href="../css/cook-side-v2.css?v=20260928T185204Z">
+<style>
+  html, body { height: auto; overflow: auto; touch-action: auto; user-select: text; }
+  body { background: #d8ccb8; padding: 16px; font-family: var(--ui-font); }
+  h1 { font: 800 20px var(--kutchi-font); margin: 0 0 4px; }
+  h2 { font: 800 14px var(--ui-font); margin: 18px 0 8px; color: #5b4a3a; text-transform: uppercase; letter-spacing: .06em; }
+  .row { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+  .col { display: flex; flex-direction: column; gap: 6px; }
+  .cap { font: 700 12px var(--ui-font); color: #5b4a3a; }
+  aside.sb2 { width: 260px; height: 700px; display: flex; flex-direction: column; box-shadow: 0 0 0 1px rgba(0,0,0,.05); overflow: hidden; }
+  aside.sb2 .play { flex: 1; }
+  .stage-demo { position: relative; width: 760px; height: 520px; background: #e9dcc4 center / cover url("../assets/cook/bg/bg-cook-worktop-t-v1-1600.webp"); display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden; }
+  #intro.demo { position: static; display: flex; align-items: center; justify-content: center; inset: auto; background: none; width: 100%; height: 100%; }
+  .review { position: relative; width: 1000px; height: 440px; background: radial-gradient(ellipse at 50% 30%, #fdf6e8, #f1e2c8); border-radius: 4px; display: flex; flex-direction: column; justify-content: center; }
+  .dones { display: flex; gap: 30px; align-items: center; background: #e9dcc4; padding: 20px 30px; border-radius: 4px; }
+  #done-btn.demo { position: static; display: block; }
+</style>
+</head>
+<body class="w6">
+<h1>Sidebar v2</h1>
+<div class="cap">Laptop scale (1366&times;768: the sidebar is 260px). Real orders from the game. The face is the replay button on every card.</div>
+
+<h2>The sidebar, every card state</h2>
+<div class="row" id="sidebars"></div>
+
+<h2>The request pop-up (the two-skewer order)</h2>
+<div class="row"><div class="stage-demo"><div id="intro" class="demo"></div></div></div>
+
+<h2>The Done button (every mode): the gold tick on a round cream button</h2>
+<div class="dones">
+  <button id="done-btn" class="demo" aria-label="Done">&#10003;</button>
+  <div class="njg-results" style="position:static;background:none"><button class="rs-btn rs-done" type="button" aria-label="Done"></button></div>
+</div>
+
+<h2>The word review</h2>
+<div class="review njg-results rs-p2" style="position:relative;inset:auto"><div class="rs-words" id="review"></div></div>
+
+<script src="../js/shared/fit.js?v=20260928T185204Z"></script>
+<script src="../js/shared/guide.js?v=20260928T185204Z"></script>
+<script>
+(() => {
+  const TICK = "../assets/ui/results/tick-gold.webp";
+  const FACE = (who) => `../assets/cook/characters/${who}-badge.webp`;
+  const w = (x) => `<span class="word">${x}</span>`;
+  // a pill: [text ....... tick]; state: "" | "next" | "done"
+  const pill = (html, state = "") => `<div class="lr r6 ${state}"><span class="lt">${html}</span><span class="tk">${state === "done" ? `<img src="${TICK}" alt="">` : ""}</span></div>`;
+  const rows = (list, seq) => `<div class="lrows ${seq ? "lseq" : ""}" data-fit-group>${list.join("")}</div>`;
+  const faceBtn = (who, cls = "") => `<button class="face-say ${cls}" type="button" aria-label="Hear it again"><img class="lface" src="${FACE(who)}" alt=""><span class="say-badge"></span></button>`;
+  const card = (who, head, body, sum = []) => `
+    <div class="card m-card">
+      <div class="m-head">
+        <button class="m-ring face-say" type="button" aria-label="Hear it again"><img class="m-face" src="${FACE(who)}" alt=""><span class="say-badge"></span></button>
+        <div class="m-who"><div class="m-dish">${head}</div>${sum.length ? `<div class="m-sum">${sum.map((s) => `<span class="sum-line fit">${s}</span>`).join("")}</div>` : ""}</div>
+      </div>
+      <div class="m-order">${body}</div>
+    </div>`;
+  const md = (html) => `<span class="md-text fit">${html}</span>`;
+  const rec = (en) => `<span class="md-text rec"><span class="md-line fit">${en}</span><small class="md-rec">to record</small></span>`;
+  const person = (who, title, list, tint) => `<div class="icard person ${tint}"><div class="pc-head">${faceBtn(who)}<div class="ic-title fit">${title}</div></div>${rows(list)}</div>`;
+  const unit = (list, tint, done) => `<div class="icard unit named ${tint} ${done ? "done" : ""}">${rows(list, true)}</div>`;
+
+  const S = [];
+  // 1. the pantry (any order: no "next"); Nani talking
+  S.push({ cap: "Pantry, two fetched · Nani: a line of hers", nani: { html: `Ne ${w("daar")}.` },
+    card: card("nani", rec("Bring me these"), `<div class="ladder"><div class="lsec">${rows([pill(w("atto"), "done"), pill(w("daar"), "done"), pill(w("aadu")), pill(w("khun"))])}</div></div>`) });
+  // 2. Nani muted, placeholder instruction
+  S.push({ cap: "Pantry, just started · Nani muted, to record", nani: { html: "Bring these from the pantry", rec: true, muted: true },
+    card: card("nani", rec("Bring me these"), `<div class="ladder"><div class="lsec">${rows([pill(w("atto")), pill(w("daar")), pill(w("aadu")), pill(w("khun"))])}</div></div>`) });
+  // 3. chai for two
+  S.push({ cap: "Chai for two (level 2)", nani: { html: "Light the fire", rec: true },
+    card: card("nana", md(`Muke ${w("chai")} khape.`), `<div class="ladder"><div class="lsec icards">${person("nana", `Nana lai.`, [pill(w("dudh"), "done"), pill(`trae ${w("khun")}`)], "")}${person("cousin", `Ali lai.`, [pill(`${w("Dudh")} na.`, "done"), pill(`hakro ${w("khun")}`, "done")], "tint-b")}</div></div>`) });
+  // 4. three skewers: the summary in the headline, one tinted box per skewer, the mixed one threading
+  S.push({ cap: "Three skewers, threading the mixed one", nani: { html: "Thread the skewers", rec: true },
+    card: card("ma", md(`Muke ${w("mishkaki")} khape.`), `<div class="ladder"><div class="lsec icards">${unit([pill(w("boga"), "done")], "", true)}${unit([pill(w("tameto"), "done"), pill(w("dungri"), "done"), pill(w("gos"), "next"), pill(w("dungri"))], "tint-b")}${unit([pill(w("gos"))], "")}</div></div>`,
+      [`hakri lakri ${w("boga")}`, `hakri lakri ${w("mixed")}`, `hakri lakri ${w("gos")}`]) });
+  // 5. chaat, an ordered job
+  S.push({ cap: "Chaat, in order (next = gold outline)", nani: { html: "Make the bowl, in order", rec: true },
+    card: card("cousin", md(`Muke ${w("chaat")} khape.`), `<div class="ladder"><div class="lsec">${rows([pill(w("chana"), "done"), pill(w("bataato"), "done"), pill(`amli ji ${w("chutney")}`, "next"), pill(`${w("Marcha")} na.`), pill(w("tameto")), pill(w("sev"))], true)}</div></div>`) });
+
+  const box = document.getElementById("sidebars");
+  S.forEach((s, i) => {
+    const col = document.createElement("div");
+    col.className = "col";
+    col.innerHTML = `<div class="cap">${s.cap}</div><aside class="sb2"><div class="guide-slot"></div>${s.card}<div class="play"></div><div class="side-rail"><button class="rail-btn" id="${i ? "" : "btn-help"}">?</button><button class="rail-btn">&#8962;</button><button class="rail-btn">&#128214;</button></div></aside>`;
+    box.appendChild(col);
+    const g = NaniGuide.mount(col.querySelector(".guide-slot"), { face: FACE("nani"), bulb: "../assets/ui/results/icon-bulb.webp", onBulb: () => {}, onReplay: (b) => { b.classList.add("on"); setTimeout(() => b.classList.remove("on"), 1200); } });
+    g.set(s.nani.html, { rec: !!s.nani.rec });
+    if (s.nani.muted) g.el.classList.add("muted");
+    col.querySelectorAll(".face-say:not(.ng-face)").forEach((b) => b.addEventListener("click", () => { b.classList.add("on"); setTimeout(() => b.classList.remove("on"), 1200); }));
+    FitText.watch(col.querySelector("aside"));
+  });
+
+  // the pop-up: the three-skewer order, nothing done yet
+  const intro = document.getElementById("intro");
+  intro.innerHTML = `<div class="ic-card wide"><div class="ic-head"><button class="ic-say face-say" type="button"><img class="ic-face" src="${FACE("ma")}" alt=""><span class="say-badge"></span></button>
+    <div class="ic-head-text"><div class="ic-dish">${md(`Muke ${w("mishkaki")} khape.`)}</div><div class="m-sum">${[`hakri lakri ${w("boga")}`, `hakri lakri ${w("mixed")}`, `hakri lakri ${w("gos")}`].map((s) => `<span class="sum-line fit">${s}</span>`).join("")}</div></div></div>
+    <div class="ic-order"><div class="ladder"><div class="lsec icards">${unit([pill(w("boga"))], "")}${unit([pill(w("tameto")), pill(w("dungri")), pill(w("gos")), pill(w("dungri"))], "tint-b")}${unit([pill(w("gos"))], "")}</div></div></div></div>`;
+  FitText.watch(intro);
+
+  // the word review: two wrong, five right
+  const say = `<span class="rs-say"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a4.5 4.5 0 0 1 0 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>`;
+  const wc = (k, e, ok) => `<button class="rs-word ${ok ? "ok" : "bad"}" type="button"><b>${k}</b><span class="rs-en">${say}${e}</span></button>`;
+  const bad = [wc("dudh", "milk"), wc("elchi", "cardamom")];
+  const ok = [wc("khun", "sugar", 1), wc("chai", "tea", 1), wc("aadu", "ginger", 1), wc("trae", "three", 1), wc("gos", "meat", 1)];
+  document.getElementById("review").innerHTML = `<div class="rs-words-col rs-words-bad" style="--rs-cols:2">${bad.join("")}</div><div class="rs-words-col rs-words-ok" style="--rs-cols:3">${ok.join("")}</div>`;
+})();
+</script>
+</body>
+</html>

@@ -102,6 +102,16 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-go { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: #fff !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: 10px 8px; box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
 .cl-go:active { transform: translateY(3px); box-shadow: 0 2px 0 #1f6457; }
 .cl-go .ph { color: #e8fff9; }
+/* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
+.cl-go.done {
+  align-self: center; width: clamp(64px, 8vw, 92px); min-height: 0; aspect-ratio: 1; border-radius: 50%; padding: 0;
+  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260928T185204Z");
+  border: 1px solid #e6d5b8; color: transparent !important; font-size: 0; overflow: hidden;
+  box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.2);
+}
+.cl-go.done.throb { animation: cl-throb-done 1.1s ease-in-out infinite; }
+@keyframes cl-throb-done { 50% { transform: scale(1.06); box-shadow: 0 4px 0 #e0cba6, 0 0 0 8px rgba(217, 164, 65, .35); } }
+.cl-go.done:active { box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
 .cl-go.alt { background: #fff; color: var(--cl-ink) !important; box-shadow: 0 5px 0 #d8c6a8; }
 .cl-go.alt .ph { color: var(--cl-soft); }
 .cl-go.throb { animation: cl-throb-go 1.1s ease-in-out infinite; }

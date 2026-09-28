@@ -129,8 +129,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #nani-line img { width: 32px; height: 32px; border-radius: 50%; }
 .side-rail { margin-top: auto; display: flex; gap: 8px; justify-content: space-between; }
 .rail-btn { flex: 1; min-height: 48px; border: 0; border-radius: 14px; background: var(--paper); box-shadow: var(--card); font: 800 22px "Baloo 2"; }
-.rail-btn.done { background: var(--accent); color: #fff; flex: 2; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-.rail-btn.done svg { width: 30px; height: 30px; }
+/* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
+.rail-btn.done {
+  flex: none; width: 56px; height: 56px; min-height: 0; align-self: center; border-radius: 50%; padding: 0; font-size: 0; color: transparent;
+  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260928T185204Z");
+  border: 1px solid #e6d5b8; box-shadow: 0 3px 0 #e0cba6, 0 6px 14px rgba(70, 45, 20, 0.2);
+}
+.rail-btn.done:active { transform: translateY(2px); box-shadow: 0 1px 0 #e0cba6, 0 3px 8px rgba(70, 45, 20, 0.2); }
 #passme .pm-say { font-weight: 700; margin-bottom: 6px; }
 #passme .pm-tray { display: flex; gap: 6px; }
 #passme .pm-tray button { flex: 0 1 auto; width: min(31%, 84px); aspect-ratio: 1; border: 0; border-radius: 12px; background: #f1e3cc; padding: 4px; }

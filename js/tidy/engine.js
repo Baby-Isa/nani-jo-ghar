@@ -706,7 +706,7 @@
   /* ---------------- the Done button ---------------- */
   Tidy.waitDone = function (H) {
     const b = $("#btn-done");
-    b.innerHTML = `${Tidy.ICON.broom}<span>Done</span>`;
+    b.innerHTML = ""; // the gold tick on a round cream button (css/tidy.css), as in every mode
     b.classList.remove("hidden");
     return new Promise((res) => {
       b.onclick = () => {
