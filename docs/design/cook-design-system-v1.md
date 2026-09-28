@@ -82,3 +82,23 @@ The same camera for everything in a scene (top-down for the counter and hob; fro
 1. **A high-fidelity mock-up first** (`lab/chai-v2-mockup.html`): a static page with the real art, the §2 tokens and the §3 grid, laptop only, showing three states (start, mid-cook, serving). New pieces (masala dabba, square cut-out tray, 4-burner hob) are drawn as medium-quality images via the OpenAI API (≤ $2), or as clean placeholders. Zafar reacts to screenshots, and we iterate there in minutes rather than in the game.
 2. **Once the mock-up is signed off:** build the design system (`css/ds.css` tokens + components: lesson panel, person card, pill, inventory slot, nav dock) and the chai v2 mechanics in the game; then ChatGPT prompt packs for the final art.
 3. **Roll out** to the other stations (maani next), each against this doc and `docs/VISUAL-QA.md`.
+
+## 10. Decisions after the mock-up review (Zafar, 28 Sept, late)
+- **Pills are stacked rows** (full width, one per row, tick on the right), not side-by-side chips.
+- **A person's card collapses when it's complete.** Once all its pills are done, the card animates up into a single line: the face plus the headline (*Muke chai khape.*) with a small flat gold check. This saves space when there are many orders. Tapping a collapsed card re-opens it.
+- **The chai v2 build goes ahead** in the game, from the mock-up (`lab/chai-v2-mockup.html`), with these fixes:
+  - the hob and tray about 15% bigger and lower (less empty space at the top);
+  - true top-down pans, lit consistently from the upper left;
+  - a tilted-pan sprite for pouring;
+  - the face badges on the hob edge in front of each burner, not on the handles;
+  - larger knobs (a 48 px tap area);
+  - real top-down chai glasses and liquids.
+
+  Art: generate via the OpenAI API if the total is under $2 (gpt-image-1, medium); otherwise write a ChatGPT paste-block pack.
+- **The end-of-station pop-up (every mode):** one pop-up card that steps through:
+  1. the three badges (stopwatch, tick, bulb) → Next;
+  2. the word review **inside the same pop-up card** (it must look like part of the pop-up, not a separate page);
+  3. the action buttons (Again / All stations, or Next station) at the bottom of that card.
+
+  It replaces the old "{Station}: done" card with its star badges, the "words in this order" and "next time" text.
+- **Word review speaker buttons:** a neutral colour (charcoal icon on a light cream circle) for both right and wrong words. The colour stays only in the card outline (gold = right, red = wrong).
