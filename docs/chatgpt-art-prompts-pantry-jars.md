@@ -50,7 +50,7 @@ Style: exactly as the attached style anchor: stylised 3D animated-feature-film l
 ```
 **attach:** `style-anchor-v1.png`
 **save as:** `pantry-v2-sheet1-tall-jars.png`
-**check:** nine identical jars, same size, on matching base lines · every filling easy to tell apart through the glass (the two flours differ in colour) · every sticker is a picture, no words · nothing crosses from one cell into the next. · each sticker shows one single item, drawn big · fill levels vary a little from one container to the next (roughly five-eighths to seven-eighths full), none nearly empty or overflowing
+**check:** nine identical jars, same size, on matching base lines · every filling easy to tell apart through the glass (the two flours differ in colour) · every sticker is a picture, no words · nothing crosses from one cell into the next · each sticker shows one single item, drawn big · fill levels vary a little from one container to the next (roughly five-eighths to seven-eighths full), none nearly empty or overflowing
 
 | Cell | Item | Game id | Why | Cuts to |
 |---|---|---|---|---|
