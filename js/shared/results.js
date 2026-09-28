@@ -179,11 +179,11 @@
   function watchImg(tier) {
     return img("rs-watch", tier === "gold" ? "stopwatch-pb" : tier === "mid" ? "stopwatch-good" : "stopwatch-plain");
   }
-  /** A big chunky tick: the empty face, a gold layer clipped to the share right and a
-   * grey layer for the rest (CSS clip-path by percentage; gold+grey, never red/green),
-   * or the shining gold-with-glow art when all right. */
-  function tickImg(rw, ww) {
-    return img("rs-tick-base", "tick-empty") + img("rs-tick-right", "tick-gold-fill", `--rw:${rw}%`) + img("rs-tick-wrong", "tick-grey", `--rw:${rw}%;--ww:${ww}%`) + img("rs-tick-gold", "tick-gold");
+  /** A big chunky tick: a grey pewter tick underneath, a gold tick layered on top
+   * clipped to the share right (CSS clip-path by percentage; gold+grey, never
+   * red/green), or the shining gold-with-glow art when all right. */
+  function tickImg(rw) {
+    return img("rs-tick-base", "tick-grey") + img("rs-tick-right", "tick-gold", `--rw:${rw}%`) + img("rs-tick-gold", "tick-gold-glow");
   }
   /** A big light bulb: which art shows is set by CSS off data-hn (0, 1, 2, 3+). */
   function bulbImgs() {
@@ -233,9 +233,8 @@
   }
   function accuracyBadge(a) {
     const rw = a.total ? (100 * a.right) / a.total : 0;
-    const ww = a.total ? 100 - rw : 0;
     return `<div class="rs-badge rs-acc tier-${a.tier === "none" ? "mid" : "pending"}" data-badge="accuracy" data-tier="${a.tier}" aria-label="${a.right} right out of ${a.total}">
-      <div class="rs-disc">${tickImg(rw, ww)}
+      <div class="rs-disc">${tickImg(rw)}
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
       <div class="rs-foot">${a.total ? `<b class="rs-n">0</b><span class="rs-of">/${a.total}</span>` : "&ndash;"}</div>
     </div>`;
@@ -290,9 +289,7 @@
         const a = b.accuracy;
         const n = x.querySelector(".rs-n");
         const right = x.querySelector(".rs-tick-right");
-        const wrong = x.querySelector(".rs-tick-wrong");
         if (right) right.classList.add("filled");
-        if (wrong) wrong.classList.add("filled");
         if (a.total && !calm) {
           if (a.right) {
             const steps = Math.min(a.right, 12);
