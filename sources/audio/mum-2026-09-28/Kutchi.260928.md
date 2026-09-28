@@ -1,0 +1,452 @@
+# Transcript: Kutchi.260928.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** I will say things in English, then my mum will say it in Kutchi, then I will say it in Kutchi, we'll both say it twice, naturally, with a pause in between, starting with the retakes, R1, what's this?
+- **0:22** Hi kuro ai.
+- **0:25** Hi kuro ai, hi kuro ai, hi kuro ai, R2, what would you like to a child?
+- **0:37** Toke kuro khapeto, toke kuro khapeto, toke kuro khapeto, toke kuro khapeto, R3, a whole
+- **0:50** tank, hakuro akokap, akokap, akokap, akokap, R4, a full tank, aki tanki, aki tanki, aki
+- **1:10** tanki, aki tanki, R5, a full tank, aki tanki, aki tanki, R6, a full tank, aki tanki, aki
+- **1:16** tanki, and then, nepoi, nepoi, nepoi, nepoi, R6, lift it out now, hevorkad, hevorkad, now
+- **1:33** Okay, we've specifically changed it to hevorkad, hevorkad, hevorkad
+- **1:41** R7, one skewer of mishkaki, hakri lakri mishkaki, hakri lakri mishkaki, hakri lakri mishkaki,
+- **1:59** hakri lakri mishkaki, hakri lakri mishkaki, R8, a cup.
+- **2:07** Hakrokap, hakrokap, hakrokap, hakrokap, it's hakro, not hakri, R9, tamarind, amli, amli,
+- **2:25** amli, amli, R10, can you make me some chai, to an elder.
+- **2:35** I muke chai banai dinda, I muke chai banai dinda.
+- **2:41** I muke chai banai dinda, I muke chai banai dinda.
+- **2:46** R11, I'm fine, Aau theek ai, aau theek ai, aau theek ai, aau theek ai.
+- **3:02** ends
+- **2:59** Who did it? Oh, R11, no sorry, R12, who did it? Last time, I don't think I captured it correctly, but say it slowly.
+- **3:12** Kere karein, karein, kere karein. There's no end at the end, right?
+- **3:16** Karein, no, it's a silent end, it's a half end. Kere karein, kere karein.
+- **3:24** So in Kutchi clearly?
+- **3:26** Kere karein, kere karein, kere karein, kere karein.
+- **3:36** Okay, part two, conversations, ID K1, hello.
+- **3:44** Salamun alaykum, Salamun alaykum, Salamun alaykum, Salamun alaykum.
+- **3:53** K2, hello, answered back, alaykum salam, alaykum salam, alaykum salam, alaykum salam.
+- **4:05** K3, goodbye, khuda hafiz, khuda hafiz, khuda hafiz, khuda hafiz.
+- **4:15** K4, how are you, informally.
+- **4:19** K5, I'm fine, and how are you, a child to an elder.
+- **4:33** Aau theek ai, aai ki aiyo, aau theek ai, aai ki aiyo.
+- **4:47** K6, I'm fine, and you, a child to an equal.
+- **4:53** Aau theek ai, tu ki aiyo, aau theek ai, tu ki aiyo.
+- **4:59** Aau theek ai, tu ki aiyo, aau theek ai, tu ki aiyo.
+- **5:06** K7, can you make me daar?
+- **5:11** Would you say that? Would you say daarja saag?
+- **5:15** Tu muke daar banai dinda?
+- **5:18** Oh, you could say daar. What do you think? It's more natural.
+- **5:20** No, you could just say daar, but if you specifically wanted daar curry.
+- **5:24** Yeah.
+- **5:25** Yeah, you just say daar, you wouldn't want to say saag, because you made saag.
+- **5:28** Okay, fine. So, can you make me daar? It's correct, you don't have to say curry.
+- **5:34** In Kutchi first.
+- **5:36** Tu muke daar banai dinda? Tu muke daar banai dinda?
+- **5:41** Tu muke daar banai dinda?
+- **5:44** Tu muke daar banai dinda?
+- **5:46** K8, can you make me maani?
+- **5:50** Tu muke maani banai dinda?
+- **5:55** Tu muke banai.
+- **5:59** Oh my God.
+- **6:01** Tu muke maani banai dinda?
+- **6:04** Tu muke maani banai dinda?
+- **6:06** Keep the last one. K9, can you make me chaat, samosa, mishkaki, each one separately. So we will say three sentences.
+- **6:21** Tu muke chaat banai dinda? Tu muke samosa banai dinda? Tu muke mishkaki banai dinda?
+- **6:31** You want me to repeat it?
+- **6:34** Tu muke chaat banai dinda, Tu muke samosa banai dinda, Tu muke mishkaki banai dinda.
+- **6:42** Tu muke chaat banai dinda, Tu muke chaat banai dinda, Tu muke samosa banai dinda, Tu muke samosa banai dinda, Tu muke mishkaki banai dinda, Tu muke mishkaki banai dinda.
+- **6:59** K10
+- **7:00** I like chai slash water slash milk.
+- **7:04** Muke chai khapeti, muke chai khapeti, muke pani khapeto, muke pani khapeto, muke doodh khapeto, muke doodh khapeto.
+- **7:16** Muke chai khapeti, muke chai khapeti, muke pani khapeto.
+- **7:26** Muke pani khapeto, muke doodh khapeto, muke doodh khapeto.
+- **7:33** K11 No I don't want it, said politely.
+- **7:40** Na muke na khape, na muke na khape, na muke na khape, na muke na khape.
+- **7:50** K12 Where's the teaspoon, where's the cup?
+- **7:54** Chamchi ki daai, chamchi ki daai, kap ki daai, kap ki daai.
+- **8:01** Chamchi ki daai, chamchi ki daai, kap ki daai, kap ki daai.
+- **8:09** K13 Do you know who I am, said from an older to a younger.
+- **8:17** Toke khabare aau kerein ya.
+- **8:19** Toke khabare aau kerein ya.
+- **8:22** Toke khabare aau kerein ya.
+- **8:24** Toke khabare aau kerein ya.
+- **8:28** K14
+- **8:30** Nana, nani, Big Ma and Ali called out as the answer to who am I?
+- **8:38** What do the children really call Big Ma? They just call her Big Ma.
+- **8:43** No, she is known as Big Ma.
+- **8:45** Because they just use Big Ma, I still don't know what that is.
+- **8:49** Well, if you're teaching Kutchi, it's Wadima. Great Grandma.
+- **8:56** Great Grandma would be Maji. Okay, well this is... Dadima, you can say Dadima or you can say Wadima.
+- **9:04** But Dadima doesn't, we use Dadima for just Grandma. We use Dadima for Grandma,
+- **9:09** but Wadima actually means Big Ma, literally translated.
+- **9:12** Or traditionally you call them Maji. Okay, well let's just record all versions and we can decide
+- **9:18** later what we want to do. So, first we'll just do Nana, Nani and Ali. You want me to do Nana in a
+- **9:26** female voice? You have a female voice, so it has to be female. That's what I'm asking, but Nana is male.
+- **9:32** Why don't you do that? Oh, he Nana, okay. It says called out as the answer to who am I.
+- **9:37** Yeah, just record them so we have them. Okay, so first in Kutchi, Nana, Nani and Ali in that order.
+- **9:42** Nana, Nana, Nani, Nani, Bigma, Wadima, Ali, Ali, Nana, Nana, Nani, Nani, Ali, Nani,
+- **10:09** Ali. Okay, and now we're going to do, you know, but you're not listening when I throw it to her. No, you weren't listening.
+- **10:16** You said leave it for now.
+- **10:18** What was I saying to her?
+- **10:20** No, I was concentrating on something else.
+- **10:23** Okay, that's fine, so you weren't listening. So now, what we're going to do is we're going to just say Bigma, then Wadima, then Maji.
+- **10:34** Which are three different versions of Bigma and we'll decide later which one to use.
+- **10:38** So Bigma, Wadima, Maji.
+- **10:42** Bigma, Bigma, Wadima, Wadima, Maji, Maji.
+- **10:51** Bigma, Bigma, Wadima, Wadima, Maji, Maji.
+- **11:01** K15, K15, son slash dear to a grandchild, boy or girl, beta, beta, beta, beta.
+- **11:23** The first story Nani asks for help.
+- **11:26** ID S1
+- **11:29** Can you help me get chai things from the pantry?
+- **11:34** So this is if, you know, the beginning of the game where it wants you to get like chai and doodh and khan and like,
+- **11:41** what was that by the way we should say it?
+- **11:43** Yeah, I'm just thinking.
+- **11:44** Chai jee chee jo khanech.
+- **11:46** Tumke help kar de chai jee chee jo khanech an lai.
+- **11:51** As short as possible.
+- **11:53** Muke help kar chai jee chee jo khanech.
+- **11:57** Okay, we'll call them in two separate sentences.
+- **12:00** Muke help karo chai jee chee jo khanech.
+- **12:04** Or the shortest would be chai jee chee jo khanech de, but the word help would be missing, it's more in the tone.
+- **12:10** What's in the khanech, khanech in there?
+- **12:13** Khanech in there, will you bring it for me?
+- **12:16** It's not an imposition, it's a request.
+- **12:21** Like, will you bring me the chai things, or you say, can you help bring me the chai things, then the politeness is in the house.
+- **12:33** So we'll keep the sentences short, and we'll decide later if we use can you help me or not, but first we'll record can you help me, and then we'll say the sentence.
+- **12:44** So, can you help me?
+- **12:46** Muke help kar chai ji ji jukani?
+- **12:49** I said, we'll break it down into two short sentences, because it's a long sentence for the kid to understand.
+- **12:54** So if we say it, we'll say first, just can you help me, we'll stop then, can you bring me the chai things.
+- **12:59** So first let's just record, can you help me. So, can you help me in Kutchi.
+- **13:05** Hang on, I need to think how do you say can you, oh, to muke help kar.
+- **13:08** Or you can just say help kar.
+- **13:11** Muke help kar.
+- **13:13** No, do the longer version.
+- **13:15** To muke help kar. To muke help kar. That's a question though. So when you say can you help me, that's a question, isn't it? Yeah, you're right. Okay, fine. Can you. So I'm also thinking. I know, okay, okay, fine, fine. When you're saying I'm not listening, it's because I'm thinking. Okay, okay. Okay, ignore everything we've said so far in S1. S1, we're going to break this sentence down into two. The first will be can you help me?
+- **13:43** We'll say that first in Kachi. Can you help me?
+- **13:46** To muke help kar de. To muke help kar de.
+- **13:50** To muke help kar de. To muke help kar de.
+- **13:54** And then now in Kachi we'll say can you get me the chai things?
+- **14:00** Come on, let me see what's pantry there.
+- **14:02** You don't need to say pantry, no?
+- **14:04** Okay, now you don't need to.
+- **14:06** So what's it going to be?
+- **14:08** Chai chai chai chai.
+- **14:10** Okay, roughly in English. Can you bring me the chai things, yeah.
+- **14:17** Okay, in Kutchi?
+- **14:18** Muke chai ji chiju kane chinde.
+- **14:31** Okay, final time. Take this final one.
+- **14:33** Muke chai ji chiju kane chinde.
+- **14:42** Japanese. Kane chinde. Kane chi dinde. Okay, I'm going to try this again. Coach me?
+- **14:49** Muke chai ji chiju kane chinde. Muke chai ji chiju kane chinde. Kane chi dinde.
+- **15:00** Muke chai ji chiju kane chinde. Kane chi dinde. Muke chai ji chiju kane chinde.
+- **15:08** What is it? Kane chi. Kane chi. What's kane chi? Kane chi is bring it.
+- **15:14** Kane chi. Is it? Kane chi is bring it. Dinde. Will you bring it. Kane chi dinde. It's all of that? Yeah, dinde is will you. Yeah. Kane chi. Kane chi is bring. Kane chi dinde. Dinde is will you.
+- **15:33** Kane chi dinde. Okay.
+- **15:47** Muke chai ji chiju kane chi dinde.
+- **15:51** You said that's what you did.
+- **15:53** Okay, one more time. Kane chi. Kane chi. Kane chi.
+- **15:58** Muke chai ji chiju kane chi dinde.
+- **16:02** Take the last one. Take the last one. That concludes S1.
+- **16:06** S2.
+- **16:09** Lovely chai. Well done there.
+- **16:13** Bo fainai. Shabash beta. No? Ok, and Kutchi?
+- **16:22** Mmm, chai bo fainai. Shabash beta.
+- **16:30** Mmm, chai bo fainai. Shabash beta.
+- **16:39** S3, tomorrow is Eid.
+- **16:42** Saware Eid aai. Saware Eid aai. Saware Eid aai. Saware Eid aai.
+- **16:50** Isn't that actually Kala or Kutchi or something?
+- **16:55** Kala is Gujarati. And the author says Kala is tomorrow and Kala is yesterday.
+- **17:03** But that's not Kutchi actually. According to the Kutchi teacher, that's Gujarati.
+- **17:06** Kala is probably is Gujarati.
+- **17:08** Kala is Kutchi. Gay Kala is Gujarati.
+- **17:11** That's what she said.
+- **17:13** So Kala is tomorrow and Gay Kala is yesterday?
+- **17:15** Yeah.
+- **17:17** So what's...
+- **17:19** No, I don't know. There's a Gay Kala in Kutchi apparently. That's Gujarati.
+- **17:23** Huh, Gay Kala is Gujarati?
+- **17:25** And Kala is both yesterday and tomorrow. I don't understand. Anyway, let's leave it for now.
+- **17:29** I think Gujarati Kala is both yesterday and tomorrow.
+- **17:31** Yeah, I don't know.
+- **17:33** Just take what we've said for the moment. Ignore our discussion.
+- **17:37** S4
+- **17:38** Guests are coming. Mageni a chenta, mageni a chenta, mageni a chenta, mageni a chenta.
+- **17:49** S5 Oh no, there's no food. Oh, kenjo nai, oh, kenjo nai.
+- **18:00** And a more exaggerated one, say Oho, kenjo nai. Oho, kenjo nai.
+- **18:06** Oho, kenjo nai. Oho, kenjo nai. Oho, kenjo nai.
+- **18:16** S6 We need to cook.
+- **18:18** S7 Panke randnu kapdo, panke randnu kapdo.
+- **18:36** This is why I think a good enunciation, you learnt Kutchi.
+- **18:42** Panke randnu no kapdo.
+- **18:44** Kapdo.
+- **18:46** Ok.
+- **18:48** Panke.
+- **18:50** Panke.
+- **18:52** Panke randnu no kapdo.
+- **18:54** Kapdo.
+- **18:56** Panke randnu no kapdo.
+- **18:58** Panke randnu no kapdo.
+- **19:02** Okay, take the last one. Take most of my last ones. S7, will you help me cook?
+- **19:11** Tumke randan lai madad kar de? Tumke randan lai madad kar de?
+- **19:17** Tumke randan lai madad kar de? Tumke randan lai madad kar de?
+- **19:24** Yes, I'll help you cook. And then also just yes. So S8, S8.
+- **19:30** Yes, I'll help you cook. In Kutchi.
+- **19:33** Ha, aaw randan lai madad kar dis. Ha, aaw randan lai madad kar dis.
+- **19:39** For a boy it would be ha, aaw randan lai madad kar dos. Ha, aaw randan lai madad kar dos.
+- **19:46** Ha, aaw randan lai... what is it?
+- **19:50** Aaw randan lai madad kar dis.
+- **19:52** Kaldos. Aaw randan lai madad kar dos.
+- **19:56** Ha, aaw randan lai madad kar dos.
+- **19:59** Ha, aaw randan lai madad kar dos.
+- **20:03** Okay, take the second to last one.
+- **20:05** And just yes?
+- **20:07** Ha. Ha.
+- **20:10** Ha. Ha.
+- **20:13** You know what I've realised? Why I get confused with the gendered endings?
+- **20:16** I think I've figured it out.
+- **20:17** The ending of the verb...
+- **20:23** ...depends on the gender of the noun, but sometimes you're the noun, you're the subject.
+- **20:30** Aar andan lai, so then all of a sudden, kardos, because I'm a boy. Aar andan lai madad kardos.
+- **20:37** Then you always used to get confused on who the gender is.
+- **20:39** Because I used to say like, no it's not chamchi, I'm a boy, it's a chamcho.
+- **20:42** But that's because sometimes you do change it based on who you are.
+- **20:45** Okay, that's maybe insightful, maybe jot that down somewhere, although I'm sure you've figured it out.
+- **20:49** Okay, S9, come let's go to the kitchen.
+- **20:52** HalSorowei maa winja.
+- **20:54** HalSorowei maa winja.
+- **20:57** HalSorowei maa windis, ughh what is that, winja.
+- **21:01** HalSorowe- oh words get to me again.
+- **21:04** HalSorowei maa winje.
+- **21:06** HalSorowei maa winja.
+- **21:08** Winje.
+- **21:09** HalSorowei maa winja.
+- **21:13** You say it like winchan,
+- **21:16** HalSorowei, aaaahhh!
+- **21:21** HalRasorowei maa winja.
+- **21:32** You like over emphasize the rasorowei maa.
+- **21:34** Because it's rasorowei maa. How is that not, rasorowei maa?
+- **21:40** Maa means in the rasorowei maa.
+- **21:42** HalRasorowei maa winja.
+- **21:47** There's so many short syllables which all start with consonants.
+- **21:52** Which really makes your mouth go back and forth so many times.
+- **21:55** Little little endings which all need HalRasorowei maa winja.
+- **22:00** That last one was probably the most natural.
+- **22:02** I think that's very akin to Arabic, I'm finding Arabic's like...
+- **22:04** I don't know, it's so in and out.
+- **22:06** Ra, maa, paa, baa, raa, aa, oong, aa, jaa, raa.
+- **22:08** Singular, masculine, plural.
+- **22:10** I don't know, okay.
+- **22:12** We're going to do Part 4, ID, P1, potato, in Kutchi, once, in Kutchi, twice.
+- **22:24** Potato.
+- **22:27** And then say three potatoes.
+- **22:39** P2, onion.
+- **22:52** Trae dungri. P3, tomato. Actually, we don't need to say the three every time, we can just say the one and the multiple versions.
+- **23:03** I think it will come out cleaner in the recording. No, we can just say bateta, bateta, bateta, what's the singular? Bateto, and bateta.
+- **23:12** But don't say the trae, actually, because I think it will confuse, I think it will be hard to split between the words.
+- **23:16** P3, tomato.
+- **23:19** Tomato, tomata, trae tomato.
+- **23:25** No, tomato is tomato.
+- **23:27** But tomato kanej.
+- **23:29** But tomato kanej, hakro tomato kanej.
+- **23:32** Okay, tomato doesn't change. Say it one more time.
+- **23:35** Tomato.
+- **23:37** Tomato.
+- **23:39** Tomato.
+- **23:41** P4, green chilli.
+- **23:43** Mirchi.
+- **23:45** Aaki mirchi. Aaki mirchi means whole chilli, not powdered chilli. I'm not sure there's a word for green chilli, you don't usually say that.
+- **23:53** Just say mirchi. Mirchi. Mirchi.
+- **23:57** And plural? Mirchi, there's no plural.
+- **24:00** So it's not marcha? No.
+- **24:04** No marcha is, you'd say trae mirchi de.
+- **24:07** Not trae marcha? No.
+- **24:10** Hannah's used to marcha.
+- **24:12** I think maybe mirchi is chili powder and aakha marcha is marcha.
+- **24:19** I'll have to think about this one.
+- **24:22** I think marcha is Gujarati.
+- **24:24** Maybe, okay. Let's stick with mirchi for now.
+- **24:29** And it doesn't have a plural.
+- **24:31** No, it's like salt.
+- **24:33** Okay. Mirchi.
+- **24:35** Mirchi.
+- **24:37** Mirchi. P5 lemon. Limu. Limu. What? Plural? Char limu. Okay, there's only a singular. Limu. Limu. P6 chapati. What we call maani. Maani. Same plural. Maani. Maani.
+- **25:04** P7 samosa. Samosa. Plurally samosa. We also, some people say sambusa though. I know, I noted that down for you.
+- **25:21** Samosa. Samosa. Which one do you want to be your one? You have to choose.
+- **25:31** When we were kids we grew up saying sambusa, now it's just samosa.
+- **25:36** Say sambusa then.
+- **25:37** When we came here and it merged with other Punjabi and other languages, it became samosa.
+- **25:42** Okay, so Nani, when she talks on the game, she will say.
+- **25:46** I'll research on that.
+- **25:47** Or for now.
+- **25:48** Yeah, for now.
+- **25:49** Take the instruction as when Nani says it in the game, she says sambusa with a B and
+- **25:52** she'll record that for you now.
+- **25:54** Sambusa.
+- **25:55** Sambusa.
+- **25:56** Sambusa.
+- **25:57** Sambusa.
+- **25:58** Sambusa.
+- **25:59** Sambusa.
+- **25:56** And for the sake of completion, I'll say it as well. Sambusa. Sambusa. P8, skewer, hakri lakri, hakri lakri.
+- **26:08** Do you say lakri? Lakri. Plural? Char lakri. No plural. Lakri. Hakri lakri. Lakri.
+- **26:21** P9, teaspoon, followed by tablespoon.
+- **26:28** Chamchi, chamcho. Chamchi, chamcho. There's no plural.
+- **26:34** Chamcha?
+- **26:36** Char chamcha de.
+- **26:39** Ah, sorry.
+- **26:41** Chamchi ne char chamcha.
+- **26:43** Yes, so chamcho becomes chamcha for plural. Chamchi stays chamchi.
+- **26:49** So say one more time Kaylee. Chamcha. Chamcha.
+- **26:54** Chamchi. Chamchi. Chamcho. Chamcho. Chamcha. Chamcha. P10 cup. Cup. Cup. Cup. Cup.
+- **27:15** P11. P.
+- **27:19** Watana is fried peas.
+- **27:27** Matar.
+- **27:29** Marr.
+- **27:31** Marr. Watana is fried peas.
+- **27:33** Okay, so fried peas is...
+- **27:35** Watana.
+- **27:39** Is that...
+- **27:40** plural? Yeah, like you always say peas. Okay, is that fried pea singular or no? No, you wouldn't say
+- **27:50** give me one pea would you? You always say peas. Pass me the peas, let's go buy some peas.
+- **27:56** You'd barely say oh I want one pea. But if you did?
+- **28:01** I've never heard of saying watana though. Okay, fine. If there was it would be watana.
+- **28:05** Okay, a single fried pea is...
+- **28:07** Watano, but you'd almost never use that, it would always be watana.
+- **28:12** But a pea, a non-fried pea, like a green pea, is...
+- **28:17** Matar, matar, matar, matar.
+- **28:22** P12, green pepper, we decided there wasn't a green pepper.
+- **28:34** Yeah, okay, we'll find a substitute in the game.
+- **28:36** We'll just call it wadi mirchi, I suppose.
+- **28:38** Or wada mircha.
+- **28:39** We'll just find a substitute in the game for green peppers.
+- **28:42** P13, what do you call the pantry or the kabat, no? Surely. What is the word for pantry?
+- **28:57** I mean the...
+- **28:58** For food kabat, like a larder kabat, people have used the word gongklop. I think it's very old. I don't think anybody would recognize that.
+- **29:05** So that was covered on the stairs. Yeah, but it also they had like a kabat with a netting kabat.
+- **29:11** Yeah. Oh, that was called pinjro, sorry. Pinjro. Pinjro. But then there's the same word you use for
+- **29:17** a bird's net, you know, a netted bird that you keep inside the house, you keep it in a cage, so it's like a cage.
+- **29:23** So it was like a food cage.
+- **29:25** We'll probably start with kabat for now.
+- **29:27** You can just start with kabat for now. You can say kanjirjo kabat, so food kabat to differentiate.
+- **29:31** We'll just keep with kabat for now. We need to keep it simple.
+- **29:33** Okay, so for P13 we're going to just say kabat, and the word in Kutchi is?
+- **29:37** Kabat. Kabat.
+- **29:39** Kabat. Kabat.
+- **29:43** You make it sound so foreign the way you say it.
+- **29:47** What, kabat?
+- **29:48** Yeah, most of the Kutchi.
+- **29:50** Kabat. It's because you don't use it, your tongue doesn't flow because you don't use the word regularly.
+- **29:55** Kabat. Kabat, yeah. At first you were saying kabat, kabat like that. Kabat, yeah, okay.
+- **30:03** I'm going to skip section G and we're going to go to the grammar section because hopefully,
+- **30:10** once we've nailed the grammar down, and I want you to confirm this in your report back,
+- **30:15** who confirmed the grammar down, then that should avoid us later on having to
+- **30:20** restructure things. Okay. Grammar. Hopefully we can just get through this one as much as we can.
+- **30:33** Okay, grammar section C, C1. One cup and two cups. Hakro khap, bur khap. Hakro khap, bur khap. C2, one mango, two mangoes.
+- **30:47** Hakro ambo, bur amba.
+- **30:50** Hakro ambo, bur amba. C3, one door, two doors.
+- **30:54** Hakro darwajo, bur darwaja.
+- **30:58** So that changes. That one changes, right?
+- **31:02** Hakro darwajo, bur darwaja.
+- **31:07** C4, we don't say dupata, we say pacheri. One pacheri, two pacheri.
+- **31:14** Hakri pacheri, bur pacheri.
+- **31:17** Hakro pacheri, hakri pacheri, bur pacheri. Is one always hakri?
+- **31:25** It can be hakro. Oh okay, fine. C8, right. C8, one maani, two maani.
+- **31:33** Hakri maani, bur maani. Hakri maani, bur maani. C6, one table, two tables.
+- **31:40** Hakro table, bur table. Hakro table, bur table. C7, one goat, two goats.
+- **31:47** What's a goat? Hakri pacheri, bur pacheri. Hakri pacheri, bur pacheri. What if it's a male goat?
+- **31:53** Hakro pachero, bur pachera. Hakro pachero, bur pachera. Okay, so singular male goat is hakro pachero
+- **32:05** and two male goats is
+- **32:07** bur pachera and one female goat is hakri pacheri and
+- **32:13** I'm getting it, two female goats is
+- **32:16** bur pachera, bur pacheri. So it's normally the male, is it a rule that the male changes or we'll find out?
+- **32:22** Yes, the O becomes an R but the I stays the same most of the time.
+- **32:26** We think maybe the I stays the same, but the O's become an A, but we're gonna figure this out as we go along, presumably.
+- **32:32** C9, one girl, two girls.
+- **32:34** Hakri chokri, bur chokri.
+- **32:36** Hakri chokri, bur chokri.
+- **32:39** C10, one eye, two eyes.
+- **32:41** Actually, sorry girls, you can say bur chokriu.
+- **32:44** So it could be hakri chokri ne bur chokriu, depends on the context of the sentence.
+- **32:51** What context?
+- **32:55** Probably correctly it's bur chokriu, but we just make it short and say bur chokri.
+- **33:00** Okay so record that clearly, two girls, bur chokriu, bur chokriu, bur chokriu, which for context for
+- **33:09** me sounds like ryu, R-Y-U, the Japanese one, ryu, chokriu. Don't just for the spelling,
+- **33:17** my opinion, chokriu. C10, one eye, two eyes, hakri ak, bur ak, bur ak hyu.
+- **33:26** Sorry, hakri ak, bur ak hyu.
+- **33:29** We're going to find out this is the case for everything.
+- **33:31** Maybe.
+- **33:32** Have we already said some things incorrectly then?
+- **33:41** Okay, leave it for now, I'll have a think.
+- **33:50** Hakro ak?
+- **33:52** Baa akrio. Akio. Hakri ak? Baa akrio. Baa akio.
+- **34:03** Okay, only take the last one. Baa akio. Akio.
+- **34:09** I think it's if it's a female but doesn't end in ai.
+- **34:13** A feminine word which doesn't end in ai gets a plural of
+- **34:18** iu or iu. Maybe, we'll find out. It's okay, I was doing this and then it'll figure it out for us.
+- **34:25** C11, one knee and two knees. Hakro gutan, baa gutan. Hakro gutan, baa gutan.
+- **34:34** I'm thinking I haven't heard anybody say gutnyu. Yeah, I'm sure. My knees are hurting.
+- **34:39** Yeah, I'm on your gutundu kanta.
+- **34:43** Gutano, gutanyu. No, gutanyu is more when you're kneeling, gutanyu.
+- **34:47** No, sit one, hakro gutan, baa gutan. Okay, just say gutan? Gutan. Okay. C12,
+- **34:56** the thing on its own and then in, on, and with. So the cup, in the cup, the cups, and in the cups.
+- **35:06** Okay, so C12, the cup, in the cup, the cups, and in the cups.
+- **35:14** Cup, cup chai andar, cup, same for plural, cup chai andar.
+- **35:24** Cup, cup chai andar, cup, cup chai andar?
+- **35:33** But that's maybe because there's only, there's no plural for cups. Okay.
+- **35:38** C13, the mango, on the mango, the mangoes, oh it says on the mango again, on the mangoes, okay.
+- **35:50** Ambo, ambe jemate, amba, ambe jemate.
+- **35:58** I'm not sure you say am...
+- **36:01** Was the first one, was the first, ambo jemate?
+- **36:05** Yeah.
+- **36:05** Ambo jemate, ambo, ne, am, ambo, ne, ambo jemate.
+- **36:11** But then on the mangoes was amba jemate? Yeah, because it's plural, amba jemate. Okay.
+- **36:17** I might have to tap out and leave you do these because this is just grammar.
+- **36:22** You'll speed through these. I'll try the mango one. Amba, no, ambo, singular, ambo, ambo jemate.
+- **36:32** Amba, amba jemate. Right? Yeah. Okay. C14, table, table jeniche, I think the same, there's
+- **36:48** no plural, table jeniche. Mom, do the doors, do the doors. C13. Oh, sorry, I'm doing six.
+- **36:54** Okay, we're starting again, C14. There we go.
+- **36:58** Darwaja jeputia, darwaja, darwaje jeputia.
+- **37:04** C15.
+- **37:06** Maani, maani jemate, maani, maani jemate.
+- **37:13** I don't think there's a plural, you don't say maanis.
+- **37:16** C16.
+- **37:18** Table, table jeniche, table jeniche, same.
+- **37:24** C17. Goat again, there's feminine and masculine, so I'll say feminine first. Bakri, bakri sathe, bakra, bakra sathe. Masculine would be bakro, bakro sathe, bakra, bakra sathe.
+- **37:46** C18.
+- **37:49** Chokro, chokre sathe, chokra, chokre sathe.
+- **37:55** Wait, say with the boy again? Chokro sathe, no? Chokre sathe. Why not chokro sathe? No,
+- **38:02** you don't say chokro sathe, you say chokre sathe. With an E? Yeah. Chokre sathe? Yeah.
+- **38:08** Not an I? No. No, I would become chokri. So you're talking about one single boy? Yeah,
+- **38:14** and I think the changes are changing in one of the others as well, yeah. You say chokro,
+- **38:18** chokre sathe.
+- **38:19** You don't say chokro sathe.
+- **38:21** Okay, so singular masculine, if you say with the boy, you say chokre sathe, chokre-e, like an E, even though singular boy is chokro.
+- **38:39** So singular boy is chokro, with the boy is chokre sathe.
+- **38:45** Boys is chokra, with an A at the end, with the boys is chokra sathe.
+- **38:52** Okay, C19?
+- **38:56** When you think in plural boy, you don't say chokre sathe.
+- **39:02** Or chokra sathe, mere chokra sathe biein.
+- **39:07** You wouldn't say he's gone with the boy, chokro sathe biein?
+- **39:11** Yeah, you would say chokre, and I'm thinking when it's boys, he's gone with the boys plural,
+- **39:16** is it chokra sathe or still chokre sathe? Chokra sathe biein.
+- **39:23** Probably in different contexts you'd use both depending what the rest of the sentence was.
+- **39:27** So you'd say chokra sathe, mere chokra sathe biein.
+- **39:31** E chokra sathe biein. You'd probably say e chokre sathe biein.
+- **39:36** Even if it was plural. I don't know, I'll have to think of some of these before I need to start going.
+- **39:58** Okay, let's just see what comes naturally for the moment. C19? Yeah, let him put it
+- **40:03** down and then it's easier sometimes.
+- **40:06** Chokri, chokri sathe, chokriun, chokriun sathe.
+- **40:13** C20?
+- **40:14** Nana, nana sathe, nani, nani sathe.
+- **40:20** C21?
+- **40:24** E chokro, e chokri, e chokro, e chokri, nana.
+- **40:31** Nani, nana, nani.
+- **40:35** So what was boys plural?
+- **40:38** Chokra.
+- **40:40** And girls plural?
+- **40:42** Chokriyung.
+- **40:44** OK. Do you have time or do you have to call it here?
+- **40:47** No, no, I think we called it a little bit too tight.
+- **40:49** OK, that's all concluded at C21.
