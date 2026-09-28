@@ -109,6 +109,7 @@
       const text = ((Cook.data.stations["chai-tray"] || {}).phases || {})[key];
       Cook.save.seenStation = Cook.save.seenStation || {};
       const seenKey = `chai-tray:${key}`;
+      if (UI.guideFor) UI.guideFor(seenKey); // Nani's box: what to do now, every time
       if (text && (guided || ctx.lab || !Cook.save.seenStation[seenKey])) UI.gist(text);
       Cook.save.seenStation[seenKey] = true;
     };

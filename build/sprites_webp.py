@@ -27,6 +27,8 @@ from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Q = 85
+# backgrounds fill the whole screen next to crisp character art: a higher quality (28 Sept, Zafar: they looked low-res)
+BG_Q = 94
 
 # burner centres in the hob plate (source px, measured on the grates' caps) and on the stage
 HOB_BURNERS_SRC = ((545.0, 379.0), (992.0, 380.0))
@@ -74,7 +76,7 @@ def make_worktop(src, dst):
     k = STAGE[0] / im.width
     im = im.resize((STAGE[0], round(im.height * k)), Image.LANCZOS)
     top = (im.height - STAGE[1]) // 2
-    im.crop((0, top, STAGE[0], top + STAGE[1])).save(dst, "WEBP", quality=Q, method=6)
+    im.crop((0, top, STAGE[0], top + STAGE[1])).save(dst, "WEBP", quality=BG_Q, method=6)
 
 
 def make_hob(src, dst):
@@ -87,7 +89,7 @@ def make_hob(src, dst):
     big = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
     x0, y0 = round(-ox), round(-oy)
     assert x0 >= 0 and y0 >= 0 and x0 + STAGE[0] <= big.width and y0 + STAGE[1] <= big.height, "the hob plate doesn't cover the stage"
-    big.crop((x0, y0, x0 + STAGE[0], y0 + STAGE[1])).save(dst, "WEBP", quality=Q, method=6)
+    big.crop((x0, y0, x0 + STAGE[0], y0 + STAGE[1])).save(dst, "WEBP", quality=BG_Q, method=6)
 
 
 def main():

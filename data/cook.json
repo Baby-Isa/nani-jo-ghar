@@ -851,7 +851,9 @@
   "sep": " ",
   "order": {
    "first": "need",
-   "next": "and"
+   "next": "and",
+   "polite": "canyou",
+   "_polite": "28 Sept (Zafar): an order's first line is short at level 1 (Muke chai khape.) and polite from level 2 (Tu muke chai banai dinda?, Mum's B40 frame; both recorded for chai)"
   },
   "list": {
    "first": "{x}.",
@@ -1019,6 +1021,12 @@
    ],
    "free": false,
    "how": "Listen to what Nani needs, then tap each one into the basket.",
+   "headline": {
+    "en": "Bring me these for {dish}",
+    "en_plain": "Bring me these",
+    "record": true,
+    "_about": "28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+   },
    "lists": {
     "basics": [
      "cook-chai",
@@ -3684,6 +3692,99 @@
   "third": {
    "busy": "Serve before the ring runs out",
    "relaxed": "Have a go without help first"
+  }
+ },
+ "guide": {
+  "_about": "28 Sept (Zafar): Nani's guide box at the top of the sidebar says what to do NOW, in Kutchi. None of these instructions is recorded yet, so each shows as an English placeholder flagged 'to record' (build/reports/cook-ui-28sept.md lists them). Once Mum records one, give it a `line` (a key in `lines`) and the box shows and says that instead. Keys: a station (data.stations), or station:phase. While Nani says one of her own lines at a station (Hane …!, Bareto!, Jaldi kar!), the box shows that line.",
+  "fetch": {
+   "en": "Bring these from the pantry"
+  },
+  "passme": {
+   "en": "Pass me that one"
+  },
+  "pour": {
+   "en": "Pour it up to the line"
+  },
+  "add": {
+   "en": "Put it in the pan"
+  },
+  "watch": {
+   "en": "Watch it; turn it down before it boils over"
+  },
+  "count": {
+   "en": "Put in as many spoons as they said"
+  },
+  "knead": {
+   "en": "Press the dough"
+  },
+  "roll": {
+   "en": "Roll the maani round"
+  },
+  "flip": {
+   "en": "Turn it over on the tawa"
+  },
+  "chop": {
+   "en": "Chop what they said"
+  },
+  "tadka": {
+   "en": "Add the spices, in order"
+  },
+  "stir": {
+   "en": "Stir it round"
+  },
+  "assemble": {
+   "en": "Make the bowl, in order"
+  },
+  "fill": {
+   "en": "Fill the samosa"
+  },
+  "fold": {
+   "en": "Fold the samosa"
+  },
+  "fry": {
+   "en": "Fry them, then lift them out"
+  },
+  "thread": {
+   "en": "Thread the skewers"
+  },
+  "grill": {
+   "en": "Grill the skewers"
+  },
+  "chai-tray": {
+   "en": "Make each cup the way they said"
+  },
+  "chai-tray:water": {
+   "en": "Put water in the pan"
+  },
+  "chai-tray:tea": {
+   "en": "Put the chai in the pan"
+  },
+  "chai-tray:knob": {
+   "en": "Light the fire"
+  },
+  "chai-tray:cups": {
+   "en": "Make each cup the way they said"
+  },
+  "chai-tray:pour": {
+   "en": "Pour the chai into the cups"
+  },
+  "mishkaki-grill": {
+   "en": "Thread the skewers, then grill them"
+  },
+  "mishkaki-grill:thread": {
+   "en": "Thread the skewers"
+  },
+  "mishkaki-grill:grill": {
+   "en": "Grill the skewers"
+  },
+  "maani-line": {
+   "en": "Roll the maani, then cook it"
+  },
+  "roll-tawa": {
+   "en": "Roll the maani, then cook it"
+  },
+  "default": {
+   "en": "Cook it the way they said"
   }
  }
 }

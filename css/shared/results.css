@@ -186,51 +186,66 @@
 .rs-done { background: var(--rs-leaf); box-shadow: 0 5px 0 #4d6531, 0 8px 16px rgba(0, 0, 0, 0.2); }
 
 /* ---------- page 2: the word review ----------
-   right words glow green and group on the right; wrong words glow red and
-   group on the left (UX 9a), each Kutchi word with its English underneath. */
+   Zafar 28 Sept: centred on the page; wrong words (red outline) on the left, right words (gold
+   outline, the theme) on the right; each side's width in proportion to its words, one to three
+   columns (--rs-cols, set per side by results.js), then more rows; every card's border and
+   shadow the same all the way round. */
 .rs-p2 { justify-content: space-between; }
+/* a spacer as tall as the buttons, so the words sit in the middle of the page, not of what's above the buttons */
+.rs-p2::before { content: ""; flex: none; height: var(--rs-btn); }
 .rs-words {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-height: 0;
   overflow-y: auto;
   display: flex;
-  gap: clamp(10px, 2vw, 22px);
-  padding: 6px;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 3vw, 36px);
+  padding: 14px;
 }
 .rs-words-col {
-  flex: 1 1 0;
+  flex: var(--rs-cols, 1) 1 0;
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
-  align-content: flex-start;
-  gap: clamp(8px, 1.6vw, 16px);
+  grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, 250px));
+  align-content: center;
+  gap: clamp(10px, 1.6vw, 18px);
 }
 .rs-words-col:empty { display: none; }
+/* the two groups sit towards the middle, each card at most a comfortable width */
+.rs-words-bad { justify-content: end; }
+.rs-words-ok { justify-content: start; }
 .rs-word {
-  --rs-word-shadow: #e2cfae;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 12px;
+  --rs-ring: var(--rs-line);
+  position: relative;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  text-align: left;
+  justify-content: center;
+  gap: 2px;
+  text-align: center;
   min-height: 64px;
-  padding: 12px 16px;
+  min-width: 0;
+  padding: 10px 12px 10px;
   border-radius: 20px;
-  border: 3px solid var(--rs-line);
+  border: 3px solid var(--rs-ring);
   background: var(--rs-paper);
   color: var(--rs-ink);
   font: inherit;
   cursor: pointer;
-  box-shadow: 0 4px 0 var(--rs-word-shadow);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rs-ring) 22%, transparent), 0 0 14px rgba(60, 35, 10, 0.12);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
-.rs-word.ok { border-color: var(--rs-leaf); --rs-word-shadow: #587439; box-shadow: 0 4px 0 var(--rs-word-shadow), 0 0 0 3px rgba(111, 143, 74, 0.22); }
-.rs-word.bad { border-color: var(--rs-madder); --rs-word-shadow: #7f2a2a; box-shadow: 0 4px 0 var(--rs-word-shadow), 0 0 0 3px rgba(166, 59, 59, 0.22); }
-.rs-word:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--rs-word-shadow); }
-.rs-word:focus-visible { outline: 4px solid var(--rs-gold); outline-offset: 2px; }
-.rs-word.on { border-color: var(--rs-gold); background: #fff3d6; }
+.rs-word.ok { --rs-ring: var(--rs-gold); background: #fffaf0; }
+.rs-word.bad { --rs-ring: #c0392b; }
+.rs-word:active { transform: scale(0.97); }
+.rs-word:focus-visible { outline: 4px solid var(--rs-indigo); outline-offset: 2px; }
+.rs-word.on { background: #fff3d6; }
+.rs-word b { overflow-wrap: normal; word-break: keep-all; hyphens: none; }
+/* the word big and centred; a small speaker beside its English underneath */
+.rs-p2 .rs-word .rs-en { display: inline-flex; align-items: center; gap: 6px; }
+.rs-p2 .rs-word .rs-say { flex: none; width: 24px; height: 24px; padding: 5px; }
 .rs-say { grid-row: 1 / 3; width: 44px; height: 44px; padding: 9px; border-radius: 50%; background: var(--rs-indigo); color: #fff; }
 .rs-word.on .rs-say { animation: rs-pulse 0.8s ease-in-out infinite; }
 .rs-word b { font-size: clamp(20px, 4.6vh, 30px); font-weight: 800; line-height: 1.1; }
@@ -245,7 +260,9 @@
   .rs-foot { justify-content: flex-start; flex: 1; }
   .rs-ribbon { top: -10px; left: auto; right: 10px; transform: rotate(-3deg); }
   .rs-actions .rs-btn:last-child { flex: 0 1 60%; }
-  .rs-words { flex-direction: column; }
+  .rs-words { flex-direction: column; align-items: stretch; }
+  .rs-words-col { grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, 1fr)); }
+  .rs-words-col.c3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 /* short landscape phones: tighter */
 @media (max-height: 430px) and (orientation: landscape) {

@@ -10,8 +10,8 @@
  *           light bulb, brighter with fewer hints, off at 3+. Then a big
  *           Next.
  *   page 2: the word review (each key Kutchi word with its English, tap to
- *           hear it) -- right words glow green and group on the right,
- *           wrong ones glow red and group on the left -- then Done (and
+ *           hear it) -- right words outlined gold and grouped on the right,
+ *           wrong ones outlined red and grouped on the left -- then Done (and
  *           Play again when the mode offers it).
  *
  *   await Results.show({mode, game, level, timeMs, right, total, hints,
@@ -22,7 +22,7 @@
  *
  * A word's `right` (true/omitted = got it, false = missed it) decides which
  * side of page 2 it groups on. A caller with no per-word verdict (nothing
- * passed) just shows every word on the right, green -- same as before.
+ * passed) just shows every word on the right, gold -- same as before.
  *
  * The badges stay mapped to the existing stars underneath (s9): Accuracy
  * gold <=> the ear star, Hints gold <=> the no-help star. Results.toStars
@@ -250,14 +250,20 @@
       <div class="rs-foot"><span class="rs-hint-count">${img("rs-cap-icon", "icon-bulb")}<b>&times; ${h.count}</b></span></div>
     </div>`;
   }
-  /** Page 2: right words glow green, grouped right; wrong words glow red, grouped left (UX 9a). */
+  /**
+   * Page 2: right words outlined gold, grouped on the right; wrong words outlined red, grouped on
+   * the left (UX 9a; Zafar 28 Sept: gold is the theme, red makes you want to fix it). Each side is
+   * as wide as its share of the words: one to three columns (then more rows), its width in proportion.
+   */
+  Results.wordCols = (n) => (n ? Math.min(3, n) : 0);
   function wordsHtml(words) {
     const card = (w, i) => `<button class="rs-word ${w.right === false ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
-          <span class="rs-say">${ICON.speaker}</span><b>${esc(w.kutchi)}</b><span class="rs-en">${esc(w.english)}</span></button>`;
+          <b>${esc(w.kutchi)}</b><span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${esc(w.english)}</span></button>`;
     const bad = [];
     const ok = [];
     words.forEach((w, i) => (w.right === false ? bad : ok).push(card(w, i)));
-    return `<div class="rs-words-col rs-words-bad">${bad.join("")}</div><div class="rs-words-col rs-words-ok">${ok.join("")}</div>`;
+    const col = (cls, list) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}" style="--rs-cols:${Results.wordCols(list.length)}">${list.join("")}</div>`;
+    return col("rs-words-bad", bad) + col("rs-words-ok", ok);
   }
 
   // the page-1 show: badges pop in one by one; the stopwatch counts up; the tick gauge fills
@@ -375,7 +381,8 @@
       p2.hidden = false;
       p2.classList.add("enter");
       if (opts.sound !== false) sfx("whoosh");
-      const first = p2.querySelector(".rs-word") || p2.querySelector(".rs-done");
+      // focus goes to Done (what to press next), so no word card looks picked out
+      const first = p2.querySelector(".rs-done") || p2.querySelector(".rs-word");
       if (first) first.focus({ preventScroll: true });
     };
     el.querySelector(".rs-next").addEventListener("click", () => {

@@ -292,23 +292,86 @@
         obj.disableInteractive();
       }
     }
-    glow(obj, on = true) {
+    /**
+     * The "this one" highlight (28 Sept, Zafar): a soft glow around the picture itself, and (for a
+     * thing to fetch or tap next: opts.bounce) a small bounce of the picture, centred on the picture,
+     * never on the picture and its label together. WebGL: a glow that follows the picture's own
+     * outline; canvas: a soft halo behind the picture's opaque part.
+     */
+    glow(obj, on = true, { bounce = false } = {}) {
       if (!obj) return;
       if (obj.glowFx) {
-        obj.glowFx.tween.stop();
-        obj.glowFx.ring.destroy();
+        const g = obj.glowFx;
+        g.tweens.forEach((t) => t.stop());
+        if (g.fx && obj.preFX) obj.preFX.remove(g.fx);
+        if (g.halo) g.halo.destroy();
         obj.glowFx = null;
-        if (obj.active) obj.setScale(obj.baseScale || obj.scale);
+        if (obj.active) {
+          if (g.y != null) obj.y = g.y;
+          obj.setScale(obj.baseScale || obj.scale);
+        }
       }
       if (!on || !obj.active) return;
-      const c = this.centre(obj);
-      const ring = this.track(
-        this.add.ellipse(c.x, c.y, Math.max(90, c.w * 1.2), Math.max(80, c.h * 1.2), 0xffd27a, 0.45).setStrokeStyle(8, 0xfff3c4, 1).setDepth(obj.depth - 0.5)
-      );
       const base = obj.baseScale || obj.scale;
       obj.baseScale = base;
-      const tween = this.tweens.add({ targets: [ring], alpha: 0.3, scale: 1.12, duration: 480, yoyo: true, repeat: -1 });
-      obj.glowFx = { ring, tween };
+      const tweens = [];
+      let fx = null;
+      let halo = null;
+      if (obj.preFX && this.renderer && this.renderer.type === Phaser.WEBGL) {
+        obj.preFX.padding = Math.max(obj.preFX.padding || 0, 20);
+        fx = obj.preFX.addGlow(0xffcf6a, 3, 0, false, 0.1, 14);
+        tweens.push(this.tweens.add({ targets: fx, outerStrength: 8, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
+      } else {
+        const c = this.opaqueBox(obj);
+        halo = this.track(this.add.ellipse(c.x, c.y, c.w * 1.25 + 24, c.h * 1.2 + 20, 0xffd27a, 0.4).setDepth(obj.depth - 0.5));
+        tweens.push(this.tweens.add({ targets: halo, alpha: 0.18, scale: 1.08, duration: 520, yoyo: true, repeat: -1 }));
+      }
+      // a small hop of the picture itself (its label and shadow stay where they are)
+      let y = null;
+      if (bounce && typeof obj.y === "number" && !this.tweens.isTweening(obj)) {
+        y = obj.y;
+        const hop = Math.max(6, Math.min(16, obj.displayHeight * 0.07));
+        tweens.push(this.tweens.add({ targets: obj, y: y - hop, duration: 260, yoyo: true, repeat: -1, repeatDelay: 700, ease: "Quad.easeOut" }));
+      }
+      obj.glowFx = { fx, halo, tweens, y };
+    }
+    /** The opaque part of an image in world px (its texture's transparent margins left out). */
+    opaqueBox(obj) {
+      const b = obj.getBounds();
+      const out = { x: b.centerX, y: b.centerY, w: b.width, h: b.height };
+      try {
+        if (!obj.texture || !obj.frame) return out;
+        const key = `${obj.texture.key}:${obj.frame.name}`;
+        const cache = (Cook._opaque = Cook._opaque || {});
+        if (!cache[key]) {
+          const f = obj.frame;
+          const cv = document.createElement("canvas");
+          cv.width = f.cutWidth;
+          cv.height = f.cutHeight;
+          const g = cv.getContext("2d", { willReadFrequently: true });
+          g.drawImage(f.source.image, f.cutX, f.cutY, f.cutWidth, f.cutHeight, 0, 0, f.cutWidth, f.cutHeight);
+          const d = g.getImageData(0, 0, cv.width, cv.height).data;
+          let x0 = cv.width, y0 = cv.height, x1 = -1, y1 = -1;
+          for (let y = 0; y < cv.height; y += 2)
+            for (let x = 0; x < cv.width; x += 2)
+              if (d[(y * cv.width + x) * 4 + 3] > 40) {
+                if (x < x0) x0 = x;
+                if (x > x1) x1 = x;
+                if (y < y0) y0 = y;
+                if (y > y1) y1 = y;
+              }
+          cache[key] = x1 < 0 ? null : { x0: x0 / cv.width, y0: y0 / cv.height, x1: x1 / cv.width, y1: y1 / cv.height };
+        }
+        const o = cache[key];
+        if (!o) return out;
+        const fx = (u) => b.x + (obj.flipX ? 1 - u : u) * b.width;
+        const fy = (v) => b.y + (obj.flipY ? 1 - v : v) * b.height;
+        const xs = [fx(o.x0), fx(o.x1)];
+        const ys = [fy(o.y0), fy(o.y1)];
+        return { x: (xs[0] + xs[1]) / 2, y: (ys[0] + ys[1]) / 2, w: Math.abs(xs[1] - xs[0]), h: Math.abs(ys[1] - ys[0]) };
+      } catch (e) {
+        return out; // a tainted or odd texture: its bounds
+      }
     }
     wiggle(obj) {
       const a = obj.angle;
@@ -444,7 +507,7 @@
       const bob = this.tweens.add({ targets: img, y: img.baseY - 6, angle: who === "nani" ? -1.2 : 1.2, duration: 220, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
       const anchor = who === "nani" ? { x: img.x + 150, y: img.baseY + 160 } : { x: img.x + 175, y: img.baseY + 150 };
       try {
-        await UI.say(line, anchor, opts);
+        await UI.say(line, anchor, who === "nani" ? Object.assign({ nani: true }, opts) : opts);
       } finally {
         bob.stop();
         if (img.active) {
@@ -484,7 +547,7 @@
         // Nani is a voice at a station; the row she names throbs on the card (UX 13)
         const hint = () => sayLine && UI.voice(sayLine).catch(() => {});
         if (guided) {
-          this.glow(target, true);
+          this.glow(target, true, { bounce: true });
           hint();
         } else {
           // real time, not game time: this measures the player's hesitation,
@@ -498,7 +561,7 @@
               timers.push(
                 setTimeout(() => {
                   if (!target.active) return;
-                  this.glow(target, true);
+                  this.glow(target, true, { bounce: true });
                   if (Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the ear star
                 }, 4000)
               );
@@ -528,7 +591,7 @@
               Cook.sfx.soft();
               if (onWrong) onWrong(key, misses);
               if (misses >= 2) {
-                this.glow(target, true);
+                this.glow(target, true, { bounce: true });
                 if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the ear star
               }
             }

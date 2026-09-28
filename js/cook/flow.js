@@ -143,6 +143,8 @@
       const st = Cook.data.stations[stKey];
       if (st && st.goal && UI.helpText() !== st.goal) UI.gist(st.goal);
     };
+    // 28 Sept: one thing of several finished (a skewer): its mini card on the order ticks
+    ctx.tickCard = (kind) => UI.mission.tickCard(kind, ctx.dishAt);
     ctx.tickItem = (id) => {
       if (typeof id === "number") {
         // a position in the dish's sequence (a mixed skewer's piece): that row, not a count row with the same word
@@ -339,7 +341,8 @@
       await Cook.wait(900);
       await exchange(who, EX("salaam"));
       if (Math.random() < 0.35) await exchange(who, EX("howareyou"));
-      if (Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
+      // from level 2 the order itself is the polite "Tu muke … banai dinda?" (Lang.orderFrame), so it isn't asked twice
+      if (level1 && Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
     }
     // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
     UI.hideBubble();

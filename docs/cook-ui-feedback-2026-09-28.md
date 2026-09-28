@@ -50,3 +50,48 @@ Zafar's feedback, with Claude's recommendations. Items marked **(decide)** are w
 
 ## 7. Also noted
 - The end-of-round screen in Cook still showed the old drawn badges. That's the live site not having rebuilt (GitHub Pages); check Cook after the next build.
+
+## 8. The chai station (Zafar, 28 Sept, evening), with Claude's recommendations
+- **Layout:** the hob and the chai tray sit side by side along the top, level top and bottom. The hob is turned to be wider (about 5/8 of the width) and the tray takes about 3/8. Below them runs a clean strip for the ingredients, and **nothing overlaps the hob**.
+- **The ingredient row reuses the pantry's front-on containers** (the jar, carton and bottle family from the pantry-v2 art), standing on the counter edge. The child sees the same jars they fetched from the pantry, and liquids read clearly, which a top-down view can't manage. The hob, the pot and the tray stay top-down. There's no need to redo everything at 45°.
+- **Liquids in the pot:** new art for the pot's contents: water, milk, light chai, dark chai, and a boiling-bubbles overlay. The level rises as liquid is added, with steam when hot. No more flat blue disc.
+- **Pouring:** the jug or carton tilts over the pot (a rotation), a short pour-stream sprite plays, and the level rises. It's simple and convincing; no full liquid simulation is needed.
+- **The chai tray:** use the real art that's already filed: `sources/art/chatgpt-batch3/tray-chai-t-v2.png` and the top-down chai glass `vessel-glass-chai-top-t-v1.png`. Each glass has the person's small round face badge on the tray rim beside it, so it's clear whose chai is whose.
+- **The hob knobs:** `sheet-hob-parts-t-v1.png` is filed but not used; wire it in.
+- **Polish, across the stations:**
+  - the same soft shadow under every object;
+  - the same glow-and-bounce highlight as the pantry;
+  - a small puff or sprinkle when an ingredient goes in;
+  - a spoon stir;
+  - label pills in one style;
+  - items without a word show no empty speaker pill.
+- **Art still to request:** pot-content states and a pour stream, the ingredient containers (from the pantry-v2 pack), and any missing chai-glass fill levels.
+- **Remove the fill line** from the chai glass and the pot: it's a relic. Nothing fills to a line any more.
+- **Ingredients:** stations where you pick from a supply (the hob, chai) use the bottom strip of front-on containers. Stations where the items are part of the scene (the mishkaki tray, rolling) keep them in the scene. The rule is consistency within each station.
+- **People behind the counter** use the character art of them leaning on the counter, or with an arm on it (the `char-*-counter` art already made), at least when they're sitting or waiting. No floating cut-out heads.
+- **The Done button (every mode): decide** between:
+  - (A) the new gold-metal tick art on a round cream button, the same tick as the end-of-round screen; recommended;
+  - (B) a brass service bell for Cook ("order's ready!", with a ding), plus A everywhere else;
+  - (C) a big gold arrow.
+- **The opening game screen** is weak; that's parked until later (Zafar).
+
+## 9. Sidebar v2 (Zafar's review of the first build, 28 Sept evening). Supersedes §1–3 wherever they differ.
+Aim: as crisp and premium as the new jar art. Flat, modern, straight, organised. **Nothing wraps onto two lines**: every headline and every item fits one line; shrink the text to fit, with a readable minimum.
+- **Cards use the short form only:** *Muke chai khape.* / *Muke mishkaki khape.* The polite long form belongs in Conversations, not the cards.
+- **The face is the replay button** on every card, Nani's included: tap the face to hear it again, with a small speaker badge on the face's corner. There's no separate speaker button, which leaves more room for the headline.
+- **Nani's box:** a brighter red tint that contrasts with the sidebar panel (e.g. a pale rose background with a deep red embroidery band). Her face = replay; on the right, only the light bulb and the mute button.
+- **The sidebar panel:** a different, slightly deeper tone than the cards; straight edges; a crisp thin divider line against the play area. The cards inside are rounded, flat, with a 1 px border and a soft shadow.
+- **Items are self-contained pills:** one per item, all the same width, in a straight stack, clearly separate from the card's headline.
+  - Done = true metallic gold (a gold gradient, not flat yellow) with the gold tick art.
+  - Next (ordered jobs) = a gold outline on a light grey fill.
+  - Pending = a plain white pill with a light border.
+  - No floating, no bullets, no empty circles.
+- **Groups (e.g. several skewers):** the headline gives the summary (e.g. one mixed, two meat, using the recorded *hakri lakri mishkaki* / *ba lakri mishkaki* clips where they exist). Each skewer is a small group box of pills, with alternate groups tinted differently so they're distinct. No label per group.
+- **No English in the item pills** (e.g. "green pepper"): if the Kutchi is missing, flag it "to record", list it in the report, and use the nearest recorded word or leave the item out of the level.
+- **The Done button (every mode), decided: option A.** The gold-metal tick art (`assets/ui/results/tick-gold.webp`) on a round cream button. It replaces the green tick button.
+- **The hands:** one still shows in the skewer station (at the bottom of the board). Remove it.
+- **The word review:**
+  - true gold (a metallic gradient, like the tick; not yellow) for right, red for wrong;
+  - a thin vertical divider between wrong (left) and right (right);
+  - both sides' rows **top-aligned** to the same line, not each centred on its own;
+  - the cards restyled to match the sidebar pills: flat, modern, crisp.

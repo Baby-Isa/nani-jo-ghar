@@ -2,6 +2,10 @@
 
 Written 28 Sept 2026, after the end-of-round badges took five rounds to get right. Every build brief that changes art, layout or UI links to this file. Tests passing is not "done" for visual work.
 
+## 0. Keep iterations fast (Zafar, 28 Sept)
+- **While iterating:** only the laptop view (1366×768), and only the screens you changed: one screenshot each, looked at and fixed. Skip the full test suites until the end.
+- **Before the one final push to `main`:** the full matrix below (phone and laptop, every state), plus the repo's tests.
+
 ## 1. Look at it, the way Zafar will
 - Take **uncropped** screenshots of **every state** (e.g. all right / mixed / none; 0, 1, 2 and 3+ hints; new best / good / plain) at **390×844 (phone)** and **1366×768 (laptop)**.
 - **Open each screenshot and look at it.** Write one line per state saying what's right or wrong. "The screenshot exists" doesn't count.

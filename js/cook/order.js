@@ -55,6 +55,10 @@
       cards: r.cards || null,
       // a list said for one card (a mixed skewer's pieces, in order): drawn on that card's slots
       cardOf: r.cardOf || null,
+      // the first thing asked for, when the card has its own headline (the pantry's "Muke dudh de."): stays first
+      lead: !!r.lead,
+      // 28 Sept: one mini card per unit (a skewer each); which of them are made
+      units: r.cards ? Array(r.qty || 1).fill(false) : null,
     };
   }
   O.row = row;
@@ -75,6 +79,10 @@
     const lists = new Map();
     const nos = [];
     let any = null;
+    // 28 Sept (Zafar): a recipe with a headline of its own (the pantry: "bring me these for {dish}")
+    // heads the card with it; everything fetched is a row. Not recorded yet: English, flagged "to record"
+    const hl = (Cook.data.recipes[d.recipe] || {}).headline;
+    if (hl) L.head = O.headline(hl, d);
     Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
       if (r.kind === "dish" && !L.head) {
         L.head = Object.assign(row(r), { head: true, line: r.line });
@@ -116,7 +124,10 @@
       delete s.dots;
       // a person's card has a fixed shape: its rows in slot order (milk, sugar, which chai), said in that order too
       if (s.for && L.card && L.card.slots) s.groups = s.groups.map((g) => g.slice().sort((a, b) => O.slotOf(L, a) - O.slotOf(L, b)));
-      else s.groups = s.groups.map((g) => Cook.shuffle(g));
+      else s.groups = s.groups.map((g) => {
+        const lead = g.filter((r) => r.lead);
+        return lead.concat(Cook.shuffle(g.filter((r) => !r.lead)));
+      });
     });
     // "no X": among the any-order rows, else sprinkled through the list
     const home = any || L.sections.filter((s) => !s.when && !s.for).pop();
@@ -125,6 +136,20 @@
     return L;
   };
 
+  /**
+   * A card headline that isn't a spoken line (yet): {en, en_plain, line?}. With `line` (a key in
+   * data.lines, once recorded) it's that Kutchi; else the English, flagged `rec` ("to record").
+   * `{dish}` is the English of the dish it's for (d.for), or the plain form without one.
+   */
+  O.headline = function (hl, d) {
+    if (hl.line && Cook.data.lines[hl.line]) {
+      const line = Lang.line(hl.line);
+      return { parts: [], ids: [], head: true, rec: false, done: false, need: 1, got: 0, line, said: line };
+    }
+    const dish = d && d.for && Cook.data.recipes[d.for] ? Cook.data.recipes[d.for].english : null;
+    const t = dish ? hl.en.replace("{dish}", dish.toLowerCase()) : hl.en_plain || hl.en.replace(/\s*for \{dish\}/, "");
+    return { parts: [], ids: [], head: true, rec: true, done: false, need: 1, got: 0, line: { segs: [{ t, lang: "e" }], en: t } };
+  };
   /** A ladder from plain lines (Station lab cards with no dish): one simple row per line. */
   O.fromLines = function (lines) {
     const rows = lines.map((l) => ({ parts: [], ids: l.segs.filter((s) => s.w).map((s) => s.w), no: false, need: 1, got: 0, line: l, simple: true }));
@@ -153,7 +178,8 @@
     // each spoken part knows the row it says, so the card can light it up as it's said (read-along)
     const push = (line, r) => lines.push(Object.assign({}, line, { row: r }));
     ladders.forEach((L) => {
-      if (heads && L.head) push(L.head.line, L.head);
+      // a headline still to record isn't said (the first row says it: "Muke dudh de.")
+      if (heads && L.head && !L.head.rec) push(L.head.line, L.head);
       L.sections.forEach((s) => {
         if (s.when && !withWhen) return;
         let first = true;
