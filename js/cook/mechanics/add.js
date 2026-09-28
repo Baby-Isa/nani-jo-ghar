@@ -15,11 +15,14 @@
       const S = z.S;
       async function flyIn(key, obj) {
         const col = St.heapColor(key);
-        const dot = S.track(S.add.circle(obj.x, obj.y - z.L(20), z.L(18), col, 1).setDepth(D.fx));
+        // from the top of the jar or bowl (a front-on jar stands on its base)
+        const c = S.centre(obj);
+        const dot = S.track(S.add.circle(c.x, c.y - c.h * 0.25, z.L(18), col, 1).setDepth(D.fx));
         Cook.sfx.pop();
         const p = into.surface ? into.surface() : into;
         await S.fly(dot, p.x, p.y, { duration: k.flyMs, arc: z.L(110) });
         S.burst(p.x, p.y, col, 10, z.L(50));
+        S.puff(p.x, p.y, col, z.L(46));
         dot.destroy();
       }
       const r = await S.step({

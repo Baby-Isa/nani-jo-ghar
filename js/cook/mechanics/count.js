@@ -34,8 +34,11 @@
     await S.fly(sp, p.x + (Math.random() - 0.5) * z.L(30), p.y - z.L(10), { duration: ms, arc: z.L(90) });
     S.tweens.add({ targets: sp, angle: -70, duration: 120 });
     S.burst(p.x, p.y, col, 6, z.L(30));
+    S.puff(p.x, p.y, col, z.L(32));
     await Cook.wait(130);
     sp.destroy();
+    // into a pot or a glass: a quick stir (28 Sept, s8)
+    if (into.rim) await St.stirIn(S, into, { ms: 520, turns: 1.5 });
   }
   Cook.Spoon = { spoon };
 

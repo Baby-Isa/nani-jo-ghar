@@ -62,11 +62,10 @@
     return t.indexOf("{x}") < t.indexOf("{n}") ? [id, n] : [n, id];
   };
   /** The frame that starts a dish in an order ("I need …") or adds one ("And …"). */
-  // 28 Sept (Zafar): short at level 1 ("Muke chai khape."), the polite form from level 2
-  // ("Tu muke chai banai dinda?", grammar.order.polite: Mum's B40 frame)
+  // Sidebar v2 (Zafar, 28 Sept evening): the cards use the short form only ("Muke chai khape.") at every
+  // level; the polite "Tu muke chai banai dinda?" (grammar.order.polite) belongs in Conversations
   Lang.orderFrame = (i, level = 1) => {
     const o = G().order || {};
-    if (i === 0 && level >= 2 && o.polite && Cook.data.lines[o.polite]) return o.polite;
     return o[i === 0 ? "first" : "next"] || (i === 0 ? "need" : "and");
   };
   /** parts: word ids and numbers, e.g. [2, "cook-maani"] */

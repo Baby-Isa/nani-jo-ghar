@@ -945,7 +945,7 @@
       "ph-meat",
       "veg-02",
       "ph-meat",
-      "ph-pepper"
+      "veg-03"
      ]
     }
    },
@@ -975,7 +975,7 @@
     "mishkaki": {
      "pattern": [
       "ph-meat",
-      "ph-pepper",
+      "veg-02",
       "veg-03",
       "ph-meat"
      ]
@@ -1936,6 +1936,7 @@
   "mishkaki": {
    "name": "ph-mishkaki",
    "english": "Mishkaki",
+   "_pepper": "Sidebar v2 (Zafar, 28 Sept evening): no English in the item pills. Green pepper (ph-pepper) has no Kutchi word yet (Mum 26 Sept, B34), so it's out of the skewers (lists and tastes) until it's recorded; its art stays filed",
    "price": 6,
    "stations": [
     "thread",
@@ -1946,11 +1947,9 @@
     "skewer": [
      "ph-meat",
      "veg-02",
-     "ph-pepper",
      "veg-03"
     ],
     "veg": [
-     "ph-pepper",
      "veg-02",
      "veg-03"
     ]

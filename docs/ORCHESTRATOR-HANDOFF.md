@@ -163,3 +163,6 @@ Held until Zafar's mode feedback: the chai-station fun pass, the clinic iteratio
 
 ### Lesson, 28 Sept: visual work isn't done until someone has looked at it
 The end-of-round badges took five rounds: grey fringes, holes, mismatched sizes, a wrong fill mapping, and a live site that hadn't rebuilt. The sessions passed their tests and saved screenshots but didn't judge them, and the orchestrator passed on "done" unseen. **Follow `docs/VISUAL-QA.md` for every visual change, and link it from every brief.** Visual work goes to the top model.
+
+### Lesson, 28 Sept: "idle" doesn't mean dead
+A session showing "idle" or "review_ready" can still have a long background job running (e.g. a 7-minute screenshot run), with its commit and push still to come. Before relaunching one as a continuation: look at `updated_at` and its `status_detail`; if it says it will push after a background step, give it at least 20–30 more minutes. On 28 Sept a duplicate chai-station session was launched this way, and Zafar had to stop it.

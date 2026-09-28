@@ -1,0 +1,273 @@
+/* =====================================================================================
+   Sidebar v2 (Zafar, 28 Sept evening; docs/cook-ui-feedback-2026-09-28.md 9)
+   As crisp as the pantry-v2 jar art: flat, straight, organised. One type scale, one set of
+   radii (card 14, group 12, pill 10), 1px borders, one soft shadow. Nothing wraps: every
+   headline and pill is one line, shrunk to fit (js/shared/fit.js, never below --fit-min).
+   The face is the replay button on every card (a small speaker badge on its corner).
+   Pills: pending = white; next (ordered jobs) = gold outline on light grey; done = metallic gold
+   with the gold tick. Several of one thing (skewers, maani, cups) are group boxes, alternately tinted.
+   Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10) supersedes v2 where they differ:
+   flat material UI against the 3D art. Pills are white with a 1px border; done = the same white pill
+   with a flat 2px gold outline and a small flat gold check; next = a light grey fill. One clean rounded
+   sans (Nunito 700/800) for all the text; no gradients, no bevels. One white card per person.
+   Selectors use :is(#side, .sb2) so the Sidebar lab (lab/sidebar-v2.html) can show several
+   sidebars at once with the same weight as the game's ids. Loaded after css/cook.css.
+   ===================================================================================== */
+:root {
+  --sb-panel: #efe5d6;
+  --sb-divider: #d2bf9f;
+  --sb-line: #e6dac7;
+  --sb-ink: #2d2018;
+  --sb-soft: #7a6857;
+  --sb-word: #a33a2c;
+  --sb-shadow: 0 1px 2px rgba(70, 45, 20, 0.07);
+  --sb-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sb-card: #ffffff;
+  --sb-pill-line: #e2d8c9;
+  --sb-gold-edge: #c99a2e;
+  --sb-gold-ink: var(--sb-ink);
+  --sb-next-fill: #eeebe6;
+  --sb-next-line: #d9d3ca;
+  --sb-next-edge: #c99a2e;
+  --sb-tint-a: #f6eee1;
+  --sb-tint-a-edge: #e8dac3;
+  --sb-tint-b: #eaf0ee;
+  --sb-tint-b-edge: #d3dfda;
+  /* the type scale (laptop): headline, pill, sub-line, tag */
+  --sb-h: 19px;
+  --sb-p: 17px;
+  --sb-s: 15px;
+  --sb-pill-h: 34px;
+  --sb-face: 44px;
+  --fit-min: 12px;
+}
+@media (max-height: 430px) {
+  :root { --sb-h: 15px; --sb-p: 13.5px; --sb-s: 12.5px; --sb-pill-h: 24px; --sb-face: 30px; --fit-min: 11px; }
+}
+
+/* ---------- the panel: a deeper tone than the cards, straight edges, a crisp line against the play area ---------- */
+body.w6 :is(#side, .sb2) {
+  background: var(--sb-panel);
+  border-left: none;
+  border-right: 1px solid var(--sb-divider);
+  padding: 10px;
+  gap: 10px;
+}
+@media (max-height: 430px) { body.w6 :is(#side, .sb2) { padding: 6px; gap: 6px; } }
+
+/* ---------- one line, shrunk to fit ---------- */
+:is(#side, .sb2) .fit:not(.fit2), #intro .fit:not(.fit2), .njg-guide .fit:not(.fit2) { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+/* ---------- the face = replay: a small speaker badge on its corner ---------- */
+.face-say { position: relative; flex: none; border: none; padding: 0; margin: 0; background: none; border-radius: 50%; cursor: pointer; display: block; -webkit-tap-highlight-color: transparent; }
+.face-say img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: #f1e6d4; box-shadow: 0 0 0 1px var(--sb-line); }
+.face-say .say-badge {
+  position: absolute; right: -2px; bottom: -2px; z-index: 3; width: 38%; min-width: 15px; max-width: 24px; aspect-ratio: 1; border-radius: 50%;
+  background: var(--sb-ink) no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  box-shadow: 0 0 0 2px #fff;
+  pointer-events: none;
+}
+.face-say:active { transform: scale(0.95); }
+.face-say.on .say-badge { background-color: var(--sb-next-edge); animation: sbBadge .8s ease-in-out infinite; }
+@keyframes sbBadge { 50% { transform: scale(1.18); } }
+
+/* ---------- the request card ---------- */
+body.w6 :is(#mission, .m-card) {
+  background: var(--sb-card);
+  border: 1px solid var(--sb-line);
+  border-radius: 14px;
+  box-shadow: var(--sb-shadow);
+  padding: 10px;
+  gap: 10px;
+  overflow: hidden;
+}
+@media (max-height: 430px) { body.w6 :is(#mission, .m-card) { padding: 6px; gap: 6px; border-radius: 12px; } }
+body.w6 :is(#mission, .m-card) .m-head { display: flex; align-items: center; gap: 10px; padding: 0; min-width: 0; }
+body.w6 :is(#mission, .m-card) .m-who { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
+body.w6 :is(#mission, .m-card) .m-ring { width: var(--sb-face); height: var(--sb-face); }
+body.w6 :is(#mission, .m-card) .m-ring .m-face { box-shadow: 0 0 0 1px var(--sb-line); }
+body.w6 :is(#mission, .m-card) .m-ring.on .m-face { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
+body.w6 :is(#mission, .m-card) .m-dish { font-size: var(--sb-h); line-height: 1.2; min-width: 0; }
+body.w6 :is(#mission, .m-card) .m-say { display: none; }
+body.w6 :is(#mission, .m-card) .m-order { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+body.w6 :is(#mission, .m-card) .m-order:empty { display: none; }
+@media (max-height: 430px) { body.w6 :is(#mission, .m-card) .m-head { gap: 7px; } body.w6 :is(#mission, .m-card) .m-order { gap: 5px; } }
+
+/* the headline: the request, one line */
+.md-text { font-family: var(--sb-font); font-weight: 800; color: var(--sb-ink); line-height: 1.25; }
+.md-text .word { color: var(--sb-word); }
+body.w6 .md-text.rec { display: flex; flex-direction: column; align-items: flex-start; white-space: normal; overflow: visible; font-family: var(--ui-font); font-style: italic; font-weight: 700; font-size: 0.86em; color: var(--sb-soft); }
+body.w6 .md-text.rec .md-line { display: block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.w6 .md-text.rec .md-rec {
+  display: inline-block; margin: 2px 0 0; white-space: nowrap; padding: 1px 5px; border-radius: 4px;
+  font-style: normal; font-size: 9px; line-height: 1.35; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  color: #9a7433; background: #f6ebd2; border: 1px solid #ead7ae;
+}
+/* several of one thing: the summary under the headline ("hakri lakri mixed", "ba lakri gos"), one line each */
+.m-sum { display: flex; flex-direction: column; gap: 1px; margin-top: 1px; min-width: 0; }
+.m-sum:empty { display: none; }
+.m-sum .sum-line { font-family: var(--sb-font); font-weight: 700; font-size: var(--sb-s); line-height: 1.25; color: var(--sb-soft); }
+.m-sum .sum-line .word { color: var(--sb-word); }
+.m-sum .sum-line.done { color: var(--sb-soft); }
+
+/* ---------- the stack of pills ---------- */
+body.w6 :is(#side, .sb2, #intro) .ladder { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+body.w6 :is(#side, .sb2, #intro) .lsec { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+body.w6 :is(#side, .sb2, #intro) .lrows,
+body.w6 :is(#side, .sb2, #intro) .lrows.lseq { display: flex; flex-direction: column; align-items: stretch; gap: 6px; padding: 0; margin: 0; min-width: 0; }
+body.w6 :is(#side, .sb2, #intro) .lrows.lseq::before,
+body.w6 :is(#side, .sb2, #intro) .lrows.lseq > .r6::before,
+body.w6 :is(#side, .sb2, #intro) .r6::after { content: none; display: none; }
+@media (max-height: 430px) {
+  body.w6 :is(#side, .sb2) .ladder, body.w6 :is(#side, .sb2) .lsec { gap: 5px; }
+  body.w6 :is(#side, .sb2) .lrows, body.w6 :is(#side, .sb2) .lrows.lseq { gap: 4px; }
+}
+
+body.w6 :is(#side, .sb2, #intro) .r6 {
+  position: relative; display: flex; align-items: center; gap: 6px; width: 100%; min-width: 0;
+  height: var(--sb-pill-h); min-height: 0; margin: 0; padding: 0 8px 0 12px;
+  border-radius: 10px; background: #fff; border: 1px solid var(--sb-pill-line);
+  box-shadow: none;
+  transition: background-color .2s, border-color .2s, box-shadow .2s;
+}
+body.w6 :is(#side, .sb2, #intro) .r6 .lt {
+  flex: 1 1 auto; min-width: 0; font-family: var(--sb-font); font-weight: 800; font-size: var(--sb-p);
+  line-height: 1.2; color: var(--sb-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body.w6 :is(#side, .sb2, #intro) .r6 .lt .word { color: var(--sb-word); }
+body.w6 :is(#side, .sb2, #intro) .r6 .lt .dots { letter-spacing: 2px; color: var(--sb-soft); }
+/* the check: a small flat gold disc with a white check (js/cook/ui.js tickHtml) */
+body.w6 :is(#side, .sb2, #intro) .r6 .tk { flex: none; width: calc(var(--sb-pill-h) * 0.56); height: calc(var(--sb-pill-h) * 0.56); display: inline-flex; align-items: center; justify-content: center; }
+body.w6 :is(#side, .sb2, #intro) .r6 .tk:empty { display: none; }
+body.w6 :is(#side, .sb2, #intro) .r6 .tk svg { width: 100%; height: 100%; display: block; }
+/* next (ordered jobs only): a light grey fill */
+body.w6 :is(#side, .sb2, #intro) .r6.next { background: var(--sb-next-fill); border-color: var(--sb-next-line); box-shadow: none; }
+/* done: the same white pill, a flat 2px gold outline (1px border + 1px ring, so nothing shifts), the check */
+body.w6 :is(#side, .sb2, #intro) .r6.done { background: #fff; border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
+body.w6 :is(#side, .sb2, #intro) .r6.done .lt { color: var(--sb-ink); }
+body.w6 :is(#side, .sb2, #intro) .r6.done .tk svg { animation: tickIn .3s cubic-bezier(.2, 1.5, .4, 1); }
+/* a "no" row ("Dudh na.") is a pill like any other */
+body.w6 :is(#side, .sb2, #intro) .r6.no .ldot, body.w6 :is(#side, .sb2, #intro) .r6 .ldot { display: none; }
+/* English (the bulb) */
+body.w6 :is(#side, .sb2, #intro) .r6 .en6 { color: var(--indigo); font-family: var(--ui-font); }
+/* read-along: the part being said lights up */
+body.w6 :is(#side, .sb2, #intro) .r6.reading { background: #fff4d2 !important; border-color: var(--sb-next-edge) !important; box-shadow: 0 0 0 2px rgba(255, 217, 138, 0.9) !important; }
+
+/* ---------- group boxes: one per skewer / maani / cup, alternately tinted; no label per group ---------- */
+body.w6 :is(#side, .sb2, #intro) .ugroup { display: contents; }
+body.w6 :is(#side, .sb2, #intro) .ugroup .ug-title { display: none; }
+body.w6 :is(#side, .sb2, #intro) .icards,
+body.w6 :is(#side, .sb2, #intro) .ugroup .icards { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+body.w6 :is(#side, .sb2, #intro) .icard,
+body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit,
+body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit.named {
+  flex: none; width: 100%; margin: 0; padding: 6px; border-radius: 12px;
+  background: var(--sb-tint-a); border: 1px solid var(--sb-tint-a-edge); box-shadow: none;
+}
+body.w6 :is(#side, .sb2, #intro) .icard.tint-b,
+body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit.tint-b { background: var(--sb-tint-b); border-color: var(--sb-tint-b-edge); }
+body.w6 :is(#side, .sb2, #intro) .icard.done,
+body.w6 :is(#side, .sb2, #intro) .ugroup .icard.unit.done { background: #fbf2d9; border-color: #ecd9a6; }
+body.w6 :is(#side, .sb2, #intro) .icard .card-say:not(.face-say) { display: none; }
+@media (max-height: 430px) {
+  body.w6 :is(#side, .sb2) .icards, body.w6 :is(#side, .sb2) .ugroup .icards { gap: 5px; }
+  body.w6 :is(#side, .sb2) .icard, body.w6 :is(#side, .sb2) .ugroup .icard.unit { padding: 4px; border-radius: 10px; }
+}
+/* Sidebar v3: one white card per person (the Chai tray): their face (= replay), the short headline,
+   their pills. The request card itself steps back (no box, no shared head): the person cards are the cards. */
+body.w6 #mission.people { background: none; border: none; box-shadow: none; padding: 0; overflow: visible; }
+body.w6 #mission.people > .m-head { display: none; }
+body.w6 :is(#mission, .m-card).people .m-order, body.w6 :is(#mission, .m-card).people .ladder, body.w6 :is(#mission, .m-card).people .lsec { gap: 10px; }
+body.w6 :is(#side, .sb2, #intro) .icard.person {
+  display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding: 10px; border-radius: 14px;
+  background: var(--sb-card); border: 1px solid var(--sb-line); box-shadow: var(--sb-shadow);
+}
+body.w6 :is(#side, .sb2, #intro) .icard.person.done { background: var(--sb-card); border-color: var(--sb-line); }
+body.w6 :is(#side, .sb2, #intro) .icard.person.speaking { border-color: var(--sb-next-edge); box-shadow: 0 0 0 1px var(--sb-next-edge), var(--sb-shadow); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head .face-say { width: var(--sb-face); height: var(--sb-face); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .lface { width: 100%; height: 100%; box-shadow: 0 0 0 1px var(--sb-line); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title { flex: 1 1 auto; min-width: 0; font-size: var(--sb-h); line-height: 1.2; color: var(--sb-ink); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title .word { color: var(--sb-word); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .lrows { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 6px; margin: 0; }
+/* the pop-up: the same person cards, flat inside it (its own head goes, as in the sidebar) */
+body.w6 #intro .ic-card.people .ic-head { display: none; }
+body.w6 #intro .ic-card.people .icard.person { box-shadow: none; }
+@media (max-height: 430px) {
+  body.w6 #mission.people .m-order, body.w6 #mission.people .ladder, body.w6 #mission.people .lsec { gap: 6px; }
+  body.w6 :is(#side, .sb2) .icard.person { gap: 4px; padding: 6px; border-radius: 12px; }
+  body.w6 :is(#side, .sb2) .icard.person .pc-head { gap: 7px; }
+  body.w6 :is(#side, .sb2) .icard.person .lrows { flex-direction: column; gap: 3px; }
+}
+
+/* the card once served: its stamp stays as it was */
+body.w6 #mission.stamped .face-say .say-badge { display: none; }
+
+/* ---------- the request pop-up: the same card, bigger ---------- */
+body.w6 #intro .ic-card {
+  --sb-h: clamp(22px, min(2.6vw, 5vh), 34px);
+  --sb-p: clamp(17px, min(1.9vw, 3.8vh), 24px);
+  --sb-s: clamp(16px, min(1.7vw, 3.4vh), 22px);
+  --sb-pill-h: clamp(34px, min(3.6vw, 6.4vh), 46px);
+  --sb-face: clamp(52px, min(5.4vw, 10vh), 76px);
+  --fit-min: 15px;
+  background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 18px;
+  box-shadow: 0 2px 4px rgba(70, 45, 20, 0.08), 0 18px 48px rgba(70, 45, 20, 0.22);
+  padding: clamp(14px, 2vh, 22px); width: min(480px, 92%); max-width: 480px;
+}
+body.w6 #intro .ic-head { display: flex; align-items: center; gap: clamp(10px, 1.4vw, 16px); margin: 0 0 clamp(10px, 1.8vh, 16px); min-width: 0; }
+body.w6 #intro .ic-head .face-say { width: var(--sb-face); height: var(--sb-face); }
+body.w6 #intro .ic-face { width: 100%; height: 100%; border: none; box-shadow: 0 0 0 1px var(--sb-line); }
+body.w6 #intro .ic-head-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+body.w6 #intro .ic-dish { flex: 1 1 auto; min-width: 0; font-size: var(--sb-h); line-height: 1.2; }
+body.w6 #intro .ic-order { display: flex; flex-direction: column; gap: 10px; }
+body.w6 #intro .ladder, body.w6 #intro .lsec { flex-direction: column; flex-wrap: nowrap; gap: 10px; }
+body.w6 #intro .lrows, body.w6 #intro .lrows.lseq { gap: 8px; }
+body.w6 #intro .icards, body.w6 #intro .ugroup .icards { gap: 10px; }
+body.w6 #intro .icard, body.w6 #intro .ugroup .icard.unit { padding: 8px; border-radius: 14px; }
+body.w6 #intro .r6 { padding: 0 10px 0 16px; border-radius: 12px; }
+body.w6 #intro .r6 .lt, body.w6 #intro .r6.head .lt { font-size: var(--sb-p); color: var(--sb-ink); }
+body.w6 #intro .ic-card.people .icard.person .ic-title { font-size: var(--sb-h); }
+body.w6 #intro .r6 .lt .word { color: var(--sb-word); }
+body.w6 #intro .m-sum .sum-line { font-size: var(--sb-s); }
+body.w6 #intro .ic-go { display: none; }
+@media (max-height: 430px) {
+  body.w6 #intro .ic-card { --sb-pill-h: 30px; --sb-p: 16px; --sb-h: 19px; --sb-s: 14px; --sb-face: 42px; padding: 10px; width: min(420px, 94%); }
+  body.w6 #intro .ic-order, body.w6 #intro .ladder, body.w6 #intro .lsec { gap: 6px; }
+  body.w6 #intro .lrows, body.w6 #intro .lrows.lseq, body.w6 #intro .icards { gap: 5px; }
+  body.w6 #intro .ic-head { margin-bottom: 8px; }
+}
+/* a long order: the pop-up takes two columns of groups rather than running off the screen */
+body.w6 #intro .ic-card.wide { width: min(760px, 94%); max-width: 760px; }
+body.w6 #intro .ic-card.wide .icards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+body.w6 #intro .ic-card.wide .ladder > .lsec > .lrows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* ---------- the rail at the bottom: the same flat buttons ---------- */
+body.w6 :is(#side, .sb2) .rail-btn { border-radius: 12px; background: var(--sb-card); border: 1px solid var(--sb-line); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.08); }
+body.w6 :is(#side, .sb2) #btn-help { background: #ffe3a3; border-color: #efcf86; }
+/* a person's face is a replay button with the old speaker's class (read-along wiring): not the old round grey button */
+body.w6 :is(#side, .sb2, #intro) .face-say.card-say { position: relative; top: auto; right: auto; z-index: auto; padding: 0; border-radius: 50%; background: none; display: block; }
+
+/* ---------- speech cards in the sidebar (a customer at the tray, Nani's "pass me"): the same card; the face hears it again ---------- */
+body.w6 #nani-card { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: var(--sb-shadow); padding: 10px; gap: 10px; }
+body.w6 #nani-card .nc-say { width: var(--sb-face); height: var(--sb-face); }
+body.w6 #nani-card .nc-face { width: 100%; height: 100%; border: none; }
+body.w6 #nani-card.talk .nc-say img { animation: badgeTalk .45s ease-in-out infinite alternate; }
+body.w6 #nani-card .say-slot .wp-say, body.w6 #passme .pm-say .wp-say { display: none; }
+body.w6 #nani-card .wp .wp-text { font-size: var(--sb-p); line-height: 1.25; }
+body.w6 #passme { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: 0 -4px 24px rgba(40, 25, 10, 0.22), 0 0 0 2px var(--sb-next-edge); }
+body.w6 #passme .pm-face { width: var(--sb-face); height: var(--sb-face); }
+body.w6 #passme .pm-nani .pm-face img { width: 100%; height: 100%; border: none; animation: badgeTalk .45s ease-in-out 4 alternate; }
+body.w6 #passme .pm-item { background: #fff; border: 1px solid var(--sb-line); border-radius: 12px; box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
+body.w6 #passme .pm-item .wp-say { width: 26px; height: 26px; padding: 5px; background: #f3ece1; border: 1px solid var(--sb-line); }
+body.w6 #passme .pm-item.right { background: #fff; border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
+body.w6 #passme .pm-item.glow { border: 1.5px solid var(--sb-next-edge); }
+
+/* short landscape phones: every gap tighter, so a full order and the rail fit the 390px-high sidebar */
+@media (max-height: 430px) {
+  body.w6 :is(#side, .sb2) .r6 { padding: 0 6px 0 9px; border-radius: 8px; }
+  body.w6 :is(#side, .sb2) .rail-btn { width: 38px; height: 38px; font-size: 18px; border-radius: 10px; }
+  body.w6 #btn-help { font-size: 22px; }
+  body.w6 #nani-card { padding: 6px; gap: 6px; border-radius: 12px; }
+  body.w6 .md-text.rec .md-rec { font-size: 8px; padding: 0 4px; }
+}

@@ -341,8 +341,8 @@
       await Cook.wait(900);
       await exchange(who, EX("salaam"));
       if (Math.random() < 0.35) await exchange(who, EX("howareyou"));
-      // from level 2 the order itself is the polite "Tu muke … banai dinda?" (Lang.orderFrame), so it isn't asked twice
-      if (level1 && Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
+      // the order card is always the short form (Sidebar v2), so the polite ask can come first at any level
+      if (Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
     }
     // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
     UI.hideBubble();
