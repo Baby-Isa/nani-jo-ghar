@@ -49,11 +49,15 @@
   };
   /* ---------- the grid (design px, 1600x900; the canvas is the play area) ---------- */
   const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
-  const BASE = 806; // where every shelf object stands
-  const BOX = 128; // §4: one art box for every slot (about 96 px on a laptop)
+  const BASE = 818; // the shelf line: every object stands on it
+  const BOX = 128; // a slot's fallback box (a word without shelf art)
+  // true relative heights (Zafar, 28 Sept, late): the bottle and carton stand tall, the chai and
+  // sugar jars medium, the spice jars short, all on one shelf line (the scale per group of the
+  // pantry-v2 canvases: liquids | jars | spices)
+  const SHELF_K = [0.425, 0.33, 0.33];
   const PITCH = 150;
   const GROUP_GAP = 44;
-  const CHIP = { w: 128, h: 46, y: 846, hitH: 70 };
+  const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 }; // the tap area: as big as the band allows
   const HOB_K = 0.79; // the mock-up's hob, 15% bigger (§10)
   const TRAY_D = 392;
   const GAP = 72;
@@ -213,7 +217,7 @@
     const trayD = Math.min(TRAY_D, hobH * 0.78);
     const total = hobW * k + GAP + trayD;
     const hobX = Math.max(48, (1600 - total) / 2);
-    const hobY = SHELF_TOP - 26 - hobH; // low: less empty marble at the top (§10)
+    const hobY = SHELF_TOP - 56 - hobH; // low (§10), with some breathing space above the shelf
     const hob = S.track(S.add.image(hobX, hobY, hobKey).setOrigin(0).setScale(k).setDepth(D.item - 4));
     hob.shadow = S.contactShadow(hob);
     const burnerY = hobY + META.hob.burnerY * hobH;
@@ -299,16 +303,33 @@
       plank.fillStyle(INK.grey, 1);
       plank.fillRoundedRect(sx - PITCH / 2 + 10, BASE - 2, group.length * PITCH - 20, 10, 5);
       group.forEach((id) => {
-        shelf[id] = slot(id, sx);
+        shelf[id] = slot(id, sx, SHELF_K[gi]);
         sx += PITCH;
       });
       sx += GROUP_GAP;
     });
-    function slot(id, x) {
+    // where a canvas's picture ends at the bottom (its transparent margin stands below the shelf line)
+    function opaqueBottom(key) {
+      try {
+        const src = S.textures.get(key).getSourceImage();
+        const cv = document.createElement("canvas");
+        cv.width = src.width;
+        cv.height = src.height;
+        const g = cv.getContext("2d", { willReadFrequently: true });
+        g.drawImage(src, 0, 0);
+        const d = g.getImageData(0, 0, cv.width, cv.height).data;
+        for (let y = cv.height - 1; y > 0; y--) for (let x = 0; x < cv.width; x += 2) if (d[(y * cv.width + x) * 4 + 3] > 60) return (y + 1) / cv.height;
+      } catch (e) {
+        /* a tainted texture: its canvas bottom */
+      }
+      return 1;
+    }
+    function slot(id, x, K) {
       const key = `jar-${id}`;
       let img;
       if (S.textures.exists(key)) {
-        img = S.prop(key, x, BASE, BOX, BOX, { depth: D.item + 1, shadow: false });
+        img = S.track(S.add.image(x, BASE, key).setOrigin(0.5, opaqueBottom(key)).setScale(K).setDepth(D.item + 1));
+        img.baseScale = K;
         img.shadow = S.contactShadow(img, { centerX: x, centerY: BASE - 2, width: img.displayWidth * 0.8, height: 22 });
       } else img = S.ingredient(id, x, BASE - BOX / 2, { w: BOX, h: BOX, label: false });
       img.wordId = id;
@@ -336,8 +357,8 @@
         speaker(icon, 1, 0, 26);
         chip.add(icon);
       }
-      chip.setSize(CHIP.w, CHIP.hitH);
-      chip.setInteractive(new Phaser.Geom.Rectangle(-CHIP.w / 2, -CHIP.hitH / 2, CHIP.w, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
+      chip.setSize(CHIP.hitW, CHIP.hitH);
+      chip.setInteractive(new Phaser.Geom.Rectangle(-CHIP.hitW / 2, -CHIP.hitH / 2 + 8, CHIP.hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
       chip.on("pointerdown", (ptr, lx, ly, ev) => {
         if (ev && ev.stopPropagation) ev.stopPropagation();
         Cook.unlockAudio();
@@ -395,7 +416,11 @@
         pan.selRing.strokeCircle(pan.face.x, pan.face.y, BADGE / 2 + 4);
       });
     const select = (pan) => {
-      if (sel && sel !== pan) closeSpoons(sel);
+      if (sel && sel !== pan) {
+        closeSpoons(sel);
+        // level 4: moving on from a pan you've poured from closes it (half is the child's call)
+        if (sel.poured > 0) closePan(sel);
+      }
       sel = pan;
       drawSel();
       UI.hideCount();
@@ -419,7 +444,7 @@
     /* ---------- the word pop (§4: learning happens during the action) ---------- */
     const pop = (id, x, y, { speak = true } = {}) => {
       const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0));
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT, fontSize: "30px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
+      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT, fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
       const w = 34 + 10 + t.width + 36;
       const g = S.add.graphics();
       g.fillStyle(0x28190a, 0.1);
