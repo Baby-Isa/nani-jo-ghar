@@ -6,6 +6,6 @@
 **Generated (gpt-image-1, medium, one draft each):** the 2-burner hob and the square tray with 4 cut-outs. Cut by `build/cut_chai_v2_mockup.py` with the baked shadows removed. **Spent ≈ $0.09.**
 **Placeholder (CSS/SVG):** the top-down glasses, liquids, steam, bubbles, pour streams and dock icons.
 
-In b, elchi shows the speaker-only chip (higher level). Every Kutchi line is already in `data/cook.json`.
+In b, elchi shows the speaker-only chip (higher level). All Kutchi is from `data/cook.json`.
 
-**Still to change:** a real top-down glass, and a truly top-down pan, since this sprite is ¾ view and mirroring it flips the light on the left pan. The serving pan also needs a proper tilted sprite. The knob art is small (the tap target is 48 px).
+**Still to change:** a real top-down glass, and a truly top-down pan, since this sprite is ¾ view and mirroring it flips the light on the left pan. The serving pan also needs a proper tilted sprite. The knob art is small (48 px tap target).
