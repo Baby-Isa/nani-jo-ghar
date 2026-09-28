@@ -118,3 +118,17 @@ The same camera for everything in a scene (top-down for the counter and hob; fro
   - still needed: dough balls (bajri, wheat) on plates, maani cooking states (raw, cooking, slight puff, done) and a chimta. Generate via the API if the total is under $2, otherwise write a ChatGPT paste-block pack.
 - **Timers by level (all Cook stations):** flip, boil and fry timers get about 15% quicker per level, set in the game data (e.g. `data/cook.json` → `timing.levelSpeed`) so they can be tuned.
 - The sidebar, cards, Nani box and end pop-up are shared, so they already apply here. Just check that the maani pills tick as each maani is done.
+
+## 12. The order model for cards and pop-ups (Zafar approved, 28 Sept, late). Every station.
+Person → items → parts. At most three tiers, and a word is never repeated across tiers.
+1. **Headline:** the request, always shown (it's what the person says): *Muke mishkaki khape.*
+2. **Item rows:** one per distinct item, all on the same visual level, each with its Kutchi number: *ba lakri gos*, *hakri lakri mixed*, *hakri maani*, *ba bajr ji maani*.
+   - **No pips, no digits:** the child must understand the number word.
+   - A row ticks when that item is complete, i.e. when its step closes (UX §11); the count is judged in the end review. The tally shows only what has been made so far, never the target.
+3. **Parts:** only for items with a recipe (a mixed skewer's four pieces, chai's ingredients, chaat layers), indented under their item row, joined by the thin sequence line when the order matters. Items with no recipe (maani, an all-meat skewer) have no parts.
+
+**Rules:**
+- **One item, one of it, with a recipe** (a single chai): no item row; the parts sit straight under the headline (as the chai card is now).
+- **Same recipe several times** = one row (*ba lakri mixed*), with the parts shown once. **Different recipes** = separate rows, each with its own parts, and alternate rows lightly tinted so they're distinct.
+- **Everything stays fully expanded until it's done** (several people or items may be worked on at once). A finished item row folds to one gold line; a finished person folds to face + headline + ✓.
+- **The pop-up uses the same tree** at full size, in the same flat card style: no yellow highlight box, no grey box around a single pill.
