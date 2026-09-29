@@ -3655,6 +3655,16 @@
    {"do": "tap", "what": "turn it again on the green"},
    {"do": "tap", "what": "lift it onto the plate on the green"}
   ],
+  "daar": [
+   {
+    "do": "tap",
+    "what": "the vegetable on Nani's card (its crate on the shelf)"
+   },
+   {
+    "do": "tap",
+    "what": "the knife: it chops, the pieces go in the katori and her card counts it"
+   }
+  ],
   "chop": [
    {"do": "swipe", "what": "slice a vegetable Nani named"},
    {"do": "swipe", "what": "and another"}

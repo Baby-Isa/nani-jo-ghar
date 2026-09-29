@@ -58,8 +58,14 @@
   // the pot and katori's round bodies (fractions of the canvas width), measured from the art
   const POT = { w: 354, cx: 0.5, cy: 0.5, r: 0.41, inner: 0.82 };
   const KATORI = { w: 193, inner: 0.78 };
-  const DAAR = 0xe3a92f;
-  const OIL = 0xd9a441;
+  const DAAR = 0xe0a42c;
+  const OIL = 0xe9c46a;
+  // the daar's lentil texture: fixed spots (fractions of the radius), paler and darker than the daar
+  const LENTILS = Array.from({ length: 70 }, (_, i) => {
+    const a = i * 2.39996;
+    const r = Math.sqrt((i + 0.5) / 70) * 0.9;
+    return [Math.cos(a) * r, Math.sin(a) * r, i % 3];
+  });
 
   /** A frame's length in ms, for a tick (the scene's ticks get no dt). */
   const clock = () => {
@@ -127,8 +133,7 @@
     let result = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       /* ---------- 1: chop ---------- */
-      await St.begin(S, ctx, "daar", "marble");
-      if (Cook.Coach) Cook.Coach.stop(true);
+      await St.begin(S, ctx, "daar", "marble"); // the first time, the ghost finger (data.onboard.daar): a crate, then the knife
       if (ctx.nextStep) ctx.nextStep("Chop");
       if (phases.chop && !attempt) UI.gist(phases.chop);
       const cz = Mech.zone(S, ctx, { id: "chop", level });
@@ -323,7 +328,7 @@
     let last = 0;
     for (;;) {
       const next = kinds.find((id) => (got[id] || 0) < want[id]) || null;
-      const r = await St.freePick(z, { items, next, doneOk: Object.keys(got).length > 0, doneGlow: ctx.guided && !next });
+      const r = await St.freePick(z, { items, next, doneOk: Object.keys(got).length > 0 || !kinds.length, doneGlow: ctx.guided && !next });
       if (r.done) break;
       if (performance.now() - last < 220) continue; // a double tap
       last = performance.now();
@@ -348,11 +353,11 @@
       got[id] = (got[id] || 0) + 1;
       const n = inBowl.length;
       const a = n * 2.3;
-      const rr = n === 0 ? 0 : Math.min(0.55, 0.22 + n * 0.08);
+      const rr = n === 0 ? 0 : Math.min(0.5, 0.34 + n * 0.03);
       const tx = katori.x + Math.cos(a) * bowlR * rr;
       const ty = katori.y + Math.sin(a) * bowlR * rr * 0.9;
       const pile = veg;
-      await S.fly(pile, tx, ty, { scale: pile.scale * 0.55, duration: 420, arc: z.L(70) });
+      await S.fly(pile, tx, ty, { scale: pile.scale * 0.42, duration: 420, arc: z.L(70) });
       pile.setDepth(D.item - 0.5 + n * 0.001);
       S.puff(tx, ty, 0xfff6e0, z.L(26));
       inBowl.push(pile);
@@ -424,12 +429,12 @@
     const Kit = Cook.Kit;
     backdrop(z, S);
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
-    const hk = 0.84;
+    const hk = 0.9;
     const hob = Kit.hob(S, { n: 1, k: z.L(hk), cx: z.X(800), bottom: z.Y(SHELF_TOP - 14) });
-    const burner = Kit.burner(S, hob, 0, { flameR: z.L(150) });
+    const bodyR = z.L(128);
+    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 1.3 });
     const cx = hob.burners[0].x;
     const cy = hob.burners[0].y;
-    const bodyR = z.L(150);
     const pot = S.track(S.add.image(cx, cy, "dv2-pot").setOrigin(POT.cx, POT.cy).setDepth(D.item));
     pot.setScale(bodyR / (POT.r * POT.w));
     pot.shadow = S.contactShadow(pot, { centerX: cx, centerY: cy + bodyR * 0.08, width: bodyR * 2.15, height: bodyR * 2.15 });
@@ -442,6 +447,12 @@
       liq.fillCircle(cx, cy, r);
       liq.fillStyle(color, a);
       liq.fillCircle(cx + r * 0.03, cy + r * 0.04, r * 0.93);
+      if (color !== OIL && r > inR * 0.7) {
+        LENTILS.forEach(([fx, fy, t]) => {
+          liq.fillStyle(t === 0 ? 0xf6d27a : t === 1 ? 0xc7861c : 0xefc25a, 0.8);
+          liq.fillCircle(cx + fx * r, cy + fy * r, z.L(t === 1 ? 2.2 : 3));
+        });
+      }
       liq.fillStyle(0xffffff, 0.12);
       liq.fillEllipse(cx - r * 0.3, cy - r * 0.32, r * 0.8, r * 0.34);
     };
@@ -457,7 +468,7 @@
       const a = i * 2.3;
       const rr = i === 0 ? 0 : Math.min(0.55, 0.22 + i * 0.08);
       const im = S.track(S.add.image(kat.x + Math.cos(a) * kR * rr, kat.y + Math.sin(a) * kR * rr * 0.9, key).setDepth(D.item + 0.1 + i * 0.001));
-      im.setScale(z.L(200 * 0.55 * (220 / BOWL.d)) / im.width);
+      im.setScale(z.L(200 * 0.42 * (220 / BOWL.d)) / im.width);
       return im;
     });
     const dBowl = S.track(S.add.image(z.X(1240), z.Y(330), "dv2-katori").setDepth(D.item));
@@ -470,6 +481,10 @@
       dG.fillCircle(x, y, kR);
       dG.fillStyle(DAAR, 1);
       dG.fillCircle(x + kR * 0.03, y + kR * 0.04, kR * 0.93);
+      LENTILS.forEach(([fx, fy, t]) => {
+        dG.fillStyle(t === 0 ? 0xf6d27a : t === 1 ? 0xc7861c : 0xefc25a, 0.8);
+        dG.fillCircle(x + fx * kR, y + fy * kR, z.L(t === 1 ? 2 : 2.6));
+      });
       dG.fillStyle(0xffffff, 0.14);
       dG.fillEllipse(x - kR * 0.3, y - kR * 0.32, kR * 0.8, kR * 0.34);
     };
@@ -554,7 +569,7 @@
         }
       }
       const drop = spiceDrop(id);
-      pop(z, S, Cook.display(id), cx, cy - bodyR - z.L(70), { speakId: id, ms: 1000 });
+      pop(z, S, Cook.display(id), cx + bodyR + z.L(190), cy - z.L(60), { speakId: id, ms: 1000 });
       await drop;
       z.progress({ added: id });
       if (!group.length) si++;
@@ -571,8 +586,8 @@
     await Promise.all(
       bits.map((b, i) => {
         const a = i * 2.1 + 0.4;
-        const rr = 0.25 + ((i * 0.37) % 0.35);
-        return S.fly(b, cx + Math.cos(a) * inR * rr, cy + Math.sin(a) * inR * rr, { scale: b.scale * 0.9, duration: 380 + i * 40, arc: z.L(90) });
+        const rr = 0.2 + ((i * 0.37) % 0.4);
+        return S.fly(b, cx + Math.cos(a) * inR * rr, cy + Math.sin(a) * inR * rr, { scale: b.scale * 0.62, duration: 380 + i * 40, arc: z.L(90) });
       })
     );
     bits.forEach((b) => {
@@ -581,7 +596,7 @@
     });
     Cook.sfx.sizzle(1);
     S.puff(cx, cy, 0xfff1c0, z.L(60));
-    S.tweens.add({ targets: kat, alpha: 0.35, duration: 300 });
+    S.tweens.add({ targets: kat, alpha: 0, duration: 300 });
     await Cook.wait(250);
     // the daar
     [dBowl, dG].forEach((o) => S.tweens.add({ targets: o, alpha: 1, duration: 200 }));
@@ -608,8 +623,8 @@
       })
     );
     if (pour && pour.stop) pour.stop();
-    pop(z, S, Cook.display("cook-daal"), cx, cy - bodyR - z.L(70), { speakId: "cook-daal", ms: 1000 });
-    S.tweens.add({ targets: dBowl, x: z.X(1240), y: z.Y(330), angle: 0, alpha: 0.35, duration: 380 });
+    pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(60), { speakId: "cook-daal", ms: 1000 });
+    S.tweens.add({ targets: dBowl, x: z.X(1240), y: z.Y(330), angle: 0, alpha: 0, duration: 380 });
     shimmer.destroy();
     if (sizzle && sizzle.stop) sizzle.stop();
     if (ctx.nextStep) ctx.nextStep("Stir");

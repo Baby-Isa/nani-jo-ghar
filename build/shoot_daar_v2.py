@@ -98,7 +98,7 @@ class Shooter(T.Player):
             time.sleep(0.35)
             self.snap("chop-mid")
         if k == "tap" and key and (key.startswith("veg-") or key.startswith("spi-")):
-            if key.startswith("veg-") and self.exp() and self.exp().get("key") == "knife":
+            if key.startswith("veg-"):
                 self.last_crate = (e["sx"], e["sy"])
             if key.startswith("spi-") and "tadka-mid" not in self.taken:
                 time.sleep(0.25)
