@@ -21,7 +21,7 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 
 STATIONS = ["fetch", "chai-tray", "samosa", "fry", "mishkaki-grill", "grill", "thread", "chop", "assemble", "maani-line", "tadka", "stir", "boil", "pour", "count", "passme", "fill", "roll", "flip", "knead", "roll-tawa"]
 PILLS = """() => { const m = document.querySelector('#mission:not(.hidden)'); if (!m) return null;
-  const all = [...m.querySelectorAll('.r6:not(.head)')]; return [all.filter(e => e.classList.contains('done')).length, all.length]; }"""
+  const all = [...m.querySelectorAll('.oc-row')]; return [all.filter(e => e.classList.contains('done')).length, all.length]; }"""
 
 
 def probe(pw, key, level, seed=4):

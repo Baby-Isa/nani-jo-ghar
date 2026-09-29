@@ -21,7 +21,7 @@
  * is), and the big button ("Go to the barbecue") ends it; it returns
  * {items: [{pieces}]} for the grill's rack. `max`: no more skewers than
  * the rack holds.
- * Params: skewers ({kind word: count}), pattern (the mixed skewer, in
+ * Params: skewers ({kind word: count}), pattern (the mixed skewer, or several different ones, in
  * order), line, until, layout {bowlsX, boardX, rowX}, handoff.
  * Knobs (data.mechanics.thread): pieces (per skewer), decoys, decoyPool,
  * showAfterMs (after Nani's hint, the piece glows: being shown).
@@ -45,6 +45,9 @@
       SK.resetIcons();
       const want = params.skewers || {};
       const pattern = params.pattern || [];
+      // two different mixes (design system 12): one skewer of each
+      const pats = SK.pats(pattern);
+      const madePat = pats.map(() => 0);
       const line = params.line || {};
       const lay = Object.assign({ bowlsX: 540, boardX: 800, rowX: 1010 }, params.layout || {});
       const handoff = params.handoff || null;
@@ -81,7 +84,6 @@
 
       const made = {};
       let odd = 0;
-      let tickedMixed = false;
       let busy = false;
       let waiting = false;
       let stopped = false;
@@ -98,7 +100,9 @@
         const i = sk.ids.length;
         const what = SK.kindOfWord(w);
         const of = (c) => ids.filter((id) => SK.cls(id) === c);
-        const id = what === "mixed" ? pattern[i] : what === "meat" ? of("meat")[0] : of("veg")[i % of("veg").length];
+        // a mixed one: the mix this skewer has started (and not made yet), else the first still to make
+        const pt = pats.length > 1 ? pats.find((x, j) => !madePat[j] && sk.ids.every((p, q) => p === x[q])) || pats[0] : pats[0] || [];
+        const id = what === "mixed" ? pt[i] : what === "meat" ? of("meat")[0] : of("veg")[i % of("veg").length];
         return { w, id };
       };
       line.threading = () => !stopped && (!!plan() || (sk && sk.ids.length > 0 && sk.ids.length < n));
@@ -186,13 +190,15 @@
         if (c.ok && ctx.tickCard) ctx.tickCard(c.kind);
         S.sparkle(z.X(lay.boardX), z.Y(SKY - 60));
         Cook.sfx.right();
-        if (c.ok && c.kind === mixedW && !tickedMixed && ctx.tickItem) {
-          tickedMixed = true;
+        // a mixed one ticks its own mix's pieces (the sequence's positions: two different mixes are said one after the other)
+        if (c.ok && c.kind === mixedW && !madePat[c.pat] && ctx.tickItem) {
+          const at = pats.slice(0, c.pat).reduce((a, x) => a + x.length, 0);
           sk.ids.forEach((id, i) => {
             if (!z.guided) Cook.markRight(id);
-            ctx.tickItem(i);
+            ctx.tickItem(at + i);
           });
         }
+        if (c.ok && c.kind === mixedW && c.pat >= 0) madePat[c.pat]++;
         z.progress({ threaded: sk.ids.slice(), kind: c.kind });
         await Cook.wait(250);
         if (z.out) {
@@ -305,7 +311,7 @@
       const R = Cook.Recipes;
       const d = R.mishkaki.make(Cook.pick(["nana", "ma", "cousin"]), { level: L.level });
       L.card(d, ["Skewer"]);
-      await L.station("thread", { skewers: d.skewers, pattern: d.pattern });
+      await L.station("thread", { skewers: d.skewers, pattern: d.pattern2 ? [d.pattern, d.pattern2] : d.pattern });
     },
   });
 })(window);

@@ -39,7 +39,8 @@
       { id: "grill", mech: "grill", region: [470, 0, 1130, 900], footprint: { x: 470, y: 0, w: 1130, h: 900 }, in: "skewers" },
     ],
     async run(host, p) {
-      const order = { skewers: p.skewers || {}, pattern: p.pattern || [] };
+      // two different mixes (design system 12, level 4): both patterns, one skewer of each
+      const order = { skewers: p.skewers || {}, pattern: p.pattern2 ? [p.pattern || [], p.pattern2] : p.pattern || [] };
       return host.knobs.juggle ? juggle(host, order) : oneJobAtATime(host, order);
     },
   });
@@ -100,7 +101,7 @@
       const R = Cook.Recipes;
       const d = R.mishkaki.make(Cook.pick(["nana", "ma", "cousin"]), { level: L.level });
       L.card(d, R.mishkaki.steps(d));
-      await L.station("mishkaki-grill", { skewers: d.skewers, pattern: d.pattern });
+      await L.station("mishkaki-grill", { skewers: d.skewers, pattern: d.pattern, pattern2: d.pattern2 });
     },
   });
 })(window);

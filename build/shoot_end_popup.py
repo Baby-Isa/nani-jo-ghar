@@ -88,7 +88,7 @@ def chai(pw, vpname):
         got = False
         t0 = time.time()
         while time.time() - t0 < 200:
-            if page.evaluate("document.querySelectorAll('#mission .icard.person.folded').length === 1 && document.querySelectorAll('#mission .icard.person:not(.done)').length >= 1"):
+            if page.evaluate("document.querySelectorAll('#mission .oc-card.folded').length === 1 && document.querySelectorAll('#mission .oc-card:not(.done)').length >= 1"):
                 if not got:
                     time.sleep(0.8)
                     shoot(page, vpname, "sidebar-fold")

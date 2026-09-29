@@ -300,3 +300,17 @@ body.w6 #passme .pm-item.glow { border: 1.5px solid var(--sb-next-edge); }
   body.w6 #nani-card { padding: 6px; gap: 6px; border-radius: 12px; }
   body.w6 .md-text.rec .md-rec { font-size: 8px; padding: 0 4px; }
 }
+
+/* ---------- design system 12: the order model (js/shared/order-card.js) draws every card, in the sidebar and the pop-up ---------- */
+body.w6 #mission.people .m-order { gap: 10px; }
+body.w6 #mission .oc-card.speaking { border-color: var(--oc-gold); box-shadow: 0 0 0 1px var(--oc-gold), var(--oc-shadow); }
+/* the pop-up: the cards sit flat in its one white card; a second person below a thin line */
+body.w6 #intro .ic-card.people .ic-order { gap: 14px; }
+body.w6 #intro .ic-order > .oc-card + .oc-card { padding-top: 14px; border-top: 1px solid var(--sb-line); }
+/* a long order: its items in two columns rather than running off the screen */
+body.w6 #intro .ic-card.wide .oc-items { display: block; column-count: 2; column-gap: 12px; }
+body.w6 #intro .ic-card.wide .oc-item { break-inside: avoid; margin-bottom: 10px; }
+@media (max-height: 430px) {
+  body.w6 #mission.people .m-order { gap: 6px; }
+  body.w6 #intro .ic-card.wide .oc-item { margin-bottom: 5px; }
+}

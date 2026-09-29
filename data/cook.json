@@ -1952,6 +1952,45 @@
     "veg": [
      "veg-02",
      "veg-03"
+    ],
+    "_mixes": "The mixed skewers (28 Sept, design system 12): four pieces, as a skewer holds (data.mechanics.thread.pieces), meat and both vegetables, never the same piece twice running. The old generator drew three pieces (meat and two vegetables once green pepper was out), which no four-piece skewer could match",
+    "mixes": [
+     [
+      "ph-meat",
+      "veg-02",
+      "ph-meat",
+      "veg-03"
+     ],
+     [
+      "ph-meat",
+      "veg-03",
+      "ph-meat",
+      "veg-02"
+     ],
+     [
+      "ph-meat",
+      "veg-02",
+      "veg-03",
+      "ph-meat"
+     ],
+     [
+      "ph-meat",
+      "veg-03",
+      "veg-02",
+      "ph-meat"
+     ],
+     [
+      "veg-02",
+      "ph-meat",
+      "veg-03",
+      "ph-meat"
+     ],
+     [
+      "veg-03",
+      "ph-meat",
+      "veg-02",
+      "ph-meat"
+     ]
     ]
    },
    "slots": {
@@ -2009,19 +2048,23 @@
      }
     },
     "pattern": {
-     "type": "items",
      "taste": "pattern",
      "tasteChance": 0.5,
-     "always": [
-      "ph-meat"
-     ],
-     "from": "$veg",
-     "take": [
-      3,
-      3
-     ],
-     "shuffle": true,
-     "order": "sequence"
+     "pick": "$mixes"
+    },
+    "pattern2": {
+     "_about": "Design system 12 (28 Sept): at level 4 two mixed skewers can be two different mixes, each said as its own list and drawn as its own row ('hakri lakri mixed') with its pieces",
+     "if": "skewers.ph-mixed>=2",
+     "likely": {
+      "byLevel": [
+       0,
+       0,
+       0,
+       0.5
+      ]
+     },
+     "differs": "pattern",
+     "pick": "$mixes"
     }
    },
    "say": [
@@ -2041,6 +2084,11 @@
      "if": "skewers.ph-mixed",
      "list": "$pattern",
      "cardOf": "ph-mixed"
+    },
+    {
+     "if": "pattern2",
+     "list": "$pattern2",
+     "cardOf": "ph-mixed"
     }
    ],
    "need": [],
@@ -2053,6 +2101,7 @@
      "do": "mishkaki-grill",
      "skewers": "$skewers",
      "pattern": "$pattern",
+     "pattern2": "$pattern2",
      "as": "grill"
     },
     {

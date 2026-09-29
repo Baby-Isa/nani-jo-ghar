@@ -16,6 +16,8 @@ Every module is one plain file with no dependencies. As a `<script>` it sets a g
 | `js/shared/overlay.js` | `Overlay` | `overlay` | `data/shared/overlays.json` |
 | `js/shared/save.js` | `Save` | `save` | localStorage (section 11) |
 | `js/shared/app.js` | `NjgApp` | none | none (section 12; browser only) |
+| `js/shared/order-card.js` | `OrderCard` | `orderCard` | none (section 14; `shape()` runs in Node) |
+| `js/shared/guide.js` | `NaniGuide` | `guide` | the Save flag `naniMuted` (section 14.4; browser only) |
 
 ```html
 <script src="js/shared/speech.js"></script>
@@ -529,4 +531,60 @@ A save migrated from before the shell (any Cook orders, words or UI data) counts
 **`Story`** (`js/shared/story.js`): `Story.play(url, {el, kinds})` runs a story file from where the current player left it; `Story.say(line)` puts a line on the read-along card (English, then Kutchi; or Kutchi only). Scene kinds: `character` (the page's own), `scene`, `cook`, `panels`, `choice`, `end`; the data file's `_about` gives the fields. Voices: a family clip (`data/family-audio.json`, only where it says exactly the Kutchi shown), else the browser's speech, else timing only; a blocked autoplay makes the card's speaker pulse. Test hook: `__story.state()`.
 
 **Cook's entry hooks** (`js/cook/app.js`): `cook.html?app=1&first=pantry&then=<page>` (day 1's pantry round with Nani's list fixed to chai, dudh, khun) and `&first=chai&then=<page>` (one order of Nani's own: one cup, chai tray level 1). Both go to `<page>` (a page of the app only) after the round and don't set `firstDone`. `first=1` (the shell's old first launch) still works. The only line added to Cook's flow is `Cook.startDay = startDay`.
+
+## 14. The order card, the pop-up and Nani's box: `js/shared/order-card.js`, `css/shared/order-card.css` (28 Sept 2026)
+
+Design system §12 (`docs/design/cook-design-system-v1.md`), for **every mode**: one person's request as a tree, **person → items → parts**, at most three tiers, no word repeated across tiers. Cook's sidebar and request pop-up are its first users (every station); the clinic and Find it adopt it next. Load `css/shared/order-card.css` and `js/shared/order-card.js` (and `js/shared/fit.js`'s `FitText.watch(box)` if the page has it: labels stay on one line, shrunk to fit).
+
+### 14.1 The data (mode-agnostic)
+
+```js
+{ person:   { id: "nana", face: "assets/…/nana-badge.webp", name: "Nana" } | null,   // the face is the replay button
+  headline: { html: "Muke <span class=word>mishkaki</span> khape.", rec: false, key } | null,
+  items: [
+    { label: "ba lakri gos", count: 2, parts: [], key },                                  // no recipe: no parts
+    { label: "hakri lakri mixed", count: 1, ordered: true, done: false, key,
+      parts: [{ label: "gos", done: true, key }, { label: "dungri", done: false, next: true, key }, …] },
+    { label: null, parts: [ … ] } ],                                                      // a dish's own steps: no row
+  done: undefined }                                                                        // default: every item done
+```
+
+- **Labels are HTML in the mode's own word markup** (Cook's `Lang.html`: Kutchi words in `.word`, which the card colours maroon). The component never builds Kutchi: the mode says the number word (`ba lakri gos`). **No pips, no digits.**
+- `count`: how many of the item (1 by default). It only decides the "one item, one of it" rule; it is never shown.
+- `done` on an item: the mode's own (a count row ticks when its **step closes**, UX §11), else all its parts done. `next` on a part: the mode's own (an ordered job's next step: a light grey band), else the first open part of the first open ordered item. `no: true`: a "no X" part (it isn't a step on the sequence line).
+- `rec: true` on the headline: a line still to record (its English, italic, flagged "to record").
+- `key`: anything; handed back with the element drawn for it (`onEl`), for read-along.
+
+### 14.2 The rules it applies (`OrderCard.shape(data, {big})`, no DOM)
+
+- **One item, one of it, with a recipe** (a single chai): no item row; the parts sit straight under the headline. An item with `label: null` is always drawn that way.
+- **Same recipe several times** = one row (the mode says `ba lakri mixed`), parts once. **Different recipes** = separate rows, each with its parts. **Alternate item rows are lightly tinted.**
+- **Everything stays open until done.** A finished item row folds to one gold line (its parts go); a finished person folds, a beat after the last tick, to face + headline + ✓ (a single line centred on the face); a tap opens it again.
+- **The pop-up** (`big: true`) is the same tree at full size, flat inside the mode's own pop-up card: nothing folds, no "next" band, no box around a row, and the read-along highlight is a gold edge (never a yellow box).
+
+Returns `{direct, done, items: [{…item, row, tint, folded, parts: [{…, next}]}]}`.
+
+### 14.3 The calls
+
+| Call | Does |
+|---|---|
+| `OrderCard.card(data, opts)` | a person card element (`.oc-card`, `data-who` = `person.id`) |
+| `OrderCard.render(box, cards, opts)` | several cards into `box` (its content replaced): `cards` = data objects, or `[{data, opts}]`; returns the elements |
+| `OrderCard.shape(data, {big})` | the rules above, as data (tests) |
+| `OrderCard.CHECK` | the small flat gold check (svg) |
+
+`opts`: `big` (the pop-up), `fold` (a state object the mode keeps across redraws, e.g. `folds[key] ||= {}`; omit it and the card never folds), `foldAfter` (ms, default 700), `onFace(ev, cardEl)` (the face tapped: replay), `onEl(key, el)` (each keyed element: headline, item rows, parts), `decorate(el, node)` (after each row or part is drawn: a mode's own bit).
+
+Classes a mode can style or query: `.oc-card` (`.done`, `.folded`, `.foldable`, `.oc-big`), `.oc-face` (`.on` while it reads), `.oc-headline`, `.oc-item` (`.tint`, `.done`, `.folded`, `.oc-direct`), `.oc-row` (`.oc-irow` item row, `.oc-part` part; `.done`, `.next`, `.no`, `.reading`), `.oc-parts.oc-seq` (the sequence line). Sizes and colours are variables on `.oc-card` (`--oc-h` headline, `--oc-i` item, `--oc-p` part, `--oc-row-h`, `--oc-part-h`, `--oc-face`, `--oc-word`, `--oc-gold`, `--oc-tint`, …; design system §2 tokens by default).
+
+**How Cook maps its orders** (`js/cook/ui.js`, `orderCards`): a person's own section (the Chai tray's cups) → their card, rows as parts under the headline; a tally row with `cards` (skewers, maani) → an item row with its number word, a mixed skewer's `cardOf` list as its ordered parts (two different mixes → two `hakri lakri mixed` rows); every other row (the pantry, the chop and tadka, chaat layers, samosa fillings) → the dish's own parts (`label: null`), a list in order with the sequence line. Read-along (`UI.readAlong`) lights the elements `onEl` registered.
+
+### 14.4 Nani's guide box: `js/shared/guide.js`, `css/shared/guide.css`
+
+The top of every mode's sidebar: Nani's face (= replay), what to do now (up to 2 lines, never cut off), the light bulb and mute. `const g = NaniGuide.mount(el, {face, bulb, bulbId, onBulb, onReplay, base})`; `g.set(html, {rec})`, `g.talk(on)`, `g.replaying(on)`; `NaniGuide.muted()` / `setMuted(v)` / `onMute(fn)` (remembered per player in the save). The file's header has the details.
+
+### 14.5 A mode adopting it (the clinic, Find it)
+1. Load the two order-card files (and `fit.js`, `guide.js` with `guide.css` for Nani's box).
+2. Build the data from the mode's own order: one card per person; its number words in the labels; `done` when the step closes.
+3. `OrderCard.render(sidebarBox, cards, {fold: state, onFace, onEl})` on every change, and the same data with `{big: true}` inside the request pop-up.
 

@@ -736,7 +736,8 @@ ORDERS_JS = r"""
         rows.forEach((r) => {
           const want = r.qty || 1;
           // the cards drawn for this row on the order card
-          const cards = [...document.querySelectorAll("#mission .icard.unit")].filter((c) => c.querySelector(".ic-title") && c.querySelector(".ic-title").textContent.trim() === Cook.Lang.plain(r.line).trim()).length || 1;
+          // (design system 12: a kind is one row with its number word, never a card per unit; a mixed one's pieces are shown once)
+          const cards = [...document.querySelectorAll("#mission .oc-irow")].filter((c) => c.textContent.trim() === Cook.Lang.plain(r.line).trim()).length || 1;
           // only a count above one is information (one is also what a blind player guesses anyway)
           if (want > 1) {
             leak[`cards L${level}`].n++;

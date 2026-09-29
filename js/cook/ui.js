@@ -779,7 +779,8 @@
     // 28 Sept (Zafar): no English instructions on a pop-up; the card itself shows the task
     const how = el.querySelector(".ic-how");
     if (how) how.textContent = "";
-    const say = el.querySelector(".ic-say"); // Sidebar v2: the face is the replay button
+    // the face is the replay button: the old head's (Wave 5) or the order card's (design system 12), found at the tap (the card is redrawn)
+    const faces = () => [...el.querySelectorAll(".ic-say, .oc-face")];
     renderIntro();
     $("#mission").classList.add("arriving");
     el.classList.remove("hidden");
@@ -787,19 +788,18 @@
     const token = Cook.run;
     let done;
     const tapped = new Promise((resolve) => (done = resolve));
-    const onTap = (ev) => {
-      if (ev.target.closest(".ic-say")) return;
-      done();
-    };
     const onSay = (ev) => {
       ev.stopPropagation();
       Cook.unlockAudio();
-      say.classList.add("on");
+      faces().forEach((f) => f.classList.add("on"));
       if (m.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
-      (UI.w6() ? readAlong(partsOf(m.line, introEls)) : Lang.speak(m.line)).then(() => say.classList.remove("on"));
+      (UI.w6() ? readAlong(partsOf(m.line, introEls)) : Lang.speak(m.line)).then(() => faces().forEach((f) => f.classList.remove("on")));
+    };
+    const onTap = (ev) => {
+      if (ev.target.closest(".ic-say, .oc-face")) return onSay(ev);
+      done();
     };
     el.addEventListener("click", onTap);
-    say.addEventListener("click", onSay);
     const prevExpect = Cook.expect;
     Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
     card.classList.add("talk");
@@ -814,7 +814,6 @@
       await Promise.race([talk, tapped]);
     } finally {
       el.removeEventListener("click", onTap);
-      say.removeEventListener("click", onSay);
       card.classList.remove("talk");
       stopReading();
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
@@ -929,291 +928,178 @@
     if (left > 0 && token === readToken) await Cook.wait(left * Cook.speed);
   }
   UI.readAlong = readAlong;
-  /** A card's speaker: read these parts, and count it as help once they're dots. */
-  function cardSay(btn, parts, rows) {
-    if (!btn.classList.contains("face-say")) btn.innerHTML = ICON.speaker;
-    btn.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      Cook.unlockAudio();
-      const hidden = rows.filter(rowHidden);
-      if (hidden.length && Cook.onHelp) Cook.onHelp("replay", { ids: [].concat(...hidden.map((r) => r.ids)) });
-      btn.classList.add("on");
-      readAlong(parts())
-        .catch(() => {})
-        .then(() => btn.classList.remove("on"));
-    });
-    return btn;
-  }
   /** The words of a line as the card shows them: Kutchi (dots when known), or English while the bulb is on. */
   const text6 = (line, hide) => (mission && mission.english && line.en ? `<span class="en6">${esc(line.en)}</span>` : Lang.html(line, { hide }));
   /*
-   * 28 Sept (Zafar, docs/cook-ui-feedback-2026-09-28.md 1-2): one row format everywhere, on the
-   * request pop-up and the sidebar card alike. No pictures (they'd give the Kutchi away), no dots:
-   *   [word ........................ tick]
-   * A row that's done gets a flat gold outline and a small flat gold check on the right (Sidebar v3). In an ordered job
-   * (a skewer's pieces, the chaat layers, the tadka) the row to do next has a light grey band and
-   * one thin line runs down the left joining the rows (the same component for every ordered job, no
-   * numbers, no arrows); an any-order list (the pantry) has no "next". Rows still to do are plain:
-   * no empty circles. Rows tick when that step closes (UX 11); nothing goes red until the review.
+   * Design system 12 (Zafar, 28 Sept, late): the order model, drawn by the shared order card
+   * (js/shared/order-card.js, css/shared/order-card.css) in the sidebar and the request pop-up alike:
+   * person → items → parts, no pictures, no pips, no digits. Here a ladder becomes the card's data,
+   * {person, headline, items: [{label, count, parts, ordered}]}:
+   *  - a person's own section (the Chai tray's cups): their own card; their rows are the parts, straight
+   *    under the headline, in the card's slot order (milk, sugar, which chai);
+   *  - a kind made several times (a tally row with `cards`: skewers, maani): an item row with its Kutchi
+   *    number ("ba lakri gos", "hakri maani"); a mixed skewer's pieces (its `cardOf` list) are its parts,
+   *    in order. The same mix several times is one row ("ba lakri mixed"), its pieces once; two
+   *    different mixes (two lists) are two rows ("hakri lakri mixed"), each with its own pieces;
+   *  - every other row (the pantry's list, the chop and the tadka, the chaat's layers, the samosa's
+   *    fillings): the dish's own parts, straight under the headline, a list in order with the sequence line.
+   * Rows tick when their step closes (UX 11; nothing goes red until the review); a finished item row
+   * folds to one gold line, a finished person to face + headline + check (in the sidebar only).
    */
-  // Sidebar v3 (28 Sept, late): a small flat gold check (a gold disc, a white check), not the 3D tick art
-  const CHECK = `<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#c99a2e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const tickHtml = (on) => `<span class="tk" aria-hidden="true">${on ? CHECK : ""}</span>`;
-  function row6(map, { r }, { next = false, key = null } = {}) {
-    const li = document.createElement("div");
-    li.className = ["lr", "r6", r.no ? "no" : "", r.done ? "done" : "", next && !r.done ? "next" : "", r.miss && r.done === false && mission && mission.stamped ? "miss" : ""].filter(Boolean).join(" ");
-    li.innerHTML = `<span class="lt fit">${text6(r.line, rowHide(r))}</span>${tickHtml(r.done)}`;
-    if (typeof r.decorate === "function") r.decorate(li);
-    addEl(map, key || r, li);
-    return li;
+  const OCard = () => global.OrderCard;
+  const partNode = (r, gi) => ({ label: text6(r.line, rowHide(r)), done: !!r.done, no: !!r.no, key: r, gi, next: false });
+  /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
+  const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
+  /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */
+  function nextGroup(rows, at = 0) {
+    const steps = [];
+    rows.filter((x) => !x.r.no).forEach((x) => steps.push(...Array(Math.max(1, x.r.need || 1)).fill(x)));
+    const open = steps.slice(at).find((x) => !x.r.done);
+    return open ? open.gi : null;
   }
-  /** Rows into a list; an ordered one gets the sequence line and its next step marked. */
-  function rowList(map, rows, { seq = false, line = false, at = 0 } = {}) {
-    const list = document.createElement("div");
-    list.className = ["lrows", seq || line ? "lseq" : ""].filter(Boolean).join(" ");
-    list.dataset.fitGroup = "";
-    // the next step: the first group with something still to do (the whole group, if it's any-order),
-    // at or after `at` steps taken (a station whose rows tick later, at the check, moves it on: M.advance)
-    let open = null;
-    if (seq) {
-      const steps = [];
-      rows.filter((x) => !x.r.no).forEach((x) => steps.push(...Array(Math.max(1, x.r.need || 1)).fill(x)));
-      open = steps.slice(at).find((x) => !x.r.done) || null;
-    }
-    rows.forEach((x) => list.appendChild(row6(map, x, { next: !!open && x.gi === open.gi && !x.r.no, key: x.key || null })));
-    return list;
+  /** The headline as the card shows it; a line still to record is flagged. */
+  function headNode(r) {
+    if (!r) return { html: esc(mission.name) };
+    if (r.rec) return { html: esc(r.line.en || Lang.plain(r.line)), rec: true, key: r };
+    return { html: text6(r.line, rowHide(r)), key: r };
   }
-  /** The card's title words: a row's words without its number ("lakri gos", "wadhi maani"). */
-  const titleOf = (r) => {
-    const parts = (r.parts || r.ids).filter((p) => typeof p === "string");
-    return Lang.phrase(parts);
-  };
-  /**
-   * Things made several times (skewers, maani): the kind as it was said, once ("ba lakri gos",
-   * with its speaker), then a mini card per unit (28 Sept, Zafar: "two skewers" = two mini cards).
-   * A mini card is one row ("lakri gos") that ticks when that one is made; a mixed skewer's card
-   * lists its pieces in order, as an ordered job (the sequence line, the next piece marked).
-   */
-  function unitGroup(map, r, pieces, sum) {
-    const g = document.createElement("div");
-    g.className = ["ugroup", r.done ? "done" : ""].filter(Boolean).join(" ");
-    // Sidebar v2 (28 Sept evening): the kind as it was said ("hakri lakri mixed") is the card's summary,
-    // under its headline, one line each; the group boxes themselves carry no label
-    const head = document.createElement("span");
-    head.className = ["sum-line", "fit", r.done ? "done" : ""].filter(Boolean).join(" ");
-    head.innerHTML = text6(r.line, rowHide(r));
-    addEl(map, r, head);
-    if (sum) sum.appendChild(head);
-    const grid = document.createElement("div");
-    grid.className = "icards";
-    const n = Math.max(1, r.qty || 1);
-    const units = r.units || [];
-    const unitDone = (u) => !!(r.done || units[u]);
-    // which unit's card is being made now (its next piece is marked)
-    const now = pieces ? [...Array(n).keys()].find((u) => !unitDone(u)) : -1;
-    const seen = new Map();
-    const pieceDone = pieces
-      ? pieces.map((p) => {
-          const k = seen.get(p) || 0;
-          seen.set(p, k + 1);
-          return !!(p.done || k < (p.got || 0));
-        })
-      : [];
+  /** Every card of the order: [{data, key, who, rows}] (rows: the ladder rows it shows, for read-along). */
+  function orderCards() {
     const cards = [];
-    for (let u = 0; u < n; u++) {
-      const c = document.createElement("div");
-      c.className = ["icard", "unit", pieces ? "named" : "", unitDone(u) ? "done" : ""].filter(Boolean).join(" ");
-      if (pieces) {
-        const list = document.createElement("div");
-        list.className = "lrows lseq";
-        list.dataset.fitGroup = "";
-        const done = (k) => unitDone(u) || (u === now && u === 0 && pieceDone[k]);
-        const next = u === now ? pieces.findIndex((p, k) => !done(k)) : -1;
-        pieces.forEach((p, k) => {
-          const li = row6(u === 0 ? map : new Map(), { r: Object.assign(Object.create(p), { done: done(k) }) }, { next: k === next, key: p });
-          list.appendChild(li);
+    shape().forEach(({ L, sections }) => {
+      const headline = headNode(L.head || null);
+      const person = (who) => ({ id: who, face: faceUrl(who), name: who === mission.who ? mission.name : who });
+      const people = sections.filter((x) => x.s.for);
+      if (people.length) {
+        people.forEach(({ s, rows }) => {
+          const placed = rows.slice().sort((a, b) => Order().slotOf(L, a.r) - Order().slotOf(L, b.r));
+          cards.push({ key: `${L.dish || 0}:${s.for}`, who: s.for, L, rows: placed.map((x) => x.r), data: { person: person(s.for), headline, items: [{ label: null, parts: placed.map((x) => partNode(x.r, x.gi)) }] } });
         });
-        c.appendChild(list);
-      } else {
-        // the mini card names the kind ("gos", "wadhi maani"): the count and "lakri" are in the title above
-        const one = { line: Lang.phrase(r.ids), done: unitDone(u), ids: r.ids, no: false };
-        c.appendChild(row6(new Map(), { r: Object.assign(Object.create(r), one) }));
+        return;
       }
-      cards.push(c);
-      grid.appendChild(c);
-    }
-    g.appendChild(grid);
-    return g;
+      const items = [];
+      const rowsShown = [];
+      sections.forEach(({ s, rows, seq }) => {
+        if (s.cardOf) return; // drawn under its item
+        const flat = rows.filter((x) => !x.r.cards);
+        if (flat.length) {
+          const parts = flat.map((x) => partNode(x.r, x.gi));
+          items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat });
+          rowsShown.push(...flat.map((x) => x.r));
+        }
+        rows
+          .filter((x) => x.r.cards)
+          .forEach(({ r }) => {
+            const mixes = L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || y.shown));
+            const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));
+            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, key: r, src: ps ? src(ps) : [] });
+            rowsShown.push(r);
+            if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(item(text6(oneOf(r), rowHide(r)), ps)));
+            else {
+              const it = item(text6(r.line, rowHide(r)), mixes[0] || null);
+              it.count = r.qty || 1;
+              items.push(it);
+            }
+            mixes.forEach((ps) => rowsShown.push(...[].concat(...ps.groups)));
+          });
+      });
+      cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: person(mission.who), headline, items } });
+    });
+    // the next step of an ordered job (a light grey band): only in the first ordered list still open
+    let marked = false;
+    cards.forEach((c) =>
+      c.data.items.forEach((it) => {
+        if (marked || !it.ordered || it.done || !it.src) return;
+        const g = nextGroup(it.src, it.at || 0);
+        if (g == null) return;
+        it.parts.forEach((p) => (p.next = p.gi === g && !p.no && !p.done));
+        marked = it.parts.some((p) => p.next);
+      })
+    );
+    return cards;
   }
-  /**
-   * Design system 10 (Zafar, 28 Sept, late): a person's card in the sidebar collapses once all its pills are
-   * done: it animates up into one line (face + headline + a small flat gold check), a beat after the last
-   * pill ticks so that tick is seen. Tapping a collapsed card re-opens it (and tapping it again folds it).
-   * The cards are redrawn often, so the state lives on the order (mission.folds), keyed by dish and person.
-   */
-  const FOLD_AFTER = 700;
-  function foldCard(c, key, done) {
-    if (!mission) return;
+  /** The order's cards into box (the sidebar's, or the pop-up's at full size); map: row -> its elements (read-along). */
+  function drawCards(box, map, { big = false } = {}) {
+    map.clear();
+    const OC = OCard();
+    box.innerHTML = "";
+    if (!OC) return [];
     const folds = (mission.folds = mission.folds || {});
-    const st = folds[key] || (folds[key] = { doneAt: 0, open: false });
-    c.dataset.fold = key;
-    if (!done) {
-      st.doneAt = 0;
-      st.open = false;
-      return;
-    }
-    if (!st.doneAt) st.doneAt = Date.now();
-    const due = st.doneAt + FOLD_AFTER / (Cook.speed || 1) - Date.now();
-    c.classList.add("foldable");
-    if (st.open) c.classList.add("reopened");
-    else if (due <= 0) c.classList.add("folded", "still");
-    else
-      setTimeout(() => {
-        // the card as it is now (it may have been redrawn since)
-        const cur = [...document.querySelectorAll("#mission .icard.person")].find((x) => x.dataset.fold === key);
-        if (cur && !st.open && cur.classList.contains("done")) cur.classList.add("folded");
-      }, due);
-    c.addEventListener("click", (e) => {
-      if (e.target.closest(".face-say")) return; // the face is replay
-      st.open = !st.open;
-      c.classList.remove("still");
-      c.classList.toggle("folded", !st.open);
-      c.classList.toggle("reopened", st.open);
+    return orderCards().map((c) => {
+      const el = OC.card(c.data, {
+        big,
+        fold: big ? null : folds[c.key] || (folds[c.key] = {}),
+        foldAfter: 700 / (Cook.speed || 1),
+        onEl: (key, e) => addEl(map, key, e),
+        decorate: (e, node) => node.key && typeof node.key.decorate === "function" && node.key.decorate(e),
+        onFace: big ? null : (ev) => {
+          ev.stopPropagation();
+          Cook.unlockAudio();
+          if (c.own && mission.ladders.length === 1) return M.sayCard();
+          sayCardEl(el, null);
+        },
+      });
+      // what this card says, in order (the headline, then its rows): a person says their line from here
+      el._parts = () => (c.data.headline && c.data.headline.key && !c.data.headline.rec ? [{ row: c.data.headline.key, line: c.data.headline.key.line, els: (map.get(c.data.headline.key) || []).filter((e) => el.contains(e)) }] : []).concat(c.rows.map((r) => ({ row: r, line: r.no || !r.said ? r.line : r.said, els: (map.get(r) || []).filter((e) => el.contains(e)) })));
+      el._rows = c.rows;
+      box.appendChild(el);
+      return el;
     });
   }
-  /**
-   * One person's card (a cup on the Chai tray). Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10):
-   * one white card per person: their face (= replay), the short headline ("Muke chai khape."), then
-   * their pills. No "{name} lai." sub-header: the card is theirs. A second person has their own card.
-   */
-  function personCard(map, L, s, rows) {
-    const c = document.createElement("div");
-    const allDone = rows.every((x) => x.r.done);
-    c.className = ["icard", "person", allDone ? "done" : ""].filter(Boolean).join(" ");
-    c.dataset.who = s.for;
-    const head = L.head || null;
-    c.innerHTML = `<div class="pc-head"><button class="card-say face-say" type="button" aria-label="Hear it again"><img class="lface" src="${faceUrl(esc(s.for))}" alt=""><span class="say-badge" aria-hidden="true"></span></button>${head ? `<div class="ic-title md-text fit">${text6(head.line, rowHide(head))}</div>` : ""}<span class="pc-tk">${tickHtml(true)}</span></div><div class="pc-body"><div class="pc-in"></div></div>`;
-    const title = c.querySelector(".ic-title");
-    if (head && title) addEl(map, head, title);
-    // the card's fixed slots, in order (milk, sugar, which chai); an empty slot draws nothing (no empty circles)
-    const placed = rows.slice().sort((a, b) => Cook.Order.slotOf(L, a.r) - Cook.Order.slotOf(L, b.r));
-    c.querySelector(".pc-in").appendChild(rowList(map, placed));
-    if (map === sideEls) foldCard(c, `${L.dish || 0}:${s.for}`, allDone);
-    const parts = () => (head && title ? [{ line: head.line, els: [title] }] : []).concat(placed.map((x) => ({ row: x.r, line: x.r.no || !x.r.said ? x.r.line : x.r.said, els: (map.get(x.r) || []).filter((e) => c.contains(e)) })));
-    c._parts = parts;
-    cardSay(c.querySelector(".pc-head .face-say"), parts, rows.map((x) => x.r));
-    return c;
-  }
-  /** Does this order have person cards (the Chai tray)? Then each person's card is the card (no shared head). */
-  const hasPeople = () => !!mission && mission.ladders.some((L) => L.sections.some((s) => s.for && (!s.when || s.shown)));
-  /**
-   * Sidebar v3: a person says their line from their own card in the sidebar (it lights up as it's
-   * read, their face's badge glows), never from a second, full-sentence card below it. rows: only
-   * these (a recast). Resolves when it's said; false when there's no card for them.
-   */
-  M.sayPerson = async function (who, rows) {
-    const c = [...document.querySelectorAll("#mission .icard.person")].find((x) => x.dataset.who === who);
-    if (!c || !c._parts || $("#mission").classList.contains("hidden")) return false;
-    const face = c.querySelector(".face-say");
+  /** One card reads itself (its face lights), counting it as help once its words are dots. rows: only these (a recast). */
+  async function sayCardEl(c, rows) {
+    const face = c.querySelector(".oc-face");
+    const hidden = (c._rows || []).filter(rowHidden);
+    if (hidden.length && Cook.onHelp && !rows) Cook.onHelp("replay", { ids: [].concat(...hidden.map((r) => r.ids)) });
     const parts = rows ? c._parts().filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : c._parts();
     c.classList.add("speaking");
     if (face) face.classList.add("on");
-    if (c.scrollIntoView) c.scrollIntoView({ block: "nearest" });
     try {
       await readAlong(parts);
+    } catch (e) {
+      /* a new read stopped it */
     } finally {
       c.classList.remove("speaking");
       if (face) face.classList.remove("on");
     }
+  }
+  /**
+   * A person says their line from their own card in the sidebar (it lights up as it's read, their
+   * face's badge glows), never from a second card below it. rows: only these (a recast). Resolves when
+   * it's said; false when there's no card for them.
+   */
+  M.sayPerson = async function (who, rows) {
+    const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
+    if (!c || !c._parts || $("#mission").classList.contains("hidden")) return false;
+    if (c.scrollIntoView) c.scrollIntoView({ block: "nearest" });
+    await sayCardEl(c, rows || null);
     return true;
   };
-  /** A ladder's blocks into `box`: sections as rows, person cards and unit cards. */
-  function blocks6(box, map, { big = false, sum = null } = {}) {
-    map.clear();
-    if (sum) sum.innerHTML = "";
-    shape().forEach(({ L, sections }, li) => {
-      const lad = document.createElement("div");
-      lad.className = "ladder";
-      // a later dish's line ("Ne samosa."); the first dish is the card's head
-      if (L.head && li > 0) {
-        const h = document.createElement("div");
-        h.className = ["lr", "r6", "head", L.head.done ? "done" : ""].filter(Boolean).join(" ");
-        h.innerHTML = `<span class="lt">${text6(L.head.line, rowHide(L.head))}</span>`;
-        addEl(map, L.head, h);
-        lad.appendChild(h);
-      }
-      const pieceSec = (id) => L.sections.find((x) => x.cardOf === id);
-      sections.forEach(({ s, rows, seq, plain }) => {
-        if (s.cardOf) return; // drawn on its card
-        if (s.for) return lad.appendChild(personCard(map, L, s, rows));
-        const sec = document.createElement("div");
-        sec.className = ["lsec", s.when ? "late" : ""].filter(Boolean).join(" ");
-        const cards = rows.filter((x) => x.r.cards);
-        const flat = rows.filter((x) => !x.r.cards);
-        if (flat.length) sec.appendChild(rowList(map, flat, { seq, line: plain && flat.length > 1, at: s.at || 0 }));
-        cards.forEach((x) => {
-          const ps = pieceSec(x.r.ids[x.r.ids.length - 1]);
-          const pieces = ps ? [].concat(...ps.groups).filter((p) => !p.no).flatMap((p) => Array(p.need || 1).fill(p)) : null;
-          // Sidebar v2: every skewer (or maani) is a group box, one of a kind included; the kinds are the summary
-          sec.appendChild(unitGroup(map, x.r, pieces, sum));
-        });
-        lad.appendChild(sec);
-      });
-      box.appendChild(lad);
-    });
-    // Sidebar v2: alternate group boxes are tinted differently, so each skewer or cup stands apart
-    box.querySelectorAll(".icard:not(.person)").forEach((c, i) => c.classList.toggle("tint-b", i % 2 === 1));
-  }
   function renderOrder6() {
     const box = $("#mission .m-order");
-    box.innerHTML = "";
-    blocks6(box, sideEls, { sum: $("#mission .m-sum") });
-    renderDish6();
-    // Sidebar v3: one white card per person; the shared head goes (each person's card has the headline)
-    $("#mission").classList.toggle("people", hasPeople());
+    drawCards(box, sideEls);
+    // the request card steps back: its cards are the order card component's (the shared head goes)
+    $("#mission").classList.add("people");
     $("#side").classList.toggle("english", !!mission.english);
     if (introOpen()) renderIntro6();
   }
-  /** The headline (the overall request) as the card's head shows it; a line still to record is flagged. */
-  function headline6(r) {
-    if (!r) return `<span class="md-text fit">${esc(mission.name)}</span>`;
-    if (r.rec) return `<span class="md-text rec"><span class="md-line fit">${esc(r.line.en || Lang.plain(r.line))}</span><small class="md-rec">to record</small></span>`;
-    return `<span class="md-text fit">${text6(r.line, rowHide(r))}</span>`;
-  }
-  function renderDish6() {
-    const box = $("#mission .m-dish");
-    const L = mission.ladders[0];
-    const r = L && L.head;
-    box.innerHTML = headline6(r);
-    if (r) {
-      sideEls.delete(r);
-      addEl(sideEls, r, box);
-    }
-  }
   function renderIntro6() {
     const box = intro().querySelector(".ic-order");
-    box.innerHTML = "";
-    blocks6(box, introEls, { big: true, sum: intro().querySelector(".m-sum") });
-    // a long order: the pop-up lays its group boxes out in two columns rather than running off the screen
-    intro().querySelector(".ic-card").classList.toggle("wide", box.querySelectorAll(".r6").length > 8);
-    intro().querySelector(".ic-card").classList.toggle("people", hasPeople());
-    // 28 Sept: the headline sits in the pop-up's head, beside the face (no name)
-    const dish = intro().querySelector(".ic-dish");
-    const L = mission.ladders[0];
-    if (dish) {
-      dish.innerHTML = headline6(L && L.head);
-      if (L && L.head) addEl(introEls, L.head, dish);
-    }
+    drawCards(box, introEls, { big: true });
+    const card = intro().querySelector(".ic-card");
+    card.classList.add("people");
+    // a long order: the pop-up lays its items out in two columns rather than running off the screen
+    card.classList.toggle("wide", box.querySelectorAll(".oc-row").length > 8);
   }
   /** The order card's own speaker: the whole order, read along on the card. */
   M.sayCard = function () {
     if (!mission || introOpen()) return;
-    const btn = $("#mission .m-ring"); // Sidebar v2: the face is the replay button
+    const btns = [...document.querySelectorAll("#mission .oc-face")]; // the face is the replay button
     if (mission.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
-    if (btn) btn.classList.add("on");
+    btns.forEach((b) => b.classList.add("on"));
     return readAlong(partsOf(mission.line, sideEls))
       .catch(() => {})
-      .then(() => btn && btn.classList.remove("on"));
+      .then(() => btns.forEach((b) => b.classList.remove("on")));
   };
 
   /* ---- the light bulb ---- */
@@ -1319,12 +1205,17 @@
     return rows;
   };
   /** Tick the i-th piece of the dish's sequence (a mixed skewer's pieces): that row, never another row with the same word. */
+  /** The sequences that positions count along: a skewer's mixes, one after the other (two different mixes), else the first. */
+  const seqSecs = (L) => {
+    const mixes = L ? L.sections.filter((x) => x.cardOf) : [];
+    return mixes.length ? mixes : [L && L.sections.find((x) => x.seq)].filter(Boolean);
+  };
   M.tickUnit = function (i, dish = 0) {
     const L = ladderFor(dish);
-    const s = L && L.sections.find((x) => x.seq);
-    if (!s) return null;
+    const secs = seqSecs(L);
+    if (!secs.length) return null;
     const units = [];
-    s.groups.forEach((g) => g.forEach((r) => !r.no && units.push(...Array(r.need || 1).fill(r))));
+    secs.forEach((s) => s.groups.forEach((g) => g.forEach((r) => !r.no && units.push(...Array(r.need || 1).fill(r)))));
     const r = units[i];
     if (!r || r.done) return r || null;
     r.got = (r.got || 0) + 1;
@@ -1362,10 +1253,8 @@
   M.unitId = function (i, dish = 0) {
     const L = ladderFor(dish);
     if (!L) return null;
-    const s = L.sections.find((x) => x.seq);
-    if (!s) return null;
     const units = [];
-    s.groups.forEach((g) => g.forEach((r) => !r.no && r.ids.forEach((id) => units.push(...Array(r.need || 1).fill(id)))));
+    seqSecs(L).forEach((s) => s.groups.forEach((g) => g.forEach((r) => !r.no && r.ids.forEach((id) => units.push(...Array(r.need || 1).fill(id))))));
     return units[i] || null;
   };
   /** Something went wrong for this item (a word id, or a compound kind's ids): mark its row (shown on the result card). */

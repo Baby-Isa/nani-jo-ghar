@@ -19,7 +19,7 @@
  * In a zone with an `in` channel (the Mishkaki grill station) the rack is
  * filled by the thread zone; `line` is the station's shared state (rack
  * room, "is anything cooking", a poke that resets Nani's hint timer).
- * Params: skewers ({kind: count}: the order), pattern (the mixed skewer,
+ * Params: skewers ({kind: count}: the order), pattern (the mixed skewer, or several different ones,
  * in order), chips (ordered? omit for no basket), stock (fill the rack
  * with ready skewers: the standalone grill), rackItems ([{pieces}]: the
  * skewers threaded before, Wave 6's one job at a time), line, dx (shift
@@ -49,28 +49,34 @@
   SK.kindOfWord = (w) => (SK.cfg().kinds || {})[w];
   SK.pieceIds = () => Object.keys(SK.cfg().classes || {});
   SK.vegIds = () => SK.pieceIds().filter((id) => SK.cls(id) === "veg");
+  /**
+   * The mixed skewers' patterns: one pattern (an array of piece ids) or several (an array of them:
+   * design system 12, two different mixes at level 4).
+   */
+  SK.pats = (pattern) => (!pattern || !pattern.length ? [] : Array.isArray(pattern[0]) ? pattern : [pattern]);
   /** Could `pieces` (so far) be the start of a skewer of kind word `w`? */
   SK.fits = function (w, pieces, pattern = []) {
     const what = SK.kindOfWord(w);
     if (what === "meat" || what === "veg") return pieces.every((p) => SK.cls(p) === what);
-    if (what === "mixed") return pieces.length <= pattern.length && pieces.every((p, i) => p === pattern[i]);
+    if (what === "mixed") return SK.pats(pattern).some((pt) => pieces.length <= pt.length && pieces.every((p, i) => p === pt[i]));
     return false;
   };
-  /** A finished skewer: {kind: word, ok} (ok: a mixed one in the spoken order). */
+  /** A finished skewer: {kind: word, ok, pat} (ok: a mixed one in a spoken order; pat: which one). */
   SK.classify = function (pieces, pattern = []) {
     const cl = pieces.map(SK.cls);
     if (cl.every((c) => c === "meat")) return { kind: SK.kindWord("meat"), ok: true };
     if (cl.every((c) => c === "veg")) return { kind: SK.kindWord("veg"), ok: true };
-    const ok = cl.every(Boolean) && pieces.length === pattern.length && pieces.every((p, i) => p === pattern[i]);
-    return { kind: SK.kindWord("mixed"), ok };
+    const pat = cl.every(Boolean) ? SK.pats(pattern).findIndex((pt) => pieces.length === pt.length && pieces.every((p, i) => p === pt[i])) : -1;
+    return { kind: SK.kindWord("mixed"), ok: pat >= 0, pat };
   };
-  /** Pieces for a ready-made skewer of kind word `w` (the standalone rack). */
-  SK.sample = function (w, n, pattern) {
+  /** Pieces for a ready-made skewer of kind word `w` (the standalone rack); i: which one (two different mixes take turns). */
+  SK.sample = function (w, n, pattern, i = 0) {
     const what = SK.kindOfWord(w);
     const meat = SK.kindWord("meat");
     if (what === "meat") return Array(n).fill(meat);
     if (what === "veg") return Array.from({ length: n }, () => Cook.pick(SK.vegIds()));
-    if (pattern && pattern.length) return pattern.slice();
+    const pats = SK.pats(pattern);
+    if (pats.length) return pats[i % pats.length].slice();
     const out = [meat, Cook.pick(SK.vegIds())];
     while (out.length < n) out.push(Cook.pick([meat].concat(SK.vegIds())));
     return Cook.shuffle(out);
@@ -925,7 +931,7 @@
       if (params.stock) {
         const items = [];
         Object.keys(want).forEach((w) => {
-          for (let i = 0; i < want[w]; i++) items.push(SK.sample(w, nPieces, pattern));
+          for (let i = 0; i < want[w]; i++) items.push(SK.sample(w, nPieces, pattern, i));
         });
         const kinds = Object.keys(SK.cfg().kinds || {});
         while (items.length < k.rack) {
@@ -1066,6 +1072,12 @@
           if (m >= 1 && m <= 5) (n === m ? Cook.markRight : Cook.markMiss)(Lang.numId(m));
         }
       });
+      // two different mixes (design system 12): one of each, not two of one
+      const pats = SK.pats(pattern);
+      if (pats.length > 1) {
+        const each = pats.map((_, j) => plate.filter((p) => p.cls.ok && p.cls.pat === j).length);
+        if (each.some((n) => n !== 1)) z.listen(false, "the two mixed skewers weren't one of each mix");
+      }
       const odd = plate.filter((p) => !p.cls.ok).length;
       if (odd) z.listen(false, `${odd} skewer${odd > 1 ? "s" : ""} not in the order`);
       if (offerChips && chipsOn !== !!params.chips) z.listen(false, chipsOn ? "ph-chips, they didn't ask for it" : "left out ph-chips");
@@ -1084,7 +1096,7 @@
       const R = Cook.Recipes;
       const d = R.mishkaki.make(Cook.pick(["nana", "ma", "cousin"]), { level: L.level });
       L.card(d, ["Grill"]);
-      await L.station("grill", { skewers: d.skewers, pattern: d.pattern, stock: true });
+      await L.station("grill", { skewers: d.skewers, pattern: d.pattern2 ? [d.pattern, d.pattern2] : d.pattern, stock: true });
     },
   });
 })(window);

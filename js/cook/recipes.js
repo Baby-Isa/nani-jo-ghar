@@ -65,10 +65,16 @@
     for (const key of rest) v = v == null ? undefined : v[key];
     return v;
   }
-  /** "dudh", "!dudh", or a list of them (all must hold). */
+  /** "dudh", "!dudh", "skewers.ph-mixed>=2", or a list of them (all must hold). */
   function cond(c, env) {
     if (c == null) return true;
     if (Array.isArray(c)) return c.every((x) => cond(x, env));
+    const cmp = /^(.+?)(>=|<=|==|>|<)(\d+)$/.exec(c);
+    if (cmp) {
+      const v = Number(lookup(cmp[1], env)) || 0;
+      const n = Number(cmp[3]);
+      return { ">=": v >= n, "<=": v <= n, "==": v === n, ">": v > n, "<": v < n }[cmp[2]];
+    }
     const neg = c.startsWith("!");
     const v = truthy(lookup(neg ? c.slice(1) : c, env));
     return neg ? !v : v;
@@ -431,7 +437,15 @@
         if (usual) d.usual = true;
         const env = { d, taste, usual, who, recipe: id, tastes: D.tastes || id, lists: D.lists || {}, vars: {} };
         const lvl = opts.level || D.level || 1;
-        Object.keys(D.slots || {}).forEach((k) => (d[k] = value(atLevel(D.slots[k], lvl), env)));
+        // a slot can be there only sometimes: "if" (a condition on the slots before it), "likely" (a chance),
+        // and "differs" (never the same as that slot: a second mixed skewer is another mix)
+        Object.keys(D.slots || {}).forEach((k) => {
+          const spec = atLevel(D.slots[k], lvl);
+          if (isObj(spec) && ((spec.if != null && !cond(spec.if, env)) || (spec.likely != null && Math.random() >= spec.likely))) return (d[k] = null);
+          d[k] = value(spec, env);
+          for (let n = 0; isObj(spec) && spec.differs && n < 12 && JSON.stringify(d[k]) === JSON.stringify(d[spec.differs]); n++) d[k] = value(spec, env);
+          if (isObj(spec) && spec.differs && JSON.stringify(d[k]) === JSON.stringify(d[spec.differs])) d[k] = null;
+        });
         if (opts.level || D.level) d.level = opts.level || D.level;
         if (D.levels) d.levels = clone(D.levels);
         return d;
