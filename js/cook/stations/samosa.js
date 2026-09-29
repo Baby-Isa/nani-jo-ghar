@@ -1,26 +1,31 @@
 /*
- * Combined station: Samosa v2, fill, fold, fry (docs/design/cook-design-system-v1.md §15; the chai v2 grid
- * §3, §4, §10; the kitchen kit §13; serve and taste §14a).
+ * Combined station: Samosa v3, fill, fold, fry (docs/design/cook-design-system-v1.md §15; the chai v2 grid
+ * §3, §4, §10; the kitchen kit §13; serve and taste §14a; the 29 Sept play-test, S1-S21 and Q2, Q3, Q9).
  *
  * THREE JOBS, one at a time, each on the whole picture:
- *  1. FILL: a real top-down pastry strip lies on a wooden board. The fillings stand on the shelf band (the
- *     bottom 26%) as identical front-on prep bowls, a `🔊 word` chip under each (tap the bowl = use it, tap
- *     the chip = hear it; from level 3 the word hides and the speaker stays). Each tap drops ONE spoonful on
- *     the pastry and its word pops with the family clip. Nothing is refused: tap the tick when it's right
- *     (it's graded then: how many spoons of each, and nothing they said no to).
- *  2. FOLD: keep the SWIPE (Zafar: "different and should feel satisfying"). The flap folds over with the
- *     finger (the real pastry art, bent along its fold line), and a soft glow shows the next swipe; let go
- *     past halfway and it snaps shut (a snap, a little pop, the next fold stage). Three folds make a
- *     samosa: its word pops. Make as many as they asked for (each new strip gets the same filling), then
- *     the phase button takes them to the karahi. The count is theirs, graded there.
- *  3. FRY: the kitchen kit's hob (ONE burner: one karahi, the burner rule) with the karahi of oil on it.
- *     Tap the knob: the oil heats (the kit's heat ring). Tap a raw samosa: it slides into the oil. Each one
- *     goes raw -> light -> golden -> too dark (a small heat ring round it); tap it when golden and the
- *     slotted spoon (no hand) lifts it onto the paper-lined plate. No tally: the plate shows the count.
+ *  1. FILL: a flat pastry strip lies on the house board (S6). The fillings sit on the shelf band (the
+ *     bottom 26%) as top-down heaps, no bowls (S2 / Q2), a `🔊 word` chip under each (tap the heap = use
+ *     it, tap the chip = hear it; from level 3 the word hides and the speaker stays). Each tap drops ONE
+ *     spoonful on the strip's left end and its word pops with the family clip. Nothing is refused: tap the
+ *     tick when it's right (it's graded then: how many spoons of each, and nothing they said no to).
+ *  2. FOLD: keep the SWIPE (Zafar: "different and should feel satisfying"). S8, S11 / Q3 (Zafar's answer):
+ *     the filling sits on the flat strip, the FIRST fold hides it, and every stage is a fixed picture
+ *     (assets/cook/items/v3/samosa/fold-1…6, one registered canvas). Three swipes, left to right, each
+ *     wiping the next picture(s) in over the last as the finger goes (1->2, 2->3->4, 4->5->6); a soft glow
+ *     shows the part that folds next; let go past the swipe's minLen and it snaps to its last picture.
+ *     The finished samosa's word pops and it goes onto the plate's flat middle (S10). Make as many as they
+ *     asked for (each new strip gets the same filling: an order has one filling for all its samosas),
+ *     then the phase button takes them to the karahi. The count is theirs, graded there.
+ *  3. FRY: the kit's WIDE hob (one big landscape burner, S19 / Q9) with the v3 karahi of oil on it, about
+ *     1.4x its old size (S17). Tap the knob: the flames come up and stay up while it's on (S21) and the
+ *     oil sizzles at once: no heating ring (S16). Tap a raw samosa: it slides into the oil. Each one goes
+ *     raw -> light -> golden -> too dark (a small timing ring round it); tap it when golden and the jharo
+ *     slides in UNDER it and it rides on top onto the paper-lined plate (S20). No tally: the plate shows
+ *     the count.
  * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): their big round face comes up over
  *   the plate (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
- *  - not quite: a gentle face, they say their order again, the plate comes back empty and the child makes
+ *  - not quite: a frown, they say their order again, the plate comes back empty and the child makes
  *    them again (fill first). Only the first try counts (the ear star, the end review). At most three tries.
  * The card (the shared order card, §12): the fillings' rows count up as spoons go in and tick when the fill
  * closes (UX 11, right or not); then the card folds to face + headline, no ✓ (the phase fold, §13: "ba
@@ -29,8 +34,9 @@
  * Levels (data/cook.json's samosa recipe slots; the fill's decoys and the fry's speed in data.mechanics):
  * 1 = one or two samosas, one decoy, words on the chips; 2 = more decoys; 3 = a "don't" filling, speaker-only
  * chips; 4 = as 3 (the fry's speed and band tighten by level in data.mechanics.fry).
- * Art: assets/cook/items/samosa-v2/ (build/gen_samosa_v2.py, build/cut_samosa_v2.py; its meta.json copied
- * below), the chaat v2 prep bowls, the kitchen kit's hob and knob (js/cook/kitchen-kit.js).
+ * Art: assets/cook/items/v3/samosa/ (build/cut_cook_v3.py; the numbers below are its meta.json, checked
+ * by build/check_vessel_meta.py), the fry states from assets/cook/items/samosa-v2/, the kit's wide hob,
+ * knob and flames (js/cook/kitchen-kit.js). Shots: build/shoot_samosa_v3.py.
  */
 (function (global) {
   const Cook = global.Cook;
@@ -883,6 +889,8 @@
             const verdict = L < lo ? "light" : L > (k.burnAt || 1.15) ? "dark" : "golden";
             if (verdict !== "golden") bad = bad || (verdict === "light" ? "lifted a samosa before it was golden" : "a samosa went too dark");
             z.skill(verdict === "golden" ? 100 : verdict === "light" ? 55 : k.burntScore || 40, "fry");
+            // the next thing to do moves on at once (it stopped frying the moment it was tapped)
+            post();
             // one jharo: a second lift waits for the first scoop to finish
             const prev = scooping;
             let done;
@@ -893,13 +901,13 @@
             const sy0 = f.y0;
             im.y = b.y = sy0;
             jharo.setPosition(sx0 + z.L(150), sy0 + z.L(170)).setAngle(0).setAlpha(0);
-            await new Promise((r) => S.tweens.add({ targets: jharo, x: sx0, y: sy0 + z.L(6), alpha: 1, duration: 220, ease: "Quad.easeOut", onComplete: r }));
+            await new Promise((r) => S.tweens.add({ targets: jharo, x: sx0, y: sy0 + z.L(6), alpha: 1, duration: 180, ease: "Quad.easeOut", onComplete: r }));
             Cook.sfx.pop();
             // onto the plate: the samosa rides on the jharo's bowl
             lifted.push({ im, b, verdict });
             const sp = plateSpots(lifted.length, FRY.px, PY, plate.flatHalf, 0.84)[lifted.length - 1];
             const sc = z.L(sp.w) / 370;
-            const dur = 480;
+            const dur = 440;
             const arc = z.L(110);
             await Promise.all([S.fly(im, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(b, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(jharo, z.X(sp.x), z.Y(sp.y) + z.L(6), { duration: dur, arc })]);
             im.setAngle(sp.a);

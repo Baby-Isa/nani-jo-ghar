@@ -17,9 +17,9 @@ Plays the station in the Station lab with build/test_cook.py's Player and saves 
   plate       the plate with the fried samosas
   taste-right / taste-wrong   the review face over the plate (--wrong: one spoon too many)
   end         the end-of-station pop-up
-  python3 build/shoot_samosa_v2.py                 # laptop, level 1 (iterating)
-  python3 build/shoot_samosa_v2.py --level 3 --wrong
-  python3 build/shoot_samosa_v2.py --matrix        # phone + laptop, levels, into build/reports/samosa-v2/
+  python3 build/shoot_samosa_v3.py                 # laptop, level 1 (iterating)
+  python3 build/shoot_samosa_v3.py --level 3 --wrong   # --wrong: the frown (Cook.forceReview)
+  python3 build/shoot_samosa_v3.py --matrix        # laptop + phone landscape, levels 1-4 + wrong, into build/reports/samosa-v3/
 """
 import argparse
 import json
@@ -74,8 +74,6 @@ class Shooter(T.Player):
                 if self.wrong and t != "happy":
                     self.page.evaluate("Cook.tasted = null")
                 return
-            if "plate" not in self.taken and not self.page.evaluate("(() => { const s = Cook.scene; return !!s && [...s.children.list].some(o => o.texture && o.texture.key === 'sv3-jharo' && o.alpha > 0.05); })()"):
-                self.snap("plate")
             return
         if k == "tap" and key not in ("knob", "samosa") and "fill-start" not in self.taken:
             time.sleep(0.4)
@@ -135,6 +133,10 @@ class Shooter(T.Player):
             self.snap("scoop")
             return r
         r = super().act(e)
+        if k == "timing":
+            # the last lift's plate wins (each lift overwrites it)
+            time.sleep(1.0)
+            self.snap("plate", force=True)
         if k == "tap" and key == "samosa" and "frying-1" not in self.taken:
             time.sleep(0.9)
             self.snap("frying-1")
@@ -154,6 +156,9 @@ def run(vp, out, level, speed, guided=True, wrong=False):
         P = Shooter(page, out, speed, tag, wrong=wrong)
         page.evaluate(f"() => {{ __cook.lab('samosa', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
+        if wrong:
+            # the frown's look (Kit.review's screenshot switch; the station's own verdict still decides)
+            page.evaluate("Cook.forceReview = false")
         if vp["height"] > vp["width"]:
             time.sleep(2.5)
             P.snap("portrait")
@@ -189,10 +194,9 @@ def main():
                 os.remove(os.path.join(out, f))
         ok &= run(VPS["phone"], out, 1, a.speed)
         for name in ["laptop", "phone-landscape"]:
-            ok &= run(VPS[name], out, 1, a.speed)
+            for lv in (1, 2, 3, 4):
+                ok &= run(VPS[name], out, lv, a.speed)
             ok &= run(VPS[name], out, 2, a.speed, wrong=True)
-            ok &= run(VPS[name], out, 3, a.speed)
-        ok &= run(VPS["laptop"], out, 4, a.speed)
     else:
         os.makedirs(a.out, exist_ok=True)
         ok &= run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong)
