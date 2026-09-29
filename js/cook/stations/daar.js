@@ -486,7 +486,7 @@
       await Cook.tween(S, { targets: jar, angle: -75, duration: 160, ease: "Quad.easeOut" });
       Cook.sfx.sizzle(0.8);
       S.burst(cx, cy - bodyR * 0.2, [col, 0xfff0c0], 12, z.L(50));
-      setPot(stage(state) < 0 ? state : "seeds");
+      if (stage(state) < 1) setPot("seeds");
       await Cook.tween(S, { targets: jar, alpha: 0, angle: 0, duration: 220 });
       jar.destroy();
     };

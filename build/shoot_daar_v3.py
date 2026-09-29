@@ -108,9 +108,9 @@ class Shooter(T.Player):
         time.sleep(0.5)
         self.snap("stir-stopped")
         # through every band (in-page, steady: Cook.stirDrive), a shot in each while it's turning
-        for rate, name, ms in [(0.45, "stir-tortoise", 2000), (1.4, "stir-hare", 1500), (3.0, "stir-spill", 1100)]:
+        for rate, name, ms in [(0.45, "stir-tortoise", 2600), (1.4, "stir-hare", 2000), (3.0, "stir-spill", 1300)]:
             p.evaluate(f"() => {{ Cook.__drive = Cook.stirDrive({rate}, {ms}); }}")
-            time.sleep(ms / 1000 * 0.85)
+            time.sleep(ms / 1000 * 0.9)
             if DEBUG:
                 print("   dial", name, p.evaluate("Cook.stirSpeed ? Cook.stirSpeed() : -1"), flush=True)
             p.screenshot(path=os.path.join(self.shots, f"{self.tag}-{name}.png"))
