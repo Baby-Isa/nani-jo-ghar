@@ -9,7 +9,7 @@
   - A finished item folds to a gold line; a finished person folds to face + headline + ✓.
   - The pop-up is flat: no yellow box and no grey boxes.
 - **Two different mixed skewers** (level 4, new). Mixes are now 4 pieces: the old generator made 3, which a 4-piece skewer could never match.
-- **Phone:** long part lists take two columns, so the order fits.
+- **Phone:** long part lists use two columns.
 
 **Screenshots** (`order-model/`): `laptop-mishkaki-popup.jpg`, `phone-mishkaki-sidebar.jpg`, `laptop-fold-sidebar.jpg`, `laptop-chai-popup-tray.jpg`.
 
