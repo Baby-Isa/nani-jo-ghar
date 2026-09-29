@@ -1,23 +1,23 @@
 # ChatGPT art prompts: Cook v3, from Zafar's play-test (29 Sept)
 
-Everything Cook needs from `docs/feedback/cook-playtest-2026-09-29.md`, in one run: 27 prompts. Free (ChatGPT). The order matters: the hob prompts H2–H6 attach the H1 picture you made.
+Everything Cook needs from `docs/feedback/cook-playtest-2026-09-29.md`, in one run: 28 prompts. Free (ChatGPT). The order matters: the hob prompts H2–H6 attach the H1 picture you made.
 
-**Prompts built on a decision** use Claude's recommended answer (report §10): T1–T2 (chaat fully side-on, Q2b), S1 (the cone fold, Q3), S5 (top-down fillings, no bowls, Q2a), M5 (both turners drawn; Zafar picks, Q15). If Zafar decided otherwise, Claude edits this page before it's pasted.
+**Built to Zafar's answers (29 Sept, report §10):** A1–A2 faces in three expressions (Q12, also the review faces, Q1); T1–T2 chaat fully side-on (Q2b); S1 filled on the flat strip, and the first fold covers it (Q3); S5 top-down fillings with no bowls (Zafar's own samosa note); M5 a flat wooden turner (Q15). Nothing else changes look: chai's and daar's side-on jars stay (Q2a).
 
 ## Paste this one block into Claude in Chrome
 ```
-You're making 27 images in ChatGPT for a children's game called Nani jo Ghar, then uploading them to GitHub yourself. Work through these steps in order, and don't change any ChatGPT, GitHub or Chrome settings.
+You're making 28 images in ChatGPT for a children's game called Nani jo Ghar, then uploading them to GitHub yourself. Work through these steps in order, and don't change any ChatGPT, GitHub or Chrome settings.
 
-1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/chatgpt-art-prompts-cook-v3.md and read the whole page. It has 27 prompts in this order: H1, H2, H3, H4, H5, H6, A1, C1, M1, M2, M3, M4, M5, D1, D2, T1, T2, S1, S2, S3, S4, S5, K1, K2, K3, K4, K5. Each is in a grey code box, followed by "attach", "save as" and "check" lines.
+1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/chatgpt-art-prompts-cook-v3.md and read the whole page. It has 28 prompts in this order: H1, H2, H3, H4, H5, H6, A1, A2, C1, M1, M2, M3, M4, M5, D1, D2, T1, T2, S1, S2, S3, S4, S5, K1, K2, K3, K4, K5. Each is in a grey code box, followed by "attach", "save as" and "check" lines.
 
 2. Download the reference images listed under "Reference images" on that page. Open each link and click its "Download raw file" button (the download-arrow icon at the top right of the image).
 
-3. In ChatGPT (chatgpt.com), for each prompt in order: start a new chat, attach the files its "attach" line names (where it says "your H1 image" or "your K4 image", attach that picture, which you downloaded earlier in this run), paste the text of its code box exactly as written, and send. When the image arrives, compare it against its "check" line.
+3. In ChatGPT (chatgpt.com), for each prompt in order: start a new chat, attach the files its "attach" line names (where it says "your H1 image", "your A1 image" or "your K4 image", attach that picture, which you downloaded earlier in this run), paste the text of its code box exactly as written, and send. When the image arrives, compare it against its "check" line.
    - If it passes, download it straight away with ChatGPT's own download button (never a screenshot), before moving on.
    - If it fails, reply once saying which check it failed and ask for a corrected image. If that fails too, start a fresh chat and try once more (at most 2 retries per prompt). Then download the best one and note what's wrong with it.
-   - Download only the one image you keep for each prompt, so there are exactly 27 downloads.
+   - Download only the one image you keep for each prompt, so there are exactly 28 downloads.
 
-4. Upload the 27 images to GitHub yourself. Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/cook-v3 and drag in the 27 downloaded files. Rename nothing on GitHub. Type this commit message: "Cook v3 art from the 29 Sept play-test (ChatGPT, 27 images)". Choose "Commit directly to the main branch" and click "Commit changes". Check the folder page then lists all 27 files.
+4. Upload the 28 images to GitHub yourself. Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/cook-v3 and drag in the 28 downloaded files. Rename nothing on GitHub. Type this commit message: "Cook v3 art from the 29 Sept play-test (ChatGPT, 28 images)". Choose "Commit directly to the main branch" and click "Commit changes". Check the folder page then lists all 28 files.
 
 5. Tell me, in prompt order: the prompt (H1 … K5), the file name as uploaded, and pass, or what's wrong with it.
 ```
@@ -40,7 +40,6 @@ You're making 27 images in ChatGPT for a children's game called Nani jo Ghar, th
 - Maani (wheat, half-cooked): https://github.com/Baby-Isa/nani-jo-ghar/blob/main/assets/cook/items/maani-cooked-half-t.png
 - Maani (millet, half-cooked): https://github.com/Baby-Isa/nani-jo-ghar/blob/main/assets/cook/items/maani-bajr-cooked-half-t.png
 - Tawa: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/assets/cook/items/vessel-tawa-t.png
-- Current chimta: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/assets/cook/items/maani-v2/chimta.webp
 - Daar pot: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/assets/cook/items/vessel-pot-t.png
 - Ladle: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/assets/cook/items/tool-ladle-t.png
 - Chaat glass bowl (current): https://github.com/Baby-Isa/nani-jo-ghar/blob/main/assets/cook/items/chaat-v2/glass-bowl.webp
@@ -130,17 +129,35 @@ Style: exactly as the attached image.
 **check:** two identical knobs, same size · off = bar horizontal, no glow · on = bar vertical with a warm glow · top-down, round.
 
 ## A. Faces
-### A1. The family's face close-ups (for the round badges)
+### A1. Face close-ups, three expressions: Nani, Nana, Ma
 ```
-A sheet of character portraits for a children's game, 1536x1024 landscape, six equal cells in two rows of three, flat mid-grey #808080 background, no text, no letters, no numbers, no logos.
-Each cell is a head-and-shoulders close-up of ONE person from the attached character sheets, looking at the viewer with a warm, gentle smile, drawn exactly as they are in the attached sheets (same face, hair, headscarf, glasses, beard, clothing colours). ALL five are framed IDENTICALLY: the face fills the middle of the cell, the eyes on the same line at 40% from the top, the top of the head just inside the top of a circle that fills the cell, the shoulders just showing at the bottom. Every person fits inside an imaginary circle 90% of the cell's height, so each can be cut into a round badge.
-Row 1: (1) Nani, the grandmother, (2) Nana, the grandfather, (3) Ma, the mother.
-Row 2: (4) Ali, the cousin, (5) Isa, the boy, (6) leave empty (plain grey).
+A sheet of character portraits for a children's game, 1536x1536 square, nine equal cells in three rows of three, flat mid-grey #808080 background, no text, no letters, no numbers, no logos.
+Each cell is a head-and-shoulders close-up of ONE person from the attached character sheets, looking at the viewer, drawn exactly as they are in the attached sheets (same face, hair, headscarf, glasses, beard, clothing colours). EVERY cell is framed IDENTICALLY: the face fills the middle of the cell, the eyes on the same line at 40% from the top, the top of the head just inside the top of a circle that fills the cell, the shoulders just showing at the bottom. Everything fits inside an imaginary circle 90% of the cell's height, so each can be cut into a round badge.
+Each row is one person; the three columns are the same person, same framing, with three expressions:
+column 1 NEUTRAL: calm, a small friendly smile, mouth closed;
+column 2 HAPPY: delighted, a big open smile, eyes crinkled (they loved the food);
+column 3 NOT HAPPY: a gentle frown, mouth turned down, eyebrows slightly raised in disappointment; kind, never angry or scary.
+Row 1: Nani, the grandmother. Row 2: Nana, the grandfather. Row 3: Ma, the mother.
 Style: exactly as the attached style anchor and character sheets: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 ```
-**attach:** `style-anchor-v1.png`, `nani-sheet-v2-approved.png`, `char-nana-v1.png`, `char-ma-v1.png`, `char-ali-v1.png`, `char-isa-v1.png`
-**save as:** `sources/art/cook-v3/a1-faces-v1.png`
-**check:** each person clearly matches their sheet · all five framed the same (eyes on one line, faces the same size) · cell 6 empty.
+**attach:** `style-anchor-v1.png`, `nani-sheet-v2-approved.png`, `char-nana-v1.png`, `char-ma-v1.png`
+**save as:** `sources/art/cook-v3/a1-faces-nani-nana-ma-v1.png`
+**check:** each row is clearly the right person · all nine framed the same (eyes on one line, faces the same size) · the three expressions read clearly: neutral, happy, gently unhappy.
+
+### A2. Face close-ups, three expressions: Ali, Isa
+```
+A sheet of character portraits for a children's game, 1536x1536 square, nine equal cells in three rows of three, flat mid-grey #808080 background, no text, no letters, no numbers, no logos.
+Each cell is a head-and-shoulders close-up of ONE person from the attached character sheets, looking at the viewer, drawn exactly as they are in the attached sheets. EVERY cell is framed IDENTICALLY, exactly like the attached face sheet: the face fills the middle of the cell, the eyes on the same line at 40% from the top, everything inside an imaginary circle 90% of the cell's height.
+Each row is one person; the three columns are the same person, same framing, with three expressions:
+column 1 NEUTRAL: calm, a small friendly smile, mouth closed;
+column 2 HAPPY: delighted, a big open smile, eyes crinkled;
+column 3 NOT HAPPY: a gentle frown, mouth turned down; kind, never angry or scary.
+Row 1: Ali, the cousin. Row 2: Isa, the boy. Row 3: leave all three cells empty (plain grey).
+Style: exactly as the attached style anchor, character sheets and face sheet: stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+```
+**attach:** `style-anchor-v1.png`, `char-ali-v1.png`, `char-isa-v1.png`, your A1 image
+**save as:** `sources/art/cook-v3/a2-faces-ali-isa-v1.png`
+**check:** Ali and Isa clearly match their sheets · framed exactly like A1 · the three expressions read clearly · row 3 empty.
 
 ## C. Chai
 ### C1. The chai pan's contents, in every state
@@ -205,17 +222,15 @@ Style: exactly as the attached style anchor: semi-photoreal materials, soft glob
 **save as:** `sources/art/cook-v3/m4-tawa-v1.png`
 **check:** perfect circle, top-down · crisp high detail (not blurry) · the handle is on the right.
 
-### M5. The maani turner: two options (Zafar picks one)
+### M5. The maani turner: a flat wooden one
 ```
-Two kitchen tools for a children's game, 1536x1024 landscape, two cells side by side, flat mid-grey #808080 background, no floor, no shadows, no text, no letters, no numbers, no logos.
-Seen straight down from directly above, each lying diagonally from lower left to upper right and filling about 80% of its cell's diagonal.
-Left cell: a traditional Indian kitchen chimta: long flat steel tongs made from one folded strip, two flat blades with a small ring at the folded end, used to flip chapatis on a tawa. Clearly a kitchen tool, polished steel.
-Right cell: a flat chapati turner: a thin wide square steel blade on a wooden handle.
-Style: exactly as the attached style anchor: semi-photoreal materials, soft global illumination, warm light from the upper left, no outlines.
+One kitchen tool for a children's game, 1536x1024 landscape, flat mid-grey #808080 background, no floor, no shadows, no text, no letters, no numbers, no logos.
+Seen straight down from directly above, lying diagonally from lower left to upper right and filling about 80% of the image's diagonal: a flat wooden chapati turner carved from ONE piece of rich dark walnut-brown wood (matching a dark walnut rolling board): a thin, wide, flat blade with a gently rounded square end, joined to a long smooth handle. Satin oiled finish, fine grain.
+Style: exactly as the attached style anchor: semi-photoreal wood, soft global illumination, warm light from the upper left, no outlines.
 ```
-**attach:** `style-anchor-v1.png`, `chimta.webp`
-**save as:** `sources/art/cook-v3/m5-turners-v1.png`
-**check:** the left is clearly kitchen tongs (not tweezers) · the right is a flat turner · both top-down.
+**attach:** `style-anchor-v1.png`
+**save as:** `sources/art/cook-v3/m5-turner-wood-v1.png`
+**check:** a flat wooden turner, one piece, dark walnut · top-down · not tongs or tweezers.
 
 ## D. Daar
 ### D1. The daar pot, straight top-down, in every state
@@ -244,7 +259,7 @@ Style: exactly as the attached style anchor: semi-photoreal food and materials, 
 **save as:** `sources/art/cook-v3/d2-ladle-trivet-bowl-v1.png`
 **check:** the ladle reads as seen from above, handle rising toward us · the daar bowl sits on a wooden trivet · all round things are perfect circles.
 
-## T. Chaat (fully side-on, recommended answer to Q2b)
+## T. Chaat (fully side-on, Q2b)
 ### T1. The chaat glass bowl, straight side-on
 ```
 One image for a children's game, 1024x1024 square, flat mid-grey #808080 background, no floor, no shadows, no text, no letters, no numbers, no logos.
@@ -269,17 +284,21 @@ Style: exactly as the attached style anchor and pantry jars: semi-photoreal food
 **check:** nine identical glass pots, exactly side-on · every ingredient clearly recognisable through the glass · same fill height in all.
 
 ## S. Samosa
-### S1. The samosa fold (the cone method, recommended answer to Q3)
+### S1. The samosa fold (filled on the flat strip; the first fold covers the filling)
 ```
 A sprite sheet for a children's game, 1536x1024 landscape, six equal cells in two rows of three, flat mid-grey #808080 background, no floor, no shadows, no text, no letters, no numbers, no logos.
-Each cell shows one step of folding a samosa from a long strip of thin raw samosa pastry, seen straight down from directly above, the pastry matt, pale cream and lightly floured. Every step is centred in its cell at the same scale.
-Row 1: (1) the flat pastry strip lying horizontally, (2) the left end folded over diagonally into a triangle, (3) folded again and opened into a cone pocket, its open mouth at the top, empty.
-Row 2: (4) the cone pocket filled with a savoury filling that shows only at its open mouth, (5) the long tail of the strip folding over the mouth, half closed, (6) the finished raw samosa: a neat sealed triangle with crisp folded edges.
+Each cell shows one step of folding a samosa from a long horizontal strip of thin raw samosa pastry, seen straight down from directly above, matt, pale cream and lightly floured. The strip is the SAME size and in the SAME place in every cell; each step folds more of it up from the LEFT end, and the rest of the strip stays flat and unchanged.
+(1) the flat, empty strip.
+(2) the FIRST fold: the strip's left end folded diagonally over itself into a neat triangle, slightly puffed up in the middle as if covering a filling underneath (no filling visible anywhere).
+(3) the triangle folded over once more along the strip.
+(4) folded over again: the triangle has moved further along, the strip shorter.
+(5) the last short tail of the strip folding over the triangle.
+(6) the finished raw samosa: a neat sealed triangle with crisp folded edges, the strip used up, sitting where the strip's right end was.
 Style: exactly as the attached style anchor: semi-photoreal pastry, soft global illumination, warm light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, `stage-3.webp`
 **save as:** `sources/art/cook-v3/s1-samosa-fold-v1.png`
-**check:** six clear, logical steps from strip to sealed triangle · the filling shows only at the mouth in step 4 · the same pastry look and scale throughout.
+**check:** the strip is in the same place in every cell · the first fold is a triangle that hides whatever's under it (no filling visible) · a clear step-by-step triangle fold ending in a sealed samosa.
 
 ### S2. The house board (for chopping, filling and threading)
 ```
@@ -313,7 +332,7 @@ Style: exactly as the attached style anchor: semi-photoreal materials, soft glob
 **save as:** `sources/art/cook-v3/s4-plate-jharo-v1.png`
 **check:** the plate has a wide flat centre and a narrow rim · the spoon's disc has clean round holes · top-down.
 
-### S5. The samosa fillings: top-down heaps, no bowls (recommended answer to Q2a)
+### S5. The samosa fillings: top-down heaps, no bowls (Zafar's samosa note)
 ```
 A sprite sheet for a children's game, 1536x1536 square, nine equal cells in three rows of three, flat mid-grey #808080 background, no floor, no shadows, no text, no letters, no numbers, no logos.
 Each cell holds ONE loose heap of a samosa filling seen straight down from directly above, NOT in a bowl, about the same size in every cell (filling about 70% of the cell), with soft natural edges:

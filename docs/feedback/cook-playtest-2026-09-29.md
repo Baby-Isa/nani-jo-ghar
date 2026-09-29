@@ -351,6 +351,21 @@ Answer "yes to all recommendations except …".
 - **Q15 Maani turner:** what does the family use to flip maani on the tawa: a *chimto* (flat tongs) or a flat turner? The ChatGPT page draws both; you pick.
 - **Q16 Order of work:** Cook fixes first, or the clinic in parallel? The doctor visits ~9 Oct. **Recommend:** start the clinic audit (a cheap session, no code) in parallel today, while the Cook fixes run.
 
+### Zafar's answers (29 Sept, ~12:30 UTC) — these override the recommendations above
+- **Q1 Review:** **not** the half-body sliding in. The person appears as a **large round face circle over the dish** (the same face art as the badges, scaled to suit each station): a happy face with a thumbs-up feel when it's right, a frowny face when it's wrong. "I don't like bodies floating where you can see the bottom half of them cut off. The circle is cleaner." One way in all seven stations; wrong still marks the wrong row and you redo it.
+- **Q2:** **(b) yes**: chaat goes fully side-on. **(a) no**: don't change everything to top-down. "I like how it is in the chai one, side-on. **If I didn't comment on something, leave it.**" So only what Zafar commented on changes: chaat (side-on), samosa's filling bowls (his own ask: the top-down heaps, no bowls, S2), sekelo's chunky pieces (K5). Chai's and daar's jars stay as they are.
+- **Q3:** **fill on the flat strip, and the first fold covers the filling** (not the cone). The filling lands on the flat strip as now; the first fold hides it; every later step is a fixed picture.
+- **Q4:** bring back the swipe chop, **with the same full review as everything else** (size, layout, design, quality, polish). The chopped pieces can go in bowls, or just sit on the counter at the top right: try it and judge.
+- **Q5:** Zafar thinks *sathe* may mean "together", but isn't sure: **ask Mum** for "with" and the example orders. Until then, the with-lines stay placeholders flagged "to record".
+- **Q6:** yes, as Zafar put it: in story mode, **the first time each dish is made that day** starts with a pantry trip for that dish (the first chai of the day fetches chai things; a second chai that day doesn't; the first samosa later that day fetches samosa things). Chai, daar, chaat and samosa. Free play skips it.
+- **Q7:** yes (level 1 written and counted aloud, level 2 written, level 3+ heard only).
+- **Q8, Q9, Q11, Q13:** yes.
+- **Q10:** yes, and the speed dial needs its own design review, probably a new design element (art if needed).
+- **Q12:** yes, and **three expressions per face**: neutral (a small smile), happy (the food's right), frowny (it's wrong). These are the Q1 review faces too.
+- **Q14:** the dough pile sits straight on the shelf band, no tray.
+- **Q15:** the family uses a **flat wooden turner** (Zafar's word sounds like *moikyo*; to confirm with Mum). Maybe no tool is needed at all: try it with a flat wooden turner that flips.
+- **Q16:** Cook first. Zafar gets the art running, then plays the clinic and gives feedback in the orchestrator chat, and a clinic plan is made the same way.
+
 ---
 
 ## 11. The plan
