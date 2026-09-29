@@ -597,7 +597,7 @@
     build([]);
     const rows = [
       { id: "dab-count", options: SCRAPE.dabs[L], answer: dab },
-      { id: "plasters", options: seqs, answer: seq.map(key) },
+      { id: "plasters", options: seqs, answer: seq.map(key), placeholder: true }, // the colours wait for the doctor's recording
     ];
     const words = [
       { kutchi: "paani", english: "water" },

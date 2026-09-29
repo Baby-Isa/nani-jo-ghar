@@ -50,6 +50,8 @@
    * The shared blind bot. rows: [{id, options, answer}] (answer may be an
    * array for an ordered row; options then list the possible sequences).
    * A blind player sees the pictures but not the words: it guesses.
+   * {seq: [choices], answer: [..]}: a sequence, each element one of seq.
+   * {skill: true}: a hand-skill row (no words decide it): every player gets it.
    */
   HS.STRATEGIES = ["fair", "random", "first-option", "last-option", "middle-option"];
   HS.bot = function (rows, rng) {
@@ -59,7 +61,12 @@
       strategies: HS.STRATEGIES,
       solve(strategy) {
         const res = rows.map((r) => {
-          if (strategy === "fair") return true;
+          if (strategy === "fair" || r.skill) return true; // a skill row (no words in it): anyone can get it
+          if (r.seq) {
+            // an ordered row: each element guessed from the same choices
+            const g = r.answer.map((_, i) => (strategy === "first-option" ? r.seq[0] : strategy === "last-option" ? r.seq[r.seq.length - 1] : strategy === "middle-option" ? r.seq[i % r.seq.length] : HS.pick(r.seq, rng)));
+            return same(g, r.answer);
+          }
           const o = r.options || [r.answer];
           let guess;
           if (strategy === "first-option") guess = o[0];
