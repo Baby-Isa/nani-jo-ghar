@@ -143,16 +143,19 @@
     let first = null; // the first try's verdict (only it counts)
     let result = null;
     for (let attempt = 0; attempt < 3; attempt++) {
-      /* ---------- 1: chop ---------- */
-      await St.begin(S, ctx, "daar", "marble"); // the first time, the ghost finger (data.onboard.daar): two swipes
-      if (ctx.nextStep) ctx.nextStep("Chop");
-      if (phases.chop && !attempt) UI.gist(phases.chop);
-      const cz = Mech.zone(S, ctx, { id: "chop", level });
-      const nani = naniCard(want, no);
-      const chopped = await chop(cz, { want, kinds, no, pool, level, retry: attempt > 0, nani, side });
-      nani.close();
-      cz.close();
-      St.end();
+      /* ---------- 1: chop (nothing to chop: an order can ask for no vegetables at all, then it's straight to the pot) ---------- */
+      let chopped = { got: {}, wrong: null, rows: [] };
+      if (kinds.length) {
+        await St.begin(S, ctx, "daar", "marble"); // the first time, the ghost finger (data.onboard.daar): two swipes
+        if (ctx.nextStep) ctx.nextStep("Chop");
+        if (phases.chop && !attempt) UI.gist(phases.chop);
+        const cz = Mech.zone(S, ctx, { id: "chop", level });
+        const nani = naniCard(want, no);
+        chopped = await chop(cz, { want, kinds, no, pool, level, retry: attempt > 0, nani, side });
+        nani.close();
+        cz.close();
+        St.end();
+      }
 
       /* ---------- 2: tadka and stir, then serve and taste ---------- */
       await St.begin(S, ctx, "daar", "marble");
