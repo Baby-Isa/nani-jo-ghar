@@ -142,7 +142,7 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 - **The shared kitchen kit (every station):** one hob, knob, pan, pot, ladle, wooden board and knife asset set; one heat component (the chai v2 heat ring, in its best version, replacing the speedometer everywhere); one pour (the chai v2 tilt and stream, replacing the arrow). No hands or arms: the knife cuts and the spoon stirs on their own.
 - **Art:** real top-down vegetables (whole and chopped; reuse pantry v2 and cook items where possible), a wooden chopping board, a knife and a bowl for the chopped vegetables. Generate via the API if the total is under $2, else a ChatGPT paste-block pack. Follow chai v2's layout and spacing learnings (§10) and `docs/VISUAL-QA.md`.
 
-## 14. The chaat station v2: Claude's draft feedback (29 Sept). NOT approved yet; Zafar to review.
+## 14. The chaat station v2 (Zafar approved, 29 Sept, with the changes in 14a)
 **What works:** the mechanic (build the bowl in order) is good for teaching order and *ne poi*; decoys, including a "don't" item (*Marcha na.*), make you listen; the ticks work.
 
 **What's wrong:**
@@ -164,3 +164,10 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 - **Levels:** level 1 is three layers with no decoys; level 2 adds decoys; level 3 adds a "don't" row (*{x} na* / *{x} wagar ji*, idea 1 in GAME-IDEAS-TBC); level 4 adds two bowls for two people with different orders (two cards).
 - **Onboarding (first time):** a ghost finger shows card row 1 → the matching bowl → the drop into the glass → the tick. Then the child does row 2.
 - **Art to make:** a front-on clear glass serving bowl (empty), front-on prep bowls for each ingredient (the same bowl, different contents), and layer textures (API if under $2, otherwise a paste-block pack).
+
+### 14a. Zafar's decisions on chaat v2 (29 Sept)
+- **Drop the tally** at this station; the glass shows what's in.
+- **Level 4 = still one person**, but the person's card starts **folded** (face + headline only). The child must remember the order they heard; opening the card to peek costs a hint (it counts on the light-bulb badge). This replaces "two bowls for two people".
+- **The serve and taste moment:** Done → the bowl slides to the person, who tastes it.
+  - **Right:** a happy reaction and a family praise clip (*Shabash!*, or another recorded, age-appropriate praise).
+  - **Wrong:** a gentle "not quite" face; the bowl slides back **empty** and the child builds it again. It's social and gentle, like UX §14, never a red cross, and the first-try result is logged for the end review.
