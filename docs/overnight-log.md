@@ -49,3 +49,4 @@
 - 03:43 UTC · daar polish · started: L4 closed card + paid peek (no dots), don't rows neutral, fallback box dropped; shooting
 - 03:53 UTC · daar polish · L4 closed card verified (laptop), dungri na neutral on both cards (new --no shot), L3 words; queue note: settle() gold no-rows + ✓ during stir need the head rule (ui.js); matrix re-shooting
 - 04:10 UTC · polish · matrix cells re-shot and looked at (samosa laptop L1/L2-wrong/L4, phone-landscape L1/L3, all no console errors; maani L1 laptop+phone-landscape); laptop L3 re-shoot + test_cook --lab laptop running
+- 04:15 UTC · daar polish · matrix re-shot (all cells, no console errors, + laptop-l2-no), report Polish section; test_cook --lab laptop running

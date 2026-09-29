@@ -14,3 +14,10 @@
 **Tests:** `test_cook.py --lab --viewport laptop` PASS.
 
 **Best:** `daar-v2/laptop-l2-wrong-chopped.png`, `laptop-l1-stir-mid.png`, `laptop-l3-taste-right.png` (notes: `daar-v2/qa.md`).
+
+## Polish (29 Sept, ~04:00 UTC)
+- **Level 4 has no "•••" rows now:** in the cook, Nana's card starts closed (face + headline) with the shared `UI.mission.closeCards(true, {peek: true})`. Tapping it opens it for a moment and costs a hint, as in chaat L4. Levels 1–3 show the tadka words (data: `ladder` is `words` or `closed`; no dots or hidden rows).
+- **"Don't" rows stay neutral:** *dungri na* uses the shared no-row style (dashed edge, no-sign, no full stop) on both Nani's and Nana's cards, and daar never ticks it. The sidebar's `settle()` still ticks no-rows once the other rows close, so daar puts them back (`neutralNo()`) until the shared fix lands (queue note).
+- **Shared calls only:** Nani's card uses `addCard` / `removeCard` and the phase fold uses `closeCards`. The fallback `#dv2-nani` box and its `dv2-fold` style are gone.
+- **Early fold:** daar no longer hides the tadka section, so the hidden-section early ✓ can't happen. **Not fixed (shared, queue note):** after the last spice every row is done, so Nana's card still shows ✓ during the stir. The card needs to wait for its head (*daar*, closed at the serve), the same fix as samosa's.
+- **Shots:** re-shot the matrix into `daar-v2/`, plus `laptop-l2-no-*` (a round with *dungri na*). `build/shoot_daar_v2.py --no` forces that round.
