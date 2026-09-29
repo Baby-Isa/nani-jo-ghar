@@ -598,11 +598,11 @@ The top of every mode's sidebar: Nani's face (= replay), what to do now (up to 2
 Cook's shared hob, extracted from chai v2 (design system §13). One owner at a time; daar v2 and samosa v2 import it (small additive edits only, after `git pull --rebase`). Loaded in `cook.html` after `zone.js`. Coordinates are the station's design px (combined stations draw 1:1 on 1600×900). **The burner rule:** one burner per pan in play, 1–4, never an empty burner.
 
 ```js
-await St.load(S, Kit.art(n, ["tawa"]));                 // hob n + knobs + flames + the vessels you place
-const sz  = Kit.size(n, k);                             // {w, h, burnerY, frontY} for layout before building
-const hob = Kit.hob(S, { n, k, cx, bottom });           // or {x, y}: → {img, x, y, w, h, burners:[{x,y}], frontY, pitch}
-const b   = Kit.burner(S, hob, i, { who, flameR, state: "high" }); // face badge + 48 px knob on the front edge, flame rings
-b.set("off" | "high" | "low");  S.tappable(b.knobHit, …);          // the station decides what the knob does
+await St.load(S, Kit.art(n, ["tawa"]));                 // hob n + knobs + flames + the vessels you place ({wide: true}: the wide hob)
+const sz  = Kit.size(n, k);                             // {w, h, burnerY, frontY} for layout before building (size(1, k, true): wide)
+const hob = Kit.hob(S, { n, k, cx, bottom });           // or {x, y}; {wide: true}: one big burner (a big karahi) → {img, x, y, w, h, burners:[{x,y}], frontY, pitch}
+const b   = Kit.burner(S, hob, i, { who, flameR, state: "high" }); // face badge + knob (the badge's size) on the front edge, flame rings
+b.set("off" | "high" | "low");  S.tappable(b.knobHit, …);          // the station decides what the knob does (bar flat / upright / diagonal)
 const pan = Kit.place(S, "pan" | "tawa" | "karahi", hob.burners[i], r); // body centred on the burner, contact shadow
 const ring = Kit.heatRing(S);  ring.draw(x, y, r, level, lo, hi);  ring.clear();  // the chai v2 clock ring (sage "now", gold sweep)
 Kit.chip(S, wordId, x, y, { word: level < 3, w });      // the shelf's `🔊 word` chip (speaker only when word:false)
@@ -610,4 +610,6 @@ Kit.badge(S, who, mood?, N?);  Kit.speaker(g, x, y, size); // face-on-white-disc
 Kit.faceArt(who);                                         // [key, url] pairs for their three faces (St.load them)
 await Kit.review(S, { who, ok, x, y, size, side, k });    // the review (X10): big round face over the dish -> {close()}
 ```
+**The hob family (29 Sept, X5):** `Kit.HOB.sets` (1–4 burners and `wide`) is the ChatGPT H1–H5 art, each hob drawn whole (`assets/cook/items/v3/hob/`, cut by `build/cut_cook_v3.py`), every burner the same size; each burner has its own measured centre (`hob.burners[i].y` can differ by a pixel between burners). The knobs are H6. Flames reach 1.2 × `flameR` and never more than 0.46 of the burner pitch. `python3 build/check_vessel_meta.py` checks the burners against the art. The station art for the next sessions (C1, M1–M5, D1–D2, T1–T2, S1–S5, K1–K5) is cut and documented in `assets/cook/items/v3/README.md`, not wired.
+
 Vessel geometry lives in `Kit.VESSELS` (canvas fractions of the round body: the `karahi` is samosa v2's, with `oil`, its oil's radius as a fraction of the body's; samosa v2's fry places it). Maani v2 uses one burner and one tawa; chai v2 keeps its own copy for now (same art and numbers).
