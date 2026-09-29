@@ -17,6 +17,7 @@ A child who can't read English and doesn't yet know the Kutchi works out the sit
 
 1. **Watch.** The exchange plays out between two characters while the child watches. The line shows in the speaker's bubble with the **read-along underline** as it's said (X2, the standard everywhere). The thing asked for is a picture on the card.
 2. **The handover.** The character who spoke turns to the child and hands over the role with a visible prop: the doctor hands over his clipboard, or Nani hands over her purse at the stall. The child's avatar moves into that spot. A **"your turn" bubble with a mic** appears over the child's avatar. It's the same sign in every mode, so the child learns it once.
+   - **The turn (UX-PRINCIPLES §16):** during the watch step the two characters face each other three-quarter on, like actors on a stage; for the handover they **turn to face the player**. That's the "your turn" cue, alongside the mic bubble.
 3. **Do it together, then alone.** See the "Say it after" ladder below.
 
 **Examples:**

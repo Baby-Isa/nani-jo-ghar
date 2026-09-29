@@ -412,3 +412,8 @@ Prototype A only borrowed the order card's **look** (its CSS classes and the gol
 - **The doctor and the patient stand on the left**, in the free wall space (not by the door, where the face circle sat on the green cross sign).
 - **The feeling cards come in a thought bubble.** After the patient answers ("I feel …"), a thought bubble rises from their head and opens out to the right, holding the four face cards (happy, sad, hot, cold). The child taps the one the patient is thinking. This replaces the card tray along the bottom.
 - At level 1, the hint that the feeling shows (the design's round face circle) sits on the patient's own face, via their expression once the real art exists. It's never a second face floating beside the bubble.
+
+### 13e. Send-off flow and staging (Zafar, 29 Sept, late)
+- **No doctor card listing every line up front.** At the send-off the doctor's card showed all his lines at once ("Is everything okay now?", "What will help?", "Say thank you to the doctor."), and he said them again at each step. Drop that: **maybe no card at all here**. If a card shows, it holds only the current need, never the whole script.
+- **The flow follows on from level 1:** the patient says how they feel (the thought bubble of 13d at L1–2). From level 3, a **tray along the bottom of the screen** holds the items the doctor can give (blanket, fan, apple, …), and the child picks the one that fixes it.
+- **Staging (a general rule; UX-PRINCIPLES §16):** while the doctor and patient talk, they stand three-quarter turned to each other and partly to the front, like actors on a stage. When it's the child's turn to act, they **turn to face the player**. That turn is the "your turn" cue.

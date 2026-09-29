@@ -120,3 +120,10 @@ In a conversation, a wrong reply pill **shakes** (with a short vibration where s
 - **VISUAL-QA checks it:** a mode's shots are compared side by side with Cook's end screen and buttons, and any difference is a flaw.
 
 **Known differences today (29 Sept):** the clinic's "Found it" / "Next" pills and its bottom-right button (cut off on the pharmacy screen), sekelo's "to the grill" pill, the results words card overflowing on phone at level 4 and writing *hakro* where the order said *hakri* (the shared results card), and chaat's chop timer ring in its old colours. Find it, Tidy up, Who did it?, Snap, Monsoon rush, Dress up and the first launch don't use the shared pieces yet; each adopts them when it's rebuilt.
+
+## 16. Stage it like a play: characters turn to the player when it's their turn (Zafar, 29 Sept)
+When two characters talk (the doctor and a patient, Nani and a guest, a customer and the cook), they stand **three-quarter turned toward each other and partly to the front**, like actors on a stage, so the child watches a real exchange. When the child becomes part of the dialogue and has to act (pick the item, answer, speak), the characters **turn to face the player**. That turn is the "your turn" cue, so no written instruction is needed.
+- It applies to the clinic and to every mode where the player joins a conversation: Cook's customers and the speaking pilot (`docs/design/speaking-more-proposal.md`: watch, then the handover), Conversations, and the trips' stalls.
+- **Art:** every talking character needs two poses: **three-quarter** (drawn once and mirrored for left and right) and **facing front**. Plan them in each art round's people-and-placement plan (VISUAL-QA §2b).
+- It's a swap between two drawn poses (with a quick crossfade), not an animation (the "no cheap animations" rule).
+- **No script cards:** a character's card never lists everything they'll say. It shows the current need only, or nothing where the scene makes it clear.
