@@ -2081,30 +2081,40 @@
     ]
    },
    "slots": {
+    "vegKind": {
+     "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri gos: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
+     "pick": ["veg-02", "veg-03"]
+    },
     "skewers": {
      "type": "tally",
      "kinds": {
       "byLevel": [
        [
         "ph-meat",
-        "ph-veg"
+        "$vegKind"
        ],
        [
         "ph-meat",
-        "ph-veg"
+        "$vegKind"
        ],
        [
         "ph-meat",
-        "ph-veg",
+        "$vegKind",
         "ph-mixed"
        ],
        [
         "ph-meat",
-        "ph-veg",
+        "$vegKind",
         "ph-mixed"
        ]
       ]
      },
+     "min": {
+      "ph-mixed": {
+       "byLevel": [0, 0, 1, 2]
+      }
+     },
+     "_min": "29 Sept (K4): mostly mixed from level 3 (one of two or three; two of three or four at level 4)",
      "total": {
       "byLevel": [
        1,
@@ -2158,7 +2168,7 @@
     {
      "frame": "order",
      "x": [
-      "ph-mishkaki"
+      "ph-sekelo"
      ]
     },
     {

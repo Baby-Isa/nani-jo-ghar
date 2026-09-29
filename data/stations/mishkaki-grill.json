@@ -40,8 +40,11 @@
    "kinds": {
     "ph-meat": "meat",
     "ph-veg": "veg",
-    "ph-mixed": "mixed"
+    "ph-mixed": "mixed",
+    "veg-02": "only:veg-02",
+    "veg-03": "only:veg-03"
    },
+   "_kinds_only": "29 Sept (K4, Zafar): no bare boga skewers in an order. A vegetable skewer is one named vegetable (only:<piece>, said after lakri: hakri lakri dungri, the gos pattern) or a mixed one with its pieces in order. ph-veg stays only to name an unasked-for all-vegetable skewer.",
    "art": {
     "ph-pepper": {
      "style": "pepper",

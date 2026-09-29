@@ -57,6 +57,8 @@
   /** The kind word for "meat" | "veg" | "mixed" (ph-meat, ph-veg, ph-mixed). */
   SK.kindWord = (what) => Object.keys(SK.cfg().kinds || {}).find((k) => SK.cfg().kinds[k] === what);
   SK.kindOfWord = (w) => (SK.cfg().kinds || {})[w];
+  /** 29 Sept (K4): a skewer of one named vegetable ("only:veg-02": hakri lakri dungri): that piece, else null. */
+  SK.only = (what) => (typeof what === "string" && what.startsWith("only:") ? what.slice(5) : null);
   SK.pieceIds = () => Object.keys(SK.cfg().classes || {});
   SK.vegIds = () => SK.pieceIds().filter((id) => SK.cls(id) === "veg");
   /**
@@ -67,6 +69,7 @@
   /** Could `pieces` (so far) be the start of a skewer of kind word `w`? */
   SK.fits = function (w, pieces, pattern = []) {
     const what = SK.kindOfWord(w);
+    if (SK.only(what)) return pieces.every((p) => p === SK.only(what));
     if (what === "meat" || what === "veg") return pieces.every((p) => SK.cls(p) === what);
     if (what === "mixed") return SK.pats(pattern).some((pt) => pieces.length <= pt.length && pieces.every((p, i) => p === pt[i]));
     return false;
@@ -75,6 +78,8 @@
   SK.classify = function (pieces, pattern = []) {
     const cl = pieces.map(SK.cls);
     if (cl.every((c) => c === "meat")) return { kind: SK.kindWord("meat"), ok: true };
+    // 29 Sept (K4): all one vegetable, when the order can name it ("hakri lakri dungri")
+    if (pieces.length && pieces.every((p) => p === pieces[0]) && SK.kindWord(`only:${pieces[0]}`)) return { kind: SK.kindWord(`only:${pieces[0]}`), ok: true };
     if (cl.every((c) => c === "veg")) return { kind: SK.kindWord("veg"), ok: true };
     const pat = cl.every(Boolean) ? SK.pats(pattern).findIndex((pt) => pieces.length === pt.length && pieces.every((p, i) => p === pt[i])) : -1;
     return { kind: SK.kindWord("mixed"), ok: pat >= 0, pat };
@@ -83,6 +88,7 @@
   SK.sample = function (w, n, pattern, i = 0) {
     const what = SK.kindOfWord(w);
     const meat = SK.meatPiece();
+    if (SK.only(what)) return Array(n).fill(SK.only(what));
     if (what === "meat") return Array(n).fill(meat);
     if (what === "veg") return Array.from({ length: n }, () => Cook.pick(SK.vegIds()));
     const pats = SK.pats(pattern);

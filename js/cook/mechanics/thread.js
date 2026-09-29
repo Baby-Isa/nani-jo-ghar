@@ -120,7 +120,7 @@
         const of = (c) => ids.filter((id) => SK.cls(id) === c);
         // a mixed one: the mix this skewer has started (and not made yet), else the first still to make
         const pt = pats.length > 1 ? pats.find((x, j) => !madePat[j] && sk.ids.every((p, q) => p === x[q])) || pats[0] : pats[0] || [];
-        const id = what === "mixed" ? pt[i] : what === "meat" ? of("meat")[0] : of("veg")[i % of("veg").length];
+        const id = SK.only(what) || (what === "mixed" ? pt[i] : what === "meat" ? of("meat")[0] : of("veg")[i % of("veg").length]);
         return { w, id };
       };
       line.threading = () => !stopped && (!!plan() || (sk && sk.ids.length > 0 && sk.ids.length < n));
