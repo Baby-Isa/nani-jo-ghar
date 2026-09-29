@@ -46,6 +46,7 @@ People read left to right. Keep the big action buttons (Done, "Go to the barbecu
   - then reveal the next thing.
 - UI appears only when it's first needed. The sidebar, stars and light bulb fade in over the first rounds, not all at once.
 - After the first time, the overlay is gone; the light bulb is the help.
+- **No English instructions for the child, ever** (Zafar, 29 Sept, restated after the clinic heal games broke it): no English sentences in bubbles and no device voice reading them. The child gets the ghost finger plus the Kutchi line with its read-along. The English goal for grown-ups lives only in the "?" pop. `build/check_onboard.mjs` enforces it in every mode that has first-time help.
 
 ## Claude's comments
 - **Agreed with all of it.** Points 3 and 5 also serve the Kutchi: a fixed four-dot card makes *the count and order* the thing to listen for, and one job at a time leaves attention free for the words.
