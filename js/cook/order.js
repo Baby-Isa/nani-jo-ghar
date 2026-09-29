@@ -88,6 +88,14 @@
         L.head = Object.assign(row(r), { head: true, line: r.line });
         return;
       }
+      // a person's own headline (the Chai tray's "Muke kari chai khape."): heads their card, not a row
+      if (r.kind === "phead" && r.for) {
+        const key = `for:${r.for}`;
+        let s = L.sections.find((y) => y.key === key);
+        if (!s) L.sections.push((s = { key, for: r.for, seq: false, when: r.when || null, groups: [[]] }));
+        s.head = Object.assign(row(r), { head: true, line: r.line });
+        return;
+      }
       const x = row(r);
       // rows said for one person (the Chai tray's cups): that person's own
       // section, "no X" rows included, drawn with their face on the card
@@ -162,7 +170,7 @@
     const i = slots.findIndex((ids) => r.ids.some((id) => ids.includes(id)));
     return i < 0 ? 99 : i;
   };
-  O.rows = (L, { all = false } = {}) => [L.head].concat(...L.sections.filter((s) => all || !s.when || s.shown).map((s) => [].concat(...s.groups))).filter(Boolean);
+  O.rows = (L, { all = false } = {}) => [L.head].concat(...L.sections.filter((s) => all || !s.when || s.shown).map((s) => [s.head].concat(...s.groups))).filter(Boolean);
   O.hasSeq = (L) => L.sections.some((s) => s.seq && s.groups.length > 1);
 
   /**

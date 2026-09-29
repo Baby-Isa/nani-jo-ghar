@@ -43,7 +43,10 @@
   const V2 = "assets/cook/items/chai-v2/";
   // what build/cut_chai_v2.py measured (kept here so the station needs no extra fetch)
   const META = {
-    panTop: { w: 512, h: 492, cx: 0.408, cy: 0.5805, r: 0.3644, rIn: 0.2915 },
+    // cx, cy: the round body's centre, fitted to its rim (29 Sept; was 0.408, 0.5805, which the handle pulled
+    // up and right, so every pan sat low-left of its burner). r is the size it's drawn at: the body itself is
+    // 0.335 of the width, so the flame and heat rings (sized to panR) peek out around it
+    panTop: { w: 512, h: 492, cx: 0.3434, cy: 0.6408, r: 0.3644, rIn: 0.2915 },
     panPour: { w: 512, h: 500, lipX: 0.03, lipY: 0.545 },
     glassR: 0.94,
   };
@@ -111,7 +114,9 @@
     const s = L.sections.find((x) => x.for === who);
     return s ? [].concat(...s.groups) : [];
   };
-  const personLine = (L, who, rows) => Lang.join((L.head ? [L.head.line] : []).concat((rows || personRows(L, who)).map((r) => (r.no || !r.said ? r.line : r.said))));
+  // a person's own headline ("Muke kari chai khape.") in place of the order's
+  const personHead = (L, who) => (L.sections.find((x) => x.for === who) || {}).head || L.head;
+  const personLine = (L, who, rows) => Lang.join((personHead(L, who) ? [personHead(L, who).line] : []).concat((rows || personRows(L, who)).map((r) => (r.no || !r.said ? r.line : r.said))));
   const hiddenRow = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.cardHidden(s.w) && Lang.wordHasVoice(s.w));
 
   /** The speaker icon (the kitchen kit's). */
