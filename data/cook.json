@@ -2115,7 +2115,7 @@
        "byLevel": [0, 0, 1, 2]
       }
      },
-     "_min": "29 Sept (K4): mostly mixed from level 3 (one of two or three; two of three or four at level 4)",
+     "_min": "29 Sept (K4): mostly mixed from level 3 (one of two or three; two of three or four at level 4). 30 Sept (sekelo session): level 3 may have two mixed (one mix, said once: ba lakri mixed), so half or more are mixed on most orders; level 4 stays at two (two different mixes are graded one of each)",
      "total": {
       "byLevel": [
        1,
@@ -2139,7 +2139,7 @@
        "byLevel": [
         0,
         0,
-        1,
+        2,
         2
        ]
       }
@@ -2900,7 +2900,8 @@
     },
     {
      "spots": 4,
-     "rack": 5,
+     "rack": 4,
+     "_rack": "30 Sept (K9, Q11): the rack is a picture of 0-4 skewers, so 4 at every level (the order is 3-4 at level 4; was 5)",
      "rate": 0.24,
      "band": [
       0.62,

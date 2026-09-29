@@ -106,3 +106,24 @@ In a conversation, a wrong reply pill **shakes** (with a short vibration where s
    Caption underneath, in the same style as the stopwatch's crown: a small bulb icon "× N".
 
 **Page 2: the word review.** Each word is a card with the Kutchi and the English underneath. Words you got **right** have a **green** outline or glow and are grouped on the **right**. Words you got **wrong** have a **red** outline and are grouped on the **left**, so the child can see at a glance what to work on.
+
+## 15. The same screens and buttons in every game mode (Zafar, 29 Sept)
+**The rule:** everything around the play looks and behaves the same in every mode (Cook's stations, the clinic, Find it, Put it there, and every mode after): the end-of-round screen (§9a: the three badges, then the word review), the actions after it (again, next, back to the choice of stations/patients/rooms), the "done" and "next" buttons during play, the "?" help, Nani's box, the order card and the light bulb. A child learns them once.
+
+**How:**
+- **One component each, from `js/shared/`, never a mode's own copy:** `results.js` (the end screen and the word review), `order-card.js` (cards), `guide.js` (Nani's box), `onboard.js` (first-time help and the skip in "?"). A mode passes data; it never restyles them.
+- **One set of buttons** (a shared button kit, to add to `js/shared/`), each with one look, one size and one place:
+  - **✓ Done**: the round gold tick, bottom right of the play area (commit what you've made: serve the dish, hand over the tray, finish the heal step);
+  - **→ Next**: the arrow, moving on to the next screen or phase (the end screen's pages, "to the grill", "to the bench"): an icon and a short label, in one pill style;
+  - **Again / Home**: the end screen's actions, in the same order everywhere;
+  - **the answer pills** (haa / na, the speaking fallbacks): one pill style.
+- **VISUAL-QA checks it:** a mode's shots are compared side by side with Cook's end screen and buttons, and any difference is a flaw.
+
+**Known differences today (29 Sept):** the clinic's "Found it" / "Next" pills and its bottom-right button (cut off on the pharmacy screen), sekelo's "to the grill" pill, the results words card overflowing on phone at level 4 and writing *hakro* where the order said *hakri* (the shared results card), and chaat's chop timer ring in its old colours. Find it, Tidy up, Who did it?, Snap, Monsoon rush, Dress up and the first launch don't use the shared pieces yet; each adopts them when it's rebuilt.
+
+## 16. Stage it like a play: characters turn to the player when it's their turn (Zafar, 29 Sept)
+When two characters talk (the doctor and a patient, Nani and a guest, a customer and the cook), they stand **three-quarter turned toward each other and partly to the front**, like actors on a stage, so the child watches a real exchange. When the child becomes part of the dialogue and has to act (pick the item, answer, speak), the characters **turn to face the player**. That turn is the "your turn" cue, so no written instruction is needed.
+- It applies to the clinic and to every mode where the player joins a conversation: Cook's customers and the speaking pilot (`docs/design/speaking-more-proposal.md`: watch, then the handover), Conversations, and the trips' stalls.
+- **Art:** every talking character needs two poses: **three-quarter** (drawn once and mirrored for left and right) and **facing front**. Plan them in each art round's people-and-placement plan (VISUAL-QA §2b).
+- It's a swap between two drawn poses (with a quick crossfade), not an animation (the "no cheap animations" rule).
+- **No script cards:** a character's card never lists everything they'll say. It shows the current need only, or nothing where the scene makes it clear.

@@ -389,3 +389,31 @@ About **4–5 build sessions in all**, against about 11 for the Cook overnight r
 - **Level 4 (two in order, against the comfort rings): pick everyone straight away.** No waiting for each person's greeting or the doctor between picks. Each tick shows its number (1, 2) as it's tapped; once the last one is tapped, the whole set is judged: all right → they lock in and rise; any wrong → the ticks shake and clear, and everyone sits back down to try again.
 - The lab's debug log (bottom left) overlaps the pills: it's lab-only, but it should sit clear of the play area.
 - **At most 6 people in the waiting room** (Zafar), at every level, counting the babies and children sitting with the grown-ups at level 5.
+- **Speaking moves out of the waiting room** (Zafar: you don't naturally call "little boy, next"). W3 "Call them in" is dropped in the clinic fix session unless Zafar says otherwise; the clinic's speaking goes into the patient conversation (E4), the pharmacy ask and the send-off. See `docs/design/speaking-more-proposal.md`.
+
+### 13b. Pharmacy, from Zafar's play of prototype A (29 Sept, late)
+- **The doctor orders, so the card says "bring me", not "I want".** The row reads *Muke plaster khape* (a customer's "I want"). It should be the doctor's request: **"[Bring me] the plaster"**. The Kutchi for "bring me" is still to confirm with Mum (Cook Q5 item 8, "bring me these", is the same ask), so it stays an English placeholder flagged "to record". Never invent it.
+- **A filled slot loses its dashed outline**, like the pantry's tray: once an item is in a slot, the cut-out box disappears.
+- **Tap a placed item to put it back** (a misclick). The first pick is what's scored: a wrong item put back still counts as a mistake in the review (the score penalty), so undo can't be used to fish for the tick.
+- **Items don't sit on the belt** (they float or tilt). That's the stand-in art: the real item art needs a flat base and a contact shadow on the belt.
+- Seen in the same shot: the green button at the bottom right ("To the bench"?) is cut off by the frame's right edge, and the lab's debug log overlaps the counter.
+- Otherwise good (Zafar).
+
+### 13c. The clinic's card becomes Cook's order card, properly (Zafar asked, 29 Sept)
+Prototype A only borrowed the order card's **look** (its CSS classes and the gold check) and kept the clinic's own card code. The clinic fix session switches the clinic to the shared `OrderCard` (`js/shared/order-card.js`, shared-api §14; its data is mode-agnostic), so every clinic card behaves exactly like Cook's:
+- **ordered jobs** show the sequence line, with the next step in a light grey band: the pharmacy's *pela … ne poi …*, the waiting room's two-in-order (L4), and each heal game's steps (wash → dab → plasters);
+- rows tick when their step closes, and a wrong pick marks its row in the review only;
+- the **read-along underline** runs as each line is spoken;
+- the **closed card and the paid peek** at the higher levels (the waiting room from L3, as decided in 13a);
+- counts follow Cook's rule (Q7: written and heard at L1, written at L2, heard only from L3);
+- Nani's box on top, one card per person (the patient's card, the doctor's request).
+
+### 13d. Send-off layout (Zafar, 29 Sept, late)
+- **The doctor and the patient stand on the left**, in the free wall space (not by the door, where the face circle sat on the green cross sign).
+- **The feeling cards come in a thought bubble.** After the patient answers ("I feel …"), a thought bubble rises from their head and opens out to the right, holding the four face cards (happy, sad, hot, cold). The child taps the one the patient is thinking. This replaces the card tray along the bottom.
+- At level 1, the hint that the feeling shows (the design's round face circle) sits on the patient's own face, via their expression once the real art exists. It's never a second face floating beside the bubble.
+
+### 13e. Send-off flow and staging (Zafar, 29 Sept, late)
+- **No doctor card listing every line up front.** At the send-off the doctor's card showed all his lines at once ("Is everything okay now?", "What will help?", "Say thank you to the doctor."), and he said them again at each step. Drop that: **maybe no card at all here**. If a card shows, it holds only the current need, never the whole script.
+- **The flow follows on from level 1:** the patient says how they feel (the thought bubble of 13d at L1–2). From level 3, a **tray along the bottom of the screen** holds the items the doctor can give (blanket, fan, apple, …), and the child picks the one that fixes it.
+- **Staging (a general rule; UX-PRINCIPLES §16):** while the doctor and patient talk, they stand three-quarter turned to each other and partly to the front, like actors on a stage. When it's the child's turn to act, they **turn to face the player**. That turn is the "your turn" cue.

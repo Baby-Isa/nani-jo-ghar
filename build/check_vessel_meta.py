@@ -146,6 +146,77 @@ def check_daar():
     return bad
 
 
+def grill_bars(path):
+    """The grill's light metal rows (the rim, the two bars, the inner front edge), as fractions of its height."""
+    im = np.asarray(Image.open(path).convert("RGBA")).astype(int)
+    H, W = im.shape[:2]
+    r, g, b, a = (im[..., i] for i in range(4))
+    m = (a > 128) & (r > 140) & (g > 140) & (b > 140) & (np.abs(r - b) < 30)
+    x0, x1 = int(W * 0.15), int(W * 0.85)
+    rows = [y for y in range(H) if m[y, x0:x1].mean() > 0.6]
+    groups = []
+    for y in rows:
+        if groups and y - groups[-1][-1] <= 2:
+            groups[-1].append(y)
+        else:
+            groups.append([y])
+    return [float(np.mean(g_)) / H for g_ in groups]
+
+
+def check_sekelo():
+    """Sekelo v3 (30 Sept, K6/K8/K9): each drawn skewer's line in the rack and plate pictures, the grill's bars
+    and bed, and the stick: the art (re-measured) vs meta.json vs js/cook/mechanics/grill.js's SK.V3 table."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import measure_sekelo_v3 as MS
+    meta = json.load(open(os.path.join(MS.DIR, "meta.json")))
+    js = open(os.path.join(ROOT, "js/cook/mechanics/grill.js")).read()
+    bad = 0
+
+    def table(name):
+        m = re.search(rf"\b{name}: \{{ w: (\d+), h: (\d+),(.*?)\}},\n", js)
+        return m and (int(m.group(1)), int(m.group(2)), m.group(3))
+
+    def off(a, b):
+        if len(a) != len(b):
+            return 1
+        return max([abs(x - y) for p, q in zip(a, b) for x, y in zip(p, q)] or [0])
+
+    for kind, n0, measure in (("rack", 0, MS.rack_sticks), ("plate", 1, None)):
+        t = table(kind)
+        js_sticks = json.loads(re.search(r"sticks: (\[\[.*\]\])", t[2]).group(1)) if t else None
+        for n in range(n0, 5):
+            name = f"{kind}-{n}"
+            art = (MS.rack_sticks(name) if n else []) if kind == "rack" else MS.plate_sticks(name, n) if n else []
+            rec = meta[name].get("sticks")
+            W, H = Image.open(os.path.join(MS.DIR, name + ".webp")).size
+            o1 = off(art, rec or [])
+            o2 = off(rec or [], js_sticks[n]) if js_sticks and t[0] == W and t[1] == H else 1
+            ok = rec is not None and o1 <= TOL and o2 <= 0.001
+            bad += not ok
+            print(f"{'ok  ' if ok else 'FAIL'} v3 sekelo/{name}: {len(art)} skewers, art vs meta off {o1:.4f}, meta vs grill.js off {o2:.4f}")
+    # the grill: its bars (the art's light rows) and bed, in meta and in grill.js
+    gm = meta["grill"]
+    rows = grill_bars(os.path.join(MS.DIR, "grill.webp"))
+    ob = max(min(abs(r - y) for r in rows) for y in gm["bars_y"])
+    bed = MS.grill_bed()
+    t = table("grill")
+    tb = json.loads(re.search(r"bars: (\[.*?\])", t[2]).group(1)) if t else []
+    tbed = json.loads(re.search(r"bed: (\[.*?\])", t[2]).group(1)) if t else []
+    o2 = max([abs(a - b) for a, b in zip(tb, gm["bars_y"][1:3])] + [abs(a - b) for a, b in zip(tbed, gm["bed"])] + [0 if t and (t[0], t[1]) == (gm["w"], gm["h"]) else 1])
+    ob2 = max(abs(a - b) for a, b in zip(bed, gm["bed"]))
+    ok = ob <= TOL and ob2 <= TOL and o2 <= 0.001 and len(tb) == 2 and len(tbed) == 4
+    bad += not ok
+    print(f"{'ok  ' if ok else 'FAIL'} v3 sekelo/grill: bars art vs meta off {ob:.4f}, bed off {ob2:.4f}, meta vs grill.js off {o2:.4f}")
+    # the stick the code moves about: its tip, handle and end
+    st = meta["stick"]
+    sm = re.search(r"stick: \{ w: (\d+), h: (\d+), tip: ([\d.]+), handle: ([\d.]+), end: ([\d.]+)", js)
+    o = max(abs(float(sm.group(i + 3)) - st[k]) for i, k in enumerate(("tip", "handle", "end"))) if sm else 1
+    ok = o <= 0.001 and (int(sm.group(1)), int(sm.group(2))) == Image.open(os.path.join(MS.DIR, "stick.webp")).size
+    bad += not ok
+    print(f"{'ok  ' if ok else 'FAIL'} v3 sekelo/stick: meta vs grill.js off {o:.4f}")
+    return bad
+
+
 def main():
     kit = open(os.path.join(ROOT, "js/cook/kitchen-kit.js")).read()
     chai = open(os.path.join(ROOT, "js/cook/stations/chai-tray.js")).read()
@@ -161,6 +232,7 @@ def main():
     checks.append(("chai-v2/meta.json panTop", "assets/cook/items/chai-v2/pan-top.webp", meta["cx"], meta["cy"]))
     bad = check_v3()
     bad += check_daar()
+    bad += check_sekelo()
     for label, url, cx, cy in checks:
         res, fx, fy, fr = fit_rim(os.path.join(ROOT, url))
         off = max(abs(fx - cx), abs(fy - cy))
