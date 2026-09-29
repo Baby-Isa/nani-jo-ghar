@@ -55,7 +55,7 @@ Zafar asked for a speed dial "in the kitchen-kit style", with its own review. Th
 
 ## 4. Tests
 - `python3 build/test_cook.py --days 1 --canvas`: **PASS on all 6 viewports** (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait), run after merging `origin/main`. Day 1 doesn't reach daar; the lab run is what plays the station.
-- `python3 build/test_cook.py --lab --stations daar --viewport laptop` and `--viewport phone-landscape`: see the final lines below.
+- `python3 build/test_cook.py --lab --stations daar --viewport laptop`: **PASS** (455 s); `--viewport phone-landscape`: **PASS** (483 s). Both run after the last merge of `origin/main`.
 - `node --test build/test_shared_*.mjs`: 113/113. `node build/check_onboard.mjs`: ok. `python3 build/check_vessel_meta.py`: ok. It now also checks `daar.js`'s POT / TRIVET / LADLE constants against `v3/daar/meta.json`, that all nine pots share the pot's canvas, and that the stir's clip sits inside the rim.
 - **Budget:** `LONG["daar"]` in `test_cook.py` is now 900 s (was 700). The swipe chop runs its full ring on every try, and a laptop lab run under load (four browsers at once) timed out at 700 s in its third chop.
 - **Bugs caught by the shots and fixed:**
