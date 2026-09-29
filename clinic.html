@@ -5,18 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>The doctor's clinic</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
-<link rel="stylesheet" href="css/shared/app.css?v=20260929T172255Z">
+<link rel="stylesheet" href="css/shared/app.css?v=20260929T180938Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/shared/results.css?v=20260929T172255Z">
-<link rel="stylesheet" href="css/shared/onboard.css?v=20260929T172255Z">
-<link rel="stylesheet" href="css/clinic.css?v=20260929T172255Z">
+<link rel="stylesheet" href="css/shared/results.css?v=20260929T180938Z">
+<link rel="stylesheet" href="css/shared/onboard.css?v=20260929T180938Z">
+<link rel="stylesheet" href="css/shared/guide.css?v=20260929T180938Z">
+<link rel="stylesheet" href="css/shared/order-card.css?v=20260929T180938Z">
+<link rel="stylesheet" href="css/clinic.css?v=20260929T180938Z">
 <!--
   The clinic (docs/modes/clinic-design.md: the pipeline, after the quality pass).
   clinic.html                      a clinic morning (the saved session; the first ever is one tiny patient)
   clinic.html?lab=1                the lab bar: any stage x variant x level, any healing game in the pipeline, a patient, a morning
   Direct lab entries (all take &seed=N &quiet=1 &fast=1 &speak=0 &onboard=0 &results=0):
-    ?stage=waiting&variant=W2&level=2      one stage alone (waiting | diagnosis | pharmacy | heal | sendoff)
+    ?stage=waiting&variant=W1&level=4      one stage alone (waiting | diagnosis | pharmacy | heal | sendoff); the waiting room has levels 1-5
     ?stage=heal&game=ear&level=1           one healing game, mounted by the pipeline's heal stage
     ?patient=1&level=2                     one patient through all five stages
     ?morning=1&session=3                   a morning (session 1 = the first-ever session); &nosave=1 keeps progress
@@ -41,7 +43,7 @@
   </select>
   <label>variant <select id="lab-variant"><option value="">draw</option></select></label>
   <label>game <select id="lab-game"><option value="">draw</option></select></label>
-  <label>L <select id="lab-level"><option>1</option><option>2</option><option>3</option></select></label>
+  <label>L <select id="lab-level"><option>1</option><option>2</option><option>3</option><option title="the waiting room only">4</option><option title="the waiting room only">5</option></select></label>
   <label>session <select id="lab-session"><option value="">saved</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
   <label>seed <input id="lab-seed" size="6"></label>
   <label><input type="checkbox" id="lab-speak" checked> speaking</label>
@@ -52,31 +54,34 @@
 </div>
 <pre class="cl-lab-out hidden" id="lab-out"></pre>
 
-<script src="js/version.js?v=20260929T172255Z"></script>
+<script src="js/version.js?v=20260929T180938Z"></script>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
-<script src="js/shared/save.js?v=20260929T172255Z"></script>
-<script src="js/shared/app.js?v=20260929T172255Z"></script>
-<script src="js/shared/family-voice.js?v=20260929T172255Z"></script>
-<script src="js/shared/uistore.js?v=20260929T172255Z"></script>
-<script src="js/shared/sfx.js?v=20260929T172255Z"></script>
-<script src="js/shared/results.js?v=20260929T172255Z"></script>
-<script src="js/shared/onboard.js?v=20260929T172255Z"></script>
-<script src="js/shared/speech.js?v=20260929T172255Z"></script>
-<script src="js/shared/say.js?v=20260929T172255Z"></script>
-<script src="js/clinic/body.js?v=20260929T172255Z"></script>
-<script src="js/clinic/kit.js?v=20260929T172255Z"></script>
-<script src="js/clinic/figure.js?v=20260929T172255Z"></script>
-<script src="js/clinic/screen.js?v=20260929T172255Z"></script>
-<script src="js/clinic/pipeline.js?v=20260929T172255Z"></script>
-<script src="js/clinic/heal/registry.js?v=20260929T172255Z"></script>
-<script src="js/clinic/heal/host.js?v=20260929T172255Z"></script>
-<script src="js/clinic/stages/common.js?v=20260929T172255Z"></script>
-<script src="js/clinic/stages/waiting.js?v=20260929T172255Z"></script>
-<script src="js/clinic/stages/diagnosis.js?v=20260929T172255Z"></script>
-<script src="js/clinic/stages/pharmacy.js?v=20260929T172255Z"></script>
-<script src="js/clinic/stages/heal.js?v=20260929T172255Z"></script>
-<script src="js/clinic/stages/sendoff.js?v=20260929T172255Z"></script>
-<script src="js/clinic/run.js?v=20260929T172255Z"></script>
+<script src="js/shared/save.js?v=20260929T180938Z"></script>
+<script src="js/shared/app.js?v=20260929T180938Z"></script>
+<script src="js/shared/family-voice.js?v=20260929T180938Z"></script>
+<script src="js/shared/uistore.js?v=20260929T180938Z"></script>
+<script src="js/shared/sfx.js?v=20260929T180938Z"></script>
+<script src="js/shared/results.js?v=20260929T180938Z"></script>
+<script src="js/shared/onboard.js?v=20260929T180938Z"></script>
+<script src="js/shared/guide.js?v=20260929T180938Z"></script>
+<script src="js/shared/order-card.js?v=20260929T180938Z"></script>
+<script src="js/shared/speech.js?v=20260929T180938Z"></script>
+<script src="js/shared/say.js?v=20260929T180938Z"></script>
+<script src="js/clinic/body.js?v=20260929T180938Z"></script>
+<script src="js/clinic/kit.js?v=20260929T180938Z"></script>
+<script src="js/clinic/figure.js?v=20260929T180938Z"></script>
+<script src="js/clinic/screen.js?v=20260929T180938Z"></script>
+<script src="js/clinic/pipeline.js?v=20260929T180938Z"></script>
+<script src="js/clinic/heal/registry.js?v=20260929T180938Z"></script>
+<script src="js/clinic/heal/host.js?v=20260929T180938Z"></script>
+<script src="js/clinic/heal/scene.js?v=20260929T180938Z"></script>
+<script src="js/clinic/stages/common.js?v=20260929T180938Z"></script>
+<script src="js/clinic/stages/waiting.js?v=20260929T180938Z"></script>
+<script src="js/clinic/stages/diagnosis.js?v=20260929T180938Z"></script>
+<script src="js/clinic/stages/pharmacy.js?v=20260929T180938Z"></script>
+<script src="js/clinic/stages/heal.js?v=20260929T180938Z"></script>
+<script src="js/clinic/stages/sendoff.js?v=20260929T180938Z"></script>
+<script src="js/clinic/run.js?v=20260929T180938Z"></script>
 <script>
 (async function () {
   const Q = new URLSearchParams(location.search);
@@ -108,7 +113,8 @@
 
   // ---- the lab bar ----
   const lab = Q.get("lab") === "1";
-  const VARIANTS = { waiting: ["W1", "W2", "W3", "W4"], diagnosis: ["D1", "D1b", "D2", "D3"], sendoff: ["E1", "E2", "E3", "E4"] };
+  // clinic v2: W2 is the ladder now, D1b is D1 at level 2, E3 is merged into E2
+  const VARIANTS = { waiting: ["W1", "W3", "W4"], diagnosis: ["D1", "D2", "D3"], sendoff: ["E1", "E2", "E4"] };
   const fillVariants = () => {
     const w = $("lab-what").value;
     $("lab-variant").innerHTML = '<option value="">draw</option>' + (VARIANTS[w] || []).map((v) => `<option>${v}</option>`).join("");

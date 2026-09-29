@@ -28,6 +28,9 @@
     await Clinic.HealHost.loadBase();
     const pj = await Kit.loadJSON("data/clinic/pipeline.json");
     R.data = PL().prepare(pj, Clinic.HealHost.clinic);
+    // clinic v2: the item overrides (the apple, the tube, the torch) reach every picture; the new rooms
+    Object.entries(pj.items || {}).forEach(([id, it]) => id !== "_about" && (Kit.ITEMS[id] = Object.assign({}, Kit.ITEMS[id] || {}, it)));
+    Clinic.Scenes = await Kit.loadJSON("data/clinic/scenes-v2.json");
     R.bodyFile = Clinic.HealHost.bodyFile;
     return R;
   };

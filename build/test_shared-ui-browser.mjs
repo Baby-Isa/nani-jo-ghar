@@ -166,16 +166,20 @@ try {
     await page.evaluate(() => (window.__lab.onboard = null));
     await page.click("#ob-force");
     await page.waitForSelector(".njg-onboard.on");
-    await page.click(".ob-skip");
+    // the skip lives in the mode's ? menu now (G7 / CQ15): no corner button on the layer
+    check(!(await page.$(".njg-onboard .ob-skip")), `${s.name}: no skip button in the corner`);
+    await page.evaluate(() => { const m = document.createElement("div"); m.id = "qmenu"; m.setAttribute("data-ob-pass", ""); Object.assign(m.style, { position: "fixed", left: "10px", bottom: "10px", width: "260px", zIndex: 999 }); document.body.appendChild(m); window.Onboard.skipButton(m); });
+    await page.click(".ob-skip-row");
     await page.waitForTimeout(300);
     check(!!(await page.$(".njg-onboard")), `${s.name}: a quick tap on skip does nothing`);
-    const sk = await centre(".ob-skip");
+    const sk = await centre(".ob-skip-row");
     await page.mouse.move(sk.x, sk.y);
     await page.mouse.down();
     await page.waitForTimeout(1200);
     await page.mouse.up();
     await page.waitForFunction(() => window.__lab.onboard);
-    check((await page.evaluate(() => window.__lab.onboard)) === "skipped", `${s.name}: holding skip for a second -> "skipped"`);
+    check((await page.evaluate(() => window.__lab.onboard)) === "skipped", `${s.name}: holding skip (in the ? menu) for a second -> "skipped"`);
+    await page.evaluate(() => document.getElementById("qmenu").remove());
     check(errors.length === 0, `${s.name}: no page errors ${errors.join(" | ")}`);
     await ctx.close();
   }

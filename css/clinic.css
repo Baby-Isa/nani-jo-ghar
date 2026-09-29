@@ -60,7 +60,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-card.english .cl-row-en { display: inline; color: #1b5e8a; }
 .cl-words .ph { color: var(--cl-ph); font-style: italic; }
 .cl-words .ku { color: var(--cl-ink); }
-.cl-words .ph + .ku, .cl-words .ku + .ph { margin-left: .25em; }
+.cl-words .ph + .ku, .cl-words .ku + .ph, .cl-words .ph + .ph { margin-left: .25em; }
 @keyframes cl-throb { 0%, 100% { transform: scale(1); background: #fff4df; } 50% { transform: scale(1.04); background: #ffe2a6; } }
 
 /* ---------- the tray (fixed slots) ---------- */
@@ -105,7 +105,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
 .cl-go.done {
   align-self: center; width: clamp(64px, 8vw, 92px); min-height: 0; aspect-ratio: 1; border-radius: 50%; padding: 0;
-  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260929T172255Z");
+  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260929T180938Z");
   border: 1px solid #e6d5b8; color: transparent !important; font-size: 0; overflow: hidden;
   box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.2);
 }
@@ -215,7 +215,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-probe.done { opacity: .35; animation: none; }
 @keyframes cl-probe { 50% { transform: translate(-50%, -50%) scale(1.18); box-shadow: 0 0 0 8px rgba(226, 163, 58, .25); } }
 .cl-kit { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 25; }
-.cl-kit-tool { width: clamp(58px, 7vw, 84px); height: clamp(58px, 7vw, 84px); border-radius: 18px; border: 3px solid #d8c6a8; background: #fff; display: grid; place-items: center; cursor: pointer; padding: 0; }
+.cl-kit-tool { width: clamp(52px, min(7vw, 13vh), 84px); height: clamp(52px, min(7vw, 13vh), 84px); border-radius: 18px; border: 3px solid #d8c6a8; background: #fff; display: grid; place-items: center; cursor: pointer; padding: 0; }
 .cl-kit-tool.sel { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); transform: scale(1.06); }
 .cl-find { position: absolute; transform: translate(-50%, -50%); font-size: 34px; pointer-events: none; animation: cl-pop .2s; }
 .cl-find.sore { font-size: 46px; filter: drop-shadow(0 0 8px #ffb347); }
@@ -275,3 +275,118 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* sidebar dishes on short screens: the picture stays inside its dish (heal B's note at 915x375) */
 .cl-side .cl-dish { overflow: hidden; grid-template-rows: 100%; }
 .cl-side .cl-dish .cl-item { height: 84%; width: auto; aspect-ratio: 1; max-width: none; max-height: none; }
+
+/* ================= clinic v2 (docs/modes/clinic-v2-design-sheets.md part A) ================= */
+/* the scene box: the approved background at full strength; everything placed in shares of the picture */
+.cl-room.v2 { background: #efe5d6; overflow: hidden; }
+.cl-scene { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; }
+.cl-scene-cap { position: absolute; display: none; background-repeat: no-repeat; filter: blur(2px); }
+.cl-placed { position: absolute; transform: translate(-50%, -100%); }
+
+/* W: the waiting room on CB1b */
+.cl-wdoc { overflow: hidden; aspect-ratio: .62; transform-origin: 50% 100%; }
+.cl-wdoc img { width: 100%; display: block; }
+.cl-wdoc.cl-placed { transform: translate(-50%, -100%) rotate(-7deg); }
+.cl-wp { pointer-events: none; transition: left 1s ease-in-out, top 1s ease-in-out, opacity .5s; }
+.cl-wp-fig { position: relative; height: 100%; isolation: isolate; transform-origin: 50% 100%; }
+.cl-wp-img { height: 100%; width: auto; display: block; }
+.cl-wp-tint { position: absolute; inset: 0; background: var(--tint); mix-blend-mode: color; opacity: .95;
+  -webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, #000 60%, #000 81%, transparent 84%);
+  -webkit-mask-size: 100% 100%, 100% 100%; -webkit-mask-composite: source-in;
+  mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, #000 60%, #000 81%, transparent 84%);
+  mask-size: 100% 100%, 100% 100%; mask-composite: intersect; pointer-events: none; }
+.cl-wp-kid { position: absolute; right: -34%; bottom: 0; height: 52%; pointer-events: none; }
+.cl-wp.puzzled .cl-wp-fig { animation: cl-shake .7s; }
+.cl-wp.standing .cl-wp-fig { transform: translateY(-6%); }
+.cl-wp.rock .cl-wp-fig { animation: cl-shiver .5s 2; }
+.cl-wp.walking { transform: translate(-50%, -100%) scale(.82); }
+.cl-wp.gone { opacity: 0; }
+.cl-wp .cl-ring { top: -8%; }
+.cl-wtick { width: clamp(44px, 4.6vw, 58px); height: clamp(44px, 4.6vw, 58px); padding: 7px; border-radius: 50%; border: 4px solid #c9962e; background: rgba(255, 255, 255, .88); color: #fff !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
+.cl-wtick svg { width: 100%; height: 100%; display: block; opacity: 0; }
+.cl-wtick.locked svg { opacity: 1; }
+.cl-wtick.locked { background: #3fa35b; border-color: #fff; animation: cl-lock .35s ease-out; }
+.cl-wtick.nope { animation: cl-tick-shake .5s; }
+.cl-wtick.gone { opacity: 0; pointer-events: none; transition: opacity .4s; }
+@keyframes cl-tick-shake { 20%, 60% { transform: translate(calc(-50% - 7px), -100%); } 40%, 80% { transform: translate(calc(-50% + 7px), -100%); } }
+@keyframes cl-lock { 50% { transform: translate(-50%, -100%) scale(1.25); } }
+
+/* D: the patient on the bed's edge (CB2b) or standing (CB3b); the stand-in doctor to the right */
+.cl-patient-layer.v2 { right: auto; bottom: auto; display: block; }
+.cl-patient-layer.v2 .cl-fig { height: 100%; }
+.cl-doc { aspect-ratio: 100 / 260; pointer-events: none; }
+.cl-doc svg { width: 100%; height: 100%; display: block; }
+.cl-doc-stand { transform: translate(-50%, -100%) scaleX(-1); }
+.cl-room.v2 .cl-kit { left: 2%; right: auto; top: 57%; bottom: auto; transform: translateY(-50%); flex-direction: column; background: rgba(255, 250, 241, .9); padding: 8px; border-radius: 16px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-kit-tool.cue { animation: cl-throb-dish 1s ease-in-out infinite; border-color: #c9962e; }
+.cl-item.standin { background: none; border: none; border-radius: 0; }
+.cl-item.standin svg { width: 100%; height: 100%; display: block; }
+
+/* P: the items ride the painted belt on CB4c; the tray on the counter strip */
+.cl-pharmacy .cl-belt.v2 { left: 0; right: 0; z-index: 6; }
+.cl-belt.v2 .cl-belt-track { inset: 0; background: none; border: 0; overflow: visible; }
+.cl-belt.v2 .cl-belt-dish { top: auto; bottom: 0; margin-top: 0; width: var(--item, 96px); height: var(--item, 96px); min-width: 48px; min-height: 48px; border: 0; border-radius: 12px; background: none; box-shadow: none; }
+.cl-belt.v2 .cl-belt-dish .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; filter: drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
+.cl-belt.v2 .cl-belt-dish .cl-item[data-colour]:not(.own-colour) { background: radial-gradient(circle at 50% 60%, var(--tint) 0 34%, transparent 36%); }
+.cl-belt.v2.stopped .cl-belt-dish { filter: saturate(.5); }
+.cl-counter-tray.v2 { right: auto; bottom: auto; transform: translate(-50%, -50%); background: rgba(255, 250, 241, .55); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); padding: 10px 14px; gap: 14px; }
+.cl-counter-tray.v2 .cl-dish { border-radius: 14px; border: 3px dashed #c9962e; background: rgba(255, 255, 255, .6); }
+.cl-counter-tray.v2 .cl-dish.full { border: 3px solid #c9962e; background: #fff; }
+.cl-counter-tray.v2 .cl-dish .cl-item { background: none; border: 0; }
+.cl-fly .cl-item { background: none; border: 0; }
+.cl-fly { background: none; border: 0; }
+
+/* E: the send-off on CB5: the face circle, the four feeling cards (or what helps), the apple, in the scene */
+.cl-feel { width: 100%; height: 100%; display: grid; place-items: center; }
+.cl-feel svg { width: 100%; height: 100%; display: block; }
+.cl-feel-circle { position: absolute; left: 50%; top: -4%; width: 42%; aspect-ratio: 1; transform: translate(-50%, -100%); border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); border: 3px solid #fff; display: grid; place-items: center; }
+.cl-feel-q { font: 800 26px var(--cl-head); color: #b9ae9f; }
+.cl-feel-circle.on { animation: cl-pop .25s ease-out; }
+.cl-feel-cards { display: flex; gap: 12px; padding: 10px 12px; background: rgba(255, 250, 241, .72); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-feel-cards .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: 6px; border-radius: 16px; border: 3px solid #e2d3bb; }
+.cl-help-card .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; }
+.room-door .cl-extra { width: clamp(64px, 7vw, 90px); height: clamp(64px, 7vw, 90px); margin: 0; border-radius: 18px; }
+.room-door .cl-extra .cl-item { width: 100%; height: 100%; background: none; border: 0; }
+.cl-fly-help { position: fixed; z-index: 300; transition: transform .45s ease-in; pointer-events: none; }
+.cl-ask-card { transform: translate(-50%, -100%); width: 86px; height: 86px; border-radius: 50%; background: #fff; box-shadow: 0 4px 14px rgba(40, 25, 10, .2); border: 4px solid #dde6d5; }
+.cl-ask-card .cl-face { width: 100%; height: 100%; }
+.cl-ask-q { position: absolute; right: -10px; top: -10px; width: 36px; height: 36px; border-radius: 50%; background: #7e9a76; color: #fff; font: 800 24px var(--cl-head); display: grid; place-items: center; }
+.cl-patient-layer.leaving { transition: left 1.2s ease-in, opacity 1.2s; left: 76% !important; opacity: .0; }
+/* G6: the running count on a row (level 1), the Kutchi number word */
+.cl-row-count { margin-left: auto; padding: 2px 10px; border-radius: 12px; background: #fff4df; color: #8c2f2f; font: 800 17px var(--cl-head); }
+.cl-row-count:empty { display: none; }
+.cl-row-count.bump { animation: cl-bump .3s; }
+.cl-row.done .cl-row-count { background: none; }
+
+/* the ? (G7 / CQ15): bottom of the sidebar; its pop holds the goal and, during first-time help, the grown-ups' skip */
+.cl-dock { margin-top: auto; display: flex; gap: 12px; padding-top: 8px; }
+.cl-help-btn { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #e6d5b8; background: #fffaf0; font: 800 22px var(--cl-head); color: #2a2522; cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: #2a2522; color: #fff8ec; border-radius: 16px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
+.cl-help-pop .ob-skip-row { color: #2a2522; }
+
+/* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
+.cl-side-top.cl-nani { display: flex; }
+.cl-nani .cl-hint-n { font-size: 15px; min-width: 0; }
+.cl-card.oc-card { padding: 10px 12px; border-radius: 12px; }
+.cl-card.oc-card .cl-card-head { margin-bottom: 6px; }
+.cl-card.oc-card .cl-card-head:has(.cl-card-face:empty) .cl-card-title:empty { display: none; }
+.cl-card.oc-card .cl-row { justify-content: space-between; padding: 6px 8px; border-radius: 10px; font: 800 clamp(15px, 1.6vw, 20px) var(--cl-font); color: #2a2522; }
+.cl-card.oc-card .cl-row + .cl-row { border-top: 1px solid #efe8dc; }
+.cl-card.oc-card .cl-tick { width: 22px; height: 22px; border: 2px solid #d9d2c7; border-radius: 50%; background: none; flex: none; order: 3; }
+.cl-card.oc-card .cl-row.done .cl-tick { border: 0; background: none; }
+.cl-card.oc-card .cl-row.done .cl-tick::after { display: none; }
+.cl-card.oc-card .cl-row.done .cl-tick svg { width: 100%; height: 100%; display: block; }
+.cl-card.oc-card .cl-row.done .cl-row-text { opacity: .55; }
+.cl-card.oc-card .cl-row-count { order: 2; }
+.cl-card.oc-card .cl-row-text { flex: 1 1 auto; min-width: 0; }
+.cl-card.oc-card .cl-words .ku { color: #8c2f2f; }
+.cl-card .oc-row .oc-t::first-letter { text-transform: none; }
+.cl-nani { --sb-face: 48px; --sb-h: 16px; }
+.cl-nani .ng-face { position: relative; flex: none; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; }
+.cl-nani .ng-face img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; object-position: top; }
+.cl-nani .ng-face .say-badge { position: absolute; right: -2px; bottom: -2px; width: 18px; height: 18px; border-radius: 50%; background: #2a2522 no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
+.cl-nani .ng-bulb, .cl-nani .ng-mute { width: 34px; height: 34px; padding: 4px; border-radius: 50%; border: 1px solid #cfdccb; background: #fff; display: grid; place-items: center; cursor: pointer; color: #4f5e4d; }
+.cl-nani .ng-bulb img { width: 100%; height: 100%; object-fit: contain; }
+.cl-nani .ng-bulb .bulb-t { display: none; }
+.cl-nani .ng-mute svg { width: 20px; height: 20px; }
+.cl-nani .ng-bulb.lit { background: #ffe26a; box-shadow: 0 0 12px 4px rgba(255, 220, 90, .8); }

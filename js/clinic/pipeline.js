@@ -124,60 +124,127 @@
 
   /* ================= stage 1: the waiting room ================= */
   /**
-   * W1: one kind, a bench of 2-3 (kinds only, never two of the same kind at level 1).
-   * W2: kind + colour (decoys share one word, never neither), or kind + wadho/nindho.
-   * W3: the child says "{kind}, [come]" (a speaking moment; pills as the fallback).
-   * W4: two calls in the called order (pela ... ne poi ...), comfort rings.
+   * Clinic v2 (docs/modes/clinic-v2-design-sheets.md W): the doctor leans out
+   * of his door and calls "[Bring in] {description}"; the child taps the tick
+   * under that person. The level is the language ladder (W4, Zafar):
+   *   1 man / woman / boy / girl · 2 + old / young · 3 + tall / short ·
+   *   4 + a colour (of clothes) · 5 + with the baby / with the child.
+   * Every person carries the attributes of the rungs up to the level; the call
+   * names the kind and the level's own word (plus earlier words only when
+   * needed to make it one person), and the room always holds a near miss for
+   * each word said (same kind but not the word; the word but another kind).
+   * W1 one call; W3 the child calls them (a speaking moment, kinds only);
+   * W4 two calls in the called order (pela ... ne poi ...), comfort rings.
+   * Every ladder word is an English placeholder (to record).
    */
+  const WHO_KINDS = { man: { young: "uncle", old: "old-man" }, woman: { young: "auntie", old: "old-woman" }, boy: { young: "boy" }, girl: { young: "girl" } };
+  const ADULT = (who) => who === "man" || who === "woman";
+  P.personKind = (p) => (WHO_KINDS[p.who] || {})[p.age || "young"] || (WHO_KINDS[p.who] || {}).young || p.who;
+  /** The English words of a person under a description (a list of attribute names). */
+  P.describe = function (data, p, attrs) {
+    const W = data.ladder_words || {};
+    const w = [];
+    if (attrs.includes("height") && p.height) w.push(W[p.height] || p.height);
+    if (attrs.includes("age") && p.age) w.push(W[p.age] || p.age);
+    w.push(W[p.who] || p.who);
+    if (attrs.includes("colour") && p.colour) w.push((data.colour_words[p.colour] || { english: `in ${p.colour}` }).english);
+    if (attrs.includes("with") && p.with) w.push(W[p.with] || `with the ${p.with}`);
+    const english = `the ${w.join(" ")}`;
+    return { kutchi: ph(english), english, attrs: attrs.slice() };
+  };
+  const matches = (p, q, attrs) => p.who === q.who && attrs.every((a) => a === "kind" || (p[a] || null) === (q[a] || null));
+  P.waitingRungs = (data, L) => (data.stages.waiting.rungs || ["kind"]).slice(0, Math.max(1, Math.min(5, L)));
+  /** The shortest description (kind + the level's word first, then earlier words) that names just this person, or null. */
+  P.uniqueAttrs = function (data, people, i, L, focus) {
+    const rungs = P.waitingRungs(data, L);
+    const p = people[i];
+    const has = (a) => a === "kind" || p[a] != null;
+    const tries = [];
+    const base = ["kind"].concat(focus && focus !== "kind" && has(focus) ? [focus] : []);
+    tries.push(base);
+    rungs.filter((a) => a !== "kind" && !base.includes(a) && has(a)).forEach((a) => tries.push(tries[tries.length - 1].concat([a])));
+    for (const t of tries) if (t.length <= 3 && people.filter((q) => matches(q, p, t)).length === 1) return t; // at most two words beside the kind
+    return null;
+  };
   P.waiting = function (data, level, rng, o = {}) {
     const S = data.stages.waiting;
-    const L = clampL(level);
-    let variant = o.variant || P.draw(S.mix[L], rng);
-    if (variant === "W3" && o.speak === false) variant = L >= 3 ? "W4" : "W2";
-    const kinds = Object.keys(data.kinds).filter((k) => k !== "_about");
-    const n = o.first ? S.firstBench : o.bench || between(S.bench[L], rng);
-    let bench = [];
-    let calls = [];
+    const L = Math.max(1, Math.min(S.maxLevel || 3, level | 0 || 1));
+    let variant = o.variant || P.draw(S.mix[L] || S.mix[3], rng);
+    if (variant === "W2") variant = "W1"; // W2 (kind + colour / size) is the ladder's rungs now
+    if (variant === "W3" && o.speak === false) variant = "W1";
+    if (variant === "W4" && L < 3 && !o.variant) variant = "W1";
+    const rungs = P.waitingRungs(data, L);
+    const focus = variant === "W3" ? "kind" : rungs[rungs.length - 1];
+    const whos = ["man", "woman", "boy", "girl"];
     const colours = data.colours;
-    if (variant === "W1" || variant === "W3") {
-      const ks = o.first ? shuffle(["girl", "boy"], rng) : shuffle(kinds, rng).slice(0, n);
-      bench = ks.map((kind) => ({ kind }));
-      const target = o.first ? ks.indexOf("girl") : Math.floor(rng() * bench.length);
-      calls = [{ target, say: P.kindWord(data, bench[target].kind) }];
-    } else if (variant === "W2") {
-      const bySize = rng() < 0.35;
-      if (bySize) {
-        // wadho/nindho: two of one he-kind (big and small) + others
-        const he = kinds.filter((k) => data.kinds[k].he);
-        const kind = pick(he, rng);
-        const others = shuffle(kinds.filter((k) => k !== kind), rng).slice(0, Math.max(1, n - 2));
-        bench = [{ kind, size: "big" }, { kind, size: "small" }].concat(others.map((k) => ({ kind: k, size: rng() < 0.5 ? "big" : "small" })));
-        bench = shuffle(bench, rng);
-        const size = rng() < 0.5 ? "big" : "small";
-        const target = bench.findIndex((b) => b.kind === kind && b.size === size);
-        calls = [{ target, say: P.kindWord(data, kind, { size: bench[target].size }), by: "size" }];
-      } else {
-        // kind + colour: every decoy shares exactly one of the two words (never neither)
-        const kind = pick(kinds, rng);
-        const cs = shuffle(colours, rng);
-        const c1 = cs[0];
-        const others = shuffle(kinds.filter((k) => k !== kind), rng);
-        bench = [{ kind, colour: c1 }, { kind, colour: cs[1] }, { kind: others[0], colour: c1 }];
-        for (let j = 3; j < n; j++) bench.push(j % 2 ? { kind, colour: cs[2 + ((j - 3) >> 1)] || cs[1] } : { kind: others[1 + ((j - 3) >> 1)], colour: c1 });
-        bench = shuffle(bench, rng);
-        const target = bench.findIndex((b) => b.kind === kind && b.colour === c1);
-        calls = [{ target, say: P.kindWord(data, kind, { colour: c1 }), by: "colour" }];
+    // a random person with every rung's attribute up to L
+    const person = (who) => {
+      const p = { who, age: null, height: null, colour: null, with: null };
+      if (rungs.includes("age") && ADULT(who)) p.age = rng() < 0.5 ? "old" : "young";
+      if (rungs.includes("height")) p.height = rng() < 0.5 ? "tall" : "short";
+      if (rungs.includes("colour")) p.colour = pick(colours, rng);
+      if (rungs.includes("with") && ADULT(who) && rng() < 0.15) p.with = rng() < 0.5 ? "baby" : "child";
+      return p;
+    };
+    const flip = { age: { old: "young", young: "old" }, height: { tall: "short", short: "tall" }, with: { baby: "child", child: "baby" } };
+    const other = (a, v) => (a === "colour" ? pick(colours.filter((c) => c !== v), rng) : a === "with" ? (rng() < 0.5 ? null : flip.with[v]) : flip[a][v]);
+    let n = o.first ? S.firstBench : o.bench || between(S.people[L] || S.people[3], rng);
+    let people;
+    let targets;
+    for (let attempt = 0; attempt < 60; attempt++) {
+      people = [];
+      if (o.first) {
+        people = shuffle(["girl", "boy"], rng).map((w) => ({ who: w, age: null, height: null, colour: null, with: null }));
+        targets = [people.findIndex((p) => p.who === "girl")];
+        break;
       }
-    } else if (variant === "W4") {
-      const ks = shuffle(kinds, rng).slice(0, Math.max(4, n));
-      bench = ks.map((kind) => ({ kind }));
-      const [a, b] = shuffle(bench.map((_, i) => i), rng);
-      calls = [
-        { target: a, say: P.kindWord(data, bench[a].kind) },
-        { target: b, say: P.kindWord(data, bench[b].kind) },
-      ];
+      if (variant === "W3" || L === 1) {
+        // kinds only: the four kinds, one of the called kind
+        const t = pick(whos, rng);
+        people.push(person(t));
+        const rest = whos.filter((w) => w !== t);
+        while (people.length < n) people.push(person(pick(rest, rng)));
+      } else {
+        // the target has the level's word; a near miss for each word
+        const needAdult = focus === "age" || focus === "with";
+        const tWho = pick(needAdult ? ["man", "woman"] : whos, rng);
+        const t = person(tWho);
+        if (focus === "with" && !t.with) t.with = rng() < 0.5 ? "baby" : "child";
+        if (focus === "with" && t.with === "baby" && t.who === "man") t.with = "child"; // the baby sits with a woman (the stand-in art)
+        people.push(t);
+        const same = Object.assign({}, person(tWho), { [focus]: other(focus, t[focus]) });
+        if (focus === "age") same.age = flip.age[t.age];
+        people.push(same);
+        const others = (needAdult ? ["man", "woman"] : whos).filter((w) => w !== tWho);
+        const alt = Object.assign(person(pick(others, rng)), { [focus]: t[focus] });
+        people.push(alt);
+        while (people.length < n) people.push(person(pick(whos, rng)));
+      }
+      people.forEach((p) => p.with === "baby" && p.who === "man" && (p.with = "child"));
+      people = shuffle(people, rng);
+      // who can be called: a description naming just them (kind + the level's word first)
+      const callable = people.map((p, i) => (variant === "W3" || L === 1 ? (people.filter((q) => q.who === p.who).length === 1 ? ["kind"] : null) : P.uniqueAttrs(data, people, i, L, focus)));
+      const withFocus = people.map((p, i) => i).filter((i) => callable[i] && (focus === "kind" || callable[i].includes(focus)));
+      if (!withFocus.length) continue;
+      const a = pick(withFocus, rng);
+      targets = [a];
+      if (variant === "W4") {
+        const b = people.map((p, i) => i).filter((i) => i !== a && callable[i]);
+        if (!b.length) continue;
+        targets.push(pick(b, rng));
+      }
+      break;
     }
-    bench.forEach((b, i) => (b.i = i));
+    // the slots: the bench first, then the standing spots, then the little stools in front
+    const nStand = o.first ? 0 : Math.min(S.standing[L] || 0, Math.max(0, people.length - 1));
+    const benchN = Math.min(S.slots.bench.length, people.length - nStand);
+    const slotList = shuffle(S.slots.bench, rng).slice(0, benchN).concat(S.slots.standing.slice(0, nStand)).concat(S.slots.front.slice(0, Math.max(0, people.length - benchN - nStand)));
+    const order = shuffle(people.map((_, i) => i), rng);
+    const bench = people.map((p, i) => Object.assign({}, p, { kind: P.personKind(p), slot: slotList[order.indexOf(i)] || `front${i}`, i }));
+    const calls = targets.map((t) => {
+      const attrs = variant === "W3" || L === 1 || o.first ? ["kind"] : P.uniqueAttrs(data, bench, t, L, focus);
+      return { target: t, say: P.describe(data, bench[t], attrs), attrs };
+    });
     const rows = calls.map((c, i) => ({
       id: `who${i}`,
       stage: "waiting",
@@ -186,14 +253,15 @@
       options: bench.map((b) => b.i),
       tested: true,
       voice: variant === "W3",
-      word: data.kinds[bench[c.target].kind].english,
+      word: c.say.english.replace(/^the /, ""),
+      rung: focus,
     }));
     let card;
     if (variant === "W4") card = [Object.assign(P.line(data, "bring2", { a: calls[0].say, b: calls[1].say }), { id: "who" })];
     else if (variant === "W3") card = [Object.assign(P.line(data, "come", { kind: calls[0].say }), { id: "who0" })];
     else card = [Object.assign(P.line(data, "bring", { kind: calls[0].say }), { id: "who0" })];
     const patient = bench[calls[calls.length - 1].target];
-    return { stage: "waiting", variant, level: L, bench, calls, rows, card, patient, ringsMs: S.ringsMs[L] };
+    return { stage: "waiting", variant, level: L, rung: focus, bench, calls, rows, card, patient, ringsMs: S.ringsMs[L] || S.ringsMs[3] };
   };
   /** A tap on bench seat i for row r: right? */
   P.judgeWho = (row, i) => row.answer === i;
@@ -209,9 +277,12 @@
   };
   /**
    * D1: 3 parts pulse (the sore one among them); taught at level 1 (no graded row).
-   * D1b (level 2): each probe answers haa/nar; the child presses Found it on haa, Next on nar: one graded row per probe.
+   *     From level 2 (the old D1b, folded in: clinic v2 D) it's graded: each probe answers haa/na;
+   *     the child presses Found it on haa, Next on na. "D1b" still names D1 at level 2 (old links).
    * D2: the patient says "[My knee hurts]" (level 3: "[My left knee]"); tap the part.
-   * D3: the doctor calls a tool and a part, 2-3 times; the find shows only at the sore one.
+   * D3: the doctor calls a tool and a part (1 call at level 1, 2 at level 2, 3 at level 3); the find
+   *     shows only at the sore one. Level 1 offers only the right tool plus one other (v2 D3).
+   * pose: "sit" on the bed's edge (CB2b) for D1/D2, "stand" by the wall (CB3b) for the check-up (D3).
    */
   P.diagnosis = function (data, level, rng, o = {}) {
     const S = data.stages.diagnosis;
@@ -222,12 +293,19 @@
     const sided = data.sided.includes(part);
     const side = sided ? (o.side || (rng() < 0.5 ? "left" : "right")) : null;
     let variant = o.variant || P.draw(S.mix[L], rng);
+    let L2 = L;
+    if (variant === "D1b") {
+      variant = "D1"; // D1b is D1's level 2 now
+      L2 = Math.max(2, L);
+    }
+    const graded = variant === "D1" && L2 >= 2;
     const pool = (data.parts[L] || data.parts[3]).filter((p) => p !== part);
     const rows = [];
     let probes = null;
     let calls = null;
     let card = [];
-    if (variant === "D1" || variant === "D1b") {
+    let tools = null;
+    if (variant === "D1") {
       const n = S.probe[L] || 3;
       // one probe per body region, so no two pulsing targets sit on top of each other on a phone
       const region = (p) => P.REGIONS.findIndex((g) => g.includes(p));
@@ -241,7 +319,7 @@
       });
       probes = shuffle([part].concat(picks), rng);
       card = [Object.assign(P.line(data, "here"), { id: "probe" })];
-      if (variant === "D1b") rows.push({ id: "probe", stage: "diagnosis", kind: "probe", answer: part, options: probes, tested: true, word: data.part_words[part] });
+      if (graded) rows.push({ id: "probe", stage: "diagnosis", kind: "probe", answer: part, options: probes, tested: true, word: data.part_words[part] });
     } else if (variant === "D2") {
       const say = L >= 3 && side ? P.line(data, "hurts-side", { side: { english: side }, part: { english: data.part_words[part] } }) : P.line(data, "hurts", { part: { english: data.part_words[part] } });
       // the placeholder frame: the whole line is English for now
@@ -249,8 +327,8 @@
       card = [Object.assign(P.line(data, "where"), { id: "where" })];
       rows.push({ id: "where", stage: "diagnosis", kind: "part", answer: { part, side: L >= 3 ? side : null }, options: data.parts[L] || data.parts[3], tested: true, patientSays: say, word: data.part_words[part] });
     } else if (variant === "D3") {
-      const tools = Object.keys(S.tools);
-      const toolFor = (p) => tools.find((t) => S.tools[t].finds.includes(p)) || "hand";
+      const all = Object.keys(S.tools);
+      const toolFor = (p) => all.find((t) => S.tools[t].finds.includes(p)) || "hand";
       const nCalls = S.calls[L] || 2;
       const others = shuffle(pool.filter((p) => toolFor(p)), rng).slice(0, nCalls - 1);
       const parts = shuffle([part].concat(others), rng);
@@ -261,13 +339,20 @@
         return { id: `check${i}`, part: p, side: sd, tool, sore: p === part, say: { kutchi: `[${S.tools[tool].english}] [${w}]`, english: `${S.tools[tool].english} ${w}` } };
       });
       card = calls.map((c) => ({ id: c.id, kutchi: c.say.kutchi, english: c.say.english }));
+      // level 1: only the right tool plus one other (v2 D3); the kit keeps the data's order
+      if (L === 1) {
+        const keep = new Set(calls.map((c) => c.tool));
+        keep.add(pick(all.filter((t) => !keep.has(t)), rng));
+        tools = all.filter((t) => keep.has(t));
+      } else tools = all;
       calls.forEach((c) => rows.push({ id: c.id, stage: "diagnosis", kind: "check", answer: { tool: c.tool, part: c.part, side: c.side }, options: tools, tested: true, word: data.part_words[c.part] }));
     }
     const said = P.prescription(data, ailmentId);
-    return { stage: "diagnosis", variant, level: L, ailment: ailmentId, part, side, probes, calls, rows, card, name: ail.say, prescription: said };
+    const pose = o.pose || (variant === "D3" ? "stand" : "sit");
+    return { stage: "diagnosis", variant, level: L, graded, ailment: ailmentId, part, side, probes, calls, tools, rows, card, pose, name: ail.say, prescription: said };
   };
-  /** D1b: the right act for a probe's answer. */
-  P.probeAnswer = (plan, probed) => (probed === plan.part ? "haa" : "nar");
+  /** D1 (level 2+): the right act for a probe's answer. "No" is na (G9: not nar). */
+  P.probeAnswer = (plan, probed) => (probed === plan.part ? "haa" : "na");
   P.judgeProbe = (plan, probed, act) => (probed === plan.part ? act === "found" : act === "next");
   /** D2: a tap on {part, side}. Sides count only when the row asks for one. */
   P.judgePart = (row, tap) => !!tap && tap.part === row.answer.part && (!row.answer.side || tap.side === row.answer.side);
@@ -443,35 +528,47 @@
 
   /* ================= stage 5: the send-off ================= */
   /**
-   * E1 (level 1, taught): happy or sad (sad 1 in 4: one more thing, then happy).
-   * E2: four faces (five at level 3 with scared, always resolved); tap the one said.
-   * E3: the goodbye the doctor cues (speaking; the pills as the fallback).
-   * E4: the child asks "[How do you feel?]" (speaking), then taps the face.
+   * Clinic v2 (docs/modes/clinic-v2-design-sheets.md E; CQ6), on CB5:
+   *   E1 (level 1, taught): the patient's face shows the feeling; pick the card (four: happy, sad, hot, cold).
+   *   E2 (level 2): the patient SAYS it, no picture; pick the card; then the goodbye the doctor
+   *      cues, in the scene (E3 is merged into E2: "E3" names E2 with the goodbye).
+   *   level 3: the feeling shows; pick WHAT HELPS (cold: blanket, hot: fan, sad: the apple).
+   *   E4 (level 3): the child asks [How do you feel?] first (speaking), then what helps.
+   * Levels 1-2, not happy: one more thing (the feeling's help, in the scene), then it ends happy.
    */
   P.sendoff = function (data, level, rng, o = {}) {
     const S = data.stages.sendoff;
     const L = clampL(level);
     let variant = o.variant || P.draw(S.mix[L], rng);
-    if ((variant === "E3" || variant === "E4") && o.speak === false) variant = L === 1 ? "E1" : "E2";
-    const faces = S.faces[variant === "E1" ? 1 : L].slice();
+    if (variant === "E3") variant = "E2"; // merged (v2 E)
+    if (variant === "E4" && o.speak === false) variant = L === 1 ? "E1" : "E2";
+    const mode = L >= 3 ? "helps" : variant === "E1" ? "face" : "said";
+    const pool = S.faces[L] || S.faces[3];
     let feeling;
-    if (variant === "E1") feeling = rng() < S.sadChance ? "sad" : "happy";
-    else feeling = pick(faces.filter((f) => f !== "scared" || o.scared), rng);
+    if (mode === "helps") feeling = pick(pool, rng);
+    else if (rng() < (S.notHappyChance || 0.25)) feeling = pick(pool.filter((f) => f !== "happy"), rng);
+    else feeling = "happy";
     const rows = [];
     const card = [Object.assign(P.line(data, "okay-now"), { id: "feel" })];
     if (variant === "E4") {
       card.unshift(Object.assign(P.line(data, "howfeel"), { id: "ask" }));
       rows.push({ id: "ask", stage: "sendoff", kind: "say-ask", answer: "howfeel", options: ["howfeel", "where", "okay-now"], tested: true, voice: true });
     }
-    rows.push({ id: "feel", stage: "sendoff", kind: "face", answer: feeling, options: shuffle(faces, rng), tested: variant !== "E1", taught: variant === "E1", word: feeling });
+    if (mode === "helps") {
+      card.push(Object.assign(P.line(data, "helps"), { id: "help" }));
+      rows.push({ id: "help", stage: "sendoff", kind: "help", answer: S.helps[feeling], feeling, options: shuffle(S.helpCards, rng), tested: true, word: (data.items[S.helps[feeling]] || {}).english || S.helps[feeling] });
+    } else {
+      rows.push({ id: "feel", stage: "sendoff", kind: "face", answer: feeling, options: shuffle(S.cards, rng), tested: mode !== "face", taught: mode === "face", word: feeling });
+    }
     let goodbye = null;
-    if (variant === "E3") {
+    if (L >= (S.goodbyeFrom || 2)) {
       goodbye = pick(Object.keys(data.goodbyes), rng);
       const g = data.goodbyes[goodbye];
       card.push({ id: "bye", kutchi: `[${g.cue.english}]`, english: g.cue.english });
       rows.push({ id: "bye", stage: "sendoff", kind: "say-bye", answer: goodbye, options: Object.keys(data.goodbyes), tested: true, voice: true });
     }
-    return { stage: "sendoff", variant, level: L, feeling, faces: rows.find((r) => r.id === "feel").options, goodbye, rows, card, line: data.feelings[feeling].line };
+    const main = rows.find((r) => r.id === "feel" || r.id === "help");
+    return { stage: "sendoff", variant, mode, level: L, feeling, faces: main.kind === "face" ? main.options : S.cards.slice(), helps: main.kind === "help" ? main.options : null, extra: S.helps[feeling] || null, goodbye, rows, card, line: data.feelings[feeling].line };
   };
   P.judgeFace = (row, face) => row.answer === face;
 
@@ -556,14 +653,15 @@
   };
   /**
    * After a morning: a stage whose tested rows were all right goes up one
-   * level (max 3). results = [{stage: [{ok, tested}]}] per patient.
+   * level (max 3; the waiting room's ladder max 5). results = [{stage: [{ok, tested}]}] per patient.
    */
+  P.MAX_LEVEL = { waiting: 5 }; // the waiting room's language ladder has five rungs (W4); the rest stop at 3
   P.levelUp = function (levels, results) {
     const out = Object.assign({}, levels);
     STAGES.forEach((s) => {
       const rows = [];
       results.forEach((r) => (r[s] || []).forEach((x) => x.tested !== false && rows.push(x)));
-      if (rows.length && rows.every((x) => x.ok)) out[s] = Math.min(3, (out[s] || 1) + 1);
+      if (rows.length && rows.every((x) => x.ok)) out[s] = Math.min(P.MAX_LEVEL[s] || 3, (out[s] || 1) + 1);
     });
     return out;
   };
@@ -616,8 +714,8 @@
     return score(rows);
   };
   P.bot.diagnosis = function (plan, strategy, rng) {
-    if (plan.variant === "D1") return score([]);
-    if (plan.variant === "D1b") {
+    if (plan.variant === "D1" && !plan.graded) return score([]);
+    if (plan.variant === "D1") {
       // the child probes in some order; each probe needs the right act
       const order = strategy === "fair" ? plan.probes.slice() : shuffle(plan.probes, rng);
       const acts = [];
@@ -687,6 +785,7 @@
       if (strategy === "fair") return { ok: true, tested: r.tested };
       let pickV;
       if (strategy === "same-face") pickV = r.kind === "face" ? "happy" : r.options[0];
+      else if (strategy === "first-card") pickV = r.options[0];
       else pickV = pick(r.options, rng);
       return { ok: pickV === r.answer, tested: r.tested };
     });
@@ -696,7 +795,7 @@
     waiting: ["fair", "random", "first-seat", "middle", "biggest"],
     diagnosis: ["fair", "random", "salient", "found-always", "next-then-found", "sore-only"],
     pharmacy: ["fair", "random", "grab-all", "first-past", "same-group"],
-    sendoff: ["fair", "random", "same-face"],
+    sendoff: ["fair", "random", "same-face", "first-card"],
   };
   /**
    * The whole patient, blind: every stage's rows plus the heal game's bot

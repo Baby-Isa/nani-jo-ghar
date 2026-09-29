@@ -18,6 +18,11 @@ Usage:
   python3 build/test_clinic.py --viewport ipad --mistakes
   python3 build/test_clinic.py --sizes phone,ipad,laptop    # the three sizes
   python3 build/test_clinic.py --only morning --session 3
+  python3 build/test_clinic.py --canvas                     # headless Chromium without WebGL (the clinic is DOM: same run)
+Clinic v2 (docs/modes/clinic-v2-design-sheets.md A): the waiting room plays its five ladder
+levels; D1 at level 2 is the old D1b; the send-off plays E1, E2 (with the goodbye), level 3's
+what-helps and E4. `heal-fever-help` plays fever with the first-time help ON, in the pipeline
+(G8: the tray the pharmacy hands over must hold the thermometer).
 Port: COOK_TEST_PORT (default 8820). Run one browser test at a time.
 Screenshots: build/screenshots/clinic-core/<viewport>/.
 """
@@ -31,6 +36,8 @@ import threading
 import time
 
 from playwright.sync_api import sync_playwright
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # build/heal_play.py (session B's driver)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORT = int(os.environ.get("COOK_TEST_PORT", os.environ.get("CLINIC_TEST_PORT", 8820)))
@@ -61,11 +68,15 @@ def start_server():
     return httpd
 
 
+CANVAS = False
+
+
 def chromium(p):
+    args = ["--disable-webgl"] if CANVAS else []
     for c in ("/opt/pw-browsers/chromium-1194/chrome-linux/chrome", "/opt/pw-browsers/chromium"):
         if os.path.exists(c) and os.path.isfile(c):
-            return p.chromium.launch(executable_path=c)
-    return p.chromium.launch()
+            return p.chromium.launch(executable_path=c, args=args)
+    return p.chromium.launch(args=args)
 
 
 class Player:
@@ -215,6 +226,63 @@ class Player:
         return self.tap_sel(sel, need_clear=False)
 
 
+def help_case(p, vp_name, args):
+    """G8: the fever game with the first-time help ON, in the pipeline (the tray the pharmacy hands over). The tray
+    must hold the thermometer (the old `strip` id left the game without one, and the help, waiting on the
+    thermometer, blocked every other tap); the game is played to the end through its own debug driver
+    (debug.next(): what a child who understood would do, as real mouse events; build/heal_play.py), every
+    step's first-time cue must come (debug.cues), and nothing may error."""
+    import heal_play
+
+    vp = VIEWPORTS[vp_name]
+    b = chromium(p)
+    ctx = b.new_context(viewport={"width": vp["width"], "height": vp["height"]}, has_touch=vp["touch"], is_mobile=vp["touch"])
+    page = ctx.new_page()
+    logs = []
+    page.on("pageerror", lambda e: logs.append(f"PAGEERROR: {e}"))
+    name = "heal-fever-help"
+    try:
+        page.goto(f"http://127.0.0.1:{PORT}/clinic.html?stage=heal&game=fever&level=1&seed={args.seed}&quiet=1&fast=1&onboard=1")
+        page.wait_for_function("() => window.__clinic && window.__clinic.ready", timeout=30000)
+        page.wait_for_function("() => { const r = window.__clinic.Stages.heal.current; return !!(r && r.controller); }", timeout=15000)
+        tray = page.evaluate("() => window.__clinic.Stages.heal.current.ctx.tray.map((t) => t.id)")
+        if "thermometer" not in tray:
+            raise AssertionError(f"the fever's tray has no thermometer: {tray}")
+        has_debug = page.evaluate("() => !!window.__clinic.Stages.heal.current.controller.debug")
+        pl = heal_play.Play(page, "fever", 1, vp_name, args.seed, None)
+        t0 = time.time()
+        cues = []
+        if has_debug:
+            while not page.evaluate("() => !!window.__clinic.last"):
+                if time.time() - t0 > 90:
+                    raise AssertionError("timed out playing fever with the help on")
+                if page.query_selector(".njg-onboard.on"):
+                    raise AssertionError("a blocking first-time overlay is up")
+                a = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r ? r.controller.debug.next() : {do: 'wait'}; }")
+                c = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug.cues ? r.controller.debug.cues : null; }")
+                if c is not None:
+                    cues = c
+                pl.act(a)
+            if not cues:
+                raise AssertionError("no first-time cue came with the help on")
+        else:
+            raise AssertionError("the fever game has no debug driver")
+        last = page.evaluate("() => { const l = window.__clinic.last; return l && l.heal ? {right: l.heal.right, total: l.heal.total} : null; }")
+        bad = [l for l in logs if "PAGEERROR" in l]
+        if not last or last["right"] != last["total"]:
+            raise AssertionError(f"not all right playing fair: {last}")
+        print(f"  {vp_name:14} {name:28} {'ok' if not bad else 'console errors':6} {time.time() - t0:5.1f}s tray {tray} heal {last['right']}/{last['total']} cues {len(cues)}")
+        return not bad
+    except Exception as e:
+        Player(page, vp, False, os.path.join(SHOTS, vp_name)).shot(f"{name}-FAIL")
+        print(f"  {vp_name:14} {name:28} FAIL  {e}")
+        for l in logs[-6:]:
+            print("     ", l)
+        return False
+    finally:
+        b.close()
+
+
 def run_case(p, vp_name, case, args):
     vp = VIEWPORTS[vp_name]
     b = chromium(p)
@@ -257,15 +325,20 @@ def main():
     ap.add_argument("--session", default=None)
     ap.add_argument("--seed", default="7")
     ap.add_argument("--play-cut", action="store_true")
+    ap.add_argument("--canvas", action="store_true", help="launch Chromium with --disable-webgl (Cook's flag; the clinic is DOM)")
     args = ap.parse_args()
+    global CANVAS
+    CANVAS = args.canvas
     sizes = args.sizes.split(",") if args.sizes else [args.viewport]
     s = args.seed
     cases = []
-    for st, vs in (("waiting", ["W1", "W2", "W3", "W4"]), ("diagnosis", ["D1", "D1b", "D2", "D3"]), ("pharmacy", [None]), ("sendoff", ["E1", "E2", "E3", "E4"])):
-        for v in vs:
-            lv = {"W1": 1, "W2": 2, "W3": 2, "W4": 3, "D1": 1, "D1b": 2, "D2": 1, "D3": 2, "E1": 1, "E2": 2, "E3": 2, "E4": 3}.get(v)
-            for L in ([lv] if lv else [1, 2, 3]):
-                cases.append({"name": f"{st}-{v or 'L' + str(L)}", "q": f"stage={st}&level={L}&seed={s}" + (f"&variant={v}" if v else "")})
+    # clinic v2: the waiting room's ladder (levels 1-5), W3 and W4; D1 levels 1-2 (level 2 = the old D1b), D2, D3 levels 1-3;
+    # the send-off's face (1), said + goodbye (2), what helps (3) and E4
+    for st, v, L in (("waiting", "W1", 1), ("waiting", "W1", 2), ("waiting", "W1", 3), ("waiting", "W1", 4), ("waiting", "W1", 5), ("waiting", "W3", 2), ("waiting", "W4", 3),
+                     ("diagnosis", "D1", 1), ("diagnosis", "D1", 2), ("diagnosis", "D2", 1), ("diagnosis", "D2", 3), ("diagnosis", "D3", 1), ("diagnosis", "D3", 2), ("diagnosis", "D3", 3),
+                     ("pharmacy", None, 1), ("pharmacy", None, 2), ("pharmacy", None, 3),
+                     ("sendoff", "E1", 1), ("sendoff", "E2", 2), ("sendoff", "E2", 3), ("sendoff", "E4", 3)):
+        cases.append({"name": f"{st}-{(v + '-') if v else ''}L{L}", "q": f"stage={st}&level={L}&seed={s}" + (f"&variant={v}" if v else "")})
     for g in ("cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"):
         cases.append({"name": f"heal-{g}", "q": f"stage=heal&game={g}&level=1&seed={s}"})
     for L in (1, 2, 3):
@@ -281,6 +354,8 @@ def main():
             print(f"== {vp} ({VIEWPORTS[vp]['width']}x{VIEWPORTS[vp]['height']}){' with mistakes' if args.mistakes else ''}")
             for c in cases:
                 ok = run_case(p, vp, c, args) and ok
+            if not args.only or args.only in "heal-fever-help":
+                ok = help_case(p, vp, args) and ok
     print("PASS" if ok else "FAIL")
     sys.exit(0 if ok else 1)
 

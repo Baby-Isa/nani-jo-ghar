@@ -41,16 +41,17 @@ console.log(`Clinic pipeline leak bot: ${N} rounds per cell, seed ${SEED}. Regis
 console.log("Won = every tested row right. Taught-only rounds (D1 and E1 at level 1) count as not won.\n");
 
 // ---- the stages ----
+// clinic v2: the waiting room's ladder has five levels (W4); D1b is D1's level 2; E3 is merged into E2
 const VARIANTS = {
-  waiting: { 1: ["W1"], 2: ["W2", "W3"], 3: ["W4", "W2", "W3"] },
-  diagnosis: { 1: ["D2"], 2: ["D1b", "D2", "D3"], 3: ["D2", "D3"] },
+  waiting: { 1: ["W1"], 2: ["W1", "W3"], 3: ["W1", "W3", "W4"], 4: ["W1", "W4"], 5: ["W1", "W4"] },
+  diagnosis: { 1: ["D2", "D3"], 2: ["D1", "D2", "D3"], 3: ["D2", "D3"] },
   pharmacy: { 1: [null], 2: [null], 3: [null] },
-  sendoff: { 1: ["E1"], 2: ["E2", "E3"], 3: ["E2", "E3", "E4"] },
+  sendoff: { 1: ["E1"], 2: ["E2"], 3: ["E2", "E4"] },
 };
 for (const stage of ["waiting", "diagnosis", "pharmacy", "sendoff"]) {
   out.stages[stage] = {};
   console.log(`== ${stage}`);
-  for (const L of [1, 2, 3]) {
+  for (const L of Object.keys(VARIANTS[stage]).map(Number)) {
     for (const v of VARIANTS[stage][L]) {
       const cell = {};
       for (const strat of P.bot.STRATEGIES[stage]) {

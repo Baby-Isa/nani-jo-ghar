@@ -271,7 +271,8 @@ Each arc from here is a trip, built mostly from existing modes, with new words e
 
 1. **Pack your bag** — a small fetch-style round (shaped like the pantry round), different items each trip.
 2. **Cook your packed lunch** — Cook, reusing its stations.
-3. **Travel** — by bus, car or motorbike. One new game: **spot it out of the window**. The only new art is the view out of the window; Nani says "spot the …", and the child taps or photographs things as they pass (shaped like the clinic's pharmacy conveyor).
+3. **Travel** — by bus, car or motorbike. One new game: **spot it out of the window**. The only new art is the view out of the window; Nani says "spot the …", and the child taps things as they pass. **Decided 29 Sept (Zafar):** keep it simple, like the clinic's pharmacy belt (the window is the belt): no camera and no aiming here.
+   - **Snap at every destination (decided 29 Sept, Zafar).** At each place, the child is first shown a few items with their words (the shot list), then finds and snaps them in the scene with Snap's viewfinder (`docs/modes/snap-design.md`, engine and greybox built). The photos feed the album and the Story by the Fire. This is Snap's home now, replacing the old village arc.
 4. **A food stall at the place** — three Cook-style mini-games (for example, at the beach: corn on the cob, mishkaki, fried doughnuts).
 5. **One or two place-specific games** — for example the beach's sandcastle and kite.
 6. **The Story by the Fire** — every arc's ending (see below and `docs/modes/story-by-the-fire-design.md`).
@@ -297,6 +298,10 @@ Two arcs that aren't day-out trips, placed into the sequence rather than tied to
 - **Making clothes with Big Ma.** The Dress up mode's home (`docs/modes/dress-up-design.md`), placed later in the sequence once a story reason for new clothes comes up (a trip, an occasion). Exact placement is TBC.
 
 Both are repeatable: like the day-out template, they're built once and replayed with new patients or new garments.
+
+**Two more, proposed 29 Sept (Zafar: "Monsoon and Who did it sound like arcs in their own right").** Both modes already have a full design with many mini-games, like Cook and the clinic, and an engine plus a greybox lab (about 17% each). Placement and story TBC; not scheduled before the first trip.
+- **The monsoon** (Monsoon rush, `docs/modes/monsoon-rush-design.md`): the rains arrive at Nani's in Kutch. Nani's forecast, bring everything in, the animals into the shed, the kitchen leak, dry off, chai for everyone.
+- **Who did it?** (`docs/modes/who-did-it-design.md`): a mystery arc. Something's missing, gather clues (look closer, follow the prints), the sofa line-up (keep who fits, ask, tell Ali, Nani guesses), accuse and prove it, the comic reveal, sorry and goodbye. Its sweets case (`who.html?case=a1c3-sweets`) could still be a small culprit round after Arc 1's Find the sweets, but only once its describing words and past-tense frames are recorded (almost all are placeholders today).
 
 ### Eid: moved later
 

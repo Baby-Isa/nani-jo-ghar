@@ -10,8 +10,15 @@
  *  - a station's code starts a phase (St.begin(S, ctx, "key") or St.coach(ctx, "key")) that has no script;
  *  - a station switches its coach off for good (Coach.stop(true)) without its own first-time demo in its
  *    place (the line above says "own first-time demo"): samosa did this, so its fill, fold and fry had no help.
+ *
+ * The clinic's heal games too (clinic v2, G5): every v2 heal game (js/clinic/heal/games/<id>.js) must have
+ * its "why" beat (def.why: the patient's problem and the doctor's goal) and a first-time cue with words
+ * (def.cues[kind]) for every kind of step its plan can make at levels 1-3 (def.steps(level, rng), 40 seeds
+ * each), and its code must show each cue (S.cue("kind", ...) or S.cue(c.kind, CUES[c.kind], ...)).
+ * Tummy, hic and hair are left as they were (CQ14) and aren't checked here yet.
  */
 import { readFileSync, readdirSync } from "node:fs";
+import { createRequire } from "node:module";
 import { join, dirname, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -70,10 +77,41 @@ for (const [key, where] of started) {
   scriptProblems(key).forEach((p) => errors.push(`${where}: starts phase "${key}": ${p}`));
 }
 
+// 4. the clinic's heal games: a why beat, and words for every step
+const require = createRequire(import.meta.url);
+const HEAL_V2 = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
+require(join(ROOT, "js/clinic/heal/registry.js"));
+require(join(ROOT, "js/clinic/heal/scene.js"));
+let healSteps = 0;
+for (const id of HEAL_V2) {
+  const f = join(ROOT, "js/clinic/heal/games", `${id}.js`);
+  const def = require(f);
+  const src = readFileSync(f, "utf8");
+  if (!def.why || !String(def.why.problem || "").trim() || !String(def.why.goal || "").trim()) errors.push(`heal ${id}: no "why" beat (def.why.problem / goal)`);
+  if (!/S\.why\(/.test(src)) errors.push(`heal ${id}: the code never plays its why beat (S.why)`);
+  if (typeof def.steps !== "function" || !def.cues) {
+    errors.push(`heal ${id}: no def.steps(level, rng) / def.cues to check`);
+    continue;
+  }
+  const kinds = new Set();
+  for (const level of [1, 2, 3]) {
+    let seed = 7 + level;
+    const rng = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    for (let i = 0; i < 40; i++) def.steps(level, rng).forEach((k) => kinds.add(k));
+  }
+  kinds.forEach((k) => {
+    healSteps++;
+    const cue = def.cues[k];
+    if (!cue || !String(cue).replace(/<[^>]+>/g, "").trim()) errors.push(`heal ${id}: step "${k}" has no first-time cue with words`);
+    const shown = new RegExp(`S\\.cue\\(\\s*"${k}"`).test(src) || /S\.cue\(\s*c\.kind\s*,\s*CUES\[c\.kind\]/.test(src);
+    if (!shown) errors.push(`heal ${id}: the code never shows the cue for step "${k}" (S.cue("${k}", ...))`);
+  });
+}
+
 const n = [...known].length;
 if (errors.length) {
   console.error(`check_onboard: ${errors.length} problem(s)`);
   errors.forEach((e) => console.error("  - " + e));
   process.exit(1);
 }
-console.log(`check_onboard: ok (${Object.keys(phases).filter((k) => !k.startsWith("_")).length} stations, ${n} phases, ${started.size} phase starts in the code, every one scripted)`);
+console.log(`check_onboard: ok (${Object.keys(phases).filter((k) => !k.startsWith("_")).length} stations, ${n} phases, ${started.size} phase starts in the code, every one scripted; clinic heal: ${HEAL_V2.length} games, ${healSteps} kinds of step, each with its why beat and words)`);

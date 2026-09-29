@@ -1,13 +1,19 @@
 /*
- * Stage 1, the waiting room: "Who's next?" (docs/modes/clinic-design.md P2,
- * Q3, Q5). The bench by the door; the doctor says who to bring in; the child
- * taps that person; they walk to the examination bench and greet him.
- * Nobody on the bench reacts until tapped. W1 kind; W2 kind + colour or
- * wadho/nindho; W3 the child calls them (a speaking moment, the pills as the
- * fallback); W4 two in the called order, with comfort rings.
- * A wrong tap at level 1: that person shakes their head and sits, and the
- * doctor says the line once more (the one gentle correction). From level 2 a
- * wrong one just looks puzzled and sits: no verdict (UX s11).
+ * Stage 1, the waiting room: "Who's next?" Clinic v2 (docs/modes/clinic-v2-design-sheets.md W;
+ * Zafar's W3/W4/W5, CQ1/CQ2), on CB1b: the six-seat bench, the standing spots
+ * by the doctor's door and the desk, two little stools in front at the top
+ * levels. The doctor leans out of his half-open door and calls
+ * "[Bring in] {description}"; the child taps the TICK under that person: it
+ * shakes if wrong and locks in if right. Nobody moves until chosen; then the
+ * chosen one stands and walks to the door. The level is the language ladder
+ * (js/clinic/pipeline.js P.waiting): man/woman/boy/girl, + old/young,
+ * + tall/short, + a colour, + with the baby/child (English placeholders, to record).
+ *   W1 one call · W3 the child calls them (a speaking moment, the pills as the
+ *   fallback) · W4 two in the called order, with the comfort rings.
+ * A wrong tick at level 1: the person shakes their head and the doctor says the
+ * line once more (the one gentle correction). From level 2 it just shakes (UX s11).
+ * Stand-ins: the rough people (sitting on their stools), recoloured for the
+ * colour rung; the doctor's rough sprite in the doorway.
  */
 (function (global) {
   "use strict";
@@ -16,20 +22,51 @@
   const S = Clinic.Stages;
   const h = Kit.h;
 
-  function seatPerson(seat, b, useSprites, bodyFile) {
-    const who = h("div", "cl-seat-who", seat);
-    const src = useSprites && Kit.person(b.kind, "neutral");
-    if (src) {
-      const img = h("img", "cl-seat-img", who);
-      img.alt = "";
-      img.draggable = false;
-      img.src = Kit.url(src);
-      return { el: who, img, react(mood) { const s2 = Kit.person(b.kind, mood) || src; img.src = Kit.url(s2); } };
+  // the rough sprite kinds that stand in for each kind (a second one when two share a kind)
+  const SPRITES = { uncle: ["uncle"], "old-man": ["old-man"], auntie: ["auntie"], "old-woman": ["old-woman", "bigma"], boy: ["boy", "cousin"], girl: ["girl"] };
+  const TICK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function spriteFor(b, used) {
+    if (b.with === "baby") return Kit.person("baby", "neutral"); // the woman holding the baby
+    const list = SPRITES[b.kind] || [b.kind];
+    const n = used[b.kind] = (used[b.kind] || 0) + 1;
+    return Kit.person(list[(n - 1) % list.length], "neutral") || Kit.person(list[0], "neutral");
+  }
+
+  /** One person in the room: the sprite (recoloured for the colour rung), the child beside them, the tick under them. */
+  function personEl(box, cfg, b, i, used) {
+    const slot = cfg.slots[b.slot] || cfg.slots.bench0;
+    const child = b.who === "boy" || b.who === "girl";
+    const hgt = cfg.adult * (child ? cfg.child : 1) * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) * (slot.scale || 1);
+    const wrap = S.place(h("div", `cl-wp${child ? " child" : ""}`, box), { x: slot.x, y: slot.y, h: hgt, z: slot.z });
+    wrap.dataset.seat = String(i);
+    wrap.dataset.slot = b.slot;
+    const src = spriteFor(b, used);
+    const fig = h("div", "cl-wp-fig", wrap);
+    const img = h("img", "cl-wp-img", fig);
+    img.alt = "";
+    img.draggable = false;
+    if (src) img.src = Kit.url(src);
+    if (b.colour) {
+      // the colour rung: the clothes (the middle band of the sprite) take the colour; a stand-in for the art
+      const tint = h("div", "cl-wp-tint", fig);
+      tint.style.setProperty("--tint", Kit.COLOURS[b.colour] || b.colour);
+      tint.style.setProperty("--mask", `url("${img.src}")`);
+      wrap.dataset.colour = b.colour;
     }
-    const fig = Clinic.Figure.make(bodyFile, { kind: b.kind, colour: b.colour, size: b.size });
-    who.appendChild(fig.el);
-    fig.pose("sit");
-    return { el: who, fig, react(mood) { fig.react(mood === "neutral" ? "idle" : mood === "wave" ? "happy" : mood); } };
+    if (b.with === "child") {
+      const k = h("img", "cl-wp-kid", wrap);
+      k.alt = "";
+      k.draggable = false;
+      k.src = Kit.url(Kit.person(i % 2 ? "girl" : "boy", "neutral"));
+    }
+    // the tick under them (the one thing to tap: W3)
+    const tick = S.place(h("button", "cl-wtick", box), { x: slot.x, y: Math.min(0.995, slot.y + 0.075), z: 20 });
+    tick.type = "button";
+    tick.dataset.seat = String(i);
+    tick.setAttribute("aria-label", "This one");
+    tick.innerHTML = TICK;
+    return { wrap, tick, b, i, gone: false };
   }
 
   S.waiting = {
@@ -38,27 +75,29 @@
       const res = S.result("waiting");
       const stage = S.room(screen, "waiting");
       stage.dataset.variant = plan.variant;
-      const bench = h("div", "cl-bench", stage);
-      const exam = h("div", "cl-exam-spot", stage);
-      h("div", "cl-exam-bench", exam);
-      // sprites when nothing on the bench needs a colour or a size (they can't be recoloured)
-      const useSprites = !plan.bench.some((b) => b.colour || b.size);
-      const seats = plan.bench.map((b, i) => {
-        const seat = h("button", `cl-seat${b.size ? " size-" + b.size : ""}`, bench);
-        seat.type = "button";
-        seat.dataset.seat = String(i);
-        seat.dataset.kind = b.kind;
-        if (b.colour) seat.dataset.colour = b.colour;
-        const p = seatPerson(seat, b, useSprites, env.bodyFile);
-        let ring = null;
-        if (plan.variant === "W4") {
-          ring = h("div", "cl-ring", seat);
+      stage.dataset.level = String(plan.level);
+      const box = stage.scene || stage;
+      const cfg = stage.sceneCfg && stage.sceneCfg.slots ? stage.sceneCfg : null;
+      // the doctor leans out of his half-open door (the rough sprite's top half: a stand-in)
+      const doc = S.place(h("div", "cl-wdoc", box), { x: cfg.doctor.x, y: cfg.doctor.y + cfg.doctor.h, h: cfg.doctor.h, z: 1 });
+      const dimg = h("img", "", doc);
+      dimg.alt = "";
+      dimg.src = Kit.url(Kit.person("doctor", "neutral") || Kit.sprite("doctor-neutral"));
+      Kit.Voice.speakers.doctor = () => doc;
+      const used = {};
+      const seats = plan.bench.map((b, i) => personEl(box, cfg, b, i, used));
+      if (plan.variant === "W4") {
+        seats.forEach((s) => {
+          const ring = h("div", "cl-ring", s.wrap);
           ring.style.setProperty("--t", `${Math.round(plan.ringsMs * (0.5 + 0.5 * env.rng()))}ms`);
-        }
-        return { el: seat, b, p, ring, gone: false };
-      });
+          s.ring = ring;
+        });
+      }
       Kit.Voice.speakers.bench = null;
 
+      // the why beat (G5): the doctor looks out, then calls
+      doc.classList.add("lean");
+      await S.say(S.line(env, "why-waiting"), "doctor");
       await S.request(screen, { title: "", rows: plan.card });
       let callIdx = 0;
       const rows = plan.rows;
@@ -71,30 +110,32 @@
         const r = rows[callIdx];
         if (busy) return { stage: "waiting", kind: "wait" };
         if (!r) return { stage: "waiting", kind: "button" };
-        if (r.voice) return { stage: "waiting", kind: "say", choice: plan.bench[r.answer].kind };
-        return { stage: "waiting", kind: "tap", target: `.cl-seat[data-seat="${r.answer}"]`, wrong: `.cl-seat:not([data-seat="${r.answer}"])` };
+        if (r.voice) return { stage: "waiting", kind: "say", choice: plan.bench[r.answer].who };
+        return { stage: "waiting", kind: "tap", target: `.cl-wtick[data-seat="${r.answer}"]`, wrong: `.cl-wtick:not([data-seat="${r.answer}"]):not(.locked)` };
       });
 
+      // the chosen one stands and walks to the doctor's door
       const walk = async (s) => {
         s.gone = true;
-        s.el.classList.add("walking");
-        const from = s.el.getBoundingClientRect();
-        const to = exam.getBoundingClientRect();
-        s.el.style.setProperty("--dx", `${to.left + to.width / 2 - (from.left + from.width / 2)}px`);
-        s.el.style.setProperty("--dy", `${to.top + to.height * 0.4 - (from.top + from.height / 2)}px`);
-        s.p.react("wave");
-        Kit.Voice.speakers.patient = () => s.el;
-        const elder = data.kinds[s.b.kind] && data.kinds[s.b.kind].elder;
-        await Kit.wait(500);
+        s.wrap.classList.add("walking");
+        s.wrap.style.left = `${cfg.exit.x * 100}%`;
+        s.wrap.style.top = `${cfg.exit.y * 100}%`;
+        s.wrap.style.zIndex = "1";
+        Kit.Voice.speakers.patient = () => s.wrap;
+        await Kit.wait(Kit.fast ? 80 : 1100);
         await S.say(S.line(env, "salaam"), "patient");
         await S.say(S.line(env, "salaam-back"), "doctor");
-        void elder;
+        s.wrap.classList.add("gone");
+        s.tick.classList.add("gone");
       };
 
       const onRight = async (s, r) => {
         busy = true;
+        s.tick.classList.add("locked");
+        if (global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
         screen.card.tick(r.id === "who1" && plan.variant === "W4" ? "who" : r.id);
         S.signal("clinic-waiting-tap");
+        await Kit.wait(Kit.fast ? 40 : 450);
         await walk(s);
         callIdx++;
         busy = false;
@@ -105,11 +146,13 @@
       };
       const onWrong = async (s) => {
         busy = true;
-        s.el.classList.add("puzzled");
-        if (plan.level <= 1) s.p.react("sad");
+        s.tick.classList.remove("nope");
+        void s.tick.offsetWidth;
+        s.tick.classList.add("nope");
+        s.wrap.classList.add("puzzled");
         await Kit.wait(700);
-        s.el.classList.remove("puzzled");
-        s.p.react("neutral");
+        s.tick.classList.remove("nope");
+        s.wrap.classList.remove("puzzled");
         if (plan.level <= 1 && !corrected) {
           corrected = true;
           await S.say(plan.card[0], "doctor");
@@ -118,44 +161,42 @@
       };
 
       seats.forEach((s, i) => {
-        s.el.addEventListener("click", async () => {
-          if (busy || s.gone) return;
+        s.tick.addEventListener("click", async () => {
+          if (busy || s.gone || s.tick.classList.contains("locked")) return;
           const r = rows[callIdx];
           if (!r || r.voice) return;
           const ok = global.ClinicPipeline.judgeWho(r, i);
           res.judge(r, ok);
-          res.log.push({ type: ok ? "right" : "wrong", rowId: r.id, detail: s.b.kind });
+          res.log.push({ type: ok ? "right" : "wrong", rowId: r.id, detail: plan.bench[i].kind });
           if (ok) await onRight(s, r);
           else await onWrong(s);
         });
       });
 
-      // the first-ever session: the ghost finger taps the one called (UX s8; taught)
-      if (env.first) {
-        S.onboard(env, "waiting", [{ spotlight: seats[rows[0].answer].el, ghost: { gesture: "tap" }, wait: "clinic-waiting-tap" }]);
-      }
+      // the first-ever session: the ghost finger taps the tick under the one called (UX s8; taught)
+      if (env.first) S.onboard(env, "waiting", [{ spotlight: seats[rows[0].answer].tick, ghost: { gesture: "tap" }, wait: "clinic-waiting-tap" }]);
 
       // W3: the child calls them (a speaking moment); the one who matches what was heard stands
       if (rows[0] && rows[0].voice) {
         const r = rows[0];
-        const kinds = Array.from(new Set(plan.bench.map((b) => b.kind)));
-        const target = plan.bench[r.answer].kind;
-        const word = (k) => global.ClinicPipeline.line(data, "come", { kind: global.ClinicPipeline.kindWord(data, k) });
+        const whos = Array.from(new Set(plan.bench.map((b) => b.who)));
+        const target = plan.bench[r.answer].who;
+        const word = (k) => global.ClinicPipeline.line(data, "come", { kind: global.ClinicPipeline.describe(data, { who: k }, ["kind"]) });
         const out = await S.moment(env, {
-          choices: kinds,
+          choices: whos,
           expected: target,
           word,
           caption: "Call them in",
           character: {
             act: async (k) => {
-              const s = seats.find((x) => x.b.kind === k && !x.gone);
+              const s = seats.find((x) => x.b.who === k && !x.gone);
               if (!s) return;
-              s.el.classList.add("standing");
+              s.wrap.classList.add("standing");
               await Kit.wait(500);
               if (k !== target) {
-                s.el.classList.add("puzzled");
+                s.wrap.classList.add("puzzled");
                 await Kit.wait(600);
-                s.el.classList.remove("puzzled", "standing");
+                s.wrap.classList.remove("puzzled", "standing");
               }
             },
           },
@@ -165,19 +206,18 @@
           },
         });
         res.moments.push(out);
-        const s = seats.find((x) => x.b.kind === target);
-        s.el.classList.remove("standing");
+        const s = seats[r.answer];
+        s.wrap.classList.remove("standing");
         await onRight(s, r);
       }
 
       // W4: the comfort rings (the only timer; nobody can lose: an empty ring rocks and refills)
-      if (plan.variant === "W4") seats.forEach((s) => s.ring && s.ring.addEventListener("animationiteration", () => s.el.classList.add("rock")));
+      if (plan.variant === "W4") seats.forEach((s) => s.ring && s.ring.addEventListener("animationiteration", () => s.wrap.classList.add("rock")));
 
       await done;
       S.current = null;
-      const btn = await S.button(screen, S.line(env, "where"));
-      void btn;
-      res.words.push({ kutchi: null, english: data.kinds[plan.patient.kind].english.replace(/^the /, "") });
+      await S.button(screen, S.line(env, "where"));
+      res.words.push({ kutchi: null, english: plan.calls[plan.calls.length - 1].say.english.replace(/^the /, "") });
       return res;
     },
   };
