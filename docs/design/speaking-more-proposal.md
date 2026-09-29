@@ -37,14 +37,41 @@ The start is fully supported: every line is written and underlined as it's spoke
 
 If there's no mic, or a null result twice, the fallback is the pills: coins, never the voice star. A parent can tick ✓ (Grandparent mode).
 
-## Where asking happens (role reversal in every mode)
-Each mode gets a moment where the child takes the asking role, using the frames it has taught:
-- **Cook:** the child **orders** from Nani's stall, or from a trip's food stall (*Muke be samosa khape*). The trips' stall is the natural home: the child buys lunch.
-- **Clinic:** the child is the doctor's voice. The patient card shows a picture, and the child asks *[Where does it hurt?]* or *[How do you feel?]* (E4 already does this), then asks the pharmacist for the item (*[Bring me] the plaster*, the flip of the pharmacy).
-- **Find it / Hide and seek:** a thought bubble shows the lost thing, and the child asks a family member *[Have you seen the {x}?]*. The answer is spoken, and the child searches where they said (an information gap: only the character knows).
-- **Put it there:** the child tells Ali where to put things (*[on the table]*). Ali acts on what the recogniser heard, and a wrong hearing is a comic mistake.
-- **Snap (at the destinations):** the child tells Ali what to photograph.
-- **Conversations:** greetings, thanks and how-are-you, started by the child from rung 3.
+## The rule: speak only inside a real two-person exchange (Zafar, 29 Sept)
+Speaking goes where people **naturally talk to each other**: ordering food (the customer and the cook), or the doctor and the patient. It does **not** go where nobody would really say the line; you don't call "little boy, next" in a waiting room. **The child always sees a regular exchange between two people first** (the watch step, many times as the listener), then takes one side of it.
+
+So the clinic's speaking moves from the waiting room (W3) into the conversation with the patient. **W3 "Call them in" is dropped** in the clinic fix session unless Zafar says otherwise, and the waiting room goes back to listening only.
+
+## Every point where it works (the inventory)
+Each row is a natural exchange the child has watched from one side before taking the other. "Recorded" means clips that already exist in `data/family-audio.json` (Mum's or Zafar's voice), usable as the model and as the other side's line.
+
+| Where | The exchange (the child's side in bold) | Watched first as | Recorded today |
+|---|---|---|---|
+| **Cook, role reversal** (pilot) | Nani: *Toke kuro khapeto?* (what do you want?) → **child: *Muke chai khape.*** | every customer's order, served by the child | *toke kuro khapeto?* (Mum, Zafar); *muke na khape*; the order lines are TTS placeholders |
+| Trips' food stall | stallholder asks → **child orders lunch** | the Cook customers | – |
+| Pantry | **child: [bring me] the milk** → Ali fetches it | Nani asking the child to fetch | – |
+| Clinic, the patient | **child (the doctor's helper): [where does it hurt?] / [how do you feel?]** → the patient answers | the doctor asking the first patients | E4's lines are placeholders (Section G, the doctor's recording) |
+| Clinic, "you're the patient" visit | the doctor asks → **child: [my knee hurts]** | the other patients answering | Section G |
+| Clinic, pharmacy | **child: [bring me] the plaster** → the pharmacist puts it on the belt | the doctor asking the pharmacist | Section G |
+| Clinic, send-off | **child: [get well soon] / goodbye** → the patient thanks | the doctor saying it | *Achija* (exists) |
+| Birthday: guests | **child (the host): [do you want chai?]** → the guest: *haa* / *na* | Nani offering | *haa*, *na* exist |
+| Put it there | **child: [where does this go?]** → Nani says where; the child places it | Ali asking Nani | – |
+| Hide and seek | **child: [have you seen the sweets?]** → a family member says where | Nani asking around | – |
+| Who did it? | **child: [did you eat it?]** → the suspect: *na!* / … | Nani questioning the line-up | – |
+| Making clothes | **child (the customer): [I want a red kurta]** → Big Ma sews it | other customers | – |
+| Conversations | greetings, thanks, how-are-you, either side | the family greeting each other | several exist |
+
+## The pilot: small, and soon after Cook and the clinic are locked
+**Cook role reversal, chai only.** The family sit the child at the table, Nani at the stove. Ali orders first (watch). Then Nani turns to the child: *Toke kuro khapeto?* A thought bubble shows the chai, and the "your turn" bubble appears. Rung 1: the order line plays, written and underlined, and the child says it after. Nani makes exactly what the recogniser heard (a wrong hearing gets a funny wrong cup), and the child drinks it.
+- It uses the existing chai station, the existing `js/shared/say.js` and `speech.js`, and the recorded *toke kuro khapeto?*.
+- It needs Mum's *Muke chai khape* (and 2–3 variants) recorded in her voice, and the recogniser enrolled with them.
+- **What to learn from it:** do children get the handover without English; does repeating after the model feel good; does the recogniser cope with a child's voice.
+- Then the shared speaking component is built from what the pilot teaches, and the other rows follow, mode by mode, as each mode is built.
+
+## Planning for it now (cheap)
+- **Every mode's design sheet gets a "speaking points" line** listing its natural exchanges from the inventory, so each mode is built with the watch step in place (the other side is seen and heard many times first).
+- **The family recording list** gets the order lines for the pilot.
+- **Nothing else is built yet:** no mode waits on this.
 
 ## When can we assume they understand?
 The per-child tracker decides, word by word. A frame becomes speakable (rung 1) only once the child has acted on it correctly as the listener several times. It moves up the "Say it after" ladder as they say it successfully. This is the "per-child sentence-pattern stage" (clinic CQ2), shared by every mode. It's already planned for "later"; this proposal makes speaking one of its main uses.
@@ -56,5 +83,5 @@ The per-child tracker decides, word by word. A frame becomes speakable (rung 1) 
 
 ## Open for Zafar
 1. ~~Echo at rung 1?~~ **Yes (Zafar, 29 Sept), with no whisper recordings; the text is written and underlined at the start.**
-2. Which mode gets the first asking moment? Claude suggests Cook's role reversal (the child orders from Nani), because the frame is the most-heard one in the game.
+2. ~~Which mode first?~~ **Cook's ordering, as the pilot (Zafar agrees it fits; the clinic's patient conversations next).**
 3. Should speaking ever be required to progress, or always optional with the voice star as the reward? Claude suggests optional, because of the mic, shy children and noisy rooms.
