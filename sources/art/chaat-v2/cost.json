@@ -1,0 +1,89 @@
+{
+ "calls": [
+  {
+   "name": "glass-bowl",
+   "usage": {
+    "input_tokens": 664,
+    "input_tokens_details": {
+     "image_tokens": 388,
+     "text_tokens": 276
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1720
+   },
+   "usd": 0.0475
+  },
+  {
+   "name": "bowls-a",
+   "usage": {
+    "input_tokens": 945,
+    "input_tokens_details": {
+     "image_tokens": 582,
+     "text_tokens": 363
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2513
+   },
+   "usd": 0.0704
+  },
+  {
+   "name": "bowls-b",
+   "usage": {
+    "input_tokens": 926,
+    "input_tokens_details": {
+     "image_tokens": 582,
+     "text_tokens": 344
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2494
+   },
+   "usd": 0.0703
+  },
+  {
+   "name": "strips-a",
+   "usage": {
+    "input_tokens": 705,
+    "input_tokens_details": {
+     "image_tokens": 388,
+     "text_tokens": 317
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2273
+   },
+   "usd": 0.0682
+  },
+  {
+   "name": "strips-b",
+   "usage": {
+    "input_tokens": 675,
+    "input_tokens_details": {
+     "image_tokens": 388,
+     "text_tokens": 287
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2243
+   },
+   "usd": 0.068
+  }
+ ]
+}
