@@ -69,7 +69,7 @@ def run(vp, station, mood, coach, level, speed):
                 name, cond = want[0]
                 ok = page.evaluate(f"(() => {{ const e = Cook.expect || {{}}; const k = Cook.Coach.key(); return !!document.querySelector('.njg-onboard') && ({cond}); }})()")
                 if ok:
-                    time.sleep(1.4)
+                    time.sleep(0.6 if name == "fry" else 1.4)
                     P.snap(name)
                     want.pop(0)
                 return False

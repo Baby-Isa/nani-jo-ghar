@@ -546,7 +546,7 @@
     if (who && Cook.Kit.review) {
       const ds = Object.values(dones);
       const fx = ds.reduce((a, d) => a + d.x, 0) / ds.length;
-      const look = await Cook.Kit.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 95, size: 230 });
+      const look = await Cook.Kit.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 70, size: 230 });
       await Cook.wait(allOk ? 300 : 900);
       await look.close();
     }

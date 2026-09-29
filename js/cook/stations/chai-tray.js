@@ -848,9 +848,11 @@
             who: pan.who,
             ok: !wrongPans.includes(pan),
             x: pan.well.x,
-            y: pan.well.y - d * 0.5 - size * 0.3,
+            // one glass: the face just above it; several (the tray's grid): each face on its own glass
+            y: pans.length > 1 ? pan.well.y - size * 0.12 : pan.well.y - d * 0.5 - size * 0.42,
             size,
-            line: allOk && i === 0 ? undefined : false,
+            side: "right",
+            line: allOk && i === pans.length - 1 ? undefined : false,
           }),
         ),
       );
