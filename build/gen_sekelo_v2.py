@@ -3,7 +3,9 @@
 doesn't have, ONE medium draft each, matched to sources/art/style-anchor-v1.png and the pantry-v2
 front-on jars (§4: the shelf band's objects are front-on):
   bowls   four identical front-on prep bowls on one sheet: raw mishkaki (meat cubes), onion pieces,
-          tomato pieces, boiled potato cubes (the decoy)
+          tomato pieces, boiled potato cubes (the decoy). Superseded (Zafar, 29 Sept): Sekelo stays top-down.
+  bowl-meat-top  the repo's top-down cream topping bowl (topping-dungri-chopped-bowl-t) filled with raw
+          mishkaki cubes, so the meat sits with the existing top-down onion, tomato and potato bowls
 gpt-image-1 via /images/edits, quality medium, flat #808080 background (cut by build/cut_sekelo_v2.py).
 Estimated cost is printed first; the run stops if the total would pass BUDGET. A draft already on disk
 is never paid for twice. Actual cost is logged from the API's usage to sources/art/sekelo/cost.json.
@@ -25,6 +27,7 @@ OUT = os.path.join(ROOT, 'sources', 'art', 'sekelo')
 ANCHOR = os.path.join(ROOT, 'sources', 'art', 'style-anchor-v1.png')
 JAR = os.path.join(ROOT, 'assets', 'cook', 'items', 'shelf-cook-khun-bare-f.webp')
 MEAT = os.path.join(ROOT, 'assets', 'cook', 'items', 'mishkaki-meat-raw-t.webp')
+TOPBOWL = os.path.join(ROOT, 'assets', 'cook', 'items', 'topping-dungri-chopped-bowl-t.webp')
 BUDGET = 2.00
 PRICE = {'text': 5e-6, 'image': 10e-6, 'out': 40e-6}
 OUT_TOKENS = {'1024x1024': 1056, '1536x1024': 1584}
@@ -46,6 +49,12 @@ PROMPTS = {
               'like the meat cube reference); 2 RED ONION cut in large square petals (purple-edged white layers); '
               '3 fresh TOMATO cut in wedges (bright red, seeds visible); 4 BOILED POTATO cubes (pale yellow, soft '
               'edges). ' + STYLE),
+    'bowl-meat-top': ('1024x1024', [TOPBOWL, MEAT],
+                      'EXACTLY the same round cream-glazed ceramic bowl as the first reference, seen from EXACTLY '
+                      'directly above (top-down, the rim a perfect circle), the same size, rim, glaze and light. Instead '
+                      'of onion it is filled to the same level with raw marinated BEEF CUBES exactly like the second '
+                      'reference (square red-orange meat cubes with a spice rub, about 12 cubes, each clearly a cube). '
+                      'The bowl alone, centred, filling about 80% of the frame. ' + STYLE.replace('No marble, no counter, no table, ', 'No marble, no counter, no table, no spoon, ')),
 }
 
 

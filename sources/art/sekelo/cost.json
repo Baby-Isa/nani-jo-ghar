@@ -16,6 +16,23 @@
     "total_tokens": 2499
    },
    "usd": 0.0703
+  },
+  {
+   "name": "bowl-meat-top",
+   "usage": {
+    "input_tokens": 622,
+    "input_tokens_details": {
+     "image_tokens": 388,
+     "text_tokens": 234
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1678
+   },
+   "usd": 0.0473
   }
  ]
 }

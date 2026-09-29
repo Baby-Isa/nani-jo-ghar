@@ -3,7 +3,7 @@
  *
  * Sekelo v2 (docs/design/cook-design-system-v1.md §15): the rack on the left,
  * the painted charcoal grill in the middle (sources/art/chatgpt-batch3/
- * sheet-tray-grill-t-v2), the plate on the right, the prep bowls quiet on
+ * sheet-tray-grill-t-v2), the plate on the right, the top-down prep bowls quiet on
  * the shelf band. The skewers stay upright; each has the chai v2 heat ring
  * round it (cream track, sage band, gold progress); tap it to turn it (raw
  * -> grilled), and it chars if left. No hands, no floating English verdicts.
@@ -761,10 +761,11 @@
   // the chai v2 grid (design px, 1600x900): the scene is the top 74%, the shelf band the bottom 26%
   const V2 = (SK.V2 = {
     SHELF_TOP: 666,
-    BASE: 818, // the shelf line: every bowl stands on it
+    BASE: 818, // (front-on shelves: the shelf line)
+    BOWL_Y: 748, // Sekelo is top-down (Zafar, 29 Sept): each bowl centred in the band above its chip
     PITCH: 150,
     GROUP_GAP: 44,
-    BOWL_W: 132, // one box size per slot (§7): every prep bowl is the same bowl
+    BOWL_W: 124, // one box size per slot (§7): every prep bowl is the same bowl, seen from above
     CHIP: { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 },
     RIGHT: 190, // the shelf keeps clear of the phase button and the tick, bottom right
     INK: { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, sage: 0x7e9a76, wrong: 0xb24a3a },
@@ -773,7 +774,7 @@
   });
   /** The piece that is meat (ph-mishkaki: §15, mishkaki is the meat cube) and a piece's word. */
   SK.meatPiece = () => SK.cfg().meatPiece || SK.kindWord("meat");
-  /** Sekelo v2's own art: the grill, the rack, the board and the front-on prep bowls. */
+  /** Sekelo v2's own art: the grill, the rack, the board and the top-down prep bowls. */
   SK.loadArt = function (S, ids = []) {
     const bowls = SK.cfg().bowls || {};
     const list = [
@@ -782,7 +783,7 @@
       ["sk2-stick", V2.DIR + "stick-v.webp"],
       ["sk2-board", "assets/cook/items/tool-board-t.png"],
       ["sk2-plate", "assets/cook/items/plate-enamel-empty-t.webp"],
-    ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, `${V2.DIR}${bowls[id]}.webp`]));
+    ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, `assets/cook/items/${bowls[id]}.webp`]));
     return Promise.race([Cook.Stations.load(S, list), Cook.wait(15000)]);
   };
   /** The taster's faces (happy, neutral) for serve and taste. */
@@ -816,7 +817,7 @@
   };
   /**
    * The shelf: identical slots (one bowl size), grouped by kind with a small gap (meat | vegetables),
-   * each standing on the shelf line with a `🔊 word` chip under it (tap the bowl = use it, tap the chip =
+   * each a top-down bowl (Zafar, 29 Sept: this station stays top-down) with a `🔊 word` chip under it (tap the bowl = use it, tap the chip =
    * hear it). At level 3 and up the word hides but the speaker stays, the same size and place (§4).
    * Returns {id: bowl}; each bowl has .chip and .home.
    */
@@ -825,11 +826,8 @@
     const width = n * V2.PITCH + (groups.length - 1) * V2.GROUP_GAP;
     const x0 = Math.max(40, (1600 - V2.RIGHT - width) / 2);
     const out = {};
-    const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
     let sx = x0 + V2.PITCH / 2;
     groups.forEach((group) => {
-      plank.fillStyle(V2.INK.grey, 1);
-      plank.fillRoundedRect(z.X(sx - V2.PITCH / 2 + 10), z.Y(V2.BASE - 2), z.L(group.length * V2.PITCH - 20), z.L(10), z.L(5));
       group.forEach((id) => {
         out[id] = SK.bowl(S, z, id, sx, level);
         sx += V2.PITCH;
@@ -844,10 +842,10 @@
     if (S.textures.exists(key)) {
       const src = S.textures.get(key).getSourceImage();
       const k = z.L(V2.BOWL_W) / src.width;
-      img = S.track(S.add.image(z.X(x), z.Y(V2.BASE + 4), key).setOrigin(0.5, 1).setScale(k).setDepth(D.item + 1));
+      img = S.track(S.add.image(z.X(x), z.Y(V2.BOWL_Y), key).setScale(k).setDepth(D.item + 1));
       img.baseScale = k;
-      img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(V2.BASE - 4), width: img.displayWidth * 0.78, height: z.L(20) });
-    } else img = S.ingredient(id, z.X(x), z.Y(V2.BASE - 60), { w: z.L(V2.BOWL_W), h: z.L(110), label: false, state: "pieces" });
+      img.shadow = S.contactShadow(img);
+    } else img = S.ingredient(id, z.X(x), z.Y(V2.BOWL_Y), { w: z.L(V2.BOWL_W), h: z.L(V2.BOWL_W), label: false, state: "pieces" });
     img.wordId = id;
     img.home = { x: img.x, y: img.y };
     // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place): the

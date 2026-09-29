@@ -5,7 +5,7 @@
  * Tap the skewer to slide the last piece back off.
  *
  * Sekelo v2 (docs/design/cook-design-system-v1.md §15): the chai v2 grid. The
- * prep bowls stand front-on on the shelf band (identical slots, meat | veg,
+ * prep bowls sit top-down on the shelf band (Zafar, 29 Sept: this station stays top-down) (identical slots, meat | veg,
  * a `🔊 word` chip under each: tap the bowl = thread it, tap the chip = hear
  * it; speaker-only at level 3 up); the board with its upright skewer on the
  * left of the scene, the skewer rack on the right. A piece's word pops by the
@@ -148,7 +148,7 @@
         const exp = plan();
         busy = true;
         const from = bowls[id];
-        const fly = S.track(S.add.image(from.x, from.y - from.displayHeight * 0.7, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
+        const fly = S.track(S.add.image(from.x, from.y, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.pop();
         await S.fly(fly, z.X(BOARD.x), z.Y(SKY - 250 * SKS), { duration: 300, arc: z.L(90) });
         if (!ordered.some((w) => SK.fits(w, sk.ids.concat(id), pattern))) {
@@ -160,7 +160,7 @@
             // level 1: it bounces back to its bowl (the one gentle correction)
             S.wiggle(sk);
             z.oops();
-            await S.fly(fly, from.x, from.y - from.displayHeight * 0.7, { duration: 280, arc: z.L(60) });
+            await S.fly(fly, from.x, from.y, { duration: 280, arc: z.L(60) });
             fly.destroy();
             busy = false;
             return;
@@ -190,7 +190,7 @@
         SK.popPiece(sk);
         const back = S.track(S.add.image(wx, wy, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.soft();
-        await S.fly(back, bowls[id].x, bowls[id].y - bowls[id].displayHeight * 0.7, { duration: 280, arc: z.L(60) });
+        await S.fly(back, bowls[id].x, bowls[id].y, { duration: 280, arc: z.L(60) });
         back.destroy();
         busy = false;
       });

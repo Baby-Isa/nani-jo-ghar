@@ -185,6 +185,7 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 ### Sekelo v2 (formerly "Mishkaki grill")
 - **Naming (Zafar):** the station is now called **Sekelo**. The word ***mishkaki* now refers only to the square beef or lamb meat cubes.** Update station names and labels; the meat-cube ingredient is *mishkaki*. The order headline (e.g. *Muke sekelo khape.*) is **to confirm with Zafar**: flag it in the report, and don't change other Kutchi.
 - **Keep the skewer orientation as it is now** (vertical on the board).
+- **Top-down throughout (Zafar, 29 Sept, after the first build):** this station keeps one top-down view, the prep bowls included: top-down bowls (the cream topping-bowl family) in the shelf band's slots with their chips, not front-on bowls.
 - **Thread:** the ingredients stand in front-on prep bowls on the shelf band (identical slots, word chips, true heights); tap to thread onto the vertical skewer; the card shows the parts with the sequence line and grey "next". Two different mixed skewers: thread one, and it moves to the skewer rack (`vessel-skewer-rack-t-v1`), then the next. No floating preview skewer.
 - **The phase button:** a flat design-system button ("to the grill", with an icon), replacing the red "Go to the barbecue".
 - **Grill:** a grill in the same art style (`sheet-tray-grill-t-v2` if suitable) with the heat-ring language; tap a skewer to turn it; raw → grilled → charred. No hands. Serve and taste.

@@ -63,11 +63,11 @@
    "_pieces": "Design system §15 (Zafar, 29 Sept): mishkaki now means only the square meat cubes, so the meat PIECE is ph-mishkaki (the bowl's chip, the word pop, a mixed skewer's parts); ph-meat (gos) stays the KIND word of an all-meat skewer in the order (ba lakri gos: to confirm).",
    "meatPiece": "ph-mishkaki",
    "bowls": {
-    "_about": "front-on prep bowls on the shelf band (build/gen_sekelo_v2.py, build/cut_sekelo_v2.py)",
-    "ph-mishkaki": "bowl-ph-meat-f",
-    "veg-02": "bowl-veg-02-f",
-    "veg-03": "bowl-veg-03-f",
-    "veg-01": "bowl-veg-01-f"
+    "_about": "Zafar (29 Sept): Sekelo stays top-down, bowls included: one cream topping bowl family seen from above (paths under assets/cook/items/; the meat bowl from build/gen_sekelo_v2.py, cut by build/cut_sekelo_v2.py)",
+    "ph-mishkaki": "sekelo/bowl-ph-meat-top",
+    "veg-02": "topping-dungri-chopped-bowl-t",
+    "veg-03": "topping-tameto-chopped-bowl-t",
+    "veg-01": "topping-bataato-boiled-bowl-t"
    }
   },
   "levels": [

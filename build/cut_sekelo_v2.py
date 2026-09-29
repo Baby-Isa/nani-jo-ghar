@@ -5,7 +5,8 @@ smooth pixels; the object is the rest, holes filled, with a 1 px anti-aliased ed
   grill-t.webp     the charcoal grill, top-down (sources/art/chatgpt-batch3/sheet-tray-grill-t-v2.png, middle)
   rack-t.webp      the wooden skewer rack, top-down (vessel-skewer-rack-t-v1.png); its middle is open
                    (the grey inside the frame is background, so holes are NOT filled: colour-to-alpha)
-  bowl-<id>-f.webp the four front-on prep bowls (sources/art/sekelo/bowls-draft1.png, build/gen_sekelo_v2.py),
+  bowl-ph-meat-top.webp  the top-down meat bowl, matching the repo's top-down topping bowls (Zafar: top-down)
+  (superseded) bowl-<id>-f.webp the four front-on prep bowls (sources/art/sekelo/bowls-draft1.png, build/gen_sekelo_v2.py),
                    every bowl on one shared canvas size, its foot on the canvas's bottom edge (true heights)
 
   python3 build/cut_sekelo_v2.py
@@ -115,9 +116,26 @@ def cut_stick():
     save(up.crop(up.getbbox()), 'stick-v.webp')
 
 
+def cut_meat_top():
+    """The top-down meat bowl (bowl-meat-top-draft1.png): the same cream bowl as the repo's top-down topping
+    bowls, cut the same size (the bowl fills a 256 px canvas), so every Sekelo bowl is one family (Zafar: top-down)."""
+    p = os.path.join(SRC, 'bowl-meat-top-draft1.png')
+    if not os.path.exists(p):
+        return
+    a = rgb(p)
+    warm = (a[..., 0] - a[..., 2] > 26) | (a.mean(2) > 212)
+    obj = C.largest(ndi.binary_fill_holes(ndi.binary_opening(ndi.binary_closing(warm, iterations=3), iterations=2)))
+    # the draft's soft grey shadow hugs the rim: take the edge in a few px so no grey ring shows on cream
+    obj = ndi.binary_erosion(obj, iterations=5)
+    x0, y0, x1, y1 = C.bbox(obj)
+    im = C.rgba(a, C.soft(obj)).crop((x0, y0, x1, y1))
+    save(im.resize((256, round(im.height * 256 / im.width)), Image.LANCZOS), 'bowl-ph-meat-top.webp')
+
+
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
+    cut_meat_top()
     cut_stick()
     cut_grill()
     cut_rack()
-    cut_bowls()
+    # (cut_bowls: the front-on bowls, superseded: Sekelo stays top-down)

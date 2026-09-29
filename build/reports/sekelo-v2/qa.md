@@ -4,7 +4,7 @@ Phone portrait (390×844) shows Cook's "turn your phone sideways" card, as every
 
 | State | Laptop | Phone landscape |
 |---|---|---|
-| start | The scene fades in under the first-time quiet moment. Board, empty rack and shelf are aligned; at L1 the chips show words (mishkaki is speaker-only, since the headline already said it) | Same layout, nothing clipped |
+| start | The scene fades in under the first-time quiet moment. Board, empty rack and the top-down bowls are aligned; at L1 the chips show words (mishkaki is speaker-only, since the headline already said it) | Same layout, nothing clipped |
 | thread | Pieces sit on the upright skewer; the word pops left of the board | Same |
 | rack | Finished skewers stand across the rack rails, handles below; the next one starts on the board | Same |
 | go | A flat white "to the grill" button with a gold icon, bottom right, clear of the shelf | Clear of the shelf |
