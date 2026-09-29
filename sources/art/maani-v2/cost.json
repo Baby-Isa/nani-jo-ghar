@@ -1,0 +1,21 @@
+{
+ "calls": [
+  {
+   "name": "chimta",
+   "usage": {
+    "input_tokens": 635,
+    "input_tokens_details": {
+     "image_tokens": 388,
+     "text_tokens": 247
+    },
+    "output_tokens": 1056,
+    "output_tokens_details": {
+     "image_tokens": 1056,
+     "text_tokens": 0
+    },
+    "total_tokens": 1691
+   },
+   "usd": 0.0474
+  }
+ ]
+}
