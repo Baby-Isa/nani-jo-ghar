@@ -177,6 +177,11 @@ class Player:
         then ↻ on the order card once (the order big again)."""
         if getattr(self, "helped", False) or not self.page.query_selector("#btn-help"):
             return
+        # the first-time coach starts on its own tick (js/cook/coach.js, every 120 ms) once there's a thing
+        # to point at, so it can arrive just after the first tap is posted: give it a moment, and try later
+        time.sleep(0.4)
+        if self.page.query_selector(".njg-onboard"):
+            return
         self.helped = True
         # record the open as it happens: the game itself puts the goal away when Nani's line changes
         # (UI.hideGist), which at test speed can come before a check afterwards
