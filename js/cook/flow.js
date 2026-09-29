@@ -891,7 +891,7 @@
     // the last station's things go before the next order card comes up over the picture
     s.clearView();
     s.viewName = null;
-    s.bg.setTexture("bg-service");
+    s.setBg("bg-service");
     // a dish's order as a ladder, or a few plain lines for stations with no dish
     const openCard = (what, steps) => {
       if (Array.isArray(what)) {
@@ -964,7 +964,7 @@
     if (S()) {
       S().clearView();
       S().viewName = null;
-      S().bg.setTexture("bg-service");
+      S().setBg("bg-service");
     }
     const days = Cook.data.days;
     const nextDay = Math.min(Cook.save.day, days.length);
@@ -1242,7 +1242,8 @@
       width: 1600,
       height: 900,
       backgroundColor: "#e9dcc4",
-      scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+      // the stage fill (queue item 8): the world grows to the stage's shape, so no letterbox strip (CookScene.fitView)
+      scale: { mode: Phaser.Scale.EXPAND, autoCenter: Phaser.Scale.CENTER_BOTH },
       input: { activePointers: 1 },
       scene: [Cook.CookScene],
     });

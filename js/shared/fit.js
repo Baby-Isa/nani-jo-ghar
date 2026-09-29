@@ -8,7 +8,8 @@
  * take up to 2 lines: class "fit fit2" (white-space: normal in its CSS) shrinks until the text fits in
  * two lines, and it's never cut off with "..." (at the minimum it may take a third line).
  *
- *   FitText.fit(el)                    one element (its CSS font-size is the largest it may be)
+ *   FitText.fit(el)                    one element (its CSS font-size is the largest it may be);
+ *                                      class "fit fit-wrap": one line down to the minimum, then two lines, never "..." 
  *   FitText.run(root)                  every .fit under root; elements with a data-fit-group share its smallest size
  *   FitText.watch(root)                run again whenever root changes size or content (returns stop)
  *
@@ -20,12 +21,25 @@
   const px = (v) => parseFloat(v) || 0;
 
   F.fit = function (el) {
+    // "fit fit-wrap": one line, shrunk down to the minimum; text that still doesn't fit (a family line
+    // that can't be shortened, a folded card's headline beside its check) wraps to two lines instead of
+    // an ellipsis (inline white-space, so the watcher's class observer doesn't loop)
+    if (el.classList.contains("fit-wrap")) {
+      el.style.whiteSpace = "";
+      const size = F.fit1(el, false);
+      if (!size || !el._fitOver) return size;
+      el.style.whiteSpace = "normal";
+      return F.fit1(el, true);
+    }
+    return F.fit1(el, el.classList.contains("fit2"));
+  };
+  F.fit1 = function (el, two) {
     el.style.fontSize = "";
+    el._fitOver = false;
     if (!el.isConnected || !el.clientWidth) return 0;
     const cs = getComputedStyle(el);
     const max = px(cs.fontSize);
     const min = Math.min(max, px(cs.getPropertyValue("--fit-min")) || 12);
-    const two = el.classList.contains("fit2");
     // two lines: taller than 2 line-heights (the line-height follows the size), or a word wider than the box
     const lines = () => {
       const lh = px(getComputedStyle(el).lineHeight) || px(getComputedStyle(el).fontSize) * 1.2;
@@ -52,6 +66,7 @@
     }
     const size = Math.floor(lo * 2) / 2;
     el.style.fontSize = `${size}px`;
+    el._fitOver = over();
     return size;
   };
 

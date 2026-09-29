@@ -41,6 +41,10 @@
   const IT = "assets/cook/items/";
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = 666;
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
+  // a scene piece's y: raised into the middle of a taller stage's worktop (Cook.lift, set per round)
+  let LIFT = 0;
+  const sy = (z, y) => z.Y(y) - z.L(LIFT);
   const BASE = 818;
   const CHIP_Y = 860;
   const PITCH = 150;
@@ -100,6 +104,7 @@
   async function station(host, p) {
     const S = host.S;
     const ctx = host.ctx;
+    LIFT = Cook.lift();
     Object.values(host.zones).forEach((z) => z.close());
     const level = Math.max(host.level || 1, Cook.roundLevel(ctx));
     const K = Mech.knobs("daar", { level });
@@ -180,24 +185,6 @@
     return result;
   }
 
-  /**
-   * A "don't" row (dungri na) is never gold-ticked while the daar is cooking: nothing was added. The
-   * sidebar's settle() ticks a section's no-rows once its other rows close, so they go back to neutral
-   * here (a broken one keeps its miss); the dish's finish ticks them with the rest.
-   */
-  function neutralNo(ctx) {
-    const L = ladderOf(ctx);
-    if (!L) return;
-    let changed = false;
-    Cook.Order.rows(L, { all: true }).forEach((r) => {
-      if (r.no && !r.miss && r.done) {
-        r.done = false;
-        changed = true;
-      }
-    });
-    if (changed) UI.mission.refresh();
-  }
-
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
   function naniCard(want, no) {
     const M = UI.mission;
@@ -232,12 +219,13 @@
 
   /* ---------- the flat pieces both phases share ---------- */
   function backdrop(z, S) {
-    S.track(S.add.rectangle(z.X(0), z.Y(0), z.L(1600), z.L(SHELF_TOP), INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
+    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
+    S.track(S.add.rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(SHELF_TOP + FAR), INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
     const g = S.track(S.add.graphics().setDepth(D.bg + 1.2));
     g.fillStyle(INK.panel, 1);
-    g.fillRect(z.X(0), z.Y(SHELF_TOP), z.L(1600), z.L(900 - SHELF_TOP));
+    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - SHELF_TOP + FAR));
     g.fillStyle(0x2a1a0a, 0.08);
-    g.fillRect(z.X(0), z.Y(SHELF_TOP), z.L(1600), z.L(3));
+    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
   }
 
   /** The word pop (§4): a flat white card with the speaker and the Kutchi word, and the family clip. */
@@ -314,17 +302,17 @@
     const S = z.S;
     const ctx = z.ctx;
     backdrop(z, S);
-    const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), "dv2-board").setDepth(D.item - 2));
+    const board = S.track(S.add.image(z.X(BOARD.x), sy(z, BOARD.y), "dv2-board").setDepth(D.item - 2));
     board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
     board.shadow = S.contactShadow(board);
     // the knife rests on the right of the board, blade up, handle toward you (no hand)
-    const knife = S.track(S.add.image(z.X(KNIFE.x), z.Y(KNIFE.y), "dv2-knife").setDepth(D.item + 2).setAngle(50));
+    const knife = S.track(S.add.image(z.X(KNIFE.x), sy(z, KNIFE.y), "dv2-knife").setDepth(D.item + 2).setAngle(50));
     const ks = z.L(KNIFE.h) / Math.hypot(312, 263);
     knife.setScale(ks);
     knife.baseScale = ks;
     knife.shadow = S.contactShadow(knife);
     const rest = { x: knife.x, y: knife.y };
-    const katori = S.track(S.add.image(z.X(BOWL.x), z.Y(BOWL.y), "dv2-katori").setDepth(D.item - 1));
+    const katori = S.track(S.add.image(z.X(BOWL.x), sy(z, BOWL.y), "dv2-katori").setDepth(D.item - 1));
     katori.setScale(z.L(BOWL.d) / KATORI.w);
     katori.shadow = S.contactShadow(katori);
     const bowlR = (z.L(BOWL.d) / 2) * KATORI.inner;
@@ -352,7 +340,7 @@
       const vs = z.L(id === "veg-12" ? 250 : 190) / veg.width;
       veg.setScale(vs * 0.6);
       Cook.sfx.whoosh();
-      await S.fly(veg, z.X(BOARD.x - 40), z.Y(BOARD.y + 10), { scale: vs, duration: 380, arc: z.L(120) });
+      await S.fly(veg, z.X(BOARD.x - 40), sy(z, BOARD.y + 10), { scale: vs, duration: 380, arc: z.L(120) });
       Cook.sfx.soft();
       z.progress({ board: id });
       // the knife is next (the focal rule: it pulses)
@@ -400,7 +388,6 @@
     nani.tickAll();
     if (ctx.closeItem) ctx.closeItem(kinds);
     else UI.mission.closeItem(kinds, ctx.dishAt || 0);
-    neutralNo(ctx);
     Cook.sfx.right();
     S.sparkle(katori.x, katori.y);
     Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
@@ -445,7 +432,7 @@
     backdrop(z, S);
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
     const hk = 0.9;
-    const hob = Kit.hob(S, { n: 1, k: z.L(hk), cx: z.X(800), bottom: z.Y(SHELF_TOP - 14) });
+    const hob = Kit.hob(S, { n: 1, k: z.L(hk), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
     const bodyR = z.L(128);
     const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 1.3 });
     const cx = hob.burners[0].x;
@@ -475,7 +462,7 @@
     const specks = S.track(S.add.container(cx, cy).setDepth(D.item + 0.3));
     const ring = Kit.heatRing(S, { width: z.L(12) });
     // the katori of chopped vegetables waits left of the hob; the daar's bowl right of it
-    const kat = S.track(S.add.image(z.X(360), z.Y(330), "dv2-katori").setDepth(D.item));
+    const kat = S.track(S.add.image(z.X(360), sy(z, 330), "dv2-katori").setDepth(D.item));
     kat.setScale(z.L(220) / KATORI.w);
     kat.shadow = S.contactShadow(kat);
     const kR = (z.L(220) / 2) * KATORI.inner;
@@ -486,7 +473,7 @@
       im.setScale(z.L(200 * 0.36 * (220 / BOWL.d)) / im.width);
       return im;
     });
-    const dBowl = S.track(S.add.image(z.X(1240), z.Y(330), "dv2-katori").setDepth(D.item));
+    const dBowl = S.track(S.add.image(z.X(1240), sy(z, 330), "dv2-katori").setDepth(D.item));
     dBowl.setScale(z.L(220) / KATORI.w);
     dBowl.shadow = S.contactShadow(dBowl);
     const dG = S.track(S.add.graphics().setDepth(D.item + 0.1));
@@ -574,7 +561,6 @@
         if (!ctx.guided && !retry) Cook.markRight(id);
         if (ctx.tickItem) ctx.tickItem(id);
         else UI.mission.tickItem(id, ctx.dishAt || 0);
-        neutralNo(ctx);
       } else {
         const expected = next;
         const why = flat.includes(id) ? `tadka ${id} before ${expected}` : `put ${id} in the tadka`;
@@ -641,7 +627,7 @@
     );
     if (pour && pour.stop) pour.stop();
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(130), { speakId: "cook-daal", ms: 1000 });
-    S.tweens.add({ targets: dBowl, x: z.X(1240), y: z.Y(330), angle: 0, alpha: 0, duration: 380 });
+    S.tweens.add({ targets: dBowl, x: z.X(1240), y: sy(z, 330), angle: 0, alpha: 0, duration: 380 });
     shimmer.destroy();
     if (sizzle && sizzle.stop) sizzle.stop();
     if (ctx.nextStep) ctx.nextStep("Stir");
@@ -790,7 +776,7 @@
       bg.fillStyle(0xffffff, 0.14 * bowl.alpha);
       bg.fillEllipse(bowl.x - bR * 0.3, bowl.y - bR * 0.32, bR * 0.8, bR * 0.34);
     };
-    bowl.setPosition(z.X(1180), z.Y(430));
+    bowl.setPosition(z.X(1180), sy(z, 430));
     await new Promise((r) => S.tweens.add({ targets: bowl, alpha: 1, duration: 260, onUpdate: drawB, onComplete: r }));
     Cook.sfx.pop();
     S.puff(bowl.x, bowl.y, 0xfff1c0, z.L(40));
@@ -798,7 +784,7 @@
     const kN = faceKey("neutral");
     const sizeP = (im) => im.setScale((z.L(560) / im.height) * (who === "cousin" ? 0.92 : 1));
     if (kN) {
-      person = S.track(S.add.image(z.X(1760), z.Y(915), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
+      person = S.track(S.add.image(z.X(Cook.offRight(1760)), z.Y(915), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
       sizeP(person);
       await new Promise((r) => S.tweens.add({ targets: person, x: z.X(PERSON_X), duration: 520, ease: "Back.easeOut", onComplete: r }));
     }
@@ -819,9 +805,9 @@
       if (person) S.tweens.add({ targets: person, y: person.y - z.L(14), duration: 160, yoyo: true, repeat: 1 });
       Cook.sfx.right();
       S.sparkle(bowl.x, bowl.y);
-      await pop(z, S, Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : bowl.x, z.Y(160), { line: Lang.line("welldone"), ms: 1500 });
+      await pop(z, S, Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : bowl.x, sy(z, 160), { line: Lang.line("welldone"), ms: 1500 });
       await Cook.wait(600);
-      if (person) S.tweens.add({ targets: person, x: z.X(1760), duration: 500, delay: 200, ease: "Sine.easeIn" });
+      if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1760)), duration: 500, delay: 200, ease: "Sine.easeIn" });
       await Cook.wait(400);
       return true;
     }
@@ -835,7 +821,7 @@
     St.customerDone();
     await new Promise((r) => S.tweens.add({ targets: bowl, x: home.x, y: home.y, alpha: 0, duration: 460, onUpdate: drawB, onComplete: r }));
     mood("neutral");
-    if (person) S.tweens.add({ targets: person, x: z.X(1760), duration: 400, ease: "Sine.easeIn" });
+    if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1760)), duration: 400, ease: "Sine.easeIn" });
     await Cook.wait(400);
     return false;
   }

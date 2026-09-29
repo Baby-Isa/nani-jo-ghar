@@ -49,6 +49,7 @@
   };
   /* ---------- the grid (design px, 1600x900; the canvas is the play area) ---------- */
   const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const BASE = 818; // the shelf line: every object stands on it
   const BOX = 128; // a slot's fallback box (a word without shelf art)
   // true relative heights (Zafar, 28 Sept, late): the bottle and carton stand tall, the chai and
@@ -156,12 +157,13 @@
 
     /* ---------- the scene: the softened marble, the shelf band ---------- */
     // §7: soften the marble so it doesn't compete with the objects
-    S.track(S.add.rectangle(0, 0, 1600, SHELF_TOP, INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
+    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
+    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
     const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
     band.fillStyle(INK.panel, 1);
-    band.fillRect(0, SHELF_TOP, 1600, 900 - SHELF_TOP);
+    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 900 - SHELF_TOP + FAR);
     band.fillStyle(0x2a1a0a, 0.08);
-    band.fillRect(0, SHELF_TOP, 1600, 3);
+    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 3);
     band.fillStyle(INK.grey, 1);
 
     /* ---------- the hob: one burner per person ---------- */
@@ -171,7 +173,8 @@
     const trayD = Math.min(TRAY_D, hobH * 0.78);
     const total = hobW * k + GAP + trayD;
     const hobX = Math.max(48, (1600 - total) / 2);
-    const hobY = SHELF_TOP - 56 - hobH; // low (§10), with some breathing space above the shelf
+    // low (§10), with some breathing space above the shelf; raised into the middle of a taller stage's worktop
+    const hobY = SHELF_TOP - 56 - hobH - Cook.lift();
     // the shared kitchen kit's hob: one burner per person (the burner rule)
     const kHob = Cook.Kit.hob(S, { n, x: hobX, y: hobY, k });
     const hob = kHob.img;

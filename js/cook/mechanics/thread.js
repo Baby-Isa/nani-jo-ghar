@@ -65,6 +65,9 @@
       // Sekelo v2 (§15): the board and its upright skewer on the left of the scene, the rack on the right,
       // the prep bowls on the shelf band below (the chai v2 grid)
       const BOARD = { x: 560, y: 346, w: 250, h: 586 };
+      // the scene is raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
+      const z0 = z;
+      z = Cook.liftZone(z0);
       const SKY = 352; // the skewer's centre on the board
       const SKS = 0.84; // the skewer on the board
       const RACK = { x: 1090, y: SKY, s: 0.6 }; // the rack sized to its skewers (followup, 29 Sept)
@@ -75,10 +78,10 @@
       const pieceIds = SK.pieceIds();
       const ids = pieceIds.concat(St.decoys(k.decoyPool || [], pieceIds, k.decoys || 0));
       await SK.loadArt(S, ids);
-      SK.band(S, z);
+      SK.band(S, z0);
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
-      const bowls = SK.shelf(S, z, groups, { level: z.level });
+      const bowls = SK.shelf(S, z0, groups, { level: z.level });
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));

@@ -40,6 +40,7 @@
   const MV = IT + "maani-v2/";
   /* ---------- the grid (design px, 1600x900; the canvas is the play area), as chai v2 ---------- */
   const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const HOB_K = 0.85; // the one-burner hob, a little bigger than chai's (it holds a tawa)
   const HOB_BOTTOM = SHELF_TOP - 40; // breathing space above the shelf (§10)
   const CHAKLA_D = 470;
@@ -132,19 +133,21 @@
     });
 
     /* ---------- the scene: the softened marble, the shelf band ---------- */
-    S.track(S.add.rectangle(0, 0, 1600, SHELF_TOP, INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
+    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
+    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
     const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
     band.fillStyle(INK.panel, 1);
-    band.fillRect(0, SHELF_TOP, 1600, 900 - SHELF_TOP);
+    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 900 - SHELF_TOP + FAR);
     band.fillStyle(0x2a1a0a, 0.08);
-    band.fillRect(0, SHELF_TOP, 1600, 3);
+    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 3);
 
     // two columns, centred as one block: the chakla | the hob
     const hs = Kit.size(1, HOB_K);
     const left = (1600 - (CHAKLA_D + COL_GAP + hs.w)) / 2;
     const LX = left + CHAKLA_D / 2;
     const RX = left + CHAKLA_D + COL_GAP + hs.w / 2;
-    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM });
+    // raised into the middle of a taller stage's worktop (the stage fill)
+    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM - Cook.lift() });
     const midY = hob.y + hob.h / 2; // the chakla sits on the hob's middle line
     const CH = { x: LX, y: midY };
 

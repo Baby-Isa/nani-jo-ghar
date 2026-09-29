@@ -171,6 +171,7 @@
   const PREP = { w: 303, h: 293 };
   /* the grid (design px, 1600x900), the same as chai v2's */
   const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const BASE = 818; // the shelf line: every bowl stands on it
   const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 };
   const PITCH = 150;
@@ -744,18 +745,20 @@
       /* ---------- the scene: the softened marble, the shelf band (chai v2's) ---------- */
       S.track(
         S.add
-          .rectangle(z.X(0), z.Y(0), z.L(1600), z.L(SHELF_TOP), INK.page, 0.5)
+          // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
+          .rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(SHELF_TOP + FAR), INK.page, 0.5)
           .setOrigin(0)
           .setDepth(D.bg + 1),
       );
       const bandG = S.track(S.add.graphics().setDepth(D.bg + 1.2));
       bandG.fillStyle(INK.panel, 1);
-      bandG.fillRect(z.X(0), z.Y(SHELF_TOP), z.L(1600), z.L(900 - SHELF_TOP));
+      bandG.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - SHELF_TOP + FAR));
       bandG.fillStyle(0x2a1a0a, 0.08);
-      bandG.fillRect(z.X(0), z.Y(SHELF_TOP), z.L(1600), z.L(3));
+      bandG.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
 
       /* ---------- the glass ---------- */
-      const bowl = glassBowl(z, S, flat.length);
+      // raised into the middle of a taller stage's worktop (the stage fill)
+      const bowl = glassBowl(Cook.liftZone(z), S, flat.length);
 
       /* ---------- the shelf: identical prep bowls, a chip under each ---------- */
       const n = ids.length;
@@ -1014,7 +1017,7 @@
           if (!kN) return null;
           const im = S.track(
             S.add
-              .image(z.X(1760), z.Y(SHELF_TOP + 6), kN)
+              .image(z.X(Cook.offRight(1760)), z.Y(SHELF_TOP + 6), kN)
               .setOrigin(0.5, 1)
               .setDepth(D.bg + 1.1),
           );
@@ -1143,7 +1146,7 @@
       if (person)
         S.tweens.add({
           targets: person,
-          x: z.X(1760),
+          x: z.X(Cook.offRight(1760)),
           duration: 500,
           delay: 200,
           ease: "Sine.easeIn",

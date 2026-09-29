@@ -58,20 +58,39 @@
   };
   UI.starIcon = (k, mode) => ICON[UI.starInfo(k, mode).icon] || ICON.tick;
 
-  /* ---------------- geometry: world (1600x900) -> page ---------------- */
+  /* ---------------- geometry: world -> page ----------------
+   * The canvas fills #stage and shows more than the 1600x900 design box when the stage has room
+   * (the stage fill, CookScene.fitView): a world point goes through the camera (its scroll and zoom). */
+  UI.worldScale = function () {
+    const canvas = document.querySelector("#game canvas");
+    const S = Cook.scene;
+    if (!canvas) return 1;
+    const gw = S && S.scale ? S.scale.gameSize.width : 1600;
+    const cam = S && S.cameras ? S.cameras.main : null;
+    return (canvas.getBoundingClientRect().width / gw) * (cam ? cam.zoom : 1);
+  };
+  UI.worldToScreen = function (x, y) {
+    const canvas = document.querySelector("#game canvas");
+    if (!canvas) return { x, y };
+    const r = canvas.getBoundingClientRect();
+    const S = Cook.scene;
+    const cam = S && S.cameras ? S.cameras.main : null;
+    const s = UI.worldScale();
+    const v = Cook.view || { left: 0, top: 0 };
+    const x0 = cam && cam.zoom === 1 ? cam.scrollX : v.left;
+    const y0 = cam && cam.zoom === 1 ? cam.scrollY : v.top;
+    return { x: r.left + (x - x0) * s, y: r.top + (y - y0) * s, s };
+  };
   UI.worldToStage = function (x, y) {
     const canvas = document.querySelector("#game canvas");
     const stage = $("#stage").getBoundingClientRect();
     if (!canvas) return { x, y, s: 1, stage };
-    const r = canvas.getBoundingClientRect();
-    const s = r.width / 1600;
-    return { x: r.left - stage.left + x * s, y: r.top - stage.top + y * s, s, rect: r, stage };
+    const p = UI.worldToScreen(x, y);
+    return { x: p.x - stage.left, y: p.y - stage.top, s: p.s, rect: canvas.getBoundingClientRect(), stage };
   };
-  UI.worldToScreen = function (x, y) {
-    const canvas = document.querySelector("#game canvas");
-    const r = canvas.getBoundingClientRect();
-    const s = r.width / 1600;
-    return { x: r.left + x * s, y: r.top + y * s };
+  /** The camera moved (the stage changed shape): things placed from world points follow. */
+  UI.onViewFit = function () {
+    if (tallyPt) placeTally();
   };
 
   /* ---------------- word pills ---------------- */
@@ -1007,7 +1026,13 @@
             mixes.forEach((ps) => rowsShown.push(...[].concat(...ps.groups)));
           });
       });
-      cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: person(mission.who), headline, items } });
+      // the card is finished only with its dish (queue item 8): every row closed AND the head, when the head
+      // is a thing still being made (samosa's "trae samosa" while folding and frying, Nana's daar while
+      // the stir runs); a head to record (the pantry's "bring me these") or with no word waits for nothing
+      const H = L.head;
+      const rowsDone = !!OCard() && items.length > 0 && OCard().shape({ items }).items.every((it) => it.done);
+      const done = rowsDone && (!H || !!H.rec || !(H.ids || []).length || !!H.done);
+      cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: person(mission.who), headline, items, done } });
     });
     // the next step of an ordered job (a light grey band): only in the first ordered list still open
     let marked = false;
@@ -1195,13 +1220,13 @@
     r.done = true;
     // a finished row shows its words again
   }
-  /** When every step of a section is done, its "no X" rows are done too (unless one was broken). */
-  function settle(L) {
-    L.sections.forEach((s) => {
-      const rows = [].concat(...s.groups);
-      if (rows.filter((r) => !r.no).every((r) => r.done)) rows.filter((r) => r.no && !r.miss).forEach(markDone);
-    });
-  }
+  /**
+   * A "don't" row (dudh na, dungri na) stays neutral while the dish is being made: nothing was added, but
+   * nothing is finished either, so it never turns gold mid-dish (queue item 8). It ticks with the rest when
+   * the dish is finished (M.finishDish), or when a station closes it itself (closeItem / tickItem {no}).
+   * A card's fold doesn't wait for it (the shared card counts an open no-row as done).
+   */
+  function settle() {}
   /**
    * A count row ("ba dungri", "trae maani"): it ticks when its step closes
    * (the item is put down, finished or served), never the moment the number
@@ -1241,7 +1266,12 @@
     const want = [].concat(ids);
     const rows = Order()
       .rows(L)
-      .filter((r) => !r.done && !r.head && (!opts.for || r.for === opts.for) && (opts.all || r.ids.some((id) => want.includes(id))));
+      .filter((r) => !r.done && !r.head && (!opts.for || r.for === opts.for) && (opts.all || (!r.no && r.ids.some((id) => want.includes(id)))));
+    // (a "don't" row isn't closed by its word mid-dish, only with everything: {all}, or the dish's finish)
+    // the head (the dish itself: "trae samosa", Nana's "daar") closes when the station says the dish is
+    // made: opts.head, everything closed ({all} for the whole order), or its own word when no row has it
+    const H = L.head;
+    if (H && !H.done && !H.rec && (opts.head || (opts.all && !opts.for) || (!rows.length && want.length && (H.ids || []).some((id) => want.includes(id))))) rows.push(H);
     rows.forEach(markDone);
     if (rows.length) {
       settle(L);

@@ -596,7 +596,7 @@
     const m = p && meta(p.file);
     const canvas = document.querySelector("#game canvas");
     if (!m || !canvas) return null;
-    const k = (canvas.getBoundingClientRect().width / W) * TAP_K;
+    const k = (Cook.UI && Cook.UI.worldScale ? Cook.UI.worldScale() : canvas.getBoundingClientRect().width / W) * TAP_K;
     const s = sprites.scale;
     return {
       src: Cook.v(`assets/cook/hands/${H.who()}/${p.file}.webp`),

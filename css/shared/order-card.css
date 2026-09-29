@@ -56,6 +56,8 @@
 .oc-card .oc-face.on .say-badge { background-color: var(--oc-gold); }
 .oc-card .oc-face:active { transform: scale(0.95); }
 .oc-card .oc-headline { flex: 1 1 auto; min-width: 0; font-weight: 800; font-size: var(--oc-h); line-height: 1.25; }
+/* the headline is the family's line and can't be shortened: shrink, then two lines, never "..." (fit.js fit-wrap) */
+.oc-card .oc-headline.fit-wrap { --fit-min: 14px; text-overflow: clip; }
 .oc-card .oc-headline.rec { display: flex; flex-direction: column; align-items: flex-start; font-style: italic; font-weight: 700; font-size: calc(var(--oc-h) * 0.86); color: #7a6857; }
 .oc-card .oc-headline.rec .oc-rec-line { max-width: 100%; }
 .oc-card .oc-rec {

@@ -35,6 +35,34 @@
     cousin: { x: 940, top: 290, scale: 1.02 },
   };
 
+  /** How far a station may raise its scene pieces into the extra worktop above the design box (k of it; see fitView). */
+  Cook.lift = (k = 0.5) => Math.round(((Cook.view && Cook.view.ey) || 0) * k);
+  /**
+   * A zone whose Y (and P) raise the scene by Cook.lift(): a station lays its scene pieces out with it and
+   * keeps the plain zone for the shelf band, so a taller stage puts them in the middle of the worktop.
+   * Everything else (input, expectations, reporting) is the zone's own.
+   */
+  Cook.liftZone = function (z, lift = Cook.lift()) {
+    if (!lift) return z;
+    const Y = (y) => z.Y(y) - lift;
+    const P = (x, y) => ({ x: z.X(x), y: Y(y) });
+    return new Proxy(z, {
+      get(t, key) {
+        if (key === "Y") return Y;
+        if (key === "P") return P;
+        if (key === "unlifted") return t;
+        const v = t[key];
+        return typeof v === "function" ? v.bind(t) : v;
+      },
+      set(t, key, v) {
+        t[key] = v;
+        return true;
+      },
+    });
+  };
+  /** An x just past the right edge of what's shown (a person sliding in from the right), never on a wide stage. */
+  Cook.offRight = (x = 1760) => Math.max(x, ((Cook.view && Cook.view.right) || 1600) + 160);
+
   class CookScene extends Phaser.Scene {
     constructor() {
       super("cook");
@@ -73,6 +101,10 @@
     create() {
       this.cameras.main.setBackgroundColor("#e9dcc4");
       this.bg = this.add.image(0, 0, "bg-service").setOrigin(0).setDepth(D.bg);
+      this.bgExt = [];
+      // the stage fill (queue item 8): the world grows with the stage (Phaser.Scale.EXPAND), see fitView
+      this.scale.on("resize", () => this.fitView());
+      this.fitView();
       this.layer = [];
       this.chars = {};
       this.loops = [];
@@ -89,6 +121,80 @@
         if (this.ticks.length) this.ticks.slice().forEach((t) => t.fn && t.fn());
       });
       if (Cook.onSceneReady) Cook.onSceneReady(this);
+    }
+
+    /* ---------------- the visible world (the stage fill, queue item 8) ----------------
+     * The game is Phaser.Scale.EXPAND on a 1600x900 base: the canvas fills #stage and the world shown
+     * grows past 1600x900 in whichever direction the stage has room (a laptop stage is taller than 16:9,
+     * a phone held sideways wider). Stations still lay out in the 1600x900 design box; the camera keeps
+     * that box centred across and anchored to the BOTTOM (the shelf band reaches the stage's bottom
+     * edge), so the extra height is worktop above it. Cook.view is the visible world rectangle
+     * {left, top, right, bottom, ex, ey}; Cook.lift(k) is how far a station may raise its scene pieces
+     * into the extra height (k of it), so they sit in the middle of the worktop, not squeezed to the shelf.
+     * Backgrounds are cover-fitted to the view (never stretched); the pantry's photo stays 1:1 (its
+     * shelves are the tap targets) and its edges carry on in the photo's own edge colours. */
+    fitView() {
+      const gs = this.scale.gameSize;
+      const gw = Math.round(gs.width);
+      const gh = Math.round(gs.height);
+      const ex = Math.max(0, gw - W);
+      const ey = Math.max(0, gh - H);
+      const cam = this.cameras.main;
+      cam.setSize(gw, gh);
+      cam.setZoom(1);
+      cam.setScroll(-ex / 2, -ey);
+      Cook.view = { left: -ex / 2, top: -ey, right: W + ex / 2, bottom: H, w: gw, h: gh, ex, ey };
+      this.fitBg();
+      if (UI.onViewFit) UI.onViewFit();
+    }
+    /** A background texture, fitted to the visible world. */
+    setBg(key) {
+      this.bg.setTexture(key);
+      this.fitBg();
+    }
+    fitBg() {
+      const bg = this.bg;
+      const v = Cook.view;
+      if (!bg || !v || !bg.texture) return;
+      this.bgExt.forEach((o) => o.destroy());
+      this.bgExt = [];
+      const src = bg.texture.getSourceImage();
+      const bw = src.width || W;
+      const bh = src.height || H;
+      const k0 = W / bw; // every background is drawn 1600 wide in the design box
+      if (this.viewName === "pantry") {
+        bg.setOrigin(0).setPosition(0, 0).setScale(k0);
+        this.extendEdges(bg.texture.key, src, k0, bh * k0);
+        return;
+      }
+      // cover the view, scaled about a pivot that stays put: the service picture's island edge (the
+      // family lean on it), a worktop's middle (nothing sits on its pattern)
+      const piv = this.viewName === "service" || !this.viewName ? { x: W / 2, y: 520 } : { x: W / 2, y: (v.top + v.bottom) / 2 };
+      const dh = bh * k0;
+      const need = Math.max(1, (piv.x - v.left) / piv.x, (v.right - piv.x) / (W - piv.x), (piv.y - v.top) / piv.y, (v.bottom - piv.y) / Math.max(1, dh - piv.y));
+      bg.setOrigin(piv.x / W, piv.y / dh).setPosition(piv.x, piv.y).setScale(k0 * need);
+    }
+    /** The pantry photo's edges carried on past it (its own edge rows and columns), for a stage of another shape. */
+    extendEdges(key, src, k, dh) {
+      const v = Cook.view;
+      const strip = (name, sx, sy, sw, sh) => {
+        const tk = `bgedge-${key}-${name}`;
+        if (!this.textures.exists(tk)) {
+          const c = document.createElement("canvas");
+          c.width = sw;
+          c.height = sh;
+          c.getContext("2d").drawImage(src, sx, sy, sw, sh, 0, 0, sw, sh);
+          this.textures.addCanvas(tk, c);
+        }
+        return tk;
+      };
+      const add = (tk, x, y, w, h) => this.bgExt.push(this.add.image(x, y, tk).setOrigin(0).setDisplaySize(w, h).setDepth(D.bg - 0.1));
+      const bw = src.width;
+      const bh = src.height;
+      if (v.top < 0) add(strip("t", 0, 0, bw, 2), 0, v.top, W, -v.top + 1);
+      if (v.bottom > dh) add(strip("b", 0, bh - 2, bw, 2), 0, dh - 1, W, v.bottom - dh + 1);
+      if (v.left < 0) add(strip("l", 0, 0, 2, bh), v.left, v.top < 0 ? v.top : 0, -v.left + 1, Math.max(dh, v.bottom) - Math.min(0, v.top));
+      if (v.right > W) add(strip("r", bw - 2, 0, 2, bh), W - 1, v.top < 0 ? v.top : 0, v.right - W + 1, Math.max(dh, v.bottom) - Math.min(0, v.top));
     }
 
     /* ---------------- views ---------------- */
@@ -138,8 +244,8 @@
       // the tally goes back to its corner (a view may place it: the pantry puts it on the fridge)
       if (UI.tallyAt) UI.tallyAt(null);
       // a painted view (data.art.sprites.bg) once loaded; the service and the old pantry photo otherwise
-      if ((name === "service" || name === "pantry") && !Cook.Art.sprite(this, bgRef)) this.bg.setTexture(`bg-${name}`);
-      else this.bg.setTexture(Cook.Art.tex(this, `bg:${name}`));
+      if ((name === "service" || name === "pantry") && !Cook.Art.sprite(this, bgRef)) this.setBg(`bg-${name}`);
+      else this.setBg(Cook.Art.tex(this, `bg:${name}`));
       UI.hideBubble();
       cam.fadeIn(dur, 233, 220, 196);
     }

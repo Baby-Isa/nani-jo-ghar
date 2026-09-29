@@ -837,12 +837,14 @@
   };
   /** The softened marble and the shelf band (§3, §7), as chai v2 draws them. */
   SK.band = function (S, z) {
-    S.track(S.add.rectangle(z.X(0), z.Y(0), z.L(1600), z.L(V2.SHELF_TOP), V2.INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
+    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
+    const FAR = 2000;
+    S.track(S.add.rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(V2.SHELF_TOP + FAR), V2.INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
     const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
     band.fillStyle(V2.INK.panel, 1);
-    band.fillRect(z.X(0), z.Y(V2.SHELF_TOP), z.L(1600), z.L(900 - V2.SHELF_TOP));
+    band.fillRect(z.X(-FAR), z.Y(V2.SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - V2.SHELF_TOP + FAR));
     band.fillStyle(0x2a1a0a, 0.08);
-    band.fillRect(z.X(0), z.Y(V2.SHELF_TOP), z.L(1600), z.L(3));
+    band.fillRect(z.X(-FAR), z.Y(V2.SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
     return band;
   };
   /**
@@ -1059,7 +1061,9 @@
       const line = params.line || {};
       const dx = params.dx != null ? params.dx : 0;
       const X = (x) => z.X(x + dx);
-      const Y = (y) => z.Y(y);
+      // the scene is raised into the middle of a taller stage's worktop (the stage fill); the band keeps z
+      const LIFT = Cook.lift();
+      const Y = (y) => z.Y(y) - LIFT;
       const L = (v) => z.L(v);
       const [lo, hi] = k.band;
       const nPieces = Mech.knobs("thread", { level: z.level }).pieces;

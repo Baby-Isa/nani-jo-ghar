@@ -56,6 +56,7 @@
   };
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = 666;
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const BASE = 818;
   const CHIP_Y = 860;
   const PITCH = 150;
@@ -216,16 +217,17 @@
   function backdrop(z, S, band = true) {
     S.track(
       S.add
-        .rectangle(z.X(0), z.Y(0), z.L(1600), z.L(band ? SHELF_TOP : 900), INK.page, 0.5)
+        // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
+        .rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L((band ? SHELF_TOP : 900) + FAR * (band ? 1 : 2)), INK.page, 0.5)
         .setOrigin(0)
         .setDepth(D.bg + 1),
     );
     if (!band) return;
     const g = S.track(S.add.graphics().setDepth(D.bg + 1.2));
     g.fillStyle(INK.panel, 1);
-    g.fillRect(z.X(0), z.Y(SHELF_TOP), z.L(1600), z.L(900 - SHELF_TOP));
+    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - SHELF_TOP + FAR));
     g.fillStyle(0x2a1a0a, 0.08);
-    g.fillRect(z.X(0), z.Y(SHELF_TOP), z.L(1600), z.L(3));
+    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
   }
 
   /** The word pop (§4): a flat white card with the speaker and the Kutchi word, and the family clip. */
@@ -282,10 +284,13 @@
 
   /* ---------- 1 + 2: fill the pastry, then fold it (and more of them) ---------- */
   async function fillFold(z, { ids, want, kinds, exclude, count, level, phases, retry }) {
+    // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
+    const z0 = z;
+    z = Cook.liftZone(z0);
     const S = z.S;
     const ctx = z.ctx;
     const k = Mech.knobs("fold", { level });
-    backdrop(z, S);
+    backdrop(z0, S);
     const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), "sv2-board").setDepth(D.item - 2));
     board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
     board.shadow = S.contactShadow(board);
@@ -293,7 +298,7 @@
     const plate = S.track(S.add.image(z.X(PLATE.x), z.Y(PLATE.y), "sv2-plate").setDepth(D.item - 2));
     plate.setDisplaySize(z.L(PLATE.d), z.L(PLATE.d));
     plate.shadow = S.contactShadow(plate);
-    const items = shelf(z, S, ids, level);
+    const items = shelf(z0, S, ids, level);
     const SW = META.stage.w * STAGE_K;
     const SH = META.stage.h * STAGE_K;
     // a stage-canvas point (fractions) in world px, for a pastry centred at (cx, cy) design px
@@ -677,12 +682,14 @@
 
   /* ---------- 3: fry in the karahi on the kit hob (one burner), lift onto the paper-lined plate ---------- */
   async function fry(z, { n, level }) {
+    const z0 = z;
+    z = Cook.liftZone(z0);
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
     const k = Mech.knobs("fry", { level });
     const [lo, hi] = k.band || [0.62, 0.84];
-    backdrop(z, S);
+    backdrop(z0, S);
     // the hob (one burner, one karahi) and the paper-lined plate, centred as one group above the shelf
     // band (the chai/maani grid); the folded samosas wait on thalis on the band
     const hob = Kit.hob(S, { n: 1, k: z.L(FRY.hobK), cx: z.X(FRY.bx - FRY.hobDx), bottom: z.Y(SHELF_TOP - 30) });
@@ -700,11 +707,11 @@
     const trays = [];
     for (let i = 0; i < n; i++) {
       const x = 800 + (i - (n - 1) / 2) * FRY.trayPitch;
-      const t = S.track(S.add.image(z.X(x), z.Y(FRY.trayY), "sv2-thali").setDepth(D.item - 1));
+      const t = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY), "sv2-thali").setDepth(D.item - 1));
       t.setScale(z.L(FRY.trayD) / t.width);
       t.shadow = S.contactShadow(t);
       trays.push(t);
-      const im = S.track(S.add.image(z.X(x), z.Y(FRY.trayY - 4), "sv2-fry-0").setScale(FS * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
+      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(FS * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
       im.baseScale = FS * 0.85;
       im.handAction = false;
       raw.push(im);
@@ -887,7 +894,7 @@
     const kN = faceKey("neutral");
     const sizeP = (im) => im.setScale((z.L(520) / im.height) * (who === "cousin" ? 0.92 : 1));
     if (kN) {
-      person = S.track(S.add.image(z.X(1760), z.Y(960), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
+      person = S.track(S.add.image(z.X(Cook.offRight(1760)), z.Y(960), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
       sizeP(person);
       await new Promise((r) => S.tweens.add({ targets: person, x: z.X(PERSON_X), duration: 520, ease: "Back.easeOut", onComplete: r }));
     }
@@ -933,7 +940,7 @@
       S.sparkle(plate.img.x, plate.img.y);
       await pop(z, S, Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : plate.img.x, z.Y(160), { line: Lang.line("welldone"), ms: 1500 });
       await Cook.wait(600);
-      if (person) S.tweens.add({ targets: person, x: z.X(1800), duration: 500, delay: 200, ease: "Sine.easeIn" });
+      if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1800)), duration: 500, delay: 200, ease: "Sine.easeIn" });
       await Cook.wait(800);
       return true;
     }
@@ -950,7 +957,7 @@
     await Cook.wait(320);
     await new Promise((r) => S.tweens.add({ targets: plate.img, x: cx0, y: cy0, scale: home[0].s, duration: 460, onComplete: r }));
     mood("neutral");
-    if (person) S.tweens.add({ targets: person, x: z.X(1760), duration: 400, ease: "Sine.easeIn" });
+    if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1760)), duration: 400, ease: "Sine.easeIn" });
     await Cook.wait(400);
     return false;
   }

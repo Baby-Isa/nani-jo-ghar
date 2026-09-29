@@ -207,7 +207,7 @@
     const h = data.headline;
     if (h) {
       // a line still to record: its English, flagged "to record" under it
-      const t = h.rec ? el("div", "oc-headline rec", `<span class="oc-rec-line fit">${h.html}</span><small class="oc-rec">to record</small>`) : el("div", "oc-headline fit", h.html);
+      const t = h.rec ? el("div", "oc-headline rec", `<span class="oc-rec-line fit">${h.html}</span><small class="oc-rec">to record</small>`) : el("div", "oc-headline fit fit-wrap", h.html);
       if (h.key != null && opts.onEl) opts.onEl(h.key, t);
       head.appendChild(t);
     }

@@ -51,7 +51,7 @@
     const UI = Cook.UI;
     const canvas = document.querySelector("#game canvas");
     if (!canvas) return null;
-    const k = canvas.getBoundingClientRect().width / 1600;
+    const k = UI.worldScale ? UI.worldScale() : canvas.getBoundingClientRect().width / 1600;
     if (e.kind === "click") {
       const el = e.selector && document.querySelector(e.selector);
       if (!el || !el.offsetParent) return null;
