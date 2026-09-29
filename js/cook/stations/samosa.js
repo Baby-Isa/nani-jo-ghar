@@ -25,8 +25,8 @@
  * closes (UX 11, right or not); "ba samosa" ticks when the plate is served.
  *
  * Levels (data/cook.json's samosa recipe slots; the fill's decoys and the fry's speed in data.mechanics):
- * 1 = one or two samosas, no decoys, words on the chips; 2 = decoys; 3 = a "don't" filling, speaker-only
- * chips; 4 = faster frying.
+ * 1 = one or two samosas, one decoy, words on the chips; 2 = more decoys; 3 = a "don't" filling, speaker-only
+ * chips; 4 = as 3 (the fry's speed and band tighten by level in data.mechanics.fry).
  * Art: assets/cook/items/samosa-v2/ (build/gen_samosa_v2.py, build/cut_samosa_v2.py; its meta.json copied
  * below), the chaat v2 prep bowls, the kitchen kit's hob and knob (js/cook/kitchen-kit.js).
  */
@@ -386,7 +386,7 @@
       const n = sheet.blobs.length;
       // the heap grows from the middle of the patch outwards
       const a = n * 2.4 + Math.random() * 0.5;
-      const rr = n === 0 ? 0 : Math.min(0.62, 0.3 + n * 0.06);
+      const rr = n === 0 ? 0 : Math.min(0.45, 0.2 + n * 0.05);
       const tx = pa.x + Math.cos(a) * pa.rx * rr;
       const ty = pa.y + Math.sin(a) * pa.ry * rr * 0.9;
       if (!quiet) Cook.sfx.pop();
@@ -567,7 +567,7 @@
 
   /** Where the i-th samosa sits on a plate (design px, around cx, cy; k = spread). */
   function plateSpot(i, cx, cy, k = 1) {
-    const S3 = [[-62, -30, -8], [62, -30, 8], [0, 52, 0], [-70, 60, -14], [70, 60, 14], [0, -80, 4]];
+    const S3 = [[-66, -12, -8], [66, -12, 8], [0, 58, 0], [-74, 70, -14], [74, 70, 14], [0, -82, 4]];
     const s = S3[i % S3.length];
     return { x: cx + s[0] * k, y: cy + s[1] * k, a: s[2] };
   }
