@@ -901,7 +901,8 @@ def main():
     httpd = start_server()
     vps = VIEWPORTS
     if args.viewport:
-        vps = [v for v in VIEWPORTS if v["name"] == args.viewport]
+        # (phone-landscape, 844x390: only when named, the station sessions' VISUAL-QA phone; not in every --days run)
+        vps = [v for v in VIEWPORTS + [{"name": "phone-landscape", "width": 844, "height": 390, "touch": True}] if v["name"] == args.viewport][:1]
     elif args.lab or args.orders or args.example or args.open_kitchen is not None:
         vps = [VIEWPORTS[1]]
     failed = []
@@ -920,7 +921,8 @@ def main():
         except Exception as ex:
             print(f"FAIL {vp['name']}: {ex}", flush=True)
             failed.append(vp["name"])
-    httpd.shutdown()
+    if httpd:
+        httpd.shutdown()
     sys.exit(1 if failed else 0)
 
 

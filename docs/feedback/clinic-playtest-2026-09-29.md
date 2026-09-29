@@ -375,3 +375,26 @@ About **4–5 build sessions in all**, against about 11 for the Cook overnight r
 **Part 1:** 0:00–0:25 W1 · 0:25 W2 · 0:35–1:44 W3 · 1:46–2:02 W1/G1 · 2:06–2:12 W2 · 2:15–3:23 W4/G4 · 3:24–4:59 W5 · 5:04–5:38 D1 · 5:46–5:51 D2/G9 · 5:51–7:15 D3/G1 · 7:19–7:46 D4 · 7:46–8:40 D5 · 8:44–8:53 D4 · 8:53–9:22 D6/§1 · 9:26–11:08 P1/P2/P3 · 11:08–12:14 P4 · 12:20–12:32 E1 · 12:36–13:37 E2 · 13:36–13:47 E2 · 13:49–14:05 E3 · 14:05–14:50 G11 · 14:50–15:30 E4 · 15:30–15:52 E4 · 15:51–16:21 G3 · 16:21–17:20 E5 · 17:24–20:49 H-cut · 20:55–21:26 H-knee · 21:26–22:32 H-knee (bandage) · 22:32 G12 · 22:40–23:07 H-knee (L3) · 23:07–24:03 H-ear/G2 · 24:03–24:20 (recording note).
 
 **Part 2:** 0:00–1:20 H-tooth (brush) · 1:20–2:25 H-tooth (bug)/G6 · 2:30–4:44 H-tooth (drill, filling) · 4:45–7:25 H-taste · 7:30–8:42 H-fever/G7/G8 · 8:46–8:58 H-fever · 9:06–10:27 H-boing · 10:27–12:15 H-eye · 12:15–14:23 H-eye (the test)/G5 · 14:23–15:48 H-foot · 15:48–16:02 H-fever/H-foot (koso, nokoso) · 16:02–17:34 H-foot (splinters) · 17:34–18:11 G10.
+
+## 13. After the v2 prototypes (29 Sept, evening): Zafar's answers to prototype B's questions
+- **The pharmacy tray feeds the heal game.** The pharmacy asks for the items the heal game will use (all of them, or some of them). Every item is needed in the heal game, so nothing is greyed out there: a wrong or missing pick costs **score** (the pharmacy's row and the accuracy badge), and the heal game still plays. The heal games keep their own tool shelf, but it shows what came from the pharmacy.
+- **Both feet at level 3** in the splinter game, so "my left foot" is actually tested.
+- **Level-1 counts** (fever, foot, drinks, boing): not answered yet; Zafar will judge them in play.
+- **Choosing a patient in the waiting room (decided):** the picked person **rises up off the seat** and stays raised; no walk and no slide to the door (the current slide looks cheap). Zafar: better not to attempt a complicated animation and have it look cheap; the game has enough real animations already. This is a general rule too: no new character animations unless they can be done well.
+- **The doctor's art is based on Hannah's granddad,** and he's happy with it.
+
+### 13a. Waiting room, from Zafar's play of prototype A (29 Sept, late)
+- **W3 "Call them in" leaks (Zafar: it fails the "you don't need to know Kutchi" test).** The card row shows the same sentence as the right pill ("the girl, come"), so a child who knows no Kutchi can match the text to the text. The design said the card shows the **picture** of who to call, not the words. **Fix:** in W3 the card shows the person's round face with no text. The pills are the Kutchi calls, each with its speaker, and the mic comes first. A pill match earns coins, never the voice star. W3 starts at level 2, as designed (it appeared at L1).
+- **Higher levels: the doctor's call is heard, not read** (Zafar's idea, Claude agrees). From level 3 the card row is **closed**: the call is only spoken, and tapping the row to see the words is the paid peek (Cook's L4 closed card). Levels 1–2 keep the words showing.
+- **Level 4 (two in order, against the comfort rings): pick everyone straight away.** No waiting for each person's greeting or the doctor between picks. Each tick shows its number (1, 2) as it's tapped; once the last one is tapped, the whole set is judged: all right → they lock in and rise; any wrong → the ticks shake and clear, and everyone sits back down to try again.
+- The lab's debug log (bottom left) overlaps the pills: it's lab-only, but it should sit clear of the play area.
+- **At most 6 people in the waiting room** (Zafar), at every level, counting the babies and children sitting with the grown-ups at level 5.
+- **Speaking moves out of the waiting room** (Zafar: you don't naturally call "little boy, next"). W3 "Call them in" is dropped in the clinic fix session unless Zafar says otherwise; the clinic's speaking goes into the patient conversation (E4), the pharmacy ask and the send-off. See `docs/design/speaking-more-proposal.md`.
+
+### 13b. Pharmacy, from Zafar's play of prototype A (29 Sept, late)
+- **The doctor orders, so the card says "bring me", not "I want".** The row reads *Muke plaster khape* (a customer's "I want"). It should be the doctor's request: **"[Bring me] the plaster"**. The Kutchi for "bring me" is still to confirm with Mum (Cook Q5 item 8, "bring me these", is the same ask), so it stays an English placeholder flagged "to record". Never invent it.
+- **A filled slot loses its dashed outline**, like the pantry's tray: once an item is in a slot, the cut-out box disappears.
+- **Tap a placed item to put it back** (a misclick). The first pick is what's scored: a wrong item put back still counts as a mistake in the review (the score penalty), so undo can't be used to fish for the tick.
+- **Items don't sit on the belt** (they float or tilt). That's the stand-in art: the real item art needs a flat base and a contact shadow on the belt.
+- Seen in the same shot: the green button at the bottom right ("To the bench"?) is cut off by the frame's right edge, and the lab's debug log overlaps the counter.
+- Otherwise good (Zafar).

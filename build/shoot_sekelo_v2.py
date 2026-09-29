@@ -10,9 +10,16 @@ Plays the station in the Station lab with build/test_cook.py's Player and saves 
   turned       a skewer just turned (grilled marks)
   serving      every skewer on the plate, just before Done
   taste        the person tastes it (serve and taste)
+v3 (30 Sept, K9-K11): also
+  raw          the first skewer just on the grill
+  plate-N      the plate holding N skewers (each one just plated)
+  charred      (--char) a skewer left past its green: it chars and goes onto the plate burnt
+  --skewers N  replay the lab's order until it asks for N skewers (a full rack of 4 at level 4)
 
   python3 build/shoot_sekelo_v2.py                    # laptop, level 3 (iterating)
   python3 build/shoot_sekelo_v2.py --all --level 4    # laptop + phones
+  python3 build/shoot_sekelo_v2.py --vp phone-landscape --level 4 --skewers 4
+  python3 build/shoot_sekelo_v2.py --level 2 --wrong --char   # the "not quite" path and a charred skewer
 """
 import argparse
 import json
@@ -30,12 +37,14 @@ VPS["phone"] = {"name": "phone", "width": 390, "height": 844, "touch": True}
 
 
 class Shooter(T.Player):
-    def __init__(self, page, shots, speed, tag):
-        super().__init__(page, shots, speed)
+    def __init__(self, page, shots, speed, tag, mistakes=True):
+        super().__init__(page, shots, speed, mistakes)
         self.tag = tag
         self.taken = set()
         self.pieces = 0
         self.turns = 0
+        self.plated = 0
+        self.char = False
         # the help buttons are the sidebar's (tested by build/test_cook.py), not this station's
         self.helped = True
 
@@ -64,6 +73,12 @@ class Shooter(T.Player):
             self.snap("start")
         if key == "turn" and "grill" not in self.taken:
             self.snap("grill")
+        if key == "lift" and self.char and "charred" not in self.taken:
+            # leave it past its green: it chars and goes onto the plate by itself
+            time.sleep(4.0 / max(1, self.speed) + 1.2)
+            self.plated += 1
+            self.snap("charred")
+            return None
         # Done: click it here (not the player's click, which waits on its own), so the taste is shot live
         r = self.page.click("#done-btn") if kind == "click" and e.get("selector") == "#done-btn" else super().act(e)
         if kind == "tap" and key and key not in ("rack", "undo", "turn", "lift"):
@@ -77,6 +92,13 @@ class Shooter(T.Player):
         if key == "turn":
             time.sleep(0.25)
             self.snap("turned")
+        if key == "rack" and "raw" not in self.taken:
+            time.sleep(0.6)
+            self.snap("raw")
+        if key == "lift":
+            self.plated += 1
+            time.sleep(0.8)
+            self.snap(f"plate-{self.plated}")
         if kind == "click" and e.get("selector") == "#done-btn":
             # serve and taste: shoot the moment their face changes (Cook.tasted), then its outcome
             self.page.evaluate("Cook.tasted = null")
@@ -96,10 +118,17 @@ class Shooter(T.Player):
         return r
 
 
-def run(vp, out, level, speed, guided=False, wrong=False):
+def run(vp, out, level, speed, guided=False, wrong=False, char=False, skewers=0):
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
-        P = Shooter(page, out, speed, f"{vp['name']}-l{level}")
+        # (a full rack of 4 for an order of 4 has no room for a wrong skewer: no deliberate mistakes then)
+        P = Shooter(page, out, speed, f"{vp['name']}-l{level}" + (f"-n{skewers}" if skewers else "") + ("-char" if char else ""), mistakes=skewers < 4)
+        P.char = char
+        if skewers:
+            # the lab's order, made again until it asks for this many skewers
+            page.evaluate("""n => { const R = Cook.Recipes.mishkaki; const make = R.make; R.make = (w, o) => {
+              for (let i = 0; i < 60; i++) { const d = make(w, o); if (Object.values(d.skewers || {}).reduce((a, b) => a + b, 0) === n) return d; }
+              return make(w, o); }; }""", skewers)
         if os.environ.get("SHOOT_DEBUG"):
             print("page open", flush=True)
         # serve and taste: hold the praise (and the "not quite") long enough to shoot it
@@ -138,12 +167,14 @@ def main():
     ap.add_argument("--guided", action="store_true")
     ap.add_argument("--wrong", action="store_true")
     ap.add_argument("--speed", type=float, default=2)
-    ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "sekelo-v2"))
+    ap.add_argument("--char", action="store_true")
+    ap.add_argument("--skewers", type=int, default=0)
+    ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "sekelo-v3"))
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     T.start_server()
     for name in (["laptop", "phone-landscape", "phone"] if a.all else [a.vp]):
-        run(VPS[name], a.out, a.level, a.speed, a.guided, a.wrong)
+        run(VPS[name], a.out, a.level, a.speed, a.guided, a.wrong, a.char, a.skewers)
         print("shot", name, flush=True)
 
 

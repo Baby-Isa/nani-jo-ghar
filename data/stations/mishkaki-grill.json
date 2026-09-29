@@ -66,11 +66,19 @@
    "_pieces": "Design system §15 (Zafar, 29 Sept): mishkaki now means only the square meat cubes, so the meat PIECE is ph-mishkaki (the bowl's chip, the word pop, a mixed skewer's parts); ph-meat (gos) stays the KIND word of an all-meat skewer in the order (ba lakri gos: to confirm).",
    "meatPiece": "ph-mishkaki",
    "bowls": {
-    "_about": "Zafar (29 Sept): Sekelo stays top-down, bowls included: one cream topping bowl family seen from above (paths under assets/cook/items/; the meat bowl from build/gen_sekelo_v2.py, cut by build/cut_sekelo_v2.py)",
-    "ph-mishkaki": "sekelo/bowl-ph-meat-top",
-    "veg-02": "topping-dungri-chopped-bowl-t",
-    "veg-03": "topping-tameto-chopped-bowl-t",
-    "veg-01": "topping-bataato-boiled-bowl-t"
+    "_about": "30 Sept (K5, Q11): the shelf holds top-down heaps of the same big chunks that go on the skewer (assets/cook/items/v3/sekelo/heap-*; the decoy potato borrows samosa v3's potato heap, it has no sekelo chunk). Was one cream bowl family (Zafar, 29 Sept).",
+    "ph-mishkaki": "v3/sekelo/heap-meat",
+    "veg-02": "v3/sekelo/heap-onion",
+    "veg-03": "v3/sekelo/heap-tomato",
+    "ph-pepper": "v3/sekelo/heap-pepper",
+    "veg-01": "v3/samosa/fill-potato"
+   },
+   "v3pieces": {
+    "_about": "30 Sept (K5): each piece's v3 chunk (assets/cook/items/v3/sekelo/<name>-raw|grilled|charred.webp); a piece not listed keeps its old sprite",
+    "ph-mishkaki": "meat",
+    "veg-02": "onion",
+    "veg-03": "tomato",
+    "ph-pepper": "pepper"
    }
   },
   "levels": [
