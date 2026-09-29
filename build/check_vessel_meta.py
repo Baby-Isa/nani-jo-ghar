@@ -233,6 +233,16 @@ def main():
     bad = check_v3()
     bad += check_daar()
     bad += check_sekelo()
+    # the samosa station places its v3 karahi and plate by numbers copied from meta.json: they must agree
+    sam = open(os.path.join(ROOT, "js/cook/stations/samosa.js")).read()
+    smeta = json.load(open(os.path.join(ROOT, "assets/cook/items/v3/samosa/meta.json")))
+    for name in ("karahi", "plate"):
+        m = re.search(rf"\b{name}: \{{ w: (\d+), cx: ([\d.]+), cy: ([\d.]+), r: ([\d.]+)", sam)
+        rec = smeta[name]
+        got = (int(m.group(1)), float(m.group(2)), float(m.group(3)), float(m.group(4))) if m else None
+        ok = bool(got) and got[0] == rec["w"] and max(abs(got[1] - rec["cx"]), abs(got[2] - rec["cy"]), abs(got[3] - rec["r"])) <= 1e-4
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} samosa.js META.{name}: {got} vs meta.json (w {rec['w']}, cx {rec['cx']}, cy {rec['cy']}, r {rec['r']})")
     for label, url, cx, cy in checks:
         res, fx, fy, fr = fit_rim(os.path.join(ROOT, url))
         off = max(abs(fx - cx), abs(fy - cy))

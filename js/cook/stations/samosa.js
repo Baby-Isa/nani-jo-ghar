@@ -1,26 +1,31 @@
 /*
- * Combined station: Samosa v2, fill, fold, fry (docs/design/cook-design-system-v1.md §15; the chai v2 grid
- * §3, §4, §10; the kitchen kit §13; serve and taste §14a).
+ * Combined station: Samosa v3, fill, fold, fry (docs/design/cook-design-system-v1.md §15; the chai v2 grid
+ * §3, §4, §10; the kitchen kit §13; serve and taste §14a; the 29 Sept play-test, S1-S21 and Q2, Q3, Q9).
  *
  * THREE JOBS, one at a time, each on the whole picture:
- *  1. FILL: a real top-down pastry strip lies on a wooden board. The fillings stand on the shelf band (the
- *     bottom 26%) as identical front-on prep bowls, a `🔊 word` chip under each (tap the bowl = use it, tap
- *     the chip = hear it; from level 3 the word hides and the speaker stays). Each tap drops ONE spoonful on
- *     the pastry and its word pops with the family clip. Nothing is refused: tap the tick when it's right
- *     (it's graded then: how many spoons of each, and nothing they said no to).
- *  2. FOLD: keep the SWIPE (Zafar: "different and should feel satisfying"). The flap folds over with the
- *     finger (the real pastry art, bent along its fold line), and a soft glow shows the next swipe; let go
- *     past halfway and it snaps shut (a snap, a little pop, the next fold stage). Three folds make a
- *     samosa: its word pops. Make as many as they asked for (each new strip gets the same filling), then
- *     the phase button takes them to the karahi. The count is theirs, graded there.
- *  3. FRY: the kitchen kit's hob (ONE burner: one karahi, the burner rule) with the karahi of oil on it.
- *     Tap the knob: the oil heats (the kit's heat ring). Tap a raw samosa: it slides into the oil. Each one
- *     goes raw -> light -> golden -> too dark (a small heat ring round it); tap it when golden and the
- *     slotted spoon (no hand) lifts it onto the paper-lined plate. No tally: the plate shows the count.
+ *  1. FILL: a flat pastry strip lies on the house board (S6). The fillings sit on the shelf band (the
+ *     bottom 26%) as top-down heaps, no bowls (S2 / Q2), a `🔊 word` chip under each (tap the heap = use
+ *     it, tap the chip = hear it; from level 3 the word hides and the speaker stays). Each tap drops ONE
+ *     spoonful on the strip's left end and its word pops with the family clip. Nothing is refused: tap the
+ *     tick when it's right (it's graded then: how many spoons of each, and nothing they said no to).
+ *  2. FOLD: keep the SWIPE (Zafar: "different and should feel satisfying"). S8, S11 / Q3 (Zafar's answer):
+ *     the filling sits on the flat strip, the FIRST fold hides it, and every stage is a fixed picture
+ *     (assets/cook/items/v3/samosa/fold-1…6, one registered canvas). Three swipes, left to right, each
+ *     wiping the next picture(s) in over the last as the finger goes (1->2, 2->3->4, 4->5->6); a soft glow
+ *     shows the part that folds next; let go past the swipe's minLen and it snaps to its last picture.
+ *     The finished samosa's word pops and it goes onto the plate's flat middle (S10). Make as many as they
+ *     asked for (each new strip gets the same filling: an order has one filling for all its samosas),
+ *     then the phase button takes them to the karahi. The count is theirs, graded there.
+ *  3. FRY: the kit's WIDE hob (one big landscape burner, S19 / Q9) with the v3 karahi of oil on it, about
+ *     1.4x its old size (S17). Tap the knob: the flames come up and stay up while it's on (S21) and the
+ *     oil sizzles at once: no heating ring (S16). Tap a raw samosa: it slides into the oil. Each one goes
+ *     raw -> light -> golden -> too dark (a small timing ring round it); tap it when golden and the jharo
+ *     slides in UNDER it and it rides on top onto the paper-lined plate (S20). No tally: the plate shows
+ *     the count.
  * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): their big round face comes up over
  *   the plate (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
- *  - not quite: a gentle face, they say their order again, the plate comes back empty and the child makes
+ *  - not quite: a frown, they say their order again, the plate comes back empty and the child makes
  *    them again (fill first). Only the first try counts (the ear star, the end review). At most three tries.
  * The card (the shared order card, §12): the fillings' rows count up as spoons go in and tick when the fill
  * closes (UX 11, right or not); then the card folds to face + headline, no ✓ (the phase fold, §13: "ba
@@ -29,8 +34,9 @@
  * Levels (data/cook.json's samosa recipe slots; the fill's decoys and the fry's speed in data.mechanics):
  * 1 = one or two samosas, one decoy, words on the chips; 2 = more decoys; 3 = a "don't" filling, speaker-only
  * chips; 4 = as 3 (the fry's speed and band tighten by level in data.mechanics.fry).
- * Art: assets/cook/items/samosa-v2/ (build/gen_samosa_v2.py, build/cut_samosa_v2.py; its meta.json copied
- * below), the chaat v2 prep bowls, the kitchen kit's hob and knob (js/cook/kitchen-kit.js).
+ * Art: assets/cook/items/v3/samosa/ (build/cut_cook_v3.py; the numbers below are its meta.json, checked
+ * by build/check_vessel_meta.py), the fry states from assets/cook/items/samosa-v2/, the kit's wide hob,
+ * knob and flames (js/cook/kitchen-kit.js). Shots: build/shoot_samosa_v3.py.
  */
 (function (global) {
   const Cook = global.Cook;
@@ -41,40 +47,59 @@
   const Mech = Cook.Mech;
 
   const V2 = "assets/cook/items/samosa-v2/";
-  const CH = "assets/cook/items/chaat-v2/";
-  // what build/cut_samosa_v2.py measured (the fold stages share one canvas; fractions of it)
+  const V3 = "assets/cook/items/v3/samosa/";
+  // what build/cut_cook_v3.py measured (assets/cook/items/v3/samosa/meta.json; fractions of each sprite)
   const META = {
-    // fill: the pocket the first fold closes over, the lower-left triangle's incircle (centre, radius as a
-    // fraction of the width), clear of the fold line (the flap is the upper-right triangle)
-    stage: { w: 540, h: 430, fill: { x: 0.187, y: 0.684, r: 0.135 } },
-    folds: [
-      { flap: [[0.0519, 0.2698], [0.5185, 0.2698], [0.5185, 0.8535]], line: [[0.0519, 0.2698], [0.5185, 0.8535]] },
-      { flap: [[0.037, 0.1047], [0.5185, 0.1047], [0.5185, 0.9302], [0.037, 0.9302]], line: [[0.5185, 0.1163], [0.5185, 0.907]] },
-      { flap: [[0.7593, 0.3023], [0.9333, 0.3023], [0.9333, 0.8605], [0.7593, 0.8605]], line: [[0.7593, 0.3023], [0.7593, 0.8605]] },
-    ],
+    // 29 Sept (S8, S11, Q3): six fixed fold pictures on ONE canvas, registered on the strip's right end.
+    // The filling lands on the flat strip's left end (fill: centre, radius as a fraction of the width);
+    // the first fold's triangle hides it. Three swipes, each wiping to the next picture(s), left to right:
+    // steps (pictures, 1-based), sweep (where the wipe's edge travels, x fractions), from/to (the swipe),
+    // glow (the part that folds next: x0, y0, x1, y1).
+    fold: {
+      w: 517,
+      h: 297,
+      fill: { x: 0.175, y: 0.655, r: 0.1 },
+      swipes: [
+        { steps: [1, 2], sweep: [0.03, 0.46], from: [0.14, 0.66], to: [0.46, 0.66], glow: [0.048, 0.43, 0.34, 0.87] },
+        { steps: [2, 3, 4], sweep: [0.03, 0.62], from: [0.2, 0.66], to: [0.6, 0.66], glow: [0.05, 0.36, 0.42, 0.9] },
+        { steps: [4, 5, 6], sweep: [0.1, 0.99], from: [0.3, 0.66], to: [0.9, 0.66], glow: [0.11, 0.26, 0.6, 0.94] },
+      ],
+      // the finished samosa (fold-6): its own middle and width on the canvas (it flies to the plate by it)
+      done: { x: 0.7, y: 0.401, w: 274 },
+    },
+    // the karahi of oil (S14, S17, S19): its round body, handles left out; oil = the oil's radius / the body's
+    karahi: { w: 1253, cx: 0.4975, cy: 0.4992, r: 0.3914, oil: 0.8994 },
+    // the paper-lined enamel plate (S10): its rim; flat = the flat paper-lined centre's half-width / the rim r
+    plate: { w: 825, cx: 0.4982, cy: 0.4994, r: 0.4826, flat: 0.6 },
+    // the slotted spoon (S20): its bowl's middle and radius (x, r fractions of the width, y of the height)
+    jharo: { w: 657, h: 837, bx: 0.279, by: 0.227, br: 0.25 },
+    heap: { w: 419, h: 410 },
     fry: { w: 400, h: 340 },
-    prep: { w: 303, h: 293 },
   };
+  // S2 / Q2: the fillings as top-down heaps, no bowls (samosa only)
+  const HEAP = { "ph-keema": "chundo", "veg-01": "potato", "veg-10": "peas", "veg-02": "onion", "veg-12": "chilli", "ph-dhana": "dhania", "veg-carrot": "carrot", "veg-cabbage": "cabbage" };
+  const heapUrl = (id) => (HEAP[id] ? `${V3}fill-${HEAP[id]}.webp` : null);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = 666;
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
-  const BASE = 818;
+  const HEAP_Y = 758;
   const CHIP_Y = 860;
   const PITCH = 150;
-  const PREP_W = 122;
-  const BOARD = { x: 720, y: 338, w: 800, h: 560 };
-  const STAGE_K = 1.2; // design px per stage-canvas px
-  const PLATE = { x: 1335, y: 420, d: 330 };
-  // the fry: burner x (bx; the hob's burner sits hobDx right of its middle), karahi body r, plate x and d,
-  // the thalis on the band. The karahi with its handles (r / 0.395 wide) + a 50 px gap + the plate is
-  // one group centred on x 800: 605 - 228 = 377 ... 1053 + 170 = 1223.
-  const FRY = { hobK: 0.9, hobDx: 11, bx: 605, r: 180, px: 1053, pd: 340, trayY: 772, trayD: 150, trayPitch: 180 };
+  const HEAP_W = 128;
+  // the house board (S6): board.webp is 1397 x 847
+  const BOARD = { x: 720, y: 338, w: 820, h: 820 * (847 / 1397) };
+  const STAGE_K = 1.42; // design px per fold-canvas px
+  const PLATE = { x: 1345, y: 400, d: 340 };
+  // the fry (S17, S19, Q9): the wide hob (one big burner) with the karahi ~1.4x its old size (body r 180 ->
+  // 250: at 270 its rim ran over the hob's knob), and the plate right of the hob. The hob (937 x 568 at
+  // k 1, its burner in the middle; its knob 0.469 h below the burner, clear of the rim) centred on bx, the
+  // plate just clear of its right edge: 66 ... 1134, 1140 ... 1480.
+  const FRY = { hobK: 1.14, bx: 600, r: 250, px: 1310, pd: 340, trayY: 772, trayD: 150, trayPitch: 180 };
+  // a samosa in the oil (design px wide) and where they float (degrees round the middle, radius / the oil's):
+  // fewer samosas, bigger and further apart
+  const OIL = (n) => (n <= 3 ? { size: 180, r: 0.5, at: [-90, 30, 150] } : n <= 4 ? { size: 165, r: 0.55, at: [-135, -45, 45, 135] } : { size: 145, r: 0.62, at: [-90, 30, 150, -30, 90, 210] });
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, glow: 0xffe3a0 };
   const FONT = "Nunito, sans-serif";
-  const CHAAT_PREP = ["veg-01", "veg-02", "veg-03", "veg-12", "ph-dhana", "ph-chana", "ph-sev", "ph-dahi", "ph-amli", "ph-lili"];
-  const OWN_PREP = ["ph-keema", "veg-10"];
-  const prepUrl = (id) => (OWN_PREP.includes(id) ? `${V2}prep-${id}.webp` : CHAAT_PREP.includes(id) ? `${CH}prep-${id}.webp` : null);
-  const topUrl = (id) => (OWN_PREP.includes(id) ? `${V2}top-${id}.webp` : CHAAT_PREP.includes(id) ? `${CH}top-${id}.webp` : null);
 
   /** A frame's length in ms, for a tick (the scene's ticks get no dt). */
   const clock = () => {
@@ -127,23 +152,23 @@
     const exclude = [].concat(p.exclude || []).filter(Boolean);
     const count = p.count || 1;
     const kFill = Mech.knobs("fill", { level });
-    const pool = p.pool || St.decoys(p.decoyPool || [], kinds.concat(exclude), St.knobInt(kFill.decoys), kFill.decoyPick).filter((id) => prepUrl(id));
+    const pool = p.pool || St.decoys(p.decoyPool || [], kinds.concat(exclude), St.knobInt(kFill.decoys), kFill.decoyPick).filter((id) => heapUrl(id));
     const ids = Cook.shuffle([...new Set(pool.concat(kinds, exclude))]);
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the fill's own begin shows it (data.onboard.samosa)
     // the art loads while the order card is up (a slow phone mustn't meet an empty scene)
     const art = [
-      ["sv2-board", "assets/cook/items/tool-board-t.png"],
-      ["sv2-plate", "assets/cook/items/plate-enamel-empty-t.webp"],
-      ["sv2-paper", V2 + "plate-paper.webp"],
+      ["sv3-board", V3 + "board.webp"],
+      ["sv3-plate", V3 + "plate.webp"],
+      ["sv3-karahi", V3 + "karahi.webp"],
+      ["sv3-jharo", V3 + "jharo.webp"],
       ["sv2-thali", "assets/cook/items/vessel-thali-t.png"],
-      ["sv2-spoon", "assets/cook/items/tool-slotted-spoon-t.webp"],
     ]
-      .concat([0, 1, 2, 3].map((i) => [`sv2-stage-${i}`, `${V2}stage-${i}.webp`]))
+      .concat([1, 2, 3, 4, 5, 6].map((i) => [`sv3-fold-${i}`, `${V3}fold-${i}.webp`]))
       .concat([0, 1, 2, 3].map((i) => [`sv2-fry-${i}`, `${V2}fry-${i}.webp`]))
-      .concat(ids.filter(prepUrl).map((id) => [`sv2-prep-${id}`, prepUrl(id)]))
-      .concat(ids.filter(topUrl).map((id) => [`sv2-top-${id}`, topUrl(id)]))
+      .concat(ids.filter(heapUrl).map((id) => [`sv3-heap-${id}`, heapUrl(id)]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
-      .concat(Cook.Kit ? Cook.Kit.art(1, ["karahi"]) : []);
+      // the wide hob (S19): one big burner, landscape; the karahi is this station's own (v3, 1.5x)
+      .concat(Cook.Kit ? Cook.Kit.art(1, [], { wide: true }) : []);
     await Promise.race([St.load(S, art), Cook.wait(12000)]);
 
     let first = null; // the first try's verdict (only it counts)
@@ -250,27 +275,24 @@
     return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
   }
 
-  /** The shelf: identical front-on prep bowls on one line, a chip under each (§4). */
+  /** The shelf: the fillings as top-down heaps on the band, no bowls (S2 / Q2), a chip under each (§4). */
   function shelf(z, S, ids, level) {
     const n = ids.length;
     const pitch = Math.min(PITCH, (1600 - 190 - 60) / Math.max(1, n));
     const width = n * pitch;
     const x0 = Math.max(30, (1600 - 190 - width) / 2); // clear of the tick, bottom right
-    const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
-    plank.fillStyle(INK.grey, 1);
-    plank.fillRoundedRect(z.X(x0 + 10), z.Y(BASE - 2), z.L(width - 20), z.L(10), z.L(5));
     const items = {};
     ids.forEach((id, i) => {
       const x = x0 + pitch * (i + 0.5);
-      const w = Math.min(PREP_W, pitch - 22);
-      const key = `sv2-prep-${id}`;
+      const w = Math.min(HEAP_W, pitch - 26);
+      const key = `sv3-heap-${id}`;
       let img;
       if (S.textures.exists(key)) {
-        const sc = z.L(w) / META.prep.w;
-        img = S.track(S.add.image(z.X(x), z.Y(BASE), key).setOrigin(0.5, 0.965).setScale(sc).setDepth(D.item + 1));
+        const sc = z.L(w) / META.heap.w;
+        img = S.track(S.add.image(z.X(x), z.Y(HEAP_Y), key).setScale(sc).setDepth(D.item + 1));
         img.baseScale = sc;
-        img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.72), height: z.L(16) });
-      } else img = S.ingredient(id, z.X(x), z.Y(BASE - 56), { w: z.L(118), h: z.L(100), label: false, depth: D.item + 1 });
+        img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(HEAP_Y + w * 0.06), width: z.L(w * 0.92), height: z.L(w * 0.86) });
+      } else img = S.ingredient(id, z.X(x), z.Y(HEAP_Y), { w: z.L(118), h: z.L(100), label: false, depth: D.item + 1 });
       img.wordId = id;
       img.handAction = false; // no hands anywhere (§15)
       img.home = { x: img.x, y: img.y };
@@ -282,6 +304,36 @@
     return items;
   }
 
+  /**
+   * Where n samosas sit on a plate's flat middle (S10: never over the rim): rows of up to 2 (up to 4) or
+   * 3, each cell's samosa as wide as fits. cx, cy, half: the flat middle (design px). -> [{x, y, a, w}]
+   */
+  function plateSpots(n, cx, cy, half, aspect = 0.8) {
+    const cols = n <= 1 ? 1 : n <= 4 ? 2 : 3;
+    const rows = Math.ceil(n / cols);
+    const cw = (2 * half) / cols;
+    const chh = (2 * half) / Math.max(rows, 1);
+    const w = Math.min(half * 1.15, cw * 0.94, (chh / aspect) * 0.94);
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const r = Math.floor(i / cols);
+      const m = r < rows - 1 ? cols : n - cols * (rows - 1);
+      const c = i - r * cols;
+      out.push({ x: cx + (c - (m - 1) / 2) * cw, y: cy + (r - (rows - 1) / 2) * chh, a: [-6, 5, -3, 7, -5, 4][i % 6], w });
+    }
+    return out;
+  }
+  /** The plate (plate.webp) centred at (x, y) design px, d across: the image and its flat middle's half-width. */
+  function plateAt(z, S, x, y, d, depth = D.item - 2) {
+    const P = META.plate;
+    const img = S.track(S.add.image(z.X(x), z.Y(y), "sv3-plate").setOrigin(P.cx, P.cy).setDepth(depth));
+    img.setScale(z.L(d) / P.w);
+    img.shadow = S.contactShadow(img, { centerX: img.x, centerY: img.y + z.L(d * 0.03), width: z.L(d * 0.96), height: z.L(d * 0.96) });
+    img.flatHalf = d * P.r * P.flat; // design px
+    img.home = { x, y };
+    return img;
+  }
+
   /* ---------- 1 + 2: fill the pastry, then fold it (and more of them) ---------- */
   async function fillFold(z, { ids, want, kinds, exclude, count, level, phases, retry }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
@@ -291,139 +343,132 @@
     const ctx = z.ctx;
     const k = Mech.knobs("fold", { level });
     backdrop(z0, S);
-    const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), "sv2-board").setDepth(D.item - 2));
+    // the house board (S6)
+    const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), "sv3-board").setDepth(D.item - 2));
     board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
     board.shadow = S.contactShadow(board);
-    // the plate the folded samosas wait on (right of the board)
-    const plate = S.track(S.add.image(z.X(PLATE.x), z.Y(PLATE.y), "sv2-plate").setDepth(D.item - 2));
-    plate.setDisplaySize(z.L(PLATE.d), z.L(PLATE.d));
-    plate.shadow = S.contactShadow(plate);
+    // the plate the folded samosas wait on (right of the board; S10: on its flat middle)
+    const plate = plateAt(z, S, PLATE.x, PLATE.y, PLATE.d);
     const items = shelf(z0, S, ids, level);
-    const SW = META.stage.w * STAGE_K;
-    const SH = META.stage.h * STAGE_K;
-    // a stage-canvas point (fractions) in world px, for a pastry centred at (cx, cy) design px
+    const F = META.fold;
+    const SW = F.w * STAGE_K;
+    const SH = F.h * STAGE_K;
+    // a fold-canvas point (fractions) in world px, for a strip centred at (cx, cy) design px
     const at = (cx, cy, fx, fy) => ({ x: z.X(cx - SW / 2 + fx * SW), y: z.Y(cy - SH / 2 + fy * SH) });
-    const P0 = { x: BOARD.x, y: BOARD.y + 10 };
+    const P0 = { x: BOARD.x, y: BOARD.y + 6 };
 
-    /* the pastry: its stage sprite, and a canvas that draws the fold in between */
+    /* the strip: its fold picture, and a canvas that wipes to the next one as the finger swipes */
     function pastry(x) {
-      const img = S.track(S.add.image(z.X(x), z.Y(P0.y), "sv2-stage-0").setDepth(D.item));
+      const img = S.track(S.add.image(z.X(x), z.Y(P0.y), "sv3-fold-1").setDepth(D.item));
       img.setScale(z.L(STAGE_K));
       img.blobs = [];
       return img;
     }
-    const foldKey = "sv2-foldcv";
+    const W = F.w;
+    const H = F.h;
+    const foldKey = "sv3-foldcv";
     if (S.textures.exists(foldKey)) S.textures.remove(foldKey);
-    const cv = S.textures.createCanvas(foldKey, META.stage.w, META.stage.h);
+    const cv = S.textures.createCanvas(foldKey, W, H);
     const fimg = S.track(S.add.image(z.X(P0.x), z.Y(P0.y), foldKey).setDepth(D.item + 0.5).setScale(z.L(STAGE_K)).setVisible(false));
-    const W = META.stage.w;
-    const H = META.stage.h;
-    function drawFold(srcKey, f, t, blobs = []) {
-      const c = cv.getContext();
-      const src = S.textures.get(srcKey).getSourceImage();
-      const poly = f.flap.map(([x, y]) => [x * W, y * H]);
-      const [[x1, y1], [x2, y2]] = f.line.map(([x, y]) => [x * W, y * H]);
-      const path = () => {
-        c.beginPath();
-        poly.forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y)));
-        c.closePath();
+    const mk = () => {
+      const c = document.createElement("canvas");
+      c.width = W;
+      c.height = H;
+      return c;
+    };
+    const offA = mk();
+    const offB = mk();
+    /**
+     * One swipe's picture at t (0-1): the fixed fold pictures in turn, each wiping in over the last from
+     * the left as the fold rolls right (a soft edge and a crease shadow on it). Before the first fold the
+     * filling is drawn on the flat strip, so the first picture's triangle covers it.
+     */
+    function drawFold(sw, t, blobs = []) {
+      const n = sw.steps.length - 1;
+      const seg = Math.min(n - 1, Math.floor(t * n));
+      const u = Cook.clamp(t * n - seg, 0, 1);
+      const oldImg = S.textures.get(`sv3-fold-${sw.steps[seg]}`).getSourceImage();
+      const newImg = S.textures.get(`sv3-fold-${sw.steps[seg + 1]}`).getSourceImage();
+      const edge = (sw.sweep[0] + (sw.sweep[1] - sw.sweep[0]) * u) * W;
+      const fe = 0.07 * W;
+      const grad = (g) => {
+        const gr = g.createLinearGradient(edge - fe, 0, edge, 0);
+        gr.addColorStop(0, "rgba(0,0,0,1)");
+        gr.addColorStop(1, "rgba(0,0,0,0)");
+        return gr;
       };
+      const a = offA.getContext("2d");
+      a.globalCompositeOperation = "source-over";
+      a.clearRect(0, 0, W, H);
+      a.drawImage(oldImg, 0, 0);
+      if (seg === 0)
+        blobs.forEach((bl) => {
+          const img = bl.texture.getSourceImage();
+          const bx = (bl.x - fimg.x) / fimg.scaleX + W / 2;
+          const by = (bl.y - fimg.y) / fimg.scaleY + H / 2;
+          a.save();
+          a.translate(bx, by);
+          a.rotate((bl.angle * Math.PI) / 180);
+          a.drawImage(img, -bl.displayWidth / fimg.scaleX / 2, -bl.displayHeight / fimg.scaleY / 2, bl.displayWidth / fimg.scaleX, bl.displayHeight / fimg.scaleY);
+          a.restore();
+        });
+      a.globalCompositeOperation = "destination-out";
+      a.fillStyle = grad(a);
+      a.fillRect(0, 0, W, H);
+      const b = offB.getContext("2d");
+      b.globalCompositeOperation = "source-over";
+      b.clearRect(0, 0, W, H);
+      b.drawImage(newImg, 0, 0);
+      b.globalCompositeOperation = "destination-in";
+      b.fillStyle = grad(b);
+      b.fillRect(0, 0, W, H);
+      const c = cv.getContext();
+      c.save();
       c.clearRect(0, 0, W, H);
-      // the pastry without its flap
-      c.save();
-      c.beginPath();
-      c.rect(0, 0, W, H);
-      poly.slice().reverse().forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y)));
-      c.closePath();
-      c.clip("evenodd");
-      c.drawImage(src, 0, 0);
+      c.drawImage(offA, 0, 0);
+      c.globalCompositeOperation = "lighter";
+      c.drawImage(offB, 0, 0);
+      // the crease: a soft shadow just behind the rolling edge, on the pastry only
+      c.globalCompositeOperation = "source-atop";
+      const sh = c.createLinearGradient(edge - fe, 0, edge + fe * 0.6, 0);
+      const d = 0.2 * Math.sin(Math.PI * u);
+      sh.addColorStop(0, "rgba(60,35,10,0)");
+      sh.addColorStop(0.55, `rgba(60,35,10,${d})`);
+      sh.addColorStop(1, "rgba(60,35,10,0)");
+      c.fillStyle = sh;
+      c.fillRect(0, 0, W, H);
       c.restore();
-      // the filling on the pastry (the first fold covers it)
-      blobs.forEach((b) => {
-        const img = b.texture.getSourceImage();
-        const bx = (b.x - fimg.x) / fimg.scaleX + W / 2;
-        const by = (b.y - fimg.y) / fimg.scaleY + H / 2;
-        c.save();
-        c.translate(bx, by);
-        c.rotate((b.angle * Math.PI) / 180);
-        const w = b.displayWidth / fimg.scaleX;
-        const h = b.displayHeight / fimg.scaleY;
-        c.drawImage(img, -w / 2, -h / 2, w, h);
-        c.restore();
-      });
-      // the flap, bent over its line: its distance from the line scales by cos(pi t) (past half, its back)
-      const ang = Math.atan2(y2 - y1, x2 - x1);
-      const s = Math.cos(Math.PI * t);
-      c.save();
-      // standing up, the flap's far edge comes toward the camera (up and a little left): a shear that
-      // grows with the distance from the fold line, so the fold line itself stays put
-      const lift = Math.sin(Math.PI * t);
-      const cosA = Math.cos(ang);
-      const sinA = Math.sin(ang);
-      const vOf = ([x, y]) => -(x - x1) * sinA + (y - y1) * cosA;
-      const vFar = poly.reduce((m, q) => (Math.abs(vOf(q)) > Math.abs(m) ? vOf(q) : m), 0) || 1;
-      const [ox, oy] = [-10 * cosA - 34 * sinA, 10 * sinA - 34 * cosA]; // (-10, -34) in the line's frame
-      c.translate(x1, y1);
-      c.rotate(ang);
-      c.transform(1, 0, (ox * lift) / vFar, (Math.abs(s) < 0.02 ? 0.02 * Math.sign(s || 1) : s) + (oy * lift) / vFar, 0, 0);
-      c.rotate(-ang);
-      c.translate(-x1, -y1);
-      path();
-      c.clip();
-      c.drawImage(src, 0, 0);
-      // light from the upper left: the lifted flap darkens as it stands up, its back is a touch paler
-      path();
-      c.fillStyle = s >= 0 ? `rgba(90,55,20,${0.28 * Math.sin(Math.PI * t)})` : `rgba(255,245,220,${0.18 * Math.sin(Math.PI * t)})`;
-      c.fill();
-      c.restore();
-      // the shadow the standing flap throws on the pastry (down and to the right)
-      if (t > 0.05 && t < 0.95) {
-        c.save();
-        c.globalCompositeOperation = "source-atop";
-        c.translate(10 * Math.sin(Math.PI * t), 12 * Math.sin(Math.PI * t));
-        c.translate(x1, y1);
-        c.rotate(ang);
-        c.scale(1, s * 0.5 + 0.5);
-        c.rotate(-ang);
-        c.translate(-x1, -y1);
-        path();
-        c.fillStyle = `rgba(60,35,10,${0.12 * Math.sin(Math.PI * t)})`;
-        c.fill();
-        c.restore();
-      }
       cv.refresh();
     }
 
-    /* a spoonful: it lifts off its bowl and drops on the pastry's filling patch */
+    /* a spoonful: a little heap lifts off its pile and lands on the strip's left end (the first fold covers it) */
     const fillAt = (sheet) => {
-      const f = META.stage.fill;
+      const f = F.fill;
       return { x: sheet.x + (f.x - 0.5) * SW * z.k, y: sheet.y + (f.y - 0.5) * SH * z.k, r: f.r * SW * z.k };
     };
     async function spoon(sheet, id, { quiet = false, fast = false } = {}) {
       const obj = items[id];
-      const key = S.textures.exists(`sv2-top-${id}`) ? `sv2-top-${id}` : S.tex(`layer:${id}`);
-      const from = obj ? { x: obj.x, y: obj.y - obj.displayHeight * 0.7 } : { x: z.X(800), y: z.Y(700) };
+      const key = S.textures.exists(`sv3-heap-${id}`) ? `sv3-heap-${id}` : S.tex(`layer:${id}`);
+      const from = obj ? { x: obj.x, y: obj.y - obj.displayHeight * 0.2 } : { x: z.X(800), y: z.Y(700) };
       if (obj && !fast) S.tweens.add({ targets: obj, scale: obj.baseScale * 1.08, duration: 90, yoyo: true });
       const b = S.track(S.add.image(from.x, from.y, key).setDepth(D.fx));
       const pa = fillAt(sheet);
       const n = sheet.blobs.length;
-      // ONE mound in the pocket: each spoon lands on it (a little off-centre) and it grows, never
-      // past the pocket's edge (the fold line stays clear)
-      // (a later spoon is a touch smaller and sits a little off the top, so a mix of fillings shows)
-      const size = n === 0 ? pa.r * 1.2 : pa.r * Math.min(1.25, 0.95 + n * 0.06);
+      // ONE mound on the strip's end: each spoon lands on it (a little off-centre) and it grows, never
+      // past the strip's edges (a later spoon is a touch smaller, so a mix of fillings shows)
+      const size = n === 0 ? pa.r * 1.8 : pa.r * Math.min(1.5, 1.15 + n * 0.06);
       b.setDisplaySize(size * 0.6, size * 0.6);
       const a = n * 2.4 + Math.random() * 0.5;
-      const rr = n === 0 ? 0 : 0.3;
+      const rr = n === 0 ? 0 : 0.32;
       const tx = pa.x + Math.cos(a) * pa.r * rr;
-      const ty = pa.y + Math.sin(a) * pa.r * rr;
-      // the mound under it swells a touch with each spoon
-      sheet.blobs.forEach((o) => S.tweens.add({ targets: o, scaleX: o.scaleX * 1.05, scaleY: o.scaleY * 1.05, duration: 160, delay: fast ? 200 : 420 }));
+      const ty = pa.y + Math.sin(a) * pa.r * rr * 0.8;
+      sheet.blobs.forEach((o) => S.tweens.add({ targets: o, scaleX: o.scaleX * 1.04, scaleY: o.scaleY * 1.04, duration: 160, delay: fast ? 200 : 420 }));
       if (!quiet) Cook.sfx.pop();
       await S.fly(b, tx, ty - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
-      await new Promise((r) => S.tweens.add({ targets: b, y: ty, displayWidth: size, displayHeight: size * 0.92, duration: 140, ease: "Quad.easeIn", onComplete: r }));
+      await new Promise((r) => S.tweens.add({ targets: b, y: ty, displayWidth: size, displayHeight: size * 0.96, duration: 140, ease: "Quad.easeIn", onComplete: r }));
       b.setDepth(D.item + 0.2 + n * 0.001);
       b.setAngle(Math.random() * 360);
-      S.tweens.add({ targets: b, scaleY: b.scaleY * 0.9, duration: 80, yoyo: true });
+      S.tweens.add({ targets: b, scaleY: b.scaleY * 0.92, duration: 80, yoyo: true });
       if (!quiet) S.puff(tx, ty, St.color(((Cook.data.words[id] || {}).layer || {}).color || "#f3e3b0"), z.L(26));
       b.wordId = id;
       sheet.blobs.push(b);
@@ -536,39 +581,33 @@
         await new Promise((r) => S.tweens.add({ targets: sheet, x: z.X(P0.x), alpha: 1, duration: 380, ease: "Cubic.easeOut", onComplete: r }));
         for (const id of order) await spoon(sheet, id, { quiet: true, fast: true });
       }
-      for (let f = 0; f < 3; f++) {
-        const fd = META.folds[f];
-        const src = `sv2-stage-${f}`;
+      for (let f = 0; f < F.swipes.length; f++) {
+        const sw = F.swipes[f];
         const cxy = { x: (sheet.x - z.X(P0.x)) / z.k + P0.x, y: P0.y };
-        const poly = fd.flap.map(([x, y]) => at(cxy.x, cxy.y, x, y));
-        const cen = poly.reduce((s, p) => ({ x: s.x + p.x / poly.length, y: s.y + p.y / poly.length }), { x: 0, y: 0 });
-        const [l1, l2] = fd.line.map(([x, y]) => at(cxy.x, cxy.y, x, y));
-        // the centroid's mirror over the fold line: where the flap lands
-        const lx = l2.x - l1.x;
-        const ly = l2.y - l1.y;
-        const ll = lx * lx + ly * ly;
-        const tt = ((cen.x - l1.x) * lx + (cen.y - l1.y) * ly) / ll;
-        const foot = { x: l1.x + lx * tt, y: l1.y + ly * tt };
-        const to = { x: 2 * foot.x - cen.x, y: 2 * foot.y - cen.y };
-        glowOn = { poly, a: cen, b: to };
+        const [gx0, gy0, gx1, gy1] = sw.glow;
+        const poly = [at(cxy.x, cxy.y, gx0, gy0), at(cxy.x, cxy.y, gx1, gy0), at(cxy.x, cxy.y, gx1, gy1), at(cxy.x, cxy.y, gx0, gy1)];
+        const from = at(cxy.x, cxy.y, sw.from[0], sw.from[1]);
+        const to = at(cxy.x, cxy.y, sw.to[0], sw.to[1]);
+        glowOn = { poly, a: from, b: to };
         const offerGo = n > 0 && f === 0;
         const r = await swipe(z, S, {
-          onDrag: () => (glowOn = null), from: cen, to, draw: (t) => drawFold(src, fd, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: phases.go || "fry them", expectGo: offerGo && n >= count, glowGo: offerGo && ctx.guided && n >= count, minLen: k.minLen || 0.45 });
+          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: phases.go || "fry them", expectGo: offerGo && n >= count, glowGo: offerGo && ctx.guided && n >= count, minLen: k.minLen || 0.45 });
         glowOn = null;
         if (r === "go") {
           quit = true;
           break;
         }
-        // the snap: the next stage, a little pop, a click
+        // the snap: the fold's last picture, a little pop, a click (the first fold has hidden the filling)
         if (f === 0) sheet.blobs.forEach((b) => b.destroy());
-        sheet.setTexture(`sv2-stage-${f + 1}`);
+        if (f === 0) sheet.blobs = [];
+        sheet.setTexture(`sv3-fold-${sw.steps[sw.steps.length - 1]}`);
         fimg.setVisible(false);
         sheet.setVisible(true);
         Cook.sfx.flip();
         setTimeout(() => Cook.sfx.click(), 60);
         const s0 = sheet.scale;
         S.tweens.add({ targets: sheet, scale: s0 * 1.05, duration: 70, yoyo: true, ease: "Quad.easeOut" });
-        z.progress((f + 1) / 3);
+        z.progress((f + 1) / F.swipes.length);
       }
       if (quit) {
         // the spare strip goes back
@@ -578,17 +617,26 @@
       }
       n++;
       z.skill(100, "fold");
-      S.sparkle(sheet.x, sheet.y);
-      Cook.sfx.right();
-      pop(z, S, Cook.display("ph-samosa"), sheet.x, sheet.y - z.L(200), { speakId: "ph-samosa", ms: 1100 });
-      // onto the plate: the plate shows how many (never a count to aim for)
-      await Cook.wait(160);
       S.tweens.killTweensOf(sheet);
       sheet.setScale(z.L(STAGE_K));
-      const spot = plateSpot(onPlate.length, PLATE.x, PLATE.y, 0.8);
-      await S.fly(sheet, z.X(spot.x), z.Y(spot.y), { scale: sheet.scale * 0.36, duration: 420, arc: z.L(90) });
-      sheet.setAngle(spot.a);
+      // the finished samosa's own middle (fold-6 sits at the strip's right end): it flies by that
+      const dn = F.done;
+      sheet.setPosition(sheet.x + (dn.x - 0.5) * SW * z.k, sheet.y + (dn.y - 0.5) * SH * z.k).setOrigin(dn.x, dn.y);
+      S.sparkle(sheet.x, sheet.y);
+      Cook.sfx.right();
+      pop(z, S, Cook.display("ph-samosa"), sheet.x, sheet.y - z.L(170), { speakId: "ph-samosa", ms: 1100 });
+      // onto the plate's flat middle (S10): the plate shows how many (never a count to aim for); the ones
+      // already there shuffle up to make room
+      await Cook.wait(160);
       onPlate.push(sheet);
+      const spots = plateSpots(onPlate.length, PLATE.x, PLATE.y, plate.flatHalf, 0.75);
+      const moves = onPlate.map((o, i) => {
+        const sp = spots[i];
+        const sc = z.L(sp.w) / dn.w;
+        if (o === sheet) return S.fly(o, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: 420, arc: z.L(90) }).then(() => o.setAngle(sp.a));
+        return new Promise((r) => S.tweens.add({ targets: o, x: z.X(sp.x), y: z.Y(sp.y), scale: sc, angle: sp.a, duration: 300, onComplete: r }));
+      });
+      await Promise.all(moves);
       if (n >= most) break;
     }
     stopGlowTick();
@@ -598,13 +646,6 @@
     z.expect({ kind: "wait" });
     await Cook.wait(250);
     return { n, got, fillWrong, order };
-  }
-
-  /** Where the i-th samosa sits on a plate (design px, around cx, cy; k = spread). */
-  function plateSpot(i, cx, cy, k = 1) {
-    const S3 = [[-66, -12, -8], [66, -12, 8], [0, 58, 0], [-74, 70, -14], [74, 70, 14], [0, -82, 4]];
-    const s = S3[i % S3.length];
-    return { x: cx + s[0] * k, y: cy + s[1] * k, a: s[2] };
   }
 
   /**
@@ -682,29 +723,32 @@
     });
   }
 
-  /* ---------- 3: fry in the karahi on the kit hob (one burner), lift onto the paper-lined plate ---------- */
+  /* ---------- 3: fry in the karahi on the wide hob, lift onto the paper-lined plate ---------- */
   async function fry(z, { n, level }) {
     const z0 = z;
     z = Cook.liftZone(z0);
     const S = z.S;
-    const ctx = z.ctx;
     const Kit = Cook.Kit;
     const k = Mech.knobs("fry", { level });
     const [lo, hi] = k.band || [0.62, 0.84];
     backdrop(z0, S);
-    // the hob (one burner, one karahi) and the paper-lined plate, centred as one group above the shelf
-    // band (the chai/maani grid); the folded samosas wait on thalis on the band
-    const hob = Kit.hob(S, { n: 1, k: z.L(FRY.hobK), cx: z.X(FRY.bx - FRY.hobDx), bottom: z.Y(SHELF_TOP - 30) });
-    const burner = Kit.burner(S, hob, 0, { flameR: z.L(FRY.r * 0.97) });
+    // S19 / Q9: the wide hob (one big landscape burner) and the karahi 1.5x its old size, the plate to its
+    // right on the burner's line; the folded samosas wait on thalis on the band
+    const hob = Kit.hob(S, { wide: true, k: z.L(FRY.hobK), cx: z.X(FRY.bx), bottom: z.Y(SHELF_TOP - 16) });
+    const at = hob.burners[0];
     const bodyR = z.L(FRY.r);
-    Kit.place(S, "karahi", hob.burners[0], bodyR);
-    const oilR = bodyR * Kit.VESSELS.karahi.oil;
-    const ring = Kit.heatRing(S, { width: z.L(12) });
-    const PY = (hob.burners[0].y - z.Y(0)) / z.k; // the plate sits on the burner's line (design px)
-    const paper = S.track(S.add.image(z.X(FRY.px), z.Y(PY), "sv2-paper").setDepth(D.item - 2));
-    paper.setScale(z.L(FRY.pd) / 720);
-    paper.shadow = S.contactShadow(paper);
-    const FS = z.L(128) / META.fry.w; // a samosa's scale (fry canvases)
+    // the flames peek out past the karahi's body (flame-high's ring: 1.2 x flameR)
+    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.9 });
+    // the karahi, placed by its measured round body (never the handle-inclusive box)
+    const KM = META.karahi;
+    const karahi = S.track(S.add.image(at.x, at.y, "sv3-karahi").setOrigin(KM.cx, KM.cy).setDepth(D.item));
+    karahi.setScale(bodyR / (KM.r * KM.w));
+    karahi.shadow = S.contactShadow(karahi, { centerX: at.x, centerY: at.y + bodyR * 0.08, width: bodyR * 2.15, height: bodyR * 2.15 });
+    const oilR = bodyR * KM.oil;
+    const PY = (at.y - z.Y(0)) / z.k; // the plate sits on the burner's line (design px)
+    const plate = plateAt(z, S, FRY.px, PY, FRY.pd);
+    const OL = OIL(n);
+    const FS = z.L(OL.size) / META.fry.w; // a samosa's scale in the oil (fry canvases)
     const raw = [];
     const trays = [];
     for (let i = 0; i < n; i++) {
@@ -713,16 +757,17 @@
       t.setScale(z.L(FRY.trayD) / t.width);
       t.shadow = S.contactShadow(t);
       trays.push(t);
-      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(FS * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
-      im.baseScale = FS * 0.85;
+      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(z.L(128) / META.fry.w * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
+      im.baseScale = im.scale;
       im.handAction = false;
       raw.push(im);
     }
 
-    // 1. the knob: the oil heats (the ring fills to its "now" band)
-    let heat = 0;
-    const cx = hob.burners[0].x;
-    const cy = hob.burners[0].y;
+    // 1. the knob: the flames come up and STAY up while it's on (S21: "low" drew its smaller ring wholly
+    // under the karahi, so the fire vanished once the oil was hot). S16 / Q9: no heating ring: the oil is
+    // hot, and the sizzle says it's ready
+    const cx = at.x;
+    const cy = at.y;
     await new Promise((resolve) => {
       burner.knobHit.handAction = false;
       if (z.guided) S.glow(burner.knobHit, true);
@@ -740,29 +785,16 @@
     });
     S.tweens.killTweensOf(burner.knob);
     burner.knob.setScale(1);
-    z.expect({ kind: "wait" });
-    const hotLo = 0.55;
-    const hotHi = 0.8;
-    await new Promise((r) => {
-      const hdt = clock();
-      const stop = S.addTick(() => {
-        heat = Math.min(0.68, heat + (hdt() / 1000) * 0.3 * (Cook.speed || 1));
-        ring.draw(cx, cy, bodyR + z.L(18), heat, hotLo, hotHi);
-        if (heat >= 0.68) {
-          stop();
-          r();
-        }
-      });
-    });
-    burner.set("low");
-    S.tweens.addCounter({ from: 1, to: 0, duration: 400, onUpdate: (t) => ring.g.setAlpha(t.getValue()), onComplete: () => ring.clear() });
+    const sizzle = Cook.sfx.sizzleLoop();
+    S.loops.push(sizzle);
     // shimmer on the oil: it's hot
-    const shimmer = S.track(S.add.ellipse(cx, cy, oilR * 1.6, oilR * 1.6, 0xfff3c0, 0).setDepth(D.item + 0.05));
+    const shimmer = S.track(S.add.ellipse(cx, cy, oilR * 1.7, oilR * 1.7, 0xfff3c0, 0).setDepth(D.item + 0.05));
     S.tweens.add({ targets: shimmer, alpha: 0.12, duration: 700, yoyo: true, repeat: -1 });
+    await Cook.wait(350);
 
     // 2. drop them in (any order, one tap each), lift each when golden
     // places in the oil: round its middle, far enough apart that the rings don't cross
-    const SPOTS = [-90, 30, 150, -30, 90, 210].map((d) => [0.54 * Math.cos((d * Math.PI) / 180), 0.54 * Math.sin((d * Math.PI) / 180)]);
+    const SPOTS = OL.at.map((d) => [OL.r * Math.cos((d * Math.PI) / 180), OL.r * Math.sin((d * Math.PI) / 180)]);
     const frying = [];
     const lifted = [];
     let bad = null;
@@ -788,12 +820,12 @@
         if (f.out) return;
         f.level += f.rate * s;
         colour(f);
-        f.ring.draw(f.a.x, f.y0 + z.L(4), z.L(54), Math.min(1.25, f.level), lo, hi);
+        f.ring.draw(f.a.x, f.y0 + z.L(4), z.L(OL.size * 0.4), Math.min(1.25, f.level), lo, hi);
         // a gentle bob in the oil, and bubbles
         f.a.y = f.b.y = f.y0 + Math.sin(performance.now() / 260 + f.ph) * z.L(2);
         if (Math.random() < 0.08) {
-          const bx = f.a.x + (Math.random() - 0.5) * z.L(110);
-          const by = f.a.y + (Math.random() - 0.5) * z.L(90);
+          const bx = f.a.x + (Math.random() - 0.5) * z.L(130);
+          const by = f.a.y + (Math.random() - 0.5) * z.L(100);
           const bub = S.track(S.add.circle(bx, by, z.L(3 + Math.random() * 4), 0xfffbe6, 0.7).setDepth(D.item + 0.9));
           S.tweens.add({ targets: bub, scale: 1.6, alpha: 0, duration: 420, onComplete: () => bub.destroy() });
         }
@@ -801,9 +833,21 @@
       const cur = frying.filter((f) => !f.out).sort((a, b) => b.level - a.level)[0];
       if (cur) z.gauge({ level: cur.level, lo, hi });
     });
-    const sizzle = Cook.sfx.sizzleLoop();
-    S.loops.push(sizzle);
-    const spoonImg = S.track(S.add.image(z.X(1060), z.Y(170), "sv2-spoon").setDepth(D.fx).setScale(z.L(210) / 341).setAngle(-30).setAlpha(0));
+    // S20: the jharo slides in UNDER the samosa (below it, above the oil), then the samosa rides on it
+    const JM = META.jharo;
+    const jharo = S.track(S.add.image(0, 0, "sv3-jharo").setOrigin(JM.bx, JM.by).setDepth(D.item + 0.06).setAlpha(0));
+    jharo.setScale((z.L(OL.size) * 0.6) / (JM.br * JM.w));
+    jharo.handAction = false;
+    let scooping = Promise.resolve();
+    // the plate's flat middle: the lifted ones shuffle up to make room (S10)
+    const settle = (fast = false) =>
+      Promise.all(
+        plateSpots(lifted.length, FRY.px, PY, plate.flatHalf, 0.84).map((sp, i) => {
+          const l = lifted[i];
+          const sc = z.L(sp.w) / 370;
+          return new Promise((r) => S.tweens.add({ targets: [l.im, l.b], x: z.X(sp.x), y: z.Y(sp.y), scale: sc, angle: sp.a, duration: fast ? 1 : 280, onComplete: r }));
+        }),
+      );
     await new Promise((resolveAll) => {
       const post = () => {
         const waiting = raw.filter((r) => !r.gone);
@@ -815,7 +859,7 @@
         else z.expect({ kind: "wait" });
       };
       raw.forEach((im) => {
-        S.tweens.add({ targets: im, scale: FS * 0.85 * 1.06, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+        S.tweens.add({ targets: im, scale: im.baseScale * 1.06, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
         S.tappable(im, async () => {
           if (im.gone) return;
           im.gone = true;
@@ -840,23 +884,40 @@
             f.out = true;
             f.ring.destroy();
             S.untap(im);
-            // the slotted spoon (no hand) scoops it out onto the paper
+            S.untap(b);
             const L = f.level;
             const verdict = L < lo ? "light" : L > (k.burnAt || 1.15) ? "dark" : "golden";
             if (verdict !== "golden") bad = bad || (verdict === "light" ? "lifted a samosa before it was golden" : "a samosa went too dark");
             z.skill(verdict === "golden" ? 100 : verdict === "light" ? 55 : k.burntScore || 40, "fry");
-            spoonImg.setPosition(im.x + z.L(40), im.y - z.L(60)).setAlpha(1);
-            S.tweens.add({ targets: spoonImg, x: im.x + z.L(10), y: im.y + z.L(10), duration: 160 });
-            await Cook.wait(170);
-            const spot = plateSpot(lifted.length, FRY.px, PY, 0.95);
+            // the next thing to do moves on at once (it stopped frying the moment it was tapped)
+            post();
+            // one jharo: a second lift waits for the first scoop to finish
+            const prev = scooping;
+            let done;
+            scooping = new Promise((r) => (done = r));
+            await prev;
+            // it stops frying where it is (the bob stops), the jharo slides in under it
+            const sx0 = im.x;
+            const sy0 = f.y0;
+            im.y = b.y = sy0;
+            // (turned so its handle hangs down over the band, never off the view's right edge by the plate)
+            jharo.setPosition(sx0 + z.L(60), sy0 + z.L(210)).setAngle(30).setAlpha(0);
+            await new Promise((r) => S.tweens.add({ targets: jharo, x: sx0, y: sy0 + z.L(6), alpha: 1, duration: 180, ease: "Quad.easeOut", onComplete: r }));
             Cook.sfx.pop();
-            const moves = [im, b].map((o) => S.fly(o, z.X(spot.x), z.Y(spot.y), { scale: FS, duration: 460, arc: z.L(100) }));
-            S.tweens.add({ targets: spoonImg, x: z.X(spot.x) + z.L(40), y: z.Y(spot.y) - z.L(40), duration: 460, onComplete: () => S.tweens.add({ targets: spoonImg, alpha: 0, duration: 200 }) });
-            await Promise.all(moves);
-            im.setAngle(spot.a);
-            b.setAngle(spot.a);
+            // onto the plate: the samosa rides on the jharo's bowl
             lifted.push({ im, b, verdict });
+            const sp = plateSpots(lifted.length, FRY.px, PY, plate.flatHalf, 0.84)[lifted.length - 1];
+            const sc = z.L(sp.w) / 370;
+            const dur = 440;
+            const arc = z.L(110);
+            await Promise.all([S.fly(im, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(b, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(jharo, z.X(sp.x), z.Y(sp.y) + z.L(6), { duration: dur, arc })]);
+            im.setAngle(sp.a);
+            b.setAngle(sp.a);
+            // it tips the samosa off and goes back down to the oil's side, out of the way
+            S.tweens.add({ targets: jharo, x: jharo.x + z.L(40), y: jharo.y + z.L(170), alpha: 0, duration: 260, ease: "Quad.easeIn" });
+            await settle();
             if (verdict === "golden") S.sparkle(im.x, im.y);
+            done();
             post();
           };
           S.tappable(im, lift);
@@ -875,15 +936,15 @@
         if (raw.every((r) => r.gone) && frying.every((f) => f.out)) again();
       });
     });
+    await scooping;
     tick();
     z.gauge(null);
     z.expect({ kind: "wait" });
     burner.set("off");
-    ring.clear();
     shimmer.destroy();
     if (sizzle && sizzle.stop) sizzle.stop();
     await Cook.wait(300);
-    return { lifted: lifted.map((l) => l.verdict), bad, plate: { img: paper, items: lifted.flatMap((l) => [l.im, l.b]) } };
+    return { lifted: lifted.map((l) => l.verdict), bad, plate: { img: plate, items: lifted.flatMap((l) => [l.im, l.b]) } };
   }
 
   /* ---------- serve and taste (§14a) ---------- */
@@ -892,8 +953,9 @@
     const ctx = z.ctx;
     z.expect({ kind: "wait" });
     // the review (X10 / Q1): their big round face over the plate, no body, no pretend eating
+    // (over the plate itself, a little above its middle; Kit.review keeps it inside the view)
     const pr = (plate.img.displayWidth || z.L(FRY.pd)) / 2;
-    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: plate.img.x, y: plate.img.y - pr - z.L(52), size: z.L(230), k: z.L(1) });
+    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: plate.img.x, y: plate.img.y - pr * 0.18, size: z.L(250), k: z.L(1) });
     if (ok || last) {
       await Cook.wait(300);
       await look.close();
