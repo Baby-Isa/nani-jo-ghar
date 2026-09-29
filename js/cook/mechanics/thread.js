@@ -4,6 +4,15 @@
  * piece goes on from the tip and slides down. When it's full it's done.
  * Tap the skewer to slide the last piece back off.
  *
+ * Sekelo v2 (docs/design/cook-design-system-v1.md §15): the chai v2 grid. The
+ * prep bowls stand front-on on the shelf band (identical slots, meat | veg,
+ * a `🔊 word` chip under each: tap the bowl = thread it, tap the chip = hear
+ * it; speaker-only at level 3 up); the board with its upright skewer on the
+ * left of the scene, the skewer rack on the right. A piece's word pops by the
+ * skewer as it goes on (the family clip plays). A finished skewer moves to
+ * the rack, then the next starts; no picture tally (the rack shows them).
+ * The meat piece is ph-mishkaki (mishkaki = the meat cubes).
+ *
  * Kutchi: which kind and how many ("ba lakri gos, hakri lakri boga"), and for a
  * mixed skewer the pieces in the order they said ("gos, ne poi tameto…").
  * Every piece bowl is always there (plus decoys at later levels), in a new
@@ -37,7 +46,7 @@
   Mech.define("thread", {
     station: "thread",
     view: "marble",
-    footprint: { x: 380, y: 40, w: 1100, h: 840 },
+    footprint: { x: 0, y: 0, w: 1600, h: 900 },
     async run(z, params, k) {
       const S = z.S;
       const ctx = z.ctx;
@@ -49,37 +58,43 @@
       const pats = SK.pats(pattern);
       const madePat = pats.map(() => 0);
       const line = params.line || {};
-      const lay = Object.assign({ bowlsX: 540, boardX: 800, rowX: 1010 }, params.layout || {});
       const handoff = params.handoff || null;
-      const full = () => handoff && handoff.max && doneRow.length >= handoff.max;
       const n = k.pieces;
       const ordered = Object.keys(want).filter((w) => want[w] > 0);
       const mixedW = SK.kindWord("mixed");
-      const SKY = 440; // the skewer's centre on the board
+      // Sekelo v2 (§15): the board and its upright skewer on the left of the scene, the rack on the right,
+      // the prep bowls on the shelf band below (the chai v2 grid)
+      const BOARD = { x: 560, y: 346, w: 250, h: 586 };
+      const SKY = 352; // the skewer's centre on the board
+      const SKS = 0.84; // the skewer on the board
+      const RACK = { x: 1080, y: 352, w: 520, s: 0.56 };
+      const slots = (handoff && handoff.max) || 4;
+      const full = () => handoff && handoff.max && doneRow.length >= handoff.max;
 
-      /* the bowls: every skewer piece (and decoys), in a new order each time */
+      /* the bowls: every skewer piece (and decoys), on the shelf, meat | vegetables, in a new order each time */
       const pieceIds = SK.pieceIds();
-      const ids = Cook.shuffle(pieceIds.concat(St.decoys(k.decoyPool || [], pieceIds, k.decoys || 0)));
-      const bowls = {};
-      const y0 = 140;
-      const y1 = 770;
-      ids.forEach((id, i) => {
-        const y = ids.length === 1 ? 450 : y0 + ((y1 - y0) * i) / (ids.length - 1);
-        bowls[id] = S.ingredient(id, z.X(lay.bowlsX), z.Y(y), { w: z.L(150), h: z.L(ids.length > 4 ? 100 : 112), state: "pieces" });
-      });
-      S.track(S.add.image(z.X(lay.boardX), z.Y(430), SK.tex(S, "board")).setScale(z.k).setDepth(D.item - 2));
-      // (Sidebar v2, 28 Sept: the hand under the board is gone; hands are out of the game for now)
+      const ids = pieceIds.concat(St.decoys(k.decoyPool || [], pieceIds, k.decoys || 0));
+      await SK.loadArt(S, ids);
+      SK.band(S, z);
+      const meatIds = ids.filter((id) => SK.cls(id) === "meat");
+      const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
+      const bowls = SK.shelf(S, z, groups, { level: z.level });
+      const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
+      if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
+      else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
+      board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(BOARD.w), height: z.L(BOARD.h) });
+      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, w: RACK.w, slots });
 
       /* the skewer on the board */
       let sk = null;
       let hit = null;
       const fresh = () => {
-        sk = SK.make(S, [], { x: z.X(lay.boardX), y: z.Y(SKY), scale: z.k, n, depth: D.item + 1 });
+        sk = SK.make(S, [], { x: z.X(BOARD.x), y: z.Y(SKY), scale: z.k * SKS, n, depth: D.item + 1 });
         sk.setAlpha(0);
         S.tweens.add({ targets: sk, alpha: 1, duration: 250 });
         sk.target = null;
       };
-      hit = S.track(S.add.zone(z.X(lay.boardX), z.Y(SKY - 60), z.L(150), z.L(560)).setDepth(D.fx + 3));
+      hit = S.track(S.add.zone(z.X(BOARD.x), z.Y(SKY - 40), z.L(170), z.L(560)).setDepth(D.fx + 3));
       fresh();
 
       const made = {};
@@ -133,9 +148,9 @@
         const exp = plan();
         busy = true;
         const from = bowls[id];
-        const fly = S.track(S.add.image(from.x, from.y, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k).setDepth(D.item + 3));
+        const fly = S.track(S.add.image(from.x, from.y - from.displayHeight * 0.7, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.pop();
-        await S.fly(fly, z.X(lay.boardX), z.Y(SKY - 250), { duration: 300, arc: z.L(90) });
+        await S.fly(fly, z.X(BOARD.x), z.Y(SKY - 250 * SKS), { duration: 300, arc: z.L(90) });
         if (!ordered.some((w) => SK.fits(w, sk.ids.concat(id), pattern))) {
           // it fits no skewer they asked for: it bounces back to its bowl
           const e = exp && exp.id ? exp.id : null;
@@ -145,7 +160,7 @@
             // level 1: it bounces back to its bowl (the one gentle correction)
             S.wiggle(sk);
             z.oops();
-            await S.fly(fly, from.x, from.y, { duration: 280, arc: z.L(60) });
+            await S.fly(fly, from.x, from.y - from.displayHeight * 0.7, { duration: 280, arc: z.L(60) });
             fly.destroy();
             busy = false;
             return;
@@ -156,6 +171,8 @@
         const img = SK.addPiece(S, sk, id, { at: -250 });
         const slot = SK.slotY(sk.ids.length - 1, n);
         await Cook.tween(S, { targets: [img, img.marks], y: slot, duration: 180 + (slot + 250) * 0.6, ease: "Quad.easeIn" });
+        // the word pops by the skewer as the piece settles, and the family clip plays
+        SK.pop(S, z, id, z.X(BOARD.x - BOARD.w / 2 - 130), z.Y(SKY + slot * SKS));
         if (exp && exp.w) sk.target = exp.w;
         if (sk.ids.length >= n) await finish();
         busy = false;
@@ -171,9 +188,9 @@
         const wx = sk.x + img.x * sk.scaleX;
         const wy = sk.y + img.y * sk.scaleY;
         SK.popPiece(sk);
-        const back = S.track(S.add.image(wx, wy, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k).setDepth(D.item + 3));
+        const back = S.track(S.add.image(wx, wy, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.soft();
-        await S.fly(back, bowls[id].x, bowls[id].y, { duration: 280, arc: z.L(60) });
+        await S.fly(back, bowls[id].x, bowls[id].y - bowls[id].displayHeight * 0.7, { duration: 280, arc: z.L(60) });
         back.destroy();
         busy = false;
       });
@@ -183,12 +200,10 @@
         const c = SK.classify(sk.ids, pattern);
         if (c.ok) made[c.kind] = (made[c.kind] || 0) + 1;
         else odd++;
-        // the picture tally: the skewers you've made, by kind (never how many they asked for)
-        const tk = c.kind || "odd";
-        UI.countUp(tk, { icon: SK.icon(tk, sk.ids), speak: false });
+        // (§15: no picture tally; the rack shows the skewers made)
         // that skewer's mini card on the order ticks (28 Sept); a wrong one ticks nothing (no verdicts mid-round)
         if (c.ok && ctx.tickCard) ctx.tickCard(c.kind);
-        S.sparkle(z.X(lay.boardX), z.Y(SKY - 60));
+        S.sparkle(z.X(BOARD.x), z.Y(SKY - 60));
         Cook.sfx.right();
         // a mixed one ticks its own mix's pieces (the sequence's positions: two different mixes are said one after the other)
         if (c.ok && c.kind === mixedW && !madePat[c.pat] && ctx.tickItem) {
@@ -208,9 +223,11 @@
           if (stopped) return;
           z.emit({ kind: "skewer", pieces: sk.ids.slice(), sprite: sk });
         } else {
+          // it moves to the rack (upright, bridging the rails), then the next one starts on the board
           const j = doneRow.length;
           doneRow.push(sk);
-          S.tweens.add({ targets: sk, x: z.X(lay.rowX + Math.min(j, 5) * 80), y: z.Y(SKY), scale: 0.55 * z.k, duration: 380, ease: "Sine.easeInOut" });
+          sk.setDepth(D.item + 0.5 + j * 0.01);
+          await Cook.tween(S, { targets: sk, x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
           if (j === 0) doneBtn();
         }
         fresh();
@@ -225,7 +242,10 @@
       let doneShown = false;
       const doneBtn = () => {
         doneShown = true;
-        if (handoff) UI.go(handoff.label, { glow: false }).then(() => resolveStop());
+        if (handoff) {
+          UI.go(handoff.label, { glow: false }).then(() => resolveStop());
+          SK.goIcon();
+        }
         else UI.done({ glow: false }).then(() => resolveStop());
       };
       const doneSel = handoff ? "#go-btn" : "#done-btn";
@@ -284,7 +304,7 @@
         // one job at a time: the skewers go on to the barbecue's rack; the plate grades the count
         UI.hideGo();
         await Cook.wait(200);
-        return { items: doneRow.map((s) => ({ pieces: s.ids.slice() })) };
+        return { items: doneRow.map((s) => ({ pieces: s.ids.slice() })), shelf: groups };
       }
       if (!z.out) {
         UI.hideDone();

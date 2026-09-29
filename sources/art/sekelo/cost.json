@@ -1,0 +1,21 @@
+{
+ "calls": [
+  {
+   "name": "bowls",
+   "usage": {
+    "input_tokens": 931,
+    "input_tokens_details": {
+     "image_tokens": 582,
+     "text_tokens": 349
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2499
+   },
+   "usd": 0.0703
+  }
+ ]
+}

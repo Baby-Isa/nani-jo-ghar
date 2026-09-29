@@ -1,5 +1,5 @@
 /*
- * Combined station: the Mishkaki grill.
+ * Combined station: Sekelo (formerly the Mishkaki grill; design system §15, Sekelo v2).
  *
  * Wave 6 (docs/UX-PRINCIPLES.md 5 and 6): one job at a time. First thread
  * every skewer (the thread mechanic, the whole screen): tap the bowls, each
@@ -40,12 +40,16 @@
     ],
     async run(host, p) {
       // two different mixes (design system 12, level 4): both patterns, one skewer of each
-      const order = { skewers: p.skewers || {}, pattern: p.pattern2 ? [p.pattern || [], p.pattern2] : p.pattern || [] };
+      const order = { skewers: p.skewers || {}, pattern: p.pattern2 ? [p.pattern || [], p.pattern2] : p.pattern || [], who: p.who };
       return host.knobs.juggle ? juggle(host, order) : oneJobAtATime(host, order);
     },
   });
 
-  /** Thread them all, "Go to the barbecue", grill them: each job on the whole screen. */
+  /**
+   * Sekelo v2 (§15): thread them all, "to the grill", grill them: each job on the whole screen. Then serve
+   * and taste (§14a): right, they praise it; wrong, the plate comes back empty and the child makes it again
+   * (threading first), the first try already logged for the end review.
+   */
   async function oneJobAtATime(host, order) {
     const S = host.S;
     const ctx = host.ctx;
@@ -54,25 +58,31 @@
     const lv = (id) => ((host.knobs.zones || {})[id] || {}).level || host.level;
     const phases = (Cook.data.stations["mishkaki-grill"] || {}).phases || {};
     const rack = Mech.knobs("grill", { level: lv("grill") }).rack;
+    const who = order.who || (ctx.order && ctx.order.who) || "nana";
+    // Sekelo v2's art loads while the order card is up (a slow phone mustn't meet an empty scene)
+    const SK = Cook.Skewer;
+    const kThread = Mech.knobs("thread", { level: lv("thread") });
+    await SK.loadArt(S, SK.pieceIds().concat(kThread.decoyPool || []));
+    for (let attempt = 0; ; attempt++) {
+      // 1. thread every skewer
+      await St.begin(S, ctx, "thread", "marble");
+      if (phases.thread && !attempt) Cook.UI.gist(phases.thread);
+      if (ctx.nextStep) ctx.nextStep("Skewer");
+      const tz = Mech.zone(S, ctx, { id: "thread", level: lv("thread") });
+      const made = await Mech.run("thread", tz, Object.assign({ handoff: { label: phases.go || "to the grill", max: rack } }, order));
+      tz.close();
+      St.end();
 
-    // 1. thread every skewer
-    await St.begin(S, ctx, "thread", "marble");
-    if (phases.thread) Cook.UI.gist(phases.thread);
-    if (ctx.nextStep) ctx.nextStep("Skewer");
-    const tz = Mech.zone(S, ctx, { id: "thread", level: lv("thread") });
-    const made = await Mech.run("thread", tz, Object.assign({ handoff: { label: phases.go || "Go to the barbecue", max: rack } }, order));
-    tz.close();
-    St.end();
-
-    // 2. the barbecue: the skewers wait on the rack
-    await St.begin(S, ctx, "grill", "marble");
-    if (phases.grill) Cook.UI.gist(phases.grill);
-    if (ctx.nextStep) ctx.nextStep("Grill");
-    const gz = Mech.zone(S, ctx, { id: "grill", level: lv("grill") });
-    const r = await Mech.run("grill", gz, Object.assign({ rackItems: (made && made.items) || [] }, order));
-    gz.close();
-    St.end();
-    return r;
+      // 2. the grill: the skewers wait on the rack; then the plate goes to them to taste
+      await St.begin(S, ctx, "grill", "marble");
+      if (phases.grill && !attempt) Cook.UI.gist(phases.grill);
+      if (ctx.nextStep) ctx.nextStep("Grill");
+      const gz = Mech.zone(S, ctx, { id: "grill", level: lv("grill") });
+      const r = await Mech.run("grill", gz, Object.assign({ rackItems: (made && made.items) || [], shelf: made && made.shelf, taste: { who }, retry: attempt > 0, lastTry: attempt >= 2 }, order));
+      gz.close();
+      St.end();
+      if (!r || !r.redo) return r;
+    }
   }
 
   /** The optional hard level: thread on the left while the grill on the right cooks. */
@@ -95,13 +105,15 @@
   }
 
   Mech.lab("mishkaki-grill", {
-    name: "Mishkaki grill",
+    name: "Sekelo",
     verb: "Thread, then the barbecue (level 4: both at once)",
     async run(L) {
       const R = Cook.Recipes;
-      const d = R.mishkaki.make(Cook.pick(["nana", "ma", "cousin"]), { level: L.level });
+      // the lab's card is always Nana's: it's Nana who tastes it
+      const who = (L.ctx.order && L.ctx.order.who) || "nana";
+      const d = R.mishkaki.make(who, { level: L.level });
       L.card(d, R.mishkaki.steps(d));
-      await L.station("mishkaki-grill", { skewers: d.skewers, pattern: d.pattern, pattern2: d.pattern2 });
+      await L.station("mishkaki-grill", { skewers: d.skewers, pattern: d.pattern, pattern2: d.pattern2, who });
     },
   });
 })(window);

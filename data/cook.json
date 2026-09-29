@@ -942,9 +942,9 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-meat",
+      "ph-mishkaki",
       "veg-02",
-      "ph-meat",
+      "ph-mishkaki",
       "veg-03"
      ]
     }
@@ -974,10 +974,10 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-meat",
+      "ph-mishkaki",
       "veg-02",
       "veg-03",
-      "ph-meat"
+      "ph-mishkaki"
      ]
     }
    },
@@ -1000,9 +1000,9 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-meat",
+      "ph-mishkaki",
       "veg-03",
-      "ph-meat",
+      "ph-mishkaki",
       "veg-02"
      ]
     }
@@ -1935,7 +1935,7 @@
   },
   "mishkaki": {
    "name": "ph-mishkaki",
-   "english": "Mishkaki",
+   "english": "Sekelo",
    "_pepper": "Sidebar v2 (Zafar, 28 Sept evening): no English in the item pills. Green pepper (ph-pepper) has no Kutchi word yet (Mum 26 Sept, B34), so it's out of the skewers (lists and tastes) until it's recorded; its art stays filed",
    "price": 6,
    "stations": [
@@ -1945,7 +1945,7 @@
    "_about": "The order says how many skewers of each kind (a tally: \"ba lakri gos, hakri lakri boga\": lakri, the skewer, is the tally's `unit`, a she-word, so one is hakri), and when there's a mixed one its pieces in order (Pela gos, ne poi …): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/UX-PRINCIPLES.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
    "lists": {
     "skewer": [
-     "ph-meat",
+     "ph-mishkaki",
      "veg-02",
      "veg-03"
     ],
@@ -1956,40 +1956,40 @@
     "_mixes": "The mixed skewers (28 Sept, design system 12): four pieces, as a skewer holds (data.mechanics.thread.pieces), meat and both vegetables, never the same piece twice running. The old generator drew three pieces (meat and two vegetables once green pepper was out), which no four-piece skewer could match",
     "mixes": [
      [
-      "ph-meat",
+      "ph-mishkaki",
       "veg-02",
-      "ph-meat",
+      "ph-mishkaki",
       "veg-03"
      ],
      [
-      "ph-meat",
+      "ph-mishkaki",
       "veg-03",
-      "ph-meat",
+      "ph-mishkaki",
       "veg-02"
      ],
      [
-      "ph-meat",
+      "ph-mishkaki",
       "veg-02",
       "veg-03",
-      "ph-meat"
+      "ph-mishkaki"
      ],
      [
-      "ph-meat",
+      "ph-mishkaki",
       "veg-03",
       "veg-02",
-      "ph-meat"
+      "ph-mishkaki"
      ],
      [
       "veg-02",
-      "ph-meat",
+      "ph-mishkaki",
       "veg-03",
-      "ph-meat"
+      "ph-mishkaki"
      ],
      [
       "veg-03",
-      "ph-meat",
+      "ph-mishkaki",
       "veg-02",
-      "ph-meat"
+      "ph-mishkaki"
      ]
     ]
    },
@@ -2862,6 +2862,7 @@
     "veg-14": { "bowl": "veg-aadu-grated-bowl-t", "whole": "veg-aadu-whole-t" },
     "fru-02": { "bowl": "veg-limu-whole-t", "whole": "veg-limu-whole-t" },
     "ph-meat": { "raw": "mishkaki-meat-raw-t", "grilled": "mishkaki-meat-grilled-t", "charred": "mishkaki-meat-charred-t" },
+    "ph-mishkaki": { "raw": "mishkaki-meat-raw-t", "grilled": "mishkaki-meat-grilled-t", "charred": "mishkaki-meat-charred-t" },
     "ph-pepper": { "whole": "veg-pepper-whole-t", "raw": "mishkaki-pepper-raw-t", "grilled": "mishkaki-pepper-grilled-t", "charred": "mishkaki-pepper-charred-t" },
     "ph-samosa": { "folded": "samosa-folded-t", "fried": "samosa-fried-golden-t" },
     "cook-maani": {
@@ -3031,9 +3032,9 @@
     "tawa": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
     "stir": ["ladle.tool"],
     "maani-line": ["spatula.tool", "tawa.top"],
-    "thread": ["skewer.tool", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
-    "grill": ["skewer.tool", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-meat.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-meat.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
-    "mishkaki-grill": ["bg:marble", "skewer.tool", "katori.top", "ph-meat.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
+    "thread": ["skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
+    "grill": ["skewer.tool", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-mishkaki.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-mishkaki.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
+    "mishkaki-grill": ["bg:marble", "skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
    }
   }
  },
