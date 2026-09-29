@@ -11,7 +11,7 @@
 ## The path (Zafar, 29 Sept)
 | # | Milestone | % | Why now / what it needs | When |
 |---|---|---|---|---|
-| 1 | **Lock Cook** | 80 | Zafar's play-test feedback on the six v2 stations, then one follow-up per station; the cream band fill (running) | This week |
+| 1 | **Lock Cook** | 80 | Zafar's play-test feedback on the six v2 stations, then one follow-up per station; the cream band fill (done 29 Sept) | This week |
 | 2 | **The clinic** (the standalone *Volunteering at the clinic* arc's mode) | 30 | **The clinic's doctor (Hannah's granddad) visits in about 10 days (~9 Oct):** record his voice (Round 4 Section G, his instructions G108+) and show him the game. Zafar plays it → audit → feedback → build to the design system | Now → ~8 Oct |
 | 3 | **Arc 1's other modes:** Put it there (set the table, pack the sweet box) and Hide and seek (find the sweets) | 25 | Built from Tidy up's `place`/`pack` engine and Find it's search; each rebuilt to the design system with the shared pieces | After the clinic |
 | 4 | **Arc 1's story layer:** beats, the hub changing, the candles finale, the Story by the Fire, the first launch re-pointed at the Birthday | 20 | Needs 1–3's day-log events. **Claude's suggestion:** give every mode its one-line day-log hook as it's built (cheap), and build the book and beats straight after 3, *before* the trip, because Arc 1 end to end is the release candidate | After 3 |
@@ -46,12 +46,12 @@
 **Shared Cook pieces**
 | Piece | State |
 |---|---|
-| Order card (person → items → parts; closed card + paid peek; don't rows; Nani's card via `UI.mission.addCard`) | ✅ `js/shared/order-card.js`, shared-api §14; 112/112 tests |
+| Order card (person → items → parts; closed card + paid peek; don't rows; Nani's card via `UI.mission.addCard`) | ✅ `js/shared/order-card.js`, shared-api §14; 112/112 tests. 29 Sept: a "don't" row stays neutral until the dish is finished; a card waits for its head (no ✓ while the samosas fry or the daar is stirred); a folded headline shrinks then wraps, never "…" |
 | Sidebar v3 (sage Nani box, one card per person, flat material pills) | ✅ |
 | End pop-up (badges → words → actions) | ✅ |
 | Kitchen kit (hob, burners, knobs, heat ring, chips, badges) | ✅ `Cook.Kit`; karahi added by the samosa polish |
 | Serve and taste (§14a) | ✅ in sekelo, chaat, samosa, daar |
-| The cream band above the counter | 🔨 **Zafar (29 Sept): fill it** with the counter top, and game pieces where they help. One build session owns it (queue item 8), with the order card's two open fixes. |
+| The cream band above the counter | ✅ **Filled (29 Sept, queue item 8).** Phaser `EXPAND`: the canvas fills `#stage` at any shape; the 1600×900 design box sits at the stage's bottom (shelf band to the bottom edge), centred across; worktop/backgrounds cover the rest (pantry photo 1:1 with its edges carried on); each station's scene is lifted into the middle of the extra worktop (`Cook.lift`, `Cook.liftZone`). Report `build/reports/stage-fill.md`. |
 
 **Cook overall: about 80%** (design 100, build 95, iterate 75, words 75, voice 15, onboarding 75, story 10). Still to go through before calling it finished: its parked ideas 5, 7, 8, 12, 18, 19 (`GAME-IDEAS-TBC.md`).
 
@@ -139,7 +139,7 @@ The clinic is set at the children's own doctor's clinic (Hannah's granddad's); t
 - English placeholders still to record: Nani's guide lines per station (Round 4 N1–N23), samosa's phase lines and "fry them" button.
 - **To record:** *kari chai* and *mori chai* (Mum, A4 §10; now in the chai station, 29 Sept).
 - **The clinic:** play it through; then Section G of Round 4 is the script to record with the doctor (~9 Oct).
-- ~~The cream band~~: **fill it** (Zafar, 29 Sept morning); build queued.
+- ~~The cream band~~: **fill it** (Zafar, 29 Sept morning); done 29 Sept (queue item 8).
 - ~~Cook's open ideas~~: **decided 29 Sept morning.** #1 and #2 are the sub cards' *dudh na* / *khun na* rows (no *wagar ji*, no *kari/mori chai*), already live; #3, the "don't" row, approved (live). Cook's other open ideas (5, 7, 8, 12, 18, 19) stay TBC.
 - Play through Cook (all six v2 stations) and the clinic.
 
