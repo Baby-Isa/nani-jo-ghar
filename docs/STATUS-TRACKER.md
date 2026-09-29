@@ -32,6 +32,8 @@
 | **Conversations** (greetings, thanks, how-are-you) | module | 25 | Engine + lab live; wire the 9 MVP exchanges into the first launch, Cook and the clinic (plans B4) |
 
 ### 1a. Cook with Nani (stations; v2 = rebuilt to the design system)
+**29 Sept play-test (Zafar, 31-min voice note):** every point, analysis and the plan are in `docs/feedback/cook-playtest-2026-09-29.md` (the X, P, C, M, D, T, S and K items). **Decisions Q1-Q16 are waiting on Zafar**; no build starts until they are answered. Art: `docs/chatgpt-art-prompts-cook-v3.md` (27 prompts, one paste into Claude in Chrome).
+
 | Station | State | Art | Open items | Report |
 |---|---|---|---|---|
 | **Chai v2** | ✅ live | $0.40 | One burner per person (1–4), on the kitchen kit. Nani's line English placeholder (to record). **29 Sept:** pans centred on their burners (the pan's centre was measured with its handle); a cup with no milk / no sugar is sometimes ordered as *Muke kari chai khape.* / *Muke mori chai khape.*, its rows saying *dudh na* / *khun na* (Zafar). *kari* and *mori* to record. | `build/reports/chai-v2.md` |

@@ -12,7 +12,7 @@ You're making 27 images in ChatGPT for a children's game called Nani jo Ghar, th
 
 2. Download the reference images listed under "Reference images" on that page. Open each link and click its "Download raw file" button (the download-arrow icon at the top right of the image).
 
-3. In ChatGPT (chatgpt.com), for each prompt in order: start a new chat, attach the files its "attach" line names (where it says "your H1 image", attach the H1 picture you downloaded earlier in this run), paste the text of its code box exactly as written, and send. When the image arrives, compare it against its "check" line.
+3. In ChatGPT (chatgpt.com), for each prompt in order: start a new chat, attach the files its "attach" line names (where it says "your H1 image" or "your K4 image", attach that picture, which you downloaded earlier in this run), paste the text of its code box exactly as written, and send. When the image arrives, compare it against its "check" line.
    - If it passes, download it straight away with ChatGPT's own download button (never a screenshot), before moving on.
    - If it fails, reply once saying which check it failed and ask for a corrected image. If that fails too, start a fresh chat and try once more (at most 2 retries per prompt). Then download the best one and note what's wrong with it.
    - Download only the one image you keep for each prompt, so there are exactly 27 downloads.
