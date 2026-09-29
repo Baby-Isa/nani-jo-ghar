@@ -52,7 +52,7 @@
 
 ### P. The pharmacy (CB4b, straight on)
 - **Why:** "Bring me…" The belt carries things along, and the child taps the ones asked for into the tray.
-- **Belt:** the items ride **the painted belt** (not a code-drawn belt across the top). The tray sits on the counter strip in front, pantry-tray style (outlined dishes).
+- **Belt:** the items ride **the painted belt** (not a code-drawn belt across the top). **No hatches** (CB4c, Zafar): the belt runs off both edges of the screen, and items of any size slide in from one side and out the other. The tray sits on the counter strip in front, pantry-tray style (outlined dishes).
 - **Levels:**
   - L1: 1 item, 6 on the belt.
   - L2: 2–3 items, look-alikes, a colour.

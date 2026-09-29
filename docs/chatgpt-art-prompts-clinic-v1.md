@@ -213,3 +213,5 @@ Style: exactly as the attached images: stylised 3D animated-feature-film look, s
 **attach:** the first CB6 image, your CB2b image, `style-anchor-v1.png`
 **save as:** `sources/art/clinic-v2/cb6b-closeup-bed-v1.png`
 **check:** the same close-up as before · no poster behind · no desk chair, toys softly visible in the left corner · a calm, empty centre · no people, no text.
+
+**CB4c (Zafar, 29 Sept):** CB4b came out right (straight on) but still has the two wooden hatches at the belt's ends. Zafar: "simpler to have the conveyor belt without the hatches either end, so items don't have a size restriction getting in and out." It's an edit in the same chat: remove both hatch boxes; the belt and its rails run straight across and off both edges of the image. The game slides items in from off-screen. Save as `sources/art/clinic-v2/cb4c-pharmacy-belt-v1.png`.
