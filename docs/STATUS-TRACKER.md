@@ -140,7 +140,7 @@ The clinic is set at the children's own doctor's clinic (Hannah's granddad's); t
 - **To record:** *kari chai* and *mori chai* (Mum, A4 §10; now in the chai station, 29 Sept).
 - **The clinic:** play it through; then Section G of Round 4 is the script to record with the doctor (~9 Oct).
 - ~~The cream band~~: **fill it** (Zafar, 29 Sept morning); done 29 Sept (queue item 8).
-- ~~Cook's open ideas~~: **decided 29 Sept morning.** #1 and #2 are the sub cards' *dudh na* / *khun na* rows (no *wagar ji*, no *kari/mori chai*), already live; #3, the "don't" row, approved (live). Cook's other open ideas (5, 7, 8, 12, 18, 19) stay TBC.
+- ~~Cook's open ideas~~: **decided 29 Sept morning.** #1 is the sub cards' *dudh na* / *khun na* rows (no *wagar ji*); #2: cups are sometimes ordered as *kari chai* / *mori chai*, the rows explaining it (live 29 Sept); #3, the "don't" row, approved (live). Cook's other open ideas (5, 7, 8, 12, 18, 19) stay TBC.
 - Play through Cook (all six v2 stations) and the clinic.
 
 1. A8.9 "Who did it?": re-asked 28 Sept (R12); Mum said *kere karein* again, the final n "a half end". Zafar to judge by ear.
