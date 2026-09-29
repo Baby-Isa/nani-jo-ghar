@@ -103,7 +103,7 @@
   .hs-timer{position:absolute;left:22%;right:22%;top:clamp(46px,8vmin,60px);height:12px;border-radius:8px;background:rgba(255,255,255,.7);border:2px solid #d8c6a8;z-index:7;overflow:hidden;pointer-events:none}
   .hs-timer i{position:absolute;left:0;top:0;bottom:0;background:#6bbf8a;transition:width .25s linear}
   .hs-timer.low i{background:#f0a040}
-  .hs-cue{position:absolute;z-index:9;max-width:min(46%,340px);background:#fffbe6;border:3px solid #e0a63a;border-radius:16px;padding:6px 12px;font:700 clamp(13px,2.2vmin,17px)/1.25 system-ui,sans-serif;color:#5b3c12;box-shadow:0 4px 12px rgba(80,50,10,.2);pointer-events:none}
+  .hs-cue{position:absolute;z-index:9;max-width:min(36%,280px);background:#fffbe6;border:3px solid #e0a63a;border-radius:16px;padding:6px 12px;font:700 clamp(13px,2.2vmin,17px)/1.25 system-ui,sans-serif;color:#5b3c12;box-shadow:0 4px 12px rgba(80,50,10,.2);pointer-events:none}
   .hs-cue b{color:#8a3a52}
   .hs-hand{position:absolute;z-index:9;font-size:clamp(30px,6vmin,46px);pointer-events:none;transform:translate(-20%,-10%);animation:hs-hand 1.1s ease-in-out infinite}
   @keyframes hs-hand{50%{transform:translate(-20%,-10%) translateY(10px) scale(.92)}}
@@ -255,6 +255,7 @@
         ctx.on(b, "click", (e) => {
           e.stopPropagation();
           if (!S.ready) return; // the why beat and the card are still being said
+          S.uncue(); // the child is on it: the words step aside
           S.pick(t.id);
           if (onPick) onPick(t.id, b);
         });
@@ -319,7 +320,7 @@
       handEl.style.top = `${cy}px`;
       // the words sit beside the hand when it points at the tool shelf (never over the tools),
       // else above it, or below when it points high; always on screen
-      const w = Math.min(rr.width * 0.46, 340);
+      const w = Math.min(rr.width * 0.36, 280);
       const shelfR = shelf.getBoundingClientRect();
       if (shelfR.width && cx > shelfR.left - rr.left - 10) {
         cueEl.style.right = `${Math.max(8, rr.right - shelfR.left + 14)}px`;
@@ -335,6 +336,8 @@
       }
       if (Voice && !Voice.quiet) Voice.say(HS.ph(cueEl.textContent), { who: "nani", noBubble: true });
     };
+    // the child has started on the close-up: the words step aside so they never sit over the work
+    ctx.on(svg, "pointerdown", () => S.uncue());
     S.markSeen = () => {
       try {
         global.localStorage && global.localStorage.setItem(seenKey, "1");

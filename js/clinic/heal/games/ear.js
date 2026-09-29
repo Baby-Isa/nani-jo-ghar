@@ -63,9 +63,11 @@
 
     // the head from the side, the ear big in the middle, against the wall
     const head = s("g", {}, S.layer);
-    s("ellipse", { cx: EAR.x - 30, cy: EAR.y + 10, rx: 250, ry: 190, fill: "#e2b08a" }, head);
-    s("path", { d: `M${EAR.x - 280} ${EAR.y - 60} Q${EAR.x - 30} ${EAR.y - 260} ${EAR.x + 230} ${EAR.y - 40} Q${EAR.x + 120} ${EAR.y - 110} ${EAR.x - 30} ${EAR.y - 120} Q${EAR.x - 200} ${EAR.y - 120} ${EAR.x - 280} ${EAR.y - 60}Z`, fill: "#3b2415" }, head);
-    s("path", { d: `M${EAR.x - 70} ${EAR.y - 100} C${EAR.x + 60} ${EAR.y - 150} ${EAR.x + 120} ${EAR.y - 20} ${EAR.x + 60} ${EAR.y + 60} C${EAR.x + 30} ${EAR.y + 120} ${EAR.x - 20} ${EAR.y + 140} ${EAR.x - 50} ${EAR.y + 100} C${EAR.x - 110} ${EAR.y + 20} ${EAR.x - 120} ${EAR.y - 70} ${EAR.x - 70} ${EAR.y - 100}Z`, fill: "#eab893", stroke: "#b9845c", "stroke-width": 5 }, head);
+    // the side of the head: skin, the hair above and behind, the jaw below; the ear a "C" with a lobe
+    s("rect", { x: EAR.x - 300, y: EAR.y - 170, width: 560, height: 340, rx: 140, fill: "#e2b08a" }, head);
+    s("path", { d: `M${EAR.x - 300} ${EAR.y - 40} L${EAR.x - 300} ${EAR.y - 110} Q${EAR.x - 290} ${EAR.y - 175} ${EAR.x - 150} ${EAR.y - 175} L${EAR.x + 150} ${EAR.y - 175} Q${EAR.x + 260} ${EAR.y - 175} ${EAR.x + 260} ${EAR.y - 60} L${EAR.x + 260} ${EAR.y + 40} Q${EAR.x + 200} ${EAR.y - 120} ${EAR.x + 60} ${EAR.y - 130} L${EAR.x - 120} ${EAR.y - 130} Q${EAR.x - 230} ${EAR.y - 120} ${EAR.x - 300} ${EAR.y - 40}Z`, fill: "#3b2415" }, head);
+    s("path", { d: `M${EAR.x + 30} ${EAR.y - 125} C${EAR.x + 150} ${EAR.y - 130} ${EAR.x + 160} ${EAR.y + 20} ${EAR.x + 90} ${EAR.y + 70} C${EAR.x + 60} ${EAR.y + 95} ${EAR.x + 70} ${EAR.y + 150} ${EAR.x + 20} ${EAR.y + 150} C${EAR.x - 30} ${EAR.y + 150} ${EAR.x - 40} ${EAR.y + 110} ${EAR.x - 60} ${EAR.y + 80} C${EAR.x - 100} ${EAR.y + 20} ${EAR.x - 90} ${EAR.y - 120} ${EAR.x + 30} ${EAR.y - 125}Z`, fill: "#eab893", stroke: "#b9845c", "stroke-width": 5 }, head);
+    s("path", { d: `M${EAR.x + 60} ${EAR.y - 90} C${EAR.x + 120} ${EAR.y - 70} ${EAR.x + 110} ${EAR.y + 30} ${EAR.x + 60} ${EAR.y + 55}`, fill: "none", stroke: "#c98f64", "stroke-width": 8, "stroke-linecap": "round" }, head);
     s("ellipse", { cx: EAR.x, cy: EAR.y, rx: 44, ry: 56, fill: "#5a2e22" }, head);
     const dirt = s("ellipse", { cx: EAR.x, cy: EAR.y, rx: 44, ry: 56, fill: "#c9a24a", opacity: 0.5 }, head);
     const waxG = s("g", {}, S.layer);
