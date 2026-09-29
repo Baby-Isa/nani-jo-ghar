@@ -43,9 +43,18 @@
     pharmacy: "Tap the things the doctor asks for as they ride past on the belt.",
     door: "Is everything okay now? Pick the face (or what helps), then say goodbye.",
   };
+  // Nani's line in her box (what to do now: English placeholders, to record)
+  S.NANI = {
+    waiting: "Tap the tick under the one the doctor calls.",
+    exam: "Find where it hurts.",
+    stand: "The doctor's tool, then the part.",
+    pharmacy: "Tap what the doctor needs on the belt.",
+    door: "How do they feel?",
+  };
   S.room = function (screen, name) {
     const stage = screen.clearStage();
     screen.goal = S.GOALS[name] || "";
+    if (screen.setNani) screen.setNani(S.NANI[name] ? { kutchi: null, english: S.NANI[name] } : null);
     stage.classList.add("cl-room", `room-${name}`);
     screen.clearActions();
     screen.tally.clear();

@@ -13,7 +13,7 @@ States (each draws something different; VISUAL-QA s5):
   D1-L1-haa           after the sore part answered haa (Found it lit)
   D2-L1, D2-L3        where does it hurt (L3: the side said)
   D3-L1, D3-L2, D3-L3 the check-up (L1: right tool + one; first-time cue at L1 with help on)
-  D-stand             diagnosis standing (CB3b)
+  (D3 is the standing check-up on CB3b; D1 and D2 sit on the bed's edge on CB2b)
   P-L1, P-L2, P-L3    the belt on CB4c, the tray on the counter strip
   P-L3-tray           the tray part-filled
   E-L1, E-L2, E-L3    the send-off on CB5 (face / said / what helps)
@@ -70,13 +70,13 @@ STATES = [
     ("D3-L1", "stage=diagnosis&variant=D3&level=1&onboard=1", "cue"),
     ("D3-L2", "stage=diagnosis&variant=D3&level=2", None),
     ("D3-L3", "stage=diagnosis&variant=D3&level=3", None),
-    ("D-stand", "stage=diagnosis&variant=D2&level=2&pose=stand", None),
     ("P-L1", "stage=pharmacy&level=1", "belt"),
     ("P-L2", "stage=pharmacy&level=2", "belt"),
     ("P-L3", "stage=pharmacy&level=3", "belt"),
     ("P-L3-tray", "stage=pharmacy&level=3", "tray"),
     ("E-L1", "stage=sendoff&level=1", None),
     ("E-L2", "stage=sendoff&level=2", None),
+    ("E-L1-extra", "stage=sendoff&level=1&seed=4", "extra"),
     ("E-L3", "stage=sendoff&level=3&variant=E2", None),
     ("E-L2-bye", "stage=sendoff&level=2", "bye"),
     ("E-E4", "stage=sendoff&level=3&variant=E4&onboard=1", "cue"),
@@ -124,6 +124,8 @@ def main():
                 fast = "" if act in ("cue", "help") else "&fast=1"
                 page.goto(f"http://127.0.0.1:{PORT}/clinic.html?lab=1&{q}&seed={a.seed}&quiet=1{fast}{onb}&results=0&fresh=1")
                 page.wait_for_function("() => window.__clinic && window.__clinic.ready", timeout=30000)
+                # the lab's own chrome off: the shot is what a child sees
+                page.add_style_tag(content=".cl-lab-bar, .cl-lab-out { display: none !important; }")
                 e = settle(page)
                 if act == "right" and e:
                     if e.get("kind") in ("tap", "act"):
@@ -154,17 +156,35 @@ def main():
                 elif act == "bye":
                     for _ in range(60):
                         e = page.evaluate("() => window.__clinic.expect()")
-                        if e and e.get("kind") == "tap" and "face" in e.get("target", ""):
+                        if e and e.get("kind") == "tap":
                             tap(page, e["target"])
                         elif e and e.get("kind") == "say":
                             break
                         time.sleep(0.15)
                     time.sleep(0.5)
+                elif act == "extra":
+                    # a not-happy answer at level 1: the right card, then the one more thing appears by the doctor
+                    for _ in range(40):
+                        e = page.evaluate("() => window.__clinic.expect()")
+                        if e and e.get("kind") == "tap" and "cl-extra" in e.get("target", ""):
+                            break
+                        if e and e.get("kind") == "tap":
+                            tap(page, e["target"])
+                        time.sleep(0.2)
+                    time.sleep(0.4)
                 elif act == "cue":
-                    time.sleep(2.5)
+                    for _ in range(40):
+                        if page.query_selector(".njg-onboard.on"):
+                            break
+                        time.sleep(0.25)
+                    time.sleep(1.0)
                 elif act == "help":
-                    time.sleep(2.5)
-                    tap(page, ".ob-help-btn, .njg-help, [data-help]")
+                    for _ in range(40):
+                        if page.query_selector(".njg-onboard.on"):
+                            break
+                        time.sleep(0.25)
+                    time.sleep(0.6)
+                    tap(page, ".cl-help-btn")
                     time.sleep(0.6)
                 path = os.path.join(OUT, f"{vp}-{name}.png")
                 page.screenshot(path=path)

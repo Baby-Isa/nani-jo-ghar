@@ -21,9 +21,24 @@
       container.innerHTML = "";
       const app = h("div", "cl-app", container);
       const side = h("aside", "cl-side", app);
-      const bulbRow = h("div", "cl-side-top", side);
-      const bulbBtn = h("button", "", bulbRow);
-      const hintN = h("span", "cl-hint-n", bulbRow);
+      // Nani's box at the top (the shared guide, G3): her face, what to do now, the light bulb and mute
+      const bulbRow = h("div", "cl-side-top cl-nani", side);
+      let nani = null;
+      let bulbBtn;
+      if (global.NaniGuide) {
+        nani = global.NaniGuide.mount(bulbRow, {
+          face: Kit.url("assets/cook/characters/nani-badge.webp"),
+          bulb: Kit.url("assets/ui/results/icon-bulb.webp"),
+          onBulb: () => scr.bulb.use(),
+          onReplay: (btn) => {
+            if (!scr.naniLine) return;
+            btn.classList.add("on");
+            Kit.Voice.say(scr.naniLine, { who: "nani", noBubble: true }).then(() => btn.classList.remove("on"));
+          },
+        });
+        bulbBtn = bulbRow.querySelector(".ng-bulb");
+      } else bulbBtn = h("button", "", bulbRow);
+      const hintN = h("span", "cl-hint-n", bulbRow.querySelector(".ng-tools") || bulbRow);
       const cardEl = h("section", "", side);
       const trayWrap = h("div", "cl-side-tray", side);
       const trayEl = h("div", "", trayWrap);
@@ -54,6 +69,7 @@
         stage: null,
       };
       scr.bulb = new Kit.Bulb(bulbBtn, {
+        keepArt: !!nani,
         level: opts.level || 1,
         targets: () => app.querySelectorAll(".cl-card, .cl-tray, .cl-belt"),
         onUse: () => {
@@ -82,6 +98,17 @@
         hintN.textContent = "";
       };
       scr.goal = "";
+      scr.nani = nani;
+      scr.naniLine = null;
+      /** Nani's line now: {kutchi, english} (an English placeholder is flagged "to record"). */
+      scr.setNani = (w) => {
+        scr.naniLine = w || null;
+        if (!nani) return;
+        const span = document.createElement("span");
+        if (w) Kit.text(w, span);
+        nani.set(span.innerHTML, { rec: !!(w && (!w.kutchi || /\[/.test(w.kutchi))) });
+      };
+      Kit.Voice.speakers.nani = () => bulbRow.querySelector(".ng-face") || bulbRow;
       scr.closeHelp = () => helpPop.classList.add("hidden");
       scr.openHelp = () => {
         helpPop.innerHTML = "";

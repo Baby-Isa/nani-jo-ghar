@@ -318,11 +318,11 @@
   Kit.Card = function (el, opts = {}) {
     const card = this;
     this.el = el;
-    el.classList.add("cl-card");
+    el.classList.add("cl-card", "oc-card"); // clinic v2 (G3): the patient card looks like Cook's order card
     el.innerHTML = "";
-    const head = h("div", "cl-card-head", el);
-    this.face = h("div", "cl-card-face", head);
-    this.title = h("div", "cl-card-title", head);
+    const head = h("div", "cl-card-head oc-head", el);
+    this.face = h("div", "cl-card-face oc-face", head);
+    this.title = h("div", "cl-card-title oc-headline", head);
     this.speaker = h("button", "cl-card-speak", head);
     this.speaker.type = "button";
     this.speaker.setAttribute("aria-label", "Hear it again");
@@ -346,13 +346,13 @@
     this.rows = (rows || []).map((r, i) => Object.assign({ id: r.id || `r${i}` }, r));
     this.list.innerHTML = "";
     this.rows.forEach((r) => {
-      const li = h("li", "cl-row", this.list);
+      const li = h("li", "cl-row oc-row", this.list);
       li.dataset.row = r.id;
-      h("span", "cl-tick", li);
-      const t = h("span", "cl-row-text", li);
+      const t = h("span", "cl-row-text oc-t", li);
       Kit.text(r, t);
       const en = h("span", "cl-row-en", li, r.english || "");
       en.setAttribute("aria-hidden", "true");
+      h("span", "cl-tick oc-tk", li);
       r.el = li;
     });
     return this;
@@ -372,6 +372,8 @@
     if (!r || !r.el) return;
     r.el.classList.remove("pulse", "now");
     r.el.classList.add("done");
+    const tk = r.el.querySelector(".oc-tk");
+    if (tk && global.OrderCard && global.OrderCard.CHECK) tk.innerHTML = global.OrderCard.CHECK;
     if (!o.quiet && global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
   };
   /**
@@ -392,7 +394,11 @@
   };
   Kit.Card.prototype.untick = function (id) {
     const r = this.row(id);
-    if (r && r.el) r.el.classList.remove("done");
+    if (r && r.el) {
+      r.el.classList.remove("done");
+      const tk = r.el.querySelector(".oc-tk");
+      if (tk) tk.innerHTML = "";
+    }
   };
   Kit.Card.prototype.isTicked = function (id) {
     const r = this.row(id);
@@ -428,11 +434,12 @@
     this.onUse = opts.onUse || null;
     this.targets = opts.targets || (() => document.querySelectorAll(".cl-card"));
     this.uses = 0;
+    this._h = () => this.use();
+    if (opts.keepArt) return; // Nani's box draws the bulb and calls use() (the shared guide, clinic v2)
     btn.classList.add("cl-bulb");
     btn.type = "button";
     btn.setAttribute("aria-label", "Light bulb: show it in English for a moment");
     btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2z" fill="currentColor"/><rect x="9" y="19" width="6" height="2.4" rx="1" fill="currentColor"/></svg>';
-    this._h = () => this.use();
     btn.addEventListener("click", this._h);
   };
   Kit.Bulb.prototype.use = function () {

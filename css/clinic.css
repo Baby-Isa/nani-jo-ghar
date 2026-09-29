@@ -363,3 +363,30 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-help-btn { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #e6d5b8; background: #fffaf0; font: 800 22px var(--cl-head); color: #2a2522; cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
 .cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: #2a2522; color: #fff8ec; border-radius: 16px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
 .cl-help-pop .ob-skip-row { color: #2a2522; }
+
+/* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
+.cl-side-top.cl-nani { display: flex; }
+.cl-nani .cl-hint-n { font-size: 15px; min-width: 0; }
+.cl-card.oc-card { padding: 10px 12px; border-radius: 12px; }
+.cl-card.oc-card .cl-card-head { margin-bottom: 6px; }
+.cl-card.oc-card .cl-card-head:has(.cl-card-face:empty) .cl-card-title:empty { display: none; }
+.cl-card.oc-card .cl-row { justify-content: space-between; padding: 6px 8px; border-radius: 10px; font: 800 clamp(15px, 1.6vw, 20px) var(--cl-font); color: #2a2522; }
+.cl-card.oc-card .cl-row + .cl-row { border-top: 1px solid #efe8dc; }
+.cl-card.oc-card .cl-tick { width: 22px; height: 22px; border: 2px solid #d9d2c7; border-radius: 50%; background: none; flex: none; order: 3; }
+.cl-card.oc-card .cl-row.done .cl-tick { border: 0; background: none; }
+.cl-card.oc-card .cl-row.done .cl-tick::after { display: none; }
+.cl-card.oc-card .cl-row.done .cl-tick svg { width: 100%; height: 100%; display: block; }
+.cl-card.oc-card .cl-row.done .cl-row-text { opacity: .55; }
+.cl-card.oc-card .cl-row-count { order: 2; }
+.cl-card.oc-card .cl-row-text { flex: 1 1 auto; min-width: 0; }
+.cl-card.oc-card .cl-words .ku { color: #8c2f2f; }
+.cl-card .oc-row .oc-t::first-letter { text-transform: none; }
+.cl-nani { --sb-face: 48px; --sb-h: 16px; }
+.cl-nani .ng-face { position: relative; flex: none; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; }
+.cl-nani .ng-face img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; object-position: top; }
+.cl-nani .ng-face .say-badge { position: absolute; right: -2px; bottom: -2px; width: 18px; height: 18px; border-radius: 50%; background: #2a2522 no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
+.cl-nani .ng-bulb, .cl-nani .ng-mute { width: 34px; height: 34px; padding: 4px; border-radius: 50%; border: 1px solid #cfdccb; background: #fff; display: grid; place-items: center; cursor: pointer; color: #4f5e4d; }
+.cl-nani .ng-bulb img { width: 100%; height: 100%; object-fit: contain; }
+.cl-nani .ng-bulb .bulb-t { display: none; }
+.cl-nani .ng-mute svg { width: 20px; height: 20px; }
+.cl-nani .ng-bulb.lit { background: #ffe26a; box-shadow: 0 0 12px 4px rgba(255, 220, 90, .8); }
