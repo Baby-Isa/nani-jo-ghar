@@ -14,3 +14,7 @@ The orchestrator's check-ins launch these as earlier jobs finish: at most 2 at o
 - At most 4 build sessions at once (the usage limit). The hob and kitchen-kit files have one owner at a time; the others import only, and make small additive edits if they must, after `git pull --rebase`.
 - **Every session reports progress** by appending one timestamped line to `docs/overnight-log.md` and pushing the branch at least every 20–30 minutes, so the orchestrator never has to interrupt anyone.
 - Each session ends with its report in `build/reports/<name>.md`, the VISUAL-QA matrix, bump_version and ONE push to main.
+
+## Notes from samosa v2 (29 Sept, ~03:00 UTC)
+- **Kitchen kit:** `Kit.VESSELS.karahi` still points at the old `vessel-kadai-oil-t`. Samosa v2 has a top-down karahi on flat grey: `assets/cook/items/samosa-v2/karahi.webp` (760×605; body centre cx 0.5, cy 0.499, radius r 0.395 of the width; the oil about 0.72 of the body). Samosa places it itself for now (the same maths as `Kit.place`); swap to `Kit.place(S, "karahi", …)` once the kit owner adds it.
+- **Order card:** after the samosa's fill closes, every part row is ticked, so the card folds to face + headline + ✓ while the samosas (the head's *trae samosa*) are still being folded and fried. A card whose head is a count still being made shouldn't show the finished ✓ until the dish is served.

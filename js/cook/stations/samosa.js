@@ -163,8 +163,9 @@
       const why = made.fillWrong || (made.n !== count ? `made ${made.n}, they asked for ${count}: ph-samosa` : null) || fried.bad;
       if (!first) {
         first = { ok: !why, why };
-        if (why) yz.listen(false, why);
-        else yz.listen(true, "samosa");
+        // the fill has already been heard (graded at its tick): here the count and the frying
+        const later = why && why !== made.fillWrong ? why : null;
+        if (later) yz.listen(false, later);
         if (!ctx.guided && count <= 5) (made.n === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
         if (made.n !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true });
       }
@@ -328,9 +329,17 @@
       const ang = Math.atan2(y2 - y1, x2 - x1);
       const s = Math.cos(Math.PI * t);
       c.save();
+      // standing up, the flap's far edge comes toward the camera (up and a little left): a shear that
+      // grows with the distance from the fold line, so the fold line itself stays put
+      const lift = Math.sin(Math.PI * t);
+      const cosA = Math.cos(ang);
+      const sinA = Math.sin(ang);
+      const vOf = ([x, y]) => -(x - x1) * sinA + (y - y1) * cosA;
+      const vFar = poly.reduce((m, q) => (Math.abs(vOf(q)) > Math.abs(m) ? vOf(q) : m), 0) || 1;
+      const [ox, oy] = [-10 * cosA - 34 * sinA, 10 * sinA - 34 * cosA]; // (-10, -34) in the line's frame
       c.translate(x1, y1);
       c.rotate(ang);
-      c.scale(1, Math.abs(s) < 0.02 ? 0.02 * Math.sign(s || 1) : s);
+      c.transform(1, 0, (ox * lift) / vFar, (Math.abs(s) < 0.02 ? 0.02 * Math.sign(s || 1) : s) + (oy * lift) / vFar, 0, 0);
       c.rotate(-ang);
       c.translate(-x1, -y1);
       path();
@@ -445,7 +454,7 @@
     if (phases.fold && !retry) UI.gist(phases.fold);
 
     /* ---------- FOLD: swipe each flap over; a soft glow shows the next swipe ---------- */
-    const glowG = S.track(S.add.graphics().setDepth(D.fx - 1));
+    const glowG = S.track(S.add.graphics().setDepth(D.fx - 1).setBlendMode(Phaser.BlendModes.ADD));
     let glowT = 0;
     let glowOn = null;
     const gdt = clock();
@@ -455,20 +464,28 @@
       if (!glowOn) return;
       glowT += dt / 1000;
       const { poly, a, b } = glowOn;
-      // the flap breathes (a warm light over it), and a soft light travels the way it folds
-      const pulse = 0.12 + 0.1 * (0.5 + 0.5 * Math.sin(glowT * 4));
-      glowG.fillStyle(INK.glow, pulse);
-      glowG.beginPath();
-      poly.forEach((p, i) => (i ? glowG.lineTo(p.x, p.y) : glowG.moveTo(p.x, p.y)));
-      glowG.closePath();
+      // the flap's edge glows (a soft gold light, breathing), and a light travels the way it folds
+      const pulse = 0.5 + 0.5 * Math.sin(glowT * 4);
+      const outline = () => {
+        glowG.beginPath();
+        poly.forEach((p, i) => (i ? glowG.lineTo(p.x, p.y) : glowG.moveTo(p.x, p.y)));
+        glowG.closePath();
+      };
+      glowG.fillStyle(0xffffff, 0.1 + 0.12 * pulse);
+      outline();
       glowG.fillPath();
-      const u = (glowT * 0.7) % 1;
-      for (let i = 0; i < 9; i++) {
-        const v = u - i * 0.035;
+      [[z.L(22), 0.1], [z.L(12), 0.2], [z.L(5), 0.55]].forEach(([w, al]) => {
+        glowG.lineStyle(w, INK.glow, al * (0.6 + 0.4 * pulse));
+        outline();
+        glowG.strokePath();
+      });
+      const u = (glowT * 0.6) % 1;
+      for (let i = 0; i < 10; i++) {
+        const v = u - i * 0.03;
         if (v < 0 || v > 1) continue;
         const e = Math.sin(Math.PI * v);
-        glowG.fillStyle(0xfff4d6, 0.5 * e * (1 - i / 9));
-        glowG.fillCircle(a.x + (b.x - a.x) * v, a.y + (b.y - a.y) * v, z.L(26 - i * 1.6));
+        glowG.fillStyle(0xfff1c8, 0.55 * e * (1 - i / 10));
+        glowG.fillCircle(a.x + (b.x - a.x) * v, a.y + (b.y - a.y) * v, z.L(20 - i * 1.4));
       }
     });
     let n = 0;
@@ -831,9 +848,9 @@
     const faceKey = (m) => (S.textures.exists(`sv2-${who}-${m}`) ? `sv2-${who}-${m}` : null);
     let person = null;
     const kN = faceKey("neutral");
-    const sizeP = (im) => im.setScale((z.L(430) / im.height) * (who === "cousin" ? 0.92 : 1));
+    const sizeP = (im) => im.setScale((z.L(560) / im.height) * (who === "cousin" ? 0.92 : 1));
     if (kN) {
-      person = S.track(S.add.image(z.X(1760), z.Y(640), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
+      person = S.track(S.add.image(z.X(1760), z.Y(915), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
       sizeP(person);
       await new Promise((r) => S.tweens.add({ targets: person, x: z.X(PERSON_X), duration: 520, ease: "Back.easeOut", onComplete: r }));
     }
@@ -846,8 +863,8 @@
     // the plate slides to them
     Cook.sfx.whoosh();
     const all = [plate.img].concat(plate.items);
-    const dx = z.L(-40) + (person ? person.x - z.L(250) - plate.img.x : 0);
-    await new Promise((r) => S.tweens.add({ targets: all, x: `+=${dx}`, y: `+=${z.L(170)}`, duration: 520, ease: "Cubic.easeInOut", onComplete: r }));
+    const dx = z.L(20);
+    await new Promise((r) => S.tweens.add({ targets: all, x: `+=${dx}`, y: `+=${z.L(150)}`, duration: 520, ease: "Cubic.easeInOut", onComplete: r }));
     if (person) await new Promise((r) => S.tweens.add({ targets: person, x: person.x - z.L(26), angle: -3, duration: 260, yoyo: true, hold: 260, ease: "Sine.easeInOut", onComplete: r }));
     await Cook.wait(300);
     if (ok || last) {
@@ -871,7 +888,7 @@
     St.customerDone();
     plate.items.forEach((o) => S.tweens.add({ targets: o, alpha: 0, duration: 300 }));
     await Cook.wait(320);
-    await new Promise((r) => S.tweens.add({ targets: plate.img, x: `-=${dx}`, y: `-=${z.L(170)}`, duration: 460, onComplete: r }));
+    await new Promise((r) => S.tweens.add({ targets: plate.img, x: `-=${dx}`, y: `-=${z.L(150)}`, duration: 460, onComplete: r }));
     mood("neutral");
     if (person) S.tweens.add({ targets: person, x: z.X(1760), duration: 400, ease: "Sine.easeIn" });
     await Cook.wait(400);

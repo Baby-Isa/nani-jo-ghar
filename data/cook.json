@@ -1858,9 +1858,13 @@
    "slots": {
     "no": {
      "type": "no",
-     "tasteChance": 0.6,
+     "tasteChance": {
+      "byLevel": [0, 0, 0.6, 0.6]
+     },
      "else": {
-      "chance": 0.4,
+      "chance": {
+       "byLevel": [0, 0, 0.8, 0.8]
+      },
       "from": [
        "veg-12",
        "veg-02",
@@ -1884,28 +1888,25 @@
      ],
      "from": "$fillings_all",
      "exclude": "no",
-     "take": [
-      1,
-      2
-     ],
+     "take": {
+     "byLevel": [[0, 1], [1, 1], [1, 2], [1, 2]]
+    },
      "order": "any"
     },
     "fillings": {
      "type": "tally",
      "kinds": "$kinds",
      "total": {
-      "int": [
-       3,
-       5
-      ]
+     "int": {
+      "byLevel": [[2, 3], [3, 4], [3, 5], [3, 5]]
      }
+    }
     },
     "count": {
-     "int": [
-      1,
-      3
-     ]
+    "int": {
+     "byLevel": [[1, 2], [1, 2], [2, 3], [2, 3]]
     }
+   }
    },
    "say": [
     {
@@ -2690,25 +2691,16 @@
   "fill": {
    "levels": [
     {
-     "decoys": [
-      2,
-      2
-     ],
+     "decoys": [0, 0],
      "decoyPick": "random",
      "rowY": 780,
      "flyMs": 340
     },
     {
-     "decoys": [
-      2,
-      3
-     ]
+     "decoys": [2, 2]
     },
     {
-     "decoys": [
-      3,
-      3
-     ]
+     "decoys": [2, 3]
     }
    ]
   },
