@@ -63,6 +63,10 @@
   const BOARD = { x: 720, y: 338, w: 800, h: 560 };
   const STAGE_K = 1.2; // design px per stage-canvas px
   const PLATE = { x: 1335, y: 420, d: 330 };
+  // the fry: burner x (bx; the hob's burner sits hobDx right of its middle), karahi body r, plate x and d,
+  // the thalis on the band. The karahi with its handles (r / 0.395 wide) + a 50 px gap + the plate is
+  // one group centred on x 800: 605 - 228 = 377 ... 1053 + 170 = 1223.
+  const FRY = { hobK: 0.9, hobDx: 11, bx: 605, r: 180, px: 1053, pd: 340, trayY: 772, trayD: 150, trayPitch: 180 };
   const PERSON_X = 1450;
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, glow: 0xffe3a0 };
   const FONT = "Nunito, sans-serif";
@@ -400,14 +404,15 @@
       const n = sheet.blobs.length;
       // ONE mound in the pocket: each spoon lands on it (a little off-centre) and it grows, never
       // past the pocket's edge (the fold line stays clear)
-      const size = Math.min(pa.r * 1.75, pa.r * (1.1 + n * 0.17));
+      // (a later spoon is a touch smaller and sits a little off the top, so a mix of fillings shows)
+      const size = n === 0 ? pa.r * 1.2 : pa.r * Math.min(1.25, 0.95 + n * 0.06);
       b.setDisplaySize(size * 0.6, size * 0.6);
       const a = n * 2.4 + Math.random() * 0.5;
-      const rr = n === 0 ? 0 : Math.min(0.18, 0.1 + n * 0.02);
+      const rr = n === 0 ? 0 : 0.3;
       const tx = pa.x + Math.cos(a) * pa.r * rr;
       const ty = pa.y + Math.sin(a) * pa.r * rr;
       // the mound under it swells a touch with each spoon
-      sheet.blobs.forEach((o) => S.tweens.add({ targets: o, scaleX: o.scaleX * 1.06, scaleY: o.scaleY * 1.06, duration: 160, delay: fast ? 200 : 420 }));
+      sheet.blobs.forEach((o) => S.tweens.add({ targets: o, scaleX: o.scaleX * 1.05, scaleY: o.scaleY * 1.05, duration: 160, delay: fast ? 200 : 420 }));
       if (!quiet) Cook.sfx.pop();
       await S.fly(b, tx, ty - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
       await new Promise((r) => S.tweens.add({ targets: b, y: ty, displayWidth: size, displayHeight: size * 0.92, duration: 140, ease: "Quad.easeIn", onComplete: r }));
