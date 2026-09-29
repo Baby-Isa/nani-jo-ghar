@@ -69,7 +69,10 @@ Branch `claude/cook-sekelo-v3`. Shots: `build/reports/sekelo-v3/` (contact sheet
   phone-landscape` ran nothing; it now exists **only when named** (844x390; not added to the `--days` list). Also
   `httpd.shutdown()` is skipped when another script already serves the port (it crashed at the end). Both small,
   additive, in a shared file.
-- `python3 build/test_cook.py --days 1 --canvas`: see the end of this section (run after merging `origin/main`).
+- `python3 build/test_cook.py --days 1 --canvas` (after merging `origin/main`): **PASS** on all six viewports
+  (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait). An earlier run's ipad failed with
+  connection-refused: a static server I had left serving the port was stopped mid-run; re-run clean.
+- Lab re-run after the merge: laptop **PASS**, phone-landscape **PASS**.
 - `node --test build/test_shared_*.mjs`: 113/113 pass. `node build/check_onboard.mjs`: ok.
 - `python3 build/check_vessel_meta.py`: ok, including the new sekelo checks (rack-0..4 and plate-1..4 skewer lines: art
   vs meta 0.0000, meta vs grill.js 0.0000; grill bars 0.0006, bed 0.0000; stick; plate-0's rim 0.0002).
