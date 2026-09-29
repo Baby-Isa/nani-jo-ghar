@@ -340,6 +340,8 @@ Answer "yes to all recommendations except …".
 
 - **Overlay check (29 Sept, after Zafar asked about room for dangling feet):** the real sitting poses on CB2b and CB1b (`build/reports/clinic-bg-check/`). The bed has room: at about half the screen height, the feet land on the step stool, with space for the doctor on the right. Six fit the bench with feet on the floor; an adult under the heart poster just touches its frame, so seat a child there or scale adults slightly (code). Both approved.
 
+- **CB6b approved** (the placement plan is in the design sheets: limbs on the paper strip, heads against the wall, extra blur in code). The clinic's backgrounds are done apart from CB4c.
+
 ## 10. Art: the backgrounds first (ChatGPT; the page is `docs/chatgpt-art-prompts-clinic-v1.md`)
 Six backgrounds, built to the recommended answers:
 - CB1 the waiting room, wider;

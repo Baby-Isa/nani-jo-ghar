@@ -78,7 +78,7 @@
 ---
 
 ## B. The heal games (prototype session B, on CB6b)
-Each game is a close-up (knee, arm, ear, mouth, eye, foot) over the blurred bed. The patient's round face sits in a corner and reacts (neutral, ouch, happy).
+Each game is a close-up (knee, arm, ear, mouth, eye, foot) over the blurred bed. **Placement on CB6b (approved 29 Sept):** limb close-ups (knee, foot, the scraped arm, boing's arm) **lie on the white paper strip** in the lower half, as if resting on the bed; head close-ups (ear, eye, mouth/tongue) **sit in the upper half against the plain wall**, as if sitting up. CB6b came out only slightly soft, so **blur it more in code** (a pre-blurred copy, or a Phaser blur) so the room never competes with the close-up; the frame on its right wall takes the doctor's certificate, blurred to match. The patient's round face sits in a corner and reacts (neutral, ouch, happy).
 
 ### H-scrape (was "cut", the scrape variant) (CQ7)
 - **Why:** "I fell over and scraped my arm." / "Let's clean it and put plasters on."
