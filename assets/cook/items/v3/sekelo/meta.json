@@ -1,0 +1,173 @@
+{
+ "rack-0": {
+  "w": 502,
+  "h": 395,
+  "sheet": "k1-rack-0-4-v1.png",
+  "registered": "rack",
+  "set": "rack"
+ },
+ "rack-1": {
+  "w": 502,
+  "h": 395,
+  "sheet": "k1-rack-0-4-v1.png",
+  "registered": "rack",
+  "set": "rack"
+ },
+ "rack-2": {
+  "w": 502,
+  "h": 395,
+  "sheet": "k1-rack-0-4-v1.png",
+  "registered": "rack",
+  "set": "rack"
+ },
+ "rack-3": {
+  "w": 502,
+  "h": 395,
+  "sheet": "k1-rack-0-4-v1.png",
+  "registered": "rack",
+  "set": "rack"
+ },
+ "rack-4": {
+  "w": 502,
+  "h": 395,
+  "sheet": "k1-rack-0-4-v1.png",
+  "registered": "rack",
+  "set": "rack"
+ },
+ "plate-1": {
+  "w": 600,
+  "h": 611,
+  "sheet": "k2-plate-1-4-v1.png",
+  "registered": "rim",
+  "set": "plate",
+  "cx": 0.4629,
+  "cy": 0.4527,
+  "r": 0.43,
+  "fit_px": 2.4,
+  "anchor": [
+   0.4629,
+   0.4528
+  ]
+ },
+ "plate-2": {
+  "w": 600,
+  "h": 611,
+  "sheet": "k2-plate-1-4-v1.png",
+  "registered": "rim",
+  "set": "plate",
+  "cx": 0.4632,
+  "cy": 0.4524,
+  "r": 0.4311,
+  "fit_px": 2.1,
+  "anchor": [
+   0.4629,
+   0.4528
+  ]
+ },
+ "plate-3": {
+  "w": 600,
+  "h": 611,
+  "sheet": "k2-plate-1-4-v1.png",
+  "registered": "rim",
+  "set": "plate",
+  "cx": 0.4621,
+  "cy": 0.4522,
+  "r": 0.4299,
+  "fit_px": 2.6,
+  "anchor": [
+   0.4629,
+   0.4528
+  ]
+ },
+ "plate-4": {
+  "w": 600,
+  "h": 611,
+  "sheet": "k2-plate-1-4-v1.png",
+  "registered": "rim",
+  "set": "plate",
+  "cx": 0.4634,
+  "cy": 0.4528,
+  "r": 0.4314,
+  "fit_px": 2.0,
+  "anchor": [
+   0.4629,
+   0.4528
+  ]
+ },
+ "grill": {
+  "w": 1505,
+  "h": 801,
+  "sheet": "k3-grill-v1.png",
+  "bars_y": [
+   0.025,
+   0.2422,
+   0.6554,
+   0.8933
+  ]
+ },
+ "meat-raw": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "meat-grilled": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "meat-charred": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "onion-raw": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "onion-grilled": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "tomato-raw": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "tomato-grilled": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "pepper-raw": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "pepper-grilled": {
+  "w": 404,
+  "h": 396,
+  "sheet": "k4-pieces-v1.png"
+ },
+ "heap-meat": {
+  "w": 635,
+  "h": 624,
+  "sheet": "k5-heaps-v1.png"
+ },
+ "heap-onion": {
+  "w": 635,
+  "h": 624,
+  "sheet": "k5-heaps-v1.png"
+ },
+ "heap-tomato": {
+  "w": 635,
+  "h": 624,
+  "sheet": "k5-heaps-v1.png"
+ },
+ "heap-pepper": {
+  "w": 635,
+  "h": 624,
+  "sheet": "k5-heaps-v1.png"
+ }
+}

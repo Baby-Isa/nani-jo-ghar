@@ -1,0 +1,146 @@
+{
+ "pan-empty": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3745,
+  "cy": 0.6139,
+  "r": 0.3243,
+  "fit_px": 1.8,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3037
+ },
+ "pan-water": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3762,
+  "cy": 0.6146,
+  "r": 0.3246,
+  "fit_px": 1.7,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3012
+ },
+ "pan-leaves": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3764,
+  "cy": 0.614,
+  "r": 0.3242,
+  "fit_px": 1.7,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3025
+ },
+ "pan-tea": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3752,
+  "cy": 0.6141,
+  "r": 0.3238,
+  "fit_px": 1.8,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3012
+ },
+ "pan-milky": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3758,
+  "cy": 0.6151,
+  "r": 0.3239,
+  "fit_px": 1.9,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3037
+ },
+ "pan-spiced": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3762,
+  "cy": 0.6148,
+  "r": 0.3234,
+  "fit_px": 1.9,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3
+ },
+ "pan-boil-tea": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3754,
+  "cy": 0.6151,
+  "r": 0.3241,
+  "fit_px": 1.5,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.2716
+ },
+ "pan-boil-milky": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3755,
+  "cy": 0.6134,
+  "r": 0.324,
+  "fit_px": 1.8,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3012
+ },
+ "pan-foam": {
+  "w": 405,
+  "h": 389,
+  "sheet": "c1-chai-pan-states-v1.png",
+  "registered": "rim",
+  "set": "pan",
+  "cx": 0.3762,
+  "cy": 0.6158,
+  "r": 0.3238,
+  "fit_px": 1.5,
+  "anchor": [
+   0.3754,
+   0.6146
+  ],
+  "inner_r": 0.3
+ }
+}

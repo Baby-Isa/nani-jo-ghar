@@ -7,6 +7,11 @@ left out) and fails when the recorded centre is off by more than 1.5% of the ima
 
   python3 build/check_vessel_meta.py
 Vessels with two handles (karahi, pot) are set by hand from their cuts and aren't checked here.
+
+v3 (29 Sept, build/cut_cook_v3.py): every round thing in assets/cook/items/v3/*/meta.json (pans, pots,
+tawa, karahi, plates, maani, bowls, knobs...) is re-fitted here with the handles dropped as outliers
+(cut_cook_v3.robust_circle), and every hob's burner centres are re-found from its brass caps and
+compared with its meta.json AND with Cook.Kit's HOBS table in js/cook/kitchen-kit.js.
 """
 import json
 import math
@@ -56,6 +61,48 @@ def fit_rim(path):
     return best
 
 
+def check_v3():
+    """The v3 cuts: each round thing's centre and radius, each hob's burners (art, meta and the kit)."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from cut_cook_v3 import gold_caps, robust_circle
+    V3 = os.path.join(ROOT, "assets", "cook", "items", "v3")
+    bad = 0
+    kit = open(os.path.join(ROOT, "js/cook/kitchen-kit.js")).read()
+    for group in sorted(os.listdir(V3)):
+        mp = os.path.join(V3, group, "meta.json")
+        if not os.path.exists(mp):
+            continue
+        meta = json.load(open(mp))
+        for name, m in meta.items():
+            path = os.path.join(V3, group, name + ".webp")
+            img = np.asarray(Image.open(path).convert("RGBA")).astype(float)
+            H, W = img.shape[:2]
+            if "burners" in m:
+                caps = gold_caps(img)
+                got = [(x / W, y / H) for x, y, _ in caps]
+                want = [(b["x"], b["y"]) for b in m["burners"]]
+                off = max((max(abs(a[0] - b[0]), abs(a[1] - b[1])) for a, b in zip(got, want)), default=1) if len(got) == len(want) else 1
+                # and the kit's table (HOBS) must say the same
+                key = name.replace("hob-", "")
+                km = re.search(rf"\b{key}: \{{ w: (\d+), h: (\d+), burners: (\[\[.*?\]\]), frontY: ([\d.]+)", kit)
+                koff = 1
+                if km:
+                    kb = json.loads(km.group(3))
+                    same_size = int(km.group(1)) == W and int(km.group(2)) == H
+                    koff = max(max(abs(a[0] - b[0]), abs(a[1] - b[1])) for a, b in zip(kb, want)) if same_size and len(kb) == len(want) else 1
+                    koff = max(koff, abs(float(km.group(4)) - m["frontY"]))
+                ok = off <= TOL and koff <= 0.001
+                bad += not ok
+                print(f"{'ok  ' if ok else 'FAIL'} v3 hob/{name}: {len(caps)} burners, art vs meta off {off:.4f}, meta vs Cook.Kit off {koff:.4f}")
+            elif "cx" in m and "r" in m:
+                cx, cy, r, res = robust_circle(img[..., 3] > 128)
+                off = max(abs(cx / W - m["cx"]), abs(cy / H - m["cy"]), abs(r / W - m["r"]))
+                ok = off <= TOL
+                bad += not ok
+                print(f"{'ok  ' if ok else 'FAIL'} v3 {group}/{name}: recorded ({m['cx']:.4f}, {m['cy']:.4f}, r {m['r']:.4f}), rim ({cx / W:.4f}, {cy / H:.4f}, r {r / W:.4f}), off {off:.4f} (fit {res:.1f}px)")
+    return bad
+
+
 def main():
     kit = open(os.path.join(ROOT, "js/cook/kitchen-kit.js")).read()
     chai = open(os.path.join(ROOT, "js/cook/stations/chai-tray.js")).read()
@@ -69,7 +116,7 @@ def main():
     checks.append(("chai-tray META.panTop", "assets/cook/items/chai-v2/pan-top.webp", float(m.group(1)), float(m.group(2))))
     meta = json.load(open(os.path.join(ROOT, "assets/cook/items/chai-v2/meta.json")))["panTop"]
     checks.append(("chai-v2/meta.json panTop", "assets/cook/items/chai-v2/pan-top.webp", meta["cx"], meta["cy"]))
-    bad = 0
+    bad = check_v3()
     for label, url, cx, cy in checks:
         res, fx, fy, fr = fit_rim(os.path.join(ROOT, url))
         off = max(abs(fx - cx), abs(fy - cy))

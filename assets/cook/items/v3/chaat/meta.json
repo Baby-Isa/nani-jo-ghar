@@ -1,0 +1,110 @@
+{
+ "bowl-side": {
+  "w": 1214,
+  "h": 618,
+  "sheet": "t1-chaat-bowl-side-v1.png",
+  "rimY": 0.0291,
+  "bottomY": 0.9693,
+  "left": 0.0148,
+  "right": 0.9843
+ },
+ "pot-chana": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-potato": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-onion": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-chilli": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-sev": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-dahi": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-imli": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-chutney": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ },
+ "pot-dhania": {
+  "w": 356,
+  "h": 370,
+  "sheet": "t2-chaat-pots-side-v1.png",
+  "registered": "bottom",
+  "set": "pot",
+  "anchor": [
+   0.5,
+   0.9514
+  ]
+ }
+}

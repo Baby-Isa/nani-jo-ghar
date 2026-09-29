@@ -30,15 +30,21 @@
 
   const V2 = "assets/cook/items/chai-v2/";
   const ST = "assets/cook/items/chai-station/";
-  // the hobs as build/cut_chai_v2.py composed them: one canvas height, one width per burner count
-  const HOB = {
-    h: 671,
-    burnerY: 0.3636,
-    frontY: 0.76,
-    // measured from the canvases (assets/cook/items/chai-v2/meta.json)
-    w: [421, 775, 1129, 1483],
-    burners: [[0.5297], [0.2877, 0.7445], [0.1975, 0.5111, 0.8246], [0.1504, 0.3891, 0.6278, 0.8665]],
+  // the hob family (29 Sept, X5: ChatGPT H1-H5, build/cut_cook_v3.py): each hob drawn whole (no more
+  // tiles stitched from one 2-burner picture), scaled so every burner is the same size. Measured from
+  // the art (assets/cook/items/v3/hob/meta.json; build/check_vessel_meta.py checks them): the canvas
+  // w x h, each burner's centre and the front strip's middle (frontY, where the badges and knobs go),
+  // as fractions. "wide": one big burner on a landscape hob (a big karahi), a kit option.
+  const V3 = "assets/cook/items/v3/hob/";
+  const HOBS = {
+    1: { w: 465, h: 658, burners: [[0.4944, 0.3805]], frontY: 0.8325 },
+    2: { w: 931, h: 568, burners: [[0.251, 0.4025], [0.7445, 0.4025]], frontY: 0.8342 },
+    3: { w: 1388, h: 709, burners: [[0.1596, 0.3725], [0.4993, 0.3728], [0.8389, 0.3725]], frontY: 0.7885 },
+    4: { w: 1753, h: 620, burners: [[0.1328, 0.4177], [0.3766, 0.4162], [0.6228, 0.4182], [0.8687, 0.4185]], frontY: 0.821 },
+    wide: { w: 937, h: 568, burners: [[0.4954, 0.3929]], frontY: 0.862 },
   };
+  const hobOf = (n, wide) => (wide ? "wide" : String(Math.max(1, Math.min(4, n))));
+  const HOB = { sets: HOBS, w: [1, 2, 3, 4].map((n) => HOBS[n].w), h: [1, 2, 3, 4].map((n) => HOBS[n].h) };
   // each vessel's round body as fractions of its canvas: centre (cx, cy) and radius r (of the width)
   const VESSELS = {
     pan: { key: "kit-pan", url: V2 + "pan-top.webp", w: 512, cx: 0.3434, cy: 0.6408, r: 0.3644 }, // centre fitted to the rim (29 Sept), as chai-tray.js
@@ -47,9 +53,10 @@
     karahi: { key: "kit-karahi", url: "assets/cook/items/samosa-v2/karahi.webp", w: 760, cx: 0.5, cy: 0.499, r: 0.395, oil: 0.72 },
   };
   const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522 };
-  const KNOB = 62; // what you see
-  const KNOB_HIT = 58; // the tap radius: at least 48 screen px across on a phone
   const BADGE = 64;
+  // the knob (H6): its round body is the badge's size beside it (X5); the art's body is 0.742 of its canvas
+  const KNOB = Math.round(BADGE / 0.742); // the sprite's size
+  const KNOB_HIT = 58; // the tap radius: at least 48 screen px across on a phone
 
   const CHIP = { w: 128, h: 46, hitW: 142, hitH: 80 };
   // the family's round faces (X4, build/cut_characters.py): framed by the eyes, three moods each.
@@ -65,37 +72,40 @@
     KNOB_HIT,
     BADGE,
 
-    /** What to load for an n-burner hob (and the vessels, the chimta). */
-    art(n = 1, vessels = ["pan"]) {
+    /** What to load for an n-burner hob (or the wide one: opts.wide), the knobs, flames and vessels. */
+    art(n = 1, vessels = ["pan"], { wide = false } = {}) {
+      const id = hobOf(n, wide);
       return [
-        [`kit-hob-${n}`, `${V2}hob-${n}.webp`],
-        ["kit-knob-off", ST + "knob-off.webp"],
-        ["kit-knob-on", ST + "knob-on.webp"],
+        [`kit-hob-${id}`, `${V3}hob-${id}.webp`],
+        ["kit-knob-off", V3 + "knob-off.webp"],
+        ["kit-knob-on", V3 + "knob-on.webp"],
         ["kit-flame-high", ST + "flame-high.webp"],
         ["kit-flame-low", ST + "flame-low.webp"],
       ].concat(vessels.filter((v) => VESSELS[v]).map((v) => [VESSELS[v].key, VESSELS[v].url]));
     },
 
-    /** The size of an n-burner hob at scale k, and where its burners and front edge sit (fractions → px). */
-    size(n, k) {
-      const w = HOB.w[n - 1] * k;
-      const h = HOB.h * k;
-      return { w, h, burnerY: HOB.burnerY * h, frontY: HOB.frontY * h };
+    /** The size of an n-burner hob (or the wide one) at scale k, and where its burners and front edge sit (px). */
+    size(n, k, wide = false) {
+      const H = HOBS[hobOf(n, wide)];
+      const w = H.w * k;
+      const h = H.h * k;
+      return { w, h, burnerY: H.burners[0][1] * h, frontY: H.frontY * h };
     },
 
     /**
      * The hob, top-left at (x, y), scaled k (or centred on cx with its bottom at `bottom`).
      * Returns {img, x, y, w, h, k, n, burners: [{x, y}], frontY, pitch}.
      */
-    hob(S, { n = 1, x, y, k = 0.79, cx, bottom, depth = D.item - 4 } = {}) {
-      n = Math.max(1, Math.min(4, n));
-      const sz = Kit.size(n, k);
+    hob(S, { n = 1, x, y, k = 0.79, cx, bottom, wide = false, depth = D.item - 4 } = {}) {
+      n = wide ? 1 : Math.max(1, Math.min(4, n));
+      const id = hobOf(n, wide);
+      const sz = Kit.size(n, k, wide);
       if (cx != null) x = cx - sz.w / 2;
       if (bottom != null) y = bottom - sz.h;
-      const img = S.track(S.add.image(x, y, `kit-hob-${n}`).setOrigin(0).setScale(k).setDepth(depth));
+      const img = S.track(S.add.image(x, y, `kit-hob-${id}`).setOrigin(0).setScale(k).setDepth(depth));
       img.shadow = S.contactShadow(img);
-      const burners = HOB.burners[n - 1].map((f) => ({ x: x + f * sz.w, y: y + sz.burnerY }));
-      return { img, x, y, w: sz.w, h: sz.h, k, n, burners, frontY: y + sz.frontY, pitch: n > 1 ? burners[1].x - burners[0].x : 300 };
+      const burners = HOBS[id].burners.map(([fx, fy]) => ({ x: x + fx * sz.w, y: y + fy * sz.h }));
+      return { img, x, y, w: sz.w, h: sz.h, k, n, wide, burners, frontY: y + sz.frontY, pitch: n > 1 ? burners[1].x - burners[0].x : Infinity };
     },
 
     /** A person's round face art: mood neutral (a small smile), happy (it's right) or frown (it's wrong). */
@@ -226,11 +236,14 @@
       const { x, y } = hob.burners[i];
       const fy = hob.frontY;
       const off = spread != null ? spread : Math.min(58, hob.pitch * 0.2);
+      // 29 Sept (X6): the flames just peek out past the pan, and never reach halfway to the next burner
+      // (flame-high's ring reaches 245/512 of its sprite, its inside 144/512: hidden under the pan)
+      const outer = Math.min(flameR * 1.2, hob.pitch * 0.46);
       const bx = who ? x - off : null;
       const kx = who ? x + off : x;
       const flameHi = S.track(S.add.image(x, y, "kit-flame-high").setDepth(D.item - 1).setAlpha(0));
       const flameLo = S.track(S.add.image(x, y, "kit-flame-low").setDepth(D.item - 1).setAlpha(0));
-      const fs = (flameR * 2.7) / 512;
+      const fs = outer / 245;
       flameHi.setScale(fs);
       flameLo.setScale(fs * 0.92);
       let face = null;

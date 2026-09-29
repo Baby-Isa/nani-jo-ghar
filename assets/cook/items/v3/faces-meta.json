@@ -1,0 +1,242 @@
+{
+ "nani-face": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    176,
+    165
+   ],
+   [
+    255,
+    137
+   ]
+  ],
+  "scale": 1.069
+ },
+ "nani-face-happy": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    588,
+    157
+   ],
+   [
+    670,
+    130
+   ]
+  ],
+  "scale": 1.0379
+ },
+ "nani-face-frown": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    998,
+    165
+   ],
+   [
+    1076,
+    137
+   ]
+  ],
+  "scale": 1.0812
+ },
+ "nana-face": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    188,
+    555
+   ],
+   [
+    260,
+    575
+   ]
+  ],
+  "scale": 1.199
+ },
+ "nana-face-happy": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    592,
+    573
+   ],
+   [
+    670,
+    558
+   ]
+  ],
+  "scale": 1.128
+ },
+ "nana-face-frown": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    1016,
+    573
+   ],
+   [
+    1091,
+    558
+   ]
+  ],
+  "scale": 1.1715
+ },
+ "ma-face": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    174,
+    971
+   ],
+   [
+    250,
+    988
+   ]
+  ],
+  "scale": 1.1505
+ },
+ "ma-face-happy": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    598,
+    966
+   ],
+   [
+    670,
+    986
+   ]
+  ],
+  "scale": 1.199
+ },
+ "ma-face-frown": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a1-faces-nani-nana-ma-v1.png",
+  "eyes_px": [
+   [
+    1021,
+    968
+   ],
+   [
+    1101,
+    988
+   ]
+  ],
+  "scale": 1.0866
+ },
+ "cousin-face": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a2-faces-ali-isa-v1.png",
+  "eyes_px": [
+   [
+    172,
+    210
+   ],
+   [
+    267,
+    192
+   ]
+  ],
+  "scale": 0.9267
+ },
+ "cousin-face-happy": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a2-faces-ali-isa-v1.png",
+  "eyes_px": [
+   [
+    590,
+    210
+   ],
+   [
+    673,
+    192
+   ]
+  ],
+  "scale": 1.055
+ },
+ "cousin-face-frown": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a2-faces-ali-isa-v1.png",
+  "eyes_px": [
+   [
+    1011,
+    222
+   ],
+   [
+    1097,
+    202
+   ]
+  ],
+  "scale": 1.0148
+ },
+ "isa-face": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a2-faces-ali-isa-v1.png",
+  "eyes_px": [
+   [
+    175,
+    653
+   ],
+   [
+    265,
+    660
+   ]
+  ],
+  "scale": 0.9926
+ },
+ "isa-face-happy": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a2-faces-ali-isa-v1.png",
+  "eyes_px": [
+   [
+    578,
+    650
+   ],
+   [
+    665,
+    663
+   ]
+  ],
+  "scale": 1.0186
+ },
+ "isa-face-frown": {
+  "w": 280,
+  "h": 280,
+  "sheet": "a2-faces-ali-isa-v1.png",
+  "eyes_px": [
+   [
+    996,
+    660
+   ],
+   [
+    1093,
+    663
+   ]
+  ],
+  "scale": 0.9233
+ }
+}

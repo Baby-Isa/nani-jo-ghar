@@ -1,0 +1,179 @@
+{
+ "dough-pile-wheat": {
+  "w": 590,
+  "h": 597,
+  "sheet": "m1-dough-v1.png"
+ },
+ "dough-pile-millet": {
+  "w": 590,
+  "h": 601,
+  "sheet": "m1-dough-v1.png"
+ },
+ "dough-ball-wheat": {
+  "w": 301,
+  "h": 298,
+  "sheet": "m1-dough-v1.png",
+  "cx": 0.4975,
+  "cy": 0.4944,
+  "r": 0.437,
+  "fit_px": 1.8
+ },
+ "dough-ball-millet": {
+  "w": 312,
+  "h": 305,
+  "sheet": "m1-dough-v1.png",
+  "cx": 0.4951,
+  "cy": 0.4974,
+  "r": 0.4347,
+  "fit_px": 1.8
+ },
+ "chakla": {
+  "w": 726,
+  "h": 722,
+  "sheet": "m2-chakla-velan-v1.png",
+  "cx": 0.4988,
+  "cy": 0.4988,
+  "r": 0.4746,
+  "fit_px": 1.8
+ },
+ "velan": {
+  "w": 773,
+  "h": 162,
+  "sheet": "m2-chakla-velan-v1.png"
+ },
+ "maani-wheat-raw": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.4994,
+  "cy": 0.4997,
+  "r": 0.4398,
+  "fit_px": 2.6,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "maani-wheat-half": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.4992,
+  "cy": 0.4994,
+  "r": 0.4371,
+  "fit_px": 2.1,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "maani-wheat-cooked": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.4986,
+  "cy": 0.4998,
+  "r": 0.4431,
+  "fit_px": 3.3,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "maani-millet-raw": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.4999,
+  "cy": 0.4993,
+  "r": 0.441,
+  "fit_px": 1.3,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "maani-millet-half": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.4987,
+  "cy": 0.4988,
+  "r": 0.4409,
+  "fit_px": 1.4,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "maani-millet-cooked": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.4983,
+  "cy": 0.4998,
+  "r": 0.4475,
+  "fit_px": 2.1,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "maani-wheat-burnt": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.4988,
+  "cy": 0.501,
+  "r": 0.4498,
+  "fit_px": 2.0,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "maani-millet-burnt": {
+  "w": 403,
+  "h": 395,
+  "sheet": "m3-maani-states-v1.png",
+  "registered": "rim",
+  "set": "maani-wheat",
+  "cx": 0.5,
+  "cy": 0.4997,
+  "r": 0.4439,
+  "fit_px": 1.4,
+  "anchor": [
+   0.4994,
+   0.4998
+  ]
+ },
+ "tawa": {
+  "w": 1221,
+  "h": 866,
+  "sheet": "m4-tawa-v1.png",
+  "cx": 0.3533,
+  "cy": 0.4978,
+  "r": 0.3386,
+  "fit_px": 2.9,
+  "handle": "right"
+ },
+ "turner": {
+  "w": 1473,
+  "h": 933,
+  "sheet": "m5-turner-wood-v1.png"
+ }
+}

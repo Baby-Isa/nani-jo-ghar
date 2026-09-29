@@ -175,8 +175,11 @@
 
     /* ---------- the hob: one burner per person ---------- */
     const hobW = Cook.Kit.HOB.w[n - 1];
-    const k = Math.min(HOB_K, (1600 - 2 * 56 - GAP - TRAY_D) / hobW);
-    const hobH = Cook.Kit.HOB.h * k;
+    const hobH0 = Cook.Kit.HOB.h[n - 1];
+    // the widest scale that fits the hob and the tray (which shrinks with the hob) in the row
+    const room = 1600 - 2 * 56 - GAP;
+    const k = Math.min(HOB_K, room - TRAY_D >= hobW * HOB_K ? HOB_K : Math.max((room - TRAY_D) / hobW, room / (hobW + hobH0 * 0.78)));
+    const hobH = hobH0 * k;
     const trayD = Math.min(TRAY_D, hobH * 0.78);
     const total = hobW * k + GAP + trayD;
     const hobX = Math.max(48, (1600 - total) / 2);
@@ -185,7 +188,6 @@
     // the shared kitchen kit's hob: one burner per person (the burner rule)
     const kHob = Cook.Kit.hob(S, { n, x: hobX, y: hobY, k });
     const hob = kHob.img;
-    const burnerY = kHob.burners[0].y;
     const burners = kHob.burners.map((b) => b.x);
     const pitch = kHob.pitch;
     const panR = Math.min(PAN_R, pitch * 0.4) * (k / HOB_K);
@@ -205,7 +207,7 @@
     const rimR = pm.body * pm.w * panScale;
     const pans = people.map((p, i) => {
       const x = burners[i];
-      const y = burnerY;
+      const y = kHob.burners[i].y;
       // the kit's burner: the flame ring peeking out under the pan; their face (= hear them) and the knob on the front edge
       // the flames peek just past the rim, as in the approved mock-up (29 Sept: at panR two burners' flames met)
       const b = Cook.Kit.burner(S, kHob, i, { who: p.who, flameR: rimR * 0.97 });

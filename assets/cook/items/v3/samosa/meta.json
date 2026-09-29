@@ -1,0 +1,131 @@
+{
+ "fold-1": {
+  "w": 517,
+  "h": 297,
+  "sheet": "s1-samosa-fold-v1.png",
+  "registered": "the strip's right end",
+  "anchor": [
+   0.9613,
+   0.638
+  ]
+ },
+ "fold-2": {
+  "w": 517,
+  "h": 297,
+  "sheet": "s1-samosa-fold-v1.png",
+  "registered": "the strip's right end",
+  "anchor": [
+   0.9613,
+   0.638
+  ]
+ },
+ "fold-3": {
+  "w": 517,
+  "h": 297,
+  "sheet": "s1-samosa-fold-v1.png",
+  "registered": "the strip's right end",
+  "anchor": [
+   0.9613,
+   0.638
+  ]
+ },
+ "fold-4": {
+  "w": 517,
+  "h": 297,
+  "sheet": "s1-samosa-fold-v1.png",
+  "registered": "the strip's right end",
+  "anchor": [
+   0.9613,
+   0.638
+  ]
+ },
+ "fold-5": {
+  "w": 517,
+  "h": 297,
+  "sheet": "s1-samosa-fold-v1.png",
+  "registered": "the strip's right end",
+  "anchor": [
+   0.9613,
+   0.638
+  ]
+ },
+ "fold-6": {
+  "w": 517,
+  "h": 297,
+  "sheet": "s1-samosa-fold-v1.png",
+  "registered": "the strip's right end",
+  "anchor": [
+   0.9613,
+   0.638
+  ]
+ },
+ "board": {
+  "w": 1397,
+  "h": 847,
+  "sheet": "s2-board-v1.png"
+ },
+ "karahi": {
+  "w": 1253,
+  "h": 1020,
+  "sheet": "s3-karahi-v1.png",
+  "cx": 0.4975,
+  "cy": 0.4992,
+  "r": 0.3914,
+  "fit_px": 3.2,
+  "oil": 0.8994
+ },
+ "plate": {
+  "w": 825,
+  "h": 834,
+  "sheet": "s4-plate-jharo-v1.png",
+  "cx": 0.4982,
+  "cy": 0.4994,
+  "r": 0.4826,
+  "fit_px": 3.9
+ },
+ "jharo": {
+  "w": 657,
+  "h": 837,
+  "sheet": "s4-plate-jharo-v1.png"
+ },
+ "fill-chundo": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ },
+ "fill-potato": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ },
+ "fill-onion": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ },
+ "fill-chilli": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ },
+ "fill-dhania": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ },
+ "fill-peas": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ },
+ "fill-carrot": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ },
+ "fill-cabbage": {
+  "w": 419,
+  "h": 410,
+  "sheet": "s5-fillings-top-v1.png"
+ }
+}

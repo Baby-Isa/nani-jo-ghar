@@ -7,9 +7,9 @@ assets/cook/items/chai-v2/, by build/cut_tick_v2.py's method adapted to these dr
   - the edge gets a 1 px anti-aliased falloff; the page draws the one soft shadow itself (§7).
   - glass stays see-through: the empty glass's alpha comes from colour-to-alpha against the
     measured grey (highlights and rims stay, the grey goes); chai is solid.
-Also composes the hob for 1..4 burners from the mock-up's 2-burner hob (hob-2-burner-t.webp):
-a left end, one burner tile per person, a right end, and a deeper front edge for the face badges
-and knobs. Positions the game needs go to assets/cook/items/chai-v2/meta.json.
+It used to compose the hob for 1..4 burners from the mock-up's 2-burner hob (compose_hobs, kept for
+the record); retired 29 Sept (X5): the hobs are drawn whole now (build/cut_cook_v3.py). Positions
+the game needs go to assets/cook/items/chai-v2/meta.json.
 
   python3 build/cut_chai_v2.py
 """
@@ -271,6 +271,7 @@ if __name__ == '__main__':
     cut_glasses()
     cut_liquids()
     cut_jars()
-    compose_hobs()
+    # compose_hobs() is retired (29 Sept, X5): stitching the 1-4 burner hobs from one 2-burner picture
+    # dented the frame. The hob family is drawn whole now: build/cut_cook_v3.py -> assets/cook/items/v3/hob/
     json.dump(META, open(os.path.join(OUT, 'meta.json'), 'w'), indent=1)
     print(json.dumps(META, indent=1))

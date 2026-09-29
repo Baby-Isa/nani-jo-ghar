@@ -1,0 +1,165 @@
+{
+ "pot-empty": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4982,
+  "cy": 0.4985,
+  "r": 0.3566,
+  "fit_px": 1.2,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-oil": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4981,
+  "cy": 0.4978,
+  "r": 0.3598,
+  "fit_px": 1.0,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-seeds": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4974,
+  "cy": 0.4982,
+  "r": 0.3592,
+  "fit_px": 1.0,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-onion": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4981,
+  "cy": 0.4992,
+  "r": 0.3596,
+  "fit_px": 0.9,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-tomato": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4989,
+  "cy": 0.4985,
+  "r": 0.3595,
+  "fit_px": 1.0,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-chilli": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4988,
+  "cy": 0.4983,
+  "r": 0.3602,
+  "fit_px": 1.2,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-daar": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4971,
+  "cy": 0.4985,
+  "r": 0.3624,
+  "fit_px": 1.4,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-tadka": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4985,
+  "cy": 0.4984,
+  "r": 0.3623,
+  "fit_px": 1.4,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "pot-stir": {
+  "w": 430,
+  "h": 348,
+  "sheet": "d1-daar-pot-states-v1.png",
+  "registered": "rim",
+  "set": "pot",
+  "cx": 0.4977,
+  "cy": 0.4974,
+  "r": 0.3623,
+  "fit_px": 1.5,
+  "anchor": [
+   0.4982,
+   0.4985
+  ]
+ },
+ "daar-bowl-trivet": {
+  "w": 528,
+  "h": 563,
+  "sheet": "d2-ladle-trivet-bowl-v1.png",
+  "cx": 0.4928,
+  "cy": 0.4987,
+  "r": 0.4833,
+  "fit_px": 7.7
+ },
+ "veg-bowl": {
+  "w": 484,
+  "h": 483,
+  "sheet": "d2-ladle-trivet-bowl-v1.png",
+  "cx": 0.4958,
+  "cy": 0.495,
+  "r": 0.458,
+  "fit_px": 1.4
+ },
+ "ladle": {
+  "w": 290,
+  "h": 455,
+  "sheet": "d2-ladle-trivet-bowl-v1.png",
+  "cx": 0.5203,
+  "cy": 0.5634,
+  "r": 0.4283,
+  "fit_px": 104.3,
+  "note": "cut out of D2's pot along a hand-drawn outline (build/cut_cook_v3.py LADLE)"
+ }
+}
