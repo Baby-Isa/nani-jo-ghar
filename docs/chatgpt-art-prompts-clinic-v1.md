@@ -97,3 +97,53 @@ Style: exactly as the attached images: stylised 3D animated-feature-film look, s
 **attach:** `style-anchor-v1.png`, your CB2 image
 **save as:** `sources/art/clinic-v2/cb6-closeup-bed-v1.png`
 **check:** the sage bed top fills the lower half with the paper strip · the room behind is softly blurred · the centre is calm and empty · no people, no text.
+
+---
+
+## Round 2 (29 Sept, after Zafar's review of CB1 and CB2)
+Zafar's notes: CB1 is good but too wide (people would be small) and the front half is empty floor; six on one bench is enough. CB2's poster sits right behind where a seated patient's head goes, and the room is too zoomed out for tapping small body parts. **Attach the first version** so the look stays the same.
+
+### Paste this block into Claude in Chrome (2 images)
+```
+You're making 2 images in ChatGPT for a children's game called Nani jo Ghar, then uploading them to GitHub yourself. Don't change any ChatGPT, GitHub or Chrome settings.
+
+1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/chatgpt-art-prompts-clinic-v1.md and read the section "Round 2" at the bottom. It has 2 prompts: CB1b and CB2b, each in a grey code box followed by "attach", "save as" and "check" lines.
+
+2. You need the CB1 and CB2 images from the first run (use the copies in your Downloads folder; if you no longer have them, download them from https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/clinic-v2, the files starting cb1 and cb2) and the style anchor: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/style-anchor-v1.png
+
+3. In ChatGPT, for each prompt in order: start a new chat, attach the files its "attach" line names, paste the text of its code box exactly as written, and send. Compare the image against its "check" line. If it passes, download it with ChatGPT's own download button. If it fails, reply once saying which check failed and ask for a corrected image; if that fails too, start a fresh chat and try once more. Download only the one image you keep for each prompt.
+
+4. Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-v2 and drag in the 2 downloaded files. Commit message: "Clinic backgrounds round 2: CB1b waiting room six-seat bench, CB2b exam room closer (ChatGPT)". Choose "Commit directly to the main branch" and click "Commit changes".
+
+5. Tell me, for CB1b and CB2b: the file name as uploaded, and pass, or what's wrong with it.
+```
+
+### CB1b. The waiting room, closer, one six-seat bench
+```
+Redraw the attached waiting room for a children's game, 1536x1024 landscape, keeping EXACTLY the same style, colours, light, materials, wall, dado band, terrazzo floor, window, medical cross sign, heart poster, half-open sage door and check-in desk, but with these changes:
+- The camera is CLOSER: the long bench fills about 75% of the image width, and the bench seat sits a little below the middle of the image, so people sitting on it will be large.
+- The bench has exactly SIX seats in a row (six sage cushions, six back cushions), light oak, centred slightly left.
+- REMOVE the two armchairs and the round side table on the left.
+- Keep the half-open door on the right and the check-in desk with its brass bell in the right foreground, with standing room in front of the door and beside the desk.
+- Much less empty floor: only a strip of terrazzo in front of the bench.
+- The medical cross sign and the heart poster stay on the wall above the bench, HIGH on the wall, so the heads of seated people will be below them.
+NO people, no animals, no text, letters or numbers anywhere.
+Style: exactly as the attached images: stylised 3D animated-feature-film look, semi-photoreal materials, soft global illumination, warm morning light from the upper left, no outlines.
+```
+**attach:** `style-anchor-v1.png`, the first CB1 image
+**save as:** `sources/art/clinic-v2/cb1b-waiting-six-v1.png`
+**check:** closer view · one bench with exactly six seats, filling about 75% of the width · no armchairs or side table · the door and desk still on the right · the sign and poster high on the wall · no people, no text.
+
+### CB2b. The exam room, closer, the poster off to the side
+```
+Redraw the attached doctor's examination room for a children's game, 1536x1024 landscape, keeping EXACTLY the same style, colours, light, materials, walls, dado band, terrazzo floor, window, desk, cabinet and door, but with these changes:
+- The camera is CLOSER: the examination bed is seen straight on and fills about 55% of the image width, its padded top a little below the middle of the image, so a person sitting on its edge (legs dangling) will be large, their head in the upper-middle of the image.
+- The wall DIRECTLY BEHIND AND ABOVE the bed is plain and calm: nothing hangs there.
+- MOVE the anatomy poster to the right, above the clear standing space right of the bed (where the doctor will stand), and make it a little smaller.
+- Keep the clear floor space to the right of the bed for the doctor. The desk and window stay at the left edge, partly cut off by the closer framing.
+NO people, no animals, no text, letters or numbers anywhere.
+Style: exactly as the attached images: stylised 3D animated-feature-film look, semi-photoreal materials, soft global illumination, warm morning light from the upper left, no outlines.
+```
+**attach:** `style-anchor-v1.png`, the first CB2 image
+**save as:** `sources/art/clinic-v2/cb2b-exam-bed-close-v1.png`
+**check:** closer view · the bed fills about half the width, straight on · plain wall directly behind and above the bed · the poster smaller, to the right, above the doctor's space · no people, no text.
