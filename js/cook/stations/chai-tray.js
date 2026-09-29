@@ -254,8 +254,10 @@
     shelfIds.forEach((group, gi) => {
       plank.fillStyle(INK.grey, 1);
       plank.fillRoundedRect(sx - PITCH / 2 + 10, BASE - 2, group.length * PITCH - 20, 10, 5);
+      // 29 Sept (X7): the band's padding rule (St.shelfFit): the group's tallest thing, hop included, keeps the top gap
+      const K = Math.min(...group.map((id) => St.shelfFit(S, `jar-${id}`, SHELF_K[gi], BASE)));
       group.forEach((id) => {
-        shelf[id] = slot(id, sx, SHELF_K[gi]);
+        shelf[id] = slot(id, sx, K);
         sx += PITCH;
       });
       sx += GROUP_GAP;

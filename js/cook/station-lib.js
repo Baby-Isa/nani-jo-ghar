@@ -38,6 +38,58 @@
   const hideKnown = (ctx) => (id) => !ctx.guided && Cook.cardHidden(id);
   S$.nani = nani;
   S$.oops = oops;
+
+  /*
+   * 29 Sept (X7, Zafar): the shelf band's one padding rule. The band is the bottom 26% (666-900 in
+   * design px) with the name chips at 860 (46 high). The gap from the top of the band to the top of
+   * the tallest thing on it equals the gap from the bottom of the chips to the bottom of the band;
+   * a thing that hops when Nani points at it (S.glow's bounce) and its glow keep inside that, so
+   * the hop and a little glow come off the room first. shelfFit gives the largest scale (at most k)
+   * that keeps a picture standing on `base` inside the rule.
+   */
+  const SHELF = { top: 666, bottom: 900, chipY: 860, chipH: 46, glow: 4 };
+  S$.SHELF = SHELF;
+  S$.shelfPad = () => SHELF.bottom - (SHELF.chipY + SHELF.chipH / 2);
+  S$.shelfItemTop = () => SHELF.top + S$.shelfPad();
+  /** How far S.glow's bounce lifts a thing this tall (the same rule as stations.js glow()). */
+  S$.shelfHop = (h) => Math.max(6, Math.min(16, h * 0.07));
+  /** Where a texture's picture starts and ends ([top, bottom] as fractions of its canvas height). */
+  S$.opaqueSpan = function (S, key) {
+    const cache = (S$._span = S$._span || {});
+    if (cache[key]) return cache[key];
+    let out = [0, 1];
+    try {
+      const src = S.textures.get(key).getSourceImage();
+      const cv = document.createElement("canvas");
+      cv.width = src.width;
+      cv.height = src.height;
+      const g = cv.getContext("2d", { willReadFrequently: true });
+      g.drawImage(src, 0, 0);
+      const d = g.getImageData(0, 0, cv.width, cv.height).data;
+      const row = (y) => {
+        for (let x = 0; x < cv.width; x += 2) if (d[(y * cv.width + x) * 4 + 3] > 60) return true;
+        return false;
+      };
+      let t = 0;
+      while (t < cv.height - 1 && !row(t)) t++;
+      let b = cv.height - 1;
+      while (b > t && !row(b)) b--;
+      out = [t / cv.height, (b + 1) / cv.height];
+    } catch (e) {
+      /* a tainted texture: its whole canvas */
+    }
+    return (cache[key] = out);
+  };
+  /** The largest scale (at most k) at which texture `key`, standing on `base`, keeps the band's top gap (with its hop). */
+  S$.shelfFit = function (S, key, k, base, { hop = true } = {}) {
+    if (!S.textures.exists(key)) return k;
+    const [t, b] = S$.opaqueSpan(S, key);
+    const h = (b - t) * S.textures.get(key).getSourceImage().height;
+    const room = base - S$.shelfItemTop() - SHELF.glow;
+    let s = k;
+    for (let n = 0; n < 3; n++) s = Math.min(k, (room - (hop ? S$.shelfHop(h * s) : 0)) / h);
+    return Math.max(0.05, s);
+  };
   S$.hideKnown = hideKnown;
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */

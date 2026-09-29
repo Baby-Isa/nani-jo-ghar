@@ -47,7 +47,8 @@
   const COL_GAP = 150; // between the chakla and the hob
   const TAWA_R = 150; // the tawa's round body
   const PLATE_D = 150; // a plate on the shelf band
-  const PLATE_Y = 750;
+  // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
+  const PLATE_Y = 666 + (900 - 883) + 8 + PLATE_D / 2;
   const PLATE_PITCH = 204;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   const CHIP_Y = 860;

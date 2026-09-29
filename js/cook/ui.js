@@ -105,7 +105,7 @@
     const sayLine = opts.speakLine || line;
     const voice = Lang.hasVoice(sayLine);
     const hideTr = opts.noTranslate || !line.en;
-    el.innerHTML = `${voice ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : opts.reserveSay ? `<span class="wp-gap"></span>` : ""}<span class="wp-text">${Lang.html(line, opts)}</span>${
+    el.innerHTML = `${voice ? `<button class="wp-say" type="button" aria-label="Hear it">${ICON.speaker}</button>` : opts.reserveSay ? `<span class="wp-gap"></span>` : ""}<span class="wp-text">${opts.readAlong ? raHtml(line, opts) : Lang.html(line, opts)}</span>${
       opts.onReveal ? `<button class="wp-eye" type="button" aria-label="Show the word">${ICON.eye}</button>` : ""
     }${hideTr ? "" : `<button class="wp-tr" type="button" aria-label="Show in English">${ICON.translate}</button>`}<span class="wp-en hidden">${esc(line.en || "")}</span>`;
     const say = el.querySelector(".wp-say");
@@ -115,7 +115,7 @@
         Cook.unlockAudio();
         say.classList.add("on");
         if (opts.onHear) opts.onHear();
-        Lang.speak(sayLine).then(() => say.classList.remove("on"));
+        (opts.readAlong && sayLine === line ? speakAlong(line, el) : Lang.speak(sayLine)).then(() => say.classList.remove("on"));
       });
     const eye = el.querySelector(".wp-eye");
     if (eye)
@@ -138,6 +138,48 @@
       });
     return el;
   };
+
+  /*
+   * 29 Sept (X2, Zafar: the read-along underline is the standard): any spoken line shows as its
+   * spoken parts (one span each), and each part underlines while it's said, as on the sidebar card.
+   * raHtml(line, opts) -> the html; speakAlong(line, box) speaks it part by part, underlining the
+   * spans inside box. A line with a whole recording of its own is heard whole, all of it underlined.
+   */
+  const raParts = (line) => (line && line.parts && line.parts.length > 1 ? line.parts : [line]);
+  const raHtml = (line, opts = {}) => raParts(line).map((p, i) => `<span class="ra" data-ra="${i}">${Lang.html(p, opts)}</span>`).join(" ");
+  async function speakAlong(line, box) {
+    const spans = (i) => (box ? [...box.querySelectorAll(i == null ? ".ra" : `.ra[data-ra="${i}"]`)] : []);
+    const lit = (els, on) => els.forEach((e) => e.classList.toggle("ra-on", on));
+    if (Lang.hasWhole && Lang.hasWhole(line)) {
+      lit(spans(), true);
+      try {
+        return await Lang.speak(line);
+      } finally {
+        lit(spans(), false);
+      }
+    }
+    const parts = raParts(line);
+    for (let i = 0; i < parts.length; i++) {
+      const els = spans(parts.length > 1 ? i : null);
+      lit(els, true);
+      try {
+        if (Lang.hasVoice(parts[i])) await Lang.speak(parts[i]);
+        else await Cook.wait(Math.max(500, Cook.readMs(Lang.plain(parts[i])) * 0.5));
+      } finally {
+        lit(els, false);
+      }
+    }
+    return true;
+  }
+  UI.raHtml = raHtml;
+  UI.speakAlong = speakAlong;
+  /*
+   * 29 Sept (P1): one speech queue at a station. The counting voice ("hakro dudh") and Nani's next
+   * line never talk over each other: each waits for the one before it, the count first.
+   */
+  let speechTail = Promise.resolve();
+  const queued = (fn) => (speechTail = speechTail.catch(() => {}).then(fn));
+  UI.queueSpeech = queued;
 
   /* ---------------- speech: bubble by a character, or Nani's card ---------------- */
   let bubbleAnchor = null;
@@ -171,7 +213,7 @@
     other.classList.add("hidden");
     const slot = target.querySelector(".say-slot");
     slot.innerHTML = "";
-    slot.appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6() }));
+    slot.appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6(), readAlong: true }));
     target.classList.remove("hidden", "talk");
     target.style.animation = "none";
     void target.offsetWidth;
@@ -190,7 +232,7 @@
     try {
       const naniQuiet = (target === card() || opts.nani) && UI.naniMuted();
       const voice = !opts.silent && !naniQuiet && Lang.hasVoice(line);
-      const talk = voice ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(opts.ms || Cook.readMs(Lang.plain(line)));
+      const talk = voice ? Promise.all([queued(() => speakAlong(line, slot)), Cook.wait(700)]) : Cook.wait(opts.ms || Cook.readMs(Lang.plain(line)));
       await Promise.race([talk, skipped]);
     } finally {
       document.removeEventListener("pointerdown", skip, true);
@@ -239,10 +281,10 @@
     // 28 Sept: her line shows in her own box at the top of the sidebar (no caption over the picture)
     if (guide) {
       guideLine = line;
-      guide.set(Lang.html(line, { hide: opts.hide }));
+      guide.set(raHtml(line, { hide: opts.hide }));
       guide.talk(true);
     } else if (!onCard) {
-      cap.innerHTML = `<span class="vc-say">${ICON.speaker}</span><span class="vc-t">${Lang.html(line, { hide: opts.hide })}</span>`;
+      cap.innerHTML = `<span class="vc-say">${ICON.speaker}</span><span class="vc-t">${raHtml(line, { hide: opts.hide })}</span>`;
       cap.classList.remove("hidden");
       cap.style.animation = "none";
       void cap.offsetWidth;
@@ -260,7 +302,7 @@
     try {
       // Nani muted (her box): she still shows the line, silently
       const voice = !opts.silent && !UI.naniMuted() && Lang.hasVoice(line);
-      const talk = voice ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(opts.ms || Math.min(2600, Cook.readMs(Lang.plain(line))));
+      const talk = voice ? Promise.all([queued(() => speakAlong(line, guide ? guide.el : cap)), Cook.wait(700)]) : Cook.wait(opts.ms || Math.min(2600, Cook.readMs(Lang.plain(line))));
       await Promise.race([talk, skipped]);
     } finally {
       document.removeEventListener("pointerdown", skip, true);
@@ -305,7 +347,7 @@
     const g = guideEntry();
     if (g && g.line && Cook.data.lines[g.line]) {
       guideLine = Lang.line(g.line);
-      guide.set(Lang.html(guideLine));
+      guide.set(raHtml(guideLine));
     } else guide.set(esc((g && g.en) || ""), { rec: !!(g && g.en) });
   }
   /** The station (or station:phase) whose instruction the box shows. */
@@ -341,7 +383,7 @@
         if (!line || !Lang.hasVoice(line)) return;
         if (Cook.onHelp && line.segs.some((x) => x.w)) Cook.onHelp("replay", { line });
         btn.classList.add("on");
-        Lang.speak(line)
+        speakAlong(line, guide.el)
           .catch(() => {})
           .then(() => btn.classList.remove("on"));
       },
@@ -1590,7 +1632,7 @@
     // 28 Sept (Zafar): the voice says the count AND the thing ("hakri dungri", "ba dungri"), the number
     // agreeing with the noun (hakro/hakri). A later level (3+) or Nani on mute stays silent.
     const lv = mission ? mission.level : orderLevel();
-    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3 && lv <= 2 && !UI.naniMuted()) Lang.speak(tallyLine(n, id));
+    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3 && lv <= 2 && !UI.naniMuted()) queued(() => Lang.speak(tallyLine(n, id)));
   };
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {

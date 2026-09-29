@@ -239,14 +239,18 @@
      * The heat ring (one per pan): it fills like a clock from the top; the sage arc is "now"; the
      * sweep turns red past it. draw(x, y, r, level 0-1, lo, hi) each frame; clear() when it stops.
      */
-    heatRing(S, { depth = D.fx - 2, width = 10 } = {}) {
+    heatRing(S, { depth = D.fx - 2, width: w0 = 10 } = {}) {
       const g = S.track(S.add.graphics().setDepth(depth));
       const a0 = -Math.PI / 2;
+      // 29 Sept (X6): half as thick again (10 -> 15 px) on a dark track, so it reads against the flames
+      const width = w0 * 1.5;
       return {
         g,
         draw(x, y, r, level, lo, hi) {
           g.clear();
-          g.lineStyle(width, INK.track, 0.8);
+          g.lineStyle(width + 4, INK.text, 0.55);
+          g.strokeCircle(x, y, r);
+          g.lineStyle(width, 0x4a3b30, 0.85);
           g.strokeCircle(x, y, r);
           g.lineStyle(width, INK.sage, 0.95);
           g.beginPath();

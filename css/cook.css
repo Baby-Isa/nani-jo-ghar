@@ -954,3 +954,8 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 
 /* Design system 10: the end-of-station pop-up sits over the game scene only; the menu card never shows behind it */
 .njg-results-open #overlay { display: none !important; }
+
+/* 29 Sept (X2): the read-along underline on every spoken line (Nani's box, a speech card, the caption),
+   one part at a time, the same gold underline as the order card's headline */
+.ra { transition: text-decoration-color .15s; text-decoration: underline 3px transparent; text-underline-offset: 5px; text-decoration-skip-ink: none; }
+.ra.ra-on { text-decoration-color: #c9962e; }
