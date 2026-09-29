@@ -85,6 +85,10 @@
    *            or between the two, and it waits for you (to flip a maani)
    *   onStart  called once, when the pin first moves the dough
    *   handle   {} that gets cancel(): stop without a score (resolves null)
+   *   pinTex   a rolling-pin texture (level, e.g. the maani v2 velan): the pin rolls on its own, no hands;
+   *            pinW its width (design px)
+   *   gold     the target is a faint gold ring etched on the board that glows when the maani is the
+   *            right size (maani v2, §11), not the white dashed circle
    */
   function rollOne(z, k, at, opts = {}) {
     const S = z.S;
@@ -116,6 +120,15 @@
         const near = nearest();
         targets.forEach((t) => {
           const ok = t === near && r >= t.R * lo && r <= t.R * hi;
+          if (opts.gold) {
+            if (ok) {
+              guide.lineStyle(z.L(22), 0xe8c060, 0.28);
+              guide.strokeCircle(cx, cy, t.R);
+            }
+            guide.lineStyle(z.L(ok ? 7 : 4), 0xc9962e, ok ? 1 : 0.45);
+            guide.strokeCircle(cx, cy, t.R);
+            return;
+          }
           guide.lineStyle(z.L(7), ok ? 0x4f6b4b : 0xffffff, 0.95);
           for (let a = 0; a < 360; a += 12) {
             guide.beginPath();
@@ -125,7 +138,12 @@
         });
       };
       drawGuide();
-      const pin = S.hand("pin", { x: cx, y: cy + z.L(60), k: z.k });
+      let pin;
+      if (opts.pinTex) {
+        pin = S.track(S.add.image(cx, cy + z.L(60), opts.pinTex).setDepth(D.item + 2).setAlpha(0));
+        pin.setScale(z.L(opts.pinW || 520) / S.texSize(opts.pinTex).w);
+        S.tweens.add({ targets: pin, alpha: 1, duration: 200 });
+      } else pin = S.hand("pin", { x: cx, y: cy + z.L(60), k: z.k });
       if (k.special) S.special(pin);
       let last = null;
       let quiet = null;

@@ -49,5 +49,28 @@ def cut_chimta():
     print('chimta', img.size)
 
 
+def existing():
+    """The existing art, made ready: the velan turned level (the pin rolls up and down the board) and the
+    steel thali, both trimmed to their objects."""
+    items = os.path.join(ROOT, 'assets', 'cook', 'items')
+    v = Image.open(os.path.join(items, 'tool-velan-t.png')).convert('RGBA')
+    a = np.asarray(v)[..., 3] > 128
+    ys, xs = np.nonzero(a)
+    # its long axis: the principal direction of the opaque pixels
+    c = np.cov(np.vstack([xs - xs.mean(), ys - ys.mean()]))
+    w, vec = np.linalg.eigh(c)
+    ang = np.degrees(np.arctan2(vec[1, -1], vec[0, -1]))
+    ang = (ang + 90) % 180 - 90  # the smaller turn keeps the light from the upper left
+    v = v.rotate(ang, resample=Image.BICUBIC, expand=True)
+    v = v.crop(v.getbbox())
+    v.save(os.path.join(OUT, 'velan.webp'), quality=92, method=6)
+    t = Image.open(os.path.join(items, 'vessel-thali-t.png')).convert('RGBA')
+    t = t.crop(t.getbbox())
+    t.thumbnail((384, 384), Image.LANCZOS)
+    t.save(os.path.join(OUT, 'thali.webp'), quality=92, method=6)
+    print('velan', v.size, round(ang, 1), 'thali', t.size)
+
+
 if __name__ == '__main__':
     cut_chimta()
+    existing()

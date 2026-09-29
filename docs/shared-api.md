@@ -588,3 +588,20 @@ The top of every mode's sidebar: Nani's face (= replay), what to do now (up to 2
 2. Build the data from the mode's own order: one card per person; its number words in the labels; `done` when the step closes.
 3. `OrderCard.render(sidebarBox, cards, {fold: state, onFace, onEl})` on every change, and the same data with `{big: true}` inside the request pop-up.
 
+
+## 15. The Cook kitchen kit: `js/cook/kitchen-kit.js` → `Cook.Kit` (29 Sept 2026, maani v2)
+
+Cook's shared hob, extracted from chai v2 (design system §13). One owner at a time; daar v2 and samosa v2 import it (small additive edits only, after `git pull --rebase`). Loaded in `cook.html` after `zone.js`. Coordinates are the station's design px (combined stations draw 1:1 on 1600×900). **The burner rule:** one burner per pan in play, 1–4, never an empty burner.
+
+```js
+await St.load(S, Kit.art(n, ["tawa"]));                 // hob n + knobs + flames + the vessels you place
+const sz  = Kit.size(n, k);                             // {w, h, burnerY, frontY} for layout before building
+const hob = Kit.hob(S, { n, k, cx, bottom });           // or {x, y}: → {img, x, y, w, h, burners:[{x,y}], frontY, pitch}
+const b   = Kit.burner(S, hob, i, { who, flameR, state: "high" }); // face badge + 48 px knob on the front edge, flame rings
+b.set("off" | "high" | "low");  S.tappable(b.knobHit, …);          // the station decides what the knob does
+const pan = Kit.place(S, "pan" | "tawa" | "karahi", hob.burners[i], r); // body centred on the burner, contact shadow
+const ring = Kit.heatRing(S);  ring.draw(x, y, r, level, lo, hi);  ring.clear();  // the chai v2 clock ring (sage "now", gold sweep)
+Kit.chip(S, wordId, x, y, { word: level < 3, w });      // the shelf's `🔊 word` chip (speaker only when word:false)
+Kit.badge(S, who);  Kit.speaker(g, x, y, size);         // face-on-white-disc texture; the flat speaker icon
+```
+Vessel geometry lives in `Kit.VESSELS` (canvas fractions of the round body: add a `karahi` measurement when samosa lands its art). Maani v2 uses one burner and one tawa; chai v2 keeps its own copy for now (same art and numbers).

@@ -1333,7 +1333,7 @@
    }
   },
   "maani": {
-   "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, and a second tawa; 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
+   "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, (one tawa at every level: §13's burner rule); 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
    "name": "cook-maani",
    "english": "Maani",
    "price": 3,
@@ -3686,6 +3686,10 @@
    "stars": 1,
    "bulb": 2
   }
+ },
+ "timing": {
+  "_about": "Cook timers by level (design system §11): flip, boil and fry timers get about 15% quicker per level (a rate is multiplied by (1/(1 - levelSpeed))^(level - 1)). Read by the maani station v2; the other stations adopt it as they are rebuilt.",
+  "levelSpeed": 0.15
  },
  "lab": {
   "_about": "Wave 6b (the quality pass, Q4 and Q9 item 6): the Station lab lists the nine kept stations (lab entry keys, in this order); every other entry (the sub-mechanics: pour, boil, count, roll, flip, thread, grill…) sits under 'Parts' for testing. Knead is cut (its file isn't loaded).",

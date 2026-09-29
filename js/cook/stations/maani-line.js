@@ -1,106 +1,94 @@
 /*
- * Combined station: the Maani line. Three zones on one screen:
+ * Combined station: the Maani line, v2 (docs/design/cook-design-system-v1.md §11, §13's burner rule).
  *
- *   dough bowls (left)  ->  chakla (middle: roll)  ->  tawa (right: flip, puff)
+ * A two-zone grid, everything centred, aligned on shared lines:
+ *  - LEFT (prep): the chakla (rolling board), a faint gold ring etched on it (the size to roll to;
+ *    it glows when the maani is right). The velan rolls on its own: no hands anywhere.
+ *  - RIGHT (cook): the shared kitchen kit's compact hob with ONE burner and ONE tawa centred on it
+ *    (maani keeps one tawa: the game is rolling the next maani while flipping the one on the tawa),
+ *    the heat ring centred on the tawa, the person's face and the knob on the hob's front edge.
+ *  - THE SHELF BAND (the bottom 26%): under the chakla, the dough plates (wheat, bajri: always both,
+ *    each with the same number of balls, more than anyone orders), a `🔊 word` chip under each
+ *    (tap the plate = take a ball, tap the chip = hear it; the speaker alone from level 3); under
+ *    the hob, the finished-maani plates, one per kind, where each cooked maani lands.
  *
- * The order says how many of each kind, in Kutchi: "ba maani ne hakri bajr
- * ji maani" (and, at level 4, big or small: wadhi / nindhi, the she-forms,
- * because maani is a she-word). The bowls always offer both doughs (maani, and
- * the greyer bajr ji maani), each with the same number of balls, always
- * more than anyone orders; nothing on screen shows the target; the count
- * badge is only a running tally of what's on the plate; you press the tick
- * when you think you're done. The ear star checks the count of each kind.
+ * The flow: tap a dough plate, the ball flies to the chakla (tap the other plate before you start
+ * and it goes back: a slip is free); drag up and down, the velan rolls it out to the ring. Tap the
+ * rolled maani and it slides onto the tawa (if the tawa's busy it waits on the board, so roll the
+ * next one while this one cooks). On the tawa the ring fills like a clock: tap in the green and
+ * the chimta flips it; tap in the green again and the chimta lifts it (a slight puff) onto its
+ * plate. Too late and it catches (a darker maani). The tick, when you think you've made what
+ * they asked for; the ear star checks the count of each kind (the target is never shown).
  *
- * The real decision: a rolled maani waits on the side plate until you tap
- * it onto the tawa, and the tawa never waits. Put each one on as soon as
- * it's rolled and roll the next while it cooks (a production line: quick,
- * but you must stop rolling to flip), or roll them all first (safe, slow).
- * Level 2+: two tawas.
- *
- * Tap the other bowl before you start rolling and the dough goes back (a
- * slip of the finger is free); once the pin has touched it, it's made.
- *
- * Params: order ({kind: n}, the recipe's tally slot: "cook-maani",
- * "cook-bajrmaani", or "ph-big+cook-maani" with sizes). Returns how many
- * were made. Knobs and levels: data/stations/maani-line.json.
+ * Params: order ({kind: n}; kinds "cook-maani", "cook-bajrmaani", or "ph-big+cook-maani" with
+ * sizes at level 4). Returns how many were made. Knobs and levels: data/stations/maani-line.json;
+ * the tawa's band and rate: data.mechanics.tawa (level 1), made about 15% quicker per level by
+ * data.timing.levelSpeed. Art: the chai v2 hob (the kit), the batch 1-3 chakla, velan, tawa,
+ * dough and maani states, the thali (assets/cook/items/maani-v2/, build/cut_maani_v2.py), and the
+ * chimta (build/gen_maani_v2.py, $0.05).
  */
 (function (global) {
   const Cook = global.Cook;
   const UI = Cook.UI;
+  const Lang = Cook.Lang;
   const D = Cook.D;
   const St = Cook.Stations;
   const Mech = Cook.Mech;
+  const Kit = Cook.Kit;
 
-  // where things sit (design coords; each zone's footprint is its region, so they're screen coords)
-  const LAY = {
-    bowlX: 165,
-    bowlYs: [262, 612],
-    chakla: { x: 660, y: 400 },
-    rest: { x: 880, y: 800 },
-    hob: { x: 1012, y: 34, w: 572, h: 624 },
-    one: { spots: [[1295, 345]], size: 0.95 },
-    two: { spots: [[1295, 192], [1295, 497]], size: 0.6 },
-    plateAt: [1180, 792],
-    spatulaAt: [1540, 610],
-  };
+  const IT = "assets/cook/items/";
+  const MV = IT + "maani-v2/";
+  /* ---------- the grid (design px, 1600x900; the canvas is the play area), as chai v2 ---------- */
+  const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const HOB_K = 0.85; // the one-burner hob, a little bigger than chai's (it holds a tawa)
+  const HOB_BOTTOM = SHELF_TOP - 40; // breathing space above the shelf (§10)
+  const CHAKLA_D = 470;
+  const COL_GAP = 150; // between the chakla and the hob
+  const TAWA_R = 150; // the tawa's round body
+  const PLATE_D = 150; // a plate on the shelf band
+  const PLATE_Y = 750;
+  const PLATE_PITCH = 204;
+  const CHIP_Y = 860;
+  const PIN_W = 540;
+  const INK = { page: 0xf4ecdf, panel: 0xefe5d6, grey: 0xd9d2c7 };
+  const BURNT = 0x8a6a55;
+  const ART = [
+    ["mv-chakla", IT + "tool-chakla-t.webp"],
+    ["mv-velan", MV + "velan.webp"],
+    ["mv-chimta", MV + "chimta.webp"],
+    ["mv-thali", MV + "thali.webp"],
+    ["mv-ball-maani", IT + "dough-ball-t.webp"],
+    ["mv-ball-bajr", IT + "dough-bajr-ball-t.webp"],
+    ["mv-raw-maani", IT + "maani-raw-t.webp"],
+    ["mv-raw-bajr", IT + "maani-bajr-raw-t.webp"],
+    ["mv-half-maani", IT + "maani-cooked-half-t.webp"],
+    ["mv-half-bajr", IT + "maani-bajr-cooked-half-t.webp"],
+    ["mv-done-maani", IT + "maani-cooked-puffed-t.webp"],
+    ["mv-done-bajr", IT + "maani-bajr-cooked-puffed-t.webp"],
+  ].concat(Kit.art(1, ["tawa"]));
 
   Mech.combined("maani-line", {
     station: "maani-line",
     view: "marble",
     dataFile: "data/stations/maani-line.json",
+    // one drawing space (1:1); the roll zone owns the left column's pointer (a tap on the tawa is not a roll)
     zones: [
-      { id: "bowls", region: [0, 0, 330, 900], footprint: { x: 0, y: 0, w: 330, h: 900 } },
-      { id: "roll", mech: "roll", region: [330, 0, 660, 900], footprint: { x: 330, y: 0, w: 660, h: 900 } },
-      { id: "tawa", mech: "tawa", region: [990, 0, 610, 900], footprint: { x: 990, y: 0, w: 610, h: 900 }, in: "rolled" },
+      { id: "bowls", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
+      { id: "roll", mech: "roll", region: [0, 0, 830, 666], footprint: { x: 0, y: 0, w: 830, h: 666 } },
+      { id: "tawa", mech: "tawa", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
     ],
     run: (host, params) => line(host, params),
   });
 
-  /** A wide steel bowl (parat) seen from above, drawn once. */
-  function parat(S, key = "ml-parat") {
-    if (S.textures.exists(key)) return key;
-    const g = S.make.graphics({ x: 0, y: 0, add: false });
-    g.fillStyle(0x3a2410, 0.18);
-    g.fillEllipse(160, 128, 300, 150);
-    g.fillStyle(0x9ea3a8, 1);
-    g.fillEllipse(160, 112, 312, 176);
-    g.fillStyle(0xe7e9eb, 1);
-    g.fillEllipse(160, 104, 300, 160);
-    g.fillStyle(0xb7bbc0, 1);
-    g.fillEllipse(160, 108, 256, 128);
-    g.fillStyle(0xffffff, 0.35);
-    g.fillEllipse(110, 84, 90, 26);
-    g.generateTexture(key, 320, 220);
-    g.destroy();
-    return key;
-  }
-
-  /** A copy of texture `key` multiplied by a colour ("#a9aab4"): the same in WebGL and canvas. */
-  function tinted(S, key, hex) {
-    if (!hex || /^#?f{6}$/i.test(hex)) return key;
-    const out = `${key}@${hex}`;
-    if (S.textures.exists(out)) return out;
-    const src = S.textures.get(key).getSourceImage();
-    const c = document.createElement("canvas");
-    c.width = src.width;
-    c.height = src.height;
-    const g = c.getContext("2d");
-    g.drawImage(src, 0, 0);
-    g.globalCompositeOperation = "multiply";
-    g.fillStyle = hex;
-    g.fillRect(0, 0, c.width, c.height);
-    g.globalCompositeOperation = "destination-in";
-    g.drawImage(src, 0, 0);
-    S.textures.addCanvas(out, c);
-    return out;
-  }
-
-  /** Ball spots in a bowl: a back row and a front row. */
+  /** Ball spots on a plate (fractions of its radius): up to 5, a ring round the middle. */
   function ballSpots(n) {
-    const back = Math.ceil(n / 2);
-    const front = n - back;
-    const row = (m, y, w) => Array.from({ length: m }, (_, i) => [m === 1 ? 0 : -w / 2 + (w * i) / (m - 1), y]);
-    return row(back, -26, 150).concat(row(front, 16, 100));
+    const out = n >= 5 ? [[0, 0]] : [];
+    const m = n - out.length;
+    for (let i = 0; i < m; i++) {
+      const a = -Math.PI / 2 + (i * Math.PI * 2) / m + 0.4;
+      out.push([Math.cos(a) * 0.42, Math.sin(a) * 0.42]);
+    }
+    return out;
   }
 
   async function line(host, params) {
@@ -110,17 +98,22 @@
     const zb = host.zones.bowls;
     const zr = host.zones.roll;
     const zt = host.zones.tawa;
-    const zrest = zr.child({ id: "rest" });
+    const zon = zr.child({ id: "rest" }); // "put it on the tawa" (the test plays from its expectation)
+    const level = zb.level || 1;
     const kRoll = Mech.knobs("roll", { level: zr.level });
-    const kTawa = Mech.knobs("tawa", { level: zt.level });
+    // the tawa: one, always (the burner rule); its speed from level 1's knobs, quicker per level
+    const kTawa = Mech.knobs("tawa", { level: 1 });
+    const kLevel = Mech.knobs("tawa", { level: zt.level });
+    const speedUp = Math.pow(1 / (1 - (((Cook.data.timing || {}).levelSpeed) || 0.15)), level - 1);
+    const [lo, hi] = kLevel.band || kTawa.band;
+    const rate1 = kTawa.rate * speedUp;
+    const rate2 = kTawa.rate2 * speedUp;
     const types = Object.keys(K.doughs || { "cook-maani": {} });
-    // bajri has its own painted art (batch 2): use it in place of a tint where it's loaded
-    const BAJR_TEX = { "dough-ball": "dough-ball-bajr", "chapati-raw": "chapati-raw-bajr", "chapati-half": "chapati-half-bajr", "chapati-puffed": "chapati-puffed-bajr" };
-    // each dough's colour baked into its own textures (a tint alone vanishes on the canvas renderer)
-    const texOf = (t, key) => {
-      const painted = t === "cook-bajrmaani" && BAJR_TEX[key];
-      if (painted && S.textures.exists(painted)) return painted;
-      return tinted(S, key, (K.doughs[t] || {}).tint);
+    const who = (ctx.order && ctx.order.who) || null;
+    await Promise.race([St.load(S, ART.concat(who ? [[`${who}-badge`, `assets/cook/characters/${who}-badge.webp`]] : [])), Cook.wait(5000)]);
+    const texOf = (t, state) => {
+      const key = `mv-${state}-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
+      return S.textures.exists(key) ? key : { ball: "dough-ball", raw: "chapati-raw", half: "chapati-half", done: "chapati-puffed" }[state];
     };
     const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] })) : null;
     const rMax = sizes ? Math.max(...sizes.map((s) => s.r)) : kRoll.radius;
@@ -137,52 +130,90 @@
       if (params.order[k] > 0) want[keyOf(type, size)] = params.order[k];
     });
 
-    /* ---------- the scene ---------- */
-    const bowlKey = parat(S);
-    // the hob: a dark panel with a burner under each tawa
-    const two = kTawa.tawas > 1;
-    const lay = two ? LAY.two : LAY.one;
-    const hob = S.track(S.add.graphics().setDepth(D.item - 3));
-    hob.fillStyle(0x3a2410, 0.22);
-    hob.fillRoundedRect(zt.X(LAY.hob.x) + 8, zt.Y(LAY.hob.y) + 12, zt.L(LAY.hob.w), zt.L(LAY.hob.h), zt.L(28));
-    hob.fillStyle(0x2b2622, 1);
-    hob.fillRoundedRect(zt.X(LAY.hob.x), zt.Y(LAY.hob.y), zt.L(LAY.hob.w), zt.L(LAY.hob.h), zt.L(28));
-    hob.lineStyle(zt.L(4), 0x4a423c, 1);
-    hob.strokeRoundedRect(zt.X(LAY.hob.x), zt.Y(LAY.hob.y), zt.L(LAY.hob.w), zt.L(LAY.hob.h), zt.L(28));
-    lay.spots.forEach(([x, y]) => {
-      hob.lineStyle(zt.L(16 * lay.size + 4), 0x46403a, 1);
-      hob.strokeCircle(zt.X(x), zt.Y(y), zt.L(150 * lay.size));
+    /* ---------- the scene: the softened marble, the shelf band ---------- */
+    S.track(S.add.rectangle(0, 0, 1600, SHELF_TOP, INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
+    const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
+    band.fillStyle(INK.panel, 1);
+    band.fillRect(0, SHELF_TOP, 1600, 900 - SHELF_TOP);
+    band.fillStyle(0x2a1a0a, 0.08);
+    band.fillRect(0, SHELF_TOP, 1600, 3);
+
+    // two columns, centred as one block: the chakla | the hob
+    const hs = Kit.size(1, HOB_K);
+    const left = (1600 - (CHAKLA_D + COL_GAP + hs.w)) / 2;
+    const LX = left + CHAKLA_D / 2;
+    const RX = left + CHAKLA_D + COL_GAP + hs.w / 2;
+    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM });
+    const midY = hob.y + hob.h / 2; // the chakla sits on the hob's middle line
+    const CH = { x: LX, y: midY };
+
+    /* ---------- the chakla and its gold ring ---------- */
+    const board = S.track(S.add.image(CH.x, CH.y, "mv-chakla").setDepth(D.item - 2));
+    board.setScale(CHAKLA_D / board.width);
+    board.shadow = S.contactShadow(board);
+
+    /* ---------- the hob: one burner, one tawa, the face and the knob on the front edge ---------- */
+    const burner = Kit.burner(S, hob, 0, { who, flameR: TAWA_R * 0.74, spread: 62, state: "high" });
+    const tawa = Kit.place(S, "tawa", hob.burners[0], TAWA_R, { depth: D.item - 0.5 });
+    const TW = { x: hob.burners[0].x, y: hob.burners[0].y };
+    const ring = Kit.heatRing(S, { width: 11 });
+    const RING_R = TAWA_R + 18;
+    let heat = "high";
+    S.tappable(burner.knobHit, () => {
+      // the knob: high (the ring runs at its pace) or low (slower: more time to roll)
+      heat = heat === "high" ? "low" : "high";
+      burner.set(heat);
     });
-    // the chakla stays; each ball is rolled on it
-    S.flat(S.tex("chakla"), zr.X(LAY.chakla.x), zr.Y(LAY.chakla.y + 10), zr.L(560), zr.L(460), { depth: D.item - 2 });
-    // the side plate where rolled maani wait for the tawa
-    S.flat(bowlKey, zr.X(LAY.rest.x), zr.Y(LAY.rest.y), zr.L(250), zr.L(170), { depth: D.item - 1 });
-    // the bowls: both doughs, always, in either order
-    const bowls = Cook.shuffle(types.slice()).map((type, i) => {
-      const x = zb.X(LAY.bowlX);
-      const y = zb.Y(LAY.bowlYs[i] != null ? LAY.bowlYs[i] : LAY.bowlYs[0] + i * 330);
-      const img = S.flat(bowlKey, x, y, zb.L(300), zb.L(206));
+    if (burner.face)
+      S.tappable(burner.face, () => {
+        // their face: hear what they asked for again
+        if (UI.mission && UI.mission.replay) UI.mission.replay();
+        S.tweens.add({ targets: burner.face, scale: burner.face.baseScale * 1.1, duration: 100, yoyo: true });
+      });
+    // the chimta rests on the counter to the right of the hob, tips up
+    const chimtaHome = { x: hob.x + hob.w + 36, y: hob.y + hob.h * 0.62, angle: -8 };
+    const chimta = S.track(S.add.image(chimtaHome.x, chimtaHome.y, "mv-chimta").setOrigin(0.1, 0.9).setDepth(D.item + 3).setAngle(chimtaHome.angle));
+    chimta.setScale(250 / chimta.width);
+
+    /* ---------- the shelf band: the dough plates (chips) | the finished plates ---------- */
+    const order = Cook.shuffle(types.slice());
+    const rowXs = (cx, n) => order.slice(0, n).map((_, i) => cx + (i - (n - 1) / 2) * PLATE_PITCH);
+    const plate = (x, y, quiet) => {
+      const p = S.track(S.add.image(x, y, "mv-thali").setDepth(D.item - 1));
+      p.setScale(PLATE_D / p.width);
+      p.shadow = S.contactShadow(p);
+      if (quiet) p.setAlpha(0.9);
+      return p;
+    };
+    const showWord = level < 3;
+    const plates = order.map((type, i) => {
+      const x = rowXs(LX, order.length)[i];
+      const img = plate(x, PLATE_Y);
       img.type = type;
-      img.balls = ballSpots(K.ballsPerBowl).map(([dx, dy]) => {
-        const b = S.track(S.add.image(x + zb.L(dx), y + zb.L(dy), texOf(type, "dough-ball")).setDepth(D.item + 0.2 + dy * 0.001));
-        b.setScale(zb.L(84) / S.texSize("dough-ball").w);
+      img.balls = ballSpots(K.ballsPerBowl || 5).map(([fx, fy], j) => {
+        const b = S.track(S.add.image(x + fx * PLATE_D * 0.5, PLATE_Y + fy * PLATE_D * 0.5, texOf(type, "ball")).setDepth(D.item + 0.2 + j * 0.001));
+        b.setScale((PLATE_D * 0.36) / b.width);
         b.home = { x: b.x, y: b.y, scale: b.scale };
         return b;
       });
-      img.label = S.label(img, type);
+      img.chip = Kit.chip(S, type, x, CHIP_Y, { word: showWord, w: 188 });
       return img;
     });
-    const bowlOf = (type) => bowls.find((b) => b.type === type);
+    const plateOf = (type) => plates.find((b) => b.type === type);
+    const dones = {};
+    order.forEach((type, i) => {
+      const x = rowXs(RX, order.length)[i];
+      dones[type] = { x, y: PLATE_Y, img: plate(x, PLATE_Y, true), n: 0 };
+    });
 
     /* ---------- state ---------- */
-    const items = []; // every rolled maani: {sprite, type, size, key, where: rest | tawa | plate}
-    const rested = [];
-    let chakla = null; // the dough on the board: {type, bowl, ball, sprite, busy, started, handle}
-    let onTawa = 0;
+    const items = []; // every rolled maani: {sprite, type, size, key, where: board | tawa | plate}
+    let chakla = null; // the dough on the board: {type, plate, ball, sprite, busy, started, handle}
+    let waiting = null; // a rolled maani waiting on the board for the tawa
+    let onTawa = null; // the maani on the tawa: {it, side, v, burnt}
     let finished = false;
     let firstOn = true;
     let doneShown = false;
-    const ch = host.channel("rolled");
     const count = (key, where) => items.filter((it) => it.key === key && (!where || it.where === where)).length;
     const plated = () => items.filter((it) => it.where === "plate");
     /** How many more of this dough the order needs (the plan for the test and for guided glows; never shown). */
@@ -190,23 +221,22 @@
       Object.keys(want)
         .filter((k) => split(k).type === type)
         .reduce((a, k) => a + Math.max(0, want[k] - count(k)), 0) - (chakla && chakla.type === type ? 1 : 0);
-    const nextType = () => (bowls.find((b) => leftOf(b.type) > 0 && b.balls.some((x) => x.visible)) || {}).type || null;
+    const nextType = () => (plates.find((b) => leftOf(b.type) > 0 && b.balls.some((x) => x.visible)) || {}).type || null;
     const aimFor = (type) => {
       if (!sizes) return 0;
       let best = 0;
       let bestLeft = -Infinity;
       sizes.forEach((s, i) => {
-        const left = (want[keyOf(type, s.id)] || 0) - count(keyOf(type, s.id));
-        if (left > bestLeft) {
+        const l = (want[keyOf(type, s.id)] || 0) - count(keyOf(type, s.id));
+        if (l > bestLeft) {
           best = i;
-          bestLeft = left;
+          bestLeft = l;
         }
       });
       return best;
     };
     const allDone = () => Object.keys(want).every((k) => count(k, "plate") === want[k]) && plated().length === Object.values(want).reduce((a, b) => a + b, 0);
-    const idle = () => !chakla && !rested.length && onTawa === 0;
-    const topRested = () => rested.filter((it) => it.landed).pop() || null;
+    const idle = () => !chakla && !waiting && !onTawa;
     const glowOn = (obj, on) => {
       if (!obj || !obj.active || !!obj._glowing === on) return;
       obj._glowing = on;
@@ -223,21 +253,40 @@
         UI.mission.step(i);
       }
     };
+    /** The word pops by the action (§4), and the family clip plays. */
+    const wordPop = (id, x, y) => {
+      const pop = S.track(S.add.container(x, y).setDepth(D.fx + 4).setAlpha(0));
+      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: "Nunito, sans-serif", fontSize: "34px", fontStyle: "800", color: "#8C2F2F" }).setOrigin(0, 0.5);
+      const w = t.width + 64;
+      const bg = S.add.graphics();
+      bg.fillStyle(0x28190a, 0.1);
+      bg.fillRoundedRect(-w / 2, -28, w, 60, 12);
+      bg.fillStyle(0xffffff, 1);
+      bg.fillRoundedRect(-w / 2, -30, w, 60, 12);
+      const icon = S.add.graphics();
+      Kit.speaker(icon, -w / 2 + 26, 0, 26);
+      t.x = -w / 2 + 48;
+      pop.add([bg, icon, t]);
+      S.tweens.add({ targets: pop, alpha: 1, y: y - 16, duration: 220 });
+      S.tweens.add({ targets: pop, alpha: 0, delay: 1300, duration: 300, onComplete: () => pop.destroy() });
+      Lang.speakWord(id);
+    };
 
-    /* ---------- what's next (the test plays from it; guided mode glows it) ---------- */
+    /* ---------- what's next (the test plays from it; the focal rule; guided glows the answer) ---------- */
     function update() {
       if (finished) return;
-      const need = !chakla ? nextType() : null;
-      const top = topRested();
-      const free = onTawa < kTawa.tawas;
-      bowls.forEach((b) => glowOn(b, !!(ctx.guided && need === b.type)));
-      rested.forEach((it) => glowOn(it.sprite, !!(ctx.guided && it === top && free)));
+      const need = !chakla && !waiting ? nextType() : null;
+      plates.forEach((b) => glowOn(b, !!(ctx.guided && need === b.type)));
+      // a rolled maani and a free tawa: that's the next thing (it pulses, whatever the level)
+      if (waiting) glowOn(waiting.sprite, !onTawa && waiting.landed);
       if (need) {
-        const b = bowlOf(need);
-        zb.expect(Object.assign({ kind: "tap", key: "dough", wrongs: bowls.filter((o) => o !== b).map(centre) }, centre(b)));
-      } else if (idle() && plated().length) zb.expect(Object.assign({ kind: "more", target: 1, count: 1, extra: true }, centre(bowls[0])));
+        const b = plateOf(need);
+        zb.expect(Object.assign({ kind: "tap", key: "dough", wrongs: plates.filter((o) => o !== b).map(centre) }, centre(b)));
+      } else if (idle() && plated().length) zb.expect(Object.assign({ kind: "more", target: 1, count: 1, extra: true }, centre(plates[0])));
       else zb.expect(null);
-      zrest.expect(top && free ? Object.assign({ kind: "tap", key: "tawa-on" }, centre(top.sprite)) : null);
+      zon.expect(waiting && waiting.landed && !onTawa ? Object.assign({ kind: "tap", key: "tawa-on" }, centre(waiting.sprite)) : null);
+      // quiet until they matter (§3): the finished plates, until a maani lands
+      Object.values(dones).forEach((d) => d.img.setAlpha(d.n ? 1 : 0.9));
       // the tick: whenever nothing is on the go (it never says whether you're right)
       if (idle() && plated().length) {
         if (!doneShown) {
@@ -253,57 +302,56 @@
       }
     }
 
-    /* ---------- bowls -> chakla ---------- */
-    async function pick(bowl) {
+    /* ---------- a dough plate -> the chakla -> rolled ---------- */
+    async function pick(pl) {
       if (finished) return;
-      if (chakla && (chakla.busy || chakla.started)) return S.wiggle(bowl); // one at a time: finish this one first
-      if (chakla && chakla.type === bowl.type) return;
-      const ball = bowl.balls.filter((b) => b.visible).pop();
-      if (!ball) return S.wiggle(bowl);
+      if (waiting) return S.wiggle(waiting.sprite); // the board's taken: put that one on the tawa first
+      if (chakla && (chakla.busy || chakla.started)) return S.wiggle(pl); // one at a time: finish this one first
+      if (chakla && chakla.type === pl.type) return;
+      const ball = pl.balls.filter((b) => b.visible).pop();
+      if (!ball) return S.wiggle(pl);
       if (chakla) putBack(chakla);
       ball.setVisible(false);
-      const sprite = S.track(S.add.image(ball.x, ball.y, texOf(bowl.type, "dough-ball")).setScale(ball.scale).setDepth(D.item + 3));
-      const c = { type: bowl.type, bowl, ball, sprite, busy: true, started: false, handle: {} };
+      const sprite = S.track(S.add.image(ball.x, ball.y, texOf(pl.type, "ball")).setScale(ball.scale).setDepth(D.item + 3));
+      const c = { type: pl.type, plate: pl, ball, sprite, busy: true, started: false, handle: {} };
       chakla = c;
       Cook.sfx.pop();
+      wordPop(pl.type, CH.x, CH.y - CHAKLA_D / 2 - 10);
       update();
-      await S.fly(sprite, zr.X(LAY.chakla.x), zr.Y(LAY.chakla.y), { scale: (2 * zr.L(kRoll.startRadius)) / S.texSize("dough-ball").w, duration: 380 });
+      await S.fly(sprite, CH.x, CH.y, { scale: (2 * kRoll.startRadius) / sprite.width, duration: 380 });
       c.busy = false;
       if (chakla !== c || finished) return;
       update();
       const targets = sizes ? sizes.map((s) => ({ id: s.id, r: s.r })) : null;
-      const r = await Mech.rollOne(zr, kRoll, LAY.chakla, {
+      const r = await Mech.rollOne(zr, kRoll, CH, {
         dough: sprite,
         board: false,
-        tex: { ball: texOf(c.type, "dough-ball"), raw: texOf(c.type, "chapati-raw") },
+        tex: { ball: texOf(c.type, "ball"), raw: texOf(c.type, "raw") },
         targets,
         aim: aimFor(c.type),
         quietMs: K.quietMs,
         keep: true,
         patient: true,
         handle: c.handle,
+        pinTex: "mv-velan",
+        pinW: PIN_W,
+        gold: true,
         onStart: () => {
           c.started = true;
           update();
         },
       });
-      if (!r) return; // it went back to its bowl
+      if (!r) return; // it went back to its plate
       zr.skill(r.score, "roll");
       chakla = null;
-      const it = { sprite: r.sprite, type: c.type, size: r.target || null, key: keyOf(c.type, r.target), score: r.score, where: "rest", landed: false };
+      const it = { sprite: r.sprite, type: c.type, size: r.target || null, key: keyOf(c.type, r.target), score: r.score, where: "board", landed: true };
       it.sizeF = sizes ? Math.sqrt((sizes.find((s) => s.id === it.size) || { r: rMax }).r / rMax) : 1;
       items.push(it);
-      rested.push(it);
-      update();
-      // it slides onto the side plate, on top of any already waiting
-      const h = rested.length - 1;
-      it.sprite.setDepth(D.item + 1 + h * 0.01);
-      await S.fly(it.sprite, zr.X(LAY.rest.x), zr.Y(LAY.rest.y - 14) - zr.L(h * 12), { scale: (zr.L(250) * 0.68 * it.sizeF) / S.texSize("chapati-raw").w, duration: 360, arc: 60 });
-      it.landed = true;
+      waiting = it;
       S.tappable(it.sprite, () => putOn());
       update();
     }
-    /** Changed your mind before rolling: the dough goes back to its bowl. */
+    /** Changed your mind before rolling: the dough goes back to its plate. */
     function putBack(c) {
       c.handle.cancel && c.handle.cancel();
       chakla = null;
@@ -313,47 +361,135 @@
       });
     }
 
-    /* ---------- side plate -> tawa ---------- */
-    function putOn() {
-      if (finished) return;
-      const top = topRested();
-      if (!top) return;
-      if (onTawa >= kTawa.tawas) return S.wiggle(top.sprite); // the tawa's full: flip that one first
-      rested.splice(rested.indexOf(top), 1);
-      glowOn(top.sprite, false);
-      S.untap(top.sprite);
-      top.where = "tawa";
-      onTawa++;
+    /* ---------- the board -> the tawa ---------- */
+    async function putOn() {
+      if (finished || !waiting) return;
+      if (onTawa) return S.wiggle(waiting.sprite); // the tawa's busy: flip or lift that one first
+      const it = waiting;
+      waiting = null;
+      glowOn(it.sprite, false);
+      S.untap(it.sprite);
+      it.where = "tawa";
+      const t = { it, side: 1, v: 0, busy: true };
+      onTawa = t;
       if (firstOn) {
         firstOn = false;
         step("Tawa");
       }
-      ch.put({ kind: "maani", sprite: top.sprite, art: { half: texOf(top.type, "chapati-half"), done: texOf(top.type, "chapati-puffed") }, size: top.sizeF, it: top });
+      update();
+      const sz = (TAWA_R * 1.62 * it.sizeF) / it.sprite.width;
+      it.sprite.setDepth(D.item + 1);
+      await S.fly(it.sprite, TW.x, TW.y, { scale: sz, duration: 380, arc: 90 });
+      it.sprite.baseScale = sz;
+      Cook.sfx.sizzle(0.4);
+      t.busy = false;
+      if (!sizzle) {
+        sizzle = Cook.sfx.sizzleLoop();
+        S.loops.push(sizzle);
+      }
+      S.tappable(it.sprite, () => tawaTap());
+      zt.passMeAfter(kTawa.passMeAfterMs);
+    }
+    let sizzle = null;
+    S.tappable(tawa, () => tawaTap());
+    // the browning as the ring fills: the maani's own colour times a warm tint
+    const C = Phaser.Display.Color;
+    const brown = (v) => C.GetColor(255, Math.round(255 - v * 45), Math.round(255 - v * 90));
+
+    /** Move the chimta to the maani (tips over it) and back: the flip and the lift. */
+    const chimtaTo = (x, y) => Cook.tween(S, { targets: chimta, x: x + 150, y: y + 150, angle: -60, duration: 170, ease: "Sine.easeOut" });
+    const chimtaHomeTween = () => S.tweens.add({ targets: chimta, x: chimtaHome.x, y: chimtaHome.y, angle: chimtaHome.angle, duration: 240, ease: "Sine.easeInOut" });
+
+    async function tawaTap() {
+      const t = onTawa;
+      if (finished || !t || t.busy) return;
+      t.busy = true;
+      ring.clear();
+      zt.expect(null);
+      const it = t.it;
+      const sp = it.sprite;
+      const v = t.v;
+      const burnt = v >= 1;
+      if (t.side === 1) {
+        // the chimta flips it
+        await chimtaTo(TW.x, TW.y);
+        Cook.sfx.flip();
+        await Cook.tween(S, { targets: sp, scaleY: 0.02, duration: 110 });
+        sp.setTexture(texOf(it.type, "half")).setTint(burnt ? BURNT : 0xffffff);
+        sp.setScale(sp.baseScale, 0.02);
+        await Cook.tween(S, { targets: sp, scaleY: sp.baseScale, duration: 110 });
+        chimtaHomeTween();
+        t.s1 = burnt ? kTawa.burntScore : S.bandScore(v, lo, hi);
+        t.burnt = burnt;
+        S.verdict(TW.x, TW.y - RING_R - 34, t.s1, { bad: burnt ? "burnt" : "too-early" });
+        t.side = 2;
+        t.v = 0;
+        t.busy = false;
+        return;
+      }
+      // side two: the chimta lifts it; a good one puffs a little (a slight puff, not a ball)
+      const good = v >= lo && v < 1;
+      Cook.sfx.puff();
+      sp.setTexture(texOf(it.type, "done")).setTint(t.burnt || burnt ? BURNT : 0xffffff);
+      const dz = (TAWA_R * 1.62 * it.sizeF) / sp.width;
+      sp.setScale(dz);
+      await Cook.tween(S, { targets: sp, scale: dz * (good ? 1.07 : 1.02), duration: good ? 220 : 150, ease: "Sine.easeOut", yoyo: true });
+      S.steam(TW.x, TW.y - 60, good ? 5 : 2);
+      const s2 = burnt ? kTawa.burntScore : S.bandScore(v, lo, hi);
+      S.verdict(TW.x, TW.y - RING_R - 34, s2, { perfect: "it-puffed", bad: burnt ? "burnt" : "flat" });
+      zt.skill((t.s1 + s2) / 2, "tawa");
+      await chimtaTo(TW.x, TW.y);
+      // onto its kind's plate: a fanned stack (you can count them), each one a little askew
+      const d = dones[it.type] || Object.values(dones)[0];
+      const j = d.n++;
+      onTawa = null;
+      S.untap(sp);
+      sp.setDepth(D.item + 2 + j * 0.01);
+      S.tweens.add({ targets: sp, angle: Math.random() * 24 - 12, duration: 450 });
+      chimtaHomeTween();
+      const fly = S.fly(sp, d.x - 10 + j * 14, d.y + 6 - j * 12, { scale: (PLATE_D * 0.78 * it.sizeF) / sp.width, duration: 450 });
+      update();
+      await fly;
+      it.where = "plate";
+      // no separate tally: the stack on its plate is the count (§14a's rule, here too)
+      // its mini card on the order ticks (one card per maani asked for)
+      if (ctx.tickCard) ctx.tickCard(it.key || it.type);
       update();
     }
-    // each one that lands on the plate: the running tally (never the target)
-    const prevProgress = zt.hooks.onProgress;
-    zt.hooks.onProgress = (p, z) => {
-      if (prevProgress) prevProgress(p, z);
-      if (!p || !p.item || !p.item.it) return;
-      p.item.it.where = "plate";
-      onTawa--;
-      // the picture tally: maani on the plate, by kind (what you made, never the target)
-      const kind = p.item.it.type;
-      UI.count(plated().filter((x) => x.type === kind).length, { id: kind, state: "done" });
-      // its mini card on the order ticks (28 Sept: one card per maani asked for)
-      if (ctx.tickCard) ctx.tickCard(p.item.it.key || kind);
-      update();
-    };
 
-    bowls.forEach((b) => {
-      // the hand picks the dough up (js/cook/hands.js)
-      [b, ...b.balls].forEach((o) => (o.handAction = "pick"));
+    // the ring: it fills like a clock on the tawa; ignore it and the maani catches
+    let last = performance.now();
+    let inBand = false;
+    zt.tick(() => {
+      const now = performance.now();
+      const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
+      last = now;
+      const t = onTawa;
+      if (!t || t.busy || finished) return;
+      const rate = (t.side === 1 ? rate1 : rate2) * (heat === "low" ? 0.6 : 1);
+      t.v += rate * dt;
+      const nowIn = t.v >= lo && t.v <= hi;
+      if (nowIn !== inBand) {
+        inBand = nowIn;
+        glowOn(t.it.sprite, nowIn);
+        if (nowIn) Cook.sfx.click();
+      }
+      if (t.side === 1) t.it.sprite.setTint(brown(Math.min(1, t.v)));
+      ring.draw(TW.x, TW.y, RING_R, t.v, lo, hi);
+      zt.gauge({ level: t.v, lo, hi });
+      zt.expect({ kind: "timing", x: TW.x, y: TW.y, key: `tawa-${t.side}` });
+      if (t.v >= 1) {
+        glowOn(t.it.sprite, false);
+        inBand = false;
+        tawaTap();
+      }
+    });
+
+    plates.forEach((b) => {
       S.tappable(b, () => pick(b));
       b.balls.forEach((ball) => S.tappable(ball, () => pick(b)));
     });
     step("Roll");
-    const tawaRun = Mech.run("tawa", zt, { spots: lay.spots, size: lay.size, plateAt: LAY.plateAt, spatulaAt: LAY.spatulaAt });
     let finish;
     const finishing = new Promise((resolve) => (finish = resolve));
     update();
@@ -362,14 +498,14 @@
     /* ---------- the tick: check the count of each kind ---------- */
     finished = true;
     UI.hideDone();
-    [zb, zrest].forEach((z) => z.expect(null));
-    bowls.forEach((b) => {
+    ring.clear();
+    if (sizzle) sizzle.stop();
+    [zb, zon, zt].forEach((z) => z.expect(null));
+    plates.forEach((b) => {
       glowOn(b, false);
       S.untap(b);
       b.balls.forEach((ball) => S.untap(ball));
     });
-    ch.close();
-    await tawaRun;
     const made = {};
     plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
     new Set(Object.keys(want).concat(Object.keys(made))).forEach((key) => {
@@ -387,13 +523,13 @@
     if (ctx.closeItem) ctx.closeItem([], { all: true });
     ctx.result.maani = plated().length;
     ctx.result.maaniKinds = made;
-    [zb, zr, zrest, zt].forEach((z) => z.close());
+    [zb, zr, zon, zt].forEach((z) => z.close());
     return plated().length;
   }
 
   Mech.lab("maani-line", {
     name: "Maani line",
-    verb: "Bowls → chakla → tawa",
+    verb: "Plates → chakla → tawa",
     after: "roll-tawa",
     async run(L) {
       const R = Cook.Recipes;

@@ -50,6 +50,11 @@ class Shooter(T.Player):
             self.snap("start")
         if os.environ.get("SHOOT_DEBUG"):
             print(round(time.time() % 1000, 1), kind, e.get("key"), flush=True)
+        if kind == "more":
+            # every maani on its plate, nothing on the go: the tick's moment (the last one wins)
+            time.sleep(0.6)
+            self.taken.discard("serving")
+            self.snap("serving")
         if kind == "timing" and "tawa" not in self.taken:
             # the ring part-way round, before the green
             time.sleep(1.2 / self.speed)
