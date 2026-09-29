@@ -3067,7 +3067,7 @@
     "flip": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
     "tawa": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
     "stir": ["ladle.tool"],
-    "maani-line": ["spatula.tool", "tawa.top"],
+    "maani-line": [],
     "thread": ["skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.raw", "veg-01.cubed"],
     "grill": ["skewer.tool", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-mishkaki.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-mishkaki.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
     "mishkaki-grill": ["bg:marble", "skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.raw", "veg-01.cubed"]
@@ -3709,8 +3709,8 @@
    {"do": "tap", "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"}
   ],
   "maani-line": [
-   {"do": "tap", "what": "the dough bowl they asked for"},
-   {"do": "roll", "what": "roll the ball up and down until it fills the circle"},
+   {"do": "tap", "what": "the dough plate they asked for"},
+   {"do": "roll", "what": "roll the ball up and down until it fills the gold ring"},
    {"do": "tap", "what": "the maani onto the tawa"},
    {"do": "tap", "what": "flip it on the green"}
   ],

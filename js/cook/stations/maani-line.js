@@ -151,6 +151,11 @@
     const board = S.track(S.add.image(CH.x, CH.y, "mv-chakla").setDepth(D.item - 2));
     board.setScale(CHAKLA_D / board.width);
     board.shadow = S.contactShadow(board);
+    // the velan waits along the board's front edge; it lifts off to roll (rollOne draws the rolling one)
+    const restPin = S.track(S.add.image(CH.x, CH.y + CHAKLA_D / 2 - 4, "mv-velan").setDepth(D.item - 1));
+    restPin.setScale((PIN_W * 0.92) / restPin.width);
+    restPin.shadow = S.contactShadow(restPin);
+    const pinRest = (on) => S.tweens.add({ targets: restPin, alpha: on ? 1 : 0, duration: 200 });
 
     /* ---------- the hob: one burner, one tawa, the face and the knob on the front edge ---------- */
     const burner = Kit.burner(S, hob, 0, { who, flameR: TAWA_R * 0.74, spread: 62, state: "high" });
@@ -322,6 +327,7 @@
       c.busy = false;
       if (chakla !== c || finished) return;
       update();
+      pinRest(false);
       const targets = sizes ? sizes.map((s) => ({ id: s.id, r: s.r })) : null;
       const r = await Mech.rollOne(zr, kRoll, CH, {
         dough: sprite,
@@ -341,6 +347,7 @@
           update();
         },
       });
+      pinRest(true);
       if (!r) return; // it went back to its plate
       zr.skill(r.score, "roll");
       chakla = null;

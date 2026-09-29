@@ -31,8 +31,9 @@
     h: 671,
     burnerY: 0.3636,
     frontY: 0.76,
-    w: [421, 795, 1169, 1543],
-    burners: [[0.5297], [0.2805, 0.7509], [0.1908, 0.5107, 0.8306], [0.1445, 0.3869, 0.6293, 0.8717]],
+    // measured from the canvases (assets/cook/items/chai-v2/meta.json)
+    w: [421, 775, 1129, 1483],
+    burners: [[0.5297], [0.2877, 0.7445], [0.1975, 0.5111, 0.8246], [0.1504, 0.3891, 0.6278, 0.8665]],
   };
   // each vessel's round body as fractions of its canvas: centre (cx, cy) and radius r (of the width)
   const VESSELS = {

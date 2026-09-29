@@ -29,7 +29,8 @@
  * Data: the chai recipe's slots (who and what, by level) in data/cook.json; this station's own
  * settings in data/stations/chai-tray.json; the boil knobs in data.mechanics.boil (profile tray).
  * Art: assets/cook/items/chai-v2/ (build/gen_chai_v2.py, build/cut_chai_v2.py; positions in its
- * meta.json), the pantry-v2 jars, the painted knob and flame rings (chai-station/).
+ * meta.json), the pantry-v2 jars; the hob, burners, knobs, flames and heat ring are the shared
+ * kitchen kit's (js/cook/kitchen-kit.js).
  */
 (function (global) {
   const Cook = global.Cook;
@@ -45,7 +46,6 @@
     panTop: { w: 512, h: 492, cx: 0.408, cy: 0.5805, r: 0.3644, rIn: 0.2915 },
     panPour: { w: 512, h: 500, lipX: 0.03, lipY: 0.545 },
     glassR: 0.94,
-    hob: { h: 671, burnerY: 0.3636, frontY: 0.76, w: [421, 795, 1169, 1543], burners: [[0.5297], [0.2805, 0.7509], [0.1908, 0.5107, 0.8306], [0.1445, 0.3869, 0.6293, 0.8717]] },
   };
   /* ---------- the grid (design px, 1600x900; the canvas is the play area) ---------- */
   const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
@@ -63,8 +63,6 @@
   const GAP = 72;
   const PAN_R = 112; // a pan's outer rim, design px
   const BADGE = 64;
-  const KNOB = 62; // what you see; the tap area is bigger (KNOB_HIT)
-  const KNOB_HIT = 58; // radius: at least 48 screen px across on a phone
   const WELLS = [[0.283, 0.279], [0.717, 0.279], [0.283, 0.697], [0.717, 0.697]]; // the tray's cut-outs
   const WELL_D = 0.33;
   const COL = { water: St.WATER, chai: 0x8a4a22, milk: 0xf6f1e7, glass: 0xc98a52 };
@@ -84,11 +82,9 @@
     ["v2-liq-tea", V2 + "liquid-tea.webp"],
     ["v2-liq-milky", V2 + "liquid-milky.webp"],
     ["v2-liq-dark", V2 + "liquid-dark.webp"],
-    ["v2-knob-off", "assets/cook/items/chai-station/knob-off.webp"],
-    ["v2-knob-on", "assets/cook/items/chai-station/knob-on.webp"],
-    ["v2-flame-high", "assets/cook/items/chai-station/flame-high.webp"],
-    ["v2-flame-low", "assets/cook/items/chai-station/flame-low.webp"],
-  ].concat([1, 2, 3, 4].map((n) => [`v2-hob-${n}`, `${V2}hob-${n}.webp`]));
+  ]
+    .concat(...[1, 2, 3, 4].map((n) => Cook.Kit.art(n, []))) // the shared kitchen kit: hobs, knobs, flames
+    .filter(([key], i, a) => a.findIndex(([k2]) => k2 === key) === i);
 
   Mech.combined("chai-tray", {
     station: "chai-tray",
@@ -103,36 +99,8 @@
   });
 
   const nameOf = (who) => (who === "nani" ? "Nani" : (Cook.data.customers[who] || {}).name || who);
-  /** A person's face badge: their badge art on a white disc with a thin grey ring (made once). */
-  function roundBadge(S, who) {
-    const key = `${who}-badge`;
-    const out = `${key}-v2round`;
-    if (S.textures.exists(out) || !S.textures.exists(key)) return S.textures.exists(out) ? out : key;
-    const src = S.textures.get(key).getSourceImage();
-    const N = 192;
-    const cv = S.textures.createCanvas(out, N, N);
-    const g = cv.getContext();
-    g.save();
-    g.beginPath();
-    g.arc(N / 2, N / 2, N / 2 - 4, 0, Math.PI * 2);
-    g.fillStyle = "#ffffff";
-    g.fill();
-    g.clip();
-    g.drawImage(src, 8, 12, N - 16, N - 16);
-    g.restore();
-    g.lineWidth = 8;
-    g.strokeStyle = "#ffffff";
-    g.beginPath();
-    g.arc(N / 2, N / 2, N / 2 - 5, 0, Math.PI * 2);
-    g.stroke();
-    g.lineWidth = 2;
-    g.strokeStyle = "rgba(42,37,34,0.18)";
-    g.beginPath();
-    g.arc(N / 2, N / 2, N / 2 - 1.5, 0, Math.PI * 2);
-    g.stroke();
-    cv.refresh();
-    return out;
-  }
+  /** A person's face badge (the kitchen kit's). */
+  const roundBadge = (S, who) => Cook.Kit.badge(S, who);
   /** This dish's ladder on the mission card (or one built from the cups). */
   function ladderOf(ctx, cups) {
     const Ls = UI.mission.ladders();
@@ -146,21 +114,8 @@
   const personLine = (L, who, rows) => Lang.join((L.head ? [L.head.line] : []).concat((rows || personRows(L, who)).map((r) => (r.no || !r.said ? r.line : r.said))));
   const hiddenRow = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.cardHidden(s.w) && Lang.wordHasVoice(s.w));
 
-  /** The speaker icon, drawn at (x, y) about `s` px tall, in the charcoal text colour. */
-  function speaker(g, x, y, s, color = 0x2a2522) {
-    const k = s / 24;
-    g.fillStyle(color, 1);
-    g.fillRect(x - 8 * k, y - 3.5 * k, 5 * k, 7 * k);
-    g.fillTriangle(x - 4 * k, y - 3.5 * k, x + 2 * k, y - 9 * k, x + 2 * k, y + 9 * k);
-    g.fillTriangle(x - 4 * k, y + 3.5 * k, x + 2 * k, y - 9 * k, x - 4 * k, y - 3.5 * k);
-    g.lineStyle(2.2 * k, color, 1);
-    g.beginPath();
-    g.arc(x + 3 * k, y, 5 * k, -0.9, 0.9);
-    g.strokePath();
-    g.beginPath();
-    g.arc(x + 3 * k, y, 9.5 * k, -0.9, 0.9);
-    g.strokePath();
-  }
+  /** The speaker icon (the kitchen kit's). */
+  const speaker = (g, x, y, sz, color) => Cook.Kit.speaker(g, x, y, sz, color);
 
   async function station(host, params) {
     const S = host.S;
@@ -210,20 +165,19 @@
     band.fillStyle(INK.grey, 1);
 
     /* ---------- the hob: one burner per person ---------- */
-    const hobKey = `v2-hob-${n}`;
-    const hobW = META.hob.w[n - 1];
+    const hobW = Cook.Kit.HOB.w[n - 1];
     const k = Math.min(HOB_K, (1600 - 2 * 56 - GAP - TRAY_D) / hobW);
-    const hobH = META.hob.h * k;
+    const hobH = Cook.Kit.HOB.h * k;
     const trayD = Math.min(TRAY_D, hobH * 0.78);
     const total = hobW * k + GAP + trayD;
     const hobX = Math.max(48, (1600 - total) / 2);
     const hobY = SHELF_TOP - 56 - hobH; // low (§10), with some breathing space above the shelf
-    const hob = S.track(S.add.image(hobX, hobY, hobKey).setOrigin(0).setScale(k).setDepth(D.item - 4));
-    hob.shadow = S.contactShadow(hob);
-    const burnerY = hobY + META.hob.burnerY * hobH;
-    const frontY = hobY + META.hob.frontY * hobH;
-    const burners = META.hob.burners[n - 1].map((f) => hobX + f * hobW * k);
-    const pitch = n > 1 ? burners[1] - burners[0] : 300;
+    // the shared kitchen kit's hob: one burner per person (the burner rule)
+    const kHob = Cook.Kit.hob(S, { n, x: hobX, y: hobY, k });
+    const hob = kHob.img;
+    const burnerY = kHob.burners[0].y;
+    const burners = kHob.burners.map((b) => b.x);
+    const pitch = kHob.pitch;
     const panR = Math.min(PAN_R, pitch * 0.4) * (k / HOB_K);
 
     /* ---------- the tray: 4 cut-outs, a face under each one used ---------- */
@@ -241,12 +195,9 @@
     const pans = people.map((p, i) => {
       const x = burners[i];
       const y = burnerY;
-      // the flames: the painted ring round the burner, peeking out under the pan
-      const flameHi = S.track(S.add.image(x, y, "v2-flame-high").setDepth(D.item - 1).setAlpha(0));
-      const flameLo = S.track(S.add.image(x, y, "v2-flame-low").setDepth(D.item - 1).setAlpha(0));
-      const fs = (panR * 2.7) / 512;
-      flameHi.setScale(fs);
-      flameLo.setScale(fs * 0.92);
+      // the kit's burner: the flame ring peeking out under the pan; their face (= hear them) and the knob on the front edge
+      const b = Cook.Kit.burner(S, kHob, i, { who: p.who, flameR: panR });
+      const { face, knob, kOff, kOn, knobHit, flameHi, flameLo } = b;
       const img = S.track(S.add.image(x, y, "v2-pan").setOrigin(pm.cx, pm.cy).setScale(panScale).setDepth(D.item));
       img.baseScale = panScale;
       img.shadow = S.contactShadow(img, { centerX: x, centerY: y + panR * 0.08, width: panR * 2.15, height: panR * 2.15 });
@@ -257,22 +208,11 @@
         layers[key] = S.track(S.add.image(x, y, `v2-liq-${key}`).setDepth(D.item + 0.3 + j * 0.02).setAlpha(0));
       });
       const bubbles = S.track(S.add.graphics().setDepth(D.item + 0.5));
-      const ring = S.track(S.add.graphics().setDepth(D.fx - 2));
+      const heatRing = Cook.Kit.heatRing(S);
       const sel = S.track(S.add.graphics().setDepth(D.item - 0.5));
       const selRing = S.track(S.add.graphics().setDepth(D.item + 0.95));
-      // the front edge: their face (= hear them), then the burner's knob
-      const bx = x - Math.min(58, pitch * 0.2);
-      const kx = x + Math.min(58, pitch * 0.2);
-      const face = S.track(S.add.image(bx, frontY, roundBadge(S, p.who)).setDisplaySize(BADGE, BADGE).setDepth(D.item + 1));
-      face.baseScale = face.scaleX;
-      const knob = S.track(S.add.container(kx, frontY).setDepth(D.item + 1));
-      const kOff = S.add.image(0, 0, "v2-knob-off").setDisplaySize(KNOB, KNOB);
-      const kOn = S.add.image(0, 0, "v2-knob-on").setDisplaySize(KNOB, KNOB).setAngle(-90).setAlpha(0);
-      knob.add([kOff, kOn]);
-      const knobHit = S.track(S.add.circle(kx, frontY, KNOB_HIT, 0xffffff, 0.001).setDepth(D.item + 2));
-      knobHit.baseScale = 1;
       const pan = {
-        i, p, who: p.who, x, y, img, water, layers, bubbles, ring, sel, selRing, face, knob, kOff, kOn, knobHit, flameHi, flameLo,
+        i, p, who: p.who, x, y, img, water, layers, bubbles, ring: heatRing.g, heatRing, burner: b, sel, selRing, face, knob, kOff, kOn, knobHit, flameHi, flameLo,
         level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [],
         heat: 0, state: "cold", poured: 0, closed: false, spoonsClosed: false, look: 0,
       };
@@ -568,14 +508,7 @@
     });
 
     /* ---------- heat: each knob, each pan ---------- */
-    const setKnob = (pan, state) => {
-      const ang = { off: 0, high: 90, low: 180 }[state];
-      S.tweens.add({ targets: pan.knob, angle: ang, duration: 260, ease: "Back.easeOut" });
-      S.tweens.add({ targets: pan.kOn, alpha: state === "off" ? 0 : 1, duration: 260 });
-      S.tweens.add({ targets: pan.flameHi, alpha: state === "high" ? 0.95 : 0, duration: 360 });
-      S.tweens.add({ targets: pan.flameLo, alpha: state === "low" ? 0.95 : 0, duration: 360 });
-      Cook.sfx.click();
-    };
+    const setKnob = (pan, state) => pan.burner.set(state);
     const knobTap = (pan) => {
       if (finished) return;
       if (pan.state === "cold") {
@@ -627,28 +560,7 @@
       });
       setLook(pan);
     });
-    const drawRing = (pan) => {
-      const g = pan.ring;
-      const r = panR + 14;
-      const a0 = -Math.PI / 2;
-      g.clear();
-      g.lineStyle(10, 0xfffaf1, 0.8);
-      g.strokeCircle(pan.x, pan.y, r);
-      g.lineStyle(10, 0x7e9a76, 0.95);
-      g.beginPath();
-      g.arc(pan.x, pan.y, r, a0 + lo * Math.PI * 2, a0 + hi * Math.PI * 2);
-      g.strokePath();
-      g.lineStyle(6, pan.heat > hi ? 0xb24a3a : INK.gold, 1);
-      g.beginPath();
-      g.arc(pan.x, pan.y, r, a0, a0 + Math.min(1, pan.heat) * Math.PI * 2);
-      g.strokePath();
-      const ex = pan.x + Math.cos(a0 + pan.heat * Math.PI * 2) * r;
-      const ey = pan.y + Math.sin(a0 + pan.heat * Math.PI * 2) * r;
-      g.fillStyle(0xffffff, 1);
-      g.fillCircle(ex, ey, 9);
-      g.lineStyle(3, 0x2a2522, 0.5);
-      g.strokeCircle(ex, ey, 9);
-    };
+    const drawRing = (pan) => pan.heatRing.draw(pan.x, pan.y, panR + 14, pan.heat, lo, hi);
     let last = performance.now();
     let steamT = 0;
     const stopHeat = S.addTick(() => {
