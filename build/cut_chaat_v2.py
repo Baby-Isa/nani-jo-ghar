@@ -7,6 +7,8 @@
     pixels outside the object) rather than one flat grey.
 Outputs:
   glass-bowl.webp      the clear serving bowl, side view, empty (see-through: its body is colour-to-alpha)
+  glass-hi.webp        its highlights alone, drawn over the layers
+  top-<word>.webp      the top of a layer (and the spoonful): the painted top-down layer art, small
   band-<word>.webp     a layer as seen through the glass: a packed texture strip (cropped from the strips
                        sheets, or tiled from the painted top-down layer art where the strip read badly)
   prep-<word>.webp     one identical front-on prep bowl per topping: the generated empty bowl, with that
@@ -119,6 +121,23 @@ def glass():
         'inside': prof,
     }
     save(crop, 'glass-bowl')
+    # the glass's highlights alone (the rim, the bright streaks): they lie OVER the food, so the layers
+    # stay crisp while the glass still reads as glass in front of them
+    arr = np.asarray(crop).astype(float)
+    lum = arr[..., :3].mean(2)
+    hi = np.clip((lum - 200) / 45, 0, 1) * (arr[..., 3] / 255)
+    # not the base's inner ring (it would lie across the food): inside the walls, below the rim, only
+    # a narrow strip by each wall keeps its highlight
+    Hh, Wh = hi.shape
+    for r in range(int(0.3 * Hh), Hh):
+        f = r / Hh
+        row = prof[min(len(prof) - 1, round(f * (len(prof) - 1)))]
+        l, rr = row[1] * Wh, row[2] * Wh
+        inset = 0.07 * Wh
+        if rr - l > 2 * inset:
+            hi[r, int(l + inset):int(rr - inset)] = 0
+    hi = ndi.gaussian_filter(hi, 0.6)
+    save(Image.fromarray(np.dstack([np.full(lum.shape + (3,), 255.0), hi * 235]).astype(np.uint8), 'RGBA'), 'glass-hi')
     return meta
 
 
@@ -160,6 +179,11 @@ TOPPINGS = {
     'ph-sev': 'topping-sev-bowl-t.png', 'ph-dhana': 'topping-dhana-chopped-bowl-t.png',
     'veg-12': 'topping-marcha-chopped-bowl-t.png', 'veg-02': 'topping-dungri-chopped-bowl-t.png',
     'veg-03': 'topping-tameto-chopped-bowl-t.png',
+}
+TOPS = {
+    'veg-01': 'layer-bataato-boiled-t', 'ph-chana': 'layer-channa-t', 'ph-dahi': 'layer-dai-t', 'ph-amli': 'layer-amli-t',
+    'ph-lili': 'layer-lili-t', 'ph-sev': 'layer-sev-t', 'ph-dhana': 'layer-dhana-chopped-t', 'veg-12': 'layer-marcha-chopped-t',
+    'veg-02': 'layer-dungri-chopped-t', 'veg-03': 'layer-tameto-chopped-t',
 }
 LIQUID = {'ph-dahi', 'ph-amli', 'ph-lili'}
 
@@ -276,5 +300,10 @@ if __name__ == '__main__':
     # the chilli rings drew as cartoon crosses: the painted top-down slices instead
     band_from_layer('layer-marcha-chopped-t.png', 'veg-12')
     meta['prep'] = prep_bowls()
+    # the top of each layer (and the spoonful that drops): the painted top-down layer art, small
+    for wid, stem in TOPS.items():
+        im = Image.open(os.path.join(ITEMS, stem + '.png')).convert('RGBA')
+        im.thumbnail((300, 300), Image.LANCZOS)
+        save(im, 'top-' + wid)
     json.dump(meta, open(os.path.join(OUT, 'meta.json'), 'w'), indent=1)
     print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk != 'inside'} for k, v in meta.items()}))

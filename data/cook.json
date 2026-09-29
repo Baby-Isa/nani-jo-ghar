@@ -1693,9 +1693,23 @@
    "slots": {
     "no": {
      "type": "no",
-     "tasteChance": 0.7,
+     "tasteChance": {
+      "byLevel": [
+       0,
+       0,
+       0.7,
+       0.7
+      ]
+     },
      "else": {
-      "chance": 0.5,
+      "chance": {
+       "byLevel": [
+        0,
+        0,
+        1,
+        1
+       ]
+      },
       "from": [
        "veg-02",
        "veg-12",
@@ -1723,14 +1737,38 @@
      "first": "$base",
      "from": "$toppings",
      "exclude": "no",
-     "take": [
-      1,
-      3
-     ],
-     "tasteAdd": [
-      "top",
-      "extra"
-     ],
+     "take": {
+      "byLevel": [
+       [
+        1,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        2,
+        3
+       ]
+      ]
+     },
+     "tasteAdd": {
+      "byLevel": [
+       [],
+       [
+        "top"
+       ],
+       [
+        "top",
+        "extra"
+       ]
+      ]
+     },
      "shuffle": true,
      "order": "sequence"
     },
@@ -2626,26 +2664,21 @@
    ]
   },
   "assemble": {
+   "_about": "Chaat v2 (docs/design/cook-design-system-v1.md §14, §14a): level 1 has no decoys; from level 2 decoys stand on the shelf with the order's toppings (and, from level 3, the 'don't' item). flyMs: a spoonful's flight to the glass.",
    "levels": [
+    {
+     "decoys": [
+      0,
+      0
+     ],
+     "decoyPick": "random",
+     "flyMs": 420
+    },
     {
      "decoys": [
       2,
       2
-     ],
-     "decoyPick": "random",
-     "flyMs": 380,
-     "rowY": 780,
-     "checkMs": 800,
-     "recastSteps": 2,
-     "bowl": {
-      "x": 800,
-      "y": 455,
-      "depth": 300,
-      "rx": 310,
-      "ry": 86,
-      "brx": 200,
-      "bry": 56
-     }
+     ]
     },
     {
      "decoys": [
