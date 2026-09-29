@@ -95,6 +95,7 @@
     const col = s("rect", { x: TH.x - 7, y: TH.y + TH.h, width: 14, height: 0, rx: 7, fill: "#c9ccd2" }, thG);
     const readG = s("g", {}, S.layer);
     const read = (hot) => {
+      if (col.getAnimations) col.getAnimations().forEach((a) => a.cancel());
       const c = hot ? "#d8433f" : "#3f6fd8";
       bulb.setAttribute("fill", c);
       col.setAttribute("fill", c);
@@ -106,6 +107,8 @@
       s("text", { x: TH.x + 36, y: TH.y + 40, "font-size": 44 }, readG).textContent = hot ? "🔥" : "❄️";
     };
     const unread = () => {
+      // a finished animation (fill: forwards) would keep the old reading showing
+      if (col.getAnimations) col.getAnimations().forEach((a) => a.cancel());
       bulb.setAttribute("fill", "#c9ccd2");
       col.setAttribute("height", 0);
       S.clear(readG);

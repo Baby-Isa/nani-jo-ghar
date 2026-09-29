@@ -110,7 +110,8 @@
     s("rect", { x: CH.x, y: CH.y, width: CH.w, height: CH.h, rx: 10, fill: "#fff", stroke: "#8a7a6c", "stroke-width": 4 }, S.layer);
     const chartG = s("g", {}, S.layer);
     const rowY = (i) => CH.y + 50 + i * (CH.h - 60) / P.chart.length;
-    const size = (i) => 58 - i * 10;
+    // shrinking rows, and never wider than the chart (2-3 pictures a row at L3)
+    const size = (i) => Math.min(58 - i * 10, (CH.w - 24) / (P.chart[i].pics.length * 1.35));
     const drawChart = () => {
       S.clear(chartG);
       P.chart.forEach((c, i) => {

@@ -53,7 +53,7 @@
     const decay = [];
     const cx = 1 + Math.floor(rng() * 3);
     const cy = 1 + Math.floor(rng() * 2);
-    for (let y = 0; y < 5; y++) for (let x = 0; x < 6; x++) if (Math.hypot(x - cx - 0.5, (y - cy - 0.5) * 1.2) < 1.6) decay.push(`${x},${y}`);
+    for (let y = 0; y < 5; y++) for (let x = 0; x < 6; x++) if (Math.hypot(x - cx - 0.5, (y - cy - 0.5) * 1.2) < 2.0) decay.push(`${x},${y}`);
     const steps = [
       { id: "brush", kind: "brush", moves, row: { id: "brush", kutchi: `[Brush:] ${moves.map(word).join(", ")}`, english: `Brush: ${moves.join(", ")}` } },
       { id: "drill", kind: "drill", decay, timer: K.drillMs[L] || 0, row: { id: "drill", kutchi: null, english: "Drill the bad bits", placeholder: true } },
