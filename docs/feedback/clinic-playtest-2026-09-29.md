@@ -388,3 +388,4 @@ About **4–5 build sessions in all**, against about 11 for the Cook overnight r
 - **Higher levels: the doctor's call is heard, not read** (Zafar's idea, Claude agrees). From level 3 the card row is **closed**: the call is only spoken, and tapping the row to see the words is the paid peek (Cook's L4 closed card). Levels 1–2 keep the words showing.
 - **Level 4 (two in order, against the comfort rings): pick everyone straight away.** No waiting for each person's greeting or the doctor between picks. Each tick shows its number (1, 2) as it's tapped; once the last one is tapped, the whole set is judged: all right → they lock in and rise; any wrong → the ticks shake and clear, and everyone sits back down to try again.
 - The lab's debug log (bottom left) overlaps the pills: it's lab-only, but it should sit clear of the play area.
+- **At most 6 people in the waiting room** (Zafar), at every level, counting the babies and children sitting with the grown-ups at level 5.
