@@ -3807,6 +3807,7 @@
    {"do": "tap", "what": "the next spoon"}
   ],
   "fry": [
+   {"do": "tap", "what": "the knob: the hob comes on (the oil is hot: it sizzles)"},
    {"do": "tap", "what": "a samosa into the oil"},
    {"do": "tap", "what": "lift it out on the green"}
   ],
