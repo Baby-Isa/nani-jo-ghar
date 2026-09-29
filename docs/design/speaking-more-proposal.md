@@ -12,15 +12,28 @@ The child never gets an English instruction. Two things carry it:
 
 So a speaking moment = picture of the need + a heard frame + a **closed set** (the recogniser only ever checks 3–5 options). It is never open-ended. That's not just a design choice: the on-device recogniser can only do closed sets anyway, so "unstructured" can't happen by construction.
 
-## The whisper ladder: how the instruction fades
-Nani is beside the child at every speaking moment. Her help fades by the word's own stage (the Roadmap's `produce_stage`), not by the mode's level:
+## Setting up the premise: watch it, do it together, do it alone
+A child who can't read English and doesn't yet know the Kutchi works out the situation by **watching it happen first**. Nobody explains it. Every speaking moment is introduced in three steps, the first time only:
 
-| Rung | Nani does | Child does |
+1. **Watch.** The exchange plays out between two characters while the child watches. The line shows in the speaker's bubble with the **read-along underline** as it's said (X2, the standard everywhere). The thing asked for is a picture on the card.
+2. **The handover.** The character who spoke turns to the child and hands over the role with a visible prop: the doctor hands over his clipboard, or Nani hands over her purse at the stall. The child's avatar moves into that spot. A **"your turn" bubble with a mic** appears over the child's avatar. It's the same sign in every mode, so the child learns it once.
+3. **Do it together, then alone.** See the "Say it after" ladder below.
+
+**Examples:**
+- **Clinic, calling a patient (W3).** For the first few patients, the doctor calls them himself (W1). The child has watched and heard "[the boy], come" many times and tapped the right person. Then the doctor hands over his clipboard, which shows the next patient's **face**, and the "your turn" bubble appears over the child.
+- **Cook, ordering.** The child has served dozens of customers who said *Muke chai khape*. In the role-reversal round, the family sits the child down at the table, Nani stands at the stove, and the child's thought bubble shows a cup of chai. First, Ali orders before the child (watch), then it's the child's turn.
+
+## "Say it after": how the help fades
+Zafar, 29 Sept: yes to repeating after a model; **no separate whisper recordings** (too much recording). So the model line is **a clip that's already recorded**: the doctor's own call, a customer's order, Nani's own line. No new recordings are needed for speaking.
+
+| Rung | The child sees and hears | The child does |
 |---|---|---|
-| 1 Echo | whispers the whole line | says it after her |
-| 2 Start | whispers the first word or the frame only (*Muke …*) | finishes it, picking the noun from the picture |
-| 3 Picture | nothing, only the picture | says the whole line |
-| 4 Choice | nothing; the picture shows two needs | picks which to ask for, then says it |
+| 1 Say it after | the recorded line plays, with **the words written** in the bubble and underlined as they're said; the same words then show in the child's "your turn" bubble | says it after the model, with the words in front of them |
+| 2 Words, no model | no model; the words are in the child's bubble, beside the picture | says it (the words are the support) |
+| 3 Picture | only the picture; the words are one tap away (the peek) | says the whole line |
+| 4 Choice | the picture shows two needs | picks which to ask for, then says it |
+
+The start is fully supported: every line is written and underlined as it's spoken, the first time and every time at rung 1. The words fade by the child's own record for that sentence pattern, not by the mode's level. Rung 1 is practice: it earns coins and a cheer, and the voice star starts at rung 2.
 
 If there's no mic, or a null result twice, the fallback is the pills: coins, never the voice star. A parent can tick ✓ (Grandparent mode).
 
@@ -34,14 +47,14 @@ Each mode gets a moment where the child takes the asking role, using the frames 
 - **Conversations:** greetings, thanks and how-are-you, started by the child from rung 3.
 
 ## When can we assume they understand?
-The per-child tracker decides, word by word. A frame becomes speakable (rung 1) only once the child has acted on it correctly as the listener several times. It moves up the whisper ladder as they say it successfully. This is the "per-child sentence-pattern stage" (clinic CQ2), shared by every mode. It's already planned for "later"; this proposal makes speaking one of its main uses.
+The per-child tracker decides, word by word. A frame becomes speakable (rung 1) only once the child has acted on it correctly as the listener several times. It moves up the "Say it after" ladder as they say it successfully. This is the "per-child sentence-pattern stage" (clinic CQ2), shared by every mode. It's already planned for "later"; this proposal makes speaking one of its main uses.
 
 ## What it needs
-- Every frame recorded in the family voices (as for listening), plus Nani's whispers: the whole line, and the frame's first word alone.
+- Nothing new to record for speaking: the models are clips already recorded for listening.
 - The tracker's `produce_stage` per word and frame (see the Roadmap's skill channels).
-- One shared speaking component (`tell` / `say` already exist) with the whisper ladder, the thought bubble and the pill fallback, so every mode's speaking moment behaves the same.
+- One shared speaking component (`tell` / `say` already exist) with the "Say it after" ladder, the "your turn" bubble, the thought bubble and the pill fallback, so every mode's speaking moment behaves the same.
 
 ## Open for Zafar
-1. Is the whisper ladder the right way to fade the instruction? In particular, is echo at rung 1 okay (repeat after Nani)?
+1. ~~Echo at rung 1?~~ **Yes (Zafar, 29 Sept), with no whisper recordings; the text is written and underlined at the start.**
 2. Which mode gets the first asking moment? Claude suggests Cook's role reversal (the child orders from Nani), because the frame is the most-heard one in the game.
 3. Should speaking ever be required to progress, or always optional with the voice star as the reward? Claude suggests optional, because of the mic, shy children and noisy rooms.
