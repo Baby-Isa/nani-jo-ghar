@@ -144,7 +144,7 @@
       St.load(
         S,
         ART.concat(
-          people.map((p) => [`${p.who}-badge`, `assets/cook/characters/${p.who}-badge.webp`]),
+          people.flatMap((p) => Cook.Kit.faceArt(p.who)),
           [].concat(...shelfIds).map((id) => [`jar-${id}`, SPICE_JAR[id] || jarUrl(id)])
         )
       ),
@@ -713,7 +713,7 @@
     async function personSay(pan, rows) {
       const img = faceImg();
       const prev = img ? img.getAttribute("src") : null;
-      if (img) img.src = Cook.v(`assets/cook/characters/${pan.who}-badge.webp`);
+      if (img) img.src = Cook.v(Cook.facePath(pan.who));
       const y0 = pan.face.y;
       const bob = S.tweens.add({ targets: pan.face, y: y0 - 8, duration: 200, yoyo: true, repeat: -1 });
       try {
@@ -834,6 +834,28 @@
     refresh();
     const nudge = setInterval(() => !finished && refresh(), 250);
 
+    /** The review faces, one over each glass (sized to the tray's spacing); the praise is said once, when all are right. */
+    async function review(wrongPans) {
+      const ws = pans.map((q) => q.well);
+      let gap = 400;
+      ws.forEach((a, i) => ws.forEach((b, j) => j > i && (gap = Math.min(gap, Math.hypot(a.x - b.x, a.y - b.y)))));
+      const size = Math.max(110, Math.min(190, gap * 0.95));
+      const d = (WELL_D * trayD) / META.glassR;
+      const allOk = !wrongPans.length;
+      return Promise.all(
+        pans.map((pan, i) =>
+          Cook.Kit.review(S, {
+            who: pan.who,
+            ok: !wrongPans.includes(pan),
+            x: pan.well.x,
+            y: pan.well.y - d * 0.5 - size * 0.3,
+            size,
+            line: allOk && i === 0 ? undefined : false,
+          }),
+        ),
+      );
+    }
+
     /* ---------- the tick: check every glass against what its person said ---------- */
     await doneP;
     finished = true;
@@ -890,6 +912,9 @@
       if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });
       else S.sparkle(pan.well.x, pan.well.y);
     }
+    // the review (29 Sept, X10 / Q1: Cook.Kit.review): each person's big round face over their glass,
+    // happy when it's right, a gentle frown when it's wrong (then they say again what they asked for)
+    const looks = await review(recasts.map((r) => r.pan));
     if (recasts.length) {
       await zb.oops();
       for (const { pan, rows } of recasts) {
@@ -897,6 +922,7 @@
         await personSay(pan, rows || undefined);
       }
     }
+    await Promise.all(looks.map((l) => l.close()));
     await Cook.wait(500);
     zb.close();
     zt.close();

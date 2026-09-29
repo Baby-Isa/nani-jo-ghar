@@ -74,7 +74,7 @@
       ["nana", "ma", "cousin"].forEach((c) =>
         ["happy", "neutral", "impatient"].forEach((p) => this.load.image(`${c}-${p}`, `assets/cook/characters/${c}-${p}.webp`))
       );
-      this.load.image("cousin-badge", "assets/cook/characters/cousin-badge.webp");
+      this.load.image("cousin-badge", Cook.facePath("cousin"));
       const props = [
         "onion", "onion-half", "onion-chopped", "tomato", "tomato-chopped", "chilli", "garlic", "daal-dry", "jeeru", "rai",
         "hardar", "loon", "atto", "water-jug", "dough-ball", "chapati-raw", "chapati-half", "chapati-puffed", "rolling-pin",

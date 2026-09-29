@@ -669,7 +669,7 @@
   }
 
   /* ---------------- panels ---------------- */
-  const face = (who) => Cook.v(`assets/cook/characters/${who}-badge.webp`);
+  const face = (who) => Cook.v(Cook.facePath(who));
   const dishName = (d) => {
     const w = R.dishWord(d.recipe);
     const n = d.count || d.cups || 1;

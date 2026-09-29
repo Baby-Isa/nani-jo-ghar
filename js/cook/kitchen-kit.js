@@ -14,7 +14,11 @@
  *   Cook.Kit.burner(S, hob, i, opts)      badge + knob + flames for burner i: {x, y, face, knob, knobHit, set(state)}
  *   Cook.Kit.place(S, kind, at, r)        a vessel (pan | tawa | karahi) centred on at {x, y}, body radius r
  *   Cook.Kit.heatRing(S, {depth})         {draw(x, y, r, level, lo, hi), clear(), destroy()}
- *   Cook.Kit.badge(S, who)                a person's face on a white disc (a texture key)
+ *   Cook.Kit.faceUrl(who, mood)           a person's round face art (mood: neutral | happy | frown)
+ *   Cook.Kit.faceArt(who)                 [key, url] pairs for their three faces (keys <who>-badge[-mood])
+ *   Cook.Kit.badge(S, who, mood, N)       a person's face on a white disc (a texture key)
+ *   Cook.Kit.review(S, opts)              the review (X10 / Q1): their big round face over the dish,
+ *                                         happy when it's right, gently frowning when it's wrong
  *   Cook.Kit.chip(S, id, x, y, opts)      the shelf's `🔊 word` chip (speaker only when opts.word is false)
  *   Cook.Kit.speaker(g, x, y, s)          the flat speaker icon, drawn into a Graphics
  *
@@ -48,6 +52,10 @@
   const BADGE = 64;
 
   const CHIP = { w: 128, h: 46, hitW: 142, hitH: 80 };
+  // the family's round faces (X4, build/cut_characters.py): framed by the eyes, three moods each.
+  // Anyone else keeps their old badge (one mood).
+  const FACES = Cook.FACES;
+  const MOODS = ["neutral", "happy", "frown"];
   const FONT = "Nunito, sans-serif";
 
   const Kit = {
@@ -90,35 +98,111 @@
       return { img, x, y, w: sz.w, h: sz.h, k, n, burners, frontY: y + sz.frontY, pitch: n > 1 ? burners[1].x - burners[0].x : 300 };
     },
 
-    /** A person's face badge: their badge art on a white disc with a thin grey ring (made once). */
-    badge(S, who) {
-      const key = `${who}-badge`;
-      const out = `${key}-v2round`;
+    /** A person's round face art: mood neutral (a small smile), happy (it's right) or frown (it's wrong). */
+    faceUrl: (who, mood) => Cook.facePath(who, mood),
+
+    /** What to load for a person's faces: texture keys <who>-badge (neutral), <who>-badge-happy, -frown. */
+    faceArt(who) {
+      if (!who) return [];
+      return MOODS.map((m) => [`${who}-badge${m === "neutral" ? "" : `-${m}`}`, Kit.faceUrl(who, m)]);
+    },
+
+    /** A person's face badge: their face art on a white disc with a thin grey ring (made once per mood and size). */
+    badge(S, who, mood = "neutral", N = 192) {
+      const key0 = `${who}-badge`;
+      const want = mood && mood !== "neutral" ? `${key0}-${mood}` : key0;
+      const key = S.textures.exists(want) ? want : key0;
+      const out = `${key}-v2round${N === 192 ? "" : `-${N}`}`;
       if (S.textures.exists(out) || !S.textures.exists(key)) return S.textures.exists(out) ? out : key;
       const src = S.textures.get(key).getSourceImage();
-      const N = 192;
       const cv = S.textures.createCanvas(out, N, N);
       const g = cv.getContext();
+      const u = N / 192;
       g.save();
       g.beginPath();
-      g.arc(N / 2, N / 2, N / 2 - 4, 0, Math.PI * 2);
+      g.arc(N / 2, N / 2, N / 2 - 4 * u, 0, Math.PI * 2);
       g.fillStyle = "#ffffff";
       g.fill();
       g.clip();
-      g.drawImage(src, 8, 12, N - 16, N - 16);
+      // the family's faces are framed to fill the circle (X4); an old badge sits a little lower, inset
+      if (FACES.includes(who)) g.drawImage(src, 0, 0, N, N);
+      else g.drawImage(src, 8 * u, 12 * u, N - 16 * u, N - 16 * u);
       g.restore();
-      g.lineWidth = 8;
+      g.lineWidth = 8 * u;
       g.strokeStyle = "#ffffff";
       g.beginPath();
-      g.arc(N / 2, N / 2, N / 2 - 5, 0, Math.PI * 2);
+      g.arc(N / 2, N / 2, N / 2 - 5 * u, 0, Math.PI * 2);
       g.stroke();
-      g.lineWidth = 2;
+      g.lineWidth = 2 * u;
       g.strokeStyle = "rgba(42,37,34,0.18)";
       g.beginPath();
-      g.arc(N / 2, N / 2, N / 2 - 1.5, 0, Math.PI * 2);
+      g.arc(N / 2, N / 2, N / 2 - 1.5 * u, 0, Math.PI * 2);
       g.stroke();
       cv.refresh();
       return out;
+    },
+
+    /**
+     * The review (29 Sept, X10 / Q1, Zafar's answer): ONE way in every station. The person appears as a
+     * big round face over the dish (no body, no pretend eating): happy when it's right, with the
+     * family's praise beside it; a gentle frown when it's wrong (the station then marks the row and the
+     * child redoes it, as before). Resolves once it has been seen and heard, with {face, close()}: the
+     * station closes it when it moves on (a wrong one can stay up while they say their order again).
+     *   who, ok, x, y (the face's centre, over the dish), size (its diameter, station px),
+     *   line (what they say when it's right; default the "welldone" line; false for none),
+     *   side ("left" | "right": where the praise card goes), k (the card's scale: the zone's), depth.
+     */
+    async review(S, { who, ok, x, y, size = 220, line, side = "left", k = 1, depth = D.fx + 4 } = {}) {
+      const mood = ok ? "happy" : "frown";
+      const key = Kit.badge(S, who, mood, 256);
+      const face = S.track(S.add.container(x, y).setDepth(depth));
+      const sh = S.add.graphics();
+      sh.fillStyle(0x28190a, 0.16);
+      sh.fillCircle(0, size * 0.035, size * 0.5);
+      const img = S.add.image(0, 0, key).setDisplaySize(size, size);
+      face.add([sh, img]);
+      face.setScale(0.5).setAlpha(0);
+      face.mood = mood;
+      await Cook.tween(S, { targets: face, scale: 1, alpha: 1, duration: 340, ease: "Back.easeOut" });
+      // (Cook.tasted and Cook.tasteHold: for the screenshot scripts)
+      Cook.tasted = ok ? "happy" : "not-quite";
+      let card = null;
+      if (ok) {
+        Cook.sfx.right();
+        S.sparkle(x, y + size * 0.35);
+        S.tweens.add({ targets: face, y: y - size * 0.06, duration: 170, yoyo: true, repeat: 1, ease: "Sine.easeOut" });
+        const said = line === false ? null : line || Cook.Lang.line("welldone");
+        if (said) {
+          const t = S.add.text(0, 0, Cook.Lang.plain(said).trim(), { fontFamily: FONT, fontSize: "34px", fontStyle: "800", color: "#8C2F2F" }).setOrigin(0.5);
+          const w = t.width + 44;
+          const h = 58;
+          const dir = side === "right" ? 1 : -1;
+          card = S.track(S.add.container(x + dir * (size * 0.5 + (18 + w / 2) * k), y).setDepth(depth + 0.5).setScale(k).setAlpha(0));
+          const g = S.add.graphics();
+          g.fillStyle(0x28190a, 0.12);
+          g.fillRoundedRect(-w / 2, -h / 2 + 3, w, h, 14);
+          g.fillStyle(0xffffff, 1);
+          g.fillRoundedRect(-w / 2, -h / 2, w, h, 14);
+          card.add([g, t]);
+          S.tweens.add({ targets: card, alpha: 1, duration: 200 });
+          await Promise.race([Cook.Lang.speak(said).catch(() => {}), Cook.wait(2200)]);
+        } else await Cook.wait(900);
+        await Cook.wait(400);
+      } else {
+        // not quite: a gentle frown and a small shake of the head (never a red cross)
+        Cook.sfx.soft();
+        await Cook.tween(S, { targets: face, angle: { from: -5, to: 5 }, duration: 170, yoyo: true, repeat: 1, ease: "Sine.easeInOut" });
+        face.setAngle(0);
+        await Cook.wait(600);
+      }
+      if (Cook.tasteHold) await new Promise((r) => setTimeout(r, Cook.tasteHold));
+      const close = async () => {
+        const all = [face, card].filter((o) => o && o.active);
+        if (!all.length) return;
+        await Cook.tween(S, { targets: all, alpha: 0, scale: 0.85, duration: 260, ease: "Sine.easeIn" });
+        all.forEach((o) => o.destroy());
+      };
+      return { face, card, close };
     },
 
     /**

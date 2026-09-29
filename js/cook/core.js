@@ -176,6 +176,17 @@
     });
   };
 
+  /**
+   * A person's round face (29 Sept, X4 / Q12): the family's four faces are close-ups framed by the eyes
+   * (build/cut_characters.py), in three moods: neutral (a small smile), happy (it's right), frown (it's
+   * wrong). Anyone else has one badge. A path (Cook.v it for the DOM).
+   */
+  Cook.FACES = ["nani", "nana", "ma", "cousin"];
+  Cook.facePath = function (who, mood = "neutral") {
+    if (!Cook.FACES.includes(who)) return `assets/cook/characters/${who}-badge.webp`;
+    return `assets/cook/characters/${who}-face${mood && mood !== "neutral" ? `-${mood}` : ""}.webp`;
+  };
+
   Cook.tween = function (scene, cfg) {
     return new Promise((resolve) => {
       scene.tweens.add(Object.assign({}, cfg, { onComplete: () => resolve() }));

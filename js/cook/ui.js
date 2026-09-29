@@ -376,7 +376,7 @@
     const el = $("#guide");
     if (!el || !global.NaniGuide) return;
     guide = global.NaniGuide.mount(el, {
-      face: Cook.v("assets/cook/characters/nani-badge.webp"),
+      face: Cook.v(Cook.facePath("nani")),
       bulb: Cook.v("assets/ui/results/icon-bulb.webp"),
       bulbId: "btn-bulb",
       onBulb: () => {
@@ -639,7 +639,7 @@
   let mission = null;
   const Order = () => Cook.Order;
   const hideWord = (id) => Cook.cardHidden(id) && Lang.wordHasVoice(id);
-  const faceUrl = (who) => Cook.v(`assets/cook/characters/${who}-badge.webp`);
+  const faceUrl = (who, mood) => Cook.v(Cook.facePath(who, mood));
   UI.faceUrl = faceUrl;
   M.open = function ({ who, name, ladders, lines, line, busy, how }) {
     if (!ladders) ladders = [Order().fromLines(lines || [])];
