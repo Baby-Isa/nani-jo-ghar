@@ -18,6 +18,7 @@
 | 5 | **The first day-out trip** (the beach: pack, packed lunch, travel spot-it, stall, sandcastle/kite, the Story by the Fire) | 5 | Mostly existing modes; new: spot-it out of the window, the stall dishes, beach art | After 4 |
 | 5a | **Landing page** (what the game is, a sign-up list) | 0 | Needed before the game is shared widely: Hannah's granddad (past president of the World Federation of Khoja Shia Ithna'ashari communities) can share it across a community with deep Kutch roots. Decide whose voices and faces appear first | Before wide sharing |
 | 5b | **Trailer** (Planet Zoo style: in-game footage, slow sweeping camera, close-ups, gentle music, title cards, no narrator) | 0 | Built in code from the game itself (a scripted trailer page recorded to MP4), not generated video. Needs the clinic art and some recorded voice (the doctor's and Mum's lines with subtitles); a royalty-free track. First cut aimed around the doctor's visit | After the clinic art round |
+| 5c | **How it's paid for (open question)** | – | Zafar's idea: about £2/month to support development, maybe with the first story arc free. Weigh against the reach through the World Federation network (free to the community, a supporter option, or a sponsor). Decide before the landing page | Before 5a |
 | 6 | **Store release** (wrapper, offline, privacy, listing) | 10 | Near the end | Last |
 
 ## 1. Arc 1: The Birthday (the MVP, S1 + S2): about 35%
