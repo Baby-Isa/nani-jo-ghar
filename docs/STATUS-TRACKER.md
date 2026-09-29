@@ -1,37 +1,50 @@
 # Nani jo Ghar: status tracker
 
-**The end point:** the app is live on the store with Arcs 1–5, and every game mode appears at least once. User testing is tracked by Zafar, not here.
+**The end point:** the app is live on the store with Arc 1 (the Birthday) plus the repeatable day-out trips, and every game mode appears at least once. User testing is tracked by Zafar, not here.
 
-**Updated:** 28 Sept 2026. Percentages are Claude's estimates. The orchestrator updates this file at every milestone.
+**Updated:** 29 Sept 2026, 05:00 UTC (after the overnight Cook run). Percentages are Claude's estimates. The orchestrator updates this file at every milestone.
 
-**Overall: about 20%.**
+**Overall: about 24%.**
 
-**Focus now (Zafar, 26 Sept): Cook, the clinic, the first launch (story walkthrough and character creation), Cook and character art, and recordings with Mum.** The other five modes are parked, and their designs aren't reviewed yet.
+**Focus now (Zafar, 28–29 Sept): lock Cook first** (every station to the design system, real art, calm spacing), then the next Arc 1 mode. The clinic waits for Zafar's own play-through; Find it waits; the other five modes stay parked.
 
-## Now (28 Sept)
-- **Reworked (28 Sept, docs only):** the story arcs, per Zafar's decisions (`docs/ideas-2026-09-28-arcs-and-focus.md`). Nani is now written as the child's guide, not a kitchen-bound character. Arc 1 is now **The Birthday** (guests order their own food, set the table, sweets hide-and-seek and counting, blow out the candles), not Eid; Eid moves to a later, not-yet-designed arc. Arc 2 onward is now a repeatable **"day out with Nani"** template (pack the bag, cook the packed lunch, travel with a new spot-it window game, a three-game food stall, one or two place games, then the fire), sketched for the beach, the garden/farm, the safari and the boat. Two standalone repeatable arcs are placed in the sequence: **volunteering at the clinic** and **making clothes with Big Ma**. Every arc now ends with **the Story by the Fire**: a fireside scene, then a picture book built from records of what the child actually did that day (not screenshots), voiced by Nani, with tap-to-fill-in-the-word gaps that grow as the child improves. Full rewrite: `docs/Nani jo Ghar — Roadmap and Story Structure.md` (old five-arc plan kept as a short "Replaced 28 Sept" note); new design and data model: `docs/modes/story-by-the-fire-design.md`; new pantry art direction (every pantry item redrawn as a side-on jar or tub, one consistent family, replacing today's top-down-on-a-side-on-shelf mismatch): `docs/chatgpt-art-prompts-pantry-jars.md`. New approved-but-unbuilt ideas logged in `docs/GAME-IDEAS-TBC.md`.
-- **Redrawn (28 Sept):** the end-of-round screen's three badges (`js/shared/results.js`, `docs/UX-PRINCIPLES.md` s9a) — a stopwatch outline with the time inside (gold/dim-gold/grey), a chunky tick that fills green/red as a gauge (gold + shimmer when all right), a light bulb that dims and cracks with each hint — all inline SVG with CSS animation, reduced-motion respected. Page 2's word review now groups right words (green) on the right and wrong ones (red) on the left; Cook passes real per-word right/wrong, the clinic doesn't track it yet so its words default to right. Same API, so every caller picks it up unchanged. Verified: `build/test_shared_ui.mjs`, `build/test_shared-ui-browser.mjs`, a Cook grill round, screenshots in `build/reports/results-9a.md`.
-- **Wired (28 Sept):** the family voice clips play in the game. A shared lookup, `js/shared/family-voice.js` (mum "ok" > zafar "ok" > either unchecked, "redo" never used), used by Cook (`js/cook/lang.js`'s `Lang.speak`, whole line/frame/word, mixed with the placeholder voice where there's no clip), `first.html` (`js/shared/story.js`, by a line's `clip` id or its Kutchi text) and the clinic (`js/clinic/kit.js`'s `Kit.Voice.say`). Coverage: `build/reports/voice-coverage.md` (18 Cook words now Mum, 2 Zafar, 34 still fallback; the clinic's own words aren't recorded yet, so it's wired but silent there for now).
-- **Fixed (28 Sept):** family clips playing no sound on the live site — `lab/conversations.html` never loaded `js/version.js` (so `njgV` was undefined) and `build/bump_version.py` only stamped root-level pages, so returning players on GitHub Pages kept a stale, cache-busted-nothing copy of the lab and its data/audio fetches; `js/shared/conversations.js`'s `C.say` also built clip URLs without `njgV`. `bump_version.py` now stamps every `lab/*.html` too. Verified with Playwright served from a subdirectory (404-free, `readyState > 0`, `play()` resolves after a click).
-- **Art fold-in (27 Sept):** Kasuku v2, the painted chakla, bajri's own maani art, the onion's whole sprite, and the clinic's final rooms + Nana/Ma/Ali seated pose are live (`build/reports/art-fold-in.md`). Still waiting on a cutting pass: the new clinic patients (girl/boy/old-man/old-woman/dad+baby) and old-man/old-woman's colour variants. The 6 family/private-photo raw images left in the dump-2 folder are still Zafar's to process.
-- **Paused (Zafar, 26 Sept eve):** Cook hands fixes + phone ⌂ fix (`claude/cook-hands-fix`). Zafar is reviewing whether the hands stay at all (long thin arms add clutter); maybe only where the hands sit near the bottom of the screen, e.g. turning the skewers.
-- **Live (26 Sept, 20:40 UTC):** the Conversations engine and lab (`lab/conversations.html`, linked from `labs.html`). Not wired into any mode yet (hook points: `docs/modes/conversations-wiring.md`). Mum's recording list: `build/reports/conversations-mvp.md`.
-- **Waiting on Zafar:** detailed feedback on Cook, the clinic and the first launch (then the chai fun pass and clinic iteration start); ticks on the voice clips (then wiring the clips and a new Word doc for Mum).
+**The rules everything is built to:** `docs/design/cook-design-system-v1.md` (the single source of truth: tokens, 22/78 grid, shelf band, order model §12, kitchen kit + burner rule §13, serve-and-taste §14a, station specs §5/§11/§13/§14/§15) and `docs/VISUAL-QA.md` (look at every state before calling it done).
 
-## 1. Game modes
-The stages are: design → build the MVP → iterate from Zafar's feedback → Kutchi words in → family voice in → onboarding → story hooks.
+## 0. Overnight run, 29 Sept (00:28–05:00 UTC)
+Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pushing to `main` once. Log: `docs/overnight-log.md`; queue and rules: `docs/overnight-queue.md`; reports: `build/reports/<name>.md` + screenshot folders. API art spent overnight: about **$1.05** (all medium quality, no paste blocks needed).
 
-| Mode | Design | MVP build | Iterate | Words | Voice | Onboard | Story | **Overall** | Next step |
-|---|---|---|---|---|---|---|---|---|---|
-| **Cook with Nani** | 100 | 100 | 60 | 70 | 10 | 70 | 10 | **65%** | Merge the hands. A fun pass on the chai station. Zafar decides the next wave (chop level 1, customer reactions). |
-| **Find it** | 100 | 90 | 30 | 40 | 5 | 50 | 10 | **45%** | Into the shell. Rebuild to the quality-pass design (the library cut from 21 to 10). |
-| **The clinic** | 100 | 85 | 0 | 5 | 0 | 60 | 0 | **35%** | Zafar's first play. Record Section G (the clinic words). Build D3 clues, the album and free play. |
-| **Tidy up** (parked) | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Zafar reviews the quality-pass design, then a rebuild. |
-| **Who did it?** (parked) | 100 | 30 | 0 | 10 | 0 | 0 | 0 | **20%** | Same. The family's A6 lines are ready for it. |
-| **Dress up** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. It shares art with character creation. |
-| **Monsoon rush** (parked) | 100 | 30 | 0 | 5 | 0 | 0 | 0 | **18%** | Same. Section G has the weather words. |
-| **Snap** (parked) | 100 | 25 | 0 | 5 | 0 | 0 | 0 | **17%** | Same. |
-| **Conversations** (module) | 80 | 70 | 0 | 0 | 0 | 0 | 0 | **25%** | **Engine + lab live (26 Sept eve); 23/23 tests.** Next: wire the 15 placements after Zafar's mode feedback; Mum records the list in `build/reports/conversations-mvp.md`. Design decided (26 Sept). Build the MVP slice (9 exchanges) after the first launch; Mum records the common whole phrases. (`docs/modes/conversations-design.md`). |
+## 1. Cook with Nani: stations (v2 = rebuilt to the design system)
+| Station | State | Art | Open items | Report |
+|---|---|---|---|---|
+| **Chai v2** | ✅ live | $0.40 | One burner per person (1–4), on the kitchen kit. Nani's line English placeholder (to record). | `build/reports/chai-v2.md` |
+| **Maani v2** + **kitchen kit** | ✅ live | $0.05 | One tawa (Zafar). Kit = `js/cook/kitchen-kit.js` (`Cook.Kit`, shared-api §15). Adopt the new card APIs (queue note). | `maani-v2.md` |
+| **Sekelo v2** (was the mishkaki grill) | ✅ live | $0.12 | Top-down throughout (Zafar). **To confirm:** headline *Muke sekelo khape.* (Zafar checking with Mum); *lakri gos* vs Mum's *hakri lakri mishkaki*. | `sekelo-v2.md` |
+| **Chaat v2** | ✅ live | $0.32 | Glass cross-section, curved layers (follow-ups fix). L4 closed card + paid peek. Nani's line placeholder. | `chaat-v2.md`, `followups.md` |
+| **Samosa v2** | ✅ live | $0.07 | Swipe fold kept; karahi fry on the kit. Polish pass: one filling mound, centred fry layout. Phase lines + "fry them" button English placeholders. | `samosa-v2.md` |
+| **Daar v2** (chop, tadka, stir) | ✅ live | $0 | Stirs shown as a Kutchi word. **To record:** Nani's "Chop these". Confirm *hakro* as the first stir count. L4 closed card (polish). | `daar-v2.md` |
+| **Pantry v2** (fetch) | 🟡 live, polish pending | – | Waiting on the final background render; then a polish pass (plans doc A3). | `pantry-v2/` |
+| **Station select, day flow, title screen** | ⏸ | – | Plans doc A4; title screen parked by Zafar. | `docs/design/plans-remaining-2026-09-29.md` |
+
+**Shared Cook pieces**
+| Piece | State |
+|---|---|
+| Order card (person → items → parts; closed card + paid peek; don't rows; Nani's card via `UI.mission.addCard`) | ✅ `js/shared/order-card.js`, shared-api §14; 112/112 tests |
+| Sidebar v3 (sage Nani box, one card per person, flat material pills) | ✅ |
+| End pop-up (badges → words → actions) | ✅ |
+| Kitchen kit (hob, burners, knobs, heat ring, chips, badges) | ✅ `Cook.Kit`; karahi added by the samosa polish |
+| Serve and taste (§14a) | ✅ in sekelo, chaat, samosa, daar |
+| The cream band above the counter | ❌ comes from the shared Phaser FIT letterbox (`js/cook/flow.js`); a one-line decision for Zafar |
+
+**Cook overall: about 75%** (design 100, build 95, iterate 70, words 75, voice 15, onboarding 75, story 10).
+
+## 1b. Other modes
+| Mode | Overall | Next step |
+|---|---|---|
+| **The clinic** | 35% | **Zafar plays it through first.** Then an audit session → Claude's feedback draft → Zafar approves → build to the design system (plans doc B1). |
+| **Find it** | 45% | Same process after the clinic (plans doc B2). |
+| **Conversations** (module) | 25% | Engine + lab live. Wire the 9 MVP exchanges into the first launch, Cook and the clinic (plans doc B4). |
+| **First launch** | 70% | Re-run end to end after the pantry polish; the story panels to be redone for the Birthday arc (plans doc B3). |
+| Tidy up / Who did it? / Dress up / Monsoon rush / Snap | 17–20% | Parked (Zafar). Each gets audit → design refresh → build with the shared components. |
 
 ## 2. Foundation and story
 | Piece | % | Next step |
@@ -88,6 +101,14 @@ The stages are: design → build the MVP → iterate from Zafar's feedback → K
 | Store listing (screenshots, text, age rating) | 0 | Near the end. |
 
 ## Waiting on Zafar (open questions)
+**New, 29 Sept (overnight Cook run):**
+- *Muke sekelo khape.* as Sekelo's headline (checking with Mum; kept for now). *lakri gos* vs *hakri lakri mishkaki* for the all-meat skewer.
+- Daar: record Nani's "Chop these"; confirm *hakro* as the first stir count.
+- English placeholders still to record: Nani's guide lines per station (Round 4 N1–N23), samosa's phase lines and "fry them" button.
+- The cream band above the counter (Phaser letterboxing): fill it with the play area, or leave it?
+- The open ideas for Cook in `docs/GAME-IDEAS-TBC.md` before Cook is called finished.
+- Play through Cook (all six v2 stations) and the clinic.
+
 1. A8.9 "Who did it?": re-asked 28 Sept (R12); Mum said *kere karein* again, the final n "a half end". Zafar to judge by ear.
 2. From 28 Sept (docs/kutchi-grammar-notes.md §29–§37): *hakro cup* (R8); *mirchi* with no plural vs *marcha* (P4); *watana* (fried) vs *matar* (green peas) for Cook's peas (P11); Big Ma's name (*Big Ma / Wadima / Maji*); whether Nani says *sambusa*; *Ki aiye?* vs *Ki ai?* (K4); *Alaikum salaam* without *wa* (K2); the ⚠ spellings of the story lines S1–S9. For Mum: which of *dinda / dinde* is for an elder; *khanij* (bring along) vs *khan* (take). Settled 28 Sept: *hever kadh* (urgent) and *hane kadh* (in a sequence) are both right; "in" is *me*; yesterday is *gaykal* for now.
 

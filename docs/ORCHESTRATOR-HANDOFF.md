@@ -1,5 +1,32 @@
 # Orchestrator handoff (for a new Claude chat)
 
+## Start here (updated 29 Sept 2026, 05:00 UTC)
+1. Read `docs/HANDOVER-2026-09-29.md`, which covers what happened overnight and what's open for Zafar.
+2. Then read `docs/STATUS-TRACKER.md` (reworked 29 Sept: Cook stations table, shared pieces, other modes) and `docs/design/cook-design-system-v1.md` (the single source of truth).
+3. The integration branch is `claude/nifty-rubin-c0d431`. `main` is the live site.
+
+**How the overnight run was orchestrated (reuse it):**
+- **Queue and rules:** `docs/overnight-queue.md`:
+  - at most 4 sessions at once;
+  - one owner per file group;
+  - every session appends a timestamped line to `docs/overnight-log.md` and pushes every 20–30 minutes;
+  - each session ends with a report in `build/reports/<name>.md`, the VISUAL-QA matrix, `bump_version` and **one** push to `main` (the Pages rate limit is about 10 builds an hour).
+- **Tracking:** the orchestrator polls with `get_session` and `git log`, re-arming a `send_later` check-in every 30 minutes. At each check-in it **looks at the finished screenshots itself** and puts what it finds into a polish session. The session that built a station can't be messaged, so the next session takes over its files.
+- **Launching sessions:**
+  - `create_session` with `source_revision` and `outcome_branch` both set to the integration branch;
+  - model = the top model for anything visual;
+  - every brief names the files the session owns and a hard stop time.
+
+**New lessons (29 Sept):**
+- **Zafar may talk to a child session directly** (he told sekelo "top-down throughout"). Read `docs/overnight-log.md` for decisions he made there, and copy them into the design doc.
+- **A reviewer pass after every build is worth it.** Each station's first build had 2–4 visible issues that only showed up when someone looked at the screenshots (flat chaat layers, filling dots on the fold line, an off-centre fry layout, "•••" pills, a rack that looked like a picture frame).
+- **Check a word is recorded before calling it English:** *mixed* and *boga* are family-recorded (B18, B17). Search `data/family-audio.json` first.
+
+---
+
+*(Older content below, from 25–28 Sept; the lessons still apply.)*
+
+
 **Written 25 Sept 2026, ~11:30 UTC**, at the end of the first orchestration chat. Read this first, then `docs/cook-with-nani-todo.md` (the live to-do and status) and `docs/modes/OVERVIEW.md`.
 
 ## How Zafar wants this run
