@@ -48,6 +48,7 @@ Card states: `card-samosa-frying.png` (folded, no ✓, while frying) and `card-d
 
 - `node build/test_shared_order_card.mjs`: 7/7. `test_shared_ui.mjs` 8/8, `test_shared_compat.mjs` 5/5.
 - `build/test_cook.py --lab --viewport laptop`: **PASS** (200 screenshots, 1460 s; every lab station played through, so pointer hit-testing through the camera works).
+- `build/test_cook.py --lab --viewport flip5-landscape`: **PASS** (208 screenshots).
 - `build/test_cook.py --days 1 --canvas --viewport laptop`: **PASS** (36 shots; the service room with Nani leaning on the island looks right). It first failed twice at "the ? didn't close the goal": the test pressed ? on the first tap, and the first-time coach (which starts on its own 120 ms tick) arrived just after, covering the button. It passed on the old build by timing alone. The test now gives the coach 0.4 s and tries the ? later if the coach is up. No test is skipped.
 
 ## 5. Notes for others
