@@ -26,7 +26,7 @@
 
 ## 3. Shots, each opened and judged (`build/reports/stage-fill/`)
 
-`before/`: laptop, the original build: cream strips above and below at all seven stations.
+`before/`: the original build (a324cb7), laptop and phone landscape: cream strips above and below at laptop; a strip below and thin strips at the sides on the phone.
 
 `after/` (start = first playable moment or the order card over the room; mid = a few actions in):
 
@@ -47,7 +47,7 @@ Card states: `card-samosa-frying.png` (folded, no ✓, while frying) and `card-d
 ## 4. Tests
 
 - `node build/test_shared_order_card.mjs`: 7/7. `test_shared_ui.mjs` 8/8, `test_shared_compat.mjs` 5/5.
-- `build/test_cook.py --lab --viewport laptop`: see the final line of this report.
+- `build/test_cook.py --lab --viewport laptop`: **PASS** (200 screenshots, 1460 s; every lab station played through, so pointer hit-testing through the camera works).
 
 ## 5. Notes for others
 
