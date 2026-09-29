@@ -3,7 +3,7 @@
 pop-up drawn by the shared order card (js/shared/order-card.js).
 
   python3 build/shoot_order_model.py                 # laptop only (iterating: VISUAL-QA 0)
-  python3 build/shoot_order_model.py --all           # laptop 1366x768 and phone (844x390 in play; 390x844 portrait)
+  python3 build/shoot_order_model.py --all           # laptop 1366x768 and phone (844x390: the game plays sideways)
   python3 build/shoot_order_model.py --only mishkaki,chai
   python3 build/shoot_order_model.py --dump          # the sidebar's text per state (no pictures)
 
@@ -12,6 +12,7 @@ States (the game's own order generator, kept to the order wanted; build/reports/
   maani      level 3: hakri maani + ba bajr ji maani (pop-up, sidebar)
   chai       level 1: a single chai (pop-up; the sidebar at the tray, parts straight under the headline; the pop-up again)
   fold       level 2 Chai tray: one person folded, one open
+  pantry, chaat, tadka, samosa   the other stations (--only; not in the default set)
 """
 import argparse
 import os
@@ -26,9 +27,8 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 OUT = os.path.join(T.ROOT, "build", "reports", "order-model")
 VIEWPORTS = {
     "laptop": {"width": 1366, "height": 768, "touch": False},
-    # the game plays sideways on a phone; portrait shows the pop-up the same way
+    # the game plays sideways on a phone (390x844 portrait is the "turn your phone" card; lab/order-card.html shows the card at 390 wide)
     "phone": {"width": 844, "height": 390, "touch": True},
-    "phone-portrait": {"width": 390, "height": 844, "touch": True},
 }
 
 # keep the recipe's own generator, but only the order wanted (tries until it makes one)
@@ -44,7 +44,13 @@ STATES = {
     "maani": ("maani-line", 3, "maani", 4),
     "chai": ("chai-tray", 1, None, None),
     "fold": ("chai-tray", 2, None, None),
+    # the other stations (checked while iterating; not in the report's matrix)
+    "pantry": ("fetch", 2, None, 2),
+    "chaat": ("assemble", 2, None, 2),
+    "tadka": ("tadka", 2, None, 2),
+    "samosa": ("samosa", 2, None, 2),
 }
+MATRIX = ["mishkaki", "maani", "chai", "fold"]
 
 
 def shoot(page, vpname, name):
@@ -92,7 +98,7 @@ def run(pw, vpname, name, dump=False):
         page.wait_for_selector("#intro:not(.hidden) .ic-card", timeout=15000)
         time.sleep(1.2)
         snap("popup")
-        if name in ("mishkaki", "maani"):
+        if n:
             V.moves(P, n)
             time.sleep(0.9)
             snap("sidebar")
@@ -127,13 +133,11 @@ def main():
     ap.add_argument("--dump", action="store_true")
     args = ap.parse_args()
     T.start_server()
-    names = [s for s in args.only.split(",") if s] or list(STATES)
+    names = [s for s in args.only.split(",") if s] or MATRIX
     with sync_playwright() as pw:
         for vpname in list(VIEWPORTS) if args.all else ["laptop"]:
             print(vpname)
             for name in names:
-                if vpname == "phone-portrait" and name not in ("mishkaki", "maani", "chai"):
-                    continue
                 run(pw, vpname, name, dump=args.dump)
 
 

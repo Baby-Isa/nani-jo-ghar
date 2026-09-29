@@ -151,6 +151,11 @@
   .oc-card .oc-items { gap: 5px; margin-top: 5px; }
   .oc-card .oc-row { padding: 0 6px 0 9px; border-radius: 8px; }
   .oc-card .oc-done-tk { width: 16px; height: 16px; }
+  /* a long part list (a mixed skewer's four pieces) takes two columns, read left to right, so the order fits without scrolling */
+  .oc-card:not(.oc-big) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) { display: grid; grid-template-columns: 1fr 1fr; }
+  .oc-card:not(.oc-big) .oc-parts.oc-seq:has(> .oc-part:nth-child(3))::before,
+  .oc-card:not(.oc-big) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) > .oc-part::before { display: none; }
+  .oc-card:not(.oc-big) .oc-item:not(.oc-direct) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) { padding-left: 8px; }
   .oc-card.oc-big { --oc-h: 19px; --oc-i: 16px; --oc-p: 15px; --oc-row-h: 30px; --oc-part-h: 28px; --oc-face: 42px; --oc-gap: 5px; --oc-indent: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {

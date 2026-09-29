@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order card lab</title>
+<!-- The shared order card (js/shared/order-card.js; design system 12; docs/shared-api.md 14): every state
+     side by side, as the sidebar and the request pop-up draw it. The words are the game's own (data/cook.json). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="../css/shared/order-card.css?v=20260929T005355Z">
+<style>
+  :root { --page: #f4ecdf; --panel: #efe5d6; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; background: var(--page); font-family: "Nunito", system-ui, sans-serif; color: #2a2522; }
+  h1 { font-size: 20px; margin: 0 0 12px; }
+  h2 { font-size: 13px; margin: 0 0 8px; color: #7a6857; text-transform: uppercase; letter-spacing: .06em; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  .side { width: 240px; background: var(--panel); padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .pop { width: min(480px, 100%); background: #fff; border-radius: 18px; padding: 18px; box-shadow: 0 18px 48px rgba(70, 45, 20, .22); }
+  .col { display: flex; flex-direction: column; gap: 8px; }
+</style>
+</head>
+<body>
+<h1>Order card lab</h1>
+<div class="row" id="lab"></div>
+<script src="../js/shared/fit.js?v=20260929T005355Z"></script>
+<script src="../js/shared/order-card.js?v=20260929T005355Z"></script>
+<script>
+  const w = (t) => `<span class="word">${t}</span>`;
+  const face = (who) => `../assets/cook/characters/${who}-badge.webp`;
+  const p = (label, done, extra) => Object.assign({ label, done: !!done }, extra || {});
+  const mixA = (d) => [p(w("gos"), d > 0), p(w("dungri"), d > 1), p(w("gos"), d > 2), p(w("tameto"), d > 3)];
+  const mixB = (d) => [p(w("tameto"), d > 0), p(w("gos"), d > 1), p(w("dungri"), d > 2), p(w("gos"), d > 3)];
+  const head = (dish) => ({ html: `Muke ${w(dish)} khape.` });
+  const STATES = {
+    "mishkaki: ba lakri gos + two different mixes": { person: { id: "nana", face: face("nana") }, headline: head("mishkaki"), items: [
+      { label: `ba lakri ${w("gos")}`, count: 2 },
+      { label: `hakri lakri ${w("mixed")}`, ordered: true, parts: mixA(2) },
+      { label: `hakri lakri ${w("mixed")}`, ordered: true, parts: mixB(0) } ] },
+    "a finished item folds to one gold line; the same mix twice is one row": { person: { id: "ma", face: face("ma") }, headline: head("mishkaki"), items: [
+      { label: `hakri lakri ${w("mixed")}`, count: 1, done: true, ordered: true, parts: mixB(4) },
+      { label: `ba lakri ${w("mixed")}`, count: 2, ordered: true, parts: mixA(1) } ] },
+    "maani: hakri maani + ba bajr ji maani": { person: { id: "cousin", face: face("cousin") }, headline: head("maani"), items: [
+      { label: `hakri ${w("maani")}`, count: 1, done: true },
+      { label: `ba ${w("bajr ji maani")}`, count: 2 } ] },
+    "a single chai: parts under the headline": { person: { id: "nana", face: face("nana") }, headline: head("chai"), items: [
+      { label: null, parts: [p(w("dudh"), true), p(`ba ${w("khun")}`), p(w("elchi"))] } ] },
+    "a finished person folds": { person: { id: "ma", face: face("ma") }, headline: head("chai"), items: [
+      { label: null, parts: [p(`${w("Dudh")} na.`, true, { no: true }), p(`trae ${w("khun")}`, true)] } ] },
+  };
+  const lab = document.getElementById("lab");
+  const side = document.createElement("div");
+  side.className = "col";
+  side.innerHTML = "<h2>Sidebar</h2>";
+  const sb = document.createElement("div");
+  sb.className = "side";
+  side.appendChild(sb);
+  Object.values(STATES).forEach((d) => sb.appendChild(OrderCard.card(d, { fold: {}, foldAfter: 0 })));
+  lab.appendChild(side);
+  ["mishkaki: ba lakri gos + two different mixes", "maani: hakri maani + ba bajr ji maani", "a single chai: parts under the headline"].forEach((k) => {
+    const col = document.createElement("div");
+    col.className = "col";
+    col.innerHTML = `<h2>Pop-up: ${k}</h2>`;
+    const pop = document.createElement("div");
+    pop.className = "pop";
+    pop.appendChild(OrderCard.card(STATES[k], { big: true }));
+    col.appendChild(pop);
+    lab.appendChild(col);
+  });
+  if (window.FitText) FitText.watch(lab);
+</script>
+</body>
+</html>
