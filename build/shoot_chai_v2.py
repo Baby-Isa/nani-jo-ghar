@@ -45,6 +45,7 @@ class Shooter(T.Player):
         if isinstance(e, dict) and e.get("kind") == "click" and e.get("selector") == "#done-btn":
             time.sleep(0.5)
             self.snap("serving")
+            self.done_at = time.time()
         if "start" not in self.taken and isinstance(e, dict) and e.get("kind") not in ("wait", None) and not e.get("intro"):
             time.sleep(0.3)
             self.snap("start")
@@ -65,7 +66,9 @@ def run(vp, out, level, speed, guided=False):
         P = Shooter(page, out, speed, f"{vp['name']}-l{level}")
         page.evaluate(f"() => {{ __cook.lab('chai-tray', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
-        P.play(lambda: page.evaluate("!!document.querySelector('#lab-list') && !document.querySelector('#overlay').classList.contains('hidden')"), timeout=1200)
+        P.done_at = None
+        # the shots are all in once the tick is pressed: stop a few seconds later (the end pop-up is not ours)
+        P.play(lambda: bool(P.done_at and time.time() - P.done_at > 4) or page.evaluate("!!document.querySelector('#lab-list') && !document.querySelector('#overlay').classList.contains('hidden')"), timeout=1200)
         browser.close()
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:
