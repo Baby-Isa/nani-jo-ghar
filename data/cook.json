@@ -2889,7 +2889,7 @@
     "ph-dhana": { "bowl": "topping-dhana-chopped-bowl-t" },
     "ph-keema": { "bowl": "topping-keema-bowl-t" },
     "ph-chips": { "bowl": "chips-golden-t", "raw": "chips-raw-t" },
-    "veg-01": { "bowl": "topping-bataato-boiled-bowl-t", "whole": "veg-bataato-whole-t", "cubed": "veg-bataato-cubed-t" },
+    "veg-01": { "bowl": "topping-bataato-boiled-bowl-t", "whole": "veg-bataato-whole-t", "cubed": "veg-bataato-cubed-t", "raw": "mishkaki-bataato-raw-t" },
     "veg-02": { "bowl": "topping-dungri-chopped-bowl-t", "whole": "veg-dungri-whole-t", "raw": "mishkaki-dungri-raw-t", "grilled": "mishkaki-dungri-grilled-t", "charred": "mishkaki-dungri-charred-t" },
     "veg-03": { "bowl": "topping-tameto-chopped-bowl-t", "whole": "veg-tameto-whole-t", "raw": "mishkaki-tameto-raw-t", "grilled": "mishkaki-tameto-grilled-t", "charred": "mishkaki-tameto-charred-t" },
     "veg-10": { "bowl": "topping-vatana-bowl-t" },
@@ -3068,9 +3068,9 @@
     "tawa": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
     "stir": ["ladle.tool"],
     "maani-line": ["spatula.tool", "tawa.top"],
-    "thread": ["skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"],
+    "thread": ["skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.raw", "veg-01.cubed"],
     "grill": ["skewer.tool", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-mishkaki.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-mishkaki.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
-    "mishkaki-grill": ["bg:marble", "skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.cubed"]
+    "mishkaki-grill": ["bg:marble", "skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.raw", "veg-01.cubed"]
    }
   }
  },

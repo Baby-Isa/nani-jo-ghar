@@ -60,7 +60,7 @@ class Shooter(T.Player):
             time.sleep(0.5)
             self.snap("serving")
         if "start" not in self.taken and kind not in ("wait", None) and not e.get("intro"):
-            time.sleep(0.3)
+            time.sleep(0.9)
             self.snap("start")
         if key == "turn" and "grill" not in self.taken:
             self.snap("grill")
@@ -77,13 +77,20 @@ class Shooter(T.Player):
             time.sleep(0.25)
             self.snap("turned")
         if kind == "click" and e.get("selector") == "#done-btn":
-            time.sleep(1.3)
+            # serve and taste: shoot the moment their face changes (Cook.tasted), then its outcome
+            self.page.evaluate("Cook.tasted = null")
+            time.sleep(0.5)
             self.snap("taste" if "taste" not in self.taken else "taste2")
-            if "-wrong" in self.tag:
-                time.sleep(2.5)
+            for _ in range(80):
+                if self.page.evaluate("Cook.tasted"):
+                    break
+                time.sleep(0.05)
+            time.sleep(0.35)
+            if "-wrong" in self.tag and "redo" not in self.taken:
+                time.sleep(1.6)
                 self.snap("redo")
             else:
-                time.sleep(1.4)
+                time.sleep(0.3)
                 self.snap("praise")
         return r
 
@@ -100,8 +107,20 @@ def run(vp, out, level, speed, guided=False, wrong=False):
             page.evaluate("Cook.forceTaste = false")
         page.evaluate(f"() => {{ __cook.lab('mishkaki-grill', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
-        P.play(lambda: page.evaluate("!!document.querySelector('#lab-list') && !document.querySelector('#overlay').classList.contains('hidden')"), timeout=1200)
-        P.snap("end")
+        t_end = []
+
+        def until():
+            # done once they've praised it and the end-of-station pop-up is up (its shot is the last)
+            if "praise" not in P.taken:
+                return False
+            t_end.append(time.time())
+            if page.evaluate("!!document.querySelector('.njg-results')"):
+                time.sleep(1.0)
+                P.snap("results")
+                return True
+            return time.time() - t_end[0] > 25
+
+        P.play(until, timeout=1200)
         browser.close()
     bad = [e for e in errors if "fonts" not in e and "ERR_FAILED" not in e]
     if bad:

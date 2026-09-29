@@ -785,6 +785,9 @@
     ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, `${V2.DIR}${bowls[id]}.webp`]));
     return Promise.race([Cook.Stations.load(S, list), Cook.wait(15000)]);
   };
+  /** The taster's faces (happy, neutral) for serve and taste. */
+  SK.faceArt = (S, who) =>
+    Promise.race([Cook.Stations.load(S, ["happy", "neutral"].map((m) => [`sk2-face-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`])), Cook.wait(15000)]);
   /** The speaker icon, drawn at (x, y) about `s` px tall (the chai v2 chip's). */
   SK.speaker = function (g, x, y, s, color = 0x2a2522) {
     const k = s / 24;
@@ -959,7 +962,8 @@
       const offerChips = params.chips != null;
 
       /* the scene: the band and the quiet shelf (the bowls you threaded from), then the grill */
-      const shelfIds = params.shelf || [SK.pieceIds()];
+      const meatIds = SK.pieceIds().filter((id) => SK.cls(id) === "meat");
+      const shelfIds = params.shelf || [meatIds, SK.pieceIds().filter((id) => !meatIds.includes(id))];
       await SK.loadArt(S, [].concat(...shelfIds));
       SK.band(S, z);
       const quiet = SK.shelf(S, z, shelfIds, { level: z.level });
@@ -1111,7 +1115,13 @@
         if (params.stock && g.cls.ok && ctx.tickCard) ctx.tickCard(g.cls.kind);
         g.sk.setDepth(D.item + 3 + j * 0.01);
         // onto the plate, still upright, side by side
-        S.tweens.add({ targets: g.sk, x: X(PLATE.x - 54 + (j % 5) * 27), y: Y(PLATE.y + 8), scale: 0.36 * z.k, duration: 460, ease: "Sine.easeInOut" });
+        // (the plate's skewers stay centred on it as more arrive)
+        const onPlate = plate.map((p) => p.sprite).filter(Boolean);
+        onPlate.forEach((sk, q) => {
+          const tx = X(PLATE.x + (q - (onPlate.length - 1) / 2) * Math.min(34, 150 / onPlate.length));
+          if (sk === g.sk) S.tweens.add({ targets: sk, x: tx, y: Y(PLATE.y + 8), scale: 0.36 * z.k, duration: 460, ease: "Sine.easeInOut" });
+          else S.tweens.add({ targets: sk, x: tx, duration: 300, ease: "Sine.easeInOut" });
+        });
         g.plated = g.sk;
         z.progress({ plated: plate.length });
         // (§15: no picture tally; the plate shows what's made)
@@ -1317,14 +1327,16 @@
    */
   async function taste(S, z, { who, ok, plateImg, skewers, X, Y, L }) {
     const V2 = SK.V2;
-    const faces = ["happy", "neutral"].map((m) => [`sk2-face-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`]);
-    await Promise.race([Cook.Stations.load(S, faces), Cook.wait(3000)]);
     z.expect({ kind: "wait" });
+    await SK.faceArt(S, who);
+    // (a face that never loaded: their badge, never a missing-texture box)
+    const faceKey = (m) => [`sk2-face-${who}-${m}`, `${who}-badge`].find((k) => S.textures.exists(k));
+    if (!faceKey("neutral")) return;
     const fx = X(PLATE.x);
     const fy = Y(150);
     const size = L(170);
     const disc = S.track(S.add.graphics().setDepth(D.fx + 1));
-    const face = S.track(S.add.image(fx, fy, `sk2-face-${who}-neutral`).setDepth(D.fx + 2));
+    const face = S.track(S.add.image(fx, fy, faceKey("neutral")).setDepth(D.fx + 2));
     const fit = () => face.setScale(size / Math.max(face.width, face.height));
     fit();
     disc.fillStyle(0x28190a, 0.1);
@@ -1343,8 +1355,9 @@
     await Cook.tween(S, { targets: face, scale: face.scale * 1.06, duration: 160, yoyo: true });
     await Cook.wait(260);
     if (ok) {
-      face.setTexture(`sk2-face-${who}-happy`);
+      face.setTexture(faceKey("happy"));
       fit();
+      Cook.tasted = "happy"; // (for the screenshot script)
       Cook.sfx.right();
       S.sparkle(fx, fy);
       const line = Lang.line("welldone");
@@ -1362,8 +1375,9 @@
       await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(2200)]);
       await Cook.wait(500);
     } else {
-      face.setTexture(`sk2-face-${who}-neutral`);
+      face.setTexture(faceKey("neutral"));
       fit();
+      Cook.tasted = "not-quite";
       Cook.sfx.soft();
       S.wiggle(face);
       await Cook.wait(700);

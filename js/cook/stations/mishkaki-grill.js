@@ -63,6 +63,7 @@
     const SK = Cook.Skewer;
     const kThread = Mech.knobs("thread", { level: lv("thread") });
     await SK.loadArt(S, SK.pieceIds().concat(kThread.decoyPool || []));
+    await SK.faceArt(S, who);
     for (let attempt = 0; ; attempt++) {
       // 1. thread every skewer
       await St.begin(S, ctx, "thread", "marble");
