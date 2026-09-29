@@ -66,8 +66,8 @@ class Shooter(T.Player):
         if kind == "more":
             # the tick may have been pressed: stop a few seconds on unless the station carries on
             self.done_at = time.time()
-        elif kind not in ("wait", None):
-            self.done_at = None
+        elif kind in ("tap", "roll", "timing"):
+            self.done_at = None  # the station carried on (one more maani)
         return r
 
     def tap(self, x, y, what=""):
