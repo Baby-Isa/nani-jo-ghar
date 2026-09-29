@@ -89,11 +89,62 @@ Please record each as a whole sentence. The words in brackets are what the game 
 10. *Muke {x} waari chai khape* as one sentence (the game puts Mum's *aadu waari chai* inside *Muke … khape*; it's marked draft).
 11. *sekelo* itself (Zafar's word for the dish, K1).
 
-## 6. Tests
-(filled in at the end)
+## 6. Tests (29 Sept, second session, laptop 1366×768)
+- `node build/check_onboard.mjs` (new): **ok**, 7 stations, 10 phases, 7 phase starts in the code, every one scripted. Against the old `samosa.js` it fails with 3 problems (its `Coach.stop(true)` lines), as it should.
+- `node build/test_shared_order_card.mjs` 7/7, `test_shared_ui.mjs` 8/8, `test_shared_compat.mjs` 5/5: **pass**.
+- `build/test_cook.py --lab --viewport laptop`, split with `--stations` (it runs past 20 min in one go):
+  - fetch, chai-tray, maani-line, mishkaki-grill, daar: **PASS** (68 shots, 1058 s);
+  - chop … flip (11 stations): every station played with no failure, but the run hit its 20-minute `timeout` at the end of `flip` (the shot scripts were running on the other lock, which slowed it), so it has no PASS line. Its last five (fill, fry, thread, grill, roll-tawa) were run again on their own: **PASS** (54 shots, 396 s);
+  - after the last layout changes (chai and maani face placement, the view clamp), chai-tray, maani-line, assemble, mishkaki-grill and samosa, daar again: RESULT_LAB4 / RESULT_LAB5.
+- `build/test_cook.py --days 1 --canvas --viewport laptop`: **PASS** (41 shots, 121 s).
 
 ## 7. Shots and flaws (VISUAL-QA §5)
-(filled in at the end)
+All in `build/reports/cook-shared-fixes/` (laptop 1366×768 and phone landscape 844×390). `build/shoot_review.py` takes the review and coach shots; `build/shoot_shared_fixes.py` the pop-ups and shelves (`popup/`). **Read this first:** the frown shots of chai, maani, daar, chaat and samosa are *forced* (`Cook.forceReview`, the face only), because the bot plays them right, so in those shots the card still shows every row ticked. In a real wrong dish the card marks the wrong row, as the test runs show. Sekelo's frown is its real wrong path (`Cook.forceTaste`). Flaws first, for each.
+
+**The faces (X4):** `faces-old-vs-new.png`.
+- Nani's face is still a touch smaller and higher than the others; her sheet is a lean-on-the-counter pose, and the ChatGPT sheet should fix it.
+- Nana's cap is cut by the circle at the top (by design: the face fills the circle, as Zafar asked).
+- Ali's frown panel is from a different row of his sheet, and its lighting is a little warmer than his neutral.
+
+**The review face (X10), right and wrong:**
+- **Daar** (`daar-happy/frown-*`):
+  - The bowl is small next to the hob, and the face stacks on it at the right of the hob, so the left third of the scene is empty.
+  - The face covers the bowl's top rim (it's meant to be "over the dish").
+  - On phone the praise card sits close to the right edge but isn't clipped.
+- **Samosa** (`samosa-*`):
+  - The face overlaps the top of the paper, and the paper-lined plate itself looks like a square napkin on a round plate (old art, not changed here).
+  - Before the clamp, the phone shot cut the face at the top; it's clamped to the view now (re-shot: see the files with the later timestamps).
+- **Chaat** (`assemble-*`):
+  - The face sits just above the glass, praise to the right.
+  - Before the clamp, the phone view cut off the top of the face (fixed, re-shot).
+  - On laptop there's a lot of empty worktop under the glass (the layout is the station's own).
+- **Sekelo** (`mishkaki-grill-*`):
+  - The plate is at the far right, so the face is ~45 px from the edge.
+  - The praise card overlaps the grill's right handle.
+  - The face hides the top of the skewer.
+- **Chai** (`chai-tray-*`, level 1 and `-l3`):
+  - One glass: the face sits above the glass on the tray's top edge.
+  - Full tray (level 3): each face sits on its own glass. The faces touch and slightly overlap each other, the left ones spill past the tray edge, and the praise card covers the empty fourth glass.
+  - The small hob and tray badges stay on show under the big faces (two faces of the same person at once).
+- **Maani** (`maani-line-*`):
+  - The face sits between the hob and the finished plates, covering the top of the plates (moved 25 px lower after the first shot, where it covered the tongs).
+  - It centres on both finished plates, so it isn't over the one with the maani.
+
+**The coaches (X11):**
+- **Samosa:** fill (`samosa-coach-*-fill`: the spotlight on the named filling, the ghost hand taps), fold (`-fold`: the strip lit, the hand swipes), fry (`-fry`).
+  - The laptop fry shot was taken after the overlay had already stepped back, so it shows the karahi without the dim. The coach did start there (the shot is only taken when `.njg-onboard` is up). The phone shot, with a shorter wait, shows it.
+- **Daar:** tadka (`daar-coach-*-tadka`: the next spice lit).
+  - The stir shot on phone (`daar-coach-phone-landscape-stir`) caught the moment after the overlay stepped back (the tick glowing), so the stir step isn't pictured with its dim. The script's stir step ran (it's what the shot waited for).
+
+**The pop-up with the new sentences** (`popup/*-popup.png`: pantry, chai, maani, samosa, sekelo):
+- Pantry (lab): the list's face is Nana, not Nani. That comes from the lab's order person, not from today's changes; in story mode it's Nani.
+- Maani: the headline repeats the row (*Muke hakri bajr ji maani khape.* / *hakri bajr ji maani*), the X12 point Zafar is to decide (§2).
+- Samosa level 1: the headline is *Muke samosa khape.* and the filling is only in the row; the spoken sentence has the "with" part.
+- Phone: the pop-up's headline is on one line, and nothing is clipped.
+
+**The chai shelf padding** (`popup/chai-tray-*-t01.png`):
+- On laptop the gap above the water bottle (~19 px) is a little larger than the gap under the chips (~11 px), so the X7 rule isn't exact at this size.
+- On phone the two gaps match to within a few px.
 
 ## 8. Things I noticed but didn't change (for Zafar)
 - The pop-up reads each row with a long pause (~3–4 s a row with no voice file in the headless browser), so a five-row pantry list takes ~20 s before it closes. It's worth checking on a real device.
