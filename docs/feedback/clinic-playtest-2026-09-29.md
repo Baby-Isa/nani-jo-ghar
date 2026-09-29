@@ -452,3 +452,8 @@ Prototype B replaced the shared onboarding kit's ghost finger with **English sen
   - **The bandage doesn't show on every tap** (a bug): every right tap must draw its turn of the bandage.
   - **At the top level the named leg isn't highlighted.** It still glows while "left knee" is said; by then the child should know it from the word alone.
 - **Never make the child wait for the talking to finish (the whole clinic).** In several games nothing can be tapped until the spoken instructions end. Input is live from the start. The instruction can still be replayed, and a tap during it simply goes ahead.
+
+### 13j. Ear wax (Zafar, 29 Sept, late)
+- **Level 1 is too hard:** it already uses *wadho / nindho* (big and small). Level 1 has no size words: just take the wax out, with at most a count. Big and small start at level 2.
+- **Wax is dragged out, not tapped:** drag each blob from the ear to a set place (a tissue or a dish beside the ear) and let go there. The gesture is the same at every level (UX §12).
+- **The wax that pops up (the higher levels) never goes away by itself.** Today a new blob slips back and disappears on its own, so the child can ignore it. Instead the new blobs keep coming and **stay until the child drags each one out**. The round ends when the ear is clear (with the level's pop-up time or count as its limit).
