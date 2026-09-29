@@ -1696,7 +1696,8 @@
      },
      "pool": "$veg",
      "tadka": "$tadka",
-     "laps": "$laps"
+     "laps": "$laps",
+     "speed": "$speed"
     },
     {
      "do": "serve",
@@ -3774,14 +3775,8 @@
    {"do": "tap", "what": "lift it onto the plate on the green"}
   ],
   "daar": [
-   {
-    "do": "tap",
-    "what": "the vegetable on Nani's card (its crate on the shelf)"
-   },
-   {
-    "do": "tap",
-    "what": "the knife: it chops, the pieces go in the katori and her card counts it"
-   }
+   {"do": "swipe", "what": "slice a vegetable Nani named: its pieces go to the side"},
+   {"do": "swipe", "what": "and another, before the timer runs out"}
   ],
   "chop": [
    {"do": "swipe", "what": "slice a vegetable Nani named"},
@@ -3819,10 +3814,12 @@
    {"do": "swipe", "what": "the last fold: it's sealed"}
   ],
   "daar-cook": [
+   {"do": "tap", "what": "the knob: the oil is hot at once, it sizzles"},
    {"do": "tap", "what": "the first spice Nana said, into the hot oil"},
    {"do": "tap", "what": "the next spice"},
-   {"do": "tap", "what": "the next one (or the pan: tip it into the pot)"},
-   {"do": "stir", "what": "drag the ladle round the pot, counting the laps"},
+   {"do": "tap", "what": "the chopped vegetables, one pile at a time: each row ticks as it goes in"},
+   {"do": "tap", "what": "the daar"},
+   {"do": "stir", "what": "drag the ladle round the pot, counting the laps (the dial shows how fast)"},
    {"do": "tap", "what": "the tick when it's done"}
   ],
   "_phases": {

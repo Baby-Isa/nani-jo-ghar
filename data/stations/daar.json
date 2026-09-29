@@ -1,20 +1,20 @@
 {
- "_about": "Data for the daar station v2 (design system §13), the combined station js/cook/stations/daar.js: chop what Nani's card says on the board (tap a crate, tap the knife; the pieces go into the katori), then the tadka in the pot on the kitchen kit's hob (one burner, one pot: the knob, the spices in the order Nani says, the chopped vegetables, the daar) and stir as many times as Nani says. Serve and taste (§14a). mechanic.levels (merged in order): vegDecoys / spiceDecoys (extra crates and jars on the shelf), spiceShelf (where the spice decoys come from), ladder (how Nana's card shows the tadka order in the cook: words, or closed = the card starts folded to face + headline and a peek costs a hint, §14a; no dots or hidden rows: no pips, and a hidden section would let the card fold with its check early), heatRate (how fast the oil heats, ring per second). `phases`: one English line per job (placeholders, like every station goal).",
+ "_about": "Data for the daar station v2 (design system §13), the combined station js/cook/stations/daar.js: v3 (29 Sept play-test, D1): the swipe chop again (js/cook/mechanics/chop.js, its own levels, decoys and timer), the pieces waiting at the side, then the tadka in the pot on the kitchen kit's hob (one burner, one pot: the knob, the spices in the order Nani says, the chopped vegetables, the daar) and stir as many times as Nani says. Serve and taste (§14a). mechanic.levels (merged in order): vegDecoys / spiceDecoys (extra crates and jars on the shelf), spiceShelf (where the spice decoys come from), ladder (how Nana's card shows the tadka order in the cook: words, or closed = the card starts folded to face + headline and a peek costs a hint, §14a; no dots or hidden rows: no pips, and a hidden section would let the card fold with its check early), (v3, S16: no oil-heating ring; the oil is hot at once and the sizzle says so. The stir's speed dial reads data.mechanics.stir's bands.) `phases`: one English line per job (placeholders, like every station goal).",
  "station": {
   "name": "Daar",
   "verb": "Chop, tadka, stir",
-  "goal": "Chop what Nani's card says, add the spices in the order she says, then stir as many times as she says.",
+  "goal": "Swipe to chop what Nani says, add the spices in the order she says, then stir as many times as she says.",
   "phases": {
-   "chop": "Tap a vegetable, then the knife. Chop what Nani's card says, then tap the tick.",
-   "cook": "Turn on the hob, add the spices in the order Nani says, then the vegetables and the daar."
+   "chop": "Swipe to chop what Nani says, before the timer runs out.",
+   "cook": "Turn on the hob, add the spices in the order Nani says, then the chopped vegetables and the daar."
   }
  },
  "mechanic": {
   "levels": [
-   {"vegDecoys": 0, "spiceDecoys": 0, "spiceShelf": ["spi-02", "spi-05", "spi-01", "spi-16", "spi-04", "veg-13", "veg-12"], "ladder": "words", "heatRate": 0.32, "stirLine": "Stir round the pot as many times as Nani says, then tap the tick."},
+   {"vegDecoys": 0, "spiceDecoys": 0, "spiceShelf": ["spi-02", "spi-05", "spi-01", "spi-16", "spi-04", "veg-13", "veg-12"], "ladder": "words", "stirLine": "Stir round the pot as many times as Nani says, then tap the tick."},
    {"vegDecoys": 2, "spiceDecoys": 2},
    {"vegDecoys": 3, "spiceDecoys": 3},
-   {"heatRate": 0.42, "vegDecoys": 4, "ladder": "closed"}
+   {"vegDecoys": 4, "ladder": "closed"}
   ]
  }
 }
