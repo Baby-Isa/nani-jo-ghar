@@ -1705,7 +1705,7 @@
      "count": 1
     }
    ],
-   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`). Daar v2 (29 Sept, design system §13): one combined station, js/cook/stations/daar.js (chop on the board from Nani's card, then the tadka and the stir in one pot on the kitchen kit's hob, serve and taste); the chop, tadka and stir mechanics stay in the lab.",
+   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`). Daar v3 (29 Sept play-test, D1-D11): one combined station, js/cook/stations/daar.js (the swipe chop again, its pieces waiting on the counter, then the tadka and the stir in one pot on the kitchen kit's hob, serve and taste); the chop, tadka and stir mechanics stay in the lab.",
    "how": "Chop what they say, add the spices in the order Nani says, then stir."
   },
   "chaat": {

@@ -390,7 +390,7 @@
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
     const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
     const bodyR = z.L(150);
-    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 1.15 });
+    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.95 }); // X6: the flames just peek out past the pot
     const cx = hob.burners[0].x;
     const cy = hob.burners[0].y;
     // the pot, placed by its measured body (never the handles' box); hot oil in it from the start (D2)
