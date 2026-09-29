@@ -444,3 +444,11 @@ Prototype B replaced the shared onboarding kit's ghost finger with **English sen
   5. **Done / Next:** does it use the shared buttons (UX §15)?
 
   Then it fixes every "no", and says why for any it can't.
+
+### 13i. Knee (bandage) game and waiting on instructions (Zafar, 29 Sept, late)
+- **The heal game's "why" explainer only plays in the lab.** In a normal run the patient has already said what's wrong at the diagnosis, so the heal game starts straight in. Standalone or lab play keeps the short beat.
+- **The bandage game is fun: keep it.** It's not very educational, but there are plenty of other chances to learn numbers.
+  - **Stop the flashing when you're done:** once the last turn is wrapped, no dot flashes.
+  - **The bandage doesn't show on every tap** (a bug): every right tap must draw its turn of the bandage.
+  - **At the top level the named leg isn't highlighted.** It still glows while "left knee" is said; by then the child should know it from the word alone.
+- **Never make the child wait for the talking to finish (the whole clinic).** In several games nothing can be tapped until the spoken instructions end. Input is live from the start. The instruction can still be replayed, and a tap during it simply goes ahead.
