@@ -22,8 +22,8 @@ Branch `claude/cook-samosa-v3`. Station: `js/cook/stations/samosa.js`. Shots: `b
   - **The knob stays on high while frying (S21).** Before, it dropped to "low" once the oil was hot.
   - **One jharo.** Two quick lifts queue: the second waits for the first scoop (about 0.9 s). The verdict is
     taken the moment you tap, and a tapped samosa stops frying at once, so the wait never burns anything.
-- **Data:** the fry coach (`data.onboard.fry`) gained its first step, the knob (it never showed it). The fill
-  phase line says "Tap the fillings" (there are no bowls now).
+- **Data:** the fill phase line says "Tap the fillings" (there are no bowls now). `data.onboard` is unchanged
+  (see S4/S7 below: adding a knob step to the fry coach broke it).
 - **Shared files:** none of the game's shared files changed (`kitchen-kit.js`, `ui.js`, `order.js`,
   `recipes.js`, `station-lib.js` untouched). The karahi and plate are placed in `samosa.js` from their measured
   meta, so `Cook.Kit.VESSELS.karahi` (the v2 karahi) is left as it is for anyone else. `build/check_vessel_meta.py`
@@ -47,16 +47,69 @@ Branch `claude/cook-samosa-v3`. Station: `js/cook/stations/samosa.js`. Shots: `b
 | **S18** base filling | ✅ checked | The shared session's `minFirst` works: 6,000 orders drawn (1,500 per level, every customer) and every one has the base (chundo or bataato) at least one spoon, as a card row. |
 | **S3** base is a row | ✅ checked | Same probe: the base is always one of the tally's rows. **But** the rows are shuffled (an any-order list), so it's often not the *first* row: see §5. |
 | **S9** second samosa | ✅ checked | An order has **one** filling for all its samosas (`fillings` is a single tally), so the next strip is pre-filled from this order's own spoons, and each station run starts empty. There is no order with two different samosas: see §5. |
-| **S4, S7** first-time coach | ✅ checked | The fill + fold coach (`data.onboard.samosa`: spoon, spoon, the tick, three folds) runs; the fry coach now shows the knob first, then a samosa in, then the lift. `node build/check_onboard.mjs` passes. The coach is a ghost hand, not words, so S4's "how much chundo" is answered by the card (level 1: the count written and heard as you add). |
+| **S4, S7** first-time coach | ✅ checked | The fill + fold coach (`data.onboard.samosa`: spoon, spoon, the tick, three folds) and the fry coach (a samosa in, the lift) both run; `node build/check_onboard.mjs` passes. I tried adding the knob as the fry coach's first step: that put the coach one step out (the spotlight stayed on the tray while a samosa was ready to lift, and the overlay blocks taps outside its light), so the lifts came late and every samosa burnt. Taken out again (bot back to 100 %). The knob still pulses and glows on a guided round. The coach is a ghost hand, not words, so S4's "how much chundo" is answered by the card (level 1: the count written and heard as you add). |
 | **The review face** | ✅ | Centred over the plate (a little above its middle), 250 px, `Kit.review` keeps it inside the view; the praise card goes left, over the hob. Shot on laptop and phone landscape, right and wrong (the frown via the kit's `Cook.forceReview` screenshot switch). |
 
 ## 3. Tests
 
-RESULTS_PLACEHOLDER
+All after merging `origin/main` (with the sekelo v3 session's work in it).
+
+| Test | Result |
+|---|---|
+| `python3 build/test_cook.py --lab --stations samosa --viewport laptop` | **PASS** (13 shots, 157 s): *Understood everything. fold 100% · fry 100%* |
+| `… --viewport phone-landscape` | **PASS** (13 shots, 128 s): *Understood everything. fold 100% · fry 100%*. (With the knob coach step in, it passed but burnt: see S4/S7.) |
+| `python3 build/test_cook.py --days 1 --canvas` | **PASS** on all six viewports (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait). Day 1 has no samosa, so this checks the rest of the game still plays. |
+| `node --test build/test_shared_*.mjs` | **PASS** 113/113 |
+| `node build/check_onboard.mjs` | **PASS** (7 stations, 10 phases, every phase start scripted) |
+| `python3 build/check_vessel_meta.py` | **PASS** (64 ok), including the new `samosa.js META.karahi` / `META.plate` vs `meta.json` check |
+| S18 / S3 probe (6,000 orders, levels 1–4, every customer) | base filling ≥ 1 spoon and a card row in every one |
+| Level 4, laptop, bot (`--lab --level 4`) | plays through (PASS); the bot burns some samosas. **The old v2 station does the same** at level 4 under the bot (run on `origin/main` in a separate worktree: *a samosa went too dark*, fry 40% on 3 of 6), so it isn't new. |
+
 
 ## 4. Shots and their flaws
 
-SHOTS_PLACEHOLDER
+`build/shoot_samosa_v3.py --matrix` (states in its header): laptop 1366×768 and phone landscape 844×390 at
+levels 1, 2, 3, 4, plus level 2 "wrong" (the frown), and phone portrait (the rotate prompt). 173 shots in
+`build/reports/samosa-v3/`, named `<viewport>-l<level>-<state>.png`. Every run: no console errors. Flaws first.
+
+**Fill** (`fill-start`, `fill-mid`, `filled`)
+- Flaws: the heaps are small on the phone (about 45 px across on screen) and, at level 3–4, chilli, dhania and
+  peas are all green blobs at that size (the chip's speaker is the only other cue from level 3). The strip on the
+  house board leaves a lot of bare board around it. The spoonfuls sit as separate little heaps side by side
+  rather than one mixed mound (you can see every filling, which helps, but it reads a bit "placed"). At level 1
+  the card can list the base second (*ba marcha, hakro bataato*: §5).
+- Right: the house board and the plate read clean; heaps have no bowls and match the pile they came from; the
+  word pop sits above the strip; the tick is clear of the heaps.
+
+**Fold** (`fold-glow`, `fold-1-mid`, `fold-1`, `fold-2`, `fold-3`, `sam-2-filled`, `folded`)
+- Flaws: mid-swipe, the wipe's soft edge shows a sliver of the filling at the triangle's right edge for a moment
+  (it's gone at the snap). Fold-4 and fold-5 are drawn a touch bigger than the others on ChatGPT's sheet (the
+  strip is 137 px tall there, 130 elsewhere), so the strip's right end steps by a few pixels at those swipes.
+  The glow is a plain rectangle round the part that folds, not its outline. `fold-3` is taken just after the
+  third swipe, so the finished samosa has often already flown to the plate (fold-6 itself is seen for ~0.3 s).
+- Right: the filling is on the flat strip and the first swipe covers it with the fold-2 triangle; every later
+  stage is the fixed picture; the finished samosa flies by its own middle and lands on the plate's flat centre;
+  the next strip comes pre-filled with the same spoons (`sam-2-filled`); 1, 2 and 3 on the plate sit in rows well
+  inside the rim (S10).
+
+**Fry** (`fry-start`, `fry-on`, `frying-1`, `frying-all`, `scoop`, `plate`)
+- Flaws: the flame ring pokes a little past the hob's top edge (the karahi is taller than the wide hob is deep,
+  so the peek above it lands on the worktop). With three samosas the timing rings nearly touch. On phone, the
+  jharo's handle ran off the right edge beside the plate in the matrix shots; it's now turned to hang down over
+  the band (re-shot: `samosa-v3/recheck/phone-landscape-l2-scoop.png`, the handle hangs down inside the view). The golden fry art (v2) is quite brown on the plate. In the matrix,
+  level-4 runs burnt a samosa on the first try: the bot's late taps, not the game (the old v2 station burns the
+  same way under the bot at level 4; see §3).
+- Right: the wide hob with the big karahi and the plate reads as one group, knob clear of the rim; flames show
+  as soon as the knob is on and stay on (S21); no heating ring (S16); samosas are bigger in the oil; the jharo is
+  under the samosa and it rides on top to the plate (S20); the plate fills in rows on its flat centre.
+
+**Review** (`taste-right`, `taste-wrong`) and **end**
+- Flaws: the face covers most of the plate (it's "over the dish" as asked, but the samosas are hidden while it's
+  up). On phone the face is pulled up by the view clamp so it sits on the plate's upper half, not its middle.
+  The praise card lands over the karahi's right handle.
+- Right: fully inside the view on laptop and phone landscape; happy and frown both read at a glance; the end
+  pop-up is unchanged.
+
 
 ## 5. Open for Zafar
 
@@ -73,7 +126,10 @@ SHOTS_PLACEHOLDER
 - **The fry art** (raw → golden → dark) is still the v2 set, a slightly different samosa shape from the new
   fold-6. A matching v3 fry set (four states on fold-6's canvas) would make the raw one on the thali the very
   samosa you folded.
-- **Level 3–4 at three samosas** is busy: the bot, playing fast, keeps up; I didn't change the fry speed.
+- **Level 4** is hard for the bot (it burns some), as it was in v2; I didn't change the fry speed.
+- **The fry coach doesn't show the knob.** A coach step per move only works when each move changes "what to
+  do next" once; the knob could be shown if the coach learnt to skip ahead when the child is ahead of it
+  (a change to the shared coach, not made).
 
 ## 6. New placeholder words
 
