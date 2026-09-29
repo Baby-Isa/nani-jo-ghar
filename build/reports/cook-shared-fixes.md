@@ -13,6 +13,11 @@ Branch `claude/nifty-rubin-c0d431`. Source: `docs/feedback/cook-playtest-2026-09
   - **D9:** daar's chopped rows go back to "to do" at the start of the pot phase and tick again when the katori tips in.
   - **X12 / Q7:** at level 1 the counting is heard as you add in daar's chop and samosa's fill (the word pop says "ba dungri" instead of "dungri"). The shared tally now speaks at level 1 only; chai's sugar keeps level 2 as well.
 - **Old art reused:** none by me. (The face crops come from the existing character art; see the helper's section below.)
+- **Second session (X4, X10, X11), mechanics changed: none removed or replaced.**
+  - The review's *look* changed as Zafar asked (Q1): the half-body person sliding in (chaat, daar, samosa) and sekelo's small face are gone, and with them the dish sliding over to the person and the "lean in and taste". What happens after the verdict is unchanged: right → the end screen; wrong → the card marks the row, they say their order again, the dish goes back and the child redoes it (at most three tries in daar and samosa, as before).
+  - Chai and maani gained the review face (they had nothing). It adds no new outcome: chai's wrong glass still gets its person's recast, and maani's end is unchanged.
+  - Samosa's first-time coach is no longer switched off (it used to kill the fry script), and daar's tadka and stir have one. The coach only shows moves; it changes no rule.
+- **Old art reused (second session):** all the faces are the existing character art re-cropped (`sources/art/characters/char-*-expressions-v1.png`, `char-nani-v2.png`). Happy is the expressions sheet's panel 3 (the old "happy" head); frown is row 3 panel 2 (a gentle worried frown, from the same sheets, used for the first time). **Nani has one face only** (her v2 sheet), so her happy and frown are her neutral until the ChatGPT face sheets come; she's never a customer, so no review shows her.
 
 ## 2. Items
 
@@ -22,9 +27,9 @@ Branch `claude/nifty-rubin-c0d431`. Source: `docs/feedback/cook-playtest-2026-09
 | **P4** read in card order | ✅ | The pantry list keeps its drawn order (no second shuffle), so the card, Nani's list and the fetch run top to bottom alike. |
 | **X2** read-along underline | ✅ | Every spoken line shows as its parts, and each part gets the gold underline while it's said: Nani's box (her lines and her replay), the speech card (the chai tray's person lines), the caption, and the pill's own speaker. The pop-up already read along (headline underline, rows gold-edged); unchanged. `UI.speakAlong` / `UI.raHtml`. |
 | **X3** speaker tappable | ✅ | The speaker badge now takes taps (`pointer-events: auto`), and a margin (`::after`) extends the face button past the badge: sidebar cards, pop-up, Nani's box (`.face-say`, `.oc-face`). The Phaser faces on the hob aren't replay buttons (tapping them selects the pan), so there was nothing to extend there. |
-| **X4 / Q12** face badges | see §4 | Helper session. |
-| **X10 / Q1** one review, big round face | see §4 | Helper session. |
-| **X11** coach for every phase, plus a check | see §4 | Helper session. |
+| **X4 / Q12** face badges | ✅ | See §4. |
+| **X10 / Q1** one review, big round face | ✅ | See §4. |
+| **X11** coach for every phase, plus a check | ✅ | See §4. |
 | **X12 / Q7** counting rule | ✅ (partly) | For the stations the rule covers (`countRule`: daar, chaat, samosa, maani, sekelo), card rows write the Kutchi quantity at levels 1–2 and drop it from level 3 (heard in the order only). Daar's rows now carry their counts (*ba dungri*, T1); chaat's chopped layers say theirs (*ba bataato*). Counting is heard as you add at level 1 (daar chop, samosa fill, the tally). Chai unchanged (its sugar tally stays). **Not done:** at level 3+ maani's headline (*Muke ba bajr ji maani khape.*) and samosa's still show their count, because the headline is the spoken line itself. Zafar to decide. |
 | **X6** heat gauge | ✅ | `Cook.Kit.heatRing`: 1.5× thicker (10 → 15 px by default, the stations' own widths scaled too), on a dark brown track with a dark edge. |
 | **X7** shelf padding | ✅ (chai, maani) | One rule in `station-lib.js` (`St.shelfFit`, `St.shelfItemTop`): the gap above the tallest item equals the gap below the chips (17 px), with the bounce and a little glow taken off first. Chai's jar groups are scaled to fit (the water bottle no longer pops out). Maani's dough plates moved down to the same line. Other stations weren't commented on, so they're untouched. |
@@ -49,7 +54,28 @@ Branch `claude/nifty-rubin-c0d431`. Source: `docs/feedback/cook-playtest-2026-09
 
 A "no" row is said in its place on the card in Mum's form (*dudh na*), so its position still says nothing (the leak rule).
 
-## 4. Sentences for Mum to record (Q5)
+## 4. X4, X10, X11 (the second session)
+
+**X4 / Q12, the faces.** `build/cut_characters.py --badges-only` re-crops Nani, Nana, Ma and Ali from the existing sheets, framed by the eyes: the eye line at 45 % of the square, the eyes 25 % of its width apart, and half the head's tilt levelled (Nani's is 18°). Nani's glasses sit wide, so her face read small when matched by the eyes; she's 10 % bigger. Three moods each: `assets/cook/characters/<who>-face.webp` (neutral), `-face-happy`, `-face-frown`. Old v new: `cook-shared-fixes/faces-old-vs-new.png` (left column the old badge, then neutral, happy, frown; the red line is the eye line).
+- **The old `<who>-badge.webp` files are untouched**: the other games (dress, snap, find, monsoon, the story) use them, and Zafar didn't comment on those. Only Cook moved to the new faces (`Cook.facePath(who, mood)`; Phaser `Cook.Kit.faceArt(who)` / `Cook.Kit.badge(S, who, mood)`). If he wants them everywhere, it's a one-line change per game.
+- **The ChatGPT face sheets drop in** as three `SPEC[who]["badge-<mood>"]` entries (sheet, box, eye centres) in `cut_characters.py`; rerun it and every Cook face and review changes. Nothing in the game code changes.
+- Not changed: Cook's cover button (`app.js`, Nani's old badge), because it's the start screen, not a face in the kitchen.
+
+**X10 / Q1, the review.** One shared component, `Cook.Kit.review(S, {who, ok, x, y, size})` in `kitchen-kit.js`: their face on a white disc (the badge look, 256 px), popping up over the dish. Right: the happy face, a hop, sparkles and the praise card (*Shabash!*, the "welldone" line, spoken). Wrong: the frown and a small shake of the head, then the station does what it did before. Where it sits:
+- **Daar:** over the bowl of daar, praise to the right (it covered the pot on the left).
+- **Samosa:** over the plate of samosas.
+- **Chaat:** over the glass, praise to the right.
+- **Sekelo:** over the plate (replacing the small face at the top).
+- **Chai (new):** at the tick, one face over each person's glass (sized to the tray's spacing); the praise is said once, when every glass is right. A wrong glass's face frowns while its person says their order again (the recast, as before).
+- **Maani (new):** at the tick, one face over the finished plates; happy when every count is right.
+- **Pantry:** none (no customer).
+
+**X11, the coach.**
+- **Samosa:** new script `data.onboard.samosa` (fill: spoon, spoon, the tick; fold: three folds). The fry's script (`data.onboard.fry`) already existed but was switched off by `Coach.stop(true)` straight after the fry began; that's gone. The early stop before the art loads is now `stop(false)` (not "seen"), so the fill's own start shows it.
+- **Daar:** new script `data.onboard["daar-cook"]` (the spices, the stir, the tick), started with the new `St.coach(ctx, key)` after the chop (the pot phase runs in the same view, so its `begin` couldn't).
+- **The check:** `node build/check_onboard.mjs`. Every station's phases are listed in `data.onboard._phases`; it fails when a phase has no script, a step isn't a move the coach can show, the code starts a phase with no script (`St.begin`/`St.coach` literals in `js/cook`), or a station calls `Coach.stop(true)` without its own demo in its place (chaat's own finger demo is allowed by its comment). Run against the old samosa it fails three times (lines 131, 153, 163); now it passes.
+
+## 5. Sentences for Mum to record (Q5)
 Please record each as a whole sentence. The words in brackets are what the game says now as English placeholders.
 1. *Muke aadu waari chai khape* **[with]** *dudh, ba khun.* How do you say "with" here? Does it change for a plural (samosas)?
 2. *Muke kari chai khape, ba khun.*
@@ -63,11 +89,11 @@ Please record each as a whole sentence. The words in brackets are what the game 
 10. *Muke {x} waari chai khape* as one sentence (the game puts Mum's *aadu waari chai* inside *Muke … khape*; it's marked draft).
 11. *sekelo* itself (Zafar's word for the dish, K1).
 
-## 5. Tests
+## 6. Tests
 (filled in at the end)
 
-## 6. Shots and flaws (VISUAL-QA §5)
+## 7. Shots and flaws (VISUAL-QA §5)
 (filled in at the end)
 
-## 7. Things I noticed but didn't change (for Zafar)
+## 8. Things I noticed but didn't change (for Zafar)
 - The pop-up reads each row with a long pause (~3–4 s a row with no voice file in the headless browser), so a five-row pantry list takes ~20 s before it closes. It's worth checking on a real device.

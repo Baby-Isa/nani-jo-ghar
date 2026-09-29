@@ -119,6 +119,13 @@
     // Only in a guided run (a dish's first order; the lab's "Nani helps"): the spotlight can be the answer
     if (Cook.Coach && UI.w6() && ctx.guided) Cook.Coach.start(key);
   }
+  /**
+   * A phase's first-time coach inside a station that has already begun (29 Sept, X11): daar's tadka and
+   * stir run on after the chop in the same view, so its begin can't start them. Same rule as begin's.
+   */
+  function coach(ctx, key) {
+    if (Cook.Coach && UI.w6() && ctx && ctx.guided) Cook.Coach.start(key);
+  }
   function end() {
     if (Cook.Coach) Cook.Coach.stop();
     Cook.inStation = false;
@@ -401,5 +408,6 @@
   S$.STRIP_Y = STRIP_Y;
   S$.begin = begin;
   S$.end = end;
+  S$.coach = coach;
   S$.row = row;
 })(window);

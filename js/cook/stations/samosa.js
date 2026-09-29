@@ -17,7 +17,8 @@
  *     Tap the knob: the oil heats (the kit's heat ring). Tap a raw samosa: it slides into the oil. Each one
  *     goes raw -> light -> golden -> too dark (a small heat ring round it); tap it when golden and the
  *     slotted spoon (no hand) lifts it onto the paper-lined plate. No tally: the plate shows the count.
- * SERVE AND TASTE (§14a): the plate slides to the person, who tastes.
+ * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): their big round face comes up over
+ *   the plate (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
  *  - not quite: a gentle face, they say their order again, the plate comes back empty and the child makes
  *    them again (fill first). Only the first try counts (the ear star, the end review). At most three tries.
@@ -128,7 +129,7 @@
     const kFill = Mech.knobs("fill", { level });
     const pool = p.pool || St.decoys(p.decoyPool || [], kinds.concat(exclude), St.knobInt(kFill.decoys), kFill.decoyPick).filter((id) => prepUrl(id));
     const ids = Cook.shuffle([...new Set(pool.concat(kinds, exclude))]);
-    if (Cook.Coach) Cook.Coach.stop(true);
+    if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the fill's own begin shows it (data.onboard.samosa)
     // the art loads while the order card is up (a slow phone mustn't meet an empty scene)
     const art = [
       ["sv2-board", "assets/cook/items/tool-board-t.png"],
@@ -149,8 +150,8 @@
     let result = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       /* ---------- 1 + 2: fill and fold ---------- */
+      // the fill and the fold: the first time, the coach shows each move (X11: data.onboard.samosa)
       await St.begin(S, ctx, "samosa", "marble");
-      if (Cook.Coach) Cook.Coach.stop(true);
       if (phases.fill && !attempt) UI.gist(phases.fill);
       if (ctx.nextStep) ctx.nextStep("Fill");
       const fz = Mech.zone(S, ctx, { id: "fill", level });
@@ -159,8 +160,8 @@
       St.end();
 
       /* ---------- 3: fry, then serve and taste ---------- */
+      // the fry: its first-time coach runs (X11: data.onboard.fry; it used to be switched off here)
       await St.begin(S, ctx, "fry", "marble");
-      if (Cook.Coach) Cook.Coach.stop(true);
       if (phases.fry && !attempt) UI.gist(phases.fry);
       if (ctx.nextStep) ctx.nextStep("Fry");
       const yz = Mech.zone(S, ctx, { id: "fry", level });
@@ -892,7 +893,7 @@
     z.expect({ kind: "wait" });
     // the review (X10 / Q1): their big round face over the plate, no body, no pretend eating
     const pr = (plate.img.displayWidth || z.L(FRY.pd)) / 2;
-    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: plate.img.x, y: plate.img.y - pr - z.L(70), size: z.L(250), k: z.L(1) });
+    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: plate.img.x, y: plate.img.y - pr - z.L(52), size: z.L(230), k: z.L(1) });
     if (ok || last) {
       await Cook.wait(300);
       await look.close();

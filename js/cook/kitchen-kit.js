@@ -153,6 +153,9 @@
      *   side ("left" | "right": where the praise card goes), k (the card's scale: the zone's), depth.
      */
     async review(S, { who, ok, x, y, size = 220, line, side = "left", k = 1, depth = D.fx + 4 } = {}) {
+      // (Cook.forceReview: the screenshot script shows a face it can't make the bot earn; the look only,
+      // the station's own verdict still decides what happens next)
+      if (Cook.forceReview != null) ok = Cook.forceReview;
       const mood = ok ? "happy" : "frown";
       const key = Kit.badge(S, who, mood, 256);
       const face = S.track(S.add.container(x, y).setDepth(depth));

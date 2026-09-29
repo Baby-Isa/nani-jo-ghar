@@ -18,7 +18,8 @@
  *     the daar. Then stir: drag the ladle round the pot (or tap the pot for one turn) as many times as Nani
  *     says. The count shows only as the Kutchi number word by the pot (*ba*, *trae*): no digits, no pips.
  *     Tap the tick when it's done.
- * SERVE AND TASTE (§14a): a ladle of daar into the bowl, the bowl slides to the person, who tastes.
+ * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): a ladle of daar into the bowl, and
+ *   their big round face comes up over it (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
  *  - not quite: a gentle face, they say their order again, and the child cooks it again (the chop first).
  *    Only the first try counts (the ear star, the end review). At most three tries.
@@ -151,6 +152,8 @@
       /* ---------- 2: tadka and stir, then serve and taste ---------- */
       await St.begin(S, ctx, "daar", "marble");
       if (Cook.Coach) Cook.Coach.stop(false);
+      // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
+      if (!attempt) St.coach(ctx, "daar-cook");
       if (ctx.nextStep) ctx.nextStep("tadka");
       UI.mission.reveal("tadka");
       // 29 Sept (D9, Zafar): the chopped things still have to go in, so their rows go back to "to do"
@@ -795,7 +798,7 @@
     Cook.sfx.pop();
     S.puff(bowl.x, bowl.y, 0xfff1c0, z.L(40));
     // the review (X10 / Q1): their big round face over the bowl, no body, no pretend eating
-    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: bowl.x, y: bowl.y - z.L(215), size: z.L(250), k: z.L(1) });
+    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: bowl.x, y: bowl.y - z.L(215), size: z.L(250), k: z.L(1), side: "right" });
     if (ok || last) {
       await Cook.wait(300);
       await look.close();

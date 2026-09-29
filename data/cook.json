@@ -3809,7 +3809,32 @@
   "fry": [
    {"do": "tap", "what": "a samosa into the oil"},
    {"do": "tap", "what": "lift it out on the green"}
-  ]
+  ],
+  "samosa": [
+   {"do": "tap", "what": "a spoon of the first filling they said, onto the strip"},
+   {"do": "tap", "what": "the next spoon (as many as the card says)"},
+   {"do": "tap", "what": "the tick when the filling's in"},
+   {"do": "swipe", "what": "fold the strip over the filling"},
+   {"do": "swipe", "what": "fold it again"},
+   {"do": "swipe", "what": "the last fold: it's sealed"}
+  ],
+  "daar-cook": [
+   {"do": "tap", "what": "the first spice Nana said, into the hot oil"},
+   {"do": "tap", "what": "the next spice"},
+   {"do": "tap", "what": "the next one (or the pan: tip it into the pot)"},
+   {"do": "stir", "what": "drag the ladle round the pot, counting the laps"},
+   {"do": "tap", "what": "the tick when it's done"}
+  ],
+  "_phases": {
+   "_about": "29 Sept (X11): every phase of every station, by the key its coach runs under (St.begin or St.coach). build/check_onboard.mjs fails when one has no script above, or when a station's code starts a phase this list doesn't know.",
+   "pantry": ["fetch"],
+   "chai": ["chai-tray"],
+   "maani": ["maani-line"],
+   "daar": ["daar", "daar-cook"],
+   "chaat": ["assemble"],
+   "samosa": ["samosa", "fry"],
+   "sekelo": ["thread", "grill"]
+  }
  },
  "tips": {
   "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",
