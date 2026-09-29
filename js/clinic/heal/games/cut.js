@@ -37,7 +37,7 @@
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
   /** The rows of one round. Pure. */
-  function plan(level, ailmentId, rng, knobs) {
+  function planCut(level, ailmentId, rng, knobs) {
     const K = Object.assign({}, KNOBS, knobs || {});
     const ail = ailmentId === "cut" || ailmentId === "scrape" ? ailmentId : level >= 2 ? "cut" : "scrape";
     const L = Math.max(1, Math.min(3, level));
@@ -123,8 +123,8 @@
   }
 
   /** The blind bot (Node): the strategies of quality pass Q6 that apply here. */
-  function bot(level, rng) {
-    const p = plan(level, level >= 2 ? "cut" : "scrape", rng);
+  function botCut(level, rng) {
+    const p = planCut(level, level >= 2 ? "cut" : "scrape", rng);
     const strategies = ["fair", "random", "tray-order", "max", "most-common", "first-option"];
     return {
       rows: p.rows,
@@ -146,10 +146,10 @@
   }
 
   /* ---------------- the browser game ---------------- */
-  function mount(stage, ctx) {
+  function mountCut(stage, ctx) {
     const doc = stage.ownerDocument;
     const K = Object.assign({}, KNOBS, (ctx.data && ctx.data.knobs) || {});
-    const P = plan(ctx.level, ctx.ailment && ctx.ailment.id, ctx.rng, K);
+    const P = planCut(ctx.level, ctx.ailment && ctx.ailment.id, ctx.rng, K);
     const part = (ctx.ailment && ctx.ailment.part) || (P.ailment === "cut" ? "arm" : "knee");
     const side = ctx.side || (part === "tooth" ? null : "left");
     const h = (tag, cls, parent, text) => {
@@ -551,10 +551,265 @@
     };
   }
 
+  /* ================= v2: the scrape (design sheets part B, H-scrape; CQ7) =================
+   * Pela paani (water), ne poi the cloth dabbed N times (counted), then plasters in the
+   * colours and order said: L1 one plaster; L2 two in order; L3 three half-and-half.
+   * The cat, star and dot designs are gone. The stitches (the "cut") stay as they were.
+   */
+  const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
+  const SCRAPE = {
+    dabs: { 1: [2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
+    colours: ["red", "blue", "green", "yellow"],
+    plasters: { 1: 1, 2: 2, 3: 3 },
+  };
+  const WHY = { problem: "I fell over and scraped my arm.", goal: "Let's clean it and put plasters on." };
+  const CUES = {
+    wash: "Tap the <b>water</b>, then tap the scrape.",
+    dab: "Tap the <b>cloth</b>, then dab the scrape. Count the dabs you're told.",
+    plaster: "Tap a <b>plaster</b> in the colour said, then tap the dotted spot.",
+  };
+  const halfName = (pair) => `${pair[0]} and ${pair[1]}`;
+  function planScrape(level, rng) {
+    const L = Math.max(1, Math.min(3, level));
+    const dab = HS.pick(SCRAPE.dabs[L], rng);
+    const n = SCRAPE.plasters[L];
+    let options;
+    if (L < 3) options = SCRAPE.colours.map((c) => [c]);
+    else {
+      options = [];
+      SCRAPE.colours.forEach((a, i) => SCRAPE.colours.slice(i + 1).forEach((b) => options.push([a, b])));
+    }
+    const seq = HS.shuffle(options, rng).slice(0, n);
+    const name = (o) => (o.length === 2 ? halfName(o) : o[0]);
+    const plasterK = seq.map((o, i) => `${i === 0 ? (n > 1 ? "pela" : "") : "ne poi"} [${name(o)}]`.trim()).join(", ");
+    const steps = [
+      { id: "wash", kind: "wash", row: { id: "wash", kutchi: "Pela paani", english: "First water" } },
+      { id: "dab", kind: "dab", count: dab, row: { id: "dab", kutchi: `Ne poi [cloth], ${HS.NUM[dab]} [dabs]`, english: `Then the cloth, ${dab} dabs` } },
+      { id: "plaster", kind: "plaster", seq, options, row: { id: "plaster", kutchi: `[Plasters:] ${plasterK}`, english: `Plasters: ${seq.map(name).join(", then ")}` } },
+    ];
+    const key = (o) => o.slice().sort().join("+");
+    // every sequence of n different plasters a blind player could lay
+    const seqs = [];
+    const build = (pre) => {
+      if (pre.length === n) return seqs.push(pre.map(key));
+      options.forEach((o) => !pre.includes(o) && build(pre.concat([o])));
+    };
+    build([]);
+    const rows = [
+      { id: "dab-count", options: SCRAPE.dabs[L], answer: dab },
+      { id: "plasters", options: seqs, answer: seq.map(key) },
+    ];
+    const words = [
+      { kutchi: "paani", english: "water" },
+      { kutchi: "pela", english: "first" },
+      { kutchi: "ne poi", english: "and then" },
+      { kutchi: HS.NUM[dab], english: String(dab) },
+      HS.ph("plaster"),
+    ];
+    return { level: L, ailment: "scrape", steps, rows, words, upFront: L >= 2, key };
+  }
+
+  function mountScrape(stage, ctx) {
+    const P = planScrape(ctx.level, ctx.rng);
+    const S = HS.make(stage, ctx, { place: "limb", game: "cut" });
+    const { s } = S;
+    const st = { i: 0, dabs: 0, washed: false, laid: [], judged: {}, over: false };
+    const cur = () => P.steps[st.i] || null;
+    const rows = P.steps.map((x) => x.row);
+    ctx.card.setRows(P.upFront ? rows : [rows[0]]);
+
+    // the arm, lying on the paper strip
+    const arm = s("g", {}, S.layer);
+    s("rect", { x: 90, y: 360, width: 560, height: 96, rx: 48, fill: "#e9b98f", stroke: "#c98f64", "stroke-width": 3 }, arm);
+    s("ellipse", { cx: 675, cy: 408, rx: 62, ry: 54, fill: "#e9b98f", stroke: "#c98f64", "stroke-width": 3 }, arm);
+    const scrape = s("g", {}, S.layer);
+    s("ellipse", { cx: 380, cy: 408, rx: 150, ry: 34, fill: "#f2a0a0", opacity: 0.8 }, scrape);
+    for (let k = 0; k < 5; k++) s("line", { x1: 260 + k * 10, y1: 392 + k * 8, x2: 500 - k * 12, y2: 384 + k * 9, stroke: "#d9546a", "stroke-width": 4, "stroke-linecap": "round", opacity: 0.7 }, scrape);
+    const dirt = s("g", {}, S.layer);
+    for (let k = 0; k < 14; k++) s("circle", { cx: 250 + ((k * 97) % 260), cy: 390 + ((k * 37) % 36), r: 4 + (k % 3), fill: "#7a5a3a" }, dirt);
+    const n = P.steps[2].seq.length;
+    const spotX = (k) => (n === 1 ? 380 : 380 + (k - (n - 1) / 2) * 110);
+    const spots = s("g", {}, S.layer);
+    const drawSpots = () => {
+      S.clear(spots);
+      for (let k = 0; k < n; k++) {
+        const x = spotX(k);
+        const o = st.laid[k];
+        if (!o) {
+          const next = k === st.laid.length && cur() && cur().kind === "plaster";
+          s("rect", { x: x - 46, y: 384, width: 92, height: 48, rx: 14, fill: "none", stroke: next ? "#2e8b7a" : "#9a8f84", "stroke-width": next ? 4 : 3, "stroke-dasharray": "8 6" }, spots);
+          continue;
+        }
+        const c = o.map((q) => HS.COLOURS[q]);
+        s("rect", { x: x - 46, y: 384, width: 92, height: 48, rx: 14, fill: c[0], stroke: "#6d5a4a", "stroke-width": 2 }, spots);
+        if (c[1]) s("path", { d: `M${x} 384 H${x + 32} a14 14 0 0 1 14 14 V418 a14 14 0 0 1 -14 14 H${x}Z`, fill: c[1] }, spots);
+        s("rect", { x: x - 16, y: 396, width: 32, height: 24, rx: 5, fill: "#fff", opacity: 0.55 }, spots);
+      }
+    };
+    drawSpots();
+
+    const tools = [{ id: "paani", glyph: "🫗", label: "" }, { id: "cloth", glyph: "🧽", label: "" }];
+    const plasterIds = P.steps[2].options.map((o) => "pl-" + P.key(o));
+    HS.shuffle(P.steps[2].options, ctx.rng).forEach((o) => tools.push({ id: "pl-" + P.key(o), colours: o.length === 2 ? o : [o[0], o[0]] }));
+    const optByTool = {};
+    P.steps[2].options.forEach((o) => (optByTool["pl-" + P.key(o)] = o));
+    const stepOfTool = (id) => (id === "paani" ? "wash" : id === "cloth" ? "dab" : "plaster");
+
+    const judge = (id, ok, detail) => {
+      st.judged[id] = ok;
+      ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
+    };
+    const open = () => {
+      const c = cur();
+      if (!c) return;
+      if (!P.upFront && st.i > 0) {
+        ctx.card.addRow(c.row);
+        ctx.say(c.row);
+      }
+      ctx.card.now(c.id);
+      drawSpots();
+      const target = c.kind === "wash" ? S.toolEls.paani : c.kind === "dab" ? S.toolEls.cloth : S.toolEls[plasterIds[0]];
+      S.cue(c.kind, CUES[c.kind], target);
+    };
+    const close = () => {
+      const c = cur();
+      if (!c) return;
+      if (c.kind === "dab") judge("dab-count", st.dabs === c.count, `${st.dabs} of ${c.count}`);
+      ctx.card.tick(c.id);
+      S.count(null);
+      st.i++;
+      if (cur()) open();
+      else finish();
+    };
+    const finish = () => {
+      st.over = true;
+      S.uncue();
+      ctx.card.now(null);
+      S.face("happy");
+      judge("plasters", JSON.stringify(st.laid.map(P.key)) === JSON.stringify(P.steps[2].seq.map(P.key)), st.laid.map(P.key).join(" "));
+      S.say("Look at that!", "patient");
+      S.markSeen();
+      ctx.after(Clinic_fast() ? 200 : 1600, () => {
+        const right = P.rows.filter((r) => st.judged[r.id]).length;
+        ctx.done({ right, total: P.rows.length, hints: 0, words: P.words });
+      });
+    };
+    const Clinic_fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
+
+    S.tools(tools, (id) => {
+      if (st.over) return;
+      const c = cur();
+      const want = stepOfTool(id);
+      // picking a later step's tool closes the open counted step (the tick confirms it)
+      if (c && want !== c.kind && c.kind === "dab" && P.steps.findIndex((x) => x.kind === want) > st.i) close();
+      if (c && c.kind === "wash" && want !== "wash") S.cue("wash", CUES.wash, S.toolEls.paani);
+    });
+    const onScrape = (p) => Math.abs(p.x - 380) < 240 && Math.abs(p.y - 408) < 70;
+    ctx.on(S.svg, "pointerdown", (e) => {
+      const p = S.pt(e);
+      const c = cur();
+      if (!c || st.over || st.busy || !S.sel || !onScrape(p)) return;
+      const tool = S.sel;
+      if (tool === "paani" && c.kind === "wash") {
+        for (let k = 0; k < 8; k++) {
+          const d = s("ellipse", { cx: 330 + k * 14, cy: 330, rx: 5, ry: 8, fill: "#6bb7ea" }, S.fx);
+          d.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(70px)", opacity: 0 }], { duration: 600, delay: k * 40, fill: "forwards" });
+          ctx.after(1000, () => d.remove());
+        }
+        S.face("ouch", 900);
+        S.say("Cold!", "patient");
+        dirt.setAttribute("opacity", 0.6);
+        S.used("paani");
+        st.busy = true;
+        ctx.after(500, () => {
+          st.busy = false;
+          if (cur() === c) close();
+        });
+      } else if (tool === "cloth" && (c.kind === "dab" || c.kind === "wash")) {
+        if (c.kind === "wash") return;
+        st.dabs++;
+        const m = s("text", { x: p.x - 24, y: p.y + 10, "font-size": 44 }, S.fx);
+        m.textContent = "🧽";
+        ctx.after(450, () => m.remove());
+        dirt.setAttribute("opacity", Math.max(0, 0.6 - st.dabs * 0.18));
+        S.face("happy", 500);
+        S.count(st.dabs);
+        ctx.tally("cloth", st.dabs);
+      } else if (optByTool[tool] && c.kind === "plaster") {
+        st.laid.push(optByTool[tool]);
+        S.face("happy", 600);
+        ctx.sfx("pop");
+        drawSpots();
+        if (st.laid.length >= n) close();
+      } else if (optByTool[tool] && c.kind === "dab") {
+        close();
+        st.laid.push(optByTool[tool]);
+        drawSpots();
+        if (st.laid.length >= n) close();
+      }
+    });
+    // Next: closes the counted dab step (the host's big button)
+    const nextBtn = ctx.button("✓", () => {
+      const c = cur();
+      if (c && c.kind === "dab" && st.dabs > 0) close();
+    }, "done");
+    nextBtn.setAttribute("aria-label", "Next");
+
+    return {
+      async start() {
+        await S.why(WHY.problem, WHY.goal);
+        if (P.upFront) await ctx.card.speak();
+        else await ctx.say(rows[0]);
+        open();
+      },
+      destroy() {
+        S.destroy();
+      },
+      debug: {
+        get plan() {
+          return P;
+        },
+        get cues() {
+          return S.cueLog.slice();
+        },
+        next() {
+          const c = cur();
+          const tool = (id) => {
+            const r = S.toolEls[id].getBoundingClientRect();
+            return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: id };
+          };
+          const at = (x, y) => Object.assign({ do: "tap" }, S.client(x, y));
+          if (st.over || !c || st.busy) return { do: "wait" };
+          if (c.kind === "wash") return S.sel !== "paani" ? tool("paani") : at(380, 408);
+          if (c.kind === "dab") {
+            if (st.dabs < c.count) return S.sel !== "cloth" ? tool("cloth") : at(380, 408);
+            return { do: "button" };
+          }
+          const want = "pl-" + P.key(c.seq[st.laid.length]);
+          return S.sel !== want ? tool(want) : at(spotX(st.laid.length), 408);
+        },
+      },
+      expect() {
+        return this.debug.next();
+      },
+    };
+  }
+
+  function plan(level, ailmentId, rng, knobs) {
+    return ailmentId === "cut" ? planCut(level, ailmentId, rng, knobs) : planScrape(level, rng);
+  }
+  function mount(stage, ctx) {
+    return ctx.ailment && ctx.ailment.id === "cut" ? mountCut(stage, ctx) : mountScrape(stage, ctx);
+  }
+  function bot(level, rng) {
+    const p = planScrape(level, rng);
+    return Object.assign(HS.bot(p.rows, rng), { plan: p });
+  }
+
   const def = {
     id: "cut",
     part: "knee",
-    ailments: ["scrape", "cut"],
+    ailments: ["cut", "scrape"], // the scrape is the default at every level; the cut only when asked
     items: ["paani", "cloth", "thread", "plaster"],
     itemsFor: { scrape: ["paani", "cloth", "plaster"], cut: ["paani", "thread", "plaster"] },
     gestures: ["tap", "drag"],
@@ -562,6 +817,9 @@
     plan,
     mount,
     bot,
+    why: WHY,
+    cues: CUES,
+    steps: (level, rng) => planScrape(level, rng).steps.map((x) => x.kind),
   };
   if (Heal) Heal.register(def);
   if (typeof module === "object" && module.exports) module.exports = def;
