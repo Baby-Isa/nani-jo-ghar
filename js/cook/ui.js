@@ -947,7 +947,9 @@
    * folds to one gold line, a finished person to face + headline + check (in the sidebar only).
    */
   const OCard = () => global.OrderCard;
-  const partNode = (r, gi) => ({ label: text6(r.line, rowHide(r)), done: !!r.done, no: !!r.no, key: r, gi, next: false });
+  /** A row's words on the card: no full stop at the end (the headline is the sentence; rows are lower case, see the card's CSS). */
+  const rowText = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
+  const partNode = (r, gi) => ({ label: rowText(text6(r.line, rowHide(r))), done: !!r.done, no: !!r.no, key: r, gi, next: false });
   /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
   const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
   /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */
@@ -961,7 +963,9 @@
   function headNode(r) {
     if (!r) return { html: esc(mission.name) };
     if (r.rec) return { html: esc(r.line.en || Lang.plain(r.line)), rec: true, key: r };
-    return { html: text6(r.line, rowHide(r)), key: r };
+    // the headline is what the person says, always shown (design system 12): its words never fade to
+    // dots ("Muke ••• khape." at the grill); the rows below carry the listening
+    return { html: text6(r.line, () => false), key: r };
   }
   /** Every card of the order: [{data, key, who, rows}] (rows: the ladder rows it shows, for read-along). */
   function orderCards() {
@@ -994,9 +998,9 @@
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));
             const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, key: r, src: ps ? src(ps) : [] });
             rowsShown.push(r);
-            if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(item(text6(oneOf(r), rowHide(r)), ps)));
+            if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(item(rowText(text6(oneOf(r), rowHide(r))), ps)));
             else {
-              const it = item(text6(r.line, rowHide(r)), mixes[0] || null);
+              const it = item(rowText(text6(r.line, rowHide(r))), mixes[0] || null);
               it.count = r.qty || 1;
               items.push(it);
             }
@@ -1025,10 +1029,23 @@
     box.innerHTML = "";
     if (!OC) return [];
     const folds = (mission.folds = mission.folds || {});
-    return orderCards().map((c) => {
+    // a station's own person cards (Nani's chop card, design system 13), above the order's, sidebar only
+    const extra = big ? [] : (mission.extra || []).map((x) => {
+      const st = folds[`x:${x.key}`] || (folds[`x:${x.key}`] = {});
+      const e = OC.card(x.data, { fold: st, closed: !!x.closed, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el) });
+      e.dataset.extra = x.key;
+      box.appendChild(e);
+      return e;
+    });
+    const closed = mission.closed || null;
+    return extra.concat(orderCards().map((c) => {
       const el = OC.card(c.data, {
         big,
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
+        // the phase fold / a start-folded card (M.closeCards): face + headline; a peek may cost a hint
+        closed: !big && !!closed && (!closed.who || closed.who === c.who),
+        onPeek: closed && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
+        peekMs: 3500 / (Cook.speed || 1),
         foldAfter: 700 / (Cook.speed || 1),
         onEl: (key, e) => addEl(map, key, e),
         decorate: (e, node) => node.key && typeof node.key.decorate === "function" && node.key.decorate(e),
@@ -1044,8 +1061,36 @@
       el._rows = c.rows;
       box.appendChild(el);
       return el;
-    });
+    }));
   }
+  /**
+   * The phase fold (design system 13) and the start-folded card (14a): the order's cards fold to face +
+   * headline (no check) until opened again. opts.peek: a tap opens a card for a moment and counts as a
+   * hint (the light-bulb badge); without it a tap opens and closes it freely. opts.who: only that person's card.
+   * M.closeCards(false) opens them again.
+   */
+  M.closeCards = function (on, opts = {}) {
+    if (!mission) return;
+    mission.closed = on ? { peek: !!opts.peek, who: opts.who || null } : null;
+    Object.values(mission.folds || {}).forEach((st) => { st.peekUntil = 0; st.opened = false; });
+    renderOrder();
+  };
+  /**
+   * A station's own person card in the sidebar, above the order's (Nani's chop card, design system 13):
+   * data is the shared order card's ({person, headline, items}); calling it again with the same key
+   * redraws it (ticks). opts.closed: folded like M.closeCards. M.removeCard(key) takes it away.
+   */
+  M.addCard = function (key, data, opts = {}) {
+    if (!mission) return;
+    const list = (mission.extra = (mission.extra || []).filter((x) => x.key !== key));
+    list.push({ key, data, closed: !!opts.closed });
+    renderOrder();
+  };
+  M.removeCard = function (key) {
+    if (!mission || !mission.extra) return;
+    mission.extra = mission.extra.filter((x) => x.key !== key);
+    renderOrder();
+  };
   /** One card reads itself (its face lights), counting it as help once its words are dots. rows: only these (a recast). */
   async function sayCardEl(c, rows) {
     const face = c.querySelector(".oc-face");

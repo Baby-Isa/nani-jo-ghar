@@ -77,6 +77,10 @@
 .oc-card.folded .oc-in { opacity: 0; }
 .oc-card.folded .oc-done-tk { opacity: 1; transform: none; }
 .oc-card.still, .oc-card.still * { transition: none !important; }
+/* closed (not finished: the phase fold, a start-folded card): face + headline only, no check; a tap peeks */
+.oc-card.closed { cursor: pointer; }
+.oc-card.closed .oc-done-tk { display: none; }
+.oc-card.closed.peek { box-shadow: 0 0 0 2px var(--oc-gold), var(--oc-shadow); }
 
 /* ---------- rows: an item row (tier 2) and a part (tier 3), one line each, a flat gold tick when done ---------- */
 .oc-card .oc-item { display: flex; flex-direction: column; min-width: 0; }
@@ -125,6 +129,18 @@
 .oc-card .oc-item.oc-direct .oc-parts.oc-seq::before { top: calc(var(--oc-part-h) / 2 - 1px); }
 /* a "no" part ("Dudh na.") is a row like the others, but it isn't a step of the sequence */
 .oc-card .oc-parts.oc-seq > .oc-part.no::before { display: none; }
+/* the "don't" row (design system 14: "dudh na", "marcha na"): no fill, a dashed muted edge, a small
+   no-sign before the words, muted ink. It ticks (gold, solid) when the dish goes out without it */
+.oc-card .oc-row.no { background: transparent; border-style: dashed; border-color: #cfc3b1; color: #6f6153; }
+.oc-card .oc-row.no .oc-t { font-weight: 700; }
+.oc-card .oc-row.no::after {
+  content: ""; order: -1; flex: none; width: calc(var(--oc-part-h) * 0.46); height: calc(var(--oc-part-h) * 0.46); margin-left: -2px;
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='7.6' fill='none' stroke='%238a7a68' stroke-width='2.2'/%3E%3Cpath d='M4.8 15.2 15.2 4.8' stroke='%238a7a68' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.oc-card .oc-row.no.done { border-style: solid; border-color: var(--oc-gold); }
+.oc-card .oc-row.no .word { color: inherit; }
+/* one casing on the card: rows start lower case mid-card (the headline is the sentence) */
+.oc-card .oc-row .oc-t::first-letter { text-transform: lowercase; }
 
 /* ---------- the pop-up: the same tree at full size, flat (no box of its own, no "next") ---------- */
 .oc-card.oc-big {

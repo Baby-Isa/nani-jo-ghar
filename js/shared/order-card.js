@@ -38,6 +38,10 @@
  *       opts.fold       a state object kept by the host across redraws ({}): folds a finished card
  *       opts.foldAfter  ms before a finished card folds (default 700)
  *       opts.onFace(ev, cardEl)      the face was tapped (replay)
+ *       opts.closed     the card is folded though not finished: face + headline, no check (the phase-fold rule,
+ *                       design system 13: a card you can't act on now; the start-folded card, 14a). Needs opts.fold
+ *       opts.onPeek(cardEl)  with opts.closed: a tap opens the card for opts.peekMs (default 3500) and calls
+ *                       this (the host counts it as a hint); without it a tap just opens and closes it
  *       opts.onEl(key, el)           each element drawn for a keyed node (headline, rows, parts)
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
  *   OrderCard.render(box, cards, opts)   several cards into box (replaces its content); returns the elements
@@ -151,6 +155,42 @@
     });
   }
 
+  /** A closed card (not finished): folded to face + headline, no check; a tap peeks (or opens) it. */
+  function closable(c, st, opts) {
+    const now = Date.now();
+    const open = st.peekUntil ? now < st.peekUntil : !!st.opened;
+    c.classList.add("closed");
+    if (open) c.classList.add("peek");
+    else c.classList.add("folded", "still");
+    const shut = () => {
+      const cur = st.el && st.el.isConnected ? st.el : c;
+      cur.classList.remove("peek", "still");
+      cur.classList.add("folded");
+    };
+    if (st.peekUntil && open) {
+      clearTimeout(st.timer);
+      st.timer = setTimeout(shut, st.peekUntil - now);
+    }
+    c.addEventListener("click", (e) => {
+      if (e.target.closest(".oc-face")) return; // the face is replay
+      const cur = st.el && st.el.isConnected ? st.el : c;
+      if (opts.onPeek) {
+        if (st.peekUntil && Date.now() < st.peekUntil) return;
+        st.peekUntil = Date.now() + (opts.peekMs != null ? opts.peekMs : 3500);
+        cur.classList.remove("folded", "still");
+        cur.classList.add("peek");
+        clearTimeout(st.timer);
+        st.timer = setTimeout(shut, st.peekUntil - Date.now());
+        opts.onPeek(cur);
+      } else {
+        st.opened = !st.opened;
+        cur.classList.remove("still");
+        cur.classList.toggle("folded", !st.opened);
+        cur.classList.toggle("peek", st.opened);
+      }
+    });
+  }
+
   OC.card = function (data, opts = {}) {
     const sh = OC.shape(data, opts);
     const c = el("div", ["oc-card", opts.big ? "oc-big" : "", sh.done ? "done" : "", sh.direct ? "direct" : ""].filter(Boolean).join(" "));
@@ -184,7 +224,12 @@
     }
     if (opts.fold && !opts.big && sh.items.length) {
       opts.fold.el = c;
-      foldable(c, opts.fold, sh.done, opts);
+      if (opts.closed && !sh.done) closable(c, opts.fold, opts);
+      else {
+        opts.fold.peekUntil = 0;
+        opts.fold.opened = false;
+        foldable(c, opts.fold, sh.done, opts);
+      }
     }
     return c;
   };

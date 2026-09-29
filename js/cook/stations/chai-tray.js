@@ -276,7 +276,9 @@
       img.isJar = true;
       img.home = { x: img.x, y: img.y };
       // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place)
-      const showWord = Cook.labelMode(id) === "text" && level < 3;
+      // level 1 always shows the word (the chai leaves' "chai" is already known from the orders, so its
+      // word stage alone would leave that chip a bare speaker); level 2 follows the word's stage
+      const showWord = level < 2 || (Cook.labelMode(id) === "text" && level < 3);
       const chip = S.track(S.add.container(x, CHIP.y).setDepth(D.item + 2));
       const bg = S.add.graphics();
       bg.fillStyle(0x28190a, 0.1);
@@ -767,6 +769,8 @@
     let gaugePan = null;
     function refresh() {
       if (finished) return;
+      // serving: every pan is in its glass, so the last pan's sugar tally has nothing left to count
+      if (pans.length && pans.every((q) => q.poured > 0)) UI.hideCount();
       if (busy) {
         zb.expect({ kind: "wait" }); // a pour in progress: the player waits for it
         return;
