@@ -790,6 +790,7 @@
     Promise.race([Cook.Stations.load(S, ["happy", "neutral"].map((m) => [`sk2-face-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`])), Cook.wait(15000)]);
   /** The speaker icon, drawn at (x, y) about `s` px tall (the chai v2 chip's). */
   SK.speaker = function (g, x, y, s, color = 0x2a2522) {
+    if (Cook.Kit && Cook.Kit.speaker && color === 0x2a2522) return Cook.Kit.speaker(g, x, y, s);
     const k = s / 24;
     g.fillStyle(color, 1);
     g.fillRect(x - 8 * k, y - 3.5 * k, 5 * k, 7 * k);
@@ -849,9 +850,14 @@
     } else img = S.ingredient(id, z.X(x), z.Y(V2.BASE - 60), { w: z.L(V2.BOWL_W), h: z.L(110), label: false, state: "pieces" });
     img.wordId = id;
     img.home = { x: img.x, y: img.y };
-    // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place)
+    // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place): the
+    // kitchen kit's (js/cook/kitchen-kit.js), else this file's copy of it
     const C = V2.CHIP;
     const showWord = Cook.labelMode(id) === "text" && level < 3;
+    if (Cook.Kit && Cook.Kit.chip && z.k === 1) {
+      img.chip = Cook.Kit.chip(S, id, z.X(x), z.Y(C.y), { word: showWord, w: C.w });
+      return img;
+    }
     const chip = S.track(S.add.container(z.X(x), z.Y(C.y)).setDepth(D.item + 2).setScale(z.k));
     const bg = S.add.graphics();
     bg.fillStyle(0x28190a, 0.1);
@@ -1357,7 +1363,7 @@
     if (ok) {
       face.setTexture(faceKey("happy"));
       fit();
-      Cook.tasted = "happy"; // (for the screenshot script)
+      Cook.tasted = "happy"; // (Cook.tasted, Cook.tasteHold: for the screenshot script)
       Cook.sfx.right();
       S.sparkle(fx, fy);
       const line = Lang.line("welldone");
@@ -1374,6 +1380,7 @@
       S.tweens.add({ targets: c, alpha: 1, duration: 200 });
       await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(2200)]);
       await Cook.wait(500);
+      if (Cook.tasteHold) await new Promise((r) => setTimeout(r, Cook.tasteHold));
     } else {
       face.setTexture(faceKey("neutral"));
       fit();
@@ -1381,6 +1388,7 @@
       Cook.sfx.soft();
       S.wiggle(face);
       await Cook.wait(700);
+      if (Cook.tasteHold) await new Promise((r) => setTimeout(r, Cook.tasteHold));
       // the plate slides back, empty: make it again
       skewers.filter(Boolean).forEach((sk) => S.tweens.add({ targets: sk, alpha: 0, duration: 300 }));
       await Cook.tween(S, { targets: plateImg, y: `+=${lift}`, duration: 380, ease: "Sine.easeInOut" });

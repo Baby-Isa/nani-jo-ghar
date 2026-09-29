@@ -64,7 +64,8 @@ class Shooter(T.Player):
             self.snap("start")
         if key == "turn" and "grill" not in self.taken:
             self.snap("grill")
-        r = super().act(e)
+        # Done: click it here (not the player's click, which waits on its own), so the taste is shot live
+        r = self.page.click("#done-btn") if kind == "click" and e.get("selector") == "#done-btn" else super().act(e)
         if kind == "tap" and key and key not in ("rack", "undo", "turn", "lift"):
             self.pieces += 1
             if self.pieces == 2:
@@ -85,12 +86,12 @@ class Shooter(T.Player):
                 if self.page.evaluate("Cook.tasted"):
                     break
                 time.sleep(0.05)
-            time.sleep(0.35)
+            time.sleep(0.6)
             if "-wrong" in self.tag and "redo" not in self.taken:
-                time.sleep(1.6)
+                self.snap("not-quite")
+                time.sleep(3.4)
                 self.snap("redo")
             else:
-                time.sleep(0.3)
                 self.snap("praise")
         return r
 
@@ -101,6 +102,8 @@ def run(vp, out, level, speed, guided=False, wrong=False):
         P = Shooter(page, out, speed, f"{vp['name']}-l{level}")
         if os.environ.get("SHOOT_DEBUG"):
             print("page open", flush=True)
+        # serve and taste: hold the praise (and the "not quite") long enough to shoot it
+        page.evaluate("Cook.tasteHold = 2500")
         if wrong:
             # the "not quite" path (serve and taste, §14a): the first plate is tasted as wrong
             P.tag += "-wrong"
