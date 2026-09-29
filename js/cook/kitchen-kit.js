@@ -39,7 +39,8 @@
   const VESSELS = {
     pan: { key: "kit-pan", url: V2 + "pan-top.webp", w: 512, cx: 0.408, cy: 0.5805, r: 0.3644 },
     tawa: { key: "kit-tawa", url: "assets/cook/items/vessel-tawa-t.webp", w: 400, cx: 0.388, cy: 0.552, r: 0.386 },
-    karahi: { key: "kit-karahi", url: "assets/cook/items/vessel-kadai-oil-t.webp", w: 0, cx: 0.5, cy: 0.5, r: 0.42 },
+    // samosa v2's karahi of oil (build/cut_samosa_v2.py): oil = the oil's radius as a fraction of the body's
+    karahi: { key: "kit-karahi", url: "assets/cook/items/samosa-v2/karahi.webp", w: 760, cx: 0.5, cy: 0.499, r: 0.395, oil: 0.72 },
   };
   const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522 };
   const KNOB = 62; // what you see

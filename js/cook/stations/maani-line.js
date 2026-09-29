@@ -176,10 +176,15 @@
         if (UI.mission && UI.mission.replay) UI.mission.replay();
         S.tweens.add({ targets: burner.face, scale: burner.face.baseScale * 1.1, duration: 100, yoyo: true });
       });
-    // the chimta rests on the counter to the right of the hob, tips up
-    const chimtaHome = { x: hob.x + hob.w + 36, y: hob.y + hob.h * 0.62, angle: -8 };
+    // the chimta lies on the hob's right rim, ring at the front corner, tips up along the edge (clear of
+    // the heat ring): placed, not floating on the counter. Its art runs ring -> tips at 45 deg, so -45 stands it up
+    const chimtaHome = { x: hob.x + hob.w - 16, y: hob.y + hob.h - 34, angle: -45 };
     const chimta = S.track(S.add.image(chimtaHome.x, chimtaHome.y, "mv-chimta").setOrigin(0.1, 0.9).setDepth(D.item + 3).setAngle(chimtaHome.angle));
-    chimta.setScale(250 / chimta.width);
+    chimta.setScale(210 / chimta.width);
+    if (chimta.preFX && S.renderer && S.renderer.type === Phaser.WEBGL) {
+      chimta.preFX.padding = 12;
+      chimta.preFX.addShadow(-2, 3, 0.06, 1, 0x000000, 4, 0.35);
+    }
 
     /* ---------- the shelf band: the dough plates (chips) | the finished plates ---------- */
     const order = Cook.shuffle(types.slice());

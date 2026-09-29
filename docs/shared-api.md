@@ -608,4 +608,4 @@ const ring = Kit.heatRing(S);  ring.draw(x, y, r, level, lo, hi);  ring.clear();
 Kit.chip(S, wordId, x, y, { word: level < 3, w });      // the shelf's `🔊 word` chip (speaker only when word:false)
 Kit.badge(S, who);  Kit.speaker(g, x, y, size);         // face-on-white-disc texture; the flat speaker icon
 ```
-Vessel geometry lives in `Kit.VESSELS` (canvas fractions of the round body: add a `karahi` measurement when samosa lands its art). Maani v2 uses one burner and one tawa; chai v2 keeps its own copy for now (same art and numbers).
+Vessel geometry lives in `Kit.VESSELS` (canvas fractions of the round body: the `karahi` is samosa v2's, with `oil`, its oil's radius as a fraction of the body's; samosa v2's fry places it). Maani v2 uses one burner and one tawa; chai v2 keeps its own copy for now (same art and numbers).

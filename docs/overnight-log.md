@@ -40,3 +40,4 @@
 - NOTE for follow-ups: card headline must never truncate with "…" (samosa: "Muke ba samosa ..."); parts/✓ only when truly done.
 - 03:09 UTC · order-card follow-ups · chaat layers (curved, thinner, no tiling, centred) + sekelo rack/piece sizes committed; full test_cook --lab laptop running; next: bump, main, report
 - 03:12 UTC · daar-v2 · VISUAL-QA matrix done and reviewed (build/reports/daar-v2/ + qa.md: phone, laptop L1-L4 with not-quite, phone-landscape L1-L3), all cells play with no console errors; report drafted; waiting on full test_cook --lab laptop, then bump + main
+- 03:08 UTC · polish · started: samosa fold mound, fry layout centred + kit karahi, early ✓; maani chimta rest

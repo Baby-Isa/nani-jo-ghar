@@ -22,7 +22,8 @@
  *  - not quite: a gentle face, they say their order again, the plate comes back empty and the child makes
  *    them again (fill first). Only the first try counts (the ear star, the end review). At most three tries.
  * The card (the shared order card, §12): the fillings' rows count up as spoons go in and tick when the fill
- * closes (UX 11, right or not); "ba samosa" ticks when the plate is served.
+ * closes (UX 11, right or not); then the card folds to face + headline, no ✓ (the phase fold, §13: "ba
+ * samosa" lives only in the headline) until the plate is tasted, when it opens (and its ✓ shows).
  *
  * Levels (data/cook.json's samosa recipe slots; the fill's decoys and the fry's speed in data.mechanics):
  * 1 = one or two samosas, one decoy, words on the chips; 2 = more decoys; 3 = a "don't" filling, speaker-only
@@ -42,7 +43,9 @@
   const CH = "assets/cook/items/chaat-v2/";
   // what build/cut_samosa_v2.py measured (the fold stages share one canvas; fractions of it)
   const META = {
-    stage: { w: 540, h: 430, fill: { x: 0.2833, y: 0.5605, rx: 0.1852, ry: 0.2209 } },
+    // fill: the pocket the first fold closes over, the lower-left triangle's incircle (centre, radius as a
+    // fraction of the width), clear of the fold line (the flap is the upper-right triangle)
+    stage: { w: 540, h: 430, fill: { x: 0.187, y: 0.684, r: 0.135 } },
     folds: [
       { flap: [[0.0519, 0.2698], [0.5185, 0.2698], [0.5185, 0.8535]], line: [[0.0519, 0.2698], [0.5185, 0.8535]] },
       { flap: [[0.037, 0.1047], [0.5185, 0.1047], [0.5185, 0.9302], [0.037, 0.9302]], line: [[0.5185, 0.1163], [0.5185, 0.907]] },
@@ -50,7 +53,6 @@
     ],
     fry: { w: 400, h: 340 },
     prep: { w: 303, h: 293 },
-    karahi: { w: 760, h: 605, cx: 0.5, cy: 0.499, r: 0.395, oil: 0.72 },
   };
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = 666;
@@ -128,7 +130,7 @@
       ["sv2-board", "assets/cook/items/tool-board-t.png"],
       ["sv2-plate", "assets/cook/items/plate-enamel-empty-t.webp"],
       ["sv2-paper", V2 + "plate-paper.webp"],
-      ["sv2-karahi", V2 + "karahi.webp"],
+      ["sv2-thali", "assets/cook/items/vessel-thali-t.png"],
       ["sv2-spoon", "assets/cook/items/tool-slotted-spoon-t.webp"],
     ]
       .concat([0, 1, 2, 3].map((i) => [`sv2-stage-${i}`, `${V2}stage-${i}.webp`]))
@@ -136,7 +138,7 @@
       .concat(ids.filter(prepUrl).map((id) => [`sv2-prep-${id}`, prepUrl(id)]))
       .concat(ids.filter(topUrl).map((id) => [`sv2-top-${id}`, topUrl(id)]))
       .concat(["neutral", "happy", "impatient"].map((m) => [`sv2-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`]))
-      .concat(Cook.Kit ? Cook.Kit.art(1, []) : []);
+      .concat(Cook.Kit ? Cook.Kit.art(1, ["karahi"]) : []);
     await Promise.race([St.load(S, art), Cook.wait(12000)]);
 
     let first = null; // the first try's verdict (only it counts)
@@ -173,23 +175,37 @@
       yz.close();
       St.end();
       result = { count: made.n, fillings: made.got, fried: fried.lifted };
+      cardFold(false);
       if (ok) break;
-      // not quite: the card starts again (its misses stay for the review)
-      const L = ladderOf(ctx);
-      if (L) {
-        Cook.Order.rows(L, { all: true }).forEach((r) => {
-          if (r.head) return;
-          r.done = false;
-          r.got = 0;
-        });
-        UI.mission.refresh();
-      }
     }
     ctx.result.samosa = result;
     ctx.result.fillings = result && result.fillings;
     ctx.result.folded = result && result.count;
     if (ctx.closeItem) ctx.closeItem(["ph-samosa"]);
     return result;
+  }
+
+  /**
+   * The phase fold (design system 13): once the fill closes, the card can't be acted on until the plate is
+   * tasted, so it folds to face + headline (no ✓: the samosas aren't made yet; the count is only in the
+   * headline, so the filling rows alone would read as "finished" at the fold).
+   */
+  function cardFold(on) {
+    const M = UI.mission;
+    if (M && M.closeCards) M.closeCards(on);
+  }
+  /** Not quite: the card starts again, open (its misses stay for the review). */
+  function cardAgain(ctx) {
+    const L = ladderOf(ctx);
+    if (L) {
+      Cook.Order.rows(L, { all: true }).forEach((r) => {
+        if (r.head) return;
+        r.done = false;
+        r.got = 0;
+      });
+      UI.mission.refresh();
+    }
+    cardFold(false);
   }
 
   /* ---------- the flat pieces every job shares ---------- */
@@ -372,7 +388,7 @@
     /* a spoonful: it lifts off its bowl and drops on the pastry's filling patch */
     const fillAt = (sheet) => {
       const f = META.stage.fill;
-      return { x: sheet.x + (f.x - 0.5) * SW * z.k, y: sheet.y + (f.y - 0.5) * SH * z.k, rx: f.rx * SW * z.k, ry: f.ry * SH * z.k };
+      return { x: sheet.x + (f.x - 0.5) * SW * z.k, y: sheet.y + (f.y - 0.5) * SH * z.k, r: f.r * SW * z.k };
     };
     async function spoon(sheet, id, { quiet = false, fast = false } = {}) {
       const obj = items[id];
@@ -380,15 +396,18 @@
       const from = obj ? { x: obj.x, y: obj.y - obj.displayHeight * 0.7 } : { x: z.X(800), y: z.Y(700) };
       if (obj && !fast) S.tweens.add({ targets: obj, scale: obj.baseScale * 1.08, duration: 90, yoyo: true });
       const b = S.track(S.add.image(from.x, from.y, key).setDepth(D.fx));
-      const size = z.L(78);
-      b.setDisplaySize(size * 0.7, size * 0.7);
       const pa = fillAt(sheet);
       const n = sheet.blobs.length;
-      // the heap grows from the middle of the patch outwards
+      // ONE mound in the pocket: each spoon lands on it (a little off-centre) and it grows, never
+      // past the pocket's edge (the fold line stays clear)
+      const size = Math.min(pa.r * 1.75, pa.r * (1.1 + n * 0.17));
+      b.setDisplaySize(size * 0.6, size * 0.6);
       const a = n * 2.4 + Math.random() * 0.5;
-      const rr = n === 0 ? 0 : Math.min(0.45, 0.2 + n * 0.05);
-      const tx = pa.x + Math.cos(a) * pa.rx * rr;
-      const ty = pa.y + Math.sin(a) * pa.ry * rr * 0.9;
+      const rr = n === 0 ? 0 : Math.min(0.18, 0.1 + n * 0.02);
+      const tx = pa.x + Math.cos(a) * pa.r * rr;
+      const ty = pa.y + Math.sin(a) * pa.r * rr;
+      // the mound under it swells a touch with each spoon
+      sheet.blobs.forEach((o) => S.tweens.add({ targets: o, scaleX: o.scaleX * 1.06, scaleY: o.scaleY * 1.06, duration: 160, delay: fast ? 200 : 420 }));
       if (!quiet) Cook.sfx.pop();
       await S.fly(b, tx, ty - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
       await new Promise((r) => S.tweens.add({ targets: b, y: ty, displayWidth: size, displayHeight: size * 0.92, duration: 140, ease: "Quad.easeIn", onComplete: r }));
@@ -416,7 +435,9 @@
       const id = r.id;
       got[id] = (got[id] || 0) + 1;
       order.push(id);
-      UI.mission.tickItem(id, ctx.dishAt || 0);
+      // a count row counts up; nothing ticks before the fill closes (a one-spoon row ticking at its
+      // first spoon would give the count away, UX 11)
+      if ((want[id] || 0) > 1) UI.mission.tickItem(id, ctx.dishAt || 0);
       const into = spoon(sheet, id);
       const pa = fillAt(sheet);
       pop(z, S, Cook.display(id), pa.x, pa.y - z.L(150), { speakId: id, ms: 1200 });
@@ -449,7 +470,9 @@
     Cook.sfx.right();
     const pa0 = fillAt(sheet);
     S.sparkle(pa0.x, pa0.y);
-    // the shelf goes quiet: folding is next
+    // the card folds until the plate is tasted; the shelf goes quiet: folding is next
+    await Cook.wait(500);
+    cardFold(true);
     Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
     if (ctx.nextStep) ctx.nextStep("Fold");
     if (phases.fold && !retry) UI.gist(phases.fold);
@@ -654,30 +677,30 @@
     const Kit = Cook.Kit;
     const k = Mech.knobs("fry", { level });
     const [lo, hi] = k.band || [0.62, 0.84];
-    backdrop(z, S, false);
-    // the hob: one burner (one karahi), centred, the knob on its front edge
-    const hk = 0.98;
-    const hob = Kit.hob(S, { n: 1, k: z.L(hk), cx: z.X(800), bottom: z.Y(860) });
-    const burner = Kit.burner(S, hob, 0, { flameR: z.L(200) });
-    const bodyR = z.L(206);
-    const kar = S.track(S.add.image(hob.burners[0].x, hob.burners[0].y, "sv2-karahi").setOrigin(META.karahi.cx, META.karahi.cy).setDepth(D.item));
-    kar.setScale(bodyR / (META.karahi.r * META.karahi.w));
-    kar.shadow = S.contactShadow(kar, { centerX: kar.x, centerY: kar.y + bodyR * 0.08, width: bodyR * 2.15, height: bodyR * 2.15 });
-    const oilR = bodyR * META.karahi.oil;
+    backdrop(z, S);
+    // the hob (one burner, one karahi) and the paper-lined plate, centred as one group above the shelf
+    // band (the chai/maani grid); the folded samosas wait on thalis on the band
+    const hob = Kit.hob(S, { n: 1, k: z.L(FRY.hobK), cx: z.X(FRY.bx - FRY.hobDx), bottom: z.Y(SHELF_TOP - 30) });
+    const burner = Kit.burner(S, hob, 0, { flameR: z.L(FRY.r * 0.97) });
+    const bodyR = z.L(FRY.r);
+    Kit.place(S, "karahi", hob.burners[0], bodyR);
+    const oilR = bodyR * Kit.VESSELS.karahi.oil;
     const ring = Kit.heatRing(S, { width: z.L(12) });
-    // the raw samosas wait on the board (left); the paper-lined plate waits on the right
-    const board = S.track(S.add.image(z.X(290), z.Y(430), "sv2-board").setDepth(D.item - 2));
-    board.setDisplaySize(z.L(420), z.L(420 * 0.736));
-    board.shadow = S.contactShadow(board);
-    const paper = S.track(S.add.image(z.X(1310), z.Y(430), "sv2-paper").setDepth(D.item - 2));
-    paper.setScale(z.L(400) / 720);
+    const PY = (hob.burners[0].y - z.Y(0)) / z.k; // the plate sits on the burner's line (design px)
+    const paper = S.track(S.add.image(z.X(FRY.px), z.Y(PY), "sv2-paper").setDepth(D.item - 2));
+    paper.setScale(z.L(FRY.pd) / 720);
     paper.shadow = S.contactShadow(paper);
     const FS = z.L(128) / META.fry.w; // a samosa's scale (fry canvases)
     const raw = [];
+    const trays = [];
     for (let i = 0; i < n; i++) {
-      const s = plateSpot(i, 290, 430, 1.1);
-      const im = S.track(S.add.image(z.X(s.x), z.Y(s.y), "sv2-fry-0").setScale(FS).setAngle(s.a).setDepth(D.item + 0.1 + i * 0.01));
-      im.baseScale = FS;
+      const x = 800 + (i - (n - 1) / 2) * FRY.trayPitch;
+      const t = S.track(S.add.image(z.X(x), z.Y(FRY.trayY), "sv2-thali").setDepth(D.item - 1));
+      t.setScale(z.L(FRY.trayD) / t.width);
+      t.shadow = S.contactShadow(t);
+      trays.push(t);
+      const im = S.track(S.add.image(z.X(x), z.Y(FRY.trayY - 4), "sv2-fry-0").setScale(FS * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
+      im.baseScale = FS * 0.85;
       im.handAction = false;
       raw.push(im);
     }
@@ -778,14 +801,15 @@
         else z.expect({ kind: "wait" });
       };
       raw.forEach((im) => {
-        S.tweens.add({ targets: im, scale: FS * 1.05, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+        S.tweens.add({ targets: im, scale: FS * 0.85 * 1.06, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
         S.tappable(im, async () => {
           if (im.gone) return;
           im.gone = true;
           S.untap(im);
           S.tweens.killTweensOf(im);
           const [sx, sy] = SPOTS[slot++ % SPOTS.length];
-          if (raw.every((r) => r.gone)) S.tweens.add({ targets: board, alpha: 0, duration: 500, delay: 400 });
+          // the empty thalis leave the band (the plate slides over it at serving)
+          if (raw.every((r) => r.gone)) trays.forEach((t) => S.tweens.add({ targets: [t, t.shadow].filter(Boolean), alpha: 0, duration: 500, delay: 400 }));
           const tx = cx + sx * oilR;
           const ty = cy + sy * oilR;
           Cook.sfx.whoosh();
@@ -810,7 +834,7 @@
             spoonImg.setPosition(im.x + z.L(40), im.y - z.L(60)).setAlpha(1);
             S.tweens.add({ targets: spoonImg, x: im.x + z.L(10), y: im.y + z.L(10), duration: 160 });
             await Cook.wait(170);
-            const spot = plateSpot(lifted.length, 1310, 430, 1.05);
+            const spot = plateSpot(lifted.length, FRY.px, PY, 0.95);
             Cook.sfx.pop();
             const moves = [im, b].map((o) => S.fly(o, z.X(spot.x), z.Y(spot.y), { scale: FS, duration: 460, arc: z.L(100) }));
             S.tweens.add({ targets: spoonImg, x: z.X(spot.x) + z.L(40), y: z.Y(spot.y) - z.L(40), duration: 460, onComplete: () => S.tweens.add({ targets: spoonImg, alpha: 0, duration: 200 }) });
@@ -871,8 +895,9 @@
     // the plate slides to them
     Cook.sfx.whoosh();
     const all = [plate.img].concat(plate.items);
-    const dx = z.L(-115);
-    const dy = z.L(190);
+    // toward them, onto the counter's front (design ~1195, 620)
+    const dx = z.X(PERSON_X - 255) - plate.img.x;
+    const dy = z.Y(620) - plate.img.y;
     const home = all.map((o) => ({ o, x: o.x, y: o.y, s: o.scaleX }));
     const cx0 = plate.img.x;
     const cy0 = plate.img.y;
@@ -912,6 +937,7 @@
     if (person) S.tweens.add({ targets: person, angle: { from: -2.5, to: 2.5 }, duration: 160, yoyo: true, repeat: 2, onComplete: () => person.setAngle(0) });
     Cook.sfx.soft();
     await Cook.wait(500);
+    cardAgain(ctx);
     const line = orderLine(ladderOf(ctx));
     if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
     St.customerDone();
