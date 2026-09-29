@@ -4,7 +4,7 @@
 
 **Art: $0.07** (one API call: karahi + paper plate). The fold stages come from `sheet-samosa-folds-t-v2` on one canvas.
 
-**Tests:** matrix in `build/reports/samosa-v2/`, no console errors.
+**Tests:** `test_cook.py --lab --viewport laptop` PASS; matrix in `build/reports/samosa-v2/`, no console errors.
 
 **TO CONFIRM (Kutchi):** nothing new. The English placeholders are the phase lines and the "fry them" button.
 
