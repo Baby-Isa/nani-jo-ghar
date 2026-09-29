@@ -20,11 +20,11 @@ framed by the eyes: `assets/cook/items/v3/faces-meta.json` has each face's eye p
 
 | file | px | what it is | measured |
 |---|---|---|---|
-| `hob-1.webp` | 465x658 | 1 burner, portrait (maani, daar, samosa fry; chai with 1 person) | n 1; burners (0.4944, 0.3805); cap_r 0.1525; support_r 0.4413; ring_r 0.4413; glass {'top': 0.0228, 'bottom': 0.9726}; frontY 0.8325; scale_from_sheet 0.5056 |
-| `hob-2.webp` | 931x568 | 2 burners (chai, 2 people) | n 2; burners (0.251, 0.4025), (0.7445, 0.4025); cap_r 0.0762; support_r 0.2229; ring_r 0.1826; glass {'top': 0.0264, 'bottom': 0.9665}; frontY 0.8342; scale_from_sheet 0.6626 |
-| `hob-3.webp` | 1388x709 | 3 burners (chai, 3 people) | n 3; burners (0.1596, 0.3725), (0.4993, 0.3728), (0.8389, 0.3725); cap_r 0.0511; support_r 0.1473; ring_r 0.121; glass {'top': 0.0282, 'bottom': 0.9676}; frontY 0.7885; scale_from_sheet 0.9413 |
-| `hob-4.webp` | 1753x620 | 4 burners (chai, 4 people) | n 4; burners (0.1328, 0.4177), (0.3766, 0.4162), (0.6228, 0.4182), (0.8687, 0.4185); cap_r 0.0405; support_r 0.1179; ring_r 0.0953; glass {'top': 0.0371, 'bottom': 0.9548}; frontY 0.821; scale_from_sheet 1.1638 |
-| `hob-wide.webp` | 937x568 | one big burner on a landscape hob, for a big karahi (`Cook.Kit.hob(S, {wide: true})`, `Kit.art(1, [...], {wide: true})`); not used by a station yet | n 1; burners (0.4954, 0.3929); cap_r 0.0987; support_r 0.3055; ring_r 0.2105; glass {'top': 0.0757, 'bottom': 0.9683}; frontY 0.862; scale_from_sheet 0.6626 |
+| `hob-1.webp` | 465x658 | 1 burner, portrait (maani, daar, samosa fry; chai with 1 person) | n 1; burners (0.4944, 0.3805); cap_r 0.1525; support_r 0.4413; glass {'top': 0.0228, 'bottom': 0.9726}; frontY 0.8325; scale_from_sheet 0.5056 |
+| `hob-2.webp` | 931x568 | 2 burners (chai, 2 people) | n 2; burners (0.251, 0.4025), (0.7445, 0.4025); cap_r 0.0762; support_r 0.2229; glass {'top': 0.0264, 'bottom': 0.9665}; frontY 0.8342; scale_from_sheet 0.6626 |
+| `hob-3.webp` | 1388x709 | 3 burners (chai, 3 people) | n 3; burners (0.1596, 0.3725), (0.4993, 0.3728), (0.8389, 0.3725); cap_r 0.0511; support_r 0.1473; glass {'top': 0.0282, 'bottom': 0.9676}; frontY 0.7885; scale_from_sheet 0.9413 |
+| `hob-4.webp` | 1753x620 | 4 burners (chai, 4 people) | n 4; burners (0.1328, 0.4177), (0.3766, 0.4162), (0.6228, 0.4182), (0.8687, 0.4185); cap_r 0.0405; support_r 0.1179; glass {'top': 0.0371, 'bottom': 0.9548}; frontY 0.821; scale_from_sheet 1.1638 |
+| `hob-wide.webp` | 937x568 | one big burner on a landscape hob, for a big karahi (`Cook.Kit.hob(S, {wide: true})`, `Kit.art(1, [...], {wide: true})`); not used by a station yet | n 1; burners (0.4954, 0.3929); cap_r 0.0987; support_r 0.3055; glass {'top': 0.0757, 'bottom': 0.9683}; frontY 0.862; scale_from_sheet 0.6626 |
 | `knob-off.webp` | 320x320 | the knob, off (grip bar horizontal) | cx 0.5005; cy 0.5005; r 0.3709; fit_px 2.2 |
 | `knob-on.webp` | 320x320 | the knob, on: the same knob, bar vertical, warm glow (the kit turns it a quarter) | cx 0.501; cy 0.5013; r 0.3802; fit_px 2.0 |
 
@@ -84,7 +84,7 @@ Not wired: for the daar session. The nine pots share one registered canvas.
 | `pot-stir.webp` | 430x348 | daar mid-stir (a swirl) | cx 0.4977; cy 0.4974; r 0.3623; fit_px 1.5; anchor [0.4982, 0.4985] |
 | `daar-bowl-trivet.webp` | 528x563 | a served bowl of daar on a woven trivet | cx 0.4928; cy 0.4987; r 0.4833; fit_px 7.7 |
 | `veg-bowl.webp` | 484x483 | a steel bowl of chopped onion, tomato and chilli | cx 0.4958; cy 0.495; r 0.458; fit_px 1.4 |
-| `ladle.webp` | 290x455 | the ladle, cut out of the small pot ChatGPT stood it in (hand-drawn outline: the bowl's circle, the handle, the hole) | cx 0.5203; cy 0.5634; r 0.4283; fit_px 104.3 |
+| `ladle.webp` | 290x455 | the ladle, cut out of the small pot ChatGPT stood it in (hand-drawn outline: the bowl's circle, the handle, the hole) | bowl_cx 0.3983; bowl_cy 0.7451; bowl_r 0.3552 |
 
 ## chaat/ (T1-T2)
 

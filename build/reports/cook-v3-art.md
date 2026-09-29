@@ -89,11 +89,13 @@ cut script's own recorded values: the ladle's bowl (recorded from its hand-drawn
   the wide one (a kit option: no station uses it yet). Each burner has its own measured y. `compose_hobs` is
   retired (`build/cut_chai_v2.py`) and its four stitched hobs deleted.
 - **Knobs (H6)**: `v3/hob/knob-off|on.webp`; the knob's round body is now the badge's size (64 px: the sprite is
-  86 px, its body 0.742 of it); "on" = the glowing knob, turned a quarter (bar vertical).
+  86 px, its body 0.742 of it); "on" = the glowing knob, turned a quarter (bar vertical); "low" now turns it to
+  135° (bar diagonal), not 180°, where the new bar lay flat again and read as "off".
 - **Flames**: sized per vessel: the ring reaches 1.2 × the flame radius the station passes (was 1.29), and never
   more than 0.46 of the burner pitch, so neighbours can't touch at 3–4 pans. The 15 px gauge sits on top.
 - **Faces**: `assets/cook/characters/<who>-face[-happy|-frown].webp` for nani, nana, ma, cousin (Ali) re-cut from
-  A1/A2; isa's are new (Cook doesn't show Isa yet). The sidebar, intro card, hob badges and review face use them.
+  A1/A2; isa's are new (`Cook.FACES` gains "isa"; Cook doesn't show Isa yet). The sidebar, intro card, hob badges
+  and review face use them. `build/cut_characters.py` no longer rewrites them (`--old-faces` to force it).
 - **Chai** (`js/cook/stations/chai-tray.js`), only what the swap needed: the hob height per burner count, each
   pan on its own burner's measured y, and the hob's scale solved with the tray (the new 4-burner hob is wider:
   1753 px vs 1483, because H4's burners are drawn smaller relative to its frame).
