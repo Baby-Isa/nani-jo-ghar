@@ -33,7 +33,7 @@ Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pu
 | End pop-up (badges → words → actions) | ✅ |
 | Kitchen kit (hob, burners, knobs, heat ring, chips, badges) | ✅ `Cook.Kit`; karahi added by the samosa polish |
 | Serve and taste (§14a) | ✅ in sekelo, chaat, samosa, daar |
-| The cream band above the counter | ❌ comes from the shared Phaser FIT letterbox (`js/cook/flow.js`); a one-line decision for Zafar |
+| The cream band above the counter | 🔨 **Zafar (29 Sept): fill it** with the counter top, and game pieces where they help. One build session owns it (queue item 8), with the order card's two open fixes. |
 
 **Cook overall: about 75%** (design 100, build 95, iterate 70, words 75, voice 15, onboarding 75, story 10).
 
@@ -105,8 +105,8 @@ Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pu
 - *Muke sekelo khape.* as Sekelo's headline (checking with Mum; kept for now). *lakri gos* vs *hakri lakri mishkaki* for the all-meat skewer.
 - Daar: record Nani's "Chop these"; confirm *hakro* as the first stir count.
 - English placeholders still to record: Nani's guide lines per station (Round 4 N1–N23), samosa's phase lines and "fry them" button.
-- The cream band above the counter (Phaser letterboxing): fill it with the play area, or leave it?
-- The open ideas for Cook in `docs/GAME-IDEAS-TBC.md` before Cook is called finished.
+- ~~The cream band~~: **fill it** (Zafar, 29 Sept morning); build queued.
+- ~~Cook's open ideas~~: **decided 29 Sept morning.** #1 and #2 are the sub cards' *dudh na* / *khun na* rows (no *wagar ji*, no *kari/mori chai*), already live; #3, the "don't" row, approved (live). Cook's other open ideas (5, 7, 8, 12, 18, 19) stay TBC.
 - Play through Cook (all six v2 stations) and the clinic.
 
 1. A8.9 "Who did it?": re-asked 28 Sept (R12); Mum said *kere karein* again, the final n "a half end". Zafar to judge by ear.
