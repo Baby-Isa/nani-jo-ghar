@@ -84,13 +84,13 @@ class Play:
             m.move(a["x"], a["y"])
             m.down()
             m.up()
-            self.page.wait_for_timeout(a.get("after", 90))
+            self.page.wait_for_timeout(a.get("after") or 90)
         elif d == "drag":
             pts = a["pts"]
             m.move(pts[0][0], pts[0][1])
             m.down()
             for x, y in pts[1:]:
-                m.move(x, y, steps=a.get("steps", 3))
+                m.move(x, y, steps=a.get("steps") or 3)
             m.up()
             self.page.wait_for_timeout(120)
         elif d == "hold":
@@ -105,7 +105,7 @@ class Play:
             self.page.locator(".cl-go").last.click()
             self.page.wait_for_timeout(150)
         elif d == "wait":
-            self.page.wait_for_timeout(a.get("ms", 150))
+            self.page.wait_for_timeout(a.get("ms") or 150)
         else:
             raise AssertionError(f"unknown action {a}")
 
