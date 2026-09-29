@@ -141,3 +141,26 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 - **Stirs:** show only the simple Kutchi number word near the pot or spoon (e.g. *trae*), no digits. The tally counts stirs done, as elsewhere.
 - **The shared kitchen kit (every station):** one hob, knob, pan, pot, ladle, wooden board and knife asset set; one heat component (the chai v2 heat ring, in its best version, replacing the speedometer everywhere); one pour (the chai v2 tilt and stream, replacing the arrow). No hands or arms: the knife cuts and the spoon stirs on their own.
 - **Art:** real top-down vegetables (whole and chopped; reuse pantry v2 and cook items where possible), a wooden chopping board, a knife and a bowl for the chopped vegetables. Generate via the API if the total is under $2, else a ChatGPT paste-block pack. Follow chai v2's layout and spacing learnings (§10) and `docs/VISUAL-QA.md`.
+
+## 14. The chaat station v2: Claude's draft feedback (29 Sept). NOT approved yet; Zafar to review.
+**What works:** the mechanic (build the bowl in order) is good for teaching order and *ne poi*; decoys, including a "don't" item (*Marcha na.*), make you listen; the ticks work.
+
+**What's wrong:**
+1. **Mixed viewpoints.** The glass bowl is seen from the side while the ingredient bowls are seen from the top, which is the same problem the pantry had.
+2. **The layers don't look like food.** They're flat colour bands that read as liquids (brown, yellow, beige). Real chaat is potato cubes, chana, a chutney drizzle and a sev crown. The top layer hides the ones beneath it, which defeats the "in order" lesson.
+3. **The ingredient grid is ragged** (four on top, three below with a hole), there are no word or speaker chips, and there's no shelf band. It floats on the marble.
+4. **The tally uses big red digits over two rows.** It's off-style: red reads as wrong, and it's a second, different number style on the screen.
+5. **The card doesn't show order.** An ordered job needs the sequence line and the grey "next" row. "Marcha na." should look like a "don't" row, not the same as the others.
+6. **Nani's line** is an English placeholder ("Make the bowl, in order").
+7. **The bowl is huge**, and the space above and around it is wasted.
+
+**Proposal:**
+- **One viewpoint: front-on.** A clear glass bowl seen from the side (a cross-section, so every layer stays visible), and the ingredients standing on the shelf band below as front-on prep bowls (the same slot rules as chai v2 §4: identical slots, `🔊 word` chips, speaker-only chips at higher levels, true relative heights).
+- **Real layer art:** each ingredient becomes a textured layer (potato cubes, chana, a dahi swirl, chutney drizzle lines, sev strands, dhania leaves, chilli slices) that settles into the glass with a little drop and bounce, and the word pops up with the family clip. Layers are sized so four to six stay visible.
+- **The card:** the order model (§12) as an ordered job, with the sequence line, grey "next" and gold done. **A "don't" row style:** the word plus a small muted *na* tag; it ticks when the bowl is served without that item (UX §11); adding it anyway only shows in the end review.
+- **The tally:** the flat design-system style (charcoal numbers, one row, only what's been added). Or drop it at this station, since the glass itself shows what's in, and a tally duplicates it.
+- **Layout (the chai v2 grid):** the bowl centred in the scene at about 60% of its current size, the shelf band below with even breathing space, and nothing floating.
+- **Serve moment:** Done → the bowl slides to the person, they react (happy face or counter mood), then the end pop-up.
+- **Levels:** level 1 is three layers with no decoys; level 2 adds decoys; level 3 adds a "don't" row (*{x} na* / *{x} wagar ji*, idea 1 in GAME-IDEAS-TBC); level 4 adds two bowls for two people with different orders (two cards).
+- **Onboarding (first time):** a ghost finger shows card row 1 → the matching bowl → the drop into the glass → the tick. Then the child does row 2.
+- **Art to make:** a front-on clear glass serving bowl (empty), front-on prep bowls for each ingredient (the same bowl, different contents), and layer textures (API if under $2, otherwise a paste-block pack).
