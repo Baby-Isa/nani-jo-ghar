@@ -1,0 +1,238 @@
+# Transcript: Zafar's clinic play-test voice note, part 1 of 2, 29 Sept 2026 (24 min)
+
+Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "N-A-R" = *nar* (no); "Sutra" (19:13) is unclear; "Namani" (19:42) = the maani (rolling); "Stick of the Plaster" = stick the plaster on; "developing Kutchi" (16:02) = developing Cook. The report is written once part 2 arrives: docs/feedback/clinic-playtest-2026-09-29.md.
+
+- **0:00** Feedback on the clinic, waiting room, variant, W1.
+- **0:07** Visual-wise, let's just do a check to make sure the background is up to the high quality of the rest of the backgrounds.
+- **0:18** But it looks nice actually. It may just need something on the wall to symbolise it's a doctor's room.
+- **0:25** I think the characters should probably sit on a bench, like a waiting room bench.
+- **0:35** And then, I don't know how to show that you've selected the right person.
+- **0:43** If they move, obviously it's not moving super realistically, where would they move to?
+- **0:53** Normally you'd go to the doctor's office or something.
+- **1:06** Maybe they just, I don't know.
+- **1:10** I was thinking they could raise their hands, but I don't want you to have to remake loads of assets again.
+- **1:13** I don't know, could underline them, like sit them slightly higher in the chair.
+- **1:23** Or what if there's just like a tick, a large tick or checkbox underneath them, or above them.
+- **1:38** Then you tick them and then it vibrates if you're wrong or locks in if you're right or something.
+- **1:44** That way they don't have to move.
+- **1:46** Actually we might need to redraw the background, I'm not sure.
+- **1:49** It just depends if it fits the rest of the theme now, kind of the high-quality semi-realism style.
+- **2:02** I don't know, but yes, something on the wall for sure to make it look like it's a doctor.
+- **2:06** I think having one large bench is helpful.
+- **2:12** And maybe that's it.
+- **2:15** I think the language needs to build simply and build up.
+- **2:23** Obviously, the thing is, it's not just about the words, right?
+- **2:27** I don't know if we're tracking kind of sentence complexity independently,
+- **2:34** or we're tracking it just within game modes and progressing up game mode levels,
+- **2:38** but to start with, I think it just needs to be...
+- **2:42** bring in the man, woman, boy, girl, then you go old man, young, whatever, then you
+- **2:50** start adding in adjectives, maybe young, old, tall, short, and then...
+- **3:09** maybe colors, or maybe like... the woman with the baby, or the lady with the child, things
+- **3:23** like that.
+- **3:24** Actually, I've got it, I think this game mode could be more fun.
+- **3:27** Let's scrap this background and why don't we make it more of an interesting, slightly
+- **3:33** more panned view of...
+- **3:36** a waiting room. And some people are sitting on the bench, some people are sitting on sofas, some people are standing by the door or standing around near the check-in desk or something.
+- **3:50** It's like an array, it's almost... it's kind of... not quite like a find-them, but a little bit. It's not super hard to find them, not like a where's Waldo, but it's just like... yeah, there could be...
+- **4:03** as the game progresses, 8 to 12 people, some seated, some standing over there, some
+- **4:10** standing in a different place, some sitting on, you know, I don't know, different
+- **4:16** benches. Have a think about how we could display it nicely and make it more
+- **4:20** hospital room-like. We're not being too busy, but just, you know, maybe just a
+- **4:25** I'm thinking like a desk and, you know, the standard medical symbol on the wall.
+- **4:32** This, you know, yeah, waiting room, stethoscope on the table or something.
+- **4:40** Well, maybe the doctor, yeah, maybe the doctor can, maybe there's a door to the doctor's office.
+- **4:46** And it's like half open and he's got his head sticking out and he's just like,
+- **4:51** Oh, bring in so and so and so and so.
+- **4:57** Or not, I don't know.
+- **4:59** Let's see what we think about that idea. Anyway, wow, long voice note, but that's
+- **5:04** the solution. So for diagnosis, variant D1. Does it hurt here? When you
+- **5:16** click on the different body parts, it should say there's body parts and then
+- **5:20** say no. So hand, no.
+- **5:26** Foot, no. Ear, yes. So then you learn the different body parts, right? So I think
+- **5:38** that is a good diagnosis mode, good diagnosis variation. What's D1B?
+- **5:46** Does it hurt here?
+- **5:51** Huh, my head. Does it hurt here? N-A-R. Okay, I don't even know what D1B is, but the same rule applies to that. We also need to think about the artwork. Give me some suggestions, what do you think? I'm just imagining like a, you know in a clinic where they have a, it's not a clinic, like a doctor's room and they have the bed.
+- **6:17** But you're not lying on the bed, you're sitting on the bed, you know, with your knees dangling over the edge.
+- **6:28** Maybe, for some of the ones, or maybe that's when you fix them, I don't know.
+- **6:35** The other variant could be like next to like a skeleton anatomy of the body.
+- **6:40** There's a few like, you know, yeah.
+- **6:43** Maybe some posters on the wall, not too busy, and then they're standing there, and the doctor's
+- **6:49** next to them.
+- **6:50** Maybe that's good.
+- **6:51** I think the doctor should be next to them in both variations.
+- **6:53** Doctor's there next to them, and he's, um, the patient's facing you, the doctor's facing
+- **7:01** kind of three-quarter turned a bit towards the patient, a bit towards you, and you click
+- **7:06** around the patient and try to figure out where it hurts.
+- **7:08** Um, yeah, we need some, we probably need to lock down the backgrounds, right, and then
+- **7:15** we'll know where to fit all the elements into it and not have to resize them.
+- **7:19** Let's have a look at variation D2.
+- **7:22** Where does it hurt?
+- **7:24** Where does it hurt?
+- **7:26** My foot hurts.
+- **7:27** Okay, then they say where it hurts.
+- **7:28** And if I click on the knee.
+- **7:30** My foot hurts.
+- **7:31** He laughs and says no, then you click on the foot.
+- **7:34** And he says yes. Okay, that's good. And then I guess he can progress to the left
+- **7:41** and right. Or is that going to be D3? Let's have a look. Oh, there's a
+- **7:46** different game mode. Okay, I don't feel well. I don't know what. Look at the knee.
+- **7:57** Okay, so they say, yeah, I don't...
+- **8:00** I don't feel well. I don't know why. And the doctor tells you to look at the ear.
+- **8:05** But it doesn't really tell you which tools to use to look at the ear.
+- **8:11** Look at the knee. What would you use to look at the knee? Hand? Okay, that was correct. Look in the ear
+- **8:19** with a tablet. Oh, is that a torch maybe? No. Stethoscope for the ear.
+- **8:26** Hand for the ear.
+- **8:32** Surely it's the temperature thingy.
+- **8:36** Oh, I don't know. Okay, that's not working.
+- **8:40** Okay, that's a good game mode. Oh, there are different levels to this. Let me go back to D2.
+- **8:44** Level 3.
+- **8:48** Okay, where does it hurt? And he says, my left hand.
+- **8:53** Okay, fine. I think these work in principle. The mechanics are good. Taking on board my
+- **8:59** feedback. Yeah, I think actually we could probably get some good artwork and this could
+- **9:06** be a good game mode. Improvements to this? I'm not sure if time pressure would really
+- **9:20** make this any more fun.
+- **9:22** Kind of have to click about. Maybe this is just good. It's not bad, actually. The
+- **9:26** mechanics are there. Maybe we're not so far off as we think. Okay, so for the pharmacy,
+- **9:33** it is quite fun. Again, we need to decide about top-down versus side-on. I
+- **9:43** think... I don't know what I think, actually.
+- **9:47** I mean, some things are better side-on and some things are better top-down.
+- **9:56** I kind of like the artwork background as it was drawn.
+- **10:00** The only thing is you've got a conveyor belt drawn in the background, but then you're not
+- **10:03** putting items on the conveyor belt, you're making your own conveyor belt to put across
+- **10:06** the top.
+- **10:07** I think we should maybe draw some inspiration from the tray for the pantry.
+- **10:14** I really don't know, top down or not. I kind of think the angle now works for the background,
+- **10:22** it's not straight on, it's maybe 30 degrees up. Question is, can we render all the objects
+- **10:29** that way? Maybe we move the camera angle to 45 degrees up. And then we maybe can, because
+- **10:36** these are all new objects, right?
+- **10:39** Medical objects. So maybe we just get them drawn top down, side on, and at 45 in some variations as well, of like rotations if required, or different sides, just so we can play around with it if we need to. But I'm thinking that would be the most easy to see, and just probably the most realistic.
+- **11:08** Let me know what you think. So that's Pharmacy L1. Let's have a look at L3.
+- **11:15** Oh wow, give me a toothbrush first, then a drill, then a filling.
+- **11:21** When it moves quicker.
+- **11:24** What is that? This is kind of fun, actually.
+- **11:28** Okay, wants the toothbrush first. Okay.
+- **11:31** Toothbrush.
+- **11:33** Then a drill.
+- **11:35** I think you can move it faster or the items can actually be closer together in this hard mode.
+- **11:41** Where's the drill?
+- **11:51** I wonder if a countdown timer would be helpful in this one.
+- **11:54** That's the drill and then the filling.
+- **11:57** What is a filling going to look like?
+- **12:00** We may have to be a bit strategic about the items we use here.
+- **12:03** Such that the items we can easily display and draw.
+- **12:14** Okay, got it all right. It's actually kind of fun. Feeling enthused.
+- **12:20** So again, artwork for the send-off. Maybe they're just leaving the clinic.
+- **12:24** Door half open. They're kind of about to step through it. Doctor next to them.
+- **12:30** Asking them if everything's okay now.
+- **12:32** I actually really like this send-off, happy or sad.
+- **12:36** But I think you need to maybe make it clearer while asking if they're happy or sad visually.
+- **12:44** So maybe we put the character icon there.
+- **12:52** How would that work though?
+- **12:54** Do you put happy sad faces for them?
+- **12:56** But that's a lot of art to render. Yeah we can keep just generic icons but, well, we
+- **13:08** can redraw some nice ones but we can keep it the same for everyone. Hot, cold, happy,
+- **13:12** sad. It's just, yeah, I don't know, it's not explicit. Obviously I'm reading the English.
+- **13:21** If you don't know English and you're still learning Kutchi, how are you going to know it's a thought bubble?
+- **13:27** Maybe the thought bubble comes out and you have to answer for them.
+- **13:31** Give me some options, give me four options.
+- **13:36** Okay let's look at variant E2. Is everything okay now? Is everything okay now? Is everything okay now?
+- **13:43** Still a bit sad.
+- **13:47** One more thing.
+- **13:49** Oh I gave them a lolly. That is so funny. Okay I really like that but based on feedback from my mom we can't be encouraging to give kids sweets so let's give them an apple which is kind of thematic. Apple a day keeps the doctor away. That is so funny though.
+- **14:05** Is everything okay now? This is actually quite a good game mode. Remind me how we designed this because I think I just gave you or Fable just a big prompt that said make it.
+- **14:15** Whatever that is. I don't know if that's a skill. I haven't really learned about skills yet but given we have other game modes I don't know if there's something we could retrospectively take a look at that prompt and make a skill out of this kind of game researching to find you know similar kind of games and what makes things funny and review them against the criteria etc but yeah this actually kind of works so we should in the lab drawn version
+- **14:43** to quickly test iterate. Yeah we should codify this somehow. Make a side point
+- **14:50** and explain this to me. Variant E3. Is everything okay now? Say bye. Is everything okay now? Still a bit sad. Okay so she's sad. One more thing. Is everything okay now?
+- **15:09** I don't really get the variation between E3 and E2. Oh now they're happy.
+- **15:19** Yeah okay. Okay say bye. I think that's good.
+- **15:30** That's good. I'm not quite sure about showing that in the left hand.
+- **15:36** Side panel. But maybe it is. I don't know how you say it. In Kutchi like you say
+- **15:44** goodbye. I'm not sure you even need the side panel for it to be honest. It can just
+- **15:52** happen. It can just come up. Side note. All the side panel if you are using it
+- **15:58** here. And the front screen and pop-off screen just.
+- **16:02** All the kind of shared UI nice elements we've taken from developing Kutchi come across here as well.
+- **16:13** And that includes all the design lessons about spacing and placement and consistency and grouping and everything like that.
+- **16:21** Okay, E4, let's go.
+- **16:23** How do you feel?
+- **16:24** How do you feel? Is everything okay now?
+- **16:26** Is everything okay now?
+- **16:27** Okay, this is the doctor basically telling you to ask these questions. I kind of get it.
+- **16:33** Which means you need to understand what the doctor is asking you.
+- **16:40** Okay, so it's like in Kutchi, like, ask them.
+- **16:49** But then ask them what, how they feel.
+- **16:53** I'll have to think about this one.
+- **16:56** I like the game mode though, we'll just have to think about how we explain it to them.
+- **16:59** But yeah, that's good.
+- **17:02** I guess this is good, it's just basically building up more dialogue. Okay, then you have to answer,
+- **17:13** show that you understood their answer. Okay, fine, that's a good mechanic. I think that
+- **17:20** in the send-off, variations are good.
+- **17:24** For the heal, I don't even know how to describe it, which one it is.
+- **17:30** It's the heal Kutchi. I don't understand, so first you put the water, and then you put the cloth, but when you click on the sticker, on the right-hand side it comes up with three buttons, a star, a cat, and a red dot. I'm not sure I understand what that is. Is that just the... I don't know, is that just a type of plaster?
+- **17:57** You put on there? I'm not sure.
+- **18:01** It's not a bad game mode, but...
+- **18:04** Okay, actually, let's try a different level.
+- **18:07** I don't really know how it gets...
+- **18:17** Okay, so you have to put the cloth and dab it four times.
+- **18:23** Okay, and the plaster, you have to put the blue one. Okay, it's actually not bad, and the
+- **18:29** colour plaster is a good idea. I just don't know if there's any more complexity we can
+- **18:36** add. Not complexity, I think just... It's very clicky. Click, click, click. Maybe with the...
+- **18:49** ...cloth you have to like...
+- **18:53** ...
+- **18:57** ...swipe or dab, but even then it doesn't really add much. It's not really a mini-game
+- **19:01** in the sense of like...
+- **19:05** ...some of the mini-cooking games.
+- **19:09** There's no skill either. Um...I think you'd only
+- **19:13** really get that from Sutra. I don't know.
+- **19:15** Plaster. I don't know. Like...I don't know. Something about placing it in the right
+- **19:24** place but that's not easy with with finger and touchscreens. I don't know.
+- **19:29** What can we do? Like...like the bits of the cooking that are fun are like putting
+- **19:37** the samosas in and out and frying them at the right time. There's a bit of a skill.
+- **19:42** Excitement and energy to that. Even the role of Namani, it's like not super fun
+- **19:47** but at least it's something to kind of do and to get right. The chopping obviously
+- **19:52** is a skilled game so that's fun. So yeah and it's just...I don't know. I don't
+- **20:04** know how to add a bit more to this game. This game mode.
+- **20:08** Put it this way, no one's gonna, I think, enjoy playing Stick of the Plaster on, right, in the same way they'll enjoy other game modes.
+- **20:17** So it's not everything has to be amazing. Or like the pharmacy one's good, right? You have to pick something off a moving trolley.
+- **20:24** So...I'm really struggling with ideas on this one.
+- **20:35** It's more like, I don't know...
+- **20:37** You see a close-up of the knee or close-up of a cut or something, like, what do you...
+- **20:43** I don't know, clean bits off of it. I'm not sure. I think I need your help there to adjust things.
+- **20:49** Otherwise, it's not bad, though, if we don't, like, progress it.
+- **20:55** Right, let's do the knee. Tap the knee. It's kind of funny. If you think back to the background
+- **21:03** imagery that I spoke about for...oh, none of these would need background imagery. I'm not
+- **21:07** sure if it's the same one. It might all just be sitting on the edge of, like, the doctor's bed.
+- **21:13** But yeah, the knee one's kind of funny, actually. Child taps, that's kind of funny. And that'll be
+- **21:18** perfect for hanging over the bed. And then bandage. One, two, three. Okay, obviously,
+- **21:26** the mechanic needs improving. Maybe the bandage is one, like, you have to just tap here, then tap
+- **21:33** here, then tap here, then tap here, like, alternating between left and right, but at
+- **21:36** different heights. And every time you tap, it applies a bandage.
+- **21:40** Does that make sense?
+- **21:44** So to start with, it's just, like, left and right, two dots, same height.
+- **21:48** You press left, then right, then left, because it says three turns, and it wraps the bandage
+- **21:53** around.
+- **21:54** But then, you know, it could be then three dots on the left and three dots on the right,
+- **21:58** and it flashes bottom left one, and then top right one, and then left middle one, and then
+- **22:04** white middle one.
+- **22:05** And then it, like, you know, you just have to do it as it flashes.
+- **22:09** But the wrapping, you know, wraps from the dots to the dots, that could be fun, and it could flash,
+- **22:14** and it's quite a quick one. It could be quite quick-paced, because it's just flashing and
+- **22:19** dotting, almost like a reaction game. Like, how quickly can you do it? Like, click on the ones
+- **22:22** that flashes. That would be fun, actually. I like that. Let's do that. Yeah, nice, okay.
+- **22:32** And then level three. I've actually not checked level threes of the cooking game,
+- **22:35** to be honest. Okay, fine, it was the right name.
+- **22:40** Bar tabs, and then the bandage. Oh, God. First on the knee, and then that knee, and then
+- **22:56** the leg. Okay, well, like, that needs to describe a bit more left than right in which one, or
+- **23:01** you should only highlight one knee and one leg at the beginning if you're not sure, but
+- **23:05** yeah, that's...
+- **23:07** That's fine. That's probably fine. Okay, let's do, yeah. So clean it four times. That's...
+- **23:22** But how do you take these things out, though? That's what I don't get. You have to take
+- **23:25** them out. That's actually kind of fun. I mean, at first I thought it was ridiculous. Maybe
+- **23:30** it's kind of funny. Then you put the drops in there.
+- **23:36** That's kind of funny. Oh, you have to clean it four times. That's actually kind of funny.
+- **23:44** I think the little game mode of taking the little wax blobs and moving them to the outer edge is
+- **23:48** kind of funny. And what if more of them keep coming? No, that would make a fun game mode.
+- **23:54** They keep repopulating. Otherwise it's kind of fun, actually. I don't know why I'm enjoying
+- **23:59** this more now. I think I was just so overwhelmed by how terrible the visuals were, although I know
+- **24:03** it was a testament. I'm just going to concentrate. All right, there's so many of these.
+- **24:10** I'm going to set you to work on this while I record the rest so the recording doesn't
+- **24:20** become too long.

@@ -1,0 +1,180 @@
+# Transcript: Zafar's clinic play-test voice note, part 2 of 2, 29 Sept 2026 (18 min)
+
+Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "dabi, jamna, mata" = *dabo / jamno* (left / right) and *mathe* (top); "nin-do tooth" = *nindho* (small) tooth; "impella limu" = *pela limu* (first the lemon); "Tell a BA marka. Any poi BA loon" = *pela ba marcha, ne poi ba loon*; "Any poi shot" = *ne poi …*; "B8 times" = 8 times?; "koso / nokoso" = the family words for hot / lukewarm (to check); "things that we kissed on" = unclear. The report: docs/feedback/clinic-playtest-2026-09-29.md.
+
+- **0:00** okay we're looking at clinic feedback, clinic feedback, heal, tooth, level one,
+- **0:09** brush, down, down, up, I'm not sure what that means though, does it mean like brush
+- **0:20** those teeth or does it just mean the order of brushing, if you say brush
+- **0:28** I'm not sure if it works for down and up, distinct from top and bottom, I think it can
+- **0:41** work though, up, down, dabi, dabi, jamna, mata, need to be clear on the visual though
+- **0:51** because there's two teeth with
+- **0:53** down marks on it, I don't know if that's just part of the visual or those are the ones I'm meant to be brushing, I'm meant to brush the bottom one first or the top one, so that needs some clarifying, I think you probably need a static toothbrush horizontally in the mouth in place and then you grab the toothbrush's head and you move it up, down, left, right according to the instructions in the order, almost like a, just dance, whatever it's called,
+- **1:20** the sequence can get more complicated as it goes on and then nin-do-tooth, three taps,
+- **1:28** that's actually kind of funny, I don't know what happens with the green buggy thing though,
+- **1:32** I press it, it just hops around, I think we need probably an idea for the green hoppy thing,
+- **1:37** maybe we don't have a green hoppy thing, it is kind of funny though, maybe it just falls away,
+- **1:44** I don't know, actually let's not scare the kids, let's just not do it but it's a good idea,
+- **1:49** keep that in mind, but then, nin-do-tooth, three taps, I gave it three taps and then
+- **2:03** a green thing came out and then I pressed the green thing a few times, then nothing
+- **2:06** happened, I pressed the green thing, it gets chased around, then I tapped on the other
+- **2:10** tooth which is actually a big tooth, then the green monster went in the thing, but another
+- **2:14** green monster came out and I can't get a green monster back in again, and this still hasn't
+- **2:18** ticked off that I did three taps, so I think this just needs checking, oh I ticked it,
+- **2:25** I ticked it so it doesn't tell you that you've done it, okay.
+- **2:30** Is there more we can do on this one, like a filling, like what's a game mode there, like
+- **2:40** you see a tooth and you have to like drill the black bits out or something like that,
+- **2:51** while keeping the good bits, you know?
+- **2:55** Is that a possibility?
+- **3:01** And then filling, is there anything we can do for filling, like, whenever we did a piping
+- **3:07** thing, did we?
+- **3:08** A piping could be jalebi, a piping could be filling, a piping can be a cake, but like,
+- **3:13** is it like fill it to the top or something?
+- **3:21** I don't know, I'm not sure if that's fun, I think drilling the bad bits while keeping
+- **3:27** the good bits is fun, especially if you're under some time pressure, um, drilling, drilling,
+- **3:39** drilling, drilling like a tunnel, um, like drilling like a hole in the tooth, hmm.
+- **3:48** Now imagine you're kind of in a cave, you're in a cave, surrounded by like, stone, I don't
+- **3:59** know, and you're drilling, it's more of a mining game isn't it, I think you have a mining
+- **4:03** game where you have to click on the ore and mine it, but maybe there's like something
+- **4:06** to it, drilling the teeth, I don't know, I'm gonna need help with this one, I think drilling
+- **4:12** the bad bits, keeping the good bits.
+- **4:14** is good, and the brushing one is good, I think filling would just be nice, maybe it's
+- **4:19** simpler than filling, maybe you just have to fill it up to the top, maybe the doctor
+- **4:24** just has the filling thing and you just press the button, he's holding the filling pipette
+- **4:30** or whatever it is, and you just tap him and you just press and hold and it fills more
+- **4:36** and more and you have to stop it at the right line, something like that.
+- **4:40** Okay, and then taste, this one's funny but I don't know if it makes sense though, I just
+- **4:49** don't know if it makes sense but mum kind of liked the idea, oh okay she's like oh you're
+- **4:52** teaching different flavours and tastes, impella limu, first of all click on it and see what
+- **4:57** is limu, there's no limu here, oh okay there's a limu pipette, alright then I click on the
+- **5:05** limu, then water, okay, but like, but what just happened, I have no idea what's going
+- **5:15** on in this game, or why, but it seems like it's been thought out, I feel like I can't
+- **5:29** really make judgements, I don't really understand what the point of this is, or the intention
+- **5:33** behind it was, to be less disparaging, because it could be quite fun.
+- **5:39** Um, yeah, I really don't know, there's something here though, I don't know, it's different for
+- **5:48** sure, it's a different kind of game mode, it's putting different flavours in, and they
+- **5:52** react, um, I think you're just gonna have to either explain it to me, or to come up
+- **5:58** with what this game could actually be, or is supposed to be, but there's the bones of
+- **6:02** something there, definitely different.
+- **6:05** Parts of the tongue, and I don't know, it's kind of like, you know, you put the
+- **6:16** lemon on the yellow taste bud, and then it's okay, and then you put the, like you
+- **6:22** want to match them up, but then one of them doesn't match up, and that's the
+- **6:25** problem one, or, I really don't know, but I like this game mode to be something.
+- **6:33** Along these lines, I don't want to misunderstand it, because it kind of looks good. Let me try level 3,
+- **6:40** maybe it's...
+- **6:41** Stick out your tongue. Okay, stick out your tongue. Tell a BA marka.
+- **6:45** Any poi BA loon.
+- **6:48** So I'm putting different foods on there. Any poi shot.
+- **6:52** So first you put the mocha.
+- **6:54** I can't see, it's covered up. Okay.
+- **6:59** Okay. I don't, I don't, I just don't, I just don't really get what I'm doing. Okay, he
+- **7:14** was unhappy about that. Okay, there's some kind of matching something. I don't know how
+- **7:19** it works to diagnose if you have to figure this one out, but it's, it's good to give
+- **7:23** me some suggestions.
+- **7:25** Give me three different suggestions.
+- **7:30** Fever.
+- **7:32** Take the temperature.
+- **7:33** Take the temperature. Okay.
+- **7:37** Why am I, why is there a...
+- **7:41** I can't play this game mode. There's a...
+- **7:44** Like a, like a play, like go to next chapter button in the top right hand corner.
+- **7:50** Oh, I had to hold it down. Okay, I don't know why that's there. That's, that's...
+- **7:54** Not good. Okay, take the temperature. I'm assuming it's the multi-coloured thing.
+- **8:01** It's telling me to click the multi-coloured thing.
+- **8:05** That's the fan.
+- **8:07** I'm so confused.
+- **8:11** Okay, it doesn't want the fan.
+- **8:13** It doesn't want the hot towel.
+- **8:15** It doesn't want the cold towel. But I can't click on the temperature thing.
+- **8:19** That just doesn't work. So...
+- **8:20** Okay, I'm going to try level 2. Take the temperature. Take the temperature. Yeah, how? Well, let me
+- **8:28** click on what I think is the temperature thing. Ugh, stupid. Okay, well, I just can't play
+- **8:37** this one to test it, so I'm just going to have to redo this one. Or just fix it so I
+- **8:42** can check if it works.
+- **8:46** Okay, maybe take the temperature, and if it's hot, then you need a cold thing or something,
+- **8:54** and then they're cold, and then you need a hot one. Maybe, like, it alternates or something
+- **8:58** like that. I don't know. Try to include to me the original intention. And then boing?
+- **9:06** Wipe it B8 times. Wipe what, though? Okay, wipe it twice.
+- **9:12** Okay. Count with me. I'll actually count. Okay, that's kind of good, I think. Okay,
+- **9:36** it doesn't really work.
+- **9:37** That I understand. Oh, you have to put the plaster? Okay, I don't get it, but I think, I guess
+- **9:44** wiping is fine, and then the injection, like, there's different colored things in
+- **9:53** the injection. I like that, that it's kind of a fake. It's not a real injection, it's
+- **9:57** like different colored things inside the injection. They go inside and you have to
+- **10:00** count how many. One, two, and every time you click, so you click one and the first one
+- **10:05** goes in, you click two and the second one goes in.
+- **10:07** That's good. I think that's something interesting and then sometimes it could be
+- **10:19** like the color. I don't really know what this game mode is. I don't know what it's trying to tell me.
+- **10:27** I need to be good though. I think it's got some potential there. And then the eye.
+- **10:33** What's the eye category?
+- **10:35** Okay, I have to put an eye drop in there. Okay, that's fine. And then?
+- **10:45** Then what do I do? Oh, that's kind of funny. It's an eye test. That's really actually quite
+- **10:56** really quite clever actually. That's really funny.
+- **11:03** I wonder if we can do... I wonder what else we can do other than fruit and veg, because I seem to get a lot of exposure to that.
+- **11:10** I guess eventually it could just be the things that we kissed on, but it could be like, birth and table, or it could be so many things. That's actually quite a fun idea, it's an eye test.
+- **11:20** I think it's quite exquisite, right? Like, well it's going row by row, which is cool.
+- **11:25** And then?
+- **11:27** And then?
+- **11:31** So you fix the eye?
+- **11:36** You fix the eye, and then they do an eye test. I think for all of these, the background artwork has
+- **11:40** to be really good, and hopefully not get changed too much, so then we can build all the assets and
+- **11:45** stuff, right the first time. But the eye test is a good concept, I think. Let's see what the
+- **11:56** higher levels are. Let's try level three. My left eye.
+- **12:02** Two drops.
+- **12:06** The cover of the other eye.
+- **12:12** Okay.
+- **12:15** But then, why...
+- **12:18** Okay, this stick thing...
+- **12:21** It doesn't fully make sense, like why am I clicking on the things? I mean, I know I need to click on the things for the purpose of learning, but...
+- **12:27** Uh...
+- **12:32** Maybe the first game mode is like it just shows them an eye chart with like three different
+- **12:40** things and they have to say, I see, and they tell you what they see, and then you have
+- **12:51** to say if it's white or not, or if they can see or not, I don't know, it's too complicated,
+- **12:58** we could then change out that lens.
+- **13:01** And then we can try again. That's probably, that's complicated, probably.
+- **13:08** It's hard, I feel like I'm not going to help you that much, I'm going to have to figure this out myself.
+- **13:13** There's, okay, what happens in normal eye test? They ask you just to read it out.
+- **13:20** So maybe they read out to you what they see, row by row, yes, and then you have to say if
+- **13:26** they're good at white or not, and if they get it wrong, you give them another eye drop,
+- **13:30** and then you, and then they try again. That could be good, I like that idea actually.
+- **13:38** To start with, it can be simple.
+- **13:40** Just one item per row, and obviously the objects get smaller as they go, and you just have to say if they read it out, and maybe it's written down as well near their mouth or something, and you have to say if they're white or not, and then later levels, it's not written down by their mouth, you just have to hear it, and there's multiple items, and they list off the items in each row,
+- **14:07** so it becomes harder for you to know. They list out from left to right, it becomes harder for you
+- **14:14** to know if they've got it all right, because you have to think about it.
+- **14:16** That's good, okay, I think we've got there, we've got that one. Let's give that one a go.
+- **14:23** And then, foot, oh my god, there's so many game modes, okay. So there's cold,
+- **14:29** honey, okay, you have to pick the cold one.
+- **14:32** And then, I don't really get the swirly thing, and they put the feet in there, and
+- **14:41** they're saying big toe, and this is little toe, and the big toe again.
+- **14:59** I don't really, like, understand what I'm doing here.
+- **15:06** Wait, then I have to take the tweezers, and then do what with the tweezers?
+- **15:13** This game mode doesn't really explain anything, if I'm honest.
+- **15:16** There's no explanation.
+- **15:17** Okay, take that and pull it down, okay, and then you put a plaster on.
+- **15:27** But where do I put the plaster, though?
+- **15:34** Okay, um, I kind of get the idea of a foot clinic.
+- **15:39** Hot or cold water's fine, it doesn't probably scale that much into the future.
+- **15:44** Once you've learnt it, you've learnt it, but, um...
+- **15:48** Oh, there's actually lukewarm as well.
+- **15:51** Um, koso means hot, and nokoso is lukewarm.
+- **15:56** I don't know if that's Gujarati, because garam is also what we would say is warm.
+- **16:02** Okay, anyway, there's a few of those you can do in a foot clinic, but what's kind of the
+- **16:07** game there?
+- **16:08** It's like...
+- **16:09** Oh, I don't know what the game is.
+- **16:12** I think removing splinters, that's a good game.
+- **16:17** See now I'm thinking you have to remove the splinter.
+- **16:19** You know those kind of games where you've got to not touch the sides of the wall, otherwise
+- **16:23** it buzzes?
+- **16:24** So maybe it's like a splinter deep inside the foot.
+- **16:27** And you've got to take a few turns to bring it out, like through a maze, almost, to take the splinter out.
+- **16:33** And yeah, you've got to take it out through the maze, the splinters, and also not touch the sides of the wall as you take it out.
+- **16:46** If it's a maze, it needs to be quite complicated, and then it would be useful for you to accurately remove it without touching the wall.
+- **16:54** And if it's the game mode, you don't touch the wall, then it can't be a maze, because you can't have that many twists and turns to be an actual hard maze, while having enough space to take it out.
+- **17:08** So I think the maze one could be something else, I think the take-it-out-accurately one is kind of good for...
+- **17:23** for a foot splinter. You should take each of them out. Let me know your thoughts. I think that's a good idea, and then you can put the plaster on afterwards.
+- **17:34** Okay. Oh my god, we got to the end of it. Maybe it's quite good then, maybe it's quite good game mode if we get all of these right.
+- **17:42** But we'd have to do a big think on some of these and how we don't just burn up loads of tokens on this.
+- **17:52** So maybe it's the background, and then you put some fake art over the good backgrounds to show the mechanic working on the backgrounds,
+- **18:01** and then if we like it, then we iterate at that point and then we commission the artwork.
+- **18:05** I need you to think about this and come up to me with a reasonable token usage plan.
+- **18:11** Okay, this is my final feedback, that's all.
