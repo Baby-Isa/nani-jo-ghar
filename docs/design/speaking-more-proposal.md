@@ -1,6 +1,6 @@
 # More speaking as the game goes on: a proposal (29 Sept 2026)
 
-**Status:** proposal for Zafar. Nothing built. It extends the Roadmap's "Skill channels" ladder (rung 4 "picture only → say it, role reversal"; rung 6 "a question in context → answer aloud") and the Conversations module.
+**Status:** approved by Zafar (29 Sept); nothing built yet. It extends the Roadmap's "Skill channels" ladder (rung 4 "picture only → say it, role reversal"; rung 6 "a question in context → answer aloud") and the Conversations module.
 
 ## The problem (Zafar, 29 Sept)
 We need more speaking as the game progresses, and Conversations alone isn't enough. The hard part is **the instruction**. How do you tell a child *what* to say when they don't read English and don't yet understand the Kutchi? Answering is easier, because the question sets it up. **Asking** is harder, because nothing prompts it. The clinic works for asking because the role (the doctor's helper) gives a reason to ask, and the questions come from a small fixed set. Anything unstructured, or anything that could become unstructured, is very hard.
@@ -41,6 +41,8 @@ If there's no mic, or a null result twice, the fallback is the pills: coins, nev
 Speaking goes where people **naturally talk to each other**: ordering food (the customer and the cook), or the doctor and the patient. It does **not** go where nobody would really say the line; you don't call "little boy, next" in a waiting room. **The child always sees a regular exchange between two people first** (the watch step, many times as the listener), then takes one side of it.
 
 So the clinic's speaking moves from the waiting room (W3) into the conversation with the patient. **W3 "Call them in" is dropped** in the clinic fix session unless Zafar says otherwise, and the waiting room goes back to listening only.
+
+**Approved (Zafar, 29 Sept):** all of this proposal, and the Cook ordering pilot. **The emphasis goes on Cook and, above all, Conversations**: they're the most natural two-person exchanges and should carry most of the speaking. The other rows are lighter touches.
 
 ## Every point where it works (the inventory)
 Each row is a natural exchange the child has watched from one side before taking the other. "Recorded" means clips that already exist in `data/family-audio.json` (Mum's or Zafar's voice), usable as the model and as the other side's line.
