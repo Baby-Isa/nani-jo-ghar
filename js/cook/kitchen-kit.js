@@ -261,7 +261,9 @@
       /** Turn the knob: off, high (the big flame ring) or low (the small one). */
       b.set = (st, quiet = false) => {
         b.state = st;
-        const ang = { off: 0, high: 90, low: 180 }[st];
+        // high: a quarter turn (the bar upright); low: further round, the bar on the diagonal (29 Sept:
+        // at 180 the H6 knob's bar lay flat again and "low" read as "off")
+        const ang = { off: 0, high: 90, low: 135 }[st];
         const t = quiet ? 0 : 1;
         S.tweens.add({ targets: knob, angle: ang, duration: 260 * t + 1, ease: "Back.easeOut" });
         S.tweens.add({ targets: kOn, alpha: st === "off" ? 0 : 1, duration: 260 * t + 1 });

@@ -10,7 +10,7 @@ Plays the station in the Station lab with build/test_cook.py's Player and saves 
 
   python3 build/shoot_chai_v2.py                       # laptop, level 2 (iterating)
   python3 build/shoot_chai_v2.py --all --level 3       # laptop + phone landscape
-  python3 build/shoot_chai_v2.py --cups 4              # 4 people (the data stops at 3: the 4-burner hob's look only)
+  python3 build/shoot_chai_v2.py --cups 4              # 4 people (the data stops at 3 people: the 4-burner hob's look only; Isa joins)
 """
 import argparse
 import json
@@ -70,7 +70,8 @@ def run(vp, out, level, speed, guided=False, cups=None):
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, f"{vp['name']}-l{level}" + (f"-{cups}cups" if cups else ""))
         if cups:  # this page only: every level orders `cups` cups
-            page.evaluate(f"() => {{ Cook.data.recipes.chai.slots.cups.count = {{ byLevel: [{cups}, {cups}, {cups}, {cups}] }}; }}")
+            # (the family list is Nana, Ma and Ali: a fourth cup needs a fourth person, so Isa joins)
+            page.evaluate(f"() => {{ const r = Cook.data.recipes.chai; r.slots.cups.count = {{ byLevel: [{cups}, {cups}, {cups}, {cups}] }}; if (!r.lists.family.includes('isa')) r.lists.family.push('isa'); }}")
         page.evaluate(f"() => {{ __cook.lab('chai-tray', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         P.done_at = None
