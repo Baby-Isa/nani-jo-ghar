@@ -10,4 +10,4 @@
 
 **Notes:** kit karahi, and the card's early ✓ (`docs/overnight-queue.md`).
 
-**Best shots:** `laptop-l1-fold-glow.png`, `laptop-l3-frying.png`, `phone-landscape-l1-taste-right.png`.
+**Best shots:** `laptop-l1-fold-glow.png`, `laptop-l3-frying.png`, `laptop-l1-taste-right.png`.
