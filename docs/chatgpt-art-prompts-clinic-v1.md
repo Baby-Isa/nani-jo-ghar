@@ -167,3 +167,49 @@ Style: exactly as the attached images: stylised 3D animated-feature-film look, s
 **attach:** `style-anchor-v1.png`, the first CB4 image
 **save as:** `sources/art/clinic-v2/cb4b-pharmacy-straight-v1.png`
 **check:** straight on, NOT looking down · the belt runs horizontally across the middle, with a hatch at each end · a strip of counter in front for a tray · shelves behind · no labels, no people.
+
+---
+
+## Round 3 (29 Sept, after Zafar's first CB3 and CB6). Paste AFTER Round 2: both attach your CB2b image
+Notes:
+- **CB6:** a good close-up, but the blurred room behind still has the anatomy poster and the desk chair that CB2b removes. It must match CB2b.
+- **CB3:** the body poster sits dead centre, exactly where the standing patient goes, so they'd hide it. Move it into the left third, with clear wall in the middle for the patient.
+
+### Paste this block into Claude in Chrome (2 images)
+```
+You're making 2 images in ChatGPT for a children's game called Nani jo Ghar, then uploading them to GitHub yourself. Don't change any ChatGPT, GitHub or Chrome settings.
+
+1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/chatgpt-art-prompts-clinic-v1.md and read the section "Round 3" at the bottom. It has 2 prompts: CB3b and CB6b, each in a grey code box followed by "attach", "save as" and "check" lines.
+
+2. You need: the CB2b image you made in Round 2, the CB3 and CB6 images from the first run (the copies in your Downloads folder, or from https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/clinic-v2), and the style anchor: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/style-anchor-v1.png
+
+3. In ChatGPT, for each prompt in order: start a new chat, attach the files its "attach" line names, paste the text of its code box exactly as written, and send. Compare the image against its "check" line. If it passes, download it with ChatGPT's own download button. If it fails, reply once saying which check failed and ask for a corrected image; if that fails too, start a fresh chat and try once more. Download only the one image you keep for each prompt.
+
+4. Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-v2 and drag in the 2 downloaded files. Commit message: "Clinic backgrounds round 3: CB3b poster wall, CB6b close-up matching CB2b (ChatGPT)". Choose "Commit directly to the main branch" and click "Commit changes".
+
+5. Tell me, for CB3b and CB6b: the file name as uploaded, and pass, or what's wrong with it.
+```
+
+### CB3b. The standing wall, the poster to the left
+```
+Redraw the first attached image (the standing wall of a doctor's examination room) for a children's game, 1536x1024 landscape, keeping EXACTLY the same style, colours, light, materials, sink counter, shelf, window, height chart, plant, white coat on its hook and door, but with these changes:
+- MOVE the big body-outline poster into the LEFT THIRD of the wall (just right of the shelf), a little smaller.
+- The CENTRE of the wall and the floor in front of it are clear and calm: a patient will stand there facing us.
+- Keep the height chart just right of centre, where the doctor will stand beside the patient.
+- It must look like the same clinic as the second attached image (the same walls, dado band, terrazzo and light).
+NO people, no animals, no text, letters or numbers anywhere.
+Style: exactly as the attached images: stylised 3D animated-feature-film look, semi-photoreal materials, soft global illumination, warm morning light from the upper left, no outlines.
+```
+**attach:** the first CB3 image, your CB2b image, `style-anchor-v1.png`
+**save as:** `sources/art/clinic-v2/cb3b-standing-wall-v1.png`
+**check:** the poster is in the left third · clear wall and floor in the centre · the height chart right of centre · no people, no text or numbers.
+
+### CB6b. The close-up, matching the exam room
+```
+Redraw the first attached image (a close-up of a doctor's examination bed with the room softly blurred behind) for a children's game, 1536x1024 landscape, keeping EXACTLY the same composition, camera, bed, paper strip, soft focus and light, but the blurred room behind must now match the second attached image (the same room): NO anatomy poster (a plain wall, with only a small framed certificate shape on the right, blurred), NO chair at the desk, and a few children's toys on a small rug in the left corner, all softly out of focus. The centre of the image stays calm and empty.
+NO people, no animals, no text, letters or numbers anywhere.
+Style: exactly as the attached images: stylised 3D animated-feature-film look, semi-photoreal materials, soft global illumination, warm light from the left, no outlines.
+```
+**attach:** the first CB6 image, your CB2b image, `style-anchor-v1.png`
+**save as:** `sources/art/clinic-v2/cb6b-closeup-bed-v1.png`
+**check:** the same close-up as before · no poster behind · no desk chair, toys softly visible in the left corner · a calm, empty centre · no people, no text.
