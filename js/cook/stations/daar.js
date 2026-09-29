@@ -18,7 +18,8 @@
  *     the daar. Then stir: drag the ladle round the pot (or tap the pot for one turn) as many times as Nani
  *     says. The count shows only as the Kutchi number word by the pot (*ba*, *trae*): no digits, no pips.
  *     Tap the tick when it's done.
- * SERVE AND TASTE (§14a): a ladle of daar into the bowl, the bowl slides to the person, who tastes.
+ * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): a ladle of daar into the bowl, and
+ *   their big round face comes up over it (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
  *  - not quite: a gentle face, they say their order again, and the child cooks it again (the chop first).
  *    Only the first try counts (the ear star, the end review). At most three tries.
@@ -52,7 +53,6 @@
   const BOARD = { x: 660, y: 345, w: 640, h: 470 };
   const KNIFE = { x: 1070, y: 350, h: 330 };
   const BOWL = { x: 1320, y: 360, d: 250 };
-  const PERSON_X = 1405;
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf };
   const FONT = "Nunito, sans-serif";
   // the vegetables' own art: word id -> file stem
@@ -88,8 +88,8 @@
   const orderLine = (L) => {
     if (!L) return null;
     // what the person asked for (the tadka order is Nani's, said at the pot: not theirs to repeat)
-    const rows = [].concat(...L.sections.filter((s) => !s.when).map((s) => [].concat(...s.groups))).filter((r) => r && !r.head);
-    return Lang.join((L.head ? [L.head.line] : []).concat(rows.map((r) => (r.no || !r.said ? r.line : r.said))));
+    // 29 Sept (X1): one sentence, in card order (Cook.Order.speech leaves the `when` sections out)
+    return Cook.Order.speech([L]);
   };
   const shelfUrl = (id) => `${IT}shelf-${id}-bare-f.webp`;
 
@@ -131,7 +131,7 @@
       .concat(vegIds.concat(flat).filter((id) => VEG[id]).map((id) => [`dv2-whole-${id}`, `${IT}veg-${VEG[id]}-whole-t.webp`]))
       .concat(vegIds.filter((id) => HALVED.includes(id)).map((id) => [`dv2-half-${id}`, `${IT}veg-${VEG[id]}-halved-t.png`]))
       .concat(vegIds.map((id) => [`dv2-chop-${id}`, IT + CHOPPED[id]]))
-      .concat(["neutral", "happy", "impatient"].map((m) => [`dv2-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`]))
+      .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : []);
     await Promise.race([St.load(S, art), Cook.wait(12000)]);
 
@@ -152,8 +152,21 @@
       /* ---------- 2: tadka and stir, then serve and taste ---------- */
       await St.begin(S, ctx, "daar", "marble");
       if (Cook.Coach) Cook.Coach.stop(false);
+      // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
+      if (!attempt) St.coach(ctx, "daar-cook");
       if (ctx.nextStep) ctx.nextStep("tadka");
       UI.mission.reveal("tadka");
+      // 29 Sept (D9, Zafar): the chopped things still have to go in, so their rows go back to "to do"
+      // here and tick again when they go into the pot (the katori tips in: cook())
+      const Lc = ladderOf(ctx);
+      if (Lc) {
+        Cook.Order.rows(Lc, { all: true }).forEach((r) => {
+          if (r.head || r.no || !r.ids.some((id) => id in want)) return;
+          r.done = false;
+          r.got = 0;
+        });
+        UI.mission.refresh();
+      }
       // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint
       const peek = K.ladder === "closed" && UI.mission.closeCards;
       if (peek) UI.mission.closeCards(true, { peek: true });
@@ -362,7 +375,9 @@
       pile.setDepth(D.item - 0.5 + n * 0.001);
       S.puff(tx, ty, 0xfff6e0, z.L(26));
       inBowl.push(pile);
-      pop(z, S, Cook.display(id), katori.x, katori.y - z.L(170), { speakId: id, ms: 1100 });
+      // 29 Sept (Q7): at level 1 the count is heard as you add ("ba dungri"), else the word
+      const cnt = level <= 1 && UI.tallyLine ? UI.tallyLine(got[id], id) : null;
+      pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), katori.x, katori.y - z.L(170), cnt ? { line: cnt, ms: 1100 } : { speakId: id, ms: 1100 });
       z.progress({ chopped: id, n: got[id] });
     }
     // graded now: each vegetable, how many, and nothing they said no to
@@ -599,6 +614,9 @@
     });
     Cook.sfx.sizzle(1);
     S.puff(cx, cy, 0xfff1c0, z.L(60));
+    // 29 Sept (D9): now they're in, their rows tick again
+    const inPot = Object.keys(chopped.got || {});
+    if (inPot.length) ctx.closeItem ? ctx.closeItem(inPot) : UI.mission.closeItem(inPot, ctx.dishAt || 0);
     S.tweens.add({ targets: kat, alpha: 0, duration: 300 });
     await Cook.wait(250);
     // the daar
@@ -761,7 +779,6 @@
     const S = z.S;
     const ctx = z.ctx;
     z.expect({ kind: "wait" });
-    const faceKey = (m) => (S.textures.exists(`dv2-${who}-${m}`) ? `dv2-${who}-${m}` : null);
     // a bowl of daar, ladled from the pot
     const bowl = S.track(S.add.image(pot.cx, pot.cy, "dv2-katori").setDepth(D.fx - 2).setAlpha(0));
     bowl.setScale(z.L(200) / KATORI.w);
@@ -780,49 +797,18 @@
     await new Promise((r) => S.tweens.add({ targets: bowl, alpha: 1, duration: 260, onUpdate: drawB, onComplete: r }));
     Cook.sfx.pop();
     S.puff(bowl.x, bowl.y, 0xfff1c0, z.L(40));
-    let person = null;
-    const kN = faceKey("neutral");
-    const sizeP = (im) => im.setScale((z.L(560) / im.height) * (who === "cousin" ? 0.92 : 1));
-    if (kN) {
-      person = S.track(S.add.image(z.X(Cook.offRight(1760)), z.Y(915), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
-      sizeP(person);
-      await new Promise((r) => S.tweens.add({ targets: person, x: z.X(PERSON_X), duration: 520, ease: "Back.easeOut", onComplete: r }));
-    }
-    const mood = (m) => {
-      const key = person && faceKey(m);
-      if (!key) return;
-      person.setTexture(key);
-      sizeP(person);
-    };
-    // the bowl slides to them
-    Cook.sfx.whoosh();
-    const home = { x: bowl.x, y: bowl.y };
-    await new Promise((r) => S.tweens.add({ targets: bowl, x: z.X(1300), y: z.Y(560), duration: 520, ease: "Cubic.easeInOut", onUpdate: drawB, onComplete: r }));
-    if (person) await new Promise((r) => S.tweens.add({ targets: person, x: person.x - z.L(26), angle: -3, duration: 260, yoyo: true, hold: 260, ease: "Sine.easeInOut", onComplete: r }));
-    await Cook.wait(300);
+    // the review (X10 / Q1): their big round face over the bowl, no body, no pretend eating
+    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: bowl.x, y: bowl.y - z.L(215), size: z.L(250), k: z.L(1), side: "right" });
     if (ok || last) {
-      mood("happy");
-      if (person) S.tweens.add({ targets: person, y: person.y - z.L(14), duration: 160, yoyo: true, repeat: 1 });
-      Cook.sfx.right();
-      S.sparkle(bowl.x, bowl.y);
-      await pop(z, S, Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : bowl.x, sy(z, 160), { line: Lang.line("welldone"), ms: 1500 });
-      await Cook.wait(600);
-      if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1760)), duration: 500, delay: 200, ease: "Sine.easeIn" });
-      await Cook.wait(400);
+      await Cook.wait(300);
+      await look.close();
       return true;
     }
-    // not quite: a gentle face, they say their order again, the bowl comes back empty
-    mood("impatient");
-    if (person) S.tweens.add({ targets: person, angle: { from: -2.5, to: 2.5 }, duration: 160, yoyo: true, repeat: 2, onComplete: () => person.setAngle(0) });
-    Cook.sfx.soft();
-    await Cook.wait(500);
+    // not quite: they say their order again (the card has marked the wrong rows), the bowl goes back
     const line = orderLine(ladderOf(ctx));
     if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
     St.customerDone();
-    await new Promise((r) => S.tweens.add({ targets: bowl, x: home.x, y: home.y, alpha: 0, duration: 460, onUpdate: drawB, onComplete: r }));
-    mood("neutral");
-    if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1760)), duration: 400, ease: "Sine.easeIn" });
-    await Cook.wait(400);
+    await Promise.all([look.close(), new Promise((r) => S.tweens.add({ targets: bowl, alpha: 0, duration: 460, onUpdate: drawB, onComplete: r }))]);
     return false;
   }
 

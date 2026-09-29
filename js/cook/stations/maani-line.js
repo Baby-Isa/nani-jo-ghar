@@ -47,7 +47,8 @@
   const COL_GAP = 150; // between the chakla and the hob
   const TAWA_R = 150; // the tawa's round body
   const PLATE_D = 150; // a plate on the shelf band
-  const PLATE_Y = 750;
+  // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
+  const PLATE_Y = 666 + (900 - 883) + 8 + PLATE_D / 2;
   const PLATE_PITCH = 204;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   const CHIP_Y = 860;
@@ -112,7 +113,7 @@
     const rate2 = kTawa.rate2 * speedUp;
     const types = Object.keys(K.doughs || { "cook-maani": {} });
     const who = (ctx.order && ctx.order.who) || null;
-    await Promise.race([St.load(S, ART.concat(who ? [[`${who}-badge`, `assets/cook/characters/${who}-badge.webp`]] : [])), Cook.wait(5000)]);
+    await Promise.race([St.load(S, ART.concat(Cook.Kit.faceArt(who))), Cook.wait(5000)]);
     const texOf = (t, state) => {
       const key = `mv-${state}-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
       return S.textures.exists(key) ? key : { ball: "dough-ball", raw: "chapati-raw", half: "chapati-half", done: "chapati-puffed" }[state];
@@ -525,10 +526,12 @@
     });
     const made = {};
     plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
+    let allOk = true;
     new Set(Object.keys(want).concat(Object.keys(made))).forEach((key) => {
       const { type, size } = split(key);
       const w = want[key] || 0;
       const got = made[key] || 0;
+      if (got !== w) allOk = false;
       // the kind as the order says it ("ph-big+cook-maani"): the result card shows "ba wadhi maani"
       zb.listen(got === w, `made ${got} ${key}, they asked for ${w}`);
       if (!ctx.guided && w) {
@@ -538,6 +541,15 @@
     });
     // the step has closed (Done): its rows tick, count rows too, right or not (UX 11)
     if (ctx.closeItem) ctx.closeItem([], { all: true });
+    // the review (29 Sept, X10 / Q1: Cook.Kit.review): their big round face over the finished plates,
+    // happy when the counts are right, a gentle frown when they're not (the card shows which)
+    if (who && Cook.Kit.review) {
+      const ds = Object.values(dones);
+      const fx = ds.reduce((a, d) => a + d.x, 0) / ds.length;
+      const look = await Cook.Kit.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 70, size: 230 });
+      await Cook.wait(allOk ? 300 : 900);
+      await look.close();
+    }
     ctx.result.maani = plated().length;
     ctx.result.maaniKinds = made;
     [zb, zr, zon, zt].forEach((z) => z.close());

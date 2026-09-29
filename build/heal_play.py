@@ -115,6 +115,9 @@ class Play:
             """([g, L, seed, kind]) => {
               const out = document.getElementById("lab-out");
               if (out) out.style.display = "none";
+              // the lab bar is dev chrome over the top of the play area: fold it away (the clinic has none)
+              const bar = document.getElementById("lab");
+              if (bar) bar.style.display = "none";
               document.getElementById("lab-game").value = g;
               document.getElementById("lab-level").value = String(L);
               document.getElementById("lab-seed").value = String(seed);

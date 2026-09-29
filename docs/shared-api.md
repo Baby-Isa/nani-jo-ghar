@@ -606,6 +606,8 @@ b.set("off" | "high" | "low");  S.tappable(b.knobHit, …);          // the stat
 const pan = Kit.place(S, "pan" | "tawa" | "karahi", hob.burners[i], r); // body centred on the burner, contact shadow
 const ring = Kit.heatRing(S);  ring.draw(x, y, r, level, lo, hi);  ring.clear();  // the chai v2 clock ring (sage "now", gold sweep)
 Kit.chip(S, wordId, x, y, { word: level < 3, w });      // the shelf's `🔊 word` chip (speaker only when word:false)
-Kit.badge(S, who);  Kit.speaker(g, x, y, size);         // face-on-white-disc texture; the flat speaker icon
+Kit.badge(S, who, mood?, N?);  Kit.speaker(g, x, y, size); // face-on-white-disc texture (mood: neutral | happy | frown); the flat speaker icon
+Kit.faceArt(who);                                         // [key, url] pairs for their three faces (St.load them)
+await Kit.review(S, { who, ok, x, y, size, side, k });    // the review (X10): big round face over the dish -> {close()}
 ```
 Vessel geometry lives in `Kit.VESSELS` (canvas fractions of the round body: the `karahi` is samosa v2's, with `oil`, its oil's radius as a fraction of the body's; samosa v2's fry places it). Maani v2 uses one burner and one tawa; chai v2 keeps its own copy for now (same art and numbers).

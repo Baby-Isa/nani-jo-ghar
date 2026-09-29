@@ -6,9 +6,9 @@
 <title>Clinic heal host (lab)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="../css/shared/results.css?v=20260929T114937Z">
-<link rel="stylesheet" href="../css/shared/onboard.css?v=20260929T114937Z">
-<link rel="stylesheet" href="../css/clinic.css?v=20260929T114937Z">
+<link rel="stylesheet" href="../css/shared/results.css?v=20260929T172255Z">
+<link rel="stylesheet" href="../css/shared/onboard.css?v=20260929T172255Z">
+<link rel="stylesheet" href="../css/clinic.css?v=20260929T172255Z">
 <!--
   The healing-game dev page (docs/clinic-heal-api.md): mounts any registered
   game on the real clinic screen with a real ctx (js/clinic/heal/host.js).
@@ -18,6 +18,7 @@
         &src=js/clinic/heal/games/ear.js   (load an extra script; repeatable; path from the site root)
         &go=1 (mount at once) &quiet=1 (no device voice) &fast=1 (short waits) &results=1 (the end-of-round screen)
         &onboard=1 (run the game's onboarding script even if seen)
+        &ailment=cut (a game's other ailment, e.g. the cut's stitches) &cues=1 (the v2 heal games' first-time cues at every level)
   Every js/clinic/heal/games/<id>.js that exists is loaded automatically.
   window.__heal = {run, result, log, mount()} for tests.
 -->
@@ -40,23 +41,23 @@
 </div>
 <pre class="cl-lab-out" id="lab-out"></pre>
 
-<script src="../js/version.js?v=20260929T114937Z"></script>
+<script src="../js/version.js?v=20260929T172255Z"></script>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
-<script src="../js/shared/save.js?v=20260929T114937Z"></script>
-<script src="../js/shared/family-voice.js?v=20260929T114937Z"></script>
-<script src="../js/shared/uistore.js?v=20260929T114937Z"></script>
-<script src="../js/shared/sfx.js?v=20260929T114937Z"></script>
-<script src="../js/shared/results.js?v=20260929T114937Z"></script>
-<script src="../js/shared/onboard.js?v=20260929T114937Z"></script>
-<script src="../js/shared/speech.js?v=20260929T114937Z"></script>
-<script src="../js/shared/say.js?v=20260929T114937Z"></script>
-<script src="../js/clinic/body.js?v=20260929T114937Z"></script>
-<script src="../js/clinic/kit.js?v=20260929T114937Z"></script>
-<script src="../js/clinic/figure.js?v=20260929T114937Z"></script>
-<script src="../js/clinic/screen.js?v=20260929T114937Z"></script>
-<script src="../js/clinic/heal/registry.js?v=20260929T114937Z"></script>
-<script src="../js/clinic/heal/host.js?v=20260929T114937Z"></script>
-<script src="../js/clinic/heal/scene.js?v=20260929T114937Z"></script>
+<script src="../js/shared/save.js?v=20260929T172255Z"></script>
+<script src="../js/shared/family-voice.js?v=20260929T172255Z"></script>
+<script src="../js/shared/uistore.js?v=20260929T172255Z"></script>
+<script src="../js/shared/sfx.js?v=20260929T172255Z"></script>
+<script src="../js/shared/results.js?v=20260929T172255Z"></script>
+<script src="../js/shared/onboard.js?v=20260929T172255Z"></script>
+<script src="../js/shared/speech.js?v=20260929T172255Z"></script>
+<script src="../js/shared/say.js?v=20260929T172255Z"></script>
+<script src="../js/clinic/body.js?v=20260929T172255Z"></script>
+<script src="../js/clinic/kit.js?v=20260929T172255Z"></script>
+<script src="../js/clinic/figure.js?v=20260929T172255Z"></script>
+<script src="../js/clinic/screen.js?v=20260929T172255Z"></script>
+<script src="../js/clinic/heal/registry.js?v=20260929T172255Z"></script>
+<script src="../js/clinic/heal/host.js?v=20260929T172255Z"></script>
+<script src="../js/clinic/heal/scene.js?v=20260929T172255Z"></script>
 <script>
 (async function () {
   const Q = new URLSearchParams(location.search);
@@ -126,6 +127,8 @@
     screen.resetHints();
     const run = (H.run = await Clinic.HealHost.mount(screen, game, {
       level, side, seed, kind: $("lab-kind").value, tray,
+      // &ailment= (e.g. the cut's stitches: ?game=cut&ailment=cut), only for the game it was given with
+      ailment: Q.get("ailment") && game === Q.get("game") ? Q.get("ailment") : undefined,
       onLog: (e) => { H.log.push(e); print(`log ${JSON.stringify(e)}`); },
     }));
     print(`mounted ${game} L${level} side=${side} seed=${seed} tray=[${run.ctx.tray.map((t) => t.id).join(", ")}]`);

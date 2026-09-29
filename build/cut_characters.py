@@ -22,8 +22,20 @@ placeholder set, so the code needs no change):
                    makes the body jump
         impatient  the impatient sheet (arms folded), scaled by the eyes to
                    the same head size and put where the neutral head is
-  <who>-badge    head and shoulders for the round faces (sidebar, intro card,
-                 chai tray): expressions panel 1 (neutral), square
+  <who>-badge    head and shoulders for the round faces of the other games
+                 (dress, snap, find...): expressions panel 1, square. As of 29 Sept
+                 the four family badges are no longer re-cut here (the old files
+                 stay); isa-badge and kasuku-badge still are.
+  <who>-face     Cook's round faces (sidebar, intro card, chai tray, hob, review):
+                 a close-up framed by the eyes (29 Sept, X4 / Q12), so every
+                 face fills its circle the same way: the eyes on one line
+                 (BADGE_EYE_Y) and the same distance apart (BADGE_IOD), the
+                 head tilt halved. Expressions panel 1 (neutral).
+  <who>-face-happy / -face-frown   the same framing for the review face
+                 (Q1): expressions panel 3 (smiling) and row 3 panel 2 (a gentle
+                 frown). Nani's sheet has one face, so hers are all the same
+                 until the ChatGPT face sheets (sources/art/cook-v3/a1-faces-*,
+                 a2-faces-*) come: add them as a SPEC badge entry per mood.
   nani-*         Nani v2 has one pose: the close-up leaning on the counter,
                  her canonical framing. All four moods use it (talk and point
                  too: a different crop would make her jump when she talks);
@@ -60,7 +72,7 @@ SPEC = {
         "f": 0.85,  # world px per sheet px
         "canvas": (443, 578),
         "badge": dict(sheet="char-nani-v2.png", box=(1100, 0, 1480, 360), eyes=((1240, 154), (1314, 130)),
-                      crown=12, chin=250),
+                      crown=12, chin=250, face_k=1.1),  # her glasses sit wide: her face matched by eye, it read small
     },
     "nana": {
         "game": dict(sheet="char-nana-v1.png", box=(1112, 40, 1536, 600), counter=505, hands_to=505,
@@ -73,6 +85,8 @@ SPEC = {
         "imp": dict(sheet="char-nana-impatient-v1.png", box=(480, 0, 1060, 1024), eyes=((726, 130), (785, 152))),
         "badge": dict(sheet="char-nana-expressions-v1.png", box=(0, 0, 384, 341), eyes=((198, 130), (250, 137)),
                       crown=30, chin=250),
+        "badge-happy": dict(sheet="char-nana-expressions-v1.png", box=(768, 0, 1152, 341), eyes=((943, 130), (1001, 137))),
+        "badge-frown": dict(sheet="char-nana-expressions-v1.png", box=(384, 682, 768, 1024), eyes=((559, 804), (615, 802))),
     },
     "ma": {
         "game": dict(sheet="char-ma-v1.png", box=(1090, 20, 1520, 520), counter=459, hands_to=462, warm=88,
@@ -85,6 +99,8 @@ SPEC = {
         "imp": dict(sheet="char-ma-impatient-v1.png", box=(520, 0, 960, 1024), eyes=((762, 124), (816, 144))),
         "badge": dict(sheet="char-ma-expressions-v1.png", box=(0, 0, 384, 341), eyes=((202, 120), (260, 134)),
                       crown=20, chin=215),
+        "badge-happy": dict(sheet="char-ma-expressions-v1.png", box=(768, 0, 1152, 341), eyes=((938, 116), (1000, 128))),
+        "badge-frown": dict(sheet="char-ma-expressions-v1.png", box=(384, 682, 768, 1024), eyes=((564, 784), (620, 796))),
     },
     "cousin": {
         "game": dict(sheet="char-ali-v1.png", box=(1056, 0, 1536, 545), counter=481, hands_to=500, warm=95,
@@ -97,6 +113,8 @@ SPEC = {
         "imp": dict(sheet="char-ali-impatient-v1.png", box=(540, 0, 940, 1024), eyes=((672, 174), (740, 148))),
         "badge": dict(sheet="char-ali-expressions-v1.png", box=(4, 0, 372, 336), eyes=((158, 164), (218, 150)),
                       crown=10, chin=265),
+        "badge-happy": dict(sheet="char-ali-expressions-v1.png", box=(772, 0, 1148, 336), eyes=((926, 164), (996, 140))),
+        "badge-frown": dict(sheet="char-ali-expressions-v1.png", box=(388, 686, 764, 1020), eyes=((541, 832), (604, 824))),
     },
     "isa": {
         "badge": dict(sheet="char-isa-expressions-v1.png", box=(0, 0, 384, 341), eyes=None, crown=None, chin=None),
@@ -337,13 +355,27 @@ def make_impatient(who):
     return place(canvas, c, ip["box"][:2], ki, eyes_mid(ip["eyes"]), eyes_mid(ge))
 
 
-def make_badge(who, size=280):
-    """Head and shoulders, square, for a round mask (object-fit: cover; top)."""
-    b = SPEC[who]["badge"]
+# the review and badge framing (X4): where the eyes sit in the square, as fractions of its side
+BADGE_EYE_Y = 0.45
+BADGE_IOD = 0.25
+BADGE_TILT = 0.5  # how much of the head's tilt stays (Nani's is 18 degrees)
+BADGE_FACES = ("nani", "nana", "ma", "cousin")
+
+
+def make_badge(who, size=280, mood=""):  # (a <who>-face for the four family faces)
+    """Head and shoulders, square, for a round mask. The four family faces are framed by the
+    eyes (the same eye line and eye spacing in every one); isa and kasuku keep the old framing."""
+    b = SPEC[who]["badge" + (f"-{mood}" if mood else "")]
     c = cut(b, counter=False)
+    x0, y0 = b["box"][:2]
+    canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    if who in BADGE_FACES:
+        e = b["eyes"]
+        k = BADGE_IOD * size / iod(e) * b.get("face_k", 1.0)
+        ang = eye_angle(e) * (1 - BADGE_TILT)  # PIL turns counter-clockwise: this levels part of the tilt
+        return place(canvas, c, (x0, y0), k, eyes_mid(e), (size / 2, size * BADGE_EYE_Y), angle=ang)
     a = c[..., 3] > 128
     ys, xs = np.nonzero(a)
-    x0, y0 = b["box"][:2]
     crown = b["crown"] if b.get("crown") is not None else y0 + ys.min()
     if b.get("chin") is not None:
         head = b["chin"] - crown
@@ -353,7 +385,6 @@ def make_badge(who, size=280):
         cx = x0 + (xs.min() + xs.max()) / 2
     # the head fills ~60% of the height; a little air above the crown
     k = 0.6 * size / head
-    canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     return place(canvas, c, (x0, y0), k, (cx, crown), (size / 2, size * 0.05))
 
 
@@ -361,6 +392,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=OUT)
     ap.add_argument("--only", default="")
+    ap.add_argument("--badges-only", action="store_true", help="only the round faces (the service views stay)")
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
     only = set(filter(None, args.only.split(",")))
@@ -374,7 +406,7 @@ def main():
         if only and who not in only:
             continue
         s = SPEC[who]
-        if "game" in s:
+        if "game" in s and not args.badges_only:
             neutral = make_neutral(who)
             if who == "nani":
                 for mood in ["neutral", "happy", "talk", "point"]:
@@ -383,7 +415,15 @@ def main():
                 save(neutral, f"{who}-neutral")
                 save(make_happy(who, neutral), f"{who}-happy")
                 save(make_impatient(who), f"{who}-impatient")
-        save(make_badge(who), f"{who}-badge")
+        if who in BADGE_FACES:
+            # Cook's round faces (X4) and review faces (Q1): neutral, happy and a gentle frown; Nani has
+            # one face for now. The old <who>-badge stays as it was: the other games still use it.
+            face = make_badge(who)
+            save(face, f"{who}-face")
+            for mood in ["happy", "frown"]:
+                save(make_badge(who, mood=mood) if f"badge-{mood}" in s else face, f"{who}-face-{mood}")
+        else:
+            save(make_badge(who), f"{who}-badge")
 
 
 if __name__ == "__main__":

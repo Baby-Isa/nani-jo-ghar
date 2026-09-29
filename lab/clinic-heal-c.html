@@ -5,9 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Clinic heal lab C</title>
 <!--
-  Heal agent C's dev page: its games on the REAL host (lab/clinic-heal-host.html),
-  one click per game and level. The host auto-loads eye.js and foot.js (they are
-  in Clinic.Heal.IDS); the maybe-later extras (tummy, hic, hair) are passed with &src=.
+  Clinic v2 heal games, lab C (design sheets part B): the eye test (they read,
+  you judge haa / na; wrong -> another drop), foot (soak, splinters pulled along
+  their paths without touching the sides, plasters). On the REAL host with the
+  first-time cues on. The maybe-later extras (tummy, hic, hair; unchanged, CQ14)
+  are passed with &src=. Tests: build/test_clinic_heal_c.py (+ _extras.py),
+  build/leak_clinic_heal_c.mjs.
 -->
 <style>
   :root { --bg: #f4ecdf; --ink: #3a2e28; --line: #d8c6a8; }
@@ -23,15 +26,15 @@
 </style>
 </head>
 <body>
-<nav id="nav"><b>Heal lab C</b></nav>
+<nav id="nav"><b>Heal lab C</b> <small>clinic v2 prototypes on CB6b</small></nav>
 <iframe id="f" title="The heal host"></iframe>
 <script>
   const GAMES = [
-    { id: "eye", name: "eye (H12)" },
-    { id: "foot", name: "foot (H13)" },
-    { id: "tummy", name: "tummy (H10)", src: "js/clinic/heal/games/tummy.js" },
-    { id: "hic", name: "hic (H15)", src: "js/clinic/heal/games/hic.js" },
-    { id: "hair", name: "hair (H16)", src: "js/clinic/heal/games/hair.js" },
+    { id: "eye", name: "eye" },
+    { id: "foot", name: "foot" },
+    { id: "tummy", name: "tummy (unchanged)", src: "js/clinic/heal/games/tummy.js" },
+    { id: "hic", name: "hic (unchanged)", src: "js/clinic/heal/games/hic.js" },
+    { id: "hair", name: "hair (unchanged)", src: "js/clinic/heal/games/hair.js" },
   ];
   const Q = new URLSearchParams(location.search);
   const nav = document.getElementById("nav");
@@ -46,7 +49,7 @@
       const a = document.createElement("a");
       a.textContent = "L" + l;
       const seed = 1 + Math.floor(Math.random() * 9999);
-      a.href = `clinic-heal-host.html?game=${g.id}&level=${l}&kind=${kinds[(gi + l) % kinds.length]}&seed=${seed}${extras}`;
+      a.href = `clinic-heal-host.html?game=${g.id}&level=${l}&kind=${kinds[(gi + l) % kinds.length]}&seed=${seed}&cues=1${extras}`;
       a.target = "f";
       a.onclick = () => links.forEach((x) => x.classList.toggle("on", x === a));
       links.push(a);
