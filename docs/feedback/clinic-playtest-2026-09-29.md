@@ -407,3 +407,8 @@ Prototype A only borrowed the order card's **look** (its CSS classes and the gol
 - the **closed card and the paid peek** at the higher levels (the waiting room from L3, as decided in 13a);
 - counts follow Cook's rule (Q7: written and heard at L1, written at L2, heard only from L3);
 - Nani's box on top, one card per person (the patient's card, the doctor's request).
+
+### 13d. Send-off layout (Zafar, 29 Sept, late)
+- **The doctor and the patient stand on the left**, in the free wall space (not by the door, where the face circle sat on the green cross sign).
+- **The feeling cards come in a thought bubble.** After the patient answers ("I feel …"), a thought bubble rises from their head and opens out to the right, holding the four face cards (happy, sad, hot, cold). The child taps the one the patient is thinking. This replaces the card tray along the bottom.
+- At level 1, the hint that the feeling shows (the design's round face circle) sits on the patient's own face, via their expression once the real art exists. It's never a second face floating beside the bubble.
