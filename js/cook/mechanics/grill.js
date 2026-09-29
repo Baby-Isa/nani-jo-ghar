@@ -120,6 +120,9 @@
     stick: { w: 49, h: 365, tip: 0.0054, handle: 0.7562, end: 0.989 },
     // every skewer on the rack, the grill and the plate is this long from its tip to its handle (design px)
     BAMBOO: 262,
+    // a chunk on the plate, as a share of its size on the rack and the grill (the plate's skewers are close)
+    PLATE_PIECE: 0.74,
+    PLATE_STAGGER: 48, // (local px: half a chunk's pitch; the bamboo has room for it below the tip)
     // the container's own tip and handle (the stick canvas, 70x640, centred at y 320)
     TIP: -318,
     HANDLE: 164,
@@ -891,9 +894,9 @@
       p.pieces.forEach((id, i) => {
         const painted = SK.pieceTex(S, id, p.burnt ? "charred" : "grilled");
         const img = S.textures.get(painted || SK.tex(S, `piece:${id}`)).getSourceImage();
-        const s = SK.pieceScale(p.pieces.length);
+        const s = SK.pieceScale(p.pieces.length) * V3.PLATE_PIECE;
         ctx.save();
-        ctx.translate(0, SK.slotY(i, p.pieces.length));
+        ctx.translate(0, SK.slotY(i, p.pieces.length) - (order[n][j] % 2 ? V3.PLATE_STAGGER : 0));
         ctx.scale(s, s);
         if (p.burnt) ctx.filter = "brightness(0.6)";
         ctx.drawImage(img, -PIECE / 2, -PIECE / 2);
@@ -1340,6 +1343,15 @@
           SK.onLine(p.sprite, ...plateArt.line(q, Math.max(n, q + 1)));
           // the skewers overlap on the plate: the one further back (up and right) under the one in front
           p.sprite.setDepth(D.item + 3 + plateArt.rank(q, Math.max(n, q + 1)) * 0.01);
+          // the plate's drawn skewers lie close together: the chunks sit a little smaller there, so each
+          // skewer still reads on its own (V3.PLATE_PIECE)
+          // and every other skewer's chunks sit half a chunk nearer its tip, so the rows don't line up into a grid
+          const r = plateArt.rank(q, Math.max(n, q + 1));
+          p.sprite.imgs.forEach((img, i) => {
+            img.setScale(SK.pieceScale(p.sprite.n) * V3.PLATE_PIECE);
+            img.y = SK.slotY(i, p.sprite.n) - (r % 2 ? V3.PLATE_STAGGER : 0);
+            img.marks.setScale(img.scale).setPosition(img.x, img.y);
+          });
         });
       };
       const plate = [];
@@ -1516,6 +1528,8 @@
         if (plateArt) {
           // v3 (K8, K9): it lies along its drawn place on the plate (the handle off the plate), then the picture holds it
           const t = SK.lineAt(...plateArt.line(j, j + 1));
+          const r = plateArt.rank(j, j + 1);
+          g.sk.imgs.forEach((img, i) => S.tweens.add({ targets: img, scale: SK.pieceScale(g.sk.n) * V3.PLATE_PIECE, y: SK.slotY(i, g.sk.n) - (r % 2 ? V3.PLATE_STAGGER : 0), duration: 460, ease: "Sine.easeInOut" }));
           S.tweens.add({ targets: g.sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 460, ease: "Sine.easeInOut", onComplete: () => {
             plate[j].landed = true;
             platePic();
