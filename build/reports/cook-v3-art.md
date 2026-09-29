@@ -76,9 +76,11 @@ Contact sheets on the game's cream (zoomed edges too), all looked at:
 ## 3. Measured, and checked
 
 `python3 build/check_vessel_meta.py` now also re-measures every v3 meta: each round thing's centre and radius
-(47: pans, pots, bowls, maani, dough balls, chakla, tawa, karahi, plates, knobs; the ladle's bowl with its
+(41: pans, pots, bowls, maani, dough balls, chakla, tawa, karahi, plates, knobs; the ladle's bowl with its
 handle masked off), and each hob's burner centres re-found from its brass caps, compared with both
-`hob/meta.json` **and** `Cook.Kit`'s `HOBS` table. RESULT_CHECK
+`hob/meta.json` **and** `Cook.Kit`'s `HOBS` table. **Result: all pass** (41 round things within 0.2% of the art, the 5 hobs' burners
+within 0.04%, meta = the kit's table exactly; plus the 4 older checks). It fits the rims independently of the
+cut script's own recorded values: the ladle's bowl (recorded from its hand-drawn outline) came back 0.17% off.
 
 ## 4. What changed in the game (Cook.Kit and chai only)
 
@@ -137,4 +139,11 @@ Nothing has to be redone for the kit to work; all 28 are usable. Worth a second 
 
 ## 7. Tests
 
-TESTS
+- `python3 build/check_vessel_meta.py`: **pass** (§3), after the final merge of `origin/main`.
+- `build/test_cook.py --lab --viewport laptop`, split in two with `--stations`:
+  the 10 kept stations **PASS** (126 screenshots, 2087 s, under load from the shoot scripts), the 11 parts **PASS**
+  (88 screenshots, 1013 s). Re-run of the kept stations after the final merge and the last two kit edits: LAB3.
+- `build/test_cook.py --days 1 --canvas`: **PASS** on all six viewports (flip5-landscape, laptop, laptop-16x10,
+  laptop-1280x800, ipad, ipad-portrait).
+- Shared Node tests `node --test build/test_shared_*.mjs`: **113/113 pass** (after the merge too).
+- `node build/check_onboard.mjs`: ok.

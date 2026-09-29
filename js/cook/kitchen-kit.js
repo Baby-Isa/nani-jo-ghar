@@ -59,7 +59,7 @@
   const KNOB_HIT = 58; // the tap radius: at least 48 screen px across on a phone
 
   const CHIP = { w: 128, h: 46, hitW: 142, hitH: 80 };
-  // the family's round faces (X4, build/cut_characters.py): framed by the eyes, three moods each.
+  // the family's round faces (X4; the v3 face sheets, build/cut_cook_v3.py): framed by the eyes, three moods each.
   // Anyone else keeps their old badge (one mood).
   const FACES = Cook.FACES;
   const MOODS = ["neutral", "happy", "frown"];
