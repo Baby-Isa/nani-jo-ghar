@@ -70,6 +70,14 @@ class Shooter(T.Player):
         key = e.get("key") if isinstance(e, dict) else None
         if DEBUG:
             print(round(time.time() % 1000, 1), k, key, flush=True)
+        if k == "wait" and "frying" in self.taken:
+            st = self.page.evaluate("(() => { const s = Cook.scene; return s ? [...s.children.list].filter(o => o.visible && o.texture && /sv2-.*-(neutral|happy|impatient)$/.test(o.texture.key)).map(o => o.texture.key) : []; })()")
+            if st and st[0].endswith("neutral"):
+                self.snap("plate")
+            elif st:
+                time.sleep(0.6)
+                self.snap("taste-right" if st[0].endswith("happy") else "taste-wrong")
+            return
         if k == "tap" and key not in ("knob", "samosa") and "fill-start" not in self.taken:
             time.sleep(0.4)
             self.snap("fill-start")
@@ -114,16 +122,6 @@ class Shooter(T.Player):
             if self.spoons == 2:
                 time.sleep(0.35)
                 self.snap("fill-mid")
-        if k == "timing":
-            # the last lift: the plate, then the taste
-            time.sleep(0.9)
-            left = self.page.evaluate("(() => { const e = Cook.expect; return e ? e.kind : null; })()")
-            if left in (None, "wait"):
-                self.snap("plate")
-                self.taste()
-                self.served += 1
-                if self.wrong:
-                    self.taken.discard("plate")
         return r
 
 
@@ -140,7 +138,7 @@ def run(vp, out, level, speed, guided=True, wrong=False):
             browser.close()
             print(tag, "portrait: the rotate prompt", flush=True)
             return True
-        P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=400)
+        P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=900)
         time.sleep(1.0)
         P.snap("end")
         res = page.evaluate("Cook.labResult ? [Cook.labResult.why, Cook.labResult.skills.join(' · '), Cook.labResult.help] : null")

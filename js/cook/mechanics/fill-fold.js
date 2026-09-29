@@ -259,8 +259,9 @@
     return n;
   };
 
+  // the samosa station itself is js/cook/stations/samosa.js (samosa v2); this is the Phase A fill + fold
   Mech.lab("fill", {
-    name: "Samosa",
+    name: "Fill + fold (Phase A)",
     verb: "Fill and fold",
     async run(L) {
       const R = Cook.Recipes;

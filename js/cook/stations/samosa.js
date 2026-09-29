@@ -61,7 +61,7 @@
   const BOARD = { x: 720, y: 338, w: 800, h: 560 };
   const STAGE_K = 1.2; // design px per stage-canvas px
   const PLATE = { x: 1335, y: 420, d: 330 };
-  const PERSON_X = 1405;
+  const PERSON_X = 1450;
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, glow: 0xffe3a0 };
   const FONT = "Nunito, sans-serif";
   const CHAAT_PREP = ["veg-01", "veg-02", "veg-03", "veg-12", "ph-dhana", "ph-chana", "ph-sev", "ph-dahi", "ph-amli", "ph-lili"];
@@ -250,6 +250,7 @@
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.72), height: z.L(16) });
       } else img = S.ingredient(id, z.X(x), z.Y(BASE - 56), { w: z.L(118), h: z.L(100), label: false, depth: D.item + 1 });
       img.wordId = id;
+      img.handAction = false; // no hands anywhere (§15)
       img.home = { x: img.x, y: img.y };
       const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: level < 3, w: Math.min(128, pitch - 12) });
       chip.setScale(z.k);
@@ -471,7 +472,7 @@
         poly.forEach((p, i) => (i ? glowG.lineTo(p.x, p.y) : glowG.moveTo(p.x, p.y)));
         glowG.closePath();
       };
-      glowG.fillStyle(0xffffff, 0.1 + 0.12 * pulse);
+      glowG.fillStyle(0xffffff, 0.04 + 0.06 * pulse);
       outline();
       glowG.fillPath();
       [[z.L(22), 0.1], [z.L(12), 0.2], [z.L(5), 0.55]].forEach(([w, al]) => {
@@ -479,13 +480,13 @@
         outline();
         glowG.strokePath();
       });
-      const u = (glowT * 0.6) % 1;
+      const u = 0.15 + ((glowT * 0.6) % 1) * 0.85;
       for (let i = 0; i < 10; i++) {
         const v = u - i * 0.03;
         if (v < 0 || v > 1) continue;
         const e = Math.sin(Math.PI * v);
-        glowG.fillStyle(0xfff1c8, 0.55 * e * (1 - i / 10));
-        glowG.fillCircle(a.x + (b.x - a.x) * v, a.y + (b.y - a.y) * v, z.L(20 - i * 1.4));
+        glowG.fillStyle(0xffe7a8, 0.3 * e * (1 - i / 10));
+        glowG.fillCircle(a.x + (b.x - a.x) * v, a.y + (b.y - a.y) * v, z.L(16 - i * 1.1));
       }
     });
     let n = 0;
@@ -677,6 +678,7 @@
       const s = plateSpot(i, 290, 430, 1.1);
       const im = S.track(S.add.image(z.X(s.x), z.Y(s.y), "sv2-fry-0").setScale(FS).setAngle(s.a).setDepth(D.item + 0.1 + i * 0.01));
       im.baseScale = FS;
+      im.handAction = false;
       raw.push(im);
     }
 
@@ -685,6 +687,7 @@
     const cx = hob.burners[0].x;
     const cy = hob.burners[0].y;
     await new Promise((resolve) => {
+      burner.knobHit.handAction = false;
       if (z.guided) S.glow(burner.knobHit, true);
       S.tappable(burner.knobHit, () => {
         S.untap(burner.knobHit);
@@ -722,18 +725,21 @@
 
     // 2. drop them in (any order, one tap each), lift each when golden
     // places in the oil: round its middle, far enough apart that the rings don't cross
-    const SPOTS = [-90, 30, 150, -30, 90, 210].map((d) => [0.6 * Math.cos((d * Math.PI) / 180), 0.6 * Math.sin((d * Math.PI) / 180)]);
+    const SPOTS = [-90, 30, 150, -30, 90, 210].map((d) => [0.54 * Math.cos((d * Math.PI) / 180), 0.54 * Math.sin((d * Math.PI) / 180)]);
     const frying = [];
     const lifted = [];
     let bad = null;
     let slot = 0;
     const colour = (f) => {
       // raw -> light -> golden -> too dark: two layered states cross-fade
+      // golden from the band's start, still golden to its end, then darkening by burnAt
       const L = f.level;
-      const stops = [0, 0.3, (lo + hi) / 2, 1.05];
-      let i = 0;
-      while (i < 2 && L > stops[i + 1]) i++;
-      const u = Cook.clamp((L - stops[i]) / (stops[i + 1] - stops[i]), 0, 1);
+      const burn = k.burnAt || 1.15;
+      let i;
+      let u;
+      if (L < lo * 0.5) [i, u] = [0, L / (lo * 0.5)];
+      else if (L < lo) [i, u] = [1, (L - lo * 0.5) / (lo * 0.5)];
+      else [i, u] = [2, Cook.clamp((L - hi) / (burn - hi), 0, 1)];
       if (f.a.texture.key !== `sv2-fry-${i}`) f.a.setTexture(`sv2-fry-${i}`);
       if (f.b.texture.key !== `sv2-fry-${i + 1}`) f.b.setTexture(`sv2-fry-${i + 1}`);
       f.b.setAlpha(u);
@@ -779,6 +785,7 @@
           S.untap(im);
           S.tweens.killTweensOf(im);
           const [sx, sy] = SPOTS[slot++ % SPOTS.length];
+          if (raw.every((r) => r.gone)) S.tweens.add({ targets: board, alpha: 0, duration: 500, delay: 400 });
           const tx = cx + sx * oilR;
           const ty = cy + sy * oilR;
           Cook.sfx.whoosh();
@@ -786,6 +793,7 @@
           Cook.sfx.sizzle(0.6);
           S.puff(tx, ty, 0xfff1c0, z.L(40));
           const b = S.track(S.add.image(tx, ty, "sv2-fry-1").setScale(FS * 0.92).setAngle(im.angle).setDepth(im.depth + 0.001).setAlpha(0));
+          b.handAction = false;
           const f = { a: im, b, level: 0, rate: Cook.pick([].concat(k.rate || [0.13, 0.18])) || 0.15, y0: ty, ph: Math.random() * 6, ring: Kit.heatRing(S, { width: z.L(7) }), out: false };
           if (Array.isArray(k.rate)) f.rate = k.rate[0] + Math.random() * (k.rate[1] - k.rate[0]);
           frying.push(f);
@@ -848,9 +856,9 @@
     const faceKey = (m) => (S.textures.exists(`sv2-${who}-${m}`) ? `sv2-${who}-${m}` : null);
     let person = null;
     const kN = faceKey("neutral");
-    const sizeP = (im) => im.setScale((z.L(560) / im.height) * (who === "cousin" ? 0.92 : 1));
+    const sizeP = (im) => im.setScale((z.L(520) / im.height) * (who === "cousin" ? 0.92 : 1));
     if (kN) {
-      person = S.track(S.add.image(z.X(1760), z.Y(915), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
+      person = S.track(S.add.image(z.X(1760), z.Y(960), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
       sizeP(person);
       await new Promise((r) => S.tweens.add({ targets: person, x: z.X(PERSON_X), duration: 520, ease: "Back.easeOut", onComplete: r }));
     }
@@ -863,8 +871,29 @@
     // the plate slides to them
     Cook.sfx.whoosh();
     const all = [plate.img].concat(plate.items);
-    const dx = z.L(20);
-    await new Promise((r) => S.tweens.add({ targets: all, x: `+=${dx}`, y: `+=${z.L(150)}`, duration: 520, ease: "Cubic.easeInOut", onComplete: r }));
+    const dx = z.L(-115);
+    const dy = z.L(190);
+    const home = all.map((o) => ({ o, x: o.x, y: o.y, s: o.scaleX }));
+    const cx0 = plate.img.x;
+    const cy0 = plate.img.y;
+    await new Promise((r) =>
+      S.tweens.addCounter({
+        from: 0,
+        to: 1,
+        duration: 520,
+        ease: "Cubic.easeInOut",
+        onUpdate: (tw) => {
+          const v = tw.getValue();
+          const sc = 1 - 0.2 * v;
+          home.forEach((h) => {
+            h.o.x = cx0 + dx * v + (h.x - cx0) * sc;
+            h.o.y = cy0 + dy * v + (h.y - cy0) * sc;
+            h.o.setScale(h.s * sc);
+          });
+        },
+        onComplete: r,
+      }),
+    );
     if (person) await new Promise((r) => S.tweens.add({ targets: person, x: person.x - z.L(26), angle: -3, duration: 260, yoyo: true, hold: 260, ease: "Sine.easeInOut", onComplete: r }));
     await Cook.wait(300);
     if (ok || last) {
@@ -874,8 +903,8 @@
       S.sparkle(plate.img.x, plate.img.y);
       await pop(z, S, Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : plate.img.x, z.Y(160), { line: Lang.line("welldone"), ms: 1500 });
       await Cook.wait(600);
-      if (person) S.tweens.add({ targets: person, x: z.X(1760), duration: 500, delay: 200, ease: "Sine.easeIn" });
-      await Cook.wait(400);
+      if (person) S.tweens.add({ targets: person, x: z.X(1800), duration: 500, delay: 200, ease: "Sine.easeIn" });
+      await Cook.wait(800);
       return true;
     }
     // not quite: a gentle face, they say their order again, the plate comes back empty
@@ -888,7 +917,7 @@
     St.customerDone();
     plate.items.forEach((o) => S.tweens.add({ targets: o, alpha: 0, duration: 300 }));
     await Cook.wait(320);
-    await new Promise((r) => S.tweens.add({ targets: plate.img, x: `-=${dx}`, y: `-=${z.L(150)}`, duration: 460, onComplete: r }));
+    await new Promise((r) => S.tweens.add({ targets: plate.img, x: cx0, y: cy0, scale: home[0].s, duration: 460, onComplete: r }));
     mood("neutral");
     if (person) S.tweens.add({ targets: person, x: z.X(1760), duration: 400, ease: "Sine.easeIn" });
     await Cook.wait(400);
