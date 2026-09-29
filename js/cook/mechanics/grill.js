@@ -520,15 +520,45 @@
     const c = cv(PIECE, PIECE);
     const ctx = c.getContext("2d");
     const m = PIECE / 2;
-    ctx.fillStyle = "rgba(40,20,5,0.22)";
+    // fitted by what's painted (the alpha box, not the file's padding): a meat cube fills the square,
+    // a veg piece (a wedge of onion or tomato, a square of pepper, a potato cube) sits a little smaller,
+    // about a cube's size, so the pieces look in proportion on the stick (followup, 29 Sept)
+    const b = alphaBox(img);
+    const fit = SK.cls(id) === "meat" ? 90 : 76;
+    const s = fit / Math.max(b.w, b.h);
+    // its soft shadow, the size of the piece
+    ctx.fillStyle = "rgba(40,20,5,0.2)";
     ctx.beginPath();
-    ctx.ellipse(m + 4, m + 8, 40, 36, 0, 0, Math.PI * 2);
+    ctx.ellipse(m + 3, m + 6, (b.w * s) / 2 - 3, (b.h * s) / 2 - 4, 0, 0, Math.PI * 2);
     ctx.fill();
-    const s = 92 / Math.max(img.width, img.height);
-    ctx.drawImage(img, m - (img.width * s) / 2, m - (img.height * s) / 2, img.width * s, img.height * s);
+    ctx.drawImage(img, b.x, b.y, b.w, b.h, m - (b.w * s) / 2, m - (b.h * s) / 2, b.w * s, b.h * s);
     S.textures.addCanvas(k, c);
     return k;
   };
+  /** The box round an image's painted pixels (alpha over 40); the whole image if it can't be read. */
+  function alphaBox(img) {
+    const w = img.width;
+    const h = img.height;
+    try {
+      const c = cv(w, h);
+      const x = c.getContext("2d");
+      x.drawImage(img, 0, 0);
+      const d = x.getImageData(0, 0, w, h).data;
+      let x0 = w, y0 = h, x1 = -1, y1 = -1;
+      for (let y = 0; y < h; y++)
+        for (let i = 0; i < w; i++)
+          if (d[(y * w + i) * 4 + 3] > 40) {
+            if (i < x0) x0 = i;
+            if (i > x1) x1 = i;
+            if (y < y0) y0 = y;
+            if (y > y1) y1 = y;
+          }
+      if (x1 >= x0 && y1 >= y0) return { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 };
+    } catch (e) {
+      /* a tainted canvas: fall back to the whole image */
+    }
+    return { x: 0, y: 0, w, h };
+  }
   /** A texture key for the drawn art ("stick", "piece:ph-meat", "grill:600x500", "rack:400x480x5"…). */
   SK.tex = function (S, key) {
     if (key.startsWith("piece:")) {
@@ -928,12 +958,82 @@
       '<path d="M5 13h22"/><path d="M6 13c0 6 4.5 10 10 10s10-4 10-10"/><path d="M11 23l-3 6M21 23l3 6"/>' +
       '<path d="M11 4c-1.5 2 1.5 3 0 5M16 3c-1.5 2 1.5 3 0 5M21 4c-1.5 2 1.5 3 0 5"/></svg>';
   };
-  /** The rack (vessel-skewer-rack): top-down, its two rails across; the skewers bridge them, upright. */
-  SK.rack = function (S, z, { x, y, w, slots }) {
-    const img = S.track(S.add.image(z.X(x), z.Y(y), S.textures.exists("sk2-rack") ? "sk2-rack" : SK.tex(S, `rack:${w}x${Math.round(w * 0.3)}x${slots}`)).setDepth(D.item - 2));
-    img.setScale(z.L(w) / img.width);
-    const inset = w * 0.1;
-    return { img, x: (i) => z.X(x - w / 2 + inset + ((i + 0.5) * (w - 2 * inset)) / slots), y: z.Y(y) };
+  /**
+   * The rack (vessel-skewer-rack-t-v1, top-down), sized to the skewers it holds (followup, 29 Sept: it
+   * read as an empty picture frame). Built from the art: its two rails, one under the skewers' tips and
+   * one across their handles, its end posts, and between them a slatted floor of the same wood (so it
+   * reads as a rack, not a hollow frame), with a notch in each rail per slot where a skewer rests.
+   * `y` is the skewers' centre (design px), `s` their scale, `slots` how many it holds.
+   * Returns {img, x(i), y, w}: slot i's centre x and the skewer's y (screen px), and the width (design px).
+   */
+  const RK = { top: -272, bot: 176, rail: 44, pitch: 140, end: 74, R: 1.5 };
+  SK.rackTex = function (S, slots) {
+    const key = `mk:rack2:${slots}`;
+    if (S.textures.exists(key)) return key;
+    const src = S.textures.get("sk2-rack").getSourceImage();
+    // the art (assets/cook/items/sekelo/rack-t.webp, 1000x277): top rail rows 3-53, bottom 223-274, posts x 7-56 and 944-992
+    const f = src.width / 1000;
+    const A = { t0: 3 * f, t1: 53 * f, b0: 223 * f, b1: 274 * f, p0: 7 * f, p1: 56 * f, q0: 944 * f, q1: 992 * f };
+    const R = RK.R;
+    const W = Math.round((slots * RK.pitch + 2 * RK.end) * R);
+    const T = Math.round(RK.rail * R);
+    const H = Math.round((RK.bot - RK.top + RK.rail) * R);
+    const c = cv(W, H);
+    const g = c.getContext("2d");
+    // the floor: slats of the rail's wood, a little darker, with thin gaps between them
+    const slat = Math.round(T * 0.82);
+    for (let y = T * 0.6, n = 0; y < H - T * 0.6; y += slat, n++) {
+      const sx = A.p1 + ((n * 97) % 200) * f;
+      g.drawImage(src, sx, A.t0 + 6 * f, (A.q0 - A.p1) * 0.72, A.t1 - A.t0 - 12 * f, T * 0.5, y, W - T, slat - 3);
+    }
+    g.fillStyle = "rgba(70,38,14,0.34)";
+    g.fillRect(T * 0.5, T * 0.6, W - T, H - T * 1.2);
+    // the inner shadow under the rails and posts (they stand above the floor)
+    const sh = (x0, y0, x1, y1, w, h) => {
+      const gr = g.createLinearGradient(x0, y0, x1, y1);
+      gr.addColorStop(0, "rgba(40,20,5,0.42)");
+      gr.addColorStop(1, "rgba(40,20,5,0)");
+      g.fillStyle = gr;
+      g.fillRect(Math.min(x0, x1), Math.min(y0, y1), w, h);
+    };
+    sh(0, T, 0, T + 22 * R, W, 22 * R);
+    sh(0, H - T, 0, H - T - 16 * R, W, 16 * R);
+    sh(T, 0, T + 18 * R, 0, 18 * R, H);
+    sh(W - T, 0, W - T - 18 * R, 0, 18 * R, H);
+    // the end posts, then the rails over them
+    g.drawImage(src, A.p0, A.t1, A.p1 - A.p0, A.b0 - A.t1, 0, T - 2, T, H - 2 * T + 4);
+    g.drawImage(src, A.q0, A.t1, A.q1 - A.q0, A.b0 - A.t1, W - T, T - 2, T, H - 2 * T + 4);
+    g.drawImage(src, 0, A.t0, src.width, A.t1 - A.t0, 0, 0, W, T);
+    g.drawImage(src, 0, A.b0, src.width, A.b1 - A.b0, 0, H - T, W, T);
+    // a notch in each rail per slot: a skewer's resting place
+    for (let i = 0; i < slots; i++) {
+      const x = (RK.end + (i + 0.5) * RK.pitch) * R;
+      [0, H - T].forEach((y) => {
+        // a groove across the rail, where the stick lies
+        const gr = g.createLinearGradient(x - 7 * R, 0, x + 7 * R, 0);
+        gr.addColorStop(0, "rgba(70,36,10,0.55)");
+        gr.addColorStop(0.6, "rgba(70,36,10,0.3)");
+        gr.addColorStop(1, "rgba(255,236,200,0.3)");
+        g.fillStyle = gr;
+        g.fillRect(x - 7 * R, y + 4 * R, 14 * R, T - 8 * R);
+      });
+    }
+    S.textures.addCanvas(key, c);
+    return key;
+  };
+  SK.rack = function (S, z, { x, y, slots, s }) {
+    const w = (slots * RK.pitch + 2 * RK.end) * s;
+    const cy = y + ((RK.top + RK.bot) / 2) * s;
+    let img;
+    if (S.textures.exists("sk2-rack")) {
+      img = S.track(S.add.image(z.X(x), z.Y(cy), SK.rackTex(S, slots)).setDepth(D.item - 2));
+      img.setScale((z.k * s) / RK.R);
+    } else {
+      img = S.track(S.add.image(z.X(x), z.Y(cy), SK.tex(S, `rack:${Math.round(w)}x${Math.round(w * 0.3)}x${slots}`)).setDepth(D.item - 2));
+      img.setScale(z.L(w) / img.width);
+    }
+    img.shadow = S.contactShadow(img);
+    return { img, w, x: (i) => z.X(x - w / 2 + (RK.end + (i + 0.5) * RK.pitch) * s), y: z.Y(y) };
   };
 
   /* ================= the grill mechanic ================= */
@@ -941,7 +1041,7 @@
   // the standalone grill shifts it left with `dx`
   // Sekelo v2 (§15): the rack on the left, the grill in the middle, the plate on the right, all top-down in
   // the scene; the prep bowls stay on the shelf band below, quiet
-  const RACK = { x: 285, y: 352, w: 400, scale: 0.5 };
+  const RACK = { x: 272, y: 352, scale: 0.5 }; // SK.rack sizes it to its slots
   const GRILL = { x: 870, y: 330, w: 740, skewerY: 352, s: 0.62, bed: [0.15, 0.85] };
   const PLATE = { x: 1410, y: 420, d: 250 };
   const CHIPS = { x: 1410, y: 560, onX: 1450, onY: 380 };
@@ -996,8 +1096,7 @@
       const spots = Array(k.spots).fill(null);
 
       /* the rack, with fixed slots (never one per skewer ordered) */
-      const rw = RACK.w;
-      const rackArt = SK.rack(S, z, { x: RACK.x + dx, y: RACK.y, w: rw, slots: k.rack });
+      const rackArt = SK.rack(S, z, { x: RACK.x + dx, y: RACK.y, slots: k.rack, s: RACK.scale });
       const rackX = (i) => rackArt.x(i);
       const rack = Array(k.rack).fill(null);
       let incoming = 0;
@@ -1028,7 +1127,7 @@
         const r = { sk, pieces: item.pieces, cls: SK.classify(item.pieces, pattern), slot: i, settled: !item.sprite };
         rack[i] = r;
         if (item.sprite) S.tweens.add({ targets: sk, x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut", onComplete: () => (r.settled = true) });
-        const hit = hitFor(sk, L(Math.min(100, (rw * 0.8) / k.rack)), L(380));
+        const hit = hitFor(sk, L(RK.pitch * RACK.scale * 0.9), L(380));
         hit.setPosition(rackX(i), Y(RACK.y));
         S.tappable(hit, () => toGrill(r));
         return r;

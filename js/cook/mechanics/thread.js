@@ -67,7 +67,7 @@
       const BOARD = { x: 560, y: 346, w: 250, h: 586 };
       const SKY = 352; // the skewer's centre on the board
       const SKS = 0.84; // the skewer on the board
-      const RACK = { x: 1080, y: 352, w: 520, s: 0.56 };
+      const RACK = { x: 1090, y: SKY, s: 0.6 }; // the rack sized to its skewers (followup, 29 Sept)
       const slots = (handoff && handoff.max) || 4;
       const full = () => handoff && handoff.max && doneRow.length >= handoff.max;
 
@@ -83,7 +83,7 @@
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
       board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(BOARD.w), height: z.L(BOARD.h) });
-      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, w: RACK.w, slots });
+      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s });
 
       /* the skewer on the board */
       let sk = null;
