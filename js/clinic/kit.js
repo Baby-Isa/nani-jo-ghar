@@ -146,7 +146,7 @@
   Kit.FEEL = {
     happy: { fill: "#f7c948", mouth: '<path d="M20 40q12 12 24 0" stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>' },
     sad: { fill: "#9cc3e6", mouth: '<path d="M20 46q12-10 24 0" stroke="#2d4a6a" stroke-width="3.5" fill="none" stroke-linecap="round"/>', extra: '<path d="M22 30q-2 6 0 8q2-2 0-8z" fill="#3b6fd2"/>' },
-    hot: { fill: "#f08a5d", mouth: '<ellipse cx="32" cy="44" rx="6" ry="4" fill="#7a2a1a"/>', extra: '<path d="M48 14q-3 6 0 8q3-2 0-8z" fill="#3b9ad2"/><path d="M54 24q-3 5 0 7q3-2 0-7z" fill="#3b9ad2"/><path d="M8 58h48" stroke="#d23b3b" stroke-width="3" stroke-dasharray="4 4"/>' },
+    hot: { fill: "#f08a5d", mouth: '<ellipse cx="32" cy="44" rx="6" ry="4" fill="#7a2a1a"/>', extra: '<path d="M48 14q-3 6 0 8q3-2 0-8z" fill="#3b9ad2"/><path d="M54 24q-3 5 0 7q3-2 0-7z" fill="#3b9ad2"/>' },
     cold: { fill: "#bfe3f2", mouth: '<path d="M20 44l4-3 4 3 4-3 4 3 4-3 4 3" stroke="#2d4a6a" stroke-width="2.5" fill="none"/>', extra: '<path d="M6 10l5 5M11 10l-5 5M52 48l5 5M57 48l-5 5M8 44l4 4M12 44l-4 4" stroke="#fff" stroke-width="2.5"/>' },
   };
   /** A flat feeling face (happy, sad, hot, cold): the same for everyone (CQ6). */
@@ -159,7 +159,7 @@
   /** The doctor, a flat-colour stand-in (a white coat, turned 3/4; the doctor art comes later). */
   Kit.doctorFigure = function (parent, cls) {
     const d = h("div", `cl-doc ${cls || ""}`, parent);
-    d.innerHTML = '<svg viewBox="0 0 100 260" aria-hidden="true"><ellipse cx="50" cy="252" rx="30" ry="6" fill="rgba(0,0,0,.12)"/><path d="M34 180h14l-2 68H34zM52 180h14l-1 68H53z" fill="#3b3b46"/><path d="M30 246h18v8H26zM52 246h18l4 8H52z" fill="#2a2522"/><path d="M22 74q28-14 56 0l6 112H16z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><path d="M44 72l6 26 6-26z" fill="#2e8b7a"/><path d="M22 76l-8 70 10 2 8-60zM78 76l6 64-10 4-6-58z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><circle cx="18" cy="150" r="6" fill="#b8845f"/><circle cx="80" cy="146" r="6" fill="#b8845f"/><path d="M36 84q2 20 14 22" stroke="#2a3f5a" stroke-width="3" fill="none"/><circle cx="50" cy="107" r="4" fill="#9aa0a8"/><rect x="44" y="56" width="12" height="12" fill="#b8845f"/><ellipse cx="52" cy="38" rx="17" ry="20" fill="#b8845f"/><path d="M35 34q2-22 18-22q15 1 16 18q-8-8-20-6q-8 1-14 10z" fill="#2b1d16"/><path d="M40 48q10 10 24 0q-2 12-12 12q-10 0-12-12z" fill="#2b1d16"/></svg>';
+    d.innerHTML = '<svg viewBox="0 0 100 260" aria-hidden="true"><ellipse cx="50" cy="252" rx="30" ry="6" fill="rgba(0,0,0,.12)"/><path d="M34 180h14l-2 68H34zM52 180h14l-1 68H53z" fill="#3b3b46"/><path d="M30 246h18v8H26zM52 246h18l4 8H52z" fill="#2a2522"/><path d="M22 74q28-14 56 0l6 112H16z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><path d="M44 72l6 26 6-26z" fill="#2e8b7a"/><path d="M22 76l-8 70 10 2 8-60zM78 76l6 64-10 4-6-58z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><circle cx="18" cy="150" r="6" fill="#b8845f"/><circle cx="80" cy="146" r="6" fill="#b8845f"/><path d="M36 84q2 20 14 22" stroke="#2a3f5a" stroke-width="3" fill="none"/><circle cx="50" cy="107" r="4" fill="#9aa0a8"/><rect x="44" y="56" width="12" height="12" fill="#b8845f"/><ellipse cx="52" cy="38" rx="17" ry="20" fill="#b8845f"/><path d="M35 34q2-22 18-22q15 1 16 18q-8-8-20-6q-8 1-14 10z" fill="#2b1d16"/><path d="M40 50q10 8 24 0q-2 10-12 10q-10 0-12-10z" fill="#2b1d16"/><circle cx="46" cy="38" r="2.6" fill="#2a2522"/><circle cx="59" cy="38" r="2.6" fill="#2a2522"/><path d="M47 47q5 3 10 0" stroke="#5a3a33" stroke-width="2" fill="none"/></svg>';
     return d;
   };
 
@@ -261,6 +261,28 @@
     const p = (Voice.queue = Voice.queue.then(run, run));
     return p;
   };
+  /** Say a short word at once, outside the queue (a count as you tap: it never holds up the lines). */
+  Voice.now = async function (w) {
+    let played = false;
+    if (w.kutchi && global.FamilyVoice) {
+      try {
+        await global.FamilyVoice.load(Kit.root);
+        const fam = global.FamilyVoice.match(w.kutchi);
+        if (fam) played = await Voice.audio(fam.file);
+      } catch (e) {
+        /* no family voice */
+      }
+    }
+    if (!played && !Voice.quiet && global.speechSynthesis) {
+      try {
+        const u = new global.SpeechSynthesisUtterance(Kit.plain(w));
+        u.rate = 0.95;
+        global.speechSynthesis.speak(u);
+      } catch (e) {
+        /* no voice */
+      }
+    }
+  };
   Voice.clear = function () {
     Voice.queue = Promise.resolve();
     try {
@@ -351,6 +373,22 @@
     r.el.classList.remove("pulse", "now");
     r.el.classList.add("done");
     if (!o.quiet && global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
+  };
+  /**
+   * G6 (the Cook counting rule, Q7): at level 1 a row counts up as you tap, written as the
+   * Kutchi number word and said aloud, instead of showing nothing until the step closes.
+   */
+  Kit.NUM = { 1: "hakro", 2: "ba", 3: "trae", 4: "char", 5: "panj" };
+  Kit.Card.prototype.count = function (id, n) {
+    const r = id ? this.row(id) : this.rows.find((x) => x.el && x.el.classList.contains("now")) || this.rows.find((x) => x.el && !x.el.classList.contains("done"));
+    if (!r || !r.el) return null;
+    let chip = r.el.querySelector(".cl-row-count");
+    if (!chip) chip = h("span", "cl-row-count", r.el);
+    chip.textContent = n > 0 ? Kit.NUM[n] || String(n) : "";
+    chip.classList.remove("bump");
+    void chip.offsetWidth;
+    chip.classList.add("bump");
+    return r.id;
   };
   Kit.Card.prototype.untick = function (id) {
     const r = this.row(id);

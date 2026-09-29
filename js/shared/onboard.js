@@ -31,8 +31,11 @@
  *   Onboard.seen(stationId) / Onboard.reset(stationId?)
  *   Onboard.machine(script)     the pure state machine under run() (Node tests)
  *
- * A grown-up can skip the whole script: the small button in the top right
- * corner, held for a second (a quick tap does nothing), or Escape.
+ * A grown-up can skip the whole script from the mode's ? menu (G7 / CQ15, 29 Sept:
+ * the corner button read as "next chapter"): Onboard.skipButton(parent) draws the
+ * hold-to-skip row there (held for a second; a quick tap does nothing), shown only
+ * while a script runs; or Escape. Anything marked [data-ob-pass] (the ? button and
+ * its menu) stays usable under the dimming. opts.skipButton: the old corner button.
  * Once per profile per station, through js/shared/uistore.js.
  *
  * Plain <script>: window.Onboard (and Shared.onboard); Node: require().
@@ -208,8 +211,39 @@
 
   const DUR = { tap: 1500, hold: 2200, drag: 2200, swipe: 1500, "circle-stir": 3000 };
 
+  const SKIP_HTML = `<button class="ob-skip" type="button" aria-label="Skip (grown-ups: hold)"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l9 7-9 7zM18 5v14"/></svg><i class="ob-hold"></i></button>`;
   let active = null;
   const pending = [];
+  /**
+   * The grown-ups' skip for a mode's ? menu: a row "Skip the help (grown-ups: hold)" that
+   * ends the running script when held for a second. Returns the element (null if no script runs).
+   */
+  Onboard.skipButton = function (parent) {
+    if (!active || typeof document === "undefined") return null;
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "ob-skip-row";
+    b.setAttribute("data-ob-pass", "");
+    b.innerHTML = `<span class="ob-skip-ic"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l9 7-9 7zM18 5v14"/></svg><i class="ob-hold"></i></span><span>Skip the help <small>grown-ups: hold</small></span>`;
+    let t = 0;
+    const start = (e) => {
+      e.preventDefault();
+      b.classList.add("holding");
+      t = setTimeout(() => {
+        b.classList.remove("holding");
+        if (active) active.skip();
+        b.dispatchEvent(new CustomEvent("skipped", { bubbles: true }));
+      }, 1000);
+    };
+    const stop = () => {
+      b.classList.remove("holding");
+      clearTimeout(t);
+    };
+    b.addEventListener("pointerdown", start);
+    ["pointerup", "pointerleave", "pointercancel"].forEach((k) => b.addEventListener(k, stop));
+    if (parent) parent.appendChild(b);
+    return b;
+  };
   /** The child did the thing (a mode calls this; also a "njg-onboard" DOM event with detail = name). */
   Onboard.signal = function (name) {
     if (active) active.signal(name);
@@ -232,7 +266,7 @@
       <svg class="ob-dim" aria-hidden="true"><defs><mask id="ob-mask-${id}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes"></g></mask></defs>
         <rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${id})"/><g class="ob-rings"></g></svg>
       <div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${opts.hand ? `<img alt="" src="${opts.hand.src}">` : HAND}</div>
-      <button class="ob-skip" type="button" aria-label="Skip (grown-ups: hold)"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l9 7-9 7zM18 5v14"/></svg><i class="ob-hold"></i></button>`;
+      ${opts.skipButton ? SKIP_HTML : ""}`;
     host.appendChild(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
     const ghost = layer.querySelector(".ob-ghost");
@@ -377,21 +411,22 @@
     };
 
     // touches outside the light are blocked; a tap inside is the "tap" signal
-    const skipBtn = layer.querySelector(".ob-skip");
+    const skipBtn = layer.querySelector(".ob-skip") || document.createElement("i");
+    const pass = (e) => !!(e.target && e.target.closest && e.target.closest("[data-ob-pass]"));
     const pt = (e) => {
       const t = e.changedTouches ? e.changedTouches[0] : e;
       return { x: t.clientX, y: t.clientY };
     };
     const allowed = (e) => skipBtn.contains(e.target) || (!layer.classList.contains("between") && lit.some((r) => inside(pt(e), r)));
     const block = (e) => {
-      if (skipBtn.contains(e.target)) return;
+      if (skipBtn.contains(e.target) || pass(e)) return;
       if (!allowed(e)) {
         e.stopPropagation();
         e.preventDefault();
       }
     };
     const up = (e) => {
-      if (skipBtn.contains(e.target) || !allowed(e)) return;
+      if (skipBtn.contains(e.target) || pass(e) || !allowed(e)) return;
       // let the game handle the tap first
       setTimeout(() => {
         if (m.tap()) advanced();

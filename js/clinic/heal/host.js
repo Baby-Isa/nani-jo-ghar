@@ -198,6 +198,11 @@
       },
       tally(itemId, n) {
         screen.tally.set(itemId, n);
+        // G6: level 1 counts up on the card's row as you tap, and says the number (Cook's rule)
+        if (level <= 1 && n > 0 && n <= 5) {
+          card.count(null, n);
+          Kit.Voice.now({ kutchi: Kit.NUM[n], english: String(n) });
+        }
       },
       log(entry) {
         const e = Object.assign({ t: Date.now() - t0, game: def.id }, entry);

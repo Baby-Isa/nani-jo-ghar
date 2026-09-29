@@ -84,14 +84,14 @@
     </div>
     <!-- 3. the rail: "?" (what do I do here?), menu, recipe book -->
     <div class="side-rail">
-      <button id="btn-help" class="rail-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false">?</button>
+      <button id="btn-help" class="rail-btn" title="What do I do here?" aria-label="What do I do here?" aria-expanded="false" data-ob-pass>?</button>
       <button id="btn-home" class="rail-btn" title="Menu" aria-label="Menu">&#8962;</button>
       <button id="btn-book" class="rail-btn" title="Nani's recipe book" aria-label="Nani's recipe book">&#128214;</button>
     </div>
   </aside>
 
   <!-- the "?" pops out the goal for this station (never shown on its own) -->
-  <div id="help-pop" class="hidden" role="dialog" aria-label="What do I do here?"><div class="hp-text"></div></div>
+  <div id="help-pop" class="hidden" role="dialog" aria-label="What do I do here?" data-ob-pass><div class="hp-text"></div></div>
 
   <!-- Nani: "pass me…". Her card comes forward in the sidebar column, never over the play area -->
   <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">

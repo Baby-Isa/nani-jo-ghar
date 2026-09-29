@@ -30,7 +30,8 @@
   },
   "exam": {
     "_about": "CB2b: the patient sits on the bed's edge (the mattress top at y 0.53, the step stool's top at 0.66, the floor at 0.8), facing us; the stand-in doctor stands to the right, turned 3/4. fig = the figure's box (the patient DOM figure draws seated inside it, feet at its bottom).",
-    "fig": { "x": 0.51, "bottom": 0.75, "h": 0.56 },
+    "fig": { "x": 0.5, "bottom": 0.69, "h": 0.56 },
+    "seat": 0.535,
     "doctor": { "x": 0.735, "y": 0.9, "h": 0.66 }
   },
   "stand": {
@@ -46,8 +47,8 @@
   },
   "door": {
     "_about": "CB5: the patient stands on the doormat by the half-open front door; the doctor beside them, to the left (turned towards them). The four cards (or what helps) sit on the floor strip.",
-    "patient": { "x": 0.64, "y": 0.8, "h": 0.46 },
-    "doctor": { "x": 0.44, "y": 0.86, "h": 0.64 },
-    "cards": { "x": 0.36, "y": 0.9 }
+    "patient": { "x": 0.735, "y": 0.8, "h": 0.46 },
+    "doctor": { "x": 0.54, "y": 0.86, "h": 0.64 },
+    "cards": { "x": 0.32, "y": 0.92 }
   }
 }

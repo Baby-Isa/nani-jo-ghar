@@ -36,8 +36,16 @@
    * stage; stage.scene is the box (null for a room without a v2 picture: the old
    * rough art, faded).
    */
+  S.GOALS = {
+    waiting: "Who's next? Listen to the doctor, then tap the tick under that person.",
+    exam: "Find where it hurts: listen to the patient (and the doctor), then tap the body.",
+    stand: "The check-up: pick the tool the doctor says, then tap the part.",
+    pharmacy: "Tap the things the doctor asks for as they ride past on the belt.",
+    door: "Is everything okay now? Pick the face (or what helps), then say goodbye.",
+  };
   S.room = function (screen, name) {
     const stage = screen.clearStage();
+    screen.goal = S.GOALS[name] || "";
     stage.classList.add("cl-room", `room-${name}`);
     screen.clearActions();
     screen.tally.clear();

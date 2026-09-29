@@ -1,13 +1,16 @@
 /*
  * Stage 2, diagnosis: "Where does it hurt?" (docs/modes/clinic-design.md P3,
- * Q3, Q5). The patient on the examination bench, symmetrical, hands in lap.
- *   D1  (the first sessions; taught): 3 parts pulse; tap one; the doctor asks
- *       [Does it hurt here?]; the patient says haa / nar; on haa the swirl,
+ * Q3, Q5; clinic v2: docs/modes/clinic-v2-design-sheets.md D). The patient
+ * faces us, sitting on the bed's edge with legs dangling (CB2b), or standing
+ * by the wall for the check-up (CB3b); a stand-in doctor to the right, turned 3/4.
+ *   D1  level 1 (taught): 3 parts pulse; tap one; the doctor asks
+ *       [Does it hurt here?]; the patient says haa / na (G9); on haa the swirl,
  *       [My knee], and the Found it button lights.
- *   D1b (level 2): the same, graded: Found it on haa, Next on nar.
+ *       Level 2 (was D1b, folded in): graded: Found it on haa, Next on na.
  *   D2  the patient says [My knee hurts] ([My left knee] at level 3); tap it.
- *   D3  (level 2+): the doctor calls a tool and a part; tap the tool, then the
- *       part; the find shows only at the sore one.
+ *   D3  the doctor calls a tool and a part; tap the tool, then the part; the
+ *       find shows only at the sore one. Level 1 shows only the right tool plus
+ *       one; each tool's first time comes with its cue (look in = the torch...).
  * Then the doctor names the ailment and says the prescription (P1's seam).
  */
 (function (global) {
@@ -26,12 +29,31 @@
       const { screen, data } = env;
       const res = S.result("diagnosis");
       S.env = env;
-      const stage = S.room(screen, "exam");
+      const standing = plan.pose === "stand";
+      const stage = S.room(screen, standing ? "stand" : "exam");
       stage.dataset.variant = plan.variant;
-      const layer = h("div", "cl-patient-layer", stage);
+      const box = stage.scene;
+      const cfg = stage.sceneCfg || {};
+      const layer = h("div", "cl-patient-layer", box || stage);
+      if (box && cfg.fig) {
+        // the figure's box on the bed's edge (or the floor), in shares of the picture
+        layer.classList.add("v2");
+        S.place(layer, { x: cfg.fig.x, y: cfg.fig.bottom, h: cfg.fig.h, w: cfg.fig.h * (620 / 900) / 1.5, z: 3 });
+        if (cfg.doctor) S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
+      }
       const fig = env.fig;
       layer.appendChild(fig.el);
-      fig.pose("sit");
+      fig.pose(standing ? "stand" : "sit");
+      // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher)
+      const seat = () => {
+        if (!box || standing || cfg.seat == null) return;
+        layer.style.top = `${cfg.fig.bottom * 100}%`;
+        const q = fig.hotspot("knee", "left", box);
+        const H = box.clientHeight || 1;
+        if (q && isFinite(q.y)) layer.style.top = `${(cfg.fig.bottom + (cfg.seat * H - q.y) / H) * 100}%`;
+      };
+      seat();
+      if (box) box.addEventListener("scenefit", seat);
       fig.react("idle", 0);
       fig.swirl(plan.part, plan.side, false);
       Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
@@ -40,7 +62,7 @@
       // the face parts answer only in the close-up: the magnifier toggles it (the head frames the face)
       const zoom = { on: false, busy: false, el: null };
       const levelParts = data.parts[plan.level] || data.parts[3];
-      if (plan.variant !== "D1" && plan.variant !== "D1b" && levelParts.some((p) => FACE.includes(p))) {
+      if (plan.variant !== "D1" && levelParts.some((p) => FACE.includes(p))) {
         zoom.el = h("button", "cl-mag", stage, "🔍");
         zoom.el.type = "button";
         zoom.el.setAttribute("aria-label", "Look closer at the face");
@@ -79,7 +101,7 @@
 
   async function d1(env, plan, res, { stage, top, fig, at }) {
     const { screen, data } = env;
-    const graded = plan.variant === "D1b";
+    const graded = !!plan.graded; // D1 level 2 (the old D1b)
     const row = plan.rows[0];
     await S.request(screen, { title: "", rows: plan.card });
     let dots = plan.probes.map((p) => {
@@ -159,7 +181,7 @@
         S.signal("clinic-probe");
         await S.say(S.line(env, "here"), "doctor");
         const yes = d.part === plan.part;
-        lastAnswer = yes ? "haa" : "nar";
+        lastAnswer = yes ? "haa" : "na";
         fig.react("idle", 0);
         await S.say(S.line(env, lastAnswer), "patient");
         if (yes) {
@@ -228,12 +250,12 @@
   async function d3(env, plan, res, { stage, top, fig, at, tapPart }) {
     const { screen, data } = env;
     const tools = data.stages.diagnosis.tools;
-    await S.request(screen, { title: "", rows: plan.card });
     await S.say(S.line(env, "unwell"), "patient");
+    await S.request(screen, { title: "", rows: plan.card });
     const kit = h("div", "cl-kit", stage);
     let tool = null;
     const btns = {};
-    Object.keys(tools).forEach((t) => {
+    (plan.tools || Object.keys(tools)).forEach((t) => {
       const b = h("button", "cl-kit-tool", kit);
       b.type = "button";
       b.dataset.tool = t;
@@ -241,17 +263,39 @@
       b.addEventListener("click", () => {
         tool = t;
         Object.values(btns).forEach((x) => x.classList.toggle("sel", x === b));
+        S.signal("clinic-tool");
       });
       btns[t] = b;
     });
+    // each tool's first time (v2 D3): the doctor says what it's for, and the ghost finger shows it
+    const cueSeen = (t) => {
+      try {
+        return !!(global.UIStore && global.UIStore.get("clinic-cue", t));
+      } catch (e) {
+        return false;
+      }
+    };
+    const cue = async (c) => {
+      if (!env.onboard || cueSeen(c.tool) || !tools[c.tool].cue) return;
+      try {
+        if (global.UIStore) global.UIStore.set("clinic-cue", c.tool, true);
+      } catch (e) {
+        /* no storage */
+      }
+      btns[c.tool].classList.add("cue");
+      await S.say(Object.assign({ kutchi: `[${tools[c.tool].cue.english}]` }, tools[c.tool].cue), "doctor");
+      S.onboard(env, `diagnosis-tool-${c.tool}`, [{ spotlight: btns[c.tool], ghost: { gesture: "tap" }, wait: "clinic-tool" }]);
+    };
     let i = 0;
     let busy = false;
     let finish;
     const done = new Promise((r) => (finish = r));
     screen.card.now(plan.calls[0].id);
+    let cueing = true;
+    cue(plan.calls[0]).then(() => (cueing = false));
     S.setExpect("diagnosis", () => {
       const c = plan.calls[i];
-      if (!c || busy || env.zoom.busy) return { stage: "diagnosis", kind: "wait" };
+      if (!c || busy || cueing || env.zoom.busy) return { stage: "diagnosis", kind: "wait" };
       const z = tool === c.tool && env.zoom.need(c.part);
       if (z) return Object.assign({ stage: "diagnosis" }, z);
       if (tool !== c.tool) return { stage: "diagnosis", kind: "tap", target: `.cl-kit-tool[data-tool="${c.tool}"]` };
@@ -288,8 +332,14 @@
         i++;
         tool = null;
         Object.values(btns).forEach((x) => x.classList.remove("sel"));
+        Object.values(btns).forEach((x) => x.classList.remove("cue"));
         if (i >= plan.calls.length) finish();
-        else screen.card.now(plan.calls[i].id);
+        else {
+          screen.card.now(plan.calls[i].id);
+          cueing = true;
+          await cue(plan.calls[i]);
+          cueing = false;
+        }
       }
       busy = false;
     });

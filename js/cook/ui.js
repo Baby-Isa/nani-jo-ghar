@@ -396,6 +396,12 @@
     const btn = $("#btn-help");
     if (!pop || !btn) return;
     pop.querySelector(".hp-text").textContent = helpText;
+    // the grown-ups' skip lives here now (G7 / CQ15), only while the first-time help runs
+    pop.querySelectorAll(".ob-skip-row").forEach((x) => x.remove());
+    if (global.Onboard && global.Onboard.active && global.Onboard.active()) {
+      const sk = global.Onboard.skipButton(pop);
+      if (sk) sk.addEventListener("skipped", () => UI.closeHelp());
+    }
     pop.classList.remove("hidden");
     btn.classList.remove("fresh");
     btn.setAttribute("aria-expanded", "true");
@@ -1725,7 +1731,7 @@
     document.addEventListener(
       "pointerdown",
       (ev) => {
-        if (UI.helpOpen() && !ev.target.closest("#btn-help")) UI.closeHelp();
+        if (UI.helpOpen() && !ev.target.closest("#btn-help, #help-pop")) UI.closeHelp();
       },
       true
     );

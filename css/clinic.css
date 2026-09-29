@@ -310,3 +310,56 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-wtick.gone { opacity: 0; pointer-events: none; transition: opacity .4s; }
 @keyframes cl-tick-shake { 20%, 60% { transform: translate(calc(-50% - 7px), -100%); } 40%, 80% { transform: translate(calc(-50% + 7px), -100%); } }
 @keyframes cl-lock { 50% { transform: translate(-50%, -100%) scale(1.25); } }
+
+/* D: the patient on the bed's edge (CB2b) or standing (CB3b); the stand-in doctor to the right */
+.cl-patient-layer.v2 { right: auto; bottom: auto; display: block; }
+.cl-patient-layer.v2 .cl-fig { height: 100%; }
+.cl-doc { aspect-ratio: 100 / 260; pointer-events: none; }
+.cl-doc svg { width: 100%; height: 100%; display: block; }
+.cl-doc-stand { transform: translate(-50%, -100%) scaleX(-1); }
+.cl-room.v2 .cl-kit { left: 2%; right: auto; top: auto; bottom: 3%; transform: none; flex-direction: row; background: rgba(255, 250, 241, .9); padding: 8px; border-radius: 16px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-kit-tool.cue { animation: cl-throb-dish 1s ease-in-out infinite; border-color: #c9962e; }
+.cl-item.standin { background: none; border: none; border-radius: 0; }
+.cl-item.standin svg { width: 100%; height: 100%; display: block; }
+
+/* P: the items ride the painted belt on CB4c; the tray on the counter strip */
+.cl-pharmacy .cl-belt.v2 { left: 0; right: 0; z-index: 6; }
+.cl-belt.v2 .cl-belt-track { inset: 0; background: none; border: 0; overflow: visible; }
+.cl-belt.v2 .cl-belt-dish { top: auto; bottom: 0; margin-top: 0; width: var(--item, 96px); height: var(--item, 96px); min-width: 48px; min-height: 48px; border: 0; border-radius: 12px; background: none; box-shadow: none; }
+.cl-belt.v2 .cl-belt-dish .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; filter: drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
+.cl-belt.v2 .cl-belt-dish .cl-item[data-colour]:not(.own-colour) { background: radial-gradient(circle at 50% 60%, var(--tint) 0 34%, transparent 36%); }
+.cl-belt.v2.stopped .cl-belt-dish { filter: saturate(.5); }
+.cl-counter-tray.v2 { right: auto; bottom: auto; transform: translate(-50%, -50%); background: rgba(255, 250, 241, .55); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); padding: 10px 14px; gap: 14px; }
+.cl-counter-tray.v2 .cl-dish { border-radius: 14px; border: 3px dashed #c9962e; background: rgba(255, 255, 255, .6); }
+.cl-counter-tray.v2 .cl-dish.full { border: 3px solid #c9962e; background: #fff; }
+.cl-counter-tray.v2 .cl-dish .cl-item { background: none; border: 0; }
+.cl-fly .cl-item { background: none; border: 0; }
+.cl-fly { background: none; border: 0; }
+
+/* E: the send-off on CB5: the face circle, the four feeling cards (or what helps), the apple, in the scene */
+.cl-feel { width: 100%; height: 100%; display: grid; place-items: center; }
+.cl-feel svg { width: 100%; height: 100%; display: block; }
+.cl-feel-circle { position: absolute; left: 50%; top: -4%; width: 42%; aspect-ratio: 1; transform: translate(-50%, -100%); border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); border: 3px solid #fff; display: grid; place-items: center; }
+.cl-feel-q { font: 800 26px var(--cl-head); color: #b9ae9f; }
+.cl-feel-circle.on { animation: cl-pop .25s ease-out; }
+.cl-feel-cards { display: flex; gap: 12px; padding: 10px 12px; background: rgba(255, 250, 241, .72); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-feel-cards .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: 6px; border-radius: 16px; border: 3px solid #e2d3bb; }
+.cl-help-card .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; }
+.room-door .cl-extra { width: clamp(64px, 7vw, 90px); height: clamp(64px, 7vw, 90px); margin: 0; border-radius: 18px; }
+.room-door .cl-extra .cl-item { width: 100%; height: 100%; background: none; border: 0; }
+.cl-fly-help { position: fixed; z-index: 300; transition: transform .45s ease-in; pointer-events: none; }
+.cl-ask-card { transform: translate(-50%, -100%); width: 86px; height: 86px; border-radius: 50%; background: #fff; box-shadow: 0 4px 14px rgba(40, 25, 10, .2); border: 4px solid #dde6d5; }
+.cl-ask-card .cl-face { width: 100%; height: 100%; }
+.cl-ask-q { position: absolute; right: -10px; top: -10px; width: 36px; height: 36px; border-radius: 50%; background: #7e9a76; color: #fff; font: 800 24px var(--cl-head); display: grid; place-items: center; }
+.cl-patient-layer.leaving { transition: left 1.2s ease-in, opacity 1.2s; left: 76% !important; opacity: .0; }
+/* G6: the running count on a row (level 1), the Kutchi number word */
+.cl-row-count { margin-left: auto; padding: 2px 10px; border-radius: 12px; background: #fff4df; color: #8c2f2f; font: 800 17px var(--cl-head); }
+.cl-row-count:empty { display: none; }
+.cl-row-count.bump { animation: cl-bump .3s; }
+.cl-row.done .cl-row-count { background: none; }
+
+/* the ? (G7 / CQ15): bottom of the sidebar; its pop holds the goal and, during first-time help, the grown-ups' skip */
+.cl-dock { margin-top: auto; display: flex; gap: 12px; padding-top: 8px; }
+.cl-help-btn { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #e6d5b8; background: #fffaf0; font: 800 22px var(--cl-head); color: #2a2522; cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: #2a2522; color: #fff8ec; border-radius: 16px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
+.cl-help-pop .ob-skip-row { color: #2a2522; }

@@ -1,7 +1,10 @@
 /*
  * Stage 3, the pharmacy counter: "Bring me..." (docs/modes/clinic-design.md
- * P4, Q1, Q3, Q5). A sushi belt runs across the top of the play area, right
- * to left, and loops: nothing is ever lost and nobody can lose. The doctor's
+ * P4, Q1, Q3, Q5; clinic v2: docs/modes/clinic-v2-design-sheets.md P). On
+ * CB4c the items ride the PAINTED belt, right to left, edge to edge: no
+ * hatches, they slide in from off-screen and out the other side, and the
+ * loop brings them round again: nothing is ever lost and nobody can lose.
+ * Level 3 is a faster belt with the items closer together; no timer (CQ5). The doctor's
  * prescription is the request card. The child TAPS the asked item as it
  * passes (tap at every level, Q1): it hops into the next empty dish of the
  * fixed-slot tray (bottom right: always as many dishes as asked, never a
@@ -26,10 +29,23 @@
       const res = S.result("pharmacy");
       const stage = S.room(screen, "pharmacy");
       stage.classList.add("cl-pharmacy");
-      const belt = h("div", "cl-belt", stage);
+      const box = stage.scene;
+      const cfg = stage.sceneCfg || {};
+      const belt = h("div", `cl-belt${box ? " v2" : ""}`, stage);
       const track = h("div", "cl-belt-track", belt);
-      const trayBox = h("div", "cl-counter-tray", stage);
+      // the tray on the counter strip, pantry style (outlined dishes)
+      const trayBox = h("div", `cl-counter-tray${box ? " v2" : ""}`, box || stage);
+      if (box && cfg.tray) S.place(trayBox, { x: cfg.tray.x, y: cfg.tray.y, z: 5 });
       const tray = new Kit.Tray(trayBox, plan.asked.length, {});
+      // the belt band sits on the painted belt: the items' bases on its surface, the band across the whole stage
+      const fitBelt = () => {
+        if (!box || cfg.beltY == null) return;
+        const top = box.offsetTop + (cfg.beltY - cfg.itemH) * box.clientHeight;
+        Object.assign(belt.style, { top: `${top}px`, height: `${cfg.itemH * box.clientHeight}px` });
+        belt.style.setProperty("--item", `${cfg.itemH * box.clientHeight}px`);
+      };
+      fitBelt();
+      if (box) box.addEventListener("scenefit", fitBelt);
       screen.trayWrap.classList.add("hidden");
       const st = PL().beltState(plan);
       const wordOf = (it) => PL().itemWord(data, it.id, it);
