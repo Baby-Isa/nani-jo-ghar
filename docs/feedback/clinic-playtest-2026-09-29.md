@@ -338,6 +338,8 @@ Answer "yes to all recommendations except …".
 
 - **Backgrounds approved (29 Sept, ~17:15):** CB1b, CB2b, CB3b, CB5 and CB6b pass their checks (CB6b already shows an empty frame on the right wall for the certificate). CB4c (the pharmacy belt, no hatches) is to come.
 
+- **Overlay check (29 Sept, after Zafar asked about room for dangling feet):** the real sitting poses on CB2b and CB1b (`build/reports/clinic-bg-check/`). The bed has room: at about half the screen height, the feet land on the step stool, with space for the doctor on the right. Six fit the bench with feet on the floor; an adult under the heart poster just touches its frame, so seat a child there or scale adults slightly (code). Both approved.
+
 ## 10. Art: the backgrounds first (ChatGPT; the page is `docs/chatgpt-art-prompts-clinic-v1.md`)
 Six backgrounds, built to the recommended answers:
 - CB1 the waiting room, wider;
