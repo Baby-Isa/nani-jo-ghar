@@ -52,7 +52,10 @@ Branch `claude/cook-samosa-v3`. Station: `js/cook/stations/samosa.js`. Shots: `b
 
 ## 3. Tests
 
-All after merging `origin/main` (with the sekelo v3 session's work in it).
+Run after merging `origin/main` (with the sekelo v3 session's work in it), and the station lab and days 1 again
+after the last merge (the clinic 13c–f commits): laptop lab PASS, *Understood everything. fold 100% · fry 100%*;
+phone-landscape lab PASS (run alongside `--days 1`, the bot's lifts came late and it burnt some: on its own it
+was 100 %, below); days 1 PASS (below).
 
 | Test | Result |
 |---|---|
