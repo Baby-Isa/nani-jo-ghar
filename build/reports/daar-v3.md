@@ -54,10 +54,48 @@ Zafar asked for a speed dial "in the kitchen-kit style", with its own review. Th
 **Left open:** the icons are code drawings (like the old ones). If Zafar wants them nicer, a ChatGPT sheet of four flat cream glyphs on transparent would drop straight in.
 
 ## 4. Tests
-(filled in at the end: see below)
+- `python3 build/test_cook.py --days 1 --canvas`: **PASS on all 6 viewports** (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait), run after merging `origin/main`. Day 1 doesn't reach daar; the lab run is what plays the station.
+- `python3 build/test_cook.py --lab --stations daar --viewport laptop` and `--viewport phone-landscape`: see the final lines below.
+- `node --test build/test_shared_*.mjs`: 113/113. `node build/check_onboard.mjs`: ok. `python3 build/check_vessel_meta.py`: ok. It now also checks `daar.js`'s POT / TRIVET / LADLE constants against `v3/daar/meta.json`, that all nine pots share the pot's canvas, and that the stir's clip sits inside the rim.
+- **Budget:** `LONG["daar"]` in `test_cook.py` is now 900 s (was 700). The swipe chop runs its full ring on every try, and a laptop lab run under load (four browsers at once) timed out at 700 s in its third chop.
+- **Bugs caught by the shots and fixed:**
+  - the dial drawn inside a Phaser container never showed its redraws (it's now plain objects);
+  - the pot never switched from oil to seeds (an inverted condition);
+  - the veg-bowl option never showed the bowl;
+  - an order with nothing to chop showed an empty "Chop these" card (it now goes straight to the pot);
+  - the praise card sat over the pot (it's now on the right);
+  - a lap count past the words showed an id (`num-09`; the last word now stays).
 
 ## 5. Shots with their flaws
-(filled in below)
+`build/reports/daar-v3/<viewport>-l<level>-<state>.png` for laptop (1366×768) and phone landscape (844×390), levels 1–4. Each level's first try goes wrong on purpose: it stirs through every band of the dial and past the count, so the wrong serve shows. `-again-*` is the second, right try. Missing names mean the state didn't happen in that run: level 3's order asked for no vegetables, so it has no chop; a few runs have no `chop-mid` because the bot, under load, sliced fewer than five.
+
+**Flaws first:**
+- **The dial lags the ladle in the shots.** Its needle is smoothed (0.35 s) and the headless renderer runs at a few frames a second, so `stir-hare` sometimes still lights the tortoise band, and `stir-spill` the hare band, while the daar is already slopping over (levels 2–4 were shot before I lengthened the drive). The laptop L1 re-shoot shows each band. On a real device the needle keeps up.
+- **The countdown ring is still the chop mechanic's own green, cream and brown**, not the kit's gold and sage. I left it because it's the shared `chop.js` and chaat's look; a kit-style ring would be a small `ringStyle` option.
+- **The review face covers the top quarter of the trivet bowl.** That is what "over the dish" asks for, but the bowl's garnish is hidden. On phone the praise card *Shabash!* sits about 10 px from the right edge. It is inside the view, but tight.
+- **Chop phase:** the empty cream shelf band stays at the bottom (the vegetables fly up through it). That keeps the grid the same as the cook, but it's a blank band.
+- **Level 3+ Nani's chop card still writes the quantities** (*ba dungri*). Q7 says heard only from level 3. That card is v2's and daar's own; I left it because the chop's count is the whole game and the card is the child's only check, **for Zafar** (see §6).
+- **At the pot, level 1–2 count rows show "••• tameto"** while undone (the shared card's got-dots after D9's reset). It's the shared order card, not daar's.
+- **The pot picture after a pile goes in** comes from the art's cumulative set: see §6.
+
+**What's right:**
+- **The swipe chop is back:** the level 1 single round, the level 2–3 switch and the decoys, with the kit's knife following the finger and no hand. Right slices send countable piles to the counter at the top right (`chop-mid`, `chopped`).
+- **The pot:**
+  - hot oil from the first frame (`cook-start`);
+  - knob on means flames that just peek out, and no ring (`hot`);
+  - the jar tips and the seeds picture fades in (`tadka-mid`);
+  - the piles wait left of the hob while their rows are back to "to do" (`piles`);
+  - the onion, tomato and chilli picture after they're in (`veg-in`);
+  - the daar poured and the tadka on top (`daar-in`).
+- **The stir:**
+  - the contents picture turns inside the rim;
+  - the swirl picture fades in with speed (`stir-hare`, `stir-spill`);
+  - the dial's lit band glows warm;
+  - the lap word sits on its chip (*hakro*, *ba*, *trae*, *panj*);
+  - spill drops fly off the rim at spilling.
+- **Serve:** the frowning face over the trivet bowl (wrong); the happy face with *Shabash!* to its right (right). Both are fully inside the view on laptop and phone.
+- **Level 4:** Nana's card starts folded in the cook.
+- **The end screen:** the word review and Again / All stations.
 
 ## 6. Open for Zafar
 - **Pot pictures by vegetable:** the art's chopped-vegetable pictures are cumulative (onion ⊂ tomato ⊂ chilli). An order with no onions still shows onion in `pot-tomato` / `pot-chilli`. The fix is two more pot pictures (tomato only, chilli only; or a set without onion). I didn't draw dots over them.
@@ -65,6 +103,7 @@ Zafar asked for a speed dial "in the kitchen-kit style", with its own review. Th
 - **The served bowl is the same picture as the one poured in.** D5 asked for "the finished daar at the side": it waits beside the pot, pours in, and a full bowl comes back for the review. It reads fine, but the bowl waiting to go in already shows the tadka on top. A plain-daar version of the trivet bowl would make the pour honest.
 - **Speed asked from level 2:** the recipe's existing `speed` slot (none / slowly / quickly) now reaches the station, as in the old stir game. It's judged by the ear star only. Say if you'd rather have the dial as a readout only (no asked speed), or have a wrong speed make the dish "not quite".
 - **A sliced decoy no longer makes the dish wrong** (its halves fall away; the ear star still counts it). This is how the swipe chop grades in chaat.
+- **Nani's chop card writes the quantities at every level** (v2's card). Q7 says level 3+ is heard only. For a swipe chop, where the count is the game, should the card go word-only at 3+ (*dungri*, *tameto*) like the order card?
 - **The chop re-marks the ear star on a retry** (the shared chop grades every time it runs). Harmless for the dish, but a retry's chop mistakes are logged too.
 
 ## 7. New placeholder words
