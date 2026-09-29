@@ -1,5 +1,5 @@
 {
- "_about": "Data for the daar station v2 (design system §13), the combined station js/cook/stations/daar.js: chop what Nani's card says on the board (tap a crate, tap the knife; the pieces go into the katori), then the tadka in the pot on the kitchen kit's hob (one burner, one pot: the knob, the spices in the order Nani says, the chopped vegetables, the daar) and stir as many times as Nani says. Serve and taste (§14a). mechanic.levels (merged in order): vegDecoys / spiceDecoys (extra crates and jars on the shelf), spiceShelf (where the spice decoys come from), ladder (how the card shows the tadka order: words | dots | hidden, as the tadka mechanic), heatRate (how fast the oil heats, ring per second). `phases`: one English line per job (placeholders, like every station goal).",
+ "_about": "Data for the daar station v2 (design system §13), the combined station js/cook/stations/daar.js: chop what Nani's card says on the board (tap a crate, tap the knife; the pieces go into the katori), then the tadka in the pot on the kitchen kit's hob (one burner, one pot: the knob, the spices in the order Nani says, the chopped vegetables, the daar) and stir as many times as Nani says. Serve and taste (§14a). mechanic.levels (merged in order): vegDecoys / spiceDecoys (extra crates and jars on the shelf), spiceShelf (where the spice decoys come from), ladder (how the card shows the tadka order: words | dots | hidden, as the tadka mechanic; not hidden for now: a hidden section lets the card fold with its check before the tadka is done), heatRate (how fast the oil heats, ring per second). `phases`: one English line per job (placeholders, like every station goal).",
  "station": {
   "name": "Daar",
   "verb": "Chop, tadka, stir",
@@ -14,7 +14,7 @@
    {"vegDecoys": 0, "spiceDecoys": 0, "spiceShelf": ["spi-02", "spi-05", "spi-01", "spi-16", "spi-04", "veg-13", "veg-12"], "ladder": "words", "heatRate": 0.32, "stirLine": "Stir round the pot as many times as Nani says, then tap the tick."},
    {"vegDecoys": 2, "spiceDecoys": 2},
    {"vegDecoys": 3, "spiceDecoys": 3, "ladder": "dots"},
-   {"ladder": "hidden", "heatRate": 0.42}
+   {"heatRate": 0.42, "vegDecoys": 4}
   ]
  }
 }

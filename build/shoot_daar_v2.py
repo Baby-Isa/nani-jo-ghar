@@ -75,13 +75,18 @@ class Shooter(T.Player):
                 # one too many: an extra vegetable, chopped
                 self.taken.add("wrong-tap")
                 self.tap(self.last_crate[0], self.last_crate[1], "one too many")
-                for _ in range(40):
+                for _ in range(150):
                     time.sleep(0.1)
                     cur = self.exp()
                     if cur and cur.get("key") == "knife":
                         self.tap(cur["sx"], cur["sy"], "knife")
                         break
-                time.sleep(2.2)
+                for _ in range(200):
+                    time.sleep(0.1)
+                    cur = self.exp()
+                    if cur and cur.get("selector") == "#done-btn":
+                        break
+                time.sleep(0.4)
             time.sleep(0.3)
             self.snap("chopped")
         if k == "tap" and key == "knob":
@@ -128,7 +133,7 @@ def run(vp, out, level, speed, guided=True, wrong=False):
             browser.close()
             print(tag, "portrait: the rotate prompt", flush=True)
             return True
-        P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=400)
+        P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=900)
         time.sleep(1.0)
         P.snap("end")
         res = page.evaluate("Cook.labResult ? [Cook.labResult.why, Cook.labResult.skills.join(' · '), Cook.labResult.help] : null")

@@ -25,7 +25,7 @@
  *
  * Levels (data/cook.json's daal recipe slots; data/stations/daar.json's mechanic levels): 1 = only what's
  * asked on the shelf, words on the chips; 2 = decoy vegetables and spices; 3 = speaker-only chips, the tadka
- * order as dots on the card; 4 = the tadka order off the card (from memory), the oil heats faster.
+ * order as dots on the card; 4 = more decoys, the oil heats faster.
  * Art (all existing): the pantry v2 crates and jars (assets/cook/items/shelf-*-bare-f), the top-down
  * vegetables (veg-*-whole-t / -halved-t / -chopped-t), tool-board-t, tool-knife-t, vessel-katori-t,
  * vessel-pot-t, tool-ladle-t, and the kitchen kit's hob and knob (js/cook/kitchen-kit.js).
@@ -114,7 +114,7 @@
     const flat = tadka.flat();
     const spiceIds = Cook.shuffle([...new Set(flat.concat(St.decoys(K.spiceShelf || [], flat, K.spiceDecoys || 0)))]);
     const laps = p.laps || 3;
-    if (Cook.Coach) Cook.Coach.stop(true);
+    if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the chop's own begin shows it (data.onboard.daar)
     const art = [
       ["dv2-board", IT + "tool-board-t.png"],
       ["dv2-knife", IT + "tool-knife-t.webp"],
@@ -146,7 +146,7 @@
 
       /* ---------- 2: tadka and stir, then serve and taste ---------- */
       await St.begin(S, ctx, "daar", "marble");
-      if (Cook.Coach) Cook.Coach.stop(true);
+      if (Cook.Coach) Cook.Coach.stop(false);
       if (ctx.nextStep) ctx.nextStep("tadka");
       UI.mission.reveal("tadka");
       if (!attempt && K.ladder && K.ladder !== "words" && UI.mission.conceal) UI.mission.conceal("tadka", K.ladder);
@@ -402,11 +402,13 @@
     const w = veg.displayWidth;
     const strokes = 4;
     const tween = (o) => new Promise((r) => S.tweens.add(Object.assign({ targets: knife, onComplete: r }, o)));
-    await tween({ x: veg.x - w * 0.36, y: veg.y - z.L(8), angle: 0, duration: 220, ease: "Quad.easeOut" });
+    // blade up and handle toward you, as it rests: the blade (the top half of the upright knife) crosses the vegetable
+    const up = knife.displayHeight * 0.22;
+    await tween({ x: veg.x - w * 0.36, y: veg.y - up - z.L(20), duration: 220, ease: "Quad.easeOut" });
     for (let i = 0; i < strokes; i++) {
       const x = veg.x - w * 0.36 + (w * 0.72 * i) / (strokes - 1);
-      await tween({ x, y: veg.y - z.L(34), scale: knife.baseScale * 1.05, duration: 90, ease: "Quad.easeOut" });
-      await tween({ y: veg.y - z.L(4), scale: knife.baseScale, duration: 70, ease: "Quad.easeIn" });
+      await tween({ x, y: veg.y - up - z.L(26), scale: knife.baseScale * 1.06, duration: 90, ease: "Quad.easeOut" });
+      await tween({ y: veg.y - up, scale: knife.baseScale, duration: 70, ease: "Quad.easeIn" });
       (Cook.sfx.chop || Cook.sfx.click)();
       S.tweens.add({ targets: veg, scaleY: veg.scaleY * 0.96, duration: 50, yoyo: true });
       if (i === 1 && S.textures.exists(`dv2-half-${id}`)) veg.setTexture(`dv2-half-${id}`).setScale(vs * 0.95);
@@ -419,7 +421,7 @@
     }
     S.puff(veg.x, veg.y, 0xfff6e0, z.L(40));
     Cook.sfx.pop();
-    tween({ x: rest.x, y: rest.y, angle: 50, duration: 260, ease: "Quad.easeInOut" });
+    tween({ x: rest.x, y: rest.y, duration: 260, ease: "Quad.easeInOut" });
     await Cook.wait(260);
   }
 
