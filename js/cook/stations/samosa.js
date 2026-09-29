@@ -103,8 +103,8 @@
   };
   const orderLine = (L) => {
     if (!L) return null;
-    const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head);
-    return Lang.join((L.head ? [L.head.line] : []).concat(rows.map((r) => (r.no || !r.said ? r.line : r.said))));
+    // 29 Sept (X1): one sentence, in card order (Cook.Order.speech)
+    return Cook.Order.speech([L]);
   };
 
   Mech.combined("samosa", {

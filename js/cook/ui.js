@@ -916,7 +916,12 @@
   /** Spoken parts ([{line, els}]) of a joined line whose parts know their rows (Cook.Order.speech). */
   function partsOf(line, map) {
     const parts = line && line.parts ? line.parts : line ? [line] : [];
-    return parts.map((l) => ({ line: l, els: (l.row && map.get(l.row)) || [] }));
+    return parts.map((l) => ({ line: l, els: elsOf(l, map) }));
+  }
+  /** The elements a spoken part lights: its row's, and every row it says (a headline that names a row, X1). */
+  function elsOf(l, map) {
+    const rows = [].concat(l.rows || [], l.row || []).filter((r, i, a) => a.indexOf(r) === i);
+    return [].concat(...rows.map((r) => map.get(r) || []));
   }
   let readToken = 0;
   const stopReading = () => {
@@ -1082,7 +1087,14 @@
         },
       });
       // what this card says, in order (the headline, then its rows): a person says their line from here
-      el._parts = () => (c.data.headline && c.data.headline.key && !c.data.headline.rec ? [{ row: c.data.headline.key, line: c.data.headline.key.line, els: (map.get(c.data.headline.key) || []).filter((e) => el.contains(e)) }] : []).concat(c.rows.map((r) => ({ row: r, line: r.no || !r.said ? r.line : r.said, els: (map.get(r) || []).filter((e) => el.contains(e)) })));
+      // 29 Sept (X1): the card's own sentence, in card order (one per person); each part lights the rows it says
+      el._parts = () => {
+        const head = c.data.headline && c.data.headline.key;
+        const line = c.who && c.L && c.L.sections.some((s) => s.for === c.who)
+          ? Order().sentence(head, c.rows, { join: Order().joinOf(c.L) })
+          : Order().speech([Object.assign({}, c.L, { head: head || null, sections: c.L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null })) })]);
+        return line.parts.map((l) => ({ row: l.row, line: l, els: elsOf(l, map).filter((e) => el.contains(e)) }));
+      };
       el._rows = c.rows;
       box.appendChild(el);
       return el;

@@ -502,6 +502,13 @@
    "src": "Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §26, B37)",
    "src_change": "was an English placeholder"
   },
+  "ph-sekelo": {
+   "kutchi": "sekelo",
+   "english": "sekelo",
+   "gender": "unknown",
+   "draft": true,
+   "src": "Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"
+  },
   "ph-mishkaki": {
    "kutchi": "mishkaki",
    "english": "mishkaki",
@@ -767,6 +774,22 @@
    "en": "First {x}.",
    "draft": true,
    "src": "Mum 25 Sept (A3.3-A3.6): pela = first (Muke pela daar khape, ne poi maani). As a line of its own, a draft"
+  },
+  "need_waari": {
+   "k": "Muke {x} waari chai khape.",
+   "en": "I want chai with {x}.",
+   "draft": true,
+   "src": "29 Sept (X1): Mum's order frame Muke {x} khape with her {x} waari chai (A3.3-A3.6: dudh / khun / kesar waari chai), put together; the whole sentence is to confirm with Mum (Q5 1)"
+  },
+  "with": {
+   "e": "with {x}",
+   "record": true,
+   "src": "29 Sept (X1): the join between an order's headline and the rest (Muke ba samosa khape, with ba chundo, trae marcha). English placeholder, TO RECORD: how Mum says 'with' for food (waari? sathe?) is Q5"
+  },
+  "and_join": {
+   "e": "and {x}",
+   "record": true,
+   "src": "29 Sept (X1): the join before a second kind of the same dish (Muke ba bajr ji maani khape, and hakri maani). English placeholder, TO RECORD with Mum (Q5 4); no Ne chaining"
   },
   "waari": {
    "k": "{x} waari chai.",
@@ -1236,8 +1259,18 @@
      "for": "$it.who",
      "say": [
       {
+       "if": "it.extra",
+       "frame": "need_waari",
+       "x": [
+        "$it.extra"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
        "if": [
         "it.named",
+        "!it.extra",
         "!it.dudh"
        ],
        "frame": "need",
@@ -1251,6 +1284,7 @@
       {
        "if": [
         "it.named",
+        "!it.extra",
         "it.dudh",
         "!it.khun"
        ],
@@ -1352,17 +1386,17 @@
    ],
    "how": "Each person says how they like their chai. Make every cup their way.",
    "card": {
-    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them.",
+    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them. 29 Sept (X1, Zafar): the extra (aadu / elchi) is the TOP row, since the headline names it (Muke aadu waari chai khape.), then milk, then sugar; said in this order too.",
     "slots": [
+     [
+      "spi-10",
+      "veg-14"
+     ],
      [
       "cook-dudh"
      ],
      [
       "cook-khun"
-     ],
-     [
-      "spi-10",
-      "veg-14"
      ],
      [
       "ph-half",
@@ -1377,6 +1411,9 @@
   "maani": {
    "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, (one tawa at every level: §13's burner rule); 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
    "name": "cook-maani",
+   "headFirst": true,
+   "join": "and_join",
+   "_sentence": "29 Sept (X1): the headline names the first kind with its count (Muke ba bajr ji maani khape.); a second kind follows with the join (and, to record)",
    "english": "Maani",
    "price": 3,
    "stations": [
@@ -1885,6 +1922,8 @@
     "fillings": {
      "type": "tally",
      "kinds": "$kinds",
+     "minFirst": 1,
+     "_minFirst": "29 Sept (S18, Zafar): every samosa has its base filling (the first kind: chundo, or bataato for veg) at least one spoon, named as a row; marcha, dhania and the rest are extras. 'Two samosas, three chillies' can't happen",
      "total": {
      "int": {
       "byLevel": [[2, 3], [3, 4], [3, 5], [3, 5]]
@@ -1955,7 +1994,7 @@
    "how": "Fill them with what they say, fold them, then fry them."
   },
   "mishkaki": {
-   "name": "ph-mishkaki",
+   "name": "ph-sekelo",
    "english": "Sekelo",
    "_pepper": "Sidebar v2 (Zafar, 28 Sept evening): no English in the item pills. Green pepper (ph-pepper) has no Kutchi word yet (Mum 26 Sept, B34), so it's out of the skewers (lists and tastes) until it's recorded; its art stays filed",
    "price": 6,

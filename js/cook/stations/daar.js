@@ -88,8 +88,8 @@
   const orderLine = (L) => {
     if (!L) return null;
     // what the person asked for (the tadka order is Nani's, said at the pot: not theirs to repeat)
-    const rows = [].concat(...L.sections.filter((s) => !s.when).map((s) => [].concat(...s.groups))).filter((r) => r && !r.head);
-    return Lang.join((L.head ? [L.head.line] : []).concat(rows.map((r) => (r.no || !r.said ? r.line : r.said))));
+    // 29 Sept (X1): one sentence, in card order (Cook.Order.speech leaves the `when` sections out)
+    return Cook.Order.speech([L]);
   };
   const shelfUrl = (id) => `${IT}shelf-${id}-bare-f.webp`;
 

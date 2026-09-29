@@ -204,13 +204,15 @@
         return sub;
       });
     },
-    /** Quantities per kind: {"ph-meat": 2, "veg-02": 1}. total, min, max per kind. */
+    /** Quantities per kind: {"ph-meat": 2, "veg-02": 1}. total, min, max per kind, minFirst. */
     tally(spec, env) {
       const t = fromTaste(spec, env);
       if (t !== undefined) return t;
       const kinds = listOf(spec.kinds, env);
       const out = {};
       kinds.forEach((k) => (out[k] = (spec.min || {})[k] || 0));
+      // minFirst: the first kind (samosa's base filling) is always there, at least this many (S18)
+      if (spec.minFirst && kinds.length) out[kinds[0]] = Math.max(out[kinds[0]], spec.minFirst);
       let left = value(spec.total, env) - kinds.reduce((a, k) => a + out[k], 0);
       while (left-- > 0) {
         const open = kinds.filter((k) => (spec.max || {})[k] == null || out[k] < spec.max[k]);

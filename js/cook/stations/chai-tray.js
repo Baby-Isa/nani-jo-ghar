@@ -118,7 +118,8 @@
   };
   // a person's own headline ("Muke kari chai khape.") in place of the order's
   const personHead = (L, who) => (L.sections.find((x) => x.for === who) || {}).head || L.head;
-  const personLine = (L, who, rows) => Lang.join((personHead(L, who) ? [personHead(L, who).line] : []).concat((rows || personRows(L, who)).map((r) => (r.no || !r.said ? r.line : r.said))));
+  // 29 Sept (X1): one sentence per person, in card order ("Muke aadu waari chai khape, with dudh, ba khun.")
+  const personLine = (L, who, rows) => Cook.Order.sentence(personHead(L, who), rows || personRows(L, who), { join: Cook.Order.joinOf(L) });
   const hiddenRow = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.cardHidden(s.w) && Lang.wordHasVoice(s.w));
 
   /** The speaker icon (the kitchen kit's). */
