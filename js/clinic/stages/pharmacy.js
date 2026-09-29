@@ -50,6 +50,7 @@
       const st = PL().beltState(plan);
       const wordOf = (it) => PL().itemWord(data, it.id, it);
 
+      await S.say(S.line(env, "why-pharmacy"), "doctor"); // the why beat (G5)
       await S.request(screen, { title: "", rows: plan.card });
 
       // the belt: dishes enter on the right every everyMs, cross in crossMs, loop through plan.loop

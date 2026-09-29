@@ -111,8 +111,8 @@
         top = H - h2;
       }
       Object.assign(box.style, { width: `${w}px`, height: `${h2}px`, left: `${left}px`, top: `${top}px` });
-      // above a bottom-fitted box: the top of the picture, mirrored and softened, so the wall carries on
-      if (top > 0) Object.assign(cap.style, { display: "block", left: `${left}px`, width: `${w}px`, top: `${top - h2}px`, height: `${h2}px` });
+      // the picture's top rows stretched up (the edge carried on), softened: no mirrored ghosts of the wall's pictures
+      if (top > 0) Object.assign(cap.style, { display: "block", left: `${left}px`, width: `${w}px`, top: "0px", height: `${top + 2}px`, backgroundSize: `100% ${h2 * 40}px`, backgroundPosition: "0 0" });
       else cap.style.display = "none";
       stage.style.setProperty("--scene-w", `${w}px`);
       stage.style.setProperty("--scene-h", `${h2}px`);

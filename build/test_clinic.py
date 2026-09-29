@@ -21,8 +21,8 @@ Usage:
   python3 build/test_clinic.py --canvas                     # headless Chromium without WebGL (the clinic is DOM: same run)
 Clinic v2 (docs/modes/clinic-v2-design-sheets.md A): the waiting room plays its five ladder
 levels; D1 at level 2 is the old D1b; the send-off plays E1, E2 (with the goodbye), level 3's
-what-helps and E4. `heal-fever-help` runs with the first-time help ON (G8: the tray's
-thermometer must be there for the help's spotlight, or the help blocks every tap).
+what-helps and E4. `heal-fever-help` plays fever with the first-time help ON, in the pipeline
+(G8: the tray the pharmacy hands over must hold the thermometer).
 Port: COOK_TEST_PORT (default 8820). Run one browser test at a time.
 Screenshots: build/screenshots/clinic-core/<viewport>/.
 """
@@ -36,6 +36,8 @@ import threading
 import time
 
 from playwright.sync_api import sync_playwright
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # build/heal_play.py (session B's driver)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORT = int(os.environ.get("COOK_TEST_PORT", os.environ.get("CLINIC_TEST_PORT", 8820)))
@@ -225,9 +227,13 @@ class Player:
 
 
 def help_case(p, vp_name, args):
-    """G8: the fever game with the first-time help ON, in the pipeline (the pharmacy's tray): the help's
-    spotlight must land on the thermometer's dish, a tap there must move the help on, and a tap on the
-    patient must end it; no page errors."""
+    """G8: the fever game with the first-time help ON, in the pipeline (the tray the pharmacy hands over). The tray
+    must hold the thermometer (the old `strip` id left the game without one, and the help, waiting on the
+    thermometer, blocked every other tap); the game is played to the end through its own debug driver
+    (debug.next(): what a child who understood would do, as real mouse events; build/heal_play.py), every
+    step's first-time cue must come (debug.cues), and nothing may error."""
+    import heal_play
+
     vp = VIEWPORTS[vp_name]
     b = chromium(p)
     ctx = b.new_context(viewport={"width": vp["width"], "height": vp["height"]}, has_touch=vp["touch"], is_mobile=vp["touch"])
@@ -238,26 +244,34 @@ def help_case(p, vp_name, args):
     try:
         page.goto(f"http://127.0.0.1:{PORT}/clinic.html?stage=heal&game=fever&level=1&seed={args.seed}&quiet=1&fast=1&onboard=1")
         page.wait_for_function("() => window.__clinic && window.__clinic.ready", timeout=30000)
-        page.wait_for_selector(".njg-onboard.on", timeout=15000)
-        tray = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r ? r.ctx.tray.map((t) => t.id) : null; }")
-        if not tray or "thermometer" not in tray:
+        page.wait_for_function("() => { const r = window.__clinic.Stages.heal.current; return !!(r && r.controller); }", timeout=15000)
+        tray = page.evaluate("() => window.__clinic.Stages.heal.current.ctx.tray.map((t) => t.id)")
+        if "thermometer" not in tray:
             raise AssertionError(f"the fever's tray has no thermometer: {tray}")
-        pl = Player(page, vp, False, os.path.join(SHOTS, vp_name))
-        time.sleep(0.4)
-        pl.shot(f"{name}-step1")
-        sel = f'.cl-side .cl-dish[data-slot="{tray.index("thermometer")}"]'
-        if not pl.tap_sel(sel, need_clear=False):
-            raise AssertionError("the thermometer's dish isn't on screen")
-        page.wait_for_function("() => { const o = document.querySelector('.njg-onboard'); return !o || o.dataset.step === '1'; }", timeout=6000)
-        time.sleep(0.4)
-        fig = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; const e = r && r.ctx.patient.el; if (!e) return null; const b = e.getBoundingClientRect(); return {x: b.left + b.width / 2, y: b.top + b.height * 0.25}; }")
-        if fig:
-            pl.tap_xy(fig["x"], fig["y"])
-        page.wait_for_function("() => !document.querySelector('.njg-onboard')", timeout=8000)
-        page.evaluate("() => window.__clinic.finishHeal()")
-        page.wait_for_function("() => !!window.__clinic.last", timeout=15000)
+        has_debug = page.evaluate("() => !!window.__clinic.Stages.heal.current.controller.debug")
+        pl = heal_play.Play(page, "fever", 1, vp_name, args.seed, None)
+        t0 = time.time()
+        cues = []
+        if has_debug:
+            while not page.evaluate("() => !!window.__clinic.last"):
+                if time.time() - t0 > 90:
+                    raise AssertionError("timed out playing fever with the help on")
+                if page.query_selector(".njg-onboard.on"):
+                    raise AssertionError("a blocking first-time overlay is up")
+                a = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r ? r.controller.debug.next() : {do: 'wait'}; }")
+                c = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug.cues ? r.controller.debug.cues : null; }")
+                if c is not None:
+                    cues = c
+                pl.act(a)
+            if not cues:
+                raise AssertionError("no first-time cue came with the help on")
+        else:
+            raise AssertionError("the fever game has no debug driver")
+        last = page.evaluate("() => { const l = window.__clinic.last; return l && l.heal ? {right: l.heal.right, total: l.heal.total} : null; }")
         bad = [l for l in logs if "PAGEERROR" in l]
-        print(f"  {vp_name:14} {name:28} {'ok' if not bad else 'console errors':6} help: thermometer dish -> patient -> done; tray {tray}")
+        if not last or last["right"] != last["total"]:
+            raise AssertionError(f"not all right playing fair: {last}")
+        print(f"  {vp_name:14} {name:28} {'ok' if not bad else 'console errors':6} {time.time() - t0:5.1f}s tray {tray} heal {last['right']}/{last['total']} cues {len(cues)}")
         return not bad
     except Exception as e:
         Player(page, vp, False, os.path.join(SHOTS, vp_name)).shot(f"{name}-FAIL")

@@ -44,7 +44,7 @@
     }
     String(k)
       .split(/(\[[^\]]*\])/)
-      .filter(Boolean)
+      .filter((seg) => seg && seg.trim()) // the space between two segments is the CSS margin (no double gap)
       .forEach((seg) => {
         if (seg.startsWith("[")) h("span", "ph", span, seg.slice(1, -1).replace(/^EN:\s*/, ""));
         else h("span", "ku", span, seg);

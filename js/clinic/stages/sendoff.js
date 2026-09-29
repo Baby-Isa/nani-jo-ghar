@@ -205,7 +205,7 @@
               await S.say(S.line(env, "onemore"), "doctor");
               const extra = h("button", "cl-extra", box);
               extra.type = "button";
-              S.place(extra, { x: cfg.doctor.x + 0.07, y: cfg.doctor.y - cfg.doctor.h * 0.38, z: 30 });
+              S.place(extra, { x: cfg.doctor.x - 0.065, y: cfg.doctor.y - cfg.doctor.h * 0.36, z: 30 }); // in the doctor's hand
               Kit.icon(plan.extra || "lollipop", extra);
               extra.addEventListener("click", async () => {
                 if (!awaitingExtra) return;

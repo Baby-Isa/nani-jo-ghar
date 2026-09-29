@@ -60,7 +60,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-card.english .cl-row-en { display: inline; color: #1b5e8a; }
 .cl-words .ph { color: var(--cl-ph); font-style: italic; }
 .cl-words .ku { color: var(--cl-ink); }
-.cl-words .ph + .ku, .cl-words .ku + .ph { margin-left: .25em; }
+.cl-words .ph + .ku, .cl-words .ku + .ph, .cl-words .ph + .ph { margin-left: .25em; }
 @keyframes cl-throb { 0%, 100% { transform: scale(1); background: #fff4df; } 50% { transform: scale(1.04); background: #ffe2a6; } }
 
 /* ---------- the tray (fixed slots) ---------- */
@@ -280,7 +280,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* the scene box: the approved background at full strength; everything placed in shares of the picture */
 .cl-room.v2 { background: #efe5d6; overflow: hidden; }
 .cl-scene { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; }
-.cl-scene-cap { position: absolute; display: none; background-size: 100% 100%; transform: scaleY(-1); filter: blur(3px) saturate(.9); opacity: .9; }
+.cl-scene-cap { position: absolute; display: none; background-repeat: no-repeat; filter: blur(2px); }
 .cl-placed { position: absolute; transform: translate(-50%, -100%); }
 
 /* W: the waiting room on CB1b */
