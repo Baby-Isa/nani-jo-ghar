@@ -230,7 +230,7 @@
    * The glass bowl and its layers. Everything in the glass's own pixels (GLASS.w x GLASS.h), drawn onto
    * one canvas texture that sits just under the glass sprite (so the glass's highlights lie over the food).
    */
-  function glassBowl(z, S) {
+  function glassBowl(z, S, expected = 5) {
     const k = GLASS_W / GLASS.w; // design px per glass px
     const H = GLASS.h * k;
     const g = {
@@ -266,7 +266,8 @@
       const t = S.textures.exists(`cv2-${kind}-${id}`) ? S.textures.get(`cv2-${kind}-${id}`).getSourceImage() : null;
       return t && t.width ? t : null;
     };
-    const full = () => ((GLASS.floor - GLASS.rim) * GLASS.h) / 5;
+    // a full layer: sized so the finished order fills about four fifths of the glass (a short order's layers are thicker)
+    const full = () => ((GLASS.floor - GLASS.rim) * GLASS.h * 0.84) / Math.max(4, expected);
     /** A level's front edge (its lowest point is y): the lower half of its surface ellipse. */
     const level = (y) => {
       const f0 = insideAt(y / GLASS.h);
@@ -640,7 +641,7 @@
       bandG.fillRect(z.X(0), z.Y(SHELF_TOP), z.L(1600), z.L(3));
 
       /* ---------- the glass ---------- */
-      const bowl = glassBowl(z, S);
+      const bowl = glassBowl(z, S, flat.length);
 
       /* ---------- the shelf: identical prep bowls, a chip under each ---------- */
       const n = ids.length;
@@ -967,8 +968,9 @@
             S.sparkle(rp.x, rp.y);
             if (exclude.length) UI.mission.closeItem(exclude, dishNo());
             if (!guided && tries === 1) flat.forEach((id) => Cook.markRight(id));
-            await pop(Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : rp.x, z.Y(250), { line: Lang.line("welldone"), ms: 1500 });
-            await Cook.wait(700);
+            await pop(Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : rp.x, z.Y(250), { line: Lang.line("welldone"), ms: 1900 });
+            // a moment to enjoy it before the end of the station
+            await Cook.wait(1400);
             break;
           }
           // not quite: a gentle face, they say what they asked for again, the glass comes back empty

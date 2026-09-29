@@ -65,9 +65,9 @@ class Shooter(T.Player):
             g = self.page.evaluate("(() => { const g = document.querySelector('.cv2-ghost'); return g ? [getComputedStyle(g).opacity, g.style.top] : null; })()")
             if g and float(g[0]) > 0.5:
                 # the finger on the card row, then on its bowl
-                time.sleep(0.9)
+                time.sleep(0.25)
                 self.snap("demo-card")
-                time.sleep(1.1)
+                time.sleep(1.6)
                 self.snap("demo")
         if k == "tap" and "start" not in self.taken:
             time.sleep(0.4)
@@ -98,7 +98,7 @@ class Shooter(T.Player):
                 time.sleep(0.1)
                 st = self.page.evaluate("(() => { const s = Cook.scene; return s && s.textures ? [...s.children.list].filter(o => o.texture && /cv2-.*-(happy|impatient)$/.test(o.texture.key)).map(o => o.texture.key) : []; })()")
                 if st:
-                    time.sleep(0.5)
+                    time.sleep(0.9)
                     self.snap("taste-right" if st[0].endswith("happy") else "taste-wrong")
                     if st[0].endswith("impatient"):
                         # the glass comes back empty
