@@ -350,7 +350,8 @@
         void countEl.offsetWidth;
         countEl.classList.add("pop");
       } else countEl.style.display = "none";
-      if ((L === 1 || L >= 3) && HS.NUM[n] && Voice && !o.silent) Voice.say({ kutchi: HS.cap(HS.NUM[n]), english: String(n) }, { who: "doctor", noBubble: true });
+      // level 1 is said by the host (ctx.tally, G6); level 3 is heard only, so we say it here
+      if (L >= 3 && HS.NUM[n] && Voice && !o.silent) Voice.say({ kutchi: HS.cap(HS.NUM[n]), english: String(n) }, { who: "doctor", noBubble: true });
     };
 
     /* ---- the gentle timer ---- */

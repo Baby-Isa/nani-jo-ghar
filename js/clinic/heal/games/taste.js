@@ -11,7 +11,9 @@
  * things into the cup, stir with the spoon), then taps the cup to give it:
  * the matching bumps shrink and vanish. Before the timer runs out.
  *   L1: one colour, a generous timer.  L2: two, in the order said.
- *   L3: three, with counts (ba chamchi ...) and a tighter timer.
+ *   L3: three, and a tighter timer. Every drink carries a spoon count
+ *   (ba chamchi ...; the sheet has counts at L3): with only three drinks, the
+ *   count is what keeps a blind guess under 10% at L1.
  * Rows (the words decide): each drink made right the first time it's given.
  */
 (function (root) {
@@ -27,7 +29,8 @@
     orange: { things: ["aadu", "paani"], kutchi: "aadu ne paani", english: "ginger and water", counted: "aadu" },
     green: { things: ["honey", "limu"], kutchi: "[honey] ne limu", english: "honey and lemon", counted: "honey" },
   };
-  const K = { colours: { 1: 1, 2: 2, 3: 3 }, timerMs: { 1: 75000, 2: 60000, 3: 45000 }, counts: [1, 2, 3] };
+  // spoon counts at every level: only three drinks exist, so the count keeps a blind guess under 10% at L1
+  const K = { colours: { 1: 1, 2: 2, 3: 3 }, timerMs: { 1: 75000, 2: 60000, 3: 45000 }, counts: { 1: [1, 2, 3, 4], 2: [1, 2, 3], 3: [1, 2, 3] } };
   const WHY = { problem: "My throat hurts and my tongue is sore.", goal: "Let's make drinks to soothe it." };
   const CUES = {
     make: "Tap the things for the drink you're told into the <b>cup</b>. Then tap the <b>spoon</b> to stir.",
@@ -43,17 +46,17 @@
     const colours = HS.shuffle(Object.keys(DRINKS), rng).slice(0, K.colours[L]);
     const drinks = colours.map((c) => {
       const d = DRINKS[c];
-      const n = L === 3 ? HS.pick(K.counts, rng) : 1;
-      const k = L === 3 ? `${d.kutchi.replace(WORD[d.counted], `${HS.NUM[n]} chamchi ${WORD[d.counted]}`)}` : d.kutchi;
-      return { colour: c, things: d.things, counted: d.counted, n, kutchi: k, english: L === 3 ? `${d.english} (${n} spoon${n > 1 ? "s" : ""} of ${d.counted === "honey" ? "honey" : d.counted})` : d.english };
+      const n = HS.pick(K.counts[L], rng);
+      const k = d.kutchi.replace(WORD[d.counted], `${HS.NUM[n]} chamchi ${WORD[d.counted]}`);
+      return { colour: c, things: d.things, counted: d.counted, n, kutchi: k, english: `${d.english} (${n} spoon${n > 1 ? "s" : ""} of ${d.counted})` };
     });
     const link = (i) => (drinks.length === 1 ? "" : i === 0 ? "Pela " : "ne poi ");
     const steps = drinks.map((d, i) => ({ id: `drink${i}`, kind: "make", drink: d, row: { id: `drink${i}`, kutchi: `${link(i)}[make] ${d.kutchi}`.trim(), english: `${i ? "Then make" : "Make"} ${d.english}` } }));
-    const key = (d) => d.things.slice().sort().join("+") + (L === 3 ? `x${d.n}` : "");
-    const opts = L === 3 ? [].concat(...pairs.map((p) => K.counts.map((n) => `${p}x${n}`))) : pairs;
+    const key = (d) => d.things.slice().sort().join("+") + `x${d.n}`;
+    const opts = [].concat(...pairs.map((p) => K.counts[L].map((n) => `${p}x${n}`)));
     const rows = drinks.map((d, i) => ({ id: `drink${i}`, options: opts, answer: key(d) }));
     const words = [{ kutchi: "hardar", english: "turmeric" }, { kutchi: "dudh", english: "milk" }, { kutchi: "aadu", english: "ginger" }, { kutchi: "paani", english: "water" }, { kutchi: "limu", english: "lemon" }, HS.ph("honey"), HS.ph("make")].filter((w) => !w.kutchi || drinks.some((d) => d.things.includes(w.kutchi)));
-    if (L === 3) words.push({ kutchi: "chamchi", english: "spoon" }, ...drinks.map((d) => ({ kutchi: HS.NUM[d.n], english: String(d.n) })));
+    words.push({ kutchi: "chamchi", english: "spoon" }, ...drinks.map((d) => ({ kutchi: HS.NUM[d.n], english: String(d.n) })));
     return { level: L, steps, rows, words, timerMs: K.timerMs[L], key };
   }
 
@@ -119,7 +122,6 @@
     const cupKey = () => {
       const ts = Object.keys(st.cup).sort();
       const base = ts.join("+");
-      if (P.level < 3) return base;
       const d = cur() && cur().drink;
       return `${base}x${d ? st.cup[d.counted] || 0 : 0}`;
     };
@@ -186,7 +188,6 @@
         st.stirred = false;
         const n = Object.values(st.cup).reduce((a, b) => a + b, 0);
         S.count(n, { silent: true });
-        ctx.tally("cup", n);
         drawCup();
       }
     );
