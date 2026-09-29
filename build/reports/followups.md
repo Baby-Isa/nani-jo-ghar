@@ -17,6 +17,8 @@
 - *mixed* and *boga* are both recorded (family-audio B18, B17), so I kept them.
 - *Muke sekelo khape* still needs confirming.
 
+**Tests:** `test_cook.py --lab --viewport laptop` PASS (208 shots).
+
 **Before / after**
 - `followups/chaat-layers-before.jpg` → `chaat-layers-after-l3-full.jpg`
 - `followups/sekelo-rack-before.jpg` → `sekelo-rack-after.jpg`

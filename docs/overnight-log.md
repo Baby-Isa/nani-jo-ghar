@@ -43,3 +43,4 @@
 - 03:08 UTC · polish · started: samosa fold mound, fry layout centred + kit karahi, early ✓; maani chimta rest
 - 03:21 UTC · polish · samosa: filling one mound in the fold's pocket, fry hob+karahi(kit)+plate centred above the band with raw samosas on thalis, no early one-spoon ticks; maani chimta on the hob rim; order-card ✓/ellipsis note in the queue; re-shooting
 - 03:23 UTC · daar-v2 · DONE. Report build/reports/daar-v2.md, matrix build/reports/daar-v2/ (+ qa.md); full test_cook --lab laptop PASS (226 shots); $0 spent (all existing art); TO CONFIRM: 'Chop these' (to record), hakro as the first stir count; version bumped, pushed to main
+- 03:30 UTC · order-card follow-ups · DONE: report build/reports/followups.md, shots build/reports/followups/, test_cook --lab laptop PASS (208 shots), version bumped, pushed to main. Not fixed: the letterbox band (shared, queue note); maani/samosa/daar to adopt closeCards/addCard (queue notes)
