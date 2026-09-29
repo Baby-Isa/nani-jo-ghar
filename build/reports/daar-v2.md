@@ -21,3 +21,4 @@
 - **Shared calls only:** Nani's card uses `addCard` / `removeCard` and the phase fold uses `closeCards`. The fallback `#dv2-nani` box and its `dv2-fold` style are gone.
 - **Early fold:** daar no longer hides the tadka section, so the hidden-section early ✓ can't happen. **Not fixed (shared, queue note):** after the last spice every row is done, so Nana's card still shows ✓ during the stir. The card needs to wait for its head (*daar*, closed at the serve), the same fix as samosa's.
 - **Shots:** re-shot the matrix into `daar-v2/`, plus `laptop-l2-no-*` (a round with *dungri na*). `build/shoot_daar_v2.py --no` forces that round.
+- **Tests (polish):** `test_cook.py --lab --viewport laptop` PASS (212 shots). Version bumped.
