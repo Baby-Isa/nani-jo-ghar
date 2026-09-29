@@ -389,3 +389,12 @@ About **4–5 build sessions in all**, against about 11 for the Cook overnight r
 - **Level 4 (two in order, against the comfort rings): pick everyone straight away.** No waiting for each person's greeting or the doctor between picks. Each tick shows its number (1, 2) as it's tapped; once the last one is tapped, the whole set is judged: all right → they lock in and rise; any wrong → the ticks shake and clear, and everyone sits back down to try again.
 - The lab's debug log (bottom left) overlaps the pills: it's lab-only, but it should sit clear of the play area.
 - **At most 6 people in the waiting room** (Zafar), at every level, counting the babies and children sitting with the grown-ups at level 5.
+- **Speaking moves out of the waiting room** (Zafar: you don't naturally call "little boy, next"). W3 "Call them in" is dropped in the clinic fix session unless Zafar says otherwise; the clinic's speaking goes into the patient conversation (E4), the pharmacy ask and the send-off. See `docs/design/speaking-more-proposal.md`.
+
+### 13b. Pharmacy, from Zafar's play of prototype A (29 Sept, late)
+- **The doctor orders, so the card says "bring me", not "I want".** The row reads *Muke plaster khape* (a customer's "I want"). It should be the doctor's request: **"[Bring me] the plaster"**. The Kutchi for "bring me" is still to confirm with Mum (Cook Q5 item 8, "bring me these", is the same ask), so it stays an English placeholder flagged "to record". Never invent it.
+- **A filled slot loses its dashed outline**, like the pantry's tray: once an item is in a slot, the cut-out box disappears.
+- **Tap a placed item to put it back** (a misclick). The first pick is what's scored: a wrong item put back still counts as a mistake in the review (the score penalty), so undo can't be used to fish for the tick.
+- **Items don't sit on the belt** (they float or tilt). That's the stand-in art: the real item art needs a flat base and a contact shadow on the belt.
+- Seen in the same shot: the green button at the bottom right ("To the bench"?) is cut off by the frame's right edge, and the lab's debug log overlaps the counter.
+- Otherwise good (Zafar).
