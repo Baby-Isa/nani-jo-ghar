@@ -684,6 +684,8 @@
   };
   SK.addPiece = function (S, c, id, { at } = {}) {
     const img = S.add.image(0, at != null ? at : SK.slotY(c.ids.length, c.n), SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(c.n));
+    // v3: each chunk a little turned or flipped, so a skewer of one kind isn't one picture repeated
+    if (SK.v3Name(id)) img.setAngle((Math.random() - 0.5) * 14).setFlipX(Math.random() < 0.5);
     const marks = S.add.image(img.x, img.y, SK.tex(S, "marks")).setScale(img.scale).setAlpha(0);
     img.marks = marks;
     img.pieceId = id;
