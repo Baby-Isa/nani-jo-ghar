@@ -10,6 +10,7 @@ Plays the station in the Station lab with build/test_cook.py's Player and saves 
 
   python3 build/shoot_chai_v2.py                       # laptop, level 2 (iterating)
   python3 build/shoot_chai_v2.py --all --level 3       # laptop + phone landscape
+  python3 build/shoot_chai_v2.py --cups 4              # 4 people (the data stops at 3: the 4-burner hob's look only)
 """
 import argparse
 import json
@@ -64,10 +65,12 @@ class Shooter(T.Player):
         return r
 
 
-def run(vp, out, level, speed, guided=False):
+def run(vp, out, level, speed, guided=False, cups=None):
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
-        P = Shooter(page, out, speed, f"{vp['name']}-l{level}")
+        P = Shooter(page, out, speed, f"{vp['name']}-l{level}" + (f"-{cups}cups" if cups else ""))
+        if cups:  # this page only: every level orders `cups` cups
+            page.evaluate(f"() => {{ Cook.data.recipes.chai.slots.cups.count = {{ byLevel: [{cups}, {cups}, {cups}, {cups}] }}; }}")
         page.evaluate(f"() => {{ __cook.lab('chai-tray', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         P.done_at = None
@@ -86,12 +89,13 @@ def main():
     ap.add_argument("--level", type=int, default=2)
     ap.add_argument("--guided", action="store_true")
     ap.add_argument("--speed", type=float, default=1.5)
+    ap.add_argument("--cups", type=int, default=None)
     ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "chai-v2"))
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     T.start_server()
     for name in (["laptop", "phone-landscape"] if a.all else [a.vp]):
-        run(VPS[name], a.out, a.level, a.speed, a.guided)
+        run(VPS[name], a.out, a.level, a.speed, a.guided, a.cups)
         print("shot", name)
 
 

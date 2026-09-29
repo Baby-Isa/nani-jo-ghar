@@ -177,11 +177,11 @@
   };
 
   /**
-   * A person's round face (29 Sept, X4 / Q12): the family's four faces are close-ups framed by the eyes
-   * (build/cut_characters.py), in three moods: neutral (a small smile), happy (it's right), frown (it's
+   * A person's round face (29 Sept, X4 / Q12): the family's faces are close-ups framed by the eyes
+   * (the ChatGPT face sheets A1/A2, build/cut_cook_v3.py --only faces), in three moods: neutral (a small smile), happy (it's right), frown (it's
    * wrong). Anyone else has one badge. A path (Cook.v it for the DOM).
    */
-  Cook.FACES = ["nani", "nana", "ma", "cousin"];
+  Cook.FACES = ["nani", "nana", "ma", "cousin", "isa"]; // (isa: from the v3 face sheet A2, 29 Sept)
   Cook.facePath = function (who, mood = "neutral") {
     if (!Cook.FACES.includes(who)) return `assets/cook/characters/${who}-badge.webp`;
     return `assets/cook/characters/${who}-face${mood && mood !== "neutral" ? `-${mood}` : ""}.webp`;

@@ -393,6 +393,7 @@ def main():
     ap.add_argument("--out", default=OUT)
     ap.add_argument("--only", default="")
     ap.add_argument("--badges-only", action="store_true", help="only the round faces (the service views stay)")
+    ap.add_argument("--old-faces", action="store_true", help="re-cut <who>-face* from the character sheets (replaced by cut_cook_v3.py's A1/A2 faces)")
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
     only = set(filter(None, args.only.split(",")))
@@ -416,8 +417,10 @@ def main():
                 save(make_happy(who, neutral), f"{who}-happy")
                 save(make_impatient(who), f"{who}-impatient")
         if who in BADGE_FACES:
-            # Cook's round faces (X4) and review faces (Q1): neutral, happy and a gentle frown; Nani has
-            # one face for now. The old <who>-badge stays as it was: the other games still use it.
+            # Cook's round faces (X4) and review faces (Q1) come from the ChatGPT face sheets A1/A2 now
+            # (build/cut_cook_v3.py --only faces, 29 Sept): don't overwrite them unless asked.
+            if not args.old_faces:
+                continue
             face = make_badge(who)
             save(face, f"{who}-face")
             for mood in ["happy", "frown"]:
