@@ -134,9 +134,13 @@ class Shooter(T.Player):
             return r
         r = super().act(e)
         if k == "timing":
-            # the last lift's plate wins (each lift overwrites it)
-            time.sleep(1.0)
-            self.snap("plate", force=True)
+            # the plate once the last one is lifted (never a pause while others are still frying)
+            time.sleep(0.05)
+            nxt = self.page.evaluate("Cook.expect ? [Cook.expect.kind, Cook.expect.x, Cook.expect.y] : [null]")
+            # (the last lift leaves the expectation on itself until its scoop ends)
+            if nxt[0] in (None, "wait") or (nxt[0] == "timing" and abs((nxt[1] or 0) - e.get("x", -1)) < 1 and abs((nxt[2] or 0) - e.get("y", -1)) < 1):
+                time.sleep(1.1)
+                self.snap("plate", force=True)
         if k == "tap" and key == "samosa" and "frying-1" not in self.taken:
             time.sleep(0.9)
             self.snap("frying-1")
@@ -181,6 +185,7 @@ def main():
     ap.add_argument("--vp", default="laptop")
     ap.add_argument("--level", type=int, default=1)
     ap.add_argument("--wrong", action="store_true")
+    ap.add_argument("--skip", nargs="*", default=[], help="matrix runs already shot and kept (e.g. laptop-l1)")
     ap.add_argument("--speed", type=float, default=1.5)
     ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "samosa-v3"))
     a = ap.parse_args()
@@ -189,13 +194,15 @@ def main():
     if a.matrix:
         out = os.path.join(T.ROOT, "build", "reports", "samosa-v3")
         os.makedirs(out, exist_ok=True)
-        for f in os.listdir(out):
-            if f.endswith(".png"):
-                os.remove(os.path.join(out, f))
-        ok &= run(VPS["phone"], out, 1, a.speed)
+        if not a.skip:
+            for f in os.listdir(out):
+                if f.endswith(".png"):
+                    os.remove(os.path.join(out, f))
+            ok &= run(VPS["phone"], out, 1, a.speed)
         for name in ["laptop", "phone-landscape"]:
             for lv in (1, 2, 3, 4):
-                ok &= run(VPS[name], out, lv, a.speed)
+                if f"{name}-l{lv}" not in a.skip:
+                    ok &= run(VPS[name], out, lv, a.speed)
             ok &= run(VPS[name], out, 2, a.speed, wrong=True)
     else:
         os.makedirs(a.out, exist_ok=True)

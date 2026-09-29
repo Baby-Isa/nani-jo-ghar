@@ -900,7 +900,8 @@
             const sx0 = im.x;
             const sy0 = f.y0;
             im.y = b.y = sy0;
-            jharo.setPosition(sx0 + z.L(150), sy0 + z.L(170)).setAngle(0).setAlpha(0);
+            // (turned so its handle hangs down over the band, never off the view's right edge by the plate)
+            jharo.setPosition(sx0 + z.L(60), sy0 + z.L(210)).setAngle(30).setAlpha(0);
             await new Promise((r) => S.tweens.add({ targets: jharo, x: sx0, y: sy0 + z.L(6), alpha: 1, duration: 180, ease: "Quad.easeOut", onComplete: r }));
             Cook.sfx.pop();
             // onto the plate: the samosa rides on the jharo's bowl
@@ -913,7 +914,7 @@
             im.setAngle(sp.a);
             b.setAngle(sp.a);
             // it tips the samosa off and goes back down to the oil's side, out of the way
-            S.tweens.add({ targets: jharo, x: jharo.x + z.L(120), y: jharo.y + z.L(140), alpha: 0, duration: 260, ease: "Quad.easeIn" });
+            S.tweens.add({ targets: jharo, x: jharo.x + z.L(40), y: jharo.y + z.L(170), alpha: 0, duration: 260, ease: "Quad.easeIn" });
             await settle();
             if (verdict === "golden") S.sparkle(im.x, im.y);
             done();
