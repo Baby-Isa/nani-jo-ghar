@@ -713,7 +713,8 @@
         if (img.texture.key !== painted) img.setTexture(painted);
         // (a v3 vegetable has no charred picture: its grilled one, darker)
         img.setTint(burnt && !(SK.v3Name(img.pieceId) === "meat") ? 0x8c7466 : light);
-        img.marks.setAlpha(Cook.clamp(marks, 0, 1) * 0.35);
+        // (a v3 piece has its own grill marks painted on)
+        img.marks.setAlpha(SK.v3Name(img.pieceId) ? 0 : Cook.clamp(marks, 0, 1) * 0.35);
         return;
       }
       img.setTint(col);
@@ -876,7 +877,9 @@
     const ctx = c.getContext("2d");
     ctx.drawImage(S.textures.get(`sk3-plate-${n}`).getSourceImage(), 0, 0, w, h);
     const order = SK.plateOrder();
-    plate.slice(0, n).forEach((p, j) => {
+    // back to front (the picture's skewers run from the back, up and right, to the front)
+    const front = plate.slice(0, n).map((p, j) => [p, j]).sort((a, b) => order[n][a[1]] - order[n][b[1]]);
+    front.forEach(([p, j]) => {
       const st = P.sticks[n][order[n][j]];
       const t = SK.lineAt({ x: st[0] * w, y: st[1] * h }, { x: st[2] * w, y: st[3] * h });
       ctx.save();
@@ -1197,7 +1200,12 @@
       const st = P.sticks[N][order[N][Math.min(j, N - 1)]];
       return [pt(st[0], st[1]), pt(st[2], st[3])];
     };
-    return { img, d: P.rim[2] * 2 * P.w * img.scaleX, line, set: (n) => img.setTexture(`sk3-plate-${Math.max(0, Math.min(4, n))}`) };
+    // rank: how far forward the j-th skewer lies in the picture of n (its drawn skewers run back to front)
+    const rank = (j, n) => {
+      const N = Math.max(1, Math.min(4, Math.max(n, j + 1)));
+      return order[N][Math.min(j, N - 1)];
+    };
+    return { img, d: P.rim[2] * 2 * P.w * img.scaleX, line, rank, set: (n) => img.setTexture(`sk3-plate-${Math.max(0, Math.min(4, n))}`) };
   };
   /** For each plate picture n: which of its drawn skewers is the j-th plated (the same place as in picture n-1). */
   SK.plateOrder = function () {
@@ -1328,6 +1336,8 @@
           if (!p.sprite || !p.landed) return;
           SK.stickShown(p.sprite, q >= n);
           SK.onLine(p.sprite, ...plateArt.line(q, Math.max(n, q + 1)));
+          // the skewers overlap on the plate: the one further back (up and right) under the one in front
+          p.sprite.setDepth(D.item + 3 + plateArt.rank(q, Math.max(n, q + 1)) * 0.01);
         });
       };
       const plate = [];
