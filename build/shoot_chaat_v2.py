@@ -162,7 +162,7 @@ def main():
         out = os.path.join(T.ROOT, "build", "reports", "chaat-v2")
         os.makedirs(out, exist_ok=True)
         for f in os.listdir(out):
-            if f.endswith(".png"):
+            if f.endswith((".png", ".jpg")):
                 os.remove(os.path.join(out, f))
         ok &= run(VPS["phone"], out, 1, a.speed, demo=False)
         for name in ["laptop", "phone-landscape"]:
@@ -170,6 +170,12 @@ def main():
             ok &= run(VPS[name], out, 2, a.speed, wrong=True, demo=False)
             ok &= run(VPS[name], out, 3, a.speed, demo=False)
             ok &= run(VPS[name], out, 4, a.speed, demo=False)
+        # kept as JPEG (a matrix of PNGs is ~15 MB)
+        from PIL import Image
+        for f in sorted(os.listdir(out)):
+            if f.endswith(".png"):
+                Image.open(os.path.join(out, f)).convert("RGB").save(os.path.join(out, f[:-4] + ".jpg"), quality=88)
+                os.remove(os.path.join(out, f))
     else:
         os.makedirs(a.out, exist_ok=True)
         ok = run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong, demo=not a.nodemo)
