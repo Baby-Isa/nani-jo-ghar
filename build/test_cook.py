@@ -82,7 +82,11 @@ def start_server():
         def log_message(self, *args):
             pass
 
-    httpd = ReusableTCPServer(("127.0.0.1", PORT), QuietHandler)
+    try:
+        httpd = ReusableTCPServer(("127.0.0.1", PORT), QuietHandler)
+    except OSError:
+        # another test or shoot script of this repo is already serving it (several sessions shoot at once)
+        return None
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd
 
@@ -174,15 +178,19 @@ class Player:
         if getattr(self, "helped", False) or not self.page.query_selector("#btn-help"):
             return
         self.helped = True
+        # record the open as it happens: the game itself puts the goal away when Nani's line changes
+        # (UI.hideGist), which at test speed can come before a check afterwards
+        self.page.evaluate("() => { const p = document.querySelector('#help-pop'); window.__helpSeen = false; if (!p) return; if (window.__helpObs) window.__helpObs.disconnect(); window.__helpObs = new MutationObserver(() => { if (!p.classList.contains('hidden')) window.__helpSeen = true; }); window.__helpObs.observe(p, {attributes: true, attributeFilter: ['class']}); }")
         self.page.click("#btn-help", force=True)
         time.sleep(0.3)
-        if not self.page.query_selector("#help-pop:not(.hidden)"):
+        if not self.page.query_selector("#help-pop:not(.hidden)") and not self.page.evaluate("window.__helpSeen"):
             raise AssertionError("the ? didn't pop the goal out")
-        self.shot("help-open")
-        self.page.click("#btn-help", force=True)
-        time.sleep(0.2)
         if self.page.query_selector("#help-pop:not(.hidden)"):
-            raise AssertionError("the ? didn't close the goal again")
+            self.shot("help-open")
+            self.page.click("#btn-help", force=True)
+            time.sleep(0.2)
+            if self.page.query_selector("#help-pop:not(.hidden)"):
+                raise AssertionError("the ? didn't close the goal again")
         # Sidebar v2: the order card's face is its replay button: it reads the card with read-along; the light bulb flips it to English for a moment
         say = self.page.query_selector("#mission:not(.hidden):not(.stamped) .m-ring.face-say")
         if say and say.is_visible():
@@ -199,11 +207,15 @@ class Player:
             time.sleep(0.6)
         bulb = self.page.query_selector("#btn-bulb")
         if bulb and bulb.is_visible() and self.page.query_selector("#mission:not(.hidden):not(.stamped)"):
+            # record the flip as it happens: at level 4 English shows for only bulbMs / speed (333 ms at speed 3),
+            # less than a click can take to settle, so checking afterwards raced it
+            self.page.evaluate("() => { const s = document.querySelector('#side'); window.__bulbSeen = s.classList.contains('english'); if (window.__bulbObs) window.__bulbObs.disconnect(); window.__bulbObs = new MutationObserver(() => { if (s.classList.contains('english')) window.__bulbSeen = true; }); window.__bulbObs.observe(s, {attributes: true, attributeFilter: ['class']}); }")
             bulb.click()
             time.sleep(0.15)
-            if not self.page.query_selector("#side.english"):
+            if not self.page.evaluate("window.__bulbSeen"):
                 raise AssertionError("the light bulb didn't flip the sidebar to English")
-            self.shot("bulb-english")
+            if self.page.query_selector("#side.english"):
+                self.shot("bulb-english")
             ms = self.page.evaluate("Cook.UI.bulbMs() / Cook.speed")
             time.sleep(ms / 1000 + 0.4)
             if self.page.query_selector("#side.english"):
