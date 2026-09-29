@@ -95,7 +95,7 @@ Please record each as a whole sentence. The words in brackets are what the game 
 - `build/test_cook.py --lab --viewport laptop`, split with `--stations` (it runs past 20 min in one go):
   - fetch, chai-tray, maani-line, mishkaki-grill, daar: **PASS** (68 shots, 1058 s);
   - chop … flip (11 stations): every station played with no failure, but the run hit its 20-minute `timeout` at the end of `flip` (the shot scripts were running on the other lock, which slowed it), so it has no PASS line. Its last five (fill, fry, thread, grill, roll-tawa) were run again on their own: **PASS** (54 shots, 396 s);
-  - after the last layout changes (chai and maani face placement, the view clamp), chai-tray, maani-line, assemble, mishkaki-grill and samosa, daar again: RESULT_LAB4 / RESULT_LAB5.
+  - after the last layout changes (chai and maani face placement, the view clamp), chai-tray, maani-line, assemble, mishkaki-grill: **PASS** (61 shots, 645 s), and samosa, daar: **PASS** (64 shots, 823 s). These runs went through real wrong dishes (a chaat in the wrong order, one maani too many, a dark samosa, one onion too many), so the frown, the marked row and the redo ran for real, not only in the forced shots.
 - `build/test_cook.py --days 1 --canvas --viewport laptop`: **PASS** (41 shots, 121 s).
 
 ## 7. Shots and flaws (VISUAL-QA §5)
