@@ -20,8 +20,8 @@ Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pu
 | **Maani v2** + **kitchen kit** | ✅ live | $0.05 | One tawa (Zafar). Kit = `js/cook/kitchen-kit.js` (`Cook.Kit`, shared-api §15). Adopt the new card APIs (queue note). | `maani-v2.md` |
 | **Sekelo v2** (was the mishkaki grill) | ✅ live | $0.12 | Top-down throughout (Zafar). **To confirm:** headline *Muke sekelo khape.* (Zafar checking with Mum); *lakri gos* vs Mum's *hakri lakri mishkaki*. | `sekelo-v2.md` |
 | **Chaat v2** | ✅ live | $0.32 | Glass cross-section, curved layers (follow-ups fix). L4 closed card + paid peek. Nani's line placeholder. | `chaat-v2.md`, `followups.md` |
-| **Samosa v2** | ✅ live | $0.07 | Swipe fold kept; karahi fry on the kit. Polish pass: one filling mound, centred fry layout. Phase lines + "fry them" button English placeholders. | `samosa-v2.md` |
-| **Daar v2** (chop, tadka, stir) | ✅ live | $0 | Stirs shown as a Kutchi word. **To record:** Nani's "Chop these". Confirm *hakro* as the first stir count. L4 closed card (polish). | `daar-v2.md` |
+| **Samosa v2** | ✅ live | $0.07 | Swipe fold kept; karahi fry on the kit. Polish pass: one filling mound, centred fry layout (kit karahi). **Still open:** the card headline cuts to "Muke ba samosa …" and ticks ✓ after filling (order-card/ui.js fix, queue note). Phase lines + "fry them" button English placeholders. | `samosa-v2.md` |
+| **Daar v2** (chop, tadka, stir) | ✅ live | $0 | Stirs shown as a Kutchi word. **To record:** Nani's "Chop these". Confirm *hakro* as the first stir count. L4 closed card + paid peek, neutral don't rows (polish). **Still open:** gold settle on don't rows and Nana's ✓ during the stir (ui.js head rule, queue note). | `daar-v2.md` |
 | **Pantry v2** (fetch) | 🟡 live, polish pending | – | Waiting on the final background render; then a polish pass (plans doc A3). | `pantry-v2/` |
 | **Station select, day flow, title screen** | ⏸ | – | Plans doc A4; title screen parked by Zafar. | `docs/design/plans-remaining-2026-09-29.md` |
 
