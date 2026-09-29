@@ -178,7 +178,13 @@
    * line never talk over each other: each waits for the one before it, the count first.
    */
   let speechTail = Promise.resolve();
-  const queued = (fn) => (speechTail = speechTail.catch(() => {}).then(fn));
+  // (a clip that never ends can't hold the queue: each waits at most 4 s for the one before)
+  const queued = (fn) => {
+    const before = Promise.race([speechTail.catch(() => {}), new Promise((r) => setTimeout(r, 4000))]);
+    const mine = before.then(fn);
+    speechTail = mine.catch(() => {});
+    return mine;
+  };
   UI.queueSpeech = queued;
 
   /* ---------------- speech: bubble by a character, or Nani's card ---------------- */
