@@ -160,8 +160,11 @@
     w: 890,
     h: 570,
     rim: 0.142, // the rim's centre line
-    floor: 0.87, // the lowest point of the inside floor's front edge
-    ery: 0.12, // a level's surface is an ellipse this flat (ry / rx): a little flatter than the rim, so the layers read
+    floor: 0.86, // the lowest point of the inside floor's front edge (the inner floor ring in the art)
+    // a level's surface is an ellipse this flat (ry / rx): the rim's ring is ~0.19, the inner floor's ~0.22
+    // (the eye looks further down into the glass), so each layer's edges curve like the glass's own rings
+    eryRim: 0.15,
+    eryFloor: 0.2,
     // prettier-ignore
     inside: [[0.4344, 0.5308], [0.2242, 0.7522], [0.1332, 0.8713], [0.0771, 0.9274], [0.0456, 0.9578], [0.0276, 0.9735], [0.022, 0.9758], [0.0242, 0.9724], [0.0287, 0.9656], [0.0332, 0.9611], [0.0355, 0.9589], [0.0377, 0.9567], [0.0411, 0.9533], [0.0433, 0.9499], [0.0467, 0.9477], [0.0501, 0.9432], [0.0523, 0.9398], [0.0568, 0.9387], [0.0591, 0.9353], [0.0636, 0.9319], [0.0669, 0.9274], [0.0692, 0.9241], [0.0737, 0.9196], [0.0782, 0.9162], [0.0816, 0.9117], [0.086, 0.9072], [0.0917, 0.9027], [0.0973, 0.8971], [0.1051, 0.8904], [0.113, 0.8825], [0.1231, 0.8735], [0.1321, 0.8645], [0.149, 0.8477], [0.1681, 0.8286], [0.1894, 0.8095], [0.2085, 0.7915], [0.2265, 0.7746], [0.2456, 0.7578], [0.2793, 0.7252], [0.3366, 0.6713], [0.4917, 0.5196]],
   };
@@ -174,7 +177,8 @@
   const PREP_W = 122; // one slot's bowl (identical for every topping)
   const GLASS_W = 440; // about 60% of the old bowl (§14)
   const GLASS_X = 800;
-  const GLASS_BOTTOM = 578; // with chai v2's breathing space above the shelf
+  // the glass is centred in the scene above the shelf band (0..SHELF_TOP): its middle at SHELF_TOP / 2
+  const GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
   const SERVE_X = 1050; // where the glass is tasted
   const PERSON_X = 1405;
   const INK = {
@@ -198,6 +202,10 @@
   const DRIZZLE = { "ph-amli": true, "ph-lili": true };
   const HAS_ART = ["veg-01", "ph-chana", "ph-dahi", "ph-amli", "ph-lili", "ph-sev", "ph-dhana", "veg-12", "veg-02", "veg-03"];
   const RES = 1.5; // the layers' canvas, over the glass's design size (crisp on a big screen)
+  // a layer's pieces, as a share of their size in the strip art (so a potato cube is a cube, not a slab)
+  const BAND_SCALE = { "veg-01": 0.48, "ph-chana": 0.5, "ph-dahi": 0.6, "ph-sev": 0.62, "ph-dhana": 0.5, "veg-02": 0.46, "veg-03": 0.44, "veg-12": 1.0 };
+  const BAND_W = 900; // a layer's flat texture: as wide as the glass (glass px)
+  const BAND_PAD = 14; // and this much above and below the layer (for the uneven lines)
 
   /** The speaker icon, drawn at (x, y) about `s` px tall (chai v2's). */
   function speaker(g, x, y, s, color = 0x2a2522) {
@@ -226,9 +234,123 @@
     return { cx: (l + r) / 2, hw: (r - l) / 2 };
   }
 
+  /** A small seeded random (a layer keeps its own look while it settles and grows). */
+  function rng(seed) {
+    let t = seed >>> 0;
+    return () => {
+      t = (t + 0x6d2b79f5) >>> 0;
+      let r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const colourOf = (id) => ((Cook.data.words[id] || {}).layer || {}).color || "#d8c49a";
+
+  /**
+   * A topping's "stamps": a dozen pieces cut at random from its strip art, each with feathered edges,
+   * at the size a piece has in the glass (BAND_SCALE). Scattered at random, they make a layer with no
+   * visible tile or repeat. A chutney's pieces are whole-height ribbons, feathered at the ends only.
+   */
+  const STAMPS = {};
+  function stampsOf(id, im) {
+    if (STAMPS[id]) return STAMPS[id];
+    const R = rng([...id].reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7));
+    const drizzle = !!DRIZZLE[id];
+    const sc = drizzle ? 1 : BAND_SCALE[id] || 0.34;
+    const out = [];
+    for (let i = 0; i < 12; i++) {
+      const sh = drizzle ? im.height : im.height * (0.5 + R() * 0.4);
+      const sw = drizzle ? im.width * (0.3 + R() * 0.2) : Math.min(im.width * 0.45, sh * (1.2 + R() * 1.2));
+      const sx = R() * (im.width - sw);
+      const sy = R() * (im.height - sh);
+      const w = Math.max(4, Math.ceil(sw * sc));
+      const h = Math.max(4, Math.ceil(sh * sc));
+      const cv = document.createElement("canvas");
+      cv.width = w;
+      cv.height = h;
+      const x = cv.getContext("2d");
+      x.drawImage(im, sx, sy, sw, sh, 0, 0, w, h);
+      x.globalCompositeOperation = "destination-in";
+      if (drizzle) {
+        const gr = x.createLinearGradient(0, 0, w, 0);
+        gr.addColorStop(0, "rgba(0,0,0,0)");
+        gr.addColorStop(0.2, "#000");
+        gr.addColorStop(0.8, "#000");
+        gr.addColorStop(1, "rgba(0,0,0,0)");
+        x.fillStyle = gr;
+        x.fillRect(0, 0, w, h);
+      } else {
+        x.translate(w / 2, h / 2);
+        x.scale(w / 2, h / 2);
+        const gr = x.createRadialGradient(0, 0, 0, 0, 0, 1);
+        gr.addColorStop(0, "#000");
+        gr.addColorStop(0.55, "#000");
+        gr.addColorStop(1, "rgba(0,0,0,0)");
+        x.fillStyle = gr;
+        x.fillRect(-1, -1, 2, 2);
+      }
+      out.push(cv);
+    }
+    return (STAMPS[id] = out);
+  }
+
+  /** One layer's flat texture (BAND_W x h glass px): its colour, then its stamps scattered at random. */
+  function bandCanvas(id, im, h, seed) {
+    const cv = document.createElement("canvas");
+    cv.width = BAND_W;
+    cv.height = h;
+    const x = cv.getContext("2d");
+    const R = rng(seed);
+    if (!DRIZZLE[id]) {
+      x.fillStyle = colourOf(id);
+      x.fillRect(0, 0, BAND_W, h);
+    }
+    if (!im) return cv;
+    const st = stampsOf(id, im);
+    const put = (s, px, py, sw, sh) => {
+      x.save();
+      if (R() < 0.5) {
+        x.translate(px + sw, py);
+        x.scale(-1, 1);
+        x.drawImage(s, 0, 0, sw, sh);
+      } else x.drawImage(s, px, py, sw, sh);
+      x.restore();
+    };
+    if (DRIZZLE[id]) {
+      // ribbons along the layer, overlapping, each a little higher or lower
+      const inner = h - 2 * BAND_PAD;
+      for (let px = -R() * 120; px < BAND_W; ) {
+        const s = st[Math.floor(R() * st.length)];
+        const sh = inner * (1.05 + R() * 0.2);
+        const sw = (s.width * sh) / s.height;
+        put(s, px, BAND_PAD + (inner - sh) / 2 + (R() - 0.5) * inner * 0.25, sw, sh);
+        px += sw * (0.6 + R() * 0.15);
+      }
+      return cv;
+    }
+    // a jittered grid (every spot covered, no two rows alike), drawn in a random order
+    const aw = st.reduce((a, s) => a + s.width, 0) / st.length;
+    const ah = st.reduce((a, s) => a + s.height, 0) / st.length;
+    const cw = Math.max(6, aw * 0.4);
+    const ch = Math.max(6, ah * 0.4);
+    const pts = [];
+    for (let gy = -ch; gy < h + ch; gy += ch)
+      for (let gx = -cw; gx < BAND_W + cw; gx += cw) {
+        const s = st[Math.floor(R() * st.length)];
+        const k = 0.85 + R() * 0.3;
+        pts.push({ s, w: s.width * k, h: s.height * k, x: gx + R() * cw, y: gy + R() * ch, o: R() });
+      }
+    pts.sort((a, b) => a.o - b.o);
+    pts.forEach((p) => put(p.s, p.x - p.w / 2, p.y - p.h / 2, p.w, p.h));
+    return cv;
+  }
+
   /**
    * The glass bowl and its layers. Everything in the glass's own pixels (GLASS.w x GLASS.h), drawn onto
    * one canvas texture that sits just under the glass sprite (so the glass's highlights lie over the food).
+   * Each layer is clipped to the glass's measured INSIDE (it narrows toward the floor): its edges are the
+   * front halves of its level's ellipse (rounder lower down, as the eye looks further into the glass), the
+   * line between two layers a little uneven, and its texture bent along that curve.
    */
   function glassBowl(z, S, expected = 5) {
     const k = GLASS_W / GLASS.w; // design px per glass px
@@ -261,32 +383,42 @@
         )
       : null;
     const parts = [shadow, glass, food].concat(hi ? [hi] : []);
-    const layers = []; // {id, th (glass px), grow}
+    const layers = []; // {id, th (glass px), grow, seed, wob, tex}
     const img = (id, kind) => {
       const t = S.textures.exists(`cv2-${kind}-${id}`) ? S.textures.get(`cv2-${kind}-${id}`).getSourceImage() : null;
       return t && t.width ? t : null;
     };
-    // a full layer: sized so the finished order fills about four fifths of the glass (a short order's layers are thicker)
-    const full = () => ((GLASS.floor - GLASS.rim) * GLASS.h * 0.84) / Math.max(4, expected);
-    /** A level's front edge (its lowest point is y): the lower half of its surface ellipse. */
+    // a full layer: thin enough that a long order (6) fills about four fifths of the glass, so three
+    // layers sit in the lower half and every layer of a long order stays visible
+    const full = () => ((GLASS.floor - GLASS.rim) * GLASS.h * 0.8) / Math.max(6, expected);
+    /** A level's surface ellipse (its front edge's lowest point is y): rounder lower in the glass. */
     const level = (y) => {
+      const t = Cook.clamp((y / GLASS.h - GLASS.rim) / (GLASS.floor - GLASS.rim), 0, 1);
+      const ery = GLASS.eryRim + (GLASS.eryFloor - GLASS.eryRim) * t;
       const f0 = insideAt(y / GLASS.h);
-      const f = insideAt((y - GLASS.ery * f0.hw * GLASS.w) / GLASS.h); // the sides sit higher, where it's wider
+      const f = insideAt((y - ery * f0.hw * GLASS.w) / GLASS.h); // the sides sit higher, where it's wider
       return {
         cx: f.cx * GLASS.w,
         hw: f.hw * GLASS.w * 0.985,
-        ry: GLASS.ery * f.hw * GLASS.w,
+        ry: ery * f.hw * GLASS.w,
       };
     };
-    const front = (y, n = 28) => {
+    const front = (y, wob, n = 48) => {
       const L = level(y);
       return Array.from({ length: n + 1 }, (_, i) => {
         const a = Math.PI - (Math.PI * i) / n; // left to right along the front
-        return {
-          x: L.cx + Math.cos(a) * L.hw,
-          y: y - L.ry + Math.sin(a) * L.ry,
-        };
+        const x = L.cx + Math.cos(a) * L.hw;
+        return { x, y: y - L.ry + Math.sin(a) * L.ry + (wob ? wob(x) : 0) };
       });
+    };
+    /** The uneven line where a layer lies on the one below (0 at the glass wall, where it's pressed flat). */
+    const wobbleOf = (seed) => {
+      const R = rng(seed * 3 + 1);
+      const f1 = 0.018 + R() * 0.02;
+      const f2 = 0.05 + R() * 0.05;
+      const p1 = R() * 6.28;
+      const p2 = R() * 6.28;
+      return (x) => 4.5 * (0.65 * Math.sin(x * f1 + p1) + 0.35 * Math.sin(x * f2 + p2));
     };
     function surface(y, id, alpha = 1) {
       const L = level(y);
@@ -296,8 +428,7 @@
       c.beginPath();
       c.ellipse(L.cx, y - L.ry, L.hw, L.ry, 0, 0, Math.PI * 2);
       c.clip();
-      const col = ((Cook.data.words[id] || {}).layer || {}).color || "#d8c49a";
-      c.fillStyle = col;
+      c.fillStyle = colourOf(id);
       if (!DRIZZLE[id]) c.fillRect(L.cx - L.hw, y - 2 * L.ry, 2 * L.hw, 2 * L.ry);
       if (im) {
         // the painted top-down art, its pile's middle, squashed to the surface's low angle
@@ -313,38 +444,41 @@
       c.fillRect(L.cx - L.hw, y - 2 * L.ry, 2 * L.hw, 2 * L.ry);
       c.restore();
     }
-    function band(y0, y1, id) {
-      // the layer between two levels (y0 below, y1 above: glass px), its strip texture clipped to it
-      const top = front(y1);
-      const bot = front(y0).reverse();
+    /** One layer seen through the glass: between its lower line (y0, wob0) and its upper line (y1, wob1). */
+    function band(L, y0, wob0, y1, wob1, fullH) {
+      const top = front(y1, wob1);
+      const bot = front(y0, wob0).reverse();
       c.save();
       c.beginPath();
       top.concat(bot).forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
       c.closePath();
       c.clip();
-      const im = img(id, "band");
-      const L = level(y0);
-      const bx = L.cx - L.hw - 6;
-      const bw = L.hw * 2 + 12;
-      const bh = y0 - (y1 - level(y1).ry) + 8;
-      if (!DRIZZLE[id]) {
-        c.fillStyle = ((Cook.data.words[id] || {}).layer || {}).color || "#d8c49a";
-        c.fillRect(bx, y1 - level(y1).ry - 4, bw, bh);
-      }
-      if (im) {
-        const s = Math.max(bw / im.width, bh / im.height);
-        const dw = im.width * s;
-        c.drawImage(im, bx + (bw - dw) / 2, y1 - level(y1).ry - 4, dw, im.height * s);
+      const h = Math.ceil(fullH + 2 * BAND_PAD);
+      if (!L.tex || Math.abs(L.tex.height - h) > 3) L.tex = bandCanvas(L.id, img(L.id, "band"), h, L.seed);
+      // the texture, bent along the level's curve (a column at a time), so the food follows the glass
+      const Lt = level(y1);
+      const x0 = Lt.cx - BAND_W / 2;
+      const step = 5;
+      for (let x = 0; x < BAND_W; x += step) {
+        const u = Cook.clamp((x0 + x + step / 2 - Lt.cx) / Lt.hw, -1, 1);
+        const ty = y1 - Lt.ry + Lt.ry * Math.sqrt(1 - u * u) - BAND_PAD;
+        c.drawImage(L.tex, x, 0, step + 0.6, L.tex.height, x0 + x, ty, step + 0.6, L.tex.height);
       }
       // the glass's curve: a soft shade at both sides, so the layer reads as round
       const L1 = level((y0 + y1) / 2);
       const gr = c.createLinearGradient(L1.cx - L1.hw, 0, L1.cx + L1.hw, 0);
-      gr.addColorStop(0, "rgba(40,25,10,0.28)");
-      gr.addColorStop(0.18, "rgba(40,25,10,0)");
-      gr.addColorStop(0.8, "rgba(40,25,10,0)");
-      gr.addColorStop(1, "rgba(40,25,10,0.34)");
+      gr.addColorStop(0, "rgba(40,25,10,0.30)");
+      gr.addColorStop(0.16, "rgba(40,25,10,0)");
+      gr.addColorStop(0.82, "rgba(40,25,10,0)");
+      gr.addColorStop(1, "rgba(40,25,10,0.36)");
       c.fillStyle = gr;
-      c.fillRect(bx, y1 - level(y1).ry - 8, bw, bh + 16);
+      c.fillRect(L1.cx - L1.hw - 10, y1 - Lt.ry - 12, 2 * L1.hw + 20, y0 - y1 + Lt.ry + 24);
+      // a soft shadow under the layer above
+      c.beginPath();
+      top.forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
+      c.strokeStyle = "rgba(40,25,10,0.22)";
+      c.lineWidth = 4;
+      c.stroke();
       c.restore();
     }
     function draw() {
@@ -354,17 +488,24 @@
       const want = layers.reduce((a, L) => a + (DRIZZLE[L.id] ? L.th * 0.45 : L.th), 0);
       const room = (GLASS.floor - GLASS.rim - 0.035) * GLASS.h;
       const fit = want > room ? room / want : 1;
+      // the line a layer lies on: shaped by the layer that fell on it (the floor is flat)
+      const wobAt = (i) => {
+        const L = layers[i];
+        return L ? (x) => L.wob(x) * Math.min(1, L.grow) : null;
+      };
       let y = GLASS.floor * GLASS.h;
       const tops = [];
-      layers.forEach((L) => {
+      layers.forEach((L, i) => {
         const th = L.th * fit * L.grow;
+        const below = i ? wobAt(i) : null;
+        const above = wobAt(i + 1);
         if (DRIZZLE[L.id]) {
           // a chutney: drizzled over the layer below (its ribbons lie on it) and a thin layer of its own
           const own = th * 0.45;
-          band(y + (th - own), y - own, L.id);
+          band(L, y + (th - own), below, y - own, above, L.th * fit);
           y -= own;
         } else {
-          band(y, y - th, L.id);
+          band(L, y, below, y - th, above, L.th * fit);
           y -= th;
         }
         tops.push({ y, id: L.id });
@@ -398,7 +539,8 @@
       },
       /** A topping settles in: a drop and a little bounce. */
       add(id, ms = 460) {
-        const L = { id, th: full() * (THIN[id] || 1), grow: 0 };
+        const seed = Math.floor(Math.random() * 1e9);
+        const L = { id, th: full() * (THIN[id] || 1), grow: 0, seed, wob: wobbleOf(seed), tex: null };
         layers.push(L);
         return new Promise((resolve) =>
           S.tweens.addCounter({
@@ -487,40 +629,12 @@
 
   /**
    * Level 4 (§14a): the person's card starts folded (face + headline); a tap on it opens it for a
-   * moment, and that peek costs a hint. The shared order card has no start-folded mode yet
-   * (docs/overnight-queue.md), so this station folds it from outside: a class on the sidebar's
-   * #mission (it survives the card being drawn again) and one small style rule.
+   * moment, and that peek costs a hint (the shared order card's closed mode: UI.mission.closeCards).
    */
   function foldCard(on) {
-    const m = document.querySelector("#mission");
-    if (!m) return () => {};
-    if (!document.querySelector("#cv2-fold-style")) {
-      const st = document.createElement("style");
-      st.id = "cv2-fold-style";
-      st.textContent =
-        "#mission.cv2-fold:not(.cv2-peek) .oc-card .oc-body{display:none}" +
-        "#mission.cv2-fold:not(.cv2-peek) .oc-card{cursor:pointer}" +
-        "#mission.cv2-fold.cv2-peek .oc-card{box-shadow:0 0 0 3px #C9962E,0 2px 8px rgba(40,25,10,.10)}";
-      document.head.appendChild(st);
-    }
-    if (!on) return () => {};
-    m.classList.add("cv2-fold");
-    let timer = null;
-    const peek = (e) => {
-      const card = e.target.closest && e.target.closest(".oc-card");
-      if (!card || e.target.closest(".oc-face") || m.classList.contains("cv2-peek")) return;
-      e.stopPropagation();
-      if (Cook.onHelp) Cook.onHelp("hint", { ids: [] });
-      m.classList.add("cv2-peek");
-      clearTimeout(timer);
-      timer = setTimeout(() => m.classList.remove("cv2-peek"), 3500 / (Cook.speed || 1));
-    };
-    m.addEventListener("click", peek, true);
-    return () => {
-      clearTimeout(timer);
-      m.removeEventListener("click", peek, true);
-      m.classList.remove("cv2-fold", "cv2-peek");
-    };
+    if (!on || !UI.mission.closeCards) return () => {};
+    UI.mission.closeCards(true, { peek: true });
+    return () => UI.mission.closeCards(false);
   }
 
   /* the ghost finger (first time only): a see-through hand on the page, over everything */
