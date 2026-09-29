@@ -582,15 +582,36 @@
     UI.gist(day.gist, { top: true });
     await Cook.wait(2400);
     UI.hideGist();
+    // 29 Sept (Q6): dishes whose things have been fetched from the pantry today
+    const fetched = new Set();
     for (const spec of day.orders) {
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
+      if (!free) for (const dish of spec.dishes) if (!fetched.has(dish) && pantryFirst(dish)) {
+        fetched.add(dish);
+        await runOrder(pantryFor(dish, spec), day);
+      }
       await runOrder(buildOrder(spec), day);
       // the app shell (js/cook/app.js): a first launch goes home after Nani's pantry round
       if (Cook.afterOrder && (await Cook.afterOrder(spec, day, { free })) === "leave") return;
       if (nanisFirst(spec)) await rulesOnce();
     }
     finishDay(day, { free });
+  }
+  /**
+   * 29 Sept (Q6, Zafar): story mode only. The first time each of chai, daar, chaat and samosa is made
+   * that day, it starts with a pantry trip for that dish's things (data.recipes.pantry.forDish): Nani's
+   * list, "Bring me these for chai", in her order. A second one that day doesn't; free play and the lab skip it.
+   */
+  const pantryFirst = (dish) => !!(((Cook.data.recipes.pantry || {}).forDish || {})[dish] && R.pantry);
+  function pantryFor(dish, spec) {
+    const lv = spec.level && typeof spec.level === "object" ? spec.level[dish] : spec.level;
+    const d = R.pantry.make("nani", { level: lv || 1 });
+    const ids = Cook.data.recipes.pantry.forDish[dish].slice();
+    d.first = ids.slice(0, 1);
+    d.rest = ids.slice(1);
+    d.for = dish;
+    return { who: "nani", dishes: [d] };
   }
   async function rulesOnce() {
     if (Cook.save.rulesSeen) return;

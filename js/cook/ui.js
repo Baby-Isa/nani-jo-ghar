@@ -1286,7 +1286,7 @@
    * (the item is put down, finished or served), never the moment the number
    * is reached, so a tick can't give the count away (UX 11, agreed 26 Sept).
    */
-  const isCount = (r) => !r.head && !r.no && ((r.parts || []).some((p) => typeof p === "number") || (!r.list && (r.need || 1) > 1));
+  const isCount = (r) => !r.head && !r.no && !r.labelQty && ((r.parts || []).some((p) => typeof p === "number") || (!r.list && (r.need || 1) > 1));
   M.isCount = isCount;
   /**
    * Tick the first open row with this item on it. Returns the row, or null.
@@ -1632,7 +1632,10 @@
     // 28 Sept (Zafar): the voice says the count AND the thing ("hakri dungri", "ba dungri"), the number
     // agreeing with the noun (hakro/hakri). A later level (3+) or Nani on mute stays silent.
     const lv = mission ? mission.level : orderLevel();
-    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3 && lv <= 2 && !UI.naniMuted()) queued(() => Lang.speak(tallyLine(n, id)));
+    // 29 Sept (Q7): counting is heard as you add at level 1 only (level 2: written; 3+: heard in the order);
+    // chai's sugar keeps its own (level 2 too: it's the listening test there)
+    const heard = lv <= 1 || (lv <= 2 && id === "cook-khun");
+    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3 && heard && !UI.naniMuted()) queued(() => Lang.speak(tallyLine(n, id)));
   };
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {

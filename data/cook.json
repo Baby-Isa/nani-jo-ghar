@@ -1049,6 +1049,13 @@
   "pantry": {
    "_about": "Wave 6 (docs/UX-PRINCIPLES.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
    "name": "ph-pantry",
+   "forDish": {
+    "_about": "29 Sept (Q6, Zafar): in story mode the first time each of these dishes is made that day starts with a pantry trip for its things (a second one that day doesn't; free play and the lab skip it). What each dish's trip fetches, all stocked in the pantry (shelf art), in the order Nani asks",
+    "chai": ["cook-chai", "cook-dudh", "cook-khun", "spi-10"],
+    "daal": ["cook-daal", "veg-02", "veg-03", "spi-01"],
+    "chaat": ["veg-01", "ph-chana", "veg-02", "ph-sev"],
+    "samosa": ["ph-keema", "veg-01", "veg-02", "cook-atto"]
+   },
    "english": "Pantry",
    "price": 2,
    "stations": [
@@ -1411,6 +1418,7 @@
   "maani": {
    "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, (one tawa at every level: §13's burner rule); 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
    "name": "cook-maani",
+   "countRule": true,
    "headFirst": true,
    "join": "and_join",
    "_sentence": "29 Sept (X1): the headline names the first kind with its count (Muke ba bajr ji maani khape.); a second kind follows with the join (and, to record)",
@@ -1511,6 +1519,7 @@
   },
   "daal": {
    "name": "cook-daal",
+   "countRule": true,
    "english": "Daal",
    "price": 5,
    "stations": [
@@ -1625,7 +1634,10 @@
      "if": "onions",
      "frame": "and",
      "x": [
-      "veg-02"
+      {
+       "n": "$onions",
+       "of": "veg-02"
+      }
      ]
     },
     {
@@ -1639,14 +1651,20 @@
      "if": "tomatoes",
      "frame": "and",
      "x": [
-      "veg-03"
+      {
+       "n": "$tomatoes",
+       "of": "veg-03"
+      }
      ]
     },
     {
      "if": "chillies",
      "frame": "and",
      "x": [
-      "veg-12"
+      {
+       "n": "$chillies",
+       "of": "veg-12"
+      }
      ]
     },
     {
@@ -1691,6 +1709,7 @@
   },
   "chaat": {
    "name": "ph-chaat",
+   "countRule": true,
    "english": "Chaat bowl",
    "price": 5,
    "stations": [
@@ -1828,7 +1847,13 @@
      ]
     },
     {
-     "list": "$seq"
+     "list": "$seq",
+     "qty": {
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
+     },
+     "_qty": "29 Sept (T1, X12): a layer that's chopped first says how many (ba bataato), as its chop does"
     },
     {
      "forEach": "$no",
@@ -1874,6 +1899,7 @@
   },
   "samosa": {
    "name": "ph-samosa",
+   "countRule": true,
    "english": "Samosa",
    "price": 5,
    "stations": [
@@ -1995,6 +2021,7 @@
   },
   "mishkaki": {
    "name": "ph-sekelo",
+   "countRule": true,
    "english": "Sekelo",
    "_pepper": "Sidebar v2 (Zafar, 28 Sept evening): no English in the item pills. Green pepper (ph-pepper) has no Kutchi word yet (Mum 26 Sept, B34), so it's out of the skewers (lists and tastes) until it's recorded; its art stays filed",
    "price": 6,

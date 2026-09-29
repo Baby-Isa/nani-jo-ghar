@@ -450,7 +450,9 @@
       if ((want[id] || 0) > 1) UI.mission.tickItem(id, ctx.dishAt || 0);
       const into = spoon(sheet, id);
       const pa = fillAt(sheet);
-      pop(z, S, Cook.display(id), pa.x, pa.y - z.L(150), { speakId: id, ms: 1200 });
+      // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
+      const cnt = (level || z.level) <= 1 && UI.tallyLine ? UI.tallyLine(got[id], id) : null;
+      pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(150), cnt ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
       await into;
       z.progress({ filled: id, n: got[id] });
     }

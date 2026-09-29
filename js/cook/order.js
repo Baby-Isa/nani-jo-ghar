@@ -28,10 +28,19 @@
   const Lang = Cook.Lang;
   const O = (Cook.Order = {});
 
+  /**
+   * 29 Sept (X12 / Q7, Zafar): the counting rule, for a recipe with `countRule`. Level 1 and 2: the
+   * card row writes the quantity in Kutchi ("ba dungri", never a digit); level 3 and up: the card
+   * says only the thing, and how many is heard in the order (remember it). Chai keeps its own
+   * (its sugar is the listening test).
+   */
+  const cardParts = (parts, level, rule) => (rule && level >= 3 ? parts.filter((p) => typeof p !== "number") : parts);
   /** A card row from a recipe ladder row (recipes.js). */
-  function row(r) {
+  function row(r, { level = 1, rule = false } = {}) {
     const parts = r.parts || r.ids;
     const phrase = Lang.phrase(parts);
+    const shown = cardParts(parts, level, rule);
+    const cardPhrase = shown.length === parts.length ? phrase : Lang.phrase(shown);
     const no = r.kind === "no";
     return {
       parts,
@@ -45,10 +54,12 @@
       revealed: false,
       phrase,
       // on the card: just the words (the dot says how it links); "no X" as said
-      line: no ? r.line : { segs: phrase.segs, en: phrase.en },
+      line: no ? r.line : { segs: cardPhrase.segs, en: cardPhrase.en },
       // as the recipe data says it (its own frame: "Ne be khun.")
       said: r.line,
       list: !!r.list,
+      // the number only says how many were chopped for it (chaat's "ba bataato"): one step, not a count row
+      labelQty: !!r.labelQty,
       for: r.for,
       qty: r.qty || 1,
       // Wave 6: one card per unit ("ba lakri gos" is two skewer cards, each with `cards` slots)
@@ -62,6 +73,7 @@
     };
   }
   O.row = row;
+  const rowOf = row;
   /** "No X" rows join a random group at a random place, so where they sit says nothing. */
   function sprinkle(groups, noRows) {
     if (!groups.length && noRows.length) groups.push([]);
@@ -83,6 +95,8 @@
     // heads the card with it; everything fetched is a row. Not recorded yet: English, flagged "to record"
     const hl = (Cook.data.recipes[d.recipe] || {}).headline;
     if (hl) L.head = O.headline(hl, d);
+    const rule = { level: d.level || 1, rule: !!(Cook.data.recipes[d.recipe] || {}).countRule };
+    const row = (r) => rowOf(r, rule);
     Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
       if (r.kind === "dish" && !L.head) {
         L.head = Object.assign(row(r), { head: true, line: r.line });

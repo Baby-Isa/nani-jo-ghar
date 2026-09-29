@@ -154,6 +154,17 @@
       if (Cook.Coach) Cook.Coach.stop(false);
       if (ctx.nextStep) ctx.nextStep("tadka");
       UI.mission.reveal("tadka");
+      // 29 Sept (D9, Zafar): the chopped things still have to go in, so their rows go back to "to do"
+      // here and tick again when they go into the pot (the katori tips in: cook())
+      const Lc = ladderOf(ctx);
+      if (Lc) {
+        Cook.Order.rows(Lc, { all: true }).forEach((r) => {
+          if (r.head || r.no || !r.ids.some((id) => id in want)) return;
+          r.done = false;
+          r.got = 0;
+        });
+        UI.mission.refresh();
+      }
       // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint
       const peek = K.ladder === "closed" && UI.mission.closeCards;
       if (peek) UI.mission.closeCards(true, { peek: true });
@@ -362,7 +373,9 @@
       pile.setDepth(D.item - 0.5 + n * 0.001);
       S.puff(tx, ty, 0xfff6e0, z.L(26));
       inBowl.push(pile);
-      pop(z, S, Cook.display(id), katori.x, katori.y - z.L(170), { speakId: id, ms: 1100 });
+      // 29 Sept (Q7): at level 1 the count is heard as you add ("ba dungri"), else the word
+      const cnt = level <= 1 && UI.tallyLine ? UI.tallyLine(got[id], id) : null;
+      pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), katori.x, katori.y - z.L(170), cnt ? { line: cnt, ms: 1100 } : { speakId: id, ms: 1100 });
       z.progress({ chopped: id, n: got[id] });
     }
     // graded now: each vegetable, how many, and nothing they said no to
@@ -599,6 +612,9 @@
     });
     Cook.sfx.sizzle(1);
     S.puff(cx, cy, 0xfff1c0, z.L(60));
+    // 29 Sept (D9): now they're in, their rows tick again
+    const inPot = Object.keys(chopped.got || {});
+    if (inPot.length) ctx.closeItem ? ctx.closeItem(inPot) : UI.mission.closeItem(inPot, ctx.dishAt || 0);
     S.tweens.add({ targets: kat, alpha: 0, duration: 300 });
     await Cook.wait(250);
     // the daar
