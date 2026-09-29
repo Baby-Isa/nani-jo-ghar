@@ -156,6 +156,11 @@ The shots are in `build/reports/clinic-v2-a/laptop-*.png` (1366×768, the lab ba
 - **Flaw:** under the first-time dimming the ? itself is dimmed. It still works.
 - **Right:** the pop shows the goal and the grown-ups' hold-to-skip row.
 
+**The phone check** (915×412, landscape; `test_clinic.py --sizes laptop,phone`):
+- The first run failed one case, D3 L3: the check-up's tool bar sat over the standing patient's feet, so "look at the left foot" couldn't be tapped.
+- The tools now stand in a column on the room's left side (free wall or counter in both rooms). The rerun passes on both sizes (every case).
+- **Flaw left:** on the phone the sidebar is narrow, so Nani's line wraps to four short lines and the card's rows wrap too.
+
 ## 5. Open, for Zafar or the next round
 
 - The standing pose of the grey figure (squat legs) and the recolour tint are stand-in limits. Both go away with the real character art.
