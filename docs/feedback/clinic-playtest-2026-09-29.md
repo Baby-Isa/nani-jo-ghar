@@ -325,6 +325,23 @@ Answer "yes to all recommendations except …".
 
   **Recommend yes.**
 
+### Zafar's answers (29 Sept, ~15:40 UTC): these override the recommendations above
+- **Everything not listed here: yes, as recommended** (CQ1, CQ3–CQ6, CQ8, CQ9, CQ11–CQ18). The token plan (§11) is approved.
+- **CQ2:** Zafar asked what the shared tracker means (explained in chat). The waiting-room ladder goes ahead now; the shared tracker stays a later foundation item.
+- **CQ7, the scrape: plaster stickers, in order.** No grit (that's the ear's game). The child puts on **three plasters in the colours and order said**; at higher levels the plasters become **half-and-half colours** (two colours each), so it's a pure colour-and-order game. "It seems a bit of a cop-out, but for the moment let's just do that." (The suture/stitches stay as the cut variant.)
+- **The ear:** use **wax blobs**, not seeds ("better for the ear"). They keep coming back from level 2.
+- **CQ10, taste → a sore throat and a swollen tongue: make the soothing drink.** The tongue has swollen bumps (a sore throat too); the child **makes a drink to bring them down**, following the doctor's instruction (the language), borrowing from the chai game, with a little trial and error: if one drink doesn't settle all the bumps, the doctor says the next one. Drinks from Cook's own words: *hardar waaro dudh* (turmeric milk), *aadu* (ginger), *madh ne limu* (honey and lemon, words to check). A countdown at higher levels. Design sheet to follow.
+  - **Refined (Zafar, ~15:50):** less trial and error. The bumps on the tongue come in **different colours, and each colour is healed by a different drink** (for example yellow = turmeric milk, orange = ginger, green = honey and lemon: the mapping taught by the doctor's instruction and the card). The child makes each drink and gives it to the patient **before the time runs out** (Zafar likes the time pressure). Level 1: one bump colour, one drink. Level 2: two colours, two drinks in order. Level 3: three, with counts (*ba chamchi madh*) and a tighter timer.
+- **Backgrounds:** six different ones, confirmed as written. The heal games' zoomed body parts (knee, scrape, ear, mouth, eye, foot) are **character close-ups**, drawn later with the patient art, on top of CB6. The flow: the patient sits on the bed's edge (CB2), you pick where it hurts, and the view zooms in to that close-up.
+
+- **Backgrounds, round 1 review (Zafar, ~16:30):** CB5 (front door) approved. CB1 goes closer, with a six-seat bench and no armchairs. CB2 goes closer, with **no poster**: the wall to the right is kept for **a photo of the real doctor's certificate** (Zafar will supply it; it's added in code as a framed picture), and children's toys go in the left corner in place of the desk chair. CB4 is redone **straight on**, the same scene without looking down. Round 2 prompts: the bottom of `docs/chatgpt-art-prompts-clinic-v1.md`.
+
+- **Backgrounds approved (29 Sept, ~17:15):** CB1b, CB2b, CB3b, CB5 and CB6b pass their checks (CB6b already shows an empty frame on the right wall for the certificate). CB4c (the pharmacy belt, no hatches) is to come.
+
+- **Overlay check (29 Sept, after Zafar asked about room for dangling feet):** the real sitting poses on CB2b and CB1b (`build/reports/clinic-bg-check/`). The bed has room: at about half the screen height, the feet land on the step stool, with space for the doctor on the right. Six fit the bench with feet on the floor; an adult under the heart poster just touches its frame, so seat a child there or scale adults slightly (code). Both approved.
+
+- **CB6b approved** (the placement plan is in the design sheets: limbs on the paper strip, heads against the wall, extra blur in code). The clinic's backgrounds are done apart from CB4c.
+
 ## 10. Art: the backgrounds first (ChatGPT; the page is `docs/chatgpt-art-prompts-clinic-v1.md`)
 Six backgrounds, built to the recommended answers:
 - CB1 the waiting room, wider;

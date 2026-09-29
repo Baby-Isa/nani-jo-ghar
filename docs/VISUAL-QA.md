@@ -23,6 +23,10 @@ Written 28 Sept 2026, after the end-of-round badges took five rounds to get righ
 - **Every state of one object shares one canvas, registered to the object's own bounding box**, so layers line up exactly. Check with a pixel-diff overlay when states are layered (e.g. gold over pewter).
 - When code maps a value onto art (like a fill percentage), map it onto the **object's** extent, not the image's.
 
+### 2b. Backgrounds: plan the people first, then test with them (Zafar, 29 Sept)
+- **Before writing a background prompt:** write down who sits or stands where, at what size (as a share of the picture's height), and what must stay clear (heads, dangling feet, the doctor's spot, where a card or face circle goes). Put those numbers in the prompt.
+- **When it comes back, before approving it:** place the real character art on it at game size, and draw the 16:9 visible box (the red box), like `build/reports/clinic-bg-check/`. Check heads, feet, overlaps with wall pictures, and room for everyone. A background isn't approved from how it looks empty.
+
 ## 3. Ship it, then check the live site
 - Run `bump_version.py`, then push the branch and `HEAD:main`.
 - **Confirm the GitHub Pages build ran for that commit** (Actions → "pages build and deployment"). Pages sometimes skips builds.
