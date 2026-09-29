@@ -1,0 +1,270 @@
+# Transcript: Zafar's Cook play-test voice note, 29 Sept 2026 (31 min)
+
+Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "chendol" / "chundo" = chundo (mince); "bhaji ja maani" = bajr ji maani; "chart making mode" = chaat; "Mushkaki" = mishkaki; "the uncle testing it" = Nana tasting it. The report is docs/feedback/cook-playtest-2026-09-29.md.
+
+- **0:00** Feedback for the pantry mode. Currently the audio overlaps, so the counting audio overlaps with the audio that says what's the next item to get, so that needs working out.
+- **0:17** Also I can see that
+- **0:26** on the left-hand panel the single ingredients that need bringing are outlined in a thin gray line when they haven't been obtained. When they have been obtained, that line turns into a thicker gold, but the gold gets clipped at the left and the right and at the top of the top item and the bottom of the bottom item.
+- **0:55** If you're not sure what I mean, ask for a screenshot, but yeah, it's quite obviously
+- **1:01** gets clipped, the rounded corners, probably a padding issue or something
+- **1:06** like that. Also, wait let me check, station lab, pantry.
+- **1:20** Also, yeah, on the card that pops up before the recipe, before the game starts, which tells you what ingredients to bring, it says bring me these, the end of the word these gets clipped as well, so that needs a review.
+- **1:46** Although sequence isn't important in this game mode.
+- **1:50** They should probably read top to bottom, at the moment it doesn't, so Nani reads out the top item, which was sugar, then the bottom item, which was milk, and then the middle item, which was the flour.
+- **2:04** She should probably just go in sequence, it just makes more sense, even though it's not necessary.
+- **2:09** It's looking kind of good though!
+- **2:12** Okay, so in the chai game...
+- **2:15** Firstly, when it comes up and says Muka Chai Kappe, I want tea, it kind of underlined it, which I thought was really nice actually.
+- **2:25** I don't know if that's a specific design choice, to underline it while he was saying it out loud, but that was cool, I think we should take that and use it.
+- **2:34** In terms of the visuals...
+- **2:41** I think the top of the water bottle is just quite close to the top of the ingredients bar, especially when highlighted and bouncing, it comes out above it.
+- **2:51** I think we maybe need to move the ingredients a tad down inside their bar, so...
+- **3:03** Yeah, just for more breathability and padding.
+- **3:07** Also...
+- **3:09** the stove is... I don't know if it... the artwork is weird? Or it's cut out weird?
+- **3:18** But zoom in, like, it looks like bent, like someone bashed it, the silver board around the edges.
+- **3:25** I think the artwork must be weird. It's very weird. Just zoom into the corners of the stove.
+- **3:33** They're like not cut correctly, and one side of the stove is thinner than the other.
+- **3:36** That might need to be doing... I wonder if we just make, like...
+- **3:40** A whole asset sheet for stoves. Single, double, three, four, different arrangements.
+- **3:51** Just so it's, like, yeah, consistent. Different orientations, but just so they're consistent for using across all the game modes.
+- **3:58** And also the knob is a bit small, I reckon. Could be bigger, visually.
+- **4:04** The voice over logic really needs work, like...
+- **4:08** It's such a weird sentence. Let me play it again.
+- **4:16** Okay, well, that didn't work. I just clicked the play button.
+- **4:27** So it says, I want tea and milk.
+- **4:32** And then I want tea with two milks.
+- **4:35** And then it just says the word, oh, then it says, ginger with, it makes no sense.
+- **4:42** It should say in English, like, I want tea with milk, two sugars and aadu.
+- **5:01** It's probably what I should say.
+- **5:03** Or it should say, I want aadu wari chai, like, I want ginger tea, basically, and then ginger
+- **5:24** should be the top ingredient.
+- **5:25** And then it can say,
+- **5:29** and milk and two sugars. It just that, yeah, it needs rethinking. Also, I've
+- **5:40** realized, if you click on the player icon, so the character icon, it plays
+- **5:50** out loud, but if you click on the speaker icon, if it sits outside,
+- **5:55** of that circular character icon, it won't play. It's not clickable.
+- **5:58** So that speaker icon, the whole speaker icon needs to be clickable as well as the character icon.
+- **6:05** Also, I think also we should use close-up pictures of the characters' faces to fill the circle.
+- **6:14** And consistently cropped as well. At the moment, I feel like there's a bit of inconsistent crop.
+- **6:20** So yeah, Nani's more zoomed in than Nana.
+- **6:30** Also, we need proper semi-photorealistic, like the same artwork style visuals, I think, for...
+- **6:42** Or maybe we don't... The liquid's going into the pan?
+- **6:47** Maybe they need to be a little bit better than they are now.
+- **6:57** Probably requires rendering the pan in different states, with water, with whatever milk, with
+- **7:03** chai.
+- **7:04** I think that might be worth doing.
+- **7:08** The flames visual is a bit much.
+- **7:12** I think the flames need toning down a bit. Oh, it's kind of a cool visual though, the flames need toning down a bit.
+- **7:20** And the time tracker around the outside maybe needs to be slightly thicker, just so you can see it more clearly against the flames.
+- **7:31** The tea animation itself is good though, with the bubbles, it's really nice.
+- **7:38** That's actually really good. I think, yeah, maybe the knob just needs to be slightly bigger, and maybe just like a, I don't know, maybe it doesn't need icons, I don't know.
+- **7:54** But yeah, if it looks visually smaller than the character cutout, it should probably match the same size.
+- **8:01** Then if it needs an on-off.
+- **8:04** Little symbol there, or maybe it doesn't.
+- **8:08** Much better though.
+- **8:14** Okay, so there's, I clicked take, there's no review at the moment by the
+- **8:19** person drinking the tea, if they like it or not.
+- **8:24** But maybe that stuff should come like in the conversations before and after, like I've not
+- **8:29** been playing the story mode, but in the story mode, like they come up to the counter, right?
+- **8:32** They come up to the kitchen counter and they ask for like...
+- **8:35** you to make them something and then it kind of launches. So I guess that's maybe the place
+- **8:40** where the food then goes back on the counter and they... with them there and they say thank you or
+- **8:47** it's good or not good.
+- **8:52** The card that pops up is just so nice now. It's just clean and beautiful.
+- **8:59** It moves very smoothly as well. That's...
+- **9:01** kind of the bar we want to set. Again the maani one. It says I want maani.
+- **9:07** Bukka maani kapar. Then it says and one bhaji ja maani. Hakri bhaji ja maani.
+- **9:14** It shouldn't be and. It should be I want maani. One bhaji ja maani. You know the
+- **9:22** whole voice engine thing needs a bit of a look at.
+- **9:27** Oh gosh, yeah, the pan. Yeah, all the stoves need reworking I think. I'm not
+- **9:37** sure about these silver bowls of dough. I don't know why they just look bad.
+- **9:52** And as of the rolling pin and the chopping board, I think maybe we go for like a slightly darker color chopping.
+- **10:00** So I'm not chopping board, rolling board, slightly darker, more richer, expensive looking one.
+- **10:05** And yeah, mama. And the rolling pin as well. I don't know.
+- **10:15** It just doesn't look as good.
+- **10:19** Yeah. What could we put the dough balls in that's not the silver trays? I'm not sure. Maybe no trays or maybe...
+- **10:34** I don't know. Maybe suggest some ideas. I think the metal just stands out awkwardly. And it doesn't look realistic the way they're piled on. Maybe it's hard to make a pile of dough look realistic.
+- **10:48** So two options. Maybe we just have singular dough balls spaced out.
+- **10:53** Or you generate the pile of dough balls as one image. So it looks realistic and
+- **11:01** then overlay on that. Well, actually nothing else. Yeah, just have a dough ball.
+- **11:06** Yeah, just have the pile of dough balls as one image. Then when you click on it, a
+- **11:15** singular dough ball flies out. So that looks better.
+- **11:19** I thought we did new artwork for the puffed up or the final version.
+- **11:26** Cooked maani. Have we done that? It still puffs up quite a lot, more like poori.
+- **11:33** And the instrument for turning the maani is weird. It looks like a weird tweezers or something.
+- **11:44** And I think there's flames that are meant to be behind the tawa or whatever it is, the saucepan.
+- **11:57** But I only see flames on the top and the bottom slightly peeking out and not the left and the right.
+- **12:01** Also, it looks like quite a low res image.
+- **12:05** The pan, I think it needs...
+- **12:11** regenerating higher quality or something. The artwork still is a little bit off in this game mode, but the layout's nice, I think.
+- **12:19** Probably a touch more padding at the top of the dough... ball... containers.
+- **12:30** It needs to be the same, like the bottom, the padding between the voice, the sound, the names of the item, ingredients, and the...
+- **12:42** sound bar, to the bottom of the ingredient bar, needs to be the same as the top of the ingredients, the top of the ingredient bar.
+- **12:49** Just usual stuff.
+- **12:54** Wait, what happened? Did we change the game? The chopping game?
+- **12:59** Why did we change the chopping game?
+- **13:02** Now you just...
+- **13:04** There's no game now anymore, you just...
+- **13:07** Yeah, let's not do that.
+- **13:10** Let's keep it as the previous one, why would we change the whole game mode?
+- **13:14** For no reason, that's bizarre.
+- **13:21** Yeah, that's not good.
+- **13:29** Yeah, I don't know why I've done that.
+- **13:33** I don't know what's in the pan to start with but it looks very unrealistic.
+- **13:39** In this game mode.
+- **13:44** Um, yeah. Don't know if it's oil or whatever it is.
+- **13:50** And then the the ginger going into the pan. Once it's in the pan it looks unrealistic.
+- **13:56** I think it's just rendered white dots.
+- **14:00** Same for all of them. We probably need to work on that for the ingredients that go inside.
+- **14:05** Oh, but I like the idea that the things you chopped are on the side from before and then
+- **14:09** you add in the ingredients. That's very clever. That's really really good. I like that.
+- **14:13** Yeah.
+- **14:14** The daar sitting off to the side needs to look a bit better. It needs to look more photorealistic.
+- **14:24** It needs to maybe sit on a small wooden, what's it called, a placemat? Whatever you put the wooden things on sometimes to protect surfaces from heat.
+- **14:36** The ladle orientation doesn't... Oh, that looks terrible.
+- **14:40** The ladle orientation makes no sense. I think it needs to be a lot more top-down, with the handle sticking out more into the air.
+- **14:53** And there's no nice visual showing you how fast you're turning the thing around and how many times.
+- **15:01** And the little speedometer's gone as well, which I thought was kind of good.
+- **15:06** Let's reintroduce those elements.
+- **15:16** The tasting mechanism wasn't good, either.
+- **15:25** Maybe all the tastings have to go back to the scene when they gave the order.
+- **15:33** It goes back to them being at the kitchen area and giving you the order. The food goes on the table.
+- **15:41** And then they say, well done, or they say, not quite right, and it shows you what you got wrong.
+- **15:52** And then you go back and redo it.
+- **15:59** And then when you get it right, you get the end screen that tells you how you did.
+- **16:04** That might be a consistent way of testing, of showing the results given to the person
+- **16:09** in story mode. Okay, I think this might be a different fix, but yeah, the ingredients that
+- **16:15** we chopped were then ticked off, but they should then be unticked or something when
+- **16:22** we get to the cooking mode, because you don't have to put them inside the pan, right?
+- **16:31** And the ingredients swirling when you stir the pot as well, it's not in the new game standard.
+- **16:39** The pot also isn't straight face down either, this whole thing needs referring.
+- **16:44** Nor is the ingredient jar holding the ingredients that you've chopped.
+- **16:51** In the chart making mode, it's not clear, you only hear...
+- **17:00** You only hear the number of items spoken out loud, which, I don't know, I just think that maybe that's not right.
+- **17:17** Somewhere it should be written down, at least in level 1 to start with.
+- **17:27** I don't know, does Nani say it? Does it say it on the... I mean, if you cut something twice, then it should say it in just the recipe card, it should just say two onions.
+- **17:45** So, let's maybe keep it in the recipe card, but just have the quantity written in there.
+- **17:54** The visuals are terrible for this game. The layout's nice, but why have we redrawn, like, the side-on, three-quarter angle bowls with ingredients? Like, it doesn't make sense.
+- **18:07** We have top-down ingredients already rendered, and we have side-on ingredients rendered right from the pantry. So, I don't understand.
+- **18:20** Why have we gone for this? Like, we just have to decide, is it side-on or not side-on? The bowl looks terrible as well.
+- **18:29** I think the bowl needs to be top-down. It's the only way you can realistically render it, no? But then you lose the layers.
+- **18:36** So, maybe the bowl needs to be fully side-on. That way you can just render the side-on items nicely, kind of how they are already.
+- **18:46** Already, you know, inside the jars. And then you don't have to worry about rendering the
+- **18:56** top nicely. And then maybe just keep everything side-on. Also, I also wonder if you should
+- **19:03** get things from the pantry at the start of this game. Why not?
+- **19:13** Actually, I don't know. You can do it quite quickly. It just reinforces what the items are, doesn't it, and how many.
+- **19:25** Curious to hear thoughts about which cooking modes we do at the pantry, and which not, and what the pros and cons might be.
+- **19:33** Actually, maybe it's okay, the animation of the uncle testing it.
+- **19:38** In-screen, without moving to a different screen.
+- **19:42** It does work, it's just the fake tasting thing.
+- **19:46** Maybe we shouldn't try to replicate him tasting it.
+- **19:50** You should just slide over to him and he just
+- **19:54** says yes or no, I guess, with a reaction.
+- **19:58** Rather than...
+- **20:02** Yeah.
+- **20:05** It looks childish, kind of, for him to pretend to eat it, I think.
+- **20:10** Okay, now with the language thing. If he wants... I'm on the samosa game now. If he wants...
+- **20:14** It says, I want two samosas.
+- **20:17** And then it says, and three chilies.
+- **20:21** No, well, it says three chilies. The voiceover says, and three chilies. It should say, with three chilies.
+- **20:27** With three chilies, and...
+- **20:30** X ingredient and Y ingredient. Let's just start with with.
+- **20:35** Again, we've done this weird bowl generation ingredient stupid thing for this.
+- **20:43** So once again, I don't get it. We have top-down ingredients, no?
+- **20:47** Could we not just use them?
+- **20:50** They might not even need to be in bowls, just keep it clean.
+- **20:53** Also...
+- **20:56** He should say all the ingredients he wants in a samosa. He didn't list out chendol, like the mincemeat, which isn't necessarily a given because...
+- **21:05** You could have veg samosas as well.
+- **21:12** That's what he's thinking through, he said he needs two samosas.
+- **21:14** Yes, if both samosas are the same, then the ingredients listed below should be what goes into both samosas, and if there's two different one ingredient sets, then they should be...
+- **21:31** grouped as two different distinct blocks. I think we've already built that logic.
+- **21:35** But yeah, it's just that the mincemeat, the chendol, should be an ingredient as well.
+- **21:41** Nothing tells you... I didn't get any onboarding for this one,
+- **21:43** nothing told me how much chendol to put in there.
+- **21:53** And this one doesn't give you a counter as you do it.
+- **21:56** So I guess this one you really just have to remember as you go along, which I think is okay.
+- **22:01** We should do a review about where we are counting along and where we're not counting along and why.
+- **22:06** Like, are we doing it deliberately?
+- **22:09** The chopping board doesn't look good here, or the rolling board.
+- **22:13** Looks like a blown up, poor quality initial image.
+- **22:18** I don't know what to do. I don't know what to do now, it just says click tick.
+- **22:23** Okay, now it's telling me to fold. Oof, oh god, these images are terrible. No, no, no, like, I see why we tried here.
+- **22:35** Oh, it's good it fills in the same ingredients for you next time, so you don't have to do it if it's the same one.
+- **22:41** You just have to be conscious that if there's two different samosa types, then it doesn't do that automatically.
+- **22:50** But the samosas don't look good on the plate, partly because they're over the rim.
+- **22:58** If they just went to the flat portion of the plate, that would look more realistic.
+- **23:04** But yeah, this folding thing is not good.
+- **23:09** We don't have to like, oh god, we don't have to render it all photorealistic with the ingredients inside.
+- **23:20** What I think is we need to do it in a way that like the ingredients should go in the middle of the pastry.
+- **23:28** I'm not actually sure how samosas are made, we need to do a bit of research.
+- **23:31** But ideally, ideally, what I'm saying is that in the first fold, the ingredients get hidden.
+- **23:40** And therefore, you can use like pre-rendered images like for the rest.
+- **23:46** But it doesn't need to be the same style and format. But rather than trying to like, because then it'd be impossible to show the ingredients half inside the pastry as it's being folded up. That'd be very difficult. Just cover them with the first action. And then, yeah, and there's nothing to generate specifically each time.
+- **24:10** It's a good way to herring though, that it pre-makes the next samosa for you. And you think, oh, do I actually need it or not? Well, not need it. You have to know the numbers. The oil, the oil looks much, much better here.
+- **24:21** Although the image hasn't been cut out properly, the cook pot right handle has a weird grey inside, it's not been cut out properly.
+- **24:31** And remember, all the burners everywhere look terrible. They all need to be doing.
+- **24:36** With my earlier comments.
+- **24:40** The time for the oil to get hot, I'm not sure if I like that because it's the same as...
+- **24:46** It's the same visually as when you have to stop the burner knob yourself, right, to stop something overheating or overboiling.
+- **24:54** I was like clicking it to be like, oh wait, I need to stop this at the right time. So that's not good.
+- **24:59** Instead, maybe we just need like a vertical one that, I don't know, that just goes from like, ready, oh I don't know.
+- **25:11** Maybe we just don't need it. Maybe it just starts sizzling already.
+- **25:15** Right. It doesn't add anything to the gameplay to make you watch this little circle go around.
+- **25:22** The sizzling sound is a good indication that it's ready as well.
+- **25:28** So let's add in the samosas. This is quite fun. I think the pot needs to be bigger.
+- **25:34** Especially as you get multiple samosas.
+- **25:40** I got this one wrong. I don't even know how. He wants two samosas and three chilli. I'm so
+- **25:53** confused. Does he want five in total? Does he just want the marcha? It's actually confusing.
+- **26:07** Maybe he didn't want the chundo then. It's not really a samosa if it's just got chillies in it.
+- **26:14** That logic needs fixing. Okay. But yeah, the frying area needs to be larger and we've got space for it.
+- **26:26** Maybe we just need to orientate the...
+- **26:32** burner the other way, like landscape or something and make the cook pot bigger, I
+- **26:37** don't know. And also the ladle or whatever it's called, the one with holes in it that
+- **26:45** you take the samosas out, that animation is good except... oh, so this time there's fire?
+- **26:49** Okay, I don't know. Anyway, this time when you... let's have a look at the ladle.
+- **26:56** The thing with the ladle...
+- **26:58** is it goes above the samosas, it should go underneath the samosas, right, to make it more realistic looking.
+- **27:07** Even if it's not super realistic, like, yeah, the ladle currently is laid over the samosas as you take them out.
+- **27:25** Oh, so just a reminder that, yeah, Mushkaki, you should now say, I want sekelo.
+- **27:33** Oh, and then this... there's no updates to this game mode. I did a hard... I did a hard reset, refresh.
+- **27:41** The skewer, the wooden board, the... it's all old artwork. It doesn't look good at all.
+- **27:46** Hey, the least ingredients are top-down, though. That looks good.
+- **27:51** But again, if it's a vegetable stick, it needs to tell you what's in it. Unless it's
+- **28:01** all the same vegetable. Like, if it's all a whole skewer of onion, then it should
+- **28:09** say one stick of onion, but that's weird. It should just be like a... most of them
+- **28:14** should be mixed, to be honest. And then if it's a vegetable one...
+- **28:17** it should tell you, like, what order to do it in. Because right now, I don't know what to click.
+- **28:20** It says vegetable. Yes, it's highlighting the onion, but... is that tomato next to it? Like, why would it...
+- **28:26** why would I not need...
+- **28:27** Tomato.
+- **28:30** Dungri.
+- **28:31** Why would I need tomato?
+- **28:32** Also, the onions and tomatoes, they look kind of good on the skewer, but that's different.
+- **28:39** They're diced small in the bowls, and they come out bigger on the skewer.
+- **28:44** They should be visually similar, and I think they should be the bigger, chunkier versions.
+- **28:49** It makes more sense to go on a skewer. Okay, to the grill.
+- **28:56** The charcoal grill's cut out badly.
+- **29:02** This wooden frame that the thing is sitting on doesn't look good at all. The skewers don't look
+- **29:06** good. What happened with it? I left you overnight to do this. I just don't know why you just go so
+- **29:10** off script. You did the feedback nicely, and then...
+- **29:13** For some reason, you know I'm not there, and without adult supervision, you just go...
+- **29:17** Haywire. Like, what happened? Okay, whatever.
+- **29:20** Anyway.
+- **29:22** The plate... Again, the skewer doesn't look very good on the plate when you're serving it.
+- **29:26** I think the handle should sit off of the plate.
+- **29:29** Um...
+- **29:31** The plate should maybe be centered in line with the...
+- **29:38** ...coal frying thing, and the...
+- **29:41** ...rack where you leave the skewers.
+- **29:47** I wonder if we generate images of the skewer, one, two, three, and four skewers, in the skewer holding rack.
+- **29:56** And, like, one, two, three, four skewers in the plate.
+- **30:00** Maybe? And then we just add in the items...
+- **30:04** ...with code, like, on top.
+- **30:07** So at least you know, like, the skewer looks very realistic in its holder, all that is fine, and then it's just the ingredient items you put on top that are superimposed. That might be an idea.
+- **30:22** So the review is different here, that the Nana is in a round icon, which also kind of works.
+- **30:32** But maybe the bottom right is more consistent?
+- **30:35** For him testing it? I think we just need one way, ideally, across all of them.
+- **30:42** Okay, I think that was... that's all the stations.
+- **30:47** I'm not trying the different levels for the moment.
