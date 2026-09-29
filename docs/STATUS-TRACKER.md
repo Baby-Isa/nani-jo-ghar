@@ -88,7 +88,7 @@ The clinic is set at the children's own doctor's clinic (Hannah's granddad's); t
 | Piece | % | Next step |
 |---|---|---|
 | Shell: one app, one save, player picker | 100 | Live: Nani's house with doors for Cook, Find it and the clinic |
-| Shared UI (end-of-round screen, onboarding kit, light bulb, request card, order card, Nani box) | 85 | Roll into each mode as it's rebuilt |
+| Shared UI (end-of-round screen, onboarding kit, light bulb, request card, order card, Nani box) | 85 | Roll into each mode as it's rebuilt. **29 Sept (Zafar): the end screen, word review, badges and the done/next buttons must be identical in every mode** (UX-PRINCIPLES §15): add a shared button kit, move the clinic onto it, and check it in every VISUAL-QA pass |
 | Story engine (arcs and chapters as data, picture panels, Story help) | 40 | Arc 1's chapters as data (§1) |
 | Day-log (what the child did, for the Story by the Fire) | 0 | Specified in the Story by the Fire design; add one hook per mode as each is built |
 | World map and home (fog of war, "the world is the menu", role reversal) | 0 | After Arc 1; the hub filling up comes first |

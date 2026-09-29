@@ -398,3 +398,29 @@ About **4–5 build sessions in all**, against about 11 for the Cook overnight r
 - **Items don't sit on the belt** (they float or tilt). That's the stand-in art: the real item art needs a flat base and a contact shadow on the belt.
 - Seen in the same shot: the green button at the bottom right ("To the bench"?) is cut off by the frame's right edge, and the lab's debug log overlaps the counter.
 - Otherwise good (Zafar).
+
+### 13c. The clinic's card becomes Cook's order card, properly (Zafar asked, 29 Sept)
+Prototype A only borrowed the order card's **look** (its CSS classes and the gold check) and kept the clinic's own card code. The clinic fix session switches the clinic to the shared `OrderCard` (`js/shared/order-card.js`, shared-api §14; its data is mode-agnostic), so every clinic card behaves exactly like Cook's:
+- **ordered jobs** show the sequence line, with the next step in a light grey band: the pharmacy's *pela … ne poi …*, the waiting room's two-in-order (L4), and each heal game's steps (wash → dab → plasters);
+- rows tick when their step closes, and a wrong pick marks its row in the review only;
+- the **read-along underline** runs as each line is spoken;
+- the **closed card and the paid peek** at the higher levels (the waiting room from L3, as decided in 13a);
+- counts follow Cook's rule (Q7: written and heard at L1, written at L2, heard only from L3);
+- Nani's box on top, one card per person (the patient's card, the doctor's request).
+
+### 13d. Send-off layout (Zafar, 29 Sept, late)
+- **The doctor and the patient stand on the left**, in the free wall space (not by the door, where the face circle sat on the green cross sign).
+- **The feeling cards come in a thought bubble.** After the patient answers ("I feel …"), a thought bubble rises from their head and opens out to the right, holding the four face cards (happy, sad, hot, cold). The child taps the one the patient is thinking. This replaces the card tray along the bottom.
+- At level 1, the hint that the feeling shows (the design's round face circle) sits on the patient's own face, via their expression once the real art exists. It's never a second face floating beside the bubble.
+
+### 13e. Send-off flow and staging (Zafar, 29 Sept, late)
+- **No doctor card listing every line up front.** At the send-off the doctor's card showed all his lines at once ("Is everything okay now?", "What will help?", "Say thank you to the doctor."), and he said them again at each step. Drop that: **maybe no card at all here**. If a card shows, it holds only the current need, never the whole script.
+- **The flow follows on from level 1:** the patient says how they feel (the thought bubble of 13d at L1–2). From level 3, a **tray along the bottom of the screen** holds the items the doctor can give (blanket, fan, apple, …), and the child picks the one that fixes it.
+- **Staging (a general rule; UX-PRINCIPLES §16):** while the doctor and patient talk, they stand three-quarter turned to each other and partly to the front, like actors on a stage. When it's the child's turn to act, they **turn to face the player**. That turn is the "your turn" cue.
+
+### 13f. End of Zafar's play of the prototypes (29 Sept, late)
+- **Waiting room level 5 needs the earlier fixes:** 6 people at most (13, counting the babies and children on laps), the picked person rises off the seat (13), the closed card from L3 (13a), and no W3 (13 speaking note).
+- **Send-off level 3: the help items and the reply pills sat on top of each other.** Reply pills only appear when a reply is actually needed, and never overlap the item tray (13e).
+- **Stale UI between rounds:** in E2 level 1 (which Zafar likes), the reply pills from an earlier round were still on screen, unused, until a page refresh. Every stage must clear its own UI when it ends.
+- **No Nani box in the clinic** (Zafar): Nani isn't there, so **the doctor fills her guidance role**. The guide box at the top of the sidebar becomes the doctor's box (his face, his line, the replay, the bulb). Nani's box only comes back if a story has her come with you.
+- **Zafar: "fix the rest of this game mode based on the previous feedback."** The clinic fix session carries out 13–13f, plus the heal-game answers in 13 (the tray feeds the heal game, both feet at L3). Level-1 counts (B's question 3) stay as built for now.
