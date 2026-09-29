@@ -7,6 +7,7 @@ understood the words would do, in client pixels:
   {do: "hold", x, y, until}  press, keep holding until the JS expression `until` is true, release
   {do: "button"}             the host's big button (Next / Done)
   {do: "wait"}               the game is busy (a line, an animation, the patient reading)
+debug.slip() (optional) returns one deliberate mistake (an action) when it's the moment for one.
 The driver plays through real mouse events until ctx.done() fires, then
 checks: right == total, the card ticked every step, every step got its
 first-time cue (words), and no console errors. A "slip" play makes one
@@ -134,9 +135,10 @@ class Play:
         while not self.js("!!__heal.result"):
             if time.time() - t0 > 90:
                 raise AssertionError("timed out playing")
-            if self.slip and not slipped and self.js("!!(__heal.run.controller.debug.slip && __heal.run.controller.debug.slip())"):
+            sl = self.js("(() => { const d = __heal.run.controller.debug; return d.slip ? d.slip() : null; })()") if (self.slip and not slipped) else None
+            if sl:
                 slipped = True
-                a = self.js("__heal.run.controller.debug.next()")
+                a = sl
             else:
                 a = self.js("__heal.run.controller.debug.next()")
             self.act(a)

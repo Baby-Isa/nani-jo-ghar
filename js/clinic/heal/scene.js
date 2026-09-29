@@ -248,6 +248,7 @@
         if (t.bg) b.style.background = t.bg;
         ctx.on(b, "click", (e) => {
           e.stopPropagation();
+          if (!S.ready) return; // the why beat and the card are still being said
           S.pick(t.id);
           if (onPick) onPick(t.id, b);
         });

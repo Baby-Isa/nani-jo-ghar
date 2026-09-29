@@ -706,6 +706,7 @@
     });
     const onScrape = (p) => Math.abs(p.x - 380) < 240 && Math.abs(p.y - 408) < 70;
     ctx.on(S.svg, "pointerdown", (e) => {
+      if (!S.ready) return;
       const p = S.pt(e);
       const c = cur();
       if (!c || st.over || st.busy || !S.sel || !onScrape(p)) return;
@@ -760,6 +761,7 @@
         await S.why(WHY.problem, WHY.goal);
         if (P.upFront) await ctx.card.speak();
         else await ctx.say(rows[0]);
+        S.ready = true;
         open();
       },
       destroy() {
@@ -773,6 +775,7 @@
           return S.cueLog.slice();
         },
         next() {
+          if (!S.ready) return { do: "wait" };
           const c = cur();
           const tool = (id) => {
             const r = S.toolEls[id].getBoundingClientRect();
@@ -787,6 +790,12 @@
           }
           const want = "pl-" + P.key(c.seq[st.laid.length]);
           return S.sel !== want ? tool(want) : at(spotX(st.laid.length), 408);
+        },
+        slip() {
+          // one dab too many
+          const c = cur();
+          if (c && c.kind === "dab" && S.sel === "cloth" && st.dabs === c.count) return Object.assign({ do: "tap", what: "extra dab" }, S.client(380, 408));
+          return null;
         },
       },
       expect() {
