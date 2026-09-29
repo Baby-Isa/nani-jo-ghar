@@ -179,26 +179,43 @@
 
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
   function naniCard(want, no) {
+    const M = UI.mission;
+    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id))), done: false }));
+    no.forEach((id) => rows.push({ id, label: Lang.html(Lang.line("no", Lang.phrase([id]))), done: false, no: true }));
+    const data = () => ({
+      person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
+      // "Chop these" is an English placeholder (§13), flagged to record
+      headline: { html: "Chop these", rec: true },
+      items: rows.map((r) => ({ label: r.label, count: 2, parts: [], done: r.done, key: r })),
+    });
+    // the sidebar's own calls (order-card follow-ups): Nani's card above the order's, and the phase fold
+    // (only cards you can act on stay open: Nana's daar card folds to face + headline while chopping)
+    if (M.addCard && M.closeCards) {
+      M.addCard("daar-chop", data());
+      M.closeCards(true);
+      return {
+        rows,
+        tickAll() {
+          rows.forEach((r) => (r.done = true));
+          M.addCard("daar-chop", data());
+        },
+        close() {
+          M.removeCard("daar-chop");
+          M.closeCards(false);
+        },
+      };
+    }
+    // before those calls existed: the card in its own box above the order card, and a scoped fold
     const OC = global.OrderCard;
     const side = document.getElementById("mission");
     const style = document.createElement("style");
-    // the phase fold (§13: only cards you can act on stay open): Nana's daar card folds to face + headline
     style.textContent = "#mission.dv2-fold .m-order .oc-item{display:none}#mission.dv2-fold .m-order .oc-card{padding-bottom:0}#dv2-nani{margin:0 0 12px}#dv2-nani .oc-card{margin:0}";
     document.head.appendChild(style);
     const box = document.createElement("div");
     box.id = "dv2-nani";
-    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id))), done: false }));
-    no.forEach((id) => rows.push({ id, label: Lang.html(Lang.line("no", Lang.phrase([id]))), done: false, no: true }));
     const draw = () => {
       box.innerHTML = "";
-      if (!OC) return;
-      const data = {
-        person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
-        // "Chop these" is an English placeholder (§13), flagged to record
-        headline: { html: "Chop these", rec: true },
-        items: rows.map((r) => ({ label: r.label, count: 2, parts: [], done: r.done, key: r })),
-      };
-      box.appendChild(OC.card(data, {}));
+      if (OC) box.appendChild(OC.card(data(), {}));
     };
     draw();
     if (side && side.parentNode) {
@@ -353,12 +370,13 @@
       // the pieces slide into the katori (they stay there: the bowl shows what's chopped)
       got[id] = (got[id] || 0) + 1;
       const n = inBowl.length;
-      const a = n * 2.3;
-      const rr = n === 0 ? 0 : Math.min(0.5, 0.34 + n * 0.03);
+      // one pile per vegetable, round the bowl (five round the side, then the middle), so they can be counted
+      const a = -Math.PI / 2 + n * ((Math.PI * 2) / 5);
+      const rr = n < 5 ? 0.46 : 0;
       const tx = katori.x + Math.cos(a) * bowlR * rr;
       const ty = katori.y + Math.sin(a) * bowlR * rr * 0.9;
       const pile = veg;
-      await S.fly(pile, tx, ty, { scale: pile.scale * 0.42, duration: 420, arc: z.L(70) });
+      await S.fly(pile, tx, ty, { scale: pile.scale * 0.36, duration: 420, arc: z.L(70) });
       pile.setDepth(D.item - 0.5 + n * 0.001);
       S.puff(tx, ty, 0xfff6e0, z.L(26));
       inBowl.push(pile);
@@ -468,10 +486,10 @@
     kat.shadow = S.contactShadow(kat);
     const kR = (z.L(220) / 2) * KATORI.inner;
     const bits = chopped.pieces.map((key, i) => {
-      const a = i * 2.3;
-      const rr = i === 0 ? 0 : Math.min(0.55, 0.22 + i * 0.08);
+      const a = -Math.PI / 2 + i * ((Math.PI * 2) / 5);
+      const rr = i < 5 ? 0.46 : 0;
       const im = S.track(S.add.image(kat.x + Math.cos(a) * kR * rr, kat.y + Math.sin(a) * kR * rr * 0.9, key).setDepth(D.item + 0.1 + i * 0.001));
-      im.setScale(z.L(200 * 0.42 * (220 / BOWL.d)) / im.width);
+      im.setScale(z.L(200 * 0.36 * (220 / BOWL.d)) / im.width);
       return im;
     });
     const dBowl = S.track(S.add.image(z.X(1240), z.Y(330), "dv2-katori").setDepth(D.item));
@@ -573,7 +591,7 @@
         }
       }
       const drop = spiceDrop(id);
-      pop(z, S, Cook.display(id), cx + bodyR + z.L(190), cy - z.L(60), { speakId: id, ms: 1000 });
+      pop(z, S, Cook.display(id), cx + bodyR + z.L(190), cy - z.L(130), { speakId: id, ms: 1000 });
       await drop;
       z.progress({ added: id });
       if (!group.length) si++;
@@ -627,7 +645,7 @@
       })
     );
     if (pour && pour.stop) pour.stop();
-    pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(60), { speakId: "cook-daal", ms: 1000 });
+    pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(130), { speakId: "cook-daal", ms: 1000 });
     S.tweens.add({ targets: dBowl, x: z.X(1240), y: z.Y(330), angle: 0, alpha: 0, duration: 380 });
     shimmer.destroy();
     if (sizzle && sizzle.stop) sizzle.stop();
