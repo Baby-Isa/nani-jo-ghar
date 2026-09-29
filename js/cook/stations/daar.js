@@ -337,6 +337,7 @@
     };
     const onSlice = ({ id, ok, x, y }) => {
       if (!ok || !S.textures.exists(`dv2-chop-${id}`)) return;
+      if (!rows.includes(id)) rows.push(id);
       const list = (piles[id] = piles[id] || []);
       const n = list.length;
       const img = S.track(S.add.image(x, y, `dv2-chop-${id}`).setDepth(D.item + 1));
@@ -616,8 +617,16 @@
     const R = 104;
     const BW = 28;
     const ay = 34; // the arc's centre, in the face
-    const c = S.track(S.add.container(z.X(x), sy(z, y)).setDepth(D.item + 1).setScale(z.k).setAlpha(0));
-    const g = S.add.graphics();
+    // (no container: each piece is placed and scaled itself, so the needle's redraws always show)
+    const ox = z.X(x);
+    const oy = sy(z, y);
+    const parts = [];
+    const put = (o, dx = 0, dy = 0, dd = 0) => {
+      S.track(o.setPosition(ox + dx * z.k, oy + dy * z.k).setScale(z.k).setDepth(D.item + 1 + dd).setAlpha(0));
+      parts.push(o);
+      return o;
+    };
+    const g = put(S.add.graphics());
     // the glass face and its gold rim (the hob's glass, the kit's gold)
     g.fillStyle(0x28190a, 0.22);
     g.fillRoundedRect(-W / 2 + 4, -H / 2 + 8, W, H, 28);
@@ -643,9 +652,9 @@
     });
     // the pictures on their bands, in cream (the glass's ink)
     const at = (v, r) => ({ x: Math.cos(toA(v)) * r, y: ay + Math.sin(toA(v)) * r });
-    const ic = S.add.graphics();
+    const ic = put(S.add.graphics(), 0, 0, 0.01);
     const cream = 0xf4ecdf;
-    let p = at(e1 / 2, R + 34);
+    let p = at(e1 / 2, R + 50);
     ic.fillStyle(cream, 0.9);
     ic.fillRoundedRect(p.x - 9, p.y - 10, 6, 20, 2);
     ic.fillRoundedRect(p.x + 3, p.y - 10, 6, 20, 2);
@@ -655,15 +664,13 @@
     hare(ic, p.x, p.y + 10, 0.6, cream);
     p = at((e3 + max) / 2, R + 40);
     splash(ic, p.x + 4, p.y + 6, 0.6, cream);
-    const lit = S.add.graphics();
-    const needle = S.add.graphics();
+    const lit = put(S.add.graphics(), 0, 0, 0.02);
+    const needle = put(S.add.graphics(), 0, 0, 0.03);
     // the laps: the Kutchi word on a white chip in the face's lower half
-    const chip = S.add.container(0, 104).setAlpha(0);
-    const cg = S.add.graphics();
-    const ct = S.add.text(0, 0, "", { fontFamily: FONT, fontSize: "40px", fontStyle: "800", color: INK.kutchi }).setOrigin(0.5);
-    chip.add([cg, ct]);
-    c.add([g, ic, lit, needle, chip]);
-    S.tweens.add({ targets: c, alpha: 1, duration: 300 });
+    const cg = put(S.add.graphics(), 0, 104, 0.04);
+    const ct = put(S.add.text(0, 0, "", { fontFamily: FONT, fontSize: "40px", fontStyle: "800", color: INK.kutchi }).setOrigin(0.5), 0, 104, 0.05);
+    const chip = [cg, ct];
+    S.tweens.add({ targets: parts.filter((o) => !chip.includes(o)), alpha: 1, duration: 300 });
     let shown = -1;
     const dial = {
       set(spd) {
@@ -688,9 +695,9 @@
         const a = toA(spd);
         needle.clear();
         needle.lineStyle(8, 0x0e0d0c, 0.5);
-        needle.lineBetween(0, ay + 2, Math.cos(a) * (R + 6), ay + 2 + Math.sin(a) * (R + 6));
+        needle.lineBetween(0, ay + 2, Math.cos(a) * (R - 4), ay + 2 + Math.sin(a) * (R - 4));
         needle.lineStyle(6, 0xf0cf7a, 1);
-        needle.lineBetween(0, ay, Math.cos(a) * (R + 6), ay + Math.sin(a) * (R + 6));
+        needle.lineBetween(0, ay, Math.cos(a) * (R - 4), ay + Math.sin(a) * (R - 4));
         const on = spd > 0.02 ? 1 : 0.4;
         needle.fillStyle(0xffa94d, 0.18 * on);
         needle.fillCircle(0, ay, 30);
@@ -702,18 +709,19 @@
         needle.fillCircle(0, ay, 5);
       },
       laps(n) {
-        if (n === shown) return;
+        // (past the numbers the words have, the last word stays: never an id on screen)
+        if (n === shown || !Cook.data.words[Cook.numId(n)]) return;
         shown = n;
         ct.setText(Lang.plain({ segs: Lang.num(n) }));
         const w = Math.max(110, ct.width + 52);
         cg.clear();
         cg.fillStyle(0xffffff, 1);
         cg.fillRoundedRect(-w / 2, -32, w, 64, 14);
-        chip.setAlpha(1);
-        S.tweens.add({ targets: chip, scale: 1.14, duration: 110, yoyo: true });
+        chip.forEach((o) => o.setAlpha(1));
+        S.tweens.add({ targets: chip, scale: z.k * 1.14, duration: 110, yoyo: true });
       },
       close() {
-        S.tweens.add({ targets: c, alpha: 0, duration: 300 });
+        S.tweens.add({ targets: parts, alpha: 0, duration: 300 });
       },
     };
     dial.set(0);
@@ -804,6 +812,29 @@
       const offs = [];
       Cook.stirCount = () => count;
       Cook.stirSpeed = () => spd;
+      // (for build/shoot_daar_v3.py: stir at a steady real speed, laps per second, through turn() as a drag
+      // does; the headless browser's mouse is too slow to reach the hare band)
+      Cook.stirDrive = (rate, ms) =>
+        new Promise((done) => {
+          dragging = true;
+          const t0 = performance.now();
+          let tl = t0;
+          const step = () => {
+            const now = performance.now();
+            let da = TAU * rate * (Math.min(500, now - tl) / 1000);
+            while (da > 0) {
+              turn(Math.min(0.5, da));
+              da -= 0.5;
+            }
+            tl = now;
+            if (now - t0 < ms && !over) requestAnimationFrame(step);
+            else {
+              dragging = false;
+              done();
+            }
+          };
+          requestAnimationFrame(step);
+        });
       const post = () =>
         z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "click", selector: "#done-btn" });
       const place = () => {
@@ -937,6 +968,7 @@
         offs.forEach((o) => o());
         Cook.stirCount = null;
         Cook.stirSpeed = null;
+        Cook.stirDrive = null;
         z.expect({ kind: "wait" });
         S.tweens.killTweensOf(ringG);
         ringG.destroy();
@@ -964,7 +996,7 @@
     Cook.sfx.pop();
     S.steam(bowl.x, bowl.y - z.L(40), 3);
     // the review (X10 / Q1): their big round face over the bowl, no body, no pretend eating
-    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: bowl.x, y: bowl.y - z.L(250), size: z.L(250), k: z.L(1), side: "left" });
+    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: bowl.x, y: bowl.y - z.L(250), size: z.L(250), k: z.L(1), side: "right" });
     if (ok || last) {
       await Cook.wait(300);
       await look.close();

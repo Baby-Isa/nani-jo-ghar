@@ -107,34 +107,21 @@ class Shooter(T.Player):
         cx, cy, r, target = e["sx"], e["sy"], e["srx"], e["target"]
         time.sleep(0.5)
         self.snap("stir-stopped")
-        a = 0.0
-        p.mouse.move(cx + r, cy)
-        p.mouse.down()
-        plan = [(0.45, 1.8, "stir-tortoise"), (1.4, 1.4, "stir-hare"), (3.4, 0.7, "stir-spill")]
-        for rate, secs, name in plan:
-            t0 = time.time()
-            last = t0
-            while time.time() - t0 < secs:
-                now = time.time()
-                a += min(2 * math.pi * rate * (now - last), 1.0)
-                last = now
-                p.mouse.move(cx + r * math.cos(a), cy + r * math.sin(a))
-                time.sleep(0.005)
+        # through every band (in-page, steady: Cook.stirDrive), a shot in each while it's turning
+        for rate, name, ms in [(0.45, "stir-tortoise", 2000), (1.4, "stir-hare", 1500), (3.0, "stir-spill", 1100)]:
+            p.evaluate(f"() => {{ Cook.__drive = Cook.stirDrive({rate}, {ms}); }}")
+            time.sleep(ms / 1000 * 0.85)
+            if DEBUG:
+                print("   dial", name, p.evaluate("Cook.stirSpeed ? Cook.stirSpeed() : -1"), flush=True)
             p.screenshot(path=os.path.join(self.shots, f"{self.tag}-{name}.png"))
             self.taken.add(name)
+            p.evaluate("() => Cook.__drive")
         # on past the count (one too many)
-        t0 = time.time()
-        last = t0
-        while time.time() - t0 < 20:
+        for _ in range(40):
             count = p.evaluate("Cook.stirCount ? Cook.stirCount() : -1")
             if count < 0 or count > target:
                 break
-            now = time.time()
-            a += min(2 * math.pi * 0.7 * (now - last), 1.0)
-            last = now
-            p.mouse.move(cx + r * math.cos(a), cy + r * math.sin(a))
-            time.sleep(0.005)
-        p.mouse.up()
+            p.evaluate("() => Cook.stirDrive(0.7, 500)")
         time.sleep(0.3)
         p.click("#done-btn")
 
@@ -145,7 +132,7 @@ def run(vp, out, level, speed, side="counter"):
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag)
         page.evaluate(f"() => {{ Cook.daarSide = {json.dumps(side)}; Cook.tasteHold = 900; }}")
-        page.evaluate(f"() => {{ __cook.lab('daar', true, {json.dumps({'level': level})}); }}")
+        page.evaluate(f"() => {{ __cook.lab('daar', false, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=900)
         time.sleep(1.0)
@@ -171,7 +158,7 @@ def main():
     if a.matrix:
         out = os.path.join(T.ROOT, "build", "reports", "daar-v3")
         os.makedirs(out, exist_ok=True)
-        for name in ["laptop", "phone-landscape"]:
+        for name in a.vp.split(","):
             for level in (1, 2, 3, 4):
                 ok &= run(VPS[name], out, level, a.speed)
     else:
