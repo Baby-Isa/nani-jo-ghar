@@ -133,11 +133,46 @@
       size: it.size || d.size || null,
     });
   };
+  /**
+   * Clinic v2 stand-ins (flat shapes, no new art: docs/modes/clinic-v2-design-sheets.md "Prototype first"):
+   * an item whose data names a `standin` draws it instead of its rough sprite (the apple for the lolly,
+   * the filling's tube, a torch that looks like a torch); the four feeling faces; the doctor's silhouette.
+   */
+  Kit.STANDIN = {
+    apple: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 18c-4-4-10-5-15-2-8 5-8 18-3 28 4 8 9 12 13 11 2 0 3-1 5-1s3 1 5 1c4 1 9-3 13-11 5-10 5-23-3-28-5-3-11-2-15 2z" fill="#d23b3b"/><path d="M22 22c-4 3-5 9-4 13" stroke="#f08a80" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M32 18c0-5 1-9 4-12" stroke="#6b4a2b" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M35 12c5-5 12-5 15-3-3 5-9 7-15 3z" fill="#3fa35b"/></svg>',
+    tube: '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="24" width="36" height="16" rx="3" fill="#f4f1ea" stroke="#9aa0a8" stroke-width="2.5"/><path d="M8 24l-4 3v10l4 3z" fill="#c9ced6" stroke="#9aa0a8" stroke-width="2"/><rect x="44" y="27" width="7" height="10" rx="1.5" fill="#3b6fd2"/><rect x="51" y="29" width="8" height="6" rx="1.5" fill="#3b6fd2"/><rect x="14" y="29" width="22" height="6" rx="2" fill="#bfe0d7"/></svg>',
+    torch: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M44 22l14-8v36l-14-8z" fill="#fff4b0" opacity=".9"/><rect x="8" y="26" width="26" height="12" rx="3" fill="#3b6fd2"/><path d="M34 22h10v20H34z" fill="#2d5aa8"/><rect x="44" y="24" width="3" height="16" fill="#ffe26a"/><rect x="16" y="23" width="7" height="4" rx="1.5" fill="#e2a33a"/></svg>',
+  };
+  Kit.FEEL = {
+    happy: { fill: "#f7c948", mouth: '<path d="M20 40q12 12 24 0" stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>' },
+    sad: { fill: "#9cc3e6", mouth: '<path d="M20 46q12-10 24 0" stroke="#2d4a6a" stroke-width="3.5" fill="none" stroke-linecap="round"/>', extra: '<path d="M22 30q-2 6 0 8q2-2 0-8z" fill="#3b6fd2"/>' },
+    hot: { fill: "#f08a5d", mouth: '<ellipse cx="32" cy="44" rx="6" ry="4" fill="#7a2a1a"/>', extra: '<path d="M48 14q-3 6 0 8q3-2 0-8z" fill="#3b9ad2"/><path d="M54 24q-3 5 0 7q3-2 0-7z" fill="#3b9ad2"/><path d="M8 58h48" stroke="#d23b3b" stroke-width="3" stroke-dasharray="4 4"/>' },
+    cold: { fill: "#bfe3f2", mouth: '<path d="M20 44l4-3 4 3 4-3 4 3 4-3 4 3" stroke="#2d4a6a" stroke-width="2.5" fill="none"/>', extra: '<path d="M6 10l5 5M11 10l-5 5M52 48l5 5M57 48l-5 5M8 44l4 4M12 44l-4 4" stroke="#fff" stroke-width="2.5"/>' },
+  };
+  /** A flat feeling face (happy, sad, hot, cold): the same for everyone (CQ6). */
+  Kit.feelingFace = function (f, parent) {
+    const d = h("div", `cl-feel feel-${f}`, parent);
+    const F = Kit.FEEL[f] || Kit.FEEL.happy;
+    d.innerHTML = `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="${F.fill}" stroke="rgba(0,0,0,.12)" stroke-width="2"/><circle cx="23" cy="26" r="3.5" fill="#2a2522"/><circle cx="41" cy="26" r="3.5" fill="#2a2522"/>${F.mouth}${F.extra || ""}</svg>`;
+    return d;
+  };
+  /** The doctor, a flat-colour stand-in (a white coat, turned 3/4; the doctor art comes later). */
+  Kit.doctorFigure = function (parent, cls) {
+    const d = h("div", `cl-doc ${cls || ""}`, parent);
+    d.innerHTML = '<svg viewBox="0 0 100 260" aria-hidden="true"><ellipse cx="50" cy="252" rx="30" ry="6" fill="rgba(0,0,0,.12)"/><path d="M34 180h14l-2 68H34zM52 180h14l-1 68H53z" fill="#3b3b46"/><path d="M30 246h18v8H26zM52 246h18l4 8H52z" fill="#2a2522"/><path d="M22 74q28-14 56 0l6 112H16z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><path d="M44 72l6 26 6-26z" fill="#2e8b7a"/><path d="M22 76l-8 70 10 2 8-60zM78 76l6 64-10 4-6-58z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><circle cx="18" cy="150" r="6" fill="#b8845f"/><circle cx="80" cy="146" r="6" fill="#b8845f"/><path d="M36 84q2 20 14 22" stroke="#2a3f5a" stroke-width="3" fill="none"/><circle cx="50" cy="107" r="4" fill="#9aa0a8"/><rect x="44" y="56" width="12" height="12" fill="#b8845f"/><ellipse cx="52" cy="38" rx="17" ry="20" fill="#b8845f"/><path d="M35 34q2-22 18-22q15 1 16 18q-8-8-20-6q-8 1-14 10z" fill="#2b1d16"/><path d="M40 48q10 10 24 0q-2 12-12 12q-10 0-12-12z" fill="#2b1d16"/></svg>';
+    return d;
+  };
+
   /** An item's picture: <div class="cl-item"> with a sprite, or a greybox glyph disc tinted by colour. */
   Kit.icon = function (item, parent, cls) {
     const info = Kit.itemInfo(item);
     const d = h("div", `cl-item ${cls || ""}`, parent);
     d.dataset.item = info.id;
+    if (info.standin && Kit.STANDIN[info.standin]) {
+      d.classList.add("standin");
+      d.innerHTML = Kit.STANDIN[info.standin];
+      return d;
+    }
     if (info.colour) d.dataset.colour = info.colour;
     if (info.size) d.dataset.size = info.size;
     const src = (info.colour && (Kit.sprite(`${info.base}-${info.colour}`) || Kit.sprite(`${info.id}-${info.colour}`))) || Kit.sprite(info.id) || Kit.sprite(info.base);

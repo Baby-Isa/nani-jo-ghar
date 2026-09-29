@@ -1,19 +1,23 @@
 {
-  "_about": "The clinic's pipeline (docs/modes/clinic-design.md: the Mini-game quality pass Q1-Q7 over the Pipeline design P1-P13). One patient = waiting room -> diagnosis -> pharmacy (the belt) -> heal (a registered healing game, docs/clinic-heal-api.md) -> send-off. Read by js/clinic/pipeline.js in the browser and in Node (build/leak_clinic.mjs). Real Kutchi only where the family gave it (docs/kutchi-grammar-notes.md and the list at the top of the pipeline design): Muke {x} khape, ne, pela ... ne poi ..., the numbers, haa, nar (draft), wadho/nindho (he-forms), Salamun alaykum, Aabhar aanjo, Achija. Everything in [brackets] is an English placeholder, shown grey italic. Never invent Kutchi.",
+  "_about": "The clinic's pipeline (docs/modes/clinic-design.md: the Mini-game quality pass Q1-Q7 over the Pipeline design P1-P13). One patient = waiting room -> diagnosis -> pharmacy (the belt) -> heal (a registered healing game, docs/clinic-heal-api.md) -> send-off. Read by js/clinic/pipeline.js in the browser and in Node (build/leak_clinic.mjs). Real Kutchi only where the family gave it (docs/kutchi-grammar-notes.md and the list at the top of the pipeline design): Muke {x} khape, ne, pela ... ne poi ..., the numbers, haa, na (G9: no is na, not nar), wadho/nindho (he-forms), Salamun alaykum, Aabhar aanjo, Achija. Everything in [brackets] is an English placeholder, shown grey italic. Never invent Kutchi.",
 
   "kinds": {
-    "_about": "P2: kinds of person, not names (the lesson). `he` = a he-word for wadho/nindho (the she-forms wadhi/nindhi are not confirmed, so size calls only go to he-kinds). `elder` = the formal greeting.",
-    "girl": { "english": "the girl", "he": false },
-    "boy": { "english": "the boy", "he": true },
-    "old-man": { "english": "the old man", "he": true, "elder": true },
-    "old-woman": { "english": "the old woman", "he": false, "elder": true },
-    "baby": { "english": "the baby", "he": false },
-    "auntie": { "english": "the auntie", "he": false },
-    "uncle": { "english": "the uncle", "he": true }
+    "_about": "P2: kinds of person, not names (the lesson). `who` = the waiting room's ladder word (man / woman / boy / girl: W4, Zafar); `age` = old / young for the adults (rung 2). `he` = a he-word for wadho/nindho (the she-forms are not confirmed). `elder` = the formal greeting. Every word here is an English placeholder, to record (the doctor's session, Round 4 Section G).",
+    "girl": { "english": "the girl", "who": "girl", "he": false },
+    "boy": { "english": "the boy", "who": "boy", "he": true },
+    "old-man": { "english": "the old man", "who": "man", "age": "old", "he": true, "elder": true },
+    "old-woman": { "english": "the old woman", "who": "woman", "age": "old", "he": false, "elder": true },
+    "uncle": { "english": "the man", "who": "man", "age": "young", "he": true },
+    "auntie": { "english": "the woman", "who": "woman", "age": "young", "he": false }
   },
   "colours": ["red", "blue", "green", "yellow"],
   "colour_words": {
     "red": { "english": "in red" }, "blue": { "english": "in blue" }, "green": { "english": "in green" }, "yellow": { "english": "in yellow" }
+  },
+  "ladder_words": {
+    "_about": "The waiting room's ladder words (W4). All English placeholders, to record (man, woman, young, old, tall, short, with, the colours, the baby, the child, bring in).",
+    "man": "man", "woman": "woman", "boy": "boy", "girl": "girl", "old": "old", "young": "young", "tall": "tall", "short": "short",
+    "baby": "with the baby", "child": "with the child"
   },
 
   "parts": {
@@ -42,56 +46,65 @@
     "sore-eye": { "game": "eye", "part": "eye", "parts": ["eye"], "from": 2, "items": ["care-drops", "tool-pointer", "care-patch"], "ask": ["care-drops", "care-patch", "tool-pointer"], "say": { "english": "A sore eye." } },
     "sore-feet": { "game": "foot", "part": "foot", "parts": ["foot"], "from": 1, "items": ["jug-hot", "jug-cold", "spi-16", "tool-tweezers", "care-plaster"], "ask": ["care-plaster", "tool-tweezers", "spi-16"], "say": { "english": "Sore feet!" } },
     "thorn": { "game": "foot", "part": "foot", "parts": ["foot", "toe"], "from": 2, "items": ["jug-hot", "jug-cold", "spi-16", "tool-tweezers", "care-plaster"], "ask": ["tool-tweezers", "care-plaster", "spi-16"], "say": { "english": "A thorn!" } },
-    "fever": { "game": "fever", "part": "head", "parts": ["head"], "from": 1, "items": ["strip", "cloth", "blanket", "fan"], "ask": ["blanket", "cloth", "fan"], "say": { "english": "A fever." } },
+    "fever": { "game": "fever", "part": "head", "parts": ["head"], "from": 1, "items": ["thermometer", "cloth", "blanket", "fan"], "ask": ["blanket", "cloth", "fan"], "say": { "english": "A fever." } },
     "jab": { "game": "boing", "part": "arm", "parts": ["arm"], "from": 2, "items": ["cotton", "syringe", "plaster", "lollipop"], "ask": ["lollipop", "cotton", "plaster"], "say": { "english": "The jab before the trip." } }
   },
 
   "stages": {
     "waiting": {
-      "_about": "P2 + Q3. mix = the variants drawn per level (weights). W3 (speaking) only when speaking moments are on.",
-      "mix": { "1": { "W1": 1 }, "2": { "W2": 3, "W3": 1 }, "3": { "W4": 3, "W2": 1, "W3": 1 } },
-      "bench": { "1": [3, 3], "2": [3, 4], "3": [4, 5] },
+      "_about": "P2 + Q3, rebuilt for clinic v2 (docs/modes/clinic-v2-design-sheets.md W; Zafar's W3/W4/CQ1/CQ2). The doctor leans out of his half-open door and calls; the child taps the TICK under the right person (it shakes if wrong, locks in if right); nobody walks until chosen. The level is the language ladder (W4): 1 man / woman / boy / girl; 2 + old / young; 3 + tall / short; 4 + a colour (of clothes); 5 + with the baby / with the child. Every ladder word is an English placeholder, to record. `people` = how many in the room per level (6 bench seats, then the standing spots by the door, the desk and the window: 4, 6, 7, 8, 9); `standing` = how many of them stand. mix: W1 one call; W3 the child calls them (speaking; kinds only, levels 2-3); W4 two calls in the called order with the comfort rings (level 3+).",
+      "maxLevel": 5,
+      "mix": { "1": { "W1": 1 }, "2": { "W1": 3, "W3": 1 }, "3": { "W1": 3, "W3": 1, "W4": 1 }, "4": { "W1": 3, "W4": 1 }, "5": { "W1": 3, "W4": 1 } },
+      "people": { "1": [4, 4], "2": [6, 6], "3": [7, 7], "4": [8, 8], "5": [9, 9] },
+      "standing": { "1": 0, "2": 1, "3": 2, "4": 2, "5": 3 },
+      "slots": { "bench": ["bench0", "bench1", "bench2", "bench3", "bench4", "bench5"], "standing": ["door", "desk", "window"], "front": [] },
+      "rungs": ["kind", "age", "height", "colour", "with"],
       "firstBench": 2,
-      "ringsMs": { "1": 60000, "2": 45000, "3": 30000 }
+      "ringsMs": { "1": 60000, "2": 45000, "3": 30000, "4": 30000, "5": 30000 }
     },
     "diagnosis": {
-      "_about": "P3 + Q3. D1 is taught (the very first sessions only: days.mix names it); D1b grades haa/nar from level 2 (Found it on haa, Next on nar); D2 the bulk; D3 the check-up detective from level 2.",
-      "mix": { "1": { "D2": 1 }, "2": { "D1b": 1, "D2": 2, "D3": 1 }, "3": { "D2": 3, "D3": 2 } },
+      "_about": "P3 + Q3. D1 is taught at level 1 (the very first sessions: days.mix names it); D1 level 2 (was D1b) grades haa/na (Found it on haa, Next on na); D2 the bulk; D3 the check-up detective (clinic v2: from level 1, with only the right tool plus one; `cue` = each tool's first-time cue, English placeholders to record).",
+      "mix": { "1": { "D2": 2, "D3": 1 }, "2": { "D1": 1, "D2": 2, "D3": 1 }, "3": { "D2": 3, "D3": 2 } },
       "probe": { "1": 3, "2": 4, "3": 5 },
       "tools": {
-        "hand": { "english": "Look at", "item": "tool-hand", "finds": ["knee", "hand", "arm", "leg", "foot", "elbow", "shoulder", "finger", "toe", "neck", "tummy"] },
-        "torch": { "english": "Look in", "item": "torch", "finds": ["ear", "eye", "mouth", "tooth"] },
-        "stethoscope": { "english": "Listen to", "item": "stethoscope", "finds": ["chest", "tummy"] },
-        "thermometer": { "english": "The temperature:", "item": "thermometer", "finds": ["head"] }
+        "hand": { "english": "Look at", "item": "tool-hand", "cue": { "english": "Look at: your hand." }, "finds": ["knee", "hand", "arm", "leg", "foot", "elbow", "shoulder", "finger", "toe", "neck", "tummy"] },
+        "torch": { "english": "Look in", "item": "torch", "cue": { "english": "Look in: the torch." }, "finds": ["ear", "eye", "mouth", "tooth"] },
+        "stethoscope": { "english": "Listen to", "item": "stethoscope", "cue": { "english": "Listen: the stethoscope." }, "finds": ["chest", "tummy"] },
+        "thermometer": { "english": "The temperature:", "item": "thermometer", "cue": { "english": "The temperature: the thermometer." }, "finds": ["head"] }
       },
-      "calls": { "2": 2, "3": 3 }
+      "calls": { "1": 1, "2": 2, "3": 3 }
     },
     "pharmacy": {
-      "_about": "P4 + Q1: tap at every level. `asks` = how many items the belt asks for; `onBelt` = dishes on the loop; `everyMs` = one enters every; `crossMs` = time to cross; `lookalikes` per asked item; `colourFrom` / `countFrom` / `orderFrom` = the level each joins.",
+      "_about": "P4 + Q1: tap at every level. Clinic v2 (P): the items ride the painted belt on CB4c edge to edge (no hatches: they slide in from off-screen), the tray sits on the counter strip (pantry style), level 3 is a faster belt with the items closer together, and there is no timer (CQ5). The X-ray left the decoys (it only reads as English). `asks` = how many items the belt asks for; `onBelt` = dishes on the loop; `everyMs` = one enters every; `crossMs` = time to cross; `lookalikes` per asked item; `colourFrom` / `countFrom` / `orderFrom` = the level each joins.",
       "levels": {
         "1": { "asks": [1, 1], "onBelt": 6, "everyMs": 2500, "crossMs": 9000, "lookalikes": 0 },
         "2": { "asks": [2, 3], "onBelt": 8, "everyMs": 2000, "crossMs": 7000, "lookalikes": 1, "colour": 0.5 },
-        "3": { "asks": [3, 4], "onBelt": 10, "everyMs": 1500, "crossMs": 5000, "lookalikes": 2, "colour": 0.5, "count": 0.6, "order": true, "stopper": true }
+        "3": { "asks": [3, 4], "onBelt": 10, "everyMs": 1000, "crossMs": 4600, "lookalikes": 2, "colour": 0.5, "count": 0.6, "order": true, "stopper": true }
       },
       "firstBelt": 5,
       "coloured": { "bandage": ["red", "blue", "green", "yellow"], "thread": ["red", "blue", "green"], "cast": ["blue", "pink", "white"], "plaster": ["red", "blue", "green"], "drops": ["red", "blue", "green", "yellow"] },
       "countable": ["cotton", "plaster", "care-plaster", "fru-02", "spi-16", "cook-khun", "cotton-bud", "blanket"],
-      "decoys": ["paani", "cloth", "plaster", "bandage", "thread", "hammer", "torch", "tweezers", "cotton-bud", "cotton", "drops", "bottle", "toothbrush", "comb", "fan", "blanket", "lollipop", "spoon", "cup", "honey", "tissue", "stethoscope", "thermometer", "crutches", "xray"]
+      "decoys": ["paani", "cloth", "plaster", "bandage", "thread", "hammer", "torch", "tweezers", "cotton-bud", "cotton", "drops", "bottle", "toothbrush", "comb", "fan", "blanket", "lollipop", "spoon", "cup", "honey", "tissue", "stethoscope", "thermometer", "crutches"]
     },
     "sendoff": {
-      "_about": "P6 + Q3 (E1+E2 merged into one feel ladder). E1 is taught at level 1 (the patient's face shows the feeling; the first sessions). E3 is the goodbye (speaking); E4 the child asks.",
-      "mix": { "1": { "E1": 1 }, "2": { "E2": 3, "E3": 1 }, "3": { "E2": 2, "E3": 1, "E4": 1 } },
-      "faces": { "1": ["happy", "sad"], "2": ["happy", "sad", "okay", "better"], "3": ["happy", "sad", "okay", "better", "scared"] },
+      "_about": "P6 + Q3, rebuilt for clinic v2 (docs/modes/clinic-v2-design-sheets.md E; CQ6): on CB5, the patient at the half-open front door, the doctor beside them. E1 (level 1): the patient's round face circle shows the feeling; pick the matching card of four (happy, sad, hot, cold). E2 (level 2): the patient SAYS it, no picture; pick the card; then the goodbye the doctor cues, in the scene (E2 and E3 merged: E3 names E2). Level 3: the feeling shows and the child picks WHAT HELPS (cold: the blanket, hot: the fan, sad: the apple); E4 (level 3): the child asks first ([How do you feel?]), with Nani's whisper the first time. Not happy at levels 1-2: one more thing (in the scene), then it ends happy.",
+      "mix": { "1": { "E1": 1 }, "2": { "E2": 1 }, "3": { "E2": 3, "E4": 1 } },
+      "faces": { "1": ["happy", "sad", "hot", "cold"], "2": ["happy", "sad", "hot", "cold"], "3": ["sad", "hot", "cold"] },
+      "cards": ["happy", "sad", "hot", "cold"],
+      "helps": { "cold": "blanket", "hot": "fan", "sad": "lollipop" },
+      "helpCards": ["blanket", "fan", "lollipop"],
+      "goodbyeFrom": 2,
+      "notHappyChance": 0.4,
       "sadChance": 0.25
     }
   },
 
   "feelings": {
-    "happy": { "english": "happy", "line": { "english": "Yes! Now I'm happy." }, "mood": "happy", "face": "😄" },
-    "sad": { "english": "sad", "line": { "english": "Still a bit sad." }, "mood": "sad", "face": "🙁" },
-    "okay": { "english": "okay", "line": { "english": "I'm okay." }, "mood": "relief", "face": "🙂" },
-    "better": { "english": "better", "line": { "english": "I feel better." }, "mood": "relief", "face": "😌" },
-    "scared": { "english": "scared", "line": { "english": "I was scared, now I'm happy." }, "mood": "scared", "face": "😨" }
+    "_about": "The four feeling faces (CQ6: the same for everyone). `line` = what the patient says (English placeholders, to record: Mum's own words, e.g. 'Muke thadh lage' for cold, are to confirm); `face` = the flat stand-in (js/clinic/kit.js Kit.feelingFace).",
+    "happy": { "english": "happy", "line": { "english": "I feel happy." }, "mood": "happy", "face": "😄" },
+    "sad": { "english": "sad", "line": { "english": "I feel sad." }, "mood": "sad", "face": "🙁" },
+    "hot": { "english": "hot", "line": { "english": "I feel hot." }, "mood": "ouch", "face": "🥵" },
+    "cold": { "english": "cold", "line": { "english": "I feel cold." }, "mood": "scared", "face": "🥶" }
   },
   "goodbyes": {
     "achija": { "kutchi": "Achija!", "english": "Good! (bye)", "cue": { "english": "Say bye." } },
@@ -99,8 +112,15 @@
     "getwell": { "kutchi": null, "english": "Get well soon!", "cue": { "english": "Say get well soon." } }
   },
   "extras": {
-    "_about": "E1's one more thing on a sad answer (from the sidebar), then the question again, always ending happy.",
+    "_about": "Levels 1-2: one more thing when they're not happy (in the scene, not the sidebar: the feeling's help, the apple for sad; Mum: no sweets), then the question again, always ending happy.",
     "list": ["lollipop", "sticker"]
+  },
+
+  "items": {
+    "_about": "Clinic v2 overrides on data/clinic.json's items (P.prepare merges them over it). The ids stay (the heal games' tray contracts); what changes is the picture (`standin`: a flat stand-in drawn by js/clinic/kit.js until the art) and the word. lollipop -> an apple (Mum: no sweets, E3/CQ13); paste -> the filling as a tube (P4); torch -> a torch that looks like one (D5).",
+    "lollipop": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "sweet", "standin": "apple" },
+    "paste": { "kutchi": null, "english": "filling", "glyph": "🦷", "placeholder": true, "group": "bottle", "standin": "tube" },
+    "torch": { "kutchi": null, "english": "torch", "glyph": "🔦", "placeholder": true, "group": "tool", "standin": "torch" }
   },
 
   "lines": {
@@ -114,7 +134,7 @@
     "hurts-side": { "kutchi": "[My {side} {part}]", "english": "My {side} {part}" },
     "here": { "kutchi": "[Does it hurt here?]", "english": "Does it hurt here?" },
     "haa": { "kutchi": "Haa", "english": "Yes" },
-    "nar": { "kutchi": "Nar", "english": "No" },
+    "na": { "kutchi": "Na", "english": "No" },
     "mypart": { "kutchi": "[My {part}]", "english": "My {part}" },
     "thatsit": { "kutchi": "[That's it]", "english": "That's it" },
     "unwell": { "kutchi": "[I don't feel well. I don't know why.]", "english": "I don't feel well. I don't know why." },
@@ -126,6 +146,11 @@
     "handover-no": { "kutchi": "[This is {x}.] Muke {y} khape", "english": "This is {x}. I need {y}" },
     "tobench": { "kutchi": "[To the bench]", "english": "To the bench" },
     "okay-now": { "kutchi": "[Is everything okay now?]", "english": "Is everything okay now?" },
+    "helps": { "kutchi": "[What will help?]", "english": "What will help?" },
+    "whisper-ask": { "kutchi": "[Ask them how they feel]", "english": "Ask them how they feel", "who": "nani" },
+    "why-waiting": { "kutchi": "[Who's next?]", "english": "Who's next?" },
+    "why-pharmacy": { "kutchi": "[Bring me...]", "english": "Bring me..." },
+    "saybye": { "kutchi": "[Say bye.]", "english": "Say bye." },
     "howfeel": { "kutchi": "[How do you feel?]", "english": "How do you feel?" },
     "onemore": { "kutchi": "[One more thing]", "english": "One more thing" },
     "thanks": { "kutchi": "Aabhar aanjo!", "english": "Thank you!" },

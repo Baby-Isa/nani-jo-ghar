@@ -1,0 +1,53 @@
+{
+  "_about": "Clinic v2 prototype (docs/modes/clinic-v2-design-sheets.md part A): the approved backgrounds (sources/art/clinic-v2/, cut to webp in assets/clinic/rooms/) shown at full strength, and where the stand-in pieces stand on them. Every x/y is a share of the picture (1536 x 1024, aspect 1.5): x across, y down; a person's y is where their feet (or stool) meet the floor; h is their height as a share of the picture's height. `need` = the x-range that must stay on screen (the scene box covers the play area when it can; when the play area is too narrow for `need`, the box fits `need`'s width and sits on the bottom, and a soft mirrored strip of the wall fills above it). Placement checked against build/reports/clinic-bg-check/ (VISUAL-QA 2b).",
+  "aspect": 1.5,
+  "rooms": {
+    "waiting": { "src": "assets/clinic/rooms/bg-clinic-waiting-cb1b-v1.webp", "need": [0.0, 0.93], "ay": 0.7 },
+    "exam": { "src": "assets/clinic/rooms/bg-clinic-exam-cb2b-v1.webp", "need": [0.2, 0.86], "ay": 0.6 },
+    "stand": { "src": "assets/clinic/rooms/bg-clinic-stand-cb3b-v1.webp", "need": [0.22, 0.86], "ay": 0.6 },
+    "pharmacy": { "src": "assets/clinic/rooms/bg-clinic-pharmacy-cb4c-v1.webp", "need": [0.15, 0.85], "ay": 0.75 },
+    "door": { "src": "assets/clinic/rooms/bg-clinic-door-cb5-v1.webp", "need": [0.1, 0.92], "ay": 0.7 }
+  },
+  "waiting": {
+    "_about": "The six-seat bench (cushion centres), the standing spots by the doctor's door and the desk, and a third standing spot by the window (level 5: 9 people; two little stools in front were tried and hid the bench's ticks). adult = an adult's height sitting (a child is `child` of it); the heart poster's frame ends at y 0.31, so a sitting adult's head (0.745 - 0.36 = 0.385) stays under it (the bg-check note).",
+    "slots": {
+      "bench0": { "x": 0.123, "y": 0.745, "z": 2 },
+      "bench1": { "x": 0.238, "y": 0.745, "z": 2 },
+      "bench2": { "x": 0.355, "y": 0.745, "z": 2 },
+      "bench3": { "x": 0.472, "y": 0.745, "z": 2 },
+      "bench4": { "x": 0.588, "y": 0.745, "z": 2 },
+      "bench5": { "x": 0.703, "y": 0.745, "z": 2 },
+      "door": { "x": 0.8, "y": 0.83, "z": 3, "scale": 1.08 },
+      "desk": { "x": 0.875, "y": 0.925, "z": 4, "scale": 1.14 },
+      "window": { "x": 0.052, "y": 0.87, "z": 4, "scale": 1.1 }
+    },
+    "adult": 0.34,
+    "child": 0.8,
+    "tall": 1.12,
+    "short": 0.84,
+    "doctor": { "x": 0.806, "y": 0.2, "h": 0.2 },
+    "exit": { "x": 0.815, "y": 0.7 }
+  },
+  "exam": {
+    "_about": "CB2b: the patient sits on the bed's edge (the mattress top at y 0.53, the step stool's top at 0.66, the floor at 0.8), facing us; the stand-in doctor stands to the right, turned 3/4. fig = the figure's box (the patient DOM figure draws seated inside it, feet at its bottom).",
+    "fig": { "x": 0.51, "bottom": 0.75, "h": 0.56 },
+    "doctor": { "x": 0.735, "y": 0.9, "h": 0.66 }
+  },
+  "stand": {
+    "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right.",
+    "fig": { "x": 0.5, "bottom": 0.86, "h": 0.64 },
+    "doctor": { "x": 0.72, "y": 0.92, "h": 0.66 }
+  },
+  "pharmacy": {
+    "_about": "CB4c: the painted belt's surface runs edge to edge between y 0.615 and 0.69; items stand on it (their base at `beltY`, `itemH` tall); the counter strip in front (y 0.73 to 1) holds the pantry-style tray.",
+    "beltY": 0.685,
+    "itemH": 0.15,
+    "tray": { "x": 0.5, "y": 0.86, "h": 0.17 }
+  },
+  "door": {
+    "_about": "CB5: the patient stands on the doormat by the half-open front door; the doctor beside them, to the left (turned towards them). The four cards (or what helps) sit on the floor strip.",
+    "patient": { "x": 0.64, "y": 0.8, "h": 0.46 },
+    "doctor": { "x": 0.44, "y": 0.86, "h": 0.64 },
+    "cards": { "x": 0.36, "y": 0.9 }
+  }
+}

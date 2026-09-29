@@ -28,18 +28,95 @@
   S.expect = () => (S.current && S.current.expect ? S.current.expect() : null);
   S.setExpect = (stage, fn) => (S.current = { stage, expect: fn });
 
-  /** A stage element with its room's background (rough art, else a flat colour). */
+  /**
+   * A stage element with its room's background. Clinic v2: the approved background
+   * (data/clinic/scenes-v2.json) at full strength, in a scene box that keeps the
+   * picture's aspect, so everything placed in it (in shares of the picture) stays
+   * on the painted bench, bed, belt or doormat at every screen size. Returns the
+   * stage; stage.scene is the box (null for a room without a v2 picture: the old
+   * rough art, faded).
+   */
   S.room = function (screen, name) {
     const stage = screen.clearStage();
     stage.classList.add("cl-room", `room-${name}`);
+    screen.clearActions();
+    screen.tally.clear();
+    const V = Clinic.Scenes;
+    const room = V && V.rooms && V.rooms[name];
+    if (room) {
+      stage.classList.add("v2");
+      const cap = h("div", "cl-scene-cap", stage);
+      const box = h("div", "cl-scene", stage);
+      const url = `url("${Kit.url(room.src)}")`;
+      box.style.backgroundImage = url;
+      cap.style.backgroundImage = url;
+      stage.scene = box;
+      stage.sceneCfg = V[name] || {};
+      S.fitScene(stage, box, cap, room, V.aspect || 1.5);
+      return stage;
+    }
+    stage.scene = null;
     const src = Kit.room(name);
     if (src) {
       const bg = h("div", "cl-room-bg", stage);
       bg.style.backgroundImage = `url("${Kit.url(src)}")`;
     }
-    screen.clearActions();
-    screen.tally.clear();
     return stage;
+  };
+  /** Size the scene box: cover the stage when `need` fits, else fit `need`'s width, on the bottom. */
+  S.fitScene = function (stage, box, cap, room, A) {
+    const fit = () => {
+      if (!box.isConnected) return;
+      const W = stage.clientWidth;
+      const H = stage.clientHeight;
+      if (!W || !H) return;
+      const need = room.need || [0, 1];
+      const span = need[1] - need[0];
+      let w;
+      let h2;
+      let left;
+      let top;
+      if (W / H >= A) {
+        w = W;
+        h2 = W / A;
+        left = 0;
+        top = (H - h2) * (room.ay != null ? room.ay : 0.6);
+      } else if (H * A * span <= W) {
+        h2 = H;
+        w = H * A;
+        const mid = (need[0] + need[1]) / 2;
+        left = Math.min(0, Math.max(W - w, W / 2 - mid * w));
+        top = 0;
+      } else {
+        w = W / span;
+        h2 = w / A;
+        left = -need[0] * w;
+        top = H - h2;
+      }
+      Object.assign(box.style, { width: `${w}px`, height: `${h2}px`, left: `${left}px`, top: `${top}px` });
+      // above a bottom-fitted box: the top of the picture, mirrored and softened, so the wall carries on
+      if (top > 0) Object.assign(cap.style, { display: "block", left: `${left}px`, width: `${w}px`, top: `${top - h2}px`, height: `${h2}px` });
+      else cap.style.display = "none";
+      stage.style.setProperty("--scene-w", `${w}px`);
+      stage.style.setProperty("--scene-h", `${h2}px`);
+      box.dispatchEvent(new CustomEvent("scenefit"));
+    };
+    fit();
+    if (global.ResizeObserver) {
+      const ro = new ResizeObserver(fit);
+      ro.observe(stage);
+    } else global.addEventListener("resize", fit);
+    return fit;
+  };
+  /** Place an element in the scene box: x centre, y = its bottom (feet), h = height (shares of the picture). */
+  S.place = function (el, { x, y, h: ht, z, w }) {
+    el.classList.add("cl-placed");
+    el.style.left = `${x * 100}%`;
+    el.style.top = `${y * 100}%`;
+    if (ht != null) el.style.height = `${ht * 100}%`;
+    if (w != null) el.style.width = `${w * 100}%`;
+    if (z != null) el.style.zIndex = String(z);
+    return el;
   };
 
   /** The doctor's face for the card (no sprite yet: a greybox face). */

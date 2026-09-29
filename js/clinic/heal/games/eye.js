@@ -9,7 +9,7 @@
  * eye]*: the pirate patch goes on THE OTHER eye (arrr!). Then the pointer
  * and the chart: the doctor names a noun the child already knows (Cook's
  * fruit and veg words), one call per row, the rows shrinking and the
- * patient squinting harder; level 3 adds *wadho/nindho* and a *nar* row.
+ * patient squinting harder; level 3 adds *wadho/nindho* and a *na* row (G9: no is *na*, not *nar*).
  * The smallest row is a tiny Kasuku who squawks when tapped (ungraded).
  *
  * Gestures (every level, UX s12): tap only (tap the dish, tap the spot).
@@ -99,7 +99,7 @@
           call = { kutchi: `${cap(w.kutchi)} ${a.kutchi}`, english: `The ${w.english} ${a.english}` };
           words.push({ kutchi: w.kutchi, english: w.english });
         } else {
-          // nar: "kelo, nar wadho" = the banana, not the big one
+          // na: "kelo, na wadho" = the banana, not the big one
           const notW = wantBig ? sw : bw;
           call = { kutchi: `${cap(a.kutchi)}, ${D.words.no.kutchi} ${notW.kutchi}`, english: `The ${a.english}, not the ${notW.english} one` };
           words.push({ kutchi: D.words.no.kutchi, english: D.words.no.english });

@@ -275,3 +275,38 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* sidebar dishes on short screens: the picture stays inside its dish (heal B's note at 915x375) */
 .cl-side .cl-dish { overflow: hidden; grid-template-rows: 100%; }
 .cl-side .cl-dish .cl-item { height: 84%; width: auto; aspect-ratio: 1; max-width: none; max-height: none; }
+
+/* ================= clinic v2 (docs/modes/clinic-v2-design-sheets.md part A) ================= */
+/* the scene box: the approved background at full strength; everything placed in shares of the picture */
+.cl-room.v2 { background: #efe5d6; overflow: hidden; }
+.cl-scene { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; }
+.cl-scene-cap { position: absolute; display: none; background-size: 100% 100%; transform: scaleY(-1); filter: blur(3px) saturate(.9); opacity: .9; }
+.cl-placed { position: absolute; transform: translate(-50%, -100%); }
+
+/* W: the waiting room on CB1b */
+.cl-wdoc { overflow: hidden; aspect-ratio: .62; transform-origin: 50% 100%; }
+.cl-wdoc img { width: 100%; display: block; }
+.cl-wdoc.cl-placed { transform: translate(-50%, -100%) rotate(-7deg); }
+.cl-wp { pointer-events: none; transition: left 1s ease-in-out, top 1s ease-in-out, opacity .5s; }
+.cl-wp-fig { position: relative; height: 100%; isolation: isolate; transform-origin: 50% 100%; }
+.cl-wp-img { height: 100%; width: auto; display: block; }
+.cl-wp-tint { position: absolute; inset: 0; background: var(--tint); mix-blend-mode: color; opacity: .95;
+  -webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, #000 60%, #000 81%, transparent 84%);
+  -webkit-mask-size: 100% 100%, 100% 100%; -webkit-mask-composite: source-in;
+  mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, #000 60%, #000 81%, transparent 84%);
+  mask-size: 100% 100%, 100% 100%; mask-composite: intersect; pointer-events: none; }
+.cl-wp-kid { position: absolute; right: -34%; bottom: 0; height: 52%; pointer-events: none; }
+.cl-wp.puzzled .cl-wp-fig { animation: cl-shake .7s; }
+.cl-wp.standing .cl-wp-fig { transform: translateY(-6%); }
+.cl-wp.rock .cl-wp-fig { animation: cl-shiver .5s 2; }
+.cl-wp.walking { transform: translate(-50%, -100%) scale(.82); }
+.cl-wp.gone { opacity: 0; }
+.cl-wp .cl-ring { top: -8%; }
+.cl-wtick { width: clamp(44px, 4.6vw, 58px); height: clamp(44px, 4.6vw, 58px); padding: 7px; border-radius: 50%; border: 4px solid #c9962e; background: rgba(255, 255, 255, .88); color: #fff !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
+.cl-wtick svg { width: 100%; height: 100%; display: block; opacity: 0; }
+.cl-wtick.locked svg { opacity: 1; }
+.cl-wtick.locked { background: #3fa35b; border-color: #fff; animation: cl-lock .35s ease-out; }
+.cl-wtick.nope { animation: cl-tick-shake .5s; }
+.cl-wtick.gone { opacity: 0; pointer-events: none; transition: opacity .4s; }
+@keyframes cl-tick-shake { 20%, 60% { transform: translate(calc(-50% - 7px), -100%); } 40%, 80% { transform: translate(calc(-50% + 7px), -100%); } }
+@keyframes cl-lock { 50% { transform: translate(-50%, -100%) scale(1.25); } }
