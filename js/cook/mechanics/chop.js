@@ -20,7 +20,10 @@
  * Params: targets {wordId: count} (zeros are left out), pool (what else
  * gets thrown), only (keep only targets in this list: the chaat chops what
  * goes in its bowl), no (vegetables they said no to), tick (tick the order
- * rows: daal).
+ * rows: daal). Daar's options (29 Sept, D1 / Q4; all default off, so chaat's chop is unchanged):
+ * knifeKey (a texture: the kitchen kit's knife follows the finger instead of the hand, the no-hands
+ * rule), onSlice({id, ok, x, y, key, scale}) (called on every slice: daar sends the pieces to the
+ * side), tally (false: no picture tally, Q7), timer ({x, y, r, warn}: moves the countdown ring).
  * Knobs (data.mechanics.chop): phases (1 = all at once; 2+ = that many
  * rounds with a switch between them, at most one per vegetable), every
  * (seconds between throws), fasterPerStage / fasterMax (throws come this
@@ -52,7 +55,7 @@
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false }, k) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, onSlice = null, tally = true, timer = null }, k) {
       const S = z.S;
       const ctx = z.ctx;
       const want = {};
@@ -65,7 +68,12 @@
       if (!ids.length) return {};
       ids.forEach((id) => Cook.markSeen(id));
       const hide = St.hideKnown(ctx);
-      const knife = S.hand("knife", { x: z.X(1300), y: z.Y(640), angle: -25, k: z.k });
+      let knife;
+      if (knifeKey && S.textures.exists(knifeKey)) {
+        // the kit's knife on its own (no hand): blade up, it follows the finger
+        knife = S.track(S.add.image(z.X(1300), z.Y(640), knifeKey).setDepth(D.hand).setAngle(35));
+        knife.setScale(z.L(260) / Math.max(knife.width, knife.height));
+      } else knife = S.hand("knife", { x: z.X(1300), y: z.Y(640), angle: -25, k: z.k });
       if (k.special) S.special(knife);
       // bigger vegetables on a small (phone) screen, so a finger can hit them
       const small = S.scale && S.scale.displaySize && S.scale.displaySize.width < 800;
@@ -124,7 +132,7 @@
       let phase = null; // the round being thrown: {targets, kinds, bag, every, secs}
 
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
-      const T = Object.assign({ x: 118, y: 124, r: 70, warn: 3 }, k.timer || {});
+      const T = Object.assign({ x: 118, y: 124, r: 70, warn: 3 }, k.timer || {}, timer || {});
       const ring = S.track(S.add.graphics().setDepth(D.item + 1));
       let left = total; // seconds left on the ring
       let lastTick = Math.ceil(left);
@@ -179,7 +187,8 @@
         const ok = !!phase && phase.targets.includes(id);
         // the picture tally (top right): every slice you made, by kind; what you did, never the target
         sliced[id] = (sliced[id] || 0) + 1;
-        UI.count(sliced[id], { id, state: "whole", speak: ok });
+        if (tally) UI.count(sliced[id], { id, state: "whole", speak: ok });
+        if (onSlice) onSlice({ id, ok: !!phase && phase.targets.includes(id), x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
         if (ok) {
           cut[id] = (cut[id] || 0) + 1;
           S.burst(img.x, img.y, [0xffffff, 0xf6d27a], 10, z.L(70));
@@ -341,7 +350,7 @@
       stop();
       offs.forEach((f) => f());
       z.expect(null);
-      UI.hideCount();
+      if (tally) UI.hideCount();
       // graded now, not while you chop (so nothing tells you when to stop)
       ids.forEach((id) => {
         const c = cut[id] || 0;

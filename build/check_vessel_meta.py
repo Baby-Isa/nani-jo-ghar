@@ -111,6 +111,41 @@ def check_v3():
     return bad
 
 
+def check_daar():
+    """Daar v3 (29 Sept): js/cook/stations/daar.js places the pot, the trivet bowl and the ladle from constants
+    (POT, TRIVET, LADLE); they must say what assets/cook/items/v3/daar/meta.json measured from the art (checked
+    against the rims by check_v3), and every pot state must share the pot's registered canvas."""
+    src = open(os.path.join(ROOT, "js/cook/stations/daar.js")).read()
+    meta = json.load(open(os.path.join(ROOT, "assets/cook/items/v3/daar/meta.json")))
+    bad = 0
+
+    def const(name):
+        m = re.search(rf"const {name} = \{{([^}}]*)\}}", src)
+        return {k: float(v) for k, v in re.findall(r"(\w+): ([\d.]+)", m.group(1))}
+
+    pairs = [("POT", "pot-empty", ("w", "h", "cx", "cy", "r")), ("TRIVET", "daar-bowl-trivet", ("w", "h", "cx", "cy", "r")),
+             ("LADLE", "ladle", ("w", "h", "bowl_cx", "bowl_cy", "bowl_r"))]
+    for name, key, fields in pairs:
+        c = const(name)
+        m = meta[key]
+        mine = [c[f] for f in ("w", "h", "cx", "cy", "r")]
+        theirs = [m[f] for f in fields]
+        ok = all(abs(a - b) <= (1 if i < 2 else 0.002) for i, (a, b) in enumerate(zip(mine, theirs)))
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} daar.js {name}: {mine} vs meta {key}: {theirs}")
+    pot = const("POT")
+    for st in re.search(r"const POTS = \[([^\]]*)\]", src).group(1).replace('"', "").split(", "):
+        m = meta[f"pot-{st}"]
+        ok = m["w"] == pot["w"] and m["h"] == pot["h"] and abs(m["cx"] - pot["cx"]) < 0.004 and abs(m["cy"] - pot["cy"]) < 0.004
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} daar pot-{st}: {m['w']}x{m['h']}, centre ({m['cx']}, {m['cy']}) on the pot's canvas")
+    # the contents' clip sits inside the rim
+    ok = pot["inner"] < pot["r"]
+    bad += not ok
+    print(f"{'ok  ' if ok else 'FAIL'} daar POT.inner {pot['inner']} < r {pot['r']}")
+    return bad
+
+
 def grill_bars(path):
     """The grill's light metal rows (the rim, the two bars, the inner front edge), as fractions of its height."""
     im = np.asarray(Image.open(path).convert("RGBA")).astype(int)
@@ -196,6 +231,7 @@ def main():
     meta = json.load(open(os.path.join(ROOT, "assets/cook/items/chai-v2/meta.json")))["panTop"]
     checks.append(("chai-v2/meta.json panTop", "assets/cook/items/chai-v2/pan-top.webp", meta["cx"], meta["cy"]))
     bad = check_v3()
+    bad += check_daar()
     bad += check_sekelo()
     # the samosa station places its v3 karahi and plate by numbers copied from meta.json: they must agree
     sam = open(os.path.join(ROOT, "js/cook/stations/samosa.js")).read()

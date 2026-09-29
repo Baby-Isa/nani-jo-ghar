@@ -54,7 +54,7 @@ PORT = int(os.environ.get("COOK_TEST_PORT", 8942))
 KEPT = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa"]
 LAB = KEPT + ["passme", "pour", "boil", "count", "roll", "flip", "fill", "fry", "thread", "grill", "roll-tawa"]
 # stations that cook a whole order on one screen (several maani, each rolled and cooked) take longer
-LONG = {"maani-line": 600, "samosa": 900, "daar": 700}
+LONG = {"maani-line": 600, "samosa": 900, "daar": 900}  # daar v3: the swipe chop runs its full ring each try
 # --zoned: run each mechanic inside this rectangle (world px) instead of the whole screen
 # COOK_TEST_DEBUG=1 prints where the player waited a long time for the game
 DEBUG = bool(os.environ.get("COOK_TEST_DEBUG"))

@@ -1696,7 +1696,8 @@
      },
      "pool": "$veg",
      "tadka": "$tadka",
-     "laps": "$laps"
+     "laps": "$laps",
+     "speed": "$speed"
     },
     {
      "do": "serve",
@@ -1704,7 +1705,7 @@
      "count": 1
     }
    ],
-   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`). Daar v2 (29 Sept, design system §13): one combined station, js/cook/stations/daar.js (chop on the board from Nani's card, then the tadka and the stir in one pot on the kitchen kit's hob, serve and taste); the chop, tadka and stir mechanics stay in the lab.",
+   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`). Daar v3 (29 Sept play-test, D1-D11): one combined station, js/cook/stations/daar.js (the swipe chop again, its pieces waiting on the counter, then the tadka and the stir in one pot on the kitchen kit's hob, serve and taste); the chop, tadka and stir mechanics stay in the lab.",
    "how": "Chop what they say, add the spices in the order Nani says, then stir."
   },
   "chaat": {
@@ -3775,14 +3776,8 @@
    {"do": "tap", "what": "lift it onto the plate on the green"}
   ],
   "daar": [
-   {
-    "do": "tap",
-    "what": "the vegetable on Nani's card (its crate on the shelf)"
-   },
-   {
-    "do": "tap",
-    "what": "the knife: it chops, the pieces go in the katori and her card counts it"
-   }
+   {"do": "swipe", "what": "slice a vegetable Nani named: its pieces go to the side"},
+   {"do": "swipe", "what": "and another, before the timer runs out"}
   ],
   "chop": [
    {"do": "swipe", "what": "slice a vegetable Nani named"},
@@ -3820,10 +3815,12 @@
    {"do": "swipe", "what": "the last fold: it's sealed"}
   ],
   "daar-cook": [
+   {"do": "tap", "what": "the knob: the oil is hot at once, it sizzles"},
    {"do": "tap", "what": "the first spice Nana said, into the hot oil"},
    {"do": "tap", "what": "the next spice"},
-   {"do": "tap", "what": "the next one (or the pan: tip it into the pot)"},
-   {"do": "stir", "what": "drag the ladle round the pot, counting the laps"},
+   {"do": "tap", "what": "the chopped vegetables, one pile at a time: each row ticks as it goes in"},
+   {"do": "tap", "what": "the daar"},
+   {"do": "stir", "what": "drag the ladle round the pot, counting the laps (the dial shows how fast)"},
    {"do": "tap", "what": "the tick when it's done"}
   ],
   "_phases": {

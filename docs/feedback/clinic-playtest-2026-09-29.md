@@ -424,3 +424,23 @@ Prototype A only borrowed the order card's **look** (its CSS classes and the gol
 - **Stale UI between rounds:** in E2 level 1 (which Zafar likes), the reply pills from an earlier round were still on screen, unused, until a page refresh. Every stage must clear its own UI when it ends.
 - **No Nani box in the clinic** (Zafar): Nani isn't there, so **the doctor fills her guidance role**. The guide box at the top of the sidebar becomes the doctor's box (his face, his line, the replay, the bulb). Nani's box only comes back if a story has her come with you.
 - **Zafar: "fix the rest of this game mode based on the previous feedback."** The clinic fix session carries out 13–13f, plus the heal-game answers in 13 (the tray feeds the heal game, both feet at L3). Level-1 counts (B's question 3) stay as built for now.
+
+### 13g. The heal games' first-time help breaks UX §8 (Zafar, 29 Sept, late)
+Prototype B replaced the shared onboarding kit's ghost finger with **English sentences in bubbles, read by the device voice** ("Tap the water, then tap the scrape.", "Tap the cloth, then dab the scrape. Count the dabs you're told."). It named that as a departure in its report, and it wasn't flagged to Zafar. It breaks **UX §8 (onboarding by showing, not telling)** and §10 (one shared onboarding kit). Fix:
+- **Back onto the shared onboarding kit** (`js/shared/onboard.js`): dim everything except the one thing, the **ghost finger does the action once** (tap the water, tap the scrape; the dab count shown by the finger dabbing), the child does it, then the next thing is revealed. No English sentences, and no device voice.
+- **What the child hears is the Kutchi instruction** (the doctor's line, a recorded clip or a flagged placeholder) with the card's read-along. That is the only "words" in the help.
+- **The "why" beat** (the patient's problem, the doctor's goal) is shown, not told: the patient's pained face and the scrape, then the doctor's line. No English caption.
+- The English goal for grown-ups lives only in the "?" pop, as in Cook.
+- **`build/check_onboard.mjs` enforces the opposite of what it checks now:** a heal game fails if its first-time help shows child-facing English text or uses the device voice, and passes when every kind of step has a ghost-finger demo (a move the kit can show: tap, swipe, drag, hold) on its target.
+
+### 13h. Scrape again, and an audit of every clinic game (Zafar, 29 Sept, late)
+- **No way to take a plaster off before finishing.** Same as the pharmacy (13b): a placed plaster (or any placed thing) can be tapped to take it back until the step is committed. The first placement is what's scored. This is now a general rule (UX-PRINCIPLES §17).
+- **The sequence card isn't there.** The scrape's plaster order ("*pela* red and yellow, *ne poi* blue and green, *ne poi* …") must show on the shared order card as a **sequence**: the sequence line, the next step in the grey band, each part ticking as it's done (13c). Today the heal game's rows sit on the old clinic card with no sequence.
+- **Audit every clinic game against these rules**, not just the scrape: the waiting room, diagnosis D1–D3, the pharmacy, all nine heal games (scrape, knee, ear, tooth, drinks, fever, boing, eye, foot; and tummy, hic and hair) and the send-off. For each, the fix session reports a row in a table:
+  1. **First-time help:** ghost finger on the shared kit, no child-facing English, no device voice (13g, UX §8)?
+  2. **Take back before Done:** can a placed or chosen thing be undone until commit (UX §17)?
+  3. **Sequences on the card:** is every ordered instruction a sequence on the shared order card (13c)?
+  4. **Stale UI:** does it clear its own UI at the end (13f)?
+  5. **Done / Next:** does it use the shared buttons (UX §15)?
+
+  Then it fixes every "no", and says why for any it can't.
