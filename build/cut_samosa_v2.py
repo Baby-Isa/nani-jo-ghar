@@ -46,9 +46,11 @@ def cut_flat(a, bg, thr=40):
     obj = ndi.binary_fill_holes(~np.isin(lab, list(border)))
     alpha, rgb = c2a(a, np.broadcast_to(bg, a.shape))
     core = ndi.binary_erosion(obj, iterations=2)
-    alpha = np.where(core, 1, np.where(ndi.binary_dilation(obj, iterations=1), alpha, 0))
-    rgb = np.where(core[..., None], a, rgb)
-    # magenta spill on the edge: pull the edge pixels' colour toward the pastry
+    # a magenta sheet leaves a coloured fringe: the edge ring goes soft and takes the core's colour
+    alpha = np.where(core, 1, np.where(obj, 0.55, 0))
+    alpha = ndi.gaussian_filter(alpha, 0.8) * obj
+    near = ndi.distance_transform_edt(~core, return_indices=True)[1]
+    rgb = a[near[0], near[1]]
     return np.dstack([rgb, alpha * 255]).astype(np.uint8), obj
 
 
@@ -130,6 +132,22 @@ def prep_bowls():
     return C.prep_bowls()
 
 
+def tops():
+    """A spoonful's top (what lands on the pastry) for the fillings chaat v2 has no top for: the painted
+    top-down bowl's contents, a soft round cut from its middle."""
+    for wid, src in {'ph-keema': 'topping-keema-bowl-t.png', 'veg-10': 'topping-vatana-bowl-t.png'}.items():
+        im = Image.open(os.path.join(ITEMS, src)).convert('RGBA')
+        iw, ih = im.size
+        r = 0.3 * iw
+        crop = im.crop((int(iw / 2 - r), int(ih / 2 - r), int(iw / 2 + r), int(ih / 2 + r)))
+        m = Image.new('L', crop.size, 0)
+        ImageDraw.Draw(m).ellipse((6, 6, crop.width - 6, crop.height - 6), fill=255)
+        m = m.filter(ImageFilter.GaussianBlur(4))
+        crop.putalpha(Image.fromarray(np.minimum(np.asarray(m), np.asarray(crop)[..., 3])))
+        crop.thumbnail((300, 300), Image.LANCZOS)
+        save(crop, 'top-' + wid)
+
+
 def fry_sheet():
     """The karahi (left half of the draft) and the paper-lined plate (right half): the draft's grey has a soft
     vignette and cast shadows, so each half is cut by its strong edges (build/cut_chaat_v2.py's silhouette) and
@@ -164,6 +182,7 @@ def fry_sheet():
 
 if __name__ == '__main__':
     meta = {'stages': fold_stages(), 'fry': fry_states(), 'prep': prep_bowls()}
+    tops()
     fs = fry_sheet()
     if fs:
         meta.update(fs)

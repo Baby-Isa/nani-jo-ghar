@@ -1940,21 +1940,11 @@
    ],
    "run": [
     {
-     "do": "fillFold",
+     "do": "samosa",
      "fillings": "$fillings",
      "exclude": "$no",
      "decoyPool": "$fillings_all",
-     "count": "$count",
-     "as": "made"
-    },
-    {
-     "do": "interrupt"
-    },
-    {
-     "do": "fry",
-     "kind": "samosa",
-     "count": "$count",
-     "made": "$made"
+     "count": "$count"
     },
     {
      "do": "serve",

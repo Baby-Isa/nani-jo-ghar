@@ -1,0 +1,14 @@
+{
+ "_about": "Data for the samosa station v2 (design system §15), the combined station js/cook/stations/samosa.js: fill the pastry from the shelf's prep bowls (a spoonful per tap), fold it by swiping, make as many as they asked for, then fry them in the karahi on the kitchen kit's hob (one burner) and lift each onto the paper-lined plate when golden. Serve and taste (§14a). The fill's decoys are data.mechanics.fill, the fold's swipe data.mechanics.fold, the fry's speed and golden band data.mechanics.fry (by level). `phases`: one English line per job (placeholders, like every station goal) and the phase button's label.",
+ "station": {
+  "name": "Samosa",
+  "verb": "Fill, fold, fry",
+  "goal": "Fill the pastry with what they said, fold it, make as many as they asked for, then fry them golden.",
+  "phases": {
+   "fill": "Tap the bowls: one spoon each tap, as many spoons as they said. Then tap the tick.",
+   "fold": "Swipe where it glows to fold the samosa. Make as many as they asked for, then tap \"fry them\".",
+   "fry": "Turn on the hob, put the samosas in, and lift each one out when it's golden.",
+   "go": "fry them"
+  }
+ }
+}
