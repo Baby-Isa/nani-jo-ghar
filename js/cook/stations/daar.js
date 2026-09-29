@@ -24,8 +24,8 @@
  *    Only the first try counts (the ear star, the end review). At most three tries.
  *
  * Levels (data/cook.json's daal recipe slots; data/stations/daar.json's mechanic levels): 1 = only what's
- * asked on the shelf, words on the chips; 2 = decoy vegetables and spices; 3 = speaker-only chips, the tadka
- * order as dots on the card; 4 = more decoys, the oil heats faster.
+ * asked on the shelf, words on the chips; 2 = decoy vegetables and spices; 3 = speaker-only chips; 4 = more decoys,
+ * the oil heats faster, and Nana's card starts folded in the cook (a peek costs a hint; no dots, no pips).
  * Art (all existing): the pantry v2 crates and jars (assets/cook/items/shelf-*-bare-f), the top-down
  * vegetables (veg-*-whole-t / -halved-t / -chopped-t), tool-board-t, tool-knife-t, vessel-katori-t,
  * vessel-pot-t, tool-ladle-t, and the kitchen kit's hob and knob (js/cook/kitchen-kit.js).
@@ -149,10 +149,13 @@
       if (Cook.Coach) Cook.Coach.stop(false);
       if (ctx.nextStep) ctx.nextStep("tadka");
       UI.mission.reveal("tadka");
-      if (!attempt && K.ladder && K.ladder !== "words" && UI.mission.conceal) UI.mission.conceal("tadka", K.ladder);
+      // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint
+      const peek = K.ladder === "closed" && UI.mission.closeCards;
+      if (peek) UI.mission.closeCards(true, { peek: true });
       if (phases.cook && !attempt) UI.gist(phases.cook);
       const kz = Mech.zone(S, ctx, { id: "cook", level });
       const cooked = await cook(kz, { spiceIds, tadka, flat, laps, level, K, chopped, retry: attempt > 0 });
+      if (peek) UI.mission.closeCards(false);
       const why = chopped.wrong || cooked.wrong;
       if (!first) first = { ok: !why, why };
       const ok = await serve(kz, { who, pot: cooked.pot, ok: !why, last: attempt >= 2 });
@@ -177,6 +180,24 @@
     return result;
   }
 
+  /**
+   * A "don't" row (dungri na) is never gold-ticked while the daar is cooking: nothing was added. The
+   * sidebar's settle() ticks a section's no-rows once its other rows close, so they go back to neutral
+   * here (a broken one keeps its miss); the dish's finish ticks them with the rest.
+   */
+  function neutralNo(ctx) {
+    const L = ladderOf(ctx);
+    if (!L) return;
+    let changed = false;
+    Cook.Order.rows(L, { all: true }).forEach((r) => {
+      if (r.no && !r.miss && r.done) {
+        r.done = false;
+        changed = true;
+      }
+    });
+    if (changed) UI.mission.refresh();
+  }
+
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
   function naniCard(want, no) {
     const M = UI.mission;
@@ -186,52 +207,23 @@
       person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
       // "Chop these" is an English placeholder (§13), flagged to record
       headline: { html: "Chop these", rec: true },
-      items: rows.map((r) => ({ label: r.label, count: 2, parts: [], done: r.done, key: r })),
+      // a "don't" row is the shared card's no-row style (dashed, the no-sign), never ticked here
+      items: rows.map((r) => (r.no ? { label: null, parts: [{ label: r.label, done: false, no: true, key: r }] } : { label: r.label, count: 2, parts: [], done: r.done, key: r })),
     });
     // the sidebar's own calls (order-card follow-ups): Nani's card above the order's, and the phase fold
     // (only cards you can act on stay open: Nana's daar card folds to face + headline while chopping)
-    if (M.addCard && M.closeCards) {
-      M.addCard("daar-chop", data());
-      M.closeCards(true);
-      return {
-        rows,
-        tickAll() {
-          rows.forEach((r) => (r.done = true));
-          M.addCard("daar-chop", data());
-        },
-        close() {
-          M.removeCard("daar-chop");
-          M.closeCards(false);
-        },
-      };
-    }
-    // before those calls existed: the card in its own box above the order card, and a scoped fold
-    const OC = global.OrderCard;
-    const side = document.getElementById("mission");
-    const style = document.createElement("style");
-    style.textContent = "#mission.dv2-fold .m-order .oc-item{display:none}#mission.dv2-fold .m-order .oc-card{padding-bottom:0}#dv2-nani{margin:0 0 12px}#dv2-nani .oc-card{margin:0}";
-    document.head.appendChild(style);
-    const box = document.createElement("div");
-    box.id = "dv2-nani";
-    const draw = () => {
-      box.innerHTML = "";
-      if (OC) box.appendChild(OC.card(data(), {}));
-    };
-    draw();
-    if (side && side.parentNode) {
-      side.parentNode.insertBefore(box, side);
-      side.classList.add("dv2-fold");
-    }
+    M.addCard("daar-chop", data());
+    M.closeCards(true);
     return {
       rows,
+      // the rows she asked for tick; her "don't" row stays neutral (nothing was added)
       tickAll() {
-        rows.forEach((r) => (r.done = true));
-        draw();
+        rows.forEach((r) => !r.no && (r.done = true));
+        M.addCard("daar-chop", data());
       },
       close() {
-        box.remove();
-        style.remove();
-        if (side) side.classList.remove("dv2-fold");
+        M.removeCard("daar-chop");
+        M.closeCards(false);
       },
     };
   }
@@ -406,7 +398,7 @@
     nani.tickAll();
     if (ctx.closeItem) ctx.closeItem(kinds);
     else UI.mission.closeItem(kinds, ctx.dishAt || 0);
-    if (!wrong && no.length) UI.mission.closeItem(no, ctx.dishAt || 0, { no: true });
+    neutralNo(ctx);
     Cook.sfx.right();
     S.sparkle(katori.x, katori.y);
     Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
@@ -580,6 +572,7 @@
         if (!ctx.guided && !retry) Cook.markRight(id);
         if (ctx.tickItem) ctx.tickItem(id);
         else UI.mission.tickItem(id, ctx.dishAt || 0);
+        neutralNo(ctx);
       } else {
         const expected = next;
         const why = flat.includes(id) ? `tadka ${id} before ${expected}` : `put ${id} in the tadka`;
