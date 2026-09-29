@@ -157,6 +157,13 @@
       // the station's own verdict still decides what happens next)
       if (Cook.forceReview != null) ok = Cook.forceReview;
       const mood = ok ? "happy" : "frown";
+      // never cut off by the view's edge (a phone shows less of the stage above the dish)
+      const view = S.cameras && S.cameras.main && S.cameras.main.worldView;
+      if (view && view.height) {
+        const m = size * 0.08;
+        y = Math.max(view.y + size / 2 + m, Math.min(view.bottom - size / 2 - m, y));
+        x = Math.max(view.x + size / 2 + m, Math.min(view.right - size / 2 - m, x));
+      }
       const key = Kit.badge(S, who, mood, 256);
       const face = S.track(S.add.container(x, y).setDepth(depth));
       const sh = S.add.graphics();

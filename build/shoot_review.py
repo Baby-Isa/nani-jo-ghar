@@ -49,7 +49,7 @@ class Shooter(T.Player):
 def run(vp, station, mood, coach, level, speed):
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
-        tag = f"{station}-{'coach' if coach else mood}-{vp['name']}"
+        tag = f"{station}-{'coach' if coach else mood}-{vp['name']}" + (f"-l{level}" if level > 1 else "")
         P = Shooter(page, tag, speed)
         if not coach:
             if station == "mishkaki-grill":
