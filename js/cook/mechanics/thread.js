@@ -70,7 +70,7 @@
       z = Cook.liftZone(z0);
       const SKY = 352; // the skewer's centre on the board
       const SKS = 0.84; // the skewer on the board
-      const RACK = { x: 1090, y: SKY, s: 0.6 }; // the rack sized to its skewers (followup, 29 Sept)
+      const RACK = { x: 1090, y: SKY, s: 0.6 }; // the rack sized to its skewers (followup, 29 Sept); v3: the picture's centre
       const slots = (handoff && handoff.max) || 4;
       const full = () => handoff && handoff.max && doneRow.length >= handoff.max;
 
@@ -230,7 +230,13 @@
           const j = doneRow.length;
           doneRow.push(sk);
           sk.setDepth(D.item + 0.5 + j * 0.01);
-          await Cook.tween(S, { targets: sk, x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
+          if (rack.v3) {
+            // v3 (K9): it lies along its drawn place in the rack's picture, then the picture holds it
+            const t = SK.lineAt(...rack.line(Math.min(j, slots - 1), j + 1));
+            await Cook.tween(S, { targets: sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut" });
+            rack.set(j + 1);
+            SK.stickShown(sk, false);
+          } else await Cook.tween(S, { targets: sk, x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
           if (j === 0) doneBtn();
         }
         fresh();
