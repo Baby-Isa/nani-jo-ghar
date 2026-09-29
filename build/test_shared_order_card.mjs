@@ -72,3 +72,10 @@ test("an empty order: just the headline", () => {
   assert.equal(s.done, false);
   assert.equal(OC.shape({ items: [{ label: null, parts: [] }] }).items.length, 0, "a nameless item with no parts is dropped");
 });
+
+test("a card waits for its head (queue item 8): rows all closed but the dish still being made -> not done; an open no-row never holds it", () => {
+  const items = [{ label: null, parts: [{ label: "hakro bataato", done: true }, { label: "dungri na", done: false, no: true }] }];
+  assert.equal(OC.shape({ items }).done, true, "the no-row doesn't hold the fold");
+  assert.equal(OC.shape({ items, done: false }).done, false, "the host's done wins: trae samosa still frying");
+  assert.equal(OC.shape({ items: [{ label: null, parts: [{ label: "hakro bataato", done: false }, { label: "dungri na", done: false, no: true }] }] }).done, false);
+});
