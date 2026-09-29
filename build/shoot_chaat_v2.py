@@ -42,6 +42,8 @@ class Shooter(T.Player):
         self.peek = peek
         self.served = 0
         self.demo = demo
+        # the Player's own "?" and light-bulb checks are test_cook's job (and cost a hint)
+        self.helped = True
 
     def shot(self, name):
         return None
@@ -78,13 +80,12 @@ class Shooter(T.Player):
                     time.sleep(0.5)
                     self.snap("peek")
                     time.sleep(3.6 / self.speed)
-        if k == "tap" and self.wrong and not self.served and "wrong-tap" not in self.taken and e.get("wrongs"):
+        if k == "tap" and self.wrong and not self.served and "wrong-tap" not in self.taken and e.get("swrongs"):
             # one deliberate wrong layer (the second one in), so the first serve is not right
-            n = self.page.evaluate("Cook.ctx && Cook.ctx.result ? 0 : 0")
             if len([t for t in self.taken if t.startswith("layer")]) >= 1:
                 self.taken.add("wrong-tap")
-                w = e["wrongs"][0]
-                self.tap(w["sx"] if "sx" in w else w["x"], w["sy"] if "sy" in w else w["y"], "wrong")
+                w = e["swrongs"][0]
+                self.tap(w["x"], w["y"], "wrong")
                 time.sleep(0.2)
                 return
         if k == "click" and e.get("selector") == "#done-btn":
@@ -128,6 +129,13 @@ def run(vp, out, level, speed, guided=True, wrong=False, demo=True):
             page.evaluate("() => { Cook.save.coached = Object.assign(Cook.save.coached || {}, {'assemble-v2': true}); }")
         page.evaluate(f"() => {{ __cook.lab('assemble', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
+        if vp["height"] > vp["width"]:
+            # Cook is landscape only: a phone held upright shows "turn your phone sideways"
+            time.sleep(2.5)
+            P.snap("portrait")
+            browser.close()
+            print(tag, "portrait: the rotate prompt", flush=True)
+            return True
         P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=300)
         time.sleep(1.0)
         P.snap("end")
@@ -156,7 +164,8 @@ def main():
         for f in os.listdir(out):
             if f.endswith(".png"):
                 os.remove(os.path.join(out, f))
-        for name in ["laptop", "phone-landscape", "phone"]:
+        ok &= run(VPS["phone"], out, 1, a.speed, demo=False)
+        for name in ["laptop", "phone-landscape"]:
             ok &= run(VPS[name], out, 1, a.speed, demo=True)
             ok &= run(VPS[name], out, 2, a.speed, wrong=True, demo=False)
             ok &= run(VPS[name], out, 3, a.speed, demo=False)

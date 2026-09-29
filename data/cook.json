@@ -1752,8 +1752,8 @@
         3
        ],
        [
-        2,
-        3
+        1,
+        2
        ]
       ]
      },
@@ -1766,6 +1766,9 @@
        [
         "top",
         "extra"
+       ],
+       [
+        "top"
        ]
       ]
      },
@@ -2216,7 +2219,7 @@
   "assemble": {
    "name": "Chaat bowl",
    "verb": "Assemble",
-   "goal": "Add the toppings in the order they asked, then tap the tick. They check every layer!"
+   "goal": "Add the toppings in the order they asked, then tap the tick: they taste it!"
   },
   "fill": {
    "name": "Fill",
@@ -3056,7 +3059,7 @@
     "chai-tray": ["bg:marble", "pan.top", "cook-chai.bowl", "spi-02.bowl", "spi-05.bowl", "cook-khun.bowl", "spi-16.bowl", "spi-10.bowl", "veg-14.bowl", "veg-13.bowl"],
     "chop": ["knife.tool", "veg-01.whole", "veg-02.whole", "veg-03.whole", "veg-12.whole", "veg-13.whole", "veg-14.whole"],
     "tadka": ["pot.top", "tadka-pan.top", "spi-02.bowl", "spi-05.bowl", "spi-01.bowl", "veg-12.bowl", "spi-16.bowl", "veg-13.bowl"],
-    "assemble": ["ph-dahi.bowl", "ph-amli.bowl", "ph-lili.bowl", "veg-02.bowl", "ph-sev.bowl", "ph-dhana.bowl", "veg-12.bowl", "veg-03.bowl", "ph-chana.bowl", "veg-01.bowl"],
+    "assemble": [],
     "fill": ["chaat-bowl.empty", "ph-keema.bowl", "veg-01.bowl", "veg-10.bowl", "veg-02.bowl", "veg-12.bowl", "ph-dhana.bowl"],
     "fold": ["ph-samosa.folded", "plate.top"],
     "fry": ["slotted-spoon.tool", "kadai.oil", "ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],

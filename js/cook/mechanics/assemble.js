@@ -999,7 +999,9 @@
           Cook.sfx.soft();
           await Cook.wait(500);
           const line = orderLine(ladderOf(ctx));
-          if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
+          // level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
+        if (line && level >= 4) await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);
+        else if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
           St.customerDone();
           await bowl.empty();
           got.length = 0;
