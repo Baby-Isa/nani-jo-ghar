@@ -9,3 +9,4 @@
 - 01:16 UTC · chaat v2 · new scene playing end to end in the lab (front-on glass with real layers, shelf of identical prep bowls + word chips, no tally, serve and taste, ghost-finger demo, level 4 fold); next: wrong-serve/rebuild, levels 2-4, polish, QA matrix
 - 01:17 UTC sekelo v2: lab test PASS (sekelo, thread, grill, laptop L1); level-4 lab test fails on the light bulb check for chai too (sidebar, not the scene: for the order-model owner); now shooting the VISUAL-QA matrix
 - 01:32 UTC · chaat v2 · wrong serve -> gentle face, glass back empty, card reset, rebuild (first try logged) working; levels 1-4 checked on laptop + phone landscape; start-folded note for order-model in overnight-queue item 5; next: QA matrix, test_cook, report
+- 01:32 UTC sekelo v2: fixes: face preload, plate centring, potato piece art; report drafted; re-shooting the matrix (laptop + phone-landscape, L1 and L4 with the not-quite path)
