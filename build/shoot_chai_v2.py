@@ -4,6 +4,7 @@
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots:
   start       everyone has spoken, nothing done yet
   mid-cook    the milk carton pouring into a pan (another pan heating, when there are two or more)
+  boiling     a pan on the high flame with its heat gauge, just before it's turned down
   pan-pour    a ready pan tipped over its person's glass
   serving     every glass poured, just before the tick
 
@@ -49,6 +50,9 @@ class Shooter(T.Player):
         if "start" not in self.taken and isinstance(e, dict) and e.get("kind") not in ("wait", None) and not e.get("intro"):
             time.sleep(0.3)
             self.snap("start")
+        # boiling: the flames and the heat gauge, just before the knob is turned down (29 Sept: never shot before)
+        if isinstance(e, dict) and e.get("kind") == "timing" and "boiling" not in self.taken:
+            self.snap("boiling")
         if os.environ.get("SHOOT_DEBUG"): print(round(time.time() % 1000, 1), e.get("kind"), key, flush=True)
         r = super().act(e)
         if key == "cook-dudh" and "mid-cook" not in self.taken:

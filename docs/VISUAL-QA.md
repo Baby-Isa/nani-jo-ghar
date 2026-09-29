@@ -31,3 +31,15 @@ Written 28 Sept 2026, after the end-of-round badges took five rounds to get righ
 ## 4. Who does it
 - Visual or judgement work (art cuts, layout, UI polish) goes to the top model; mechanical work (data, wiring, docs) can go to the mid-tier model.
 - The orchestrator looks at the screenshot itself before reporting "done", and never passes on a session's "done" unseen.
+
+## 5. Hunt for flaws, don't confirm the fix (29 Sept, after Zafar caught the chai pans)
+**What happened:** every chai pan sat low-left of its burner from the v2 build onward: the pan's centre had been measured with its handle attached. It passed the chai v2 build, two polish passes, the stage-fill session ("hob + tray centred ✓") and the orchestrator's own check. Zafar spotted it in one screenshot, along with a lit burner with no pan on it and the heat gauge sitting on the flame tips. Nobody had ever shot the boiling state.
+
+**Why the tests didn't help:** `test_cook.py` is a play-through test. A bot plays every station and checks the scoring; it never looks at the picture. Passing it says the game works, not that it looks right.
+
+**The rules from now on:**
+- **Shoot every state that draws something different,** not only start/mid/end: for a hob, heating (flames + gauge), turned down, a pan lifted away, boiled over. Levels 1–4 when the layout changes with the count (1–4 burners). Each station's shoot script names its states in its header; add one whenever a new state appears.
+- **The reviewer lists what's wrong before saying anything is right.** For each shot: zoom into the focal object (crop ×2) and write every flaw you can find (alignment, overlap, crowding, empty or lit-but-unused things, labels, anything that differs from the approved mock-up). "Looks right" with no flaws listed isn't a review.
+- **Compare with the approved mock-up** (`build/reports/*-mockup/`) side by side, not from memory.
+- **Measure what can be measured.** `python3 build/check_vessel_meta.py` checks that each vessel's recorded centre matches its art's rim. Add a check like it whenever art metadata drives placement.
+- **The builder doesn't mark its own homework:** the orchestrator (or a fresh session) reviews the final shots, not the session that made them.

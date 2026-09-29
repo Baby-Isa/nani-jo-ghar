@@ -46,7 +46,8 @@
     // cx, cy: the round body's centre, fitted to its rim (29 Sept; was 0.408, 0.5805, which the handle pulled
     // up and right, so every pan sat low-left of its burner). r is the size it's drawn at: the body itself is
     // 0.335 of the width, so the flame and heat rings (sized to panR) peek out around it
-    panTop: { w: 512, h: 492, cx: 0.3434, cy: 0.6408, r: 0.3644, rIn: 0.2915 },
+    // body: the rim's own radius (the heat gauge sits on it, inside the flames)
+    panTop: { w: 512, h: 492, cx: 0.3434, cy: 0.6408, r: 0.3644, rIn: 0.2915, body: 0.3352 },
     panPour: { w: 512, h: 500, lipX: 0.03, lipY: 0.545 },
     glassR: 0.94,
   };
@@ -200,11 +201,13 @@
     const pm = META.panTop;
     const panScale = panR / (pm.r * pm.w);
     const rIn = pm.rIn * pm.w * panScale;
+    const rimR = pm.body * pm.w * panScale;
     const pans = people.map((p, i) => {
       const x = burners[i];
       const y = burnerY;
       // the kit's burner: the flame ring peeking out under the pan; their face (= hear them) and the knob on the front edge
-      const b = Cook.Kit.burner(S, kHob, i, { who: p.who, flameR: panR });
+      // the flames peek just past the rim, as in the approved mock-up (29 Sept: at panR two burners' flames met)
+      const b = Cook.Kit.burner(S, kHob, i, { who: p.who, flameR: rimR * 0.97 });
       const { face, knob, kOff, kOn, knobHit, flameHi, flameLo } = b;
       const img = S.track(S.add.image(x, y, "v2-pan").setOrigin(pm.cx, pm.cy).setScale(panScale).setDepth(D.item));
       img.baseScale = panScale;
@@ -356,7 +359,7 @@
       pans.forEach((pan) => {
         pan.sel.clear();
         pan.selRing.clear();
-        if (pan !== sel || n < 2) return;
+        if (pan !== sel || n < 2 || pan.away) return;
         // the chosen pan: a warm pool of light under it, and a gold ring round its face
         for (let j = 0; j < 3; j++) {
           pan.sel.fillStyle(0xffd98a, 0.14);
@@ -570,7 +573,8 @@
       });
       setLook(pan);
     });
-    const drawRing = (pan) => pan.heatRing.draw(pan.x, pan.y, panR + 14, pan.heat, lo, hi);
+    // the gauge rides on the pan's rim, inside the flames (29 Sept: at panR + 14 it sat on the flame tips)
+    const drawRing = (pan) => pan.heatRing.draw(pan.x, pan.y, rimR, pan.heat, lo, hi);
     let last = performance.now();
     let steamT = 0;
     const stopHeat = S.addTick(() => {
@@ -627,6 +631,12 @@
       // the tipped pan: its lip over the glass
       const tilt = S.track(S.add.image(pan.x, pan.y, "v2-pan-pour").setOrigin(pp.lipX, pp.lipY).setScale(ps * 0.9).setDepth(D.fx + 1).setAlpha(0));
       pan.img.setAlpha(0);
+      // the pan's off the burner: no flame and no glow on an empty burner while it pours (29 Sept)
+      pan.away = true;
+      const flames = [pan.burner.flameHi, pan.burner.flameLo];
+      const flameA = flames.map((fl) => fl.alpha);
+      flames.forEach((fl) => S.tweens.add({ targets: fl, alpha: 0, duration: 160 }));
+      drawSel();
       Object.values(pan.layers).forEach((im) => im.setVisible(false));
       pan.water.setVisible(false);
       pan.bubbles.setVisible(false);
@@ -673,6 +683,9 @@
       await new Promise((r) => S.tweens.add({ targets: tilt, angle: 0, duration: 160, onComplete: r }));
       await S.fly(tilt, pan.x, pan.y, { duration: 420, arc: 50, scale: ps * 0.9 });
       tilt.destroy();
+      pan.away = false;
+      if (pan.poured < 2) flames.forEach((fl, j) => S.tweens.add({ targets: fl, alpha: flameA[j], duration: 200 }));
+      drawSel();
       pan.img.setAlpha(1);
       if (pan.img.shadow) pan.img.shadow.setVisible(true);
       Object.values(pan.layers).forEach((im) => im.setVisible(true));
