@@ -1,0 +1,21 @@
+{
+ "calls": [
+  {
+   "name": "fry-sheet",
+   "usage": {
+    "input_tokens": 893,
+    "input_tokens_details": {
+     "image_tokens": 582,
+     "text_tokens": 311
+    },
+    "output_tokens": 1568,
+    "output_tokens_details": {
+     "image_tokens": 1568,
+     "text_tokens": 0
+    },
+    "total_tokens": 2461
+   },
+   "usd": 0.0701
+  }
+ ]
+}
