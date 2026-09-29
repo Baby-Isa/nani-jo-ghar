@@ -98,24 +98,31 @@ Style: exactly as the attached images: stylised 3D animated-feature-film look, s
 **save as:** `sources/art/clinic-v2/cb6-closeup-bed-v1.png`
 **check:** the sage bed top fills the lower half with the paper strip · the room behind is softly blurred · the centre is calm and empty · no people, no text.
 
+
 ---
 
-## Round 2 (29 Sept, after Zafar's review of CB1 and CB2)
-Zafar's notes: CB1 is good but too wide (people would be small) and the front half is empty floor; six on one bench is enough. CB2's poster sits right behind where a seated patient's head goes, and the room is too zoomed out for tapping small body parts. **Attach the first version** so the look stays the same.
+## Round 2 (29 Sept, after Zafar's review of CB1, CB2, CB4 and CB5)
+Zafar's notes:
+- **CB1:** good, but too wide (people would be small), and the front half is empty floor. Six on one bench is enough.
+- **CB2:** no poster at all. The wall on the right stays clear for a photo of the real doctor's certificate (added in code later). A few children's toys go in the left corner in place of the desk chair. Also closer, for tapping small body parts.
+- **CB4:** it came out looking down from above; the same scene seen straight on is ideal.
+- **CB5 (the front door):** approved as it is.
 
-### Paste this block into Claude in Chrome (2 images)
+**Attach each first version** so the look stays the same.
+
+### Paste this block into Claude in Chrome (3 images)
 ```
-You're making 2 images in ChatGPT for a children's game called Nani jo Ghar, then uploading them to GitHub yourself. Don't change any ChatGPT, GitHub or Chrome settings.
+You're making 3 images in ChatGPT for a children's game called Nani jo Ghar, then uploading them to GitHub yourself. Don't change any ChatGPT, GitHub or Chrome settings.
 
-1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/chatgpt-art-prompts-clinic-v1.md and read the section "Round 2" at the bottom. It has 2 prompts: CB1b and CB2b, each in a grey code box followed by "attach", "save as" and "check" lines.
+1. Open https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/chatgpt-art-prompts-clinic-v1.md and read the section "Round 2" at the bottom. It has 3 prompts: CB1b, CB2b and CB4b, each in a grey code box followed by "attach", "save as" and "check" lines.
 
-2. You need the CB1 and CB2 images from the first run (use the copies in your Downloads folder; if you no longer have them, download them from https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/clinic-v2, the files starting cb1 and cb2) and the style anchor: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/style-anchor-v1.png
+2. You need the CB1, CB2 and CB4 images from the first run (use the copies in your Downloads folder; if you no longer have them, download them from https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/clinic-v2, the files starting cb1, cb2 and cb4) and the style anchor: https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/style-anchor-v1.png
 
 3. In ChatGPT, for each prompt in order: start a new chat, attach the files its "attach" line names, paste the text of its code box exactly as written, and send. Compare the image against its "check" line. If it passes, download it with ChatGPT's own download button. If it fails, reply once saying which check failed and ask for a corrected image; if that fails too, start a fresh chat and try once more. Download only the one image you keep for each prompt.
 
-4. Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-v2 and drag in the 2 downloaded files. Commit message: "Clinic backgrounds round 2: CB1b waiting room six-seat bench, CB2b exam room closer (ChatGPT)". Choose "Commit directly to the main branch" and click "Commit changes".
+4. Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-v2 and drag in the 3 downloaded files. Commit message: "Clinic backgrounds round 2: CB1b six-seat waiting room, CB2b exam room closer with toys, CB4b pharmacy straight on (ChatGPT)". Choose "Commit directly to the main branch" and click "Commit changes".
 
-5. Tell me, for CB1b and CB2b: the file name as uploaded, and pass, or what's wrong with it.
+5. Tell me, for CB1b, CB2b and CB4b: the file name as uploaded, and pass, or what's wrong with it.
 ```
 
 ### CB1b. The waiting room, closer, one six-seat bench
@@ -134,16 +141,29 @@ Style: exactly as the attached images: stylised 3D animated-feature-film look, s
 **save as:** `sources/art/clinic-v2/cb1b-waiting-six-v1.png`
 **check:** closer view · one bench with exactly six seats, filling about 75% of the width · no armchairs or side table · the door and desk still on the right · the sign and poster high on the wall · no people, no text.
 
-### CB2b. The exam room, closer, the poster off to the side
+### CB2b. The exam room: closer, no poster, toys in the corner
 ```
-Redraw the attached doctor's examination room for a children's game, 1536x1024 landscape, keeping EXACTLY the same style, colours, light, materials, walls, dado band, terrazzo floor, window, desk, cabinet and door, but with these changes:
+Redraw the attached doctor's examination room for a children's game, 1536x1024 landscape, keeping EXACTLY the same style, colours, light, materials, walls, dado band, terrazzo floor, window, desk, white medicine cabinet and door, but with these changes:
 - The camera is CLOSER: the examination bed is seen straight on and fills about 55% of the image width, its padded top a little below the middle of the image, so a person sitting on its edge (legs dangling) will be large, their head in the upper-middle of the image.
-- The wall DIRECTLY BEHIND AND ABOVE the bed is plain and calm: nothing hangs there.
-- MOVE the anatomy poster to the right, above the clear standing space right of the bed (where the doctor will stand), and make it a little smaller.
+- REMOVE the anatomy poster completely. The wall behind and above the bed is plain and calm, and the wall to the RIGHT of the bed, above the clear standing space, is also bare (a framed certificate will be added there later).
+- REMOVE the chair at the desk. In its place, in the left corner on the floor, a few children's toys: a small wooden toy car, a stack of colourful wooden blocks, a soft teddy bear and a little ball, neat and tidy on a small round rug.
 - Keep the clear floor space to the right of the bed for the doctor. The desk and window stay at the left edge, partly cut off by the closer framing.
 NO people, no animals, no text, letters or numbers anywhere.
 Style: exactly as the attached images: stylised 3D animated-feature-film look, semi-photoreal materials, soft global illumination, warm morning light from the upper left, no outlines.
 ```
 **attach:** `style-anchor-v1.png`, the first CB2 image
 **save as:** `sources/art/clinic-v2/cb2b-exam-bed-close-v1.png`
-**check:** closer view · the bed fills about half the width, straight on · plain wall directly behind and above the bed · the poster smaller, to the right, above the doctor's space · no people, no text.
+**check:** closer view, the bed straight on and about half the width · no poster anywhere · bare wall above the bed and to its right · toys on a rug in the left corner, no desk chair · no people, no text.
+
+### CB4b. The pharmacy counter, straight on
+```
+Redraw the attached pharmacy counter for a children's game, 1536x1024 landscape, keeping EXACTLY the same style, colours, light, materials, marble counter, conveyor belt with its steel rails and wooden hatches at each end, sage cabinets, open shelves of white medicine boxes and brown bottles, window and plant, but seen STRAIGHT ON: the camera faces the shelves squarely from a standing adult's eye height, only a little above the counter, NOT looking down from above.
+- The conveyor belt runs straight across the image from left to right (horizontal, parallel to the bottom edge), from the hatch on the left to the hatch on the right, across the middle of the image.
+- In front of the belt, a strip of the pale marble counter top is visible, wide enough for a small tray.
+- Behind the belt, the shelves and cabinets fill the upper part of the image, straight on.
+NO people, no animals, no labels, no text, letters or numbers anywhere.
+Style: exactly as the attached images: stylised 3D animated-feature-film look, semi-photoreal materials, soft global illumination, warm morning light from the upper left, no outlines.
+```
+**attach:** `style-anchor-v1.png`, the first CB4 image
+**save as:** `sources/art/clinic-v2/cb4b-pharmacy-straight-v1.png`
+**check:** straight on, NOT looking down · the belt runs horizontally across the middle, with a hatch at each end · a strip of counter in front for a tray · shelves behind · no labels, no people.
