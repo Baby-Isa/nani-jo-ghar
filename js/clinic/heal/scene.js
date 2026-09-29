@@ -14,7 +14,7 @@
  *   S.why(problem, goal)   the opening beat: the patient says the problem, the doctor the goal
  *   S.tools(list, onPick)  the tool shelf (stand-in buttons on the right); S.pick(id) selects
  *   S.cue(key, text, target)   the first-time cue: words + a pointing hand; S.uncue()
- *   S.count(n)       the count-up (Cook rule Q7): L1 shown and said, L2 shown, L3 said
+ *   S.count(n)       the count-up (Cook rule Q7): the host writes it (ctx.tally; L1 on the card, said); L3 said here
  *   S.timer(ms, onEnd)     a gentle bar: {stop(), left()}
  *   S.destroy()
  *
@@ -93,16 +93,13 @@
   .hs-doc{position:absolute;left:10px;bottom:10px;width:clamp(44px,8vmin,64px);height:clamp(44px,8vmin,64px);border-radius:50%;background:#e8f3ef;border:3px solid #2e8b7a;display:grid;place-items:center;font-size:clamp(20px,4vmin,30px);z-index:7;pointer-events:none}
   .hs-tools{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:grid;grid-template-columns:repeat(var(--cols,1),auto);gap:8px;z-index:8;pointer-events:none}
   .hs-tools>*{pointer-events:auto}
-  .hs-root .hs-tool{flex:0 0 auto;width:auto;margin:0;box-sizing:border-box;min-width:clamp(60px,9vw,96px);min-height:clamp(46px,7vh,66px);border-radius:16px;border:4px solid #d8c6a8;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font:700 12px/1.1 system-ui,sans-serif;color:#5b4636;cursor:pointer;padding:3px 6px}
+  .hs-root .hs-tool{flex:0 0 auto;width:auto;margin:0;box-sizing:border-box;min-width:clamp(56px,9vw,96px);min-height:clamp(46px,7vh,62px);border-radius:16px;border:4px solid #d8c6a8;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font:700 12px/1.1 system-ui,sans-serif;color:#5b4636;cursor:pointer;padding:3px 6px}
   .hs-tool .g{font-size:clamp(20px,3.4vmin,30px);line-height:1.1}
   .hs-tool .sw{display:flex;gap:2px}
   .hs-tool.sel{border-color:#2e8b7a;box-shadow:0 0 0 5px rgba(46,139,122,.35)}
   .hs-tool.used{opacity:.45}
   .hs-tool.pulse{animation:hs-pulse 1s ease-in-out infinite}
   @keyframes hs-pulse{50%{box-shadow:0 0 0 7px rgba(240,180,60,.55)}}
-  .hs-count{position:absolute;left:50%;top:8px;transform:translateX(-50%);min-width:54px;padding:2px 14px;border-radius:18px;background:#fff;border:3px solid #2e8b7a;font:800 clamp(20px,4vmin,30px)/1.2 system-ui,sans-serif;color:#2e6b5f;text-align:center;z-index:7;pointer-events:none}
-  .hs-count.pop{animation:hs-pop .3s}
-  @keyframes hs-pop{50%{transform:translateX(-50%) scale(1.25)}}
   .hs-timer{position:absolute;left:22%;right:22%;top:clamp(46px,8vmin,60px);height:12px;border-radius:8px;background:rgba(255,255,255,.7);border:2px solid #d8c6a8;z-index:7;overflow:hidden;pointer-events:none}
   .hs-timer i{position:absolute;left:0;top:0;bottom:0;background:#6bbf8a;transition:width .25s linear}
   .hs-timer.low i{background:#f0a040}
@@ -238,7 +235,9 @@
     S.tools = (list, fn) => {
       shelf.innerHTML = "";
       S.toolEls = {};
-      shelf.style.setProperty("--cols", Math.ceil(list.length / 6));
+      // as many rows as fit the play area's height (a phone is short), then more columns
+      const rowsFit = Math.max(2, Math.floor((root.getBoundingClientRect().height * 0.86 + 8) / 70));
+      shelf.style.setProperty("--cols", Math.ceil(list.length / Math.min(6, rowsFit)));
       onPick = fn;
       list.forEach((t) => {
         const b = h("button", "hs-tool", shelf);
@@ -318,12 +317,22 @@
       handEl = h("div", "hs-hand", root, "👆");
       handEl.style.left = `${cx}px`;
       handEl.style.top = `${cy}px`;
-      // the words sit above the hand, or below when it points high; kept on screen
+      // the words sit beside the hand when it points at the tool shelf (never over the tools),
+      // else above it, or below when it points high; always on screen
       const w = Math.min(rr.width * 0.46, 340);
-      let left = Math.max(8, Math.min(rr.width - w - 8, cx - w / 2));
-      cueEl.style.left = `${left}px`;
-      if (cy > rr.height * 0.45) cueEl.style.bottom = `${Math.max(8, rr.height - cy + 26)}px`;
-      else cueEl.style.top = `${Math.min(rr.height - 60, cy + 54)}px`;
+      const shelfR = shelf.getBoundingClientRect();
+      if (shelfR.width && cx > shelfR.left - rr.left - 10) {
+        cueEl.style.right = `${Math.max(8, rr.right - shelfR.left + 14)}px`;
+        cueEl.style.top = `${Math.max(8, Math.min(rr.height - 90, cy - 30))}px`;
+        handEl.textContent = "👉";
+        handEl.style.left = `${shelfR.left - rr.left - 44}px`;
+        handEl.style.top = `${cy - 22}px`;
+      } else {
+        const left = Math.max(8, Math.min(rr.width - w - 8, cx - w / 2));
+        cueEl.style.left = `${left}px`;
+        if (cy > rr.height * 0.45) cueEl.style.bottom = `${Math.max(8, rr.height - cy + 26)}px`;
+        else cueEl.style.top = `${Math.min(rr.height - 60, cy + 54)}px`;
+      }
       if (Voice && !Voice.quiet) Voice.say(HS.ph(cueEl.textContent), { who: "nani", noBubble: true });
     };
     S.markSeen = () => {
@@ -334,24 +343,13 @@
       }
     };
 
-    /* ---- the count-up (Cook rule Q7) ---- */
-    const countEl = h("div", "hs-count", root);
-    countEl.style.display = "none";
+    /* ---- the count-up (Cook rule Q7) ----
+     * The host writes the count (ctx.tally's chip, and at level 1 the card's row, said aloud: G6), so
+     * nothing is drawn here: at level 3 the count is heard only, and said here. S.count(null) is a no-op.
+     */
     S.count = (n, o = {}) => {
-      if (n == null) {
-        countEl.style.display = "none";
-        return;
-      }
-      const L = ctx.level;
-      if (L <= 2 && !o.hidden) {
-        countEl.style.display = "";
-        countEl.textContent = o.label ? `${o.label} ${n}` : String(n);
-        countEl.classList.remove("pop");
-        void countEl.offsetWidth;
-        countEl.classList.add("pop");
-      } else countEl.style.display = "none";
-      // level 1 is said by the host (ctx.tally, G6); level 3 is heard only, so we say it here
-      if (L >= 3 && HS.NUM[n] && Voice && !o.silent) Voice.say({ kutchi: HS.cap(HS.NUM[n]), english: String(n) }, { who: "doctor", noBubble: true });
+      if (n == null) return;
+      if (ctx.level >= 3 && HS.NUM[n] && Voice && !o.silent) Voice.say({ kutchi: HS.cap(HS.NUM[n]), english: String(n) }, { who: "doctor", noBubble: true });
     };
 
     /* ---- the gentle timer ---- */
