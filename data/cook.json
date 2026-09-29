@@ -502,6 +502,13 @@
    "src": "Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §26, B37)",
    "src_change": "was an English placeholder"
   },
+  "ph-sekelo": {
+   "kutchi": "sekelo",
+   "english": "sekelo",
+   "gender": "unknown",
+   "draft": true,
+   "src": "Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"
+  },
   "ph-mishkaki": {
    "kutchi": "mishkaki",
    "english": "mishkaki",
@@ -768,6 +775,22 @@
    "draft": true,
    "src": "Mum 25 Sept (A3.3-A3.6): pela = first (Muke pela daar khape, ne poi maani). As a line of its own, a draft"
   },
+  "need_waari": {
+   "k": "Muke {x} waari chai khape.",
+   "en": "I want chai with {x}.",
+   "draft": true,
+   "src": "29 Sept (X1): Mum's order frame Muke {x} khape with her {x} waari chai (A3.3-A3.6: dudh / khun / kesar waari chai), put together; the whole sentence is to confirm with Mum (Q5 1)"
+  },
+  "with": {
+   "e": "with {x}",
+   "record": true,
+   "src": "29 Sept (X1): the join between an order's headline and the rest (Muke ba samosa khape, with ba chundo, trae marcha). English placeholder, TO RECORD: how Mum says 'with' for food (waari? sathe?) is Q5"
+  },
+  "and_join": {
+   "e": "and {x}",
+   "record": true,
+   "src": "29 Sept (X1): the join before a second kind of the same dish (Muke ba bajr ji maani khape, and hakri maani). English placeholder, TO RECORD with Mum (Q5 4); no Ne chaining"
+  },
   "waari": {
    "k": "{x} waari chai.",
    "en": "Chai with {x}.",
@@ -1026,6 +1049,13 @@
   "pantry": {
    "_about": "Wave 6 (docs/UX-PRINCIPLES.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
    "name": "ph-pantry",
+   "forDish": {
+    "_about": "29 Sept (Q6, Zafar): in story mode the first time each of these dishes is made that day starts with a pantry trip for its things (a second one that day doesn't; free play and the lab skip it). What each dish's trip fetches, all stocked in the pantry (shelf art), in the order Nani asks",
+    "chai": ["cook-chai", "cook-dudh", "cook-khun", "spi-10"],
+    "daal": ["cook-daal", "veg-02", "veg-03", "spi-01"],
+    "chaat": ["veg-01", "ph-chana", "veg-02", "ph-sev"],
+    "samosa": ["ph-keema", "veg-01", "veg-02", "cook-atto"]
+   },
    "english": "Pantry",
    "price": 2,
    "stations": [
@@ -1236,8 +1266,18 @@
      "for": "$it.who",
      "say": [
       {
+       "if": "it.extra",
+       "frame": "need_waari",
+       "x": [
+        "$it.extra"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
        "if": [
         "it.named",
+        "!it.extra",
         "!it.dudh"
        ],
        "frame": "need",
@@ -1251,6 +1291,7 @@
       {
        "if": [
         "it.named",
+        "!it.extra",
         "it.dudh",
         "!it.khun"
        ],
@@ -1352,17 +1393,17 @@
    ],
    "how": "Each person says how they like their chai. Make every cup their way.",
    "card": {
-    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them.",
+    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them. 29 Sept (X1, Zafar): the extra (aadu / elchi) is the TOP row, since the headline names it (Muke aadu waari chai khape.), then milk, then sugar; said in this order too.",
     "slots": [
+     [
+      "spi-10",
+      "veg-14"
+     ],
      [
       "cook-dudh"
      ],
      [
       "cook-khun"
-     ],
-     [
-      "spi-10",
-      "veg-14"
      ],
      [
       "ph-half",
@@ -1377,6 +1418,10 @@
   "maani": {
    "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, (one tawa at every level: §13's burner rule); 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
    "name": "cook-maani",
+   "countRule": true,
+   "headFirst": true,
+   "join": "and_join",
+   "_sentence": "29 Sept (X1): the headline names the first kind with its count (Muke ba bajr ji maani khape.); a second kind follows with the join (and, to record)",
    "english": "Maani",
    "price": 3,
    "stations": [
@@ -1474,6 +1519,7 @@
   },
   "daal": {
    "name": "cook-daal",
+   "countRule": true,
    "english": "Daal",
    "price": 5,
    "stations": [
@@ -1588,7 +1634,10 @@
      "if": "onions",
      "frame": "and",
      "x": [
-      "veg-02"
+      {
+       "n": "$onions",
+       "of": "veg-02"
+      }
      ]
     },
     {
@@ -1602,14 +1651,20 @@
      "if": "tomatoes",
      "frame": "and",
      "x": [
-      "veg-03"
+      {
+       "n": "$tomatoes",
+       "of": "veg-03"
+      }
      ]
     },
     {
      "if": "chillies",
      "frame": "and",
      "x": [
-      "veg-12"
+      {
+       "n": "$chillies",
+       "of": "veg-12"
+      }
      ]
     },
     {
@@ -1654,6 +1709,7 @@
   },
   "chaat": {
    "name": "ph-chaat",
+   "countRule": true,
    "english": "Chaat bowl",
    "price": 5,
    "stations": [
@@ -1791,7 +1847,13 @@
      ]
     },
     {
-     "list": "$seq"
+     "list": "$seq",
+     "qty": {
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
+     },
+     "_qty": "29 Sept (T1, X12): a layer that's chopped first says how many (ba bataato), as its chop does"
     },
     {
      "forEach": "$no",
@@ -1837,6 +1899,7 @@
   },
   "samosa": {
    "name": "ph-samosa",
+   "countRule": true,
    "english": "Samosa",
    "price": 5,
    "stations": [
@@ -1885,6 +1948,8 @@
     "fillings": {
      "type": "tally",
      "kinds": "$kinds",
+     "minFirst": 1,
+     "_minFirst": "29 Sept (S18, Zafar): every samosa has its base filling (the first kind: chundo, or bataato for veg) at least one spoon, named as a row; marcha, dhania and the rest are extras. 'Two samosas, three chillies' can't happen",
      "total": {
      "int": {
       "byLevel": [[2, 3], [3, 4], [3, 5], [3, 5]]
@@ -1955,7 +2020,8 @@
    "how": "Fill them with what they say, fold them, then fry them."
   },
   "mishkaki": {
-   "name": "ph-mishkaki",
+   "name": "ph-sekelo",
+   "countRule": true,
    "english": "Sekelo",
    "_pepper": "Sidebar v2 (Zafar, 28 Sept evening): no English in the item pills. Green pepper (ph-pepper) has no Kutchi word yet (Mum 26 Sept, B34), so it's out of the skewers (lists and tastes) until it's recorded; its art stays filed",
    "price": 6,
@@ -2015,30 +2081,40 @@
     ]
    },
    "slots": {
+    "vegKind": {
+     "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri gos: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
+     "pick": ["veg-02", "veg-03"]
+    },
     "skewers": {
      "type": "tally",
      "kinds": {
       "byLevel": [
        [
         "ph-meat",
-        "ph-veg"
+        "$vegKind"
        ],
        [
         "ph-meat",
-        "ph-veg"
+        "$vegKind"
        ],
        [
         "ph-meat",
-        "ph-veg",
+        "$vegKind",
         "ph-mixed"
        ],
        [
         "ph-meat",
-        "ph-veg",
+        "$vegKind",
         "ph-mixed"
        ]
       ]
      },
+     "min": {
+      "ph-mixed": {
+       "byLevel": [0, 0, 1, 2]
+      }
+     },
+     "_min": "29 Sept (K4): mostly mixed from level 3 (one of two or three; two of three or four at level 4)",
      "total": {
       "byLevel": [
        1,
@@ -2092,7 +2168,7 @@
     {
      "frame": "order",
      "x": [
-      "ph-mishkaki"
+      "ph-sekelo"
      ]
     },
     {
@@ -3733,7 +3809,32 @@
   "fry": [
    {"do": "tap", "what": "a samosa into the oil"},
    {"do": "tap", "what": "lift it out on the green"}
-  ]
+  ],
+  "samosa": [
+   {"do": "tap", "what": "a spoon of the first filling they said, onto the strip"},
+   {"do": "tap", "what": "the next spoon (as many as the card says)"},
+   {"do": "tap", "what": "the tick when the filling's in"},
+   {"do": "swipe", "what": "fold the strip over the filling"},
+   {"do": "swipe", "what": "fold it again"},
+   {"do": "swipe", "what": "the last fold: it's sealed"}
+  ],
+  "daar-cook": [
+   {"do": "tap", "what": "the first spice Nana said, into the hot oil"},
+   {"do": "tap", "what": "the next spice"},
+   {"do": "tap", "what": "the next one (or the pan: tip it into the pot)"},
+   {"do": "stir", "what": "drag the ladle round the pot, counting the laps"},
+   {"do": "tap", "what": "the tick when it's done"}
+  ],
+  "_phases": {
+   "_about": "29 Sept (X11): every phase of every station, by the key its coach runs under (St.begin or St.coach). build/check_onboard.mjs fails when one has no script above, or when a station's code starts a phase this list doesn't know.",
+   "pantry": ["fetch"],
+   "chai": ["chai-tray"],
+   "maani": ["maani-line"],
+   "daar": ["daar", "daar-cook"],
+   "chaat": ["assemble"],
+   "samosa": ["samosa", "fry"],
+   "sekelo": ["thread", "grill"]
+  }
  },
  "tips": {
   "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",

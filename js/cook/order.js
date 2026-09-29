@@ -28,10 +28,19 @@
   const Lang = Cook.Lang;
   const O = (Cook.Order = {});
 
+  /**
+   * 29 Sept (X12 / Q7, Zafar): the counting rule, for a recipe with `countRule`. Level 1 and 2: the
+   * card row writes the quantity in Kutchi ("ba dungri", never a digit); level 3 and up: the card
+   * says only the thing, and how many is heard in the order (remember it). Chai keeps its own
+   * (its sugar is the listening test).
+   */
+  const cardParts = (parts, level, rule) => (rule && level >= 3 ? parts.filter((p) => typeof p !== "number") : parts);
   /** A card row from a recipe ladder row (recipes.js). */
-  function row(r) {
+  function row(r, { level = 1, rule = false } = {}) {
     const parts = r.parts || r.ids;
     const phrase = Lang.phrase(parts);
+    const shown = cardParts(parts, level, rule);
+    const cardPhrase = shown.length === parts.length ? phrase : Lang.phrase(shown);
     const no = r.kind === "no";
     return {
       parts,
@@ -45,10 +54,12 @@
       revealed: false,
       phrase,
       // on the card: just the words (the dot says how it links); "no X" as said
-      line: no ? r.line : { segs: phrase.segs, en: phrase.en },
+      line: no ? r.line : { segs: cardPhrase.segs, en: cardPhrase.en },
       // as the recipe data says it (its own frame: "Ne be khun.")
       said: r.line,
       list: !!r.list,
+      // the number only says how many were chopped for it (chaat's "ba bataato"): one step, not a count row
+      labelQty: !!r.labelQty,
       for: r.for,
       qty: r.qty || 1,
       // Wave 6: one card per unit ("ba lakri gos" is two skewer cards, each with `cards` slots)
@@ -62,6 +73,7 @@
     };
   }
   O.row = row;
+  const rowOf = row;
   /** "No X" rows join a random group at a random place, so where they sit says nothing. */
   function sprinkle(groups, noRows) {
     if (!groups.length && noRows.length) groups.push([]);
@@ -83,6 +95,8 @@
     // heads the card with it; everything fetched is a row. Not recorded yet: English, flagged "to record"
     const hl = (Cook.data.recipes[d.recipe] || {}).headline;
     if (hl) L.head = O.headline(hl, d);
+    const rule = { level: d.level || 1, rule: !!(Cook.data.recipes[d.recipe] || {}).countRule };
+    const row = (r) => rowOf(r, rule);
     Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
       if (r.kind === "dish" && !L.head) {
         L.head = Object.assign(row(r), { head: true, line: r.line });
@@ -130,19 +144,98 @@
     L.sections.forEach((s) => {
       s.seq = s.groups.length > 1;
       delete s.dots;
-      // a person's card has a fixed shape: its rows in slot order (milk, sugar, which chai), said in that order too
+      // a person's card has a fixed shape: its rows in slot order (which chai, milk, sugar), said in that order too
       if (s.for && L.card && L.card.slots) s.groups = s.groups.map((g) => g.slice().sort((a, b) => O.slotOf(L, a) - O.slotOf(L, b)));
       else s.groups = s.groups.map((g) => {
         const lead = g.filter((r) => r.lead);
-        return lead.concat(Cook.shuffle(g.filter((r) => !r.lead)));
+        // 29 Sept (P4): a list with a lead row (the pantry's) keeps the order its slot was drawn in
+        // (already random), so the card, Nani's list and what's fetched all run top to bottom alike
+        return lead.length ? lead.concat(g.filter((r) => !r.lead)) : Cook.shuffle(g);
       });
     });
     // "no X": among the any-order rows, else sprinkled through the list
     const home = any || L.sections.filter((s) => !s.when && !s.for).pop();
     if (home) sprinkle(home.groups, nos);
     else if (nos.length) L.sections.push({ key: "any", seq: false, groups: [Cook.shuffle(nos)] });
+    // 29 Sept (X1, Zafar): the kind of dish goes in the headline where the family's pattern has it:
+    // "headFirst" (maani) says the first counted row in the order frame ("Muke ba bajr ji maani khape."),
+    // so the headline names what's made; the row stays on the card (it's ticked), and isn't said twice
+    const def = Cook.data.recipes[d.recipe] || {};
+    if (def.headFirst && L.head && !L.head.rec && any) {
+      const first = any.groups[0].find((r) => !r.no && !r.cards);
+      const firstAny = first || any.groups[0].find((r) => !r.no);
+      if (firstAny) {
+        const line = Lang.line(Lang.orderFrame(i, d.level), firstAny.phrase);
+        Object.assign(L.head, { line, said: line, ids: firstAny.ids.slice(), parts: firstAny.parts, phrase: firstAny.phrase });
+      }
+    }
     return L;
   };
+
+  /* ---------------- 29 Sept (X1): one sentence per person ---------------- */
+  // a line's segments without its last full stop (it goes on inside a sentence)
+  const cut = (segs) => {
+    const out = segs.map((s) => Object.assign({}, s));
+    for (let k = out.length - 1; k >= 0; k--) {
+      if (!out[k].t || /^\s*$/.test(out[k].t)) continue;
+      out[k].t = out[k].t.replace(/[.!?]\s*$/, "");
+      if (!out[k].t) out.splice(k, 1);
+      break;
+    }
+    return out;
+  };
+  const lower = (segs) => {
+    const k = segs.findIndex((s) => s.lang && s.t);
+    if (k >= 0) segs[k] = Object.assign({}, segs[k], { t: segs[k].t.charAt(0).toLowerCase() + segs[k].t.slice(1) });
+    return segs;
+  };
+  const cutEn = (en) => String(en || "").replace(/[.!?]\s*$/, "");
+  /** Is this row already said by the headline ("Muke aadu waari chai khape." says the aadu row)? */
+  const inHead = (head, r) => !!head && !r.no && r.ids.length > 0 && r.ids.every((id) => (head.ids || []).includes(id));
+  /**
+   * One person's order as ONE sentence, in card order (29 Sept, X1): the headline ("Muke aadu waari
+   * chai khape"), then the card's other rows as their bare words ("dudh, ba khun"), a leave-it-out
+   * row in its own confirmed form ("dudh na"). The join word between the headline and the rest is
+   * the recipe's `join` line (data.lines.with / .and_join): English, flagged "to record", until Mum
+   * gives the Kutchi (Q5); there's no "Ne" chaining. Each part knows the rows it says (read-along).
+   * Without a spoken headline (the pantry's "bring me these", still to record) each row is said as
+   * the recipe data frames it ("Muke dudh de. Ne atto.").
+   */
+  O.sentence = function (head, rows, { join = "with" } = {}) {
+    const F = Lang.frames();
+    const parts = [];
+    const said = head && !head.rec && head.line;
+    if (!said) {
+      rows.forEach((r) => parts.push(Object.assign({}, r.no || !r.said ? r.line : r.said, { row: r })));
+      return Lang.join(parts);
+    }
+    const inH = rows.filter((r) => inHead(head, r));
+    const rest = rows.filter((r) => !inH.includes(r));
+    const end = (k) => (k === rest.length - 1 ? "." : ",");
+    parts.push({ segs: cut(head.line.segs).concat(rest.length ? [{ t: ",", lang: null }] : [{ t: ".", lang: null }]), en: cutEn(head.line.en) + (rest.length ? "," : "."), row: head, rows: [head].concat(inH) });
+    let joined = false;
+    rest.forEach((r, k) => {
+      let segs;
+      let en;
+      if (r.no) {
+        const l = Lang.line(F.no, r.phrase);
+        segs = lower(cut(l.segs));
+        en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
+      } else if (!joined && Cook.data.lines[join]) {
+        const l = Lang.line(join, r.phrase);
+        segs = cut(l.segs);
+        en = cutEn(l.en);
+        joined = true;
+      } else {
+        segs = r.phrase.segs.slice();
+        en = r.phrase.en;
+      }
+      parts.push({ segs: segs.concat({ t: end(k), lang: null }), en: en + end(k), row: r, rows: [r] });
+    });
+    return Lang.join(parts);
+  };
+  /** The join word a recipe's sentence uses ("with": samosa, chai; "and": maani's second kind). */
+  O.joinOf = (L) => ((Cook.data.recipes[L.recipe] || {}).join || "with");
 
   /**
    * A card headline that isn't a spoken line (yet): {en, en_plain, line?}. With `line` (a key in
@@ -185,11 +278,18 @@
     const lines = [];
     // each spoken part knows the row it says, so the card can light it up as it's said (read-along)
     const push = (line, r) => lines.push(Object.assign({}, line, { row: r }));
+    const said = (l) => l.parts.forEach((p) => lines.push(p));
     ladders.forEach((L) => {
-      // a headline still to record isn't said (the first row says it: "Muke dudh de.")
-      if (heads && L.head && !L.head.rec) push(L.head.line, L.head);
+      // 29 Sept (X1): a spoken headline and the plain rows under it are ONE sentence, in card order
+      // ("Muke ba samosa khape, with ba chundo, trae marcha."); a person's own rows (the Chai tray's
+      // cups) are their own sentence; ordered lists ("Pela chana. Ne poi bataato.") follow as before
+      const whole = heads && L.head && !L.head.rec;
+      const plain = (s) => !s.simple && !s.seq && !s.groups.some((g) => g.some((r) => r.list));
+      if (whole) said(O.sentence(L.head, [].concat(...L.sections.filter((s) => !s.when && !s.for && plain(s)).map((s) => [].concat(...s.groups))), { join: O.joinOf(L) }));
       L.sections.forEach((s) => {
         if (s.when && !withWhen) return;
+        if (s.for) return said(O.sentence(s.head || L.head, [].concat(...s.groups), { join: O.joinOf(L) }));
+        if (whole && !s.when && plain(s)) return;
         let first = true;
         s.groups.forEach((g, gi) => {
           let firstInGroup = true;

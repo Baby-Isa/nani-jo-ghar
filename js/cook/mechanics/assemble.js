@@ -14,9 +14,10 @@
  *  - NO TALLY at this station (§14a): the glass shows what's in.
  * The card (the shared order card, §12): each layer ticks its row as it goes in (UX 11, right or not);
  * the order is judged when you serve.
- * SERVE AND TASTE (§14a): Done -> the glass slides to the person, who tastes it.
+ * THE REVIEW (29 Sept, X10 / Q1: Cook.Kit.review): Done -> their big round face comes up over the glass
+ * (no body, no pretend eating).
  *  - right: a happy face and the family's praise clip (Shabash!);
- *  - wrong: a gentle "not quite" face, they say their order again, the glass slides back EMPTY and you
+ *  - wrong: a gentle frown, they say their order again, the glass EMPTIES and you
  *    build it again. Never a red cross; only the first try counts (the ear star, the end review).
  * LEVELS (§14, §14a; the recipe's slots by level in data/cook.json, the decoys in
  * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row (and the words
@@ -84,7 +85,7 @@
     const who = ctx.order && ctx.order.who;
     if (face && who && who !== "nani") {
       face.dataset.nani = face.dataset.nani || face.getAttribute("src");
-      face.src = Cook.v(`assets/cook/characters/${who}-badge.webp`);
+      face.src = Cook.v(Cook.facePath(who));
     }
     return UI.say(line, { badge: true }, opts).catch(() => {});
   };
@@ -180,8 +181,6 @@
   const GLASS_X = 800;
   // the glass is centred in the scene above the shelf band (0..SHELF_TOP): its middle at SHELF_TOP / 2
   const GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
-  const SERVE_X = 1050; // where the glass is tasted
-  const PERSON_X = 1405;
   const INK = {
     text: "#2A2522",
     kutchi: "#8C2F2F",
@@ -624,8 +623,8 @@
   };
   const orderLine = (L) => {
     if (!L) return null;
-    const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head);
-    return Lang.join((L.head ? [L.head.line] : []).concat(rows.map((r) => (r.no || !r.said ? r.line : r.said))));
+    // 29 Sept (X1): one sentence, in card order (Cook.Order.speech)
+    return Cook.Order.speech([L]);
   };
 
   /**
@@ -721,7 +720,6 @@
       if (!pool) pool = St.decoys(decoyPool, flat.concat(exclude), knobInt(k.decoys), k.decoyPick);
       const ids = Cook.shuffle([...new Set(pool.concat(flat, exclude))]);
       const who = (ctx.order && ctx.order.who) || "nana";
-      const moods = ["neutral", "happy", "impatient"];
       await Promise.race([
         St.load(
           S,
@@ -729,7 +727,7 @@
             ["cv2-glass", V2 + "glass-bowl.webp"],
             ["cv2-glass-hi", V2 + "glass-hi.webp"],
           ].concat(
-            moods.map((m) => [`cv2-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`]),
+            Cook.Kit ? Cook.Kit.faceArt(who) : [],
             ...ids
               .filter((id) => HAS_ART.includes(id))
               .map((id) => [
@@ -967,7 +965,6 @@
       if (ctx.intro) await ctx.intro;
       const unfold = foldCard(level >= 4);
 
-      let person = null;
       let tries = 0;
       try {
         /* ---------- first time: the ghost finger shows row 1 -> its bowl -> the drop -> the tick ---------- */
@@ -1010,35 +1007,11 @@
           Cook.writeSave();
         }
 
-        /* ---------- the person, for the serve (they come in from the right) ---------- */
-        const faceKey = (m) => (S.textures.exists(`cv2-${who}-${m}`) ? `cv2-${who}-${m}` : null);
-        const personIn = async () => {
-          const kN = faceKey("neutral");
-          if (!kN) return null;
-          const im = S.track(
-            S.add
-              .image(z.X(Cook.offRight(1760)), z.Y(SHELF_TOP + 6), kN)
-              .setOrigin(0.5, 1)
-              .setDepth(D.bg + 1.1),
-          );
-          im.setScale((z.L(430) / im.height) * (who === "cousin" ? 0.92 : 1));
-          im.baseScale = im.scaleX;
-          await new Promise((r) =>
-            S.tweens.add({
-              targets: im,
-              x: z.X(PERSON_X),
-              duration: 520,
-              ease: "Back.easeOut",
-              onComplete: r,
-            }),
-          );
-          return im;
-        };
-        const mood = (m) => {
-          const key = person && faceKey(m);
-          if (!key) return;
-          person.setTexture(key);
-          person.setScale((z.L(430) / person.height) * (who === "cousin" ? 0.92 : 1));
+        /* ---------- the review (X10 / Q1): their big round face over the glass, no body ---------- */
+        let look = null;
+        const review = async (ok) => {
+          const r = bowl.rimAt();
+          look = await Cook.Kit.review(S, { who, ok, x: r.x, y: r.y - z.L(120), size: z.L(250), k: z.L(1), side: "right" });
         };
 
         /* ---------- build, serve, taste (and build again if it's not right) ---------- */
@@ -1061,33 +1034,17 @@
           while (busy) await Cook.wait(60);
           z.expect({ kind: "wait" });
           tries++;
-          // serve: the glass slides to the person, who tastes it
-          Cook.sfx.whoosh();
-          person = person || (await personIn());
-          await bowl.slide(z.X(SERVE_X));
-          if (person) await new Promise((r) => S.tweens.add({ targets: person, x: person.x - z.L(26), angle: -3, duration: 260, yoyo: true, hold: 260, ease: "Sine.easeInOut", onComplete: r }));
-        await bowl.tilt(-6);
-          await Cook.wait(350);
+          // serve: their face comes up over the glass (no pretend eating)
+          await Cook.wait(250);
           const m = C.mistake(got);
           if (!m) {
             // right: a happy face and the family's praise
-            mood("happy");
-            if (person)
-              S.tweens.add({
-                targets: person,
-                y: person.y - z.L(14),
-                duration: 160,
-                yoyo: true,
-                repeat: 1,
-              });
-            Cook.sfx.right();
-            const rp = bowl.rimAt();
-            S.sparkle(rp.x, rp.y);
             if (exclude.length) UI.mission.closeItem(exclude, dishNo());
             if (!guided && tries === 1) flat.forEach((id) => Cook.markRight(id));
-            await pop(Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : rp.x, z.Y(250), { line: Lang.line("welldone"), ms: 1900 });
+            await review(true);
             // a moment to enjoy it before the end of the station
-            await Cook.wait(1400);
+            await Cook.wait(900);
+            await look.close();
             break;
           }
           // not quite: a gentle face, they say what they asked for again, the glass comes back empty
@@ -1105,27 +1062,14 @@
             if (wrong && exclude.includes(wrong)) UI.mission.missItem(wrong, dishNo(), { no: true });
             else if (m.expected) UI.mission.missItem(m.expected, dishNo());
           }
-          mood("impatient");
-          if (person)
-            S.tweens.add({
-              targets: person,
-              angle: { from: -2.5, to: 2.5 },
-              duration: 160,
-              yoyo: true,
-              repeat: 2,
-              onComplete: () => person.setAngle(0),
-            });
-          Cook.sfx.soft();
-          await Cook.wait(500);
+          await review(false);
           const line = orderLine(ladderOf(ctx));
           // level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
         if (line && level >= 4) await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);
         else if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
           St.customerDone();
-          await bowl.empty();
+          await Promise.all([look.close(), bowl.empty()]);
           got.length = 0;
-          await bowl.slide(z.X(GLASS_X), 560);
-          mood("neutral");
           // the card starts again (its misses stay for the review)
           const L = ladderOf(ctx);
           if (L) {
@@ -1143,14 +1087,6 @@
       }
       ctx.result.layers = got.slice();
       z.skill(tries === 1 ? 100 : Math.max(55, 100 - 20 * (tries - 1)), "assemble");
-      if (person)
-        S.tweens.add({
-          targets: person,
-          x: z.X(Cook.offRight(1760)),
-          duration: 500,
-          delay: 200,
-          ease: "Sine.easeIn",
-        });
       await Cook.wait(500);
       return got;
     },

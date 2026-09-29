@@ -322,6 +322,12 @@
       });
     });
   };
+  /** Does the whole line have a recording of its own (family clip or TTS file)? Then it's heard whole. */
+  Lang.hasWhole = (line) => {
+    if (!line || !line.segs.every((s) => s.lang !== "e")) return false;
+    const whole = Lang.plain(line).trim();
+    return !!fileFor(whole, "k") || !!famMatch(whole);
+  };
   /** Can this word be heard at all? (A word you can't hear is never dotted out.) */
   Lang.wordHasVoice = (id) => {
     const t = Cook.display(id);

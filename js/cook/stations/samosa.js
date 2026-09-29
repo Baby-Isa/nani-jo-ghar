@@ -17,7 +17,8 @@
  *     Tap the knob: the oil heats (the kit's heat ring). Tap a raw samosa: it slides into the oil. Each one
  *     goes raw -> light -> golden -> too dark (a small heat ring round it); tap it when golden and the
  *     slotted spoon (no hand) lifts it onto the paper-lined plate. No tally: the plate shows the count.
- * SERVE AND TASTE (§14a): the plate slides to the person, who tastes.
+ * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): their big round face comes up over
+ *   the plate (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
  *  - not quite: a gentle face, they say their order again, the plate comes back empty and the child makes
  *    them again (fill first). Only the first try counts (the ear star, the end review). At most three tries.
@@ -68,7 +69,6 @@
   // the thalis on the band. The karahi with its handles (r / 0.395 wide) + a 50 px gap + the plate is
   // one group centred on x 800: 605 - 228 = 377 ... 1053 + 170 = 1223.
   const FRY = { hobK: 0.9, hobDx: 11, bx: 605, r: 180, px: 1053, pd: 340, trayY: 772, trayD: 150, trayPitch: 180 };
-  const PERSON_X = 1450;
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, glow: 0xffe3a0 };
   const FONT = "Nunito, sans-serif";
   const CHAAT_PREP = ["veg-01", "veg-02", "veg-03", "veg-12", "ph-dhana", "ph-chana", "ph-sev", "ph-dahi", "ph-amli", "ph-lili"];
@@ -103,8 +103,8 @@
   };
   const orderLine = (L) => {
     if (!L) return null;
-    const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head);
-    return Lang.join((L.head ? [L.head.line] : []).concat(rows.map((r) => (r.no || !r.said ? r.line : r.said))));
+    // 29 Sept (X1): one sentence, in card order (Cook.Order.speech)
+    return Cook.Order.speech([L]);
   };
 
   Mech.combined("samosa", {
@@ -129,7 +129,7 @@
     const kFill = Mech.knobs("fill", { level });
     const pool = p.pool || St.decoys(p.decoyPool || [], kinds.concat(exclude), St.knobInt(kFill.decoys), kFill.decoyPick).filter((id) => prepUrl(id));
     const ids = Cook.shuffle([...new Set(pool.concat(kinds, exclude))]);
-    if (Cook.Coach) Cook.Coach.stop(true);
+    if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the fill's own begin shows it (data.onboard.samosa)
     // the art loads while the order card is up (a slow phone mustn't meet an empty scene)
     const art = [
       ["sv2-board", "assets/cook/items/tool-board-t.png"],
@@ -142,7 +142,7 @@
       .concat([0, 1, 2, 3].map((i) => [`sv2-fry-${i}`, `${V2}fry-${i}.webp`]))
       .concat(ids.filter(prepUrl).map((id) => [`sv2-prep-${id}`, prepUrl(id)]))
       .concat(ids.filter(topUrl).map((id) => [`sv2-top-${id}`, topUrl(id)]))
-      .concat(["neutral", "happy", "impatient"].map((m) => [`sv2-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`]))
+      .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, ["karahi"]) : []);
     await Promise.race([St.load(S, art), Cook.wait(12000)]);
 
@@ -150,8 +150,8 @@
     let result = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       /* ---------- 1 + 2: fill and fold ---------- */
+      // the fill and the fold: the first time, the coach shows each move (X11: data.onboard.samosa)
       await St.begin(S, ctx, "samosa", "marble");
-      if (Cook.Coach) Cook.Coach.stop(true);
       if (phases.fill && !attempt) UI.gist(phases.fill);
       if (ctx.nextStep) ctx.nextStep("Fill");
       const fz = Mech.zone(S, ctx, { id: "fill", level });
@@ -160,8 +160,8 @@
       St.end();
 
       /* ---------- 3: fry, then serve and taste ---------- */
+      // the fry: its first-time coach runs (X11: data.onboard.fry; it used to be switched off here)
       await St.begin(S, ctx, "fry", "marble");
-      if (Cook.Coach) Cook.Coach.stop(true);
       if (phases.fry && !attempt) UI.gist(phases.fry);
       if (ctx.nextStep) ctx.nextStep("Fry");
       const yz = Mech.zone(S, ctx, { id: "fry", level });
@@ -450,7 +450,9 @@
       if ((want[id] || 0) > 1) UI.mission.tickItem(id, ctx.dishAt || 0);
       const into = spoon(sheet, id);
       const pa = fillAt(sheet);
-      pop(z, S, Cook.display(id), pa.x, pa.y - z.L(150), { speakId: id, ms: 1200 });
+      // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
+      const cnt = (level || z.level) <= 1 && UI.tallyLine ? UI.tallyLine(got[id], id) : null;
+      pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(150), cnt ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
       await into;
       z.progress({ filled: id, n: got[id] });
     }
@@ -889,76 +891,22 @@
     const S = z.S;
     const ctx = z.ctx;
     z.expect({ kind: "wait" });
-    const faceKey = (m) => (S.textures.exists(`sv2-${who}-${m}`) ? `sv2-${who}-${m}` : null);
-    let person = null;
-    const kN = faceKey("neutral");
-    const sizeP = (im) => im.setScale((z.L(520) / im.height) * (who === "cousin" ? 0.92 : 1));
-    if (kN) {
-      person = S.track(S.add.image(z.X(Cook.offRight(1760)), z.Y(960), kN).setOrigin(0.5, 1).setDepth(D.bg + 1.1));
-      sizeP(person);
-      await new Promise((r) => S.tweens.add({ targets: person, x: z.X(PERSON_X), duration: 520, ease: "Back.easeOut", onComplete: r }));
-    }
-    const mood = (m) => {
-      const key = person && faceKey(m);
-      if (!key) return;
-      person.setTexture(key);
-      sizeP(person);
-    };
-    // the plate slides to them
-    Cook.sfx.whoosh();
-    const all = [plate.img].concat(plate.items);
-    // toward them, onto the counter's front (design ~1195, 620)
-    const dx = z.X(PERSON_X - 255) - plate.img.x;
-    const dy = z.Y(620) - plate.img.y;
-    const home = all.map((o) => ({ o, x: o.x, y: o.y, s: o.scaleX }));
-    const cx0 = plate.img.x;
-    const cy0 = plate.img.y;
-    await new Promise((r) =>
-      S.tweens.addCounter({
-        from: 0,
-        to: 1,
-        duration: 520,
-        ease: "Cubic.easeInOut",
-        onUpdate: (tw) => {
-          const v = tw.getValue();
-          const sc = 1 - 0.2 * v;
-          home.forEach((h) => {
-            h.o.x = cx0 + dx * v + (h.x - cx0) * sc;
-            h.o.y = cy0 + dy * v + (h.y - cy0) * sc;
-            h.o.setScale(h.s * sc);
-          });
-        },
-        onComplete: r,
-      }),
-    );
-    if (person) await new Promise((r) => S.tweens.add({ targets: person, x: person.x - z.L(26), angle: -3, duration: 260, yoyo: true, hold: 260, ease: "Sine.easeInOut", onComplete: r }));
-    await Cook.wait(300);
+    // the review (X10 / Q1): their big round face over the plate, no body, no pretend eating
+    const pr = (plate.img.displayWidth || z.L(FRY.pd)) / 2;
+    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: plate.img.x, y: plate.img.y - pr - z.L(52), size: z.L(230), k: z.L(1) });
     if (ok || last) {
-      mood("happy");
-      if (person) S.tweens.add({ targets: person, y: person.y - z.L(14), duration: 160, yoyo: true, repeat: 1 });
-      Cook.sfx.right();
-      S.sparkle(plate.img.x, plate.img.y);
-      await pop(z, S, Lang.plain(Lang.line("welldone")).trim(), person ? person.x - z.L(40) : plate.img.x, z.Y(160), { line: Lang.line("welldone"), ms: 1500 });
-      await Cook.wait(600);
-      if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1800)), duration: 500, delay: 200, ease: "Sine.easeIn" });
-      await Cook.wait(800);
+      await Cook.wait(300);
+      await look.close();
       return true;
     }
-    // not quite: a gentle face, they say their order again, the plate comes back empty
-    mood("impatient");
-    if (person) S.tweens.add({ targets: person, angle: { from: -2.5, to: 2.5 }, duration: 160, yoyo: true, repeat: 2, onComplete: () => person.setAngle(0) });
-    Cook.sfx.soft();
-    await Cook.wait(500);
+    // not quite: the card starts again, they say their order again, the plate comes back empty
     cardAgain(ctx);
     const line = orderLine(ladderOf(ctx));
     if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
     St.customerDone();
     plate.items.forEach((o) => S.tweens.add({ targets: o, alpha: 0, duration: 300 }));
-    await Cook.wait(320);
-    await new Promise((r) => S.tweens.add({ targets: plate.img, x: cx0, y: cy0, scale: home[0].s, duration: 460, onComplete: r }));
-    mood("neutral");
-    if (person) S.tweens.add({ targets: person, x: z.X(Cook.offRight(1760)), duration: 400, ease: "Sine.easeIn" });
-    await Cook.wait(400);
+    await look.close();
+    await Cook.wait(120);
     return false;
   }
 

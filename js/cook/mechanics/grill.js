@@ -57,6 +57,8 @@
   /** The kind word for "meat" | "veg" | "mixed" (ph-meat, ph-veg, ph-mixed). */
   SK.kindWord = (what) => Object.keys(SK.cfg().kinds || {}).find((k) => SK.cfg().kinds[k] === what);
   SK.kindOfWord = (w) => (SK.cfg().kinds || {})[w];
+  /** 29 Sept (K4): a skewer of one named vegetable ("only:veg-02": hakri lakri dungri): that piece, else null. */
+  SK.only = (what) => (typeof what === "string" && what.startsWith("only:") ? what.slice(5) : null);
   SK.pieceIds = () => Object.keys(SK.cfg().classes || {});
   SK.vegIds = () => SK.pieceIds().filter((id) => SK.cls(id) === "veg");
   /**
@@ -67,6 +69,7 @@
   /** Could `pieces` (so far) be the start of a skewer of kind word `w`? */
   SK.fits = function (w, pieces, pattern = []) {
     const what = SK.kindOfWord(w);
+    if (SK.only(what)) return pieces.every((p) => p === SK.only(what));
     if (what === "meat" || what === "veg") return pieces.every((p) => SK.cls(p) === what);
     if (what === "mixed") return SK.pats(pattern).some((pt) => pieces.length <= pt.length && pieces.every((p, i) => p === pt[i]));
     return false;
@@ -75,6 +78,8 @@
   SK.classify = function (pieces, pattern = []) {
     const cl = pieces.map(SK.cls);
     if (cl.every((c) => c === "meat")) return { kind: SK.kindWord("meat"), ok: true };
+    // 29 Sept (K4): all one vegetable, when the order can name it ("hakri lakri dungri")
+    if (pieces.length && pieces.every((p) => p === pieces[0]) && SK.kindWord(`only:${pieces[0]}`)) return { kind: SK.kindWord(`only:${pieces[0]}`), ok: true };
     if (cl.every((c) => c === "veg")) return { kind: SK.kindWord("veg"), ok: true };
     const pat = cl.every(Boolean) ? SK.pats(pattern).findIndex((pt) => pieces.length === pt.length && pieces.every((p, i) => p === pt[i])) : -1;
     return { kind: SK.kindWord("mixed"), ok: pat >= 0, pat };
@@ -83,6 +88,7 @@
   SK.sample = function (w, n, pattern, i = 0) {
     const what = SK.kindOfWord(w);
     const meat = SK.meatPiece();
+    if (SK.only(what)) return Array(n).fill(SK.only(what));
     if (what === "meat") return Array(n).fill(meat);
     if (what === "veg") return Array.from({ length: n }, () => Cook.pick(SK.vegIds()));
     const pats = SK.pats(pattern);
@@ -817,8 +823,7 @@
     return Promise.race([Cook.Stations.load(S, list), Cook.wait(15000)]);
   };
   /** The taster's faces (happy, neutral) for serve and taste. */
-  SK.faceArt = (S, who) =>
-    Promise.race([Cook.Stations.load(S, ["happy", "neutral"].map((m) => [`sk2-face-${who}-${m}`, `assets/cook/characters/${who}-${m}.webp`])), Cook.wait(15000)]);
+  SK.faceArt = (S, who) => Promise.race([Cook.Stations.load(S, Cook.Kit.faceArt(who)), Cook.wait(15000)]);
   /** The speaker icon, drawn at (x, y) about `s` px tall (the chai v2 chip's). */
   SK.speaker = function (g, x, y, s, color = 0x2a2522) {
     if (Cook.Kit && Cook.Kit.speaker && color === 0x2a2522) return Cook.Kit.speaker(g, x, y, s);
@@ -1428,71 +1433,19 @@
   });
 
   /**
-   * Serve and taste (design system §14a, §15): their face comes in above the plate, the plate slides up to
-   * them and they taste it. Right: a happy face and the family's praise clip (Shabash!). Wrong: a gentle
-   * "not quite" face (never a red cross), and the plate slides back empty so the child makes it again.
+   * The review (29 Sept, X10 / Q1: Cook.Kit.review, one way in every station): their big round face
+   * comes up over the plate (no body, no pretend eating). Right: a happy face and the family's praise
+   * clip (Shabash!). Wrong: a gentle frown (never a red cross), and the plate slides back empty so the
+   * child makes it again.
    */
   async function taste(S, z, { who, ok, plateImg, skewers, X, Y, L }) {
-    const V2 = SK.V2;
     z.expect({ kind: "wait" });
     await SK.faceArt(S, who);
-    // (a face that never loaded: their badge, never a missing-texture box)
-    const faceKey = (m) => [`sk2-face-${who}-${m}`, `${who}-badge`].find((k) => S.textures.exists(k));
-    if (!faceKey("neutral")) return;
-    const fx = X(PLATE.x);
-    const fy = Y(150);
-    const size = L(170);
-    const disc = S.track(S.add.graphics().setDepth(D.fx + 1));
-    const face = S.track(S.add.image(fx, fy, faceKey("neutral")).setDepth(D.fx + 2));
-    const fit = () => face.setScale(size / Math.max(face.width, face.height));
-    fit();
-    disc.fillStyle(0x28190a, 0.1);
-    disc.fillCircle(fx, fy + L(3), size * 0.56);
-    disc.fillStyle(0xffffff, 1);
-    disc.fillCircle(fx, fy, size * 0.56);
-    [disc, face].forEach((o) => o.setAlpha(0));
-    face.x += L(80);
-    await Cook.tween(S, { targets: face, x: fx, alpha: 1, duration: 320, ease: "Back.easeOut" });
-    disc.setAlpha(1);
-    // the plate (and the skewers on it) slides up to them; they taste it
-    const moving = [plateImg].concat(skewers.filter(Boolean));
-    const lift = L(40);
-    await Cook.tween(S, { targets: moving, y: `-=${lift}`, duration: 380, ease: "Sine.easeInOut" });
-    Cook.sfx.pop();
-    await Cook.tween(S, { targets: face, scale: face.scale * 1.06, duration: 160, yoyo: true });
-    await Cook.wait(260);
-    if (ok) {
-      face.setTexture(faceKey("happy"));
-      fit();
-      Cook.tasted = "happy"; // (Cook.tasted, Cook.tasteHold: for the screenshot script)
-      Cook.sfx.right();
-      S.sparkle(fx, fy);
-      const line = Lang.line("welldone");
-      const t = S.add.text(0, 0, Lang.plain(line), { fontFamily: V2.FONT, fontSize: "30px", fontStyle: "800", color: V2.INK.kutchi }).setOrigin(0.5);
-      const w = t.width + 40;
-      // what they say, beside their face (a flat white card, the Kutchi word colour)
-      const c = S.track(S.add.container(fx - size * 0.56 - L(16) - L(w / 2), fy).setDepth(D.fx + 3).setScale(z.k).setAlpha(0));
-      const g = S.add.graphics();
-      g.fillStyle(0x28190a, 0.1);
-      g.fillRoundedRect(-w / 2, -24 + 3, w, 48, 12);
-      g.fillStyle(0xffffff, 1);
-      g.fillRoundedRect(-w / 2, -24, w, 48, 12);
-      c.add([g, t]);
-      S.tweens.add({ targets: c, alpha: 1, duration: 200 });
-      await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(2200)]);
-      await Cook.wait(500);
-      if (Cook.tasteHold) await new Promise((r) => setTimeout(r, Cook.tasteHold));
-    } else {
-      face.setTexture(faceKey("neutral"));
-      fit();
-      Cook.tasted = "not-quite";
-      Cook.sfx.soft();
-      S.wiggle(face);
-      await Cook.wait(700);
-      if (Cook.tasteHold) await new Promise((r) => setTimeout(r, Cook.tasteHold));
+    const look = await Cook.Kit.review(S, { who, ok, x: X(PLATE.x), y: Y(PLATE.y) - L(PLATE.d / 2) - L(95), size: L(250), k: L(1) });
+    await look.close();
+    if (!ok) {
       // the plate slides back, empty: make it again
       skewers.filter(Boolean).forEach((sk) => S.tweens.add({ targets: sk, alpha: 0, duration: 300 }));
-      await Cook.tween(S, { targets: plateImg, y: `+=${lift}`, duration: 380, ease: "Sine.easeInOut" });
       await Cook.wait(400);
     }
   }

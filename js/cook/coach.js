@@ -39,6 +39,8 @@
   /** Has this station been shown already? */
   C.seen = (key) => !!(Cook.save.coached || {})[key] || !!(OB() && OB().seen(obId(key)));
   C.active = () => !!live;
+  /** The phase being coached now (its data.onboard key), or null. */
+  C.key = () => (live ? live.key : null);
   /** The script for a station (data.onboard), or null. */
   C.script = (key) => {
     const s = scripts()[key];

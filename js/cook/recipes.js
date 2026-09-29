@@ -204,13 +204,15 @@
         return sub;
       });
     },
-    /** Quantities per kind: {"ph-meat": 2, "veg-02": 1}. total, min, max per kind. */
+    /** Quantities per kind: {"ph-meat": 2, "veg-02": 1}. total, min, max per kind, minFirst. */
     tally(spec, env) {
       const t = fromTaste(spec, env);
       if (t !== undefined) return t;
       const kinds = listOf(spec.kinds, env);
       const out = {};
       kinds.forEach((k) => (out[k] = (spec.min || {})[k] || 0));
+      // minFirst: the first kind (samosa's base filling) is always there, at least this many (S18)
+      if (spec.minFirst && kinds.length) out[kinds[0]] = Math.max(out[kinds[0]], spec.minFirst);
       let left = value(spec.total, env) - kinds.reduce((a, k) => a + out[k], 0);
       while (left-- > 0) {
         const open = kinds.filter((k) => (spec.max || {})[k] == null || out[k] < spec.max[k]);
@@ -282,12 +284,14 @@
         steps.forEach((st, si) => {
           dot++;
           [].concat(st.entry).forEach((id, j) => {
-            const ps = st.n > 1 ? Lang.countParts(st.n, id) : [id];
+            // qty: a slot saying how many of this layer (chaat: ba bataato, as its chop has it; T1)
+            const q = st.n > 1 ? st.n : e.qty && e.qty[id] != null ? Number(res(e.qty[id], env)) || 0 : 0;
+            const ps = q > 1 ? Lang.countParts(q, id) : [id];
             const ph = Lang.phrase(ps);
             // "Pela chana. Ne poi bataato." (first …, and then …: the family's word order)
             const line = !said.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
             said.push(line);
-            rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null });
+            rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null, labelQty: st.n <= 1 && q > 1 });
           });
         });
         if (said.length && !when) lines.push(Lang.join(said));

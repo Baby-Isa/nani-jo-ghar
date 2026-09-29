@@ -314,3 +314,8 @@ body.w6 #intro .ic-card.wide .oc-item { break-inside: avoid; margin-bottom: 10px
   body.w6 #mission.people .m-order { gap: 6px; }
   body.w6 #intro .ic-card.wide .oc-item { margin-bottom: 5px; }
 }
+
+/* 29 Sept (X3): the whole speaker badge, plus a margin, is part of the face's tap target
+   (the badge sticks out past the round face; taps there used to fall through) */
+.face-say .say-badge { pointer-events: auto; }
+.face-say::after { content: ""; position: absolute; inset: -4px -10px -10px -4px; border-radius: 40%; }
