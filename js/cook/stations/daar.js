@@ -83,7 +83,8 @@
   };
   const orderLine = (L) => {
     if (!L) return null;
-    const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !(r.sec && r.sec.when));
+    // what the person asked for (the tadka order is Nani's, said at the pot: not theirs to repeat)
+    const rows = [].concat(...L.sections.filter((s) => !s.when).map((s) => [].concat(...s.groups))).filter((r) => r && !r.head);
     return Lang.join((L.head ? [L.head.line] : []).concat(rows.map((r) => (r.no || !r.said ? r.line : r.said))));
   };
   const shelfUrl = (id) => `${IT}shelf-${id}-bare-f.webp`;
@@ -561,9 +562,10 @@
         else UI.mission.tickItem(id, ctx.dishAt || 0);
       } else {
         const expected = next;
-        wrong = wrong || (flat.includes(id) ? `tadka ${id} before ${expected}` : `put ${id} in the tadka`);
+        const why = flat.includes(id) ? `tadka ${id} before ${expected}` : `put ${id} in the tadka`;
+        wrong = wrong || why;
         if (!retry) {
-          z.listen(false, wrong);
+          z.listen(false, why);
           if (flat.includes(expected)) UI.mission.missItem(expected, ctx.dishAt || 0);
           Cook.markMiss(expected);
         }
