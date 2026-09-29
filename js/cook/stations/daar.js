@@ -202,7 +202,9 @@
   function naniCard(want, no) {
     const M = UI.mission;
     const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id))), done: false }));
-    no.forEach((id) => rows.push({ id, label: Lang.html(Lang.line("no", Lang.phrase([id]))), done: false, no: true }));
+    // a row is lower case with no full stop (the sidebar's rows: "dungri na")
+    const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
+    no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.line("no", Lang.phrase([id])))), done: false, no: true }));
     const data = () => ({
       person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
       // "Chop these" is an English placeholder (§13), flagged to record

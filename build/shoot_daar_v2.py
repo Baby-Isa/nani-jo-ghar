@@ -120,11 +120,13 @@ class Shooter(T.Player):
         return r
 
 
-def run(vp, out, level, speed, guided=True, wrong=False):
-    tag = f"{vp['name']}-l{level}" + ("-wrong" if wrong else "")
+def run(vp, out, level, speed, guided=True, wrong=False, nono=False):
+    tag = f"{vp['name']}-l{level}" + ("-wrong" if wrong else "") + ("-no" if nono else "")
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag, wrong=wrong)
+        if nono:  # a round where they say no onions (the "don't" row: dungri na)
+            page.evaluate("() => Cook.data.recipes.daal.slots.onions.byLevel.forEach((b) => (b.zero = 1))")
         page.evaluate(f"() => {{ __cook.lab('daar', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         if vp["height"] > vp["width"]:
@@ -149,6 +151,7 @@ def main():
     ap.add_argument("--vp", default="laptop")
     ap.add_argument("--level", type=int, default=1)
     ap.add_argument("--wrong", action="store_true")
+    ap.add_argument("--no", action="store_true", help="a round with a don't row (dungri na)")
     ap.add_argument("--speed", type=float, default=1.5)
     ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "daar-v2"))
     a = ap.parse_args()
@@ -166,9 +169,10 @@ def main():
             ok &= run(VPS[name], out, 2, a.speed, wrong=True)
             ok &= run(VPS[name], out, 3, a.speed)
         ok &= run(VPS["laptop"], out, 4, a.speed)
+        ok &= run(VPS["laptop"], out, 2, a.speed, nono=True)
     else:
         os.makedirs(a.out, exist_ok=True)
-        ok &= run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong)
+        ok &= run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong, nono=a.no)
     sys.exit(0 if ok else 1)
 
 

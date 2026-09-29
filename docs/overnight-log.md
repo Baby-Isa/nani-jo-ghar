@@ -47,3 +47,4 @@
 - 03:40 UTC orchestrator: daar v2 DONE (reviewed: chop board/knife/katori + shelf crates good; stir count as Kutchi word good; L4 hidden tadka rows show "•••" pills = against no-pips; "dungri na" ticks gold). Follow-ups DONE (reviewed chaat layers after: much better, curved + centred). Launched daar polish (session_01QjnjeN2omhm6GYZyVW7x2Q). Running: samosa+maani polish, daar polish. Letterbox cream band = shared Phaser FIT (flow.js) → left for Zafar's call, not tonight.
 - 03:42 UTC · polish · fry layout + mound verified in shots (laptop L1/L3), maani chimta on the hob; matrix cells + test_cook --lab laptop running
 - 03:43 UTC · daar polish · started: L4 closed card + paid peek (no dots), don't rows neutral, fallback box dropped; shooting
+- 03:53 UTC · daar polish · L4 closed card verified (laptop), dungri na neutral on both cards (new --no shot), L3 words; queue note: settle() gold no-rows + ✓ during stir need the head rule (ui.js); matrix re-shooting
