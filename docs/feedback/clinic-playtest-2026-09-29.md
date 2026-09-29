@@ -398,3 +398,12 @@ About **4–5 build sessions in all**, against about 11 for the Cook overnight r
 - **Items don't sit on the belt** (they float or tilt). That's the stand-in art: the real item art needs a flat base and a contact shadow on the belt.
 - Seen in the same shot: the green button at the bottom right ("To the bench"?) is cut off by the frame's right edge, and the lab's debug log overlaps the counter.
 - Otherwise good (Zafar).
+
+### 13c. The clinic's card becomes Cook's order card, properly (Zafar asked, 29 Sept)
+Prototype A only borrowed the order card's **look** (its CSS classes and the gold check) and kept the clinic's own card code. The clinic fix session switches the clinic to the shared `OrderCard` (`js/shared/order-card.js`, shared-api §14; its data is mode-agnostic), so every clinic card behaves exactly like Cook's:
+- **ordered jobs** show the sequence line, with the next step in a light grey band: the pharmacy's *pela … ne poi …*, the waiting room's two-in-order (L4), and each heal game's steps (wash → dab → plasters);
+- rows tick when their step closes, and a wrong pick marks its row in the review only;
+- the **read-along underline** runs as each line is spoken;
+- the **closed card and the paid peek** at the higher levels (the waiting room from L3, as decided in 13a);
+- counts follow Cook's rule (Q7: written and heard at L1, written at L2, heard only from L3);
+- Nani's box on top, one card per person (the patient's card, the doctor's request).
