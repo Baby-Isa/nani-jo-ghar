@@ -94,6 +94,14 @@ def check_v3():
                 ok = off <= TOL and koff <= 0.001
                 bad += not ok
                 print(f"{'ok  ' if ok else 'FAIL'} v3 hob/{name}: {len(caps)} burners, art vs meta off {off:.4f}, meta vs Cook.Kit off {koff:.4f}")
+            elif "bowl_r" in m:  # the ladle: its round bowl, with the handle (above it) left out
+                mask = img[..., 3] > 128
+                mask[: int((m["bowl_cy"] - m["bowl_r"] * W / H * 0.5) * H)] = False
+                cx, cy, r, res = robust_circle(mask)
+                off = max(abs(cx / W - m["bowl_cx"]), abs(cy / H - m["bowl_cy"]), abs(r / W - m["bowl_r"]))
+                ok = off <= TOL
+                bad += not ok
+                print(f"{'ok  ' if ok else 'FAIL'} v3 {group}/{name} bowl: recorded ({m['bowl_cx']:.4f}, {m['bowl_cy']:.4f}, r {m['bowl_r']:.4f}), rim ({cx / W:.4f}, {cy / H:.4f}, r {r / W:.4f}), off {off:.4f} (fit {res:.1f}px)")
             elif "cx" in m and "r" in m:
                 cx, cy, r, res = robust_circle(img[..., 3] > 128)
                 off = max(abs(cx / W - m["cx"]), abs(cy / H - m["cy"]), abs(r / W - m["r"]))

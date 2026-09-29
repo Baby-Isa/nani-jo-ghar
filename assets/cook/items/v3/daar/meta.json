@@ -156,10 +156,9 @@
   "w": 290,
   "h": 455,
   "sheet": "d2-ladle-trivet-bowl-v1.png",
-  "cx": 0.5203,
-  "cy": 0.5634,
-  "r": 0.4283,
-  "fit_px": 104.3,
+  "bowl_cx": 0.3983,
+  "bowl_cy": 0.7451,
+  "bowl_r": 0.3552,
   "note": "cut out of D2's pot along a hand-drawn outline (build/cut_cook_v3.py LADLE)"
  }
 }

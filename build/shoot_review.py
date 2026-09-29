@@ -99,7 +99,9 @@ def main():
     ap.add_argument("--coach", action="store_true")
     ap.add_argument("--level", type=int, default=1)
     ap.add_argument("--speed", type=float, default=3)
+    ap.add_argument("--out", default=OUT)
     a = ap.parse_args()
+    globals()["OUT"] = a.out
     os.makedirs(OUT, exist_ok=True)
     T.CANVAS = True
     T.start_server()

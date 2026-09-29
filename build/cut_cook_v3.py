@@ -404,7 +404,6 @@ def hob_group(old_cap_r):
             "burners": [{"x": round(x / W, 4), "y": round(y / H, 4)} for x, y, _ in caps],
             "cap_r": round(np.mean([r for _, _, r in caps]) / W, 4),
             "support_r": round(sup / W, 4),
-            "ring_r": round(ring / W, 4),
             "glass": {"top": round(glass_top / H, 4), "bottom": round(glass_bottom / H, 4)},
             "frontY": round(front_y / H, 4),
             "scale_from_sheet": round(k, 4),
@@ -696,8 +695,12 @@ def cut_ladle():
     grey = (yy < LADLE["rim_y"]) & (d < 30)
     alpha = mask * np.where(grey, c2a, 1.0)
     rgb = np.where(grey[..., None], np.clip((a - bg) / np.maximum(c2a, 1e-3)[..., None] + bg, 0, 255), a)
-    img = tight(np.dstack([rgb, alpha * 255]), 12)
-    return img, bg
+    full = np.dstack([rgb, alpha * 255])
+    x0, y0 = bbox(full, 8)[:2]
+    img = tight(full, 12)
+    h, w = img.shape[:2]
+    bowl = {"bowl_cx": round((bx - x0 + 12) / w, 4), "bowl_cy": round((by - y0 + 12) / h, 4), "bowl_r": round(br / w, 4)}
+    return img, bg, bowl
 
 
 def daar_group():
@@ -708,8 +711,7 @@ def daar_group():
     # (the ladle's own pot isn't wanted: the ladle is cut out of it below)
     singles(G, "d2-ladle-trivet-bowl-v1.png", [("daar-bowl-trivet", (523, 6, 1022, 1018), round_fn()),
                                                ("veg-bowl", (1034, 6, 1530, 1018), round_fn())], local_bg=True)
-    img, bg = cut_ladle()
-    m, _ = circle_meta(img)  # the ladle's round bowl (the handle's rays are dropped as outliers)
+    img, bg, m = cut_ladle()  # m: the ladle's round bowl, from its outline
     m["note"] = "cut out of D2's pot along a hand-drawn outline (build/cut_cook_v3.py LADLE)"
     G.put("ladle", img, bg, "d2-ladle-trivet-bowl-v1.png", m)
     G.done()
