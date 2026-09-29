@@ -18,6 +18,7 @@
   - every brief names the files the session owns and a hard stop time.
 
 **New lessons (29 Sept):**
+- **Build sessions must not spawn helper sessions or background helpers** (29 Sept afternoon). The shared-fixes session split three items into helpers, sat idle at 14:21 waiting for them, and they never reported back, so their work was lost. Write it into every brief; the orchestrator checks `get_session` for `status_category: review_ready` + an old `updated_at`, and relaunches the lost items.
 - **Zafar may talk to a child session directly** (he told sekelo "top-down throughout"). Read `docs/overnight-log.md` for decisions he made there, and copy them into the design doc.
 - **A reviewer pass after every build is worth it.** Each station's first build had 2–4 visible issues that only showed up when someone looked at the screenshots (flat chaat layers, filling dots on the fold line, an off-centre fry layout, "•••" pills, a rack that looked like a picture frame).
 - **Check a word is recorded before calling it English:** *mixed* and *boga* are family-recorded (B18, B17). Search `data/family-audio.json` first.
