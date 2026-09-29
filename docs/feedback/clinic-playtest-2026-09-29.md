@@ -336,6 +336,8 @@ Answer "yes to all recommendations except …".
 
 - **Backgrounds, round 1 review (Zafar, ~16:30):** CB5 (front door) approved. CB1 goes closer, with a six-seat bench and no armchairs. CB2 goes closer, with **no poster**: the wall to the right is kept for **a photo of the real doctor's certificate** (Zafar will supply it; it's added in code as a framed picture), and children's toys go in the left corner in place of the desk chair. CB4 is redone **straight on**, the same scene without looking down. Round 2 prompts: the bottom of `docs/chatgpt-art-prompts-clinic-v1.md`.
 
+- **Backgrounds approved (29 Sept, ~17:15):** CB1b, CB2b, CB3b, CB5 and CB6b pass their checks (CB6b already shows an empty frame on the right wall for the certificate). CB4c (the pharmacy belt, no hatches) is to come.
+
 ## 10. Art: the backgrounds first (ChatGPT; the page is `docs/chatgpt-art-prompts-clinic-v1.md`)
 Six backgrounds, built to the recommended answers:
 - CB1 the waiting room, wider;

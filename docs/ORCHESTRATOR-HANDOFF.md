@@ -18,6 +18,7 @@
   - every brief names the files the session owns and a hard stop time.
 
 **New lessons (29 Sept):**
+- **Art runs always upload themselves** (Zafar, 29 Sept): every Claude in Chrome paste block ends with Chrome uploading the images to `sources/art/<pack>/` on `main` itself (a commit straight to main), and reporting pass/fail per prompt. Zafar never uploads by hand. Keep the prompt page on `main` before he pastes (Chrome reads it there), and if his upload and your push race, merge `origin/main` and push again.
 - **Build sessions must not spawn helper sessions or background helpers** (29 Sept afternoon). The shared-fixes session split three items into helpers, sat idle at 14:21 waiting for them, and they never reported back, so their work was lost. Write it into every brief; the orchestrator checks `get_session` for `status_category: review_ready` + an old `updated_at`, and relaunches the lost items.
 - **Zafar may talk to a child session directly** (he told sekelo "top-down throughout"). Read `docs/overnight-log.md` for decisions he made there, and copy them into the design doc.
 - **A reviewer pass after every build is worth it.** Each station's first build had 2–4 visible issues that only showed up when someone looked at the screenshots (flat chaat layers, filling dots on the fold line, an off-centre fry layout, "•••" pills, a rack that looked like a picture frame).
