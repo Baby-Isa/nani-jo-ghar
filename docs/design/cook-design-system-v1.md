@@ -171,3 +171,19 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 - **The serve and taste moment:** Done → the bowl slides to the person, who tastes it.
   - **Right:** a happy reaction and a family praise clip (*Shabash!*, or another recorded, age-appropriate praise).
   - **Wrong:** a gentle "not quite" face; the bowl slides back **empty** and the child builds it again. It's social and gentle, like UX §14, never a red cross, and the first-try result is logged for the end review.
+
+## 15. Samosa v2 and Sekelo v2 (Zafar approved, 29 Sept, ~01:00 UK)
+**Common to all Cook stations:** consistent spacing across stations (the chai v2 grid: the scene area plus the shelf band, the same margins and gaps), the synthesised external review (§1–§7: one focal point, one viewpoint, identical shelf slots, word chips, flat UI, no hands, real art, calm), the shared kitchen kit (§13), the order card (§12), serve and taste (§14a) where a dish is served. **Use existing art wherever possible** (`sources/art/chatgpt-batch3/`: `sheet-samosa-folds-t-v2`, `sheet-tray-grill-t-v2`, `vessel-skewer-rack-t-v1`, `tool-*`, `vessel-*`; `assets/cook/items/`: the samosa fold stages, mishkaki raw/grilled/charred, pantry v2 containers). Generate only what's missing (API if under $2, otherwise a paste-block pack).
+
+### Samosa v2 (fill, fold, fry)
+- **Fill:** real top-down pastry on a wooden board; the filling comes from front-on prep bowls on the shelf band; each tap adds a spoonful, and the word pops with the clip.
+- **Fold: keep the SWIPE** (Zafar likes it: it's different and should feel satisfying). Make it feel great: real pastry art for each fold stage, the fold animating to follow the finger, a satisfying snap and sound at the end, and a soft glow showing where to swipe. No dashed line and no red dot.
+- **Fry:** the kitchen kit (hob, knob, heat ring) with a karahi; samosas go raw → light → golden → too dark; lifted out with a slotted spoon (no hand) onto a paper-lined plate; *hane kadh*.
+- **Card:** order model (*ba samosa* + parts + a "don't" row); the phase-fold rule between fill and fry. **No tally.** Serve and taste.
+
+### Sekelo v2 (formerly "Mishkaki grill")
+- **Naming (Zafar):** the station is now called **Sekelo**. The word ***mishkaki* now refers only to the square beef or lamb meat cubes.** Update station names and labels; the meat-cube ingredient is *mishkaki*. The order headline (e.g. *Muke sekelo khape.*) is **to confirm with Zafar**: flag it in the report, and don't change other Kutchi.
+- **Keep the skewer orientation as it is now** (vertical on the board).
+- **Thread:** the ingredients stand in front-on prep bowls on the shelf band (identical slots, word chips, true heights); tap to thread onto the vertical skewer; the card shows the parts with the sequence line and grey "next". Two different mixed skewers: thread one, and it moves to the skewer rack (`vessel-skewer-rack-t-v1`), then the next. No floating preview skewer.
+- **The phase button:** a flat design-system button ("to the grill", with an icon), replacing the red "Go to the barbecue".
+- **Grill:** a grill in the same art style (`sheet-tray-grill-t-v2` if suitable) with the heat-ring language; tap a skewer to turn it; raw → grilled → charred. No hands. Serve and taste.
