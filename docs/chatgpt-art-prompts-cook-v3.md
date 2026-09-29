@@ -383,7 +383,7 @@ Style: exactly as the attached style anchor: semi-photoreal materials and glowin
 ### K4. The skewer pieces: big and chunky, raw and grilled
 ```
 A sprite sheet for a children's game, 1536x1536 square, nine equal cells in three rows of three, flat mid-grey #808080 background, no floor, no shadows, no text, no letters, no numbers, no logos.
-Each cell holds ONE big chunky piece for a skewer seen straight down from directly above, each about the same size (filling about 55% of the cell), with a small hole through its middle where a skewer would pass:
+Each cell holds ONE big chunky piece for a skewer seen straight down from directly above, each about the same size (filling about 55% of the cell), with NO hole (the skewer is drawn separately, underneath the pieces):
 Row 1: (1) a raw cube of red marinated meat, (2) the same cube grilled, browned with char marks, (3) the same cube charred, blackened at the edges.
 Row 2: (4) a raw chunk of red onion, its layers showing, (5) the onion chunk grilled with charred edges, (6) a raw chunk of tomato.
 Row 3: (7) the tomato chunk grilled, (8) a raw chunk of green pepper, (9) the pepper chunk grilled.
@@ -391,7 +391,8 @@ Style: exactly as the attached style anchor and the attached grilled piece: semi
 ```
 **attach:** `style-anchor-v1.png`, `mishkaki-meat-grilled-t.png`
 **save as:** `sources/art/cook-v3/k4-pieces-v1.png`
-**check:** nine chunky pieces of similar size, top-down · raw, grilled and charred clearly different · onion, tomato and pepper recognisable.
+**check:** nine chunky pieces of similar size, top-down · no holes in any piece · raw, grilled and charred clearly different · onion, tomato and pepper recognisable.
+**note (29 Sept):** the first run drew a hole through each piece (the old prompt asked for one). Looking down on a skewer lying flat, you'd never see a hole facing you, so the pieces have none; the game draws the stick underneath.
 
 ### K5. The same chunky pieces, heaped for the shelf
 ```
