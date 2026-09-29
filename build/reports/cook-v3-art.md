@@ -144,7 +144,7 @@ Nothing has to be redone for the kit to work; all 28 are usable. Worth a second 
 - `python3 build/check_vessel_meta.py`: **pass** (§3), after the final merge of `origin/main`.
 - `build/test_cook.py --lab --viewport laptop`, split in two with `--stations`:
   the 10 kept stations **PASS** (126 screenshots, 2087 s, under load from the shoot scripts), the 11 parts **PASS**
-  (88 screenshots, 1013 s). Re-run of the kept stations after the final merge and the last two kit edits: LAB3.
+  (88 screenshots, 1013 s). Re-run of the kept stations after merging `origin/main` and the last two kit edits: **PASS** (109 screenshots, 929 s).
 - `build/test_cook.py --days 1 --canvas`: **PASS** on all six viewports (flip5-landscape, laptop, laptop-16x10,
   laptop-1280x800, ipad, ipad-portrait).
 - Shared Node tests `node --test build/test_shared_*.mjs`: **113/113 pass** (after the merge too).
