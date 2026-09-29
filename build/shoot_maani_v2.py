@@ -62,7 +62,13 @@ class Shooter(T.Player):
         if kind == "roll" and "rolling" not in self.taken:
             # a snap half-way through the drag
             self._roll_snap = True
-        return super().act(e)
+        r = super().act(e)
+        if kind == "more":
+            # the tick may have been pressed: stop a few seconds on unless the station carries on
+            self.done_at = time.time()
+        elif kind not in ("wait", None):
+            self.done_at = None
+        return r
 
     def tap(self, x, y, what=""):
         return super().tap(x, y, what)

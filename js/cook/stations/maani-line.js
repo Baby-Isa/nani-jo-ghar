@@ -48,6 +48,7 @@
   const PLATE_D = 150; // a plate on the shelf band
   const PLATE_Y = 750;
   const PLATE_PITCH = 204;
+  const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   const CHIP_Y = 860;
   const PIN_W = 540;
   const INK = { page: 0xf4ecdf, panel: 0xefe5d6, grey: 0xd9d2c7 };
@@ -454,7 +455,8 @@
       sp.setDepth(D.item + 2 + j * 0.01);
       S.tweens.add({ targets: sp, angle: Math.random() * 24 - 12, duration: 450 });
       chimtaHomeTween();
-      const fly = S.fly(sp, d.x - 10 + j * 14, d.y + 6 - j * 12, { scale: (PLATE_D * 0.78 * it.sizeF) / sp.width, duration: 450 });
+      const [fx, fy] = FAN[j % FAN.length];
+      const fly = S.fly(sp, d.x + fx, d.y + fy, { scale: (PLATE_D * 0.64 * it.sizeF) / sp.width, duration: 450 });
       update();
       await fly;
       it.where = "plate";
