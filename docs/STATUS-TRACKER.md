@@ -62,6 +62,7 @@ The clinic is set at the children's own doctor's clinic (Hannah's granddad's); t
 
 | Piece | % | State and next step |
 |---|---|---|
+| **v2 prototypes (29 Sept, live)** | 50 | A: the rooms on the new backgrounds (waiting-room ladder L1–5, diagnosis, pharmacy belt, send-off feelings), the Nani box and order-card look, skip behind "?". B: all nine heal games reworked on the CB6b close-up (plasters, knee flash-wrap, ear wax, tooth brush/drill/fill, soothing drinks, fever, boing, eye test, foot splinters). Stand-in art. Reports `build/reports/clinic-v2-a.md`, `clinic-v2-b.md`. **Next: Zafar plays**, then answers B's open questions |
 | The mode (`clinic.html`: waiting room → where it hurts → pharmacy → heal games → send-off) | 35 | Phase 1 built and tested (21 lab entries, hotspots, speaking paths); greybox and rough sprites, **every row an English placeholder**. Dump 3's patients are in the manifest |
 | Design-system rebuild (patient card = the shared order card, Nani box, end pop-up, kit-style props, no hands) | 0 | **Zafar plays it through → an audit session → Claude's feedback → Zafar approves → build** (plans B1) |
 | Words and voice | 5 | Round 4 **Section G** (body parts, "it hurts", hot/cold, his instructions G108–G127) is the doctor's script. Get it ready to record with him; wire the clips straight after |
@@ -75,6 +76,9 @@ The clinic is set at the children's own doctor's clinic (Hannah's granddad's); t
 | **Volunteering at the clinic** (standalone, repeatable) | see §2 | The mode is being built now for the doctor's visit |
 | **Making clothes with Big Ma** (standalone, repeatable) | 0 | Dress up's home; placement TBC. Dress up is parked (17–20%) |
 | **Eid** (a later arc) | 0 | Moved out of Arc 1 on 28 Sept; not designed |
+| **The monsoon** (proposed standalone arc, 29 Sept) | 17 | Monsoon rush's mode: designed in full, engine + greybox leak (G1–G3) built. Placement TBC |
+| **Who did it?** (proposed standalone mystery arc, 29 Sept) | 17 | Designed (10 mini-games, 9 reveals); case engine + 4 greybox games built. Needs its describing words and past-tense frames recorded first. Maybe a small culprit round after Arc 1's Find the sweets |
+| **Snap at every trip destination** (decided 29 Sept) | 17 | Shown the items and words, then find and snap them in the scene; the photos feed the album and the Story by the Fire. The travel game stays simple, like the pharmacy belt |
 
 ## 4. Foundation (shared by every arc)
 | Piece | % | Next step |
@@ -90,9 +94,10 @@ The clinic is set at the children's own doctor's clinic (Hannah's granddad's); t
 | Mode | % | Where it's used |
 |---|---|---|
 | Tidy up | 20 | **Not parked for long:** its `place` and `pack` engine is Arc 1's Put it there (§1) |
-| Who did it? | 17 | The cat and the sweets could use its line-up later; not needed for Arc 1's first cut |
+| Who did it? | 17 | Its own arc (proposed 29 Sept, §3) |
 | Dress up | 17 | Making clothes with Big Ma |
-| Monsoon rush, Snap | 17 | Snap's "spot it" shape may feed the trips' travel game |
+| Monsoon rush | 17 | Its own arc, the monsoon (proposed 29 Sept, §3) |
+| Snap | 17 | The photo game at every trip destination (decided 29 Sept, §3) |
 | ~~Arc 2: The Wedding~~ / ~~Arc 3: The Monsoon~~ / ~~Arc 4: Nani's Lost Ring~~ / ~~Arc 5: Nani's Village~~ | – | **Superseded 28 Sept**; see the Roadmap's "Replaced 28 Sept" note |
 
 *The overnight Cook run, 29 Sept (00:28–05:00 UTC):* eight build sessions plus three polish sessions, ≤4 at once. Log: `docs/overnight-log.md`; queue and rules: `docs/overnight-queue.md`; reports: `build/reports/<name>.md`. API art spent: about **$1.05**.
