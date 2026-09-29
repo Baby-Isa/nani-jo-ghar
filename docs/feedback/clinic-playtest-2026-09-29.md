@@ -457,3 +457,18 @@ Prototype B replaced the shared onboarding kit's ghost finger with **English sen
 - **Level 1 is too hard:** it already uses *wadho / nindho* (big and small). Level 1 has no size words: just take the wax out, with at most a count. Big and small start at level 2.
 - **Wax is dragged out, not tapped:** drag each blob from the ear to a set place (a tissue or a dish beside the ear) and let go there. The gesture is the same at every level (UX §12).
 - **The wax that pops up (the higher levels) never goes away by itself.** Today a new blob slips back and disappears on its own, so the child can ignore it. Instead the new blobs keep coming and **stay until the child drags each one out**. The round ends when the ear is clear (with the level's pop-up time or count as its limit).
+
+### 13k. Tooth, and the plan for the rest (Zafar, 29 Sept, late)
+- **Tooth (brush, drill, fill) is good.** It only needs the usual fixes: the voice-overs (13g), input live from the start (13i), and the sidebar (the doctor's box and the shared order card, 13c/13f).
+- **Zafar reviews the other heal games tomorrow** (drinks, fever, boing, eye, foot). Before then, **a first pass applies everything learned tonight to all of them**:
+  - first-time help on the ghost finger with no English;
+  - input never waits for speech;
+  - take back until Done;
+  - ordered instructions as sequences on the shared card;
+  - level 1 without the harder describing words (big/small, sides) where a game front-loads them (13j);
+  - no highlight on what the words should tell at the top level (13i);
+  - effects that stop when the job is done (13i);
+  - each game clears its own UI;
+  - the doctor's box.
+
+  Tummy, hic and hair stay as they are (CQ14).
