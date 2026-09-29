@@ -996,7 +996,7 @@
       if (people.length) {
         people.forEach(({ s, rows }) => {
           const placed = rows.slice().sort((a, b) => Order().slotOf(L, a.r) - Order().slotOf(L, b.r));
-          cards.push({ key: `${L.dish || 0}:${s.for}`, who: s.for, L, rows: placed.map((x) => x.r), data: { person: person(s.for), headline, items: [{ label: null, parts: placed.map((x) => partNode(x.r, x.gi)) }] } });
+          cards.push({ key: `${L.dish || 0}:${s.for}`, who: s.for, L, rows: placed.map((x) => x.r), data: { person: person(s.for), headline: s.head ? headNode(s.head) : headline, items: [{ label: null, parts: placed.map((x) => partNode(x.r, x.gi)) }] } });
         });
         return;
       }

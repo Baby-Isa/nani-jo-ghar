@@ -91,6 +91,9 @@ def cut_pans():
     obj = largest(object_mask(a))
     body = largest(ndi.binary_opening(obj, iterations=30))
     ys, xs = np.nonzero(body)
+    # NB (29 Sept): the opening leaves the handle's root on the body, so this mean sits up and right of the
+    # real centre; the shipped meta has cx 0.3434, cy 0.6408, from a circle fitted to the rim with the
+    # handle's side left out. Fit the rim the same way before re-cutting, or the pans sit off their burners
     cx, cy = xs.mean(), ys.mean()
     R = np.sqrt(body.sum() / np.pi)
     x0, y0, x1, y1 = bbox(obj)

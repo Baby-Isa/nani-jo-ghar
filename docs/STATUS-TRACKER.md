@@ -2,21 +2,39 @@
 
 **The end point:** the app is live on the store with Arc 1 (the Birthday) plus the repeatable day-out trips, and every game mode appears at least once. User testing is tracked by Zafar, not here.
 
-**Updated:** 29 Sept 2026, 05:00 UTC (after the overnight Cook run). Percentages are Claude's estimates. The orchestrator updates this file at every milestone.
+**Updated:** 29 Sept 2026, ~10:00 UTC (restructured around the story arcs and Zafar's plan). Percentages are Claude's estimates. The orchestrator updates this file at every milestone.
 
-**Overall: about 24%.**
-
-**Focus now (Zafar, 28–29 Sept): lock Cook first** (every station to the design system, real art, calm spacing), then the next Arc 1 mode. The clinic waits for Zafar's own play-through; Find it waits; the other five modes stay parked.
+**Overall: about 24%.** The first release candidate is **Arc 1, the Birthday, end to end** (Roadmap "MVP and release scope"); the day-out trips and the two standalone arcs come after it.
 
 **The rules everything is built to:** `docs/design/cook-design-system-v1.md` (the single source of truth: tokens, 22/78 grid, shelf band, order model §12, kitchen kit + burner rule §13, serve-and-taste §14a, station specs §5/§11/§13/§14/§15) and `docs/VISUAL-QA.md` (look at every state before calling it done).
 
-## 0. Overnight run, 29 Sept (00:28–05:00 UTC)
-Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pushing to `main` once. Log: `docs/overnight-log.md`; queue and rules: `docs/overnight-queue.md`; reports: `build/reports/<name>.md` + screenshot folders. API art spent overnight: about **$1.05** (all medium quality, no paste blocks needed).
+## The path (Zafar, 29 Sept)
+| # | Milestone | % | Why now / what it needs | When |
+|---|---|---|---|---|
+| 1 | **Lock Cook** | 80 | Zafar's play-test feedback on the six v2 stations, then one follow-up per station; the cream band fill (running) | This week |
+| 2 | **The clinic** (the standalone *Volunteering at the clinic* arc's mode) | 30 | **The clinic's doctor (Hannah's granddad) visits in about 10 days (~9 Oct):** record his voice (Round 4 Section G, his instructions G108+) and show him the game. Zafar plays it → audit → feedback → build to the design system | Now → ~8 Oct |
+| 3 | **Arc 1's other modes:** Put it there (set the table, pack the sweet box) and Hide and seek (find the sweets) | 25 | Built from Tidy up's `place`/`pack` engine and Find it's search; each rebuilt to the design system with the shared pieces | After the clinic |
+| 4 | **Arc 1's story layer:** beats, the hub changing, the candles finale, the Story by the Fire, the first launch re-pointed at the Birthday | 20 | Needs 1–3's day-log events. **Claude's suggestion:** give every mode its one-line day-log hook as it's built (cheap), and build the book and beats straight after 3, *before* the trip, because Arc 1 end to end is the release candidate | After 3 |
+| 5 | **The first day-out trip** (the beach: pack, packed lunch, travel spot-it, stall, sandcastle/kite, the Story by the Fire) | 5 | Mostly existing modes; new: spot-it out of the window, the stall dishes, beach art | After 4 |
+| 6 | **Store release** (wrapper, offline, privacy, listing) | 10 | Near the end | Last |
 
-## 1. Cook with Nani: stations (v2 = rebuilt to the design system)
+## 1. Arc 1: The Birthday (the MVP, S1 + S2): about 35%
+| Chapter / errand | Mode | % | State and next step |
+|---|---|---|---|
+| **First launch** (character creation → pantry → chai for Nani → the story → "help me cook?") | shell + Cook | 70 | Live (`first.html`). Its hook still says Eid: re-point it at the Birthday; the story panels (0%) redone for the Birthday; re-run after the pantry polish (plans B3) |
+| **The guests are coming: cook each guest's order** | Cook | 80 | See §1a. The guests' ordering round (each guest asks by name) is Cook's existing customer flow |
+| **The guests are coming: set the table** | Put it there (Tidy up T2, the dastarkhwan) | 20 | Tidy up's engine exists (`tidy.html`, `place`/`stack`/`check`), greybox, English placeholders. Needs the design-system rebuild, the table art, place words (idea 10, *munje same rakh*) |
+| **The cat and the sweets: find the sweets** | Hide and seek (Find it's search) | 30 | Find it is 45% (`find.html`, engine + rooms); the sweets-and-Simba round isn't built. Audit → feedback → build (plans B2) |
+| **The cat and the sweets: pack the sweet box** | Put it there (Tidy up T3, `pack` with counting) | 15 | Designed; the fruit skin first, the sweet skin when the sweet words exist (E59) |
+| **The party: blow out the candles** | a finale beat | 0 | Small; one scene and one line |
+| **The Story by the Fire** (every arc's ending) | its own module | 0 | Designed (`docs/modes/story-by-the-fire-design.md`), buildable in one session once the modes log their day |
+| **Beats, the hub filling up** (balloons → streamers → table → cake) | story engine | 20 | `js/shared/story.js` + `data/story/*.json` exist (40%); Arc 1's beat script is TBC (Roadmap "Arc 1's beat script") |
+| **Conversations** (greetings, thanks, how-are-you) | module | 25 | Engine + lab live; wire the 9 MVP exchanges into the first launch, Cook and the clinic (plans B4) |
+
+### 1a. Cook with Nani (stations; v2 = rebuilt to the design system)
 | Station | State | Art | Open items | Report |
 |---|---|---|---|---|
-| **Chai v2** | ✅ live | $0.40 | One burner per person (1–4), on the kitchen kit. Nani's line English placeholder (to record). | `build/reports/chai-v2.md` |
+| **Chai v2** | ✅ live | $0.40 | One burner per person (1–4), on the kitchen kit. Nani's line English placeholder (to record). **29 Sept:** pans centred on their burners (the pan's centre was measured with its handle); a cup with no milk / no sugar is sometimes ordered as *Muke kari chai khape.* / *Muke mori chai khape.*, its rows saying *dudh na* / *khun na* (Zafar). *kari* and *mori* to record. | `build/reports/chai-v2.md` |
 | **Maani v2** + **kitchen kit** | ✅ live | $0.05 | One tawa (Zafar). Kit = `js/cook/kitchen-kit.js` (`Cook.Kit`, shared-api §15). Adopt the new card APIs (queue note). | `maani-v2.md` |
 | **Sekelo v2** (was the mishkaki grill) | ✅ live | $0.12 | Top-down throughout (Zafar). **To confirm:** headline *Muke sekelo khape.* (Zafar checking with Mum); *lakri gos* vs Mum's *hakri lakri mishkaki*. | `sekelo-v2.md` |
 | **Chaat v2** | ✅ live | $0.32 | Glass cross-section, curved layers (follow-ups fix). L4 closed card + paid peek. Nani's line placeholder. | `chaat-v2.md`, `followups.md` |
@@ -35,35 +53,49 @@ Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pu
 | Serve and taste (§14a) | ✅ in sekelo, chaat, samosa, daar |
 | The cream band above the counter | 🔨 **Zafar (29 Sept): fill it** with the counter top, and game pieces where they help. One build session owns it (queue item 8), with the order card's two open fixes. |
 
-**Cook overall: about 75%** (design 100, build 95, iterate 70, words 75, voice 15, onboarding 75, story 10).
+**Cook overall: about 80%** (design 100, build 95, iterate 75, words 75, voice 15, onboarding 75, story 10). Still to go through before calling it finished: its parked ideas 5, 7, 8, 12, 18, 19 (`GAME-IDEAS-TBC.md`).
 
-## 1b. Other modes
-| Mode | Overall | Next step |
+## 2. The clinic (next focus, for the doctor's visit ~9 Oct): about 30%
+The clinic is set at the children's own doctor's clinic (Hannah's granddad's); the child is his helper. In the story it becomes the standalone **Volunteering at the clinic** arc (4–5 patients, after the first or second day out), but it's built now so the doctor can record his lines and see the game.
+
+| Piece | % | State and next step |
 |---|---|---|
-| **The clinic** | 35% | **Zafar plays it through first.** Then an audit session → Claude's feedback draft → Zafar approves → build to the design system (plans doc B1). |
-| **Find it** | 45% | Same process after the clinic (plans doc B2). |
-| **Conversations** (module) | 25% | Engine + lab live. Wire the 9 MVP exchanges into the first launch, Cook and the clinic (plans doc B4). |
-| **First launch** | 70% | Re-run end to end after the pantry polish; the story panels to be redone for the Birthday arc (plans doc B3). |
-| Tidy up / Who did it? / Dress up / Monsoon rush / Snap | 17–20% | Parked (Zafar). Each gets audit → design refresh → build with the shared components. |
+| The mode (`clinic.html`: waiting room → where it hurts → pharmacy → heal games → send-off) | 35 | Phase 1 built and tested (21 lab entries, hotspots, speaking paths); greybox and rough sprites, **every row an English placeholder**. Dump 3's patients are in the manifest |
+| Design-system rebuild (patient card = the shared order card, Nani box, end pop-up, kit-style props, no hands) | 0 | **Zafar plays it through → an audit session → Claude's feedback → Zafar approves → build** (plans B1) |
+| Words and voice | 5 | Round 4 **Section G** (body parts, "it hurts", hot/cold, his instructions G108–G127) is the doctor's script. Get it ready to record with him; wire the clips straight after |
+| Art | 32 | Still to do: 7.1 "where it hurts"; neck, back and hair parts; the belt and rail sit too high |
+| The arc wrapper (patients over several visits, the certificate on the hub shelf) | 0 | After Arc 1 and the first trip |
 
-## 2. Foundation and story
+## 3. After Arc 1
+| Arc | % | State and next step |
+|---|---|---|
+| **Day-out trips** (repeatable template: pack → packed lunch → travel spot-it → the stall → place games → the Story by the Fire) | 5 | Designed 28 Sept (Roadmap "Story arcs"); beach first, then garden/farm, safari, boat. Reuses the pantry fetch, Cook stations, the clinic's conveyor shape (for spot-it) |
+| **Volunteering at the clinic** (standalone, repeatable) | see §2 | The mode is being built now for the doctor's visit |
+| **Making clothes with Big Ma** (standalone, repeatable) | 0 | Dress up's home; placement TBC. Dress up is parked (17–20%) |
+| **Eid** (a later arc) | 0 | Moved out of Arc 1 on 28 Sept; not designed |
+
+## 4. Foundation (shared by every arc)
 | Piece | % | Next step |
 |---|---|---|
-| Shared UI (end-of-round screen, onboarding kit, light bulb, request card) | 85 | Roll it into the five new modes as they're rebuilt. |
-| Shell: one app, one save, player picker | 100 | Live: Nani's house with doors for Cook, Find it and the clinic; a player picker; one save with migration. |
-| First launch: character creation and the walkthrough (pantry → chai for Nani → the Eid story → "help me cook?") | 70 | Live (`first.html`). Needs Mum's story lines, real panel art and a layered character; also a way to edit a character later, and the chai station's fun pass. |
-| Story engine (arcs and chapters as data, picture panels, Story help) | 40 | `js/shared/story.js` and `data/story/*.json` exist. Next: Arc 1's chapters as data. |
-| World map and home (fog of war, "the world is the menu", role reversal) | 0 | Phase C, after the first launch. |
-| Speech recognition (on-device, closed set, voice star) | 30 | Enrol it with the family voice clips; the first speaking moments go in Cook. |
-| Arc 1: The Birthday (S1 + S2) | 15 | Reworked 28 Sept from Eid to a birthday party (Roadmap "Story arcs"); same % as before, since it's the same modes reflavoured. Next: the first launch (needs its own hook updated off Eid), then Cook's order errand, Put it there and Hide and seek mapped onto the modes. |
-| Story by the fire (every arc's ending) | 0 | Design written 28 Sept: `docs/modes/story-by-the-fire-design.md` (the day-log API, page templates, gap ladder). Buildable in one session; not started. |
-| Day-out trips: the repeatable arc template (beach, garden/farm, safari, boat sketched) | 0 | Design written 28 Sept (Roadmap "Story arcs"). Next: build the template once Arc 1 lands, starting with the beach. |
-| Volunteering at the clinic (standalone, repeatable arc) | 0 | Approved 28 Sept; introduced after the first or second day-out trip. Shares its build with the clinic mode above. |
-| Making clothes with Big Ma (standalone, repeatable arc) | 0 | Approved 28 Sept; exact placement TBC. Shares its build with Dress up. |
-| Eid (a later arc) | 0 | Moved out of Arc 1 on 28 Sept; not yet designed. |
-| ~~Arc 2: The Wedding~~ / ~~Arc 3: The Monsoon~~ / ~~Arc 4: Nani's Lost Ring~~ / ~~Arc 5: Nani's Village~~ | – | **Superseded 28 Sept.** Folded into the rows above and the cross-arc vocabulary spine; see the Roadmap's "Replaced 28 Sept" note for where each idea went. |
+| Shell: one app, one save, player picker | 100 | Live: Nani's house with doors for Cook, Find it and the clinic |
+| Shared UI (end-of-round screen, onboarding kit, light bulb, request card, order card, Nani box) | 85 | Roll into each mode as it's rebuilt |
+| Story engine (arcs and chapters as data, picture panels, Story help) | 40 | Arc 1's chapters as data (§1) |
+| Day-log (what the child did, for the Story by the Fire) | 0 | Specified in the Story by the Fire design; add one hook per mode as each is built |
+| World map and home (fog of war, "the world is the menu", role reversal) | 0 | After Arc 1; the hub filling up comes first |
+| Speech recognition (on-device, closed set, voice star) | 30 | Enrol it with the family voice clips; the first speaking moments go in Cook |
 
-## 3. Language
+## 5. Parked modes
+| Mode | % | Where it's used |
+|---|---|---|
+| Tidy up | 20 | **Not parked for long:** its `place` and `pack` engine is Arc 1's Put it there (§1) |
+| Who did it? | 17 | The cat and the sweets could use its line-up later; not needed for Arc 1's first cut |
+| Dress up | 17 | Making clothes with Big Ma |
+| Monsoon rush, Snap | 17 | Snap's "spot it" shape may feed the trips' travel game |
+| ~~Arc 2: The Wedding~~ / ~~Arc 3: The Monsoon~~ / ~~Arc 4: Nani's Lost Ring~~ / ~~Arc 5: Nani's Village~~ | – | **Superseded 28 Sept**; see the Roadmap's "Replaced 28 Sept" note |
+
+*The overnight Cook run, 29 Sept (00:28–05:00 UTC):* eight build sessions plus three polish sessions, ≤4 at once. Log: `docs/overnight-log.md`; queue and rules: `docs/overnight-queue.md`; reports: `build/reports/<name>.md`. API art spent: about **$1.05**.
+
+## 6. Language
 | Piece | % | Next step |
 |---|---|---|
 | Recordings with Mum (Sections A–J, about 170 min in all) | 25 | **28 Sept: Round 3 Parts 1–4 and C1–C21 recorded** (41 min, `sources/audio/mum-2026-09-28/`, report `build/reports/recording-2026-09-28.md`). **Next session: C22 onwards** (describing words, my/your, verbs and tenses), then G, E, F, H, D, I, J. Was: | **Next session: `docs/Questions for Mum (Round 3).docx`** (re-takes, Conversations, story lines, one/many nouns, then G, C, E, F, H, D, I, J). Was: | **Section C** (the grammar sentences) next, then G (clinic and monsoon), D, E, F, H, I. Also the 10 first-launch story lines. |
@@ -73,7 +105,7 @@ Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pu
 | Words in the game data | Cook 70, Find 40, the clinic 5, the others 5–10 | Each mode's words go in when its recording section is done. |
 | Syllabus word lists S1–S6 | S1 50, S2 20, S3–S6 5 | Recordings C and E–H fill S2–S4. |
 
-## 4. Artwork (basic → initial → full → final)
+## 7. Artwork (basic → initial → full → final)
 - **Basic:** greybox or rough placeholder.
 - **Initial:** the first real art, enough to play.
 - **Full:** every asset exists.
@@ -91,7 +123,7 @@ Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pu
 | **Tidy up, Who, Dress, Monsoon, Snap** | ✓ | 10 | 0 | 0 | **12%** each | Batch-3 prompts; more once their rebuilds settle. |
 | **UI and app icon** | ✓ | 40 | 10 | 0 | **30%** | Store icon and splash screen. |
 
-## 5. Release (store)
+## 8. Release (store)
 | Piece | % | Next step |
 |---|---|---|
 | Wrapper (PWA, then Capacitor for iOS and Android) | 0 | Decide once the shell has landed. |
@@ -105,6 +137,8 @@ Eight build sessions plus three polish sessions, all Opus, ≤4 at once, each pu
 - *Muke sekelo khape.* as Sekelo's headline (checking with Mum; kept for now). *lakri gos* vs *hakri lakri mishkaki* for the all-meat skewer.
 - Daar: record Nani's "Chop these"; confirm *hakro* as the first stir count.
 - English placeholders still to record: Nani's guide lines per station (Round 4 N1–N23), samosa's phase lines and "fry them" button.
+- **To record:** *kari chai* and *mori chai* (Mum, A4 §10; now in the chai station, 29 Sept).
+- **The clinic:** play it through; then Section G of Round 4 is the script to record with the doctor (~9 Oct).
 - ~~The cream band~~: **fill it** (Zafar, 29 Sept morning); build queued.
 - ~~Cook's open ideas~~: **decided 29 Sept morning.** #1 and #2 are the sub cards' *dudh na* / *khun na* rows (no *wagar ji*, no *kari/mori chai*), already live; #3, the "don't" row, approved (live). Cook's other open ideas (5, 7, 8, 12, 18, 19) stay TBC.
 - Play through Cook (all six v2 stations) and the clinic.

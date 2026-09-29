@@ -316,9 +316,10 @@
       // 28 Sept (Zafar): a recipe with its own `headline` (the pantry's "bring me these for …")
       // keeps that line as the card's head, so what's fetched is all rows, the first one leading
       const lead = !!(e.head && def.headline);
-      const kind = e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
-      if (kind !== "no" && (e.dot === "next" || (kind === "dish" && !rows.length) || lead)) dot++;
-      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead });
+      // "personHead": that person's own headline on their card ("Muke kari chai khape.": a cup ordered by its name)
+      const kind = e.personHead && forWho ? "phead" : e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
+      if (kind !== "no" && kind !== "phead" && (e.dot === "next" || (kind === "dish" && !rows.length) || lead)) dot++;
+      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead });
     };
     (def.say || []).forEach((e, k) => walk(e, e.for ? res(e.for, env) : undefined, k));
     return { lines, rows };

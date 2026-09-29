@@ -544,6 +544,18 @@
    "say": "jal-dee",
    "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §24, B3)"
   },
+  "ph-kari": {
+   "kutchi": "kari",
+   "english": "black",
+   "src": "Mum, A4 (docs/kutchi-grammar-notes.md §10): kari chai is black tea, chai with no milk. Not recorded yet. Chai is a she-word, so kari; the he-word form is probably karo (unconfirmed), not used",
+   "_use": "Only in kari chai (the Chai tray, Zafar 29 Sept): a cup ordered by its name, its card's rows say what that means (dudh na)"
+  },
+  "ph-mori": {
+   "kutchi": "mori",
+   "english": "unsweetened",
+   "src": "Mum, A4 (docs/kutchi-grammar-notes.md §10): mori chai is chai with no sugar. Not recorded yet. Chai is a she-word, so mori; the he-word form is probably moro (unconfirmed), not used",
+   "_use": "Only in mori chai (the Chai tray, Zafar 29 Sept): a cup ordered by its name, its card's rows say what that means (khun na)"
+  },
   "ph-half": {
    "kutchi": "adh",
    "english": "half",
@@ -1148,7 +1160,7 @@
     "count",
     "pour"
    ],
-   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (dudh or dudh na; Muke chai me {n} khun khape or khun na; plain, elchi waari chai or aadu waari chai; at level 4 also half or full), so those rows wait for the tray (`when`). Wave 6 levels, each adding one thing: 1 = one cup; 2 = two; 3 = three; 4 = three plus half/full. Each cup is one card with a fixed shape (`card`). Tastes are only a bias (tasteChance).",
+   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (dudh or dudh na; Muke chai me {n} khun khape or khun na; plain, elchi waari chai or aadu waari chai; at level 4 also half or full), so those rows wait for the tray (`when`). Wave 6 levels, each adding one thing: 1 = one cup; 2 = two; 3 = three; 4 = three plus half/full. Each cup is one card with a fixed shape (`card`). Tastes are only a bias (tasteChance). Zafar 29 Sept: a cup with no milk, or with milk but no sugar, is sometimes (`named`) ordered by the chai's own name, *Muke kari chai khape.* / *Muke mori chai khape.*, as that person's card headline (`personHead`); its rows still say what the name means (dudh na / khun na).",
    "lists": {
     "family": [
      "nana",
@@ -1193,6 +1205,9 @@
        "taste": "extra",
        "tasteChance": 0.4
       },
+      "named": {
+       "chance": 0.5
+      },
       "amount": {
        "byLevel": [
         null,
@@ -1220,6 +1235,33 @@
      "forEach": "$cups",
      "for": "$it.who",
      "say": [
+      {
+       "if": [
+        "it.named",
+        "!it.dudh"
+       ],
+       "frame": "need",
+       "x": [
+        "ph-kari",
+        "cook-chai"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.named",
+        "it.dudh",
+        "!it.khun"
+       ],
+       "frame": "need",
+       "x": [
+        "ph-mori",
+        "cook-chai"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
       {
        "if": "it.dudh",
        "frame": "and",
