@@ -63,3 +63,10 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - Possible gaps: the roadmap "thin shell spec" is in code-map.md but its launch-flow mermaid and MVP table still say "quilt" (stale box notes it); testing.md has no full QA matrix (lives in qa-checklist.md).
 - Art-bible §5 was moved whole (pivots, containers, export), not only "Export/cut" as the harvest note said.
 - The `Stale points` boxes quote rule IDs from the rulebook; F2/F13/F14/H32/J7 I took from harvest notes, worth a spot-check by the Fable review.
+
+**Session G (done):**
+- All nine Session G items ticked; every touched doc starts with a "Stale points" box; sources copied word for word with `> from:` lines.
+- `ui-design-system.md` keeps §2–4, 6–8, 12; §1, 5, 9–11, 13–15 moved to `cook.md` Part 1 (one-line pointers left). The cook-ui-feedback §3 (Nani's box with mute) and §6 (word review) are appended there; §4 pantry and §8 chai are in `cook.md`.
+- Not placed: Game Design's "The quilt" went into `progression-and-scoring.md` (as history); Cook build-log §3 bug table and persona reviews are left in the archive (bug table belongs to `process/regressions.md`, Session L/orchestrator). Phase-a-design sections not copied (§1–7, 10–11, 13–14 old Phase A plan) stay in `docs/archive/cook/`; plans-remaining A1/A2 (Samosa/Mishkaki) are superseded by cook.md §15.
+- Possible loss: OVERVIEW's "what all designs agree on" and decisions list (harvest routes the shared-words list to Session L's lexicon); clinic v1 sections not listed in the checklist (Revisions 1–2, §1–6, 8, 10–11) remain only in `docs/archive/clinic/`; `conversations-wiring.md` and `story-by-the-fire.md` got no build status (none exists).
+- `modes/clinic.md` and the other mode files received their box after the title line; mode-specific story-home re-homing is left for the later docs clean-up.
