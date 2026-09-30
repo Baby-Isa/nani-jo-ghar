@@ -55,3 +55,87 @@ session did the rest.
 - **The shoot script** now shoots every state (start, water, leaves, tea, mid-cook, milky, spiced, boiling,
   foam, pan-pour, serving, taste-wrong, taste-right, end), with a clean second run per level for the right
   serve, and `--matrix` for laptop + phone landscape, levels 1–4 and 4 people.
+- **The praise card at 4 people** (found in the shots, fixed): the card goes right of the last face, which
+  at 4 people is the tray's bottom-right one, so *Shabash!* ran off the view. When it won't fit, it now goes
+  left of the leftmost face (over the hob's right end, which has stepped back by then). 1–3 people
+  are unchanged.
+- **Tray layout at 3–4 people:** unchanged, and it holds. The hob and tray keep the 72 design px gap (about
+  55 px on the laptop, 35–45 px on phone landscape). The tray shrinks with the hob, and nothing touches.
+
+## 3. Tests
+All run after the last change; the second set after merging `origin/main`.
+- `python3 build/test_cook.py --lab --stations chai-tray,pour,boil,passme --viewport laptop`: **PASS**
+  (31 screenshots, 351 s); `--viewport phone-landscape`: **PASS** (31 screenshots, 144 s).
+- **After merging `origin/main`** (chaat v3 and the rest): the lab test again, laptop **PASS** (32 shots,
+  199 s) and phone landscape **PASS** (32 shots, 190 s); `python3 build/test_cook.py --days 1 --canvas`
+  **PASS on all 6 viewports** (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait).
+- `node --test build/test_shared_*.mjs`: 117/117. `node build/check_onboard.mjs`: ok.
+  `python3 build/check_vessel_meta.py`: ok, 93 checks, including the new chai `panTop` against the v3 pan.
+- The shot matrix (20 runs: laptop and phone landscape × levels 1–4 and 4 people, each once with mistakes and
+  once clean) played through with **no console errors**; the clean runs scored boil 100% on almost every pan;
+  the two 35% scores are the shoot bot's own tap timing under load (it waits on the gauge from outside the page).
+- C5: 600 orders per level generated and read (§2); C2: the bottle's hop measured in the running game (§2).
+
+## 4. Shots with their flaws
+`build/reports/chai-v3/<viewport>-l<level>[-4cups][-right]-<state>.png`, laptop (1366×768) and phone
+landscape (844×390), levels 1–4 (1, 2, 3, 3 people) and `-l4-4cups` (4 people, Isa joining). The first run
+of each goes wrong on purpose (salt in the last pan; the first milky pan left on the flame till it foams),
+so its `taste-wrong` shows the frown. `-right-*` is a clean second run: `taste-right`, `serving`, `end`.
+States a run doesn't reach are missing because that order didn't have them (orders are random):
+- `tea` (a pan with no milk) at levels 1 and 4;
+- `milky` / `spiced` / `foam` wherever a milky pan was ordered (not level 1 laptop / phone: their order
+  was *dudh na*);
+- `spiced` wherever milk and an extra met.
+
+**Flaws first:**
+- **The glasses are always milky.** The tray's glass pictures are v2's (`glass-half`, `glass-full`: milky
+  chai), so a *kari chai* (no milk) pan pours into a milky glass (`phone-landscape-l1-taste-wrong`,
+  `laptop-l4-pan-pour`). It's more noticeable now that the pan shows black tea. It needs a black-tea glass
+  pair (art: see §5).
+- **No picture for three in-between stages,** so the nearest one shows:
+  - black tea with elchi or aadu shows plain black tea (`pan-spiced` is milky chai with spices);
+  - milk poured in before the leaves shows milky chai half over the water;
+  - leaves in a dry pan show the empty pan.
+- **The tipped pan** in the pour is still v2's picture (`pan-pour`). It's a little brighter and cooler than
+  the v3 pan and always holds milky chai, even when it's black tea (`laptop-l4-pan-pour`).
+- **The pan's fill level doesn't change** (one level per picture): a second splash of water, or the rest
+  after a half pour at level 4, looks the same as a full pan.
+- **The water shot catches the bottle on its way home** over the pan (`laptop-l1-water`). The pour itself is
+  fine; that's the shot's timing.
+- **Pre-existing, not changed here:**
+  - the pan handles reach the hob's top edge on the rightmost burner (`laptop-l3-*`, `-4cups-*`);
+  - the laptop sidebar can't show four people's open cards (the fourth is cut off: `laptop-l4-4cups-pan-pour`);
+  - on phone at 4 people the sidebar's bottom buttons are cut off;
+  - review faces cover the glasses;
+  - under heavy load (four browsers) one run's shelf art missed the station's 5 s load race and showed the
+    fallback jugs and bowls (a re-shoot was normal). That's the load race in `station()`, and I left it.
+- **A spiced pan loses its pods while it boils:** at the boil it shows `pan-boil-milky` (froth, no pods),
+  then settles back to `pan-spiced` when turned down. A boiling-spiced picture would keep them.
+- **The focal glow round a knob** is a flat brown disc on the dark hob (`laptop-l2-boiling`: Nana's knob).
+  It's the shared glow's canvas halo, pre-existing.
+
+**What's right:**
+- every pan sits on its burner's measured centre in all nine pictures (no jump between stages);
+- the stages read at a glance: clear water, leaves steeping, amber tea, milky, spiced with pods and ginger,
+  a rolling boil, froth up to the rim;
+- the bubbles ride on top, and the gauge sits on the rim inside the flames;
+- the burner under a pan that's away pouring is unlit;
+- the review faces, praise card and end pop-up are unchanged (the card stays in view at 4 people);
+- the tray never touches the hob at 3–4 people.
+
+## 5. Open for Zafar
+- **Art for the glasses and the tipped pan:** a black-tea `glass-half` / `glass-full`, and a v3-style tipped
+  pan (milky and black tea) would make the pour and the tray match the pan. Until then the glass is milky
+  whatever was poured.
+- **Pictures for the in-between stages** if you want them: black tea with spices, milk in water (milk before
+  the leaves), dry leaves in the pan. Or keep the nearest-picture fallback.
+- **Fill level:** the pictures have one level. A lower-level set (e.g. after a half pour) is optional.
+- **The sentence's join word is still the English placeholder "with"** (Q5: ask Mum). Where it lands now:
+  before the first row after the headline that isn't a *na* row or the amount
+  (*Muke kari chai khape, dudh na, with hakro khun, adh.*).
+- **An extra beats kari / mori in the headline** (the data's rule): a no-milk elchi cup says
+  *Muke elchi waari chai khape, dudh na…*, never *kari*. Say if you'd rather it said *kari elchi waari chai*
+  (that would need Mum's word order).
+
+## 6. New placeholder words
+None. No new Kutchi and no new English lines. (`joinless` is a flag on two existing words, not a word.)

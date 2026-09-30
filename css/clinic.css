@@ -105,7 +105,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
 .cl-go.done {
   align-self: center; width: clamp(64px, 8vw, 92px); min-height: 0; aspect-ratio: 1; border-radius: 50%; padding: 0;
-  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260930T124446Z");
+  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260930T133815Z");
   border: 1px solid #e6d5b8; color: transparent !important; font-size: 0; overflow: hidden;
   box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.2);
 }
