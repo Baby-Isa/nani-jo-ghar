@@ -1,0 +1,51 @@
+/*
+ * The shared button kit (js/shared/buttons.js; UX-PRINCIPLES 15): ✓ Done (Cook's round gold tick),
+ * → Next (Cook's flat design-system pill with a gold icon), the answer pills. One look, one size,
+ * one place: the bottom-right corner of the play area (the parent must be positioned), always
+ * inside its edges.
+ */
+.njg-btn { font-family: Nunito, "Baloo 2", system-ui, sans-serif; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.njg-btn:disabled { opacity: .45; cursor: default; }
+
+/* ✓ Done: the round gold tick (Cook's #done-btn) */
+.njg-done {
+  position: absolute; z-index: 30; right: max(12px, 2.5%); bottom: max(12px, 4%);
+  width: clamp(58px, 8vw, 96px); aspect-ratio: 1; border-radius: 50%; padding: 0; margin: 0;
+  background: #fffaf0; border: 1px solid #e6d5b8; color: transparent; font-size: 0; overflow: hidden;
+  box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, .22);
+}
+.njg-done-tick { position: absolute; inset: 0; background: no-repeat center 54% / 66% url("../../assets/ui/results/tick-gold.webp"); }
+.njg-done:active { transform: translateY(3px); box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, .2); }
+.njg-done.glow { animation: njgDoneGlow 1s ease-in-out infinite; }
+@keyframes njgDoneGlow { 50% { box-shadow: 0 0 0 8px rgba(217, 164, 65, .35), 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, .22); } }
+
+/* → Next: the flat pill (Cook's #go-btn.ds): white card, charcoal text, gold edge and icon */
+.njg-next {
+  position: absolute; z-index: 30; right: max(12px, 2.5%); bottom: max(12px, 5%);
+  display: inline-flex; align-items: center; gap: 8px; max-width: calc(100% - 24px); box-sizing: border-box;
+  border-radius: 12px; min-height: 48px; margin: 0;
+  padding: clamp(8px, 1.1vw, 14px) clamp(14px, 1.8vw, 22px);
+  background: #fff; color: #2a2522; border: 2px solid #c9962e;
+  box-shadow: 0 2px 8px rgba(40, 25, 10, .10);
+  font-weight: 800; font-size: clamp(15px, 1.5vw, 20px); line-height: 1.15; text-align: left;
+}
+.njg-next-t { min-width: 0; overflow-wrap: anywhere; }
+.njg-next-ic { display: inline-flex; flex: none; width: 1.5em; height: 1.5em; color: #c9962e; }
+.njg-next-ic svg { width: 100%; height: 100%; }
+.njg-next:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(40, 25, 10, .10); }
+.njg-next.glow { animation: njgNextGlow 1s ease-in-out infinite; }
+@keyframes njgNextGlow { 50% { box-shadow: 0 0 0 6px rgba(201, 150, 46, .30), 0 2px 8px rgba(40, 25, 10, .10); } }
+
+/* the answer pills: haa / na, the speaking fallbacks */
+.njg-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.njg-pill {
+  min-width: 96px; min-height: 56px; padding: 8px 20px; border-radius: 999px; margin: 0;
+  background: #fff; color: #2a2522; border: 2px solid #c9962e; box-shadow: 0 2px 8px rgba(40, 25, 10, .12);
+  font: 800 clamp(18px, 2vw, 24px)/1.1 Nunito, "Baloo 2", system-ui, sans-serif; cursor: pointer;
+}
+.njg-pill:active { transform: translateY(1px); }
+.njg-pill.shake { animation: njgPillShake .45s; }
+.njg-pill.chosen { background: #fff6dc; }
+.njg-pills.locked .njg-pill { pointer-events: none; }
+@keyframes njgPillShake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@media (prefers-reduced-motion: reduce) { .njg-done.glow, .njg-next.glow, .njg-pill.shake { animation: none; } }

@@ -390,3 +390,53 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-nani .ng-bulb .bulb-t { display: none; }
 .cl-nani .ng-mute svg { width: 20px; height: 20px; }
 .cl-nani .ng-bulb.lit { background: #ffe26a; box-shadow: 0 0 12px 4px rgba(255, 220, 90, .8); }
+
+/* ================= clinic fixes (29-30 Sept, feedback 13-13k) ================= */
+/* UX 15: the buttons come from the shared kit (css/shared/buttons.css) and sit in the play area's
+   bottom-right corner, inside its edges (the pharmacy's button was cut off by the frame: 13b) */
+.cl-app { grid-template-columns: var(--cl-side-w) 1fr; }
+.cl-actions { position: absolute; z-index: 40; right: max(10px, 2%); bottom: max(10px, 3%); left: auto; top: auto; display: flex; flex-direction: row; align-items: flex-end; justify-content: flex-end; gap: 10px; padding: 0; background: none; pointer-events: none; max-width: calc(100% - 20px); }
+.cl-actions > * { pointer-events: auto; }
+.cl-actions .njg-btn { position: relative; right: auto; bottom: auto; }
+.cl-actions .cl-go.njg-next { color: #2a2522 !important; min-height: 48px; }
+.cl-actions .cl-go.njg-next .ph { color: #8a7a6c; }
+.cl-actions .cl-go.njg-done { min-height: 0; }
+@media (max-width: 700px) and (orientation: portrait) { .cl-app { grid-template-rows: auto 1fr; } }
+/* 13c: the card is the shared order card; its box is only the frame */
+.cl-card { background: none; box-shadow: none; padding: 0; border-radius: 0; flex: 0 1 auto; min-height: 0; overflow: auto; }
+.cl-card .oc-card { --oc-p: clamp(14px, 1.5vw, 19px); }
+.cl-card .cl-empty { display: none; }
+.cl-card .oc-face.cl-card-face { width: var(--oc-face, 40px); height: var(--oc-face, 40px); padding: 0; border: 0; background: #d6b08c; border-radius: 50%; position: relative; overflow: visible; cursor: pointer; flex: none; }
+.cl-card .oc-face.cl-card-face > .cl-face { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
+.cl-card .oc-face.cl-card-face > .cl-face svg, .cl-card .oc-face.cl-card-face > .cl-face img { width: 100%; height: 100%; object-fit: cover; }
+.cl-card .cl-row { font: inherit; }
+.cl-card .cl-row .cl-row-text .ku { color: #8c2f2f; }
+.cl-card .cl-row-count { margin-left: 6px; font-size: 15px; }
+.cl-card .oc-row .oc-t::first-letter { text-transform: none; }
+.cl-card .oc-card.closed { cursor: pointer; }
+.cl-card .oc-card.closed.folded .oc-head::after { content: "···"; font: 800 22px var(--cl-head); color: #b8a88f; margin-left: 8px; letter-spacing: 2px; }
+/* 13f: the doctor's box (the shared guide box, in the clinic's teal: Nani isn't at the clinic) */
+.cl-docbox { --nani-sage: #4f9a8a; }
+.cl-docbox .ng-face img { object-position: center; }
+/* 13b: a filled dish loses its dashed outline (the pantry's tray); a tap on it takes the item back until ✓ Done */
+.cl-counter-tray .cl-dish.full, .cl-counter-tray.v2 .cl-dish.full { border-color: transparent; background: transparent; box-shadow: none; cursor: pointer; }
+.cl-counter-tray .cl-dish.full:active { transform: scale(.94); }
+.cl-counter-tray.committed .cl-dish.full { cursor: default; }
+/* 13a: W4 ticks show their number as they're tapped; the picked person rises off the seat and stays raised */
+.cl-wtick.picked:not(.locked) { background: #fff6dc; border-color: #c9962e; }
+.cl-wtick.locked::after { content: none !important; }
+.cl-wtick.picked::after { content: attr(data-n); position: absolute; inset: 0; display: grid; place-items: center; font: 800 clamp(20px, 2.4vw, 28px) var(--cl-head); color: #8c2f2f; }
+.cl-wtick { position: absolute; }
+.cl-wp .cl-wp-fig { transition: transform .45s ease-out; }
+.cl-wp.risen .cl-wp-fig { transform: translateY(-9%); }
+.cl-wp.risen { z-index: 12 !important; }
+/* UX 16, staging (a hook for the art's three-quarter and front poses; with the stand-ins, a small turn) */
+.cl-staged { transition: transform .25s ease; }
+.cl-staged.pose-swap { animation: cl-pose-fade .25s ease; }
+@keyframes cl-pose-fade { 0% { opacity: .55; } 100% { opacity: 1; } }
+.cl-staged[data-pose="talk"][data-facing="left"] > svg, .cl-staged[data-pose="talk"][data-facing="left"] > img { transform: scaleX(-1); }
+.cl-staged[data-pose="talk"] { filter: saturate(.92); }
+.cl-card .oc-headline.reading { box-shadow: inset 0 -3px 0 #c9962e; }
+.cl-card .oc-headline .cl-row-en { display: none; }
+.cl-card.english .oc-headline .cl-row-text { display: none; }
+.cl-card.english .oc-headline .cl-row-en { display: inline; color: #1b5e8a; }

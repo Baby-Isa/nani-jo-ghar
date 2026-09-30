@@ -36,7 +36,8 @@
       // the tray on the counter strip, pantry style (outlined dishes)
       const trayBox = h("div", `cl-counter-tray${box ? " v2" : ""}`, box || stage);
       if (box && cfg.tray) S.place(trayBox, { x: cfg.tray.x, y: cfg.tray.y, z: 5 });
-      const tray = new Kit.Tray(trayBox, plan.asked.length, {});
+      // a tap on a filled dish takes the item back until ✓ Done (13b, UX 17); the first placement is scored
+      const tray = new Kit.Tray(trayBox, plan.asked.length, { onTap: (i) => takeBack(i) });
       // the belt band sits on the painted belt: the items' bases on its surface, the band across the whole stage
       const fitBelt = () => {
         if (!box || cfg.beltY == null) return;
@@ -50,8 +51,8 @@
       const st = PL().beltState(plan);
       const wordOf = (it) => PL().itemWord(data, it.id, it);
 
-      await S.say(S.line(env, "why-pharmacy"), "doctor"); // the why beat (G5)
-      await S.request(screen, { title: "", rows: plan.card });
+      // the doctor's request (13b "[Bring me] ..."), read along in the sidebar; the belt runs at once (13i)
+      await S.request(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq) });
 
       // the belt: dishes enter on the right every everyMs, cross in crossMs, loop through plan.loop
       const everyMs = plan.slow ? plan.everyMs * 1.3 : plan.everyMs;
@@ -162,21 +163,32 @@
         if (counted) screen.tally.set(d.id, r.count);
         if (PL().beltFull(st)) await check();
       };
+      // the tray is full: ✓ Done hands it over (the shared button); until then a dish can be taken back
       let checkBtn = null;
       const check = async () => {
-        // with a counted item the child says when they're done (the tray is full but the count may not be)
-        if (plan.asked.some((a) => a.count) && !checkBtn) {
-          checkBtn = screen.go(S.line(env, "done"), () => {
-            if (busy) return;
-            checkBtn.remove();
-            checkBtn = null;
-            handover();
-          }, "throb");
-          checkBtn.dataset.go = "done";
-          return;
-        }
-        if (!checkBtn) await handover();
+        if (checkBtn) return;
+        checkBtn = screen.go("✓", () => {
+          if (busy || !PL().beltFull(st)) return;
+          checkBtn.remove();
+          checkBtn = null;
+          handover();
+        }, "done throb");
+        checkBtn.dataset.go = "done";
       };
+      const takeBack = (i) => {
+        if (busy || committed || !st.dishes[i]) return;
+        const d = PL().beltTakeBack(st, i);
+        tray.fill(i, null);
+        counts[d.key] = 0;
+        if (counted) screen.tally.set(d.id, 0);
+        res.log.push({ type: "takeback", detail: d.key });
+        if (global.Sfx && global.Sfx.tap) try { global.Sfx.tap(); } catch (e) { /* no sound */ }
+        if (checkBtn && !PL().beltFull(st)) {
+          checkBtn.remove();
+          checkBtn = null;
+        }
+      };
+      let committed = false;
 
       const handover = async () => {
         busy = true;
@@ -186,7 +198,11 @@
           const dish = tray.slots[r.dish].el;
           dish.classList.add("lifted");
           const it = r.key ? plan.loop.find((x) => PL().beltKey(x) === r.key) || { id: r.key.split(":")[0] } : null;
-          if (r.ok) await S.say(S.line(env, "handover-ok", { x: wordOf(it) }), "doctor");
+          if (r.ok) {
+            await S.say(S.line(env, "handover-ok", { x: wordOf(it) }), "doctor");
+            const k = plan.asked.findIndex((a) => PL().beltKey(a) === r.key);
+            if (k >= 0) screen.card.tick(`grab${k}`);
+          }
           else {
             const want = r.want ? plan.asked.find((a) => PL().beltKey(a) === r.want) : null;
             await S.say(S.line(env, "handover-no", { x: it ? wordOf(it) : { english: "empty" }, y: want ? wordOf(want) : { english: "that" } }), "doctor");
@@ -202,7 +218,9 @@
         paused--;
         busy = false;
         if (out.every((r) => r.ok)) {
-          screen.card.tick("need");
+          committed = true;
+          trayBox.classList.add("committed");
+          plan.card.forEach((r) => screen.card.tick(r.id, { quiet: true }));
           finish();
         }
       };
@@ -211,6 +229,7 @@
         if (checkBtn) {
           const need = plan.asked.find((a) => a.count && (counts[PL().beltKey(a)] || 0) < a.count);
           if (!need) return { stage: "pharmacy", kind: "tap", target: '.cl-go[data-go="done"]' };
+          // a counted item still short with the tray full: take the wrong dish back (tests), else keep tapping
         }
         if (busy) return { stage: "pharmacy", kind: "wait" };
         const want = plan.asked.find((a) => {
@@ -229,6 +248,7 @@
       dead = true;
       cancelAnimationFrame(raf);
       S.current = null;
+      S.endOnboard();
       if (global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
       await S.button(screen, S.line(env, "tobench"));
       plan.words.forEach((w) => res.words.push(w.word));

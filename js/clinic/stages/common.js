@@ -43,18 +43,14 @@
     pharmacy: "Tap the things the doctor asks for as they ride past on the belt.",
     door: "Is everything okay now? Pick the face (or what helps), then say goodbye.",
   };
-  // Nani's line in her box (what to do now: English placeholders, to record)
-  S.NANI = {
-    waiting: "Tap the tick under the one the doctor calls.",
-    exam: "Find where it hurts.",
-    stand: "The doctor's tool, then the part.",
-    pharmacy: "Tap what the doctor needs on the belt.",
-    door: "How do they feel?",
-  };
+  // the doctor's line in his box (13f: the doctor fills Nani's guidance role): his own words for the room,
+  // never an English instruction to the child (UX 8). Line ids in data/clinic/pipeline.json; placeholders to record.
+  S.GUIDE = { waiting: "why-waiting", exam: "where", stand: "lookhere", pharmacy: "why-pharmacy", door: "okay-now" };
   S.room = function (screen, name) {
     const stage = screen.clearStage();
     screen.goal = S.GOALS[name] || "";
-    if (screen.setNani) screen.setNani(S.NANI[name] ? { kutchi: null, english: S.NANI[name] } : null);
+    const gd = S.GUIDE[name] && Clinic.Run && Clinic.Run.data ? global.ClinicPipeline.line(Clinic.Run.data, S.GUIDE[name]) : null;
+    if (screen.setNani) screen.setNani(gd);
     stage.classList.add("cl-room", `room-${name}`);
     screen.clearActions();
     screen.tally.clear();
@@ -162,42 +158,60 @@
   };
 
   /**
-   * The request card (UX s1): the rows go in the sidebar card; a big copy
-   * opens over the play area and is read aloud row by row (each lighting),
-   * then flies into the sidebar. Resolves when it has landed.
+   * The request card (UX s1, s13; clinic fixes 13c, 13i): the rows go straight into the sidebar's order
+   * card and are read aloud with the read-along (each row lighting as it's said). Nothing waits for the
+   * talking: input is live at once, and a tap during the reading simply goes ahead. Resolves at once;
+   * `.reading` is the read-along's promise. opts: ordered (one ordered job), closed + onPeek (the closed
+   * card: the call is heard, not read; a tap peeks and counts a hint).
    */
-  S.request = async function (screen, { title, face, rows, who = "doctor", read = true }) {
+  S.request = function (screen, { title, face, rows, who = "doctor", read = true, ordered = false, closed = false, onPeek = null }) {
     const card = screen.card;
-    card.setTitle(title || "", face || S.doctorFace());
-    card.setRows(rows);
     card.who = who;
-    if (!read) return;
-    const big = card.el.cloneNode(true);
-    big.classList.add("cl-card-big");
-    big.querySelectorAll(".cl-card-speak").forEach((b) => b.remove());
-    screen.main.appendChild(big);
-    card.el.classList.add("cl-card-waiting");
-    const bigRows = Array.from(big.querySelectorAll(".cl-row"));
-    await Kit.wait(250);
-    for (let i = 0; i < rows.length; i++) {
-      const el = bigRows[i];
-      if (el) el.classList.add("reading");
-      await Kit.Voice.say(rows[i], { who: rows[i].who || who, noBubble: true });
-      if (el) el.classList.remove("reading");
+    card.isOrdered = !!ordered;
+    card.closed = closed ? { onPeek } : null;
+    card.fold = {};
+    card.titleText = title || "";
+    card.faceEl = face || S.doctorFace();
+    card.setRows(rows);
+    const reading = read ? card.speak() : Promise.resolve();
+    return Promise.resolve({ reading });
+  };
+
+  /**
+   * The staging hook (UX 16, 13e): while two characters talk they stand three-quarter turned to each other
+   * ("talk"); when it's the child's turn to act they turn to face the player ("front"): that turn is the
+   * "your turn" cue. A swap between two drawn poses with a quick crossfade, never an animation. The art
+   * (a three-quarter pose, mirrored for left and right, and a front pose) doesn't exist yet: with the
+   * stand-ins the hook sets data-pose and data-facing, and the CSS turns the stand-in a little
+   * (css/clinic.css "staging"). When the art lands, Kit.art.poses[kind] = {talk, front} swaps the picture.
+   *   S.pose(el, "talk" | "front", {facing: "left" | "right"})
+   */
+  S.pose = function (el, pose, o = {}) {
+    if (!el) return el;
+    const was = el.dataset.pose;
+    el.dataset.pose = pose;
+    if (o.facing) el.dataset.facing = o.facing;
+    el.classList.add("cl-staged");
+    if (was && was !== pose) {
+      el.classList.remove("pose-swap");
+      void el.offsetWidth;
+      el.classList.add("pose-swap");
     }
-    // fly into the sidebar
-    const from = big.getBoundingClientRect();
-    const to = card.el.getBoundingClientRect();
-    const sx = to.width / Math.max(1, from.width);
-    const sy = to.height / Math.max(1, from.height);
-    big.style.transformOrigin = "0 0";
-    big.style.transition = `transform ${Kit.fast ? 60 : 450}ms ease-in, opacity ${Kit.fast ? 60 : 450}ms ease-in`;
-    void big.offsetWidth;
-    big.style.transform = `translate(${to.left - from.left}px, ${to.top - from.top}px) scale(${sx}, ${sy})`;
-    big.style.opacity = "0.2";
-    await Kit.wait(Kit.fast ? 70 : 460);
-    big.remove();
-    card.el.classList.remove("cl-card-waiting");
+    const kind = el.dataset.kind;
+    const poses = kind && Kit.art && Kit.art.poses && Kit.art.poses[kind];
+    const img = el.querySelector("img");
+    if (poses && img && poses[pose] && Kit.sprite(poses[pose])) img.src = Kit.url(Kit.sprite(poses[pose]));
+    return el;
+  };
+  /** Both talk (three-quarter, turned to each other), or both turn to the player (the child's turn). */
+  S.stage = function (a, b, turn) {
+    if (turn === "player") {
+      S.pose(a, "front");
+      S.pose(b, "front");
+    } else {
+      S.pose(a, "talk", { facing: "right" });
+      S.pose(b, "talk", { facing: "left" });
+    }
   };
 
   /** The big button on the right; resolves when pressed. `throb` makes it pulse. */

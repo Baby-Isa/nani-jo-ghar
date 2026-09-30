@@ -5,7 +5,10 @@
  * levels. The doctor leans out of his half-open door and calls
  * "[Bring in] {description}"; the child taps the TICK under that person: it
  * shakes if wrong and locks in if right. Nobody moves until chosen; then the
- * chosen one stands and walks to the door. The level is the language ladder
+ * chosen one rises up off the seat and stays raised (13: no walk, no slide).
+ * At most 6 in the room, never two identical (13). From level 3 the card is
+ * closed: the call is heard, and a tap on the card is the paid peek (13a).
+ * W4: tap everyone, then the set is judged (13a). W3 left the mix (13). The level is the language ladder
  * (js/clinic/pipeline.js P.waiting): man/woman/boy/girl, + old/young,
  * + tall/short, + a colour, + with the baby/child (English placeholders, to record).
  *   W1 one call · W3 the child calls them (a speaking moment, the pills as the
@@ -95,54 +98,54 @@
       }
       Kit.Voice.speakers.bench = null;
 
-      // the why beat (G5): the doctor looks out, then calls
+      // the why beat (G5): the doctor looks out, then calls. Input is live at once (13i): nothing waits for the talking
       doc.classList.add("lean");
-      await S.say(S.line(env, "why-waiting"), "doctor");
-      await S.request(screen, { title: "", rows: plan.card });
+      S.pose(doc, "front");
+      S.say(S.line(env, "why-waiting"), "doctor");
+      // from level 3 the card is closed: the call is heard, not read; a tap on it is the paid peek (13a, 13c)
+      const closed = plan.level >= 3;
+      await S.request(screen, { title: "", rows: plan.card, closed, onPeek: () => screen.peek("waiting-card") });
       let callIdx = 0;
       const rows = plan.rows;
+      const W4 = plan.variant === "W4";
       let corrected = false;
       let busy = false;
       let finish;
       const done = new Promise((r) => (finish = r));
+      let picks = []; // W4: the ticks tapped so far, in order (numbered 1, 2)
 
       S.setExpect("waiting", () => {
         const r = rows[callIdx];
         if (busy) return { stage: "waiting", kind: "wait" };
+        if (W4 && picks.length < rows.length) {
+          const want = rows[picks.length];
+          return { stage: "waiting", kind: "tap", target: `.cl-wtick[data-seat="${want.answer}"]`, wrong: `.cl-wtick:not([data-seat="${want.answer}"]):not(.locked):not(.picked)` };
+        }
         if (!r) return { stage: "waiting", kind: "button" };
         if (r.voice) return { stage: "waiting", kind: "say", choice: plan.bench[r.answer].who };
         return { stage: "waiting", kind: "tap", target: `.cl-wtick[data-seat="${r.answer}"]`, wrong: `.cl-wtick:not([data-seat="${r.answer}"]):not(.locked)` };
       });
 
-      // the chosen one stands and walks to the doctor's door
-      const walk = async (s) => {
+      // the chosen one rises up off the seat and stays raised (13: no walk, no slide to the door)
+      const rise = async (s) => {
         s.gone = true;
-        s.wrap.classList.add("walking");
-        s.wrap.style.left = `${cfg.exit.x * 100}%`;
-        s.wrap.style.top = `${cfg.exit.y * 100}%`;
-        s.wrap.style.zIndex = "1";
+        s.wrap.classList.add("risen");
         Kit.Voice.speakers.patient = () => s.wrap;
-        await Kit.wait(Kit.fast ? 80 : 1100);
-        await S.say(S.line(env, "salaam"), "patient");
-        await S.say(S.line(env, "salaam-back"), "doctor");
-        s.wrap.classList.add("gone");
-        s.tick.classList.add("gone");
+        await Kit.wait(Kit.fast ? 60 : 450);
+        S.say(S.line(env, "salaam"), "patient");
+        S.say(S.line(env, "salaam-back"), "doctor");
       };
 
       const onRight = async (s, r) => {
         busy = true;
         s.tick.classList.add("locked");
         if (global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
-        screen.card.tick(r.id === "who1" && plan.variant === "W4" ? "who" : r.id);
+        screen.card.tick(r.id);
         S.signal("clinic-waiting-tap");
-        await Kit.wait(Kit.fast ? 40 : 450);
-        await walk(s);
+        await rise(s);
         callIdx++;
         busy = false;
-        if (callIdx >= rows.length) {
-          if (plan.variant === "W4") screen.card.tick("who");
-          finish();
-        }
+        if (callIdx >= rows.length) finish();
       };
       const onWrong = async (s) => {
         busy = true;
@@ -150,19 +153,70 @@
         void s.tick.offsetWidth;
         s.tick.classList.add("nope");
         s.wrap.classList.add("puzzled");
-        await Kit.wait(700);
+        await Kit.wait(Kit.fast ? 80 : 700);
         s.tick.classList.remove("nope");
         s.wrap.classList.remove("puzzled");
+        busy = false;
         if (plan.level <= 1 && !corrected) {
           corrected = true;
-          await S.say(plan.card[0], "doctor");
+          S.say(plan.card[0], "doctor");
         }
+      };
+      // W4 (13a): tap everyone straight away, each tick showing its number; the whole set is judged once the
+      // last one is tapped (a numbered tick tapped again is taken back: UX 17). All right: they lock in and rise;
+      // any wrong: the ticks shake and clear, and everyone sits back down to try again. The first set is scored.
+      const number = () => seats.forEach((x) => {
+        const k = picks.indexOf(x.i);
+        x.tick.classList.toggle("picked", k >= 0);
+        x.tick.dataset.n = k >= 0 ? String(k + 1) : "";
+      });
+      const judgeSet = async () => {
+        busy = true;
+        const ok = rows.map((r, k) => global.ClinicPipeline.judgeWho(r, picks[k]));
+        rows.forEach((r, k) => res.judge(r, ok[k]));
+        res.log.push({ type: ok.every(Boolean) ? "right" : "wrong", rowId: "set", detail: picks.map((i) => plan.bench[i].kind).join(",") });
+        await Kit.wait(Kit.fast ? 40 : 350);
+        if (ok.every(Boolean)) {
+          for (let k = 0; k < picks.length; k++) {
+            const s = seats[picks[k]];
+            s.tick.classList.add("locked");
+            screen.card.tick(rows[k].id);
+            await rise(s);
+          }
+          if (global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
+          S.signal("clinic-waiting-tap");
+          callIdx = rows.length;
+          busy = false;
+          finish();
+          return;
+        }
+        picks.forEach((i) => {
+          const s = seats[i];
+          s.tick.classList.remove("nope");
+          void s.tick.offsetWidth;
+          s.tick.classList.add("nope");
+          s.wrap.classList.add("puzzled");
+        });
+        await Kit.wait(Kit.fast ? 80 : 700);
+        seats.forEach((s) => s.wrap.classList.remove("puzzled", "risen", "standing"));
+        seats.forEach((s) => s.tick.classList.remove("nope"));
+        picks = [];
+        number();
         busy = false;
       };
 
       seats.forEach((s, i) => {
         s.tick.addEventListener("click", async () => {
           if (busy || s.gone || s.tick.classList.contains("locked")) return;
+          if (W4) {
+            const k = picks.indexOf(i);
+            if (k >= 0) picks.splice(k, 1); // take it back (UX 17)
+            else picks.push(i);
+            s.wrap.classList.toggle("standing", picks.includes(i));
+            number();
+            if (picks.length === rows.length) await judgeSet();
+            return;
+          }
           const r = rows[callIdx];
           if (!r || r.voice) return;
           const ok = global.ClinicPipeline.judgeWho(r, i);
@@ -208,6 +262,7 @@
         res.moments.push(out);
         const s = seats[r.answer];
         s.wrap.classList.remove("standing");
+        callIdx = 0;
         await onRight(s, r);
       }
 
@@ -216,6 +271,7 @@
 
       await done;
       S.current = null;
+      S.endOnboard();
       await S.button(screen, S.line(env, "where"));
       res.words.push({ kutchi: null, english: plan.calls[plan.calls.length - 1].say.english.replace(/^the /, "") });
       return res;

@@ -334,7 +334,7 @@ def main():
     cases = []
     # clinic v2: the waiting room's ladder (levels 1-5), W3 and W4; D1 levels 1-2 (level 2 = the old D1b), D2, D3 levels 1-3;
     # the send-off's face (1), said + goodbye (2), what helps (3) and E4
-    for st, v, L in (("waiting", "W1", 1), ("waiting", "W1", 2), ("waiting", "W1", 3), ("waiting", "W1", 4), ("waiting", "W1", 5), ("waiting", "W3", 2), ("waiting", "W4", 3),
+    for st, v, L in (("waiting", "W1", 1), ("waiting", "W1", 2), ("waiting", "W1", 3), ("waiting", "W1", 4), ("waiting", "W1", 5), ("waiting", "W4", 3), ("waiting", "W4", 5),
                      ("diagnosis", "D1", 1), ("diagnosis", "D1", 2), ("diagnosis", "D2", 1), ("diagnosis", "D2", 3), ("diagnosis", "D3", 1), ("diagnosis", "D3", 2), ("diagnosis", "D3", 3),
                      ("pharmacy", None, 1), ("pharmacy", None, 2), ("pharmacy", None, 3),
                      ("sendoff", "E1", 1), ("sendoff", "E2", 2), ("sendoff", "E2", 3), ("sendoff", "E4", 3)):

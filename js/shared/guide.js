@@ -71,14 +71,18 @@
   const SPEAKER = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="ng-waves" d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path class="ng-slash" d="M16 9l6 6M22 9l-6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`;
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  /** Build the box inside `el` (emptied). opts: face (img URL), bulb (img URL, optional), bulbId, onBulb, onReplay(faceButton). */
+  /**
+   * Build the box inside `el` (emptied). opts: face (img URL), bulb (img URL, optional), bulbId, onBulb, onReplay(faceButton),
+   * name (who the box is: "Nani" by default; the clinic's is the doctor, 13f: Nani isn't at the clinic).
+   */
   G.mount = function (el, opts = {}) {
     if (!el) return null;
     el.classList.add("njg-guide");
     el.setAttribute("role", "group");
-    el.setAttribute("aria-label", "Nani");
+    const who = esc(opts.name || "Nani");
+    el.setAttribute("aria-label", opts.name || "Nani");
     el.innerHTML = `
-      <button class="ng-face face-say" type="button" aria-label="Hear Nani again" title="Hear Nani again"><img alt="Nani" src="${esc(opts.face || "")}"><span class="say-badge" aria-hidden="true"></span></button>
+      <button class="ng-face face-say" type="button" aria-label="Hear ${who} again" title="Hear ${who} again"><img alt="${who}" src="${esc(opts.face || "")}"><span class="say-badge" aria-hidden="true"></span></button>
       <span class="ng-say"></span>
       <span class="ng-tools">
         ${opts.bulb || opts.onBulb ? `<button class="ng-bulb" type="button"${opts.bulbId ? ` id="${esc(opts.bulbId)}"` : ""} aria-label="Show it in English for a moment" title="Show it in English for a moment">${opts.bulb ? `<img alt="" src="${esc(opts.bulb)}">` : ""}<span class="bulb-t"></span></button>` : ""}
@@ -91,7 +95,8 @@
       const m = G.muted();
       el.classList.toggle("muted", m);
       mute.setAttribute("aria-pressed", String(m));
-      const label = m ? "Nani is quiet. Tap to hear her again" : "Make Nani quiet";
+      const nm = opts.name || "Nani";
+      const label = opts.name ? (m ? `${nm} is quiet. Tap to hear again` : `Make ${nm} quiet`) : m ? "Nani is quiet. Tap to hear her again" : "Make Nani quiet";
       mute.setAttribute("aria-label", label);
       mute.title = label;
     };

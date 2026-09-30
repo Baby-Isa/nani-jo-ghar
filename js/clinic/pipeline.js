@@ -199,11 +199,8 @@
         break;
       }
       if (variant === "W3" || L === 1) {
-        // kinds only: the four kinds, one of the called kind
-        const t = pick(whos, rng);
-        people.push(person(t));
-        const rest = whos.filter((w) => w !== t);
-        while (people.length < n) people.push(person(pick(rest, rng)));
+        // kinds only: different kinds (never two identical people, 13), so every one of them can be called
+        shuffle(whos, rng).slice(0, Math.min(n, whos.length)).forEach((w) => people.push(person(w)));
       } else {
         // the target has the level's word; a near miss for each word
         const needAdult = focus === "age" || focus === "with";
@@ -221,6 +218,24 @@
         while (people.length < n) people.push(person(pick(whos, rng)));
       }
       people.forEach((p) => p.with === "baby" && p.who === "man" && (p.with = "child"));
+      // at most maxInRoom in the room, counting the babies and children with the grown-ups (13, 13f)
+      const cap = S.maxInRoom || 6;
+      const inRoom = () => people.length + people.filter((p) => p.with).length;
+      for (let k = people.length - 1; k >= 0 && inRoom() > cap; k--) if (people[k].with && !(k === 0 && focus === "with")) people[k].with = null;
+      while (inRoom() > cap && people.length > 3) people.pop();
+      // never two identical people (13): a filler that looks like someone already there is drawn again
+      const sig = (p) => [p.who, p.age, p.height, p.colour, p.with].join("|");
+      let clash = false;
+      for (let k = 1; k < people.length; k++) {
+        let tries = 0;
+        while (people.slice(0, k).some((q) => sig(q) === sig(people[k])) && tries++ < 30) {
+          if (k < 3 && L > 1) break; // a near miss built on purpose: draw the room again
+          people[k] = person(pick(L === 1 ? whos : whos, rng));
+          if (people[k].with && inRoom() > cap) people[k].with = null;
+        }
+        if (people.slice(0, k).some((q) => sig(q) === sig(people[k]))) clash = true;
+      }
+      if (clash) continue;
       people = shuffle(people, rng);
       // who can be called: a description naming just them (kind + the level's word first)
       const callable = people.map((p, i) => (variant === "W3" || L === 1 ? (people.filter((q) => q.who === p.who).length === 1 ? ["kind"] : null) : P.uniqueAttrs(data, people, i, L, focus)));
@@ -257,7 +272,8 @@
       rung: focus,
     }));
     let card;
-    if (variant === "W4") card = [Object.assign(P.line(data, "bring2", { a: calls[0].say, b: calls[1].say }), { id: "who" })];
+    // W4: two in order, a sequence on the shared card (13c): "Pela {a}" then "ne poi {b}"
+    if (variant === "W4") card = [{ id: "who0", seq: "who", kutchi: `Pela ${calls[0].say.kutchi}`, english: `First ${calls[0].say.english}` }, { id: "who1", seq: "who", kutchi: `ne poi ${calls[1].say.kutchi}`, english: `and then ${calls[1].say.english}` }];
     else if (variant === "W3") card = [Object.assign(P.line(data, "come", { kind: calls[0].say }), { id: "who0" })];
     else card = [Object.assign(P.line(data, "bring", { kind: calls[0].say }), { id: "who0" })];
     const patient = bench[calls[calls.length - 1].target];
@@ -419,20 +435,20 @@
     const decoys = shuffle(S.decoys.filter((d) => !askIds.includes(d) && !askIds.map(base).includes(d) && (L > 1 || !askedGroups.has(group(d)))), rng);
     decoys.forEach((d) => add({ id: d, colour: null }));
     const loop = shuffle(belt, rng);
-    // the card: the doctor's prescription
+    // the card: the doctor's request (13b: the doctor orders, so it's "[Bring me] ...", not a customer's
+    // "Muke ... khape"; the Kutchi for "bring me" is still to confirm with Mum: an English placeholder, to record).
+    // One row per item (each ticks when the tray is handed over); at level 3 the order is a sequence on the
+    // shared card (13c): pela ..., ne poi ...
     const words = asked.map((a) => P.itemWord(data, a.id, a));
-    let line;
-    if (words.length === 1) line = P.line(data, "need1", { a: words[0] });
-    else if (K.order) {
-      const rest = words.slice(1).map((w) => w.kutchi).join(", ne poi ");
-      const restE = words.slice(1).map((w) => w.english).join(", and then ");
-      line = P.line(data, "needOrder", { a: words[0], rest: { kutchi: rest, english: restE } });
-    } else {
-      const rest = words.slice(1).map((w) => w.kutchi).join(", ne ");
-      const restE = words.slice(1).map((w) => w.english).join(", and ");
-      line = P.line(data, "needN", { a: words[0], rest: { kutchi: rest, english: restE } });
-    }
-    line.id = "need";
+    const ordered = !!(K.order && words.length > 1);
+    const card = words.map((w, i) => {
+      const pre = ordered ? (i === 0 ? "pela " : "ne poi ") : i === 0 ? "" : "ne ";
+      const preE = ordered ? (i === 0 ? "first " : "and then ") : i === 0 ? "" : "and ";
+      return Object.assign({ id: `grab${i}`, kutchi: `${pre}${w.kutchi}`, english: `${preE}${w.english}` }, ordered ? { seq: "need" } : {});
+    });
+    const cardHead = P.line(data, "bringme", { a: { kutchi: "", english: "" } });
+    cardHead.kutchi = cardHead.kutchi.trim();
+    cardHead.english = cardHead.english.trim();
     const rows = asked.map((a, i) => ({ id: `grab${i}`, stage: "pharmacy", kind: "grab", answer: keyOf(a), options: loop.map(keyOf), tested: true, word: words[i].word.english }));
     if (K.order && asked.length > 1) rows.push({ id: "order", stage: "pharmacy", kind: "order", answer: asked.map(keyOf), tested: true });
     asked.forEach((a, i) => a.count && rows.push({ id: `count${i}`, stage: "pharmacy", kind: "count", answer: a.count, item: keyOf(a), tested: true }));
@@ -448,7 +464,8 @@
       asked,
       loop,
       rows,
-      card: [line],
+      card,
+      cardHead,
       tray,
       words,
       everyMs: K.everyMs,
@@ -458,7 +475,7 @@
     };
   };
   /** A fresh tray state for the belt: one dish per asked item. */
-  P.beltState = (plan) => ({ dishes: plan.asked.map(() => null), taps: [], handovers: 0, first: null });
+  P.beltState = (plan) => ({ dishes: plan.asked.map(() => null), taps: [], handovers: 0, first: null, firstIn: plan.asked.map(() => null), takenBack: [] });
   /**
    * The child taps a belt item: a counted item already in a dish adds to it;
    * otherwise it hops to the next empty dish. Returns {dish, count} or null (tray full).
@@ -475,7 +492,17 @@
     const i = st.dishes.findIndex((d) => !d);
     if (i < 0) return null;
     st.dishes[i] = { key: k, id: it.id, colour: it.colour || null, count: 1 };
+    // the first placement in each dish is what's scored (UX 17): taking it back can't fish for the tick
+    if (st.firstIn && !st.firstIn[i] && !st.handovers) st.firstIn[i] = Object.assign({}, st.dishes[i]);
     return { dish: i, count: 1 };
+  };
+  /** Tap a placed dish to take it back (13b, UX 17): the dish empties; the belt brings the item round again. */
+  P.beltTakeBack = function (st, i) {
+    const d = st.dishes[i];
+    if (!d) return null;
+    st.dishes[i] = null;
+    (st.takenBack = st.takenBack || []).push(d.key);
+    return d;
   };
   P.beltFull = (st) => st.dishes.every(Boolean);
   /**
@@ -504,7 +531,11 @@
   /** The belt's rows, judged on the first handover. */
   P.beltRows = function (plan, st) {
     const f = st.first || { dishes: st.dishes, taps: st.taps };
-    const inTray = f.dishes.filter(Boolean);
+    // each dish as it was first filled (a thing taken back still counts: UX 17); the counts as handed over
+    const inTray = f.dishes.map((d, i) => {
+      const a = st.firstIn && st.firstIn[i];
+      return a && (!d || a.key !== d.key) ? a : d;
+    }).filter(Boolean);
     return plan.rows.map((r) => {
       if (r.kind === "grab") return { id: r.id, ok: inTray.some((d) => d.key === r.answer), row: r };
       if (r.kind === "order") {

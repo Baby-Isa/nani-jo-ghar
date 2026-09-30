@@ -108,6 +108,8 @@
     return Kit.sprite(p[mood] || p.neutral);
   };
 
+  /** The doctor's face for his box (a flat stand-in: glasses, beard; the art is based on Hannah's granddad, to come). */
+  Kit.DOCTOR_FACE = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#e8f3ef"/><circle cx="20" cy="21" r="14" fill="#c99a74"/><path d="M6 17 Q20 1 34 17 L34 12 Q20 -4 6 12Z" fill="#6f6a66"/><circle cx="15" cy="19.5" r="4" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="25" cy="19.5" r="4" fill="none" stroke="#333" stroke-width="1.5"/><path d="M19 19.5 h2" stroke="#333" stroke-width="1.5"/><path d="M11 27 Q20 38 29 27 Q27 33 20 33 Q13 33 11 27Z" fill="#8e8984"/><path d="M16 28.5 Q20 31 24 28.5" fill="none" stroke="#5a3a33" stroke-width="1.6" stroke-linecap="round"/><path d="M4 40 Q20 30 36 40Z" fill="#fff"/><path d="M17 36 L20 40 L23 36" fill="#2e8b7a"/></svg>');
   Kit.ITEMS = {}; // filled from data/clinic.json items
   Kit.COLOURS = {
     red: "#d23b3b", blue: "#3b6fd2", green: "#3fa35b", yellow: "#f0c43a", white: "#f4f1ea", black: "#33333b",
@@ -312,69 +314,175 @@
   /* ---------------- the instruction card ---------------- */
   /**
    * new Kit.Card(el, {who: "doctor", face: element|null, title})
-   * setRows([{id, kutchi, english, audio?, count?}]) · tick(id) · pulse(id) · english(on)
-   * speak() reads every row in order, lighting each (the one speaker, top right).
+   * Clinic fixes (13c, 13h): drawn by the shared order card (js/shared/order-card.js), so it behaves
+   * exactly like Cook's: ordered jobs show the sequence line with the next step in the grey band,
+   * rows tick when their step closes, the read-along lights each row as it's said, and the higher
+   * levels can close the card (a tap is the paid peek). One card per person (the patient's card, the
+   * doctor's request); the doctor's box sits above it (screen.js).
+   *
+   * setRows([{id, kutchi, english, audio?, who?, seq?}]) · addRow(r) · tick(id) · untick(id) · miss(id)
+   * pulse(id) · now(id) · count(id, n) · english(on) · speak(ids?) (the read-along)
+   * ordered(on): every row is one ordered job (the heal games' steps, the pharmacy's pela ... ne poi ...)
+   * rows sharing a `seq` key are one ordered job too; other rows are plain rows
+   * close(on, {onPeek}) the closed card (the call is heard, not read): a tap peeks for 3.5 s and counts a hint
+   * row(id).el is the row's element as drawn now (tests: .cl-row[data-row=id]).
    */
   Kit.Card = function (el, opts = {}) {
-    const card = this;
     this.el = el;
-    el.classList.add("cl-card", "oc-card"); // clinic v2 (G3): the patient card looks like Cook's order card
+    el.classList.add("cl-card");
     el.innerHTML = "";
-    const head = h("div", "cl-card-head oc-head", el);
-    this.face = h("div", "cl-card-face oc-face", head);
-    this.title = h("div", "cl-card-title oc-headline", head);
-    this.speaker = h("button", "cl-card-speak", head);
-    this.speaker.type = "button";
-    this.speaker.setAttribute("aria-label", "Hear it again");
-    this.speaker.innerHTML = "&#128264;";
-    this.list = h("ol", "cl-card-rows", el);
     this.rows = [];
     this.who = opts.who || "doctor";
     this.onReplay = opts.onReplay || null;
-    this.speaker.addEventListener("click", () => {
-      if (card.onReplay) card.onReplay();
-      card.speak();
-    });
+    this.faceEl = null;
+    this.titleText = "";
+    this.isOrdered = false;
+    this.closed = null;
+    this.fold = {};
+    this.st = { done: new Set(), miss: new Set(), pulse: null, now: null, reading: null, counts: {} };
+    if (global.FitText && global.FitText.watch) try { global.FitText.watch(el); } catch (e) { /* no fitting */ }
     if (opts.title) this.setTitle(opts.title);
   };
-  Kit.Card.prototype.setTitle = function (title, faceEl) {
-    this.title.textContent = title || "";
-    this.face.innerHTML = "";
-    if (faceEl) this.face.appendChild(faceEl);
+  const esc = (t) => String(t == null ? "" : t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  /** A row's label for the order card: the Kutchi (placeholders grey italic) and its English for the bulb. */
+  Kit.rowHtml = function (r) {
+    const t = document.createElement("span");
+    t.className = "cl-row-text";
+    Kit.text(r, t);
+    return `${t.outerHTML}<span class="cl-row-en" aria-hidden="true">${esc(r.english || "")}</span>`;
   };
-  Kit.Card.prototype.setRows = function (rows) {
-    this.rows = (rows || []).map((r, i) => Object.assign({ id: r.id || `r${i}` }, r));
-    this.list.innerHTML = "";
-    this.rows.forEach((r) => {
-      const li = h("li", "cl-row oc-row", this.list);
-      li.dataset.row = r.id;
-      const t = h("span", "cl-row-text oc-t", li);
-      Kit.text(r, t);
-      const en = h("span", "cl-row-en", li, r.english || "");
-      en.setAttribute("aria-hidden", "true");
-      h("span", "cl-tick oc-tk", li);
-      r.el = li;
+  Kit.Card.prototype.render = function () {
+    const card = this;
+    const st = this.st;
+    const OC = global.OrderCard;
+    const rows = this.rows;
+    const part = (r) => ({ label: Kit.rowHtml(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
+    const items = [];
+    const groups = {};
+    rows.forEach((r) => {
+      const g = this.isOrdered ? "__all" : r.seq;
+      if (g) {
+        if (!groups[g]) {
+          groups[g] = { label: null, ordered: true, parts: [] };
+          items.push(groups[g]);
+        }
+        groups[g].parts.push(part(r));
+      } else items.push({ label: Kit.rowHtml(r), parts: [], done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
     });
+    // a job with a single step is a plain row (no sequence line for one thing)
+    items.forEach((it, i) => {
+      if (it.label === null && it.parts.length === 1) items[i] = Object.assign({ parts: [] }, it.parts[0]);
+    });
+    const tt = this.titleText;
+    const headHtml = !tt ? null : typeof tt === "string" ? esc(tt) : Kit.rowHtml(tt);
+    const data = { person: null, headline: headHtml ? { html: headHtml, key: "__head" } : null, items };
+    card.rows.forEach((r) => (r.el = null));
+    const opts = {
+      fold: this.fold,
+      foldAfter: 900,
+      onEl: (key, rowEl) => {
+        if (key === "__head") {
+          card.headEl = rowEl;
+          rowEl.classList.toggle("reading", st.reading === "__head");
+          return;
+        }
+        const r = card.row(key);
+        if (!r) return;
+        r.el = rowEl;
+      },
+      decorate: (rowEl, node) => {
+        if (node.key == null) return;
+        const r = card.row(node.key);
+        if (!r) return;
+        rowEl.classList.add("cl-row");
+        rowEl.dataset.row = r.id;
+        rowEl.classList.toggle("pulse", st.pulse === r.id);
+        rowEl.classList.toggle("now", st.now === r.id);
+        rowEl.classList.toggle("reading", st.reading === r.id);
+        const n = st.counts[r.id];
+        if (n > 0) {
+          const chip = document.createElement("span");
+          chip.className = "cl-row-count";
+          chip.textContent = Kit.NUM[n] || String(n);
+          rowEl.insertBefore(chip, rowEl.querySelector(".oc-tk"));
+        }
+      },
+    };
+    if (this.closed) {
+      opts.closed = true;
+      opts.onPeek = this.closed.onPeek || null;
+    }
+    this.el.innerHTML = "";
+    if (!OC) return this;
+    const c = OC.card(data, opts);
+    // the person's face (= replay), drawn by the clinic (a stand-in face element, not a picture file)
+    if (this.faceEl) {
+      const f = document.createElement("button");
+      f.type = "button";
+      f.className = "oc-face face-say cl-card-face";
+      f.setAttribute("aria-label", "Hear it again");
+      f.appendChild(this.faceEl);
+      f.insertAdjacentHTML("beforeend", '<span class="say-badge" aria-hidden="true"></span>');
+      f.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (card.onReplay) card.onReplay();
+        card.speak();
+      });
+      const head = c.querySelector(".oc-head");
+      head.insertBefore(f, head.firstChild);
+    }
+    if (!rows.length && !this.faceEl && !this.titleText) c.classList.add("cl-empty");
+    this.el.appendChild(c);
+    this.ocEl = c;
+    if (global.FitText && global.FitText.run) try { global.FitText.run(c); } catch (e) { /* no fitting */ }
     return this;
   };
+  Kit.Card.prototype.setTitle = function (title, faceEl) {
+    this.titleText = title || "";
+    this.faceEl = faceEl || null;
+    return this.render();
+  };
+  Kit.Card.prototype.ordered = function (on = true) {
+    this.isOrdered = !!on;
+    return this.render();
+  };
+  /** The closed card (13a, 13c: from level 3 the call is heard, not read): a tap peeks and counts a hint. */
+  Kit.Card.prototype.close = function (on = true, o = {}) {
+    this.closed = on ? { onPeek: o.onPeek || null } : null;
+    this.fold = {};
+    return this.render();
+  };
+  Kit.Card.prototype.setRows = function (rows) {
+    this.rows = (rows || []).map((r, i) => Object.assign({ id: r.id || `r${i}` }, r, { el: null }));
+    this.st = { done: new Set(), miss: new Set(), pulse: null, now: null, reading: null, counts: {} };
+    this.fold = {};
+    return this.render();
+  };
   Kit.Card.prototype.addRow = function (r) {
-    const rows = this.rows.map((x) => Object.assign({}, x, { el: undefined }));
-    const ticked = this.rows.filter((x) => x.el && x.el.classList.contains("done")).map((x) => x.id);
-    this.setRows(rows.concat([r]));
-    ticked.forEach((id) => this.tick(id, { quiet: true }));
+    this.rows.push(Object.assign({ id: r.id || `r${this.rows.length}` }, r, { el: null }));
+    return this.render();
   };
   Kit.Card.prototype.row = function (id) {
     return this.rows.find((r) => r.id === id) || null;
   };
   /** Auto-tick when a step CLOSES (UX s11). */
   Kit.Card.prototype.tick = function (id, o = {}) {
-    const r = this.row(id);
-    if (!r || !r.el) return;
-    r.el.classList.remove("pulse", "now");
-    r.el.classList.add("done");
-    const tk = r.el.querySelector(".oc-tk");
-    if (tk && global.OrderCard && global.OrderCard.CHECK) tk.innerHTML = global.OrderCard.CHECK;
+    if (!this.row(id) || this.st.done.has(id)) return;
+    this.st.done.add(id);
+    if (this.st.pulse === id) this.st.pulse = null;
+    if (this.st.now === id) this.st.now = null;
+    this.render();
     if (!o.quiet && global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
+  };
+  Kit.Card.prototype.untick = function (id) {
+    if (this.st.done.delete(id)) this.render();
+  };
+  /** A wrong pick marks its row in the review only (13c): never shown during play. */
+  Kit.Card.prototype.miss = function (id) {
+    this.st.miss.add(id);
+  };
+  Kit.Card.prototype.isTicked = function (id) {
+    return this.st.done.has(id);
   };
   /**
    * G6 (the Cook counting rule, Q7): at level 1 a row counts up as you tap, written as the
@@ -382,47 +490,46 @@
    */
   Kit.NUM = { 1: "hakro", 2: "ba", 3: "trae", 4: "char", 5: "panj" };
   Kit.Card.prototype.count = function (id, n) {
-    const r = id ? this.row(id) : this.rows.find((x) => x.el && x.el.classList.contains("now")) || this.rows.find((x) => x.el && !x.el.classList.contains("done"));
-    if (!r || !r.el) return null;
-    let chip = r.el.querySelector(".cl-row-count");
-    if (!chip) chip = h("span", "cl-row-count", r.el);
-    chip.textContent = n > 0 ? Kit.NUM[n] || String(n) : "";
-    chip.classList.remove("bump");
-    void chip.offsetWidth;
-    chip.classList.add("bump");
+    const r = id ? this.row(id) : this.row(this.st.now) || this.rows.find((x) => !this.st.done.has(x.id));
+    if (!r) return null;
+    this.st.counts[r.id] = n;
+    this.render();
+    const chip = r.el && r.el.querySelector(".cl-row-count");
+    if (chip) chip.classList.add("bump");
     return r.id;
-  };
-  Kit.Card.prototype.untick = function (id) {
-    const r = this.row(id);
-    if (r && r.el) {
-      r.el.classList.remove("done");
-      const tk = r.el.querySelector(".oc-tk");
-      if (tk) tk.innerHTML = "";
-    }
-  };
-  Kit.Card.prototype.isTicked = function (id) {
-    const r = this.row(id);
-    return !!(r && r.el && r.el.classList.contains("done"));
   };
   /** The throbbing hint (free). pulse(null) stops every pulse. */
   Kit.Card.prototype.pulse = function (id, on = true) {
-    this.rows.forEach((r) => r.el && (id == null || r.id === id) && r.el.classList.toggle("pulse", !!on && id != null));
+    this.st.pulse = on && id != null ? id : null;
+    this.render();
   };
   /** Mark the row being worked on now (a soft highlight, not a hint). */
   Kit.Card.prototype.now = function (id) {
-    this.rows.forEach((r) => r.el && r.el.classList.toggle("now", r.id === id));
+    if (this.st.now === id) return;
+    this.st.now = id;
+    this.render();
   };
   Kit.Card.prototype.english = function (on) {
     this.el.classList.toggle("english", !!on);
   };
-  /** The one speaker: read the rows in order, lighting each as it plays. */
+  /** The read-along: read the rows in order, lighting each as it plays (the card's face is the replay). */
   Kit.Card.prototype.speak = async function (only) {
-    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows;
+    const tt = this.titleText;
+    if (!only && tt && typeof tt === "object") {
+      this.st.reading = "__head";
+      if (this.headEl) this.headEl.classList.add("reading");
+      await Voice.say(tt, { who: this.who, noBubble: true });
+      if (this.st.reading === "__head") this.st.reading = null;
+      if (this.headEl) this.headEl.classList.remove("reading");
+    }
+    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows.slice();
     for (const r of rows) {
-      if (!r.el) continue;
-      r.el.classList.add("reading");
+      if (!this.rows.includes(r)) continue;
+      this.st.reading = r.id;
+      if (r.el) r.el.classList.add("reading");
       await Voice.say(r, { who: r.who || this.who, noBubble: true });
-      r.el.classList.remove("reading");
+      if (this.st.reading === r.id) this.st.reading = null;
+      if (r.el) r.el.classList.remove("reading");
     }
   };
 
@@ -552,9 +659,26 @@
     this.slots.forEach((s, j) => s.el.classList.toggle("pulse", on && j === i));
   };
 
-  /* ---------------- the big button on the right ---------------- */
+  /* ---------------- the buttons (the shared kit, UX 15) ---------------- */
+  /**
+   * The clinic's buttons come from the shared button kit (js/shared/buttons.js): "✓" (or cls "done")
+   * is the round gold ✓ Done; anything else is the → Next pill with its label. They sit in the play
+   * area's bottom-right corner (screen.actions), inside its edges on every screen.
+   */
   Kit.button = function (parent, label, onPress, cls) {
-    const b = h("button", `cl-go ${cls || ""}`, parent);
+    const NB = global.NjgButtons;
+    const isDone = label === "✓" || /\bdone\b/.test(cls || "");
+    const glow = /\bthrob\b/.test(cls || "");
+    let b;
+    if (NB) {
+      const lab = typeof label === "string" || label == null ? label : Kit.text(label, null);
+      b = isDone ? NB.done(parent, (e) => onPress && onPress(e), { glow }) : NB.next(parent, lab, (e) => onPress && onPress(e), { glow });
+      b.classList.add("cl-go");
+      (cls || "").split(/\s+/).filter((c) => c && c !== "throb").forEach((c) => b.classList.add(c));
+      if (b.parentNode !== parent && parent) parent.appendChild(b);
+      return b;
+    }
+    b = h("button", `cl-go ${cls || ""}`, parent);
     b.type = "button";
     if (typeof label === "string") b.textContent = label;
     else if (label) Kit.text(label, b);
