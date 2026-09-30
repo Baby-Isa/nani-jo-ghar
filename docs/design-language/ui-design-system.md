@@ -1,5 +1,15 @@
 # Cook design system v1, and the chai station v2 (28 Sept 2026)
 
+> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written; the Cook station specs (§1, 5, 9–11, 13–15) now live in `docs/game-design/modes/cook.md`.
+> - "One line per pill (shrink to fit, down to 14 px)" → headlines shrink, then wrap; never clipped or ellipsised (F7, non-negotiable 9)
+> - Stars or star badges on result cards → three badges: time, accuracy, hints (H5, decisions 1–2)
+> - *marcha* and "Marcha na." in Nani's chop card → *mirchi* only, no plural, for now (G5, decision 5)
+> - An English headline placeholder ("Chop these") for the child → no written English for the child (E1, F23); missing Kutchi is a grey-italic placeholder flagged "to record"
+> - "Front-on inventory bowls" (§4) vs top-down prep bowls in Sekelo and samosa → camera chosen per station (H14)
+> - Hands in Cook → none (H13)
+> - Sidebar on the right in older sketches → left, about 22% (F4); no letterbox or cream strip (F18)
+> - Digits or dots for quantities → none for the child (E12, F25)
+
 The single source of truth for how Cook looks and behaves. It merges Zafar's feedback (and his wife's), two external reviews (`external-review-*.md` in this folder), and Claude's own review. Where it disagrees with an older doc, this wins. **Status: §8 answered by Zafar (28 Sept): one pan per person YES; masala dabba NO; tap object = use, tap chip = hear YES. Mock-up (§9) next.**
 
 *§1 Moved to `docs/game-design/modes/cook.md` (Part 1: station specs).*
@@ -87,3 +97,20 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 *§14 Moved to `docs/game-design/modes/cook.md` (Part 1: station specs).*
 
 *§15 Moved to `docs/game-design/modes/cook.md` (Part 1: station specs).*
+
+## Additions from Zafar's Cook UI feedback, 28 Sept
+
+> from: docs/feedback/cook-ui-feedback-2026-09-28.md § §3 Nani the guide: her own box at the top of the sidebar, in every mode (includes the mute button)
+
+### 3. Nani the guide: her own box at the top of the sidebar, in every mode
+- She's always there: her face, and the instruction for what to do **now**, in Kutchi. Sometimes it's spoken, sometimes only written.
+- **Her colour (decide).** Recommendation: the cream of her kurta, with a band of her red embroidery along the left edge. It's distinct from the plain cream recipe cards, without looking like a danger red.
+- **Tap her box to mute or unmute her voice** (remembered for every mode), plus a replay button. The light bulb (translate) moves into her box row, drawn with the new bulb art, which frees the lonely top row.
+
+> from: docs/feedback/cook-ui-feedback-2026-09-28.md § §6 The word review (page 2 of the end-of-round screen): the layout
+
+### 6. The word review (page 2 of the end-of-round screen)
+- **Centred vertically**, not pushed to the top.
+- **The card border and shadow the same all the way round.** Better colours: right = gold (the theme); wrong = red (Zafar's "red makes you want to fix it") **(decide)**.
+- **The layout:** wrong words on the left, right words on the right. Each side's width is proportional to its count, with a minimum of one column. At most three across per side, stacking into rows.
+
