@@ -29,7 +29,7 @@ Branch `claude/cook-maani-v3`. Station `js/cook/stations/maani-line.js` (and the
 
 ## 3. Tests
 - `python3 build/test_cook.py --lab --stations maani-line,roll-tawa,roll,flip --viewport laptop`: **PASS** (477 s). `--viewport phone-landscape`: **PASS** (414 s). Both re-run after the last code change.
-- `python3 build/test_cook.py --days 1 --canvas`: DAYS_RESULT
+- `python3 build/test_cook.py --days 1 --canvas`: **PASS on all 6 viewports** (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait), run after merging `origin/main` (chaat v3). The laptop lab run was repeated after that merge too: **PASS** (369 s). Day 1 doesn't reach maani; the lab runs are what play the station.
 - `node --test build/test_shared_*.mjs`: 117/117. `node build/check_onboard.mjs`: ok. `python3 build/check_vessel_meta.py`: ok, with the new `check_maani()` (23 lines, all ok).
 - **The bot's tawa scores are low (40–64% on the first maani of a run).** The bot reads the ring through the page, so it taps late: under load, and while a shot is being taken. These scores come from the test player's timing, not the station's; the ring's band and speed are unchanged from v2.
 - **Bug caught by the shots and fixed:** the Tawa lab drew the v3 maani about 25% bigger than its tawa (a 403 px canvas where v1's was 324). `tawa.js` now scales it back to the old size.
