@@ -243,6 +243,8 @@
       return { x: wx, y: wy, glass, face, fill: 0 };
     });
     pans.forEach((pan, i) => (pan.well = wells[i]));
+    // for the screenshot script (build/shoot_chai_v2.py): each pan's state; harmless when unused
+    Cook.chaiPans = () => pans.map((q) => ({ who: q.who, state: q.state, heat: q.heat, lo, hi, milk: q.has.milk > 0, leaves: q.has.leaves > 0, extras: q.extras.length, shown: q.shown, poured: q.poured }));
 
     /* ---------- the shelf: identical slots, grouped, a chip under each ---------- */
     const slotsN = shelfIds.reduce((a, g) => a + g.length, 0);
@@ -923,6 +925,7 @@
     }
     // the review (29 Sept, X10 / Q1: Cook.Kit.review): each person's big round face over their glass,
     // happy when it's right, a gentle frown when it's wrong (then they say again what they asked for)
+    Cook.chaiServe = recasts.length ? "wrong" : "right"; // for the screenshot script
     const looks = await review(recasts.map((r) => r.pan));
     if (recasts.length) {
       await zb.oops();
