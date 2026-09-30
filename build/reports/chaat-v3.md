@@ -38,7 +38,8 @@ Branch `claude/cook-chaat-v3`. Mechanic `js/cook/mechanics/assemble.js` (and its
 
 ## 3. Tests
 - `python3 build/test_cook.py --lab --stations assemble,chop --viewport laptop`: **PASS** (147 s). With `--viewport phone-landscape`: **PASS** (128 s).
-- `python3 build/test_cook.py --days 1 --canvas`: see the final line in `docs/overnight-log.md`. It was re-run per viewport after the final merge of `origin/main`; day 1 doesn't reach chaat.
+- `python3 build/test_cook.py --days 1 --canvas`: **PASS on all 6 viewports** (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait), run one viewport at a time on the final code; `origin/main` had not moved since the branch started, so the merge was a no-op. Day 1 doesn't reach chaat.
+- The lab runs above were repeated on the final code: laptop **PASS** (148 s), phone landscape **PASS** (133 s).
 - `node --test build/test_shared_*.mjs`: **117/117**. `node build/check_onboard.mjs`: **ok**. `python3 build/check_vessel_meta.py`: **ok** (88 checks, 11 new for chaat: the bowl, plus the ten pots on one canvas).
 - **Take-back,** checked in the browser (phone landscape, level 2):
   - bowl before `[chana, bataato]`, card `chana ✓ bataato ✓`;
