@@ -33,7 +33,7 @@ DEBUG = bool(os.environ.get("SHOOT_DEBUG"))
 
 
 class Shooter(T.Player):
-    def __init__(self, page, shots, speed, tag, wrong=False, peek=False, demo=False):
+    def __init__(self, page, shots, speed, tag, wrong=False, peek=False, demo=False, takeback=False):
         super().__init__(page, shots, speed)
         self.mistakes = False
         self.tag = tag
@@ -42,6 +42,7 @@ class Shooter(T.Player):
         self.peek = peek
         self.served = 0
         self.demo = demo
+        self.takeback = takeback
         # the Player's own "?" and light-bulb checks are test_cook's job (and cost a hint)
         self.helped = True
 
@@ -118,17 +119,28 @@ class Shooter(T.Player):
             # each layer going in: mid-drop (the spoonful over the bowl), then settled
             time.sleep(0.3 / self.speed)
             self.snap(f"in{n + 1}", force=True)
+            if self.takeback and n == 2 and "takeback" not in self.taken:
+                # §17: tap the bowl, the top layer comes back out to its pot
+                time.sleep(0.9)
+                xy = self.page.evaluate("""(() => { const s = Cook.scene; const o = [...s.children.list].filter(o => o.texture && o.texture.key === 'cv3-bowl').pop();
+                    const p = Cook.UI.worldToScreen(o.x, o.y + o.displayHeight * 0.2); return [p.x, p.y]; })()""")
+                self.snap("takeback-before")
+                self.page.mouse.click(xy[0], xy[1])
+                time.sleep(0.25)
+                self.snap("takeback")
+                time.sleep(0.9)
+                self.snap("takeback-after")
             if n == 1 and "mid" not in self.taken:
                 time.sleep(0.55 / self.speed * 1.5)
                 self.snap("mid")
         return r
 
 
-def run(vp, out, level, speed, guided=True, wrong=False, demo=True):
+def run(vp, out, level, speed, guided=True, wrong=False, demo=True, takeback=False):
     tag = f"{vp['name']}-l{level}" + ("-wrong" if wrong else "")
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
-        P = Shooter(page, out, speed, tag, wrong=wrong, peek=level >= 4, demo=demo)
+        P = Shooter(page, out, speed, tag, wrong=wrong, peek=level >= 4, demo=demo, takeback=takeback)
         if not demo:
             page.evaluate("() => { Cook.save.coached = Object.assign(Cook.save.coached || {}, {'assemble-v2': true}); }")
         page.evaluate(f"() => {{ __cook.lab('assemble', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
@@ -157,6 +169,7 @@ def main():
     ap.add_argument("--level", type=int, default=1)
     ap.add_argument("--wrong", action="store_true")
     ap.add_argument("--nodemo", action="store_true")
+    ap.add_argument("--takeback", action="store_true")
     ap.add_argument("--speed", type=float, default=1.5)
     ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "chaat-v3"))
     a = ap.parse_args()
@@ -182,7 +195,7 @@ def main():
                 os.remove(os.path.join(out, f))
     else:
         os.makedirs(a.out, exist_ok=True)
-        ok = run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong, demo=not a.nodemo)
+        ok = run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong, demo=not a.nodemo, takeback=a.takeback)
     sys.exit(0 if ok else 1)
 
 

@@ -607,6 +607,29 @@
           }),
         );
       },
+      /** §17: the top layer comes back out (it shrinks away); returns its id. */
+      async removeTop(ms = 320) {
+        const L = layers[layers.length - 1];
+        if (!L) return null;
+        await new Promise((resolve) =>
+          S.tweens.addCounter({
+            from: 1,
+            to: 0,
+            duration: ms,
+            ease: "Sine.easeIn",
+            onUpdate: (tw) => {
+              L.grow = tw.getValue();
+              draw();
+            },
+            onComplete: resolve,
+          }),
+        );
+        layers.pop();
+        draw();
+        return L.id;
+      },
+      /** The picture you tap to take the top layer back (the see-through glass over the food). */
+      hit: hi,
       /** Everything out (a gentle "not quite": the glass comes back empty). */
       async empty() {
         const n = layers.length;
@@ -936,7 +959,71 @@
 
       /* ---------- a topping goes in: it lifts off the shelf, drops into the glass and settles ---------- */
       const got = [];
+      const ticked = []; // the card row each layer ticked (null: none), to untick it if it's taken back
       let busy = 0;
+      let building = false; // the bowl takes a layer back only while you're building (§17)
+      let firstWrong = null;
+      /** The first mistake is what's scored (the ear star, the end review), whenever it's found. */
+      const firstMiss = (m) => {
+        if (firstWrong) return;
+        const wrong = m.got;
+        let why;
+        if (wrong && exclude.includes(wrong)) why = `added ${wrong} (they said no)`;
+        else if (wrong && m.expected) why = `${wrong} instead of ${m.expected}`;
+        else if (wrong) why = `added ${wrong} at the end`;
+        else why = `forgot ${m.expected}`;
+        firstWrong = why;
+        z.listen(false, why);
+        if (m.expected) Cook.markMiss(m.expected);
+        if (wrong && exclude.includes(wrong)) UI.mission.missItem(wrong, dishNo(), { no: true });
+        else if (m.expected) UI.mission.missItem(m.expected, dishNo());
+      };
+      /**
+       * §17 (29 Sept): tap the bowl to take the top layer back, until Done. It shrinks out of the bowl and a
+       * spoonful flies back to its pot; its card row goes back to "to do". A layer that was wrong when it went
+       * in still counts as the first mistake (the first placement is what's scored).
+       */
+      async function takeBack() {
+        if (!building || busy || !got.length) return;
+        busy++;
+        const at = got.length - 1;
+        const id = got[at];
+        const m = C.mistake(got);
+        if (m && m.at === at && m.got !== undefined) firstMiss(m);
+        Cook.sfx.pop();
+        const p = bowl.surfaceAt();
+        await bowl.removeTop();
+        got.pop();
+        const r = ticked.pop();
+        const L = ladderOf(ctx);
+        if (r) {
+          r.got = Math.max(0, (r.got || 1) - 1);
+          r.done = false;
+        }
+        const s = L && L.sections.find((x) => x.seq && !x.cardOf);
+        if (s && s.at) s.at--;
+        UI.mission.refresh();
+        const obj = items[id];
+        if (obj && S.textures.exists(`cv3-bit-${id}`)) {
+          const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(64), z.L(64 * 0.62)));
+          await S.fly(spoon, obj.x, obj.y - obj.displayHeight * 0.5, { duration: 380, arc: z.L(70) });
+          spoon.destroy();
+        }
+        // what the order wants next has changed (the guided glow, and the test's expectation)
+        if (building) {
+          const want = C.next(got);
+          Object.entries(items).forEach(([k2, o]) => o && o.active && ctx.guided && S.glow(o, k2 === want));
+          if (want && items[want]) {
+            const c = S.centre(items[want]);
+            const wrongs = Object.keys(items)
+              .filter((k2) => k2 !== want && items[k2] && items[k2].active)
+              .map((k2) => S.centre(items[k2]));
+            z.expect({ kind: "tap", x: c.x, y: c.y, key: want, wrongs });
+          }
+        }
+        busy--;
+      }
+      S.tappable(bowl.hit, () => takeBack());
       async function drop(id) {
         const obj = items[id];
         busy++;
@@ -998,7 +1085,7 @@
         spoon.destroy();
         got.push(id);
         // the pill ticks now (UX 11: its step has closed, right or not; the serve judges the order)
-        UI.mission.tickItem(id, dishNo());
+        ticked.push(UI.mission.tickItem(id, dishNo()));
         if (UI.mission.advance) UI.mission.advance(dishNo());
         S.puff(p.x, p.y, St.color(((Cook.data.words[id] || {}).layer || {}).color || "#ffffff"), z.L(34));
         const settle = bowl.add(id);
@@ -1065,9 +1152,9 @@
         };
 
         /* ---------- build, serve, taste (and build again if it's not right) ---------- */
-        let firstWrong = null;
         for (;;) {
           let last = 0;
+          building = true;
           for (;;) {
             const r = await St.freePick(z, {
               items,
@@ -1081,6 +1168,7 @@
             z.expect({ kind: "wait" });
             await drop(r.id);
           }
+          building = false;
           while (busy) await Cook.wait(60);
           z.expect({ kind: "wait" });
           tries++;
@@ -1090,7 +1178,7 @@
           if (!m) {
             // right: a happy face and the family's praise
             if (exclude.length) UI.mission.closeItem(exclude, dishNo());
-            if (!guided && tries === 1) flat.forEach((id) => Cook.markRight(id));
+            if (!guided && tries === 1 && !firstWrong) flat.forEach((id) => Cook.markRight(id));
             await review(true);
             // a moment to enjoy it before the end of the station
             await Cook.wait(900);
@@ -1098,28 +1186,17 @@
             break;
           }
           // not quite: a gentle face, they say what they asked for again, the glass comes back empty
-          const wrong = m.got;
-          let why;
-          if (wrong && exclude.includes(wrong)) why = `added ${wrong} (they said no)`;
-          else if (wrong && m.expected) why = `${wrong} instead of ${m.expected}`;
-          else if (wrong) why = `added ${wrong} at the end`;
-          else why = `forgot ${m.expected}`;
-          if (!firstWrong) {
-            // only the first try counts (the ear star and the end review)
-            firstWrong = why;
-            z.listen(false, why);
-            if (m.expected) Cook.markMiss(m.expected);
-            if (wrong && exclude.includes(wrong)) UI.mission.missItem(wrong, dishNo(), { no: true });
-            else if (m.expected) UI.mission.missItem(m.expected, dishNo());
-          }
+          // (only the first mistake counts: the ear star and the end review)
+          firstMiss(m);
           await review(false);
           const line = orderLine(ladderOf(ctx));
           // level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
-        if (line && level >= 4) await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);
-        else if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
+          if (line && level >= 4) await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);
+          else if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
           St.customerDone();
           await Promise.all([look.close(), bowl.empty()]);
           got.length = 0;
+          ticked.length = 0;
           // the card starts again (its misses stay for the review)
           const L = ladderOf(ctx);
           if (L) {
@@ -1136,7 +1213,7 @@
         unfold();
       }
       ctx.result.layers = got.slice();
-      z.skill(tries === 1 ? 100 : Math.max(55, 100 - 20 * (tries - 1)), "assemble");
+      z.skill(tries === 1 && !firstWrong ? 100 : Math.max(55, 100 - 20 * Math.max(1, tries - 1)), "assemble");
       await Cook.wait(500);
       return got;
     },
