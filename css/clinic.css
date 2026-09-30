@@ -433,7 +433,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* UX 16, staging (a hook for the art's three-quarter and front poses; with the stand-ins, a small turn) */
 .cl-staged { transition: transform .25s ease; }
 .cl-staged.pose-swap { animation: cl-pose-fade .25s ease; }
-@keyframes cl-pose-fade { 0% { opacity: .55; } 100% { opacity: 1; } }
+@keyframes cl-pose-fade { 0% { opacity: .85; } 100% { opacity: 1; } }
 .cl-staged[data-pose="talk"][data-facing="left"] > svg, .cl-staged[data-pose="talk"][data-facing="left"] > img { transform: scaleX(-1); }
 .cl-staged[data-pose="talk"] { filter: saturate(.92); }
 .cl-card .oc-headline.reading { box-shadow: inset 0 -3px 0 #c9962e; }

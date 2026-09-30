@@ -108,7 +108,7 @@
       const feel = data.feelings[plan.feeling];
       const moodOf = (f) => (f === "happy" ? "happy" : data.feelings[f].mood);
       fig.react(moodOf(plan.feeling), 0);
-      if (plan.mode === "face") showFeel(plan.feeling);
+      if (plan.mode !== "said") showFeel(plan.feeling);
       S.say(Object.assign({ kutchi: `[${feel.line.english}]` }, feel.line), "patient");
       // the child's turn: they turn to face the player (UX 16), and the choice opens at once (13i)
       S.stage(docEl, layer, "player");
@@ -156,7 +156,7 @@
       const nowHappy = async () => {
         fig.react("happy", 0);
         fig.pose("jump");
-        if (plan.mode === "face") showFeel("happy");
+        if (plan.mode !== "said") showFeel("happy");
         await S.say(Object.assign({ kutchi: `[${data.feelings.happy.line.english}]` }, data.feelings.happy.line), "patient");
       };
 
@@ -253,7 +253,7 @@
               return;
             }
             fig.react("happy", 0);
-            if (plan.mode === "face") showFeel("happy");
+            if (plan.mode !== "said") showFeel("happy");
             finish();
           })
         );
