@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cut the samosa v2 art (docs/design/cook-design-system-v1.md §15) into assets/cook/items/samosa-v2/, with
+"""Cut the samosa v2 art (docs/design-language/ui-design-system.md §15) into assets/cook/items/samosa-v2/, with
 build/cut_tick_v2.py's method (the object = everything not connected to the flat background, holes filled;
 edges by colour-to-alpha against the measured background):
   stage-0..3.webp   the fold stages on ONE registered canvas (they overlay exactly): 0 the flat strip (made from

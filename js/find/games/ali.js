@@ -1,5 +1,5 @@
 /*
- * Find it, F4: Ali's turn (docs/find-it-design.md D2, D4 moment 2; brief
+ * Find it, F4: Ali's turn (docs/game-design/modes/find-it.md D2, D4 moment 2; brief
  * 8.3 task 3). Role reversal: you're Nani. Your list is pictures (you can
  * see it; you say it); Ali stands at the stall and picks what he HEARD, so
  * you see what you said. Level 1: the thing. From level 2, a second moment

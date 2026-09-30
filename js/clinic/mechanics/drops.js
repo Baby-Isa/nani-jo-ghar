@@ -1,5 +1,5 @@
 /*
- * Mechanic: drops (T11, level 3). docs/modes/clinic-design.md R2.5, R3.2.
+ * Mechanic: drops (T11, level 3). docs/archive/clinic/clinic-design-v1.md R2.5, R3.2.
  * The patient said which eye or ear (their own side, "my left eye": the
  * where row, before this); the doctor says how many ("Two drops."). The
  * dropper sits over the place; squeeze once per drop (Cook's counted tap);

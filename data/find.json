@@ -1,5 +1,5 @@
 {
-  "_about": "Find it (docs/find-it-design.md): the search engine's data. Scenes (anchors and hide spots, with the relation each spot has to its anchor), look-alike groups, mechanic levels and the story. Every Kutchi word is borrowed: from data/cook.json (shared with Cook) or from data/content.json (the content master), listed in words.from_content. Nothing here is Kutchi; nothing is invented. A word with no Kutchi yet shows as a grey English placeholder.",
+  "_about": "Find it (docs/game-design/modes/find-it.md): the search engine's data. Scenes (anchors and hide spots, with the relation each spot has to its anchor), look-alike groups, mechanic levels and the story. Every Kutchi word is borrowed: from data/cook.json (shared with Cook) or from data/content.json (the content master), listed in words.from_content. Nothing here is Kutchi; nothing is invented. A word with no Kutchi yet shows as a grey English placeholder.",
 
   "words": {
     "_about": "Merged into the shared word table (Cook.data.words) when find.html loads: the Kutchi draft and English from the content master, and the item picture. Word progress is shared with Cook (one save, one purse).",
@@ -11,7 +11,7 @@
     ],
     "numbers": {"6": "num-06", "7": "num-07", "8": "num-08", "9": "num-09", "10": "num-10"},
     "spelling": {
-      "_about": "The family's spelling wins over a draft in data/cook.json (read-only here), for Find it's screens only; the voice stays the draft's recording until the family records it. No V in Kutchi, always W (docs/kutchi-grammar-notes.md, 25 Sept).",
+      "_about": "The family's spelling wins over a draft in data/cook.json (read-only here), for Find it's screens only; the voice stays the draft's recording until the family records it. No V in Kutchi, always W (docs/language/grammar-notes.md, 25 Sept).",
       "ph-big": "wadho"
     },
     "placeholders": {
@@ -126,7 +126,7 @@
       ]
     },
     "sitting-room": {
-      "_about": "Nani's sitting room, as grey boxes (F3 level 3: under and behind). Everything is in data/scenes/sitting-room.json (the scene schema of docs/shared-api.md 1.2), including the occluders that hide part of a thing under the sofa or behind the curtain (at least 40% of it always shows: Rel.visibleFraction). The art comes later from this layout (design 4.4).",
+      "_about": "Nani's sitting room, as grey boxes (F3 level 3: under and behind). Everything is in data/scenes/sitting-room.json (the scene schema of docs/architecture/shared-api.md 1.2), including the occluders that hide part of a thing under the sofa or behind the curtain (at least 40% of it always shows: Rel.visibleFraction). The art comes later from this layout (design 4.4).",
       "base": "data/scenes/sitting-room.json"
     }
   },

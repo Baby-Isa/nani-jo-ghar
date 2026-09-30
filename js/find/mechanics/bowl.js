@@ -1,5 +1,5 @@
 /*
- * Find it, speaking moment 1: the bowl (docs/find-it-design.md D4, D9.1).
+ * Find it, speaking moment 1: the bowl (docs/game-design/modes/find-it.md D4, D9.1).
  * Nani's hands are full at the end of her list: the child tells her what
  * to put in the bowl, and she takes that thing from the bag. The closed set
  * is the bag's kinds, padded with stall things to at least 3 (at most 8).

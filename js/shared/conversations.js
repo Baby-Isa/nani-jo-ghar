@@ -1,6 +1,6 @@
 /*
  * Conversations: someone on screen talks to the child, and the child answers
- * (docs/modes/conversations-design.md; §10a are Zafar's decisions and win).
+ * (docs/game-design/modes/conversations.md; §10a are Zafar's decisions and win).
  * A shared, mode-agnostic module: a mode offers a moment at a placement and
  * gets control back when it ends (or at once, if the module declines).
  * Speech bubbles over the scene, never a new screen (§6.3).

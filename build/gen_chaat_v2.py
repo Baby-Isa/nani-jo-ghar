@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Chaat v2 game art (docs/design/cook-design-system-v1.md §14, §14a): the pieces the chaat station needs
+"""Chaat v2 game art (docs/design-language/ui-design-system.md §14, §14a): the pieces the chaat station needs
 that the repo doesn't have, ONE medium draft each, matched to sources/art/style-anchor-v1.png and the
 existing top-down topping bowls (assets/cook/items/topping-*-bowl-t):
   glass-bowl   a clear glass serving bowl seen front-on (side view), empty

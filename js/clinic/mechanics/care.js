@@ -1,5 +1,5 @@
 /*
- * Mechanic: care (M2, the trolley). docs/modes/clinic-design.md R2.5, 6.4,
+ * Mechanic: care (M2, the trolley). docs/archive/clinic/clinic-design-v1.md R2.5, 6.4,
  * 6.5, 12.2 task 3. The doctor names the treatment ("A plaster." / level 2:
  * "The green bandage."). The trolley always holds EVERY unlocked item for the
  * level, shuffled per visit, with three bandage rolls in three colours and

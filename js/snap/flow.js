@@ -1,5 +1,5 @@
 /*
- * Snap: the page's shape (phase 1 greybox: docs/modes/snap-design.md s12).
+ * Snap: the page's shape (phase 1 greybox: docs/game-design/modes/snap.md s12).
  *
  * Title -> Photo walk (G1 and G2 in turn) or the Snap lab -> a round ->
  * the result card (stars, pocket money, "Nani asked / You gave", a tip per

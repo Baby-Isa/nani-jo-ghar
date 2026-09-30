@@ -1,5 +1,5 @@
 /*
- * Mechanic: check (M15, the check-up). docs/modes/clinic-design.md R2.2,
+ * Mechanic: check (M15, the check-up). docs/archive/clinic/clinic-design-v1.md R2.2,
  * 12.2 task 2. The doctor calls a part ("The head." / "Now the knee." /
  * "The knee again."); from level 2 with a tool ("Listen to the chest");
  * from level 3 the patient adds the side in their own voice ("My left one").

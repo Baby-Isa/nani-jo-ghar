@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the daar station v2 (docs/VISUAL-QA.md; docs/design/cook-design-system-v1.md §15).
+"""Screenshots of the daar station v2 (docs/archive/process/VISUAL-QA.md; docs/design-language/ui-design-system.md §15).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots:
   chop-start, on-board, chop-mid, chopped   the chop (Nani's card, the crates, the board, the knife, the katori)

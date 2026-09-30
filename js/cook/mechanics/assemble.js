@@ -1,5 +1,5 @@
 /*
- * Mechanic: assemble, the chaat station (v2: docs/design/cook-design-system-v1.md §14 + §14a; the chai v2
+ * Mechanic: assemble, the chaat station (v2: docs/design-language/ui-design-system.md §14 + §14a; the chai v2
  * grid and slots, §3, §4, §10; v3, 30 Sept: the play-test's T2, T3, T5 and Q2b). Toppings go into a clear
  * glass bowl in the order the person said.
  *

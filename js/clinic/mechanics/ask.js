@@ -1,5 +1,5 @@
 /*
- * Mechanic: ask (the "?" rung: ask the doctor). docs/modes/clinic-design.md
+ * Mechanic: ask (the "?" rung: ask the doctor). docs/archive/clinic/clinic-design-v1.md
  * R2.4, 6.3. On a part row (a check or "where does it hurt?") the child can
  * press "?": the doctor narrows it to two, "Is it the knee, or the foot?",
  * the right one and a look-alike in random order (the which-one stub).

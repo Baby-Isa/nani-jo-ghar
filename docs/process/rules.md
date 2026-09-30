@@ -57,7 +57,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Put decisions as a numbered Q list, each with a recommendation**, answerable "yes to all except …"; write his answers into the doc. (A3)
 - **Change only what he commented on,** and never remove or replace a mechanic or mini-game without his explicit OK. (A4, A5)
 - **Fix things properly the first time** (new art if that's what it takes), and apply one game's lessons to its sibling games before he plays them. (A8, A16)
-- **Before calling a mode finished, go through its open ideas in `docs/GAME-IDEAS-TBC.md` with him;** ideas there are marked done when built, never deleted. (A14)
+- **Before calling a mode finished, go through its open ideas in `docs/ideas.md` with him;** ideas there are marked done when built, never deleted. (A14)
 - **New mode work runs audit (screenshots of every screen) → Claude's feedback draft → Zafar approves → build.** (A22)
 
 ### Reports and handing things over
@@ -68,11 +68,11 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **When he's short on tokens, do only what was asked**, on the cheapest model that can. (A12)
 
 ### Plans, trackers and continuity
-- **`docs/STATUS-TRACKER.md` is the master tracker:** update it at every milestone, structured by story arc, artwork as its own section (basic → initial → full → final), user testing left out. (A15)
+- **`docs/status.md` is the master tracker:** update it at every milestone, structured by story arc, artwork as its own section (basic → initial → full → final), user testing left out. (A15)
 - **One rulebook, one place for reviews.** Don't scatter rules; check old handovers for rules before archiving them. (A18, A19)
 - **The orchestrator chat plans, reviews and delegates:** tight briefs or a clean instruction file per executing chat, lean context, agent reports under ~250 words without cutting findings. (A20, A23)
-- **Copy decisions Zafar made directly in a child session** (see `docs/overnight-log.md`) into the design doc. (A21)
-- **A new chat opens with a plan update** after reading the latest handover, STATUS-TRACKER, ORCHESTRATOR-HANDOFF, UX-PRINCIPLES, the Kutchi grammar notes and GAME-IDEAS-TBC. (A15, A28)
+- **Copy decisions Zafar made directly in a child session** (see `docs/process/overnight-log.md`) into the design doc. (A21)
+- **A new chat opens with a plan update** after reading `docs/status.md` (its "Next chat" section first), `docs/design-language/ux-principles.md`, `docs/language/grammar-notes.md` and `docs/ideas.md`. (A15, A28)
 - **Hand over at every step boundary, not when the chat is full:** rewrite the "Next chat" section of `docs/status.md` with a ready-to-paste starting prompt and push it; recommend a fresh chat per step or at ~70% context, rather than compacting mid-task. (A25, decision 14)
 - **Overnight runs:** regular check-ins and a written report by 08:00 UK, then update the tracker and handovers so a new chat can start. (A17)
 
@@ -92,11 +92,11 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Big refactors live on their own branch** until they're ready. (B18)
 
 ### Briefs
-- **Every brief is complete:** owned files, a hard stop time, links to UX-PRINCIPLES, VISUAL-QA and the rulebook, "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
+- **Every brief is complete:** owned files, a hard stop time, links to `CLAUDE.md`, the rulebook, `docs/design-language/ux-principles.md` and `docs/process/qa-checklist.md`, "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
 
 ### Git and publishing
-- **Check `git log origin/main` before redoing work;** during a run, log a timestamped line in `docs/overnight-log.md` and push the branch every 20–30 minutes. (B6, B14)
-- **End every session with** a report in `build/reports/<name>.md`, the VISUAL-QA matrix, `bump_version` and ONE push to `main`. (B6)
+- **Check `git log origin/main` before redoing work;** during a run, log a timestamped line in `docs/process/overnight-log.md` and push the branch every 20–30 minutes. (B6, B14)
+- **End every session with** a report in `build/reports/<name>.md`, the QA checklist results (`docs/process/qa-checklist.md`), `bump_version` and ONE push to `main`. (B6)
 - **Run `python3 build/bump_version.py` before every push to `main`;** every asset URL built in code goes through `Cook.v()` / `njgV()`. (B7)
 - **`main` is the live Pages site:** publish = bump, commit, push the branch and `HEAD:main`; if an upload races you, merge `origin/main` and push again; on `?v=` conflicts, take the real side and re-bump. (B8, B9)
 - **Commit small and often, never force-push,** with the Co-Authored-By and Claude-Session lines. Big audio files go up as a GitHub release. (B15, J11)
@@ -188,7 +188,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 ## 5. Game design: modes, story and progression
 
 ### Cook
-- **`docs/design/cook-design-system-v1.md` is Cook's single source of truth.** (H10)
+- **Cook's design has two homes:** the shared look and components in `docs/design-language/ui-design-system.md`, and Cook's stations in `docs/game-design/modes/cook.md` (split from the Cook design system v1 on 1 Oct). Together they are Cook's single source of truth. (H10)
 - **Story mode is one recipe across a few stations;** free play is the kitchen with people arriving, stopping when you choose. (H50)
 - **Pantry first, story mode only:** the first time each dish is made that day starts with a pantry trip ("bring me these for {dish}"); Nani's "pass me" goes in the pantry and slower modes. (H15, H49)
 - **Everything cooks in the pan or pot, never the glass:** one pan per person, one burner per pan, no empty or lit-but-unused burners. Maani keeps one tawa. (H11)
@@ -232,7 +232,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 ### Parked, dropped and future
 - **Parked modes** (Tidy up, Who did it?, Dress up, Monsoon rush, Snap) are rebuilt on shared components; dropped ideas (fry "take them out?", *munje same we*, pill organiser, tooth bug) stay dropped. (H45, H46)
-- **Ideas approved 26 Sept** (#10, 11, 13–16, 18, 19; #12 only as *munje same rakh*) are tracked in GAME-IDEAS-TBC. (H55)
+- **Ideas approved 26 Sept** (#10, 11, 13–16, 18, 19; #12 only as *munje same rakh*) are tracked in `docs/ideas.md`. (H55)
 - **Don't block the future:** a world map with fog of war, travel instead of a free-play toggle, role reversal; log it as tech debt. (H56, H57)
 
 ---

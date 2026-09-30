@@ -2,7 +2,7 @@
  * Cook with Nani inside the app shell (index.html; js/shared/app.js).
  * Only does anything when the house opened Cook (?app=1).
  *
- * FIRST LAUNCH (docs/UX-PRINCIPLES.md 7: no tutorial). A new player lands
+ * FIRST LAUNCH (docs/design-language/ux-principles.md 7: no tutorial). A new player lands
  * here before they've seen any menu:
  *   - Nani's kitchen with one big round play button covers the page at once
  *     (the Cook title never shows). One tap, and that tap is what unlocks the

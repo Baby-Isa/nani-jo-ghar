@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cut the maani v2 art (build/gen_maani_v2.py) the way build/cut_tick_v2.py does (docs/VISUAL-QA.md §2):
+"""Cut the maani v2 art (build/gen_maani_v2.py) the way build/cut_tick_v2.py does (docs/archive/process/VISUAL-QA.md §2):
 the object is everything not connected to the flat grey background, with pinholes filled; its cast
 shadow and the ring's hole (the background colour itself) stay see-through; a 1 px
 anti-aliased edge. Out: assets/cook/items/maani-v2/chimta.webp (tips up and to the right, cropped

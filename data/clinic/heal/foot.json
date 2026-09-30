@@ -1,5 +1,5 @@
 {
-  "_about": "Clinic heal game `foot` (H13 The foot bath; docs/modes/clinic-design.md Q4, the quality pass). Size x side on ten toes: wadho/nindho (he-forms, confirmed by Mum) and the patient's own left/right (placeholders). The feet face you: the patient's left foot is on the right of your screen, and each big toe is on the inside. Levels are data. The tray ids are data/clinic.json's (paani, loon, tweezers, plaster); tapping the paani dish shows the same jug twice, one steaming and one with ice, in a shuffled order.",
+  "_about": "Clinic heal game `foot` (H13 The foot bath; docs/archive/clinic/clinic-design-v1.md Q4, the quality pass). Size x side on ten toes: wadho/nindho (he-forms, confirmed by Mum) and the patient's own left/right (placeholders). The feet face you: the patient's left foot is on the right of your screen, and each big toe is on the inside. Levels are data. The tray ids are data/clinic.json's (paani, loon, tweezers, plaster); tapping the paani dish shows the same jug twice, one steaming and one with ice, in a shuffled order.",
   "id": "foot",
   "ailments": {
     "sore-feet": {

@@ -62,14 +62,14 @@ GU = {
     # the spelling and the pronunciation.
     "narr": "ના", "arsetehtea": "આસ્તેથી", "jaldee": "જલ્દી", "udd": "અડધું",
     "barrelor": "ભરેલો", "wuddoar": "વડો", "nindhoar": "નીંઢો",
-    # the family's words, 25 Sept 2026 (docs/kutchi-grammar-notes.md): daar, ba (said "ber"),
+    # the family's words, 25 Sept 2026 (docs/language/grammar-notes.md): daar, ba (said "ber"),
     # hakro/hakri, wadhi/nindhi (she-forms, drafts), watana, Muke {x} de, pela, waari, me, lai;
     # Nana, Ma and Ali for the cup cards. Best-guess Gujarati script, only so the voice can read them
     "daar": "દાર", "ber": "બેર", "hakro": "હકરો", "hakri": "હકરી", "wuddee": "વડી", "nindhee": "નીંઢી",
     "watana": "વટાણા", "de": "દે", "pela": "પેલા", "waari": "વારી", "me": "મેં", "lai": "લઈ",
     "nana": "નાના", "ma": "મા", "ali": "અલી",
-    # Mum's A8 and Section B answers, 26 Sept 2026 (docs/kutchi-grammar-notes.md §23-§28,
-    # docs/cook-word-changes-B.md): na, aste thi, aako, chana, gos, bajr ji maani,
+    # Mum's A8 and Section B answers, 26 Sept 2026 (docs/language/grammar-notes.md §23-§28,
+    # docs/archive/language/cook-word-changes-B.md): na, aste thi, aako, chana, gos, bajr ji maani,
     # the chutneys, dhania, chundo, tarela bataata, lakri, boga, the kitchen words and phrases
     "na": "ના", "aste": "આસ્તે", "thi": "થી", "aako": "આકો", "chana": "ચણા", "gos": "ગોસ",
     "ji": "જી", "amli": "આમલી", "chutney": "ચટણી", "fudino": "ફુદીનો", "sev": "સેવ", "dhania": "ધાણિયા",

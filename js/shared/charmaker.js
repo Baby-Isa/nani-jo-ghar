@@ -1,9 +1,9 @@
 /*
- * Make your character (docs/first-launch-story.md, "Character creation").
+ * Make your character (docs/game-design/modes/first-launch.md, "Character creation").
  * Pictures only, no reading: the character big on the left, updating live;
  * on the right a row of tabs (each a picture of that part, in its current
  * colour), the swatches for the chosen tab (each a picture of the part in
- * that choice), and a big ✓ under the thumb (docs/UX-PRINCIPLES.md 2).
+ * that choice), and a big ✓ under the thumb (docs/design-language/ux-principles.md 2).
  * Everything comes from data/character-options.json through js/shared/character.js.
  *
  *   CharMaker.open(host, {choices}) -> Promise<choices>   resolves on ✓

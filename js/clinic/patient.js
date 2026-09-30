@@ -1,5 +1,5 @@
 /*
- * The clinic: the patient on the bench (docs/modes/clinic-design.md 8.2).
+ * The clinic: the patient on the bench (docs/archive/clinic/clinic-design-v1.md 8.2).
  * Phase 1 greybox: a grey silhouette drawn in code from the hotspot
  * polygons (data/patients/grey-adult.json via js/clinic/body.js), a face
  * whose mouth and eyes carry the expressions (idle, ouch, giggle, ahh,

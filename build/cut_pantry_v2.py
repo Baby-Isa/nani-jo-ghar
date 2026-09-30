@@ -1,4 +1,4 @@
-"""Cut the pantry v2 sheets (sources/art/pantry-v2/, docs/chatgpt-art-prompts-pantry-jars.md)
+"""Cut the pantry v2 sheets (sources/art/pantry-v2/, docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md)
 into registered transparent webps, on build/cut_tick_v2.py's method:
 
 - the background is measured from the sheet's edges; cells are found from the grey gutters;
@@ -20,7 +20,7 @@ from scipy import ndimage as ndi
 
 SRC = 'sources/art/pantry-v2/'
 OUT = 'assets/cook/items/'
-DOC = 'docs/chatgpt-art-prompts-pantry-jars.md'
+DOC = 'docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md'
 
 # sheet -> (P section whose table gives the ids, kind, canvas w, h)
 SHEETS = {

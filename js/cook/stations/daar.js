@@ -1,5 +1,5 @@
 /*
- * Combined station: Daar v3, chop, then tadka and stir (docs/design/cook-design-system-v1.md §13; the chai v2
+ * Combined station: Daar v3, chop, then tadka and stir (docs/design-language/ui-design-system.md §13; the chai v2
  * grid §3, §4, §10; the kitchen kit §13; serve and taste §14a; the 29 Sept play-test §6, D1-D11, S16).
  *
  * TWO PHASES, each on the whole picture, with a phase fold between them:

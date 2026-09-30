@@ -1,6 +1,6 @@
 # Cook with Nani: Wave 6 (branch `claude/build-cook-wave6`)
 
-All nine items from Zafar's grill playtest (`docs/UX-PRINCIPLES.md`).
+All nine items from Zafar's grill playtest (`docs/design-language/ux-principles.md`).
 
 ## What changed
 - **Request card** reads along: each spoken chunk lights its row or card as it plays, shows the dish's plain-English `how`, then shrinks into the sidebar.

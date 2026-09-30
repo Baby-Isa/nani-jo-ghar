@@ -1,6 +1,6 @@
 # Clinic v2, prototype B: the heal games (29 Sept 2026)
 
-The heal games from the design sheets, part B (`docs/modes/clinic-v2-design-sheets.md`), with Zafar's answers (`docs/feedback/clinic-playtest-2026-09-29.md` §9) overriding the recommendations. These are **prototypes**: flat stand-in shapes and emoji on the blurred CB6b bed, so Zafar can judge the mechanics. No new art.
+The heal games from the design sheets, part B (`docs/game-design/modes/clinic.md`), with Zafar's answers (`docs/feedback/clinic-playtest-2026-09-29.md` §9) overriding the recommendations. These are **prototypes**: flat stand-in shapes and emoji on the blurred CB6b bed, so Zafar can judge the mechanics. No new art.
 
 Branch `claude/clinic-v2` (shared with prototype A). Labs: `lab/clinic-heal-a.html` (scrape, knee, ear, tooth), `-b` (drinks, fever, boing), `-c` (eye, foot; tummy, hic and hair unchanged). Each link opens the real host with the first-time cues on.
 
@@ -10,7 +10,7 @@ Every game below is new code on a shared close-up layer (`js/clinic/heal/scene.j
 
 **Changes to every heal game**
 - **The close-up replaces the zoomed patient figure.** Each game draws its body part on CB6b: limbs on the paper strip, heads against the wall. A round face in the top-left corner reacts to what happens. The host's figure isn't used, so the host hides it.
-- **Each game draws its own tool shelf** (stand-in buttons on the right) and doesn't use the sidebar tray, which the host hides. As a result, **the pharmacy's tray no longer decides anything in a heal game.** A wrong item the child brought isn't shown or counted. The contract (`docs/clinic-heal-api.md`) says the game uses `ctx.tray`, so this is a real departure. The pipeline still passes the tray, and `test_clinic` checks the fever's tray still has its thermometer (G8).
+- **Each game draws its own tool shelf** (stand-in buttons on the right) and doesn't use the sidebar tray, which the host hides. As a result, **the pharmacy's tray no longer decides anything in a heal game.** A wrong item the child brought isn't shown or counted. The contract (`docs/architecture/clinic-heal-api.md`) says the game uses `ctx.tray`, so this is a real departure. The pipeline still passes the tray, and `test_clinic` checks the fever's tray still has its thermometer (G8).
 - **The first-time help is new.** The shared onboarding kit's ghost hand (`ctx.onboard`) is gone from these games. In its place, each step shows a cue: words in a bubble, a pointing hand, and the words said by the device voice. The cue never blocks a tap, and it never sits over the tool shelf. Cues show at level 1 every time, and at levels 2–3 the first time this browser plays the game. `&cues=1` forces them on and `&cues=0` switches them off.
 - **Every game opens with its "why" beat.** The patient says the problem, then the doctor says the goal. Taps are ignored until the beat and the card have been said.
 - **Counting follows the host's G6 (session A).** The host writes the count (the tally chip, and the card row at level 1) and says it at level 1. The scene adds nothing at levels 1–2 and says the count at level 3 (heard only).

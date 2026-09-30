@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the daar station v3 (docs/VISUAL-QA.md §5; the 29 Sept play-test §6, D1-D11, S16).
+"""Screenshots of the daar station v3 (docs/archive/process/VISUAL-QA.md §5; the 29 Sept play-test §6, D1-D11, S16).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots of every
 state that draws something different. One run per level: the first try goes wrong on purpose (it stirs

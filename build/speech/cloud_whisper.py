@@ -9,7 +9,7 @@ i/ee, u/oo, d/dh, t/th, k/kh all collapsed) does the rest.
 
 This is NOT on-device: the child's voice leaves the phone. It runs here only
 to measure what accuracy the family would be trading privacy for. See
-docs/speech-recognition-plan.md.
+docs/architecture/speech-recognition-plan.md.
 
 Usage:
   python3 build/speech/cloud_whisper.py <dir_or_files...> --choices "1-kutchi-moke-chai-kape=moke chai kape,2-kutchi-moke-doodh-kape=moke doodh kape,..."

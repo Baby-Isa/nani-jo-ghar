@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the Sekelo station v2 (docs/VISUAL-QA.md; design system §15).
+"""Screenshots of the Sekelo station v2 (docs/archive/process/VISUAL-QA.md; design system §15).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots:
   start        everyone has spoken, nothing threaded yet

@@ -1,7 +1,7 @@
 # Order model (§12): report (29 Sept)
 
 **Done:**
-- **Shared component:** `js/shared/order-card.js` + `css/shared/order-card.css`, drawing person → items → parts. API in `docs/shared-api.md` §14, ready for the clinic and Find it. Lab: `lab/order-card.html`.
+- **Shared component:** `js/shared/order-card.js` + `css/shared/order-card.css`, drawing person → items → parts. API in `docs/architecture/shared-api.md` §14, ready for the clinic and Find it. Lab: `lab/order-card.html`.
 - **Cook uses it everywhere:** the sidebar and the request pop-up, at every station.
   - A single chai puts its parts straight under the headline.
   - The same mix twice is one row (*ba lakri mixed*); different items are separate, tinted rows.

@@ -1,6 +1,6 @@
 # Clinic heal agent C: report (26 Sept 2026)
 
-**Built** (all on the contract, `docs/clinic-heal-api.md`; levels 1–3 as data in `data/clinic/heal/<id>.json`):
+**Built** (all on the contract, `docs/architecture/clinic-heal-api.md`; levels 1–3 as data in `data/clinic/heal/<id>.json`):
 - `eye` (H12): drops on the named side and count, the pirate patch on *the other* eye (L3), the picture chart of Cook's fruit and veg nouns, *wadho/nindho* and *nar* (L3). Tap only.
 - `foot` (H13): hot or cold paani (a tap pours), *ba chamcha loon*, feet in; *wadho/nindho* toe × the patient's own side (L3); pluck the thorn (drag), plaster.
 - Maybe-later extras: `tummy` (H10), `hic` (H15) and `hair` (H16), all using Kutchi numbers plus *paani, dudh, chai, adh, pela, ne poi*.

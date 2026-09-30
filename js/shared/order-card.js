@@ -1,5 +1,5 @@
 /*
- * The order card (docs/design/cook-design-system-v1.md 12; Zafar, 28 Sept, late). One shared component
+ * The order card (docs/design-language/ui-design-system.md 12; Zafar, 28 Sept, late). One shared component
  * for every mode's person card, in the sidebar and in the request pop-up alike:
  *
  *   person → items → parts. At most three tiers, and a word is never repeated across tiers.

@@ -1,6 +1,6 @@
 # Sidebar v2: report (28 Sept, evening)
 
-**Done** (docs/cook-ui-feedback-2026-09-28.md §9):
+**Done** (docs/feedback/cook-ui-feedback-2026-09-28.md §9):
 - **Cards:** flat and one line each; text shrinks to fit (`js/shared/fit.js`). Headlines use the short form only. Every face, Nani's included, is the replay button (speaker badge).
 - **Pills:** pending = white, next = gold outline on grey, done = metallic gold with the tick art.
 - **Skewers:** the kinds go under the headline; each skewer gets its own tinted box.

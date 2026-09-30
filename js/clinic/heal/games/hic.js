@@ -1,7 +1,7 @@
 /*
- * Clinic heal game `hic`: H15 Mouth: hic! (docs/modes/clinic-design.md,
+ * Clinic heal game `hic`: H15 Mouth: hic! (docs/archive/clinic/clinic-design-v1.md,
  * "H15 Mouth: hic!", built on the quality pass rules Q1; contract
- * docs/clinic-heal-api.md).
+ * docs/architecture/clinic-heal-api.md).
  *
  * Ali laughed so much he has hiccups. The close-up: the patient's face and
  * shoulders (their own colours, from the figure's kind); every 2.5-4 s a

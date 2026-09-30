@@ -1,6 +1,6 @@
 /*
  * Stage 4, heal: the registered healing game for the ailment
- * (docs/clinic-heal-api.md), mounted by the host on the same screen with the
+ * (docs/architecture/clinic-heal-api.md), mounted by the host on the same screen with the
  * same patient figure, the diagnosed part and side, and the tray the child
  * brought from the pharmacy (in the prescription's order). The game ends
  * itself with ctx.done(); its right/total and words join the patient's round.

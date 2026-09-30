@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots for the shared Cook fixes of 29 Sept (build/reports/cook-shared-fixes.md; docs/VISUAL-QA.md 5).
+"""Screenshots for the shared Cook fixes of 29 Sept (build/reports/cook-shared-fixes.md; docs/archive/process/VISUAL-QA.md 5).
 
 Plays a lab station with build/test_cook.py's Player and saves uncropped shots every `--every` seconds
 (the request pop-up first, then the station as it's played), so the pop-up, Nani's box, the shelf

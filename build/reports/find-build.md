@@ -1,6 +1,6 @@
 # Find it: build report (phases 0 and 1, 25 Sept 2026)
 
-Branch `claude/build-find`. Details: `docs/find-build-log.md`, `build/reports/find-leak.md`.
+Branch `claude/build-find`. Details: `docs/archive/build-logs/find-build-log.md`, `build/reports/find-leak.md`.
 
 ## What's built, and where
 - **One-file mechanics and games.** `list.js` is gone: `js/find/mechanics/` has `spot`, `bag`, `greet`, `where`, `tell` and `bowl`; `js/find/games/` has `list` (F1), `whichone` (F2), `where` (F3) and `ali` (F4).

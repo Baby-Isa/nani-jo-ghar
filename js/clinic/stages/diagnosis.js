@@ -1,6 +1,6 @@
 /*
- * Stage 2, diagnosis: "Where does it hurt?" (docs/modes/clinic-design.md P3,
- * Q3, Q5; clinic v2: docs/modes/clinic-v2-design-sheets.md D). The patient
+ * Stage 2, diagnosis: "Where does it hurt?" (docs/archive/clinic/clinic-design-v1.md P3,
+ * Q3, Q5; clinic v2: docs/game-design/modes/clinic.md D). The patient
  * faces us, sitting on the bed's edge with legs dangling (CB2b), or standing
  * by the wall for the check-up (CB3b); a stand-in doctor to the right, turned 3/4.
  *   D1  level 1 (taught): 3 parts pulse; tap one; the doctor asks

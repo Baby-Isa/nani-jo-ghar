@@ -1,5 +1,5 @@
 /*
- * Find it, F3: Where is it? (docs/find-it-design.md D2, D5; R2 the calls).
+ * Find it, F3: Where is it? (docs/game-design/modes/find-it.md D2, D5; R2 the calls).
  *
  * Nani calls one thing at a time, and where: "santra, crate [in]". The
  * called thing is in three or more places, so only the position decides;

@@ -1,10 +1,10 @@
 /*
- * One line, always (Zafar, 28 Sept: "nothing wraps onto two lines"; docs/cook-ui-feedback-2026-09-28.md 9).
+ * One line, always (Zafar, 28 Sept: "nothing wraps onto two lines"; docs/feedback/cook-ui-feedback-2026-09-28.md 9).
  * Text that must stay on one line gets the class "fit" (and white-space: nowrap in its CSS):
  * FitText shrinks its font until it fits, never below a readable minimum (CSS var --fit-min,
  * default 12px; past that the CSS ellipsis takes over). A group of lines (the pills on one card)
  * can share one size, so a card never mixes sizes.
- * Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10): Nani narrates, so her line may
+ * Sidebar v3 (28 Sept, late; docs/feedback/cook-ui-feedback-2026-09-28.md 10): Nani narrates, so her line may
  * take up to 2 lines: class "fit fit2" (white-space: normal in its CSS) shrinks until the text fits in
  * two lines, and it's never cut off with "..." (at the minimum it may take a third line).
  *

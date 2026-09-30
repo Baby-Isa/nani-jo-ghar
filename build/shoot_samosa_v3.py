@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the samosa station v3 (29 Sept play-test, S1-S21; docs/VISUAL-QA.md §5).
+"""Screenshots of the samosa station v3 (29 Sept play-test, S1-S21; docs/archive/process/VISUAL-QA.md §5).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots:
   fill-start  the flat strip on the house board, the filling heaps on the band (S2, S6), nothing chosen yet

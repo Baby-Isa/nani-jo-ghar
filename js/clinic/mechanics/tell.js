@@ -1,6 +1,6 @@
 /*
  * Mechanic: tell (role reversal: the child SAYS a word and a character acts
- * on it). docs/modes/clinic-design.md R3.4. Shared with every mode's
+ * on it). docs/archive/clinic/clinic-design-v1.md R3.4. Shared with every mode's
  * speaking moment; built here first and offered to js/shared/mechanics/
  * at integration.
  *

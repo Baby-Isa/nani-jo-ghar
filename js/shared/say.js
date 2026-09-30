@@ -1,5 +1,5 @@
 /*
- * Shared speaking moment: the UI around Speech.listen() (docs/shared-api.md s4).
+ * Shared speaking moment: the UI around Speech.listen() (docs/architecture/shared-api.md s4).
  *
  * Role reversal in every mode: the child says the Kutchi and a character
  * acts on it. This module is that moment, once: a big round microphone

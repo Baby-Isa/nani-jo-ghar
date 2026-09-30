@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage-fill screenshots (docs/VISUAL-QA.md): every v2 Cook station, start + mid-cook, at any viewport.
+"""Stage-fill screenshots (docs/archive/process/VISUAL-QA.md): every v2 Cook station, start + mid-cook, at any viewport.
 
 Checks the stage has no dead cream strip: the worktop reaches the stage's top edge, the shelf band the
 bottom edge, and nothing is letterboxed at the sides (build/reports/stage-fill.md).

@@ -1,7 +1,7 @@
 /*
  * STUB. Tidy up's same-API stand-in for the foundation's relations layer
  * (js/shared/rel.js + data/relations.json + scene `spots`), which doesn't
- * exist yet (docs/modes/BUILD-COMMON.md, "Shared pieces"). Swapping to the
+ * exist yet (docs/archive/mode-briefs/BUILD-COMMON.md, "Shared pieces"). Swapping to the
  * real one is one line: load js/shared/rel.js instead of this file (the
  * browser) or require it in js/tidy/rules.js (Node).
  *
@@ -9,7 +9,7 @@
  *   Rel.options(state, rule, scene) -> [spotId]  where the rule's item could
  *                                      go (a free spot) for the rule to hold
  *
- * The spec is docs/modes/tidy-up-design.md 8.1. `scene` is a compiled board
+ * The spec is docs/game-design/modes/tidy-up.md 8.1. `scene` is a compiled board
  * (js/tidy/rules.js Rules.board): {spots: [...], byId: {id: spot}} where a
  * spot is {id, cap, tags: [{rel, anchor?}], nbr: {left,right,front,back},
  * adj?: [ids]}. `state` is {placements: {iid: spotId | "tray"},

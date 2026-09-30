@@ -4,7 +4,7 @@
 
 **Art: $0.05** (one chimta, gpt-image-1 medium). Everything else is existing art.
 
-**Kit:** `Cook.Kit.art/size/hob/burner/place/heatRing/chip/badge/speaker` (`js/cook/kitchen-kit.js`; docs/shared-api.md §15). Chai v2 now uses it. Its old hob numbers were slightly off, so pans now sit exactly on their grates (chai shots re-shot).
+**Kit:** `Cook.Kit.art/size/hob/burner/place/heatRing/chip/badge/speaker` (`js/cook/kitchen-kit.js`; docs/architecture/shared-api.md §15). Chai v2 now uses it. Its old hob numbers were slightly off, so pans now sit exactly on their grates (chai shots re-shot).
 
 **Tests:** `test_cook.py --lab --viewport laptop` PASS.
 

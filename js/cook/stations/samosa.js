@@ -1,5 +1,5 @@
 /*
- * Combined station: Samosa v3, fill, fold, fry (docs/design/cook-design-system-v1.md §15; the chai v2 grid
+ * Combined station: Samosa v3, fill, fold, fry (docs/design-language/ui-design-system.md §15; the chai v2 grid
  * §3, §4, §10; the kitchen kit §13; serve and taste §14a; the 29 Sept play-test, S1-S21 and Q2, Q3, Q9).
  *
  * THREE JOBS, one at a time, each on the whole picture:

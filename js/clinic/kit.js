@@ -1,7 +1,7 @@
 /*
  * The clinic's screen kit (DOM; no Phaser): the pieces every stage and
  * every healing game shares, so the screen looks and behaves the same all
- * the way through a patient (docs/UX-PRINCIPLES.md s1-s4, s11, s13).
+ * the way through a patient (docs/design-language/ux-principles.md s1-s4, s11, s13).
  *
  *   Kit.Card     the instruction card (the master): rows that tick when a
  *                step closes, a throbbing hint, one speaker (reads the rows
@@ -136,7 +136,7 @@
     });
   };
   /**
-   * Clinic v2 stand-ins (flat shapes, no new art: docs/modes/clinic-v2-design-sheets.md "Prototype first"):
+   * Clinic v2 stand-ins (flat shapes, no new art: docs/game-design/modes/clinic.md "Prototype first"):
    * an item whose data names a `standin` draws it instead of its rough sprite (the apple for the lolly,
    * the filling's tube, a torch that looks like a torch); the four feeling faces; the doctor's silhouette.
    */

@@ -1,5 +1,5 @@
 /*
- * Combined station: the Maani line, v3 (docs/design/cook-design-system-v1.md §11, §13's burner rule;
+ * Combined station: the Maani line, v3 (docs/design-language/ui-design-system.md §11, §13's burner rule;
  * the 29 Sept play-test §5, M3-M9, Q14, Q15: build/reports/maani-v3.md).
  *
  * A two-zone grid, everything centred, aligned on shared lines:

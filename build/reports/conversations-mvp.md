@@ -3,7 +3,7 @@
 **Built** (branch `claude/conversations-mvp`, new files only, plus one link in `labs.html`):
 - `js/shared/conversations.js` + `css/shared/conversations.css`: the engine and the bubbles (§8.5 API: `maybe`, `run`, `hear`). It covers §14 (shake, buzz, 4 cycling embarrassed looks, ask again until right), §10a frequency and skips, aai/tu, Kasuku repeat-only, and the Zafar/Mum reply voice. Tracking goes in Save `conversations`.
 - `data/conversations/`: 9 exchanges, 15 placements, the speakers, and the lines (Khuda-fis and "Thank you!" per §10a).
-- `lab/conversations.html` and `docs/modes/conversations-wiring.md` (hooks for all 15; nothing wired yet).
+- `lab/conversations.html` and `docs/game-design/modes/conversations-wiring.md` (hooks for all 15; nothing wired yet).
 
 **Placeholders** (untested, grey italic):
 - "Will you help me cook?" (E5)

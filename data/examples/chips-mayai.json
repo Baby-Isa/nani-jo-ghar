@@ -1,5 +1,5 @@
 {
- "_about": "Worked example from docs/cook-with-nani-recipes-guide.md: chips mayai from existing mechanics (fry, count, pour, tawa), data only. The game does NOT load this file; build/test_cook.py --example plays it in the Station lab. To make it real: move `words` into data/cook.json words and `recipe` into data/cook.json recipes (key chips-mayai), add painted art, and give the words their Kutchi when the family supplies it (until then they are English placeholders).",
+ "_about": "Worked example from docs/architecture/cook-recipes-guide.md: chips mayai from existing mechanics (fry, count, pour, tawa), data only. The game does NOT load this file; build/test_cook.py --example plays it in the Station lab. To make it real: move `words` into data/cook.json words and `recipe` into data/cook.json recipes (key chips-mayai), add painted art, and give the words their Kutchi when the family supplies it (until then they are English placeholders).",
  "words": {
   "ph-mayai": {
    "kutchi": null,

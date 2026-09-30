@@ -1,4 +1,4 @@
-/* Tidy up with Nani: greybox (docs/modes/tidy-up-design.md, phase 1).
+/* Tidy up with Nani: greybox (docs/game-design/modes/tidy-up.md, phase 1).
  * Shapes and dots only, plus the existing fruit, veg and spice pictures.
  * No labels on items, no tints on rows, nothing reacts to hovering (G1, G2, G7). */
 :root {

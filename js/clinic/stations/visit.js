@@ -1,6 +1,6 @@
 /*
  * The clinic: the visit (a combined station: calls -> where? -> care ->
- * stick | wrap | lift | tuck | drops -> handover). docs/modes/clinic-design.md
+ * stick | wrap | lift | tuck | drops -> handover). docs/archive/clinic/clinic-design-v1.md
  * R3.3, R2.2. One engine for every visit type; the rows come from
  * js/clinic/visit.js (the same rows the Node leak bot plays).
  *

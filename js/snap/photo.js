@@ -1,5 +1,5 @@
 /*
- * Snap: the print record and the matcher (docs/modes/snap-design.md D1, D3,
+ * Snap: the print record and the matcher (docs/game-design/modes/snap.md D1, D3,
  * 8.1). Pure: no DOM, no Phaser, no randomness, so the Node leak bot
  * (build/leak_snap.mjs), the lab and the round all judge a print the same way.
  *

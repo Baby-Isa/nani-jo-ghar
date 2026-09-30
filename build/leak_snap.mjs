@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * Snap's Node leak bot (no browser): docs/modes/snap-design.md 8.4, D5, and
+ * Snap's Node leak bot (no browser): docs/game-design/modes/snap.md 8.4, D5, and
  * the build brief's phase 0. It deals real rounds from data/snap.json and
  * data/scenes/orchard.json and plays them with js/snap/sim.js, the same pure
  * evaluator (js/snap/photo.js) and dealer (js/snap/requests.js) the browser uses.

@@ -1,6 +1,6 @@
 /*
  * STUB (Snap-local until the foundation's "star sets and ear/voice rules as
- * data" arrive: docs/modes/snap-design.md s12, shared pieces). Same shape as
+ * data" arrive: docs/game-design/modes/snap.md s12, shared pieces). Same shape as
  * the planned shared API, so the swap is one line in js/snap/adapters.js.
  *
  *   Stars.ear(rows, { minTested })   rows: [{ stage, firstRight, shown, excluded }]

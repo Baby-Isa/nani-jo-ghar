@@ -1,6 +1,6 @@
 /*
  * Mechanic: lift (T12: the cool cloth, the ice pack, the hot-water bottle).
- * docs/modes/clinic-design.md R2.5. It goes onto the sore place; a ring
+ * docs/archive/clinic/clinic-design-v1.md R2.5. It goes onto the sore place; a ring
  * fills round it (Cook's S.ring, "tap when it's green"); lift it off on the
  * green. The hand star from the timing. The Kutchi is in which item (the
  * care row, before this) and, from level 2, hot or cold.

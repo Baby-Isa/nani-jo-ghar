@@ -1,5 +1,5 @@
 /*
- * The clinic's healing games: the host (docs/clinic-heal-api.md). Builds a
+ * The clinic's healing games: the host (docs/architecture/clinic-heal-api.md). Builds a
  * game's `ctx` on the shared screen (js/clinic/screen.js), mounts it, and
  * resolves when the game calls ctx.done(). Used by the pipeline's heal stage
  * and by lab/clinic-heal-host.html.
@@ -14,7 +14,7 @@
  *   run.destroy();
  *
  * ctx, exactly as the contract lists it, plus ADDITIONS (never renamed or
- * removed later; see "Host additions" in docs/clinic-heal-api.md):
+ * removed later; see "Host additions" in docs/architecture/clinic-heal-api.md):
  *   ctx.game, ctx.ailment ({id, part, side, ...}), ctx.part, ctx.data (the
  *   game's data/clinic/heal/<id>.json, or null), ctx.stage (the element),
  *   ctx.item(id) -> {id, english, kutchi, colour, glyph}, ctx.icon(item, parent),
@@ -146,7 +146,7 @@
     tray.onTap = (i, item) => trayTaps.forEach((fn) => fn(i, item, tray.slots[i].el));
 
     // which host pieces the game uses: a game that draws its own tray or its own patient gets the
-    // host's hidden (additive; docs/clinic-heal-api.md "Host additions")
+    // host's hidden (additive; docs/architecture/clinic-heal-api.md "Host additions")
     const used = { patient: false, trayUI: false };
     const track = (obj, key) => {
       const o = {};

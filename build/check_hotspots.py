@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the clinic's patient hotspots (docs/modes/clinic-design.md 12.2 task 1, R3.9).
+"""Check the clinic's patient hotspots (docs/archive/clinic/clinic-design-v1.md 12.2 task 1, R3.9).
 
 For each patient hotspot file (data/patients/*.json) and each of the six
 test screen sizes, it reports every part's EFFECTIVE hit area: the design

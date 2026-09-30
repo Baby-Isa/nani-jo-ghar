@@ -1,5 +1,5 @@
 /*
- * Shared star sets and ear/voice rules, as data (docs/shared-api.md s3).
+ * Shared star sets and ear/voice rules, as data (docs/architecture/shared-api.md s3).
  *
  * Every mode has the same four stars in its own clothes: the ear
  * ("Understood"), a hand/craft star (chef's hat, broom, umbrella...), the

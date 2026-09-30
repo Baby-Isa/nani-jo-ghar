@@ -1,6 +1,6 @@
 /*
  * The heal games' close-up scene (clinic v2, design sheets part B;
- * docs/modes/clinic-v2-design-sheets.md). A PROTOTYPE layer: flat stand-in
+ * docs/game-design/modes/clinic.md). A PROTOTYPE layer: flat stand-in
  * shapes on the blurred CB6b bed, so the mechanics can be judged before art.
  *
  *   const S = Clinic.HealScene.make(stage, ctx, {place: "limb" | "head", game: "knee"});

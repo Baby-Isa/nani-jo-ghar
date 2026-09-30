@@ -1,5 +1,5 @@
 /*
- * Snap's one adapter file (docs/modes/snap-design.md s12: "behind one
+ * Snap's one adapter file (docs/game-design/modes/snap.md s12: "behind one
  * adapter file so the swap is one edit"). Every shared piece Snap needs from
  * the foundation is reached through here:
  *

@@ -1,5 +1,5 @@
 /*
- * Find it, mechanic `tell` (docs/find-it-design.md D3, D4): role reversal.
+ * Find it, mechanic `tell` (docs/game-design/modes/find-it.md D3, D4): role reversal.
  * The child says it; a character acts on whatever came back, so the child
  * sees what they said. Built on the shared speaking moment (js/shared/say.js
  * Say.tell over js/shared/speech.js): the mic and the closed set as pills;

@@ -1,6 +1,6 @@
 /*
  * The app frame ("one app, one save", phase B): what makes the separate
- * mode pages feel like one app. docs/shared-api.md section 12.
+ * mode pages feel like one app. docs/architecture/shared-api.md section 12.
  *
  * NAVIGATION IS BY PAGE. The house (index.html) and each mode (cook.html,
  * find.html, clinic.html, the labs) stay separate pages; the house opens a

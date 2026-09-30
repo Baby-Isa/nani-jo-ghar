@@ -1,5 +1,5 @@
 #!/bin/sh
-# Slices ChatGPT batch 1's item sheets (docs/chatgpt-art-prompts.md, section 3)
+# Slices ChatGPT batch 1's item sheets (docs/archive/art-prompts/chatgpt-art-prompts.md, section 3)
 # into assets/cook/items/. Names: <group>-<item>-<state>-<view>, Kutchi where
 # data/cook.json has the word (dungri, jeeru...), English otherwise.
 # --keep-purple spares red onion from the magenta despill (it is nearly the

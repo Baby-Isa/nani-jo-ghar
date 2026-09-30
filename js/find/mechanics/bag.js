@@ -1,5 +1,5 @@
 /*
- * Find it, mechanic `bag` (M5 Check the bag; docs/find-it-design.md D3):
+ * Find it, mechanic `bag` (M5 Check the bag; docs/game-design/modes/find-it.md D3):
  * the odd one out in what someone packed for you. The shopkeeper (or Ali)
  * packs the list into your bag and gets one thing wrong: a look-alike
  * instead of one thing, or one too many (js/find/gen.js Gen.pack). Tap the

@@ -1,5 +1,5 @@
 /*
- * Snap: the mode's data layer in the browser (docs/modes/snap-design.md).
+ * Snap: the mode's data layer in the browser (docs/game-design/modes/snap.md).
  *
  * Snap is its own page (snap.html) and, like Find it, borrows Cook with
  * Nani's systems as they are (read only): data/cook.json's words, frames and

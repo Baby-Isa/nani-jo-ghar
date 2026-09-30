@@ -116,7 +116,7 @@
     if (w.right >= 4) return 3;
     return 2;
   };
-  /* How a word is shown as it's learned (docs/cook-with-nani-phase-a-design.md
+  /* How a word is shown as it's learned (docs/archive/cook/cook-with-nani-phase-a-design.md
    * section 4). A word shows as text in only one place at a time, so
    * players can't just match letter shapes:
    *   stage 1 new:      mission card text,  item label text (+ glow)

@@ -1,5 +1,5 @@
 {
-  "_about": "Who did it? content (docs/modes/who-did-it-design.md, deep dive + section 12). People, attributes and clue types are data; every mini-game's levels are knobs (games.<id>.levels, read by js/who/case.js). Kutchi is never written here: every attribute points at a word id in data/cook.json (words), or at a placeholder in this file's own 'words' (kutchi null, grey English in the game). 'draft' marks Zafar's unconfirmed phonetic drafts (vadho, nindho, nar), which count as a test by default (D9.1) and are flagged for the audit.",
+  "_about": "Who did it? content (docs/game-design/modes/who-did-it.md, deep dive + section 12). People, attributes and clue types are data; every mini-game's levels are knobs (games.<id>.levels, read by js/who/case.js). Kutchi is never written here: every attribute points at a word id in data/cook.json (words), or at a placeholder in this file's own 'words' (kutchi null, grey English in the game). 'draft' marks Zafar's unconfirmed phonetic drafts (vadho, nindho, nar), which count as a test by default (D9.1) and are flagged for the audit.",
 
   "words": {
     "_about": "Placeholders only (never Kutchi). The game looks a word up in data/cook.json first, then here.",

@@ -6,7 +6,7 @@
  * with which action is data/hand-poses.json, and each sprite's crop and
  * where its arm leaves the bottom edge is data/hand-sprites.json.
  *
- * Rules (docs/UX-PRINCIPLES.md 8, 12, 13; the art bible 7):
+ * Rules (docs/design-language/ux-principles.md 8, 12, 13; the art bible 7):
  *  - The player's forearm always comes up from the bottom edge (the sleeve
  *    is stretched on down to the edge), aimed at a shoulder below the
  *    screen. Nani's come down from the top: she's across the worktop, and

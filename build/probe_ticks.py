@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sidebar v3 tick probe (docs/cook-ui-feedback-2026-09-28.md 10): play each station in the lab,
+"""Sidebar v3 tick probe (docs/feedback/cook-ui-feedback-2026-09-28.md 10): play each station in the lab,
 move by move, and check the sidebar's pills tick mid-round (UX 11), not only at the end.
 
   python3 build/probe_ticks.py                      # every station, level 2, laptop

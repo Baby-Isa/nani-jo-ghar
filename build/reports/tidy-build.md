@@ -1,6 +1,6 @@
 # Tidy up: build report (phases 0 and 1)
 
-**Branch:** `claude/build-tidy`. Detail: `docs/tidy-up-build-log.md`.
+**Branch:** `claude/build-tidy`. Detail: `docs/archive/build-logs/tidy-up-build-log.md`.
 
 ## Built
 - **Phase 0 (pure logic):**

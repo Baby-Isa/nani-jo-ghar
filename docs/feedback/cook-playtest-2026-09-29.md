@@ -7,7 +7,7 @@
 - Each item says what Zafar said, what's causing it (checked in the code), and what to do.
 - ✅ = done already today. 🟢 = Zafar liked it: keep it and copy it elsewhere.
 - **Q** items are decisions for Zafar (§10). Nothing is built until they're answered.
-- **Art:** every picture needed is in the one ChatGPT page, `docs/chatgpt-art-prompts-cook-v3.md` (§11, step 1).
+- **Art:** every picture needed is in the one ChatGPT page, `docs/archive/art-prompts/chatgpt-art-prompts-cook-v3.md` (§11, step 1).
 
 ---
 

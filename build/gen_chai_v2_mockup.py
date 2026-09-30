@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Chai v2 mock-up art (docs/design/cook-design-system-v1.md §9 step 1): ONE medium draft each of
+"""Chai v2 mock-up art (docs/design-language/ui-design-system.md §9 step 1): ONE medium draft each of
 the two pieces the repo doesn't have yet, matched to sources/art/style-anchor-v1.png:
   hob-2  a compact top-down hob with exactly 2 burners
   tray-4 a small square wooden tray with 4 round cut-outs, top-down

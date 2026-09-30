@@ -1,5 +1,5 @@
 /*
- * Tidy up: the engine (docs/modes/tidy-up-design.md D.1, D.3, 6.2-6.4, 7;
+ * Tidy up: the engine (docs/game-design/modes/tidy-up.md D.1, D.3, 6.2-6.4, 7;
  * build brief task 2). Plain HTML, like Find it: the board is a 1600x900
  * design of divs fitted to the stage, and no Phaser.
  *

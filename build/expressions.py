@@ -100,7 +100,7 @@ def check_prereqs():
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         log("STOP: GEMINI_API_KEY is not set. Cannot call the Gemini image-edit API.")
-        log("Fallback: see lab/PROMPTS.md and section 6 of the build brief.")
+        log("Fallback: see docs/archive/lab-PROMPTS.md and section 6 of the build brief.")
         sys.exit(1)
     return key
 

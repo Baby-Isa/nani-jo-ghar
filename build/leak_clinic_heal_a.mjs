@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * The leak bot for the heal games in lab A (clinic v2): the scrape (cut),
- * knee, ear, tooth. The Sceptic as code (docs/modes/clinic-design.md Q6, the
+ * knee, ear, tooth. The Sceptic as code (docs/archive/clinic/clinic-design-v1.md Q6, the
  * contract's "The Kutchi decides" rule): each game's bot(level, rng) plays
  * the SAME model the browser game plays, with strategies that see only
  * what's on screen (pictures, the order of dishes and pills, which card

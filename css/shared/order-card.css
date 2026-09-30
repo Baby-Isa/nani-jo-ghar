@@ -1,5 +1,5 @@
 /* =====================================================================================
-   The order card (js/shared/order-card.js; docs/design/cook-design-system-v1.md 12 and 2).
+   The order card (js/shared/order-card.js; docs/design-language/ui-design-system.md 12 and 2).
    person → items → parts, flat: white card, 12 px radii, one soft shadow, Nunito.
    Every colour and size is a variable on .oc-card, so a mode can retune it without forking.
    ===================================================================================== */

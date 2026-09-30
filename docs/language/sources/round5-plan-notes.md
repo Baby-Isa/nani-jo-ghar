@@ -37,7 +37,7 @@ Work in progress, saved so it can resume in the morning **when Zafar says go**. 
 
 ## To finish when approved
 
-1. Write `docs/Nani jo Ghar — Questions for Mum (Round 5).md` in Round 4's format. Keep its "How to answer" section: long takes, say the ID, three times for Parts A/N/W, once for sentences.
+1. Write `docs/language/mum-questions/Questions for Mum (Round 5).md` in Round 4's format. Keep its "How to answer" section: long takes, say the ID, three times for Parts A/N/W, once for sentences.
 2. Fable review.
 3. Build the Word copy: `npm install docx@8` in the scratchpad, then `NODE_PATH=<scratch>/node_modules node build/build_mum_questions_docx.js <md> <docx>`. Tested on Round 4 and it works.
 4. Send Zafar the Word copy and a short brief.

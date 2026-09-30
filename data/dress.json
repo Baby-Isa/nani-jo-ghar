@@ -1,5 +1,5 @@
 {
-  "_about": "Dress up (mode id dress-up): words, frames, people, levels as data. docs/modes/dress-up-design.md, the deep dive (25 Sept) and section 12. NEVER invent Kutchi: every word here is a placeholder (\"kutchi\": null + English) until the family gives it (Questions for Mum E60-E71, F44-F79). The real words this mode uses (numbers hikdo..panj, vadho/nindho, nar, and the frames Muke {x} khape / Ne {x} / Nar {x} / Muke hikdo {x} dine / Arre re) are REFERENCED by id from data/cook.json, never copied: see `real`.",
+  "_about": "Dress up (mode id dress-up): words, frames, people, levels as data. docs/game-design/modes/dress-up.md, the deep dive (25 Sept) and section 12. NEVER invent Kutchi: every word here is a placeholder (\"kutchi\": null + English) until the family gives it (Questions for Mum E60-E71, F44-F79). The real words this mode uses (numbers hikdo..panj, vadho/nindho, nar, and the frames Muke {x} khape / Ne {x} / Nar {x} / Muke hikdo {x} dine / Arre re) are REFERENCED by id from data/cook.json, never copied: see `real`.",
   "real": {
     "_about": "Ids that live in data/cook.json. The grader counts a row's decision as real Kutchi only when every attribute it checks is one of these.",
     "numbers": ["num-01", "num-02", "num-03", "num-04", "num-05"],

@@ -1,6 +1,6 @@
 /*
  * Snap: a whole round without a screen, and the bots that play it
- * (docs/modes/snap-design.md 8.4 and D5; build brief phase 0). Pure: the
+ * (docs/game-design/modes/snap.md 8.4 and D5; build brief phase 0). Pure: the
  * Node leak bot (build/leak_snap.mjs) runs it hundreds of times per level,
  * and the lab's in-browser bot (js/snap/bot.js) uses the same strategies to
  * drive the real viewfinder and hand-in.

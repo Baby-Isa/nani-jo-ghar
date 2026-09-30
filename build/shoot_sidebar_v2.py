@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sidebar v2 screenshots (docs/cook-ui-feedback-2026-09-28.md 9; docs/VISUAL-QA.md).
+"""Sidebar v2 screenshots (docs/feedback/cook-ui-feedback-2026-09-28.md 9; docs/archive/process/VISUAL-QA.md).
 
 Plays Cook's Station lab with a seeded Math.random (the same order every time),
 using build/test_cook.py's Player for the moves, and pictures each state of

@@ -1,4 +1,4 @@
-"""Put the labels on the pantry v2 containers (docs/chatgpt-art-prompts-pantry-jars.md, "Putting the
+"""Put the labels on the pantry v2 containers (docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md, "Putting the
 labels on"): the item's icon on the blank sticker, the sticker at one fixed anchor per container
 type, bent a little on round containers and shaded to the container's light.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Samosa v2 game art (docs/design/cook-design-system-v1.md §15): the two pieces the samosa station needs that
+"""Samosa v2 game art (docs/design-language/ui-design-system.md §15): the two pieces the samosa station needs that
 the repo doesn't have, ONE medium draft, matched to sources/art/style-anchor-v1.png, the chai v2 top-down pan
 and the enamel plate:
   fry-sheet   a top-down karahi of hot oil (for the kitchen-kit hob) + a top-down enamel plate lined with paper

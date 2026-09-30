@@ -19,7 +19,7 @@ Outside material about Kutchi grammar, kept for reference. **Nothing here is evi
 - **Caution:** a related paper by the same group speaks of **"Kutchi Gujarati"** ([GLOW abstract](https://glowlinguistics.org/36/pdf/structural_asymmetries_-_the_view_from_kutchi_gujarati_and_marwari.pdf)). That may be a Gujarati variety spoken in Kutch, not the Sindhi-related Kutchi the family speaks. The agreement split has to be tested with Mum, not assumed.
 - **A Grammatical Framework resource grammar for Sindhi exists** (Chalmers thesis; listed in the GF library, [GF RGL publications](https://www.grammaticalframework.org/lib/doc/rgl-publications.html)). It's the planned template for the engine.
 
-## First comparison with what Mum has told us (`docs/kutchi-grammar-notes.md`)
+## First comparison with what Mum has told us (`docs/language/grammar-notes.md`)
 
 **Matches** (good signs):
 - *muke* for "to me" and *toke*;

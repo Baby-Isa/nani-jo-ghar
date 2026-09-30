@@ -27,7 +27,7 @@
 ## Games integrated
 All nine: knee, ear, tooth (A); taste, fever, boing (B); eye, foot (C); cut (core). C's extras stay lab-only.
 
-My additive fixes (listed in `docs/clinic-heal-api.md`):
+My additive fixes (listed in `docs/architecture/clinic-heal-api.md`):
 - Node registration.
 - A bot's own `fair()`.
 - `opts.part`.

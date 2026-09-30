@@ -1,5 +1,5 @@
 /*
- * Shared "which one?" chooser (docs/shared-api.md s2).
+ * Shared "which one?" chooser (docs/architecture/shared-api.md s2).
  *
  * The same decision sits in five modes with five renderers: an attribute +
  * a noun picks one thing among decoys (Find it M3, Dress up's rack, Snap

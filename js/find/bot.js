@@ -1,5 +1,5 @@
 /*
- * Find it: the non-speaker bot (docs/find-it-design.md s6, "the wife's test
+ * Find it: the non-speaker bot (docs/game-design/modes/find-it.md s6, "the wife's test
  * as code"). A test player that sees only the screen and knows no Kutchi.
  *
  * It sees what a person who doesn't speak Kutchi sees: the pictures on the

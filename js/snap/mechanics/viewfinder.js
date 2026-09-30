@@ -1,5 +1,5 @@
 /*
- * Snap mechanic: the viewfinder (docs/modes/snap-design.md D3 `viewfinder`,
+ * Snap mechanic: the viewfinder (docs/game-design/modes/snap.md D3 `viewfinder`,
  * build brief task 2). NEW.
  *
  * A still scene (1.5-2 screens) under a fixed frame in the middle of the

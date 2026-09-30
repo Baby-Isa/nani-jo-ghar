@@ -1,6 +1,6 @@
 /*
  * One save for the whole game ("one app, one save", phase B, 26 Sept 2026).
- * docs/shared-api.md section 11 is the contract.
+ * docs/architecture/shared-api.md section 11 is the contract.
  *
  * Every mode reads and writes its progress through this module, through a
  * small adapter in that mode (Cook's core.js; UIStore for bests, onboarding

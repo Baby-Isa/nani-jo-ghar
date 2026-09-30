@@ -1,5 +1,5 @@
 /*
- * Snap mechanic: Show Nani, the hand-in (docs/modes/snap-design.md D2 G3,
+ * Snap mechanic: Show Nani, the hand-in (docs/game-design/modes/snap.md D2 G3,
  * D3 `handin`, 6.4). NEW.
  *
  * Nani asks for every row again, in a new random order, by voice (the line

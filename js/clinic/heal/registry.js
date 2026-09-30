@@ -1,5 +1,5 @@
 /*
- * The clinic's healing games: the registry (docs/clinic-heal-api.md).
+ * The clinic's healing games: the registry (docs/architecture/clinic-heal-api.md).
  *
  *   Clinic.Heal.register(def)      // a game file calls this once
  *   Clinic.Heal.get(id) / has(id) / ids() / list()

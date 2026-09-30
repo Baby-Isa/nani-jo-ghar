@@ -119,7 +119,7 @@ It also fails any room's first-time script without a ghost demo. I checked that 
 - Tummy, hic and hair are unchanged (CQ14).
 
 ### UX §15: the shared button kit
-**Done:** `js/shared/buttons.js` and `css/shared/buttons.css`, documented in `docs/shared-api.md` §16, with a Node test.
+**Done:** `js/shared/buttons.js` and `css/shared/buttons.css`, documented in `docs/architecture/shared-api.md` §16, with a Node test.
 - ✓ Done is Cook's round gold tick; → Next is Cook's flat design-system pill; the answer pills share one style; `endActions()` gives the end screen's actions in one order (Again, Next, the list, Home).
 - The clinic uses the kit for every button, D1's Found it/Next, the eye's haa/na, and the end screen's actions.
 - **Cook is unchanged** (it adopts the kit later).
@@ -160,7 +160,7 @@ It also fails any room's first-time script without a ghost demo. I checked that 
 - `js/shared/onboard.js`: **a real bug fixed.** When a script was skipped during its between-steps pause, the pause's timer ran `end()` a second time. That cleared `active` for the *next* script, whose overlay was left on screen blocking taps (the in-pipeline fever timed out on it). `end()` now runs once, and only clears `active` if it's its own.
 - `js/shared/guide.js`: an optional `name` (the doctor); Nani's defaults and labels are unchanged.
 - New: `js/shared/buttons.js`, `css/shared/buttons.css`, `build/test_shared_buttons.mjs`.
-- Docs: `docs/shared-api.md` §16.
+- Docs: `docs/architecture/shared-api.md` §16.
 
 **Clinic**:
 - `js/clinic/kit.js`: the card on OrderCard (sequences, read-along, closed card, miss, the headline read), `Kit.button` on the shared kit, `Kit.DOCTOR_FACE`.

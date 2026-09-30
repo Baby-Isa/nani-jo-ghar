@@ -104,7 +104,7 @@ body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y:
   .find-foot { grid-column: 2; grid-row: 2; align-self: end; position: static; }
 }
 
-/* ---------------- phase 1 greyboxes (docs/find-it-design.md 8.2) ---------------- */
+/* ---------------- phase 1 greyboxes (docs/game-design/modes/find-it.md 8.2) ---------------- */
 /* a greybox scene: anchors as labelled boxes on a plain floor; occluders over the things */
 #world.greybox { background: linear-gradient(#efe6d6 0 62%, #d8c7aa 62% 100%); }
 .w-grey-floor { position: absolute; inset: 0; pointer-events: none; }

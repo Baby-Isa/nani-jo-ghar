@@ -1,6 +1,6 @@
 /*
- * Stage 3, the pharmacy counter: "Bring me..." (docs/modes/clinic-design.md
- * P4, Q1, Q3, Q5; clinic v2: docs/modes/clinic-v2-design-sheets.md P). On
+ * Stage 3, the pharmacy counter: "Bring me..." (docs/archive/clinic/clinic-design-v1.md
+ * P4, Q1, Q3, Q5; clinic v2: docs/game-design/modes/clinic.md P). On
  * CB4c the items ride the PAINTED belt, right to left, edge to edge: no
  * hatches, they slide in from off-screen and out the other side, and the
  * loop brings them round again: nothing is ever lost and nobody can lose.

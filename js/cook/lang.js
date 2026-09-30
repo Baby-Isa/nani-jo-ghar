@@ -35,7 +35,7 @@
   const G = () => (Cook.data && Cook.data.grammar) || {};
   Lang.grammar = G;
   /**
-   * Gender agreement (the family, 25 Sept: docs/kutchi-grammar-notes.md).
+   * Gender agreement (the family, 25 Sept: docs/language/grammar-notes.md).
    * A noun has words[id].gender ("he" | "she" | "unknown"); a word with
    * `forms` ({he, she}: "one" hakro/hakri, describing words wadho/wadhi)
    * takes the form for its noun. Unknown gender: the word's own `kutchi`.

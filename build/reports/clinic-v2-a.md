@@ -1,6 +1,6 @@
 # Clinic v2, prototype A: the rooms (W, D, P, E) and the shared clinic fixes
 
-**Built on:** `docs/modes/clinic-v2-design-sheets.md` part A, Zafar's answers in `docs/feedback/clinic-playtest-2026-09-29.md`, and the Cook design system. Branch `claude/clinic-v2`, shared with session B (the heal games, on separate files).
+**Built on:** `docs/game-design/modes/clinic.md` part A, Zafar's answers in `docs/feedback/clinic-playtest-2026-09-29.md`, and the Cook design system. Branch `claude/clinic-v2`, shared with session B (the heal games, on separate files).
 
 **What it is:** a prototype. The mechanics sit on the new approved backgrounds with stand-in pieces: the rough people, the grey patient figure, and flat shapes for the doctor, the apple, the tube, the torch and the four feeling faces. No new art.
 

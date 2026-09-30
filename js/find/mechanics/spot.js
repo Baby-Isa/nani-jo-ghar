@@ -1,5 +1,5 @@
 /*
- * Find it, mechanic `spot` (docs/find-it-design.md D3): find one thing in a
+ * Find it, mechanic `spot` (docs/game-design/modes/find-it.md D3): find one thing in a
  * panned scene. The padded hit box and snap (view.js), a find arcs into the
  * carried basket and its row's tally goes up (`count`: the tally only,
  * never the target, never ends by itself); a wrong tap wiggles and Nani

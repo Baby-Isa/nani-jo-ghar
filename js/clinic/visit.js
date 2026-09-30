@@ -1,7 +1,7 @@
 /*
  * The clinic: the visit engine (pure logic; no browser, no Phaser).
  *
- * docs/modes/clinic-design.md, R2.2 (visit types), R2.3 (the ladder),
+ * docs/archive/clinic/clinic-design-v1.md, R2.2 (visit types), R2.3 (the ladder),
  * R3.1-R3.4 (hand-over, sides in the patient's voice, speaking moments).
  *
  * One engine for every visit: a visit is a list of CALLS (the doctor names

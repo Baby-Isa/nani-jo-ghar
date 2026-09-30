@@ -1,6 +1,6 @@
 /*
  * Cook with Nani: first-time onboarding by showing, not telling (Wave 6,
- * docs/UX-PRINCIPLES.md 8; Wave 6b, 10: the shared kit and a script per
+ * docs/design-language/ux-principles.md 8; Wave 6b, 10: the shared kit and a script per
  * station).
  *
  * Wave 6b: each kept station has an ONBOARDING SCRIPT in data

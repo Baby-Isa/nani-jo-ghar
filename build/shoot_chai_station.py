@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the Chai tray station (docs/VISUAL-QA.md): start, mid-pour, full tray.
+"""Screenshots of the Chai tray station (docs/archive/process/VISUAL-QA.md): start, mid-pour, full tray.
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves
 uncropped shots at the moments that matter.

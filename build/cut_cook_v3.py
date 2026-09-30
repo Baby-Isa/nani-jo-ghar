@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Cut the Cook v3 ChatGPT sheets (29 Sept play-test, docs/chatgpt-art-prompts-cook-v3.md) into sprites.
+"""Cut the Cook v3 ChatGPT sheets (29 Sept play-test, docs/archive/art-prompts/chatgpt-art-prompts-cook-v3.md) into sprites.
 
     python3 build/cut_cook_v3.py              # every sheet -> assets/cook/items/v3/<group>/*.webp + meta.json
     python3 build/cut_cook_v3.py --only hob   # one group (hob, faces, chai, maani, daar, chaat, samosa, sekelo)
 
-The method is build/cut_tick_v2.py's (docs/VISUAL-QA.md §2):
+The method is build/cut_tick_v2.py's (docs/archive/process/VISUAL-QA.md §2):
   - the object is everything not connected to the flat grey background, holes filled, so grey steel
     and dark glass stay solid; BUT a hole that is itself flat background grey (inside a loop handle,
     a rack's frame, the holes of a slotted spoon) is background again, so no grey is left inside;

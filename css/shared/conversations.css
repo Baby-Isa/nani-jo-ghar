@@ -1,6 +1,6 @@
 /*
  * Conversations (js/shared/conversations.js): speech bubbles over the scene, never a
- * new screen (docs/modes/conversations-design.md §6.3). The speaker's bubble sits at their
+ * new screen (docs/game-design/modes/conversations.md §6.3). The speaker's bubble sits at their
  * head (or top centre when the host gives no anchor); the child's reply pills rise from
  * the bottom right, under the thumb (UX §2). No dim, no card: the scene stays alive.
  */

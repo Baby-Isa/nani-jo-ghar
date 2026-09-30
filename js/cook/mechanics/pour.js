@@ -1,7 +1,7 @@
 /*
  * Mechanic: pour.
  *
- * Wave 6b (docs/UX-PRINCIPLES.md 12; the quality pass, Q5): where things
+ * Wave 6b (docs/design-language/ux-principles.md 12; the quality pass, Q5): where things
  * are tapped in, liquids are tapped in too. A TAP on the jug (or the pan)
  * pours ONE measure: the pouring jug slides in over the target, the liquid
  * rises to the next dashed line with the pour sound and its rising pitch,

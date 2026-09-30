@@ -1,5 +1,5 @@
 /*
- * Find it, mechanic `greet` (docs/find-it-design.md D3; reused from Cook):
+ * Find it, mechanic `greet` (docs/game-design/modes/find-it.md D3; reused from Cook):
  * the salaam exchange at the stall (data/cook.json exchanges.salaam,
  * UI.choose). Moved out of list.js unchanged.
  */

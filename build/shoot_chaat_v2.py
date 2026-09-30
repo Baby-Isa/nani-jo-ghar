@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the chaat station (v2; v3 since 30 Sept: the side-on bowl and pots, the review face) (docs/VISUAL-QA.md; docs/design/cook-design-system-v1.md §14, §14a).
+"""Screenshots of the chaat station (v2; v3 since 30 Sept: the side-on bowl and pots, the review face) (docs/archive/process/VISUAL-QA.md; docs/design-language/ui-design-system.md §14, §14a).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots:
   demo        the first-time ghost finger (card row 1 -> its bowl -> the drop)

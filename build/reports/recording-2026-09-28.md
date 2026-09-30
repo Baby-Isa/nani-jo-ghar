@@ -1,6 +1,6 @@
 # Recording 28 Sept 2026: Mum and Zafar, Round 3
 
-`sources/audio/mum-2026-09-28/Kutchi.260928.m4a` (41 min). Findings are in `docs/kutchi-grammar-notes.md` §29–§36.
+`sources/audio/mum-2026-09-28/Kutchi.260928.m4a` (41 min). Findings are in `docs/language/grammar-notes.md` §29–§36.
 
 **Covered:** Part 1 re-takes R1–R12, Part 2 conversations K1–K15, Part 3 story lines S1–S9, Part 4 one/many P1–P13, and Section C1–C21. Section G was skipped on purpose.
 

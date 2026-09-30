@@ -5,7 +5,7 @@
  * LAUNCH
  *   - nobody on this device yet (a first launch): make "Player 1" and go
  *     straight into the first launch (first.html: the character, the pantry
- *     round, chai, the Eid story). No menu, no tutorial (docs/UX-PRINCIPLES.md
+ *     round, chai, the Eid story). No menu, no tutorial (docs/design-language/ux-principles.md
  *     7). The house appears after it.
  *   - a player who hasn't had it yet (a child a grown-up just added) goes the
  *     same way the moment they're picked.
@@ -38,8 +38,8 @@
   ];
   // THE FIRST-LAUNCH HOOK. A player without the "firstDone" flag is sent here (a brand-new
   // device, or a child a grown-up just added): first.html, the first launch (make your character,
-  // the pantry round, chai for Nani, the Eid picture story; docs/first-launch-story.md). It ends
-  // with Save.setFlag("firstDone", true) and NjgApp.home("first"). docs/shared-api.md sections 12-13.
+  // the pantry round, chai for Nani, the Eid picture story; docs/game-design/modes/first-launch.md). It ends
+  // with Save.setFlag("firstDone", true) and NjgApp.home("first"). docs/architecture/shared-api.md sections 12-13.
   // (?speed= is passed on for the browser tests, which play the Cook rounds fast)
   const FIRST = "first.html?app=1" + (params.get("speed") ? `&speed=${encodeURIComponent(params.get("speed"))}` : "");
 
@@ -230,7 +230,7 @@
       });
     };
     draw();
-    // Story help (docs/first-launch-story.md): English then Kutchi (the default), or Kutchi only
+    // Story help (docs/game-design/modes/first-launch.md): English then Kutchi (the default), or Kutchi only
     const helpBtns = sheet.querySelectorAll("#story-help [data-help]");
     const showHelp = () => {
       const h = Save.setting("storyHelp") === "k" ? "k" : "en-k";

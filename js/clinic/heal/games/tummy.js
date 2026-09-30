@@ -1,6 +1,6 @@
 /*
- * Clinic heal game `tummy`: H10 Bubbles and burps (docs/modes/clinic-design.md;
- * contract docs/clinic-heal-api.md).
+ * Clinic heal game `tummy`: H10 Bubbles and burps (docs/archive/clinic/clinic-design-v1.md;
+ * contract docs/architecture/clinic-heal-api.md).
  *
  * Ali ate too many sweets at the wedding. The close-up: a round comic belly
  * (the shirt rolled up, a belly button with a face), six coloured bubbles

@@ -1,5 +1,5 @@
 /*
- * The shared kitchen kit (docs/design/cook-design-system-v1.md §13; API note: docs/shared-api.md).
+ * The shared kitchen kit (docs/design-language/ui-design-system.md §13; API note: docs/architecture/shared-api.md).
  *
  * One hob for every Cook station, extracted from the chai v2 station: a compact top-down hob with
  * ONE BURNER PER PAN IN PLAY (1-4, never an empty burner: the burner rule), each burner's small

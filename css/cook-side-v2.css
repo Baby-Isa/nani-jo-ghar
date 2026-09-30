@@ -1,12 +1,12 @@
 /* =====================================================================================
-   Sidebar v2 (Zafar, 28 Sept evening; docs/cook-ui-feedback-2026-09-28.md 9)
+   Sidebar v2 (Zafar, 28 Sept evening; docs/feedback/cook-ui-feedback-2026-09-28.md 9)
    As crisp as the pantry-v2 jar art: flat, straight, organised. One type scale, one set of
    radii (card 14, group 12, pill 10), 1px borders, one soft shadow. Nothing wraps: every
    headline and pill is one line, shrunk to fit (js/shared/fit.js, never below --fit-min).
    The face is the replay button on every card (a small speaker badge on its corner).
    Pills: pending = white; next (ordered jobs) = gold outline on light grey; done = metallic gold
    with the gold tick. Several of one thing (skewers, maani, cups) are group boxes, alternately tinted.
-   Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10) supersedes v2 where they differ:
+   Sidebar v3 (28 Sept, late; docs/feedback/cook-ui-feedback-2026-09-28.md 10) supersedes v2 where they differ:
    flat material UI against the 3D art. Pills are white with a 1px border; done = the same white pill
    with a flat 2px gold outline and a small flat gold check; next = a light grey fill. One clean rounded
    sans (Nunito 700/800) for all the text; no gradients, no bevels. One white card per person.

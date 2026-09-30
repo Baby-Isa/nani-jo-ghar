@@ -219,7 +219,7 @@
 .rs-btn:not(.primary):not(.rs-done) { border-color: #d9d2c7; }
 .rs-next { animation: rs-nudge 2.4s ease-in-out 2.2s infinite; }
 .rs-again { width: var(--rs-btn); padding: 0; }
-/* Sidebar v2 (Zafar, 28 Sept evening; docs/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
+/* Sidebar v2 (Zafar, 28 Sept evening; docs/feedback/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
    option A, the gold-metal tick on a round cream button (it replaces the green tick) */
 .rs-done {
   width: var(--rs-btn); border-radius: 50%; padding: 0;
@@ -282,7 +282,7 @@
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
-/* Sidebar v3 (28 Sept, late; docs/cook-ui-feedback-2026-09-28.md 10): flat material cards, no gradients,
+/* Sidebar v3 (28 Sept, late; docs/feedback/cook-ui-feedback-2026-09-28.md 10): flat material cards, no gradients,
    no bevels, no 3D text: a white card with a flat 2px outline, gold for right, red for wrong */
 .rs-word.ok { --rs-edge: #c9962e; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
 .rs-word.bad { --rs-edge: #c0443c; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }

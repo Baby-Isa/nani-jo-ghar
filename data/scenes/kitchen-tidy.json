@@ -1,5 +1,5 @@
 {
- "_about": "Tidy up sidecar for the kitchen (E view), to be merged into data/scenes/kitchen.json by the foundation agent. Design coordinates are the 1600x900 board; the tray strip is y 740-890. Spots carry precomputed relation tags to fixed anchors and a neighbour graph (docs/modes/tidy-up-design.md 8.1); lv: the first level a spot (or tag) exists at. Greybox until the shelves are painted.",
+ "_about": "Tidy up sidecar for the kitchen (E view), to be merged into data/scenes/kitchen.json by the foundation agent. Design coordinates are the 1600x900 board; the tray strip is y 740-890. Spots carry precomputed relation tags to fixed anchors and a neighbour graph (docs/game-design/modes/tidy-up.md 8.1); lv: the first level a spot (or tag) exists at. Greybox until the shelves are painted.",
  "id": "kitchen-tidy",
  "camera": "E",
  "base": "kitchen",

@@ -81,7 +81,7 @@ def fmt(m):
 def main():
     out = ["# Cook v3 art (29 Sept play-test)", "",
            "Cut by `python3 build/cut_cook_v3.py` from `sources/art/cook-v3/` (the 28 ChatGPT sheets from",
-           "`docs/chatgpt-art-prompts-cook-v3.md`, renamed to their \"save as\" names). The method is `docs/VISUAL-QA.md` §2's:",
+           "`docs/archive/art-prompts/chatgpt-art-prompts-cook-v3.md`, renamed to their \"save as\" names). The method is `docs/archive/process/VISUAL-QA.md` §2's:",
            "colour-to-alpha edges, flat grey inside loops and holes made transparent (and checked: no `#808080` left inside a",
            "cut), ChatGPT's drawn drop shadows removed, and one registered canvas per object shown in several states.",
            "",
@@ -93,7 +93,7 @@ def main():
            "",
            "The faces (A1, A2) went to `assets/cook/characters/<who>-face[-happy|-frown].webp` (Ali is `cousin`; Isa's are new),",
            "framed by the eyes: `assets/cook/items/v3/faces-meta.json` has each face's eye points on its sheet.", "",
-           "**v3.1 (30 Sept):** the redos R1-R8 (`docs/chatgpt-art-prompts-overnight-2026-09-30.md`, `sources/art/cook-v3-1/`) are",
+           "**v3.1 (30 Sept):** the redos R1-R8 (`docs/archive/art-prompts/chatgpt-art-prompts-overnight-2026-09-30.md`, `sources/art/cook-v3-1/`) are",
            "cut by `python3 build/cut_cook_v3_1.py` (the same method, this script's functions) into the same folders, next to",
            "the v3 files, with `-v2` where one replaces a v3 file. R4's pots are scaled and placed on D1's pot canvas (their",
            "rims on D1's); R6's plates share one canvas on the rim. The report: `build/reports/art-v3-1.md`.", ""]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""End-to-end test for the first launch (docs/first-launch-story.md; first.html).
+"""End-to-end test for the first launch (docs/game-design/modes/first-launch.md; first.html).
 
 At phone (915x375), iPad (1024x768) and laptop (1366x768) sizes, in a
 fresh browser (a new device):

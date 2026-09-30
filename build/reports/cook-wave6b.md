@@ -1,6 +1,6 @@
 # Cook with Nani: Wave 6b (branch `claude/build-cook-wave6b`)
 
-UX principles §9, §11, §12 and §13, the quality pass's kept stations, and the Wave 6b list in `docs/cook-with-nani-todo.md`.
+UX principles §9, §11, §12 and §13, the quality pass's kept stations, and the Wave 6b list in `docs/archive/cook/cook-with-nani-todo.md`.
 
 ## What changed, everywhere
 - **End-of-round screen** (`js/shared/results.js`) after every order and every lab round: time and personal best (per game and level), accuracy, hints, then the word review. Accuracy is the order's rows, plus a red slot for each mistake that isn't a row. The badges map to the stars.

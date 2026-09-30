@@ -1,6 +1,6 @@
 /*
  * H2/H8 Wash, stitch, plaster: the reference healing game for
- * docs/clinic-heal-api.md (design: docs/modes/clinic-design.md Q4, Q5).
+ * docs/architecture/clinic-heal-api.md (design: docs/archive/clinic/clinic-design-v1.md Q4, Q5).
  *
  * The scrape (level 1, the first-ever healing game): Pela paani, ne poi
  * [cloth], ne poi [plaster], said one at a time, the tray in that order.

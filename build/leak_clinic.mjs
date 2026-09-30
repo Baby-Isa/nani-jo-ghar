@@ -1,6 +1,6 @@
 /*
- * The clinic's leak bot for the pipeline (docs/modes/clinic-design.md P12,
- * Q6; docs/clinic-heal-api.md). No browser: it plays the same rows the
+ * The clinic's leak bot for the pipeline (docs/archive/clinic/clinic-design-v1.md P12,
+ * Q6; docs/architecture/clinic-heal-api.md). No browser: it plays the same rows the
  * stages play (js/clinic/pipeline.js) and every registered healing game's
  * own bot (Clinic.Heal.botRun), with strategies that never hear the words.
  *

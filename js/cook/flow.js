@@ -7,7 +7,7 @@
  * (chai, maani, daal, chaat bowl, samosa, mishkaki), then free cooking.
  * The Station lab on the title lets you try every station on its own.
  *
- * Stars (docs/cook-with-nani-phase-a-design.md s6), shown as cut-outs on
+ * Stars (docs/archive/cook/cook-with-nani-phase-a-design.md s6), shown as cut-outs on
  * the mission card that fill in or grey out as you cook:
  *   ear   understood: everything asked for, right counts, right order
  *   hand  cooked well: poured to the line, nothing burnt or spilt
@@ -167,7 +167,7 @@
       await St.passMe(S(), ctx, {});
     };
     /*
-     * Help (docs/cook-with-nani-kutchi-audit.md, top fix 1):
+     * Help (docs/archive/cook/cook-with-nani-kutchi-audit.md, top fix 1):
      *   hearing it again (replay, Nani's hint, a label speaker from stage 3)
      *     costs the no-help star (Relaxed) or some patience (Busy);
      *   being shown the answer (the hesitation glow, the highlight after two
@@ -200,7 +200,7 @@
   /** Wave 5 (clarity and calm): how much Nani says, from data.calm. */
   const calm = () => Cook.data.calm || {};
   /**
-   * Wave 6: the UI appears as it's first needed (docs/UX-PRINCIPLES.md 8).
+   * Wave 6: the UI appears as it's first needed (docs/design-language/ux-principles.md 8).
    * A new player's first order has just the order card; the stars fade in
    * from the second order, the light bulb from the third (data.calm.uiAfter).
    * The Station lab, and anyone who has played before Wave 6, sees it all.

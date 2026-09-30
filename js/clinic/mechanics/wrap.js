@@ -1,5 +1,5 @@
 /*
- * Mechanic: wrap (T2, the bandage). docs/modes/clinic-design.md R2.5, R3.3.
+ * Mechanic: wrap (T2, the bandage). docs/archive/clinic/clinic-design-v1.md R2.5, R3.3.
  * The bandage goes round the limb on a circular track (Stir's gesture: drag
  * round; each full turn counts) around the limb's axis from the hotspot
  * data. From level 2 the doctor says how many times ("Round twice."): the

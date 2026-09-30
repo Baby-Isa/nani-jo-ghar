@@ -1,10 +1,10 @@
 /*
- * Nani's guide box (Zafar, 28 Sept 2026; docs/cook-ui-feedback-2026-09-28.md 3).
+ * Nani's guide box (Zafar, 28 Sept 2026; docs/feedback/cook-ui-feedback-2026-09-28.md 3).
  * One shared component, so every mode can put Nani at the top of its sidebar:
  *
  *   [face)] what to do now, in Kutchi, up to 2 lines       [bulb] [mute]
  *
- *  - Sidebar v3 (Zafar, 28 Sept late; docs/cook-ui-feedback-2026-09-28.md 10): a calm sage green box
+ *  - Sidebar v3 (Zafar, 28 Sept late; docs/feedback/cook-ui-feedback-2026-09-28.md 10): a calm sage green box
  *    with a darker sage band down the left (one CSS variable, --nani-sage), so she stands apart from
  *    the panel and the cards;
  *  - her face is the replay button (a small speaker badge on its corner), as on every card

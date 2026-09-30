@@ -1,6 +1,6 @@
 /*
  * Mechanic: where (M1, "Where does it hurt?"; the named ailment, V3).
- * docs/modes/clinic-design.md R2.2, 6.3, 6.5, R3.2, R3.4 (S2).
+ * docs/archive/clinic/clinic-design-v1.md R2.2, 6.3, 6.5, R3.2, R3.4 (S2).
  * The patient says it ("My knee hurts."; level 3: "My left knee hurts.",
  * their own left, which is on the right of your screen: they face you).
  * Tap the place. Right: the soft sore swirl, "That's it!". Wrong: a giggle,

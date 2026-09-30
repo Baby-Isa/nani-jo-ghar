@@ -1,5 +1,5 @@
 /*
- * The clinic: the body map (pure; no Phaser). docs/modes/clinic-design.md
+ * The clinic: the body map (pure; no Phaser). docs/archive/clinic/clinic-design-v1.md
  * 8.1 (hotspot files), 8.2 (body.js), R3.2 (sides are the patient's own).
  *
  *   ClinicBody.build(file) -> body   // mirror .left -> .right across axisX

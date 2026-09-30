@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser test for the clinic's pipeline (clinic.html; docs/modes/clinic-design.md).
+"""Browser test for the clinic's pipeline (clinic.html; docs/archive/clinic/clinic-design-v1.md).
 
 Plays lab entries through REAL pointer events at screen coordinates, read
 from window.__clinic.expect() (what the current stage wants next): taps on the
@@ -19,7 +19,7 @@ Usage:
   python3 build/test_clinic.py --sizes phone,ipad,laptop    # the three sizes
   python3 build/test_clinic.py --only morning --session 3
   python3 build/test_clinic.py --canvas                     # headless Chromium without WebGL (the clinic is DOM: same run)
-Clinic v2 (docs/modes/clinic-v2-design-sheets.md A): the waiting room plays its five ladder
+Clinic v2 (docs/game-design/modes/clinic.md A): the waiting room plays its five ladder
 levels; D1 at level 2 is the old D1b; the send-off plays E1, E2 (with the goodbye), level 3's
 what-helps and E4. `heal-fever-help` plays fever with the first-time help ON, in the pipeline
 (G8: the tray the pharmacy hands over must hold the thermometer).

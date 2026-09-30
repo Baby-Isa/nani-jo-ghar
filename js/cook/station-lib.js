@@ -3,7 +3,7 @@
  * into building blocks 24 Sept 2026).
  *
  * Each station is one single-finger mini-game, a "verb" that recipes
- * reuse with different settings (docs/cook-with-nani-phase-a-design.md s8).
+ * reuse with different settings (docs/archive/cook/cook-with-nani-phase-a-design.md s8).
  * Rule: every station has at least one setting that only the Kutchi tells
  * you (what, how many, which order, how, or leave-it-out).
  *
@@ -32,7 +32,7 @@
   const BURNER = { left: { x: 515, y: 375 }, right: { x: 1085, y: 375 } };
   const STRIP_Y = 790;
 
-  // at a station Nani is a voice (docs/UX-PRINCIPLES.md 13); one gentle "Arre re!" at level 1 only (UX 11)
+  // at a station Nani is a voice (docs/design-language/ux-principles.md 13); one gentle "Arre re!" at level 1 only (UX 11)
   const nani = (line, opts = {}) => UI.voice(line, opts);
   const oops = () => (Cook.gentleOops(Cook.ctx) ? nani(Lang.line("oops"), { ms: 900 }).catch(() => {}) : Promise.resolve());
   const hideKnown = (ctx) => (id) => !ctx.guided && Cook.cardHidden(id);

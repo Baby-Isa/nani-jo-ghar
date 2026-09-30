@@ -1,5 +1,5 @@
 /*
- * Find it, mechanic `where` (docs/find-it-design.md D3, R2 the calls): a
+ * Find it, mechanic `where` (docs/game-design/modes/find-it.md D3, R2 the calls): a
  * row with a position, on the shared relations layer. The called thing is
  * in three or more places (js/find/gen.js places them), so only the
  * position separates the copies; anchors match by WORD through Rel.holds

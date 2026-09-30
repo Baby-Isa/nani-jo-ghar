@@ -1,5 +1,5 @@
 {
-  "_about": "H1 The kicking knee (and the cast). docs/modes/clinic-design.md Q4 H1 and the quality pass Q1-Q7; contract docs/clinic-heal-api.md. Levels are data: each row's decider (a count, a side, a path order) is drawn from the level's lists. Words: real Kutchi only from data/cook.json (same ids); everything else is an English placeholder ({\"placeholder\": true}), shown as [EN: ...] until the family gives the word. Level 1 carries two real-Kutchi counts so a blind bot stays under 10% (build/leak_clinic_heal_a.mjs).",
+  "_about": "H1 The kicking knee (and the cast). docs/archive/clinic/clinic-design-v1.md Q4 H1 and the quality pass Q1-Q7; contract docs/architecture/clinic-heal-api.md. Levels are data: each row's decider (a count, a side, a path order) is drawn from the level's lists. Words: real Kutchi only from data/cook.json (same ids); everything else is an English placeholder ({\"placeholder\": true}), shown as [EN: ...] until the family gives the word. Level 1 carries two real-Kutchi counts so a blind bot stays under 10% (build/leak_clinic_heal_a.mjs).",
   "id": "knee",
   "part": "body-knee",
   "words": {

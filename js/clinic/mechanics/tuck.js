@@ -1,5 +1,5 @@
 /*
- * Mechanic: tuck (T13, the blanket). docs/modes/clinic-design.md R2.5.
+ * Mechanic: tuck (T13, the blanket). docs/archive/clinic/clinic-design-v1.md R2.5.
  * Pull the blanket up from their knees to their chin (a vertical drag; the
  * hand star from how near the chin it stops). From level 2 the doctor may
  * say how many ("Two blankets."): tap the pile for each one more, then the

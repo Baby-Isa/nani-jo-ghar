@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cut the cook pack's counter-mood edits (docs/chatgpt-art-prompts-batch3-cook.md,
+"""Cut the cook pack's counter-mood edits (docs/archive/art-prompts/chatgpt-art-prompts-batch3-cook.md,
 section 1) with exactly build/cut_characters.py's boxes, eyes and frames, so
 each new mood lands where today's does and nothing jumps when it swaps.
 

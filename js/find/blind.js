@@ -1,5 +1,5 @@
 /*
- * Find it: the non-speaker bot, pure (docs/find-it-design.md D5, 8.2
+ * Find it: the non-speaker bot, pure (docs/game-design/modes/find-it.md D5, 8.2
  * phase 0). The headless twin of js/find/bot.js (which plays in the page):
  * the same idea, "the wife's test as code", on a round built by
  * js/find/gen.js, so build/leak_find.mjs can play thousands of rounds of

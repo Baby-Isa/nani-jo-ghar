@@ -1,12 +1,12 @@
 /*
  * The clinic's pipeline (pure: no DOM; runs in the browser and in Node).
- * docs/modes/clinic-design.md: the Mini-game quality pass (Q1-Q7) over the
+ * docs/archive/clinic/clinic-design-v1.md: the Mini-game quality pass (Q1-Q7) over the
  * Pipeline design (P1-P13). One patient goes through five stages, in order,
  * every time; what one stage decides is what the next one runs on:
  *
  *   waiting room (who) -> diagnosis (part + side -> the ailment) ->
  *   pharmacy (the belt: the prescription onto a fixed-slot tray; the doctor's
- *   handover check) -> heal (the registered game, docs/clinic-heal-api.md) ->
+ *   handover check) -> heal (the registered game, docs/architecture/clinic-heal-api.md) ->
  *   send-off (the feeling, the goodbye) -> the end-of-round screen.
  *
  *   const P = ClinicPipeline;
@@ -124,7 +124,7 @@
 
   /* ================= stage 1: the waiting room ================= */
   /**
-   * Clinic v2 (docs/modes/clinic-v2-design-sheets.md W): the doctor leans out
+   * Clinic v2 (docs/game-design/modes/clinic.md W): the doctor leans out
    * of his door and calls "[Bring in] {description}"; the child taps the tick
    * under that person. The level is the language ladder (W4, Zafar):
    *   1 man / woman / boy / girl · 2 + old / young · 3 + tall / short ·
@@ -559,7 +559,7 @@
 
   /* ================= stage 5: the send-off ================= */
   /**
-   * Clinic v2 (docs/modes/clinic-v2-design-sheets.md E; CQ6), on CB5:
+   * Clinic v2 (docs/game-design/modes/clinic.md E; CQ6), on CB5:
    *   E1 (level 1, taught): the patient's face shows the feeling; pick the card (four: happy, sad, hot, cold).
    *   E2 (level 2): the patient SAYS it, no picture; pick the card; then the goodbye the doctor
    *      cues, in the scene (E3 is merged into E2: "E3" names E2 with the goodbye).

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sekelo v2 game art (docs/design/cook-design-system-v1.md §15): what the station needs that the repo
+"""Sekelo v2 game art (docs/design-language/ui-design-system.md §15): what the station needs that the repo
 doesn't have, ONE medium draft each, matched to sources/art/style-anchor-v1.png and the pantry-v2
 front-on jars (§4: the shelf band's objects are front-on):
   bowls   four identical front-on prep bowls on one sheet: raw mishkaki (meat cubes), onion pieces,

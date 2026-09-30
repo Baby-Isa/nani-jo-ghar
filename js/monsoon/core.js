@@ -1,6 +1,6 @@
 /*
  * Monsoon rush: core (data, word progress, the voice, the mechanic
- * registry and the storm runner). Design: docs/modes/monsoon-rush-design.md.
+ * registry and the storm runner). Design: docs/game-design/modes/monsoon-rush.md.
  *
  * monsoon.html loads Cook's core.js and lang.js (data, the placeholder
  * voice, line building) and never copies them. Word progress goes through

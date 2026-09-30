@@ -2,7 +2,7 @@
  * The clinic's runner (DOM): a patient through the five stages, then the
  * shared end-of-round screen (js/shared/results.js: time, accuracy, hints,
  * then the word review), and a clinic morning of patients with "Close the
- * clinic" at the end (docs/modes/clinic-design.md P1, P6, P8).
+ * clinic" at the end (docs/archive/clinic/clinic-design-v1.md P1, P6, P8).
  *
  *   await Clinic.Run.load();                       // data, art, the body
  *   const scr = Clinic.Screen.build(root);

@@ -1,0 +1,633 @@
+# Shared API (`js/shared/`)
+
+*The contract between the foundation and the mode builds, 25 Sept 2026. Every call, its arguments and what it returns, the data formats, and how each mode swaps its stub for the real module. The foundation session owns `js/shared/`, `data/relations.json` and `data/shared/`; modes read them and never edit them. Ask for a change by writing it in your build log; don't fork a copy.*
+
+## 0. Loading
+
+Every module is one plain file with no dependencies. As a `<script>` it sets a global and also hangs itself on `window.Shared`; in Node, `require()` it (the leak bots and tests do this).
+
+| File | Global | `Shared.` | Data it reads |
+|---|---|---|---|
+| `js/shared/speech.js` | `Speech` | `speech` | family MP3s via the audio manifest |
+| `js/shared/rel.js` | `Rel` | `rel` | `data/relations.json` |
+| `js/shared/whichone.js` | `WhichOne` | `whichone` | none (a mode passes its look-alike groups) |
+| `js/shared/stars.js` | `Stars` | `stars` | `data/shared/stars.json` |
+| `js/shared/say.js` | `Say` | `say` | uses `Speech`, and `Stars` if loaded |
+| `js/shared/overlay.js` | `Overlay` | `overlay` | `data/shared/overlays.json` |
+| `js/shared/save.js` | `Save` | `save` | localStorage (section 11) |
+| `js/shared/app.js` | `NjgApp` | none | none (section 12; browser only) |
+| `js/shared/order-card.js` | `OrderCard` | `orderCard` | none (section 14; `shape()` runs in Node) |
+| `js/shared/guide.js` | `NaniGuide` | `guide` | the Save flag `naniMuted` (section 14.4; browser only) |
+
+```html
+<script src="js/shared/speech.js"></script>
+<script src="js/shared/rel.js"></script>
+<script src="js/shared/whichone.js"></script>
+<script src="js/shared/stars.js"></script>
+<script src="js/shared/say.js"></script>
+<script src="js/shared/overlay.js"></script>
+<script>
+  await Promise.all([Rel.loadJSON(), Stars.loadJSON(), Overlay.loadJSON()]); // default URLs are relative to the page
+</script>
+```
+
+In Node, use `Rel.load(require("../data/relations.json"))` and do the same for the others. A module that hasn't loaded its data still works, but only on built-in defaults: Rel knows the common relations, and Stars uses Cook's rule with `minTested` 2.
+
+Conventions:
+- **Coordinates** are design pixels on the 1600×900 stage. A panning scene sets `stage: [w, 900]`.
+- **Rects** are `[x0, y0, x1, y1]`. `box: [x, y, w, h]` is accepted and converted.
+- **Word ids** are Cook's (`cook-chai`, `fru-01`, `ph-…`). Nothing shared invents Kutchi: every relation word is a placeholder with `kutchi: null`.
+- **Randomness** is always passed in (`rng`), so generators and bots are seeded.
+
+---
+
+## 1. Relations layer: `data/relations.json`, `js/shared/rel.js`, the scene schema
+
+### 1.1 `data/relations.json`
+```json
+{ "relations": { "in-front": { "word": "ph-rel-front", "kind": "anchor", "cams": ["H","E"], "order": 5, "derived": "front", "inverse": "behind" }, ... },
+  "aliases":   { "next-left": "left-of", "in-front-of": "in-front", ... },
+  "grammar":   { "place": "{x} {anchor} {rel}", "unary": "{x} {rel}", "between": "{x} {anchor} {anchor2} {rel}" },
+  "words":     { "ph-rel-front": { "kutchi": null, "english": "in front of" }, ... } }
+```
+
+| Relation ids | `kind` |
+|---|---|
+| `in`, `on`, `under`, `behind`, `next-to`, `left-of`, `right-of`, `in-front`, `on-top` | `anchor` (needs one anchor) |
+| `between` | `anchor2` (needs two anchors) |
+| `middle`, `corner`, `top-row`, `bottom-row`, `first`, `last` | `unary` (no anchor) |
+| `stay` | `leave` (Tidy up's "leave it where it is") |
+
+- **`derived`** says how the relation is read off the spot neighbour graph when the anchor is a placed item rather than scenery: `adjacent`, `left`, `right`, `front`, `back`, `between` or `stack`.
+- **`frame: "player"`** means left and right are the player's, as seen on screen.
+- **`order`** is the acquisition order: in and on first, then under, behind, next to, in front of, between.
+- **Aliases** cover every other spelling the designs used (Find it's `next-left`/`next-right`, Tidy up's `ph-rel-*` ids).
+- **`Rel.mergeWords(Cook.data.words)`** adds the placeholder words to the word table. It never overwrites an existing word, so a family word later wins.
+
+### 1.2 The scene schema (`data/scenes/<scene>.json` and sidecars)
+All keys are optional except `anchors` and `spots` where a mode uses relations. Find it's live `data/find.json` `scenes.bazaar` is valid as it stands (it seeded this schema).
+
+```json
+{ "id": "sitting-room", "camera": "H", "stage": [1600, 900],
+  "anchors": {                                   // object keyed by id, or an array of {id, ...}
+    "crate-left": { "word": "ph-crate", "en": "crate", "rect": [172, 482, 462, 598] },
+    "seat-1":     { "kind": "person-seat", "word": null, "rect": [...], "who": "nana" } },
+  "spots": [                                     // array or object keyed by id
+    { "id": "cl-1", "anchor": "crate-left", "rel": "in", "x": 222, "baseline": 524,
+      "also": [["next-to", "scale"]], "size": 90 },                     // Find it's form
+    { "id": "s12", "x": 610, "y": 540, "surface": "cloth", "cap": 1,     // Tidy up's form
+      "tags": [{ "rel": "in-front", "anchor": "seat-2" }, { "rel": "middle" }],
+      "nbr": { "left": "s11", "right": "s13", "front": "s22", "back": null, "below": null } } ],
+  "occluders": [ { "id": "counter", "rect": [0, 555, 1600, 900], "z": 5 }, { "id": "pot", "poly": [[x, y], ...] } ],
+  "safe": [80, 45, 1520, 855],                   // or {"margin": 0.05}; default: the outer 5% is off limits
+  "surfaces": [ { "id": "cloth", "rect": [...], "material": "cloth" } ],
+  "groups": { "pots": ["ph-pot"] },              // "@pots" in a rule
+  "stacks": [ { "spot": "s30", "max": 4 } ],     // capacity > 1
+  "openables": [...], "monsoon": {...}           // anything else passes through untouched
+}
+```
+
+- **Spot tags.** Every spot ends up with `tags: [{rel, anchor?, anchor2?}]`, built from `rel` + `anchor`, `also` and `tags`, in that order. `y` defaults to `baseline`, and `cap` defaults to 1.
+- **Anchors** are scenery, never targets. `who` seats a person; a board can reseat people with `state.who`.
+- **Rules for authors, checked by `Rel.validate`:**
+  - rects run `x1 > x0` and `y1 > y0`;
+  - relations and anchors exist;
+  - `nbr` is symmetric (`left` ↔ `right`, `front` ↔ `back`);
+  - no spot sits in the safe margin unless it sets `edgeOk: true`.
+- **Visible share.** The "≥ 40% of an item shows" rule is `Rel.visibleFraction(box, scene, z)`.
+- **Sidecars.** A mode's extra keys live in its own sidecar (`kitchen-tidy.json`, `kitchen-monsoon.json`) until phase B merges them. At runtime `Rel.scene(base, sidecar1, …)` merges them:
+  - anchors and spots merge by id (a sidecar spot can add `nbr` or tags to a base spot);
+  - `occluders` concatenate;
+  - other keys are replaced by the later file.
+
+### 1.3 `js/shared/rel.js`
+
+| Call | Returns |
+|---|---|
+| `Rel.load(json)` / `await Rel.loadJSON(url = "data/relations.json")` | `Rel` |
+| `Rel.id(r)` | the canonical relation id (aliases resolved) |
+| `Rel.info(r)` | `{word, kind, derived, frame, cams, order}` |
+| `Rel.scene(base, ...sidecars)` | a normalised scene: `anchors` and `spots` keyed by id, spots with `tags`, `nbr` and `cap` (idempotent) |
+| `Rel.validate(scene)` | `["spot x: unknown anchor \"y\"", ...]` (empty = fine) |
+| `Rel.at(spotId, rel, anchor, state, scene, anchor2?, opts?)` | the primitive: does that spot stand in `rel` to `anchor`? (by a tag; else, for a placed-item anchor, by the neighbour graph) |
+| `Rel.holds(item, where, scene?, {byWord})` | **Find form**: does a placed item (`item.rel = [[relation, of], ...]`) match `where = [rel, anchor]` or `{rel, anchor}`? Anchors match by **word** (both crates are "the crate"), unless `byWord: false` |
+| `Rel.options(scene, row)` | **Find form**: the scene's placed items (`scene.items`) matching `row.noun` + `row.where`; with no items, the spot ids tagged that way |
+| `Rel.holds(state, rule, scene, {ranks, byWord})` | **Board form** (Tidy up): `state = {placements: {inst: spotId \| "tray"}, items?: {inst: {noun, colour, size, kind...}}, start?, who?, groups?}` → true / false |
+| `Rel.options(state, rule, scene)` | **Board form**: free spot ids (capacity respected; the rule's own item may move) where the rule's item would satisfy it; for a `not` rule, where it wouldn't. This is what Ali picks among, and what the "≥ 3 options" check counts |
+| `Rel.check(state, rules, scene)` | `[{i, ok}]` plus `.firstWrong` (the row Nani recasts) and `.allOk` |
+| `Rel.solve(state, rules, scene, {limit = 1, maxNodes = 200000, ranks})` | up to `limit` placements maps satisfying every rule; `.exhausted`, `.nodes` |
+| `Rel.phrase(rule, scene, x?)` | word ids in the grammar's order, e.g. `["ph-cup", "ph-door", "ph-rel-nextto"]`, for `Cook.Lang.phrase` |
+| `Rel.visibleFraction(box, scene, z?)` | 0..1 of the box not covered by occluders above `z` |
+| `Rel.inSafe(x, y, scene)` / `Rel.safeRect(scene)` | the safe area |
+
+Two notes on the board form:
+- An instance's noun is `items[inst].noun`, else the part of its id before `#` (`"ph-cup#2"`).
+- Ranks for `order` and `compare` come from `opts.ranks`, e.g. `{size: ["small", "mid", "big"]}`; numeric values need none.
+
+**Rule types (board form, from Tidy up 8.1):**
+
+| Type | Shape | Holds when |
+|---|---|---|
+| place | `{item, attrs?, rel, anchor}` | some matching instance is placed where `rel` to `anchor` holds. `anchor` is a scene anchor id, a word id, `"@person"`, or a placed item's word (derived) |
+| unary | `{item, rel: "middle"}` | some matching instance is on a spot tagged so |
+| class | `{all: {kind?, colour?...}, rel, anchor}` | every matching instance does (and there is at least one) |
+| count | `{n, item, rel, anchor}` | exactly `n` matching instances do (over-collecting is wrong) |
+| leave | `{item, rel: "stay"}` | every matching instance is where `state.start` had it |
+| not | `{not: rule}` | **no** matching instance satisfies the inner relation ("nothing next to the door") |
+| order | `{items: "@pots", by: "size", dir: "desc", along: "shelf-2", from: "door"}` | all are placed along `along` (spot anchor, surface or tag), and sorted by `by` starting from the end nearest `from` |
+| compare | `{item, rel, anchor: {most \| least: attr, item?}}` | as place, with the anchor being the placed instance with the extreme value |
+
+Tidy up's five solver checks, built on these calls:
+- **Solvable**: `Rel.solve(...).length ≥ 1`.
+- **≥ 3 options per row**: `Rel.options(state, rule, scene).length ≥ 3`, with the other rows' items placed by a solution.
+- **Convention fails**: `!Rel.check(conventionState, rules, scene).allOk`.
+- **No forced row**: drop one rule, then `Rel.solve(..., {limit: 2})` must leave its item unpinned.
+- **Flat priors**: the harness counts over 1,000 boards.
+
+The generator stays in `Tidy.Rules.make`.
+
+### 1.4 Tidy up's dialect: `Rel.Tidy`
+Tidy up compiled its own board shape before this module existed. `Rel.Tidy` is that API exactly (`item`, `matches`, `where`, `at(state, spot)`, `free`, `neighbours`, `tagged`, `satisfies`, `holds`, `options`), tested for agreement with Tidy up's stub on 300 random boards. Its shapes are:
+- a board `{spots, byId}`;
+- items `{word, attrs, kind}`;
+- rows with an explicit `type`;
+- `not: {rule}`;
+- `order.along` as a list of spot ids;
+- a placed-item anchor `{item, attrs}`.
+
+**One real difference, left open for phase B:** in Tidy up's dialect "next to" a placed item means *any* neighbour (left, right, front, back, `adj`). In the board form above it means left or right only. Pick one when the words arrive: it depends on what the Kutchi phrase covers.
+
+---
+
+## 2. Which-one chooser: `js/shared/whichone.js`
+
+An item is `{id, noun, colour?, size?, ...}` or `{id, noun, attrs: {...}}`; `kind` is accepted for `noun`. A row is `{noun, attrs: {colour: "red"}, count?}`, or flat `{noun, colour}`.
+
+| Call | Returns |
+|---|---|
+| `WhichOne.rng(seed)` | seeded `() => [0, 1)` (mulberry32) |
+| `WhichOne.shuffle(arr, rng)` / `WhichOne.val(item, dim)` / `WhichOne.asked(row)` / `WhichOne.matches(item, row)` | helpers |
+| `WhichOne.checkDecoys(items, row, opts)` | `{ok, problems}`. The **decoy rule**: the row is answered by exactly `count` (default 1); the asked noun appears in ≥ `minValues` values of each asked dim (default 3, size 2); each asked value is on ≥ `minNouns` (2) nouns; `balanced`: every value of each asked dim ±`tolerance` (1), over `opts.palette[dim]` if given |
+| `WhichOne.build(row, {values: {dim: palette}, nouns, total, rng, count, ...})` | items (ids `w1…`) that pass the rule; unasked dims in `values` are filled balanced so they distract; throws if impossible |
+| `WhichOne.group(id, groups)` / `WhichOne.candidates(id, groups, {n, rng, exclude})` / `WhichOne.checkGroups(groups)` | the look-alike group; the candidates to show (the whole group or n of it, always including id, shuffled); problems (duplicates, singletons). `groups` is an array of arrays or `{groups: [...]}` (Find it's and Cook's shape) |
+| `WhichOne.balance(items, used, {min: 2, except})` | `{ok, problems, counts, distinct, median}`: every said value (`used` = dim names or `[{dim, value}]`) is on ≥ 2 items (Who did it 3.2), plus each item's distinctiveness and the median |
+| `WhichOne.distinctive(item, items, dims)` / `WhichOne.notStandout(item, items, dims)` | how many of its values are unique; is it at or below the median (the culprit rule) |
+| `WhichOne.consistent(items, clues)` / `WhichOne.lucky(items, clues)` | who still fits; accusing now is a guess (more than one fits: no ear star). A clue is `fn(item)`, `{fits(item)}` or `{dim, value, not?}` |
+| `WhichOne.blindOdds(rows, items, {visible, dims, strategies, countKnown})` | `{p, rows: [{p, strategy, candidates, targets}]}`: the chance a non-speaker gets every row right, taking the strongest prior per row (`uniform`, `odd` one out, most `common` value, plus yours). Use `row.visible` / `opts.visible` for what a non-speaker can read (an English placeholder), and report such rows apart |
+| `WhichOne.setOdds(scope, answers, {features, salience})` | Dress up 8.4: the best blind chance of picking exactly the set `answers` from `scope`. The strategies are uniform, the one strictly most common value of any feature, and the most salient colour; a strategy set smaller than k takes it all plus the rest at random |
+| `WhichOne.fitBudget(make, {budget: 0.05, addDecoy, addRow, odds, blind, maxSteps})` | `{round, p, steps, ok}`: `make()` a round, then alternate `addDecoy(round)` / `addRow(round)` (each returns the grown round or null) until `odds(round) ≤ budget` |
+| `WhichOne.grid(nouns, colours, extra)` / `rangeOdds([lo, hi])` / `product(ps)` / `choose(n, k)` | decoy grids and round odds |
+| `WhichOne.estimate(trials, playOnce)` | a leak bot's win rate |
+| `WhichOne.Pick` | Dress up's stub API exactly (rng-first `int/choose/shuffle/sample/weighted`, `grid`, `rules(scope, answers)`, `setOdds`, `rangeOdds`, `product`, `C`) |
+
+---
+
+## 3. Star sets and ear/voice rules: `data/shared/stars.json`, `js/shared/stars.js`
+
+### 3.1 The data
+`rules.defaults`, then `rules.<mode>`, then `rules.<mode>.variants.<name>` (a visit type, a mechanic).
+
+| Knob | Default | Meaning | Who changes it |
+|---|---|---|---|
+| `earPass` | 1 | share of tested rows that must be heard (1 = Cook's first-miss rule) | Monsoon 0.8 |
+| `minTested` | 2 | fewer tested rows: ear shown dashed, "not tested this time" | Cook 1; clinic 3 (named ailment 2); Monsoon 6 (forecast 10) |
+| `taughtStage` | 1 | rows whose word is at this stage or below are taught, not tested | |
+| `placeholdersTested` | false | a row whose deciding word has no Kutchi yet doesn't count for the ear (English is readable) | |
+| `voicePass` / `voiceMin` | 1 / 1 | share of speaking moments recognised or ✓'d, and how many there must be | Tidy and Snap `voiceMin` 2; Monsoon 0.8 over 4 |
+| `firstTry` | false | only a first-try acceptance counts | clinic |
+| `minConfidence` | 0.5 | below this a recognition goes to the pills (`Say` reads it) | |
+| `busyWrongWeight` | 1 | a Busy wrong's weight against the word's stage | Monsoon 0.5 |
+| `lateCounts` | true | a late answer counts against the word's stage | Monsoon false |
+| `maxMissWeightPerRound` | null | cap per word per round (2 = at most one stage) | Monsoon 2 |
+
+`star_sets.<mode>` uses Cook's shape (`ear`, `hand`, `relaxed`, `busy`) plus `voice`, each `{icon, name, tip}`:
+- For Cook and Find it these match `data/cook.json`.
+- The new icons (`mic`, `megaphone`, `broom`, `umbrella`, `needle`, `nani-glasses`, `plaster`, `lens`) have SVGs in `Stars.ICONS` until phase B merges them into `UI.ICON`.
+
+`menu_words.ids` lists words known from English menus. They are played but never tested, in every mode.
+
+Mode ids are `cook`, `find`, `tidy`, `who`, `dress-up`, `monsoon`, `clinic` and `snap`. The aliases `dress`, `who-did-it`, `tidy-up` and `monsoon-rush` also resolve.
+
+### 3.2 The calls
+A row is `{word | words, outcome? | ok? | firstRight?, stage?, taught?, retry?, excluded?, shown?, placeholder?}`. The `outcome` values are `heard`, `wrong`, `late`, `taught` and `retry`.
+
+A moment is what `Say` resolves: `{via: "voice" | "pill" | "parent" | "skip", confidence?, tries?}`. Snap's `{heard, target, parent}` is accepted too.
+
+| Call | Returns |
+|---|---|
+| `Stars.load(json)` / `await Stars.loadJSON(url = "data/shared/stars.json")` | `Stars` |
+| `Stars.rules(mode, variant?)` or `Stars.rules({...knobs})` | merged knobs |
+| `Stars.set(mode, {busy, voice})` | `[{key: "ear" \| "hand" \| "third" \| "voice", icon, name, tip}]`; voice only when the round has a speaking moment |
+| `Stars.installInto(Cook.data)` | adds every star set to `Cook.data.star_sets` without overwriting a mode's own |
+| `Stars.outcome(row, mode)` / `Stars.isTested(row, mode)` | `heard \| wrong \| late \| taught \| retry \| menu \| placeholder` |
+| `Stars.ear(rows, mode \| knobs, variant?)` | `{state: "earned" \| "lost" \| "untested", tested, heard, ratio, need, offered, earned}` |
+| `Stars.voice(moments, mode \| knobs, variant?)` | `{state: "earned" \| "open" \| "untested" \| "none", said, counted, ratio, offered, earned}`. A pill tap leaves it **open**, never lost; `none` = no voice slot |
+| `Stars.progress(rows, mode, {busy, variant})` | `[{word, correct, missWeight}]` to feed `js/progress.js` (a miss weight of 2 = one stage) |
+| `Stars.isMenuWord(id)` | |
+
+---
+
+## 4. The speaking moment: `js/shared/say.js`
+
+```js
+const out = await Say.moment({
+  choices: ["cook-chai", "cook-dudh", "cook-khun"],  // the closed set, 2-8 ids
+  mode: "cook",                        // the log; minConfidence from Stars.rules(mode) if Stars is loaded
+  character: {                         // every hook optional, may return a promise
+    listen() {},                       // the character turns and cups an ear
+    heard(choice, res) {},             // a recognition arrived
+    act(choice, via) {},               // the character DOES it (voice, pill or parent): the child sees what was heard
+    miss(n, res) {},                   // "Hmm?" / "Say it again?" / "Nar!"
+    done(out) {},
+  },
+  accept: (choice, via) => true,       // false = the act was wrong: a hearing counts as a miss; a pill tap leaves the pills up
+  expected: "cook-chai",               // optional: what a parent's ✓ confirms
+  grandparent: false,                  // shows "✓ They said it" / "Again"
+  pillsLive: false,                    // true at L1: pills and mic together from the start
+  timeoutMs: 4000,                     // passed to Speech.listen
+  pillsAfterMs: 8000,                  // the pills go live on this timer whatever happens (0 = off)
+  retries: 1,                          // misses before the pills go live
+  minConfidence: 0.5,
+  label: (id) => Cook.display(id),     // pill text (the default; placeholders show grey italic)
+  caption: "Nana wants his chai. Tell the cook what to make.",
+  container: document.body,
+  speech: Speech,                      // anything with listen(); the lab passes a fake
+  onHeard(out) {}, onChoice(out) {},   // Who did it / Find it callback names
+});
+// out = {choice, via: "voice" | "pill" | "parent" | "skip", confidence, tries, retried, fallback, enrolled}
+```
+
+**The flow.**
+1. The panel (bottom centre, fits 915×375) shows the mic and faint pills. With no templates for the set, a refused or absent mic, or fewer than 2 choices, the mic is hidden and the pills are live at once.
+2. A tap calls `Speech.listen()` inside the tap (iOS). The button pulses (`listening`) and swells when a voice starts (`speaking`).
+3. A recognition at or above `minConfidence` makes the character act (`heard`, then `act`), then `accept`.
+4. On a null, a low confidence or a rejected act, `miss` plays and the button gets a hint ring for one "say it again". After `retries` misses the pills go live.
+5. A pill tap cancels any listen, the character acts, then `accept` runs.
+
+**Grandparent mode.** ✓ resolves `expected` as `via: "parent"`. With no `expected`, it arms the pills so the parent taps which word was said. "Again" goes back to the mic.
+
+**What the moment writes.**
+- **Enrolment.** It calls `Speech.confirm(choice, "game")` after an accepted recognition (enrols only at margin ≥ 0.4) and `Speech.confirm(choice, "parent")` after a parent's ✓. Pill taps never enrol.
+- **Parent log.** It writes one `Speech.logMoment(...)` entry per moment.
+- **No voice lines while listening.** While `Say.isListening()` is true, the mode must not play a voice line.
+
+The voice star is `Stars.voice([out, ...], mode)`.
+
+The other calls:
+- **`Say.tell(opts)`** is the same moment, accepting `actor` for `character`.
+- **`Say.pills(el, ids, {label, onPick, live})`** is the shared pill builder on its own; it returns `{el, setLive, buttons}`.
+- **`Say.machine(opts)`** is the pure state machine under the moment, for leak bots and headless tests:
+  - `start({micOk})`, `micTap()`, `heard(res)`, `pill(id)`;
+  - after `heard` or `pill` comes the phase `"acting"`, then `accepted()` or `rejected()`;
+  - `timer()`, `parentOk()`, `parentAgain()`, `skip()`.
+
+### 4.1 `js/shared/speech.js` (the recogniser, finished)
+The designed call is unchanged: `Speech.listen({choices, timeoutMs, onState, pcm?}) → {choice, confidence} | null`. It never throws, only one listen runs at a time, and the audio is dropped once its features are taken.
+
+| Call | What it does |
+|---|---|
+| `Speech.loadTemplates(id, urls)` → n / `Speech.hasTemplates(ids)` / `Speech.templateUrls(id, audioManifest)` | family recordings as templates (`word` kind only; the TTS placeholder voices are not family) |
+| `Speech.status()` | `"unknown" \| "ok" \| "refused" \| "absent"` (refused hides the mic for the session) |
+| `Speech.cancel()` / `Speech.busy()` | stop a listen (it resolves null) |
+| `Speech.setProfile(id)` | enrolments are per profile, per device (`localStorage` `njg-speech-enrol-v1:<id>`) |
+| `Speech.confirm(choice, "parent" \| "game")` → enrolled? / `Speech.shouldEnrol(last, choice, by)` | the plan's rule: a parent always enrols; the game only on margin ≥ `Speech.ENROL_MARGIN` (0.4); `Speech.MAX_TAKES` (3) per word, newest wins |
+| `Speech.enrol(choice, pcm?)` / `Speech.clearEnrolments(choice?)` / `Speech.enrolmentCount(choice)` | parent setup takes; "start again" |
+| `Speech.last` | `{feat, result: {choice, confidence, margin, d1, distances}, choices}` (features, never audio) |
+| `Speech.log`, `Speech.onLog = (entry) => ...`, `Speech.logMoment(entry)` | the parent log (device only); the shell persists it via `onLog` in phase B |
+| `Speech.features / classify / dtw / endpoints / pack / unpack` | the pure half, as used by `build/speech/harness.js` |
+
+---
+
+## 5. Overlay-at-anchor sprites: `data/shared/overlays.json`, `js/shared/overlay.js`
+
+```json
+{ "bases": { "nana-upper": { "img": "assets/cook/characters/nana-neutral.webp", "size": [370, 389], "view": "upper", "shape": "person",
+                             "anchors": { "head": [0.5, 0.06], "eyes": [0.5, 0.27], "neck": [0.5, 0.52], "chest": [0.5, 0.72], "hands": [0.5, 0.97] },
+                             "fit": { "ov-cap": { "w": 0.46, "dx": 0, "dy": 0 } } },
+             "grey-cat":   { "img": null, "size": [300, 300], "shape": "cat", "anchors": { ..., "paws": [0.5, 0.94] } } },
+  "layers": { "ov-cap":   { "anchor": "head", "pivot": [0.5, 0.2], "w": 0.45, "aspect": 0.32, "z": 30, "tint": true, "defaultTint": "white", "slot": "head", "shape": "arc" },
+              "ov-trace": { "anchor": "paws", ..., "shape": "smudge" },
+              "item:*":   { "anchor": "hands", "pivot": [0.5, 0.75], "w": 0.3, "aspect": 1, "z": 40, "shape": "item" } },
+  "colours": { "red": "#b72424", ... } }
+```
+
+**Bases.**
+- **Anchors** are normalised `[x, y]` positions in the base image.
+- **`fit`** nudges a layer on this one base (fractions of the base) to get within 4 px.
+- **Bases so far:** `nana-upper`, `ma-upper` and `cousin-upper` use the existing crops; `grey-person` and `grey-cat` are greyboxes.
+
+**Layers.**
+- **Placement.** The layer's `pivot` (0..1 of its own box) sits on the anchor. `w` is a fraction of the drawn base width, and `aspect` (h/w) or `size` gives its height.
+- **`z`.** The base is 0; a negative `z` draws behind it (a dupatta).
+- **`slot`.** Wearing a new layer replaces whatever is in its slot. Dress up's slots are `head`, `top`, `layer`, `bottom`, `feet`, `wrap`, `wrist` and `carry`.
+- **Tints.** `tint: true` means a neutral sprite coloured in code. A tint is a colour id from `colours` or a hex; a mode's colour word with its own `hex` just passes the hex.
+- **`shape`.** The greybox used until the art exists: `person`, `cat`, `arc`, `glasses`, `rect`, `smudge`, `rings` or `item`.
+- **`item:<word id>`** uses the `item:*` template. Its picture comes from `opts.itemImage(wordId)`.
+
+| Call | Returns |
+|---|---|
+| `Overlay.load(json)` / `await Overlay.loadJSON(url = "data/shared/overlays.json")` | `Overlay` |
+| `Overlay.figure(base, layers?, {mirror, skin})` | `{base, layers: [{id, tint?, pattern?, anchor?, fit?, z?}], mirror}` |
+| `Overlay.wear(fig, layerOrId, {tint, pattern})` / `Overlay.remove(fig, idOrSlot)` | a new figure (slots replace) |
+| `Overlay.layout(fig, rect, {itemImage})` | the draw list, back to front: `[{kind: "base" \| "layer", id, x, y, w, h, z, img, tint, pattern, shape, flip, anchor, label}]`, plus `.skipped` (layers whose anchor this base lacks: never drawn in the wrong place) |
+| `Overlay.anchorAt(fig, rect, name)` | `[x, y]` on the canvas |
+| `Overlay.draw(ctx, fig, rect, {images, itemImage, makeCanvas, list})` | draws and returns the list. With images, it draws the images; tinted layers go through an offscreen canvas (multiply, pattern, then the sprite's alpha); anything unloaded is drawn as its greybox |
+| `Overlay.hit(list, x, y, kinds?)` | the topmost entry under a point ("look closer" at a suspect's paws) |
+| `await Overlay.preload(figs, {images, itemImage})` | `{src: Image}` (browser) |
+
+`rect` is `{x, y, w, h}`; the base is fitted inside it, bottom-centred, so a line-up stands on one line. Patterns are `dots`, `stripes` and `bandhani` (a finer dot grid).
+
+---
+
+## 6. Swapping a stub for the real module
+
+Each swap is one line, or a few in a single adapter file. After swapping, delete the stub and run your leak bot: the shared modules are at least as strict as the stubs.
+
+| Mode | Stub today | Swap to |
+|---|---|---|
+| **Find it** | `Find.matches` on `item.rel`, `Find.makeWants` size rows in `gen.js`, `Find.fakeListen`, `data/find.json` `star_set` | `Rel.holds(item, want.where, scene)` (word matching is the default); `WhichOne.checkDecoys(items, row, {minValues: {size: 2}})` or `WhichOne.build` for size rows; `Say.tell({choices, actor, onChoice, speech: {listen: Find.fakeListen, hasTemplates: () => true}})` in the lab, the real `Speech` otherwise; `Stars.installInto(Cook.data)` and `Stars.voice/ear(rows, "find")` |
+| **Tidy up** | `js/tidy/stubs/rel.js` (its own board dialect), `js/tidy/stubs/say.js`, speech stubbed to null, sidecars `kitchen-tidy.json` etc. | `Tidy.Rel = Rel.Tidy` (section 1.4: the stub's API and answers exactly; converge on the board form in phase B); `Tidy.say = (choices, o) => Say.moment(Object.assign({choices, mode: "tidy"}, o))`; stars `Stars.ear(rows, "tidy")` |
+| **Who did it?** | `js/who/stubs/whichone.js` (`balance`, `blindOdds(case)`), speech URL flags, greybox overlays, `data/who.json` `star_set` | `const W = WhichOne` in `case.js`: `W.balance(suspects, dims)` returns the stub's `counts`, `distinct` and `median`, plus `ok` and `problems`. Keep the case-level `blindOdds(case)` in `case.js` (it's the case's own formula), or build it from `WhichOne.setOdds`/`product`. **Don't write `js/shared/mechanics/tell.js`**: use `Say.tell({choices, actor, onHeard})` (it reports `{choice, via}`). For the URL flags, pass `speech: {listen: stubListen, hasTemplates: () => true}`. Suspects: `Overlay.figure("grey-cat", ["ov-trace", "item:fru-01"])` with your people's anchors added as bases |
+| **Dress up** | `js/dress/stubs/pick.js`, `js/dress/mechanics/say.js`, a local `star_sets` | `Dress.Pick = WhichOne.Pick` (the same API and answers), or `WhichOne.setOdds` directly; `say.js` → `Say.moment({... mode: "dress-up"})` (it already checks `window.Shared?.speech`); `Stars.rules("dress-up")`; the doll → `Overlay` with Dress up's slots (add full-body bases to `overlays.json` in phase B) |
+| **Monsoon rush** | `js/monsoon/speech-stub.js`, a local `say.js`, sidecars, `data/monsoon-audio.json` | `Say.moment({choices, mode: "monsoon", speech: labStub \|\| Speech})`; `Stars.ear(rows, "monsoon")` (80% over ≥ 6, forecast ≥ 10), `Stars.voice(moments, "monsoon")`, and `Stars.progress(rows, "monsoon", {busy})` for the Busy stage rule; `Stars.isMenuWord`; sidecars through `Rel.scene(base, sidecar)` when G6 L2+ needs relations |
+| **Clinic** | `js/clinic/stubs/{speech,which,overlay}.js`, `js/clinic/mechanics/tell.js` | `tell.run({io})` → `Say.moment({choices, expected: answer, accept: (c) => c === answer, grandparent: parentJudge, pillsLive: pillsFromStart, minConfidence, mode: "clinic"})`. A wrong pill plays out and the pills stay up, as your `tell` does. The voice star is `Stars.voice(moments, "clinic")` (first try only). `which.js` → `WhichOne.candidates(id, lookalike_groups, {n: 3})`; `overlay.js` → `Overlay` |
+| **Snap** | `js/snap/adapters.js` → `stubs/stars.js`, `stubs/which-one.js` | In `adapters.js`: `Snap.Stars = Stars` (`Stars.ear(rows, {minTested: 2})` and `Stars.voice(said, {minSaid: 2})` take the stub's row shapes and return `offered` and `earned`; add `lens` locally, or use `Stars.ICONS.lens`); keep the size-class picker or use `WhichOne.checkDecoys(items, row, {minValues: {size: 3}})`. `Snap.listen` stays; the pill fallback can move to `Say.moment` |
+
+Until phase B these calls go through the modes' own files, so nothing in `js/shared/` needs editing by a mode.
+
+## 7. Tests, lab and what is not here
+
+- **Unit tests:** `node --test build/test_shared_*.mjs` (speech, rel, whichone, stars, say, overlay and the stub-compat tests; no browser).
+- **Browser smoke test:** `node build/test_shared-browser.mjs` (port 8800, one page, the global playwright).
+- **Lab:** `lab/shared.html` shows overlays with anchors, a say moment, relations on the bazaar scene, and star slots.
+
+Phase B owns the rest:
+- the shell, "one app, one save", with `Speech.setProfile` and `Speech.onLog` wired to the profile;
+- `Stars.ICONS` merged into `UI.ICON`, and `Stars.installInto(Cook.data)` in the shell;
+- the audio manifest's `dur` and `keyAt` fields;
+- merging scene sidecars into `data/scenes/*`;
+- full-body bases;
+- a shared `js/shared/mechanics/` folder if two modes' mechanics converge.
+
+---
+
+## 8. The end-of-round screen: `js/shared/results.js`, `css/shared/results.css`
+
+*Added 25 Sept 2026 (UX principles §9). Load `uistore.js` and `sfx.js` first; both are optional.*
+
+| File | Global | `Shared.` | What |
+|---|---|---|---|
+| `js/shared/uistore.js` | `UIStore` | `uistore` | per-profile storage for bests and onboarding (8.1) |
+| `js/shared/sfx.js` | `Sfx` | `sfx` | synthesised sounds, no files: `bing`, `gold`, `right`, `wrong`, `tap`, `whoosh`, `pop`; `Sfx.muted`; `Sfx.unlock()` in a tap |
+| `js/shared/results.js` | `Results` | `results` | the screen |
+| `js/shared/onboard.js` | `Onboard` | `onboard` | the onboarding kit (s9) |
+
+```js
+const out = await Results.show({
+  mode: "cook", game: "chai", level: 1,       // the personal best is kept per mode + game + level, per profile
+  timeMs: 38200, right: 5, total: 5, hints: 0, // the light bulb counts as a hint
+  marks: [true, true, false, ...],            // optional: slot order (default: rights first)
+  words: [{ kutchi: "dudh", english: "milk", audio: "assets/audio/word/cook-dudh.mp3", id: "cook-dudh" }],
+  speak: (w) => Lang.speakWord(w.id),         // optional: the mode's own audio path
+  onDone(out) {}, onAgain(out) {},            // onAgain optional: shows Play again on the last step
+  actions: [{ id: "again", label: "Again", icon: "again" }, { id: "list", label: "All stations", icon: "grid", primary: true }],
+                                              // optional: the last step's own buttons (replace Play again / Done); elId sets a button's id
+  sound: true, container: document.body,
+});
+// out = {action: "done" | "again" | an actions id, badges, best: {ms, newBest, first, key}}
+```
+
+**One pop-up card** (design system §10, 28 Sept): a white card over the dimmed game that steps through the badges (→ Next), then the word review in the same card, with the action buttons at its foot on that last step. Both steps keep the card's size.
+
+**Page 1.** Three badges, then a big Next on the right. On a phone narrower than 560 px the badges stack as rows.
+- **Time**: a stopwatch disc showing the seconds (m:ss from a minute), with the best under a crown. A new best is faster by at least one shown second: it goes gold, with a bing, sparkles and "New best!". The first round sets the best quietly, and a slower time is never shamed (mid). Leave out `timeMs` for no Time badge.
+- **Accuracy**: `right/total`, with slots that fill green or red in turn. Up to 20 slots, then a jar. All right goes gold with a chime; 60% or more is mid, less is plain.
+- **Hints**: the count, and one small bulb per hint. 0 is gold, 1 mid, 2 or more plain.
+
+**Page 2.** The word review: one card per word (Kutchi, then a neutral speaker and the English), outlined gold when right and red when missed; a tap plays it. The audio path is `speak(w)`, else `w.audio`, else Cook's `Lang.speakWord(w.id)`, else `NjgAudio.speakRaw`/local TTS. With no words, the actions sit under the badges.
+
+Reduced motion shows everything at once (sounds still play). Every target is at least 64 px.
+
+**Pure calls (Node):**
+
+| Call | Returns |
+|---|---|
+| `Results.bestKey(mode, game, level)` | `"cook/chai/L1"` |
+| `Results.judgeTime(ms, prevMs)` | `{seconds, bestMs, first, newBest, changed, tier}` |
+| `Results.recordTime(mode, game, level, ms)` / `Results.best(...)` | judge and store / the stored best |
+| `Results.accuracyTier(right, total)` / `Results.hintTier(n)` | `gold \| mid \| plain` (`none`: nothing asked) |
+| `Results.badges(round, prevMs)` | all three |
+| `Results.toStars({right, total, hints, rows?, mode?, hand?, third?})` | `{ear, hand, third}`: Accuracy gold ⇔ ear, Hints gold ⇔ no-help. With `rows` the mode's `Stars.ear` rule decides. The craft star passes through |
+| `Results.fromStars(stars, {help?, right?, total?})` | show()'s `{right, total, hints}` for a mode that only has stars, with tiers matching them |
+
+### 8.1 `UIStore`: where bests and "seen" live
+`UIStore.get/set(section, key)`, `clear(section?)`, `use(backend)`, `memory()`. **Phase B:** with `js/shared/save.js` loaded (every game page loads it), the data is the current player's `"ui"` namespace in the one save (section 11): `{bests, onboarded, seen, clinic: {state}}`; `UIStore.kind()` is `"save"`. Without it (Node, the old fruit-bowl errand): with a profile attached (`Progress.attachProfile`) the data is `profile.shared_ui`; with neither, one fallback key, `localStorage["njg-shared-ui-fallback-v1"]` (migrated into the one save the first time a device runs it).
+
+## 9. The onboarding kit: `js/shared/onboard.js`, `css/shared/onboard.css`
+
+```js
+const how = await Onboard.run("cook/chai-pour", [
+  { spotlight: "#jug", ghost: { gesture: "tap" } },                                            // waits for a tap in the light
+  { spotlight: ["#jug", "#pan"], ghost: { from: "#jug", to: "#pan", gesture: "drag" }, wait: "pour-done" },
+  { spotlight: () => panRectOnCanvas(), ghost: { gesture: "circle-stir" }, wait: "stirred", audio: "assets/audio/…" },
+], { force: false, idleMs: 7000, audio: (step, i) => {}, onStep: (step, i) => {} });
+// how = "done" | "skipped" | "seen" (this profile had it already: nothing shown)
+Onboard.signal("pour-done");   // the mode says the child did it (or dispatch a "njg-onboard" event, detail = name)
+```
+
+- **`spotlight`**: a selector, an element, `[x, y, w, h]` in page px (for a canvas), a function returning one, or a list of these. Everything else is dimmed, and touches outside the light are blocked.
+- **`ghost.gesture`**: `tap`, `drag` (from → to), `hold`, `swipe` (from → to, or rightwards) or `circle-stir`. `from` defaults to the spotlight. The ghost plays once, and again after `idleMs` with nothing done.
+- **`wait`**: the signal that ends the step. The default is `"tap"`: any tap in the light. A child who acts during the ghost isn't held back.
+- **No text.** Audio is an optional hook per step. A grown-up skips with the small corner button, held for 1 s (a quick tap does nothing), or with Escape.
+- **Once per profile per station**: the script id is stored under `onboarded`. `Onboard.seen(id)` checks it; `Onboard.reset(id?)` clears it.
+- **UI that appears when first needed**: `Onboard.await(el, key)` hides it. `Onboard.fadeIn(el, key)` fades it in with a glow the first time, and shows it at once after that; it returns true the first time.
+- **Pure (Node)**: `Onboard.machine(script)` (phases idle → show → wait → … → done or skipped; `start`, `ghostDone`, `signal`, `tap`, `idle`, `skip`), `Onboard.validate(script)`, `Onboard.normalize(step)`, `Onboard.path(gesture, from, to, box)`.
+
+## 10. How a mode adopts them
+
+1. **Load them.** Add `<link>`s to `css/shared/results.css` and `onboard.css`. Then add `<script>`s for `uistore.js`, `sfx.js`, `results.js` and `onboard.js`, after `progress.js` (and `stars.js` if you use it).
+2. **End of round.** Replace the result card with `Results.show({...})`:
+   - time the round from the first action to Done;
+   - `right`/`total` are your tested rows;
+   - `hints` is your help count (Cook: `ctx.help`);
+   - `words` is your word review list mapped to `{kutchi, english, id}`;
+   - pass `speak` to use your audio.
+   Keep awarding stars as now; `Results.toStars(round)` gives the same answer for ear and no-help (or pass your stars in with `fromStars`). Nothing changes in `progress.js`.
+3. **Onboarding.** At the end of each mini-game's build, write its script (UX §10):
+   - call `await Onboard.run("<mode>/<station>", script)` before the station's first round;
+   - call `Onboard.signal(name)` where your mechanic already knows the child did the thing;
+   - for canvas stations, give the spotlight rects in page px, from your stage-to-screen transform.
+4. **Fade-ins.** Mark the sidebar, stars and light bulb with `Onboard.await(el, "<mode>/sidebar")`, and call `Onboard.fadeIn(el, key)` in the round that first needs each one.
+5. **Tests.** Run `node --test build/test_shared_ui.mjs` and `node build/test_shared-ui-browser.mjs` (port 8811). The lab is `lab/shared-ui.html`.
+
+## 11. The one save: `js/shared/save.js` (phase B, 26 Sept 2026)
+
+Every mode reads and writes progress through it, through a small adapter in that mode. Load it right after `js/version.js` on every game page (before anything that saves).
+
+**Layout (localStorage).** Synchronous on purpose: every mode's load/save was already synchronous, so the adapters are a few lines each and no mode's boot changes.
+
+| Key | Holds |
+|---|---|
+| `njg-save` | the root: `{schema: 1, current, players: [{id, name, colour, created, auto?}], migrated: {oldKey: {player, ns, at}}}` |
+| `njg-save:<player>:cook` | `Cook.save` exactly as before: coins, day, **word stages** (`words`), **stars** (`best`), `taught`, and the `find` / `dress` / `snap` sub-saves that share it. The star and stage rules are Cook's, unchanged |
+| `njg-save:<player>:ui` | `UIStore`: personal bests (`results.js`), onboarding "seen" flags (`onboard.js`), `seen`, the clinic's `state` |
+| `njg-save:<player>:speech` | voice enrolment (`speech.js`): `{choice: [packed takes]}` |
+| `njg-save:<player>:shell` | the shell's flags: `firstDone` (had the first pantry round) |
+
+A new mode picks a namespace name (`[\w-]+`) and calls `Save.get(ns)` / `Save.set(ns, obj)`; nothing else to register.
+
+| Call | Does |
+|---|---|
+| `Save.init()` | load the root; the first time on a device, migrate (below). Every call below runs it |
+| `Save.players()` / `Save.current()` / `Save.currentId()` / `Save.player(id)` | copies of the player list and records |
+| `Save.addPlayer({name, colour, auto?})` | a new player, made current; asks `navigator.storage.persist()` the first time |
+| `Save.select(id)` / `Save.updatePlayer(id, {name, colour})` / `Save.removePlayer(id)` | switch, rename or recolour, remove (with every key of theirs) |
+| `Save.ensurePlayer()` | the current player, making "Player 1" if there's nobody (a mode page opened on its own) |
+| `Save.get(ns, id?)` / `Save.has(ns, id?)` / `Save.set(ns, obj, id?)` / `Save.update(ns, fn, id?)` / `Save.clear(ns, id?)` | a namespace of the current (or named) player. `get` returns a copy, `{}` when empty; `set` returns false if it could only keep it in memory |
+| `Save.flag(name)` / `Save.setFlag(name, value)` | the `shell` namespace |
+| `Save.exportJSON()` / `Save.importJSON(text)` | the parent's save file: `{format: "nani-jo-ghar-save", schema, exported, root, data: {player: {ns: …}}}`. Import adds players, or replaces the player with the same id; everyone else stays. Throws on a file that isn't a save or is from a newer schema |
+| `Save.persistent()` | false when storage is blocked or full: play carries on from memory for the visit |
+| `Save.onChange(fn)` | `fn("player" \| "data", what)`; returns an unsubscribe |
+| `Save.use(storage)` / `Save.memoryStore()` | tests: any Storage-like object |
+
+**Migration.** `schema` 0 is "before the shell". The first `init()` on a device with no root copies each old key that exists into a first player, "Player 1": `njg-cook-v1` → `cook`, `njg-shared-ui-fallback-v1` → `ui`, `njg-speech-enrol-v1` → `speech`. The old keys are never deleted (a way back). A corrupt old key is skipped. A missing or corrupt root with players' keys present is rebuilt from the keys. Later schema changes add a step to `Save.MIGRATIONS[n]`. Not migrated: the old fruit-bowl errand (`bowl.html`) keeps its own IndexedDB profiles (`js/storage.js`); it is a prototype outside the app.
+
+**Adapters** (the whole of each mode's change):
+- Cook (`js/cook/core.js`, `loadSave`/`writeSave`): `Cook.save` ⇄ `Save.get/set("cook")`, falling back to the old key if a page doesn't load `save.js`. Find it, Dress up and Snap use `Cook.save`, so they follow with no change.
+- `UIStore` (`js/shared/uistore.js`): a `"save"` backend, used whenever `Save` is loaded. The clinic, results and onboarding follow with no change.
+- `speech.js`: enrolments load from and save to `Save` `"speech"`.
+
+Every storage access is wrapped in try/catch. Tests: `node --test build/test_shared_save.mjs`.
+
+## 12. The app frame: `js/shared/app.js`, `css/shared/app.css`
+
+What makes the separate pages one app. Load `css/shared/app.css` first in the `<head>` (render-blocking: the house colour is the first paint) and `js/shared/app.js` right after `save.js`.
+
+- **Navigation is by page.** The house (`index.html`) opens a mode with `?app=1`; the way home goes back to `index.html?from=<page>`. Pages cross-fade (cross-document view transitions where the browser has them, else a 150 ms fade-out). Why pages and not in-page mounting: `build/reports/shell.md`.
+- **The way home.** With `?app=1`, the mode's own ⌂ rail button (`#btn-home`) goes home instead of to the mode's menu, and a ⌂ in the player's colour (`#njg-home`) sits in the top-left corner whenever the mode isn't mid-round (always, where a mode has no rail ⌂). Mid-round, leaving asks first. Both are handled on the window in the capture phase, so the onboarding kit's blocker can't swallow them. Without `?app=1` a page behaves as before.
+
+| Call | Does |
+|---|---|
+| `NjgApp.isApp()` | opened from the house |
+| `NjgApp.go(url)` / `NjgApp.home(from?)` / `NjgApp.link(url)` | open a page of the app / back to the house / add `app=1` |
+| `NjgApp.mount({busy, rest, confirm})` | a mode's own rules: `busy()` mid-round (default `Cook.inDay`), `rest()` when the corner ⌂ shows, the confirm text |
+
+**A mode's first launch** is its own adapter's job: Cook's is `js/cook/app.js` (`?first=1`: one play button, then day 1's pantry order, then home), hooked into `flow.js` by `Cook.afterOrder(spec, day, {free})`, which may return `"leave"`.
+
+**The first-launch hook** (for character creation and the Eid story, `docs/game-design/modes/first-launch.md`, built later on top of the shell). `js/home.js` sends any player without the `firstDone` flag (a brand-new device, or a child just added in "Who's playing?") to one URL, `FIRST` (now `first.html?app=1`: section 13). The later flow:
+1. points `FIRST` at its own page (say `first.html?app=1`), which loads `css/shared/app.css`, `save.js` and `app.js` like any mode;
+2. keeps what it makes in the current player's save: a name and colour through `Save.updatePlayer(Save.currentId(), {name, colour})`, the character's layers in a new namespace (`Save.set("character", {...})`);
+3. may still hand over to Cook's pantry round (`NjgApp.go("cook.html?app=1&first=1")`: Cook sets `firstDone` and goes home), or ends itself with `Save.setFlag("firstDone", true)` then `NjgApp.home("first")`.
+A save migrated from before the shell (any Cook orders, words or UI data) counts as started and never sees the first launch.
+
+## 13. The first launch: `first.html`, `js/shared/story.js`, `js/shared/character.js` (26 Sept 2026)
+
+`FIRST` in `js/home.js` is now `first.html?app=1`: make your character, arrive at Nani's, Cook's pantry round, "Can you make me chai?", Cook's chai round, Nani sips, the Eid picture story, Yes/No, home (`docs/game-design/modes/first-launch.md`; report `build/reports/first-launch.md`).
+
+**The save.** New namespaces: `character` (`{v: 1, choices: {body, skin, hair, eyes, top, bottom}, hands: "player-boy" | "player-girl", updated}`: swatch ids, not colours, so the palette can be retuned) and `story` (`{"first-launch": {at: <scene id> | null, started, done?}}`). `firstDone` is set by the story's `end` scene. Device-wide grown-ups' settings live in the root: `Save.setting(name)` / `Save.setSetting(name, value)` (`storyHelp`: `"en-k"`, the default, or `"k"`); a save file carries players, not settings.
+
+**`Character`** (`js/shared/character.js`): `load()`, `defaults()`, `normalize(choices)`, `svg(choices, {view})` (view: a viewBox, a category id, or `"badge"`), `hands(choices)`, `get(id?)` / `put(choices, id?)`, `badge(el, id?)`. Options and layers are `data/character-options.json`; the layers are SVG files whose `fill="currentColor"` parts take a category's colour, and `{body}` in a file name picks the file. A new category is a data entry plus layer files. `js/shared/charmaker.js`: `CharMaker.open(host, {choices}) -> Promise<choices>`.
+
+**`Story`** (`js/shared/story.js`): `Story.play(url, {el, kinds})` runs a story file from where the current player left it; `Story.say(line)` puts a line on the read-along card (English, then Kutchi; or Kutchi only). Scene kinds: `character` (the page's own), `scene`, `cook`, `panels`, `choice`, `end`; the data file's `_about` gives the fields. Voices: a family clip (`data/family-audio.json`, only where it says exactly the Kutchi shown), else the browser's speech, else timing only; a blocked autoplay makes the card's speaker pulse. Test hook: `__story.state()`.
+
+**Cook's entry hooks** (`js/cook/app.js`): `cook.html?app=1&first=pantry&then=<page>` (day 1's pantry round with Nani's list fixed to chai, dudh, khun) and `&first=chai&then=<page>` (one order of Nani's own: one cup, chai tray level 1). Both go to `<page>` (a page of the app only) after the round and don't set `firstDone`. `first=1` (the shell's old first launch) still works. The only line added to Cook's flow is `Cook.startDay = startDay`.
+
+## 14. The order card, the pop-up and Nani's box: `js/shared/order-card.js`, `css/shared/order-card.css` (28 Sept 2026)
+
+Design system §12 (`docs/design-language/ui-design-system.md`), for **every mode**: one person's request as a tree, **person → items → parts**, at most three tiers, no word repeated across tiers. Cook's sidebar and request pop-up are its first users (every station); the clinic and Find it adopt it next. Load `css/shared/order-card.css` and `js/shared/order-card.js` (and `js/shared/fit.js`'s `FitText.watch(box)` if the page has it: labels stay on one line, shrunk to fit).
+
+### 14.1 The data (mode-agnostic)
+
+```js
+{ person:   { id: "nana", face: "assets/…/nana-badge.webp", name: "Nana" } | null,   // the face is the replay button
+  headline: { html: "Muke <span class=word>mishkaki</span> khape.", rec: false, key } | null,
+  items: [
+    { label: "ba lakri gos", count: 2, parts: [], key },                                  // no recipe: no parts
+    { label: "hakri lakri mixed", count: 1, ordered: true, done: false, key,
+      parts: [{ label: "gos", done: true, key }, { label: "dungri", done: false, next: true, key }, …] },
+    { label: null, parts: [ … ] } ],                                                      // a dish's own steps: no row
+  done: undefined }                                                                        // default: every item done
+```
+
+- **Labels are HTML in the mode's own word markup** (Cook's `Lang.html`: Kutchi words in `.word`, which the card colours maroon). The component never builds Kutchi: the mode says the number word (`ba lakri gos`). **No pips, no digits.**
+- `count`: how many of the item (1 by default). It only decides the "one item, one of it" rule; it is never shown.
+- `done` on an item: the mode's own (a count row ticks when its **step closes**, UX §11), else all its parts done. `next` on a part: the mode's own (an ordered job's next step: a light grey band), else the first open part of the first open ordered item. `no: true`: a "no X" part (it isn't a step on the sequence line).
+- `rec: true` on the headline: a line still to record (its English, italic, flagged "to record").
+- `key`: anything; handed back with the element drawn for it (`onEl`), for read-along.
+
+### 14.2 The rules it applies (`OrderCard.shape(data, {big})`, no DOM)
+
+- **One item, one of it, with a recipe** (a single chai): no item row; the parts sit straight under the headline. An item with `label: null` is always drawn that way.
+- **Same recipe several times** = one row (the mode says `ba lakri mixed`), parts once. **Different recipes** = separate rows, each with its parts. **Alternate item rows are lightly tinted.**
+- **Everything stays open until done.** A finished item row folds to one gold line (its parts go); a finished person folds, a beat after the last tick, to face + headline + ✓ (a single line centred on the face); a tap opens it again.
+- **The pop-up** (`big: true`) is the same tree at full size, flat inside the mode's own pop-up card: nothing folds, no "next" band, no box around a row, and the read-along highlight is a gold edge (never a yellow box).
+
+Returns `{direct, done, items: [{…item, row, tint, folded, parts: [{…, next}]}]}`.
+
+### 14.3 The calls
+
+| Call | Does |
+|---|---|
+| `OrderCard.card(data, opts)` | a person card element (`.oc-card`, `data-who` = `person.id`) |
+| `OrderCard.render(box, cards, opts)` | several cards into `box` (its content replaced): `cards` = data objects, or `[{data, opts}]`; returns the elements |
+| `OrderCard.shape(data, {big})` | the rules above, as data (tests) |
+| `OrderCard.CHECK` | the small flat gold check (svg) |
+
+`opts`: `big` (the pop-up), `fold` (a state object the mode keeps across redraws, e.g. `folds[key] ||= {}`; omit it and the card never folds), `foldAfter` (ms, default 700), `onFace(ev, cardEl)` (the face tapped: replay), `onEl(key, el)` (each keyed element: headline, item rows, parts), `decorate(el, node)` (after each row or part is drawn: a mode's own bit).
+
+**Closed cards (29 Sept):** `closed: true` (needs `fold`) folds a card that isn't finished to face + headline, with no ✓: the §13 phase fold (a card you can't act on now) and §14a's start-folded card. With `onPeek(cardEl)` a tap opens it for `peekMs` (default 3500) and the host counts it (Cook: a hint on the light-bulb badge); without it a tap opens and closes it freely. A part with `no: true` is the "don't" row: dashed muted edge, a small no-sign, muted ink; gold when it ticks. Rows start lower case (CSS `::first-letter`); Cook also drops their full stop.
+
+Cook's sidebar wraps these: `UI.mission.closeCards(on, {peek, who})`, and `UI.mission.addCard(key, data, {closed})` / `removeCard(key)` for a station's own person card above the order's (Nani's chop card).
+
+Classes a mode can style or query: `.oc-card` (`.done`, `.folded`, `.foldable`, `.oc-big`), `.oc-face` (`.on` while it reads), `.oc-headline`, `.oc-item` (`.tint`, `.done`, `.folded`, `.oc-direct`), `.oc-row` (`.oc-irow` item row, `.oc-part` part; `.done`, `.next`, `.no`, `.reading`), `.oc-parts.oc-seq` (the sequence line). Sizes and colours are variables on `.oc-card` (`--oc-h` headline, `--oc-i` item, `--oc-p` part, `--oc-row-h`, `--oc-part-h`, `--oc-face`, `--oc-word`, `--oc-gold`, `--oc-tint`, …; design system §2 tokens by default).
+
+**How Cook maps its orders** (`js/cook/ui.js`, `orderCards`): a person's own section (the Chai tray's cups) → their card, rows as parts under the headline; a tally row with `cards` (skewers, maani) → an item row with its number word, a mixed skewer's `cardOf` list as its ordered parts (two different mixes → two `hakri lakri mixed` rows); every other row (the pantry, the chop and tadka, chaat layers, samosa fillings) → the dish's own parts (`label: null`), a list in order with the sequence line. Read-along (`UI.readAlong`) lights the elements `onEl` registered.
+
+### 14.4 Nani's guide box: `js/shared/guide.js`, `css/shared/guide.css`
+
+The top of every mode's sidebar: Nani's face (= replay), what to do now (up to 2 lines, never cut off), the light bulb and mute. `const g = NaniGuide.mount(el, {face, bulb, bulbId, onBulb, onReplay, base})`; `g.set(html, {rec})`, `g.talk(on)`, `g.replaying(on)`; `NaniGuide.muted()` / `setMuted(v)` / `onMute(fn)` (remembered per player in the save). The file's header has the details.
+
+### 14.5 A mode adopting it (the clinic, Find it)
+1. Load the two order-card files (and `fit.js`, `guide.js` with `guide.css` for Nani's box).
+2. Build the data from the mode's own order: one card per person; its number words in the labels; `done` when the step closes.
+3. `OrderCard.render(sidebarBox, cards, {fold: state, onFace, onEl})` on every change, and the same data with `{big: true}` inside the request pop-up.
+
+
+## 15. The Cook kitchen kit: `js/cook/kitchen-kit.js` → `Cook.Kit` (29 Sept 2026, maani v2)
+
+Cook's shared hob, extracted from chai v2 (design system §13). One owner at a time; daar v2 and samosa v2 import it (small additive edits only, after `git pull --rebase`). Loaded in `cook.html` after `zone.js`. Coordinates are the station's design px (combined stations draw 1:1 on 1600×900). **The burner rule:** one burner per pan in play, 1–4, never an empty burner.
+
+```js
+await St.load(S, Kit.art(n, ["tawa"]));                 // hob n + knobs + flames + the vessels you place ({wide: true}: the wide hob)
+const sz  = Kit.size(n, k);                             // {w, h, burnerY, frontY} for layout before building (size(1, k, true): wide)
+const hob = Kit.hob(S, { n, k, cx, bottom });           // or {x, y}; {wide: true}: one big burner (a big karahi) → {img, x, y, w, h, burners:[{x,y}], frontY, pitch}
+const b   = Kit.burner(S, hob, i, { who, flameR, state: "high" }); // face badge + knob (the badge's size) on the front edge, flame rings
+b.set("off" | "high" | "low");  S.tappable(b.knobHit, …);          // the station decides what the knob does (bar flat / upright / diagonal)
+const pan = Kit.place(S, "pan" | "tawa" | "karahi", hob.burners[i], r); // body centred on the burner, contact shadow
+const ring = Kit.heatRing(S);  ring.draw(x, y, r, level, lo, hi);  ring.clear();  // the chai v2 clock ring (sage "now", gold sweep)
+Kit.chip(S, wordId, x, y, { word: level < 3, w });      // the shelf's `🔊 word` chip (speaker only when word:false)
+Kit.badge(S, who, mood?, N?);  Kit.speaker(g, x, y, size); // face-on-white-disc texture (mood: neutral | happy | frown); the flat speaker icon
+Kit.faceArt(who);                                         // [key, url] pairs for their three faces (St.load them)
+await Kit.review(S, { who, ok, x, y, size, side, k });    // the review (X10): big round face over the dish -> {close()}
+```
+**The hob family (29 Sept, X5):** `Kit.HOB.sets` (1–4 burners and `wide`) is the ChatGPT H1–H5 art, each hob drawn whole (`assets/cook/items/v3/hob/`, cut by `build/cut_cook_v3.py`), every burner the same size; each burner has its own measured centre (`hob.burners[i].y` can differ by a pixel between burners). The knobs are H6. Flames reach 1.2 × `flameR` and never more than 0.46 of the burner pitch. `python3 build/check_vessel_meta.py` checks the burners against the art. The station art for the next sessions (C1, M1–M5, D1–D2, T1–T2, S1–S5, K1–K5) is cut and documented in `assets/cook/items/v3/README.md`, not wired.
+
+Vessel geometry lives in `Kit.VESSELS` (canvas fractions of the round body: the `karahi` is samosa v2's, with `oil`, its oil's radius as a fraction of the body's; samosa v2's fry places it). Maani v2 uses one burner and one tawa; chai v2 keeps its own copy for now (same art and numbers).
+
+## 16. The button kit: `js/shared/buttons.js`, `css/shared/buttons.css` (30 Sept 2026, UX-PRINCIPLES 15)
+
+One look, one size and one place for the buttons every mode uses, so a child learns them once. Load `css/shared/buttons.css` and `js/shared/buttons.js` (plain script: `window.NjgButtons`, `Shared.buttons`; Node: `require()` gives the pure parts). **The clinic uses it** (its `Kit.button` and the answer pills); **Cook adopts it later** (its `#done-btn` and `#go-btn.ds` are the looks the kit copies, so nothing in Cook changes when it switches).
+
+| Call | Draws | Where |
+|---|---|---|
+| `NjgButtons.done(parent, onPress, {glow, id, label, cls})` | **✓ Done**: the round gold tick (Cook's `#done-btn`: cream disc, `tick-gold.webp`, 3D lip) | bottom-right corner of `parent` (the play area), inside its edges |
+| `NjgButtons.next(parent, label, onPress, {icon, glow, id, cls})` | **→ Next**: the flat design-system pill (Cook's `#go-btn.ds`: white, gold edge, charcoal label, gold icon) | the same corner; `label` = text, a DOM node (the mode's word markup) or `{html}`; `icon` = `arrow` (default), `check`, `grid`, `again`, `home` or `null` |
+| `NjgButtons.pills(parent, [{id, label \| html \| node}], onPick, {cls})` | **answer pills** (haa / na, Found it / Next, the speaking fallbacks): one pill style | where the mode puts the row; `row.pill(id)`, `row.lock(on)` |
+| `NjgButtons.glow(btn, on)` | the "press me" glow (Done and Next) | |
+| `NjgButtons.endActions({again, next, list, home})` | `Results.show`'s `actions`, always in the one order **Again, Next, the list, Home**; each value `true` (the default label) or a label; the last one given is primary; `elId` = `njg-end-<id>` | the end screen (§8) |
+| `NjgButtons.ORDER` | `["again", "next", "list", "home"]` | |
+
+- `parent` must be positioned. Done and Next are `position: absolute` in its bottom-right corner (`right/bottom: max(12px, 2.5%/4%)`), never past its edge (the clinic pharmacy's button was cut off by the frame: 13b). A mode with its own corner box (the clinic's `.cl-actions`) sets them `position: relative` inside it.
+- A press disables the button for 400 ms (no double taps) and plays `Sfx.tap`.
+- The clinic: `Kit.button(parent, "✓", fn, "done")` is Done, any other label is Next (`.cl-go` stays on both for the tests); D1's Found it / Next and the eye test's haa / na are pills; `Results.show` gets `NjgButtons.endActions({next: "Next"})`.
+- Tests: `node --test build/test_shared_buttons.mjs` (the pure part).

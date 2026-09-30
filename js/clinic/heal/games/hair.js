@@ -1,6 +1,6 @@
 /*
- * Clinic heal game `hair`: H16 The beetles (docs/modes/clinic-design.md,
- * H16 and decision 1; contract docs/clinic-heal-api.md).
+ * Clinic heal game `hair`: H16 The beetles (docs/archive/clinic/clinic-design-v1.md,
+ * H16 and decision 1; contract docs/architecture/clinic-heal-api.md).
  *
  * The close-up: the patient's head from the front with a big mop of hair
  * (their own hair colour; a bald patient gets Ali's hair), and nine tiny

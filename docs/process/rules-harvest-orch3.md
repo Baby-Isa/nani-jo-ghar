@@ -13,7 +13,7 @@ Harvested on 30 Sept 2026 from this chat's full transcript, starting at its firs
 - Start a new chat with a plan update: how each item is moving and its next step. (26 Sept)
 - **Wait for his answers before starting any work that depends on them.** "This is why you need to wait for my answers before starting please." (28 Sept evening)
 - When he says "wait for feedback" or "wait for my next message, don't do anything", do nothing until he writes again. (28 Sept, several times)
-- Before calling a mode or station finished, show him its open ideas in `docs/GAME-IDEAS-TBC.md`. (26 Sept, brief)
+- Before calling a mode or station finished, show him its open ideas in `docs/ideas.md`. (26 Sept, brief)
 - Fixes should be understood and solved properly the first time, without back-and-forth. Request new art if that's what it takes. "This shouldn't take so much back and forth… just solve please." (28 Sept, tick art)
 - Look at screenshots yourself before reporting a visual as done. An interim screenshot that is "terrible" must not reach him as progress. (28 Sept, tick) (chat only as phrased; the principle is in VISUAL-QA.md)
 - Talk design questions through with him first ("give me your feedback first, let's talk it through, then create an action plan"). Then queue the build once he says "queue it". (28 Sept, maani)
@@ -192,7 +192,7 @@ Harvested on 30 Sept 2026 from this chat's full transcript, starting at its firs
   - **Story by the Fire** ends every arc. Nani tells the day's story by the fire as a picture book built from **records of what the child actually did** (not screenshots). You tap to fill in missing words, and do more of this as you progress. It opens with Nani for the emotional connection, then the book opens. (28 Sept)
 - **Focus:** lock Cook first (all its art, flow and polish), then the next Arc 1 mode. (28 Sept)
 - Leave the clinic until he has played it through and judged whether it's fun; Find it waits too. Other modes stay parked. (29 Sept)
-- Open game ideas stay in `docs/GAME-IDEAS-TBC.md` until he decides on them. (standing rule)
+- Open game ideas stay in `docs/ideas.md` until he decides on them. (standing rule)
 
 ## 10. Characters, family and culture
 - Nani's role is the guide (above). Nana, Ma and Ali each order for themselves. (28 Sept)

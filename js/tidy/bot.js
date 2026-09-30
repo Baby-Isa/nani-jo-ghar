@@ -1,5 +1,5 @@
 /*
- * Tidy up: the leak bot (docs/modes/tidy-up-design.md 8.4, build brief
+ * Tidy up: the leak bot (docs/game-design/modes/tidy-up.md 8.4, build brief
  * task 1). A player who knows no Kutchi and sees only the screen:
  * Rules.view(round) = the tray's pictures (and what they are: anyone knows
  * an orange from a lemon, a fruit from a spice), the places on the board

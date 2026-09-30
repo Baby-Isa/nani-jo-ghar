@@ -1,7 +1,7 @@
 /*
  * The clinic: the dispensary (T6: fetch -> handover; later T5: pour/count +
  * stir -> handover) and the doctor's bag (M8, pass me).
- * docs/modes/clinic-design.md R2.5 (T5, T6), R3.1, R3.3.
+ * docs/archive/clinic/clinic-design-v1.md R2.5 (T5, T6), R3.1, R3.3.
  *
  * These REUSE Cook's mechanics by id, loaded unchanged from
  * js/cook/mechanics/ (fetch, count, stir, passme): the clinic's bottles and

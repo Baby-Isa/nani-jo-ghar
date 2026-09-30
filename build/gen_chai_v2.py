@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Chai v2 game art (docs/design/cook-design-system-v1.md §10): the pieces the station needs that the
+"""Chai v2 game art (docs/design-language/ui-design-system.md §10): the pieces the station needs that the
 repo doesn't have, ONE medium draft each, matched to sources/art/style-anchor-v1.png and the mock-up's
 generated hob (assets/cook/items/chai-v2/hob-2-burner-t.webp):
   pan-top    a true top-down saucepan, empty (light from the upper left)

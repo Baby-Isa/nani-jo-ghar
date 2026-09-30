@@ -1,6 +1,6 @@
 /*
- * The end-of-round pop-up (docs/UX-PRINCIPLES.md s9, redrawn by s9a; one stepped
- * card since docs/design/cook-design-system-v1.md s10). The same steps in every mode:
+ * The end-of-round pop-up (docs/design-language/ux-principles.md s9, redrawn by s9a; one stepped
+ * card since docs/design-language/ui-design-system.md s10). The same steps in every mode:
  *   page 1: three big badges side by side (stacked on a narrow phone).
  *           Time: a stopwatch outline with the time drawn inside it (per-
  *           profile best per mode+game+level); gold+buzzing on a new best,

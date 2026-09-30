@@ -4,7 +4,7 @@
 
 **Liquids:** shaded pot contents (see-through water → light chai → darkening dark chai), steam when hot, a rolling boil, a bottle or carton tilting over the pot or glass with a curved stream and a splash. **Polish:** puff and stir when things go in, jars glow and bounce, no voiceless speaker pills.
 
-**Art to request:** `docs/chatgpt-art-prompts-chai-station.md` (C1 pot liquids, C2 streams, C3 glass fills). Not yet: jar label stickers; leaning counter characters (a service scene).
+**Art to request:** `docs/archive/art-prompts/chatgpt-art-prompts-chai-station.md` (C1 pot liquids, C2 streams, C3 glass fills). Not yet: jar label stickers; leaning counter characters (a service scene).
 
 **Tests:** `test_cook.py --lab --viewport laptop` PASS (20 stations).
 

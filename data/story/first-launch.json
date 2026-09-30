@@ -1,5 +1,5 @@
 {
-  "_about": "The first launch (docs/first-launch-story.md, 'Zafar's flow'), played by js/shared/story.js on first.html. Scenes run in order; where the player is is kept in their save (namespace 'story', {\"first-launch\": {at, started}}), so a reload picks up at the same scene (a panel story from its first panel; a Cook round starts again). Kinds: character (make your character), scene (a picture, Nani, the child, one or more lines, then the big arrow), cook (a Cook round, which comes back here with done=<scene id>), panels (a picture story, one line per panel), choice (Yes/No: only Yes works; No dodges and Nani laughs), end (sets the flag and goes home). Lines are said in English, then Kutchi (the 'Story help' parent setting can make it Kutchi only). Kutchi marked placeholder: true is Claude's or Zafar's draft until Mum records it; 'clip' is a family recording (data/family-audio.json id, 'speaker' default mum) and is only given where it says exactly the Kutchi shown.",
+  "_about": "The first launch (docs/game-design/modes/first-launch.md, 'Zafar's flow'), played by js/shared/story.js on first.html. Scenes run in order; where the player is is kept in their save (namespace 'story', {\"first-launch\": {at, started}}), so a reload picks up at the same scene (a panel story from its first panel; a Cook round starts again). Kinds: character (make your character), scene (a picture, Nani, the child, one or more lines, then the big arrow), cook (a Cook round, which comes back here with done=<scene id>), panels (a picture story, one line per panel), choice (Yes/No: only Yes works; No dodges and Nani laughs), end (sets the flag and goes home). Lines are said in English, then Kutchi (the 'Story help' parent setting can make it Kutchi only). Kutchi marked placeholder: true is Claude's or Zafar's draft until Mum records it; 'clip' is a family recording (data/family-audio.json id, 'speaker' default mum) and is only given where it says exactly the Kutchi shown.",
   "id": "first-launch",
   "flag": "firstDone",
   "lines": {
@@ -7,49 +7,49 @@
       "en": "Can you help me?",
       "kutchi": "Tu muke help kar de?",
       "clip": "tu-muke-help-kar-de",
-      "note": "Mum 28 Sept, Round 3 S1, first half (Mum split the line in two) (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+      "note": "Mum 28 Sept, Round 3 S1, first half (Mum split the line in two) (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "pantry-ask": {
       "en": "Can you bring me the chai things?",
       "kutchi": "Muke chai ji chiju khanechi dinde?",
       "clip": "muke-chai-ji-chiju-khanechi-dinde",
-      "note": "Mum 28 Sept, Round 3 S1, second half ('pantry' isn't needed) (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+      "note": "Mum 28 Sept, Round 3 S1, second half ('pantry' isn't needed) (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "make-chai": {
       "en": "Can you make me chai?",
       "kutchi": "Tu muke chai banai dinda?",
       "clip": "tu-muke-chai-banai-dinda",
-      "note": "Mum, B40 (docs/kutchi-grammar-notes.md)."
+      "note": "Mum, B40 (docs/language/grammar-notes.md)."
     },
     "lovely-chai": {
       "en": "Mmm, lovely chai! Well done, beta.",
       "kutchi": "Mmm, chai bo fine ai. Shabash, beta.",
       "clip": "mmm-chai-bo-fine-ai-shabash-beta",
-      "note": "Mum 28 Sept, Round 3 S2 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+      "note": "Mum 28 Sept, Round 3 S2 (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "eid-tomorrow": {
       "en": "Tomorrow is Eid!",
       "kutchi": "Saware Eid ai.",
       "clip": "saware-eid-ai",
-      "note": "Mum 28 Sept, Round 3 S3 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check. Saware (tomorrow), not kale."
+      "note": "Mum 28 Sept, Round 3 S3 (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check. Saware (tomorrow), not kale."
     },
     "everyone-coming": {
       "en": "Guests are coming.",
       "kutchi": "Mageni achenta.",
       "clip": "mageni-achenta",
-      "note": "Mum 28 Sept, Round 3 S4 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+      "note": "Mum 28 Sept, Round 3 S4 (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "food-not-ready": {
       "en": "Oh no, there's no food!",
       "kutchi": "Oho, kenjo nai!",
       "clip": "oho-kenjo-nai",
-      "note": "Mum 28 Sept, Round 3 S5 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+      "note": "Mum 28 Sept, Round 3 S5 (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "help-cook": {
       "en": "Will you help me cook?",
       "kutchi": "Tu muke randhan lai madad kar de?",
       "clip": "tu-muke-randhan-lai-madad-kar-de",
-      "note": "Mum 28 Sept, Round 3 S7 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+      "note": "Mum 28 Sept, Round 3 S7 (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     },
     "yes": {
       "en": "Yes!",
@@ -69,7 +69,7 @@
       "en": "Come, let's go to the kitchen!",
       "kutchi": "Hal, rasore me winja.",
       "clip": "hal-rasore-me-winja",
-      "note": "Mum 28 Sept, Round 3 S9 (docs/kutchi-grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
+      "note": "Mum 28 Sept, Round 3 S9 (docs/language/grammar-notes.md §33); spelling heard by Whisper, for Zafar to check."
     }
   },
   "scenes": [

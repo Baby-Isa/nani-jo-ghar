@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the maani station (docs/VISUAL-QA.md §5; v3: the 29 Sept play-test §5, M3-M9, Q14, Q15).
+"""Screenshots of the maani station (docs/archive/process/VISUAL-QA.md §5; v3: the 29 Sept play-test §5, M3-M9, Q14, Q15).
 
 Plays the Maani line in the Station lab with build/test_cook.py's Player and saves uncropped shots of every
 state that draws something different. Two runs per level: the first goes wrong on purpose (it lets the first

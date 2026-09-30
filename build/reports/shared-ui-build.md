@@ -9,7 +9,7 @@
   Then a big Next. Page 2 is the word review (tap to hear), then Done, with Play again if the mode offers it. `toStars`/`fromStars` map the badges to the existing stars.
 - **`js/shared/onboard.js`, `css/shared/onboard.css`.** Script steps: a spotlight (touches outside it are blocked), a ghost hand (tap, drag, hold, swipe, circle-stir), then a wait for a signal or tap. Once per profile per station. A grown-up skips by holding the corner button for 1 s, or with Escape. Also `fadeIn`/`await`.
 - **Support.** `js/shared/uistore.js` stores data on `profile.shared_ui` through Progress's attached profile, with a marked fallback key when no profile is attached. `js/shared/sfx.js` has the Web Audio sounds; no files.
-- **Docs.** `docs/shared-api.md` §8–10 covers both APIs and adoption. `labs.html` has a new card.
+- **Docs.** `docs/architecture/shared-api.md` §8–10 covers both APIs and adoption. `labs.html` has a new card.
 
 ## Open
 `lab/shared-ui.html`: five fake rounds, plus a 3-step fake chai station (tap, drag to pour, stir).

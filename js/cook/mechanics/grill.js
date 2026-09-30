@@ -1,7 +1,7 @@
 /*
  * Mechanic: grill (Sekelo's grill, and its plate).
  *
- * Sekelo v2 (docs/design/cook-design-system-v1.md §15): the rack on the left,
+ * Sekelo v2 (docs/design-language/ui-design-system.md §15): the rack on the left,
  * the painted charcoal grill in the middle (sources/art/chatgpt-batch3/
  * sheet-tray-grill-t-v2), the plate on the right, the top-down prep bowls quiet on
  * the shelf band. The skewers stay upright; each has the chai v2 heat ring

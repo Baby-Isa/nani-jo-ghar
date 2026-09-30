@@ -1,4 +1,4 @@
-/* Chai v2 mock-up (docs/design/cook-design-system-v1.md §9 step 1). A static page at 1366x768:
+/* Chai v2 mock-up (docs/design-language/ui-design-system.md §9 step 1). A static page at 1366x768:
    only the §2 tokens below, the §3 grid, the §4 slots. Nothing here is wired to the game. */
 :root {
   /* §2 colours */

@@ -1,7 +1,7 @@
 # Kutchi grammar checklist for the sentence engine (research, 30 Sept 2026)
 
 Label key used on every form below:
-- **[Mum §n]** = confirmed or heard from Mum, in `docs/kutchi-grammar-notes.md` section n (⚠ = Whisper-heard, Zafar not yet checked).
+- **[Mum §n]** = confirmed or heard from Mum, in `docs/language/grammar-notes.md` section n (⚠ = Whisper-heard, Zafar not yet checked).
 - **[GF-Snd]** = read in the GF Sindhi resource grammar source (gf-rgl `src/sindhi`). A 2012 student grammar, partial and partly Urdu-flavoured. A template for the *shape* of the engine, not evidence about Kutchi.
 - **[Sindhi-gen]** = general knowledge of Sindhi grammar that I could NOT re-verify in a source I could open this session. Treat as a hypothesis.
 - **[Keine]** = Keine, Nisar & Bhatt 2014/15, abstract-level only (I could not open the paper).
@@ -13,7 +13,7 @@ Label key used on every form below:
 ## A. Sources
 
 **Read (opened and used)**
-- `docs/kutchi-grammar-notes.md` (all of it, §1 to §37). The only evidence about the family's Kutchi.
+- `docs/language/grammar-notes.md` (all of it, §1 to §37). The only evidence about the family's Kutchi.
 - `docs/language/sources/README.md`, `gemini-blueprint-v1` and `-v2` (the two Gemini files; v2 skimmed to its lexicon). Unverified.
 - GF Sindhi source on GitHub (raw files fetched): [MorphoSnd.gf](https://raw.githubusercontent.com/GrammaticalFramework/gf-rgl/master/src/sindhi/MorphoSnd.gf) (14 noun classes, adjective classes, verb endings), [ResSnd.gf](https://raw.githubusercontent.com/GrammaticalFramework/gf-rgl/master/src/sindhi/ResSnd.gf) (Agr, NPCase incl. `NPErg`, copula tables, tenses, negation, question order), [StructuralSnd.gf](https://raw.githubusercontent.com/GrammaticalFramework/gf-rgl/master/src/sindhi/StructuralSnd.gf) (pronouns, postpositions), [ParadigmsSnd.gf](https://raw.githubusercontent.com/GrammaticalFramework/gf-rgl/master/src/sindhi/ParadigmsSnd.gf), [VerbSnd.gf](https://raw.githubusercontent.com/GrammaticalFramework/gf-rgl/master/src/sindhi/VerbSnd.gf).
 

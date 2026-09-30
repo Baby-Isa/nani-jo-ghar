@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the samosa station v2 (docs/VISUAL-QA.md; docs/design/cook-design-system-v1.md §15).
+"""Screenshots of the samosa station v2 (docs/archive/process/VISUAL-QA.md; docs/design-language/ui-design-system.md §15).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots:
   fill-start  the pastry on the board, the prep bowls on the shelf, nothing chosen yet

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the Chai tray (docs/VISUAL-QA.md §5; v2, then the 30 Sept v3 pan states, C8).
+"""Screenshots of the Chai tray (docs/archive/process/VISUAL-QA.md §5; v2, then the 30 Sept v3 pan states, C8).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots of every
 state that draws something different. The first run goes wrong on purpose (the salt in the last pan,

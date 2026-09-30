@@ -1,6 +1,6 @@
 /*
  * Mechanic: you (V0, M14: You're the patient) with S1, "It's my knee".
- * docs/modes/clinic-design.md R5, R3.2 step A, R3.4 S1.
+ * docs/archive/clinic/clinic-design-v1.md R5, R3.2 step A, R3.4 S1.
  * First person, looking down at your own lap (your left is on the LEFT of
  * the screen): a soft pink scuff on a part, or, for a cold, a shiver. The
  * doctor leans in: "You first. Where does it hurt?", hands folded. You SAY

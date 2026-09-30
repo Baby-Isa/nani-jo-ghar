@@ -4,9 +4,9 @@
     python3 build/cut_cook_v3_1.py               # everything
     python3 build/cut_cook_v3_1.py --only daar   # one group: hob, daar, sekelo, clinic
 
-The sheets are docs/chatgpt-art-prompts-overnight-2026-09-30.md's, uploaded under their "save as" names
+The sheets are docs/archive/art-prompts/chatgpt-art-prompts-overnight-2026-09-30.md's, uploaded under their "save as" names
 (sources/art/cook-v3-1/, sources/art/clinic-v2/items/). The method is build/cut_cook_v3.py's (cut_tick_v2,
-docs/VISUAL-QA.md §2), whose functions this reuses: colour-to-alpha edges, flat grey inside loops made
+docs/archive/process/VISUAL-QA.md §2), whose functions this reuses: colour-to-alpha edges, flat grey inside loops made
 transparent (and checked), ChatGPT's drawn shadows removed, one registered canvas per object shown in
 several states. New files sit next to the v3 ones (assets/cook/items/v3/<group>/), with a -v2 suffix where
 they replace one; the clinic items go to assets/clinic/items-v2/.

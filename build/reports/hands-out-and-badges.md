@@ -3,7 +3,7 @@
 **Hands:** `cook.html` no longer loads `js/cook/hands.js` (tag commented
 out; file/art kept). All call sites already guard on `Cook.Hands ? … : …`,
 so this alone disables hands everywhere. Clinic never used it. Re-enable
-note in `docs/cook-with-nani-todo.md`.
+note in `docs/archive/cook/cook-with-nani-todo.md`.
 
 **Results:** re-cut `stopwatch-pb`/`icon-bulb` with `cut_glow.py` (glow
 fringed under the grey-key cutter); other cuts checked clean. Time text:

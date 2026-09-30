@@ -1,5 +1,5 @@
 {
-  "_about": "Tidy up (docs/modes/tidy-up-design.md, deep dive D.1-D.9 and section 12). One engine: a round is {board, start, rows, speaker}; rows are rules (place, count, leave, class, not, order) graded rule by rule at Done (or live at level 1). Levels list only what changes (Cook's shape). Every word without Kutchi is kutchi: null and shows as a grey English placeholder: no Kutchi is invented. Fruit, veg and spice nouns and numbers come from data/content.json (words.from_content).",
+  "_about": "Tidy up (docs/game-design/modes/tidy-up.md, deep dive D.1-D.9 and section 12). One engine: a round is {board, start, rows, speaker}; rows are rules (place, count, leave, class, not, order) graded rule by rule at Done (or live at level 1). Levels list only what changes (Cook's shape). Every word without Kutchi is kutchi: null and shows as a grey English placeholder: no Kutchi is invented. Fruit, veg and spice nouns and numbers come from data/content.json (words.from_content).",
 
   "words": {
     "_about": "Placeholders: kutchi null until the family gives the word (Questions for Mum ids in `ask`). The shop nouns are borrowed from data/content.json, never copied here.",

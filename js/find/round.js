@@ -1,5 +1,5 @@
 /*
- * Find it: one round of searching (docs/find-it-design.md s1, s5, s6).
+ * Find it: one round of searching (docs/game-design/modes/find-it.md s1, s5, s6).
  *
  * The engine a mechanic drives: the list on the mission card (one ladder
  * row per want, one dot per item, never per unit, in random order), items

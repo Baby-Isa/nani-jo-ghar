@@ -1,7 +1,7 @@
 /*
  * Cook with Nani: the HTML layer (Phase A).
  *
- *  - Word pills in three shapes (docs/cook-with-nani-phase-a-design.md s4):
+ *  - Word pills in three shapes (docs/archive/cook/cook-with-nani-phase-a-design.md s4):
  *    full [speaker | Kutchi | translate], choice (big, tappable) and the
  *    in-world item labels (drawn in Phaser, see stations.js).
  *  - The mission card: who ordered, the order as pills (words fade to dots
@@ -36,7 +36,7 @@
   ICON.bulb = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.8.6 1.3 1.4 1.3 2.3V17h5v-.4c0-.9.5-1.7 1.3-2.3A6.5 6.5 0 0 0 12 2.5z" fill="currentColor" opacity=".9"/><path d="M9.6 19h4.8M10.4 21.3h3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9.6 9.2a2.7 2.7 0 0 1 2.4-2.3" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".8"/></svg>`;
   UI.ICON = ICON;
   /**
-   * Wave 6 (docs/UX-PRINCIPLES.md), for pages that opt in with <body class="w6">
+   * Wave 6 (docs/design-language/ux-principles.md), for pages that opt in with <body class="w6">
    * (cook.html): the sidebar on the left, one card per thing with a fixed
    * shape, no per-line speaker, 👁 or translate (one light bulb at the top of
    * the sidebar instead; one speaker per card, reading it with read-along).
@@ -253,7 +253,7 @@
   };
 
   /*
-   * Wave 6b (docs/UX-PRINCIPLES.md 13): the instruction card is the master;
+   * Wave 6b (docs/design-language/ux-principles.md 13): the instruction card is the master;
    * at a station Nani is a VOICE. Her card doesn't take sidebar space: her
    * line plays, and the rows of the order card it names throb while she
    * says it (the throbbing hint). A line about something that isn't on the
@@ -941,7 +941,7 @@
 
   /* ================= Wave 6: cards, read-along, the light bulb ================= */
   /*
-   * docs/UX-PRINCIPLES.md 1, 3 and 4. The order card and the request card
+   * docs/design-language/ux-principles.md 1, 3 and 4. The order card and the request card
    * (the intro) are drawn from the same blocks:
    *  - plain rows: a dot and the words, nothing else (no speaker, 👁 or
    *    translate on a row any more);
@@ -1604,7 +1604,7 @@
 
   /* ---------------- the picture tally, done button, toast ---------------- */
   /*
-   * Wave 6b (docs/UX-PRINCIPLES.md 11): a small tally in the top-right
+   * Wave 6b (docs/design-language/ux-principles.md 11): a small tally in the top-right
    * corner of every station where you make several things: a picture of
    * each thing with how many YOU have done so far (🧅 3, 🍅 2). It shows
    * what you did, never the target, and never the Kutchi number as text

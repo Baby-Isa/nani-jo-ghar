@@ -305,7 +305,7 @@
     get result() {
       return this.ctx.result;
     }
-    /* Nani: at a station she's a voice (UI.voice, docs/UX-PRINCIPLES.md 13) */
+    /* Nani: at a station she's a voice (UI.voice, docs/design-language/ux-principles.md 13) */
     say(line, opts = {}) {
       return UI.voice(line, opts);
     }

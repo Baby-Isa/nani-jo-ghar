@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * Find it: the leak bot, headless (no browser). docs/find-it-design.md D5,
+ * Find it: the leak bot, headless (no browser). docs/game-design/modes/find-it.md D5,
  * build brief 8.2 phase 0.
  *
  * The non-speaker bot (js/find/blind.js) plays rounds built by the page's

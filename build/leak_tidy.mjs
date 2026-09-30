@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * Tidy up: the generator checks and the leak bot, headless (no browser).
- * docs/modes/tidy-up-design.md 8.1 (checks 1-5), 8.4 (the bot), build brief
+ * docs/game-design/modes/tidy-up.md 8.1 (checks 1-5), 8.4 (the bot), build brief
  * phase 0.
  *
  *   node build/leak_tidy.mjs --gen 1000 --bot 500

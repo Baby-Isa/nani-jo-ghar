@@ -1,5 +1,5 @@
 {
-  "_about": "H4 Brush up, brush down. docs/modes/clinic-design.md Q4 H4 and the quality pass Q1-Q7; contract docs/clinic-heal-api.md. Levels are data. The direction chain is random per round (2 words at level 1, 4 at level 2, 6 at level 3 with the patient's own left/right, which is mirrored on screen); the tooth by size (wadho/nindho, data/cook.json ids) and the bug count (numbers) are real Kutchi; the paste colour (level 3) and the directions are English placeholders.",
+  "_about": "H4 Brush up, brush down. docs/archive/clinic/clinic-design-v1.md Q4 H4 and the quality pass Q1-Q7; contract docs/architecture/clinic-heal-api.md. Levels are data. The direction chain is random per round (2 words at level 1, 4 at level 2, 6 at level 3 with the patient's own left/right, which is mirrored on screen); the tooth by size (wadho/nindho, data/cook.json ids) and the bug count (numbers) are real Kutchi; the paste colour (level 3) and the directions are English placeholders.",
   "id": "tooth",
   "part": "body-tooth",
   "words": {

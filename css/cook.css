@@ -168,7 +168,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #count-badge .count-digit { font-size: clamp(26px, 3.6vw, 48px); color: var(--madder); }
 #count-badge.bump { animation: bump .3s; }
 
-/* Sidebar v2 (Zafar, 28 Sept evening; docs/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
+/* Sidebar v2 (Zafar, 28 Sept evening; docs/feedback/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
    option A, the gold-metal tick (the end-of-round screen's) on a round cream button. It replaced the green tick. */
 #done-btn {
   position: absolute; z-index: 8; right: 2.5%; bottom: 4%;
@@ -654,7 +654,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #mission .lr .wp .wp-text, #nani-card .wp .wp-text, #mission .m-dish, #mission .lr.head .wp .wp-text { font-size: 19px; }
 }
 
-/* ================= Wave 6 (docs/UX-PRINCIPLES.md; pages with <body class="w6">: cook.html) ================= */
+/* ================= Wave 6 (docs/design-language/ux-principles.md; pages with <body class="w6">: cook.html) ================= */
 /* 2. the sidebar is on the LEFT (people read left to right); Done and "Go to the barbecue" stay on the right */
 @media (min-aspect-ratio: 1333/1000) {
   body.w6 #app { grid-template-columns: var(--side-w) 1fr; }
@@ -853,7 +853,7 @@ body.w6 #mission .throb { animation: throb .7s ease-in-out infinite alternate; b
 .lab-parts summary { cursor: pointer; font-weight: 800; color: var(--ink-soft); }
 
 /* ================= 28 Sept (Zafar): the request card, the pop-up, Nani's box =================
-   docs/cook-ui-feedback-2026-09-28.md 1-3. One row format on the pop-up and the sidebar card:
+   docs/feedback/cook-ui-feedback-2026-09-28.md 1-3. One row format on the pop-up and the sidebar card:
    the word on the left, a small gold tick on the right when it's done (a light gold band);
    in an ordered job the next row has a light grey band and one thin line joins the rows down
    the left. No pictures, no dots, no empty circles, no English instructions. */

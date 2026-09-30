@@ -1,5 +1,5 @@
 /*
- * The shared button kit (docs/UX-PRINCIPLES.md 15; Zafar, 29 Sept): one look, one size and one
+ * The shared button kit (docs/design-language/ux-principles.md 15; Zafar, 29 Sept): one look, one size and one
  * place for the buttons every mode uses, so a child learns them once.
  *
  *   ✓ Done     the round gold tick, bottom right of the play area: commit what you've made

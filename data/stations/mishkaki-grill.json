@@ -1,5 +1,5 @@
 {
- "_about": "Data for the Sekelo station (formerly the Mishkaki grill; design system §15), the combined station js/cook/stations/mishkaki-grill.js. `station`: its name, goal and one line per phase. `words` are the skewer kinds the order names (the family's words, 26 Sept: gos = meat (ph-meat), boga = vegetable, mixed; each is said after lakri, the skewer: ba lakri gos). `mechanic.skewer` is shared by the thread and grill mechanics: which piece is meat or veg (`classes`), which word names which kind of skewer (`kinds`), and how each piece is drawn on a skewer (`art`, placeholder). `mechanic.levels`: which level each zone's mechanic runs at (the grill's own levels in data/cook.json add spots and speed) and `juggle`. Wave 6 (docs/UX-PRINCIPLES.md 5): one job at a time: thread every skewer, press \"Go to the barbecue\", then grill them. `juggle: true` (level 4, optional, for older children) is the old two-zone screen, threading while the grill cooks. The order's shape per level (1 skewer; 2; 2-3 with a mixed one; 3-4) is the mishkaki recipe's `skewers` slot.",
+ "_about": "Data for the Sekelo station (formerly the Mishkaki grill; design system §15), the combined station js/cook/stations/mishkaki-grill.js. `station`: its name, goal and one line per phase. `words` are the skewer kinds the order names (the family's words, 26 Sept: gos = meat (ph-meat), boga = vegetable, mixed; each is said after lakri, the skewer: ba lakri gos). `mechanic.skewer` is shared by the thread and grill mechanics: which piece is meat or veg (`classes`), which word names which kind of skewer (`kinds`), and how each piece is drawn on a skewer (`art`, placeholder). `mechanic.levels`: which level each zone's mechanic runs at (the grill's own levels in data/cook.json add spots and speed) and `juggle`. Wave 6 (docs/design-language/ux-principles.md 5): one job at a time: thread every skewer, press \"Go to the barbecue\", then grill them. `juggle: true` (level 4, optional, for older children) is the old two-zone screen, threading while the grill cooks. The order's shape per level (1 skewer; 2; 2-3 with a mixed one; 3-4) is the mishkaki recipe's `skewers` slot.",
  "station": {
   "name": "Sekelo",
   "verb": "Thread, grill, plate",
@@ -15,7 +15,7 @@
    "kutchi": "boga",
    "english": "vegetable",
    "gender": "unknown",
-   "src": "Mum 26 Sept (Section B, B17; docs/kutchi-grammar-notes.md §25): boga, the family's word (from Swahili)",
+   "src": "Mum 26 Sept (Section B, B17; docs/language/grammar-notes.md §25): boga, the family's word (from Swahili)",
    "src_change": "was an English placeholder",
    "_note": "a vegetable skewer (no meat)"
   },
@@ -23,7 +23,7 @@
    "kutchi": "mixed",
    "english": "mixed",
    "gender": "unknown",
-   "src": "Mum 26 Sept (Section B, B18; docs/kutchi-grammar-notes.md §25): mixed, the English word",
+   "src": "Mum 26 Sept (Section B, B18; docs/language/grammar-notes.md §25): mixed, the English word",
    "src_change": "was an English placeholder",
    "_note": "a skewer of meat and vegetables, threaded in the order said"
   }

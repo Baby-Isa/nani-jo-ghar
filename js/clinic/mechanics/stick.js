@@ -1,5 +1,5 @@
 /*
- * Mechanic: stick (T1, the plaster). docs/modes/clinic-design.md R2.5, 12.2
+ * Mechanic: stick (T1, the plaster). docs/archive/clinic/clinic-design-v1.md R2.5, 12.2
  * task 3 (Cook's pour drag, score = distance). Peel the plaster off the
  * trolley and drag it onto the sore place; where you let go is where it
  * sticks. The hand star (gentle hands) from how near the spot it went.

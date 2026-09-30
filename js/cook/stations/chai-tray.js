@@ -1,5 +1,5 @@
 /*
- * Combined station: the Chai tray, v2 (docs/design/cook-design-system-v1.md §4, §5, §10; the owner's logic).
+ * Combined station: the Chai tray, v2 (docs/design-language/ui-design-system.md §4, §5, §10; the owner's logic).
  *
  * Everything is made in the PAN; nothing is made in the glass.
  *  - THE HOB (top left): a compact top-down hob with one burner per person (level 1: 1, then 2, 3;

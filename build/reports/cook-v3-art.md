@@ -1,7 +1,7 @@
 # Cook v3 art: the 28 ChatGPT sheets, cut, and the shared kit swapped (29 Sept)
 
 Branch `claude/nifty-rubin-c0d431`. Brief: rename and cut all 28 images from Zafar's play-test pack
-(`docs/chatgpt-art-prompts-cook-v3.md`), put the parts every station shares into `Cook.Kit` (the hob
+(`docs/archive/art-prompts/chatgpt-art-prompts-cook-v3.md`), put the parts every station shares into `Cook.Kit` (the hob
 family, knobs, flames, faces), and cut and document the rest for the station sessions.
 
 ## 1. The mapping (all 28 checked by eye: every one matches the orchestrator's list)

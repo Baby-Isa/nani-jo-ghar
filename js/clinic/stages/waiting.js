@@ -1,5 +1,5 @@
 /*
- * Stage 1, the waiting room: "Who's next?" Clinic v2 (docs/modes/clinic-v2-design-sheets.md W;
+ * Stage 1, the waiting room: "Who's next?" Clinic v2 (docs/game-design/modes/clinic.md W;
  * Zafar's W3/W4/W5, CQ1/CQ2), on CB1b: the six-seat bench, the standing spots
  * by the doctor's door and the desk, two little stools in front at the top
  * levels. The doctor leans out of his half-open door and calls

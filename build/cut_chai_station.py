@@ -1,5 +1,5 @@
 """Cut the chai station's filed art (sources/art/chatgpt-batch3/) into transparent webps,
-on build/cut_tick_v2.py's method (docs/VISUAL-QA.md s2):
+on build/cut_tick_v2.py's method (docs/archive/process/VISUAL-QA.md s2):
 
 - the background is measured from the image's edges;
 - solid things (the tray, the knobs): everything not connected to the flat grey, holes

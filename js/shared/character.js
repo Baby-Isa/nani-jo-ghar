@@ -1,6 +1,6 @@
 /*
  * The player's character: data-driven layers, tinted per choice
- * (docs/first-launch-story.md, "Character creation"; docs/shared-api.md 13).
+ * (docs/game-design/modes/first-launch.md, "Character creation"; docs/architecture/shared-api.md 13).
  *
  * data/character-options.json lists the categories (each a row of picture
  * swatches: a colour, or a variant such as boy/girl) and the layers, bottom

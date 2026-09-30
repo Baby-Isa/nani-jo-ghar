@@ -106,7 +106,7 @@ PROMPT = ("A son and his mother record Kutchi words for a family language game. 
 
 # --------------------------------------------------------------------------
 # The item list for sources/audio/mum-2026-09-26/B.m4a (A8 and B1-B49).
-# Spellings and ids follow docs/kutchi-grammar-notes.md sections 23-28, with
+# Spellings and ids follow docs/language/grammar-notes.md sections 23-28, with
 # Zafar's corrections at the end of 28 (hever, aako, chundo, aau theek ai).
 # "at" is where Zafar reads the question. Pins were set after listening by
 # proxy (per-take Whisper, pitch, and what's said around the takes).

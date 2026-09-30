@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scene art for the playtest-2 layout (see docs/playtest-2026-09-23.md).
+"""Scene art for the playtest-2 layout (see docs/feedback/playtest-2026-09-23.md).
 Everything here is derived from the existing painted art, so it stays in
 the same style - nothing is invented from scratch except the brass bowl.
 

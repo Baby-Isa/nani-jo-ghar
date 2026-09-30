@@ -1,6 +1,6 @@
 # First launch: the character, chai for Nani, the Eid story
 
-Branch `claude/first-launch`. Decisions: `docs/first-launch-build-log.md`. API: `docs/shared-api.md` §13.
+Branch `claude/first-launch`. Decisions: `docs/archive/build-logs/first-launch-build-log.md`. API: `docs/architecture/shared-api.md` §13.
 
 ## The flow
 A player without `firstDone` goes to `first.html` (`FIRST` in `js/home.js`). The scenes are data, played by `js/shared/story.js`:

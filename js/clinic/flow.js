@@ -1,6 +1,6 @@
 /*
  * The clinic: boot, the grading context, and the clinic lab.
- * docs/modes/clinic-design.md R3.9 phase 1, 8.3 (the lab).
+ * docs/archive/clinic/clinic-design-v1.md R3.9 phase 1, 8.3 (the lab).
  *
  * The clinic runs on Cook's engine (js/cook/core, lang, art, ui, stations,
  * station-lib, zone), loaded unchanged, with Cook's own mechanics (fetch,

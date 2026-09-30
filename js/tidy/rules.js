@@ -1,6 +1,6 @@
 /*
  * Tidy up: the round generator, the solver checks and the row phrases
- * (docs/modes/tidy-up-design.md D.1, D.5, 8.1; build brief task 1).
+ * (docs/game-design/modes/tidy-up.md D.1, D.5, 8.1; build brief task 1).
  *
  * Pure logic: no DOM, no Cook. It runs in the page (js/tidy/engine.js) and
  * in Node (build/leak_tidy.mjs), so the leak bot plays exactly the rounds a

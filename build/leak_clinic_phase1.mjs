@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * The clinic's leak bot (the Sceptic as code; no browser).
- * docs/modes/clinic-design.md R3.9 phase 1, 8.3, R2.2 (sweep, leftovers),
+ * docs/archive/clinic/clinic-design-v1.md R3.9 phase 1, 8.3, R2.2 (sweep, leftovers),
  * R3.4 (mumble).
  *
  * It plays the SAME graded rows the game plays (js/clinic/visit.js makes

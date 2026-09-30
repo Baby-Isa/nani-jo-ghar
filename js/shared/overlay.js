@@ -1,5 +1,5 @@
 /*
- * Shared overlay-at-anchor sprites (docs/shared-api.md s5).
+ * Shared overlay-at-anchor sprites (docs/architecture/shared-api.md s5).
  *
  * One figure = a base sprite (an upper-body crop first, full body later)
  * with named anchors (head, eyes, neck, chest, hands, paws...) + layers

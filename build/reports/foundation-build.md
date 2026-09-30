@@ -1,6 +1,6 @@
 # Foundation build, phase A (25 Sept 2026)
 
-Branch `claude/build-foundation`. The full contract is `docs/shared-api.md`. Only new files were touched, plus `js/shared/speech.js`.
+Branch `claude/build-foundation`. The full contract is `docs/architecture/shared-api.md`. Only new files were touched, plus `js/shared/speech.js`.
 
 ## Built
 Each piece is one plain file, available as a global, as `window.Shared.*`, or through Node `require()`.

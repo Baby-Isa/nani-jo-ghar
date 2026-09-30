@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""End-of-station pop-up and collapsing person cards (docs/design/cook-design-system-v1.md 10; docs/VISUAL-QA.md).
+"""End-of-station pop-up and collapsing person cards (docs/design-language/ui-design-system.md 10; docs/archive/process/VISUAL-QA.md).
 
   python3 build/shoot_end_popup.py          # laptop only (iterating: VISUAL-QA 0)
   python3 build/shoot_end_popup.py --all    # laptop 1366x768 and phone 390x844

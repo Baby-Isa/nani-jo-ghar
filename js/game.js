@@ -5,7 +5,7 @@
  * Kitchen (ask + pre-exposure) -> bazaar (buy into YOUR basket) ->
  * kitchen (move everything from your basket into Nani's bowl) -> patch.
  *
- * Playtest 2 (23 Sep 2026, docs/playtest-2026-09-23.md) reshaped this:
+ * Playtest 2 (23 Sep 2026, docs/feedback/playtest-2026-09-23.md) reshaped this:
  *  - a first-person foreground basket you always hold; bought fruit lands
  *    in it and stays, then moves into Nani's bowl at home
  *  - characters stand BEHIND a counter/island that hides their lower body

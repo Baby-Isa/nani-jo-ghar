@@ -1,5 +1,5 @@
 /*
- * The onboarding kit (docs/UX-PRINCIPLES.md s8 and s10; docs/shared-api.md
+ * The onboarding kit (docs/design-language/ux-principles.md s8 and s10; docs/architecture/shared-api.md
  * s9): onboarding by showing, not telling. The first time a child meets a
  * station, each step dims everything except one thing, a ghost hand does
  * the action once, then the kit waits for the child to do it before

@@ -1,6 +1,6 @@
 {
  "id": "sitting-room",
- "_about": "Nani's sitting room as grey boxes (Find it F3 level 3; docs/find-it-design.md 4.4, 8.2 phase 1). The scene schema of docs/shared-api.md 1.2: anchors are scenery (never targets), spots are hide spots (Find it's form: anchor, rel, x, baseline), occluders are drawn over the things (the sofa's skirt, the curtain, the cushion) so a thing under or behind shows at least 40% (Rel.visibleFraction). No art yet: the page draws each anchor as a labelled grey box. The carried basket reuses the bazaar's basket sprites.",
+ "_about": "Nani's sitting room as grey boxes (Find it F3 level 3; docs/game-design/modes/find-it.md 4.4, 8.2 phase 1). The scene schema of docs/architecture/shared-api.md 1.2: anchors are scenery (never targets), spots are hide spots (Find it's form: anchor, rel, x, baseline), occluders are drawn over the things (the sofa's skirt, the curtain, the cushion) so a thing under or behind shows at least 40% (Rel.visibleFraction). No art yet: the page draws each anchor as a labelled grey box. The carried basket reuses the bazaar's basket sprites.",
  "camera": "E",
  "stage": [
   1600,

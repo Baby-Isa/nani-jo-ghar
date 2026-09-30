@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * The blind leak bot for heal agent C's games (docs/clinic-heal-api.md):
+ * The blind leak bot for heal agent C's games (docs/architecture/clinic-heal-api.md):
  * eye (H12), foot (H13) and the maybe-later extras (tummy H10, hic H15,
  * hair H16) when their files exist. Every strategy each game lists plays
  * N rounds per level through Clinic.Heal.botRun (no words understood,

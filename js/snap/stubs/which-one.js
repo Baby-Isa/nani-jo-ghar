@@ -1,6 +1,6 @@
 /*
  * STUB (Snap-local until the foundation's shared "which one?" attribute-and-
- * decoy module arrives; docs/modes/snap-design.md D3 and s12). Phase 1 uses
+ * decoy module arrives; docs/game-design/modes/snap.md D3 and s12). Phase 1 uses
  * this local size-class picker with the same rules, deleted at integration:
  *   - the asked noun is in >= 3 sizes in the scene (big, mid, small);
  *   - the asked attribute is balanced: big and small are asked equally;

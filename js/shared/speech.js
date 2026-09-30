@@ -22,7 +22,7 @@
  * Why templates + DTW and not a model: there is no Kutchi model anywhere,
  * the set is tiny (3–8), the reference voices are the family's own, the
  * whole thing is 25 KB of plain JS with no download, and it is what the
- * game can ship this month. See docs/speech-recognition-plan.md for the
+ * game can ship this month. See docs/architecture/speech-recognition-plan.md for the
  * comparison and the test results, and the path to an embedding model
  * later if accuracy on real children's voices needs it.
  *
@@ -44,7 +44,7 @@
  *  - Home-screen (standalone) PWAs re-ask mic permission per launch on
  *    some iOS versions; the button's copy should expect that.
  *
- * Module surface (docs/shared-api.md has the full contract):
+ * Module surface (docs/architecture/shared-api.md has the full contract):
  *   listen({choices, timeoutMs, onState, pcm})  -> {choice, confidence} | null
  *   cancel()                        stop a listen in progress (a pill was tapped)
  *   status()                        "unknown" | "ok" | "refused" | "absent"

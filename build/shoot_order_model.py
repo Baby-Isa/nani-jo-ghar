@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The order model (docs/design/cook-design-system-v1.md 12; docs/VISUAL-QA.md): Cook's sidebar and request
+"""The order model (docs/design-language/ui-design-system.md 12; docs/archive/process/VISUAL-QA.md): Cook's sidebar and request
 pop-up drawn by the shared order card (js/shared/order-card.js).
 
   python3 build/shoot_order_model.py                 # laptop only (iterating: VISUAL-QA 0)

@@ -1,6 +1,6 @@
 # Snap: build report (phases 0 and 1)
 
-Branch `claude/build-snap`; Snap's own files only. Details: `docs/snap-build-log.md`.
+Branch `claude/build-snap`; Snap's own files only. Details: `docs/archive/build-logs/snap-build-log.md`.
 
 ## What's built
 - **Phase 0 (pure logic, Node and browser):** `js/snap/photo.js`, `js/snap/requests.js` (dealer, guaranteed frame), `js/snap/sim.js` (rounds, 11 bot strategies), `data/snap.json`, `data/scenes/orchard.json` (Snap-owned sidecar, greybox).

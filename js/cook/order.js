@@ -13,7 +13,7 @@
  * A group is one dot on the card. Rows in the same group can be done in
  * any order; groups in a `seq` section are steps, joined by a dashed line,
  * and are said with "ne poi" (and then). Leak rules from
- * docs/cook-with-nani-kutchi-audit.md:
+ * docs/archive/cook/cook-with-nani-kutchi-audit.md:
  *   - no pictures, only words (the card draws the rows);
  *   - one dot per item type, never per unit ("ba tameto" is one row);
  *   - "no X" rows go in at random and look like the others;

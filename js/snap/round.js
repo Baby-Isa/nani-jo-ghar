@@ -1,5 +1,5 @@
 /*
- * Snap: one round (docs/modes/snap-design.md D1, D2, 6.2-6.4, 7).
+ * Snap: one round (docs/game-design/modes/snap.md D1, D2, 6.2-6.4, 7).
  *
  *   intro card (Nani says the rows; a stage-1 word's fruit twinkle once)
  *   -> shoot (the viewfinder; film = rows + 2; nothing says if a print is right)

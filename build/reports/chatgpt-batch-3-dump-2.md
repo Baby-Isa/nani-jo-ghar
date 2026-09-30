@@ -2,7 +2,7 @@
 
 **Processed:** 26 Sept 2026. **Source:** 16 PNGs and Claude in Chrome's log in `assets/chat gpt dump for processing 2/`. **Not wired into the game.** Contact sheet: `build/contact-sheets/chatgpt-batch3-dump2.png` (every sprite on black and white at 0.5×, plus the wheat maani and golden samosa they must swap with). Re-run: `sh build/slice_chatgpt_batch3.sh`.
 
-This dump is not the RUN-ME run (`docs/art-run-tonight.md`): the log (`sources/art/chatgpt-batch3/nani-art-report-log.md`) covers the real-life characters Zafar approved and batch 2's sections 1 and 2 (`docs/chatgpt-art-prompts-batch2.md`). None of the cook pack (`-batch3-cook.md`) or batch 3 (`-batch3.md`) prompts are in it.
+This dump is not the RUN-ME run (`docs/archive/art/art-run-tonight.md`): the log (`sources/art/chatgpt-batch3/nani-art-report-log.md`) covers the real-life characters Zafar approved and batch 2's sections 1 and 2 (`docs/archive/art-prompts/chatgpt-art-prompts-batch2.md`). None of the cook pack (`-batch3-cook.md`) or batch 3 (`-batch3.md`) prompts are in it.
 
 ## 1. Mapping (checked by eye against the log)
 

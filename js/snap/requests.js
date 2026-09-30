@@ -1,5 +1,5 @@
 /*
- * Snap: a round as data (docs/modes/snap-design.md D1, D5, build brief task 1).
+ * Snap: a round as data (docs/game-design/modes/snap.md D1, D5, build brief task 1).
  * Pure: no DOM. Used by the round in the browser and by build/leak_snap.mjs.
  *
  *   Req.knobs(snap, game, level)       -> K: the game level merged with its viewfinder, photo and hand-in levels

@@ -1,5 +1,5 @@
 /*
- * Find it, F2: Which one? (docs/find-it-design.md D2, D5; brief 8.3 task 2).
+ * Find it, F2: Which one? (docs/game-design/modes/find-it.md D2, D5; brief 8.3 task 2).
  *
  * R1 with a size on every row: wadho santra, nindho kelo (the family's
  * spelling; the draft form ships before C22-C36 confirms agreement, D9.3).

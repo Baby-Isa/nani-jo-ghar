@@ -1,6 +1,6 @@
 # ChatGPT batch 1: processing report
 
-**Processed:** 25 Sept 2026. **Source:** 42 downloads in `assets/chat gpt dump for processing/` (folder now removed), made by Claude in Chrome from `docs/chatgpt-art-prompts.md`. **Not wired into the game yet.**
+**Processed:** 25 Sept 2026. **Source:** 42 downloads in `assets/chat gpt dump for processing/` (folder now removed), made by Claude in Chrome from `docs/archive/art-prompts/chatgpt-art-prompts.md`. **Not wired into the game yet.**
 
 **In short:** 108 item sprites sliced from 9 sheets, 14 backgrounds filed (PNG + WebP), 15 character sheets filed. 5 hard fails need a re-prompt (one of them is a missing file), plus some fixes that can be made in code. The biggest gaps for Cook are the millet (bajri) maani set, hob knobs and flame rings, the grill, and the F-view pantry items.
 

@@ -1,5 +1,5 @@
 /*
- * Find it: the search engine's data layer (docs/find-it-design.md s3).
+ * Find it: the search engine's data layer (docs/game-design/modes/find-it.md s3).
  *
  * Find it is a separate page (find.html) that shares Cook with Nani's
  * systems as they are: data/cook.json's words, frames and grammar
@@ -48,7 +48,7 @@
     });
     Object.assign(Cook.data.grammar.numbers, fd.words.numbers || {});
     // the family's spelling wins on Find it's screens (wadho, not vadho); the voice stays the draft's
-    // recording until the family records it (docs/kutchi-grammar-notes.md: no V in Kutchi, always W)
+    // recording until the family records it (docs/language/grammar-notes.md: no V in Kutchi, always W)
     Object.entries(fd.words.spelling || {}).forEach(([id, k]) => {
       if (id[0] === "_" || !W[id]) return;
       const was = W[id].kutchi;

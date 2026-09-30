@@ -1,6 +1,6 @@
 # Monsoon rush: build report (phases 0–1, plus G3)
 
-Branch `claude/build-monsoon`. Details and decisions: `docs/monsoon-build-log.md`.
+Branch `claude/build-monsoon`. Details and decisions: `docs/archive/build-logs/monsoon-build-log.md`.
 
 ## Built
 - **Engine (Node and browser)**: `js/monsoon/clock.js` (audio clock and a virtual clock), `calls.js` (generator with the §8.1 constraints, `keyAt` timing, grading, retries, stars, the Busy stage rule), `bots.js` (the §8.5 bots and a headless player). G1, G2, G3, G4 and G6 storms run headless.

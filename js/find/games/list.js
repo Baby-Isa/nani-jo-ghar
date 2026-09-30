@@ -1,6 +1,6 @@
 /*
  * Find it, F1: Nani's list (the bazaar hunt), with Check the bag and the
- * bowl (docs/find-it-design.md D2, D5; build brief 8.3 task 1).
+ * bowl (docs/game-design/modes/find-it.md D2, D5; build brief 8.3 task 1).
  *
  * greet -> spot + count -> bag -> tell (the bowl). Nani's list is spoken in
  * Kutchi and shown as the order ladder (words fade to dots per word stage).

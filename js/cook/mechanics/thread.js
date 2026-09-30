@@ -4,7 +4,7 @@
  * piece goes on from the tip and slides down. When it's full it's done.
  * Tap the skewer to slide the last piece back off.
  *
- * Sekelo v2 (docs/design/cook-design-system-v1.md §15): the chai v2 grid. The
+ * Sekelo v2 (docs/design-language/ui-design-system.md §15): the chai v2 grid. The
  * prep bowls sit top-down on the shelf band (Zafar, 29 Sept: this station stays top-down) (identical slots, meat | veg,
  * a `🔊 word` chip under each: tap the bowl = thread it, tap the chip = hear
  * it; speaker-only at level 3 up); the board with its upright skewer on the

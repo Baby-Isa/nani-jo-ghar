@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tidy up: browser tests (docs/modes/tidy-up-design.md 8.4, build brief phase 1).
+"""Tidy up: browser tests (docs/game-design/modes/tidy-up.md 8.4, build brief phase 1).
 
 Same style as build/test_cook.py and build/test_find.py: it plays through REAL
 pointer events at screen coordinates (tap-tap and drag), reads what the game

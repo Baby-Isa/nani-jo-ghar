@@ -1,6 +1,6 @@
 # Dress up: build report (phases 0 and 1)
 
-Branch `claude/build-dress`, 25 Sept 2026. Details: `docs/dress-build-log.md`.
+Branch `claude/build-dress`, 25 Sept 2026. Details: `docs/archive/build-logs/dress-build-log.md`.
 
 ## Built
 - **Phase 0 (Node-runnable):** `data/dress.json` (all clothes, colour, part, tool and weather words are placeholders; numbers, *vadho/nindho*, *nar* and Cook's frames referenced by id from `data/cook.json`), `js/dress/look.js` (generator for G1–G5 and K5 with the 5% blind-odds budget), `rack.js`, `grade.js`, `build/leak_dress.mjs`.

@@ -1,5 +1,5 @@
 /*
- * Snap mechanic: Ali's camera, the role reversal (docs/modes/snap-design.md
+ * Snap mechanic: Ali's camera, the role reversal (docs/game-design/modes/snap.md
  * D2 G4, D4). NEW. Ali holds the camera (D9.3); the child directs him.
  *
  * For each of Ali's rows: a picture card of the shot wanted (no text: that

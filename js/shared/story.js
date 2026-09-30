@@ -1,7 +1,7 @@
 /*
  * The story player: scenes and picture panels from data, told by Nani on a
- * read-along card (docs/UX-PRINCIPLES.md 1), one scene at a time
- * (docs/first-launch-story.md; docs/shared-api.md 13). The first launch is
+ * read-along card (docs/design-language/ux-principles.md 1), one scene at a time
+ * (docs/game-design/modes/first-launch.md; docs/architecture/shared-api.md 13). The first launch is
  * data/story/first-launch.json; the arcs can reuse this with their own file.
  *
  *   Story.play(url, {el, kinds, params})   load the story and run it from where this

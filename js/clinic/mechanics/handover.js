@@ -1,6 +1,6 @@
 /*
  * Mechanic: handover (R3.1, Zafar's decision 2: the child never gives
- * medicine). docs/modes/clinic-design.md R3.1, R3.4 (S4).
+ * medicine). docs/archive/clinic/clinic-design-v1.md R3.1, R3.4 (S4).
  * The doctor opens his hand; the child puts what they fetched, mixed or
  * used into it. He lifts it and NAMES it, the part and the count ("The
  * bandage. The knee. Twice."): the visit's words heard again, from him, in

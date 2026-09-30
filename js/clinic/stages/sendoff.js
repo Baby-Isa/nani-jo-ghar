@@ -1,6 +1,6 @@
 /*
- * Stage 5, the send-off: "Is everything okay now?" (docs/modes/clinic-design.md
- * P6, Q3, Q5; clinic v2: docs/modes/clinic-v2-design-sheets.md E, CQ6). On CB5
+ * Stage 5, the send-off: "Is everything okay now?" (docs/archive/clinic/clinic-design-v1.md
+ * P6, Q3, Q5; clinic v2: docs/game-design/modes/clinic.md E, CQ6). On CB5
  * the patient stands by the half-open front door, the doctor beside them.
  *   E1 (level 1; taught): the patient's round face circle SHOWS the feeling;
  *      the child picks the matching card of four (happy, sad, hot, cold).

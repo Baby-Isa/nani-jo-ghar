@@ -1,7 +1,7 @@
 /*
  * Combined station: Sekelo (formerly the Mishkaki grill; design system §15, Sekelo v2).
  *
- * Wave 6 (docs/UX-PRINCIPLES.md 5 and 6): one job at a time. First thread
+ * Wave 6 (docs/design-language/ux-principles.md 5 and 6): one job at a time. First thread
  * every skewer (the thread mechanic, the whole screen): tap the bowls, each
  * finished skewer waits beside the board. Then the big button, "Go to the
  * barbecue", takes them to the rack by the grill (the grill mechanic, the

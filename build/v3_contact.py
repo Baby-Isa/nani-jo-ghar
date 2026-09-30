@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contact sheet of cuts on the game's cream (docs/VISUAL-QA.md §2): python3 build/v3_contact.py OUT.png files... [--zoom]"""
+"""Contact sheet of cuts on the game's cream (docs/archive/process/VISUAL-QA.md §2): python3 build/v3_contact.py OUT.png files... [--zoom]"""
 import sys, math
 from PIL import Image, ImageDraw
 CREAM = (246, 239, 226)

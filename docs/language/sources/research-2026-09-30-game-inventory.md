@@ -1,6 +1,6 @@
 # Nani jo Ghar: language inventory (what the game SAYS today) for the grammar-engine questionnaire
 
-Read-only audit, 30 Sept 2026. Sources: `data/cook.json`, `data/stations/*.json`, `js/cook/{lang,order,recipes}.js`, `data/story/first-launch.json`, `data/conversations/*`, `data/clinic.json`, `data/clinic/*`, `data/family-audio.json`, `docs/kutchi-grammar-notes.md` (cited as §n; "Z 26 Sept" = Zafar's dated correction blocks).
+Read-only audit, 30 Sept 2026. Sources: `data/cook.json`, `data/stations/*.json`, `js/cook/{lang,order,recipes}.js`, `data/story/first-launch.json`, `data/conversations/*`, `data/clinic.json`, `data/clinic/*`, `data/family-audio.json`, `docs/language/grammar-notes.md` (cited as §n; "Z 26 Sept" = Zafar's dated correction blocks).
 
 How I got real sentences: I ran Cook's own `recipes.js` + `order.js` + `lang.js` in Node on `data/cook.json` (60 orders per dish per level, levels 1-4; harness in the scratchpad `sim.js`, output `sim-out.json`). Every "sample" below is real output. Note: mishkaki's `ph-mixed`/`ph-veg` words are merged at runtime from `data/stations/mishkaki-grill.json`, so the harness printed the id.
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 # Slices the cooking sheets from ChatGPT batch 3's run (the second dump, 26 Sept:
-# docs/chatgpt-art-prompts-batch2.md sections 1-2, run as part of
-# docs/art-run-tonight.md) into assets/cook/items/, as each prompt's
+# docs/archive/art-prompts/chatgpt-art-prompts-batch2.md sections 1-2, run as part of
+# docs/archive/art/art-run-tonight.md) into assets/cook/items/, as each prompt's
 # "slices to:" line says. Originals: sources/art/chatgpt-batch3/.
 # The onion, thali sprites replace batch 1's (they were left unwired pending
 # this redo). Report: build/reports/chatgpt-batch-3-dump-2.md.

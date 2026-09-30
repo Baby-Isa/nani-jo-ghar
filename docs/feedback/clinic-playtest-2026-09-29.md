@@ -113,7 +113,7 @@ The top-right ▶| button is the first-time help's **skip for grown-ups** (hold 
 ### G11. How the clinic was designed, and making it a skill (1:14:05–14:50)
 "Remind me how we designed this… I think I gave you or Fable a big prompt that said make it… could we retrospectively make a skill of this kind of game research… we should codify this."
 
-**How it was actually done:** five briefs, each adding a layer to `docs/modes/clinic-design.md`:
+**How it was actually done:** five briefs, each adding a layer to `docs/archive/clinic/clinic-design-v1.md`:
 1. **Mode design** (`MODE-DESIGN-BRIEF.md`): research the hit games; draft 8–12 mechanics; score each on Fun, Forces Kutchi, Distinct, Plot and Replay; run persona loops (children aged 5, 8 and 11, Zafar, a parent, Nani, a Sceptic, a Builder); give a verdict and a build brief.
 2. **An outside review** (`REVIEW-2026-09-25.md`).
 3. **A deep dive** (`DEEP-DIVE-BRIEF.md`): a mini-game library scored on fun at 5 and at 11, Kutchi, distinctness and build cost; speaking moments; a blind-bot estimate.
@@ -334,7 +334,7 @@ Answer "yes to all recommendations except …".
   - **Refined (Zafar, ~15:50):** less trial and error. The bumps on the tongue come in **different colours, and each colour is healed by a different drink** (for example yellow = turmeric milk, orange = ginger, green = honey and lemon: the mapping taught by the doctor's instruction and the card). The child makes each drink and gives it to the patient **before the time runs out** (Zafar likes the time pressure). Level 1: one bump colour, one drink. Level 2: two colours, two drinks in order. Level 3: three, with counts (*ba chamchi madh*) and a tighter timer.
 - **Backgrounds:** six different ones, confirmed as written. The heal games' zoomed body parts (knee, scrape, ear, mouth, eye, foot) are **character close-ups**, drawn later with the patient art, on top of CB6. The flow: the patient sits on the bed's edge (CB2), you pick where it hurts, and the view zooms in to that close-up.
 
-- **Backgrounds, round 1 review (Zafar, ~16:30):** CB5 (front door) approved. CB1 goes closer, with a six-seat bench and no armchairs. CB2 goes closer, with **no poster**: the wall to the right is kept for **a photo of the real doctor's certificate** (Zafar will supply it; it's added in code as a framed picture), and children's toys go in the left corner in place of the desk chair. CB4 is redone **straight on**, the same scene without looking down. Round 2 prompts: the bottom of `docs/chatgpt-art-prompts-clinic-v1.md`.
+- **Backgrounds, round 1 review (Zafar, ~16:30):** CB5 (front door) approved. CB1 goes closer, with a six-seat bench and no armchairs. CB2 goes closer, with **no poster**: the wall to the right is kept for **a photo of the real doctor's certificate** (Zafar will supply it; it's added in code as a framed picture), and children's toys go in the left corner in place of the desk chair. CB4 is redone **straight on**, the same scene without looking down. Round 2 prompts: the bottom of `docs/archive/art-prompts/chatgpt-art-prompts-clinic-v1.md`.
 
 - **Backgrounds approved (29 Sept, ~17:15):** CB1b, CB2b, CB3b, CB5 and CB6b pass their checks (CB6b already shows an empty frame on the right wall for the certificate). CB4c (the pharmacy belt, no hatches) is to come.
 
@@ -342,7 +342,7 @@ Answer "yes to all recommendations except …".
 
 - **CB6b approved** (the placement plan is in the design sheets: limbs on the paper strip, heads against the wall, extra blur in code). The clinic's backgrounds are done apart from CB4c.
 
-## 10. Art: the backgrounds first (ChatGPT; the page is `docs/chatgpt-art-prompts-clinic-v1.md`)
+## 10. Art: the backgrounds first (ChatGPT; the page is `docs/archive/art-prompts/chatgpt-art-prompts-clinic-v1.md`)
 Six backgrounds, built to the recommended answers:
 - CB1 the waiting room, wider;
 - CB2 the exam room with the bed;
@@ -389,7 +389,7 @@ About **4–5 build sessions in all**, against about 11 for the Cook overnight r
 - **Level 4 (two in order, against the comfort rings): pick everyone straight away.** No waiting for each person's greeting or the doctor between picks. Each tick shows its number (1, 2) as it's tapped; once the last one is tapped, the whole set is judged: all right → they lock in and rise; any wrong → the ticks shake and clear, and everyone sits back down to try again.
 - The lab's debug log (bottom left) overlaps the pills: it's lab-only, but it should sit clear of the play area.
 - **At most 6 people in the waiting room** (Zafar), at every level, counting the babies and children sitting with the grown-ups at level 5.
-- **Speaking moves out of the waiting room** (Zafar: you don't naturally call "little boy, next"). W3 "Call them in" is dropped in the clinic fix session unless Zafar says otherwise; the clinic's speaking goes into the patient conversation (E4), the pharmacy ask and the send-off. See `docs/design/speaking-more-proposal.md`.
+- **Speaking moves out of the waiting room** (Zafar: you don't naturally call "little boy, next"). W3 "Call them in" is dropped in the clinic fix session unless Zafar says otherwise; the clinic's speaking goes into the patient conversation (E4), the pharmacy ask and the send-off. See `docs/game-design/speaking.md`.
 
 ### 13b. Pharmacy, from Zafar's play of prototype A (29 Sept, late)
 - **The doctor orders, so the card says "bring me", not "I want".** The row reads *Muke plaster khape* (a customer's "I want"). It should be the doctor's request: **"[Bring me] the plaster"**. The Kutchi for "bring me" is still to confirm with Mum (Cook Q5 item 8, "bring me these", is the same ask), so it stays an English placeholder flagged "to record". Never invent it.

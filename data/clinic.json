@@ -1,5 +1,5 @@
 {
- "_about": "The clinic (the doctor's clinic), phase 1 data. docs/modes/clinic-design.md (Revision 3, then Revision 2). No Kutchi exists yet for any body part, care item, instrument or frame: every word and line here is an English placeholder (kutchi: null, lines with `e` only), shown in grey italics. Never invent Kutchi. This file is merged into Cook.data at load (js/clinic/flow.js) under clinic-only ids (body-, care-, tool-, feel-, side-, cl-), so Cook's mechanics (fetch, count, stir, pour, passme) run on it unchanged; data/cook.json is never edited. The pure visit engine (js/clinic/visit.js) reads the same file in Node for build/leak_clinic.mjs.",
+ "_about": "The clinic (the doctor's clinic), phase 1 data. docs/archive/clinic/clinic-design-v1.md (Revision 3, then Revision 2). No Kutchi exists yet for any body part, care item, instrument or frame: every word and line here is an English placeholder (kutchi: null, lines with `e` only), shown in grey italics. Never invent Kutchi. This file is merged into Cook.data at load (js/clinic/flow.js) under clinic-only ids (body-, care-, tool-, feel-, side-, cl-), so Cook's mechanics (fetch, count, stir, pour, passme) run on it unchanged; data/cook.json is never edited. The pure visit engine (js/clinic/visit.js) reads the same file in Node for build/leak_clinic.mjs.",
  "words": {
   "body-head": {
    "kutchi": null,

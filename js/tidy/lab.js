@@ -1,5 +1,5 @@
 /*
- * The Tidy lab (docs/modes/tidy-up-design.md 8.3): run any mini-game x
+ * The Tidy lab (docs/game-design/modes/tidy-up.md 8.3): run any mini-game x
  * board x kind x level with a random board, or a mechanic alone. Buttons:
  * Nani helps (stage-1 teaching on), Busy, Paw, Grandparent (a parent's
  * tick), Voice off, Show spots (draws spots, tags and neighbours), Word

@@ -8,9 +8,9 @@ everything from your basket into Nani's bowl, then back to the hub, which
 visibly fills up with Eid decorations as you go.
 
 **This is the Build Brief v4 pass** (production Shopping + thin shell) -
-see `docs/Nani jo Ghar — Roadmap and Story Structure.md` for the current
+see `docs/archive/design-v1/Roadmap and Story Structure.md` for the current
 master plan and `docs/build-briefs/` for the brief itself. Earlier history:
-`docs/playtest-2026-09-23.md` (playtest 2 findings) and the "What playtest 2
+`docs/feedback/playtest-2026-09-23.md` (playtest 2 findings) and the "What playtest 2
 changed" / "What v2 got wrong" tables below, from the original **Build
 Brief v3** Phaser rebuild after the first CSS/DOM version failed on a real
 phone.
@@ -23,11 +23,11 @@ phone.
 > - 16 stations, and six dishes: chai, maani, daal, chaat bowl, samosa, mishkaki
 > - a **Station lab** on the title screen to try each station
 >
-> Design, decisions and audit: `docs/cook-with-nani-phase-a-design.md`. Questions for the family: `docs/Nani jo Ghar — Questions for Mum (Round 2 — Cooking).md`. Test: `python3 build/test_cook.py --lab` (every station) or `--days 7` (the whole story).
+> Design, decisions and audit: `docs/archive/cook/cook-with-nani-phase-a-design.md`. Questions for the family: `docs/language/mum-questions/Questions for Mum (Round 2 — Cooking).md`. Test: `python3 build/test_cook.py --lab` (every station) or `--days 7` (the whole story).
 
 **Open `cook.html`** (a separate page; the fruit errand and hub are untouched). It's a
 separate, self-contained prototype of the flagship game mode from
-`docs/game-modes-v2.md` and `docs/game-modes-fun-analysis.md`, in the new
+`docs/archive/design-v1/game-modes-v2.md` and `docs/archive/design-v1/game-modes-fun-analysis.md`, in the new
 3D-film art style. It doesn't touch the fruit errand.
 
 - **Loop:** a family member arrives and greets you (you answer, in Kutchi).
@@ -56,11 +56,11 @@ separate, self-contained prototype of the flagship game mode from
 - **Art:** `sources/cook/*.webp` (ChatGPT sheets), sliced by
   `build/make_cook_art.py` into `assets/cook/`.
 - **Words:** `data/cook.json`. Every Kutchi string, and what the family
-  needs to check or record, is in `docs/cook-with-nani-words.md`.
+  needs to check or record, is in `docs/archive/language/cook-with-nani-words.md`.
 - **Test:** `python3 build/test_cook.py` (all six screen sizes, day 1) or
   `--full` (all five days and free play). It plays through real pointer
   events and fails if anything covers a thing to tap.
-- **Build log, QA and persona reviews:** `docs/cook-with-nani-build-log.md`.
+- **Build log, QA and persona reviews:** `docs/archive/build-logs/cook-with-nani-build-log.md`.
 
 ## What this pass added
 

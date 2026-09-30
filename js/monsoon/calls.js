@@ -1,7 +1,7 @@
 /*
  * Monsoon rush: the call engine. Pure logic, no DOM: the same file runs in
  * the browser (Monsoon.Calls) and in Node (build/leak_monsoon.mjs).
- * Design: docs/modes/monsoon-rush-design.md, the deep dive (D.1–D.5) and
+ * Design: docs/game-design/modes/monsoon-rush.md, the deep dive (D.1–D.5) and
  * sections 8.1–8.5; build brief task 1.
  *
  *   Calls.storm(game, level, opts)   -> a storm: its candidates and planned waves

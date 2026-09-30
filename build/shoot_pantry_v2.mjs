@@ -1,4 +1,4 @@
-// Pantry v2 verification screenshots (docs/VISUAL-QA.md §1): the new pantry in the fetch lab
+// Pantry v2 verification screenshots (docs/archive/process/VISUAL-QA.md §1): the new pantry in the fetch lab
 // at levels 1 and 4, empty tray / half full / full, at phone landscape and laptop
 // (Cook is landscape only: a phone held upright shows "turn your phone sideways").
 // Output: build/reports/pantry-v2/*.png   Run: node build/shoot_pantry_v2.mjs

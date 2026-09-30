@@ -1,5 +1,5 @@
 /*
- * Shared relations layer: where things are, as data (docs/shared-api.md s1).
+ * Shared relations layer: where things are, as data (docs/architecture/shared-api.md s1).
  *
  * One list of relation ids (data/relations.json), one scene schema
  * (anchors, spots, occluders, safe), one checker, used by Find it, Tidy up,
@@ -624,7 +624,7 @@
    * `type`, a placed-item anchor as {item, attrs}, and "next to" meaning ANY
    * neighbour (nbr left/right/front/back plus adj). The main board form
    * above reads "next to" as left/right only; which reading wins is a
-   * phase-B decision (docs/shared-api.md s1.4), and until then Tidy keeps its own.
+   * phase-B decision (docs/architecture/shared-api.md s1.4), and until then Tidy keeps its own.
    */
   const T = { TRAY: "tray" };
   T.item = function (state, iid) {

@@ -1,7 +1,7 @@
 # Clinic v2 items (CI1-CI5, 30 Sept)
 
 Cut by `python3 build/cut_cook_v3_1.py --only clinic` from `sources/art/clinic-v2/items/` (the five ChatGPT sheets of
-`docs/chatgpt-art-prompts-overnight-2026-09-30.md`, CI1-CI5). The method is `docs/VISUAL-QA.md` §2's (cut_tick_v2):
+`docs/archive/art-prompts/chatgpt-art-prompts-overnight-2026-09-30.md`, CI1-CI5). The method is `docs/archive/process/VISUAL-QA.md` §2's (cut_tick_v2):
 colour-to-alpha edges, grey inside loops made transparent (and checked), ChatGPT's drawn shadows removed. Each item is
 one piece (the pen torch's drawn light spot on the counter is dropped; the stethoscope keeps all its parts); glass
 things (the eye-drop bottle, the cotton-bud pot, the thermometer, the syringe, the honey jar, the milk jug, the two

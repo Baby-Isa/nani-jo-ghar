@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * The leak bot for healing-game agent B's games: taste (H5), fever (H6),
- * boing (H9). The Sceptic as code (docs/modes/clinic-design.md Q6, the
+ * boing (H9). The Sceptic as code (docs/archive/clinic/clinic-design-v1.md Q6, the
  * contract's "The Kutchi decides" rule): each game's bot(level, rng) plays
  * the SAME model the browser game plays, with strategies that see only
  * what's on screen (pictures, the order of dishes and pills, which card

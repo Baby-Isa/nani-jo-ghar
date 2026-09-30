@@ -1,6 +1,6 @@
 # Cook v3.1 art and follow-ups (30 Sept)
 
-Branch `claude/cook-v3-1-art`. The 13 overnight images (`docs/chatgpt-art-prompts-overnight-2026-09-30.md`: R1–R8 for Cook,
+Branch `claude/cook-v3-1-art`. The 13 overnight images (`docs/archive/art-prompts/chatgpt-art-prompts-overnight-2026-09-30.md`: R1–R8 for Cook,
 CI1–CI5 for the clinic) are cut, reviewed and wired, along with Zafar's answers to the v3 station reports
 (`docs/feedback/cook-playtest-2026-09-29.md`, last section).
 

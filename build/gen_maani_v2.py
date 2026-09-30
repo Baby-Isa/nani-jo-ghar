@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Maani v2 game art (docs/design/cook-design-system-v1.md §11): the one piece the repo doesn't have.
+"""Maani v2 game art (docs/design-language/ui-design-system.md §11): the one piece the repo doesn't have.
 Everything else is existing art (the chakla, velan, tawa, dough balls, maani states, thali, the chai v2 hob).
   chimta   Indian flat steel tongs, top-down, lying diagonally (it flips the maani: no hands)
 gpt-image-1 via /images/edits, quality medium, flat #808080 background (cut by build/cut_maani_v2.py).

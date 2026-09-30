@@ -1,6 +1,6 @@
 /* The clinic (the pipeline build, 26 Sept 2026): one screen for every stage
    and every healing game. Sidebar left, play area, big buttons right
-   (docs/UX-PRINCIPLES.md s2, s13). Greybox until the rough art lands. */
+   (docs/design-language/ux-principles.md s2, s13). Greybox until the rough art lands. */
 :root {
   --cl-bg: #f3e7d3;
   --cl-paper: #fffaf1;
@@ -276,7 +276,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-side .cl-dish { overflow: hidden; grid-template-rows: 100%; }
 .cl-side .cl-dish .cl-item { height: 84%; width: auto; aspect-ratio: 1; max-width: none; max-height: none; }
 
-/* ================= clinic v2 (docs/modes/clinic-v2-design-sheets.md part A) ================= */
+/* ================= clinic v2 (docs/game-design/modes/clinic.md part A) ================= */
 /* the scene box: the approved background at full strength; everything placed in shares of the picture */
 .cl-room.v2 { background: #efe5d6; overflow: hidden; }
 .cl-scene { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; }

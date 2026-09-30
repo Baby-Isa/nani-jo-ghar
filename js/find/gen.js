@@ -1,5 +1,5 @@
 /*
- * Find it: the round generator, pure (docs/find-it-design.md D3, D5, 8.2
+ * Find it: the round generator, pure (docs/game-design/modes/find-it.md D3, D5, 8.2
  * phase 0). No DOM and no Cook: it runs in find.html and in Node
  * (build/leak_find.mjs), so the leak bot plays exactly the rounds the page
  * builds.
