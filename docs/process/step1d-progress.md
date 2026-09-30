@@ -34,7 +34,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `audio.md` (new) ← Game Design recording method, multiple voices, sound design; rules G14–G17 by ID
 - [x] `architecture/technical-plan.md` ← stale box (Phaser, quilt entity, chunk_type, IndexedDB, 44 px, no manifest)
 - [x] `architecture/shared-api.md`, `speech-recognition-plan.md`, `clinic-heal-api.md`, `cook-recipes-guide.md` ← stale boxes
-- [ ] `architecture/code-map.md` (new) ← root README's Architecture and Files sections; Roadmap thin-shell spec and storage rules
+- [x] `architecture/code-map.md` (new) ← root README's Architecture and Files sections; Roadmap thin-shell spec and storage rules
 - [ ] `architecture/testing.md` (new) ← BUILD-COMMON test ports, alive-nani testing lessons, the rules on browser tests (B16) by ID
 
 ### Session L: `docs/language/`, `docs/process/`, `docs/vision.md`, `docs/ideas.md` only
