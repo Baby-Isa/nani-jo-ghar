@@ -16,7 +16,7 @@ Branch: `claude/cool-albattani-7pbgd5`. Sessions (launched 1 Oct 00:04 UK, Sonne
 Each merge copies sections **word for word** with a `> from: <old file> §<heading>` line, and every moved or new design doc gets a **"Stale points"** box at the top listing what `docs/process/rules.md` now overrides (rule ID for each). The rulebook wins every conflict. Don't rewrite design content. Sources for merges are now in `docs/archive/`. The harvest notes per file are in `docs/process/step1d-harvest/` (A = process/feedback, B = game design, C = art/language/technical).
 
 ### Session G: `docs/game-design/` and `docs/design-language/ui-design-system.md` only
-- [ ] `game-design/story-and-arcs.md` (new) ← Roadmap (story sections, arcs, syllabus S1–S6), Game Design (world, scene catalogue, blanket quest), game-modes-v2 syllabus-first table, Chapter 1 Art Prompts Eid mapping
+- [x] `game-design/story-and-arcs.md` (new) ← Roadmap (story sections, arcs, syllabus S1–S6), Game Design (world, scene catalogue, blanket quest), game-modes-v2 syllabus-first table, Chapter 1 Art Prompts Eid mapping
 - [ ] `game-design/progression-and-scoring.md` (new) ← Game Design per-word stages, notebook; Roadmap learning design, skill channels, procedural generation; game-modes-v2 upgrades; cook build-log upgrade table
 - [ ] `game-design/cast.md` ← stale box; add family descriptions from the archived Image Prompt Sheets, cats' roles by mode and Big Ma's room from the Asset Building Plan, Roadmap recurring cast
 - [ ] `game-design/speaking.md` ← stale box only
