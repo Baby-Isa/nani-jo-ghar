@@ -41,7 +41,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `language/grammar-notes.md` ← stale box (marcha, chindo, hakri cup, "repo private later")
 - [x] `language/lexicon.md` (new) ← cook-word-changes-B, handout vocabulary (marked unconfirmed), Brief handout-rights table, the Excel's role (open question)
 - [x] `language/engine-spec.md` (new) ← NEXT-CHAT-START step 2b requirements, pointer to `language/sources/`; design itself comes in step 2b
-- [ ] `language/mum-questions/README.md` (new, short) ← which rounds are answered, where answers live
+- [x] `language/mum-questions/README.md` (new, short) ← which rounds are answered, where answers live
 - [ ] `process/mode-design-method.md` (new) ← MODE-DESIGN, DEEP-DIVE, MINIGAME-QUALITY, PIPELINE briefs, fun-analysis checklist
 - [ ] `process/session-brief-template.md` (new) ← rules B3, B4, B17, CLAUDE.md "Briefing a build session", BUILD-COMMON
 - [ ] `process/art-how-to.md` (new) ← art-run-tonight rules, 30 Sept overnight paste block, batch3-cook edit rules, chat discipline
