@@ -43,7 +43,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `language/engine-spec.md` (new) ← NEXT-CHAT-START step 2b requirements, pointer to `language/sources/`; design itself comes in step 2b
 - [x] `language/mum-questions/README.md` (new, short) ← which rounds are answered, where answers live
 - [x] `process/mode-design-method.md` (new) ← MODE-DESIGN, DEEP-DIVE, MINIGAME-QUALITY, PIPELINE briefs, fun-analysis checklist
-- [ ] `process/session-brief-template.md` (new) ← rules B3, B4, B17, CLAUDE.md "Briefing a build session", BUILD-COMMON
+- [x] `process/session-brief-template.md` (new) ← rules B3, B4, B17, CLAUDE.md "Briefing a build session", BUILD-COMMON
 - [ ] `process/art-how-to.md` (new) ← art-run-tonight rules, 30 Sept overnight paste block, batch3-cook edit rules, chat discipline
 - [ ] `vision.md` (new) ← Project Brief (pitch, why, audience, success, pillars, non-goals), Game Design (rejected mechanics, Grandparent mode, age fit), fun-analysis personas, Roadmap design research, Zafar's aim (NEXT-CHAT-START §1); commercial model "open"
 - [ ] `ideas.md` ← add quilt-making Big Ma arc; free-play ideas, sidebar magnifier and notebook, art juice list, todo tech-debt ideas, TTS-from-family-voices (parked, see decisions 30 Sept)
