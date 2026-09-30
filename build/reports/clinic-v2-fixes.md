@@ -237,7 +237,8 @@ Flaws left:
   - They match Cook's component; the actions differ by flow. The clinic offers **Next** only (a patient can't be replayed); Cook offers **Again** and **All stations**.
   - The clinic's Next arrow is the kit's gold icon, where Cook's is a black glyph.
   - The clinic's sidebar foot has only "?", where Cook's also has home and the book.
-- The laptop D1 shot from the first pass predates the button fix; the re-shoot (§4 block) has the pill style.
+- **Phone**: the pharmacy tray is now lifted to stay inside the play area, but the stand-in drops bottle still pokes below its dish. The doctor's box line wraps to three or four short lines in the narrow phone sidebar.
+- All 80 states were re-shot after the fixes (both sizes, no page errors); the D1 pills, ✓ Done and → Next now match Cook.
 
 ---
 
