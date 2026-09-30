@@ -14,6 +14,11 @@
  * the apple, not a lolly), then the question again: it always ends happy.
  * From level 2 the doctor cues the goodbye and the child says it, in the scene
  * (E2 and E3 merged; no left panel). Then the sticker for the album.
+ * Clinic fixes (13d-13f): the doctor and the patient on the left; no script card (the doctor's box says the
+ * one line now); the feeling cards in a thought bubble from the patient's head at levels 1-2, the help
+ * items in a tray along the bottom from level 3; reply pills only when a reply is needed, never with the
+ * tray; talking three-quarter, turning to the player on the child's turn (UX 16); input never waits for
+ * the talking (13i); the stage clears its own UI.
  */
 (function (global) {
   "use strict";
@@ -31,7 +36,7 @@
       screen.trayWrap.classList.add("hidden");
       const box = stage.scene || stage;
       const cfg = stage.sceneCfg && stage.sceneCfg.patient ? stage.sceneCfg : { patient: { x: 0.64, y: 0.8, h: 0.46 }, doctor: { x: 0.44, y: 0.86, h: 0.64 }, cards: { x: 0.36, y: 0.9 } };
-      S.place(Kit.doctorFigure(box, "cl-doc-door"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
+      const docEl = S.place(Kit.doctorFigure(box, "cl-doc-door"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
       const layer = S.place(h("div", "cl-patient-layer v2", box), { x: cfg.patient.x, y: cfg.patient.y, h: cfg.patient.h, w: cfg.patient.h * (620 / 900) / 1.5, z: 3 });
       const fig = env.fig;
       layer.appendChild(fig.el);
@@ -39,16 +44,29 @@
       fig.pose("stand");
       fig.react("idle", 0);
       Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
-      // the round face circle over the patient (Cook's review face): it shows the feeling at levels 1 and 3
-      const circle = h("div", "cl-feel-circle", layer);
+      Kit.Voice.speakers.doctor = () => docEl;
+      // UX 16: while they talk, the doctor and the patient stand three-quarter turned to each other
+      S.stage(docEl, layer, "talk");
+      // level 1's hint that the feeling shows sits ON the patient's own face (13d): a stand-in circle over the
+      // head until the real art's expressions exist; never a second face floating beside the bubble
+      const circle = h("div", "cl-feel-circle on-face", layer);
       const showFeel = (f) => {
         circle.innerHTML = "";
         if (f) Kit.feelingFace(f, circle);
-        else h("span", "cl-feel-q", circle, "…");
         circle.classList.toggle("on", !!f);
+        const head = fig.el.querySelector(".fig-head");
+        if (head) {
+          const hr = head.getBoundingClientRect();
+          const lr = layer.getBoundingClientRect();
+          const d = Math.max(hr.width, hr.height) * 1.05;
+          Object.assign(circle.style, { width: `${d}px`, left: `${hr.left - lr.left + hr.width / 2}px`, top: `${hr.top - lr.top + hr.height / 2 - d / 2}px` });
+        }
       };
       showFeel(null);
-      await S.request(screen, { title: "", rows: plan.card });
+      // 13e: no card listing every line up front (no script cards, UX 16): the doctor's box says the one
+      // line now; the scene makes the rest clear
+      screen.card.setTitle("", null);
+      screen.card.setRows([]);
 
       const rowOf = (id) => plan.rows.find((r) => r.id === id);
       // E4: the child asks first (Nani's whisper and the question card the first time)
@@ -67,7 +85,7 @@
           S.place(qcard, { x: cfg.patient.x, y: cfg.patient.y - cfg.patient.h - 0.02, z: 30 });
           qcard.appendChild(S.personFace(patient.kind, "neutral"));
           h("span", "cl-ask-q", qcard, "?");
-          await S.say(S.line(env, "whisper-ask"), "nani");
+          S.say(S.line(env, "whisper-ask"), "guide");
         }
         S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: "howfeel" }));
         const out = await S.moment(env, {
@@ -83,17 +101,33 @@
         });
         res.moments.push(out);
         if (qcard) qcard.remove();
-        screen.card.tick("ask");
-      } else await S.say(S.line(env, "okay-now"), "doctor");
+        env.screen.main.querySelectorAll(".njg-say, .cl-pills").forEach((n) => n.remove()); // no stale pills (13f)
+      } else S.say(S.line(env, "okay-now"), "doctor");
 
       // the feeling: shown (level 1 and 3) or only said (level 2)
       const feel = data.feelings[plan.feeling];
       const moodOf = (f) => (f === "happy" ? "happy" : data.feelings[f].mood);
       fig.react(moodOf(plan.feeling), 0);
-      if (plan.mode !== "said") showFeel(plan.feeling);
-      await S.say(Object.assign({ kutchi: `[${feel.line.english}]` }, feel.line), "patient");
-
-      const cards = S.place(h("div", "cl-feel-cards", box), { x: cfg.cards.x, y: cfg.cards.y, z: 25 });
+      if (plan.mode === "face") showFeel(plan.feeling);
+      S.say(Object.assign({ kutchi: `[${feel.line.english}]` }, feel.line), "patient");
+      // the child's turn: they turn to face the player (UX 16), and the choice opens at once (13i)
+      S.stage(docEl, layer, "player");
+      // levels 1-2: the four feeling cards in a thought bubble rising from the patient's head, opening out to
+      // the right (13d); level 3: the help items in a tray along the bottom of the screen (13e)
+      let cards;
+      if (plan.mode === "helps") cards = h("div", "cl-help-tray", stage);
+      else {
+        cards = h("div", "cl-thought", box);
+        const head = fig.el.querySelector(".fig-head");
+        const hb = head ? head.getBoundingClientRect() : layer.getBoundingClientRect();
+        const bb = box.getBoundingClientRect();
+        const hx = (hb.left + hb.width * 0.8 - bb.left) / Math.max(1, bb.width);
+        const hy = (hb.top - bb.top) / Math.max(1, bb.height);
+        cards.style.left = `${Math.min(0.62, hx + 0.03) * 100}%`;
+        cards.style.bottom = `${Math.max(0.25, 1 - hy + 0.03) * 100}%`;
+        h("i", "cl-thought-dot d1", cards);
+        h("i", "cl-thought-dot d2", cards);
+      }
       let busy = false;
       let finish;
       const done = new Promise((r) => (finish = r));
@@ -122,14 +156,14 @@
       const nowHappy = async () => {
         fig.react("happy", 0);
         fig.pose("jump");
-        if (plan.mode !== "said") showFeel("happy");
+        if (plan.mode === "face") showFeel("happy");
         await S.say(Object.assign({ kutchi: `[${data.feelings.happy.line.english}]` }, data.feelings.happy.line), "patient");
       };
 
       if (plan.mode === "helps") {
         // level 3: what helps? (the blanket, the fan, the apple)
         const r = rowOf("help");
-        await S.say(S.line(env, "helps"), "doctor");
+        S.say(S.line(env, "helps"), "doctor");
         const btns = plan.helps.map((id) => {
           const b = h("button", "cl-face-card cl-help-card", cards);
           b.type = "button";
@@ -156,8 +190,6 @@
             b.classList.add("yes");
             await toPatient(b);
             await nowHappy();
-            screen.card.tick("feel");
-            screen.card.tick("help");
             finish();
           })
         );
@@ -221,20 +253,22 @@
               return;
             }
             fig.react("happy", 0);
-            if (plan.mode !== "said") showFeel("happy");
-            screen.card.tick("feel");
+            if (plan.mode === "face") showFeel("happy");
             finish();
           })
         );
         if (env.first) S.onboard(env, "sendoff", [{ spotlight: () => btns.find((x) => x.dataset.face === answer), ghost: { gesture: "tap" }, wait: "clinic-face" }]);
       }
       await done;
-      cards.remove();
+      cards.remove(); // the stage clears its own UI before the next thing (13f)
+      S.stage(docEl, layer, "talk");
 
-      // the goodbye, in the scene (from level 2: E2 and E3 merged)
+      // the goodbye, in the scene (from level 2: E2 and E3 merged); the reply pills only now, when a reply is
+      // needed, with nothing else on screen (13f)
       if (plan.goodbye) {
         const r = rowOf("bye");
-        await S.say(plan.card.find((x) => x.id === "bye"), "doctor");
+        S.say(plan.card.find((x) => x.id === "bye"), "doctor");
+        S.stage(docEl, layer, "player");
         S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: plan.goodbye }));
         const out = await S.moment(env, {
           choices: r.options,
@@ -248,13 +282,14 @@
           },
         });
         res.moments.push(out);
-        screen.card.tick("bye");
+        env.screen.main.querySelectorAll(".njg-say, .cl-pills").forEach((n) => n.remove());
       } else {
         await S.say(S.line(env, "thanks"), "patient");
       }
       fig.pose("wave");
       layer.classList.add("leaving");
       S.current = null;
+      S.endOnboard();
       // the sticker for the album
       const sticker = h("div", "cl-sticker", stage);
       sticker.appendChild(S.personFace(patient.kind, "happy"));

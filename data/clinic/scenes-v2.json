@@ -46,9 +46,9 @@
     "tray": { "x": 0.5, "y": 0.86, "h": 0.17 }
   },
   "door": {
-    "_about": "CB5: the patient stands on the doormat by the half-open front door; the doctor beside them, to the left (turned towards them). The four cards (or what helps) sit on the floor strip.",
-    "patient": { "x": 0.765, "y": 0.8, "h": 0.46 },
-    "doctor": { "x": 0.605, "y": 0.86, "h": 0.64 },
-    "cards": { "x": 0.335, "y": 0.95 }
+    "_about": "CB5, clinic fixes 13d: the doctor and the patient stand on the LEFT, in the free wall space (not by the door, where the face circle sat on the green cross sign), turned to each other while they talk. The feeling cards open in a thought bubble from the patient's head, out to the right (levels 1-2); from level 3 the help items sit in a tray along the bottom of the screen.",
+    "patient": { "x": 0.37, "y": 0.84, "h": 0.46 },
+    "doctor": { "x": 0.22, "y": 0.88, "h": 0.64 },
+    "cards": { "x": 0.6, "y": 0.95 }
   }
 }

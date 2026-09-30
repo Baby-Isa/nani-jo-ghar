@@ -39,7 +39,14 @@
         // the figure's box on the bed's edge (or the floor), in shares of the picture
         layer.classList.add("v2");
         S.place(layer, { x: cfg.fig.x, y: cfg.fig.bottom, h: cfg.fig.h, w: cfg.fig.h * (620 / 900) / 1.5, z: 3 });
-        if (cfg.doctor) S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
+        if (cfg.doctor) {
+          const docEl = S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
+          // UX 16 (the staging hook): the doctor is turned three-quarter to the patient while they talk;
+          // on the child's turn (the card is up, a moment later) he turns to the player
+          S.pose(docEl, "talk", { facing: "left" });
+          Kit.Voice.speakers.doctor = () => docEl;
+          setTimeout(() => docEl.isConnected && S.pose(docEl, "front"), Kit.fast ? 50 : 1200);
+        }
       }
       const fig = env.fig;
       layer.appendChild(fig.el);
@@ -90,7 +97,7 @@
       if (zoom.on) await fig.focus(null, null, 1, Kit.fast ? 60 : 350);
       if (zoom.el) zoom.el.remove();
       fig.swirl(plan.part, plan.side, true);
-      await S.say(plan.name, "doctor");
+      S.say(plan.name, "doctor");
       const btn = await S.button(screen, { kutchi: "[To the counter]", english: "To the counter" });
       void btn;
       res.words.push({ kutchi: null, english: data.part_words[plan.part] || plan.part });
@@ -151,10 +158,18 @@
         armButtons(false);
       }
     };
-    const found = screen.go(S.line(env, "found"), () => act("found"));
+    // Found it / Next are the shared answer pills (UX 15), in the play area's corner
+    const choices = [{ id: "found", node: Kit.text(S.line(env, "found"), null) }].concat(graded ? [{ id: "next", node: Kit.text(S.line(env, "next"), null) }] : []);
+    const pills = global.NjgButtons ? global.NjgButtons.pills(screen.actions, choices, (id) => act(id), { cls: "cl-answer" }) : null;
+    const pill = (id) => (pills ? pills.pill(id) : screen.go(S.line(env, id), () => act(id)));
+    const found = pill("found");
+    found.classList.add("cl-go");
     found.dataset.act = "found";
-    const next = graded ? screen.go(S.line(env, "next"), () => act("next"), "alt") : null;
-    if (next) next.dataset.act = "next";
+    const next = graded ? pill("next") : null;
+    if (next) {
+      next.classList.add("cl-go");
+      next.dataset.act = "next";
+    }
     const armButtons = (on) => {
       found.disabled = !on;
       found.classList.toggle("throb", on && !graded);
@@ -204,8 +219,7 @@
     const { screen, data } = env;
     const row = plan.rows[0];
     await S.request(screen, { title: "", rows: plan.card });
-    await Kit.wait(Kit.fast ? 50 : 1200);
-    await S.say(row.patientSays, "patient");
+    S.say(row.patientSays, "patient"); // input is live at once (13i): a tap during the line goes ahead
     let busy = false;
     let finish;
     const done = new Promise((r) => (finish = r));
@@ -230,7 +244,7 @@
         fig.swirl(plan.part, plan.side, true);
         fig.react("relief");
         S.signal("clinic-part");
-        await S.say(S.line(env, "thatsit"), "doctor");
+        S.say(S.line(env, "thatsit"), "doctor");
         screen.card.tick("where");
         finish();
       } else {
@@ -250,7 +264,7 @@
   async function d3(env, plan, res, { stage, top, fig, at, tapPart }) {
     const { screen, data } = env;
     const tools = data.stages.diagnosis.tools;
-    await S.say(S.line(env, "unwell"), "patient");
+    S.say(S.line(env, "unwell"), "patient");
     await S.request(screen, { title: "", rows: plan.card });
     const kit = h("div", "cl-kit", stage);
     let tool = null;
