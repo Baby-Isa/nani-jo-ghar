@@ -361,6 +361,7 @@
     const tex = (im, key) => im.texture.key !== `v3-pan-${key}` && im.setTexture(`v3-pan-${key}`);
     // fade: { from, u } while something goes in (the last picture, then the new one over it)
     const setLook = (pan, fade) => {
+      if (!fade && pan.fading) return; // something's going in: its fade has the picture (the heat tick waits)
       let [a, b, u] = lookOf(pan);
       if (fade && fade.u < 1 && fade.from !== a) [a, b, u] = [fade.from, a, fade.u];
       else if (!fade || fade.u >= 1) pan.shown = b && u >= 0.5 ? b : a;
@@ -368,8 +369,19 @@
       if (b) tex(pan.mix, b);
       pan.mix.setAlpha(b ? u : 0);
     };
-    const fadeLook = (pan, from, ms = 450) =>
-      S.tweens.addCounter({ from: 0, to: 1, duration: ms, onUpdate: (tw) => setLook(pan, { from, u: tw.getValue() }), onComplete: () => setLook(pan) });
+    const fadeLook = (pan, from, ms = 450) => {
+      pan.fading = true;
+      S.tweens.addCounter({
+        from: 0,
+        to: 1,
+        duration: ms,
+        onUpdate: (tw) => setLook(pan, { from, u: tw.getValue() }),
+        onComplete: () => {
+          pan.fading = false;
+          setLook(pan);
+        },
+      });
+    };
     const drawSel = () =>
       pans.forEach((pan) => {
         pan.sel.clear();
@@ -448,6 +460,7 @@
       const cap = { x: art.x - Math.sin(rad) * cy0, y: art.y + Math.cos(rad) * cy0 };
       const stream = S.track(S.add.graphics().setDepth(D.fx));
       const from = pan.level;
+      pan.fading = true;
       await new Promise((r) =>
         S.tweens.addCounter({
           from: 0,
@@ -468,6 +481,8 @@
         })
       );
       stream.destroy();
+      pan.fading = false;
+      setLook(pan);
       S.puff(pan.x, pan.y, color, 36);
       await new Promise((r) => S.tweens.add({ targets: art, angle: 0, duration: 180, onComplete: r }));
       await S.fly(art, obj.x, obj.y - obj.displayHeight / 2, { duration: 320, arc: 40 });

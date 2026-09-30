@@ -2,9 +2,9 @@
 """Screenshots of the Chai tray (docs/VISUAL-QA.md §5; v2, then the 30 Sept v3 pan states, C8).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots of every
-state that draws something different. The lab's first try goes wrong on purpose (the salt in the last
-pan, and one milky pan left on the high flame till it foams), so the wrong serve shows; the lab then
-plays it again, right (`-again-*`).
+state that draws something different. The first run goes wrong on purpose (the salt in the last pan,
+and one milky pan left on the high flame till it foams), so the wrong serve shows; a second, clean run
+(`-right-*`) shoots the right serve.
   start       everyone has spoken, nothing done yet
   water       the first pan with water in it
   leaves      the chai leaves in (water with leaves)
@@ -70,11 +70,7 @@ class Shooter(T.Player):
             time.sleep(0.6)
             self.snap(f"taste-{st[1]}")
             self.page.evaluate("Cook.tasted = null; Cook.chaiServe = null")
-            if st[1] == "wrong" and self.first:
-                # the lab's second try: the same states again, played right
-                self.first = False
-                self.tag += "-again"
-                self.taken = set()
+            self.first = False  # the lab doesn't play it again: the right serve is a second, clean run
         return e
 
     def heat(self, e):
