@@ -1,0 +1,103 @@
+# Nani jo Ghar
+
+A game that teaches young children Kutchi through play at Nani's house, voiced only by the real family. Zafar owns it and decides. It runs as a web app on GitHub Pages (`main` is the live site) and will be wrapped for the app stores.
+
+**The newest word from Zafar wins.** If he says something that clashes with this file or the rulebook, follow him, then update the rulebook (`docs/process/rules.md`) and the decisions log (`docs/decisions.md`) in the same commit.
+
+## Working agreement
+
+- Discuss first. Never start builds, agents, sessions or art while Zafar is still talking something through or while a question to him is open. Propose, wait for an explicit go, then act.
+- Approval for one thing is not approval for the next. Work one step at a time; each step ends with a deliverable Zafar reviews.
+- When he says more is coming, collect and list; plan nothing until he's done.
+- Put decisions to him as a numbered list, each with a recommendation, answerable "yes to all except …". Write his answers into `docs/decisions.md`.
+- Nothing reaches Zafar that breaks a written rule. Run the QA checklist first and look at the screenshots yourself.
+- Keep replies short and plain. Don't assume he remembers IDs.
+- Recommend a model and effort level, with a cost estimate, before every launch.
+- Improve on his ideas: research best practice and push back where it's warranted.
+
+## Non-negotiables
+
+1. **Discuss first; act only when told.** (above)
+2. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his explicit OK.
+3. **Fix it properly, once.** Every past feedback item is on `docs/process/regressions.md` and is rechecked at every review.
+4. **Never invent Kutchi.** Mum is the authority (Masi second opinion; Zafar confirms spellings). Two AIs agreeing is not evidence. Missing Kutchi is a grey-italic English placeholder flagged "to record".
+5. **No English instructions for the child, ever,** on screen or in audio. English for grown-ups lives only in the "?" pop-up.
+6. **Pass the Kutchi leak test:** someone who knows no Kutchi can't win by reading, matching, eliminating, patterns or waiting.
+7. **Done means looked at, not tests passed.** Every state is screenshotted and judged, flaws listed first, by someone other than the builder.
+8. **The same shared screens and buttons in every mode,** from `js/shared/`, never restyled per mode.
+9. **No clipped or ellipsised text, anywhere.** Headlines shrink, then wrap.
+10. **Only real family voices ship.** TTS is test-only and never ships; no AI-generated Kutchi.
+11. **Every spoken line is a full, natural sentence from the language engine,** never stitched words or hand fixes. If the engine can't say it, report the gap; don't write a fragment.
+12. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can take it back until Done.
+13. **Art is made in ChatGPT via Claude in Chrome** from one ready-to-paste block. A paid API only for a rapid prototype when Zafar can't respond, under $2.
+14. **Sessions:** at most ~4 at once, no helper sessions, complete briefs, `python3 build/bump_version.py` and one push to `main` at the end.
+15. **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
+16. **The family is Khoja Muslim:** halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
+
+The full rulebook, grouped by topic, is `docs/process/rules.md`. **Read the sections that apply before any build or design work.** Every rule lives there once; other docs link to its IDs rather than restating it.
+
+## Where things live
+
+- `docs/README.md`: the index of every doc. Start here.
+- `docs/status.md`: what's live, in progress and next. Update it at every milestone.
+- `docs/decisions.md`: every decision Zafar has made, dated, newest last.
+- `docs/process/rules.md`: the rulebook. `docs/process/qa-checklist.md`: the definition of done. `docs/process/regressions.md`: every past feedback item.
+- `docs/vision.md`: pitch, audience and the design pillars that break ties.
+- `docs/game-design/`: arcs, cast, progression and scoring, one file per mode.
+- `docs/design-language/`: art bible, art pipeline, UI design system, UX principles, tone of voice, audio.
+- `docs/language/`: grammar notes, lexicon, Mum's question rounds, the engine spec.
+- `docs/architecture/`: technical plan, shared API, conventions, testing.
+- `docs/feedback/`: dated play-test notes. `docs/ideas.md`: the parking lot. `docs/archive/`: superseded docs (moved, never deleted).
+- `build/reports/<name>.md`: one report per build session.
+
+## Starting a chat or session
+
+1. Read this file, `docs/status.md`, and the rulebook sections for the work at hand.
+2. Check `git log origin/main` before redoing anything.
+3. For a mode, read its file in `docs/game-design/modes/` and the design-language docs it touches.
+
+## Briefing a build session
+
+Use `docs/process/session-brief-template.md`. Every brief names: the files the session owns, a hard stop time, links to this file, the rulebook and the QA checklist, "don't remove mechanics", "no helper sessions", and the permissions it needs up front.
+
+- Parallel sessions only on disjoint files. Shared files (`js/shared/`, the kitchen kit, the order card) have one owner; others import them.
+- A mode session edits only its own mode's files. A missing shared piece becomes a marked stub with the same API.
+- Big refactors live on their own branch until approved.
+
+## Git and publishing
+
+- Commit small and often. Never force-push. End commit messages with the Co-Authored-By and Claude-Session lines.
+- Every asset URL built in code goes through `Cook.v()` / `njgV()`. Run `python3 build/bump_version.py` before every push to `main`.
+- Publish = bump, commit, push the branch and `HEAD:main`. If an upload races you, merge `origin/main` and push again; on `?v=` conflicts take the real side and re-bump.
+- Browser tests run one at a time (`flock -w 1800 … timeout`, own `COOK_TEST_PORT`).
+- End every build session with `build/reports/<name>.md`, the QA checklist results, and ONE push to `main`.
+- Tell Zafar something is live only after the Pages build ran for that commit and the fix shows after a hard refresh; send a screenshot.
+
+## Definition of done
+
+Work is done when `docs/process/qa-checklist.md` passes:
+
+- the automated checks run clean;
+- every visually distinct state is screenshotted uncropped at 390×844, 1366×768 and a 16:10 laptop, across levels 1–4, one written line per state;
+- someone other than the builder has reviewed the screenshots, listing flaws first (zoom ×2: clipping, spacing, padding, alignment, overlap);
+- every item on `docs/process/regressions.md` for the touched screens is rechecked;
+- the change is compared side by side with the approved mock-up and with Zafar's last feedback, item by item.
+
+While iterating: laptop size, changed screens only, one shot each. Run the full matrix before the final push.
+
+## Language
+
+- Romanised Kutchi only; the family's spellings as written in `docs/language/grammar-notes.md`.
+- No Kutchi grammar in game code: frames and word forms live in data; nouns carry gender, singular and plural.
+- Search `data/family-audio.json` before calling a word "English only".
+- Never show English or pictures where the task is understanding Kutchi.
+
+## Art
+
+- Plan before prompting: what the object is for, how it's seen in game, who stands where in a background.
+- Judge every generated asset pass/fail and fix failures before Zafar sees anything.
+- The method is `docs/design-language/art-pipeline.md`; the look is `docs/design-language/art-bible.md`.
+
+## Handover
+
+When a chat fills up: finish in-flight work, update `docs/status.md`, write a handover with a ready-to-paste starting prompt, and push.
