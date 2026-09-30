@@ -34,6 +34,7 @@
         patient: env.fig,
         seed: Math.floor(env.rng() * 1e9),
         onboard: !!env.onboard,
+        inRun: true, // the diagnosis already told the why: the game starts straight in (13i)
       });
       S.heal.current = run;
       S.setExpect("heal", () => {

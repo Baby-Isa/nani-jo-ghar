@@ -45,6 +45,11 @@ function rngFrom(seed) {
   };
 }
 
+// Zafar's own calls that knowingly lift a game's blind rate above 10% at level 1, printed every run (never silent).
+// knee (29 Sept, 13i): "Stop the flashing when you're done: once the last turn is wrapped, no dot flashes" and "the
+// bandage game is fun: keep it. It's not very educational, but there are plenty of other chances to learn numbers."
+// The stopped flash tells the turns, so only the hammer count is decided by the word (1 of 4 at level 1).
+const ACCEPTED = { knee: { under: 0.3, why: "13i: the flashing stops at the last turn (Zafar), so the turns are a hand-skill row; open for Zafar" } };
 const out = { seed: SEED, rounds: ROUNDS, l1Rounds: L1, games: {} };
 const fails = [];
 const pct = (x) => `${(100 * x).toFixed(1)}%`.padStart(7);
@@ -57,6 +62,7 @@ for (const id of GAMES) {
   if (def.problems && def.problems.length) fails.push(`${id}: contract: ${def.problems.join("; ")}`);
   out.games[id] = {};
   console.log(`\n${id} (${def.part}; gestures ${def.gestures.join(", ")})`);
+  if (ACCEPTED[id]) console.log(`  ACCEPTED above 10% at level 1: ${ACCEPTED[id].why}`);
   for (const level of def.levels) {
     const strategies = Heal.botStrategies(id, level);
     const n = level === 1 ? L1 : ROUNDS;
@@ -90,10 +96,12 @@ for (const id of GAMES) {
       strategies
         .filter((s) => s !== "fair")
         .forEach((s) => {
-          if (row[s].win >= 0.1) fails.push(`${id} L1: ${s} wins ${pct(row[s].win)} blind (must be under 10%)`);
+          const ok = ACCEPTED[id] ? row[s].win < ACCEPTED[id].under : row[s].win < 0.1;
+          if (!ok) fails.push(`${id} L1: ${s} wins ${pct(row[s].win)} blind (must be under ${ACCEPTED[id] ? pct(ACCEPTED[id].under) : "10%"})`);
         });
   }
 }
 if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify(out, null, 1));
-console.log(fails.length ? `\nFAIL\n  ${fails.join("\n  ")}` : "\nPASS: fair 100% everywhere; every blind strategy under 10% at level 1");
+const except = Object.entries(ACCEPTED).map(([k, v]) => `${k} under ${pct(v.under).trim()}`).join(", ");
+console.log(fails.length ? `\nFAIL\n  ${fails.join("\n  ")}` : `\nPASS: fair 100% everywhere; every blind strategy under 10% at level 1${except ? ` (except, as Zafar decided: ${except})` : ""}`);
 process.exit(fails.length ? 1 : 0);

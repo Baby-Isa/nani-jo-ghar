@@ -23,9 +23,10 @@
     flashMs: { 1: 0, 2: 1800, 3: 1100 },
   };
   const WHY = { problem: "My knee hurts.", goal: "Let's check it and bandage it." };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    kick: "Tap the <b>hammer</b>, then tap the glowing knee. Tap as many times as you're told.",
-    wrap: "Tap the <b>bandage</b>. Then tap each dot as it <b>flashes</b>. Stop after the turns you're told, then press ✓.",
+    kick: { gesture: "tap", then: "tap" },
+    wrap: { gesture: "tap", then: "tap" },
   };
 
   function plan(level, rng, sideIn) {
@@ -48,7 +49,8 @@
     ];
     const rows = [
       { id: "kick-count", options: K.kicks[L], answer: kicks },
-      { id: "wrap-turns", options: K.turns[L], answer: turns },
+      // 13i: the flashing stops at the last turn, so the turns are no longer decided by the word alone: a hand-skill row
+      { id: "wrap-turns", options: K.turns[L], answer: turns, skill: true },
     ];
     const words = [{ kutchi: HS.NUM[kicks], english: String(kicks) }, { kutchi: HS.NUM[turns], english: String(turns) }, { kutchi: "ne poi", english: "and then" }, HS.ph("knee"), HS.ph("bandage")];
     if (L === 3) words.push({ kutchi: sideK, english: side });
@@ -82,9 +84,10 @@
       legs[side] = { g, glow, shin, wrap, x };
     });
     const sore = legs[P.side];
+    // 13i: at the top level the named leg doesn't glow: the word alone says which knee
     const glowOn = (on) => {
       Object.values(legs).forEach((l) => l.glow.setAttribute("opacity", 0));
-      if (on) sore.glow.setAttribute("opacity", 0.55);
+      if (on && P.level < 3) sore.glow.setAttribute("opacity", 0.55);
     };
     glowOn(true);
     const dotsG = s("g", {}, S.layer);
@@ -98,7 +101,7 @@
       ["l", "r"].forEach((sd) =>
         ys.forEach((y) => {
           const p = dotPos({ s: sd, y });
-          const on = active() && active().s === sd && active().y === y;
+          const on = !wrapped() && active() && active().s === sd && active().y === y;
           const c = s("circle", { cx: p.x, cy: p.y, r: on ? 17 : 11, fill: on ? "#f0a030" : "#fff", stroke: "#8a5a2a", "stroke-width": 3 }, dotsG);
           if (on) c.animate([{ opacity: 1 }, { opacity: 0.45 }, { opacity: 1 }], { duration: 500, iterations: Infinity });
           dots.push({ s: sd, y, x: p.x, yy: p.y });
@@ -106,6 +109,8 @@
       );
     };
     const active = () => P.steps[1].order[st.oi % P.steps[1].order.length];
+    // 13i: once the last turn is wrapped, no dot flashes (the child presses ✓)
+    const wrapped = () => !!cur() && cur().kind === "wrap" && st.turns >= cur().count;
 
     const judge = (id, ok, detail) => {
       st.judged[id] = ok;
@@ -114,7 +119,10 @@
     const open = () => {
       const c = cur();
       ctx.card.now(c.id);
-      S.cue(c.kind, CUES[c.kind], S.toolEls[c.kind === "kick" ? "hammer" : "bandage"]);
+      S.cue(c.kind, CUES[c.kind], S.toolEls[c.kind === "kick" ? "hammer" : "bandage"], c.kind === "kick" ? { x: sore.x, y: KY } : () => {
+        const d = dotPos(active());
+        return { x: d.x, y: d.y, r: 26 };
+      });
     };
     const close = () => {
       const c = cur();
@@ -145,7 +153,7 @@
     const armFlash = () => {
       clearFlash();
       drawDots();
-      if (!P.flashMs || st.over) return;
+      if (!P.flashMs || st.over || wrapped()) return;
       st.flashT = setTimeout(() => {
         if (!cur() || cur().kind !== "wrap") return;
         ctx.log({ type: "extra", rowId: "wrap", detail: "missed a flash" });
@@ -199,8 +207,14 @@
         return;
       }
       if (c.kind === "wrap" && S.sel === "bandage") {
-        const d = dots.find((q) => Math.hypot(p.x - q.x, p.y - q.yy) < 30);
-        if (!d) return;
+        // the nearest dot (13i bug: dots 34 apart with a 30 reach overlap, and the first one found was often
+        // a neighbour, so a right tap drew no turn)
+        let d = null;
+        dots.forEach((q) => {
+          const dd = Math.hypot(p.x - q.x, p.y - q.yy);
+          if (dd < 30 && (!d || dd < d.dd)) d = Object.assign({ dd }, q);
+        });
+        if (!d || wrapped()) return;
         const a = active();
         if (d.s !== a.s || d.y !== a.y) {
           ctx.log({ type: "extra", rowId: "wrap", detail: "not the flashing dot" });
@@ -232,10 +246,7 @@
 
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        if (P.level === 3) await S.say({ kutchi: `${HS.cap(P.side === "left" ? "dabo" : "jamno")} [knee]`, english: `The ${P.side} knee` }, "doctor");
-        await ctx.card.speak();
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab; the card's read-along says the side at L3
         open();
       },
       destroy() {

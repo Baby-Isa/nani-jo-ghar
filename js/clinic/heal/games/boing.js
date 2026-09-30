@@ -19,12 +19,13 @@
 
   const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, beads: { 1: [2, 3, 4], 2: [4, 5] }, colours: ["red", "blue", "green"], one: "purple" };
   const WHY = { problem: "Time for my jab.", goal: "I'll do it. You count!" };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    wipe: "Tap the <b>cotton</b>, then wipe the arm. Count the wipes you're told, then press ✓.",
-    beads: "Tap a <b>bead</b>: it goes into the doctor's syringe. Count them in, then press ✓.",
-    boing: "Count down with the doctor... BOING!",
-    plaster: "Tap the <b>plaster</b>, then tap the spot.",
-    apple: "Now the <b>apple</b>: tap it to give it.",
+    wipe: { gesture: "tap", then: "tap" },
+    beads: { gesture: "tap" },
+    boing: { gesture: "tap" },
+    plaster: { gesture: "tap", then: "tap" },
+    apple: { gesture: "tap" },
   };
 
   function plan(level, rng) {
@@ -210,9 +211,7 @@
 
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        await ctx.card.speak();
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab
         open();
       },
       destroy() {

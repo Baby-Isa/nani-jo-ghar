@@ -520,8 +520,8 @@
         await ctx.patient.focus(part, side, K.zoom, 500);
         layout();
         ctx.on(root, "resize", onResize);
-        if (P.upFront) await ctx.card.speak();
-        else await ctx.say(rows[0]);
+        if (P.upFront) ctx.card.speak(); // input never waits for the talking (13i)
+        else ctx.say(rows[0]);
         state.lastAct = Date.now();
         throb();
         if (ctx.level === 1) {
@@ -563,10 +563,11 @@
     plasters: { 1: 1, 2: 2, 3: 3 },
   };
   const WHY = { problem: "I fell over and scraped my arm.", goal: "Let's clean it and put plasters on." };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    wash: "Tap the <b>water</b>, then tap the scrape.",
-    dab: "Tap the <b>cloth</b>, then dab the scrape. Count the dabs you're told.",
-    plaster: "Tap a <b>plaster</b> in the colour said, then tap the dotted spot.",
+    wash: { gesture: "tap", then: "tap" },
+    dab: { gesture: "tap", then: "tap" },
+    plaster: { gesture: "tap", then: "tap" },
   };
   const halfName = (pair) => `${pair[0]} and ${pair[1]}`;
   function planScrape(level, rng) {
@@ -581,11 +582,13 @@
     }
     const seq = HS.shuffle(options, rng).slice(0, n);
     const name = (o) => (o.length === 2 ? halfName(o) : o[0]);
-    const plasterK = seq.map((o, i) => `${i === 0 ? (n > 1 ? "pela" : "") : "ne poi"} [${name(o)}]`.trim()).join(", ");
+    // 13h: the plasters' order is a sequence on the shared card: one part per plaster (pela ..., ne poi ...),
+    // the next one in the grey band, each ticking as it goes on
+    const plasterRows = seq.map((o, i) => ({ id: `plaster${i}`, seq: "plasters", kutchi: `${i === 0 ? (n > 1 ? "pela " : "") : "ne poi "}[${name(o)} plaster]`.trim(), english: `${i === 0 ? (n > 1 ? "first " : "") : "then "}${name(o)} plaster` }));
     const steps = [
-      { id: "wash", kind: "wash", row: { id: "wash", kutchi: "Pela paani", english: "First water" } },
-      { id: "dab", kind: "dab", count: dab, row: { id: "dab", kutchi: `Ne poi [cloth], ${HS.NUM[dab]} [dabs]`, english: `Then the cloth, ${dab} dabs` } },
-      { id: "plaster", kind: "plaster", seq, options, row: { id: "plaster", kutchi: `[Plasters:] ${plasterK}`, english: `Plasters: ${seq.map(name).join(", then ")}` } },
+      { id: "wash", kind: "wash", row: { id: "wash", seq: "steps", kutchi: "Pela paani", english: "First water" } },
+      { id: "dab", kind: "dab", count: dab, row: { id: "dab", seq: "steps", kutchi: `Ne poi [cloth], ${HS.NUM[dab]} [dabs]`, english: `Then the cloth, ${dab} dabs` } },
+      { id: "plaster", kind: "plaster", seq, options, row: plasterRows[0], rows: plasterRows },
     ];
     const key = (o) => o.slice().sort().join("+");
     // every sequence of n different plasters a blind player could lay
@@ -613,10 +616,16 @@
     const P = planScrape(ctx.level, ctx.rng);
     const S = HS.make(stage, ctx, { place: "limb", game: "cut" });
     const { s } = S;
-    const st = { i: 0, dabs: 0, washed: false, laid: [], judged: {}, over: false };
+    const n = P.steps[2].seq.length;
+    // laid[k]: the plaster on spot k (null = empty); firstLaid[k]: the first one put there (what's scored: UX 17)
+    const st = { i: 0, dabs: 0, washed: false, laid: new Array(n).fill(null), firstLaid: new Array(n).fill(null), judged: {}, over: false };
     const cur = () => P.steps[st.i] || null;
-    const rows = P.steps.map((x) => x.row);
-    ctx.card.setRows(P.upFront ? rows : [rows[0]]);
+    const rowsOf = (x) => x.rows || [x.row];
+    const rows = [].concat(...P.steps.map(rowsOf));
+    ctx.card.ordered(false); // two sequences: the steps, then the plasters (13h)
+    ctx.card.setRows(P.upFront ? rows : rowsOf(P.steps[0]));
+    const nextSpot = () => st.laid.findIndex((x) => !x);
+    const laidN = () => st.laid.filter(Boolean).length;
 
     // the arm, lying on the paper strip
     const arm = s("g", {}, S.layer);
@@ -627,7 +636,6 @@
     for (let k = 0; k < 5; k++) s("line", { x1: 260 + k * 10, y1: 392 + k * 8, x2: 500 - k * 12, y2: 384 + k * 9, stroke: "#d9546a", "stroke-width": 4, "stroke-linecap": "round", opacity: 0.7 }, scrape);
     const dirt = s("g", {}, S.layer);
     for (let k = 0; k < 14; k++) s("circle", { cx: 250 + ((k * 97) % 260), cy: 390 + ((k * 37) % 36), r: 4 + (k % 3), fill: "#7a5a3a" }, dirt);
-    const n = P.steps[2].seq.length;
     const spotX = (k) => (n === 1 ? 380 : 380 + (k - (n - 1) / 2) * 110);
     const spots = s("g", {}, S.layer);
     const drawSpots = () => {
@@ -636,7 +644,7 @@
         const x = spotX(k);
         const o = st.laid[k];
         if (!o) {
-          const next = k === st.laid.length && cur() && cur().kind === "plaster";
+          const next = k === nextSpot() && cur() && cur().kind === "plaster";
           s("rect", { x: x - 46, y: 384, width: 92, height: 48, rx: 14, fill: "none", stroke: next ? "#2e8b7a" : "#9a8f84", "stroke-width": next ? 4 : 3, "stroke-dasharray": "8 6" }, spots);
           continue;
         }
@@ -663,19 +671,19 @@
       const c = cur();
       if (!c) return;
       if (!P.upFront && st.i > 0) {
-        ctx.card.addRow(c.row);
+        rowsOf(c).forEach((r) => ctx.card.addRow(r));
         ctx.say(c.row);
       }
-      ctx.card.now(c.id);
+      ctx.card.now(c.kind === "plaster" ? null : c.id);
       drawSpots();
-      const target = c.kind === "wash" ? S.toolEls.paani : c.kind === "dab" ? S.toolEls.cloth : S.toolEls[plasterIds[0]];
-      S.cue(c.kind, CUES[c.kind], target);
+      const target = c.kind === "wash" ? S.toolEls.paani : c.kind === "dab" ? S.toolEls.cloth : S.toolEls["pl-" + P.key(c.seq[0])];
+      S.cue(c.kind, CUES[c.kind], target, { x: c.kind === "plaster" ? spotX(0) : 380, y: 408 });
     };
     const close = () => {
       const c = cur();
       if (!c) return;
       if (c.kind === "dab") judge("dab-count", st.dabs === c.count, `${st.dabs} of ${c.count}`);
-      ctx.card.tick(c.id);
+      if (c.kind !== "plaster") ctx.card.tick(c.id);
       S.count(null);
       st.i++;
       if (cur()) open();
@@ -686,7 +694,9 @@
       S.uncue();
       ctx.card.now(null);
       S.face("happy");
-      judge("plasters", JSON.stringify(st.laid.map(P.key)) === JSON.stringify(P.steps[2].seq.map(P.key)), st.laid.map(P.key).join(" "));
+      // the first plaster put on each spot is what's scored (a plaster taken back still counts: UX 17)
+      const first = st.firstLaid.map((o) => (o ? P.key(o) : "-"));
+      judge("plasters", JSON.stringify(first) === JSON.stringify(P.steps[2].seq.map(P.key)), first.join(" "));
       S.say("Look at that!", "patient");
       S.markSeen();
       ctx.after(Clinic_fast() ? 200 : 1600, () => {
@@ -702,7 +712,6 @@
       const want = stepOfTool(id);
       // picking a later step's tool closes the open counted step (the tick confirms it)
       if (c && want !== c.kind && c.kind === "dab" && P.steps.findIndex((x) => x.kind === want) > st.i) close();
-      if (c && c.kind === "wash" && want !== "wash") S.cue("wash", CUES.wash, S.toolEls.paani);
     });
     const onScrape = (p) => Math.abs(p.x - 380) < 240 && Math.abs(p.y - 408) < 70;
     ctx.on(S.svg, "pointerdown", (e) => {
@@ -736,32 +745,44 @@
         S.face("happy", 500);
         S.count(st.dabs);
         ctx.tally("cloth", st.dabs);
-      } else if (optByTool[tool] && c.kind === "plaster") {
-        st.laid.push(optByTool[tool]);
-        S.face("happy", 600);
-        ctx.sfx("pop");
+      } else if (c.kind === "plaster" && laidN() && spotAt(p) >= 0 && st.laid[spotAt(p)]) {
+        // a laid plaster tapped: it comes off again, until ✓ (13h, UX 17)
+        const k = spotAt(p);
+        st.laid[k] = null;
+        ctx.card.untick(`plaster${k}`);
+        ctx.sfx("tap");
+        ctx.log({ type: "takeback", detail: `plaster ${k}` });
         drawSpots();
-        if (st.laid.length >= n) close();
-      } else if (optByTool[tool] && c.kind === "dab") {
-        close();
-        st.laid.push(optByTool[tool]);
-        drawSpots();
-        if (st.laid.length >= n) close();
+      } else if (optByTool[tool] && (c.kind === "plaster" || c.kind === "dab")) {
+        if (c.kind === "dab") close();
+        lay(optByTool[tool]);
       }
     });
+    const spotAt = (p) => {
+      for (let k = 0; k < n; k++) if (Math.abs(p.x - spotX(k)) < 50 && Math.abs(p.y - 408) < 34) return k;
+      return -1;
+    };
+    const lay = (o) => {
+      const k = nextSpot();
+      if (k < 0) return;
+      st.laid[k] = o;
+      if (!st.firstLaid[k]) st.firstLaid[k] = o;
+      S.face("happy", 600);
+      ctx.sfx("pop");
+      ctx.card.tick(`plaster${k}`);
+      drawSpots();
+    };
     // Next: closes the counted dab step (the host's big button)
     const nextBtn = ctx.button("✓", () => {
       const c = cur();
       if (c && c.kind === "dab" && st.dabs > 0) close();
+      else if (c && c.kind === "plaster" && laidN() >= n) close(); // ✓ commits the plasters
     }, "done");
     nextBtn.setAttribute("aria-label", "Next");
 
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        if (P.upFront) await ctx.card.speak();
-        else await ctx.say(rows[0]);
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab
         open();
       },
       destroy() {
@@ -788,8 +809,9 @@
             if (st.dabs < c.count) return S.sel !== "cloth" ? tool("cloth") : at(380, 408);
             return { do: "button" };
           }
-          const want = "pl-" + P.key(c.seq[st.laid.length]);
-          return S.sel !== want ? tool(want) : at(spotX(st.laid.length), 408);
+          if (nextSpot() < 0) return { do: "button" };
+          const want = "pl-" + P.key(c.seq[nextSpot()]);
+          return S.sel !== want ? tool(want) : at(spotX(nextSpot()), 408);
         },
         slip() {
           // one dab too many

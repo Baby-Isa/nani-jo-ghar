@@ -29,10 +29,11 @@
     tol: 0.09,
   };
   const WHY = { problem: "My tooth hurts.", goal: "Let's brush, fix it and fill it." };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    brush: "Drag the brush's <b>head</b> the way you're told, one move at a time.",
-    drill: "Drag the <b>drill</b> over the dark bits. Leave the white, or it chips!",
-    fill: "Press and <b>hold</b> the tube. Let go at the line.",
+    brush: { gesture: "swipe" },
+    drill: { gesture: "swipe" },
+    fill: { gesture: "hold" },
   };
   const DIRS = ["up", "down", "left", "right"];
   const DIR_K = { left: "dabo", right: "jamno" };
@@ -304,9 +305,7 @@
     S.tools([], null);
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        await ctx.card.speak();
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab
         open();
       },
       destroy() {

@@ -11,9 +11,13 @@
  *   S.pt(e) -> {x, y} in svg units · S.client(x, y) -> {x, y} client px (tests)
  *   S.face(mood)     the patient's round face, top-left: neutral, ouch, happy, wince, cold, hot, read, sad
  *   S.say(line, who) a line ({kutchi, english, placeholder} or English) by "patient" / "doctor"
- *   S.why(problem, goal)   the opening beat: the patient says the problem, the doctor the goal
- *   S.tools(list, onPick)  the tool shelf (stand-in buttons on the right); S.pick(id) selects
- *   S.cue(key, text, target)   the first-time cue: words + a pointing hand; S.uncue()
+ *   S.begin(why)     start: input live at once (13i); the why beat (standalone only) and the card's read-along alongside
+ *   S.why(problem, goal)   the opening beat, shown not told (13g): the pained face, then the doctor's line;
+ *                    only when the game runs on its own (ctx.inRun skips it: the diagnosis already told it, 13i)
+ *   S.tools(list, onPick)  the tool shelf (stand-in buttons on the right); S.pick(id) selects; the things that
+ *                    came from the pharmacy's tray are marked (13)
+ *   S.cue(kind, spec, target, then?)   first-time help: the ghost finger on the shared onboarding kit, no words,
+ *                    no device voice (13g, UX 8); S.uncue() ends it; S.did() the child acted
  *   S.count(n)       the count-up (Cook rule Q7): the host writes it (ctx.tally; L1 on the card, said); L3 said here
  *   S.timer(ms, onEnd)     a gentle bar: {stop(), left()}
  *   S.destroy()
@@ -103,10 +107,9 @@
   .hs-timer{position:absolute;left:22%;right:22%;top:clamp(46px,8vmin,60px);height:12px;border-radius:8px;background:rgba(255,255,255,.7);border:2px solid #d8c6a8;z-index:7;overflow:hidden;pointer-events:none}
   .hs-timer i{position:absolute;left:0;top:0;bottom:0;background:#6bbf8a;transition:width .25s linear}
   .hs-timer.low i{background:#f0a040}
-  .hs-cue{position:absolute;z-index:9;max-width:min(36%,280px);background:#fffbe6;border:3px solid #e0a63a;border-radius:16px;padding:6px 12px;font:700 clamp(13px,2.2vmin,17px)/1.25 system-ui,sans-serif;color:#5b3c12;box-shadow:0 4px 12px rgba(80,50,10,.2);pointer-events:none}
-  .hs-cue b{color:#8a3a52}
-  .hs-hand{position:absolute;z-index:9;font-size:clamp(30px,6vmin,46px);pointer-events:none;transform:translate(-20%,-10%);animation:hs-hand 1.1s ease-in-out infinite}
-  @keyframes hs-hand{50%{transform:translate(-20%,-10%) translateY(10px) scale(.92)}}
+  .hs-tool{position:relative}
+  .hs-from{position:absolute;right:-6px;top:-6px;width:20px;height:20px;border-radius:50%;background:#fff6dc;border:2px solid #c9962e;box-shadow:0 1px 3px rgba(60,40,20,.2)}
+  .hs-from::after{content:"";position:absolute;left:4px;right:4px;top:7px;height:5px;border-radius:0 0 5px 5px;background:#c9962e}
   .hs-said{position:absolute;z-index:8;background:#fff;border:3px solid #d9bf95;border-radius:14px;padding:3px 10px;font:800 clamp(14px,2.6vmin,20px)/1.2 system-ui,sans-serif;color:#3b2415;pointer-events:none;white-space:nowrap}
   `;
 
@@ -220,11 +223,29 @@
     /* ---- lines ---- */
     const asLine = (l) => (typeof l === "string" ? HS.ph(l) : l);
     S.say = (line, who = "doctor") => ctx.say(asLine(line), { who });
+    /**
+     * The "why" beat (13g, 13i): shown, not told: the patient's pained face, then the doctor's line (his goal:
+     * a line to record, never an English caption). Only when the game runs on its own (the lab, standalone):
+     * in a full run the diagnosis has already told it, so the game starts straight in (ctx.inRun).
+     */
+    S.standalone = !ctx.inRun;
     S.why = async (problem, goal) => {
+      if (!S.standalone) return;
+      S.face("ouch");
+      await new Promise((r) => ctx.after(Kit && Kit.fast ? 80 : 1100, r));
       S.face("sad");
-      await S.say(problem, "patient");
-      S.face("neutral");
-      await S.say(goal, "doctor");
+      void problem; // the problem is the face: no words (13g)
+      await ctx.say(asLine(goal), { who: "doctor", noBubble: true });
+      S.face(opts.rest || "neutral");
+    };
+    /**
+     * Start the game: input is live at once (13i: never wait for the talking); the why beat (standalone only)
+     * and the card's read-along run alongside. A tap during them simply goes ahead.
+     */
+    S.begin = (why) => {
+      S.ready = true;
+      const talk = (why ? S.why(why.problem, why.goal) : Promise.resolve()).then(() => ctx.card.speak && ctx.card.speak());
+      return talk.catch(() => {});
     };
 
     /* ---- the tool shelf ---- */
@@ -252,10 +273,15 @@
         } else h("span", "g", b, t.glyph || "•");
         if (t.label) h("span", "l", b, t.label);
         if (t.bg) b.style.background = t.bg;
+        // what came from the pharmacy (13): the tray's things are marked on the shelf; nothing is greyed out
+        if (S.fromTray(t)) {
+          b.classList.add("from-tray");
+          h("span", "hs-from", b).setAttribute("aria-hidden", "true");
+        }
         ctx.on(b, "click", (e) => {
           e.stopPropagation();
-          if (!S.ready) return; // the why beat and the card are still being said
-          S.uncue(); // the child is on it: the words step aside
+          if (!S.ready) return;
+          S.did(); // the child is on it: the first-time help moves on
           S.pick(t.id);
           if (onPick) onPick(t.id, b);
         });
@@ -270,14 +296,29 @@
     S.used = (id, on = true) => S.toolEls[id] && S.toolEls[id].classList.toggle("used", on);
     S.pulseTool = (id) => Object.entries(S.toolEls).forEach(([k, b]) => b.classList.toggle("pulse", k === id));
 
-    /* ---- the first-time cue: words for every step, a pointing hand ---- */
-    const seenKey = `njg-heal-cues-${S.game}`;
-    let seen = false;
-    try {
-      seen = global.localStorage && global.localStorage.getItem(seenKey) === "1";
-    } catch (e) {
-      /* private mode */
-    }
+    /* ---- what came from the pharmacy (13: the tray feeds the heal game) ---- */
+    const ALIAS = { bud: "cotton-bud", thermo: "thermometer", apple: "lollipop", cover: "patch", "care-patch": "patch", "care-drops": "drops", "care-plaster": "plaster", "cook-paani": "paani", "fru-02": "limu", "tool-tweezers": "tweezers" };
+    const norm = (id) => ALIAS[id] || String(id || "").replace(/^(care|tool|cook)-/, "");
+    const trayIds = new Set((ctx.tray || []).map((t) => norm(t.id)));
+    S.fromTray = (t) => {
+      if (!trayIds.size || !t) return false;
+      const id = norm(t.from || t.id);
+      if (trayIds.has(id)) return true;
+      if (/^pl-/.test(id) && trayIds.has("plaster")) return true; // the scrape's coloured plasters
+      if (/^jug-/.test(id) && (trayIds.has("jug-hot") || trayIds.has("jug-cold"))) return true;
+      return false;
+    };
+
+    /* ---- the first-time help: the ghost finger on the shared onboarding kit (13g, UX 8) ----
+     * No words and no device voice: everything but the one thing is dimmed, the ghost finger does the
+     * move once (tap, drag, hold, swipe) on its target, the child does it, then the next thing is lit.
+     * What the child hears is the doctor's line with the card's read-along (the card), never a cue.
+     *   S.cue(kind, spec, target, then?)   spec = def.cues[kind]: {gesture, to?, then?}
+     *     target: an element, {x, y} in svg units, or a function returning either (the tool or the spot)
+     *     spec.then / then: the second thing (after a tool: the spot on the close-up), tapped
+     * Once per profile per game and kind (UIStore "onboarded"); &cues=1 shows it every time, &cues=0 never.
+     * S.cueLog lists every kind whose help was asked for (the tests check every step kind has one).
+     */
     const force = (() => {
       try {
         return new URLSearchParams(global.location.search).get("cues");
@@ -285,66 +326,56 @@
         return null;
       }
     })();
-    S.cuesOn = force === "0" ? false : force === "1" || ctx.level === 1 || !seen;
+    S.cuesOn = force !== "0" && !!global.Onboard && ctx.onboardOn !== false;
     S.cueLog = [];
-    let cueEl = null;
-    let handEl = null;
+    const rectOf = (p, pad = 34) => () => {
+      const t = typeof p === "function" ? p() : p;
+      if (!t) return null;
+      if (t.getBoundingClientRect) return t;
+      if (t.x != null) {
+        const c = S.client(t.x, t.y);
+        const r = (t.r ? t.r / S.unit() : pad);
+        return [c.x - r, c.y - r, 2 * r, 2 * r];
+      }
+      return null;
+    };
+    let cueId = null;
+    const mine = () => global.Onboard && global.Onboard.active && global.Onboard.active() && cueId && global.Onboard.active().id === cueId;
     S.uncue = () => {
-      if (cueEl) cueEl.remove();
-      if (handEl) handEl.remove();
-      cueEl = handEl = null;
+      if (mine()) global.Onboard.active().skip();
     };
-    /** target: {x, y} in svg units, an element, or a function returning either */
-    S.cue = (key, text, target) => {
+    /** The child acted: the help moves to its next thing (or ends). */
+    S.did = () => global.Onboard && global.Onboard.signal && global.Onboard.signal("hs-did");
+    S.cue = (key, spec, target, then) => {
       S.cueLog.push(key);
-      if (!S.cuesOn) return;
+      if (!S.cuesOn || !spec) return;
+      const sp = typeof spec === "string" ? { gesture: "tap" } : spec;
+      const g = sp.gesture || "tap";
+      const first = rectOf(target);
+      if (!first()) return;
+      const isTool = (() => {
+        const t = typeof target === "function" ? target() : target;
+        return !!(t && t.closest && t.closest(".hs-tools, .cl-actions, .njg-btn"));
+      })();
+      const steps = [];
+      if (g === "drag" && sp.to) {
+        const to = rectOf(sp.to);
+        steps.push({ spotlight: [first, to], ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
+      } else steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+      const nx = then || sp.then;
+      if (nx) {
+        const t2 = rectOf(nx.target || nx);
+        const g2 = nx.gesture || "tap";
+        const to2 = nx.to ? rectOf(nx.to) : null;
+        if (t2()) steps.push({ spotlight: to2 ? [t2, to2] : t2, ghost: to2 ? { gesture: g2, from: t2, to: to2 } : { gesture: g2 }, wait: "hs-did" });
+      }
       S.uncue();
-      const rr = root.getBoundingClientRect();
-      let p = typeof target === "function" ? target() : target;
-      let cx = rr.width / 2;
-      let cy = rr.height / 2;
-      if (p && p.getBoundingClientRect) {
-        const r = p.getBoundingClientRect();
-        cx = r.left + r.width / 2 - rr.left;
-        cy = r.top + r.height / 2 - rr.top;
-      } else if (p && p.x != null) {
-        const c = S.client(p.x, p.y);
-        cx = c.x - rr.left;
-        cy = c.y - rr.top;
-      }
-      cueEl = h("div", "hs-cue", root);
-      cueEl.dataset.cue = key;
-      cueEl.innerHTML = text;
-      handEl = h("div", "hs-hand", root, "👆");
-      handEl.style.left = `${cx}px`;
-      handEl.style.top = `${cy}px`;
-      // the words sit beside the hand when it points at the tool shelf (never over the tools),
-      // else above it, or below when it points high; always on screen
-      const w = Math.min(rr.width * 0.36, 280);
-      const shelfR = shelf.getBoundingClientRect();
-      if (shelfR.width && cx > shelfR.left - rr.left - 10) {
-        cueEl.style.right = `${Math.max(8, rr.right - shelfR.left + 14)}px`;
-        cueEl.style.top = `${Math.max(8, Math.min(rr.height - 90, cy - 30))}px`;
-        handEl.textContent = "👉";
-        handEl.style.left = `${shelfR.left - rr.left - 44}px`;
-        handEl.style.top = `${cy - 22}px`;
-      } else {
-        const left = Math.max(8, Math.min(rr.width - w - 8, cx - w / 2));
-        cueEl.style.left = `${left}px`;
-        if (cy > rr.height * 0.45) cueEl.style.bottom = `${Math.max(8, rr.height - cy + 26)}px`;
-        else cueEl.style.top = `${Math.min(rr.height - 60, cy + 54)}px`;
-      }
-      if (Voice && !Voice.quiet) Voice.say(HS.ph(cueEl.textContent), { who: "nani", noBubble: true });
+      cueId = `clinic/heal-${S.game}-${key}`;
+      global.Onboard.run(cueId, steps, { force: force === "1", idleMs: 6000 }).catch(() => {});
     };
-    // the child has started on the close-up: the words step aside so they never sit over the work
-    ctx.on(svg, "pointerdown", () => S.uncue());
-    S.markSeen = () => {
-      try {
-        global.localStorage && global.localStorage.setItem(seenKey, "1");
-      } catch (e) {
-        /* private mode */
-      }
-    };
+    // the child has started on the close-up: the help moves on
+    ctx.on(svg, "pointerdown", () => S.did());
+    S.markSeen = () => {};
 
     /* ---- the count-up (Cook rule Q7) ----
      * The host writes the count (ctx.tally's chip, and at level 1 the card's row, said aloud: G6), so
@@ -411,6 +442,7 @@
       while (g.firstChild) g.removeChild(g.firstChild);
     };
     S.destroy = () => {
+      S.uncue();
       clearTimeout(faceT);
       root.remove();
       css.remove();

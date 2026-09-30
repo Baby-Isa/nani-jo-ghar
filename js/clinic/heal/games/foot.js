@@ -12,8 +12,9 @@
  *    L1: 1 straight. L2: 2, gently curved. L3: 3, in the toes, in the order
  *    said (pela [big toe], ne poi ...).
  * 3. A plaster where each one was.
- * The swirl is gone: the patient says which foot (not tested).
- * Rows: the soak (which water, how many jugs); the toe order at L3.
+ * Level 3 draws both feet (13): the splinters are in both, the patient says which foot,
+ * and pulling one from the other foot is the mistake (the foot-side row).
+ * Rows: the soak (which water, how many jugs); the toe order and the foot at L3.
  */
 (function (root) {
   "use strict";
@@ -24,10 +25,11 @@
   const K = { jugs: { 1: [1, 2, 3, 4], 2: [1, 2, 3, 4], 3: [2, 3, 4] }, splinters: { 1: 1, 2: 2, 3: 3 }, halfW: 20, slideBack: 0.3 };
   const TOES = ["big toe", "middle toe", "little toe"];
   const WHY = { problem: "Ow, something's in my foot!", goal: "Let's take the splinters out." };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    soak: "Tap the <b>water</b> you're told, then tap the bowl. Pour as many jugs as you're told, then press ✓.",
-    pull: "Drag the splinter's end out along its path. Don't touch the sides!",
-    plaster: "Tap the <b>plaster</b>, then tap each spot where a splinter was.",
+    soak: { gesture: "tap", then: "tap" },
+    pull: { gesture: "drag" },
+    plaster: { gesture: "tap", then: "tap" },
   };
 
   // the foot, top view, lying on the paper strip; toes up the screen. A left foot: big toe on our right.
@@ -69,6 +71,8 @@
     const jugs = HS.pick(K.jugs[L], rng);
     const splinters = paths(L, rng);
     const order = L === 3 ? HS.shuffle(TOES, rng) : null;
+    // 13: both feet at level 3, so "my left foot" is actually tested (the splinters are in both; the one said is the one)
+    const side = L === 3 ? (rng() < 0.5 ? "left" : "right") : null;
     const steps = [{ id: "soak", kind: "soak", temp, jugs, row: { id: "soak", kutchi: `Paani [${temp}], ${HS.NUM[jugs]} [jugs]`, english: `${HS.cap(temp)} water, ${jugs} jugs` } }];
     const orderK = order ? `: ${order.map((t, i) => `${i ? "ne poi" : "pela"} [${t}]`).join(", ")}` : "";
     steps.push({ id: "pull", kind: "pull", order, row: { id: "pull", kutchi: `[Splinters]${orderK}`, english: order ? `The splinters: first the ${order.join(", then the ")}` : "Take the splinters out" } });
@@ -78,30 +82,54 @@
       { id: "soak-jugs", options: K.jugs[L], answer: jugs },
     ];
     if (order) rows.push({ id: "toe-order", seq: TOES, answer: order, placeholder: true });
+    if (side) rows.push({ id: "foot-side", options: ["left", "right"], answer: side, placeholder: true });
     const words = [{ kutchi: "paani", english: "water" }, { kutchi: HS.NUM[jugs], english: String(jugs) }, HS.ph(temp), HS.ph("splinter")];
     if (order) words.push({ kutchi: "pela", english: "first" }, { kutchi: "ne poi", english: "and then" }, HS.ph("big toe"), HS.ph("little toe"));
-    return { level: L, steps, rows, words, splinters };
+    if (side) words.push(HS.ph(`my ${side} foot`));
+    return { level: L, steps, rows, words, splinters, side };
   }
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng);
     const S = HS.make(stage, ctx, { place: "limb", game: "foot" });
     const { s } = S;
-    const st = { i: 0, jugs: 0, temp: null, judged: {}, over: false, busy: false, prog: {}, pulled: [], plasters: {} };
+    const st = { i: 0, jugs: 0, temp: null, judged: {}, over: false, busy: false, prog: {}, pulled: [], plasters: {}, otherOut: [] };
     P.splinters.forEach((q) => (st.prog[q.id] = LEN)); // the head starts LEN along: the splinter lies from the spot out
     const cur = () => P.steps[st.i] || null;
     const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
     ctx.card.setRows(P.steps.map((x) => x.row));
 
-    // the bowl under the foot, then the foot
-    const water = s("ellipse", { cx: FOOT.x, cy: FOOT.y + 60, rx: 250, ry: 70, fill: "#bfe0f5", opacity: 0 }, S.layer);
-    s("ellipse", { cx: FOOT.x, cy: FOOT.y + 60, rx: 250, ry: 70, fill: "none", stroke: "#8a9fb0", "stroke-width": 6 }, S.layer);
-    s("ellipse", { cx: FOOT.x + 10, cy: FOOT.y + 20, rx: 150, ry: 120, fill: "#e2b08a", stroke: "#b9845c", "stroke-width": 4 }, S.layer);
-    Object.entries(TOE).forEach(([t, p]) => s("ellipse", { cx: p.x, cy: p.y, rx: t === "big toe" ? 36 : t === "middle toe" ? 25 : 19, ry: t === "big toe" ? 42 : t === "middle toe" ? 30 : 23, fill: "#e2b08a", stroke: "#b9845c", "stroke-width": 4 }, S.layer));
-    TOE2.forEach((t) => s("ellipse", { cx: t.x, cy: t.y, rx: t.r, ry: t.r * 1.2, fill: "#e2b08a", stroke: "#b9845c", "stroke-width": 4 }, S.layer));
-    const pathG = s("g", {}, S.layer);
-    const splG = s("g", {}, S.layer);
-    const plG = s("g", {}, S.layer);
+    // level 3: both feet, smaller, side by side (a left foot has its big toe on our right; the right foot is its
+    // mirror); the named one is the one to work on. The drawing below is in one foot's own units (T maps them).
+    const two = !!P.side;
+    const KF = 0.6;
+    const place = (left) => (left ? { tx: 560 - KF * 400, ty: 400 - KF * 380, sx: KF, sy: KF } : { tx: 240 + KF * 400, ty: 400 - KF * 380, sx: -KF, sy: KF });
+    const T = two ? place(P.side === "left") : { tx: 0, ty: 0, sx: 1, sy: 1 };
+    const O = two ? place(P.side !== "left") : null;
+    const toLocal = (p, M = T) => ({ x: (p.x - M.tx) / M.sx, y: (p.y - M.ty) / M.sy });
+    const toSvg = (p, M = T) => ({ x: M.tx + M.sx * p.x, y: M.ty + M.sy * p.y });
+    const tf = (M) => `translate(${M.tx} ${M.ty}) scale(${M.sx} ${M.sy})`;
+    // the bowl under the foot (or both feet), then the foot
+    const bowl = two ? { cx: 400, cy: 455, rx: 360, ry: 62 } : { cx: FOOT.x, cy: FOOT.y + 60, rx: 250, ry: 70 };
+    const water = s("ellipse", { cx: bowl.cx, cy: bowl.cy, rx: bowl.rx, ry: bowl.ry, fill: "#bfe0f5", opacity: 0 }, S.layer);
+    s("ellipse", { cx: bowl.cx, cy: bowl.cy, rx: bowl.rx, ry: bowl.ry, fill: "none", stroke: "#8a9fb0", "stroke-width": 6 }, S.layer);
+    const drawFoot = (g) => {
+      s("ellipse", { cx: FOOT.x + 10, cy: FOOT.y + 20, rx: 150, ry: 120, fill: "#e2b08a", stroke: "#b9845c", "stroke-width": 4 }, g);
+      Object.entries(TOE).forEach(([t, p]) => s("ellipse", { cx: p.x, cy: p.y, rx: t === "big toe" ? 36 : t === "middle toe" ? 25 : 19, ry: t === "big toe" ? 42 : t === "middle toe" ? 30 : 23, fill: "#e2b08a", stroke: "#b9845c", "stroke-width": 4 }, g));
+      TOE2.forEach((t) => s("ellipse", { cx: t.x, cy: t.y, rx: t.r, ry: t.r * 1.2, fill: "#e2b08a", stroke: "#b9845c", "stroke-width": 4 }, g));
+    };
+    // the other foot (level 3): its own splinters, the same paths mirrored; pulling one of them is the wrong foot
+    let otherG = null;
+    if (two) {
+      otherG = s("g", { transform: tf(O) }, S.layer);
+      drawFoot(otherG);
+    }
+    const mainG = s("g", { transform: tf(T) }, S.layer);
+    drawFoot(mainG);
+    const pathG = s("g", {}, mainG);
+    const splG = s("g", {}, mainG);
+    const plG = s("g", {}, mainG);
+    const otherSplG = two ? s("g", {}, otherG) : null;
     const at = (q, t) => {
       const f = Math.max(0, Math.min(1, t)) * (q.pts.length - 1);
       const k = Math.floor(f);
@@ -113,6 +141,17 @@
       S.clear(pathG);
       S.clear(splG);
       const c = cur();
+      if (otherSplG) {
+        S.clear(otherSplG);
+        P.splinters.forEach((q) => {
+          if (st.otherOut.includes(q.id)) return;
+          const tail = [];
+          for (let k = 0; k <= 8; k++) tail.push(at(q, LEN - (k / 8) * LEN));
+          s("path", { d: tail.map((p, k) => `${k ? "L" : "M"}${p.x} ${p.y}`).join(" "), fill: "none", stroke: "#6a3e1e", "stroke-width": 7, "stroke-linecap": "round" }, otherSplG);
+          const h = at(q, LEN);
+          s("circle", { cx: h.x, cy: h.y, r: 9, fill: "#8a5a2a", stroke: "#fff", "stroke-width": 2 }, otherSplG);
+        });
+      }
       P.splinters.forEach((q) => {
         if (st.pulled.includes(q.id)) return;
         const d = q.pts.map((p, k) => `${k ? "L" : "M"}${p.x} ${p.y}`).join(" ");
@@ -148,9 +187,12 @@
       const c = cur();
       ctx.card.now(c.id);
       draw();
-      if (c.kind === "soak") S.cue("soak", CUES.soak, S.toolEls["jug-" + c.temp]);
-      if (c.kind === "pull") S.cue("pull", CUES.pull, at(P.splinters[0], 0));
-      if (c.kind === "plaster") S.cue("plaster", CUES.plaster, S.toolEls.plaster);
+      if (c.kind === "soak") S.cue("soak", CUES.soak, S.toolEls["jug-" + c.temp], { x: bowl.cx, y: bowl.cy });
+      if (c.kind === "pull") {
+        const q = c.order ? P.splinters.find((x) => x.toe === c.order[0]) : P.splinters[0];
+        S.cue("pull", Object.assign({ to: toSvg(at(q, 1)) }, CUES.pull), toSvg(at(q, st.prog[q.id])));
+      }
+      if (c.kind === "plaster") S.cue("plaster", CUES.plaster, S.toolEls.plaster, toSvg(P.splinters[0].pts[0]));
     };
     const close = () => {
       const c = cur();
@@ -159,6 +201,7 @@
         judge("soak-water", st.temp === c.temp, st.temp || "none");
         judge("soak-jugs", st.jugs === c.jugs, `${st.jugs} of ${c.jugs}`);
       }
+      if (c.kind === "pull" && two && !("foot-side" in st.judged)) judge("foot-side", true, P.side);
       if (c.kind === "pull" && c.order) {
         const got = st.pulled.map((id) => P.splinters.find((q) => q.id === id).toe);
         judge("toe-order", JSON.stringify(got) === JSON.stringify(c.order), got.join(", "));
@@ -187,11 +230,13 @@
     let drag = null;
     ctx.on(S.svg, "pointerdown", (e) => {
       if (!S.ready || st.over || st.busy) return;
-      const p = S.pt(e);
+      const w = S.pt(e);
+      const p = toLocal(w);
       const c = cur();
       if (!c) return;
       if (c.kind === "soak") {
-        if (!/^jug-/.test(S.sel || "") || Math.hypot((p.x - FOOT.x) / 1.6, p.y - FOOT.y - 30) > 170) return;
+        if (!/^jug-/.test(S.sel || "")) return;
+        if (two ? Math.hypot((w.x - bowl.cx) / 1.9, w.y - bowl.cy + 40) > 190 : Math.hypot((p.x - FOOT.x) / 1.6, p.y - FOOT.y - 30) > 170) return;
         const t = S.sel.slice(4);
         if (st.temp && st.temp !== t) st.temp = "mixed";
         else st.temp = t;
@@ -207,6 +252,18 @@
       }
       if (c.kind === "pull") {
         const q = P.splinters.find((x) => !st.pulled.includes(x.id) && Math.hypot(p.x - at(x, st.prog[x.id]).x, p.y - at(x, st.prog[x.id]).y) < 28);
+        if (!q && two) {
+          // the other foot: the wrong one (the patient said which); a wince, logged, scored once
+          const po = toLocal(w, O);
+          const qo = P.splinters.find((x) => Math.hypot(po.x - at(x, LEN).x, po.y - at(x, LEN).y) < 34);
+          if (qo) {
+            if (!("foot-side" in st.judged)) judge("foot-side", false, P.side === "left" ? "right" : "left");
+            else ctx.log({ type: "extra", rowId: "foot-side", detail: "the other foot again" });
+            S.face("wince", 600);
+            S.say(`[My ${P.side} foot!]`, "patient");
+          }
+          return;
+        }
         if (!q) return;
         drag = q;
         S.svg.setPointerCapture && S.svg.setPointerCapture(e.pointerId);
@@ -230,7 +287,7 @@
     ctx.on(S.svg, "pointermove", (e) => {
       if (!drag) return;
       const q = drag;
-      const p = S.pt(e);
+      const p = toLocal(S.pt(e));
       // the nearest point on the path, near where the splinter is now
       const t0 = st.prog[q.id];
       let best = { t: t0, d: 1e9 };
@@ -254,7 +311,7 @@
         st.pulled.push(q.id);
         S.face("happy", 600);
         ctx.sfx("pop");
-        const fly = s("line", { x1: at(q, 1).x, y1: at(q, 1).y, x2: at(q, 1 - LEN).x, y2: at(q, 1 - LEN).y, stroke: "#6a3e1e", "stroke-width": 7, "stroke-linecap": "round" }, S.fx);
+        const fly = s("line", { x1: at(q, 1).x, y1: at(q, 1).y, x2: at(q, 1 - LEN).x, y2: at(q, 1 - LEN).y, stroke: "#6a3e1e", "stroke-width": 7, "stroke-linecap": "round" }, mainG);
         fly.animate([{ transform: "translate(0,0)" }, { transform: "translate(120px,-160px)", opacity: 0 }], { duration: 600, fill: "forwards" });
         ctx.after(700, () => fly.remove());
         if (st.pulled.length === P.splinters.length) {
@@ -283,10 +340,8 @@
 
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        await S.say(P.level === 3 ? "[My left foot]" : "[My foot]", "patient");
-        await ctx.card.speak();
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab
+        S.say(P.side ? `[My ${P.side} foot]` : "[My foot]", "patient"); // level 3: which foot is the test (13)
         open();
       },
       destroy() {
@@ -307,13 +362,14 @@
             const r = S.toolEls[id].getBoundingClientRect();
             return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: id };
           };
-          const cl = (p) => {
+          const cl = (p0) => {
+            const p = toSvg(p0);
             const q = S.client(p.x, p.y);
             return [q.x, q.y];
           };
           if (c.kind === "soak") {
             if (st.jugs >= c.jugs) return { do: "button" };
-            return S.sel !== "jug-" + c.temp ? tool("jug-" + c.temp) : Object.assign({ do: "tap", what: "pour" }, S.client(FOOT.x, FOOT.y + 60));
+            return S.sel !== "jug-" + c.temp ? tool("jug-" + c.temp) : Object.assign({ do: "tap", what: "pour" }, S.client(bowl.cx, bowl.cy));
           }
           if (c.kind === "pull") {
             const q = c.order ? P.splinters.find((x) => x.toe === c.order[st.pulled.length]) : P.splinters.find((x) => !st.pulled.includes(x.id));
@@ -324,13 +380,14 @@
           }
           if (S.sel !== "plaster") return tool("plaster");
           const q = P.splinters.find((x) => !st.plasters[x.id]);
-          return Object.assign({ do: "tap", what: "plaster" }, S.client(q.pts[0].x, q.pts[0].y));
+          const sp = toSvg(q.pts[0]);
+          return Object.assign({ do: "tap", what: "plaster" }, S.client(sp.x, sp.y));
         },
         slip() {
           // one jug too many
           const c = cur();
           if (!S.ready || st.busy || !c || c.kind !== "soak" || st.jugs !== c.jugs || S.sel !== "jug-" + c.temp) return null;
-          return Object.assign({ do: "tap", what: "extra jug" }, S.client(FOOT.x, FOOT.y + 60));
+          return Object.assign({ do: "tap", what: "extra jug" }, S.client(bowl.cx, bowl.cy));
         },
       },
     };

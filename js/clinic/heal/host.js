@@ -162,7 +162,9 @@
       return o;
     };
     const card = screen.card;
+    card.closed = null;
     card.setTitle("", null);
+    card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     card.setRows([]);
 
     const ctx = {
@@ -186,12 +188,17 @@
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),
         speak: (ids) => card.speak(ids),
+        ordered: (on) => card.ordered(on),
+        miss: (rowId) => card.miss(rowId),
         el: card.el,
       },
       say(lineId, o = {}) {
         const l = HOST.line(lineId, data);
-        return Kit.Voice.say(l, { who: o.who || l.who || "doctor" });
+        return Kit.Voice.say(l, { who: o.who || l.who || "doctor", noBubble: !!o.noBubble });
       },
+      // clinic fixes: in a full run (the pipeline) the diagnosis already told the why (13i); first-time help on/off
+      inRun: !!opts.inRun,
+      onboardOn: opts.onboard !== false,
       interject(k) {
         const l = INTERJECT[k] || HOST.line(k, data);
         return Kit.Voice.say(l, { who: "doctor" });

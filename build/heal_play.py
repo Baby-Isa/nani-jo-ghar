@@ -9,8 +9,9 @@ understood the words would do, in client pixels:
   {do: "wait"}               the game is busy (a line, an animation, the patient reading)
 debug.slip() (optional) returns one deliberate mistake (an action) when it's the moment for one.
 The driver plays through real mouse events until ctx.done() fires, then
-checks: right == total, the card ticked every step, every step got its
-first-time cue (words), and no console errors. A "slip" play makes one
+checks: right == total, the card ticked every step, every kind of step asked
+for its first-time help (the ghost finger on the shared kit: no words, 13g),
+no child-facing English in the help, and no console errors. A "slip" play makes one
 deliberate mistake where the game offers one (debug.slip()) and must lose
 exactly one row.
 """
@@ -142,6 +143,10 @@ class Play:
             if sl:
                 slipped = True
                 a = sl
+                # a deliberate mistake may sit outside the first-time help's light: a grown-up's skip first (Escape)
+                if self.js("!!document.querySelector('.njg-onboard')"):
+                    self.page.keyboard.press("Escape")
+                    self.page.wait_for_timeout(350)
             else:
                 a = self.js("__heal.run.controller.debug.next()")
             self.act(a)

@@ -22,9 +22,10 @@
 
   const K = { exchanges: { 1: [2], 2: [3, 4], 3: [3, 4] }, counts: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4] }, fastMs: 450 };
   const WHY = { problem: "I feel hot... no, cold!", goal: "Let's get you just right." };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    temp: "Tap the <b>thermometer</b>, then tap the forehead. Red is hot, blue is cold.",
-    fix: "Hot? Cool them with the <b>cloth</b> or the <b>fan</b>. Cold? The <b>blanket</b>. Use the one you're told, as many times as you're told, then press ✓.",
+    temp: { gesture: "tap", then: "tap" },
+    fix: { gesture: "tap", then: "tap" },
   };
   const TOOL_EN = { cloth: "the cool cloth", fan: "the fan", blanket: "the blanket" };
 
@@ -241,9 +242,7 @@
 
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        await ctx.card.speak();
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab
         open();
       },
       destroy() {

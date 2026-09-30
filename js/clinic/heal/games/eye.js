@@ -39,11 +39,12 @@
   const word = (t) => (t.k ? t.k : `[${t.e}]`);
   const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4 }, per: { 1: [1], 2: [1], 3: [2, 3] }, wrongP: 0.45 };
   const WHY = { problem: "I can't see well.", goal: "Drops first, then let's test your eyes." };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    cover: "Tap the <b>cover</b>, then tap the eye to cover, the other one!",
-    drops: "Tap the <b>drops</b>, then tap the eye you're told. Count the drops, then press ✓.",
-    read: "Listen: did they read the row right? Tap <b>haa</b> if right, <b>na</b> if wrong.",
-    redrop: "Wrong! One more <b>drop</b> in the eye, then they read it again.",
+    cover: { gesture: "tap", then: "tap" },
+    drops: { gesture: "tap", then: "tap" },
+    read: { gesture: "tap" },
+    redrop: { gesture: "tap", then: "tap" },
   };
 
   function plan(level, rng) {
@@ -293,9 +294,7 @@
 
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        await ctx.card.speak();
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab
         open();
       },
       destroy() {

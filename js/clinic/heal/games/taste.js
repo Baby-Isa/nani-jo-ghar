@@ -32,9 +32,10 @@
   // spoon counts at every level: only three drinks exist, so the count keeps a blind guess under 10% at L1
   const K = { colours: { 1: 1, 2: 2, 3: 3 }, timerMs: { 1: 75000, 2: 60000, 3: 45000 }, counts: { 1: [1, 2, 3, 4], 2: [1, 2, 3], 3: [1, 2, 3] } };
   const WHY = { problem: "My throat hurts and my tongue is sore.", goal: "Let's make drinks to soothe it." };
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    make: "Tap the things for the drink you're told into the <b>cup</b>. Then tap the <b>spoon</b> to stir.",
-    give: "Now tap the <b>cup</b> to give it. The bumps of that colour go away!",
+    make: { gesture: "tap" },
+    give: { gesture: "tap" },
   };
 
   // every drink a blind player could make: two different things (with a spoon count at level 3)
@@ -203,9 +204,7 @@
 
     return {
       async start() {
-        await S.why(WHY.problem, WHY.goal);
-        await ctx.card.speak();
-        S.ready = true;
+        S.begin(WHY); // input is live at once (13i); the why beat only in the lab
         timer = S.timer(P.timerMs * (fast() ? 3 : 1), () => finish(false));
         open();
       },
