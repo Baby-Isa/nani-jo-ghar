@@ -50,7 +50,7 @@ bowl, the ladle's bowl and the clinic's basin (new `check_clinic_items`). It als
 ### Sekelo (`js/cook/mechanics/grill.js`, `data/stations/mishkaki-grill.json`)
 - **The plate is `plate-N-v2` (R6).** `SK.V3.plate` holds the measured rim and each fanned skewer's line. The pieces sit along them as before (the code places pieces on whatever lines are measured).
   - `PLATE_PIECE` goes 0.74 → 0.9.
-  - The alternate stagger (48) goes, and every plated chunk moves 90 local px toward its tip (`PLATE_SHIFT`), where the fan is widest.
+  - The alternate stagger (48) goes, and every plated chunk moves 60 local px toward its tip (90 pushed the top chunk past the tip) (`PLATE_SHIFT`), where the fan is widest.
   - Round-1 flaw: at 3 skewers, the chunks by the handles overlapped where the skewers converge.
 - **The clean empty plate** replaces the patched plate-0.
 - **R7:** the decoy potato (`veg-01`) has its own chunks (`v3pieces`) and its own heap (`bowls`), no longer samosa's diced potato. Every piece loads a charred picture.

@@ -128,7 +128,7 @@
     PLATE_STAGGER: 0, // (v3: 48, alternate skewers staggered; R6's fan needs none)
     // (v3.1, R6) every plated chunk moves this far toward its tip (local px): the fanned skewers are far apart
     // at the tips and close at the handles, so the chunks sit where there's room
-    PLATE_SHIFT: 90,
+    PLATE_SHIFT: 60, // (90 pushed the top chunk past the tip: -250 - 47 stays inside -318)
     // the container's own tip and handle (the stick canvas, 70x640, centred at y 320)
     TIP: -318,
     HANDLE: 164,
