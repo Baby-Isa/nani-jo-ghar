@@ -410,3 +410,14 @@ One session cuts every sheet with the cut_tick_v2 method and the new grey-leftov
 
 ## 12. Coverage check (every line of the transcript → an item)
 0:00 P1 · 0:17–1:06 P2 · 1:06–1:20 P3 · 1:46–2:04 P4 · 2:09 §1 · 2:12–2:25 C1/X2 · 2:34–3:03 C2/X7 · 3:07–3:51 C3/X5 · 3:58 C4/X5 · 4:04–5:29 C5/X1 · 5:38–5:58 C6/X3 · 6:05–6:20 C7/X4 · 6:30–7:04 C8/X9 · 7:08–7:20 C9/C10/X6 · 7:31 C11 · 7:38–8:08 C4/X5 · 8:14–8:47 C12/X10 · 8:52–9:01 C13 · 9:01–9:22 M1/X1 · 9:27 M2/X5 · 9:37–9:52 M3 · 9:52–10:15 M4 · 10:19–11:15 M3 · 11:19–11:26 M5 · 11:33 M6 · 11:44–11:57 M7 · 12:01–12:11 M8 · 12:11 §1 · 12:19–12:49 M9/X7 · 12:54–13:29 D1/X15 · 13:33–13:50 D2 · 13:50–14:00 D3/X9 · 14:05–14:13 D4 · 14:14–14:24 D5 · 14:36–14:40 D6 · 14:53–15:06 D7 · 15:16–16:09 D8/X10 · 16:09–16:22 D9 · 16:31 D10 · 16:39–16:44 D11 · 16:51–17:45 T1/X12 · 17:54–18:20 T2/X8 · 18:20–18:56 T3 · 18:56–19:25 T4/X13 · 19:33–20:05 T5/X10 · 20:10–20:30 S1/X1 · 20:35–20:50 S2/X8 · 20:56–21:35 S3 · 21:41–21:53 S4/X11 · 21:53–22:06 S5/X12 · 22:09–22:13 S6 · 22:18 S7/X11 · 22:23 S8 · 22:35–22:41 S9 · 22:50–22:58 S10 · 23:04–24:10 S11/Q3 · 24:10 S12, S13 · 24:21 S14/X14 · 24:31–24:36 S15/X5 · 24:40–25:22 S16 · 25:28–25:34 S17 · 25:40–26:14 S18 · 26:14–26:37 S19 · 26:45 S21 · 26:45–27:25 S20 · 27:25 K1 · 27:33–27:46 K2/X15 · 27:46 K3 · 27:51–28:32 K4 · 28:32–28:49 K5 · 28:56 K6/X14 · 29:02–29:17 K7/X15 · 29:22–29:41 K8 · 29:47–30:07 K9 · 30:22–30:42 K10/X10 · 30:47 K11.
+
+### Zafar's answers to the v3 station reports (30 Sept, morning: "yes to everything for now")
+- **Daar:**
+  - Nani may ask for a speed from level 2 (ear star only);
+  - slicing a decoy costs the ear star but doesn't ruin the dish;
+  - **the chop card hides the numbers from level 3** (Q7, words only);
+  - **use the extra pot pictures** (R4 in the overnight art page) so an order without onion shows no onion.
+- **Samosa:**
+  - **the base filling goes first on the card** (a small `headFirst` option in the shared `order.js`);
+  - **two different samosas in one order** (two blocks on the card; the second strip starts empty when it differs);
+  - the karahi at 1.39× is fine.

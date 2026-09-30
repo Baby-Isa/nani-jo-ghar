@@ -472,3 +472,9 @@ Prototype B replaced the shared onboarding kit's ghost finger with **English sen
   - the doctor's box.
 
   Tummy, hic and hair stay as they are (CQ14).
+
+### 13l. Answers to the fix session's "Open for Zafar" (30 Sept, morning: "yes to everything for now")
+- The knee's flashing stops when done: **keep it**, even though it gives the count away (the leak bots' named exception).
+- **Closed cards from L3** in the heal games and the pharmacy too: yes.
+- A wrong pharmacy item is swapped before the heal game (the pharmacy's row still costs): yes.
+- **The clinic's end screen also offers "Again" (the same patient) and "All patients"**, like Cook.
