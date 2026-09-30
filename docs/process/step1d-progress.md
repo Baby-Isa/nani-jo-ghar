@@ -35,7 +35,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `architecture/technical-plan.md` ← stale box (Phaser, quilt entity, chunk_type, IndexedDB, 44 px, no manifest)
 - [x] `architecture/shared-api.md`, `speech-recognition-plan.md`, `clinic-heal-api.md`, `cook-recipes-guide.md` ← stale boxes
 - [x] `architecture/code-map.md` (new) ← root README's Architecture and Files sections; Roadmap thin-shell spec and storage rules
-- [ ] `architecture/testing.md` (new) ← BUILD-COMMON test ports, alive-nani testing lessons, the rules on browser tests (B16) by ID
+- [x] `architecture/testing.md` (new) ← BUILD-COMMON test ports, alive-nani testing lessons, the rules on browser tests (B16) by ID
 
 ### Session L: `docs/language/`, `docs/process/`, `docs/vision.md`, `docs/ideas.md` only
 - [x] `language/grammar-notes.md` ← stale box (marcha, chindo, hakri cup, "repo private later")
@@ -57,3 +57,9 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 
 ## Notes for the orchestrator
 
+### Session D summary (1 Oct)
+- Done: art-bible.md (stale box; §5, §9, §10 moved out, ambient motion and set-dressing lists added), art-pipeline.md (new, 13 sections, all word for word with `> from:` lines), ux-principles.md, tone-of-voice.md, audio.md, architecture stale boxes (technical-plan, shared-api, speech-recognition-plan, clinic-heal-api, cook-recipes-guide), code-map.md, testing.md.
+- Not placed (left in docs/archive for Session G / the orchestrator): Asset Building Plan §3 cats and §7 Big Ma's room (cast.md, Session G); Asset Plan §2 placeholder; batch2/batch3 per-run instructions and sheet prompts (archive only).
+- Possible gaps: the roadmap "thin shell spec" is in code-map.md but its launch-flow mermaid and MVP table still say "quilt" (stale box notes it); testing.md has no full QA matrix (lives in qa-checklist.md).
+- Art-bible §5 was moved whole (pivots, containers, export), not only "Export/cut" as the harvest note said.
+- The `Stale points` boxes quote rule IDs from the rulebook; F2/F13/F14/H32/J7 I took from harvest notes, worth a spot-check by the Fable review.
