@@ -85,9 +85,12 @@ def check_v3():
                 want = [(b["x"], b["y"]) for b in m["burners"]]
                 off = max((max(abs(a[0] - b[0]), abs(a[1] - b[1])) for a, b in zip(got, want)), default=1) if len(got) == len(want) else 1
                 # and the kit's table (HOBS) must say the same
-                key = name.replace("hob-", "")
+                # (30 Sept, v3.1: hob-4-v2 replaces hob-4 in the kit; the superseded v3 file is only checked against its meta)
+                key = name.replace("hob-", "").replace("-v2", "")
                 km = re.search(rf"\b{key}: \{{ w: (\d+), h: (\d+), burners: (\[\[.*?\]\]), frontY: ([\d.]+)", kit)
-                koff = 1
+                if f"{name}-v2" in meta:
+                    km = None
+                koff = 1 if km is not None or f"{name}-v2" not in meta else 0
                 if km:
                     kb = json.loads(km.group(3))
                     same_size = int(km.group(1)) == W and int(km.group(2)) == H

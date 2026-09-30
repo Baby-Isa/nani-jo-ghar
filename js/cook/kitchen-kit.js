@@ -40,7 +40,9 @@
     1: { w: 465, h: 658, burners: [[0.4944, 0.3805]], frontY: 0.8325 },
     2: { w: 931, h: 568, burners: [[0.251, 0.4025], [0.7445, 0.4025]], frontY: 0.8342 },
     3: { w: 1388, h: 709, burners: [[0.1596, 0.3725], [0.4993, 0.3728], [0.8389, 0.3725]], frontY: 0.7885 },
-    4: { w: 1753, h: 620, burners: [[0.1328, 0.4177], [0.3766, 0.4162], [0.6228, 0.4182], [0.8687, 0.4185]], frontY: 0.821 },
+    // 30 Sept (v3.1, R1): hob-4-v2, four burners at H1's burner size: at the same cap size it's 1546 px wide, not
+    // 1753, so a station fitting it to a width draws bigger burners (chai at 4 people)
+    4: { w: 1546, h: 530, burners: [[0.1413, 0.4542], [0.3807, 0.4543], [0.6202, 0.4544], [0.8597, 0.4544]], frontY: 0.8928, file: "hob-4-v2" },
     wide: { w: 937, h: 568, burners: [[0.4954, 0.3929]], frontY: 0.862 },
   };
   const hobOf = (n, wide) => (wide ? "wide" : String(Math.max(1, Math.min(4, n))));
@@ -54,8 +56,9 @@
   };
   const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, text: 0x2a2522 };
   const BADGE = 64;
-  // the knob (H6): its round body is the badge's size beside it (X5); the art's body is 0.742 of its canvas
-  const KNOB = Math.round(BADGE / 0.742); // the sprite's size
+  // the knob (R2, v3.1): its round body is the badge's size beside it (X5); the art's body (its gold ring) is
+  // 0.839 of its canvas (2 x r 0.4193, assets/cook/items/v3/hob/meta.json knob-off-v2; H6's was 0.742)
+  const KNOB = Math.round(BADGE / 0.839); // the sprite's size
   const KNOB_HIT = 58; // the tap radius: at least 48 screen px across on a phone
 
   const CHIP = { w: 128, h: 46, hitW: 142, hitH: 80 };
@@ -76,9 +79,10 @@
     art(n = 1, vessels = ["pan"], { wide = false } = {}) {
       const id = hobOf(n, wide);
       return [
-        [`kit-hob-${id}`, `${V3}hob-${id}.webp`],
-        ["kit-knob-off", V3 + "knob-off.webp"],
-        ["kit-knob-on", V3 + "knob-on.webp"],
+        [`kit-hob-${id}`, `${V3}${HOBS[id].file || `hob-${id}`}.webp`],
+        // 30 Sept (v3.1, R2): the knob with the stronger "on" glow
+        ["kit-knob-off", V3 + "knob-off-v2.webp"],
+        ["kit-knob-on", V3 + "knob-on-v2.webp"],
         ["kit-flame-high", ST + "flame-high.webp"],
         ["kit-flame-low", ST + "flame-low.webp"],
       ].concat(vessels.filter((v) => VESSELS[v]).map((v) => [VESSELS[v].key, VESSELS[v].url]));
