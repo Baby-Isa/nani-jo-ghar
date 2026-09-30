@@ -866,6 +866,16 @@
       const size = Math.max(110, Math.min(190, gap * 0.95));
       const d = (WELL_D * trayD) / META.glassR;
       const allOk = !wrongPans.length;
+      // the praise card goes right of the last face; at 4 people that face is the tray's bottom right and
+      // the card would run off the view (30 Sept), so then it goes left of the leftmost face instead
+      const CARD_W = 230; // "Shabash!" at 34px with its padding, design px (with a margin)
+      const vr = (Cook.view && Cook.view.right) || 1600;
+      let praise = pans.length - 1;
+      let side = "right";
+      if (pans[praise].well.x + size / 2 + 18 + CARD_W > vr - 16) {
+        praise = pans.reduce((b, q, j) => (q.well.x < pans[b].well.x ? j : b), 0);
+        side = "left";
+      }
       return Promise.all(
         pans.map((pan, i) =>
           Cook.Kit.review(S, {
@@ -875,8 +885,8 @@
             // one glass: the face just above it; several (the tray's grid): each face on its own glass
             y: pans.length > 1 ? pan.well.y - size * 0.12 : pan.well.y - d * 0.5 - size * 0.42,
             size,
-            side: "right",
-            line: allOk && i === pans.length - 1 ? undefined : false,
+            side: i === praise ? side : "right",
+            line: allOk && i === praise ? undefined : false,
           }),
         ),
       );
