@@ -14,7 +14,8 @@ Plays the station in the Station lab with build/test_cook.py's Player and saves 
 
   python3 build/shoot_chaat_v2.py                         # laptop, level 1 (iterating)
   python3 build/shoot_chaat_v2.py --level 3 --wrong       # a wrong first serve, then right
-  python3 build/shoot_chaat_v2.py --matrix                # every level, phone + laptop, into build/reports/chaat-v2/
+  python3 build/shoot_chaat_v2.py --matrix --vp laptop    # v3: every level as the whole recipe, into build/reports/chaat-v3/
+  python3 build/shoot_chaat_v2.py --matrix --vp phone-landscape
 """
 import argparse
 import json
@@ -70,6 +71,16 @@ class Shooter(T.Player):
                 self.snap("demo-card")
                 time.sleep(1.6)
                 self.snap("demo")
+        if k == "slice":
+            # the chop (the whole recipe only): mid-way = after the second slice
+            self.slices = getattr(self, "slices", 0) + 1
+            if self.slices == 1:
+                self.snap("chop-start")
+            if self.slices == 2:
+                r = super().act(e)
+                time.sleep(0.15)
+                self.snap("chop-mid")
+                return r
         if k == "tap" and "start" not in self.taken:
             time.sleep(0.4)
             self.snap("start")
@@ -117,7 +128,9 @@ class Shooter(T.Player):
             n = len([t for t in self.taken if t.startswith("layer")])
             self.taken.add(f"layer{n}")
             # each layer going in: mid-drop (the spoonful over the bowl), then settled
-            time.sleep(0.3 / self.speed)
+            time.sleep(0.12)
+            self.snap(f"in{n + 1}a", force=True)
+            time.sleep(0.9)
             self.snap(f"in{n + 1}", force=True)
             if self.takeback and n == 2 and "takeback" not in self.taken:
                 # §17: tap the bowl, the top layer comes back out to its pot
@@ -136,14 +149,16 @@ class Shooter(T.Player):
         return r
 
 
-def run(vp, out, level, speed, guided=True, wrong=False, demo=True, takeback=False):
-    tag = f"{vp['name']}-l{level}" + ("-wrong" if wrong else "")
+def run(vp, out, level, speed, guided=True, wrong=False, demo=True, takeback=False, recipe=False):
+    tag = f"{vp['name']}-l{level}" + ("-wrong" if wrong else "") + ("-recipe" if recipe else "")
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag, wrong=wrong, peek=level >= 4, demo=demo, takeback=takeback)
         if not demo:
             page.evaluate("() => { Cook.save.coached = Object.assign(Cook.save.coached || {}, {'assemble-v2': true}); }")
-        page.evaluate(f"() => {{ __cook.lab('assemble', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        # recipe: the whole chaat (its chop, then the bowl), as a day plays it
+        key = "recipe:chaat" if recipe else "assemble"
+        page.evaluate(f"() => {{ __cook.lab('{key}', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         if vp["height"] > vp["width"]:
             # Cook is landscape only: a phone held upright shows "turn your phone sideways"
@@ -170,32 +185,35 @@ def main():
     ap.add_argument("--wrong", action="store_true")
     ap.add_argument("--nodemo", action="store_true")
     ap.add_argument("--takeback", action="store_true")
+    ap.add_argument("--recipe", action="store_true")
+    ap.add_argument("--levels", default="1,2,3,4")
     ap.add_argument("--speed", type=float, default=1.5)
     ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "chaat-v3"))
     a = ap.parse_args()
     T.start_server()
     ok = True
     if a.matrix:
+        # v3: every level, each played as the whole recipe (the chop, then the bowl), its first serve wrong on
+        # purpose (the frown and the rebuild), then right; level 1 with the first-time demo, level 2 with a
+        # take-back (§17). One viewport per call (--vp), so each call stays inside a 10-minute run.
         out = os.path.join(T.ROOT, "build", "reports", "chaat-v3")
         os.makedirs(out, exist_ok=True)
+        vp = VPS[a.vp]
+        levels = [int(x) for x in a.levels.split(",")]
         for f in os.listdir(out):
-            if f.endswith((".png", ".jpg")):
+            if any(f.startswith(f"{vp['name']}-l{lv}-") for lv in levels) and f.endswith((".png", ".jpg")):
                 os.remove(os.path.join(out, f))
-        ok &= run(VPS["phone"], out, 1, a.speed, demo=False)
-        for name in ["laptop", "phone-landscape"]:
-            ok &= run(VPS[name], out, 1, a.speed, demo=True)
-            ok &= run(VPS[name], out, 2, a.speed, wrong=True, demo=False)
-            ok &= run(VPS[name], out, 3, a.speed, demo=False)
-            ok &= run(VPS[name], out, 4, a.speed, demo=False)
+        for lv in levels:
+            ok &= run(vp, out, lv, a.speed, wrong=True, demo=lv == 1, takeback=lv == 2, recipe=True)
         # kept as JPEG (a matrix of PNGs is ~15 MB)
         from PIL import Image
         for f in sorted(os.listdir(out)):
             if f.endswith(".png"):
-                Image.open(os.path.join(out, f)).convert("RGB").save(os.path.join(out, f[:-4] + ".jpg"), quality=88)
+                Image.open(os.path.join(out, f)).convert("RGB").save(os.path.join(out, f[:-4] + ".jpg"), quality=85)
                 os.remove(os.path.join(out, f))
     else:
         os.makedirs(a.out, exist_ok=True)
-        ok = run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong, demo=not a.nodemo, takeback=a.takeback)
+        ok = run(VPS[a.vp], a.out, a.level, a.speed, wrong=a.wrong, demo=not a.nodemo, takeback=a.takeback, recipe=a.recipe)
     sys.exit(0 if ok else 1)
 
 

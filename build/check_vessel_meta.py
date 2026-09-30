@@ -294,11 +294,11 @@ def check_chaat(write=False):
     keys = ("cx", "rimY", "floorTopY", "floorY", "floorHw", "eryFloor")
     o1 = max([abs(m[k] - rec.get(k, 9)) for k in keys] + [abs(x - y) for p, q in zip(m["inside"], rec.get("inside", [])) for x, y in zip(p, q)])
     js = open(os.path.join(ROOT, "js/cook/mechanics/assemble.js")).read()
-    b = re.search(r"const BOWL = \{ w: (\d+), h: (\d+), cx: ([\d.]+), rim: ([\d.]+), floor: ([\d.]+), eryRim: ([\d.]+), eryFloor: ([\d.]+)", js)
+    b = re.search(r"const BOWL = \{ w: (\d+), h: (\d+), cx: ([\d.]+), rim: ([\d.]+), floor: ([\d.]+), eryRim: ([\d.]+), eryFloor: ([\d.]+), floorTop: ([\d.]+), floorHw: ([\d.]+)", js)
     ins = re.search(r"const BOWL_INSIDE = (\[\[.*?\]\]);", js)
     if b and ins:
-        got = [float(b.group(i)) for i in range(3, 8)]
-        want = [rec["cx"], rec["rimY"], rec["floorY"], rec["eryRim"], rec["eryFloor"]]
+        got = [float(b.group(i)) for i in range(3, 10)]
+        want = [rec["cx"], rec["rimY"], rec["floorY"], rec["eryRim"], rec["eryFloor"], rec["floorTopY"], rec["floorHw"]]
         o2 = max([abs(x - y) for x, y in zip(got, want)] + [abs(x - y) for p, q in zip(json.loads(ins.group(1)), rec["inside"]) for x, y in zip(p, q)])
         o2 += 0 if (int(b.group(1)), int(b.group(2))) == (rec["w"], rec["h"]) else 1
     else:

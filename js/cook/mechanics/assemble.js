@@ -1,32 +1,36 @@
 /*
- * Mechanic: assemble, the chaat station v2 (docs/design/cook-design-system-v1.md §14 + §14a; the
- * chai v2 grid and slots, §3, §4, §10). Toppings go into a clear glass bowl in the order the person said.
+ * Mechanic: assemble, the chaat station (v2: docs/design/cook-design-system-v1.md §14 + §14a; the chai v2
+ * grid and slots, §3, §4, §10; v3, 30 Sept: the play-test's T2, T3, T5 and Q2b). Toppings go into a clear
+ * glass bowl in the order the person said.
  *
- * ONE VIEWPOINT, FRONT-ON:
- *  - THE GLASS (centred in the scene, about 60% of the old bowl): a clear serving bowl seen from the
- *    side, a cross-section, so every layer stays visible. Each topping settles in as its own textured
- *    layer (potato cubes, chana, a dahi swirl, chutney drizzled over the layer below, sev, dhania,
- *    chilli), with a little drop and bounce; the top layer shows its surface, and its word pops by the
- *    glass with the family clip (§4: learning happens during the action).
- *  - THE SHELF (the bottom 26%): identical front-on prep bowls standing on one shelf line, a
- *    `🔊 word` chip under each: tap the bowl = use it, tap the chip = hear it. From level 3 the word
- *    hides and the speaker stays (the same chip). Decoys and the "don't" item stand there too.
- *  - NO TALLY at this station (§14a): the glass shows what's in.
+ * FULLY SIDE-ON (v3, Q2b: "keep everything side-on"):
+ *  - THE BOWL (centred in the scene): the side-on glass serving bowl (assets/cook/items/v3/chaat/
+ *    bowl-side.webp), placed by its MEASURED inside (build/check_vessel_meta.py: the rim, the inside
+ *    floor, the inside wall at 41 heights; copied below as BOWL / BOWL_INSIDE and checked against the art).
+ *    Each topping settles in as a side-on strip of the same food as in its pot (tiled from the pot
+ *    picture at the bowl's scale), with a little drop and bounce; the top layer shows its surface, and its
+ *    word pops by the bowl with the family clip (§4: learning happens during the action). A see-through
+ *    copy of the glass lies over the food (its walls and highlights; the floor's ring cut out).
+ *  - THE SHELF (the bottom 26%): the side-on glass pots (v3/chaat/pot-*.webp, the pantry jars' look),
+ *    standing on their measured bottom-centre on one shelf line, a `🔊 word` chip under each: tap the pot
+ *    = use it, tap the chip = hear it. From level 3 the word hides and the speaker stays (the same chip).
+ *    Decoys and the "don't" item stand there too. The tomato pot is a stand-in (see POTS).
+ *  - TAKE IT BACK (UX §17): until Done, a tap on the bowl lifts the top layer back out to its pot.
+ *  - NO TALLY at this station (§14a): the bowl shows what's in.
  * The card (the shared order card, §12): each layer ticks its row as it goes in (UX 11, right or not);
- * the order is judged when you serve.
- * THE REVIEW (29 Sept, X10 / Q1: Cook.Kit.review): Done -> their big round face comes up over the glass
- * (no body, no pretend eating).
+ * at levels 1-2 a chopped layer's row writes how many (T1, Q7: "ba bataato"). The order is judged when
+ * you serve.
+ * THE REVIEW (29 Sept, X10 / Q1, T5: Cook.Kit.review): Done -> their big round face comes up over the
+ * bowl (no body, no pretend eating).
  *  - right: a happy face and the family's praise clip (Shabash!);
- *  - wrong: a gentle frown, they say their order again, the glass EMPTIES and you
- *    build it again. Never a red cross; only the first try counts (the ear star, the end review).
+ *  - wrong: a gentle frown, they say their order again, the bowl EMPTIES and you
+ *    build it again. Never a red cross; only the first mistake counts (the ear star, the end review).
  * LEVELS (§14, §14a; the recipe's slots by level in data/cook.json, the decoys in
  * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row (and the words
  * hide on the chips); 4 = the person's card starts FOLDED (face + headline): remember what you heard;
  * tapping the card to peek costs a hint (the light-bulb badge).
- * ONBOARDING (first time, §14): a ghost finger shows card row 1 -> the matching bowl -> the drop into
- * the glass -> the tick; then the child does row 2.
- * Art: assets/cook/items/chaat-v2/ (build/gen_chaat_v2.py, build/cut_chaat_v2.py; the glass's measured
- * inside in its meta.json, copied below so the station needs no extra fetch).
+ * ONBOARDING (first time, §14): a ghost finger shows card row 1 -> the matching pot -> the drop into
+ * the bowl -> the tick; then the child does row 2.
  *
  * St.freePick (below) is the shared "tap anything, or Done" step that the fill mechanic uses too:
  * nothing is refused, so nothing gives the answer away; you're graded afterwards.
@@ -159,7 +163,7 @@
   // the side-on glass bowl, as build/check_vessel_meta.py measured it (v3/chaat/meta.json "bowl-side"): the
   // rim's and the inside floor's front lines, how flat a level's ellipse is there, and the inside wall's
   // [left, right] at 41 heights of the sprite (all fractions of the sprite's width / height)
-  const BOWL = { w: 1214, h: 618, cx: 0.4992, rim: 0.0599, floor: 0.8285, eryRim: 0.025, eryFloor: 0.1504 };
+  const BOWL = { w: 1214, h: 618, cx: 0.4992, rim: 0.0599, floor: 0.8285, eryRim: 0.025, eryFloor: 0.1504, floorTop: 0.6489, floorHw: 0.304 };
   // prettier-ignore
   const BOWL_INSIDE = [[0.0346,0.9646],[0.0346,0.9646],[0.0346,0.9646],[0.0372,0.962],[0.0445,0.9539],[0.0477,0.9507],[0.0509,0.9483],[0.0549,0.9443],[0.0581,0.9411],[0.0613,0.9379],[0.0653,0.9347],[0.0685,0.9299],[0.0733,0.9259],[0.0773,0.9218],[0.0813,0.9178],[0.0854,0.913],[0.0902,0.9081],[0.095,0.9033],[0.0999,0.8985],[0.1055,0.8928],[0.1112,0.8871],[0.1177,0.8807],[0.1242,0.8742],[0.1315,0.8677],[0.1396,0.8595],[0.1469,0.8514],[0.1567,0.8425],[0.1657,0.8327],[0.1763,0.8221],[0.1885,0.8106],[0.2002,0.799],[0.2125,0.7858],[0.2273,0.7718],[0.2446,0.7545],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504]];
   const GLASS = { w: BOWL.w, h: BOWL.h, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, inside: BOWL_INSIDE };
@@ -363,7 +367,7 @@
       for (let gx = -cw; gx < BAND_W + cw; gx += cw) {
         const s = st[Math.floor(R() * st.length)];
         const k = 0.85 + R() * 0.3;
-        if (R() < 0.8) continue;
+        if (R() < 0.55) continue;
         pts.push({ s, w: s.width * k, h: s.height * k, x: gx + R() * cw, y: gy + R() * ch, o: R() });
       }
     pts.sort((a, b) => a.o - b.o);
@@ -418,9 +422,32 @@
         .setDepth(D.item - 0.2),
     );
     const food = S.track(S.add.image(g.x, g.y, key).setDisplaySize(z.L(GLASS_W), z.L(H)).setDepth(D.item));
+    // the see-through glass over the food: its walls and highlights, but not the floor's ring (that's
+    // behind the food): the ring's ellipse is mostly cut out of the copy (the floor's measured front line,
+    // back line and half-width, meta.json)
+    const overKey = "cv3-bowl-over";
+    if (!S.textures.exists(overKey) && S.textures.exists("cv3-bowl")) {
+      const src = S.textures.get("cv3-bowl").getSourceImage();
+      const cv = document.createElement("canvas");
+      cv.width = src.width;
+      cv.height = src.height;
+      const x = cv.getContext("2d");
+      x.drawImage(src, 0, 0);
+      x.globalCompositeOperation = "destination-out";
+      const ry = ((GLASS.floor - BOWL.floorTop) * cv.height) / 2;
+      x.translate(BOWL.cx * cv.width, GLASS.floor * cv.height - ry);
+      x.scale(BOWL.floorHw * cv.width * 1.04, ry * 1.1);
+      const gr = x.createRadialGradient(0, 0, 0, 0, 0, 1);
+      gr.addColorStop(0, "rgba(0,0,0,0.8)");
+      gr.addColorStop(0.8, "rgba(0,0,0,0.8)");
+      gr.addColorStop(1, "rgba(0,0,0,0)");
+      x.fillStyle = gr;
+      x.fillRect(-1, -1, 2, 2);
+      S.textures.addCanvas(overKey, cv);
+    }
     const hi = S.track(
       S.add
-        .image(g.x, g.y, "cv3-bowl")
+        .image(g.x, g.y, S.textures.exists(overKey) ? overKey : "cv3-bowl")
         .setDisplaySize(z.L(GLASS_W), z.L(H))
         .setAlpha(0.45)
         .setDepth(D.item + 0.2),
