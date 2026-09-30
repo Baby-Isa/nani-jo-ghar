@@ -267,6 +267,108 @@ def check_sekelo():
     return bad
 
 
+CHAAT = os.path.join(ROOT, "assets", "cook", "items", "v3", "chaat")
+
+
+def measure_chaat_bowl(path=os.path.join(CHAAT, "bowl-side.webp")):
+    """Chaat v3 (30 Sept, T3/Q2b): the side-on glass bowl's inside, measured from its alpha.
+
+    rimY: the middle of the rim's bright lines (centre column); floorTopY / floorY: the back and front of the
+    inside floor's ring (the front is where the thick glass base starts); floorHw: the ring's half-width
+    (the inner end of the solid band of wall and ring at the left, on the ring's middle row); cx: the silhouette's
+    middle. The inside wall is the silhouette inset by the wall: its thickness under the rim, growing to
+    (silhouette - floorHw) at the floor ring's middle. eryRim / eryFloor: how flat a level's ellipse is
+    (ry / rx) at the rim and at the floor. inside: [left, right] of the inside wall at 41 heights (0..1).
+    Every value is a fraction of the sprite's width (x) or height (y)."""
+    a = np.asarray(Image.open(path).convert("RGBA"))[:, :, 3].astype(int)
+    H, W = a.shape
+
+    def sil(y):
+        xs = np.nonzero(a[int(y)] > 60)[0]
+        return int(xs.min()), int(xs.max())
+
+    col = a[:, W // 2 - 8 : W // 2 + 8].mean(1)
+    solid = np.nonzero(col > 150)[0]
+    rim_rows = solid[solid < H * 0.2]
+    rim = (rim_rows.min() + rim_rows.max()) / 2
+    ring_top = int(solid[solid > H * 0.4].min())
+    base = next(y for y in range(ring_top + 40, H) if col[y] >= 200)
+    floor = base - 6
+    fc = (ring_top + floor) / 2
+    row = a[int(fc) - 7 : int(fc) + 8].mean(0)
+    l0, r0 = sil(fc)
+    cx = (l0 + r0) / 2
+    # the wall and the ring's left end are one solid band from the silhouette's edge: its inner end
+    band0 = next(x for x in range(l0, int(cx)) if row[x] > 150)
+    ring_l = next(x for x in range(band0, int(cx)) if row[x] < 100)
+    floor_hw = cx - ring_l
+    # the wall under the rim: from the silhouette's left edge, inwards until the glass thins out
+    yw = int(rim_rows.max()) + 30
+    lw, _ = sil(yw)
+    wall = next(x for x in range(lw, int(cx)) if a[yw - 3 : yw + 4, x].mean() < 60) - lw
+    ins_floor = (r0 - l0) / 2 - floor_hw
+    rim_hw = (sil(rim)[1] - sil(rim)[0]) / 2 - wall
+    inside = []
+    for i in range(41):
+        y = min(max(i / 40 * (H - 1), rim), floor)
+        t = min(1.0, (y - rim) / (fc - rim))
+        ins = wall + (ins_floor - wall) * t
+        l, r = sil(y)
+        inside.append([round((l + ins) / W, 4), round((r - ins) / W, 4)])
+    return {
+        "cx": round(cx / W, 4),
+        "rimY": round(rim / H, 4),
+        "floorTopY": round(ring_top / H, 4),
+        "floorY": round(floor / H, 4),
+        "floorHw": round(floor_hw / W, 4),
+        "wall": round(wall / W, 4),
+        "eryRim": 0.025,
+        "eryFloor": round((floor - ring_top) / 2 / floor_hw, 4),
+        "inside": inside,
+        "_rim_hw": rim_hw,
+    }
+
+
+def check_chaat(write=False):
+    """Chaat v3: the bowl's measured inside (art vs meta.json vs assemble.js's BOWL), and every shelf pot on
+    the pots' one canvas (w, h and anchor as pot-chana's; assemble.js's POT)."""
+    mp = os.path.join(CHAAT, "meta.json")
+    meta = json.load(open(mp))
+    m = measure_chaat_bowl()
+    m.pop("_rim_hw")
+    if write:
+        meta["bowl-side"].update(m)
+        json.dump(meta, open(mp, "w"), indent=1)
+    rec = meta["bowl-side"]
+    bad = 0
+    keys = ("cx", "rimY", "floorTopY", "floorY", "floorHw", "eryFloor")
+    o1 = max([abs(m[k] - rec.get(k, 9)) for k in keys] + [abs(x - y) for p, q in zip(m["inside"], rec.get("inside", [])) for x, y in zip(p, q)])
+    js = open(os.path.join(ROOT, "js/cook/mechanics/assemble.js")).read()
+    b = re.search(r"const BOWL = \{ w: (\d+), h: (\d+), cx: ([\d.]+), rim: ([\d.]+), floor: ([\d.]+), eryRim: ([\d.]+), eryFloor: ([\d.]+), floorTop: ([\d.]+), floorHw: ([\d.]+)", js)
+    ins = re.search(r"const BOWL_INSIDE = (\[\[.*?\]\]);", js)
+    if b and ins:
+        got = [float(b.group(i)) for i in range(3, 10)]
+        want = [rec["cx"], rec["rimY"], rec["floorY"], rec["eryRim"], rec["eryFloor"], rec["floorTopY"], rec["floorHw"]]
+        o2 = max([abs(x - y) for x, y in zip(got, want)] + [abs(x - y) for p, q in zip(json.loads(ins.group(1)), rec["inside"]) for x, y in zip(p, q)])
+        o2 += 0 if (int(b.group(1)), int(b.group(2))) == (rec["w"], rec["h"]) else 1
+    else:
+        o2 = 1
+    ok = o1 <= TOL and o2 <= 0.0005 and len(rec.get("inside", [])) == 41
+    bad += not ok
+    print(f"{'ok  ' if ok else 'FAIL'} v3 chaat/bowl-side: inside art vs meta off {o1:.4f}, meta vs assemble.js BOWL off {o2:.4f}")
+    pots = sorted(k for k in meta if k.startswith("pot-"))
+    ref = meta["pot-chana"]
+    pm = re.search(r"const POT = \{ w: (\d+), h: (\d+), anchor: \[([\d.]+), ([\d.]+)\]", js)
+    for k in pots:
+        W, H = Image.open(os.path.join(CHAAT, k + ".webp")).size
+        p = meta[k]
+        ok = (W, H) == (p["w"], p["h"]) == (ref["w"], ref["h"]) and p["anchor"] == ref["anchor"]
+        ok = ok and bool(pm) and (int(pm.group(1)), int(pm.group(2))) == (W, H) and [float(pm.group(3)), float(pm.group(4))] == p["anchor"]
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} v3 chaat/{k}: {W}x{H}, anchor {p['anchor']} (the pots' one canvas, assemble.js POT)")
+    return bad
+
+
 def main():
     kit = open(os.path.join(ROOT, "js/cook/kitchen-kit.js")).read()
     chai = open(os.path.join(ROOT, "js/cook/stations/chai-tray.js")).read()
@@ -284,6 +386,7 @@ def main():
     bad += check_daar()
     bad += check_maani()
     bad += check_sekelo()
+    bad += check_chaat(write="--write-chaat" in sys.argv)
     # the samosa station places its v3 karahi and plate by numbers copied from meta.json: they must agree
     sam = open(os.path.join(ROOT, "js/cook/stations/samosa.js")).read()
     smeta = json.load(open(os.path.join(ROOT, "assets/cook/items/v3/samosa/meta.json")))
