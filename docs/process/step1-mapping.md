@@ -1,8 +1,8 @@
 # Step 1: docs mapping (for Zafar's review at Gate A)
 
-Every doc → **keep** (move to its new home), **merge** (its live content moves into the new doc named; the file then goes to the archive), **record** (a dated record kept whole) or **archive** (nothing live left). Nothing moves until you approve. Files are moved with `git mv`, so history is kept, and nothing is deleted.
+Every doc → **keep** (move to its new home), **merge** (its live content moves into the new doc named; the file then goes to the archive), **record** (a dated record kept whole) or **archive** (nothing live left). Nothing moves until you approve. Files are moved in a way that keeps their full history, and nothing is deleted.
 
-Three read-only passes checked every file for decisions, design content and past feedback before any "archive" verdict. What they found is harvested into `docs/decisions.md` (drafted), `docs/process/regressions.md` (drafted) and the "harvest" column below. The full per-file notes are in the session scratchpad and can be committed if you want them.
+Three read-only passes checked every file for decisions, design content and past feedback before any "archive" verdict. What they found is already harvested into two new files on the branch, `docs/decisions.md` (138 dated decisions, plus Claude's unconfirmed assumptions listed apart) and `docs/process/regressions.md` (188 past feedback items with status and how to check each), and into the "harvest" column below. The full per-file notes are in the session scratchpad and can be committed if you want them.
 
 **Result:** 105 Markdown docs today → about 45 live docs in a clear tree, plus dated records and the archive.
 
@@ -48,12 +48,13 @@ docs/
 | Doc | Verdict | Goes to | Harvest / reason |
 |---|---|---|---|
 | `STATUS-TRACKER.md` | keep (rewrite) | `status.md` | Master tracker; clean up garbled Language rows, stale %, voice star, *marcha*, hands-in-Cook row |
-| `NEXT-CHAT-START.md` | merge | `status.md`, `vision.md`, `language/engine-spec.md` | Plan and current state → status; your aim → vision; step 2b language-engine requirements → engine-spec |
+| `NEXT-CHAT-START.md` | merge | `status.md`, `vision.md`, `language/engine-spec.md` | Plan and current state → status; your aim → vision; step 2b language-engine requirements → engine-spec. From now on the handover lives in a "Next chat" section at the top of `status.md` (rewritten whenever a chat fills up), so there's one place to start |
 | `design/plans-remaining-2026-09-29.md` | merge | `status.md`, `modes/cook.md` | Live items: pantry polish, station-select screen and day flow, Find it audit, first-launch re-run, Conversations wiring |
 | `ORCHESTRATOR-HANDOFF.md` | merge | `decisions.md` | 25–26 Sept decisions; every rule already in rules.md; session log → archive |
 | `HANDOVER-2026-09-26.md` | merge | `decisions.md`, `modes/first-launch.md` | Character-creation layout (person left, swatches right) is nowhere else |
 | `HANDOVER-2026-09-29.md` | merge | `decisions.md`, `status.md` | Overnight decisions; open list |
-| `MORNING-SUMMARY.md`, `overnight-log.md`, `overnight-queue.md` | archive | `archive/handovers/` | Checked: the only decisions are in rules.md; orchestrator-found flaws copied to regressions |
+| `overnight-log.md` | keep | `process/overnight-log.md` | Rule B6 still requires a timestamped run log; orchestrator-found flaws copied to regressions |
+| `MORNING-SUMMARY.md`, `overnight-queue.md` | archive | `archive/handovers/` | Checked: the only decisions are in rules.md |
 | `GAME-IDEAS-TBC.md` | keep | `ideas.md` | Add the quilt-making Big Ma arc row |
 | `free-play-and-world-ideas.md` | merge | `ideas.md`, `vision.md` | Free-play per mode, places map, other languages later |
 | `ideas-2026-09-28-arcs-and-focus.md` | archive | `archive/` | Checked: every point is in the Roadmap, the Cook design system or rules |
@@ -88,7 +89,7 @@ docs/
 | `first-launch-story.md` | keep | `modes/first-launch.md` | Hook still says Eid (open question) |
 | `find-it-design.md` | keep | `modes/find-it.md` | Plus the Roadmap's fruit-bowl errand |
 | `modes/tidy-up-, who-did-it-, dress-up-, monsoon-rush-, snap-design.md` | keep | `modes/<mode>.md` | Parked designs; stale box lists stars, quilt, *nar*, old arc homes |
-| 10 build logs (`*-build-log.md`) | merge | each mode's doc, "Build status" section | Leak-bot numbers and builders' decisions exist nowhere else; then → `archive/build-logs/` |
+| 9 mode build logs (`clinic-`, `conversations-`, `dress-`, `find-`, `first-launch-`, `monsoon-`, `snap-`, `tidy-up-`, `who-build-log.md`) | merge | each mode's doc, "Build status" section | Leak-bot numbers and builders' decisions exist nowhere else; then → `archive/build-logs/` |
 | `sidebar-design.md` | archive | `archive/` | Right-hand tab sidebar was replaced; two ideas (magnifier, notebook tab) → `ideas.md` |
 
 ### Design language and art
@@ -134,14 +135,16 @@ docs/
 | `clinic-heal-api.md` | keep | `architecture/clinic-heal-api.md` | Live contract |
 | `speech-recognition-plan.md` | keep | `architecture/speech-recognition-plan.md` | Matches `js/shared/speech.js`; voice star stale |
 | `cook-with-nani-recipes-guide.md` | keep | `architecture/cook-recipes-guide.md` | How to add stations and recipes as data |
-| `process/rules.md`, `rules-harvest.md` | keep | same place | The rulebook and its source |
+| `process/rules.md`, `rules-harvest.md` | keep | same place | The rulebook and its source. Its own file paths (GAME-IDEAS-TBC, STATUS-TRACKER, VISUAL-QA, UX-PRINCIPLES, overnight-log) are updated with the moves, and H10 ("`cook-design-system-v1.md` is Cook's single source of truth") is reworded to its two new homes |
+| `process/qa-checklist.md`, `process/regressions.md`, `decisions.md`, root `CLAUDE.md` | new | same place | The Gate A drafts, committed on the branch for your review |
+| `process/step1-mapping.md` (this file) | archive after step 1 | `archive/` | A record of how the move was done |
 | `process/rules-harvest-orch1/2/3.md` | record | same place | Already merged into rules.md |
 | `feedback/*` (5), `playtest-2026-09-23.md` | record | `feedback/` | Dated play-tests; every item is on the regression list |
-| `design/external-review-chatgpt/gemini-2026-09-28.md` | record | `feedback/external-reviews/` | Outside advice, not your words |
+| `design/external-review-chatgpt-2026-09-28.md`, `design/external-review-gemini-2026-09-28.md` | record | `feedback/external-reviews/` | Outside advice, not your words |
 
 ## Code and data that point at doc paths
 
-About 400 references in 207 files (code comments, data notes, test headers) name doc paths. **None are read when the game runs.** They're updated by a script in the same commit as the moves, so every pointer stays correct. No behaviour changes; the fast node tests are run to prove it.
+About 400 references in 207 files (code comments, data notes, test headers) name doc paths. **None are read when the game runs.** A script fixes every old path in the same commit as the moves, so every pointer stays correct. No behaviour changes; the quick automated tests are run to prove it.
 
 ## Questions for Zafar (answer "yes to all except …")
 
@@ -159,12 +162,13 @@ About 400 references in 207 files (code comments, data notes, test headers) name
 6. **Mum's Word copies:** Round 4's stays beside its `.md`; the other two are archived (regenerable). *Recommend yes.*
 7. **Path references** in code and data are updated by script in the same commit as the moves. *Recommend yes.*
 8. **Wording:** `rules.md` says "Khoja Muslim" in the top rules and "Khoja Shia Muslim" in §9. *Recommend "Khoja Shia Muslim" everywhere.*
+9. **Phone screenshots:** the rules say 390×844, which is a phone held upright. But the game is landscape (J2), and Cook shows a "please rotate" card on an upright phone (`css/cook.css`). An upright shot of Cook shows only that card. *Recommend shooting the phone at 844×390 (landscape) as the main phone size, plus one upright shot to check the rotate card*, and updating rule C2 and the checklist to match.
 
 **Not needed for step 1:** the passes found about 40 open content questions. Examples: what "Hide and seek" is in Arc 1, whether the notebook and Grandparent mode are still planned, Busy/Relaxed Cook modes, the Excel's role, first launch still hooked on Eid before Mum records its lines, and a long list of words for Mum. They'll be listed in `status.md` under "Waiting on Zafar", grouped and each with a recommendation, for when you have time.
 
-## After your approval (1d)
+## After your approval (step 1d: carrying it out)
 
-1. Moves (`git mv`) and the path-rewrite script: done by me.
+1. Moves and the path-fixing script: done by me.
 2. Merges, run as three Sonnet sessions on separate folders, so there are no clashes:
    - `game-design/`;
    - `design-language/` and `architecture/`;

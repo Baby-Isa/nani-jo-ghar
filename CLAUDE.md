@@ -12,8 +12,11 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 - Put decisions to him as a numbered list, each with a recommendation, answerable "yes to all except …". Write his answers into `docs/decisions.md`.
 - Nothing reaches Zafar that breaks a written rule. Run the QA checklist first and look at the screenshots yourself.
 - Keep replies short and plain. Don't assume he remembers IDs.
-- Recommend a model and effort level, with a cost estimate, before every launch.
+- Hand him exactly what to do, ready to paste: one block for Chrome, one message for a session, the link and what to play (`labs.html` links every lab).
+- Recommend a model and effort level with every suggested action, and give a cost estimate before every launch.
 - Improve on his ideas: research best practice and push back where it's warranted.
+- Voice-note feedback becomes a full report: every point with its timestamp, the cause checked in code, the fix, and a coverage check mapping every transcript line. It opens with every mechanic changed and old art reused.
+- New mode work runs: audit (screenshots of every screen) → Claude's feedback draft → Zafar approves → build. Before calling a mode finished, go through its open ideas in `docs/ideas.md` with him.
 
 ## Non-negotiables
 
@@ -52,9 +55,17 @@ The full rulebook, grouped by topic, is `docs/process/rules.md`. **Read the sect
 
 ## Starting a chat or session
 
-1. Read this file, `docs/status.md`, and the rulebook sections for the work at hand.
+1. Read `docs/status.md` (its "Next chat" section first) and the rulebook sections for the work at hand.
 2. Check `git log origin/main` before redoing anything.
 3. For a mode, read its file in `docs/game-design/modes/` and the design-language docs it touches.
+4. A new orchestrator chat opens with a short plan update for Zafar.
+
+## Running sessions
+
+- Re-arm a `send_later` check-in every 30–40 minutes while sessions run, and look at their finished screenshots yourself each time.
+- "Idle" isn't dead: read `updated_at` and `status_detail`, wait 20–30 minutes, and never relaunch a session that's still running. After a usage limit or restart, check every session and relaunch stopped ones as continuations.
+- During a run, log a timestamped line in `docs/process/overnight-log.md` and push the branch every 20–30 minutes.
+- Overnight runs end with a written report by 08:00 UK, then `docs/status.md` is updated so a new chat can start.
 
 ## Briefing a build session
 
@@ -78,7 +89,7 @@ Use `docs/process/session-brief-template.md`. Every brief names: the files the s
 Work is done when `docs/process/qa-checklist.md` passes:
 
 - the automated checks run clean;
-- every visually distinct state is screenshotted uncropped at 390×844, 1366×768 and a 16:10 laptop, across levels 1–4, one written line per state;
+- every visually distinct state is screenshotted uncropped at the sizes and levels the checklist names, one written line per state;
 - someone other than the builder has reviewed the screenshots, listing flaws first (zoom ×2: clipping, spacing, padding, alignment, overlap);
 - every item on `docs/process/regressions.md` for the touched screens is rechecked;
 - the change is compared side by side with the approved mock-up and with Zafar's last feedback, item by item.
@@ -87,7 +98,7 @@ While iterating: laptop size, changed screens only, one shot each. Run the full 
 
 ## Language
 
-- Romanised Kutchi only; the family's spellings as written in `docs/language/grammar-notes.md`.
+- Romanised Kutchi only; the family's spellings and words as written in `docs/language/grammar-notes.md` and `docs/language/lexicon.md`.
 - No Kutchi grammar in game code: frames and word forms live in data; nouns carry gender, singular and plural.
 - Search `data/family-audio.json` before calling a word "English only".
 - Never show English or pictures where the task is understanding Kutchi.
@@ -100,4 +111,4 @@ While iterating: laptop size, changed screens only, one shot each. Run the full 
 
 ## Handover
 
-When a chat fills up: finish in-flight work, update `docs/status.md`, write a handover with a ready-to-paste starting prompt, and push.
+When a chat fills up: finish in-flight work, then rewrite the "Next chat" section at the top of `docs/status.md` (where things stand, what's open, a ready-to-paste starting prompt), and push.
