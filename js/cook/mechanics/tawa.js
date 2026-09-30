@@ -74,7 +74,10 @@
         const base = 0xffffff;
         const half = (item.art && item.art.half) || HALF;
         const done = (item.art && item.art.done) || DONE;
-        const sz = 0.7 * ks * (item.size || 1); // a small maani looks small on the tawa too
+        // the scales below were set for the v1 art (324 px); the v3 maani (a registered 403 px canvas) is
+        // brought to the same size on the tawa and the plate
+        const norm = 324 / ((S.texSize(RAW) || {}).w || 324);
+        const sz = 0.7 * ks * (item.size || 1) * norm; // a small maani looks small on the tawa too
         let ch;
         if (item.sprite && item.sprite.active) {
           // routed from another zone: fly it over
@@ -115,7 +118,7 @@
         // onto the plate: a growing stack, each one a little askew
         const j = served++;
         ch.setDepth(D.item + 2 + j * 0.01);
-        const ps = 0.5 * z.k * (item.size || 1);
+        const ps = 0.5 * z.k * (item.size || 1) * norm;
         S.tweens.add({ targets: ch, angle: Math.random() * 24 - 12, duration: 450 });
         await S.fly(ch, z.X(plate.x) + z.L(Math.random() * 16 - 8), z.Y(plate.y - 24) - z.L(j * 16), { scale: ps, duration: 450 });
       };
