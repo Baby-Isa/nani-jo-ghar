@@ -6,6 +6,9 @@ Outside material about Kutchi grammar, kept for reference. **Nothing here is evi
 |---|---|---|
 | `gemini-blueprint-v1-2026-09-30.md` | Gemini's "Kutchi NLP engine blueprint": agreement paths, pronoun and verb-suffix tables, a Python sketch | AI-generated, unverified |
 | `gemini-blueprint-v2-2026-09-30.md` | Gemini's v2: the same paths, plus negation, postpositions, implosives, differential object marking, echo words and a 200-entry lexicon | AI-generated, unverified |
+| `research-2026-09-30-grammar-checklist.md` | Claude's research pass: 21 grammar categories with what Mum confirmed, what Sindhi sources predict, and test sentences | Research; forms from outside sources are hypotheses |
+| `research-2026-09-30-game-inventory.md` | Every sentence frame, verb, noun and English placeholder the game uses today | Inventory of the code and data |
+| `round5-plan-notes.md` | Paused plan for Round 5 of the Questions for Mum | Awaiting Zafar's go |
 
 ## What's real behind it
 
