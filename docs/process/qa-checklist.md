@@ -89,9 +89,9 @@ A reviewer who is not the builder fills in the results, flaws first.
 
 | ID | Check | Rule | How |
 |---|---|---|---|
-| LNG-01 | No English instruction text or audio for the child; English only in the "?" pop-up | E1, G15 | auto: `build/check_onboard.mjs` (Cook coaches) · eye elsewhere |
+| LNG-01 | No written English for the child anywhere (grown-ups' "?" pop-up aside); no spoken English in games or help; in story mode, spoken English is followed by the Kutchi | E1, G15 | auto: `build/check_onboard.mjs` (Cook coaches) · eye elsewhere |
 | LNG-02 | The Kutchi leak test passes at level 1: a non-speaker bot can't win. Check the known leak patterns: help that shows the answer; the game deciding for you; the screen giving the answer; fixed slots; sound matching; decoys that give themselves away; row shapes that decode the order; a count shown where it should be heard | C10 | auto: `build/leak_*.mjs` (other modes); Cook's leak checks are in `build/test_cook.py` · eye for the patterns |
-| LNG-03 | Every spoken line is a full sentence from the engine; no fragments or stitched words | G9 | eye (until the engine lands) |
+| LNG-03 | Every line is a full sentence built by the engine; every word heard is a family recording; no hand-written fragments | G9, G12 | eye (until the engine lands) |
 | LNG-04 | No invented Kutchi: every string is sourced, drafts carry `draft: true`, missing words are grey-italic placeholders flagged "to record" | G1–G3 | eye · auto: `build/lines_needing_family.py` (lists the gaps) |
 | LNG-05 | No English or pictures where the task is understanding Kutchi; one place for a word's text at a time | G22 | eye |
 | LNG-06 | Settled spellings used (*na*, *khun*, *ba*, *hane*, *khuda-fis* …) | G4–G8 | eye → auto |

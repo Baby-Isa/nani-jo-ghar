@@ -153,7 +153,7 @@ About 400 references in 207 files (code comments, data notes, test headers) name
 3. **Merge word for word plus a "Stale points" box; don't rewrite design docs now.** Each mode's doc gets corrected properly when that mode is refactored in step 3. *Recommend yes.*
 4. **Where a design doc conflicts with `rules.md`, the rulebook wins,** and the box says so. The main cases:
    - the Brief's "no timers in Nani's house" (Cook has level timers);
-   - the English gist captions in story beats (E1 says no English for the child);
+   - the English gist captions in story beats: now settled by your 30 Sept answer (spoken English in story mode is fine; written English never), so captions go;
    - the clinic waiting room of 8–10 people at level 3 (H28 says at most 6);
    - the Art Bible's liquids as discs (D11 says pictures).
 
