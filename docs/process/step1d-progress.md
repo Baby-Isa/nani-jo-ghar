@@ -20,7 +20,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `game-design/progression-and-scoring.md` (new) ← Game Design per-word stages, notebook; Roadmap learning design, skill channels, procedural generation; game-modes-v2 upgrades; cook build-log upgrade table
 - [x] `game-design/cast.md` ← stale box; add family descriptions from the archived Image Prompt Sheets, cats' roles by mode and Big Ma's room from the Asset Building Plan, Roadmap recurring cast
 - [x] `game-design/speaking.md` ← stale box only
-- [ ] `game-design/modes/README.md` (new) ← OVERVIEW core-verb table, one line per mode
+- [x] `game-design/modes/README.md` (new) ← OVERVIEW core-verb table, one line per mode
 - [x] `game-design/modes/cook.md` (new) ← ui-design-system.md station specs (§1, 5, 9–11, 13–15: **move** them out of that file, leave a pointer), phase-a-design, cook build log, game-modes-v2 §7, fun-analysis §5, plans-remaining A4, cook-ui-feedback chai layout, kutchi-audit open items, Round 2 dish table
 - [ ] `design-language/ui-design-system.md` (Session G owns this file) ← after moving the station specs out: stale box; add the cook-ui-feedback-2026-09-28 word-review layout and Nani's mute button
 - [ ] `game-design/modes/clinic.md` ← v2 sheets are the spine; add live parts of the archived clinic-design v1 (see harvest B row); clinic build log; stale box
