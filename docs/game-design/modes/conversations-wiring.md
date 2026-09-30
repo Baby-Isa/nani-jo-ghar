@@ -1,5 +1,7 @@
 # Conversations: wiring the 15 MVP placements (for the orchestrator, after merge)
 
+> **Stale points** (the rulebook wins): the voice star and `Stars.voice` → gone; correct speaking earns more pocket money (decisions 1–2, rule H5). Line numbers in this file date from 26 Sept. Archive this file once the 15 placements are wired.
+
 **Status:** the module is built and tested on `claude/conversations-mvp` (`js/shared/conversations.js`, `css/shared/conversations.css`, `data/conversations/*.json`, `lab/conversations.html`). **Nothing is wired into `first.html`, `cook.html` or `clinic.html`**: other sessions were editing them. This doc gives the exact hook point and the code for each placement. Line numbers are from `claude/nifty-rubin-c0d431` at `2d1db16`; check them again after merging, since those files are moving.
 
 Design: `docs/game-design/modes/conversations.md` (§10a wins). The placements are rows in `data/conversations/placements.json`.
