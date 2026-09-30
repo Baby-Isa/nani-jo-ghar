@@ -49,9 +49,9 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `ideas.md` ← add quilt-making Big Ma arc; free-play ideas, sidebar magnifier and notebook, art juice list, todo tech-debt ideas, TTS-from-family-voices (parked, see decisions 30 Sept)
 
 ## Phase 3: orchestrator
-- [ ] `docs/status.md` rewritten: "Next chat" section first; plan (steps 1–4 and the later docs clean-up); live state; open questions for Zafar (grouped, each with a recommendation); open regression rows by mode
-- [ ] `docs/README.md` index; root `README.md` short front door
-- [ ] Scripted check: every old file accounted for, every doc link resolves
+- [x] `docs/status.md` rewritten: "Next chat" section first; plan (steps 1–4 and the later docs clean-up); live state; open questions for Zafar (grouped, each with a recommendation); open regression rows by mode
+- [x] `docs/README.md` index; root `README.md` short front door
+- [x] Scripted check: every old file accounted for, every doc link resolves
 - [ ] Fable review of the tree (lost content, broken links, stale boxes present)
 - [ ] Zafar reviews → merge to `main` (docs only, bump version)
 
