@@ -358,5 +358,216 @@
   ],
   "sticks": [],
   "_about": "plate-1 with its skewer painted out (build/measure_sekelo_v3.py cut_plate0)"
+ },
+ "plate-0-v2": {
+  "w": 465,
+  "h": 499,
+  "sheet": "r6-plate-0-4-v2.png",
+  "cx": 0.499,
+  "cy": 0.461,
+  "r": 0.4506,
+  "fit_px": 2.2,
+  "registered": "rim",
+  "set": "plate-v2",
+  "anchor": [
+   0.499,
+   0.4604
+  ],
+  "note": "R6: the skewers fanned wider; plate-0-v2 is a clean empty plate (replaces the patched plate-0)",
+  "sticks": []
+ },
+ "plate-1-v2": {
+  "w": 465,
+  "h": 499,
+  "sheet": "r6-plate-0-4-v2.png",
+  "cx": 0.4982,
+  "cy": 0.4604,
+  "r": 0.4522,
+  "fit_px": 1.7,
+  "registered": "rim",
+  "set": "plate-v2",
+  "anchor": [
+   0.499,
+   0.4604
+  ],
+  "note": "R6: the skewers fanned wider; plate-0-v2 is a clean empty plate (replaces the patched plate-0)",
+  "sticks": [
+   [
+    0.2256,
+    0.1946,
+    0.7881,
+    0.7745,
+    0.9138,
+    0.904
+   ]
+  ]
+ },
+ "plate-2-v2": {
+  "w": 465,
+  "h": 499,
+  "sheet": "r6-plate-0-4-v2.png",
+  "cx": 0.4981,
+  "cy": 0.4608,
+  "r": 0.4513,
+  "fit_px": 1.6,
+  "registered": "rim",
+  "set": "plate-v2",
+  "anchor": [
+   0.499,
+   0.4604
+  ],
+  "note": "R6: the skewers fanned wider; plate-0-v2 is a clean empty plate (replaces the patched plate-0)",
+  "sticks": [
+   [
+    0.138,
+    0.288,
+    0.7337,
+    0.793,
+    0.8914,
+    0.9267
+   ],
+   [
+    0.4861,
+    0.0996,
+    0.8065,
+    0.7647,
+    0.8805,
+    0.9182
+   ]
+  ]
+ },
+ "plate-3-v2": {
+  "w": 465,
+  "h": 499,
+  "sheet": "r6-plate-0-4-v2.png",
+  "cx": 0.5,
+  "cy": 0.4604,
+  "r": 0.4568,
+  "fit_px": 2.3,
+  "registered": "rim",
+  "set": "plate-v2",
+  "anchor": [
+   0.499,
+   0.4604
+  ],
+  "note": "R6: the skewers fanned wider; plate-0-v2 is a clean empty plate (replaces the patched plate-0)",
+  "sticks": [
+   [
+    0.1395,
+    0.2769,
+    0.7135,
+    0.8156,
+    0.8412,
+    0.9355
+   ],
+   [
+    0.3907,
+    0.111,
+    0.7789,
+    0.7807,
+    0.8621,
+    0.9244
+   ],
+   [
+    0.7571,
+    0.1725,
+    0.8206,
+    0.7615,
+    0.8399,
+    0.9408
+   ]
+  ]
+ },
+ "plate-4-v2": {
+  "w": 465,
+  "h": 499,
+  "sheet": "r6-plate-0-4-v2.png",
+  "cx": 0.498,
+  "cy": 0.4607,
+  "r": 0.4584,
+  "fit_px": 1.8,
+  "registered": "rim",
+  "set": "plate-v2",
+  "anchor": [
+   0.499,
+   0.4604
+  ],
+  "note": "R6: the skewers fanned wider; plate-0-v2 is a clean empty plate (replaces the patched plate-0)",
+  "sticks": [
+   [
+    0.1391,
+    0.2731,
+    0.7235,
+    0.7953,
+    0.8562,
+    0.9139
+   ],
+   [
+    0.3106,
+    0.1347,
+    0.7653,
+    0.7831,
+    0.8567,
+    0.9134
+   ],
+   [
+    0.5394,
+    0.0777,
+    0.7992,
+    0.7655,
+    0.8555,
+    0.9146
+   ],
+   [
+    0.8011,
+    0.1845,
+    0.8246,
+    0.7574,
+    0.8322,
+    0.9432
+   ]
+  ]
+ },
+ "potato-raw": {
+  "w": 404,
+  "h": 396,
+  "sheet": "r7-potato-charred-v1.png",
+  "what": "R7: potato, raw"
+ },
+ "potato-grilled": {
+  "w": 404,
+  "h": 396,
+  "sheet": "r7-potato-charred-v1.png",
+  "what": "R7: potato, grilled"
+ },
+ "potato-charred": {
+  "w": 404,
+  "h": 396,
+  "sheet": "r7-potato-charred-v1.png",
+  "what": "R7: potato, charred"
+ },
+ "onion-charred": {
+  "w": 404,
+  "h": 396,
+  "sheet": "r7-potato-charred-v1.png",
+  "what": "R7: onion, charred"
+ },
+ "tomato-charred": {
+  "w": 404,
+  "h": 396,
+  "sheet": "r7-potato-charred-v1.png",
+  "what": "R7: tomato, charred"
+ },
+ "pepper-charred": {
+  "w": 404,
+  "h": 396,
+  "sheet": "r7-potato-charred-v1.png",
+  "what": "R7: pepper, charred"
+ },
+ "heap-potato": {
+  "w": 635,
+  "h": 624,
+  "sheet": "r7-potato-charred-v1.png",
+  "what": "R7: a loose heap of raw potato chunks (the decoy's shelf heap)"
  }
 }

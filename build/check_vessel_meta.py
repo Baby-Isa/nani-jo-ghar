@@ -96,8 +96,13 @@ def check_v3():
                 print(f"{'ok  ' if ok else 'FAIL'} v3 hob/{name}: {len(caps)} burners, art vs meta off {off:.4f}, meta vs Cook.Kit off {koff:.4f}")
             elif "bowl_r" in m:  # the ladle: its round bowl, with the handle (above it) left out
                 mask = img[..., 3] > 128
-                mask[: int((m["bowl_cy"] - m["bowl_r"] * W / H * 0.5) * H)] = False
-                cx, cy, r, res = robust_circle(mask)
+                if m.get("bowl_fit") == "inscribed":  # v3.1's ladle-v2 (a deep dipper, three-quarter on): the biggest circle inside
+                    from cut_cook_v3_1 import inscribed
+                    cx, cy, r = inscribed(mask)
+                    res = 0.0
+                else:
+                    mask[: int((m["bowl_cy"] - m["bowl_r"] * W / H * 0.5) * H)] = False
+                    cx, cy, r, res = robust_circle(mask)
                 off = max(abs(cx / W - m["bowl_cx"]), abs(cy / H - m["bowl_cy"]), abs(r / W - m["bowl_r"]))
                 ok = off <= TOL
                 bad += not ok
@@ -124,7 +129,7 @@ def check_daar():
         return {k: float(v) for k, v in re.findall(r"(\w+): ([\d.]+)", m.group(1))}
 
     pairs = [("POT", "pot-empty", ("w", "h", "cx", "cy", "r")), ("TRIVET", "daar-bowl-trivet", ("w", "h", "cx", "cy", "r")),
-             ("LADLE", "ladle", ("w", "h", "bowl_cx", "bowl_cy", "bowl_r"))]
+             ("LADLE", "ladle-v2", ("w", "h", "bowl_cx", "bowl_cy", "bowl_r")), ("TRIVET_PLAIN", "daar-bowl-trivet-plain", ("w", "h", "cx", "cy", "r"))]
     for name, key, fields in pairs:
         c = const(name)
         m = meta[key]
@@ -185,8 +190,9 @@ def check_sekelo():
         t = table(kind)
         js_sticks = json.loads(re.search(r"sticks: (\[\[.*\]\])", t[2]).group(1)) if t else None
         for n in range(n0, 5):
-            name = f"{kind}-{n}"
-            art = (MS.rack_sticks(name) if n else []) if kind == "rack" else MS.plate_sticks(name, n) if n else []
+            # (30 Sept, v3.1: the plate is R6's plate-N-v2, its fanned skewers found line by line)
+            name = f"{kind}-{n}" if kind == "rack" else f"plate-{n}-v2"
+            art = (MS.rack_sticks(name) if n else []) if kind == "rack" else MS.plate_v2_sticks(n)
             rec = meta[name].get("sticks")
             W, H = Image.open(os.path.join(MS.DIR, name + ".webp")).size
             o1 = off(art, rec or [])

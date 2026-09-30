@@ -109,19 +109,22 @@
    *             and the handle's end: the handle is off the plate); rim [cx, cy, r]
    *   grill:    the bars (y) and the coal bed [x0, y0, x1, y1]
    *   stick:    stick.webp (rack-1's skewer, the rails taken out): the one skewer the code moves about
-   * The pieces (meat/onion/tomato/pepper, raw/grilled; meat charred too) and the heaps are the same chunks
+   * 30 Sept (v3.1, R6): the plate is plate-0-v2 .. plate-4-v2 (the skewers fanned wider, a clean empty plate;
+   * build/measure_sekelo_v3.py --v2 finds each fanned skewer as its own line). R7: every piece has a charred
+   * chunk that keeps its own colour, and the decoy potato has raw, grilled and charred chunks and a heap.
+   * The pieces (meat/onion/tomato/pepper/potato, raw/grilled/charred) and the heaps are the same chunks
    * (K5). A skewer on screen is a container whose local tip is y = -318 and handle y = 164 (the drawn stick's
    * 70x640 canvas, centre 320): SK.onLine lays it along any drawn skewer. */
   const V3 = (SK.V3 = {
     DIR: "assets/cook/items/v3/sekelo/",
     rack: { w: 502, h: 395, sticks: [[], [[0.1991,0.043,0.7367,0.9519]], [[0.1987,0.043,0.7367,0.9519],[0.3907,0.043,0.7392,0.9519]], [[0.2011,0.043,0.7367,0.9519],[0.3924,0.043,0.7367,0.9519],[0.5836,0.043,0.7367,0.9519]], [[0.1992,0.043,0.7367,0.9519],[0.3943,0.043,0.7367,0.9519],[0.5916,0.043,0.7367,0.9519],[0.7884,0.043,0.7367,0.9519]]] },
-    plate: { w: 600, h: 611, rim: [0.4629, 0.4527, 0.43], sticks: [[], [[0.1549,0.2145,0.7327,0.7797,0.8646,0.9087]], [[0.2238,0.155,0.7956,0.7204,0.9181,0.8415],[0.1534,0.2127,0.7297,0.7826,0.8593,0.9107]], [[0.3011,0.1086,0.8393,0.6475,0.9505,0.759],[0.2226,0.1578,0.7866,0.7227,0.9042,0.8404],[0.1548,0.213,0.7258,0.7849,0.8454,0.9046]], [[0.299,0.1074,0.8396,0.6468,0.952,0.759],[0.2221,0.1567,0.7843,0.7176,0.9041,0.8372],[0.1558,0.2114,0.7215,0.7759,0.8389,0.8931],[0.1073,0.2848,0.6477,0.824,0.7708,0.9469]]] },
+    plate: { w: 465, h: 499, rim: [0.499, 0.461, 0.4506], sticks: [[],[[0.2256,0.1946,0.7881,0.7745,0.9138,0.904]],[[0.138,0.288,0.7337,0.793,0.8914,0.9267],[0.4861,0.0996,0.8065,0.7647,0.8805,0.9182]],[[0.1395,0.2769,0.7135,0.8156,0.8412,0.9355],[0.3907,0.111,0.7789,0.7807,0.8621,0.9244],[0.7571,0.1725,0.8206,0.7615,0.8399,0.9408]],[[0.1391,0.2731,0.7235,0.7953,0.8562,0.9139],[0.3106,0.1347,0.7653,0.7831,0.8567,0.9134],[0.5394,0.0777,0.7992,0.7655,0.8555,0.9146],[0.8011,0.1845,0.8246,0.7574,0.8322,0.9432]]] },
     grill: { w: 1505, h: 801, bars: [0.2422, 0.6554], bed: [0.2013, 0.1746, 0.8027, 0.8065] },
     stick: { w: 49, h: 365, tip: 0.0054, handle: 0.7562, end: 0.989 },
     // every skewer on the rack, the grill and the plate is this long from its tip to its handle (design px)
     BAMBOO: 262,
     // a chunk on the plate, as a share of its size on the rack and the grill (the plate's skewers are close)
-    PLATE_PIECE: 0.74,
+    PLATE_PIECE: 0.9, // (0.74 on v3's close skewers; R6's fanned ones have more room)
     PLATE_STAGGER: 48, // (local px: half a chunk's pitch; the bamboo has room for it below the tip)
     // the container's own tip and handle (the stick canvas, 70x640, centred at y 320)
     TIP: -318,
@@ -716,8 +719,8 @@
       const painted = img.pieceId && SK.pieceTex(img.scene, img.pieceId, state);
       if (painted) {
         if (img.texture.key !== painted) img.setTexture(painted);
-        // (a v3 vegetable has no charred picture: its grilled one, darker)
-        img.setTint(burnt && !(SK.v3Name(img.pieceId) === "meat") ? 0x8c7466 : light);
+        // (a piece with no charred picture: its grilled one, darker; R7 gave every v3 piece its own)
+        img.setTint(burnt && !img.scene.textures.exists(`sk3-${SK.v3Name(img.pieceId)}-charred`) ? 0x8c7466 : light);
         // (a v3 piece has its own grill marks painted on)
         img.marks.setAlpha(SK.v3Name(img.pieceId) ? 0 : Cook.clamp(marks, 0, 1) * 0.35);
         return;
@@ -898,7 +901,8 @@
         ctx.save();
         ctx.translate(0, SK.slotY(i, p.pieces.length) - (order[n][j] % 2 ? V3.PLATE_STAGGER : 0));
         ctx.scale(s, s);
-        if (p.burnt) ctx.filter = "brightness(0.6)";
+        // (a charred chunk is painted: only a piece without one is darkened)
+        if (p.burnt && !S.textures.exists(`sk3-${SK.v3Name(id)}-charred`)) ctx.filter = "brightness(0.6)";
         ctx.drawImage(img, -PIECE / 2, -PIECE / 2);
         ctx.restore();
       });
@@ -938,9 +942,9 @@
     ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, `assets/cook/items/${bowls[id]}.webp`]));
     // v3 (K5, K6, K9): the pictured rack and plate, the grill, the one stick, the chunky pieces
     const v3 = [["sk3-grill", V3.DIR + "grill.webp"], ["sk3-stick", V3.DIR + "stick.webp"]];
-    for (let n = 0; n <= 4; n++) v3.push([`sk3-rack-${n}`, `${V3.DIR}rack-${n}.webp`], [`sk3-plate-${n}`, `${V3.DIR}plate-${n}.webp`]);
+    for (let n = 0; n <= 4; n++) v3.push([`sk3-rack-${n}`, `${V3.DIR}rack-${n}.webp`], [`sk3-plate-${n}`, `${V3.DIR}plate-${n}-v2.webp`]);
     const names = [...new Set(ids.concat(SK.pieceIds()).map(SK.v3Name).filter(Boolean))];
-    names.forEach((n) => ["raw", "grilled"].concat(n === "meat" ? ["charred"] : []).forEach((st) => v3.push([`sk3-${n}-${st}`, `${V3.DIR}${n}-${st}.webp`])));
+    names.forEach((n) => ["raw", "grilled", "charred"].forEach((st) => v3.push([`sk3-${n}-${st}`, `${V3.DIR}${n}-${st}.webp`])));
     list.push(...v3);
     return Promise.race([Cook.Stations.load(S, list), Cook.wait(15000)]);
   };

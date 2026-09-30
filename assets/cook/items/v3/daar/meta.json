@@ -160,5 +160,174 @@
   "bowl_cy": 0.7451,
   "bowl_r": 0.3552,
   "note": "cut out of D2's pot along a hand-drawn outline (build/cut_cook_v3.py LADLE)"
+ },
+ "pot-tomato-only": {
+  "w": 430,
+  "h": 348,
+  "sheet": "r4-daar-pot-more-v1.png",
+  "cx": 0.4978,
+  "cy": 0.4992,
+  "r": 0.3567,
+  "fit_px": 1.7,
+  "registered": "rim (D1's pot canvas)",
+  "set": "pot",
+  "anchor": [
+   0.4982,
+   0.4985
+  ],
+  "scale_from_sheet": 0.8582,
+  "what": "seeds + tomato (no onion)"
+ },
+ "pot-chilli-only": {
+  "w": 430,
+  "h": 348,
+  "sheet": "r4-daar-pot-more-v1.png",
+  "cx": 0.4986,
+  "cy": 0.4993,
+  "r": 0.3566,
+  "fit_px": 1.5,
+  "registered": "rim (D1's pot canvas)",
+  "set": "pot",
+  "anchor": [
+   0.4982,
+   0.4985
+  ],
+  "scale_from_sheet": 0.8583,
+  "what": "seeds + green chilli (no onion)"
+ },
+ "pot-onion-chilli": {
+  "w": 430,
+  "h": 348,
+  "sheet": "r4-daar-pot-more-v1.png",
+  "cx": 0.4994,
+  "cy": 0.4996,
+  "r": 0.3568,
+  "fit_px": 1.6,
+  "registered": "rim (D1's pot canvas)",
+  "set": "pot",
+  "anchor": [
+   0.4982,
+   0.4985
+  ],
+  "scale_from_sheet": 0.8584,
+  "what": "seeds + onion + chilli (no tomato)"
+ },
+ "pot-tomato-chilli": {
+  "w": 430,
+  "h": 348,
+  "sheet": "r4-daar-pot-more-v1.png",
+  "cx": 0.4971,
+  "cy": 0.4993,
+  "r": 0.3561,
+  "fit_px": 1.8,
+  "registered": "rim (D1's pot canvas)",
+  "set": "pot",
+  "anchor": [
+   0.4982,
+   0.4985
+  ],
+  "scale_from_sheet": 0.86,
+  "what": "seeds + tomato + chilli (no onion)"
+ },
+ "pot-tadka-v2": {
+  "w": 430,
+  "h": 348,
+  "sheet": "r4-daar-pot-more-v1.png",
+  "cx": 0.4987,
+  "cy": 0.497,
+  "r": 0.3562,
+  "fit_px": 1.7,
+  "registered": "rim (D1's pot canvas)",
+  "set": "pot",
+  "anchor": [
+   0.4982,
+   0.4985
+  ],
+  "scale_from_sheet": 0.8599,
+  "what": "cooked daar, a tadka of mustard and cumin only (no dry chilli, no curry leaves)"
+ },
+ "daar-bowl-trivet-plain": {
+  "w": 489,
+  "h": 490,
+  "sheet": "r4-daar-pot-more-v1.png",
+  "cx": 0.4991,
+  "cy": 0.4971,
+  "r": 0.4619,
+  "fit_px": 1.6,
+  "what": "the trivet bowl of plain daar (no tadka): the bowl waiting to be poured"
+ },
+ "ladle-v2": {
+  "w": 833,
+  "h": 1039,
+  "sheet": "r3-ladle-v2.png",
+  "bowl_cx": 0.3697,
+  "bowl_cy": 0.7016,
+  "bowl_r": 0.3501,
+  "bowl_fit": "inscribed",
+  "note": "R3: a deep steel dipper seen three-quarter on (not the foreshortened ladle asked for)"
+ },
+ "chop-heap-onion": {
+  "w": 477,
+  "h": 469,
+  "sheet": "r5-chopped-veg-v1.png",
+  "what": "a loose heap of chopped onion"
+ },
+ "chop-heap-tomato": {
+  "w": 477,
+  "h": 469,
+  "sheet": "r5-chopped-veg-v1.png",
+  "what": "a loose heap of chopped tomato"
+ },
+ "chop-heap-chilli": {
+  "w": 477,
+  "h": 469,
+  "sheet": "r5-chopped-veg-v1.png",
+  "what": "a loose heap of chopped chilli"
+ },
+ "chop-piece-onion": {
+  "w": 159,
+  "h": 164,
+  "sheet": "r5-chopped-veg-v1.png",
+  "what": "one piece, the heaps' scale"
+ },
+ "chop-piece-tomato": {
+  "w": 159,
+  "h": 164,
+  "sheet": "r5-chopped-veg-v1.png",
+  "what": "one piece, the heaps' scale"
+ },
+ "chop-piece-chilli": {
+  "w": 159,
+  "h": 164,
+  "sheet": "r5-chopped-veg-v1.png",
+  "what": "one piece, the heaps' scale"
+ },
+ "dial-stopped": {
+  "w": 360,
+  "h": 343,
+  "sheet": "r8-dial-icons-v1.png",
+  "what": "flat cream icon (R8)",
+  "colour": "#F5E6C8"
+ },
+ "dial-slow": {
+  "w": 360,
+  "h": 343,
+  "sheet": "r8-dial-icons-v1.png",
+  "what": "flat cream icon (R8)",
+  "colour": "#F5E6C8"
+ },
+ "dial-fast": {
+  "w": 360,
+  "h": 343,
+  "sheet": "r8-dial-icons-v1.png",
+  "what": "flat cream icon (R8)",
+  "colour": "#F5E6C8"
+ },
+ "dial-spill": {
+  "w": 360,
+  "h": 343,
+  "sheet": "r8-dial-icons-v1.png",
+  "what": "flat cream icon (R8)",
+  "colour": "#F5E6C8"
  }
 }

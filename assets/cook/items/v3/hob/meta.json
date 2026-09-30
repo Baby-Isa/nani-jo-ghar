@@ -142,5 +142,58 @@
   "r": 0.3802,
   "fit_px": 2.0,
   "note": "grip bar horizontal = off; on is the same knob turned a quarter (bar vertical) with a warm glow"
+ },
+ "hob-4-v2": {
+  "w": 1546,
+  "h": 530,
+  "sheet": "r1-hob-4-v2.png",
+  "n": 4,
+  "burners": [
+   {
+    "x": 0.1413,
+    "y": 0.4542
+   },
+   {
+    "x": 0.3807,
+    "y": 0.4543
+   },
+   {
+    "x": 0.6202,
+    "y": 0.4544
+   },
+   {
+    "x": 0.8597,
+    "y": 0.4544
+   }
+  ],
+  "cap_r": 0.0459,
+  "support_r": 0.131,
+  "glass": {
+   "top": 0.0415,
+   "bottom": 0.9491
+  },
+  "frontY": 0.8928,
+  "scale_from_sheet": 1.0255,
+  "note": "R1: four burners at H1's burner size (replaces hob-4)"
+ },
+ "knob-off-v2": {
+  "w": 400,
+  "h": 400,
+  "sheet": "r2-knob-off-on-v2.png",
+  "cx": 0.4964,
+  "cy": 0.4992,
+  "r": 0.4401,
+  "fit_px": 26.6,
+  "note": "R2: grip bar horizontal = off; on: the same knob, bar vertical, a strong warm glow (the kit turns it a quarter)"
+ },
+ "knob-on-v2": {
+  "w": 400,
+  "h": 400,
+  "sheet": "r2-knob-off-on-v2.png",
+  "cx": 0.4993,
+  "cy": 0.4993,
+  "r": 0.4337,
+  "fit_px": 0.5,
+  "note": "R2: grip bar horizontal = off; on: the same knob, bar vertical, a strong warm glow (the kit turns it a quarter)"
  }
 }

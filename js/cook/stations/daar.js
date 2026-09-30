@@ -32,7 +32,10 @@
  * chips; 4 = more decoys, and Nana's card starts folded in the cook (a peek costs a hint).
  * Art: assets/cook/items/v3/daar/ (the nine pots on one registered canvas, the trivet bowl, the ladle;
  * meta.json), the pantry v2 jars, the top-down vegetables (veg-*-whole-t / -chopped-t), tool-knife-t, and
- * the kitchen kit's hob and knob (js/cook/kitchen-kit.js). The dial is drawn in code (no new art).
+ * the kitchen kit's hob and knob (js/cook/kitchen-kit.js). The dial's face is drawn in code.
+ * 30 Sept (v3.1, build/cut_cook_v3_1.py): the pot shows only the vegetables that went in (R4's pots), the
+ * plain daar waits on its trivet (R4), real chopped heaps and pieces (R5), ladle-v2 (R3), the dial's four
+ * flat icons (R8), and Nani's chop card is words only from level 3.
  * Shots: build/shoot_daar_v3.py.
  */
 (function (global) {
@@ -61,6 +64,10 @@
   // the vegetables' own art: word id -> file stem
   const VEG = { "veg-01": "bataato", "veg-02": "dungri", "veg-03": "tameto", "veg-12": "marcha", "veg-13": "lasan", "veg-14": "aadu" };
   const CHOPPED = { "veg-01": "veg-bataato-cubed-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.png" };
+  // 30 Sept (R5): onion, tomato and chilli as real chopped heaps (one heap per chopped vegetable) and one piece
+  // each (the piece flies off the knife and lands as its heap), in place of the flower-like v2 piles
+  const HEAP5 = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli" };
+  const pileUrl = (id) => (HEAP5[id] ? `${V3}chop-heap-${HEAP5[id]}.webp` : IT + CHOPPED[id]);
   /*
    * The v3 pot (D1 art, build/cut_cook_v3.py): nine states on one registered canvas, 430 x 348. Measured from
    * the art (assets/cook/items/v3/daar/meta.json; build/check_vessel_meta.py re-fits them): the round body's
@@ -69,14 +76,22 @@
    * clipped a little inside it, so the rim never turns.
    */
   const POT = { w: 430, h: 348, cx: 0.4982, cy: 0.4985, r: 0.3566, inner: 0.325 };
-  const POTS = ["empty", "oil", "seeds", "onion", "tomato", "chilli", "daar", "tadka", "stir"];
-  // what the pot shows once a chopped vegetable is in (the art's own order: onion, then tomato, then chilli)
-  const VEG_POT = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli" };
-  const VEG_STAGE = ["seeds", "onion", "tomato", "chilli"];
+  // 30 Sept (R4): the -only / pairs pots (the same canvas, registered to D1's rim) so an order without onion
+  // never shows onion; tadka-v2 has only the mustard and cumin (no dry chilli, no curry leaves: no order has them)
+  const POTS = ["empty", "oil", "seeds", "onion", "tomato", "chilli", "daar", "tadka", "stir", "tomato-only", "chilli-only", "onion-chilli", "tomato-chilli", "tadka-v2"];
+  // what the pot shows for the pictured vegetables in it so far (onion, tomato, chilli: every mix has its picture;
+  // D1's "tomato" is onion + tomato and its "chilli" all three). Another vegetable (garlic, potato) changes nothing.
+  const VEG_BIT = { "veg-02": 1, "veg-03": 2, "veg-12": 4 };
+  const MIX_POT = ["seeds", "onion", "tomato-only", "tomato", "chilli-only", "onion-chilli", "tomato-chilli", "chilli"];
   // the served bowl on its trivet (528 x 563; its round body, trivet and all: r 0.4833 of w) and the ladle
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
   const TRIVET = { w: 528, h: 563, cx: 0.4928, cy: 0.4987, r: 0.4833 };
-  const LADLE = { w: 290, h: 455, cx: 0.3983, cy: 0.7451, r: 0.3552 };
+  // 30 Sept (R3): ladle-v2, a deep steel dipper seen three-quarter on (its bowl: the biggest circle inside it)
+  const LADLE = { w: 833, h: 1039, cx: 0.3697, cy: 0.7016, r: 0.3501 };
+  // (R4 cell 6) the same bowl of plain daar, no tadka: it waits beside the pot and pours in (the tadka one is the review's)
+  const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4619 };
+  // (R8) the speed dial's four flat cream icons: stopped, slow (tortoise), fast (hare), too fast (a splash)
+  const DIAL_ICONS = ["stopped", "slow", "fast", "spill"];
   /*
    * Where the chopped pieces wait (D4, Q4: "in bowls, or on the counter at the top right: try it and judge").
    * "counter": one small pile per piece, a row per vegetable, straight on the counter (chosen: it can be
@@ -130,12 +145,15 @@
     const art = [
       ["dv2-knife", IT + "tool-knife-t.webp"],
       ["dv3-trivet", V3 + "daar-bowl-trivet.webp"],
-      ["dv3-ladle", V3 + "ladle.webp"],
+      ["dv3-ladle", V3 + "ladle-v2.webp"],
+      ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
     ]
       .concat(POTS.map((st) => [`dv3-pot-${st}`, `${V3}pot-${st}.webp`]))
       .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, shelfUrl(id)]))
-      .concat(vegAll.map((id) => [`dv2-chop-${id}`, IT + CHOPPED[id]]))
+      .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
+      .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
+      .concat(DIAL_ICONS.map((n) => [`dv3-dial-${n}`, `${V3}dial-${n}.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : []);
     await Promise.race([St.load(S, art), Cook.wait(12000)]);
@@ -150,7 +168,7 @@
         if (ctx.nextStep) ctx.nextStep("Chop");
         if (phases.chop && !attempt) UI.gist(phases.chop);
         const cz = Mech.zone(S, ctx, { id: "chop", level });
-        const nani = naniCard(want, no);
+        const nani = naniCard(want, no, level);
         chopped = await chop(cz, { want, kinds, no, pool, level, retry: attempt > 0, nani, side });
         nani.close();
         cz.close();
@@ -207,9 +225,11 @@
   }
 
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
-  function naniCard(want, no) {
+  function naniCard(want, no, level = 1) {
     const M = UI.mission;
-    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id))), done: false }));
+    // 30 Sept (Zafar, Q7): from level 3 the chop card is words only ("dungri"); how many is heard, as on the order card
+    const parts = (id) => (level >= 3 ? [id] : Lang.countParts(want[id], id));
+    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(parts(id))), done: false }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
     no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.line("no", Lang.phrase([id])))), done: false, no: true }));
@@ -343,13 +363,20 @@
       if (!rows.includes(id)) rows.push(id);
       const list = (piles[id] = piles[id] || []);
       const n = list.length;
-      const img = S.track(S.add.image(x, y, `dv2-chop-${id}`).setDepth(D.item + 1));
+      // (R5) one chopped piece flies off the knife and lands as its heap
+      const piece = S.textures.exists(`dv3-piece-${id}`) && !bowl;
+      const img = S.track(S.add.image(x, y, piece ? `dv3-piece-${id}` : `dv2-chop-${id}`).setDepth(D.item + 1));
+      const heapW = S.textures.get(`dv2-chop-${id}`).getSourceImage().width;
       const sc = z.L(PILE) / Math.max(img.width, img.height);
-      img.setScale(sc * 1.5);
+      img.setScale(piece ? z.L(PILE * 0.45) / img.width : sc * 1.5);
       list.push(img);
       const to = bowl ? { x: bowl.x + z.L((n % 3) * 30 - 30), y: bowl.y + z.L(Math.floor(n / 3) * 24 - 20) } : spot(id, n);
-      S.fly(img, to.x, to.y, { scale: bowl ? sc * 0.5 : sc, duration: 460, arc: z.L(90) }).then(() => {
+      S.fly(img, to.x, to.y, { scale: bowl ? sc * 0.5 : piece ? img.scale : sc, duration: 460, arc: z.L(90) }).then(() => {
         if (!img.active) return;
+        if (piece) {
+          img.setTexture(`dv2-chop-${id}`);
+          img.setScale(z.L(PILE) / heapW);
+        }
         img.setDepth(D.item - 0.5 + n * 0.001);
         S.puff(to.x, to.y, 0xfff6e0, z.L(22));
         if (bowl) {
@@ -420,7 +447,14 @@
           },
         });
       });
-    const stage = (st) => VEG_STAGE.indexOf(st);
+    let mix = 0; // the pictured vegetables in the pot so far (VEG_BIT)
+    const stage = (st) => (st === "oil" ? 0 : 1);
+    /** A chopped vegetable goes in: the pot shows exactly what's in it (R4: no onion unless onion went in). */
+    const addVeg = (id) => {
+      mix |= VEG_BIT[id] || 0;
+      const want = MIX_POT[mix];
+      if (want !== state) setPot(want);
+    };
 
     // the chopped piles wait left of the hob (one row per vegetable: tap a row, it goes in); the daar right of it
     const Cc = SIDE.cook;
@@ -448,8 +482,12 @@
         hits[id] = hit;
       });
     }
-    const dBowl = S.track(S.add.image(z.X(1250), sy(z, 330), "dv3-trivet").setDepth(D.item));
-    dBowl.setScale(z.L(230) / TRIVET.w);
+    // (R4 cell 6) the plain daar waits; the tadka goes on in the pot
+    const plainKey = S.textures.exists("dv3-trivet-plain") ? "dv3-trivet-plain" : "dv3-trivet";
+    const PB = plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET;
+    // (the same bowl size as the review's: its round body, trivet and all)
+    const dBowl = S.track(S.add.image(z.X(1250), sy(z, 330), plainKey).setOrigin(PB.cx, PB.cy).setDepth(D.item));
+    dBowl.setScale((z.L(230) * TRIVET.r) / (PB.r * PB.w));
     dBowl.shadow = S.contactShadow(dBowl);
     const items = shelf(z, S, spiceIds, level);
     Object.values(items).forEach((o) => o.setAlpha(0.6));
@@ -537,9 +575,7 @@
       imgs.forEach((b) => S.tweens.add({ targets: b, alpha: 0, duration: 260, onComplete: () => b.destroy() }));
       Cook.sfx.sizzle(1);
       S.puff(cx, cy, 0xfff1c0, z.L(50));
-      const want = VEG_POT[id];
-      if (want && stage(want) > stage(state)) setPot(want);
-      else if (!want && stage(state) < 1) setPot("onion");
+      addVeg(id);
     };
     Cook.daarPhase = "piles";
     let left = Object.keys(hits);
@@ -556,10 +592,8 @@
         // the bowl tips in: everything in it goes at once
         await S.fly(vbowl, cx - bodyR * 0.8, cy - bodyR * 0.4, { duration: 360, arc: z.L(60) });
         await Cook.tween(S, { targets: vbowl, angle: 60, duration: 200 });
-        chopped.rows.forEach((id) => {
-          const want = VEG_POT[id];
-          if (want && stage(want) > stage(state)) setPot(want);
-        });
+        chopped.rows.forEach((id) => (mix |= VEG_BIT[id] || 0));
+        addVeg(null);
         Cook.sfx.sizzle(1);
         S.tweens.add({ targets: vbowl, alpha: 0, duration: 300 });
         if (ctx.closeItem) ctx.closeItem(chopped.rows);
@@ -580,14 +614,14 @@
     S.tweens.add({ targets: dBowl, scale: dBowl.scale * 1.05, duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     await tapOnce(z, S, dBowl, "daar", { glow: z.guided });
     S.tweens.killTweensOf(dBowl);
-    const home = { x: dBowl.x, y: dBowl.y, s: z.L(230) / TRIVET.w };
+    const home = { x: dBowl.x, y: dBowl.y, s: dBowl.scale };
     await Cook.tween(S, { targets: dBowl, x: cx + bodyR * 1.05, y: cy - bodyR * 0.7, angle: -35, scale: home.s * 0.9, duration: 420, ease: "Quad.easeInOut" });
     const pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
     await setPot("daar", 700);
     if (pour && pour.stop) pour.stop();
     S.tweens.add({ targets: dBowl, alpha: 0, duration: 300 });
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
-    await setPot("tadka", 600);
+    await setPot("tadka-v2", 600);
     Cook.daarPhase = "daar-in";
     burner.set("low");
     if (sizzle && sizzle.stop) sizzle.stop();
@@ -655,7 +689,23 @@
     });
     // the pictures on their bands, in cream (the glass's ink)
     const at = (v, r) => ({ x: Math.cos(toA(v)) * r, y: ay + Math.sin(toA(v)) * r });
+    // (R8) the four flat cream icons on their bands, each about a band's width
+    const spots = [
+      [e1 / 2, R + 52],
+      [(e1 + e2) / 2, R + 50],
+      [(e2 + e3) / 2, R + 50],
+      [(e3 + max) / 2, R + 48],
+    ];
+    if (DIAL_ICONS.every((n) => S.textures.exists(`dv3-dial-${n}`))) {
+      DIAL_ICONS.forEach((n, i) => {
+        const q = at(...spots[i]);
+        const im = S.add.image(0, 0, `dv3-dial-${n}`);
+        put(im, q.x, q.y, 0.01);
+        im.setScale((z.k * 62) / Math.max(im.width, im.height));
+      });
+    }
     const ic = put(S.add.graphics(), 0, 0, 0.01);
+    if (DIAL_ICONS.every((n) => S.textures.exists(`dv3-dial-${n}`))) ic.setVisible(false);
     const cream = 0xf4ecdf;
     let p = at(e1 / 2, R + 50);
     ic.fillStyle(cream, 0.9);
@@ -784,7 +834,7 @@
         im.setMask(mask);
         return im;
       };
-      const still = layer("dv3-pot-tadka", 1);
+      const still = layer("dv3-pot-tadka-v2", 1);
       const swirl = layer("dv3-pot-stir", 0);
       // the ladle (D6): top-down, its bowl in the daar and the handle rising toward us
       const ladle = S.track(S.add.image(cx + trackR, cy, "dv3-ladle").setDepth(D.item + 0.6).setOrigin(LADLE.cx, LADLE.cy));

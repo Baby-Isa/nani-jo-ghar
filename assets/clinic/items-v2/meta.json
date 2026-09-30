@@ -1,0 +1,296 @@
+{
+ "plasters-box": {
+  "w": 323,
+  "h": 328,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "plasters box"
+ },
+ "bandage-roll": {
+  "w": 364,
+  "h": 323,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "bandage roll"
+ },
+ "tweezers": {
+  "w": 378,
+  "h": 177,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "tweezers"
+ },
+ "cotton-buds": {
+  "w": 268,
+  "h": 326,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "cotton buds"
+ },
+ "eye-drops": {
+  "w": 169,
+  "h": 334,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "eye drops"
+ },
+ "thermometer": {
+  "w": 404,
+  "h": 226,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "thermometer"
+ },
+ "toothbrush": {
+  "w": 374,
+  "h": 291,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "toothbrush"
+ },
+ "filling-paste": {
+  "w": 400,
+  "h": 202,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "filling paste"
+ },
+ "dentist-drill": {
+  "w": 394,
+  "h": 212,
+  "sheet": "ci1-care-kit-v1.png",
+  "what": "dentist drill"
+ },
+ "reflex-hammer": {
+  "w": 393,
+  "h": 261,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "reflex hammer"
+ },
+ "stethoscope": {
+  "w": 396,
+  "h": 377,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "stethoscope"
+ },
+ "pen-torch": {
+  "w": 375,
+  "h": 284,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "pen torch"
+ },
+ "syringe": {
+  "w": 397,
+  "h": 233,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "syringe"
+ },
+ "water-jug": {
+  "w": 333,
+  "h": 345,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "water jug"
+ },
+ "cloth-blue": {
+  "w": 399,
+  "h": 294,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "cloth blue"
+ },
+ "blanket-red": {
+  "w": 433,
+  "h": 357,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "blanket red"
+ },
+ "desk-fan": {
+  "w": 322,
+  "h": 417,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "desk fan"
+ },
+ "apple": {
+  "w": 309,
+  "h": 331,
+  "sheet": "ci2-tools-comfort-v1.png",
+  "what": "apple"
+ },
+ "tumbler": {
+  "w": 278,
+  "h": 359,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "tumbler"
+ },
+ "teaspoon": {
+  "w": 412,
+  "h": 192,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "teaspoon"
+ },
+ "honey-jar": {
+  "w": 359,
+  "h": 380,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "honey jar"
+ },
+ "ginger": {
+  "w": 391,
+  "h": 344,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "ginger"
+ },
+ "lemon-half": {
+  "w": 305,
+  "h": 302,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "lemon half"
+ },
+ "turmeric-bowl": {
+  "w": 369,
+  "h": 309,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "turmeric bowl"
+ },
+ "milk-jug": {
+  "w": 351,
+  "h": 402,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "milk jug"
+ },
+ "turmeric-milk": {
+  "w": 313,
+  "h": 392,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "turmeric milk"
+ },
+ "ginger-water": {
+  "w": 309,
+  "h": 390,
+  "sheet": "ci3-drinks-v1.png",
+  "what": "ginger water"
+ },
+ "plaster-red": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster red",
+  "box_w_px": 332,
+  "box_h_px": 146
+ },
+ "plaster-yellow": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster yellow",
+  "box_w_px": 330,
+  "box_h_px": 146
+ },
+ "plaster-blue": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster blue",
+  "box_w_px": 332,
+  "box_h_px": 146
+ },
+ "plaster-green": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster green",
+  "box_w_px": 331,
+  "box_h_px": 146
+ },
+ "plaster-red-yellow": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster red yellow",
+  "box_w_px": 332,
+  "box_h_px": 146
+ },
+ "plaster-red-blue": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster red blue",
+  "box_w_px": 331,
+  "box_h_px": 146
+ },
+ "plaster-red-green": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster red green",
+  "box_w_px": 332,
+  "box_h_px": 146
+ },
+ "plaster-yellow-blue": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster yellow blue",
+  "box_w_px": 331,
+  "box_h_px": 146
+ },
+ "plaster-yellow-green": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster yellow green",
+  "box_w_px": 332,
+  "box_h_px": 146
+ },
+ "plaster-blue-green": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster blue green",
+  "box_w_px": 331,
+  "box_h_px": 145
+ },
+ "plaster-skin": {
+  "w": 360,
+  "h": 175,
+  "sheet": "ci4-plasters-v1.png",
+  "what": "plaster skin",
+  "box_w_px": 330,
+  "box_h_px": 145
+ },
+ "jug-hot": {
+  "w": 432,
+  "h": 512,
+  "sheet": "ci5-foot-soak-v1.png",
+  "what": "jug hot",
+  "registered": "bottom-centre",
+  "anchor": [
+   0.499,
+   0.9702
+  ]
+ },
+ "jug-cold": {
+  "w": 432,
+  "h": 512,
+  "sheet": "ci5-foot-soak-v1.png",
+  "what": "jug cold",
+  "registered": "bottom-centre",
+  "anchor": [
+   0.499,
+   0.9702
+  ]
+ },
+ "jug-lukewarm": {
+  "w": 432,
+  "h": 512,
+  "sheet": "ci5-foot-soak-v1.png",
+  "what": "jug lukewarm",
+  "registered": "bottom-centre",
+  "anchor": [
+   0.499,
+   0.9702
+  ],
+  "grey_left_px": 309
+ },
+ "basin": {
+  "w": 509,
+  "h": 512,
+  "sheet": "ci5-foot-soak-v1.png",
+  "cx": 0.5,
+  "cy": 0.4969,
+  "r": 0.4733,
+  "fit_px": 1.3,
+  "what": "a round steel basin of clear water, top-down (the foot soak)"
+ }
+}

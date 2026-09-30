@@ -13,9 +13,11 @@ It also cuts stick.webp, the one empty skewer the code moves about (the board, t
 first skewer, with the rails taken out from behind it, so every skewer on screen is the same drawn stick.
 
   python3 build/measure_sekelo_v3.py          # measure, cut, write meta.json
+  python3 build/measure_sekelo_v3.py --v2     # only R6's plate-0-v2 .. plate-4-v2 (30 Sept, v3.1)
   (build/check_vessel_meta.py re-measures with these functions and checks meta.json and grill.js agree)
 """
 import json
+import math
 import os
 
 import numpy as np
@@ -90,6 +92,58 @@ def plate_sticks(name, n):
         (tx, ty), (hx, hy), (ex, ey) = pt(t0), pt(th), pt(t1)
         out.append([round(tx / W, 4), round(ty / H, 4), round(hx / W, 4), round(hy / H, 4), round(ex / W, 4), round(ey / H, 4)])
     return out
+
+
+def plate_sticks_fan(name, n, seed=1):
+    """30 Sept (R6, plate-N-v2): the skewers fan out from the handles, so one shared direction doesn't
+    separate them (plate_sticks); each is found as a line instead (RANSAC over the wood pixels, the best
+    line's pixels taken out, n times). [tx, ty, hx, hy, ex, ey] (fractions), sorted by angle."""
+    im = rgba(name)
+    r, g, b, a = (im[:, :, i] for i in range(4))
+    H, W = a.shape
+    wood = (a > 128) & (r - b > 60) & (r > 90)
+    ys, xs = np.nonzero(wood)
+    P = np.c_[xs, ys].astype(float)
+    dark = r[ys, xs] < 150
+    rng = np.random.default_rng(seed)
+    left = np.ones(len(P), bool)
+    out = []
+    for _ in range(n):
+        idx = np.nonzero(left & ~dark)[0]
+        best = None
+        for _ in range(1500):
+            i, j = rng.choice(idx, 2, replace=False)
+            d = P[j] - P[i]
+            L = np.hypot(*d)
+            if L < 60:
+                continue
+            nrm = np.array([-d[1], d[0]]) / L
+            inl = left & ~dark & (np.abs((P - P[i]) @ nrm) < 3.5)
+            if best is None or inl.sum() > best[0]:
+                best = (inl.sum(), P[i], nrm)
+        _, p0, nrm = best
+        inl = left & ~dark & (np.abs((P - p0) @ nrm) < 3.5)
+        # refit on the inliers
+        c = P[inl].mean(0)
+        d = np.linalg.svd(P[inl] - c, full_matrices=False)[2][0]
+        if d[0] + d[1] < 0:
+            d = -d  # towards the handles (lower right)
+        nrm = np.array([-d[1], d[0]])
+        t = (P - c) @ d
+        band = np.abs((P - c) @ nrm) < 4
+        tb = t[band & ~dark]
+        t0 = np.percentile(tb, 0.3)
+        # the handle: this line's dark wood, beyond the bamboo
+        hd = band & dark & (t > np.percentile(tb, 60))
+        th = np.percentile(t[hd], 2) if hd.any() else np.percentile(tb, 99.7)
+        wide = (np.abs((P - c) @ nrm) < 12) & dark & (t > th - 5)
+        t1 = np.percentile(t[wide], 99.5) if wide.any() else th
+        pt = lambda s: c + d * s
+        (tx, ty), (hx, hy), (ex, ey) = pt(t0), pt(th), pt(t1)
+        out.append([round(tx / W, 4), round(ty / H, 4), round(hx / W, 4), round(hy / H, 4), round(ex / W, 4), round(ey / H, 4)])
+        # take this skewer out (its bamboo, and its handle's wider band)
+        left &= ~((np.abs((P - c) @ nrm) < 7) & (t < th)) & ~wide
+    return sorted(out, key=lambda s: math.atan2(s[3] * H - s[1] * H, s[2] * W - s[0] * W))
 
 
 def grill_bed():
@@ -173,6 +227,30 @@ def measure():
     return m
 
 
+def plate_v2_sticks(n):
+    """R6's plate-N-v2 skewers. Its "four" cell has FIVE bamboo sticks drawn (four handles show): the short
+    lower-left one (the lowest tip) is left empty, the other four keep plate-3-v2's places plus the middle one."""
+    if not n:
+        return []
+    if n < 4:
+        return plate_sticks_fan(f"plate-{n}-v2", n)
+    five = plate_sticks_fan("plate-4-v2", 5)
+    low = max(range(5), key=lambda i: five[i][1])
+    return [s for i, s in enumerate(five) if i != low]
+
+
+def measure_v2():
+    """30 Sept (v3.1): only the R6 plates (plate-0-v2 .. plate-4-v2): their skewers into meta.json."""
+    mp = os.path.join(DIR, "meta.json")
+    meta = json.load(open(mp))
+    for n in range(5):
+        meta[f"plate-{n}-v2"]["sticks"] = [[float(v) for v in s] for s in plate_v2_sticks(n)]
+    json.dump(meta, open(mp, "w"), indent=1)
+    open(mp, "a").write("\n")
+    for n in range(5):
+        print(f"plate-{n}-v2", meta[f"plate-{n}-v2"]["sticks"])
+
+
 def main():
     mp = os.path.join(DIR, "meta.json")
     meta = json.load(open(mp))
@@ -189,4 +267,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    measure_v2() if "--v2" in sys.argv else main()
