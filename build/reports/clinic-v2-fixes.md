@@ -184,9 +184,18 @@ It also fails any room's first-time script without a ghost demo. I checked that 
 
 ---
 
-## 4. Tests
-
-See the final block at the end of this report (run after the last merge).
+## 4. Tests (30 Sept, ~00:35–01:05 UTC, on the final code; main hadn't moved, re-checked at the end)
+| Check | Result |
+|---|---|
+| `python3 build/test_clinic.py --canvas --sizes laptop,phone` | **PASS**, 70 cases (the waiting room L1–5 and W4, D1–D3, the pharmacy L1–3, the send-off, the nine heal games, patients at L1–3, the first-ever morning, and `heal-fever-help`, which now requires the ghost finger with no words in it) |
+| `python3 build/test_clinic_heal_a.py` (phone, iPad, laptop) | **PASS** 108/108 |
+| `python3 build/test_clinic_heal_b.py` | **PASS** 81/81 |
+| `python3 build/test_clinic_heal_c.py` | **PASS** 54/54, plus the foot edge check and tummy/hic/hair |
+| `node build/leak_clinic.mjs` | No problems (knee L1 printed as ACCEPTED, 13i) |
+| `node build/leak_clinic_heal_a/b/c.mjs` | PASS. Every blind strategy is under 10% at L1 **except the knee, at ~25%**: named, printed, and open for Zafar |
+| `node build/check_onboard.mjs` (flipped) | ok: 9 heal games, every kind of step has a ghost-finger demo with no English and no device voice. A text cue and a why beat in a full run were each tried and fail it |
+| Shared Node tests (`node --test build/test_shared_*.mjs`, with the new `test_shared_buttons.mjs`) | all pass (13 files, 117 tests) |
+| `python3 build/test_cook.py --days 1 --canvas` (onboard.js and guide.js are shared) | **PASS** on every viewport it runs |
 
 ---
 
