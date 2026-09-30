@@ -175,7 +175,8 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Show progress, not verdicts:** no red crosses or buzzes mid-round; mistakes show in the end review. Gentle exceptions: the conversation reply, the serve frown, the waiting-room shake. (E10)
 - **Scoring is the three end-of-round badges: time, accuracy, hints,** with a personal best per mode and level. No ear star, no voice star; remove the legacy star code. (H5, J7, decisions 1–2)
 - **The accuracy tick fills gold for right and grey for wrong.** (F13, decision 3)
-- **Pocket money rewards doing well:** the better the child does (correct speaking included), the more pocket money, and the bigger the pile. Never explain the mechanism to the child. (decision 2)
+- **Pocket money rewards doing well:** one simple internal model pays by **volume** (tasks completed) × **quality** (fewer hints, more ticks, quicker time; correct speaking pays more) × **difficulty**. Never explain the mechanism to the child: the better they do, the more they earn. (decisions 2, 10)
+- **Calibrate upgrade prices to a pace:** a few cheap upgrades are affordable after the first few games; nicer ones cost more, while harder and better play earns more. Aim for an upgrade roughly **every 2–3 games at first, stretching to every 4–5 games** once each game's easy upgrades are bought. (decision 10)
 
 ### Speaking
 - **Speaking is core and grows through the game,** mostly in Cook and Conversations; every mode's design sheet lists its natural speaking points. (H4)
@@ -223,7 +224,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 ### Story, arcs and progression
 - **Arc 1 is the Birthday:** cook each guest's order, set the table, find the sweets, pack the sweet box, candles, then the Story by the Fire. Eid is a later arc. (H36)
 - **Then repeatable day-out trips** (beach first): pack → packed lunch → simple travel spot-it → a three-game food stall → place games (Snap at every stop) → the Story by the Fire. (H37, H38)
-- **Standalone arcs:** Volunteering at the clinic (4–5 patients a visit), **quilt-making with Big Ma**, and the proposed Monsoon and Who did it?. (H39, decision 4)
+- **Standalone arcs:** Volunteering at the clinic (4–5 patients a visit), **two Big Ma arcs, quilt-making and making outfits**, and the proposed Monsoon and Who did it?. (H39, decision 4)
 - **Every arc ends with the Story by the Fire:** a picture book of what the child actually did, voiced by Nani, with gaps to fill. (H40)
 - **The progress marker is a bookshelf, not the quilt:** at the "book end" review with Nani, the arc's book goes on the shelf, name on the spine, and the hub fills up. (I14, decision 4)
 - **The story is carried by picture and sound,** never text the child must read; short, skippable story beats are fine. (I13)
@@ -350,7 +351,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Nani, based on Zafar's mum, is the guide everywhere** and calls every child *beta*; sheet v2 is canonical (mole on her right, the bracelet, two gold rings, no bangles). (I3, I4)
 - **Nani's house is in Kutch:** modern, with culture as a hint. (I5)
 - **The doctor is Hannah's granddad:** always competent, kind and in charge; the comedy is never at his expense. (I6)
-- **Big Ma** (the wife's great-grandma) is the family seamstress who sings as she sews, always in a headscarf; name TBC; relationship never explained. (I7)
+- **Big Ma** (the wife's great-grandma) is the family seamstress who sings as she sews, always in a headscarf; called **"Big Ma"** in the game; relationship never explained. (I7, decision 11)
 - **Simba and Zazu,** Zafar's cats, bring mischief, never peril, and never block play. (I8)
 - **Kasuku the parrot repeats words in family voices in idle moments only;** Isa the baby is talked about, never to. (I9, I10)
 - **Ali, Layla, Nana, Ma and the guests are generic,** not real family; each orders for themselves. (I11)
@@ -380,19 +381,19 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **The *mirchi* plural:** *mirchi* only for now; Zafar to confirm with Mum. (decision 5)
 - **Words still to ask Mum:** *kere karein* ("who did it?"), which Zafar doesn't recognise; green pepper (no Kutchi word: drop it from skewers?); the maani turner *moikyo*; *Muke sekelo khape*. (G25, H20, H21)
 - **A skip for spoken replies in Conversations** is TBC. (E26)
-- **Big Ma's in-game name** is TBC. (I7)
-- **Big Ma's arcs:** does quilt-making replace "Making clothes with Big Ma" or sit alongside it? (H39, decision 4)
 
 ## Decisions log, 30 Sept
 
 Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Conflicts table numbers in brackets):
 
 1. **Hints cost lightbulbs** (the hints badge); nothing costs the ear star any more. (#5)
-2. **The voice star goes;** correct speaking earns more pocket money. The child isn't told the mechanism: simply, the better they do, the more pocket money (and the bigger the pile). (#58)
+2. **The voice star goes;** correct speaking earns more pocket money. The child isn't told the mechanism: simply, the better they do, the more pocket money. (#58)
 3. **The accuracy tick fills gold / grey,** not green/red. (#59)
-4. **The quilt becomes Big Ma's quilt-making story arc;** the progress marker is a bookshelf that fills with one named book per finished arc at the "book end" review with Nani. (#6)
+4. **The quilt becomes Big Ma's quilt-making story arc** (separate from her making-outfits arc); the progress marker is a bookshelf that fills with one named book per finished arc at the "book end" review with Nani. (#6)
 5. **Use *mirchi* only for now** (no *marcha* plural); Zafar will confirm with Mum. (#25)
 6. **Everything stays public** (repo, recordings) until the game or landing page is published and people start looking; then revisit. (#41)
 7. **Commercial model: TBC;** both ideas stay open, no rule. (#42)
 8. **Mithai at a celebration is fine;** never lollies, biscuits or sweets as rewards to the child (the clinic lolly goes). (#43)
 9. **Unattended runs may make art of family members;** all consent is given; Zafar supervises only each person's first character sheet. Supersedes "real people's art only with Zafar present". (#66)
+10. **Pocket money model:** pay by volume × quality (hints, ticks, time) × difficulty; upgrade prices calibrated so an upgrade comes every 2–3 games at first, stretching to 4–5. (Zafar, 30 Sept)
+11. **Big Ma is called "Big Ma"** in the game. Quilt-making and making outfits are two separate Big Ma arcs. (Zafar, 30 Sept)
