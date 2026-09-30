@@ -41,7 +41,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 > 13. **Art is made in ChatGPT via Claude in Chrome** from one ready-to-paste block; a paid API only for a rapid prototype under $2. (D1, D3)
 > 14. **Sessions:** at most ~4 at once, no helper sessions, complete briefs, `bump_version` and one push to `main` at the end. (B1, B3, B4, B6, B7)
 > 15. **Be cost-conscious** and recommend a model and effort level with every suggested action. (A11, A12)
-> 16. **The family is Khoja Muslim:** halal only, no Hindu religious markers; never sweets, lollies or biscuits as rewards. (I1, I2)
+> 16. **The family is Khoja Shia Ithna'asheri Muslim** (internal only, never named in the game or public material): halal only, no Hindu religious markers; never sweets, lollies or biscuits as rewards. (I1, I2)
 
 ---
 
@@ -114,7 +114,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 ### How to review
 - **The builder doesn't mark its own homework:** a fresh session or the orchestrator reviews (Fable for docs and designs); never pass on a "done" unseen. (C4, C17)
 - **List flaws before saying anything is right:** zoom ×2 and check clipping, spacing, padding, alignment, overlap, crowding, unused lit things, labels, mock-up differences. (C3)
-- **Screenshot every visually distinct state, uncropped, at 390×844, 1366×768 and 16:10 laptops,** across levels 1–4, one written line per state. (C2, C11, C16)
+- **Screenshot every visually distinct state, uncropped, at phone landscape 844×390 (plus 800×360, the tightest common phone, in the full matrix), 1366×768 and 16:10 laptops (1440×900, 1280×800),** across levels 1–4, one written line per state; one upright phone shot checks the rotate card. (C2, C11, C16, decision 15)
 - **While iterating: laptop only, changed screens only, one shot each.** The full matrix and tests only before the final push. (C8)
 
 ### Standing checks
@@ -346,7 +346,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 ## 9. Characters, family and culture
 
-- **The family is Khoja Shia Muslim, with Kutch and East African roots:** no bindi, tilak, sindoor, deities or temple items; halal only; modest clothing. (I1)
+- **The family is Khoja Shia Ithna'asheri Muslim, with Kutch and East African roots** (internal note only: never named in anything players or the public read): no bindi, tilak, sindoor, deities or temple items; halal only; modest clothing. (I1)
 - **Never sweets, lollies or biscuits as rewards to the child** (an apple instead); **mithai at a celebration** (birthday, party, sweet box) is fine. (I2, decision 8)
 - **Nani, based on Zafar's mum, is the guide everywhere** and calls every child *beta*; sheet v2 is canonical (mole on her right, the bracelet, two gold rings, no bangles). (I3, I4)
 - **Nani's house is in Kutch:** modern, with culture as a hint. (I5)
@@ -400,3 +400,4 @@ Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Confli
 12. **English:** no written English for the child, ever. Story mode may speak English and then repeat in Kutchi where needed, especially at the start for longer exposition, avoided where simple lines and visuals will do. (Zafar, 30 Sept, reviewing CLAUDE.md)
 13. **Engine and voices:** every word must be a human recording, but the sentence can be built by the engine; statistical analysis of simulated play identifies the most-used phrases, which are recorded whole. (Zafar, 30 Sept)
 14. **Handover timing:** don't wait for a full chat; hand over at step boundaries and around 70% context rather than compacting. (Zafar, 30 Sept)
+15. **Phone screenshots are landscape:** 844×390 (iPhone 12–14, one of the three most-used phone sizes) as the main phone size, 800×360 (the most-used Android size and the tightest height) in the full matrix, plus one upright shot for the rotate card. (Zafar, 30 Sept)

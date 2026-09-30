@@ -12,7 +12,7 @@ A reviewer who is not the builder fills in the results, flaws first.
 
 1. **While iterating:** laptop view (1366×768) only, changed screens only, one screenshot each, looked at and fixed. The full review below runs once, before the one push to `main`.
 2. Run every **auto** line that applies to the touched modes.
-3. Screenshot every visually distinct state, uncropped, at **390×844** (phone), **1366×768** (laptop) and **1440×900** / **1280×800** (16:10 laptops), across levels 1–4.
+3. Screenshot every visually distinct state, uncropped, at **844×390** (phone landscape, iPhone 12–14), **800×360** (small Android landscape, the tightest height), **1366×768** (laptop) and **1440×900** / **1280×800** (16:10 laptops), across levels 1–4. One upright phone shot (390×844) checks the "please rotate" card.
    - "Every state" means every state that draws something different, not just start, middle and end: a hob heating, turned down, pan lifted, boiled over; 1–4 burners where the count changes the layout; end screens with all right / mixed / none, 0 / 1 / 2 / 3+ hints, new best / good / plain.
    - Each shoot script names its states in its header.
 4. Zoom ×2 on the focal object of each shot and go through the **eye** lines. List every flaw first, then write one line per state. "The screenshot exists" doesn't count.
@@ -32,7 +32,7 @@ A reviewer who is not the builder fills in the results, flaws first.
 | TXT-02 | Long headlines shrink first, then wrap; they never overflow their card | F7 | eye → auto |
 | TXT-03 | The guide box shows at most 2 lines; a card row shows 1 | F7 | eye → auto |
 | TXT-04 | Outlines, glows and highlights around text have room and aren't cut by the card edge | F7 | eye |
-| TXT-05 | No text is smaller than 14 px (L4) at 390×844, chip words included; words stay readable at a glance on a phone | F2 | eye → auto |
+| TXT-05 | No text is smaller than 14 px (L4) at 800×360 and 844×390, chip words included; words stay readable at a glance on a phone | F2 | eye → auto |
 | TXT-06 | Only Nunito at the four sizes: L1 22/800, L2 20/800, L3 17/700, L4 14/600 | F2 | eye → auto |
 | TXT-07 | Kutchi on cards is lower case, with Kutchi number words and no full stop | F10 | eye |
 | TXT-08 | Every spoken line is also written, with the read-along underline as it's said | E3, E4 | eye |

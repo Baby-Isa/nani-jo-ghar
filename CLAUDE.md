@@ -35,7 +35,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 13. **Art is made in ChatGPT via Claude in Chrome** from one ready-to-paste block. A paid API only for a rapid prototype when Zafar can't respond, under $2.
 14. **Sessions:** at most ~4 at once, no helper sessions, complete briefs, `python3 build/bump_version.py` and one push to `main` at the end.
 15. **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
-16. **The family is Khoja Muslim:** halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
+16. **The family is Khoja Shia Ithna'asheri Muslim** (internal note only; never named in anything players or the public read): halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
 
 The full rulebook, grouped by topic, is `docs/process/rules.md`. **Read the sections that apply before any build or design work.** Every rule lives there once; other docs link to its IDs rather than restating it.
 
