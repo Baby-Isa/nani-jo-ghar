@@ -11,8 +11,8 @@
 ## The path (Zafar, 29 Sept)
 | # | Milestone | % | Why now / what it needs | When |
 |---|---|---|---|---|
-| 1 | **Lock Cook** | 80 | Zafar's play-test feedback on the six v2 stations, then one follow-up per station; the cream band fill (done 29 Sept) | This week |
-| 2 | **The clinic** (the standalone *Volunteering at the clinic* arc's mode) | 30 | **The clinic's doctor (Hannah's granddad) visits in about 10 days (~9 Oct):** record his voice (Round 4 Section G, his instructions G108+) and show him the game. Zafar plays it → audit → feedback → build to the design system | Now → ~8 Oct |
+| 1 | **Lock Cook** | 86 | Zafar's play-test feedback on the six v2 stations, then one follow-up per station; the cream band fill (done 29 Sept) | This week |
+| 2 | **The clinic** (the standalone *Volunteering at the clinic* arc's mode) | 55 | **The clinic's doctor (Hannah's granddad) visits in about 10 days (~9 Oct):** record his voice (Round 4 Section G, his instructions G108+) and show him the game. Zafar plays it → audit → feedback → build to the design system | Now → ~8 Oct |
 | 3 | **Arc 1's other modes:** Put it there (set the table, pack the sweet box) and Hide and seek (find the sweets) | 25 | Built from Tidy up's `place`/`pack` engine and Find it's search; each rebuilt to the design system with the shared pieces | After the clinic |
 | 4 | **Arc 1's story layer:** beats, the hub changing, the candles finale, the Story by the Fire, the first launch re-pointed at the Birthday | 20 | Needs 1–3's day-log events. **Claude's suggestion:** give every mode its one-line day-log hook as it's built (cheap), and build the book and beats straight after 3, *before* the trip, because Arc 1 end to end is the release candidate | After 3 |
 | 5 | **The first day-out trip** (the beach: pack, packed lunch, travel spot-it, stall, sandcastle/kite, the Story by the Fire) | 5 | Mostly existing modes; new: spot-it out of the window, the stall dishes, beach art | After 4 |
@@ -48,6 +48,9 @@
 | **Daar v2** (chop, tadka, stir) | ✅ live | $0 | Stirs shown as a Kutchi word. **To record:** Nani's "Chop these". Confirm *hakro* as the first stir count. L4 closed card + paid peek, neutral don't rows (polish). **Still open:** gold settle on don't rows and Nana's ✓ during the stir (ui.js head rule, queue note). | `daar-v2.md` |
 | **Pantry v2** (fetch) | 🟡 live, polish pending | – | Waiting on the final background render; then a polish pass (plans doc A3). | `pantry-v2/` |
 | **Station select, day flow, title screen** | ⏸ | – | Plans doc A4; title screen parked by Zafar. | `docs/design/plans-remaining-2026-09-29.md` |
+
+
+**30 Sept, morning:** the Cook v3 art is in (the hob family, knobs, flames, faces), and **daar, samosa and sekelo v3 are live** (`build/reports/daar-v3.md`, `samosa-v3.md`, `sekelo-v3.md`); chaat's chop re-tested after daar's chop.js change (pass). Maani, chaat and chai v3 are next (briefs ready). **Clinic:** Zafar's play of the v2 prototypes (§13–13k) is fixed and live (`build/reports/clinic-v2-fixes.md`, with the audit table); his review of drinks, fever, boing, eye and foot is next.
 
 **Shared Cook pieces**
 | Piece | State |
