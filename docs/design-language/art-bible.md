@@ -1,5 +1,17 @@
 # Nani jo Ghar: art bible
 
+
+> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
+> - Liquids drawn as discs masked by the pot's inner rim (§8) → pre-rendered pictures, cross-faded; never drawn dots or discs (D11)
+> - "Default: the image API's native transparent background" → art is made in ChatGPT via Claude in Chrome; no alpha, so batches use magenta `#FF00FF` for food and grey `#808080` for steel, glass, wood, tools and characters, then key it (D1, D3, D22). See `art-pipeline.md`
+> - Hands (§7) and the hands sections of the prompt templates → parked, none in Cook (H13); the hand work is kept in `art-pipeline.md` under "Hands (parked)"
+> - Quilt (in the cast notes) → bookshelf (decision 4)
+> - Star-related art and UI (ear, hand, tick stars) → three badges (H5)
+> - "No private photos" wording in older prompts → superseded by decision 9
+> - Chapter 1 "thick outlines / cel shading" style line → retired; this bible's 3D-film look stands
+> - Open in this file: "tappable items get the most saturation in the frame" and "one accent pattern per surface" (§2) are not in the rulebook; they live here.
+> - §5 (layers, pivots, containers, export, transparent backgrounds), §9 (prompt templates) and §10 (visual QA checklist) moved to `art-pipeline.md`.
+
 **Started:** 24 Sept 2026. **Status:** v1, the single source of truth for every image prompt and every art review. It will be amended as the Cook with Nani stations settle; parts marked **(provisional)** are expected to change.
 
 **Where the decisions came from:** `docs/archive/art/art-direction-options.md` (section 10, the chosen 3D-film look), `docs/archive/cook/cook-with-nani-phase-a-design.md` (section 2, what went wrong and the agreed fixes), `docs/archive/art/Asset Building Plan.md` (hands, cats, ambient motion, real-life likeness), `docs/archive/design-v1/game-modes-v2.md` (the eight modes), `docs/archive/art/Asset Naming Convention.md` (file names, slicing).
@@ -173,53 +185,35 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 
 ---
 
-## 5. Layers and motion
 
-**The rule (from the asset plan):** anything that moves, is tapped, changes state or can be covered is its own layer. Everything else is baked into the background.
+## 5. Layers and motion (moved; ambient motion kept here)
 
-| Baked into the background | Separate sprite |
-|---|---|
-| Walls, floor, window frame, worktop, cabinets, fixed shelves, fixed hob body, fixed decor | Every tappable item, every container that receives items, characters, cats, hands, tools |
-| The station surface (board, chakla, hob) **only if it never moves** in that station | Hob knobs (they turn), flame rings, pans and pots |
-| | Occluders cut from the background: the island front, a cushion, the stall counter front |
-| | Ambient motion: curtain, fan blades, plants and leaf shadows, bunting flags, lanterns, clock hands, birds, steam wisps, dust motes |
-| | Story dressing (Eid decorations) |
+Moved to `docs/design-language/art-pipeline.md` (§5: layers, pivots, containers, export, transparent backgrounds). The ambient-motion table from the asset plan is kept here:
 
-**No doubled surfaces:** a surface is either baked or a sprite, never both. No board drawn on a background that already has one; no chakla on a chopping board.
+> from: docs/archive/art/Asset Building Plan.md §4 Making scenes feel alive (ambient motion)
 
-### Pivots
+### Ambient motion: making scenes feel alive
 
-Record each pivot in the asset list as normalised `[x, y]` (0–1 from the sprite's top-left).
+**Rule for every background from now on: anything that should move is its own layer with a pivot point**, not painted into the background. Code does the motion (a gentle sine sway, flicker, particles), so the art cost is mostly just separating the layers.
 
-| Sprite | Pivot |
-|---|---|
-| Hands | Centre of the cuff where the arm leaves the frame edge |
-| Tools (knife, ladle, spatula, rolling pin) | The centre of the grip, where the hand holds it |
-| Jugs and pans (for tilting) | The lower front corner under the spout or lip |
-| Containers, standing items | Bottom centre (the contact point) |
-| Character heads, cat heads | The base of the neck |
-| Cat tails | The tail root |
-| Curtains, bunting, lanterns | The top attachment point (rail, string, chain) |
-| Fan blades, clock hands, hob knobs | Centre of rotation |
+| Motion | Art needed | Done in code |
+|---|---|---|
+| Bunting swaying (Eid) | Each flag its own small sprite on a string sprite | Per-flag sway with an offset, a gust every so often |
+| Curtain in a breeze | Curtain as a separate layer | A slow skew/wave |
+| Ceiling fan | The blades as a separate sprite | Rotation |
+| Steam (chai, daal, rain on a hot road) | One soft wisp sprite | Particles |
+| Flames on the hob | Already drawn in code | Flicker |
+| Dust in a sunbeam | One soft dot | Drifting particles in the light shaft |
+| Plants, leaf shadows on the wall | Plant and leaf-shadow layers | Sway |
+| Washing line, a kite through the window | Each item a sprite | Sway, a kite bobbing |
+| Birds on the windowsill or wire (pigeons, sparrows) | 3–4 poses (sit, peck, hop, fly off) | Occasional hop; fly off when tapped |
+| Kasuku, the parrot (African grey, windowsill or a perch — hub, doorway, kitchen) | Pose set: perched, head tilt, beak open "talking", wings flapping, walking along the perch. Head a separate layer | Idle tilts and the odd "talking" beat when it repeats a word (behaviour: `docs/game-design/cast.md`); never during a task |
+| Lanterns and fairy lights (Eid) | Lantern sprite; one light-dot sprite | Glow pulse, twinkle |
+| Clock | Hands as separate sprites | Ticking |
+| Rain on the window, drips (Monsoon) | Drop and streak sprites | Particles |
+| Cats, Nani | See section 3; Nani's breathing and blinking already exist | Breathing, blinking, tail flicks |
 
-### Containers
-
-Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (the inside and far rim) and **front** (the near rim), so items sit inside. In T view most containers need only one layer plus a code mask for the inner rim.
-
-### Export
-
-- **Transparent PNG from the generator**, stored as **WebP with alpha** in `assets/` (lossless for hands and anything with fine edges; quality about 90 otherwise).
-- **Trim** to the item's own bounding box, then **pad 16 px** of transparency on every side.
-- **Stored size:** the largest size the sprite appears on the 1600×900 stage, times 1.5 for sharp phones. Backgrounds are exactly 1600×900.
-- **Backgrounds are 16:9.** If the generator can't output 16:9, ask for the nearest landscape size with the scene kept inside a central 16:9 band, then crop. Never stretch.
-- **Naming:** as in `docs/archive/art/Asset Naming Convention.md`, with the view and state as suffixes: `<item>-<view>-<state>`, e.g. `onion-t-chopped.webp`, `milk-jug-f.webp`, `hand-b1-t.webp`, `hand-b1-t-girl.webp`. **(provisional)**
-
-### Transparent backgrounds vs the magenta sheet
-
-- **Default: the image API's native transparent background**, one item per image.
-- **Magenta sheets (`#FF00FF`) are legacy**, for ChatGPT-web batch sheets only. Slice them with the method in the Naming Convention doc (hard key, whole blobs by centroid, 2 px erode).
-- **Never use magenta for steel, brass, glass, glowing or wispy items:** the 3D look makes metal and glass pick up a magenta tint in their reflections. Those must use native transparency or a neutral mid-grey background.
-- **Glass and steam need partial alpha,** so they always come from native transparency, never from a key.
+Keep it subtle: 2–4 moving things per scene, never near a tap target, and switched off by the "reduce motion" setting.
 
 ---
 
@@ -364,85 +358,10 @@ Reskins change **only the skin tone, sleeve and accessories**, and they are made
 
 ---
 
-## 9. Prompt templates
 
-Every prompt = **style block** + the template + **negative block**. Attach the references each template names. Fill in `{…}`.
+## 9 and 10. Prompt templates and visual QA checklist (moved)
 
-### Style block (every prompt starts with this)
-
-> Stylised 3D animated-feature-film look: soft global illumination, gentle warm fill, believable materials (marble, brushed steel, polished brass, pale oak, cotton, food with soft subsurface), clean simplified surfaces with restrained detail, appealing slightly chunky proportions, no outlines. Warm late-morning sunlight from the upper left; soft shadows falling to the lower right; a soft contact shadow wherever something touches a surface. Bright, warm, clean palette. Match the rendering of the attached style reference exactly.
-
-### Negative block (every prompt ends with this)
-
-> Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel shading, no flat vector style, no painterly brushwork, no photorealism. No depth-of-field blur, motion blur, vignette, lens flare or bloom. No second light source. No extra objects, props, people or background clutter beyond what is described. Correct anatomy: five fingers per hand. No bindi, tilak or other Hindu religious markers.
-
-### (a) Character sheet from photos
-
-Attach: the photos (private), `sources/cook/nani-sheet.webp` for style.
-
-> Create a character sheet for a game character, based on the person in the attached photos, in the style of the attached style reference. Keep the likeness in the features that survive stylising: face shape, {glasses}, {headscarf: how it's worn, colour, pattern}, build, {jewellery}. Stylise the face: large expressive eyes, soft rounded forms, simple readable mouth, smooth skin. She wears {clothing}. On one flat light-grey background, laid out in clear panels: a full-body turnaround (front, three-quarter, side, back); an upper-body front view cut at the waist; head-and-shoulders expressions {neutral, talking, smile, big happy, thinking, surprised, worried, gentle disapproval}; both hands open showing {bangles, rings, sleeve cuff}; close-ups of {accessories and fabric motif}; and a strip of flat colour swatches for skin, hair, eyes and main fabrics. The same person in every panel, identical clothing and accessories.
-
-### (b) A pose from a character sheet
-
-Attach: the signed-off character sheet only.
-
-> Using the attached character sheet as the only reference, show {name} {pose, e.g. "pointing upwards with her right hand, hand above waist height"} with the expression {expression}. Upper body, cut at the waist, front view, as seen standing behind a kitchen island. Keep her face, glasses, headscarf, clothing, embroidery, jewellery and colours exactly as on the sheet. Transparent background.
-
-(For an expression change on an existing pose, use (d)-style in-place editing: "Change only the {mouth/eyes}; every other pixel identical.")
-
-### (c) An item in a given view and state
-
-Attach: `sources/cook/props-sheet.webp` (materials only). Never the item's other states.
-
-> A single {item} {state, e.g. "chopped into small even cubes, heaped loosely"} for a cooking game. View: {F: "front view, camera at the item's mid-height looking about 10 degrees down, standing on its base" | T: "seen from directly above, straight down, round things as circles"}. Real size about {size} cm; draw it as that size would look next to a {reference item}. Centred, filling about 70% of the frame, a soft contact shadow directly under it towards the lower right. Transparent background.
-
-For a state, write the state into the prompt itself (e.g. "small curved, translucent, layered pieces of red onion in a loose pile, seen from directly above"); don't attach the raw item image or use edit mode (section 8). Keep other objects out of item prompts ("only this food in frame: no hands…"): a scale comparison like "next to a child's hand" makes the model draw the hand.
-
-### (d) Edit in place (item onto an empty station)
-
-Attach: the empty station background; a mask covering only the placement area if the API supports it.
-
-> Edit the attached image. Add exactly one {item, state} resting on the {worktop / board / pan} at {position, e.g. "the centre of the board"}, seen from directly above like everything else in the image. Size it as a real {item} relative to the {board, about 25 cm across}. It sits on the surface with a soft contact shadow towards the lower right, lit by the same sunlight from the upper left. Change nothing else: every other pixel stays identical.
-
-**Cut-out:** align, diff against the empty background, keep the largest changed blob, then split it into the **item** (opaque) and its **shadow** (pixels that are only darker, kept as a separate semi-transparent layer). Reject if anything outside the item and its shadow changed.
-
-### (e) A hand pose
-
-Attach: the signed-off reference hand (after it exists); before that, the style reference.
-
-> The right hand and forearm of a child of about 7, {skin tone}, entering from the bottom edge of the frame, {T: "seen from directly above, back of the hand up, over a worktop" | E: "at eye level, back of the hand towards the viewer"}. Pose: {grip description, e.g. "fingers curled around an invisible horizontal handle, as if holding a knife, thumb along the top"}. No tool or object in the hand. Slender hand, long fingers relative to the palm, smooth, no visible bones, knuckle ridges or veins. Sleeve: a plain white linen shirt sleeve rolled back to between the elbow and the wrist, bare forearm below, the roll just showing at the frame edge (or cropped out); no embroidery. Same hand, skin, size and sleeve as the attached reference hand. Transparent background.
-
-### (f) A reskin (sleeve and accessories only)
-
-Attach: the master hand image.
-
-> Edit the attached image. Change only the sleeve and accessories: {e.g. "replace the sleeve with a plain, modern rolled-back cotton sleeve in a soft dusty pink and add three thin glass bangles in red, green and gold at the wrist"}. Keep the hand exactly the same: identical outline, finger positions, skin, lighting and size. Nothing else changes. Transparent background.
-
----
-
-## 10. Visual QA checklist
-
-Review every contact sheet on **both a black and a white backing**, and every placed asset in an in-game screenshot.
-
-| # | Check | Reject if |
-|---|---|---|
-| 1 | **Camera matches the background** | A T sprite in an E scene or the reverse; a ¾ view anywhere; ovals where circles are expected in T |
-| 2 | **It touches a surface and has a shadow** | Floating; standing on a lip, edge or shadow instead of a surface; shadow in the wrong direction |
-| 3 | **Scale matches the reference** | Size order inverts (section 4); more than 1.5× true size; hands not at 1.2× |
-| 4 | **No doubled surfaces** | Board on board, chakla on a board, a baked item plus its sprite |
-| 5 | **The tap target is obvious** | Below about 90 px; low contrast with its background; covered by a cat, hand or decoration |
-| 6 | **Timing cue where the eye already is** | A ring, gauge or verdict away from the item being watched; gauges floating on the hob |
-| 7 | **Clean alpha** | A coloured fringe (check on black), halos, clipped edges, a missing 16 px pad, stray pixels |
-| 8 | **Light agrees** | Highlights or shadows from a second direction |
-| 9 | **Style holds** | Outlines, cel shading, photographic textures, clip-art shine, blur |
-| 10 | **Character consistent** | Face, glasses, headscarf, clothing colours or accessories differ from the sheet |
-| 11 | **Sleeve consistent** | Sleeve, colour, bangles or hand outline differ from the master |
-| 12 | **No text** | Any letters or numbers, even fake ones |
-| 13 | **Cultural accuracy** | See below |
-| 14 | **Finger count (hands)** | Count every digit, at full size, and write the count down for each hand. Five per hand (thumb and four fingers) unless the pose hides some behind the palm; hidden digits must be where the pose puts them, not missing. Counting frames E3 raise exactly 1, 2, 3, 4, 5 (in "4" the thumb is folded and must not stick out). Reject: a missing or extra digit, two fingers merged, two hands fused into one shape |
-| 15 | **Hand scale matches (hands)** | Forearm width just above the sleeve differs from the reference by more than about 5% after the scale normaliser (`build/gen_assets.py`, `forearm_widths()`); the hand looks bigger or smaller than its neighbours on the contact sheet; the normaliser had no room to grow it (flagged in its log) |
-| 16 | **Hand camera, light and skin (hands)** | T poses not seen from straight above; E poses showing the palm when the pose says the back of the hand; a forearm entering from the side when the pose doesn't need it; light not from the upper left like the reference; skin not matching the reference after the skin normaliser (orange palms, pale or pink hands) |
-| 17 | **Tool gaps (grips)** | A tool drawn in the hand (tools are separate sprites); no clear gap where the tool goes; a keyed-out gap that slices through a finger or leaves a red rim |
+Moved to `docs/design-language/art-pipeline.md`.
 
 **Cultural accuracy (a Khoja home, Kutch and East Africa):**
 - **Clothing:** kurta, kurti, salwar, dupatta or headscarf; modest cuts; caps on men as the family confirms. No Hindu religious markers.
@@ -451,6 +370,51 @@ Review every contact sheet on **both a black and a white backing**, and every pl
 - **Decor:** Kutch craft as accents (mirror-work, ajrakh, bandhani, brass); no deity images, no temple items.
 
 ---
+
+---
+
+## Set dressing
+
+> from: docs/archive/art/Asset Building Plan.md §6 Set dressing: East African and Kutch objects
+
+### East African and Kutch objects
+
+**Restraint rule (decided with the family, 24 Sept 2026): at most 1–2 cultural nods per scene**, rotated between scenes and visits rather than all shown at once, introduced gradually, never clutter. Zafar's wife: "don't do too much, it will look old again" — the game is modern-looking with hints and nods, not a caricature. See also the Art Bible, section 1. Object first, then a one-line description of how it looks, then which scenes it suits.
+
+### East Africa — chosen (24 Sept 2026)
+
+| Object | How it looks | Suits |
+|---|---|---|
+| **Tandoor** | Large clay oven, wide mouth, set into a low brick surround | **Background only**, somewhere in the yard. Replaces the charcoal jiko stove (removed) |
+| **Vacuum flask of chai** | Tall metal or patterned plastic flask with a cup-lid | Hub, guests arriving, the dastarkhwan |
+| **Blue-rimmed enamel mugs and plates** | White enamel with a speckled dark-blue rim and edge chips | Dastarkhwan, kitchen shelves, yard meals |
+| **Kanga cloth** | Bright block-printed cotton, bold border, folded stacks or worn as a wrap | Market stalls, washing line, Ma or a guest's dress |
+| **Woven mkeka mat** | Flat plaited palm-leaf mat, natural tan with a simple woven pattern | Floor seating, dastarkhwan, yard |
+| **Mbuzi, the coconut-grater stool** | Low wooden stool with a curved serrated blade fixed at one end, sat astride to grate | Kitchen background, a cook-along beat |
+| **Carved Swahili-style door** | Dark wood, deep geometric and floral relief carving, brass studs | Bazaar or hub exterior establishing shot |
+| **Woven baskets (kiondo)** — the family's own suggestion | Tightly coiled woven fibre, rounded body, often a leather or cloth trim and carry strap | Bazaar (Find it), hub shelves, carried by shoppers |
+| **Three-legged wooden stool (kigoda)** — the family's own suggestion | Low, round-topped, three splayed legs, plain turned wood | Hub, kitchen, yard, bazaar stalls |
+| **Short straw broom (ufagio)** — the family's own suggestion | A tight bunch of stiff grass or straw bound at the top into a handle, no long shaft; used bent over | Yard, tidy-up scenes, propped by a doorway |
+| **Panga (machete)** — the family's own suggestion | A long, broad steel blade with a plain wooden handle | **Tool only, hanging**, on a hook in the yard or a store; never handled, since it's a children's game |
+
+**Not now** (suggestions the family didn't pick; drop unless a later scene calls for one): brass coffee pot, kerosene lamp, tin trunk, transistor radio, mosquito net, crate of soda bottles, sugarcane, mango tree, Maasai shuka blanket.
+
+### Kutch — suggestions, same restraint rule
+
+Not yet chosen; a list to work from.
+
+| Object | How it looks | Suits |
+|---|---|---|
+| Mirror-work cushions (abhla) | Embroidered cotton with small round mirror discs stitched in, bright thread borders | Hub seating, dastarkhwan, bedroom |
+| Bandhani cloth | Tie-dyed fine cotton or silk, small dot patterns in bright colours on a deep ground | Dupattas, cushion covers, folded stacks on a shelf |
+| Brass and copper vessels | Hand-hammered pots and lotas, warm gold and reddish sheen, dented and polished | Kitchen shelves, serving, the courtyard |
+| Charpai | Low wooden frame strung with woven rope or webbing in a criss-cross pattern | Yard or courtyard seating, an outdoor nap spot |
+| Clay water pots (matka) | Rounded unglazed terracotta, a narrow neck, sometimes on a stand or ring | Kitchen, yard, bazaar |
+| Rogan-painted cloth | Fine, raised, glossy castor-paint scrollwork in bright colour on dark cloth | A framed wall piece, a special cushion or cloth |
+| Carved wooden chest | Dark wood, brass corner fittings and studs, sometimes a domed lid | Bedroom, storage, the wedding arc (dowry chest) |
+
+---
+
 
 ## 11. Open questions for Zafar
 
