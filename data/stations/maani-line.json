@@ -3,9 +3,16 @@
  "station": {
   "name": "Maani line",
   "verb": "Roll and cook",
-  "goal": "Tap a dough plate and roll the dough to the gold ring, then tap it onto the tawa. Flip it on the green, lift it on the green. Tick when you've made what they asked for."
+  "goal": "Tap a dough pile and roll the ball to the gold ring, then tap it onto the tawa. Flip it on the green, lift it on the green. Tick when you've made what they asked for."
  },
- "words": {},
+ "words": {
+  "ph-turner": {
+   "kutchi": null,
+   "english": "turner",
+   "gender": "unknown",
+   "src": "placeholder, TO RECORD with Mum (29 Sept play-test Q15): the flat wooden turner the family flips maani with; Zafar's word sounds like 'moikyo', unconfirmed. Not shown or spoken yet: the turner is a picture only (js/cook/stations/maani-line.js)"
+  }
+ },
  "mechanic": {
   "levels": [
    {

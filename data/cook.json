@@ -567,14 +567,16 @@
    "kutchi": "adh",
    "english": "half",
    "say": "udd",
-   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet"
+   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet",
+   "joinless": true
   },
   "ph-full": {
    "kutchi": "aako",
    "english": "full",
    "src": "Mum 26 Sept (Section B, B5; docs/kutchi-grammar-notes.md §24) and Zafar's spelling, 26 Sept: aako, with two a's (replaces ako / aki)",
    "src_change": "was bharelo (Zafar 25 Sept, phonetic)",
-   "_use": "aako cup = a whole cup, the one used in cooking (Zafar 26 Sept: use aako cup for recipe amounts). A filled-up cup is bharelo cup; bharelo / bhareli also means heaped (bhareli chamchi). Cup has no gender: one cup is hakri cup. The Chai tray says it on its own, like adh: Ne aako."
+   "_use": "aako cup = a whole cup, the one used in cooking (Zafar 26 Sept: use aako cup for recipe amounts). A filled-up cup is bharelo cup; bharelo / bhareli also means heaped (bhareli chamchi). Cup has no gender: one cup is hakri cup. The Chai tray says it on its own, like adh: Ne aako.",
+   "joinless": true
   },
   "ph-big": {
    "kutchi": "wadho",
@@ -2973,7 +2975,7 @@
  },
  "art": {
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
-  "props": ["dough-ball-bajr", "chapati-raw-bajr", "chapati-half-bajr", "chapati-puffed-bajr"],
+  "props": ["dough-ball-bajr", "chapati-raw-bajr", "chapati-half-bajr", "chapati-puffed-bajr", "chapati-burnt"],
   "sprites": {
    "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). tool-chakla-t and veg-dungri-whole-t now wired (art.chakla; veg-02.whole, the daal chop). Left out on purpose (no station reads that state yet, or a design call): veg-dungri-peeled-t (no peel step, only whole -> chopped), tool-velan-t (the rolling pin is part of the two-hand grip, js/cook/hands.js), vessel-thali-t (vessel:serving already uses chaat-bowl; swapping to a flat thali needs Zafar's call on dishes other than chaat). tools: a painted tool drawn into a drawn hand (Wave 6b).",
    "dir": "assets/cook/items/",
@@ -3011,16 +3013,20 @@
     "ph-pepper": { "whole": "veg-pepper-whole-t", "raw": "mishkaki-pepper-raw-t", "grilled": "mishkaki-pepper-grilled-t", "charred": "mishkaki-pepper-charred-t" },
     "ph-samosa": { "folded": "samosa-folded-t", "fried": "samosa-fried-golden-t" },
     "cook-maani": {
-     "dough": "dough-ball-t",
-     "raw": { "file": "maani-raw-t", "square": true },
-     "half": { "file": "maani-cooked-half-t", "square": true },
-     "done": { "file": "maani-cooked-puffed-t", "square": true }
+     "dough": "v3/maani/dough-ball-wheat",
+     "raw": "v3/maani/maani-wheat-raw",
+     "half": "v3/maani/maani-wheat-half",
+     "done": "v3/maani/maani-wheat-cooked",
+     "burnt": "v3/maani/maani-wheat-burnt",
+     "bowl": "v3/maani/maani-wheat-cooked"
     },
     "cook-bajrmaani": {
-     "dough": "dough-bajr-ball-t",
-     "raw": { "file": "maani-bajr-raw-t", "square": true },
-     "half": { "file": "maani-bajr-cooked-half-t", "square": true },
-     "done": { "file": "maani-bajr-cooked-puffed-t", "square": true }
+     "dough": "v3/maani/dough-ball-millet",
+     "raw": "v3/maani/maani-millet-raw",
+     "half": "v3/maani/maani-millet-half",
+     "done": "v3/maani/maani-millet-cooked",
+     "burnt": "v3/maani/maani-millet-burnt",
+     "bowl": "v3/maani/maani-millet-cooked"
     },
     "cook-paani": { "jug": "vessel-water-jug-f" },
     "cook-dudh": { "jug": "vessel-milk-jug-f" },
@@ -3070,6 +3076,7 @@
     "chapati-half": "cook-maani.half",
     "chapati-puffed": "cook-maani.done",
     "dough-ball": "cook-maani.dough",
+    "chapati-burnt": "cook-maani.burnt",
     "chapati-raw-bajr": "cook-bajrmaani.raw",
     "chapati-half-bajr": "cook-bajrmaani.half",
     "chapati-puffed-bajr": "cook-bajrmaani.done",
@@ -3818,10 +3825,10 @@
    {"do": "tap", "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"}
   ],
   "maani-line": [
-   {"do": "tap", "what": "the dough plate they asked for"},
+   {"do": "tap", "what": "the dough pile they asked for (a ball flies out)"},
    {"do": "roll", "what": "roll the ball up and down until it fills the gold ring"},
    {"do": "tap", "what": "the maani onto the tawa"},
-   {"do": "tap", "what": "flip it on the green"}
+   {"do": "tap", "what": "flip it on the green (the turner flips it)"}
   ],
   "thread": [
    {"do": "tap", "what": "a bowl: the piece slides down the skewer"},

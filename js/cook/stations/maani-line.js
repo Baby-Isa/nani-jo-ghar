@@ -1,31 +1,33 @@
 /*
- * Combined station: the Maani line, v2 (docs/design/cook-design-system-v1.md §11, §13's burner rule).
+ * Combined station: the Maani line, v3 (docs/design/cook-design-system-v1.md §11, §13's burner rule;
+ * the 29 Sept play-test §5, M3-M9, Q14, Q15: build/reports/maani-v3.md).
  *
  * A two-zone grid, everything centred, aligned on shared lines:
- *  - LEFT (prep): the chakla (rolling board), a faint gold ring etched on it (the size to roll to;
- *    it glows when the maani is right). The velan rolls on its own: no hands anywhere.
+ *  - LEFT (prep): the chakla (rolling board, dark walnut), a faint gold ring etched on it (the size to
+ *    roll to; it glows when the maani is right). The velan rolls on its own: no hands anywhere.
  *  - RIGHT (cook): the shared kitchen kit's compact hob with ONE burner and ONE tawa centred on it
  *    (maani keeps one tawa: the game is rolling the next maani while flipping the one on the tawa),
- *    the heat ring centred on the tawa, the person's face and the knob on the hob's front edge.
- *  - THE SHELF BAND (the bottom 26%): under the chakla, the dough plates (wheat, bajri: always both,
- *    each with the same number of balls, more than anyone orders), a `🔊 word` chip under each
- *    (tap the plate = take a ball, tap the chip = hear it; the speaker alone from level 3); under
- *    the hob, the finished-maani plates, one per kind, where each cooked maani lands.
+ *    the flames peeking out all round it, the heat ring on the tawa's rim, the person's face and the
+ *    knob on the hob's front edge, the flat wooden turner resting on the counter beside the hob.
+ *  - THE SHELF BAND (the bottom 26%): under the chakla, the dough piles (wheat, bajri: always both,
+ *    straight on the band, no tray), a `🔊 word` chip under each (tap the pile = one ball flies out,
+ *    tap the chip = hear it; the speaker alone from level 3); under the hob, the finished-maani
+ *    plates, one per kind, where each cooked maani lands.
  *
- * The flow: tap a dough plate, the ball flies to the chakla (tap the other plate before you start
+ * The flow: tap a dough pile, a ball flies out to the chakla (tap the other pile before you start
  * and it goes back: a slip is free); drag up and down, the velan rolls it out to the ring. Tap the
  * rolled maani and it slides onto the tawa (if the tawa's busy it waits on the board, so roll the
  * next one while this one cooks). On the tawa the ring fills like a clock: tap in the green and
- * the chimta flips it; tap in the green again and the chimta lifts it (a slight puff) onto its
- * plate. Too late and it catches (a darker maani). The tick, when you think you've made what
- * they asked for; the ear star checks the count of each kind (the target is never shown).
+ * the turner flips it (the spotted, half-cooked side up); tap in the green again and the turner
+ * lifts it, flat and cooked, onto its plate. Too late and it's burnt (its own picture). The tick,
+ * when you think you've made what they asked for; the ear star checks the count of each kind (the
+ * target is never shown).
  *
  * Params: order ({kind: n}; kinds "cook-maani", "cook-bajrmaani", or "ph-big+cook-maani" with
  * sizes at level 4). Returns how many were made. Knobs and levels: data/stations/maani-line.json;
  * the tawa's band and rate: data.mechanics.tawa (level 1), made about 15% quicker per level by
- * data.timing.levelSpeed. Art: the chai v2 hob (the kit), the batch 1-3 chakla, velan, tawa,
- * dough and maani states, the thali (assets/cook/items/maani-v2/, build/cut_maani_v2.py), and the
- * chimta (build/gen_maani_v2.py, $0.05).
+ * data.timing.levelSpeed. Art: the v3 set (assets/cook/items/v3/maani/: piles, balls, chakla, velan,
+ * tawa, turner, the four flat maani states per kind), the kit's hob, and v2's thali (maani-v2/).
  */
 (function (global) {
   const Cook = global.Cook;
@@ -38,6 +40,7 @@
 
   const IT = "assets/cook/items/";
   const MV = IT + "maani-v2/";
+  const V3 = IT + "v3/maani/";
   /* ---------- the grid (design px, 1600x900; the canvas is the play area), as chai v2 ---------- */
   const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
@@ -52,23 +55,40 @@
   const PLATE_PITCH = 204;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   const CHIP_Y = 860;
-  const PIN_W = 540;
+  const PIN_W = 440; // the v3 velan is a thicker pin: shorter, so it sits on the board and not over its edges
+  // 30 Sept (M3, M9 / Q14): the dough piles stand straight on the band (no tray), on this line just above
+  // their chips; St.shelfFit sizes them so the gap above equals the gap under the chips (no hop: a pile
+  // doesn't bounce, it squashes a little as a ball comes off)
+  const PILE_BASE = 828;
+  const PILE_K = 0.32; // at most (a pile is 590 px): shelfFit brings it down to the band's rule
+  /* ---------- the v3 art (29 Sept play-test M3-M8; assets/cook/items/v3/maani/, build/cut_cook_v3.py) ----------
+   * Measured from the art (meta.json; build/check_vessel_meta.py checks these against it): each round body's
+   * centre (cx, cy: fractions of the canvas) and radius (r: of the width). Placed by the body, never the box. */
+  const TAWA = { w: 1221, cx: 0.3533, cy: 0.4978, r: 0.3386 }; // M8: the hi-res tawa, handle at right
+  const CHAKLA = { w: 726, cx: 0.4988, cy: 0.4988, r: 0.4746 }; // M4: dark walnut
+  const DISC_R = 0.44; // every maani state (raw, half, cooked, burnt) shares one canvas: the disc's radius
+  const BALL_R = 0.437; // a dough ball's radius (wheat 0.437, millet 0.4347)
+  const TURNER = { ox: 0.19, oy: 0.73, len: 220 }; // M6 / Q15: the blade's middle (the origin), its length on screen
   const INK = { page: 0xf4ecdf, panel: 0xefe5d6, grey: 0xd9d2c7 };
-  const BURNT = 0x8a6a55;
   const ART = [
-    ["mv-chakla", IT + "tool-chakla-t.webp"],
-    ["mv-velan", MV + "velan.webp"],
-    ["mv-chimta", MV + "chimta.webp"],
+    ["mv-chakla", V3 + "chakla.webp"],
+    ["mv-velan", V3 + "velan.webp"],
+    ["mv-tawa", V3 + "tawa.webp"],
+    ["mv-turner", V3 + "turner.webp"],
     ["mv-thali", MV + "thali.webp"],
-    ["mv-ball-maani", IT + "dough-ball-t.webp"],
-    ["mv-ball-bajr", IT + "dough-bajr-ball-t.webp"],
-    ["mv-raw-maani", IT + "maani-raw-t.webp"],
-    ["mv-raw-bajr", IT + "maani-bajr-raw-t.webp"],
-    ["mv-half-maani", IT + "maani-cooked-half-t.webp"],
-    ["mv-half-bajr", IT + "maani-bajr-cooked-half-t.webp"],
-    ["mv-done-maani", IT + "maani-cooked-puffed-t.webp"],
-    ["mv-done-bajr", IT + "maani-bajr-cooked-puffed-t.webp"],
-  ].concat(Kit.art(1, ["tawa"]));
+    ["mv-pile-maani", V3 + "dough-pile-wheat.webp"],
+    ["mv-pile-bajr", V3 + "dough-pile-millet.webp"],
+    ["mv-ball-maani", V3 + "dough-ball-wheat.webp"],
+    ["mv-ball-bajr", V3 + "dough-ball-millet.webp"],
+  ]
+    .concat(
+      // M5: flat states, brown spots, no puff; a burnt one of its own (no more tinting the done one)
+      ["raw", "half", "cooked", "burnt"].flatMap((st) => [
+        [`mv-${st}-maani`, `${V3}maani-wheat-${st}.webp`],
+        [`mv-${st}-bajr`, `${V3}maani-millet-${st}.webp`],
+      ])
+    )
+    .concat(Kit.art(1, []));
 
   Mech.combined("maani-line", {
     station: "maani-line",
@@ -82,17 +102,6 @@
     ],
     run: (host, params) => line(host, params),
   });
-
-  /** Ball spots on a plate (fractions of its radius): up to 5, a ring round the middle. */
-  function ballSpots(n) {
-    const out = n >= 5 ? [[0, 0]] : [];
-    const m = n - out.length;
-    for (let i = 0; i < m; i++) {
-      const a = -Math.PI / 2 + (i * Math.PI * 2) / m + 0.4;
-      out.push([Math.cos(a) * 0.42, Math.sin(a) * 0.42]);
-    }
-    return out;
-  }
 
   async function line(host, params) {
     const S = host.S;
@@ -116,8 +125,11 @@
     await Promise.race([St.load(S, ART.concat(Cook.Kit.faceArt(who))), Cook.wait(5000)]);
     const texOf = (t, state) => {
       const key = `mv-${state}-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
-      return S.textures.exists(key) ? key : { ball: "dough-ball", raw: "chapati-raw", half: "chapati-half", done: "chapati-puffed" }[state];
+      return S.textures.exists(key) ? key : { ball: "dough-ball", raw: "chapati-raw", half: "chapati-half", cooked: "chapati-puffed", burnt: "chapati-puffed" }[state];
     };
+    // how much of its canvas a picture's round body fills (the v3 art has margins): a maani r px across is its disc, not its box
+    const bodyOf = (key) => (/^mv-(raw|half|cooked|burnt)-/.test(key) ? DISC_R : /^mv-ball-/.test(key) ? BALL_R : 0.5);
+    const discScale = (key, r) => r / (bodyOf(key) * S.texSize(key).w);
     const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] })) : null;
     const rMax = sizes ? Math.max(...sizes.map((s) => s.r)) : kRoll.radius;
     const keyOf = (type, size) => (size ? `${size}+${type}` : type);
@@ -153,8 +165,9 @@
     const CH = { x: LX, y: midY };
 
     /* ---------- the chakla and its gold ring ---------- */
-    const board = S.track(S.add.image(CH.x, CH.y, "mv-chakla").setDepth(D.item - 2));
-    board.setScale(CHAKLA_D / board.width);
+    // M4: the dark walnut chakla, centred by its measured round body
+    const board = S.track(S.add.image(CH.x, CH.y, "mv-chakla").setOrigin(CHAKLA.cx, CHAKLA.cy).setDepth(D.item - 2));
+    board.setScale(CHAKLA_D / 2 / (CHAKLA.r * board.width));
     board.shadow = S.contactShadow(board);
     // the velan waits along the board's front edge; it lifts off to roll (rollOne draws the rolling one)
     const restPin = S.track(S.add.image(CH.x, CH.y + CHAKLA_D / 2 - 4, "mv-velan").setDepth(D.item - 1));
@@ -163,11 +176,17 @@
     const pinRest = (on) => S.tweens.add({ targets: restPin, alpha: on ? 1 : 0, duration: 200 });
 
     /* ---------- the hob: one burner, one tawa, the face and the knob on the front edge ---------- */
-    const burner = Kit.burner(S, hob, 0, { who, flameR: TAWA_R * 0.74, spread: 62, state: "high" });
-    const tawa = Kit.place(S, "tawa", hob.burners[0], TAWA_R, { depth: D.item - 0.5 });
+    // M7: the flame ring sized to the tawa (as chai's and daar's): its tips peek out past the rim all the
+    // way round (flame-high reaches 1.2 x flameR; the v2 0.74 hid it under the tawa but for the gaps)
+    const burner = Kit.burner(S, hob, 0, { who, flameR: TAWA_R * 0.95, spread: 62, state: "high" });
     const TW = { x: hob.burners[0].x, y: hob.burners[0].y };
+    // M8: the hi-res tawa, placed by its measured body (the handle leaves the box off-centre), as Kit.place does
+    const tawa = S.track(S.add.image(TW.x, TW.y, "mv-tawa").setOrigin(TAWA.cx, TAWA.cy).setDepth(D.item - 0.5));
+    tawa.setScale(TAWA_R / (TAWA.r * tawa.width));
+    tawa.shadow = S.contactShadow(tawa, { centerX: TW.x, centerY: TW.y + TAWA_R * 0.08, width: TAWA_R * 2.15, height: TAWA_R * 2.15 });
     const ring = Kit.heatRing(S, { width: 11 });
-    const RING_R = TAWA_R + 18;
+    // the ring on the tawa's rim, inside the flames (X6: never on the flame tips), outside the maani
+    const RING_R = TAWA_R - 14;
     let heat = "high";
     S.tappable(burner.knobHit, () => {
       // the knob: high (the ring runs at its pace) or low (slower: more time to roll)
@@ -180,17 +199,18 @@
         if (UI.mission && UI.mission.replay) UI.mission.replay();
         S.tweens.add({ targets: burner.face, scale: burner.face.baseScale * 1.1, duration: 100, yoyo: true });
       });
-    // the chimta lies on the hob's right rim, ring at the front corner, tips up along the edge (clear of
-    // the heat ring): placed, not floating on the counter. Its art runs ring -> tips at 45 deg, so -45 stands it up
-    const chimtaHome = { x: hob.x + hob.w - 30, y: hob.y + hob.h - 40, angle: -45 };
-    const chimta = S.track(S.add.image(chimtaHome.x, chimtaHome.y, "mv-chimta").setOrigin(0.1, 0.9).setDepth(D.item + 3).setAngle(chimtaHome.angle));
-    chimta.setScale(190 / chimta.width);
-    if (chimta.preFX && S.renderer && S.renderer.type === Phaser.WEBGL) {
-      chimta.preFX.padding = 12;
-      chimta.preFX.addShadow(-2, 3, 0.06, 1, 0x000000, 4, 0.35);
+    // M6 / Q15: the flat wooden turner (the family's tool: a word like "moikyo", to confirm with Mum) rests on
+    // the counter right of the hob, blade down by the hob's corner, handle up and away: placed, not floating.
+    // It slides under the maani to flip it, and again to lift it off. Its origin is the blade's middle.
+    const turnerHome = { x: hob.x + hob.w + 62, y: hob.y + hob.h - 120, angle: 0 };
+    const turner = S.track(S.add.image(turnerHome.x, turnerHome.y, "mv-turner").setOrigin(TURNER.ox, TURNER.oy).setDepth(D.item + 3));
+    turner.setScale(TURNER.len / turner.width);
+    if (turner.preFX && S.renderer && S.renderer.type === Phaser.WEBGL) {
+      turner.preFX.padding = 12;
+      turner.preFX.addShadow(-2, 3, 0.06, 1, 0x000000, 4, 0.35);
     }
 
-    /* ---------- the shelf band: the dough plates (chips) | the finished plates ---------- */
+    /* ---------- the shelf band: the dough piles (chips) | the finished plates ---------- */
     const order = Cook.shuffle(types.slice());
     const rowXs = (cx, n) => order.slice(0, n).map((_, i) => cx + (i - (n - 1) / 2) * PLATE_PITCH);
     const plate = (x, y, quiet) => {
@@ -201,19 +221,25 @@
       return p;
     };
     const showWord = level < 3;
+    // M3 / Q14: one realistic pile of dough balls per kind, straight on the band (no tray); tap it and one
+    // ball flies out. Both piles at one scale (the smaller fit), standing on PILE_BASE by their own bottom.
+    const pileKey = (t) => `mv-pile-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
+    const pileK = Math.min(...order.map((t) => (S.textures.exists(pileKey(t)) ? St.shelfFit(S, pileKey(t), PILE_K, PILE_BASE, { hop: false }) : PILE_K)));
     const plates = order.map((type, i) => {
       const x = rowXs(LX, order.length)[i];
-      const img = plate(x, PLATE_Y);
+      const key = pileKey(type);
+      const bottom = S.textures.exists(key) ? St.opaqueSpan(S, key)[1] : 1;
+      const img = S.track(S.add.image(x, PILE_BASE, key).setOrigin(0.5, bottom).setScale(pileK).setDepth(D.item - 1));
+      img.baseScale = pileK;
+      img.shadow = S.contactShadow(img, { centerX: x, centerY: PILE_BASE - 6, width: img.displayWidth * 0.86, height: 24 });
       img.type = type;
-      img.balls = ballSpots(K.ballsPerBowl || 5).map(([fx, fy], j) => {
-        const b = S.track(S.add.image(x + fx * PLATE_D * 0.5, PLATE_Y + fy * PLATE_D * 0.5, texOf(type, "ball")).setDepth(D.item + 0.2 + j * 0.001));
-        b.setScale((PLATE_D * 0.36) / b.width);
-        b.home = { x: b.x, y: b.y, scale: b.scale };
-        return b;
-      });
+      // always more than anyone orders, the same in both, never shown (the pile is one picture): out of
+      // balls, the pile goes (a ball put back brings it back)
+      img.left = K.ballsPerBowl || 5;
       img.chip = Kit.chip(S, type, x, CHIP_Y, { word: showWord, w: 188 });
       return img;
     });
+    const pileShow = (pl) => S.tweens.add({ targets: [pl, pl.shadow].filter(Boolean), alpha: pl.left > 0 ? 1 : 0, duration: 250 });
     const plateOf = (type) => plates.find((b) => b.type === type);
     const dones = {};
     order.forEach((type, i) => {
@@ -236,7 +262,7 @@
       Object.keys(want)
         .filter((k) => split(k).type === type)
         .reduce((a, k) => a + Math.max(0, want[k] - count(k)), 0) - (chakla && chakla.type === type ? 1 : 0);
-    const nextType = () => (plates.find((b) => leftOf(b.type) > 0 && b.balls.some((x) => x.visible)) || {}).type || null;
+    const nextType = () => (plates.find((b) => leftOf(b.type) > 0 && b.left > 0) || {}).type || null;
     const aimFor = (type) => {
       if (!sizes) return 0;
       let best = 0;
@@ -317,23 +343,27 @@
       }
     }
 
-    /* ---------- a dough plate -> the chakla -> rolled ---------- */
+    /* ---------- a dough pile -> the chakla -> rolled ---------- */
     async function pick(pl) {
       if (finished) return;
       if (waiting) return S.wiggle(waiting.sprite); // the board's taken: put that one on the tawa first
       if (chakla && (chakla.busy || chakla.started)) return S.wiggle(pl); // one at a time: finish this one first
       if (chakla && chakla.type === pl.type) return;
-      const ball = pl.balls.filter((b) => b.visible).pop();
-      if (!ball) return S.wiggle(pl);
+      if (pl.left <= 0) return S.wiggle(pl);
       if (chakla) putBack(chakla);
-      ball.setVisible(false);
+      // one ball comes off the top of the pile (the art's balls are drawn at the pile's scale) and flies out
+      const pc = S.centre(pl);
+      const ball = { x: pc.x + (Math.random() - 0.5) * pc.w * 0.2, y: pc.y - pc.h * 0.2, scale: pileK };
+      pl.left--;
+      pileShow(pl);
       const sprite = S.track(S.add.image(ball.x, ball.y, texOf(pl.type, "ball")).setScale(ball.scale).setDepth(D.item + 3));
+      S.tweens.add({ targets: pl, scaleY: pileK * 0.96, duration: 90, yoyo: true, onComplete: () => pl.active && pl.setScale(pileK) });
       const c = { type: pl.type, plate: pl, ball, sprite, busy: true, started: false, handle: {} };
       chakla = c;
       Cook.sfx.pop();
       wordPop(pl.type, CH.x, CH.y - CHAKLA_D / 2 - 10);
       update();
-      await S.fly(sprite, CH.x, CH.y, { scale: (2 * kRoll.startRadius) / sprite.width, duration: 380 });
+      await S.fly(sprite, CH.x, CH.y, { scale: discScale(sprite.texture.key, kRoll.startRadius), duration: 420, arc: 170 });
       c.busy = false;
       if (chakla !== c || finished) return;
       update();
@@ -351,6 +381,7 @@
         handle: c.handle,
         pinTex: "mv-velan",
         pinW: PIN_W,
+        body: bodyOf,
         gold: true,
         onStart: () => {
           c.started = true;
@@ -358,7 +389,7 @@
         },
       });
       pinRest(true);
-      if (!r) return; // it went back to its plate
+      if (!r) return; // it went back to its pile
       zr.skill(r.score, "roll");
       chakla = null;
       const it = { sprite: r.sprite, type: c.type, size: r.target || null, key: keyOf(c.type, r.target), score: r.score, where: "board", landed: true };
@@ -368,13 +399,14 @@
       S.tappable(it.sprite, () => putOn());
       update();
     }
-    /** Changed your mind before rolling: the dough goes back to its plate. */
+    /** Changed your mind before rolling: the dough goes back onto its pile (§17). */
     function putBack(c) {
       c.handle.cancel && c.handle.cancel();
       chakla = null;
       S.fly(c.sprite, c.ball.x, c.ball.y, { scale: c.ball.scale, duration: 300 }).then(() => {
         c.sprite.destroy();
-        c.ball.setVisible(true);
+        c.plate.left++;
+        pileShow(c.plate);
       });
     }
 
@@ -394,7 +426,7 @@
         step("Tawa");
       }
       update();
-      const sz = (TAWA_R * 1.62 * it.sizeF) / it.sprite.width;
+      const sz = discScale(it.sprite.texture.key, TAWA_R * 0.72 * it.sizeF);
       it.sprite.setDepth(D.item + 1);
       await S.fly(it.sprite, TW.x, TW.y, { scale: sz, duration: 380, arc: 90 });
       it.sprite.baseScale = sz;
@@ -413,9 +445,11 @@
     const C = Phaser.Display.Color;
     const brown = (v) => C.GetColor(255, Math.round(255 - v * 45), Math.round(255 - v * 90));
 
-    /** Move the chimta to the maani (tips over it) and back: the flip and the lift. */
-    const chimtaTo = (x, y) => Cook.tween(S, { targets: chimta, x: x + 150, y: y + 150, angle: -60, duration: 170, ease: "Sine.easeOut" });
-    const chimtaHomeTween = () => S.tweens.add({ targets: chimta, x: chimtaHome.x, y: chimtaHome.y, angle: chimtaHome.angle, duration: 240, ease: "Sine.easeInOut" });
+    /** The turner slides its blade under the maani's right edge (from its side of the hob), and back. */
+    const turnerTo = (x, y, r) =>
+      Cook.tween(S, { targets: turner, x: x + r * 0.62, y: y + r * 0.12, angle: -6, duration: 190, ease: "Sine.easeOut" });
+    const turnerHomeTween = () => S.tweens.add({ targets: turner, x: turnerHome.x, y: turnerHome.y, angle: turnerHome.angle, duration: 260, ease: "Sine.easeInOut" });
+    const discR = (it) => TAWA_R * 0.72 * it.sizeF;
 
     async function tawaTap() {
       const t = onTawa;
@@ -428,34 +462,40 @@
       const v = t.v;
       const burnt = v >= 1;
       if (t.side === 1) {
-        // the chimta flips it
-        await chimtaTo(TW.x, TW.y);
+        // the turner flips it: the cooked side comes up, spotted (M5), or burnt if it caught
+        await turnerTo(TW.x, TW.y, discR(it));
         Cook.sfx.flip();
+        S.tweens.add({ targets: turner, angle: -16, y: turner.y - 10, duration: 110, yoyo: true });
         await Cook.tween(S, { targets: sp, scaleY: 0.02, duration: 110 });
-        sp.setTexture(texOf(it.type, "half")).setTint(burnt ? BURNT : 0xffffff);
+        sp.setTexture(texOf(it.type, burnt ? "burnt" : "half")).setTint(0xffffff);
+        sp.baseScale = discScale(sp.texture.key, discR(it));
         sp.setScale(sp.baseScale, 0.02);
         await Cook.tween(S, { targets: sp, scaleY: sp.baseScale, duration: 110 });
-        chimtaHomeTween();
+        turnerHomeTween();
         t.s1 = burnt ? kTawa.burntScore : S.bandScore(v, lo, hi);
         t.burnt = burnt;
-        S.verdict(TW.x, TW.y - RING_R - 34, t.s1, { bad: burnt ? "burnt" : "too-early" });
+        S.verdict(TW.x, TW.y - TAWA_R - 30, t.s1, { bad: burnt ? "burnt" : "too-early" });
         t.side = 2;
         t.v = 0;
         t.busy = false;
         return;
       }
-      // side two: the chimta lifts it; a good one puffs a little (a slight puff, not a ball)
+      // side two: the turner lifts it off. M5: it stays flat (the v2 puffed picture is gone); a good one
+      // is the cooked picture, lifted too soon it's still the half-cooked one, too late (or burnt on the
+      // first side) the burnt one. A little lift as it comes off, no puff.
       const good = v >= lo && v < 1;
-      Cook.sfx.puff();
-      sp.setTexture(texOf(it.type, "done")).setTint(t.burnt || burnt ? BURNT : 0xffffff);
-      const dz = (TAWA_R * 1.62 * it.sizeF) / sp.width;
+      const state = t.burnt || burnt ? "burnt" : v >= lo ? "cooked" : "half";
+      await turnerTo(TW.x, TW.y, discR(it));
+      sp.setTexture(texOf(it.type, state)).setTint(0xffffff);
+      const dz = discScale(sp.texture.key, discR(it));
       sp.setScale(dz);
-      await Cook.tween(S, { targets: sp, scale: dz * (good ? 1.07 : 1.02), duration: good ? 220 : 150, ease: "Sine.easeOut", yoyo: true });
-      S.steam(TW.x, TW.y - 60, good ? 5 : 2);
+      sp.baseScale = dz;
+      Cook.sfx.flip();
+      await Cook.tween(S, { targets: [sp], scale: dz * 1.03, duration: 150, ease: "Sine.easeOut", yoyo: true });
+      S.steam(TW.x, TW.y - 60, good ? 4 : 2);
       const s2 = burnt ? kTawa.burntScore : S.bandScore(v, lo, hi);
-      S.verdict(TW.x, TW.y - RING_R - 34, s2, { perfect: "it-puffed", bad: burnt ? "burnt" : "flat" });
+      S.verdict(TW.x, TW.y - TAWA_R - 30, s2, { bad: burnt ? "burnt" : "too-early" });
       zt.skill((t.s1 + s2) / 2, "tawa");
-      await chimtaTo(TW.x, TW.y);
       // onto its kind's plate: a fanned stack (you can count them), each one a little askew
       const d = dones[it.type] || Object.values(dones)[0];
       const j = d.n++;
@@ -463,12 +503,13 @@
       S.untap(sp);
       sp.setDepth(D.item + 2 + j * 0.01);
       S.tweens.add({ targets: sp, angle: Math.random() * 24 - 12, duration: 450 });
-      chimtaHomeTween();
+      turnerHomeTween();
       const [fx, fy] = FAN[j % FAN.length];
-      const fly = S.fly(sp, d.x + fx, d.y + fy, { scale: (PLATE_D * 0.64 * it.sizeF) / sp.width, duration: 450 });
+      const fly = S.fly(sp, d.x + fx, d.y + fy, { scale: discScale(sp.texture.key, PLATE_D * 0.3 * it.sizeF), duration: 450 });
       update();
       await fly;
       it.where = "plate";
+      it.state = state;
       // no separate tally: the stack on its plate is the count (§14a's rule, here too)
       // its mini card on the order ticks (one card per maani asked for)
       if (ctx.tickCard) ctx.tickCard(it.key || it.type);
@@ -492,7 +533,8 @@
         glowOn(t.it.sprite, nowIn);
         if (nowIn) Cook.sfx.click();
       }
-      if (t.side === 1) t.it.sprite.setTint(brown(Math.min(1, t.v)));
+      // the browning as the ring fills: a warm tint over the raw side, lighter over the spotted side
+      t.it.sprite.setTint(brown(Math.min(1, t.v) * (t.side === 1 ? 1 : 0.5)));
       ring.draw(TW.x, TW.y, RING_R, t.v, lo, hi);
       zt.gauge({ level: t.v, lo, hi });
       zt.expect({ kind: "timing", x: TW.x, y: TW.y, key: `tawa-${t.side}` });
@@ -505,7 +547,6 @@
 
     plates.forEach((b) => {
       S.tappable(b, () => pick(b));
-      b.balls.forEach((ball) => S.tappable(ball, () => pick(b)));
     });
     step("Roll");
     let finish;
@@ -522,7 +563,6 @@
     plates.forEach((b) => {
       glowOn(b, false);
       S.untap(b);
-      b.balls.forEach((ball) => S.untap(ball));
     });
     const made = {};
     plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));

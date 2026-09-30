@@ -12,6 +12,8 @@ v3 (29 Sept, build/cut_cook_v3.py): every round thing in assets/cook/items/v3/*/
 tawa, karahi, plates, maani, bowls, knobs...) is re-fitted here with the handles dropped as outliers
 (cut_cook_v3.robust_circle), and every hob's burner centres are re-found from its brass caps and
 compared with its meta.json AND with Cook.Kit's HOBS table in js/cook/kitchen-kit.js.
+
+Maani v3 (30 Sept, check_maani): the maani line's own tawa, chakla and maani-state constants against the v3 art.
 """
 import json
 import math
@@ -170,6 +172,54 @@ def check_daar():
     ok = pot["inner"] < pot["r"]
     bad += not ok
     print(f"{'ok  ' if ok else 'FAIL'} daar POT.inner {pot['inner']} < r {pot['r']}")
+    return bad
+
+
+def check_maani():
+    """Maani v3 (30 Sept, play-test M4, M5, M8): js/cook/stations/maani-line.js places the tawa and the chakla by
+    their measured bodies (TAWA, CHAKLA) and sizes every maani state and dough ball by one radius (DISC_R, BALL_R).
+    They must say what assets/cook/items/v3/maani/meta.json measured, the tawa's centre must sit on its re-fitted
+    rim (its handle dropped), and the four states of each maani must share one registered canvas."""
+    src = open(os.path.join(ROOT, "js/cook/stations/maani-line.js")).read()
+    meta = json.load(open(os.path.join(ROOT, "assets/cook/items/v3/maani/meta.json")))
+    bad = 0
+
+    def const(name):
+        m = re.search(rf"const {name} = \{{([^}}]*)\}}", src)
+        return {k: float(v) for k, v in re.findall(r"(\w+): ([\d.]+)", m.group(1))}
+
+    def num(name):
+        return float(re.search(rf"const {name} = ([\d.]+)", src).group(1))
+
+    for name, key in (("TAWA", "tawa"), ("CHAKLA", "chakla")):
+        c = const(name)
+        m = meta[key]
+        mine = [c[f] for f in ("w", "cx", "cy", "r")]
+        theirs = [m[f] for f in ("w", "cx", "cy", "r")]
+        ok = all(abs(a - b) <= (1 if i == 0 else 0.002) for i, (a, b) in enumerate(zip(mine, theirs)))
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} maani-line.js {name}: {mine} vs meta {key}: {theirs}")
+    # the tawa's rim, re-fitted here with its handle left out: the recorded centre and radius sit on it
+    t = const("TAWA")
+    res, fx, fy, fr = fit_rim(os.path.join(ROOT, "assets/cook/items/v3/maani/tawa.webp"))
+    off = max(abs(fx - t["cx"]), abs(fy - t["cy"]))
+    ok = off <= TOL and abs(fr - t["r"]) <= TOL
+    bad += not ok
+    print(f"{'ok  ' if ok else 'FAIL'} maani-line.js TAWA on the tawa's rim: recorded ({t['cx']:.4f}, {t['cy']:.4f}) r {t['r']:.4f}, "
+          f"rim ({fx:.4f}, {fy:.4f}) r {fr:.4f}, off {off:.4f} (fit {res:.1f}px)")
+    disc = num("DISC_R")
+    ball = num("BALL_R")
+    for kind in ("wheat", "millet"):
+        raw = meta[f"maani-{kind}-raw"]
+        for st in ("raw", "half", "cooked", "burnt"):
+            m = meta[f"maani-{kind}-{st}"]
+            ok = (m["w"], m["h"]) == (raw["w"], raw["h"]) and m["anchor"] == raw["anchor"] and abs(m["r"] - disc) <= TOL
+            bad += not ok
+            print(f"{'ok  ' if ok else 'FAIL'} maani-{kind}-{st}: {m['w']}x{m['h']}, anchor {m['anchor']}, r {m['r']} vs DISC_R {disc}")
+        m = meta[f"dough-ball-{kind}"]
+        ok = abs(m["r"] - ball) <= TOL
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} dough-ball-{kind}: r {m['r']} vs BALL_R {ball}")
     return bad
 
 
@@ -356,12 +406,23 @@ def main():
         url = m.group(1).strip()
         url = url.replace('V2 + "', "assets/cook/items/chai-v2/").strip('"')
         checks.append((f"Cook.Kit.VESSELS.{name}", url, float(m.group(2)), float(m.group(3))))
-    m = re.search(r"panTop: \{ w: \d+, h: \d+, cx: ([\d.]+), cy: ([\d.]+)", chai)
-    checks.append(("chai-tray META.panTop", "assets/cook/items/chai-v2/pan-top.webp", float(m.group(1)), float(m.group(2))))
+    # 30 Sept (C8): chai's top-down pan is v3's nine pictured states: META.panTop is their shared rim centre
+    m = re.search(r"panTop: \{ w: (\d+), h: (\d+), cx: ([\d.]+), cy: ([\d.]+), r: [\d.]+, rIn: ([\d.]+), body: ([\d.]+)", chai)
+    cmeta = json.load(open(os.path.join(ROOT, "assets/cook/items/v3/chai/meta.json")))
+    for name in ("pan-empty", "pan-water", "pan-milky", "pan-boil-milky", "pan-foam"):
+        checks.append((f"chai-tray META.panTop on v3 {name}", f"assets/cook/items/v3/chai/{name}.webp", float(m.group(3)), float(m.group(4))))
+    ref = cmeta["pan-empty"]
+    same = all(cmeta[k]["w"] == int(m.group(1)) and cmeta[k]["h"] == int(m.group(2)) and cmeta[k]["anchor"] == ref["anchor"] for k in cmeta)
+    offm = max(abs(float(m.group(3)) - ref["anchor"][0]), abs(float(m.group(4)) - ref["anchor"][1]), abs(float(m.group(6)) - ref["r"]))
+    inner = min(cmeta[k]["inner_r"] for k in cmeta if not k.startswith("pan-boil")) - 0.005 <= float(m.group(5)) < float(m.group(6))
+    okc = same and offm <= 0.001 and inner
+    print(f"{'ok  ' if okc else 'FAIL'} chai-tray META.panTop vs v3/chai/meta.json: one canvas {same}, anchor/body off {offm:.4f}, rIn inside the rim {inner}")
     meta = json.load(open(os.path.join(ROOT, "assets/cook/items/chai-v2/meta.json")))["panTop"]
     checks.append(("chai-v2/meta.json panTop", "assets/cook/items/chai-v2/pan-top.webp", meta["cx"], meta["cy"]))
     bad = check_v3()
+    bad += 0 if okc else 1
     bad += check_daar()
+    bad += check_maani()
     bad += check_sekelo()
     bad += check_clinic_items()
     bad += check_chaat(write="--write-chaat" in sys.argv)

@@ -173,7 +173,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #done-btn {
   position: absolute; z-index: 8; right: 2.5%; bottom: 4%;
   width: clamp(58px, 8vw, 96px); aspect-ratio: 1; border-radius: 50%; padding: 0;
-  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260930T124446Z");
+  background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20260930T133903Z");
   border: 1px solid #e6d5b8; color: transparent; font-size: 0; overflow: hidden;
   box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.22);
 }
@@ -194,7 +194,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
   background: rgba(45, 32, 24, 0.45); padding: 12px;
 }
-#overlay.title-mode { background: url("../assets/cook/bg/service.jpg?v=20260930T124446Z") center / cover; }
+#overlay.title-mode { background: url("../assets/cook/bg/service.jpg?v=20260930T133903Z") center / cover; }
 #panel {
   background: var(--cream); border-radius: 26px; box-shadow: 0 20px 60px rgba(40,25,10,.35);
   width: min(880px, 100%); max-height: 100%; overflow-y: auto; padding: clamp(14px, 2.5vw, 30px);
