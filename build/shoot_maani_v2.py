@@ -120,9 +120,12 @@ class Shooter(T.Player):
                 self.snap("lift-cooked")
             return None
         if k == "tap" and key == "dough":
+            # slow the station for a moment so the shot catches the ball in the air
+            self.page.evaluate("() => { Cook.__ts = Cook.scene.tweens.timeScale; Cook.scene.tweens.timeScale = 0.15; }")
             r = super().act(e)
-            time.sleep(0.12)
+            time.sleep(0.25)
             self.snap("ball-flying")
+            self.page.evaluate("() => { Cook.scene.tweens.timeScale = Cook.__ts; }")
             return r
         return super().act(e)
 

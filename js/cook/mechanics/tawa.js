@@ -14,8 +14,9 @@
  * Params: n, spots/plateAt/spatulaAt (design coords, to re-lay it out),
  * size (tawa and chapati scale, e.g. 0.8 to fit two in a zone), art
  * {raw, half, done} (texture keys: a painted prop or a drawn key such as
- * "layer:<wordId>"; default the chapati), doneWord (verdict key for the
- * second tap, default "it-puffed").
+ * "layer:<wordId>"; default the chapati; burnt: its burnt picture, else
+ * the done one tinted), doneWord (verdict key for the second tap, default
+ * "perfect": a maani doesn't puff up, M5).
  * Knobs (data.mechanics.tawa): band, rate, rate2, speedUp, burntScore,
  * tawas, passMeAfterMs, special.
  */
@@ -34,7 +35,7 @@
     station: "flip",
     view: "hob",
     footprint: { x: 200, y: 150, w: 1360, h: 740 },
-    async run(z, { n = 0, spots, plateAt, spatulaAt, size = 1, art = {}, doneWord = "it-puffed" }, k) {
+    async run(z, { n = 0, spots, plateAt, spatulaAt, size = 1, art = {}, doneWord = "perfect" }, k) {
       const S = z.S;
       const tex = (key, dflt) => (!key ? dflt : S.textures.exists(key) ? key : S.tex(key));
       const RAW = tex(art.raw, "chapati-raw");
@@ -96,15 +97,17 @@
         const a = v1 >= 1 ? k.burntScore : S.bandScore(v1, lo, hi);
         S.verdict(x, y - 230 * ks, a, { bad: v1 >= 1 ? "burnt" : "too-early" });
         const v2 = await S.ring(ch, { r: 180 * ks, lo, hi, rate: k.rate2 * (1 + i * k.speedUp), io: wz.io, alsoTap: [tw] });
-        // the puff: a good one balloons up with a whoosh of steam
+        // done: a good one lifts a little with a whoosh of steam (30 Sept, play-test M5: a maani stays flat,
+        // only a slight puff, never a poori ball; "done" is the v3 flat cooked picture, burnt its own)
         const puffed = v2 >= lo && v2 < 1;
         Cook.sfx.puff();
-        ch.setTexture(done).setTint(v1 >= 1 || v2 >= 1 ? mul(base, BURNT) : base);
-        const dz = sz * 0.8;
-        ch.setScale(dz * 0.85);
-        await Cook.tween(S, { targets: ch, scale: dz * (puffed ? 1.3 : 1.05), duration: puffed ? 260 : 180, ease: "Back.easeOut", yoyo: true });
-        S.steam(x, y - 80 * ks, puffed ? 7 : 3);
-        if (puffed) S.burst(x, y - 30 * ks, [0xfff6e0, 0xffffff, 0xf3e1b8], 10, 150 * ks);
+        const burnt = (item.art && item.art.burnt) || (S.textures.exists("chapati-burnt") ? "chapati-burnt" : null);
+        const charred = v1 >= 1 || v2 >= 1;
+        ch.setTexture(charred && burnt ? burnt : done).setTint(charred && !burnt ? mul(base, BURNT) : base);
+        const dz = sz;
+        ch.setScale(dz);
+        await Cook.tween(S, { targets: ch, scale: dz * (puffed ? 1.05 : 1.02), duration: puffed ? 220 : 150, ease: "Sine.easeOut", yoyo: true });
+        S.steam(x, y - 80 * ks, puffed ? 5 : 3);
         const b = v2 >= 1 ? k.burntScore : S.bandScore(v2, lo, hi);
         S.verdict(x, y - 230 * ks, b, { perfect: doneWord, bad: v2 >= 1 ? "burnt" : "flat" });
         z.skill((a + b) / 2, "tawa");
