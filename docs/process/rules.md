@@ -69,6 +69,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 ### Plans, trackers and continuity
 - **`docs/status.md` is the master tracker:** update it at every milestone, structured by story arc, artwork as its own section (basic → initial → full → final), user testing left out. (A15)
+- **The orchestrator owns the regression list:** new feedback becomes a row the same day, every brief lists the rows for its screens, every step end reports open rows by mode in `docs/status.md`; Zafar never has to track it. During runs, a one-line update to Zafar at every check-in. (decision 16)
 - **One rulebook, one place for reviews.** Don't scatter rules; check old handovers for rules before archiving them. (A18, A19)
 - **The orchestrator chat plans, reviews and delegates:** tight briefs or a clean instruction file per executing chat, lean context, agent reports under ~250 words without cutting findings. (A20, A23)
 - **Copy decisions Zafar made directly in a child session** (see `docs/process/overnight-log.md`) into the design doc. (A21)
@@ -401,3 +402,4 @@ Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Confli
 13. **Engine and voices:** every word must be a human recording, but the sentence can be built by the engine; statistical analysis of simulated play identifies the most-used phrases, which are recorded whole. (Zafar, 30 Sept)
 14. **Handover timing:** don't wait for a full chat; hand over at step boundaries and around 70% context rather than compacting. (Zafar, 30 Sept)
 15. **Phone screenshots are landscape:** 844×390 (iPhone 12–14, one of the three most-used phone sizes) as the main phone size, 800×360 (the most-used Android size and the tightest height) in the full matrix, plus one upright shot for the rotate card. (Zafar, 30 Sept)
+16. **The orchestrator owns the regression list** and reports open rows at every step end; a one-line update to Zafar at every check-in during runs. (Zafar, 1 Oct)

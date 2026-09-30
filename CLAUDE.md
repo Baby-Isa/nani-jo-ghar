@@ -16,6 +16,8 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 - Recommend a model and effort level with every suggested action, and give a cost estimate before every launch.
 - Improve on his ideas: research best practice and push back where it's warranted.
 - Voice-note feedback becomes a full report: every point with its timestamp, the cause checked in code, the fix, and a coverage check mapping every transcript line. It opens with every mechanic changed and old art reused.
+- The orchestrator owns the regression list, so Zafar never has to track feedback: every new feedback item becomes a row the same day; every brief lists the rows for the screens it touches; every step end reports open rows by mode in `docs/status.md`.
+- During runs, post a one-line update to Zafar at every check-in.
 - New mode work runs: audit (screenshots of every screen) → Claude's feedback draft → Zafar approves → build. Before calling a mode finished, go through its open ideas in `docs/ideas.md` with him.
 
 ## Non-negotiables
