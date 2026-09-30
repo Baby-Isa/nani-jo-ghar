@@ -1,5 +1,14 @@
 # Nani jo Ghar: cast
 
+> **Stale points (what `docs/process/rules.md` now overrides).** Existing text is left as written.
+> - "Arc 1: Eid at Nani's", "Later arcs" (Monsoon, Wedding, crow, village), "The spill" and "Eid morning" appearances → the Birthday arc, day-out trips, Making clothes with Big Ma, Monsoon, Who did it (H36–H39)
+> - "Nana … storyteller in Arc 5" → Story by the Fire (H40)
+> - Kasuku imitates "Arre re!" "just after a mistake" → idle moments only, never during a task (I9)
+> - Nani's gold bangles → no bangles (the later correction in this file wins)
+> - "Zafar's wife's granddad" is Hannah's granddad (same person; the rules use Hannah's)
+> - The player's hands → none in Cook (H13); hands are parked in the art docs
+> - Recurring cast rows below mention "Eid" and "mends the kurta in The spill" → the Birthday arc (H36)
+
 **Started:** 24 Sept 2026. Who appears in the game, where, and who they're based on. Art rules for characters are in `docs/design-language/art-bible.md` section 6.
 
 **Real-life likenesses** (agreed with the family; character sheet first, then every pose from the sheet):
@@ -121,3 +130,70 @@ The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `big
 - Drawn as a kitten: bigger head and eyes, shorter legs.
 - A plain thin collar, no bell.
 - Drop the real-life tracker tags on both cats.
+
+## Additions from the archived docs
+
+> from: docs/archive/superseded/Image Prompt Sheets.md § Later sheets, for future scenes (the Family entry: descriptions of the wider family)
+
+**Family** (Template B, one character at a time) — worth generating early, alongside Nani, since a consistent cast is hard to recover later. Attach Nani each time so the cast holds together as one style.
+
+> Three views of the same character in a row, side by side, on a plain flat magenta background, hex FF00FF, with clear space between each of the three poses so the magenta background separates all three. [CHARACTER DESCRIPTION]. Upper body, facing the viewer, identical pose and framing in all three. Left: mouth closed, neutral friendly expression. Centre: mouth open as if speaking. Right: smiling broadly with both hands raised in celebration. Children's storybook illustration style, bright saturated colours, soft cel shading, thick soft outlines. No text. Create a new image, matching the style of the attached image exactly.
+
+| Character | Description to paste in |
+| --- | --- |
+| Nana | A kindly Kutchi grandfather in his seventies, white beard, white prayer cap, cream kurta, a shawl over one shoulder |
+| Masi | A Kutchi woman in her forties, warm smile, teal patterned headscarf, embroidered blouse, gold earrings |
+| Mama | A Kutchi man in his forties, short beard, checked shirt with sleeves rolled up, a cloth over one shoulder |
+| Kaka | A Kutchi man in his fifties, moustache, glasses, plain grey kurta, a wristwatch |
+| Kaki | A Kutchi woman in her fifties, mustard yellow headscarf, simple embroidered kameez, silver bangles |
+| Fui | A Kutchi woman in her sixties, soft round face, deep green patterned headscarf, shawl, reading glasses on a chain |
+| Older cousin | A Kutchi girl of about twelve, cheerful, bright pink headscarf, simple kurti, small backpack strap on one shoulder |
+
+> from: docs/archive/art/Asset Building Plan.md § Asset Building Plan § 3 The cats (roles by mode)
+
+### 3. The cats (Zafar's two cats, 24 Sept)
+
+**Simba** (the big brother, 5, black Russian Blue) and **Zazu** (the little brother, 1, grey Russian Blue). Both have **green eyes**. Their size and proportions tell them apart: Simba a big adult cat, **Zazu drawn as a kitten** (bigger head and eyes, shorter legs, fluffier), which also makes them good "describe the cat" clues (big/small, dark/light, old/young).
+
+**Role:** recurring mischief-makers and part of the house's life. They're introduced in a story beat (e.g. the sweets go missing) and then show up across modes.
+
+| Where | What the cats do | The Kutchi it drives |
+|---|---|---|
+| **Hub and scenes** | Asleep in a sunbeam, washing, tail flicking on the floor or a windowsill; tap to pet (purr) | Ambient; later "come here", the cats' own words |
+| **Cook with Nani** | A scripted mischief event: a cat steals an ingredient and Nani says where it went ("on the shelf", "under the table") | Positions, nouns |
+| **Who did it?** | Suspects in "who ate the sweets?": the clues describe them (colour, big/small, tail, where they were) | Describing, past tense |
+| **Find it** | Hidden somewhere in a busy scene; find the cat and what it took | Positions |
+| **Tidy up** | Knocked everything over; put it back where Nani says | Positions, rules |
+| **Monsoon rush** | Get the cats inside before the rain | Rooms, positions |
+| **Snap** | "Take a photo of the cat asleep on the chair" | Describing |
+| **Care ritual** (optional) | Feed them each day: *bo* scoops for one, *hikdo* for the other | Numbers, names, kinship-style "whose bowl?" |
+
+**Rules:** a cat never covers a tap target and never blocks play at random. Mischief is a scripted event with its own moment; otherwise the cats live on the floor layer and in the margins.
+
+**Art:** one character sheet per cat (turnaround, sitting, lying, sleeping curled, walking, pouncing, eating, guilty face, carrying something in the mouth), made from Zafar's photos with the game's style reference. **The tail and head are separate layers** so code can flick the tail, turn the head, blink and breathe (sleeping cats rise and fall). About 15 images per cat.
+
+**Needs from Zafar:** 4–6 photos of each (both sides, the face, the tail, a typical pose). Keep the photos out of the public repo (a git-ignored `sources/private/` folder, or upload them straight into the chat).
+
+> from: docs/archive/art/Asset Building Plan.md § Asset Building Plan § 7 Big Ma's room
+
+### 7. Big Ma's room (new scene, decided 24 Sept 2026)
+
+Replaces the tailor's shop in "The spill" (Roadmap, Arc 1). Big Ma is the family's seamstress: instead of a shop, the player goes to her room to get the stained kurta fixed.
+
+- **Background:** a warm, homely room with a **sewing corner** — a sewing machine or basket, thread reels in a small rack or tin, a pin cushion, folded cloth, scissors. Restrained set dressing (section 6's rule: 1–2 nods, not more).
+- **Character sheet:** Big Ma, real-life likeness (Art Bible, section 6; `docs/game-design/cast.md`). Sheet-first rule: photos in, character sheet out, Zafar signs off, every later pose from the sheet.
+- **Audio:** she **sings a song while she sews** — a new audio asset, recorded by Zafar's wife, alongside the family's other spoken-word recordings.
+
+> from: docs/archive/design-v1/Roadmap and Story Structure.md § Roadmap and Story Structure § Recurring cast
+
+### Recurring cast
+
+| Character | Trait | What it's for |
+| --- | --- | --- |
+| Nani | Warm, says "Arre re!" on a miss | **The child's guide, not a kitchen-bound character** (28 Sept): she leads every arc and every place, not only Cook. Her fixed frames are still the grammar backbone |
+| The cat | Steals and hides things | Runs every Hide and seek errand; a running gag, no peril, endless postpositions |
+| Nana | Dozes, tells stories | The past-tense narrator; arrives once a trip needs retelling a past event |
+| Older cousin | Always losing things, eventually asks the player to explain | Role reversal: the player gives the instruction |
+| Big Ma | The family's seamstress; sings while she sews | Recurring at Eid, dinners and gatherings; solves problems in her room (e.g. mends the kurta in "The spill") |
+| The shopkeeper | Sometimes hands over the wrong thing | The player's first taste of correcting someone in Kutchi |
+

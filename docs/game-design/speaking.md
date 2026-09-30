@@ -1,5 +1,11 @@
 # More speaking as the game goes on: a proposal (29 Sept 2026)
 
+> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
+> - "The voice star starts at rung 2", "coins, never the voice star", Open question 3 "voice star as the reward" → no voice star; scoring is three badges (H5, decisions 1–3)
+> - Spoken-English lines and "Achija" / "Aabhar aanjo" as defaults → goodbye is *khuda-fis*, thank you is in English (Zafar, 26 Sept; G24)
+> - Coins as the reward for speaking → decision 10 (upgrades)
+> - Any English written on screen as the instruction to speak → none for the child (E1, F23); a picture says what, the heard frame says how
+
 **Status:** approved by Zafar (29 Sept); nothing built yet. It extends the Roadmap's "Skill channels" ladder (rung 4 "picture only → say it, role reversal"; rung 6 "a question in context → answer aloud") and the Conversations module.
 
 ## The problem (Zafar, 29 Sept)
