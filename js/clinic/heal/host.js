@@ -162,8 +162,15 @@
       return o;
     };
     const card = screen.card;
-    card.closed = null;
-    card.setTitle("", null);
+    // the doctor's card (his face = replay); from level 3 it's closed: the counts are heard, not read (13c, Cook's
+    // rule Q7: written and heard at L1, written at L2, heard only from L3); a tap peeks and counts a hint
+    const face = h("div", "cl-face doctor");
+    const fimg = h("img", "", face);
+    fimg.alt = "";
+    fimg.src = Kit.DOCTOR_FACE;
+    card.closed = level >= 3 ? { onPeek: () => (screen.peek ? screen.peek("heal-card") : screen.bulb.use()) } : null;
+    card.fold = {};
+    card.setTitle("", face);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     card.setRows([]);
 

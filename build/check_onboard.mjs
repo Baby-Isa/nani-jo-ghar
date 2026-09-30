@@ -119,6 +119,7 @@ for (const id of HEAL_V2) {
     healSteps++;
     const cue = def.cues[k];
     if (!cue || typeof cue !== "object") return errors.push(`heal ${id}: step "${k}" has no ghost-finger demo (def.cues.${k} = {gesture})`);
+    if (cue.watch === true && Object.keys(cue).length === 1) return; // a step the child only watches (boing's countdown): nothing to do, nothing to demo
     if (!MOVES_KIT.includes(cue.gesture)) errors.push(`heal ${id}: step "${k}": "${cue.gesture}" isn't a move the shared kit shows (${MOVES_KIT.join(", ")})`);
     const words = JSON.stringify(cue).replace(/"(gesture|then|to|target)"/g, "").replace(new RegExp(`"(${MOVES_KIT.join("|")})"`, "g"), "");
     if (TEXTY.test(words)) errors.push(`heal ${id}: step "${k}": the help carries English (${JSON.stringify(cue)})`);

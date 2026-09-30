@@ -130,17 +130,24 @@
     // the judging buttons, by the chart
     const judgeBox = S.h("div", null, S.root);
     judgeBox.style.cssText = "position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:18px;z-index:8";
-    const mk = (id, label, bg) => {
+    // haa / na: the shared answer pills (UX 15), one pill style everywhere
+    const NB = root.NjgButtons;
+    const pills = NB ? NB.pills(judgeBox, [{ id: "haa", html: "haa" }, { id: "na", html: "na" }], (id) => onJudge(id === "haa")) : null;
+    const mk = (id, label) => {
+      if (pills) {
+        const b = pills.pill(id);
+        b.dataset.judge = id;
+        return b;
+      }
       const b = S.h("button", "hs-tool", judgeBox);
       b.type = "button";
       b.dataset.judge = id;
-      b.style.cssText = `min-width:110px;min-height:64px;font:800 24px system-ui,sans-serif;background:${bg};color:#fff;border-color:rgba(0,0,0,.15)`;
       b.textContent = label;
       ctx.on(b, "click", () => onJudge(id === "haa"));
       return b;
     };
-    const haaBtn = mk("haa", "✓ haa", "#3fa35b");
-    const naBtn = mk("na", "✗ na", "#d8433f");
+    const haaBtn = mk("haa", "haa");
+    const naBtn = mk("na", "na");
     const showJudge = (on) => (judgeBox.style.display = on ? "flex" : "none");
     showJudge(false);
 
@@ -157,18 +164,20 @@
       showJudge(false);
       S.face("read");
       if (P.level === 1) S.said(said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", "));
-      await S.say(line, "patient");
-      S.face("neutral");
-      st.busy = false;
-      st.awaiting = { i, again, wrong: !again && c.wrong };
       if (again) {
+        await S.say(line, "patient");
+        S.face("neutral");
+        st.busy = false;
         // read right after the drop: on to the next row
-        st.awaiting = null;
         S.said(null);
         return advance();
       }
+      // the judging pills come up as the reading starts: input never waits for the talking (13i)
+      st.busy = false;
+      st.awaiting = { i, again, wrong: c.wrong };
       showJudge(true);
       if (i === 0) S.cue("read", CUES.read, haaBtn);
+      S.say(line, "patient").then(() => S.face("neutral"));
     };
     const onJudge = (saysRight) => {
       if (!st.awaiting || st.busy || st.over) return;

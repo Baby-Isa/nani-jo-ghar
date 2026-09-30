@@ -105,9 +105,12 @@
       Object.entries(st.cup).forEach(([t, n]) => {
         for (let k = 0; k < n; k++) items.push(t);
       });
+      st.inCup = [];
       items.forEach((t, k) => {
-        const tx = s("text", { x: CUP.x - (items.length * 34) / 2 + k * 34, y: CUP.y - 72, "font-size": 30 }, inG);
+        const x = CUP.x - (items.length * 34) / 2 + k * 34;
+        const tx = s("text", { x, y: CUP.y - 72, "font-size": 30 }, inG);
         tx.textContent = GLYPH[t];
+        st.inCup.push({ t, x: x + 15, y: CUP.y - 82 });
       });
       const col = st.cup.hardar ? "#f0c43a" : st.cup.aadu ? "#e8b070" : st.cup.limu || st.cup.honey ? "#d8e07a" : st.cup.dudh ? "#fbfaf4" : st.cup.paani ? "#bfe0f5" : "#e8dcc8";
       liquid.setAttribute("fill", col);
@@ -136,7 +139,8 @@
       if (!c) return;
       const k = cupKey();
       const want = P.key(c.drink);
-      const ok = k === want && Object.keys(st.cup).length === 2;
+      const ok = k === want && Object.keys(st.cup).length === 2 && !st.slip;
+      st.slip = false;
       judge(c.id, ok, `gave ${k || "an empty cup"}`);
       S.face("drink", 700);
       const madeColour = Object.keys(DRINKS).find((col) => DRINKS[col].things.slice().sort().join("+") === Object.keys(st.cup).sort().join("+"));
@@ -195,6 +199,20 @@
     ctx.on(S.svg, "pointerdown", (e) => {
       if (!S.ready || st.over || st.busy) return;
       const p = S.pt(e);
+      // a thing in the cup tapped: it comes out again, until the cup is given (UX 17). Taking back a wrong
+      // thing (or a spoonful too many) still counts against this drink: the first go is what's scored.
+      const hit = (st.inCup || []).find((q) => Math.abs(p.x - q.x) < 17 && Math.abs(p.y - q.y) < 22);
+      if (hit) {
+        const d = cur() && cur().drink;
+        if (d && (!d.things.includes(hit.t) || (hit.t === d.counted && st.cup[hit.t] > d.n))) st.slip = true;
+        st.cup[hit.t]--;
+        if (!st.cup[hit.t]) delete st.cup[hit.t];
+        st.stirred = false;
+        ctx.sfx("tap");
+        ctx.log({ type: "takeback", detail: hit.t });
+        drawCup();
+        return;
+      }
       if (Math.abs(p.x - CUP.x) > 80 || Math.abs(p.y - CUP.y) > 80) return;
       if (!Object.keys(st.cup).length) return;
       if (!st.stirred) return S.cue("make", CUES.make, S.toolEls.spoon);

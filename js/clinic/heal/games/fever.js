@@ -123,7 +123,7 @@
       const c = cur();
       if (c.kind === "temp") {
         unread();
-        S.cue("temp", CUES.temp, S.toolEls.thermo);
+        S.cue("temp", CUES.temp, S.toolEls.thermo, { x: H.x, y: H.y - 50 });
       } else {
         st.uses = {};
         st.taps = [];
@@ -133,7 +133,7 @@
         else ctx.card.addRow(row);
         ctx.card.now(c.id);
         ctx.say(row);
-        S.cue("fix", CUES.fix, S.toolEls[e.hot ? "fan" : "blanket"]);
+        S.cue("fix", CUES.fix, S.toolEls[e.tool === "cloth" ? "cloth" : e.hot ? "fan" : "blanket"], { x: H.x, y: H.y });
       }
     };
     const next = () => {

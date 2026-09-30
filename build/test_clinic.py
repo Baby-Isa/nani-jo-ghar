@@ -121,7 +121,7 @@ class Player:
 
     def results_screen(self):
         # the shared end-of-round screen: page 1 (badges) -> Next -> page 2 (words) -> Done
-        for sel in (".rs-next", ".rs-done"):
+        for sel in (".rs-next", ".rs-done", ".rs-act.primary"):
             c = self.centre(sel)
             if c:
                 self.tap_xy(c["x"], c["y"])
@@ -138,11 +138,11 @@ class Player:
                 raise AssertionError(f"{label}: page errors {errs}")
             if self.ev(done_js):
                 # a results screen may still be open
-                if self.centre(".rs-next") or self.centre(".rs-done"):
+                if self.centre(".rs-next") or self.centre(".rs-done") or self.centre(".rs-act.primary"):
                     self.results_screen()
                     continue
                 return time.time() - t0
-            if self.centre(".rs-next") or self.centre(".rs-done"):
+            if self.centre(".rs-next") or self.centre(".rs-done") or self.centre(".rs-act.primary"):
                 self.shot(f"{label}-results")
                 self.results_screen()
                 continue
@@ -231,7 +231,8 @@ def help_case(p, vp_name, args):
     must hold the thermometer (the old `strip` id left the game without one, and the help, waiting on the
     thermometer, blocked every other tap); the game is played to the end through its own debug driver
     (debug.next(): what a child who understood would do, as real mouse events; build/heal_play.py), every
-    step's first-time cue must come (debug.cues), and nothing may error."""
+    step's first-time help must come (debug.cues) as the ghost finger on the shared kit with no words in it
+    (13g), and nothing may error."""
     import heal_play
 
     vp = VIEWPORTS[vp_name]
@@ -252,19 +253,27 @@ def help_case(p, vp_name, args):
         pl = heal_play.Play(page, "fever", 1, vp_name, args.seed, None)
         t0 = time.time()
         cues = []
+        seen_ghost = False
         if has_debug:
             while not page.evaluate("() => !!window.__clinic.last"):
                 if time.time() - t0 > 90:
                     raise AssertionError("timed out playing fever with the help on")
-                if page.query_selector(".njg-onboard.on"):
-                    raise AssertionError("a blocking first-time overlay is up")
+                # 13g: the help is the ghost finger on the shared kit: no words in it, and no device voice
+                ob = page.query_selector(".njg-onboard")
+                if ob:
+                    seen_ghost = True
+                    txt = (ob.inner_text() or "").strip()
+                    if txt:
+                        raise AssertionError(f"the first-time help shows words: {txt[:60]!r}")
                 a = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r ? r.controller.debug.next() : {do: 'wait'}; }")
                 c = page.evaluate("() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug.cues ? r.controller.debug.cues : null; }")
                 if c is not None:
                     cues = c
                 pl.act(a)
             if not cues:
-                raise AssertionError("no first-time cue came with the help on")
+                raise AssertionError("no first-time help came with the help on")
+            if not seen_ghost:
+                raise AssertionError("the first-time help never showed the ghost finger (the shared onboarding kit)")
         else:
             raise AssertionError("the fever game has no debug driver")
         last = page.evaluate("() => { const l = window.__clinic.last; return l && l.heal ? {right: l.heal.right, total: l.heal.total} : null; }")

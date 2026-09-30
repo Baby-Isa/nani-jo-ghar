@@ -348,17 +348,24 @@
     S.did = () => global.Onboard && global.Onboard.signal && global.Onboard.signal("hs-did");
     S.cue = (key, spec, target, then) => {
       S.cueLog.push(key);
-      if (!S.cuesOn || !spec) return;
+      if (!S.cuesOn || !spec || spec.watch) return; // a step the child only watches has nothing to demo
       const sp = typeof spec === "string" ? { gesture: "tap" } : spec;
       const g = sp.gesture || "tap";
       const first = rectOf(target);
       if (!first()) return;
       const isTool = (() => {
         const t = typeof target === "function" ? target() : target;
-        return !!(t && t.closest && t.closest(".hs-tools, .cl-actions, .njg-btn"));
+        return !!(t && t.closest && t.closest(".hs-tools, .cl-actions, .njg-btn, .njg-pills"));
       })();
       const steps = [];
-      if (g === "drag" && sp.to) {
+      // the tool is already in hand (picking it opened this step): start at the second thing
+      const held = isTool && (() => {
+        const t = typeof target === "function" ? target() : target;
+        return t && t.dataset && t.dataset.tool && t.dataset.tool === S.sel;
+      })();
+      if (held) {
+        /* no first step */
+      } else if (g === "drag" && sp.to) {
         const to = rectOf(sp.to);
         steps.push({ spotlight: [first, to], ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
       } else steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
@@ -369,6 +376,7 @@
         const to2 = nx.to ? rectOf(nx.to) : null;
         if (t2()) steps.push({ spotlight: to2 ? [t2, to2] : t2, ghost: to2 ? { gesture: g2, from: t2, to: to2 } : { gesture: g2 }, wait: "hs-did" });
       }
+      if (!steps.length) return;
       S.uncue();
       cueId = `clinic/heal-${S.game}-${key}`;
       global.Onboard.run(cueId, steps, { force: force === "1", idleMs: 6000 }).catch(() => {});

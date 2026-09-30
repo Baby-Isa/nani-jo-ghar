@@ -23,7 +23,7 @@
   const CUES = {
     wipe: { gesture: "tap", then: "tap" },
     beads: { gesture: "tap" },
-    boing: { gesture: "tap" },
+    boing: { watch: true }, // the countdown runs by itself: the child watches (and counts along), nothing to demo
     plaster: { gesture: "tap", then: "tap" },
     apple: { gesture: "tap" },
   };
@@ -104,15 +104,17 @@
         S.cue("boing", CUES.boing, { x: SY.x + SY.w / 2, y: SY.y + 35 });
         return countdown();
       }
-      S.cue(c.kind, CUES[c.kind], S.toolEls[TOOL[c.kind]]);
+      S.cue(c.kind, CUES[c.kind], S.toolEls[TOOL[c.kind]], c.kind === "wipe" || c.kind === "plaster" ? { x: A.x, y: A.y } : null);
     };
     const close = () => {
       const c = cur();
       if (!c) return;
       if (c.kind === "wipe") judge("wipe-count", st.wipes === c.count, `${st.wipes} of ${c.count}`);
       if (c.kind === "beads") {
-        if (P.level < 3) judge("bead-count", st.beads.length === c.beads.length, `${st.beads.length} of ${c.beads.length}`);
-        else judge("bead-colours", JSON.stringify(st.beads) === JSON.stringify(c.beads), st.beads.join(" "));
+        // a bead taken back counts only if the child had gone past the count or the colour (the first go is scored)
+        const slip = st.beadSlip && st.maxBeads > c.beads.length;
+        if (P.level < 3) judge("bead-count", !slip && st.beads.length === c.beads.length, `${st.beads.length} of ${c.beads.length}`);
+        else judge("bead-colours", !st.beadWrong && JSON.stringify(st.beads) === JSON.stringify(c.beads), st.beads.join(" "));
       }
       ctx.card.tick(c.id);
       S.count(null);
@@ -163,6 +165,9 @@
         if (!cur() || cur().kind !== "beads") return;
         if (st.beads.length >= 5) return;
         st.beads.push(id.slice(5));
+        st.maxBeads = Math.max(st.maxBeads || 0, st.beads.length);
+        const want = cur().beads;
+        if (P.level >= 3 && want[st.beads.length - 1] !== id.slice(5)) st.beadWrong = true;
         drawBeads();
         S.count(st.beads.length);
         ctx.tally("beads", st.beads.length);
@@ -180,6 +185,17 @@
       if (!S.ready || st.over || st.busy) return;
       const p = S.pt(e);
       const c = cur();
+      // a tap on the syringe takes the last bead back out, until ✓ (UX 17); the first go is what's scored
+      if (c && c.kind === "beads" && st.beads.length && p.x >= SY.x - 20 && p.x <= SY.x + SY.w + 20 && p.y >= SY.y - 20 && p.y <= SY.y + (SY.h || 70) + 20) {
+        st.beads.pop();
+        st.beadSlip = true;
+        drawBeads();
+        S.count(st.beads.length, { silent: true });
+        ctx.tally("beads", st.beads.length);
+        ctx.sfx("tap");
+        ctx.log({ type: "takeback", detail: "a bead" });
+        return;
+      }
       if (!c || Math.abs(p.y - A.y) > 70 || p.x < 120 || p.x > 680) return;
       if (c.kind === "wipe" && S.sel === "cotton") {
         st.wipes++;

@@ -52,7 +52,8 @@
       const wordOf = (it) => PL().itemWord(data, it.id, it);
 
       // the doctor's request (13b "[Bring me] ..."), read along in the sidebar; the belt runs at once (13i)
-      await S.request(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq) });
+      // from level 3 the card is closed: the counts and the order are heard, not read (13c, Cook's rule Q7)
+      await S.request(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq), closed: plan.level >= 3, onPeek: () => screen.peek("pharmacy-card") });
 
       // the belt: dishes enter on the right every everyMs, cross in crossMs, loop through plan.loop
       const everyMs = plan.slow ? plan.everyMs * 1.3 : plan.everyMs;

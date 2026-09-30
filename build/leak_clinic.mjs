@@ -33,6 +33,10 @@ const N = +arg("--rounds", 500);
 const SEED = +arg("--seed", 1);
 const data = P.prepare(JSON.parse(fs.readFileSync(path.join(ROOT, "data/clinic/pipeline.json"), "utf8")), JSON.parse(fs.readFileSync(path.join(ROOT, "data/clinic.json"), "utf8")));
 const games = Heal.ids();
+// Zafar's own calls that knowingly lift a heal game's blind rate above 10% at level 1, printed every run (never silent).
+// knee (29 Sept, 13i): the flashing stops once the last turn is wrapped, so the turns are a hand-skill row; "the bandage
+// game is fun: keep it. It's not very educational, but there are plenty of other chances to learn numbers."
+const ACCEPTED = { knee: { under: 0.3, why: "13i, the flashing stops at the last turn (Zafar); open for Zafar" } };
 const pct = (w, n) => `${((100 * w) / n).toFixed(1)}%`;
 const out = { rounds: N, seed: SEED, games, stages: {}, heal: {}, patient: {}, first: null };
 let problems = 0;
@@ -100,7 +104,8 @@ for (const id of games) {
     // "reader" reads the English placeholders (every word is English until the family records it): reported, not a blind leak
     const blind = Object.entries(cell).filter(([k, x]) => k !== "fair" && k !== "reader" && typeof x === "number");
     const worst = blind.reduce((m, [k, x]) => (x > m[1] ? [k, x] : m), ["-", 0]);
-    if (L === 1 && worst[1] >= 0.1) {
+    if (L === 1 && ACCEPTED[id] && worst[1] < ACCEPTED[id].under) console.log(`  ACCEPTED ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)}: ${ACCEPTED[id].why}`);
+    else if (L === 1 && worst[1] >= 0.1) {
       problems++;
       console.log(`  !! ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)} (the contract wants under 10%)`);
     }

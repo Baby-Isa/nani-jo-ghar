@@ -125,6 +125,8 @@
         words,
         sound: !Kit.fast,
         container: document.body,
+        // UX 15: the end screen's actions from the shared kit, in the one order everywhere (Again, Next, the list, Home)
+        actions: global.NjgButtons ? global.NjgButtons.endActions(o.endActions || { next: "Next" }) : undefined,
       });
     }
     return out;

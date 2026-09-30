@@ -613,3 +613,21 @@ await Kit.review(S, { who, ok, x, y, size, side, k });    // the review (X10): b
 **The hob family (29 Sept, X5):** `Kit.HOB.sets` (1–4 burners and `wide`) is the ChatGPT H1–H5 art, each hob drawn whole (`assets/cook/items/v3/hob/`, cut by `build/cut_cook_v3.py`), every burner the same size; each burner has its own measured centre (`hob.burners[i].y` can differ by a pixel between burners). The knobs are H6. Flames reach 1.2 × `flameR` and never more than 0.46 of the burner pitch. `python3 build/check_vessel_meta.py` checks the burners against the art. The station art for the next sessions (C1, M1–M5, D1–D2, T1–T2, S1–S5, K1–K5) is cut and documented in `assets/cook/items/v3/README.md`, not wired.
 
 Vessel geometry lives in `Kit.VESSELS` (canvas fractions of the round body: the `karahi` is samosa v2's, with `oil`, its oil's radius as a fraction of the body's; samosa v2's fry places it). Maani v2 uses one burner and one tawa; chai v2 keeps its own copy for now (same art and numbers).
+
+## 16. The button kit: `js/shared/buttons.js`, `css/shared/buttons.css` (30 Sept 2026, UX-PRINCIPLES 15)
+
+One look, one size and one place for the buttons every mode uses, so a child learns them once. Load `css/shared/buttons.css` and `js/shared/buttons.js` (plain script: `window.NjgButtons`, `Shared.buttons`; Node: `require()` gives the pure parts). **The clinic uses it** (its `Kit.button` and the answer pills); **Cook adopts it later** (its `#done-btn` and `#go-btn.ds` are the looks the kit copies, so nothing in Cook changes when it switches).
+
+| Call | Draws | Where |
+|---|---|---|
+| `NjgButtons.done(parent, onPress, {glow, id, label, cls})` | **✓ Done**: the round gold tick (Cook's `#done-btn`: cream disc, `tick-gold.webp`, 3D lip) | bottom-right corner of `parent` (the play area), inside its edges |
+| `NjgButtons.next(parent, label, onPress, {icon, glow, id, cls})` | **→ Next**: the flat design-system pill (Cook's `#go-btn.ds`: white, gold edge, charcoal label, gold icon) | the same corner; `label` = text, a DOM node (the mode's word markup) or `{html}`; `icon` = `arrow` (default), `check`, `grid`, `again`, `home` or `null` |
+| `NjgButtons.pills(parent, [{id, label \| html \| node}], onPick, {cls})` | **answer pills** (haa / na, Found it / Next, the speaking fallbacks): one pill style | where the mode puts the row; `row.pill(id)`, `row.lock(on)` |
+| `NjgButtons.glow(btn, on)` | the "press me" glow (Done and Next) | |
+| `NjgButtons.endActions({again, next, list, home})` | `Results.show`'s `actions`, always in the one order **Again, Next, the list, Home**; each value `true` (the default label) or a label; the last one given is primary; `elId` = `njg-end-<id>` | the end screen (§8) |
+| `NjgButtons.ORDER` | `["again", "next", "list", "home"]` | |
+
+- `parent` must be positioned. Done and Next are `position: absolute` in its bottom-right corner (`right/bottom: max(12px, 2.5%/4%)`), never past its edge (the clinic pharmacy's button was cut off by the frame: 13b). A mode with its own corner box (the clinic's `.cl-actions`) sets them `position: relative` inside it.
+- A press disables the button for 400 ms (no double taps) and plays `Sfx.tap`.
+- The clinic: `Kit.button(parent, "✓", fn, "done")` is Done, any other label is Next (`.cl-go` stays on both for the tests); D1's Found it / Next and the eye test's haa / na are pills; `Results.show` gets `NjgButtons.endActions({next: "Next"})`.
+- Tests: `node --test build/test_shared_buttons.mjs` (the pure part).
