@@ -83,7 +83,16 @@ bowl, the ladle's bowl and the clinic's basin (new `check_clinic_items`). It als
 - The vessel check's kit comparison now reads `hob-4-v2` as the kit's 4-burner hob.
 
 ## 3. Tests
-(filled in below)
+All on the branch after merging `origin/main` (chai v3, maani v3; main hadn't moved again since):
+- `python3 build/test_cook.py --lab --stations daar,samosa,mishkaki-grill,chop,tadka,stir,fill,fry,thread,grill --viewport laptop`: **PASS** (107 screenshots, 1091 s).
+  - The bot's own slips show in the verdicts (a too-dark samosa, a chopped count), as ever.
+  - It also passed earlier on the pre-kit code: samosa, fill, fry, sekelo, thread and grill (78 screenshots), and daar alone (12).
+- The same with `--viewport phone-landscape`: **PASS** (113 screenshots, 1093 s).
+- `python3 build/test_cook.py --days 1 --canvas`: **PASS** on all 6 viewports (flip5-landscape, laptop, laptop-16x10, laptop-1280x800, ipad, ipad-portrait), after the final merge.
+- The shared Node tests (`build/test_shared_*.mjs`, 13 files): **117/117 pass**.
+- `node build/check_onboard.mjs`: **ok** (7 stations, 10 phases; clinic heal 9 games).
+- `python3 build/check_vessel_meta.py`: **128 ok, 0 fail**. That covers the new pots, the plates and their measured skewer lines against grill.js, the knobs, hob-4-v2 against `Cook.Kit.HOBS[4]`, the trivet bowls, the ladle-v2 bowl, daar.js's constants, and the clinic basin.
+- Every shot run logged **no console errors**.
 
 ## 4. Shots and their flaws
 Every shot is in `build/reports/art-v3-1/`:
@@ -112,13 +121,15 @@ Every shot is in `build/reports/art-v3-1/`:
 - **Samosa**
   - L1 and L3 two kinds (`samosa-*-L1/`, `samosa-*-L3-two/`): the card has the base first in both blocks (*chundo*, then the extras; the second block "samosa" with *bataato*).
   - Two or three fillings show as separate mounds on the strip (`*-filled.png`, `*-sam-2-filled.png`), and the second kind's first strip starts empty.
-  - The **"fry them" pill** is the kit's Next (white card, gold edge and arrow, bottom right). R5's chilli rings on the shelf read as chilli.
+  - The **"fry them" pill** is the kit's Next (white card, gold edge and arrow, bottom right).
+  - R5's chilli rings on the shelf read as chilli on the laptop. **On the phone** (844 px wide) the rings and the peas are two small green heaps side by side, told apart mostly by the rings' pale seeds. Better than S5's chilli, but not unmistakable at that size.
   - **Flaw left:** at L3 the block-2 row reads "samosa" with no count, because the count rule hides numbers from L3 and the count is only heard (*and ba samosa*). That's the rule, but with two blocks the child has to hold two counts in their head.
 - **Sekelo**
   - L1 charred (`sekelo-*-L1-char/`), L3 with 3 skewers and L4 with 4 (`sekelo-*-L3/`, `*-L4/`). The empty plate is clean.
   - A charred onion skewer stays purple and black on the grill (`*-charred.png`). The potato decoy has its own heap and chunks.
   - **Still crowds a little** (the orchestrator's question): at 3 and 4 skewers the lower chunks of neighbouring skewers touch near the handles, where R6's skewers converge. It's better than v3's parallel skewers, but not the clean fan the prompt asked for.
   - **Flaw left:** R6's fifth, empty bamboo stick shows on the 4-skewer plate (lower left).
+  - **Shoot-script note:** the phone L3 run (`sekelo-phone-landscape-L3/`) stalled after the grill's first turn, on the bot's deliberate wrong skewer (4 threaded for 3), and was stopped after 14 minutes. So it has no plate shots; the phone L1 and L4 runs have them. The station itself passes the phone lab test (§3), and nothing in the plate change touches the grill's turn.
 - **The hob** (`hob-chai-*-{1,2,3,4}/`, `hob-maani-laptop-L1/`, and the daar and samosa hobs in their folders)
   - At 1–3 burners (the v3 hobs) and 4 (R1), each knob is shown off (`*-start.png`) and on (`*-boiling.png`, `*-tawa-half.png`).
   - The on glow is a wide warm ring and reads at a glance, even on the phone. At 4 people chai's burners are bigger (scale 0.72, was 0.63), the four faces and knobs sit on the front strip, and the tray stays in the row.
