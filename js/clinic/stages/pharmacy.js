@@ -44,6 +44,12 @@
         const top = box.offsetTop + (cfg.beltY - cfg.itemH) * box.clientHeight;
         Object.assign(belt.style, { top: `${top}px`, height: `${cfg.itemH * box.clientHeight}px` });
         belt.style.setProperty("--item", `${cfg.itemH * box.clientHeight}px`);
+        // the tray stays inside the play area on a short screen (phone landscape cut its bottom off)
+        trayBox.style.marginTop = "0px";
+        const tr = trayBox.getBoundingClientRect();
+        const sr = stage.getBoundingClientRect();
+        const over = tr.bottom - (sr.bottom - 6);
+        if (over > 0) trayBox.style.marginTop = `${-over}px`;
       };
       fitBelt();
       if (box) box.addEventListener("scenefit", fitBelt);
