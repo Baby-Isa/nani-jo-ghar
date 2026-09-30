@@ -2,7 +2,7 @@
 
 > **Stale points (the rulebook, `docs/process/rules.md`, wins).** The text below is kept as recorded; these lines are overridden:
 > - *marcha* as the plural of *mirchi* (Zafar, 26 Sept afternoon; §4 and §28) → *mirchi* only, no plural, for now; Zafar to confirm with Mum (G24, G25, decision 5). §34 P4 records Mum's view.
-> - *chindo* for mince (§24 B33 and "Claude's view") → *chundo* (Zafar's corrections to A8 and Section B, 26 Sept; decision 13 list, G24).
+> - *chindo* for mince (§24 B33 and "Claude's view") → *chundo* (Zafar's corrections to A8 and Section B, 26 Sept; G24).
 > - *hakri cup* (§25 B27, also repeated in `cook-word-changes-B`) → *hakro cup*: cup is a he-word (Mum, 28 Sept, §29 R8; G5).
 > - "the game currently uses *hikdo* for one" and *bo* for two (early sections) → *hakro/hakri* by gender and *ba* (G5); both already fixed in data.
 > - "Zafar to choose Big Ma / Wadima / Maji" (§30 K14) → decided: "Big Ma" (I7, decision 11).
