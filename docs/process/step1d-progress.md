@@ -29,7 +29,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 ### Session D: `docs/design-language/` (except `ui-design-system.md`) and `docs/architecture/` only
 - [x] `art-bible.md` ← stale box (liquids D11, API transparency D1, hands parked, quilt); keep §1–4, 6–8, cultural accuracy; **move** §5, §9, §10 to art-pipeline.md; add Asset Plan ambient motion and set-dressing lists
 - [x] `art-pipeline.md` (new) ← Art Bible §5/§9/§10, Asset Naming Convention, Asset Plan hands (parked), batch-1 style-anchor and templates, pantry-jars cut/label method, colour-ground rules, alive-nani prompt method, playtest-23 animation research, Image Prompt Sheets templates, art-direction style-lock test
-- [ ] `ux-principles.md` ← stale box (stars, green/red tick, per-card speaker, picture tally)
+- [x] `ux-principles.md` ← stale box (stars, green/red tick, per-card speaker, picture tally)
 - [ ] `tone-of-voice.md` (new, short) ← rules E27, E30, G6–G8, cast notes, speaking tone
 - [ ] `audio.md` (new) ← Game Design recording method, multiple voices, sound design; rules G14–G17 by ID
 - [ ] `architecture/technical-plan.md` ← stale box (Phaser, quilt entity, chunk_type, IndexedDB, 44 px, no manifest)

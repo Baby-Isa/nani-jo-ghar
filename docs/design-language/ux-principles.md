@@ -1,5 +1,16 @@
 # UX principles for every mode (Zafar's playtest of the Mishkaki grill, 25 Sept 2026)
 
+> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
+> - Ear star, "costs the ear star", "costs the no-help star", badges "mapped to the existing stars (craft, ear, no-help)" (§4, §8, §9) → three badges (time, accuracy, hints), no ear or voice star; hints cost lightbulbs; legacy star code to be removed (H5, decisions 1–3)
+> - "Stars fade in over the first rounds" (§8) → badges, not stars (H5)
+> - Accuracy as slots filling "green for right and red for wrong" and "red for the share wrong" (§9, §9a) → gold tick for right, grey for the rest; red only for wrong words in the word review (F13, F14)
+> - "Green outline" on right words in the review (§9a) → see F13/F14 (gold for right)
+> - "One speaker in each card's top-right corner" (§4) → the face is the replay (UI28; E25, F8)
+> - "A tally with pictures" top-right (§11) → flat tallies only where kept, such as chai sugar (E12, F25)
+> - "A skewer card always has four dots" (§3) → check against no step counters and sequences never numbered (F9, F23)
+> - "Known differences today (29 Sept)" (§15) → time-bound; most fixed by the shared button kit; re-check and drop
+> - "Mishkaki grill" in the header → the mode is now Sekelo
+
 Zafar: "I was concerned the games would be too easy, but they're very addictive and fun. They're way too overwhelming at the beginning, with lots of information." These rules apply to Cook and to every new mode. Build sessions follow them from their next phase; Cook gets them in Wave 6.
 
 ## 1. The request card
