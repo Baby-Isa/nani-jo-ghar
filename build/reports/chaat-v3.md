@@ -57,7 +57,7 @@ States: `chop-start`, `chop-mid` (missing where the bot sliced only once), `demo
 - **The glass's big side highlights** lie at 45% over the ends of every layer, so both ends look paler than the middle. That is how glass looks, but it's strong.
 - **The tomato pot** is a recoloured onion pot. It reads as diced tomato at shelf size, but the pieces have onion's shape, and one corner of the dice stays pale.
 - **Phone: the chip words are tiny** (about 10 px, and *amli ji chutney* runs to two lines at about 7 px). This is v2's chip size; the pots are about 45 px wide. Everything is still tappable, but the words are hard to read.
-- **The spoonful was hard to see in flight** at 64 px. It is now 92 px; the `inNa` shots were taken before that change, except where re-shot.
+- **The spoonful was hard to see in flight** at 64 px. It is now 92 px. Laptop levels 1–2 were re-shot with it; the other `inNa` shots still show the 64 px one.
 - **The order card's face circle blinks empty** for a moment after a row ticks (seen in several `in*` shots). This is the shared order card re-rendering its image, not chaat's.
 - **End screen:** the *fudino ji chutney* word tile overflows its box. This is the shared end screen, which §15 says not to restyle, so I left it.
 - **The review face** sits over the middle of the rim and hides the top of the bowl's back edge. That's what "over the dish" asks for.
