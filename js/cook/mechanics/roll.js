@@ -87,6 +87,7 @@
    *   handle   {} that gets cancel(): stop without a score (resolves null)
    *   pinTex   a rolling-pin texture (level, e.g. the maani v2 velan): the pin rolls on its own, no hands;
    *            pinW its width (design px)
+   *   body     (key) => the fraction of the texture's width that is the round body's radius (default 0.5)
    *   gold     the target is a faint gold ring etched on the board that glows when the maani is the
    *            right size (maani v2, §11), not the white dashed circle
    */
@@ -109,7 +110,10 @@
       const setR = () => {
         const key = r < z.L(90) ? tex.ball : tex.raw;
         if (dough.texture.key !== key) dough.setTexture(key);
-        dough.setScale((r * 2) / S.texSize(key).w);
+        // opts.body(key): how much of its canvas the dough's round body fills (the v3 maani art has
+        // margins), so the dough's edge, not its box, is r across; default the whole width
+        const fr = (opts.body && opts.body(key)) || 0.5;
+        dough.setScale(r / (fr * S.texSize(key).w));
       };
       setR();
       // the target you're nearest to (by ratio: 10% short of small is nearer small)
