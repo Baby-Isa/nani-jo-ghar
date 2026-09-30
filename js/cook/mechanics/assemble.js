@@ -219,6 +219,7 @@
   const BAND_SCALE = { "veg-01": 0.62, "ph-chana": 0.62, "ph-dahi": 0.8, "ph-sev": 0.7, "ph-dhana": 0.62, "veg-02": 0.6, "veg-03": 0.6, "veg-12": 0.62 };
   const BAND_W = 1300; // a layer's flat texture: as wide as the bowl (bowl px)
   const BAND_PAD = 14; // and this much above and below the layer (for the uneven lines)
+  const SPOON_W = 92; // a spoonful in flight (design px): big enough to see what is going in
   const potFood = {}; // id -> a canvas of the food in its pot (the layer's texture)
 
   /** The speaker icon, drawn at (x, y) about `s` px tall (chai v2's). */
@@ -1033,7 +1034,7 @@
         UI.mission.refresh();
         const obj = items[id];
         if (obj && S.textures.exists(`cv3-bit-${id}`)) {
-          const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(64), z.L(64 * 0.62)));
+          const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(SPOON_W), z.L(SPOON_W * 0.62)));
           await S.fly(spoon, obj.x, obj.y - obj.displayHeight * 0.5, { duration: 380, arc: z.L(70) });
           spoon.destroy();
         }
@@ -1088,7 +1089,7 @@
               S.add
                 .image(obj.x, obj.y - obj.displayHeight * 0.7, bitKey)
                 .setDepth(D.fx)
-                .setDisplaySize(z.L(64), z.L(64 * 0.62)),
+                .setDisplaySize(z.L(SPOON_W), z.L(SPOON_W * 0.62)),
             )
           : S.track(
               S.add
