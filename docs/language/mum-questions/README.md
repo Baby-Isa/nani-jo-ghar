@@ -1,0 +1,26 @@
+# Questions for Mum: which rounds are answered, and where the answers live
+
+> **Stale points (the rulebook, `docs/process/rules.md`, wins).**
+> - Older rounds say "Claude drafts Kutchi from the handouts and dictionary for you to confirm": drafts are only ever flagged unconfirmed; Mum is the authority and two AIs agreeing is not evidence (G1, G21, non-negotiable 4).
+> - Older rounds mention an ear star or voice star, TTS placeholders or English on screen: those are overridden (decisions 1–2, G14, E1).
+> - Round 4 and the others are a **record**: don't edit them. Answers are written into `grammar-notes.md`, `lexicon.md` and `data/family-audio.json`, not back into the rounds.
+> - "Round 5" is paused: see `../sources/round5-plan-notes.md`. Nothing has been shown to Mum.
+
+Recordings are cut into clips and indexed in `data/family-audio.json` (question ids such as R1, K1, S1, P1, C1). Zafar marks each line heard / clear / ⚠ in the right-hand columns of the round.
+
+| Round (file here) | Date | What it covered | Status | Where the answers live |
+|---|---|---|---|---|
+| Round 1 | 23 Sept | Grammar patterns and a first word list | **Superseded** by Combined; nothing answered here (all its questions reappear in Combined) | n/a |
+| Round 2 (Cooking) | 24 Sept (Part 6 added 25 Sept) | The 16-dish list, dish names, "Part 5: check what we've guessed" (handout words) | **Superseded** by Combined | The dish table is for `game-design/modes/cook.md` (future dishes); the Part 5 handout words are in `../lexicon.md` § 2 as *unconfirmed, confirm with Mum* |
+| Combined, for the visit | 25 Sept | Sections A and B (the heart: about 18 minutes); C onwards carried to Rounds 3 and 4 unchanged | **Sections A and B answered** (25–26 Sept) | `../grammar-notes.md` §1–§28 |
+| Round 3 | 26 Sept (answered 28 Sept) | Parts 1–4 and Section C1–C21 | **Answered** (28 Sept). Sections G, E, F, H, D, I, J **not** answered here; re-issued in Round 4 | `../grammar-notes.md` §29–§37 (the 28 Sept recording); Zafar's ✓/⚠ marks per line (R1–R12, K1–K15, S1–S9, P1–P13, C1–C21) are **only kept in table form inside this file**; clip ids in `data/family-audio.json` |
+| **Round 4** (`.md` and the `.docx` Mum reads) | 28 Sept | The live round: Cook first (Parts 1–3), then the grammar sentences (Section C from C22), then Part 4, Sections I, E, G, F, H, J | **Live; not yet answered** (no answer notes). **Section G is the doctor's script**, to record with Mum's and Zafar's help (~9 Oct) | To be written into `../grammar-notes.md` and `../lexicon.md` |
+| Round 5 | (paused, 30 Sept) | Plan notes only: quick checks, Section C core (C22–C154), a new Section L for the gaps the grammar checklist found | **Not written.** Awaiting Zafar's go | `../sources/round5-plan-notes.md` |
+
+## Word copies
+
+`Questions for Mum (Round 4).docx` is the copy Mum reads; it sits beside its `.md`. The Word copies of Round 3 and Combined are in `docs/archive/language/` and can be regenerated with `build/build_mum_questions_docx.js`. **Open question for Zafar:** does Mum still open the Word files? If so, regenerate from the `.md`; if not, the `.docx` can stay archived.
+
+## How the rounds are answered (the method, unchanged)
+
+Mum records one long voice file; before each part she says its name and each line's number; word lists are said twice (🎤 words three times), sentences once. Zafar types what she said beside each question and sends it back to her to check.
