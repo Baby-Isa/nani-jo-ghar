@@ -48,7 +48,7 @@
     // 13j: level 1 has no size words (just take the wax out); big and small start at level 2
     const steps = [L === 1
       ? { id: "wax", kind: "wax", order: null, row: { id: "wax", kutchi: "[The wax out]", english: "Take the wax out" } }
-      : { id: "wax", kind: "wax", order, row: { id: "wax", kutchi: `[Wax:] pela ${kw(order[0])}, ne poi ${kw(order[1])}`, english: `The wax: first the ${order[0]} one, then the ${order[1]} one` } }];
+      : { id: "wax", kind: "wax", order, row: { id: "wax0", seq: "wax", kutchi: `pela ${kw(order[0])} [wax]`, english: `first the ${order[0]} wax` }, rows: [{ id: "wax0", seq: "wax", kutchi: `pela ${kw(order[0])} [wax]`, english: `first the ${order[0]} wax` }, { id: "wax1", seq: "wax", kutchi: `ne poi ${kw(order[1])}`, english: `then the ${order[1]} one` }] }];
     if (K.popMs[L]) steps.push({ id: "pop", kind: "pop", ms: K.popMs[L], max: MAXPOPS[L], row: { id: "pop", kutchi: null, english: "More wax!", placeholder: true } });
     steps.push({ id: "clean", kind: "clean", count: cleans, row: { id: "clean", kutchi: `[Cotton bud], ${HS.NUM[cleans]}`, english: `The cotton bud, ${cleans} times` } });
     steps.push({ id: "drops", kind: "drops", count: drops, row: { id: "drops", kutchi: `Ne poi [drops], ${HS.NUM[drops]}`, english: `Then the drops, ${drops}` } });
@@ -68,7 +68,7 @@
     const st = { i: 0, out: [], cleans: 0, drops: 0, judged: {}, over: false, busy: false, pops: [], popping: false, drag: null, hold: null };
     const cur = () => P.steps[st.i] || null;
     const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
-    ctx.card.setRows(P.steps.filter((x) => x.kind !== "pop").map((x) => x.row));
+    ctx.card.setRows([].concat(...P.steps.filter((x) => x.kind !== "pop").map((x) => x.rows || [x.row]))); // the wax order is a sequence (13h)
 
     // the head from the side, the ear big in the middle, against the wall
     const head = s("g", {}, S.layer);
@@ -184,6 +184,7 @@
         return;
       }
       st.out.push(g.key);
+      if (cur() && cur().rows) ctx.card.tick(`wax${st.out.length - 1}`); // each part ticks as it's done (13c)
       S.face("ouch", 500);
       drawWax();
       if (st.out.length === 2) {

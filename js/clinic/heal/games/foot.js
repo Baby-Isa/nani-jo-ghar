@@ -75,7 +75,9 @@
     const side = L === 3 ? (rng() < 0.5 ? "left" : "right") : null;
     const steps = [{ id: "soak", kind: "soak", temp, jugs, row: { id: "soak", kutchi: `Paani [${temp}], ${HS.NUM[jugs]} [jugs]`, english: `${HS.cap(temp)} water, ${jugs} jugs` } }];
     const orderK = order ? `: ${order.map((t, i) => `${i ? "ne poi" : "pela"} [${t}]`).join(", ")}` : "";
-    steps.push({ id: "pull", kind: "pull", order, row: { id: "pull", kutchi: `[Splinters]${orderK}`, english: order ? `The splinters: first the ${order.join(", then the ")}` : "Take the splinters out" } });
+    // the toe order (L3) is a sequence on the card (13h): pela [big toe], ne poi ...
+    const pullRows = order ? order.map((t, i) => ({ id: `pull${i}`, seq: "toes", kutchi: `${i ? "ne poi" : "pela"} [${t}]`, english: `${i ? "then the" : "first the"} ${t}` })) : null;
+    steps.push({ id: "pull", kind: "pull", order, row: pullRows ? pullRows[0] : { id: "pull", kutchi: `[Splinters]${orderK}`, english: "Take the splinters out" }, rows: pullRows });
     steps.push({ id: "plaster", kind: "plaster", row: { id: "plaster", kutchi: null, english: "A plaster on each spot", placeholder: true } });
     const rows = [
       { id: "soak-water", options: TEMPS, answer: temp, placeholder: true },
@@ -97,7 +99,7 @@
     P.splinters.forEach((q) => (st.prog[q.id] = LEN)); // the head starts LEN along: the splinter lies from the spot out
     const cur = () => P.steps[st.i] || null;
     const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
-    ctx.card.setRows(P.steps.map((x) => x.row));
+    ctx.card.setRows([].concat(...P.steps.map((x) => x.rows || [x.row])));
 
     // level 3: both feet, smaller, side by side (a left foot has its big toe on our right; the right foot is its
     // mirror); the named one is the one to work on. The drawing below is in one foot's own units (T maps them).
@@ -309,6 +311,7 @@
       if (st.prog[q.id] >= 0.97) {
         drag = null;
         st.pulled.push(q.id);
+        if (cur() && cur().rows) ctx.card.tick(`pull${st.pulled.length - 1}`);
         S.face("happy", 600);
         ctx.sfx("pop");
         const fly = s("line", { x1: at(q, 1).x, y1: at(q, 1).y, x2: at(q, 1 - LEN).x, y2: at(q, 1 - LEN).y, stroke: "#6a3e1e", "stroke-width": 7, "stroke-linecap": "round" }, mainG);

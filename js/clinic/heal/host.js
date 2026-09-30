@@ -171,6 +171,8 @@
     card.closed = level >= 3 ? { onPeek: () => (screen.peek ? screen.peek("heal-card") : screen.bulb.use()) } : null;
     card.fold = {};
     card.setTitle("", face);
+    // the doctor's box: his line now is his goal for this game (a line to record: 13f, the doctor fills Nani's role)
+    if (screen.setGuide) screen.setGuide(def.why && def.why.goal ? { kutchi: `[${def.why.goal}]`, english: def.why.goal } : null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     card.setRows([]);
 

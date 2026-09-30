@@ -456,3 +456,11 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* 13a, 13b: the lab's debug log sits over the sidebar, clear of the play area (lab only) */
 .cl-lab-out { left: 8px; bottom: 66px; max-width: calc(var(--cl-side-w) - 16px); max-height: 28vh; font-size: 11px; opacity: .92; }
 .cl-lab-bar { right: 0; }
+/* the shared buttons keep their one look (UX 15): the clinic's old .cl-go styles (kept on them for the tests) don't apply */
+.cl-go.njg-next { background: #fff !important; color: #2a2522 !important; border: 2px solid #c9962e !important; border-radius: 12px !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .10) !important; font: 800 clamp(15px, 1.5vw, 20px)/1.15 Nunito, "Baloo 2", system-ui, sans-serif !important; min-height: 48px; padding: clamp(8px, 1.1vw, 14px) clamp(14px, 1.8vw, 22px) !important; animation: none; }
+.cl-go.njg-next.glow { animation: njgNextGlow 1s ease-in-out infinite; }
+.cl-go.njg-next .ph { color: #6f6153 !important; }
+.cl-go.njg-done { background: #fffaf0 !important; border: 1px solid #e6d5b8 !important; border-radius: 50% !important; box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, .22) !important; min-height: 0 !important; padding: 0 !important; width: clamp(58px, 8vw, 96px) !important; height: auto !important; aspect-ratio: 1; animation: none; }
+.cl-go.njg-done.glow { animation: njgDoneGlow 1s ease-in-out infinite; }
+.njg-pill.cl-go { min-height: 56px !important; border-radius: 999px !important; background: #fff !important; color: #2a2522 !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .12) !important; border: 2px solid #c9962e !important; }
+.njg-pill.cl-go .ph { color: #6f6153; }

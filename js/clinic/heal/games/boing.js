@@ -44,7 +44,9 @@
     const beadK = L < 3 ? `[Beads], ${HS.NUM[beads.length]}` : `[Beads:] ${groups.map((g) => `${HS.NUM[g.n]} [${g.c}]`).join(", ")}`;
     const steps = [
       { id: "wipe", kind: "wipe", count: wipes, row: { id: "wipe", kutchi: `[Wipe], ${HS.NUM[wipes]}`, english: `Wipe it ${wipes} times` } },
-      { id: "beads", kind: "beads", beads, row: { id: "beads", kutchi: beadK, english: L < 3 ? `${beads.length} beads` : `Beads: ${groups.map((g) => `${g.n} ${g.c}`).join(", ")}` } },
+      { id: "beads", kind: "beads", beads, row: { id: "beads", kutchi: beadK, english: L < 3 ? `${beads.length} beads` : `Beads: ${groups.map((g) => `${g.n} ${g.c}`).join(", ")}` },
+        // L3: the colours in order are a sequence on the card (13h): one part per colour
+        rows: L < 3 ? null : groups.map((g, i) => ({ id: `beads${i}`, seq: "beads", kutchi: `${i ? "ne poi " : ""}${HS.NUM[g.n]} [${g.c}]`, english: `${i ? "then " : ""}${g.n} ${g.c}` })) },
       { id: "boing", kind: "boing", row: { id: "boing", kutchi: null, english: "Count down... BOING!", placeholder: true } },
       { id: "plaster", kind: "plaster", row: { id: "plaster", kutchi: "Pela [plaster]", english: "First the plaster" } },
       { id: "apple", kind: "apple", row: { id: "apple", kutchi: "ne poi [apple]", english: "then the apple" } },
@@ -64,7 +66,7 @@
     const st = { i: 0, wipes: 0, beads: [], judged: {}, over: false, busy: false };
     const cur = () => P.steps[st.i] || null;
     const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
-    ctx.card.setRows(P.steps.map((x) => x.row));
+    ctx.card.setRows([].concat(...P.steps.map((x) => x.rows || [x.row])));
 
     // the upper arm on the paper strip; the jab spot
     const A = { x: 420, y: 410 };
@@ -117,6 +119,7 @@
         else judge("bead-colours", !st.beadWrong && JSON.stringify(st.beads) === JSON.stringify(c.beads), st.beads.join(" "));
       }
       ctx.card.tick(c.id);
+      (c.rows || []).forEach((r) => ctx.card.tick(r.id, { quiet: true }));
       S.count(null);
       S.uncue();
       st.i++;

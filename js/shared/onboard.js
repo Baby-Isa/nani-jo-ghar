@@ -288,6 +288,7 @@
     const idleMs = (st) => (st.idleMs != null ? st.idleMs : opts.idleMs != null ? opts.idleMs : 7000);
     let lit = [];
     let raf = 0;
+    let betweenT = 0;
     let idleTimer = 0;
     let anim = null;
     let resolveRun;
@@ -404,7 +405,7 @@
       if (root.Sfx) root.Sfx.play("pop", { volume: 0.7 });
       // a short breath between steps, so the child sees what their action did
       layer.classList.add("between");
-      setTimeout(() => {
+      betweenT = setTimeout(() => {
         layer.classList.remove("between");
         begin();
       }, reduced() ? 150 : 450);
@@ -456,8 +457,13 @@
       if (how === "skipped") m.skip();
       end(how);
     }
+    let ended = false;
     function end(how) {
-      if (!layer.isConnected) return;
+      // once only: a script skipped during its between-steps pause would end again from that pause's timer, and
+      // that second end cleared `active` for the NEXT script, orphaning its overlay (it kept blocking taps: 30 Sept)
+      if (ended || !layer.isConnected) return;
+      ended = true;
+      clearTimeout(betweenT);
       cancelAnimationFrame(raf);
       clearTimeout(idleTimer);
       if (anim) anim.cancel();
@@ -468,7 +474,7 @@
       if (S) S.set("onboarded", id, true);
       layer.classList.remove("on");
       setTimeout(() => layer.remove(), reduced() ? 0 : 300);
-      active = null;
+      if (active && active.layer === layer) active = null;
       resolveRun(how);
       const next = pending.shift();
       if (next) next();

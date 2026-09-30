@@ -56,7 +56,8 @@
     const cy = 1 + Math.floor(rng() * 2);
     for (let y = 0; y < 5; y++) for (let x = 0; x < 6; x++) if (Math.hypot(x - cx - 0.5, (y - cy - 0.5) * 1.2) < 2.0) decay.push(`${x},${y}`);
     const steps = [
-      { id: "brush", kind: "brush", moves, row: { id: "brush", kutchi: `[Brush:] ${moves.map(word).join(", ")}`, english: `Brush: ${moves.join(", ")}` } },
+      // the called order is a sequence on the card (13h): one part per move, each ticking as it's brushed
+      { id: "brush", kind: "brush", moves, row: { id: "brush0", seq: "brush", kutchi: word(moves[0]), english: moves[0] }, rows: moves.map((m, i) => ({ id: `brush${i}`, seq: "brush", kutchi: `${i ? "ne poi " : "pela "}${word(m)}`, english: `${i ? "then " : "first "}${m}` })) },
       { id: "drill", kind: "drill", decay, timer: K.drillMs[L] || 0, row: { id: "drill", kutchi: null, english: "Drill the bad bits", placeholder: true } },
       { id: "fill", kind: "fill", row: { id: "fill", kutchi: null, english: "Fill it to the line", placeholder: true } },
     ];
@@ -77,7 +78,7 @@
     const st = { i: 0, done: [], judged: {}, over: false, busy: false, cleared: new Set(), white: 0, chipped: false, fill: 0, holding: false };
     const cur = () => P.steps[st.i] || null;
     const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
-    ctx.card.setRows(P.steps.map((x) => x.row));
+    ctx.card.setRows([].concat(...P.steps.map((x) => x.rows || [x.row])));
 
     /* ---- 1. the mouth and the fixed brush ---- */
     const M = { x: 400, y: 170 };
@@ -219,6 +220,7 @@
     const brushMove = (m) => {
       const c = cur();
       st.done.push(m);
+      ctx.card.tick(`brush${st.done.length - 1}`, { quiet: true });
       const [dx, dy] = SCREEN[m];
       head.animate([{ transform: "translate(0,0)" }, { transform: `translate(${dx * 60}px,${dy * 45}px)` }, { transform: "translate(0,0)" }], { duration: 420 });
       const f = s("circle", { cx: M.x + dx * 60 + (ctx.rng() - 0.5) * 30, cy: M.y + dy * 45, r: 10, fill: "#fff", opacity: 0.9 }, foam);

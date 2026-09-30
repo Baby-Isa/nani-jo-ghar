@@ -360,7 +360,7 @@
     const items = [];
     const groups = {};
     rows.forEach((r) => {
-      const g = this.isOrdered ? "__all" : r.seq;
+      const g = r.seq || (this.isOrdered ? "__all" : null);
       if (g) {
         if (!groups[g]) {
           groups[g] = { label: null, ordered: true, parts: [] };
