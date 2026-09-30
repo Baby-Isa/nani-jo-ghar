@@ -116,6 +116,28 @@ def check_v3():
     return bad
 
 
+def check_clinic_items():
+    """30 Sept (v3.1, CI5): the clinic v2 items' round things (the foot-soak basin) in assets/clinic/items-v2/meta.json."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from cut_cook_v3 import robust_circle
+    d = os.path.join(ROOT, "assets", "clinic", "items-v2")
+    mp = os.path.join(d, "meta.json")
+    bad = 0
+    if not os.path.exists(mp):
+        return 0
+    for name, m in json.load(open(mp)).items():
+        if "cx" not in m or "r" not in m:
+            continue
+        img = np.asarray(Image.open(os.path.join(d, name + ".webp")).convert("RGBA")).astype(float)
+        H, W = img.shape[:2]
+        cx, cy, r, res = robust_circle(img[..., 3] > 128)
+        off = max(abs(cx / W - m["cx"]), abs(cy / H - m["cy"]), abs(r / W - m["r"]))
+        ok = off <= TOL
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} clinic items-v2/{name}: recorded ({m['cx']:.4f}, {m['cy']:.4f}, r {m['r']:.4f}), rim ({cx / W:.4f}, {cy / H:.4f}, r {r / W:.4f}), off {off:.4f} (fit {res:.1f}px)")
+    return bad
+
+
 def check_daar():
     """Daar v3 (29 Sept): js/cook/stations/daar.js places the pot, the trivet bowl and the ladle from constants
     (POT, TRIVET, LADLE); they must say what assets/cook/items/v3/daar/meta.json measured from the art (checked
@@ -341,6 +363,7 @@ def main():
     bad = check_v3()
     bad += check_daar()
     bad += check_sekelo()
+    bad += check_clinic_items()
     bad += check_chaat(write="--write-chaat" in sys.argv)
     # the samosa station places its v3 karahi and plate by numbers copied from meta.json: they must agree
     sam = open(os.path.join(ROOT, "js/cook/stations/samosa.js")).read()
