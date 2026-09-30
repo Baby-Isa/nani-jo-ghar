@@ -1,5 +1,8 @@
 # Story by the Fire: design (module id `storyfire`)
 
+> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
+> - Nothing found stale by the harvest; it is consistent with H40. The gap ladder (G4) uses pocket money, which decision 10 may change.
+
 **Date:** 28 Sept 2026
 **Status:** a proposal for Zafar. Nothing is built. Grows out of Zafar's 28 Sept decision (`docs/archive/design-v1/ideas-2026-09-28-arcs-and-focus.md` §4) that every arc ends this way, and out of `docs/archive/design-v1/Roadmap and Story Structure.md`'s "Story arcs" section.
 **Reads:** the Roadmap (layout contract, story beats, containers, skill channels), `docs/design-language/ux-principles.md` §14 (get it right before you move on) and §11 (no negatives mid-play), `docs/game-design/modes/conversations.md` (the reply-pill component and rung ladder, reused here), `docs/game-design/modes/first-launch.md` (the panel-story precedent this extends).
