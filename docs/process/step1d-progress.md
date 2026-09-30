@@ -17,7 +17,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 
 ### Session G: `docs/game-design/` and `docs/design-language/ui-design-system.md` only
 - [x] `game-design/story-and-arcs.md` (new) ← Roadmap (story sections, arcs, syllabus S1–S6), Game Design (world, scene catalogue, blanket quest), game-modes-v2 syllabus-first table, Chapter 1 Art Prompts Eid mapping
-- [ ] `game-design/progression-and-scoring.md` (new) ← Game Design per-word stages, notebook; Roadmap learning design, skill channels, procedural generation; game-modes-v2 upgrades; cook build-log upgrade table
+- [x] `game-design/progression-and-scoring.md` (new) ← Game Design per-word stages, notebook; Roadmap learning design, skill channels, procedural generation; game-modes-v2 upgrades; cook build-log upgrade table
 - [ ] `game-design/cast.md` ← stale box; add family descriptions from the archived Image Prompt Sheets, cats' roles by mode and Big Ma's room from the Asset Building Plan, Roadmap recurring cast
 - [ ] `game-design/speaking.md` ← stale box only
 - [ ] `game-design/modes/README.md` (new) ← OVERVIEW core-verb table, one line per mode
