@@ -162,6 +162,7 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | SEK-06 | Onion and tomato are big and chunky, the same in the bowl and on the skewer, not oversized against the stick | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` K5; `docs/overnight-log.md` (orchestrator) |
 | SEK-07 | Plate skewers drawn close together; skewer handle sits off the plate; plate lines up with grill and rack | open | eye: plate state | `docs/feedback/cook-playtest-2026-09-29.md` K8; `build/reports/sekelo-v3.md` §6 |
 | SEK-08 | One job per phase (thread, then grill); no chips on the grill | fixed | eye: each phase | `docs/UX-PRINCIPLES.md` §5, §6 |
+| SEK-09 | Turning a skewer too soon shows nothing and costs nothing (too late not yet tested). An early turn should show the meat still uncooked; a late one burnt (charred art exists). The consequence is open: the family says it's undercooked or burnt, and maybe the skewer goes back to be grilled again. Must stay warm, never punishing (rule E30) | open (design needed) | eye: grill phase, turn early / on time / late, L1–L4 · INT-05 | Zafar, orchestrator chat 30 Sept |
 
 ## Cook: general
 
