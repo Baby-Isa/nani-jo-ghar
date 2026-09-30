@@ -1,5 +1,15 @@
 # Kutchi grammar notes (from the family's recordings)
 
+> **Stale points (the rulebook, `docs/process/rules.md`, wins).** The text below is kept as recorded; these lines are overridden:
+> - *marcha* as the plural of *mirchi* (Zafar, 26 Sept afternoon; §4 and §28) → *mirchi* only, no plural, for now; Zafar to confirm with Mum (G24, G25, decision 5). §34 P4 records Mum's view.
+> - *chindo* for mince (§24 B33 and "Claude's view") → *chundo* (Zafar's corrections to A8 and Section B, 26 Sept; decision 13 list, G24).
+> - *hakri cup* (§25 B27, also repeated in `cook-word-changes-B`) → *hakro cup*: cup is a he-word (Mum, 28 Sept, §29 R8; G5).
+> - "the game currently uses *hikdo* for one" and *bo* for two (early sections) → *hakro/hakri* by gender and *ba* (G5); both already fixed in data.
+> - "Zafar to choose Big Ma / Wadima / Maji" (§30 K14) → decided: "Big Ma" (I7, decision 11).
+> - "the repo will be made private later" (25 Sept header note) → everything stays public until the game or landing page is published (decision 6).
+> - Don't "fix" *nar* = "look" (§20): it is correct. The word for "no" is *na* (G5).
+> - "Game ideas 9–13 are parked in `docs/GAME-IDEAS-TBC.md`" → now `docs/ideas.md`.
+
 Each finding lists its source recording and how sure we are. The family is the authority; "heard" means transcribed by Whisper and read by Claude, so the spelling is rough until Zafar checks it.
 
 ## 25 Sept 2026: Mum and Zafar, Questions A3.1 and A3.2 (8 min, file `A2_q1_and_2.m4a`)

@@ -38,7 +38,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [ ] `architecture/testing.md` (new) ← BUILD-COMMON test ports, alive-nani testing lessons, the rules on browser tests (B16) by ID
 
 ### Session L: `docs/language/`, `docs/process/`, `docs/vision.md`, `docs/ideas.md` only
-- [ ] `language/grammar-notes.md` ← stale box (marcha, chindo, hakri cup, "repo private later")
+- [x] `language/grammar-notes.md` ← stale box (marcha, chindo, hakri cup, "repo private later")
 - [ ] `language/lexicon.md` (new) ← cook-word-changes-B, handout vocabulary (marked unconfirmed), Brief handout-rights table, the Excel's role (open question)
 - [ ] `language/engine-spec.md` (new) ← NEXT-CHAT-START step 2b requirements, pointer to `language/sources/`; design itself comes in step 2b
 - [ ] `language/mum-questions/README.md` (new, short) ← which rounds are answered, where answers live
