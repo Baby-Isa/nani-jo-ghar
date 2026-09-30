@@ -78,7 +78,9 @@
   };
   // S2 / Q2: the fillings as top-down heaps, no bowls (samosa only)
   const HEAP = { "ph-keema": "chundo", "veg-01": "potato", "veg-10": "peas", "veg-02": "onion", "veg-12": "chilli", "ph-dhana": "dhania", "veg-carrot": "carrot", "veg-cabbage": "cabbage" };
-  const heapUrl = (id) => (HEAP[id] ? `${V3}fill-${HEAP[id]}.webp` : null);
+  // 30 Sept (v3.1): S5's green chilli heap read as peas; R5's sliced chilli rings (cut for daar) take its place
+  const HEAP_ART = { "veg-12": "assets/cook/items/v3/daar/chop-heap-chilli.webp" };
+  const heapUrl = (id) => HEAP_ART[id] || (HEAP[id] ? `${V3}fill-${HEAP[id]}.webp` : null);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = 666;
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
@@ -151,9 +153,13 @@
     const kinds = Object.keys(want);
     const exclude = [].concat(p.exclude || []).filter(Boolean);
     const count = p.count || 1;
+    // 30 Sept: a second kind of samosa (its own block on the card), from level 3
+    const want2 = asTally(p.fillings2);
+    const kinds2 = Object.keys(want2);
+    const count2 = kinds2.length ? Number(p.count2) || 0 : 0;
     const kFill = Mech.knobs("fill", { level });
-    const pool = p.pool || St.decoys(p.decoyPool || [], kinds.concat(exclude), St.knobInt(kFill.decoys), kFill.decoyPick).filter((id) => heapUrl(id));
-    const ids = Cook.shuffle([...new Set(pool.concat(kinds, exclude))]);
+    const pool = p.pool || St.decoys(p.decoyPool || [], kinds.concat(kinds2, exclude), St.knobInt(kFill.decoys), kFill.decoyPick).filter((id) => heapUrl(id));
+    const ids = Cook.shuffle([...new Set(pool.concat(kinds, count2 ? kinds2 : [], exclude))]);
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the fill's own begin shows it (data.onboard.samosa)
     // the art loads while the order card is up (a slow phone mustn't meet an empty scene)
     const art = [
@@ -180,7 +186,7 @@
       if (phases.fill && !attempt) UI.gist(phases.fill);
       if (ctx.nextStep) ctx.nextStep("Fill");
       const fz = Mech.zone(S, ctx, { id: "fill", level });
-      const made = await fillFold(fz, { ids, want, kinds, exclude, count, level, phases, retry: attempt > 0 });
+      const made = await fillFold(fz, { ids, want, kinds, exclude, count, want2, kinds2, count2, level, phases, retry: attempt > 0 });
       fz.close();
       St.end();
 
@@ -192,19 +198,22 @@
       const yz = Mech.zone(S, ctx, { id: "fry", level });
       const fried = await fry(yz, { n: made.n, level });
       // the verdict: the filling, the count, and nothing raw or burnt on the plate
-      const why = made.fillWrong || (made.n !== count ? `made ${made.n}, they asked for ${count}: ph-samosa` : null) || fried.bad;
+      const countWrong = made.two ? (made.nA !== count || made.nB !== count2 ? `made ${made.nA} and ${made.nB}, they asked for ${count} and ${count2}: ph-samosa` : null) : made.n !== count ? `made ${made.n}, they asked for ${count}: ph-samosa` : null;
+      const why = made.fillWrong || countWrong || fried.bad;
       if (!first) {
         first = { ok: !why, why };
         // the fill has already been heard (graded at its tick): here the count and the frying
         const later = why && why !== made.fillWrong ? why : null;
         if (later) yz.listen(false, later);
-        if (!ctx.guided && count <= 5) (made.n === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
-        if (made.n !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true });
+        const nOne = made.two ? made.nA : made.n;
+        if (!ctx.guided && count <= 5) (nOne === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
+        if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
+        if (made.two && !ctx.guided && count2 <= 5) (made.nB === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
       }
       const ok = await serve(yz, { who, plate: fried.plate, ok: !why, last: attempt >= 2 });
       yz.close();
       St.end();
-      result = { count: made.n, fillings: made.got, fried: fried.lifted };
+      result = { count: made.n, fillings: made.got, fried: fried.lifted, fillings2: made.got2 || null };
       cardFold(false);
       if (ok) break;
     }
@@ -288,7 +297,9 @@
       const key = `sv3-heap-${id}`;
       let img;
       if (S.textures.exists(key)) {
-        const sc = z.L(w) / META.heap.w;
+        // (scaled by its own canvas: R5's chilli heap isn't on S5's 419 px one; it fills its canvas, so a little smaller)
+        const own = S.textures.get(key).getSourceImage().width;
+        const sc = (z.L(w) / own) * (own === META.heap.w ? 1 : 0.85);
         img = S.track(S.add.image(z.X(x), z.Y(HEAP_Y), key).setScale(sc).setDepth(D.item + 1));
         img.baseScale = sc;
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(HEAP_Y + w * 0.06), width: z.L(w * 0.92), height: z.L(w * 0.86) });
@@ -335,7 +346,7 @@
   }
 
   /* ---------- 1 + 2: fill the pastry, then fold it (and more of them) ---------- */
-  async function fillFold(z, { ids, want, kinds, exclude, count, level, phases, retry }) {
+  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
     const z0 = z;
     z = Cook.liftZone(z0);
@@ -453,77 +464,113 @@
       if (obj && !fast) S.tweens.add({ targets: obj, scale: obj.baseScale * 1.08, duration: 90, yoyo: true });
       const b = S.track(S.add.image(from.x, from.y, key).setDepth(D.fx));
       const pa = fillAt(sheet);
-      const n = sheet.blobs.length;
-      // ONE mound on the strip's end: each spoon lands on it (a little off-centre) and it grows, never
-      // past the strip's edges (a later spoon is a touch smaller, so a mix of fillings shows)
-      const size = n === 0 ? pa.r * 1.8 : pa.r * Math.min(1.5, 1.15 + n * 0.06);
-      b.setDisplaySize(size * 0.6, size * 0.6);
-      const a = n * 2.4 + Math.random() * 0.5;
-      const rr = n === 0 ? 0 : 0.32;
-      const tx = pa.x + Math.cos(a) * pa.r * rr;
-      const ty = pa.y + Math.sin(a) * pa.r * rr * 0.8;
-      sheet.blobs.forEach((o) => S.tweens.add({ targets: o, scaleX: o.scaleX * 1.04, scaleY: o.scaleY * 1.04, duration: 160, delay: fast ? 200 : 420 }));
+      // 30 Sept: ONE little mound per filling on the strip's end, side by side, so every filling that went in
+      // shows (a big mound per spoon hid the ones under it: only the last showed). Another spoon of the
+      // same filling grows its mound; the first fold still covers them all.
+      let own = sheet.blobs.find((o) => o.wordId === id);
+      const kinds = sheet.blobs.map((o) => o.wordId).concat(own ? [] : [id]);
+      const spots = mounds(pa, kinds.length);
+      const place = (o, sp, ms) => {
+        const size = sp.size * Math.min(1.3, 1 + 0.1 * ((o.spoons || 1) - 1));
+        if (!ms) return o.setPosition(sp.x, sp.y).setDisplaySize(size, size * 0.96);
+        S.tweens.add({ targets: o, x: sp.x, y: sp.y, displayWidth: size, displayHeight: size * 0.96, duration: ms });
+      };
+      sheet.blobs.forEach((o) => o !== own && place(o, spots[kinds.indexOf(o.wordId)], fast ? 200 : 300));
+      const at = spots[kinds.indexOf(id)];
+      b.setDisplaySize(at.size * 0.6, at.size * 0.6);
       if (!quiet) Cook.sfx.pop();
-      await S.fly(b, tx, ty - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
-      await new Promise((r) => S.tweens.add({ targets: b, y: ty, displayWidth: size, displayHeight: size * 0.96, duration: 140, ease: "Quad.easeIn", onComplete: r }));
-      b.setDepth(D.item + 0.2 + n * 0.001);
+      await S.fly(b, at.x, at.y - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
+      await new Promise((r) => S.tweens.add({ targets: b, y: at.y, displayWidth: at.size * 0.9, displayHeight: at.size * 0.86, duration: 140, ease: "Quad.easeIn", onComplete: r }));
+      if (!quiet) S.puff(at.x, at.y, St.color(((Cook.data.words[id] || {}).layer || {}).color || "#f3e3b0"), z.L(26));
+      if (own) {
+        // the spoonful joins its own mound, which grows a little
+        b.destroy();
+        own.spoons = (own.spoons || 1) + 1;
+        place(own, at, 140);
+        return own;
+      }
+      b.setDepth(D.item + 0.2 + sheet.blobs.length * 0.001);
       b.setAngle(Math.random() * 360);
-      S.tweens.add({ targets: b, scaleY: b.scaleY * 0.92, duration: 80, yoyo: true });
-      if (!quiet) S.puff(tx, ty, St.color(((Cook.data.words[id] || {}).layer || {}).color || "#f3e3b0"), z.L(26));
       b.wordId = id;
+      b.spoons = 1;
+      place(b, at, 0);
+      S.tweens.add({ targets: b, scaleY: b.scaleY * 0.92, duration: 80, yoyo: true });
       sheet.blobs.push(b);
       return b;
+    }
+    /** Where m fillings' mounds sit on the strip's end (world px): one big, two side by side, or a ring. */
+    function mounds(pa, m) {
+      if (m <= 1) return [{ x: pa.x, y: pa.y, size: pa.r * 1.8 }];
+      if (m === 2) return [-1, 1].map((k) => ({ x: pa.x + k * pa.r * 0.5, y: pa.y, size: pa.r * 1.25 }));
+      return Array.from({ length: m }, (_, i) => {
+        const a = -Math.PI / 2 + (i * 2 * Math.PI) / m;
+        return { x: pa.x + Math.cos(a) * pa.r * 0.55, y: pa.y + Math.sin(a) * pa.r * 0.45, size: pa.r * (m <= 4 ? 1.1 : 0.95) };
+      });
     }
 
     /* ---------- FILL ---------- */
     let sheet = pastry(P0.x);
     S.tweens.add({ targets: sheet, alpha: { from: 0, to: 1 }, duration: 250 });
-    const got = {};
-    const order = [];
-    let last = 0;
-    for (;;) {
-      const next = kinds.find((id) => (got[id] || 0) < want[id]) || null;
-      const r = await St.freePick(z, { items, next, doneOk: order.length > 0, doneGlow: ctx.guided && !next });
-      if (r.done) break;
-      if (performance.now() - last < 220) continue; // a double tap
-      last = performance.now();
-      const id = r.id;
-      got[id] = (got[id] || 0) + 1;
-      order.push(id);
-      // a count row counts up; nothing ticks before the fill closes (a one-spoon row ticking at its
-      // first spoon would give the count away, UX 11)
-      if ((want[id] || 0) > 1) UI.mission.tickItem(id, ctx.dishAt || 0);
-      const into = spoon(sheet, id);
-      const pa = fillAt(sheet);
-      // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
-      const cnt = (level || z.level) <= 1 && UI.tallyLine ? UI.tallyLine(got[id], id) : null;
-      pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(150), cnt ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
-      await into;
-      z.progress({ filled: id, n: got[id] });
+    // 30 Sept: two different samosas in one order (count2, want2): block 1 is filled first; once its
+    // samosas are made, the next strip starts EMPTY and block 2 is filled on it (then pre-filled as usual)
+    const two = count2 > 0 && kinds2.length > 0;
+    const bOpt = (b) => (two ? { block: b } : {});
+    /** Fill one strip for one block, then grade it (how many spoons of each, nothing they said no to). */
+    async function fillOne(wantB, kindsB, block) {
+      const got = {};
+      const order = [];
+      let last = 0;
+      for (;;) {
+        const next = kindsB.find((id) => (got[id] || 0) < wantB[id]) || null;
+        const r = await St.freePick(z, { items, next, doneOk: order.length > 0, doneGlow: ctx.guided && !next });
+        if (r.done) break;
+        if (performance.now() - last < 220) continue; // a double tap
+        last = performance.now();
+        const id = r.id;
+        got[id] = (got[id] || 0) + 1;
+        order.push(id);
+        // a count row counts up; nothing ticks before the fill closes (a one-spoon row ticking at its
+        // first spoon would give the count away, UX 11)
+        if ((wantB[id] || 0) > 1) UI.mission.tickItem(id, ctx.dishAt || 0, bOpt(block));
+        const into = spoon(sheet, id);
+        const pa = fillAt(sheet);
+        // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
+        const cnt = (level || z.level) <= 1 && UI.tallyLine ? UI.tallyLine(got[id], id) : null;
+        pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(150), cnt ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
+        await into;
+        z.progress({ filled: id, n: got[id] });
+      }
+      // graded now: each filling, how many spoons, and nothing they said no to
+      let fillWrong = null;
+      Object.keys(got).forEach((id) => {
+        if (wantB[id]) return;
+        fillWrong = fillWrong || (exclude.includes(id) ? `put ${id} in (they said no)` : `put ${id} in`);
+        if (!retry && exclude.includes(id)) UI.mission.missItem(id, ctx.dishAt || 0, { no: true });
+      });
+      kindsB.forEach((id) => {
+        const g = got[id] || 0;
+        const right = g === wantB[id];
+        if (!right) {
+          fillWrong = fillWrong || `spooned ${g}, they asked for ${wantB[id]}: ${id}${two ? ` (samosa ${block})` : ""}`;
+          if (!retry) UI.mission.missItem(id, ctx.dishAt || 0, Object.assign({ counted: true }, bOpt(block)));
+        }
+        if (!ctx.guided && !retry) {
+          (right ? Cook.markRight : Cook.markMiss)(id);
+          if (wantB[id] <= 5) (right ? Cook.markRight : Cook.markMiss)(Cook.numId(wantB[id]));
+        }
+      });
+      if (!retry) z.listen(!fillWrong, fillWrong || "filled");
+      if (two) UI.mission.closeItem(kindsB, ctx.dishAt || 0, { block });
+      else if (ctx.closeItem) ctx.closeItem(kindsB);
+      else UI.mission.closeItem(kindsB, ctx.dishAt || 0);
+      if (!fillWrong && exclude.length && (!two || block === 2)) UI.mission.closeItem(exclude, ctx.dishAt || 0, { no: true });
+      return { got, order, fillWrong };
     }
-    // graded now: each filling, how many spoons, and nothing they said no to
-    let fillWrong = null;
-    Object.keys(got).forEach((id) => {
-      if (want[id]) return;
-      fillWrong = fillWrong || (exclude.includes(id) ? `put ${id} in (they said no)` : `put ${id} in`);
-      if (!retry && exclude.includes(id)) UI.mission.missItem(id, ctx.dishAt || 0, { no: true });
-    });
-    kinds.forEach((id) => {
-      const g = got[id] || 0;
-      const right = g === want[id];
-      if (!right) {
-        fillWrong = fillWrong || `spooned ${g}, they asked for ${want[id]}: ${id}`;
-        if (!retry) UI.mission.missItem(id, ctx.dishAt || 0, { counted: true });
-      }
-      if (!ctx.guided && !retry) {
-        (right ? Cook.markRight : Cook.markMiss)(id);
-        if (want[id] <= 5) (right ? Cook.markRight : Cook.markMiss)(Cook.numId(want[id]));
-      }
-    });
-    if (!retry) z.listen(!fillWrong, fillWrong || "filled");
-    if (ctx.closeItem) ctx.closeItem(kinds);
-    else UI.mission.closeItem(kinds, ctx.dishAt || 0);
-    if (!fillWrong && exclude.length) UI.mission.closeItem(exclude, ctx.dishAt || 0, { no: true });
+    const f1 = await fillOne(want, kinds, 1);
+    const got = f1.got;
+    let order = f1.order;
+    let fillWrong = f1.fillWrong;
+    let got2 = null;
     Cook.sfx.right();
     const pa0 = fillAt(sheet);
     S.sparkle(pa0.x, pa0.y);
@@ -570,7 +617,11 @@
       }
     });
     let n = 0;
-    const most = count + (k.maxExtra != null ? k.maxExtra : 3);
+    let nA = 0; // (two kinds: how many of each were made)
+    let nB = 0;
+    let second = false; // folding the second kind now
+    const total = count + (two ? count2 : 0);
+    const most = total + (k.maxExtra != null ? k.maxExtra : 3);
     const onPlate = [];
     let quit = false;
     while (n < most && !quit) {
@@ -579,7 +630,22 @@
         sheet = pastry(P0.x - 700);
         sheet.setAlpha(0);
         await new Promise((r) => S.tweens.add({ targets: sheet, x: z.X(P0.x), alpha: 1, duration: 380, ease: "Cubic.easeOut", onComplete: r }));
-        for (const id of order) await spoon(sheet, id, { quiet: true, fast: true });
+        if (two && !second && n === count) {
+          // the second kind: this strip starts empty, and it's filled from the shelf (its own block on the card)
+          second = true;
+          cardFold(false);
+          Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 1, duration: 250 }));
+          if (ctx.nextStep) ctx.nextStep("Fill");
+          const f2 = await fillOne(want2, kinds2, 2);
+          got2 = f2.got;
+          order = f2.order;
+          fillWrong = fillWrong || f2.fillWrong;
+          Cook.sfx.right();
+          await Cook.wait(400);
+          cardFold(true);
+          Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
+          if (ctx.nextStep) ctx.nextStep("Fold");
+        } else for (const id of order) await spoon(sheet, id, { quiet: true, fast: true });
       }
       for (let f = 0; f < F.swipes.length; f++) {
         const sw = F.swipes[f];
@@ -591,7 +657,7 @@
         glowOn = { poly, a: from, b: to };
         const offerGo = n > 0 && f === 0;
         const r = await swipe(z, S, {
-          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: phases.go || "fry them", expectGo: offerGo && n >= count, glowGo: offerGo && ctx.guided && n >= count, minLen: k.minLen || 0.45 });
+          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: phases.go || "fry them", expectGo: offerGo && n >= total, glowGo: offerGo && ctx.guided && n >= total, minLen: k.minLen || 0.45 });
         glowOn = null;
         if (r === "go") {
           quit = true;
@@ -616,6 +682,8 @@
         break;
       }
       n++;
+      if (second) nB++;
+      else nA++;
       z.skill(100, "fold");
       S.tweens.killTweensOf(sheet);
       sheet.setScale(z.L(STAGE_K));
@@ -645,7 +713,7 @@
     UI.hideDone();
     z.expect({ kind: "wait" });
     await Cook.wait(250);
-    return { n, got, fillWrong, order };
+    return { n, nA, nB, two, got, got2, fillWrong, order };
   }
 
   /**
@@ -670,10 +738,12 @@
         }
         draw(t);
       };
+      let nextBtn = null;
       const finish = (r) => {
         if (over) return;
         over = true;
         offs.forEach((o) => o());
+        if (nextBtn) nextBtn.remove();
         UI.hideGo();
         z.expect(null);
         resolve(r);
@@ -718,8 +788,11 @@
           }
         }),
       );
-      if (offerGo) UI.go(goLabel, { glow: !!glowGo }).then(() => finish("go"));
-      z.expect(expectGo ? { kind: "click", selector: "#go-btn" } : { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+      // 30 Sept: "fry them" is the shared button kit's → Next (js/shared/buttons.js, UX-PRINCIPLES 15)
+      const stage = document.querySelector("#stage");
+      if (offerGo && global.NjgButtons && stage) nextBtn = global.NjgButtons.next(stage, goLabel, () => finish("go"), { id: "samosa-next", glow: !!glowGo });
+      else if (offerGo) UI.go(goLabel, { glow: !!glowGo }).then(() => finish("go"));
+      z.expect(expectGo ? { kind: "click", selector: nextBtn ? "#samosa-next" : "#go-btn" } : { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
     });
   }
 
@@ -978,9 +1051,11 @@
     async run(L) {
       const R = Cook.Recipes;
       const who = (L.ctx.order && L.ctx.order.who) || "nana";
-      const d = R.samosa.make(who, { level: L.level });
+      let d = R.samosa.make(who, { level: L.level });
+      // (Cook.samosaTwo: build/shoot_samosa_v3.py asks for an order with two kinds, from level 3)
+      for (let i = 0; Cook.samosaTwo != null && L.level >= 3 && !d.count2 === !!Cook.samosaTwo && i < 40; i++) d = R.samosa.make(who, { level: L.level });
       L.card(d, R.samosa.steps(d));
-      await L.station("samosa", { fillings: d.fillings, exclude: d.no, decoyPool: Cook.data.recipes.samosa.lists.fillings_all, count: d.count, who });
+      await L.station("samosa", { fillings: d.fillings, exclude: d.no, decoyPool: Cook.data.recipes.samosa.lists.fillings_all, count: d.count, fillings2: d.fillings2, count2: d.count2, who });
     },
   });
 })(window);

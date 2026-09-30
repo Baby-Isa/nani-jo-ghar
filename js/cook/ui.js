@@ -1064,6 +1064,13 @@
       sections.forEach(({ s, rows, seq }) => {
         if (s.cardOf) return; // drawn under its item
         const flat = rows.filter((x) => !x.r.cards);
+        if (s.block && s.head) {
+          // 30 Sept: a second block of the dish (samosa's second kind): its own row ("trae samosa"), its parts under it
+          const parts = flat.map((x) => partNode(x.r, x.gi));
+          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts, ordered: false, at: 0, src: flat, key: s.head });
+          rowsShown.push(s.head, ...flat.map((x) => x.r));
+          return;
+        }
         if (flat.length) {
           const parts = flat.map((x) => partNode(x.r, x.gi));
           items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat });
@@ -1310,7 +1317,7 @@
     if (!L) return null;
     const rows = Order()
       .rows(L)
-      .filter((r) => !r.done && (opts.no ? r.no : !r.no) && (!opts.for || r.for === opts.for));
+      .filter((r) => !r.done && (opts.no ? r.no : !r.no) && (!opts.for || r.for === opts.for) && (opts.block == null || (r.block || 1) === opts.block));
     // an order row first, the dish's own name last (the pantry fetches the tea for "chai")
     const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
     if (!r) return null;
@@ -1332,7 +1339,7 @@
     const want = [].concat(ids);
     const rows = Order()
       .rows(L)
-      .filter((r) => !r.done && !r.head && (!opts.for || r.for === opts.for) && (opts.all || (!r.no && r.ids.some((id) => want.includes(id)))));
+      .filter((r) => !r.done && !r.head && (!opts.for || r.for === opts.for) && (opts.block == null || (r.block || 1) === opts.block) && (opts.all || (!r.no && r.ids.some((id) => want.includes(id)))));
     // (a "don't" row isn't closed by its word mid-dish, only with everything: {all}, or the dish's finish)
     // the head (the dish itself: "trae samosa", Nana's "daar") closes when the station says the dish is
     // made: opts.head, everything closed ({all} for the whole order), or its own word when no row has it
@@ -1399,14 +1406,14 @@
     return units[i] || null;
   };
   /** Something went wrong for this item (a word id, or a compound kind's ids): mark its row (shown on the result card). */
-  M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null } = {}) {
+  M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null, block = null } = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
     const want = [].concat(id);
     const has = (x) => want.every((w) => x.ids.includes(w));
     const rows = Order()
       .rows(L, { all: true })
-      .filter((r) => !forWho || r.for === forWho);
+      .filter((r) => (!forWho || r.for === forWho) && (block == null || (r.block || 1) === block));
     const num = (x) => x.parts && x.parts.some((p) => typeof p === "number");
     const r =
       // a count that went wrong is the counted row ("ba maani"), not the dish's name ("maani")

@@ -70,6 +70,8 @@
       lead: !!r.lead,
       // 28 Sept: one mini card per unit (a skewer each); which of them are made
       units: r.cards ? Array(r.qty || 1).fill(false) : null,
+      // 30 Sept: which block of the dish (samosa's second kind is block 2; null: the dish's own rows)
+      block: r.block || null,
     };
   }
   O.row = row;
@@ -108,6 +110,20 @@
         let s = L.sections.find((y) => y.key === key);
         if (!s) L.sections.push((s = { key, for: r.for, seq: false, when: r.when || null, groups: [[]] }));
         s.head = Object.assign(row(r), { head: true, line: r.line });
+        return;
+      }
+      // 30 Sept: a second block of the dish (samosa's second kind): its own section, headed by its own line
+      // ("and trae samosa"), its rows under it; its "no" rows stay the dish's (said once)
+      if (r.block && (r.kind === "bhead" || r.kind === "item")) {
+        const key = `block:${r.block}`;
+        let s = L.sections.find((y) => y.key === key);
+        if (!s) L.sections.push((s = { key, block: r.block, seq: false, when: r.when || null, groups: [[]] }));
+        if (r.kind === "bhead") {
+          // cardLine: the card's words (the count rule: words only from level 3); line: as it's said
+          const hr = row(r);
+          s.head = Object.assign(hr, { head: true, cardLine: hr.line, line: r.line });
+        }
+        else s.groups[0].push(row(r));
         return;
       }
       const x = row(r);
@@ -157,6 +173,20 @@
     const home = any || L.sections.filter((s) => !s.when && !s.for).pop();
     if (home) sprinkle(home.groups, nos);
     else if (nos.length) L.sections.push({ key: "any", seq: false, groups: [Cook.shuffle(nos)] });
+    // 30 Sept (Zafar, samosa): "baseFirst" names the slot whose first item is the base (samosa's chundo or
+    // bataato): its row goes first in every block, the rest stay shuffled. (Not "headFirst": that's maani's
+    // headline rule below.)
+    const defB = Cook.data.recipes[d.recipe] || {};
+    if (defB.baseFirst) {
+      const slots = [].concat(defB.baseFirst);
+      L.sections.forEach((s) => {
+        if (s.for || s.seq || (s.key !== "any" && !s.block)) return;
+        const base = [].concat(d[slots[Math.min(slots.length - 1, (s.block || 1) - 1)]] || [])[0];
+        const g = s.groups[0] || [];
+        const k = g.findIndex((r) => !r.no && r.ids.includes(base));
+        if (k > 0) g.unshift(g.splice(k, 1)[0]);
+      });
+    }
     // 29 Sept (X1, Zafar): the kind of dish goes in the headline where the family's pattern has it:
     // "headFirst" (maani) says the first counted row in the order frame ("Muke ba bajr ji maani khape."),
     // so the headline names what's made; the row stays on the card (it's ticked), and isn't said twice
@@ -285,10 +315,11 @@
       // cups) are their own sentence; ordered lists ("Pela chana. Ne poi bataato.") follow as before
       const whole = heads && L.head && !L.head.rec;
       const plain = (s) => !s.simple && !s.seq && !s.groups.some((g) => g.some((r) => r.list));
-      if (whole) said(O.sentence(L.head, [].concat(...L.sections.filter((s) => !s.when && !s.for && plain(s)).map((s) => [].concat(...s.groups))), { join: O.joinOf(L) }));
+      if (whole) said(O.sentence(L.head, [].concat(...L.sections.filter((s) => !s.when && !s.for && !s.block && plain(s)).map((s) => [].concat(...s.groups))), { join: O.joinOf(L) }));
       L.sections.forEach((s) => {
         if (s.when && !withWhen) return;
-        if (s.for) return said(O.sentence(s.head || L.head, [].concat(...s.groups), { join: O.joinOf(L) }));
+        // a person's own rows, or a second block of the dish ("and trae samosa, with bataato."): their own sentence
+        if (s.for || s.block) return said(O.sentence(s.head || L.head, [].concat(...s.groups), { join: O.joinOf(L) }));
         if (whole && !s.when && plain(s)) return;
         let first = true;
         s.groups.forEach((g, gi) => {

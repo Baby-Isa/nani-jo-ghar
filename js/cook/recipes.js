@@ -309,7 +309,8 @@
         if (!when) lines.push(ls.length > 1 ? Lang.join(ls) : ls[0]);
         dot++;
         // cards: one card per unit, each with that many slots (Wave 6: a skewer card always has four dots)
-        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null }));
+        // block: a second block of the same dish (30 Sept: samosa's second kind), its own section on the card
+        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null, block: e.block || null }));
         return;
       }
       const frame = e.frame === "order" ? Lang.orderFrame(i, d.level) : e.frame;
@@ -321,9 +322,10 @@
       // keeps that line as the card's head, so what's fetched is all rows, the first one leading
       const lead = !!(e.head && def.headline);
       // "personHead": that person's own headline on their card ("Muke kari chai khape.": a cup ordered by its name)
-      const kind = e.personHead && forWho ? "phead" : e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
+      // "blockHead": the head of a second block of the dish ("and trae samosa": samosa's second kind, 30 Sept)
+      const kind = e.blockHead && e.block ? "bhead" : e.personHead && forWho ? "phead" : e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
       if (kind !== "no" && kind !== "phead" && (e.dot === "next" || (kind === "dish" && !rows.length) || lead)) dot++;
-      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead });
+      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" || kind === "bhead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead, block: e.block || null });
     };
     (def.say || []).forEach((e, k) => walk(e, e.for ? res(e.for, env) : undefined, k));
     return { lines, rows };

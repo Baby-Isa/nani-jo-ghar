@@ -1070,6 +1070,8 @@
       const R = Cook.Recipes;
       const who = (L.ctx.order && L.ctx.order.who) || "nana";
       const d = R.daal.make(who, { level: L.level });
+      // (Cook.daarForce: build/shoot_daar_v3.py --force '{"onions": 0}' shows an order with no onion)
+      if (Cook.daarForce) Object.assign(d, Cook.daarForce);
       L.card(d, R.daal.steps(d));
       const run = Cook.data.recipes.daal.run.find((s) => s.do === "daar");
       const env = { d, lists: Cook.data.recipes.daal.lists || {}, vars: {} };

@@ -114,7 +114,7 @@ class Shooter(T.Player):
                 time.sleep(0.6 if self.swipes == 2 else 0.12)
                 self.snap(f"fold-{self.swipes}")
             return r
-        if k == "click" and e.get("selector") == "#go-btn":
+        if k == "click" and e.get("selector") in ("#go-btn", "#samosa-next"):
             time.sleep(0.4)
             self.snap("folded")
         if k == "tap" and key == "knob":

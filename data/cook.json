@@ -1901,6 +1901,8 @@
   "samosa": {
    "name": "ph-samosa",
    "countRule": true,
+   "baseFirst": ["kinds", "kinds2"],
+   "_baseFirst": "30 Sept (Zafar): the base filling (chundo or bataato: each block's first kind) is the first row on the card and said first; the rest stay shuffled (js/cook/order.js)",
    "english": "Samosa",
    "price": 5,
    "stations": [
@@ -1961,7 +1963,38 @@
     "int": {
      "byLevel": [[1, 2], [1, 2], [2, 3], [2, 3]]
     }
-   }
+   },
+    "count2": {
+     "int": {
+      "byLevel": [[0, 0], [0, 0], [1, 2], [1, 2]]
+     },
+     "zero": {
+      "byLevel": [1, 1, 0.5, 0.5]
+     },
+     "_count2": "30 Sept (Zafar: two different samosas in one order): from level 3, half the orders have a second kind, this many of it (0: none). Its own block on the card; its first strip starts empty"
+    },
+    "base2": {
+     "type": "items",
+     "from": "$bases",
+     "exclude": ["kinds"],
+     "take": 1
+    },
+    "kinds2": {
+     "type": "items",
+     "first": "$base2",
+     "from": "$extras",
+     "exclude": "no",
+     "take": [0, 1],
+     "order": "any"
+    },
+    "fillings2": {
+     "type": "tally",
+     "kinds": "$kinds2",
+     "minFirst": 1,
+     "total": {
+      "int": [2, 3]
+     }
+    }
    },
    "say": [
     {
@@ -1984,6 +2017,25 @@
      "x": [
       "$it"
      ]
+    },
+    {
+     "if": "count2>0",
+     "frame": "and_join",
+     "block": 2,
+     "blockHead": true,
+     "x": [
+      {
+       "n": "$count2",
+       "of": "ph-samosa",
+       "one": false
+      }
+     ]
+    },
+    {
+     "if": "count2>0",
+     "tally": "$fillings2",
+     "frame": "and",
+     "block": 2
     }
    ],
    "need": [
@@ -2000,7 +2052,9 @@
      "fillings": "$fillings",
      "exclude": "$no",
      "decoyPool": "$fillings_all",
-     "count": "$count"
+     "count": "$count",
+     "fillings2": "$fillings2",
+     "count2": "$count2"
     },
     {
      "do": "serve",
@@ -2016,7 +2070,9 @@
      "veg-02",
      "veg-12",
      "ph-dhana"
-    ]
+    ],
+    "bases": ["ph-keema", "veg-01"],
+    "extras": ["veg-10", "veg-02", "veg-12", "ph-dhana"]
    },
    "how": "Fill them with what they say, fold them, then fry them."
   },

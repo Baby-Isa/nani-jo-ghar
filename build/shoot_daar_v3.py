@@ -30,6 +30,7 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 VPS = {v["name"]: v for v in T.VIEWPORTS}
 VPS["phone-landscape"] = {"name": "phone-landscape", "width": 844, "height": 390, "touch": True}
 DEBUG = bool(os.environ.get("SHOOT_DEBUG"))
+FORCE = ""  # --force: slots forced on the lab's order (JSON)
 PHASE_SHOT = {"chopped": "chopped", "hot": "hot", "piles": "piles", "veg-in": "veg-in", "daar-in": "daar-in"}
 
 
@@ -131,7 +132,7 @@ def run(vp, out, level, speed, side="counter"):
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag)
-        page.evaluate(f"() => {{ Cook.daarSide = {json.dumps(side)}; Cook.tasteHold = 900; }}")
+        page.evaluate(f"() => {{ Cook.daarSide = {json.dumps(side)}; Cook.tasteHold = 900; Cook.daarForce = {FORCE or 'null'}; }}")
         page.evaluate(f"() => {{ __cook.lab('daar', false, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         P.play(lambda: page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), timeout=900)
@@ -150,9 +151,12 @@ def main():
     ap.add_argument("--vp", default="laptop")
     ap.add_argument("--level", type=int, default=1)
     ap.add_argument("--side", default="counter")
+    ap.add_argument("--force", default="", help='slots to force on the lab order, JSON: \'{"onions": 0}\' (30 Sept: a no-onion order)')
     ap.add_argument("--speed", type=float, default=1.5)
     ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "daar-v3"))
     a = ap.parse_args()
+    global FORCE
+    FORCE = a.force
     T.start_server()
     ok = True
     if a.matrix:
