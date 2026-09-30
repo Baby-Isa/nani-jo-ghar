@@ -2,7 +2,7 @@
 
 **If you are a session resuming after a limit or restart:** read this file first. Do only the unticked items in *your* section, tick each one as you finish it, and commit and push after every item (`git pull --rebase` first). Never redo a ticked item. The plan is `docs/process/step1-mapping.md` (old names); the move map is at the end of this file.
 
-Branch: `claude/cool-albattani-7pbgd5`. Nothing goes to `main` until Zafar approves the finished tree.
+Branch: `claude/cool-albattani-7pbgd5`. Sessions (launched 1 Oct 00:04 UK, Sonnet): G `session_01G9W5cc2SPT69pxFCpAx9T7`, D `session_01VB243jrV1kL9orwskaUCNt`, L `session_01W6ZbXoqdfXAGGjatYhWbMF`; orchestrator `session_01AByCiJUWQHyiojceoysBgu` checks them every ~35 minutes and resumes any that stop. Nothing goes to `main` until Zafar approves the finished tree.
 
 ## Phase 1: moves and path fixes (orchestrator): done 1 Oct 00:15 UK
 
@@ -54,3 +54,6 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [ ] Scripted check: every old file accounted for, every doc link resolves
 - [ ] Fable review of the tree (lost content, broken links, stale boxes present)
 - [ ] Zafar reviews → merge to `main` (docs only, bump version)
+
+## Notes for the orchestrator
+
