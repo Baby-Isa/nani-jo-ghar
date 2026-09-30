@@ -28,8 +28,9 @@
  *
  * Data: the chai recipe's slots (who and what, by level) in data/cook.json; this station's own
  * settings in data/stations/chai-tray.json; the boil knobs in data.mechanics.boil (profile tray).
- * Art: assets/cook/items/chai-v2/ (build/gen_chai_v2.py, build/cut_chai_v2.py; positions in its
- * meta.json), the pantry-v2 jars; the hob, burners, knobs, flames and heat ring are the shared
+ * Art: the pan, top-down, is v3's nine pictured states (assets/cook/items/v3/chai/, placed by the rim
+ * centre in its meta.json: 30 Sept, C8 / X9, nothing drawn inside it); the tipped pan, tray and glasses are
+ * assets/cook/items/chai-v2/ (positions in its meta.json); the pantry-v2 jars; the hob, burners, knobs, flames and heat ring are the shared
  * kitchen kit's (js/cook/kitchen-kit.js).
  */
 (function (global) {
@@ -41,13 +42,17 @@
   const Mech = Cook.Mech;
 
   const V2 = "assets/cook/items/chai-v2/";
+  const V3 = "assets/cook/items/v3/chai/";
+  // 30 Sept (C8 / X9): the pan's contents are pictures, one per stage of the brew, all on one registered
+  // canvas (the rim's centre lines up in all nine), so they cross-fade on the burner without moving
+  const PAN_LOOKS = ["empty", "water", "leaves", "tea", "milky", "spiced", "boil-tea", "boil-milky", "foam"];
   // what build/cut_chai_v2.py measured (kept here so the station needs no extra fetch)
   const META = {
-    // cx, cy: the round body's centre, fitted to its rim (29 Sept; was 0.408, 0.5805, which the handle pulled
-    // up and right, so every pan sat low-left of its burner). r is the size it's drawn at: the body itself is
-    // 0.335 of the width, so the flame and heat rings (sized to panR) peek out around it
-    // body: the rim's own radius (the heat gauge sits on it, inside the flames)
-    panTop: { w: 512, h: 492, cx: 0.3434, cy: 0.6408, r: 0.3644, rIn: 0.2915, body: 0.3352 },
+    // the v3 pan (v3/chai/meta.json): cx, cy = the canvas's registration point, the rim's measured centre
+    // (handle left out), the same in all nine pictures. body: the rim's own radius (the heat gauge sits on
+    // it, inside the flames); rIn: the contents' radius (the bubbles stay inside it); r: the size it's drawn
+    // at, 1.087 x the body as with v2's pan, so the flame and heat rings (sized to panR) peek out around it
+    panTop: { w: 405, h: 389, cx: 0.3754, cy: 0.6146, r: 0.3525, rIn: 0.3012, body: 0.3243 },
     panPour: { w: 512, h: 500, lipX: 0.03, lipY: 0.545 },
     glassR: 0.94,
   };
@@ -77,17 +82,13 @@
   // the small-jar family for every spice slot (aadu and lasan drawn for v2 in the same jar)
   const SPICE_JAR = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp" };
   const ART = [
-    ["v2-pan", V2 + "pan-top.webp"],
     ["v2-pan-pour", V2 + "pan-pour.webp"],
     ["v2-tray", V2 + "tray-4-cutout-t.webp"],
     ["v2-glass-empty", V2 + "glass-empty.webp"],
     ["v2-glass-half", V2 + "glass-half.webp"],
     ["v2-glass-full", V2 + "glass-full.webp"],
-    ["v2-liq-milk", V2 + "liquid-milk.webp"],
-    ["v2-liq-tea", V2 + "liquid-tea.webp"],
-    ["v2-liq-milky", V2 + "liquid-milky.webp"],
-    ["v2-liq-dark", V2 + "liquid-dark.webp"],
   ]
+    .concat(PAN_LOOKS.map((k) => [`v3-pan-${k}`, `${V3}pan-${k}.webp`]))
     .concat(...[1, 2, 3, 4].map((n) => Cook.Kit.art(n, []))) // the shared kitchen kit: hobs, knobs, flames
     .filter(([key], i, a) => a.findIndex(([k2]) => k2 === key) === i);
 
@@ -212,21 +213,18 @@
       // the flames peek just past the rim, as in the approved mock-up (29 Sept: at panR two burners' flames met)
       const b = Cook.Kit.burner(S, kHob, i, { who: p.who, flameR: rimR * 0.97 });
       const { face, knob, kOff, kOn, knobHit, flameHi, flameLo } = b;
-      const img = S.track(S.add.image(x, y, "v2-pan").setOrigin(pm.cx, pm.cy).setScale(panScale).setDepth(D.item));
+      // the pan is its own contents' picture (C8): `img` shows one stage, `mix` the next one fading in over it
+      const img = S.track(S.add.image(x, y, "v3-pan-empty").setOrigin(pm.cx, pm.cy).setScale(panScale).setDepth(D.item));
       img.baseScale = panScale;
       img.shadow = S.contactShadow(img, { centerX: x, centerY: y + panR * 0.08, width: panR * 2.15, height: panR * 2.15 });
-      // the liquid: water drawn (see-through); the others are painted pools that cross-fade
-      const water = S.track(S.add.graphics().setDepth(D.item + 0.2));
-      const layers = {};
-      ["tea", "milk", "milky", "dark"].forEach((key, j) => {
-        layers[key] = S.track(S.add.image(x, y, `v2-liq-${key}`).setDepth(D.item + 0.3 + j * 0.02).setAlpha(0));
-      });
+      const mix = S.track(S.add.image(x, y, "v3-pan-empty").setOrigin(pm.cx, pm.cy).setScale(panScale).setDepth(D.item + 0.05).setAlpha(0));
+      const layers = { mix };
       const bubbles = S.track(S.add.graphics().setDepth(D.item + 0.5));
       const heatRing = Cook.Kit.heatRing(S);
       const sel = S.track(S.add.graphics().setDepth(D.item - 0.5));
       const selRing = S.track(S.add.graphics().setDepth(D.item + 0.95));
       const pan = {
-        i, p, who: p.who, x, y, img, water, layers, bubbles, ring: heatRing.g, heatRing, burner: b, sel, selRing, face, knob, kOff, kOn, knobHit, flameHi, flameLo,
+        i, p, who: p.who, x, y, img, mix, shown: "empty", layers, bubbles, ring: heatRing.g, heatRing, burner: b, sel, selRing, face, knob, kOff, kOn, knobHit, flameHi, flameLo,
         level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [],
         heat: 0, state: "cold", poured: 0, closed: false, spoonsClosed: false, look: 0,
       };
@@ -340,26 +338,36 @@
     const dishNo = () => ctx.dishAt || 0;
     const [lo, hi] = kBoil.band;
 
-    const setLook = (pan) => {
-      // the water (see-through), then the painted pools: tea, milk, milky chai, darkening as it heats
-      const L = pan.level;
-      pan.water.clear();
-      const r = rIn * (0.84 + 0.16 * Math.min(1, L));
-      const vis = pan.poured >= 2 ? 0 : L > 0.01 ? 1 : 0;
+    // C8: which picture the pan shows: [the stage, the next one fading in over it, how far]. The leaves
+    // steep to black tea as it heats; near the green it comes to the boil; past the green milky chai
+    // foams up to the rim (the boil-over warning). Turned down, it settles (the simmer bubbles stay on top).
+    const boilAt = lo - 0.12;
+    const lookOf = (pan) => {
       const tea = pan.has.leaves > 0;
       const milk = pan.has.milk > 0;
-      const dark = tea ? Cook.clamp(pan.heat / hi, 0, 1) * (milk ? 0.85 : 0.95) : 0;
-      const a = { tea: 0, milk: 0, milky: 0, dark: 0 };
-      if (tea && milk) a.milky = 1;
-      else if (tea) a.tea = 1;
-      else if (milk) a.milk = pan.has.water ? 0.8 : 1;
-      a.dark = dark;
-      if (vis && pan.has.water && !tea && !milk) St.shade(pan.water, { x: pan.x, y: pan.y, rx: r, ry: r }, COL.water, pan.state === "heating" ? Math.max(0, (pan.heat - lo + 0.15) / 0.3) : 0);
-      Object.entries(pan.layers).forEach(([key, im]) => {
-        im.setDisplaySize(r * 2, r * 2);
-        im.setAlpha(vis * a[key]);
-      });
+      if (pan.poured >= 2 || !(pan.has.water > 0 || milk)) return ["empty", null, 0];
+      // milk in before the leaves: no picture of milky water, so the milky chai half over the water
+      if (!tea) return milk ? ["water", "milky", 0.5] : ["water", null, 0];
+      const calm = milk ? (pan.extras.length ? "spiced" : "milky") : "tea";
+      const h = pan.heat;
+      if (pan.state === "ready") return [calm, null, 0];
+      if (pan.state !== "heating" || h < boilAt) return milk ? [calm, null, 0] : ["leaves", "tea", Cook.clamp(h / boilAt, 0, 1)];
+      const boil = milk ? "boil-milky" : "boil-tea";
+      if (!milk || h <= hi) return [calm, boil, Cook.clamp((h - boilAt) / (lo - boilAt), 0, 1)];
+      return ["boil-milky", "foam", Cook.clamp((h - hi) / (1 - hi), 0, 1)];
     };
+    const tex = (im, key) => im.texture.key !== `v3-pan-${key}` && im.setTexture(`v3-pan-${key}`);
+    // fade: { from, u } while something goes in (the last picture, then the new one over it)
+    const setLook = (pan, fade) => {
+      let [a, b, u] = lookOf(pan);
+      if (fade && fade.u < 1 && fade.from !== a) [a, b, u] = [fade.from, a, fade.u];
+      else if (!fade || fade.u >= 1) pan.shown = b && u >= 0.5 ? b : a;
+      tex(pan.img, a);
+      if (b) tex(pan.mix, b);
+      pan.mix.setAlpha(b ? u : 0);
+    };
+    const fadeLook = (pan, from, ms = 450) =>
+      S.tweens.addCounter({ from: 0, to: 1, duration: ms, onUpdate: (tw) => setLook(pan, { from, u: tw.getValue() }), onComplete: () => setLook(pan) });
     const drawSel = () =>
       pans.forEach((pan) => {
         pan.sel.clear();
@@ -419,7 +427,7 @@
     const popAt = (pan) => ({ x: Math.min(1500, pan.x + panR * 0.9), y: pan.y - panR - 58 });
 
     /* ---------- using the shelf: pour a bottle, or a spoonful ---------- */
-    const pourInto = async (pan, obj, color, toLevel) => {
+    const pourInto = async (pan, obj, color, toLevel, look) => {
       // the bottle or carton lifts, tips over the pan (its cap is the spout) and pours
       busy++;
       obj.flying = true;
@@ -452,7 +460,7 @@
             stream.lineTo(pan.x + (cap.x - pan.x) * 0.15, pan.y);
             stream.strokePath();
             pan.level = from + (toLevel - from) * u;
-            setLook(pan);
+            setLook(pan, { from: look, u });
           },
           onComplete: r,
         })
@@ -481,15 +489,16 @@
       unglow();
       Cook.sfx.pop();
       const at = popAt(pan);
+      const look = pan.shown;
       if (id === "cook-paani") {
         pop(id, at.x, at.y);
         pan.has.water++;
-        await pourInto(pan, obj, COL.water, Math.min(0.9, pan.level + (pan.level < 0.1 ? 0.62 : 0.12)));
+        await pourInto(pan, obj, COL.water, Math.min(0.9, pan.level + (pan.level < 0.1 ? 0.62 : 0.12)), look);
       } else if (id === "cook-dudh") {
         pop(id, at.x, at.y);
         pan.has.milk++;
         if (pan.p.dudh && !pan.closed) UI.mission.tickItem("cook-dudh", dishNo(), { for: pan.who });
-        await pourInto(pan, obj, COL.milk, Math.min(1, pan.level + 0.22));
+        await pourInto(pan, obj, COL.milk, Math.min(1, pan.level + 0.22), look);
       } else if (id === "cook-khun") {
         if (pan.sugar >= (K.tallyMax || 6)) return;
         pan.sugar++;
@@ -511,11 +520,9 @@
         }
         pop(id, at.x, at.y);
         await spoonInto(pan, obj, id);
-        if (id === "cook-chai") {
-          // the leaves go in: the water turns to light tea
-          if (pan.level < 0.05) pan.level = 0.12;
-          setLook(pan);
-        }
+        // the leaves (or a spice) land: the next picture fades in
+        if (id === "cook-chai" && pan.level < 0.05) pan.level = 0.12;
+        fadeLook(pan, look);
       }
       refresh();
     };
@@ -643,7 +650,6 @@
       flames.forEach((fl) => S.tweens.add({ targets: fl, alpha: 0, duration: 160 }));
       drawSel();
       Object.values(pan.layers).forEach((im) => im.setVisible(false));
-      pan.water.setVisible(false);
       pan.bubbles.setVisible(false);
       if (pan.img.shadow) pan.img.shadow.setVisible(false);
       S.tweens.add({ targets: tilt, alpha: 1, duration: 120 });
@@ -694,7 +700,6 @@
       pan.img.setAlpha(1);
       if (pan.img.shadow) pan.img.shadow.setVisible(true);
       Object.values(pan.layers).forEach((im) => im.setVisible(true));
-      pan.water.setVisible(true);
       pan.bubbles.setVisible(true);
       pan.level = pan.poured >= 2 ? 0 : pan.level * 0.6;
       setLook(pan);

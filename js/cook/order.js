@@ -192,6 +192,9 @@
   const cutEn = (en) => String(en || "").replace(/[.!?]\s*$/, "");
   /** Is this row already said by the headline ("Muke aadu waari chai khape." says the aadu row)? */
   const inHead = (head, r) => !!head && !r.no && r.ids.length > 0 && r.ids.every((id) => (head.ids || []).includes(id));
+  // 30 Sept (chai C5): a word marked `joinless` (the Chai tray's adh / aako) is never the one the join
+  // word goes before ("khun na, with aako" read "no sugar, with full"): it's said bare, and the join waits
+  const joinless = (r) => r.ids.length > 0 && r.ids.every((id) => ((Cook.data.words || {})[id] || {}).joinless);
   /**
    * One person's order as ONE sentence, in card order (29 Sept, X1): the headline ("Muke aadu waari
    * chai khape"), then the card's other rows as their bare words ("dudh, ba khun"), a leave-it-out
@@ -221,7 +224,7 @@
         const l = Lang.line(F.no, r.phrase);
         segs = lower(cut(l.segs));
         en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
-      } else if (!joined && Cook.data.lines[join]) {
+      } else if (!joined && !joinless(r) && Cook.data.lines[join]) {
         const l = Lang.line(join, r.phrase);
         segs = cut(l.segs);
         en = cutEn(l.en);

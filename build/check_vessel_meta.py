@@ -226,11 +226,21 @@ def main():
         url = m.group(1).strip()
         url = url.replace('V2 + "', "assets/cook/items/chai-v2/").strip('"')
         checks.append((f"Cook.Kit.VESSELS.{name}", url, float(m.group(2)), float(m.group(3))))
-    m = re.search(r"panTop: \{ w: \d+, h: \d+, cx: ([\d.]+), cy: ([\d.]+)", chai)
-    checks.append(("chai-tray META.panTop", "assets/cook/items/chai-v2/pan-top.webp", float(m.group(1)), float(m.group(2))))
+    # 30 Sept (C8): chai's top-down pan is v3's nine pictured states: META.panTop is their shared rim centre
+    m = re.search(r"panTop: \{ w: (\d+), h: (\d+), cx: ([\d.]+), cy: ([\d.]+), r: [\d.]+, rIn: ([\d.]+), body: ([\d.]+)", chai)
+    cmeta = json.load(open(os.path.join(ROOT, "assets/cook/items/v3/chai/meta.json")))
+    for name in ("pan-empty", "pan-water", "pan-milky", "pan-boil-milky", "pan-foam"):
+        checks.append((f"chai-tray META.panTop on v3 {name}", f"assets/cook/items/v3/chai/{name}.webp", float(m.group(3)), float(m.group(4))))
+    ref = cmeta["pan-empty"]
+    same = all(cmeta[k]["w"] == int(m.group(1)) and cmeta[k]["h"] == int(m.group(2)) and cmeta[k]["anchor"] == ref["anchor"] for k in cmeta)
+    offm = max(abs(float(m.group(3)) - ref["anchor"][0]), abs(float(m.group(4)) - ref["anchor"][1]), abs(float(m.group(6)) - ref["r"]))
+    inner = min(cmeta[k]["inner_r"] for k in cmeta if not k.startswith("pan-boil")) - 0.005 <= float(m.group(5)) < float(m.group(6))
+    okc = same and offm <= 0.001 and inner
+    print(f"{'ok  ' if okc else 'FAIL'} chai-tray META.panTop vs v3/chai/meta.json: one canvas {same}, anchor/body off {offm:.4f}, rIn inside the rim {inner}")
     meta = json.load(open(os.path.join(ROOT, "assets/cook/items/chai-v2/meta.json")))["panTop"]
     checks.append(("chai-v2/meta.json panTop", "assets/cook/items/chai-v2/pan-top.webp", meta["cx"], meta["cy"]))
     bad = check_v3()
+    bad += 0 if okc else 1
     bad += check_daar()
     bad += check_sekelo()
     # the samosa station places its v3 karahi and plate by numbers copied from meta.json: they must agree

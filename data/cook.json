@@ -567,14 +567,16 @@
    "kutchi": "adh",
    "english": "half",
    "say": "udd",
-   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet"
+   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/kutchi-grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet",
+   "joinless": true
   },
   "ph-full": {
    "kutchi": "aako",
    "english": "full",
    "src": "Mum 26 Sept (Section B, B5; docs/kutchi-grammar-notes.md §24) and Zafar's spelling, 26 Sept: aako, with two a's (replaces ako / aki)",
    "src_change": "was bharelo (Zafar 25 Sept, phonetic)",
-   "_use": "aako cup = a whole cup, the one used in cooking (Zafar 26 Sept: use aako cup for recipe amounts). A filled-up cup is bharelo cup; bharelo / bhareli also means heaped (bhareli chamchi). Cup has no gender: one cup is hakri cup. The Chai tray says it on its own, like adh: Ne aako."
+   "_use": "aako cup = a whole cup, the one used in cooking (Zafar 26 Sept: use aako cup for recipe amounts). A filled-up cup is bharelo cup; bharelo / bhareli also means heaped (bhareli chamchi). Cup has no gender: one cup is hakri cup. The Chai tray says it on its own, like adh: Ne aako.",
+   "joinless": true
   },
   "ph-big": {
    "kutchi": "wadho",
