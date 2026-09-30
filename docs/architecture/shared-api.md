@@ -1,5 +1,12 @@
 # Shared API (`js/shared/`)
 
+> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
+> - §3 Star sets, `data/shared/stars.json`, `js/shared/stars.js`, ear star and voice star (`Stars.ear`, `Stars.voice`), and `Results.toStars` ("accuracy gold ⇔ ear, hints ⇔ no-help") → the code matches the doc but the concept is superseded: scoring is the three badges (time, accuracy, hints); no ear or voice star; the legacy star code is to be deleted (H5, J7, decisions 1–2)
+> - §6 stub-swap table and §7 "Phase B owns the rest" → historical, describing 25 Sept; `save.js` and `app.js` (phase B) are built
+> - §0 file and global table is missing about ten newer modules (`buttons.js`, `results.js`, `onboard.js`, `uistore.js`, `character.js`, `charmaker.js`, `conversations.js`, `family-voice.js`, `fit.js`, `sfx.js`, `story.js`); some are covered in §9 and §12–§16
+> - Hands in any API (first-person hands) → parked, none in Cook (H13)
+> - Every mode must use the shared screens and buttons, never restyled (non-negotiable 8)
+
 *The contract between the foundation and the mode builds, 25 Sept 2026. Every call, its arguments and what it returns, the data formats, and how each mode swaps its stub for the real module. The foundation session owns `js/shared/`, `data/relations.json` and `data/shared/`; modes read them and never edit them. Ask for a change by writing it in your build log; don't fork a copy.*
 
 ## 0. Loading

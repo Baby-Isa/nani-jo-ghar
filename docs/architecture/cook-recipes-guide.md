@@ -1,5 +1,12 @@
 # Cook with Nani: how to add ingredients, recipes, levels and stations
 
+> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
+> - §6 "one set of ear, hand and lightning stars" and any star bookkeeping → three badges (time, accuracy, hints) and the pocket-money model (H5, decisions 1, 2, 10)
+> - "Knead" as a mechanic → cut from the playable stations
+> - First-person hands → parked, none in Cook (H13)
+> - Liquids drawn as discs or dots → pre-rendered pictures, cross-faded (D11)
+> - Pour as press-and-hold → pour is a tap-measure
+
 **Updated:** 26 Sept 2026 (Wave 6). For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
 
 Never invent Kutchi. A new word goes in with `"kutchi": null` and its English, and shows as a grey English placeholder until the family gives the Kutchi.

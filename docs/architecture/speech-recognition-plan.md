@@ -1,5 +1,12 @@
 # Nani jo Ghar — Speech recognition plan
 
+> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
+> - "Voice star rules" → remove: no voice star, no ear star (decision 2, H5); speaking is judged inside the three badges
+> - Examples *nar*, *bo*, *hikdo*, *aastethi* → *nar* is wrong (no = *na*, G5); use the confirmed spellings in `docs/language/lexicon.md`
+> - "Children's takes kept in the family, never shipped" is consistent with I15: children's voices never ship and stay on the device
+> - Where speaking happens → only inside a real two-person exchange (`docs/game-design/speaking.md`, rules E32)
+> - Never make the child wait for speech (E5) and nothing makes a child feel bad (E30): recognition results are never shown as verdicts
+
 *Closed-set spoken-word recognition: at a speaking moment the game knows the 3–8 Kutchi words the child could mean, and must pick the one said, or say "didn't catch that". Companion to the Deep-dive brief (principle 3) and the Game Design's "Speaking, staged" table (stage two). 25 Sept 2026.*
 
 ## Recommendation in one paragraph

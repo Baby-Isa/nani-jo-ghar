@@ -1,5 +1,11 @@
 # Clinic healing games: the plug-in contract (26 Sept 2026)
 
+> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
+> - The games list `knee cut ear tooth taste fever boing eye foot` is behind the code: `js/clinic/heal/games/` also has `hair`, `hic` and `tummy`, which are parked (H32)
+> - Hands or first-person hand art in heal games → parked (H13)
+> - Stars for healing → three badges (H5)
+> - Sides are the patient's own (*dabo*/*jamno*); the doctor says "bring me", never "I want" (G19, G20)
+
 The clinic is being built by several agents at once. The **core agent** owns the pipeline (waiting room → diagnosis → pharmacy → heal → send-off) and everything in `js/clinic/` except `js/clinic/heal/games/`. The **healing-game agents** each own a few games and write only their own files. Everyone codes against this contract. The core may **add** to `ctx`, but never renames or removes what's here. Design source: `docs/archive/clinic/clinic-design-v1.md`, the "Mini-game quality pass" (Q1–Q7) on top of the "Pipeline design" (P1–P13).
 
 ## Files
