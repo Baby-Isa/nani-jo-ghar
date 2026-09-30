@@ -46,7 +46,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `process/session-brief-template.md` (new) ← rules B3, B4, B17, CLAUDE.md "Briefing a build session", BUILD-COMMON
 - [x] `process/art-how-to.md` (new) ← art-run-tonight rules, 30 Sept overnight paste block, batch3-cook edit rules, chat discipline
 - [x] `vision.md` (new) ← Project Brief (pitch, why, audience, success, pillars, non-goals), Game Design (rejected mechanics, Grandparent mode, age fit), fun-analysis personas, Roadmap design research, Zafar's aim (NEXT-CHAT-START §1); commercial model "open"
-- [ ] `ideas.md` ← add quilt-making Big Ma arc; free-play ideas, sidebar magnifier and notebook, art juice list, todo tech-debt ideas, TTS-from-family-voices (parked, see decisions 30 Sept)
+- [x] `ideas.md` ← add quilt-making Big Ma arc; free-play ideas, sidebar magnifier and notebook, art juice list, todo tech-debt ideas, TTS-from-family-voices (parked, see decisions 30 Sept)
 
 ## Phase 3: orchestrator
 - [ ] `docs/status.md` rewritten: "Next chat" section first; plan (steps 1–4 and the later docs clean-up); live state; open questions for Zafar (grouped, each with a recommendation); open regression rows by mode
