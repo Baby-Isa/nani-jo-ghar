@@ -28,7 +28,10 @@
 1. **Discussion first. Never start agents or sessions while Zafar is discussing.** Propose, wait for an explicit go, then act. Approval for one thing isn't approval for the next.
 2. **One step at a time.** Each step ends with a deliverable Zafar reviews and approves before the next begins.
 3. **Nothing reaches Zafar that breaks a written rule.** The QA checklist and its automated checks run first, and the orchestrator reviews screenshots itself.
-4. The full rule list is in `docs/process/rules-harvest.md` (harvested 30 Sept from this chat, the handover docs, the UX and QA docs and the feedback decisions). It becomes `CLAUDE.md` in step 1.
+4. The full rule list is in `docs/process/rules-harvest.md`. It becomes `CLAUDE.md` in step 1.
+   - **Sources:** all four orchestrator chats (hub 1, 2, 3 and 4; the older chats' own harvests are `docs/process/rules-harvest-orch1/2/3.md`), plus the handover docs, the UX and QA docs and the feedback decisions. All merged 30 Sept.
+   - **Contents:** 264 rules, 33 of them tagged *[old chats only]*, a conflicts table, and a candidate core of 40 lines for `CLAUDE.md`.
+   - **Open conflicts:** the "NEEDS ZAFAR" items in its merge summary. Get Zafar's answers on these as part of step 1.
 
 ## 4. The agreed plan (Zafar approved the sequence, 30 Sept)
 
