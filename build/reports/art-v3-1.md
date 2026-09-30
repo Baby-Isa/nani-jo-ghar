@@ -73,14 +73,63 @@ bowl, the ladle's bowl and the clinic's basin (new `check_clinic_items`). It als
 - **The green chilli heap** is R5's chilli rings (`daar/chop-heap-chilli`), sized by its own canvas: it no longer reads as peas.
 - **Lab / shots:** `Cook.samosaTwo` (lab only) and `shoot_samosa_v3.py --two`.
 
-### The kitchen kit (`js/cook/kitchen-kit.js`)
-See §4b: done last, after chai's work reached main.
+### The kitchen kit (`js/cook/kitchen-kit.js`), done last, after chai v3 and maani v3 reached main
+- **`HOBS[4]` is R1's `hob-4-v2`.** It's measured from the art (burners, `frontY` 0.8928) and checked against the art and the meta by `check_vessel_meta.py`.
+  - Its caps are the v3 size, so a station's `k` keeps its burner size. But the hob is 1546 px wide, not 1753.
+  - Chai fits its hob to the row (`room / hobW`), so at 4 people its hob scale goes from 0.633 to 0.723 and its burners are 14% bigger, with no chai code changed.
+- **The knobs are R2's `knob-off-v2` / `knob-on-v2`.** `KNOB` is `BADGE / 0.839`: R2's body is 0.839 of its canvas, H6's was 0.742. The knob's round body stays the face badge's size.
+  - The kit still turns the knob a quarter (`kOn` starts at −90°), which works for R2 as it did for H6: its "on" bar is vertical.
+- The old `hob-4`, `knob-off` and `knob-on` stay in the folder, unused.
+- The vessel check's kit comparison now reads `hob-4-v2` as the kit's 4-burner hob.
 
 ## 3. Tests
 (filled in below)
 
 ## 4. Shots and their flaws
-(filled in below)
+Every shot is in `build/reports/art-v3-1/`:
+- `<station>-<viewport>-L<n>[…]/`, shot by the stations' own scripts (`shoot_daar_v3.py`, `shoot_samosa_v3.py`, `shoot_sekelo_v2.py`, `shoot_chai_v2.py`, `shoot_maani_v2.py`);
+- the round-1 flaws (before the fixes) in `flaws/`.
+
+**Round 1 (found, then fixed and re-shot):**
+- **Daar: two chilli heaps merged into one pile** (`flaws/r1-daar-chilli-heaps-merge.jpg`). The R5 heaps fill their canvas; they're now drawn at 0.82 of a pile and 0.95–0.98 apart. Two heaps stay two in the L3 and no-onion shots.
+- **Daar: the "stopped" icon poked out past the dial's left edge** (`flaws/r1-daar-dial-icon-clipped.jpg`). The icons' radii are now kept inside the face; all four are inside in the re-shot `stir-*` shots.
+- **Samosa: block 2 came out as *watana* only**, with no base (`flaws/r1-samosa-block2-base-watana.jpg`). The order had used both bases in block 1. Fixed in the data (`base1`); the L3 two-kinds shot is now chundo ×3 then bataato ×2, and a right review.
+- **Sekelo: chunks overlapped by the handles** on the 3-skewer plate (`flaws/r1-sekelo-plate-crowd-handles.jpg`), where the fanned skewers converge. The chunks now sit toward the tips (and 90 px pushed the top one past the tip on a single skewer: 60).
+- **Sekelo: the potato decoy heap was tiny** (it sat on K5's big canvas). It's now cut tight, the same size as the other heaps.
+- **The knobs** (contact sheet): a glow sliver on the off knob, a squared-off glow, and an off-centre fit. All fixed in the cut.
+- **Samosa: the fry's knob glowed but kept its bar flat**, so it read as off (`samosa-laptop-L1/laptop-l1-fry-on.png`).
+  - This bug predates v3.1: `samosa.js` called `burner.set("high")` and then killed the knob's tweens (to stop its pulse), which killed the quarter turn too.
+  - R2's strong glow made it obvious. The pulse now stops before the knob turns.
+  - Re-shot in `samosa-phone-landscape-*`; the laptop L1 shot still shows it.
+
+**What the final shots show:**
+- **Daar**
+  - The no-onion order (`daar-*-L1-noonion/`): the pot goes seeds → tomato + chilli, never onion (`*-veg-in.png`). The plain daar waits on its trivet and pours in; the tadka comes up as mustard and cumin only.
+  - L3 (`daar-*-L3/`): Nani's chop card is words only (*tameto*, *dungri na*), and she says the count (*Kali ba tameto*).
+  - The dial's four icons are readable on the dark glass. The ladle reads as a steel cup with its handle up and right (see R3).
+  - **Flaw left:** at the hare's speed the stir's swirl picture fades in, and that's D1's `pot-stir`, which still has curry leaves (no v2 swirl was asked for). It shows only while stirring fast.
+  - **Flaw left:** the review bowl is D1's tadka bowl (dry chilli, curry leaves), as asked, while the pot's tadka is mustard and cumin only.
+- **Samosa**
+  - L1 and L3 two kinds (`samosa-*-L1/`, `samosa-*-L3-two/`): the card has the base first in both blocks (*chundo*, then the extras; the second block "samosa" with *bataato*).
+  - Two or three fillings show as separate mounds on the strip (`*-filled.png`, `*-sam-2-filled.png`), and the second kind's first strip starts empty.
+  - The **"fry them" pill** is the kit's Next (white card, gold edge and arrow, bottom right). R5's chilli rings on the shelf read as chilli.
+  - **Flaw left:** at L3 the block-2 row reads "samosa" with no count, because the count rule hides numbers from L3 and the count is only heard (*and ba samosa*). That's the rule, but with two blocks the child has to hold two counts in their head.
+- **Sekelo**
+  - L1 charred (`sekelo-*-L1-char/`), L3 with 3 skewers and L4 with 4 (`sekelo-*-L3/`, `*-L4/`). The empty plate is clean.
+  - A charred onion skewer stays purple and black on the grill (`*-charred.png`). The potato decoy has its own heap and chunks.
+  - **Still crowds a little** (the orchestrator's question): at 3 and 4 skewers the lower chunks of neighbouring skewers touch near the handles, where R6's skewers converge. It's better than v3's parallel skewers, but not the clean fan the prompt asked for.
+  - **Flaw left:** R6's fifth, empty bamboo stick shows on the 4-skewer plate (lower left).
+- **The hob** (`hob-chai-*-{1,2,3,4}/`, `hob-maani-laptop-L1/`, and the daar and samosa hobs in their folders)
+  - At 1–3 burners (the v3 hobs) and 4 (R1), each knob is shown off (`*-start.png`) and on (`*-boiling.png`, `*-tawa-half.png`).
+  - The on glow is a wide warm ring and reads at a glance, even on the phone. At 4 people chai's burners are bigger (scale 0.72, was 0.63), the four faces and knobs sit on the front strip, and the tray stays in the row.
+  - **Flaw left:** R1's front strip is thin, so the knob's glow reaches the frame at the bottom edge. It's tidy, but tighter than on hob-1–3.
 
 ## 5. Open for Zafar
-(filled in below)
+- **R3, the ladle:** a deep steel dipper, not a ladle, in both ChatGPT tries. It works in the pot (it reads as a tool stirring), but say if you want a redo with a reference photo of a real steel *kadchi*.
+- **R6's "four" cell has five sticks.** The game leaves the lowest one empty. A redo of cell 5 only (four skewers, the same fan, handles apart) would fix it and uncrowd the handles.
+- **The stir's swirl picture** still has D1's curry leaves (it shows at speed). One more pot picture, the daar mid-stir with R4's mustard-and-cumin tadka, would match. The same goes for **the review bowl**, which keeps D1's dry chilli and curry leaves: a trivet bowl with R4's tadka would too.
+- **Two samosas, two counts at L3+:** the second block's count is heard only (the count rule). Keep that, or write the second block's count on the card?
+- **When the second kind starts:** the station switches to the empty strip once the first kind's count is made. That gives away the first count (the child can't make too many of the first kind). The alternative is a "next kind" button, which needs a new button word. Say which.
+- **`baseFirst` vs `headFirst`:** the brief said `headFirst`, but that name is maani's headline rule in `order.js`, so this is `baseFirst`. Same behaviour, as asked.
+- **The clinic items** are cut and checked but not wired: for the clinic session. CI1's dentist drill has a small bur; say if it should go.
+- **"Chop these" / "and"** are still the English placeholders they were (flagged to record). No new Kutchi and no new English on screen.

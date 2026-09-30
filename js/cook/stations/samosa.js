@@ -847,6 +847,10 @@
       S.tappable(burner.knobHit, () => {
         S.untap(burner.knobHit);
         S.glow(burner.knobHit, false);
+        // the pulse stops BEFORE the knob turns (30 Sept: killing the knob's tweens after set() stopped its quarter
+        // turn too, so the "on" knob kept its bar flat, reading as off)
+        S.tweens.killTweensOf(burner.knob);
+        burner.knob.setScale(1);
         burner.set("high");
         resolve();
       });
@@ -856,8 +860,6 @@
       burner.knob.baseScale = 1;
       S.tweens.add({ targets: burner.knob, scale: 1.1, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     });
-    S.tweens.killTweensOf(burner.knob);
-    burner.knob.setScale(1);
     const sizzle = Cook.sfx.sizzleLoop();
     S.loops.push(sizzle);
     // shimmer on the oil: it's hot
