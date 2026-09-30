@@ -200,6 +200,7 @@ def main():
                     time.sleep(0.6)
                     tap(page, ".cl-help-btn")
                     time.sleep(0.6)
+                time.sleep(0.7)  # pop-ins (the thought bubble, the feeling circle) finish before the shot
                 path = os.path.join(OUT, f"{vp}-{name}.png")
                 page.screenshot(path=path)
                 print(f"{vp:7} {name:12} {'ERR ' + '; '.join(errs) if errs else 'ok'}")
