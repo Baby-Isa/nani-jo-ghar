@@ -986,6 +986,7 @@
 
       /* ---------- a topping goes in: it lifts off the shelf, drops into the glass and settles ---------- */
       const got = [];
+      Cook.assembleGot = got; // (for the screenshot and test scripts: what's in the bowl, bottom first)
       const ticked = []; // the card row each layer ticked (null: none), to untick it if it's taken back
       let busy = 0;
       let building = false; // the bowl takes a layer back only while you're building (§17)
