@@ -28,10 +28,54 @@ Branch `claude/cook-maani-v3`. Station `js/cook/stations/maani-line.js` (and the
 - **Shoot script:** `build/shoot_maani_v2.py` rewritten for v3's states. It slows the scene's tweens for a moment to catch the ball in the air and the turner mid-move.
 
 ## 3. Tests
-_(filled in below)_
+- `python3 build/test_cook.py --lab --stations maani-line,roll-tawa,roll,flip --viewport laptop`: **PASS** (477 s). `--viewport phone-landscape`: **PASS** (414 s). Both re-run after the last code change.
+- `python3 build/test_cook.py --days 1 --canvas`: DAYS_RESULT
+- `node --test build/test_shared_*.mjs`: 117/117. `node build/check_onboard.mjs`: ok. `python3 build/check_vessel_meta.py`: ok, with the new `check_maani()` (23 lines, all ok).
+- **The bot's tawa scores are low (40–64% on the first maani of a run).** The bot reads the ring through the page, so it taps late: under load, and while a shot is being taken. These scores come from the test player's timing, not the station's; the ring's band and speed are unchanged from v2.
+- **Bug caught by the shots and fixed:** the Tawa lab drew the v3 maani about 25% bigger than its tawa (a 403 px canvas where v1's was 324). `tawa.js` now scales it back to the old size.
 
 ## 4. Shots with their flaws
-_(filled in below)_
+`build/reports/maani-v3/<viewport>-l<level>-<run>-<state>.png`, for laptop (1366×768) and phone landscape (844×390), levels 1–4. Each level has two runs:
+- **wrong:** it leaves the first maani to burn, then makes one too many, so the frown shows;
+- **right:** played right.
+
+States:
+- `start`
+- `ball-flying`
+- `rolling`, `rolled`
+- `tawa-raw`: from the wrong run, taken before it burns
+- `turner-flip`, `tawa-half`, `lift-cooked`
+- `burnt`: wrong run
+- `serving`
+- `taste-wrong`, `taste-right`
+- `end`
+
+All 16 runs had no console errors. Laptop L4 right was re-shot alone: in the first pass the shared test server stopped under it and its sidebar faces didn't load.
+
+**Flaws first:**
+- **The review face covers the hob's front strip** (the badge and knob) and the top third of both plates. This is worst on phone, where it's clamped into view. It's v2's placement ("over the finished plates"). Moving it lower would hide the maani, so I left it; say if it should shrink (it's 230 px).
+- **On phone, the verdict word** ("Perfect!", "Burnt!") sits right at the top edge of the view, over the tawa. It's readable, but only just clear of the edge.
+- **The turner at rest is on bare counter** right of the hob, not on a spoon rest or the hob. It reads as placed (its shadow, the blade by the hob's corner), but a spoon-rest picture would anchor it better.
+- **The velan is chunky.** The v3 pin is a fat walnut pin (about 1:4.8), so when rolling it covers a band across the middle of the dough. It's drawn shorter than v2's so it stays on the board.
+- **The piles are small beside the plates.** The band's padding rule caps them at about 95 px tall (laptop), against 104 px plates. Taller would break M9.
+- **At level 3+ the chips are speaker-only**, so the two piles are told apart only by colour (wheat pale, millet grey-brown). That's by design (listen), but the two colours are the only visual cue.
+- **Mid-flip** (`turner-flip`) the maani is a thin line under the turner blade for about 0.1 s. That's what a flip is, but a still of it looks like an empty tawa with a stick on it.
+- **Headline repeats its row** (X12; left as asked).
+- **The Tawa / Roll → Tawa labs** (lab-only) still use the old tawa, a drawn hand and a spatula. Only their maani pictures are v3.
+
+**What's right:**
+- **M3:** the two piles stand straight on the band, no tray, each over its chip. A ball arcs out of the top of the pile to the chakla (`ball-flying`), and the pile squashes a little as it goes.
+- **M4:** the dark walnut chakla and velan match the house-board look. The gold ring reads on the dark wood, and the rolled maani meets it at its edge (`rolled`).
+- **M5:**
+  - raw (pale, floury) → the half picture's light spots after the flip → the flat cooked picture with brown spots on the lift;
+  - no puff anywhere;
+  - `burnt` shows the burnt picture, and the burnt maani stays burnt on its plate;
+  - wheat and millet each have their own four pictures.
+- **M6:** the flat wooden turner slides its blade under the maani's right edge to flip and to lift (`turner-flip`, `lift-cooked`), then goes back to rest.
+- **M7:** the flame tips peek out evenly all round the tawa at every level. The heat ring sits on the tawa's rim, inside the flames and clear of the maani.
+- **M8:** the tawa is crisp at both sizes, centred on the burner by its body, handle out to the right.
+- **M9:** at rest the gap above the pile tops matches the gap under the chips (21 vs 17 design px; the 4 px is the rule's glow allowance).
+- **Serve:** the frown over the plates on a wrong count, *Shabash!* and the happy face on a right one. The end screen is the shared one, untouched.
 
 ## 5. Open for Zafar
 - **X12 (left as asked):** the maani card's headline repeats its row: *Muke hakri maani khape.* over a row *hakri maani*. That's the shared order card (§12 / X1), not the station.

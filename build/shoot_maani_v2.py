@@ -95,7 +95,7 @@ class Shooter(T.Player):
             if self.wrong and not self.burnt:
                 # leave the first one: it catches, and the station flips it (burnt side up)
                 self.burnt = True
-                time.sleep(1.0)
+                time.sleep(0.4)
                 self.snap("tawa-raw")
                 t0 = time.time()
                 while time.time() - t0 < 40:
@@ -106,31 +106,33 @@ class Shooter(T.Player):
                 time.sleep(0.5)
                 self.snap("burnt")
                 return None
-            r = self.timed(e)
-            if r:
-                time.sleep(0.1)
-                self.snap("turner-flip")
+            self.timed(e, "turner-flip", 0.2)
+            time.sleep(0.25)
+            self.snap("tawa-half")
             return None
         if k == "timing" and key == "tawa-2":
-            time.sleep(0.6)
-            self.snap("tawa-half")
-            r = self.timed(e)
-            if r:
-                time.sleep(0.12)
-                self.snap("lift-cooked")
+            self.timed(e, "lift-cooked", 0.55)
             return None
         if k == "tap" and key == "dough":
             # slow the station for a moment so the shot catches the ball in the air
-            self.page.evaluate("() => { Cook.__ts = Cook.scene.tweens.timeScale; Cook.scene.tweens.timeScale = 0.15; }")
+            self.slow(0.15)
             r = super().act(e)
             time.sleep(0.25)
             self.snap("ball-flying")
-            self.page.evaluate("() => { Cook.scene.tweens.timeScale = Cook.__ts; }")
+            self.slow(None)
             return r
         return super().act(e)
 
-    def timed(self, e):
-        """The Player's timing tap (in the green); True if it tapped."""
+    def slow(self, ts):
+        """Slow the station's animations (ts) for a shot mid-move, or back to normal (None). The tawa's ring is
+        paused meanwhile anyway: it doesn't run while the turner is busy."""
+        if ts is None:
+            self.page.evaluate("() => { if (Cook.__ts != null) Cook.scene.tweens.timeScale = Cook.__ts; Cook.__ts = null; }")
+        else:
+            self.page.evaluate(f"() => {{ if (Cook.__ts == null) Cook.__ts = Cook.scene.tweens.timeScale; Cook.scene.tweens.timeScale = {ts}; }}")
+
+    def timed(self, e, name=None, after=0.2):
+        """The Player's timing tap (in the green), then (name) a shot mid-move, slowed; True if it tapped."""
         p = self.page
         t0 = time.time()
         while time.time() - t0 < 30:
@@ -140,10 +142,15 @@ class Shooter(T.Player):
             cur = self.exp()
             if cur and cur.get("kind") != "timing":
                 return False
-            if not self.wrong and "tawa-raw" not in self.taken and g and g["level"] > 0.25:
-                self.snap("tawa-raw")
             time.sleep(0.015)
-        self.tap(e["sx"], e["sy"], "timing")
+        if name and name not in self.taken:
+            self.slow(0.12)
+            self.tap(e["sx"], e["sy"], "timing")
+            time.sleep(after)
+            self.snap(name)
+            self.slow(None)
+        else:
+            self.tap(e["sx"], e["sy"], "timing")
         return True
 
 
