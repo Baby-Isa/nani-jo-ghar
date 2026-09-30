@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the chaat station v2 (docs/VISUAL-QA.md; docs/design/cook-design-system-v1.md §14, §14a).
+"""Screenshots of the chaat station (v2; v3 since 30 Sept: the side-on bowl and pots, the review face) (docs/VISUAL-QA.md; docs/design/cook-design-system-v1.md §14, §14a).
 
 Plays the station in the Station lab with build/test_cook.py's Player and saves uncropped shots:
   demo        the first-time ghost finger (card row 1 -> its bowl -> the drop)
@@ -93,15 +93,16 @@ class Shooter(T.Player):
             self.snap("built" if not self.served else "rebuilt")
             r = super().act(e)
             self.served += 1
-            # the glass slides over and the person tastes it
-            for i in range(40):
+            # v3 (T5): their big round face comes up over the bowl (Cook.Kit.review sets Cook.tasted)
+            for i in range(60):
                 time.sleep(0.1)
-                st = self.page.evaluate("(() => { const s = Cook.scene; return s && s.textures ? [...s.children.list].filter(o => o.texture && /cv2-.*-(happy|impatient)$/.test(o.texture.key)).map(o => o.texture.key) : []; })()")
+                st = self.page.evaluate("Cook.tasted || null")
                 if st:
-                    time.sleep(0.9)
-                    self.snap("taste-right" if st[0].endswith("happy") else "taste-wrong")
-                    if st[0].endswith("impatient"):
-                        # the glass comes back empty
+                    time.sleep(0.5)
+                    self.snap("taste-right" if st == "happy" else "taste-wrong")
+                    self.page.evaluate("Cook.tasted = null")
+                    if st != "happy":
+                        # the bowl comes back empty
                         for j in range(120):
                             time.sleep(0.1)
                             if self.exp() and self.exp().get("kind") == "tap":
@@ -114,6 +115,9 @@ class Shooter(T.Player):
         if k == "tap":
             n = len([t for t in self.taken if t.startswith("layer")])
             self.taken.add(f"layer{n}")
+            # each layer going in: mid-drop (the spoonful over the bowl), then settled
+            time.sleep(0.3 / self.speed)
+            self.snap(f"in{n + 1}", force=True)
             if n == 1 and "mid" not in self.taken:
                 time.sleep(0.55 / self.speed * 1.5)
                 self.snap("mid")
@@ -154,12 +158,12 @@ def main():
     ap.add_argument("--wrong", action="store_true")
     ap.add_argument("--nodemo", action="store_true")
     ap.add_argument("--speed", type=float, default=1.5)
-    ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "chaat-v2"))
+    ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "chaat-v3"))
     a = ap.parse_args()
     T.start_server()
     ok = True
     if a.matrix:
-        out = os.path.join(T.ROOT, "build", "reports", "chaat-v2")
+        out = os.path.join(T.ROOT, "build", "reports", "chaat-v3")
         os.makedirs(out, exist_ok=True)
         for f in os.listdir(out):
             if f.endswith((".png", ".jpg")):
