@@ -565,8 +565,8 @@
   "what": "R7: pepper, charred"
  },
  "heap-potato": {
-  "w": 635,
-  "h": 624,
+  "w": 374,
+  "h": 368,
   "sheet": "r7-potato-charred-v1.png",
   "what": "R7: a loose heap of raw potato chunks (the decoy's shelf heap)"
  }

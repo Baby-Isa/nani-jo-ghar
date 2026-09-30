@@ -1973,11 +1973,15 @@
      },
      "_count2": "30 Sept (Zafar: two different samosas in one order): from level 3, half the orders have a second kind, this many of it (0: none). Its own block on the card; its first strip starts empty"
     },
+    "base1": {
+     "value": "$kinds.0"
+    },
     "base2": {
      "type": "items",
      "from": "$bases",
-     "exclude": ["kinds"],
-     "take": 1
+     "exclude": ["base1"],
+     "take": 1,
+     "_base2": "the second kind's base is the other base (chundo or bataato) from the first kind's"
     },
     "kinds2": {
      "type": "items",

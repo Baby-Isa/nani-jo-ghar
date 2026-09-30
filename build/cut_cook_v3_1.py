@@ -143,12 +143,18 @@ def hob_group():
     a = load("r2-knob-off-on-v2.png")
     bg = V.measure_bg(a)
     H, W = a.shape[:2]
-    offc = V.cut(a[:, : W // 2], bg)
+    # (the on cell's glow spills ~40 px over the sheet's middle: the off knob is cut clear of it)
+    offc = V.cut(a[:, : W // 2 - 40], bg)
     on_glow = V.cut_glow(a[:, W // 2:], bg)
     placed = []
     for img in (offc, on_glow):
-        m = img[..., 3] > 200
-        cx, cy, r, _ = V.robust_circle(m)
+        # registered on the gold ring (a filled disc): ChatGPT's shadow and the glow don't pull the centre
+        rgb = img[..., :3]
+        gold = (img[..., 3] > 200) & (rgb[..., 0] > 150) & (rgb[..., 0] - rgb[..., 2] > 80) & (rgb[..., 1] > 110)
+        disc = ndi.binary_fill_holes(ndi.binary_closing(gold, iterations=3))
+        lab, _ = ndi.label(disc)
+        disc = lab == (np.argmax(np.bincount(lab.ravel())[1:]) + 1)
+        cx, cy, r, _ = V.robust_circle(disc)
         placed.append((img, (cx, cy), r))
     rr = max(r for _, _, r in placed)
     # how far the "on" glow reaches (alpha over 3%), so the square keeps all of it
@@ -164,10 +170,10 @@ def hob_group():
         cv, _ = place_on(img, (cx, cy), (2 * half, 2 * half), (half, half))
         if i == 0:
             # the off knob: nothing past its own rim (the on cell's glow reaches over the sheet's middle)
-            cv[..., 3] *= np.clip((r * 1.08 - dist) / 3, 0, 1)
+            cv[..., 3] *= np.clip((r + 3 - dist) / 3, 0, 1)
         else:
             # the glow fades to nothing before the canvas edge (never squared off)
-            cv[..., 3] *= np.clip((half - 2 - dist) / (half * 0.25), 0, 1)
+            cv[..., 3] *= np.clip((half - 2 - dist) / (half * 0.12), 0, 1)
         outs.append(cv)
     for fname, img in zip(("knob-off-v2", "knob-on-v2"), outs):
         m, _ = V.circle_meta(img)
@@ -305,11 +311,11 @@ def sekelo_group():
         cv, _ = place_on(c, (c.shape[1] / 2, c.shape[0] / 2), (CW, CH), (CW / 2, CH / 2))
         G.put(name, cv, bg, "r7-potato-charred-v1.png", {"what": "R7: " + name.replace("-", ", ")})
     x0, y0, x1, y1 = boxes[6]
-    heap = V.tight(V.cut(a[y0:y1, x0:x1], bg, keep="all", min_area=1500), 16)
-    k5 = G.meta["heap-meat"]
-    cv, _ = place_on(heap, (heap.shape[1] / 2, heap.shape[0] / 2), (max(k5["w"], heap.shape[1]), max(k5["h"], heap.shape[0])),
-                     (max(k5["w"], heap.shape[1]) / 2, max(k5["h"], heap.shape[0]) / 2))
-    G.put("heap-potato", cv, bg, "r7-potato-charred-v1.png", {"what": "R7: a loose heap of raw potato chunks (the decoy's shelf heap)"})
+    # (a tight canvas, a little margin, as K5's heaps fill theirs: the shelf sizes a heap by its canvas width)
+    heap = V.cut(a[y0:y1, x0:x1], bg, keep="all", min_area=1500)
+    x0b, y0b, x1b, y1b = V.bbox(heap, 8)
+    heap = V.tight(heap, int(0.06 * max(x1b - x0b, y1b - y0b)))
+    G.put("heap-potato", heap, bg, "r7-potato-charred-v1.png", {"what": "R7: a loose heap of raw potato chunks (the decoy's shelf heap)"})
     G.done()
     return G
 

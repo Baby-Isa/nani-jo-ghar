@@ -153,12 +153,16 @@ class Shooter(T.Player):
         return r
 
 
+TWO = False
+
+
 def run(vp, out, level, speed, guided=True, wrong=False):
     tag = f"{vp['name']}-l{level}" + ("-wrong" if wrong else "")
     with sync_playwright() as pw:
         browser, page, errors = T.open_page(pw, vp, speed, False)
         P = Shooter(page, out, speed, tag, wrong=wrong)
-        page.evaluate(f"() => {{ __cook.lab('samosa', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
+        # (--two, 30 Sept: an order with two different samosas, from level 3)
+        page.evaluate(f"() => {{ Cook.samosaTwo = {'1' if TWO else 'null'}; __cook.lab('samosa', {'true' if guided else 'false'}, {json.dumps({'level': level})}); }}")
         page.wait_for_function("document.querySelector('#overlay').classList.contains('hidden')", timeout=10000)
         if wrong:
             # the frown's look (Kit.review's screenshot switch; the station's own verdict still decides)
@@ -185,10 +189,13 @@ def main():
     ap.add_argument("--vp", default="laptop")
     ap.add_argument("--level", type=int, default=1)
     ap.add_argument("--wrong", action="store_true")
+    ap.add_argument("--two", action="store_true", help="an order with two different samosas (level 3+)")
     ap.add_argument("--skip", nargs="*", default=[], help="matrix runs already shot and kept (e.g. laptop-l1)")
     ap.add_argument("--speed", type=float, default=1.5)
     ap.add_argument("--out", default=os.path.join(T.ROOT, "build", "screenshots", "samosa-v3"))
     a = ap.parse_args()
+    global TWO
+    TWO = a.two
     T.start_server()
     ok = True
     if a.matrix:

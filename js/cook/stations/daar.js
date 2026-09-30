@@ -100,6 +100,10 @@
    */
   const SIDE = { counter: { x: 1395, y: 120, row: 112 }, cook: { x: 330, y: 190, row: 128 } };
   const PILE = 96; // one piece's pile, design px
+  // (R5's heaps fill their canvas, the old piles didn't: a heap is drawn a little smaller and the heaps further
+  // apart, so two heaps stay two, never one big pile)
+  const heapSize = (id) => (HEAP5[id] ? PILE * 0.82 : PILE);
+  const PITCH_OF = (id) => (HEAP5[id] ? PILE * 0.98 : PILE * 0.78);
 
   const ladderOf = (ctx) => {
     const Ls = UI.mission.ladders() || [];
@@ -356,7 +360,7 @@
     const spot = (id, n) => {
       if (!rows.includes(id)) rows.push(id);
       const r = rows.indexOf(id);
-      return { x: z.X(C.x + 70 - n * (PILE * 0.72)), y: sy(z, C.y + r * C.row) };
+      return { x: z.X(C.x + 70 - n * (HEAP5[id] ? PILE * 0.95 : PILE * 0.72)), y: sy(z, C.y + r * C.row) };
     };
     const onSlice = ({ id, ok, x, y }) => {
       if (!ok || !S.textures.exists(`dv2-chop-${id}`)) return;
@@ -367,7 +371,7 @@
       const piece = S.textures.exists(`dv3-piece-${id}`) && !bowl;
       const img = S.track(S.add.image(x, y, piece ? `dv3-piece-${id}` : `dv2-chop-${id}`).setDepth(D.item + 1));
       const heapW = S.textures.get(`dv2-chop-${id}`).getSourceImage().width;
-      const sc = z.L(PILE) / Math.max(img.width, img.height);
+      const sc = z.L(heapSize(id)) / Math.max(img.width, img.height);
       img.setScale(piece ? z.L(PILE * 0.45) / img.width : sc * 1.5);
       list.push(img);
       const to = bowl ? { x: bowl.x + z.L((n % 3) * 30 - 30), y: bowl.y + z.L(Math.floor(n / 3) * 24 - 20) } : spot(id, n);
@@ -375,7 +379,7 @@
         if (!img.active) return;
         if (piece) {
           img.setTexture(`dv2-chop-${id}`);
-          img.setScale(z.L(PILE) / heapW);
+          img.setScale(z.L(heapSize(id)) / heapW);
         }
         img.setDepth(D.item - 0.5 + n * 0.001);
         S.puff(to.x, to.y, 0xfff6e0, z.L(22));
@@ -471,12 +475,12 @@
         const n = chopped.got[id];
         const y = sy(z, Cc.y + r * Cc.row);
         piles[id] = Array.from({ length: n }, (_, i) => {
-          const x = z.X(Cc.x + (i - (n - 1) / 2) * PILE * 0.78);
+          const x = z.X(Cc.x + (i - (n - 1) / 2) * PITCH_OF(id));
           const im = S.track(S.add.image(x, y, `dv2-chop-${id}`).setDepth(D.item + 0.1 + i * 0.001));
-          im.setScale(z.L(PILE) / Math.max(im.width, im.height));
+          im.setScale(z.L(heapSize(id)) / Math.max(im.width, im.height));
           return im;
         });
-        const w = z.L(Math.max(1, n) * PILE * 0.78 + 30);
+        const w = z.L(Math.max(1, n) * PITCH_OF(id) + 30);
         const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(PILE + 16), 0xffffff, 0.001).setDepth(D.item + 0.4));
         hit.wordId = id;
         hits[id] = hit;
@@ -585,7 +589,7 @@
       Object.values(pick).forEach((h) => S.tweens.add({ targets: piles[h.wordId] || h, scale: "*=1.05", duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
       const r = await St.freePick(z, { items: pick, next: left[0], doneOk: false });
       left.forEach((id) => S.tweens.killTweensOf(piles[id] || hits[id]));
-      left.forEach((id) => (piles[id] || []).forEach((im) => im.setScale(z.L(PILE) / Math.max(im.width, im.height))));
+      left.forEach((id) => (piles[id] || []).forEach((im) => im.setScale(z.L(heapSize(id)) / Math.max(im.width, im.height))));
       if (vbowl) vbowl.setScale(z.L(230) / 484);
       left = left.filter((id) => id !== r.id);
       if (r.id === "bowl") {
@@ -690,18 +694,19 @@
     // the pictures on their bands, in cream (the glass's ink)
     const at = (v, r) => ({ x: Math.cos(toA(v)) * r, y: ay + Math.sin(toA(v)) * r });
     // (R8) the four flat cream icons on their bands, each about a band's width
+    // (radii kept inside the face: the band ends lie near the face's left and right edges)
     const spots = [
-      [e1 / 2, R + 52],
-      [(e1 + e2) / 2, R + 50],
-      [(e2 + e3) / 2, R + 50],
-      [(e3 + max) / 2, R + 48],
+      [e1 / 2, R + 26],
+      [(e1 + e2) / 2, R + 44],
+      [(e2 + e3) / 2, R + 48],
+      [(e3 + max) / 2, R + 30],
     ];
     if (DIAL_ICONS.every((n) => S.textures.exists(`dv3-dial-${n}`))) {
       DIAL_ICONS.forEach((n, i) => {
         const q = at(...spots[i]);
         const im = S.add.image(0, 0, `dv3-dial-${n}`);
         put(im, q.x, q.y, 0.01);
-        im.setScale((z.k * 62) / Math.max(im.width, im.height));
+        im.setScale((z.k * 58) / Math.max(im.width, im.height));
       });
     }
     const ic = put(S.add.graphics(), 0, 0, 0.01);

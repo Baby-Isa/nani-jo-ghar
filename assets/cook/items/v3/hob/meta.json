@@ -180,10 +180,10 @@
   "w": 400,
   "h": 400,
   "sheet": "r2-knob-off-on-v2.png",
-  "cx": 0.4964,
-  "cy": 0.4992,
-  "r": 0.4401,
-  "fit_px": 26.6,
+  "cx": 0.4997,
+  "cy": 0.5001,
+  "r": 0.4193,
+  "fit_px": 1.0,
   "note": "R2: grip bar horizontal = off; on: the same knob, bar vertical, a strong warm glow (the kit turns it a quarter)"
  },
  "knob-on-v2": {
@@ -192,7 +192,7 @@
   "sheet": "r2-knob-off-on-v2.png",
   "cx": 0.4993,
   "cy": 0.4993,
-  "r": 0.4337,
+  "r": 0.4662,
   "fit_px": 0.5,
   "note": "R2: grip bar horizontal = off; on: the same knob, bar vertical, a strong warm glow (the kit turns it a quarter)"
  }
