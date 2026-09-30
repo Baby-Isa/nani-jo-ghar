@@ -23,7 +23,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `game-design/modes/README.md` (new) ← OVERVIEW core-verb table, one line per mode
 - [x] `game-design/modes/cook.md` (new) ← ui-design-system.md station specs (§1, 5, 9–11, 13–15: **move** them out of that file, leave a pointer), phase-a-design, cook build log, game-modes-v2 §7, fun-analysis §5, plans-remaining A4, cook-ui-feedback chai layout, kutchi-audit open items, Round 2 dish table
 - [x] `design-language/ui-design-system.md` (Session G owns this file) ← after moving the station specs out: stale box; add the cook-ui-feedback-2026-09-28 word-review layout and Nani's mute button
-- [ ] `game-design/modes/clinic.md` ← v2 sheets are the spine; add live parts of the archived clinic-design v1 (see harvest B row); clinic build log; stale box
+- [x] `game-design/modes/clinic.md` ← v2 sheets are the spine; add live parts of the archived clinic-design v1 (see harvest B row); clinic build log; stale box
 - [ ] `modes/conversations.md`, `story-by-the-fire.md`, `first-launch.md`, `find-it.md`, `tidy-up.md`, `who-did-it.md`, `dress-up.md`, `monsoon-rush.md`, `snap.md` ← each: stale box; its build log appended as "Build status"; first-launch gets HO26 character creation
 
 ### Session D: `docs/design-language/` (except `ui-design-system.md`) and `docs/architecture/` only
