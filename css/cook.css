@@ -1017,3 +1017,23 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 /* the panel's picture buttons stay in view at its foot while its content scrolls (a short phone's shop, the finale) */
 #panel .pic-row { position: sticky; bottom: 0; z-index: 2; padding-top: var(--njg-s2); background: var(--cream); }
 .title-wrap .pic-row { position: static; margin-bottom: 0; padding: 0; background: none; }
+
+/* ---------- R6: the shop fits the screen (nothing below the fold, no scrolling), and the grown-ups' "?" never
+   pushes the child's buttons off it (R4's 800x360 shop; the title's and the shop's "?" at 1366x768 and 1366x1024) ---------- */
+#panel { --panel-pad: clamp(14px, 2.5vw, 30px); padding: var(--panel-pad); }
+/* the panel's own picture buttons, pinned at its foot, sit inside its padding: its round corner never cuts them (the finale) */
+#panel > .pic-row { padding-bottom: var(--panel-pad); margin-bottom: calc(-1 * var(--panel-pad)); }
+/* the grown-ups' "?" open: the panel shows only their English (and the "?" to close it), so nothing of the child's moves */
+#panel:has(> .gu-pop:not(.hidden)) > :not(.gu-pop):not(.gu-btn) { display: none; }
+/* the shop grows with the screen like everything else (a 12.9" tablet keeps all twelve upgrades in two rows) */
+#panel:has(> .shop-grid.pic) { width: min(calc(880px * var(--njg-scale)), 100%); }
+/* a short phone: the coins and Done share the top row beside the "?", and each upgrade is its picture beside its price */
+@media (max-height: 500px) {
+  #panel:has(> .shop-grid.pic) { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; row-gap: var(--njg-s2); }
+  #panel:has(> .shop-grid.pic) > .purse { grid-column: 1; grid-row: 1; margin: 0; }
+  #panel:has(> .shop-grid.pic) > .pic-row { grid-column: 2; grid-row: 1; position: static; margin: 0 calc(var(--njg-tap) + var(--njg-s2)) 0 0; padding: 0; background: none; }
+  #panel:has(> .shop-grid.pic) > .shop-grid, #panel:has(> .shop-grid.pic) > .gu-pop { grid-column: 1 / -1; }
+  #panel > .shop-grid.pic { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 3), 1fr)); }
+  #panel > .shop-grid .shop-item.pic { grid-template-columns: auto minmax(0, 1fr); justify-items: start; padding: var(--njg-s1) var(--njg-s2); }
+  #panel > .shop-grid .shop-item.pic .shop-img, #panel > .shop-grid .shop-item.pic .shop-img img { width: var(--njg-tap); height: var(--njg-tap); }
+}
