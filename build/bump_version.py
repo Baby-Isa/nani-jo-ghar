@@ -15,12 +15,16 @@ It sets the one stamp in all the places that carry it:
     every file a Phaser scene loads;
   - every local css/js tag and <img src="assets/..."> in the pages
     (every *.html at the root, and every *.html under lab/);
-  - every url("../assets/...") in css/*.css;
+  - every url("../assets/...") in css/**/*.css (css/shared/ reaches them as
+    "../../assets/..."), and every local @import ("tokens.css", which
+    css/shared/app.css imports: R6);
   - the import map of every page that has one (decision 18, ES modules):
     <script type="importmap" data-njg="core">...</script> is rewritten to map
-    every module under js/core/ to its stamped URL, by name ("#core/save.js")
-    and by path ("./js/core/save.js", so the core's own relative imports get
-    the stamp too). Pages without that tag are left exactly as before.
+    every ES module under js/ (a file with a top-level import or export: the
+    core, js/shared/{host,mode,input}.js, js/demo/, each mode's main.js; R6)
+    to its stamped URL, by name ("#core/save.js", "#shared/host.js") and by
+    path ("./js/core/save.js", so a module's own relative imports get the
+    stamp too). Pages without that tag are left exactly as before.
 """
 import datetime
 import glob
@@ -52,15 +56,29 @@ def stamp_attr(m, v):
 
 # the ES-module pilot (decision 18): the import map a page opts into
 IMPORTMAP_RE = re.compile(r'(<script\b[^>]*\btype="importmap"[^>]*\bdata-njg="core"[^>]*>)(.*?)(</script>)', re.S)
-MODULE_DIRS = ["js/core"]
+MODULE_DIRS = ["js/core"]  # always mapped, whole (the core is modules only)
+MODULE_RE = re.compile(r"^(?:import\s[^(]|import\s*\{|export\s)", re.M)
+SKIP_DIRS = ("js/vendor/",)
+
+
+def is_module(path):
+    """A file with a top-level import or export statement (not a dynamic import())."""
+    try:
+        return bool(MODULE_RE.search(open(os.path.join(ROOT, path), encoding="utf-8").read()))
+    except OSError:
+        return False
 
 
 def module_files():
-    """Every module the import map names: js/core/**/*.js, as repo-relative paths."""
-    out = []
+    """Every module the import map names: js/core/**/*.js and every other ES module under js/, as repo-relative paths."""
+    out = set()
     for d in MODULE_DIRS:
         for f in glob.glob(os.path.join(ROOT, d, "**", "*.js"), recursive=True):
-            out.append(os.path.relpath(f, ROOT).replace(os.sep, "/"))
+            out.add(os.path.relpath(f, ROOT).replace(os.sep, "/"))
+    for f in glob.glob(os.path.join(ROOT, "js", "**", "*.js"), recursive=True):
+        rel = os.path.relpath(f, ROOT).replace(os.sep, "/")
+        if rel not in out and not rel.startswith(SKIP_DIRS) and is_module(rel):
+            out.add(rel)
     return sorted(out)
 
 
@@ -110,11 +128,13 @@ def main():
             write(p, s2, dry)
             changed.append(page)
 
-    # stylesheets: url("../assets/...")
-    css = re.compile(r'(url\(["\']?)(\.\./assets/[^"\')]+)(["\']?\))')
-    for p in sorted(glob.glob(os.path.join(ROOT, "css", "*.css"))):
+    # stylesheets (css/ and css/shared/): url("../assets/...") or url("../../assets/..."), and a local @import
+    css = re.compile(r'(url\(["\']?)((?:\.\./)+assets/[^"\')]+)(["\']?\))')
+    imp = re.compile(r'(@import\s+(?:url\()?["\'])([^"\':]+\.css(?:\?[^"\']*)?)(["\'])')
+    for p in sorted(glob.glob(os.path.join(ROOT, "css", "**", "*.css"), recursive=True)):
         s = open(p, encoding="utf-8").read()
         s2 = css.sub(lambda m: stamp_attr(m, v), s)
+        s2 = imp.sub(lambda m: stamp_attr(m, v), s2)
         if s2 != s:
             write(p, s2, dry)
             changed.append(os.path.relpath(p, ROOT))

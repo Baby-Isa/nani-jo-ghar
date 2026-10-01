@@ -180,7 +180,8 @@
   F.start = function (url) {
     if (started) return started;
     const doc = root.document;
-    const stamp = (u) => (root.njgV ? root.njgV(u) : root.Cook && root.Cook.v ? root.Cook.v(u) : u);
+    // the version stamp (B7): njgV leaves a full URL alone, and layout.json's is one (found from this script's own address)
+    const stamp = (u) => (root.NJG_V && !/[?&]v=/.test(u) ? `${u}${u.includes("?") ? "&" : "?"}v=${root.NJG_V}` : root.njgV ? root.njgV(u) : u);
     started = fetch(stamp(url || URL_))
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`layout ${r.status}`))))
       .then((L) => {
