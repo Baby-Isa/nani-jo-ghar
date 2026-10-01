@@ -1,0 +1,196 @@
+You're making 115 images in ChatGPT for a children's game called Nani jo Ghar, and uploading them to GitHub yourself. Zafar is here for part A only; after that you work on your own and he reads your log later.
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-fcd9dddd-wnywzc/docs/design-language/art-plans/clinic-heal-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. This message gives the run order and, for every prompt: what to attach, the name to log it under ("save as") and what to check.
+
+REFERENCE IMAGES (download these first)
+Open each link and click "Download raw file" (the download-arrow icon at the top right of the picture):
+ 1. style-anchor-v1.png        https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/style-anchor-v1.png
+ 2. char-clinic-girl-v1.png    https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-girl-v1.png
+ 3. char-clinic-boy-v1.png     https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-boy-v1.png
+ 4. char-clinic-oldman-v1.png  https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-oldman-v1.png
+ 5. char-clinic-oldwoman-v1.png https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-oldwoman-v1.png
+ 6. char-clinic-dad-baby-v1.png https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-dad-baby-v1.png
+ 7. char-clinic-lineup-v1.png  https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-lineup-v1.png
+ 8. char-ali-hurts-v1.png      https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-ali-hurts-v1.png
+ 9. cb2b-exam-bed-close-v1.png https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/clinic-v2/cb2b-exam-bed-close-v1.png
+10. ci1-care-kit-v1.png        https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/clinic-v2/items/ci1-care-kit-v1.png
+11. ci2-tools-comfort-v1.png   https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings or download folder; no GitHub settings.
+- Sign nothing in or out. Delete no chats.
+- Upload only the images this run makes and your log file, only to the folder below. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own, and never reword, shorten or add to one. The only changes allowed: filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table, and in part A one extra sentence Zafar dictates.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- Pace yourself: at most 3 images generating at once (3 ChatGPT chats); start the next one only when one of those has finished, and leave at least a minute between sends. A prompt that attaches "kept:X" waits until X has been downloaded.
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat (never continue another prompt's chat).
+2. Attach exactly the files on its line. "kept:X" means the image you kept and downloaded for prompt X (your log says which file that is). For an edit (a line that says "edit"), attach ONLY that one kept image, nothing else; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box from the page, with the slots filled for that line's person, and send.
+4. Judge the image against its check (the CHECKS list below) and then the PASS/FAIL LIST below, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it once: the same prompt in a fresh chat with the same attachments. If that fails too, you may try once more (at most 2 redos). Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+6. Download the kept image with ChatGPT's own download button (never a screenshot), straight away. Make sure it's the NEW image, not one you attached.
+7. Write its log line straight away (see THE LOG), then move on.
+
+PART A: WITH ZAFAR (6 images; Zafar watches each one)
+Before S1, say in this chat: "Starting the six character sheets. I'll stop after each one for your ok." For each sheet: when the image passes your own check, post "<ID> ready: <one line on how it looks>. Please look at the ChatGPT tab and reply ok, redo (and what to change), or skip." Then wait.
+- ok: download it, log it, go to the next sheet.
+- redo + his words: send the same prompt in a fresh chat with his words added as one last sentence; at most 2 redos per sheet.
+- skip: log it; skip that sheet and every later prompt that attaches it.
+- go: skip the remaining sheets now (and everything that attaches them), start part B, and log them as "waiting for Zafar".
+- S1 (the girl) never times out: if Zafar hasn't replied, post a reminder in this chat every 10 minutes and keep waiting. Part B can't start without her sheet.
+- S2 to S6: if Zafar hasn't replied within 15 minutes, treat it as "go": log that sheet and the ones after it as "waiting for Zafar" and start part B. On "resume", run those sheets first (with Zafar watching), then their people's lines.
+Once part A is over, tell Zafar: "Part A done. I'll carry on alone; you can leave."
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART A (6)
+S1 | style-anchor-v1.png, char-clinic-girl-v1.png, char-ali-hurts-v1.png | s1-girl-sheet-v2.png | SHEET + the girl as v1: two short plaits, white ribbons, yellow dress, white leggings, white sandals; about five
+S2 | style-anchor-v1.png, char-clinic-boy-v1.png, char-ali-hurts-v1.png | s2-boy-sheet-v2.png | SHEET + the boy as v1: gap-toothed grin, red long-sleeved T-shirt, dark blue trousers; about six; not like the boy in orange
+S3 | style-anchor-v1.png, char-clinic-oldman-v1.png, char-ali-hurts-v1.png | s3-oldman-sheet-v2.png | SHEET + the old man as v1: grey moustache, no beard, no cap, no glasses, blue kurta; no stick anywhere
+S4 | style-anchor-v1.png, char-clinic-oldwoman-v1.png, char-ali-hurts-v1.png | s4-oldwoman-sheet-v2.png | SHEET + the old woman as v1: white headscarf covering hair, ears and neck in every panel, green shawl, cream kurta; no glasses; no red
+S5 | style-anchor-v1.png, char-clinic-dad-baby-v1.png, char-clinic-lineup-v1.png | s5-man-sheet-v1.png | SHEET + the young father as in the line-up: short beard, white shirt, navy trousers; no baby anywhere; panel 6 is a forearm with the sleeve rolled to the elbow
+S6 | style-anchor-v1.png, char-clinic-lineup-v1.png | s6-woman-sheet-v1.png | SHEET + a new woman, not like anyone in the line-up and not like a woman in a green dupatta and maroon kurta; dusty-blue headscarf covering hair, ears and neck in every panel; purple tunic; no jewellery
+
+PART B: THE GIRL AND HER GAMES (37). Person: girl. Limb set: child.
+girl-W1 | style-anchor-v1.png, kept:S1 | girl-w1-front-neutral-v1.png | W1
+girl-W2 | edit: kept:girl-W1 | girl-w2-front-happy-v1.png | FACE
+girl-W3 | edit: kept:girl-W1 | girl-w3-front-sad-v1.png | FACE
+girl-W4 | edit: kept:girl-W1 | girl-w4-front-pain-v1.png | FACE
+girl-W5 | edit: kept:girl-W1 | girl-w5-front-hot-v1.png | FACE
+girl-W6 | edit: kept:girl-W1 | girl-w6-front-cold-v1.png | FACE
+girl-W7 | style-anchor-v1.png, kept:S1 | girl-w7-side-neutral-v1.png | W7
+girl-W8 | edit: kept:girl-W7 | girl-w8-side-happy-v1.png | FACE (compare with girl-W7)
+girl-W9 | kept:girl-W1, kept:S1 | girl-w9-blanket-v1.png | W9
+girl-W10 | kept:girl-W1, kept:S1 | girl-w10-bottle-v1.png | W10
+child-K1 | style-anchor-v1.png, kept:S1 | child-k1-knee-v1.png | K1
+child-K2 | kept:child-K1, kept:S1 | child-k2-knee-kick-v1.png | K2
+child-K3 | edit: kept:child-K1 | child-k3-knee-graze-v1.png | K3
+child-F1 | style-anchor-v1.png, kept:S1 | child-f1-forearm-v1.png | F1
+child-F2 | edit: kept:child-F1 | child-f2-forearm-graze-v1.png | F2
+child-F4 | edit: kept:child-F1 | child-f4-forearm-cut-v1.png | F4
+child-U1 | style-anchor-v1.png, kept:S1 | child-u1-upperarm-v1.png | U1
+child-P1 | style-anchor-v1.png, kept:S1 | child-p1-sole-v1.png | P1
+girl-E1 | style-anchor-v1.png, kept:S1 | girl-e1-ear-v1.png | E1
+girl-M1 | style-anchor-v1.png, kept:S1 | girl-m1-mouth-v1.png | M1
+girl-M2 | style-anchor-v1.png, kept:S1 | girl-m2-tongue-v1.png | M2
+girl-Y1 | style-anchor-v1.png, kept:S1 | girl-y1-eyes-v1.png | Y1
+girl-Y2 | edit: kept:girl-Y1 | girl-y2-eye-sore-v1.png | Y2
+girl-Y3 | edit: kept:girl-Y1 | girl-y3-eyes-closed-v1.png | Y3
+girl-T1 | style-anchor-v1.png, kept:S1 | girl-t1-eyetest-a-v1.png | T1
+girl-T2 | style-anchor-v1.png, kept:S1 | girl-t2-eyetest-b-v1.png | T2
+O1 | style-anchor-v1.png | o1-ear-foot-bits-v1.png | O1
+O2 | style-anchor-v1.png | o2-mouth-bits-v1.png | O2
+O3 | style-anchor-v1.png, ci1-care-kit-v1.png | o3-bud-ointment-v1.png | O3
+R3 | cb2b-exam-bed-close-v1.png | r3-exam-room-square-v1.png | R3
+R4 | edit: cb2b-exam-bed-close-v1.png | r4-exam-window-open-v1.png | R4
+R1 | style-anchor-v1.png, ci2-tools-comfort-v1.png, kept:girl-W10 (leave it out if girl-W10 was skipped) | r1-fever-things-v1.png | R1
+R5 | style-anchor-v1.png, ci2-tools-comfort-v1.png | r5-thermo-gauge-v1.png | R5
+R2 | style-anchor-v1.png, ci2-tools-comfort-v1.png | r2-ceiling-fan-v1.png | R2
+C1 | style-anchor-v1.png | c1-eye-chart-front-v1.png | C1
+C2 | style-anchor-v1.png, kept:C1 | c2-eye-chart-turned-v1.png | C2
+B1 | style-anchor-v1.png, ci1-care-kit-v1.png | b1-filling-button-v1.png | B1
+Then upload part B (see UPLOADING).
+
+PART C: THE OTHER PATIENTS (70). For each person, run these lines with that person's prefix and sheet:
+ <p>-W1 | style-anchor-v1.png, kept:<sheet> | <p>-w1-front-neutral-v1.png | W1
+ <p>-W2 to <p>-W6 | edit: kept:<p>-W1 | <p>-w2-front-happy-v1.png, <p>-w3-front-sad-v1.png, <p>-w4-front-pain-v1.png, <p>-w5-front-hot-v1.png, <p>-w6-front-cold-v1.png | FACE
+ <p>-W7 | style-anchor-v1.png, kept:<sheet> | <p>-w7-side-neutral-v1.png | W7
+ <p>-W8 | edit: kept:<p>-W7 | <p>-w8-side-happy-v1.png | FACE (compare with <p>-W7)
+ <p>-W9 | kept:<p>-W1, kept:<sheet> | <p>-w9-blanket-v1.png | W9
+ <p>-W10 | kept:<p>-W1, kept:<sheet> | <p>-w10-bottle-v1.png | W10
+ <p>-<head prompt> | style-anchor-v1.png, kept:<sheet> | <p>-<id>-<name>-v1.png, named like the girl's (e1-ear, m1-mouth, m2-tongue, y1-eyes, t1-eyetest-a, t2-eyetest-b) | the same check ID
+ <p>-Y2, <p>-Y3 | edit: kept:<p>-Y1 | <p>-y2-eye-sore-v1.png, <p>-y3-eyes-closed-v1.png | Y2, Y3
+People, in this order:
+ boy (sheet S2): W1 to W10, then E1, M1 (12 images)
+ oldman (sheet S3): W1 to W10, then Y1, Y2, Y3, T1, T2 (15)
+ oldwoman (sheet S4): W1 to W10, then Y1, Y2, Y3, T1, T2 (15)
+ man (sheet S5): W1 to W10, then M1 (11)
+ woman (sheet S6): W1 to W6, W9, W10 (no W7, no W8), then M2 (9)
+Then the adult limbs. Limb set: adult; sheet S5:
+ adult-K1 | style-anchor-v1.png, kept:S5 | adult-k1-knee-v1.png | K1
+ adult-K2 | kept:adult-K1, kept:S5 | adult-k2-knee-kick-v1.png | K2
+ adult-K3 | edit: kept:adult-K1 | adult-k3-knee-graze-v1.png | K3
+ adult-F1 | style-anchor-v1.png, kept:S5 | adult-f1-forearm-v1.png | F1
+ adult-F2 | edit: kept:adult-F1 | adult-f2-forearm-graze-v1.png | F2
+ adult-F4 | edit: kept:adult-F1 | adult-f4-forearm-cut-v1.png | F4
+ adult-U1 | style-anchor-v1.png, kept:S5 | adult-u1-upperarm-v1.png | U1
+ adult-P1 | style-anchor-v1.png, kept:S5 | adult-p1-sole-v1.png | P1
+If a person's sheet was skipped in part A, skip all of that person's lines (and the adult limbs if S5 was skipped), and log it.
+Then upload part C.
+
+PART D: THE DROP MACHINE (2)
+D1 | style-anchor-v1.png, ci2-tools-comfort-v1.png | d1-drop-machine-v1.png | D1
+D2 | style-anchor-v1.png, ci2-tools-comfort-v1.png, kept:D1 | d2-levers-drops-v1.png | D2
+Then upload part D.
+
+CHECKS (by check ID)
+SHEET: eight panels in two rows of four, nothing touching, no borders or labels · the same person in every panel · panel 1 sitting front-on, thighs level, feet flat on one level · panel 2 exactly side-on facing right · panel 4 side-on head (the whole ear shows, unless a headscarf covers it) · panel 5 happy · panel 7 the sole of a bare foot, toes up · skin a warm light tan, not orange, pink or grey · no bed, bench or chair drawn
+W1: the same person as their sheet · front-on, facing us · thighs level, both feet flat at one level · hands on the lap, neutral face, mouth closed · fills about 85% of the height, touches no edge · no bed or stool drawn
+FACE: only the face changed (body, hands, clothes, hair, size and position identical to the original) · the expression asked for, readable at thumbnail size · nothing upsetting, no tears, sweat drops or symbols
+W7: exactly side-on, facing right · legs as the prompt says (child: hanging free; adult: feet flat on an invisible floor) · the same person · touches no edge
+W9: the same person, size and framing as the attached front picture · a plain deep-red blanket round the shoulders, held at the chest · legs and feet in the same place as in the front picture · a cosy, relieved face · touches no edge
+W10: the same person, size and framing as the attached front picture · a teal knitted hot-water bottle hugged against the tummy · legs and feet in the same place as in the front picture · a comforted face · touches no edge
+K1: three-quarter side view of a knee · plain white cloth rolled just above the knee · the thigh enters from the left edge, the shin leaves the bottom edge, no foot · the knee about half the height · clean skin, no marks
+K2: the same framing as the attached K1: thigh in from the left, the knee at the same size and place · the shin kicked forward to the right · no foot, no motion lines
+K3: one gentle pink graze on the kneecap, no blood · nothing else changed
+F1: the forearm held out palm down, in from the left edge · white sleeve rolled below the elbow · the whole hand inside the image, five fingers · clean skin
+F2: one gentle pink graze mid-forearm, no blood · nothing else changed
+F4: one short, thin pink line, no blood, nothing open · nothing else changed
+U1: a bare upper arm, sleeve pushed up to the shoulder · the arm leaves the bottom edge · clean skin
+P1: the sole straight on, toes at the top · five separate toes · smooth and clean, no lines or marks · the leg leaves the bottom edge
+E1: exactly side-on, facing right · a big, clean ear a little left of centre, its opening visible · head off the top and right edges, neck off the bottom
+M1: mouth wide open, top and bottom teeth clear, white and healthy · the cheeks run off the left and right edges
+M2: tongue out and down, plain pink, no spots · the cheeks run off the left and right edges
+Y1: both eyes open, clear, looking at us · the head runs off the left and right edges
+Y2: only the eye on the viewer's right is sore (pink) · the other eye unchanged · no tears
+Y3: both eyes gently closed · nothing else changed
+T1: head and shoulders front-on, the shoulders running off the bottom edge · one hand covering the eye on the viewer's right · the other eye looking a little to our right, past us · five fingers
+T2: waist up, exactly side-on facing right, the body running off the bottom edge · looking ahead and slightly up · hands on the lap
+O1: nine things in a 3 by 3 grid, in order: three wax blobs (big, medium, small; friendly, not gross), a seed, two splinters, one clear drop, a tissue, a soft patch of dust and grit (no blood)
+O2: four round spots, the same size, in red, yellow, blue and green; three jagged decay patches; one white filling patch
+O3: the same bud three times at the same size and place (plain, green ointment, wax), then a pot of green ointment with no label
+R3: the original room unchanged across the middle (window, cabinet, desk, bed, stool, toys, door all in place) · a plain ceiling above with nothing on it · empty terrazzo floor below, its speckles the same size as the original's · no visible seams
+R4: only the window changed and it reads as open · everything else identical
+R1: five things in order: ice pack, the teal hot-water bottle, a woven hand fan, the heater off, the same heater on (glowing bars); the last cell empty · no dials or numbers anywhere
+R5: one tall empty glass thermometer on a plain white board, straight on · no markings, scale, numbers or liquid
+R2: left, the fan body (downrod and motor) with no blades · right, four blades seen from directly below, a perfect cross fitting an imaginary circle, no circle drawn
+C1: a straight-on blank white picture board like an eye chart, one small eye picture at the top, six EMPTY rows getting less tall · NO letters, numbers or pictures in the rows
+C2: the same chart on a three-legged stand, turned about 30 degrees to the left (left edge further away) · rows still empty, no letters
+B1: blue button up and the same button down, same place · nozzle idle and the same nozzle squeezing white paste, same place · no symbols
+D1: a white and steel machine, four tall tubes of red, yellow, blue and green LIQUID (no balls or beads), a drip spout under each, a chute to one opening at the bottom, empty lever sockets, no levers · looks like a medicine dispenser, not a sweet, gumball or jelly-bean machine
+D2: lever up and the same lever down · four identical TEARDROP-shaped drops, matte and softly see-through, in red, yellow, blue and green, never glossy balls · the syringe upright, open at the top, empty, no needle · last cell empty
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare.
+- The background isn't one flat mid-grey (R3 and R4 excepted); there's a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head or body runs off that edge (R3 and R4 fill the whole image).
+- The wrong number of things, things in the wrong order, or extra objects, people or animals.
+- Hands: not five fingers on each visible hand, fused or extra fingers. Feet: not five toes where a sole shows.
+- A person who doesn't match their sheet (face, hair, headscarf, beard, clothes, colours), or looks older or younger than the sheet.
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest clothes (bare shoulders on a woman, short or tight clothes), or any religious marker (bindi, tilak, sindoor, deities, temple items).
+- Anything scary, bloody, gory or gross, or a face a small child would find upsetting; real distress instead of a mild, comic wince.
+- Anything that looks like sweets, lollies, jelly beans, gumballs or a sweet machine; medicine drops drawn as glossy balls.
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left; a second light; "seen exactly side-on" or "from directly below" drawn at an angle; circles drawn as ovals where "straight on" or "from directly below" was asked.
+
+THE LOG
+Keep one running log. If you can, save it as art-run-log.txt in Downloads and add each line as you go; if not, post each line in this chat as you write it, and after every 5 images (and before every image-limit wait) post the whole log so far as one block.
+One line per downloaded image:
+ <ID> | <time> | <the downloaded file's name exactly as saved> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | Zafar: ok / redo / skipped / not asked | <notes>
+Also log every skipped prompt (and why), every image-limit message with its time, and anything odd (a refusal, an error, a duplicate download, a missing attachment).
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+UPLOADING (after each part)
+Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-heal-v3 and drag in that part's downloaded images (only the ones you kept) and your log file so far, saved as art-run-log-partA.txt, -partB.txt, -partC.txt or -partD.txt (if you kept the log in this chat, save it to a text file first; if you can't, paste it into the commit description instead). Rename nothing. Choose "Commit directly to the main branch", commit message "Clinic heal v3 art, part <A/B/C/D> (ChatGPT, <n> images)", click "Commit changes", then check the folder page lists the new files. Part A's sheets go up with part B's upload.
+
+RESUMING
+If this message is pasted again later with the word "resume", open the folder above, read the art-run-log-part*.txt files there, download any kept image a later prompt needs from that folder, and carry on from the first prompt that isn't logged as kept. Sheets logged "waiting for Zafar" come first, run the part A way (he watches each one).
+
+AT THE END
+Post the full log, then a short list per part: passed, failed (and why) and skipped (and why).
