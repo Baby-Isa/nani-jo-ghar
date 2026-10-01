@@ -11,7 +11,7 @@
 > - "The hub is Nani's house … the bazaar, the kitchen, the clinic and the beach road" and "Nani … a character confined to the kitchen" → Nani is the child's guide everywhere (Zafar, 28 Sept).
 > - Game Design's "pocket money at Eid", "functional purchases: extra seconds, hints" → pocket money rewards doing well, by volume × quality × difficulty; upgrades never do the listening for you (decision 10, H-rules in §4 Feedback, scoring and rewards).
 > - Game Design's "Art direction" (cel shading, thick outlines) → the stylised 3D look, no outlines (D13, D16).
-> - "Hikdo, bo, trae", *daal*, *nar* and the like in copied examples → G5 (*hikdo*, *bo*, *nar*), G4 (*daal*); G25 for *marcha*.
+> - "Hikdo, bo, trae", *daal*, *nar* and the like in copied examples → G5 (*hikdo*, *bo*, *nar*), G4 (*daal*).
 > - "Everything is audio-first … Timers: adult on by default" age table: the difficulty model stands; specifics change with each mode's design.
 > - "Grandparent mode is the one to protect" is **not in rules.md**; it is carried here as a design intent, status unconfirmed (see "Open questions").
 > - "Avoid entirely: … speech recognition" (game-modes-v2 §5) → every mode has closed-set speaking moments (`game-design/speaking.md`); recognition is on-device only (J1).

@@ -1,7 +1,7 @@
 # Nani jo Ghar — Technical Plan
 
 > **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - Phaser (older briefs and the alive-Nani lab pages use a vendored Phaser) → production is plain web technology with no game engine; Phaser is lab-only and not a dependency of the shipped game
+> - Phaser (older briefs and the alive-Nani lab pages use a vendored Phaser) → Cook runs on Phaser (cook.html loads js/vendor/phaser.min.js); the other modes are DOM/SVG; Phaser's future is a step-2a decision.
 > - "Patch" / the quilt as a list of earned patches (§ data model) → bookshelf (decision 4)
 > - `chunk_type` on Sentence (§ Chunked recording) → the language engine builds lines from recorded words; the most frequent phrases are recorded whole (G9, G12); frames and word forms live in data, no Kutchi grammar in game code (G13, G18). Treat `chunk_type` as superseded until the engine spec (step 2b) replaces it
 > - Device profile in a store on the device, IndexedDB `njg_shell` (`js/storage.js`) → that is the legacy bowl page only; the live save is `js/shared/save.js` (localStorage `njg-save`, see `shared-api.md` §11)

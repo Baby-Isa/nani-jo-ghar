@@ -4,7 +4,7 @@
 > - Mode test ports (Find it 8801 … Foundation 8800) were set for the 25 Sept wave of sessions → still one browser test at a time with your own `COOK_TEST_PORT`; at most ~4 sessions at once, no helper sessions (B1, B16, non-negotiable 14)
 > - "Browser tests only if cheap" → done means looked at, not tests passed: every state screenshotted and judged by someone other than the builder (non-negotiable 7; QA checklist)
 > - "Leak-bot numbers" in the build report → the Kutchi leak test still applies (non-negotiable 6)
-> - Alive-Nani test lessons mention Phaser's clock in headless Chromium → Phaser is lab-only; the lesson about wall-clock timing versus throttled `requestAnimationFrame` still holds for any headless test
+> - Alive-Nani test lessons mention Phaser's clock in headless Chromium → Cook runs on Phaser (cook.html loads js/vendor/phaser.min.js); the other modes are DOM/SVG; Phaser's future is a step-2a decision. The lesson about wall-clock timing versus throttled `requestAnimationFrame` still holds for any headless test
 
 The definition of done is `docs/process/qa-checklist.md`. This file is the practical side: ports, commands and lessons.
 

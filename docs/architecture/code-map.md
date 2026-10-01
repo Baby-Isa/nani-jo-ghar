@@ -1,7 +1,7 @@
 # Code map: how the code is laid out
 
 > **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - The root README's Architecture and Files sections describe the 23 Sept fruit-bowl MVP: the Phaser 3 scene layer, IndexedDB `js/storage.js` shell and first-person hands are the legacy bowl page only. Live pages use plain web technology and the shared modules in `js/shared/`; the one save is `js/shared/save.js` (localStorage `njg-save`) (see `shared-api.md` §11)
+> - The root README's Architecture and Files sections describe the 23 Sept fruit-bowl MVP: the IndexedDB `js/storage.js` shell and first-person hands are the legacy bowl page only. Cook runs on Phaser (cook.html loads js/vendor/phaser.min.js); the other modes are DOM/SVG; Phaser's future is a step-2a decision. The shared modules are in `js/shared/`; the one save is `js/shared/save.js` (localStorage `njg-save`) (see `shared-api.md` §11)
 > - "Storage rules": IndexedDB, one record per profile → the live save is `Save` in `js/shared/save.js`; the IndexedDB shell is legacy (bowl page only)
 > - Thin shell spec (quilt on the wall, patches, the quilt replay) → quilt → bookshelf (decision 4); Eid-decorations hub → Birthday (H36–H41)
 > - Hands in the file list → parked, none in Cook (H13)
