@@ -181,7 +181,29 @@
       "laptop": 1,
       "tablet": 1.25
     },
-    "hiDpi": 1.25
+    "hiDpi": 1.25,
+    "scenes": {
+      "_about": "A scene's own size and safe area (what must stay on screen), in its own pixels. `fill`: fit (the whole picture fits, Cook's Phaser EXPAND) or cover (the picture covers the play area, the clinic's rooms). anchorY: how a picture taller than the play area is cropped (0 keeps the top, 1 the bottom).",
+      "cook": {
+        "w": 1600,
+        "h": 900,
+        "safe": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "fill": "fit",
+        "anchorY": 1
+      },
+      "clinic": {
+        "w": 1536,
+        "h": 1024,
+        "fill": "cover",
+        "anchorY": 0.6,
+        "_about": "each room's own `need` (data/clinic/scenes-v2.json) is its safe area across; its `ay` its anchorY"
+      }
+    }
   },
   "card": {
     "_about": "The order card's row layout per form factor (decision 25): `stack` = one row per line (today's); `pills` = short rows share a line as pills, wrapping, never clipped. Default stays `stack` until Zafar chooses.",

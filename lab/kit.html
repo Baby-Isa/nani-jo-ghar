@@ -97,7 +97,7 @@
     fn(g, el);
   }
   NaniGuide.setMuted(false);
-  document.querySelectorAll(".njg-guide").forEach((el, i) => i !== 3 && el.classList.remove("muted"));
+  document.querySelectorAll(".njg-guide")[3].classList.add("muted");
 
   // ---------- the order card: the same orders, stacked and as pills ----------
   const P = (label, o = {}) => Object.assign({ label, done: false }, o);

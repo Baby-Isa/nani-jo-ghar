@@ -27,7 +27,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 #clinic-root { position: fixed; inset: 0; }
 .cl-app { position: absolute; inset: 0; display: grid; grid-template-columns: var(--cl-side-w) 1fr var(--cl-act-w); gap: 0; }
 .cl-side { background: var(--cl-paper); border-right: 3px solid #e6d6bd; display: flex; flex-direction: column; gap: 8px; padding: 8px; overflow: hidden; min-height: 0; }
-.cl-side-top { display: flex; align-items: center; gap: 8px; }
+.cl-side-top:not(.njg-guide) { display: flex; align-items: center; gap: 8px; }
 .cl-main { position: relative; overflow: hidden; min-width: 0; }
 .cl-play { position: absolute; inset: 0; }
 .cl-stage { position: absolute; inset: 0; }
