@@ -132,8 +132,9 @@
     const home = fig.el.parentNode;
     layer.appendChild(fig.el);
     fig.pose("sit");
+    let frozen = false; // once the zoom starts, the seat is fixed (later measures would read a scaled or moved figure)
     const seat = () => {
-      if (cfg.seat == null) return;
+      if (cfg.seat == null || frozen || fig.el.parentNode !== layer) return;
       layer.style.top = `${cfg.fig.bottom * 100}%`;
       const q = fig.hotspot("knee", "left", box);
       const H = box.clientHeight || 1;
@@ -157,7 +158,10 @@
       wide,
       /** The push-in: the room scales about the part and blurs; at the peak it fades to the close-up below. */
       async in() {
-        const a = anchor();
+        seat();
+        const a = (z.at = anchor());
+        frozen = true;
+        z.top = layer.style.top; // the seated position, kept for the pull-out (the figure moves away in between)
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.add("on");
         const zoom = play(box, [{ transform: "scale(1)", filter: "blur(0px)" }, { transform: `scale(${a.k})`, filter: "blur(6px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
@@ -170,11 +174,13 @@
       /** The pull-out: the room comes back over the close-up, zoomed in, then out to the wide shot (the patient happy). */
       async out() {
         if (!wide.isConnected) return;
-        const a = anchor();
+        // measure on the unscaled room: the push-in's last frame (scaled, blurred) is still held
+        [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
         layer.appendChild(fig.el);
         fig.pose("sit");
         fig.react("happy", 0);
-        seat();
+        if (z.top) layer.style.top = z.top;
+        const a = z.at || anchor();
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.remove("gone");
         wide.classList.add("on");
