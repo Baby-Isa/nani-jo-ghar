@@ -216,7 +216,7 @@
     const skin = S.skin;
     const hc = opts.hair || S.hairCol;
     // behind the head: long hair and bunches
-    if (KD.hair === "long") s("path", { d: "M16 50 Q12 14 50 12 Q88 14 84 50 L86 92 L70 92 L72 52 Q50 40 28 52 L30 92 L14 92Z", fill: hc }, fs);
+    if (KD.hair === "long") s("path", { d: "M14 50 Q10 12 50 10 Q90 12 86 50 L96 96 L78 96 L76 60 Q50 44 24 60 L22 96 L4 96Z", fill: hc }, fs);
     if (KD.hair === "bunches") [18, 82].forEach((cx) => s("circle", { cx, cy: 30, r: 11, fill: hc }, fs));
     if (KD.hair === "bun") s("circle", { cx: 50, cy: 10, r: 9, fill: hc }, fs);
     if (KD.dupatta) s("path", { d: "M8 100 Q10 60 24 70 Q50 84 76 70 Q90 60 92 100Z", fill: KD.dupatta }, fs);

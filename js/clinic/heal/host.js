@@ -382,12 +382,13 @@
         const l = INTERJECT[k] ? LANG().w(INTERJECT[k]) : HOST.line(k, data);
         return Kit.Voice.say(l, { who: "doctor" });
       },
-      tally(itemId, n) {
+      tally(itemId, n, o = {}) {
         // D6: the count on the tool in use (never the target); level 1 also says the number (E12)
         if (n > 0) countOn(itemId, n);
         else clearCounts();
-        // D7: from level 2 the ✓ closes a counted step once it has begun; at level 1 the step closes itself (D5)
-        if (n > 0 && level >= 2) showDone(true);
+        // D7: from level 2 the ✓ closes a counted step once it has begun; at level 1 the step closes itself (D5).
+        // SH-40 (2 Oct): a step the child's next action closes (the next tool: o.next) never shows the ✓
+        if (n > 0 && level >= 2 && !o.next) showDone(true);
         if (level <= 1 && n > 0 && n <= 5) Kit.Voice.now(LANG().num(n));
       },
       /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */

@@ -551,10 +551,17 @@
     };
   }
 
-  /* ================= v2: the scrape (design sheets part B, H-scrape; CQ7) =================
-   * Pela paani (water), ne poi the cloth dabbed N times (counted), then plasters in the
-   * colours and order said: L1 one plaster; L2 two in order; L3 three half-and-half.
-   * The cat, star and dot designs are gone. The stitches (the "cut") stay as they were.
+  /* ================= v3: the scrape (D15a, decision 27; the 1 Oct report § 8H) =================
+   * 1. Wash it clean (a reveal): pick the jug, then sweep its water over the scrape; the dirt washes away where the
+   *    water passes. The step closes when it's clean (a skill: no words decide it).
+   * 2. Ne poi the cloth, dabbed N times (counted; kept: "select it and then tap each time, that's probably fine").
+   *    The cloth dries the water the wash left.
+   * 3. The plasters, in the colours and order said: DRAG each from the shelf onto a red patch so it covers the red
+   *    (a corner left showing makes the patient wince; drag it again to fix it, tap it to take it off until ✓).
+   *    L1 one plaster (it settles on when it's nearly right); L2 two in order, one colour each; L3 two in order, each
+   *    two colours (CLN-45: never more than two things to hold in one step).
+   * Rows (the Kutchi decides): the dab count; the plasters' colours and order (colours: English placeholders, to
+   * record). The cut (the stitches) above is unchanged.
    */
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
   const SCRAPE = {
@@ -563,13 +570,29 @@
     // CLN-45 (1 Oct, P14/P17): at most two things to hold per step at L3, and L2 -> L3 adds one thing: two plasters
     // at L2 and L3 (one colour each at L2, two at L3), each plaster's row said as it opens (D8)
     plasters: { 1: 1, 2: 2, 3: 2 },
+    washRadius: { 1: 46, 2: 40, 3: 36 }, // svg units round the water's point that it washes
+    washDone: 0.85, // the share of the dirt washed when the rest rinses off by itself
+    full: 0.97, // a patch this covered counts as covered
+    settle: { 1: 0.45, 2: 0, 3: 0 }, // L1: a plaster this near settles on straight (a help, never a judgement)
+    plaster: { w: 156, h: 78 }, // the plaster on the close-up, svg units (the art is 2:1)
+    patch: { rx: 40, ry: 18 },
+  };
+  const ART = "assets/clinic/items-v2/";
+  // the two-colour plasters the v2 art has (either way round)
+  const PAIRS = ["blue-green", "red-blue", "red-green", "red-yellow", "yellow-blue", "yellow-green"];
+  const plasterFile = (o) => {
+    if (o.length === 1) return `${ART}plaster-${o[0]}.webp`;
+    const a = `${o[0]}-${o[1]}`;
+    const b = `${o[1]}-${o[0]}`;
+    return `${ART}plaster-${PAIRS.includes(a) ? a : PAIRS.includes(b) ? b : o[0]}.webp`;
   };
   const WHY = { problem: "I fell over and scraped my arm.", goal: "Let's clean it and put plasters on." };
-  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
+  // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice); the wash and the
+  // plasters are drags, shown as drags (one gesture per thing, P32)
   const CUES = {
-    wash: { gesture: "tap", then: "tap" },
+    wash: { gesture: "tap", then: { gesture: "drag" } },
     dab: { gesture: "tap", then: "tap" },
-    plaster: { gesture: "tap", then: "tap" },
+    plaster: { gesture: "drag" },
   };
   const halfName = (pair) => `${pair[0]} and ${pair[1]}`;
   function planScrape(level, rng) {
@@ -606,76 +629,124 @@
       { id: "plasters", options: seqs, answer: seq.map(key), placeholder: true }, // the colours wait for the doctor's recording
     ];
     const words = [Lg.w("cook-paani"), Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), num(dab), HS.ph("plaster")];
-    return { level: L, ailment: "scrape", steps, rows, words, upFront: L >= 2, key };
+    return { level: L, ailment: "scrape", steps, rows, words, upFront: false, key };
   }
 
   function mountScrape(stage, ctx) {
     const P = planScrape(ctx.level, ctx.rng);
     const S = HS.make(stage, ctx, { place: "limb", game: "cut" });
     const { s } = S;
+    const doc = stage.ownerDocument;
     const n = P.steps[2].seq.length;
-    // laid[k]: the plaster on spot k (null = empty); firstLaid[k]: the first one put there (what's scored: UX 17)
-    const st = { i: 0, dabs: 0, washed: false, laid: new Array(n).fill(null), firstLaid: new Array(n).fill(null), judged: {}, over: false };
+    const st = { i: 0, dabs: 0, over: false, busy: false, judged: {}, firstSeq: [], carry: null, washing: false };
     const cur = () => P.steps[st.i] || null;
     const rowsOf = (x) => x.rows || [x.row];
-    const rows = [].concat(...P.steps.map(rowsOf));
     ctx.card.ordered(false); // two sequences: the steps, then the plasters (13h)
-    ctx.card.setRows(P.upFront ? rows : rowsOf(P.steps[0]));
-    const nextSpot = () => st.laid.findIndex((x) => !x);
-    const laidN = () => st.laid.filter(Boolean).length;
+    ctx.card.setRows(rowsOf(P.steps[0]));
+    const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
+    const Kit = root.Clinic && root.Clinic.Kit;
+    const url = (u) => (Kit && Kit.url ? Kit.url(u) : u);
 
-    // the arm, lying on the paper strip
-    const arm = s("g", {}, S.layer);
-    s("rect", { x: 90, y: 360, width: 560, height: 96, rx: 48, fill: "#e9b98f", stroke: "#c98f64", "stroke-width": 3 }, arm);
-    s("ellipse", { cx: 675, cy: 408, rx: 62, ry: 54, fill: "#e9b98f", stroke: "#c98f64", "stroke-width": 3 }, arm);
-    const scrape = s("g", {}, S.layer);
-    s("ellipse", { cx: 380, cy: 408, rx: 150, ry: 34, fill: "#f2a0a0", opacity: 0.8 }, scrape);
-    for (let k = 0; k < 5; k++) s("line", { x1: 260 + k * 10, y1: 392 + k * 8, x2: 500 - k * 12, y2: 384 + k * 9, stroke: "#d9546a", "stroke-width": 4, "stroke-linecap": "round", opacity: 0.7 }, scrape);
-    const dirt = s("g", {}, S.layer);
-    for (let k = 0; k < 14; k++) s("circle", { cx: 250 + ((k * 97) % 260), cy: 390 + ((k * 37) % 36), r: 4 + (k % 3), fill: "#7a5a3a" }, dirt);
-    const spotX = (k) => (n === 1 ? 380 : 380 + (k - (n - 1) / 2) * 110);
-    const spots = s("g", {}, S.layer);
-    const drawSpots = () => {
-      S.clear(spots);
-      for (let k = 0; k < n; k++) {
-        const x = spotX(k);
-        const o = st.laid[k];
-        if (!o) {
-          const next = k === nextSpot() && cur() && cur().kind === "plaster";
-          s("rect", { x: x - 46, y: 384, width: 92, height: 48, rx: 14, fill: "none", stroke: next ? "#2e8b7a" : "#9a8f84", "stroke-width": next ? 4 : 3, "stroke-dasharray": "8 6" }, spots);
-          continue;
-        }
-        const c = o.map((q) => HS.COLOURS[q]);
-        s("rect", { x: x - 46, y: 384, width: 92, height: 48, rx: 14, fill: c[0], stroke: "#6d5a4a", "stroke-width": 2 }, spots);
-        if (c[1]) s("path", { d: `M${x} 384 H${x + 32} a14 14 0 0 1 14 14 V418 a14 14 0 0 1 -14 14 H${x}Z`, fill: c[1] }, spots);
-        s("rect", { x: x - 16, y: 396, width: 32, height: 24, rx: 5, fill: "#fff", opacity: 0.55 }, spots);
+    /* ---- the close-up: the patient's own forearm (or leg) from the left edge, the scrape in the middle ----
+     * Stand-in art, drawn in the patient's own skin and clothes (CLN-67); the art batch's F2/K3 swap in by file name
+     * (data/clinic/heal/cut.json art). The limb runs off the left edge, so it reads as part of the person (CLN-43). */
+    const legPart = /knee|leg/.test(String(ctx.part || ""));
+    const defs = s("defs", {}, S.svg);
+    const gid = `cut-skin-${Math.floor(ctx.rng() * 1e6)}`;
+    const grad = s("linearGradient", { id: gid, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    s("stop", { offset: "0", "stop-color": S.skinLight }, grad);
+    s("stop", { offset: "0.55", "stop-color": S.skin }, grad);
+    s("stop", { offset: "1", "stop-color": S.skinDark }, grad);
+    const limb = s("g", { class: "cut-limb" }, S.layer);
+    const Y = 350; // the limb's middle line
+    s("ellipse", { cx: 330, cy: Y + 78, rx: 470, ry: 22, fill: "rgba(60,40,30,.16)" }, limb); // contact shadow on the bed
+    if (legPart) {
+      // the leg, stretched out: the thigh from the left edge, the knee, the shin, the foot up at the right
+      s("path", { d: `M-700 ${Y - 74} L520 ${Y - 62} Q600 ${Y - 58} 640 ${Y - 30} L650 ${Y + 52} Q560 ${Y + 66} 500 ${Y + 64} L-700 ${Y + 74}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3 }, limb);
+      s("path", { d: `M630 ${Y - 40} Q700 ${Y - 120} 742 ${Y - 96} Q760 ${Y - 40} 690 ${Y + 46} L640 ${Y + 54}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3 }, limb);
+      s("path", { d: `M-700 ${Y - 80} L60 ${Y - 74} Q80 ${Y} 60 ${Y + 74} L-700 ${Y + 80}Z`, fill: S.legs }, limb); // the rolled trouser leg
+      s("path", { d: `M40 ${Y - 78} Q70 ${Y} 40 ${Y + 78} L84 ${Y + 74} Q108 ${Y} 84 ${Y - 74}Z`, fill: HS.shade(S.legs, -0.15) }, limb);
+    } else {
+      // the forearm held out, palm down: the sleeve at the left edge, the wrist, the hand
+      s("path", { d: `M-700 ${Y - 60} L560 ${Y - 46} Q600 ${Y - 44} 618 ${Y - 40} L618 ${Y + 40} Q600 ${Y + 46} 560 ${Y + 50} L-700 ${Y + 64}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3 }, limb);
+      // the hand, palm down: a soft mitten of fingers, the thumb tucked above (stand-in)
+      s("path", { d: `M600 ${Y - 44} Q640 ${Y - 58} 690 ${Y - 50} L770 ${Y - 44} Q800 ${Y - 40} 800 ${Y - 10} Q800 ${Y + 22} 770 ${Y + 30} L690 ${Y + 40} Q640 ${Y + 52} 600 ${Y + 44}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3, "stroke-linejoin": "round" }, limb);
+      [-22, -2, 18].forEach((dy) => s("path", { d: `M716 ${Y + dy} Q750 ${Y + dy - 2} 784 ${Y + dy + 2}`, fill: "none", stroke: S.skinDark, "stroke-width": 2.5, "stroke-linecap": "round", opacity: 0.6 }, limb));
+      s("path", { d: `M650 ${Y - 52} Q690 ${Y - 82} 728 ${Y - 70} Q738 ${Y - 58} 722 ${Y - 50} Q690 ${Y - 46} 668 ${Y - 44}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3, "stroke-linejoin": "round" }, limb); // the thumb
+      s("path", { d: `M-700 ${Y - 70} L40 ${Y - 66} Q62 ${Y} 40 ${Y + 70} L-700 ${Y + 74}Z`, fill: S.clothes }, limb); // the sleeve
+      s("path", { d: `M24 ${Y - 74} Q54 ${Y} 24 ${Y + 74} L72 ${Y + 70} Q96 ${Y} 72 ${Y - 70}Z`, fill: HS.shade(S.clothes, -0.15) }, limb); // its rolled cuff
+    }
+
+    // the scrape: one red patch per plaster, each a soft irregular graze with scratch lines
+    const patches = [];
+    const patchG = s("g", { class: "cut-patches" }, S.layer);
+    const PX = n === 1 ? [330] : [250, 420];
+    PX.forEach((x, k) => {
+      const y = Y + (k % 2 ? 6 : -6);
+      const R = SCRAPE.patch;
+      const pts = [];
+      for (let a = 0; a < 12; a++) {
+        const t = (a / 12) * Math.PI * 2;
+        const j = 0.82 + ctx.rng() * 0.18;
+        pts.push([x + Math.cos(t) * R.rx * j, y + Math.sin(t) * R.ry * j]);
       }
-    };
-    drawSpots();
+      const d = "M" + pts.map((p) => p.map((v) => v.toFixed(1)).join(" ")).join(" L") + "Z";
+      const g = s("g", {}, patchG);
+      s("path", { d, fill: "#e06a6a", stroke: "#c84a50", "stroke-width": 2, "stroke-linejoin": "round" }, g);
+      for (let q = 0; q < 4; q++) s("line", { x1: x - R.rx * 0.6, y1: y - 8 + q * 5, x2: x + R.rx * 0.6, y2: y - 11 + q * 5, stroke: "#b8384a", "stroke-width": 2.5, "stroke-linecap": "round", opacity: 0.7 }, g);
+      patches.push({ k, x, y, rx: R.rx, ry: R.ry, g, cover: null, full: false, firstAt: null });
+    });
+    // the dirt: specks over and round the patches, washed away where the water goes (a reveal)
+    const dirtG = s("g", { class: "cut-dirt" }, S.layer);
+    const specks = [];
+    patches.forEach((p) => {
+      for (let q = 0; q < 16; q++) {
+        const a = ctx.rng() * Math.PI * 2;
+        const r = Math.sqrt(ctx.rng());
+        const x = p.x + Math.cos(a) * (p.rx + 18) * r;
+        const y = p.y + Math.sin(a) * (p.ry + 12) * r;
+        const el = s("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: (3 + ctx.rng() * 4).toFixed(1), fill: ctx.rng() < 0.5 ? "#7a5a3a" : "#8f6c48" }, dirtG);
+        specks.push({ x, y, el, gone: false });
+      }
+    });
+    // the water the wash leaves (the cloth dabs it dry)
+    const wetG = s("g", { class: "cut-wet", opacity: 0 }, S.layer);
+    patches.forEach((p) => [-1, 0, 1].forEach((d) => s("ellipse", { cx: p.x + d * 26, cy: p.y - 20 + Math.abs(d) * 8, rx: 6, ry: 8, fill: "#bfe2f6", stroke: "#8cc4e8", "stroke-width": 1.5 }, wetG)));
+    const plasterG = s("g", { class: "cut-plasters" }, S.layer);
 
-    const tools = [{ id: "paani", glyph: "🫗", label: "" }, { id: "cloth", glyph: "🧽", label: "" }];
-    const plasterIds = P.steps[2].options.map((o) => "pl-" + P.key(o));
-    HS.shuffle(P.steps[2].options, ctx.rng).forEach((o) => tools.push({ id: "pl-" + P.key(o), colours: o.length === 2 ? o : [o[0], o[0]] }));
+    /* ---- the tools: the v2 item art ---- */
+    const tools = [{ id: "paani", img: ART + "water-jug.webp" }, { id: "cloth", img: ART + "cloth-blue.webp" }];
     const optByTool = {};
-    P.steps[2].options.forEach((o) => (optByTool["pl-" + P.key(o)] = o));
+    HS.shuffle(P.steps[2].options, ctx.rng).forEach((o) => {
+      const id = "pl-" + P.key(o);
+      optByTool[id] = o;
+      tools.push({ id, img: plasterFile(o) });
+    });
     const stepOfTool = (id) => (id === "paani" ? "wash" : id === "cloth" ? "dab" : "plaster");
 
     const judge = (id, ok, detail) => {
       st.judged[id] = ok;
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
+    const patchTarget = () => {
+      const p = patches.find((q) => !q.full) || patches[0];
+      return { x: p.x, y: p.y, r: 46 };
+    };
     const open = () => {
       const c = cur();
       if (!c) return;
-      if (!P.upFront && st.i > 0) {
+      if (st.i > 0) {
         rowsOf(c).forEach((r) => ctx.card.addRow(r));
         ctx.say(c.row);
       }
       // D8: the plaster step opens its first plaster's row (the next one opens as each goes on)
       ctx.card.now(c.kind === "plaster" ? "plaster0" : c.id);
-      drawSpots();
-      const target = c.kind === "wash" ? S.toolEls.paani : c.kind === "dab" ? S.toolEls.cloth : S.toolEls["pl-" + P.key(c.seq[0])];
-      S.cue(c.kind, CUES[c.kind], target, { x: c.kind === "plaster" ? spotX(0) : 380, y: 408 });
+      if (c.kind === "wash") {
+        const a = specks.reduce((m, q) => (q.x < m.x ? q : m), specks[0]);
+        const b = specks.reduce((m, q) => (q.x > m.x ? q : m), specks[0]);
+        S.cue("wash", CUES.wash, S.toolEls.paani, { gesture: "drag", target: { x: a.x, y: Y }, to: { x: b.x, y: Y } });
+      } else if (c.kind === "dab") S.cue("dab", CUES.dab, S.toolEls.cloth, { x: patches[0].x, y: patches[0].y });
+      else S.cue("plaster", Object.assign({ to: patchTarget }, CUES.plaster), S.toolEls["pl-" + P.key(c.seq[0])]);
     };
     const close = () => {
       const c = cur();
@@ -683,6 +754,7 @@
       if (c.kind === "dab") judge("dab-count", st.dabs === c.count, `${st.dabs} of ${c.count}`);
       if (c.kind !== "plaster") ctx.card.tick(c.id);
       S.count(null);
+      S.used(c.kind === "wash" ? "paani" : c.kind === "dab" ? "cloth" : "");
       st.i++;
       if (cur()) open();
       else finish();
@@ -692,95 +764,251 @@
       S.uncue();
       ctx.card.now(null);
       S.face("happy");
-      // the first plaster put on each spot is what's scored (a plaster taken back still counts: UX 17)
-      const first = st.firstLaid.map((o) => (o ? P.key(o) : "-"));
+      // the first plaster put on each patch, in the order they went on, is what's scored (a plaster taken back still
+      // counts: UX 17)
+      const first = st.firstSeq.slice(0, n);
       judge("plasters", JSON.stringify(first) === JSON.stringify(P.steps[2].seq.map(P.key)), first.join(" "));
       S.say("Look at that!", "patient");
       S.markSeen();
-      ctx.after(Clinic_fast() ? 200 : 1600, () => {
+      ctx.after(fast() ? 200 : 1600, () => {
         const right = P.rows.filter((r) => st.judged[r.id]).length;
         ctx.done({ right, total: P.rows.length, hints: 0, words: P.words });
       });
     };
-    const Clinic_fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
 
     S.tools(tools, (id) => {
       if (st.over) return;
       const c = cur();
       const want = stepOfTool(id);
-      // picking a later step's tool closes the open counted step (the tick confirms it)
+      // SH-40: picking a later step's tool closes the open counted step (no ✓ where a next action exists)
       if (c && want !== c.kind && c.kind === "dab" && P.steps.findIndex((x) => x.kind === want) > st.i) close();
     });
-    const onScrape = (p) => Math.abs(p.x - 380) < 240 && Math.abs(p.y - 408) < 70;
+
+    /* ---- 1. the wash: the jug's water swept over the scrape ---- */
+    const jug = s("image", { href: url(ART + "water-jug.webp"), width: 110, height: 114, opacity: 0, class: "cut-jug" }, S.fx);
+    const stream = s("path", { fill: "none", stroke: "#8cc8ee", "stroke-width": 10, "stroke-linecap": "round", opacity: 0 }, S.fx);
+    const washedShare = () => specks.filter((q) => q.gone).length / specks.length;
+    const washAt = (p) => {
+      // the jug tilts above and to the right of the point; its stream lands on the point
+      jug.setAttribute("x", p.x + 18);
+      jug.setAttribute("y", p.y - 170);
+      jug.setAttribute("transform", `rotate(-38 ${p.x + 73} ${p.y - 113})`);
+      jug.setAttribute("opacity", 1);
+      stream.setAttribute("d", `M${p.x + 24} ${p.y - 128} Q${p.x + 6} ${p.y - 70} ${p.x} ${p.y}`);
+      stream.setAttribute("opacity", 0.85);
+      const R = SCRAPE.washRadius[P.level];
+      let hit = 0;
+      specks.forEach((q) => {
+        if (q.gone || Math.hypot(q.x - p.x, q.y - p.y) > R) return;
+        q.gone = true;
+        hit++;
+        q.el.animate([{ transform: "translate(0,0)", opacity: 1 }, { transform: `translate(${(q.x - p.x) * 0.6}px, 26px)`, opacity: 0 }], { duration: 420, fill: "forwards" });
+      });
+      if (hit) {
+        wetG.setAttribute("opacity", Math.min(1, washedShare() * 1.4));
+        if (!st.splashT || Date.now() - st.splashT > 300) {
+          st.splashT = Date.now();
+          const sp = s("circle", { cx: p.x, cy: p.y, r: 10, fill: "none", stroke: "#bfe2f6", "stroke-width": 4 }, S.fx);
+          sp.animate([{ r: 10, opacity: 1 }, { r: 34, opacity: 0 }], { duration: 380, fill: "forwards" });
+          ctx.after(420, () => sp.remove());
+        }
+      }
+      if (washedShare() >= SCRAPE.washDone && cur() && cur().kind === "wash" && !st.busy) {
+        st.busy = true;
+        specks.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" })));
+        wetG.setAttribute("opacity", 1);
+        S.face("ouch", 900);
+        S.say("Cold!", "patient");
+        ctx.sfx("pop");
+        ctx.after(fast() ? 150 : 600, () => {
+          st.busy = false;
+          endWash();
+          if (cur() && cur().kind === "wash") close();
+        });
+      }
+    };
+    const endWash = () => {
+      st.washing = false;
+      jug.setAttribute("opacity", 0);
+      stream.setAttribute("opacity", 0);
+    };
+
+    /* ---- 3. the plasters: dragged from the shelf (or a laid one dragged again) ---- */
+    const PW = SCRAPE.plaster.w;
+    const PH = SCRAPE.plaster.h;
+    // how much of a patch a plaster at (x, y) covers: the share of the patch's points under the plaster's pad
+    const coverage = (p, x, y) => {
+      let tot = 0;
+      let inn = 0;
+      for (let i = -4; i <= 4; i++)
+        for (let j = -3; j <= 3; j++) {
+          const px = p.x + (i / 4) * p.rx;
+          const py = p.y + (j / 3) * p.ry;
+          if ((i / 4) ** 2 + (j / 3) ** 2 > 1) continue;
+          tot++;
+          if (Math.abs(px - x) <= PW / 2 - 6 && Math.abs(py - y) <= PH / 2 - 4) inn++;
+        }
+      return tot ? inn / tot : 0;
+    };
+    const drawPlaster = (pl) => {
+      if (pl.el) pl.el.remove();
+      pl.el = s("image", { href: url(plasterFile(pl.opt)), x: pl.x - PW / 2, y: pl.y - PH / 2, width: PW, height: PH, class: "cut-plaster", "data-plaster": P.key(pl.opt) }, plasterG);
+    };
+    const laid = () => patches.filter((p) => p.cover);
+    const fullN = () => patches.filter((p) => p.full).length;
+    const refresh = () => {
+      // the rows tick as the plasters go on properly; the next plaster's row is the current one (D8)
+      const m = fullN();
+      for (let k = 0; k < n; k++) (k < m ? ctx.card.tick : ctx.card.untick)(`plaster${k}`);
+      if (m < n) ctx.card.now(`plaster${m}`);
+      // D7: the ✓ shows once every patch is covered (it commits them; until then a plaster can come off again)
+      if (ctx.ready) ctx.ready(m >= n);
+    };
+    const drop = (opt, p) => {
+      // the patch it lands on: the uncovered one it covers most
+      let best = null;
+      let bestC = 0;
+      patches.forEach((q) => {
+        if (q.cover) return;
+        const c = coverage(q, p.x, p.y);
+        if (c > bestC) (bestC = c), (best = q);
+      });
+      if (!best || bestC < 0.3) return false; // off the scrape: back to the shelf, nothing lost
+      const pl = { opt, x: p.x, y: p.y };
+      // L1: a plaster that's nearly right settles on straight (the drag is the skill from L2)
+      if (SCRAPE.settle[P.level] && bestC >= SCRAPE.settle[P.level]) (pl.x = best.x), (pl.y = best.y);
+      best.cover = pl;
+      pl.patch = best;
+      best.full = coverage(best, pl.x, pl.y) >= SCRAPE.full;
+      if (best.firstAt == null) {
+        best.firstAt = Date.now();
+        st.firstSeq.push(P.key(opt));
+      }
+      drawPlaster(pl);
+      ctx.sfx("pop");
+      if (best.full) S.face("happy", 600);
+      else {
+        S.face("wince", 800); // a red corner still shows: drag it again to cover it
+        ctx.log({ type: "extra", rowId: `plaster${fullN()}`, detail: "a corner of red showing" });
+      }
+      refresh();
+      return true;
+    };
+    const lift = (pl) => {
+      pl.patch.cover = null;
+      pl.patch.full = false;
+      if (pl.el) pl.el.remove();
+      pl.el = null;
+      refresh();
+    };
+    const plasterAt = (p) => laid().map((q) => q.cover).find((pl) => Math.abs(p.x - pl.x) < PW / 2 && Math.abs(p.y - pl.y) < PH / 2) || null;
+    // the plaster in the hand: an svg picture that follows the finger
+    const held = s("image", { width: PW, height: PH, opacity: 0, class: "cut-held" }, S.fx);
+    const holdAt = (p) => {
+      held.setAttribute("x", p.x - PW / 2);
+      held.setAttribute("y", p.y - PH / 2);
+    };
+    const startCarry = (opt, e, from) => {
+      if (cur() && cur().kind === "dab") close(); // SH-40: the plaster is the next action: it closes the dab step
+      const c = cur();
+      if (!c || c.kind !== "plaster") return;
+      st.carry = { opt, from, x0: e.clientX, y0: e.clientY, moved: false };
+      held.setAttribute("href", url(plasterFile(opt)));
+      holdAt(S.pt(e));
+      held.setAttribute("opacity", from === "laid" ? 0.95 : 0);
+      S.did();
+    };
+    const endCarry = (e) => {
+      const k = st.carry;
+      st.carry = null;
+      held.setAttribute("opacity", 0);
+      if (!k) return;
+      const p = e && e.clientX != null ? S.pt(e) : null;
+      if (!k.moved) {
+        // a tap: on the shelf it picks the plaster (tap, then tap where it goes); on a laid one it takes it off
+        if (k.from === "laid") {
+          ctx.sfx("tap");
+          ctx.log({ type: "takeback", detail: P.key(k.opt) });
+          S.face("ouch", 400);
+        }
+        return;
+      }
+      if (!p || !drop(k.opt, p)) ctx.sfx("tap");
+    };
+    Object.keys(optByTool).forEach((id) => {
+      const b = S.toolEls[id];
+      ctx.on(b, "pointerdown", (e) => {
+        if (!S.ready || st.over) return;
+        startCarry(optByTool[id], e, "shelf");
+      });
+    });
+    ctx.on(doc, "pointermove", (e) => {
+      const k = st.carry;
+      if (!k) return;
+      if (!k.moved && Math.hypot(e.clientX - k.x0, e.clientY - k.y0) > 10) {
+        k.moved = true;
+        held.setAttribute("opacity", 0.95);
+      }
+      if (k.moved) holdAt(S.pt(e));
+    });
+    ctx.on(doc, "pointerup", (e) => {
+      if (st.carry) endCarry(e);
+      if (st.washing) endWash();
+    });
+    ctx.on(doc, "pointercancel", () => {
+      if (st.carry) endCarry(null);
+      if (st.washing) endWash();
+    });
+
+    /* ---- taps and sweeps on the close-up ---- */
+    const onScrape = (p) => Math.abs(p.x - 335) < 260 && Math.abs(p.y - Y) < 90;
     ctx.on(S.svg, "pointerdown", (e) => {
       if (!S.ready) return;
       const p = S.pt(e);
       const c = cur();
-      if (!c || st.over || st.busy || !S.sel || !onScrape(p)) return;
-      const tool = S.sel;
-      if (tool === "paani" && c.kind === "wash") {
-        for (let k = 0; k < 8; k++) {
-          const d = s("ellipse", { cx: 330 + k * 14, cy: 330, rx: 5, ry: 8, fill: "#6bb7ea" }, S.fx);
-          d.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(70px)", opacity: 0 }], { duration: 600, delay: k * 40, fill: "forwards" });
-          ctx.after(1000, () => d.remove());
+      if (!c || st.over || st.busy || st.carry) return;
+      // a laid plaster: drag it to straighten it, or tap it to take it off (until ✓: UX 17)
+      if (c.kind === "plaster") {
+        const pl = plasterAt(p);
+        if (pl) {
+          lift(pl);
+          startCarry(pl.opt, e, "laid");
+          return;
         }
-        S.face("ouch", 900);
-        S.say("Cold!", "patient");
-        dirt.setAttribute("opacity", 0.6);
-        S.used("paani");
-        st.busy = true;
-        ctx.after(500, () => {
-          st.busy = false;
-          if (cur() === c) close();
-        });
-      } else if (tool === "cloth" && (c.kind === "dab" || c.kind === "wash")) {
-        if (c.kind === "wash") return;
+        // tap, then tap: a plaster picked on the shelf goes on where the child taps (no snapping: it still has to cover)
+        if (optByTool[S.sel] && onScrape(p)) drop(optByTool[S.sel], p);
+        return;
+      }
+      if (!S.sel || !onScrape(p)) return;
+      if (S.sel === "paani" && c.kind === "wash") {
+        st.washing = true;
+        washAt(p);
+        return;
+      }
+      if (S.sel === "cloth" && c.kind === "dab") {
         st.dabs++;
-        const m = s("text", { x: p.x - 24, y: p.y + 10, "font-size": 44 }, S.fx);
-        m.textContent = "🧽";
-        ctx.after(450, () => m.remove());
-        dirt.setAttribute("opacity", Math.max(0, 0.6 - st.dabs * 0.18));
+        const m = s("image", { href: url(ART + "cloth-blue.webp"), x: p.x - 50, y: p.y - 40, width: 100, height: 74 }, S.fx);
+        m.animate([{ transform: "translateY(-14px)" }, { transform: "translateY(0)" }, { transform: "translateY(-10px)", opacity: 0 }], { duration: 450, fill: "forwards" });
+        ctx.after(480, () => m.remove());
+        wetG.setAttribute("opacity", Math.max(0, 1 - st.dabs * 0.3));
         S.face("happy", 500);
         S.count(st.dabs);
-        ctx.tally("cloth", st.dabs);
+        // SH-40: the next action (a plaster) closes this step from level 2: no ✓
+        ctx.tally("cloth", st.dabs, { next: true });
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (ctx.level === 1 && st.dabs >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
-      } else if (c.kind === "plaster" && laidN() && spotAt(p) >= 0 && st.laid[spotAt(p)]) {
-        // a laid plaster tapped: it comes off again, until ✓ (13h, UX 17)
-        const k = spotAt(p);
-        st.laid[k] = null;
-        ctx.card.untick(`plaster${k}`);
-        if (ctx.ready) ctx.ready(false);
-        ctx.sfx("tap");
-        ctx.log({ type: "takeback", detail: `plaster ${k}` });
-        drawSpots();
-      } else if (optByTool[tool] && (c.kind === "plaster" || c.kind === "dab")) {
-        if (c.kind === "dab") close();
-        lay(optByTool[tool]);
       }
     });
-    const spotAt = (p) => {
-      for (let k = 0; k < n; k++) if (Math.abs(p.x - spotX(k)) < 50 && Math.abs(p.y - 408) < 34) return k;
-      return -1;
-    };
-    const lay = (o) => {
-      const k = nextSpot();
-      if (k < 0) return;
-      st.laid[k] = o;
-      if (!st.firstLaid[k]) st.firstLaid[k] = o;
-      S.face("happy", 600);
-      ctx.sfx("pop");
-      ctx.card.tick(`plaster${k}`);
-      if (k + 1 < n && !st.laid[k + 1]) ctx.card.now(`plaster${k + 1}`); // D8: the next plaster's row, said as it opens
-      drawSpots();
-      // D7: the ✓ shows once every plaster is on (it commits them; until then a plaster can come off again)
-      if (ctx.ready) ctx.ready(laidN() >= n);
-    };
-    // Next: closes the counted dab step (the host's big button)
+    ctx.on(S.svg, "pointermove", (e) => {
+      if (!st.washing) return;
+      const c = cur();
+      if (!c || c.kind !== "wash") return endWash();
+      washAt(S.pt(e));
+    });
+    // ✓ commits the plasters (the last step: nothing else can close it)
     const nextBtn = ctx.button("✓", () => {
       const c = cur();
-      if (c && c.kind === "dab" && st.dabs > 0) close();
-      else if (c && c.kind === "plaster" && laidN() >= n) close(); // ✓ commits the plasters
+      if (c && c.kind === "plaster" && fullN() >= n) close();
     }, "done");
     nextBtn.setAttribute("aria-label", "Next");
 
@@ -808,19 +1036,41 @@
           };
           const at = (x, y) => Object.assign({ do: "tap" }, S.client(x, y));
           if (st.over || !c || st.busy) return { do: "wait" };
-          if (c.kind === "wash") return S.sel !== "paani" ? tool("paani") : at(380, 408);
-          if (c.kind === "dab") {
-            if (st.dabs < c.count) return S.sel !== "cloth" ? tool("cloth") : at(380, 408);
-            return { do: "button" };
+          if (c.kind === "wash") {
+            if (S.sel !== "paani") return tool("paani");
+            // one sweep through the dirt that's left, left to right
+            const left = specks.filter((q) => !q.gone).sort((a, b) => a.x - b.x);
+            if (!left.length) return { do: "wait" };
+            const pts = left.filter((q, i) => i % 2 === 0 || i === left.length - 1).map((q) => {
+              const p = S.client(q.x, q.y);
+              return [p.x, p.y];
+            });
+            if (pts.length < 2) pts.push([pts[0][0] + 4, pts[0][1] + 2]);
+            return { do: "drag", pts, steps: 4, what: "wash" };
           }
-          if (nextSpot() < 0) return { do: "button" };
-          const want = "pl-" + P.key(c.seq[nextSpot()]);
-          return S.sel !== want ? tool(want) : at(spotX(nextSpot()), 408);
+          if (c.kind === "dab") {
+            if (st.dabs < c.count) return S.sel !== "cloth" ? tool("cloth") : at(patches[0].x, patches[0].y);
+            // the next action: the first plaster, dragged on
+          }
+          const m = fullN();
+          if (m >= n) return { do: "button" };
+          const want = "pl-" + P.key(P.steps[2].seq[m]);
+          const pt = patches.find((q) => !q.cover) || patches.find((q) => !q.full);
+          if (pt.cover) {
+            // straighten a plaster with red showing: drag it onto its patch
+            const a = S.client(pt.cover.x, pt.cover.y);
+            const b = S.client(pt.x, pt.y);
+            return { do: "drag", pts: [[a.x, a.y], [(a.x + b.x) / 2, (a.y + b.y) / 2], [b.x, b.y]], what: "straighten" };
+          }
+          const r = S.toolEls[want].getBoundingClientRect();
+          const a = [r.left + r.width / 2, r.top + r.height / 2];
+          const b = S.client(pt.x, pt.y);
+          return { do: "drag", pts: [a, [(a[0] + b.x) / 2, (a[1] + b.y) / 2 - 20], [b.x, b.y]], steps: 6, what: want };
         },
         slip() {
           // one dab too many
           const c = cur();
-          if (c && c.kind === "dab" && S.sel === "cloth" && st.dabs === c.count) return Object.assign({ do: "tap", what: "extra dab" }, S.client(380, 408));
+          if (c && c.kind === "dab" && S.sel === "cloth" && st.dabs === c.count) return Object.assign({ do: "tap", what: "extra dab" }, S.client(patches[0].x, patches[0].y));
           return null;
         },
       },
