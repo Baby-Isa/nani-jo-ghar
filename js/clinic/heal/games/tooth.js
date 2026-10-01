@@ -94,10 +94,10 @@
       i,
       row: Object.assign({ id: `b${i}` }, Lg.show(Lg.step(i, dirM(m), { lower: i > 0 }), { cap: i === 0 })),
     }));
-    steps.push({ id: "drill", kind: "drill", patches, timer: (lv.drillMs != null ? lv.drillMs : K.drillMs[L]) || 0, row: Object.assign({ id: "drill" }, Lg.w("tooth-drill", { cap: true })) });
-    steps.push({ id: "fill", kind: "fill", row: Object.assign({ id: "fill" }, Lg.w("tooth-fill", { cap: true })) });
+    steps.push({ id: "drill", kind: "drill", patches, timer: (lv.drillMs != null ? lv.drillMs : K.drillMs[L]) || 0, row: Object.assign({}, Lg.w("tooth-drill", { cap: true }), { id: "drill" }) });
+    steps.push({ id: "fill", kind: "fill", row: Object.assign({}, Lg.w("tooth-fill", { cap: true }), { id: "fill" }) });
     const rows = [
-      { id: "brush-order", seq: DIRS, answer: moves, placeholder: L < 3 }, // up / down wait for the recording
+      { id: "b-order", seq: DIRS, answer: moves, placeholder: L < 3 }, // up / down wait for the recording
       { id: "drill-care", skill: true, answer: true },
       { id: "fill-line", skill: true, answer: true },
     ];
@@ -380,17 +380,17 @@
       if (!c) return;
       if (c.kind === "brush") {
         ctx.card.tick(c.id);
-        if (c.i === P.moves.length - 1) judge("brush-order", JSON.stringify(st.done) === JSON.stringify(P.moves), st.done.join(" "));
+        if (c.i === P.moves.length - 1) judge("b-order", JSON.stringify(st.done) === JSON.stringify(P.moves), { moves: st.done.slice() }); // the review shows it on the brush rows (D14)
       }
       if (c.kind === "drill") {
         if (timer) timer.stop();
         const all = c.patches.every((p) => !p.left.size);
-        judge("drill-care", !st.chipped && all, `${c.patches.filter((p) => !p.left.size).length}/${c.patches.length} cleared${st.chipped ? ", chipped" : ""}`);
+        judge("drill-care", !st.chipped && all, { cleared: c.patches.filter((p) => !p.left.size).length, of: c.patches.length, chipped: st.chipped });
         drillEl.setAttribute("opacity", 0);
         ctx.card.tick(c.id);
       }
       if (c.kind === "fill") {
-        judge("fill-line", st.fill >= zone[0] && st.fill <= zone[1], `filled to ${Math.round((100 * st.fill) / FILL.max)}%`);
+        judge("fill-line", st.fill >= zone[0] && st.fill <= zone[1], { filled: Math.round((100 * st.fill) / FILL.max) });
         ctx.card.tick(c.id);
       }
       S.uncue();

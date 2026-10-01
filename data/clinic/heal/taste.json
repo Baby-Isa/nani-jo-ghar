@@ -1,137 +1,118 @@
 {
- "_about": "H5 The taste test (docs/archive/clinic/clinic-design-v1.md Q4 H5; contract docs/architecture/clinic-heal-api.md). A tongue coated from the Eid sweets. Four droppers of the same shape (a picture on each label: lemon, sugar, salt, chilli); the card's word is the only way to know which. Then a drink from three cups. Every row is real Kutchi (Cook's words by id). Four droppers and three cups (not the design's three and paani) keep level 1 under 10% blind: 1/4 x 1/3. The rack is the game's own (the sidebar tray is hidden): the pharmacy's tray arrives in the called order, which would give the order away. The throbbing hint after throbMs lights the line and its dish; a line finished after that counts as hinted.",
+ "_about": "H-taste -> the sore spots (1 Oct play-test D15e, decision 27; js/clinic/heal/games/taste.js). Pop the spots of the colour(s) said with a cotton bud dipped in a soothing ointment (never a pin), the others stay; then one named drink (a liquid poured, one thing added, stirred, given) clears the rest. Levels are data: pop (colours to pop; L3 every colour but the one said, na), each (spots of each popping colour), decoys (spots of each other colour), upMs (how long a spot stays up), maxUp (spots up at once), counts (spoons of the drink's thing, from L2). The colours are data/clinic.json's col-* words (English placeholders, to record). art: the art plan's M2 tongue, O2 spots and O3 bud swap in by file name once ready.",
  "id": "taste",
  "ailments": {
   "coated-tongue": {
-   "name": "a coated tongue (the Eid sweets)",
+   "name": "sore spots on the tongue",
    "part": "mouth",
-   "items": [
-    "limu",
-    "khun",
-    "loon",
-    "paani"
-   ],
    "from": 1
-  }
- },
- "throbMs": 8000,
- "words": {
-  "limu": {
-   "cook": "fru-02",
-   "audio": "assets/audio/cook-tts/limu.mp3"
-  },
-  "khun": {
-   "cook": "cook-khun",
-   "audio": "assets/audio/cook-tts/khun.mp3"
-  },
-  "loon": {
-   "cook": "spi-16",
-   "audio": "assets/audio/cook-tts/loon.mp3"
-  },
-  "marcha": {
-   "cook": "veg-12",
-   "audio": "assets/audio/cook-tts/marcha.mp3"
-  },
-  "paani": {
-   "cook": "cook-paani",
-   "audio": "assets/audio/cook-tts/paani.mp3"
-  },
-  "dudh": {
-   "cook": "cook-dudh",
-   "audio": "assets/audio/cook-tts/dudh.mp3"
-  },
-  "chai": {
-   "cook": "cook-chai",
-   "audio": "assets/audio/cook-tts/chai.mp3"
-  },
-  "pela": {
-   "cook": "lnk-pela"
-  },
-  "nepoi": {
-   "cook": "lnk-nepoi"
-  },
-  "n1": {
-   "cook": "num-01"
-  },
-  "n2": {
-   "cook": "num-02"
-  },
-  "n3": {
-   "cook": "num-03",
-   "audio": "assets/audio/cook-tts/trae.mp3"
-  }
- },
- "droppers": {
-  "limu": {
-   "item": "fru-02",
-   "face": "sour",
-   "label": "lemon",
-   "drop": "#f7e36a"
-  },
-  "khun": {
-   "item": "cook-khun",
-   "face": "sweet",
-   "label": "sugar",
-   "drop": "#ffffff"
-  },
-  "loon": {
-   "item": "spi-16",
-   "face": "salty",
-   "label": "salt",
-   "drop": "#dfe8ee"
-  },
-  "marcha": {
-   "item": "veg-12",
-   "face": "fire",
-   "label": "chilli",
-   "drop": "#8fd16a"
-  }
- },
- "cups": {
-  "paani": {
-   "item": "cook-paani",
-   "face": "spit",
-   "fill": "#bfe3f5"
-  },
-  "dudh": {
-   "item": "cook-dudh",
-   "face": "moustache",
-   "fill": "#fbfbf6"
-  },
-  "chai": {
-   "item": "cook-chai",
-   "face": "slurp",
-   "fill": "#b9814f"
   }
  },
  "levels": {
   "1": {
-   "tastes": 1,
-   "counts": null,
-   "readAs": "each",
-   "note": "One taste, then one drink. The doctor reads each line as it comes."
+   "pop": 1,
+   "each": 3,
+   "decoys": 2,
+   "upMs": 2600,
+   "maxUp": 3,
+   "_note": "one colour to pop (of three), then the drink with no count; the first play is the guided round (D13)"
   },
   "2": {
-   "tastes": 3,
-   "counts": null,
-   "readAs": "list",
-   "note": "Three tastes in the called order (pela ... ne poi ...), then the drink; read as one list."
-  },
-  "3": {
-   "tastes": 3,
+   "pop": 2,
+   "each": 2,
+   "decoys": 2,
+   "upMs": 2100,
+   "maxUp": 4,
    "counts": [
     1,
     2,
     3
    ],
-   "readAs": "list",
-   "note": "Three tastes, each with a count of drops (ba limu); a count closes when the dropper is put down."
+   "_note": "two colours, the drink with a spoon count (written)"
+  },
+  "3": {
+   "each": 2,
+   "decoys": 3,
+   "upMs": 1500,
+   "maxUp": 4,
+   "counts": [
+    1,
+    2,
+    3
+   ],
+   "_note": "not the colour said (na): pop the other two; faster; heard only (the closed card)"
   }
  },
- "lines": {
+ "colours": {
+  "red": "#d8433f",
+  "green": "#3fa35b",
+  "blue": "#3f6fd8"
+ },
+ "holes": [
+  [
+   320,
+   215
+  ],
+  [
+   400,
+   210
+  ],
+  [
+   480,
+   215
+  ],
+  [
+   305,
+   290
+  ],
+  [
+   375,
+   280
+  ],
+  [
+   445,
+   290
+  ],
+  [
+   495,
+   300
+  ],
+  [
+   345,
+   360
+  ],
+  [
+   440,
+   365
+  ]
+ ],
+ "art": {
+  "_about": "art plan pack clinic-heal-v3 (M2, O2, O3): used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units",
   "tongue": {
-   "english": "Stick out your tongue",
-   "placeholder": true
+   "src": "assets/clinic/closeups/{kind}/tongue.webp",
+   "ready": false,
+   "box": [
+    -150,
+    -40,
+    1100,
+    620
+   ]
+  },
+  "spot-red": {
+   "src": "assets/clinic/heal-v3/spot-red.webp",
+   "ready": false
+  },
+  "spot-green": {
+   "src": "assets/clinic/heal-v3/spot-green.webp",
+   "ready": false
+  },
+  "spot-blue": {
+   "src": "assets/clinic/heal-v3/spot-blue.webp",
+   "ready": false
+  },
+  "budOintment": {
+   "src": "assets/clinic/heal-v3/bud-ointment.webp",
+   "ready": false
   }
  },
  "camera": {

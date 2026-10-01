@@ -1,52 +1,43 @@
 /*
- * H-eye (clinic v2, design sheets part B; CQ11, Zafar's design). A
- * PROTOTYPE on the CB6b close-up (a head close-up: the eyes in the upper
- * half against the wall, the chart on the wall) with flat stand-ins.
+ * H-eye (clinic v2; the 1 Oct play-test D15h, decision 27; CLN-59 to CLN-63).
  *
- * Why: "I can't see well." / "Drops, then let's test your eyes."
- * 1. Drops: N (counted); the side from L2 (the patient's own; English
- *    placeholders until the recording); L3 "cover the other eye" first.
- * 2. The eye test: the chart's rows of pictures get smaller. The patient
- *    reads each row out and the child judges: haa (right) or na (wrong).
- *    Wrong -> another drop, then the patient reads that row again.
- *    L1: one picture per row, and what they say is also written by their mouth.
- *    L2: heard only.  L3: 2-3 pictures per row, read left to right.
- * The words: Cook's foods (limu, dungri, tameto, ...) and household things
- * (bed, table, cup, ball, key: English placeholders, to record). No is *na*.
- * Rows (the words decide): the drop count, the side (L2+), each chart row's judgement.
+ * Why: "I can't see well." / "Drops first, then let's test your eyes."
+ * 1. Drops, in a front close-up of the eyes: only the sore eye is red (CLN-59); pick the dropper and it hangs over
+ *    the sore eye; tap to drop, the count on the dropper (D6). Level 1 closes at the count (D5); from level 2 the
+ *    eye chart in the corner lights up once a drop is in, and tapping it starts the test (P75: no ✓ to guess).
+ * 2. The eye test, in two versions (a data flag, test.version; the lab's ?eyetest=a|b):
+ *    A, the split screen: the patient close up on the left, a hand over the good eye, looking past us; the chart
+ *       big on the right, a frame between them (two players on one screen);
+ *    B, side by side: the patient side-on at the left, a big chart on a stand close by on the right, turned a
+ *       quarter towards both of them.
+ *    The patient reads the lit row aloud and the child says haa or na. The rows highlight and tick like the card's
+ *    rows (the "now" band; gold when judged: CLN-61). After na the dropper hangs over the eye and pulses: one tap,
+ *    then the patient reads that row again (CLN-62, the redrop Zafar liked). No hidden first step (CLN-63): sides
+ *    are said only in the diagnosis (D10).
+ *    L1: one picture a row, what they say also written by them; L2 heard only; L3 two or three pictures a row.
+ * The help never presses haa on a row read wrong (CLN-60): its first row is shown with the right answer, unscored.
+ * Rows (the words decide): the drop count, each chart row's judgement.
+ * Art swaps in by file name: data art.* (the art plan's Y1-Y3 eyes, T1/T2 eye tests, C1/C2 charts) once ready.
  */
 (function (root) {
   "use strict";
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
-  const THINGS = [
-    // each picture's word by its lexicon id (data/clinic/lang.json; Cook's ids): no Kutchi in this file (R5)
-    { id: "lemon", g: "🍋", lex: "fru-02" },
-    { id: "onion", g: "🧅", lex: "veg-02" },
-    { id: "tomato", g: "🍅", lex: "veg-03" },
-    { id: "potato", g: "🥔", lex: "veg-01" },
-    { id: "chilli", g: "🌶️", lex: "veg-12" },
-    { id: "garlic", g: "🧄", lex: "veg-13" },
-    { id: "milk", g: "🥛", lex: "cook-dudh" },
-    { id: "bed", g: "🛏️", lex: "bed" },
-    { id: "table", g: "🪑", lex: "chair" },
-    { id: "cup", g: "☕", lex: "cup" },
-    { id: "ball", g: "⚽", lex: "ball" },
-    { id: "key", g: "🔑", lex: "key" },
-    { id: "spoon", g: "🥄", lex: "cl-chamchi" },
-  ];
+  // the chart's pictures: words the child already knows from Cook, each by its lexicon id, with Cook's icon
+  const THINGS = ["fru-02", "veg-01", "veg-02", "veg-03", "veg-12", "veg-13", "veg-14", "cook-dudh", "cook-paani"].map((lex) => ({ id: lex, lex, icon: `assets/cook/items/icon-${lex}.webp` }));
   const BY = Object.fromEntries(THINGS.map((t) => [t.id, t]));
+  const RID = (i) => `chart-${"abcdef"[i]}`; // a chart row's scored id (the review lists it under the eye-test row)
   const W = (t) => HS.L.w(t.lex);
   const word = (t) => W(t).kutchi || `[${W(t).english}]`;
   const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4 }, per: { 1: [1], 2: [1], 3: [2, 3] }, wrongP: 0.45 };
   const WHY = { problem: "I can't see well.", goal: "Drops first, then let's test your eyes." };
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    cover: { gesture: "tap", then: "tap" },
     drops: { gesture: "tap", then: "tap" },
+    chart: { gesture: "tap" },
     read: { gesture: "tap" },
-    redrop: { gesture: "tap", then: "tap" },
+    redrop: { gesture: "tap" },
   };
 
   function plan(level, rng) {
@@ -60,7 +51,10 @@
     for (let r = 0; r < K.rows[L]; r++) {
       const n = HS.pick(K.per[L], rng);
       const pics = [];
-      for (let k = 0; k < n; k++) pics.push(pool[pi++ % pool.length].id);
+      while (pics.length < n) {
+        const id = pool[pi++ % pool.length].id;
+        if (!pics.includes(id)) pics.push(id);
+      }
       const wrong = rng() < K.wrongP;
       let said = pics.slice();
       if (wrong) {
@@ -73,64 +67,261 @@
       }
       chart.push({ pics, said, wrong });
     }
+    const Lg = HS.L;
     const steps = [];
-    steps.push({ id: "drops", kind: "drops", count: drops, side, row: Object.assign({ id: "drops" }, HS.L.show(HS.L.join(["cl-drops", ",", HS.L.count(drops)]), { cap: true })) });
+    steps.push({ id: "drops", kind: "drops", count: drops, side, row: Object.assign({ id: "drops" }, Lg.show(Lg.join(["cl-drops", ",", Lg.count(drops)]), { cap: true })) });
     chart.forEach((c, i) => steps.push({ id: `read${i}`, kind: "read", row: i, rowDef: c }));
     const rows = [{ id: "drops-count", options: K.drops[L], answer: drops }];
-    if (side) rows.push({ id: "drops-side", options: ["left", "right"], answer: side, placeholder: true });
-    chart.forEach((c, i) => rows.push({ id: `read${i}`, options: [true, false], answer: !c.wrong }));
-    const words = [HS.L.num(drops), HS.L.w(HS.L.noId())];
-    chart.forEach((c) => c.pics.forEach((id) => words.push(W(BY[id]))));
+    // each chart row's judgement: "chart-a", "chart-b" ... (the end review lists them under the card's eye-test row, D14)
+    chart.forEach((c, i) => rows.push({ id: `chart-${"abcdef"[i]}`, options: [true, false], answer: !c.wrong }));
+    const words = [Lg.num(drops), Lg.w(Lg.yesId()), Lg.w(Lg.noId())];
+    const seen = new Set();
+    chart.forEach((c) => c.pics.forEach((id) => !seen.has(id) && seen.add(id) && words.push(W(BY[id]))));
     return { level: L, side, steps, rows, chart, words };
   }
 
   function mount(stage, ctx) {
+    const data = ctx.data || {};
     const P = plan(ctx.level, ctx.rng);
     const S = HS.make(stage, ctx, { place: "head", game: "eye" });
     const { s } = S;
-    const st = { i: 0, drops: 0, dropSide: null, covered: null, judged: {}, over: false, busy: false, awaiting: null, redrop: false };
+    const Kit0 = root.Clinic && root.Clinic.Kit;
+    const url = (u) => (Kit0 && Kit0.url ? Kit0.url(u) : u);
+    const fast = () => !!(Kit0 && Kit0.fast);
+    const kind = S.kind || (ctx.patient && ctx.patient.kind) || "girl";
+    const art = (key) => {
+      const a = data.art && data.art[key];
+      return a && a.ready && a.src ? Object.assign({}, a, { src: a.src.replace("{kind}", kind) }) : null;
+    };
+    // the test's version: the data's flag, or the lab's ?eyetest=a|b (both prototyped, D15h)
+    const version = (() => {
+      let v = (data.test && data.test.version) || "A";
+      try {
+        const q = new URLSearchParams(root.location.search).get("eyetest");
+        if (q) v = q;
+      } catch (e) {
+        /* no page */
+      }
+      return String(v).toUpperCase() === "B" ? "B" : "A";
+    })();
+    const st = { i: 0, drops: 0, judged: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false };
     const cur = () => P.steps[st.i] || null;
-    const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
-    ctx.card.setRows(P.steps.filter((x) => x.row && x.kind === "drops").map((x) => x.row).concat([{ id: "chart", kutchi: null, english: "The eye test", placeholder: true }]));
+    ctx.card.setRows(P.steps.filter((x) => x.kind === "drops").map((x) => x.row).concat([Object.assign({}, HS.L.w("eye-test", { cap: true }), { id: "chart" })]));
+    const skin = S.skin || "#c99a74";
+    const skinDark = S.skinDark || "#a77b58";
+    const hair = S.hairCol || "#2b1d16";
+    const clothes = S.clothes || "#3f7fcf";
+    // the sore eye: the patient's own side from the diagnosis (their right is on our left), else their right
+    const soreSide = ctx.side === "left" ? "left" : "right";
 
-    // the eyes, big, on the left; the patient's left eye is on OUR right
-    const EY = { right: { x: 150, y: 170 }, left: { x: 340, y: 170 } };
-    s("rect", { x: 35, y: 70, width: 420, height: 210, rx: 100, fill: "#e2b08a" }, S.layer);
-    const eyeEls = {};
-    ["right", "left"].forEach((sd) => {
-      const e = EY[sd];
-      s("ellipse", { cx: e.x, cy: e.y, rx: 80, ry: 50, fill: "#fff", stroke: "#8a5a3a", "stroke-width": 4 }, S.layer);
-      s("circle", { cx: e.x, cy: e.y, r: 28, fill: "#6a4a2a" }, S.layer);
-      s("circle", { cx: e.x, cy: e.y, r: 12, fill: "#1a1010" }, S.layer);
-      s("path", { d: `M${e.x - 85} ${e.y - 60} Q${e.x} ${e.y - 90} ${e.x + 85} ${e.y - 60}`, stroke: "#3b2415", "stroke-width": 10, fill: "none", "stroke-linecap": "round" }, S.layer);
-      eyeEls[sd] = s("ellipse", { cx: e.x, cy: e.y, rx: 80, ry: 50, fill: "#f2a0a0", opacity: 0.35 }, S.layer);
+    const tween = (ms, fn) =>
+      new Promise((res) => {
+        if (fast() || !root.requestAnimationFrame) {
+          fn(1);
+          return res();
+        }
+        const t0 = Date.now();
+        const step = () => {
+          if (st.gone) return res();
+          const u = Math.min(1, (Date.now() - t0) / ms);
+          fn(u);
+          if (u < 1) root.requestAnimationFrame(step);
+          else res();
+        };
+        step();
+      });
+
+    /* ---------------- 1. the drops: the eyes, front on (Y1/Y2/Y3; a drawn stand-in until ready) ---------------- */
+    const dropsG = s("g", {}, S.layer);
+    const EY = { right: { x: 255, y: 250 }, left: { x: 545, y: 250 } }; // the patient's own sides (facing us)
+    const sore = EY[soreSide];
+    // Y2 has the sore eye on the viewer's right (the patient's left): mirrored for the patient's right
+    const eyesArt = art("eyesSore");
+    let soreEl = null;
+    let blinkEls = [];
+    if (eyesArt) s("image", { href: url(eyesArt.src), x: eyesArt.box[0], y: eyesArt.box[1], width: eyesArt.box[2], height: eyesArt.box[3], preserveAspectRatio: "xMidYMid slice", transform: soreSide === "right" ? "translate(800 0) scale(-1 1)" : null }, dropsG);
+    else {
+      s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: skin }, dropsG);
+      s("path", { d: "M-400 -300 L1200 -300 L1200 40 Q400 -20 -400 40Z", fill: hair }, dropsG); // the hairline
+      s("path", { d: "M400 300 Q382 400 360 452 Q400 472 440 452 Q418 400 400 300Z", fill: skinDark, opacity: 0.35 }, dropsG); // the nose
+      ["right", "left"].forEach((sd) => {
+        const e = EY[sd];
+        const isSore = sd === soreSide;
+        s("path", { d: `M${e.x - 105} ${e.y - 92} Q${e.x} ${e.y - 132} ${e.x + 105} ${e.y - 88}`, stroke: hair, "stroke-width": 16, fill: "none", "stroke-linecap": "round" }, dropsG); // the brow
+        if (isSore) s("ellipse", { cx: e.x, cy: e.y, rx: 112, ry: 72, fill: "#e98f8f", opacity: 0.55 }, dropsG); // puffy pink lids
+        s("ellipse", { cx: e.x, cy: e.y, rx: 92, ry: 54, fill: "#fff", stroke: "#7a4a32", "stroke-width": 4 }, dropsG);
+        const red = s("ellipse", { cx: e.x, cy: e.y, rx: 90, ry: 52, fill: "#f08a8a", opacity: isSore ? 0.55 : 0 }, dropsG);
+        if (isSore) soreEl = red;
+        s("circle", { cx: e.x, cy: e.y, r: 34, fill: "#6a4a2a" }, dropsG);
+        s("circle", { cx: e.x, cy: e.y, r: 15, fill: "#1a1010" }, dropsG);
+        s("circle", { cx: e.x - 10, cy: e.y - 12, r: 7, fill: "#fff" }, dropsG);
+        if (isSore) s("path", { d: `M${e.x - 92} ${e.y - 10} Q${e.x} ${e.y - 62} ${e.x + 92} ${e.y - 10} L${e.x + 92} ${e.y - 54} L${e.x - 92} ${e.y - 54}Z`, fill: skin, opacity: 0.9 }, dropsG); // the heavy lid
+        blinkEls.push(s("ellipse", { cx: e.x, cy: e.y, rx: 96, ry: 58, fill: skin, opacity: 0 }, dropsG));
+      });
+    }
+    // the dropper (the clinic v2 eye drops), hanging over the sore eye once picked
+    const dropper = s("g", { opacity: 0 }, S.fx);
+    s("image", { href: url("assets/clinic/items-v2/eye-drops.webp"), x: -30, y: -128, width: 60, height: 118, transform: "rotate(180 0 -69)" }, dropper);
+    const ring = s("circle", { cx: 0, cy: 34, r: 40, fill: "none", stroke: "#f0b43c", "stroke-width": 6, opacity: 0 }, dropper); // round the eye
+    let dropperAt = null;
+    let bob = 0;
+    const showDropper = (at, pulse) => {
+      dropperAt = at;
+      dropper.setAttribute("opacity", at ? 1 : 0);
+      ring.setAttribute("opacity", 0);
+      if (!at) return;
+      const id = ++bob;
+      const t0 = Date.now();
+      const step = () => {
+        if (id !== bob || st.gone || !dropperAt) return;
+        const t = (Date.now() - t0) / 1000;
+        dropper.setAttribute("transform", `translate(${at.x} ${at.y - 34 + Math.sin(t * 3) * 4})`);
+        if (pulse) ring.setAttribute("opacity", 0.35 + 0.35 * Math.sin(t * 6));
+        if (root.requestAnimationFrame && !fast()) root.requestAnimationFrame(step);
+      };
+      step();
+    };
+    const fallDrop = (at) => {
+      const d = s("path", { d: "M0 -12 Q8 0 0 6 Q-8 0 0 -12Z", fill: "#7cc4f0", transform: `translate(${at.x} ${at.y - 40})` }, S.fx);
+      return tween(320, (u) => d.setAttribute("transform", `translate(${at.x} ${at.y - 40 + 38 * u})`)).then(() => d.remove());
+    };
+    const blink = () => {
+      blinkEls.forEach((b) => b.setAttribute("opacity", 1));
+      ctx.after(fast() ? 30 : 220, () => blinkEls.forEach((b) => b.setAttribute("opacity", 0)));
+    };
+    // the mini chart in the corner: from level 2 it starts the test (lit once a drop is in)
+    const MINI = { x: 640, y: 24, w: 88, h: 128 };
+    const miniG = s("g", { opacity: 0 }, dropsG);
+    s("rect", { x: MINI.x - 6, y: MINI.y - 6, width: MINI.w + 12, height: MINI.h + 12, rx: 12, fill: "#c8a46e" }, miniG);
+    s("rect", { x: MINI.x, y: MINI.y, width: MINI.w, height: MINI.h, rx: 8, fill: "#fff" }, miniG);
+    [16, 13, 10, 8].forEach((r, k) => {
+      const y = MINI.y + 22 + k * 28;
+      [-1, 0, 1].slice(0, 3 - (k > 1 ? 1 : 0)).forEach((j) => s("circle", { cx: MINI.x + MINI.w / 2 + j * (r * 2.2), cy: y, r: r * 0.7, fill: ["#e2b23b", "#d9534f", "#5aa05a", "#8a5a3a"][(k + j + 3) % 4] }, miniG));
     });
-    const coverG = s("g", {}, S.layer);
+    const miniRing = s("rect", { x: MINI.x - 12, y: MINI.y - 12, width: MINI.w + 24, height: MINI.h + 24, rx: 16, fill: "none", stroke: "#f0b43c", "stroke-width": 6, opacity: 0 }, miniG);
+    let miniOn = false;
+    const lightMini = (on) => {
+      miniOn = on;
+      miniG.setAttribute("opacity", on ? 1 : 0);
+      const t0 = Date.now();
+      const step = () => {
+        if (!miniOn || st.gone) return miniRing.setAttribute("opacity", 0);
+        miniRing.setAttribute("opacity", 0.4 + 0.4 * Math.sin(((Date.now() - t0) / 1000) * 5));
+        if (root.requestAnimationFrame && !fast()) root.requestAnimationFrame(step);
+      };
+      step();
+    };
 
-    // the chart on the wall, right
-    const CH = { x: 490, y: 10, w: 190, h: 320 }; // clear of the tool shelf on the right
-    s("rect", { x: CH.x, y: CH.y, width: CH.w, height: CH.h, rx: 10, fill: "#fff", stroke: "#8a7a6c", "stroke-width": 4 }, S.layer);
-    const chartG = s("g", {}, S.layer);
-    const rowY = (i) => CH.y + 50 + i * (CH.h - 60) / P.chart.length;
-    // shrinking rows, and never wider than the chart (2-3 pictures a row at L3)
-    const size = (i) => Math.min(58 - i * 10, (CH.w - 24) / (P.chart[i].pics.length * 1.35));
+    /* ---------------- 2. the test: version A (split screen) or B (side by side) ---------------- */
+    const testG = s("g", { opacity: 0 }, S.layer);
+    const chartG = s("g", {}, testG);
+    let CH; // the chart's board, in its own (unturned) units
+    let readEye; // where the patient's open eye is (the redrop)
+    let chartXf = ""; // B: the quarter turn
+    if (version === "A") {
+      const a = art("testA");
+      // the left panel: the patient, head and shoulders, a hand over the good eye, looking past us to our right
+      const pan = s("g", {}, testG);
+      s("rect", { x: -400, y: -300, width: 790, height: 1100, fill: "#e9dcc6" }, pan);
+      if (a) s("image", { href: url(a.src), x: a.box[0], y: a.box[1], width: a.box[2], height: a.box[3], preserveAspectRatio: "xMidYMid slice" }, pan);
+      else {
+        s("path", { d: "M40 520 Q60 380 200 360 Q340 380 360 520Z", fill: clothes }, pan); // shoulders
+        s("rect", { x: 175, y: 300, width: 50, height: 70, fill: skinDark }, pan); // neck
+        s("ellipse", { cx: 200, cy: 205, rx: 108, ry: 124, fill: skin }, pan); // head
+        s("path", { d: "M92 200 Q90 80 200 76 Q310 80 308 200 Q290 120 200 122 Q110 120 92 200Z", fill: hair }, pan);
+        // the open eye (the sore one), looking to our right
+        s("ellipse", { cx: 160, cy: 205, rx: 26, ry: 16, fill: "#fff", stroke: "#7a4a32", "stroke-width": 3 }, pan);
+        s("circle", { cx: 172, cy: 205, r: 11, fill: "#3b2415" }, pan);
+        s("path", { d: "M128 178 Q160 166 190 176", stroke: hair, "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, pan);
+        // the hand over the other eye: a palm and four fingers, the thumb along the cheek
+        const hand = s("g", {}, pan);
+        [[214, 150, -18], [236, 146, -8], [258, 150, 4], [278, 160, 16]].forEach(([x, y, a]) => s("rect", { x: x - 11, y: y - 30, width: 22, height: 62, rx: 11, fill: skin, stroke: skinDark, "stroke-width": 3, transform: `rotate(${a} ${x} ${y + 20})` }, hand));
+        s("ellipse", { cx: 248, cy: 214, rx: 44, ry: 48, fill: skin, stroke: skinDark, "stroke-width": 3 }, hand);
+        s("rect", { x: 230, y: 160, width: 50, height: 40, fill: skin }, hand); // the fingers' join
+        s("path", { d: "M212 236 Q200 262 214 284", stroke: skinDark, "stroke-width": 14, "stroke-linecap": "round", fill: "none", opacity: 0.25 }, hand);
+        s("path", { d: "M262 262 Q290 300 300 340 L250 350 Q246 300 230 262Z", fill: skin }, hand); // the wrist
+        s("path", { d: "M176 270 Q200 284 222 270", stroke: "#7a3a2a", "stroke-width": 4, fill: "none", "stroke-linecap": "round" }, pan); // a small smile
+      }
+      readEye = a && a.eye ? { x: a.eye[0], y: a.eye[1] } : { x: 160, y: 205 };
+      // the split: a frame between the two halves
+      s("rect", { x: 392, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
+      s("rect", { x: 406, y: -300, width: 600, height: 1100, fill: "#f4ecdf" }, testG);
+      CH = { x: 450, y: 18, w: 262, h: 352 };
+      testG.appendChild(chartG); // the chart over both halves' ground
+    } else {
+      const b = art("testB");
+      const pan = s("g", {}, testG);
+      s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: "#eadfcb" }, pan);
+      s("rect", { x: -400, y: 430, width: 1600, height: 400, fill: "#d9c7a8" }, pan); // the floor
+      if (b) s("image", { href: url(b.src), x: b.box[0], y: b.box[1], width: b.box[2], height: b.box[3], preserveAspectRatio: "xMidYMid meet" }, pan);
+      else {
+        // side-on, facing right, sitting up, looking at the chart
+        s("path", { d: "M70 520 L80 330 Q90 290 150 286 Q215 290 222 340 L236 520Z", fill: clothes }, pan); // body
+        s("rect", { x: 140, y: 236, width: 40, height: 60, fill: skinDark }, pan); // neck
+        s("path", { d: "M110 160 Q112 82 190 80 Q262 84 262 160 Q264 182 276 196 Q262 206 260 222 Q256 252 222 262 Q170 270 132 248 Q106 222 110 160Z", fill: skin }, pan); // head in profile
+        s("path", { d: "M106 170 Q96 72 190 70 Q262 72 266 132 Q226 104 182 112 Q160 150 150 200 Q126 210 106 170Z", fill: hair }, pan);
+        s("ellipse", { cx: 160, cy: 186, rx: 14, ry: 17, fill: skinDark, opacity: 0.5 }, pan); // ear
+        s("path", { d: "M222 150 Q234 146 244 150", stroke: hair, "stroke-width": 6, fill: "none", "stroke-linecap": "round" }, pan);
+        s("path", { d: "M226 166 Q238 160 248 166 Q238 172 226 166Z", fill: "#fff", stroke: "#7a4a32", "stroke-width": 2 }, pan);
+        s("circle", { cx: 242, cy: 166, r: 5, fill: "#3b2415" }, pan);
+        s("path", { d: "M240 226 Q252 230 258 224", stroke: "#7a3a2a", "stroke-width": 3, fill: "none", "stroke-linecap": "round" }, pan);
+      }
+      readEye = b && b.eye ? { x: b.eye[0], y: b.eye[1] } : { x: 238, y: 166 };
+      // the chart on its stand, close by, turned a quarter towards both of them
+      CH = { x: 400, y: 14, w: 262, h: 352 };
+      const legs = s("g", {}, testG);
+      s("path", { d: `M${CH.x + 60} ${CH.y + CH.h - 10} L${CH.x + 20} 498 M${CH.x + CH.w - 50} ${CH.y + CH.h - 10} L${CH.x + CH.w - 10} 498 M${CH.x + CH.w / 2} ${CH.y + CH.h - 10} L${CH.x + CH.w / 2 + 6} 470`, stroke: "#a9824d", "stroke-width": 10, "stroke-linecap": "round" }, legs);
+      testG.appendChild(chartG);
+      chartXf = `matrix(0.86 0.045 0 1 ${CH.x * 0.14 + 30} ${-CH.x * 0.045})`; // the left edge further away: a quarter turn
+      chartG.setAttribute("transform", chartXf);
+    }
+    const chartArt = art(version === "A" ? "chartFront" : "chartTurned");
+    // the board: a white chart in a light-wood frame, an eye at the top, rows of pictures getting smaller
+    if (chartArt) s("image", { href: url(chartArt.src), x: CH.x - 14, y: CH.y - 14, width: CH.w + 28, height: CH.h + 28, preserveAspectRatio: "none" }, chartG);
+    else {
+      s("rect", { x: CH.x - 14, y: CH.y - 14, width: CH.w + 28, height: CH.h + 28, rx: 16, fill: "#c8a46e", stroke: "#a9824d", "stroke-width": 3 }, chartG);
+      s("rect", { x: CH.x, y: CH.y, width: CH.w, height: CH.h, rx: 10, fill: "#fffefb" }, chartG);
+      s("path", { d: `M${CH.x + CH.w / 2 - 26} ${CH.y + 28} Q${CH.x + CH.w / 2} ${CH.y + 8} ${CH.x + CH.w / 2 + 26} ${CH.y + 28} Q${CH.x + CH.w / 2} ${CH.y + 48} ${CH.x + CH.w / 2 - 26} ${CH.y + 28}Z`, fill: "#fff", stroke: "#4a6f98", "stroke-width": 4 }, chartG);
+      s("circle", { cx: CH.x + CH.w / 2, cy: CH.y + 28, r: 8, fill: "#4a6f98" }, chartG);
+    }
+    const rowsG = s("g", {}, chartG);
+    const nR = P.chart.length;
+    const top = CH.y + 58;
+    const SIZES = [74, 62, 52, 44].slice(0, nR);
+    const gap = (CH.h - 70 - SIZES.reduce((a, b) => a + b, 0)) / nR;
+    const rowBox = (i) => {
+      let y = top;
+      for (let k = 0; k < i; k++) y += SIZES[k] + gap;
+      const sz = Math.min(SIZES[i], (CH.w - 36) / (P.chart[i].pics.length * 1.12));
+      return { y, h: SIZES[i] + gap * 0.6, sz };
+    };
+    const CHECK = (x, y, r, g) => {
+      const c = s("g", { transform: `translate(${x} ${y})` }, g);
+      s("circle", { r, fill: "#c9962e" }, c);
+      s("path", { d: `M${-r * 0.45} ${r * 0.04} L${-r * 0.14} ${r * 0.33} L${r * 0.44} ${-r * 0.28}`, fill: "none", stroke: "#fff", "stroke-width": r * 0.25, "stroke-linecap": "round", "stroke-linejoin": "round" }, c);
+    };
     const drawChart = () => {
-      S.clear(chartG);
+      S.clear(rowsG);
       P.chart.forEach((c, i) => {
-        const y = rowY(i);
+        const b = rowBox(i);
         const now = cur() && cur().kind === "read" && cur().row === i;
-        if (now) s("rect", { x: CH.x + 6, y: y - size(i) * 0.95, width: CH.w - 12, height: size(i) * 1.25, rx: 8, fill: "#fff3c8" }, chartG);
+        const done = RID(i) in st.judged;
+        // the card's own looks (CLN-61): "now" is the soft band, a judged row has the gold outline and check
+        if (now) s("rect", { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3 }, rowsG);
+        if (done) {
+          s("rect", { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "none", stroke: "#c9962e", "stroke-width": 4 }, rowsG);
+          CHECK(CH.x + CH.w - 12, b.y + 4, 11, rowsG);
+        }
         c.pics.forEach((id, k) => {
-          const t = s("text", { x: CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * size(i) * 1.15, y, "font-size": size(i), "text-anchor": "middle" }, chartG);
-          t.textContent = BY[id].g;
+          const x = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * 1.12 - b.sz / 2;
+          s("image", { href: url(BY[id].icon), x, y: b.y + (b.h - b.sz) / 2 - 2, width: b.sz, height: b.sz, opacity: done || now || !cur() || cur().kind !== "read" || cur().row < i ? 1 : 0.85 }, rowsG);
         });
       });
     };
     drawChart();
 
-    // the judging buttons, by the chart
+    // the judging pills, under the chart: the shared answer pills (UX 15), one pill style everywhere
     const judgeBox = S.h("div", "hs-judge", S.root);
-    // haa / na: the shared answer pills (UX 15), one pill style everywhere
     const NB = root.NjgButtons;
     const yesNo = { yes: HS.L.w(HS.L.yesId()).kutchi, no: HS.L.w(HS.L.noId()).kutchi };
     const pills = NB ? NB.pills(judgeBox, [{ id: "yes", html: yesNo.yes }, { id: "no", html: yesNo.no }], (id) => onJudge(id === "yes")) : null;
@@ -149,7 +340,21 @@
     };
     const haaBtn = mk("yes", yesNo.yes);
     const naBtn = mk("no", yesNo.no);
-    const showJudge = (on) => judgeBox.classList.toggle("hidden", !on);
+    // the pills sit under the chart (not across the split): their centre follows the chart's on screen
+    const placeJudge = () => {
+      const m = chartG.getScreenCTM && chartG.getScreenCTM();
+      if (!m) return;
+      const p = S.svg.createSVGPoint();
+      p.x = CH.x + CH.w / 2;
+      p.y = CH.y + CH.h;
+      const q = p.matrixTransform(m);
+      judgeBox.style.left = `${q.x - S.root.getBoundingClientRect().left}px`;
+      judgeBox.style.width = "max-content"; // side by side, never stacked over the chart
+    };
+    const showJudge = (on) => {
+      judgeBox.classList.toggle("hidden", !on);
+      if (on) placeJudge();
+    };
     showJudge(false);
 
     const judge = (id, ok, detail) => {
@@ -157,30 +362,41 @@
       st.judged[id] = ok;
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
+    const toTest = async () => {
+      // the camera pulls back from the eyes to the test (a cross-fade; the art batch makes it a cut, art plan 2.1)
+      st.busy = true;
+      showDropper(null);
+      lightMini(false);
+      S.tools([], null);
+      await tween(450, (u) => {
+        dropsG.setAttribute("opacity", 1 - u);
+        testG.setAttribute("opacity", u);
+      });
+      st.view = "test";
+      st.busy = false;
+    };
     const readRow = async (i, again) => {
       const c = P.chart[i];
       const said = again ? c.pics : c.said;
       const line = { kutchi: said.map((id) => word(BY[id])).join(", "), english: said.map((id) => W(BY[id]).english).join(", ") };
-      st.busy = true;
       showJudge(false);
       S.face("read");
       if (P.level === 1) S.said(said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", "));
       if (again) {
+        st.busy = true;
         await S.say(line, "patient");
         S.face("neutral");
         st.busy = false;
-        // read right after the drop: on to the next row
         S.said(null);
         return advance();
       }
       // the judging pills come up as the reading starts: input never waits for the talking (13i)
-      st.busy = false;
       st.awaiting = { i, again, wrong: c.wrong };
       showJudge(true);
       // CLN-60: the first-time help shows the RIGHT answer for this row (never haa on a row read wrong); the row it
       // shows is taught, not scored
       if (i === 0) {
-        if (S.cuesOn && !again) P.rows = P.rows.filter((r) => r.id !== "read0");
+        if (S.cuesOn && !again) P.rows = P.rows.filter((r) => r.id !== RID(0));
         S.cue("read", CUES.read, c.wrong ? naBtn : haaBtn);
       }
       S.say(line, "patient").then(() => S.face("neutral"));
@@ -188,15 +404,17 @@
     const onJudge = (saysRight) => {
       if (!st.awaiting || st.busy || st.over) return;
       const { i, wrong } = st.awaiting;
-      judge(`read${i}`, saysRight === !wrong, saysRight ? "yes" : "no");
+      judge(RID(i), saysRight === !wrong, saysRight ? yesNo.yes : yesNo.no);
       st.awaiting = null;
       showJudge(false);
       S.said(null);
+      S.uncue();
       drawChart();
       if (!saysRight) {
-        // another drop, then they read it again
+        // CLN-62: the dropper hangs over the eye and pulses: one tap, then they read the row again
         st.redrop = { i };
-        S.cue("redrop", CUES.redrop, S.toolEls.drops);
+        showDropper(readEye, true);
+        S.cue("redrop", CUES.redrop, { x: readEye.x, y: readEye.y - 50, r: 50 });
         return;
       }
       advance();
@@ -207,28 +425,24 @@
       if (!c) return finish();
       open();
     };
-    const open = () => {
+    const open = async () => {
       const c = cur();
       drawChart();
-      if (c.kind === "cover") return S.cue("cover", CUES.cover, S.toolEls.cover);
       if (c.kind === "drops") {
         ctx.card.now("drops");
-        return S.cue("drops", CUES.drops, S.toolEls.drops);
+        return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: sore.x, y: sore.y, r: 80 } });
       }
       if (c.kind === "read") {
-        if (c.row === 0) {
-          ctx.card.now("chart");
-          S.uncue();
-        }
+        if (st.view !== "test") await toTest();
+        if (c.row === 0) ctx.card.now("chart");
         readRow(c.row, false);
       }
     };
     const closeDrops = () => {
       const c = cur();
+      if (!c || c.kind !== "drops") return;
       judge("drops-count", st.drops === c.count, `${st.drops} of ${c.count}`);
-      if (c.side) judge("drops-side", st.dropSide === c.side, st.dropSide || "none");
       ctx.card.tick("drops");
-      S.count(null);
       S.uncue();
       advance();
     };
@@ -236,78 +450,62 @@
       st.over = true;
       S.uncue();
       showJudge(false);
+      showDropper(null);
       ctx.card.tick("chart");
       ctx.card.now(null);
       S.face("happy");
       S.say("I can see!", "patient");
-      S.markSeen();
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 
-    const tools = [{ id: "drops", glyph: "💧" }];
-    // D10: no "cover the other eye" step (sides only in the diagnosis), so no cover tool
-    S.tools(tools, () => {});
-    const eyeAt = (p) => ["left", "right"].find((sd) => Math.hypot(p.x - EY[sd].x, (p.y - EY[sd].y) * 1.4) < 90);
-    const dropIn = (sd) => {
-      const e = EY[sd];
-      const d = s("ellipse", { cx: e.x, cy: e.y - 90, rx: 8, ry: 12, fill: "#6bb7ea" }, S.fx);
-      d.animate([{ transform: "translateY(0)" }, { transform: "translateY(90px)", opacity: 0.2 }], { duration: 400, fill: "forwards" });
-      ctx.after(450, () => d.remove());
+    S.tools([{ id: "drops", glyph: "💧", img: "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
+      if (id === "drops" && cur() && cur().kind === "drops") showDropper(sore, false);
+    });
+    const dropIn = async (at) => {
+      await fallDrop(at);
       S.face("wince", 400);
-      eyeEls[sd].setAttribute("opacity", 0.1);
+      blink();
     };
     ctx.on(S.svg, "pointerdown", (e) => {
       if (!S.ready || st.over || st.busy) return;
       const p = S.pt(e);
-      const sd = eyeAt(p);
       const c = cur();
-      if (!sd || !c) return;
-      if (c.kind === "cover" && S.sel === "cover") {
-        st.covered = sd;
-        s("circle", { cx: EY[sd].x, cy: EY[sd].y, r: 70, fill: "#8a8f98" }, coverG);
-        st.busy = true;
-        ctx.after(200, () => {
-          st.busy = false;
-          advance();
-        });
-        return;
-      }
-      if (S.sel !== "drops") return;
+      if (!c) return;
       if (st.redrop) {
-        dropIn(sd);
+        if (Math.hypot(p.x - readEye.x, p.y - (readEye.y - 40)) > 90) return;
         const i = st.redrop.i;
         st.redrop = null;
         S.uncue();
         st.busy = true;
-        ctx.after(fast() ? 100 : 500, () => {
+        dropIn(readEye).then(() => {
+          showDropper(null);
           st.busy = false;
           readRow(i, true);
         });
         return;
       }
       if (c.kind !== "drops") return;
-      if (st.covered === sd) return; // the covered eye
+      // from level 2 the lit chart in the corner starts the test
+      if (miniOn && p.x > MINI.x - 16 && p.x < MINI.x + MINI.w + 16 && p.y > MINI.y - 16 && p.y < MINI.y + MINI.h + 16) {
+        S.did();
+        return closeDrops();
+      }
+      if (S.sel !== "drops") return;
+      if (Math.hypot(p.x - sore.x, (p.y - sore.y) * 1.3) > 140 && Math.hypot(p.x - sore.x, p.y - (sore.y - 70)) > 70) return;
       st.drops++;
-      st.dropSide = st.dropSide || sd;
-      if (st.dropSide !== sd) st.dropSide = "both";
-      S.count(st.drops);
       ctx.tally("drops", st.drops);
-      dropIn(sd);
+      if (ctx.level >= 3) S.count(st.drops);
+      dropIn(sore);
+      if (soreEl) soreEl.setAttribute("opacity", Math.max(0.08, 0.55 - 0.18 * st.drops));
       // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
       if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900);
+      if (P.level >= 2 && !miniOn) {
+        lightMini(true);
+        S.cue("chart", CUES.chart, { x: MINI.x + MINI.w / 2, y: MINI.y + MINI.h / 2, r: 70 });
+      }
       st.busy = true;
       ctx.after(fast() ? 60 : 250, () => (st.busy = false));
     });
-    const btn = ctx.button(
-      "✓",
-      () => {
-        const c = cur();
-        if (!S.ready || st.over || st.busy || !c || c.kind !== "drops" || !st.drops) return;
-        closeDrops();
-      },
-      "done"
-    );
-    btn.setAttribute("aria-label", "Next");
 
     return {
       async start() {
@@ -315,6 +513,9 @@
         open();
       },
       destroy() {
+        st.gone = true;
+        bob++;
+        miniOn = false;
         S.destroy();
       },
       debug: {
@@ -324,6 +525,7 @@
         get cues() {
           return S.cueLog.slice();
         },
+        version,
         next() {
           if (!S.ready) return { do: "wait" };
           const c = cur();
@@ -332,13 +534,10 @@
             const r = S.toolEls[id].getBoundingClientRect();
             return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: id };
           };
-          const eye = (sd, what) => Object.assign({ do: "tap", what }, S.client(EY[sd].x, EY[sd].y));
-          const want = P.side || "right";
-          if (st.redrop) return S.sel !== "drops" ? tool("drops") : eye(want, "redrop");
-          if (c.kind === "cover") return S.sel !== "cover" ? tool("cover") : eye(want === "left" ? "right" : "left", "cover");
+          if (st.redrop) return Object.assign({ do: "tap", what: "redrop" }, S.client(readEye.x, readEye.y - 30));
           if (c.kind === "drops") {
-            if (st.drops >= c.count) return { do: "button" };
-            return S.sel !== "drops" ? tool("drops") : eye(want, "drop");
+            if (st.drops >= c.count) return P.level >= 2 ? Object.assign({ do: "tap", what: "chart" }, S.client(MINI.x + MINI.w / 2, MINI.y + MINI.h / 2)) : { do: "wait" };
+            return S.sel !== "drops" ? tool("drops") : Object.assign({ do: "tap", what: "drop" }, S.client(sore.x, sore.y));
           }
           if (st.awaiting) {
             const b = (st.awaiting.wrong ? naBtn : haaBtn).getBoundingClientRect();

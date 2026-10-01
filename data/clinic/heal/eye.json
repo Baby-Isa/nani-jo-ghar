@@ -1,5 +1,5 @@
 {
- "_about": "Clinic heal game `eye` (H12 Drops and the chart; docs/archive/clinic/clinic-design-v1.md Q4, the quality pass). Levels are data. Real Kutchi only where the family or Cook already has it (numbers, wadho/nindho, nar, the fruit and veg nouns from data/content.json, which are drafts); everything in [EN: ...] is a grey placeholder. Sides are always the patient's own (they face you: their left eye is on the right of your screen). The tray ids are data/clinic.json's (drops-green = the drops in green, pointer, patch); the patch rides the tray at every level, but only level 3 has a patch row (at levels 1-2 it is ungraded pirate fun).",
+ "_about": "H-eye (1 Oct play-test D15h, decision 27; js/clinic/heal/games/eye.js): drops in a front close-up (only the sore eye red, the dropper over it), then the eye test in two versions (test.version: A the split screen, B side by side with the chart on a stand; the lab's ?eyetest=a|b picks either). Chart rows light and tick like card rows; after na the dropper hangs over the eye and pulses. The chart's pictures are Cook's icons for words the child knows (data/clinic/lang.json ids). Sides are said only in the diagnosis (D10). art: the art plan's Y1-Y3, T1, T2, C1, C2 swap in by file name once ready. The older keys below (numbers, chart_nouns, levels) are the first design's notes, kept for Mum's word list; the game's levels are in its code (K).",
  "id": "eye",
  "ailments": {
   "sore-eye": {
@@ -299,5 +299,63 @@
  "camera": {
   "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
   "wide": "front"
+ },
+ "test": {
+  "version": "A",
+  "_about": "A = the split screen (the patient close up covering one eye, looking over our shoulder; the chart on the right); B = the patient side-on at the left, a big chart on a stand at the right, turned a quarter towards both (D15h: both prototyped for Zafar)"
+ },
+ "art": {
+  "_about": "art plan pack clinic-heal-v3: used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; eye = where the open eye is (the redrop)",
+  "eyesSore": {
+   "src": "assets/clinic/closeups/{kind}/eyes-sore.webp",
+   "ready": false,
+   "box": [
+    -150,
+    -40,
+    1100,
+    620
+   ],
+   "_note": "Y2: the sore eye on the viewer's right (the patient's left): the code mirrors it for the other side"
+  },
+  "eyesClosed": {
+   "src": "assets/clinic/closeups/{kind}/eyes-closed.webp",
+   "ready": false
+  },
+  "testA": {
+   "src": "assets/clinic/closeups/{kind}/eyetest-a.webp",
+   "ready": false,
+   "box": [
+    0,
+    0,
+    392,
+    500
+   ],
+   "eye": [
+    160,
+    205
+   ]
+  },
+  "testB": {
+   "src": "assets/clinic/closeups/{kind}/eyetest-b.webp",
+   "ready": false,
+   "box": [
+    0,
+    0,
+    380,
+    500
+   ],
+   "eye": [
+    238,
+    166
+   ]
+  },
+  "chartFront": {
+   "src": "assets/clinic/heal-v3/eye-chart-front.webp",
+   "ready": false
+  },
+  "chartTurned": {
+   "src": "assets/clinic/heal-v3/eye-chart-turned.webp",
+   "ready": false
+  }
  }
 }

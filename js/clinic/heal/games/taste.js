@@ -358,7 +358,7 @@
     };
     const closePop = () => {
       const c = cur();
-      judge("pop", !st.wrongDab, `${c.targets.join(" + ")}${st.wrongDab ? ", a wrong colour dabbed" : ""}`);
+      judge("pop", !st.wrongDab, { targets: c.targets, decoyDabbed: st.wrongDab });
       ctx.card.tick("pop");
       S.uncue();
       // the spots left (the decoys) come up and stay up for the drink to clear
@@ -435,7 +435,7 @@
       const key = glassKey();
       const want = P.rows.find((r) => r.id === "drink").answer;
       const ok = key === want;
-      judge("drink", ok, `gave ${key}`);
+      judge("drink", ok, { gave: key });
       st.busy = true;
       S.uncue();
       // the tumbler goes up to the mouth and tips
