@@ -4,12 +4,12 @@
   "w": 1600,
   "h": 900,
   "views": {
-    "_about": "Measured 1 Oct (R4) at level 4 over every Station-lab station: the x-range of every tappable thing and shelf chip, widened to every shelf chip's text (the chai tray's first chip, paani, starts near x 30). Only x is constrained (null: the height is free). The pantry keeps the whole box: its fridge holds things to tap at its right edge (dudh near x 1482, met in story days, not in the lab's lists). The hob view (tadka, stir) and the stations' shelf bands that reach the edges keep the whole box until they are laid out for 4:3.",
+    "_about": "Measured 1 Oct (R4) at level 4 over every Station-lab station: the x-range of every tappable thing and shelf chip, widened to every shelf chip's text (the chai tray's first chip, paani, starts near x 30) and on the right to x 1500, past what other levels and orders may place there (the sekelo grill's chips at x 1450, the samosa plate's edge at 1480). Only x is constrained (null: the height is free). The pantry keeps the whole box: its fridge holds things to tap at its right edge (dudh near x 1482, met in story days, not in the lab's lists). The hob view (tadka, stir) and the stations' shelf bands that reach the edges keep the whole box until they are laid out for 4:3.",
     "marble": {
       "safe": [
         20,
         null,
-        1430,
+        1500,
         null
       ],
       "from": [
