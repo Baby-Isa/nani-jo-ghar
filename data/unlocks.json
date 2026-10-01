@@ -1,0 +1,10 @@
+{
+  "_about": "What opens when (js/core/unlocks.js; decision 22). rules[id]: {\"open\": \"always\"}; {\"after\": {\"arc\": id}} (open once that arc is finished); {\"after\": {\"arc\": id, \"chapter\": n}} (once chapter n of it is finished); {\"all\": [...]}, {\"any\": [...]}. An id is a map place (data/map.json `unlock`) or a mode or errand. An id with no rule is closed and Unlocks.why() says it's unknown. The arc a rule waits for is what the locked place says (\"locked until the beach story\"). State per child lives in the save (story.arcs, unlocks.open). renamed: {old id: new id} when an id changes, so saves keep what they opened.",
+  "version": 1,
+  "renamed": {},
+  "rules": {
+    "kitchen": { "open": "always" },
+    "clinic": { "open": "always" },
+    "beach": { "after": { "arc": "beach", "chapter": 1 } }
+  }
+}

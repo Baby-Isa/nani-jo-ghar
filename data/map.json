@@ -1,0 +1,11 @@
+{
+  "_about": "Free play's map (decision 22): every place, open or locked; a locked place says which story opens it (js/core/unlocks.js why()). places[]: id; unlock (the rule id in data/unlocks.json; the place id when missing); modes: what can be played there ({mode, page, errands?}: the page is opened with a play context, js/core/context.js); art: the map picture ids (open and locked; art to make, D1). A tiny example for now: the kitchen and the clinic open, the beach locked until its story. The map's look and the hub that reads it are R3b and R6.",
+  "version": 1,
+  "id": "map",
+  "renamed": {},
+  "places": [
+    { "id": "kitchen", "unlock": "kitchen", "modes": [{ "mode": "cook", "page": "cook.html" }], "art": { "open": "map/kitchen", "locked": "map/kitchen-locked" } },
+    { "id": "clinic", "unlock": "clinic", "modes": [{ "mode": "clinic", "page": "clinic.html" }], "art": { "open": "map/clinic", "locked": "map/clinic-locked" } },
+    { "id": "beach", "unlock": "beach", "modes": [], "art": { "open": "map/beach", "locked": "map/beach-locked" } }
+  ]
+}
