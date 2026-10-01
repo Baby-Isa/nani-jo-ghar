@@ -28,7 +28,7 @@ SAMPLE_FRUIT = [
     "assets/items/fruit/fru-09.png", "assets/items/fruit/fru-13.png",
     "assets/items/fruit/fru-15.png", "assets/items/fruit/fru-16.png",
 ]
-SINK = 3  # px an item sits into its surface (matches js/game.js)
+SINK = 3  # px an item sits into its surface (the value the retired bowl errand used)
 
 
 def load(p):

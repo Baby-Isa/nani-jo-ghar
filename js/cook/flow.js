@@ -1019,7 +1019,7 @@
             <button class="btn" id="t-book">Recipe book</button>
             <button class="btn" id="t-shop">Shop</button>
           </div>
-          <p style="margin-top:14px;font-size:13px"><a href="bowl.html">Fruit bowl errand</a> · <a href="#" id="t-reset">Start over</a>${Cook.Hands ? ` · Your hands: ${["player-boy", "player-girl"].map((h) => `<a href="#" data-hands="${h}" style="${Cook.Hands.who() === h ? "font-weight:800;text-decoration:none" : ""}">${h === "player-boy" ? "boy" : "girl"}</a>`).join(" / ")}` : ""} ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
+          <p style="margin-top:14px;font-size:13px"><a href="#" id="t-reset">Start over</a>${Cook.Hands ? ` · Your hands: ${["player-boy", "player-girl"].map((h) => `<a href="#" data-hands="${h}" style="${Cook.Hands.who() === h ? "font-weight:800;text-decoration:none" : ""}">${h === "player-boy" ? "boy" : "girl"}</a>`).join(" / ")}` : ""} ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
         </div>
       </div>`,
       { title: true }
