@@ -1,10 +1,10 @@
 # Step 2b: language engine research and design
 
-1 Oct 2026. Docs only; nothing committed.
+1 Oct 2026. Docs only; drafts committed to the branch for review.
 
 ## What I produced
 
-- `docs/language/elicitation-questionnaire.md`: **Round 5 for Mum**, in Round 4's format (Word copy tested). Cook first, then the Birthday, then the grammar core; about 70–75 minutes with "stop here" marks; Round 4 IDs reused, new ones L1–L92; re-takes and the sweet box included; no Section G, clothes or first-launch lines.
+- `docs/language/mum-questions/Questions for Mum (Round 5).md`: **Round 5 for Mum**, in Round 4's format (Word copy tested). Cook first, then the Birthday, then the grammar core; about 70–75 minutes with "stop here" marks; Round 4 IDs reused, new ones L1–L92; re-takes and the sweet box included; no Section G, clothes or first-launch lines.
 - `docs/language/grammar-kb.md`: 30 features, each KNOWN / HYPOTHESIS / UNKNOWN, with the game lines that need it and the question that settles it.
 - `docs/language/engine-design.md`: architecture, data formats, the API (§ 6, for step 2a), frequency statistics, gaps, the Excel, tests, a worked example, migration, effort.
 - `docs/language/fill-the-engine.md`: adding words and rules, evidence, the loop to Mum and back.

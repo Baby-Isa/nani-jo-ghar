@@ -28,7 +28,7 @@
 |---|---|---|---|
 | Q1 | a cup | *cup* | re-take |
 | Q2 | on the mango · on the mangoes | *ambo je mathe · amba je mathe* | re-take; say whichever is right for you |
-| Q3 | with the boy · with the girl · with Nana | *chokra sathe · chokri sathe · Nana sathe* | re-take |
+| Q3 | with the boy · with the girl · with Nana | *chokre sathe · chokri sathe · Nana sathe* | re-take |
 | Q8 | Can you make me chai? (to Nana) · Can you make me chai? (to a grandchild) | *… banai dinda? / … banai dinde?* | which one is for an elder, which for a child? |
 | Q9 | take this · bring it with you | *khan · khanij* | is that the difference? |
 | Q10 | Who did it? (something's been eaten or spilt) | *kere karein?* | how you'd really ask the children |
@@ -87,7 +87,7 @@
 | L25 | I'd like one maani. · I'd like two big maani. · I'd like one small millet maani. | | |
 | L26 | I'd like one plain maani and two millet maani. | | |
 | L27 | I'd like one skewer of meat and one mixed skewer. · I'd like two meat skewers with chips. | | |
-| L28 | I'd like chaat with chickpeas, yoghurt and sev, but no onion. · First the chickpeas, then the potato, then the yoghurt. | | |
+| L28 | I'd like chaat with chickpeas, yoghurt and sev, but no onion. | | |
 
 ### L29–L33. Fetching and "for"
 
@@ -101,7 +101,7 @@
 
 ## Part 3 · Kitchen words: he-word or she-word? (about 12 minutes)
 
-*Three times each. For these words we need to know whether each one is a he-word or a she-word. The easiest way is to ask for some politely, the way you said "Muke paani khapeto" and "Muke chai khapeti" last time. So for each one, just say "I'd like some …" politely. Where the notes show a word, it's only a guess from a class handout: say your own word, even if it's different.*
+*Three times each. For these words we need to know whether each one is a he-word or a she-word. The easiest way is to ask for some politely, the way you said "Muke paani khapeto" and "Muke chai khapeti" last time. So for each one, just say "I'd like some …" politely. Where the notes show a word, some come from a class handout and some you've said before: either way, say your own word, even if it's different.*
 
 ### L34–L45. "I'd like some …" (politely)
 
@@ -120,20 +120,20 @@
 | L44 | cardamom · red chilli powder | | *elchi · lal marcha?* |
 | L45 | chips · vegetables | | *chips · boga* |
 
-### G1–G9 and L46–L50. "One …" then "two …"
+### M1–M9 and L46–L50. "One …" then "two …"
 
-*(These G numbers are this part's own, not the doctor's questions.)*
+*(Round 4 had these as G1–G10; they're numbered M here so they don't clash with Section G.)*
 
 | ID | English: say "one …" then "two …" | One | Two | Notes |
 |---|---|---|---|---|
-| G1 | spoonful of sugar | | | one spoon of sugar, two spoons of sugar |
-| G2 | garlic clove | | | |
-| G3 | piece of ginger | | | |
-| G4 | cardamom pod | | | |
-| G6 | chickpea | | | |
-| G7 | skewer of mishkaki | | | |
-| G8 | bowl of chaat | | | |
-| G9 | glass of chai | | | |
+| M1 | spoonful of sugar | | | one spoon of sugar, two spoons of sugar |
+| M2 | garlic clove | | | |
+| M3 | piece of ginger | | | |
+| M4 | cardamom pod | | | |
+| M6 | chickpea | | | |
+| M7 | skewer of mishkaki | | | |
+| M8 | bowl of chaat | | | |
+| M9 | glass of chai | | | |
 | L46 | onion · tomato | | | |
 | L47 | samosa · chilli · lemon | | | |
 | L48 | pan (the chai pot) · tawa | | | W5 |
@@ -177,7 +177,7 @@
 | N15 | Chop what they said. | | |
 | N16 | Add the spices, one after the other. | | the tadka |
 | N17 | Stir it round. | | |
-| N18 | Make the bowl, in order. | | the chaat |
+| N18 | Make the bowl, in order. · First the chickpeas, then the potato, then the yoghurt. | | the chaat |
 | N19 | Fill the samosa. · Fold the samosa. | | |
 | N20 | Fry them, then take them out. | | |
 | N21 | Put the pieces on the skewer. · Now grill them. | | |
@@ -226,7 +226,7 @@ Answer notes:
 | L68 | (everyone) Happy birthday! | | or the English |
 | L69 | (Nani to a grandchild) Put a plate in front of Nana. · Put a cup next to each plate. · Put the spoon on the plate. | | |
 | L70 | (Nani to a grandchild) Put one plate for each person. | | |
-| Q5 | (Nani to a grandchild) Give this to Nana. · Give this to Nani. · Give the cake to the boy. | | "to Nana" |
+| L93 | (Nani to a grandchild) Give this to Nana. · Give this to Nani. · Give the cake to the boy. | | "to Nana" |
 | L71 | (Nani) Oh no! The cat has knocked the sweets everywhere! | | |
 | L72 | (Nani) The cat ate the sweet! · The cat ate the cake! | | |
 | L73 | (Nani) Where are the sweets? · (child) They're under the chair. · They're not here. | | |
@@ -316,10 +316,10 @@ Say the whole little phrase each time.
 |---|---|---|---|
 | C50 | Nana's cup · Nana's cups | | |
 | C51 | Nana's mango · Nana's mangoes | | |
-| C52 | Nana's door · Nana's dupatta · Nana's maani | | |
+| C52 | Nana's door · Nana's maani | | |
 | C53 | Nani's cup · Nani's cups | | |
 | C54 | Nani's mango · Nani's mangoes | | |
-| C55 | Nani's door · Nani's dupatta · Nani's goat | | |
+| C55 | Nani's door · Nani's shawl · Nani's goat | | |
 | C59 | in Nana's cup · on Nani's mango · behind the boy's door · with the girl's goat | | |
 
 **Stop here if you like.**

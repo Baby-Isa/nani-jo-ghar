@@ -1,6 +1,6 @@
 # Language engine: design (for Zafar's approval)
 
-Step 2b, 1 Oct 2026. Read-only research and design; nothing is built until Zafar approves (step 4). Requirements: `engine-spec.md`. What the engine knows: `grammar-kb.md`. How to fill it: `fill-the-engine.md`. Mum's next questions: `elicitation-questionnaire.md`.
+Step 2b, 1 Oct 2026. Read-only research and design; nothing is built until Zafar approves (step 4). Requirements: `engine-spec.md`. What the engine knows: `grammar-kb.md`. How to fill it: `fill-the-engine.md`. Mum's next questions: `mum-questions/Questions for Mum (Round 5).md`.
 
 Rules this design serves: G1 (never invent Kutchi), G2–G3 (gaps are grey-italic placeholders; drafts are flagged), G9 (every line a full natural sentence), G10 (standard, researched build), G11 (filled from Mum's sentences), G12 (frequent phrases recorded whole; recordings never change the engine), G13 and G18 (no Kutchi grammar in code; nouns carry gender, singular and plural), G14 (only family voices ship), F10 (card rows and the spoken sentence share one source).
 

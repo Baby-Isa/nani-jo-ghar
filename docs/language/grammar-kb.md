@@ -7,7 +7,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **KNOWN** cites `grammar-notes.md` as "notes §n" (with the round and clip id where there is one). ⚠ = Whisper's hearing, not yet checked by Zafar (rule G2: such forms ship only as drafts).
 - **HYPOTHESIS** cites its source: [GF-Snd] = the Grammatical Framework (GF) resource grammar for Sindhi (`gf-rgl/src/sindhi`, a 2012 student grammar, Sindhi in Arabic script); [Sindhi-gen] = general Sindhi grammar from the 30 Sept research pass (`sources/research-2026-09-30-grammar-checklist.md`), not re-verified; [Keine] = Keine, Nisar and Bhatt 2014, abstract only (the PDF is blocked by the proxy); [Gemini] = the AI blueprints (unverified, often wrong for the family). **A hypothesis is never a Kutchi form.** Under rule G1 (non-negotiable 4) it only shapes the questions and the engine's feature model. Sindhi forms are written as Sindhi, never put into game data.
 - **Needed by** cites the game inventory (`sources/research-2026-09-30-game-inventory.md`) as "inv §1A #n" (its frame numbers) or "inv §6" (fragments), and Arc 1 errands (`game-design/story-and-arcs.md` § Arc 1).
-- **Settled by** names the Round 5 question IDs (`elicitation-questionnaire.md`).
+- **Settled by** names the Round 5 question IDs (`mum-questions/Questions for Mum (Round 5).md`).
 - **Jargon, once:** a *paradigm* is the full set of forms of one word (*hakro / hakri*); *agreement* is one word changing to match another (*khapeto* for a he-word); the *oblique* is the form a noun takes before a postposition (*chokro* → *chokre sathe*); a *postposition* is "in", "with" and so on placed after the noun (*rasore me*); *perfective* means a finished action ("ate", "went").
 
 **Priority** (P1 blocks Cook; P2 blocks Arc 1, the Birthday; P3 later modes) is how the questionnaire was ordered.
@@ -18,15 +18,15 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 | # | Feature | Status | Priority | Settled by |
 |---|---|---|---|---|
-| 1 | Noun gender | Rule known; most Cook nouns unknown | P1 | L34–L51, G1–G9 |
+| 1 | Noun gender | Rule known; most Cook nouns unknown | P1 | L34–L51, M1–M9 |
 | 2 | Plural | Rule mostly known; -yu plural open | P1 | L46–L51, Q13 |
 | 3 | Oblique before postpositions | Tendency only | P2 | Q2, Q3, C28–C32, C59 |
 | 4 | Articles | Known: none | — | — |
 | 5 | Possession *jo / ji / je / ja* | Half known | P2 | C50–C55, C59, L41 |
 | 6 | Adjectives | Partly known | P1 (maani) / P2 | L25, C22–C35, L92 |
 | 7 | Numbers and counting | 1–2 known, 3–5 heard, 6–10 unknown | P1 | L52, L53, L54, E119–E123 |
-| 8 | Measures and "a skewer of" | Partly known | P1 | G1–G9, L14, L27, L57 |
-| 9 | Pronouns and "to me" forms | Partly known | P2 | C86–C92, Q5, L82 |
+| 8 | Measures and "a skewer of" | Partly known | P1 | M1–M9, L14, L27, L57 |
+| 9 | Pronouns and "to me" forms | Partly known | P2 | C86–C92, L93, L82 |
 | 10 | Person and politeness (*tu / aai*) | Rule known; verb forms partial | P1 | Q8, C142–C150, L32 |
 | 11 | "Be" (*ai*, *wo*, *nai*) | Partly known | P2 | L73, L79, L90, C152 |
 | 12 | "I need" (*muke … khape*) | Known | P1 | L9–L33 (re-heard in context) |
@@ -39,7 +39,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 | 19 | Negation | Partly known | P1 | L10, L19, L24, L61, C148–C152 |
 | 20 | Questions | Partly known | P2 | C153, C154, L73, L77, L79 |
 | 21 | Postpositions | Partly known | P1 (*me*, *lai*) / P2 | L83–L87, L69, L70 |
-| 22 | Object marker *ke* | Heard once | P2 | Q5, C132–C136 |
+| 22 | Object marker *ke* | Heard once | P2 | L93, C132–C136 |
 | 23 | "and", "with", lists, "first … then" | "with" for food unknown: **Cook's biggest gap** | P1 | L9–L31, L55, L60, L88, L89 |
 | 24 | Word order | Known in outline | P1 | every sentence |
 | 25 | Calling out (vocative) | Known | P3 | Q6 |
@@ -58,7 +58,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **UNKNOWN.** The gender of most Cook nouns: *khun, atto, daar, chaat, samosa, sekelo, gos, boga, chips, ghee, dai, sev, chana, dhania, chundo, loon, lasan, aadu, hardar, jeeru, rai, elchi, tameto, dungri, mirchi, limu* (inv §3A–3B: all "?"); Arc 1 nouns (cake, candle, balloon, present, cat, guest, sweets).
 - **Hint.** *dungri wagar ji daar* (§10) would make daar a she-word if *wagar ji* agrees; that is itself unconfirmed (feature 19).
 - **Needed by.** "one" *hakro/hakri* in every count (inv §1A #15), *wadho/wadhi* (#1, maani L4), the polite *khapeto/khapeti* (Conversations, inv §1E), *nato/nati* (#4), past-tense agreement (feature 16).
-- **Settled by.** L34–L45 (the polite "I'd like some …" shows gender through *khapeto/khapeti*, the frame Mum used herself in K10), G1–G9 and L46–L51 ("one …"), L62–L66.
+- **Settled by.** L34–L45 (the polite "I'd like some …" shows gender through *khapeto/khapeti*, the frame Mum used herself in K10), M1–M9 and L46–L51 ("one …"), L62–L66.
 
 ## 2. Plural
 
@@ -114,17 +114,17 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 - **KNOWN.** *aako cup* (a whole cup), *bharelo cup*, *bhareli chamchi* (§24 B5, §29 R3), *adh* (half, amounts), *hakri lakri mishkaki / ba lakri mishkaki* (one / two skewers of mishkaki, §25, §29 R7): the measure word comes first and the stuff follows bare.
 - **Draft.** *hakri lakri gos / mixed* (Claude's extension, `decisions.md` working assumptions "Lakri order").
-- **UNKNOWN.** "a spoon of sugar" (G1), "a glass of chai" (G9), "half a cup of chai" (L14).
+- **UNKNOWN.** "a spoon of sugar" (M1), "a glass of chai" (M9), "half a cup of chai" (L14).
 - **Needed by.** Chai sugar rows, sekelo rows (inv §6), pour station.
-- **Settled by.** G1–G9, L14, L27, L57.
+- **Settled by.** M1–M9, L14, L27, L57.
 
 ## 9. Pronouns and "to me" forms
 
 - **KNOWN.** *aau* (I), *tu* (you, to a child or same age), *aai* (you, to an elder), *e* (he/she) (notes §21, §23). "To" forms: *muke, toke, anke* ⚠, *panke* (to us) (§23, §37.1). *inke* (it, as an object; §25 B15). *mu sathe* (with me; §12), *munje* (of me, before a place word; §16). *hi / hu* (this / that), *hida / huda / kida* (here / there / where).
 - **HYPOTHESIS.** [Sindhi-gen] two "we" (with or without the listener; *panke* fits the inclusive one); plural "you"; 3rd-person near/far (GF-Snd has `Pers3_Near | Pers3_Distant`).
 - **UNKNOWN.** "they", "to them", "we" (both kinds), "to him / her".
-- **Needed by.** Cook's frame uses only *muke* (fixed). Arc 1 "give this to Nana" (Q5), Conversations.
-- **Settled by.** C86–C92, Q5, L82; the rest of Section C (C61–C85, "if there's time").
+- **Needed by.** Cook's frame uses only *muke* (fixed). Arc 1 "give this to Nana" (L93), Conversations.
+- **Settled by.** C86–C92, L93, L82; the rest of Section C (C61–C85, "if there's time").
 
 ## 10. Person and politeness
 
@@ -222,7 +222,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **KNOWN.** *Simba ke … nares* (I saw Simba; §20); *gadi ke ubhi rakh* (stop the car; §25 B19). *ke* also means "or" (§9).
 - **HYPOTHESIS.** [Sindhi-gen] *khe* marks people as objects and "to".
 - **UNKNOWN.** Whether "give it to Nana" uses *ke*; when things (not people) take it.
-- **Settled by.** Q5, C132–C136, C150.
+- **Settled by.** L93, C132–C136, C150.
 
 ## 23. "and", "with", lists, "first … then"
 

@@ -52,6 +52,6 @@ Designed in step 2b (1 Oct 2026), awaiting Zafar's approval; nothing is built un
 
 - The engine design: `engine-design.md` (its API is § 6).
 - The grammar knowledge base (known / hypothesis / unknown): `grammar-kb.md`.
-- Mum's elicitation questionnaire (Round 5): `elicitation-questionnaire.md`.
+- Mum's elicitation questionnaire (Round 5): `mum-questions/Questions for Mum (Round 5).md`.
 - The fill-the-engine rulebook: `fill-the-engine.md`.
 - Summary and the decisions for Zafar: `build/reports/step-2b.md`.

@@ -4,7 +4,7 @@
 > - Older rounds say "Claude drafts Kutchi from the handouts and dictionary for you to confirm": drafts are only ever flagged unconfirmed; Mum is the authority and two AIs agreeing is not evidence (G1, G21, non-negotiable 4).
 > - Older rounds mention an ear star or voice star, TTS placeholders or English on screen: those are overridden (decisions 1–2, G14, E1).
 > - Round 4 and the others are a **record**: don't edit them. Answers are written into `grammar-notes.md`, `lexicon.md` and `data/family-audio.json`, not back into the rounds.
-> - "Round 5" is paused: see `../sources/round5-plan-notes.md`. Nothing has been shown to Mum.
+> - Round 5 (1 Oct) is the step 2b elicitation questionnaire, ordered by what each answer unlocks for the engine; its plan notes are `../sources/round5-plan-notes.md`.
 
 Recordings are cut into clips and indexed in `data/family-audio.json` (question ids such as R1, K1, S1, P1, C1). Zafar marks each line heard / clear / ⚠ in the right-hand columns of the round.
 
@@ -15,7 +15,7 @@ Recordings are cut into clips and indexed in `data/family-audio.json` (question 
 | Combined, for the visit | 25 Sept | Sections A and B (the heart: about 18 minutes); C onwards carried to Rounds 3 and 4 unchanged | **Sections A and B answered** (25–26 Sept) | `../grammar-notes.md` §1–§28 |
 | Round 3 | 26 Sept (answered 28 Sept) | Parts 1–4 and Section C1–C21 | **Answered** (28 Sept). Sections G, E, F, H, D, I, J **not** answered here; re-issued in Round 4 | `../grammar-notes.md` §29–§37 (the 28 Sept recording); Zafar's ✓/⚠ marks per line (R1–R12, K1–K15, S1–S9, P1–P13, C1–C21) are **only kept in table form inside this file**; clip ids in `data/family-audio.json` |
 | **Round 4** (`.md` and the `.docx` Mum reads) | 28 Sept | The live round: Cook first (Parts 1–3), then the grammar sentences (Section C from C22), then Part 4, Sections I, E, G, F, H, J | **Live; not yet answered** (no answer notes). **Section G is the doctor's script**, to record with Mum's and Zafar's help (~9 Oct) | To be written into `../grammar-notes.md` and `../lexicon.md` |
-| Round 5 | (paused, 30 Sept) | Plan notes only: quick checks, Section C core (C22–C154), a new Section L for the gaps the grammar checklist found | **Not written.** Awaiting Zafar's go | `../sources/round5-plan-notes.md` |
+| **Round 5** (`.md` and the `.docx` Mum reads) | 1 Oct | The step 2b questionnaire: re-takes, Cook orders as whole sentences ("with", "and", "but no"), noun genders, numbers, Nani's cooking lines, the Birthday, then the Section C grammar core; new IDs L1–L93, the "one/two" words as M1–M9 | **Live; for Mum's 1 Oct session** | To be written into `../grammar-notes.md`, `../lexicon.md` and `../grammar-kb.md` |
 
 ## Word copies
 

@@ -8,7 +8,7 @@ Outside material about Kutchi grammar, kept for reference. **Nothing here is evi
 | `gemini-blueprint-v2-2026-09-30.md` | Gemini's v2: the same paths, plus negation, postpositions, implosives, differential object marking, echo words and a 200-entry lexicon | AI-generated, unverified |
 | `research-2026-09-30-grammar-checklist.md` | Claude's research pass: 21 grammar categories with what Mum confirmed, what Sindhi sources predict, and test sentences | Research; forms from outside sources are hypotheses |
 | `research-2026-09-30-game-inventory.md` | Every sentence frame, verb, noun and English placeholder the game uses today | Inventory of the code and data |
-| `round5-plan-notes.md` | Paused plan for Round 5 of the Questions for Mum | Superseded by `../elicitation-questionnaire.md` (step 2b, 1 Oct) |
+| `round5-plan-notes.md` | Paused plan for Round 5 of the Questions for Mum | Superseded by `../mum-questions/Questions for Mum (Round 5).md` (step 2b, 1 Oct) |
 
 ## What's real behind it
 
@@ -65,7 +65,7 @@ Outside material about Kutchi grammar, kept for reference. **Nothing here is evi
 
 ## How it's used
 
-Step 2b (1 Oct) turned this material into `../grammar-kb.md` (what's known, hypothesised and unknown), `../engine-design.md`, `../fill-the-engine.md` and Round 5, `../elicitation-questionnaire.md`.
+Step 2b (1 Oct) turned this material into `../grammar-kb.md` (what's known, hypothesised and unknown), `../engine-design.md`, `../fill-the-engine.md` and Round 5, `../mum-questions/Questions for Mum (Round 5).md`.
 
 1. **Round 5 of the Questions for Mum** turns each "new to us" item into short natural sentences that settle it: minimal pairs such as "I (boy) ate the samosa / I (girl) ate the samosa / I ate the chapati / Nani ate the samosas".
 2. **The engine spec** (step 2b) takes the feature model (person, number, gender, aspect, formal "you") from the paper and the Sindhi grammar, then fills it only with what Mum confirms.
