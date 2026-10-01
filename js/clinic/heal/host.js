@@ -167,6 +167,7 @@
         const zoom = play(box, [{ transform: "scale(1)", filter: "blur(0px)" }, { transform: `scale(${a.k})`, filter: "blur(6px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
         const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.7 }, { opacity: 0 }], { duration: ms, easing: "ease-in", fill: "forwards" });
         await Promise.all([zoom, fade]);
+        if (z.leaving) return; // the game already ended (a very quick round): the pull-out owns the layer now
         wide.classList.remove("on");
         wide.classList.add("gone");
         if (home) home.appendChild(fig.el);
@@ -174,6 +175,7 @@
       /** The pull-out: the room comes back over the close-up, zoomed in, then out to the wide shot (the patient happy). */
       async out() {
         if (!wide.isConnected) return;
+        z.leaving = true;
         // measure on the unscaled room: the push-in's last frame (scaled, blurred) is still held
         [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
         layer.appendChild(fig.el);

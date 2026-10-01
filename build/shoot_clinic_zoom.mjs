@@ -26,7 +26,7 @@ for (const g of GAMES) {
       window.__zoomAnims = [];
       Element.prototype.animate = function (...a) {
         const an = orig.apply(this, a);
-        if (this.classList && (this.classList.contains("cl-zoom") || this.classList.contains("cl-zoom-box"))) {
+        if (!window.__noPause && this.classList && (this.classList.contains("cl-zoom") || this.classList.contains("cl-zoom-box"))) {
           an.pause();
           window.__zoomAnims.push(an);
         }
@@ -43,21 +43,17 @@ for (const g of GAMES) {
       await page.screenshot({ path: f });
       shots.push({ f, label: `${size} in ${Math.round(t * 100)}%` });
     }
-    // the zoom out: end the game as a fair player would (the test hook), then step through its frames
+    // the zoom out: end the game as a fair player would (the test hook), then shoot it as it plays (about 0.9 s)
     await page.evaluate(() => {
       window.__zoomAnims.forEach((a) => a.finish());
-      window.__zoomAnims.length = 0;
+      window.__noPause = true;
       window.__clinic.finishHeal();
     });
-    const outOk = await page.waitForFunction(() => window.__zoomAnims.length >= 2, null, { timeout: 15000 }).then(() => true, () => false);
-    if (outOk) {
-      for (const t of [0.2, 0.6, 1]) {
-        await page.evaluate((t) => window.__zoomAnims.forEach((a) => (a.currentTime = t * (a.effect.getTiming().duration || 900))), t);
-        await sleep(150);
-        const f = join(OUT, `${g}-${size}-out-${String(Math.round(t * 100)).padStart(3, "0")}.png`);
-        await page.screenshot({ path: f });
-        shots.push({ f, label: `${size} out ${Math.round(t * 100)}%` });
-      }
+    for (const ms of [150, 450, 1400]) {
+      await sleep(ms === 150 ? 150 : ms === 450 ? 300 : 950);
+      const f = join(OUT, `${g}-${size}-out-${String(ms).padStart(4, "0")}.png`);
+      await page.screenshot({ path: f });
+      shots.push({ f, label: `${size} out ${ms} ms` });
     }
     await (p.ctx || page.context()).close();
   }
