@@ -10,10 +10,9 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **Where things stand (1 Oct 2026, 01:00 UK):**
 - **Building is paused** while the project is reorganised (decision log, 30 Sept).
-- **Step 1, the "brain" and `CLAUDE.md`,** is in its last phase:
+- **Step 1, the "brain" and `CLAUDE.md`, is done** (approved and merged to `main`, 1 Oct):
   - the rulebook, `CLAUDE.md`, the QA checklist, the regression list and the decisions log are done;
   - every doc has moved to the new tree (step 1d).
-- **Waiting on:** the Fable review of the tree, then Zafar's review, then the merge to `main` (docs only).
 - **Mum records at 10:00 UK on 1 Oct:**
   - Round 5 of the Questions for Mum is planned but **not written**; it starts only when Zafar says go (about 1.5 hours; plan: `docs/language/sources/round5-plan-notes.md`).
   - The fallback is Round 4 as it is (`docs/language/mum-questions/`).
@@ -22,7 +21,6 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 **Next steps, in order:**
 1. **Mum's session.**
 2. **Process her recording:** transcribe, cut the clips, update `docs/language/grammar-notes.md`.
-3. **Finish step 1:** the Fable review, Zafar's review, merge to `main`.
 4. **Step 2, side by side:**
    - **2a:** the code's target operating model and a gap analysis;
    - **2b:** the language engine design.
@@ -39,7 +37,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 | Step | What | State |
 |---|---|---|
-| 1 | The brain: rulebook, `CLAUDE.md`, QA checklist, regression list, decisions log, docs reorganised | **Last phase** (review, then `main`) |
+| 1 | The brain: rulebook, `CLAUDE.md`, QA checklist, regression list, decisions log, docs reorganised | **Done** (merged 1 Oct) |
 | 2a | Code target operating model: engine core, one scoring model (the three badges), shared UI kit, content as data, modes as plug-ins, a sandbox that plays the real flows, layout lint; then a gap analysis with a sequenced refactor plan and estimates | Next |
 | 2b | Language engine design: Grammatical Framework style, the Sindhi resource grammar as template, Mum's answers as the only evidence; the grammar knowledge base; the fill-the-engine rulebook and questionnaire | Next (starts from `docs/language/engine-spec.md` and `docs/language/sources/`) |
 | 3 | Refactor to the target model, one session at a time, checked by flow tests and layout lint. Parked modes: decide at 2a whether they move now or when their turn comes | After 2 |
