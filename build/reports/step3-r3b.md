@@ -11,15 +11,15 @@ Branch `ccr-fcd9dddd-wnywzc`. No live page, mode or shared-kit file changed. Gui
 - `labs.html` generated (`build/gen_labs.mjs`, all 36 old links kept); `check_onboard.mjs` works for any mode.
 
 ## The demo
-`js/demo/`: Cook's pantry (`fetch`) and the clinic's scrape (`cut`) through two adapters, neither file touched. In Chromium (`build/host/demo-browser.mjs`, 1366×768): lab scrape 2/2, lab pantry 3/3, free play locked "until the demo story (chapter 1)", story round with badges and 9 coins that finishes chapter and arc, then free play pays again (9 → 18). No E17 findings, no page errors.
+`js/demo/`: Cook's pantry (`fetch`) and the clinic's scrape (`cut`) through two adapters, neither file touched. In Chromium (`build/host/demo-browser.mjs`, 1366×768, and 844×390 for the scrape, the lock and the story): lab scrape 2/2, lab pantry 3/3, free play locked "until the demo story (chapter 1)", story round with badges and 9 coins that finishes chapter and arc, then free play pays again (9 → 18). No E17 findings, no page errors.
 
 ## Checks
-`node --test build/host/` 41 pass; core 42, shared 132, lint 12 pass; check_onboard, check_arcs, gen_labs `--check` ok. Sandbox `--quick --check` (house, cook:fetch, clinic:heal-cut; clean worktree): see below.
+`node --test build/host/` 41 pass; core 42, shared 132, lint 12 pass; check_onboard, check_arcs, gen_labs `--check` ok. Sandbox `--quick --check` (house, cook:fetch, clinic:heal-cut; clean worktree): all end, 0 page errors, 16 fixed, 2 new `text-small` at 13.9 px (`.rs-en`, `.ng-rec`). Those come from R3a's token commit (e7592ce3): these flows load none of R3b's files. Rounding for R3a. No full run: R1b's gate is still going.
 
 ## Flaws seen in the shots (shared kit, not changed here)
 1. The end screen's buttons carry English words ("Again", "Next", "Home", "All"): E1 in story and free play (`NjgButtons.endActions`; Results has no home icon).
 2. A word with no Kutchi ("plaster") shows a blank title, not a grey-italic "to record" placeholder.
-3. `text-small` on `.rs-en` and the guide's `.ng-rec` (already in the baseline).
+3. At 844×390 the heal tools are `tap-small` (clinic, known).
 
 ## For R4 (Cook)
 - `js/cook/main.js`; each kept station a mini-game; `Mech.combined` runs inside one stage.
