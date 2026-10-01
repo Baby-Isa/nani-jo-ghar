@@ -105,7 +105,9 @@
       const row = h("div", "cl-receipt-row", list);
       row.appendChild(S.personFace(o.plan.kind, "happy"));
       h("span", "cl-receipt-item", row).appendChild(Kit.icon(o.plan.stages.pharmacy.asked[0], null));
-      h("span", `cl-receipt-mark${o.right === o.total ? " gold" : ""}`, row, o.right === o.total ? "★" : "☆");
+      // no stars anywhere (H5): a gold tick for a patient with every row right, a grey one otherwise (F13)
+      const mark = h("span", `cl-receipt-mark${o.right === o.total ? " gold" : ""}`, row);
+      mark.innerHTML = global.OrderCard && global.OrderCard.CHECK ? global.OrderCard.CHECK : "&#10003;";
     });
     h("div", "cl-receipt-coins", r, `🪙 ${o.coins || 0}`);
     await S.button(screen, S.line({ data: R.data }, "close"));

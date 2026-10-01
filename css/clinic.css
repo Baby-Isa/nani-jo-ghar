@@ -255,8 +255,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: 2px dashed #eadcc6; }
 .cl-receipt-row .cl-face { width: 56px; height: 56px; flex: none; }
 .cl-receipt-item { width: 56px; height: 56px; display: grid; place-items: center; }
-.cl-receipt-mark { margin-left: auto; font-size: 34px; color: #cdb996; }
-.cl-receipt-mark.gold { color: #e2a33a; }
+.cl-receipt-mark { margin-left: auto; width: var(--njg-s6); height: var(--njg-s6); filter: grayscale(1) opacity(.45); }
+.cl-receipt-mark svg { width: 100%; height: 100%; display: block; }
+.cl-receipt-mark.gold { filter: none; }
 .cl-receipt-coins { margin-top: var(--njg-s2); font: 800 30px var(--cl-head); }
 
 /* narrow and short screens */
@@ -466,7 +467,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 
 /* ---- the heal games' shared play rules (R5; 1 Oct report § 8E, decision 27) ---- */
 /* D6 (SH-39): the running count on the tool in use: the Kutchi number word at levels 1-2, dots from level 3 */
-.hs-root .hs-count { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s2) * -1); min-width: var(--njg-s4); padding: 0 var(--njg-s1); border-radius: var(--njg-round); background: var(--njg-gold); color: var(--njg-panel); font: 800 var(--njg-t3) / 1.4 var(--cl-head); text-align: center; box-shadow: var(--njg-shadow); pointer-events: none; z-index: 2; }
+.hs-root .hs-count { position: absolute; top: calc(var(--njg-s2) * -1); left: calc(var(--njg-s2) * -1); min-width: var(--njg-s4); padding: 0 var(--njg-s1); border-radius: var(--njg-round); background: var(--njg-gold); color: var(--njg-panel); font: 800 var(--njg-t3) / 1.4 var(--cl-head); text-align: center; box-shadow: var(--njg-shadow); pointer-events: none; z-index: 2; }
 .hs-root .hs-count.dots { letter-spacing: 0.08em; }
 .hs-root .hs-count.bump { animation: cl-bump .3s; }
 
