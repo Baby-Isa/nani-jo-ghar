@@ -177,6 +177,9 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
     screen: "own",
     needs: { scripts: CLASSIC, styles: STYLES },
     label,
+    // the first-time help lives in the clinic's own stage and heal code (S.onboard, S.cue): checked by
+    // build/check_onboard.mjs's clinic check (every step kind a ghost-finger demo, no words)
+    adapter: { of: "clinic-heal", key: heal || stage, label },
     mount(el, ctx) {
       let stopped = false;
       return {
