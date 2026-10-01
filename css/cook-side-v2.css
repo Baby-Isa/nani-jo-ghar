@@ -319,3 +319,4 @@ body.w6 #intro .ic-card.wide .oc-item { break-inside: avoid; margin-bottom: 10px
 
 /* R3a: in the pop-up (a scroll box) the face's 48 px tap area takes its full room, so nothing pokes past the card */
 body.w6 #intro .oc-card .oc-face { margin: 0; }
+body.w6 #intro .oc-card .oc-face::after { inset: 0; }
