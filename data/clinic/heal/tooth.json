@@ -1,142 +1,7 @@
 {
- "_about": "H4 Brush up, brush down. docs/archive/clinic/clinic-design-v1.md Q4 H4 and the quality pass Q1-Q7; contract docs/architecture/clinic-heal-api.md. Levels are data. The direction chain is random per round (2 words at level 1, 4 at level 2, 6 at level 3 with the patient's own left/right, which is mirrored on screen); the tooth by size (wadho/nindho, data/cook.json ids) and the bug count (numbers) are real Kutchi; the paste colour (level 3) and the directions are English placeholders.",
+ "_about": "H-tooth: brush, drill, fill, all inside one mouth close-up (1 Oct play-test D15d, decision 27; js/clinic/heal/games/tooth.js). Levels are data: levels[n].chain (brush moves, said one at a time), levels[n].decay (how many jagged patches and how big: scattered by level, CLN-52), levels[n].drillMs (a gentle timer), fill (the green zone and the fill time per level: narrower and faster, CLN-53). art: the close-up and props from the art plan (docs/design-language/art-plans/clinic-heal-art-plan.md M1, O2, B1) swap in by file name once the cut session sets ready: true (and records the boxes). The words are data/clinic/lang.json's (tooth-*, cl-dabo / cl-jamno at level 3).",
  "id": "tooth",
  "part": "body-tooth",
- "words": {
-  "num-01": {
-   "kutchi": "hakro",
-   "english": "one",
-   "from": "data/cook.json"
-  },
-  "num-02": {
-   "kutchi": "ba",
-   "english": "two",
-   "say": "ber",
-   "from": "data/cook.json"
-  },
-  "num-03": {
-   "kutchi": "trae",
-   "english": "three",
-   "from": "data/cook.json"
-  },
-  "num-04": {
-   "kutchi": "char",
-   "english": "four",
-   "from": "data/cook.json"
-  },
-  "num-05": {
-   "kutchi": "panj",
-   "english": "five",
-   "from": "data/cook.json"
-  },
-  "ph-big": {
-   "kutchi": "wadho",
-   "english": "big",
-   "from": "data/cook.json"
-  },
-  "ph-small": {
-   "kutchi": "nindho",
-   "english": "small",
-   "from": "data/cook.json"
-  },
-  "body-tooth": {
-   "kutchi": null,
-   "english": "tooth",
-   "placeholder": true
-  },
-  "dir-up": {
-   "kutchi": null,
-   "english": "up",
-   "placeholder": true,
-   "screen": "up"
-  },
-  "dir-down": {
-   "kutchi": null,
-   "english": "down",
-   "placeholder": true,
-   "screen": "down"
-  },
-  "dir-left": {
-   "kutchi": null,
-   "english": "left",
-   "placeholder": true,
-   "screen": "left"
-  },
-  "dir-right": {
-   "kutchi": null,
-   "english": "right",
-   "placeholder": true,
-   "screen": "right"
-  },
-  "dir-my-left": {
-   "kutchi": null,
-   "english": "my left",
-   "placeholder": true,
-   "screen": "right",
-   "_screen": "the patient faces us: their left is our right"
-  },
-  "dir-my-right": {
-   "kutchi": null,
-   "english": "my right",
-   "placeholder": true,
-   "screen": "left"
-  },
-  "w-brush": {
-   "kutchi": null,
-   "english": "Brush",
-   "placeholder": true
-  },
-  "w-taps": {
-   "kutchi": null,
-   "english": "taps",
-   "placeholder": true
-  },
-  "w-fill": {
-   "kutchi": null,
-   "english": "Fill it",
-   "placeholder": true
-  },
-  "col-white": {
-   "kutchi": null,
-   "english": "the white one",
-   "placeholder": true,
-   "hex": "#f7f5ee"
-  },
-  "col-yellow": {
-   "kutchi": null,
-   "english": "the yellow one",
-   "placeholder": true,
-   "hex": "#f0cf5a"
-  },
-  "col-pink": {
-   "kutchi": null,
-   "english": "the pink one",
-   "placeholder": true,
-   "hex": "#ef9fbf"
-  }
- },
- "lines": {
-  "heal-tooth-brush": {
-   "voice": "doctor",
-   "k": "{what}: {dirs}",
-   "e": "Brush: {dirs}"
-  },
-  "heal-tooth-brush-patient": {
-   "voice": "patient",
-   "k": "{what}: {dirs}",
-   "e": "Brush: {dirs}"
-  },
-  "heal-tooth-drill": {
-   "voice": "doctor",
-   "k": "{size} {tooth}. {n} {taps}",
-   "e": "The {size} tooth: {n} taps"
-  },
-  "heal-tooth-fill": {
-   "voice": "doctor",
-   "k": "{what}: {colour}",
-   "e": "Fill it: {colour}"
-  }
- },
  "ailments": {
   "sugar-bug": {
    "part": "body-tooth",
@@ -162,66 +27,68 @@
  },
  "levels": {
   "1": {
-   "ailments": [
-    "sugar-bug"
-   ],
-   "dirs": [
-    "dir-up",
-    "dir-down"
-   ],
    "chain": 2,
-   "shoo": [
-    1,
-    2,
-    3
-   ],
-   "brush_voice": "doctor"
+   "decay": {
+    "n": 1,
+    "r": 52
+   },
+   "_note": "two moves (up/down/left/right, one at a time); one big patch; no timer"
   },
   "2": {
-   "ailments": [
-    "sugar-bug"
-   ],
-   "dirs": [
-    "dir-up",
-    "dir-down",
-    "dir-left",
-    "dir-right"
-   ],
    "chain": 4,
-   "shoo": [
-    2,
-    3,
-    4
-   ],
-   "brush_voice": "doctor"
+   "decay": {
+    "n": 2,
+    "r": 38
+   },
+   "_note": "four moves; two patches"
   },
   "3": {
-   "ailments": [
-    "sugar-bug",
-    "cracked-tooth"
-   ],
-   "dirs": [
-    "dir-up",
-    "dir-down",
-    "dir-my-left",
-    "dir-my-right"
-   ],
    "chain": 6,
-   "shoo": [
-    2,
-    3,
-    4,
-    5
-   ],
-   "colours": [
-    "col-white",
-    "col-yellow",
-    "col-pink"
-   ],
-   "brush_voice": "patient"
+   "decay": {
+    "n": 4,
+    "r": 25
+   },
+   "drillMs": 16000,
+   "_note": "six moves, the patient's own dabo / jamno; four small patches scattered; a gentle timer"
   }
  },
- "fun": "The foam grows with every stroke; the sugar bug has eyebrows and hops to the jar one tap at a time; the filled tooth twinkles.",
+ "fill": {
+  "_about": "the gauge: 0 = empty, max = the top; let go inside zone[level] (green, red either side); ms = empty to full while the button is held",
+  "max": 1.15,
+  "zone": {
+   "1": [
+    0.55,
+    0.86
+   ],
+   "2": [
+    0.62,
+    0.82
+   ],
+   "3": [
+    0.67,
+    0.8
+   ]
+  },
+  "ms": {
+   "1": 3400,
+   "2": 2600,
+   "3": 2000
+  }
+ },
+ "chipAt": 16,
+ "brush": {
+  "_about": "the toothbrush picture and where its head is (the picture's own pixels)",
+  "src": "assets/clinic/items-v2/toothbrush.webp",
+  "size": [
+   374,
+   291
+  ],
+  "head": [
+   62,
+   52
+  ],
+  "w": 300
+ },
  "drill": {
   "_about": "CLN-51: the drill's picture and where its tip (the bur) is in the picture's own pixels; the tip sits under the finger.",
   "src": "assets/clinic/items-v2/dentist-drill.webp",
@@ -233,7 +100,56 @@
    45,
    196
   ],
-  "w": 130
+  "w": 150
+ },
+ "art": {
+  "_about": "art plan pack clinic-heal-v3: each slot is used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; tip = the nozzle's tip in its own drawn size. Until then the game draws stand-ins.",
+  "mouth": {
+   "src": "assets/clinic/closeups/{kind}/mouth.webp",
+   "ready": false,
+   "box": [
+    -150,
+    -60,
+    1100,
+    620
+   ]
+  },
+  "decay1": {
+   "src": "assets/clinic/heal-v3/decay-1.webp",
+   "ready": false
+  },
+  "decay2": {
+   "src": "assets/clinic/heal-v3/decay-2.webp",
+   "ready": false
+  },
+  "decay3": {
+   "src": "assets/clinic/heal-v3/decay-3.webp",
+   "ready": false
+  },
+  "buttonUp": {
+   "src": "assets/clinic/heal-v3/filling-button-up.webp",
+   "ready": false
+  },
+  "buttonDown": {
+   "src": "assets/clinic/heal-v3/filling-button-down.webp",
+   "ready": false
+  },
+  "nozzle": {
+   "src": "assets/clinic/heal-v3/filling-nozzle.webp",
+   "ready": false,
+   "size": [
+    180,
+    180
+   ],
+   "tip": [
+    20,
+    170
+   ]
+  },
+  "nozzlePaste": {
+   "src": "assets/clinic/heal-v3/filling-nozzle-paste.webp",
+   "ready": false
+  }
  },
  "camera": {
   "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
