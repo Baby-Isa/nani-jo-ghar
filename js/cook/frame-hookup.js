@@ -3,6 +3,9 @@
  * Cook's camera follows the shared stage (js/shared/stage.js; the same picture on a laptop, and on a
  * tablet the scene may grow to its safe area, data/layout.json stage.scenes.cook), and the light bulb
  * goes through the shared bulb (js/shared/bulb.js).
+ * R4 (decision 24): each Cook view may have its own safe area in Cook's scene data, in design units
+ * (data/scenes/cook-views.json `views[<view>].safe`: what the child must reach in that view), so a tablet
+ * grows that view's play items up to data/layout.json's itemScale; layout.json's "cook:<view>" wins over it.
  */
 (function () {
   "use strict";
@@ -11,7 +14,8 @@
     Scene.prototype.fitView = function () {
       var gs = this.scale.gameSize, gw = Math.round(gs.width), gh = Math.round(gs.height);
       var scenes = (window.Frame && Frame.layout && Frame.layout.stage && Frame.layout.stage.scenes) || {};
-      var spec = Stage.scene(scenes["cook:" + this.viewName] ? "cook:" + this.viewName : "cook");
+      var own = (Cook.viewScenes || {})[this.viewName] || null;
+      var spec = scenes["cook:" + this.viewName] ? Stage.scene("cook:" + this.viewName) : Object.assign(Stage.scene("cook"), own || {});
       var m = Stage.fit({ box: { w: gw, h: gh }, scene: spec, itemScale: Stage.itemScale() });
       var cam = this.cameras.main;
       cam.setSize(gw, gh);
@@ -28,5 +32,13 @@
     // a new form factor (a resize past a tablet's shape) can change the item scale: fit again
     if (window.Frame) Frame.onChange(function () { if (Cook.scene && Cook.scene.fitView) Cook.scene.fitView(); });
   }
+  // Cook's own scene data: a safe area per view (loaded with Cook's data, before the first view is fitted)
+  if (window.Cook && Cook.onLoad)
+    Cook.onLoad.push(function () {
+      return fetch(Cook.v("data/scenes/cook-views.json"))
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { Cook.viewScenes = (d && d.views) || {}; })
+        .catch(function () { Cook.viewScenes = {}; });
+    });
   if (window.Bulb && window.UI) Bulb.cookShim(UI, Cook);
 })();

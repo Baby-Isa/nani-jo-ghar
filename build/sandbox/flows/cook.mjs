@@ -14,7 +14,7 @@ export async function openCook(ctx, { speed = 3, save } = {}) {
   await page.goto(`${BASE}/cook.html?speed=${speed}`, { waitUntil: "load" });
   await page.evaluate((s) => { localStorage.clear(); if (s) localStorage.setItem("njg-cook-v1", JSON.stringify(s)); }, save || null);
   await page.goto(`${BASE}/cook.html?speed=${speed}`, { waitUntil: "load" });
-  await page.waitForSelector("#panel h1", { timeout: 20000 });
+  await page.waitForSelector("#panel .title-wrap", { timeout: 20000 }); // R4: the title has no visible heading (E1)
 }
 
 // mode: "fair" (what the game asks), "mistake" (a wrong pick where the mini-game allows it, then on to the end), "hint" (the unguided lab:

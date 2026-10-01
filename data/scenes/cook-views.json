@@ -1,0 +1,36 @@
+{
+  "_about": "Cook's scene data (R4, decision 24), in the design's own units (1600x900, D15). views[<view>].safe = [x0, y0, x1, y1]: what the child must reach in that Cook view (every tappable thing and shelf chip, measured with build/measure_cook_views.mjs at level 4, plus a margin). js/cook/frame-hookup.js hands it to the shared stage (js/shared/stage.js), so on a tablet that view grows up to data/layout.json stage.itemScale, cropping only what lies outside. A view not listed keeps the whole box (stage.scenes.cook). data/layout.json's stage.scenes[\"cook:<view>\"] wins over this file.",
+  "version": 1,
+  "w": 1600,
+  "h": 900,
+  "views": {
+    "_about": "Measured 1 Oct (R4) at level 4 over every Station-lab station: the x-range of every tappable thing and shelf chip, plus 20 px; the pantry also keeps its tally on the fridge (mechanics.fetch.tally, x 1406). Only x is constrained (null: the height is free). The hob view (tadka, stir) and the stations' shelf bands that reach the edges keep the whole box until they are laid out for 4:3.",
+    "marble": {
+      "safe": [
+        70,
+        null,
+        1414,
+        null
+      ],
+      "from": [
+        "chai-tray",
+        "maani-line",
+        "mishkaki-grill",
+        "daar",
+        "assemble",
+        "samosa"
+      ]
+    },
+    "pantry": {
+      "safe": [
+        62,
+        null,
+        1470,
+        null
+      ],
+      "from": [
+        "fetch"
+      ]
+    }
+  }
+}

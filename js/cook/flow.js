@@ -1003,6 +1003,7 @@
       <div class="title-wrap">
         <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
         <div>
+          <h1 hidden>Cook with Nani</h1>
           <div class="purse">${coinsHtml(Cook.coins(), "total")}</div>
           <div class="day-dots">${dots}</div>
           <div class="btn-row pic-row">
