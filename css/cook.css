@@ -1013,3 +1013,4 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .btn.pic-btn:not(.primary) { background: var(--njg-card); color: var(--njg-ink); border: var(--njg-line-2) solid var(--njg-gold); box-shadow: var(--njg-shadow); }
 .btn.pic-btn.primary { color: #fff; }
 .shop-item .shop-price { min-height: var(--njg-tap); box-sizing: border-box; display: inline-flex; align-items: center; gap: var(--njg-s1); opacity: .8; }
+.sum-card .cc-dish .ph, #panel .chip .ph { color: #8a7d70; font-style: italic; font-weight: 700; }

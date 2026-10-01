@@ -688,10 +688,12 @@
    * (what the screen is, the settings, the Station lab, starting over) is behind the panel's "?".
    */
   const face = (who) => Cook.v(Cook.facePath(who));
+  /** A dish as HTML: its Kutchi name (an English placeholder grey italic, flagged to record: G2). */
   const dishName = (d) => {
     const w = R.dishWord(d.recipe);
     const n = d.count || d.cups || 1;
-    return (n > 1 ? `${n} × ` : "") + Cook.display(w);
+    const name = Cook.isPlaceholder(w) ? `<i class="ph" title="To record">${UI.esc(Cook.display(w))}</i>` : UI.esc(Cook.display(w));
+    return (n > 1 ? `${n} × ` : "") + name;
   };
   const svg = (p) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
   const PIC = {
@@ -757,7 +759,7 @@
     // the last station's instruction goes from Nani's box (the day is over)
     if (UI.guideFor) UI.guideFor(null);
     const last = day.finale && !free;
-    const card = (c) => `<div class="ccard sum-card"><div class="cc-head"><img src="${face(c.who)}" alt=""><span class="cc-dish">${c.dishes.map(dishName).map(UI.esc).join(" + ")}</span></div>${c.coins ? `<span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>` : ""}</div>`;
+    const card = (c) => `<div class="ccard sum-card"><div class="cc-head"><img src="${face(c.who)}" alt=""><span class="cc-dish">${c.dishes.map(dishName).join(" + ")}</span></div>${c.coins ? `<span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>` : ""}</div>`;
     const p = UI.panel(`
       <div class="purse">${coinsHtml(`+${state.dayCoins}`, "today")}<span class="purse-sep" aria-hidden="true">${PIC.shop}</span>${coinsHtml(Cook.coins(), "total")}</div>
       <div class="cards">${state.cards.map(card).join("")}</div>
