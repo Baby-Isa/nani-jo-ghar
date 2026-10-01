@@ -190,7 +190,8 @@ export function createLang({ cook, index = null, voice = null, path = null } = {
       }
       // a describing word or "one" agreeing with a noun whose gender is unknown: today's code uses its own spelling
       if (s.w && w && w.forms && s.lang === "k") {
-        const noun = segments.slice(i + 1).find((x) => x.w && words[x.w] && !words[x.w].forms && !/^num-/.test(x.w) && !/^ph-/.test(x.w));
+        // the noun it agrees with, found as js/cook/lang.js Lang.phrase finds it: the next word with a gender field
+        const noun = segments.slice(i + 1).find((x) => x.w && words[x.w] && words[x.w].gender);
         if (noun && !Lg.gender(noun.w)) gaps.push({ kind: "feature", lex: noun.w, feature: "gender", defaulted: s.t, seg: i });
       }
     });
