@@ -86,3 +86,4 @@
 - 2026-10-01 21:23 UK · R4 and R5 stopped at the usage limit (~20:45 UK); limit reset; both resumed as continuations (nothing lost: all work committed). R4 was on its report; R5 on the heal-game rules.
 - 2026-10-01 22:05 UK · R5 building the heal rules (eye badge, count badge on the tool, goal headlines, no stars on the receipt); R4 running its final sandbox check.
 - 2026-10-01 22:46 UK · Both running and pushing. R4 notes Cook's play items can't grow on tablets until stations are laid out for 4:3 (open item). R5 drafting its report while finishing the zoom-out.
+- 2026-10-01 23:25 UK · R4 done (stars and wage gone, Cook on core and host, SH-02 fixed, modules; tablets not done; 94 findings traced to R3a's shared layout incl. Snap hang). Launched R6 gate prep (stop 06:30) to fix those, stitched speech, versioning, labs. New rows CK-TB-01 (take-back gap in 9 stations) and CK-TAB-01 (Cook 4:3 layouts).

@@ -196,6 +196,8 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | CK-17 | Card and recipe text clears at each new order (no stale "Nani shows you") | fixed | eye: second order · INT-03 | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
 | CK-18 | A customer's bubble never covers their own face | fixed | eye: serve | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
 | CK-19 | Art is WebP and light (10 MB once became 2 MB) | fixed | auto: asset size budget (planned) | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-TB-01 | Take it back until Done (E14): 9 of 12 Cook stations offer no take-back (only chaat, assemble and sekelo do) | open | sandbox #takeback flows | `build/reports/step3-r4.md` (1 Oct) |
+| CK-TAB-01 | Tablets: Cook's play items grow to use a 4:3 screen (decision 24); each station needs a 4:3 layout before the stage can grow them | open | sandbox 1024×768, 1180×820, 1366×1024 | `build/reports/step3-r3a.md`, `step3-r4.md` (1 Oct) |
 
 ## Clinic
 
