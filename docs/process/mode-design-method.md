@@ -279,7 +279,7 @@ UK English. Tables and short bullets. No filler. Sections:
 
 > from: docs/archive/mode-briefs/OVERVIEW.md § What all six designs agree on
 
-> Stale: "stars and help costs" → three badges, with the light bulb as the help (H5); "the leak bot" and "the lab" are the QA tools in `process/qa-checklist.md` and `labs.html`; point 1 (the shared word list) is in `language/lexicon.md` §3.
+> Stale: "stars and help costs" → three badges, with the light bulb as the help (H5); "the leak bot" is in `process/rules.md` and the labs are linked from `labs.html`; point 1 (the shared word list) is in `language/lexicon.md` §3.
 
 2. **Build on the shared engine, after "one app, one save".** Every mode reuses Cook and Find it's building blocks: word pills, the order ladder, stars and help costs, levels as data, the lab, the test harness and the leak bot. Relations stored as data also enables role reversal later.
 3. **Most modes have a slice that already works as a real Kutchi test:**

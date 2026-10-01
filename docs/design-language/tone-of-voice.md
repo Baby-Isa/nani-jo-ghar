@@ -1,7 +1,6 @@
 # Tone of voice: how the family sounds
 
 > **Stale points (what `docs/process/rules.md` now overrides).** This is a new, short doc. The rules below are restated by ID only so they can't drift; `docs/process/rules.md` is the source and wins every conflict.
-> - Quilt → bookshelf (decision 4) wherever the cast notes mention it
 > - Stars → three badges (H5): no praise or verdict delivered through stars
 > - Hand-written fragments or hand fixes to spoken lines → never; the language engine builds every line (G9, non-negotiable 11)
 
@@ -20,20 +19,22 @@ Who speaks, how they speak, and what they never say. The words themselves are in
 
 ## Cast notes that set the tone
 
-> from: docs/game-design/cast.md (Kasuku)
+> from: docs/game-design/cast.md § Kasuku (the two bullets on its voice and when it speaks)
 
-- **Kasuku's voice is the family's own recordings**, pitch-shifted, with a squawk added. No extra recording is needed.
+- **Its voice is the family's own recordings**, pitch-shifted, with a squawk added. No extra recording is needed.
 - **Rule:** it speaks only in idle moments (the hub, arriving, between orders), **never during a task**, so it can't give an answer away.
 
-> from: docs/game-design/cast.md (Big Ma)
+> from: docs/game-design/cast.md § Big Ma (decided 24 Sept 2026)
 
-Big Ma is the warm senior pillar of the family; her relationship to the player is never explained, the way a small child just knows "that's Big Ma". She is the family's seamstress and sings while she sews (recorded by Zafar's wife).
+Zafar's wife's great-grandma. She's the warm senior pillar of the family — her relationship to the player is never explained, the way a small child just knows "that's Big Ma". She's recurring at Eid, dinners and gatherings, and **she's the family's seamstress**: instead of a tailor's shop, the player goes to **Big Ma's room**, where her sewing things are. She solves problems there (she fixes the stained kurta in "The spill") and **sings a song while she sews** (Zafar's wife will record it). She also takes the **elders'** role on Eid morning where it fits, alongside the generic elders. This replaces the earlier "great-grandma" options list (eldest / seamstress / both) and the generic tailor.
 
-> from: docs/game-design/cast.md (Arc 1 table, "Their job in the learning")
+> from: docs/game-design/cast.md § Arc 1: Eid at Nani's (the rows for Nani, the fruit seller and the older cousin)
 
-- **Nani** gives the instructions; her fixed phrases are the backbone of the grammar.
-- **The fruit seller** sometimes hands over the wrong thing, so the player corrects them.
-- **The older cousin** is always losing things; later the player gives *them* instructions.
+| Character | Based on | Where they appear | Their job in the learning |
+|---|---|---|---|
+| **Nani** | Zafar's mum | Everywhere | Gives the instructions; her fixed phrases are the backbone of the grammar |
+| **The fruit seller** | Generic | Bazaar (the fruit bowl errand, built) | Numbers, fruit; sometimes hands over the wrong thing, so the player corrects them |
+| **The older cousin** | Generic | "Knock knock", later arcs | Always losing things; later the player gives *them* instructions |
 
 ## Speaking tone
 
