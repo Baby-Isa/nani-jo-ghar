@@ -339,6 +339,47 @@ UX §11 says a card line ticks automatically when that part is done right, at ev
 12. **Build brief note:** phases as the to-do's Wave 7; own files first (`pour.js`, `chop.js`, `stir.js`, `data/cook.json` reactions and levels), then `flow.js` for the travelling card and the serve step, then the shared speech hook.
 
 
+> from: docs/archive/cook/cook-with-nani-phase-a-design.md § 3. The learning link (the big one)
+
+### 3. The learning link (the big one)
+
+**The wife's critique:** you can do well by pattern recognition. We audited every step:
+
+| Step | Needs Kutchi? | Why |
+|---|---|---|
+| Greeting | Barely | Same exchange every time |
+| Which dish | Briefly | Only 3 words |
+| Pantry basics | **No** | Recipe memory |
+| Extras (elchi, tameto) | **Yes** | They vary |
+| Counts | **Yes** | Number words |
+| Stove sequence | **No** | Fixed order |
+| Tadka order | **Yes** | Changes each day |
+| Stir count | **Yes** | Number words |
+| "The usual" | **No** | People memory |
+| Gestures, serving | No | Hands only |
+
+About a third of play needed the language.
+
+**Principle:** nothing the player does may be decided by memory of a fixed recipe. Every choice is set by something said in Kutchi, and it changes from order to order.
+
+**How:**
+1. **The order is the recipe.** Every dish has variable slots given only in Kutchi:
+   - **chai:** milk or none, how many sugars or none, elchi, ginger or masala, how many cups;
+   - **daal:** tadka spices, tomato, onion, chilli (each yes or no), salt;
+   - **maani:** how many, ghee or not.
+2. **Nani interrupts: "pass me…"** (Zafar's refinement: she slides in from the edge mid-cook and names an item; three look-alike items appear; tap the right one).
+   - Busy mode: the pan keeps cooking, which is the fun chaos.
+   - Relaxed mode: the cooking **pauses** (agreed).
+   - Her requests draw on the **whole vocabulary**, which doubles as spaced review.
+3. **Look-alike decoys:** sugar next to salt (khun and loon), water next to milk, cumin next to mustard seeds.
+4. **"No" and "not":** "chai, no sugar" can't be done on autopilot.
+5. **Words Nani says while you work:** enough, more, a little, big, small, just right, slowly, quickly. Heard exactly when they apply (Total Physical Response).
+6. **Serve to the right person:** "this is for Nana" (kinship).
+7. **End-of-day recall:** "what did Ma have?"
+8. **Later: swap roles** (you order from Nani).
+
+**English for missing words:** use English until the family supplies the Kutchi, shown in a distinct style (grey italic) so it's obvious and easy to swap.
+
 > from: docs/archive/cook/cook-with-nani-phase-a-design.md § 8. The station library
 
 ### 8. The station library (verbs)
