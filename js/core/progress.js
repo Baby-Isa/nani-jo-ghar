@@ -12,6 +12,7 @@
  *   P.support(id, { placeholder }) -> { label, card, hintAfterMs, autoPlay, picture }   (how much help to give)
  *   P.cookStage(id) -> 1..4  // Cook's own four stages, for Cook's callers until R4 moves them
  *   P.importCook(cookWords)  // Cook's seen/right/miss records in; safe to call again (only what changed since)
+ *                            // (done by itself on every read while Cook keeps its own words: followCook)
  *
  * The pure functions below (meet, heard, said, fromCook, importCook, support) work on plain records, so
  * tests and the save migration use them without a save.
@@ -193,9 +194,26 @@ export function support(rec, data, { placeholder = false } = {}) {
 }
 
 /** The progress service over the one save's `words` namespace. */
-export function createProgress({ save, data } = {}) {
+export function createProgress({ save, data, followCook = true } = {}) {
   const D = rules(data);
-  const all = () => (save ? save.get("words") : {});
+  // While Cook still writes its own word records (until R4), what it adds is brought over on the next read,
+  // so a mode already on the core never sees stale stages. Cheap: only when Cook's words changed.
+  let lastCook = null;
+  const follow = () => {
+    if (!save || !followCook || !save.has || !save.has("cook")) return;
+    const cw = save.get("cook").words;
+    if (!cw || typeof cw !== "object") return;
+    const key = JSON.stringify(cw);
+    if (key === lastCook) return;
+    lastCook = key;
+    const cur = save.get("words");
+    const next = importCook(cur, cw, D);
+    if (JSON.stringify(next) !== JSON.stringify(cur)) save.set("words", next);
+  };
+  const all = () => {
+    follow();
+    return save ? save.get("words") : {};
+  };
   const put = (id, rec) => {
     if (save) save.update("words", (w) => ((w[id] = rec), w));
     return rec;

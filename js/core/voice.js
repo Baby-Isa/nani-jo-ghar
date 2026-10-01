@@ -242,9 +242,14 @@ export function createVoice({ index, player, path, gapMs = 120 } = {}) {
     const token = prev.token + 1;
     const items = V.plan(result);
     const start = queue ? prev.done.catch(() => {}) : (P.stop(), Promise.resolve());
-    const entry = { token, done: null };
+    const entry = { token, done: null, playing: true };
     channels.set(channel, entry);
-    entry.done = start.then(() => playItems(items, channel, token, onWord)).then((done) => ({ done }));
+    entry.done = start
+      .then(() => playItems(items, channel, token, onWord))
+      .then((done) => {
+        if (channels.get(channel) === entry) entry.playing = false;
+        return { done };
+      });
     return entry.done;
   };
   V.word = (text, { say, channel = "word" } = {}) => {
@@ -255,10 +260,10 @@ export function createVoice({ index, player, path, gapMs = 120 } = {}) {
   };
   V.stop = (channel = "main") => {
     const c = channels.get(channel);
-    if (c) c.token++;
+    if (c) (c.token++, (c.playing = false));
     P.stop();
   };
-  V.busy = (channel = "main") => !!channels.get(channel);
+  V.busy = (channel = "main") => !!(channels.get(channel) && channels.get(channel).playing);
   return V;
 }
 

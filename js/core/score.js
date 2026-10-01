@@ -10,8 +10,9 @@
  * With the save:
  *   const S = createScore({ save, wallet, progress, economy })
  *   S.best(mode, game, level)              the stored best (ms) or undefined
- *   S.finish(round) -> { badges, best, pay, words }   writes the best (ui.bests), the coins (wallet) and the
- *                                                     word evidence (words) in one step (R4/R5 wire this)
+ *   S.finish(round) -> { badges, best, pay, words }   writes the best (ui.bests), the coins (wallet), the word
+ *                                                     evidence (words) and, in story mode, the story log line
+ *                                                     (story) in one step (R4/R5 wire this)
  *
  * A round (filled in by the framework's tally; js/core/types.js has the full shape):
  *   { mode, game, level, timeMs, right, total, marks?, hints,
@@ -53,8 +54,8 @@ export function badges(r, prevBestMs) {
   };
 }
 
-/** The scoring service. `wallet` and `progress` are optional (a round can be judged without paying). */
-export function createScore({ save, wallet, progress } = {}) {
+/** The scoring service. `wallet`, `progress` and `log` are optional (a round can be judged without paying). */
+export function createScore({ save, wallet, progress, log } = {}) {
   const ui = () => (save ? save.get("ui") : {});
   const S = {
     best: (mode, game, level) => (ui().bests || {})[bestKey(mode, game, level)],
@@ -87,6 +88,9 @@ export function createScore({ save, wallet, progress } = {}) {
             spoken: { ok: spoken.filter((x) => x && x.ok).length, total: spoken.length },
           })
         : null;
+      // the round's line in the story log (story mode only: free play has no story to tell)
+      const play = round.play || {};
+      if (log && play.play === "story" && play.arc) log.log({ arc: play.arc, chapter: play.chapter, errand: play.errand, type: "round", what: round.game, count: b.accuracy.right });
       return { key, badges: b, best: b.time ? { ms: b.time.bestMs, newBest: b.time.newBest, first: b.time.first } : null, pay, words };
     },
   };

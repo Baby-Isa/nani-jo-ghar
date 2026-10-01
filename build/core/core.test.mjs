@@ -259,3 +259,28 @@ test("loadCore: every part wired over one save, with the real data files", async
   const out = core.score.finish({ mode: "clinic", game: "pharmacy", level: 1, timeMs: 20000, right: 2, total: 3, hints: 1 });
   assert.equal(core.wallet.coins(), 51 + out.pay.coins);
 });
+
+test("progress follows Cook's own word records while Cook is still on old code", () => {
+  const Save = createSave({});
+  const s = Save.memoryStore();
+  Object.entries(live.afterClinic).forEach(([k, v]) => s.setItem(k, v));
+  Save.use(s);
+  Save.init();
+  const P = createProgress({ save: Save, data: progressData });
+  assert.equal(P.stage("cook-dudh"), 2);
+  // the classic Cook marks dudh right three more times
+  Save.update("cook", (c) => ((c.words["cook-dudh"].right += 3), (c.words["cook-dudh"].seen += 3), c));
+  assert.equal(P.stage("cook-dudh"), 3, "1 + 3 rights: Cook's stage 3, seen through the core");
+  // and a brand-new Cook word appears
+  Save.update("cook", (c) => ((c.words["veg-01"] = { seen: 1, right: 0, miss: 0, streakMiss: 0 }), c));
+  assert.equal(P.stage("veg-01"), 2);
+});
+
+test("voice: busy() while a line plays, not after", async () => {
+  const player = { play: () => new Promise((r) => setTimeout(r, 15)), stop() {} };
+  const V = createVoice({ index: clipIndex([]), player, path: "test", gapMs: 0 });
+  const p = V.say({ clipPlan: [{ file: "a", source: "family-ok", tokens: [0, 0] }] });
+  assert.equal(V.busy(), true);
+  await p;
+  assert.equal(V.busy(), false);
+});

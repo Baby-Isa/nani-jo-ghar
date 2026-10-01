@@ -132,3 +132,28 @@ test("content versions: every new data file has one; updates and rollbacks never
   assert.equal(Save.contentVersion("map", "map"), 2);
   assert.equal(checkContent(Save, "arc", { id: "x" }).status, "unversioned");
 });
+
+test("story log: append-only days per arc; Score.finish writes the round's line in story mode only", async () => {
+  const { createLog } = await import("../../js/core/log.js");
+  const { createScore } = await import("../../js/core/score.js");
+  const Save = fresh();
+  Save.ensurePlayer();
+  let day = 1;
+  const log = createLog({ save: Save, now: () => new Date(`2026-10-0${day}T10:00:00Z`) });
+  log.log({ arc: "birthday", type: "made", who: "nana", what: "cook-chai", count: 2 });
+  log.log({ arc: "birthday", type: "made", what: "cook-maani" });
+  assert.equal(log.days().length, 1);
+  assert.equal(log.days()[0].entries.length, 2);
+  assert.equal(log.log({ arc: "x" }), null, "no type: nothing logged, nothing thrown");
+  const S = createScore({ save: Save, log });
+  S.finish({ mode: "cook", game: "chai", level: 1, right: 2, total: 2, hints: 0, play: makeContext({ play: "free" }) });
+  assert.equal(log.days()[0].entries.length, 2, "free play: no story line");
+  S.finish({ mode: "cook", game: "chai", level: 1, right: 2, total: 2, hints: 0, play: makeContext({ play: "story", arc: "birthday", chapter: 1, errand: "cook-1" }) });
+  assert.deepEqual(log.days()[0].entries[2].type, "round");
+  // retention: the current and the previous arc only
+  day = 2;
+  log.log({ arc: "beach", type: "saw", what: "x" });
+  day = 3;
+  log.log({ arc: "quilt", type: "placed", what: "y" });
+  assert.deepEqual(log.days().map((d) => d.arc), ["beach", "quilt"]);
+});

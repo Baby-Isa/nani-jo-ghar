@@ -3,7 +3,7 @@
  *
  *   import { loadCore } from "#core/index.js";
  *   const core = await loadCore({ base: "", cook: window.Cook });
- *   core.save  core.progress  core.score  core.wallet  core.voice  core.lang  core.settings  core.unlocks
+ *   core.save  core.progress  core.score  core.wallet  core.voice  core.lang  core.settings  core.unlocks  core.log
  *   core.play  (this page's play context, from its URL)
  *
  * Each part is also importable on its own (#core/save.js, #core/wallet.js ...). The core never calls a mode.
@@ -18,6 +18,7 @@ import { createLang } from "./lang/index.js";
 import { createSettings } from "./settings.js";
 import { createUnlocks, Entitlements } from "./unlocks.js";
 import { fromQuery } from "./context.js";
+import { createLog } from "./log.js";
 
 export async function loadCore({ base = "", save = Save, cook = null, player = null } = {}) {
   const load = (p, fallback) => loadJSON(p, { base }).catch(() => fallback);
@@ -34,11 +35,13 @@ export async function loadCore({ base = "", save = Save, cook = null, player = n
   const wallet = createWallet({ save, economy });
   const index = clipIndex(familyAudio, { tts: (tts && tts.lines) || {} });
   const voice = createVoice({ index, player });
+  const log = createLog({ save });
   return {
+    log,
     save,
     progress,
     wallet,
-    score: createScore({ save, wallet, progress }),
+    score: createScore({ save, wallet, progress, log }),
     voice,
     lang: createLang({ cook, index, voice }),
     settings: createSettings({ save }),
