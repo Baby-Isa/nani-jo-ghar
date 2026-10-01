@@ -36,7 +36,10 @@ One line per doc. Start with `docs/status.md`. Superseded docs are in `docs/arch
 ## Language (`language/`)
 - `grammar-notes.md`: everything Mum has confirmed about Kutchi grammar, dated.
 - `lexicon.md`: the words, with source and confirmation status.
-- `engine-spec.md`: the language engine's requirements (the design comes in step 2b).
+- `engine-spec.md`: the language engine's requirements.
+- `engine-design.md`: the engine design (step 2b, approved 1 Oct): a Kutchi engine in GF's style, its data formats and API.
+- `grammar-kb.md`: what's known, guessed and unknown about each grammar feature, and the question that settles it.
+- `fill-the-engine.md`: how to add words and rules, and how gaps become Mum's questions.
 - `mum-questions/`: every round of Questions for Mum (Round 4 is the live one; `README.md` says which are answered).
 - `sources/`: outside material (the Gemini blueprints, research notes); hypotheses only, never evidence.
 
