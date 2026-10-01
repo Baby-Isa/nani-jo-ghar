@@ -52,7 +52,7 @@ Each merge copies sections **word for word** with a `> from: <old file> §<headi
 - [x] `docs/status.md` rewritten: "Next chat" section first; plan (steps 1–4 and the later docs clean-up); live state; open questions for Zafar (grouped, each with a recommendation); open regression rows by mode
 - [x] `docs/README.md` index; root `README.md` short front door
 - [x] Scripted check: every old file accounted for, every doc link resolves
-- [ ] Fable review of the tree (lost content, broken links, stale boxes present)
+- [x] Fable review of the tree (lost content, broken links, stale boxes present): 9 must-fix and 8 should-fix found, all applied 1 Oct (review fixes 1–8 plus status and regressions); left for later: checking Build Brief v4's story-beat spec against `js/shared/story.js`
 - [ ] Zafar reviews → merge to `main` (docs only, bump version)
 
 ## Notes for the orchestrator

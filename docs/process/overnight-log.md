@@ -80,3 +80,4 @@
 
 - 2026-10-01 00:04 UK · Step 1d: phase 1 (100 moves, 1,146 path fixes) pushed; merge sessions G, D, L launched on Sonnet; check-ins every ~35 min.
 - 2026-10-01 00:55 UK · Step 1d: sessions G, D, L all done (27/27 items); status.md, docs index and root README written; scripted check clean (every moved file present, every live link resolves). Fable review next.
+- 2026-10-01 ~02:00 UK · Step 1d: Fable review done (9 must-fix, 0 invented Kutchi); all fixes applied and pushed. Waiting on Zafar's review, then merge to main.

@@ -178,6 +178,15 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | CK-08 | No oil-heating ring (it looks like the timing ring); sizzle means ready | built, not re-played | eye: samosa, daar | `docs/feedback/cook-playtest-2026-09-29.md` S16, Q9 |
 | CK-09 | One house chakla: dark walnut, not blown up or low-res; no board drawn on a board | built, not re-played | eye: maani, samosa · ART-03 | `docs/archive/cook/cook-with-nani-phase-a-design.md` §2; `docs/feedback/cook-playtest-2026-09-29.md` M4, S6 |
 | CK-10 | Tadka arrow and pulse from small pan to pot; chopped vegetables thrown high enough | fixed | eye: daar | `docs/archive/cook/cook-with-nani-todo.md` Wave 1 |
+| CK-11 | Nothing covers the game: Nani's bubble once covered the top pantry shelf on a phone (915×375); she now talks from the sidebar | fixed | auto: `build/test_cook.py` (topmost check) · LAY-06 | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-12 | Pot and pan contents sit inside the rim, not above it (vessel geometry stored as fractions of the image) | fixed | eye: every vessel state · LAY-10 | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-13 | Flames visible under the pans (ring drawn under the pan's edge) | fixed | eye: lit burner | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-14 | Nothing stands on a lit burner (a glass once did) | fixed | eye: hob · H11 | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-15 | Count badges never overlap a speech bubble, card or tool | fixed | eye · LAY-12 | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-16 | A hidden item's shadow hides with it | fixed | eye: after each pick | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-17 | Card and recipe text clears at each new order (no stale "Nani shows you") | fixed | eye: second order · INT-03 | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-18 | A customer's bubble never covers their own face | fixed | eye: serve | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
+| CK-19 | Art is WebP and light (10 MB once became 2 MB) | fixed | auto: asset size budget (planned) | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
 
 ## Clinic
 

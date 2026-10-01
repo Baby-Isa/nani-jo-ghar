@@ -15,7 +15,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
   - every doc has moved to the new tree (step 1d).
 - **Waiting on:** the Fable review of the tree, then Zafar's review, then the merge to `main` (docs only).
 - **Mum records at 10:00 UK on 1 Oct:**
-  - Round 5 of the Questions for Mum is planned but not written; Zafar says go (plan: `docs/language/sources/round5-plan-notes.md`).
+  - Round 5 of the Questions for Mum is planned but **not written**; it starts only when Zafar says go (about 1.5 hours; plan: `docs/language/sources/round5-plan-notes.md`).
   - The fallback is Round 4 as it is (`docs/language/mum-questions/`).
 - **The doctor's visit around 9 Oct** needs only his voice recorded (Round 4 Section G). No clinic build before it.
 
@@ -129,6 +129,20 @@ Not needed for step 1; each has Claude's recommendation. Answer any time with "y
 17. **Chai art to make:** black-tea glasses, the tipped pan, in-between pan states; the daar ladle came out as a dipper (redo from a photo of a real *kadchi*); the sekelo plate cell. *Recommend: one art batch when Cook is finished.*
 18. **The Word copies of Mum's rounds:** does she still read them? *Recommend: yes, keep building them.*
 
+### Older open decisions (from the 25 Sept mode designs; defaults were taken, never confirmed one by one)
+21. **Who did it?** Can Nana, Nani or baby Isa be culprits, and Kasuku a silent suspect? A "Prove it" step for 8+, or too school-like? *Recommend: yes to family culprits and Kasuku; Prove it optional at the top level.*
+22. **Monsoon rush:** a goat in the kitchen as a joke? Big Ma's song during the leak? *Recommend yes to both.*
+23. **The doctor:** what the children call him in the game; does he voice his own lines? *Recommend: his own voice (Round 4 Section G), his family's name for him.*
+24. **Snap:** young Nani in old photos? Instant camera or phone? *Recommend: young Nani yes; a phone.*
+25. **Which sweets go in Nani's sweet box** (blocks art in three modes). *For Mum.*
+26. **Owners:** mehndi (Tidy up or Dress up), "Footprints", "watch the sky". *Recommend: decide when each mode is rebuilt.*
+27. **Ungraded creative choices** (Dress up themes, extra placing in Tidy up): OK? *Recommend yes.*
+28. **Clothing words** (*topi* or *kofia*) and what the family really wears (blocks Dress up art). *For Mum.*
+29. **The rooms in Nani's house** (Monsoon rush, Find it). *Recommend: kitchen, sitting room, Big Ma's room (the 25 Sept default).*
+30. **Clinic feelings:** "sad" or "scared", always resolved gently? *Recommend yes.*
+31. **Cook timing windows** (boil about 1.2 s, tawa about 0.9 s): too hard for a five-year-old? *Recommend: widen at level 1; check when Cook is finished.*
+
 ### Business
+
 19. **Commercial model:** open (decision 7). The landing page needs it first.
-20. **Landing page:** whose voices and faces appear first.
+20. **Landing page:** whose voices and faces appear first. Hannah's granddad can share it across a community with deep Kutch roots; the trailer is planned "Planet Zoo style" (in-game footage, slow camera, gentle music, no narrator), built in code from the game.
