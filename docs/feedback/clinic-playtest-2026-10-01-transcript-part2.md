@@ -1,0 +1,178 @@
+# Transcript: 73e7a5b8-Kutchi_clinic_feedback2.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** Ok, clinic feedback. Fever, L1 in the pipeline. Take the temperature, ok. Put on his forehead.
+- **0:14** Ok, thermometer's kind of funny. Add a blanket. I don't know why I'm adding the blanket to their face. So, yeah.
+- **0:26** Just going back to my idea about the person sitting on the bench and you zoom in. They should maybe zoom in on their head and upper torso and the blanket kind of goes over their shoulders or something.
+- **0:39** Or tucked under their arms and over their body. I don't know but we should make the, we should try and make the artwork for it.
+- **0:48** For a couple of different, you know, blanket or no blanket or something, I don't know.
+- **0:53** In general we should have artwork for like hot and cold and sore and, I don't know, just
+- **1:01** try and get them all done now, okay. Cold blanket, put one.
+- **1:07** Oh, that's fine, it's too hot now.
+- **1:12** Now what do you do, remove the blanket?
+- **1:19** No, does anything happen? He's just said, no, I'm too hot. Oh, ice. Do I give him ice now?
+- **1:32** Don't let me give him ice. Oh, fan. Do I give him the fan? Okay, this isn't really working, I
+- **1:43** don't know how to click through. But it's kind of funny actually, unintentionally.
+- **1:47** Like there should be a thermometer, it should have a golden zone or green zone, you test
+- **1:53** it and it's too hot and you give them a blanket and you test it and then also they're too cold
+- **1:58** you give them a blanket and then you give them a fan.
+- **2:01** Is that funny?
+- **2:05** That's kind of funny.
+- **2:06** Maybe you don't test it each time, you test it the first time and then it dynamically goes
+- **2:12** up and down and based off of that.
+- **2:14** You kind of connect the thermometer and then afterwards it goes up and down.
+- **2:21** That's kind of funny.
+- **2:23** And you can cool them down with ice cubes.
+- **2:27** Or maybe that's kind of clever, different ones have different effect sizes.
+- **2:30** You can cool them down with an ice cube, a fan.
+- **2:41** I probably need one more.
+- **2:43** Heat them up with a blanket, a hot water bottle.
+- **2:53** If you could think of, help me think of one more for each, then one could, each one reduces it
+- **2:59** either big, medium or small each time. So you know like the smallest thing is a fan
+- **3:06** and ice will cool you down even more and I don't know whatever the third one is will cool you down
+- **3:10** even more.
+- **3:12** Then you kind of have to eye up like where the temperature, how far the actual temperature is off the perfect temperature zone and then if you overshoot it then you have to do something else to try get it back again and it's just funny because you've got to get the combination right.
+- **3:38** Like say the effect size is 2, 3 and 4 and they're one unit too hot you have to use two units of cold, no yeah if they're one unit too hot you have to use three units of cold to get them overall two units cold and then you could use your two unit heat
+- **4:08** to get them up into the right zone. You couldn't have used the two unit cold because that would have
+- **4:14** made them one unit cold because they started off one unit hot but your hot units go in two, three
+- **4:21** and four so you'd be stuck. That's kind of fun actually. I have no idea what the educational
+- **4:28** element of this is whatsoever. I think maybe the doctor just says like
+- **4:36** and the visuals really show like you need to get them, the gameplay can show it the first time around, you have to get them into the ideal zone and then as you click the items it calls them out maybe so says what their names are. So you learn what the items are and how much is there to learn a language once you learn the vocabulary it's the conversations that are going to teach you how to
+- **5:04** put the sentences together and the instructions that you hear
+- **5:09** and eventually you're participating so I don't know how much we can put into a game mode like this
+- **5:16** ideally just more vocab that's why cooking is good you can get a lot of cooking vocab
+- **5:25** window open the window close the window that's actually so funny maybe this one's a bit more
+- **5:31** zoomed out
+- **5:32** and you kind of have the whole room and you just like get the rice open the window close the window turn on the fan like the ceiling fan do the handheld fan put the heater on this is kind of funny yeah all around the room there's different things you can press and click and you just see the temperature going up and down until you found the equilibrium that's so funny oh I'm just a genius and then yeah that lets you like yeah find items around the room
+- **5:57** and then maybe if you're struggling you can get a hint from the doctor or
+- **6:03** something and he calls out something and that way you're learning what that
+- **6:07** means oh okay let's try level three take the temperature take the temperature
+- **6:16** hot, NDA, jaldi, do the fan quickly, acro
+- **6:23** BA, okay do that twice, now I'm too cold, no he's too cold, okay whatever my idea is so good oh it's such a good idea right I'm now doing heal boing L1 in the pipeline, wipe BA, wipe it twice, countdown, boing, teleplaster
+- **6:49** maybe they just can't say it as you do it say one instruction at a time it's
+- **6:55** just too much you know it's not you're just not listening you just want to start
+- **6:59** that might apply to the whole across the whole game to be honest well no the
+- **7:08** cooking one I don't know I just know we play it we're just ignoring the voice
+- **7:16** and just looking and just clicking through obviously we can read English
+- **7:19** but but yeah maybe it should just say read the instructions out one by one as
+- **7:35** you complete them but obviously some things aren't always in order are they
+- **7:40** so maybe the non-order ones it just gives it to you
+- **7:45** it's kind of a gameplay thing tell me what you think give me your opinion at
+- **7:50** least on this one there's just too many like I'm not gonna hear the whole thing
+- **7:54** stop listen to it and start playing the game I'm like no I've seen it says wipe
+- **7:58** and I'm wiping and I'm looking where the wiping thing is and then I've really
+- **8:02** like not heard the second instruction and then now it's talking about the
+- **8:06** third instruction while I'm reading the second instruction do you know I'm
+- **8:09** saying so suggest to me how we can fix that
+- **8:13** beads I've got beads three also be okay so what we need is like a pick and mix
+- **8:26** dispenser type thing machine that feeds the syringe and you have to click the
+- **8:33** different colors and I don't know if Kutchi has shapes square circle I don't
+- **8:40** know but that could be how you fill in the syringe
+- **8:42** and you can learn about shapes and colors and then yeah you click you click the different pipes
+- **8:48** of the machine you'll filter down go into the syringe then the syringe is ready and you
+- **8:58** um syringe them so how does that work
+- **9:00** yeah acro v8 only click the hands
+- **9:07** just keep taking them out again boing where's the boing how do I count down
+- **9:17** well I know how to count down I don't know what to click clicking everywhere
+- **9:26** all on the syringe count down
+- **9:32** okay well there's a pointless I don't know how to make this work so oh I
+- **9:41** tick it tick is just not always that clear I was counting down that's kind of
+- **9:46** funny huh the boing is kind of funny but we can't we can show the pointy bit
+- **9:52** going in that's fine plaster this is kind of funny
+- **9:59** giving the apple okay let's save the apple for
+- **10:09** oh maybe it's maybe it's fine just animation was a bit rubbish that's kind
+- **10:15** of funny I think with my idea it will be better okay level three let's go
+- **10:21** it's such hard work
+- **10:24** any point I grow blue green blue countdown can't take it I take it just
+- **10:33** not obvious whatsoever I know it's everywhere but needs to be more near
+- **10:44** the syringe at the top and and say like I don't know
+- **10:50** oh it's no I should just highlight the end of the syringe or something and then
+- **10:55** you press it and then it does it crunch well the tick the tick is just don't like
+- **11:10** it this doesn't fit with a lot of games shouldn't be used unless necessary
+- **11:16** okay heal I let's try that drops tray the I test
+- **11:44** drops three
+- **11:50** back row VA tray
+- **11:55** okay it's not quite obvious which eye to put it into and stuff and the eye test
+- **12:06** um
+- **12:11** then the eye test how do i start the eye test sure i'll just press the tick tomato yeah i just
+- **12:25** don't have the tick thing i think we just got to count it out loud and take it when it's done
+- **12:32** it's just it's fine okay tomato no it's not tomato then why is telling me to press yes
+- **12:39** tomato no not tomato okay well but then we should give her the eye drops to fix
+- **12:50** it okay this year this kind of works but but not quite i mean the visuals we need
+- **12:54** thinking about like what's okay then the game just ended okay that's weird we
+- **12:59** just need to think about like how are they looking at this
+- **13:06** maybe the first oh yeah how are they looking at this maybe it's kind of fine
+- **13:09** it's zoomed in and it's just them on the kind of i don't know the way you need to
+- **13:17** look at the eyes to put the drops in the eye but the eyes need to be
+- **13:22** looking at the board or the the eye test thing to make sense but you also need to
+- **13:28** see the eye test thing fully so you can see what they're saying which means
+- **13:32** that doesn't quite work so maybe you just see them I don't know
+- **13:44** oh
+- **13:54** so now we need to think about how we set out but then I like the idea of
+- **14:00** yeah I just had that idea of it they speak each one is to get used to be more
+- **14:08** obviously getting smaller but they speak each one if they get it right you get a
+- **14:13** tick almost like how the on the menu on the sidebar menu it gets a tick you know
+- **14:20** saying thing that rose done highlighted and gold okay next row highlighted in
+- **14:25** the same style
+- **14:26** and then if they say and it's the wrong you say no then I then maybe the maybe
+- **14:39** the doctor just puts the drop I drop in them or something because that's not
+- **14:46** really part of the gameplay and then they try again or maybe you get in the
+- **14:52** I drop
+- **14:54** you just see it but how do you switch between this kind of like I drop game
+- **14:59** and get the words right game I don't know once you figured that one out this
+- **15:13** would be a very fun game mode and really good because hey there's so many items
+- **15:18** you can put in that the eye test game
+- **15:22** I, L3 in the pipeline, drops, right eye, two, okay, that's not correct so now what
+- **15:49** okay so they kind of I'm seeing them both kind of looking at me the okay it
+- **16:02** needs to kind of be more obviously an eye test board that's kind of funny why
+- **16:09** I didn't hear what you said let's see the play button work oh let me click on
+- **16:15** that one
+- **16:16** drops right eye VA no I didn't know what you said I was gonna say no if I'm
+- **16:26** wrong how do I get penalized that's gonna take now oh I guess if it's wrong
+- **16:31** I have to put more drops in the eye
+- **16:38** so then then he reads out to you
+- **16:41** that's kind of clever
+- **16:45** that one's right don't agree market yeah that's correct as well I can see I can see okay I mean
+- **16:53** maybe that's maybe that's like fine if it's a split screen if you can't show as a split screen
+- **16:59** like you know like how you two player on play on one playstation like if you show it like that
+- **17:07** so it's kind of like he's looking at the board
+- **17:09** and you can see looking at the board on the left and you can see the board yourself on the right
+- **17:13** and he's kind of looking at them both that's funny
+- **17:16** okay it's kind of there the problem is you're looking for me for feedback but I'm like oh
+- **17:23** yeah like I said need to be clear what happens if you get it wrong
+- **17:26** gets it wrong it's not clear that you need to give them an extra eye drop
+- **17:34** I wonder if the dropper is just like above their eye you just click
+- **17:37** click it it just drops it in
+- **17:39** or something maybe do it just needs to be a bit clearer oh hopefully you can
+- **17:45** just help me fix it for me heel foot and what did the pipeline hot water
+- **17:57** a plaster on each spot yeah it's a splinter how does that work
+- **18:06** oh no that's only the tweezer now no I finished putting hot water do I have to
+- **18:12** tick okay and then I've got to move the splinter out but plaster plaster on each
+- **18:27** spot it doesn't hurt anymore okay at level one that it's okay that the proof
+- **18:32** of the pudding will come into higher levels for this
+- **18:35** level three it's kind of funny actually I have to put it out but it's just like
+- **19:00** mmm it's not hard enough to put it out it doesn't hurt anymore like I thought
+- **19:08** there's gonna be a let's try level five like a bit of an angle to turn or
+- **19:13** something and I didn't get in trouble for like doing it inaccurately my left
+- **19:19** foot so that means that means I'm thinking about I think hello middle toe
+- **19:25** I like I like kind of idea that you see the sole of the foot and you have to put
+- **19:28** it out kind of towards the edge of the foot that's kind of funny
+- **19:32** or along the path anyway um along the path to to an edge but yeah I think it
+- **19:44** yeah it needs to be more there's a path with like three squarish turns in there and you need to
+- **19:51** follow drag it along that path and not touch drag it on that path out of the foot and not touch the
+- **19:58** sides
+- **19:59** needs to be more like that oh we're done my lord oh it's such hard work
+- **20:07** you can really see the potential though like I actually don't it's funny I play proper like
+- **20:13** proper games I play games like League of Legends like um Far Cry, Sim City, FIFA
+- **20:23** like kind of more games like that and I'm playing like computer games so much well I saw like phone
+- **20:28** mobile app games I find them a bit shallow
+- **20:31** so I have no idea how this compares but I'm sure this is gonna kind of be up
+- **20:39** there with a professional looking game studio level quality game I don't know
+- **20:44** it looks kind of good like the vision of what it could be maybe it's ambitious
+- **20:51** but I would almost think people would enjoy playing it even if they didn't
+- **20:55** want to learn Kutchi
+- **20:56** but maybe that's a step too far but that would be the ambition
+- **21:03** there's so many game modes in this it's just the clinic and then there's
+- **21:06** you know so many different games I just played and I think it could be good I think it could be like a
+- **21:15** well I'd assume something a big studio would make but maybe not but maybe
