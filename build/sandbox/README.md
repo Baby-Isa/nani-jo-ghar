@@ -19,6 +19,7 @@ COOK_TEST_PORT=8812 flock -w 1800 /tmp/njg-browser.lock timeout 14400 node build
 | `--check` | compare with `build/lint/baseline.json`; **exit 1** on a new finding, a flow that no longer reaches its end, or a new page error |
 | `--update-baseline` | drop fixed findings from the baseline (it only shrinks). `--accept` also adopts new findings, and creates the baseline the first time |
 | `--webgl` | Phaser's WebGL renderer for Cook. Default is canvas (about 4x faster; no tints) |
+| `--from-run <run-id>` | judge a finished run's saved data (no browser): `--all --from-run before --check` |
 | `--list`, `--no-sheets`, `--run-id`, `--resume <run-id>` | list flows; skip contact sheets; name the output folder; skip flow-sizes already done in that run |
 
 `node build/sandbox/run.mjs --list` shows the flow ids: `house`, `first`, `cook:title`, `cook:<station>` (fetch = the pantry, chai-tray, maani-line, mishkaki-grill, daar, chop, tadka, stir, assemble, samosa), `cook:<recipe>` (chai, maani, daal, chaat, samosa as `cook:recipe:samosa`, mishkaki), `cook:<station>@L3` (level 3), `clinic:waiting|diagnosis|pharmacy|sendoff` (+ `@L3`), `clinic:heal-<game>` and `clinic:patient` (+ `@L3`). Cook's parts (`cook-parts`) run only when named.
@@ -28,6 +29,8 @@ Typical loop while iterating: `--quick --flow cook:chai-tray --check`. Before a 
 ## What is checked (build/lint/layout.mjs)
 
 At every recorded state, on visible elements only: **text-clipped**, **ellipsis** (only if it truncates; line clamps too), **text-small** (under 14 px as rendered, transforms included), **tap-small** (under 48x48 px; buttons, links, roles, inline handlers and anything given a click/pointer listener, found by an injected recorder), **text-offscreen**, **tap-offscreen**, **page-scroll**, **scroll-container**. Each finding has page, flow, state, size, selector and the measured value. `node --test build/lint/layout.test.mjs` runs the lint on `build/lint/fixtures/violations.html` and must find every planted violation and none of the clean elements.
+
+Each state is linted twice, 300 ms apart, and only what shows in both counts (an animation half-way through is not a finding). A thing that is moving between two measurements (a belt dish passing the edge) is not reported as off screen.
 
 Not checked: text drawn inside a canvas (Cook's Phaser scene); things covering other things (LAY-06); words broken mid-word; spacing on the 4/8 grid.
 

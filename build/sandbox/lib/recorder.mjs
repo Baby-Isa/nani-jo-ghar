@@ -30,7 +30,14 @@ export class Recorder {
     let findings = [];
     let shotOk = true;
     try { await page.screenshot({ path: join(this.dir, shot), animations: "allow", timeout: 15000 }); } catch (e) { shotOk = false; this.notes.push(`screenshot of ${unique} failed: ${e.message.split("\n")[0]}`); }
-    try { findings = await lintPage(page); } catch (e) { this.notes.push(`lint of ${unique} failed: ${e.message.split("\n")[0]}`); }
+    // two lint passes 300 ms apart; only what is on screen in both counts (an animation half-way through is not a finding)
+    try {
+      const a = await lintPage(page);
+      await page.waitForTimeout(300);
+      const b = await lintPage(page);
+      const inB = new Map(b.map((f) => [f.check + "|" + f.selector, f]));
+      findings = a.filter((f) => inB.has(f.check + "|" + f.selector)).map((f) => inB.get(f.check + "|" + f.selector));
+    } catch (e) { this.notes.push(`lint of ${unique} failed: ${e.message.split("\n")[0]}`); }
     const pg = this.pagePath();
     this.states.push({ name: unique, page: pg, shot: shotOk ? shot : null, findings: findings.map((f) => ({ ...f, page: pg })), note: opts.note || "", at: Date.now() - this.t0 });
     return unique;

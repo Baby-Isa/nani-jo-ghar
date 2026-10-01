@@ -140,7 +140,7 @@ if (!fromRun) writeFileSync(join(runDir, "summary.md"), md);
 
 // ---- baseline actions ----
 console.log("");
-log(`findings: ${cur.findings.length} (${top(byCheck).map(([k, v]) => `${k} ${v}`).join(", ") || "none"})`);
+log(`findings: ${sum.findings.length} (${top(byCheck).map(([k, v]) => `${k} ${v}`).join(", ") || "none"})`);
 if (has("--update-baseline")) {
   if (!base && !has("--accept")) { console.error("There is no baseline yet: create it with --update-baseline --accept."); process.exit(2); }
   const out = Baseline.update(base, cur, scope, { accept: has("--accept") });
