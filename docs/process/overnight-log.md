@@ -85,3 +85,4 @@
 - 2026-10-01 19:46 UK · R5 moving fast (staging zoom in/out with stand-ins, CLN-43/45/49/51, SH-46, D13; clinic CSS on tokens; labs.html regenerated). R4 pushing (labs pay, shared buttons). Art plan reviewed by Fable, fixed (115 images), Chrome block sent to Zafar.
 - 2026-10-01 21:23 UK · R4 and R5 stopped at the usage limit (~20:45 UK); limit reset; both resumed as continuations (nothing lost: all work committed). R4 was on its report; R5 on the heal-game rules.
 - 2026-10-01 22:05 UK · R5 building the heal rules (eye badge, count badge on the tool, goal headlines, no stars on the receipt); R4 running its final sandbox check.
+- 2026-10-01 22:46 UK · Both running and pushing. R4 notes Cook's play items can't grow on tablets until stations are laid out for 4:3 (open item). R5 drafting its report while finishing the zoom-out.
