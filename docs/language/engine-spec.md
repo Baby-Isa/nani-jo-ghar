@@ -1,7 +1,7 @@
 # Language engine: specification (requirements only; the design comes in step 2b)
 
 > **Stale points (the rulebook, `docs/process/rules.md`, wins).**
-> - This file holds Zafar's **requirements** for the engine, copied from the 30 Sept handover. No engine design exists yet; step 2b produces it, for Zafar's approval.
+> - This file holds Zafar's **requirements** for the engine, copied from the 30 Sept handover. The design is `engine-design.md` (step 2b, 1 Oct), awaiting Zafar's approval; see Status at the end.
 > - "Decide the Excel's role" is still an open question: see `language/lexicon.md` § The Excel's role.
 > - Where the handover says "use GF as the template", outside grammars and the Gemini/Claude research in `language/sources/` are **hypotheses, not evidence**: Mum is the authority and two AIs agreeing is not evidence (G1, non-negotiable 4).
 > - Rules that govern the engine: G9–G13, G18 (every line a full natural sentence; engine built the standard way; filled from Mum's natural sentences; whole-phrase recordings for the most frequent lines; no Kutchi grammar in game code; nouns carry gender, singular and plural).
@@ -48,4 +48,10 @@
 
 ## Status
 
-Not yet designed. Step 2b (read-only research and design) delivers the four outputs above; nothing is built until Zafar approves.
+Designed in step 2b (1 Oct 2026), awaiting Zafar's approval; nothing is built until he approves.
+
+- The engine design: `engine-design.md` (its API is § 6).
+- The grammar knowledge base (known / hypothesis / unknown): `grammar-kb.md`.
+- Mum's elicitation questionnaire (Round 5): `elicitation-questionnaire.md`.
+- The fill-the-engine rulebook: `fill-the-engine.md`.
+- Summary and the decisions for Zafar: `build/reports/step-2b.md`.
