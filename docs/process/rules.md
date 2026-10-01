@@ -101,6 +101,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Run `python3 build/bump_version.py` before every push to `main`;** every asset URL built in code goes through `Cook.v()` / `njgV()`. (B7)
 - **`main` is the live Pages site:** publish = bump, commit, push the branch and `HEAD:main`; if an upload races you, merge `origin/main` and push again; on `?v=` conflicts, take the real side and re-bump. (B8, B9)
 - **Commit small and often, never force-push,** with the Co-Authored-By and Claude-Session lines. Big audio files go up as a GitHub release. (B15, J11)
+- **Screenshots and report images are not committed;** they're kept as release or artifact files so the published site stays under GitHub's 1 GB. (B19, decision 20)
 - **Browser tests run one at a time** (`flock -w 1800 … timeout`, own `COOK_TEST_PORT`, `--canvas` for `--days`, split by `--stations`); discard rewritten screenshots unless intended. (B16)
 
 ---
@@ -229,7 +230,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Every arc ends with the Story by the Fire:** a picture book of what the child actually did, voiced by Nani, with gaps to fill. (H40)
 - **The progress marker is a bookshelf, not the quilt:** at the "book end" review with Nani, the arc's book goes on the shelf, name on the spine, and the hub fills up. (I14, decision 4)
 - **The story is carried by picture and sound,** never text the child must read; short, skippable story beats are fine. (I13)
-- **Order of work:** Cook → the clinic → Arc 1's modes → Arc 1's story layer → one trip arc; the end point is the store launch with Arcs 1–5. (H41, H54)
+- **Order of work:** Cook → the clinic → Arc 1's modes → Arc 1's story layer → one trip arc; the end point is the store launch with Arcs 1–5. **The clinic is built now, ideally finished before the doctor's ~9 Oct visit.** (H41, H54, decision 19)
 
 ### Parked, dropped and future
 - **Parked modes** (Tidy up, Who did it?, Dress up, Monsoon rush, Snap) are rebuilt on shared components; dropped ideas (fry "take them out?", *munje same we*, pill organiser, tooth bug) stay dropped. (H45, H46)
@@ -329,7 +330,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 ### The language engine
 - **Every spoken line is a proper, natural, full sentence** built by the engine from its rules, never hand-written fragments or hand fixes. Every word heard is a human recording. (G9)
-- **Build the engine the standard, researched way:** lexicon, morphology and syntax, with a rulebook on filling and using it. (G10)
+- **Build the engine the standard, researched way:** lexicon, morphology and syntax, with a rulebook on filling and using it. It is a **Kutchi** engine: Grammatical Framework's design run by our own small JavaScript engine; Sindhi grammars are a structural reference only (`docs/language/engine-design.md`). (G10, decision 17)
 - **Fill it from Mum's natural example sentences,** not grammar tables; the engine outputs the prioritised list of what to record. (G11)
 - **Record the most frequent phrases whole** after a simulated run; assembling from words is the fallback; recordings never change the engine. (G12)
 - **No Kutchi grammar in game code:** frames live in data; nouns carry gender, singular and plural. (G13, G18)
@@ -367,7 +368,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **A web app on GitHub Pages for testing, wrapped with Capacitor for the stores;** landscape; Kids-category rules. (J2)
 - **One app, one save:** every mode plugs into the shell and `js/shared/save.js`; progress is per word. (J3)
 - **Content model first:** positions are measured per background and stored as scene data, never nudged in CSS; swapping art never changes code. (J4)
-- **A clean, modular, scalable codebase to modern best practice;** remove legacy code and concepts when the design moves on. (J6, J7)
+- **A clean, modular, scalable codebase to modern best practice;** remove legacy code and concepts when the design moves on. The target is `docs/architecture/target-model.md`: a core, the shared kit, content as data, modes as plug-ins, ES modules with no bundler. (J6, J7, decision 18)
 - **Everything stays public (repo, recordings)** until the game or landing page is published and people start looking; then revisit. (decision 6)
 - **A landing page (with a sign-up list) and a code-built trailer from in-game footage** are in the plan. (J5)
 - **Success is Mum enjoying the recording and a child asking to play again,** not downloads or streaks. (J9)
@@ -403,3 +404,7 @@ Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Confli
 14. **Handover timing:** don't wait for a full chat; hand over at step boundaries and around 70% context rather than compacting. (Zafar, 30 Sept)
 15. **Phone screenshots are landscape:** 844×390 (iPhone 12–14, one of the three most-used phone sizes) as the main phone size, 800×360 (the most-used Android size and the tightest height) in the full matrix, plus one upright shot for the rotate card. (Zafar, 30 Sept)
 16. **The orchestrator owns the regression list** and reports open rows at every step end; a one-line update to Zafar at every check-in during runs. (Zafar, 1 Oct)
+17. **The language engine is a Kutchi engine:** GF's design, our own small JavaScript engine; Sindhi only as a structural reference. The Excel is retired as a source. (Zafar, 1 Oct)
+18. **The code target model is approved** (`docs/architecture/target-model.md`); star code and the clinic's phase-1 prototype go; computer voices stay on the test site, out of the store app. (Zafar, 1 Oct)
+19. **Keep building the clinic, ideally to completion before the doctor's ~9 Oct visit,** so he can play his section. Supersedes "no clinic build before the visit". (Zafar, 1 Oct)
+20. **Screenshots and report images are not committed** (site under 1 GB); **the clinic's coins join the one purse now**; no wages; browser tests in Node; the layout lint only gets stricter. (Zafar, 1 Oct)
