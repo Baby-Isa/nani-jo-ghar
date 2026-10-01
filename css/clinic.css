@@ -500,3 +500,5 @@ body.clinic button { font-family: inherit; color: inherit; }
 .hs-timer.low i { background: #f0a040; }
 .hs-said { position: absolute; z-index: 8; background: #fff; border: 3px solid #d9bf95; border-radius: var(--njg-radius); padding: 0 var(--njg-s2); font: 800 var(--njg-t2) / 1.2 var(--cl-head); color: #3b2415; pointer-events: none; white-space: nowrap; }
 .hs-judge { position: absolute; left: 50%; bottom: var(--njg-s3); transform: translateX(-50%); display: flex; gap: var(--njg-s4); z-index: 8; }
+/* the tightest phones: the four feeling faces in one row, so the bubble above the head stays on the screen */
+@media (max-height: 420px) { .cl-thought { grid-template-columns: repeat(4, auto); padding: var(--njg-s2) var(--njg-s3); } }

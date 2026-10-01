@@ -100,7 +100,9 @@
 /* SH-43: a peeked closed card looks like an open card (no gold ring round its corners) */
 .oc-card.closed.peek { box-shadow: var(--oc-shadow); }
 /* D12: the small eye on a closed card: tap to look (its own badge at the end) */
-.oc-look { display: none; flex: none; width: var(--njg-icon); height: var(--njg-icon); margin-left: auto; color: var(--njg-ink-soft); }
+/* in the card's corner, so the headline keeps the card's whole width (a narrow phone sidebar) */
+.oc-card.closed { position: relative; }
+.oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
 .oc-look svg { width: 100%; height: 100%; display: block; }
 .oc-card.closed.folded .oc-look { display: block; }
 

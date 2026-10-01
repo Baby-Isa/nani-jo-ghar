@@ -168,14 +168,14 @@
 .njg-say.hint .mic{outline:4px solid #f2b134}
 .njg-say .mic[hidden]{display:none}
 .njg-say .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
-.njg-say .pill{min-height:44px;min-width:64px;padding:8px 16px;border-radius:22px;border:2px solid #d9bf95;background:#fff;font:inherit;color:inherit;opacity:.35;pointer-events:none;transition:opacity .3s}
+.njg-say .pill{min-height:48px;min-width:64px;padding:8px 16px;border-radius:22px;border:2px solid #d9bf95;background:#fff;font:inherit;color:inherit;opacity:.35;pointer-events:none;transition:opacity .3s}
 .njg-say.hint .pill{opacity:.6}
 .njg-say.live .pill{opacity:1;pointer-events:auto;cursor:pointer}
 .njg-say .pill.ph{font-style:italic;color:#8a7a6a}
 .njg-say .parent{display:flex;gap:8px;font-size:13px}
 .njg-say .parent button{min-height:36px;padding:4px 12px;border-radius:18px;border:1px solid #b9a07a;background:#f7eedd;font:inherit}
 @keyframes njg-pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,85,61,.5),0 4px 0 #8e3526}50%{box-shadow:0 0 0 14px rgba(200,85,61,0),0 4px 0 #8e3526}}
-@media (max-height:440px){.njg-say{bottom:8px;padding:8px 12px;gap:6px}.njg-say .mic{width:60px;height:60px}.njg-say .mic svg{width:30px;height:30px}.njg-say .pill{min-height:38px}}
+@media (max-height:440px){.njg-say{bottom:8px;padding:8px 12px;gap:6px}.njg-say .mic{width:60px;height:60px}.njg-say .mic svg{width:30px;height:30px}.njg-say .pill{min-height:48px}}
 @media (prefers-reduced-motion:reduce){.njg-say.listening .mic{animation:none;outline:4px solid #c8553d}}`;
   const MIC = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>`;
   function injectCss(doc) {
