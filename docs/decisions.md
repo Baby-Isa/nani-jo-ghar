@@ -209,6 +209,29 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **Process:** **No gaps in the checks:** the sandbox covers every live flow at every level, the mistake and hint paths, text drawn in Cook's canvas, sound, overlap, tablets, and a smoke flow for each parked mode so shared changes can't break them silently. Source: orchestrator chat, 1 Oct. Rule: C2, C11, decision 24
 - **Design:** **Tablets are first-class and layout scales by design, not as a retrofit:** the screen matrix adds tablets; sizes come from tokens that scale with the screen; art comes at a resolution and with a safe area that fill any screen shape; how much things grow per screen is a rule set later in data. Zafar on a tablet: "good but inefficient on screen space; certain elements need to be bigger". Source: orchestrator chat, 1 Oct. Rule: F2, F18, D15, decision 24
 - **Design:** Build in flexibility rather than lock layouts: the sidebar and its text scale with the screen; the order card can show short rows (e.g. ingredients) as pills sharing a line instead of stacked rows, chosen per screen size in data; the default stays stacked until Zafar chooses. Source: orchestrator chat, 1 Oct. Rule: F4, F8, decision 25
+- **Language:** **Stitched speech everywhere until just before publishing.** Every line is built by the engine and assembled from recorded words; whole-phrase recordings are switched off until the pre-publish quality pass, so they never hide gaps in the engine, and using the engine everywhere tests it. The engine should grow to generate Kutchi on demand and, ideally, fill a whole dictionary that could become a resource for people. Supersedes the timing in decision 13 (whole phrases recorded and used "near the end" only). Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening). Rule: G9, G12, decision 26
+- **Design:** A **dictionary mode** later: an unrestricted, child- and grown-up-friendly way to browse the engine (a translation box and the word books). Added on top of the engine after step 4; nothing extra is needed in the core now. Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening). Rule: decision 26
+- **Language:** The child's model reply voice follows the character: a boy's voice where one is recorded, otherwise the girl's (Mum's). Zafar may look for a boy of the right age; his own Kutchi pronunciation isn't strong. Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening). Rule: G17
+- **Code:** Word learning has five stages (Cook's four map across). A "game" in the pocket-money pace is one sitting (a story-mode recipe, a clinic visit). Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening). Rule: G23, decision 10
+- **Code:** **Device support is set by the market, not the family:** the app must run on most devices, including older and cheaper ones in India. Claude's research sets the cut-off (iOS 15+ with a module shim; Android 7+ with an updated system WebView) and a performance budget tested on a cheap Android phone. Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening). Rule: J2, decision 26
+- **Code:** Lab rounds pay pocket money and buy upgrades like real play, so testing is as close as possible to the real game. Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening)
+- **Clinic (heal games, the 1 Oct report §10):** yes to all, with these changes:
+  - **D1 zoom:** zoom in from the patient on the bed, swap to the HD close-up at the peak, then zoom back out for "thank you, I feel better".
+  - **D2 camera:** two wide shots, front-on and side-on, chosen by the angle each close-up needs.
+  - **D3 states:** hot, cold, happy, sad, pain and neutral; the body reacts and alternates as the room gets too hot or cold; a blanket, and hugging a hot-water bottle; not every item simulated.
+  - **D5 ticks:** try level 1 gold at the count, level 2+ at the step's close; revisit if play-tests say so.
+  - **D8:** one instruction at a time, and input never waits for the voice.
+  - **D11–D12, the bulb and the eye:** the **bulb is for language** (it translates; one bulb per use); the **eye is for reading** (opening a closed card; its own badge). A clear split.
+  - **D13 guided first round:** the game shows the first task, then the child does that same task (copying what they've just seen).
+  - **D14:** the end review shows which step went wrong (e.g. tap a tick to see more); Mum asked for this ("I don't know what I got wrong"), Cook's serve too.
+  - **D15c ear:** more wax appears as you clean (the fun); the whispered-word check needs explaining first.
+  - **D15e drinks:** a cotton bud dabbed in a soothing ointment (*malam*), not a pin, so children never copy it with needles.
+  - **D15f fever:** keep different-sized effects (up to three sizes: window big, ceiling fan medium, hand fan small); the doctor names which to use at first, later he just says "fix it" and the child works it out.
+  - **D15g boing:** the drop machine is three or four vertical dispensers with a lever that drops a blob (not sweets) into the syringe; then press the syringe's glowing end.
+  - **D15h eye test:** prototype two versions: (A) a split screen, the patient close up covering one eye and looking over the viewer's shoulder, the chart on the right; (B) the patient side-on at the left, a big chart close to them at the right, quarter-turned towards both patient and viewer.
+  - **D18:** each game's own vocabulary from its scene, plus a sentence pattern where it fits.
+  - **D19, before the doctor's visit:** the clinic must look really good, better than Cook today, and work first time (he's about 80). He plays **every heal game**, and everything is recorded and shown to him. So all the redesigns and the art land before the visit, not tiers.
+  Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening). Rule: H25–H35, decision 27
 
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 

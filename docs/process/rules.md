@@ -152,6 +152,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 ### Help and hints
 - **The light bulb is the help:** it flips the text to English for 5/3/2/1 s by level and **costs a lightbulb on the hints badge**; the face is the one replay; no per-line translate buttons. (E25, decision 1)
+- **The bulb is for language, the eye is for reading:** the bulb translates (one bulb per use); opening a closed card is a look, counted on its own eye badge at closed-card levels. (E25, F9, decision 27)
 - **A glow is a hint, not a giveaway:** only after a wrong tap or ~5 s of hesitation, and never at the top level for what the words should tell. (E16, E28)
 - **From level 3, cards are closed;** peeking costs a hint. (F9, H22, H34)
 
@@ -335,7 +336,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Every spoken line is a proper, natural, full sentence** built by the engine from its rules, never hand-written fragments or hand fixes. Every word heard is a human recording. (G9)
 - **Build the engine the standard, researched way:** lexicon, morphology and syntax, with a rulebook on filling and using it. It is a **Kutchi** engine: Grammatical Framework's design run by our own small JavaScript engine; Sindhi grammars are a structural reference only (`docs/language/engine-design.md`). (G10, decision 17)
 - **Fill it from Mum's natural example sentences,** not grammar tables; the engine outputs the prioritised list of what to record. (G11)
-- **Record the most frequent phrases whole** after a simulated run; assembling from words is the fallback; recordings never change the engine. (G12)
+- **Record the most frequent phrases whole** after a simulated run; assembling from words is the fallback; recordings never change the engine. **Until the pre-publish quality pass, every line is stitched from recorded words** (whole-phrase clips switched off), so the engine is tested everywhere. (G12, decision 26)
 - **No Kutchi grammar in game code:** frames live in data; nouns carry gender, singular and plural. (G13, G18)
 
 ### Voices and recordings
@@ -416,3 +417,5 @@ Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Confli
 23. **Word books** (a picture dictionary by topic) on the shelf beside the story books; R3b (one game host, mode and arc formats, a build guide) is back in step 3. (Zafar, 1 Oct)
 24. **No gaps in the checks** (every live flow and level, mistakes and hints, canvas text, sound, overlap, tablets, parked-mode smoke flows); **tablets first-class and layout built to scale**, the scaling rules set later in data. (Zafar, 1 Oct)
 25. **Flexible, not locked:** the sidebar and its text scale with the screen; the order card can lay short rows out as pills sharing a line, chosen per screen size in data (default stacked until Zafar chooses). (Zafar, 1 Oct)
+26. **Stitched speech everywhere** until the pre-publish pass (whole-phrase clips off); a dictionary mode later; device support set by the market (iOS 15+ with a shim, Android 7+, a cheap-phone performance budget); model reply voice follows the character; five word stages; labs pay like real play. (Zafar, 1 Oct)
+27. **The clinic's heal games** per the 1 Oct report §10 with Zafar's changes (`docs/decisions.md`): zoom in and out, two wide shots, body states, the bulb/eye split, the guided first round, the review shows what went wrong; everything lands before the doctor's visit and must look better than Cook today. (Zafar, 1 Oct)
