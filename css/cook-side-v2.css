@@ -316,3 +316,6 @@ body.w6 #intro .ic-card.wide .oc-item { break-inside: avoid; margin-bottom: 10px
    (the badge sticks out past the round face; taps there used to fall through) */
 .face-say .say-badge { pointer-events: auto; }
 .face-say::after { content: ""; position: absolute; inset: -4px -10px -10px -4px; border-radius: 40%; }
+
+/* R3a: in the pop-up (a scroll box) the face's 48 px tap area takes its full room, so nothing pokes past the card */
+body.w6 #intro .oc-card .oc-face { margin: 0; }

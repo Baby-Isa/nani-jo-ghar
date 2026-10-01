@@ -200,7 +200,7 @@
 html[data-ff="phone"] .oc-card .oc-row { padding: 0 var(--njg-s1) 0 var(--njg-s2); }
 html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) { flex-direction: row; flex-wrap: wrap; }
 /* two to a line where both fit whole, else one (a word is never split: TXT-10) */
-html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) > .oc-part { flex: 1 1 calc(50% - var(--oc-gap)); min-width: min(100%, max-content); }
+html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) > .oc-part { flex: 1 1 max-content; }
 html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3))::before,
 html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) > .oc-part::before { display: none; }
 html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-item:not(.oc-direct) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) { padding-left: var(--njg-s2); }
