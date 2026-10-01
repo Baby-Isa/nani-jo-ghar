@@ -29,6 +29,14 @@ html.njg-leaving body { opacity: 0; transition: opacity 150ms ease-out; }
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
+/* FL-02 (R3a): on a page inside the frame the top-left corner is the guide box (her face is the replay), so the
+   way home sits in the sidebar's nav dock instead, beside the "?" (the dock's own place for it, F4) */
+html:has(.njg-side) #njg-home {
+  top: auto;
+  bottom: max(var(--njg-side-pad), env(safe-area-inset-bottom));
+  left: calc(max(var(--njg-side-pad), env(safe-area-inset-left)) + var(--njg-rail) + var(--njg-s3));
+  width: var(--njg-rail); height: var(--njg-rail);
+}
 #njg-home svg { width: 50%; height: 50%; fill: #6b3b24; }
 #njg-home:active { transform: scale(.94); }
 #njg-home.hidden { display: none; }

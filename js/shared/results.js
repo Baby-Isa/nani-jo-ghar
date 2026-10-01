@@ -152,6 +152,7 @@
     speaker: svg('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
     next: svg('<path d="M5 12h13M13 6l6 6-6 6"/>'),
     again: svg('<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4.5h4.5"/>'),
+    home: svg('<path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/>'),
     grid: svg('<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>'),
     spark: svg('<path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z" fill="currentColor"/>'),
   };
@@ -261,7 +262,7 @@
   Results.wordCols = (n) => (n ? Math.min(3, n) : 0);
   function wordsHtml(words) {
     const card = (w, i) => `<button class="rs-word ${w.right === false ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
-          <b>${esc(w.kutchi)}</b><span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${esc(w.english)}</span></button>`;
+          ${w.kutchi ? `<b>${esc(w.kutchi)}</b>` : `<b class="rs-ph">${esc(w.english || "")}</b><small class="rs-rec">to record</small>`}<span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${esc(w.english)}</span></button>`;
     const bad = [];
     const ok = [];
     words.forEach((w, i) => (w.right === false ? bad : ok).push(card(w, i)));
@@ -334,9 +335,10 @@
     if (opts.actions && opts.actions.length) {
       return opts.actions
         .map((a) => {
-          const icon = ICON[a.icon] || "";
-          const cls = ["rs-btn", "rs-act", `rs-act-${esc(a.id)}`, a.primary ? "primary" : "", a.label ? "labelled" : ""].filter(Boolean).join(" ");
-          return `<button class="${cls}" type="button" data-act="${esc(a.id)}"${a.elId ? ` id="${esc(a.elId)}"` : ""} aria-label="${esc(a.label || a.id)}">${icon}${a.label ? `<span>${esc(a.label)}</span>` : ""}</button>`;
+          // E1 (no written English for the child): the actions are pictures; a label is for grown-ups' screen readers only (R3a)
+          const icon = ICON[a.icon] || ICON[{ list: "grid", home: "home" }[a.id] || a.id] || "";
+          const cls = ["rs-btn", "rs-act", `rs-act-${esc(a.id)}`, a.primary ? "primary" : ""].filter(Boolean).join(" ");
+          return `<button class="${cls}" type="button" data-act="${esc(a.id)}"${a.elId ? ` id="${esc(a.elId)}"` : ""} aria-label="${esc(a.label || a.id)}" title="${esc(a.label || a.id)}">${icon}</button>`;
         })
         .join("");
     }

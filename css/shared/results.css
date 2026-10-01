@@ -344,3 +344,11 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 @media (orientation: portrait) and (prefers-reduced-motion: reduce) {
   .rs-badge.celebrate .rs-ribbon { transform: rotate(-3deg); }
 }
+
+/* a word with no Kutchi yet (G2): its English as a grey-italic placeholder, flagged "to record" for the grown-ups (R3a) */
+.rs-word b.rs-ph { font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
+.rs-word .rs-rec {
+  display: inline-block; padding: 0 var(--njg-s2); border-radius: var(--njg-round); white-space: nowrap;
+  font: 800 var(--njg-flag-t)/1.35 var(--njg-font); letter-spacing: .04em; text-transform: uppercase;
+  color: var(--njg-flag); background: var(--njg-flag-bg); border: var(--njg-line) solid var(--njg-flag-edge);
+}

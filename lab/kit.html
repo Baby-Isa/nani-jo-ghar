@@ -145,7 +145,7 @@
   if (part === "results" || part === "words") {
     const words = [
       { kutchi: "paani", english: "water", right: true }, { kutchi: "dudh", english: "milk", right: true }, { kutchi: "fudino ji chutney", english: "mint chutney", right: false },
-      { kutchi: "hakro khun", english: "one sugar", right: true }, { kutchi: "elchi", english: "cardamom", right: false }, { kutchi: "chai", english: "tea", right: true },
+      { kutchi: "hakro khun", english: "one sugar", right: true }, { kutchi: "elchi", english: "cardamom", right: false }, { kutchi: "chai", english: "tea", right: true }, { kutchi: "", english: "spoon", right: true },
     ];
     const p = Results.show({ mode: "lab", game: "kit", level: 1, timeMs: 52000, right: 7, total: 10, hints: 1, words, sound: false, actions: NjgButtons.endActions({ again: true, list: true, next: true }), onAction: () => {} });
     if (part === "words") {
