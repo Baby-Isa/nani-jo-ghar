@@ -71,7 +71,7 @@ The engine's internals, data formats and API are step 2b's: [`docs/language/engi
   card.show(r.rows); Voice.say(r);   // rows and speech from the same result (F10)
   ```
 - **One door for words on screen too.** The order card, the shelf chips, the end-screen word review and the bulb's English all take `Lang` results, so the review shows the exact form the order used (fixes SH-02 at its root).
-- **Until step 4:** step 3 puts a `Lang` **adapter** in `js/core/lang/` with the same calls, built on today's proto-engine (`js/cook/lang.js` + `js/cook/order.js` + `data/cook.json` `lines`/`grammar`). Modes are switched to call `Lang` in step 3; step 4 replaces the inside. No new Kutchi or grammar is written in step 3: anything the adapter can't say comes back as a gap.
+- **Until step 4:** step 3 puts a `Lang` **adapter** in `js/core/lang/` with the same calls, built on today's proto-engine (`js/cook/lang.js` + `js/cook/order.js` + `data/cook.json` `lines`/`grammar`). Step 3 builds only this **seam**, and moves the clinic's hard-coded Kutchi through it (Cook's callers already use the proto-engine). Moving Cook's callers onto `Lang.say` is step 4d's job (engine-design § 14), and step 4 replaces the inside. No new Kutchi or grammar is written in step 3: anything the adapter can't say comes back as a gap.
 - **Gaps are collected**, not hidden: every gap the sandbox meets is written to the gap list that becomes Mum's next questions (engine-design § 10).
 
 ### 3.2 Voice and speech: `js/core/voice.js` (+ `js/shared/speech.js`, unchanged)
@@ -81,7 +81,8 @@ One player for every voice in the game, replacing the six playback paths there a
 - `Voice.say(result, {channel, onWord})` plays a `Lang` clip plan in order and reports each word as it starts (for the read-along underline, E4). `Voice.word(id)` for a chip or the face replay. `Voice.stop(channel)`.
 - **One queue per screen:** a new line on the same channel waits or replaces, never overlaps (PAN-04).
 - **Never blocks input** (E5): it returns at once; a mode may await it but the framework never locks taps while it plays.
-- **Family voices only in a release** (G14, AUD-02): only clips marked OK in `data/family-audio.json`. Unchecked clips and computer voices play only with a dev flag (`?dev=voice`), and the package step (§ 8.5) leaves the TTS files out of the app.
+- **Family voices only in the store app** (G14, AUD-02). GitHub Pages is the test site (J2), and G14 allows computer voices for testing, so on Pages a line with no family recording yet is still heard: Voice plays the OK family clip if there is one, else (on the test path) an unchecked clip or the existing TTS file, marked as such in the dev log. A `?dev=voice` flag shows which is which. The TTS files stay in the repo; the store package (§ 8.5) leaves them and the unchecked clips out, so the app only ever plays OK family clips.
+- **`Lang.play(result)`** (engine-design § 6.2) is one line: it hands the result to `Voice.say(result)`, so there is one audio queue.
 - `Voice.listen({choices})` wraps the on-device recogniser (`js/shared/speech.js`, J1). The speaking moment's screen stays `js/shared/say.js`. Speaking never blocks (E32).
 
 ### 3.3 Progress: `js/core/progress.js`
@@ -142,7 +143,7 @@ Everything a child sees that isn't a mode's own play area. One component per sha
 
 - **`css/shared/tokens.css`** is the only place colours, the four Nunito sizes, spacing, radii and the one shadow are defined (F2, `docs/design-language/ui-design-system.md` § 2). Every other stylesheet uses its variables; the CSS lint (§ 8.2) fails anything else.
 - **`js/shared/frame.js` + `css/shared/frame.css`**: the page grid every mode uses: the left sidebar (~22%: guide box, cards, nav dock) and the play area (~78%, with the shelf band), filling the whole screen with no letterbox (F4, F5, F18), safe areas for notches, and the one "please turn your phone" card for portrait.
-- **The stage** (`js/shared/stage.js`): one coordinate system for scenes. A scene's positions are in its background's own pixels (1600×900, D15) and the stage converts them to the screen for DOM, SVG and Phaser alike. Cook's `UI.worldToScreen` and the clinic's share-of-picture maths become this one service.
+- **The stage** (`js/shared/stage.js`): one coordinate system for scenes. A scene's positions are in its background's own pixels (1600×900, D15; each scene file states its size, so the clinic's 1536×1024 rooms work until they're re-cut) and the stage converts them to the screen for DOM, SVG and Phaser alike. Cook's `UI.worldToScreen` and the clinic's share-of-picture maths become this one service.
 - **Text fitting** (`js/shared/fit.js`): headlines shrink to the L4 minimum (14 px), then wrap; never an ellipsis, never clipped (F7, TXT-01–05). The guide box keeps up to two lines, card rows one.
 
 ### 4.2 The UI kit
@@ -333,7 +334,8 @@ node build/sandbox/play.mjs --mode cook --flow lab:chai-tray --levels 1-4 --size
 ### 8.5 Versioning and packaging
 
 - **`njgV()` and `bump_version.py` stay** (B7). With ES modules, `bump_version` also writes the page's import map (§ 10), so module files get the stamp without every file changing on every push.
-- **`build/package.mjs`** copies only what the game uses (pages, `js/`, `css/`, `data/`, the assets the data and code refer to, OK family clips) into `dist/`. That folder is what Capacitor wraps, and (decision for Zafar) what GitHub Pages publishes through a small GitHub Action, keeping the public site small. It also lists missing and unused assets.
+- **`build/package.mjs`** copies only what the store app uses (pages, `js/`, `css/`, `data/`, the assets the data and code refer to, OK family clips; no labs, TTS files or unchecked clips) into `dist/`, which is what Capacitor wraps. It also lists missing and unused assets.
+- **The test site stays as it is:** Pages publishes the tip of `main`, labs included (A10), so nothing about publishing changes (B7–B9). To keep the site under GitHub's 1 GB limit, test screenshots and report images stop being committed and live as release or artifact files instead (decision 8a). An Action-built site is a fallback only if that isn't enough (decision 8b).
 - A check fails any asset URL built in code without `njgV()` / `Cook.v()` (ART-05).
 
 ---
@@ -395,7 +397,7 @@ A mode session that needs something shared writes a **marked stub with the same 
 |---|---|---|
 | Bundler (Vite, esbuild) or no build? | **No build step.** | Capacitor only needs a folder of static files (`webDir`); it doesn't care how they were made. A bundler adds a step every session must run and can forget, and hides the real files from screenshots and diffs. Revisit only if load time on a real phone becomes a problem (the code is ~2.7 MB unminified plus Phaser's 1.2 MB; measure first). |
 | Classic scripts or ES modules? | **ES modules, page by page**, starting with the core. | Dependencies become visible in each file (a session sees what a file uses), the 49-tag script lists go, Node tests import the same files without wrappers, unused files show up. Supported in every browser the game targets and in Capacitor's web views. |
-| Cache-busting with modules? | **An import map written by `bump_version`.** | Modules import names like `#core/save.js`; one `<script type="importmap">` per page maps each to `js/core/save.js?v=<stamp>`. Node maps the same names through `package.json` "imports". So only the pages change on a bump (as now), not every file. Import maps need iOS 16.4 or later; to be checked on the family's oldest iPad in the pilot session. |
+| Cache-busting with modules? | **An import map written by `bump_version`.** | Modules import names like `#core/save.js`; one `<script type="importmap">` per page maps each to `js/core/save.js?v=<stamp>`. Node maps the same names through `package.json` "imports". So only the pages change on a bump (as now), not every file. Import maps need iOS 16.4 or later (iPads from 2017 on can run it). Mitigation: the pilot session (R2a) checks the family's oldest iPad; if it's older, a small vendored shim (es-module-shims) adds import maps, or the stamp goes on each import line instead. |
 | Phaser? | **Keep it for Cook; DOM/SVG for everything else.** | Cook's stations are built on Phaser 3.90 and play-tested; the clinic proves DOM/SVG is enough for the rest, and DOM text can be linted and fitted. Phaser's canvas exposes its hit areas through the test hook. |
 | TypeScript? | **No; JSDoc types for the contracts.** | The same safety where it matters (the interfaces), no compile step. |
 | Visual regression testing? | **Contact sheets plus a "what changed" diff, judged by a person.** | Pass/fail screenshot tests break on every art change and teach people to approve blindly; the rulebook wants a person to judge every state (C1, C3). |
