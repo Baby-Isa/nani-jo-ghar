@@ -117,6 +117,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **The builder doesn't mark its own homework:** a fresh session or the orchestrator reviews (Fable for docs and designs); never pass on a "done" unseen. (C4, C17)
 - **List flaws before saying anything is right:** zoom ×2 and check clipping, spacing, padding, alignment, overlap, crowding, unused lit things, labels, mock-up differences. (C3)
 - **Screenshot every visually distinct state, uncropped, at phone landscape 844×390 (plus 800×360, the tightest common phone, in the full matrix), 1366×768 and 16:10 laptops (1440×900, 1280×800),** across levels 1–4, one written line per state; one upright phone shot checks the rotate card. (C2, C11, C16, decision 15)
+- **Tablets are in the matrix too:** 1024×768, 1180×820 and 1366×1024 landscape. (decision 24)
 - **While iterating: laptop only, changed screens only, one shot each.** The full matrix and tests only before the final push. (C8)
 
 ### Standing checks
@@ -246,6 +247,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **The UI is flat material against the 3D art:** white pills, flat gold done outline, no gradients or 3D text; no step counters, internal numbers or English support text. (F3, F23)
 - **Left sidebar ~22%** (guide box, cards, ? · ⌂ · book dock); **play area ~78%** with the shelf band; big buttons bottom right under the thumb. (F4, F5)
 - **Fill the whole stage:** no letterbox or cream strip. (F18)
+- **Built to scale, phones to tablets:** every size comes from tokens that scale with the screen, art has the resolution and safe area to fill any screen shape, and nothing is sized for one screen and patched later; tablets use their extra space for bigger play items, not empty margins. (F18, decision 24)
 - **Characters are hidden by the scene,** never the screen edge; no floating heads; one text line beside an icon is centred on it. (F19, F21)
 
 ### Shared components
@@ -411,3 +413,5 @@ Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Confli
 20. **Screenshots and report images are not committed** (site under 1 GB); **the clinic's coins join the one purse now**; no wages; browser tests in Node; the layout lint only gets stricter. (Zafar, 1 Oct)
 21. **Unconfirmed gender → the he-form, flagged and never shipped;** the bowl errand retired; step 3 as the lean plan with R4 and R5 side by side; Mum's 1 Oct session uses Round 4. (Zafar, 1 Oct)
 22. **Story mode and free play;** the free-play map shows every place, locked ones labelled with the story that opens them; the core holds the play context, unlocks, the map as data, the language setting, per-child settings, a paid-content check and content versions. (Zafar, 1 Oct)
+23. **Word books** (a picture dictionary by topic) on the shelf beside the story books; R3b (one game host, mode and arc formats, a build guide) is back in step 3. (Zafar, 1 Oct)
+24. **No gaps in the checks** (every live flow and level, mistakes and hints, canvas text, sound, overlap, tablets, parked-mode smoke flows); **tablets first-class and layout built to scale**, the scaling rules set later in data. (Zafar, 1 Oct)
