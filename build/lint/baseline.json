@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated": "2026-10-01T11:29:11.593Z",
+ "generated": "2026-10-01T17:22:48.898Z",
  "flows": {
   "clinic:diagnosis#hint@800x360": {"complete":true,"errors":[],"states":6},
   "clinic:diagnosis#mistake@800x360": {"complete":true,"errors":[],"states":4},
@@ -402,7 +402,7 @@
   "cook:samosa@L2#mistake@800x360": {"complete":true,"errors":[],"states":13},
   "cook:samosa@L2@800x360": {"complete":true,"errors":[],"states":12},
   "cook:samosa@L3#hint@800x360": {"complete":true,"errors":[],"states":14},
-  "cook:samosa@L3@1024x768": {"complete":false,"errors":[],"states":9},
+  "cook:samosa@L3@1024x768": {"complete":true,"states":12,"errors":[]},
   "cook:samosa@L4@800x360": {"complete":true,"errors":[],"states":12},
   "cook:shop@1024x768": {"complete":true,"errors":[],"states":4},
   "cook:shop@800x360": {"complete":true,"errors":[],"states":4},
@@ -3906,6 +3906,7 @@
   {"key":"tap-small|cook:samosa@L3|1024x768|button#btn-bulb","measured":"30x30px"},
   {"key":"tap-small|cook:samosa@L3|1024x768|button#btn-help","measured":"46x46px"},
   {"key":"tap-small|cook:samosa@L3|1024x768|button#btn-home","measured":"46x46px"},
+  {"key":"tap-small|cook:samosa@L3|1024x768|div.m-order > div.direct.foldable > div.oc-head > button.face-say.oc-face","measured":"44x44px"},
   {"key":"tap-small|cook:samosa@L3|1024x768|div.m-order > div.direct.folded > div.oc-head > button.face-say.oc-face","measured":"44x44px"},
   {"key":"tap-small|cook:samosa@L3|1024x768|div.m-order > div.direct.oc-card > div.oc-head > button.face-say.oc-face","measured":"44x44px"},
   {"key":"tap-small|cook:samosa@L3|1024x768|div#guide > button.face-say.ng-face","measured":"44x44px"},

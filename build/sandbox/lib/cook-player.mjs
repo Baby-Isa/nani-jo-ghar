@@ -302,7 +302,8 @@ export class CookPlayer {
       if (this.hints && !(await this.page.evaluate("!!document.querySelector('.njg-onboard')"))) await this.hintMoves(e);
       if (e.kind !== "wait" && e.kind !== lastKind) await this.once(`kind-${e.kind}`, { settle: ["timing", "hold", "slice", "stir", "roll"].includes(e.kind) ? 0 : 150 });
       lastKind = e.kind;
-      const key = JSON.stringify({ kind: e.kind, key: e.key, x: e.x, y: e.y, selector: e.selector });
+      // a swipe has no x/y, only x1..y2: leave them out and a round with more than 8 swipes in a row (3 samosas, 3 folds each) looks stuck
+      const key = JSON.stringify({ kind: e.kind, key: e.key, x: e.x, y: e.y, selector: e.selector, x1: e.x1, y1: e.y1, x2: e.x2, y2: e.y2 });
       this.repeats = key === this.lastKey && !["wait", "slice"].includes(e.kind) ? this.repeats + 1 : 0;
       this.lastKey = key;
       if (this.repeats > 8) { await this.once("stuck"); throw new Error(`stuck repeating ${key}`); }
