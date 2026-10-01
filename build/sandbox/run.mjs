@@ -24,6 +24,7 @@ if (has("--help") || has("-h") || !argv.length) {
   --check               compare the findings with build/lint/baseline.json; exit 1 on a NEW finding, a flow that no longer reaches its end, or a new page error
   --update-baseline     rewrite the baseline with the fixed findings dropped (it only shrinks); add --accept to adopt new findings too (or to create it)
   --webgl               Phaser's WebGL renderer for Cook (software GL: about 4x slower; the default is canvas, which draws no tints)
+  --from-run id         judge a finished run's saved data (no browser): with --check / --update-baseline
   --list                list the flows and exit
   --no-sheets           skip the contact sheets
   --run-id id           folder name under build/screenshots/sandbox/ (default: a timestamp)`);
@@ -57,7 +58,7 @@ if (has("--quick") && has("--all")) { console.error("--quick is for named flows 
 const sizes = has("--quick") ? [QUICK_SIZE] : (val("--sizes") ? val("--sizes").split(",") : ALL_SIZES);
 for (const s of sizes) if (!SIZES[s]) { console.error(`Unknown size ${s}. Known: ${ALL_SIZES.join(", ")}`); process.exit(2); }
 
-const runId = val("--run-id") || val("--resume") || new Date().toISOString().replace(/[-:]/g, "").slice(0, 13).replace("T", "-");
+const runId = val("--run-id") || val("--resume") || val("--from-run") || new Date().toISOString().replace(/[-:]/g, "").slice(0, 13).replace("T", "-");
 const runDir = join(ROOT, "build", "screenshots", "sandbox", runId);
 const dataDir = join(runDir, "data");
 mkdirSync(dataDir, { recursive: true });
@@ -65,14 +66,20 @@ const dataFile = (flow, size) => join(dataDir, `${flow.replace(/[^a-z0-9@]+/gi, 
 
 const log = (...a) => console.log(new Date().toTimeString().slice(0, 8), ...a);
 const t0 = Date.now();
-const server = await startServer();
-const browser = await launch({ webgl: has("--webgl") });
+const fromRun = val("--from-run");
+const server = fromRun ? null : await startServer();
+const browser = fromRun ? null : await launch({ webgl: has("--webgl") });
 const results = [];
-log(`run ${runId}: ${flows.length} flows x ${sizes.length} sizes, port ${PORT}`);
+log(fromRun ? `re-judging run ${fromRun} (no browser)` : `run ${runId}: ${flows.length} flows x ${sizes.length} sizes, port ${PORT}`);
 
 function hashSeed(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
 
-for (const flow of flows) {
+if (fromRun) {
+  const d = join(ROOT, "build", "screenshots", "sandbox", fromRun, "data");
+  const ids = new Set(flows.map((f) => f.id));
+  for (const f of readdirSync(d)) { const r = JSON.parse(readFileSync(join(d, f), "utf8")); if (ids.has(r.flow) && sizes.includes(r.size)) results.push(r); }
+}
+for (const flow of fromRun ? [] : flows) {
   for (const size of sizes) {
     const file = dataFile(flow.id, size);
     if (has("--resume") && existsSync(file)) { results.push(JSON.parse(readFileSync(file, "utf8"))); log(`${flow.id} @ ${size}: resumed`); continue; }
@@ -97,9 +104,9 @@ for (const flow of flows) {
 }
 
 // ---- contact sheets ----
-if (!has("--no-sheets")) await makeSheets(browser, runDir, results, log);
-await browser.close();
-server.close();
+if (!has("--no-sheets") && !fromRun) await makeSheets(browser, runDir, results, log);
+if (browser) await browser.close();
+if (server) server.close();
 
 // ---- the ratchet ----
 const cur = Baseline.flatten(results);
@@ -107,24 +114,29 @@ const scope = new Set(results.map((r) => `${r.flow}@${r.size}`));
 const base = Baseline.load();
 const cmp = Baseline.compare(base, cur, scope);
 
-// ---- summary.md ----
+// ---- summary.md (every flow-size saved in this run folder, not only this invocation's) ----
+const merged = new Map();
+for (const f of readdirSync(dataDir)) { const r = JSON.parse(readFileSync(join(dataDir, f), "utf8")); merged.set(`${r.flow}@${r.size}`, r); }
+for (const r of results) merged.set(`${r.flow}@${r.size}`, r);
+const everything = [...merged.values()];
+const sum = Baseline.flatten(everything);
 const byCheck = {}, byPage = {}, byFlow = {};
-for (const f of cur.findings) { byCheck[f.check] = (byCheck[f.check] || 0) + 1; byPage[f.page] = (byPage[f.page] || 0) + 1; byFlow[f.flow] = (byFlow[f.flow] || 0) + 1; }
+for (const f of sum.findings) { byCheck[f.check] = (byCheck[f.check] || 0) + 1; byPage[f.page] = (byPage[f.page] || 0) + 1; byFlow[f.flow] = (byFlow[f.flow] || 0) + 1; }
 const top = (o, n = 12) => Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, n);
 const elapsed = Math.round((Date.now() - t0) / 1000);
-let md = `# Sandbox run ${runId}\n\n${flows.length} flows x ${sizes.length} sizes (${sizes.join(", ")}). Run time ${Math.floor(elapsed / 60)} min ${elapsed % 60} s. Contact sheets: \`sheets/\`. Raw data: \`data/\`.\n\n`;
-md += `## Findings: ${cur.findings.length} (unique per check, flow, size and selector)\n\nBy check: ${top(byCheck).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}\n\nBy page: ${top(byPage).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}\n\n`;
+let md = `# Sandbox run ${runId}\n\n${new Set(everything.map((r) => r.flow)).size} flows x ${new Set(everything.map((r) => r.size)).size} sizes. Run time of the last invocation: ${Math.floor(elapsed / 60)} min ${elapsed % 60} s. Contact sheets: \`sheets/\`. Raw data: \`data/\`.\n\n`;
+md += `## Findings: ${sum.findings.length} (unique per check, flow, size and selector)\n\nBy check: ${top(byCheck).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}\n\nBy page: ${top(byPage).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}\n\n`;
 md += `## Flows\n\n| flow | size | end | states | findings | page errors | seconds |\n|---|---|---|---|---|---|---|\n`;
-for (const r of results) md += `| ${r.flow} | ${r.size} | ${r.complete ? "yes" : "NO: " + (r.stops[0] || "").replace(/\|/g, "/").slice(0, 90)} | ${r.states.length} | ${r.findingCount} | ${r.errors.length} | ${(r.ms / 1000).toFixed(0)} |\n`;
+for (const r of everything) md += `| ${r.flow} | ${r.size} | ${r.complete ? "yes" : "NO: " + (r.stops[0] || "").replace(/\|/g, "/").slice(0, 90)} | ${r.states.length} | ${r.findingCount} | ${r.errors.length} | ${(r.ms / 1000).toFixed(0)} |\n`;
 md += `\n## States\n\n`;
-for (const r of results) {
+for (const r of everything) {
   md += `### ${r.flow} @ ${r.size}\n\n`;
   for (const [i, s] of r.states.entries()) md += `${i + 1}. \`${s.name}\` (${s.page}): ${s.findings.length} findings${s.shot ? "" : " (no screenshot)"}\n`;
   for (const n of r.notes) md += `- note: ${n}\n`;
   for (const e of r.errors) md += `- page error: ${e}\n`;
   md += "\n";
 }
-writeFileSync(join(runDir, "summary.md"), md);
+if (!fromRun) writeFileSync(join(runDir, "summary.md"), md);
 
 // ---- baseline actions ----
 console.log("");

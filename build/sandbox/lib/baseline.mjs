@@ -25,7 +25,22 @@ export function flatten(results) {
   return { findings: [...findings.values()], flows };
 }
 
-export function load() { return existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8")) : null; }
+// the file is one finding per line (small, and a diff shows what changed); a finding is {key, measured}
+export function load() {
+  if (!existsSync(BASELINE)) return null;
+  const b = JSON.parse(readFileSync(BASELINE, "utf8"));
+  b.findings = b.findings.map((f) => {
+    const i = [0, 1, 2].reduce((at) => f.key.indexOf("|", at) + 1, 0); // the first three "|"
+    const [check, flow, size] = f.key.slice(0, i - 1).split("|");
+    return { ...f, check, flow, size, selector: f.key.slice(i), states: f.states || [], page: f.page || "" };
+  });
+  return b;
+}
+function save(out) {
+  const flows = Object.keys(out.flows).sort().map((k) => `  ${JSON.stringify(k)}: ${JSON.stringify(out.flows[k])}`).join(",\n");
+  const finds = out.findings.map((f) => "  " + JSON.stringify({ key: f.key, measured: f.measured })).join(",\n");
+  writeFileSync(BASELINE, `{\n "version": 1,\n "generated": ${JSON.stringify(out.generated)},\n "flows": {\n${flows}\n },\n "findings": [\n${finds}\n ]\n}\n`);
+}
 
 // compare a run with the baseline, within the flows and sizes the run covered
 export function compare(base, cur, scope) {
@@ -66,6 +81,6 @@ export function update(base, cur, scope, { accept }) {
     else out.flows[fs] = { complete: b.complete || c.complete, states: c.states, errors: (b.errors || []).filter((e) => c.errors.includes(e)) };
   }
   out.generated = new Date().toISOString();
-  writeFileSync(BASELINE, JSON.stringify(out, null, 1) + "\n");
+  save(out);
   return out;
 }

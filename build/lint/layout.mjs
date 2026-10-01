@@ -12,6 +12,7 @@
 //   tap-offscreen    a tappable thing partly outside the viewport
 //   page-scroll      the page itself scrolls (LAY-02)
 //   scroll-container a visible box that scrolls (a scroll bar on a child screen, CMP-07)
+// Off-screen findings on a thing that is moving (a belt dish, a slide-in) are dropped: it is passing through, not parked there.
 // Each finding: {check, selector, measured, text}.
 
 export const CLICK_HOOK = `(() => {
@@ -29,7 +30,7 @@ export const CLICK_HOOK = `(() => {
 })();`;
 
 // Runs in the page. Self-contained (it is serialised with toString()).
-export function pageLint(opts) {
+export async function pageLint(opts) {
   const MIN_TEXT = (opts && opts.minText) || 14;
   const MIN_TAP = (opts && opts.minTap) || 48;
   const TOL = 1.5;
@@ -105,6 +106,7 @@ export function pageLint(opts) {
     return vis;
   }
 
+  const moving = []; // off-screen findings re-measured later: a thing that is moving (a belt, a slide-in) is not parked off screen
   const add = (check, el, measured, extra) => out.push(Object.assign({ check, selector: selector(el), measured, text: ((extra && extra.text) || (el.textContent || "").trim()).replace(/\s+/g, " ").slice(0, 30) }, extra && extra.detail ? { detail: extra.detail } : {}));
 
   // ---- text ----
@@ -169,7 +171,7 @@ export function pageLint(opts) {
     if (clipped && !ell) add("text-clipped", el, `cut by ${Math.round(clipped.px)}px`, { detail: clipped.a === el ? "its own box" : "parent " + selector(clipped.a) });
     // outside the viewport
     const out_ = Math.max(-L, -T, R - vw, B - vh);
-    if (out_ > TOL) add("text-offscreen", el, `${Math.round(out_)}px outside the screen`);
+    if (out_ > TOL) { add("text-offscreen", el, `${Math.round(out_)}px outside the screen`); moving.push([out[out.length - 1], el, el.getBoundingClientRect()]); }
   }
 
   // ---- tap targets ----
@@ -190,7 +192,7 @@ export function pageLint(opts) {
     // an SVG child with no size of its own (a <g>) measures by its box
     if (r.width < MIN_TAP - 0.5 || r.height < MIN_TAP - 0.5) add("tap-small", el, `${Math.round(r.width)}x${Math.round(r.height)}px`);
     const o = Math.max(-r.left, -r.top, r.right - vw, r.bottom - vh);
-    if (o > TOL) add("tap-offscreen", el, `${Math.round(o)}px outside the screen`);
+    if (o > TOL) { add("tap-offscreen", el, `${Math.round(o)}px outside the screen`); moving.push([out[out.length - 1], el, r]); }
   }
 
   // ---- scrolling ----
@@ -207,6 +209,13 @@ export function pageLint(opts) {
     if (!sx && !sy) continue;
     if (!shown(el, el.getBoundingClientRect())) continue;
     add("scroll-container", el, (sx ? `sideways ${el.scrollWidth}>${el.clientWidth}` : "") + (sx && sy ? ", " : "") + (sy ? `down ${el.scrollHeight}>${el.clientHeight}` : ""));
+  }
+  if (moving.length) {
+    await new Promise((res) => setTimeout(res, 120));
+    for (const [f, el, r0] of moving) {
+      const r1 = el.getBoundingClientRect();
+      if (Math.abs(r1.left - r0.left) > 1.5 || Math.abs(r1.top - r0.top) > 1.5) out.splice(out.indexOf(f), 1);
+    }
   }
   // one finding per (check, selector): keep the worst-looking first
   const seen = new Map();

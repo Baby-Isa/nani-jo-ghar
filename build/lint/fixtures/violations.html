@@ -28,6 +28,7 @@
   #parked { position: absolute; left: -9999px; top: 0; font-size: 8px; }
   #parked-btn { position: absolute; left: -9999px; top: 0; width: 20px; height: 20px; }
   #wraps { width: 100px; }
+  #moving-off { position: absolute; top: 300px; left: 0; width: 60px; height: 60px; background: #9c6; }
   #scaled-ok { font-size: 7px; transform: scale(2.2); transform-origin: left top; display: inline-block; }
 </style></head>
 <body>
@@ -50,7 +51,10 @@
 <span id="parked">parked off screen</span><button id="parked-btn" aria-label="parked"></button>
 <div class="row"><div id="wraps">A sentence that simply wraps onto several lines without any trouble at all</div></div>
 <div class="row" style="height:40px"><span id="scaled-ok">scaled up</span></div>
+<div id="moving-off"></div>
 <script>
+  // a thing passing through the edge of the screen (a belt dish): moving, so not parked off screen
+  (function () { let x = -30; const el = document.getElementById("moving-off"); el.addEventListener("click", () => {}); (function tick() { x = x > 900 ? -30 : x + 3; el.style.left = x + "px"; requestAnimationFrame(tick); })(); })();
   // a div that is a button only because it has a listener (found through the injected recorder)
   document.getElementById("click-div").addEventListener("click", () => {});
 </script>
