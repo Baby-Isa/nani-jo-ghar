@@ -1,0 +1,274 @@
+# Transcript: 55a189f3-Kutchi_clinic_feedback_1.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** Starting with the heal, Kut, L1 in the pipeline, there's a stethoscope icon in the bottom left corner which I don't know what it does, it's not clickable, and then we need to figure out the artwork, at the moment the backgrounds are very blurred, and then the arms just sitting,
+- **0:26** I think it's an arm, I don't know, anyway, some artwork needs to be thought about, I
+- **0:32** thought, actually I don't know what I thought when we were doing it, for some reason in my
+- **0:37** mind I envisioned like, they're sitting on the edge of a bed and you're not
+- **0:44** looking at them straight on but maybe like at a 45 degree angle, so you can
+- **0:49** kind of see the front and side of them, but I don't think that's, I'm not sure that's a
+- **0:53** good idea, to be honest.
+- **0:55** But yeah, then you could like, see the injection going into their arm, you could then zoom in
+- **1:03** in that position, go closer to their ear, maybe that is better, yeah.
+- **1:19** It just makes it seem more like a 3D real game, because you see them...
+- **1:24** if you like, as a 3D person sitting on the edge of a bed, and the screen kind of just then zooms in and maybe secretly changes the image once it zooms in to the zoomed-in game state.
+- **1:35** But it zooms in to the knee, or the foot, or the arm, and zooms in enough that that thing becomes the main thing and everything else becomes blurry.
+- **1:46** And then you focus on that, but I think that would look better than a limb just sitting there.
+- **1:51** By itself on a table.
+- **1:53** Okay, pela pani. So first water. I click on the water. Then I click on that. I guess that's fine. Maybe a drag is better for that. I'm not sure.
+- **2:11** I'm not sure. Give me your opinion. And then the cloth, and then three. I mean, the instructions are good.
+- **2:19** So they're clicking once, then the other, then the second time is just, also you can't really do that with a,
+- **2:25** I guess you can do it on a tablet or a phone. Okay, and then three dabs.
+- **2:36** Oh, I get it. You kind of select it and then you tap each time. So that's probably fine.
+- **2:40** Yeah, this is one level one. I think if you've just done it three times, I've probably gone back and forth on this so many times. It's hard because I,
+- **2:51** know the games and find them easy and boring. And then I go to my mum, who's actually quite a good representative of probably a kid or just someone that actually does like playing games, but hasn't played them in years.
+- **3:05** She gets a little bit confused. And then I'm reminded that actually,
+- **3:10** we do need to, we're more likely to lose people because they don't know how to play the game at the beginning.
+- **3:17** Rather than it's too easy, because it's still kind of new and fun for them, right?
+- **3:24** They've never played this game before. It's exciting and they're focused on the
+- **3:28** Kutchi element as well. So, so anyway, I like the counting of three, even though
+- **3:33** it's, hmm, maybe that three needs to go somewhere else. I don't know.
+- **3:44** Or maybe it's fine. I don't know, but it doesn't turn green, though. I think it should, sorry, this was the part, it should probably turn green, I think, at some point.
+- **3:53** Or not green, but it should, like, tick off that you've done it, when you've done it three times, as requested. At least for level one.
+- **4:03** And maybe all the levels, I don't know. I mean, I guess at some point you will end up learning.
+- **4:09** I think I'm just trying to be very strict, because I know, like, certain games you just don't end up learning, but...
+- **4:14** Did I? If a hundred times in the cost of a game mode you've been told to do
+- **4:18** something three times, and you're not gonna keep clicking each time or looking
+- **4:24** at the sidebar, eventually you're gonna go, oh, I know what three is. So, yes, in
+- **4:33** conclusion, I think, subject to your feedback, that we just tick it off when
+- **4:38** you've done it. I mean, the game has to be simple.
+- **4:41** And consistent. So, yeah, it should be ticked off, I think, when you've done it three times.
+- **4:47** Red blaster.
+- **4:49** And I think that should be probably across all game modes, unless there's a clever way of taking it out, I don't know.
+- **4:55** Okay, and then red blaster.
+- **4:59** You click it and you apply it, then you're done.
+- **5:02** Ooh, it folds up nicely.
+- **5:06** Um...
+- **5:07** What was it unfolded? So it never had a description, this one. This side card never
+- **5:15** had a description, it just had the instructions. So maybe we should just say
+- **5:20** like heal, heal the arm or heal the cut, heal the cut or something and then when
+- **5:30** you folded it up it's got a tick and it says you know heal the cut, you healed
+- **5:33** the cut.
+- **5:35** It's really boring if I'm honest but I think because it's just a clicky clicky
+- **5:47** game isn't it.
+- **6:02** Maybe the animations can make it more exciting or I don't know this one's a
+- **6:10** bit boring isn't it. Can you give me three suggestions of how to make this
+- **6:17** more fun to play like mechanically what can you do to make it fun
+- **6:28** we really need to start like referencing certain best practice game design
+- **6:33** studies etc one like what makes games fun or we need to have our own list
+- **6:38** because it's like every time we're starting from scratch where it should be
+- **6:43** a bit of it like a pool of things to draw upon like oh we had time pressure
+- **6:47** or we had variety or we had generally mean something like that specific
+- **6:52** mechanics is just tapping tapping
+- **6:54** um i don't know take it as for now let me try look at that
+- **7:03** let me try
+- **7:07** go back now and i'll click on cut level three in the pipeline
+- **7:13** any poi cloth ba dabs hello red and green plaster any poi blue and green plaster
+- **7:22** any poi red and yellow plaster
+- **7:26** whoa that is tough i actually kind of like it i like the three dots like showing that he's talking um in his card
+- **7:36** cold
+- **7:39** god did i remember myself no i didn't that's i think when you take away the um
+- **7:47** in the written instruction
+- **7:50** then you've you've got to go simple you've got to go simple i mean how many things can someone remember
+- **7:57** two probably like one pani one dab and one sticker i don't get to see it for that long
+- **8:06** okay two dabs jesus this is it's hard acro b a and then okay red green blue green yellow
+- **8:17** red yellow red green blue green red green
+- **8:28** blue green
+- **8:32** blue yellow also i'm not sure the top right hand corner of all these stickers and um
+- **8:41** all these plasters and the water and the sponge there's an icon i don't know what the icon means
+- **8:45** it looks like a
+- **8:46** half gold semicircle look at that oh i got it right okay yeah i guess that's
+- **8:55** that's good it just yeah we need to ramp up the difficulty i think we need to
+- **8:59** understand that when we switch to sound only it makes a difference and then we
+- **9:04** need to show them
+- **9:12** as much as possible why they got penalized because they clicked on the thing um
+- **9:22** or maybe maybe you've tried this little four there maybe you've tried to include it
+- **9:26** i think yeah we need to show somewhere as each time you use a hint on the page
+- **9:30** it counts the number of light bulbs maybe down at the bottom by the question mark or
+- **9:37** what happens i press light bulb now okay just oh it changes it to English once
+- **9:51** it's open that's something we need to figure out as well if it's like open in
+- **9:56** such a short period of time then maybe if you open it it just opens it
+- **10:04** oh I don't know or give it longer give it like eight seconds enough time so you
+- **10:11** can also turn it into English but yeah but then it's confusing to stack up the
+- **10:19** light bulbs by the light bulb button because you're thinking well that turns
+- **10:23** it to English and I didn't turn it to English so
+- **10:29** okay how about this and then you can tell me off because we're adding in a
+- **10:35** new end screen but what if when we get to this game level where you're not
+- **10:42** shown the words we add in a new icon which is like an eye icon like a looking
+- **10:50** icon and it and it reveals to you
+- **10:57** you know it shows you what's written down and then in the end game screen it
+- **11:04** it like yeah it gives you gold if you didn't look or oh well whatever like the
+- **11:13** light bulb it just shows it just dims down the more times you looked and shows
+- **11:16** you how many times you looked and it could be like a look like an eyeball
+- **11:19** eyeball what the hell is an eyeball an eyeball
+- **11:23** yeah yeah hopefully that makes sense hey that's the only way trying you can't put
+- **11:38** it into ticks because that's about getting the words right you can't put it
+- **11:42** into the light bulb because that's like English cute clues
+- **11:48** and it doesn't make sense early on because there's no looking penalty so I
+- **11:54** think it just comes in those games okay knee L1 in the pipeline hammer acro any
+- **12:06** boy bandage char turns okay me acro okay
+- **12:17** yeah same point maybe about the counting and then officially go there or
+- **12:20** somewhere else maybe it's fine there same point about the title there's
+- **12:27** either no title to that card which would be like fix the knee or something so
+- **12:32** yeah just apply these for all the game modes these are like cross running
+- **12:36** points and then yeah I briefly played the other game mode where the left and
+- **12:45** right was complicated to figure out because the respective thing
+- **12:49** the bandage one is kind of fun yeah and the point around it you should take as well the
+- **13:00** problem with putting the number there is that it squashes up the text there's a lot of screen
+- **13:07** on the game itself because there's only two knees so I think it should be
+- **13:16** maybe next to the icons that you're using so it shows you how many times
+- **13:23** have you used them that could make sense that feels better okay that's kind of fun
+- **13:35** heal me level four and J any boy bandage and J turns
+- **13:43** punch nothing punch yeah both a punch okay um I'm not I just figure myself I
+- **13:54** really do we try to be consistent from the beginning about the left and the
+- **14:00** right
+- **14:08** maybe we don't reference
+- **14:10** sit in this game it's just in like the diagnosis because then it can be longer
+- **14:15** and they can say oh my left knee then you have to select it but once it's
+- **14:19** selected then the game just remembers that it doesn't penalize you for
+- **14:24** choosing the wrong one or he lets you choose one click one or he just shows
+- **14:29** you one knee because and then the knee you could maybe do
+- **14:36** face on or maybe still three-quarters whatever like 45 degrees might still look
+- **14:43** good you can see the knee kicking out because yeah it only works when you let
+- **14:49** them say the full sentence like oh my left knee and in the text it could say
+- **14:53** his left knee but then you know we're short on words here so
+- **14:58** acro to VA
+- **15:02** trick chart and here it's not counting I click it also isn't counting the drop
+- **15:10** down although I don't know why but when I click the drop down I click to drop
+- **15:15** down the text box the recipe card for the doctor giving instructions the
+- **15:20** corners change to like a weird gold I don't know it's weird
+- **15:27** but only the corners fine so that five didn't count anywhere which maybe it
+- **15:36** should maybe but maybe maybe when you're listening it changes it to a number
+- **15:42** counting on the item while then written out so you can keep track but you're not
+- **15:51** just looking to match the word up with the sound
+- **15:54** and then bandage Oh it keeps moving like whack-a-mole yeah no I don't think it
+- **16:10** should let you move like that I think what I was trying to say is once you've
+- **16:13** clicked one flashing dot Jesus I can't keep up with that once you've clicked one
+- **16:19** flashing dot
+- **16:21** then it shows you the next flashing dot but only after you've clicked one so that
+- **16:27** in that sense it becomes like a rapid thing rather than like whack-a-mole I
+- **16:34** see where you got the whack-a-mole inspiration from now maybe we could use
+- **16:42** whack-a-mole in like the sticker game like it was a bit gory you gotta like
+- **16:47** put the sticker on the part that's bleeding that's maybe a bit gory but yes change this so that
+- **16:57** only one thing flashes at a time one dot when you click on that dot the bad edge goes there
+- **17:02** and then you see which of the next dots flash so you have to be quick to react you can't just
+- **17:09** bust out a sequence okay there's a fun game mode though
+- **17:14** right we are on to ear l1 in the pipeline the wax out taking the wax out
+- **17:28** any poi drops BA I think numbers maybe for level ones a bit much or for the first
+- **17:35** time in playing the game one two
+- **17:42** you have to drag it that that wasn't clear that wasn't clear for me on
+- **17:47** boarding fine that was the wax out okay in cotton bud
+- **17:54** BA, tray, chart
+- **18:04** just a bit boring that one just clicking
+- **18:08** maybe it's fine them the fact it changes color is good maybe in the other than
+- **18:22** the visuals it can make it be more interesting I guess that you really do
+- **18:24** have to listen to the number and then two drops
+- **18:34** it's just a bit boring um definitely skill element like you have to drop in
+- **18:46** specific place well like you have the little indicators of waiting to drop it
+- **18:56** so there's at least something you have to do
+- **18:59** just click on those little bits to drop it there it's very clicky maybe cotton
+- **19:12** bud is like you have to erase erase the wax without touching the rest of the
+- **19:21** ear a little bit like the tooth game tooth drilling game
+- **19:26** I'm not sure how to how else to make it more fun can you give me five
+- **19:33** suggestions yes five I need you to you know be creative and think and use this
+- **19:38** practice and look online and think about how we can make this more fun I can hear
+- **19:44** again great you can hear again right let's try level three
+- **19:51** Helen Idaho wax
+- **19:53** any point what hope okay cotton bud trick any boy drops and J so pedal in
+- **20:03** though yeah that is a small one doesn't work
+- **20:14** Pella nindo wax okay so I've got the tweez all you have to drag it
+- **20:22** okay then the big one way now I've done oh now it's show me more keep coming uh-huh
+- **20:31** that's funny okay I think you should just show that at the start though not
+- **20:38** suddenly there's more pairing that could be confusing you should just say like or
+- **20:45** mud air wax
+- **20:48** and then they keep growing but that's more fun but it's meant to be a take out
+- **20:56** one then spawns two then you take out one of those and that's fine but the
+- **20:59** other one spawns another two that kind of thing it's close though yeah sort of
+- **21:08** randomly spawning we need to take one a sometimes it's born sometimes doesn't
+- **21:13** spawn
+- **21:14** and will keep appearing across the larger surface area right now it's all
+- **21:19** a little bit cramped the actual space where the wax and the ear is is quite
+- **21:26** small if it was bigger that'll be more fun because you've got to move the mouse
+- **21:31** around a bit more as well okay and then cotton bud three
+- **21:41** it's a bit boring I mean it is more fun with the earwax you have to get now that is
+- **21:45** that is true it's just the cotton bud feels the problem with all of these is
+- **21:50** that it's all just like following the number of instructions and like they're
+- **21:54** gonna learn the numbers at this point like how many times are we gonna hammer
+- **22:00** it in like there's got to be either some other language element you learn or
+- **22:06** there's not you know you're learning what the item is maybe you just
+- **22:11** having a bit of fun cuz there's nothing else educational in this I'm not sure
+- **22:20** there's any ways we can make it more educational as well I can hear again
+- **22:24** not terrible again maybe just kind of the games I find them a bit boring okay
+- **22:34** heal tooth L1 in the pipeline
+- **22:38** tell her right any kind of funny drill the bad bits fill it to the line fill it
+- **22:47** to the line VA sure the bad bits can anything is the drill the tip of the
+- **22:55** drill isn't in the same place as the tip of your my cursor so that's one to check
+- **23:01** otherwise
+- **23:04** that's just kind of funny like it has a bit basic looking with some better
+- **23:08** artwork it'll be better but kind of the blocky concept is funny but again yeah
+- **23:14** this tooth should be shown in the mouth this should zoom into the patient's
+- **23:17** mouth onto the tooth to see their tooth and a bit of like pinkiness around of
+- **23:21** their mouth and he's done you drill this out it's kind of funny as it gets more
+- **23:27** advanced the blobs the if it do I could be more scattered
+- **23:31** this one I need explaining that you have to I think maybe maybe game modes we have
+- **23:37** to pour something or like hold it they just need some visual to explain you
+- **23:42** have to hold it right now I've no idea what this visual is I'm gonna click it
+- **23:45** and it holds it down it's not bad it maybe just needs like zones say a green
+- **23:52** zone of the right level to raise it to and then
+- **23:57** red either side so you have to try hit it in the sweet spot that sweet spot can
+- **24:02** get smaller as the game modes get harder and the fill level could speed up as
+- **24:06** well to also make it harder yeah then if it needs like a push button or a press
+- **24:15** button like a clear like you know like press the nuclear button kind of
+- **24:20** button that goes down when you press it so
+- **24:25** so it's clear and then the filling can almost come like almost like a robotic
+- **24:31** arm or something like it's more you're controlling the lever if that makes
+- **24:36** sense hmm right let's try level three
+- **24:42** first up, then down
+- **24:51** drink, ne poi up, ne poi down, chart, ne poi dabo, panje, drill the bad bits
+- **25:04** okay yeah the bad bits can be more jaggedy and less like neatly
+- **25:14** grouped together as the modes get harder
+- **25:17** no idea what the visuals are for the syringe or anything like that but okay
+- **25:21** that's kind of fun actually that's kind of fun and then taste make me a shamchi
+- **25:33** honey and a limu, make me a shamchi honey and a limu, so this is where you might need the
+- **25:38** recipe card thing where the ingredients are on different lines and again this
+- **25:43** is where you might need the title so make
+- **25:46** honey
+- **25:55** I don't really understand if I
+- **26:01** that didn't help
+- **26:03** okay I don't really understand this
+- **26:06** so honey, click on it once but then do I click again on the honey
+- **26:10** I don't know I click on it twice and then I click on the lemon
+- **26:16** oh I have to click on the honey twice to add two honeys
+- **26:22** okay whatever it should be like the cooking game where it gets poured in but maybe you don't see
+- **26:26** getting poured in so you don't see maybe it's not uh maybe you see I don't know what you see
+- **26:35** a tiny bit of liquid at the top or no liquid just so you don't have to make loads of different
+- **26:39** kind of uh
+- **26:41** visuals okay and then you stir it my throat feels better it still feels
+- **26:48** better okay that's that's it's alright different drinks the the tongue pops
+- **26:58** were funny maybe that's a whack-a-mole game you have to
+- **27:06** pop the tongue blisters and they keep popping up and then you make the drink
+- **27:11** so it's a two-part game you just have a pin and you have to click them as they pop up
+- **27:16** yeah just different blisters on the tongue popping up and you have to pop
+- **27:19** them everyone loves that you can speed it up as the game modes get harder and
+- **27:23** yeah you have a little needle and you pop all the tongue blisters and then you
+- **27:28** make them a drink let's do that okay let's try level three
+- **27:34** hello make tray shamchi honey any lemu oh that's complicated any point make be a
+- **27:40** shamchi and do any pot honey any point make these drinks you maybe that's
+- **27:47** boring maybe that's a bit boring I guess it's educational we're making
+- **27:54** three different drinks this is too hard especially without hearing it who could
+- **27:59** remember that many ingredients
+- **28:01** that's just a memory game make three and and and the text wraps off I'm not even
+- **28:06** going to play this game it's unplayable I can't even see all the text
+- **28:20** okay any point make the green ones it's not terrible
+- **28:28** what do we make the blister idea without the game mode then
+- **28:38** Papa Papa Papa Papa maybe we didn't make that another game mode so then the tongue
+- **28:44** one is still okay no let's just let's go for quality over quantity I think
+- **28:54** as you pop them they leave like residue different colored residue and then the
+- **29:05** different types of drink heal the different types of residue but we can't
+- **29:10** have that many types of drinks and all being memory that's too much
+- **29:20** uh who are we getting lazy now what about like saying which specific what about saying
+- **29:35** which specific colors you have to pop
+- **29:40** on the whack-a-mole game yes because then someone decoys
+- **29:46** and maybe just get the i don't know yeah that'd be funny like
+- **29:49** let's say only only pop these ones maybe it's only pop these ones and the ones you don't pop then you have a cup of tea and the cup of tea takes away those ones so it's a mixture
