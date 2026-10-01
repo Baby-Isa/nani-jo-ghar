@@ -5,7 +5,7 @@
  *    full [speaker | Kutchi | translate], choice (big, tappable) and the
  *    in-world item labels (drawn in Phaser, see stations.js).
  *  - The mission card: who ordered, the order as pills (words fade to dots
- *    as they're learned), three star cut-outs (ear, hand, lightning/tick)
+ *    as they're learned), (R4: no stars; the shared end screen has the badges)
  *    that fill or grey out as you cook, and the steps. At the end it's
  *    stamped and becomes a completion card.
  *  - Nani's "pass me" interrupt, small-talk choices, gist and how-to lines,
@@ -97,7 +97,7 @@
   /**
    * A pill for a line. opts: {shape: "full" | "choice", hide: fn(wordId),
    * noTranslate, onHint}. The speaker plays the line; translate shows the
-   * English (and counts as help, for the "no help" star).
+   * English (and counts as help, a hint on the hints badge).
    */
   UI.pill = function (line, opts = {}) {
     const el = document.createElement("span");
@@ -132,7 +132,7 @@
         tr.classList.toggle("on", !en.classList.contains("hidden"));
         if (en.classList.contains("hidden")) return;
         // English shows the meaning: for a line with order words in it,
-        // that's the answer (costs the ear star); otherwise it's help.
+        // that's the answer (costs the accuracy badge); otherwise it's help.
         if (opts.onTranslate) opts.onTranslate();
         else if (Cook.onHelp) Cook.onHelp(line.segs.some((s) => s.w) ? "translate" : "help", { line });
       });
@@ -533,7 +533,7 @@
    * answer is never the odd one out. Relaxed: the cooking pauses (the
    * caller sets Cook.paused). Busy: it keeps going and the play area stays
    * tappable. The two-miss highlight and the translate button show the
-   * answer, so they cost the ear star; from word stage 3 the right
+   * answer, so they cost the accuracy badge; from word stage 3 the right
    * picture's speaker counts as help.
    */
   function passMeOptions(want, options) {
@@ -633,8 +633,8 @@
    * No pictures in the rows, ever.
    *
    * Help on the card: the speaker is free while a row's words are still
-   * shown as text; once they're dots, replaying costs the no-help star.
-   * 👁 shows the Kutchi (never English) and costs the ear star; so does
+   * shown as text; once they're dots, replaying costs a hint.
+   * 👁 shows the Kutchi (never English) and costs the accuracy badge; so does
    * the dish row's A/En (English for the whole order) before it's done.
    *
    * Wave 5: when someone orders, the same list comes up big in the middle
@@ -740,7 +740,7 @@
         reserveSay: true,
         onHear: () => {
           // hearing it again is fine while the words are on the card; once
-          // they're dots, a replay is help (the no-help star)
+          // they're dots, a replay is help (a hint)
           if (rowHidden(r) && Cook.onHelp) Cook.onHelp("replay", { ids: r.ids });
         },
         onReveal: hidden
@@ -775,7 +775,7 @@
     const tr = $("#mission .m-tr");
     if (tr) tr.classList.toggle("on", !!mission.english);
   }
-  /** A/En: English under every row of the order (for rows still to do, that's the answer: the ear star). */
+  /** A/En: English under every row of the order (for rows still to do, that's the answer: the accuracy badge). */
   M.translate = function () {
     if (!mission) return;
     mission.english = !mission.english;
@@ -954,10 +954,10 @@
    * Every card has one speaker in its top-right corner: it reads the card
    * in order and each part lights up as it's said (read-along, by recorded
    * chunk: each spoken line has its own voice file). Hearing it again once
-   * its words are dots is help (the no-help star), as before.
+   * its words are dots is help (a hint), as before.
    * The light bulb at the top of the sidebar flips the words to English for
    * a few seconds (data.calm.bulbMs by level: 5, 3, 2, 1 s); for rows still
-   * to do that's the answer, so it costs the ear star, like A/En did.
+   * to do that's the answer, so it costs the accuracy badge, like A/En did.
    */
   const sideEls = new Map(); // row -> [elements] on the sidebar card
   const introEls = new Map(); // row -> [elements] on the request card
@@ -1278,7 +1278,7 @@
     $("#side").classList.add("english");
     if (mission && !$("#mission").classList.contains("stamped")) {
       mission.english = true;
-      // English for rows still to do is the answer: the ear star (Cook.onHelp "translate")
+      // English for rows still to do is the answer: the accuracy badge (Cook.onHelp "translate")
       const open = [].concat(...mission.ladders.map((L) => Order().rows(L).filter((x) => !x.done)));
       if (Cook.onHelp) {
         if (open.length) Cook.onHelp("translate", { ids: [].concat(...open.map((x) => x.ids)) });

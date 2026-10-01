@@ -16,8 +16,8 @@
  * Every mechanic is still callable the Phase A way, as
  * Cook.Stations.<name>(S, ctx, params): e.g. St.roll(S, ctx, {count: 3}).
  * It reports into ctx:
- *   ctx.listen(ok)       — did you do what the words said? (the ear star)
- *   ctx.skill(score)     — hands: pour to the line, flip on time (the hand star)
+ *   ctx.listen(ok)       — did you do what the words said? (the accuracy badge)
+ *   ctx.skill(score)     — hands: pour to the line, flip on time (a hand job (not scored))
  *   ctx.result[...]      — what you actually made, for the customer
  * and it may call ctx.maybePassMe() at a safe moment (Nani interrupts).
  */

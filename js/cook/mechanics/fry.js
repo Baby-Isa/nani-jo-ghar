@@ -7,7 +7,7 @@
  * (chips beside the samosas), and at level 3 the pan is mixed: Nani's
  * chips are already frying, and she says "lift the samosas, leave the
  * chips". Lifting or frying the wrong kind, or the wrong number, costs
- * the ear star. While things fry (hands idle) Nani may ask "pass me".
+ * the accuracy badge. While things fry (hands idle) Nani may ask "pass me".
  * Params: kind (a key of knobs.items: samosa, chips…), count, made (how
  * many you made: they're on the tray, plus the extras; default count).
  * Knobs (data.mechanics.fry): band, rate [min, max], extras [min, max],

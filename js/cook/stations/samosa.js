@@ -26,7 +26,7 @@
  *   the plate (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
  *  - not quite: a frown, they say their order again, the plate comes back empty and the child makes
- *    them again (fill first). Only the first try counts (the ear star, the end review). At most three tries.
+ *    them again (fill first). Only the first try counts (the accuracy badge, the end review). At most three tries.
  * The card (the shared order card, §12): the fillings' rows count up as spoons go in and tick when the fill
  * closes (UX 11, right or not); then the card folds to face + headline, no ✓ (the phase fold, §13: "ba
  * samosa" lives only in the headline) until the plate is tasted, when it opens (and its ✓ shows).

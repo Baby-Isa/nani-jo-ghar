@@ -18,13 +18,13 @@
  *     tap the pot for one turn. The pictured contents turn with the ladle (D10), clipped inside the rim.
  *     The speed dial (D7 / Q10: dark glass, gold rim, the "on" knob's warm glow) shows stopped, tortoise,
  *     hare, spilling; the laps show as the Kutchi number word under it. From level 2 Nani may ask for a
- *     speed ("slowly", "quickly", the stir mechanic's words), judged by the ear star only.
+ *     speed ("slowly", "quickly", the stir mechanic's words), judged by the accuracy badge only.
  *     Tap the tick when it's done.
  * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): a bowl of daar on its trivet beside the
  *   pot, and their big round face comes up over it (no body, no pretend eating).
  *  - right: a happy face and the family's praise;
  *  - not quite: a gentle face, they say their order again, and the child cooks it again (the chop first).
- *    Only the first try counts (the ear star, the end review). At most three tries.
+ *    Only the first try counts (the accuracy badge, the end review). At most three tries.
  *
  * Levels (data/cook.json's daal recipe slots; data/stations/daar.json's levels; data.mechanics.chop's levels
  * for the chop, data.mechanics.stir's for the dial's bands and the speed words): 1 = only what's asked,

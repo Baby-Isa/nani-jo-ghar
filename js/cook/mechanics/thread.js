@@ -18,7 +18,7 @@
  * Every piece bowl is always there (plus decoys at later levels), in a new
  * order each time, and nothing stops you at the number ordered: you
  * decide how many to make. A piece that fits no skewer in the order
- * bounces back to its bowl and costs the ear star; the count is graded
+ * bounces back to its bowl and costs the accuracy badge; the count is graded
  * where the skewers end up (the grill's plate, or Done when threading on
  * its own).
  *
@@ -126,7 +126,7 @@
       line.threading = () => !stopped && (!!plan() || (sk && sk.ids.length > 0 && sk.ids.length < n));
       line.blocked = () => waiting;
 
-      /* Nani's help if you hesitate: she says it again (the no-help star), then it glows (the ear star) */
+      /* Nani's help if you hesitate: she says it again (a hint), then it glows (the accuracy badge) */
       let idle = 0;
       let hinted = false;
       let shown = null;

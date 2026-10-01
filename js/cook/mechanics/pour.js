@@ -8,7 +8,7 @@
  * and stops there by itself; the jug slides back (Cook.Pour.measure). So
  * pouring is counting, like the sugar spoons, and it's the same gesture at
  * every level. A tap can't miss the line, so a pour has no hand score (the
- * Chai tray's hand star is the knob alone). The press-and-hold pour below
+ * Chai tray's hand job (not scored) is the knob alone). The press-and-hold pour below
  * (Cook.Pour.hold) stays for any mode that still wants it.
  *
  * Wave 3 (the owner's jug design, the hold):

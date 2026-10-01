@@ -453,13 +453,14 @@
   }
   /**
    * Score the round through the core: the best is read first (the end screen judges the time against the
-   * best as it was), then Score.finish writes the best, the coins and the story line. A lab round is
-   * judged and its best kept, but pays nothing (as before). Without the core (a parked page) nothing is paid.
+   * best as it was), then Score.finish writes the best, the coins and the story line. A lab round pays like
+   * real play (decision, 1 Oct evening: testing as close to the real game as possible). Without the core (a
+   * parked page) nothing is paid.
    */
   function finishRound(ctx, o) {
     const round = cookRound(ctx, o);
     const core = Cook.core;
-    const score = core ? (o.kind === "lab" ? core.scoreNoPay : core.score) : null;
+    const score = core ? core.score : null;
     const prevBest = score ? score.best(round.mode, round.game, round.level) : undefined;
     // inside the game host (js/cook/main.js, ?hosted=1) the host scores the whole plan: judge only, write nothing
     const fin = !score ? null : Cook.hosted ? { badges: score.badges(round, prevBest), pay: null } : score.finish(round);
@@ -669,7 +670,7 @@
   }
 
   function finishDay(day, { free } = {}) {
-    // a day is done when its last order is served (the title's day dots); no stars to keep
+    // a day is done when its last order is served (the title's day dots)
     if (!free) {
       Cook.save.best[day.id] = Math.max(Cook.save.best[day.id] || 0, state.cards.length);
       if (Cook.save.day === day.id) Cook.save.day = day.id + 1;
@@ -947,8 +948,9 @@
       seen[g.what] = (seen[g.what] || 0) + 1;
       return `${g.what} ${seen[g.what]}: ${g.score}%`;
     });
-    // judged (and the best kept) by the core, never paid: a lab is for trying things (play: "lab")
+    // scored and paid by the core like real play (1 Oct evening); a lab round has no story line (play: null)
     const scored = finishRound(ctx, { game: key, level, end: tEnd, kind: "lab" });
+    if (scored.coins) setTimeout(() => Cook.sfx.coin(), 300);
     Cook.labResult = { key, right: scored.round.right, total: scored.round.total, why: ctx.listenMiss ? `Mistakes: ${ctx.reasons.join("; ")}` : "Understood everything.", skills, help: ctx.help };
     const actions = [
       { id: "again", label: "Again", icon: "again", elId: "lab-again" },

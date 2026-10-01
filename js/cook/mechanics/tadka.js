@@ -3,12 +3,12 @@
  * the hot oil in that order, then tip the pan into the pot (the pan
  * glows and an arrow points at the pot). Don't dawdle: once the first
  * spice is in, a heat ring fills round the pan, and if the next spice
- * (or the tip) doesn't come before it's full, the spices burn (the hand
- * star; it also stops "wait for the hint glow" from paying off).
+ * (or the tip) doesn't come before it's full, the spices burn (a hand
+ * job; it also stops "wait for the hint glow" from paying off).
  * Kutchi: the sequence ("ne poi"). At higher levels the order ladder
  * shows the spices as dots, then not at all: it's Nani's spoken order,
- * from memory (the Simon moment). Hearing her again costs the no-help
- * star. `order` may hold any-order groups (arrays): one shared dot.
+ * from memory (the Simon moment). Hearing her again costs a
+ * hint. `order` may hold any-order groups (arrays): one shared dot.
  * Knobs (data.mechanics.tadka): shelf (the spice bowls on the counter;
  * the order's own spices are always added), autoTip (the tadka
  * upgrade), ladder ("words" | "dots" | "hidden": how the mission card

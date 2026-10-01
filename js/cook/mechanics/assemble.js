@@ -24,7 +24,7 @@
  * bowl (no body, no pretend eating).
  *  - right: a happy face and the family's praise clip (Shabash!);
  *  - wrong: a gentle frown, they say their order again, the bowl EMPTIES and you
- *    build it again. Never a red cross; only the first mistake counts (the ear star, the end review).
+ *    build it again. Never a red cross; only the first mistake counts (the accuracy badge, the end review).
  * LEVELS (§14, §14a; the recipe's slots by level in data/cook.json, the decoys in
  * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row (and the words
  * hide on the chips); 4 = the person's card starts FOLDED (face + headline): remember what you heard;
@@ -992,7 +992,7 @@
       let busy = 0;
       let building = false; // the bowl takes a layer back only while you're building (§17)
       let firstWrong = null;
-      /** The first mistake is what's scored (the ear star, the end review), whenever it's found. */
+      /** The first mistake is what's scored (the accuracy badge, the end review), whenever it's found. */
       const firstMiss = (m) => {
         if (firstWrong) return;
         const wrong = m.got;
@@ -1217,7 +1217,7 @@
             break;
           }
           // not quite: a gentle face, they say what they asked for again, the glass comes back empty
-          // (only the first mistake counts: the ear star and the end review)
+          // (only the first mistake counts: the accuracy badge and the end review)
           firstMiss(m);
           await review(false);
           const line = orderLine(ladderOf(ctx));

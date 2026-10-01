@@ -16,7 +16,7 @@
  *            - a COMBINED station: Cook.Mech.combined(id, {zones: […]}),
  *              2-3 zones side by side (or a main zone and a side rack),
  *              items routed between them through named channels, one set
- *              of stars. Each lives in its own js/cook/stations/<id>.js.
+ *              of marks. Each lives in its own js/cook/stations/<id>.js.
  * KNOBS     every difficulty setting comes from data: data.mechanics[id]
  *           .levels[n] (each level only lists what changes), then an
  *           optional profile ("cup", "water"), then owned upgrades'
@@ -26,7 +26,7 @@
  *   z.X(x) z.Y(y) z.P(x, y) z.L(len) z.k    map design coords into the zone
  *   z.on(event, fn)  z.tick(fn)             input (filtered) and per-frame work
  *   z.io  z.expect(e)  z.gauge(g)           what the player should do next
- *   z.listen(ok, why)  z.skill(score, what) the ear and hand stars (+ hooks)
+ *   z.listen(ok, why)  z.skill(score, what) the ear and hand job (not scored)s (+ hooks)
  *   z.progress(p)  z.say(line)  z.oops()    progress, Nani's lines
  *   z.emit(item)  z.take()  z.out  z.in     routing between zones
  *   z.child({region?})  z.split(n)          several instances at once
@@ -286,7 +286,7 @@
     gauge(g) {
       Hub.gauge(this, g);
     }
-    /* reporting: into the order's ctx (one set of stars) and the hooks */
+    /* reporting: into the order's ctx (one set of marks) and the hooks */
     listen(ok, why) {
       if (this.ctx && this.ctx.listen) this.ctx.listen(ok, why);
       if (!ok) this.hook("onMistake", why);
@@ -513,7 +513,7 @@
     }
   }
   M.Host = Host;
-  /** Run combined station `id`: one view, 2-3 zones, one set of stars. */
+  /** Run combined station `id`: one view, 2-3 zones, one set of marks. */
   M.host = async function (id, S, ctx, params = {}, opts = {}) {
     const def = M.combos[id];
     await Cook.Stations.begin(S, ctx, def.station || id, def.view || "marble");

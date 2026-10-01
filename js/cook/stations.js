@@ -689,7 +689,7 @@
                 setTimeout(() => {
                   if (!target.active) return;
                   this.glow(target, true, { bounce: true });
-                  if (Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the ear star
+                  if (Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
                 }, 4000)
               );
             }, d)
@@ -719,7 +719,7 @@
               if (onWrong) onWrong(key, misses);
               if (misses >= 2) {
                 this.glow(target, true, { bounce: true });
-                if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the ear star
+                if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
               }
             }
           });

@@ -20,7 +20,7 @@
  * next one while this one cooks). On the tawa the ring fills like a clock: tap in the green and
  * the turner flips it (the spotted, half-cooked side up); tap in the green again and the turner
  * lifts it, flat and cooked, onto its plate. Too late and it's burnt (its own picture). The tick,
- * when you think you've made what they asked for; the ear star checks the count of each kind (the
+ * when you think you've made what they asked for; the accuracy badge checks the count of each kind (the
  * target is never shown).
  *
  * Params: order ({kind: n}; kinds "cook-maani", "cook-bajrmaani", or "ph-big+cook-maani" with

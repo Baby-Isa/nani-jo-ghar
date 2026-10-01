@@ -9,7 +9,7 @@
  *    exists; otherwise it's shown in the bubble with a "needs recording"
  *    mark, and stays up long enough to read.
  *  - Nothing may make a child feel bad: no buzzers, no lives, customers
- *    never leave angry. Being slow or wrong only means fewer stars.
+ *    never leave angry. Being slow or wrong only shows in the end badges.
  */
 (function (global) {
   const Cook = (global.Cook = global.Cook || {});
@@ -104,7 +104,7 @@
   /*
    * Step 3 R4: Cook on the engine core (js/core/, ES modules). cook.html's module bootstrap
    * (js/cook/boot.js) sets Cook.coreReady (a promise) and, once loaded, Cook.core =
-   * {save, progress, score, wallet, voice, lang, play, data, scoreNoPay}. The one purse is the core's
+   * {save, progress, score, wallet, voice, lang, play, data}. The one purse is the core's
    * wallet (coins only go up, except buying: no wages, E29); upgrades are the wallet's. A page that
    * still loads Cook's files the classic way (the parked modes) has no core and keeps the old fields.
    */
@@ -435,7 +435,7 @@
       tone(1320, 0.08, { type: "square", gain: 0.07 });
       tone(1760, 0.18, { type: "square", gain: 0.07, when: 0.07 });
     },
-    star(i = 0) {
+    star(i = 0) { // parked modes only (Find it, Snap: their legacy stars); Cook never plays it
       tone(880 * Math.pow(1.26, i), 0.25, { type: "triangle", gain: 0.2 });
     },
     puff() {

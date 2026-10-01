@@ -17,7 +17,7 @@
  * place it, so each has its own ring round it (not one for the grill) and
  * its own timer: turn it on the green, `turns` times, then lift it onto the
  * plate on the green. Up to `spots` skewers cook at once: juggling.
- * Burnt or undercooked costs the hand star, never the ear star.
+ * Burnt or undercooked costs a hand job (not scored), never the accuracy badge.
  *
  * Kutchi: what goes on the plate. The order says how many skewers of each
  * kind ("ba lakri gos, hakri lakri boga"); the rack never holds exactly that
@@ -1711,7 +1711,7 @@
       const closeRows = () => ctx.closeItem && ctx.closeItem([].concat(...Object.keys(want).map((w) => w.split("+"))));
       if (!params.taste) closeRows();
 
-      /* the ear star: the right number of each kind, mixed in order, chips or not (the first try only:
+      /* the accuracy badge: the right number of each kind, mixed in order, chips or not (the first try only:
          a plate made again after "not quite" is never judged twice, §14a) */
       const first = !params.retry;
       const listen = (ok, why) => first && z.listen(ok, why);

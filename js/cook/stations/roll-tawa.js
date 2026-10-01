@@ -5,8 +5,8 @@
  * a wooden board on the left, the tawa (the tawa mechanic) on the hob on
  * the right. Each rolled maani is routed through the "rolled" channel and
  * flies over to the tawa, which cooks it while you roll the next. One set
- * of stars: the roll zone says whether you made as many as they asked
- * for (ear); every roll and every flip scores the hand star.
+ * of marks: the roll zone says whether you made as many as they asked
+ * for (accuracy); every roll and every flip scores a hand job (not scored).
  *
  * It proves the host; the real Maani line (dough bowls -> chakla -> tawa,
  * big/small, two tawas) is js/cook/stations/maani-line.js, next wave.

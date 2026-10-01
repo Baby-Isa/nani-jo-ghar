@@ -1005,3 +1005,5 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .book-face { display: grid; place-items: center; padding: var(--njg-s2); }
 .book-face img { width: calc(var(--njg-tap) * 1.25); height: calc(var(--njg-tap) * 1.25); border-radius: 50%; object-fit: cover; object-position: top; }
 #panel .cards:has(.book-face) { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 1.75), 1fr)); }
+.btn.pic-btn:not(.primary) { background: var(--njg-card); color: var(--njg-ink); border: var(--njg-line-2) solid var(--njg-gold); box-shadow: var(--njg-shadow); }
+.btn.pic-btn.primary { color: #fff; }

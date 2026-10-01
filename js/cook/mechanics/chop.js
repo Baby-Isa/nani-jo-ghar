@@ -13,9 +13,9 @@
  *
  * Chopping never ends by itself when you reach a number: the round runs
  * until the ring is empty (each wanted vegetable is thrown a few more
- * times than asked for). Too many or too few costs the ear star (graded at
+ * times than asked for). Too many or too few costs the accuracy badge (graded at
  * the end, so nothing on screen says when to stop); slicing the wrong one:
- * "Arre re!" and the ear star. Kutchi: which ones, how many, and the switch.
+ * "Arre re!" and the accuracy badge. Kutchi: which ones, how many, and the switch.
  *
  * Params: targets {wordId: count} (zeros are left out), pool (what else
  * gets thrown), only (keep only targets in this list: the chaat chops what

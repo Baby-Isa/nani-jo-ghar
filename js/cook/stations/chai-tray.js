@@ -15,7 +15,7 @@
  *    family clip plays.
  *  - HEAT, per pan (as before): tap the knob to light it (water first); a ring round the pan fills
  *    like a clock and the chai darkens and rolls; tap the knob in the green to turn it down. Ignore
- *    it and it boils over (foam, the hand star). Then the pan is ready.
+ *    it and it boils over (foam, a hand job (not scored)). Then the pan is ready.
  *  - THE TRAY (top right): a small square wooden tray with 4 round cut-outs, each person's face
  *    under theirs, quiet (dimmed) until a pan is ready. Tap a ready pan: it lifts, tilts and pours
  *    into its person's glass. At level 4 (half or full: adh / aako) one tap pours half, a second

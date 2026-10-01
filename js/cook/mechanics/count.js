@@ -1,7 +1,7 @@
 /*
  * Mechanic: count in (spoons). Tap the bowl once per spoon they asked
  * for, then the tick. The look-alike bowls beside it (salt next to sugar)
- * can be spooned in too: a spoon of the wrong one costs the ear star
+ * can be spooned in too: a spoon of the wrong one costs the accuracy badge
  * ("Arre re!"). The badge shows the running tally only, never the target.
  * Kutchi: the number ("ba khun"), "khun na", and which bowl.
  * Cook.Spoon.spoon(z, {bowl, into, word}) is the one-spoon animation the

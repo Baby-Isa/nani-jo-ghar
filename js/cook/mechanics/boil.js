@@ -3,7 +3,7 @@
  * a clock; bubbles grow as it nears the boil. The burner has a BIG knob
  * (the owner: it wasn't clear where to tap): tap it to light the burner
  * (needOn), and tap it again in the green to turn it down. Ignore it and
- * the pan boils over (foam everywhere; it costs the hand star), then the
+ * the pan boils over (foam everywhere; it costs a hand job (not scored)), then the
  * knob turns itself down. Nani may interrupt mid-boil (Busy: it keeps
  * boiling while you help her).
  *

@@ -17,8 +17,8 @@
  * each kind, in Kutchi ("ba lakri gos, hakri lakri boga"), and a mixed skewer's
  * pieces in order. Nothing on screen shows the count or the kinds: every
  * piece bowl is always there and the rack has fixed slots per level. The
- * ear star: pieces that fit the order, the right number of each kind on the
- * plate, a mixed skewer in the spoken order. The hand star: every turn and
+ * accuracy badge: pieces that fit the order, the right number of each kind on the
+ * plate, a mixed skewer in the spoken order. The hand job (not scored): every turn and
  * lift (burnt or undercooked costs it).
  *
  * Levels: data/stations/mishkaki-grill.json (which level each part runs at,

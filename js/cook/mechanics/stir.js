@@ -11,7 +11,7 @@
  *
  * Nani reacts live from her sidebar line: after you've stirred on the
  * wrong side of the dial for a while she says the word again ("slowly!"),
- * which costs the speed part of the ear star (it gives you the answer);
+ * which costs the accuracy badge (it gives you the answer);
  * "enough!" when you go past the count (at the count itself only while
  * she's guiding, the teaching run). At level 3 she changes the speed
  * mid-stir ("now quickly!", sometimes the same speed again, so the switch
@@ -513,7 +513,7 @@
         needle.fillCircle(dx0, dy0, z.L(16));
       }
 
-      /* ---------- the stars ---------- */
+      /* ---------- the marks (accuracy; the speed) ---------- */
       const got = result.count;
       z.listen(got === laps, `stirred ${got} times, they asked for ${laps}`);
       got === laps ? Cook.markRight(Cook.numId(laps)) : Cook.markMiss(Cook.numId(laps));
