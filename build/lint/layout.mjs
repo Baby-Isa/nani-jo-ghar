@@ -1,0 +1,219 @@
+// The screen lint: measures what is ON SCREEN (computed styles and boxes), not the code.
+// `pageLint` runs inside the page; `lintPage(page)` is the Node side. The sandbox (build/sandbox)
+// calls it at every recorded state and size. It never touches game code: the click-listener
+// recorder (CLICK_HOOK) is injected with page.addInitScript.
+//
+// Checks (only on VISIBLE elements: shown, not fully clipped, not parked off screen):
+//   text-clipped     text cut off by its own box or a parent with overflow hidden/clip (TXT-01, TXT-02)
+//   ellipsis         text-overflow: ellipsis (or a line clamp) that is actually truncating (TXT-01)
+//   text-small       text rendered under 14 px, transforms included (TXT-05)
+//   tap-small        a tappable thing under 48x48 px (LAY-04)
+//   text-offscreen   text running outside the viewport
+//   tap-offscreen    a tappable thing partly outside the viewport
+//   page-scroll      the page itself scrolls (LAY-02)
+//   scroll-container a visible box that scrolls (a scroll bar on a child screen, CMP-07)
+// Each finding: {check, selector, measured, text}.
+
+export const CLICK_HOOK = `(() => {
+  if (window.__njgClickables) return;
+  const list = (window.__njgClickables = []);
+  const seen = new WeakSet();
+  const kinds = new Set(["click", "pointerdown", "pointerup", "mousedown", "mouseup", "touchstart", "touchend"]);
+  const orig = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function (type, fn, opts) {
+    try {
+      if (kinds.has(type) && this instanceof Element && !seen.has(this)) { seen.add(this); list.push(new WeakRef(this)); }
+    } catch (e) {}
+    return orig.call(this, type, fn, opts);
+  };
+})();`;
+
+// Runs in the page. Self-contained (it is serialised with toString()).
+export function pageLint(opts) {
+  const MIN_TEXT = (opts && opts.minText) || 14;
+  const MIN_TAP = (opts && opts.minTap) || 48;
+  const TOL = 1.5;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const out = [];
+  const csCache = new Map();
+  const cs = (el) => { let c = csCache.get(el); if (!c) { c = getComputedStyle(el); csCache.set(el, c); } return c; };
+  const STATE = new Set("in on off live show shown active hidden done ok holding pulse throb reading glow open closed ready wrong right bad good sel selected current lit dim flash shake pop fade fading visible enter leave idle busy hover focus pressed".split(" "));
+
+  function seg(el) {
+    const tag = el.tagName.toLowerCase();
+    if (el.id && !/\d{3,}/.test(el.id)) return tag + "#" + el.id;
+    const cls = (typeof el.className === "string" ? el.className : (el.className && el.className.baseVal) || "")
+      .split(/\s+/).filter((c) => c && !STATE.has(c) && !/\d/.test(c)).sort().slice(0, 2);
+    return tag + (cls.length ? "." + cls.join(".") : "");
+  }
+  function selector(el) {
+    const parts = [];
+    for (let n = el, i = 0; n && n.nodeType === 1 && i < 4; n = n.parentElement, i++) {
+      parts.unshift(seg(n));
+      if (n.id && !/\d{3,}/.test(n.id)) break;
+      if (n === document.body) break;
+    }
+    return parts.join(" > ");
+  }
+
+  // ---- visibility ----
+  const opCache = new Map();
+  function opacity(el) {
+    if (!el || el === document.documentElement) return 1;
+    let v = opCache.get(el);
+    if (v === undefined) { v = (parseFloat(cs(el).opacity) || 0) * opacity(el.parentElement); opCache.set(el, v); }
+    return v;
+  }
+  function clipAncestors(el) {
+    const res = [];
+    let pos = cs(el).position;
+    for (let n = el.parentElement; n && n !== document.documentElement; n = n.parentElement) {
+      const c = cs(n);
+      const transformed = c.transform !== "none" || c.filter !== "none" || c.perspective !== "none";
+      const positioned = c.position !== "static";
+      if (pos === "fixed" && !transformed) continue;
+      if (pos === "absolute" && !positioned && !transformed) continue;
+      if (c.overflowX !== "visible" || c.overflowY !== "visible") res.push(n);
+      pos = c.position;
+    }
+    return res;
+  }
+  function padBox(n) {
+    const r = n.getBoundingClientRect();
+    const sx = n.offsetWidth ? r.width / n.offsetWidth : 1, sy = n.offsetHeight ? r.height / n.offsetHeight : 1;
+    const l = r.left + n.clientLeft * sx, t = r.top + n.clientTop * sy;
+    return { left: l, top: t, right: l + n.clientWidth * sx, bottom: t + n.clientHeight * sy };
+  }
+  function inter(a, b) {
+    return { left: Math.max(a.left, b.left), top: Math.max(a.top, b.top), right: Math.min(a.right, b.right), bottom: Math.min(a.bottom, b.bottom) };
+  }
+  // the part of el that can be seen, or null (hidden, transparent, parked off screen, fully clipped)
+  function shown(el, rect) {
+    const c = cs(el);
+    if (c.visibility !== "visible" || c.display === "none") return null;
+    if (opacity(el) < 0.05) return null;
+    if (rect.width <= 0 && rect.height <= 0) return null;
+    let vis = inter(rect, { left: 0, top: 0, right: vw, bottom: vh });
+    for (const a of clipAncestors(el)) {
+      const c2 = cs(a);
+      const b = padBox(a);
+      if (c2.overflowX === "visible") { b.left = -1e9; b.right = 1e9; }
+      if (c2.overflowY === "visible") { b.top = -1e9; b.bottom = 1e9; }
+      vis = inter(vis, b);
+    }
+    if (vis.right - vis.left <= 0 || vis.bottom - vis.top <= 0) return null;
+    return vis;
+  }
+
+  const add = (check, el, measured, extra) => out.push(Object.assign({ check, selector: selector(el), measured, text: ((extra && extra.text) || (el.textContent || "").trim()).replace(/\s+/g, " ").slice(0, 30) }, extra && extra.detail ? { detail: extra.detail } : {}));
+
+  // ---- text ----
+  function ownTextRects(el) {
+    const rects = [];
+    for (const n of el.childNodes) {
+      if (n.nodeType !== 3 || !n.nodeValue.trim()) continue;
+      const r = document.createRange();
+      r.selectNodeContents(n);
+      for (const q of r.getClientRects()) if (q.width > 0 && q.height > 0) rects.push(q);
+    }
+    return rects;
+  }
+  function scaleOf(el) {
+    if (el instanceof SVGElement) {
+      try { const m = el.getScreenCTM(); if (m) return Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)) || 1; } catch (e) {}
+      return 1;
+    }
+    if (el.offsetWidth > 0) { const r = el.getBoundingClientRect(); const s = r.width / el.offsetWidth; if (s > 0 && isFinite(s)) return s; }
+    if (el.offsetHeight > 0) { const r = el.getBoundingClientRect(); const s = r.height / el.offsetHeight; if (s > 0 && isFinite(s)) return s; }
+    return 1;
+  }
+  const all = document.querySelectorAll("body *");
+  for (const el of all) {
+    const tag = el.tagName;
+    if (tag === "SCRIPT" || tag === "STYLE" || tag === "NOSCRIPT" || tag === "OPTION" || tag === "TEMPLATE") continue;
+    const isField = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+    const rects = isField ? [el.getBoundingClientRect()] : ownTextRects(el);
+    if (!rects.length) continue;
+    const box = el.getBoundingClientRect();
+    const vis = shown(el, box.width || box.height ? box : rects[0]);
+    if (!vis) continue;
+    const c = cs(el);
+    const fs = parseFloat(c.fontSize) || 0;
+    const sc = scaleOf(el);
+    const eff = fs * sc;
+    if (eff > 0 && eff < MIN_TEXT - 0.05) add("text-small", el, eff.toFixed(1) + "px", { detail: `font-size ${fs}px x scale ${sc.toFixed(2)}` });
+    if (isField) continue;
+    // text rectangle (union of own text)
+    let L = Infinity, T = Infinity, R = -Infinity, B = -Infinity;
+    for (const q of rects) { L = Math.min(L, q.left); T = Math.min(T, q.top); R = Math.max(R, q.right); B = Math.max(B, q.bottom); }
+    // ellipsis / line clamp that is actually truncating
+    const clamp = c.webkitLineClamp && c.webkitLineClamp !== "none";
+    let ell = false;
+    if (c.textOverflow === "ellipsis" && c.overflowX !== "visible" && el.scrollWidth > el.clientWidth + 1) { ell = true; add("ellipsis", el, `${el.scrollWidth}px of text in ${el.clientWidth}px`); }
+    else if (clamp && el.scrollHeight > el.clientHeight + 1) { ell = true; add("ellipsis", el, `line-clamp ${c.webkitLineClamp}: ${el.scrollHeight}px of text in ${el.clientHeight}px`); }
+    // clipped by its own box or a parent (overflow hidden / clip)
+    let clipped = null;
+    for (const a of [el, ...clipAncestors(el)]) {
+      const ca = cs(a);
+      const hx = ca.overflowX === "hidden" || ca.overflowX === "clip";
+      const hy = ca.overflowY === "hidden" || ca.overflowY === "clip";
+      if (!hx && !hy) continue;
+      if (a === el && ell) continue;
+      const b = padBox(a);
+      const slop = fs * sc * 0.3;
+      let px = 0;
+      if (hx) px = Math.max(px, R - b.right, b.left - L);
+      if (hy) px = Math.max(px, B - (b.bottom + slop), (b.top - slop) - T);
+      if (px > TOL && (!clipped || px > clipped.px)) clipped = { px, a };
+    }
+    if (clipped && !ell) add("text-clipped", el, `cut by ${Math.round(clipped.px)}px`, { detail: clipped.a === el ? "its own box" : "parent " + selector(clipped.a) });
+    // outside the viewport
+    const out_ = Math.max(-L, -T, R - vw, B - vh);
+    if (out_ > TOL) add("text-offscreen", el, `${Math.round(out_)}px outside the screen`);
+  }
+
+  // ---- tap targets ----
+  const cand = new Set(document.querySelectorAll('button, a[href], input:not([type=hidden]), select, textarea, summary, [role=button], [role=radio], [role=tab], [role=checkbox], [role=switch], [role=link], [onclick]'));
+  for (const w of window.__njgClickables || []) {
+    const el = w.deref();
+    if (el && el.isConnected && el !== document.body && el !== document.documentElement && el.tagName !== "CANVAS" && el.tagName !== "HTML") cand.add(el);
+  }
+  for (const el of cand) {
+    if (!el.isConnected) continue;
+    const c = cs(el);
+    if (c.pointerEvents === "none" || el.disabled) continue;
+    const r = el.getBoundingClientRect();
+    const vis = shown(el, r);
+    if (!vis) continue;
+    // a big container with a delegated listener is not a button
+    if (r.width * r.height > vw * vh * 0.4) continue;
+    // an SVG child with no size of its own (a <g>) measures by its box
+    if (r.width < MIN_TAP - 0.5 || r.height < MIN_TAP - 0.5) add("tap-small", el, `${Math.round(r.width)}x${Math.round(r.height)}px`);
+    const o = Math.max(-r.left, -r.top, r.right - vw, r.bottom - vh);
+    if (o > TOL) add("tap-offscreen", el, `${Math.round(o)}px outside the screen`);
+  }
+
+  // ---- scrolling ----
+  const se = document.scrollingElement || document.documentElement;
+  const ho = cs(document.documentElement).overflowX, hb = cs(document.body).overflowX;
+  const vo = cs(document.documentElement).overflowY, vb = cs(document.body).overflowY;
+  const hidden = (a, b) => a === "hidden" || a === "clip" || (a === "visible" && (b === "hidden" || b === "clip"));
+  if (se.scrollWidth > vw + 1 && !hidden(ho, hb)) out.push({ check: "page-scroll", selector: "html", measured: `sideways: ${se.scrollWidth}px in ${vw}px`, text: "" });
+  if (se.scrollHeight > vh + 1 && !hidden(vo, vb)) out.push({ check: "page-scroll", selector: "html", measured: `down: ${se.scrollHeight}px in ${vh}px`, text: "" });
+  for (const el of all) {
+    const c = cs(el);
+    const sx = (c.overflowX === "auto" || c.overflowX === "scroll") && el.scrollWidth > el.clientWidth + 1;
+    const sy = (c.overflowY === "auto" || c.overflowY === "scroll") && el.scrollHeight > el.clientHeight + 1;
+    if (!sx && !sy) continue;
+    if (!shown(el, el.getBoundingClientRect())) continue;
+    add("scroll-container", el, (sx ? `sideways ${el.scrollWidth}>${el.clientWidth}` : "") + (sx && sy ? ", " : "") + (sy ? `down ${el.scrollHeight}>${el.clientHeight}` : ""));
+  }
+  // one finding per (check, selector): keep the worst-looking first
+  const seen = new Map();
+  for (const f of out) { const k = f.check + "|" + f.selector; if (!seen.has(k)) seen.set(k, f); else seen.get(k).count = (seen.get(k).count || 1) + 1; }
+  return Array.from(seen.values());
+}
+
+export async function lintPage(page, opts = {}) {
+  return page.evaluate(`(${pageLint.toString()})(${JSON.stringify(opts)})`);
+}

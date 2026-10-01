@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Lint fixture: known violations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { margin: 0; font: 16px/1.3 sans-serif; }
+  .row { margin: 4px 8px; }
+  /* VIOLATIONS: each id below is one the lint must find (see layout.test.mjs) */
+  #clip-self { display: inline-block; width: 80px; overflow: hidden; white-space: nowrap; }
+  #clip-parent-box { width: 90px; height: 24px; overflow: hidden; }
+  #clip-parent-text { white-space: nowrap; display: block; }
+  #ellipsis-bad { width: 80px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  #clamp-bad { width: 160px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  #small-text { font-size: 11px; }
+  #small-btn { width: 30px; height: 30px; padding: 0; }
+  #small-link { font-size: 16px; }
+  #click-div { width: 24px; height: 24px; background: #c96; }
+  #offscreen-text { position: absolute; top: 330px; right: -60px; width: 200px; }
+  #scroller { width: 140px; height: 40px; overflow: auto; }
+  #scroller div { height: 200px; }
+  #wide { position: absolute; top: 380px; left: 0; width: 3000px; height: 2px; background: #888; }
+  /* CLEAN: none of these may be reported */
+  #ok-btn { width: 56px; height: 56px; font-size: 18px; }
+  #ok-text { font-size: 18px; }
+  #ellipsis-fits { width: 300px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  #hidden-none { display: none; font-size: 8px; }
+  #hidden-opacity { opacity: 0; font-size: 8px; }
+  #hidden-vis { visibility: hidden; font-size: 8px; }
+  #parked { position: absolute; left: -9999px; top: 0; font-size: 8px; }
+  #parked-btn { position: absolute; left: -9999px; top: 0; width: 20px; height: 20px; }
+  #wraps { width: 100px; }
+  #scaled-ok { font-size: 7px; transform: scale(2.2); transform-origin: left top; display: inline-block; }
+</style></head>
+<body>
+<div class="row"><span id="clip-self">This sentence is far too long for its box</span></div>
+<div class="row"><div id="clip-parent-box"><span id="clip-parent-text">Another sentence that is too long for its parent</span></div></div>
+<div class="row"><div id="ellipsis-bad">A line that ends in three dots</div></div>
+<div class="row"><div id="clamp-bad">Line one of a long paragraph that is clamped to two lines and so the third line and beyond is cut off for good, never to be seen by the child.</div></div>
+<div class="row"><span id="small-text">Tiny words nobody can read</span></div>
+<div class="row"><button id="small-btn" aria-label="small">x</button></div>
+<div class="row"><a id="small-link" href="#">a link</a></div>
+<div class="row"><div id="click-div"></div></div>
+<div id="offscreen-text">This text runs off the right edge</div>
+<div class="row"><div id="scroller"><div>scrolls</div></div></div>
+<div id="wide"></div>
+
+<div class="row"><button id="ok-btn">OK</button></div>
+<div class="row"><span id="ok-text">Plain readable text at eighteen pixels</span></div>
+<div class="row"><div id="ellipsis-fits">Fits in its box</div></div>
+<div class="row"><span id="hidden-none">hidden</span><span id="hidden-opacity">transparent</span><span id="hidden-vis">invisible</span></div>
+<span id="parked">parked off screen</span><button id="parked-btn" aria-label="parked"></button>
+<div class="row"><div id="wraps">A sentence that simply wraps onto several lines without any trouble at all</div></div>
+<div class="row" style="height:40px"><span id="scaled-ok">scaled up</span></div>
+<script>
+  // a div that is a button only because it has a listener (found through the injected recorder)
+  document.getElementById("click-div").addEventListener("click", () => {});
+</script>
+</body></html>
