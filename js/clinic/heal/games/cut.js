@@ -560,7 +560,9 @@
   const SCRAPE = {
     dabs: { 1: [2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
     colours: ["red", "blue", "green", "yellow"],
-    plasters: { 1: 1, 2: 2, 3: 3 },
+    // CLN-45 (1 Oct, P14/P17): at most two things to hold per step at L3, and L2 -> L3 adds one thing: two plasters
+    // at L2 and L3 (one colour each at L2, two at L3), each plaster's row said as it opens (D8)
+    plasters: { 1: 1, 2: 2, 3: 2 },
   };
   const WHY = { problem: "I fell over and scraped my arm.", goal: "Let's clean it and put plasters on." };
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
@@ -585,7 +587,7 @@
     // 13h: the plasters' order is a sequence on the shared card: one part per plaster (pela ..., ne poi ...),
     // the next one in the grey band, each ticking as it goes on
     const Lg = LG();
-    const plasterRows = seq.map((o, i) => Object.assign({ id: `plaster${i}`, seq: "plasters" }, say(n > 1 || i > 0 ? Lg.step(i, [name(o), "cl-plaster"], { lower: true }) : Lg.join([name(o), "cl-plaster"]))));
+    const plasterRows = seq.map((o, i) => Object.assign({ id: `plaster${i}` }, say(n > 1 || i > 0 ? Lg.step(i, [name(o), "cl-plaster"], { lower: true }) : Lg.join([name(o), "cl-plaster"]))));
     const steps = [
       { id: "wash", kind: "wash", row: Object.assign({ id: "wash", seq: "steps" }, say(Lg.first("cook-paani"))) },
       { id: "dab", kind: "dab", count: dab, row: Object.assign({ id: "dab", seq: "steps" }, say(Lg.join([Lg.then("cl-cloth"), ",", Lg.item("cl-dabs", { n: dab })]))) },
@@ -669,7 +671,8 @@
         rowsOf(c).forEach((r) => ctx.card.addRow(r));
         ctx.say(c.row);
       }
-      ctx.card.now(c.kind === "plaster" ? null : c.id);
+      // D8: the plaster step opens its first plaster's row (the next one opens as each goes on)
+      ctx.card.now(c.kind === "plaster" ? "plaster0" : c.id);
       drawSpots();
       const target = c.kind === "wash" ? S.toolEls.paani : c.kind === "dab" ? S.toolEls.cloth : S.toolEls["pl-" + P.key(c.seq[0])];
       S.cue(c.kind, CUES[c.kind], target, { x: c.kind === "plaster" ? spotX(0) : 380, y: 408 });
@@ -768,6 +771,7 @@
       S.face("happy", 600);
       ctx.sfx("pop");
       ctx.card.tick(`plaster${k}`);
+      if (k + 1 < n && !st.laid[k + 1]) ctx.card.now(`plaster${k + 1}`); // D8: the next plaster's row, said as it opens
       drawSpots();
       // D7: the ✓ shows once every plaster is on (it commits them; until then a plaster can come off again)
       if (ctx.ready) ctx.ready(laidN() >= n);

@@ -101,8 +101,7 @@ test("CLN-60: the eye's first-time help shows the right answer for the first row
     }
     found = seed;
     const reached = await playUntil(page, () => {
-      const c = window.__clinic.Stages.heal.current.controller.debug;
-      return !!document.querySelector(".njg-onboard") && !!document.querySelector('[data-judge="no"]') && getComputedStyle(document.querySelector('[data-judge="no"]').parentElement).display !== "none";
+      return !!document.querySelector(".njg-onboard") && !!document.querySelector(".hs-judge:not(.hidden) [data-judge='no']");
     }, 80);
     assert.ok(reached, "the judging pills came up with the first-time help on");
     await sleep(400);

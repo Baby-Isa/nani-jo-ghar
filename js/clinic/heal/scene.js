@@ -112,31 +112,7 @@
   // D1 (1 Oct, CLN-43): behind every close-up, the exam room itself (CB2b), zoomed on the bed and blurred, so the
   // room matches the wide shot the zoom came from; CB6b (the close-up bed) is kept only as a fallback
   const BG = "assets/clinic/rooms/bg-clinic-exam-cb2b-v1.webp";
-  const CSS = `
-  .hs-root{position:absolute;inset:0;z-index:5;overflow:hidden;background:linear-gradient(#efe3cc 0 55%,#9fbfa6 55%);touch-action:none;user-select:none;-webkit-user-select:none}
-  .hs-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .hs-face{position:absolute;left:10px;top:10px;width:clamp(64px,12vmin,104px);height:clamp(64px,12vmin,104px);border-radius:50%;background:#fff;border:4px solid #d9bf95;box-shadow:0 4px 10px rgba(60,40,20,.18);z-index:7;pointer-events:none}
-  .hs-face svg{width:100%;height:100%}
-  .hs-face.shake{animation:hs-shake .35s 2}
-  @keyframes hs-shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-  .hs-doc{position:absolute;left:10px;bottom:10px;width:clamp(44px,8vmin,64px);height:clamp(44px,8vmin,64px);border-radius:50%;background:#e8f3ef;border:3px solid #2e8b7a;display:grid;place-items:center;font-size:clamp(20px,4vmin,30px);z-index:7;pointer-events:none}
-  .hs-tools{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:grid;grid-template-columns:repeat(var(--cols,1),auto);gap:8px;z-index:8;pointer-events:none}
-  .hs-tools>*{pointer-events:auto}
-  .hs-root .hs-tool{flex:0 0 auto;width:auto;margin:0;box-sizing:border-box;min-width:clamp(56px,9vw,96px);min-height:clamp(46px,7vh,62px);border-radius:16px;border:4px solid #d8c6a8;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font:700 12px/1.1 system-ui,sans-serif;color:#5b4636;cursor:pointer;padding:3px 6px}
-  .hs-tool .g{font-size:clamp(20px,3.4vmin,30px);line-height:1.1}
-  .hs-tool .sw{display:flex;gap:2px}
-  .hs-tool.sel{border-color:#2e8b7a;box-shadow:0 0 0 5px rgba(46,139,122,.35)}
-  .hs-tool.used{opacity:.45}
-  .hs-tool.pulse{animation:hs-pulse 1s ease-in-out infinite}
-  @keyframes hs-pulse{50%{box-shadow:0 0 0 7px rgba(240,180,60,.55)}}
-  .hs-timer{position:absolute;left:22%;right:22%;top:clamp(46px,8vmin,60px);height:12px;border-radius:8px;background:rgba(255,255,255,.7);border:2px solid #d8c6a8;z-index:7;overflow:hidden;pointer-events:none}
-  .hs-timer i{position:absolute;left:0;top:0;bottom:0;background:#6bbf8a;transition:width .25s linear}
-  .hs-timer.low i{background:#f0a040}
-  .hs-tool{position:relative}
-  .hs-from{position:absolute;right:-6px;top:-6px;width:20px;height:20px;border-radius:50%;background:#fff6dc;border:2px solid #c9962e;box-shadow:0 1px 3px rgba(60,40,20,.2)}
-  .hs-from::after{content:"";position:absolute;left:4px;right:4px;top:7px;height:5px;border-radius:0 0 5px 5px;background:#c9962e}
-  .hs-said{position:absolute;z-index:8;background:#fff;border:3px solid #d9bf95;border-radius:14px;padding:3px 10px;font:800 clamp(14px,2.6vmin,20px)/1.2 system-ui,sans-serif;color:#3b2415;pointer-events:none;white-space:nowrap}
-  `;
+  // the close-up's look is in css/clinic.css (R5: no styles written from code; sizes on the shared tokens)
 
   HS.make = function (stage, ctx, opts = {}) {
     const doc = stage.ownerDocument;
@@ -154,8 +130,6 @@
       if (parent) parent.appendChild(n);
       return n;
     };
-    const css = h("style", null, stage);
-    css.textContent = CSS;
     const root = h("div", "hs-root", stage);
     root.dataset.place = opts.place || "limb";
     const svg = s("svg", { class: "hs-svg", viewBox: "0 0 800 500", preserveAspectRatio: "xMidYMid meet" }, root);
@@ -293,7 +267,8 @@
           const sw = h("span", "g sw", b);
           t.colours.forEach((c) => {
             const d = h("span", null, sw);
-            d.style.cssText = `display:inline-block;width:16px;height:26px;border-radius:5px;background:${HS.COLOURS[c] || c};border:2px solid rgba(0,0,0,.2)`;
+            d.className = "hs-sw";
+            d.style.setProperty("--sw", HS.COLOURS[c] || c);
           });
         } else h("span", "g", b, t.glyph || "•");
         if (t.label) h("span", "l", b, t.label);

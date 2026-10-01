@@ -476,3 +476,26 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-zoom.gone { display: none; }
 .cl-zoom-box { will-change: transform, filter; }
 .hs-root .hs-bg { filter: blur(8px); }
+
+/* ---- the heal games' close-up (was a <style> written by js/clinic/heal/scene.js; R5: on the tokens) ---- */
+.hs-root { position: absolute; inset: 0; z-index: 5; overflow: hidden; background: linear-gradient(#efe3cc 0 55%, #9fbfa6 55%); touch-action: none; user-select: none; -webkit-user-select: none; }
+.hs-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hs-face { position: absolute; left: var(--njg-s2); top: var(--njg-s2); width: calc(var(--njg-big-face) * 1.2); height: calc(var(--njg-big-face) * 1.2); border-radius: 50%; background: #fff; border: 4px solid #d9bf95; box-shadow: var(--njg-shadow); z-index: 7; pointer-events: none; }
+.hs-face svg { width: 100%; height: 100%; }
+.hs-face.shake { animation: hs-shake .35s 2; }
+@keyframes hs-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.hs-tools { position: absolute; right: var(--njg-s2); top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: repeat(var(--cols, 1), auto); gap: var(--njg-s2); z-index: 8; pointer-events: none; }
+.hs-tools > * { pointer-events: auto; }
+.hs-root .hs-tool { position: relative; flex: 0 0 auto; width: auto; margin: 0; box-sizing: border-box; min-width: calc(var(--njg-tap) * 1.5); min-height: calc(var(--njg-tap) * 1.1); border-radius: var(--njg-radius); border: 4px solid #d8c6a8; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; font: 700 var(--njg-t4) / 1.1 var(--cl-head); color: #5b4636; cursor: pointer; padding: var(--njg-s1); }
+.hs-tool .g { font-size: calc(var(--njg-t1) * 1.2); line-height: 1.1; }
+.hs-tool .sw { display: flex; gap: var(--njg-s1); }
+.hs-tool .hs-sw { display: inline-block; width: var(--njg-s4); height: var(--njg-s5); border-radius: var(--njg-s1); background: var(--sw, #ccc); border: 2px solid rgba(0, 0, 0, .2); }
+.hs-tool.sel { border-color: #2e8b7a; box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); }
+.hs-tool.used { opacity: .45; }
+.hs-tool.pulse { animation: hs-pulse 1s ease-in-out infinite; }
+@keyframes hs-pulse { 50% { box-shadow: 0 0 0 7px rgba(240, 180, 60, .55); } }
+.hs-timer { position: absolute; left: 22%; right: 22%; top: calc(var(--njg-big-face) * 1.3); height: var(--njg-s3); border-radius: var(--njg-s2); background: rgba(255, 255, 255, .7); border: 2px solid #d8c6a8; z-index: 7; overflow: hidden; pointer-events: none; }
+.hs-timer i { position: absolute; left: 0; top: 0; bottom: 0; background: #6bbf8a; transition: width .25s linear; }
+.hs-timer.low i { background: #f0a040; }
+.hs-said { position: absolute; z-index: 8; background: #fff; border: 3px solid #d9bf95; border-radius: var(--njg-radius); padding: 0 var(--njg-s2); font: 800 var(--njg-t2) / 1.2 var(--cl-head); color: #3b2415; pointer-events: none; white-space: nowrap; }
+.hs-judge { position: absolute; left: 50%; bottom: var(--njg-s3); transform: translateX(-50%); display: flex; gap: var(--njg-s4); z-index: 8; }

@@ -129,8 +129,7 @@
     drawChart();
 
     // the judging buttons, by the chart
-    const judgeBox = S.h("div", null, S.root);
-    judgeBox.style.cssText = "position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:18px;z-index:8";
+    const judgeBox = S.h("div", "hs-judge", S.root);
     // haa / na: the shared answer pills (UX 15), one pill style everywhere
     const NB = root.NjgButtons;
     const yesNo = { yes: HS.L.w(HS.L.yesId()).kutchi, no: HS.L.w(HS.L.noId()).kutchi };
@@ -150,7 +149,7 @@
     };
     const haaBtn = mk("yes", yesNo.yes);
     const naBtn = mk("no", yesNo.no);
-    const showJudge = (on) => (judgeBox.style.display = on ? "flex" : "none");
+    const showJudge = (on) => judgeBox.classList.toggle("hidden", !on);
     showJudge(false);
 
     const judge = (id, ok, detail) => {
