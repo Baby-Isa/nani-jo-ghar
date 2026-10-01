@@ -68,7 +68,7 @@ body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y:
 .find-foot { flex: none; display: flex; flex-direction: column; gap: 8px; position: sticky; bottom: 0; background: var(--paper); z-index: 2; }
 #find-done { flex: none; width: 100%; min-height: 48px; font-size: clamp(16px, 1.8vw, 21px); }
 .find-foot .side-rail { flex-wrap: nowrap; gap: 6px; justify-content: space-between; }
-.find-foot .rail-btn { flex: 0 1 46px; min-width: 32px; }
+.find-foot .rail-btn { flex: 0 1 var(--njg-rail); min-width: 32px; } /* R6: the shared dock size (R3a made it 48 px; a 46 px basis left these under the tap floor) */
 #btn-zoom-in, #btn-zoom-out { font-weight: 800; font-size: 26px; line-height: 1; }
 .rail-btn:disabled { opacity: .4; }
 #btn-warmer { padding: 10px; }

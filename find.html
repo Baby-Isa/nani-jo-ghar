@@ -7,6 +7,7 @@
 <title>Find it with Nani</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
 <link rel="stylesheet" href="css/shared/app.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/frame.css?v=20261001T045807Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
 <link rel="stylesheet" href="css/cook.css?v=20261001T045807Z">
@@ -14,9 +15,7 @@
 </head>
 <body class="find">
 
-<div id="rotate">
-  <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to play Find it</p></div>
-</div>
+<!-- R6: an upright phone gets the frame's one wordless turn-your-phone card (js/shared/frame.js, C2); this page's own English card lost its hiding rule with R3a (css/cook.css) and pushed the page down -->
 
 <div id="app">
   <main id="stage">
@@ -94,6 +93,7 @@
 <div id="overlay" class="hidden"><div id="panel"></div></div>
 
 <script src="js/version.js?v=20261001T045807Z"></script>
+<script src="js/shared/frame.js?v=20261001T045807Z"></script>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
 <script src="js/shared/save.js?v=20261001T045807Z"></script>
 <script src="js/shared/app.js?v=20261001T045807Z"></script>
