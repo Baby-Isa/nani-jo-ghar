@@ -201,6 +201,7 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **Code:** The bowl errand (`bowl.html`, the first prototype) is retired; git keeps it. Source: orchestrator chat, 1 Oct. Rule: J7
 - **Process:** Step 3 runs as the lean plan: R0 clean slate, R1 checks, R2 core, R3 shared frame and kit, then R4 (Cook) and R5 (the clinic) as two sessions at once on separate files; everything else moves when that screen is next worked on. Source: orchestrator chat, 1 Oct. Rule: B1
 - **Language:** Mum's 1 Oct session uses the Round 4 sheet. Source: orchestrator chat, 1 Oct
+- **Process:** The clinic audit waits until the clinic is on the new code (R5) and Zafar has played the v2 heal games. R1 (the checks) runs before the code moves, slimmed to the live flows and the layout lint, so every later session is measured against a "before" baseline. Source: orchestrator chat, 1 Oct. Rule: C11
 
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
