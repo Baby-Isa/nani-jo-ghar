@@ -779,9 +779,12 @@
         const owned = Cook.hasUpgrade(u.id);
         const price = Cook.price(u);
         const can = !owned && Cook.coins() >= price;
+        // a button only when it can be pressed (F22: hidden until usable, never greyed); otherwise just its price
         const action = owned
           ? `<span class="shop-owned" aria-label="In Nani's kitchen">${PIC.done}</span>`
-          : `<button class="btn small shop-buy ${can ? "primary" : ""}" data-buy="${u.id}" ${can ? "" : "disabled"} aria-label="Buy ${UI.esc(u.name)} for ${price}"><i class="coin-dot"></i>${price}</button>`;
+          : can
+            ? `<button class="btn small shop-buy primary" data-buy="${u.id}" aria-label="Buy ${UI.esc(u.name)} for ${price}"><i class="coin-dot"></i>${price}</button>`
+            : `<span class="pill coins shop-price" aria-label="${price} coins"><i class="coin-dot"></i>${price}</span>`;
         return `<div class="shop-item pic ${owned ? "owned" : ""}" title="${UI.esc(u.name)}"><div class="shop-img ${u.special ? "special" : ""}"><img src="${imgFor(u)}" alt="${UI.esc(u.name)}"></div>${action}</div>`;
       };
       const nu = Cook.data.no_upgrade;
@@ -1118,7 +1121,7 @@
     btn.innerHTML = DOOR;
     btn.setAttribute("aria-label", "Close the kitchen");
     btn.title = "Close the kitchen";
-    const top = $(".side-rail");
+    const top = $("#stage");
     if (top && !top.contains(btn)) top.appendChild(btn);
   }
   function hideCloseKitchenButton() {

@@ -4,12 +4,12 @@
   "w": 1600,
   "h": 900,
   "views": {
-    "_about": "Measured 1 Oct (R4) at level 4 over every Station-lab station: the x-range of every tappable thing and shelf chip, plus 20 px; the pantry also keeps its tally on the fridge (mechanics.fetch.tally, x 1406). Only x is constrained (null: the height is free). The hob view (tadka, stir) and the stations' shelf bands that reach the edges keep the whole box until they are laid out for 4:3.",
+    "_about": "Measured 1 Oct (R4) at level 4 over every Station-lab station: the x-range of every tappable thing and shelf chip, widened to every shelf chip's text (the chai tray's first chip, paani, starts near x 30); the pantry also keeps its tally on the fridge (mechanics.fetch.tally, x 1406). Only x is constrained (null: the height is free). The hob view (tadka, stir) and the stations' shelf bands that reach the edges keep the whole box until they are laid out for 4:3.",
     "marble": {
       "safe": [
-        70,
+        20,
         null,
-        1414,
+        1430,
         null
       ],
       "from": [
@@ -23,9 +23,9 @@
     },
     "pantry": {
       "safe": [
-        62,
+        40,
         null,
-        1470,
+        1480,
         null
       ],
       "from": [

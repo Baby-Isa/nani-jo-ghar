@@ -964,8 +964,8 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 }
 .gu-btn[aria-expanded="true"] { background: var(--ink); color: #ffd98a; }
 .gu-pop {
-  position: absolute; top: calc(var(--njg-tap) + var(--njg-s4)); right: var(--njg-s3); z-index: 3;
-  width: min(420px, calc(100% - var(--njg-s5))); max-height: calc(100% - var(--njg-tap) - var(--njg-s6)); overflow-y: auto; box-sizing: border-box;
+  /* in the panel's flow, under its "?" (the panel scrolls, never the pop) */
+  position: relative; z-index: 3; margin: 0 calc(var(--njg-tap) + var(--njg-s2)) var(--njg-s3) 0; box-sizing: border-box;
   background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow-lift); padding: var(--njg-s3) var(--njg-s4);
   font: 500 var(--njg-t3)/1.35 var(--njg-font); color: var(--njg-ink);
 }
@@ -974,6 +974,8 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .gu-pop .gu-list { margin: 0; padding-left: var(--njg-s4); }
 .gu-pop .gu-list li { margin: 0 0 var(--njg-s1); }
 .gu-pop .btn { min-height: var(--njg-tap); }
+.gu-pop .seg button { min-height: var(--njg-tap); font-size: var(--njg-t3); }
+.gu-pop .seg-help { font-size: var(--njg-t3); }
 .gu-pop .gu-small a { display: inline-block; min-height: var(--njg-tap); line-height: var(--njg-tap); }
 .pic-row { align-items: center; }
 .btn.pic-btn {
@@ -999,7 +1001,10 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .shop-item .shop-buy { display: inline-flex; align-items: center; gap: var(--njg-s1); min-height: var(--njg-tap); min-width: calc(var(--njg-tap) * 1.5); justify-content: center; }
 .shop-item .shop-owned { display: inline-grid; place-items: center; width: var(--njg-tap); height: var(--njg-tap); color: var(--sage); }
 .shop-item .shop-owned svg { width: 70%; height: 70%; }
-.side-rail .close-kitchen svg { width: 60%; height: 60%; }
+/* the open kitchen's "close the kitchen" door: in the play area's top-left corner (the rail has no room on a phone) */
+#stage > .close-kitchen { position: absolute; z-index: 30; top: var(--njg-s2); left: var(--njg-s2); width: var(--njg-tap); height: var(--njg-tap); color: var(--ink); }
+#stage > .close-kitchen svg { width: 60%; height: 60%; }
+#stage > .close-kitchen:disabled { opacity: 1; }
 /* the "to check" flag (decision 21; test site only): a form guessed for a noun Mum hasn't given a gender */
 .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .book-face { display: grid; place-items: center; padding: var(--njg-s2); }
@@ -1007,3 +1012,4 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #panel .cards:has(.book-face) { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 1.75), 1fr)); }
 .btn.pic-btn:not(.primary) { background: var(--njg-card); color: var(--njg-ink); border: var(--njg-line-2) solid var(--njg-gold); box-shadow: var(--njg-shadow); }
 .btn.pic-btn.primary { color: #fff; }
+.shop-item .shop-price { min-height: var(--njg-tap); box-sizing: border-box; display: inline-flex; align-items: center; gap: var(--njg-s1); opacity: .8; }
