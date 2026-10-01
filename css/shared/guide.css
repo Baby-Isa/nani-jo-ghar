@@ -16,8 +16,10 @@
   --ng-band-w: var(--njg-s2);
   position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-areas: "face . tools" "say say say";
+  /* R5 (the 800x360 first launch, R3a's gate): the tools take the rest of the top line and wrap under each other
+     when the box is too narrow for the face and both, so the mute never runs off the screen */
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "face tools" "say say";
   align-items: center;
   column-gap: var(--njg-s2);
   row-gap: var(--njg-s1);
@@ -67,7 +69,7 @@
 .njg-guide.new .ng-say { animation: ngNew .3s ease-out; }
 @keyframes ngNew { from { opacity: .2; transform: translateY(var(--njg-s1)); } }
 /* the tools: the bulb and the mute, side by side on the top line, each a full tap */
-.njg-guide .ng-tools { grid-area: tools; flex: none; display: flex; flex-direction: row; align-items: center; gap: var(--njg-s2); }
+.njg-guide .ng-tools { grid-area: tools; flex: none; min-width: 0; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: var(--njg-s2); }
 .njg-guide .ng-tools button {
   position: relative; overflow: hidden; width: var(--njg-tool); height: var(--njg-tool); border-radius: 50%; border: var(--njg-line) solid var(--ng-edge);
   padding: calc(var(--njg-tool) * 0.22);
