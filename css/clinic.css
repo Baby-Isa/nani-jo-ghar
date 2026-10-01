@@ -366,7 +366,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-help-pop .ob-skip-row { color: #2a2522; }
 
 /* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
-.cl-nani .cl-hint-n { font-size: var(--njg-t4); min-width: 0; }
+/* the hints so far: a small count on the bulb's corner (inside the guide box, never past its edge) */
+.cl-nani .ng-tools { position: relative; }
+.cl-nani .cl-hint-n { position: absolute; left: calc(var(--njg-tool) - var(--njg-s3)); top: calc(var(--njg-s1) * -1); font-size: var(--njg-t4); line-height: 1; min-width: 0; pointer-events: none; }
 .cl-card.oc-card { padding: 10px 12px; border-radius: 12px; }
 .cl-card.oc-card .cl-card-head { margin-bottom: 6px; }
 .cl-card.oc-card .cl-card-head:has(.cl-card-face:empty) .cl-card-title:empty { display: none; }
