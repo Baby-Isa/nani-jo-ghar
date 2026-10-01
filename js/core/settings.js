@@ -16,7 +16,12 @@
  *   const S = createSettings({ save })
  *   S.get(name)  S.all()  S.set(name, value)  S.reset(name)  S.modelSpeaker() -> "zafar" | "mum"
  *   S.device(name)  S.setDevice(name, value)
+ *   langPath(lang, file) -> "data/lang/kutchi/lexicon.json"   where each language's data and voices will live
+ *                                                            (planned: step 4 fills data/lang/kutchi/; nothing has moved yet)
  */
+
+/** The planned home of a language's data (decision 22 d): data/lang/<lang>/<file>. */
+export const langPath = (lang, file) => `data/lang/${String(lang || "kutchi").replace(/[^a-z0-9-]/gi, "")}/${file}`;
 
 export const CHILD_DEFAULTS = Object.freeze({ modelVoice: null, level: null, readAlong: true, sound: true });
 export const DEVICE_DEFAULTS = Object.freeze({ scale: "auto" });

@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createSave } from "../../js/core/save.js";
 import { createUnlocks, Entitlements } from "../../js/core/unlocks.js";
-import { createSettings, CHILD_DEFAULTS, DEVICE_DEFAULTS } from "../../js/core/settings.js";
+import { createSettings, CHILD_DEFAULTS, DEVICE_DEFAULTS, langPath } from "../../js/core/settings.js";
 import { makeContext, fromQuery, toQuery } from "../../js/core/context.js";
 import { checkContent } from "../../js/core/content.js";
 
@@ -98,6 +98,7 @@ test("settings: defaults per child; the model voice follows the character; set, 
   assert.deepEqual(Object.keys(CHILD_DEFAULTS), ["modelVoice", "level", "readAlong", "sound"]);
   // per device: the language and room for a per-screen scale (decision 24)
   assert.equal(S.device("lang"), "kutchi");
+  assert.equal(langPath(S.device("lang"), "lexicon.json"), "data/lang/kutchi/lexicon.json", "the planned data path per language");
   assert.equal(S.device("scale"), DEVICE_DEFAULTS.scale);
   S.setDevice("scale", 1.25);
   assert.equal(S.device("scale"), 1.25);
