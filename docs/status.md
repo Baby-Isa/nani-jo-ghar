@@ -8,21 +8,18 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (1 Oct 2026, 07:00 UK):**
-- **Building is paused** while the project is reorganised (decision log, 30 Sept).
-- **Step 1 is done** (merged to `main`, 1 Oct).
-- **Steps 2a and 2b are drafted, reviewed by Fable and fixed, awaiting Zafar's approval** (on branch `ccr-fcd9dddd-wnywzc`, not on `main`):
-  - 2a: `docs/architecture/target-model.md`, `docs/architecture/gap-analysis.md`, report `build/reports/step-2a.md` (12 decisions; step 3 as 12 sessions, about 2½ weeks; the published site is 2.8 GB against GitHub's 1 GB limit).
-  - 2b: `docs/language/engine-design.md`, `grammar-kb.md`, `fill-the-engine.md`, report `build/reports/step-2b.md` (7 decisions; a GF-style JavaScript engine rather than real GF).
-- **Round 5 for Mum** is written (the 2b questionnaire): `docs/language/mum-questions/Questions for Mum (Round 5).md` and `.docx`. Mum records at 10:00 UK on 1 Oct.
-- **The doctor's visit around 9 Oct** needs only his voice recorded (Round 4 Section G). The clinic stays untouched until after it (2a decision 6).
+**Where things stand (1 Oct 2026, 08:00 UK):**
+- **Steps 1, 2a and 2b are done and approved** (2a/2b answers in `docs/decisions.md`, 2026-10-01). Work is on branch `ccr-fcd9dddd-wnywzc`, not yet on `main`.
+- **Step 3 is running as the lean plan** (`docs/architecture/gap-analysis.md` § 4, the "Revised 1 Oct" box): R0 clean slate first.
+- **The clinic is built now** (decision 19), ideally finished before the doctor's ~9 Oct visit. Zafar plays the v2 heal games first; the clinic audit comes after it moves onto the new code (R5).
+- **Mum's 1 Oct session uses Round 4.** Round 5 (`docs/language/mum-questions/Questions for Mum (Round 5).md`) is ready for a later session.
 
 **Next steps, in order:**
-1. **Zafar answers the 2a and 2b decisions** ("yes to all except …"); write them into `docs/decisions.md` and the rulebook; merge the branch to `main`.
-2. **Mum's session** (Round 5), then **process her recording:** transcribe, cut the clips, update `grammar-notes.md`, `lexicon.md` and `grammar-kb.md`.
-3. **Step 3:** refactor into the target model, one session at a time (`docs/architecture/gap-analysis.md`), starting with R0 (the site size) and the checks.
+1. **Step 3:** R0 → R1 → R2 → R3 → R4 (Cook) and R5 (the clinic) side by side.
+2. **Process Mum's Round 4 recording:** transcribe, cut the clips, update `grammar-notes.md`, `lexicon.md` and `grammar-kb.md`.
+3. **Zafar's clinic play feedback** → the clinic audit on the new code → his approval of what "finished" means → finishing sessions before ~9 Oct.
 4. **Step 4:** build and fill the language engine (four sessions, `docs/language/engine-design.md` § 14).
-5. **Then:** finish Cook fully, then the clinic games.
+5. **Then:** finish Cook fully.
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` (this "Next chat" section first) and `docs/process/rules.md`. Give me a short plan update, then propose the next step's plan. Don't start anything until I say go.
@@ -34,9 +31,9 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 | Step | What | State |
 |---|---|---|
 | 1 | The brain: rulebook, `CLAUDE.md`, QA checklist, regression list, decisions log, docs reorganised | **Done** (merged 1 Oct) |
-| 2a | Code target operating model: engine core, one scoring model (the three badges), shared UI kit, content as data, modes as plug-ins, a sandbox that plays the real flows, layout lint; then a gap analysis with a sequenced refactor plan and estimates | **Drafted and reviewed** (1 Oct); awaiting Zafar's decisions |
+| 2a | Code target operating model: engine core, one scoring model (the three badges), shared UI kit, content as data, modes as plug-ins, a sandbox that plays the real flows, layout lint; then a gap analysis with a sequenced refactor plan and estimates | **Done** (approved 1 Oct) |
 | 2b | Language engine design: Grammatical Framework style, the Sindhi resource grammar as template, Mum's answers as the only evidence; the grammar knowledge base; the fill-the-engine rulebook and questionnaire | **Drafted and reviewed** (1 Oct); awaiting Zafar's decisions. Round 5 for Mum written |
-| 3 | Refactor to the target model, one session at a time, checked by flow tests and layout lint. Parked modes: decide at 2a whether they move now or when their turn comes | After 2 |
+| 3 | Refactor to the target model: the lean plan (R0–R5), checked by flow tests and layout lint; parked modes move when their turn comes | **Running** (1 Oct) |
 | 4 | Build the language engine, fill it with everything known, use it everywhere | After 3 |
 | Docs | The shared design docs are rewritten clean after the target model is approved; each mode's doc is rewritten when that mode is refactored (its "Stale points" box then goes) | With 2a / 3 |
 | Then | Finish Cook fully (open regression rows, SEK-09 and the rest), then the clinic games | After 4 |

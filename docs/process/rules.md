@@ -319,6 +319,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 ### Authority
 - **Never invent Kutchi.** Mum is the authority, Masi the dialect tie-break, Zafar confirms spellings; handout vocabulary is fine but their text is never shipped. (G1, G21)
 - **Missing Kutchi gets a grey-italic English placeholder flagged "to record",** listed for Mum; drafts carry `draft: true`; never English inside item pills. (G2, G3)
+- **An unconfirmed noun gender takes the Kutchi he-form** (Mum's rule of thumb), tops Mum's list, shows the grown-ups' "to check" flag on the test site, is never recorded as a whole phrase and never ships in the store app. (G2, decision 21)
 
 ### Spelling and settled words
 - **Romanised only, matched generously:** W not V at a word's start, no English articles, long vowels doubled where heard long (*waari*, *daar*, *maani*). (G4)
@@ -408,3 +409,4 @@ Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Confli
 18. **The code target model is approved** (`docs/architecture/target-model.md`); star code and the clinic's phase-1 prototype go; computer voices stay on the test site, out of the store app. (Zafar, 1 Oct)
 19. **Keep building the clinic, ideally to completion before the doctor's ~9 Oct visit,** so he can play his section. Supersedes "no clinic build before the visit". (Zafar, 1 Oct)
 20. **Screenshots and report images are not committed** (site under 1 GB); **the clinic's coins join the one purse now**; no wages; browser tests in Node; the layout lint only gets stricter. (Zafar, 1 Oct)
+21. **Unconfirmed gender → the he-form, flagged and never shipped;** the bowl errand retired; step 3 as the lean plan with R4 and R5 side by side; Mum's 1 Oct session uses Round 4. (Zafar, 1 Oct)

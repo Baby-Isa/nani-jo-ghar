@@ -141,6 +141,19 @@ The orchestrator lists these in each brief (decision 16). "Auto" means the row g
 
 ## 4. The step 3 plan: sessions, one at a time
 
+> **Revised 1 Oct (Zafar's answers, `docs/decisions.md` 2026-10-01): the lean plan.** Step 3 fixes only what causes repeat bugs and what the engine and the clinic need; everything else (positions into scene data, file splits, first launch and the house, parked modes, the docs rewrite) moves when that screen is next worked on.
+>
+> | # | Session | From the table below | Model | Size |
+> |---|---|---|---|---|
+> | R0 | Clean slate: site under 1 GB, the clinic's phase 1 and the bowl errand deleted | R0 | mid-tier | ~2 h, 1–2M |
+> | R1 | The checks: the sandbox plays the live flows; the layout lint baseline at five sizes | R1a + the smallest useful part of R1b | mid-tier | ~4 h, 4–5M |
+> | R2 | The core: score, one purse (the clinic's coins merged **now**), word progress, voice, the language seam | R2a + R2b | top | ~5 h, 5–7M |
+> | R3 | Shared frame and kit: no clipped text, 14 px floor, 48 px taps, one bulb, buttons and card | R3a + the bulb/buttons/card part of R3b | top | ~6 h, 6–8M |
+> | R4 ∥ R5 | **Two at once, disjoint files:** Cook onto the core (stars and the wage out); the clinic onto the core and kit | R4a (+ R4b's kit swap); R5 | top | ~6 h each, 12–16M together |
+>
+> About 6 sessions and 25–35M tokens, finishing around 4–5 Oct. **The clinic is no longer held back for the doctor's visit** (decision 19): it moves in R5, then gets its finishing sessions before ~9 Oct, after Zafar has played the v2 heal games. The gates below still apply, with G2 no longer tied to the visit. The detailed table is kept as the menu the lean sessions draw from.
+
+
 All sessions run on one integration branch (`refactor/step3`, B18), one at a time, each ending with its report and the checks in target-model § 9.5. The branch merges to `main` at three gates, each after Zafar plays it:
 
 - **G1** after R0–R1b: deletions and tooling only, no change to any live screen. It deletes the clinic's **phase-1** prototype (`clinic-phase1.html`), which is not the clinic the doctor will see (`clinic.html` is untouched).
