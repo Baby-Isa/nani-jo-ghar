@@ -130,8 +130,8 @@
       "big-face": 44,
       "row-h": 28,
       "part-h": 26,
-      "big-row-h": 32,
-      "big-part-h": 30,
+      "big-row-h": 30,
+      "big-part-h": 28,
       "side-pad": 4,
       "side-gap": 4,
       "card-pad": 4,
@@ -188,26 +188,6 @@
         "w": 1600,
         "h": 900,
         "safe": [
-          80,
-          0,
-          1520,
-          900
-        ],
-        "fill": "fit",
-        "anchorY": 1,
-        "_about": "Cook's stations: every tap sits inside x 80-1520 (measured 1 Oct: chai tray 90-1316, maani 352-1394, tadka 114-1486, assemble 420-1180), so a tablet may crop the sides to that and grow the scene; the station layouts themselves are 16:9 until R4 lays them out for 4:3"
-      },
-      "clinic": {
-        "w": 1536,
-        "h": 1024,
-        "fill": "cover",
-        "anchorY": 0.6,
-        "_about": "each room's own `need` (data/clinic/scenes-v2.json) is its safe area across; its `ay` its anchorY"
-      },
-      "cook:pantry": {
-        "w": 1600,
-        "h": 900,
-        "safe": [
           0,
           0,
           1600,
@@ -215,7 +195,14 @@
         ],
         "fill": "fit",
         "anchorY": 1,
-        "_about": "the pantry's shelves reach both edges (taps 73-1540): never cropped"
+        "_about": "Cook's stations: the shelf band's chips reach both edges of the design box (the chai tray's 'paani' chip starts near x 30), so the safe area is the whole box and a tablet shows the plain fit. To grow Cook's play items on a 4:3 tablet, R4 lays the stations out for it (a shelf that fits a narrower safe area, or two rows) and narrows this safe area; the stage then grows the scene up to stage.itemScale"
+      },
+      "clinic": {
+        "w": 1536,
+        "h": 1024,
+        "fill": "cover",
+        "anchorY": 0.6,
+        "_about": "each room's own `need` (data/clinic/scenes-v2.json) is its safe area across; its `ay` its anchorY"
       }
     }
   },

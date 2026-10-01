@@ -258,7 +258,7 @@ body.w6 #intro .r6 .lt .word { color: var(--sb-word); }
 body.w6 #intro .m-sum .sum-line { font-size: var(--sb-s); }
 body.w6 #intro .ic-go { display: none; }
 @media (max-height: 430px) {
-  body.w6 #intro .ic-card { --sb-pill-h: 30px; --sb-p: 16px; --sb-h: 19px; --sb-s: 14px; --sb-face: 42px; padding: 10px; width: min(420px, 94%); }
+  body.w6 #intro .ic-card { --sb-pill-h: 28px; --sb-p: 16px; --sb-h: 19px; --sb-s: 14.5px; --sb-face: 42px; padding: 8px; width: min(420px, 94%); }
   body.w6 #intro .ic-order, body.w6 #intro .ladder, body.w6 #intro .lsec { gap: 6px; }
   body.w6 #intro .lrows, body.w6 #intro .lrows.lseq, body.w6 #intro .icards { gap: 5px; }
   body.w6 #intro .ic-head { margin-bottom: 8px; }
