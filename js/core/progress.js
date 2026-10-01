@@ -34,11 +34,11 @@ export const DEFAULT_DATA = {
   produce: { advanceAfter: { 1: 1, 2: 2, 3: 3, 4: 3 }, dropAfterMisses: 2, floor: 1, dropStreak: {} },
   cookImport: { base: { 1: 0, 2: 0, 3: 4, 4: 9 } },
   support: {
-    1: { label: "text", card: "text", hintAfterMs: 4000, autoPlay: true, picture: true },
-    2: { label: "speaker", card: "text", hintAfterMs: 5000, autoPlay: true, picture: true },
-    3: { label: "speaker", card: "dots", hintAfterMs: 8000, autoPlay: false, picture: true },
-    4: { label: "speaker", card: "dots", hintAfterMs: 12000, autoPlay: false, picture: true },
-    5: { label: "speaker", card: "dots", hintAfterMs: 12000, autoPlay: false, picture: false },
+    1: { label: "text", card: "text", hintAfterMs: 7000, autoPlay: true, picture: true },
+    2: { label: "speaker", card: "text", hintAfterMs: 8000, autoPlay: true, picture: true },
+    3: { label: "speaker", card: "dots", hintAfterMs: 11000, autoPlay: false, picture: true },
+    4: { label: "speaker", card: "dots", hintAfterMs: 15000, autoPlay: false, picture: true },
+    5: { label: "speaker", card: "dots", hintAfterMs: 15000, autoPlay: false, picture: false },
   },
 };
 
