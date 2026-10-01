@@ -29,8 +29,10 @@
     el.style.overflowWrap = "";
     const size = F.fit1(el, two);
     if (!size || !el._fitOver) return size;
-    // at the floor and still too long: wrap (inline styles, so the watcher's class observer doesn't loop)
+    // at the floor and still too long for one line: wrap, at the largest size that fits two lines (the line
+    // stays as big as it can), and at the floor more lines (inline styles, so the watcher's class observer doesn't loop)
     el.style.whiteSpace = "normal";
+    if (!two) F.fit1(el, true);
     el._fitOver = F.wide(el, true);
     // a single word wider than the box even at the floor: let it break rather than be cut
     if (el._fitOver) el.style.overflowWrap = "anywhere";

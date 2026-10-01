@@ -48,8 +48,8 @@
   --njg-item-scale: 1;
   /* one scaled pixel: for art-bound sizes that have no token of their own (a conversation bubble's tail) */
   --njg-u: calc(1px * var(--njg-scale));
-  --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14px;
-  --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14px;
+  --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14.5px;
+  --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14.5px;
   --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;
   --njg-s1: 4px; --njg-s2: 8px; --njg-s3: 12px; --njg-s4: 16px; --njg-s5: 24px; --njg-s6: 32px; --njg-s7: 40px;
   --njg-radius: 12px; --njg-line: 1px; --njg-line-2: 2px;
@@ -64,8 +64,8 @@
 /* phones (short side under 500 px) */
 @media (max-height: 499.98px), (max-width: 499.98px) {
   :root {
-    --njg-side-h: 16px; --njg-side-p: 14px; --njg-side-s: 14px;
-    --njg-big-h: 20px; --njg-big-p: 16px; --njg-big-s: 14px;
+    --njg-side-h: 16px; --njg-side-p: 14.5px; --njg-side-s: 14.5px;
+    --njg-big-h: 20px; --njg-big-p: 16px; --njg-big-s: 14.5px;
     --njg-face: 36px; --njg-guide-face: 40px; --njg-big-face: 44px;
     --njg-row-h: 28px; --njg-part-h: 26px; --njg-big-row-h: 32px; --njg-big-part-h: 30px;
     --njg-side-pad: 4px; --njg-side-gap: 4px; --njg-card-pad: 4px; --njg-card-gap: 4px; --njg-indent: 12px;
@@ -78,8 +78,8 @@
 @media (min-height: 600px) and (min-width: 600px) and (max-aspect-ratio: 3/2) {
   :root {
     --njg-scale: 1.15; --njg-item-scale: 1.25;
-    --njg-t1: 25.3px; --njg-t2: 23px; --njg-t3: 19.55px; --njg-t4: 16.1px;
-    --njg-side-h: 21.85px; --njg-side-p: 19.55px; --njg-side-s: 17.25px; --njg-flag-t: 16.1px;
+    --njg-t1: 25.3px; --njg-t2: 23px; --njg-t3: 19.55px; --njg-t4: 16.67px;
+    --njg-side-h: 21.85px; --njg-side-p: 19.55px; --njg-side-s: 17.25px; --njg-flag-t: 16.67px;
     --njg-big-h: 34.5px; --njg-big-p: 25.3px; --njg-big-s: 23px;
     --njg-s1: 4.6px; --njg-s2: 9.2px; --njg-s3: 13.8px; --njg-s4: 18.4px; --njg-s5: 27.6px; --njg-s6: 36.8px; --njg-s7: 46px;
     --njg-radius: 13.8px;

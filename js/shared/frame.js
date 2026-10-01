@@ -177,6 +177,7 @@
     if (el) return el;
     el = doc.createElement("div");
     el.id = "njg-rotate";
+    el.className = "njg-rotate";
     el.setAttribute("role", "img");
     el.setAttribute("aria-label", "Turn your phone sideways");
     el.innerHTML = `<div class="njg-rotate-card"><svg viewBox="0 0 96 96" aria-hidden="true"><g class="njg-rotate-phone"><rect x="30" y="14" width="36" height="68" rx="7"/><circle cx="48" cy="73" r="3"/></g><path class="njg-rotate-arrow" d="M76 34a34 34 0 0 1 2 30" /><path class="njg-rotate-head" d="M72 60l6 6 5-8"/></svg></div>`;

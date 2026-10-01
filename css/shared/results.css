@@ -289,7 +289,7 @@
 .rs-word:active { transform: scale(0.97); }
 .rs-word:focus-visible { outline: calc(var(--njg-line-2) * 1.5) solid var(--rs-ink); outline-offset: var(--njg-line-2); }
 .rs-word.on { background: var(--njg-cream); box-shadow: 0 0 0 calc(var(--njg-line-2) * 1.5) rgba(255, 217, 138, 0.9); }
-.rs-word b { overflow-wrap: normal; word-break: keep-all; hyphens: none; white-space: nowrap; }
+.rs-word b { overflow-wrap: normal; word-break: keep-all; hyphens: none; white-space: normal; text-wrap: balance; max-width: 100%; } /* SH-01 (R3a): a long word wraps between its words, never cut */
 /* the word big and centred; a small speaker beside its English underneath.
    Design system 10: the speaker is neutral (a charcoal icon on a light cream circle) for right and wrong
    words alike; the colour stays only in the card's outline (gold right, red wrong). */

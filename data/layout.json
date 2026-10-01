@@ -30,7 +30,7 @@
     }
   },
   "floors": {
-    "_about": "Never below these, whatever the scale (F2, F7: text 14 px, taps 48 px). Tokens listed under `textTokens` take the text floor, under `tapTokens` the tap floor; `unscaled` ones (hairlines) never scale. hand-w and hand-h are the onboarding's ghost hand, whose fingertip js/shared/onboard.js places in that box.",
+    "_about": "Never below these, whatever the scale (F2, F7: text 14 px, taps 48 px). Tokens listed under `textTokens` take the text floor, under `tapTokens` the tap floor; `unscaled` ones (hairlines) never scale. hand-w and hand-h are the onboarding's ghost hand, whose fingertip js/shared/onboard.js places in that box. Text that sits at the floor is set at 14.5 px (t4, flag-t, the phone's small sizes): half a pixel of room, so sub-pixel rounding never renders it under 14.",
     "text": 14,
     "tap": 48,
     "textTokens": [
@@ -71,11 +71,11 @@
       "t1": 22,
       "t2": 20,
       "t3": 17,
-      "t4": 14,
+      "t4": 14.5,
       "side-h": 19,
       "side-p": 17,
       "side-s": 15,
-      "flag-t": 14,
+      "flag-t": 14.5,
       "big-h": 30,
       "big-p": 22,
       "big-s": 20,
@@ -120,11 +120,11 @@
     },
     "phone": {
       "side-h": 16,
-      "side-p": 14,
-      "side-s": 14,
+      "side-p": 14.5,
+      "side-s": 14.5,
       "big-h": 20,
       "big-p": 16,
-      "big-s": 14,
+      "big-s": 14.5,
       "face": 36,
       "guide-face": 40,
       "big-face": 44,
@@ -188,13 +188,14 @@
         "w": 1600,
         "h": 900,
         "safe": [
+          80,
           0,
-          0,
-          1600,
+          1520,
           900
         ],
         "fill": "fit",
-        "anchorY": 1
+        "anchorY": 1,
+        "_about": "Cook's stations: every tap sits inside x 80-1520 (measured 1 Oct: chai tray 90-1316, maani 352-1394, tadka 114-1486, assemble 420-1180), so a tablet may crop the sides to that and grow the scene; the station layouts themselves are 16:9 until R4 lays them out for 4:3"
       },
       "clinic": {
         "w": 1536,
@@ -202,6 +203,19 @@
         "fill": "cover",
         "anchorY": 0.6,
         "_about": "each room's own `need` (data/clinic/scenes-v2.json) is its safe area across; its `ay` its anchorY"
+      },
+      "cook:pantry": {
+        "w": 1600,
+        "h": 900,
+        "safe": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "fill": "fit",
+        "anchorY": 1,
+        "_about": "the pantry's shelves reach both edges (taps 73-1540): never cropped"
       }
     }
   },
