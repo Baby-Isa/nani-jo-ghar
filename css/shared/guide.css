@@ -91,3 +91,9 @@
 .njg-guide .ng-mute.flash { animation: ngFlash .35s ease-out; }
 @keyframes ngFlash { 40% { transform: scale(.88); } }
 @media (prefers-reduced-motion: reduce) { .njg-guide.talk .ng-face img, .njg-guide.new .ng-say { animation: none; } }
+/* R5: on a phone the top line is tight (the face and two tools in ~190 px): closer gaps first, so the tools only wrap
+   under each other when even that isn't enough */
+@media (max-height: 420px) {
+  .njg-guide { column-gap: var(--njg-s1); }
+  .njg-guide .ng-tools { gap: var(--njg-s1); }
+}
