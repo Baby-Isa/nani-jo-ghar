@@ -241,9 +241,9 @@
     // each new move and the child copies it, and nothing is scored (its rows are taught); counts are judged from the
     // next round. Once per child per game (the save's "ui" namespace, through UIStore).
     const US = global.UIStore;
-    const taught = level === 1 && opts.onboard !== false && !!US && !US.get("clinic-taught", def.id);
+    const taught = !!def.cues && level === 1 && opts.onboard !== false && !!US && !US.get("clinic-taught", def.id);
     // D1, D2: the zoom from the patient on the bed into the close-up (and back out at the end)
-    const staging = opts.staging === false ? null : HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
+    const staging = opts.staging === false || !def.cues ? null : HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
 
     const log = [];
     const timers = new Set();
@@ -288,12 +288,15 @@
     card.fold = {};
     // D9 (1 Oct, CLN-44): the card's headline is the doctor's goal (a line to record); the card folds to it with
     // the gold check when every step is done. The goal moved here from the doctor's box (one place for a line).
+    // the 1 Oct play rules are the nine v2 games' (they declare their cues); the parked ones (tummy, hic, hair) run as
+    // they were: the goal in the doctor's box, the whole card at once, no zoom, the ✓ always there
+    const v2 = !!def.cues;
     const goal = def.why && def.why.goal ? { kutchi: null, english: def.why.goal, placeholder: true } : "";
-    card.setTitle(goal, face);
-    if (screen.setGuide) screen.setGuide(null);
+    card.setTitle(v2 ? goal : "", face);
+    if (screen.setGuide) screen.setGuide(v2 ? null : goal ? { kutchi: `[${goal.english}]`, english: goal.english } : null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
-    card.setProgressive(true, (ids) => {
+    card.setProgressive(v2, (ids) => {
       if (!finished) card.speak(ids);
     });
     card.setRows([]);
@@ -304,8 +307,9 @@
      * D7 (SH-40): the ✓ is hidden until it can do something: it shows once the open step has a count going (or the
      *    game says so: ctx.ready), and hides again when the next step opens.
      */
-    const done = { btn: null, on: false };
+    const done = { btn: null, on: !v2 };
     const showDone = (on) => {
+      if (!v2) return;
       done.on = !!on;
       if (done.btn) done.btn.classList.toggle("hidden", !done.on);
     };
@@ -381,7 +385,7 @@
       },
       /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */
       ready(on) {
-        showDone(on);
+        if (v2) showDone(on);
       },
       log(entry) {
         const e = Object.assign({ t: Date.now() - t0, game: def.id }, entry);
