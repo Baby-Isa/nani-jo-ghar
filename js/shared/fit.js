@@ -35,7 +35,7 @@
     if (!two) F.fit1(el, true);
     el._fitOver = F.wide(el, true);
     // a single word wider than the box even at the floor: let it break rather than be cut
-    if (el._fitOver) el.style.overflowWrap = "anywhere";
+    if (el._fitOver) el.style.overflowWrap = "break-word";
     return size;
   };
 

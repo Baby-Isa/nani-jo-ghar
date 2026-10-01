@@ -262,7 +262,7 @@
   Results.wordCols = (n) => (n ? Math.min(3, n) : 0);
   function wordsHtml(words) {
     const card = (w, i) => `<button class="rs-word ${w.right === false ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
-          ${w.kutchi ? `<b>${esc(w.kutchi)}</b>` : `<b class="rs-ph">${esc(w.english || "")}</b><small class="rs-rec">to record</small>`}<span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${esc(w.english)}</span></button>`;
+          ${w.kutchi ? `<b>${esc(w.kutchi)}</b>` : `<b class="rs-ph">${esc(w.english || "")}</b><small class="rs-rec">to record</small>`}<span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${w.kutchi ? esc(w.english) : ""}</span></button>`;
     const bad = [];
     const ok = [];
     words.forEach((w, i) => (w.right === false ? bad : ok).push(card(w, i)));

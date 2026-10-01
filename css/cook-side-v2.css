@@ -50,7 +50,7 @@ body.w6 :is(#side, .sb2) {
   padding: 10px;
   gap: 10px;
 }
-@media (max-height: 430px) { body.w6 :is(#side, .sb2) { padding: 6px; gap: 6px; } }
+@media (max-height: 430px) { body.w6 :is(#side, .sb2) { padding: var(--njg-side-pad); gap: var(--njg-side-gap); } }
 
 /* ---------- one line, shrunk to fit ---------- */
 :is(#side, .sb2) .fit:not(.fit2), #intro .fit:not(.fit2), .njg-guide .fit:not(.fit2) { display: block; white-space: nowrap; overflow: visible; min-width: 0; }

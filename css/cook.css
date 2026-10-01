@@ -287,7 +287,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* short landscape phones: tighter sidebar */
 @media (max-height: 430px) {
-  #side { padding: 6px; gap: 6px; }
+  #side { padding: var(--njg-side-pad); gap: var(--njg-side-gap); }
   #nani-card { padding: 6px; gap: 6px; }
   .card { padding: 6px 8px; }
   #btn-help { font-size: 22px; }
