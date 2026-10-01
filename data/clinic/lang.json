@@ -352,6 +352,66 @@
    "kutchi": "waaro",
    "english": "with",
    "src": "the drinks game's drink name hardar waaro dudh (heal/games/taste.js); Cook's frame for mixed-in is {x} waari chai (lines.waari); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "tooth-up": {
+   "kutchi": null,
+   "english": "up",
+   "src": "English placeholder (to record): the tooth game's brush moves (heal/games/tooth.js); was a bare English id"
+  },
+  "tooth-down": {
+   "kutchi": null,
+   "english": "down",
+   "src": "English placeholder (to record): the tooth game's brush moves"
+  },
+  "tooth-left": {
+   "kutchi": null,
+   "english": "left",
+   "src": "English placeholder (to record): the tooth game's brush moves at levels 1-2 (level 3 says the patient's own side: cl-dabo / cl-jamno)"
+  },
+  "tooth-right": {
+   "kutchi": null,
+   "english": "right",
+   "src": "English placeholder (to record): the tooth game's brush moves at levels 1-2"
+  },
+  "tooth-brush": {
+   "kutchi": null,
+   "english": "brush",
+   "src": "English placeholder (to record): the tooth game's word review"
+  },
+  "tooth-drill": {
+   "kutchi": null,
+   "english": "drill the bad bits",
+   "src": "English placeholder (to record): the tooth game's drill row (a line to record)"
+  },
+  "tooth-fill": {
+   "kutchi": null,
+   "english": "fill it to the green",
+   "src": "English placeholder (to record): the tooth game's fill row (a line to record)"
+  },
+  "taste-pop": {
+   "kutchi": null,
+   "english": "pop",
+   "src": "English placeholder (to record): the sore-spots game's row: pop the spots of the colour said (decision 27, D15e)"
+  },
+  "taste-spots": {
+   "kutchi": null,
+   "english": "spots",
+   "src": "English placeholder (to record): the sore-spots game: the sore spots on the tongue"
+  },
+  "taste-ointment": {
+   "kutchi": null,
+   "english": "soothing ointment",
+   "src": "English placeholder (to record): the sore-spots game: the cotton bud is dipped in it; Zafar called it malam (decision 27): to confirm with Mum"
+  },
+  "taste-give": {
+   "kutchi": null,
+   "english": "give it",
+   "src": "English placeholder (to record): the sore-spots game's drink row: give the drink (a line to record)"
+  },
+  "eye-test": {
+   "kutchi": null,
+   "english": "the eye test",
+   "src": "English placeholder (to record): the eye game's chart row (a line to record)"
   }
  }
 }
