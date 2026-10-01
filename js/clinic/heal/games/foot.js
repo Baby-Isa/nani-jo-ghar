@@ -249,7 +249,7 @@
         S.count(st.jugs);
         ctx.tally("jug", st.jugs);
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (P.level === 1 && st.jugs >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
+        if (P.level === 1 && st.jugs >= c.jugs) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
         water.setAttribute("fill", TCOL[t]);
         water.setAttribute("opacity", Math.min(0.55, 0.15 + st.jugs * 0.1));
         S.face(t === "hot" ? "hot" : t === "cold" ? "cold" : "happy", 600);

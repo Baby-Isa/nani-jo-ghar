@@ -481,7 +481,6 @@
       S.uncue();
       clearTimeout(faceT);
       root.remove();
-      css.remove();
     };
     return S;
   };
