@@ -102,6 +102,97 @@
   };
 
   /**
+   * D1, D2 (1 Oct, decision 27; CLN-43): the staging. Every heal game opens on the wide shot (the exam room, the
+   * patient on the bed's edge: the diagnosis's own scene), zooms in on the sore part, and swaps to the close-up at
+   * the peak, the room blurred behind; when the game ends it zooms back out and the patient says the line
+   * "thank you, I feel better" (to record). Stand-in art for now (the sitting figure, the drawn close-ups): the art
+   * batch only swaps pictures. The wide shot's angle is the game's data (camera.wide: "front" | "side"); there is
+   * no side-on sitting pose yet, so "side" uses the front pose (art list A1).
+   *   const z = HOST.stage(stage, fig, {part, side, camera, level}); await z.in(); ...; await z.out();
+   * Web Animations, so tests can pause them; reduced motion: a plain cross-fade.
+   */
+  HOST.stage = function (stage, fig, o = {}) {
+    const doc = stage.ownerDocument;
+    const V = Clinic.Scenes;
+    const room = V && V.rooms && V.rooms.exam;
+    const cfg = (V && V.exam) || null;
+    const reduced = !!(global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const ms = Kit.fast ? 120 : o.ms || 900;
+    const none = { wide: null, in: () => Promise.resolve(), out: () => Promise.resolve(), destroy() {} };
+    if (!room || !cfg || !fig || !Clinic.Stages || !Clinic.Stages.fitScene) return none;
+    const wide = h("div", "cl-zoom", stage);
+    wide.dataset.camera = (o.camera && o.camera.wide) || "front";
+    const cap = h("div", "cl-scene-cap", wide);
+    const box = h("div", "cl-scene cl-zoom-box", wide);
+    const url = `url("${Kit.url(room.src)}")`;
+    box.style.backgroundImage = url;
+    cap.style.backgroundImage = url;
+    const layer = h("div", "cl-patient-layer v2", box);
+    Clinic.Stages.place(layer, { x: cfg.fig.x, y: cfg.fig.bottom, h: cfg.fig.h, w: (cfg.fig.h * (620 / 900)) / 1.5, z: 3 });
+    const home = fig.el.parentNode;
+    layer.appendChild(fig.el);
+    fig.pose("sit");
+    const seat = () => {
+      if (cfg.seat == null) return;
+      layer.style.top = `${cfg.fig.bottom * 100}%`;
+      const q = fig.hotspot("knee", "left", box);
+      const H = box.clientHeight || 1;
+      if (q && isFinite(q.y)) layer.style.top = `${(cfg.fig.bottom + (cfg.seat * H - q.y) / H) * 100}%`;
+    };
+    Clinic.Stages.fitScene(wide, box, cap, room, V.aspect || 1.5);
+    seat();
+    box.addEventListener("scenefit", seat);
+    const part = String(o.part || "knee").replace(/^body-/, "");
+    // the part's anchor on the wide shot, and how far to push in (the part fills about 60 % of the play height)
+    const anchor = () => {
+      const q = fig.hotspot(part, o.side || "left", box) || { x: box.clientWidth / 2, y: box.clientHeight / 2, r: 40 };
+      const bw = box.clientWidth || 1;
+      const bh = box.clientHeight || 1;
+      const H = stage.clientHeight || bh;
+      const k = Math.max(2.2, Math.min(5, (0.6 * H) / Math.max(24, 2.4 * (q.r || 30))));
+      return { ox: (100 * q.x) / bw, oy: (100 * q.y) / bh, k };
+    };
+    const play = (el, frames, opts) => (el.animate && !reduced ? el.animate(frames, opts).finished.catch(() => {}) : Promise.resolve());
+    const z = {
+      wide,
+      /** The push-in: the room scales about the part and blurs; at the peak it fades to the close-up below. */
+      async in() {
+        const a = anchor();
+        box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
+        wide.classList.add("on");
+        const zoom = play(box, [{ transform: "scale(1)", filter: "blur(0px)" }, { transform: `scale(${a.k})`, filter: "blur(6px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
+        const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.7 }, { opacity: 0 }], { duration: ms, easing: "ease-in", fill: "forwards" });
+        await Promise.all([zoom, fade]);
+        wide.classList.remove("on");
+        wide.classList.add("gone");
+        if (home) home.appendChild(fig.el);
+      },
+      /** The pull-out: the room comes back over the close-up, zoomed in, then out to the wide shot (the patient happy). */
+      async out() {
+        if (!wide.isConnected) return;
+        const a = anchor();
+        layer.appendChild(fig.el);
+        fig.pose("sit");
+        fig.react("happy", 0);
+        seat();
+        box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
+        wide.classList.remove("gone");
+        wide.classList.add("on");
+        await Promise.all([
+          play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
+          play(box, [{ transform: `scale(${a.k})`, filter: "blur(6px)" }, { transform: "scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
+        ]);
+        Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
+      },
+      destroy() {
+        if (home && fig.el.parentNode === layer) home.appendChild(fig.el);
+        wide.remove();
+      },
+    };
+    return z;
+  };
+
+  /**
    * Mount a registered game on a screen. Returns {ctx, controller, result, destroy}.
    * `screen` is a Clinic.Screen (the lab and the pipeline both build one).
    */
@@ -138,6 +229,13 @@
     fig.react("idle", 0);
     if (opts.swirl !== false && ailment.part) fig.swirl(ailment.part, side, true);
     Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
+    // D13 (1 Oct, decision 27): the first time a child plays a heal game is the guided round: the ghost finger shows
+    // each new move and the child copies it, and nothing is scored (its rows are taught); counts are judged from the
+    // next round. Once per child per game (the save's "ui" namespace, through UIStore).
+    const US = global.UIStore;
+    const taught = level === 1 && opts.onboard !== false && !!US && !US.get("clinic-taught", def.id);
+    // D1, D2: the zoom from the patient on the bed into the close-up (and back out at the end)
+    const staging = opts.staging === false ? null : HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
 
     const log = [];
     const timers = new Set();
@@ -260,6 +358,7 @@
       // clinic fixes: in a full run (the pipeline) the diagnosis already told the why (13i); first-time help on/off
       inRun: !!opts.inRun,
       onboardOn: opts.onboard !== false,
+      taught, // D13: the guided first round (nothing scored)
       interject(k) {
         const l = INTERJECT[k] ? LANG().w(INTERJECT[k]) : HOST.line(k, data);
         return Kit.Voice.say(l, { who: "doctor" });
@@ -310,6 +409,8 @@
           if (!row) return;
           steps.push({ id: e.rowId, label: { kutchi: row.kutchi || null, english: row.english || "" }, ok: e.type === "right", done: e.detail != null && typeof e.detail !== "object" ? String(e.detail) : null });
         });
+        if (taught && US) US.set("clinic-taught", def.id, true);
+        if (taught) r = Object.assign({}, r, { right: 0, total: 0, taught: true });
         const out = Object.assign({ right: 0, total: 0, words: [] }, r, {
           hints: (r.hints || 0) + (screen.hints - hintsAtStart),
           steps,
@@ -321,7 +422,10 @@
           tray: trayItems,
         });
         if (opts.onDone) opts.onDone(out);
-        resolveResult(out);
+        // D1: the zoom back out, and the patient's "thank you, I feel better" (a line to record), then the result
+        const thanks = HOST.line("thanks-better", data);
+        const outro = staging ? staging.out().then(() => Kit.Voice.say(thanks, { who: "patient" })) : Promise.resolve();
+        Promise.race([outro, new Promise((r) => setTimeout(r, Kit.fast ? 600 : 4000))]).then(() => resolveResult(out));
       },
       // --- additions ---
       item: (id) => Kit.itemInfo(id),
@@ -378,7 +482,9 @@
       console.error(`Healing game "${def.id}" failed to mount`, e);
       throw e;
     }
-    // start() may run for a while (the doctor reads the card): mount returns at once
+    // start() may run for a while (the doctor reads the card): mount returns at once. The zoom in plays over the
+    // game's opening (the close-up is live underneath: input never waits for it, E5)
+    if (staging) staging.in().catch(() => {});
     const started = Promise.resolve()
       .then(() => controller.start && controller.start())
       .catch((e) => console.error(`Healing game "${def.id}" failed to start`, e));
@@ -391,6 +497,7 @@
     }
     const run = {
       ctx,
+      staging,
       used,
       controller,
       result,
@@ -405,6 +512,7 @@
         } catch (e) {
           console.error(e);
         }
+        if (staging) staging.destroy();
         if (!opts.patient) fig.destroy();
         Kit.Voice.clear();
         // the card is the screen's: the next stage gets it whole again (D8 is the heal games' rule)

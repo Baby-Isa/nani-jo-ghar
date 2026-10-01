@@ -121,8 +121,17 @@
       });
     };
     const chipEl = s("path", { d: `M${T.x + 100} ${T.y - 118} L${T.x + 140} ${T.y - 110} L${T.x + 136} ${T.y - 60} Z`, fill: "#6a1f2a", opacity: 0 }, toothG);
-    const drillEl = s("text", { x: -100, y: -100, "font-size": 46, opacity: 0 }, S.fx);
-    drillEl.textContent = "🪛";
+    // CLN-51: the drill is its picture (assets/clinic/items-v2), placed so its tip (the bur, data: drill.tip, in the
+    // picture's own pixels) sits exactly under the finger
+    const DR = Object.assign({ src: "assets/clinic/items-v2/dentist-drill.webp", size: [394, 212], tip: [45, 196], w: 130 }, (ctx.data && ctx.data.drill) || {});
+    const DW = DR.w;
+    const DH = (DR.w * DR.size[1]) / DR.size[0];
+    const tipX = (DR.tip[0] / DR.size[0]) * DW;
+    const tipY = (DR.tip[1] / DR.size[1]) * DH;
+    const Kit0 = root.Clinic && root.Clinic.Kit;
+    const drillEl = s("image", { href: Kit0 ? Kit0.url(DR.src) : DR.src, x: -1000, y: -1000, width: DW, height: DH, opacity: 0, class: "hs-drill" }, S.fx);
+    drillEl.dataset.tipX = String(tipX);
+    drillEl.dataset.tipY = String(tipY);
     // the fill: the hole's cup, the line, the rising paste, the doctor's tube
     const fillG = s("g", { opacity: 0 }, S.layer);
     const hole = { x: T.x - 60, y: T.y - 70, w: 120, h: 120 };
@@ -242,8 +251,8 @@
     };
     const drillAt = (p) => {
       const c = cur();
-      drillEl.setAttribute("x", p.x - 10);
-      drillEl.setAttribute("y", p.y + 10);
+      drillEl.setAttribute("x", p.x - tipX);
+      drillEl.setAttribute("y", p.y - tipY);
       drillEl.setAttribute("opacity", 1);
       const gx = Math.floor((p.x - (T.x - T.w / 2)) / cellW);
       const gy = Math.floor((p.y - (T.y - T.h / 2)) / cellH);

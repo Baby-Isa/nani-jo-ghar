@@ -469,3 +469,10 @@ body.clinic button { font-family: inherit; color: inherit; }
 .hs-root .hs-count { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s2) * -1); min-width: var(--njg-s4); padding: 0 var(--njg-s1); border-radius: var(--njg-round); background: var(--njg-gold); color: var(--njg-panel); font: 800 var(--njg-t3) / 1.4 var(--cl-head); text-align: center; box-shadow: var(--njg-shadow); pointer-events: none; z-index: 2; }
 .hs-root .hs-count.dots { letter-spacing: 0.08em; }
 .hs-root .hs-count.bump { animation: cl-bump .3s; }
+
+/* D1, D2 (CLN-43): the zoom from the patient on the bed into the close-up; the close-up is live underneath */
+.cl-zoom { position: absolute; inset: 0; z-index: 20; overflow: hidden; pointer-events: none; background: var(--njg-page); opacity: 0; }
+.cl-zoom.on { opacity: 1; }
+.cl-zoom.gone { display: none; }
+.cl-zoom-box { will-change: transform, filter; }
+.hs-root .hs-bg { filter: blur(8px); }

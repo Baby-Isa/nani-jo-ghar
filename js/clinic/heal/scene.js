@@ -49,6 +49,25 @@
     }
     return b;
   };
+  /**
+   * CLN-49: of the things within reach of a touch, the one aimed at: the smallest gap between the touch and its
+   * edge (inside a small blob beats the edge of a big one next to it). list: [{x, y, r, ...}]; pad: the finger.
+   */
+  HS.nearest = function (p, list, pad = 16) {
+    let best = null;
+    let bestGap = Infinity;
+    (list || []).forEach((q) => {
+      if (!q) return;
+      const d = Math.hypot(p.x - q.x, p.y - q.y);
+      if (d >= q.r + pad) return;
+      const gap = d - q.r;
+      if (gap < bestGap) {
+        bestGap = gap;
+        best = q;
+      }
+    });
+    return best;
+  };
   /** An English placeholder word ("to record"). */
   HS.ph = (english) => ({ kutchi: null, english, placeholder: true });
   /** The colours: English placeholders until the doctor's recording (Section G). */
@@ -90,7 +109,9 @@
 
   /* ---------------- the browser scene ---------------- */
   const NS = "http://www.w3.org/2000/svg";
-  const BG = "assets/clinic/rooms/cb6b-closeup-bed-blur-v1.webp";
+  // D1 (1 Oct, CLN-43): behind every close-up, the exam room itself (CB2b), zoomed on the bed and blurred, so the
+  // room matches the wide shot the zoom came from; CB6b (the close-up bed) is kept only as a fallback
+  const BG = "assets/clinic/rooms/bg-clinic-exam-cb2b-v1.webp";
   const CSS = `
   .hs-root{position:absolute;inset:0;z-index:5;overflow:hidden;background:linear-gradient(#efe3cc 0 55%,#9fbfa6 55%);touch-action:none;user-select:none;-webkit-user-select:none}
   .hs-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -140,7 +161,7 @@
     const svg = s("svg", { class: "hs-svg", viewBox: "0 0 800 500", preserveAspectRatio: "xMidYMid meet" }, root);
     // the blurred bed, placed so its paper strip sits at y 342-482 whatever the stage's shape
     const bgUrl = ((Kit && Kit.root) || "") + BG;
-    s("image", { href: bgUrl, x: -300, y: -190, width: 1400, height: 933, preserveAspectRatio: "none", opacity: 0.95 }, svg);
+    s("image", { href: Kit && Kit.url ? Kit.url(BG) : bgUrl, x: -800, y: -470, width: 2400, height: 1600, preserveAspectRatio: "none", opacity: 0.95, class: "hs-bg" }, svg);
     s("rect", { x: -2000, y: -2000, width: 5000, height: 5000, fill: "#fffaf0", opacity: 0.22 }, svg);
     const S = { root, svg, s, h, ctx, level: ctx.level, game: opts.game || (ctx.game && ctx.game.id) };
     S.layer = s("g", { class: "hs-art" }, svg);
@@ -347,7 +368,11 @@
       if (mine()) global.Onboard.active().skip();
     };
     /** The child acted: the help moves to its next thing (or ends). */
-    S.did = () => global.Onboard && global.Onboard.signal && global.Onboard.signal("hs-did");
+    S.lastDid = 0;
+    S.did = () => {
+      S.lastDid = Date.now();
+      if (global.Onboard && global.Onboard.signal) global.Onboard.signal("hs-did");
+    };
     S.cue = (key, spec, target, then) => {
       S.cueLog.push(key);
       if (!S.cuesOn || !spec || spec.watch) return; // a step the child only watches has nothing to demo
@@ -381,7 +406,19 @@
       if (!steps.length) return;
       S.uncue();
       cueId = `clinic/heal-${S.game}-${key}`;
-      global.Onboard.run(cueId, steps, { force: force === "1", idleMs: 6000 }).catch(() => {});
+      const asked = Date.now();
+      const id = cueId;
+      global.Onboard.run(cueId, steps, { force: force === "1", idleMs: 6000 })
+        .then((how) => {
+          // SH-46 (1 Oct, P32): a move the child has met before but isn't doing now is shown again after a pause,
+          // not only the first time ever
+          if (how !== "seen") return;
+          ctx.after(8000, () => {
+            if (S.lastDid > asked || cueId !== id || mine()) return;
+            global.Onboard.run(id, steps, { force: true, idleMs: 6000 }).catch(() => {});
+          });
+        })
+        .catch(() => {});
     };
     // the child has started on the close-up: the help moves on
     ctx.on(svg, "pointerdown", () => S.did());

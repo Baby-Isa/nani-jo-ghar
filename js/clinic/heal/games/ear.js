@@ -167,11 +167,13 @@
       const c = cur();
       if (!c || S.sel !== "tweezers") return null;
       if (c.kind === "pop") {
-        const q = st.pops.find((x) => Math.hypot(p.x - x.x, p.y - x.y) < x.r + 16);
+        const q = HS.nearest(p, st.pops, 16);
         return q ? { pop: q, x: q.x, y: q.y, r: q.r } : null;
       }
       if (c.kind !== "wax") return null;
-      const k = ["big", "small"].find((q) => !st.out.includes(q) && Math.hypot(p.x - BLOB[q].x, p.y - BLOB[q].y) < BLOB[q].r + 16);
+      // CLN-49: the blob aimed at, not the first within reach (the small one beside the big one)
+      const near = HS.nearest(p, ["big", "small"].filter((q) => !st.out.includes(q)).map((q) => Object.assign({ key: q }, BLOB[q])), 16);
+      const k = near ? near.key : null;
       return k ? { key: k, x: BLOB[k].x, y: BLOB[k].y, r: BLOB[k].r } : null;
     };
     const dropOut = (g) => {

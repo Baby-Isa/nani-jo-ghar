@@ -374,6 +374,7 @@
   }
  },
  "lines": {
+  "thanks-better": {"e": "Thank you, I feel better!", "who": "patient", "_about": "D1 (1 Oct): the patient's line after the zoom back out of every heal game. To record."},
   "cl-hurts": {
    "e": "My {x} hurts."
   },
