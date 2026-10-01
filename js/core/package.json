@@ -1,0 +1,4 @@
+{
+  "//": "Node reads the core files as ES modules (decision 18). Browsers ignore this file.",
+  "type": "module"
+}

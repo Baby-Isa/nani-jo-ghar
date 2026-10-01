@@ -1,0 +1,27 @@
+{
+  "_about": "Per-word progress rules (js/core/progress.js; rule G23; target-model § 3.3). A word has an understand_stage and a produce_stage, 1 to 5. advanceAfter[stage] = correct recalls from the Kutchi needed at that stage to go up one (stage 1 -> 2 needs none: meeting the word is enough, as in Cook). Two misses in a row drop a stage; once met, understanding never drops below floorOnceMet; dropStreak[stage] = the recalls already counted on the stage it drops to. Only evidence with a cue in recallCues counts as recall (the child had only the Kutchi to go on). cookImport.base: the right-answer count at which each of Cook's four stages starts (js/cook/core.js Cook.wordStage), used to import Cook's words. support[stage]: how much help a word gets (the label, the card text or dots, the hint delay, auto-play, a picture); stages 1-4 match Cook's labelMode, cardHidden and data/cook.json calm.hintMs today.",
+  "version": 1,
+  "stages": { "min": 1, "max": 5 },
+  "recallCues": ["kutchi"],
+  "understand": {
+    "meetAdvances": true,
+    "advanceAfter": { "1": 0, "2": 4, "3": 5, "4": 6 },
+    "dropAfterMisses": 2,
+    "floorOnceMet": 2,
+    "dropStreak": { "2": 1, "3": 0, "4": 0 }
+  },
+  "produce": {
+    "advanceAfter": { "1": 1, "2": 2, "3": 3, "4": 3 },
+    "dropAfterMisses": 2,
+    "floor": 1,
+    "dropStreak": {}
+  },
+  "cookImport": { "base": { "1": 0, "2": 0, "3": 4, "4": 9 } },
+  "support": {
+    "1": { "label": "text", "card": "text", "hintAfterMs": 4000, "autoPlay": true, "picture": true },
+    "2": { "label": "speaker", "card": "text", "hintAfterMs": 5000, "autoPlay": true, "picture": true },
+    "3": { "label": "speaker", "card": "dots", "hintAfterMs": 8000, "autoPlay": false, "picture": true },
+    "4": { "label": "speaker", "card": "dots", "hintAfterMs": 12000, "autoPlay": false, "picture": true },
+    "5": { "label": "speaker", "card": "dots", "hintAfterMs": 12000, "autoPlay": false, "picture": false }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "_about": "Pocket money (js/core/wallet.js; decisions 2, 10, 20; rule E29). One purse; coins only go up except when buying; no wages. coins = round(perTask x volume x quality x difficulty), at least minCoins. volume = tasks done in the round. quality = base + accuracy x weights.accuracy + hintScore x weights.hints + timeScore x weights.time + speaking x weights.speaking, kept between qualityMin and qualityMax (hintScore by hints used: 0, 1, 2+; timeScore by the time badge's tier; speaking = right spoken replies / spoken prompts, a bonus only). difficulty = levels[level] x modes[mode]. The child never sees this, only coins arriving. shop: every upgrade's price (the prices here replace data/cook.json's when Cook moves onto the wallet, R4); tier easy = the cheap first buys. Tuned with build/core/economy-sim.mjs so an upgrade is affordable about every 2-3 games at first, stretching to every 4-5 (decision 10).",
+  "version": 1,
+  "pay": {
+    "perTask": 1,
+    "minCoins": 2,
+    "base": 0.6,
+    "weights": {
+      "accuracy": 0.6,
+      "hints": 0.3,
+      "time": 0.2,
+      "speaking": 0.4
+    },
+    "qualityMin": 0.6,
+    "qualityMax": 2.1,
+    "hintScore": [
+      1,
+      0.5,
+      0
+    ],
+    "timeScore": {
+      "gold": 1,
+      "mid": 0.6,
+      "plain": 0.3,
+      "none": 0.5
+    },
+    "levels": {
+      "1": 1,
+      "2": 1.2,
+      "3": 1.4,
+      "4": 1.6
+    },
+    "modes": {
+      "cook": 1,
+      "clinic": 1
+    }
+  },
+  "shop": [
+    {
+      "id": "helper",
+      "mode": "cook",
+      "station": "chop",
+      "tier": "easy",
+      "price": 10
+    },
+    {
+      "id": "knife",
+      "mode": "cook",
+      "station": "chop",
+      "tier": "easy",
+      "price": 12
+    },
+    {
+      "id": "bigspoon",
+      "mode": "cook",
+      "station": "assemble",
+      "tier": "easy",
+      "price": 13
+    },
+    {
+      "id": "basket",
+      "mode": "cook",
+      "station": "fetch",
+      "tier": "easy",
+      "price": 15
+    },
+    {
+      "id": "pin",
+      "mode": "cook",
+      "station": "roll",
+      "tier": "nice",
+      "price": 40
+    },
+    {
+      "id": "tadka",
+      "mode": "cook",
+      "station": "tadka",
+      "tier": "nice",
+      "price": 45
+    },
+    {
+      "id": "pot",
+      "mode": "cook",
+      "station": "stir",
+      "tier": "nice",
+      "price": 50
+    },
+    {
+      "id": "jug",
+      "mode": "cook",
+      "station": "pour",
+      "tier": "nice",
+      "price": 55
+    },
+    {
+      "id": "slotted",
+      "mode": "cook",
+      "station": "fry",
+      "tier": "nice",
+      "price": 60
+    },
+    {
+      "id": "tawa",
+      "mode": "cook",
+      "station": "tawa",
+      "tier": "nice",
+      "price": 65
+    },
+    {
+      "id": "thali",
+      "mode": "cook",
+      "station": "serve",
+      "tier": "nice",
+      "price": 70
+    },
+    {
+      "id": "machine",
+      "mode": "cook",
+      "station": "boil",
+      "tier": "nice",
+      "price": 80
+    },
+    {
+      "id": "mixer",
+      "mode": "cook",
+      "station": "knead",
+      "tier": "nice",
+      "price": 40,
+      "hidden": true
+    }
+  ]
+}

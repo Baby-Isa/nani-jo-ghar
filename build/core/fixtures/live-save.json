@@ -1,0 +1,21 @@
+{
+ "captured": "2026-10-01T12:04:47.433Z",
+ "how": "build/core/capture-saves.mjs: first launch played in the sandbox, then the clinic's own Clinic.Run.save()",
+ "errors": [],
+ "afterFirst": {
+  "njg-save:p0f63hn:cook": "{\"v\":1,\"mode\":\"relaxed\",\"coins\":48,\"day\":1,\"best\":{},\"owned\":[],\"slots\":[],\"words\":{\"cook-chai\":{\"seen\":5,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856204458},\"cook-khun\":{\"seen\":4,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856196231},\"cook-dudh\":{\"seen\":4,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856195969},\"spi-10\":{\"seen\":2,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856196486}},\"taught\":{\"pantry\":true,\"chai\":true},\"finished\":false,\"freeRounds\":0,\"playDays\":[\"2026-10-01\"],\"orders\":3,\"seenStation\":{\"fetch\":true,\"chai-tray\":true,\"chai-tray:water\":true,\"chai-tray:tea\":true,\"chai-tray:cups\":true,\"chai-tray:knob\":true,\"chai-tray:pour\":true},\"goalShown\":{\"fetch\":true,\"chai-tray\":true},\"coached\":{\"fetch\":true,\"chai-tray\":true}}",
+  "njg-save:p0f63hn:story": "{\"first-launch\":{\"at\":null,\"started\":\"2026-10-01T12:02:20.102Z\",\"done\":\"2026-10-01T12:04:46.293Z\"}}",
+  "njg-save": "{\"schema\":1,\"current\":\"p0f63hn\",\"players\":[{\"id\":\"p0f63hn\",\"name\":\"Player 1\",\"colour\":\"#c0392b\",\"created\":\"2026-10-01T12:02:19.583Z\",\"auto\":true}],\"migrated\":{}}",
+  "njg-save:p0f63hn:character": "{\"v\":1,\"choices\":{\"body\":\"girl\",\"skin\":\"s4\",\"hair\":\"h3\",\"eyes\":\"e4\",\"top\":\"t4\",\"bottom\":\"b5\"},\"hands\":\"player-girl\",\"updated\":\"2026-10-01T12:02:22.025Z\"}",
+  "njg-save:p0f63hn:ui": "{\"onboarded\":{\"cook/fetch\":true,\"cook/chai-tray\":true},\"bests\":{\"cook/pantry/L1\":3237,\"cook/chai/L1\":43737}}",
+  "njg-save:p0f63hn:shell": "{\"firstDone\":true}"
+ },
+ "afterClinic": {
+  "njg-save:p0f63hn:cook": "{\"v\":1,\"mode\":\"relaxed\",\"coins\":48,\"day\":1,\"best\":{},\"owned\":[],\"slots\":[],\"words\":{\"cook-chai\":{\"seen\":5,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856204458},\"cook-khun\":{\"seen\":4,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856196231},\"cook-dudh\":{\"seen\":4,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856195969},\"spi-10\":{\"seen\":2,\"right\":1,\"miss\":0,\"streakMiss\":0,\"last\":1790856196486}},\"taught\":{\"pantry\":true,\"chai\":true},\"finished\":false,\"freeRounds\":0,\"playDays\":[\"2026-10-01\"],\"orders\":3,\"seenStation\":{\"fetch\":true,\"chai-tray\":true,\"chai-tray:water\":true,\"chai-tray:tea\":true,\"chai-tray:cups\":true,\"chai-tray:knob\":true,\"chai-tray:pour\":true},\"goalShown\":{\"fetch\":true,\"chai-tray\":true},\"coached\":{\"fetch\":true,\"chai-tray\":true}}",
+  "njg-save:p0f63hn:story": "{\"first-launch\":{\"at\":null,\"started\":\"2026-10-01T12:02:20.102Z\",\"done\":\"2026-10-01T12:04:46.293Z\"}}",
+  "njg-save": "{\"schema\":1,\"current\":\"p0f63hn\",\"players\":[{\"id\":\"p0f63hn\",\"name\":\"Player 1\",\"colour\":\"#c0392b\",\"created\":\"2026-10-01T12:02:19.583Z\",\"auto\":true}],\"migrated\":{}}",
+  "njg-save:p0f63hn:character": "{\"v\":1,\"choices\":{\"body\":\"girl\",\"skin\":\"s4\",\"hair\":\"h3\",\"eyes\":\"e4\",\"top\":\"t4\",\"bottom\":\"b5\"},\"hands\":\"player-girl\",\"updated\":\"2026-10-01T12:02:22.025Z\"}",
+  "njg-save:p0f63hn:ui": "{\"onboarded\":{\"cook/fetch\":true,\"cook/chai-tray\":true},\"bests\":{\"cook/pantry/L1\":3237,\"cook/chai/L1\":43737},\"clinic\":{\"state\":{\"session\":2,\"levels\":{\"waiting\":1,\"diagnosis\":1,\"pharmacy\":1,\"heal\":1,\"sendoff\":1},\"album\":[\"kid:knee\"],\"coins\":3}}}",
+  "njg-save:p0f63hn:shell": "{\"firstDone\":true}"
+ }
+}
