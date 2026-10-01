@@ -2,7 +2,7 @@
 
 > **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
 > - Stars, the ear star, the voice star, craft stars, `star_sets` and `minTested` → three badges: time, accuracy, hints (H5, J7, decisions 1–3)
-> - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G24)
+> - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G6)
 > - *nar* for "no" → ***na*** (*nar* means "look") (G5, decision 5)
 > - Story homes (Eid morning, "The spill", the wedding, the shoe mountain, Arc 1/3/4/5) → the Birthday arc, day-out trips, clinic, Making clothes with Big Ma, Monsoon, Who did it (H36–H39) (the §7.7 map of 94 rows is built on the old five arcs; rebase it)
 > - *mishkaki* as the dish → *sekelo* is the dish, *mishkaki* the meat cubes (H20)

@@ -4,7 +4,7 @@
 > - Stars, the ear star, the voice star, craft stars, `star_sets` and `minTested` → three badges: time, accuracy, hints (H5, J7, decisions 1–3) (umbrella; its P.10 already maps stars under the three badges, use that as the model)
 > - Quilt patches and quilt grids as the progress object → a bookshelf, one named book per finished arc (decision 4); quilt-making becomes a Big Ma arc
 > - *nar* for "no" → ***na*** (*nar* means "look") (G5, decision 5)
-> - *hikdo* (one) → *hakro/hakri* by gender; *bo* (two) → *ba*; *vadho* → *wadho*; *daal* → *daar* (G5, G6)
+> - *hikdo* (one) → *hakro/hakri* by gender; *bo* (two) → *ba*; *vadho* → *wadho*; *daal* → *daar* (G4, G5)
 > - Story homes (Eid morning, "The spill", the wedding, the shoe mountain, Arc 1/3/4/5) → the Birthday arc, day-out trips, clinic, Making clothes with Big Ma, Monsoon, Who did it (H36–H39) (Monsoon is now a proposed standalone arc)
 > - Pocket money, coins, receipts, hint costs in coins → decision 10 (upgrades) and decision 1 (the light bulb costs a lightbulb)
 

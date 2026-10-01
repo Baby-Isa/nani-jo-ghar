@@ -3,7 +3,7 @@
 > **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written; the Cook station specs (§1, 5, 9–11, 13–15) now live in `docs/game-design/modes/cook.md`.
 > - "One line per pill (shrink to fit, down to 14 px)" → headlines shrink, then wrap; never clipped or ellipsised (F7, non-negotiable 9)
 > - Stars or star badges on result cards → three badges: time, accuracy, hints (H5, decisions 1–2)
-> - *marcha* and "Marcha na." in Nani's chop card → *mirchi* only, no plural, for now (G5, decision 5)
+> - *marcha* and "Marcha na." in Nani's chop card → *mirchi* only, no plural, for now (G25, decision 5)
 > - An English headline placeholder ("Chop these") for the child → no written English for the child (E1, F23); missing Kutchi is a grey-italic placeholder flagged "to record"
 > - "Front-on inventory bowls" (§4) vs top-down prep bowls in Sekelo and samosa → camera chosen per station (H14)
 > - Hands in Cook → none (H13)

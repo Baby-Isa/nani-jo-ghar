@@ -8,7 +8,7 @@
 > - "Eid rush", Eid-morning beats and "arcs" in the old homes → the first arc is the Birthday; old arc homes are overridden (H36–H39).
 > - Files go in `docs/game-design/modes/<mode>.md` (not `docs/modes/<mode-id>-design.md`); "don't commit or push" and "only create your one file" were per-session instructions for those runs, not standing rules; session rules are in `process/session-brief-template.md`.
 > - Clinic waiting room of 8–10 people at level 3 → at most 6 (H28). "No needles/stitches" in OVERVIEW → stitches and injections are fine (Zafar, 25 Sept).
-> - Kutchi examples inside the briefs (*hikdo*, *bo*, *vadho*, *daal*, *marcha*) → G5, G24, decision 5.
+> - Kutchi examples inside the briefs (*hikdo*, *bo*, *vadho*, *daal*, *marcha*) → G5 (*hikdo*, *bo*), G4 (*vadho*, *daal*), G25 and decision 5 (*marcha*).
 > - Speech: the closed-set design stands; "voice star" is gone (J7); the recogniser call is `js/shared/speech.js` (`architecture/speech-recognition-plan.md`).
 > - The mini-game rules (consistent gestures within a mini-game, auto-tick, card is master) are in `design-language/ux-principles.md` and rules H2.
 

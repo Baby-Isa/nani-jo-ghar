@@ -6,7 +6,7 @@
 > - Coins, prices, the 375-coin shop, pocket money "given at Eid", hints that cost pocket money or pause the clock → decision 10 (upgrades) and decision 1 (the light bulb costs a lightbulb)
 > - Digits or dots "2 × santra", target digits on the chalkboard → no digits for the child (E12, F25)
 > - Subtitles, English link on every card, English toggle → no written English for the child (E1, F23)
-> - *hikdo/bo* → *hakro/hakri*, *ba*; *daal* → *daar*; *vadho* → *wadho* (G5, G6)
+> - *hikdo/bo* → *hakro/hakri*, *ba*; *daal* → *daar*; *vadho* → *wadho* (G4, G5)
 > - Doing it "at Eid" (pocket money, rewards) → the Birthday arc (H36)
 
 How a child's words advance, how the skills are checked, what scores and unlocks there are, and how errands are generated. The badge rules themselves are in `docs/process/rules.md` (H5, J7) and are not restated here.

@@ -3,9 +3,9 @@
 > **Stale points (what `docs/process/rules.md` now overrides).** The source blocks below are copied word for word and not corrected.
 > - Stars, the ear star and the voice star → three badges: time, accuracy, hints (H5, decisions 1–2)
 > - Hands in Cook → none: no hands anywhere (H13)
-> - *marcha* (plural, "ba marcha") → *mirchi* only, no plural, for now (G5, decision 5)
+> - *marcha* (plural, "ba marcha") → *mirchi* only, no plural, for now (G25, decision 5)
 > - *mishkaki* as the station or dish → the station is **Sekelo**; *mishkaki* is only the meat cubes (H20)
-> - *daal* → *daar*; *hikdo* (one) → *hakro/hakri* by gender; *vadho* → *wadho* (G5, G6)
+> - *daal* → *daar*; *hikdo* (one) → *hakro/hakri* by gender; *vadho* → *wadho* (G4, G5)
 > - Coins, prices, the 375-coin shop and "pocket money" → superseded by decision 10 (upgrades)
 > - Quilt patch as the Day 5 finale → bookshelf book (decision 4)
 > - English on screen, English "gist" or grey English in games → none for the child (E1, F23); written English only in the "?" pop-up

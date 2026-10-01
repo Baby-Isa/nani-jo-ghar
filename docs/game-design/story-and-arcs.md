@@ -6,7 +6,7 @@
 > - Stars and the ear/voice star → three badges (H5, decisions 1–2)
 > - Pocket money "given at Eid", functional purchases, shop prices → decision 10
 > - "English one tap away", gist captions and subtitles → no English for the child (E1, F23); the light bulb is the help (decision 1)
-> - *hikdo/bo/trae* as the tap counts → *hakro/hakri* by gender, *ba*, *trae* (G5, G6); *daal* → *daar*; *mishkaki* as the dish → *sekelo* (H20)
+> - *hikdo/bo/trae* as the tap counts → *hakro/hakri* by gender, *ba*, *trae* (G4, G5); *daal* → *daar*; *mishkaki* as the dish → *sekelo* (H20)
 > - "Platform decisions: move to a private host before recordings go in" → everything stays public until launch (decision 6)
 > - Chapter 1 Eid dressing (lantern, bunting, fairy lights, crescent and star) → re-home to the Birthday arc (H36)
 

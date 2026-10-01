@@ -2,7 +2,7 @@
 
 > **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
 > - "The voice star starts at rung 2", "coins, never the voice star", Open question 3 "voice star as the reward" → no voice star; scoring is three badges (H5, decisions 1–3)
-> - Spoken-English lines and "Achija" / "Aabhar aanjo" as defaults → goodbye is *khuda-fis*, thank you is in English (Zafar, 26 Sept; G24)
+> - Spoken-English lines and "Achija" / "Aabhar aanjo" as defaults → goodbye is *khuda-fis*, thank you is in English (Zafar, 26 Sept; G6)
 > - Coins as the reward for speaking → decision 10 (upgrades)
 > - Any English written on screen as the instruction to speak → none for the child (E1, F23); a picture says what, the heard frame says how
 

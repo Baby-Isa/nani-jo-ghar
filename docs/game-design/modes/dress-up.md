@@ -4,8 +4,8 @@
 > - Stars, the ear star, the voice star, craft stars, `star_sets` and `minTested` → three badges: time, accuracy, hints (H5, J7, decisions 1–3) (needle-and-thread craft star)
 > - Quilt patches and quilt grids as the progress object → a bookshelf, one named book per finished arc (decision 4); quilt-making becomes a Big Ma arc (offcuts become the chapter's patch)
 > - *nar* for "no" → ***na*** (*nar* means "look") (G5, decision 5)
-> - *hikdo* (one) → *hakro/hakri* by gender; *bo* (two) → *ba*; *vadho* → *wadho*; *daal* → *daar* (G5, G6)
-> - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G24)
+> - *hikdo* (one) → *hakro/hakri* by gender; *bo* (two) → *ba*; *vadho* → *wadho*; *daal* → *daar* (G4, G5)
+> - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G6)
 > - Story homes (Eid morning, "The spill", the wedding, the shoe mountain, Arc 1/3/4/5) → the Birthday arc, day-out trips, clinic, Making clothes with Big Ma, Monsoon, Who did it (H36–H39) (Eid morning, "The spill", wedding: re-home to Making clothes with Big Ma)
 > - Pocket money, coins, receipts, hint costs in coins → decision 10 (upgrades) and decision 1 (the light bulb costs a lightbulb)
 

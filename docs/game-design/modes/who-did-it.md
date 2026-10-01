@@ -4,9 +4,9 @@
 > - Stars, the ear star, the voice star, craft stars, `star_sets` and `minTested` → three badges: time, accuracy, hints (H5, J7, decisions 1–3) (Nani's glasses)
 > - Quilt patches and quilt grids as the progress object → a bookshelf, one named book per finished arc (decision 4); quilt-making becomes a Big Ma arc
 > - *nar* for "no" → ***na*** (*nar* means "look") (G5, decision 5)
-> - *hikdo* (one) → *hakro/hakri* by gender; *bo* (two) → *ba*; *vadho* → *wadho*; *daal* → *daar* (G5, G6)
-> - *marcha* → *mirchi* only, no plural, for now (G5, decision 5)
-> - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G24)
+> - *hikdo* (one) → *hakro/hakri* by gender; *bo* (two) → *ba*; *vadho* → *wadho*; *daal* → *daar* (G4, G5)
+> - *marcha* → *mirchi* only, no plural, for now (G25, decision 5)
+> - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G6)
 > - Story homes (Eid morning, "The spill", the wedding, the shoe mountain, Arc 1/3/4/5) → the Birthday arc, day-out trips, clinic, Making clothes with Big Ma, Monsoon, Who did it (H36–H39); "Case of the day" daily → one rotating hub daily
 > - Pocket money, coins, receipts, hint costs in coins → decision 10 (upgrades) and decision 1 (the light bulb costs a lightbulb)
 
