@@ -297,6 +297,8 @@ export function clinicFlows() {
   for (const g of HEAL_GAMES) f.push(clinicFlow({ id: `clinic:heal-${g}`, title: `Clinic: heal game ${g}, level 1`, query: `stage=heal&game=${g}&level=1`, timeoutMs: 200000 }));
   f.push(clinicFlow({ id: "clinic:patient", title: "Clinic: One patient, end to end, level 1 (first-time help on)", query: "patient=1&level=1&results=1", onboard: true, timeoutMs: 420000 }));
   f.push(clinicFlow({ id: "clinic:patient@L3", title: "Clinic: One patient, end to end, level 3", query: "patient=1&level=3&results=1", level: 3, timeoutMs: 420000 }));
+  // R5: a clinic morning through the one game host (session 2: two patients, an end screen after each, then "close the clinic")
+  f.push({ ...clinicFlow({ id: "clinic:morning", title: "Clinic: a morning (session 2: two patients through the host, then close the clinic)", query: "morning=1&session=2&nosave=1", timeoutMs: 600000 }), deep: true });
 
   // ---- the deeper paths (run at the deep sizes): every level, then the mistake and hint players ----
   const D = (o) => f.push({ ...clinicFlow(o), deep: true });

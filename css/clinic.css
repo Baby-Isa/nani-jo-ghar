@@ -26,12 +26,12 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* ---------- the frame ---------- */
 #clinic-root { position: fixed; inset: 0; }
 .cl-app { position: absolute; inset: 0; display: grid; grid-template-columns: var(--cl-side-w) 1fr var(--cl-act-w); gap: 0; }
-.cl-side { background: var(--cl-paper); border-right: 3px solid #e6d6bd; display: flex; flex-direction: column; gap: 8px; padding: 8px; overflow: hidden; min-height: 0; }
-.cl-side-top:not(.njg-guide) { display: flex; align-items: center; gap: 8px; }
+.cl-side { background: var(--cl-paper); border-right: 3px solid #e6d6bd; display: flex; flex-direction: column; gap: var(--njg-s2); padding: var(--njg-s2); overflow: hidden; min-height: 0; }
+.cl-side-top:not(.njg-guide) { display: flex; align-items: center; gap: var(--njg-s2); }
 .cl-main { position: relative; overflow: hidden; min-width: 0; }
 .cl-play { position: absolute; inset: 0; }
 .cl-stage { position: absolute; inset: 0; }
-.cl-actions { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: 10px; padding: 10px 10px 14px; background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.03)); }
+.cl-actions { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s2) var(--njg-s3); background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.03)); }
 
 /* ---------- the light bulb ---------- */
 .cl-bulb { width: 48px; height: 48px; border-radius: 50%; border: 3px solid #e7cf8e; background: #fff6d8; color: #caa13a; display: grid; place-items: center; cursor: pointer; flex: none; }
@@ -40,15 +40,15 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-hint-n { font: 800 var(--njg-t2) var(--cl-head); color: var(--cl-soft); }
 
 /* ---------- the instruction card ---------- */
-.cl-card { background: #fff; border-radius: var(--cl-r); box-shadow: 0 2px 0 #e7d8c0, 0 6px 14px rgba(80, 60, 30, .08); padding: 8px 10px 10px; flex: 0 1 auto; min-height: 0; overflow: auto; }
-.cl-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.cl-card { background: #fff; border-radius: var(--cl-r); box-shadow: 0 2px 0 #e7d8c0, 0 6px 14px rgba(80, 60, 30, .08); padding: var(--njg-s2) var(--njg-s2) var(--njg-s2); flex: 0 1 auto; min-height: 0; overflow: auto; }
+.cl-card-head { display: flex; align-items: center; gap: var(--njg-s2); margin-bottom: var(--njg-s1); }
 .cl-card-face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex: none; background: #d6b08c; }
 .cl-card-face:empty { display: none; }
 .cl-card-face svg, .cl-card-face .cl-fig { width: 100%; height: 100%; }
 .cl-card-title { flex: 1; font: 700 15px var(--cl-head); color: var(--cl-soft); line-height: 1.1; }
 .cl-card-speak { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e0d2bd; background: #fffaf1; font-size: 20px; cursor: pointer; flex: none; }
-.cl-card-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.cl-row { display: flex; align-items: center; gap: 8px; padding: 6px 6px; border-radius: 10px; font: 700 clamp(15px, 1.7vw, 22px) var(--cl-head); line-height: 1.15; }
+.cl-card-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--njg-s1); }
+.cl-row { display: flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s2); border-radius: 10px; font: 700 clamp(15px, 1.7vw, 22px) var(--cl-head); line-height: 1.15; }
 .cl-row.now { background: #fff4df; }
 .cl-row.reading { background: #ffe9b3; }
 .cl-row.pulse { animation: cl-throb 1s ease-in-out infinite; }
@@ -66,7 +66,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 
 /* ---------- the tray (fixed slots) ---------- */
 .cl-side-tray { flex: 0 0 auto; }
-.cl-tray { display: flex; flex-wrap: wrap; gap: 8px; }
+.cl-tray { display: flex; flex-wrap: wrap; gap: var(--njg-s2); }
 .cl-side .cl-tray { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
 .cl-side .cl-tray .cl-dish { width: 100%; height: clamp(48px, 9vh, 76px); }
 .cl-dish { position: relative; width: clamp(64px, 8vw, 96px); height: clamp(64px, 8vw, 96px); border-radius: 50%; border: 4px dashed #d8c6a8; background: #fbf4e6; display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .15s; }
@@ -93,14 +93,14 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-item-img { width: 100%; height: 100%; object-fit: contain; }
 
 /* ---------- the tally (top right of the play area) ---------- */
-.cl-tally { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; z-index: 30; pointer-events: none; }
+.cl-tally { position: absolute; top: 8px; right: 8px; display: flex; gap: var(--njg-s2); z-index: 30; pointer-events: none; }
 .cl-tally.empty { display: none; }
-.cl-tally-chip { display: flex; align-items: center; gap: 4px; background: #fff; border-radius: 20px; padding: 4px 10px 4px 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, .1); font: 800 20px var(--cl-head); }
+.cl-tally-chip { display: flex; align-items: center; gap: var(--njg-s1); background: #fff; border-radius: 20px; padding: var(--njg-s1) var(--njg-s2) var(--njg-s1) var(--njg-s1); box-shadow: 0 2px 6px rgba(0, 0, 0, .1); font: 800 20px var(--cl-head); }
 .cl-tally-chip.bump { animation: cl-bump .3s; }
 @keyframes cl-bump { 50% { transform: scale(1.2); } }
 
 /* ---------- the big buttons (right) ---------- */
-.cl-go { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: #fff !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: 10px 8px; box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
+.cl-go { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: #fff !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: var(--njg-s2) var(--njg-s2); box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
 .cl-go:active { transform: translateY(3px); box-shadow: 0 2px 0 #1f6457; }
 .cl-go .ph { color: #e8fff9; }
 /* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
@@ -120,7 +120,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 @keyframes cl-throb-go { 50% { transform: scale(1.06); box-shadow: 0 5px 0 #1f6457, 0 0 0 8px rgba(46, 139, 122, .25); } }
 
 /* ---------- speech bubbles ---------- */
-.cl-bubble { position: absolute; z-index: 60; max-width: 60%; background: #fff; border-radius: 18px; padding: 8px 14px; font: 700 clamp(15px, 1.8vw, 22px) var(--cl-head); box-shadow: 0 4px 12px rgba(0, 0, 0, .12); pointer-events: none; transform: translateY(-100%); animation: cl-pop .2s ease-out; }
+.cl-bubble { position: absolute; z-index: 60; max-width: 60%; background: #fff; border-radius: 18px; padding: var(--njg-s2) var(--njg-s3); font: 700 clamp(15px, 1.8vw, 22px) var(--cl-head); box-shadow: 0 4px 12px rgba(0, 0, 0, .12); pointer-events: none; transform: translateY(-100%); animation: cl-pop .2s ease-out; }
 .cl-bubble.top { left: 50%; top: 10px; transform: translateX(-50%); }
 .cl-bubble.who-patient { background: #fff7e8; border: 3px solid #f1d9ae; }
 .cl-bubble.who-doctor { background: #eef8f5; border: 3px solid #bfe0d7; }
@@ -154,15 +154,15 @@ body.clinic button { font-family: inherit; color: inherit; }
 @keyframes cl-spin { to { transform: rotate(360deg); } }
 
 /* ---------- lab chrome ---------- */
-.cl-lab-bar { position: fixed; top: 0; left: var(--cl-side-w); right: var(--cl-act-w); z-index: 200; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 4px 8px; background: rgba(255, 250, 241, .92); border-bottom: 2px solid #e6d6bd; font: 600 13px var(--cl-font); }
-.cl-lab-bar select, .cl-lab-bar input, .cl-lab-bar button { font: 600 13px var(--cl-font); padding: 3px 6px; border-radius: 8px; border: 1px solid #cdb996; background: #fff; }
+.cl-lab-bar { position: fixed; top: 0; left: var(--cl-side-w); right: var(--cl-act-w); z-index: 200; display: flex; flex-wrap: wrap; gap: var(--njg-s2); align-items: center; padding: var(--njg-s1) var(--njg-s2); background: rgba(255, 250, 241, .92); border-bottom: 2px solid #e6d6bd; font: 600 13px var(--cl-font); }
+.cl-lab-bar select, .cl-lab-bar input, .cl-lab-bar button { font: 600 13px var(--cl-font); padding: var(--njg-s1) var(--njg-s2); border-radius: 8px; border: 1px solid #cdb996; background: #fff; }
 .cl-lab-bar .grow { flex: 1; }
 .cl-lab-bar.min > :not(.cl-lab-toggle) { display: none; }
-.cl-lab-out { position: fixed; left: calc(var(--cl-side-w) + 8px); bottom: 8px; z-index: 200; max-width: 55vw; max-height: 40vh; overflow: auto; background: rgba(255, 255, 255, .95); border-radius: 10px; padding: 6px 10px; font: 12px ui-monospace, monospace; white-space: pre-wrap; box-shadow: 0 2px 8px rgba(0, 0, 0, .15); }
+.cl-lab-out { position: fixed; left: calc(var(--cl-side-w) + 8px); bottom: 8px; z-index: 200; max-width: 55vw; max-height: 40vh; overflow: auto; background: rgba(255, 255, 255, .95); border-radius: 10px; padding: var(--njg-s2) var(--njg-s2); font: 12px ui-monospace, monospace; white-space: pre-wrap; box-shadow: 0 2px 8px rgba(0, 0, 0, .15); }
 .cl-lab-out:empty { display: none; }
 
 @media (max-height: 460px) {
-  .cl-row { padding: 3px 4px; font-size: 15px; }
+  .cl-row { padding: var(--njg-s1) var(--njg-s1); font-size: 15px; }
   .cl-go { min-height: 56px; }
   .cl-card-face, .cl-card-speak, .cl-bulb { width: 36px; height: 36px; }
   .cl-side .cl-tray .cl-dish { height: 44px; }
@@ -215,7 +215,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-probe.sel { border-color: var(--cl-accent); background: rgba(46, 139, 122, .25); animation: none; }
 .cl-probe.done { opacity: .35; animation: none; }
 @keyframes cl-probe { 50% { transform: translate(-50%, -50%) scale(1.18); box-shadow: 0 0 0 8px rgba(226, 163, 58, .25); } }
-.cl-kit { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 25; }
+.cl-kit { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: var(--njg-s2); z-index: 25; }
 .cl-kit-tool { width: clamp(52px, min(7vw, 13vh), 84px); height: clamp(52px, min(7vw, 13vh), 84px); border-radius: 18px; border: 3px solid #d8c6a8; background: #fff; display: grid; place-items: center; cursor: pointer; padding: 0; }
 .cl-kit-tool.sel { border-color: var(--cl-accent); box-shadow: 0 0 0 5px rgba(46, 139, 122, .35); transform: scale(1.06); }
 .cl-find { position: absolute; transform: translate(-50%, -50%); font-size: 34px; pointer-events: none; animation: cl-pop .2s; }
@@ -227,15 +227,15 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-belt.stopped .cl-belt-track { filter: saturate(.4); }
 .cl-belt-dish { position: absolute; left: 0; top: 50%; margin-top: calc(clamp(64px, 9vw, 104px) / -2); width: clamp(64px, 9vw, 104px); height: clamp(64px, 9vw, 104px); border-radius: 50%; border: 4px solid #e9e1d2; background: #fffaf1; display: grid; place-items: center; padding: 0; cursor: pointer; will-change: transform; box-shadow: 0 4px 0 rgba(0, 0, 0, .18); touch-action: none; }
 .cl-fly { position: fixed; z-index: 300; border-radius: 50%; border: 4px solid #e9e1d2; background: #fffaf1; display: grid; place-items: center; transition: transform .3s ease-in; pointer-events: none; }
-.cl-counter-tray { position: absolute; right: 3%; bottom: 6%; padding: 12px 14px; background: #caa46f; border-radius: 22px; box-shadow: 0 6px 0 #9c7a4a; display: flex; gap: 10px; }
+.cl-counter-tray { position: absolute; right: 3%; bottom: 6%; padding: var(--njg-s3) var(--njg-s3); background: #caa46f; border-radius: 22px; box-shadow: 0 6px 0 #9c7a4a; display: flex; gap: var(--njg-s2); }
 .cl-counter-tray .cl-dish { cursor: default; }
 .cl-dish.lifted { transform: translateY(-18px) scale(1.08); box-shadow: 0 10px 18px rgba(0, 0, 0, .2); }
 .cl-stopper { position: absolute; left: 3%; bottom: 8%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: #fff6d8; font-size: 30px; cursor: pointer; }
 .cl-item.own-colour { border-color: rgba(0, 0, 0, .08); }
 
 /* stage 5: faces, the one more thing, the sticker */
-.cl-faces { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 10px; width: min(38%, 300px); z-index: 25; }
-.cl-face-card { min-height: 88px; border-radius: 20px; border: 4px solid #e2d3bb; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; padding: 6px; }
+.cl-faces { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: var(--njg-s2); width: min(38%, 300px); z-index: 25; }
+.cl-face-card { min-height: 88px; border-radius: 20px; border: 4px solid #e2d3bb; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--njg-s1); cursor: pointer; padding: var(--njg-s2); }
 .cl-face-emoji { font-size: clamp(34px, 5vw, 54px); line-height: 1; }
 .cl-face-word { font: 700 15px var(--cl-head); }
 .cl-face-card.yes { border-color: var(--cl-good); box-shadow: 0 0 0 5px rgba(63, 163, 91, .3); }
@@ -245,19 +245,19 @@ body.clinic button { font-family: inherit; color: inherit; }
 @keyframes cl-sticker { 0% { transform: scale(0) rotate(-30deg); } 60% { transform: scale(1.2) rotate(8deg); } 100% { transform: scale(1) rotate(-6deg); } }
 
 /* speaking: the pills without a mic (the shared Say panel draws its own) */
-.cl-pills { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 92%; z-index: 90; background: rgba(255, 250, 241, .95); padding: 12px; border-radius: 22px; box-shadow: 0 6px 20px rgba(0, 0, 0, .15); }
+.cl-pills { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: var(--njg-s2); max-width: 92%; z-index: 90; background: rgba(255, 250, 241, .95); padding: var(--njg-s3); border-radius: 22px; box-shadow: 0 6px 20px rgba(0, 0, 0, .15); }
 .cl-pills-cap { width: 100%; text-align: center; font: 700 16px var(--cl-head); color: var(--cl-soft); }
-.cl-pill { min-height: 64px; padding: 8px 18px; border-radius: 32px; border: 3px solid #d8c6a8; background: #fff; font: 800 clamp(16px, 2vw, 22px) var(--cl-head); cursor: pointer; }
+.cl-pill { min-height: 64px; padding: var(--njg-s2) var(--njg-s4); border-radius: 32px; border: 3px solid #d8c6a8; background: #fff; font: 800 clamp(16px, 2vw, 22px) var(--cl-head); cursor: pointer; }
 
 /* close the clinic: the receipt */
-.cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: #fff; border-radius: 22px; padding: 16px 20px; box-shadow: 0 8px 30px rgba(0, 0, 0, .15); text-align: center; }
+.cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: #fff; border-radius: 22px; padding: var(--njg-s4) var(--njg-s4); box-shadow: 0 8px 30px rgba(0, 0, 0, .15); text-align: center; }
 .cl-receipt-title { font-size: 44px; }
-.cl-receipt-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; border-bottom: 2px dashed #eadcc6; }
+.cl-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: 2px dashed #eadcc6; }
 .cl-receipt-row .cl-face { width: 56px; height: 56px; flex: none; }
 .cl-receipt-item { width: 56px; height: 56px; display: grid; place-items: center; }
 .cl-receipt-mark { margin-left: auto; font-size: 34px; color: #cdb996; }
 .cl-receipt-mark.gold { color: #e2a33a; }
-.cl-receipt-coins { margin-top: 10px; font: 800 30px var(--cl-head); }
+.cl-receipt-coins { margin-top: var(--njg-s2); font: 800 30px var(--cl-head); }
 
 /* narrow and short screens */
 @media (max-width: 700px) and (orientation: portrait) {
@@ -267,7 +267,7 @@ body.clinic button { font-family: inherit; color: inherit; }
   .cl-side-tray { flex: 1 1 100%; }
   .cl-side .cl-tray { flex-direction: row; }
   .cl-side .cl-tray .cl-dish { width: 64px; height: 56px; }
-  .cl-actions { flex-direction: row; justify-content: flex-end; padding: 8px; }
+  .cl-actions { flex-direction: row; justify-content: flex-end; padding: var(--njg-s2); }
   .cl-go { min-width: 140px; }
   .cl-lab-bar { left: 0; right: 0; }
 }
@@ -303,7 +303,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-wp.walking { transform: translate(-50%, -100%) scale(.82); }
 .cl-wp.gone { opacity: 0; }
 .cl-wp .cl-ring { top: -8%; }
-.cl-wtick { width: clamp(44px, 4.6vw, 58px); height: clamp(44px, 4.6vw, 58px); padding: 7px; border-radius: 50%; border: 4px solid #c9962e; background: rgba(255, 255, 255, .88); color: #fff !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
+.cl-wtick { width: clamp(44px, 4.6vw, 58px); height: clamp(44px, 4.6vw, 58px); padding: var(--njg-s2); border-radius: 50%; border: 4px solid #c9962e; background: rgba(255, 255, 255, .88); color: #fff !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
 .cl-wtick svg { width: 100%; height: 100%; display: block; opacity: 0; }
 .cl-wtick.locked svg { opacity: 1; }
 .cl-wtick.locked { background: #3fa35b; border-color: #fff; animation: cl-lock .35s ease-out; }
@@ -318,7 +318,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-doc { aspect-ratio: 100 / 260; pointer-events: none; }
 .cl-doc svg { width: 100%; height: 100%; display: block; }
 .cl-doc-stand { transform: translate(-50%, -100%) scaleX(-1); }
-.cl-room.v2 .cl-kit { left: 2%; right: auto; top: 57%; bottom: auto; transform: translateY(-50%); flex-direction: column; background: rgba(255, 250, 241, .9); padding: 8px; border-radius: 16px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-room.v2 .cl-kit { left: 2%; right: auto; top: 57%; bottom: auto; transform: translateY(-50%); flex-direction: column; background: rgba(255, 250, 241, .9); padding: var(--njg-s2); border-radius: 16px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
 .cl-kit-tool.cue { animation: cl-throb-dish 1s ease-in-out infinite; border-color: #c9962e; }
 .cl-item.standin { background: none; border: none; border-radius: 0; }
 .cl-item.standin svg { width: 100%; height: 100%; display: block; }
@@ -330,7 +330,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-belt.v2 .cl-belt-dish .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; filter: drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
 .cl-belt.v2 .cl-belt-dish .cl-item[data-colour]:not(.own-colour) { background: radial-gradient(circle at 50% 60%, var(--tint) 0 34%, transparent 36%); }
 .cl-belt.v2.stopped .cl-belt-dish { filter: saturate(.5); }
-.cl-counter-tray.v2 { right: auto; bottom: auto; transform: translate(-50%, -50%); background: rgba(255, 250, 241, .55); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); padding: 10px 14px; gap: 14px; }
+.cl-counter-tray.v2 { right: auto; bottom: auto; transform: translate(-50%, -50%); background: rgba(255, 250, 241, .55); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); padding: var(--njg-s2) var(--njg-s3); gap: var(--njg-s3); }
 .cl-counter-tray.v2 .cl-dish { border-radius: 14px; border: 3px dashed #c9962e; background: rgba(255, 255, 255, .6); }
 .cl-counter-tray.v2 .cl-dish.full { border: 3px solid #c9962e; background: #fff; }
 .cl-counter-tray.v2 .cl-dish .cl-item { background: none; border: 0; }
@@ -343,8 +343,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-feel-circle { position: absolute; left: 50%; top: -4%; width: 42%; aspect-ratio: 1; transform: translate(-50%, -100%); border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); border: 3px solid #fff; display: grid; place-items: center; }
 .cl-feel-q { font: 800 26px var(--cl-head); color: #b9ae9f; }
 .cl-feel-circle.on { animation: cl-pop .25s ease-out; }
-.cl-feel-cards { display: flex; gap: 12px; padding: 10px 12px; background: rgba(255, 250, 241, .72); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-feel-cards .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: 6px; border-radius: 16px; border: 3px solid #e2d3bb; }
+.cl-feel-cards { display: flex; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s3); background: rgba(255, 250, 241, .72); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-feel-cards .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid #e2d3bb; }
 .cl-help-card .cl-item { width: 100%; height: 100%; max-width: none; max-height: none; background: none; border: 0; }
 .room-door .cl-extra { width: clamp(64px, 7vw, 90px); height: clamp(64px, 7vw, 90px); margin: 0; border-radius: 18px; }
 .room-door .cl-extra .cl-item { width: 100%; height: 100%; background: none; border: 0; }
@@ -354,25 +354,25 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-ask-q { position: absolute; right: -10px; top: -10px; width: 36px; height: 36px; border-radius: 50%; background: #7e9a76; color: #fff; font: 800 24px var(--cl-head); display: grid; place-items: center; }
 .cl-patient-layer.leaving { transition: left 1.2s ease-in, opacity 1.2s; left: 76% !important; opacity: .0; }
 /* G6: the running count on a row (level 1), the Kutchi number word */
-.cl-row-count { margin-left: auto; padding: 2px 10px; border-radius: 12px; background: #fff4df; color: #8c2f2f; font: 800 17px var(--cl-head); }
+.cl-row-count { margin-left: auto; padding: var(--njg-s1) var(--njg-s2); border-radius: 12px; background: #fff4df; color: #8c2f2f; font: 800 17px var(--cl-head); }
 .cl-row-count:empty { display: none; }
 .cl-row-count.bump { animation: cl-bump .3s; }
 .cl-row.done .cl-row-count { background: none; }
 
 /* the ? (G7 / CQ15): bottom of the sidebar; its pop holds the goal and, during first-time help, the grown-ups' skip */
-.cl-dock { margin-top: auto; display: flex; gap: 12px; padding-top: 8px; }
+.cl-dock { margin-top: auto; display: flex; gap: var(--njg-s3); padding-top: var(--njg-s2); }
 .cl-help-btn { width: var(--njg-rail); height: var(--njg-rail); border-radius: 50%; border: 2px solid #e6d5b8; background: #fffaf0; font: 800 22px var(--cl-head); color: #2a2522; cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: #2a2522; color: #fff8ec; border-radius: 16px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
+.cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: #2a2522; color: #fff8ec; border-radius: 16px; padding: var(--njg-s3) var(--njg-s3); box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
 .cl-help-pop .ob-skip-row { color: #2a2522; }
 
 /* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
 /* the hints so far: a small count on the bulb's corner (inside the guide box, never past its edge) */
 .cl-nani .ng-tools { position: relative; }
 .cl-nani .cl-hint-n { position: absolute; left: calc(var(--njg-tool) - var(--njg-s3)); top: calc(var(--njg-s1) * -1); font-size: var(--njg-t3); line-height: 1; min-width: 0; pointer-events: none; }
-.cl-card.oc-card { padding: 10px 12px; border-radius: 12px; }
-.cl-card.oc-card .cl-card-head { margin-bottom: 6px; }
+.cl-card.oc-card { padding: var(--njg-s2) var(--njg-s3); border-radius: 12px; }
+.cl-card.oc-card .cl-card-head { margin-bottom: var(--njg-s2); }
 .cl-card.oc-card .cl-card-head:has(.cl-card-face:empty) .cl-card-title:empty { display: none; }
-.cl-card.oc-card .cl-row { justify-content: space-between; padding: 6px 8px; border-radius: 10px; font: 800 clamp(15px, 1.6vw, 20px) var(--cl-font); color: #2a2522; }
+.cl-card.oc-card .cl-row { justify-content: space-between; padding: var(--njg-s2) var(--njg-s2); border-radius: 10px; font: 800 clamp(15px, 1.6vw, 20px) var(--cl-font); color: #2a2522; }
 .cl-card.oc-card .cl-row + .cl-row { border-top: 1px solid #efe8dc; }
 .cl-card.oc-card .cl-tick { width: 22px; height: 22px; border: 2px solid #d9d2c7; border-radius: 50%; background: none; flex: none; order: 3; }
 .cl-card.oc-card .cl-row.done .cl-tick { border: 0; background: none; }
@@ -394,7 +394,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* UX 15: the buttons come from the shared kit (css/shared/buttons.css) and sit in the play area's
    bottom-right corner, inside its edges (the pharmacy's button was cut off by the frame: 13b) */
 .cl-app { grid-template-columns: var(--cl-side-w) 1fr; }
-.cl-actions { position: absolute; z-index: 40; right: max(10px, 2%); bottom: max(10px, 3%); left: auto; top: auto; display: flex; flex-direction: row; align-items: flex-end; justify-content: flex-end; gap: 10px; padding: 0; background: none; pointer-events: none; max-width: calc(100% - 20px); }
+.cl-actions { position: absolute; z-index: 40; right: max(10px, 2%); bottom: max(10px, 3%); left: auto; top: auto; display: flex; flex-direction: row; align-items: flex-end; justify-content: flex-end; gap: var(--njg-s2); padding: 0; background: none; pointer-events: none; max-width: calc(100% - 20px); }
 .cl-actions > * { pointer-events: auto; }
 .cl-actions .njg-btn { position: relative; right: auto; bottom: auto; }
 .cl-actions .cl-go.njg-next { color: #2a2522 !important; min-height: 48px; }
@@ -410,10 +410,10 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-card .oc-face.cl-card-face > .cl-face svg, .cl-card .oc-face.cl-card-face > .cl-face img { width: 100%; height: 100%; object-fit: cover; }
 .cl-card .cl-row { font: inherit; }
 .cl-card .cl-row .cl-row-text .ku { color: #8c2f2f; }
-.cl-card .cl-row-count { margin-left: 6px; font-size: 15px; }
+.cl-card .cl-row-count { margin-left: var(--njg-s2); font-size: 15px; }
 .cl-card .oc-row .oc-t::first-letter { text-transform: none; }
 .cl-card .oc-card.closed { cursor: pointer; }
-.cl-card .oc-card.closed.folded .oc-head::after { content: "···"; font: 800 22px var(--cl-head); color: #b8a88f; margin-left: 8px; letter-spacing: 2px; }
+.cl-card .oc-card.closed.folded .oc-head::after { content: "···"; font: 800 22px var(--cl-head); color: #b8a88f; margin-left: var(--njg-s2); letter-spacing: 2px; }
 /* 13f: the doctor's box (the shared guide box, in the clinic's teal: Nani isn't at the clinic) */
 .cl-docbox { --nani-sage: #4f9a8a; }
 .cl-docbox .ng-face img { object-position: center; }
@@ -440,15 +440,15 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-card.english .oc-headline .cl-row-text { display: none; }
 .cl-card.english .oc-headline .cl-row-en { display: inline; color: #1b5e8a; }
 /* 13d: the feeling cards in a thought bubble rising from the patient's head, opening out to the right */
-.cl-thought { position: absolute; z-index: 25; display: grid; grid-template-columns: repeat(2, auto); gap: 10px; padding: 16px 18px; background: #fff; border-radius: 40px; box-shadow: 0 4px 16px rgba(40, 25, 10, .16); transform-origin: 0% 100%; animation: cl-thought-in .35s ease-out; }
-.cl-thought .cl-face-card { width: clamp(56px, 6.4vw, 86px); height: clamp(56px, 6.4vw, 86px); min-height: 0; padding: 5px; border-radius: 50%; border: 3px solid #e2d3bb; }
+.cl-thought { position: absolute; z-index: 25; display: grid; grid-template-columns: repeat(2, auto); gap: var(--njg-s2); padding: var(--njg-s4) var(--njg-s4); background: #fff; border-radius: 40px; box-shadow: 0 4px 16px rgba(40, 25, 10, .16); transform-origin: 0% 100%; animation: cl-thought-in .35s ease-out; }
+.cl-thought .cl-face-card { width: clamp(56px, 6.4vw, 86px); height: clamp(56px, 6.4vw, 86px); min-height: 0; padding: var(--njg-s1); border-radius: 50%; border: 3px solid #e2d3bb; }
 .cl-thought-dot { position: absolute; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(40, 25, 10, .14); }
 .cl-thought-dot.d1 { width: 18px; height: 18px; left: -14px; bottom: -14px; }
 .cl-thought-dot.d2 { width: 11px; height: 11px; left: -28px; bottom: -30px; }
 @keyframes cl-thought-in { from { transform: scale(.2); opacity: 0; } }
 /* 13e: from level 3, the help items in a tray along the bottom of the screen */
-.cl-help-tray { position: absolute; z-index: 25; left: 50%; bottom: 3%; transform: translateX(-50%); display: flex; gap: 14px; padding: 10px 16px; background: rgba(255, 250, 241, .9); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
-.cl-help-tray .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: 6px; border-radius: 16px; border: 3px solid #e2d3bb; }
+.cl-help-tray { position: absolute; z-index: 25; left: 50%; bottom: 3%; transform: translateX(-50%); display: flex; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s4); background: rgba(255, 250, 241, .9); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-help-tray .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid #e2d3bb; }
 /* level 1's hint sits on the patient's own face (13d): the stand-in circle over the head */
 .cl-feel-circle.on-face { top: 1%; width: 30%; transform: translate(-50%, 0); opacity: 0; pointer-events: none; }
 .cl-feel-circle.on-face.on { opacity: 1; }
@@ -456,7 +456,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-lab-out { left: 8px; bottom: 66px; max-width: calc(var(--cl-side-w) - 16px); max-height: 28vh; font-size: 11px; opacity: .92; }
 .cl-lab-bar { right: 0; }
 /* the shared buttons keep their one look (UX 15): the clinic's old .cl-go styles (kept on them for the tests) don't apply */
-.cl-go.njg-next { background: #fff !important; color: #2a2522 !important; border: 2px solid #c9962e !important; border-radius: 12px !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .10) !important; font: 800 clamp(15px, 1.5vw, 20px)/1.15 Nunito, "Baloo 2", system-ui, sans-serif !important; min-height: 48px; padding: clamp(8px, 1.1vw, 14px) clamp(14px, 1.8vw, 22px) !important; animation: none; }
+.cl-go.njg-next { background: #fff !important; color: #2a2522 !important; border: 2px solid #c9962e !important; border-radius: 12px !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .10) !important; font: 800 clamp(15px, 1.5vw, 20px)/1.15 Nunito, "Baloo 2", system-ui, sans-serif !important; min-height: 48px; padding: clamp(var(--njg-s2), 1.1vw, var(--njg-s3)) clamp(var(--njg-s3), 1.8vw, 22px) !important; animation: none; }
 .cl-go.njg-next.glow { animation: njgNextGlow 1s ease-in-out infinite; }
 .cl-go.njg-next .ph { color: #6f6153 !important; }
 .cl-go.njg-done { background: #fffaf0 !important; border: 1px solid #e6d5b8 !important; border-radius: 50% !important; box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, .22) !important; min-height: 0 !important; padding: 0 !important; width: clamp(58px, 8vw, 96px) !important; height: auto !important; aspect-ratio: 1; animation: none; }

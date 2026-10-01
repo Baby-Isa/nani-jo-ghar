@@ -199,6 +199,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           const sp = plan.stages[name];
           if (name === "heal" && heal && sp.game !== heal) sp.game = heal;
           const res = await R.stage(screen, name, plan, env);
+          S.current = null; // the stage is over: nothing is expected of the child until the next one says so
           if (stopped) return;
           round.results[name] = res;
           // the first try of every tested row (E14); the healing game's own right/total as rows of its own
