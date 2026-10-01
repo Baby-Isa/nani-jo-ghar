@@ -61,7 +61,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--rs-pad);
-  width: min(100%, calc(var(--njg-badge) * 5));
+  width: min(100%, var(--njg-end-card));
   max-height: 100%;
   padding: var(--rs-pad);
   border-radius: var(--njg-radius);
@@ -249,10 +249,10 @@
   flex: var(--rs-cols, 1) 1 0;
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, calc(var(--njg-badge) * 1.1)));
+  grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, var(--njg-end-col)));
   align-content: start;
   gap: var(--njg-s3);
-  padding: 0 var(--njg-s5);
+  padding: 0 var(--njg-s4);
 }
 .rs-words-col:empty { display: none; }
 /* the thin divider between wrong (left) and right (right) */

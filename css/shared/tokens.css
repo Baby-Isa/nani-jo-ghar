@@ -58,7 +58,7 @@
   --njg-row-h: 36px; --njg-part-h: 32px; --njg-big-row-h: 48px; --njg-big-part-h: 44px;
   --njg-side-pad: 8px; --njg-side-gap: 8px; --njg-card-pad: 8px; --njg-card-gap: 8px; --njg-indent: 20px;
   --njg-done: 88px; --njg-tick: 20px; --njg-hand-w: 64px; --njg-hand-h: 80px;
-  --njg-badge: 200px; --njg-end-btn: 72px; --njg-end-pad: 24px; --njg-end-word: 28px; --njg-end-cap: 22px; --njg-end-foot: 30px; --njg-end-btn-t: 20px;
+  --njg-badge: 200px; --njg-end-btn: 72px; --njg-end-pad: 24px; --njg-end-word: 28px; --njg-end-cap: 22px; --njg-end-foot: 30px; --njg-end-btn-t: 20px; --njg-end-card: 1000px; --njg-end-col: 220px;
   --njg-side-w: max(clamp(200px, 19vw, 360px), min(360px, 100vw - 100dvh * 1.7778));
 }
 /* phones (short side under 500 px) */
@@ -88,7 +88,7 @@
     --njg-row-h: 41.4px; --njg-part-h: 36.8px; --njg-big-row-h: 55.2px; --njg-big-part-h: 50.6px;
     --njg-side-pad: 9.2px; --njg-side-gap: 9.2px; --njg-card-pad: 9.2px; --njg-card-gap: 9.2px; --njg-indent: 23px;
     --njg-done: 101.2px; --njg-tick: 23px;
-    --njg-badge: 230px; --njg-end-btn: 82.8px; --njg-end-pad: 27.6px; --njg-end-word: 32.2px; --njg-end-cap: 25.3px; --njg-end-foot: 34.5px; --njg-end-btn-t: 23px;
+    --njg-badge: 230px; --njg-end-btn: 82.8px; --njg-end-pad: 27.6px; --njg-end-word: 32.2px; --njg-end-cap: 25.3px; --njg-end-foot: 34.5px; --njg-end-btn-t: 23px; --njg-end-card: 1150px; --njg-end-col: 253px;
     --njg-side-w: clamp(253px, 25vw, 345px);
   }
 }

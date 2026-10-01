@@ -66,7 +66,7 @@
     ]
   },
   "sizes": {
-    "_about": "Base values (px at scale 1). `laptop` is the full set; `phone` and `tablet` list only what differs. t1-t4 are the design system's Nunito L1-L4 (CDS 2); side-* the sidebar's headline, row and sub-line; big-* the request pop-up; s1-s7 the 8-pt spacing; face the visible face on a card, face-hit its tap area; tool the guide box's bulb and mute; rail the nav dock's buttons; row-h and part-h an order card's item row and part; done the round Done tick. badge, end-* are the end screen's (js/shared/results.js): a badge's picture, its buttons, padding, the review's word, captions, the accuracy count, the buttons' words.",
+    "_about": "Base values (px at scale 1). `laptop` is the full set; `phone` and `tablet` list only what differs. t1-t4 are the design system's Nunito L1-L4 (CDS 2); side-* the sidebar's headline, row and sub-line; big-* the request pop-up; s1-s7 the 8-pt spacing; face the visible face on a card, face-hit its tap area; tool the guide box's bulb and mute; rail the nav dock's buttons; row-h and part-h an order card's item row and part; done the round Done tick. badge, end-* are the end screen's (js/shared/results.js): a badge's picture, its buttons, padding, the review's word, captions, the accuracy count, the buttons' words. end-card is the end screen card's widest, end-col a review column's widest.",
     "laptop": {
       "t1": 22,
       "t2": 20,
@@ -116,7 +116,9 @@
       "end-foot": 30,
       "end-btn-t": 20,
       "hand-w": 64,
-      "hand-h": 80
+      "hand-h": 80,
+      "end-card": 1000,
+      "end-col": 220
     },
     "phone": {
       "side-h": 16,
