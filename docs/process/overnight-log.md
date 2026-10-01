@@ -87,3 +87,4 @@
 - 2026-10-01 22:05 UK · R5 building the heal rules (eye badge, count badge on the tool, goal headlines, no stars on the receipt); R4 running its final sandbox check.
 - 2026-10-01 22:46 UK · Both running and pushing. R4 notes Cook's play items can't grow on tablets until stations are laid out for 4:3 (open item). R5 drafting its report while finishing the zoom-out.
 - 2026-10-01 23:25 UK · R4 done (stars and wage gone, Cook on core and host, SH-02 fixed, modules; tablets not done; 94 findings traced to R3a's shared layout incl. Snap hang). Launched R6 gate prep (stop 06:30) to fix those, stitched speech, versioning, labs. New rows CK-TB-01 (take-back gap in 9 stations) and CK-TAB-01 (Cook 4:3 layouts).
+- 2026-10-02 00:05 UK · R6 found the Snap hang's cause (parked modes' own English rotate card lost its hiding rule with R3a) and fixed it; R5 finishing the end review's steps and keeping tummy/hic/hair as they were.
