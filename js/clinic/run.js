@@ -1,18 +1,13 @@
 /*
- * The clinic's runner (DOM): a patient through the five stages, then the
- * shared end-of-round screen (js/shared/results.js: time, accuracy, hints,
- * then the word review), and a clinic morning of patients with "Close the
- * clinic" at the end (docs/archive/clinic/clinic-design-v1.md P1, P6, P8).
+ * The clinic's stage runner (DOM). The one game host runs the rounds (js/clinic/main.js: a patient, a
+ * morning, a lab stage); this file loads the data and runs ONE stage of a patient's plan on the clinic's
+ * screen, and draws "Close the clinic" at the end of a morning.
  *
  *   await Clinic.Run.load();                       // data, art, the body
- *   const scr = Clinic.Screen.build(root);
- *   await Clinic.Run.morning(scr, {session});      // the saved session when omitted
- *   await Clinic.Run.patient(scr, plan, {results}) // one patient
- *   Clinic.Run.stage(scr, "pharmacy", plan)        // one stage alone (the lab)
+ *   Clinic.Run.stage(scr, "pharmacy", plan, env)   // one stage of a plan
  *
- * Progress lives in UIStore("clinic", "state"): {session, levels per stage,
- * album, coins}. After a morning, a stage whose rows were all right goes up a
- * level (ClinicPipeline.levelUp). The first-ever session is session 1.
+ * Progress lives in the clinic's own save namespace ("clinic": {state: {session, levels per stage, album}}).
+ * After a morning, a stage whose rows were all right goes up a level (ClinicPipeline.levelUp).
  */
 (function (global) {
   "use strict";
@@ -37,18 +32,29 @@
   R.games = () => Clinic.Heal.ids();
 
   /* ---------------- saved state ---------------- */
-  const DEF = () => ({ session: 1, levels: { waiting: 1, diagnosis: 1, pharmacy: 1, heal: 1, sendoff: 1 }, album: [], coins: 0 });
+  // R5: the clinic's own namespace in the one save ("clinic": session, stage levels, album). No coins: they are the
+  // one purse's (decision 20). Read once from the old place (ui.clinic.state) when the namespace is still empty.
+  const DEF = () => ({ session: 1, levels: { waiting: 1, diagnosis: 1, pharmacy: 1, heal: 1, sendoff: 1 }, album: [] });
+  const SAVE = () => (global.Save && typeof global.Save.get === "function" ? global.Save : null);
   R.state = function () {
     try {
-      const s = global.UIStore && global.UIStore.get("clinic", "state");
-      return Object.assign(DEF(), s || {});
+      const sv = SAVE();
+      let s = sv ? (sv.get("clinic") || {}).state : null;
+      if (!s && global.UIStore) s = global.UIStore.get("clinic", "state");
+      const out = Object.assign(DEF(), s || {});
+      delete out.coins;
+      return out;
     } catch (e) {
       return DEF();
     }
   };
   R.save = function (s) {
     try {
-      if (global.UIStore) global.UIStore.set("clinic", "state", s);
+      const sv = SAVE();
+      const st = Object.assign({}, s);
+      delete st.coins;
+      if (sv && sv.update) sv.update("clinic", (d) => Object.assign({}, d, { state: st }));
+      else if (global.UIStore) global.UIStore.set("clinic", "state", st);
     } catch (e) {
       /* labs without storage */
     }
@@ -84,96 +90,8 @@
     return res;
   };
 
-  /** The patient's accuracy: every tested row of the five stages, plus the healing game's own right/total. */
-  R.score = function (results) {
-    const marks = [];
-    ["waiting", "diagnosis", "pharmacy"].forEach((s) => (results[s] ? results[s].rows : []).forEach((r) => r.tested && marks.push(r.ok)));
-    const hl = results.heal && results.heal.heal;
-    if (hl && hl.total) for (let i = 0; i < hl.total; i++) marks.push(i < hl.right);
-    (results.sendoff ? results.sendoff.rows : []).forEach((r) => r.tested && marks.push(r.ok));
-    return { right: marks.filter(Boolean).length, total: marks.length, marks };
-  };
-
-  /** One patient through the pipeline, then the end-of-round screen. */
-  R.patient = async function (screen, plan, o = {}) {
-    const env = R.env(screen, plan, o);
-    screen.resetHints();
-    screen.trayWrap.classList.add("hidden");
-    const t0 = Date.now();
-    const results = {};
-    for (const name of PL().STAGES) {
-      if (o.only && !o.only.includes(name)) continue;
-      results[name] = await R.stage(screen, name, plan, env);
-    }
-    const timeMs = Date.now() - t0;
-    const sc = R.score(results);
-    const healWords = results.heal && results.heal.heal ? results.heal.heal.words : [];
-    const words = PL().words(R.data, plan, healWords);
-    const out = { plan, results, timeMs, right: sc.right, total: sc.total, marks: sc.marks, hints: screen.hints, words };
-    R.last = out;
-    env.fig.destroy();
-    if (o.results !== false && global.Results) {
-      out.shown = await global.Results.show({
-        mode: "clinic",
-        game: plan.ailment,
-        level: plan.level,
-        timeMs,
-        right: sc.right,
-        total: sc.total,
-        marks: sc.marks,
-        hints: screen.hints,
-        words,
-        sound: !Kit.fast,
-        container: document.body,
-        // UX 15: the end screen's actions from the shared kit, in the one order everywhere (Again, Next, the list, Home)
-        actions: global.NjgButtons ? global.NjgButtons.endActions(o.endActions || { next: "Next" }) : undefined,
-      });
-    }
-    return out;
-  };
-
-  /** A clinic morning (P8): the session's patients, then "Close the clinic". */
-  R.morning = async function (screen, o = {}) {
-    const st = R.state();
-    const session = o.session || st.session;
-    const rng = PL().rng(o.seed || Math.floor(Math.random() * 1e9));
-    const m = PL().morning(R.data, { session, levels: o.levels || st.levels, rng, games: R.games(), speak: o.speak != null ? o.speak : R.opts.speak });
-    R.morningPlan = m;
-    const outs = [];
-    // UI that appears when first needed (UX s8): the light bulb stays hidden through the first-ever patient
-    const bulbKey = "clinic/bulb";
-    if (global.Onboard && m.entry.first) global.Onboard.await(screen.bulb.btn, bulbKey);
-    else if (global.Onboard) global.Onboard.fadeIn(screen.bulb.btn, bulbKey);
-    for (let i = 0; i < m.patients.length; i++) {
-      const plan = m.patients[i];
-      const out = await R.patient(screen, plan, Object.assign({}, o, { rng }));
-      outs.push(out);
-      st.album = Array.from(new Set((st.album || []).concat([`${plan.kind}:${plan.ailment}`])));
-      st.coins = (st.coins || 0) + 1 + (out.right === out.total && out.total > 0 ? 1 : 0);
-      if (i < m.patients.length - 1) {
-        screen.clearStage();
-        screen.clearActions();
-        screen.card.setRows([]);
-        await S.button(screen, S.line({ data: R.data }, "nextpatient"));
-      }
-    }
-    // level up per stage (a stage whose tested rows were all right this morning)
-    const perStage = outs.map((x) => {
-      const r = {};
-      Object.entries(x.results).forEach(([s, v]) => (r[s] = s === "heal" ? [{ ok: !v.heal || !v.heal.total || v.heal.right === v.heal.total, tested: !!(v.heal && v.heal.total) }] : v.rows));
-      return r;
-    });
-    if (!o.noSave) {
-      st.levels = m.entry.levels && session <= 2 ? Object.assign({}, st.levels) : PL().levelUp(st.levels, perStage);
-      st.session = session + 1;
-      R.save(st);
-    }
-    await R.close(screen, outs, st);
-    return { morning: m, outs, state: st };
-  };
-
   /** "Close the clinic": the receipt (patients seen, stickers, pocket money). */
-  R.close = async function (screen, outs, st) {
+  R.close = async function (screen, outs, o = {}) {
     const stage = screen.clearStage();
     screen.clearActions();
     screen.card.setTitle("", S.doctorFace());
@@ -187,7 +105,7 @@
       h("span", "cl-receipt-item", row).appendChild(Kit.icon(o.plan.stages.pharmacy.asked[0], null));
       h("span", `cl-receipt-mark${o.right === o.total ? " gold" : ""}`, row, o.right === o.total ? "★" : "☆");
     });
-    h("div", "cl-receipt-coins", r, `🪙 ${st.coins || 0}`);
+    h("div", "cl-receipt-coins", r, `🪙 ${o.coins || 0}`);
     await S.button(screen, S.line({ data: R.data }, "close"));
   };
 })(typeof self !== "undefined" ? self : this);

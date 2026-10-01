@@ -30,8 +30,43 @@
     ?morning=1&session=3                   a morning (session 1 = the first-ever session); &nosave=1 keeps progress
     &grandparent=1                         the speaking moments show the grown-up's tick ("They said it")
   The index of every entry: lab/clinic-core.html.
-  window.__clinic for tests: {Run, Stages, expect(), finishHeal(), last, ready}.
+  Runs through the one game host (js/clinic/main.js, js/shared/host.js). Add &nonav=1 so the end screen's buttons stay on the page (tests).
+  window.__clinic for tests: {Run, Stages, expect(), finishHeal(), last, ready, host}; window.njgTest (target-model § 8.1).
 -->
+<script type="importmap" data-njg="core">
+{
+ "imports": {
+  "#core/content.js": "./js/core/content.js?v=20261001T045807Z",
+  "./js/core/content.js": "./js/core/content.js?v=20261001T045807Z",
+  "#core/context.js": "./js/core/context.js?v=20261001T045807Z",
+  "./js/core/context.js": "./js/core/context.js?v=20261001T045807Z",
+  "#core/env.js": "./js/core/env.js?v=20261001T045807Z",
+  "./js/core/env.js": "./js/core/env.js?v=20261001T045807Z",
+  "#core/index.js": "./js/core/index.js?v=20261001T045807Z",
+  "./js/core/index.js": "./js/core/index.js?v=20261001T045807Z",
+  "#core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
+  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
+  "#core/log.js": "./js/core/log.js?v=20261001T045807Z",
+  "./js/core/log.js": "./js/core/log.js?v=20261001T045807Z",
+  "#core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
+  "./js/core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
+  "#core/save.js": "./js/core/save.js?v=20261001T045807Z",
+  "./js/core/save.js": "./js/core/save.js?v=20261001T045807Z",
+  "#core/score.js": "./js/core/score.js?v=20261001T045807Z",
+  "./js/core/score.js": "./js/core/score.js?v=20261001T045807Z",
+  "#core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
+  "./js/core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
+  "#core/types.js": "./js/core/types.js?v=20261001T045807Z",
+  "./js/core/types.js": "./js/core/types.js?v=20261001T045807Z",
+  "#core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
+  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
+  "#core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
+  "./js/core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
+  "#core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z",
+  "./js/core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z"
+ }
+}
+</script>
 </head>
 <body class="clinic">
 <div id="clinic-root"></div>
@@ -62,8 +97,6 @@
 
 <script src="js/version.js?v=20261001T045807Z"></script>
 <script src="js/shared/frame.js?v=20261001T045807Z"></script>
-<!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
-<script src="js/shared/save.js?v=20261001T045807Z"></script>
 <script src="js/shared/app.js?v=20261001T045807Z"></script>
 <script src="js/shared/family-voice.js?v=20261001T045807Z"></script>
 <script src="js/shared/uistore.js?v=20261001T045807Z"></script>
@@ -95,117 +128,102 @@
 <script src="js/clinic/stages/heal.js?v=20261001T045807Z"></script>
 <script src="js/clinic/stages/sendoff.js?v=20261001T045807Z"></script>
 <script src="js/clinic/run.js?v=20261001T045807Z"></script>
-<script>
-(async function () {
+<script type="module">
+  // R5: the clinic runs through the one game host (js/shared/host.js) as a mode plug-in (js/clinic/main.js).
+  // The URL entries below are the same as before; window.__clinic keeps its calls for the tests, next to window.njgTest.
   const Q = new URLSearchParams(location.search);
-  const Kit = Clinic.Kit, Run = Clinic.Run, S = Clinic.Stages, P = ClinicPipeline;
-  // R3a hook-up (until R5 moves the clinic onto the framework): the shared bulb and tally behind the Kit's names, and the
-  // scene box from the shared stage (js/shared/stage.js: exactly fitScene's maths, build/test_shared_stage.mjs)
-  if (window.Bulb) Kit.Bulb = Bulb.KitBulb(Kit);
-  if (window.Tally) Kit.Tally = Tally.KitTally(Kit);
-  if (window.Stage) S.fitScene = function (stage, box, cap, room, A) {
-    const A_ = A || 1.5, SW = 1536, SH = SW / A_, need = room.need || [0, 1];
-    const spec = { w: SW, h: SH, safe: [need[0] * SW, null, need[1] * SW, null], fill: "cover", anchorY: room.ay != null ? room.ay : 0.6 };
-    const fit = () => {
-      if (!box.isConnected) return;
-      const W = stage.clientWidth, H = stage.clientHeight;
-      if (!W || !H) return;
-      const m = Stage.fit({ box: { w: W, h: H }, scene: spec });
-      Object.assign(box.style, { width: `${m.w}px`, height: `${m.h}px`, left: `${m.left}px`, top: `${m.top}px` });
-      // the picture's top rows stretched up (the edge carried on), softened: no mirrored ghosts of the wall's pictures
-      if (m.top > 0) Object.assign(cap.style, { display: "block", left: `${m.left}px`, width: `${m.w}px`, top: "0px", height: `${m.top + 2}px`, backgroundSize: `100% ${m.h * 40}px`, backgroundPosition: "0 0" });
-      else cap.style.display = "none";
-      stage.style.setProperty("--scene-w", `${m.w}px`);
-      stage.style.setProperty("--scene-h", `${m.h}px`);
-      box.dispatchEvent(new CustomEvent("scenefit"));
-    };
-    fit();
-    if (window.ResizeObserver) new ResizeObserver(fit).observe(stage);
-    else window.addEventListener("resize", fit);
-    return fit;
-  };
-  Kit.Voice.quiet = Q.get("quiet") === "1";
-  Kit.fast = Q.get("fast") === "1";
   const $ = (id) => document.getElementById(id);
+  const C = (window.__clinic = { expect: () => (window.Clinic && Clinic.Stages ? Clinic.Stages.expect() : null), finishHeal: () => Clinic.Stages.heal.finish(), last: null, ready: false, errors: [] });
+  window.addEventListener("error", (e) => C.errors.push(String(e.message)));
+  window.addEventListener("unhandledrejection", (e) => C.errors.push(String(e.reason && e.reason.message ? e.reason.message : e.reason)));
   const out = $("lab-out");
   const print = (s) => { out.textContent = (out.textContent + s + "\n").split("\n").slice(-30).join("\n"); };
-  const C = (window.__clinic = { Run, Stages: S, expect: () => S.expect(), finishHeal: () => S.heal.finish(), last: null, ready: false, errors: [] });
-  window.addEventListener("error", (e) => C.errors.push(String(e.message)));
 
-  // every healing game that exists
-  const load = (src) => new Promise((res) => {
-    const s = document.createElement("script");
-    s.src = njgV(src);
-    s.onload = () => res(true);
-    s.onerror = () => res(false);
-    document.body.appendChild(s);
-  });
-  await Promise.all(Clinic.Heal.IDS.map((id) => load(`js/clinic/heal/games/${id}.js`)));
-  await Run.load();
-  const screen = Clinic.Screen.build($("clinic-root"), { level: 1 });
-  if (window.Frame) Frame.mount({ app: screen.app, side: screen.side, play: screen.main });
-  C.screen = screen;
+  const M = await import(njgV("./js/shared/mode.js"));
+  const { loadCore } = await import("#core/index.js");
+  const CM = await import(njgV("./js/clinic/main.js"));
+  const core = await loadCore({ base: "" });
+  const mode = await M.loadMode("clinic", { stamp: njgV });
+  const Kit = Clinic.Kit, Run = Clinic.Run;
+  C.Run = Run; C.Stages = Clinic.Stages; C.core = core; C.mode = mode;
+  Kit.Voice.quiet = Q.get("quiet") === "1";
+  Kit.fast = Q.get("fast") === "1";
   Run.opts.speak = Q.get("speak") !== "0";
   Run.opts.onboard = Q.get("onboard") !== "0";
   Run.opts.grandparent = Q.get("grandparent") === "1"; // a grown-up's tick in the speaking moments
-  const results = Q.get("results") !== "0";
+  const nonav = Q.get("nonav") === "1";
+  const host = M.createHost({
+    root: $("clinic-root"),
+    core,
+    kit: { Results: window.Results, Onboard: window.Onboard },
+    hook: true,
+    results: Q.get("results") !== "0",
+    resultsContainer: document.body,
+    sound: !Kit.fast,
+    onboard: Q.get("onboard") !== "0",
+    speakWord: (w) => Kit.Voice.say({ kutchi: w.kutchi, english: w.english }, { who: "doctor", noBubble: true }),
+  });
+  C.host = host;
+  const endActions = window.NjgButtons && window.NjgButtons.endActions;
+  const go = (href) => { if (!nonav) location.href = href; };
 
-  // ---- the lab bar ----
+  // ---- the lab bar (developer chrome) ----
   const lab = Q.get("lab") === "1";
-  // clinic v2: W2 is the ladder now, D1b is D1 at level 2, E3 is merged into E2
   const VARIANTS = { waiting: ["W1", "W3", "W4"], diagnosis: ["D1", "D2", "D3"], sendoff: ["E1", "E2", "E4"] };
   const fillVariants = () => {
     const w = $("lab-what").value;
     $("lab-variant").innerHTML = '<option value="">draw</option>' + (VARIANTS[w] || []).map((v) => `<option>${v}</option>`).join("");
   };
-  $("lab-game").innerHTML = '<option value="">draw</option>' + Run.games().map((g) => `<option>${g}</option>`).join("");
+  $("lab-game").innerHTML = '<option value="">draw</option>' + CM.HEAL.concat(CM.PARKED).map((g) => `<option>${g}</option>`).join("");
   $("lab-what").onchange = fillVariants;
   $("lab-min").onclick = () => $("lab").classList.toggle("min");
   $("lab-reset").onclick = () => { Run.reset(); if (window.Onboard) Onboard.reset(); print("progress reset"); };
 
-  const levelsAll = (L) => ({ waiting: L, diagnosis: L, pharmacy: L, heal: L, sendoff: L });
+  /** A URL's (or the lab bar's) choice -> a shell entry. */
+  function entryOf(o) {
+    const seed = +o.seed || Math.floor(Math.random() * 1e5) + 1; // fixed per entry: Again is the same patient (H34)
+    const level = +o.level || 1;
+    const params = {};
+    if (o.variant) params.variant = o.variant;
+    if (o.what === "patient") return { play: "lab", level, seed, game: null, params };
+    if (o.what === "heal") return { play: "lab", level, seed, game: o.game || CM.HEAL[Math.floor(Math.random() * CM.HEAL.length)], params };
+    return { play: "lab", level, seed, game: o.what, params };
+  }
   C.go = async function (o) {
-    const seed = +o.seed || Math.floor(Math.random() * 1e5);
-    const rng = P.rng(seed);
-    const L = +o.level || 1;
-    print(`-- ${o.what} L${L} seed ${seed}${o.variant ? " " + o.variant : ""}${o.game ? " " + o.game : ""}`);
-    Run.opts.speak = o.speak !== false && Q.get("speak") !== "0";
+    print(`-- ${o.what} L${o.level || 1}${o.variant ? " " + o.variant : ""}${o.game ? " " + o.game : ""}`);
     try {
       if (o.what === "morning") {
-        const r = await Run.morning(screen, { session: +o.session || null, seed, noSave: Q.get("nosave") === "1", results });
+        const r = await CM.playMorning({ mode, host, core, session: +o.session || null, seed: +o.seed || null, noSave: Q.get("nosave") === "1", endActions, onRound: (res) => (C.round = res) });
         C.last = r;
         print(`morning done: ${r.outs.map((x) => `${x.plan.kind}/${x.plan.ailment} ${x.right}/${x.total}`).join(", ")}`);
         return r;
       }
-      const games = Run.games();
-      const ailment = o.game ? P.ailmentsFor(Run.data, 3, [o.game]).find((a) => (Run.data.ailments[a].from || 1) <= L) || P.ailmentsFor(Run.data, 3, [o.game])[0] : null;
-      const plan = P.patient(Run.data, { rng, levels: levelsAll(L), variants: o.variant ? { [o.what]: o.variant } : {}, ailment, games, speak: Run.opts.speak });
-      C.plan = plan;
-      if (o.what === "patient") {
-        const r = await Run.patient(screen, plan, { seed, results });
-        C.last = r;
-        print(`patient done: ${plan.kind}/${plan.ailment} ${r.right}/${r.total} in ${Math.round(r.timeMs / 1000)} s`);
-        return r;
-      }
-      const env = Run.env(screen, plan, { seed });
-      const r = await Run.stage(screen, o.what, plan, env);
-      C.last = r;
-      const hl = r.heal ? ` heal ${r.heal.right}/${r.heal.total}` : "";
-      print(`${o.what} done: ${r.rows.map((x) => `${x.id}:${x.ok ? "✓" : "✗"}${x.tested ? "" : "(taught)"}`).join(" ")}${hl}`);
-      env.fig.destroy();
-      return r;
+      const entry = entryOf(o);
+      const last = await M.playMode({
+        mode, entry, host, core, endActions,
+        onRound: (r) => {
+          const round = CM.default.session.round;
+          C.last = { round: r.round, finish: r.finish, plan: round && round.plan, rows: (r.round && r.round.marks) || [], right: r.round.right, total: r.round.total, coins: r.finish && r.finish.pay ? r.finish.pay.coins : 0, results: round && round.results };
+          print(`${o.what} done: ${r.round.right}/${r.round.total}, ${C.last.coins} coins`);
+        },
+        nav: { list: () => go("labs.html"), home: () => go("index.html"), locked: async () => print("locked") },
+      });
+      return last;
     } catch (e) {
       console.error(e);
       print(`error: ${e.message}`);
       C.errors.push(String(e.message));
     }
   };
-  $("lab-go").onclick = () => C.go({ what: $("lab-what").value, variant: $("lab-variant").value, game: $("lab-game").value, level: $("lab-level").value, session: $("lab-session").value, seed: $("lab-seed").value, speak: $("lab-speak").checked });
+  $("lab-go").onclick = () => C.go({ what: $("lab-what").value, variant: $("lab-variant").value, game: $("lab-game").value, level: $("lab-level").value, session: $("lab-session").value, seed: $("lab-seed").value });
 
   if (lab) { $("lab").classList.remove("hidden"); $("lab-out").classList.remove("hidden"); }
   const what = Q.get("stage") || (Q.get("patient") ? "patient" : Q.get("morning") ? "morning" : null);
   if (Q.get("level")) $("lab-level").value = Q.get("level");
   if (Q.get("seed")) $("lab-seed").value = Q.get("seed");
+  // the classic scripts and the clinic's data first, so the first stage starts at once
+  await Promise.all(CM.HEAL.concat(CM.PARKED).map((id) => new Promise((res) => { const s = document.createElement("script"); s.src = njgV(`js/clinic/heal/games/${id}.js`); s.onload = s.onerror = () => res(); document.body.appendChild(s); })));
+  await Run.load();
   C.ready = true;
   if (what) {
     $("lab-what").value = what;
@@ -217,7 +235,6 @@
     // the game: a clinic morning, then another
     for (;;) await C.go({ what: "morning" });
   } else fillVariants();
-})();
 </script>
 </body>
 </html>

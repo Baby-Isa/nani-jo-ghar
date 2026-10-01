@@ -121,6 +121,36 @@
     } else global.addEventListener("resize", fit);
     return fit;
   };
+  /**
+   * R3a/R5: the scene box from the shared stage (js/shared/stage.js: exactly the maths above, tested in
+   * build/test_shared_stage.mjs), so the clinic and Cook map scenes one way. Called once by js/clinic/main.js.
+   */
+  S.useStage = function (Stage) {
+    S.fitScene = function (stage, box, cap, room, A) {
+      const A_ = A || 1.5;
+      const SW = 1536;
+      const SH = SW / A_;
+      const need = room.need || [0, 1];
+      const spec = { w: SW, h: SH, safe: [need[0] * SW, null, need[1] * SW, null], fill: "cover", anchorY: room.ay != null ? room.ay : 0.6 };
+      const fit = () => {
+        if (!box.isConnected) return;
+        const W = stage.clientWidth;
+        const H = stage.clientHeight;
+        if (!W || !H) return;
+        const m = Stage.fit({ box: { w: W, h: H }, scene: spec });
+        Object.assign(box.style, { width: `${m.w}px`, height: `${m.h}px`, left: `${m.left}px`, top: `${m.top}px` });
+        if (m.top > 0) Object.assign(cap.style, { display: "block", left: `${m.left}px`, width: `${m.w}px`, top: "0px", height: `${m.top + 2}px`, backgroundSize: `100% ${m.h * 40}px`, backgroundPosition: "0 0" });
+        else cap.style.display = "none";
+        stage.style.setProperty("--scene-w", `${m.w}px`);
+        stage.style.setProperty("--scene-h", `${m.h}px`);
+        box.dispatchEvent(new CustomEvent("scenefit"));
+      };
+      fit();
+      if (global.ResizeObserver) new ResizeObserver(fit).observe(stage);
+      else global.addEventListener("resize", fit);
+      return fit;
+    };
+  };
   /** Place an element in the scene box: x centre, y = its bottom (feet), h = height (shares of the picture). */
   S.place = function (el, { x, y, h: ht, z, w }) {
     el.classList.add("cl-placed");

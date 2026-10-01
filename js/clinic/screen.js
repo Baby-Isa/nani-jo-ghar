@@ -51,6 +51,7 @@
       helpBtn.setAttribute("aria-label", "What do I do here?");
       helpBtn.setAttribute("data-ob-pass", "");
       const helpPop = h("div", "cl-help-pop hidden", document.body);
+      helpPop.dataset.njgKeep = ""; // the page's one pop-up: kept between stages (the host's E17 check)
       helpPop.setAttribute("data-ob-pass", "");
       helpPop.setAttribute("role", "dialog");
       const main = h("main", "cl-main", app);
