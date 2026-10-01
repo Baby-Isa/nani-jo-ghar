@@ -46,8 +46,14 @@
       .split(/(\[[^\]]*\])/)
       .filter((seg) => seg && seg.trim()) // the space between two segments is the CSS margin (no double gap)
       .forEach((seg) => {
-        if (seg.startsWith("[")) h("span", "ph", span, seg.slice(1, -1).replace(/^EN:\s*/, ""));
-        else h("span", "ku", span, seg);
+        if (seg.startsWith("[")) return h("span", "ph", span, seg.slice(1, -1).replace(/^EN:\s*/, ""));
+        // CLN-68: punctuation that follows a word ("[Wipe], ba") joins it: its own span, which takes no margin, so
+        // there's never a space before a comma; the words after it keep their own space
+        const m = /^\s*([,.;:!?]+)(.*)$/.exec(seg);
+        if (m && span.lastChild) {
+          h("span", "pn", span, m[1] + (!m[2].trim() && m[2] ? " " : ""));
+          if (m[2].trim()) h("span", "ku", span, m[2]);
+        } else h("span", "ku", span, seg);
       });
     return span;
   };
@@ -170,6 +176,14 @@
     const info = Kit.itemInfo(item);
     const d = h("div", `cl-item ${cls || ""}`, parent);
     d.dataset.item = info.id;
+    // an item whose data names its own picture (`img`, a path: the clinic v2 item art, e.g. the apple) draws it
+    if (info.img && !info.colour) {
+      const img = h("img", "cl-item-img", d);
+      img.alt = "";
+      img.draggable = false;
+      img.src = Kit.url(info.img);
+      return d;
+    }
     if (info.standin && Kit.STANDIN[info.standin]) {
       d.classList.add("standin");
       d.innerHTML = Kit.STANDIN[info.standin];
@@ -200,12 +214,13 @@
     log: [],
   });
   const estimate = (text) => Math.max(900, Math.min(4200, 420 + 330 * String(text || "").split(/\s+/).length));
-  Voice.tts = function (text) {
+  Voice.tts = function (text, o = {}) {
     if (Voice.quiet || !text || !global.speechSynthesis) return Promise.resolve(false);
     return new Promise((res) => {
       try {
         const u = new global.SpeechSynthesisUtterance(text);
         u.rate = 0.9;
+        if (o.soft) u.volume = 0.5;
         let done = false;
         const end = () => !done && ((done = true), res(true));
         u.onend = end;
@@ -218,10 +233,11 @@
       }
     });
   };
-  Voice.audio = function (src) {
+  Voice.audio = function (src, o = {}) {
     return new Promise((res) => {
       try {
         const a = new Audio(Kit.url(src));
+        if (o.soft) a.volume = 0.45; // a whisper (the ear's hearing check): the same family clip, quieter
         let done = false;
         const end = (ok) => !done && ((done = true), res(ok));
         a.onended = () => end(true);
@@ -247,14 +263,15 @@
       const bubble = opts.noBubble ? null : Voice.bubble(w, who, opts);
       const t0 = Date.now();
       let played = false;
-      if (w.audio) played = await Voice.audio(w.audio);
+      const ao = { soft: !!opts.soft };
+      if (w.audio) played = await Voice.audio(w.audio, ao);
       // a family recording of this Kutchi line (js/shared/family-voice.js), else the device voice
       if (!played && w.kutchi && w.placeholder !== true && global.FamilyVoice) {
         await global.FamilyVoice.load(Kit.root);
         const fam = global.FamilyVoice.match(w.kutchi);
-        if (fam) played = await Voice.audio(fam.file);
+        if (fam) played = await Voice.audio(fam.file, ao);
       }
-      if (!played) await Voice.tts(Kit.plain(w));
+      if (!played) await Voice.tts(Kit.plain(w), ao);
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
       if (left > 0) await new Promise((r) => setTimeout(r, left));
       setTimeout(() => bubble && bubble.remove(), Kit.fast ? 50 : 500);

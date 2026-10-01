@@ -47,7 +47,7 @@
     "sore-feet": { "game": "foot", "part": "foot", "parts": ["foot"], "from": 1, "items": ["jug-hot", "jug-cold", "care-plaster"], "ask": ["care-plaster", "jug-hot", "jug-cold"], "say": { "english": "Sore feet!" } },
     "thorn": { "game": "foot", "part": "foot", "parts": ["foot", "toe"], "from": 2, "items": ["jug-hot", "jug-cold", "care-plaster"], "ask": ["care-plaster", "jug-cold", "jug-hot"], "say": { "english": "A thorn!" } },
     "fever": { "game": "fever", "part": "head", "parts": ["head"], "from": 1, "items": ["thermometer", "cloth", "blanket", "fan"], "ask": ["blanket", "cloth", "fan"], "say": { "english": "A fever." } },
-    "jab": { "game": "boing", "part": "arm", "parts": ["arm"], "from": 2, "items": ["cotton", "syringe", "plaster", "lollipop"], "ask": ["lollipop", "cotton", "plaster"], "say": { "english": "The jab before the trip." } }
+    "jab": { "game": "boing", "part": "arm", "parts": ["arm"], "from": 2, "items": ["cotton", "syringe", "plaster", "apple"], "ask": ["apple", "cotton", "plaster"], "say": { "english": "The jab before the trip." } }
   },
 
   "stages": {
@@ -85,15 +85,15 @@
       "firstBelt": 5,
       "coloured": { "bandage": ["red", "blue", "green", "yellow"], "thread": ["red", "blue", "green"], "cast": ["blue", "pink", "white"], "plaster": ["red", "blue", "green"], "drops": ["red", "blue", "green", "yellow"] },
       "countable": ["cotton", "plaster", "care-plaster", "fru-02", "spi-16", "cook-khun", "cotton-bud", "blanket"],
-      "decoys": ["paani", "cloth", "plaster", "bandage", "thread", "hammer", "torch", "tweezers", "cotton-bud", "cotton", "drops", "bottle", "toothbrush", "comb", "fan", "blanket", "lollipop", "spoon", "cup", "honey", "tissue", "stethoscope", "thermometer", "crutches"]
+      "decoys": ["paani", "cloth", "plaster", "bandage", "thread", "hammer", "torch", "tweezers", "cotton-bud", "cotton", "drops", "bottle", "toothbrush", "comb", "fan", "blanket", "apple", "spoon", "cup", "honey", "tissue", "stethoscope", "thermometer", "crutches"]
     },
     "sendoff": {
       "_about": "P6 + Q3, rebuilt for clinic v2 (docs/game-design/modes/clinic.md E; CQ6): on CB5, the patient at the half-open front door, the doctor beside them. E1 (level 1): the patient's round face circle shows the feeling; pick the matching card of four (happy, sad, hot, cold). E2 (level 2): the patient SAYS it, no picture; pick the card; then the goodbye the doctor cues, in the scene (E2 and E3 merged: E3 names E2). Level 3: the feeling shows and the child picks WHAT HELPS (cold: the blanket, hot: the fan, sad: the apple); E4 (level 3): the child asks first ([How do you feel?]), with Nani's whisper the first time. Not happy at levels 1-2: one more thing (in the scene), then it ends happy.",
       "mix": { "1": { "E1": 1 }, "2": { "E2": 1 }, "3": { "E2": 3, "E4": 1 } },
       "faces": { "1": ["happy", "sad", "hot", "cold"], "2": ["happy", "sad", "hot", "cold"], "3": ["sad", "hot", "cold"] },
       "cards": ["happy", "sad", "hot", "cold"],
-      "helps": { "cold": "blanket", "hot": "fan", "sad": "lollipop" },
-      "helpCards": ["blanket", "fan", "lollipop"],
+      "helps": { "cold": "blanket", "hot": "fan", "sad": "apple" },
+      "helpCards": ["blanket", "fan", "apple"],
       "goodbyeFrom": 2,
       "notHappyChance": 0.4,
       "sadChance": 0.25
@@ -114,12 +114,14 @@
   },
   "extras": {
     "_about": "Levels 1-2: one more thing when they're not happy (in the scene, not the sidebar: the feeling's help, the apple for sad; Mum: no sweets), then the question again, always ending happy.",
-    "list": ["lollipop", "sticker"]
+    "list": ["apple", "sticker"]
   },
 
   "items": {
-    "_about": "Clinic v2 overrides on data/clinic.json's items (P.prepare merges them over it). The ids stay (the heal games' tray contracts); what changes is the picture (`standin`: a flat stand-in drawn by js/clinic/kit.js until the art) and the word. lollipop -> an apple (Mum: no sweets, E3/CQ13); paste -> the filling as a tube (P4); torch -> a torch that looks like one (D5).",
-    "lollipop": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "sweet", "standin": "apple" },
+    "_about": "Clinic v2 overrides on data/clinic.json's items (P.prepare merges them over it). The ids stay (the heal games' tray contracts); what changes is the picture (`standin`: a flat stand-in drawn by js/clinic/kit.js until the art) and the word. CLN-66 (2 Oct): no lollipop anywhere: every list here names the apple (its own id, with the v2 apple art); the old lollipop id still draws the apple, for any data that still names it; paste -> the filling as a tube (P4); torch -> a torch that looks like one (D5).",
+    "apple": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "treat", "img": "assets/clinic/items-v2/apple.webp", "standin": "apple" },
+    "lollipop": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "treat", "img": "assets/clinic/items-v2/apple.webp", "standin": "apple" },
+    "sticker": { "kutchi": null, "english": "sticker", "glyph": "⭐", "placeholder": true, "group": "treat" },
     "paste": { "kutchi": null, "english": "filling", "glyph": "🦷", "placeholder": true, "group": "bottle", "standin": "tube" },
     "torch": { "kutchi": null, "english": "torch", "glyph": "🔦", "placeholder": true, "group": "tool", "standin": "torch" }
   },

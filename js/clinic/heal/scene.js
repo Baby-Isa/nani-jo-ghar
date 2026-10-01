@@ -68,6 +68,25 @@
     });
     return best;
   };
+  HS.CSS = [
+    ".hs-tool .g.im{width:calc(var(--njg-tap) * 1.25);height:calc(var(--njg-tap) * .95);object-fit:contain;pointer-events:none;-webkit-user-drag:none}",
+    ".hs-tool.drag-src{opacity:.4}",
+    ".hs-held{position:absolute;z-index:9;pointer-events:none;transform:translate(-50%,-50%);filter:drop-shadow(0 6px 6px rgba(0,0,0,.25))}",
+    ".hs-held img{display:block;width:100%;height:100%;object-fit:contain}",
+    ".hs-pics{position:absolute;left:50%;bottom:var(--njg-s3);transform:translateX(-50%);display:flex;gap:var(--njg-s3);z-index:8}",
+    ".hs-pic{width:calc(var(--njg-tap) * 2);height:calc(var(--njg-tap) * 2);border-radius:50%;border:4px solid #d8c6a8;background:#fffaf1;display:grid;place-items:center;padding:var(--njg-s1);cursor:pointer;box-shadow:var(--njg-shadow)}",
+    ".hs-pic img{width:80%;height:80%;object-fit:contain;pointer-events:none}",
+    ".hs-pic.picked{border-color:var(--njg-gold)}",
+    ".hs-pic.pulse{animation:hs-pulse 1s ease-in-out infinite}",
+  ].join("\n");
+  /** A colour lighter (k > 0) or darker (k < 0): "#c99a74", 0.12 -> a hex. */
+  HS.shade = function (hex, k) {
+    const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ""));
+    if (!m) return hex;
+    const n = parseInt(m[1], 16);
+    const ch = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => Math.round(k >= 0 ? c + (255 - c) * k : c * (1 + k)));
+    return "#" + ch.map((c) => Math.max(0, Math.min(255, c)).toString(16).padStart(2, "0")).join("");
+  };
   /** An English placeholder word ("to record"). */
   HS.ph = (english) => ({ kutchi: null, english, placeholder: true });
   /** The colours: English placeholders until the doctor's recording (Section G). */
@@ -130,6 +149,13 @@
       if (parent) parent.appendChild(n);
       return n;
     };
+    // the heal close-ups' own few rules (item pictures on the shelf, the held thing, the ear check's pictures), on the
+    // shared tokens; one sheet per page. A proposal for css/clinic.css (heal-A report), kept here until it moves.
+    if (!doc.getElementById("hs-v3-css")) {
+      const st = h("style", null, doc.head);
+      st.id = "hs-v3-css";
+      st.textContent = HS.CSS;
+    }
     const root = h("div", "hs-root", stage);
     root.dataset.place = opts.place || "limb";
     const svg = s("svg", { class: "hs-svg", viewBox: "0 0 800 500", preserveAspectRatio: "xMidYMid meet" }, root);
@@ -165,17 +191,54 @@
       return m ? 1 / m.a : 1;
     };
 
+    /* ---- the patient: their colours, so the close-up matches the person the zoom came from ---- */
+    // CLN-67 (2 Oct): the round face (and the close-up's skin and clothes) follow the patient's own kind: hair, skin,
+    // clothes, cap, moustache, glasses (js/clinic/figure.js KINDS), never one stock face over everyone
+    const fig = ctx.patient && ctx.patient.figure;
+    const kindId = (fig && fig.kind) || (ctx.patient && ctx.patient.kind) || "girl";
+    const KINDS = (global.Clinic && global.Clinic.Figure && global.Clinic.Figure.KINDS) || {};
+    const COLS = (global.Clinic && global.Clinic.Figure && global.Clinic.Figure.COLOURS) || {};
+    const KD = Object.assign({ hair: "short", hairCol: "#2b1d16", clothes: "#3f7fcf", legs: "#34495e" }, KINDS[kindId] || {});
+    if (fig && fig.colour) KD.clothes = COLS[fig.colour] || fig.colour;
+    S.kind = kindId;
+    S.skin = opts.skin || KD.skin || "#c99a74";
+    S.skinDark = HS.shade(S.skin, -0.18);
+    S.skinLight = HS.shade(S.skin, 0.12);
+    S.clothes = KD.clothes;
+    S.legs = KD.legs || KD.clothes;
+    S.hairCol = KD.hairCol || "#2b1d16";
+    S.child = ["girl", "boy", "baby", "ali", "cousin"].includes(kindId);
+
     /* ---- the patient's round face ---- */
     const faceBox = h("div", "hs-face", root);
+    faceBox.dataset.kind = kindId;
     const fs = s("svg", { viewBox: "0 0 100 100" }, faceBox);
-    const skin = opts.skin || "#e9b98f";
+    const skin = S.skin;
+    const hc = opts.hair || S.hairCol;
+    // behind the head: long hair and bunches
+    if (KD.hair === "long") s("path", { d: "M16 50 Q12 14 50 12 Q88 14 84 50 L86 92 L70 92 L72 52 Q50 40 28 52 L30 92 L14 92Z", fill: hc }, fs);
+    if (KD.hair === "bunches") [18, 82].forEach((cx) => s("circle", { cx, cy: 30, r: 11, fill: hc }, fs));
+    if (KD.hair === "bun") s("circle", { cx: 50, cy: 10, r: 9, fill: hc }, fs);
+    if (KD.dupatta) s("path", { d: "M8 100 Q10 60 24 70 Q50 84 76 70 Q90 60 92 100Z", fill: KD.dupatta }, fs);
     s("circle", { cx: 50, cy: 54, r: 38, fill: skin }, fs);
-    s("path", { d: "M14 46 Q18 12 50 12 Q84 12 86 46 Q70 26 50 28 Q30 26 14 46Z", fill: opts.hair || "#3b2415" }, fs);
+    // the hair on top, by style (bald: two tufts at the sides; none: nothing)
+    const HAIR = {
+      short: "M14 46 Q18 12 50 12 Q84 12 86 46 Q70 26 50 28 Q30 26 14 46Z",
+      bunches: "M14 48 Q16 12 50 12 Q84 12 86 48 Q72 24 50 26 Q28 24 14 48Z",
+      long: "M14 50 Q16 12 50 12 Q84 12 86 50 Q74 26 50 24 Q26 26 14 50Z",
+      bun: "M14 46 Q18 14 50 14 Q82 14 86 46 Q70 28 50 28 Q30 28 14 46Z",
+      bald: "M13 58 Q12 44 18 38 L20 58Z M87 58 Q88 44 82 38 L80 58Z",
+      tuft: "M46 18 Q50 6 54 18 Q51 14 50 20Z",
+    };
+    if (HAIR[KD.hair]) s("path", { d: HAIR[KD.hair], fill: hc }, fs);
+    if (KD.cap) s("path", { d: "M20 30 Q50 6 80 30 L80 36 L20 36Z", fill: "#f4f1ea", stroke: "#cfc8b8", "stroke-width": 2 }, fs);
     const cheeks = s("g", { opacity: 0 }, fs);
     s("circle", { cx: 30, cy: 64, r: 7, fill: "#f07a6a" }, cheeks);
     s("circle", { cx: 70, cy: 64, r: 7, fill: "#f07a6a" }, cheeks);
     const eyes = s("g", {}, fs);
     const mouth = s("path", { fill: "none", stroke: "#5b2a1a", "stroke-width": 4, "stroke-linecap": "round" }, fs);
+    if (KD.moustache) s("path", { d: "M36 66 Q50 58 64 66 Q50 63 36 66Z", fill: hc, stroke: hc, "stroke-width": 3, "stroke-linejoin": "round" }, fs);
+    if (KD.glasses) [36, 64].forEach((cx) => s("circle", { cx, cy: 48, r: 9, fill: "none", stroke: "#333", "stroke-width": 2.5 }, fs));
     const extra = s("g", {}, fs);
     const MOODS = {
       neutral: { eyes: "open", mouth: "M38 72 L62 72" },
@@ -263,7 +326,13 @@
         const b = h("button", "hs-tool", shelf);
         b.type = "button";
         b.dataset.tool = t.id;
-        if (t.colours) {
+        if (t.img) {
+          // the clinic v2 item art (assets/clinic/items-v2/), sized by the tool's own box
+          const im = h("img", "g im", b);
+          im.alt = "";
+          im.draggable = false;
+          im.src = Kit && Kit.url ? Kit.url(t.img) : t.img;
+        } else if (t.colours) {
           const sw = h("span", "g sw", b);
           t.colours.forEach((c) => {
             const d = h("span", null, sw);
@@ -295,7 +364,7 @@
     S.pulseTool = (id) => Object.entries(S.toolEls).forEach(([k, b]) => b.classList.toggle("pulse", k === id));
 
     /* ---- what came from the pharmacy (13: the tray feeds the heal game) ---- */
-    const ALIAS = { bud: "cotton-bud", thermo: "thermometer", apple: "lollipop", cover: "patch", "care-patch": "patch", "care-drops": "drops", "care-plaster": "plaster", "cook-paani": "paani", "fru-02": "limu", "tool-tweezers": "tweezers" };
+    const ALIAS = { bud: "cotton-bud", thermo: "thermometer", lollipop: "apple", cover: "patch", "care-patch": "patch", "care-drops": "drops", "care-plaster": "plaster", "cook-paani": "paani", "fru-02": "limu", "tool-tweezers": "tweezers" };
     const norm = (id) => ALIAS[id] || String(id || "").replace(/^(care|tool|cook)-/, "");
     const trayIds = new Set((ctx.tray || []).map((t) => norm(t.id)));
     S.fromTray = (t) => {

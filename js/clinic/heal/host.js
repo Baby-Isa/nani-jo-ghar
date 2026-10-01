@@ -52,7 +52,14 @@
       global.ClinicLang.load(HOST.lang);
       global.ClinicLang.resolve = (id) => Kit.ITEMS[id] || (HOST.clinic.words || {})[id] || null;
     }
-    if (HOST.clinic.items) Object.assign(Kit.ITEMS, HOST.clinic.items);
+    // the items, once: data/clinic.json's, then the clinic v2 overrides in data/clinic/pipeline.json on top (the apple,
+    // the tube, the torch). CLN-66: merging clinic.json's items again on every mount put the 🍭 back over the apple.
+    if (!HOST.itemsMerged) {
+      HOST.itemsMerged = true;
+      if (HOST.clinic.items) Object.entries(HOST.clinic.items).forEach(([id, it]) => (Kit.ITEMS[id] = Object.assign({}, it, Kit.ITEMS[id] || {})));
+      const pj = (await Kit.loadJSON("data/clinic/pipeline.json")) || {};
+      Object.entries(pj.items || {}).forEach(([id, it]) => id !== "_about" && (Kit.ITEMS[id] = Object.assign({}, Kit.ITEMS[id] || {}, it)));
+    }
     if (Kit.art == null) await Kit.loadArt();
     return HOST;
   };
