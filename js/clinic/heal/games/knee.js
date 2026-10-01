@@ -69,10 +69,11 @@
 
     // the patient sits on the bed's edge facing us: thighs on the paper strip, knees at the edge,
     // shins hanging. The patient's left knee is on OUR right.
-    const KX = { left: 490, right: 310 };
+    // D10 (1 Oct, CLN-47): the close-up shows the one sore knee, in the middle (the side is the diagnosis's test)
+    const KX = { left: 400, right: 400 };
     const KY = 360;
     const legs = {};
-    ["right", "left"].forEach((side) => {
+    [P.side].forEach((side) => {
       const x = KX[side];
       const g = s("g", {}, S.layer);
       s("path", { d: `M${x - 62} 250 Q${x} 236 ${x + 62} 250 L${x + 56} ${KY} L${x - 56} ${KY}Z`, fill: "#3f6fa8" }, g); // shorts
@@ -85,10 +86,9 @@
       legs[side] = { g, glow, shin, wrap, x };
     });
     const sore = legs[P.side];
-    // 13i: at the top level the named leg doesn't glow: the word alone says which knee
     const glowOn = (on) => {
       Object.values(legs).forEach((l) => l.glow.setAttribute("opacity", 0));
-      if (on && P.level < 3) sore.glow.setAttribute("opacity", 0.55);
+      if (on) sore.glow.setAttribute("opacity", 0.55);
     };
     glowOn(true);
     const dotsG = s("g", {}, S.layer);
@@ -192,6 +192,8 @@
         st.kicks++;
         S.count(st.kicks);
         ctx.tally("hammer", st.kicks);
+        // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
+        if (ctx.level === 1 && st.kicks >= c.count) ctx.after(450, () => cur() === c && !st.over && close());
         const hm = s("text", { x: leg.x + 30, y: KY - 30, "font-size": 60 }, S.fx);
         hm.textContent = "🔨";
         hm.style.transformBox = "fill-box";
@@ -228,6 +230,8 @@
         st.turns++;
         S.count(st.turns);
         ctx.tally("bandage", st.turns);
+        // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
+        if (ctx.level === 1 && st.turns >= c.count) ctx.after(450, () => cur() === c && !st.over && close());
         ctx.sfx("tap");
         st.oi++;
         armFlash();

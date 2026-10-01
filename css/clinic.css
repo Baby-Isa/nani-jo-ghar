@@ -463,3 +463,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-go.njg-done.glow { animation: njgDoneGlow 1s ease-in-out infinite; }
 .njg-pill.cl-go { min-height: 56px !important; border-radius: 999px !important; background: #fff !important; color: #2a2522 !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .12) !important; border: 2px solid #c9962e !important; }
 .njg-pill.cl-go .ph { color: #6f6153; }
+
+/* ---- the heal games' shared play rules (R5; 1 Oct report § 8E, decision 27) ---- */
+/* D6 (SH-39): the running count on the tool in use: the Kutchi number word at levels 1-2, dots from level 3 */
+.hs-root .hs-count { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s2) * -1); min-width: var(--njg-s4); padding: 0 var(--njg-s1); border-radius: var(--njg-round); background: var(--njg-gold); color: var(--njg-panel); font: 800 var(--njg-t3) / 1.4 var(--cl-head); text-align: center; box-shadow: var(--njg-shadow); pointer-events: none; z-index: 2; }
+.hs-root .hs-count.dots { letter-spacing: 0.08em; }
+.hs-root .hs-count.bump { animation: cl-bump .3s; }

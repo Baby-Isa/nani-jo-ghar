@@ -180,11 +180,44 @@
     fimg.src = Kit.DOCTOR_FACE;
     card.closed = level >= 3 ? { onPeek: () => (screen.peek ? screen.peek("heal-card") : screen.bulb.use()) } : null;
     card.fold = {};
-    card.setTitle("", face);
-    // the doctor's box: his line now is his goal for this game (a line to record: 13f, the doctor fills Nani's role)
-    if (screen.setGuide) screen.setGuide(def.why && def.why.goal ? { kutchi: `[${def.why.goal}]`, english: def.why.goal } : null);
+    // D9 (1 Oct, CLN-44): the card's headline is the doctor's goal (a line to record); the card folds to it with
+    // the gold check when every step is done. The goal moved here from the doctor's box (one place for a line).
+    const goal = def.why && def.why.goal ? { kutchi: null, english: def.why.goal, placeholder: true } : "";
+    card.setTitle(goal, face);
+    if (screen.setGuide) screen.setGuide(null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
+    // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
+    card.setProgressive(true, (ids) => {
+      if (!finished) card.speak(ids);
+    });
     card.setRows([]);
+
+    /* ---- the shared play rules for every heal game (1 Oct report § 8D-8G, decision 27) ----
+     * D6 (SH-39): the running count sits on the tool in use: its Kutchi word at L1-2 (said at L1), dots from L3;
+     *    no chip in the card's row, no tally in the corner.
+     * D7 (SH-40): the ✓ is hidden until it can do something: it shows once the open step has a count going (or the
+     *    game says so: ctx.ready), and hides again when the next step opens.
+     */
+    const done = { btn: null, on: false };
+    const showDone = (on) => {
+      done.on = !!on;
+      if (done.btn) done.btn.classList.toggle("hidden", !done.on);
+    };
+    const clearCounts = () => stage.querySelectorAll(".hs-count").forEach((n) => n.remove());
+    const countOn = (itemId, n) => {
+      const tool = stage.querySelector(`.hs-tool[data-tool="${String(itemId).replace(/"/g, "")}"]`) || stage.querySelector(".hs-tool.sel");
+      if (!tool) return;
+      let b = tool.querySelector(".hs-count");
+      if (!b) {
+        b = h("span", "hs-count", tool);
+        b.setAttribute("aria-hidden", "true");
+      }
+      b.classList.toggle("dots", level >= 3);
+      b.textContent = level >= 3 ? "•".repeat(Math.min(n, 9)) : Kit.num(n);
+      b.classList.remove("bump");
+      void b.offsetWidth;
+      b.classList.add("bump");
+    };
 
     const ctx = {
       level,
@@ -200,10 +233,19 @@
       tray: trayItems,
       card: {
         setRows: (rows) => card.setRows(rows),
-        tick: (rowId) => card.tick(rowId),
+        tick: (rowId) => {
+          if (rowId === card.st.now) showDone(false);
+          card.tick(rowId);
+        },
         pulse: (rowId, on) => card.pulse(rowId, on),
         // additions
-        now: (rowId) => card.now(rowId),
+        now: (rowId) => {
+          if (rowId !== card.st.now) {
+            clearCounts();
+            showDone(false);
+          }
+          card.now(rowId);
+        },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),
         speak: (ids) => card.speak(ids),
@@ -223,12 +265,16 @@
         return Kit.Voice.say(l, { who: "doctor" });
       },
       tally(itemId, n) {
-        screen.tally.set(itemId, n);
-        // G6: level 1 counts up on the card's row as you tap, and says the number (Cook's rule)
-        if (level <= 1 && n > 0 && n <= 5) {
-          card.count(null, n);
-          Kit.Voice.now(LANG().num(n));
-        }
+        // D6: the count on the tool in use (never the target); level 1 also says the number (E12)
+        if (n > 0) countOn(itemId, n);
+        else clearCounts();
+        // D7: from level 2 the ✓ closes a counted step once it has begun; at level 1 the step closes itself (D5)
+        if (n > 0 && level >= 2) showDone(true);
+        if (level <= 1 && n > 0 && n <= 5) Kit.Voice.now(LANG().num(n));
+      },
+      /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */
+      ready(on) {
+        showDone(on);
       },
       log(entry) {
         const e = Object.assign({ t: Date.now() - t0, game: def.id }, entry);
@@ -279,7 +325,13 @@
         show: () => screen.trayWrap.classList.remove("hidden"),
       }, "trayUI"),
       button(label, onPress, cls) {
-        return screen.go(label, onPress, cls);
+        const b = screen.go(label, onPress, cls);
+        // D7: the ✓ stays hidden until it's usable (rule F22: never greyed out, hidden)
+        if (label === "✓" || /\bdone\b/.test(cls || "")) {
+          done.btn = b;
+          b.classList.toggle("hidden", !done.on);
+        }
+        return b;
       },
       clearButtons: () => screen.clearActions(),
       after(ms, fn) {
@@ -339,6 +391,9 @@
         }
         if (!opts.patient) fig.destroy();
         Kit.Voice.clear();
+        // the card is the screen's: the next stage gets it whole again (D8 is the heal games' rule)
+        card.setProgressive(false);
+        card.closed = null;
       },
     };
     HOST.current = run;

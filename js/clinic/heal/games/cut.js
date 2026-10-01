@@ -745,6 +745,7 @@
         const k = spotAt(p);
         st.laid[k] = null;
         ctx.card.untick(`plaster${k}`);
+        if (ctx.ready) ctx.ready(false);
         ctx.sfx("tap");
         ctx.log({ type: "takeback", detail: `plaster ${k}` });
         drawSpots();
@@ -766,6 +767,8 @@
       ctx.sfx("pop");
       ctx.card.tick(`plaster${k}`);
       drawSpots();
+      // D7: the ✓ shows once every plaster is on (it commits them; until then a plaster can come off again)
+      if (ctx.ready) ctx.ready(laidN() >= n);
     };
     // Next: closes the counted dab step (the host's big button)
     const nextBtn = ctx.button("✓", () => {

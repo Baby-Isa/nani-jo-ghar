@@ -217,11 +217,11 @@
       if (ms) faceT = setTimeout(() => S.face(opts.rest || "neutral"), ms);
     };
     S.face(opts.rest || "neutral");
-    h("div", "hs-doc", root, "🩺");
+    // D16 (1 Oct, CLN-42): no 🩺 badge in the corner; the doctor speaks from his box in the sidebar
     const Voice = Kit && Kit.Voice;
     if (Voice) {
       Voice.speakers.patient = () => faceBox;
-      Voice.speakers.doctor = () => root.querySelector(".hs-doc");
+      Voice.speakers.doctor = () => doc.querySelector(".cl-docbox .ng-face") || null;
     }
 
     /* ---- lines ---- */
@@ -239,7 +239,7 @@
       await new Promise((r) => ctx.after(Kit && Kit.fast ? 80 : 1100, r));
       S.face("sad");
       void problem; // the problem is the face: no words (13g)
-      await ctx.say(asLine(goal), { who: "doctor", noBubble: true });
+      void goal; // D9: the goal is the card's headline now, said by the card's read-along
       S.face(opts.rest || "neutral");
     };
     /**
@@ -277,11 +277,9 @@
         } else h("span", "g", b, t.glyph || "•");
         if (t.label) h("span", "l", b, t.label);
         if (t.bg) b.style.background = t.bg;
-        // what came from the pharmacy (13): the tray's things are marked on the shelf; nothing is greyed out
-        if (S.fromTray(t)) {
-          b.classList.add("from-tray");
-          h("span", "hs-from", b).setAttribute("aria-hidden", "true");
-        }
+        // what came from the pharmacy (13) is still known (S.fromTray), but D16 (1 Oct, CLN-42): no gold
+        // half-circle badge on the tools: an unexplained icon
+        if (S.fromTray(t)) b.classList.add("from-tray");
         ctx.on(b, "click", (e) => {
           e.stopPropagation();
           if (!S.ready) return;

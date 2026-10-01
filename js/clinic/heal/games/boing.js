@@ -87,7 +87,7 @@
     s("rect", { x: SY.x - 70, y: SY.y + 25, width: 70, height: 20, fill: "#6a8aa8" }, syG);
     s("rect", { x: SY.x - 90, y: SY.y - 5, width: 22, height: 80, rx: 6, fill: "#6a8aa8" }, syG);
     s("line", { x1: SY.x + SY.w, y1: SY.y + 35, x2: SY.x + SY.w + 70, y2: SY.y + 35, stroke: "#8a8f98", "stroke-width": 4 }, syG);
-    s("text", { x: SY.x + SY.w - 10, y: SY.y - 12, "font-size": 40 }, syG).textContent = "🧤";
+    // D16 (1 Oct, CLN-42): no glove on the syringe (an unexplained icon)
     for (let k = 1; k < 6; k++) s("line", { x1: SY.x + k * 50, y1: SY.y + SY.h - 18, x2: SY.x + k * 50, y2: SY.y + SY.h, stroke: "#6a8aa8", "stroke-width": 3 }, syG);
     const beadG = s("g", {}, syG);
     const drawBeads = () => {
@@ -178,6 +178,8 @@
         S.count(st.beads.length);
         ctx.tally("beads", st.beads.length);
         ctx.sfx("pop");
+        // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
+        if (P.level === 1 && st.beads.length >= want.length) ctx.after(450, () => cur() && cur().kind === "beads" && !st.over && !st.busy && close());
         return;
       }
       if (id === "apple" && c.kind === "apple") {
@@ -207,6 +209,8 @@
         st.wipes++;
         S.count(st.wipes);
         ctx.tally("cotton", st.wipes);
+        // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
+        if (P.level === 1 && st.wipes >= c.count) ctx.after(450, () => cur() === c && !st.over && !st.busy && close());
         shine.setAttribute("opacity", Math.min(0.6, st.wipes * 0.15));
         const w = s("text", { x: p.x - 24, y: p.y + 12, "font-size": 44 }, S.fx);
         w.textContent = "☁️";

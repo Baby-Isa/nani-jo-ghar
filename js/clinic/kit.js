@@ -355,7 +355,9 @@
     const card = this;
     const st = this.st;
     const OC = global.OrderCard;
-    const rows = this.rows;
+    // D8 (1 Oct): a progressive card grows one step at a time; the rows still to come aren't drawn
+    const rows = this.progressive ? this.rows.slice(0, this.shown + 1) : this.rows;
+    const pending = this.progressive && this.shown < this.rows.length - 1;
     const part = (r) => ({ label: Kit.rowHtml(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
     const items = [];
     const groups = {};
@@ -376,6 +378,7 @@
     const tt = this.titleText;
     const headHtml = !tt ? null : typeof tt === "string" ? esc(tt) : Kit.rowHtml(tt);
     const data = { person: null, headline: headHtml ? { html: headHtml, key: "__head" } : null, items };
+    if (pending) data.done = false;
     card.rows.forEach((r) => (r.el = null));
     const opts = {
       fold: this.fold,
@@ -456,11 +459,47 @@
     this.rows = (rows || []).map((r, i) => Object.assign({ id: r.id || `r${i}` }, r, { el: null }));
     this.st = { done: new Set(), miss: new Set(), pulse: null, now: null, reading: null, counts: {} };
     this.fold = {};
+    this.shown = this.progressive ? this.groupEnd(0) : this.rows.length - 1;
     return this.render();
   };
   Kit.Card.prototype.addRow = function (r) {
     this.rows.push(Object.assign({ id: r.id || `r${this.rows.length}` }, r, { el: null }));
+    if (this.progressive && this.shown === this.rows.length - 2) this.shown = this.rows.length - 1;
     return this.render();
+  };
+  /**
+   * D8 (1 Oct, SH-45): one instruction at a time. progressive(on): the card shows the first step's rows only;
+   * now(stepId) opens the rows of that step (its row, or its parts "<step>0", "<step>1"... and the rows sharing their
+   * `seq`), and onReveal(ids) is told, so the doctor says the new line as it appears (never the whole job up front).
+   */
+  Kit.Card.prototype.setProgressive = function (on = true, onReveal = null) {
+    this.progressive = !!on;
+    this.onReveal = onReveal;
+    this.shown = this.progressive ? this.groupEnd(0) : this.rows.length - 1;
+    return this;
+  };
+  /** The last index of the step group that starts at i (rows sharing the first row's `seq`). */
+  Kit.Card.prototype.groupEnd = function (i) {
+    if (!this.rows.length) return -1;
+    const r = this.rows[i];
+    let j = i;
+    if (r && r.seq) while (j + 1 < this.rows.length && this.rows[j + 1].seq === r.seq) j++;
+    return j;
+  };
+  /** The rows of a step: its own row, or its parts (<step>0, <step>1 ...). */
+  Kit.Card.prototype.stepRows = function (stepId) {
+    const re = new RegExp(`^${String(stepId).replace(/[^\w-]/g, "")}\\d+$`);
+    return this.rows.filter((r) => r.id === stepId || re.test(r.id));
+  };
+  Kit.Card.prototype.reveal = function (stepId) {
+    if (!this.progressive || stepId == null) return [];
+    const mine = this.stepRows(stepId);
+    if (!mine.length) return [];
+    const last = Math.max(...mine.map((r) => this.groupEnd(this.rows.indexOf(r))));
+    if (last <= this.shown) return [];
+    const fresh = this.rows.slice(this.shown + 1, last + 1).map((r) => r.id);
+    this.shown = last;
+    return fresh;
   };
   Kit.Card.prototype.row = function (id) {
     return this.rows.find((r) => r.id === id) || null;
@@ -506,9 +545,11 @@
   };
   /** Mark the row being worked on now (a soft highlight, not a hint). */
   Kit.Card.prototype.now = function (id) {
-    if (this.st.now === id) return;
+    const fresh = this.reveal(id);
+    if (this.st.now === id && !fresh.length) return;
     this.st.now = id;
     this.render();
+    if (fresh.length && this.onReveal) this.onReveal(fresh);
   };
   Kit.Card.prototype.english = function (on) {
     this.el.classList.toggle("english", !!on);
@@ -523,7 +564,7 @@
       if (this.st.reading === "__head") this.st.reading = null;
       if (this.headEl) this.headEl.classList.remove("reading");
     }
-    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows.slice();
+    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows.slice(0, this.progressive ? this.shown + 1 : this.rows.length);
     for (const r of rows) {
       if (!this.rows.includes(r)) continue;
       this.st.reading = r.id;
