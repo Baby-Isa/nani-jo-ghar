@@ -21,12 +21,12 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 **Next steps, in order:**
 1. **Mum's session.**
 2. **Process her recording:** transcribe, cut the clips, update `docs/language/grammar-notes.md`.
-4. **Step 2, side by side:**
+3. **Step 2, side by side:**
    - **2a:** the code's target operating model and a gap analysis;
    - **2b:** the language engine design.
-5. **Step 3:** refactor into the target model: the live code first, parked modes by decision.
-6. **Step 4:** build and fill the language engine, and use it everywhere.
-7. **Then:** finish Cook fully, then the clinic games.
+4. **Step 3:** refactor into the target model: the live code first, parked modes by decision.
+5. **Step 4:** build and fill the language engine, and use it everywhere.
+6. **Then:** finish Cook fully, then the clinic games.
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` (this "Next chat" section first) and `docs/process/rules.md`. Give me a short plan update, then propose the next step's plan. Don't start anything until I say go.
