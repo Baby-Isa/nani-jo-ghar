@@ -4,11 +4,12 @@
  *
  * Why: "My knee hurts." / "Let's check it and bandage it."
  * 1. Tap the knee with the hammer N times: the leg kicks (the funny bit, kept).
- * 2. The wrap: dots by the knee flash; tap each as it flashes and the bandage
- *    wraps from the last dot to this one. Stop after N turns (the count said).
- *    L1: 2 dots (left, right) at one height, alternating, no hurry.
- *    L2: 3 dots each side at different heights, flashing in a set order.
- *    L3: faster, more turns; only the sore leg glows (D10, 1 Oct: the side is said in the diagnosis only).
+ * 2. The wrap: one dot by the knee lights and WAITS for the tap (CLN-48, D15b: nothing moves on by itself); tap
+ *    it and the bandage wraps from the last dot to this one, and the next dot lights somewhere new. The speed is
+ *    the child's own (the time badge rewards it). Stop after N turns (the count said).
+ *    L1: 2 dots (behind, in front) at one height, alternating.
+ *    L2: 3 dots each side at different heights, in a set order.
+ *    L3: more turns, heard only (the closed card). One knee, side-on (D10, D2: the side is the diagnosis's test).
  * Rows (the Kutchi decides): the kick count, the turns. Mistakes are logged
  * silently and show in the end review.
  */
@@ -20,7 +21,6 @@
   const K = {
     kicks: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
     turns: { 1: [2, 3, 4], 2: [3, 4, 5], 3: [3, 4, 5] },
-    flashMs: { 1: 0, 2: 1800, 3: 1100 },
   };
   const WHY = { problem: "My knee hurts.", goal: "Let's check it and bandage it." };
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
@@ -55,7 +55,7 @@
       { id: "wrap-turns", options: K.turns[L], answer: turns, skill: true },
     ];
     const words = [Lg.num(kicks), Lg.num(turns), Lg.w("lnk-nepoi"), HS.ph("knee"), HS.ph("bandage")];
-    return { level: L, side, steps, rows, words, flashMs: K.flashMs[L] };
+    return { level: L, side, steps, rows, words };
   }
 
   function mount(stage, ctx) {
@@ -67,32 +67,40 @@
     ctx.card.setRows(P.steps.map((x) => x.row));
     const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
 
-    // the patient sits on the bed's edge facing us: thighs on the paper strip, knees at the edge,
-    // shins hanging. The patient's left knee is on OUR right.
-    // D10 (1 Oct, CLN-47): the close-up shows the one sore knee, in the middle (the side is the diagnosis's test)
-    const KX = { left: 400, right: 400 };
-    const KY = 360;
+    // D2, D10 (1 Oct, CLN-47): the one sore knee, side-on (the patient faces right, on the bed's end): the thigh in
+    // from the left edge, the knee a little right of centre, the shin hanging out of the bottom, so the kick reads.
+    // Stand-in art in the patient's own skin and clothes (CLN-67); the art batch's K1/K2 swap in by file name.
+    const KX = 440;
+    const KY = 250;
+    const defs = s("defs", {}, S.svg);
+    const gid = `knee-skin-${Math.floor(ctx.rng() * 1e6)}`;
+    const grad = s("linearGradient", { id: gid, x1: 0, y1: 0, x2: 1, y2: 0 }, defs);
+    s("stop", { offset: "0", "stop-color": S.skinDark }, grad);
+    s("stop", { offset: "0.45", "stop-color": S.skin }, grad);
+    s("stop", { offset: "1", "stop-color": S.skinLight }, grad);
     const legs = {};
-    [P.side].forEach((side) => {
-      const x = KX[side];
-      const g = s("g", {}, S.layer);
-      s("path", { d: `M${x - 62} 250 Q${x} 236 ${x + 62} 250 L${x + 56} ${KY} L${x - 56} ${KY}Z`, fill: "#3f6fa8" }, g); // shorts
-      const glow = s("ellipse", { cx: x, cy: KY, rx: 74, ry: 64, fill: "#ffe27a", opacity: 0 }, g);
-      const shin = s("g", {}, g);
-      s("rect", { x: x - 44, y: KY - 10, width: 88, height: 150, rx: 40, fill: "#d9a57c", stroke: "#b9845c", "stroke-width": 3 }, shin);
-      s("ellipse", { cx: x + (side === "left" ? 14 : -14), cy: KY + 146, rx: 58, ry: 26, fill: "#7a4a3a" }, shin); // shoe
-      s("ellipse", { cx: x, cy: KY, rx: 50, ry: 42, fill: "#e2b08a", stroke: "#b9845c", "stroke-width": 3 }, g);
-      const wrap = s("g", {}, g);
-      legs[side] = { g, glow, shin, wrap, x };
-    });
+    const g = s("g", { class: "knee-leg" }, S.layer);
+    const glow = s("ellipse", { cx: KX, cy: KY, rx: 96, ry: 92, fill: "#ffe27a", opacity: 0 }, g);
+    // the shin and foot (the kick turns this about the knee)
+    const body = s("g", { class: "knee-body" }, g); // the stand-in drawing (the art swaps in for it: S.closeup)
+    const shin = s("g", { class: "knee-shin" }, body);
+    s("path", { d: `M${KX - 52} ${KY + 10} Q${KX - 46} ${KY + 200} ${KX - 36} ${KY + 330} L${KX + 34} ${KY + 330} Q${KX + 44} ${KY + 190} ${KX + 50} ${KY + 4}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3 }, shin);
+    s("path", { d: `M${KX - 40} ${KY + 300} L${KX - 40} ${KY + 360} L${KX + 120} ${KY + 360} Q${KX + 130} ${KY + 318} ${KX + 40} ${KY + 296}Z`, fill: "#7a4a3a" }, shin); // the shoe
+    // the thigh on the bed, from the left edge, and the rolled trouser leg
+    s("path", { d: `M-700 ${KY - 70} L${KX - 10} ${KY - 62} Q${KX + 62} ${KY - 56} ${KX + 58} ${KY + 8} Q${KX + 50} ${KY + 64} ${KX - 20} ${KY + 60} L-700 ${KY + 64}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3 }, body);
+    s("path", { d: `M-700 ${KY - 76} L${KX - 150} ${KY - 70} Q${KX - 128} ${KY} ${KX - 150} ${KY + 68} L-700 ${KY + 72}Z`, fill: S.legs }, body);
+    s("path", { d: `M${KX - 168} ${KY - 74} Q${KX - 142} ${KY} ${KX - 168} ${KY + 72} L${KX - 124} ${KY + 68} Q${KX - 102} ${KY} ${KX - 124} ${KY - 70}Z`, fill: HS.shade(S.legs, -0.15) }, body);
+    // the kneecap
+    s("ellipse", { cx: KX + 30, cy: KY - 4, rx: 30, ry: 36, fill: S.skinLight, opacity: 0.55 }, body);
+    const wrap = s("g", {}, g);
+    const art = S.closeup("knee", body);
+    if (art) g.insertBefore(art, wrap);
+    legs[P.side] = { g, glow, shin, wrap, x: KX };
     const sore = legs[P.side];
-    const glowOn = (on) => {
-      Object.values(legs).forEach((l) => l.glow.setAttribute("opacity", 0));
-      if (on) sore.glow.setAttribute("opacity", 0.55);
-    };
+    const glowOn = (on) => sore.glow.setAttribute("opacity", on ? 0.5 : 0);
     glowOn(true);
     const dotsG = s("g", {}, S.layer);
-    const dotPos = (d) => ({ x: sore.x + (d.s === "l" ? -70 : 70), y: KY - 34 + d.y * 34 });
+    const dotPos = (d) => ({ x: sore.x + (d.s === "l" ? -78 : 92), y: KY - 40 + d.y * 40 });
     const dots = [];
     const drawDots = () => {
       S.clear(dotsG);
@@ -149,24 +157,14 @@
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 
-    // the flash: level 1 waits for the tap; from level 2 a missed flash moves on
-    const clearFlash = () => clearTimeout(st.flashT);
-    const armFlash = () => {
-      clearFlash();
-      drawDots();
-      if (!P.flashMs || st.over || wrapped()) return;
-      st.flashT = setTimeout(() => {
-        if (!cur() || cur().kind !== "wrap") return;
-        ctx.log({ type: "extra", rowId: "wrap", detail: "missed a flash" });
-        st.oi++;
-        armFlash();
-      }, P.flashMs * (fast() ? 3 : 1));
-    };
+    // CLN-48 (D15b): the lit dot waits for the tap at every level; nothing moves on by itself
+    const clearFlash = () => {};
+    const armFlash = () => drawDots();
 
     S.tools(
       [
-        { id: "hammer", glyph: "🔨" },
-        { id: "bandage", glyph: "🧻" },
+        { id: "hammer", img: "assets/clinic/items-v2/reflex-hammer.webp" },
+        { id: "bandage", img: "assets/clinic/items-v2/bandage-roll.webp" },
       ],
       (id) => {
         if (st.over) return;
@@ -182,7 +180,7 @@
       const c = cur();
       if (!c || st.over || st.busy) return;
       if (c.kind === "kick" && S.sel === "hammer") {
-        const leg = Object.values(legs).find((l) => Math.hypot(p.x - l.x, p.y - KY) < 70);
+        const leg = Object.values(legs).find((l) => Math.hypot(p.x - l.x - 20, p.y - KY) < 90);
         if (!leg) return;
         if (leg !== sore) {
           ctx.log({ type: "wrong", rowId: "kick", detail: "the other knee" });
@@ -191,18 +189,23 @@
         }
         st.kicks++;
         S.count(st.kicks);
-        ctx.tally("hammer", st.kicks);
+        ctx.tally("hammer", st.kicks, { next: true }); // SH-40: the bandage (the next action) closes this step
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (ctx.level === 1 && st.kicks >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
-        const hm = s("text", { x: leg.x + 30, y: KY - 30, "font-size": 60 }, S.fx);
-        hm.textContent = "🔨";
+        const hm = s("image", { href: (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)("assets/clinic/items-v2/reflex-hammer.webp"), x: KX + 40, y: KY + 10, width: 150, height: 100 }, S.fx);
         hm.style.transformBox = "fill-box";
-        hm.style.transformOrigin = "80% 80%";
-        hm.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(-25deg)" }, { transform: "rotate(0deg)" }], { duration: 300 });
+        hm.style.transformOrigin = "100% 50%";
+        hm.animate([{ transform: "rotate(-25deg)" }, { transform: "rotate(10deg)" }, { transform: "rotate(-15deg)" }], { duration: 300 });
         ctx.after(350, () => hm.remove());
-        const dir = P.side === "left" ? -1 : 1;
-        leg.shin.style.transformOrigin = `${leg.x}px ${KY}px`;
-        leg.shin.animate([{ transform: "rotate(0deg)" }, { transform: `rotate(${dir * 55}deg)` }, { transform: "rotate(0deg)" }], { duration: 520, easing: "ease-out" });
+        // the kick: the shin swings forward (to the right) about the knee
+        leg.shin.style.transformOrigin = `${KX}px ${KY}px`;
+        leg.shin.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(-55deg)" }, { transform: "rotate(0deg)" }], { duration: 520, easing: "ease-out" });
+        // with the art: the kicked picture for a moment (K2, registered to K1)
+        const kick = art && ctx.data.art["knee-kick"];
+        if (kick && kick.on) {
+          art.setAttribute("href", (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)(kick.file));
+          ctx.after(420, () => art.setAttribute("href", (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)(ctx.data.art.knee.file)));
+        }
         S.face("happy", 600);
         ctx.sfx("pop");
         st.busy = true;

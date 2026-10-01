@@ -543,6 +543,21 @@
       return el;
     };
 
+    /**
+     * The art swap (the clinic-heal-v3 art plan § 8): a close-up's picture by file name, from the game's data
+     * (`art: {key: {file, on, box: [x, y, w, h] in svg units}}`). While `on` is false (the art isn't cut yet) the
+     * stand-in drawing shows; once the cut session drops the file in and sets `on`, the picture replaces it, with no
+     * code change. Returns the <image> or null.
+     */
+    S.closeup = (key, standin) => {
+      const a = ctx.data && ctx.data.art && ctx.data.art[key];
+      if (!a || !a.on || !a.file) return null;
+      const [x, y, w, hh] = a.box || [0, 0, 800, 500];
+      const im = s("image", { href: Kit && Kit.url ? Kit.url(a.file) : a.file, x, y, width: w, height: hh, preserveAspectRatio: "xMidYMid slice", class: "hs-closeup" });
+      S.layer.insertBefore(im, S.layer.firstChild);
+      if (standin) standin.setAttribute("display", "none");
+      return im;
+    };
     S.clear = (g) => {
       while (g.firstChild) g.removeChild(g.firstChild);
     };

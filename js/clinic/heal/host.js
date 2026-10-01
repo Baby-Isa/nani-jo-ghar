@@ -372,7 +372,7 @@
       },
       say(lineId, o = {}) {
         const l = HOST.line(lineId, data);
-        return Kit.Voice.say(l, { who: o.who || l.who || "doctor", noBubble: !!o.noBubble });
+        return Kit.Voice.say(l, { who: o.who || l.who || "doctor", noBubble: !!o.noBubble, soft: !!o.soft });
       },
       // clinic fixes: in a full run (the pipeline) the diagnosis already told the why (13i); first-time help on/off
       inRun: !!opts.inRun,

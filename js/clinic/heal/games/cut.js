@@ -677,6 +677,8 @@
       s("path", { d: `M24 ${Y - 74} Q54 ${Y} 24 ${Y + 74} L72 ${Y + 70} Q96 ${Y} 72 ${Y - 70}Z`, fill: HS.shade(S.clothes, -0.15) }, limb); // its rolled cuff
     }
 
+    S.closeup(legPart ? "knee-graze" : "forearm-graze", limb);
+
     // the scrape: one red patch per plaster, each a soft irregular graze with scratch lines
     const patches = [];
     const patchG = s("g", { class: "cut-patches" }, S.layer);
@@ -767,7 +769,10 @@
       // the first plaster put on each patch, in the order they went on, is what's scored (a plaster taken back still
       // counts: UX 17)
       const first = st.firstSeq.slice(0, n);
-      judge("plasters", JSON.stringify(first) === JSON.stringify(P.steps[2].seq.map(P.key)), first.join(" "));
+      const okP = JSON.stringify(first) === JSON.stringify(P.steps[2].seq.map(P.key));
+      // D14: logged against the first plaster's row, so the end review can show which step it was
+      st.judged.plasters = okP;
+      ctx.log({ type: okP ? "right" : "wrong", rowId: "plaster0-order", detail: first.join(" ") });
       S.say("Look at that!", "patient");
       S.markSeen();
       ctx.after(fast() ? 200 : 1600, () => {
