@@ -23,6 +23,41 @@
 <link rel="stylesheet" href="css/shared/focus.css?v=20261001T045807Z">
 <!-- Sidebar v2 (docs/feedback/cook-ui-feedback-2026-09-28.md 9): the sidebar, the request cards and pop-up -->
 <link rel="stylesheet" href="css/cook-side-v2.css?v=20261001T045807Z">
+<!-- the engine core's modules by name (filled and stamped by build/bump_version.py) -->
+<script type="importmap" data-njg="core">
+{
+ "imports": {
+  "#core/content.js": "./js/core/content.js?v=20261001T045807Z",
+  "./js/core/content.js": "./js/core/content.js?v=20261001T045807Z",
+  "#core/context.js": "./js/core/context.js?v=20261001T045807Z",
+  "./js/core/context.js": "./js/core/context.js?v=20261001T045807Z",
+  "#core/env.js": "./js/core/env.js?v=20261001T045807Z",
+  "./js/core/env.js": "./js/core/env.js?v=20261001T045807Z",
+  "#core/index.js": "./js/core/index.js?v=20261001T045807Z",
+  "./js/core/index.js": "./js/core/index.js?v=20261001T045807Z",
+  "#core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
+  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
+  "#core/log.js": "./js/core/log.js?v=20261001T045807Z",
+  "./js/core/log.js": "./js/core/log.js?v=20261001T045807Z",
+  "#core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
+  "./js/core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
+  "#core/save.js": "./js/core/save.js?v=20261001T045807Z",
+  "./js/core/save.js": "./js/core/save.js?v=20261001T045807Z",
+  "#core/score.js": "./js/core/score.js?v=20261001T045807Z",
+  "./js/core/score.js": "./js/core/score.js?v=20261001T045807Z",
+  "#core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
+  "./js/core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
+  "#core/types.js": "./js/core/types.js?v=20261001T045807Z",
+  "./js/core/types.js": "./js/core/types.js?v=20261001T045807Z",
+  "#core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
+  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
+  "#core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
+  "./js/core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
+  "#core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z",
+  "./js/core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z"
+ }
+}
+</script>
 </head>
 <body class="w6">
 
@@ -41,9 +76,8 @@
     <div id="count-badge" class="hidden" aria-live="polite"></div>
     <!-- Wave 6b: at a station Nani is a voice; a line that isn't on the card shows here for a moment (never takes a tap) -->
     <div id="voice" class="hidden" role="status" aria-live="polite"></div>
-    <button id="done-btn" class="hidden" aria-label="Done">&#10003;</button>
-    <!-- Wave 6: the big button between two jobs ("Go to the barbecue"), on the right under the thumb -->
-    <button id="go-btn" class="hidden" type="button"><span class="go-t"></span><span class="go-arrow" aria-hidden="true">&#10140;</span></button>
+    <!-- ✓ Done and → Next (between two jobs, "to the grill"): the shared kit's buttons (js/shared/buttons.js),
+         made by Cook's UI.init as #done-btn and #go-btn, bottom right under the thumb -->
     <div id="toast" class="hidden"></div>
 
     <!-- the intro order card: when someone orders it comes up big in the middle (nothing is live yet), then flies into the sidebar -->
@@ -62,7 +96,7 @@
   <aside id="side" class="njg-side">
     <!-- Wave 6: the sidebar is on the LEFT (people read left to right); the big action buttons stay on the right of the picture.
          0. 28 Sept: Nani's guide box (js/shared/guide.js): her face and what to do now; tap it to mute or unmute her
-            (remembered in the save); the light bulb (English for a few seconds: 5/3/2/1 s by level; it costs the ear star) and her speaker -->
+            (remembered in the save); the light bulb (English for a few seconds: 5/3/2/1 s by level; it costs a hint) and her speaker -->
     <div id="guide"></div>
     <!-- 1. the order card, always on top: compact; ↻ opens it big again (the intro card). It becomes the completion card when the order is served -->
     <div id="mission" class="card hidden">
@@ -73,8 +107,8 @@
           <img class="m-face" alt="">
           <span class="say-badge" aria-hidden="true"></span>
         </button>
-        <!-- the dish ("Muke chai khape."), the summary of several (skewers: "hakri lakri mixed"), then the three stars; who it is shows in the face -->
-        <div class="m-who"><div class="m-dish"></div><div class="m-sum"></div><div class="m-stars"></div></div>
+        <!-- the dish ("Muke chai khape."), the summary of several (skewers: "hakri lakri mixed"); who it is shows in the face (no stars: R4) -->
+        <div class="m-who"><div class="m-dish"></div><div class="m-sum"></div></div>
       </div>
       <div class="m-order"></div>
       <div class="m-stamp">Served!</div>
@@ -112,8 +146,6 @@
 <script src="js/vendor/phaser.min.js?v=20261001T045807Z"></script>
 <script src="js/version.js?v=20261001T045807Z"></script>
 <script src="js/shared/frame.js?v=20261001T045807Z"></script>
-<!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
-<script src="js/shared/save.js?v=20261001T045807Z"></script>
 <script src="js/shared/app.js?v=20261001T045807Z"></script>
 <script src="js/shared/family-voice.js?v=20261001T045807Z"></script>
 <script src="js/shared/uistore.js?v=20261001T045807Z"></script>
@@ -128,77 +160,50 @@
 <script src="js/shared/guide.js?v=20261001T045807Z"></script>
 <script src="js/shared/order-card.js?v=20261001T045807Z"></script>
 <script src="js/shared/buttons.js?v=20261001T045807Z"></script>
-<script src="js/cook/core.js?v=20261001T045807Z"></script>
-<script src="js/cook/lang.js?v=20261001T045807Z"></script>
-<script src="js/cook/art.js?v=20261001T045807Z"></script>
-<script src="js/cook/ui.js?v=20261001T045807Z"></script>
-<script src="js/cook/stations.js?v=20261001T045807Z"></script>
+<!-- R4 (decision 18): Cook loads as ES modules, in this order, after the classic shared kit above. The engine core
+     comes in through the import map (js/cook/boot.js: the one save, the purse, the badges, the language seam). -->
+<script type="module" src="js/cook/boot.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/core.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/lang.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/art.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/ui.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/stations.js?v=20261001T045807Z"></script>
 <!-- Hands out (28 Sept, Zafar): disabled for now, file kept. Re-enable by restoring this script tag. -->
-<!-- <script src="js/cook/hands.js?v=20261001T045807Z"></script> -->
-<script src="js/cook/station-lib.js?v=20261001T045807Z"></script>
-<script src="js/cook/zone.js?v=20261001T045807Z"></script>
-<script src="js/cook/kitchen-kit.js?v=20261001T045807Z"></script>
+<!-- <script type="module" src="js/cook/hands.js?v=20261001T045807Z"></script> -->
+<script type="module" src="js/cook/station-lib.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/zone.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/kitchen-kit.js?v=20261001T045807Z"></script>
 <!-- mechanics: one verb per file (the order here is the Station lab's order) -->
-<script src="js/cook/mechanics/fetch.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/passme.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/pour.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/add.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/boil.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/count.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/fetch.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/passme.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/pour.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/add.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/boil.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/count.js?v=20261001T045807Z"></script>
 <!-- knead (js/cook/mechanics/knead.js) is cut from the playable stations (the quality pass: no word, hands only); the file stays -->
-<script src="js/cook/mechanics/roll.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/tawa.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/chop.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/tadka.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/stir.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/assemble.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/fill-fold.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/fry.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/thread.js?v=20261001T045807Z"></script>
-<script src="js/cook/mechanics/grill.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/roll.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/tawa.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/chop.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/tadka.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/stir.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/assemble.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/fill-fold.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/fry.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/thread.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/mechanics/grill.js?v=20261001T045807Z"></script>
 <!-- combined stations: one file each (the next wave fills the three stubs) -->
-<script src="js/cook/stations/roll-tawa.js?v=20261001T045807Z"></script>
-<script src="js/cook/stations/maani-line.js?v=20261001T045807Z"></script>
-<script src="js/cook/stations/chai-tray.js?v=20261001T045807Z"></script>
-<script src="js/cook/stations/mishkaki-grill.js?v=20261001T045807Z"></script>
-<script src="js/cook/stations/samosa.js?v=20261001T045807Z"></script>
-<script src="js/cook/stations/daar.js?v=20261001T045807Z"></script>
-<script src="js/cook/recipes.js?v=20261001T045807Z"></script>
-<script src="js/cook/order.js?v=20261001T045807Z"></script>
-<script src="js/cook/coach.js?v=20261001T045807Z"></script>
-<script src="js/cook/flow.js?v=20261001T045807Z"></script>
-<!-- R3a hook-up (until R4 moves Cook onto the framework): Cook's camera follows the shared stage (js/shared/stage.js; the same
-     picture on a laptop, and on a tablet the scene may grow to its safe area, data/layout.json stage.scenes.cook), and the
-     light bulb goes through the shared bulb (js/shared/bulb.js) -->
-<script>
-(function () {
-  "use strict";
-  var Scene = window.Cook && Cook.CookScene;
-  if (Scene && window.Stage) {
-    Scene.prototype.fitView = function () {
-      var gs = this.scale.gameSize, gw = Math.round(gs.width), gh = Math.round(gs.height);
-      var scenes = (window.Frame && Frame.layout && Frame.layout.stage && Frame.layout.stage.scenes) || {};
-      var spec = Stage.scene(scenes["cook:" + this.viewName] ? "cook:" + this.viewName : "cook");
-      var m = Stage.fit({ box: { w: gw, h: gh }, scene: spec, itemScale: Stage.itemScale() });
-      var cam = this.cameras.main;
-      cam.setSize(gw, gh);
-      cam.setOrigin(0, 0);
-      cam.setZoom(m.s);
-      cam.setScroll(m.view.x0, m.view.y0);
-      Cook.view = { left: m.view.x0, top: m.view.y0, right: m.view.x1, bottom: m.view.y1, w: gw, h: gh, ex: m.view.x1 - m.view.x0 - spec.w, ey: m.view.y1 - m.view.y0 - spec.h, s: m.s };
-      this.fitBg();
-      if (window.UI && UI.onViewFit) UI.onViewFit();
-    };
-    // a new view (the pantry, a station) has its own safe area: fit again before the station lays out its pieces
-    var setBg = Scene.prototype.setBg;
-    Scene.prototype.setBg = function (key) { setBg.call(this, key); this.fitView(); };
-    // a new form factor (a resize past a tablet's shape) can change the item scale: fit again
-    if (window.Frame) Frame.onChange(function () { if (Cook.scene && Cook.scene.fitView) Cook.scene.fitView(); });
-  }
-  if (window.Bulb && window.UI) Bulb.cookShim(UI, Cook);
-})();
-</script>
+<script type="module" src="js/cook/stations/roll-tawa.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/stations/maani-line.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/stations/chai-tray.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/stations/mishkaki-grill.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/stations/samosa.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/stations/daar.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/recipes.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/order.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/coach.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/flow.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/frame-hookup.js?v=20261001T045807Z"></script>
 <!-- inside the app shell: the first launch (straight into the pantry) and the way home -->
-<script src="js/cook/app.js?v=20261001T045807Z"></script>
+<script type="module" src="js/cook/app.js?v=20261001T045807Z"></script>
 </body>
 </html>

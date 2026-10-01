@@ -1079,6 +1079,15 @@
   SK.goIcon = function () {
     const b = document.querySelector("#go-btn");
     if (!b) return;
+    // the shared Next (js/shared/buttons.js): its icon slot takes the grill
+    const kitIcon = b.querySelector(".njg-next-ic");
+    if (kitIcon) {
+      kitIcon.innerHTML =
+        '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M5 13h22"/><path d="M6 13c0 6 4.5 10 10 10s10-4 10-10"/><path d="M11 23l-3 6M21 23l3 6"/>' +
+        '<path d="M11 4c-1.5 2 1.5 3 0 5M16 3c-1.5 2 1.5 3 0 5M21 4c-1.5 2 1.5 3 0 5"/></svg>';
+      return;
+    }
     b.classList.add("ds");
     const a = b.querySelector(".go-arrow");
     if (a) a.remove();

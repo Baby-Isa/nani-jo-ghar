@@ -43,6 +43,8 @@ export function allFlows() {
   for (const f of MODE_FLOWS) flows.push({ ...f, sizes: ["800x360", "1366x768"] });
   // ---- the upright phone: the rotate card on every page; the static CSS lint ----
   flows.push(rotateFlow, cssFlow);
+  // ---- R4: the take-back path of every Cook flow (E14: place something, take it back, carry on to the end), at level 1 ----
+  for (const u of unit) flows.push(deep(cookStation(u.key, 1, { recipe: !!u.recipe, mode: "takeback" })));
   return flows.map((f) => ({ ...f, parked: false }));
 }
 export const flowSizes = (f) => f.sizes || ALL_SIZES;

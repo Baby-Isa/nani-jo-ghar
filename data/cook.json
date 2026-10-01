@@ -3464,11 +3464,11 @@
  "upgrades": [
   {
    "id": "basket",
+   "bonus": 2,
    "station": "Pantry",
    "name": "Special basket",
    "image": "basket",
    "special": true,
-   "price": 30,
    "effect": "Things fly into it twice as fast, and every order earns 2 extra coins.",
    "idea": "A two-basket trolley: fetch for two orders in one trip (Busy mode).",
    "knobs": {
@@ -3484,7 +3484,6 @@
    "name": "Special jug",
    "image": "water-jug",
    "special": true,
-   "price": 35,
    "effect": "A quick pour: every tap of the jug pours at once.",
    "idea": "A measuring jug with marked lines (a quarter, a half, full) that Nani names in Kutchi.",
    "knobs": {
@@ -3502,7 +3501,6 @@
    "station": "Boiling",
    "name": "Chai machine",
    "image": "chai-machine",
-   "price": 60,
    "effect": "Boils and pours the chai for you. You still add what's asked for.",
    "idea": "A brass chai machine; a cheaper tier is a milk-watcher disc that rattles before the pan boils over.",
    "knobs": {
@@ -3524,7 +3522,6 @@
    "name": "Special atto bowl",
    "image": "atto",
    "special": true,
-   "price": 40,
    "effect": "Kneads the dough for you.",
    "idea": "An atta-kneading machine (dough maker).",
    "knobs": {
@@ -3539,7 +3536,6 @@
    "name": "Special rolling pin",
    "image": "rolling-pin",
    "special": true,
-   "price": 30,
    "effect": "Rolls twice as fast and never goes too big.",
    "idea": "A tapered belan, then a chapati press that makes a perfect circle in one push.",
    "knobs": {
@@ -3556,7 +3552,6 @@
    "name": "Special tawa",
    "image": "tawa",
    "special": true,
-   "price": 40,
    "effect": "The flip window is twice as wide.",
    "idea": "A heavy cast-iron tawa, then a roti jali (mesh) for a guaranteed puff.",
    "knobs": {
@@ -3574,7 +3569,6 @@
    "station": "Chopping",
    "name": "Special knife",
    "image": "knife-gold",
-   "price": 25,
    "effect": "Chop in 2 swipes instead of 4.",
    "idea": "A sharp chef's knife, then a pull-cord vegetable chopper.",
    "knobs": {
@@ -3589,9 +3583,7 @@
    "station": "Chopping",
    "name": "Ali helps",
    "image": "cousin-badge",
-   "price": 15,
-   "wage": 5,
-   "effect": "Ali chops for you. Costs 5 coins a day.",
+   "effect": "Ali chops for you.",
    "idea": "Family members as kitchen helpers with a daily wage, tycoon-style."
   },
   {
@@ -3600,7 +3592,6 @@
    "name": "Special tadka pan",
    "image": "tadka-pan",
    "special": true,
-   "price": 30,
    "effect": "Tips itself into the daal once the spices are in. (You still add them in the order Nani says.)",
    "idea": "A long-handled tadka ladle that pours straight into the pot.",
    "knobs": {
@@ -3615,7 +3606,6 @@
    "name": "Special pot",
    "image": "pot",
    "special": true,
-   "price": 30,
    "effect": "Small, wobbly circles count as a stir.",
    "idea": "A long wooden ladle (doi); later a pressure cooker whose whistles you count.",
    "knobs": {
@@ -3628,11 +3618,11 @@
   },
   {
    "id": "thali",
+   "bonus": 3,
    "station": "Serving",
    "name": "Special thali",
    "image": "thali",
    "special": true,
-   "price": 40,
    "effect": "Customers tip 3 extra coins on every order.",
    "idea": "Brass thali and katoris: better presentation, bigger tips."
   },
@@ -3643,7 +3633,6 @@
    "image": "knife-gold",
    "art": "hand:spoon",
    "special": true,
-   "price": 35,
    "effect": "The green window for lifting fried food is twice as wide.",
    "idea": "A jharo (slotted spoon) and a frying basket that lifts everything at once.",
    "knobs": {
@@ -3658,11 +3647,12 @@
   },
   {
    "id": "bigspoon",
+   "bonus": 2,
+   "bonusFor": "chaat",
    "station": "Assembling",
    "name": "Special serving spoon",
    "art": "hand:spoon",
    "special": true,
-   "price": 25,
    "effect": "Toppings fly into the bowl twice as fast, and every chaat order earns 2 extra coins.",
    "idea": "A set of matching brass katoris and spoons for a chaat counter.",
    "knobs": {
@@ -3730,53 +3720,6 @@
    ]
   ]
  },
- "star_sets": {
-  "_about": "Each game mode supplies its own star icons (icon names from js/cook/ui.js ICON). Cook: the 'cooked well' star is a chef's hat. Find it (planned): a magnifying glass.",
-  "cook": {
-   "ear": {
-    "icon": "ear",
-    "name": "Understood",
-    "tip": "Understood: everything they asked for"
-   },
-   "hand": {
-    "icon": "chefhat",
-    "name": "Cooked well",
-    "tip": "Cooked well: nothing spilt or burnt"
-   },
-   "relaxed": {
-    "icon": "tick",
-    "name": "No help",
-    "tip": "No help: no hints, reveals or translations"
-   },
-   "busy": {
-    "icon": "bolt",
-    "name": "Quick",
-    "tip": "Quick: served before their patience ran out"
-   }
-  },
-  "find": {
-   "ear": {
-    "icon": "ear",
-    "name": "Understood",
-    "tip": "Understood: found what they asked for"
-   },
-   "hand": {
-    "icon": "magnifier",
-    "name": "Sharp eyes",
-    "tip": "Sharp eyes: found it without a wrong pick"
-   },
-   "relaxed": {
-    "icon": "tick",
-    "name": "No help",
-    "tip": "No help"
-   },
-   "busy": {
-    "icon": "bolt",
-    "name": "Quick",
-    "tip": "Quick"
-   }
-  }
- },
  "calm": {
   "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: bulbMs = how long the light bulb shows English, by the order's level (5, 3, 2, 1 s); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
   "quietMs": 4000,
@@ -3799,7 +3742,6 @@
   ],
   "coachSteps": 4,
   "uiAfter": {
-   "stars": 1,
    "bulb": 2
   }
  },
@@ -3899,37 +3841,6 @@
    "chaat": ["assemble"],
    "samosa": ["samosa", "fry"],
    "sekelo": ["thread", "grill"]
-  }
- },
- "tips": {
-  "_about": "One short 'Next time' tip per missed star on the result card. Plain words, no numbers.",
-  "ear": {
-   "no": "Leave out what they said no to",
-   "order": "Do them in the order they said",
-   "count": "Make as many as they asked for",
-   "speed": "Stir at the speed Nani says",
-   "shown": "Have a go before Nani shows you",
-   "passme": "Listen for what Nani asks for",
-   "wrong": "Listen for each word, then pick it"
-  },
-  "hand": {
-   "pour": "Stop pouring at the dashed line",
-   "boil": "Turn the knob down when the ring is green",
-   "tawa": "Flip when the ring reaches green",
-   "fry": "Lift each one out when its ring is green",
-   "grill": "Turn the skewer when its ring is green",
-   "roll": "Roll until it just fills the circle",
-   "stir speed": "Stir at the speed Nani says",
-   "knead": "Keep pressing until the dough is smooth",
-   "fold": "Swipe along each dashed line",
-   "chop": "Slice right through each one",
-   "default": "Take your time with your hands",
-   "tadka": "Add the next spice before the oil smokes",
-   "chop missed": "Slice each one Nani names before it falls"
-  },
-  "third": {
-   "busy": "Serve before the ring runs out",
-   "relaxed": "Have a go without help first"
   }
  },
  "guide": {

@@ -81,14 +81,14 @@
     };
     parts.forEach((p, i) => {
       if (i) segs.push({ t: sep, lang: null });
-      const g = Lang.gender(nounAfter(i));
-      if (typeof p === "number") {
-        segs.push(...Lang.num(p, g));
-        en.push(String(p));
-      } else {
-        segs.push(...Lang.word(p, g));
-        en.push(Cook.english(p));
-      }
+      const noun = nounAfter(i);
+      const g = Lang.gender(noun);
+      const add = typeof p === "number" ? Lang.num(p, g) : Lang.word(p, g);
+      // decision 21: a form agreeing with a noun whose gender Mum hasn't confirmed is the he-form, a guess:
+      // the segment says so (check), and the test site flags it "to check" (never in the store app)
+      if (noun && !g && add.some((x) => Lang.hasForms(x.w))) add.forEach((x) => Lang.hasForms(x.w) && (x.check = noun));
+      segs.push(...add);
+      en.push(typeof p === "number" ? String(p) : Cook.english(p));
     });
     return { segs, en: en.join(" ") };
   };
@@ -119,6 +119,12 @@
     return { segs, en, key };
   };
   Lang.wordLine = (id) => ({ segs: Lang.word(id), en: Cook.english(id) });
+  /** One word in a given form, said on its own (the end review's "hakri", SH-02). */
+  Lang.formLine = (id, text) => ({ segs: [{ t: text || Cook.display(id), lang: Cook.isPlaceholder(id) ? "e" : "k", w: id }], en: Cook.english(id) });
+  /** Does this word change with its noun's gender (hakro/hakri, wadho/wadhi)? */
+  Lang.hasForms = (id) => !!(id && ((Cook.data.words[id] || {}).forms || null));
+  /** The "to check" flag shows on the test site only, never in the store app (decision 21). */
+  Lang.flagGuesses = () => global.NJG_BUILD !== "store";
   /** A draft word (given by Zafar, not yet confirmed by the family). */
   Lang.isDraft = (id) => !!(Cook.data.words[id] || {}).draft;
   /**
@@ -206,8 +212,10 @@
         return;
       }
       dots = false;
-      const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : ""].filter(Boolean).join(" ");
-      out.push(cls ? `<span class="${cls}">${esc(s.t)}</span>` : esc(s.t));
+      const flag = s.check && Lang.flagGuesses();
+      const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : "", flag ? "to-check" : ""].filter(Boolean).join(" ");
+      const tip = flag ? ` title="To check: ${esc(Cook.english(s.check))}'s gender isn't confirmed (Mum), so this is the he-form"` : "";
+      out.push(cls ? `<span class="${cls}"${tip}>${esc(s.t)}</span>` : esc(s.t));
     });
     return out.join("");
   };
@@ -350,7 +358,19 @@
       else await synth(saySpelling(w));
     }
   }
+  /** The store app's voice (G14, AUD-02): only OK family clips, through the core's one player (js/core/voice.js). */
+  const storeVoice = () => {
+    const V = Cook.core && Cook.core.voice;
+    return V && V.path && V.path() === "store" ? V : null;
+  };
   Lang.speak = async (line) => {
+    // R4: in the store app (or ?voice=store on the test site) every line goes through the core's Voice, which plays
+    // OK family clips only; on the test site Cook's own search below is the same plan (R2's voice-parity test)
+    const SV = storeVoice();
+    if (SV) {
+      await SV.say({ segments: line.segs }, { channel: "cook" });
+      return true;
+    }
     const whole = Lang.plain(line).trim();
     if (line.segs.every((s) => s.lang !== "e")) {
       const fam = famMatch(whole);

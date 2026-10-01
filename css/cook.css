@@ -157,25 +157,27 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 @keyframes glowPulse { 50% { box-shadow: 0 0 0 8px rgba(201,151,58,.35), var(--shadow); } }
 @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
-#count-badge {
+#count-badge:not(.njg-tally) {
   position: absolute; z-index: 8; right: 3%; top: 4%;
   background: var(--cream); border-radius: 18px; padding: 4px 18px; box-shadow: var(--shadow);
   display: flex; align-items: baseline; gap: 10px; font-family: var(--kutchi-font); font-weight: 800;
 }
-#count-badge .count-digit { font-size: clamp(26px, 3.6vw, 48px); color: var(--madder); }
-#count-badge.bump { animation: bump .3s; }
+#count-badge:not(.njg-tally) .count-digit { font-size: clamp(26px, 3.6vw, 48px); color: var(--madder); }
+#count-badge:not(.njg-tally).bump { animation: bump .3s; }
 
 /* Sidebar v2 (Zafar, 28 Sept evening; docs/feedback/cook-ui-feedback-2026-09-28.md 9): the Done button in every mode is
-   option A, the gold-metal tick (the end-of-round screen's) on a round cream button. It replaced the green tick. */
-#done-btn {
+   option A, the gold-metal tick (the end-of-round screen's) on a round cream button. It replaced the green tick.
+   R4: cook.html's Done and Next are the shared kit's (js/shared/buttons.js, .njg-btn); these rules are for the
+   parked pages that borrow this file with their own buttons. */
+#done-btn:not(.njg-btn) {
   position: absolute; z-index: 8; right: 2.5%; bottom: 4%;
   width: clamp(58px, 8vw, 96px); aspect-ratio: 1; border-radius: 50%; padding: 0;
   background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20261001T045807Z");
   border: 1px solid #e6d5b8; color: transparent; font-size: 0; overflow: hidden;
   box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.22);
 }
-#done-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
-#done-btn.glow { animation: doneGlow 1s ease-in-out infinite; }
+#done-btn:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
+#done-btn:not(.njg-btn).glow { animation: doneGlow 1s ease-in-out infinite; }
 @keyframes doneGlow { 50% { box-shadow: 0 0 0 8px rgba(217, 164, 65, .35), 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.22); } }
 
 #toast {
@@ -625,8 +627,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #nani-card .wp .wp-text { font-size: 15px; }
   .lsec.lfor { gap: 4px; }
   .lsec.lfor .lface { width: 26px; height: 26px; }
-  #count-badge { padding: 2px 12px; border-radius: 14px; }
-  #count-badge .count-digit { font-size: 24px; }
+  #count-badge:not(.njg-tally) { padding: 2px 12px; border-radius: 14px; }
+  #count-badge:not(.njg-tally) .count-digit { font-size: 24px; }
   #intro { padding: 2%; }
   #intro .ic-go { display: none; }
   #passme { margin: 4px; padding: 6px; border-radius: 14px; }
@@ -783,42 +785,43 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
 @keyframes coStir { 0% { transform: rotate(0deg) translateX(var(--rr)) rotate(0deg); } 100% { transform: rotate(360deg) translateX(var(--rr)) rotate(-360deg); } }
 
 /* 5. the big button between two jobs ("Go to the barbecue"), bottom right under the thumb */
-#go-btn {
+#go-btn:not(.njg-btn) {
   position: absolute; z-index: 8; right: 2.5%; bottom: 4%; display: inline-flex; align-items: center; gap: 10px;
   border: none; border-radius: 999px; padding: clamp(10px, 1.6vw, 18px) clamp(16px, 2.4vw, 30px);
   background: var(--madder); color: #fff; box-shadow: 0 5px 0 #86362a, var(--shadow);
   font-family: var(--ui-font); font-weight: 800; font-size: clamp(17px, 2.2vw, 28px);
 }
-#go-btn .go-arrow { font-size: 1.2em; line-height: 1; }
-#go-btn.glow { animation: glowPulse 1s ease-in-out infinite; }
-#go-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #86362a, var(--shadow); }
+#go-btn:not(.njg-btn) .go-arrow { font-size: 1.2em; line-height: 1; }
+#go-btn:not(.njg-btn).glow { animation: glowPulse 1s ease-in-out infinite; }
+#go-btn:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 2px 0 #86362a, var(--shadow); }
 /* Sekelo v2 (design system §15): the flat design-system phase button ("to the grill" + a gold icon):
    a white card, charcoal text, radius 12, the one soft shadow; no gradient, bevel or red */
-#go-btn.ds {
+#go-btn:not(.njg-btn).ds {
   right: 2.5%; bottom: 5%; gap: 8px; border-radius: 12px; min-height: 48px;
   padding: clamp(8px, 1.1vw, 14px) clamp(14px, 1.8vw, 22px);
   background: #FFFFFF; color: #2A2522; border: 2px solid #C9962E;
   box-shadow: 0 2px 8px rgba(40, 25, 10, .10);
   font-family: Nunito, sans-serif; font-weight: 800; font-size: clamp(15px, 1.5vw, 20px);
 }
-#go-btn.ds .go-icon { display: inline-flex; width: 1.5em; height: 1.5em; }
-#go-btn.ds .go-icon svg { width: 100%; height: 100%; }
-#go-btn.ds:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(40, 25, 10, .10); }
-#go-btn.ds.glow { animation: goDsGlow 1s ease-in-out infinite; }
+#go-btn:not(.njg-btn).ds .go-icon { display: inline-flex; width: 1.5em; height: 1.5em; }
+#go-btn:not(.njg-btn).ds .go-icon svg { width: 100%; height: 100%; }
+#go-btn:not(.njg-btn).ds:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(40, 25, 10, .10); }
+#go-btn:not(.njg-btn).ds.glow { animation: goDsGlow 1s ease-in-out infinite; }
 @keyframes goDsGlow { 50% { box-shadow: 0 0 0 6px rgba(201, 150, 46, .30), 0 2px 8px rgba(40, 25, 10, .10); } }
 
 /* ---------- Wave 6b: the picture tally (top right), Nani's voice, the throbbing hint ---------- */
 /* the tally: a picture of each thing and how many you've done so far (never the target); it never takes a tap */
 /* 28 Sept (Zafar): a grid, at most three across (six things = 2 x 3), never one long wrapping line */
-#count-badge { pointer-events: none; display: grid; grid-template-columns: repeat(var(--cols, 3), auto); align-items: center; justify-items: start; gap: 4px 14px; padding: 6px 14px; }
-/* placed on a point of the picture (UI.tallyAt), e.g. the pantry's fridge base */
-#count-badge.at { right: auto; transform: translate(-50%, -50%); gap: 2px 10px; padding: 4px 10px; }
-#count-badge.at .tl img { width: clamp(22px, 2.5vw, 36px); height: clamp(22px, 2.5vw, 36px); }
-#count-badge.at .tl .count-digit { font-size: clamp(18px, 2.1vw, 28px); }
-#count-badge .tl { display: inline-flex; align-items: center; gap: 4px; }
-#count-badge .tl img { width: clamp(30px, 3.6vw, 52px); height: clamp(30px, 3.6vw, 52px); object-fit: contain; filter: drop-shadow(0 1px 1px rgba(60,40,20,.25)); }
-#count-badge .tl .count-digit { font-size: clamp(22px, 3vw, 40px); line-height: 1; }
-#count-badge .tl.bump { animation: bump .3s; }
+#count-badge:not(.njg-tally) { pointer-events: none; display: grid; grid-template-columns: repeat(var(--cols, 3), auto); align-items: center; justify-items: start; gap: 4px 14px; padding: 6px 14px; }
+/* placed on a point of the picture (UI.tallyAt), e.g. the pantry's fridge base (R4: the shared tally on Cook's page too: only its place) */
+#count-badge.njg-tally.at { right: auto; justify-content: center; transform: translate(-50%, -50%); }
+#count-badge:not(.njg-tally).at { right: auto; transform: translate(-50%, -50%); gap: 2px 10px; padding: 4px 10px; }
+#count-badge:not(.njg-tally).at .tl img { width: clamp(22px, 2.5vw, 36px); height: clamp(22px, 2.5vw, 36px); }
+#count-badge:not(.njg-tally).at .tl .count-digit { font-size: clamp(18px, 2.1vw, 28px); }
+#count-badge:not(.njg-tally) .tl { display: inline-flex; align-items: center; gap: 4px; }
+#count-badge:not(.njg-tally) .tl img { width: clamp(30px, 3.6vw, 52px); height: clamp(30px, 3.6vw, 52px); object-fit: contain; filter: drop-shadow(0 1px 1px rgba(60,40,20,.25)); }
+#count-badge:not(.njg-tally) .tl .count-digit { font-size: clamp(22px, 3vw, 40px); line-height: 1; }
+#count-badge:not(.njg-tally) .tl.bump { animation: bump .3s; }
 /* Nani's voice at a station: a line that isn't on the card, for a moment, over the top of the picture */
 #voice {
   position: absolute; left: 50%; top: 2.5%; transform: translateX(-50%); z-index: 9; pointer-events: none;
@@ -833,9 +836,9 @@ body.w6 #mission .throb { animation: throb .7s ease-in-out infinite alternate; b
 @keyframes throb { from { box-shadow: 0 0 0 0 rgba(201,151,58,0); background-color: transparent; } to { box-shadow: 0 0 0 4px rgba(201,151,58,.45); background-color: rgba(255, 217, 138, .45); } }
 @media (prefers-reduced-motion: reduce) { body.w6 #mission .throb { animation: none; background-color: rgba(255, 217, 138, .5); } }
 @media (max-height: 500px) {
-  #count-badge { padding: 2px 8px; gap: 2px 8px; }
-  #count-badge .tl img { width: 26px; height: 26px; }
-  #count-badge .tl .count-digit { font-size: 20px; }
+  #count-badge:not(.njg-tally) { padding: 2px 8px; gap: 2px 8px; }
+  #count-badge:not(.njg-tally) .tl img { width: 26px; height: 26px; }
+  #count-badge:not(.njg-tally) .tl .count-digit { font-size: 20px; }
   #voice { font-size: 14px; padding: 4px 10px 4px 6px; }
 }
 /* Wave 6b: the Station lab's parts (the pieces inside the nine stations) fold away */
@@ -949,3 +952,56 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
    one part at a time, the same gold underline as the order card's headline */
 .ra { transition: text-decoration-color .15s; text-decoration: underline 3px transparent; text-underline-offset: 5px; text-decoration-skip-ink: none; }
 .ra.ra-on { text-decoration-color: #c9962e; }
+
+/* ---------- R4: the title, the day's end and the shop without written English for the child (E1) ----------
+   Picture buttons (their labels are for screen readers), coins and Kutchi; whatever a grown-up reads sits
+   behind the panel's own "?" (Cook.grownUps in js/cook/flow.js). Sizes from the shared tokens. */
+#panel { position: relative; }
+.gu-btn {
+  position: absolute; top: var(--njg-s3); right: var(--njg-s3); z-index: 2;
+  width: var(--njg-tap); height: var(--njg-tap); min-width: var(--njg-tap);
+  background: #ffd98a; font-family: var(--kutchi-font); font-weight: 800; font-size: var(--njg-t1); line-height: 1; color: var(--ink);
+}
+.gu-btn[aria-expanded="true"] { background: var(--ink); color: #ffd98a; }
+.gu-pop {
+  position: absolute; top: calc(var(--njg-tap) + var(--njg-s4)); right: var(--njg-s3); z-index: 3;
+  width: min(420px, calc(100% - var(--njg-s5))); max-height: calc(100% - var(--njg-tap) - var(--njg-s6)); overflow-y: auto; box-sizing: border-box;
+  background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow-lift); padding: var(--njg-s3) var(--njg-s4);
+  font: 500 var(--njg-t3)/1.35 var(--njg-font); color: var(--njg-ink);
+}
+.gu-pop h3 { margin: 0 0 var(--njg-s1); font-size: var(--njg-t2); }
+#panel .gu-pop p { margin: 0 0 var(--njg-s2); font-size: var(--njg-t3); }
+.gu-pop .gu-list { margin: 0; padding-left: var(--njg-s4); }
+.gu-pop .gu-list li { margin: 0 0 var(--njg-s1); }
+.gu-pop .btn { min-height: var(--njg-tap); }
+.gu-pop .gu-small a { display: inline-block; min-height: var(--njg-tap); line-height: var(--njg-tap); }
+.pic-row { align-items: center; }
+.btn.pic-btn {
+  display: inline-grid; place-items: center; padding: 0; min-height: 0;
+  width: calc(var(--njg-tap) * 1.4); height: calc(var(--njg-tap) * 1.4); border-radius: 50%;
+}
+.btn.pic-btn svg { width: 56%; height: 56%; }
+.btn.pic-btn.big { width: calc(var(--njg-tap) * 2); height: calc(var(--njg-tap) * 2); }
+.btn.pic-btn.big svg { width: 50%; height: 50%; margin-left: 8%; }
+.title-wrap .purse, .title-wrap .day-dots { margin-right: calc(var(--njg-tap) + var(--njg-s2)); }
+.day-dot b svg { width: 50%; height: 50%; vertical-align: middle; }
+.day-dot .st { display: inline-grid; place-items: center; color: var(--sage); }
+.day-dot .st svg { width: var(--njg-s5); height: var(--njg-s5); }
+.purse .purse-sep { display: inline-grid; place-items: center; width: var(--njg-s5); height: var(--njg-s5); color: var(--ink-soft); }
+.purse .purse-sep svg { width: 100%; height: 100%; }
+.pill.coins.total { font-size: var(--njg-t1); }
+.cards .sum-card { min-height: calc(var(--njg-tap) + var(--njg-s3)); }
+.sum-card .cc-head { padding-right: calc(var(--njg-tap) + var(--njg-s2)); }
+.sum-card .cc-head img { width: var(--njg-tap); height: var(--njg-tap); flex: none; }
+.shop-grid.pic { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 3), 1fr)); gap: var(--njg-s2); }
+.shop-item.pic { grid-template-columns: 1fr; justify-items: center; gap: var(--njg-s2); padding: var(--njg-s2); }
+.shop-item.pic .shop-img, .shop-item.pic .shop-img img { width: calc(var(--njg-tap) * 1.5); height: calc(var(--njg-tap) * 1.5); }
+.shop-item .shop-buy { display: inline-flex; align-items: center; gap: var(--njg-s1); min-height: var(--njg-tap); min-width: calc(var(--njg-tap) * 1.5); justify-content: center; }
+.shop-item .shop-owned { display: inline-grid; place-items: center; width: var(--njg-tap); height: var(--njg-tap); color: var(--sage); }
+.shop-item .shop-owned svg { width: 70%; height: 70%; }
+.side-rail .close-kitchen svg { width: 60%; height: 60%; }
+/* the "to check" flag (decision 21; test site only): a form guessed for a noun Mum hasn't given a gender */
+.to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.book-face { display: grid; place-items: center; padding: var(--njg-s2); }
+.book-face img { width: calc(var(--njg-tap) * 1.25); height: calc(var(--njg-tap) * 1.25); border-radius: 50%; object-fit: cover; object-position: top; }
+#panel .cards:has(.book-face) { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 1.75), 1fr)); }

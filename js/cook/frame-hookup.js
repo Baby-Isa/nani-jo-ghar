@@ -1,0 +1,32 @@
+/*
+ * R3a's hook-up, moved out of cook.html into its own module (R4, decision 18: the page loads as modules):
+ * Cook's camera follows the shared stage (js/shared/stage.js; the same picture on a laptop, and on a
+ * tablet the scene may grow to its safe area, data/layout.json stage.scenes.cook), and the light bulb
+ * goes through the shared bulb (js/shared/bulb.js).
+ */
+(function () {
+  "use strict";
+  var Scene = window.Cook && Cook.CookScene;
+  if (Scene && window.Stage) {
+    Scene.prototype.fitView = function () {
+      var gs = this.scale.gameSize, gw = Math.round(gs.width), gh = Math.round(gs.height);
+      var scenes = (window.Frame && Frame.layout && Frame.layout.stage && Frame.layout.stage.scenes) || {};
+      var spec = Stage.scene(scenes["cook:" + this.viewName] ? "cook:" + this.viewName : "cook");
+      var m = Stage.fit({ box: { w: gw, h: gh }, scene: spec, itemScale: Stage.itemScale() });
+      var cam = this.cameras.main;
+      cam.setSize(gw, gh);
+      cam.setOrigin(0, 0);
+      cam.setZoom(m.s);
+      cam.setScroll(m.view.x0, m.view.y0);
+      Cook.view = { left: m.view.x0, top: m.view.y0, right: m.view.x1, bottom: m.view.y1, w: gw, h: gh, ex: m.view.x1 - m.view.x0 - spec.w, ey: m.view.y1 - m.view.y0 - spec.h, s: m.s };
+      this.fitBg();
+      if (window.UI && UI.onViewFit) UI.onViewFit();
+    };
+    // a new view (the pantry, a station) has its own safe area: fit again before the station lays out its pieces
+    var setBg = Scene.prototype.setBg;
+    Scene.prototype.setBg = function (key) { setBg.call(this, key); this.fitView(); };
+    // a new form factor (a resize past a tablet's shape) can change the item scale: fit again
+    if (window.Frame) Frame.onChange(function () { if (Cook.scene && Cook.scene.fitView) Cook.scene.fitView(); });
+  }
+  if (window.Bulb && window.UI) Bulb.cookShim(UI, Cook);
+})();

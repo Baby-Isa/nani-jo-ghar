@@ -48,7 +48,8 @@ test("broken arcs: each kind of mistake is named", () => {
     [(a) => (a.chapters[0].flow[1].errand.id = "set-table"), /errand "set-table" is used twice/],
     [(a) => (a.chapters[0].flow[0] = { beat: "x", errand: { id: "y" } }), /one of beat, errand, conversation/],
     [(a) => (a.chapters[0].flow[1].errand.status = "done"), /status one of/],
-    [(a) => (a.chapters[0].flow[1].errand.status = "playable"), /playable only once js\/cook\/main.js exists/],
+    // (Cook is a plug-in since R4: a parked mode stands in for "not moved yet")
+    [(a) => Object.assign(a.chapters[0].flow[1].errand, { status: "playable", mode: "tidy" }), /"tidy" is playable only once js\/tidy\/main.js exists/],
     [(a) => (a.chapters[0].flow[3].errand.status = "waiting"), /waiting, but js\/put-it-there\/ doesn't exist/],
     [(a) => (a.chapters[0].flow[1].errand.settings = { level: 7 }), /level 1-4/],
     [(a) => (a.chapters[0].flow[0].kutchi = "Mageni achenta."), /no words for the child/],

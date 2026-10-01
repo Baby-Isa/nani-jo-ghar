@@ -1012,6 +1012,8 @@
        * spoonful flies back to its pot; its card row goes back to "to do". A layer that was wrong when it went
        * in still counts as the first mistake (the first placement is what's scored).
        */
+      // where a tap takes the top layer back, while one can be (the test hook's `undo`: E14)
+      Cook.undoAt = () => (building && !busy && got.length && bowl.hit && bowl.hit.active ? S.centre(bowl.hit) : null);
       async function takeBack() {
         if (!building || busy || !got.length) return;
         busy++;

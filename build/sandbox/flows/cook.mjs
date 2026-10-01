@@ -17,8 +17,9 @@ export async function openCook(ctx, { speed = 3, save } = {}) {
   await page.waitForSelector("#panel h1", { timeout: 20000 });
 }
 
-// mode: "fair" (what the game asks), "mistake" (a wrong pick where the mini-game allows it, then on to the end) or "hint" (the unguided lab:
-// waits for the hesitation hint and glow, presses the light bulb, peeks at a closed card)
+// mode: "fair" (what the game asks), "mistake" (a wrong pick where the mini-game allows it, then on to the end), "hint" (the unguided lab:
+// waits for the hesitation hint and glow, presses the light bulb, peeks at a closed card) or "takeback" (E14: once something is placed
+// and the station offers it, take it back, then carry on to the end)
 export function cookStation(key, level = 1, { recipe = false, mode = "fair", group = "cook" } = {}) {
   const labKey = recipe ? `recipe:${key}` : key;
   // a recipe is "cook:<id>" unless a station has the same key ("cook:recipe:<id>")
@@ -43,7 +44,10 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       }
       await sleep(400);
       await rec.state("result");
-      ctx.extra = { badges: P.badges, bulbs: P.bulbs, peeks: P.peeks, mistakes: [...P.made] };
+      ctx.extra = { badges: P.badges, bulbs: P.bulbs, peeks: P.peeks, mistakes: [...P.made], tookBack: P.tookBack };
+      // #takeback (E14, R4): the station took something back and the round still ran to its end; a station that never
+      // offers a take-back is noted (a gap for the regression list), not failed
+      if (mode === "takeback" && !P.tookBack) rec.note("take-back: this station offered none (no __cook.expectation().undo before Done)");
       ctx.reachedEnd = true;
     },
   };
@@ -52,19 +56,22 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
 export const cookTitle = {
   id: "cook:title",
   group: "cook",
-  title: "Cook: the title, the Station lab list, the word book",
+  title: "Cook: the title, its grown-ups' \"?\", the Station lab list, the word book, the shop",
   timeoutMs: 90000,
   async run(ctx) {
     const { page, rec } = ctx;
     await openCook(ctx);
     await rec.state("title");
+    // R4 (E1): the Station lab and the settings are behind the title's grown-ups' "?"
+    const gu = await page.$("#gu-btn");
+    if (gu) { await gu.click(); await sleep(300); await rec.state("title-grown-ups"); }
     const lab = await page.$("#t-lab");
     if (lab) { await lab.click(); await sleep(400); await rec.state("station-lab-list"); const d = await page.$(".lab-parts summary"); if (d) { await d.click(); await sleep(200); await rec.state("station-lab-parts-open"); } await page.click("#lab-back").catch(() => {}); await sleep(300); }
     else rec.stop("no #t-lab button on the title");
     const book = await page.$("#t-book");
     if (book) { await book.click(); await sleep(500); await rec.state("recipe-book"); await page.click("#book-close").catch(() => {}); await sleep(300); }
     const shop = await page.$("#t-shop");
-    if (shop) { await shop.click(); await sleep(400); await rec.state("shop"); await page.click("#shop-done").catch(() => {}); await sleep(300); }
+    if (shop) { await shop.click(); await sleep(400); await rec.state("shop"); const g = await page.$("#gu-btn"); if (g) { await g.click(); await sleep(300); await rec.state("shop-grown-ups"); await g.click(); } await page.click("#shop-done").catch(() => {}); await sleep(300); }
     ctx.reachedEnd = true;
   },
 };

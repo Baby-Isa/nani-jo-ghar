@@ -7,12 +7,11 @@
  * (chai, maani, daal, chaat bowl, samosa, mishkaki), then free cooking.
  * The Station lab on the title lets you try every station on its own.
  *
- * Stars (docs/archive/cook/cook-with-nani-phase-a-design.md s6), shown as cut-outs on
- * the mission card that fill in or grey out as you cook:
- *   ear   understood: everything asked for, right counts, right order
- *   hand  cooked well: poured to the line, nothing burnt or spilt
- *   bolt  quick (Busy) / tick  no help (Relaxed): no hints, no translating
- * Pocket money: 5 for helping + 5 ear + 3 hand + 3 bolt/tick (+ upgrades).
+ * Step 3 R4: on the engine core (js/core/, Cook.core). No stars of any kind (H5, J7): every order ends
+ * with the shared end screen's three badges (time, accuracy, hints) from Score.finish, which also pays
+ * the pocket money into the one purse (data/economy.json; coins only go up except buying, so no daily
+ * wage, E29) and writes the best and the story log line. The order's rows are the accuracy marks; a
+ * mistake with no row of its own is one more grey slot.
  */
 (function (global) {
   const Cook = global.Cook;
@@ -22,9 +21,8 @@
   const R = Cook.Recipes;
   const $ = (s) => document.querySelector(s);
 
-  const state = (Cook.state = { day: null, cards: [], dayStars: 0, patience: null, free: false });
+  const state = (Cook.state = { day: null, cards: [], dayCoins: 0, patience: null, free: false });
   Cook.log = [];
-  const PAY = { help: 5, ear: 5, hand: 3, third: 3 };
 
   /* ---------------- the order context stations report into ---------------- */
   const ID_RE = /\b(?:cook|veg|spi|fru|ph|num|lnk)-[a-z0-9]+\b/g;
@@ -37,7 +35,7 @@
       .replace(/\+(?=(?:cook|veg|spi|fru|ph|num|lnk)-)/g, " ")
       .replace(ID_RE, (id) => (Cook.data.words[id] ? Cook.display(id) : id));
   /**
-   * What an ear-star report means, read from the station's own words
+   * What a mistake report means, read from the station's own words
    * ("added X (they said no)", "tadka X before Y", "3 X, they asked for 2"),
    * so the result card can say what went wrong and give one tip for it.
    */
@@ -125,12 +123,11 @@
       // a mistake with no row of its own (a wrong thing picked, an extra): its own red slot at the end
       if (!row && !["shown", "passme"].includes(p.kind)) ctx.strays++;
       if (["no", "order", "wrong"].includes(p.kind) && p.ids[0] && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(p.ids[0]), ok: false });
-      UI.mission.star("ear", "lost");
     };
+    // how well a hand job went (pour to the line, flip on time): kept for the lab's notes; it scores nothing
     ctx.skill = (score, what) => {
       score = Math.round(score);
       ctx.grades.push({ what, score });
-      if (score < 55) UI.mission.star("hand", "lost");
     };
     // a step has closed: its rows tick, count rows too, right or not (UX 11; UI.mission.closeItem)
     ctx.closeItem = (ids, opts = {}) => UI.mission.closeItem(ids, ctx.dishAt, opts);
@@ -169,10 +166,10 @@
     /*
      * Help (docs/archive/cook/cook-with-nani-kutchi-audit.md, top fix 1):
      *   hearing it again (replay, Nani's hint, a label speaker from stage 3)
-     *     costs the no-help star (Relaxed) or some patience (Busy);
+     *     is a hint on the hints badge (and in Busy some patience);
      *   being shown the answer (the hesitation glow, the highlight after two
      *     misses, 👁 reveal, translating an order line or "pass me")
-     *     costs that AND the ear star.
+     *     is that AND a mistake on the accuracy badge.
      */
     Cook.onHelp = (kind = "help", info = {}) => {
       if (Cook.ctx !== ctx) return;
@@ -180,7 +177,6 @@
       const ids = info.ids || (Cook.expect && Cook.expect.key ? [Cook.expect.key] : []);
       ids.forEach((id) => typeof id === "string" && ctx.wordHelp.add(id));
       if (Cook.save.mode === "busy") drainPatience(HELP_COST[kind] || 5);
-      else UI.mission.star("third", "lost");
       const open = !$("#mission").classList.contains("hidden") && !$("#mission").classList.contains("stamped");
       if (["reveal", "translate", "shown"].includes(kind) && (open || info.passMe)) {
         const what = (info.ids || []).join(" ") || "the order";
@@ -201,17 +197,16 @@
   const calm = () => Cook.data.calm || {};
   /**
    * Wave 6: the UI appears as it's first needed (docs/design-language/ux-principles.md 8).
-   * A new player's first order has just the order card; the stars fade in
-   * from the second order, the light bulb from the third (data.calm.uiAfter).
+   * A new player's first orders have just the order card; the light bulb fades in
+   * from the third (data.calm.uiAfter.bulb).
    * The Station lab, and anyone who has played before Wave 6, sees it all.
    */
   function uiStage({ all = false } = {}) {
     const n = Cook.save.orders || 0;
-    const after = calm().uiAfter || { stars: 1, bulb: 2 };
+    const after = calm().uiAfter || { bulb: 2 };
     // someone who played before Wave 6 (dishes taught, no orders counted) keeps everything
     if (!n && Object.keys(Cook.save.taught || {}).length > 0) Cook.save.uiAll = true;
     all = all || !!Cook.save.uiAll;
-    document.body.classList.toggle("ui-stars", all || n >= after.stars);
     document.body.classList.toggle("ui-bulb", all || n >= after.bulb);
   }
   Cook.uiStage = uiStage;
@@ -261,7 +256,6 @@
   function paintPatience() {
     state.patience = Math.max(0, 1 - patienceUsed / patienceTotal);
     UI.setPatience(state.patience);
-    if (state.patience < 0.35) UI.mission.star("third", "lost");
   }
   /** Help in Busy mode costs patience: the ring jumps down by `sec` seconds' worth. */
   function drainPatience(sec) {
@@ -413,13 +407,14 @@
   /* ---------------- the end of a round: the shared screen (UX 9) ----------------
    * js/shared/results.js: page 1 is three badges (time with the personal best
    * per game and level, accuracy as slots, hints), page 2 the word review.
-   * Accuracy is the order's rows (green unless the row went wrong) plus one
-   * red slot per mistake that isn't a row (a wrong thing, an extra one).
-   * The badges stay mapped to the stars: accuracy gold <=> the ear star
-   * (a lost ear with every row green gets one red slot), hints gold <=> no
-   * help (ctx.help: hints, the light bulb, hearing it again).
+   * Accuracy is the order's rows (gold unless the row went wrong) plus one
+   * grey slot per mistake that isn't a row (a wrong thing, an extra one; a
+   * mistake heard with every row still right is one such slot). Hints are
+   * every help used (ctx.help: hints, the light bulb, hearing it again).
+   * The badges, the best, the pocket money and the story line come from the
+   * core in one step (Score.finish, js/core/score.js); Cook computes none of them.
    */
-  function accuracyMarks(ctx, stars) {
+  function accuracyMarks(ctx) {
     const marks = [];
     (ctx.ladders || []).forEach((L) =>
       Cook.Order.rows(L, { all: true }).forEach((r) => {
@@ -427,31 +422,88 @@
         marks.push(!r.miss);
       })
     );
+    const rows = marks.length;
     for (let i = 0; i < Math.min(ctx.strays || 0, 8); i++) marks.push(false);
-    if (!marks.length) marks.push(!!stars.ear);
-    if (!stars.ear && marks.every(Boolean)) marks.push(false);
+    if (!marks.length) marks.push(!ctx.listenMiss);
+    if (ctx.listenMiss && marks.every(Boolean)) marks.push(false);
+    marks.rows = rows;
     return marks;
   }
   Cook.accuracyMarks = accuracyMarks;
-  async function roundEnd(ctx, { game, level, stars, end, actions }) {
-    const R = global.Results;
-    if (!R || Cook.noResults) return null;
-    UI.hideCount();
-    const marks = accuracyMarks(ctx, stars);
-    const missed = missedWordIds(ctx);
-    const words = UI.orderWords(ctx.ladders).map((id) => ({ id, kutchi: Cook.display(id), english: Cook.english(id), right: !missed.has(id) }));
-    const shown = R.show({
+  /** How this round was started (decision 22a): the page's play context, story or free play (or a lab). */
+  function playOf(kind) {
+    const base = (Cook.core && Cook.core.play) || {};
+    return kind === "lab" ? null : Object.assign({}, base, { play: kind === "free" ? "free" : base.play === "story" && base.arc ? "story" : state.free ? "free" : "story" });
+  }
+  /** One round for the core's Score.finish (js/core/types.js): Cook's rows, mistakes, hints and time. */
+  function cookRound(ctx, { game, level, end, kind }) {
+    const marks = accuracyMarks(ctx);
+    return {
       mode: "cook",
       game,
       level,
       timeMs: ctx.t0 ? Math.max(0, (end || Date.now()) - ctx.t0) : undefined,
       right: marks.filter(Boolean).length,
       total: marks.length,
-      marks,
+      marks: marks.slice(),
       hints: ctx.help || 0,
-      words,
-      speak: (w) => Lang.speakWord(w.id),
+      tasks: Math.max(1, marks.rows || 0),
+      play: playOf(kind),
+    };
+  }
+  /**
+   * Score the round through the core: the best is read first (the end screen judges the time against the
+   * best as it was), then Score.finish writes the best, the coins and the story line. A lab round is
+   * judged and its best kept, but pays nothing (as before). Without the core (a parked page) nothing is paid.
+   */
+  function finishRound(ctx, o) {
+    const round = cookRound(ctx, o);
+    const core = Cook.core;
+    const score = core ? (o.kind === "lab" ? core.scoreNoPay : core.score) : null;
+    const prevBest = score ? score.best(round.mode, round.game, round.level) : undefined;
+    // inside the game host (js/cook/main.js, ?hosted=1) the host scores the whole plan: judge only, write nothing
+    const fin = !score ? null : Cook.hosted ? { badges: score.badges(round, prevBest), pay: null } : score.finish(round);
+    return { round, prevBest, fin, coins: (fin && fin.pay && fin.pay.coins) || 0 };
+  }
+  /** Every word id touched by a row that went wrong (plus ctx.wordMiss), for the word review's right/wrong (UX 9a). */
+  function missedWordIds(ctx) {
+    const missed = new Set(ctx.wordMiss);
+    (ctx.ladders || []).forEach((L) =>
+      Cook.Order.rows(L, { all: true }).forEach((r) => {
+        if (!r.miss) return;
+        r.line.segs.filter((s) => s.w).map((s) => s.w).concat(r.ids).forEach((id) => missed.add(id));
+      })
+    );
+    return missed;
+  }
+  /**
+   * The words the order used, in the forms it used them (SH-02: "hakri" where the order said hakri, not the
+   * base "hakro"): each Kutchi word once, in the order it was said, its text as it was on the card.
+   */
+  function reviewWords(ctx) {
+    const missed = missedWordIds(ctx);
+    return UI.orderWordForms(ctx.ladders).map((w) => ({ id: w.id, kutchi: w.kutchi, english: Cook.english(w.id), right: !missed.has(w.id), toCheck: !!w.check || undefined }));
+  }
+  async function roundEnd(ctx, { scored, actions }) {
+    const R = global.Results;
+    if (!R || Cook.noResults) return null;
+    UI.hideCount();
+    const { round, prevBest } = scored;
+    // the core wrote the best already: the end screen reads the best as it was before this round, writes nothing
+    const store = Cook.core ? { get: (s, k) => (s === "bests" && k === R.bestKey(round.mode, round.game, round.level) ? prevBest : undefined), set() {} } : undefined;
+    const shown = R.show({
+      mode: "cook",
+      game: round.game,
+      level: round.level,
+      timeMs: round.timeMs,
+      right: round.right,
+      total: round.total,
+      marks: round.marks,
+      hints: round.hints,
+      words: reviewWords(ctx),
+      speak: (w) => (w.kutchi ? Lang.speak(Lang.formLine(w.id, w.kutchi)) : Lang.speakWord(w.id)),
       sound: true,
+      store,
       actions,
     });
     // what to press next (for the test harness and the first-time overlay); the last step's main action
@@ -465,7 +517,7 @@
     return out;
   }
 
-  /* ---------------- serve: stars, pocket money, the completion card ---------------- */
+  /* ---------------- serve: the badges, pocket money ---------------- */
   function drawServed(ctx, x) {
     const s = S();
     const n = ctx.served.length;
@@ -498,40 +550,33 @@
     drawServed(ctx, Cook.CHARS[who].x);
     Cook.sfx.pop();
     await Cook.wait(600);
-    // the three stars
-    const skills = ctx.grades.map((g) => g.score);
-    const avg = skills.length ? skills.reduce((a, b) => a + b, 0) / skills.length : 100;
-    const stars = {
-      ear: ctx.listenMiss === 0,
-      hand: avg >= 75 && (skills.length ? Math.min(...skills) : 100) >= 55,
-      third: busy ? (state.patience || 0) >= 0.35 : ctx.help === 0,
-    };
-    Object.entries(stars).forEach(([k, v]) => UI.mission.star(k, v ? "earned" : "lost", { final: true }));
-    const n = Object.values(stars).filter(Boolean).length;
+    const understood = ctx.listenMiss === 0;
     // what they asked for that didn't happen: Nani says "Arre re" and the
     // customer says the Kutchi again (the teaching moment)
-    if (!stars.ear) {
+    if (!understood) {
       S().setMood(who, "neutral");
       await S().talk("nani", Lang.line("oops"), { ms: 900 });
       await S().talk(who, recast(ctx), { after: "neutral" });
     }
-    S().setMood(who, n >= 2 ? "happy" : "neutral");
-    // pocket money, as a receipt
-    const extra = (Cook.hasUpgrade("basket") ? 2 : 0) + (Cook.hasUpgrade("thali") ? 3 : 0) + (Cook.hasUpgrade("bigspoon") && order.dishes.some((d) => d.recipe === "chaat") ? 2 : 0);
-    const receipt = [["Helping Nani", PAY.help]];
-    if (stars.ear) receipt.push(["Understood (ear star)", PAY.ear]);
-    if (stars.hand) receipt.push([`${UI.starInfo("hand").name} star`, PAY.hand]);
-    if (stars.third) receipt.push([`${UI.starInfo("third").name} star`, PAY.third]);
-    if (extra) receipt.push(["Kitchen upgrades", extra]);
-    const coins = receipt.reduce((a, [, v]) => a + v, 0);
+    // the round, scored and paid by the core (Score.finish: the badges, the best, the coins, the story line)
+    const game = order.dishes.map((d) => d.recipe).join("+");
+    const level = Math.max(...order.dishes.map((d) => d.level || 1));
+    const scored = finishRound(ctx, { game, level, end: tServed, kind: state.free ? "free" : "story" });
+    const pleased = !scored.fin || scored.fin.badges.accuracy.tier !== "plain";
+    S().setMood(who, pleased ? "happy" : "neutral");
+    // an owned upgrade that says "every order earns extra coins" still does (data/cook.json upgrades[].bonus)
+    let coins = scored.coins;
+    const bonus = (Cook.data.upgrades || []).reduce((n, u) => n + (u.bonus && Cook.hasUpgrade(u.id) && (!u.bonusFor || order.dishes.some((d) => d.recipe === u.bonusFor)) ? u.bonus : 0), 0);
+    if (bonus && Cook.wallet()) {
+      Cook.wallet().earn(bonus, "cook/upgrades");
+      coins += bonus;
+    }
     const c = Cook.CHARS[who];
-    S().floatText(c.x, c.top + 120, `+${coins}`, "#ffe08a");
-    setTimeout(() => Cook.sfx.coin(), 400);
-    for (let i = 0; i < n; i++) setTimeout(() => Cook.sfx.star(i), 250 * i);
-    Cook.save.coins += coins;
-    state.dayStars += n;
-    UI.setCoins(Cook.save.coins, true);
-    UI.setStars(state.dayStars, true);
+    if (coins) {
+      S().floatText(c.x, c.top + 120, `+${coins}`, "#ffe08a");
+      setTimeout(() => Cook.sfx.coin(), 400);
+    }
+    state.dayCoins += coins;
     UI.mission.stamp();
     Cook.writeSave();
     await Cook.wait(900);
@@ -539,16 +584,16 @@
       // Nani's own list (the pantry): just her thanks; she stays in her kitchen
       await S().talk("nani", Lang.line("thanks"), { after: "happy" });
     } else {
-      await S().talk(who, Lang.line("thanks"), { after: n >= 2 ? "happy" : "neutral" });
+      await S().talk(who, Lang.line("thanks"), { after: pleased ? "happy" : "neutral" });
       await S().talk("nani", Lang.line("welcome"), { ms: 900 });
       await S().talk(who, Lang.line("bye"));
     }
     UI.hideBubble();
     if (who !== "nani") await S().leaveChar(who);
     // Wave 6b: the shared end-of-round screen (time, accuracy, hints; then the words)
-    await roundEnd(ctx, { game: order.dishes.map((d) => d.recipe).join("+"), level: Math.max(...order.dishes.map((d) => d.level || 1)), stars, end: tServed });
+    await roundEnd(ctx, { scored });
     state.ordersServed = (state.ordersServed || 0) + 1;
-    const card = Object.assign({ who, dishes: order.dishes, stars, coins, receipt, reasons: ctx.reasons.slice(), help: ctx.help, lines: [Lang.plain(ctx.orderLine)] }, outcome(ctx, stars, busy));
+    const card = { who, dishes: order.dishes, coins, badges: scored.fin ? scored.fin.badges : null, right: scored.round.right, total: scored.round.total, reasons: ctx.reasons.slice(), help: ctx.help, lines: [Lang.plain(ctx.orderLine)] };
     state.cards.push(card);
     Cook.log.push(card);
     UI.mission.close();
@@ -562,24 +607,17 @@
     state.day = day;
     state.free = !!free;
     state.cards = [];
-    state.dayStars = 0;
+    state.dayCoins = 0;
     const today = new Date().toISOString().slice(0, 10);
     Cook.save.playDays = Cook.save.playDays || [];
     if (!Cook.save.playDays.includes(today)) Cook.save.playDays.push(today);
     Cook.writeSave();
     UI.closePanel();
     UI.clearStage();
-    UI.setStars(0);
-    if (Cook.hasUpgrade("helper")) {
-      Cook.save.coins = Math.max(0, Cook.save.coins - 5);
-      UI.setCoins(Cook.save.coins);
-    }
     await serviceView(null);
-    // Wave 6: no tutorial first. A new player's first thing is the smallest round there is,
-    // Nani's pantry list (three things); the pocket-money rules come after it
-    const nanisFirst = (spec) => spec.who === "nani" && !free;
-    if (!Cook.save.rulesSeen && !(day.orders[0] && nanisFirst(day.orders[0]))) await rulesOnce();
-    UI.gist(day.gist, { top: true });
+    // Wave 6: no tutorial first. A new player's first thing is the smallest round there is, Nani's pantry list
+    // (three things). The day's title is for grown-ups only, behind the "?" (E1); the pause before it stays.
+    UI.gist(day.gist);
     await Cook.wait(2400);
     UI.hideGist();
     // 29 Sept (Q6): dishes whose things have been fetched from the pantry today
@@ -594,7 +632,6 @@
       await runOrder(buildOrder(spec), day);
       // the app shell (js/cook/app.js): a first launch goes home after Nani's pantry round
       if (Cook.afterOrder && (await Cook.afterOrder(spec, day, { free })) === "leave") return;
-      if (nanisFirst(spec)) await rulesOnce();
     }
     finishDay(day, { free });
   }
@@ -613,12 +650,8 @@
     d.for = dish;
     return { who: "nani", dishes: [d] };
   }
-  async function rulesOnce() {
-    if (Cook.save.rulesSeen) return;
-    await showRules();
-    Cook.save.rulesSeen = true;
-    Cook.writeSave();
-  }
+  Cook.pantryFirst = pantryFirst;
+  Cook.pantryFor = pantryFor;
   /** Day 1: Nani makes a chai herself, then it's your turn. */
   async function chaiDemo() {
     await serviceView(null);
@@ -629,132 +662,87 @@
     S().prop("glass-chai", 470, 712, 100, 130, { depth: Cook.D.occ + 2 });
     S().setMood("nani", "happy");
     Cook.sfx.fanfare();
-    UI.gist("Now Nana wants chai. Listen carefully: he'll say how he likes it!", { top: true });
+    // for grown-ups only, behind the "?" (E1): the pause stays
+    UI.gist("Now Nana wants chai. Listen carefully: he'll say how he likes it!");
     await Cook.wait(2600);
     UI.hideGist();
   }
 
-  /** Pocket-money rules, shown once, before the first day. */
-  function showRules() {
-    return new Promise((resolve) => {
-      const p = UI.panel(`
-        <h2>Pocket money from Nani</h2>
-        <p>"I'll give you pocket money for helping. Get it all right and be quick, and you get more!" Every order has three stars to win:</p>
-        <div class="rules">
-          <div class="rule"><span class="mstar earned">${UI.starIcon("ear")}</span><b>${UI.esc(UI.starInfo("ear").name)}</b><p>Everything they asked for, the right number, the right order.</p></div>
-          <div class="rule"><span class="mstar earned">${UI.starIcon("hand")}</span><b>${UI.esc(UI.starInfo("hand").name)}</b><p>Cook it just right: nothing burnt, boiled over or spilt.</p></div>
-          <div class="rule"><span class="mstar earned">${UI.starIcon("third")}</span><b>${UI.esc(UI.starInfo("third").name)}</b><p>${Cook.save.mode === "busy" ? "Serve before the ring round their face runs out." : "No hints, no peeking and no translations."}</p></div>
-        </div>
-        <p>You always get ${PAY.help} coins for helping, plus ${PAY.ear}, ${PAY.hand} and ${PAY.third} for the stars. Nobody ever loses money.</p>
-        <div class="btn-row"><button class="btn primary" id="rules-ok">Let's cook!</button></div>`);
-      $("#rules-ok").addEventListener("click", () => {
-        Cook.expect = null;
-        UI.closePanel();
-        resolve();
-      });
-      Cook.expect = { kind: "click", selector: "#rules-ok" };
-    });
-  }
-
   function finishDay(day, { free } = {}) {
+    // a day is done when its last order is served (the title's day dots); no stars to keep
     if (!free) {
-      Cook.save.best[day.id] = Math.max(Cook.save.best[day.id] || 0, state.dayStars);
+      Cook.save.best[day.id] = Math.max(Cook.save.best[day.id] || 0, state.cards.length);
       if (Cook.save.day === day.id) Cook.save.day = day.id + 1;
       if (day.finale) Cook.save.finished = true;
     } else {
-      Cook.save.best.free = Math.max(Cook.save.best.free || 0, state.dayStars);
+      Cook.save.best.free = Math.max(Cook.save.best.free || 0, state.cards.length);
     }
     Cook.writeSave();
     showSummary(day, { free });
   }
 
-  /* ---------------- panels ---------------- */
+  /* ---------------- panels ----------------
+   * No written English for the child (E1): the title, the day's end and the shop are pictures, coins and
+   * Kutchi; their buttons are pictures with labels for screen readers. Whatever a grown-up needs to read
+   * (what the screen is, the settings, the Station lab, starting over) is behind the panel's "?".
+   */
   const face = (who) => Cook.v(Cook.facePath(who));
   const dishName = (d) => {
     const w = R.dishWord(d.recipe);
     const n = d.count || d.cups || 1;
     return (n > 1 ? `${n} × ` : "") + Cook.display(w);
   };
-  function starsHtml(st) {
-    return ["ear", "hand", "third"].map((k) => `<span class="mstar ${st[k] ? "earned" : "lost"}" title="${UI.esc(UI.starInfo(k).tip)}">${UI.starIcon(k)}</span>`).join("");
-  }
-
-  /*
-   * The result card's right half: the word review (every Kutchi word in
-   * the order, the missed ones and the helped ones marked) and one short
-   * "Next time" tip per missed star. Plain words, no numbers.
-   */
-  const EAR_PRIORITY = ["no", "order", "count", "speed", "wrong", "passme", "shown"];
-  function tipsFor(stars, kinds, grades, busy) {
-    const T = Cook.data.tips || { ear: {}, hand: {}, third: {} };
-    const out = [];
-    if (!stars.ear) {
-      const k = EAR_PRIORITY.find((x) => kinds.includes(x)) || "wrong";
-      out.push({ star: "ear", text: T.ear[k] || T.ear.wrong });
-    }
-    if (!stars.hand) {
-      const worst = grades.slice().sort((a, b) => a.score - b.score)[0];
-      out.push({ star: "hand", text: (worst && T.hand[worst.what]) || T.hand.default });
-    }
-    if (!stars.third) out.push({ star: "third", text: busy ? T.third.busy : T.third.relaxed });
-    return out;
-  }
-  /** Every word id touched by a row that went wrong (plus ctx.wordMiss), for the word review and Results.show's per-word right/wrong (UX 9a). */
-  function missedWordIds(ctx) {
-    const missed = new Set(ctx.wordMiss);
-    (ctx.ladders || []).forEach((L) =>
-      Cook.Order.rows(L, { all: true }).forEach((r) => {
-        if (!r.miss) return;
-        r.line.segs.filter((s) => s.w).map((s) => s.w).concat(r.ids).forEach((id) => missed.add(id));
-      })
-    );
-    return missed;
-  }
+  const svg = (p) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+  const PIC = {
+    play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>`,
+    home: svg('<path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/>'),
+    shop: svg('<path d="M4 9h16l-1.5 11h-13z"/><path d="M8.5 9V7a3.5 3.5 0 0 1 7 0v2"/>'),
+    book: svg('<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/>'),
+    done: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+    one: svg('<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>'),
+    feast: svg('<path d="M3 15h18"/><path d="M5 15a7 7 0 0 1 14 0"/><path d="M12 6v2"/><path d="M4 19h16"/>'),
+    lock: svg('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+  };
+  Cook.PIC = PIC;
+  const coinsHtml = (n, cls = "") => `<span class="pill coins ${cls}"><i class="coin-dot"></i>${n}</span>`;
+  /** A picture button (its label is for screen readers and the grown-ups, never written for the child). */
+  const picBtn = (id, pic, label, cls = "") => `<button class="btn pic-btn ${cls}" id="${id}" type="button" aria-label="${UI.esc(label)}" title="${UI.esc(label)}">${PIC[pic]}</button>`;
   /**
-   * Wave 5: the word review. Every Kutchi word in the order as a pill
-   * (speaker, Kutchi, English), marked where it went wrong ("missed": a
-   * row that went wrong, or a mistake about that word) or where you needed
-   * help with it ("help": shown, revealed, translated, hinted, or heard
-   * again once it was dots).
+   * The grown-ups' "?" on a panel: a round "?" in its top corner; the English (what this screen is,
+   * settings, the lab) opens beside it and nowhere else (E1, E31).
    */
-  function outcome(ctx, stars, busy) {
-    const missed = missedWordIds(ctx);
-    const helped = new Set(ctx.wordHelp);
-    (ctx.ladders || []).forEach((L) =>
-      Cook.Order.rows(L, { all: true }).forEach((r) => {
-        if (r.revealed) r.line.segs.filter((s) => s.w).map((s) => s.w).concat(r.ids).forEach((id) => helped.add(id));
-      })
-    );
-    const words = UI.orderWords(ctx.ladders).map((id) => ({ id, state: missed.has(id) ? "missed" : helped.has(id) ? "helped" : "ok" }));
-    return { words, tips: tipsFor(stars, ctx.kinds, ctx.grades, busy) };
+  function grownUps(p, html) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "rail-btn gu-btn";
+    btn.id = "gu-btn";
+    btn.textContent = "?";
+    btn.setAttribute("aria-label", "For grown-ups");
+    btn.setAttribute("aria-expanded", "false");
+    const box = document.createElement("div");
+    box.className = "gu-pop hidden";
+    box.id = "gu-pop";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", "For grown-ups");
+    box.innerHTML = html;
+    btn.addEventListener("click", () => {
+      Cook.sfx.click();
+      const open = box.classList.toggle("hidden") === false;
+      btn.setAttribute("aria-expanded", String(open));
+    });
+    p.prepend(box);
+    p.prepend(btn);
+    return box;
   }
-  function resultRight(c) {
-    const tips = c.tips || [];
-    const words = c.words || [];
-    const flagged = words.some((w) => w.state !== "ok");
-    return `<div class="rc-right">
-      ${words.length ? `<div class="rc-words"><h4>Words in this order${flagged ? ` <span class="rc-key"><i class="k-missed"></i>missed <i class="k-helped"></i>needed help</span>` : ""}</h4>${UI.wordReview(words)}</div>` : ""}
-      ${
-        tips.length
-          ? `<div class="rc-tips"><h4>Next time</h4>${tips.map((t) => `<div class="rc-tip"><span class="mstar lost">${UI.starIcon(t.star)}</span>${UI.esc(t.text)}</div>`).join("")}</div>`
-          : `<div class="rc-tips all"><h4>Next time</h4><div class="rc-tip">Just the same. All three stars!</div></div>`
-      }
-    </div>`;
-  }
-  function cardHtml(c) {
-    const name = c.who === "nani" ? "Nani" : Cook.data.customers[c.who].name;
-    return `<div class="ccard rcard"><div class="rc-left"><div class="cc-head"><img src="${face(c.who)}" alt="">${UI.esc(name)}</div>
-      <span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>
-      <div class="cc-dish">${c.dishes.map(dishName).map(UI.esc).join(" + ")}</div>
-      <div class="cc-stars">${starsHtml(c.stars)}</div></div>${resultRight(c)}</div>`;
-  }
+  Cook.grownUps = grownUps;
+
+  /** Every Kutchi word met so far, for the recipe book (grown-ups read the English there). */
   function wordChips(ids) {
     return ids
       .map((id) => {
         const st = Cook.wordStage(id);
         const ph = Cook.isPlaceholder(id);
-        const draft = Lang.isDraft(id) ? ` <span class="draft" title="A draft word from Zafar: Mum to confirm">draft</span>` : "";
-        return `<button class="chip" data-w="${id}">${ph ? `<i class="ph">${UI.esc(Cook.display(id))}</i>` : UI.esc(Cook.display(id))}${draft}<small>${UI.esc(Cook.english(id))} <span class="dots">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
+        return `<button class="chip" type="button" data-w="${id}" aria-label="${UI.esc(Cook.english(id))}">${ph ? `<i class="ph">${UI.esc(Cook.display(id))}</i>` : UI.esc(Cook.display(id))}<small><span class="dots" aria-hidden="true">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
       })
       .join("");
   }
@@ -762,55 +750,61 @@
     root.querySelectorAll(".chip[data-w]").forEach((b) => b.addEventListener("click", () => Lang.speakWord(b.dataset.w)));
   }
 
+  /** The day's end: who you cooked for, what, and the coins (each order's badges and words were on its own end screen). */
   function showSummary(day, { free } = {}) {
     UI.clearStage();
-    const total = state.cards.reduce((s, e) => s + e.coins, 0);
     const last = day.finale && !free;
-    const max = state.cards.length * 3;
-    // pocket money lives here and on the title screen (Wave 5: not in the sidebar while cooking)
+    const card = (c) => `<div class="ccard sum-card"><div class="cc-head"><img src="${face(c.who)}" alt=""><span class="cc-dish">${c.dishes.map(dishName).map(UI.esc).join(" + ")}</span></div>${c.coins ? `<span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>` : ""}</div>`;
     const p = UI.panel(`
-      <h2>${free ? UI.esc(day.title) : `Day ${day.id}: ${UI.esc(day.title)}`}</h2>
-      <div class="purse"><span class="pill stars">&#9733; ${state.dayStars} of ${max}</span><span class="pill coins"><i class="coin-dot"></i>+${total} today</span><span class="purse-total">${Cook.save.coins} in your purse</span></div>
-      <div class="cards">${state.cards.map(cardHtml).join("")}</div>
-      <div class="btn-row">
-        ${last ? `<button class="btn primary" id="sum-finale">The Eid feast!</button>` : `<button class="btn primary" id="sum-shop">Nani's shop</button>`}
-        <button class="btn" id="sum-menu">Menu</button>
+      <div class="purse">${coinsHtml(`+${state.dayCoins}`, "today")}<span class="purse-sep" aria-hidden="true">${PIC.shop}</span>${coinsHtml(Cook.coins(), "total")}</div>
+      <div class="cards">${state.cards.map(card).join("")}</div>
+      <div class="btn-row pic-row">
+        ${picBtn("sum-menu", "home", "Menu")}
+        ${last ? picBtn("sum-finale", "feast", "The Eid feast!", "primary") : picBtn("sum-shop", "shop", "Nani's shop", "primary")}
       </div>`);
-    UI.wireWordReview(p);
+    grownUps(p, `<h3>${free ? UI.esc(day.title) : `Day ${day.id}: ${UI.esc(day.title)}`}</h3><p>Who your child cooked for today and the pocket money each order earned (first: today's coins; then everything in the purse). Each order's badges and words were shown when it was served.</p>`);
     ($("#sum-shop") || $("#sum-finale")).addEventListener("click", () => (last ? showFinale() : showShop()));
     $("#sum-menu").addEventListener("click", showTitle);
     Cook.expect = { kind: "click", selector: last ? "#sum-finale" : "#sum-shop" };
   }
 
   const imgFor = (u) => Cook.v(u.art ? Cook.Art.url(u.art) : u.image && u.image.endsWith("badge") ? `assets/cook/characters/${u.image}.webp` : `assets/cook/props/${u.image}.webp`);
+  /** Nani's shop: each upgrade as its picture and its price; buying spends from the one purse (the only way coins go down). */
   function showShop() {
     // an upgrade for a station that's been cut (knead, Wave 6b) is off the shop
     const ups = Cook.data.upgrades.filter((u) => !u.hidden);
     const render = () => {
       const card = (u) => {
-        const owned = Cook.save.owned.includes(u.id);
-        const can = Cook.save.coins >= u.price;
+        const owned = Cook.hasUpgrade(u.id);
+        const price = Cook.price(u);
+        const can = !owned && Cook.coins() >= price;
         const action = owned
-          ? `<span class="tag owned-tag">✓ In Nani's kitchen</span>`
-          : `<button class="btn small ${can ? "primary" : ""}" data-buy="${u.id}" ${can ? "" : "disabled"}>Buy · ${u.price}</button>`;
-        return `<div class="shop-item ${owned ? "owned" : ""}"><div class="shop-img ${u.special ? "special" : ""}"><img src="${imgFor(u)}" alt=""></div><div><div class="station">${UI.esc(u.station)}</div><h4>${UI.esc(u.name)}</h4><p>${UI.esc(u.effect)}</p>${u.wage ? `<div class="tag">wage ${u.wage} coins a day</div>` : ""}${action}</div></div>`;
+          ? `<span class="shop-owned" aria-label="In Nani's kitchen">${PIC.done}</span>`
+          : `<button class="btn small shop-buy ${can ? "primary" : ""}" data-buy="${u.id}" ${can ? "" : "disabled"} aria-label="Buy ${UI.esc(u.name)} for ${price}"><i class="coin-dot"></i>${price}</button>`;
+        return `<div class="shop-item pic ${owned ? "owned" : ""}" title="${UI.esc(u.name)}"><div class="shop-img ${u.special ? "special" : ""}"><img src="${imgFor(u)}" alt="${UI.esc(u.name)}"></div>${action}</div>`;
       };
       const nu = Cook.data.no_upgrade;
       const p = UI.panel(`
-        <h2>Nani's shop</h2>
-        <p>You have <b>${Cook.save.coins}</b> coin${Cook.save.coins === 1 ? "" : "s"}. Every station has an upgrade, but you can't afford them all, so choose what helps your cooking most. Upgrades do the fiddly jobs; you still have to understand the order.</p>
-        <div class="shop-grid">${ups.map(card).join("")}
-          <div class="shop-item none"><div class="shop-img"><img src="${Cook.v("assets/cook/props/sugar-jar.webp")}" alt=""></div><div><div class="station">${UI.esc(nu.station)}</div><h4>No upgrade</h4><p>${UI.esc(nu.text)}</p></div></div>
-        </div>
-        <div class="btn-row"><button class="btn primary" id="shop-done">Done</button></div>`);
+        <div class="purse">${coinsHtml(Cook.coins(), "total")}</div>
+        <div class="shop-grid pic">${ups.map(card).join("")}</div>
+        <div class="btn-row pic-row">${picBtn("shop-done", "done", "Done", "primary")}</div>`);
+      grownUps(
+        p,
+        `<h3>Nani's shop</h3><p>Every station has an upgrade, but your child can't afford them all, so they choose what helps their cooking most. Upgrades do the fiddly jobs; the child still has to understand the order. Buying is the only time coins go down.</p>
+        <ul class="gu-list">${ups.map((u) => `<li><b>${UI.esc(u.name)}</b> (${UI.esc(u.station)}, ${Cook.price(u)}): ${UI.esc(u.effect)}</li>`).join("")}<li><b>No upgrade</b> (${UI.esc(nu.station)}): ${UI.esc(nu.text)}</li></ul>`
+      );
       p.querySelectorAll("[data-buy]").forEach((b) =>
         b.addEventListener("click", () => {
           const u = ups.find((x) => x.id === b.dataset.buy);
-          if (Cook.save.coins < u.price || Cook.save.owned.includes(u.id)) return;
-          Cook.save.coins -= u.price;
-          Cook.save.owned.push(u.id);
+          const W = Cook.wallet();
+          if (Cook.hasUpgrade(u.id) || Cook.coins() < Cook.price(u)) return;
+          if (W) {
+            if (!W.buy(u.id)) return;
+          } else {
+            Cook.save.coins -= u.price;
+            Cook.save.owned.push(u.id);
+          }
           Cook.sfx.coin();
-          UI.setCoins(Cook.save.coins, true);
           Cook.writeSave();
           const top = p.scrollTop;
           render();
@@ -825,34 +819,35 @@
 
   function showFinale() {
     Cook.sfx.fanfare();
-    const total = Object.entries(Cook.save.best).filter(([k]) => k !== "free").reduce((s, [, v]) => s + v, 0);
-    UI.panel(`
+    const p = UI.panel(`
       <h1>Eid Mubarak!</h1>
       <div class="finale-row">
         <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
       </div>
-      <p>The whole family ate together, and you cooked it all: chai, maani, daar, chaat, samosa and mishkaki. You earned <b>${total}</b> stars.</p>
       <div class="patch" title="A new patch for Nani's quilt"></div>
-      <p style="text-align:center">A new patch for Nani's quilt. <b>Free cooking</b> is open: new orders every time.</p>
-      <div class="btn-row" style="justify-content:center"><button class="btn primary" id="fin-shop">Nani's shop</button><button class="btn" id="fin-menu">Menu</button></div>`);
+      <div class="btn-row pic-row">${picBtn("fin-menu", "home", "Menu")}${picBtn("fin-shop", "shop", "Nani's shop", "primary")}</div>`);
+    grownUps(p, `<h3>The Eid feast</h3><p>The whole family ate together, and your child cooked it all: chai, maani, daar, chaat, samosa and mishkaki. A new patch for Nani's quilt. Free cooking is open: new orders every time.</p>`);
     $("#fin-shop").addEventListener("click", showShop);
     $("#fin-menu").addEventListener("click", showTitle);
     Cook.expect = { kind: "click", selector: "#fin-menu" };
   }
 
+  /** Nani's recipe book: the dishes learned and the words met, in Kutchi (tap to hear); the English is behind the "?" (E1). */
   function showBook() {
     const taught = Object.keys(Cook.data.recipes).filter((k) => Cook.save.taught[k]);
-    const favs = Object.entries(Cook.data.customers)
-      .map(([who, c]) => `<div class="ccard"><div class="cc-head"><img src="${face(who)}" alt="">${UI.esc(c.name)}</div><div class="cc-why">${UI.esc(c.likes)}</div></div>`)
-      .join("");
     const met = Object.keys(Cook.save.words).filter((id) => Cook.data.words[id]);
     const p = UI.panel(`
-      <h2>Nani's recipe book</h2>
-      <p>Recipes change with every order: listen to what each person asks for.</p>
-      ${taught.length ? `<div class="chips">${taught.map((k) => `<span class="chip">${UI.esc(Cook.display(Cook.data.recipes[k].name))}<small>${UI.esc(Cook.data.recipes[k].english)}: ${Cook.data.recipes[k].stations.join(", ")}</small></span>`).join("")}</div>` : "<p>Cook with Nani to fill this book.</p>"}
-      <h3>How the family like it</h3><div class="cards">${favs}</div>
-      ${met.length ? `<h3>Words</h3><p>Dots show how well you know each word. Grey words are placeholders until the family gives us the Kutchi. Tap to hear.</p><div class="chips">${wordChips(met)}</div>` : ""}
-      <div class="btn-row"><button class="btn primary" id="book-close">Close</button></div>`);
+      ${taught.length ? `<div class="chips">${taught.map((k) => `<button class="chip" type="button" data-w="${UI.esc(Cook.data.recipes[k].name)}">${UI.esc(Cook.display(Cook.data.recipes[k].name))}</button>`).join("")}</div>` : ""}
+      <div class="cards">${Object.keys(Cook.data.customers).map((who) => `<div class="ccard book-face"><img src="${face(who)}" alt=""></div>`).join("")}</div>
+      ${met.length ? `<div class="chips">${wordChips(met)}</div>` : ""}
+      <div class="btn-row pic-row">${picBtn("book-close", "done", "Close", "primary")}</div>`);
+    grownUps(
+      p,
+      `<h3>Nani's recipe book</h3><p>Recipes change with every order: your child listens to what each person asks for. The first row is the dishes learned so far, then the family, then every word met (tap to hear; the dots show how well it's known, grey words are placeholders until the family gives us the Kutchi).</p>
+      ${taught.length ? `<ul class="gu-list">${taught.map((k) => `<li><b>${UI.esc(Cook.display(Cook.data.recipes[k].name))}</b>: ${UI.esc(Cook.data.recipes[k].english)} (${Cook.data.recipes[k].stations.join(", ")})</li>`).join("")}</ul>` : ""}
+      <ul class="gu-list">${Object.values(Cook.data.customers).map((c) => `<li><b>${UI.esc(c.name)}</b>: ${UI.esc(c.likes)}</li>`).join("")}</ul>
+      ${met.length ? `<ul class="gu-list">${met.map((id) => `<li><b>${UI.esc(Cook.display(id))}</b>: ${UI.esc(Cook.english(id))}${Lang.isDraft(id) ? " (a draft word from Zafar: Mum to confirm)" : ""}</li>`).join("")}</ul>` : ""}`
+    );
     wireChips(p);
     $("#book-close").addEventListener("click", () => (Cook.inDay ? UI.closePanel() : showTitle()));
   }
@@ -900,6 +895,7 @@
   }
   async function runLab(key, guided, { level = Cook.labLevel || 1, region } = {}) {
     Cook.run++;
+    Cook.undoAt = null;
     closeResults();
     Cook.unlockAudio();
     Cook.inDay = true;
@@ -941,7 +937,6 @@
     const tEnd = Date.now();
     // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
     // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)
-    const labStars = { ear: ctx.listenMiss === 0, hand: !ctx.grades.some((g) => g.score < 55), third: ctx.help === 0 };
     UI.mission.stamp();
     // what the station scored, for the test harness (it was the old card's small print)
     const counts = {};
@@ -952,13 +947,15 @@
       seen[g.what] = (seen[g.what] || 0) + 1;
       return `${g.what} ${seen[g.what]}: ${g.score}%`;
     });
-    Cook.labResult = { key, stars: labStars, why: ctx.listenMiss ? `Ear: ${ctx.reasons.join("; ")}` : "Understood everything.", skills, help: ctx.help };
+    // judged (and the best kept) by the core, never paid: a lab is for trying things (play: "lab")
+    const scored = finishRound(ctx, { game: key, level, end: tEnd, kind: "lab" });
+    Cook.labResult = { key, right: scored.round.right, total: scored.round.total, why: ctx.listenMiss ? `Mistakes: ${ctx.reasons.join("; ")}` : "Understood everything.", skills, help: ctx.help };
     const actions = [
       { id: "again", label: "Again", icon: "again", elId: "lab-again" },
       { id: "list", label: "All stations", icon: "grid", elId: "lab-list", primary: true },
     ];
     const run = Cook.run;
-    const out = await roundEnd(ctx, { game: key, level, stars: labStars, end: tEnd, actions });
+    const out = await roundEnd(ctx, { scored, actions });
     if (run !== Cook.run) return; // something else started while the pop-up was up
     UI.mission.close();
     if (out && out.action === "again") return runLab(key, guided, { level, region });
@@ -989,42 +986,46 @@
     }
     const days = Cook.data.days;
     const nextDay = Math.min(Cook.save.day, days.length);
+    // the story days as numbered dots (a done day ticked, the next one lit): numbers, not written English (E1)
     const dots = days
       .map((d) => {
         const cls = Cook.save.best[d.id] != null ? "done" : d.id === nextDay && !Cook.save.finished ? "next" : "";
-        return `<button class="day-dot ${cls}" data-day="${d.id}" ${d.id <= Cook.save.day || Cook.save.finished ? "" : "disabled"} style="border:none;background:none"><b>${d.id}</b>${
-          Cook.save.best[d.id] != null ? `<span class="st">★${Cook.save.best[d.id]}</span>` : UI.esc(d.title)
-        }</button>`;
+        const open = d.id <= Cook.save.day || Cook.save.finished;
+        return `<button class="day-dot ${cls}" data-day="${d.id}" ${open ? "" : "disabled"} type="button" aria-label="Day ${d.id}: ${UI.esc(d.title)}" style="border:none;background:none"><b>${open ? d.id : PIC.lock}</b>${Cook.save.best[d.id] != null ? `<span class="st">${PIC.done}</span>` : ""}</button>`;
       })
       .join("");
     const mode = Cook.save.mode;
+    const startLabel = Cook.save.finished ? "Free cooking" : Cook.save.day > 1 ? `Day ${nextDay}: ${days[nextDay - 1].title}` : "Start cooking";
     const p = UI.panel(
       `
       <div class="title-wrap">
         <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
         <div>
-          <h1>Cook with Nani</h1>
-          <p>The family come to Nani's kitchen and ask for food in Kutchi. Listen, cook it the way they like it, and earn pocket money!${(Cook.save.playDays || []).length > 1 ? ` <b>You've cooked with Nani on ${Cook.save.playDays.length} days.</b>` : ""}</p>
-          <div class="purse"><span class="pill coins" title="Pocket money"><i class="coin-dot"></i>${Cook.save.coins}</span><span class="purse-total">pocket money</span></div>
+          <div class="purse">${coinsHtml(Cook.coins(), "total")}</div>
           <div class="day-dots">${dots}</div>
-          <div class="seg" role="group" aria-label="Setting">
-            <button data-mode="relaxed" class="${mode === "relaxed" ? "on" : ""}">Relaxed</button>
-            <button data-mode="busy" class="${mode === "busy" ? "on" : ""}">Busy</button>
+          <div class="btn-row pic-row">
+            ${picBtn(Cook.save.finished ? "t-free" : "t-start", "play", startLabel, "primary big")}
+            ${Cook.save.taught.chai ? picBtn("t-quick", "one", "Quick order: one customer") : ""}
+            ${picBtn("t-book", "book", "Recipe book")}
+            ${picBtn("t-shop", "shop", "Nani's shop")}
           </div>
-          <div class="seg-help">${mode === "relaxed" ? "No waiting. When Nani interrupts, the cooking pauses." : "Customers wait with a patience bar, and the cooking keeps going when Nani interrupts!"}</div>
-          <div class="btn-row">
-            ${Cook.save.finished ? `<button class="btn primary" id="t-free">Free cooking</button>` : `<button class="btn primary" id="t-start">${Cook.save.day > 1 ? `Day ${nextDay}: ${UI.esc(days[nextDay - 1].title)}` : "Start cooking"}</button>`}
-            <button class="btn" id="t-lab">Station lab</button>
-            ${Cook.save.taught.chai ? `<button class="btn" id="t-quick" title="One customer">Quick order</button>` : ""}
-            <button class="btn" id="t-book">Recipe book</button>
-            <button class="btn" id="t-shop">Shop</button>
-          </div>
-          <p style="margin-top:14px;font-size:13px"><a href="#" id="t-reset">Start over</a>${Cook.Hands ? ` · Your hands: ${["player-boy", "player-girl"].map((h) => `<a href="#" data-hands="${h}" style="${Cook.Hands.who() === h ? "font-weight:800;text-decoration:none" : ""}">${h === "player-boy" ? "boy" : "girl"}</a>`).join(" / ")}` : ""} ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
         </div>
       </div>`,
       { title: true }
     );
-    UI.setCoins(Cook.save.coins);
+    // everything a grown-up reads (what Cook is, the setting, the Station lab, starting over) is behind the "?" (E1, E31)
+    grownUps(
+      p,
+      `<h3>Cook with Nani</h3>
+      <p>The family come to Nani's kitchen and ask for food in Kutchi. Your child listens, cooks it the way they like it, and earns pocket money.${(Cook.save.playDays || []).length > 1 ? ` They've cooked with Nani on ${Cook.save.playDays.length} days.` : ""} The big round button starts ${UI.esc(startLabel.toLowerCase())}; the numbered dots are the story days.</p>
+      <div class="seg" role="group" aria-label="Setting">
+        <button data-mode="relaxed" class="${mode === "relaxed" ? "on" : ""}">Relaxed</button>
+        <button data-mode="busy" class="${mode === "busy" ? "on" : ""}">Busy</button>
+      </div>
+      <div class="seg-help">${mode === "relaxed" ? "No waiting. When Nani interrupts, the cooking pauses." : "Customers wait with a patience bar, and the cooking keeps going when Nani interrupts!"}</div>
+      <div class="btn-row"><button class="btn" id="t-lab" type="button">Station lab</button></div>
+      <p class="gu-small"><a href="#" id="t-reset">Start over</a>${Cook.Hands ? ` · Your hands: ${["player-boy", "player-girl"].map((h) => `<a href="#" data-hands="${h}" style="${Cook.Hands.who() === h ? "font-weight:800;text-decoration:none" : ""}">${h === "player-boy" ? "boy" : "girl"}</a>`).join(" / ")}` : ""} ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>`
+    );
     p.querySelectorAll("[data-mode]").forEach((b) =>
       b.addEventListener("click", () => {
         Cook.save.mode = b.dataset.mode;
@@ -1052,7 +1053,7 @@
     $("#t-shop").addEventListener("click", showShop);
     $("#t-reset").addEventListener("click", (e) => {
       e.preventDefault();
-      if (confirm("Start Cook with Nani again from day 1? Pocket money, upgrades and word progress will be cleared.")) {
+      if (confirm("Start Cook with Nani again from day 1? The story days and Cook's word dots start again; pocket money and upgrades stay in the purse (coins are never taken away).")) {
         Cook.resetSave();
         showTitle();
       }
@@ -1101,15 +1102,19 @@
       closeKitchenBtn = document.createElement("button");
       closeKitchenBtn.id = "close-kitchen";
       closeKitchenBtn.type = "button";
-      closeKitchenBtn.className = "btn small close-kitchen";
+      closeKitchenBtn.className = "rail-btn close-kitchen";
       closeKitchenBtn.addEventListener("click", requestCloseKitchen);
     }
     return closeKitchenBtn;
   }
+  // a picture (a closed door), never written English for the child (E1); its label is for screen readers
+  const DOOR = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4h11v17"/><path d="M3 21h18"/><circle cx="13" cy="12.5" r="1" fill="currentColor"/></svg>`;
   function showCloseKitchenButton() {
     const btn = closeKitchenButton();
     btn.disabled = false;
-    btn.textContent = "Close the kitchen";
+    btn.innerHTML = DOOR;
+    btn.setAttribute("aria-label", "Close the kitchen");
+    btn.title = "Close the kitchen";
     const top = $(".side-rail");
     if (top && !top.contains(btn)) top.appendChild(btn);
   }
@@ -1121,7 +1126,7 @@
     state.kitchenOpen = false;
     const btn = closeKitchenButton();
     btn.disabled = true;
-    btn.textContent = state.orderActive ? "Finishing this order…" : "Closing…";
+    btn.setAttribute("aria-label", state.orderActive ? "Finishing this order" : "Closing");
   }
 
   /** One open-kitchen customer: a random taught dish for a random family member. */
@@ -1139,25 +1144,16 @@
     state.day = day;
     state.free = true;
     state.cards = [];
-    state.dayStars = 0;
+    state.dayCoins = 0;
     const today = new Date().toISOString().slice(0, 10);
     Cook.save.playDays = Cook.save.playDays || [];
     if (!Cook.save.playDays.includes(today)) Cook.save.playDays.push(today);
     Cook.writeSave();
     UI.closePanel();
     UI.clearStage();
-    UI.setStars(0);
-    if (Cook.hasUpgrade("helper")) {
-      Cook.save.coins = Math.max(0, Cook.save.coins - 5);
-      UI.setCoins(Cook.save.coins);
-    }
     await serviceView(null);
-    if (!Cook.save.rulesSeen) {
-      await showRules();
-      Cook.save.rulesSeen = true;
-      Cook.writeSave();
-    }
-    UI.gist(day.gist, { top: true });
+    // for grown-ups only, behind the "?" (E1); the pause stays
+    UI.gist(day.gist);
     await Cook.wait(2400);
     UI.hideGist();
     state.kitchenOpen = true;
@@ -1172,7 +1168,7 @@
         if (!state.kitchenOpen) break;
         // a gentle queue: the next customer is on their way, a little
         // sooner (so they start to overlap) when the day is Busy
-        UI.gist("Someone's on their way to the kitchen…", { top: true });
+        UI.gist("Someone's on their way to the kitchen…");
         await Cook.wait(busy ? 700 + Math.random() * 500 : 1500 + Math.random() * 900);
         UI.hideGist();
       }
@@ -1199,6 +1195,48 @@
     $("#btn-book").addEventListener("click", showBook);
   }
 
+  /* ---------------- the game host's way in (js/cook/main.js) ----------------
+   * One order, as a stage of the host's plan, on this page in the host's frame (?hosted=1: the host scores and
+   * pays the plan). {pantry: true, dish}: Nani's pantry list for the dish, only the first time that dish is made
+   * today (H15, H49; otherwise it resolves {skipped}). {dish, who}: one customer's order of that dish. {free: true}:
+   * an open-kitchen customer (a dish already taught). Resolves when the order's end screen would open.
+   */
+  Cook.hosted = new URLSearchParams(global.location.search).get("hosted") === "1";
+  const today = () => new Date().toISOString().slice(0, 10);
+  function fetchedToday(dish) {
+    const f = Cook.save.fetched || {};
+    return f.day === today() && (f.dishes || []).includes(dish);
+  }
+  async function hostedOrder(o = {}) {
+    Cook.run++;
+    closeResults();
+    stopPatience();
+    Cook.unlockAudio();
+    Cook.inDay = true;
+    UI.closePanel();
+    UI.clearStage();
+    state.free = !!o.free;
+    state.cards = [];
+    state.dayCoins = 0;
+    const level = o.level || 1;
+    if (o.pantry) {
+      const dish = o.dish || "chai";
+      if (!pantryFirst(dish) || fetchedToday(dish)) return { skipped: true };
+      const f = Cook.save.fetched && Cook.save.fetched.day === today() ? Cook.save.fetched : { day: today(), dishes: [] };
+      f.dishes = f.dishes.concat(dish);
+      Cook.save.fetched = f;
+      Cook.writeSave();
+      await serviceView(null);
+      const card = await runOrder(pantryFor(dish, { who: "nani", dishes: [dish], level }), null);
+      return { tasks: card ? card.total : undefined };
+    }
+    const spec = o.free || !o.dish ? generateCustomer() : { who: o.who || Cook.pick(["nana", "ma", "cousin"]), dishes: [o.dish] };
+    spec.level = level;
+    await serviceView(null);
+    const card = await runOrder(buildOrder(spec), null);
+    return { tasks: card ? card.total : undefined };
+  }
+
   /* ---------------- test hooks ---------------- */
   global.__cook = {
     expectation() {
@@ -1220,6 +1258,9 @@
         out.sry = e.ry * k;
       }
       if (typeof e.count === "function") out.count = e.kind === "stir" && Cook.stirCount ? Cook.stirCount() : e.count();
+      // where a tap takes the last thing back, when the station offers it now (E14: until Done)
+      const u = Cook.undoAt && Cook.undoAt();
+      if (u) out.undo = conv(u.x, u.y);
       delete out.wrongs;
       return out;
     },
@@ -1231,9 +1272,9 @@
       return {
         view: Cook.scene && Cook.scene.viewName,
         day: state.day && state.day.id,
-        coins: Cook.save.coins,
+        coins: Cook.coins(),
         save: Cook.save,
-        cards: Cook.log.map((c) => ({ who: c.who, stars: c.stars, coins: c.coins, reasons: c.reasons })),
+        cards: Cook.log.map((c) => ({ who: c.who, right: c.right, total: c.total, coins: c.coins, reasons: c.reasons })),
         panel: UI.panelOpen(),
         paused: Cook.paused,
         dayCards: state.cards.length,
@@ -1241,6 +1282,7 @@
       };
     },
     lab: (key, guided = true, opts = {}) => runLab(key, guided, opts),
+    order: (o) => hostedOrder(o),
     reset() {
       Cook.resetSave();
       Cook.log = [];
@@ -1249,13 +1291,13 @@
 
   /* ---------------- boot ---------------- */
   global.addEventListener("load", async () => {
-    // Wave 6b (UX 11): the stars don't grey out mid-round; they're shown when the order is served
-    Cook.deferStars = true;
     UI.init();
     wireRail();
+    // the engine core (js/cook/boot.js, a module): the one save, the purse, the badges. A failed load
+    // (no module support) still plays, unpaid, on Cook's own save (Cook.core stays null)
+    if (Cook.coreReady) await Cook.coreReady.catch(() => null);
     Cook.loadSave();
     await Cook.load();
-    UI.setCoins(Cook.save.coins);
     Cook.onSceneReady = () => showTitle();
     new Phaser.Game({
       type: Phaser.AUTO,

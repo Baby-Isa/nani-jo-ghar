@@ -45,9 +45,9 @@
   UI.w6 = () => document.body.classList.contains("w6");
 
   /**
-   * Star icons come from the game mode's star set (data.star_sets), so each
-   * mode supplies its own: in Cook the "cooked well" star is a chef's hat,
-   * in Find it (planned) a magnifying glass. k: "ear" | "hand" | "third".
+   * PARKED MODES ONLY (Find it, Dress up, Snap borrow this file; H45): their star icons from their own
+   * star sets. Cook itself has no stars since step 3 R4 (H5, J7: the three badges instead); this and the
+   * other marked legacy-star helpers below go when those modes move onto the core.
    */
   UI.starInfo = function (k, mode = Cook.save.mode) {
     const sets = Cook.data.star_sets || {};
@@ -655,7 +655,7 @@
       name,
       ladders,
       line: line || (lines ? Lang.join(lines) : Order().speech(ladders)),
-      stars: { ear: "pending", hand: "pending", third: "pending" },
+      stars: { ear: "pending", hand: "pending", third: "pending" }, // parked modes only (legacy stars)
       busy,
       // the request card's instructions (Wave 6): what to do, in plain English
       how: how || null,
@@ -677,8 +677,10 @@
     renderOrder();
     UI.setPatience(busy ? 1 : null);
   };
+  // parked modes only (legacy stars): Cook's card has no star box (R4)
   function renderStars() {
     const box = $("#mission .m-stars");
+    if (!box) return;
     box.innerHTML = ["ear", "hand", "third"]
       .map((k) => {
         const info = UI.starInfo(k, mission.busy ? "busy" : "relaxed");
@@ -1498,7 +1500,7 @@
   // Wave 5: the English step pills are gone; kept as no-ops for callers
   M.step = () => {};
   M.setSteps = () => {};
-  /** state: "earned" | "lost" | "pending" */
+  /** PARKED MODES ONLY (legacy stars; Cook never calls it). state: "earned" | "lost" | "pending" */
   M.star = function (k, state, { final = false } = {}) {
     if (!mission || mission.stars[k] === state) return;
     // Wave 6b (UX 11): no verdicts mid-round. A page that opts in (Cook.deferStars) keeps its
@@ -1531,8 +1533,8 @@
     return el ? el.innerHTML : "";
   };
 
-  /* Busy: the customer's patience as a ring round their face, and the
-     lightning star drains with it (grey once it's too low to win). */
+  /* Busy: the customer's patience as a ring round their face (a parked mode's
+     legacy lightning star drains with it). */
   function paintDrain(frac) {
     const st = $(`#mission .mstar[data-k="third"]`);
     if (st) st.style.setProperty("--fill", `${Math.round(Cook.clamp(frac, 0, 1) * 100)}%`);
@@ -1554,10 +1556,10 @@
   };
 
   /* ---------------- pocket money ---------------- */
-  // Wave 5: no coins/stars counter in the sidebar any more (pocket money is
-  // on the title screen and the day's summary); kept so callers needn't care
+  // Wave 5: no coins counter in the sidebar (pocket money is on the title screen and the day's
+  // summary); kept as a no-op so the parked modes that call it needn't care
   UI.setCoins = () => {};
-  UI.setStars = () => {};
+  UI.setStars = () => {}; // parked modes only
   function bumpEl(p) {
     p.classList.remove("bump");
     void p.offsetWidth;
@@ -1581,6 +1583,25 @@
       if (seqWord && L.sections.some((s) => s.seq && s.groups.length > 1)) add(seqWord);
     });
     return out;
+  };
+  /**
+   * SH-02: the same words as orderWords, each in the FORM the order used ("hakri" where the order said
+   * hakri dungri, not the dictionary's "hakro"): [{id, kutchi, check}] where kutchi is the text the card
+   * showed (lower case, no full stop) and check marks a form guessed for a noun of unconfirmed gender
+   * (decision 21: the "to check" flag on the test site). A word met in two forms keeps the first.
+   */
+  UI.orderWordForms = function (ladders) {
+    const ids = UI.orderWords(ladders);
+    const form = new Map();
+    const clean = (id, t) => {
+      let k = String(t || "").replace(/[.,!?;:]+/g, " ").replace(/\s+/g, " ").trim();
+      const base = Cook.display(id);
+      if (k && base && base.charAt(0) === base.charAt(0).toLowerCase()) k = k.charAt(0).toLowerCase() + k.slice(1);
+      return k || base;
+    };
+    const look = (segs) => (segs || []).forEach((s) => s.w && s.lang === "k" && !form.has(s.w) && form.set(s.w, { kutchi: clean(s.w, s.t), check: !!s.check }));
+    (ladders || []).forEach((L) => Order().rows(L, { all: true }).forEach((r) => look((r.phrase ? r.phrase.segs : r.line.segs).concat(r.line.segs))));
+    return ids.map((id) => Object.assign({ id, kutchi: Cook.display(id), check: false }, form.get(id) || {}));
   };
   /** Word pills: [speaker] Kutchi · English, marked "missed" or "help". */
   UI.wordReview = function (words) {
@@ -1625,7 +1646,26 @@
     return Cook.data.words[id] ? Cook.Art.wordUrl(id) : null;
   }
   UI.tallyIcon = iconFor;
+  /*
+   * R4 (F1, F25): on Cook's page the tally is the shared kit's (js/shared/tally.js), mounted on #count-badge;
+   * a page without the kit (the parked modes that borrow this file) keeps the drawing below.
+   */
+  let kitTally = null;
+  const shared = () => {
+    if (kitTally) return kitTally;
+    const b = $("#count-badge");
+    if (!b || !global.Tally || !document.body.classList.contains("w6")) return null;
+    b.classList.remove("hidden");
+    kitTally = global.Tally.mount(b);
+    return kitTally;
+  };
   function drawTally() {
+    const kt = shared();
+    if (kt) {
+      if (!tally.size) return kt.clear();
+      tally.forEach((t, key) => kt.counts[key] !== t.n && kt.set(key, t.n, { icon: t.icon }));
+      return;
+    }
     const b = $("#count-badge");
     if (!b) return;
     if (!tally.size) {
@@ -1644,7 +1684,7 @@
     tally.set(id, { n, icon: icon || (prev && prev.icon) || iconFor(id === "_" ? null : id, state) });
     drawTally();
     const el = $(`#count-badge .tl[data-k="${CSS.escape(id)}"]`);
-    if (el) bumpEl(el);
+    if (el) bumpEl(el); // (the shared tally bumps its own chip)
     // Counting aloud teaches the number words (stages 1-2). From stage 3
     // the count is silent, so you can't just stop when the sound matches
     // what you heard in the order.
@@ -1720,7 +1760,7 @@
   UI.go = function (label, opts = {}) {
     const b = $("#go-btn");
     if (!b) return Promise.resolve();
-    b.querySelector(".go-t").textContent = label;
+    (b.querySelector(".njg-next-t") || b.querySelector(".go-t")).textContent = label;
     b.classList.remove("hidden");
     b.classList.toggle("glow", !!opts.glow);
     return new Promise((resolve) => (goResolve = resolve));
@@ -1779,18 +1819,24 @@
       if (e) e.addEventListener("click", fn);
       return e;
     };
-    on("#go-btn", () => {
-      Cook.sfx.click();
+    // ✓ Done and → Next: the shared kit's buttons (js/shared/buttons.js; F1, SH-23), made here on Cook's page;
+    // a page with its own (the parked modes that borrow this file) keeps them
+    const pressGo = () => {
       const r = goResolve;
       UI.hideGo();
       if (r) r();
-    });
-    on("#done-btn", () => {
-      Cook.sfx.click();
+    };
+    const pressDone = () => {
       const r = doneResolve;
       UI.hideDone();
       if (r) r();
-    });
+    };
+    const kit = global.NjgButtons;
+    const stage = $("#stage");
+    if (kit && stage && !$("#done-btn")) kit.done(stage, pressDone, { id: "done-btn" }).classList.add("hidden");
+    else on("#done-btn", () => (Cook.sfx.click(), pressDone()));
+    if (kit && stage && !$("#go-btn")) kit.next(stage, "", pressGo, { id: "go-btn" }).classList.add("hidden");
+    else on("#go-btn", () => (Cook.sfx.click(), pressGo()));
     document.addEventListener("pointerdown", () => Cook.unlockAudio(), { passive: true });
     // the "?": the goal pops out; any tap elsewhere puts it away
     on("#btn-help", () => {

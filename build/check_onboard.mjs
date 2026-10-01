@@ -264,8 +264,11 @@ export async function run(only = null) {
     r.needs.forEach((x) => want.add(x));
     results.push(r);
   }
+  // a built-in check runs for a mode not moved yet, and for a moved mode whose games are adapters over its own
+  // code (Cook since R4: its stations through the host are still checked by Cook's own coach-script check)
+  const pulled = new Set(results.flatMap((r) => r.needs || []));
   const own = Object.entries(BUILT_IN)
-    .filter(([id]) => want.has(id) && !modes.some((m) => m.id === id))
+    .filter(([id]) => want.has(id) && (!modes.some((m) => m.id === id) || pulled.has(id)))
     .map(([, fn]) => fn());
   return own.concat(results);
 }

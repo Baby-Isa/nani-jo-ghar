@@ -203,6 +203,7 @@
       return obj;
     }
     clearView() {
+      Cook.undoAt = null; // a take-back belongs to the view that offered it
       this.loops.forEach((l) => l.stop && l.stop());
       this.loops = [];
       this.tweens.killAll();

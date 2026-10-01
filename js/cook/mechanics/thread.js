@@ -295,6 +295,8 @@
           return z.expect(null);
         }
         if (p.undo) return z.expect({ kind: "tap", x: hit.x, y: z.Y(SKY), key: "undo" });
+        // a piece on the skewer can come off again until Done (E14): where to tap, for the test hook's `undo`
+        Cook.undoAt = () => (sk.ids.length && !busy && hit.active ? { x: hit.x, y: z.Y(SKY) } : null);
         const c = S.centre(target);
         const jig = ((sk.ids.length % 3) - 1) * z.L(14);
         const wrongs = ids.filter((id) => id !== p.id).map((id) => S.centre(bowls[id]));

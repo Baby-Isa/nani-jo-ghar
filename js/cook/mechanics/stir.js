@@ -46,15 +46,13 @@
   const Mech = Cook.Mech;
   const TAU = Math.PI * 2;
 
-  // the stir station's own lines and tips (data, not code)
+  // the stir station's own lines (data, not code)
   Cook.onLoad.push(async (data) => {
     const extra = await fetch(Cook.v("data/stations/stir.json"))
       .then((r) => r.json())
       .catch(() => null);
     if (!extra) return;
     Object.keys(extra.lines || {}).forEach((key) => (data.lines[key] = data.lines[key] || extra.lines[key]));
-    const tips = (data.tips = data.tips || {});
-    Object.keys(extra.tips || {}).forEach((star) => (tips[star] = Object.assign({}, extra.tips[star], tips[star] || {})));
   });
 
   /** The top-down pot as a texture (so it can be tinted "special"). */

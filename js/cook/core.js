@@ -101,7 +101,23 @@
     if (hands) Cook.save.hands = hands;
     Cook.writeSave();
   };
-  Cook.hasUpgrade = (id) => Cook.save.owned.includes(id);
+  /*
+   * Step 3 R4: Cook on the engine core (js/core/, ES modules). cook.html's module bootstrap
+   * (js/cook/boot.js) sets Cook.coreReady (a promise) and, once loaded, Cook.core =
+   * {save, progress, score, wallet, voice, lang, play, data, scoreNoPay}. The one purse is the core's
+   * wallet (coins only go up, except buying: no wages, E29); upgrades are the wallet's. A page that
+   * still loads Cook's files the classic way (the parked modes) has no core and keeps the old fields.
+   */
+  Cook.core = Cook.core || null;
+  Cook.coreReady = Cook.coreReady || null;
+  Cook.wallet = () => (Cook.core && Cook.core.wallet) || null;
+  Cook.coins = () => (Cook.wallet() ? Cook.wallet().coins() : Cook.save.coins || 0);
+  Cook.hasUpgrade = (id) => (Cook.wallet() ? Cook.wallet().has(id) : (Cook.save.owned || []).includes(id));
+  /** An upgrade's price: data/economy.json's (through the wallet), else the old one in data/cook.json. */
+  Cook.price = (u) => {
+    const p = Cook.wallet() ? Cook.wallet().price(u.id) : null;
+    return p != null ? p : u.price != null ? u.price : Infinity;
+  };
 
   /* ---------------- per-word progress (Game Design: per-word difficulty) ----
    * stage 1 introduced (first meeting) -> the item glows as it's named
@@ -122,7 +138,7 @@
    *   stage 1 new:      mission card text,  item label text (+ glow)
    *   stage 2 learning: mission card text,  item label speaker only
    *   stage 3 nearly:   mission card dots,  item label speaker only
-   *   stage 4 known:    mission card dots (replaying costs the no-help star), item label speaker only
+   *   stage 4 known:    mission card dots (replaying costs a hint), item label speaker only
    * Every item always keeps at least a speaker button, so it's never a
    * mystery blob with nothing to tap. English placeholders are never
    * "known" Kutchi and are never dotted out on the card. */
@@ -461,5 +477,4 @@
     return a;
   };
   Cook.clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-  Cook.starsFor = (score) => (score >= 88 ? 3 : score >= 68 ? 2 : 1);
 })(window);

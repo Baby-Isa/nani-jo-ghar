@@ -13,6 +13,10 @@ export class CookPlayer {
   constructor(page, rec, { speed = 3, prefix = "", mode = "fair" } = {}) {
     this.page = page; this.rec = rec; this.speed = speed; this.prefix = prefix; this.mode = mode;
     this.mistakes = mode === "mistake";
+    // "takeback" (E14, R4): once something has been placed and the station offers to take it back
+    // (__cook.expectation().undo), tap it back, then carry on to the end
+    this.takeback = mode === "takeback";
+    this.tookBack = 0;
     this.hints = mode === "hint";
     this.seen = new Set();
     this.lastKey = null; this.repeats = 0; this.helped = this.hints; this.intros = 0;
@@ -299,6 +303,14 @@ export class CookPlayer {
       if (e.kind === "click" && ["#sum-shop", "#sum-finale", "#shop-done", "#t-start", "#t-free", "#fin-menu", "#lab-list", ".njg-results #lab-list"].includes(e.selector)) { await sleep(100); continue; }
       if (e.kind === "tap" && !this.helped && !(await this.page.evaluate("Cook.save.mode === 'busy' || !!document.querySelector('.njg-onboard')"))) { await this.tryHelp(); continue; }
       if (e.intro) { lastKind = "intro"; await this.act(e); await this.waitChange(e, 10000); continue; }
+      if (this.takeback && !this.tookBack && e.undo && e.kind === "tap") {
+        this.tookBack++;
+        await this.once("before-takeback");
+        await this.tap(e.undo.x, e.undo.y, "take it back");
+        await sleep(700);
+        await this.once("after-takeback");
+        continue;
+      }
       if (this.hints && !(await this.page.evaluate("!!document.querySelector('.njg-onboard')"))) await this.hintMoves(e);
       if (e.kind !== "wait" && e.kind !== lastKind) await this.once(`kind-${e.kind}`, { settle: ["timing", "hold", "slice", "stir", "roll"].includes(e.kind) ? 0 : 150 });
       lastKind = e.kind;

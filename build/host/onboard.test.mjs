@@ -40,6 +40,8 @@ test("the demo's adapters are checked by Cook's and the clinic's own checks, whi
   assert.match(all, /cook: \d+ stations/);
   assert.match(all, /clinic: 9 heal games/);
   assert.match(all, /demo: 2 games, 0 demo steps, adapters checked as cook and clinic/);
-  // a single built-in mode still runs on its own
-  assert.equal((await run(["cook"])).length, 1);
+  // a single mode still runs on its own: Cook (a plug-in since R4) with its own built-in check of the code it wraps
+  const cook = await run(["cook"]);
+  assert.match(cook.map((r) => r.summary).join(" | "), /cook: \d+ stations/);
+  assert.deepEqual(cook.flatMap((r) => r.errors), []);
 });
