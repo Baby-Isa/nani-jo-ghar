@@ -41,6 +41,9 @@ One line per doc. Start with `docs/status.md`. Superseded docs are in `docs/arch
 - `sources/`: outside material (the Gemini blueprints, research notes); hypotheses only, never evidence.
 
 ## Architecture (`architecture/`)
+- `target-model.md`: the target architecture (step 2a, approved 1 Oct): the core, the shared kit, content as data, modes as plug-ins.
+- `gap-analysis.md`: today's code against the target, and the step 3 refactor plan ("Revised 1 Oct" box).
+- `building-games.md`: how to build a new mini-game, mode, arc or map place from existing parts (step 3, R3b).
 - `code-map.md`: how the code is laid out, pages, build scripts.
 - `technical-plan.md`: the original technical plan (partly stale; see its box).
 - `shared-api.md`: the `js/shared/` modules and their APIs.
@@ -50,4 +53,4 @@ One line per doc. Start with `docs/status.md`. Superseded docs are in `docs/arch
 - `testing.md`: test scripts, ports, headless-testing lessons.
 
 ## Feedback (`feedback/`)
-- Dated play-tests and reviews: `playtest-2026-09-23.md`, `modes-review-2026-09-25.md`, `cook-ui-feedback-2026-09-28.md`, `cook-playtest-2026-09-29.md` (+ transcript), `clinic-playtest-2026-09-29.md` (+ transcripts), `external-reviews/`. Every item is on the regression list.
+- Dated play-tests and reviews: `playtest-2026-09-23.md`, `modes-review-2026-09-25.md`, `cook-ui-feedback-2026-09-28.md`, `cook-playtest-2026-09-29.md` (+ transcript), `clinic-playtest-2026-09-29.md` (+ transcripts), `clinic-playtest-2026-10-01.md` (+ transcripts), `external-reviews/`. Every item is on the regression list.
