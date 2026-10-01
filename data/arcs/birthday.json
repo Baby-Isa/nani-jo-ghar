@@ -1,5 +1,5 @@
 {
-  "_about": "Arc 1, the Birthday: the SKELETON only (rule H36; the chapters, goals and errands are docs/game-design/story-and-arcs.md 'Arc 1: The Birthday' as written; no new content). The beat script is still to write (story-and-arcs.md 'Arc 1's beat script: TBC'), so every beat is an id with status to-write and no line: lines are meanings in the language engine's data, never text here (G13). Format: docs/architecture/building-games.md 'Add an arc'. flow is the order a chapter plays in: {beat}, {errand: {id, mode, entry, settings, status}}, {conversation: {id}} (a slot where the shell MAY put a Conversation, H44). opens: what finishing the chapter opens (map places, modes; fed to js/core/unlocks.js through js/shared/mode.js withArcRules). Errand status: playable (its mode runs on the game host), waiting (the mode is built but not yet moved onto the host: Cook until R4), to-build (no mode yet). note: for grown-ups and sessions only, never shown to the child.",
+  "_about": "Arc 1, the Birthday: the SKELETON only (rule H36; the chapters, goals and errands are docs/game-design/story-and-arcs.md 'Arc 1: The Birthday' as written; no new content). The beat script is still to write (story-and-arcs.md 'Arc 1's beat script: TBC'), so every beat is an id with status to-write and no line: lines are meanings in the language engine's data, never text here (G13). Format: docs/architecture/building-games.md 'Add an arc'. flow is the order a chapter plays in: {beat}, {errand: {id, mode, entry, settings, status}}, {conversation: {id}} (a slot where the shell MAY put a Conversation, H44). opens: what finishing the chapter opens (map places, modes; fed to js/core/unlocks.js through js/shared/mode.js withArcRules). Errand status: playable (its mode runs on the game host: Cook since R4, js/cook/main.js), waiting (the mode is built but not yet moved onto the host), to-build (no mode yet). note: for grown-ups and sessions only, never shown to the child.",
   "version": 1,
   "id": "birthday",
   "status": "skeleton",
@@ -11,7 +11,7 @@
       "note": "The guests are coming. Guests are due -> nothing's ready -> each guest fed, the table set.",
       "flow": [
         { "beat": "guests-coming-start", "status": "to-write" },
-        { "errand": { "id": "cook-guests", "mode": "cook", "status": "waiting", "entry": {}, "settings": {}, "note": "Cook each guest's order: each guest asks for their own dish by name, like Cook's customer flow." } },
+        { "errand": { "id": "cook-guests", "mode": "cook", "status": "playable", "entry": {}, "settings": {}, "note": "Cook each guest's order: each guest asks for their own dish by name, like Cook's customer flow." } },
         { "conversation": { "id": "after-cook-guests" } },
         { "errand": { "id": "set-table", "mode": "put-it-there", "status": "to-build", "entry": {}, "settings": {}, "note": "Set the table (Put it there): place words for plates, cups, a spot for each guest." } },
         { "beat": "guests-coming-end", "status": "to-write" }
