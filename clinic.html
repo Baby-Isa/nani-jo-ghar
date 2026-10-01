@@ -6,6 +6,9 @@
 <title>The doctor's clinic</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
 <link rel="stylesheet" href="css/shared/app.css?v=20261001T045807Z">
+<!-- R3a: the design tokens and the frame, sized from data/layout.json by js/shared/frame.js -->
+<link rel="stylesheet" href="css/shared/tokens.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/frame.css?v=20261001T045807Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
 <link rel="stylesheet" href="css/shared/results.css?v=20261001T045807Z">
@@ -13,6 +16,8 @@
 <link rel="stylesheet" href="css/shared/guide.css?v=20261001T045807Z">
 <link rel="stylesheet" href="css/shared/order-card.css?v=20261001T045807Z">
 <link rel="stylesheet" href="css/shared/buttons.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/tally.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/focus.css?v=20261001T045807Z">
 <link rel="stylesheet" href="css/clinic.css?v=20261001T045807Z">
 <!--
   The clinic (docs/archive/clinic/clinic-design-v1.md: the pipeline, after the quality pass).
@@ -56,6 +61,7 @@
 <pre class="cl-lab-out hidden" id="lab-out"></pre>
 
 <script src="js/version.js?v=20261001T045807Z"></script>
+<script src="js/shared/frame.js?v=20261001T045807Z"></script>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
 <script src="js/shared/save.js?v=20261001T045807Z"></script>
 <script src="js/shared/app.js?v=20261001T045807Z"></script>
@@ -66,6 +72,10 @@
 <script src="js/shared/onboard.js?v=20261001T045807Z"></script>
 <script src="js/shared/guide.js?v=20261001T045807Z"></script>
 <script src="js/shared/fit.js?v=20261001T045807Z"></script>
+<script src="js/shared/stage.js?v=20261001T045807Z"></script>
+<script src="js/shared/bulb.js?v=20261001T045807Z"></script>
+<script src="js/shared/tally.js?v=20261001T045807Z"></script>
+<script src="js/shared/focus.js?v=20261001T045807Z"></script>
 <script src="js/shared/order-card.js?v=20261001T045807Z"></script>
 <script src="js/shared/buttons.js?v=20261001T045807Z"></script>
 <script src="js/shared/speech.js?v=20261001T045807Z"></script>
@@ -89,6 +99,31 @@
 (async function () {
   const Q = new URLSearchParams(location.search);
   const Kit = Clinic.Kit, Run = Clinic.Run, S = Clinic.Stages, P = ClinicPipeline;
+  // R3a hook-up (until R5 moves the clinic onto the framework): the shared bulb and tally behind the Kit's names, and the
+  // scene box from the shared stage (js/shared/stage.js: exactly fitScene's maths, build/test_shared_stage.mjs)
+  if (window.Bulb) Kit.Bulb = Bulb.KitBulb(Kit);
+  if (window.Tally) Kit.Tally = Tally.KitTally(Kit);
+  if (window.Stage) S.fitScene = function (stage, box, cap, room, A) {
+    const A_ = A || 1.5, SW = 1536, SH = SW / A_, need = room.need || [0, 1];
+    const spec = { w: SW, h: SH, safe: [need[0] * SW, null, need[1] * SW, null], fill: "cover", anchorY: room.ay != null ? room.ay : 0.6 };
+    const fit = () => {
+      if (!box.isConnected) return;
+      const W = stage.clientWidth, H = stage.clientHeight;
+      if (!W || !H) return;
+      const m = Stage.fit({ box: { w: W, h: H }, scene: spec });
+      Object.assign(box.style, { width: `${m.w}px`, height: `${m.h}px`, left: `${m.left}px`, top: `${m.top}px` });
+      // the picture's top rows stretched up (the edge carried on), softened: no mirrored ghosts of the wall's pictures
+      if (m.top > 0) Object.assign(cap.style, { display: "block", left: `${m.left}px`, width: `${m.w}px`, top: "0px", height: `${m.top + 2}px`, backgroundSize: `100% ${m.h * 40}px`, backgroundPosition: "0 0" });
+      else cap.style.display = "none";
+      stage.style.setProperty("--scene-w", `${m.w}px`);
+      stage.style.setProperty("--scene-h", `${m.h}px`);
+      box.dispatchEvent(new CustomEvent("scenefit"));
+    };
+    fit();
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(stage);
+    else window.addEventListener("resize", fit);
+    return fit;
+  };
   Kit.Voice.quiet = Q.get("quiet") === "1";
   Kit.fast = Q.get("fast") === "1";
   const $ = (id) => document.getElementById(id);
@@ -108,6 +143,7 @@
   await Promise.all(Clinic.Heal.IDS.map((id) => load(`js/clinic/heal/games/${id}.js`)));
   await Run.load();
   const screen = Clinic.Screen.build($("clinic-root"), { level: 1 });
+  if (window.Frame) Frame.mount({ app: screen.app, side: screen.side, play: screen.main });
   C.screen = screen;
   Run.opts.speak = Q.get("speak") !== "0";
   Run.opts.onboard = Q.get("onboard") !== "0";

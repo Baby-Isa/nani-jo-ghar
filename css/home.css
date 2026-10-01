@@ -37,7 +37,7 @@ button { font: inherit; color: inherit; }
   color: #fff; font: 800 18px/1 "Baloo 2", system-ui, sans-serif;
   box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .15);
 }
-#who .nm { font-weight: 800; max-width: 30vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#who .nm { font-weight: 800; max-width: 30vw; overflow-wrap: anywhere; } /* F7: wraps, never "..." (R3a) */
 #grownups {
   position: relative; width: 44px; height: 44px; border: none; border-radius: 50%;
   background: transparent; cursor: pointer; opacity: .55; touch-action: none;
@@ -104,7 +104,7 @@ button { font: inherit; color: inherit; }
   font: 800 clamp(15px, 2.1vw, 22px)/1.1 "Baloo 2", system-ui, sans-serif;
   background: var(--cream); border-radius: 10px; padding: 4px 12px 2px;
   box-shadow: 0 2px 6px rgba(60, 35, 20, .15);
-  text-align: center; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+  text-align: center; max-width: 100%; overflow-wrap: normal; /* F7: wraps, never "..." (R3a) */
   margin-top: 6px;
 }
 .doors.soon { flex-wrap: wrap; padding-bottom: 12px; }
@@ -150,7 +150,7 @@ button { font: inherit; color: inherit; }
 .tile.on { border-color: var(--accent); }
 .tile .dot { width: 64px; height: 64px; font-size: 30px; }
 .tile .dot.plus { background: #cdbba2; }
-.tile .nm { font-weight: 800; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tile .nm { font-weight: 800; max-width: 100%; overflow-wrap: anywhere; } /* F7: wraps, never "..." (R3a) */
 .add { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
 .add[hidden] { display: none; }
 .add input, .prow input {

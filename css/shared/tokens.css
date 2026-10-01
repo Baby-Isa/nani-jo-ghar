@@ -1,0 +1,94 @@
+/* =====================================================================================
+   The design tokens (rule F2; docs/design-language/ui-design-system.md 2): the ONE place for colours,
+   the Nunito sizes, the 8-pt spacing, the radii, the one shadow and every component size. Every other
+   stylesheet uses these variables and nothing else.
+
+   Sizes are built to scale (decisions 24, 25): js/shared/frame.js reads data/layout.json, works out the
+   form factor (phone, tablet, laptop) and one scale from the screen, and writes every --njg-* size on
+   <html> (text never under 14 px, taps never under 48 px). The numbers below are only the first paint's
+   fallback (laptop, then phone, then a tablet estimate), the same numbers layout.json gives;
+   build/test_shared_frame.mjs fails if they drift. To tune a size, change data/layout.json.
+   ===================================================================================== */
+:root {
+  /* ---------- colours (CDS 2) ---------- */
+  --njg-page: #f4ecdf;        /* parchment */
+  --njg-panel: #efe5d6;       /* the sidebar */
+  --njg-card: #ffffff;
+  --njg-ink: #2a2522;         /* body text: charcoal, never rust */
+  --njg-ink-soft: #7a6857;    /* muted text (a placeholder to record, a sub-line) */
+  --njg-word: #8c2f2f;        /* the Kutchi keyword */
+  --njg-gold: #c9962e;        /* flat gold: done outlines, icons */
+  --njg-grey: #d9d2c7;
+  --njg-edge: #e4dccf;        /* a card's or row's 1 px edge */
+  --njg-tint: #f4ecdf;        /* alternate rows */
+  --njg-tint-edge: #e6dac6;
+  --njg-next: #efebe4;        /* the next step's light grey fill */
+  --njg-sage: #7f9b7c;        /* Nani's guide box (everything else in it is mixed from this) */
+  --njg-wrong: #c0443c;       /* the end review only */
+  --njg-cream: #fffaf0;       /* the round buttons' face */
+  --njg-cream-edge: #e6d5b8;
+  --njg-cream-lip: #e0cba6;
+  --njg-flag: #9a7433;        /* the grown-ups' "to record" flag */
+  --njg-flag-bg: #f6ebd2;
+  --njg-flag-edge: #ead7ae;
+  --njg-house: #f3e7d3;       /* the app's first-paint colour */
+
+  /* ---------- the one shadow, and the type face ---------- */
+  --njg-shadow: 0 2px 8px rgba(40, 25, 10, 0.1);
+  --njg-shadow-lift: 0 2px 4px rgba(70, 45, 20, 0.08), 0 18px 48px rgba(70, 45, 20, 0.22);
+  /* the round cream buttons (Done, home): a little lip under them, pressed flat */
+  --njg-lip: 0 4px 0 var(--njg-cream-lip), 0 8px 18px rgba(70, 45, 20, 0.22);
+  --njg-lip-down: 0 1px 0 var(--njg-cream-lip), 0 4px 10px rgba(70, 45, 20, 0.2);
+  --njg-glow-gold: 0 0 0 8px rgba(217, 164, 65, 0.35);
+  --njg-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --njg-round: 999px;         /* the full circle / pill radius (CDS 2: 12 or full) */
+
+  /* ---------- sizes: laptop, scale 1 (fallback; frame.js writes the real ones) ---------- */
+  --njg-scale: 1;
+  --njg-item-scale: 1;
+  /* one scaled pixel: for art-bound sizes that have no token of their own (a conversation bubble's tail) */
+  --njg-u: calc(1px * var(--njg-scale));
+  --njg-t1: 22px; --njg-t2: 20px; --njg-t3: 17px; --njg-t4: 14px;
+  --njg-side-h: 19px; --njg-side-p: 17px; --njg-side-s: 15px; --njg-flag-t: 14px;
+  --njg-big-h: 30px; --njg-big-p: 22px; --njg-big-s: 20px;
+  --njg-s1: 4px; --njg-s2: 8px; --njg-s3: 12px; --njg-s4: 16px; --njg-s5: 24px; --njg-s6: 32px; --njg-s7: 40px;
+  --njg-radius: 12px; --njg-line: 1px; --njg-line-2: 2px;
+  --njg-tap: 48px; --njg-tool: 48px; --njg-rail: 48px; --njg-icon: 24px;
+  --njg-face: 44px; --njg-face-hit: 48px; --njg-guide-face: 56px; --njg-big-face: 72px;
+  --njg-row-h: 36px; --njg-part-h: 32px; --njg-big-row-h: 48px; --njg-big-part-h: 44px;
+  --njg-side-pad: 8px; --njg-side-gap: 8px; --njg-card-pad: 8px; --njg-card-gap: 8px; --njg-indent: 20px;
+  --njg-done: 88px; --njg-tick: 20px; --njg-hand-w: 64px; --njg-hand-h: 80px;
+  --njg-badge: 200px; --njg-end-btn: 72px; --njg-end-pad: 24px; --njg-end-word: 28px; --njg-end-cap: 22px; --njg-end-foot: 30px; --njg-end-btn-t: 20px;
+  --njg-side-w: max(clamp(200px, 19vw, 360px), min(360px, 100vw - 100dvh * 1.7778));
+}
+/* phones (short side under 500 px) */
+@media (max-height: 499.98px), (max-width: 499.98px) {
+  :root {
+    --njg-side-h: 16px; --njg-side-p: 14px; --njg-side-s: 14px;
+    --njg-big-h: 20px; --njg-big-p: 16px; --njg-big-s: 14px;
+    --njg-face: 36px; --njg-guide-face: 40px; --njg-big-face: 44px;
+    --njg-row-h: 28px; --njg-part-h: 26px; --njg-big-row-h: 32px; --njg-big-part-h: 30px;
+    --njg-side-pad: 4px; --njg-side-gap: 4px; --njg-card-pad: 4px; --njg-card-gap: 4px; --njg-indent: 12px;
+    --njg-done: 64px; --njg-tick: 16px;
+    --njg-badge: 104px; --njg-end-btn: 60px; --njg-end-pad: 12px; --njg-end-word: 21px; --njg-end-cap: 15px; --njg-end-foot: 20px; --njg-end-btn-t: 17px;
+    --njg-side-w: max(clamp(200px, 19vw, 260px), min(260px, 100vw - 100dvh * 1.7778));
+  }
+}
+/* tablets (short side 600 px or more, no wider than 3:2): an estimate at the smallest tablet scale until frame.js runs */
+@media (min-height: 600px) and (min-width: 600px) and (max-aspect-ratio: 3/2) {
+  :root {
+    --njg-scale: 1.15; --njg-item-scale: 1.25;
+    --njg-t1: 25.3px; --njg-t2: 23px; --njg-t3: 19.55px; --njg-t4: 16.1px;
+    --njg-side-h: 21.85px; --njg-side-p: 19.55px; --njg-side-s: 17.25px; --njg-flag-t: 16.1px;
+    --njg-big-h: 34.5px; --njg-big-p: 25.3px; --njg-big-s: 23px;
+    --njg-s1: 4.6px; --njg-s2: 9.2px; --njg-s3: 13.8px; --njg-s4: 18.4px; --njg-s5: 27.6px; --njg-s6: 36.8px; --njg-s7: 46px;
+    --njg-radius: 13.8px;
+    --njg-tap: 55.2px; --njg-tool: 55.2px; --njg-rail: 55.2px; --njg-icon: 27.6px;
+    --njg-face: 50.6px; --njg-face-hit: 55.2px; --njg-guide-face: 64.4px; --njg-big-face: 82.8px;
+    --njg-row-h: 41.4px; --njg-part-h: 36.8px; --njg-big-row-h: 55.2px; --njg-big-part-h: 50.6px;
+    --njg-side-pad: 9.2px; --njg-side-gap: 9.2px; --njg-card-pad: 9.2px; --njg-card-gap: 9.2px; --njg-indent: 23px;
+    --njg-done: 101.2px; --njg-tick: 23px;
+    --njg-badge: 230px; --njg-end-btn: 82.8px; --njg-end-pad: 27.6px; --njg-end-word: 32.2px; --njg-end-cap: 25.3px; --njg-end-foot: 34.5px; --njg-end-btn-t: 23px;
+    --njg-side-w: clamp(253px, 25vw, 345px);
+  }
+}

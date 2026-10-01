@@ -33,16 +33,13 @@
   --sb-tint-a-edge: #e8dac3;
   --sb-tint-b: #eaf0ee;
   --sb-tint-b-edge: #d3dfda;
-  /* the type scale (laptop): headline, pill, sub-line, tag */
-  --sb-h: 19px;
-  --sb-p: 17px;
-  --sb-s: 15px;
-  --sb-pill-h: 34px;
-  --sb-face: 44px;
-  --fit-min: 12px;
-}
-@media (max-height: 430px) {
-  :root { --sb-h: 15px; --sb-p: 13.5px; --sb-s: 12.5px; --sb-pill-h: 24px; --sb-face: 30px; --fit-min: 11px; }
+  /* the type scale: the shared tokens (css/shared/tokens.css, sized per screen from data/layout.json; R3a) */
+  --sb-h: var(--njg-side-h);
+  --sb-p: var(--njg-side-p);
+  --sb-s: var(--njg-side-s);
+  --sb-pill-h: var(--njg-row-h);
+  --sb-face: var(--njg-face);
+  --fit-min: var(--njg-t4);
 }
 
 /* ---------- the panel: a deeper tone than the cards, straight edges, a crisp line against the play area ---------- */
@@ -56,7 +53,7 @@ body.w6 :is(#side, .sb2) {
 @media (max-height: 430px) { body.w6 :is(#side, .sb2) { padding: 6px; gap: 6px; } }
 
 /* ---------- one line, shrunk to fit ---------- */
-:is(#side, .sb2) .fit:not(.fit2), #intro .fit:not(.fit2), .njg-guide .fit:not(.fit2) { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+:is(#side, .sb2) .fit:not(.fit2), #intro .fit:not(.fit2), .njg-guide .fit:not(.fit2) { display: block; white-space: nowrap; overflow: visible; min-width: 0; }
 
 /* ---------- the face = replay: a small speaker badge on its corner ---------- */
 .face-say { position: relative; flex: none; border: none; padding: 0; margin: 0; background: none; border-radius: 50%; cursor: pointer; display: block; -webkit-tap-highlight-color: transparent; }
@@ -84,7 +81,7 @@ body.w6 :is(#mission, .m-card) {
 @media (max-height: 430px) { body.w6 :is(#mission, .m-card) { padding: 6px; gap: 6px; border-radius: 12px; } }
 body.w6 :is(#mission, .m-card) .m-head { display: flex; align-items: center; gap: 10px; padding: 0; min-width: 0; }
 body.w6 :is(#mission, .m-card) .m-who { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
-body.w6 :is(#mission, .m-card) .m-ring { width: var(--sb-face); height: var(--sb-face); }
+body.w6 :is(#mission, .m-card) .m-ring { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
 body.w6 :is(#mission, .m-card) .m-ring .m-face { box-shadow: 0 0 0 1px var(--sb-line); }
 body.w6 :is(#mission, .m-card) .m-ring.on .m-face { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
 body.w6 :is(#mission, .m-card) .m-dish { font-size: var(--sb-h); line-height: 1.2; min-width: 0; }
@@ -97,11 +94,11 @@ body.w6 :is(#mission, .m-card) .m-order:empty { display: none; }
 .md-text { font-family: var(--sb-font); font-weight: 800; color: var(--sb-ink); line-height: 1.25; }
 .md-text .word { color: var(--sb-word); }
 body.w6 .md-text.rec { display: flex; flex-direction: column; align-items: flex-start; white-space: normal; overflow: visible; font-family: var(--ui-font); font-style: italic; font-weight: 700; font-size: 0.86em; color: var(--sb-soft); }
-body.w6 .md-text.rec .md-line { display: block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.w6 .md-text.rec .md-line { display: block; max-width: 100%; white-space: normal; overflow: visible; }
 body.w6 .md-text.rec .md-rec {
   display: inline-block; margin: 2px 0 0; white-space: nowrap; padding: 1px 5px; border-radius: 4px;
-  font-style: normal; font-size: 9px; line-height: 1.35; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
-  color: #9a7433; background: #f6ebd2; border: 1px solid #ead7ae;
+  font-style: normal; font-size: var(--njg-flag-t); line-height: 1.35; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--njg-flag); background: var(--njg-flag-bg); border: var(--njg-line) solid var(--njg-flag-edge);
 }
 /* several of one thing: the summary under the headline ("hakri lakri mixed", "ba lakri gos"), one line each */
 .m-sum { display: flex; flex-direction: column; gap: 1px; margin-top: 1px; min-width: 0; }
@@ -132,7 +129,7 @@ body.w6 :is(#side, .sb2, #intro) .r6 {
 }
 body.w6 :is(#side, .sb2, #intro) .r6 .lt {
   flex: 1 1 auto; min-width: 0; font-family: var(--sb-font); font-weight: 800; font-size: var(--sb-p);
-  line-height: 1.2; color: var(--sb-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  line-height: 1.2; color: var(--sb-ink); white-space: nowrap; overflow: visible;
 }
 body.w6 :is(#side, .sb2, #intro) .r6 .lt .word { color: var(--sb-word); }
 body.w6 :is(#side, .sb2, #intro) .r6 .lt .dots { letter-spacing: 2px; color: var(--sb-soft); }
@@ -186,7 +183,7 @@ body.w6 :is(#side, .sb2, #intro) .icard.person {
 body.w6 :is(#side, .sb2, #intro) .icard.person.done { background: var(--sb-card); border-color: var(--sb-line); }
 body.w6 :is(#side, .sb2, #intro) .icard.person.speaking { border-color: var(--sb-next-edge); box-shadow: 0 0 0 1px var(--sb-next-edge), var(--sb-shadow); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head { display: flex; align-items: center; gap: 10px; min-width: 0; margin: 0; }
-body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head .face-say { width: var(--sb-face); height: var(--sb-face); }
+body.w6 :is(#side, .sb2, #intro) .icard.person .pc-head .face-say { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .lface { width: 100%; height: 100%; box-shadow: 0 0 0 1px var(--sb-line); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title { flex: 1 1 auto; min-width: 0; font-size: var(--sb-h); line-height: 1.2; color: var(--sb-ink); }
 body.w6 :is(#side, .sb2, #intro) .icard.person .ic-title .word { color: var(--sb-word); }
@@ -245,7 +242,7 @@ body.w6 #intro .ic-card {
   padding: clamp(14px, 2vh, 22px); width: min(480px, 92%); max-width: 480px;
 }
 body.w6 #intro .ic-head { display: flex; align-items: center; gap: clamp(10px, 1.4vw, 16px); margin: 0 0 clamp(10px, 1.8vh, 16px); min-width: 0; }
-body.w6 #intro .ic-head .face-say { width: var(--sb-face); height: var(--sb-face); }
+body.w6 #intro .ic-head .face-say { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
 body.w6 #intro .ic-face { width: 100%; height: 100%; border: none; box-shadow: 0 0 0 1px var(--sb-line); }
 body.w6 #intro .ic-head-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
 body.w6 #intro .ic-dish { flex: 1 1 auto; min-width: 0; font-size: var(--sb-h); line-height: 1.2; }
@@ -279,26 +276,26 @@ body.w6 :is(#side, .sb2, #intro) .face-say.card-say { position: relative; top: a
 
 /* ---------- speech cards in the sidebar (a customer at the tray, Nani's "pass me"): the same card; the face hears it again ---------- */
 body.w6 #nani-card { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: var(--sb-shadow); padding: 10px; gap: 10px; }
-body.w6 #nani-card .nc-say { width: var(--sb-face); height: var(--sb-face); }
+body.w6 #nani-card .nc-say { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
 body.w6 #nani-card .nc-face { width: 100%; height: 100%; border: none; }
 body.w6 #nani-card.talk .nc-say img { animation: badgeTalk .45s ease-in-out infinite alternate; }
 body.w6 #nani-card .say-slot .wp-say, body.w6 #passme .pm-say .wp-say { display: none; }
 body.w6 #nani-card .wp .wp-text { font-size: var(--sb-p); line-height: 1.25; }
 body.w6 #passme { background: var(--sb-card); border: 1px solid var(--sb-line); border-radius: 14px; box-shadow: 0 -4px 24px rgba(40, 25, 10, 0.22), 0 0 0 2px var(--sb-next-edge); }
-body.w6 #passme .pm-face { width: var(--sb-face); height: var(--sb-face); }
+body.w6 #passme .pm-face { width: max(var(--sb-face), var(--njg-face-hit)); height: max(var(--sb-face), var(--njg-face-hit)); }
 body.w6 #passme .pm-nani .pm-face img { width: 100%; height: 100%; border: none; animation: badgeTalk .45s ease-in-out 4 alternate; }
 body.w6 #passme .pm-item { background: #fff; border: 1px solid var(--sb-line); border-radius: 12px; box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
-body.w6 #passme .pm-item .wp-say { width: 26px; height: 26px; padding: 5px; background: #f3ece1; border: 1px solid var(--sb-line); }
+body.w6 #passme .pm-item .wp-say { width: var(--njg-tap); height: var(--njg-tap); padding: var(--njg-s3); background: #f3ece1; border: 1px solid var(--sb-line); }
 body.w6 #passme .pm-item.right { background: #fff; border-color: var(--sb-gold-edge); box-shadow: 0 0 0 1px var(--sb-gold-edge); }
 body.w6 #passme .pm-item.glow { border: 1.5px solid var(--sb-next-edge); }
 
 /* short landscape phones: every gap tighter, so a full order and the rail fit the 390px-high sidebar */
 @media (max-height: 430px) {
   body.w6 :is(#side, .sb2) .r6 { padding: 0 6px 0 9px; border-radius: 8px; }
-  body.w6 :is(#side, .sb2) .rail-btn { width: 38px; height: 38px; font-size: 18px; border-radius: 10px; }
+  body.w6 :is(#side, .sb2) .rail-btn { width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); }
   body.w6 #btn-help { font-size: 22px; }
   body.w6 #nani-card { padding: 6px; gap: 6px; border-radius: 12px; }
-  body.w6 .md-text.rec .md-rec { font-size: 8px; padding: 0 4px; }
+
 }
 
 /* ---------- design system 12: the order model (js/shared/order-card.js) draws every card, in the sidebar and the pop-up ---------- */

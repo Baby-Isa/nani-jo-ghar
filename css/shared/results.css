@@ -16,7 +16,7 @@
   --rs-tile: #faf6ef;
   --rs-tile-line: #e7ded0;
   --rs-say-bg: #f4ecdf;
-  --rs-pad: clamp(16px, 3.2vh, 24px);
+  --rs-pad: var(--njg-end-pad);
   --rs-cream: #fdf6e8;
   --rs-paper: #fffaf0;
   --rs-line: #e6d2b0;
@@ -29,20 +29,20 @@
   --rs-leaf: #6f8f4a;
   --rs-madder: #a63b3b;
   --rs-indigo: #2f3e6b;
-  --rs-disc: clamp(72px, min(28vh, 16vw), 200px);
-  --rs-btn: clamp(60px, min(11vh, 8vw), 72px);
+  --rs-disc: var(--njg-badge);
+  --rs-btn: var(--njg-end-btn);
   position: fixed;
   inset: 0;
   z-index: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: max(10px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+  padding: max(var(--njg-s2), env(safe-area-inset-top)) max(var(--njg-s3), env(safe-area-inset-right)) max(var(--njg-s2), env(safe-area-inset-bottom)) max(var(--njg-s3), env(safe-area-inset-left));
   box-sizing: border-box;
   /* Design system 10: a pop-up card over the (dimmed) game, not a page of its own */
   background: rgba(42, 37, 34, 0.42);
   color: var(--rs-ink);
-  font: 600 16px/1.2 Nunito, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 600 var(--njg-t4)/1.2 var(--njg-font);
   animation: rs-fade 0.25s ease-out both;
   -webkit-user-select: none;
   user-select: none;
@@ -61,12 +61,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--rs-pad);
-  width: min(100%, 1000px);
+  width: min(100%, calc(var(--njg-badge) * 5));
   max-height: 100%;
   padding: var(--rs-pad);
-  border-radius: 12px;
+  border-radius: var(--njg-radius);
   background: var(--rs-card);
-  box-shadow: 0 2px 8px rgba(40, 25, 10, 0.1), 0 18px 48px rgba(40, 25, 10, 0.22);
+  box-shadow: var(--njg-shadow-lift);
   animation: rs-rise 0.3s cubic-bezier(0.2, 0.9, 0.3, 1) both;
 }
 .rs-steps { display: grid; grid-template-rows: minmax(0, 1fr); flex: 1 1 auto; min-height: 0; }
@@ -78,32 +78,32 @@
 .rs-card { overflow: hidden; }
 .rs-page.enter, .rs-actions.enter { animation: rs-slide 0.3s ease-out both; }
 /* ---------- page 1: the three badges ---------- */
-.rs-badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(8px, 2.4vw, 28px); align-items: stretch; }
-.rs-badges.n2 { grid-template-columns: repeat(2, minmax(0, 340px)); justify-content: center; }
+.rs-badges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--njg-s5); align-items: stretch; }
+.rs-badges.n2 { grid-template-columns: repeat(2, minmax(0, calc(var(--njg-badge) * 1.7))); justify-content: center; }
 /* inside the card, each badge is a flat light tile (no card-in-card shadow); gold outline = the best of it */
 .rs-badge {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(6px, 1.4vh, 12px);
-  padding: clamp(10px, 2.2vh, 20px) 10px;
-  border-radius: 12px;
+  gap: var(--njg-s2);
+  padding: var(--njg-s4) var(--njg-s2);
+  border-radius: var(--njg-radius);
   background: var(--rs-tile);
-  border: 1px solid var(--rs-tile-line);
+  border: var(--njg-line) solid var(--rs-tile-line);
   box-shadow: none;
   transition: border-color 0.4s, box-shadow 0.4s, transform 0.3s;
   min-width: 0;
 }
-.rs-badge.pre { opacity: 0; transform: scale(0.85) translateY(10px); }
+.rs-badge.pre { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
 .rs-badge.in { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1), border-color 0.4s, box-shadow 0.4s; }
 /* UX 9a: no circle behind the badge -- the object sits straight in the
    square card (.rs-badge is the card; .rs-disc just sizes and stacks it). */
 .rs-disc { position: relative; width: var(--rs-disc); height: var(--rs-disc); display: block; }
-.rs-foot { min-height: clamp(26px, 6vh, 44px); display: flex; align-items: center; justify-content: center; width: 100%; }
+.rs-foot { min-height: calc(var(--njg-end-cap) * 1.8); display: flex; align-items: center; justify-content: center; width: 100%; }
 
 /* tiers: the badge card's frame (gold border always means "the best of it") */
-.rs-badge.tier-gold { border-color: #c9962e; box-shadow: 0 0 0 1px #c9962e; }
+.rs-badge.tier-gold { border-color: var(--njg-gold); box-shadow: 0 0 0 var(--njg-line) var(--njg-gold); }
 .rs-badge.tier-plain { opacity: 0.94; }
 
 /* ---------- time: the stopwatch art, the time drawn over its empty face ---------- */
@@ -126,20 +126,20 @@
 .rs-big.long { font-size: calc(var(--rs-disc) * 0.16); }
 
 /* time: the best line (crown icon) and the ribbon */
-.rs-best { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; background: #f6ead6; font-size: clamp(15px, 3.2vh, 22px); }
+.rs-best { display: inline-flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s1) var(--njg-s3); border-radius: var(--njg-round); background: #f6ead6; font-size: var(--njg-end-cap); }
 .rs-ribbon {
   position: absolute;
-  top: -12px;
+  top: calc(var(--njg-s3) * -1);
   left: 50%;
   transform: translateX(-50%) rotate(-3deg);
-  padding: 6px 16px;
-  border-radius: 12px;
+  padding: var(--njg-s1) var(--njg-s4);
+  border-radius: var(--njg-radius);
   background: var(--rs-madder);
   color: #fff;
-  font-size: clamp(15px, 3.4vh, 22px);
+  font-size: var(--njg-end-cap);
   font-weight: 800;
   white-space: nowrap;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--njg-shadow);
   opacity: 0;
 }
 .rs-badge.celebrate .rs-ribbon { animation: rs-ribbon 0.5s cubic-bezier(0.3, 1.6, 0.6, 1) both; }
@@ -160,8 +160,8 @@
 .rs-tick-gold { opacity: 0; transition: opacity 0.5s; }
 .rs-acc.tier-gold .rs-tick-base, .rs-acc.tier-gold .rs-tick-right { visibility: hidden; }
 .rs-acc.tier-gold .rs-tick-gold { opacity: 1; }
-.rs-acc .rs-foot { font-size: clamp(20px, 4.2vh, 30px); font-weight: 800; font-variant-numeric: tabular-nums; }
-.rs-acc .rs-foot .rs-of { opacity: 0.6; font-weight: 600; margin-left: 2px; }
+.rs-acc .rs-foot { font-size: var(--njg-end-foot); font-weight: 800; font-variant-numeric: tabular-nums; }
+.rs-acc .rs-foot .rs-of { opacity: 0.6; font-weight: 600; margin-left: var(--njg-line-2); }
 
 /* ---------- hints: the bulb art for the hint count (0, 1, 2, 3+), cross-faded ---------- */
 .rs-lamp { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transform: scale(1.25); opacity: 0; transition: opacity 0.4s; }
@@ -170,7 +170,7 @@
 .rs-badge[data-hn="2"] .rs-lamp-2,
 .rs-badge[data-hn="3"] .rs-lamp-3 { opacity: 1; }
 .rs-badge[data-hn="0"] .rs-lamp-0 { animation: rs-flicker 1.3s ease-in-out infinite; }
-.rs-hint-count { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; background: #f6ead6; font-size: clamp(15px, 3.2vh, 22px); }
+.rs-hint-count { display: inline-flex; align-items: center; gap: var(--njg-s2); padding: var(--njg-s1) var(--njg-s3); border-radius: var(--njg-round); background: #f6ead6; font-size: var(--njg-end-cap); }
 .rs-cap-icon { width: 1.1em; height: 1.1em; object-fit: contain; vertical-align: -0.15em; }
 
 /* sparkles around a gold disc ("party lines") */
@@ -188,21 +188,21 @@
 .rs-badge.celebrate .rs-disc { animation: rs-pop 0.45s cubic-bezier(0.3, 1.6, 0.6, 1), rs-buzz 0.16s linear 0.45s 6; }
 
 /* ---------- the buttons at the card's foot: flat (design system 2), big, on the right (under the thumb) ---------- */
-.rs-actions { display: flex; justify-content: flex-end; align-items: center; gap: 12px; flex: none; }
+.rs-actions { display: flex; justify-content: flex-end; align-items: center; gap: var(--njg-s3); flex: none; }
 .rs-btn {
   width: calc(var(--rs-btn) * 1.7);
   height: var(--rs-btn);
-  border: 1px solid transparent;
-  border-radius: 12px;
+  border: var(--njg-line) solid transparent;
+  border-radius: var(--njg-radius);
   background: var(--rs-card);
   color: var(--rs-ink);
-  padding: 0 20px;
+  padding: 0 var(--njg-s5);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  font: 800 clamp(17px, 2.6vh, 20px)/1 Nunito, system-ui, sans-serif;
+  gap: var(--njg-s2);
+  font: 800 var(--njg-end-btn-t)/1 var(--njg-font);
   box-shadow: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -210,10 +210,10 @@
 }
 .rs-btn svg { width: calc(var(--rs-btn) * 0.5); height: calc(var(--rs-btn) * 0.5); stroke-width: 2.6; flex: none; }
 .rs-btn.labelled { width: auto; min-width: calc(var(--rs-btn) * 1.7); }
-.rs-btn.labelled svg { width: 26px; height: 26px; }
+.rs-btn.labelled svg { width: calc(var(--njg-icon) * 1.1); height: calc(var(--njg-icon) * 1.1); }
 .rs-btn span { white-space: nowrap; }
 .rs-btn:active { transform: scale(0.97); }
-.rs-btn:focus-visible { outline: 3px solid #c9962e; outline-offset: 3px; }
+.rs-btn:focus-visible { outline: calc(var(--njg-line-2) * 1.5) solid var(--njg-gold); outline-offset: var(--njg-line-2); }
 /* the main action: charcoal; the others: white with a grey outline */
 .rs-btn.primary { background: var(--rs-ink); color: #fff; }
 .rs-btn:not(.primary):not(.rs-done) { border-color: #d9d2c7; }
@@ -224,7 +224,7 @@
 .rs-done {
   width: var(--rs-btn); border-radius: 50%; padding: 0;
   background: #fffaf0 no-repeat center 54% / 66% url("../../assets/ui/results/tick-gold.webp");
-  border: 1px solid #e6d5b8;
+  border: var(--njg-line) solid var(--njg-cream-edge);
 }
 .rs-done svg { display: none; }
 
@@ -243,20 +243,20 @@
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  padding: 4px;
+  padding: var(--njg-s1);
 }
 .rs-words-col {
   flex: var(--rs-cols, 1) 1 0;
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, 220px));
+  grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, calc(var(--njg-badge) * 1.1)));
   align-content: start;
-  gap: clamp(10px, 1.4vw, 16px);
-  padding: 0 clamp(14px, 2.4vw, 30px);
+  gap: var(--njg-s3);
+  padding: 0 var(--njg-s5);
 }
 .rs-words-col:empty { display: none; }
 /* the thin divider between wrong (left) and right (right) */
-.rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: 1px solid #d8c4a2; }
+.rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: var(--njg-line) solid #d8c4a2; }
 /* the two groups sit towards the middle */
 .rs-words-bad { justify-content: end; }
 .rs-words-ok { justify-content: start; }
@@ -267,73 +267,70 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: var(--njg-s1);
   text-align: center;
-  min-height: 66px;
+  min-height: calc(var(--njg-tap) + var(--njg-s4));
   min-width: 0;
-  padding: 8px 12px 9px;
-  border-radius: 12px;
-  border: 1px solid var(--rs-edge);
+  padding: var(--njg-s2) var(--njg-s3);
+  border-radius: var(--njg-radius);
+  border: var(--njg-line) solid var(--rs-edge);
   background: #fff;
   color: var(--rs-ink);
   font: inherit;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(70, 45, 20, 0.08), 0 4px 12px rgba(70, 45, 20, 0.08);
+  box-shadow: var(--njg-shadow);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 /* Sidebar v3 (28 Sept, late; docs/feedback/cook-ui-feedback-2026-09-28.md 10): flat material cards, no gradients,
    no bevels, no 3D text: a white card with a flat 2px outline, gold for right, red for wrong */
-.rs-word.ok { --rs-edge: #c9962e; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
-.rs-word.bad { --rs-edge: #c0443c; background: #fff; color: var(--rs-ink); border: 2px solid var(--rs-edge); box-shadow: 0 1px 2px rgba(70, 45, 20, 0.06); }
+.rs-word.ok { --rs-edge: var(--njg-gold); background: var(--njg-card); color: var(--rs-ink); border: var(--njg-line-2) solid var(--rs-edge); box-shadow: var(--njg-shadow); }
+.rs-word.bad { --rs-edge: var(--njg-wrong); background: var(--njg-card); color: var(--rs-ink); border: var(--njg-line-2) solid var(--rs-edge); box-shadow: var(--njg-shadow); }
 .rs-word:active { transform: scale(0.97); }
-.rs-word:focus-visible { outline: 3px solid var(--rs-ink); outline-offset: 2px; }
-.rs-word.on { background: #fffaf0; box-shadow: 0 0 0 3px rgba(255, 217, 138, 0.9); }
+.rs-word:focus-visible { outline: calc(var(--njg-line-2) * 1.5) solid var(--rs-ink); outline-offset: var(--njg-line-2); }
+.rs-word.on { background: var(--njg-cream); box-shadow: 0 0 0 calc(var(--njg-line-2) * 1.5) rgba(255, 217, 138, 0.9); }
 .rs-word b { overflow-wrap: normal; word-break: keep-all; hyphens: none; white-space: nowrap; }
 /* the word big and centred; a small speaker beside its English underneath.
    Design system 10: the speaker is neutral (a charcoal icon on a light cream circle) for right and wrong
    words alike; the colour stays only in the card's outline (gold right, red wrong). */
-.rs-p2 .rs-word .rs-en { display: inline-flex; align-items: center; gap: 8px; }
-.rs-p2 .rs-word .rs-say { flex: none; width: 26px; height: 26px; padding: 5px; }
-.rs-say { grid-row: 1 / 3; width: 44px; height: 44px; padding: 9px; border-radius: 50%; background: var(--rs-say-bg); color: var(--rs-ink); }
+.rs-p2 .rs-word .rs-en { display: inline-flex; align-items: center; gap: var(--njg-s2); }
+.rs-p2 .rs-word .rs-say { flex: none; width: calc(var(--njg-icon) * 1.1); height: calc(var(--njg-icon) * 1.1); padding: var(--njg-s1); }
+.rs-say { grid-row: 1 / 3; width: var(--njg-tap); height: var(--njg-tap); padding: var(--njg-s2); border-radius: 50%; background: var(--rs-say-bg); color: var(--rs-ink); }
 .rs-word.ok .rs-say, .rs-word.bad .rs-say { background: var(--rs-say-bg); color: var(--rs-ink); }
 .rs-word.on .rs-say { animation: rs-pulse 0.8s ease-in-out infinite; }
-.rs-word b { font-family: Nunito, system-ui, sans-serif; font-size: clamp(21px, 4.4vh, 28px); font-weight: 800; line-height: 1.15; letter-spacing: -0.005em; }
-.rs-en { font-family: Nunito, system-ui, sans-serif; font-size: clamp(13px, 2.8vh, 16px); color: #7a6558; font-weight: 700; }
+.rs-word b { font-family: var(--njg-font); font-size: var(--njg-end-word); font-weight: 800; line-height: 1.15; letter-spacing: -0.005em; }
+.rs-en { font-family: var(--njg-font); font-size: var(--njg-t4); color: #7a6558; font-weight: 700; }
 .rs-word.ok .rs-en, .rs-word.bad .rs-en { color: #7a6558; }
 
 /* ---------- narrow portrait phones: badges stack as rows ---------- */
-@media (max-width: 560px) {
-  .njg-results { --rs-disc: clamp(70px, min(14vh, 26vw), 116px); --rs-btn: 60px; --rs-pad: 16px; padding-left: 16px; padding-right: 16px; }
+@media (orientation: portrait) {
+  .njg-results { --rs-disc: var(--njg-badge); --rs-pad: var(--njg-s4); padding-left: var(--njg-s4); padding-right: var(--njg-s4); }
   .rs-badges,
-  .rs-badges.n2 { grid-template-columns: 1fr; gap: 10px; }
-  .rs-badge { flex-direction: row; justify-content: flex-start; gap: 18px; padding: 10px 16px; }
+  .rs-badges.n2 { grid-template-columns: 1fr; gap: var(--njg-s2); }
+  .rs-badge { flex-direction: row; justify-content: flex-start; gap: var(--njg-s4); padding: var(--njg-s2) var(--njg-s4); }
   .rs-foot { justify-content: flex-start; flex: 1; }
-  .rs-ribbon { top: -10px; left: auto; right: 10px; transform: rotate(-3deg); }
+  .rs-ribbon { top: calc(var(--njg-s2) * -1); left: auto; right: var(--njg-s2); transform: rotate(-3deg); }
   .rs-actions .rs-btn:last-child { flex: 0 1 60%; }
-  .rs-actions .rs-btn.labelled { flex: 1 1 auto; min-width: 0; padding: 0 12px; gap: 8px; font-size: 17px; }
-  .rs-actions .rs-btn.labelled svg { width: 22px; height: 22px; }
+  .rs-actions .rs-btn.labelled { flex: 1 1 auto; min-width: 0; padding: 0 var(--njg-s3); gap: var(--njg-s2); }
+  .rs-actions .rs-btn.labelled svg { width: var(--njg-icon); height: var(--njg-icon); }
   .rs-actions .rs-btn.rs-done { flex: none; width: var(--rs-btn); }
-  .rs-words { flex-direction: column; align-items: stretch; gap: 14px; }
+  .rs-words { flex-direction: column; align-items: stretch; gap: var(--njg-s3); }
   .rs-words-col { padding: 0; }
-  .rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: none; border-top: 1px solid #d8c4a2; padding-top: 14px; }
+  .rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: none; border-top: var(--njg-line) solid #d8c4a2; padding-top: var(--njg-s3); }
   .rs-words-col { grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, 1fr)); }
   .rs-words-col.c3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 /* short landscape phones: tighter */
-@media (max-height: 430px) and (orientation: landscape) {
-  .rs-badge { padding: 8px; gap: 6px; border-radius: 20px; }
-  .njg-results { --rs-pad: 12px; }
-}
+html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 
 @keyframes rs-fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes rs-rise { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
-@keyframes rs-slide { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+@keyframes rs-rise { from { opacity: 0; transform: translateY(var(--njg-s4)) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes rs-slide { from { opacity: 0; transform: translateX(var(--njg-s5)); } to { opacity: 1; transform: none; } }
 @keyframes rs-pop { 0% { transform: scale(1); } 45% { transform: scale(1.14); } 100% { transform: scale(1); } }
-@keyframes rs-buzz { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(0.6px, -0.5px); } 50% { transform: translate(-0.5px, 0.5px); } 75% { transform: translate(0.4px, 0.4px); } }
+@keyframes rs-buzz { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(0.6%, -0.5%); } 50% { transform: translate(-0.5%, 0.5%); } 75% { transform: translate(0.4%, 0.4%); } }
 @keyframes rs-ribbon { from { opacity: 0; transform: translateX(-50%) scale(0.4) rotate(-12deg); } to { opacity: 1; transform: translateX(-50%) rotate(-3deg); } }
 @keyframes rs-twinkle { 0%, 100% { opacity: 0; transform: scale(0.4) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(30deg); } }
-@keyframes rs-nudge { 0%, 80%, 100% { transform: none; } 88% { transform: translateX(6px); } 94% { transform: translateX(-2px); } }
+@keyframes rs-nudge { 0%, 80%, 100% { transform: none; } 88% { transform: translateX(var(--njg-s1)); } 94% { transform: translateX(calc(var(--njg-line-2) * -1)); } }
 @keyframes rs-pulse { 50% { transform: scale(1.12); } }
 @keyframes rs-flicker { 0%, 100% { opacity: 1; } 45% { opacity: 0.88; } 55% { opacity: 1; } 80% { opacity: 0.94; } }
 
@@ -344,6 +341,6 @@
   .rs-badge.celebrate .rs-ribbon { opacity: 1; }
   .rs-badge.celebrate .rs-sparkles svg { opacity: 0.9; }
 }
-@media (max-width: 560px) and (prefers-reduced-motion: reduce) {
+@media (orientation: portrait) and (prefers-reduced-motion: reduce) {
   .rs-badge.celebrate .rs-ribbon { transform: rotate(-3deg); }
 }

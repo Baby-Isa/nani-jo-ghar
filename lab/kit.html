@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Shared kit: every state</title>
+<!--
+  The shared kit's state sheet (R3a; docs/architecture/target-model.md 4.2: "each component has a lab entry showing every
+  state"). Every component at this screen's size (open it at phone, laptop and tablet sizes): the guide box, the light
+  bulb, the order card in both row layouts (stacked | pills, decision 25), the buttons, the tally, the focus pulse.
+  ?part=results opens the end screen over it (page 1, the three badges); ?part=words its page 2.
+  Sizes come from data/layout.json through js/shared/frame.js, exactly as in a mode.
+-->
+<link rel="stylesheet" href="../css/shared/app.css">
+<link rel="stylesheet" href="../css/shared/tokens.css">
+<link rel="stylesheet" href="../css/shared/frame.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="../css/shared/guide.css">
+<link rel="stylesheet" href="../css/shared/order-card.css">
+<link rel="stylesheet" href="../css/shared/buttons.css">
+<link rel="stylesheet" href="../css/shared/tally.css">
+<link rel="stylesheet" href="../css/shared/focus.css">
+<link rel="stylesheet" href="../css/shared/results.css">
+<style>
+  /* the lab page itself (developer chrome, not the game) */
+  html, body { margin: 0; background: var(--njg-page); font-family: var(--njg-font); color: var(--njg-ink); }
+  body { padding: var(--njg-s3); }
+  h1 { font-size: var(--njg-t1); margin: 0 0 var(--njg-s2); }
+  .k-ff { font-size: var(--njg-t4); color: var(--njg-ink-soft); margin: 0 0 var(--njg-s3); }
+  .k-row { display: flex; flex-wrap: wrap; gap: var(--njg-s4); align-items: flex-start; margin-bottom: var(--njg-s5); }
+  .k-col { width: var(--njg-side-w); background: var(--njg-panel); padding: var(--njg-side-pad); display: flex; flex-direction: column; gap: var(--njg-side-gap); box-sizing: border-box; }
+  .k-col > b, .k-cap { font-size: var(--njg-t4); color: var(--njg-ink-soft); font-weight: 700; }
+  .k-play { position: relative; width: calc(var(--njg-side-w) * 1.6); height: calc(var(--njg-done) * 2.2); background: #e9dcc4; border-radius: var(--njg-radius); overflow: hidden; }
+  .k-thing { display: inline-grid; place-items: center; width: var(--njg-tap); height: var(--njg-tap); border-radius: var(--njg-radius); background: var(--njg-card); box-shadow: var(--njg-shadow); font-size: var(--njg-t1); margin: var(--njg-s3); }
+  .k-face { display: inline-block; }
+</style>
+</head>
+<body>
+<h1>Shared kit</h1>
+<p class="k-ff" id="ff"></p>
+
+<div class="k-row" id="guides"></div>
+<div class="k-row" id="cards-stack"></div>
+<div class="k-row" id="cards-pills"></div>
+<div class="k-row">
+  <div class="k-play" id="play-done"><span class="k-cap">Done, glowing</span></div>
+  <div class="k-play" id="play-next"><span class="k-cap">Next</span></div>
+  <div class="k-play" id="play-tally"><span class="k-cap">tally</span><div id="tally"></div></div>
+  <div class="k-play" id="play-focus"><span class="k-cap">focus: one pulses, the rest dim</span><br><span class="k-thing">a</span><span class="k-thing" id="focus-on">b</span><span class="k-thing">c</span></div>
+  <div class="k-col" id="pills"><b>answer pills</b></div>
+</div>
+
+<script src="../js/version.js"></script>
+<script src="../js/shared/frame.js"></script>
+<script src="../js/shared/uistore.js"></script>
+<script src="../js/shared/sfx.js"></script>
+<script src="../js/shared/fit.js"></script>
+<script src="../js/shared/guide.js"></script>
+<script src="../js/shared/bulb.js"></script>
+<script src="../js/shared/order-card.js"></script>
+<script src="../js/shared/buttons.js"></script>
+<script src="../js/shared/tally.js"></script>
+<script src="../js/shared/focus.js"></script>
+<script src="../js/shared/results.js"></script>
+<script>
+(async function () {
+  "use strict";
+  const Q = new URLSearchParams(location.search);
+  const A = (p) => "../" + p;
+  const face = (who) => A(`assets/cook/characters/${who}-badge.webp`);
+  const $ = (id) => document.getElementById(id);
+  const col = (box, title) => {
+    const c = document.createElement("div");
+    c.className = "k-col";
+    c.innerHTML = `<b>${title}</b>`;
+    box.appendChild(c);
+    return c;
+  };
+  const W = (k) => `<span class="word">${k}</span>`;
+  await Frame.ready;
+  const now = Frame.now || {};
+  $("ff").textContent = `${innerWidth}x${innerHeight}: ${now.ff} · scale ${now.scale} · sidebar ${now.sideW} px · card rows "${now.rows}" by default`;
+
+  // ---------- the guide box: a line, a long line, a line to record, muted, the bulb on ----------
+  const G = [
+    ["her line", (g) => g.set(`Pela ${W("paani")}.`)],
+    ["a long line (two lines, shrunk)", (g) => g.set(`Hane ${W("dudh")} ne ${W("khun")} ne ${W("elchi")} chai me naakh, beta.`)],
+    ["to record (grey italic, flagged)", (g) => g.set("Bring me these for the chai", { rec: true })],
+    ["muted", (g) => (NaniGuide.setMuted(true), g.set(`Pela ${W("paani")}.`))],
+    ["the bulb on", (g, el) => { g.set(`Pela ${W("paani")}.`); const b = Bulb.create(el.querySelector(".ng-bulb"), { ms: 600000 }); b.use(); }],
+  ];
+  for (const [title, fn] of G) {
+    const c = col($("guides"), `guide box: ${title}`);
+    const el = document.createElement("div");
+    c.appendChild(el);
+    const g = NaniGuide.mount(el, { face: face("nani"), bulb: A("assets/ui/results/icon-bulb.webp"), onBulb: () => {} });
+    fn(g, el);
+  }
+  NaniGuide.setMuted(false);
+  document.querySelectorAll(".njg-guide").forEach((el, i) => i !== 3 && el.classList.remove("muted"));
+
+  // ---------- the order card: the same orders, stacked and as pills ----------
+  const P = (label, o = {}) => Object.assign({ label, done: false }, o);
+  const ORDERS = [
+    ["one chai (parts under the headline)", { person: { id: "nana", face: face("nana") }, headline: { html: `Muke ${W("chai")} khape.` }, items: [{ label: "chai", parts: [P(W("dudh")), P(`${W("hakro")} ${W("khun")}`), P(W("elchi"))] }] }],
+    ["the pantry (items, one ticked)", { person: { id: "nani", face: face("nani") }, headline: { html: "bring me these for the daar", rec: true }, items: [{ label: `${W("ba")} ${W("tameta")}`, done: true }, { label: `${W("trae")} ${W("dungri")}` }, { label: W("lasan") }, { label: W("jeeru") }, { label: W("hardar") }] }],
+    ["skewers (rows with ordered parts, one next)", { person: { id: "ma", face: face("ma") }, headline: { html: `Muke ${W("sekelo")} khape.` }, items: [{ label: `${W("hakri")} ${W("lakri")} mixed`, ordered: true, parts: [P(W("gos"), { done: true }), P(W("boga")), P(W("gos")), P(W("boga"))] }, { label: `${W("ba")} ${W("lakri")} ${W("gos")}`, ordered: true, parts: [P(W("gos")), P(W("gos"))] }] }],
+    ["a 'no' row and a long word", { person: { id: "cousin", face: face("cousin") }, headline: { html: `Muke ${W("fudino ji chutney")} waari ${W("chaat")} khape.` }, items: [{ label: "chaat", parts: [P(W("bataato")), P(W("chana")), P(`${W("dungri")} na`, { no: true }), P(W("fudino ji chutney"))] }] }],
+    ["finished (folds to a gold line)", { person: { id: "isa", face: face("isa") }, headline: { html: `Muke ${W("chai")} khape.` }, items: [{ label: "chai", parts: [P(W("dudh"), { done: true }), P(W("khun"), { done: true })] }] }],
+  ];
+  const cards = (box, cls) => ORDERS.forEach(([title, data], i) => {
+    const c = col(box, `card (${cls === "oc-pills" ? "pills" : "stacked"}): ${title}`);
+    const card = OrderCard.card(data, { fold: i === 4 ? { doneAt: 1 } : {}, foldAfter: 0 });
+    card.classList.add(cls);
+    c.appendChild(card);
+    FitText.watch(card);
+  });
+  cards($("cards-stack"), "oc-stack");
+  cards($("cards-pills"), "oc-pills");
+  // the pop-up's big card, both layouts
+  for (const cls of ["oc-stack", "oc-pills"]) {
+    const c = col($(cls === "oc-pills" ? "cards-pills" : "cards-stack"), `pop-up card (${cls === "oc-pills" ? "pills" : "stacked"})`);
+    c.style.width = "calc(var(--njg-side-w) * 1.6)";
+    c.style.background = "var(--njg-card)";
+    const card = OrderCard.card(ORDERS[0][1], { big: true });
+    card.classList.add(cls);
+    c.appendChild(card);
+    FitText.watch(card);
+  }
+
+  // ---------- buttons, tally, focus, pills ----------
+  NjgButtons.done($("play-done"), () => {}, { glow: true });
+  NjgButtons.next($("play-next"), { html: `${W("chulo")} par` }, () => {});
+  const t = Tally.mount($("tally"));
+  t.set("tameto", 3, { icon: A("assets/ui/results/icon-bulb.webp") });
+  t.set("dungri", 2, { icon: A("assets/ui/results/icon-crown.webp") });
+  const pl = document.createElement("div");
+  pl.style.position = "relative";
+  $("pills").appendChild(pl);
+  NjgButtons.pills(pl, [{ id: "haa", html: "haa" }, { id: "na", html: "na" }], () => {});
+  Focus.only($("focus-on"), document.querySelectorAll("#play-focus .k-thing"));
+
+  // ---------- the end screen ----------
+  const part = Q.get("part");
+  if (part === "results" || part === "words") {
+    const words = [
+      { kutchi: "paani", english: "water", right: true }, { kutchi: "dudh", english: "milk", right: true }, { kutchi: "fudino ji chutney", english: "mint chutney", right: false },
+      { kutchi: "hakro khun", english: "one sugar", right: true }, { kutchi: "elchi", english: "cardamom", right: false }, { kutchi: "chai", english: "tea", right: true },
+    ];
+    const p = Results.show({ mode: "lab", game: "kit", level: 1, timeMs: 52000, right: 7, total: 10, hints: 1, words, sound: false, actions: NjgButtons.endActions({ again: true, list: true, next: true }), onAction: () => {} });
+    if (part === "words") {
+      await new Promise((r) => setTimeout(r, 2600));
+      const nx = document.querySelector(".njg-results .rs-next");
+      if (nx) nx.click();
+    }
+    await p;
+  }
+})();
+</script>
+</body>
+</html>

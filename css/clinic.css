@@ -10,7 +10,8 @@
   --cl-accent-2: #e2a33a;
   --cl-ph: #8d8a86;
   --cl-good: #3fa35b;
-  --cl-side-w: clamp(170px, 24vw, 330px);
+  /* R3a: the frame's sidebar width (js/shared/frame.js from data/layout.json `sidebar`; css/shared/tokens.css) */
+  --cl-side-w: var(--njg-side-w);
   --cl-act-w: clamp(96px, 11vw, 150px);
   --cl-r: 16px;
   --cl-font: "Nunito", system-ui, sans-serif;
@@ -36,7 +37,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-bulb { width: 48px; height: 48px; border-radius: 50%; border: 3px solid #e7cf8e; background: #fff6d8; color: #caa13a; display: grid; place-items: center; cursor: pointer; flex: none; }
 .cl-bulb svg { width: 28px; height: 28px; }
 .cl-bulb.lit { background: #ffe26a; color: #b8860b; box-shadow: 0 0 18px 6px rgba(255, 220, 90, .8); }
-.cl-hint-n { font: 800 18px var(--cl-head); color: var(--cl-soft); }
+.cl-hint-n { font: 800 var(--njg-t2) var(--cl-head); color: var(--cl-soft); }
 
 /* ---------- the instruction card ---------- */
 .cl-card { background: #fff; border-radius: var(--cl-r); box-shadow: 0 2px 0 #e7d8c0, 0 6px 14px rgba(80, 60, 30, .08); padding: 8px 10px 10px; flex: 0 1 auto; min-height: 0; overflow: auto; }
@@ -360,13 +361,12 @@ body.clinic button { font-family: inherit; color: inherit; }
 
 /* the ? (G7 / CQ15): bottom of the sidebar; its pop holds the goal and, during first-time help, the grown-ups' skip */
 .cl-dock { margin-top: auto; display: flex; gap: 12px; padding-top: 8px; }
-.cl-help-btn { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #e6d5b8; background: #fffaf0; font: 800 22px var(--cl-head); color: #2a2522; cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
+.cl-help-btn { width: var(--njg-rail); height: var(--njg-rail); border-radius: 50%; border: 2px solid #e6d5b8; background: #fffaf0; font: 800 22px var(--cl-head); color: #2a2522; cursor: pointer; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
 .cl-help-pop { position: fixed; z-index: 960; width: min(320px, 80vw); background: #2a2522; color: #fff8ec; border-radius: 16px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(40, 25, 10, .25); font: 700 16px var(--cl-font); line-height: 1.35; }
 .cl-help-pop .ob-skip-row { color: #2a2522; }
 
 /* G3: the shared UI from Cook: Nani's box at the top of the sidebar, the card in the order card's look */
-.cl-side-top.cl-nani { display: flex; }
-.cl-nani .cl-hint-n { font-size: 15px; min-width: 0; }
+.cl-nani .cl-hint-n { font-size: var(--njg-t4); min-width: 0; }
 .cl-card.oc-card { padding: 10px 12px; border-radius: 12px; }
 .cl-card.oc-card .cl-card-head { margin-bottom: 6px; }
 .cl-card.oc-card .cl-card-head:has(.cl-card-face:empty) .cl-card-title:empty { display: none; }
@@ -381,14 +381,11 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-card.oc-card .cl-row-text { flex: 1 1 auto; min-width: 0; }
 .cl-card.oc-card .cl-words .ku { color: #8c2f2f; }
 .cl-card .oc-row .oc-t::first-letter { text-transform: none; }
-.cl-nani { --sb-face: 48px; --sb-h: 16px; }
 .cl-nani .ng-face { position: relative; flex: none; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; }
-.cl-nani .ng-face img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; object-position: top; }
-.cl-nani .ng-face .say-badge { position: absolute; right: -2px; bottom: -2px; width: 18px; height: 18px; border-radius: 50%; background: #2a2522 no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
-.cl-nani .ng-bulb, .cl-nani .ng-mute { width: 34px; height: 34px; padding: 4px; border-radius: 50%; border: 1px solid #cfdccb; background: #fff; display: grid; place-items: center; cursor: pointer; color: #4f5e4d; }
-.cl-nani .ng-bulb img { width: 100%; height: 100%; object-fit: contain; }
+.cl-nani .ng-face img { display: block; border-radius: 50%; object-fit: cover; object-position: top; }
+.cl-nani .ng-face .say-badge { position: absolute; width: calc(var(--njg-guide-face) * 0.36); height: calc(var(--njg-guide-face) * 0.36); border-radius: 50%; background: #2a2522 no-repeat center / 62% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 9h4l5-4v14l-5-4H3z' fill='%23fff'/%3E%3C/svg%3E"); box-shadow: 0 0 0 2px #fff; }
+/* (the guide box's tools are the shared kit's, 48 px: css/shared/guide.css) */
 .cl-nani .ng-bulb .bulb-t { display: none; }
-.cl-nani .ng-mute svg { width: 20px; height: 20px; }
 .cl-nani .ng-bulb.lit { background: #ffe26a; box-shadow: 0 0 12px 4px rgba(255, 220, 90, .8); }
 
 /* ================= clinic fixes (29-30 Sept, feedback 13-13k) ================= */
@@ -404,9 +401,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 @media (max-width: 700px) and (orientation: portrait) { .cl-app { grid-template-rows: auto 1fr; } }
 /* 13c: the card is the shared order card; its box is only the frame */
 .cl-card { background: none; box-shadow: none; padding: 0; border-radius: 0; flex: 0 1 auto; min-height: 0; overflow: auto; }
-.cl-card .oc-card { --oc-p: clamp(14px, 1.5vw, 19px); }
+.cl-card .oc-card { --oc-p: var(--njg-side-p); }
 .cl-card .cl-empty { display: none; }
-.cl-card .oc-face.cl-card-face { width: var(--oc-face, 40px); height: var(--oc-face, 40px); padding: 0; border: 0; background: #d6b08c; border-radius: 50%; position: relative; overflow: visible; cursor: pointer; flex: none; }
+.cl-card .oc-face.cl-card-face { width: max(var(--oc-face), var(--njg-face-hit)); height: max(var(--oc-face), var(--njg-face-hit)); margin: 0; padding: 0; border: 0; background: #d6b08c; border-radius: 50%; position: relative; overflow: visible; cursor: pointer; flex: none; }
 .cl-card .oc-face.cl-card-face > .cl-face { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
 .cl-card .oc-face.cl-card-face > .cl-face svg, .cl-card .oc-face.cl-card-face > .cl-face img { width: 100%; height: 100%; object-fit: cover; }
 .cl-card .cl-row { font: inherit; }

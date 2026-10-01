@@ -1,62 +1,81 @@
 /* Nani's guide box (js/shared/guide.js). Sidebar v3 (docs/feedback/cook-ui-feedback-2026-09-28.md 10): a calm
-   sage green box (it echoes the kitchen cabinets) with a darker sage band down the left, distinct from
-   the cream panel and the white cards. The one colour is --nani-sage: everything else is mixed from it.
-   Her face = replay (speaker badge); on the right only the bulb and the mute button. She narrates, so
-   her line may take up to 2 lines (shrunk to fit, never cut off with "..."). */
-:root { --nani-sage: #7f9b7c; }
+   sage green box with a darker sage band down the left, distinct from the cream panel and the white cards.
+   The one colour is --njg-sage (tokens.css): everything else is mixed from it.
+   R3a (the approved mock-up, build/reports/chai-v2-mockup/): her face (= replay) and the tools on the top
+   line, her words underneath across the whole box, so the line gets the box's full width on a phone too.
+   Every tap is at least 48 px (--njg-tool, --njg-face-hit); every size is a token (data/layout.json).
+   Her line takes up to 2 lines, shrunk to fit and then wrapped (js/shared/fit.js), never cut. */
 .njg-guide {
-  --ng-sage: var(--nani-sage, #7f9b7c);
-  --ng-bg: color-mix(in srgb, var(--ng-sage) 20%, #fff);
-  --ng-edge: color-mix(in srgb, var(--ng-sage) 45%, #fff);
+  --ng-sage: var(--nani-sage, var(--njg-sage));
+  --ng-bg: color-mix(in srgb, var(--ng-sage) 20%, var(--njg-card));
+  --ng-edge: color-mix(in srgb, var(--ng-sage) 45%, var(--njg-card));
   --ng-band: color-mix(in srgb, var(--ng-sage) 88%, #000);
   --ng-deep: color-mix(in srgb, var(--ng-sage) 50%, #1d2a1c);
-  --ng-ink: #2d2018;
-  --ng-face: var(--sb-face, 44px);
-  position: relative; display: flex; align-items: center; gap: 9px; min-width: 0; flex: none;
+  --ng-ink: var(--njg-ink);
+  --ng-face: var(--njg-guide-face);
+  --ng-band-w: var(--njg-s2);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "face . tools" "say say say";
+  align-items: center;
+  column-gap: var(--njg-s2);
+  row-gap: var(--njg-s1);
+  min-width: 0; flex: none;
   background: var(--ng-bg);
-  border: 1px solid var(--ng-edge); border-radius: 14px; padding: 7px 7px 7px 15px; overflow: hidden;
-  box-shadow: 0 1px 2px rgba(40, 60, 40, 0.08);
+  border: var(--njg-line) solid var(--ng-edge);
+  border-radius: var(--njg-radius);
+  padding: var(--njg-card-pad) var(--njg-card-pad) var(--njg-card-pad) calc(var(--ng-band-w) + var(--njg-card-pad));
+  overflow: hidden;
+  box-shadow: var(--njg-shadow);
 }
-.njg-guide::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 7px; background: var(--ng-band); }
-.njg-guide .ng-face { width: var(--ng-face); height: var(--ng-face); }
-.njg-guide .ng-face img { background: #fff; box-shadow: 0 0 0 2px #fff; }
+.njg-guide::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: var(--ng-band-w); background: var(--ng-band); }
+/* the face: the visible face is --njg-guide-face; the button (its tap area) never under 48 px */
+.njg-guide .ng-face {
+  grid-area: face;
+  width: max(var(--ng-face), var(--njg-face-hit)); height: max(var(--ng-face), var(--njg-face-hit));
+  display: grid; place-items: center;
+}
+.njg-guide .ng-face img { width: var(--ng-face); height: var(--ng-face); background: var(--njg-card); box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card); }
+.njg-guide .ng-face .say-badge { right: calc((max(var(--ng-face), var(--njg-face-hit)) - var(--ng-face)) / 2 - var(--njg-line-2)); bottom: calc((max(var(--ng-face), var(--njg-face-hit)) - var(--ng-face)) / 2 - var(--njg-line-2)); }
 .njg-guide.talk .ng-face img { animation: ngTalk .45s ease-in-out infinite alternate; }
-@keyframes ngTalk { to { transform: translateY(-2px) rotate(-3deg); } }
-.njg-guide .ng-say { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
-/* up to 2 lines, shrunk to fit (js/shared/fit.js "fit2"), never an ellipsis */
+@keyframes ngTalk { to { transform: translateY(calc(var(--njg-line-2) * -1)) rotate(-3deg); } }
+.njg-guide .ng-say { grid-area: say; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+/* up to 2 lines, shrunk to fit then wrapped (js/shared/fit.js "fit2"), never an ellipsis */
 .njg-guide .ng-line {
-  display: block; max-width: 100%; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: normal; --fit-min: 11px;
-  font-family: Nunito, system-ui, sans-serif; font-weight: 800; font-size: var(--sb-h, 18px); line-height: 1.2; color: var(--ng-ink);
+  display: block; max-width: 100%; white-space: normal; overflow: visible; overflow-wrap: normal; --fit-min: var(--njg-t4);
+  font-family: var(--njg-font); font-weight: 800; font-size: var(--sb-h, var(--njg-side-h)); line-height: 1.2; color: var(--ng-ink);
 }
-.njg-guide .ng-line .word { color: #9b2e22; }
-.njg-guide .ng-say.rec .ng-line { --fit-min: 10px; font-style: italic; font-weight: 700; color: #4f5e4d; font-size: calc(var(--sb-h, 18px) * 0.86); }
+.njg-guide .ng-line .word { color: var(--njg-word); }
+/* a line still to record: its English placeholder, grey italic (G2), with the grown-ups' flag under it */
+.njg-guide .ng-say.rec .ng-line { font-style: italic; font-weight: 700; color: color-mix(in srgb, var(--ng-sage) 30%, var(--njg-ink-soft)); }
 .njg-guide .ng-rec {
-  display: inline-block; margin-top: 3px; white-space: nowrap; padding: 1px 5px; border-radius: 4px;
-  font-family: Nunito, system-ui, sans-serif; font-style: normal; font-size: 9px; line-height: 1.35; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--ng-deep); background: #fff; border: 1px solid var(--ng-edge);
+  display: inline-block; margin-top: var(--njg-s1); white-space: nowrap; padding: 0 var(--njg-s2); border-radius: var(--njg-round);
+  font-family: var(--njg-font); font-style: normal; font-size: var(--njg-flag-t); line-height: 1.35; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ng-deep); background: var(--njg-card); border: var(--njg-line) solid var(--ng-edge);
 }
 .njg-guide.new .ng-say { animation: ngNew .3s ease-out; }
-@keyframes ngNew { from { opacity: .2; transform: translateY(3px); } }
-.njg-guide .ng-tools { flex: none; display: flex; flex-direction: column; gap: 4px; }
+@keyframes ngNew { from { opacity: .2; transform: translateY(var(--njg-s1)); } }
+/* the tools: the bulb and the mute, side by side on the top line, each a full tap */
+.njg-guide .ng-tools { grid-area: tools; flex: none; display: flex; flex-direction: row; align-items: center; gap: var(--njg-s2); }
 .njg-guide .ng-tools button {
-  position: relative; overflow: hidden; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--ng-edge); padding: 5px;
-  background: #fff; color: var(--ng-ink); box-shadow: none; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  position: relative; overflow: hidden; width: var(--njg-tool); height: var(--njg-tool); border-radius: 50%; border: var(--njg-line) solid var(--ng-edge);
+  padding: calc(var(--njg-tool) * 0.22);
+  background: var(--njg-card); color: var(--ng-ink); box-shadow: none; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
 }
 .njg-guide .ng-tools button svg, .njg-guide .ng-tools button img { width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 1; }
 .njg-guide .ng-bulb img { transform: scale(1.3); }
 .njg-guide .ng-slash { display: none; }
+/* the bulb while it's on: its bar runs down (js/shared/bulb.js sets --bulb-ms) */
+.njg-guide .ng-bulb .bulb-t { position: absolute; left: 0; bottom: 0; width: 100%; height: var(--njg-s1); background: var(--njg-gold); transform-origin: left; transform: scaleX(0); }
+.njg-guide .ng-bulb.on, .njg-guide .ng-bulb.lit { background: color-mix(in srgb, var(--njg-gold) 30%, var(--njg-card)); }
+.njg-guide .ng-bulb.on .bulb-t { animation: ngBulbRun var(--bulb-ms, 3000ms) linear forwards; }
+@keyframes ngBulbRun { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 /* muted: the mute button shows a slash on a deep sage disc; her face greys a little */
-.njg-guide.muted .ng-mute { background: var(--ng-deep); border-color: var(--ng-deep); color: #fff; }
+.njg-guide.muted .ng-mute { background: var(--ng-deep); border-color: var(--ng-deep); color: var(--njg-card); }
 .njg-guide.muted .ng-waves { display: none; }
 .njg-guide.muted .ng-slash { display: inline; }
 .njg-guide.muted .ng-face img { filter: grayscale(.5); opacity: .85; }
 .njg-guide .ng-mute.flash { animation: ngFlash .35s ease-out; }
 @keyframes ngFlash { 40% { transform: scale(.88); } }
-@media (max-height: 430px) {
-  .njg-guide { padding: 4px 4px 4px 12px; gap: 6px; border-radius: 12px; }
-  .njg-guide::before { width: 6px; }
-  .njg-guide .ng-tools { gap: 4px; flex-direction: row; }
-  .njg-guide .ng-tools button { width: 26px; height: 26px; padding: 4px; }
-  .njg-guide .ng-rec { font-size: 8px; padding: 0 4px; margin-top: 1px; }
-}
 @media (prefers-reduced-motion: reduce) { .njg-guide.talk .ng-face img, .njg-guide.new .ng-say { animation: none; } }

@@ -7,6 +7,9 @@
 <title>Cook with Nani</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
 <link rel="stylesheet" href="css/shared/app.css?v=20261001T045807Z">
+<!-- R3a: the design tokens and the frame (sidebar + play area, the turn-your-phone card), sized from data/layout.json by js/shared/frame.js -->
+<link rel="stylesheet" href="css/shared/tokens.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/frame.css?v=20261001T045807Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
 <link rel="stylesheet" href="css/cook.css?v=20261001T045807Z">
@@ -16,17 +19,17 @@
 <link rel="stylesheet" href="css/shared/guide.css?v=20261001T045807Z">
 <link rel="stylesheet" href="css/shared/order-card.css?v=20261001T045807Z">
 <link rel="stylesheet" href="css/shared/buttons.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/tally.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/focus.css?v=20261001T045807Z">
 <!-- Sidebar v2 (docs/feedback/cook-ui-feedback-2026-09-28.md 9): the sidebar, the request cards and pop-up -->
 <link rel="stylesheet" href="css/cook-side-v2.css?v=20261001T045807Z">
 </head>
 <body class="w6">
 
-<div id="rotate">
-  <div class="rotate-card"><div class="rotate-icon">&#8635;</div><p>Turn your phone sideways to cook with Nani</p></div>
-</div>
+<!-- (an upright phone gets the frame's one turn-your-phone card, js/shared/frame.js) -->
 
-<div id="app">
-  <main id="stage">
+<div id="app" class="njg-frame">
+  <main id="stage" class="njg-play">
     <div id="game"></div>
 
     <!-- a speech bubble beside a character (service view) -->
@@ -56,7 +59,7 @@
 
   </main>
 
-  <aside id="side">
+  <aside id="side" class="njg-side">
     <!-- Wave 6: the sidebar is on the LEFT (people read left to right); the big action buttons stay on the right of the picture.
          0. 28 Sept: Nani's guide box (js/shared/guide.js): her face and what to do now; tap it to mute or unmute her
             (remembered in the save); the light bulb (English for a few seconds: 5/3/2/1 s by level; it costs the ear star) and her speaker -->
@@ -108,6 +111,7 @@
 
 <script src="js/vendor/phaser.min.js?v=20261001T045807Z"></script>
 <script src="js/version.js?v=20261001T045807Z"></script>
+<script src="js/shared/frame.js?v=20261001T045807Z"></script>
 <!-- one app, one save: every page reads and writes progress through js/shared/save.js -->
 <script src="js/shared/save.js?v=20261001T045807Z"></script>
 <script src="js/shared/app.js?v=20261001T045807Z"></script>
@@ -117,6 +121,10 @@
 <script src="js/shared/results.js?v=20261001T045807Z"></script>
 <script src="js/shared/onboard.js?v=20261001T045807Z"></script>
 <script src="js/shared/fit.js?v=20261001T045807Z"></script>
+<script src="js/shared/stage.js?v=20261001T045807Z"></script>
+<script src="js/shared/bulb.js?v=20261001T045807Z"></script>
+<script src="js/shared/tally.js?v=20261001T045807Z"></script>
+<script src="js/shared/focus.js?v=20261001T045807Z"></script>
 <script src="js/shared/guide.js?v=20261001T045807Z"></script>
 <script src="js/shared/order-card.js?v=20261001T045807Z"></script>
 <script src="js/shared/buttons.js?v=20261001T045807Z"></script>
@@ -159,6 +167,33 @@
 <script src="js/cook/order.js?v=20261001T045807Z"></script>
 <script src="js/cook/coach.js?v=20261001T045807Z"></script>
 <script src="js/cook/flow.js?v=20261001T045807Z"></script>
+<!-- R3a hook-up (until R4 moves Cook onto the framework): Cook's camera follows the shared stage (js/shared/stage.js; the same
+     picture on a laptop, and on a tablet the scene may grow to its safe area, data/layout.json stage.scenes.cook), and the
+     light bulb goes through the shared bulb (js/shared/bulb.js) -->
+<script>
+(function () {
+  "use strict";
+  var Scene = window.Cook && Cook.CookScene;
+  if (Scene && window.Stage) {
+    Scene.prototype.fitView = function () {
+      var gs = this.scale.gameSize, gw = Math.round(gs.width), gh = Math.round(gs.height);
+      var spec = Stage.scene("cook");
+      var m = Stage.fit({ box: { w: gw, h: gh }, scene: spec, itemScale: Stage.itemScale() });
+      var cam = this.cameras.main;
+      cam.setSize(gw, gh);
+      cam.setOrigin(0, 0);
+      cam.setZoom(m.s);
+      cam.setScroll(m.view.x0, m.view.y0);
+      Cook.view = { left: m.view.x0, top: m.view.y0, right: m.view.x1, bottom: m.view.y1, w: gw, h: gh, ex: m.view.x1 - m.view.x0 - spec.w, ey: m.view.y1 - m.view.y0 - spec.h, s: m.s };
+      this.fitBg();
+      if (window.UI && UI.onViewFit) UI.onViewFit();
+    };
+    // a new form factor (a resize past a tablet's shape) can change the item scale: fit again
+    if (window.Frame) Frame.onChange(function () { if (Cook.scene && Cook.scene.fitView) Cook.scene.fitView(); });
+  }
+  if (window.Bulb && window.UI) Bulb.cookShim(UI, Cook);
+})();
+</script>
 <!-- inside the app shell: the first launch (straight into the pantry) and the way home -->
 <script src="js/cook/app.js?v=20261001T045807Z"></script>
 </body>

@@ -1,0 +1,43 @@
+/* =====================================================================================
+   The frame (js/shared/frame.js; rules F4, F5, F18, C2): the sidebar on the left, the play area the
+   rest, filling the whole screen on every size and shape, with no letterbox or cream strip. The
+   sidebar's width is --njg-side-w (data/layout.json `sidebar`); a notch's safe area is padding, so
+   the play area's picture still runs under it while nothing tappable does.
+   ===================================================================================== */
+.njg-frame {
+  display: grid;
+  grid-template-columns: var(--njg-side-w) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  width: 100vw; height: 100vh;
+  width: 100dvw; height: 100dvh;
+  overflow: hidden;
+}
+.njg-frame > .njg-side {
+  grid-column: 1; grid-row: 1;
+  min-width: 0; min-height: 0;
+  padding-top: max(var(--njg-side-pad), env(safe-area-inset-top));
+  padding-bottom: max(var(--njg-side-pad), env(safe-area-inset-bottom));
+  padding-left: max(var(--njg-side-pad), env(safe-area-inset-left));
+}
+.njg-frame > .njg-play { grid-column: 2; grid-row: 1; position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+/* the play area's own corner things (Done, Next) keep clear of a notch or home bar */
+
+/* ---------- the one turn-your-phone card (C2): a phone turning on its side, no words (E1) ---------- */
+/* (js/shared/frame.js sets <html data-rotate> when the screen is upright and narrower than layout.json `rotate`) */
+#njg-rotate { display: none; }
+html[data-rotate] #njg-rotate {
+  position: fixed; inset: 0; z-index: 2147483600;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--njg-house);
+}
+.njg-rotate-card {
+  display: grid; place-items: center;
+  width: calc(var(--njg-big-face) * 2.4); aspect-ratio: 1;
+  border-radius: 50%; background: var(--njg-card); box-shadow: var(--njg-shadow);
+}
+.njg-rotate-card svg { width: 70%; height: 70%; overflow: visible; }
+.njg-rotate-phone { fill: none; stroke: var(--njg-ink); stroke-width: 5; transform-box: view-box; transform-origin: 50% 50%; animation: njgTurn 2.4s ease-in-out infinite; }
+.njg-rotate-phone circle { fill: var(--njg-ink); stroke: none; }
+.njg-rotate-arrow, .njg-rotate-head { fill: none; stroke: var(--njg-gold); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes njgTurn { 0%, 25% { transform: rotate(0); } 55%, 100% { transform: rotate(-90deg); } }
+@media (prefers-reduced-motion: reduce) { .njg-rotate-phone { animation: none; transform: rotate(-90deg); } }

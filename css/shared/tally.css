@@ -1,0 +1,20 @@
+/* The tally (js/shared/tally.js; F25): flat chips in the play area's top-right corner, a picture and a count.
+   It never takes a tap. Sizes are tokens (css/shared/tokens.css). */
+.njg-tally {
+  position: absolute; z-index: 30;
+  top: max(var(--njg-s2), env(safe-area-inset-top)); right: max(var(--njg-s2), env(safe-area-inset-right));
+  display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--njg-s2);
+  max-width: 60%; pointer-events: none;
+}
+.njg-tally.empty { display: none; }
+.njg-tally-chip {
+  display: flex; align-items: center; gap: var(--njg-s1);
+  padding: var(--njg-s1) var(--njg-s3) var(--njg-s1) var(--njg-s1); border-radius: var(--njg-round);
+  background: var(--njg-card); box-shadow: var(--njg-shadow);
+  font: 800 var(--njg-t1)/1 var(--njg-font); color: var(--njg-ink); font-variant-numeric: tabular-nums;
+}
+.njg-tally-pic { display: inline-grid; place-items: center; width: var(--njg-s6); height: var(--njg-s6); }
+.njg-tally-pic img { width: 100%; height: 100%; object-fit: contain; }
+.njg-tally-chip.bump { animation: njgTallyBump .3s; }
+@keyframes njgTallyBump { 50% { transform: scale(1.2); } }
+@media (prefers-reduced-motion: reduce) { .njg-tally-chip.bump { animation: none; } }

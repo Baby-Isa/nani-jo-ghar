@@ -7,7 +7,8 @@
 :root {
   /* the sidebar takes the room the 16:9 picture can't use (a short, wide
      phone has ~75px spare beside it), and never less than a readable column */
-  --side-w: min(360px, max(clamp(200px, 19vw, 300px), calc(100vw - 100dvh * 16 / 9)));
+  /* R3a: the frame's sidebar width (js/shared/frame.js from data/layout.json `sidebar`; css/shared/tokens.css) */
+  --side-w: var(--njg-side-w);
   --ink: #2d2018;
   --ink-soft: #6b5a4c;
   --cream: #fffaf1;
@@ -22,11 +23,7 @@
   --kutchi-font: "Baloo 2", "Nunito", system-ui, sans-serif;
   --ui-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
-/* 4:3-ish landscape (an iPad): the picture is letterboxed top and bottom anyway, so
-   the sidebar takes a little of its width to keep whole words on a line */
-@media (max-aspect-ratio: 3/2) and (min-aspect-ratio: 1333/1000) {
-  :root { --side-w: 244px; }
-}
+/* (4:3 tablets: the frame sizes the sidebar and everything in it, data/layout.json `sidebar.tablet`) */
 
 * { box-sizing: border-box; }
 html, body {
@@ -88,8 +85,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #live { flex: 1 0 auto; min-height: 0; display: flex; flex-direction: column; }
 .side-rail { display: flex; flex-wrap: wrap; gap: 8px; flex: none; align-items: center; }
 .rail-btn {
-  width: 46px; height: 46px; border-radius: 14px; border: none; background: var(--cream);
-  font-size: 22px; box-shadow: 0 2px 6px rgba(60,40,20,.12); padding: 0;
+  width: var(--njg-rail); height: var(--njg-rail); border-radius: var(--njg-radius); border: none; background: var(--cream);
+  font-size: calc(var(--njg-rail) * 0.46); box-shadow: 0 2px 6px rgba(60,40,20,.12); padding: 0;
 }
 /* the "?": the goal pops out when pressed; it pulses the first time you meet a station */
 #btn-help { background: #ffd98a; font-family: var(--kutchi-font); font-weight: 800; font-size: 26px; line-height: 1; color: var(--ink); }
@@ -286,20 +283,13 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #passme { grid-column: 1; grid-row: 2; }
 }
 
-/* phones held upright: ask to rotate */
-#rotate { display: none; }
-@media (orientation: portrait) and (max-width: 600px) {
-  #rotate { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: var(--paper); }
-  .rotate-card { text-align: center; font-weight: 800; }
-  .rotate-icon { font-size: 60px; }
-}
+/* (phones held upright: the frame's one turn-your-phone card, css/shared/frame.css) */
 
 /* short landscape phones: tighter sidebar */
 @media (max-height: 430px) {
   #side { padding: 6px; gap: 6px; }
   #nani-card { padding: 6px; gap: 6px; }
   .card { padding: 6px 8px; }
-  .rail-btn { width: 40px; height: 40px; font-size: 19px; }
   #btn-help { font-size: 22px; }
 }
 

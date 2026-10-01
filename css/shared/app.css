@@ -1,3 +1,6 @@
+/* the design tokens: every page that has the app frame has them (css/shared/tokens.css) */
+@import url("tokens.css");
+
 /* The app frame (js/shared/app.js): loaded, render-blocking, in the head of
    every page of the app, so the first paint is already the house colour. */
 
@@ -5,34 +8,30 @@
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
 
-html { background: #f3e7d3; }
+html { background: var(--njg-house); }
 /* browsers without view transitions: a quick fade-out before the next page */
 html.njg-leaving body { opacity: 0; transition: opacity 150ms ease-out; }
 
-/* the same way home in every mode: the player's colour around a house */
+/* the same way home in every mode: the player's colour around a house (sizes: css/shared/tokens.css) */
 #njg-home {
   position: fixed;
   z-index: 2147483000;
-  top: max(6px, env(safe-area-inset-top));
-  left: max(6px, env(safe-area-inset-left));
-  width: 44px; height: 44px;
+  top: max(var(--njg-s2), env(safe-area-inset-top));
+  left: max(var(--njg-s2), env(safe-area-inset-left));
+  width: var(--njg-tap); height: var(--njg-tap);
   padding: 0; margin: 0;
   border-radius: 50%;
-  border: 4px solid var(--njg-player, #b5523b);
+  border: var(--njg-s1) solid var(--njg-player, #b5523b);
   background: #fffaf2;
-  box-shadow: 0 2px 8px rgba(60, 35, 20, .28);
+  box-shadow: var(--njg-shadow);
   display: grid; place-items: center;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-#njg-home svg { width: 22px; height: 22px; fill: #6b3b24; }
+#njg-home svg { width: 50%; height: 50%; fill: #6b3b24; }
 #njg-home:active { transform: scale(.94); }
 #njg-home.hidden { display: none; }
-@media (min-width: 1100px) and (min-height: 700px) {
-  #njg-home { width: 52px; height: 52px; }
-  #njg-home svg { width: 26px; height: 26px; }
-}
 
 /* a first launch (js/cook/app.js): Nani's kitchen and one big play button, before anything else */
 html.njg-first #njg-home { display: none; }
@@ -45,11 +44,11 @@ html.njg-first #njg-home { display: none; }
 #njg-first.go { opacity: 0; pointer-events: none; }
 #njg-play {
   position: relative;
-  width: min(42vmin, 220px); height: min(42vmin, 220px);
+  width: min(42vmin, calc(var(--njg-big-face) * 3)); height: min(42vmin, calc(var(--njg-big-face) * 3));
   border-radius: 50%; padding: 0;
-  border: 8px solid #fffaf2;
+  border: var(--njg-s2) solid #fffaf2;
   background: #b5523b;
-  box-shadow: 0 8px 28px rgba(60, 35, 20, .35);
+  box-shadow: var(--njg-shadow-lift);
   cursor: pointer; overflow: hidden;
   animation: njgPulse 1.4s ease-in-out infinite alternate;
   -webkit-tap-highlight-color: transparent;
@@ -58,7 +57,7 @@ html.njg-first #njg-home { display: none; }
 #njg-play .njg-tri {
   position: absolute; right: 4%; bottom: 4%;
   width: 34%; height: 34%; border-radius: 50%;
-  background: #fffaf2; box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  background: #fffaf2; box-shadow: var(--njg-shadow);
 }
 #njg-play .njg-tri::after {
   content: ""; position: absolute; inset: 27% 22% 27% 36%;

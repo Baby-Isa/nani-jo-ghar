@@ -1,0 +1,198 @@
+{
+  "_about": "The scaling rules for every screen (decisions 24 and 25; rules F2, F4, F18). js/shared/frame.js reads this file, works out the form factor and one scale from the viewport, and writes every size token (--njg-*) on <html>; css/shared/tokens.css holds the same numbers as the first-paint fallback (build/test_shared_frame.mjs keeps the two equal). Change a number here and the next load uses it: nothing in CSS or code needs to change. All lengths are CSS px at scale 1 (a 1366x768 laptop).",
+  "version": 1,
+  "formFactors": {
+    "_about": "Landscape is assumed (a portrait phone gets the turn-your-phone card). short = the viewport's shorter side, aspect = long / short. First match wins: phone, then tablet, else laptop.",
+    "phone": {
+      "shortBelow": 500
+    },
+    "tablet": {
+      "shortFrom": 600,
+      "aspectUpTo": 1.5
+    }
+  },
+  "scale": {
+    "_about": "One number per screen: scale = clamp(min, short / refShort, max). Every size token is its base value times this scale, then the floors.",
+    "phone": {
+      "refShort": 390,
+      "min": 1,
+      "max": 1
+    },
+    "laptop": {
+      "refShort": 768,
+      "min": 1,
+      "max": 1
+    },
+    "tablet": {
+      "refShort": 700,
+      "min": 1.15,
+      "max": 1.4
+    }
+  },
+  "floors": {
+    "_about": "Never below these, whatever the scale (F2, F7: text 14 px, taps 48 px). Tokens listed under `textTokens` take the text floor, under `tapTokens` the tap floor; `unscaled` ones (hairlines) never scale. hand-w and hand-h are the onboarding's ghost hand, whose fingertip js/shared/onboard.js places in that box.",
+    "text": 14,
+    "tap": 48,
+    "textTokens": [
+      "t1",
+      "t2",
+      "t3",
+      "t4",
+      "side-h",
+      "side-p",
+      "side-s",
+      "flag-t",
+      "big-h",
+      "big-p",
+      "big-s",
+      "end-word",
+      "end-cap",
+      "end-foot",
+      "end-btn-t"
+    ],
+    "tapTokens": [
+      "tap",
+      "tool",
+      "rail",
+      "face-hit",
+      "done",
+      "end-btn"
+    ],
+    "unscaled": [
+      "line",
+      "line-2",
+      "hand-w",
+      "hand-h"
+    ]
+  },
+  "sizes": {
+    "_about": "Base values (px at scale 1). `laptop` is the full set; `phone` and `tablet` list only what differs. t1-t4 are the design system's Nunito L1-L4 (CDS 2); side-* the sidebar's headline, row and sub-line; big-* the request pop-up; s1-s7 the 8-pt spacing; face the visible face on a card, face-hit its tap area; tool the guide box's bulb and mute; rail the nav dock's buttons; row-h and part-h an order card's item row and part; done the round Done tick. badge, end-* are the end screen's (js/shared/results.js): a badge's picture, its buttons, padding, the review's word, captions, the accuracy count, the buttons' words.",
+    "laptop": {
+      "t1": 22,
+      "t2": 20,
+      "t3": 17,
+      "t4": 14,
+      "side-h": 19,
+      "side-p": 17,
+      "side-s": 15,
+      "flag-t": 14,
+      "big-h": 30,
+      "big-p": 22,
+      "big-s": 20,
+      "s1": 4,
+      "s2": 8,
+      "s3": 12,
+      "s4": 16,
+      "s5": 24,
+      "s6": 32,
+      "s7": 40,
+      "radius": 12,
+      "line": 1,
+      "line-2": 2,
+      "tap": 48,
+      "tool": 48,
+      "rail": 48,
+      "icon": 24,
+      "face": 44,
+      "face-hit": 48,
+      "guide-face": 56,
+      "big-face": 72,
+      "row-h": 36,
+      "part-h": 32,
+      "big-row-h": 48,
+      "big-part-h": 44,
+      "side-pad": 8,
+      "side-gap": 8,
+      "card-pad": 8,
+      "card-gap": 8,
+      "indent": 20,
+      "done": 88,
+      "tick": 20,
+      "badge": 200,
+      "end-btn": 72,
+      "end-pad": 24,
+      "end-word": 28,
+      "end-cap": 22,
+      "end-foot": 30,
+      "end-btn-t": 20,
+      "hand-w": 64,
+      "hand-h": 80
+    },
+    "phone": {
+      "side-h": 16,
+      "side-p": 14,
+      "side-s": 14,
+      "big-h": 20,
+      "big-p": 16,
+      "big-s": 14,
+      "face": 36,
+      "guide-face": 40,
+      "big-face": 44,
+      "row-h": 28,
+      "part-h": 26,
+      "big-row-h": 32,
+      "big-part-h": 30,
+      "side-pad": 4,
+      "side-gap": 4,
+      "card-pad": 4,
+      "card-gap": 4,
+      "indent": 12,
+      "done": 64,
+      "tick": 16,
+      "badge": 104,
+      "end-btn": 60,
+      "end-pad": 12,
+      "end-word": 21,
+      "end-cap": 15,
+      "end-foot": 20,
+      "end-btn-t": 17
+    },
+    "tablet": {}
+  },
+  "sidebar": {
+    "_about": "The sidebar's width (F4: about a fifth of the screen, on the left). width = clamp(min x scale, share x viewport width, max x scale); `fillAspect`: on a screen wider than that aspect the sidebar also takes the room the picture can't use (never past max).",
+    "phone": {
+      "share": 0.19,
+      "min": 200,
+      "max": 260,
+      "fillAspect": 1.7778
+    },
+    "laptop": {
+      "share": 0.19,
+      "min": 200,
+      "max": 360,
+      "fillAspect": 1.7778
+    },
+    "tablet": {
+      "share": 0.25,
+      "min": 220,
+      "max": 300,
+      "fillAspect": 1.7778
+    }
+  },
+  "stage": {
+    "_about": "js/shared/stage.js: a scene is laid out in its own background pixels (1600x900, D15; a scene file may give its own size, e.g. the clinic's 1536x1024). itemScale: how much a play item may grow past the plain fit on this kind of screen, so a 4:3 tablet uses its height (the scene's sides past its safe area may go off screen to allow it). hiDpi: art at @2x is picked when devicePixelRatio x the drawn scale passes this.",
+    "design": {
+      "w": 1600,
+      "h": 900
+    },
+    "itemScale": {
+      "phone": 1,
+      "laptop": 1,
+      "tablet": 1.25
+    },
+    "hiDpi": 1.25
+  },
+  "card": {
+    "_about": "The order card's row layout per form factor (decision 25): `stack` = one row per line (today's); `pills` = short rows share a line as pills, wrapping, never clipped. Default stays `stack` until Zafar chooses.",
+    "rows": {
+      "phone": "stack",
+      "laptop": "stack",
+      "tablet": "stack"
+    }
+  },
+  "rotate": {
+    "_about": "The one turn-your-phone card (C2): shown when the screen is upright and narrower than this.",
+    "portraitBelowWidth": 600
+  }
+}
