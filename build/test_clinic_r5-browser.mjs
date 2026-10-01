@@ -167,7 +167,7 @@ test("SH-09: the drinks game's card rows are never cut off at level 3 (phone)", 
   assert.deepEqual(cut, [], "no clipped row");
 });
 
-test("D11, D12: at a closed-card level the bulb opens the card, a look is counted apart, and the end screen shows the eye badge", async () => {
+test("D11, D12: at a closed-card level the bulb opens the card, and a look isn't counted as a bulb", async () => {
   const { page, close } = await open("1366x768", "stage=pharmacy&level=3&seed=7&onboard=0", "window.__clinic && window.__clinic.expect && window.__clinic.expect() && document.querySelector('.cl-card .oc-card.closed')");
   // a look: tap the closed card
   await page.click(".cl-card .oc-card.closed .oc-head", { force: true });
@@ -177,7 +177,7 @@ test("D11, D12: at a closed-card level the bulb opens the card, a look is counte
     window.Clinic.Kit.fast = false;
   });
   await page.click(".ng-bulb", { force: true });
-  await sleep(300);
+  await sleep(60); // the lab's fast mode makes the bulb's time 0.3 s
   const open1 = await page.evaluate(() => !!document.querySelector(".cl-card .oc-card.bulb-open"));
   const counts = await page.evaluate(() => ({ hints: window.__clinic.Stages && window.Clinic && document.querySelector(".cl-hint-n").textContent }));
   await close();
