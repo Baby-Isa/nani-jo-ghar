@@ -732,6 +732,22 @@ then drop them into the game and playtest. Only if it holds up in motion, on a p
 
 ---
 
+> from: docs/archive/art/art-direction-options.md §10 Chosen direction: stylised 3D film look (23 Sept 2026). Is it workable? › The ChatGPT stress test (what the test should cover)
+
+### The ChatGPT stress test (what the test should cover)
+
+> Stale: "transparent background" below → ChatGPT gives no alpha, so the test sheets use magenta or grey grounds, then key (D1, D22); "the hands" in step 5 → parked, none in Cook (H13).
+
+1. **Canonical Nani:** 1 neutral image, then 5 edits (eyes closed, mouth open, smile, pointing *above* the counter, worried). Does she stay the same person?
+2. **Twelve ingredients** in one style, each on a transparent background, the same scale and lighting.
+3. **Ingredient states:** an onion raw, then halved, then chopped (edits of the same image).
+4. **The empty kitchen background** at 16:9: no Nani, no props on the tappable surfaces, with room behind the island.
+5. **Layers:** basket back and front, the hands, the brass bowl back and front (transparent).
+6. **A second character** (the shopkeeper) in the same style, next to Nani, so they look like one family of designs.
+
+If 1–3 hold up, the style is safe to commit to.
+
+---
 
 ## 14. Background art brief (every new background)
 
