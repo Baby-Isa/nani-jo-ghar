@@ -13,7 +13,7 @@ import { loadCook, seeded } from "./cook-harness.mjs";
 import { meet, heard, said, importCook, fromCook, cookStageOf, support, createProgress, DEFAULT_DATA } from "../../js/core/progress.js";
 import * as Score from "../../js/core/score.js";
 import { payFor, mergeLegacy, createWallet } from "../../js/core/wallet.js";
-import { chooseClip, clipIndex, planClips, createVoice } from "../../js/core/voice.js";
+import { chooseClip, clipIndex, planClips, createVoice, isPhrase, phrasesOn } from "../../js/core/voice.js";
 import { createSave } from "../../js/core/save.js";
 
 const require = createRequire(import.meta.url);
@@ -283,4 +283,38 @@ test("voice: busy() while a line plays, not after", async () => {
   assert.equal(V.busy(), true);
   await p;
   assert.equal(V.busy(), false);
+});
+
+test("voice (R6, decision 26): stitched speech: a whole-phrase clip only with phrases on; a family word beats a stand-in", async () => {
+  const list = [
+    { id: "p", kutchi: "Muke chai khape.", file: "phrase.mp3", speaker: "mum", checked: "ok" },
+    { id: "m", kutchi: "muke", file: "muke.mp3", speaker: "mum", checked: "ok" },
+    { id: "c", kutchi: "chai", file: "chai.mp3", speaker: "mum", checked: "ok" },
+    { id: "k", kutchi: "khape", file: "khape.mp3", speaker: "mum", checked: "ok" },
+  ];
+  const idx = clipIndex(list, { tts: { "muke chai khape": "tts-line.mp3", "muke dudh khape": "tts-dudh.mp3" } });
+  assert.equal(isPhrase("Muke chai khape."), true);
+  assert.equal(isPhrase("khape."), false);
+  assert.equal(phrasesOn(), false, "off by default (until the pre-publish pass)");
+  const segs = [{ t: "Muke", lang: "k" }, { t: " ", lang: null }, { t: "chai", lang: "k" }, { t: " khape.", lang: "k" }];
+  const files = (p) => p.map((c) => c.file || c.source);
+  assert.deepEqual(files(planClips(segs, idx, { path: "test", phrases: true })), ["phrase.mp3"], "pre-publish: the whole recording");
+  assert.deepEqual(files(planClips(segs, idx, { path: "test", phrases: false })), ["muke.mp3", "chai.mp3", "khape.mp3"], "stitched, ahead of the TTS line");
+  assert.deepEqual(files(planClips(segs, idx, { path: "store" })), ["muke.mp3", "chai.mp3", "khape.mp3"], "store: stitched");
+  // a word with no family clip: the test path keeps its stand-in (the TTS line), the store path reports the gap
+  const dudh = [{ t: "Muke", lang: "k" }, { t: " ", lang: null }, { t: "dudh", lang: "k" }, { t: " khape.", lang: "k" }];
+  assert.deepEqual(files(planClips(dudh, idx, { path: "test" })), ["tts-dudh.mp3"]);
+  assert.deepEqual(files(planClips(dudh, idx, { path: "store" })), ["muke.mp3", "missing", "khape.mp3"]);
+  assert.equal(idx.match("muke chai khape", { path: "store" }), null, "the index skips phrase clips by default");
+  assert.equal(idx.byId("p", { path: "store" }), null);
+  assert.equal(idx.byId("p", { path: "store", phrases: true }).file, "phrase.mp3");
+  // V.word with a short line: stitched too
+  const played = [];
+  const V = createVoice({ index: idx, player: { play: async (f) => played.push(f), stop() {}, synth: async () => true }, path: "store", gapMs: 0 });
+  await V.word("muke chai khape");
+  assert.deepEqual(played, ["muke.mp3", "chai.mp3", "khape.mp3"]);
+  const P = createVoice({ index: idx, player: { play: async (f) => played.push(f), stop() {} }, path: "store", phrases: true, gapMs: 0 });
+  played.length = 0;
+  await P.say({ segments: segs });
+  assert.deepEqual(played, ["phrase.mp3"], "createVoice({phrases: true}) for the pre-publish pass");
 });
