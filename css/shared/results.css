@@ -356,11 +356,12 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 /* ---------- D12 (1 Oct, decision 27): the eye badge, at closed-card levels only ---------- */
 .rs-badges.n4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--njg-s3); }
 .rs-badges.n3.has-looks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.rs-looks .rs-eye-art { width: calc(var(--rs-disc, var(--njg-badge)) * 0.8); height: calc(var(--rs-disc, var(--njg-badge)) * 0.8); color: var(--njg-gold); transition: opacity 0.4s, color 0.4s; }
-.rs-looks[data-ln="1"] .rs-eye-art { color: #b58a3c; opacity: 0.75; }
-.rs-looks[data-ln="2"] .rs-eye-art { color: #9a8a72; opacity: 0.55; }
-.rs-looks[data-ln="3"] .rs-eye-art { color: #8a8070; opacity: 0.4; }
-.rs-looks .rs-cap-icon { color: #8a6a3a; }
+.njg-results .rs-looks .rs-disc .rs-eye-art { width: 92%; height: 92%; margin: auto; color: var(--njg-gold); transition: opacity 0.4s, color 0.4s; }
+.njg-results .rs-looks .rs-foot svg.rs-cap-icon { display: inline-block; width: 1.5em; height: 1em; }
+.njg-results .rs-looks[data-ln="1"] .rs-disc .rs-eye-art { color: #b58a3c; opacity: 0.75; }
+.njg-results .rs-looks[data-ln="2"] .rs-disc .rs-eye-art { color: #9a8a72; opacity: 0.55; }
+.njg-results .rs-looks[data-ln="3"] .rs-disc .rs-eye-art { color: #8a8070; opacity: 0.4; }
+.njg-results .rs-looks .rs-cap-icon { color: #8a6a3a; }
 
 /* ---------- D14: the steps, from the tick badge (which went wrong) ---------- */
 .rs-acc.rs-tappable { cursor: pointer; }

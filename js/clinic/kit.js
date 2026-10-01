@@ -377,7 +377,9 @@
     });
     const tt = this.titleText;
     const headHtml = !tt ? null : typeof tt === "string" ? esc(tt) : Kit.rowHtml(tt);
-    const data = { person: null, headline: headHtml ? { html: headHtml, key: "__head" } : null, items };
+    // a headline still to record (the heal games' goal, D9) carries the grown-ups' "to record" flag (G2)
+    const rec = !!(tt && typeof tt === "object" && !tt.kutchi);
+    const data = { person: null, headline: headHtml ? { html: headHtml, key: "__head", rec } : null, items };
     if (pending) data.done = false;
     card.rows.forEach((r) => (r.el = null));
     const opts = {
