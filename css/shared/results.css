@@ -367,7 +367,7 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 .rs-acc.rs-tappable { cursor: pointer; }
 .rs-acc.rs-tappable.open { border-color: var(--njg-gold); }
 .rs-p1 { position: relative; }
-.rs-steps-list { position: absolute; inset: 0; z-index: 3; overflow: auto; display: flex; align-items: center; justify-content: center; background: var(--njg-panel); border-radius: var(--njg-radius); padding: var(--njg-s3); cursor: pointer; }
+.rs-steps-list { position: absolute; inset: calc(var(--njg-s1) * -1); z-index: 3; overflow: auto; display: flex; align-items: center; justify-content: center; background: var(--njg-panel); border-radius: var(--njg-radius); padding: var(--njg-s3); cursor: pointer; }
 .rs-steps-list[hidden] { display: none; }
 .rs-steps-list ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--njg-s2); min-width: 0; max-width: 100%; }
 .rs-step { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s3); border-radius: var(--njg-radius); border: var(--njg-line) solid #e3d4ba; font-family: var(--njg-font); font-size: var(--njg-t3); color: var(--njg-ink); }
@@ -382,3 +382,4 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 @media (orientation: portrait) {
   .rs-badges.n4 { grid-template-columns: 1fr; gap: var(--njg-s2); }
 }
+.rs-step-text .rs-ph-in { font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }

@@ -419,7 +419,7 @@
           seen.add(e.rowId);
           const row = rowFor(e.rowId);
           if (!row) return;
-          steps.push({ id: e.rowId, label: { kutchi: row.kutchi || null, english: row.english || "" }, ok: e.type === "right", done: e.detail != null && typeof e.detail !== "object" ? String(e.detail) : null });
+          steps.push({ id: e.rowId, label: { kutchi: row.kutchi || null, english: row.english || "" }, ok: e.type === "right", done: e.detail != null && typeof e.detail !== "object" ? String(e.detail).replace(/^(\d+) of \d+$/, "$1") : null });
         });
         if (taught && US) US.set("clinic-taught", def.id, true);
         if (taught) r = Object.assign({}, r, { right: 0, total: 0, taught: true });

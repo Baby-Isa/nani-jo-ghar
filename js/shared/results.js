@@ -276,7 +276,9 @@
   function stepsHtml(steps) {
     const row = (x) => {
       const l = x.label || {};
-      const k = l.kutchi ? `<b>${esc(l.kutchi)}</b>` : `<b class="rs-ph">${esc(l.english || "")}</b>`;
+      // an English placeholder inside a Kutchi line ([wax]) is grey italic, never shown with its brackets (G2)
+      const ph = (t) => esc(t).replace(/\[([^\]]*)\]/g, '<i class="rs-ph-in">$1</i>');
+      const k = l.kutchi ? `<b>${ph(l.kutchi)}</b>` : `<b class="rs-ph">${esc(l.english || "")}</b>`;
       return `<li class="rs-step ${x.ok ? "ok" : "bad"}"><span class="rs-step-tick" aria-hidden="true">&#10003;</span><span class="rs-step-text">${k}${l.kutchi && l.english ? `<small>${esc(l.english)}</small>` : ""}</span>${!x.ok && x.done != null ? `<span class="rs-step-done">${esc(x.done)}</span>` : ""}</li>`;
     };
     return `<div class="rs-steps-list" hidden role="dialog" aria-label="The steps"><ul>${steps.map(row).join("")}</ul></div>`;
