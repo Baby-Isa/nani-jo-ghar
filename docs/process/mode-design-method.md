@@ -275,3 +275,22 @@ UK English. Tables and short bullets. No filler. Sections:
 9. **Tension then release,** but never punishment for the language itself.
 10. **The language is the input:** you can't win without understanding the Kutchi.
 
+## 6. What all six designs agreed on (points 2 to 4)
+
+> from: docs/archive/mode-briefs/OVERVIEW.md § What all six designs agree on
+
+> Stale: "stars and help costs" → three badges, with the light bulb as the help (H5); "the leak bot" and "the lab" are the QA tools in `process/qa-checklist.md` and `labs.html`; point 1 (the shared word list) is in `language/lexicon.md` §3.
+
+2. **Build on the shared engine, after "one app, one save".** Every mode reuses Cook and Find it's building blocks: word pills, the order ladder, stars and help costs, levels as data, the lab, the test harness and the leak bot. Relations stored as data also enables role reversal later.
+3. **Most modes have a slice that already works as a real Kutchi test:**
+   - Monsoon rush's kitchen leak (food words);
+   - Who did it?'s magnifier (*hardar*);
+   - Snap's "just so many" (fruit and numbers);
+   - Tidy up's "put the shopping away" (food nouns).
+
+   Build those slices first.
+4. **New art types to test small before any art run:**
+   - full-body "paper-doll" dressing (Dress up);
+   - seated patients and a first-person "lap view" of the player's own knees (clinic);
+   - scenery strips (Snap);
+   - the courtyard shared by Find it and Monsoon rush.
