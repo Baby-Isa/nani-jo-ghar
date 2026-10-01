@@ -208,6 +208,7 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **Code:** Step 3 adds R3b back: one game host, the mode and mini-game interfaces, the arc and map formats and a "build a new game or arc from existing parts" guide, run alongside R3a. Source: orchestrator chat, 1 Oct. Rule: H1, H7, decision 23
 - **Process:** **No gaps in the checks:** the sandbox covers every live flow at every level, the mistake and hint paths, text drawn in Cook's canvas, sound, overlap, tablets, and a smoke flow for each parked mode so shared changes can't break them silently. Source: orchestrator chat, 1 Oct. Rule: C2, C11, decision 24
 - **Design:** **Tablets are first-class and layout scales by design, not as a retrofit:** the screen matrix adds tablets; sizes come from tokens that scale with the screen; art comes at a resolution and with a safe area that fill any screen shape; how much things grow per screen is a rule set later in data. Zafar on a tablet: "good but inefficient on screen space; certain elements need to be bigger". Source: orchestrator chat, 1 Oct. Rule: F2, F18, D15, decision 24
+- **Design:** Build in flexibility rather than lock layouts: the sidebar and its text scale with the screen; the order card can show short rows (e.g. ingredients) as pills sharing a line instead of stacked rows, chosen per screen size in data; the default stays stacked until Zafar chooses. Source: orchestrator chat, 1 Oct. Rule: F4, F8, decision 25
 
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
