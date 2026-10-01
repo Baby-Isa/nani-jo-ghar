@@ -111,3 +111,25 @@ test("upright phones get the turn-your-phone card; landscape and tablets don't",
   assert.equal(Frame.compute(L, 844, 390).rotate, false);
   assert.equal(Frame.compute(L, 768, 1024).rotate, false);
 });
+
+test("R6: a sidebar that doesn't fit steps down from the screen's scale to sidebar.fit.minScale", () => {
+  const t = Frame.compute(L, 1180, 820);
+  const steps = Frame.sideScales(L, t.scale);
+  assert.equal(steps[0], t.scale, "the screen's own scale first");
+  assert.equal(steps[steps.length - 1], L.sidebar.fit.minScale);
+  for (let i = 1; i < steps.length; i++) assert.ok(steps[i] < steps[i - 1], `steps go down: ${steps}`);
+  assert.equal(Frame.sideTokens(L, t.ff, t.scale, t.scale), null, "nothing to set at the screen's own scale");
+});
+
+test("R6: the sidebar's own sizes keep the floors, the taps and the dock's padding at every step", () => {
+  for (const k of Object.keys(MATRIX)) {
+    const [w, h] = k.split("x").map(Number);
+    const t = Frame.compute(L, w, h);
+    for (const s of Frame.sideScales(L, t.scale).slice(1)) {
+      const v = Frame.sideTokens(L, t.ff, t.scale, s);
+      for (const tok of L.floors.textTokens) if (v[`--njg-${tok}`]) assert.ok(px(v[`--njg-${tok}`]) >= 14.5, `${k} @${s} ${tok} ${v[`--njg-${tok}`]}`);
+      for (const tok of [...L.floors.tapTokens, ...L.floors.unscaled, ...L.sidebar.fit.keep]) assert.equal(v[`--njg-${tok}`], undefined, `${k} @${s}: ${tok} keeps the screen's value`);
+      for (const [name, val] of Object.entries(v)) assert.ok(px(val) <= px(t.vars[name]) + 1e-9, `${k} @${s}: ${name} only shrinks`);
+    }
+  }
+});

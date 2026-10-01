@@ -64,3 +64,36 @@ test("the turn-your-phone card shows upright, not sideways", async () => {
   assert.equal(shown, "flex");
   assert.equal(hidden, "none");
 });
+
+test("R6: a busy round's sidebar (three people at chai, level 3) fits a tablet's height; the dock stays on screen", async () => {
+  for (const size of ["1024x768", "1180x820"]) {
+    const a = await open(size, "cook.html?speed=3");
+    await a.page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
+    await a.page.evaluate(() => { __cook.lab("chai-tray", true, { level: 3 }); });
+    await a.page.waitForFunction(() => document.querySelectorAll("#mission .oc-card").length >= 3, null, { timeout: 20000 });
+    await sleep(800);
+    const m = await a.page.evaluate(() => {
+      const s = document.querySelector("#side");
+      const b = document.querySelector("#btn-book").getBoundingClientRect();
+      return { sh: s.scrollHeight, ch: s.clientHeight, scale: s.dataset.njgSideScale, bottom: b.bottom, h: innerHeight };
+    });
+    await a.close();
+    assert.ok(m.sh <= m.ch + 1, `${size}: sidebar ${m.sh} > ${m.ch} (side scale ${m.scale})`);
+    assert.ok(m.bottom <= m.h, `${size}: the dock's book button ends at ${m.bottom} on a ${m.h} px screen`);
+  }
+});
+
+test("R6: Snap, Find it and Dress up show the frame's wordless turn-your-phone card upright, and nothing above their page sideways", async () => {
+  for (const url of ["snap.html", "find.html", "dress.html"]) {
+    const up = await open("390x844", url);
+    const shown = await up.page.evaluate(() => getComputedStyle(document.getElementById("njg-rotate")).display);
+    await up.close();
+    const side = await open("844x390", url);
+    const r = await side.page.evaluate(() => ({ hidden: getComputedStyle(document.getElementById("njg-rotate")).display, own: !!document.getElementById("rotate"), scroll: document.scrollingElement.scrollHeight - innerHeight }));
+    await side.close();
+    assert.equal(shown, "flex", url);
+    assert.equal(r.hidden, "none", url);
+    assert.equal(r.own, false, `${url}: no English card of its own`);
+    assert.ok(r.scroll <= 0, `${url}: the page is ${r.scroll} px taller than the screen`);
+  }
+});

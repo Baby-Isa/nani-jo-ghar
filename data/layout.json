@@ -152,7 +152,7 @@
     "tablet": {}
   },
   "sidebar": {
-    "_about": "The sidebar's width (F4: about a fifth of the screen, on the left). width = clamp(min x scale, share x viewport width, max x scale); `fillAspect`: on a screen wider than that aspect the sidebar also takes the room the picture can't use (never past max).",
+    "_about": "The sidebar's width (F4: about a fifth of the screen, on the left). width = clamp(min x scale, share x viewport width, max x scale); `fillAspect`: on a screen wider than that aspect the sidebar also takes the room the picture can't use (never past max). `fit` (R6): when a busy round's sidebar (several people's cards, the guide with its English line) is taller than the screen, js/shared/frame.js steps the sidebar's own sizes down (type, faces, rows, gaps) by `step` until it fits, never below `minScale` x the base sizes; the floors hold (text that reaches the floor stays at `textFloor`), and the taps, hairlines and the tokens in `keep` keep the screen's own value (the way home lines up with the dock's padding).",
     "phone": {
       "share": 0.19,
       "min": 200,
@@ -170,6 +170,14 @@
       "min": 220,
       "max": 300,
       "fillAspect": 1.7778
+    },
+    "fit": {
+      "minScale": 0.8,
+      "step": 0.05,
+      "textFloor": 14.5,
+      "keep": [
+        "side-pad"
+      ]
     }
   },
   "stage": {

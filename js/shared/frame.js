@@ -26,6 +26,9 @@
  *   Frame.now                     the last compute() result
  *   Frame.onChange(fn)            fn(now) after every apply; returns an unsubscribe
  *   Frame.mount({app, side, play})  put a page's own grid inside the frame (classes njg-frame, njg-side, njg-play)
+ *   Frame.fitSide(el)             keep a sidebar's content on screen: step its own sizes down while it overflows
+ *                                 (layout.json `sidebar.fit`; every .njg-side is followed by itself, Frame.watchSide)
+ *   Frame.tokens(L, ff, scale), Frame.sideTokens(L, ff, full, s), Frame.sideScales(L, full)   (pure: Node tests)
  *   Frame.rotateCard()            the turn-your-phone card (added to <body> once; CSS shows it when upright)
  *
  * Opt out (a lab that lays itself out): <html data-njg-frame="off">.
@@ -62,12 +65,8 @@
   /** Upright and narrower than layout.json `rotate.portraitBelowWidth`: the turn-your-phone card shows. */
   F.rotate = (L, w, h) => h > w && w < (((L && L.rotate) || {}).portraitBelowWidth || 600);
 
-  /** Everything the frame sets for a w x h viewport (no DOM). */
-  F.compute = function (L, w, h) {
-    const ff = F.formFactor(L, w, h);
-    const sc = (L.scale && L.scale[ff]) || { refShort: 768, min: 1, max: 1 };
-    const short = Math.min(w, h);
-    const scale = round(clamp(sc.min, short / sc.refShort, sc.max));
+  /** Every size token of a form factor at one scale, floors applied: {"--njg-t1": "22px", ...}. */
+  F.tokens = function (L, ff, scale) {
     const base = Object.assign({}, (L.sizes && L.sizes.laptop) || {}, (L.sizes && L.sizes[ff]) || {});
     const fl = L.floors || {};
     const text = new Set(fl.textTokens || []);
@@ -81,6 +80,55 @@
       if (tap.has(k)) px = Math.max(fl.tap || 48, px);
       vars[`--njg-${k}`] = `${round(px)}px`;
     }
+    return vars;
+  };
+
+  /**
+   * The sidebar's own sizes when its content is taller than the screen at scale `s` (rule F7: nothing runs off
+   * or scrolls; R6). Only what is in the sidebar shrinks: its type, faces, rows and gaps, down to layout.json
+   * `sidebar.fit.minScale`; the floors still hold (text at the floor is kept at `textFloor`, 14.5 px, so rounding
+   * never renders it under 14), and the taps, hairlines and the tokens in `fit.keep` (the dock's padding, which the
+   * way home outside the sidebar lines up with) keep the screen's own value. Returns {"--njg-…": px} to set on the
+   * sidebar element (its children inherit them), or null at the screen's own scale.
+   */
+  F.sideTokens = function (L, ff, full, s) {
+    if (!(s < full)) return null;
+    const fit = (L.sidebar && L.sidebar.fit) || {};
+    const fl = L.floors || {};
+    const keep = new Set([...(fl.tapTokens || []), ...(fl.unscaled || []), ...(fit.keep || [])]);
+    const text = new Set(fl.textTokens || []);
+    const at = F.tokens(L, ff, full);
+    const small = F.tokens(L, ff, s);
+    const tf = fit.textFloor || (fl.text || 14) + 0.5;
+    const out = {};
+    for (const [k, v] of Object.entries(small)) {
+      const name = k.slice(6);
+      if (keep.has(name) || v === at[k]) continue;
+      let px = parseFloat(v);
+      if (text.has(name)) px = Math.max(px, Math.min(parseFloat(at[k]), tf));
+      if (`${round(px)}px` !== at[k]) out[k] = `${round(px)}px`;
+    }
+    return out;
+  };
+
+  /** The scales a sidebar tries, largest first, when its content doesn't fit: the screen's, then steps down to fit.minScale. */
+  F.sideScales = function (L, full) {
+    const fit = (L.sidebar && L.sidebar.fit) || {};
+    const min = Math.min(full, fit.minScale == null ? full : fit.minScale);
+    const step = fit.step || 0.05;
+    const out = [full];
+    for (let s = full - step; s > min + 1e-6; s -= step) out.push(round(s));
+    if (min < full) out.push(min);
+    return out;
+  };
+
+  /** Everything the frame sets for a w x h viewport (no DOM). */
+  F.compute = function (L, w, h) {
+    const ff = F.formFactor(L, w, h);
+    const sc = (L.scale && L.scale[ff]) || { refShort: 768, min: 1, max: 1 };
+    const short = Math.min(w, h);
+    const scale = round(clamp(sc.min, short / sc.refShort, sc.max));
+    const vars = F.tokens(L, ff, scale);
     const sb = (L.sidebar && L.sidebar[ff]) || { share: 0.2, min: 200, max: 360 };
     let side = clamp(sb.min * scale, sb.share * w, sb.max * scale);
     if (sb.fillAspect) side = Math.max(side, Math.min(sb.max * scale, w - h * sb.fillAspect));
@@ -148,7 +196,10 @@
         };
         root.addEventListener("resize", again);
         root.addEventListener("orientationchange", again);
-        return go();
+        const out = go();
+        if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", watchAll);
+        else watchAll();
+        return out;
       })
       .catch((e) => {
         // tokens.css's fallback values stay: the page still works
@@ -160,10 +211,84 @@
   };
   Object.defineProperty(F, "ready", { get: () => started || F.start() });
 
+  /**
+   * Keep a sidebar's content on the screen (R6: R3a's tablet scale and 48 px taps made a busy round's sidebar,
+   * three people's cards and the guide, taller than the screen; the dock's "?", home and book went under the
+   * bottom edge and the sidebar scrolled). After every change in it, the sidebar is laid out at the screen's
+   * scale and, only while it overflows, at the next step down (F.sideScales), its tokens written on the element
+   * itself. Returns {scale, fits}. Called by itself for every .njg-side (F.watchSide).
+   */
+  F.fitSide = function (el) {
+    const L = F.layout;
+    const now = F.now;
+    if (!el || !L || !now) return null;
+    const names = el._njgSideVars || [];
+    for (const k of names) el.style.removeProperty(k);
+    el._njgSideVars = [];
+    const over = () => el.scrollHeight > el.clientHeight + 1;
+    let used = now.scale;
+    if (el.clientHeight > 0 && over()) {
+      for (const s of F.sideScales(L, now.scale).slice(1)) {
+        const vars = F.sideTokens(L, now.ff, now.scale, s) || {};
+        for (const k of el._njgSideVars) if (!(k in vars)) el.style.removeProperty(k);
+        for (const [k, v] of Object.entries(vars)) el.style.setProperty(k, v);
+        el._njgSideVars = Object.keys(vars);
+        used = s;
+        if (!over()) break;
+      }
+    }
+    el.dataset.njgSideScale = String(used);
+    return { scale: used, fits: !over() };
+  };
+
+  const watched = new Set();
+  /** Follow a sidebar: refit it (once per frame) when its content, its classes or the screen change. */
+  F.watchSide = function (el) {
+    if (!el || watched.has(el) || !root.MutationObserver) return;
+    watched.add(el);
+    let q = 0;
+    let busy = false;
+    const go = () => {
+      q = 0;
+      busy = true;
+      try {
+        F.fitSide(el);
+      } finally {
+        // the fit's own style writes are not a change to answer
+        mo.takeRecords();
+        busy = false;
+      }
+    };
+    const soon = () => {
+      if (busy || q) return;
+      q = root.requestAnimationFrame(go);
+    };
+    const mo = new root.MutationObserver((recs) => {
+      if (recs.some((r) => !(r.target === el && r.attributeName === "style"))) soon();
+    });
+    mo.observe(el, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class", "hidden", "style"] });
+    if (root.ResizeObserver) {
+      const ro = new root.ResizeObserver(soon);
+      ro.observe(el);
+    }
+    F.onChange(soon);
+    // web fonts change every line's height
+    if (root.document.fonts && root.document.fonts.ready) root.document.fonts.ready.then(soon);
+    soon();
+  };
+  const watchAll = () => {
+    const doc = root.document;
+    if (doc) doc.querySelectorAll(".njg-side").forEach((el) => F.watchSide(el));
+  };
+
   /** A page's own grid inside the frame: the classes the frame's CSS lays out. */
   F.mount = function ({ app, side, play } = {}) {
     if (app) app.classList.add("njg-frame");
-    if (side) side.classList.add("njg-side");
+    if (side) {
+      side.classList.add("njg-side");
+      if (F.layout) F.watchSide(side);
+      else F.ready.then(() => F.watchSide(side));
+    }
     if (play) play.classList.add("njg-play");
     F.rotateCard();
     return { app, side, play };
