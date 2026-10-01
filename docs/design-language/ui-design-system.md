@@ -114,3 +114,72 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 - **The card border and shadow the same all the way round.** Better colours: right = gold (the theme); wrong = red (Zafar's "red makes you want to fix it") **(decide)**.
 - **The layout:** wrong words on the left, right words on the right. Each side's width is proportional to its count, with a minimum of one column. At most three across per side, stacking into rows.
 
+
+## Layout contract v2 (23 Sept, from the Roadmap)
+
+> **Stale points (what `docs/process/rules.md` and later decisions now override; the text below is left as written).**
+> - Sidebar as its own column beside the game, unspecified side → left, about 22% (F4)
+> - The carried container as "the shopping basket" (Errand 1) and a "basket handle" list → the basket became the pantry tray (H52)
+> - Letterbox "filled with the scene's dominant colour or a blurred copy of the background" → no letterbox or cream strip (F18)
+> - Speech bubble with "English one tap away", and a gist caption → no written English for the child (non-negotiable 5)
+> - The "Background art brief (every new background)" part of this section is in `art-pipeline.md` §14
+
+> from: docs/archive/design-v1/Roadmap and Story Structure.md § Layout contract v2
+
+## Layout contract v2
+
+Supersedes the layout contract in the Image Prompt Sheets doc and the "Screen layout" section of the Game Design doc. Drawn from the two 23 Sep playtests. Every scene follows it, so the interface and code never change between scenes.
+
+### The world and the screen
+
+| Rule | Detail |
+| --- | --- |
+| World size | Fixed 1600×900 (16:9), scaled to fit. All positions are background pixels, stored in `data/scenes/<scene>.json` and checked with `build/place_preview.py` |
+| Sidebar | Always its own column beside the game in landscape, never on top of it. A slide-out drawer only in portrait or on very narrow screens, with a close button, and it never opens by itself during play |
+| Letterbox | Filled with the scene's dominant colour or a blurred copy of the background, never black bars |
+| Tests | Every build tested at phone landscape (915×375), 1366×768, **1440×900 and 1280×800 (16:10)**, and iPad landscape and portrait. Before every tap, the test checks nothing covers the item |
+
+### Depth layers, back to front
+
+1. Background (painted wall, shelves, sky)
+2. Swaying scenery layer, where supplied (curtain, awning, lantern, hanging pots) [later]
+3. Character (upper body only)
+4. **Counter, island or bolster front**, which hides the character's lower body. Drawn into the background or supplied as a matching separate layer
+5. Items on shelves and counters, each with a contact shadow, sunk ~4px into the surface
+6. Destination container where one exists (Nani's bowl, the cooking pot: back layer, items, front rim)
+7. **Carried container** (the player's basket or tray: back layer, items, front rim)
+8. Anything in flight; speech bubbles; overlays
+
+### The carried container (core mechanic)
+
+- Bottom-centre of the screen, **no taller than 22% of the screen height**, so it works on a 375px-tall phone.
+- A separate art layer, never painted into a background, so one background works with a basket, a tray, a notebook or a sewing box.
+- Three layers: inside back, items, front rim. Items pack into preset spots, turned ±8°, overlapping like a real basket.
+- Everything collected is visible where it goes. No invisible counters.
+- Chapter 1: the shopping basket (Errand 1) and the serving tray (Errand 3). Later: notebook (Ask around), sewing kit (thread quest), first-aid box (Monsoon).
+- Tap to move, never drag.
+
+### Characters
+
+- Always stand behind a counter, island or bolster; hidden by the scene, never by the screen edge.
+- Upper body only, so no legs and rarely arms are needed.
+- Every pose on an identical canvas size and position. Eyes and mouth are the only parts that change for frequent animation (blinks, talking); see the character animation approach in the playtest review.
+- Speaking uses a speech bubble from the speaker: solid cream background, dark text, English one tap away inside the bubble. Replaces the caption band across the top.
+
+### Item zones: sized by what the zone is for
+
+| Zone | What it is | Sized by | Capacity |
+| --- | --- | --- | --- |
+| **Shop display** (bazaar counter) | Targets plus decoys for one errand; restocked by the errand generator each time | The largest single errand: up to 6 targets plus a similar number of look-alike decoys | **10 to 12 slots** in one row on the counter, with crates and baskets as holders |
+| **Pantry** (kitchen shelves) | A progress container: every mastered food word lives here for good | The whole food vocabulary it holds | **4 long, evenly spaced shelves, room for ~32 items** (16 fruit, 16 vegetables), slots built into the art |
+| **Spice cupboard** | A separate close-up scene opened from the kitchen | The spice vocabulary | **3 shelves × 6 = 18 slots** for the 16 spices |
+| **Dastarkhwan** | The "put it there" surface for laying the table | One meal for the family and guests | Hotspots measured onto the cloth: places, cups, serving dishes |
+
+The spice cupboard is in the MVP because Chapter 1's daal needs spices. Buying spices at a separate spice seller is deferred: in Chapter 1 the spices are already in Nani's cupboard.
+
+### Sidebar (the recipe list)
+
+- Each row: `[quantity ×] [Kutchi word] [play button, never clipped]`, dots that fill as items are collected (● ● ○), English toggle beneath. Items with no count show no number.
+- Buttons hidden until usable, never shown greyed-out as "…".
+- Later: the list moves into the world (a handwritten list tied to the basket handle), freeing the whole screen.
+

@@ -731,3 +731,19 @@ Before regenerating everything, make **one complete scene** in the chosen style:
 then drop them into the game and playtest. Only if it holds up in motion, on a phone, move on to the rest.
 
 ---
+
+
+## 14. Background art brief (every new background)
+
+> from: docs/archive/design-v1/Roadmap and Story Structure.md § Layout contract v2 › Background art brief (every new background)
+
+> Stale: the quiet left strip and the 4:3 crop below pre-date the left sidebar at about 22% (F4) and the no-letterbox rule (F18); the rest of the layout contract v2 is in `ui-design-system.md`.
+
+### Background art brief (every new background)
+
+- A counter, island or bolster running across the scene, with room behind it for the character. No leftover floor objects (rugs, crates) where it goes or in the foreground.
+- A slightly high camera looking down onto the work surface, so items and containers read clearly.
+- Clear, flat, evenly lit surfaces where tappable items go. **No painted food anywhere near a tappable zone.**
+- The quiet left strip is no longer needed for the sidebar (it has its own column), but keep the far edges uncluttered for the 4:3 crop.
+- Same camera height and painterly lighting in every scene, 16:9, no text.
+- Supply separately, on transparent backgrounds, in the same style: carried container, destination container, counter front layer, swaying items.
