@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>Nani jo Ghar: lab</title>
+<!--
+  One page runs any moved mode (js/<mode>/main.js) through the one game host (js/shared/host.js, mode.js):
+    lab.html?mode=demo&game=pantry&level=2          one stage alone (play=lab is the default here)
+    lab.html?mode=demo&level=1                      the mode's whole plan, as a lab round
+    lab.html?mode=demo&play=story&arc=demo&chapter=1&errand=helper    an errand of an arc (data/arcs/)
+    lab.html?mode=demo&play=free                    free play (locked until the story that opens it)
+  Extra: &seed=7 (the host's rng), &speed=3 (Cook's test speed), &quiet=1 &fast=1 &onboard=0 &guided=0 &side= &kind=
+  (passed to every stage as ctx.params), &nonav=1 (the end screen's buttons don't leave the page: tests).
+  labs.html lists every lab entry (build/gen_labs.mjs). The test hook is window.njgTest (target-model § 8.1).
+-->
+<link rel="stylesheet" href="css/shared/app.css?v=20261001T045807Z">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/shared/results.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/onboard.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/guide.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/order-card.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/buttons.css?v=20261001T045807Z">
+<style>
+  /* the lab page's own chrome only: the stage fills the screen; the shared frame (R3a) goes round it when it lands */
+  html, body { margin: 0; height: 100%; background: #f3e7d3; }
+  #lab-stage { position: fixed; inset: 0; overflow: hidden; }
+  .lab-note { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; font: 700 18px/1.4 "Nunito", system-ui, sans-serif; color: #3a2e28; }
+  .lab-note > div { max-width: 560px; background: #fffaf1; border-radius: 16px; padding: 24px; box-shadow: 0 6px 18px rgba(58, 46, 40, .14); text-align: center; }
+  .lab-note .lock { font-size: 48px; line-height: 1; }
+  .lab-note a { display: inline-block; min-height: 48px; line-height: 48px; padding: 0 16px; color: #8a4b2a; }
+  .lab-note small { display: block; font-weight: 500; font-size: 15px; color: #7a6558; margin-top: 8px; }
+</style>
+<script type="importmap" data-njg="core">
+{
+ "imports": {
+  "#core/content.js": "./js/core/content.js?v=20261001T045807Z",
+  "./js/core/content.js": "./js/core/content.js?v=20261001T045807Z",
+  "#core/context.js": "./js/core/context.js?v=20261001T045807Z",
+  "./js/core/context.js": "./js/core/context.js?v=20261001T045807Z",
+  "#core/env.js": "./js/core/env.js?v=20261001T045807Z",
+  "./js/core/env.js": "./js/core/env.js?v=20261001T045807Z",
+  "#core/index.js": "./js/core/index.js?v=20261001T045807Z",
+  "./js/core/index.js": "./js/core/index.js?v=20261001T045807Z",
+  "#core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
+  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
+  "#core/log.js": "./js/core/log.js?v=20261001T045807Z",
+  "./js/core/log.js": "./js/core/log.js?v=20261001T045807Z",
+  "#core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
+  "./js/core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
+  "#core/save.js": "./js/core/save.js?v=20261001T045807Z",
+  "./js/core/save.js": "./js/core/save.js?v=20261001T045807Z",
+  "#core/score.js": "./js/core/score.js?v=20261001T045807Z",
+  "./js/core/score.js": "./js/core/score.js?v=20261001T045807Z",
+  "#core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
+  "./js/core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
+  "#core/types.js": "./js/core/types.js?v=20261001T045807Z",
+  "./js/core/types.js": "./js/core/types.js?v=20261001T045807Z",
+  "#core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
+  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
+  "#core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
+  "./js/core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
+  "#core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z",
+  "./js/core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z"
+ }
+}
+</script>
+</head>
+<body>
+<div id="lab-stage"></div>
+
+<script src="js/version.js?v=20261001T045807Z"></script>
+<!-- the shared kit, as every game page loads it (the one save is the core's, js/core/save.js: no classic save.js here) -->
+<script src="js/shared/family-voice.js?v=20261001T045807Z"></script>
+<script src="js/shared/uistore.js?v=20261001T045807Z"></script>
+<script src="js/shared/sfx.js?v=20261001T045807Z"></script>
+<script src="js/shared/results.js?v=20261001T045807Z"></script>
+<script src="js/shared/onboard.js?v=20261001T045807Z"></script>
+<script src="js/shared/guide.js?v=20261001T045807Z"></script>
+<script src="js/shared/fit.js?v=20261001T045807Z"></script>
+<script src="js/shared/order-card.js?v=20261001T045807Z"></script>
+<script src="js/shared/buttons.js?v=20261001T045807Z"></script>
+<script src="js/shared/speech.js?v=20261001T045807Z"></script>
+<script src="js/shared/say.js?v=20261001T045807Z"></script>
+<script type="module">
+  const q = new URLSearchParams(location.search);
+  if (!q.has("play")) q.set("play", q.has("arc") ? "story" : "lab");
+  const stageEl = document.getElementById("lab-stage");
+  const note = (html) => {
+    const d = document.createElement("div");
+    d.className = "lab-note";
+    d.innerHTML = `<div>${html}</div>`;
+    document.body.appendChild(d);
+    return d;
+  };
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const getJSON = async (p) => (await fetch(njgV(p))).json();
+
+  const M = await import(njgV("./js/shared/mode.js"));
+  const { loadCore } = await import("#core/index.js");
+  const { createUnlocks } = await import("#core/unlocks.js");
+
+  if (!q.get("mode")) {
+    note(`Pick a game from <a href="labs.html">the labs list</a>.`);
+  } else {
+    const core = await loadCore({ base: "" });
+    const mode = await M.loadMode(q.get("mode"), { stamp: njgV });
+    const index = await getJSON("data/arcs/index.json");
+    const arcs = {};
+    for (const a of index.arcs) arcs[a.id] = await getJSON(`data/arcs/${a.id}.json`);
+    const map = await getJSON("data/map.json");
+    // the arcs feed the unlock rules (a chapter's "opens"), next to data/unlocks.json's own
+    const unlocks = createUnlocks({ save: core.save, rules: M.withArcRules(core.data.unlocks, arcs) });
+
+    const params = {};
+    ["speed", "quiet", "fast", "onboard", "guided", "side", "kind"].forEach((k) => q.has(k) && (params[k] = /^\d+$/.test(q.get(k)) ? Number(q.get(k)) : q.get(k)));
+    if (params.onboard === 0) params.onboard = false;
+    if (params.guided === 0) params.guided = false;
+    const entry = Object.assign(M.entryFromQuery(q), { params });
+
+    const navLog = [];
+    const slotsLog = [];
+    const rounds = [];
+    const leave = (where, href) => {
+      navLog.push(where);
+      if (q.get("nonav") !== "1") location.href = href;
+    };
+    const host = M.createHost({
+      root: stageEl,
+      core,
+      kit: { Results: window.Results, Onboard: window.Onboard },
+      hook: true,
+      // a Conversation may go here (H44): the shell decides; wired with the hub (R6). The lab only notes the slot.
+      slots: async (name, info) => slotsLog.push(`${name}:${info.play.play}`),
+      speakWord: (w) => core.voice.word(w.kutchi || w.english),
+    });
+    const labState = { entry, rounds, nav: navLog, slots: slotsLog, last: null, ended: false };
+    Object.assign(window.njgTest, { lab: () => Object.assign(labState, { coins: core.wallet.coins() }), arc: (id) => unlocks.arc(id), errands: (id) => M.errandsDone(core.save, id), why: (id) => unlocks.why(id) });
+
+    const last = await M.playMode({
+      mode,
+      entry,
+      host,
+      core,
+      unlocks,
+      arcs,
+      map,
+      endActions: window.NjgButtons && window.NjgButtons.endActions,
+      prepare: (plan) => M.loadNeeds(M.gamesOf(mode, plan), { stamp: njgV }),
+      onRound: (r) => rounds.push({ round: r.round, coins: r.finish && r.finish.pay ? r.finish.pay.coins : 0, badges: r.finish && r.finish.badges, action: r.out && r.out.action, story: r.story || null }),
+      nav: {
+        locked: async (why) => {
+          navLog.push("locked");
+          note(`<div class="lock" aria-hidden="true">&#128274;</div>${esc(M.whyText(why))}<small>For grown-ups: this is the test site's lab page; the child's map shows the same lock.</small><a href="labs.html">All labs</a>`);
+        },
+        list: () => leave("list", "labs.html"),
+        home: () => leave("home", "index.html"),
+        go: (e) => leave(`go:${e.mode}`, `lab.html?${M.entryToQuery(e)}`),
+      },
+    });
+    labState.last = last;
+    labState.ended = true;
+  }
+</script>
+</body>
+</html>

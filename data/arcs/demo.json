@@ -1,0 +1,19 @@
+{
+  "_about": "A TEST arc for the plug-and-play demo (js/demo/main.js; docs/architecture/building-games.md, the worked example): one chapter, one errand that runs the demo mode's whole plan (Cook's pantry, then the clinic's scrape, both wrapped by adapters), and a Conversation slot. Finishing the chapter opens the demo mode's free play, which shows the whole loop: locked ('locked until the demo story'), played in story mode, open. test: true keeps it off the child's map and bookshelf; lab.html and build/host play it.",
+  "version": 1,
+  "id": "demo",
+  "test": true,
+  "status": "test",
+  "open": { "open": "always" },
+  "chapters": [
+    {
+      "id": "helper",
+      "note": "Help in the kitchen, then at the clinic.",
+      "flow": [
+        { "errand": { "id": "helper", "mode": "demo", "status": "playable", "entry": {}, "settings": { "level": 1 } } },
+        { "conversation": { "id": "after-helper" } }
+      ],
+      "opens": ["demo"]
+    }
+  ]
+}

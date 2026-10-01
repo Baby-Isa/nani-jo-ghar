@@ -1,0 +1,8 @@
+{
+  "_about": "Every arc the shell knows (js/shared/mode.js; docs/architecture/building-games.md). One file per arc: data/arcs/<id>.json, checked by build/host/check_arcs.mjs. test: true arcs are for the test site and build/host only (lab.html, never the child's map or bookshelf).",
+  "version": 1,
+  "arcs": [
+    { "id": "birthday" },
+    { "id": "demo", "test": true }
+  ]
+}

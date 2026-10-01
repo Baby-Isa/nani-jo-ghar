@@ -1,0 +1,43 @@
+{
+  "_about": "Arc 1, the Birthday: the SKELETON only (rule H36; the chapters, goals and errands are docs/game-design/story-and-arcs.md 'Arc 1: The Birthday' as written; no new content). The beat script is still to write (story-and-arcs.md 'Arc 1's beat script: TBC'), so every beat is an id with status to-write and no line: lines are meanings in the language engine's data, never text here (G13). Format: docs/architecture/building-games.md 'Add an arc'. flow is the order a chapter plays in: {beat}, {errand: {id, mode, entry, settings, status}}, {conversation: {id}} (a slot where the shell MAY put a Conversation, H44). opens: what finishing the chapter opens (map places, modes; fed to js/core/unlocks.js through js/shared/mode.js withArcRules). Errand status: playable (its mode runs on the game host), waiting (the mode is built but not yet moved onto the host: Cook until R4), to-build (no mode yet). note: for grown-ups and sessions only, never shown to the child.",
+  "version": 1,
+  "id": "birthday",
+  "status": "skeleton",
+  "source": "rule H36; docs/game-design/story-and-arcs.md, Arc 1: The Birthday (28 Sept 2026)",
+  "open": { "after": { "arc": "first-launch" } },
+  "chapters": [
+    {
+      "id": "guests-coming",
+      "note": "The guests are coming. Guests are due -> nothing's ready -> each guest fed, the table set.",
+      "flow": [
+        { "beat": "guests-coming-start", "status": "to-write" },
+        { "errand": { "id": "cook-guests", "mode": "cook", "status": "waiting", "entry": {}, "settings": {}, "note": "Cook each guest's order: each guest asks for their own dish by name, like Cook's customer flow." } },
+        { "conversation": { "id": "after-cook-guests" } },
+        { "errand": { "id": "set-table", "mode": "put-it-there", "status": "to-build", "entry": {}, "settings": {}, "note": "Set the table (Put it there): place words for plates, cups, a spot for each guest." } },
+        { "beat": "guests-coming-end", "status": "to-write" }
+      ],
+      "opens": []
+    },
+    {
+      "id": "cat-and-sweets",
+      "note": "The cat and the sweets. The mithai's out -> the cat scatters it.",
+      "flow": [
+        { "beat": "cat-and-sweets-start", "status": "to-write" },
+        { "errand": { "id": "find-sweets", "mode": "hide-and-seek", "status": "to-build", "entry": {}, "settings": {}, "note": "Find the sweets (Hide and seek)." } },
+        { "conversation": { "id": "after-find-sweets" } },
+        { "errand": { "id": "pack-sweet-box", "mode": "put-it-there", "status": "to-build", "entry": {}, "settings": {}, "note": "Pack the sweet box (Put it there, with counting: the right number in each layer)." } },
+        { "beat": "cat-and-sweets-end", "status": "to-write" }
+      ],
+      "opens": []
+    },
+    {
+      "id": "party",
+      "note": "The party. Everyone's fed and seated.",
+      "flow": [
+        { "beat": "candles", "status": "to-write", "note": "Blow out the candles: a short finale beat." },
+        { "errand": { "id": "story-by-the-fire", "mode": "fire", "status": "to-build", "entry": {}, "settings": {}, "note": "The Story by the Fire (H40): the book of what the child did, voiced by Nani." } }
+      ],
+      "opens": []
+    }
+  ]
+}
