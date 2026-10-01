@@ -35,7 +35,7 @@ export async function makeSheets(browser, runDir, results, log = () => {}) {
         .shot{background:#ddd;width:100%} .shot img{width:100%;height:100%;display:block;object-fit:contain}
         figcaption{padding:6px 8px;display:flex;flex-direction:column;gap:1px;font-size:13px} figcaption span{color:#6b5a45;font-size:12px} .n{font-weight:700}
       </style><h1>${esc(r.flow)} &middot; ${esc(r.size)} (${esc(sz.label)})${parts.length > 1 ? ` &middot; part ${pi + 1}/${parts.length}` : ""}</h1>
-      <p>${esc(r.title)}. ${r.complete ? "Reached its end." : "Did not reach its end."} ${r.states.length} states, ${r.findingCount} findings, ${(r.ms / 1000).toFixed(0)} s.</p>${stops}
+      <p>${esc(r.title)}. ${r.complete ? "Reached its end." : "Did not reach its end."} ${r.states.length} states, ${r.findingCount} distinct findings, ${(r.ms / 1000).toFixed(0)} s.</p>${stops}
       <div class="grid">${cells}</div>`;
       const htmlName = `${slug(r.flow)}__${r.size}${parts.length > 1 ? `__${pi + 1}` : ""}`;
       writeFileSync(join(outDir, htmlName + ".html"), html);

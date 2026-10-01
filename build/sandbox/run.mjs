@@ -88,11 +88,11 @@ for (const flow of flows) {
       try { await Promise.race([rec.state("stopped-here"), new Promise((r) => setTimeout(r, 20000))]); } catch (e2) { /* the page is gone */ }
     } finally { clearTimeout(timer); }
     await ctx.close().catch(() => {});
-    const findingCount = rec.states.reduce((n, s) => n + s.findings.length, 0);
+    const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
     const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started };
     writeFileSync(file, JSON.stringify(r));
     results.push(r);
-    log(`${flow.id} @ ${size}: ${r.complete ? "end reached" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s`);
+    log(`${flow.id} @ ${size}: ${r.complete ? "end reached" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} distinct findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s`);
   }
 }
 

@@ -149,6 +149,8 @@ function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, onboard =
       const q = `${query}&seed=${SEED}&quiet=1&fast=1&onboard=${onboard ? 1 : 0}`;
       await page.goto(`${BASE}/clinic.html?${q}`, { waitUntil: "load" });
       await page.waitForFunction(() => window.__clinic && window.__clinic.ready, null, { timeout: 30000 });
+      // adapter: some games' debug drivers ask `__heal.run` (the heal-host lab's hook); here the same thing lives in __clinic
+      await page.evaluate(() => { if (!window.__heal) Object.defineProperty(window, "__heal", { value: { get run() { return window.__clinic.Stages.heal.current; }, get result() { return window.__clinic.last; } } }); });
       await sleep(500);
       const P = new ClinicPlayer(page, rec);
       try {
