@@ -4,22 +4,6 @@
   "w": 1600,
   "h": 900,
   "views": {
-    "_about": "Measured 1 Oct (R4) at level 4 over every Station-lab station: the x-range of every tappable thing and shelf chip, widened to every shelf chip's text (the chai tray's first chip, paani, starts near x 30) and on the right to x 1500, past what other levels and orders may place there (the sekelo grill's chips at x 1450, the samosa plate's edge at 1480). Only x is constrained (null: the height is free). The pantry keeps the whole box: its fridge holds things to tap at its right edge (dudh near x 1482, met in story days, not in the lab's lists). The hob view (tadka, stir) and the stations' shelf bands that reach the edges keep the whole box until they are laid out for 4:3.",
-    "marble": {
-      "safe": [
-        20,
-        null,
-        1500,
-        null
-      ],
-      "from": [
-        "chai-tray",
-        "maani-line",
-        "mishkaki-grill",
-        "daar",
-        "assemble",
-        "samosa"
-      ]
-    }
+    "_about": "Empty for now (R4): every Cook view keeps the whole box. Measured (build/measure_cook_views.mjs, level 4) the marble worktop's tappables span x 90-1394, but its stations keep the bottom-right corner clear for the Done tick (x 1410-1600), and the pantry's fridge holds things at x 1482: any narrower area puts a shelf chip under the tick or off screen (sandbox r4-final: cook:assemble@L4 at 1024x768, cook:day1 and day3). Growing play items on 4:3 tablets needs each station laid out for 4:3 first (the shelf in two rows or a narrower pitch, the tick's corner kept)."
   }
 }
