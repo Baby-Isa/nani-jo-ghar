@@ -9,14 +9,14 @@
 
 ## 0. In short
 
-- **118 images** in four parts, uploaded by Chrome to `sources/art/clinic-heal-v3/` on `main`:
+- **115 images** in four parts, uploaded by Chrome to `sources/art/clinic-heal-v3/` on `main`:
   - **A, with Zafar watching (6):** the first character sheet of each new patient: the girl, the boy, the old man, the old woman, the man, the woman.
-  - **B, the girl and her games (38):** her wide shots front and side, six states, the blanket and the hot-water bottle; every close-up her nine games need; and the props those games need (the overlays, the fever-room things, the exam room's tablet version and open window, the eye chart, the filling button).
-  - **C, the other five patients (72):** their wide shots and states, the adult limb close-ups, and only the head close-ups their ailments need.
+  - **B, the girl and her games (37):** her wide shots front and side, six states, the blanket and the hot-water bottle; every close-up her nine games need; and the props those games need (the overlays, the fever-room things, the exam room's tablet version and open window, the eye chart, the filling button).
+  - **C, the other five patients (70):** their wide shots and states, the adult limb close-ups, and only the head close-ups their ailments need.
   - **D, the drop machine (2).**
 - **One change to the order I was given:** the fever-room things, the eye chart and the filling button sit in part B, straight after the girl, not after the other patients. Her fever, eye and tooth games can't be played without them, so this is what makes the visit safe if the run stops early (question 1).
-- **Zafar's time:** about 5 minutes to start, then 30–40 minutes watching the six sheets; the rest runs on its own.
-- **When:** as soon as this page is on `main`. Part B is likely done in 2–3 hours, part C and D overnight.
+- **Zafar's time:** about 5 minutes to start, then 30–40 minutes watching the six sheets; the rest runs on its own. The girl's sheet (S1) waits for him however long it takes; if he goes quiet for 15 minutes on any later sheet, the runner moves on to part B and comes back to the skipped sheets on "resume".
+- **When:** as soon as this page is pushed (the block reads it from the branch `ccr-fcd9dddd-wnywzc` until it reaches `main`). Part B is likely done in 2–3 hours, part C and D overnight.
 
 ---
 
@@ -34,7 +34,7 @@
 | Cook's item icons | `assets/cook/items/icon-<id>.webp` | The pictures on the eye chart's rows (placed by code), so the chart uses words the child already knows |
 | The kitchen kit's pour | Cook | The drink pour in the sore-spots game |
 
-**Retired:** CB6b (`cb6b-closeup-bed*.webp`) as the heal background (kept as a fallback, not deleted); every emoji tool and every code-drawn stand-in limb, head, ear, mouth, tongue, eye and foot; the rough girl, boy, old man, old woman, uncle and auntie sprites (`assets/clinic/rough/patients/`), once the new ones are wired.
+**Retired:** CB6b (`cb6b-closeup-bed*.webp`) as the heal background (kept as a fallback, not deleted); **the lollipop**, which `data/clinic/pipeline.json` still lists in six places: `ailments.jab.items` and `ailments.jab.ask` (the jab's ask), `stages.sendoff.helps.sad` (the sad patient's help at the send-off), `stages.sendoff.helpCards`, `extras.list` and `stages.pharmacy.decoys`. It gets no art; the data swaps it for the apple (I2, CLN-27, CLN-37) in the finishing session, not here; every emoji tool and every code-drawn stand-in limb, head, ear, mouth, tongue, eye and foot; the rough girl, boy, old man, old woman, uncle and auntie sprites (`assets/clinic/rough/patients/`), once the new ones are wired.
 
 **Not in this batch:**
 - **The doctor.** He stands in every wide shot, but his art is made from his own photos with Zafar watching, and that isn't in this brief (question 5).
@@ -51,7 +51,7 @@
    - **Front-on:** the patient sits centred on the bed's long edge, facing us, feet on the step stool. This is also the diagnosis scene, and the shot for the forearm, the upper arm, the mouth, the tongue, the eyes, the eye test A, the foot sole and the fever room.
    - **Side-on:** the patient sits on the right-hand end of the bed in profile, facing right towards the doctor, legs hanging over the end. This is the shot for the knee, the ear and the eye test B.
    - Moving from the front-on diagnosis to a side-on zoom is a cross-fade: the patient turns.
-2. **The zoom** (code). The room layer scales about the sore part's anchor until the part fills about 60% of the play area's height. At the peak, the HD close-up cross-fades in, registered so the part sits at the same place and size (a match cut). The room behind stays CB2b, zoomed and blurred. After the game, it cross-fades back to the wide pose in its happy state, zooms out, and the patient says "thank you, I feel better".
+2. **The zoom** (code). The room layer scales about the sore part's anchor until the part fills about 60% of the play area's height. At the peak, the HD close-up cross-fades in. For the knee and ear (from W7) and the mouth, tongue, eyes and eye test A (from W1) it's registered so the part sits at the same place and size (a match cut); the forearm, upper arm, sole and eye test B change pose or angle, so they hard-cut at the peak (section 7.6). The room behind stays CB2b, zoomed and blurred. After the game, it cross-fades back to the wide pose in its happy state, zooms out, and the patient says "thank you, I feel better".
 3. **States** (D3, Zafar): neutral, happy, sad, pain, hot and cold, as face swaps on one body. The whole body changes for two extras only: **the blanket over the shoulders** and **hugging the hot-water bottle**. The body alternates as the room gets too hot or too cold, using the existing shake (E22); not every item is acted out.
 
 ### 2.2 Canvases, resolution, bleed and safe areas
@@ -63,7 +63,7 @@ The clinic's scenes are laid out in the rooms' own pixels, 1536×1024, filled "c
 | **Wide poses** (W) | 1024×1536 portrait, one figure about 1,300 px tall | The figure at its largest drawn height on the room: about 410 px for a child, 575 px for an adult (scene data, measured by overlay) | 2× that, downscaled from the source (real pixels, no upscaling) | None needed: a sprite on the room |
 | **Head layers and corner faces** | Edits of the wide pose | On the wide pose's own canvas; corner-face crops square, 512 px | Head layers 2×, as the wide pose | Corner faces: the eye line at the same height and the face at the same width for everyone (D18) |
 | **Close-ups** (K, F, U, P, E, M, Y, T) | 1536×1024 or 1024×1536; the limb or head **runs off the image edges** | The source size | **2× with a free upscaler** (Real-ESRGAN, run locally in the cut step), then sharpened (question 3) | **Exit edges are the bleed:** the code scales each close-up so every edge the limb leaves by sits past the screen edge on any shape from square (a tablet's play area once the 25% sidebar is taken) to 1.75:1 (a phone). **The safe area** (the part and every tap target) is the middle 60% of the width and 70% of the height |
-| **The exam room** (R3) | 1024×1024: the whole of CB2b across the middle, with new ceiling and floor bands | 1536×1536: the original 1536×1024 kept pixel for pixel in the middle (y 256–1280), with only the new bands taken from R3, registered and feathered | 3072×3072 (upscaled) | A tablet's square play area now sees the whole room, window and door included; a phone's 1.75:1 sees the full width and loses only bands top and bottom. **Safe area: x 0–1 and y about 0.07–0.93 of the original picture;** zoom anchors and tappable room things stay inside y 0.10–0.90 |
+| **The exam room** (R3) | 1024×1024: the whole of CB2b across the middle, with new ceiling and floor bands | 1536×1536: the original 1536×1024 kept pixel for pixel in the middle (y 256–1280), with only the new bands taken from R3 (made at 0.67 scale, so they go through Real-ESRGAN to reach 1536 wide), registered and feathered | 3072×3072 (upscaled) | A tablet's square play area now sees the whole room, window and door included; a phone's 1.75:1 sees the full width and loses only bands top and bottom. **Safe area: x 0–1 and y about 0.07–0.93 of the original picture;** zoom anchors and tappable room things stay inside y 0.10–0.90 |
 | **Props and overlays** (O, R1, R2, B1, D2) | Grid sheets, cells about 350–500 px | Trimmed, 16 px pad, at most 512 px | Not needed (drawn at 480 px or less, per R3a) | — |
 | **The eye chart and the drop machine** (C1, C2, D1) | 1024×1536 portrait | The source size | 2×, upscaled | Inside the safe area of their scene |
 
@@ -88,8 +88,8 @@ The clinic's scenes are laid out in the rooms' own pixels, 1536×1024, filled "c
 | **W2–W6 happy, sad, pain, hot, cold** | The face reacts (D3); the corner face; the send-off bubble | Swapped over W1's face; cropped for the corner circle | Edits of W1 | As W1 | — | Each is an edit of W1, registered to W1 by ECC on the head band. **Only the head region** is kept, as a layer on W1's canvas, so any state's face can sit on any body (the blanket one included) |
 | **W7 side, neutral** | The side-on zoom (knee, ear, eye test B) | On CB2b, at the bed's right-hand end, in profile, facing right | E, side | Seat at x about 0.70, y 0.535; the legs hang over the bed's end (x 0.74–0.77): a child's feet hang free, an adult's rest on the floor at y 0.80; doctor at x about 0.86, feet at y 0.92, turned three-quarter to the patient. On the square room (R3), all of this is on screen on a tablet too | The legs over the end, so the zoom to the knee reads | Base canvas for W8 |
 | **W8 side, happy** | The zoom-out and "thank you" after a side-on game | As W7 | Edit of W7 | As W7 | — | Head layer on W7's canvas |
-| **W9 blanket** | Fever: too cold → the blanket (small warm step); the send-off | Swapped for the whole of W1 | Edit of W1 | As W1; the blanket matches `items-v2/blanket-red` (a plain deep-red fleece) | Legs and feet unchanged, so the seat and feet don't jump | Registered to W1 by ECC on the legs and feet band; exported on W1's canvas |
-| **W10 hugging the hot-water bottle** | Fever: the medium warm step | As W9 | Edit of W1 | The bottle: a plain teal knitted cover with a cream rubber neck and stopper. It must contrast with every patient's clothes (it does: yellow, red, blue, cream and green, white, purple), and R1's loose bottle is drawn from this one | As W9 | As W9 |
+| **W9 blanket** | Fever: too cold → the blanket (small warm step); the send-off | Swapped for the whole of W1 | A fresh prompt (the arms change, so not an edit, D9) with the kept W1 and the sheet attached | As W1; the blanket matches `items-v2/blanket-red` (a plain deep-red fleece) | Legs and feet unchanged, so the seat and feet don't jump | Registered to W1 by ECC on the legs and feet band; exported on W1's canvas |
+| **W10 hugging the hot-water bottle** | Fever: the medium warm step | As W9 | A fresh prompt, as W9 | The bottle: a plain teal knitted cover with a cream rubber neck and stopper. It must contrast with every patient's clothes (it does: yellow, red, blue, cream and green, white, purple), and R1's loose bottle is drawn from this one | As W9 | As W9 |
 
 **Fanning when hot** (my 8B idea) is left out: Zafar listed only the blanket and the bottle. The hot face (flushed, puffing) carries "too hot".
 
@@ -101,8 +101,8 @@ A close-up is **a cut-out picture over the zoomed, blurred room**, never a lone 
 
 | Image | Game | Camera and framing | Size of the part | Exit edges | States, one registered canvas (D8) |
 |---|---|---|---|---|---|
-| **K knee** (child K1–K4; adult AK1–AK4) | Knee (the hammer tap, the wrap); scrape on the knee (wash reveal, plasters) | Three-quarter side, sitting, the lower leg hanging (the kick reads) | The knee about half the image height, a little right of centre | Thigh in from the left, shin out of the bottom | 1 plain; 2 kicked (only the lower leg moves); 3 grazed; 4 grazed with dirt (an edit of 3, so the graze underneath matches exactly and the wash can reveal 3 through 4) |
-| **F forearm** (F1–F4; AF1–AF4) | Scrape on the arm; the cut (stitches drawn in code) | Held out to us, palm down, from above and a little in front | The forearm about a third of the height, across the middle | Sleeve at the left edge | 1 plain; 2 grazed; 3 grazed with dirt (an edit of 2); 4 a short neat cut, a thin pink line with no blood (H26) |
+| **K knee** (child K1–K3; adult AK1–AK3) | Knee (the hammer tap, the wrap); scrape on the knee (wash reveal, plasters) | Three-quarter side, sitting, the lower leg hanging (the kick reads) | The knee about half the image height, a little right of centre | Thigh in from the left, shin out of the bottom | 1 plain; 2 kicked (a fresh prompt with K1 and the sheet attached, since the pose changes, D9); 3 grazed (an edit of 1). **The dirt is an overlay** (O1's dirt patch) placed over the graze on 3, which the wash wipes away in code; no edit of an edit |
+| **F forearm** (F1, F2, F4; AF1, AF2, AF4) | Scrape on the arm; the cut (stitches drawn in code) | Held out to us, palm down, from above and a little in front | The forearm about a third of the height, across the middle | Sleeve at the left edge | 1 plain; 2 grazed (an edit of 1; the dirt is O1's overlay, as for the knee); 4 a short neat cut, a thin pink line with no blood (H26), an edit of 1 |
 | **U upper arm** (U1; AU1) | Boing (the jab) | Side and a little in front, the arm hanging | The bare upper arm about half the height | Arm out of the bottom; chest at the left | 1 plain (the plaster is the existing sprite) |
 | **P sole** (P1; AP1) | Foot (the square-turn splinter paths, drawn in code) | Straight on to the sole, toes up | The sole about three-quarters of the height | Ankle and leg out of the bottom | 1 plain, smooth, with clearly separate toes (named at L3) |
 | **E ear** | Ear (wax wiping, more wax spawning, the seed, drops) | Exactly side-on, facing right | The ear about 40% of the height, drawn a little bigger than real (Zafar: "a bigger ear") | Head off the top and right, neck off the bottom | 1 plain (wax, the seed and the tissue are overlays) |
@@ -128,7 +128,7 @@ A close-up is **a cut-out picture over the zoomed, blurred room**, never a lone 
 
 | Image | What and why | Seen as | Notes |
 |---|---|---|---|
-| **O1** ear and foot bits | Ear wax big, medium and small (big and small are said from L2); a seed (the seed-in-ear ailment); two splinters; one clear drop (eye drops); a folded tissue (where the wax goes) | On E, P and Y | Wax is friendly: glossy, honey-coloured, never gross. The colour change Zafar liked is a code tint |
+| **O1** ear, foot and scrape bits | Ear wax big, medium and small (big and small are said from L2); a seed (the seed-in-ear ailment); two splinters; one clear drop (eye drops); a folded tissue (where the wax goes); **a dirt patch** (soft dust and grit, the scrape's wash reveal over K3 and F2) | On E, P, Y, K3 and F2 | Wax is friendly: glossy, honey-coloured, never gross. The colour change Zafar liked is a code tint. The dirt patch is scaled and rotated per scrape in code, and the wash wipes it away through a mask |
 | **O2** mouth bits | Sore spots in red, yellow, blue and green (`pipeline.json` `colours`); three jagged decay patches (scattered by level); a white filling patch | On M1 and M2 | All spots the same size and shape, so only the colour word decides |
 | **O3** cotton bud and ointment | One bud clean, the same bud with ointment (*malam*, D15e: never a pin), the same bud with wax (the ear wipe); a small pot of ointment | Held over M2 and E | The three buds registered; matched to CI1's bud pot |
 
@@ -141,7 +141,8 @@ Cooling: **window big, ceiling fan medium, hand fan small**. Warming: **blanket 
 | **R3 the room, square** | The exam room for every exam scene, tablets included | The original kept in the middle; ceiling and floor bands added | — |
 | **R4 the window, open** | An overlay cut from the diff with CB2b (art-pipeline 9d) | x 0–0.10, y 0–0.45 | Closed = CB2b as it is; open = the overlay |
 | **R2 the ceiling fan** | A body (downrod and motor) and a blade disc drawn from directly below; the code tilts the disc into the room's view (CSS `rotateX`) and spins it (`rotateZ`) | Downrod from the new ceiling at x about 0.34; blades at about y 0.12, clear of the patient's head and inside the phone crop | Off = still; on = spinning (code) |
-| **R1 the comfort things and the heater** | Ice pack, hot-water bottle, hand fan on the mattress's free right end; the heater on the floor; the big thermometer gauge on the wall | Small things at x 0.62–0.72 on the mattress top (y about 0.45); heater on the floor at x about 0.24, base at y 0.84 (left of the bed, clear of the toys); gauge at x 0.76–0.84, y 0.12–0.40 | Heater off and on (registered); the gauge is empty, and its level and green zone are code |
+| **R1 the comfort things and the heater** | Ice pack, hot-water bottle, hand fan on the mattress's free right end; the heater on the floor | Small things at x 0.62–0.72 on the mattress top (y about 0.45); heater on the floor at x about 0.24, base at y 0.84 (left of the bed, clear of the toys) | Heater off and on (registered) |
+| **R5 the live thermometer gauge** | Big on the wall: the reading the doctor's green zone is judged on | x 0.76–0.84, y 0.12–0.40 | One empty gauge, its own 1024×1536 prompt so it's sharp at the size it's drawn; its level and green zone are code |
 
 The **thermometer gauge** is new because the reading must be big and live (the doctor's green zone). The small glass thermometer from CI1 stays as the tool.
 
@@ -152,8 +153,8 @@ The **thermometer gauge** is new because the reading must be big and live (the d
 | **C1 chart, front-on** | Version A: the right half of the split screen, over the blurred room | A blank white board in a light-wood frame, one small eye picture at the top and six empty rows, getting less tall from top to bottom. The pictures (Cook's icons) are placed by code at each row's size; the current row is lit and judged rows tick gold like the card (CLN-61). **No letters, no numbers** |
 | **C2 chart, quarter-turned on a stand** | Version B: at the right, close to the side-on patient (T2), facing between the patient and us | The same chart, turned about 30°. The cut records its four corners, so the code can lay the row pictures on it in perspective (a CSS `matrix3d` from the corners) |
 | **B1 filling button and nozzle** | Tooth fill: press the big button while the gauge (code: green zone, red either side) is in the green | Button up and down, registered; the nozzle idle and squeezing paste, registered; matched to CI1's drill and paste tube. Blue, so it reads as neither "stop" nor "yes" |
-| **D1 drop machine** | Boing: four tall dispensers, each with a lever; a pulled lever drops a blob into the syringe below; then the syringe's glowing end starts the jab (D15g) | White and pale steel with four clear tubes of red, yellow, blue and green medicine drops. **Clinical, never a sweet machine** (I2): no glass dome, coin slot, turning handle, stripes or wrapped sweets. The lever sockets are empty; the levers are D2 |
-| **D2 levers, drops, upright syringe** | The four levers (up and down), the falling drops, and CI2's syringe standing upright with its barrel open | The syringe is cut in two layers (the back of the barrel, and the clear front at partial alpha), so drops sit inside it |
+| **D1 drop machine** | Boing: four tall dispensers, each with a lever; a pulled lever lets one drop fall into the syringe below; then the syringe's glowing end starts the jab (D15g) | White and pale steel; four clear tubes of **coloured liquid medicine** (red, yellow, blue, green), each with a **drip spout** at the bottom. **Clinical, never a sweet machine** (I2, decision 27): no balls, beads or jelly beans in the tubes, no glass dome, coin slot, turning handle, stripes or wrapped sweets. The lever sockets are empty; the levers are D2 |
+| **D2 levers, drops, upright syringe** | The four levers (up and down), the falling drops, and CI2's syringe standing upright with its barrel open | Each drop is **teardrop-shaped and matte-translucent** like a drop of liquid medicine, **never a glossy ball** (no gumball or jelly-bean look; question 9). The syringe is cut in two layers (the back of the barrel, and the clear front at partial alpha), so drops sit inside it |
 
 ---
 
@@ -161,18 +162,20 @@ The **thermometer gauge** is new because the reading must be big and live (the d
 
 | Part | Who's there | Prompts | Images | Why this order |
 |---|---|---|---|---|
-| **A** | **Zafar watches** | S1 girl, S2 boy, S3 old man, S4 old woman, S5 man, S6 woman | 6 | Each person's first sheet needs him (D12, decision 9). The girl's goes first. If he must leave after S1, he types **go**: the runner skips the other sheets and everything that needs them, and still finishes part B and part D |
-| **B** | Unattended | Girl: W1–W10; child limbs K1–K4, F1–F4, U1, P1; her head close-ups E1, M1, M2, Y1–Y3, T1, T2; then O1–O3, R3, R4, R1, R2, C1, C2, B1 | 38 | The girl is the visit's patient: with part B done, every heal game can be played with real art |
-| **C** | Unattended | Boy, old man, old woman, man, woman (their W prompts and head close-ups); the adult limbs AK1–AK4, AF1–AF4, AU1, AP1 (from the man's sheet) | 72 | The rest of the cast, in the order of how many games they play |
+| **A** | **Zafar watches** | S1 girl, S2 boy, S3 old man, S4 old woman, S5 man, S6 woman | 6 | Each person's first sheet needs him (D12, decision 9). The girl's goes first and never times out. If he must leave, he types **go** (or is silent for 15 minutes on S2–S6): the runner starts part B and part D, and reruns the skipped sheets (and their people) on "resume" |
+| **B** | Unattended | Girl: W1–W10; child limbs K1–K3, F1, F2, F4, U1, P1; her head close-ups E1, M1, M2, Y1–Y3, T1, T2; then O1–O3, R3, R4, R1, R5, R2, C1, C2, B1 | 37 | The girl is the visit's patient: with part B done, every heal game can be played with real art |
+| **C** | Unattended | Boy, old man, old woman, man, woman (their W prompts and head close-ups); the adult limbs AK1–AK3, AF1, AF2, AF4, AU1, AP1 (from the man's sheet) | 70 | The rest of the cast, in the order of how many games they play |
 | **D** | Unattended | D1, D2 | 2 | Zafar wants it before the visit (D19), but boing works with the stand-in beads until it lands |
 
-**Dependencies:** an edit waits for the image it edits. Every W and every head close-up waits for its person's sheet. The child limbs need S1; the adult limbs need S5. R1 attaches the kept W10 (if W10 was skipped, R1 goes without it). C2 needs C1, and D2 needs D1. The runner keeps up to three going at once (D26), so within a part the order is a queue, not a strict line.
+**Dependencies:** an edit waits for the image it edits, and is only ever made from a fresh picture (no edits of edits); W9, W10 and K2 wait for the kept W1 or K1. Every W and every head close-up waits for its person's sheet. The child limbs need S1; the adult limbs need S5. R1 attaches the kept W10 (if W10 was skipped, R1 goes without it and draws the bottle from its words). C2 needs C1, and D2 needs D1. The runner keeps up to three going at once (D26), so within a part the order is a queue, not a strict line.
 
 ---
 
 ## 5. The prompts
 
 **For the runner:** paste each code box exactly as written. A code box with `{NAME}`, `{KEEP}`, `{LEGS}` or `{LIMB_WHO}` is a template: replace each slot with that prompt's person's text from the PEOPLE table below, exactly, and change nothing else. These substitutions (and, in part A only, one sentence Zafar dictates) are the only changes ever allowed.
+
+**The edit tail.** Every edit prompt (W2–W6, W8, K3, F2, F4, Y2, Y3, R4) ends with the same tail, already written into each code box: the same size and shape as the attached picture, the flat `#808080` background (R4 keeps its room), the style line and the negatives. An edit is only ever made from a fresh, non-edited picture (never an edit of an edit), and only for a small change in the same pose (D9). Where the pose changes (W9, W10, K2), it's a fresh prompt with the kept picture and the sheet attached.
 
 ### PEOPLE table (the slot texts)
 
@@ -250,7 +253,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 ```
 Generate an image, 1536×1024, landscape.
 
-Using the attached old man character sheet as the only reference for who he is, make a new character sheet for him as a patient at a friendly children's doctor's, in exactly the same style. He is in his seventies, slim and slightly stooped: grey hair neatly combed back, a grey moustache, a clean-shaven chin, no cap, no glasses; a long kurta in plain solid blue; white trousers; brown sandals. No walking stick in any panel. Keep his face, hair, clothes and colours exactly as on the sheet. His skin is a warm light tan (about hex #C49A78): a little more brown than beige, warm and unsaturated, never orange, never pink.
+Using the attached old man character sheet as the only reference for who he is, make a new character sheet for him as a patient at a friendly children's doctor's, in exactly the same style. He is in his seventies, slim and slightly stooped: grey hair neatly combed back, a grey moustache, a clean-shaven chin, no cap; a long kurta in plain solid blue; white trousers; brown sandals. Remove the glasses and the walking stick seen on the sheet: no glasses and no stick in any panel. Keep his face, hair, clothes and colours exactly as on the sheet. His skin is a warm light tan (about hex #C49A78): a little more brown than beige, warm and unsaturated, never orange, never pink.
 
 Layout: eight separate panels in two rows of four, with clear space between them; nothing touches or crosses into a neighbouring panel. Do not draw panel borders, grid lines or labels.
 Top row, left to right:
@@ -371,30 +374,50 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 ```
 Edit the attached picture. Change ONLY the face, to this expression: a big, happy, open smile and bright eyes, feeling much better.
 Everything else stays exactly the same: the same person, pose, body, hands, clothes, hair, colours and skin; the same size and position in the frame; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize, crop or add anything. Do not add any text, letters, numbers, symbols, tears, sweat drops, stars or motion lines.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### W3. Sad (an edit)
 ```
 Edit the attached picture. Change ONLY the face, to this expression: sad, the brows raised in the middle, the mouth turned down, the eyes a little glassy, no tears.
 Everything else stays exactly the same: the same person, pose, body, hands, clothes, hair, colours and skin; the same size and position in the frame; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize, crop or add anything. Do not add any text, letters, numbers, symbols, tears, sweat drops, stars or motion lines.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### W4. Pain (an edit)
 ```
 Edit the attached picture. Change ONLY the face, to this expression: a small comic wince of pain, one eye squeezed shut, the teeth together, the brows pulled together; mild and a little funny, never real distress.
 Everything else stays exactly the same: the same person, pose, body, hands, clothes, hair, colours and skin; the same size and position in the frame; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize, crop or add anything. Do not add any text, letters, numbers, symbols, tears, sweat drops, stars or motion lines.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### W5. Hot (an edit)
 ```
 Edit the attached picture. Change ONLY the face, to this expression: much too hot, flushed pink cheeks, droopy half-closed eyes, the mouth open, puffing out air.
 Everything else stays exactly the same: the same person, pose, body, hands, clothes, hair, colours and skin; the same size and position in the frame; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize, crop or add anything. Do not add any text, letters, numbers, symbols, tears, sweat drops, stars or motion lines.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### W6. Cold (an edit)
 ```
-Edit the attached picture. Change ONLY the face, to this expression: much too cold, the teeth chattering, a pink nose and pink cheeks, the lips slightly bluish, the eyes scrunched.
+Edit the attached picture. Change ONLY the face, to this expression: much too cold, the teeth chattering, a pink nose and pink cheeks, the eyes scrunched.
 Everything else stays exactly the same: the same person, pose, body, hands, clothes, hair, colours and skin; the same size and position in the frame; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize, crop or add anything. Do not add any text, letters, numbers, symbols, frost, tears, sweat drops, stars or motion lines.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### W7. Side-on, neutral (template)
@@ -416,18 +439,40 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 ```
 Edit the attached picture. Change ONLY the face, to this expression: a big, happy, open smile and bright eyes, feeling much better.
 Everything else stays exactly the same: the same person, pose, body, hands, clothes, hair, colours and skin; the same size and position in the frame; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize, crop or add anything. Do not add any text, letters, numbers, symbols, tears, sweat drops, stars or motion lines.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### W9. The blanket (an edit of W1)
+#### W9. The blanket (template; attach the kept W1 and the sheet)
 ```
-Edit the attached picture. Wrap a soft, thick, plain deep-red fleece blanket around the shoulders and back like a cape, its two front edges held together at the chest by both hands; the blanket falls over the lap, but the lower legs and feet still show. Change the face to cosy and relieved: a small warm smile, the eyes a little sleepy.
-Keep everything else exactly the same: the same person, hair, legs, feet, the clothes that still show, the colours and the skin; the same size and position in the frame, with the seat and the feet exactly where they were; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize or crop anything. Do not add any text, letters, numbers, symbols or motion lines.
+Generate an image, 1024×1536, portrait.
+
+Using the attached character sheet as the only reference for who this is, and the attached front picture of {NAME} for the exact pose, size and framing, draw {NAME} again exactly as in that front picture, at the same size and the same position in the frame, sitting on an invisible ledge with the same legs and the same feet in exactly the same place, but now: a soft, thick, plain deep-red fleece blanket is wrapped around the shoulders and back like a cape, its two front edges held together at the chest by both hands; the blanket falls over the lap, but the lower legs and feet still show. A cosy, relieved face: a small warm smile, the eyes a little sleepy. Draw no bed, stool or step.
+
+Keep {NAME} exactly as on the sheet: {KEEP}. Skin a warm light tan (about hex #C49A78), never orange, never pink.
+
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no surface, no gradient, no texture. NO shadows of any kind.
+
+Style: exactly as the attached pictures and style: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### W10. Hugging the hot-water bottle (an edit of W1)
+#### W10. Hugging the hot-water bottle (template; attach the kept W1 and the sheet)
 ```
-Edit the attached picture. Put a hot-water bottle in a plain teal knitted cover, its cream rubber neck and stopper showing at the top, into the arms, hugged close against the tummy with both arms. Change the face to warm and comforted: the eyes half closed, a small contented smile.
-Keep everything else exactly the same: the same person, hair, legs, feet, clothes, colours and skin; the same size and position in the frame, with the seat and the feet exactly where they were; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize or crop anything. Do not add any text, letters, numbers, symbols or motion lines.
+Generate an image, 1024×1536, portrait.
+
+Using the attached character sheet as the only reference for who this is, and the attached front picture of {NAME} for the exact pose, size and framing, draw {NAME} again exactly as in that front picture, at the same size and the same position in the frame, sitting on an invisible ledge with the same legs and the same feet in exactly the same place, but now hugging a hot-water bottle close against the tummy with both arms: the bottle is in a plain teal knitted cover, with its cream rubber neck and stopper showing at the top. A warm, comforted face: the eyes half closed, a small contented smile. Draw no bed, stool or step.
+
+Keep {NAME} exactly as on the sheet: {KEEP}. Skin a warm light tan (about hex #C49A78), never orange, never pink.
+
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no surface, no gradient, no texture. NO shadows of any kind.
+
+Style: exactly as the attached pictures and style: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 ---
@@ -452,22 +497,27 @@ Style: exactly as the attached sheet and style anchor: a stylised 3D animated-fe
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur.
 ```
 
-#### K2. Knee, kicked (an edit of K1)
+#### K2. Knee, kicked (template; attach the kept K1 and the sheet)
 ```
-Edit the attached picture. Change ONLY the lower leg: it has just kicked forward, as when a doctor taps the knee with a little rubber hammer. The shin now swings out to the right, pointing down and to the right at about 45 degrees, and still runs off the bottom or right edge of the image.
-The thigh, the knee, the rolled cloth and the skin stay exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. Do not add motion lines, symbols, text, letters or numbers.
+Generate an image, 1536×1024, landscape.
+
+Using the attached knee close-up for the exact framing, size and look, and the attached character sheet for who this is, draw the same close-up of the right knee of {LIMB_WHO} again: the same three-quarter side view, the same plain white trouser leg rolled up to just above the knee, and the thigh coming in from the left edge, with the thigh and the knee at exactly the same size and position as in the attached close-up. But now the lower leg has just kicked forward, as when a doctor taps the knee with a little rubber hammer: the shin swings out to the right, pointing down and to the right at about 45 degrees, and runs off the bottom or right edge of the image; no foot in the picture. Smooth, clean skin, the same warm light tan (about hex #C49A78), never orange; no mark. Draw no bed. The leg touches only the left, bottom or right edges of the image.
+
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no surface, no gradient, no texture. NO shadows of any kind.
+
+Style: exactly as the attached close-up and sheet: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+
+Do not add any text, letters, numbers, labels, logos or watermarks. No motion lines. No outlines, no cel shading, no photorealism, no blur.
 ```
 
 #### K3. Knee, grazed (an edit of K1)
 ```
 Edit the attached picture. Add one small graze on the front of the kneecap: a rough patch of pink, scuffed skin about the size of a large coin, gentle, like a playground graze. No blood, no drops, no open wound.
 Change nothing else: everything else exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. Do not add text, letters, numbers or symbols.
-```
-
-#### K4. Knee, grazed and dirty (an edit of K3)
-```
-Edit the attached picture. Add a little dirt only on and just around the graze: soft brown dust and a few tiny specks of grit, as after a fall in a playground.
-The graze underneath, its shape and colour, the knee and everything else stay exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. No blood. Do not add text, letters, numbers or symbols.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### F1. Forearm (template)
@@ -492,18 +542,20 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 ```
 Edit the attached picture. Add one small graze in the middle of the top of the forearm: a rough patch of pink, scuffed skin about the size of a large coin, gentle, like a playground graze. No blood, no drops, no open wound.
 Change nothing else: everything else exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. Do not add text, letters, numbers or symbols.
-```
-
-#### F3. Forearm, grazed and dirty (an edit of F2)
-```
-Edit the attached picture. Add a little dirt only on and just around the graze: soft brown dust and a few tiny specks of grit, as after a fall in a playground.
-The graze underneath, its shape and colour, the arm and everything else stay exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. No blood. Do not add text, letters, numbers or symbols.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### F4. Forearm, a small cut (an edit of F1)
 ```
 Edit the attached picture. Add one short, neat, straight cut across the middle of the top of the forearm, about as long as a finger: a thin pink line with slightly pink edges, gentle. No blood, nothing open.
 Change nothing else: everything else exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. Do not add text, letters, numbers or symbols.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### U1. Upper arm (template)
@@ -608,12 +660,20 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 ```
 Edit the attached picture. Make ONLY the eye on the viewer's right look sore: the white of that eye pink, its lids a little puffy and pink, the upper lid slightly droopy. No tears, nothing in the eye.
 The other eye and everything else stay exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. Do not add text, letters, numbers or symbols.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### Y3. Eyes closed (an edit of Y1)
 ```
 Edit the attached picture. Change ONLY the eyes: both closed gently, as in a blink, the lashes together, the face relaxed.
 Everything else stays exactly the same, at the same size and position; the same lighting; the same flat mid-grey background with no shadows. Do not add text, letters, numbers or symbols.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
 #### T1. Eye test A (the split screen)
@@ -648,13 +708,14 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 
 ### The props
 
-#### O1. Ear and foot bits
+#### O1. Ear, foot and scrape bits
 ```
 Generate an image, 1536×1024, landscape.
 
-A sprite sheet for a children's doctor game: eight small things in an invisible grid of 4 columns and 2 rows of equal cells, one thing per cell, centred, each filling about half of its cell, with clear background all round; nothing touches or crosses a cell boundary. Do not draw grid lines, borders or labels.
-Row 1, left to right: (1) a big blob of ear wax: a soft, rounded, glossy golden-yellow blob, like a little dab of honey-coloured clay, friendly and never gross; (2) the same kind of blob, medium-sized; (3) the same kind of blob, small; (4) one small, round, smooth, shiny brown seed.
-Row 2, left to right: (5) one thin, straight wooden splinter; (6) one short, slightly thicker wooden splinter; (7) one single clear water drop, glossy, with a highlight; (8) a soft white paper tissue, loosely folded.
+A sprite sheet for a children's doctor game: nine small things in an invisible grid of 3 columns and 3 rows of equal cells, one thing per cell, centred, each filling about half of its cell, with clear background all round; nothing touches or crosses a cell boundary. Do not draw grid lines, borders or labels.
+Row 1, left to right: (1) a big blob of ear wax: a soft, rounded, glossy golden-yellow blob, like a little dab of honey-coloured clay, friendly and never gross; (2) the same kind of blob, medium-sized; (3) the same kind of blob, small.
+Row 2, left to right: (4) one small, round, smooth, shiny brown seed; (5) one thin, straight wooden splinter; (6) one short, slightly thicker wooden splinter.
+Row 3, left to right: (7) one single clear water drop, glossy, with a highlight; (8) a soft white paper tissue, loosely folded; (9) a thin, roughly round patch of dirt as after a fall in a playground: soft brown dust with a few tiny specks of grit, its edges soft and patchy, lying flat as if on skin, with nothing under it.
 Each seen from the front, lit from the upper left.
 
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
@@ -697,17 +758,30 @@ Style: exactly as the attached style anchor and care kit: a stylised 3D animated
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur.
 ```
 
-#### R1. The comfort things, the heater and the big thermometer
+#### R1. The comfort things and the heater
 ```
 Generate an image, 1536×1024, landscape.
 
-A sprite sheet for a children's doctor game: six things in an invisible grid of 3 columns and 2 rows of equal cells, one thing per cell, centred, each filling about 60% of its cell, with clear background all round; nothing touches or crosses a cell boundary. Do not draw grid lines, borders or labels. Each is seen from the front and slightly above (a three-quarter view), lying flat or standing on a flat base, like the attached clinic things.
-Row 1, left to right: (1) a soft blue gel ice pack, rectangular with rounded corners, a light frost on it, lying flat; (2) the hot-water bottle from the attached picture, on its own: the plain teal knitted cover with its cream rubber neck and stopper, lying flat; (3) a round hand fan of woven palm leaf with a short plain wooden handle, lying flat.
-Row 2, left to right: (4) a small free-standing electric heater: a plain cream metal body with two horizontal heating bars across the front, standing on two small feet, switched OFF, the bars grey; (5) the SAME heater, at exactly the same size and position in its cell, switched ON, the bars glowing warm orange with a soft warm glow just around them; (6) a big friendly wall thermometer: a tall clear glass tube with a round bulb at the bottom, EMPTY with no liquid inside, on a plain white rounded backing board, with no markings, no scale and no numbers.
+A sprite sheet for a children's doctor game: five things in an invisible grid of 3 columns and 2 rows of equal cells, one thing per cell, centred, each filling about 60% of its cell, with clear background all round; nothing touches or crosses a cell boundary; the last cell is left empty. Do not draw grid lines, borders or labels. Each is seen from the front and slightly above (a three-quarter view), lying flat or standing on a flat base, like the attached clinic things.
+Row 1, left to right: (1) a soft blue gel ice pack, rectangular with rounded corners, a light frost on it, lying flat; (2) a hot-water bottle on its own, lying flat: a plain teal knitted cover with its cream rubber neck and stopper showing at the top (if a picture of a patient hugging one is attached, make it exactly that bottle; if not, draw it from these words); (3) a round hand fan of woven palm leaf with a short plain wooden handle, lying flat.
+Row 2, left to right: (4) a small free-standing electric heater: a plain cream metal body with two horizontal heating bars across the front, standing on two small feet, switched OFF, the bars grey; (5) the SAME heater, at exactly the same size and position in its cell, switched ON, the bars glowing warm orange with a soft warm glow just around them; (6) empty.
 
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
 
 Style: exactly as the attached style anchor and clinic things: a stylised 3D animated-feature-film look, semi-photoreal materials, soft global illumination, warm light from the upper left, no outlines.
+
+Do not add any text, letters, numbers, labels, logos, dials or watermarks. No outlines, no cel shading, no photorealism, no blur.
+```
+
+#### R5. The live thermometer gauge
+```
+Generate an image, 1024×1536, portrait.
+
+A big, friendly wall thermometer for a children's doctor game, on its own, seen exactly straight on: a tall clear glass tube with a round glass bulb at the bottom, completely EMPTY with no liquid inside, mounted on a plain white backing board with softly rounded corners. No markings, no scale lines, no numbers, no letters and no colours on the board. Centred, filling about 85% of the image height; the tube runs almost the full height of the board.
+
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No wall, no gradient, no texture. NO shadows of any kind.
+
+Style: exactly as the attached style anchor and clinic things: a stylised 3D animated-feature-film look, semi-photoreal glass, soft global illumination, warm light from the upper left, no outlines.
 
 Do not add any text, letters, numbers, labels, logos, dials or watermarks. No outlines, no cel shading, no photorealism, no blur.
 ```
@@ -718,7 +792,7 @@ Generate an image, 1536×1024, landscape.
 
 A sprite sheet for a children's doctor game: a ceiling fan in two separate parts, in an invisible grid of 2 columns and 1 row of equal cells, one part per cell, with clear background all round; nothing touches or crosses a cell boundary. Do not draw grid lines, borders or labels.
 (1) Left cell: the body of a ceiling fan, seen from the side at eye level and a little below: a long plain white downrod coming straight down from near the top of the cell, and a plain cream motor housing at its bottom. NO blades.
-(2) Right cell: the fan's four blades with their round cream hub, seen from DIRECTLY BELOW, looking straight up, so the four blades form a perfect cross inside a perfect circle; plain pale wooden blades, all the same size, filling about 85% of the cell's height.
+(2) Right cell: the fan's four blades with their round cream hub, seen from DIRECTLY BELOW, looking straight up, so the four blades form a perfect cross that fits exactly within an imaginary circle (draw no circle); plain pale wooden blades, all the same size, filling about 85% of the cell's height.
 
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No ceiling, no gradient, no texture. NO shadows of any kind.
 
@@ -731,7 +805,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 ```
 Generate an image, 1024×1024, square.
 
-The attached picture is a room in a children's game. Draw EXACTLY the same room, from exactly the same camera and with the same light, but show more of it above and below. The whole attached picture fits across the full width of the square, in the middle, unchanged. Above it, the same plain cream wall continues up to a plain white ceiling with a simple narrow cornice and nothing on the ceiling. Below it, the same speckled terrazzo floor continues towards us, empty and clear.
+The attached picture is a room in a children's game. Draw EXACTLY the same room, from exactly the same camera and with the same light, but show more of it above and below. The whole attached picture fits across the full width of the square, in the middle, unchanged. Above it, the same plain cream wall continues up to a plain white ceiling with a simple narrow cornice and nothing on the ceiling. Below it, the same speckled terrazzo floor continues towards us, empty and clear, with speckles the same size as in the attached picture (not bigger as the floor comes nearer).
 Nothing in the room moves, changes size, or is added or removed: the window, the medicine cabinet, the desk and everything on it, the plant, the bed and its paper roll, the step stool, the toys and the rug, and the door all stay exactly where they are. No people, no animals.
 
 Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel shading, no photorealism, no blur, no vignette.
@@ -741,13 +815,16 @@ Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel 
 ```
 Edit the attached picture. Change ONLY the window on the left: open it, so that its tall glass casement is swung inwards into the room at an angle and the sunny garden outside shows more clearly through the gap.
 Everything else stays exactly the same: the walls, the medicine cabinet, the desk and everything on it, the plant, the bed and its paper roll, the step stool, the toys, the rug, the door, the light and the colours. Do not move, resize or crop anything. Do not add any people, animals, text, letters, numbers or logos.
+Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
+Style: exactly as the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur.
 ```
 
 #### C1. The eye chart, front-on
 ```
 Generate an image, 1024×1536, portrait.
 
-A big, friendly picture eye chart for a children's doctor's room, on its own: a tall white board with softly rounded corners in a plain light-wood frame, seen exactly straight on, perfectly rectangular, centred, filling about 85% of the image height. At the very top of the board, one small friendly picture of an open eye. Below it, six EMPTY horizontal rows, each marked only by a thin pale-grey line along its bottom; the rows get a little less tall from the top row to the bottom row, like the rows of an eye chart. The rows are completely empty: no pictures, no letters, no numbers and no symbols in them. This eye chart has NO letters anywhere.
+A blank picture board like an eye chart, for a children's doctor's room, on its own: a tall white board with softly rounded corners in a plain light-wood frame, seen exactly straight on, perfectly rectangular, centred, filling about 85% of the image height. At the very top of the board, one small friendly picture of an open eye. Below it, six EMPTY horizontal rows, each marked only by a thin pale-grey line along its bottom; the rows get a little less tall from the top row to the bottom row, like the rows of an eye chart. The rows are completely empty: no pictures, no letters, no numbers and no symbols in them. NO letters anywhere on the board.
 
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No wall, no gradient, no texture. NO shadows of any kind.
 
@@ -788,8 +865,8 @@ Do not add any text, letters, numbers, symbols, labels, logos or watermarks. No 
 ```
 Generate an image, 1024×1536, portrait.
 
-A friendly medicine drop machine for a children's doctor's clinic, on its own, seen from the front and slightly above, standing on a flat base: a white and pale-steel cabinet with FOUR tall clear glass tubes standing side by side on top. Each tube is filled with round, glossy, slightly see-through jelly-like drops of medicine, all of one colour: red, yellow, blue and green, from left to right. Under each tube is a small steel spout over a shared chute that funnels down to one small round opening at the bottom centre, where a drop can fall out. On the front, under each tube, is an empty round steel socket where a lever will go; draw NO levers. Centred, filling about 85% of the image height.
-Clean, clinical and friendly: it must look like medicine, not sweets or a gumball machine. No glass dome, no coin slot, no turning handle, no stripes, no wrapped sweets.
+A friendly medicine drop machine for a children's doctor's clinic, on its own, seen from the front and slightly above, standing on a flat base: a white and pale-steel cabinet with FOUR tall clear glass tubes standing side by side on top. Each tube is filled with coloured liquid medicine, one colour per tube: red, yellow, blue and green, from left to right; the liquid is smooth and clear-coloured, with no balls, beads or sweets in it. At the bottom of each tube is a small steel drip spout, like a medicine dropper's tip, over a shared chute that funnels down to one small round opening at the bottom centre, where a drop can fall out. On the front, under each tube, is an empty round steel socket where a lever will go; draw NO levers. Centred, filling about 85% of the image height.
+Clean, clinical and friendly: it must look like a medicine dispenser, not a sweet, gumball or jelly-bean machine. No balls, no glass dome, no coin slot, no turning handle, no stripes, no wrapped sweets.
 
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
 
@@ -803,8 +880,8 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No outlines,
 Generate an image, 1536×1024, landscape.
 
 A sprite sheet for a children's doctor game: seven things in an invisible grid of 4 columns and 2 rows of equal cells, one thing per cell, centred, with clear background all round; nothing touches or crosses a cell boundary; the last cell is left empty. Do not draw grid lines, borders or labels. Each seen from the front and slightly above, matching the attached drop machine.
-Row 1: (1) a short steel lever with a round white knob, pointing UP, on a small round steel mount; (2) the SAME lever and mount, at exactly the same size and position in its cell, pulled DOWN; (3) one round, glossy, slightly see-through jelly-like medicine drop in red; (4) the same drop in yellow.
-Row 2: (5) the same drop in blue; (6) the same drop in green (all four drops exactly the same size and shape); (7) the attached syringe, standing upright, tip down, in a small white holder, its plunger taken out so that the clear barrel is open at the top and empty; (8) empty.
+Row 1: (1) a short steel lever with a round white knob, pointing UP, on a small round steel mount; (2) the SAME lever and mount, at exactly the same size and position in its cell, pulled DOWN; (3) one single drop of liquid medicine in red, falling: a teardrop shape (round at the bottom, pointed at the top), matte and softly translucent like coloured syrup, never a glossy ball, bead or sweet; (4) the same drop in yellow.
+Row 2: (5) the same drop in blue; (6) the same drop in green (all four drops exactly the same teardrop size and shape); (7) the attached syringe, standing upright, tip down, in a small white holder, its plunger taken out so that the clear barrel is open at the top and empty; (8) empty.
 
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.
 
@@ -820,10 +897,10 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No needle. N
 **Zafar:** open ChatGPT in Chrome, signed in, and open a new Claude in Chrome chat. Paste the block below and stay for part A (about 30–40 minutes: six character sheets to say ok to). Then you can leave it running. **Model:** Claude in Chrome's default. **Cost:** nothing beyond your ChatGPT plan. Expect image-limit waits; it picks up again on its own.
 
 ```
-You're making 118 images in ChatGPT for a children's game called Nani jo Ghar, and uploading them to GitHub yourself. Zafar is here for part A only; after that you work on your own and he reads your log later.
+You're making 115 images in ChatGPT for a children's game called Nani jo Ghar, and uploading them to GitHub yourself. Zafar is here for part A only; after that you work on your own and he reads your log later.
 
 THE PAGE
-Open https://github.com/Baby-Isa/nani-jo-ghar/blob/main/docs/design-language/art-plans/clinic-heal-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. This message gives the run order and, for every prompt: what to attach, the name to log it under ("save as") and what to check.
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-fcd9dddd-wnywzc/docs/design-language/art-plans/clinic-heal-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. This message gives the run order and, for every prompt: what to attach, the name to log it under ("save as") and what to check.
 
 REFERENCE IMAGES (download these first)
 Open each link and click "Download raw file" (the download-arrow icon at the top right of the picture):
@@ -849,7 +926,7 @@ SAFETY RULES (always)
 
 HOW TO RUN EACH PROMPT
 1. Start a fresh ChatGPT chat (never continue another prompt's chat).
-2. Attach exactly the files on its line. "kept:X" means the image you kept and downloaded for prompt X (your log says which file that is). For an edit (a line that says "edit"), attach ONLY that one kept image, nothing else.
+2. Attach exactly the files on its line. "kept:X" means the image you kept and downloaded for prompt X (your log says which file that is). For an edit (a line that says "edit"), attach ONLY that one kept image, nothing else; an edit is always of a fresh picture, never of another edit.
 3. Paste the text of its code box from the page, with the slots filled for that line's person, and send.
 4. Judge the image against its check (the CHECKS list below) and then the PASS/FAIL LIST below, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
 5. If it fails, redo it once: the same prompt in a fresh chat with the same attachments. If that fails too, you may try once more (at most 2 redos). Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
@@ -861,8 +938,9 @@ Before S1, say in this chat: "Starting the six character sheets. I'll stop after
 - ok: download it, log it, go to the next sheet.
 - redo + his words: send the same prompt in a fresh chat with his words added as one last sentence; at most 2 redos per sheet.
 - skip: log it; skip that sheet and every later prompt that attaches it.
-- go: skip the remaining sheets now (and everything that attaches them) and start part B.
-- No reply within 10 minutes: log it and treat it as skip, then carry on.
+- go: skip the remaining sheets now (and everything that attaches them), start part B, and log them as "waiting for Zafar".
+- S1 (the girl) never times out: if Zafar hasn't replied, post a reminder in this chat every 10 minutes and keep waiting. Part B can't start without her sheet.
+- S2 to S6: if Zafar hasn't replied within 15 minutes, treat it as "go": log that sheet and the ones after it as "waiting for Zafar" and start part B. On "resume", run those sheets first (with Zafar watching), then their people's lines.
 Once part A is over, tell Zafar: "Part A done. I'll carry on alone; you can leave."
 
 RUN ORDER. Line format: ID (person) | attach | save as | check
@@ -874,7 +952,7 @@ S4 | style-anchor-v1.png, char-clinic-oldwoman-v1.png, char-ali-hurts-v1.png | s
 S5 | style-anchor-v1.png, char-clinic-dad-baby-v1.png, char-clinic-lineup-v1.png | s5-man-sheet-v1.png | SHEET + the young father as in the line-up: short beard, white shirt, navy trousers; no baby anywhere; panel 6 is a forearm with the sleeve rolled to the elbow
 S6 | style-anchor-v1.png, char-clinic-lineup-v1.png | s6-woman-sheet-v1.png | SHEET + a new woman, not like anyone in the line-up and not like a woman in a green dupatta and maroon kurta; dusty-blue headscarf covering hair, ears and neck in every panel; purple tunic; no jewellery
 
-PART B: THE GIRL AND HER GAMES (38). Person: girl. Limb set: child.
+PART B: THE GIRL AND HER GAMES (37). Person: girl. Limb set: child.
 girl-W1 | style-anchor-v1.png, kept:S1 | girl-w1-front-neutral-v1.png | W1
 girl-W2 | edit: kept:girl-W1 | girl-w2-front-happy-v1.png | FACE
 girl-W3 | edit: kept:girl-W1 | girl-w3-front-sad-v1.png | FACE
@@ -883,15 +961,13 @@ girl-W5 | edit: kept:girl-W1 | girl-w5-front-hot-v1.png | FACE
 girl-W6 | edit: kept:girl-W1 | girl-w6-front-cold-v1.png | FACE
 girl-W7 | style-anchor-v1.png, kept:S1 | girl-w7-side-neutral-v1.png | W7
 girl-W8 | edit: kept:girl-W7 | girl-w8-side-happy-v1.png | FACE (compare with girl-W7)
-girl-W9 | edit: kept:girl-W1 | girl-w9-blanket-v1.png | W9
-girl-W10 | edit: kept:girl-W1 | girl-w10-bottle-v1.png | W10
+girl-W9 | kept:girl-W1, kept:S1 | girl-w9-blanket-v1.png | W9
+girl-W10 | kept:girl-W1, kept:S1 | girl-w10-bottle-v1.png | W10
 child-K1 | style-anchor-v1.png, kept:S1 | child-k1-knee-v1.png | K1
-child-K2 | edit: kept:child-K1 | child-k2-knee-kick-v1.png | K2
+child-K2 | kept:child-K1, kept:S1 | child-k2-knee-kick-v1.png | K2
 child-K3 | edit: kept:child-K1 | child-k3-knee-graze-v1.png | K3
-child-K4 | edit: kept:child-K3 | child-k4-knee-graze-dirty-v1.png | K4
 child-F1 | style-anchor-v1.png, kept:S1 | child-f1-forearm-v1.png | F1
 child-F2 | edit: kept:child-F1 | child-f2-forearm-graze-v1.png | F2
-child-F3 | edit: kept:child-F2 | child-f3-forearm-graze-dirty-v1.png | F3
 child-F4 | edit: kept:child-F1 | child-f4-forearm-cut-v1.png | F4
 child-U1 | style-anchor-v1.png, kept:S1 | child-u1-upperarm-v1.png | U1
 child-P1 | style-anchor-v1.png, kept:S1 | child-p1-sole-v1.png | P1
@@ -909,19 +985,20 @@ O3 | style-anchor-v1.png, ci1-care-kit-v1.png | o3-bud-ointment-v1.png | O3
 R3 | cb2b-exam-bed-close-v1.png | r3-exam-room-square-v1.png | R3
 R4 | edit: cb2b-exam-bed-close-v1.png | r4-exam-window-open-v1.png | R4
 R1 | style-anchor-v1.png, ci2-tools-comfort-v1.png, kept:girl-W10 (leave it out if girl-W10 was skipped) | r1-fever-things-v1.png | R1
+R5 | style-anchor-v1.png, ci2-tools-comfort-v1.png | r5-thermo-gauge-v1.png | R5
 R2 | style-anchor-v1.png, ci2-tools-comfort-v1.png | r2-ceiling-fan-v1.png | R2
 C1 | style-anchor-v1.png | c1-eye-chart-front-v1.png | C1
 C2 | style-anchor-v1.png, kept:C1 | c2-eye-chart-turned-v1.png | C2
 B1 | style-anchor-v1.png, ci1-care-kit-v1.png | b1-filling-button-v1.png | B1
 Then upload part B (see UPLOADING).
 
-PART C: THE OTHER PATIENTS (72). For each person, run these lines with that person's prefix and sheet:
+PART C: THE OTHER PATIENTS (70). For each person, run these lines with that person's prefix and sheet:
  <p>-W1 | style-anchor-v1.png, kept:<sheet> | <p>-w1-front-neutral-v1.png | W1
  <p>-W2 to <p>-W6 | edit: kept:<p>-W1 | <p>-w2-front-happy-v1.png, <p>-w3-front-sad-v1.png, <p>-w4-front-pain-v1.png, <p>-w5-front-hot-v1.png, <p>-w6-front-cold-v1.png | FACE
  <p>-W7 | style-anchor-v1.png, kept:<sheet> | <p>-w7-side-neutral-v1.png | W7
  <p>-W8 | edit: kept:<p>-W7 | <p>-w8-side-happy-v1.png | FACE (compare with <p>-W7)
- <p>-W9 | edit: kept:<p>-W1 | <p>-w9-blanket-v1.png | W9
- <p>-W10 | edit: kept:<p>-W1 | <p>-w10-bottle-v1.png | W10
+ <p>-W9 | kept:<p>-W1, kept:<sheet> | <p>-w9-blanket-v1.png | W9
+ <p>-W10 | kept:<p>-W1, kept:<sheet> | <p>-w10-bottle-v1.png | W10
  <p>-<head prompt> | style-anchor-v1.png, kept:<sheet> | <p>-<id>-<name>-v1.png, named like the girl's (e1-ear, m1-mouth, m2-tongue, y1-eyes, t1-eyetest-a, t2-eyetest-b) | the same check ID
  <p>-Y2, <p>-Y3 | edit: kept:<p>-Y1 | <p>-y2-eye-sore-v1.png, <p>-y3-eyes-closed-v1.png | Y2, Y3
 People, in this order:
@@ -932,12 +1009,10 @@ People, in this order:
  woman (sheet S6): W1 to W6, W9, W10 (no W7, no W8), then M2 (9)
 Then the adult limbs. Limb set: adult; sheet S5:
  adult-K1 | style-anchor-v1.png, kept:S5 | adult-k1-knee-v1.png | K1
- adult-K2 | edit: kept:adult-K1 | adult-k2-knee-kick-v1.png | K2
+ adult-K2 | kept:adult-K1, kept:S5 | adult-k2-knee-kick-v1.png | K2
  adult-K3 | edit: kept:adult-K1 | adult-k3-knee-graze-v1.png | K3
- adult-K4 | edit: kept:adult-K3 | adult-k4-knee-graze-dirty-v1.png | K4
  adult-F1 | style-anchor-v1.png, kept:S5 | adult-f1-forearm-v1.png | F1
  adult-F2 | edit: kept:adult-F1 | adult-f2-forearm-graze-v1.png | F2
- adult-F3 | edit: kept:adult-F2 | adult-f3-forearm-graze-dirty-v1.png | F3
  adult-F4 | edit: kept:adult-F1 | adult-f4-forearm-cut-v1.png | F4
  adult-U1 | style-anchor-v1.png, kept:S5 | adult-u1-upperarm-v1.png | U1
  adult-P1 | style-anchor-v1.png, kept:S5 | adult-p1-sole-v1.png | P1
@@ -954,15 +1029,13 @@ SHEET: eight panels in two rows of four, nothing touching, no borders or labels 
 W1: the same person as their sheet · front-on, facing us · thighs level, both feet flat at one level · hands on the lap, neutral face, mouth closed · fills about 85% of the height, touches no edge · no bed or stool drawn
 FACE: only the face changed (body, hands, clothes, hair, size and position identical to the original) · the expression asked for, readable at thumbnail size · nothing upsetting, no tears, sweat drops or symbols
 W7: exactly side-on, facing right · legs as the prompt says (child: hanging free; adult: feet flat on an invisible floor) · the same person · touches no edge
-W9: a plain deep-red blanket round the shoulders, held at the chest · legs and feet unchanged and in the same place · a cosy, relieved face
-W10: a teal knitted hot-water bottle hugged against the tummy · legs and feet unchanged and in the same place · a comforted face
+W9: the same person, size and framing as the attached front picture · a plain deep-red blanket round the shoulders, held at the chest · legs and feet in the same place as in the front picture · a cosy, relieved face · touches no edge
+W10: the same person, size and framing as the attached front picture · a teal knitted hot-water bottle hugged against the tummy · legs and feet in the same place as in the front picture · a comforted face · touches no edge
 K1: three-quarter side view of a knee · plain white cloth rolled just above the knee · the thigh enters from the left edge, the shin leaves the bottom edge, no foot · the knee about half the height · clean skin, no marks
-K2: only the lower leg moved, kicked forward to the right · thigh and knee unchanged
+K2: the same framing as the attached K1: thigh in from the left, the knee at the same size and place · the shin kicked forward to the right · no foot, no motion lines
 K3: one gentle pink graze on the kneecap, no blood · nothing else changed
-K4: dirt only on and around the graze · the graze's shape unchanged · nothing else changed
 F1: the forearm held out palm down, in from the left edge · white sleeve rolled below the elbow · the whole hand inside the image, five fingers · clean skin
 F2: one gentle pink graze mid-forearm, no blood · nothing else changed
-F3: dirt only on and around the graze · the graze's shape unchanged
 F4: one short, thin pink line, no blood, nothing open · nothing else changed
 U1: a bare upper arm, sleeve pushed up to the shoulder · the arm leaves the bottom edge · clean skin
 P1: the sole straight on, toes at the top · five separate toes · smooth and clean, no lines or marks · the leg leaves the bottom edge
@@ -974,18 +1047,19 @@ Y2: only the eye on the viewer's right is sore (pink) · the other eye unchanged
 Y3: both eyes gently closed · nothing else changed
 T1: head and shoulders front-on, the shoulders running off the bottom edge · one hand covering the eye on the viewer's right · the other eye looking a little to our right, past us · five fingers
 T2: waist up, exactly side-on facing right, the body running off the bottom edge · looking ahead and slightly up · hands on the lap
-O1: eight things in order: three wax blobs (big, medium, small; friendly, not gross), a seed, two splinters, one clear drop, a tissue
+O1: nine things in a 3 by 3 grid, in order: three wax blobs (big, medium, small; friendly, not gross), a seed, two splinters, one clear drop, a tissue, a soft patch of dust and grit (no blood)
 O2: four round spots, the same size, in red, yellow, blue and green; three jagged decay patches; one white filling patch
 O3: the same bud three times at the same size and place (plain, green ointment, wax), then a pot of green ointment with no label
-R3: the original room unchanged across the middle (window, cabinet, desk, bed, stool, toys, door all in place) · a plain ceiling above with nothing on it · empty terrazzo floor below · no visible seams
+R3: the original room unchanged across the middle (window, cabinet, desk, bed, stool, toys, door all in place) · a plain ceiling above with nothing on it · empty terrazzo floor below, its speckles the same size as the original's · no visible seams
 R4: only the window changed and it reads as open · everything else identical
-R1: six things in order: ice pack, the teal hot-water bottle, a woven hand fan, the heater off, the same heater on (glowing bars), an empty thermometer with no markings · no dials or numbers anywhere
-R2: left, the fan body (downrod and motor) with no blades · right, four blades seen from directly below, a perfect cross in a circle
-C1: a straight-on white chart, one small eye picture at the top, six EMPTY rows getting less tall · NO letters, numbers or pictures in the rows
+R1: five things in order: ice pack, the teal hot-water bottle, a woven hand fan, the heater off, the same heater on (glowing bars); the last cell empty · no dials or numbers anywhere
+R5: one tall empty glass thermometer on a plain white board, straight on · no markings, scale, numbers or liquid
+R2: left, the fan body (downrod and motor) with no blades · right, four blades seen from directly below, a perfect cross fitting an imaginary circle, no circle drawn
+C1: a straight-on blank white picture board like an eye chart, one small eye picture at the top, six EMPTY rows getting less tall · NO letters, numbers or pictures in the rows
 C2: the same chart on a three-legged stand, turned about 30 degrees to the left (left edge further away) · rows still empty, no letters
 B1: blue button up and the same button down, same place · nozzle idle and the same nozzle squeezing white paste, same place · no symbols
-D1: a white and steel machine, four tall tubes of red, yellow, blue and green drops, a chute to one opening at the bottom, empty lever sockets, no levers · looks like medicine, not a sweet or gumball machine
-D2: lever up and the same lever down · four identical drops in red, yellow, blue and green · the syringe upright, open at the top, empty, no needle · last cell empty
+D1: a white and steel machine, four tall tubes of red, yellow, blue and green LIQUID (no balls or beads), a drip spout under each, a chute to one opening at the bottom, empty lever sockets, no levers · looks like a medicine dispenser, not a sweet, gumball or jelly-bean machine
+D2: lever up and the same lever down · four identical TEARDROP-shaped drops, matte and softly see-through, in red, yellow, blue and green, never glossy balls · the syringe upright, open at the top, empty, no needle · last cell empty
 
 PASS/FAIL LIST (every image; any one of these is a fail)
 - Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
@@ -998,7 +1072,7 @@ PASS/FAIL LIST (every image; any one of these is a fail)
 - Skin that is orange, pink, grey or very pale instead of a warm light tan.
 - Immodest clothes (bare shoulders on a woman, short or tight clothes), or any religious marker (bindi, tilak, sindoor, deities, temple items).
 - Anything scary, bloody, gory or gross, or a face a small child would find upsetting; real distress instead of a mild, comic wince.
-- Anything that looks like sweets, lollies or a sweet machine.
+- Anything that looks like sweets, lollies, jelly beans, gumballs or a sweet machine; medicine drops drawn as glossy balls.
 - An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
 - Light from anywhere but the upper left; a second light; "seen exactly side-on" or "from directly below" drawn at an angle; circles drawn as ovals where "straight on" or "from directly below" was asked.
 
@@ -1015,7 +1089,7 @@ UPLOADING (after each part)
 Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-heal-v3 and drag in that part's downloaded images (only the ones you kept) and your log file so far, saved as art-run-log-partA.txt, -partB.txt, -partC.txt or -partD.txt (if you kept the log in this chat, save it to a text file first; if you can't, paste it into the commit description instead). Rename nothing. Choose "Commit directly to the main branch", commit message "Clinic heal v3 art, part <A/B/C/D> (ChatGPT, <n> images)", click "Commit changes", then check the folder page lists the new files. Part A's sheets go up with part B's upload.
 
 RESUMING
-If this message is pasted again later with the word "resume", open the folder above, read the art-run-log-part*.txt files there, download any kept image a later prompt needs from that folder, and carry on from the first prompt that isn't logged as kept.
+If this message is pasted again later with the word "resume", open the folder above, read the art-run-log-part*.txt files there, download any kept image a later prompt needs from that folder, and carry on from the first prompt that isn't logged as kept. Sheets logged "waiting for Zafar" come first, run the part A way (he watches each one).
 
 AT THE END
 Post the full log, then a short list per part: passed, failed (and why) and skipped (and why).
@@ -1030,12 +1104,12 @@ Post the full log, then a short list per part: passed, failed (and why) and skip
 **At generation:** the runner judges each image against its check and the pass/fail list in the block, with at most 2 redos (section 6).
 
 **After upload, Claude judges again, more strictly, before anything is wired or shown to Zafar:**
-1. **Contact sheets** on a black and a white backing, and on the game's cream, at ×2 zoom: clean alpha, no grey fringe or holes (glass, the eye drop, the jelly drops, the gauge's tube and the syringe barrel keep partial alpha, never a hard key), and a 16 px pad (art-pipeline §3 rows 1–13).
+1. **Contact sheets** on a black and a white backing, and on the game's cream, at ×2 zoom: clean alpha, no grey fringe or holes (glass, the eye drop, the medicine drops and liquid, the gauge's tube and the syringe barrel keep partial alpha, never a hard key), and a 16 px pad (art-pipeline §3 rows 1–13).
 2. **Skin:** sample the cheek and forearm midtone of every person and limb against `#C49A78`. More than ΔE 6 away is colour-corrected (a hue and lightness shift on the skin mask only); more than ΔE 12 is a fail and a redo.
-3. **Registration** (D8): every edit is ECC-registered to its original; after a 7×7 open, the diff outside the allowed region (the head for FACE, the lower leg for K2, the graze for K3, K4, F2–F4, the eye for Y2 and Y3) must stay under 1.5% (the `build/expressions.py` method, art-pipeline §10). Over that, it's a redo.
+3. **Registration** (D8): every edit is ECC-registered to its original; after a 7×7 open, the diff outside the allowed region (the head for FACE, the lower leg for K2, the graze for K3, F2 and F4, the eye for Y2 and Y3; W9, W10 and K2 are fresh prompts, registered on the legs or the thigh instead) must stay under 1.5% (the `build/expressions.py` method, art-pipeline §10). Over that, it's a redo.
 4. **Character consistency** (art-pipeline §3 row 10): every W and every head close-up side by side with its sheet.
 5. **The overlay test** (D5): the girl's W1 and W7 placed on CB2b and on R3 at the scene-data positions, with the doctor stand-in, at laptop 1366×768, phone 844×390 and tablet 1180×820. Check the size against the bed and stool, nothing hidden behind the sidebar, and the fan, heater, gauge and window inside every crop.
-6. **The match-cut test:** each close-up over its wide pose zoomed to the part's anchor; the part's place and size agree within about 5%.
+6. **The match-cut test:** only the close-ups that match-cut: **K (knee) and E (ear) from W7; M1, M2, Y and T1 from W1.** Each is laid over its wide pose zoomed to the part's anchor, and the part's place and size must agree within about 5%. **F, U, P and T2 hard-cut at the zoom's peak** (the pose or angle changes, so a match isn't possible), and they aren't tested for a match: only that the cut lands at the peak with the part centred.
 7. **Culture and tone** (I1, I2, H26): modest clothes, no markers, nothing gory, the drop machine reads as medicine.
 
 Failures go back into a short follow-up block, never to Zafar.
@@ -1068,21 +1142,22 @@ The game code reads it in the finishing sessions (F2/F3); the cut session only w
 | W2–W6 | ECC to W1 (head band); head-region mask, feathered at the collar | `patients/<kind>/<kind>-face-{happy,sad,pain,hot,cold}.webp` + `@2x` (on W1's canvas) | Wide-shot reactions; fever hot/cold alternation; the zoom-out "thank you" (happy) |
 | W1–W6 | Square head-and-shoulders crop, eye line at 42% from the top, face width fixed across all kinds (D18) | `patients/<kind>/<kind>-head-{neutral,happy,sad,pain,hot,cold}.webp` (512 px) | The corner face in every close-up; the send-off thought bubble (H33) |
 | W7, W8 | W7 as W1; W8 a head layer on W7's canvas | `patients/<kind>/<kind>-side.webp`, `<kind>-side-face-happy.webp` + `@2x` | Side-on zooms: knee, ear, eye test B (`scenes-v2.json` new `exam.side`: seat x 0.70, y 0.535; doctor x 0.86) |
-| W9, W10 | ECC to W1 on the legs and feet band; whole figure on W1's canvas | `patients/<kind>/<kind>-front-blanket.webp`, `<kind>-front-bottle.webp` + `@2x` | Fever (warm steps); the send-off |
-| K1–K4 (child, adult) | One registered canvas; exit edges left and bottom; fabric mask from the white cloth | `closeups/<set>/knee{,-kick,-graze,-graze-dirty}.webp` + `@2x`; `knee-fabric.webp` | `heal/knee.json` (hammer kick K2, wrap on K1); `heal/cut.json` scrape on the knee (wash reveals K3 through K4; plasters on K3) |
-| F1–F4 | As K; exit edge left | `closeups/<set>/forearm{,-graze,-graze-dirty,-cut}.webp` + `@2x`; `forearm-fabric.webp` | `heal/cut.json`: scrape on the arm (F3 → F2), the cut (F4, stitches in code) |
+| W9, W10 | Fresh prompts; ECC to W1 on the legs and feet band; whole figure on W1's canvas (more than about 2% drift at the seat or feet is a redo) | `patients/<kind>/<kind>-front-blanket.webp`, `<kind>-front-bottle.webp` + `@2x` | Fever (warm steps); the send-off |
+| K1–K3 (child, adult) | One registered canvas; exit edges left and bottom; fabric mask from the white cloth | `closeups/<set>/knee{,-kick,-graze}.webp` + `@2x`; `knee-fabric.webp` | `heal/knee.json` (hammer kick K2, registered to K1 on the thigh; wrap on K1); `heal/cut.json` scrape on the knee (O1's dirt over K3, wiped away by the wash; plasters on K3) |
+| F1, F2, F4 | As K; exit edge left | `closeups/<set>/forearm{,-graze,-cut}.webp` + `@2x`; `forearm-fabric.webp` | `heal/cut.json`: scrape on the arm (O1's dirt over F2, washed away), the cut (F4, stitches in code) |
 | U1 | Exit edges left and bottom | `closeups/<set>/upperarm.webp` + `@2x`; `upperarm-fabric.webp` | `heal/boing.json` (the jab; the existing plaster sprite) |
 | P1 | Exit edge bottom | `closeups/<set>/sole.webp` + `@2x`; `sole-fabric.webp` | `heal/foot.json` (channels and splinters in code; the toes' positions recorded for L3) |
 | E1 | Exit edges top, right and bottom | `closeups/<kind>/ear.webp` + `@2x`; the canal point recorded | `heal/ear.json` |
 | M1, M2 | Exit edges left and right (and top or bottom where they touch) | `closeups/<kind>/mouth.webp`, `tongue.webp` + `@2x`; tooth boxes and the tongue area recorded | `heal/tooth.json`; `heal/taste.json` (the sore spots) |
 | Y1–Y3 | One registered canvas; exit edges left and right | `closeups/<kind>/eyes{,-sore,-closed}.webp` + `@2x`; eye centres recorded | `heal/eye.json` (drops) |
 | T1, T2 | Exit edge bottom | `closeups/<kind>/eyetest-a.webp`, `eyetest-b.webp` + `@2x` | `heal/eye.json` (versions A and B, both prototyped per D15h) |
-| O1 | Grid cut by gutters (the pantry method); the drop keeps partial alpha | `heal-v3/wax-{big,mid,small}.webp`, `seed.webp`, `splinter-{thin,thick}.webp`, `drop.webp`, `tissue.webp` | `ear.json`, `foot.json`, `eye.json` |
+| O1 | Grid cut by gutters (the pantry method); the drop keeps partial alpha | `heal-v3/wax-{big,mid,small}.webp`, `seed.webp`, `splinter-{thin,thick}.webp`, `drop.webp`, `tissue.webp`, `dirt.webp` (partial alpha at its edges) | `ear.json`, `foot.json`, `eye.json`, `cut.json` (the dirt over K3 and F2) |
 | O2 | As O1 | `heal-v3/spot-{red,yellow,blue,green}.webp`, `decay-{1,2,3}.webp`, `filling-patch.webp` | `taste.json`, `tooth.json` |
 | O3 | Buds on one registered canvas | `heal-v3/bud{,-ointment,-wax}.webp`, `ointment-pot.webp` | `taste.json` (*malam*), `ear.json` (the wipe) |
-| R3 | Register R3's middle to CB2b (ECC); keep CB2b's pixels; take only the bands; feather the seam over 24 px | `rooms/bg-clinic-exam-cb2b-sq-v1.webp` (1536×1536) + `@2x` | Every exam scene (`scenes-v2.json` `rooms.exam.src`, its `need` and `ay` remeasured; a per-room size in `layout.json` `stage.scenes`, which is a code change for F2) |
+| R3 | Register R3's middle to CB2b (ECC); keep CB2b's pixels; take only the bands, upscaled by Real-ESRGAN to the original's scale; feather the seam over 24 px | `rooms/bg-clinic-exam-cb2b-sq-v1.webp` (1536×1536) + `@2x` | Every exam scene (`scenes-v2.json` `rooms.exam.src`, its `need` and `ay` remeasured; a per-room size in `layout.json` `stage.scenes`, which is a code change for F2) |
 | R4 | Diff against CB2b (art-pipeline 9d); keep the changed blob; offset +256 px on the square room | `room-items/window-open.webp` + `@2x` | `heal/fever.json` (the window, big cool step) |
-| R1 | Grid cut; heater off and on registered; the gauge's glass at partial alpha, its tube's inner box recorded for the code's level and green zone | `room-items/{ice-pack,hot-water-bottle,hand-fan,heater-off,heater-on,thermo-gauge}.webp` | `heal/fever.json` (positions in section 3.4) |
+| R1 | Grid cut; heater off and on registered | `room-items/{ice-pack,hot-water-bottle,hand-fan,heater-off,heater-on}.webp` | `heal/fever.json` (positions in section 3.4) |
+| R5 | Cut; the glass at partial alpha; the tube's inner box recorded for the code's level and green zone | `room-items/thermo-gauge.webp` + `@2x` | `heal/fever.json` (the live reading) |
 | R2 | Two cuts; the blades' hub centre recorded (the pivot) | `room-items/fan-body.webp`, `fan-blades.webp` | `heal/fever.json` (ceiling fan, medium cool step; spin and tilt in code) |
 | C1, C2 | Cut; C2's four board corners and both charts' row boxes recorded | `heal-v3/eye-chart-front.webp`, `eye-chart-turned.webp` + `@2x` | `heal/eye.json` (row pictures are Cook's `icon-<id>.webp`, placed by code) |
 | B1 | Pairs registered | `heal-v3/filling-button-{up,down}.webp`, `filling-nozzle{,-paste}.webp` | `heal/tooth.json` (the fill; the gauge is code) |
@@ -1100,10 +1175,10 @@ The game code reads it in the finishing sessions (F2/F3); the cut session only w
 
 | | |
 |---|---|
-| **Images** | **118** (6 + 38 + 72 + 2). With redos at roughly a quarter, expect about 145 generations |
+| **Images** | **115** (6 + 37 + 70 + 2). With redos at roughly a quarter, expect about 140 generations |
 | **Zafar's time** | About 5 minutes to set up and paste; 30–40 minutes watching part A (six sheets, about 3 minutes each with his look, plus any redos); then nothing until he plays the result. If he can only stay for S1, he types **go** and the other five sheets wait for a second short sitting |
 | **Run time** | At about 1 image a minute and 3 at once: part B 1–1.5 hours and part C 2–3 hours of generation. Image-limit waits probably stretch the whole run across an evening and a night. Part B is first, so the girl's art is in by the morning even if part C runs on |
-| **When** | As soon as this page is on `main` (the block reads it from there) and Zafar has 40 minutes, ideally the evening of 2 Oct. Part B cut and reviewed on 3 Oct, so F2/F3 can wire the girl's games 4–6 Oct; parts C and D cut by 5 Oct; leaving 3–4 days before the ~9 Oct visit |
+| **When** | As soon as this page is pushed (the block reads it from the branch `ccr-fcd9dddd-wnywzc`; once it's merged, the link can point at `main`) and Zafar has 40 minutes, ideally the evening of 2 Oct. Part B cut and reviewed on 3 Oct, so F2/F3 can wire the girl's games 4–6 Oct; parts C and D cut by 5 Oct; leaving 3–4 days before the ~9 Oct visit |
 | **Claude's cut-and-review session** | One session after each upload. **Top model, high effort** (judging art is visual work, rule 15): about 2–3M tokens for part B (the cut script, the girl's cuts, the overlay and match-cut tests) and 2M for parts C and D. The script could be written by a mid-tier model, but one owner is simpler, and the review must be someone other than the builder (D25) |
 | **Paid API** | None. This doesn't qualify as a rapid prototype (non-negotiable 13) |
 
@@ -1119,3 +1194,4 @@ The game code reads it in the finishing sessions (F2/F3); the cut session only w
 6. **Nana, Ma and Ali as patients** keep their existing sitting poses and feelings this time; no side-on poses or face swaps on the body, and the data gives them only limb, foot and fever games until they have head close-ups. Adding those later is about 24 images. *Recommend yes, for now.*
 7. **The ice pack:** your sizes are window big, ceiling fan medium and hand fan small, so the ice pack is drawn as a spare (one cell) and the game decides later whether it's in. *Recommend yes.*
 8. **The woman's look** (new): a dusty-blue headscarf and a purple tunic, so she can't be confused with Ma, the old woman or the older cousin. You'll see her sheet in part A. *Recommend yes.*
+9. **The drop machine's drops:** each tube holds coloured liquid medicine with a drip spout, and a pulled lever lets fall one **teardrop-shaped, matte, see-through drop**, never a glossy ball, so it can't read as a gumball or jelly-bean machine (I2, decision 27). Shapes (your "maybe shapes") stay out until Mum has the words. *Recommend yes.*
