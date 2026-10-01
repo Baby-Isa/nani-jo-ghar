@@ -21,22 +21,24 @@
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
   const THINGS = [
-    { id: "limu", g: "🍋", k: "limu", e: "lemon" },
-    { id: "dungri", g: "🧅", k: "dungri", e: "onion" },
-    { id: "tameto", g: "🍅", k: "tameto", e: "tomato" },
-    { id: "bataato", g: "🥔", k: "bataato", e: "potato" },
-    { id: "marcha", g: "🌶️", k: "marcha", e: "chilli" },
-    { id: "lasan", g: "🧄", k: "lasan", e: "garlic" },
-    { id: "dudh", g: "🥛", k: "dudh", e: "milk" },
-    { id: "bed", g: "🛏️", k: null, e: "bed" },
-    { id: "table", g: "🪑", k: null, e: "chair" },
-    { id: "cup", g: "☕", k: null, e: "cup" },
-    { id: "ball", g: "⚽", k: null, e: "ball" },
-    { id: "key", g: "🔑", k: null, e: "key" },
-    { id: "spoon", g: "🥄", k: null, e: "spoon" },
+    // each picture's word by its lexicon id (data/clinic/lang.json; Cook's ids): no Kutchi in this file (R5)
+    { id: "lemon", g: "🍋", lex: "fru-02" },
+    { id: "onion", g: "🧅", lex: "veg-02" },
+    { id: "tomato", g: "🍅", lex: "veg-03" },
+    { id: "potato", g: "🥔", lex: "veg-01" },
+    { id: "chilli", g: "🌶️", lex: "veg-12" },
+    { id: "garlic", g: "🧄", lex: "veg-13" },
+    { id: "milk", g: "🥛", lex: "cook-dudh" },
+    { id: "bed", g: "🛏️", lex: "bed" },
+    { id: "table", g: "🪑", lex: "chair" },
+    { id: "cup", g: "☕", lex: "cup" },
+    { id: "ball", g: "⚽", lex: "ball" },
+    { id: "key", g: "🔑", lex: "key" },
+    { id: "spoon", g: "🥄", lex: "cl-chamchi" },
   ];
   const BY = Object.fromEntries(THINGS.map((t) => [t.id, t]));
-  const word = (t) => (t.k ? t.k : `[${t.e}]`);
+  const W = (t) => HS.L.w(t.lex);
+  const word = (t) => W(t).kutchi || `[${W(t).english}]`;
   const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4 }, per: { 1: [1], 2: [1], 3: [2, 3] }, wrongP: 0.45 };
   const WHY = { problem: "I can't see well.", goal: "Drops first, then let's test your eyes." };
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
@@ -49,7 +51,8 @@
 
   function plan(level, rng) {
     const L = Math.max(1, Math.min(3, level));
-    const side = L >= 2 ? (rng() < 0.5 ? "left" : "right") : null;
+    // D10 (1 Oct): sides are said and tested in the diagnosis only: no side row, no "cover the other eye"
+    const side = null;
     const drops = HS.pick(K.drops[L], rng);
     const pool = HS.shuffle(THINGS, rng);
     let pi = 0;
@@ -71,15 +74,13 @@
       chart.push({ pics, said, wrong });
     }
     const steps = [];
-    if (L === 3) steps.push({ id: "cover", kind: "cover" });
-    const sideW = side ? ` [${side} eye]` : "";
-    steps.push({ id: "drops", kind: "drops", count: drops, side, row: { id: "drops", kutchi: `[Drops]${sideW}, ${HS.NUM[drops]}`, english: `Drops${side ? ` in the ${side} eye` : ""}, ${drops}` } });
+    steps.push({ id: "drops", kind: "drops", count: drops, side, row: Object.assign({ id: "drops" }, HS.L.show(HS.L.join(["cl-drops", ",", HS.L.count(drops)]), { cap: true })) });
     chart.forEach((c, i) => steps.push({ id: `read${i}`, kind: "read", row: i, rowDef: c }));
     const rows = [{ id: "drops-count", options: K.drops[L], answer: drops }];
     if (side) rows.push({ id: "drops-side", options: ["left", "right"], answer: side, placeholder: true });
     chart.forEach((c, i) => rows.push({ id: `read${i}`, options: [true, false], answer: !c.wrong }));
-    const words = [{ kutchi: HS.NUM[drops], english: String(drops) }, { kutchi: "na", english: "no" }];
-    chart.forEach((c) => c.pics.forEach((id) => words.push(BY[id].k ? { kutchi: BY[id].k, english: BY[id].e } : HS.ph(BY[id].e))));
+    const words = [HS.L.num(drops), HS.L.w(HS.L.noId())];
+    chart.forEach((c) => c.pics.forEach((id) => words.push(W(BY[id]))));
     return { level: L, side, steps, rows, chart, words };
   }
 
@@ -132,7 +133,8 @@
     judgeBox.style.cssText = "position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:18px;z-index:8";
     // haa / na: the shared answer pills (UX 15), one pill style everywhere
     const NB = root.NjgButtons;
-    const pills = NB ? NB.pills(judgeBox, [{ id: "haa", html: "haa" }, { id: "na", html: "na" }], (id) => onJudge(id === "haa")) : null;
+    const yesNo = { yes: HS.L.w(HS.L.yesId()).kutchi, no: HS.L.w(HS.L.noId()).kutchi };
+    const pills = NB ? NB.pills(judgeBox, [{ id: "yes", html: yesNo.yes }, { id: "no", html: yesNo.no }], (id) => onJudge(id === "yes")) : null;
     const mk = (id, label) => {
       if (pills) {
         const b = pills.pill(id);
@@ -143,11 +145,11 @@
       b.type = "button";
       b.dataset.judge = id;
       b.textContent = label;
-      ctx.on(b, "click", () => onJudge(id === "haa"));
+      ctx.on(b, "click", () => onJudge(id === "yes"));
       return b;
     };
-    const haaBtn = mk("haa", "haa");
-    const naBtn = mk("na", "na");
+    const haaBtn = mk("yes", yesNo.yes);
+    const naBtn = mk("no", yesNo.no);
     const showJudge = (on) => (judgeBox.style.display = on ? "flex" : "none");
     showJudge(false);
 
@@ -159,7 +161,7 @@
     const readRow = async (i, again) => {
       const c = P.chart[i];
       const said = again ? c.pics : c.said;
-      const line = { kutchi: said.map((id) => word(BY[id])).join(", "), english: said.map((id) => BY[id].e).join(", ") };
+      const line = { kutchi: said.map((id) => word(BY[id])).join(", "), english: said.map((id) => W(BY[id]).english).join(", ") };
       st.busy = true;
       showJudge(false);
       S.face("read");
@@ -176,13 +178,18 @@
       st.busy = false;
       st.awaiting = { i, again, wrong: c.wrong };
       showJudge(true);
-      if (i === 0) S.cue("read", CUES.read, haaBtn);
+      // CLN-60: the first-time help shows the RIGHT answer for this row (never haa on a row read wrong); the row it
+      // shows is taught, not scored
+      if (i === 0) {
+        if (S.cuesOn && !again) P.rows = P.rows.filter((r) => r.id !== "read0");
+        S.cue("read", CUES.read, c.wrong ? naBtn : haaBtn);
+      }
       S.say(line, "patient").then(() => S.face("neutral"));
     };
     const onJudge = (saysRight) => {
       if (!st.awaiting || st.busy || st.over) return;
       const { i, wrong } = st.awaiting;
-      judge(`read${i}`, saysRight === !wrong, saysRight ? "haa" : "na");
+      judge(`read${i}`, saysRight === !wrong, saysRight ? "yes" : "no");
       st.awaiting = null;
       showJudge(false);
       S.said(null);
@@ -239,7 +246,7 @@
     };
 
     const tools = [{ id: "drops", glyph: "💧" }];
-    if (P.level === 3) tools.unshift({ id: "cover", glyph: "🥄" });
+    // D10: no "cover the other eye" step (sides only in the diagnosis), so no cover tool
     S.tools(tools, () => {});
     const eyeAt = (p) => ["left", "right"].find((sd) => Math.hypot(p.x - EY[sd].x, (p.y - EY[sd].y) * 1.4) < 90);
     const dropIn = (sd) => {
@@ -334,7 +341,7 @@
           }
           if (st.awaiting) {
             const b = (st.awaiting.wrong ? naBtn : haaBtn).getBoundingClientRect();
-            return { do: "tap", x: b.left + b.width / 2, y: b.top + b.height / 2, what: st.awaiting.wrong ? "na" : "haa" };
+            return { do: "tap", x: b.left + b.width / 2, y: b.top + b.height / 2, what: st.awaiting.wrong ? "no" : "yes" };
           }
           return { do: "wait" };
         },

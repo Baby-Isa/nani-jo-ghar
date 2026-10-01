@@ -19,6 +19,9 @@
   "use strict";
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
+  // the fan's speeds: their words' ids in the lexicon (data/clinic/lang.json, Cook's words)
+  const QUICK = "ph-quickly";
+  const SLOW = "ph-slowly";
 
   const K = { exchanges: { 1: [2], 2: [3, 4], 3: [3, 4] }, counts: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4] }, fastMs: 450 };
   const WHY = { problem: "I feel hot... no, cold!", goal: "Let's get you just right." };
@@ -37,7 +40,7 @@
     for (let i = 0; i < n; i++) {
       const tool = hot ? (rng() < 0.5 ? "cloth" : "fan") : "blanket";
       const count = HS.pick(K.counts[L], rng);
-      const speed = L === 3 && tool === "fan" ? (rng() < 0.5 ? "jaldi" : "aste thi") : null;
+      const speed = L === 3 && tool === "fan" ? (rng() < 0.5 ? QUICK : SLOW) : null;
       const after = i === n - 1 ? "just right" : hot ? "too cold" : "too hot";
       ex.push({ hot, tool, count, speed, after });
       hot = !hot;
@@ -45,18 +48,19 @@
     const steps = [];
     ex.forEach((e, i) => {
       steps.push({ id: `temp${i}`, kind: "temp", ex: i });
-      const kw = `${e.hot ? "[Hot!]" : "[Cold!]"} [${e.tool}] ${HS.NUM[e.count]}${e.speed ? `, ${e.speed}` : ""}`;
-      steps.push({ id: `fix${i}`, kind: "fix", ex: i, row: { id: `fix${i}`, kutchi: kw, english: `${e.hot ? "Hot" : "Cold"}: ${TOOL_EN[e.tool]}, ${e.count} times${e.speed ? `, ${e.speed === "jaldi" ? "quickly" : "slowly"}` : ""}` } });
+      // words, numbers and the speed word from data through the seam (R5); the bulb's English as before
+      const kw = HS.L.show(HS.L.join([e.hot ? "hot!" : "cold!", e.tool, HS.L.count(e.count), ...(e.speed ? [",", HS.L.item(e.speed)] : [])]), { cap: true });
+      steps.push({ id: `fix${i}`, kind: "fix", ex: i, row: { id: `fix${i}`, kutchi: kw.kutchi, english: `${e.hot ? "Hot" : "Cold"}: ${TOOL_EN[e.tool]}, ${e.count} times${e.speed ? `, ${e.speed === QUICK ? "quickly" : "slowly"}` : ""}` } });
     });
     const combo = (tool, count, speed) => `${tool}x${count}${speed ? "-" + speed : ""}`;
     const rows = ex.map((e, i) => {
       const tools = e.hot ? ["cloth", "fan"] : ["blanket"];
       const opts = [];
-      tools.forEach((t) => K.counts[L].forEach((c) => (L === 3 && t === "fan" ? ["jaldi", "aste thi"] : [null]).forEach((sp) => opts.push(combo(t, c, sp)))));
+      tools.forEach((t) => K.counts[L].forEach((c) => (L === 3 && t === "fan" ? [QUICK, SLOW] : [null]).forEach((sp) => opts.push(combo(t, c, sp)))));
       return { id: `fix${i}`, options: opts, answer: combo(e.tool, e.count, e.speed) };
     });
-    const words = [HS.ph("hot"), HS.ph("cold"), HS.ph("just right")].concat(ex.map((e) => ({ kutchi: HS.NUM[e.count], english: String(e.count) })));
-    if (L === 3) words.push({ kutchi: "jaldi", english: "quickly" }, { kutchi: "aste thi", english: "slowly" });
+    const words = [HS.ph("hot"), HS.ph("cold"), HS.ph("just right")].concat(ex.map((e) => (HS.L.num(e.count))));
+    if (L === 3) words.push(HS.L.w(QUICK), HS.L.w(SLOW));
     return { level: L, ex, steps, rows, words, combo };
   }
 
@@ -152,7 +156,7 @@
         if (P.level === 3 && t === "fan") {
           const gaps = st.taps.slice(1).map((x, k) => x - st.taps[k]);
           const avg = gaps.length ? gaps.reduce((a, b) => a + b, 0) / gaps.length : 0;
-          speed = avg && avg < K.fastMs * (fast() ? 1 : 1) ? "jaldi" : "aste thi";
+          speed = avg && avg < K.fastMs * (fast() ? 1 : 1) ? QUICK : SLOW;
         }
         got = P.combo(t, n, speed);
       } else if (used.length > 1) got = used.map(([t, n]) => `${t}x${n}`).join("+");
@@ -267,7 +271,7 @@
           if (c.kind === "temp") return S.sel !== "thermo" ? tool("thermo") : head();
           const e = P.ex[c.ex];
           if (S.sel !== e.tool) return tool(e.tool);
-          if ((st.uses[e.tool] || 0) < e.count) return head(e.speed === "aste thi" ? 750 : e.speed === "jaldi" ? 40 : 90);
+          if ((st.uses[e.tool] || 0) < e.count) return head(e.speed === SLOW ? 750 : e.speed === QUICK ? 40 : 90);
           return { do: "button" };
         },
         slip() {
@@ -276,7 +280,7 @@
           if (!S.ready || st.busy || !c || c.kind !== "fix" || c.ex !== 0) return null;
           const e = P.ex[0];
           if (S.sel !== e.tool || (st.uses[e.tool] || 0) !== e.count) return null;
-          return Object.assign({ do: "tap", what: "extra", after: e.speed === "aste thi" ? 750 : 40 }, S.client(FH.x, FH.y + 40));
+          return Object.assign({ do: "tap", what: "extra", after: e.speed === SLOW ? 750 : 40 }, S.client(FH.x, FH.y + 40));
         },
       },
     };

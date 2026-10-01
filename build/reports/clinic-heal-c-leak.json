@@ -33,20 +33,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.011,
-      "rows": 0.474
+      "win": 0.0175,
+      "rows": 0.464
      },
      "first-option": {
-      "win": 0.0145,
-      "rows": 0.506
+      "win": 0.034,
+      "rows": 0.515
      },
      "last-option": {
-      "win": 0.002,
-      "rows": 0.434
+      "win": 0.016,
+      "rows": 0.432
      },
      "middle-option": {
-      "win": 0.0125,
-      "rows": 0.503
+      "win": 0.0335,
+      "rows": 0.508
      }
     },
     "3": {
@@ -55,20 +55,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0085,
-      "rows": 0.465
+      "win": 0.024,
+      "rows": 0.475
      },
      "first-option": {
-      "win": 0.015,
+      "win": 0.0335,
       "rows": 0.506
      },
      "last-option": {
-      "win": 0.0085,
-      "rows": 0.44
+      "win": 0.0125,
+      "rows": 0.432
      },
      "middle-option": {
-      "win": 0.0165,
-      "rows": 0.509
+      "win": 0.026,
+      "rows": 0.499
      }
     }
    }
@@ -82,20 +82,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0765,
-      "rows": 0.284
+      "win": 0.0865,
+      "rows": 0.302
      },
      "first-option": {
-      "win": 0.082,
-      "rows": 0.297
+      "win": 0.0885,
+      "rows": 0.296
      },
      "last-option": {
-      "win": 0.088,
-      "rows": 0.306
+      "win": 0.0845,
+      "rows": 0.286
      },
      "middle-option": {
-      "win": 0.0785,
-      "rows": 0.278
+      "win": 0.093,
+      "rows": 0.301
      }
     },
     "2": {
@@ -104,20 +104,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0775,
-      "rows": 0.29
+      "win": 0.0855,
+      "rows": 0.285
      },
      "first-option": {
-      "win": 0.0795,
-      "rows": 0.287
+      "win": 0.0905,
+      "rows": 0.298
      },
      "last-option": {
-      "win": 0.0835,
-      "rows": 0.286
+      "win": 0.088,
+      "rows": 0.305
      },
      "middle-option": {
-      "win": 0.084,
-      "rows": 0.292
+      "win": 0.081,
+      "rows": 0.288
      }
     },
     "3": {
@@ -126,20 +126,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0015,
-      "rows": 0.307
+      "win": 0.0065,
+      "rows": 0.234
      },
      "first-option": {
       "win": 0,
-      "rows": 0.289
+      "rows": 0.226
      },
      "last-option": {
       "win": 0,
-      "rows": 0.297
+      "rows": 0.213
      },
      "middle-option": {
-      "win": 0.0135,
-      "rows": 0.336
+      "win": 0.015,
+      "rows": 0.278
      }
     }
    }
@@ -153,20 +153,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0405,
-      "rows": 0.239
+      "win": 0.051,
+      "rows": 0.242
      },
      "best": {
-      "win": 0.087,
-      "rows": 0.286
+      "win": 0.086,
+      "rows": 0.3
      },
      "first": {
-      "win": 0.07,
-      "rows": 0.29
+      "win": 0.0815,
+      "rows": 0.283
      },
      "most": {
-      "win": 0.0825,
-      "rows": 0.296
+      "win": 0.0805,
+      "rows": 0.295
      }
     },
     "2": {
@@ -175,20 +175,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.016,
-      "rows": 0.148
+      "win": 0.025,
+      "rows": 0.156
      },
      "best": {
-      "win": 0.0425,
-      "rows": 0.205
+      "win": 0.0485,
+      "rows": 0.21
      },
      "first": {
-      "win": 0.043,
-      "rows": 0.211
+      "win": 0.035,
+      "rows": 0.198
      },
      "most": {
-      "win": 0.0335,
-      "rows": 0.204
+      "win": 0.0365,
+      "rows": 0.199
      }
     },
     "3": {
@@ -197,20 +197,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0145,
-      "rows": 0.338
+      "win": 0.0085,
+      "rows": 0.342
      },
      "best": {
-      "win": 0.024,
-      "rows": 0.374
+      "win": 0.02,
+      "rows": 0.384
      },
      "first": {
-      "win": 0.0265,
-      "rows": 0.438
+      "win": 0.022,
+      "rows": 0.447
      },
      "most": {
-      "win": 0.0175,
-      "rows": 0.378
+      "win": 0.019,
+      "rows": 0.368
      }
     }
    }
@@ -224,20 +224,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.022,
-      "rows": 0.143
+      "win": 0.021,
+      "rows": 0.142
      },
      "best": {
-      "win": 0.063,
-      "rows": 0.267
+      "win": 0.0695,
+      "rows": 0.27
      },
      "first": {
       "win": 0,
-      "rows": 0.097
+      "rows": 0.095
      },
      "max": {
-      "win": 0.064,
-      "rows": 0.257
+      "win": 0.068,
+      "rows": 0.269
      }
     },
     "2": {
@@ -246,20 +246,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0065,
-      "rows": 0.17
+      "win": 0.005,
+      "rows": 0.165
      },
      "best": {
-      "win": 0.048,
-      "rows": 0.365
+      "win": 0.033,
+      "rows": 0.349
      },
      "first": {
       "win": 0,
-      "rows": 0.282
+      "rows": 0.275
      },
      "max": {
-      "win": 0.0345,
-      "rows": 0.358
+      "win": 0.038,
+      "rows": 0.352
      }
     },
     "3": {
@@ -268,20 +268,20 @@
       "rows": 1
      },
      "random": {
-      "win": 0.0015,
-      "rows": 0.123
+      "win": 0.003,
+      "rows": 0.136
      },
      "best": {
-      "win": 0.024,
-      "rows": 0.296
+      "win": 0.017,
+      "rows": 0.292
      },
      "first": {
       "win": 0,
-      "rows": 0.194
+      "rows": 0.197
      },
      "max": {
-      "win": 0.023,
-      "rows": 0.274
+      "win": 0.0255,
+      "rows": 0.284
      }
     }
    }
@@ -296,23 +296,23 @@
      },
      "random": {
       "win": 0.0115,
-      "rows": 0.117
+      "rows": 0.11
      },
      "best": {
-      "win": 0.0365,
+      "win": 0.042,
       "rows": 0.222
      },
      "first": {
       "win": 0,
-      "rows": 0.056
+      "rows": 0.059
      },
      "all-of-one": {
-      "win": 0.0345,
-      "rows": 0.215
+      "win": 0.0365,
+      "rows": 0.216
      },
      "catch-all": {
       "win": 0,
-      "rows": 0.165
+      "rows": 0.161
      }
     },
     "2": {
@@ -321,24 +321,24 @@
       "rows": 1
      },
      "random": {
-      "win": 0.001,
-      "rows": 0.097
+      "win": 0.003,
+      "rows": 0.099
      },
      "best": {
-      "win": 0.0035,
-      "rows": 0.145
+      "win": 0.006,
+      "rows": 0.169
      },
      "first": {
       "win": 0,
-      "rows": 0.078
+      "rows": 0.076
      },
      "all-of-one": {
-      "win": 0.0075,
-      "rows": 0.157
+      "win": 0.007,
+      "rows": 0.165
      },
      "catch-all": {
       "win": 0,
-      "rows": 0.124
+      "rows": 0.113
      }
     },
     "3": {
@@ -348,19 +348,19 @@
      },
      "random": {
       "win": 0,
-      "rows": 0.118
+      "rows": 0.111
      },
      "best": {
-      "win": 0.0015,
-      "rows": 0.175
+      "win": 0.001,
+      "rows": 0.186
      },
      "first": {
       "win": 0,
-      "rows": 0.058
+      "rows": 0.055
      },
      "all-of-one": {
-      "win": 0,
-      "rows": 0.183
+      "win": 0.0025,
+      "rows": 0.169
      },
      "catch-all": {
       "win": 0,

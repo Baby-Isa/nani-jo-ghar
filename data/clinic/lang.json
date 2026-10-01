@@ -1,0 +1,357 @@
+{
+ "_about": "The clinic's words and sentence frames for the language seam (js/core/lang through the clinic's source, js/clinic/lang.js). R5 moved every Kutchi word, number table and join (pela / ne poi / ne, wadho / nindho) out of the clinic's code into this file. Nothing here is new Kutchi: words that Cook already has keep Cook's id and entry (from: data/cook.json), the rest were string literals in js/clinic and say where. A word with kutchi: null is an English placeholder (grey italic, flagged to record). Describing words and 'one' agree with the noun's gender; a noun of unknown gender takes the he-form, flagged 'to check' (decision 21). The frames here have no full stop (card rows: F10).",
+ "grammar": {
+  "numbers": {
+   "1": "num-01",
+   "2": "num-02",
+   "3": "num-03",
+   "4": "num-04",
+   "5": "num-05"
+  },
+  "count": "{n} {x}",
+  "sep": " ",
+  "number": "{x}!",
+  "then": "then",
+  "then_first": "first",
+  "list": {
+   "first": "{x}",
+   "next": "and"
+  },
+  "size": {
+   "big": "ph-big",
+   "small": "ph-small"
+  },
+  "yes": "cl-haa",
+  "no": "ph-no",
+  "sides": {
+   "left": "cl-dabo",
+   "right": "cl-jamno"
+  }
+ },
+ "lines": {
+  "first": {
+   "k": "Pela {x}",
+   "en": "First {x}",
+   "src": "Mum 25 Sept (A3.3-A3.6): pela = first; the clinic's rows, no full stop"
+  },
+  "then": {
+   "k": "Ne poi {x}",
+   "en": "And then {x}",
+   "src": "ne poi confirmed by Mum 25 Sept; the clinic's rows, no full stop"
+  },
+  "and": {
+   "k": "ne {x}",
+   "en": "and {x}",
+   "src": "the clinic's any-order join (pharmacy rows: X ne Y); Cook's lines.and is Ne {x}."
+  },
+  "times": {
+   "e": "{x} times",
+   "src": "no Kutchi (gap Times)"
+  }
+ },
+ "words": {
+  "num-01": {
+   "kutchi": "hakro",
+   "english": "one",
+   "forms": {
+    "he": "hakro",
+    "she": "hakri"
+   },
+   "src": "Mum 25 Sept (A3 recording, docs/language/grammar-notes.md); was hikdo (class handout)",
+   "from": "data/cook.json"
+  },
+  "num-02": {
+   "kutchi": "ba",
+   "english": "two",
+   "say": "ber",
+   "src": "Mum 25 Sept (A3 recording, docs/language/grammar-notes.md): said like the Ber of Bernstein; was bo (class handout). Screen spelling ba is Zafar's proposal, to confirm with the recording",
+   "draft": true,
+   "from": "data/cook.json"
+  },
+  "num-03": {
+   "kutchi": "trae",
+   "english": "three",
+   "src": "handout",
+   "from": "data/cook.json"
+  },
+  "num-04": {
+   "kutchi": "char",
+   "english": "four",
+   "src": "handout",
+   "from": "data/cook.json"
+  },
+  "num-05": {
+   "kutchi": "panj",
+   "english": "five",
+   "src": "handout",
+   "from": "data/cook.json"
+  },
+  "lnk-pela": {
+   "kutchi": "pela",
+   "english": "first",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke pela daar khape, ne poi maani",
+   "draft": true,
+   "from": "data/cook.json"
+  },
+  "lnk-nepoi": {
+   "kutchi": "ne poi",
+   "english": "and then",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B12): ne poi confirmed",
+   "from": "data/cook.json"
+  },
+  "ph-big": {
+   "kutchi": "wadho",
+   "english": "big",
+   "say": "wudd-oar",
+   "forms": {
+    "he": "wadho",
+    "she": "wadhi"
+   },
+   "say_forms": {
+    "she": "wudd-ee"
+   },
+   "src": "Zafar 25 Sept, phonetic; wadho / wadhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B6)",
+   "from": "data/cook.json"
+  },
+  "ph-small": {
+   "kutchi": "nindho",
+   "english": "small",
+   "say": "nindh-oar",
+   "forms": {
+    "he": "nindho",
+    "she": "nindhi"
+   },
+   "say_forms": {
+    "she": "nindh-ee"
+   },
+   "src": "Zafar 25 Sept, phonetic; nindho / nindhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B7)",
+   "from": "data/cook.json"
+  },
+  "ph-no": {
+   "kutchi": "na",
+   "english": "no / not",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na, not nar (nar = look). The polite whole sentence is muke na khape (nato / nati agree)",
+   "from": "data/cook.json"
+  },
+  "ph-quickly": {
+   "kutchi": "jaldi",
+   "english": "quickly",
+   "say": "jal-dee",
+   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B3)",
+   "from": "data/cook.json"
+  },
+  "ph-slowly": {
+   "kutchi": "aste thi",
+   "english": "slowly",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B2): aste = slow",
+   "from": "data/cook.json"
+  },
+  "cook-paani": {
+   "kutchi": "paani",
+   "english": "water",
+   "gender": "he",
+   "src": "zafar-24sep",
+   "from": "data/cook.json"
+  },
+  "cook-dudh": {
+   "kutchi": "dudh",
+   "english": "milk",
+   "gender": "he",
+   "src": "zafar-24sep",
+   "from": "data/cook.json"
+  },
+  "veg-14": {
+   "kutchi": "aadu",
+   "english": "ginger",
+   "gender": "unknown",
+   "src": "content master",
+   "from": "data/cook.json"
+  },
+  "fru-02": {
+   "kutchi": "limu",
+   "kutchi_one": "limu",
+   "kutchi_many": "limu",
+   "english": "lemon",
+   "gender": "unknown",
+   "src": "handout",
+   "from": "data/cook.json"
+  },
+  "spi-01": {
+   "kutchi": "hardar",
+   "english": "turmeric",
+   "gender": "unknown",
+   "src": "content master",
+   "from": "data/cook.json"
+  },
+  "veg-01": {
+   "kutchi": "bataato",
+   "kutchi_one": "bataato",
+   "kutchi_many": "bataata",
+   "english": "potato",
+   "gender": "unknown",
+   "src": "content master",
+   "from": "data/cook.json"
+  },
+  "veg-02": {
+   "kutchi": "dungri",
+   "kutchi_one": "dungri",
+   "kutchi_many": "dungri",
+   "english": "onion",
+   "gender": "unknown",
+   "src": "content master",
+   "from": "data/cook.json"
+  },
+  "veg-03": {
+   "kutchi": "tameto",
+   "english": "tomato",
+   "gender": "unknown",
+   "src": "content master",
+   "from": "data/cook.json"
+  },
+  "veg-12": {
+   "kutchi": "marcha",
+   "kutchi_one": "mirchi",
+   "english": "green chilli",
+   "gender": "unknown",
+   "src": "content master",
+   "from": "data/cook.json"
+  },
+  "veg-13": {
+   "kutchi": "lasan",
+   "english": "garlic",
+   "gender": "unknown",
+   "src": "content master",
+   "from": "data/cook.json"
+  },
+  "cl-haa": {
+   "kutchi": "haa",
+   "english": "yes",
+   "src": "the patient's answer in the diagnosis and the eye test (js/clinic/stages/diagnosis.js, heal/games/eye.js); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-chamchi": {
+   "kutchi": "chamchi",
+   "english": "spoon",
+   "src": "the drinks game (heal/games/taste.js); Cook says it in Muke chamchi de (lines.give, Mum 25 Sept A3.3-A3.6); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-dabo": {
+   "kutchi": "dabo",
+   "english": "left",
+   "src": "rule G19 (sides are the patient's own: dabo / jamno); tooth (heal/games/tooth.js); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-jamno": {
+   "kutchi": "jamno",
+   "english": "right",
+   "src": "rule G19 (dabo / jamno); tooth (heal/games/tooth.js); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-shabash": {
+   "kutchi": "Shabash!",
+   "english": "Well done!",
+   "src": "the heal host's interjections (heal/host.js INTERJECT); rule E27 short interjections; moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-arre": {
+   "kutchi": "Arre re!",
+   "english": "Oh dear!",
+   "src": "the heal host's interjections (heal/host.js INTERJECT); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-achija": {
+   "kutchi": "Achija!",
+   "english": "Good!",
+   "src": "the heal host's interjections (heal/host.js INTERJECT); also data/clinic/pipeline.json goodbyes.achija; moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-hedo": {
+   "kutchi": "Hedo!",
+   "english": "Here!",
+   "src": "the heal host's interjections (heal/host.js INTERJECT); a handout word, never confirmed by Mum (decisions.md working assumptions); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  },
+  "cl-honey": {
+   "kutchi": null,
+   "english": "honey",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-wipe": {
+   "kutchi": null,
+   "english": "wipe",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-beads": {
+   "kutchi": null,
+   "english": "beads",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-plaster": {
+   "kutchi": null,
+   "english": "plaster",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-apple": {
+   "kutchi": null,
+   "english": "apple",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-cloth": {
+   "kutchi": null,
+   "english": "cloth",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-thread": {
+   "kutchi": null,
+   "english": "thread",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-dabs": {
+   "kutchi": null,
+   "english": "dabs",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-stitches": {
+   "kutchi": null,
+   "english": "stitches",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-wax": {
+   "kutchi": null,
+   "english": "wax",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-cotton-bud": {
+   "kutchi": null,
+   "english": "cotton bud",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-drops": {
+   "kutchi": null,
+   "english": "drops",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-jugs": {
+   "kutchi": null,
+   "english": "jugs",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-splinters": {
+   "kutchi": null,
+   "english": "splinters",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-make": {
+   "kutchi": null,
+   "english": "make",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-big-toe": {
+   "kutchi": null,
+   "english": "big toe",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-little-toe": {
+   "kutchi": null,
+   "english": "little toe",
+   "src": "English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+  },
+  "cl-waaro": {
+   "kutchi": "waaro",
+   "english": "with",
+   "src": "the drinks game's drink name hardar waaro dudh (heal/games/taste.js); Cook's frame for mixed-in is {x} waari chai (lines.waari); moved from the clinic code in R5, unchanged (was a string literal in js/clinic); not new Kutchi"
+  }
+ }
+}

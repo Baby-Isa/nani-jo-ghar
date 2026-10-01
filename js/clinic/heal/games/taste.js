@@ -21,13 +21,21 @@
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
-  const THINGS = ["hardar", "dudh", "aadu", "paani", "honey", "limu"];
-  const GLYPH = { hardar: "🟡", dudh: "🥛", aadu: "🫚", paani: "💧", honey: "🍯", limu: "🍋" };
-  const WORD = { hardar: "hardar", dudh: "dudh", aadu: "aadu", paani: "paani", honey: "[honey]", limu: "limu" };
+  // the things on the shelf, each with its word in the lexicon (data/clinic/lang.json): no Kutchi in this file (R5)
+  const THINGS = ["turmeric", "milk", "ginger", "water", "honey", "lemon"];
+  const GLYPH = { turmeric: "🟡", milk: "🥛", ginger: "🫚", water: "💧", honey: "🍯", lemon: "🍋" };
+  const LEX = { turmeric: "spi-01", milk: "cook-dudh", ginger: "veg-14", water: "cook-paani", honey: "cl-honey", lemon: "fru-02" };
+  // a drink: the counted thing first (n spoons of it), then the rest, joined as the data says (waaro, ne)
   const DRINKS = {
-    yellow: { things: ["hardar", "dudh"], kutchi: "hardar waaro dudh", english: "turmeric milk", counted: "hardar" },
-    orange: { things: ["aadu", "paani"], kutchi: "aadu ne paani", english: "ginger and water", counted: "aadu" },
-    green: { things: ["honey", "limu"], kutchi: "[honey] ne limu", english: "honey and lemon", counted: "honey" },
+    yellow: { things: ["turmeric", "milk"], counted: "turmeric", join: "with" },
+    orange: { things: ["ginger", "water"], counted: "ginger", join: "and" },
+    green: { things: ["honey", "lemon"], counted: "honey", join: "and" },
+  };
+  const drinkName = (d, n) => {
+    const Lg = HS.L;
+    const head = Lg.item(LEX[d.counted], n != null ? { n, mods: ["cl-chamchi"] } : {});
+    const rest = d.things.filter((t) => t !== d.counted).map((t) => LEX[t]);
+    return d.join === "with" ? Lg.join([head, "cl-waaro", ...rest]) : Lg.join([head, ...rest.map((r) => Lg.also(r))]);
   };
   // spoon counts at every level: only three drinks exist, so the count keeps a blind guess under 10% at L1
   const K = { colours: { 1: 1, 2: 2, 3: 3 }, timerMs: { 1: 75000, 2: 60000, 3: 45000 }, counts: { 1: [1, 2, 3, 4], 2: [1, 2, 3], 3: [1, 2, 3] } };
@@ -48,16 +56,17 @@
     const drinks = colours.map((c) => {
       const d = DRINKS[c];
       const n = HS.pick(K.counts[L], rng);
-      const k = d.kutchi.replace(WORD[d.counted], `${HS.NUM[n]} chamchi ${WORD[d.counted]}`);
-      return { colour: c, things: d.things, counted: d.counted, n, kutchi: k, english: `${d.english} (${n} spoon${n > 1 ? "s" : ""} of ${d.counted})` };
+      const w = HS.L.show(drinkName(d, n));
+      return { colour: c, things: d.things, counted: d.counted, n, kutchi: w.kutchi, english: w.english, name: drinkName(d, n) };
     });
-    const link = (i) => (drinks.length === 1 ? "" : i === 0 ? "Pela " : "ne poi ");
-    const steps = drinks.map((d, i) => ({ id: `drink${i}`, kind: "make", drink: d, row: { id: `drink${i}`, kutchi: `${link(i)}[make] ${d.kutchi}`.trim(), english: `${i ? "Then make" : "Make"} ${d.english}` } }));
+    const Lg = HS.L;
+    const make = (d) => Lg.join(["cl-make", d.name]);
+    const steps = drinks.map((d, i) => ({ id: `drink${i}`, kind: "make", drink: d, row: Object.assign({ id: `drink${i}` }, Lg.show(drinks.length === 1 ? make(d) : Lg.step(i, make(d), { lower: i > 0 }), { cap: i === 0 })) }));
     const key = (d) => d.things.slice().sort().join("+") + `x${d.n}`;
     const opts = [].concat(...pairs.map((p) => K.counts[L].map((n) => `${p}x${n}`)));
     const rows = drinks.map((d, i) => ({ id: `drink${i}`, options: opts, answer: key(d) }));
-    const words = [{ kutchi: "hardar", english: "turmeric" }, { kutchi: "dudh", english: "milk" }, { kutchi: "aadu", english: "ginger" }, { kutchi: "paani", english: "water" }, { kutchi: "limu", english: "lemon" }, HS.ph("honey"), HS.ph("make")].filter((w) => !w.kutchi || drinks.some((d) => d.things.includes(w.kutchi)));
-    words.push({ kutchi: "chamchi", english: "spoon" }, ...drinks.map((d) => ({ kutchi: HS.NUM[d.n], english: String(d.n) })));
+    const words = THINGS.filter((t) => t !== "honey" && drinks.some((d) => d.things.includes(t))).map((t) => Lg.w(LEX[t])).concat([HS.ph("honey"), HS.ph("make")]);
+    words.push(Lg.w("cl-chamchi"), ...drinks.map((d) => Lg.num(d.n)));
     return { level: L, steps, rows, words, timerMs: K.timerMs[L], key };
   }
 

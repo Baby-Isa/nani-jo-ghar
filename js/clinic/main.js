@@ -27,6 +27,7 @@ export const CLASSIC = [
   "js/shared/bulb.js",
   "js/shared/tally.js",
   "js/shared/focus.js",
+  "js/clinic/lang.js",
   "js/clinic/body.js",
   "js/clinic/kit.js",
   "js/clinic/figure.js",

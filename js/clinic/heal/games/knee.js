@@ -8,7 +8,7 @@
  *    wraps from the last dot to this one. Stop after N turns (the count said).
  *    L1: 2 dots (left, right) at one height, alternating, no hurry.
  *    L2: 3 dots each side at different heights, flashing in a set order.
- *    L3: faster, more turns; the side is said (dabo / jamno) and only that leg glows.
+ *    L3: faster, more turns; only the sore leg glows (D10, 1 Oct: the side is said in the diagnosis only).
  * Rows (the Kutchi decides): the kick count, the turns. Mistakes are logged
  * silently and show in the end review.
  */
@@ -41,19 +41,20 @@
       order.push(L === 1 ? { s, y: 1 } : { s, y: Math.floor(rng() * 3) });
       s = s === "l" ? "r" : "l";
     }
-    const sideK = side === "left" ? "dabo" : "jamno";
-    const knee = L === 3 ? `${HS.cap(sideK)} [knee]: ` : "";
+    // words, numbers and joins from data through the seam (R5); D10 (1 Oct): sides are said and tested in the
+    // diagnosis only, so the close-up's rows never name the side
+    const Lg = HS.L;
+    const say = (m, o) => Lg.show(m, o);
     const steps = [
-      { id: "kick", kind: "kick", count: kicks, row: { id: "kick", kutchi: `${knee}[hammer], ${HS.NUM[kicks]}`, english: `${L === 3 ? `The ${side} knee: ` : ""}the hammer, ${kicks} taps` } },
-      { id: "wrap", kind: "wrap", count: turns, order, row: { id: "wrap", kutchi: `Ne poi [bandage], ${HS.NUM[turns]} [turns]`, english: `Then the bandage, ${turns} turns` } },
+      { id: "kick", kind: "kick", count: kicks, row: Object.assign({ id: "kick" }, say(Lg.join(["hammer", ",", Lg.count(kicks)]), { cap: true })) },
+      { id: "wrap", kind: "wrap", count: turns, order, row: Object.assign({ id: "wrap" }, say(Lg.join([Lg.then("bandage"), ",", Lg.item("turns", { n: turns })]))) },
     ];
     const rows = [
       { id: "kick-count", options: K.kicks[L], answer: kicks },
       // 13i: the flashing stops at the last turn, so the turns are no longer decided by the word alone: a hand-skill row
       { id: "wrap-turns", options: K.turns[L], answer: turns, skill: true },
     ];
-    const words = [{ kutchi: HS.NUM[kicks], english: String(kicks) }, { kutchi: HS.NUM[turns], english: String(turns) }, { kutchi: "ne poi", english: "and then" }, HS.ph("knee"), HS.ph("bandage")];
-    if (L === 3) words.push({ kutchi: sideK, english: side });
+    const words = [Lg.num(kicks), Lg.num(turns), Lg.w("lnk-nepoi"), HS.ph("knee"), HS.ph("bandage")];
     return { level: L, side, steps, rows, words, flashMs: K.flashMs[L] };
   }
 

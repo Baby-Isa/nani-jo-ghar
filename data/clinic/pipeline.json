@@ -124,6 +124,7 @@
     "torch": { "kutchi": null, "english": "torch", "glyph": "🔦", "placeholder": true, "group": "tool", "standin": "torch" }
   },
 
+  "answer_lines": {"_about": "The patient's yes / no in the diagnosis: which lines say them (R5: the ids left the code).", "yes": "haa", "no": "na"},
   "lines": {
     "bring": { "kutchi": "[Bring in] {kind}", "english": "Bring in {kind}" },
     "bring2": { "kutchi": "Pela {a}, ne poi {b}", "english": "First {a}, and then {b}" },

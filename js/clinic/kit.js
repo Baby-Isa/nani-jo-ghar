@@ -403,7 +403,7 @@
         if (n > 0) {
           const chip = document.createElement("span");
           chip.className = "cl-row-count";
-          chip.textContent = Kit.NUM[n] || String(n);
+          chip.textContent = Kit.num(n);
           rowEl.insertBefore(chip, rowEl.querySelector(".oc-tk"));
         }
       },
@@ -488,7 +488,8 @@
    * G6 (the Cook counting rule, Q7): at level 1 a row counts up as you tap, written as the
    * Kutchi number word and said aloud, instead of showing nothing until the step closes.
    */
-  Kit.NUM = { 1: "hakro", 2: "ba", 3: "trae", 4: "char", 5: "panj" };
+  /** A number word from data (js/clinic/lang.js; R5: no number table in code). */
+  Kit.num = (n) => (global.ClinicLang && global.ClinicLang.numId(n) ? global.ClinicLang.num(n).kutchi : String(n));
   Kit.Card.prototype.count = function (id, n) {
     const r = id ? this.row(id) : this.row(this.st.now) || this.rows.find((x) => !this.st.done.has(x.id));
     if (!r) return null;

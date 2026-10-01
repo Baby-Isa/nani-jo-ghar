@@ -71,13 +71,16 @@
     const jugs = HS.pick(K.jugs[L], rng);
     const splinters = paths(L, rng);
     const order = L === 3 ? HS.shuffle(TOES, rng) : null;
-    // 13: both feet at level 3, so "my left foot" is actually tested (the splinters are in both; the one said is the one)
-    const side = L === 3 ? (rng() < 0.5 ? "left" : "right") : null;
-    const steps = [{ id: "soak", kind: "soak", temp, jugs, row: { id: "soak", kutchi: `Paani [${temp}], ${HS.NUM[jugs]} [jugs]`, english: `${HS.cap(temp)} water, ${jugs} jugs` } }];
-    const orderK = order ? `: ${order.map((t, i) => `${i ? "ne poi" : "pela"} [${t}]`).join(", ")}` : "";
+    // D10 (1 Oct): sides are said and tested in the diagnosis only; the close-up shows the one sore foot
+    // (supersedes 29 Sept 13 "both feet at level 3")
+    const side = null;
+    // words, numbers and joins from data through the seam (R5)
+    const Lg = HS.L;
+    const say = (m, o) => Lg.show(m, o);
+    const steps = [{ id: "soak", kind: "soak", temp, jugs, row: Object.assign({ id: "soak" }, say(Lg.join([Lg.item("cook-paani"), temp, ",", Lg.item("cl-jugs", { n: jugs })]), { cap: true })) }];
     // the toe order (L3) is a sequence on the card (13h): pela [big toe], ne poi ...
-    const pullRows = order ? order.map((t, i) => ({ id: `pull${i}`, seq: "toes", kutchi: `${i ? "ne poi" : "pela"} [${t}]`, english: `${i ? "then the" : "first the"} ${t}` })) : null;
-    steps.push({ id: "pull", kind: "pull", order, row: pullRows ? pullRows[0] : { id: "pull", kutchi: `[Splinters]${orderK}`, english: "Take the splinters out" }, rows: pullRows });
+    const pullRows = order ? order.map((t, i) => Object.assign({ id: `pull${i}`, seq: "toes" }, say(Lg.step(i, t, { lower: true })))) : null;
+    steps.push({ id: "pull", kind: "pull", order, row: pullRows ? pullRows[0] : Object.assign({ id: "pull" }, say(Lg.item("cl-splinters"), { cap: true })), rows: pullRows });
     steps.push({ id: "plaster", kind: "plaster", row: { id: "plaster", kutchi: null, english: "A plaster on each spot", placeholder: true } });
     const rows = [
       { id: "soak-water", options: TEMPS, answer: temp, placeholder: true },
@@ -85,8 +88,8 @@
     ];
     if (order) rows.push({ id: "toe-order", seq: TOES, answer: order, placeholder: true });
     if (side) rows.push({ id: "foot-side", options: ["left", "right"], answer: side, placeholder: true });
-    const words = [{ kutchi: "paani", english: "water" }, { kutchi: HS.NUM[jugs], english: String(jugs) }, HS.ph(temp), HS.ph("splinter")];
-    if (order) words.push({ kutchi: "pela", english: "first" }, { kutchi: "ne poi", english: "and then" }, HS.ph("big toe"), HS.ph("little toe"));
+    const words = [Lg.w("cook-paani"), Lg.num(jugs), HS.ph(temp), HS.ph("splinter")];
+    if (order) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), HS.ph("big toe"), HS.ph("little toe"));
     if (side) words.push(HS.ph(`my ${side} foot`));
     return { level: L, steps, rows, words, splinters, side };
   }

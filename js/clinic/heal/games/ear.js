@@ -44,20 +44,22 @@
     const order = bigFirst ? ["big", "small"] : ["small", "big"];
     const cleans = HS.pick(K.cleans[L], rng);
     const drops = HS.pick(K.drops[L], rng);
-    const kw = (x) => (x === "big" ? "wadho" : "nindho");
+    const Lg = HS.L; // words, numbers and joins from data through the seam (R5)
+    const say = (m, o) => Lg.show(m, o);
+    const waxRow = (i) => say(Lg.step(i, i === 0 ? Lg.item("cl-wax", { size: order[0] }) : Lg.item(Lg.sizeId(order[1])), { lower: true }));
     // 13j: level 1 has no size words (just take the wax out); big and small start at level 2
     const steps = [L === 1
       ? { id: "wax", kind: "wax", order: null, row: { id: "wax", kutchi: "[The wax out]", english: "Take the wax out" } }
-      : { id: "wax", kind: "wax", order, row: { id: "wax0", seq: "wax", kutchi: `pela ${kw(order[0])} [wax]`, english: `first the ${order[0]} wax` }, rows: [{ id: "wax0", seq: "wax", kutchi: `pela ${kw(order[0])} [wax]`, english: `first the ${order[0]} wax` }, { id: "wax1", seq: "wax", kutchi: `ne poi ${kw(order[1])}`, english: `then the ${order[1]} one` }] }];
+      : { id: "wax", kind: "wax", order, row: Object.assign({ id: "wax0", seq: "wax" }, waxRow(0)), rows: [Object.assign({ id: "wax0", seq: "wax" }, waxRow(0)), Object.assign({ id: "wax1", seq: "wax" }, waxRow(1))] }];
     if (K.popMs[L]) steps.push({ id: "pop", kind: "pop", ms: K.popMs[L], max: MAXPOPS[L], row: { id: "pop", kutchi: null, english: "More wax!", placeholder: true } });
-    steps.push({ id: "clean", kind: "clean", count: cleans, row: { id: "clean", kutchi: `[Cotton bud], ${HS.NUM[cleans]}`, english: `The cotton bud, ${cleans} times` } });
-    steps.push({ id: "drops", kind: "drops", count: drops, row: { id: "drops", kutchi: `Ne poi [drops], ${HS.NUM[drops]}`, english: `Then the drops, ${drops}` } });
+    steps.push({ id: "clean", kind: "clean", count: cleans, row: Object.assign({ id: "clean" }, say(Lg.join(["cl-cotton-bud", ",", Lg.count(cleans)]), { cap: true })) });
+    steps.push({ id: "drops", kind: "drops", count: drops, row: Object.assign({ id: "drops" }, say(Lg.join([Lg.then("cl-drops"), ",", Lg.count(drops)]))) });
     const rows = [
       ...(L === 1 ? [] : [{ id: "wax-order", options: [["big", "small"], ["small", "big"]], answer: order }]),
       { id: "clean-count", options: K.cleans[L], answer: cleans },
       { id: "drops-count", options: K.drops[L], answer: drops },
     ];
-    const words = (L === 1 ? [] : [{ kutchi: "pela", english: "first" }, { kutchi: "wadho", english: "big" }, { kutchi: "nindho", english: "small" }]).concat([{ kutchi: "ne poi", english: "and then" }, { kutchi: HS.NUM[cleans], english: String(cleans) }, { kutchi: HS.NUM[drops], english: String(drops) }, HS.ph("ear"), HS.ph("wax")]);
+    const words = (L === 1 ? [] : [Lg.w("lnk-pela"), Lg.w("ph-big"), Lg.w("ph-small")]).concat([Lg.w("lnk-nepoi"), Lg.num(cleans), Lg.num(drops), HS.ph("ear"), HS.ph("wax")]);
     return { level: L, steps, rows, words };
   }
 

@@ -23,7 +23,10 @@
   "use strict";
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
 
-  const NUM = { 1: "hakro", 2: "ba", 3: "trae", 4: "char", 5: "panj" };
+  // words, numbers and joins from data through the seam (js/clinic/lang.js, R5): no Kutchi in this file
+  const LG = () => root.ClinicLang || (typeof require === "function" ? require("../../lang.js") : null);
+  const say = (m, o) => LG().show(m, o);
+  const num = (n) => LG().num(n);
   const KNOBS = {
     zoom: 2.2,
     throbMs: 8000,
@@ -42,44 +45,41 @@
     const ail = ailmentId === "cut" || ailmentId === "scrape" ? ailmentId : level >= 2 ? "cut" : "scrape";
     const L = Math.max(1, Math.min(3, level));
     const steps = [];
-    const first = (w, en) => ({ kutchi: `Pela ${w}`, english: `First ${en}` });
-    const then = (w, en) => ({ kutchi: `Ne poi ${w}`, english: `And then ${en}` });
-    steps.push({ id: "wash", kind: "wash", item: "paani", row: Object.assign({ id: "wash" }, first("paani", "water")), tested: false });
+    const Lg = LG();
+    const then = (x) => say(Lg.then(x));
+    steps.push({ id: "wash", kind: "wash", item: "paani", row: Object.assign({ id: "wash" }, say(Lg.first("cook-paani"))), tested: false });
     if (ail === "scrape") {
       const dab = { id: "dab", kind: "dab", item: "cloth", tested: L >= 2 };
       if (L >= 2) {
         dab.count = pick(K.dabCounts[L], rng);
         dab.options = K.dabCounts[L];
-        dab.row = { id: "dab", kutchi: `Ne poi [cloth]. ${cap(NUM[dab.count])} [dabs]`, english: `And then the cloth. ${dab.count} dabs` };
-      } else dab.row = Object.assign({ id: "dab" }, then("[cloth]", "the cloth"));
+        dab.row = Object.assign({ id: "dab" }, say(Lg.join([Lg.then("cl-cloth"), ".", Lg.item("cl-dabs", { n: dab.count })])));
+      } else dab.row = Object.assign({ id: "dab" }, then("cl-cloth"));
       steps.push(dab);
     } else {
       const st = { id: "stitch", kind: "stitch", item: "thread", tested: L >= 2 };
       if (L === 1) {
         st.gaps = [{ size: "one", dots: K.stitchDots[1], count: null }];
-        st.row = Object.assign({ id: "stitch" }, then("[thread]", "the thread"));
+        st.row = Object.assign({ id: "stitch" }, then("cl-thread"));
       } else if (L === 2) {
         st.count = pick(K.stitchCounts[2], rng);
         st.options = K.stitchCounts[2];
         st.gaps = [{ size: "one", dots: K.stitchDots[2], count: st.count }];
-        st.row = { id: "stitch", kutchi: `Ne poi [thread]. ${cap(NUM[st.count])} [stitches]`, english: `And then the thread. ${st.count} stitches` };
+        st.row = Object.assign({ id: "stitch" }, say(Lg.join([Lg.then("cl-thread"), ".", Lg.item("cl-stitches", { n: st.count })])));
       } else {
         const big = pick(K.stitchCounts[3].big, rng);
         const small = pick(K.stitchCounts[3].small, rng);
         const bigFirst = rng() < 0.5;
-        const a = bigFirst ? ["wadho", big, "big"] : ["nindho", small, "small"];
-        const b = bigFirst ? ["nindho", small, "small"] : ["wadho", big, "big"];
+        const a = bigFirst ? ["big", big] : ["small", small];
+        const b = bigFirst ? ["small", small] : ["big", big];
         st.gaps = [
           { size: "big", dots: K.stitchDots[3].big, count: big },
           { size: "small", dots: K.stitchDots[3].small, count: small },
         ];
         st.order = bigFirst ? ["big", "small"] : ["small", "big"];
         st.bigLeft = rng() < 0.5; // where the big gap sits on screen: random, so position gives nothing away
-        st.row = {
-          id: "stitch",
-          kutchi: `Ne poi [thread]: pela ${a[0]}, ${NUM[a[1]]}; ne poi ${b[0]}, ${NUM[b[1]]}`,
-          english: `And then the thread: first the ${a[2]} one, ${a[1]}; then the ${b[2]} one, ${b[1]}`,
-        };
+        const sized = ([size, n], i) => [Lg.step(i, Lg.item(Lg.sizeId(size)), { lower: true }), ",", Lg.count(n)];
+        st.row = Object.assign({ id: "stitch" }, say(Lg.join([Lg.then("cl-thread"), ":", ...sized(a, 0), ";", ...sized(b, 1)])));
       }
       steps.push(st);
     }
@@ -87,10 +87,10 @@
     if (L >= 2) {
       pl.options = K.plasterColours[L];
       pl.colour = pick(pl.options, rng);
-      pl.row = { id: "plaster", kutchi: `Ne poi [the ${pl.colour} plaster]`, english: `And then the ${pl.colour} plaster` };
+      pl.row = Object.assign({ id: "plaster" }, then([pl.colour, "cl-plaster"]));
     } else {
       pl.options = K.designs;
-      pl.row = Object.assign({ id: "plaster" }, then("[plaster]", "the plaster"));
+      pl.row = Object.assign({ id: "plaster" }, then("cl-plaster"));
     }
     steps.push(pl);
     // the ear rows (what the review counts from level 2)
@@ -104,12 +104,12 @@
       } else if (s.kind === "stitch") rows.push({ id: "stitch-count", kind: "count", step: s.id, answer: s.count, options: s.options });
       if (s.kind === "plaster") rows.push({ id: "plaster-colour", kind: "colour", step: s.id, answer: s.colour, options: s.options });
     });
-    const words = [{ kutchi: "paani", english: "water", id: "paani" }, { kutchi: "pela", english: "first" }, { kutchi: "ne poi", english: "and then" }];
+    const words = [Object.assign(Lg.w("cook-paani"), { id: "paani" }), Lg.w("lnk-pela"), Lg.w("lnk-nepoi")];
     steps.forEach((s) => {
-      if (s.count) words.push({ kutchi: NUM[s.count], english: String(s.count) });
-      (s.gaps || []).forEach((g) => g.count && words.push({ kutchi: NUM[g.count], english: String(g.count) }));
+      if (s.count) words.push(num(s.count));
+      (s.gaps || []).forEach((g) => g.count && words.push(num(g.count)));
     });
-    if (L === 3 && ail === "cut") words.push({ kutchi: "wadho", english: "big" }, { kutchi: "nindho", english: "small" });
+    if (L === 3 && ail === "cut") words.push(Lg.w("ph-big"), Lg.w("ph-small"));
     steps.forEach((s) => s.item !== "paani" && words.push({ kutchi: null, english: s.item === "thread" ? "thread" : s.item, placeholder: true }));
     const seen = new Set();
     return {
@@ -584,10 +584,11 @@
     const name = (o) => (o.length === 2 ? halfName(o) : o[0]);
     // 13h: the plasters' order is a sequence on the shared card: one part per plaster (pela ..., ne poi ...),
     // the next one in the grey band, each ticking as it goes on
-    const plasterRows = seq.map((o, i) => ({ id: `plaster${i}`, seq: "plasters", kutchi: `${i === 0 ? (n > 1 ? "pela " : "") : "ne poi "}[${name(o)} plaster]`.trim(), english: `${i === 0 ? (n > 1 ? "first " : "") : "then "}${name(o)} plaster` }));
+    const Lg = LG();
+    const plasterRows = seq.map((o, i) => Object.assign({ id: `plaster${i}`, seq: "plasters" }, say(n > 1 || i > 0 ? Lg.step(i, [name(o), "cl-plaster"], { lower: true }) : Lg.join([name(o), "cl-plaster"]))));
     const steps = [
-      { id: "wash", kind: "wash", row: { id: "wash", seq: "steps", kutchi: "Pela paani", english: "First water" } },
-      { id: "dab", kind: "dab", count: dab, row: { id: "dab", seq: "steps", kutchi: `Ne poi [cloth], ${HS.NUM[dab]} [dabs]`, english: `Then the cloth, ${dab} dabs` } },
+      { id: "wash", kind: "wash", row: Object.assign({ id: "wash", seq: "steps" }, say(Lg.first("cook-paani"))) },
+      { id: "dab", kind: "dab", count: dab, row: Object.assign({ id: "dab", seq: "steps" }, say(Lg.join([Lg.then("cl-cloth"), ",", Lg.item("cl-dabs", { n: dab })]))) },
       { id: "plaster", kind: "plaster", seq, options, row: plasterRows[0], rows: plasterRows },
     ];
     const key = (o) => o.slice().sort().join("+");
@@ -602,13 +603,7 @@
       { id: "dab-count", options: SCRAPE.dabs[L], answer: dab },
       { id: "plasters", options: seqs, answer: seq.map(key), placeholder: true }, // the colours wait for the doctor's recording
     ];
-    const words = [
-      { kutchi: "paani", english: "water" },
-      { kutchi: "pela", english: "first" },
-      { kutchi: "ne poi", english: "and then" },
-      { kutchi: HS.NUM[dab], english: String(dab) },
-      HS.ph("plaster"),
-    ];
+    const words = [Lg.w("cook-paani"), Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), num(dab), HS.ph("plaster")];
     return { level: L, ailment: "scrape", steps, rows, words, upFront: L >= 2, key };
   }
 

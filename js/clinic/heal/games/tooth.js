@@ -36,7 +36,8 @@
     fill: { gesture: "hold" },
   };
   const DIRS = ["up", "down", "left", "right"];
-  const DIR_K = { left: "dabo", right: "jamno" };
+  // left / right said with the lexicon's side words (data/clinic/lang.json grammar.sides; no Kutchi here, R5)
+  const DIR_K = { left: true, right: true };
   // the patient's own left is on our right
   const SCREEN = { up: [0, -1], down: [0, 1], left: [1, 0], right: [-1, 0] };
 
@@ -49,7 +50,9 @@
       while (moves.length && m === moves[moves.length - 1]);
       moves.push(m);
     }
-    const word = (m) => (L === 3 && DIR_K[m] ? DIR_K[m] : `[${m}]`);
+    const Lg = HS.L;
+    const dirM = (m) => (L === 3 && DIR_K[m] ? Lg.item(Lg.sideId(m)) : Lg.item(m));
+    const word = (m) => Lg.show(dirM(m)).kutchi || `[${m}]`;
     // the decay: a blob of cells on the tooth (6 x 5 grid)
     const decay = [];
     const cx = 1 + Math.floor(rng() * 3);
@@ -57,7 +60,7 @@
     for (let y = 0; y < 5; y++) for (let x = 0; x < 6; x++) if (Math.hypot(x - cx - 0.5, (y - cy - 0.5) * 1.2) < 2.0) decay.push(`${x},${y}`);
     const steps = [
       // the called order is a sequence on the card (13h): one part per move, each ticking as it's brushed
-      { id: "brush", kind: "brush", moves, row: { id: "brush0", seq: "brush", kutchi: word(moves[0]), english: moves[0] }, rows: moves.map((m, i) => ({ id: `brush${i}`, seq: "brush", kutchi: `${i ? "ne poi " : "pela "}${word(m)}`, english: `${i ? "then " : "first "}${m}` })) },
+      { id: "brush", kind: "brush", moves, row: { id: "brush0", seq: "brush", kutchi: word(moves[0]), english: moves[0] }, rows: moves.map((m, i) => Object.assign({ id: `brush${i}`, seq: "brush" }, Lg.show(Lg.step(i, dirM(m), { lower: true })))) },
       { id: "drill", kind: "drill", decay, timer: K.drillMs[L] || 0, row: { id: "drill", kutchi: null, english: "Drill the bad bits", placeholder: true } },
       { id: "fill", kind: "fill", row: { id: "fill", kutchi: null, english: "Fill it to the line", placeholder: true } },
     ];
@@ -67,7 +70,7 @@
       { id: "fill-line", skill: true, answer: true },
     ];
     const words = [HS.ph("up"), HS.ph("down"), HS.ph("tooth"), HS.ph("brush")];
-    if (L === 3) words.push({ kutchi: "dabo", english: "left" }, { kutchi: "jamno", english: "right" });
+    if (L === 3) words.push(Lg.w(Lg.sideId("left")), Lg.w(Lg.sideId("right")));
     return { level: L, steps, rows, words };
   }
 

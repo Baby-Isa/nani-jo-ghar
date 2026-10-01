@@ -33,8 +33,12 @@
 })(typeof self !== "undefined" ? self : this, function (global) {
   "use strict";
   const HS = {};
-  // the numbers the family has given (Cook's words); 1-5 only, so counts stay at 5 or under
-  HS.NUM = { 1: "hakro", 2: "ba", 3: "trae", 4: "char", 5: "panj" };
+  // every word, number and join from data through the seam (js/clinic/lang.js; R5): 1-5 only, so counts stay at 5 or under
+  // (looked up when used: a page may load js/clinic/lang.js after this file, e.g. the heal host's loadBase)
+  const Lg = () => global.ClinicLang || (typeof require === "function" ? require("../lang.js") : null);
+  Object.defineProperty(HS, "L", { get: Lg, enumerable: true });
+  /** The number word for n ("ba"), or null past five. */
+  HS.num = (n, o) => (Lg().numId(n) ? Lg().num(n, o).kutchi : null);
   HS.cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   HS.pick = (a, rng) => a[Math.floor(rng() * a.length)];
   HS.shuffle = (a, rng) => {
@@ -391,7 +395,7 @@
      */
     S.count = (n, o = {}) => {
       if (n == null) return;
-      if (ctx.level >= 3 && HS.NUM[n] && Voice && !o.silent) Voice.say({ kutchi: HS.cap(HS.NUM[n]), english: String(n) }, { who: "doctor", noBubble: true });
+      if (ctx.level >= 3 && HS.num(n) && Voice && !o.silent) Voice.say(Lg().num(n, { cap: true }), { who: "doctor", noBubble: true });
     };
 
     /* ---- the gentle timer ---- */

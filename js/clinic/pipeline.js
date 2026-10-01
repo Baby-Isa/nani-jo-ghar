@@ -31,7 +31,8 @@
   "use strict";
   const P = {};
   const STAGES = (P.STAGES = ["waiting", "diagnosis", "pharmacy", "heal", "sendoff"]);
-  const NUM = (P.NUM = { 1: "hakro", 2: "ba", 3: "trae", 4: "char", 5: "panj" });
+  // every Kutchi word, number and join comes from data through the language seam (js/clinic/lang.js, R5)
+  const L = P.Lang = (typeof self !== "undefined" && self.ClinicLang) || (typeof globalThis !== "undefined" && globalThis.ClinicLang) || (typeof require === "function" ? require("./lang.js") : null);
 
   /* ---------------- randomness ---------------- */
   P.rng = function (seed) {
@@ -69,6 +70,8 @@
     const d = Object.assign({}, pipeline);
     d.items = Object.assign({}, (clinic && clinic.items) || {}, pipeline.items || {});
     delete d.items._about;
+    // the language seam finds the clinic's items by id (the browser's kit sets a wider resolver: Kit.ITEMS)
+    if (L && !L.resolve) L.resolve = (id) => d.items[id] || null;
     return d;
   };
 
@@ -104,7 +107,7 @@
       e = `${o.colour} ${e}`;
     }
     if (o.count > 1) {
-      k = `${NUM[o.count]} ${kutchi ? k : k.replace(/\]$/, "s]")}`;
+      k = `${L.num(o.count).kutchi} ${kutchi ? k : k.replace(/\]$/, "s]")}`;
       e = `${o.count} ${e}${kutchi ? "" : "s"}`;
     }
     return { id, kutchi: k, english: e, placeholder: !kutchi && !o.count, word: { kutchi, english: it.english || english, id } };
@@ -112,7 +115,8 @@
   P.kindWord = function (data, kind, o = {}) {
     const k = data.kinds[kind] || { english: kind };
     const noun = k.english.replace(/^the /, "");
-    if (o.size) return { kutchi: `${o.size === "big" ? "wadho" : "nindho"} ${ph(noun)}`, english: `the ${o.size} ${noun}`, word: k.english };
+    // the describing word agrees with the noun (a kind of unknown gender: the he-form, flagged; decision 21)
+    if (o.size) return { kutchi: `${L.w(L.sizeId(o.size)).kutchi} ${ph(noun)}`, english: `the ${o.size} ${noun}`, word: k.english };
     if (o.colour) return { kutchi: `${ph(k.english)} ${ph(data.colour_words[o.colour].english)}`, english: `${k.english} ${data.colour_words[o.colour].english}` };
     return { kutchi: ph(k.english), english: k.english };
   };
@@ -120,6 +124,17 @@
     const w = data.part_words[part] || part;
     if (side) return { kutchi: ph(`my ${side} ${w}`), english: `my ${side} ${w}` };
     return { kutchi: ph(w), english: w };
+  };
+
+  /**
+   * A row joined to the ones before it, by the data's frames (the seam): ordered, "pela {x}" then "ne poi {x}";
+   * any order, "{x}" then "ne {x}". w is a display word {kutchi, english} (its Kutchi may hold [placeholders]).
+   */
+  P.joined = function (i, w, { ordered = false, lower = false } = {}) {
+    if (!ordered && i === 0) return { kutchi: w.kutchi || ph(w.english), english: w.english };
+    const frame = ordered ? L.show(L.step(i, "\u0001", { lower })) : L.show(L.also("\u0001"));
+    const swap = (t, by) => String(t).replace(/\[?\u0001\]?/, by);
+    return { kutchi: swap(frame.kutchi, w.kutchi || ph(w.english)), english: swap(frame.english, w.english) };
   };
 
   /* ================= stage 1: the waiting room ================= */
@@ -273,7 +288,7 @@
     }));
     let card;
     // W4: two in order, a sequence on the shared card (13c): "Pela {a}" then "ne poi {b}"
-    if (variant === "W4") card = [{ id: "who0", seq: "who", kutchi: `Pela ${calls[0].say.kutchi}`, english: `First ${calls[0].say.english}` }, { id: "who1", seq: "who", kutchi: `ne poi ${calls[1].say.kutchi}`, english: `and then ${calls[1].say.english}` }];
+    if (variant === "W4") card = [0, 1].map((i) => Object.assign(P.joined(i, calls[i].say, { ordered: true, lower: i > 0 }), { id: `who${i}`, seq: "who" }));
     else if (variant === "W3") card = [Object.assign(P.line(data, "come", { kind: calls[0].say }), { id: "who0" })];
     else card = [Object.assign(P.line(data, "bring", { kind: calls[0].say }), { id: "who0" })];
     const patient = bench[calls[calls.length - 1].target];
@@ -367,8 +382,8 @@
     const pose = o.pose || (variant === "D3" ? "stand" : "sit");
     return { stage: "diagnosis", variant, level: L, graded, ailment: ailmentId, part, side, probes, calls, tools, rows, card, pose, name: ail.say, prescription: said };
   };
-  /** D1 (level 2+): the right act for a probe's answer. "No" is na (G9: not nar). */
-  P.probeAnswer = (plan, probed) => (probed === plan.part ? "haa" : "na");
+  /** D1 (level 2+): the right act for a probe's answer: "yes" or "no" (said with the data's words: haa / na, G9). */
+  P.probeAnswer = (plan, probed) => (probed === plan.part ? "yes" : "no");
   P.judgeProbe = (plan, probed, act) => (probed === plan.part ? act === "found" : act === "next");
   /** D2: a tap on {part, side}. Sides count only when the row asks for one. */
   P.judgePart = (row, tap) => !!tap && tap.part === row.answer.part && (!row.answer.side || tap.side === row.answer.side);
@@ -441,11 +456,7 @@
     // shared card (13c): pela ..., ne poi ...
     const words = asked.map((a) => P.itemWord(data, a.id, a));
     const ordered = !!(K.order && words.length > 1);
-    const card = words.map((w, i) => {
-      const pre = ordered ? (i === 0 ? "pela " : "ne poi ") : i === 0 ? "" : "ne ";
-      const preE = ordered ? (i === 0 ? "first " : "and then ") : i === 0 ? "" : "and ";
-      return Object.assign({ id: `grab${i}`, kutchi: `${pre}${w.kutchi}`, english: `${preE}${w.english}` }, ordered ? { seq: "need" } : {});
-    });
+    const card = words.map((w, i) => Object.assign({ id: `grab${i}` }, P.joined(i, w, { ordered, lower: true }), ordered ? { seq: "need" } : {}));
     const cardHead = P.line(data, "bringme", { a: { kutchi: "", english: "" } });
     cardHead.kutchi = cardHead.kutchi.trim();
     cardHead.english = cardHead.english.trim();
@@ -752,7 +763,7 @@
       const acts = [];
       for (const p of order) {
         let act;
-        if (strategy === "fair") act = P.probeAnswer(plan, p) === "haa" ? "found" : "next";
+        if (strategy === "fair") act = P.probeAnswer(plan, p) === "yes" ? "found" : "next";
         else if (strategy === "found-always") act = "found";
         else if (strategy === "next-then-found") act = acts.length >= plan.probes.length - 1 ? "found" : "next";
         else act = rng() < 0.5 ? "found" : "next";

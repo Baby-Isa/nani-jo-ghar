@@ -178,7 +178,7 @@
     armButtons(false);
     S.setExpect("diagnosis", () => {
       if (current && !found.disabled) {
-        const a2 = lastAnswer === "haa" ? "found" : "next";
+        const a2 = lastAnswer === "yes" ? "found" : "next";
         return { stage: "diagnosis", kind: "act", act: a2, target: `.cl-go[data-act="${a2}"]`, wrong: `.cl-go[data-act="${a2 === "found" ? "next" : "found"}"]` };
       }
       if (busy) return { stage: "diagnosis", kind: "wait" };
@@ -196,9 +196,10 @@
         S.signal("clinic-probe");
         await S.say(S.line(env, "here"), "doctor");
         const yes = d.part === plan.part;
-        lastAnswer = yes ? "haa" : "na";
+        lastAnswer = yes ? "yes" : "no";
         fig.react("idle", 0);
-        await S.say(S.line(env, lastAnswer), "patient");
+        // the patient's answer: the data's line for yes / no (haa / na, G9)
+        await S.say(S.line(env, (data.answer_lines || {})[lastAnswer] || lastAnswer), "patient");
         if (yes) {
           if (global.Sfx && global.Sfx.bing) try { global.Sfx.bing(); } catch (e) { /* no sound */ }
           fig.swirl(plan.part, plan.side, true);

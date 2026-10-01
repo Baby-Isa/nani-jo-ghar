@@ -41,21 +41,24 @@
     }
     const groups = [];
     beads.forEach((c) => (groups.length && groups[groups.length - 1].c === c ? groups[groups.length - 1].n++ : groups.push({ c, n: 1 })));
-    const beadK = L < 3 ? `[Beads], ${HS.NUM[beads.length]}` : `[Beads:] ${groups.map((g) => `${HS.NUM[g.n]} [${g.c}]`).join(", ")}`;
+    const Lg = HS.L; // words, numbers and joins from data through the seam (R5)
+    const say = (m, o) => Lg.show(m, o);
+    const groupM = (g) => Lg.item(g.c, { n: g.n });
+    const beadW = L < 3 ? say(Lg.join(["cl-beads", ",", Lg.count(beads.length)]), { cap: true }) : say(Lg.join(["cl-beads", ":", ...groups.flatMap((g, i) => (i ? [",", groupM(g)] : [groupM(g)]))]), { cap: true });
     const steps = [
-      { id: "wipe", kind: "wipe", count: wipes, row: { id: "wipe", kutchi: `[Wipe], ${HS.NUM[wipes]}`, english: `Wipe it ${wipes} times` } },
-      { id: "beads", kind: "beads", beads, row: { id: "beads", kutchi: beadK, english: L < 3 ? `${beads.length} beads` : `Beads: ${groups.map((g) => `${g.n} ${g.c}`).join(", ")}` },
+      { id: "wipe", kind: "wipe", count: wipes, row: Object.assign({ id: "wipe" }, say(Lg.join(["cl-wipe", ",", Lg.count(wipes)]), { cap: true })) },
+      { id: "beads", kind: "beads", beads, row: Object.assign({ id: "beads" }, beadW),
         // L3: the colours in order are a sequence on the card (13h): one part per colour
-        rows: L < 3 ? null : groups.map((g, i) => ({ id: `beads${i}`, seq: "beads", kutchi: `${i ? "ne poi " : ""}${HS.NUM[g.n]} [${g.c}]`, english: `${i ? "then " : ""}${g.n} ${g.c}` })) },
+        rows: L < 3 ? null : groups.map((g, i) => Object.assign({ id: `beads${i}`, seq: "beads" }, say(i ? Lg.then(groupM(g), { lower: true }) : groupM(g)))) },
       { id: "boing", kind: "boing", row: { id: "boing", kutchi: null, english: "Count down... BOING!", placeholder: true } },
-      { id: "plaster", kind: "plaster", row: { id: "plaster", kutchi: "Pela [plaster]", english: "First the plaster" } },
-      { id: "apple", kind: "apple", row: { id: "apple", kutchi: "ne poi [apple]", english: "then the apple" } },
+      { id: "plaster", kind: "plaster", row: Object.assign({ id: "plaster" }, say(Lg.first("cl-plaster"))) },
+      { id: "apple", kind: "apple", row: Object.assign({ id: "apple" }, say(Lg.then("cl-apple", { lower: true }))) },
     ];
     const rows = [{ id: "wipe-count", options: K.wipes[L], answer: wipes }];
     if (L < 3) rows.push({ id: "bead-count", options: K.beads[L], answer: beads.length });
     else rows.push({ id: "bead-colours", seq: K.colours, answer: beads, placeholder: true });
-    const words = [{ kutchi: HS.NUM[wipes], english: String(wipes) }, { kutchi: "pela", english: "first" }, { kutchi: "ne poi", english: "and then" }, HS.ph("apple"), HS.ph("plaster")];
-    groups.forEach((g) => words.push({ kutchi: HS.NUM[g.n], english: String(g.n) }));
+    const words = [Lg.num(wipes), Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), HS.ph("apple"), HS.ph("plaster")];
+    groups.forEach((g) => words.push(Lg.num(g.n)));
     return { level: L, steps, rows, words };
   }
 
@@ -133,7 +136,7 @@
         S.clear(countG);
         const t = s("text", { x: 400, y: 300, "font-size": 90, "text-anchor": "middle", fill: "#2e6b5f", "font-weight": 800 }, countG);
         t.textContent = String(n);
-        await S.say({ kutchi: HS.cap(HS.NUM[n]), english: String(n) }, "doctor");
+        await S.say(HS.L.num(n, { cap: true }), "doctor");
       }
       S.clear(countG);
       const b = s("text", { x: 400, y: 300, "font-size": 110, "text-anchor": "middle", fill: "#d8433f", "font-weight": 900 }, countG);

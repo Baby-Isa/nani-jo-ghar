@@ -39,6 +39,19 @@
   HOST.loadBase = async function () {
     if (!HOST.bodyFile) HOST.bodyFile = await Kit.loadJSON("data/patients/grey-adult.json");
     if (!HOST.clinic) HOST.clinic = (await Kit.loadJSON("data/clinic.json")) || {};
+    // the clinic's words and frames (R5: the language seam's data; js/clinic/lang.js)
+    if (!HOST.lang) {
+      // a page that didn't load the seam's clinic half itself (the demo's adapter): load it now
+      if (!global.ClinicLang) await new Promise((res) => {
+        const sc = document.createElement("script");
+        sc.src = (global.njgV || ((u) => u))(`${Kit.root || ""}js/clinic/lang.js`);
+        sc.onload = sc.onerror = () => res();
+        document.body.appendChild(sc);
+      });
+      HOST.lang = (await Kit.loadJSON("data/clinic/lang.json")) || {};
+      global.ClinicLang.load(HOST.lang);
+      global.ClinicLang.resolve = (id) => Kit.ITEMS[id] || (HOST.clinic.words || {})[id] || null;
+    }
     if (HOST.clinic.items) Object.assign(Kit.ITEMS, HOST.clinic.items);
     if (Kit.art == null) await Kit.loadArt();
     return HOST;
@@ -67,12 +80,9 @@
     return null;
   };
 
-  const INTERJECT = {
-    shabash: { kutchi: "Shabash!", english: "Well done!" },
-    arre: { kutchi: "Arre re!", english: "Oh dear!" },
-    achija: { kutchi: "Achija!", english: "Good!" },
-    hedo: { kutchi: "Hedo!", english: "Here!" },
-  };
+  // the doctor's short interjections (E27): word ids in data/clinic/lang.json, said through the seam
+  const INTERJECT = { shabash: "cl-shabash", arre: "cl-arre", achija: "cl-achija", hedo: "cl-hedo" };
+  const LANG = () => global.ClinicLang;
 
   /** The patient API a game receives (contract + additions). */
   HOST.patientApi = function (fig, stageEl, kind) {
@@ -209,7 +219,7 @@
       inRun: !!opts.inRun,
       onboardOn: opts.onboard !== false,
       interject(k) {
-        const l = INTERJECT[k] || HOST.line(k, data);
+        const l = INTERJECT[k] ? LANG().w(INTERJECT[k]) : HOST.line(k, data);
         return Kit.Voice.say(l, { who: "doctor" });
       },
       tally(itemId, n) {
@@ -217,7 +227,7 @@
         // G6: level 1 counts up on the card's row as you tap, and says the number (Cook's rule)
         if (level <= 1 && n > 0 && n <= 5) {
           card.count(null, n);
-          Kit.Voice.now({ kutchi: Kit.NUM[n], english: String(n) });
+          Kit.Voice.now(LANG().num(n));
         }
       },
       log(entry) {
