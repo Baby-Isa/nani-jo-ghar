@@ -26,7 +26,7 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 |---|---|---|---|---|
 | SH-07 | One white card per person: face, headline, stacked rows; no name label, no scroll bar, no intro line such as "Nani laide" | fixed | eye: 1366×768 · CMP-07 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §2; `docs/archive/design-v1/ideas-2026-09-28-arcs-and-focus.md` §5 |
 | SH-08 | Card order equals spoken order (Nani reads top to bottom, not sugar, milk, flour) | built, not re-played | auto: `build/test_cook.py` order-card tests; eye: ear · CMP-08 | `docs/feedback/cook-playtest-2026-09-29.md` P4, X1 |
-| SH-09 | Card rows stay on one line, shrunk to fit; headlines shrink first, then wrap (rule F7, 30 Sept, replaces "nothing wraps"); never clipped (pantry failed again: see PAN-01) | fixed | eye: 390×844 · TXT-02 (auto planned) | `docs/feedback/cook-ui-feedback-2026-09-28.md` §9; `docs/archive/handovers/NEXT-CHAT-START.md` §2 |
+| SH-09 | Card rows stay on one line, shrunk to fit; headlines shrink first, then wrap (rule F7, 30 Sept, replaces "nothing wraps"); never clipped (pantry failed again: see PAN-01) | reopened | eye: 390×844 · TXT-02 (auto planned) | `docs/feedback/cook-ui-feedback-2026-09-28.md` §9; `docs/archive/handovers/NEXT-CHAT-START.md` §2; `docs/feedback/clinic-playtest-2026-10-01.md` 1:28:01 (drinks L3 rows cut off) |
 | SH-10 | Rows tick or count up as items go in (chai bug, tooth three taps, clinic rows); level-1 counts for fever, foot, drinks, boing judged in play | built, not re-played | auto: `build/test_cook.py` tick check; eye: L1 · CMP-09 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §10; `docs/feedback/clinic-playtest-2026-09-29.md` G6 |
 | SH-11 | No early ticks or folds: samosa card ticked after filling while still frying, daar Nana's tick during the stir, "don't" row gold mid-dish; samosa headline cut to "Muke ba samosa …" | built, not re-played | auto: order-card node tests; eye: samosa, daar · CMP-09, TXT-01 | `docs/process/overnight-log.md` 03:07; `docs/archive/handovers/overnight-queue.md` notes |
 | SH-12 | Items with no word at higher levels keep a speaker-only chip of the same size and position | fixed | eye: L3–L4 · CMP-08 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §10 |
@@ -70,6 +70,15 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | SH-35 | Shelf items at true relative heights; enough gap between cooking area and shelf | open (unverified) | eye: 1366×768 · LAY-07 | `docs/design-language/ui-design-system.md` §10 (late) |
 | SH-36 | One line of text beside a character icon is centred on the icon | open (unverified) | eye: collapsed cards · TXT-09 | `docs/design-language/ui-design-system.md` §10 (late) |
 | SH-37 | Cook screens have one focal thing; UI and world look like one product; identical shelf slots; design tokens only | built, not re-played | eye: 1366×768 · CMP-10, CMP-04 | `docs/design-language/ui-design-system.md` §1.1–1.4 |
+| SH-38 | A counted row at L1 turns gold the moment the count is reached and the step closes by itself; from L2 it ticks only when the step closes (decision D5) | open | eye: L1 and L2, each counted step · CMP-09 | `docs/feedback/clinic-playtest-2026-10-01.md` this report P7, 1:3:44–4:55 |
+| SH-39 | The running count sits on the tool in use (Kutchi word L1–2, dots L3+), never squeezed into a card row or in a far corner (D6) | open | eye: 844×390 and 1366×768 · INT-10 | `docs/feedback/clinic-playtest-2026-10-01.md` P23, P26, 1:12:49–13:23, 1:15:36–15:51 |
+| SH-40 | ✓ hidden until usable; a step moves on by the next action where one exists (D7, rule F22) | open | eye: every heal game start · CMP-02 | `docs/feedback/clinic-playtest-2026-10-01.md` P70, P75, P89, 2:9:32–11:16, 2:12:06, 2:18:06 |
+| SH-41 | On a closed card the bulb opens it in English for the bulb's whole time, one hint; long enough to read (D11) | open | eye: L3 closed card, bulb · INT-04 | `docs/feedback/clinic-playtest-2026-10-01.md` P19, 1:9:37–10:29 |
+| SH-42 | Looks at a closed card are counted apart from bulbs, not stacked by the bulb; the eye badge shows only at closed-card levels (D12) | open | eye: L3 end screen | `docs/feedback/clinic-playtest-2026-10-01.md` P20, 1:10:19–11:54 |
+| SH-43 | A peeked closed card shows no odd gold corners | open | eye: ×2 zoom, peek · CMP-07 | `docs/feedback/clinic-playtest-2026-10-01.md` P27, 1:15:02–15:27 |
+| SH-44 | The end review shows which step went wrong (asked vs done, pictured) | open | eye: end review after a mistake · CMP-13 | `docs/feedback/clinic-playtest-2026-10-01.md` P18, 1:9:04–9:22 |
+| SH-45 | One instruction at a time in the heal games: each step's line and row appear as it opens; never the whole job read out up front (D8) | open | ear: boing L1, scrape L3 · TXT-08 | `docs/feedback/clinic-playtest-2026-10-01.md` P14, P66, 2:6:49–8:13 |
+| SH-46 | A move the child hasn't managed yet (e.g. a drag) is shown again by the ghost finger after a pause, not only the first time ever | open | eye: ear L1, second play | `docs/feedback/clinic-playtest-2026-10-01.md` P32, 1:17:42–17:47 |
 
 ## Cook: pantry
 
@@ -249,17 +258,41 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | CLN-30 | Each heal game explains itself with one "why" beat ("why am I clicking on the things?"), no English sentences in bubbles | built, not re-played | auto: `build/check_onboard.mjs` · LNG-01 | `docs/feedback/clinic-playtest-2026-09-29.md` G5, §13g |
-| CLN-31 | Fever playable: tray id is thermometer, first-time help does not block taps, fan does not look like the strip; hot and cold to "just right" (Zafar's review pending) | built, not re-played | auto: help-path test; eye | `docs/feedback/clinic-playtest-2026-09-29.md` G8, H-fever |
+| CLN-31 | Fever playable: tray id is thermometer, first-time help does not block taps, fan does not look like the strip; hot and cold to "just right" (Zafar's review pending) | reopened | auto: help-path test; eye | `docs/feedback/clinic-playtest-2026-09-29.md` G8, H-fever; `docs/feedback/clinic-playtest-2026-10-01.md` §13 (1 Oct: still confusing) |
 | CLN-32 | Scrape: not too clicky; plasters in clear colours and order; a plaster can be taken off; sequence on the shared card | built, not re-played | eye: scrape · INT-02 | `docs/feedback/clinic-playtest-2026-09-29.md` H-cut, §13h |
 | CLN-33 | Knee: bandage shows on every tap; flashing stops when done; named leg not highlighted at top level; level 3 left and right clear (leak bot blind rate about 25% at L1 accepted) | built, not re-played | auto: leak bot; eye · INT-06 | `docs/feedback/clinic-playtest-2026-09-29.md` H-knee, §13i, §13l |
 | CLN-34 | Ear: level 1 not too hard (*wadho* and *nindho* not too early); wax is dragged to a tissue, not tapped; pop-up wax does not vanish by itself | built, not re-played | eye: L1 | `docs/feedback/clinic-playtest-2026-09-29.md` §13j |
 | CLN-35 | Tooth: brushing clear; no confusing bug; voice-overs, input live and sidebar work | built, not re-played | eye: tooth | `docs/feedback/clinic-playtest-2026-09-29.md` H-tooth, §13k |
-| CLN-36 | Taste game is understandable (soothing drinks redesign) | built, not re-played | eye: drinks | `docs/feedback/clinic-playtest-2026-09-29.md` H-taste |
-| CLN-37 | Boing: plaster part clear; apple not lollipop; coloured beads idea | built, not re-played | eye: boing | `docs/feedback/clinic-playtest-2026-09-29.md` H-boing |
-| CLN-38 | Eye: "what else other than fruit and veg?" answered; "why am I clicking on the things?" answered | built, not re-played | eye: eye game | `docs/feedback/clinic-playtest-2026-09-29.md` H-eye |
+| CLN-36 | Taste game is understandable (soothing drinks redesign) | reopened | eye: drinks | `docs/feedback/clinic-playtest-2026-09-29.md` H-taste; `docs/feedback/clinic-playtest-2026-10-01.md` §13 (1 Oct: still confusing) |
+| CLN-37 | Boing: plaster part clear; apple not lollipop; coloured beads idea | reopened | eye: boing | `docs/feedback/clinic-playtest-2026-09-29.md` H-boing; `docs/feedback/clinic-playtest-2026-10-01.md` §13 (1 Oct: still confusing) |
+| CLN-38 | Eye: "what else other than fruit and veg?" answered; "why am I clicking on the things?" answered | reopened | eye: eye game | `docs/feedback/clinic-playtest-2026-09-29.md` H-eye; `docs/feedback/clinic-playtest-2026-10-01.md` §13 (1 Oct: still confusing) |
 | CLN-39 | Eye cover cannot be taken back | open | eye: eye game · INT-02 | `docs/feedback/clinic-playtest-2026-09-29.md` H-eye |
 | CLN-40 | Foot: swirly part understood; toes, tweezers and plaster position clear; splinters buzz-wire style, both feet at L3 | built, not re-played | eye: foot | `docs/feedback/clinic-playtest-2026-09-29.md` H-foot |
 | CLN-41 | Tummy, hic and hair still on the old help; decide later | open | eye: those games · INT-04 | `docs/feedback/clinic-playtest-2026-09-29.md` CQ14; `build/reports/clinic-v2-fixes.md` §7 |
+| CLN-42 | No unexplained icons: no 🩺 badge bottom left, no gold half-circle on tools, no glove on the syringe | open | eye: every heal game | `docs/feedback/clinic-playtest-2026-10-01.md` P1, P16, P68, 1:0:00, 1:8:32–8:46, 2:9:00 |
+| CLN-43 | A heal game opens by zooming from the patient on the bed to the sore part; never a lone limb on a table; the background soft, not washed out (D1) | open | eye: each heal game's opening, 1366×768 and 844×390 | `docs/feedback/clinic-playtest-2026-10-01.md` P2, P3, 1:0:00–1:51, 2:0:26 |
+| CLN-44 | Every heal card has a headline (the goal) and folds to it with the check | open | eye: each heal game · CMP-07 | `docs/feedback/clinic-playtest-2026-10-01.md` P10, 1:5:07–5:33, 1:12:20 |
+| CLN-45 | At L3 no step asks more than two things to remember; the jump from L2 to L3 is one thing | open | eye: scrape L2 and L3 · INT-10 | `docs/feedback/clinic-playtest-2026-10-01.md` P14, P17, 1:7:36–9:04 |
+| CLN-46 | The scrape and the cotton bud have a skill, not just taps | open | eye: scrape, ear | `docs/feedback/clinic-playtest-2026-10-01.md` P11, P33, 1:5:35–6:52, 1:17:47–19:21 |
+| CLN-47 | Sides are said and tested only in the diagnosis; the close-up shows the one sore knee, foot or eye (D10) | open | eye: knee, foot, eye L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P25, P82, P91, 1:13:35–14:58 |
+| CLN-48 | Knee wrap: one dot lit at a time, waiting for the tap; nothing moves on by itself | open | eye: knee L2, L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P28, 1:15:54–17:09 |
+| CLN-49 | Ear: the blob you aim at is the one you pick up (small next to big) | open | eye: ear L3 · INT-06 | `docs/feedback/clinic-playtest-2026-10-01.md` P36, 1:19:51–20:14 |
+| CLN-50 | Ear: more wax is shown from the start, spawns as you remove it, over a bigger ear | open | eye: ear L2, L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P38, P39, 1:20:31–21:31 |
+| CLN-51 | Tooth: the drill's tip is under the finger | open | eye: ×2 zoom, drill | `docs/feedback/clinic-playtest-2026-10-01.md` P42, 1:22:47–23:01 |
+| CLN-52 | Tooth: drilled inside the mouth; decay jagged and scattered by level | open | eye: tooth L1, L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P43, P44, 1:23:04–23:31, 1:25:04 |
+| CLN-53 | Tooth fill: a clear button, a green zone with red either side; harder by level | open | eye: tooth fill | `docs/feedback/clinic-playtest-2026-10-01.md` P45, 1:23:31–24:36, 1:25:17 |
+| CLN-54 | Drinks: the recipe on separate rows under a headline; no counts at L1; the pour shown | open | eye: drinks L1 | `docs/feedback/clinic-playtest-2026-10-01.md` P47–P49, 1:25:21–26:41 |
+| CLN-55 | Drinks are never a three-recipe memory test; the sore-spot game with one drink (D15e) | open | eye: drinks L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P50, P51, 1:26:48–29:49 |
+| CLN-56 | Fever: the blanket goes over the shoulders, never the face | open | eye: fever, cold | `docs/feedback/clinic-playtest-2026-10-01.md` P55, 2:0:14–0:26 |
+| CLN-57 | Fever: always clear what to do next (no tools that silently do nothing); a live thermometer with a zone | open | eye: fever, after each change | `docs/feedback/clinic-playtest-2026-10-01.md` P58, P59, 2:1:01–2:21 |
+| CLN-58 | Boing: the syringe's end starts the jab; tapping the syringe never takes beads out by surprise | open | eye: boing L1, L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P69, P70, 2:9:07–11:16 |
+| CLN-59 | Eye: the sore eye is clear | open | eye: eye L1 | `docs/feedback/clinic-playtest-2026-10-01.md` P74, 2:11:55–12:06 |
+| CLN-60 | Eye: the first-time help never presses *haa* on a row read wrong | open | auto: help path; eye: first play · LNG-02 | `docs/feedback/clinic-playtest-2026-10-01.md` P76, 2:12:25–12:39 |
+| CLN-61 | Eye: obviously an eye chart; the patient seen looking at it; chart rows highlight and tick like card rows | open | eye: eye test | `docs/feedback/clinic-playtest-2026-10-01.md` P78, P79, P83, P87, 2:12:59–14:26, 2:15:49–17:16 |
+| CLN-62 | Eye: after *na* the dropper over the eye shows what to do | open | eye: eye, a wrong read | `docs/feedback/clinic-playtest-2026-10-01.md` P77, P88, 2:12:39–12:59, 2:17:16–17:45 |
+| CLN-63 | Eye L3: no hidden first step without a row or a line | open | eye: eye L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P82, 2:15:22–15:49 |
+| CLN-64 | Foot: the sole; a path with turns; touching the side is a scored mistake | open | eye: foot L2, L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P90, P92, 2:18:35–20:07 |
+| CLN-65 | Patients have hot, cold, sore and happy states, from one body | open | eye: each state | `docs/feedback/clinic-playtest-2026-10-01.md` P57, 2:0:53–1:01 |
 
 ## First launch and shell
 
@@ -326,6 +359,8 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | KEEP-06 | Diagnosis: "does it hurt here?", "my foot", "look at the knee, then the hand"; calm, no time pressure | keep | eye: diagnosis | `docs/feedback/clinic-playtest-2026-09-29.md` D1, D2, D3 |
 | KEEP-07 | Heal games liked: knee tap, ear wax taking-out, tooth small-tooth three taps, taste "bones", boing wipe and count, eye test, plaster colour idea | keep | eye: each heal game | `docs/feedback/clinic-playtest-2026-09-29.md` H-knee, H-ear, H-tooth, H-taste, H-boing, H-eye |
 | KEEP-08 | The lolly "so funny" (now an apple, never a lolly) | keep | auto: grep lolly · CUL-02 | `docs/feedback/clinic-playtest-2026-09-29.md` E3 |
+| KEEP-09 | The closed card's three dots ("he's talking"); the card's fold | keep | eye: L3 card | `docs/feedback/clinic-playtest-2026-10-01.md` P9, P13, 1:5:02, 1:7:26 |
+| KEEP-10 | Liked in the heal games: the bandage wrap, the ear pop-ups, the drill concept, the tongue pops, the thermometer, the boing and its plaster, the eye redrop-and-reread, foot L3 | keep | eye: each game | `docs/feedback/clinic-playtest-2026-10-01.md` §2 of this report |
 
 ## Retired
 
