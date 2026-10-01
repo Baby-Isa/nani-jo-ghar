@@ -19,7 +19,7 @@ Top offenders: the shared guide box (mute, bulb, face 26-44 px; "to record" flag
 Full matrix 95 min. About 19 min per size, dominated by Cook (daar, samosa, mishkaki-grill take 1-3 min each).
 
 ## Stability
-See the check results appended below.
+Second runs on unchanged code: the house and every clinic flow at all five sizes, and first launch, Cook title, chai-tray, stir, chop and assemble at 844x390 and 1366x768. The Cook and first-launch part passed with 0 new findings (196 known, 0 fixed). The clinic part first showed 5 new findings out of about 830: the same selectors turning up in another flow (which words are on a card, whether a card is folded) and one pharmacy-belt dish stopped at the screen edge. Fixes: a known check+size+selector in another flow is printed as "moved", not failed (4 cases); the belt dish is listed with its reason in `build/lint/ignore.json`; every state is linted twice 300 ms apart and only findings in both count. After that the clinic re-judged clean: 0 new, 4 moved, 1 fixed (not shrunk). Seeded `Math.random`, the clinic's `seed=7` and local fonts make the rest repeat.
 
 ## Out of scope / limits
 - Cook is drawn with Phaser's canvas renderer (4-5x faster than software WebGL; no tints). `--webgl` for fidelity. Text drawn inside the canvas is not linted.
