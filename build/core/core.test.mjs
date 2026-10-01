@@ -241,3 +241,21 @@ test("voice: one queue per channel; a new line replaces the one playing; say() r
   await S.say({ clipPlan: [{ file: "t.mp3", source: "tts", tokens: [0, 0] }, { file: "u.mp3", source: "family-unchecked", tokens: [1, 1] }] });
   assert.deepEqual(played, []);
 });
+
+test("loadCore: every part wired over one save, with the real data files", async () => {
+  const { loadCore } = await import("../../js/core/index.js");
+  const Save = createSave({});
+  const s = Save.memoryStore();
+  Object.entries(live.afterClinic).forEach(([k, v]) => s.setItem(k, v));
+  Save.use(s);
+  const core = await loadCore({ save: Save, player: { play: async () => true, stop() {} } });
+  assert.equal(core.save.init().schema, 2);
+  assert.equal(core.wallet.coins(), 51, "48 from Cook + 3 from the clinic, one purse");
+  assert.equal(core.progress.stage("cook-chai"), 2);
+  assert.equal(core.settings.get("modelVoice"), "girl");
+  assert.equal(core.unlocks.isOpen("kitchen"), true);
+  assert.equal(core.play.play, "free");
+  assert.equal(core.entitlements.has("anything"), true);
+  const out = core.score.finish({ mode: "clinic", game: "pharmacy", level: 1, timeMs: 20000, right: 2, total: 3, hints: 1 });
+  assert.equal(core.wallet.coins(), 51 + out.pay.coins);
+});
