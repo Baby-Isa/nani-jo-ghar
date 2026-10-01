@@ -5,6 +5,7 @@
 > - "Three stars" (ear, voice, gentle hands, No help/Quick), "+5 ear, +3 gentle hands", the plaster-star craft star, `star_sets.clinic`, `minTested` → three badges: time, accuracy, hints (H5, decisions 1–3)
 > - Lollipop (H9, tray, order-words frame, words list) → apple (decision 8); never sweets as rewards
 > - *nar* for "no" → ***na*** (G5); *hikdo* → *hakro/hakri*; *vadho* → *wadho* (G4)
+> - Hand poses (§9.3) and the player's hands in first-person views → parked, none in Cook (H13)
 > - *Achija* / *Aabhar aanjo* → goodbye *khuda-fis*, thank you in English (26 Sept; G6)
 > - Story home "Arc 3 Ch4 Nani has a cold" and the stethoscope quilt patch → clinic as its own mode; bookshelf, not quilt (H36–H39, decision 4)
 > - Pocket money, collections bought with coins, the clinic's own shop → decision 10 (upgrades)

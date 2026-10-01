@@ -5,6 +5,7 @@
 > - Hands in Cook → none: no hands anywhere (H13)
 > - *marcha* (plural, "ba marcha") → *mirchi* only, no plural, for now (G25, decision 5)
 > - *mishkaki* as the station or dish → the station is **Sekelo**; *mishkaki* is only the meat cubes (H20)
+> - *nar* (for "no", e.g. "*nar dudh*") → *na* (G5)
 > - *daal* → *daar*; *hikdo* (one) → *hakro/hakri* by gender; *vadho* → *wadho* (G4, G5)
 > - Coins, prices, the 375-coin shop and "pocket money" → superseded by decision 10 (upgrades)
 > - Quilt patch as the Day 5 finale → bookshelf book (decision 4)
@@ -643,6 +644,13 @@ These are the dishes we'd like to put in the game. They mix Kutch cooking and th
 
 
 ## Part 5. Kutchi audit: open items
+
+
+> from: docs/archive/cook/cook-with-nani-kutchi-audit.md § Top 8 fixes (ranked by learning impact per effort), the line after the list
+
+Next after these: symmetric look-alike groups for "pass me" (Wave 2, data only); tastes as a bias, with "not today" changes; the ear star checking who each dish is for (Chai tray first).
+
+> Stale: "the ear star" → three badges (H5, decisions 1–2); the eight fixes themselves are the record in `docs/archive/cook/cook-with-nani-kutchi-audit.md`.
 
 
 > from: docs/archive/cook/cook-with-nani-kutchi-audit.md § After Wave 3: what still leaks

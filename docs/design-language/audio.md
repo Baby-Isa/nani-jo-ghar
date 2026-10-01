@@ -51,3 +51,9 @@ Stage three is a long game. An app used by enough families, with consent, become
 2. **Real voices, staged.** Record in one long take per session, each word or sentence said twice with a pause. A script finds the silences and splits the take into one file per item, named to match the content master.
 3. **Multiple speakers stack, they don't replace.** Each new voice adds another Recording row for the same word. The app can pick one at random, or let a player choose whose voice they hear.
 4. **Swapping needs no rebuild.** A Recording is just a file matched by name to the content master. Replacing the placeholder with a family voice, or adding a second one, is a file drop, not a code change.
+
+## Big Ma's song
+
+> from: docs/archive/art/Asset Building Plan.md § 7. Big Ma's room (new scene, decided 24 Sept 2026)
+
+- **Audio:** she **sings a song while she sews** — a new audio asset, recorded by Zafar's wife, alongside the family's other spoken-word recordings.

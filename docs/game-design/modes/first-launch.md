@@ -3,6 +3,7 @@
 > **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
 > - "Tomorrow is Eid" hook and the record list built on it → the Birthday arc (H36)
 > - English and romanised subtitles and the story-help device setting → no written English for the child (E1, F23); spoken English allowed in story mode only (non-negotiable 5)
+> - "Boy or girl also picks the player's hands" → hands parked, none in Cook (H13)
 > - Placeholder Kutchi sources → never invent Kutchi; grey-italic English flagged "to record" (non-negotiable 4)
 
 ## What Zafar said

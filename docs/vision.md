@@ -151,6 +151,10 @@ In order. Each one only matters if the one above it held.
 4. **Kutchi is spoken aloud in the house more than it was.** Including by the adults, prompted by the game.
 5. **Another family asks for a copy.**
 
+> from: docs/archive/design-v1/Game Design.md § Build order
+
+Stage two is the real gate. If the evening spent recording with Zafar's mother is a good evening, this project finishes. Everything downstream is craft.
+
 Explicitly not success: downloads, streaks, daily active users, time in app. Time in app is a cost the family pays, not a benefit. A child who learns forty words in ten short sessions has done better than one who learned forty in fifty.
 
 ## Design pillars
@@ -282,7 +286,7 @@ The content model is already language-agnostic: words and sentences have ids and
 
 > from: docs/archive/design-v1/Game Design.md § Audio and speaking, "Stage three" and "A line to hold"
 
-**Stage three is a long game.** An app used by enough families, with consent, becomes the first real corpus of spoken Kutchi. Worth noting in the plan and building nothing towards yet.
+Stage three is a long game. An app used by enough families, with consent, becomes the first real corpus of spoken Kutchi. Worth noting in the plan and building nothing towards yet.
 
 **A line to hold.** Recordings a child makes in the app stay on the device and are never uploaded. The corpus, if it ever exists, comes from adults who chose to contribute their voice, and the two are never mixed.
 

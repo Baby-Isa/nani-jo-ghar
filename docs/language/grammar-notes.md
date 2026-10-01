@@ -8,7 +8,7 @@
 > - "Zafar to choose Big Ma / Wadima / Maji" (§30 K14) → decided: "Big Ma" (I7, decision 11).
 > - "the repo will be made private later" (25 Sept header note) → everything stays public until the game or landing page is published (decision 6).
 > - Don't "fix" *nar* = "look" (§20): it is correct. The word for "no" is *na* (G5).
-> - "Game ideas 9–13 are parked in `docs/ideas.md`" → now `docs/ideas.md`.
+> - "Game ideas 9–13 are parked in `docs/GAME-IDEAS-TBC.md`" → now `docs/ideas.md`.
 
 Each finding lists its source recording and how sure we are. The family is the authority; "heard" means transcribed by Whisper and read by Claude, so the spelling is rough until Zafar checks it.
 

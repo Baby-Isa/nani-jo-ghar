@@ -2,6 +2,7 @@
 
 > **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
 > - Stars, the ear star, the voice star, craft stars, `star_sets` and `minTested` → three badges: time, accuracy, hints (H5, J7, decisions 1–3) (Q2 "sharp-eye" star, D4 "voice star", D9.2 parent tick, hint-ladder costs)
+> - *nar* (for "no") → *na* (G5)
 > - *hikdo* (one) → *hakro/hakri* by gender; *bo* (two) → *ba*; *vadho* → *wadho*; *daal* → *daar* (G4, G5)
 > - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G6)
 > - Story homes (Eid morning, "The spill", the wedding, the shoe mountain, Arc 1/3/4/5) → the Birthday arc, day-out trips, clinic, Making clothes with Big Ma, Monsoon, Who did it (H36–H39)
