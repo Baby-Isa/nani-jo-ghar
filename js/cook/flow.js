@@ -754,6 +754,8 @@
   /** The day's end: who you cooked for, what, and the coins (each order's badges and words were on its own end screen). */
   function showSummary(day, { free } = {}) {
     UI.clearStage();
+    // the last station's instruction goes from Nani's box (the day is over)
+    if (UI.guideFor) UI.guideFor(null);
     const last = day.finale && !free;
     const card = (c) => `<div class="ccard sum-card"><div class="cc-head"><img src="${face(c.who)}" alt=""><span class="cc-dish">${c.dishes.map(dishName).map(UI.esc).join(" + ")}</span></div>${c.coins ? `<span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>` : ""}</div>`;
     const p = UI.panel(`
