@@ -6,6 +6,8 @@ art, data or code. Run this before every push to main:
 
     python3 build/bump_version.py            # stamp = now (UTC)
     python3 build/bump_version.py --check    # print the current stamp only
+    python3 build/bump_version.py --dry-run  # list what would change; write nothing
+    python3 build/bump_version.py --stamp 20261001T120000Z   # a given stamp (tests)
 
 It sets the one stamp in all the places that carry it:
   - js/version.js (V), which code uses through njgV(url) / Cook.v(url) for
@@ -13,10 +15,16 @@ It sets the one stamp in all the places that carry it:
     every file a Phaser scene loads;
   - every local css/js tag and <img src="assets/..."> in the pages
     (every *.html at the root, and every *.html under lab/);
-  - every url("../assets/...") in css/*.css.
+  - every url("../assets/...") in css/*.css;
+  - the import map of every page that has one (decision 18, ES modules):
+    <script type="importmap" data-njg="core">...</script> is rewritten to map
+    every module under js/core/ to its stamped URL, by name ("#core/save.js")
+    and by path ("./js/core/save.js", so the core's own relative imports get
+    the stamp too). Pages without that tag are left exactly as before.
 """
 import datetime
 import glob
+import json
 import os
 import re
 import sys
@@ -42,16 +50,50 @@ def stamp_attr(m, v):
     return f'{m.group(1)}{stamp_url(m.group(2), v)}{m.group(3)}'
 
 
+# the ES-module pilot (decision 18): the import map a page opts into
+IMPORTMAP_RE = re.compile(r'(<script\b[^>]*\btype="importmap"[^>]*\bdata-njg="core"[^>]*>)(.*?)(</script>)', re.S)
+MODULE_DIRS = ["js/core"]
+
+
+def module_files():
+    """Every module the import map names: js/core/**/*.js, as repo-relative paths."""
+    out = []
+    for d in MODULE_DIRS:
+        for f in glob.glob(os.path.join(ROOT, d, "**", "*.js"), recursive=True):
+            out.append(os.path.relpath(f, ROOT).replace(os.sep, "/"))
+    return sorted(out)
+
+
+def import_map(page, v):
+    """The import map for one page: "#core/x.js" and "./js/core/x.js" -> the stamped URL (lab pages: "../")."""
+    up = "../" * page.replace(os.sep, "/").count("/")
+    prefix = up or "./"
+    imports = {}
+    for f in module_files():
+        url = stamp_url(prefix + f, v)
+        imports["#" + f[len("js/"):]] = url
+        imports[prefix + f] = url
+    return json.dumps({"imports": imports}, indent=1)
+
+
+def write(path, text, dry):
+    if not dry:
+        open(path, "w", encoding="utf-8").write(text)
+
+
 def main():
+    dry = "--dry-run" in sys.argv
     path = os.path.join(ROOT, VERSION_JS)
     src = open(path, encoding="utf-8").read()
     if "--check" in sys.argv:
         print(V_RE.search(src).group(2))
         return
     v = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    if "--stamp" in sys.argv:
+        v = sys.argv[sys.argv.index("--stamp") + 1]
     new = V_RE.sub(lambda m: m.group(1) + v + m.group(3), src, count=1)
     assert new != src or v in src, "no stamp found in js/version.js"
-    open(path, "w", encoding="utf-8").write(new)
+    write(path, new, dry)
     changed = [VERSION_JS]
 
     # pages: <script src>, <link href>, <img src> pointing at local files
@@ -63,8 +105,9 @@ def main():
             continue
         s = open(p, encoding="utf-8").read()
         s2 = tag.sub(lambda m: stamp_attr(m, v), s)
+        s2 = IMPORTMAP_RE.sub(lambda m: m.group(1) + "\n" + import_map(page, v) + "\n" + m.group(3), s2)
         if s2 != s:
-            open(p, "w", encoding="utf-8").write(s2)
+            write(p, s2, dry)
             changed.append(page)
 
     # stylesheets: url("../assets/...")
@@ -73,10 +116,10 @@ def main():
         s = open(p, encoding="utf-8").read()
         s2 = css.sub(lambda m: stamp_attr(m, v), s)
         if s2 != s:
-            open(p, "w", encoding="utf-8").write(s2)
+            write(p, s2, dry)
             changed.append(os.path.relpath(p, ROOT))
 
-    print(f"version {v}: " + ", ".join(changed))
+    print(f"{'dry run, would stamp ' if dry else ''}version {v}: " + ", ".join(changed))
 
 
 if __name__ == "__main__":
