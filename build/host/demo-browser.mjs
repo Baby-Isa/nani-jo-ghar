@@ -110,7 +110,7 @@ async function playPantry(page, rec) {
 
 async function endScreen(page, rec, action) {
   await page.waitForSelector(".njg-results .rs-card", { timeout: 20000 });
-  await sleep(1800);
+  await sleep(4000); // the badges come in one after another
   await rec.state("results-badges");
   if (await page.$(".njg-results .rs-next")) {
     await page.click(".njg-results .rs-next");
