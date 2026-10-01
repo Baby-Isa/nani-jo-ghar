@@ -18,7 +18,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 | # | Feature | Status | Priority | Settled by |
 |---|---|---|---|---|
-| 1 | Noun gender | Rule known; most Cook nouns unknown | P1 | L34–L51, M1–M9 |
+| 1 | Noun gender | Rule known; most Cook nouns unknown | P1 | L34–L50, M1–M9 |
 | 2 | Plural | Rule mostly known; -yu plural open | P1 | L46–L51, Q13 |
 | 3 | Oblique before postpositions | Tendency only | P2 | Q2, Q3, C28–C32, C59 |
 | 4 | Articles | Known: none | — | — |
@@ -53,12 +53,12 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 1. Noun gender
 
-- **KNOWN.** Two genders, he-words and she-words (notes §1, §5). Mum's rule for an unknown gender: use the he-form (notes §24 B4, §37.5). He-words: *ambo, cup, table, paani, dudh, darwajo, bakro, chokro, chamcho, bateto, gutan* (notes §2, §29 R8, §31, §35). She-words: *maani, kursi, chai, lakri, chamchi, pacheri, bakri, chokri, akh, baju, film* (notes §2, §5, §17, §25, §35, Zafar §21 corrections). Chutneys take *ji*, so are probably she-words (inference, `decisions.md` working assumptions).
+- **KNOWN.** Two genders, he-words and she-words (notes §1, §5). Mum's rule for an unknown gender: use the he-form (notes §24 B4, §37.5). He-words: *ambo, cup, table, paani, dudh, darwajo, bakro, chokro, chamcho, bateto*, and *gutan* ⚠ (notes §2, §29 R8, §31, §35). She-words: *maani, kursi, chai, lakri, chamchi, bakri, chokri, baju, film*, plus *pacheri* ⚠ (Mum: "it can be *hakro*" too, §35 C4) and *akh* ⚠ (§35 C10) (notes §2, §5, §17, §25, §35, Zafar §21 corrections). Chutneys take *ji*, so are probably she-words (inference, `decisions.md` working assumptions).
 - **HYPOTHESIS.** [GF-Snd] two genders, 14 noun classes. [Gemini] three genders (a neuter): **not supported** by anything Mum has said (`sources/README.md`).
 - **UNKNOWN.** The gender of most Cook nouns: *khun, atto, daar, chaat, samosa, sekelo, gos, boga, chips, ghee, dai, sev, chana, dhania, chundo, loon, lasan, aadu, hardar, jeeru, rai, elchi, tameto, dungri, mirchi, limu* (inv §3A–3B: all "?"); Arc 1 nouns (cake, candle, balloon, present, cat, guest, sweets).
 - **Hint.** *dungri wagar ji daar* (§10) would make daar a she-word if *wagar ji* agrees; that is itself unconfirmed (feature 19).
 - **Needed by.** "one" *hakro/hakri* in every count (inv §1A #15), *wadho/wadhi* (#1, maani L4), the polite *khapeto/khapeti* (Conversations, inv §1E), *nato/nati* (#4), past-tense agreement (feature 16).
-- **Settled by.** L34–L45 (the polite "I'd like some …" shows gender through *khapeto/khapeti*, the frame Mum used herself in K10), M1–M9 and L46–L51 ("one …"), L62–L66.
+- **Settled by.** L34–L45 (the polite "I'd like some …" shows gender through *khapeto/khapeti*, the frame Mum used herself in K10), M1–M9 and L46–L50 ("one …"), L62–L66.
 
 ## 2. Plural
 
@@ -120,7 +120,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 9. Pronouns and "to me" forms
 
-- **KNOWN.** *aau* (I), *tu* (you, to a child or same age), *aai* (you, to an elder), *e* (he/she) (notes §21, §23). "To" forms: *muke, toke, anke* ⚠, *panke* (to us) (§23, §37.1). *inke* (it, as an object; §25 B15). *mu sathe* (with me; §12), *munje* (of me, before a place word; §16). *hi / hu* (this / that), *hida / huda / kida* (here / there / where).
+- **KNOWN.** *aau* (I), *tu* (you, to a child or same age), *aai* (you, to an elder), *e* (he/she) (notes §21, §23). "To" forms: *muke, toke, anke* (spelling confirmed by Zafar: grammar-notes "Zafar, 26 Sept (afternoon)", after §28), *panke* (to us) (§23, §37.1). *inke* (it, as an object; §25 B15). *mu sathe* (with me; §12), *munje* (of me, before a place word; §16). *hi / hu* (this / that), *hida / huda / kida* (here / there / where).
 - **HYPOTHESIS.** [Sindhi-gen] two "we" (with or without the listener; *panke* fits the inclusive one); plural "you"; 3rd-person near/far (GF-Snd has `Pers3_Near | Pers3_Distant`).
 - **UNKNOWN.** "they", "to them", "we" (both kinds), "to him / her".
 - **Needed by.** Cook's frame uses only *muke* (fixed). Arc 1 "give this to Nana" (L93), Conversations.
@@ -179,7 +179,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **HYPOTHESIS.** [Keine] in Kutchi, past sentences with an object show "defective" agreement, and with an "I / we" subject the verb agrees with the **object**. [Sindhi-gen] the verb agrees with the object (*ambo* → he-ending, *maani* → she-ending) and the subject takes an oblique form. Caution: Keine's consultants may speak "Kutchi Gujarati" (`sources/README.md`).
 - **UNKNOWN.** Everything: what the verb agrees with, whether the subject changes form, whether "I" differs from "Nani".
 - **Needed by.** Arc 1 "the cat ate the sweets", "I found it / them" (L72, L74), Who did it, any "I made the chai" (Cook end screen, Story by the Fire).
-- **Settled by.** C123–C136, L72, L74, L80–L82. **The engine's feature model reserves room for both answers** (see `engine-design.md` § Syntax rules): agreement target is a per-tense setting in the grammar data, not code.
+- **Settled by.** C123–C136, L72, L74, L80–L82. Caution: L80 and L81 pair chai (she) with daar and samosa, whose genders are unknown, so they only isolate object agreement once L36 (daar) and L47 (samosa) have settled those genders; C123–C130 (mango vs maani) isolate it on their own. **The engine's feature model reserves room for both answers** (see `engine-design.md` § Syntax rules): agreement target is a per-tense setting in the grammar data, not code.
 
 ## 17. Compound and helper verbs
 
@@ -205,7 +205,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 20. Questions
 
-- **KNOWN.** Yes/no questions by rising voice only (no "can" word: §27 B40). Question words: *kuro* (what), *ker* (who), *kida* (where), *kitla* (how many), *kyo* ⚠ (which), *ki* (how) (§23). The question word sits where the answer would (*chamchi kida ai?*, §30 K12).
+- **KNOWN.** Yes/no questions by rising voice only (no "can" word: §27 B40). Question words: *kuro* (what), *ker* (who), *kida* (where), *kitla* (how many), *kyo* (which; spelling confirmed by Zafar: grammar-notes "Zafar, 26 Sept (afternoon)", after §28), *ki* (how) (§23). The question word sits where the answer would (*chamchi kida ai?*, §30 K12).
 - **UNKNOWN.** "when"; "who" as the doer (*kere* ⚠ §23; Zafar doesn't recognise it).
 - **Settled by.** C153, C154, Q10, L73, L77, L79.
 
@@ -244,13 +244,13 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 26. Time, manner and degree words
 
-- **KNOWN.** *hane* (now, in a sequence), *hever* (now, generally), *jaldi*, *aste thi*, *thori war*, *thorok* ⚠, *wadhare* ⚠, *bas*, *kali* (§24, §25). *saware* (tomorrow, ⚠ unsettled), *gaykal* (yesterday, for now) (§33 S3, §37.9). *bo* (very?) ⚠ (§33 S2).
+- **KNOWN.** *hane* (now, in a sequence), *hever* (now, generally), *jaldi*, *aste thi*, *thori war*, *thorok*, *wadhare* (both confirmed by Zafar: grammar-notes "Zafar, 26 Sept (afternoon)", after §28), *bas*, *kali* (§24, §25). *saware* (tomorrow, ⚠ unsettled), *gaykal* (yesterday, for now) (§33 S3, §37.9). *bo* (very?) ⚠ (§33 S2).
 - **UNKNOWN.** "today", "again", "very" (confirmed), "each".
 - **Settled by.** L58, L67, L70, L91.
 
 ## 27. Verb nouns ("to cook", "for tasting")
 
-- **KNOWN.** *randhnu* (to cook), *randhan lai* (for cooking), *chakhan lai de* (let me taste) (§27 B46, §33).
+- **KNOWN.** *chakhan lai de* (let me taste) (§27 B46); *randhnu* ⚠ (to cook, §33 S6) and *randhan lai* (for cooking, §33 S7, heard).
 - **Needed by.** Story lines only today. Low priority.
 
 ## 28. Speaker gender
@@ -262,7 +262,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 29. Fixed phrases (recorded whole, never built)
 
-Greetings and stock phrases the engine treats as single meanings: *Salamun alaykum, Alaikum salaam, Khuda-fis, thank you, Shabash, Bas, Bareto, Ukreto, Dhyan rakh, Jara e wandho nai, Mu lai khobar, Aau theek ai, Tu ki aiye? / Aai ki aayo?, Ha, Na, thank you, Hi na, hu, ki baki nai, time pati vyo* (notes §21–§30; checklist § C). Rule G6 and G7 govern which to use.
+Greetings and stock phrases the engine treats as single meanings: *Salamun alaykum, Alaikum salaam* ⚠ (§30 K2), *Khuda-fis, thank you, Shabash, Bas, Bareto, Ukreto, Dhyan rakh, Jara e wandho nai, Mu lai khobar, Aau theek ai, Tu ki aiye? / Aai ki aayo?, Ha, Na, thank you, Hi na, hu, ki baki nai, time pati vyo* (notes §21–§30; checklist § C). Rule G6 and G7 govern which to use.
 
 ## 30. "the one with milk", "very", "again"
 

@@ -12,7 +12,7 @@ Rules this design serves: G1 (never invent Kutchi), G2–G3 (gaps are grey-itali
 
 - **What it does.** Game code asks for a *meaning* ("this customer wants two samosas with mince, no chilli"). The engine returns the Kutchi sentence as tokens and text, plus a **clip plan** (which family recordings to play: a whole-phrase recording where one exists, otherwise one recording per word), or a **gap** saying exactly what it doesn't know yet ("how to say *with* for food: ask L22–L23").
 - **How it's built.** The Grammatical Framework (GF) way: one **abstract syntax** (the meanings, shared by every language) and one **concrete grammar** for Kutchi (lexicon, paradigms, and syntax rules that say how each meaning is put into words). All of it is **data** (JSON). The code is a small, general linearizer (*linearize* = turn a meaning into words) that contains no Kutchi.
-- **The recommendation on GF itself.** Use GF's **design**, its categories and its vocabulary, but **not the GF toolchain**, and use the Sindhi resource grammar as a **checklist of features, not as code**. Run a small GF-style engine in plain JavaScript that reads the grammar data. Reasons in [§ 2](#2-research-and-the-recommendation): the GF compiler can't be installed in our build sessions, the browser runtime is unmaintained, GF has no notion of "this form is unknown" (which is our normal state), and the Sindhi grammar's forms contradict the family's at key points. This is a deliberate push-back on "use the Sindhi resource grammar as the template"; Zafar decides (decision 1 in `build/reports/step-2b.md`).
+- **The recommendation on GF itself.** Use GF's **design**, its categories and its vocabulary, but **not the GF toolchain**, and use the Sindhi resource grammar as a **checklist of features, not as code**. Run a small GF-style engine in plain JavaScript that reads the grammar data. Reasons in [§ 2](#2-research-and-the-recommendation): the GF compiler can't be installed in our build sessions, GF has no place for per-form status, sources and question IDs (which "report the gap" needs), and the Sindhi grammar's forms contradict the family's. GF's own JavaScript runtime and its way of marking missing forms would work; we keep the abstract syntax GF-compatible so moving to real GF later is a port. This is a deliberate push-back on "use the Sindhi resource grammar as the template"; Zafar decides (decision 1 in `build/reports/step-2b.md`).
 - **Recording never changes the engine.** Recordings are indexed by the meaning they say. The engine always builds the sentence; the clip planner then picks the best family recordings to say it.
 - **Frequency decides what Mum records whole.** A simulation plays every mode thousands of times, counts which phrases a child hears most, and ranks them by "hearings saved per second of Mum's time".
 - **Gaps become Mum's next questions** automatically, in the Round 5 format, ordered by how often the game needs each one.
@@ -36,27 +36,31 @@ Grammatical Framework is an open-source grammar formalism from Chalmers (Ranta a
 
 ### How to run it offline in the browser (and later in Capacitor)
 
-| | A. Real GF: `.gf` source → PGF/JSON → GF TypeScript runtime | B. GF-style engine in JS reading grammar data (**recommended**) |
+| | A. Real GF: `.gf` source → PGF / JS / JSON → a GF JavaScript runtime | B. GF-style engine in JS reading grammar data (**recommended**) |
 |---|---|---|
 | Standard? | The standard toolchain | GF's architecture, categories and terms; our own ~600–900-line linearizer |
 | Build tools | The GF compiler (Haskell). In our cloud sessions GitHub release binaries are blocked (HTTP 403) and `ghcup` is blocked; building GF from Hackage with GHC from apt might work but is untested, slow and large (checked 1 Oct) | None: plain JSON and JS; Node for tests |
-| Browser runtime | `gf-typescript`. Its own README: "not actively maintained … features are limited and it is not efficient, making it really only useful for smaller grammars" ([repo](https://github.com/GrammaticalFramework/gf-typescript)). Not on npm | Our code, no dependencies |
+| Browser runtime | Two exist. gf-core's own JavaScript runtime (`gf -make -output-format=js` plus `gflib.js`, in `gf-core/src/runtime/javascript`), and its successor `gf-typescript` (JSON grammars), whose README says it is "not actively maintained … really only useful for smaller grammars" ([repo](https://github.com/GrammaticalFramework/gf-typescript)). Our grammar is small, so either would run it. Neither is on npm | Our code, no dependencies |
 | Offline / Capacitor | Works (static files) | Works (static files) |
 | Bundle size | Runtime plus a compiled grammar; size not verified (couldn't build one here) | Estimated 20–30 KB of JS plus 50–150 KB of JSON data (estimate, not measured) |
-| Unknown forms | GF tables must be total: every cell needs a string at compile time. "Unknown" would have to be faked with marker strings and post-processed | First-class: every cell has a status (confirmed / draft / unknown); unknown returns a **gap** |
-| Clip plans | Linearization returns a string; which word came from which lexicon entry is lost | Every token carries its lexicon entry and form, so clip planning and read-along underlining are direct |
+| Unknown forms | GF can mark a missing form: `nonExist` (or empty `variants {}`) makes linearization fail or show a marker for that form. What it has no place for is **metadata per cell**: confirmed vs draft (⚠), the source (grammar-notes §), and which Mum question settles it. We'd keep those in a side file and join them back after linearizing | Every cell carries its status, source and `ask` ID; an unknown cell returns a **gap** naming the question |
+| Clip plans | Plain linearization returns a string; GF's bracketed linearization (where the runtime offers it) shows which function made which words, but mapping that back to lexicon cells and clips is our own code | Every token carries its lexicon entry and form, so clip planning and read-along underlining are direct |
 | Mum's answers going in | Edit `.gf`, recompile with a toolchain sessions can't run | Edit a JSON row; tests run in Node at once |
 | Maintained by future Claude sessions | Needs GF fluency and the toolchain in every session | JSON with a schema and validation; small, readable code |
 | Parsing (text → meaning) | Yes | No (not needed: speaking uses closed sets, `docs/game-design/speaking.md`) |
 
-**Recommendation: B.** Keep GF's design so it stays "standard, not bespoke" where it matters:
+**Recommendation: B, on balance.** The deciding reasons are three: the GF compiler can't be installed in our build sessions (so no session could change the grammar and test it), GF has no place for per-cell status, sources and question IDs (the heart of "report the gap"), and the Sindhi RGL's forms contradict the family's, so we'd rewrite its morphology anyway. GF's runtime and its handling of missing forms are **not** reasons: both would work.
+
+**What we lose by not using real GF:** the compiler's type checking of the grammar (we replace it with a schema check and golden tests, § 12), parsing (not needed today), the RGL's ready-made syntax for constructions we haven't met yet, and the GF community's tools. **How we keep the door open:** the abstract syntax is kept GF-compatible (GF category names, functions with typed arguments, no JS-only features), so a session with the GF toolchain can export `abstract.json` to a `.gf` abstract and the Kutchi data to a concrete grammar, and check it in real GF.
+
+Keep GF's design so it stays "standard, not bespoke" where it matters:
 
 1. the abstract/concrete split, with GF names for the categories (`N`, `A`, `V`, `V2`, `NP`, `CN`, `VP`, `Cl`, `Imp`, `Utt`) and RGL-style core functions (`DetCN`, `AdjCN`, `ComplV2`, `PredVP`, `ImpVP`, `UseN`…);
 2. an **application grammar** on top (the game's meanings, such as `Order` and `Fetch`), defined as combinations of the core, which is exactly how GF apps use the RGL;
 3. the RGL Sindhi feature model as the parameter set;
 4. feature labels written in the cross-language UniMorph style (`sg`, `pl`, `obl`, `imp`, `neg`…; the UniMorph site was blocked by the proxy, so cited from the research pass only).
 
-A future session could write a small exporter from our JSON to `.gf` files and cross-check the grammar in real GF on a laptop. If the game ever needs parsing, or the grammar grows past about 100 meanings, revisit option A.
+If the game ever needs parsing, or the grammar grows past about 100 meanings, or GF becomes installable in our sessions, revisit option A; the GF-compatible abstract syntax makes that a port, not a rewrite.
 
 **Option C (author in GF, compile to JSON, our own runtime)** keeps the toolchain problem and adds a converter; not recommended.
 
@@ -139,7 +143,7 @@ One entry per word (a *lexeme*), with its class, gender, paradigm, any irregular
   "src": ["grammar-notes §1", "§11", "§24 B1", "§31", "§33 S6"] }
 ```
 
-- `gender: null` means unknown. The linearizer uses Mum's default (he) **and** reports a `feature` gap, so the default never hides the question (`grammar-kb.md` feature 1).
+- `gender: null` means unknown. The linearizer uses Mum's default (he) **and** reports a `feature` gap, so the default never hides the question (`grammar-kb.md` feature 1). **Downside:** a wrong gender (*hakro* for what is really a she-word) can ship and be heard until Mum answers. **Mitigation:** every defaulted noun is listed for Mum in the gap report, weighted by how often it's heard, and flagged in the session report; Zafar can choose the grey placeholder instead (decision 4 in `build/reports/step-2b.md`).
 - Multi-word verbs (`banai de`, `chadi de`, `madad kar`) have a `head` part that inflects; the rest is fixed.
 - `say` (a voice spelling, as Cook has today) and `aliases` (old ids such as `cook-paani`) carry over from `data/cook.json`.
 
@@ -206,10 +210,10 @@ Each clip keeps today's fields (`id`, `qid`, `kutchi`, `speaker`, `file`, `check
 
 ```json
 { "id": "muke-chai-khapeti", "kutchi": "Muke chai khapeti", "speaker": "mum", "checked": "ok",
-  "meaning": "Need(p1,Item(n.chai))|polite", "tokens": ["pron.p1:dat", "n.chai:sg.dir", "v.khap:pres.she.sg"] }
+  "meaning": "Need(p1,Item(n.chai))|polite|she", "tokens": ["pron.p1:dat", "n.chai:sg.dir", "v.khap:pres.she.sg"] }
 ```
 
-`meaning` is the canonical key of the tree the clip says (see [§ 8](#8-frequency-statistics-which-phrases-mum-records-whole)); `tokens` lets the planner use a clip for part of a sentence. Both are added by the fill step ([`fill-the-engine.md`](fill-the-engine.md) § 4). Clips without them still match by text, as `FamilyVoice.match` does today (`js/shared/family-voice.js`).
+`meaning` is the canonical key of the tree the clip says: the tree, then the register, then the speaker's gender (`he` / `she`), the same key § 8 counts; `tokens` lets the planner use a clip for part of a sentence. Both are added by the fill step ([`fill-the-engine.md`](fill-the-engine.md) § 4). Clips without them still match by text, as `FamilyVoice.match` does today (`js/shared/family-voice.js`).
 
 ---
 
@@ -277,7 +281,7 @@ const r = Lang.say(
 | `Lang.rows(meaning, ctx)` | the card rows only (lower case, no full stop: rule F10) | `js/shared/order-card.js` |
 | `Lang.check(meaning, ctx)` | `{ok, gaps}` without building text | a mode deciding whether to offer an item at all |
 | `Lang.word(lexId, cell?)` | one token and its clip | word cards, the end review, `Lang.speakWord` today |
-| `Lang.play(result, opts)` | a promise that plays the clip plan in order, with per-token timing for read-along underlining (rule E4) | `js/shared/say.js` |
+| `Lang.play(result, opts)` | a promise that plays the clip plan in order, with per-token timing for read-along underlining (rule E4; inside whole-phrase clips this needs word timestamps, § 9) | `js/shared/say.js` |
 | `Lang.explain(meaning, ctx)` | the rule trace (which rule, which cell, which source) | tests and debugging |
 | `Lang.load(base)` | loads the data files once | page start-up |
 
@@ -304,7 +308,7 @@ const r = Lang.say(
 Rule G12: the most frequent phrases are recorded whole so they sound human; the rest are assembled. The engine never changes; only the clip index grows.
 
 1. **Simulate play.** A Node tool runs each mode's own content generator (Cook's `recipes.js` + `order.js` already do this: the inventory's harness ran 60 orders per dish per level) under a **play model**: how many rounds a child plays per day, at which levels, over the first month. Each run logs the meaning trees the game asks the engine to say, with speaker and register.
-2. **Key every phrase.** A meaning key is the canonical tree text plus the register and the speaker's gender, e.g. `Need(p1,Item(n.samosa,2))|informal`. Every subtree that is a natural unit (a noun phrase, a clause, a whole utterance) is counted too.
+2. **Key every phrase.** A meaning key is the canonical tree text plus the register and the speaker's gender, e.g. `Need(p1,Item(n.samosa,2))|informal|he` (the same key format as § 5.5). Every subtree that is a natural unit (a noun phrase, a clause, a whole utterance) is counted too.
 3. **Rank by value.** For each candidate: expected hearings per week × words it replaces ÷ its length in seconds = *hearings saved per second of recording*.
 4. **Pick under a budget.** Greedily take the top candidates until the budget (e.g. 20 minutes of Mum's time) is spent or the gain flattens. Output a coverage curve ("the top N phrases cover X% of everything a child hears in week one") so Zafar can choose the budget.
 5. **Variety.** For the top phrases, ask for two takes and alternate them, so a line heard 30 times a day doesn't sound like a loop.
@@ -316,12 +320,12 @@ Rule G12: the most frequent phrases are recorded whole so they sound human; the 
 
 Given tokens and the recordings:
 
-1. **Whole first.** Find recordings whose `meaning` matches a subtree exactly (same words, same forms, same register). Prefer the longest, then the preferred speaker (`ctx.voice`), then `checked: "ok"` over unchecked; `redo` never plays (as `FamilyVoice` does today).
+1. **Whole first.** Find recordings whose `meaning` matches a subtree exactly (same words, same forms, register and speaker gender). Prefer the longest, then the preferred speaker (`ctx.voice`). **Only clips Zafar marked `checked: "ok"` are used in production** (rule G16); unchecked clips are allowed only in a test build, and `redo` never plays. Note for the gap analysis: today's `js/shared/family-voice.js` (lines 47–60) ranks unchecked clips below OK ones but still returns them, which is the same leak.
 2. **Then by text.** For the rest, match runs of tokens by normalised text (`FamilyVoice.norm`).
 3. **Then per word**, preferring a word cut from a sentence (it sounds natural in a sentence) over a citation form said alone.
 4. **Anything left is `missing`**: an audio gap, listed for recording.
 
-A clip plan is ordered segments, each with the token span it covers, so read-along underlining follows the voice.
+A clip plan is ordered segments, each with the token span it covers. **Read-along timing:** a per-word clip underlines its word for the clip's length; inside a whole-phrase clip, per-word underlining needs word start and end times. Those come from word-level timestamps in `build/transcribe_family.py` (Whisper can give them) or from forced alignment, stored per clip as `words: [{t, start, end}]`. Without them, the whole phrase underlines at once. This is in step 4c's scope (§ 15).
 
 ---
 
@@ -447,7 +451,7 @@ Steps:
 |---|---|---|---|
 | 4a | Engine core: data schema and validation, linearizer, clip planner, `Lang.say` / `rows` / `check` / `play`, Node tests | top model, high effort (judgement-heavy) | one session, ~3–4 h |
 | 4b | Fill from what's known: lexicon from `data/cook.json` and grammar-notes (~120–150 entries), paradigms, ~25 rules, golden tests from §1–§37 | mid-tier model, medium effort (mechanical, but cite every source) | one session, ~3 h |
-| 4c | Simulator, frequency ranking, gap reporter, phrase-list output in the questionnaire format | mid-tier, medium | one session, ~2–3 h |
+| 4c | Simulator, frequency ranking, gap reporter, phrase-list output in the questionnaire format; word timestamps for clips (Whisper word-level output in `build/transcribe_family.py`, or forced alignment) for read-along inside whole phrases | mid-tier, medium | one session, ~3–4 h |
 | 4d | Cook migration behind adapters, full QA checklist and screenshots | top model, high (visual review) | one session, ~4 h plus review |
 | after each Mum round | Fill session: notes → data → tests → new phrase list | mid-tier, medium | ~1–2 h |
 

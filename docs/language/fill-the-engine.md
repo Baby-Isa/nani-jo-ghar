@@ -59,7 +59,7 @@ Every change cites its source in `src` (a grammar-notes section, a clip `qid`, o
 1. **The engine lists what it needs.** Run the gap reporter (`engine-design.md` § 10). It writes the next questions, ordered by how often the game needs each answer, in the "Questions for Mum" format, with new IDs continuing the L series.
 2. **The orchestrator shapes the round:** keeps Round 4's "How to answer" section, adds re-takes and "stop here" marks, keeps the core to about 60–75 minutes, and builds the Word copy with `build/build_mum_questions_docx.js`. Zafar approves before Mum sees it.
 3. **Mum records** one long take, saying each ID (G16). Word lists three times, sentences once.
-4. **The recording is cut and transcribed** (`build/transcribe_family.py`), and the clips go into `data/family-audio.json` with their `qid`. Zafar marks each clip OK / ?? in `lab/family-audio.html`; only OK clips ship (G16).
+4. **The recording is cut and transcribed** (`build/transcribe_family.py`), and the clips go into `data/family-audio.json` with their `qid`. Zafar marks each clip OK / ?? in `lab/family-audio.html`; only OK clips ship (G16), and unchecked clips play only in test builds. Keep Whisper's word timestamps for each clip, so read-along can underline word by word inside whole phrases (`engine-design.md` § 9).
 5. **A fill session** writes what Mum said into `grammar-notes.md` (a new dated section: the recording, a table of ID / English / what Mum said / confidence, then "What this means for the engine"), updates `lexicon.md`, then the engine data (§ 2), then the tests. Each new data row cites the new grammar-notes section.
 6. **Re-run** the tests, the gap reporter and the phrase-frequency list. The session report lists: gaps closed, gaps still open, new gaps (Mum's answers often open new questions), and which game lines now speak Kutchi.
 
@@ -74,7 +74,7 @@ Every change cites its source in `src` (a grammar-notes section, a clip `qid`, o
 
 - A form whose source is ⚠ (Whisper's hearing) is `draft` and shows with the draft flag (G3). It stops being a draft only when Zafar confirms the spelling; record the date in its `src`.
 - An unknown form is not a draft: it's a gap, shown as grey-italic English "to record" (G2).
-- A Mum-default (unknown gender → he-form) renders normally but is reported as a `feature` gap every time, so it gets asked.
+- A Mum-default (unknown gender → he-form) renders normally but is reported as a `feature` gap every time, so it gets asked. The risk is that a wrong gender is heard until Mum answers, so put the most-heard defaulted nouns at the top of the next round.
 - `wanted` words (from the Excel or the handouts) carry their `hint` for the questionnaire writer only. They are never rendered.
 
 ## 6. Tests to run
