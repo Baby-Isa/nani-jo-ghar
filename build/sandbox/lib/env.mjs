@@ -7,20 +7,31 @@ import { existsSync, readFileSync, statSync, createReadStream } from "node:fs";
 import { join, dirname, extname, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CLICK_HOOK } from "../../lint/layout.mjs";
+import { PHASER_HOOK } from "../../lint/phaser.mjs";
+import { SOUND_HOOK, SoundLog } from "./sound.mjs";
+import { installTouch } from "./touch.mjs";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 export const PORT = +(process.env.COOK_TEST_PORT || 8812);
 export const BASE = `http://127.0.0.1:${PORT}`;
 export const FONTS_DIR = join(ROOT, "build", "sandbox", "fonts");
+// touch: phones and tablets are emulated with touch (hasTouch, isMobile) and the players' canvas gestures go in as real touch events
 export const SIZES = {
-  "844x390": { width: 844, height: 390, label: "phone landscape (iPhone 12-14)" },
-  "800x360": { width: 800, height: 360, label: "small Android landscape" },
+  "844x390": { width: 844, height: 390, label: "phone landscape (iPhone 12-14)", touch: true },
+  "800x360": { width: 800, height: 360, label: "small Android landscape", touch: true },
   "1366x768": { width: 1366, height: 768, label: "laptop" },
   "1440x900": { width: 1440, height: 900, label: "16:10 laptop" },
   "1280x800": { width: 1280, height: 800, label: "16:10 laptop (small)" },
+  "1024x768": { width: 1024, height: 768, label: "tablet landscape 4:3 (iPad)", touch: true },
+  "1180x820": { width: 1180, height: 820, label: "tablet landscape (iPad Air 10.9)", touch: true },
+  "1366x1024": { width: 1366, height: 1024, label: "tablet landscape (iPad Pro 12.9)", touch: true },
+  "390x844": { width: 390, height: 844, label: "phone upright (the rotate card)", touch: true, upright: true },
 };
-export const ALL_SIZES = Object.keys(SIZES);
+// the five sizes the baseline was first made at, then the tablets; the upright phone is only for the rotate-card flow
+export const ALL_SIZES = ["844x390", "800x360", "1366x768", "1440x900", "1280x800", "1024x768", "1180x820", "1366x1024"];
 export const QUICK_SIZE = "1366x768";
+// the sizes that bound the others: the tightest phone, a 4:3 tablet and a 16:10 laptop (the gate's reduced set for deeper paths)
+export const CORE_SIZES = ["800x360", "1024x768", "1440x900"];
 
 const require = createRequire(import.meta.url);
 let pw;
@@ -65,9 +76,10 @@ const SEED_SCRIPT = (seed) => `(() => { let a = ${seed >>> 0}; Math.random = fun
 const fontsCss = () => readFileSync(join(FONTS_DIR, "fonts.css"), "utf8").replaceAll("__FONTS__", `${BASE}/__fonts`);
 
 // A fresh context + page: the size, no network beyond the local server, the real fonts from build/sandbox/fonts.
-export async function newPage(browser, sizeKey, { seed = 1, record } = {}) {
+export async function newPage(browser, sizeKey, { seed = 1, touch } = {}) {
   const size = SIZES[sizeKey];
-  const ctx = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: 1, serviceWorkers: "block" });
+  const useTouch = touch === undefined ? !!size.touch : touch;
+  const ctx = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: 1, serviceWorkers: "block", ...(useTouch ? { hasTouch: true, isMobile: true } : {}) });
   await ctx.route(/^https?:\/\//, (route) => {
     const u = route.request().url();
     if (u.startsWith(BASE)) return route.fallback();
@@ -76,12 +88,17 @@ export async function newPage(browser, sizeKey, { seed = 1, record } = {}) {
   });
   await ctx.addInitScript(SEED_SCRIPT(seed));
   await ctx.addInitScript(CLICK_HOOK);
+  await ctx.addInitScript(PHASER_HOOK);
+  await ctx.addInitScript(SOUND_HOOK);
+  const sound = new SoundLog();
+  await ctx.exposeFunction("__njgLog", (e) => { sound.push(e); });
   const page = await ctx.newPage();
+  if (useTouch) await installTouch(page, ctx);
   const errors = [];
   page.on("pageerror", (e) => errors.push(`${new URL(page.url()).pathname}: ${e.message || e}`));
   page.on("console", (m) => { if (m.type() === "error" && !/Failed to load resource|net::ERR/.test(m.text())) errors.push(`${new URL(page.url()).pathname}: console: ${m.text().slice(0, 200)}`); });
   page.on("dialog", (d) => d.accept().catch(() => {}));
-  return { ctx, page, errors, size };
+  return { ctx, page, errors, size, sound, touch: useTouch };
 }
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

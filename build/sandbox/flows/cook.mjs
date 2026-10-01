@@ -17,20 +17,22 @@ export async function openCook(ctx, { speed = 3, save } = {}) {
   await page.waitForSelector("#panel h1", { timeout: 20000 });
 }
 
-export function cookStation(key, level = 1, { recipe = false } = {}) {
+// mode: "fair" (what the game asks), "mistake" (a wrong pick where the mini-game allows it, then on to the end) or "hint" (the unguided lab:
+// waits for the hesitation hint and glow, presses the light bulb, peeks at a closed card)
+export function cookStation(key, level = 1, { recipe = false, mode = "fair", group = "cook" } = {}) {
   const labKey = recipe ? `recipe:${key}` : key;
   // a recipe is "cook:<id>" unless a station has the same key ("cook:recipe:<id>")
-  const id = `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}` + (level > 1 ? `@L${level}` : "");
+  const id = `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}` + (level > 1 ? `@L${level}` : "") + (mode !== "fair" ? `#${mode}` : "");
   return {
     id,
-    group: "cook",
-    title: `Cook, Station lab: ${labKey}, level ${level}`,
-    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000,
+    group,
+    title: `Cook, Station lab: ${labKey}, level ${level}${mode !== "fair" ? `, ${mode} player` : ""}`,
+    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000 * (mode === "hint" ? 1.3 : 1),
     async run(ctx) {
       const { page, rec } = ctx;
       await openCook(ctx);
-      const P = new CookPlayer(page, rec);
-      await page.evaluate(([k, l]) => { __cook.lab(k, true, { level: l }); }, [labKey, level]);
+      const P = new CookPlayer(page, rec, { mode });
+      await page.evaluate(([k, l, g]) => { __cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);
       await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
       await sleep(500);
       await rec.state("start");
@@ -41,6 +43,7 @@ export function cookStation(key, level = 1, { recipe = false } = {}) {
       }
       await sleep(400);
       await rec.state("result");
+      ctx.extra = { badges: P.badges, bulbs: P.bulbs, peeks: P.peeks, mistakes: [...P.made] };
       ctx.reachedEnd = true;
     },
   };
@@ -62,6 +65,99 @@ export const cookTitle = {
     if (book) { await book.click(); await sleep(500); await rec.state("recipe-book"); await page.click("#book-close").catch(() => {}); await sleep(300); }
     const shop = await page.$("#t-shop");
     if (shop) { await shop.click(); await sleep(400); await rec.state("shop"); await page.click("#shop-done").catch(() => {}); await sleep(300); }
+    ctx.reachedEnd = true;
+  },
+};
+
+// ---- the day-level flows: story days, the shop, the open kitchen ----
+const RECIPE_IDS = ["chai", "maani", "daal", "chaat", "samosa", "mishkaki"];
+// a save as the one-save migration reads it (see build/test_cook.py open_kitchen_save)
+const saveAt = (day, extra = {}) => ({ v: 1, mode: "relaxed", coins: 0, day, best: {}, owned: [], slots: [], words: {}, taught: Object.fromEntries(RECIPE_IDS.slice(0, Math.max(0, day - 1)).map((r) => [r, true])), finished: false, freeRounds: 0, rulesSeen: day > 1, playDays: [], ...extra });
+
+// a story day, from the title: start it, play every order in it, the day's summary, the shop, back to the title.
+export function cookDay(n) {
+  return {
+    id: `cook:day${n}`,
+    group: "cook",
+    title: `Cook, story day ${n}: from the title, every order, the summary, the shop`,
+    timeoutMs: 1500 * 1000,
+    async run(ctx) {
+      const { page, rec } = ctx;
+      await openCook(ctx, { save: saveAt(n, { coins: 20 }) });
+      const P = new CookPlayer(page, rec);
+      await rec.state("title");
+      await page.click("#t-start");
+      await sleep(500);
+      try {
+        await P.play(() => page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), { timeout: ctx.timeoutMs - 60000 });
+      } finally { for (const c of P.covers) rec.note(`covered tap: ${c}`); }
+      await sleep(600);
+      await rec.state("day-summary");
+      if (await page.$("#sum-finale")) {
+        await page.click("#sum-finale"); await sleep(700);
+        await rec.state("finale");
+        await page.click("#fin-shop");
+      } else await page.click("#sum-shop");
+      await sleep(400);
+      await rec.state("shop");
+      const buys = await page.$$("[data-buy]:not([disabled])");
+      if (buys.length) { await buys[0].click(); await sleep(300); await rec.state("shop-bought"); }
+      await page.click("#shop-done");
+      await sleep(500);
+      await rec.state("title-after");
+      ctx.reachedEnd = true;
+    },
+  };
+}
+
+// the shop on its own: with coins, buy, buy again, leave
+export const cookShop = {
+  id: "cook:shop",
+  group: "cook",
+  title: "Cook: the shop with coins to spend: buy, buy again, leave",
+  timeoutMs: 120000,
+  async run(ctx) {
+    const { page, rec } = ctx;
+    await openCook(ctx, { save: saveAt(4, { coins: 200 }) });
+    await page.click("#t-shop"); await sleep(500);
+    await rec.state("shop");
+    let bought = 0;
+    for (let i = 0; i < 3; i++) {
+      const b = await page.$("[data-buy]:not([disabled])");
+      if (!b) break;
+      await b.click(); bought++; await sleep(350);
+      if (i === 0) await rec.state("shop-bought");
+    }
+    await rec.state("shop-after");
+    ctx.extra = { bought };
+    await page.click("#shop-done"); await sleep(400);
+    await rec.state("title-after");
+    ctx.reachedEnd = true;
+  },
+};
+
+// free cooking: the open kitchen. A finished save, serve two customers, close the kitchen, the summary
+export const cookOpenKitchen = {
+  id: "cook:open-kitchen",
+  group: "cook",
+  title: "Cook: free cooking, the open kitchen: serve two customers, close the kitchen, the summary",
+  timeoutMs: 1200 * 1000,
+  async run(ctx) {
+    const { page, rec } = ctx;
+    await openCook(ctx, { save: { v: 1, mode: "relaxed", coins: 40, day: 7, best: { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3 }, owned: [], slots: [], words: {}, taught: Object.fromEntries(RECIPE_IDS.map((r) => [r, true])), finished: true, freeRounds: 0, rulesSeen: true, playDays: [] } });
+    await page.waitForSelector("#t-free", { timeout: 10000 });
+    await rec.state("title");
+    await page.click("#t-free");
+    await page.waitForSelector("#close-kitchen", { timeout: 15000 });
+    await rec.state("kitchen-open");
+    const P = new CookPlayer(page, rec);
+    try {
+      await P.play(() => page.evaluate("!!document.querySelector('#sum-shop, #sum-finale')"), { timeout: ctx.timeoutMs - 60000, closeKitchenAfter: 2 });
+    } finally { for (const c of P.covers) rec.note(`covered tap: ${c}`); }
+    await sleep(500);
+    const served = await page.evaluate("__cook.state().cards.length");
+    if (served < 2) rec.stop(`open kitchen: only ${served} of 2 customers served before closing`);
+    await rec.state("summary");
     ctx.reachedEnd = true;
   },
 };

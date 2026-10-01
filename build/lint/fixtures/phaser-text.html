@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Lint fixture: text inside a Phaser canvas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html, body { margin: 0; height: 100%; background: #ccc; overflow: hidden; } #game { width: 100%; height: 100%; }</style>
+<script src="../../../js/vendor/phaser.min.js"></script>
+</head>
+<body>
+<div id="game"></div>
+<script>
+  // A 1600x900 world shown at half size, like Cook on a small screen: a 34 px label is 17 px on screen, a 20 px one 10 px.
+  class S extends Phaser.Scene {
+    create() {
+      const T = (x, y, s, size, extra = {}) => this.add.text(x, y, s, Object.assign({ fontFamily: "sans-serif", fontSize: size + "px", fontStyle: "bold", color: "#222" }, extra));
+      // VIOLATIONS
+      this.tiny = T(100, 100, "tiny label", 20);                                          // 10 px on screen
+      const box = this.add.container(400, 300); box.setScale(0.5); box.add(T(0, 0, "scaled in a container", 34)); // 34 x 0.5 x 0.5 = 8.5 px
+      this.off = T(1500, 400, "runs off the right edge of the world", 34);               // cut by the canvas
+      // CLEAN
+      T(100, 200, "readable label", 34);                                                  // 17 px on screen
+      const hid = T(100, 300, "hidden small", 12); hid.setVisible(false);
+      const inv = T(100, 400, "transparent small", 12); inv.setAlpha(0);
+      const hidBox = this.add.container(900, 500); hidBox.setVisible(false); hidBox.add(T(0, 0, "in a hidden container", 12));
+    }
+  }
+  new Phaser.Game({ type: Phaser.CANVAS, parent: "game", width: 1600, height: 900, scale: { mode: Phaser.Scale.EXPAND, autoCenter: Phaser.Scale.CENTER_BOTH }, scene: [S] });
+</script>
+</body></html>

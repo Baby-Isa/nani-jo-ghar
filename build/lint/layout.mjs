@@ -12,6 +12,10 @@
 //   tap-offscreen    a tappable thing partly outside the viewport
 //   page-scroll      the page itself scrolls (LAY-02)
 //   scroll-container a visible box that scrolls (a scroll bar on a child screen, CMP-07)
+//   covered          something sits on top of a tappable thing: the topmost element at its visible centre is neither it nor
+//                    its child (LAY-06). A full-screen scrim or modal over everything is by design and not reported.
+//   covers-play-area something other than the canvas is on top of the middle of the play area (LAY-06)
+//   word-broken      a word split across two lines, mid-word (TXT-10)
 // Off-screen findings on a thing that is moving (a belt dish, a slide-in) are dropped: it is passing through, not parked there.
 // Each finding: {check, selector, measured, text}.
 
@@ -169,10 +173,41 @@ export async function pageLint(opts) {
       if (px > TOL && (!clipped || px > clipped.px)) clipped = { px, a };
     }
     if (clipped && !ell) add("text-clipped", el, `cut by ${Math.round(clipped.px)}px`, { detail: clipped.a === el ? "its own box" : "parent " + selector(clipped.a) });
+    // a word split across two lines (not at a hyphen or a space)
+    for (const n of el.childNodes) {
+      if (n.nodeType !== 3 || n.nodeValue.length > 600) continue;
+      const re = /[^\s\u00ad\-\u2010-\u2014]{3,}/g;
+      let m, broke = null;
+      while (!broke && (m = re.exec(n.nodeValue))) {
+        const rg = document.createRange();
+        rg.setStart(n, m.index); rg.setEnd(n, m.index + m[0].length);
+        const rs = Array.from(rg.getClientRects()).filter((q) => q.width > 0.5 && q.height > 0);
+        if (rs.length > 1 && Math.max(...rs.map((q) => q.top)) - Math.min(...rs.map((q) => q.top)) > rs[0].height * 0.6) broke = m[0];
+      }
+      if (broke) { add("word-broken", el, `"${broke}" is split across lines`, { text: broke }); break; }
+    }
     // outside the viewport
     const out_ = Math.max(-L, -T, R - vw, B - vh);
     if (out_ > TOL) { add("text-offscreen", el, `${Math.round(out_)}px outside the screen`); moving.push([out[out.length - 1], el, el.getBoundingClientRect()]); }
   }
+
+  // ---- covering (LAY-06) ----
+  // a full-viewport fixed scrim or modal over everything is by design (the results card, the first-time help, a panel)
+  const scrimCache = new Map();
+  function inScrim(n) {
+    for (let a = n; a && a !== document.documentElement; a = a.parentElement) {
+      let v = scrimCache.get(a);
+      if (v === undefined) {
+        const c = cs(a);
+        const r = a.getBoundingClientRect();
+        v = (c.position === "fixed" || c.position === "absolute") && r.width >= vw * 0.9 && r.height >= vh * 0.9 && a !== document.body;
+        scrimCache.set(a, v);
+      }
+      if (v) return true;
+    }
+    return false;
+  }
+  const modalLike = (n) => !!(n.closest && n.closest(".njg-onboard, [role=dialog], dialog, [aria-modal=true]"));
 
   // ---- tap targets ----
   const cand = new Set(document.querySelectorAll('button, a[href], input:not([type=hidden]), select, textarea, summary, [role=button], [role=radio], [role=tab], [role=checkbox], [role=switch], [role=link], [onclick]'));
@@ -191,8 +226,38 @@ export async function pageLint(opts) {
     if (r.width * r.height > vw * vh * 0.4) continue;
     // an SVG child with no size of its own (a <g>) measures by its box
     if (r.width < MIN_TAP - 0.5 || r.height < MIN_TAP - 0.5) add("tap-small", el, `${Math.round(r.width)}x${Math.round(r.height)}px`);
+    // covered: the topmost element at the middle of what can be seen of it
+    {
+      const cx = (vis.left + vis.right) / 2, cy = (vis.top + vis.bottom) / 2;
+      const top = document.elementFromPoint(cx, cy);
+      if (top && top !== el && !el.contains(top) && !(top.tagName === "LABEL" && (top.contains(el) || top.control === el)) && !inScrim(top) && !modalLike(top)) {
+        const own = el.closest && el.closest("[role=dialog], dialog, [aria-modal=true]");
+        if (!(own && own.contains(top))) { add("covered", el, `covered by ${selector(top)} at (${Math.round(cx)},${Math.round(cy)})`, { detail: selector(top) }); moving.push([out[out.length - 1], top, top.getBoundingClientRect()]); } // a cover that is moving is passing by
+      }
+    }
     const o = Math.max(-r.left, -r.top, r.right - vw, r.bottom - vh);
     if (o > TOL) { add("tap-offscreen", el, `${Math.round(o)}px outside the screen`); moving.push([out[out.length - 1], el, r]); }
+  }
+
+  // ---- the play area: nothing but the canvas on top of its middle (LAY-06) ----
+  {
+    let cv = null, best = 0;
+    for (const c of document.querySelectorAll("canvas")) {
+      const r = c.getBoundingClientRect();
+      if (shown(c, r) && r.width * r.height > best) { best = r.width * r.height; cv = c; }
+    }
+    if (cv && best > vw * vh * 0.4) {
+      const r = cv.getBoundingClientRect();
+      const seenTop = new Set();
+      for (const fx of [0.4, 0.55, 0.7]) for (const fy of [0.3, 0.5, 0.7]) {
+        const x = Math.min(vw - 1, Math.max(0, r.left + r.width * fx)), y = Math.min(vh - 1, Math.max(0, r.top + r.height * fy));
+        const top = document.elementFromPoint(x, y);
+        if (!top || top === cv || cv.contains(top) || inScrim(top) || modalLike(top) || seenTop.has(top)) continue;
+        seenTop.add(top);
+        add("covers-play-area", top, `on top of the play area at (${Math.round(x)},${Math.round(y)})`);
+        moving.push([out[out.length - 1], top, top.getBoundingClientRect()]);
+      }
+    }
   }
 
   // ---- scrolling ----

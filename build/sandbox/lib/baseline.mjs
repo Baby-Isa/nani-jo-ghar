@@ -43,10 +43,10 @@ export function load() {
   });
   return b;
 }
-function save(out) {
+function save(out, path = BASELINE) {
   const flows = Object.keys(out.flows).sort().map((k) => `  ${JSON.stringify(k)}: ${JSON.stringify(out.flows[k])}`).join(",\n");
   const finds = out.findings.map((f) => "  " + JSON.stringify({ key: f.key, measured: f.measured })).join(",\n");
-  writeFileSync(BASELINE, `{\n "version": 1,\n "generated": ${JSON.stringify(out.generated)},\n "flows": {\n${flows}\n },\n "findings": [\n${finds}\n ]\n}\n`);
+  writeFileSync(path, `{\n "version": 1,\n "generated": ${JSON.stringify(out.generated)},\n "flows": {\n${flows}\n },\n "findings": [\n${finds}\n ]\n}\n`);
 }
 
 // compare a run with the baseline, within the flows and sizes the run covered
@@ -63,12 +63,28 @@ export function compare(base, cur, scope) {
   const fixed = [...baseF.values()].filter((f) => !curF.has(f.key) && !curLoose.has(looseKey(f)));
   const incomplete = [];
   const newErrors = [];
+  const unbaselined = [], newIncomplete = [];
   for (const fs of scope) {
     const b = base && base.flows && base.flows[fs], c = cur.flows[fs];
+    if (!b && c) { unbaselined.push(fs); if (!c.complete) newIncomplete.push(fs); }
     if (b && b.complete && c && !c.complete) incomplete.push(fs);
     if (c) for (const e of c.errors) if (!b || !(b.errors || []).includes(e)) newErrors.push(`${fs}: ${e}`);
   }
-  return { added, moved, fixed, incomplete, newErrors };
+  return { added, moved, fixed, incomplete, newErrors, unbaselined, newIncomplete };
+}
+
+// append only: add the findings and the flow-sizes the baseline lacks; change nothing that is already there
+export function append(base, cur, { path } = {}) {
+  const out = JSON.parse(JSON.stringify(base));
+  const have = new Set(out.findings.map((f) => f.key));
+  let added = 0;
+  for (const f of cur.findings) if (!have.has(f.key)) { out.findings.push(f); have.add(f.key); added++; }
+  for (const [fs, v] of Object.entries(cur.flows)) if (!out.flows[fs]) out.flows[fs] = v;
+  out.findings.sort((a, b) => a.key.localeCompare(b.key));
+  out.generated = base.generated; // an append is not a regeneration
+  save(out, path);
+  out.added = added;
+  return out;
 }
 
 // write a new baseline. shrinkOnly: keep only what the old one had (drop the fixed); accept: adopt the run's findings

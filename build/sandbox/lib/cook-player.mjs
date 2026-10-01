@@ -2,16 +2,27 @@
 // events at screen coordinates. A Node port of build/test_cook.py's Player, without the deliberate mistakes.
 // It records each new view and each new kind of expectation as a state, once.
 import { sleep } from "./env.mjs";
+import { waitBadges, readBadges } from "./results.mjs";
 
 const STIR = { slow: 0.45, quick: 1.4, default: 0.7, spill: 3.4 };
 
+// mode: "fair" does what the game asks. "mistake" makes the wrong pick, tap or amount where the mini-game allows it (a wrong item, the
+// wrong greeting, one too many, a decoy sliced, the wrong stir speed), then goes on to the end. "hint" asks for help: it leaves the first
+// thing alone until the hesitation hint and glow come (the lab is played unguided), presses the light bulb, and peeks at a closed card.
 export class CookPlayer {
-  constructor(page, rec, { speed = 3, prefix = "" } = {}) {
-    this.page = page; this.rec = rec; this.speed = speed; this.prefix = prefix;
+  constructor(page, rec, { speed = 3, prefix = "", mode = "fair" } = {}) {
+    this.page = page; this.rec = rec; this.speed = speed; this.prefix = prefix; this.mode = mode;
+    this.mistakes = mode === "mistake";
+    this.hints = mode === "hint";
     this.seen = new Set();
-    this.lastKey = null; this.repeats = 0; this.helped = false; this.intros = 0;
+    this.lastKey = null; this.repeats = 0; this.helped = this.hints; this.intros = 0;
     this.covers = new Set();
     this.taps = 0;
+    this.made = new Set();   // the mistakes already made, by kind
+    this.waited = false;     // the hesitation wait, once
+    this.bulbs = 0;          // bulb presses in hint mode
+    this.peeks = 0;
+    this.badges = [];        // what the end card showed, for the report
   }
   exp() { this.tExp = Date.now(); return this.page.evaluate("__cook.expectation()"); }
   gauge() { return this.page.evaluate("__cook.gauge()"); }
@@ -20,7 +31,10 @@ export class CookPlayer {
 
   async cover(x, y, what) {
     const tag = await this.page.evaluate(([x, y]) => { const e = document.elementFromPoint(x, y); return e ? e.tagName + "#" + e.id + "." + (typeof e.className === "string" ? e.className : "") : "none"; }, [x, y]);
-    if (!tag.startsWith("CANVAS")) this.covers.add(`${what} at (${Math.round(x)},${Math.round(y)}) is covered by ${tag}`);
+    if (!tag.startsWith("CANVAS")) {
+      this.covers.add(`${what} at (${Math.round(x)},${Math.round(y)}) is covered by ${tag}`);
+      this.rec.pend("covered", `canvas tap: ${what}`, `covered by ${tag} at (${Math.round(x)},${Math.round(y)})`);
+    }
   }
   async tap(x, y, what = "tap") { await this.cover(x, y, what); await this.page.mouse.click(x, y); this.taps++; }
 
@@ -74,13 +88,28 @@ export class CookPlayer {
     if (e.intro) { await this.intro(); return; }
     if (k === "click") {
       const sel = e.selector;
+      if (this.mistakes && e.wrong && !this.made.has("click-wrong") && (await p.$(e.wrong))) {
+        this.made.add("click-wrong");
+        await p.click(e.wrong);
+        await sleep(500);
+        await this.once("wrong-choice");
+      }
       await p.waitForSelector(sel, { state: "visible", timeout: 10000 });
       if (sel.includes(".njg-results")) {
-        await sleep(1800);
+        if (sel.includes("rs-next")) { await waitBadges(p); this.badges = await readBadges(p); } else await sleep(600);
         await this.once("results-" + (sel.includes("rs-next") ? "badges" : "words"));
       }
       await p.click(sel);
     } else if (k === "tap") {
+      // mistake: a wrong item first (the first three different things asked for), then the right one
+      if (this.mistakes && e.swrongs && e.swrongs.length && !this.made.has("tap:" + e.key) && this.made.size < 6) {
+        this.made.add("tap:" + e.key);
+        const w = e.swrongs[this.made.size % e.swrongs.length];
+        await this.tap(w.x, w.y, "wrong item");
+        await sleep(350);
+        await this.once("wrong-tap", { settle: 0 });
+        await sleep(500);
+      }
       await this.tap(e.sx, e.sy, e.key || "item");
     } else if (k === "hold") {
       await this.cover(e.sx, e.sy, "hold");
@@ -105,7 +134,13 @@ export class CookPlayer {
       await p.click("#done-btn").catch(() => {});
     } else if (k === "more") {
       if (e.count < e.target) await this.tap(e.sx, e.sy, "another");
-      else await p.click("#done-btn").catch(() => {});
+      else if (this.mistakes && e.extra && !this.made.has("more-extra")) {
+        // one more than they asked for (the Maani line)
+        this.made.add("more-extra");
+        await this.tap(e.sx, e.sy, "one too many");
+        await sleep(400);
+        await this.once("wrong-extra", { settle: 0 });
+      } else await p.click("#done-btn").catch(() => {});
     } else if (k === "knead") {
       for (let i = 0; i < 10; i++) { await this.tap(e.sx, e.sy, "knead"); await sleep(100); if (JSON.stringify(await this.exp()) !== JSON.stringify(e)) break; }
     } else if (k === "roll") {
@@ -126,6 +161,17 @@ export class CookPlayer {
       await p.mouse.up();
       await sleep(500);
     } else if (k === "swipe" || k === "slice") {
+      if (k === "slice" && this.mistakes && e.swrongs && e.swrongs.length && !this.made.has("slice-wrong")) {
+        // one slice through a decoy in flight
+        this.made.add("slice-wrong");
+        const w = e.swrongs[0];
+        await p.mouse.move(w.x - 60, w.y - 20); await p.mouse.down();
+        for (let s = 1; s <= 4; s++) await p.mouse.move(w.x - 60 + 120 * s / 4, w.y - 20 + 40 * s / 4);
+        await p.mouse.up();
+        await sleep(150);
+        await this.once("wrong-slice", { settle: 0 });
+        return;
+      }
       await p.mouse.move(e.sx1, e.sy1); await p.mouse.down();
       const steps = k === "slice" ? 1 : 10;
       for (let s = 1; s <= steps; s++) {
@@ -149,15 +195,26 @@ export class CookPlayer {
     const p = this.page;
     const cx = e.sx, cy = e.sy, r = e.srx, target = e.target;
     let speed = e.speed, a = 0, count = e.count || 0;
+    // mistake: slosh back and forth far too fast (it spills; not a lap), then the wrong speed until Nani says it
+    const mistake = this.mistakes && !this.made.has("stir");
+    if (mistake) this.made.add("stir");
     await p.mouse.move(cx + r, cy); await p.mouse.down();
     const t0 = Date.now();
-    let anchorT = t0, anchorA = 0, curWant = null;
+    let anchorT = t0, anchorA = 0, curWant = null, shot = false;
     while (count < target && Date.now() - t0 < 90000) {
       const now = Date.now();
-      const want = STIR[speed == null ? "default" : speed];
-      if (want !== curWant) { curWant = want; anchorT = now; anchorA = a; }
-      const goal = anchorA + 2 * Math.PI * want * (now - anchorT) / 1000;
-      a += Math.min(goal - a, 1.2);
+      let want = STIR[speed == null ? "default" : speed];
+      const wiggle = mistake && now - t0 < 1200;
+      if (mistake && !wiggle && speed && count < target - 1 && now - t0 < 3800) want = STIR[speed === "slow" ? "quick" : "slow"];
+      if (wiggle) {
+        a = 0.9 * Math.sin(2 * Math.PI * 5 * (now - t0) / 1000);
+        anchorT = now; anchorA = a; curWant = null;
+        if (!shot && now - t0 > 700) { shot = true; await this.once("wrong-stir", { settle: 0 }); }
+      } else {
+        if (want !== curWant) { curWant = want; anchorT = now; anchorA = a; }
+        const goal = anchorA + 2 * Math.PI * want * (now - anchorT) / 1000;
+        a += Math.min(goal - a, 1.2);
+      }
       await p.mouse.move(cx + r * Math.cos(a), cy + r * Math.sin(a));
       const cur = await this.exp();
       if (!cur || cur.kind !== "stir") break;
@@ -171,11 +228,62 @@ export class CookPlayer {
     while (Date.now() - t1 < 5000) { const cur = await this.exp(); if (!cur || cur.kind !== "stir") break; await sleep(50); }
   }
 
+  // the hint player's moves, at the first things it is asked to do: wait for the hesitation hint and glow, press the light bulb (three
+  // times over the run: the end card's bulb goes dim), peek at a folded card
+  async hintMoves(e) {
+    const p = this.page;
+    const calm = ["tap", "hold", "count", "more", "swipe", "roll"].includes(e.kind); // not the timed gestures: a wait would cost the window
+    if (calm && !this.waited) {
+      this.waited = true;
+      // the lab is unguided: Nani names the thing after the word's hesitation delay, and it glows 4 s later (real time, not game time)
+      const d = await p.evaluate("Cook.hintDelay(Object.keys(Cook.save.words)[0] || 'x')").catch(() => 4000);
+      await sleep(Math.min(d, 13000) + 700);
+      await this.once("hint-nani-says", { settle: 0 });
+      await sleep(4300);
+      await this.once("hint-glow", { settle: 0 });
+    }
+    // peek at a folded card (a closed order card: from level 3 the call is heard, not read)
+    if (this.peeks < 2) {
+      const closed = await p.$("#side .oc-card.closed.folded .oc-head");
+      if (closed && (await closed.isVisible())) {
+        this.peeks++;
+        await closed.click({ force: true }).catch(() => {});
+        await sleep(300);
+        await this.once("peek-open", { settle: 0 });
+        await sleep(300);
+      }
+    }
+    if (calm && this.bulbs < 3 && !this.bulbBusy) {
+      const bulb = await p.$("#btn-bulb");
+      if (bulb && (await bulb.isVisible()) && (await p.$("#mission:not(.hidden):not(.stamped)"))) {
+        this.bulbBusy = true;
+        try {
+          await bulb.click({ force: true }).catch(() => {});
+          this.bulbs++;
+          await sleep(120);
+          if (await p.$("#side.english")) await this.once("bulb-english", { settle: 0 });
+          const ms = await p.evaluate("Cook.UI.bulbMs() / Cook.speed");
+          await sleep(ms + 400);
+        } finally { this.bulbBusy = false; }
+      }
+    }
+  }
+
   // play until until() says so. Records `view-<name>` and `kind-<kind>` once each.
-  async play(until, { timeout = 300000 } = {}) {
+  async play(until, { timeout = 300000, closeKitchenAfter = null } = {}) {
     const t0 = Date.now();
-    let lastKind = null, lastView = null, idle = 0;
+    let lastKind = null, lastView = null, idle = 0, closed = false;
     while (!(await until())) {
+      // open kitchen (free cooking): close it ourselves once enough customers have been served
+      if (closeKitchenAfter != null && !closed) {
+        const served = await this.page.evaluate("__cook.state().dayCards").catch(() => 0);
+        if (served >= closeKitchenAfter && (await this.page.$("#close-kitchen:not([disabled])"))) {
+          await this.once("close-kitchen");
+          await this.page.click("#close-kitchen");
+          closed = true;
+          await sleep(200);
+        }
+      }
       if (Date.now() - t0 > timeout) { await this.once("timeout"); throw new Error(`timed out after ${Math.round((Date.now() - t0) / 1000)}s playing (last expectation ${JSON.stringify(lastKind)}, view ${lastView})`); }
       let view = null;
       try { view = await this.page.evaluate("__cook.state().view"); } catch (e) { /* navigating */ }
@@ -191,6 +299,7 @@ export class CookPlayer {
       if (e.kind === "click" && ["#sum-shop", "#sum-finale", "#shop-done", "#t-start", "#t-free", "#fin-menu", "#lab-list", ".njg-results #lab-list"].includes(e.selector)) { await sleep(100); continue; }
       if (e.kind === "tap" && !this.helped && !(await this.page.evaluate("Cook.save.mode === 'busy' || !!document.querySelector('.njg-onboard')"))) { await this.tryHelp(); continue; }
       if (e.intro) { lastKind = "intro"; await this.act(e); await this.waitChange(e, 10000); continue; }
+      if (this.hints && !(await this.page.evaluate("!!document.querySelector('.njg-onboard')"))) await this.hintMoves(e);
       if (e.kind !== "wait" && e.kind !== lastKind) await this.once(`kind-${e.kind}`, { settle: ["timing", "hold", "slice", "stir", "roll"].includes(e.kind) ? 0 : 150 });
       lastKind = e.kind;
       const key = JSON.stringify({ kind: e.kind, key: e.key, x: e.x, y: e.y, selector: e.selector });

@@ -36,3 +36,33 @@ test("a known selector turning up in another flow is moved, not new; a fixed one
   assert.deepEqual(c.moved.map((x) => x.selector), ["span.y"]);
   assert.deepEqual(c.fixed.map((x) => x.selector), ["button#x"]); // span.y (flow b) is not fixed: it is still there, in flow a
 });
+
+import { append } from "./lib/baseline.mjs";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+test("a page the baseline has never seen is reported; one that does not reach its end fails", () => {
+  const base = flatten([run("a", "1366x768", true, [])]);
+  const cur = flatten([run("a", "1366x768", true, []), run("b", "1366x768", true, []), run("c", "1366x768", false, [])]);
+  const c = compare(base, cur, new Set(["a@1366x768", "b@1366x768", "c@1366x768"]));
+  assert.deepEqual(c.unbaselined.sort(), ["b@1366x768", "c@1366x768"]);
+  assert.deepEqual(c.newIncomplete, ["c@1366x768"]);
+});
+
+test("append adds the findings and pages the baseline lacks and changes nothing that is there", () => {
+  const dir = mkdtempSync(join(tmpdir(), "njg-base-"));
+  {
+    const base = flatten([run("a", "1366x768", true, [f("tap-small", "button#x")])]);
+    // an existing flow-size gains a finding of a new kind; a new flow-size appears
+    const cur = flatten([run("a", "1366x768", true, [f("tap-small", "button#x"), f("covered", "button#y")]), run("b", "800x360", true, [f("text-small", "span.z")])]);
+    const out = append({ version: 1, generated: "then", flows: base.flows, findings: base.findings.map((x) => ({ key: x.key, measured: x.measured })) }, cur, { path: join(dir, "b.json") });
+    assert.equal(out.added, 2);
+    assert.equal(out.generated, "then");
+    assert.deepEqual(out.findings.map((x) => x.key).sort(), ["covered|a|1366x768|button#y", "tap-small|a|1366x768|button#x", "text-small|b|800x360|span.z"]);
+    assert.deepEqual(Object.keys(out.flows).sort(), ["a@1366x768", "b@800x360"]);
+    assert.deepEqual(out.flows["a@1366x768"], base.flows["a@1366x768"]); // untouched
+    const written = JSON.parse(readFileSync(join(dir, "b.json"), "utf8"));
+    assert.equal(written.findings.length, 3);
+  }
+});

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Lint fixture: covered things, broken words, the play area</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; font: 18px/1.3 sans-serif; }
+  canvas#stage { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: #e9dcc4; }
+  .abs { position: absolute; }
+  /* VIOLATIONS */
+  #cov-btn { left: 20px; top: 20px; width: 64px; height: 64px; }
+  #cov-over { left: 36px; top: 36px; width: 32px; height: 32px; background: rgba(0,0,0,.2); }
+  #brk-bad { left: 120px; top: 20px; width: 70px; word-break: break-all; }
+  /* CLEAN */
+  #cov-clean-btn { left: 20px; top: 110px; width: 64px; height: 64px; }
+  #cov-pe-none { left: 20px; top: 110px; width: 64px; height: 64px; pointer-events: none; background: rgba(0,0,0,.1); }
+  #cov-child-btn { left: 20px; top: 200px; width: 64px; height: 64px; padding: 0; }
+  #cov-child-btn span { display: block; width: 64px; height: 64px; }
+  #brk-ok { left: 220px; top: 20px; width: 70px; }
+  #brk-hyphen { left: 320px; top: 20px; width: 56px; }
+  #brk-long { left: 420px; top: 20px; width: 70px; white-space: nowrap; }
+  #blocker { left: 40%; top: 25%; width: 40%; height: 55%; background: transparent; }
+  #scrim { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,.4); z-index: 50; }
+</style></head>
+<body>
+<canvas id="stage" width="844" height="390"></canvas>
+<button id="cov-btn" class="abs" aria-label="covered">A</button><div id="cov-over" class="abs"></div>
+<div id="brk-bad" class="abs">Wonderfulness is great</div>
+<button id="cov-clean-btn" class="abs" aria-label="clean">B</button><div id="cov-pe-none" class="abs"></div>
+<button id="cov-child-btn" class="abs" aria-label="child"><span>C</span></button>
+<div id="brk-ok" class="abs">Wonder fulness is great</div>
+<div id="brk-hyphen" class="abs">roll-tawa fry-pan</div>
+<div id="brk-long" class="abs">Wonderfulnessisgreat</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  for (const id of ["cov-btn", "cov-clean-btn", "cov-child-btn"]) document.getElementById(id).addEventListener("click", () => {});
+  if (q.get("blocker") === "1") { const d = document.createElement("div"); d.id = "blocker"; d.className = "abs"; d.addEventListener("click", () => {}); document.body.appendChild(d); }
+  if (q.get("scrim") === "1") { const d = document.createElement("div"); d.id = "scrim"; d.setAttribute("role", "dialog"); document.body.appendChild(d); }
+</script>
+</body></html>
