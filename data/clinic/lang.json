@@ -412,6 +412,136 @@
    "kutchi": null,
    "english": "the eye test",
    "src": "English placeholder (to record): the eye game's chart row (a line to record)"
+  },
+  "fever-temp": {
+   "kutchi": null,
+   "english": "take the temperature",
+   "src": "English placeholder (to record): the fever room's first row (heal/games/fever.js): the thermometer goes in, then the wall thermometer reads live"
+  },
+  "fever-window": {
+   "kutchi": null,
+   "english": "window",
+   "src": "English placeholder (to record): the fever room (D15f): a thing round the room, the big cooling step"
+  },
+  "fever-ceiling-fan": {
+   "kutchi": null,
+   "english": "ceiling fan",
+   "src": "English placeholder (to record): the fever room: the medium cooling step"
+  },
+  "fever-hand-fan": {
+   "kutchi": null,
+   "english": "hand fan",
+   "src": "English placeholder (to record): the fever room: the small cooling step"
+  },
+  "fever-ice-pack": {
+   "kutchi": null,
+   "english": "ice pack",
+   "src": "English placeholder (to record): the fever room: the spare cooler, off behind a data flag (art plan question 7)"
+  },
+  "fever-heater": {
+   "kutchi": null,
+   "english": "heater",
+   "src": "English placeholder (to record): the fever room: the big warming step"
+  },
+  "fever-bottle": {
+   "kutchi": null,
+   "english": "hot-water bottle",
+   "src": "English placeholder (to record): the fever room: the medium warming step (the patient hugs it)"
+  },
+  "fever-blanket": {
+   "kutchi": null,
+   "english": "blanket",
+   "src": "English placeholder (to record): the fever room: the small warming step (over the shoulders, CLN-56)"
+  },
+  "fever-open": {
+   "kutchi": null,
+   "english": "open",
+   "src": "English placeholder (to record): the fever room's verbs (the window); the engine joins verb and thing: word order to confirm with Mum"
+  },
+  "fever-close": {
+   "kutchi": null,
+   "english": "close",
+   "src": "English placeholder (to record): the fever room's verbs (the window): the undo, named from level 2"
+  },
+  "fever-switch-on": {
+   "kutchi": null,
+   "english": "switch on",
+   "src": "English placeholder (to record): the fever room's verbs (the ceiling fan, the heater)"
+  },
+  "fever-switch-off": {
+   "kutchi": null,
+   "english": "switch off",
+   "src": "English placeholder (to record): the fever room's verbs: the undo, named from level 2"
+  },
+  "fever-give": {
+   "kutchi": null,
+   "english": "give",
+   "src": "English placeholder (to record): the fever room's verbs (the hand fan, the hot-water bottle, the ice pack go to the patient)"
+  },
+  "fever-take-away": {
+   "kutchi": null,
+   "english": "take back",
+   "src": "English placeholder (to record): the fever room's verbs: the undo, named from level 2"
+  },
+  "fever-put-on": {
+   "kutchi": null,
+   "english": "put on",
+   "src": "English placeholder (to record): the fever room's verbs (the blanket, over the shoulders)"
+  },
+  "fever-take-off": {
+   "kutchi": null,
+   "english": "take off",
+   "src": "English placeholder (to record): the fever room's verbs (the blanket): the undo, named from level 2"
+  },
+  "fever-fix": {
+   "kutchi": null,
+   "english": "fix it",
+   "src": "English placeholder (to record): the fever room's level-3 line: the doctor names nothing and the child works it out (decision 27, D15f)"
+  },
+  "fever-too-hot": {
+   "kutchi": null,
+   "english": "I'm too hot!",
+   "src": "English placeholder (to record): the fever room: the patient says how they feel (a line to record)"
+  },
+  "fever-too-cold": {
+   "kutchi": null,
+   "english": "I'm too cold!",
+   "src": "English placeholder (to record): the fever room: the patient (a line to record)"
+  },
+  "fever-still-hot": {
+   "kutchi": null,
+   "english": "Still too hot!",
+   "src": "English placeholder (to record): the fever room: the patient, after a change that wasn't enough (a line to record)"
+  },
+  "fever-still-cold": {
+   "kutchi": null,
+   "english": "Still too cold!",
+   "src": "English placeholder (to record): the fever room: the patient (a line to record)"
+  },
+  "fever-just-right": {
+   "kutchi": null,
+   "english": "Just right!",
+   "src": "English placeholder (to record): the fever room: the patient, in the green zone (a line to record)"
+  },
+  "boing-press": {
+   "kutchi": null,
+   "english": "press it",
+   "src": "English placeholder (to record): the boing (heal/games/boing.js, D15g): the row for pressing the syringe's glowing end, which starts the jab"
+  },
+  "boing-medicine": {
+   "kutchi": null,
+   "english": "medicine",
+   "src": "English placeholder (to record): the boing's drop machine: the coloured liquid medicine in its tubes (never sweets, I2)"
+  },
+  "foot-middle-toe": {
+   "kutchi": null,
+   "english": "middle toe",
+   "src": "English placeholder (to record): the foot (heal/games/foot.js): level 3 names the toes for the order"
+  },
+  "foot-ow": {
+   "kutchi": null,
+   "english": "Ow!",
+   "src": "English placeholder (to record): the foot: the patient when the splinter touches the side of its channel (a line to record)"
   }
  }
 }
