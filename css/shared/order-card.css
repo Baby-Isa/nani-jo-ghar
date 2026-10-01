@@ -97,7 +97,12 @@
 /* closed (not finished: the phase fold, a start-folded card): face + headline only, no check; a tap peeks */
 .oc-card.closed { cursor: pointer; }
 .oc-card.closed .oc-done-tk { display: none; }
-.oc-card.closed.peek { box-shadow: 0 0 0 var(--njg-line-2) var(--oc-gold), var(--oc-shadow); }
+/* SH-43: a peeked closed card looks like an open card (no gold ring round its corners) */
+.oc-card.closed.peek { box-shadow: var(--oc-shadow); }
+/* D12: the small eye on a closed card: tap to look (its own badge at the end) */
+.oc-look { display: none; flex: none; width: var(--njg-icon); height: var(--njg-icon); margin-left: auto; color: var(--njg-ink-soft); }
+.oc-look svg { width: 100%; height: 100%; display: block; }
+.oc-card.closed.folded .oc-look { display: block; }
 
 /* ---------- rows: an item row (tier 2) and a part (tier 3), one line (shrunk, then wrapped), a flat gold tick when done ---------- */
 .oc-card .oc-item { display: flex; flex-direction: column; min-width: 0; }

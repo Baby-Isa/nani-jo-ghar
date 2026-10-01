@@ -414,6 +414,8 @@
     if (this.closed) {
       opts.closed = true;
       opts.onPeek = this.closed.onPeek || null;
+      opts.open = !!this.bulbOn; // D11: the bulb opens a closed card for its time
+      this.closedSeen = true; // the round had a closed card: the end screen shows the eye badge (D12)
     }
     this.el.innerHTML = "";
     if (!OC) return this;
@@ -551,6 +553,12 @@
     this.render();
     if (fresh.length && this.onReveal) this.onReveal(fresh);
   };
+  /** D11: the light bulb is on (or off): a closed card opens for the bulb's whole time, in English. */
+  Kit.Card.prototype.bulbOpen = function (on) {
+    if (!!this.bulbOn === !!on) return;
+    this.bulbOn = !!on;
+    if (this.closed) this.render();
+  };
   Kit.Card.prototype.english = function (on) {
     this.el.classList.toggle("english", !!on);
   };
@@ -576,7 +584,9 @@
   };
 
   /* ---------------- the light bulb ---------------- */
-  Kit.BULB_MS = { 1: 5000, 2: 3000, 3: 2000, 4: 1000 };
+  // the bulb's time per level: data/clinic/pipeline.json "bulb_ms" (D11, 1 Oct: 8 s at every level to start); this is
+  // only the fallback before the data loads
+  Kit.BULB_MS = { 1: 8000, 2: 8000, 3: 8000, 4: 8000 };
   Kit.Bulb = function (btn, opts = {}) {
     this.btn = btn;
     this.level = opts.level || 1;

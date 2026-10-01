@@ -40,7 +40,8 @@
  *       opts.onFace(ev, cardEl)      the face was tapped (replay)
  *       opts.closed     the card is folded though not finished: face + headline, no check (the phase-fold rule,
  *                       design system 13: a card you can't act on now; the start-folded card, 14a). Needs opts.fold
- *       opts.onPeek(cardEl)  with opts.closed: a tap opens the card for opts.peekMs (default 3500) and calls
+ *       opts.open       with opts.closed: the card is open for now (the light bulb's time, D11), not folded
+ *       opts.onPeek(cardEl)  with opts.closed: a tap (on the card or its small eye, D12) opens the card for opts.peekMs (default 3500) and calls
  *                       this (the host counts it as a hint); without it a tap just opens and closes it
  *       opts.onEl(key, el)           each element drawn for a keyed node (headline, rows, parts)
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
@@ -62,6 +63,7 @@
   const OC = {};
   OC.CHECK = `<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#c9962e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const FOLD_AFTER = 700;
+  OC.EYE = `<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M2 20 Q32 -6 62 20 Q32 46 2 20Z" fill="#fffaf0" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="20" r="10" fill="currentColor"/></svg>`;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
   /** The rules, no DOM: which items get a row, which are tinted, folded, which part is next. */
@@ -160,6 +162,11 @@
     const now = Date.now();
     const open = st.peekUntil ? now < st.peekUntil : !!st.opened;
     c.classList.add("closed");
+    // D11 (1 Oct, decision 27): the light bulb opens a closed card for the bulb's whole time (in English)
+    if (opts.open) {
+      c.classList.add("bulb-open");
+      return;
+    }
     if (open) c.classList.add("peek");
     else c.classList.add("folded", "still");
     const shut = () => {
@@ -212,6 +219,8 @@
       head.appendChild(t);
     }
     head.insertAdjacentHTML("beforeend", `<span class="oc-done-tk">${OC.CHECK}</span>`);
+    // D12 (1 Oct, decision 27): on a closed card a small eye says "tap to look" (a look has its own badge)
+    if (opts.closed && opts.onPeek && !opts.big) head.insertAdjacentHTML("beforeend", `<span class="oc-look" aria-hidden="true">${OC.EYE}</span>`);
     c.appendChild(head);
     if (sh.items.length) {
       const body = el("div", "oc-body");

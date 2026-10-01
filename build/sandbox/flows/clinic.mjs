@@ -115,7 +115,10 @@ class ClinicPlayer {
       await m.up();
       await this.page.waitForTimeout(150);
     } else if (a.do === "button") {
-      await this.page.locator(".cl-go").last().click({ timeout: 3000 }).catch(() => {});
+      // D7 (R5): the ✓ is hidden until it can do something (at level 1 a counted step closes itself): then wait a beat
+      const vis = await this.page.locator(".cl-go:not(.hidden)").count();
+      if (vis) await this.page.locator(".cl-go:not(.hidden)").last().click({ timeout: 3000 }).catch(() => {});
+      else await this.page.waitForTimeout(300);
       await this.page.waitForTimeout(150);
     } else if (a.do === "wait") {
       await this.page.waitForTimeout(a.ms || 150);

@@ -295,8 +295,24 @@
       done(r = {}) {
         if (finished) return;
         finished = true;
+        // D14 (1 Oct, SH-44): which step went wrong, for the end review: each judged row's line, right or not, and
+        // what was done (the game's own detail, e.g. "2 of 3")
+        const rowFor = (id) => {
+          const base = String(id).replace(/-[a-z]+$/, "");
+          return card.rows.find((x) => x.id === id) || card.rows.find((x) => x.id === base) || card.rows.find((x) => x.id.indexOf(base) === 0) || null;
+        };
+        const seen = new Set();
+        const steps = [];
+        log.forEach((e) => {
+          if ((e.type !== "right" && e.type !== "wrong") || !e.rowId || seen.has(e.rowId)) return;
+          seen.add(e.rowId);
+          const row = rowFor(e.rowId);
+          if (!row) return;
+          steps.push({ id: e.rowId, label: { kutchi: row.kutchi || null, english: row.english || "" }, ok: e.type === "right", done: e.detail != null && typeof e.detail !== "object" ? String(e.detail) : null });
+        });
         const out = Object.assign({ right: 0, total: 0, words: [] }, r, {
           hints: (r.hints || 0) + (screen.hints - hintsAtStart),
+          steps,
           log: log.slice(),
           timeMs: Date.now() - t0,
           game: def.id,

@@ -189,8 +189,11 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           const P = G().ClinicPipeline;
           const round = roundFor(ctx, screen);
           const { plan, env } = round;
-          // the hint badge: every light bulb and every peek at a closed card (E25, F9)
+          // the bulb is for language (the hints badge, E25); a look at a closed card is for reading (its own eye
+          // badge, D12, decision 27)
           screen.onHint = () => ctx.hint(1);
+          screen.onLook = () => ctx.look(1);
+          screen.card.closedSeen = false;
           ctx.test.state(stage);
           const name = stage;
           const sp = plan.stages[name];
@@ -208,7 +211,12 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           const words = ctx.params.patient && name === "sendoff" ? P.words(R.data, plan, round.healWords) : ctx.params.patient ? [] : (res.words || []).concat(hl && hl.words ? hl.words : []);
           if (G().__clinic) G().__clinic.stageResult = res;
           if (last) env.fig.destroy();
-          ctx.done({ words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right })) });
+          // the round had a closed card: the end screen shows the eye badge (D12)
+          if (screen.card.closedSeen) ctx.lookable();
+          ctx.done({
+            words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right })),
+            steps: hl && hl.steps ? hl.steps : undefined, // D14: the heal game's steps, for "what went wrong"
+          });
         },
         expect() {
           const S = G().Clinic && G().Clinic.Stages;

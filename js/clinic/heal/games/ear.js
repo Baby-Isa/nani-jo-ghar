@@ -234,7 +234,7 @@
         S.count(st.cleans);
         ctx.tally("bud", st.cleans);
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.cleans >= c.count) ctx.after(450, () => cur() === c && !st.over && close());
+        if (ctx.level === 1 && st.cleans >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         dirt.setAttribute("opacity", Math.max(0, 0.5 - st.cleans * 0.14));
         const b = s("text", { x: EAR.x - 10, y: EAR.y + 10, "font-size": 50 }, S.fx);
         b.textContent = "🦯";
@@ -247,7 +247,7 @@
         S.count(st.drops);
         ctx.tally("drops", st.drops);
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.drops >= c.count) ctx.after(600, () => cur() === c && !st.over && close());
+        if (ctx.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
         const d = s("ellipse", { cx: EAR.x, cy: EAR.y - 90, rx: 8, ry: 12, fill: "#6bb7ea" }, S.fx);
         d.animate([{ transform: "translateY(0)" }, { transform: "translateY(90px)", opacity: 0.2 }], { duration: 450, fill: "forwards" });
         ctx.after(500, () => d.remove());

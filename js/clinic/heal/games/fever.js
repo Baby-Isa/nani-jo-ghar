@@ -222,6 +222,9 @@
       const n = st.uses[tool];
       S.count(n);
       ctx.tally(tool, n);
+      // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
+      const cf = cur();
+      if (P.level === 1 && cf && cf.kind === "fix" && n >= P.ex[cf.ex].count) S.when(() => (cur() !== cf || st.over ? "stop" : !st.busy), closeFix, 500);
       if (tool === "blanket") {
         s("rect", { x: H.x - 170 + n * 6, y: H.y + 150 - n * 14, width: 340, height: 60, rx: 18, fill: ["#d8433f", "#3f6fd8", "#3fa35b", "#f0c43a", "#8a55c8"][(n - 1) % 5], opacity: 0.9 }, blanketG);
       } else {

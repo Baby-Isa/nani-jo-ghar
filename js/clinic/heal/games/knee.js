@@ -193,7 +193,7 @@
         S.count(st.kicks);
         ctx.tally("hammer", st.kicks);
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.kicks >= c.count) ctx.after(450, () => cur() === c && !st.over && close());
+        if (ctx.level === 1 && st.kicks >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         const hm = s("text", { x: leg.x + 30, y: KY - 30, "font-size": 60 }, S.fx);
         hm.textContent = "🔨";
         hm.style.transformBox = "fill-box";
@@ -231,7 +231,7 @@
         S.count(st.turns);
         ctx.tally("bandage", st.turns);
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.turns >= c.count) ctx.after(450, () => cur() === c && !st.over && close());
+        if (ctx.level === 1 && st.turns >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         ctx.sfx("tap");
         st.oi++;
         armFlash();

@@ -295,7 +295,7 @@
       ctx.tally("drops", st.drops);
       dropIn(sd);
       // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-      if (P.level === 1 && st.drops >= c.count) ctx.after(1100, () => cur() === c && !st.over && st.drops >= c.count && closeDrops());
+      if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900);
       st.busy = true;
       ctx.after(fast() ? 60 : 250, () => (st.busy = false));
     });

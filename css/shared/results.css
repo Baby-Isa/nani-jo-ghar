@@ -352,3 +352,32 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   font: 800 var(--njg-flag-t)/1.35 var(--njg-font); letter-spacing: .04em; text-transform: uppercase;
   color: var(--njg-flag); background: var(--njg-flag-bg); border: var(--njg-line) solid var(--njg-flag-edge);
 }
+
+/* ---------- D12 (1 Oct, decision 27): the eye badge, at closed-card levels only ---------- */
+.rs-badges.n4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--njg-s3); }
+.rs-badges.n3.has-looks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.rs-looks .rs-eye-art { width: calc(var(--rs-disc, var(--njg-badge)) * 0.8); height: calc(var(--rs-disc, var(--njg-badge)) * 0.8); color: var(--njg-gold); transition: opacity 0.4s, color 0.4s; }
+.rs-looks[data-ln="1"] .rs-eye-art { color: #b58a3c; opacity: 0.75; }
+.rs-looks[data-ln="2"] .rs-eye-art { color: #9a8a72; opacity: 0.55; }
+.rs-looks[data-ln="3"] .rs-eye-art { color: #8a8070; opacity: 0.4; }
+.rs-looks .rs-cap-icon { color: #8a6a3a; }
+
+/* ---------- D14: the steps, from the tick badge (which went wrong) ---------- */
+.rs-acc.rs-tappable { cursor: pointer; }
+.rs-acc.rs-tappable.open { border-color: var(--njg-gold); }
+.rs-p1 { position: relative; }
+.rs-steps-list { position: absolute; inset: 0; z-index: 3; overflow: auto; display: flex; align-items: center; justify-content: center; background: var(--njg-panel); border-radius: var(--njg-radius); padding: var(--njg-s3); cursor: pointer; }
+.rs-steps-list[hidden] { display: none; }
+.rs-steps-list ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--njg-s2); min-width: 0; max-width: 100%; }
+.rs-step { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s3); border-radius: var(--njg-radius); border: var(--njg-line) solid #e3d4ba; font-family: var(--njg-font); font-size: var(--njg-t3); color: var(--njg-ink); }
+.rs-step.ok { border-color: var(--njg-gold); }
+.rs-step.bad { border-color: var(--njg-wrong); }
+.rs-step-tick { flex: none; display: inline-grid; place-items: center; width: var(--njg-s5); height: var(--njg-s5); border-radius: var(--njg-round); background: var(--njg-gold); color: var(--njg-panel); font-weight: 800; }
+.rs-step.bad .rs-step-tick { background: var(--njg-grey); }
+.rs-step-text { display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
+.rs-step-text small { font-size: var(--njg-t4); color: var(--njg-ink-soft); font-weight: 700; }
+.rs-step-text .rs-ph { font-style: italic; color: var(--njg-ink-soft); }
+.rs-step-done { margin-left: auto; padding: 0 var(--njg-s2); border-radius: var(--njg-round); background: #f6ead6; font-weight: 800; white-space: nowrap; }
+@media (orientation: portrait) {
+  .rs-badges.n4 { grid-template-columns: 1fr; gap: var(--njg-s2); }
+}

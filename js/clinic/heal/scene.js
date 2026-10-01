@@ -396,6 +396,20 @@
       if (ctx.level >= 3 && HS.num(n) && Voice && !o.silent) Voice.say(Lg().num(n, { cap: true }), { who: "doctor", noBubble: true });
     };
 
+    /**
+     * D5 (SH-38): close a step by itself once it can (level 1 at the count): test() -> true (now), false (wait a
+     * beat: the game is busy), or "stop" (the step moved on).
+     */
+    S.when = (test, fn, first = 300) => {
+      const tick = () => {
+        const r = test();
+        if (r === "stop") return;
+        if (r) fn();
+        else ctx.after(150, tick);
+      };
+      ctx.after(first, tick);
+    };
+
     /* ---- the gentle timer ---- */
     S.timer = (ms, onEnd) => {
       const el = h("div", "hs-timer", root);

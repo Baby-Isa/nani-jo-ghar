@@ -76,6 +76,9 @@
         keepArt: !!nani,
         level: opts.level || 1,
         targets: () => app.querySelectorAll(".cl-card, .cl-tray, .cl-belt"),
+        // D11 (1 Oct, decision 27): the bulb is for language: on a closed card it opens the card, in English, for its time
+        onOn: () => scr.card && scr.card.bulbOpen && scr.card.bulbOpen(true),
+        onOff: () => scr.card && scr.card.bulbOpen && scr.card.bulbOpen(false),
         onUse: () => {
           scr.hints++;
           hintN.textContent = scr.hints ? String(scr.hints) : "";
@@ -100,14 +103,18 @@
       scr.setLevel = function (l) {
         scr.bulb.level = l;
       };
-      /** The closed card's paid peek (13a, 13c): a tap opens it for a moment and counts as a hint, like the bulb. */
-      scr.peek = function (what) {
-        scr.hints++;
-        hintN.textContent = String(scr.hints);
-        scr.onHint && scr.onHint(scr.hints, what);
+      /**
+       * A look at the closed card (D12, 1 Oct, decision 27: the eye is for reading): a tap on the card (or its small
+       * eye) opens it for a moment. Counted on its own (the end screen's eye badge), never as a bulb.
+       */
+      scr.looks = 0;
+      scr.peek = scr.look = function (what) {
+        scr.looks++;
+        scr.onLook && scr.onLook(scr.looks, what);
       };
       scr.resetHints = function () {
         scr.hints = 0;
+        scr.looks = 0;
         hintN.textContent = "";
       };
       scr.goal = "";

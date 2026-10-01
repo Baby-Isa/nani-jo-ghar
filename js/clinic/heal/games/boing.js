@@ -179,7 +179,7 @@
         ctx.tally("beads", st.beads.length);
         ctx.sfx("pop");
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (P.level === 1 && st.beads.length >= want.length) ctx.after(450, () => cur() && cur().kind === "beads" && !st.over && !st.busy && close());
+        if (P.level === 1 && st.beads.length >= want.length) S.when(() => (!cur() || cur().kind !== "beads" || st.over ? "stop" : !st.busy), close, 450);
         return;
       }
       if (id === "apple" && c.kind === "apple") {
@@ -210,7 +210,7 @@
         S.count(st.wipes);
         ctx.tally("cotton", st.wipes);
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (P.level === 1 && st.wipes >= c.count) ctx.after(450, () => cur() === c && !st.over && !st.busy && close());
+        if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         shine.setAttribute("opacity", Math.min(0.6, st.wipes * 0.15));
         const w = s("text", { x: p.x - 24, y: p.y + 12, "font-size": 44 }, S.fx);
         w.textContent = "☁️";

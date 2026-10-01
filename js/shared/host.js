@@ -36,14 +36,17 @@
  *   ctx.mark(row, ok, {word, cue})   a row closed: right or wrong. Only the FIRST mark of a row counts (E14);
  *                                    later ones are logged as tries
  *   ctx.place(slot, item, ok?) / ctx.takeBack(slot)   take it back until Done (E14): the first placement scores
- *   ctx.hint()       a light bulb or card peek (costs the hints badge)
+ *   ctx.hint()       a light bulb (costs the hints badge: the bulb is for language, E25)
+ *   ctx.look()       a look at a closed card (decision 27: the eye is for reading; its own badge, never a bulb)
+ *   ctx.lookable()   this stage had a closed card (the end screen then shows the eye badge, D12)
  *   ctx.log(entry)   the story log (story mode only)
  *   ctx.pause(name)  a natural pause: the shell may slot a Conversation here (none in a lab)
  *   ctx.rng()        seeded, so bots and tests repeat
  *   ctx.wait(ms)     resolves after ms; rejects (HostLeft) if the child leaves, so a stage's script just stops
  *   ctx.after(ms, fn) ctx.every(ms, fn) ctx.on(el, type, fn)   cleared by the host at the end of the stage
  *   ctx.test.expect(e) ctx.test.state(name)   what the stage wants next, for window.njgTest (§ 8.1)
- *   ctx.done(r?)     the stage is finished. r may carry {right, total, marks, hints, words, evidence, tasks, timeMs}
+ *   ctx.done(r?)     the stage is finished. r may carry {right, total, marks, hints, looks, words, evidence, tasks, timeMs,
+ *                    steps: [{id, label, asked, done, ok}] (D14: what the end review shows when a step went wrong)}
  *                    from an adapter whose game scores itself: the host turns right/total (or marks) into marks
  *                    when the stage made none; evidence [{word, ok, cue}] feeds word progress; words the end screen
  *
@@ -107,6 +110,8 @@ export function createTally() {
   const order = [];
   const extra = [];
   let hints = 0;
+  let looks = 0;
+  let lookable = false;
   let tries = 0;
   return {
     /** Word evidence that isn't a row of its own (an adapter's word review): it feeds word progress only. */
@@ -132,6 +137,15 @@ export function createTally() {
     get hints() {
       return hints;
     },
+    /** A look at a closed card (D12): counted apart from the bulbs. */
+    look(n = 1) {
+      looks += n;
+      lookable = true;
+      return looks;
+    },
+    lookable() {
+      lookable = true;
+    },
     summary() {
       const list = order.map((k) => rows.get(k));
       return {
@@ -139,6 +153,7 @@ export function createTally() {
         total: list.length,
         marks: list.map((r) => r.ok),
         hints,
+        looks: lookable ? looks : null,
         tries,
         rows: list
           .filter((r) => r.word)
@@ -263,6 +278,7 @@ export function createHost(opts = {}) {
       total: sum.total,
       marks: sum.marks,
       hints: sum.hints,
+      looks: sum.looks,
       rows: sum.rows,
       tasks: tasks || sum.total,
       play: play && play.play === "lab" ? null : play,
@@ -284,6 +300,8 @@ export function createHost(opts = {}) {
         total: round.total,
         marks: round.marks,
         hints: round.hints,
+        looks: round.looks,
+        steps: stepsOf(stages),
         words: dedupeWords(words),
         actions: actions || undefined,
         speak: opts.speakWord,
@@ -300,6 +318,12 @@ export function createHost(opts = {}) {
     now.result = res;
     return res;
   }
+  /** D14: the steps each stage reports (asked vs done), for the end review's "what went wrong". */
+  const stepsOf = (stages) => {
+    const out = [];
+    stages.forEach((st) => (st.steps || []).forEach((x) => out.push(Object.assign({ stage: st.game }, x))));
+    return out.length ? out : undefined;
+  };
   const resKey = (r) => `${r.mode || "?"}/${r.game || "-"}/L${r.level == null ? 1 : r.level}`;
   function dedupeWords(ws) {
     const seen = new Map();
@@ -411,6 +435,12 @@ export function createHost(opts = {}) {
       hint(n = 1) {
         return tally.hint(n);
       },
+      look(n = 1) {
+        return tally.look(n);
+      },
+      lookable() {
+        tally.lookable();
+      },
       log(entry) {
         if (!core.log || !play || play.play !== "story") return null;
         return core.log.log(Object.assign({ arc: play.arc, chapter: play.chapter, errand: play.errand }, entry));
@@ -500,6 +530,8 @@ export function createHost(opts = {}) {
       list.forEach((ok, k) => tally.mark(scope(`r${k}`), ok));
     }
     if (!info.left && r.hints) tally.hint(r.hints);
+    if (!info.left && r.looks) tally.look(r.looks);
+    info.steps = Array.isArray(r.steps) ? r.steps : null;
     if (!info.left && Array.isArray(r.evidence)) r.evidence.forEach((x) => x && tally.evidence(x.word, x.ok, x.cue));
     info.words = Array.isArray(r.words) ? r.words : null;
     // an adapter whose game keeps its own clock passes timeMs; otherwise first action (or mount) to Done

@@ -106,6 +106,9 @@
         targets: opts.targets || (() => root.document.querySelectorAll(".cl-card")),
         bodyClass: "cl-english",
         onUse: (n) => self.onUse && self.onUse(n),
+        // R5 (D11): the clinic opens a closed card for the bulb's whole time
+        onOn: (ms) => opts.onOn && opts.onOn(ms),
+        onOff: () => opts.onOff && opts.onOff(),
       });
     }
     Object.defineProperties(KitBulb.prototype, {

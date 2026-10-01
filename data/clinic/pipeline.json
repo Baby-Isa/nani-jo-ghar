@@ -124,6 +124,7 @@
     "torch": { "kutchi": null, "english": "torch", "glyph": "🔦", "placeholder": true, "group": "tool", "standin": "torch" }
   },
 
+  "bulb_ms": {"_about": "D11 (1 Oct, decision 27): how long the light bulb shows English (and opens a closed card), per level. 8 s at every level to start; tuned after play-tests.", "1": 8000, "2": 8000, "3": 8000, "4": 8000},
   "answer_lines": {"_about": "The patient's yes / no in the diagnosis: which lines say them (R5: the ids left the code).", "yes": "haa", "no": "na"},
   "lines": {
     "bring": { "kutchi": "[Bring in] {kind}", "english": "Bring in {kind}" },

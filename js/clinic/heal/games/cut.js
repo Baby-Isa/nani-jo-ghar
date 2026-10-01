@@ -740,6 +740,8 @@
         S.face("happy", 500);
         S.count(st.dabs);
         ctx.tally("cloth", st.dabs);
+        // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
+        if (ctx.level === 1 && st.dabs >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
       } else if (c.kind === "plaster" && laidN() && spotAt(p) >= 0 && st.laid[spotAt(p)]) {
         // a laid plaster tapped: it comes off again, until ✓ (13h, UX 17)
         const k = spotAt(p);

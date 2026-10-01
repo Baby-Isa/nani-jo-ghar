@@ -255,6 +255,33 @@
     </div>`;
   }
   /**
+   * D12 (1 Oct, decision 27): the eye badge, only at closed-card levels (opts.looks a number): the eye is for
+   * reading, apart from the bulb. Gold with no looks, dimmer per look, "× n" under it. A flat stand-in eye until
+   * its art is made (the art list).
+   */
+  const EYE = `<svg class="rs-eye-art" viewBox="0 0 64 40" aria-hidden="true"><path d="M2 20 Q32 -6 62 20 Q32 46 2 20Z" fill="#fffaf0" stroke="currentColor" stroke-width="4"/><circle cx="32" cy="20" r="10" fill="currentColor"/><circle cx="35" cy="17" r="3" fill="#fffaf0"/></svg>`;
+  Results.lookTier = (n) => (!n ? "gold" : n === 1 ? "mid" : "plain");
+  function lookBadge(n) {
+    const ln = n >= 3 ? "3" : String(n);
+    return `<div class="rs-badge rs-looks tier-${Results.lookTier(n)}" data-badge="looks" data-ln="${ln}" aria-label="${n} looks">
+      <div class="rs-disc">${EYE}<span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
+      <div class="rs-foot"><span class="rs-hint-count">${EYE.replace("rs-eye-art", "rs-cap-icon")}<b>&times; ${n}</b></span></div>
+    </div>`;
+  }
+  /**
+   * D14 (1 Oct, decision 27; Mum: "I don't know what I got wrong"): the steps a round asked for, tapped open from
+   * the tick badge: each step's line with a gold or grey tick, and for a wrong one what was done.
+   * steps: [{label: {kutchi, english}, ok, done?}]
+   */
+  function stepsHtml(steps) {
+    const row = (x) => {
+      const l = x.label || {};
+      const k = l.kutchi ? `<b>${esc(l.kutchi)}</b>` : `<b class="rs-ph">${esc(l.english || "")}</b>`;
+      return `<li class="rs-step ${x.ok ? "ok" : "bad"}"><span class="rs-step-tick" aria-hidden="true">&#10003;</span><span class="rs-step-text">${k}${l.kutchi && l.english ? `<small>${esc(l.english)}</small>` : ""}</span>${!x.ok && x.done != null ? `<span class="rs-step-done">${esc(x.done)}</span>` : ""}</li>`;
+    };
+    return `<div class="rs-steps-list" hidden role="dialog" aria-label="The steps"><ul>${steps.map(row).join("")}</ul></div>`;
+  }
+  /**
    * Page 2: right words outlined gold, grouped on the right; wrong words outlined red, grouped on
    * the left (UX 9a; Zafar 28 Sept: gold is the theme, red makes you want to fix it). Each side is
    * as wide as its share of the words: one to three columns (then more rows), its width in proportion.
@@ -325,6 +352,9 @@
       } else if (kind === "hints") {
         if (b.hints.tier === "gold") x.classList.add("celebrate");
         await wait(250 * beat);
+      } else if (kind === "looks") {
+        if (x.dataset.ln === "0") x.classList.add("celebrate");
+        await wait(250 * beat);
       }
     }
   }
@@ -363,6 +393,8 @@
     const b = Results.badges(opts, time ? time.prevMs : null);
     if (time) b.time = time;
     const words = (opts.words || []).filter((w) => w && (w.kutchi || w.english));
+    const looks = typeof opts.looks === "number" ? opts.looks : null;
+    const steps = Array.isArray(opts.steps) ? opts.steps.filter((x) => x && x.label) : [];
     const host = opts.container || document.body;
     const el = document.createElement("div");
     el.className = "njg-results";
@@ -375,7 +407,8 @@
       <div class="rs-card" data-step="1">
         <div class="rs-steps">
           <div class="rs-page rs-p1" data-page="1">
-            <div class="rs-badges n${timed ? 3 : 2}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}</div>
+            <div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>
+            ${steps.length ? stepsHtml(steps) : ""}
           </div>
           ${words.length ? `<div class="rs-page rs-p2" data-page="2" aria-hidden="true"><div class="rs-words">${wordsHtml(words)}</div></div>` : ""}
         </div>
@@ -443,6 +476,20 @@
           .then(() => btn.classList.remove("on"));
       })
     );
+    // D14: tap the tick badge to see the steps (which went wrong); tap again (or the list) to close it
+    const acc = el.querySelector(".rs-acc");
+    const list = el.querySelector(".rs-steps-list");
+    if (acc && list) {
+      acc.classList.add("rs-tappable");
+      acc.setAttribute("role", "button");
+      acc.setAttribute("tabindex", "0");
+      const toggle = () => {
+        list.hidden = !list.hidden;
+        acc.classList.toggle("open", !list.hidden);
+      };
+      acc.addEventListener("click", toggle);
+      list.addEventListener("click", toggle);
+    }
     // focus into the dialog (the card itself, so no button shows a ring before it's needed)
     card.setAttribute("tabindex", "-1");
     card.focus({ preventScroll: true });
