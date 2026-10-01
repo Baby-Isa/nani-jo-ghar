@@ -202,6 +202,8 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **Process:** Step 3 runs as the lean plan: R0 clean slate, R1 checks, R2 core, R3 shared frame and kit, then R4 (Cook) and R5 (the clinic) as two sessions at once on separate files; everything else moves when that screen is next worked on. Source: orchestrator chat, 1 Oct. Rule: B1
 - **Language:** Mum's 1 Oct session uses the Round 4 sheet. Source: orchestrator chat, 1 Oct
 - **Process:** The clinic audit waits until the clinic is on the new code (R5) and Zafar has played the v2 heal games. R1 (the checks) runs before the code moves, slimmed to the live flows and the layout lint, so every later session is measured against a "before" baseline. Source: orchestrator chat, 1 Oct. Rule: C11
+- **Design:** Two top-level ways to play: **story mode** and **free play**. Free play is a map that always shows every place; places not yet open are shown locked and say which story opens them (e.g. "locked until the beach story"); story mode unlocks them. Supersedes "travel instead of a free-play toggle" (H56) as the free-play shape. Source: orchestrator chat, 1 Oct. Rule: H57, decision 22
+- **Code:** The core also holds: how a game was started (story or free play, arc, chapter), one unlock service with its reasons (data-driven, per child), the map as data, the language as a setting (data and voices per language), per-child settings (model voice, level, read-along, sound), a paid-content check that always says yes for now, and content version numbers. Source: orchestrator chat, 1 Oct. Rule: J6, decision 22
 
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 

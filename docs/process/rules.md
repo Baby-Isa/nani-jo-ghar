@@ -235,7 +235,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 ### Parked, dropped and future
 - **Parked modes** (Tidy up, Who did it?, Dress up, Monsoon rush, Snap) are rebuilt on shared components; dropped ideas (fry "take them out?", *munje same we*, pill organiser, tooth bug) stay dropped. (H45, H46)
 - **Ideas approved 26 Sept** (#10, 11, 13–16, 18, 19; #12 only as *munje same rakh*) are tracked in `docs/ideas.md`. (H55)
-- **Don't block the future:** a world map with fog of war, travel instead of a free-play toggle, role reversal; log it as tech debt. (H56, H57)
+- **Two ways to play: story mode and free play.** Free play is a map that always shows every place; places not yet open show as locked, saying which story opens them; story mode unlocks them. Role reversal stays a future idea. (H56, H57, decision 22)
 
 ---
 
@@ -410,3 +410,4 @@ Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Confli
 19. **Keep building the clinic, ideally to completion before the doctor's ~9 Oct visit,** so he can play his section. Supersedes "no clinic build before the visit". (Zafar, 1 Oct)
 20. **Screenshots and report images are not committed** (site under 1 GB); **the clinic's coins join the one purse now**; no wages; browser tests in Node; the layout lint only gets stricter. (Zafar, 1 Oct)
 21. **Unconfirmed gender → the he-form, flagged and never shipped;** the bowl errand retired; step 3 as the lean plan with R4 and R5 side by side; Mum's 1 Oct session uses Round 4. (Zafar, 1 Oct)
+22. **Story mode and free play;** the free-play map shows every place, locked ones labelled with the story that opens them; the core holds the play context, unlocks, the map as data, the language setting, per-child settings, a paid-content check and content versions. (Zafar, 1 Oct)
