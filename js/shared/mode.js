@@ -340,7 +340,10 @@ export async function playMode({ mode, entry, host, core = {}, unlocks = null, a
 /** Load a mode's main.js and its data. importer(url) and fetchJSON(path) are injectable (tests). */
 export async function loadMode(modeId, { base = "", stamp = (u) => u, importer = (u) => import(u), fetchJSON } = {}) {
   if (!id(modeId)) throw new Error(`no such mode "${modeId}"`);
-  const mod = await importer(stamp(`${base}js/${modeId}/main.js`));
+  // import() resolves against this module, not the page: give it the page's own URL for the file (stamped first)
+  const rel = stamp(`${base}js/${modeId}/main.js`);
+  const url = typeof document !== "undefined" && document.baseURI ? new URL(rel, document.baseURI).href : rel;
+  const mod = await importer(url);
   const mode = defineMode(mod.default || mod);
   mode.loaded = {};
   const get = fetchJSON || (async (p) => (await fetch(stamp(base + p))).json());

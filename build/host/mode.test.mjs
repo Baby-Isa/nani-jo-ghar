@@ -166,3 +166,13 @@ test("a lab round of one stage: the stage alone, the list at the end, nothing lo
   assert.deepEqual(nav, ["list"]);
   assert.deepEqual(unlocks.arc("demo"), { chapter: 0, done: false });
 });
+
+test("loadMode: a mode by id, checked, with its data loaded; gamesOf lists what a plan needs", async () => {
+  const base = new URL("../../", import.meta.url).href;
+  const m = await M.loadMode("demo", { base, fetchJSON: async () => ({}) });
+  assert.equal(m.id, "demo");
+  assert.deepEqual(m.loaded, {});
+  const needs = M.gamesOf(m, m.plan({ play: "story" })).map((g) => g.id);
+  assert.deepEqual(needs, ["pantry", "scrape"]);
+  await assert.rejects(M.loadMode("../etc"), /no such mode/);
+});
