@@ -36,7 +36,7 @@ Not checked: text drawn inside a canvas (Cook's Phaser scene); things covering o
 
 ## The ratchet
 
-`build/lint/baseline.json` is today's findings. A finding is identified by **check + flow + size + selector** (not by state name, so renaming a state is free). `--check` fails only on findings not in the baseline; it prints the fixed ones so the baseline can shrink. A flow that reached its end in the baseline and now stops short also fails, so a refactor can't hide findings by breaking a flow. Stable runs: `Math.random` is seeded per flow, and the clinic takes `seed=7`, so people, patients and orders repeat.
+`build/lint/baseline.json` is today's findings. A finding is identified by **check + flow + size + selector** (not by state name, so renaming a state is free). It only fails as NEW if even check + size + selector is unknown in every flow; a known one turning up in a different flow is printed as "moved" (timing-dependent screens, such as which words are on a card, do that now and then). `build/lint/ignore.json` lists the few findings that are timing noise by design (the pharmacy belt's dishes at the screen edge), each with its reason. `--check` fails only on findings not in the baseline; it prints the fixed ones so the baseline can shrink. A flow that reached its end in the baseline and now stops short also fails, so a refactor can't hide findings by breaking a flow. Stable runs: `Math.random` is seeded per flow, and the clinic takes `seed=7`, so people, patients and orders repeat.
 
 ## Output
 

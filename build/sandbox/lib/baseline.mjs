@@ -1,11 +1,18 @@
 // The ratchet. build/lint/baseline.json holds today's findings; a run may not add one, and the count only goes down.
 // A finding is identified by (check, flow, size, selector), not by state name, so a renamed state doesn't count as new.
+// It only counts as NEW if even (check, size, selector) is unknown to the baseline in any flow: a screen that is timing-dependent
+// (which words are on a card, where a belt dish is when the picture is taken) turns up in a different flow now and then, and
+// that is reported as "moved", not failed.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT } from "./env.mjs";
 
 export const BASELINE = join(ROOT, "build", "lint", "baseline.json");
+// build/lint/ignore.json: findings that are timing noise by design (each with its reason)
+const IGNORE = existsSync(join(ROOT, "build", "lint", "ignore.json")) ? JSON.parse(readFileSync(join(ROOT, "build", "lint", "ignore.json"), "utf8")) : [];
+export const ignored = (f) => IGNORE.some((i) => i.check === f.check && f.selector.includes(i.selector));
 export const keyOf = (f) => `${f.check}|${f.flow}|${f.size}|${f.selector}`;
+export const looseKey = (f) => `${f.check}|${f.size}|${f.selector}`;
 const fsKey = (flow, size) => `${flow}@${size}`;
 
 // results -> flat findings (one per key, with the states it showed in) and per flow-size facts
@@ -14,7 +21,7 @@ export function flatten(results) {
   const flows = {};
   for (const r of results) {
     flows[fsKey(r.flow, r.size)] = { complete: r.complete, errors: [...new Set(r.errors)].sort(), states: r.states.length };
-    for (const s of r.states) for (const f of s.findings) {
+    for (const s of r.states) for (const f of s.findings.filter((x) => !ignored(x))) {
       const e = { check: f.check, page: s.page, flow: r.flow, size: r.size, selector: f.selector, measured: f.measured, text: f.text || "", states: [s.name] };
       e.key = keyOf(e);
       const old = findings.get(e.key);
@@ -45,10 +52,15 @@ function save(out) {
 // compare a run with the baseline, within the flows and sizes the run covered
 export function compare(base, cur, scope) {
   const inScope = (x) => scope.has(fsKey(x.flow, x.size));
-  const baseF = new Map((base ? base.findings : []).filter(inScope).map((f) => [f.key, f]));
+  const baseAll = base ? base.findings : [];
+  const baseF = new Map(baseAll.filter(inScope).map((f) => [f.key, f]));
+  const baseLoose = new Set(baseAll.map(looseKey));
   const curF = new Map(cur.findings.map((f) => [f.key, f]));
-  const added = cur.findings.filter((f) => !baseF.has(f.key));
-  const fixed = [...baseF.values()].filter((f) => !curF.has(f.key));
+  const curLoose = new Set(cur.findings.map(looseKey));
+  const unknown = cur.findings.filter((f) => !baseF.has(f.key));
+  const added = unknown.filter((f) => !baseLoose.has(looseKey(f)));
+  const moved = unknown.filter((f) => baseLoose.has(looseKey(f)));
+  const fixed = [...baseF.values()].filter((f) => !curF.has(f.key) && !curLoose.has(looseKey(f)));
   const incomplete = [];
   const newErrors = [];
   for (const fs of scope) {
@@ -56,7 +68,7 @@ export function compare(base, cur, scope) {
     if (b && b.complete && c && !c.complete) incomplete.push(fs);
     if (c) for (const e of c.errors) if (!b || !(b.errors || []).includes(e)) newErrors.push(`${fs}: ${e}`);
   }
-  return { added, fixed, incomplete, newErrors };
+  return { added, moved, fixed, incomplete, newErrors };
 }
 
 // write a new baseline. shrinkOnly: keep only what the old one had (drop the fixed); accept: adopt the run's findings
@@ -64,13 +76,15 @@ export function update(base, cur, scope, { accept }) {
   const out = base ? JSON.parse(JSON.stringify(base)) : { version: 1, findings: [], flows: {} };
   const inScope = (x) => scope.has(fsKey(x.flow, x.size));
   const curF = new Map(cur.findings.map((f) => [f.key, f]));
+  const curLoose = new Set(cur.findings.map(looseKey));
   const kept = [];
   for (const f of out.findings) {
     if (!inScope(f)) { kept.push(f); continue; }
     const c = curF.get(f.key);
     const run = cur.flows[fsKey(f.flow, f.size)];
     if (c) kept.push(accept ? c : { ...f, measured: c.measured, states: c.states }); // still there (refresh what it measures)
-    else if (run && !run.complete && !accept) kept.push(f);   // the flow stopped early: can't tell it was fixed
+    else if (!accept && ((run && !run.complete) || curLoose.has(looseKey(f)))) kept.push(f); // flow stopped early, or it turned up in another flow: not fixed
+    else if (accept) { /* adopted run replaces it */ }
   }
   if (accept) { const have = new Set(kept.map((f) => f.key)); for (const f of cur.findings) if (!have.has(f.key)) kept.push(f); }
   out.findings = kept.sort((a, b) => a.key.localeCompare(b.key));

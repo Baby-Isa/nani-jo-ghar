@@ -150,11 +150,12 @@ if (has("--check")) {
   if (!base) { console.error("No baseline (build/lint/baseline.json). Create it with --update-baseline --accept."); process.exit(2); }
   for (const f of cmp.added.slice(0, 80)) console.log(`NEW ${f.check.padEnd(16)} ${f.flow} @ ${f.size} [${f.states.join(", ")}] ${f.selector}: ${f.measured}${f.text ? `  "${f.text}"` : ""}`);
   if (cmp.added.length > 80) console.log(`... and ${cmp.added.length - 80} more new findings`);
+  for (const f of cmp.moved.slice(0, 40)) console.log(`moved ${f.check.padEnd(16)} ${f.flow} @ ${f.size} ${f.selector} (known in another flow; not a failure)`);
   for (const fs of cmp.incomplete) console.log(`INCOMPLETE ${fs}: reached its end in the baseline, not now`);
   for (const e of cmp.newErrors) console.log(`NEW PAGE ERROR ${e}`);
   console.log(`${cmp.fixed.length} fixed (run --update-baseline to shrink the baseline)`);
   const bad = cmp.added.length + cmp.incomplete.length + cmp.newErrors.length;
-  console.log(bad ? `CHECK FAILED: ${cmp.added.length} new findings, ${cmp.incomplete.length} flows no longer reach their end, ${cmp.newErrors.length} new page errors` : `CHECK PASSED: 0 new findings (${cur.findings.length} known, ${cmp.fixed.length} fixed)`);
+  console.log(bad ? `CHECK FAILED: ${cmp.added.length} new findings, ${cmp.incomplete.length} flows no longer reach their end, ${cmp.newErrors.length} new page errors` : `CHECK PASSED: 0 new findings (${cur.findings.length} known, ${cmp.moved.length} moved between flows, ${cmp.fixed.length} fixed)`);
   log(`summary: ${join(runDir, "summary.md")}`);
   process.exit(bad ? 1 : 0);
 }

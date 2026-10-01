@@ -27,3 +27,12 @@ test("a flow that reached its end and now stops short fails the check", () => {
   const cur = flatten([run("a", "1366x768", false, [])]);
   assert.deepEqual(compare(base, cur, new Set(["a@1366x768"])).incomplete, ["a@1366x768"]);
 });
+
+test("a known selector turning up in another flow is moved, not new; a fixed one is dropped only if it is gone everywhere", () => {
+  const base = flatten([run("a", "1366x768", true, [f("tap-small", "button#x")]), run("b", "1366x768", true, [f("text-small", "span.y")])]);
+  const cur = flatten([run("a", "1366x768", true, [f("text-small", "span.y")]), run("b", "1366x768", true, [])]);
+  const c = compare(base, cur, new Set(["a@1366x768", "b@1366x768"]));
+  assert.deepEqual(c.added, []);
+  assert.deepEqual(c.moved.map((x) => x.selector), ["span.y"]);
+  assert.deepEqual(c.fixed.map((x) => x.selector), ["button#x"]); // span.y (flow b) is not fixed: it is still there, in flow a
+});

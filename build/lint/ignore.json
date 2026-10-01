@@ -1,0 +1,4 @@
+[
+  { "check": "tap-offscreen", "selector": "button.cl-belt-dish", "why": "The pharmacy belt carries dishes through the screen edge on purpose; where a dish has stopped when the stage ends depends on timing, so it would flicker in and out of the baseline." },
+  { "check": "text-offscreen", "selector": "button.cl-belt-dish", "why": "Same belt." }
+]
