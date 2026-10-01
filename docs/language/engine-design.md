@@ -281,7 +281,7 @@ const r = Lang.say(
 | `Lang.rows(meaning, ctx)` | the card rows only (lower case, no full stop: rule F10) | `js/shared/order-card.js` |
 | `Lang.check(meaning, ctx)` | `{ok, gaps}` without building text | a mode deciding whether to offer an item at all |
 | `Lang.word(lexId, cell?)` | one token and its clip | word cards, the end review, `Lang.speakWord` today |
-| `Lang.play(result, opts)` | a promise that plays the clip plan in order, with per-token timing for read-along underlining (rule E4; inside whole-phrase clips this needs word timestamps, § 9) | `js/shared/say.js` |
+| `Lang.play(result, opts)` | a promise that plays the clip plan in order, with per-token timing for read-along underlining (rule E4; inside whole-phrase clips this needs word timestamps, § 9). It delegates playback to the core voice module, `Voice.say(result)` (`docs/architecture/target-model.md` § 3.2) | `js/shared/say.js` |
 | `Lang.explain(meaning, ctx)` | the rule trace (which rule, which cell, which source) | tests and debugging |
 | `Lang.load(base)` | loads the data files once | page start-up |
 
@@ -452,7 +452,7 @@ Steps:
 | 4a | Engine core: data schema and validation, linearizer, clip planner, `Lang.say` / `rows` / `check` / `play`, Node tests | top model, high effort (judgement-heavy) | one session, ~3–4 h |
 | 4b | Fill from what's known: lexicon from `data/cook.json` and grammar-notes (~120–150 entries), paradigms, ~25 rules, golden tests from §1–§37 | mid-tier model, medium effort (mechanical, but cite every source) | one session, ~3 h |
 | 4c | Simulator, frequency ranking, gap reporter, phrase-list output in the questionnaire format; word timestamps for clips (Whisper word-level output in `build/transcribe_family.py`, or forced alignment) for read-along inside whole phrases | mid-tier, medium | one session, ~3–4 h |
-| 4d | Cook migration behind adapters, full QA checklist and screenshots | top model, high (visual review) | one session, ~4 h plus review |
+| 4d | Cook migration behind adapters, full QA checklist and screenshots (step 3 builds only the adapter seam; see `docs/architecture/gap-analysis.md`) | top model, high (visual review) | one session, ~4 h plus review |
 | after each Mum round | Fill session: notes → data → tests → new phrase list | mid-tier, medium | ~1–2 h |
 
 4a must finish first; 4b and 4c can run in parallel on disjoint files; 4d last. Costs per launch are estimated by the orchestrator at launch time.
