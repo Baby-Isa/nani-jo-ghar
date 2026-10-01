@@ -73,7 +73,8 @@ test("no hard-coded px sizes in css/shared (tokens.css is the one place)", () =>
   const dir = new URL("../css/shared/", import.meta.url);
   for (const f of readdirSync(dir)) {
     if (!f.endsWith(".css") || f === "tokens.css") continue;
-    const src = readFileSync(new URL(f, dir), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    // a media query's condition can't take a variable (R6): its px are breakpoints, not sizes
+    const src = readFileSync(new URL(f, dir), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/@media[^{]*\{/g, "@media {");
     // a px length that isn't a 0px fallback
     const bad = [...src.matchAll(/(?<![\w.-])(\d*\.?\d+)px\b/g)].filter((m) => +m[1] !== 0).map((m) => src.slice(Math.max(0, m.index - 40), m.index + 6).replace(/\s+/g, " "));
     assert.deepEqual(bad, [], `${f}: ${bad.length} px sizes`);
