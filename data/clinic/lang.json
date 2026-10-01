@@ -542,6 +542,16 @@
    "kutchi": null,
    "english": "Ow!",
    "src": "English placeholder (to record): the foot: the patient when the splinter touches the side of its channel (a line to record)"
+  },
+  "ear-wax-out": {
+   "kutchi": null,
+   "english": "Take the wax out",
+   "src": "English placeholder (to record): the ear's level-1 wax row (heal/games/ear.js, heal-A 2 Oct; was a bracketed line in the code)"
+  },
+  "ear-hear-q": {
+   "kutchi": null,
+   "english": "Can you hear me? Which one did I say?",
+   "src": "English placeholder (to record): the doctor's line before the whispered word in the ear's hearing check (heal/games/ear.js, D15c, heal-A 2 Oct)"
   }
  }
 }
