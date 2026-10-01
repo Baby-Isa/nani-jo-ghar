@@ -14,3 +14,13 @@ drafts/
 build/screenshots/cook-hands/
 build/screenshots/cook-hands-run/
 build/screenshots/first-launch/
+
+# Not committed: keeps the published Pages site under 1 GB (decision 20, B19).
+# Old copies live in git history (see build/reports/step3-r0.md for the SHA).
+build/screenshots/*
+!build/screenshots/.gitkeep
+build/reports/**/*.png
+build/reports/**/*.jpg
+build/reports/**/*.jpeg
+build/reports/**/*.webp
+build/reports/**/*.gif
