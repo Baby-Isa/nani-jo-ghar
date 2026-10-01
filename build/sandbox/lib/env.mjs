@@ -95,7 +95,7 @@ export async function newPage(browser, sizeKey, { seed = 1, touch } = {}) {
   const page = await ctx.newPage();
   if (useTouch) await installTouch(page, ctx);
   const errors = [];
-  page.on("pageerror", (e) => errors.push(`${new URL(page.url()).pathname}: ${e.message || e}`));
+  page.on("pageerror", (e) => { if (!/ResizeObserver loop/.test(String(e.message || e))) errors.push(`${new URL(page.url()).pathname}: ${e.message || e}`); }); // the ResizeObserver notice is the browser's, not a bug
   page.on("console", (m) => { if (m.type() === "error" && !/Failed to load resource|net::ERR/.test(m.text())) errors.push(`${new URL(page.url()).pathname}: console: ${m.text().slice(0, 200)}`); });
   page.on("dialog", (d) => d.accept().catch(() => {}));
   return { ctx, page, errors, size, sound, touch: useTouch };

@@ -127,7 +127,8 @@ class ClinicPlayer {
     const t0 = Date.now();
     let lastStage = null;
     while (Date.now() - t0 < timeout) {
-      const errs = await this.ev(() => (window.__clinic ? window.__clinic.errors : []));
+      // "ResizeObserver loop completed with undelivered notifications" is a browser notice, not a bug: it fires now and then on layout
+      const errs = (await this.ev(() => (window.__clinic ? window.__clinic.errors : []))).filter((e) => !/ResizeObserver loop/.test(e));
       if (errs.length) throw new Error(`page errors ${JSON.stringify(errs)}`);
       if (await this.ev(done)) {
         if (await this.resultsVisible()) { await this.once("results-end"); await this.results(); continue; }
@@ -195,6 +196,8 @@ class ClinicPlayer {
       }
       if (this.hints && steps > 3 && !this.bulbs.has("heal")) await this.hintMoves("heal");
       const a = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : { do: "wait" }; });
+      // while the first-time overlay runs it ignores taps for about 450 ms between its steps: go at a child's pace
+      if (a.do !== "wait" && (await this.page.$(".njg-onboard"))) await sleep(700);
       await this.healAct(a);
       steps++;
       if (!mid && steps > 6 && a.do !== "wait") { mid = true; await this.once(`heal-${game}-mid`); }

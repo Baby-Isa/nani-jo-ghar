@@ -14,7 +14,7 @@ Always under the browser lock, on your own port. Never hold the lock for more th
 
 **`--touched <flows>`** runs the named flows with every level and path of them (`cook:chai-tray` also runs `@L2`, `@L3`, `@L4`, `#mistake`, `#hint`; a group or prefix such as `cook:` or `clinic:` works too) at each flow's sizes, then `--check`. Keep it inside `flock ... timeout 1200` with `--budget-min 13`: if it prints `N pages left` (exit 75), run the same line again with `--resume <run-id>`.
 
-**`--gate`** is everything: every flow, every level, both paths, every size it has, 3 pages at once inside one browser. It takes and releases the lock itself, in chunks of about 13 minutes (each chunk is `flock ... timeout 1200`), so another session can use the browser in between, and it ends with the `--check` verdict (exit 0 or 1). If it is interrupted, run the same command with `--resume <run-id>` (the id is printed). A full gate takes about GATE_TIME of browser time.
+**`--gate`** is everything: every flow, every level, both paths, every size it has, 3 pages at once inside one browser. It takes and releases the lock itself, in chunks of about 13 minutes (each chunk is `flock ... timeout 1200`), so another session can use the browser in between, and it ends with the `--check` verdict (exit 0 or 1). If it is interrupted, run the same command with `--resume <run-id>` (the id is printed). A full gate (480 pages) took about 1 h 50 min of browser time at 3-4 pages at a time (344 page-minutes in all), over 8 lock-sized chunks.
 
 | Flag | What it does |
 |---|---|
@@ -25,6 +25,7 @@ Always under the browser lock, on your own port. Never hold the lock for more th
 | `--budget-min M` | start no new page after M minutes; exit 75 if some are left |
 | `--check` | compare with `build/lint/baseline.json`; **exit 1** on a new finding, a flow that no longer reaches its end, a new page that does not reach its end, or a new page error |
 | `--update-baseline` | drop fixed findings (it only shrinks). `--accept` also adopts new ones and creates the file. `--append` only **adds** findings and pages the baseline lacks and changes no existing entry |
+| `--no-touch` | run the touch sizes with mouse input (to tell a touch problem from a game problem) |
 | `--webgl` | Phaser's WebGL for Cook (canvas is the default: about 4x faster, no tints) |
 | `--from-run <id>` | judge a finished run's saved data (no browser): `--all --from-run <id> --check` |
 | `--list`, `--no-sheets`, `--run-id`, `--resume` | list flows (with their sizes); skip contact sheets; name the output folder; continue a run |

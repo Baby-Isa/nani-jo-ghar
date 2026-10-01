@@ -118,7 +118,10 @@ if (fromRun) {
     todo.push(j);
   }
   // the heavy flows first, so a chunk's tail is short pages
-  todo.sort((a, b) => (b.flow.timeoutMs || 300000) - (a.flow.timeoutMs || 300000) || order.get(a.flow.id) - order.get(b.flow.id));
+  // pages the baseline has never seen (new levels, paths, sizes) first, pages it already knows last; the heavy flows first within each
+  const known = Baseline.load();
+  const seenBefore = (j) => (known && known.flows && known.flows[`${j.flow.id}@${j.size}`] ? 1 : 0);
+  todo.sort((a, b) => seenBefore(a) - seenBefore(b) || (b.flow.timeoutMs || 300000) - (a.flow.timeoutMs || 300000) || order.get(a.flow.id) - order.get(b.flow.id));
   log(`run ${runId}: ${jobs.length} pages (${jobs.length - todo.length} done already), ${parallel} at a time, port ${PORT}${budgetMs < Infinity ? `, ${val("--budget-min")} min budget` : ""}`);
   const fresh = [];
   if (todo.length) {
@@ -132,7 +135,7 @@ if (fromRun) {
         writeFileSync(file, JSON.stringify(r)); fresh.push(r); log(`${flow.id} @ ${size}: ${findings.length} findings`); return;
       }
       const started = Date.now();
-      const { ctx, page, errors, sound, touch } = await newPage(browser, size, { seed: hashSeed(flow.id) });
+      const { ctx, page, errors, sound, touch } = await newPage(browser, size, { seed: hashSeed(flow.id), ...(has("--no-touch") ? { touch: false } : {}) });
       const rec = new Recorder({ flow: flow.id, size, dir: runDir, page });
       const c = { page, rec, errors, size, browser, touch, timeoutMs: flow.timeoutMs || 300000, reachedEnd: false };
       let timer;
