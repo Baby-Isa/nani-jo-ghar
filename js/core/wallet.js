@@ -86,9 +86,10 @@ export function payFor(round, economy) {
   const q = (P.base != null ? P.base : 1) + accuracy * (w.accuracy || 0) + hintScore * (w.hints || 0) + timeScore * (w.time || 0) + speaking * (w.speaking || 0);
   const quality = clamp(q, P.qualityMin != null ? P.qualityMin : 0, P.qualityMax != null ? P.qualityMax : Infinity);
   const levels = P.levels || {};
-  const lv = String(r.level || 1);
-  const levelX = levels[lv] != null ? levels[lv] : levels[String(Math.max(...Object.keys(levels).map(Number).filter((n) => n <= (r.level || 1)), 1))] || 1;
-  const modeX = ((P.modes || {})[r.mode] != null ? P.modes[r.mode] : 1);
+  // the level's multiplier; a level above the table takes the highest one there is
+  const known = Object.keys(levels).map(Number).filter((n) => n <= (r.level || 1));
+  const levelX = known.length ? levels[String(Math.max(...known))] : 1;
+  const modeX = (P.modes || {})[r.mode] != null ? P.modes[r.mode] : 1;
   const difficulty = levelX * modeX;
   const raw = (P.perTask || 1) * volume * quality * difficulty;
   const coins = Math.max(P.minCoins || 1, Math.round(raw));
