@@ -10,9 +10,9 @@ Branch `ccr-fcd9dddd-wnywzc`. No mechanic changed; Cook and the clinic run their
 - **Kit**: guide box per the approved mock-up (face and tools on top, line underneath, 48 px taps, its own face/badge styles); `bulb.js`, `tally.js`, `focus.js` with shims behind Cook's `UI.bulb` and the clinic's `Kit.Bulb`/`Kit.Tally`; order card on tokens, rows grow instead of clipping, 48 px face, **pill flow** (`card.rows` per form factor, default stacked); end screen on tokens, review words wrap, end actions are pictures (E1), a word with no Kutchi shows its flagged placeholder. State sheet: `lab/kit.html` (`?part=results`, `?part=words`).
 
 ## Checks
-- Unit: shared 132, frame 9, stage 6, browser frame test 4 (one number in layout.json resizes Cook's sidebar on reload). All pass.
+- Unit: shared 132 (incl. frame 9, stage 6), core 42, host 41, lint+sandbox 17; browser frame test 4 (one number in layout.json resizes Cook's sidebar on reload). All pass.
 - CSS lint: 470 → 421 (`css/shared` 48 → 0).
-- Sandbox: RESULT_LINE
+- Sandbox `--check` on a clean worktree of this branch: touched flows (Cook title, all ten stations, chai/chaat, L3, hint and mistake paths; clinic stages, heal games, One patient; house, first launch) at phone, laptop and tablet sizes: every flow ends, 0 page errors; laptop pages now show 0 findings on most flows. Full gate: first chunk only (15 of 480 pages): **1 new** (first launch @ 800x360: the guide's mute 15 px off screen), 241 fixed. Pages R1b's baseline lacks at a size report their old Cook/clinic findings as new; baseline not shrunk yet (needs the full gate).
 
 ## Regression rows
 SH-01 fixed (review word wraps). SH-09 fixed (rows wrap, never cut). SH-27 fixed (guide tools, rail, faces 48 px). PAN-01 fixed (headline shrinks then wraps; ring inset). FL-02 fixed (corner home sits in the dock on framed pages). SH-24, SH-29, SH-30, SH-36, SH-37 rechecked OK. SH-28 open: the shelf chips are Phaser canvas text (R4).
@@ -23,6 +23,11 @@ Before/after: `build/screenshots/r3a/pairs/` (left before, right after), kit she
 ## Art for tablets (@2x or more bleed)
 All backgrounds (Cook 1600×900, clinic 1536×1024): drawn up to ~3600 device px on an iPad Pro; need @2x and 4:3 bleed (Cook's cover-fit stretches 16:9 art ~1.8× on a square stage). Characters (~400 px): @2x. Props (≤480 px), badges, results art: fine.
 
-## Left
-- `bump_version.py`: stamp `css/shared/tokens.css` (imported by `app.css`), map the new shared files.
-- The sandbox lint reads 14 px text at a fractional width as 13.9 px.
+## Left (next steps; R5 now owns host/tally/order-card/results/bulb/onboard and their CSS)
+- Run the full gate, then `--update-baseline`.
+- First launch @ 800x360: the guide's mute is pushed 15 px off screen (narrow sidebar there); check the guide's top row width.
+- Order card: the clinic's own rows (`cl-row-text`) still wrap tightly on phones; the pill flow is ready for Zafar to try (`card.rows` in layout.json).
+- Bulb/tally: the shims (`Bulb.KitBulb`, `Bulb.cookShim`, `Tally.KitTally`) go once R4/R5 call `Bulb.create` / `Tally.mount` directly.
+- Results: the review's placeholder card (no Kutchi) is new; check it against G2 with Zafar.
+- `bump_version.py`: stamp `css/shared/tokens.css` (imported by `app.css`) and map the new shared files. `lab/kit.html` needs a `labs.html` entry.
+- The sandbox lint reads 14 px text at a fractional width as 13.9 px (why at-floor text is 14.5 px).
