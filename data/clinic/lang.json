@@ -550,7 +550,7 @@
   },
   "ear-hear-q": {
    "kutchi": null,
-   "english": "Can you hear me? Which one did I say?",
+   "english": "Which one did I say?",
    "src": "English placeholder (to record): the doctor's line before the whispered word in the ear's hearing check (heal/games/ear.js, D15c, heal-A 2 Oct)"
   }
  }

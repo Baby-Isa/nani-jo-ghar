@@ -224,5 +224,33 @@
  "camera": {
   "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
   "wide": "side"
+ },
+ "art": {
+  "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
+  "ear": {
+   "file": "assets/clinic/closeups/girl/ear.webp",
+   "on": false,
+   "box": [
+    0,
+    -60,
+    800,
+    620
+   ]
+  }
+ },
+ "hearing": {
+  "_about": "D15c (decision 27): the whispered-word check at the end of the ear. on: true (Zafar can switch it off here; the orchestrator recommends keeping it). words: lexicon ids in data/clinic/lang.json the child knows from Cook (their pictures are Cook's icons, assets/cook/items/icon-<id>.webp; family clips exist for limu, dungri and tameto; paani is stitched). choices: how many pictures per level. With it off, level 1's only Kutchi row is the drops count (25% blind).",
+  "on": true,
+  "words": [
+   "fru-02",
+   "veg-02",
+   "veg-03",
+   "cook-paani"
+  ],
+  "choices": {
+   "1": 3,
+   "2": 3,
+   "3": 4
+  }
  }
 }
