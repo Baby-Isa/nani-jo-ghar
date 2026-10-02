@@ -49,7 +49,7 @@ export const STYLES = ["css/shared/tokens.css", "css/shared/frame.css", "css/sha
 export const HEAL = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 export const PARKED = ["tummy", "hic", "hair"];
 const HEAL_GESTURES = { cut: ["tap"], knee: ["tap"], ear: ["tap", "drag"], tooth: ["tap", "drag"], taste: ["tap"], fever: ["tap"], boing: ["tap"], eye: ["tap"], foot: ["tap", "drag"], tummy: ["tap", "drag"], hic: ["tap"], hair: ["tap", "drag"] };
-const LABEL = { cut: "The scrape", knee: "The knee", ear: "The ear", tooth: "The tooth", taste: "Sore tongue (drinks)", fever: "Fever", boing: "The jab (boing)", eye: "The eye", foot: "The foot", tummy: "Tummy ache", hic: "Hiccups", hair: "Itchy hair" };
+const LABEL = { cut: "The scrape", knee: "The knee", ear: "The ear", tooth: "The tooth", taste: "Sore spots (tongue)", fever: "Fever", boing: "The jab (boing)", eye: "The eye", foot: "The foot", tummy: "Tummy ache", hic: "Hiccups", hair: "Itchy hair" };
 const STAGES = ["waiting", "diagnosis", "pharmacy", "heal", "sendoff"];
 const STAGE_LABEL = { waiting: "Waiting room", diagnosis: "Diagnosis", pharmacy: "Pharmacy (the belt)", heal: "Heal (the patient's game)", sendoff: "Send-off" };
 const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5] };
@@ -270,7 +270,9 @@ export default {
   lab: () =>
     ["waiting", "diagnosis", "pharmacy", "sendoff"]
       .map((s) => ({ game: s, label: `Clinic: ${STAGE_LABEL[s]}`, note: "One stage alone, with its own patient." }))
-      .concat(HEAL.map((g) => ({ game: g, label: `Clinic heal: ${LABEL[g]}`, note: "One healing game, mounted by the pipeline's heal stage." })))
+      .concat(HEAL.map((g) => ({ game: g, label: `Clinic heal: ${LABEL[g]}${g === "eye" ? " (test A, split screen)" : ""}`, note: "One healing game, mounted by the pipeline's heal stage.", extra: g === "eye" ? "&eyetest=a" : "" })))
+      // D15h: both eye tests are prototyped; B (side by side) next to A
+      .concat([{ game: "eye", label: `Clinic heal: ${LABEL.eye} (test B, side by side)`, note: "The eye test's version B (the lab's eyetest=b).", extra: "&eyetest=b" }])
       .concat(PARKED.map((g) => ({ game: g, label: `Clinic heal (parked): ${LABEL[g]}`, note: "Parked: as it is, lab only." })))
       .concat([{ game: null, label: "Clinic: one patient", note: "One patient through all five stages, then the one end screen.", levels: [1, 2, 3] }]),
   free: { endless: true },

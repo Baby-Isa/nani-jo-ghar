@@ -47,12 +47,13 @@
       .filter((seg) => seg && seg.trim()) // the space between two segments is the CSS margin (no double gap)
       .forEach((seg) => {
         if (seg.startsWith("[")) return h("span", "ph", span, seg.slice(1, -1).replace(/^EN:\s*/, ""));
-        // CLN-68: punctuation that follows a word ("[Wipe], ba") joins it: its own span, which takes no margin, so
-        // there's never a space before a comma; the words after it keep their own space
+        // CLN-68: punctuation that follows a word ("[Wipe], ba") joins that word, so there's never a space before a
+        // comma; the words after it keep their gap (the CSS margin between spans)
+        // (it rides on the word before it, so it's never a tiny span of its own under the 14 px floor)
         const m = /^\s*([,.;:!?]+)(.*)$/.exec(seg);
         if (m && span.lastChild) {
-          h("span", "pn", span, m[1] + (!m[2].trim() && m[2] ? " " : ""));
-          if (m[2].trim()) h("span", "ku", span, m[2]);
+          span.lastChild.textContent += m[1];
+          if (m[2].trim()) h("span", "ku", span, m[2].replace(/^\s+/, ""));
         } else h("span", "ku", span, seg);
       });
     return span;
@@ -324,6 +325,11 @@
       b.style.left = `${Math.max(4, Math.min(70, x * 100 - 12))}%`;
       b.style.top = `${Math.max(2, r.top - lr.top - 8)}px`;
       b.classList.add("anchored");
+      // group B's proposal (2 Oct): a bubble by a speaker near the top (the close-up's round face) stays on screen:
+      // if it would start above the layer, it moves down by the overhang
+      const br = b.getBoundingClientRect();
+      if (br.height && br.top < lr.top + 2) b.style.top = `${parseFloat(b.style.top) + (lr.top + 2 - br.top)}px`;
+      if (br.width && br.right > lr.right - 2) b.style.left = `${Math.max(0, br.left - lr.left - (br.right - lr.right + 2))}px`;
     } else b.classList.add("top");
     return b;
   };

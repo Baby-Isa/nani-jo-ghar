@@ -260,7 +260,8 @@ export function labList(modes) {
   for (const m of modes) {
     for (const l of m.lab() || []) {
       const levels = l.levels || (m.games[l.game] && m.games[l.game].levels) || [1];
-      out.push({ mode: m.id, game: l.game || null, label: l.label || l.game || m.id, levels, note: l.note || "", url: labUrl(m.id, l.game, levels[0]) });
+      // l.extra: more of the lab's own query for this entry (e.g. the clinic's eye test version, "&eyetest=b")
+      out.push({ mode: m.id, game: l.game || null, label: l.label || l.game || m.id, levels, note: l.note || "", url: labUrl(m.id, l.game, levels[0], l.extra || "") });
     }
   }
   return out;

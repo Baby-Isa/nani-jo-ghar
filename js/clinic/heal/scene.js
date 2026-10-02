@@ -159,6 +159,22 @@
     const root = h("div", "hs-root", stage);
     root.dataset.place = opts.place || "limb";
     const svg = s("svg", { class: "hs-svg", viewBox: "0 0 800 500", preserveAspectRatio: "xMidYMid meet" }, root);
+    // tablets (group B's proposal, 2 Oct; decision 24): the close-up grows past the plain fit by the screen's item
+    // scale (data/layout.json stage.itemScale, through the shared stage service), cropping its sides down to the
+    // game's safe area (opts.safe: [x0, x1] in svg units; the tool column sits over the right edge anyway). Phones and
+    // laptops (item scale 1) keep the plain fit.
+    const SAFE = opts.safe || [80, 720];
+    const fitView = () => {
+      const St = global.Stage;
+      const r = root.getBoundingClientRect();
+      if (!St || !St.fit || !r.width || !r.height) return;
+      const m = St.fit({ box: { w: r.width, h: r.height }, scene: { w: 800, h: 500, safe: [SAFE[0], null, SAFE[1], null], fill: "fit" }, itemScale: St.itemScale ? St.itemScale() : 1 });
+      const vw = r.width / m.s;
+      const vh = r.height / m.s;
+      // the safe area's middle in the middle; down, the picture's middle (the close-ups are drawn round y 250)
+      const cx = (SAFE[0] + SAFE[1]) / 2;
+      svg.setAttribute("viewBox", `${(cx - vw / 2).toFixed(1)} ${(250 - vh / 2).toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`);
+    };
     // the blurred bed, placed so its paper strip sits at y 342-482 whatever the stage's shape
     const bgUrl = ((Kit && Kit.root) || "") + BG;
     s("image", { href: Kit && Kit.url ? Kit.url(BG) : bgUrl, x: -800, y: -470, width: 2400, height: 1600, preserveAspectRatio: "none", opacity: 0.95, class: "hs-bg" }, svg);
@@ -190,6 +206,10 @@
       const m = svg.getScreenCTM();
       return m ? 1 / m.a : 1;
     };
+
+    fitView();
+    ctx.on(global, "resize", fitView);
+    S.fitView = fitView;
 
     /* ---- the patient: their colours, so the close-up matches the person the zoom came from ---- */
     // CLN-67 (2 Oct): the round face (and the close-up's skin and clothes) follow the patient's own kind: hair, skin,
