@@ -79,6 +79,8 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | SH-44 | The end review shows which step went wrong (asked vs done, pictured) | built, not re-played | eye: end review after a mistake · CMP-13 | `docs/feedback/clinic-playtest-2026-10-01.md` P18, 1:9:04–9:22 |
 | SH-45 | One instruction at a time in the heal games: each step's line and row appear as it opens; never the whole job read out up front (D8) | built, not re-played | ear: boing L1, scrape L3 · TXT-08 | `docs/feedback/clinic-playtest-2026-10-01.md` P14, P66, 2:6:49–8:13 |
 | SH-46 | A move the child hasn't managed yet (e.g. a drag) is shown again by the ghost finger after a pause, not only the first time ever | built, not re-played | eye: ear L1, second play | `docs/feedback/clinic-playtest-2026-10-01.md` P32, 1:17:42–17:47 |
+| SH-47 | Closed card on phones: the headline shrinks first, then wraps at the largest two-line size; the flag sits clear of the eye | open | eye: 800×360, 844×390 · TXT-02 | Fable's clinic review, 2 Oct |
+| SH-48 | Card rows stay on one line on phones, shrinking to the floor first | open | eye: 800×360, 844×390 · TXT-02 | Fable's clinic review, 2 Oct |
 
 ## Cook: pantry
 
@@ -298,6 +300,18 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | CLN-66 | No lollipop anywhere in the clinic: the boing tool list on the wide shot still shows 🍭 (the close-up shows the apple) | built, not re-played | eye: boing wide shot · CUL-02 | orchestrator review of R5's zoom sheets, 2 Oct |
 | CLN-67 | The patient's round face in the close-up matches the patient (a boy's face shows over the girl) | built, not re-played | eye: each heal close-up | orchestrator review of R5's zoom sheets, 2 Oct |
 | CLN-68 | Card rows join cleanly: no stray space before a comma ("Wipe , ba") | built, not re-played | eye: boing card | orchestrator review of R5's zoom sheets, 2 Oct |
+| CLN-69 | The results card sits over the scene (the room), never a bare cream stage | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-70 | Every heal game clears its own buttons on done (the scrape's ✓ lingered into the results) | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-71 | Speech bubbles stay inside the play area (the ear's sat off the top) | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-72 | The first-time help's light is a soft centred glow, never beige squares | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-73 | The word review never scrolls or clips at 800×360 | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-74 | The scrape's hand stays clear of the tool strip | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-75 | The foot's hot, cold and lukewarm jugs read at a glance (steam, ice) | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-76 | English lines the child sees are styled as flagged placeholders, never dark bold text | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-77 | The zoom never shows a full-screen smear or ghost close-up UI on the pull-out | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-78 | The ear's hearing check and the eye chart use scene-fitting pictures, not emoji | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-79 | The tick badge always reads (never '–') | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-80 | The eye test's haa/na pills are at least 48 px on phones | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
 
 ## First launch and shell
 
