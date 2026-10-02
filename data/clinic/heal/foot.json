@@ -1,5 +1,5 @@
 {
- "_about": "Clinic heal game `foot` (H13 The foot bath; docs/archive/clinic/clinic-design-v1.md Q4, the quality pass). Size x side on ten toes: wadho/nindho (he-forms, confirmed by Mum) and the patient's own left/right (placeholders). The feet face you: the patient's left foot is on the right of your screen, and each big toe is on the inside. Levels are data. The tray ids are data/clinic.json's (paani, loon, tweezers, plaster); tapping the paani dish shows the same jug twice, one steaming and one with ice, in a shuffled order.",
+ "_about": "Clinic heal game `foot` (D15i, decision 27; js/clinic/heal/games/foot.js). The sole of the foot, toes up. The soak (which water: paani [hot]/[cold]/[lukewarm], how many jugs), then each splinter dragged out along its lighter channel with square turns to the edge of the foot: touching the side is an 'ow', it slides back to the last turn and loses the steady-hand row (a scored skill row, no words); then a plaster on each spot. Level 1 one straight channel; level 2 two channels with one or two turns; level 3 three channels from three toes, three turns each and narrower, the toes named for the order (pela [big toe], ne poi ...). Sides only in the diagnosis (D10). The channels, splinters and widths are in the code (PATHS, halfW per level); the levels, rows and words below the game's code are the older design's notes, kept for reference.",
  "id": "foot",
  "ailments": {
   "sore-feet": {
@@ -176,7 +176,14 @@
   }
  },
  "camera": {
-  "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
-  "wide": "side"
+  "_about": "D2 (1 Oct): the sole is seen from the front-on wide shot (the art plan §2.1).",
+  "wide": "front"
+ },
+ "art": {
+  "_about": "The art plan's P1 (closeups/<set>/sole.webp, child and adult sets), swapped in by file name when it exists; the channels and splinters stay code.",
+  "sole": {
+   "child": "assets/clinic/closeups/child/sole.webp",
+   "adult": "assets/clinic/closeups/adult/sole.webp"
+  }
  }
 }

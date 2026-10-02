@@ -1,132 +1,166 @@
 {
- "_about": "H6 Too hot, just right (docs/archive/clinic/clinic-design-v1.md Q4 H6; contract docs/architecture/clinic-heal-api.md; js/clinic/heal/games/fever.js). The conversation game: the thermometer's reading, then the patient's answers, decide each step and when to stop. The patient's face never shows hot or cold (it would give the answer away); only the words do. A wrong step changes nothing (he says it again); a step after 'just right' tips him over the other way. Level 1 is three or four exchanges (not the design's one: one binary exchange is 50% blind); blind odds about 1/2 per exchange x 1/2 for when to stop. There is no Kutchi yet for hot, cold, still cold, too hot or just right: those rows are English placeholders (grey italic) until the family gives the words; the counts (Cook's numbers) and jaldi/aastethi (Cook's drafts) are real.",
+ "_about": "H-fever, the room (D15f, decision 27; the 1 Oct report §8H; js/clinic/heal/games/fever.js). Played in the wide exam room (CB2b), no close-up. A live wall thermometer with a green zone; things round the room cool or warm the patient by their size (things.*.size, in reading units; the zone is -rules.zone..+rules.zone). The patient's fever swings hot and cold; the doctor names the thing to use (levels 1-2), from level 3 the last exchange is 'fix it'. Every swing is sized so the named thing lands in the zone and at least one other thing a non-speaker could pick does too, so the thermometer never gives the answer away (C10). Every word is an English placeholder (data/clinic/lang.json fever-*), to record.",
  "id": "fever",
  "ailments": {
   "fever": {
    "name": "a fever, or a chill",
    "part": "head",
    "items": [
-    "thermometer",
-    "cloth",
-    "blanket",
-    "fan"
+    "thermometer"
    ],
    "from": 1
   }
  },
- "throbMs": 8000,
- "words": {
-  "temp": {
-   "english": "Take the temperature",
-   "placeholder": true
-  },
-  "hot": {
-   "english": "Hot!",
-   "placeholder": true
-  },
-  "cold": {
-   "english": "Cold!",
-   "placeholder": true
-  },
-  "still-cold": {
-   "english": "Still cold!",
-   "placeholder": true
-  },
-  "too-hot": {
-   "english": "Too hot!",
-   "placeholder": true
-  },
-  "too-cold": {
-   "english": "Now too cold!",
-   "placeholder": true
-  },
-  "just-right": {
-   "english": "Just right!",
-   "placeholder": true
-  },
-  "feel": {
-   "english": "How do you feel?",
-   "placeholder": true
-  },
-  "blankets": {
-   "english": "blankets",
-   "placeholder": true
-  },
-  "fan": {
-   "english": "fan",
-   "placeholder": true
-  },
-  "times": {
-   "english": "times",
-   "placeholder": true
-  },
-  "jaldi": {
-   "cook": "ph-quickly",
-   "english": "quickly!"
-  },
-  "aastethi": {
-   "cook": "ph-slowly",
-   "english": "slowly"
-  },
-  "n2": {
-   "cook": "num-02",
-   "english": "two"
-  },
-  "n3": {
-   "cook": "num-03",
-   "english": "three",
-   "audio": "assets/audio/cook-tts/trae.mp3"
-  },
-  "n4": {
-   "cook": "num-04",
-   "english": "four",
-   "audio": "assets/audio/cook-tts/char.mp3"
-  }
- },
- "speed": {
-  "jaldiMaxMs": 420,
-  "aastethiMinMs": 650,
-  "minWafts": 3
- },
- "levels": {
-  "1": {
-   "steps": [
-    3,
-    4
-   ],
-   "count": null,
-   "speed": false,
-   "note": "The reading, then two or three answers in either direction, then Done on just right. Every step is one tap-tap (the fan: a few wafts, then it's put down or rests)."
-  },
-  "2": {
-   "steps": [
-    3,
-    4
-   ],
-   "count": [
-    2,
-    3,
-    4
-   ],
-   "speed": false,
-   "note": "The reading comes with a count (Cold! trae [blankets] / Hot! [fan], ba [times]); the count closes when the item is put down or Done is pressed."
-  },
-  "3": {
-   "steps": [
-    3,
-    4
-   ],
-   "count": [
-    2,
-    3,
-    4
-   ],
-   "speed": true,
-   "note": "Plus the fan's speed on every later too-hot step ([fan], jaldi! / aastethi), judged by the rhythm of the taps (at least three wafts)."
-  }
- },
  "camera": {
-  "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
-  "wide": "front"
- }
+  "_about": "D15f: the fever room plays in the wide shot itself (no zoom to a close-up). 'room' asks the heal host to skip the zoom (proposal in build/reports/heal-C.md); until it does, the game removes the zoom layer itself.",
+  "wide": "room"
+ },
+ "rules": {
+  "_about": "zone: the green zone's half-width; max: the thermometer's range either side; exchanges per level; fixFrom: the level 'fix it' starts; fixLast: how many exchanges at the end are 'fix it'; gaps: the swing sizes per level (the named thing always lands in the zone); fixGaps: the 'fix it' swings (4 needs two things); icePack: the spare cooler on or off (art plan question 7).",
+  "zone": 1,
+  "max": 6,
+  "exchanges": {
+   "1": [
+    3
+   ],
+   "2": [
+    3,
+    4
+   ],
+   "3": [
+    4
+   ]
+  },
+  "fixFrom": 3,
+  "fixLast": {
+   "3": 1
+  },
+  "gaps": {
+   "1": [
+    2
+   ],
+   "2": [
+    1,
+    2,
+    3
+   ],
+   "3": [
+    1,
+    2,
+    3
+   ]
+  },
+  "fixGaps": [
+   2,
+   3,
+   4
+  ],
+  "icePack": false
+ },
+ "room": {
+  "_about": "things: side (cool/warm), size (1 small, 2 medium, 3 big), fixed (stays where it is: a toggle) or not (goes to the patient). at: where each sits on CB2b, in fractions of the picture (x centre, y its bottom, h and w its size), moved into view when a screen crops the picture (the art plan §3.4 positions; remeasure when the art lands).",
+  "things": {
+   "window": {
+    "side": "cool",
+    "size": 3,
+    "fixed": true
+   },
+   "ceiling-fan": {
+    "side": "cool",
+    "size": 2,
+    "fixed": true
+   },
+   "hand-fan": {
+    "side": "cool",
+    "size": 1
+   },
+   "ice-pack": {
+    "side": "cool",
+    "size": 2,
+    "spare": true
+   },
+   "heater": {
+    "side": "warm",
+    "size": 3,
+    "fixed": true
+   },
+   "bottle": {
+    "side": "warm",
+    "size": 2
+   },
+   "blanket": {
+    "side": "warm",
+    "size": 1
+   }
+  },
+  "at": {
+   "window": {
+    "x": 0.034,
+    "y": 0.43,
+    "h": 0.42,
+    "w": 0.066
+   },
+   "ceiling-fan": {
+    "x": 0.33,
+    "y": 0.22,
+    "h": 0.13,
+    "w": 0.17,
+    "top": true
+   },
+   "hand-fan": {
+    "x": 0.668,
+    "y": 0.455,
+    "h": 0.075,
+    "w": 0.06
+   },
+   "ice-pack": {
+    "x": 0.31,
+    "y": 0.455,
+    "h": 0.06,
+    "w": 0.06
+   },
+   "heater": {
+    "x": 0.215,
+    "y": 0.84,
+    "h": 0.16,
+    "w": 0.11
+   },
+   "bottle": {
+    "x": 0.722,
+    "y": 0.455,
+    "h": 0.08,
+    "w": 0.05
+   },
+   "blanket": {
+    "x": 0.372,
+    "y": 0.46,
+    "h": 0.06,
+    "w": 0.075
+   },
+   "thermometer": {
+    "x": 0.612,
+    "y": 0.455,
+    "h": 0.1,
+    "w": 0.035
+   },
+   "gauge": {
+    "x": 0.8,
+    "y": 0.42,
+    "h": 0.3,
+    "w": 0.06
+   }
+  }
+ },
+ "art": {
+  "_about": "The art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md §8, R1, R2, R4, R5): a file that isn't there yet keeps the code-drawn stand-in. <id>-on / <id>-off for things with two states. The gauge (R5) and the ceiling fan (R2, body and spinning blades) need their measured boxes from the cut before they replace the drawn ones.",
+  "window-on": "assets/clinic/room-items/window-open.webp",
+  "hand-fan": "assets/clinic/room-items/hand-fan.webp",
+  "ice-pack": "assets/clinic/room-items/ice-pack.webp",
+  "heater-off": "assets/clinic/room-items/heater-off.webp",
+  "heater-on": "assets/clinic/room-items/heater-on.webp",
+  "bottle": "assets/clinic/room-items/hot-water-bottle.webp",
+  "blanket": "assets/clinic/items-v2/blanket-red.webp",
+  "thermometer": "assets/clinic/items-v2/thermometer.webp"
+ },
+ "throbMs": 8000
 }
