@@ -746,7 +746,7 @@
       if (c.kind === "wash") {
         const a = specks.reduce((m, q) => (q.x < m.x ? q : m), specks[0]);
         const b = specks.reduce((m, q) => (q.x > m.x ? q : m), specks[0]);
-        S.cue("wash", CUES.wash, S.toolEls.paani, { gesture: "drag", target: { x: a.x, y: Y }, to: { x: b.x, y: Y } });
+        S.cue("wash", CUES.wash, S.toolEls.paani, { gesture: "drag", target: { x: a.x, y: Y, r: 56 }, to: { x: b.x, y: Y, r: 56 } });
       } else if (c.kind === "dab") S.cue("dab", CUES.dab, S.toolEls.cloth, { x: patches[0].x, y: patches[0].y });
       else S.cue("plaster", Object.assign({ to: patchTarget }, CUES.plaster), S.toolEls["pl-" + P.key(c.seq[0])]);
     };
