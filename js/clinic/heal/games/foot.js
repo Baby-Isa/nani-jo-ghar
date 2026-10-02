@@ -140,7 +140,9 @@
     const clipId = `fo-clip-${Math.floor(Math.random() * 1e9)}`;
     const defs = s("defs", {}, S.svg);
     const clip = s("clipPath", { id: clipId }, defs);
-    s("path", { d: outline, transform: P.flip ? "translate(800 0) scale(-1 1)" : null }, clip);
+    const clipG = s("g", { transform: P.flip ? "translate(800 0) scale(-1 1)" : null }, clip);
+    s("path", { d: outline }, clipG);
+    Object.values(TOE_AT).forEach(([x, y, rx, ry]) => s("ellipse", { cx: x, cy: y, rx, ry }, clipG)); // the toes' splinters sit in their channels too
     const chanG = s("g", { "clip-path": `url(#${clipId})` }, S.layer);
     const chanFill = HS.shade ? HS.shade(sole, 0.45) : "#f6e2cc";
     const splG = s("g", {}, S.layer);
@@ -268,19 +270,23 @@
 
     const TCOL = { hot: "#e8503a", cold: "#3f8fd8", lukewarm: "#9a7ad0" };
     const IMG = "assets/clinic/items-v2/";
-    S.tools(TEMPS.map((t) => ({ id: "jug-" + t, img: `${IMG}jug-${t}.webp`, glyph: "•", bg: TCOL[t] + "26" })).concat([{ id: "plaster", img: IMG + "plaster-skin.webp", glyph: "•" }]), () => {
-      // D7: the next tool closes the soak (from level 2; level 1 closes itself at the count)
-      const c = cur();
-      if (c && c.kind === "soak" && st.jugs && S.sel === "plaster") close();
-    });
+    S.tools(TEMPS.map((t) => ({ id: "jug-" + t, img: `${IMG}jug-${t}.webp`, glyph: "•", bg: TCOL[t] + "26" })).concat([{ id: "plaster", img: IMG + "plaster-skin.webp", glyph: "•" }]), () => {});
 
     let drag = null;
     const slack = () => K.slackPx * S.unit();
     ctx.on(S.svg, "pointerdown", (e) => {
       if (!S.ready || st.over || st.busy) return;
       const p = S.pt(e);
-      const c = cur();
+      let c = cur();
       if (!c) return;
+      // D7: from level 2 the soak closes by the next action: taking hold of a splinter (no ✓)
+      if (c.kind === "soak" && st.jugs && P.level >= 2) {
+        const grab = 30 + slack();
+        if (P.splinters.some((x) => Math.hypot(p.x - at(x, st.prog[x.id]).x, p.y - at(x, st.prog[x.id]).y) < grab)) {
+          close();
+          c = cur();
+        }
+      }
       if (c.kind === "soak") {
         if (!/^jug-/.test(S.sel || "")) return;
         if (Math.hypot((p.x - 400) / 1.4, p.y - 300) > 260) return;
@@ -377,16 +383,6 @@
     const up = () => (drag = null);
     ctx.on(S.svg, "pointerup", up);
     ctx.on(S.svg, "pointercancel", up);
-    const btn = ctx.button(
-      "✓",
-      () => {
-        const c = cur();
-        if (!S.ready || st.over || st.busy || !c || c.kind !== "soak" || !st.jugs) return;
-        close();
-      },
-      "done"
-    );
-    btn.setAttribute("aria-label", "Next");
 
     return {
       async start() {
@@ -415,11 +411,11 @@
             return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: id };
           };
           if (c.kind === "soak") {
-            if (st.jugs >= c.jugs) return P.level === 1 ? { do: "wait" } : tool("plaster");
-            return S.sel !== "jug-" + c.temp ? tool("jug-" + c.temp) : Object.assign({ do: "tap", what: "pour" }, S.client(400, 300));
+            if (st.jugs >= c.jugs && P.level === 1) return { do: "wait" };
+            if (st.jugs < c.jugs) return S.sel !== "jug-" + c.temp ? tool("jug-" + c.temp) : Object.assign({ do: "tap", what: "pour" }, S.client(400, 300));
           }
-          if (c.kind === "pull") {
-            const q = nextSplinter();
+          if (c.kind === "pull" || c.kind === "soak") {
+            const q = c.kind === "soak" ? (P.steps[1].order ? P.splinters.find((x) => x.toe === P.steps[1].order[0]) : P.splinters[0]) : nextSplinter();
             if (!q) return { do: "wait" };
             const pts = [];
             for (let t = st.prog[q.id]; t < total(q); t += 12) {

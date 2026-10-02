@@ -1,5 +1,5 @@
 {
- "_about": "H9 The boing (docs/archive/clinic/clinic-design-v1.md Q4 H9; contract docs/architecture/clinic-heal-api.md; js/clinic/heal/games/boing.js). The doctor holds the syringe: the child never touches it (tapping its dish only gets a finger wag). Wipe the arm the count of times (the step closes when the cotton is put down), count DOWN aloud with the doctor (a speaking moment: the shared Say.moment, the five numbers as the closed set in a shuffled order, the pills as the fallback; a wrong or missed number just waits), BOING, then the plaster and the lollipop in the called order. Blind level 1: 1/3 (wipe count) x 1/5 x 1/5 (the numbers, first try) x 1/2 (the order). The numbers and pela/ne poi are real (Cook's ids); plaster, lollipop, the arms and the colours are English placeholders until the family gives the words.",
+ "_about": "H9 the boing, with the drop machine (D15g, decision 27; js/clinic/heal/games/boing.js). The doctor holds the syringe; the child helps and counts. Wipe the arm the count of times; pull a dispenser's lever for each drop of liquid medicine that falls into the upright syringe (counted on the syringe; a drop is taken back by tapping that drop); press the syringe's glowing end to start the jab; the doctor counts down, BOING; a plaster on the spot. The apple is only at the send-off (H33, CLN-66). Level 1: one dispenser, the count written and said (closes at the count); level 2: more drops, written only, closed by the glowing end; level 3: three or four dispensers and the colours said in order (pela/ne poi). Blind level 1: 1/5 (wipes) x 1/3 (drops). The numbers and pela/ne poi are Cook's; wipe, drops, plaster, press it and the colours are English placeholders to record.",
  "id": "boing",
  "ailments": {
   "jab": {
@@ -8,8 +8,7 @@
    "items": [
     "cotton",
     "syringe",
-    "plaster",
-    "lollipop"
+    "plaster"
    ],
    "from": 1
   }
@@ -50,10 +49,6 @@
   },
   "plaster": {
    "english": "plaster",
-   "placeholder": true
-  },
-  "lollipop": {
-   "english": "lollipop",
    "placeholder": true
   },
   "my-left-arm": {
@@ -116,14 +111,19 @@
  "levels": {
   "1": {
    "wipe": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "drops": [
     2,
     3,
     4
    ],
-   "from": 2,
-   "side": false,
-   "colour": false,
-   "note": "One arm, sleeve up. Wipe ba/trae/char times, count down from ba, then the plaster and the lollipop in the called order. Each line read as it comes; pills live from the start."
+   "dispensers": 1,
+   "note": "One dispenser. Wipe, the drops (the count written and said; the row turns gold at the count and the step closes by itself), then the glowing end, the countdown from trae, BOING, the plaster."
   },
   "2": {
    "wipe": [
@@ -132,10 +132,13 @@
     4,
     5
    ],
-   "from": 3,
-   "side": true,
-   "colour": false,
-   "note": "Both sleeves up: the patient says which arm (their own left or right). Count down from trae. The lines up front."
+   "drops": [
+    3,
+    4,
+    5
+   ],
+   "dispensers": 1,
+   "note": "+ more drops, the count written only; the glowing end closes the drops step (D7: the next action)."
   },
   "3": {
    "wipe": [
@@ -144,18 +147,16 @@
     4,
     5
    ],
-   "from": 5,
-   "side": true,
-   "colour": true,
-   "note": "Count down from panj; the patient asks for the plaster's colour, chosen from three."
+   "dispensers": 4,
+   "note": "+ four dispensers and the colours said, in order: ba [red], ne poi hakro [blue]; the card is closed (heard only)."
   }
- },
- "voice": {
-  "pillsLiveAtLevel1": true,
-  "pillsAfterMs": 8000
  },
  "camera": {
   "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
   "wide": "front"
+ },
+ "art": {
+  "_about": "The art plan's D1 and D2 (docs/design-language/art-plans/clinic-heal-art-plan.md §8), swapped in by file name when they exist; until then the code-drawn machine, levers, drops and syringe. The levers, drops and the two-layer syringe need their cut positions (tube, socket, spout) before they replace the drawn ones.",
+  "machine": "assets/clinic/heal-v3/drop-machine.webp"
  }
 }
