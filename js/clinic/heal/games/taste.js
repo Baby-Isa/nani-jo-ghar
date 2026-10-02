@@ -331,7 +331,18 @@
     };
 
     /* ---------------- the steps ---------------- */
-    const popTools = () => S.tools([{ id: "bud", glyph: BUD.glyph, img: BUD.img }], () => {});
+    // the first-time help's second move: once the bud is in hand, a spot of the colour said, when one is up
+    const upTarget = () => spots.find((q) => q.target && (q.state === "up" || q.state === "rising"));
+    const cueSpot = () => {
+      const c = cur();
+      if (!c || c.kind !== "pop" || st.over) return;
+      if (!upTarget()) return ctx.after(250, cueSpot);
+      S.cue("pop-spot", { gesture: "tap" }, () => {
+        const q = upTarget();
+        return q ? { x: q.x, y: q.y - 6, r: R + 10 } : null;
+      });
+    };
+    const popTools = () => S.tools([{ id: "bud", glyph: BUD.glyph, img: BUD.img }], (id) => id === "bud" && ctx.after(200, cueSpot));
     const drinkTools = () =>
       S.tools(
         Object.keys(THINGS)
@@ -345,10 +356,7 @@
       if (c.kind === "pop") {
         popTools();
         tick();
-        S.cue("pop", CUES.pop, S.toolEls.bud, { target: () => {
-          const sp = spots.find((q) => q.target && (q.state === "up" || q.state === "rising"));
-          return sp ? { x: sp.x, y: sp.y, r: R + 8 } : null;
-        } });
+        S.cue("pop", { gesture: "tap" }, S.toolEls.bud);
       }
       if (c.kind === "drink") {
         drinkTools();

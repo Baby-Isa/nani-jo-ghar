@@ -69,7 +69,7 @@
     }
     const Lg = HS.L;
     const steps = [];
-    steps.push({ id: "drops", kind: "drops", count: drops, side, row: Object.assign({ id: "drops" }, Lg.show(Lg.join(["cl-drops", ",", Lg.count(drops)]), { cap: true })) });
+    steps.push({ id: "drops", kind: "drops", count: drops, side, row: Object.assign({ id: "drops" }, Lg.show(Lg.join(["cl-drops", Lg.count(drops)]), { cap: true })) });
     chart.forEach((c, i) => steps.push({ id: `read${i}`, kind: "read", row: i, rowDef: c }));
     const rows = [{ id: "drops-count", options: K.drops[L], answer: drops }];
     // each chart row's judgement: "chart-a", "chart-b" ... (the end review lists them under the card's eye-test row, D14)
@@ -217,7 +217,7 @@
     const chartG = s("g", {}, testG);
     let CH; // the chart's board, in its own (unturned) units
     let readEye; // where the patient's open eye is (the redrop)
-    let chartXf = ""; // B: the quarter turn
+    let turn = null; // B: the quarter turn
     if (version === "A") {
       const a = art("testA");
       // the left panel: the patient, head and shoulders, a hand over the good eye, looking past us to our right
@@ -270,19 +270,34 @@
       // the chart on its stand, close by, turned a quarter towards both of them
       CH = { x: 400, y: 14, w: 262, h: 352 };
       const legs = s("g", {}, testG);
-      s("path", { d: `M${CH.x + 60} ${CH.y + CH.h - 10} L${CH.x + 20} 498 M${CH.x + CH.w - 50} ${CH.y + CH.h - 10} L${CH.x + CH.w - 10} 498 M${CH.x + CH.w / 2} ${CH.y + CH.h - 10} L${CH.x + CH.w / 2 + 6} 470`, stroke: "#a9824d", "stroke-width": 10, "stroke-linecap": "round" }, legs);
+      s("path", { d: `M${CH.x + 90} ${CH.y + CH.h - 30} L${CH.x + 60} 488 M${CH.x + CH.w - 40} ${CH.y + CH.h - 10} L${CH.x + CH.w - 6} 498 M${CH.x + CH.w / 2 + 30} ${CH.y + CH.h - 20} L${CH.x + CH.w / 2 + 40} 470`, stroke: "#a9824d", "stroke-width": 10, "stroke-linecap": "round" }, legs);
       testG.appendChild(chartG);
-      chartXf = `matrix(0.86 0.045 0 1 ${CH.x * 0.14 + 30} ${-CH.x * 0.045})`; // the left edge further away: a quarter turn
-      chartG.setAttribute("transform", chartXf);
+      // a quarter turn: the board's left edge is further away, so shorter (a perspective map of the board's own units)
+      turn = { k: 0.84, x: 26 };
     }
     const chartArt = art(version === "A" ? "chartFront" : "chartTurned");
+    // Q: a point on the board (its own units) to the screen; B's quarter turn maps the board onto a quad whose left
+    // edge is set back and shorter, so it reads as turned (C2's art brings its own corners: art.chartTurned.quad)
+    const Q = (x, y) => {
+      if (!turn) return [x, y];
+      const u = (x - (CH.x - 14)) / (CH.w + 28);
+      const v = (y - (CH.y - 14)) / (CH.h + 28);
+      const k = turn.k + (1 - turn.k) * u; // the height scale across the board
+      const X = CH.x - 14 + turn.x + u * (CH.w + 28 - turn.x);
+      const mid = CH.y + CH.h / 2;
+      return [X, mid + (CH.y - 14 + v * (CH.h + 28) - mid) * k];
+    };
+    const kAt = (x) => (turn ? turn.k + (1 - turn.k) * ((x - (CH.x - 14)) / (CH.w + 28)) : 1);
+    const quad = (x, y, w, h) => [Q(x, y), Q(x + w, y), Q(x + w, y + h), Q(x, y + h)].map((q) => q.map((v) => Math.round(v * 10) / 10).join(",")).join(" ");
     // the board: a white chart in a light-wood frame, an eye at the top, rows of pictures getting smaller
     if (chartArt) s("image", { href: url(chartArt.src), x: CH.x - 14, y: CH.y - 14, width: CH.w + 28, height: CH.h + 28, preserveAspectRatio: "none" }, chartG);
     else {
-      s("rect", { x: CH.x - 14, y: CH.y - 14, width: CH.w + 28, height: CH.h + 28, rx: 16, fill: "#c8a46e", stroke: "#a9824d", "stroke-width": 3 }, chartG);
-      s("rect", { x: CH.x, y: CH.y, width: CH.w, height: CH.h, rx: 10, fill: "#fffefb" }, chartG);
-      s("path", { d: `M${CH.x + CH.w / 2 - 26} ${CH.y + 28} Q${CH.x + CH.w / 2} ${CH.y + 8} ${CH.x + CH.w / 2 + 26} ${CH.y + 28} Q${CH.x + CH.w / 2} ${CH.y + 48} ${CH.x + CH.w / 2 - 26} ${CH.y + 28}Z`, fill: "#fff", stroke: "#4a6f98", "stroke-width": 4 }, chartG);
-      s("circle", { cx: CH.x + CH.w / 2, cy: CH.y + 28, r: 8, fill: "#4a6f98" }, chartG);
+      s("polygon", { points: quad(CH.x - 14, CH.y - 14, CH.w + 28, CH.h + 28), fill: "#c8a46e", stroke: "#a9824d", "stroke-width": 3, "stroke-linejoin": "round" }, chartG);
+      s("polygon", { points: quad(CH.x, CH.y, CH.w, CH.h), fill: "#fffefb", "stroke-linejoin": "round" }, chartG);
+      const [ex, ey] = Q(CH.x + CH.w / 2, CH.y + 28);
+      const ek = kAt(CH.x + CH.w / 2);
+      s("path", { d: `M${ex - 26} ${ey} Q${ex} ${ey - 20 * ek} ${ex + 26} ${ey} Q${ex} ${ey + 20 * ek} ${ex - 26} ${ey}Z`, fill: "#fff", stroke: "#4a6f98", "stroke-width": 4 }, chartG);
+      s("circle", { cx: ex, cy: ey, r: 8 * ek, fill: "#4a6f98" }, chartG);
     }
     const rowsG = s("g", {}, chartG);
     const nR = P.chart.length;
@@ -307,14 +322,17 @@
         const now = cur() && cur().kind === "read" && cur().row === i;
         const done = RID(i) in st.judged;
         // the card's own looks (CLN-61): "now" is the soft band, a judged row has the gold outline and check
-        if (now) s("rect", { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3 }, rowsG);
+        if (now) s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 8, b.y - 4, CH.w - 16, b.h + 8), fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3, "stroke-linejoin": "round" } : { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3 }, rowsG);
         if (done) {
-          s("rect", { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "none", stroke: "#c9962e", "stroke-width": 4 }, rowsG);
-          CHECK(CH.x + CH.w - 12, b.y + 4, 11, rowsG);
+          s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 8, b.y - 4, CH.w - 16, b.h + 8), fill: "none", stroke: "#c9962e", "stroke-width": 4, "stroke-linejoin": "round" } : { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "none", stroke: "#c9962e", "stroke-width": 4 }, rowsG);
+          const [cx, cy] = Q(CH.x + CH.w - 12, b.y + 4);
+          CHECK(cx, cy, 11, rowsG);
         }
         c.pics.forEach((id, k) => {
-          const x = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * 1.12 - b.sz / 2;
-          s("image", { href: url(BY[id].icon), x, y: b.y + (b.h - b.sz) / 2 - 2, width: b.sz, height: b.sz, opacity: done || now || !cur() || cur().kind !== "read" || cur().row < i ? 1 : 0.85 }, rowsG);
+          const bx = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * 1.12;
+          const [px, py] = Q(bx, b.y + b.h / 2 - 2);
+          const z = b.sz * kAt(bx);
+          s("image", { href: url(BY[id].icon), x: px - z / 2, y: py - z / 2, width: z, height: z, opacity: done || now || !cur() || cur().kind !== "read" || cur().row < i ? 1 : 0.85 }, rowsG);
         });
       });
     };
