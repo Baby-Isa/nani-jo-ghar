@@ -169,11 +169,15 @@
       const r = root.getBoundingClientRect();
       if (!St || !St.fit || !r.width || !r.height) return;
       const m = St.fit({ box: { w: r.width, h: r.height }, scene: { w: 800, h: 500, safe: [SAFE[0], null, SAFE[1], null], fill: "fit" }, itemScale: St.itemScale ? St.itemScale() : 1 });
-      const vw = r.width / m.s;
-      const vh = r.height / m.s;
+      // opts.zoom: a game whose part is small in the 800 x 500 drawing (the scrape's forearm) pushes in on
+      // opts.focus on every screen, never past where its safe area still fits across
+      const zs = Math.min(m.s * (opts.zoom || 1), Math.max(m.s, r.width / Math.max(1, SAFE[1] - SAFE[0])));
+      const vw = r.width / zs;
+      const vh = r.height / zs;
       // the safe area's middle in the middle; down, the picture's middle (the close-ups are drawn round y 250)
-      const cx = (SAFE[0] + SAFE[1]) / 2;
-      svg.setAttribute("viewBox", `${(cx - vw / 2).toFixed(1)} ${(250 - vh / 2).toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`);
+      const cx = opts.focus ? opts.focus[0] : (SAFE[0] + SAFE[1]) / 2;
+      const cy = opts.focus ? opts.focus[1] : 250;
+      svg.setAttribute("viewBox", `${(cx - vw / 2).toFixed(1)} ${(cy - vh / 2).toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`);
     };
     // the blurred bed, placed so its paper strip sits at y 342-482 whatever the stage's shape
     const bgUrl = ((Kit && Kit.root) || "") + BG;

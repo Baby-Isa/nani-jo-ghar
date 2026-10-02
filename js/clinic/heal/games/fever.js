@@ -268,10 +268,7 @@
       st.id = "fv-css";
       st.textContent = CSS;
     }
-    // D15f: no close-up. The heal host still zooms every game in (js/clinic/heal/host.js stage()); until it reads
-    // fever.json camera.wide "room" (a proposal in build/reports/heal-C.md), the game takes the zoom layer out so the
-    // room stays wide, and keeps its own figure in its own room.
-    if (((ctx.data && ctx.data.camera) || {}).wide === "room") stage.querySelectorAll(":scope > .cl-zoom").forEach((z) => z.remove());
+    // D15f: no close-up: the heal host skips the zoom for fever.json camera.wide "room" (heal-A, 2 Oct)
     S.svg.style.display = "none"; // no close-up drawing layer
     const face = S.root.querySelector(".hs-face");
     if (face) face.hidden = true; // the patient is in the room: no round face in the corner

@@ -46,7 +46,7 @@
     "sore-eye": { "game": "eye", "part": "eye", "parts": ["eye"], "from": 2, "items": ["care-drops", "care-patch"], "ask": ["care-drops", "care-patch"], "say": { "english": "A sore eye." } },
     "sore-feet": { "game": "foot", "part": "foot", "parts": ["foot"], "from": 1, "items": ["jug-hot", "jug-cold", "care-plaster"], "ask": ["care-plaster", "jug-hot", "jug-cold"], "say": { "english": "Sore feet!" } },
     "thorn": { "game": "foot", "part": "foot", "parts": ["foot", "toe"], "from": 2, "items": ["jug-hot", "jug-cold", "care-plaster"], "ask": ["care-plaster", "jug-cold", "jug-hot"], "say": { "english": "A thorn!" } },
-    "fever": { "game": "fever", "part": "head", "parts": ["head"], "from": 1, "items": ["thermometer", "cloth", "blanket", "fan"], "ask": ["blanket", "cloth", "fan"], "say": { "english": "A fever." } },
+    "fever": { "game": "fever", "part": "head", "parts": ["head"], "from": 1, "items": ["thermometer"], "ask": ["thermometer"], "_about": "D15f (2 Oct, group C): the fever room's cooling and warming things are in the room itself; only the thermometer comes from the pharmacy", "say": { "english": "A fever." } },
     "jab": { "game": "boing", "part": "arm", "parts": ["arm"], "from": 2, "items": ["cotton", "syringe", "plaster", "apple"], "ask": ["apple", "cotton", "plaster"], "say": { "english": "The jab before the trip." } }
   },
 

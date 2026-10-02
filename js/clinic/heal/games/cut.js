@@ -594,7 +594,6 @@
     dab: { gesture: "tap", then: "tap" },
     plaster: { gesture: "drag" },
   };
-  const halfName = (pair) => `${pair[0]} and ${pair[1]}`;
   function planScrape(level, rng) {
     const L = Math.max(1, Math.min(3, level));
     const dab = HS.pick(SCRAPE.dabs[L], rng);
@@ -606,11 +605,13 @@
       SCRAPE.colours.forEach((a, i) => SCRAPE.colours.slice(i + 1).forEach((b) => options.push([a, b])));
     }
     const seq = HS.shuffle(options, rng).slice(0, n);
-    const name = (o) => (o.length === 2 ? halfName(o) : o[0]);
     // 13h: the plasters' order is a sequence on the shared card: one part per plaster (pela ..., ne poi ...),
-    // the next one in the grey band, each ticking as it goes on
+    // the next one in the grey band, each ticking as it goes on. The colours are the clinic's colour words (col-*:
+    // Mum's laal and lilo; yellow and blue still to record); a two-colour plaster joins them with the engine's "and"
     const Lg = LG();
-    const plasterRows = seq.map((o, i) => Object.assign({ id: `plaster${i}` }, say(n > 1 || i > 0 ? Lg.step(i, [name(o), "cl-plaster"], { lower: true }) : Lg.join([name(o), "cl-plaster"]))));
+    const col = (c) => `col-${c}`;
+    const name = (o) => (o.length === 2 ? [col(o[0]), Lg.also(col(o[1]))] : [col(o[0])]);
+    const plasterRows = seq.map((o, i) => Object.assign({ id: `plaster${i}` }, say(n > 1 || i > 0 ? Lg.step(i, [...name(o), "cl-plaster"], { lower: true }) : Lg.join([...name(o), "cl-plaster"]))));
     const steps = [
       { id: "wash", kind: "wash", row: Object.assign({ id: "wash", seq: "steps" }, say(Lg.first("cook-paani"))) },
       { id: "dab", kind: "dab", count: dab, row: Object.assign({ id: "dab", seq: "steps" }, say(Lg.join([Lg.then("cl-cloth"), ",", Lg.item("cl-dabs", { n: dab })]))) },
@@ -626,7 +627,8 @@
     build([]);
     const rows = [
       { id: "dab-count", options: SCRAPE.dabs[L], answer: dab },
-      { id: "plasters", options: seqs, answer: seq.map(key), placeholder: true }, // the colours wait for the doctor's recording
+      // still English while a colour said has no Kutchi yet (yellow, blue: to record)
+      { id: "plasters", options: seqs, answer: seq.map(key), placeholder: seq.some((o) => o.some((c) => !Lg.w(col(c)).kutchi)) },
     ];
     const words = [Lg.w("cook-paani"), Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), num(dab), HS.ph("plaster")];
     return { level: L, ailment: "scrape", steps, rows, words, upFront: false, key };
@@ -634,7 +636,8 @@
 
   function mountScrape(stage, ctx) {
     const P = planScrape(ctx.level, ctx.rng);
-    const S = HS.make(stage, ctx, { place: "limb", game: "cut" });
+    // the forearm is long and thin in the 800 x 500 drawing: push in on the scrape so it fills more of the screen
+    const S = HS.make(stage, ctx, { place: "limb", game: "cut", zoom: 1.35, focus: [355, 335], safe: [140, 560] });
     const { s } = S;
     const doc = stage.ownerDocument;
     const n = P.steps[2].seq.length;

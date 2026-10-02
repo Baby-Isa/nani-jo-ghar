@@ -250,7 +250,9 @@
     const US = global.UIStore;
     const taught = !!def.cues && level === 1 && opts.onboard !== false && !!US && !US.get("clinic-taught", def.id);
     // D1, D2: the zoom from the patient on the bed into the close-up (and back out at the end)
-    const staging = opts.staging === false || !def.cues ? null : HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
+    // group C (2 Oct): a game that plays in the room itself (data camera.wide "room": the fever room) has no zoom
+    const roomGame = !!(data && data.camera && data.camera.wide === "room");
+    const staging = opts.staging === false || !def.cues || roomGame ? null : HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
 
     const log = [];
     const timers = new Set();
@@ -321,13 +323,26 @@
       if (done.btn) done.btn.classList.toggle("hidden", !done.on);
     };
     const clearCounts = () => stage.querySelectorAll(".hs-count").forEach((n) => n.remove());
-    const countOn = (itemId, n) => {
-      const tool = stage.querySelector(`.hs-tool[data-tool="${String(itemId).replace(/"/g, "")}"]`) || stage.querySelector(".hs-tool.sel");
+    const countOn = (itemId, n, at) => {
+      const tool = at || stage.querySelector(`.hs-tool[data-tool="${String(itemId).replace(/"/g, "")}"]`) || stage.querySelector(".hs-tool.sel");
       if (!tool) return;
-      let b = tool.querySelector(".hs-count");
-      if (!b) {
-        b = h("span", "hs-count", tool);
+      let b;
+      if (tool.ownerSVGElement || !tool.appendChild || tool.tagName === "svg") {
+        // group C (2 Oct): a count on a thing drawn in a close-up's svg (the boing's syringe): a badge over its corner
+        const holder = stage.querySelector(".hs-root") || stage;
+        b = holder.querySelector(":scope > .hs-count.at") || h("span", "hs-count at", holder);
+        const r = tool.getBoundingClientRect();
+        const hr = holder.getBoundingClientRect();
+        b.style.left = `${Math.round(r.left - hr.left)}px`;
+        b.style.top = `${Math.round(r.top - hr.top)}px`;
         b.setAttribute("aria-hidden", "true");
+      } else {
+        stage.querySelectorAll(".hs-count.at").forEach((x) => x.remove());
+        b = tool.querySelector(".hs-count");
+        if (!b) {
+          b = h("span", "hs-count", tool);
+          b.setAttribute("aria-hidden", "true");
+        }
       }
       b.classList.toggle("dots", level >= 3);
       b.textContent = level >= 3 ? "•".repeat(Math.min(n, 9)) : Kit.num(n);
@@ -382,9 +397,13 @@
         const l = INTERJECT[k] ? LANG().w(INTERJECT[k]) : HOST.line(k, data);
         return Kit.Voice.say(l, { who: "doctor" });
       },
+      /** group C (2 Oct): a running count that sits on something other than a shelf tool (an element in the close-up). */
+      countAt(el, n, o = {}) {
+        return ctx.tally(null, n, Object.assign({}, o, { at: el }));
+      },
       tally(itemId, n, o = {}) {
         // D6: the count on the tool in use (never the target); level 1 also says the number (E12)
-        if (n > 0) countOn(itemId, n);
+        if (n > 0) countOn(itemId, n, o.at || null);
         else clearCounts();
         // D7: from level 2 the ✓ closes a counted step once it has begun; at level 1 the step closes itself (D5).
         // SH-40 (2 Oct): a step the child's next action closes (the next tool: o.next) never shows the ✓
