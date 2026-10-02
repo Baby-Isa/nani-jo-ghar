@@ -446,9 +446,16 @@
         const halfW = (a.w || 0.05) / 2;
         let x = Math.max(v.x0 + halfW + pad, Math.min(v.x1 - halfW - pad, a.x));
         let y = a.y;
+        let h = a.h;
         if (a.top) y = Math.max(a.y, v.y0 + a.h + 0.02);
         y = Math.min(y, v.y1 - 0.01);
-        place(el, x, y, a.h, a.w);
+        // a phone crops the picture's top: a tall thing (the window) keeps its foot and loses its top, never off screen
+        if (y - h < v.y0 + 0.005) {
+          const hh = y - v.y0 - 0.01;
+          if (hh >= a.h * 0.5) h = hh;
+          else y = v.y0 + a.h + 0.01;
+        }
+        place(el, x, y, h, a.w);
       };
       Object.keys(els).forEach((id) => put(els[id], AT[id]));
       // the window: over the painted one when it's on screen (only its open state is drawn); a whole drawn window
@@ -554,7 +561,9 @@
       drawWear();
       // one instruction at a time (D8): this exchange's line joins the card as it opens; the patient says how they
       // feel, then the doctor says the line (input is live throughout, E5)
-      ctx.card.addRow(c.row);
+      // the temperature's row has done its job: the card keeps to the exchanges (it fits the shortest phone)
+      if (ctx.card.el && st.i === 1) ctx.card.setRows([c.row]);
+      else ctx.card.addRow(c.row);
       ctx.card.now(c.id);
       st.busy = true;
       ctx.after(fast() ? 120 : 600, () => (st.busy = false));

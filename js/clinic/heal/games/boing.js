@@ -92,7 +92,7 @@
     const A = { x: 300, y: 395 };
     const skin = S.skin || "#d9a57c";
     const armG = s("g", {}, S.layer);
-    s("path", { d: "M-40 330 L470 345 Q540 350 540 400 Q540 452 470 456 L-40 470 Z", fill: skin, stroke: S.skinDark || "#b9845c", "stroke-width": 4 }, armG);
+    s("path", { d: "M-40 330 L410 345 Q474 350 474 400 Q474 452 410 456 L-40 470 Z", fill: skin, stroke: S.skinDark || "#b9845c", "stroke-width": 4 }, armG);
     s("path", { d: "M-40 322 L130 326 Q150 400 130 478 L-40 478 Z", fill: S.clothes || "#e25a5a", stroke: "rgba(0,0,0,.18)", "stroke-width": 3 }, armG); // the rolled sleeve
     const spot = s("circle", { cx: A.x, cy: A.y, r: 16, fill: "none", stroke: "#2e8b7a", "stroke-width": 4, "stroke-dasharray": "5 5" }, armG);
     const shine = s("ellipse", { cx: A.x, cy: A.y, rx: 70, ry: 32, fill: "#fff", opacity: 0 }, armG);
@@ -101,7 +101,7 @@
     // the drop machine (D1's art swaps in): white and pale steel, clear tubes of coloured liquid medicine, each with a
     // drip spout and a lever; the upright syringe stands under the spouts
     const n = P.tubes.length;
-    const MC = 590; // the machine's centre line (clear of the tool shelf on the right at every screen shape)
+    const MC = 540; // the machine's centre line (clear of the tool shelf on the right at every screen shape)
     const M = { x: MC - (50 + n * 56) / 2, y: 10, w: 50 + n * 56, h: 172 };
     const tubeW = 40;
     const tubeX = (k) => M.x + 25 + 28 + k * 56;
@@ -375,7 +375,7 @@
         ctx.log({ type: "takeback", detail: "a drop" });
         return;
       }
-      if (Math.abs(p.y - A.y) > 75 || p.x > 540) return;
+      if (Math.abs(p.y - A.y) > 75 || p.x > 480) return;
       if (c.kind === "wipe" && S.sel === "cotton") {
         st.wipes++;
         S.count(st.wipes);

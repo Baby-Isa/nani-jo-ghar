@@ -140,9 +140,10 @@
     const clipId = `fo-clip-${Math.floor(Math.random() * 1e9)}`;
     const defs = s("defs", {}, S.svg);
     const clip = s("clipPath", { id: clipId }, defs);
-    const clipG = s("g", { transform: P.flip ? "translate(800 0) scale(-1 1)" : null }, clip);
-    s("path", { d: outline }, clipG);
-    Object.values(TOE_AT).forEach(([x, y, rx, ry]) => s("ellipse", { cx: x, cy: y, rx, ry }, clipG)); // the toes' splinters sit in their channels too
+    // (a clipPath takes shapes only, no group: each carries the mirror itself)
+    const flipT = P.flip ? "translate(800 0) scale(-1 1)" : null;
+    s("path", { d: outline, transform: flipT }, clip);
+    Object.values(TOE_AT).forEach(([x, y, rx, ry]) => s("ellipse", { cx: x, cy: y, rx, ry, transform: flipT }, clip)); // the toes' splinters sit in their channels too
     const chanG = s("g", { "clip-path": `url(#${clipId})` }, S.layer);
     const chanFill = HS.shade ? HS.shade(sole, 0.45) : "#f6e2cc";
     const splG = s("g", {}, S.layer);
