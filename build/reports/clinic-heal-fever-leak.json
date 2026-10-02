@@ -1,0 +1,86 @@
+{
+ "game": "fever",
+ "n": 2000,
+ "limit": 0.1,
+ "problems": [],
+ "levels": {
+  "1": {
+   "fair": {
+    "win": 1,
+    "rows": 1
+   },
+   "random": {
+    "win": 0.0275,
+    "rows": 0.3
+   },
+   "first-option": {
+    "win": 0,
+    "rows": 0.248
+   },
+   "last-option": {
+    "win": 0,
+    "rows": 0.248
+   },
+   "middle-option": {
+    "win": 0.0545,
+    "rows": 0.391
+   },
+   "reads-gauge": {
+    "win": 0.025,
+    "rows": 0.306
+   }
+  },
+  "2": {
+   "fair": {
+    "win": 1,
+    "rows": 1
+   },
+   "random": {
+    "win": 0.022,
+    "rows": 0.299
+   },
+   "first-option": {
+    "win": 0.0245,
+    "rows": 0.338
+   },
+   "last-option": {
+    "win": 0.0165,
+    "rows": 0.325
+   },
+   "middle-option": {
+    "win": 0.0035,
+    "rows": 0.277
+   },
+   "reads-gauge": {
+    "win": 0.0325,
+    "rows": 0.367
+   }
+  },
+  "3": {
+   "fair": {
+    "win": 1,
+    "rows": 1
+   },
+   "random": {
+    "win": 0.0315,
+    "rows": 0.491
+   },
+   "first-option": {
+    "win": 0.041,
+    "rows": 0.499
+   },
+   "last-option": {
+    "win": 0.034,
+    "rows": 0.49
+   },
+   "middle-option": {
+    "win": 0.006,
+    "rows": 0.473
+   },
+   "reads-gauge": {
+    "win": 0.051,
+    "rows": 0.534
+   }
+  }
+ }
+}

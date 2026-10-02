@@ -335,6 +335,7 @@
       // the glowing end: it closes the drops step (L2+, D7: the next action) and starts the jab
       if (c.kind === "drops" && st.drops.length) close();
       if (cur() && cur().kind === "press") {
+        S.uncue(); // the glowing end's help ends with the press
         ctx.card.tick("press");
         thumb.animate && thumb.animate([{ transform: "translateY(0)" }, { transform: "translateY(12px)" }], { duration: 160, fill: "forwards" });
         st.i++;

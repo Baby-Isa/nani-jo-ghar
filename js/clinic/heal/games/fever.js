@@ -685,7 +685,11 @@
       S.uncue();
       ctx.card.now(null);
       fig.react("happy", 0);
-      ctx.after(fast() ? 200 : 1200, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
+      // the review's words: the things the doctor actually named (each exchange is built live)
+      const named = new Set();
+      P.steps.forEach((x) => x.live && x.live.answer && named.add(x.live.answer.split(":")[1]));
+      const words = P.words.slice(0, 3).concat([...named].map((id) => L().w(cfg.things[id].word)));
+      ctx.after(fast() ? 200 : 1200, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words }));
     };
 
     // the card: the first line only (one instruction at a time, D8); each exchange's line is added as it opens

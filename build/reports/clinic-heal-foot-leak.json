@@ -1,0 +1,74 @@
+{
+ "game": "foot",
+ "n": 2000,
+ "limit": 0.1,
+ "problems": [],
+ "levels": {
+  "1": {
+   "fair": {
+    "win": 1,
+    "rows": 1
+   },
+   "random": {
+    "win": 0.0685,
+    "rows": 0.513
+   },
+   "first-option": {
+    "win": 0.0685,
+    "rows": 0.51
+   },
+   "last-option": {
+    "win": 0.066,
+    "rows": 0.508
+   },
+   "middle-option": {
+    "win": 0.061,
+    "rows": 0.506
+   }
+  },
+  "2": {
+   "fair": {
+    "win": 1,
+    "rows": 1
+   },
+   "random": {
+    "win": 0.0975,
+    "rows": 0.54
+   },
+   "first-option": {
+    "win": 0.075,
+    "rows": 0.516
+   },
+   "last-option": {
+    "win": 0.0815,
+    "rows": 0.523
+   },
+   "middle-option": {
+    "win": 0.0825,
+    "rows": 0.526
+   }
+  },
+  "3": {
+   "fair": {
+    "win": 1,
+    "rows": 1
+   },
+   "random": {
+    "win": 0.004,
+    "rows": 0.425
+   },
+   "first-option": {
+    "win": 0,
+    "rows": 0.42
+   },
+   "last-option": {
+    "win": 0,
+    "rows": 0.419
+   },
+   "middle-option": {
+    "win": 0.021,
+    "rows": 0.461
+   }
+  }
+ }
+}
