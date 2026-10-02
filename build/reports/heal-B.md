@@ -1,26 +1,32 @@
-# heal-B: the tooth, the sore spots, the eye (D15d, D15e, D15h; decision 27)
+# heal-B: tooth, sore spots, eye (D15d, e, h; decision 27)
 
-Branch `ccr-fcd9dddd-wnywzc`. No mechanic removed beyond the report + decision 27. Stand-in art; the plan's art swaps in by file name (each game's `data/clinic/heal/<game>.json` → `art`, `ready: false` until the cut session sets it).
+No mechanic removed beyond the report and decision 27. The art is stand-in for now. The plan's art swaps in by file name: each game's JSON has an `art` block, and the cut session sets `ready: true`.
 
 ## Per game
-- **Tooth:** one mouth close-up (gums, teeth, the real toothbrush); brush moves said **one at a time** (each its own row, L3 six); a push-in (match cut) on the sore tooth, still in the mouth; **jagged decay scattered by level** (1 / 2 / 4 patches) drilled with the drill's tip under the finger; the fill: a **big press button**, a nozzle, a gauge with **green between red**, narrower and faster by level (data `fill`). Letting go under the green just pauses.
-- **Sore spots:** three colours pop up and down (whack-a-mole); pop the colour(s) said with an **ointment bud** (never a pin), decoys stay; then one named drink (four: hardar waaro dudh, [honey] waaro dudh, aadu ne paani, limu ne paani): pour (the kit's pour look into the steel tumbler), add (spoon count from L2), stir, give: the rest fade. L3 "[spots], [red spots] na". Wrong drink: a face, try again (first is scored).
-- **Eye:** front close-up, only the sore eye red, the dropper hangs over it; L2+ the lit corner chart starts the test (no ✓). **Version A** split screen / **B** side by side with the chart turned in perspective (`test.version`, lab `?eyetest=a|b`). Chart rows "now" band and gold tick; after *na* the dropper pulses over the eye.
+- **Tooth:** everything happens in one mouth close-up. The brush moves come one at a time (each is its own row). The camera pushes in on the sore tooth and stays inside the mouth. Jagged decay is scattered by level (1, 2 or 4 patches), and the drill's tip sits under the finger. The fill uses a press button, a nozzle and a gauge with green between red; the green narrows and the fill speeds up by level.
+- **Sore spots:** spots in three colours pop up and down. The child pops the colours said with an ointment bud; the decoys stay. Then comes one named drink (four drinks): pour, add (a spoon count from L2), stir, give, and the rest of the spots fade. Level 3 uses *na*.
+- **Eye:** only the sore eye is red, and the dropper sits over it. From L2, tapping the lit chart starts the test. **A** is the split screen; **B** is side by side, with the chart turned in perspective (`test.version`, or `?eyetest=a|b` in the lab). Chart rows highlight and tick like card rows. After *na*, the dropper pulses over the eye.
 
-## Rows built (not re-played by Zafar)
-CLN-52, 53, 54, 55, 59, 61, 62, 63; CLN-51, 60 kept; SH-38/39/40/44/45 for these games; KEEP-10 (drill, tongue pops, redrop).
+## Rows
+Built, not yet replayed by Zafar: CLN-52 to 55, 59, 61 to 63. CLN-51 and CLN-60 are kept, and so is KEEP-10.
 
 ## Checks
-Leak bots (L1, 5000 rounds; must be <10%): tooth worst 8.5%, taste worst 8.7%, eye worst 5.6%; fair 100% every level. `leak_clinic_heal_b`, `check_onboard`, `check_clinic_kutchi`, `test_clinic_r5` pass. Sandbox `--touched clinic:heal-{tooth,taste,eye}` (36 pages, every size, #mistake, #hint): every page reaches its end; `--check` passed, 0 new findings (run heal-B-2; the first run's 3 phone findings, the drops row's comma under 14 px, fixed by dropping the comma).
+- **Leak bots, L1** (must be under 10%): tooth 8.5% worst, taste 8.7%, eye 5.6%; the fair strategy wins 100%.
+- **Other checks:** onboard, Kutchi, R5 unit tests and the old `leak_b` all pass.
+- **Sandbox** (36 pages, every size, #mistake and #hint): every page ends, and `--check` passes with 0 new findings.
 
 ## Sheets
-`/home/user/heal-B/build/screenshots/sandbox/heal-B-2/sheets/` (not committed, B19). Flaws first: tablets show the 800×500 drawing small with empty space (shared); the patient's speech bubble can sit off the top edge (shared); stand-in faces are flat next to Cook's art until the plan's M1/M2/Y/T/C art lands.
+`build/screenshots/sandbox/heal-B-2/sheets/` (not committed). Flaws:
+- On tablets the drawing stays small.
+- The patient's speech bubble can sit off the top of the screen.
+- The stand-in faces are flat next to Cook's art.
 
-## Shared-change proposals
-- `scene.js`: grow the close-up on tablets (crop to the safe area, not `meet`).
-- `kit.js`: the `.pn` punctuation span renders under 14 px on phones; the patient's bubble should stay on screen.
-- `pipeline.json` (group A): `coated-tongue` → "sore spots", tray `cotton-bud` + the drinks' things.
-- `js/clinic/main.js`: a lab link for eye version B.
+## Proposals (shared files)
+- `scene.js`: make the close-up grow on tablets.
+- `kit.js`: the `.pn` punctuation span is under 14 px on phones; keep the patient's bubble on screen.
+- `pipeline.json`: rename `coated-tongue` to "sore spots", and add the bud to the tray.
+- `main.js`: add a lab link for eye B.
 
 ## For Zafar
-Version A or B? The four drink names and *[red spots] na* are engine joins of existing words: for Mum's list with the colours, *malam*, and the direction words.
+- A or B?
+- For Mum's list: the drink names, *[red spots] na*, the colours, *malam* and the direction words.
