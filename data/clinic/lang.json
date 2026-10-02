@@ -552,6 +552,31 @@
    "kutchi": null,
    "english": "Which one did I say?",
    "src": "English placeholder (to record): the doctor's line before the whispered word in the ear's hearing check (heal/games/ear.js, D15c, heal-A 2 Oct)"
+  },
+  "col-red": {
+   "kutchi": "laal",
+   "english": "red",
+   "src": "Mum's own word: red = laal (docs/language/grammar-notes.md line 118, 'Not the red one: laal na'); wired for every clinic colour (the scrape's plasters, the sore spots, the boing) at the orchestrator's request, heal-A 2 Oct"
+  },
+  "col-green": {
+   "kutchi": "lilo",
+   "english": "green",
+   "src": "Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct"
+  },
+  "red": {
+   "kutchi": "laal",
+   "english": "red",
+   "src": "the same word as col-red, for games that name a colour by its plain id (the boing): Mum's own word: red = laal (docs/language/grammar-notes.md line 118, 'Not the red one: laal na'); wired for every clinic colour (the scrape's plasters, the sore spots, the boing) at the orchestrator's request, heal-A 2 Oct"
+  },
+  "green": {
+   "kutchi": "lilo",
+   "english": "green",
+   "src": "the same word as col-green, for games that name a colour by its plain id (the boing): Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct"
+  },
+  "col-yellow": {
+   "kutchi": null,
+   "english": "yellow",
+   "src": "English placeholder (to record): no Kutchi for yellow on record yet (heal-A 2 Oct)"
   }
  }
 }
