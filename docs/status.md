@@ -8,18 +8,19 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (1 Oct 2026, 19:00 UK):**
-- **Steps 1, 2a and 2b are done and approved.** Decisions 17–27 (1 Oct) are in `docs/decisions.md`; the rulebook is updated.
-- **Step 3 (the lean plan plus R1b and R3b) is running on branch `ccr-fcd9dddd-wnywzc`; nothing is on `main` yet.** Done: R0 clean slate, R1 + R1b the sandbox and lint (480 pages, 8 sizes incl. tablets, baseline 6,601), R2 the core, R3a the frame and kit built to scale, R3b the game host and formats (reports `build/reports/step3-*.md`). Running overnight: R4 Cook onto the framework, R5 the clinic onto it plus the heal games' shared rules, the clinic heal art plan (`docs/design-language/art-plans/`).
-- **The clinic is the priority before the doctor's ~9 Oct visit:** every heal game, looking better than Cook today, working first time (decision 27; the plan in `docs/feedback/clinic-playtest-2026-10-01.md` with Zafar's answers).
-- **Mum's 1 Oct session used Round 4;** the recording isn't processed yet. Round 5 is ready for the next session.
+**Where things stand (2 Oct 2026, 09:30 UK):**
+- **Steps 1, 2a, 2b done; step 3 nearly done** on branch `ccr-fcd9dddd-wnywzc` (nothing on `main` yet): R0–R5 done (reports `build/reports/step3-*.md`); R6 gate prep finishing (stitched speech, versioning stamps, sidebar fit, Snap hang fixed).
+- **The clinic** is on the new framework with Zafar's 1 Oct rules and the zoom staging (stand-in art). The heal-game redesigns are running in three sessions (A scrape/knee/ear + clinic-wide fixes; B tooth/sore spots/eye A–B; C fever room/boing + drop machine/foot), stop 14:00 UK.
+- **Art:** the clinic art plan (115 images) and Chrome block are ready (`docs/design-language/art-plans/`); Zafar hasn't started the run. His answers to the art plan's §10 questions are still open.
+- **Overnight loss:** the sessions paused at the usage limit ~00:50 UK and weren't resumed until 09:20 (`docs/process/overnight-log.md`).
+- **Open items:** Cook's tablet layouts (CK-TAB-01) and take-back in 9 Cook stations (CK-TB-01); Mum's Round 4 recording not yet processed.
 
 **Next steps, in order:**
-1. **Gate after R4 and R5:** the full sandbox gate and `--update-baseline`; `bump_version.py` stamps `css/shared/tokens.css` and maps the new shared files; `lab/kit.html` into `labs.html`; the core voice stitches every line from words (decision 26); Zafar looks; publish to `main`.
-2. **The clinic before ~9 Oct:** the art batch (Zafar runs the Chrome block, the girl patient first); the redesign sessions per heal game (D15a–i, three at once on separate files); the art wired in; the full QA matrix; Zafar plays on a real tablet.
-3. **Process Mum's Round 4 recording** when Zafar sends it.
-4. **Step 4:** build and fill the language engine (four sessions), then the dictionary mode and word books on top.
-5. **Then:** finish Cook fully.
+1. **Today:** the heal redesigns finish (14:00); the full gate (sandbox `--gate`, `--update-baseline`); a Fable review of the clinic contact sheets; Zafar plays the clinic on the branch build; publish to `main` once he's happy.
+2. **The art run** (Zafar starts it in Chrome; part A needs him ~30–40 min), then cut and wire, then the full QA matrix.
+3. **Before ~9 Oct:** the doctor plays every heal game; his Section G lines recorded at the visit.
+4. **Process Mum's Round 4 recording** when Zafar sends it.
+5. **Step 4:** build and fill the language engine; then the dictionary mode and word books; then finish Cook (tablet layouts, take-back).
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` (this "Next chat" section first) and `docs/process/rules.md`. Give me a short plan update, then propose the next step's plan. Don't start anything until I say go.
