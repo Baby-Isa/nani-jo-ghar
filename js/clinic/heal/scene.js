@@ -425,7 +425,9 @@
       if (t.getBoundingClientRect) return t;
       if (t.x != null) {
         const c = S.client(t.x, t.y);
-        const r = (t.r ? t.r / S.unit() : pad);
+        // a point with no radius lights about 60 svg units round it (it grows with the close-up, e.g. on tablets),
+        // never less than the finger's pad: the move the help asks for starts inside what it lights
+        const r = t.r ? t.r / S.unit() : Math.max(pad, 60 / S.unit());
         return [c.x - r, c.y - r, 2 * r, 2 * r];
       }
       return null;
