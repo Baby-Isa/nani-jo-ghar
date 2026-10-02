@@ -577,6 +577,11 @@
    "kutchi": null,
    "english": "yellow",
    "src": "English placeholder (to record): no Kutchi for yellow on record yet (heal-A 2 Oct)"
+  },
+  "col-blue": {
+   "kutchi": null,
+   "english": "blue",
+   "src": "English placeholder (to record): no Kutchi for blue on record yet; the same as data/clinic.json col-blue, here so the seam finds it in Node too (heal-A 2 Oct)"
   }
  }
 }
