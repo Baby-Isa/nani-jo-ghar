@@ -10,12 +10,12 @@
 ## 0. In short
 
 - **115 images** in four parts, uploaded by Chrome to `sources/art/clinic-heal-v3/` on `main`:
-  - **A, with Zafar watching (6):** the first character sheet of each new patient: the girl, the boy, the old man, the old woman, the man, the woman.
+  - **A, the six patient sheets (6), judged by the runner** (none is a real person, decision 29): the first character sheet of each new patient: the girl, the boy, the old man, the old woman, the man, the woman.
   - **B, the girl and her games (37):** her wide shots front and side, six states, the blanket and the hot-water bottle; every close-up her nine games need; and the props those games need (the overlays, the fever-room things, the exam room's tablet version and open window, the eye chart, the filling button).
   - **C, the other five patients (70):** their wide shots and states, the adult limb close-ups, and only the head close-ups their ailments need.
   - **D, the drop machine (2).**
 - **One change to the order I was given:** the fever-room things, the eye chart and the filling button sit in part B, straight after the girl, not after the other patients. Her fever, eye and tooth games can't be played without them, so this is what makes the visit safe if the run stops early (question 1).
-- **Zafar's time:** about 5 minutes to start, then 30–40 minutes watching the six sheets; the rest runs on its own. The girl's sheet (S1) waits for him however long it takes; if he goes quiet for 15 minutes on any later sheet, the runner moves on to part B and comes back to the skipped sheets on "resume".
+- **Zafar's time:** about a minute: paste the block into Claude in Chrome. Nothing needs his approval (decision 29: only Nani, Big Ma and the doctor do), and the runner moves every image between GitHub and ChatGPT itself, with no downloads.
 - **When:** as soon as this page is pushed (the block reads it from the branch `ccr-fcd9dddd-wnywzc` until it reaches `main`). Part B is likely done in 2–3 hours, part C and D overnight.
 
 ---
@@ -83,7 +83,7 @@ The clinic's scenes are laid out in the rooms' own pixels, 1536×1024, filled "c
 
 | Image | What it's for | How it's seen in the game | Camera | Who stands where, at what size | What stays clear | Registration |
 |---|---|---|---|---|---|---|
-| **S1–S6 first sheets** | The one reference for every later image of that person (D12); Zafar signs each off | Never seen in the game | Front, side, head views, sole | Eight panels: sitting front, sitting side-on, head front, head side-on (ear), head happy, hands, sole, swatches | Nothing touching | — |
+| **S1–S6 first sheets** | The one reference for every later image of that person (D12); the runner judges it (decision 29: only real people need Zafar) | Never seen in the game | Front, side, head views, sole | Eight panels: sitting front, sitting side-on, head front, head side-on (ear), head happy, hands, sole, swatches | Nothing touching | — |
 | **W1 front, neutral** | The diagnosis and the front-on zoom; the body every state sits on | On CB2b, sitting on the bed's front edge | E, front | Patient centred at x 0.50; seat line at y 0.535 (the mattress top); feet on the step stool's top at y 0.66; child about 0.40 of the room's height, adult about 0.56 (`scenes-v2.json` `exam.fig`, then measured by overlay). Doctor at x 0.735, feet at y 0.90 | Above the head up to the cabinet, for the thought bubble; the window (x < 0.08) and the thermometer gauge's wall spot (x 0.76–0.84, y 0.12–0.40); the mattress's free right end (x 0.62–0.72) for the small comfort things | The base canvas for W2–W6, W9, W10 |
 | **W2–W6 happy, sad, pain, hot, cold** | The face reacts (D3); the corner face; the send-off bubble | Swapped over W1's face; cropped for the corner circle | Edits of W1 | As W1 | — | Each is an edit of W1, registered to W1 by ECC on the head band. **Only the head region** is kept, as a layer on W1's canvas, so any state's face can sit on any body (the blanket one included) |
 | **W7 side, neutral** | The side-on zoom (knee, ear, eye test B) | On CB2b, at the bed's right-hand end, in profile, facing right | E, side | Seat at x about 0.70, y 0.535; the legs hang over the bed's end (x 0.74–0.77): a child's feet hang free, an adult's rest on the floor at y 0.80; doctor at x about 0.86, feet at y 0.92, turned three-quarter to the patient. On the square room (R3), all of this is on screen on a tablet too | The legs over the end, so the zoom to the knee reads | Base canvas for W8 |
@@ -162,7 +162,7 @@ The **thermometer gauge** is new because the reading must be big and live (the d
 
 | Part | Who's there | Prompts | Images | Why this order |
 |---|---|---|---|---|
-| **A** | **Zafar watches** | S1 girl, S2 boy, S3 old man, S4 old woman, S5 man, S6 woman | 6 | Each person's first sheet needs him (D12, decision 9). The girl's goes first and never times out. If he must leave, he types **go** (or is silent for 15 minutes on S2–S6): the runner starts part B and part D, and reruns the skipped sheets (and their people) on "resume" |
+| **A** | Unattended | S1 girl, S2 boy, S3 old man, S4 old woman, S5 man, S6 woman | 6 | None of them is a real person, so the runner judges them (decision 29). The girl's goes first: every part B prompt needs it |
 | **B** | Unattended | Girl: W1–W10; child limbs K1–K3, F1, F2, F4, U1, P1; her head close-ups E1, M1, M2, Y1–Y3, T1, T2; then O1–O3, R3, R4, R1, R5, R2, C1, C2, B1 | 37 | The girl is the visit's patient: with part B done, every heal game can be played with real art |
 | **C** | Unattended | Boy, old man, old woman, man, woman (their W prompts and head close-ups); the adult limbs AK1–AK3, AF1, AF2, AF4, AU1, AP1 (from the man's sheet) | 70 | The rest of the cast, in the order of how many games they play |
 | **D** | Unattended | D1, D2 | 2 | Zafar wants it before the visit (D19), but boing works with the stand-in beads until it lands |
@@ -173,7 +173,7 @@ The **thermometer gauge** is new because the reading must be big and live (the d
 
 ## 5. The prompts
 
-**For the runner:** paste each code box exactly as written. A code box with `{NAME}`, `{KEEP}`, `{LEGS}` or `{LIMB_WHO}` is a template: replace each slot with that prompt's person's text from the PEOPLE table below, exactly, and change nothing else. These substitutions (and, in part A only, one sentence Zafar dictates) are the only changes ever allowed.
+**For the runner:** paste each code box exactly as written. A code box with `{NAME}`, `{KEEP}`, `{LEGS}` or `{LIMB_WHO}` is a template: replace each slot with that prompt's person's text from the PEOPLE table below, exactly, and change nothing else. These substitutions are the only changes ever allowed.
 
 **The edit tail.** Every edit prompt (W2–W6, W8, K3, F2, F4, Y2, Y3, R4) ends with the same tail, already written into each code box: the same size and shape as the attached picture, the flat `#808080` background (R4 keeps its room), the style line and the negatives. An edit is only ever made from a fresh, non-edited picture (never an edit of an edit), and only for a small change in the same pose (D9). Where the pose changes (W9, W10, K2), it's a fresh prompt with the kept picture and the sheet attached.
 
@@ -195,9 +195,9 @@ The **thermometer gauge** is new because the reading must be big and live (the d
 
 ---
 
-### Part A: the first sheets (Zafar watches each one)
+### Part A: the first sheets (the runner judges them; decision 29)
 
-#### S1. The girl (Zafar watches this one)
+#### S1. The girl
 ```
 Generate an image, 1536×1024, landscape.
 
@@ -223,7 +223,7 @@ Style: exactly as the attached sheets and style anchor: a stylised 3D animated-f
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### S2. The boy (Zafar watches this one)
+#### S2. The boy
 ```
 Generate an image, 1536×1024, landscape.
 
@@ -249,7 +249,7 @@ Style: exactly as the attached sheets and style anchor: a stylised 3D animated-f
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### S3. The old man (Zafar watches this one)
+#### S3. The old man
 ```
 Generate an image, 1536×1024, landscape.
 
@@ -275,7 +275,7 @@ Style: exactly as the attached sheets and style anchor: a stylised 3D animated-f
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### S4. The old woman (Zafar watches this one)
+#### S4. The old woman
 ```
 Generate an image, 1536×1024, landscape.
 
@@ -301,7 +301,7 @@ Style: exactly as the attached sheets and style anchor: a stylised 3D animated-f
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### S5. The man (Zafar watches this one)
+#### S5. The man
 ```
 Generate an image, 1536×1024, landscape.
 
@@ -327,7 +327,7 @@ Style: exactly as the attached sheets and style anchor: a stylised 3D animated-f
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### S6. The woman (Zafar watches this one)
+#### S6. The woman
 ```
 Generate an image, 1536×1024, landscape.
 
@@ -897,54 +897,92 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No needle. N
 **Zafar:** open ChatGPT in Chrome, signed in, and open a new Claude in Chrome chat. Paste the block below and stay for part A (about 30–40 minutes: six character sheets to say ok to). Then you can leave it running. **Model:** Claude in Chrome's default. **Cost:** nothing beyond your ChatGPT plan. Expect image-limit waits; it picks up again on its own.
 
 ```
-You're making 115 images in ChatGPT for a children's game called Nani jo Ghar, and uploading them to GitHub yourself. Zafar is here for part A only; after that you work on your own and he reads your log later.
+You're making 115 images in ChatGPT for a children's game called Nani jo Ghar and putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
 
 THE PAGE
-Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-fcd9dddd-wnywzc/docs/design-language/art-plans/clinic-heal-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. This message gives the run order and, for every prompt: what to attach, the name to log it under ("save as") and what to check.
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-fcd9dddd-wnywzc/docs/design-language/art-plans/clinic-heal-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
 
-REFERENCE IMAGES (download these first)
-Open each link and click "Download raw file" (the download-arrow icon at the top right of the picture):
- 1. style-anchor-v1.png        https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/style-anchor-v1.png
- 2. char-clinic-girl-v1.png    https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-girl-v1.png
- 3. char-clinic-boy-v1.png     https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-boy-v1.png
- 4. char-clinic-oldman-v1.png  https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-oldman-v1.png
- 5. char-clinic-oldwoman-v1.png https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-oldwoman-v1.png
- 6. char-clinic-dad-baby-v1.png https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-dad-baby-v1.png
- 7. char-clinic-lineup-v1.png  https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-clinic-lineup-v1.png
- 8. char-ali-hurts-v1.png      https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/chatgpt-batch3/char-ali-hurts-v1.png
- 9. cb2b-exam-bed-close-v1.png https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/clinic-v2/cb2b-exam-bed-close-v1.png
-10. ci1-care-kit-v1.png        https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/clinic-v2/items/ci1-care-kit-v1.png
-11. ci2-tools-comfort-v1.png   https://github.com/Baby-Isa/nani-jo-ghar/blob/main/sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/
+Reference images, by the name the run order uses:
+ style-anchor-v1.png          RAW + sources/art/style-anchor-v1.png
+ char-clinic-girl-v1.png      RAW + sources/art/chatgpt-batch3/char-clinic-girl-v1.png
+ char-clinic-boy-v1.png       RAW + sources/art/chatgpt-batch3/char-clinic-boy-v1.png
+ char-clinic-oldman-v1.png    RAW + sources/art/chatgpt-batch3/char-clinic-oldman-v1.png
+ char-clinic-oldwoman-v1.png  RAW + sources/art/chatgpt-batch3/char-clinic-oldwoman-v1.png
+ char-clinic-dad-baby-v1.png  RAW + sources/art/chatgpt-batch3/char-clinic-dad-baby-v1.png
+ char-clinic-lineup-v1.png    RAW + sources/art/chatgpt-batch3/char-clinic-lineup-v1.png
+ char-ali-hurts-v1.png        RAW + sources/art/chatgpt-batch3/char-ali-hurts-v1.png
+ cb2b-exam-bed-close-v1.png   RAW + sources/art/clinic-v2/cb2b-exam-bed-close-v1.png
+ ci1-care-kit-v1.png          RAW + sources/art/clinic-v2/items/ci1-care-kit-v1.png
+ ci2-tools-comfort-v1.png     RAW + sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+Kept images: "kept:X" is the image you kept for prompt X, already committed by you to RAW + sources/art/clinic-heal-v3/<X's save-as name>.
+The upload page: https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-heal-v3
+The folder (to check and to resume): https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/clinic-heal-v3
+
+MOVING IMAGES WITHOUT DOWNLOADING (use your JavaScript tool; test both moves on S1 first and log which way worked, then always use that way)
+
+1. INTO CHATGPT (attaching). In a fresh ChatGPT chat, run this in the page, with the prompt's attachment URLs filled in:
+   (async () => {
+     const urls = [/* the RAW URLs for this prompt */];
+     const dt = new DataTransfer();
+     for (const u of urls) { const r = await fetch(u); if (!r.ok) throw new Error(u + ' ' + r.status);
+       dt.items.add(new File([await r.blob()], u.split('/').pop(), { type: 'image/png' })); }
+     const box = document.querySelector('#prompt-textarea') || document.querySelector('[contenteditable="true"]');
+     const input = [...document.querySelectorAll('input[type=file]')].find(i => !i.accept || /image|\*/.test(i.accept));
+     if (input) { input.files = dt.files; input.dispatchEvent(new Event('change', { bubbles: true })); }
+     else { box.focus(); box.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); }
+     return dt.files.length + ' files';
+   })()
+   Then take a screenshot and check the composer shows exactly that many thumbnails before you paste the prompt text. If the thumbnails don't appear, try the paste route instead of the file input (swap the two branches). If fetch itself is blocked on chatgpt.com, use the clipboard route, one file at a time: open the RAW URL in a new tab, click the image once, run
+     (async () => { const b = await (await fetch(location.href)).blob(); await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]); return 'copied'; })()
+   then switch back to the ChatGPT tab, click in the message box and press Ctrl+V (Cmd+V on a Mac). Repeat per file.
+
+2. OUT OF CHATGPT, INTO GITHUB (saving a kept image). Never use ChatGPT's download button.
+   a) Copy the image: in the ChatGPT tab, click the new image once, then run
+      (async () => { const imgs = [...document.querySelectorAll('main img')].filter(i => i.naturalWidth >= 512);
+        const img = imgs[imgs.length - 1]; let b;
+        try { b = await (await fetch(img.src, { credentials: 'include' })).blob(); }
+        catch (e) { return 'FETCH-BLOCKED ' + img.src; }
+        if (b.type !== 'image/png') { const bm = await createImageBitmap(b); const c = new OffscreenCanvas(bm.width, bm.height);
+          c.getContext('2d').drawImage(bm, 0, 0); b = await c.convertToBlob({ type: 'image/png' }); }
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]);
+        return 'copied ' + img.naturalWidth + 'x' + img.naturalHeight; })()
+      Check the size it reports is the full image (1024 or more on its long side), not a thumbnail. Make sure it's the NEW image, not one you attached. If it says FETCH-BLOCKED, open that src URL in a new tab, click the image there and run the clipboard snippet from move 1 in that tab.
+   b) Paste it into GitHub with its save-as name: open the upload page in a tab (keep one tab for it), and run there, with the save-as name filled in:
+      (() => { const name = 'SAVE-AS-NAME.png';
+        document.addEventListener('paste', e => { const f = e.clipboardData && e.clipboardData.files[0]; if (!f) return;
+          e.preventDefault(); e.stopImmediatePropagation();
+          const dt = new DataTransfer(); dt.items.add(new File([f], name, { type: 'image/png' }));
+          const input = document.querySelector('input[type=file]'); input.files = dt.files;
+          input.dispatchEvent(new Event('change', { bubbles: true })); }, { once: true, capture: true });
+        return 'ready for ' + name; })()
+      then click an empty part of the page and press Ctrl+V (Cmd+V on a Mac). Check the file appears in the list with the right name.
+   c) In "Commit changes", put the image's log line (see THE LOG) as the commit message, choose "Commit directly to the main branch", commit, and check the folder page now lists the file. Do this for every kept image straight away, so a later prompt can attach it from RAW and nothing is lost if the run stops.
+   If both ways fail for an image, leave it in its ChatGPT chat, log "NOT SAVED: <chat title>" and carry on; Claude collects those afterwards. Never fall back to downloading.
+
+APPROVALS
+- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.
+- Everything else (these six patients, limbs, close-ups, props, rooms) is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log "needs Zafar: likeness" and carry on.
 
 SAFETY RULES (always)
-- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings or download folder; no GitHub settings.
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no and use the other route.
 - Sign nothing in or out. Delete no chats.
-- Upload only the images this run makes and your log file, only to the folder below. Attach to ChatGPT only the files each prompt's line names.
-- Never write a prompt of your own, and never reword, shorten or add to one. The only changes allowed: filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table, and in part A one extra sentence Zafar dictates.
+- Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table.
 - If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
-- Pace yourself: at most 3 images generating at once (3 ChatGPT chats); start the next one only when one of those has finished, and leave at least a minute between sends. A prompt that attaches "kept:X" waits until X has been downloaded.
+- Pace yourself: at most 3 images generating at once (3 ChatGPT chats); start the next one only when one of those has finished, and leave at least a minute between sends. A prompt that attaches "kept:X" waits until X is committed.
 
 HOW TO RUN EACH PROMPT
 1. Start a fresh ChatGPT chat (never continue another prompt's chat).
-2. Attach exactly the files on its line. "kept:X" means the image you kept and downloaded for prompt X (your log says which file that is). For an edit (a line that says "edit"), attach ONLY that one kept image, nothing else; an edit is always of a fresh picture, never of another edit.
+2. Attach exactly the files on its line (move 1). For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
 3. Paste the text of its code box from the page, with the slots filled for that line's person, and send.
 4. Judge the image against its check (the CHECKS list below) and then the PASS/FAIL LIST below, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
-5. If it fails, redo it once: the same prompt in a fresh chat with the same attachments. If that fails too, you may try once more (at most 2 redos). Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
-6. Download the kept image with ChatGPT's own download button (never a screenshot), straight away. Make sure it's the NEW image, not one you attached.
-7. Write its log line straight away (see THE LOG), then move on.
-
-PART A: WITH ZAFAR (6 images; Zafar watches each one)
-Before S1, say in this chat: "Starting the six character sheets. I'll stop after each one for your ok." For each sheet: when the image passes your own check, post "<ID> ready: <one line on how it looks>. Please look at the ChatGPT tab and reply ok, redo (and what to change), or skip." Then wait.
-- ok: download it, log it, go to the next sheet.
-- redo + his words: send the same prompt in a fresh chat with his words added as one last sentence; at most 2 redos per sheet.
-- skip: log it; skip that sheet and every later prompt that attaches it.
-- go: skip the remaining sheets now (and everything that attaches them), start part B, and log them as "waiting for Zafar".
-- S1 (the girl) never times out: if Zafar hasn't replied, post a reminder in this chat every 10 minutes and keep waiting. Part B can't start without her sheet.
-- S2 to S6: if Zafar hasn't replied within 15 minutes, treat it as "go": log that sheet and the ones after it as "waiting for Zafar" and start part B. On "resume", run those sheets first (with Zafar watching), then their people's lines.
-Once part A is over, tell Zafar: "Part A done. I'll carry on alone; you can leave."
+5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most 2 redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+6. Save the kept image to GitHub straight away (move 2), with its log line as the commit message, then move on.
 
 RUN ORDER. Line format: ID (person) | attach | save as | check
-PART A (6)
+PART A: THE SIX PATIENT SHEETS (6). Judge them yourself like every other image. Run S1 first: every girl prompt needs it.
 S1 | style-anchor-v1.png, char-clinic-girl-v1.png, char-ali-hurts-v1.png | s1-girl-sheet-v2.png | SHEET + the girl as v1: two short plaits, white ribbons, yellow dress, white leggings, white sandals; about five
 S2 | style-anchor-v1.png, char-clinic-boy-v1.png, char-ali-hurts-v1.png | s2-boy-sheet-v2.png | SHEET + the boy as v1: gap-toothed grin, red long-sleeved T-shirt, dark blue trousers; about six; not like the boy in orange
 S3 | style-anchor-v1.png, char-clinic-oldman-v1.png, char-ali-hurts-v1.png | s3-oldman-sheet-v2.png | SHEET + the old man as v1: grey moustache, no beard, no cap, no glasses, blue kurta; no stick anywhere
@@ -990,7 +1028,7 @@ R2 | style-anchor-v1.png, ci2-tools-comfort-v1.png | r2-ceiling-fan-v1.png | R2
 C1 | style-anchor-v1.png | c1-eye-chart-front-v1.png | C1
 C2 | style-anchor-v1.png, kept:C1 | c2-eye-chart-turned-v1.png | C2
 B1 | style-anchor-v1.png, ci1-care-kit-v1.png | b1-filling-button-v1.png | B1
-Then upload part B (see UPLOADING).
+Part B done: post the part B summary (see AT THE END) and carry on.
 
 PART C: THE OTHER PATIENTS (70). For each person, run these lines with that person's prefix and sheet:
  <p>-W1 | style-anchor-v1.png, kept:<sheet> | <p>-w1-front-neutral-v1.png | W1
@@ -1017,12 +1055,13 @@ Then the adult limbs. Limb set: adult; sheet S5:
  adult-U1 | style-anchor-v1.png, kept:S5 | adult-u1-upperarm-v1.png | U1
  adult-P1 | style-anchor-v1.png, kept:S5 | adult-p1-sole-v1.png | P1
 If a person's sheet was skipped in part A, skip all of that person's lines (and the adult limbs if S5 was skipped), and log it.
-Then upload part C.
+Part C done: post the part C summary and carry on.
 
 PART D: THE DROP MACHINE (2)
 D1 | style-anchor-v1.png, ci2-tools-comfort-v1.png | d1-drop-machine-v1.png | D1
 D2 | style-anchor-v1.png, ci2-tools-comfort-v1.png, kept:D1 | d2-levers-drops-v1.png | D2
-Then upload part D.
+Part D done.
+
 
 CHECKS (by check ID)
 SHEET: eight panels in two rows of four, nothing touching, no borders or labels · the same person in every panel · panel 1 sitting front-on, thighs level, feet flat on one level · panel 2 exactly side-on facing right · panel 4 side-on head (the whole ear shows, unless a headscarf covers it) · panel 5 happy · panel 7 the sole of a bare foot, toes up · skin a warm light tan, not orange, pink or grey · no bed, bench or chair drawn
@@ -1076,23 +1115,20 @@ PASS/FAIL LIST (every image; any one of these is a fail)
 - An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
 - Light from anywhere but the upper left; a second light; "seen exactly side-on" or "from directly below" drawn at an angle; circles drawn as ovals where "straight on" or "from directly below" was asked.
 
+
 THE LOG
-Keep one running log. If you can, save it as art-run-log.txt in Downloads and add each line as you go; if not, post each line in this chat as you write it, and after every 5 images (and before every image-limit wait) post the whole log so far as one block.
-One line per downloaded image:
- <ID> | <time> | <the downloaded file's name exactly as saved> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | Zafar: ok / redo / skipped / not asked | <notes>
-Also log every skipped prompt (and why), every image-limit message with its time, and anything odd (a refusal, an error, a duplicate download, a missing attachment).
+One line per kept image, used as that image's commit message:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | <notes>
+Also log every skipped prompt (and why), every image-limit message with its time, every "NOT SAVED" image, and anything odd (a refusal, an error, a missing attachment). Post each line in this chat as you write it, and after every 10 images post the whole log so far as one block.
 
 IMAGE LIMITS
 If ChatGPT says you've hit the image limit, log the time and its exact words. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
 
-UPLOADING (after each part)
-Open https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-heal-v3 and drag in that part's downloaded images (only the ones you kept) and your log file so far, saved as art-run-log-partA.txt, -partB.txt, -partC.txt or -partD.txt (if you kept the log in this chat, save it to a text file first; if you can't, paste it into the commit description instead). Rename nothing. Choose "Commit directly to the main branch", commit message "Clinic heal v3 art, part <A/B/C/D> (ChatGPT, <n> images)", click "Commit changes", then check the folder page lists the new files. Part A's sheets go up with part B's upload.
-
 RESUMING
-If this message is pasted again later with the word "resume", open the folder above, read the art-run-log-part*.txt files there, download any kept image a later prompt needs from that folder, and carry on from the first prompt that isn't logged as kept. Sheets logged "waiting for Zafar" come first, run the part A way (he watches each one).
+If this message is pasted again later with the word "resume", open the folder page: every committed file is a kept image (its commit message is its log line). Carry on from the first prompt in the run order whose save-as file isn't there.
 
-AT THE END
-Post the full log, then a short list per part: passed, failed (and why) and skipped (and why).
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped (and why), not saved. At the very end, also commit the whole log as sources/art/clinic-heal-v3/art-run-log.txt: on the folder page use "Add file" > "Create new file", paste the log, commit directly to main.
 ```
 
 **What happens next (Claude):** the uploads are matched to the prompts through the log (then the picture), renamed to the save-as names in `sources/art/clinic-heal-v3/`, cut, and reviewed by someone other than the builder (D25, C4) before Zafar sees anything (section 8).
@@ -1176,7 +1212,7 @@ The game code reads it in the finishing sessions (F2/F3); the cut session only w
 | | |
 |---|---|
 | **Images** | **115** (6 + 37 + 70 + 2). With redos at roughly a quarter, expect about 140 generations |
-| **Zafar's time** | About 5 minutes to set up and paste; 30–40 minutes watching part A (six sheets, about 3 minutes each with his look, plus any redos); then nothing until he plays the result. If he can only stay for S1, he types **go** and the other five sheets wait for a second short sitting |
+| **Zafar's time** | About a minute to paste the block; nothing to approve (decision 29); then nothing until he plays the result. |
 | **Run time** | At about 1 image a minute and 3 at once: part B 1–1.5 hours and part C 2–3 hours of generation. Image-limit waits probably stretch the whole run across an evening and a night. Part B is first, so the girl's art is in by the morning even if part C runs on |
 | **When** | As soon as this page is pushed (the block reads it from the branch `ccr-fcd9dddd-wnywzc`; once it's merged, the link can point at `main`) and Zafar has 40 minutes, ideally the evening of 2 Oct. Part B cut and reviewed on 3 Oct, so F2/F3 can wire the girl's games 4–6 Oct; parts C and D cut by 5 Oct; leaving 3–4 days before the ~9 Oct visit |
 | **Claude's cut-and-review session** | One session after each upload. **Top model, high effort** (judging art is visual work, rule 15): about 2–3M tokens for part B (the cut script, the girl's cuts, the overlay and match-cut tests) and 2M for parts C and D. The script could be written by a mid-tier model, but one owner is simpler, and the review must be someone other than the builder (D25) |

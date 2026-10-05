@@ -286,7 +286,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 ### Pipeline and cost
 - **Art is made in ChatGPT via Claude in Chrome.** A paid API only to prototype fast when Zafar won't respond, under $2: medium quality, estimate and draft first, spend reported. (D1, D2)
-- **One long paste block per run:** generous batches, every attachment, a save-as name and check line per prompt; Chrome uploads to `sources/art/<pack>/` on `main` and reports pass/fail. (D3)
+- **One long paste block per run, needing no manual steps from Zafar:** generous batches, every attachment, a save-as name and check line per prompt. The runner works only inside Chrome: it attaches references to ChatGPT from `raw.githubusercontent.com` and commits each kept image straight to `sources/art/<pack>/` on `main` through the page (JavaScript and the clipboard), never downloading or using a file picker; it reports pass/fail. (D3, decision 29)
 - **The Chrome runner** changes no settings, signs nothing in or out, uploads only listed files, logs-and-skips anything needing Zafar, and paces ~1 image a minute, 3 at once. (D24, D26)
 - **Judge every generated asset pass/fail and fix failures** before Zafar sees anything. (D25)
 - **Art Zafar uploads is named, moved and processed** with a report; approved art replaces live art, with old versions kept. (D28, D29)
@@ -311,7 +311,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Pot and pan contents are pre-rendered pictures, cross-faded;** never drawn dots or discs. (D11)
 
 ### Characters and likeness
-- **Character sheet first:** Zafar supervises each person's first sheet; after sign-off, unattended runs may make that person's art from it. (D12, decision 9)
+- **Character sheet first.** Zafar approves art only for characters based on real people (Nani, Big Ma, the doctor, any real family member): their first sheet and any new look, because only he can judge the likeness. Everything else (generic characters, props, rooms, items) the runner and Claude judge pass/fail themselves, with no approval from Zafar. After a sheet passes, unattended runs make that person's art from it. (D12, decisions 9 and 29)
 - **Family photos may be attached to prompts for likeness;** all consent is given. (D12, decision 9)
 - **Faces:** head-and-shoulders filling the circle, same eye line and size for everyone, three expressions (neutral, happy, frown). (D18)
 

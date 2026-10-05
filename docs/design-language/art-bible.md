@@ -302,7 +302,7 @@ Full list and generation order: `docs/archive/art/Asset Building Plan.md`, secti
 - **Right hands only;** left hands are mirrored in code. Two-handed images only where the hands touch (rolling pin, clap, handshake, fold).
 - **Grip plus separate tool:** hands are drawn empty in the grip pose; the tool is its own sprite placed at the grip's pivot. The list is organised by grip (A open, B handle, C pinch, D hold, E social, F play).
 - **Cameras:** a pose is drawn only in the camera it's used in (T top-down, back of the hand up; E eye level, back of the hand towards the player).
-- **The reference hand:** one right hand, top-down, relaxed and slightly open, boy sleeve, 1.2× worktop scale. Zafar signs it off; every other hand is an edit of it.
+- **The reference hand:** one right hand, top-down, relaxed and slightly open, boy sleeve, 1.2× worktop scale. The runner and Claude judge it (decision 29); every other hand is an edit of it.
 - **Shape:** a slender hand: slim overall, with **long fingers relative to a small palm** (not stubby, chunky or toy-like). **No visible bones, knuckle ridges, tendons or veins**; surfaces stay smooth and simple, because the hands are rigid sprites moved in code.
 - **Skin tone:** **one tone, Zafar's own** — a warm light tan, not orange, not saturated (hex values in section 2). No skin-tone variants for now.
 - **Sleeve:** modern, not costume. The rolled sleeve is **only sometimes visible**: in the top-down set the bare forearm enters from the bottom edge and the soft rolled fabric just shows at the very bottom edge, or is cropped out.

@@ -382,7 +382,7 @@ Each line: pose, camera, frames, and what it's used for. Games: **C** Cook, **F*
 
 ### 1.5 Generation order
 
-1. **Reference hand.** One right hand, top-down, with the embroidered cuff. Zafar signs it off.
+1. **Reference hand.** One right hand, top-down, with the embroidered cuff. The runner and Claude judge it (decision 29: only real people need Zafar).
 2. **Master set**, top-down poses first (Cook needs them first), then eye level.
 3. **The code check.** Drop the hands into two stations (roll and tawa) and check that the grips line up with the tools.
 4. **Characters in code** (`build/skin_hands.py`): boy, girl, girl Eid (when the mehndi texture exists) and Nani, from the passing masters; check the anchor sheet (`--check-sheet`) and each character's contact sheet.

@@ -108,7 +108,8 @@ While iterating: laptop size, changed screens only, one shot each. Run the full 
 ## Art
 
 - Plan before prompting: what the object is for, how it's seen in game, who stands where in a background.
-- Judge every generated asset pass/fail and fix failures before Zafar sees anything.
+- Judge every generated asset pass/fail and fix failures before Zafar sees anything. Zafar approves only characters based on real people (Nani, Big Ma, the doctor); everything else needs no approval from him.
+- Art runs need no manual steps from Zafar: the Chrome runner moves images between GitHub and ChatGPT in the browser, never via downloads.
 - The method is `docs/design-language/art-pipeline.md`; the look is `docs/design-language/art-bible.md`.
 
 ## Handover

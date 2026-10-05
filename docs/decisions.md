@@ -238,6 +238,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **28. Finishing step 3:** C1 (clinic polish) and G1 (gate fixes) run side by side, both on the top model; neither publishes to `main`. One publish after the gate (full sandbox run on the mid-tier model, then one Fable review) and Zafar's play. This deliberately replaces "every session ends with one push to `main`" (B6) for these two sessions. Upgrade bonus coins (no numbers yet) and Cook's tablet layouts (CK-TAB-01) wait. Zafar wants to play both the clinic and Cook this evening.
   Source: Zafar, orchestrator chat, 5 Oct ("yes to all"). Rule: B6 (exception for this gate)
 
+- **29. Art approval and the hands-free runner:** Zafar approves art only for characters based on real people (Nani, Big Ma, the doctor, any real family member), because only he can judge the likeness. All other art is judged pass/fail by the Chrome runner and Claude, with no approval from him. Art runs need no manual effort from him: the Chrome runner attaches references from GitHub and commits kept images straight to GitHub in the browser, never downloading. The clinic heal block's part A (six generic patients) no longer waits for him.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: D3, D12
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

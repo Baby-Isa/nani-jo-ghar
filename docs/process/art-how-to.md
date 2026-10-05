@@ -2,7 +2,8 @@
 
 > **Stale points (the rulebook, `docs/process/rules.md`, wins).** Blocks below are copied word for word from the 26–30 Sept packs; read them with these overrides:
 > - "No private photos" / "Mum's, Big Ma's, the doctor's and the cats' photos stay in `sources/private/` and never go into the repo" → family photos may be attached for likeness; all consent is given (D12, decision 9). The 26 Sept run-me already says so; the rule's short form is in `rules.md` §7.
-> - "Drag the PNGs into the Claude Code chat" / "Zafar uploads" → the current method is Chrome uploading to `sources/art/<pack>/` on `main` (D3); Claude then renames, cuts and reviews.
+> - "Download", "Drag the PNGs into the Claude Code chat", "Zafar uploads" and "drag them in" → the current method needs no manual steps and no downloads: the runner attaches references from `raw.githubusercontent.com` and commits each kept image to `sources/art/<pack>/` on `main` from the browser (JavaScript and the clipboard). The template is the "MOVING IMAGES WITHOUT DOWNLOADING" section of `docs/design-language/art-plans/clinic-heal-chrome-block.txt` (D3, decision 29); Claude then cuts and reviews.
+> - "Zafar watches / signs off" a sheet → only for characters based on real people (Nani, Big Ma, the doctor); all other art is judged by the runner and Claude (D12, decision 29).
 > - "Slice magenta sheets with `build/slice_sheet.py`" → legacy; cut with `build/cut_tick_v2.py`'s method (D7, D22; `design-language/art-pipeline.md`).
 > - "Generate via an image API for transparency" → ChatGPT, not an API, except a rapid prototype under $2 when Zafar can't respond (D1, D2, non-negotiable 13).
 > - "Hands" in the prompts → hands are out of Cook and parked (Zafar, 28 Sept).
