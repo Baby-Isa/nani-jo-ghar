@@ -72,8 +72,9 @@ if (s.flows?.length && !a.has("no-rows")) {
   add("");
 }
 
-add("PROOF (rule C, done means looked at):",
-  "  - Map what you changed: `node build/tools/review/touched.mjs` and run the sandbox command it prints.",
+add("PROOF (rule C8, decision 48: fast checks only; the orchestrator's /review runs the full matrix once before a publish):",
+  "  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).",
+  "  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.",
   "  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).",
   "  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.",
   "  - `node build/tools/review/skeleton.mjs " + report + "` starts the report's proof section.",

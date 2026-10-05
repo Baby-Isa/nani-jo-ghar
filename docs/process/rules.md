@@ -121,7 +121,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **List flaws before saying anything is right:** zoom ×2 and check clipping, spacing, padding, alignment, overlap, crowding, unused lit things, labels, mock-up differences. (C3)
 - **Screenshot every visually distinct state, uncropped, at phone landscape 844×390 (plus 800×360, the tightest common phone, in the full matrix), 1366×768 and 16:10 laptops (1440×900, 1280×800),** across levels 1–4, one written line per state; one upright phone shot checks the rotate card. (C2, C11, C16, decision 15)
 - **Tablets are in the matrix too:** 1024×768, 1180×820 and 1366×1024 landscape. (decision 24)
-- **While iterating: laptop only, changed screens only, one shot each.** The full matrix and tests only before the final push. (C8)
+- **Builders check fast; the full check runs once.** A build session runs the tests, leak scripts, `checks.mjs` and one `--touched` pass at laptop size on the flows it changed, one shot each. The full matrix, the sound run and the outside review run once, by the orchestrator's `/review`, before a publish. (C8, decision 48)
 
 ### Standing checks
 - **The regression list:** every past feedback item is rechecked at every review. (C6)
