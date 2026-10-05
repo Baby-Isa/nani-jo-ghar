@@ -13,7 +13,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 - **Still running (check each with `get_session`; reports land in `build/reports/`):**
   1. **Gate**: full sandbox run, Sonnet, `session_01G2jdcAfGrNjmDL2mgHdH93`, stop 17:00 → `step3-gate.md`.
   2. **W2**: Cook's samosa/daar guide phases, the clinic words shown and heard, *lal* → ***laal*** everywhere, decision 32; Sonnet, `session_01JcvC7Umt9dTH9ZVUQ27aJc`, stop 17:30 → `w2-words.md`.
-  3. **A1**: the girl's clinic art cut and wired into the nine heal games; told to wrap up (big context) → `a1-clinic-art.md` with a "left for the next art session" list. Opus, `session_01MX4oT85PhNCze8gryAZbNz`.
+  3. **A1: done** (15:30): all landed part B art for the girl is wired in all nine heal games (`a1-clinic-art.md`). Stand-ins left: boing's arm (U1 failed on modesty: redo), foot L3, diagnosis and send-off, and everything not yet landed. 3 card-scroll findings at L2 on phones come from G1's order card (reproduce on 0af7011): fix before publishing.
   4. **Chrome art run** (Zafar's browser): parts B–D still landing in `sources/art/clinic-heal-v3/` on `main` (30 of 115 at 14:50).
 - **Decision 33:** Zafar plays only after all the art is finished and wired, the full checks pass, and it is live on `main`. No play tonight.
 
