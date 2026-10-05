@@ -105,6 +105,9 @@
 .oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
 .oc-look svg { width: 100%; height: 100%; display: block; }
 .oc-card.closed.folded .oc-look { display: block; }
+/* SH-47: the headline (and a "to record" flag under it) keeps clear of the eye: the head leaves the eye's corner
+   free, so a long line shrinks first, then wraps at the largest two-line size (js/shared/fit.js), never under it */
+.oc-card.closed.folded:has(> .oc-head > .oc-look) .oc-head { padding-right: calc(var(--njg-icon) * 0.85 + var(--njg-s1)); }
 
 /* ---------- rows: an item row (tier 2) and a part (tier 3), one line (shrunk, then wrapped), a flat gold tick when done ---------- */
 .oc-card .oc-item { display: flex; flex-direction: column; min-width: 0; }
