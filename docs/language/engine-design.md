@@ -134,7 +134,8 @@ One entry per word (a *lexeme*), with its class, gender, paradigm, any irregular
   "forms": { "he": "hakro", "she": "hakri" }, "src": ["grammar-notes §2"] }
 
 { "id": "a.wadho", "pos": "A", "paradigm": "adj.o",
-  "forms": { "he.sg": "wadho", "she.sg": "wadhi" }, "src": ["grammar-notes §4", "§24 B6"] }
+  "forms": { "he.sg": "wadho", "he.pl": "wadha", "he.obl": "wadhe", "she.sg": "wadhi", "she.pl": "wadhi" },
+  "src": ["grammar-notes §4", "§24 B6", "§40–§42 (5 Oct)"] }
 
 { "id": "v.khap", "pos": "V2dat", "gloss": "be needed (to someone)",
   "forms": { "informal": "khape", "pres.he.sg": "khapeto", "pres.she.sg": "khapeti",
@@ -157,7 +158,7 @@ A paradigm is a word class: how each cell is made from the stem, with a status p
   "cells": {
     "sg.dir": { "make": "{stem}o", "status": "confirmed", "src": "grammar-notes §4" },
     "pl.dir": { "make": "{stem}a", "status": "confirmed", "src": "§4, §34, §35" },
-    "sg.obl": { "make": null, "status": "unknown", "note": "chokre (§36 C18) but ambo (§36 C13): set per word" },
+    "sg.obl": { "make": "{stem}e", "status": "draft", "src": "§41, §48, §49, §55 (5 Oct: ambe, bakre, chokre, darwaje, rasore)", "note": "28 Sept bare ambo je mathe / bakro sathe (§36) to recheck with Mum" },
     "pl.obl": { "make": "{stem}a", "status": "draft", "src": "chokra sathe, §36 C18" }
   }
 },

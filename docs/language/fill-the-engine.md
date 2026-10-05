@@ -37,7 +37,7 @@ Every change cites its source in `src` (a grammar-notes section, a clip `qid`, o
 
 - **One word's odd form** (*chokre* before *sathe*): put it in that word's `forms`; don't change the paradigm.
 - **A pattern** that holds for **every** word Mum has said in that class (-o → -a): set the paradigm cell to `confirmed` with all the examples as sources.
-- **A tendency** with exceptions (the oblique -e: *chokre* but *ambo*): leave the paradigm cell `unknown` and set forms per word. Never promote a tendency to a rule.
+- **A tendency** with exceptions: leave the paradigm cell `unknown` and set forms per word. Never promote a tendency to a rule. (The old example, the oblique -e, *chokre* but *ambo*, was largely settled by Mum on 5 Oct, grammar-notes §41 and §49: the cell is now a `draft` default with the two 28 Sept exceptions to recheck.).
 - A new paradigm needs at least two of Mum's words in it.
 
 ### 2.3 A syntax rule or a new meaning
