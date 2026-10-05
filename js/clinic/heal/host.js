@@ -189,6 +189,14 @@
     };
     // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
     const healed = () => fig.el.querySelectorAll(".fig-swirl").forEach((n) => n.remove());
+    // the figure goes back as it came: the next stage (the send-off stands the patient up) draws the greybox
+    const restore = () => {
+      if (!art || hadArt || !fig.artBox) return;
+      fig.artBox.remove();
+      fig.el.classList.remove("has-art");
+      fig.groups.marks.removeAttribute("transform");
+      fig.art = fig.artEl = fig.artBox = null;
+    };
     const play = (el, frames, opts) => (el.animate && !reduced ? el.animate(frames, opts).finished.catch(() => {}) : Promise.resolve());
     const z = {
       wide,
@@ -260,17 +268,13 @@
         layer.appendChild(still);
         if (home) home.appendChild(fig.el);
         else fig.el.remove();
+        restore();
         layer.insertBefore(still, layer.firstChild);
         z.kept = true;
       },
       destroy() {
         if (home && fig.el.parentNode === layer) home.appendChild(fig.el);
-        // the figure goes back as it came (the next stage may show it front-on or as the greybox)
-        if (art && !hadArt && fig.artBox) {
-          fig.artBox.remove();
-          fig.el.classList.remove("has-art");
-          fig.art = fig.artEl = fig.artBox = null;
-        }
+        restore();
         wide.remove();
       },
     };
