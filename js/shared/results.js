@@ -297,7 +297,7 @@
     const bad = [];
     const ok = [];
     words.forEach((w, i) => (w.right === false ? bad : ok).push(card(w, i)));
-    const col = (cls, list) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}" style="--rs-cols:${Results.wordCols(list.length)}">${list.join("")}</div>`;
+    const col = (cls, list) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}${list.length >= 10 ? " many" : ""}" style="--rs-cols:${Results.wordCols(list.length)}">${list.join("")}</div>`;
     return col("rs-words-bad", bad) + col("rs-words-ok", ok);
   }
 

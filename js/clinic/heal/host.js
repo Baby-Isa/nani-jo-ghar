@@ -160,6 +160,8 @@
       const k = Math.max(2.2, Math.min(5, (0.6 * H) / Math.max(24, 2.4 * (q.r || 30))));
       return { ox: (100 * q.x) / bw, oy: (100 * q.y) / bh, k };
     };
+    // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
+    const healed = () => fig.el.querySelectorAll(".fig-swirl").forEach((n) => n.remove());
     const play = (el, frames, opts) => (el.animate && !reduced ? el.animate(frames, opts).finished.catch(() => {}) : Promise.resolve());
     const z = {
       wide,
@@ -193,14 +195,18 @@
         layer.appendChild(fig.el);
         fig.pose("sit");
         fig.react("happy", 0);
+        healed();
         if (z.top) layer.style.top = z.top;
         const a = z.at || anchor();
+        // CLN-77: the pull-out starts part of the way in, lightly softened: never a full-screen smear of a huge,
+        // blurred patient
+        const k0 = 1 + (a.k - 1) * 0.55;
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.remove("gone");
         wide.classList.add("on");
         await Promise.all([
           play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
-          play(box, [{ transform: `scale(${a.k})`, filter: "blur(4px)" }, { transform: "scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
+          play(box, [{ transform: `scale(${k0})`, filter: "blur(2px)" }, { transform: "scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
         ]);
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
@@ -214,6 +220,7 @@
         box.style.transform = box.style.filter = "";
         wide.classList.remove("gone");
         wide.classList.add("on", "kept");
+        healed();
         if (fig.el.parentNode !== layer) {
           layer.appendChild(fig.el);
           fig.pose("sit");

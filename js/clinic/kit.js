@@ -315,6 +315,9 @@
   Voice.layer = null; // the element bubbles are placed in (the play area)
   Voice.bubble = function (w, who, opts = {}) {
     const layer = opts.layer || Voice.layer || document.body;
+    // the speaker's last bubble (kept for half a second after its line) goes when they speak again: two bubbles never
+    // stack in the same place (the eye test's rows, read one after another)
+    document.querySelectorAll(`.cl-bubble.who-${who}`).forEach((x) => x.remove());
     const b = h("div", `cl-bubble who-${who}`, layer);
     Kit.text(w, b);
     // CLN-76 (E1, G2): a line with no Kutchi yet is a flagged placeholder (grey italic, "to record"), never dark text

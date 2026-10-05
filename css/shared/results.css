@@ -385,3 +385,13 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   .rs-badges.n4 { grid-template-columns: 1fr; gap: var(--njg-s2); }
 }
 .rs-step-text .rs-ph-in { font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
+
+/* CLN-73 (2 Oct): short landscape phones (800x360) fit a level-3 review (nine or more words) without a scroll: the
+   tiles go compact, the word and its speaker + English side by side on one line (wrapping under only when narrow),
+   and a long list takes a fourth column */
+@media (orientation: landscape) and (max-height: 440px) {
+  .njg-results .rs-words-col { gap: var(--njg-s2); }
+  .njg-results .rs-words-col.many { grid-template-columns: repeat(4, minmax(0, var(--njg-end-col))); }
+  .njg-results .rs-word { flex-direction: row; flex-wrap: wrap; column-gap: var(--njg-s2); row-gap: 0; min-height: var(--njg-tap); padding: var(--njg-s1) var(--njg-s2); }
+  .njg-results .rs-word .rs-rec { order: 3; }
+}
