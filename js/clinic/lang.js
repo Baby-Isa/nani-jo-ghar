@@ -48,7 +48,9 @@
         try {
           mod = await import("#core/lang/index.js");
         } catch (e) {
-          mod = await import(`${root}js/core/lang/engine/index.js`);
+          // (a classic script's import() resolves against the script's own URL: make it the page's)
+          const base = typeof document !== "undefined" ? document.baseURI : "";
+          mod = await import(new URL(`${root}js/core/lang/engine/index.js`, base).href);
         }
         const data = {};
         for (const f of DATA_FILES) data[f] = await loadJSON(`data/lang/${f}.json`);
@@ -66,7 +68,7 @@
   /* ---------------- ids ---------------- */
   // the clinic's ids are the engine's aliases (build/lang/import_clinic.mjs): a word by its own id, a tray item as
   // clinic.item.<id>, a line as clinic.line.<key>, the pipeline's words as clinic.pipeline.<kind>.<key>
-  const PREFIX = ["", "clinic.item.", "clinic.line.", "clinic.line.pipeline."];
+  const PREFIX = ["", "clinic.item.", "clinic.line.", "clinic.line.pipeline.", "col-"]; // col-: a colour by its plain name
   E.lex = function (id, prefixes = PREFIX) {
     if (id == null) return null;
     const lx = EN().linearizer;
@@ -148,6 +150,26 @@
     a.en += (a.en && space ? " " : "") + (b.en || "");
     return a;
   }
+  /** insert result b into a after token ti / segment si (a space before it), shifting a's clip plan */
+  function splice(a, b, ti, si) {
+    const nb = b.tokens.length;
+    const segs = [{ t: " ", lang: null }].concat(b.segments.map((x) => Object.assign({}, x)));
+    const ns = segs.length;
+    const shift = (c) => Object.assign({}, c, { tokens: c.tokens && c.tokens.map((t) => (t >= ti ? t + nb : t)), segs: c.segs && c.segs.map((t) => (t != null && t >= si ? t + ns : t)) });
+    const plan = a.clipPlan.map(shift);
+    const ins = (b.clipPlan || []).map((c) => Object.assign({}, c, { tokens: c.tokens && c.tokens.map((t) => t + ti), segs: c.segs && c.segs.map((t) => (t == null || t < 0 ? t : t + si + 1)) }));
+    const at = plan.findIndex((c) => c.tokens && c.tokens[0] >= ti + nb);
+    plan.splice(at < 0 ? plan.length : at, 0, ...ins);
+    a.tokens.splice(ti, 0, ...b.tokens);
+    a.segments.splice(si, 0, ...segs);
+    a.clipPlan = plan;
+    a.gaps.push(...(b.gaps || []));
+    a.drafts.push(...(b.drafts || []));
+    a.ok = a.ok && b.ok;
+    a.text = a.segments.map((x) => x.t).join("");
+    a.en += b.en ? " " + b.en : "";
+    return a;
+  }
   /** a sentence result as a row piece: no capital, no final mark (F10: card rows), unless asked */
   function rowOf(r, { lower }) {
     const segs = r.segments.slice();
@@ -206,15 +228,39 @@
         }
         // a frame round a describing word or a number said on its own ("pela wadho"): the engine's frame word, then
         // the engine's own word (its frames take a noun phrase; a lone describing word has no noun to agree with)
-        const bare = m.x && m.x.fn === "Item" && !m.x.n && !(m.x.mods && m.x.mods.length) ? EN().linearizer.lexOf(idOf(m.x.kind)) : null;
+        const bare = m.x && m.x.fn === "Item" && !(m.x.mods && m.x.mods.length) ? EN().linearizer.lexOf(idOf(m.x.kind)) : null;
         if (bare && !["N", "PN", "Phrase"].includes(bare.pos) && ["First", "Then", "And"].includes(m.fn)) {
           r = rowOf(EN().say({ fn: m.fn }, E.ctx), { lower: !!m.lower });
-          concat(r, wordResult(bare.id));
+          concat(r, E.say(m.x));
+          break;
+        }
+        // a line's slot filled by a joined description ("chokri [in green]"): the line with the description's head in
+        // the slot, and the rest of the description placed right after the head's word
+        const jk = Object.keys(m).find((k) => k !== "x" && m[k] && typeof m[k] === "object" && m[k].fn === "Join");
+        if (jk) {
+          const [head, ...rest] = m[jk].parts;
+          r = E.say(Object.assign({}, m, { [jk]: head }));
+          const hid = head && head.fn === "Item" ? idOf(head.kind) : typeof head === "string" ? idOf(head) : null;
+          let ti = -1;
+          r.tokens.forEach((t, i) => t.lex === hid && (ti = i));
+          let si = -1;
+          r.segments.forEach((sg, i) => sg.w === hid && (si = i));
+          const add = E.say({ fn: "Join", parts: rest });
+          if (ti < 0 || si < 0) concat(r, add);
+          else splice(r, add, ti + 1, si + 1);
           break;
         }
         const em = toEngine(m);
         if (em.fn === "Item" && !em.n && !(em.mods && em.mods.length)) {
           r = wordResult(em.kind);
+          break;
+        }
+        // a count of a describing word with its noun left out ("ba laal": two red ones): the engine's number word, then
+        // the engine's own word (its Item needs a noun to agree with)
+        const head = em.fn === "Item" ? EN().linearizer.lexOf(em.kind) : null;
+        if (head && !["N", "PN", "Phrase"].includes(head.pos) && em.n != null && !(em.mods && em.mods.length)) {
+          r = E.say({ fn: "Count", n: em.n });
+          concat(r, wordResult(head.id));
           break;
         }
         r = EN().say(em, E.ctx);
@@ -276,6 +322,21 @@
   /* ---------------- display words ---------------- */
   E.w = (id, o) => Object.assign(E.show(E.word(id), o), { id });
   E.num = (n, o) => Object.assign(E.show(E.count(n), o), { id: E.numId(n), n });
+  /**
+   * A parked game's word table ({key: {id?, english, …}}) with every word the engine's (its own id, else the key, as
+   * the engine's alias); the non-language fields stay. A word the engine doesn't know stays its placeholder.
+   */
+  E.words = (map) =>
+    Object.fromEntries(
+      Object.entries(map || {}).map(([k, v]) => {
+        const id = v && v.id && E.lex(v.id) ? v.id : E.lex(k) ? k : null;
+        // the table's own capital (a row's first word: "Pela") is spelling, kept
+        const w = id ? E.w(id, { cap: !!(v && /^[A-Z]/.test(v.kutchi || "")) }) : { kutchi: null, english: (v && v.english) || k, placeholder: true, plan: [] };
+        return [k, Object.assign({}, v, { kutchi: w.kutchi, english: w.english, placeholder: w.placeholder, plan: w.plan, audio: undefined })];
+      })
+    );
+  /** A parked game's numbers list ([{n, …}]) with each number word the engine's (capitalised, as the lists had them). */
+  E.numbers = (list) => (list || []).map((x) => Object.assign({}, x, (({ kutchi, english, plan }) => ({ kutchi: kutchi || x.kutchi, english, plan }))(E.num(x.n, { cap: true }))));
   /** A display word for a size + noun ("wadho [wax]"): the describing word agrees with the noun (he-form if unknown). */
   E.sized = (size, noun, o) => E.show(E.item(noun, { size }), o);
 

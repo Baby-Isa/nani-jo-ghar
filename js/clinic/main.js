@@ -209,7 +209,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           // the round had a closed card: the end screen shows the eye badge (D12)
           if (screen.card.closedSeen) ctx.lookable();
           ctx.done({
-            words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right })),
+            words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right, plan: w.plan || [] })),
             steps: hl && hl.steps ? hl.steps : undefined, // D14: the heal game's steps, for "what went wrong"
           });
         },

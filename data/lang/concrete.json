@@ -1431,15 +1431,6 @@
    "what": "My {side} {part}",
    "src": "data/clinic/pipeline.json lines.pipeline.hurts-side: data/clinic/pipeline.json"
   },
-  "MyPart": {
-   "status": "unknown",
-   "ask": [
-    "Round 4 Section G (the doctor's script)"
-   ],
-   "english": "My {part}",
-   "what": "My {part}",
-   "src": "data/clinic/pipeline.json lines.pipeline.mypart: data/clinic/pipeline.json"
-  },
   "ToolThePart": {
    "status": "unknown",
    "ask": [
@@ -1466,6 +1457,15 @@
    "english": "This is {x}. Bring me {y}",
    "what": "This is {x}. Bring me {y}",
    "src": "data/clinic/pipeline.json lines.pipeline.handover-no: data/clinic/pipeline.json"
+  },
+  "MyPart": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "My {part}",
+   "what": "My {part}",
+   "src": "data/clinic/pipeline.json lines.pipeline.mypart: data/clinic/pipeline.json"
   },
   "BringMeA": {
    "status": "unknown",

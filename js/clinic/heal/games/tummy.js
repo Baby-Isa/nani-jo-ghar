@@ -25,6 +25,7 @@
   "use strict";
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const ID = "tummy";
+  const CL = () => root.ClinicLang || (typeof require === "function" ? require("../../lang.js") : null); // the engine (js/clinic/lang.js)
   const nodeData = () => {
     const fs = require("fs");
     const path = require("path");
@@ -40,9 +41,9 @@
 
   function makeRound(D, level, rng) {
     const lv = D.levels[String(level)] || D.levels["1"];
-    const W = D.words;
+    const W = CL().words(D.words);
     const count = pick(rng, lv.bubbles);
-    const num = D.numbers.find((n) => n.n === count);
+    const num = CL().numbers(D.numbers).find((n) => n.n === count);
     const dk = pick(rng, D.drinks);
     const dw = W[dk.word];
     const amount = lv.amount ? (rng() < 0.5 ? HALF : FULL) : null;

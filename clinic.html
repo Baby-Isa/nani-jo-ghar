@@ -162,7 +162,7 @@
     resultsContainer: document.body,
     sound: !Kit.fast,
     onboard: Q.get("onboard") !== "0",
-    speakWord: (w) => Kit.Voice.say({ kutchi: w.kutchi, english: w.english }, { who: "doctor", noBubble: true }),
+    speakWord: (w) => Kit.Voice.say({ kutchi: w.kutchi, english: w.english, placeholder: w.placeholder, plan: w.plan || (w.id && ClinicLang.engine && ClinicLang.lex(w.id) ? ClinicLang.w(w.id).plan : []) }, { who: "doctor", noBubble: true }), // the engine's clip plan (step 4e)
   });
   C.host = host;
   const endActions = window.NjgButtons && window.NjgButtons.endActions;

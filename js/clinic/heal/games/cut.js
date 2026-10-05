@@ -110,7 +110,7 @@
       (s.gaps || []).forEach((g) => g.count && words.push(num(g.count)));
     });
     if (L === 3 && ail === "cut") words.push(Lg.w("ph-big"), Lg.w("ph-small"));
-    steps.forEach((s) => s.item !== "paani" && words.push({ kutchi: null, english: s.item === "thread" ? "thread" : s.item, placeholder: true }));
+    steps.forEach((s) => s.item !== "paani" && words.push(Lg.w(Lg.lex(s.item, ["clinic.item.", "cl-", ""]) || s.item)));
     const seen = new Set();
     return {
       level: L,

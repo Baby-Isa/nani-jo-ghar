@@ -90,6 +90,11 @@
    "kutchi": null,
    "english": "Cast",
    "placeholder": true
+  },
+  "turns": {
+   "english": "turns",
+   "placeholder": true,
+   "src": "English placeholder (to record): the bandage's count word (heal/games/knee.js wrap row); was an id the clinic's old lookup showed as its own English, now in data so the engine holds it (step 4e)"
   }
  },
  "lines": {

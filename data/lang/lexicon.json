@@ -7396,10 +7396,12 @@
    "glossPl": "turns",
    "status": "to-record",
    "src": [
-    "data/clinic/heal/knee.json words.w-turns: no source given"
+    "data/clinic/heal/knee.json words.w-turns: no source given",
+    "data/clinic/heal/knee.json words.turns: English placeholder (to record): the bandage's count word (heal/games/knee.js wrap row); was an id the clinic's old lookup showed as its own English, now in data so the engine holds it (step 4e)"
    ],
    "aliases": [
-    "w-turns"
+    "w-turns",
+    "turns"
    ],
    "ask": {
     "word": [

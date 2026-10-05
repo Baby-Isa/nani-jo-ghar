@@ -441,7 +441,7 @@
     // shared card (13c): pela ..., ne poi ...
     const words = asked.map((a) => P.itemWord(data, a.id, a));
     const ordered = !!(K.order && words.length > 1);
-    const card = words.map((w, i) => Object.assign({ id: `grab${i}` }, P.joined(i, w, { ordered, lower: true }), ordered ? { seq: "need" } : {}));
+    const card = words.map((w, i) => Object.assign({ id: `grab${i}` }, P.joined(i, w, { ordered, lower: i > 0 }), ordered ? { seq: "need" } : {}));
     const cardHead = P.line(data, "bringme");
     const rows = asked.map((a, i) => ({ id: `grab${i}`, stage: "pharmacy", kind: "grab", answer: keyOf(a), options: loop.map(keyOf), tested: true, word: words[i].word.english }));
     if (K.order && asked.length > 1) rows.push({ id: "order", stage: "pharmacy", kind: "order", answer: asked.map(keyOf), tested: true });

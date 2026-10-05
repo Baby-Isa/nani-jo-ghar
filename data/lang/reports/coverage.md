@@ -34,7 +34,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 | By source (an entry can cite several) | Citations |
 |---|---|
 | grammar-notes | 487 |
-| data/clinic* | 450 |
+| data/clinic* | 451 |
 | parked modes | 166 |
 | data/cook.json | 106 |
 | lexicon.md §6 | 69 |

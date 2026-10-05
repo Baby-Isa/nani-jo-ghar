@@ -28,6 +28,7 @@
   "use strict";
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const ID = "hair";
+  const CL = () => root.ClinicLang || (typeof require === "function" ? require("../../lang.js") : null); // the engine (js/clinic/lang.js)
   const nodeData = () => {
     const fs = require("fs");
     const path = require("path");
@@ -51,8 +52,8 @@
   /** One round: the rows (the card), the answers and the beetles' places, from the level's data. */
   function makeRound(D, level, rng) {
     const lv = D.levels[String(level)] || D.levels["1"];
-    const W = D.words;
-    const num = (n) => D.numbers.find((x) => x.n === n);
+    const W = CL().words(D.words);
+    const num = (n) => CL().numbers(D.numbers).find((x) => x.n === n);
     const rows = [];
     const words = [];
     const addNum = (nm) => words.push({ kutchi: nm.kutchi.toLowerCase(), english: nm.english });

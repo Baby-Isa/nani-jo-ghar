@@ -112,7 +112,7 @@
    */
   const CLINIC_PIC = { "cook-paani": "water-jug", "cook-dudh": "milk-jug", "fru-02": "lemon-half", "veg-14": "ginger" };
   HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/items-v2/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
-  HS.ph = (english) => ({ kutchi: null, english, placeholder: true });
+  HS.ph = (english) => ({ kutchi: null, english, placeholder: true }); // unused by the nine games since step 4e (lines are keys)
   /** The colours: English placeholders until the doctor's recording (Section G). */
   HS.COLOURS = { red: "#d8433f", blue: "#3f6fd8", green: "#3fa35b", yellow: "#f0c43a", orange: "#f08a2c", purple: "#8a55c8", white: "#f7f4ee" };
 

@@ -28,7 +28,7 @@
     sore: { 1: 1, 2: 2, 3: 3 }, // sore pink patches the bud must miss
     budR: 20, // the bud's tip, svg units
   };
-  // D15c: the whispered-word check. Words the child knows from Cook (lexicon ids in data/clinic/lang.json; their
+  // D15c: the whispered-word check. Words the child knows from Cook (ids the engine knows, data/lang/lexicon.json; their
   // pictures are Cook's icons). The data file can switch it off (hearing.on) or change the words.
   const HEAR = { on: true, words: ["fru-02", "veg-02", "veg-03", "cook-paani"], choices: { 1: 3, 2: 3, 3: 4 } };
   const hearDefaults = () => {

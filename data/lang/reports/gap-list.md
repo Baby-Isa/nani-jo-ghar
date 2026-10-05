@@ -385,14 +385,14 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: clinic line "My {part} hurts" (clinic.line.pipeline.hurts).
 27. Please say these the way you would at home: "My left knee" Ask: Round 4 Section G (the doctor's script).
    - Needed by: clinic line "My {side} {part}" (clinic.line.pipeline.hurts-side).
-28. Please say these the way you would at home: "My knee" Ask: Round 4 Section G (the doctor's script).
-   - Needed by: clinic line "My {part}" (clinic.line.pipeline.mypart).
-29. Please say these the way you would at home: "torch the knee" Ask: Round 4 Section G (the doctor's script).
+28. Please say these the way you would at home: "torch the knee" Ask: Round 4 Section G (the doctor's script).
    - Needed by: clinic line "{tool} the {part}" (clinic.line.pipeline.check).
-30. Please say these the way you would at home: "knee. Good." Ask: Round 4 Section G (the doctor's script).
+29. Please say these the way you would at home: "knee. Good." Ask: Round 4 Section G (the doctor's script).
    - Needed by: clinic line "{x}. Good." (clinic.line.pipeline.handover-ok).
-31. Please say these the way you would at home: "This is knee. Bring me y" Ask: Round 4 Section G (the doctor's script).
+30. Please say these the way you would at home: "This is knee. Bring me y" Ask: Round 4 Section G (the doctor's script).
    - Needed by: clinic line "This is {x}. Bring me {y}" (clinic.line.pipeline.handover-no).
+31. Please say these the way you would at home: "My knee" Ask: Round 4 Section G (the doctor's script).
+   - Needed by: clinic line "My {part}" (clinic.line.pipeline.mypart).
 32. Please say these the way you would at home: "Bring me a" Ask: Round 4 Section G (the doctor's script).
    - Needed by: clinic line "Bring me {a}" (clinic.line.pipeline.bringme).
 33. Please say these the way you would at home: "left knee" Ask: Round 4 Section G (the doctor's script).

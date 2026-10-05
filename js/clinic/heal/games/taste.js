@@ -22,7 +22,7 @@
 
   // the spot colours: the clinic's colour words (data/clinic.json col-*; English placeholders, to record)
   const COLS = { red: { lex: "col-red", hex: "#d8433f" }, green: { lex: "col-green", hex: "#3fa35b" }, blue: { lex: "col-blue", hex: "#3f6fd8" } };
-  // the things on the counter, each by its lexicon id (data/clinic/lang.json): no Kutchi in this file (R5)
+  // the things on the counter, each by its id (an alias in the engine's data/lang/lexicon.json): no Kutchi in this file (R5, 4e)
   const THINGS = {
     milk: { lex: "cook-dudh", img: "assets/clinic/items-v2/milk-jug.webp", glyph: "🥛", liquid: "#f7f3ea" },
     water: { lex: "cook-paani", img: "assets/clinic/items-v2/water-jug.webp", glyph: "💧", liquid: "#d4e9f4" },
@@ -45,7 +45,7 @@
   const drinkName = (id, n) => {
     const d = DRINKS[id];
     const Lg = HS.L;
-    const head = Lg.item(THINGS[d.add].lex, n != null ? { n, mods: ["cl-chamchi"] } : {});
+    const head = n != null ? { fn: "Unit", n, unit: "cl-chamchi", of: THINGS[d.add].lex } : Lg.item(THINGS[d.add].lex); // "ba chamchi …": the engine's Unit
     return d.join === "with" ? Lg.join([head, "cl-waaro", THINGS[d.liquid].lex]) : Lg.join([head, Lg.also(THINGS[d.liquid].lex)]);
   };
   const K = {

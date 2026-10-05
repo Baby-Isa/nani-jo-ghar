@@ -21,7 +21,7 @@
  * The body's state is a stand-in until the art (W5, W6, W9, W10): hot = flushed with sweat drops, cold = shivering;
  * the blanket goes over the SHOULDERS (CLN-56), the hot-water bottle is hugged, the hand fan fans the face.
  * The art swaps in by file name (fever.json `art`; the art plan's R1, R2, R4, R5): a missing file keeps the stand-in.
- * Every word through the seam (data/clinic/lang.json fever-*): all English placeholders, flagged to record.
+ * Every word through the engine (data/lang/lexicon.json, aliases fever-*): all English placeholders, flagged to record.
  */
 (function (root) {
   "use strict";

@@ -32,6 +32,7 @@
   "use strict";
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const ID = "hic";
+  const CL = () => root.ClinicLang || (typeof require === "function" ? require("../../lang.js") : null); // the engine (js/clinic/lang.js)
   const nodeData = () => {
     const fs = require("fs");
     const path = require("path");
@@ -46,12 +47,12 @@
   /** One round: the rows (the card) and the answers, from the level's data. */
   function makeRound(D, level, rng) {
     const lv = D.levels[String(level)] || D.levels["1"];
-    const Wd = D.words;
+    const Wd = CL().words(D.words);
     const sips = pick(rng, lv.sips);
     const hold = pick(rng, lv.hold);
     const fill = lv.fill ? (pick(rng, lv.fill) === "half" ? 1 : 2) : 0; // jug taps: 1 = adh (half), 2 = full
     const first = lv.order ? (rng() < 0.5 ? "drink" : "hold") : "drink";
-    const numOf = (n) => D.numbers.find((x) => x.n === n);
+    const numOf = (n) => CL().numbers(D.numbers).find((x) => x.n === n);
     const sN = numOf(sips);
     const hN = numOf(hold);
     const sipW = sips === 1 ? Wd.sip.english : Wd.sips.english;
@@ -606,7 +607,7 @@
       puff();
       mouth("puff");
       // the patient counts what you tapped (a tally, never the target)
-      const num = D.numbers.find((x) => x.n === st.holds);
+      const num = CL().numbers(D.numbers).find((x) => x.n === st.holds);
       const l = num ? { kutchi: low(num.kutchi), english: num.english, who: "patient" } : line("mmph");
       say(l);
       const [bx, by] = toW(60, 330);

@@ -36,7 +36,7 @@
     fill: { gesture: "hold" },
   };
   const DIRS = ["up", "down", "left", "right"];
-  // the direction words by id (data/clinic/lang.json): English placeholders to record; dabo / jamno at L3
+  // the direction words by id (the engine, data/lang/lexicon.json): English placeholders to record; dabo / jamno at L3
   const DIR_ID = { up: "tooth-up", down: "tooth-down", left: "tooth-left", right: "tooth-right" };
   // the patient's own left is on our right
   const SCREEN = { up: [0, -1], down: [0, 1], left: [1, 0], right: [-1, 0] };
