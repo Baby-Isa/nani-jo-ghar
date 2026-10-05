@@ -269,6 +269,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **39. The roadmap after this chapter:** finish Cook and the clinic through play and feedback; choose with Zafar the next mode to finish Arc 1, and finish all of Arc 1's modes; put the story glue round Arc 1; build the beach trip first as the template, then the other destination trips; then the sewing arc with Big Ma. A release could run Arc 1 → Destination 1 → Clinic 1 → Destination 2 → Sewing 1 → Destination 3 → Clinic 2 → Destination 4 → Sewing 2.
   Source: Zafar, orchestrator chat, 5 Oct.
 
+- **40. The engine holds all Kutchi knowledge:** 4b fills the engine with every known word from anywhere in the repo (every mode, parked ones included, the recordings, the lexicon, grammar notes and knowledge base, Mum's rounds) and every known grammar and syntax rule and exception (e.g. *mori chai*, *kari chai*). Everything the game or Claude knows about Kutchi comes from the engine, and every new piece of information (Mum's answers, recordings, corrections) is fed into the engine first.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: G26, G11
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

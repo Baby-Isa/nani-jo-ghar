@@ -288,16 +288,53 @@
       readEye = b && b.eye ? { x: b.eye[0], y: b.eye[1] } : { x: 238, y: 166 };
       // the chart on its stand, close by, turned a quarter towards both of them
       CH = { x: 400, y: 14, w: 262, h: 352 };
-      const legs = s("g", {}, testG);
+      const legs = s("g", { class: "eye-legs" }, testG);
       s("path", { d: `M${CH.x + 90} ${CH.y + CH.h - 30} L${CH.x + 60} 488 M${CH.x + CH.w - 40} ${CH.y + CH.h - 10} L${CH.x + CH.w - 6} 498 M${CH.x + CH.w / 2 + 30} ${CH.y + CH.h - 20} L${CH.x + CH.w / 2 + 40} 470`, stroke: "#a9824d", "stroke-width": 10, "stroke-linecap": "round" }, legs);
       testG.appendChild(chartG);
       // a quarter turn: the board's left edge is further away, so shorter (a perspective map of the board's own units)
       turn = { k: 0.84, x: 26 };
     }
     const chartArt = art(version === "A" ? "chartFront" : "chartTurned");
+    // A2 (5 Oct): C1 / C2. The board's corners (art.*.board, shares of the picture) fix where the picture goes and
+    // the board's own units (CH) take the board's shape, so the rows of pictures are never stretched
+    let IMG = null; // the chart picture's box
+    let CQ = null; // C2: the board's four corners on screen
+    if (chartArt && chartArt.board && chartArt.size) {
+      const [tl, tr, br, bl] = chartArt.board;
+      const [sw, sh] = chartArt.size;
+      if (version === "A") {
+        const aspect = ((tr[0] - tl[0]) * sw) / ((bl[1] - tl[1]) * sh);
+        const w = CH.h * aspect;
+        CH = { x: CH.x + (CH.w - w) / 2, y: CH.y, w, h: CH.h };
+        const IW = CH.w / (tr[0] - tl[0]);
+        const IH = CH.h / (bl[1] - tl[1]);
+        IMG = { x: CH.x - tl[0] * IW, y: CH.y - tl[1] * IH, w: IW, h: IH };
+      } else {
+        const hf = (bl[1] - tl[1] + (br[1] - tr[1])) / 2; // the board's height, a share of the picture's
+        const IH = CH.h / hf;
+        const IW = (IH * sw) / sh;
+        const cx = (tl[0] + tr[0] + br[0] + bl[0]) / 4;
+        const cy = (tl[1] + tr[1] + br[1] + bl[1]) / 4;
+        IMG = { x: CH.x + CH.w / 2 - cx * IW, y: CH.y + CH.h / 2 - cy * IH, w: IW, h: IH };
+        CQ = [tl, tr, br, bl].map(([x, y]) => [IMG.x + x * IW, IMG.y + y * IH]);
+        const wpx = (CQ[1][0] - CQ[0][0] + (CQ[2][0] - CQ[3][0])) / 2;
+        const w = (CH.h * wpx) / ((CQ[3][1] - CQ[0][1] + (CQ[2][1] - CQ[1][1])) / 2);
+        CH = { x: CH.x + (CH.w - w) / 2, y: CH.y, w, h: CH.h };
+        turn = null; // the corners do the turn
+        testG.querySelectorAll(".eye-legs").forEach((n) => n.remove()); // C2 stands on its own easel
+      }
+    }
     // Q: a point on the board (its own units) to the screen; B's quarter turn maps the board onto a quad whose left
     // edge is set back and shorter, so it reads as turned (C2's art brings its own corners: art.chartTurned.quad)
     const Q = (x, y) => {
+      if (CQ) {
+        // a point on the board (its own units) onto C2's corners (bilinear: the board is a flat quad)
+        const u = (x - CH.x) / CH.w;
+        const v = (y - CH.y) / CH.h;
+        const top = [CQ[0][0] + (CQ[1][0] - CQ[0][0]) * u, CQ[0][1] + (CQ[1][1] - CQ[0][1]) * u];
+        const bot = [CQ[3][0] + (CQ[2][0] - CQ[3][0]) * u, CQ[3][1] + (CQ[2][1] - CQ[3][1]) * u];
+        return [top[0] + (bot[0] - top[0]) * v, top[1] + (bot[1] - top[1]) * v];
+      }
       if (!turn) return [x, y];
       const u = (x - (CH.x - 14)) / (CH.w + 28);
       const v = (y - (CH.y - 14)) / (CH.h + 28);
@@ -306,10 +343,17 @@
       const mid = CH.y + CH.h / 2;
       return [X, mid + (CH.y - 14 + v * (CH.h + 28) - mid) * k];
     };
-    const kAt = (x) => (turn ? turn.k + (1 - turn.k) * ((x - (CH.x - 14)) / (CH.w + 28)) : 1);
+    const kAt = (x) => {
+      if (CQ) {
+        const u = (x - CH.x) / CH.w;
+        return ((1 - u) * (CQ[3][1] - CQ[0][1]) + u * (CQ[2][1] - CQ[1][1])) / CH.h;
+      }
+      return turn ? turn.k + (1 - turn.k) * ((x - (CH.x - 14)) / (CH.w + 28)) : 1;
+    };
     const quad = (x, y, w, h) => [Q(x, y), Q(x + w, y), Q(x + w, y + h), Q(x, y + h)].map((q) => q.map((v) => Math.round(v * 10) / 10).join(",")).join(" ");
     // the board: a white chart in a light-wood frame, an eye at the top, rows of pictures getting smaller
-    if (chartArt) s("image", { href: url(chartArt.src), x: CH.x - 14, y: CH.y - 14, width: CH.w + 28, height: CH.h + 28, preserveAspectRatio: "none" }, chartG);
+    if (chartArt && IMG) s("image", { href: url(chartArt.src), x: IMG.x, y: IMG.y, width: IMG.w, height: IMG.h, preserveAspectRatio: "none" }, chartG);
+    else if (chartArt) s("image", { href: url(chartArt.src), x: CH.x - 14, y: CH.y - 14, width: CH.w + 28, height: CH.h + 28, preserveAspectRatio: "none" }, chartG);
     else {
       s("polygon", { points: quad(CH.x - 14, CH.y - 14, CH.w + 28, CH.h + 28), fill: "#c8a46e", stroke: "#a9824d", "stroke-width": 3, "stroke-linejoin": "round" }, chartG);
       s("polygon", { points: quad(CH.x, CH.y, CH.w, CH.h), fill: "#fffefb", "stroke-linejoin": "round" }, chartG);
@@ -323,7 +367,15 @@
     const top = CH.y + 58;
     const SIZES = [74, 62, 52, 44].slice(0, nR);
     const gap = (CH.h - 70 - SIZES.reduce((a, b) => a + b, 0)) / nR;
+    // A2: on the art, each row sits on one of the chart's own ruled lines under the eye (the biggest at the top)
+    const LINES = IMG && chartArt.lines && chartArt.lines.length > nR ? chartArt.lines : null;
     const rowBox = (i) => {
+      if (LINES) {
+        const y0 = CH.y + LINES[i] * CH.h;
+        const y1 = CH.y + LINES[i + 1] * CH.h;
+        const sz = Math.min(SIZES[i], (y1 - y0) * 0.86, (CH.w - 36) / (P.chart[i].pics.length * 1.12));
+        return { y: y1 - sz - 6, h: sz + 4, sz };
+      }
       let y = top;
       for (let k = 0; k < i; k++) y += SIZES[k] + gap;
       const sz = Math.min(SIZES[i], (CH.w - 36) / (P.chart[i].pics.length * 1.12));

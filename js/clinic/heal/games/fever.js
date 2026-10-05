@@ -175,12 +175,19 @@
     ".fv-wear{pointer-events:none}",
     ".fv-wave-fan{transform-box:fill-box;transform-origin:20% 90%;animation:fv-fan .45s ease-in-out infinite alternate}",
     ".fv-sweat{animation:fv-drip 1.6s ease-in infinite}",
+    ".fv-fan-art{position:absolute;left:0;right:0;bottom:0;pointer-events:none}",
+    ".fv-fan-art .fv-fan-body{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;object-position:50% 0}",
+    ".fv-fan-tilt{position:absolute;transform:translate(-50%,-50%) perspective(600px) rotateX(74deg)}",
+    ".fv-fan-tilt img{width:100%;height:100%;object-fit:contain}",
+    ".fv-thing.on .fv-fan-tilt img{animation:fv-spin .45s linear infinite}",
+    ".fv-gauge .fv-gauge-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}",
+    ".fv-gauge.art svg{position:absolute}",
     "@keyframes fv-spin{to{transform:rotate(360deg)}}",
     "@keyframes fv-breeze{0%,100%{transform:translateX(0)}50%{transform:translateX(10px)}}",
     "@keyframes fv-rise{0%{transform:translateY(6px);opacity:0}50%{opacity:.9}100%{transform:translateY(-10px);opacity:0}}",
     "@keyframes fv-fan{from{transform:rotate(-14deg)}to{transform:rotate(12deg)}}",
     "@keyframes fv-drip{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(26px);opacity:0}}",
-    "@media (prefers-reduced-motion: reduce){.fv-thing.on .fv-blades,.fv-thing.on .fv-breeze,.fv-thing.on .fv-waves,.fv-wave-fan,.fv-sweat{animation:none}}",
+    "@media (prefers-reduced-motion: reduce){.fv-thing.on .fv-fan-tilt img,.fv-thing.on .fv-blades,.fv-thing.on .fv-breeze,.fv-thing.on .fv-waves,.fv-wave-fan,.fv-sweat{animation:none}}",
   ].join("\n");
 
   // stand-in drawings (no text, no emoji): each in its own 0 0 100 100 box unless said
@@ -378,6 +385,7 @@
     const art = (el, id, state) => {
       // the art plan's file, when it exists: swap the stand-in for it (a missing file keeps the stand-in)
       const f = ART[`${id}${state ? "-" + state : ""}`] || ART[id];
+      if (el.dataset.ownArt) return; // drawn from its own pieces (the ceiling fan, R2): nothing to swap
       if (!f || !Kit) {
         // no picture for this state: the stand-in again
         el.querySelectorAll("img.fv-art").forEach((n) => n.remove());
@@ -413,20 +421,57 @@
     };
     Object.keys(cfg.things).forEach(mkThing);
     mkThing("thermometer");
+    // A2 (5 Oct): R2's ceiling fan: the body (downrod and motor) hangs from the ceiling; the blade disc, drawn from
+    // directly below, is tilted into the room's view and spins when on (art plan 3.4). fever.json art.fan: the files,
+    // the motor's foot (where the blades sit) as a share of the body's height, the disc's width against the body's
+    const FAN = ART.fan;
+    if (FAN && FAN.body && FAN.blades && els["ceiling-fan"]) {
+      const b = els["ceiling-fan"];
+      b.querySelectorAll("svg.fv-standin").forEach((n) => (n.style.display = "none"));
+      b.dataset.ownArt = "1";
+      // the button is the motor and the blades (what a child taps, always on screen); the downrod runs up from it
+      const wrap = S.h("div", "fv-fan-art", b);
+      wrap.style.height = `${((AT["ceiling-fan"].art || AT["ceiling-fan"].h) / AT["ceiling-fan"].h) * 100}%`;
+      const body = S.h("img", "fv-fan-body", wrap);
+      body.alt = "";
+      body.src = Kit ? Kit.url(FAN.body) : FAN.body;
+      const tilt = S.h("div", "fv-fan-tilt", wrap);
+      const bl = S.h("img", "", tilt);
+      bl.alt = "";
+      bl.src = Kit ? Kit.url(FAN.blades) : FAN.blades;
+      Object.assign(tilt.style, { left: "50%", top: `${(FAN.foot || 0.95) * 100}%`, width: `${(FAN.disc || 2.4) * 100}%`, aspectRatio: "1 / 1" });
+    }
     // the wall thermometer: the reading, with its green zone (R5's gauge art swaps in; the level and zone stay code)
     const gauge = S.h("div", "fv-gauge", box);
     const gs = s("svg", { viewBox: "0 0 40 200", preserveAspectRatio: "xMidYMax meet", "aria-hidden": "true" }, gauge);
     const RANGE = cfg.k.max; // -RANGE..+RANGE
-    const TUBE = { top: 10, bot: 168 };
+    // A2 (5 Oct): R5's gauge (a cream board, an empty glass tube and bulb) when it's cut: the level and the zones are
+    // drawn inside the tube's measured box (fever.json art.gauge.tube, shares of the picture), the bulb below it
+    const GA = ART.gauge && ART.gauge.file && ART.gauge.tube ? ART.gauge : null;
+    const vbH = GA ? Math.round((40 * ((GA.tube[3] - GA.tube[1]) * GA.h)) / ((GA.tube[2] - GA.tube[0]) * GA.w)) : 200;
+    if (GA) {
+      gauge.classList.add("art");
+      const im = S.h("img", "fv-gauge-art", gauge);
+      im.alt = "";
+      im.src = Kit ? Kit.url(GA.file) : GA.file;
+      gauge.insertBefore(im, gs);
+      gs.setAttribute("viewBox", `0 0 40 ${vbH}`);
+      gs.setAttribute("preserveAspectRatio", "none");
+      Object.assign(gs.style, { left: `${GA.tube[0] * 100}%`, top: `${GA.tube[1] * 100}%`, width: `${(GA.tube[2] - GA.tube[0]) * 100}%`, height: `${(GA.tube[3] - GA.tube[1]) * 100}%` });
+    }
+    const BULB = GA ? { r: 20 * (GA.bulb || 1), cy: vbH - 20 * (GA.bulb || 1) } : { r: 13, cy: 182 };
+    const TUBE = GA ? { top: 8, bot: BULB.cy - BULB.r * 0.6 } : { top: 10, bot: 168 };
     const yOf = (r) => TUBE.bot - ((Math.max(-RANGE, Math.min(RANGE, r)) + RANGE) / (2 * RANGE)) * (TUBE.bot - TUBE.top);
-    s("rect", { x: 2, y: 0, width: 36, height: 200, rx: 18, fill: "#ffffff", stroke: "#a8a296", "stroke-width": 3 }, gs);
-    s("rect", { x: 12, y: yOf(RANGE), width: 16, height: yOf(cfg.k.zone + 0.5) - yOf(RANGE), fill: "#f6c9c0" }, gs);
-    s("rect", { x: 12, y: yOf(-cfg.k.zone - 0.5), width: 16, height: yOf(-RANGE) - yOf(-cfg.k.zone - 0.5), fill: "#c9def6" }, gs);
-    s("rect", { x: 8, y: yOf(cfg.k.zone + 0.5), width: 24, height: yOf(-cfg.k.zone - 0.5) - yOf(cfg.k.zone + 0.5), rx: 4, fill: "#7fcf86", stroke: "#3fa35b", "stroke-width": 2 }, gs);
+    if (!GA) s("rect", { x: 2, y: 0, width: 36, height: 200, rx: 18, fill: "#ffffff", stroke: "#a8a296", "stroke-width": 3 }, gs);
+    // with the art the zones are bands across the glass (the tube is the whole box), else beside the drawn column
+    const ZX = GA ? [6, 28, 2, 36] : [12, 16, 8, 24];
+    s("rect", { x: ZX[0], y: yOf(RANGE), width: ZX[1], height: yOf(cfg.k.zone + 0.5) - yOf(RANGE), fill: "#f6c9c0", opacity: GA ? 0.85 : 1 }, gs);
+    s("rect", { x: ZX[0], y: yOf(-cfg.k.zone - 0.5), width: ZX[1], height: yOf(-RANGE) - yOf(-cfg.k.zone - 0.5), fill: "#c9def6", opacity: GA ? 0.85 : 1 }, gs);
+    s("rect", { x: ZX[2], y: yOf(cfg.k.zone + 0.5), width: ZX[3], height: yOf(-cfg.k.zone - 0.5) - yOf(cfg.k.zone + 0.5), rx: 4, fill: "#7fcf86", stroke: "#3fa35b", "stroke-width": 2 }, gs);
     const colBg = s("rect", { x: 16, y: TUBE.top, width: 8, height: TUBE.bot - TUBE.top, rx: 4, fill: "rgba(0,0,0,.06)" }, gs);
     void colBg;
-    const col = s("rect", { class: "fv-col", x: 16, y: TUBE.top, width: 8, height: TUBE.bot - TUBE.top + 10, rx: 4, fill: "#c9ccd2" }, gs);
-    const bulbC = s("circle", { cx: 20, cy: 182, r: 13, fill: "#c9ccd2", stroke: "#a8a296", "stroke-width": 3 }, gs);
+    const col = s("rect", { class: "fv-col", x: 15, y: TUBE.top, width: 10, height: TUBE.bot - TUBE.top + 10, rx: 5, fill: "#c9ccd2" }, gs);
+    const bulbC = s("circle", { cx: 20, cy: BULB.cy, r: BULB.r, fill: "#c9ccd2", stroke: GA ? "none" : "#a8a296", "stroke-width": 3, opacity: GA ? 0.9 : 1 }, gs);
     // R5's gauge art comes with its tube's inner box measured at the cut; until then the drawn gauge
     const showReading = (r) => {
       const c = r == null ? "#c9ccd2" : inZone(r, cfg.k) ? "#3fa35b" : r > 0 ? "#d8433f" : "#3f6fd8";
@@ -446,6 +491,9 @@
       const put = (el, a) => {
         if (!el) return;
         const halfW = (a.w || 0.05) / 2;
+        // A2: a thing registered on the room (the open window over the painted one, the fan from the ceiling) stays
+        // exactly where it is; the screen's edge may crop it like the room
+        if (a.hang) return place(el, a.x, a.y, a.h, a.w);
         let x = Math.max(v.x0 + halfW + pad, Math.min(v.x1 - halfW - pad, a.x));
         let y = a.y;
         let h = a.h;
@@ -500,11 +548,20 @@
         // the arms round it: two sleeves across the front (the hug)
         s("path", { d: `M${shR[0] + 10} ${tum[1] - 20} Q640 ${tum[1] + 30} ${shL[0] - 10} ${tum[1] - 20}`, stroke: "rgba(60,50,45,.45)", "stroke-width": 26, fill: "none", "stroke-linecap": "round" }, wear);
       }
-      if (on["ice-pack"]) s("rect", { x: 640 - 60, y: 18, width: 120, height: 44, rx: 16, fill: "#9fd2f2", stroke: "#4f97c9", "stroke-width": 4 }, wear);
+      // A2 (5 Oct): R1's ice pack and hand fan when they're cut (the same pictures as in the room), else drawn
+      const worn = (id) => (ART[id] && Kit ? Kit.url(ART[id]) : null);
+      if (on["ice-pack"]) {
+        if (worn("ice-pack")) s("image", { href: worn("ice-pack"), x: 640 - 70, y: -4, width: 140, height: 97 }, wear);
+        else s("rect", { x: 640 - 60, y: 18, width: 120, height: 44, rx: 16, fill: "#9fd2f2", stroke: "#4f97c9", "stroke-width": 4 }, wear);
+      }
       if (on["hand-fan"]) {
         const hand = sp("hand", "left");
         const fg = s("g", { class: "fv-wave-fan" }, wear);
-        s("path", { d: `M${hand[0] - 10} ${hand[1] - 40} L${hand[0] - 120} ${hand[1] - 230} A140 140 0 0 1 ${hand[0] + 50} ${hand[1] - 260} Z`, fill: "#7fc4c0", stroke: "#3d8f8a", "stroke-width": 5 }, fg);
+        // the woven fan's handle (its bottom-right in the picture) in the hand, the fan up and to the left
+        if (worn("hand-fan")) {
+          fg.style.transformOrigin = "92% 92%";
+          s("image", { href: worn("hand-fan"), x: hand[0] - 0.92 * 230, y: hand[1] - 0.92 * 203, width: 230, height: 203 }, fg);
+        } else s("path", { d: `M${hand[0] - 10} ${hand[1] - 40} L${hand[0] - 120} ${hand[1] - 230} A140 140 0 0 1 ${hand[0] + 50} ${hand[1] - 260} Z`, fill: "#7fc4c0", stroke: "#3d8f8a", "stroke-width": 5 }, fg);
       }
       if (st.measured) s("rect", { x: 640 + 8, y: 186, width: 70, height: 10, rx: 5, fill: "#ffffff", stroke: "#8a8f98", "stroke-width": 3, transform: "rotate(-14 648 190)" }, wear);
       const r = st.measured ? reading() : null;

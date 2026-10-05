@@ -93,7 +93,7 @@
       steps.push({ id: "hear", kind: "hear", word, choices, row: Object.assign({}, Lg.w("ear-hear-q"), { id: "hear" }) });
       rows.push({ id: "hear-word", options: choices, answer: word });
     }
-    const words = (L === 1 ? [] : [Lg.w("lnk-pela"), Lg.w("ph-big"), Lg.w("ph-small")]).concat([Lg.w("lnk-nepoi"), Lg.num(drops), HS.ph("ear"), HS.ph("wax")]);
+    const words = (L === 1 ? [] : [Lg.w("lnk-pela"), Lg.w("ph-big"), Lg.w("ph-small")]).concat([Lg.w("lnk-nepoi"), Lg.num(drops), Lg.w("body-ear"), Lg.w("cl-wax")]);
     if (hear) words.push(Object.assign(Lg.w(hear.word), { id: hear.word }));
     return { level: L, steps, rows, words, hear };
   }
@@ -242,6 +242,23 @@
     s("line", { x1: 0, y1: 0, x2: 120, y2: -90, stroke: "#f2f2f2", "stroke-width": 7, "stroke-linecap": "round" }, bud);
     s("line", { x1: 0, y1: 0, x2: 120, y2: -90, stroke: "#c9c9c9", "stroke-width": 1.5, "stroke-linecap": "round", opacity: 0.6 }, bud);
     const budTip = s("ellipse", { cx: 0, cy: 0, rx: 13, ry: 9, fill: "#ffffff", stroke: "#d8d2c4", "stroke-width": 2, transform: "rotate(-37)" }, bud);
+    // A2 (5 Oct): O3's bud (clean, then with wax once it has wiped some) when it's cut: the swab's centre on the
+    // tip, the stick up to the right along the drawn one (a horizontal picture, its swab at the right end)
+    const budArt = BITS && BITS.bud && BITS["bud-wax"] ? [BITS.bud, BITS["bud-wax"]] : null;
+    let budImg = null;
+    if (budArt) {
+      const b = budArt[0];
+      const k = 150 / Math.max(1, b.w - 32);
+      const tx = (b.w - 16 - (b.h - 32) / 2) * k;
+      const ty = (b.h / 2) * k;
+      S.clear(bud);
+      const g = s("g", { transform: `rotate(143.13) translate(${-tx} ${-ty})` }, bud);
+      budImg = s("image", { href: url(b.file), x: 0, y: 0, width: b.w * k, height: b.h * k }, g);
+    }
+    const budWax = (on) => {
+      if (budImg) budImg.setAttribute("href", url(budArt[on ? 1 : 0].file));
+      else budTip.setAttribute("fill", on ? "#f3dc8a" : "#ffffff");
+    };
     const wipeAt = (p) => {
       bud.setAttribute("transform", `translate(${p.x} ${p.y})`);
       bud.setAttribute("opacity", 1);
@@ -254,7 +271,7 @@
           pt.el.animate([{ opacity: 0.75 }, { opacity: 0 }], { duration: 220, fill: "forwards" });
         })
       );
-      if (hit) budTip.setAttribute("fill", "#f3dc8a");
+      if (hit) budWax(true);
       // the sore skin: a touch makes the patient wince (counted once per touch, a hand-skill row)
       const onSore = sores.some((q) => Math.hypot(q.x - p.x, q.y - p.y) < q.r + 4);
       if (onSore && Date.now() - st.soreT > 700) {

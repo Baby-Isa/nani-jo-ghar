@@ -3,7 +3,7 @@
   "aspect": 1.5,
   "rooms": {
     "waiting": { "src": "assets/clinic/rooms/bg-clinic-waiting-cb1b-v1.webp", "need": [0.0, 0.93], "ay": 0.7 },
-    "exam": { "src": "assets/clinic/rooms/bg-clinic-exam-cb2b-v1.webp", "need": [0.2, 0.86], "ay": 0.6 },
+    "exam": { "src": "assets/clinic/rooms/bg-clinic-exam-cb2b-v1.webp", "need": [0.2, 0.86], "ay": 0.6, "square": { "src": "assets/clinic/rooms/bg-clinic-exam-cb2b-sq-v1.webp", "size": 1536, "middle": [256, 1280], "_about": "A2 (5 Oct), R3: the square room (CB2b kept pixel for pixel in rows 256-1280, R3's ceiling and floor bands); a screen taller than the room shows its whole width (js/clinic/stages/common.js squareFit)" } },
     "stand": { "src": "assets/clinic/rooms/bg-clinic-stand-cb3b-v1.webp", "need": [0.22, 0.86], "ay": 0.6 },
     "pharmacy": { "src": "assets/clinic/rooms/bg-clinic-pharmacy-cb4c-v1.webp", "need": [0.15, 0.85], "ay": 0.75 },
     "door": { "src": "assets/clinic/rooms/bg-clinic-door-cb5-v1.webp", "need": [0.1, 0.92], "ay": 0.7 }

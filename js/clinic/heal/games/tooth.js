@@ -210,7 +210,13 @@
       p.d = d;
       s("path", { d, fill: "#ead2c6", stroke: "#c9a493", "stroke-width": 3 }, holesG);
       const a = decayArt[k % 3];
-      if (a) s("image", { href: url(a.src), x: p.cx - p.r * 1.2, y: p.cy - p.r * 1.2, width: p.r * 2.4, height: p.r * 2.4, "clip-path": null }, decayG);
+      if (a) {
+        // A2 (5 Oct): O2's decay as the patch's texture, clipped to the patch's own outline (the drill's samples)
+        const cid = `${uid}-d${k}`;
+        s("path", { d }, s("clipPath", { id: cid }, decayG));
+        s("image", { href: url(a.src), x: p.cx - p.r * 1.5, y: p.cy - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none", "clip-path": `url(#${cid})` }, decayG);
+        s("path", { d, fill: "none", stroke: "#6e4c37", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0.6 }, decayG);
+      }
       else {
         s("path", { d, fill: "#4a3326", stroke: "#2f1f17", "stroke-width": 3, "stroke-linejoin": "round" }, decayG);
         s("path", { d, fill: "none", stroke: "#6e4c37", "stroke-width": 9, opacity: 0.5, transform: `translate(${p.cx * 0.12} ${p.cy * 0.12}) scale(0.88)` }, decayG);
@@ -270,8 +276,9 @@
     let btnUp = null;
     let btnDown = null;
     if (upArt && downArt) {
-      btnUp = s("image", { href: url(upArt.src), x: BTN.x - 70, y: BTN.y - 70, width: 140, height: 140 }, btnG);
-      btnDown = s("image", { href: url(downArt.src), x: BTN.x - 70, y: BTN.y - 70, width: 140, height: 140, opacity: 0 }, btnG);
+      // B1 (A2): the art's base is wider than the drawn one, so it sits a little lower, clear of the gauge
+      btnUp = s("image", { href: url(upArt.src), x: BTN.x - 70, y: BTN.y - 56, width: 140, height: 140 }, btnG);
+      btnDown = s("image", { href: url(downArt.src), x: BTN.x - 70, y: BTN.y - 56, width: 140, height: 140, opacity: 0 }, btnG);
     } else {
       s("ellipse", { cx: BTN.x, cy: BTN.y + 22, rx: BTN.r + 18, ry: 22, fill: "#e9e6df", stroke: "#b9b4aa", "stroke-width": 3 }, btnG);
       s("rect", { x: BTN.x - BTN.r - 18, y: BTN.y, width: 2 * BTN.r + 36, height: 22, fill: "#e9e6df" }, btnG);
@@ -290,13 +297,23 @@
       if (nozImg && nozArt && nozPasteArt) nozImg.setAttribute("href", url(down ? nozPasteArt.src : nozArt.src));
       ribbon.setAttribute("opacity", down ? 1 : 0);
     };
+    const fillArt = art("fillingPatch");
     const drawPaste = () => {
       S.clear(pasteG);
       const f = st.fill;
       if (f <= 0) return;
       drillPatches.forEach((p) => {
         const k = Math.min(f / zone[0], 1) * (f > zone[1] ? 1 + (f - zone[1]) * 1.6 : 1);
-        s("path", { d: p.d, fill: "#fdfdff", stroke: f > zone[1] ? "#c8ccd6" : "none", "stroke-width": 3, transform: `translate(${p.cx * (1 - k)} ${p.cy * (1 - k)}) scale(${k})` }, pasteG);
+        const tf = `translate(${p.cx * (1 - k)} ${p.cy * (1 - k)}) scale(${k})`;
+        s("path", { d: p.d, fill: "#fdfdff", stroke: f > zone[1] ? "#c8ccd6" : "none", "stroke-width": 3, transform: tf }, pasteG);
+        // A2 (5 Oct): O2's filling over the paste, inside the patch's own outline (its gloss reads as a filling)
+        if (fillArt) {
+          const cid = `${uid}-f${p.cx | 0}-${p.cy | 0}`;
+          const cp = s("clipPath", { id: cid }, pasteG);
+          s("path", { d: p.d }, cp);
+          const g = s("g", { "clip-path": `url(#${cid})`, transform: tf }, pasteG);
+          s("image", { href: url(fillArt.src), x: p.cx - p.r * 1.35, y: p.cy - p.r * 1.35, width: p.r * 2.7, height: p.r * 2.7, preserveAspectRatio: "none" }, g);
+        }
       });
       ribbon.setAttribute("d", `M${NZ.x} ${NZ.y} Q${NZ.x - 4} ${NZ.y + 16} ${drillPatches[0].cx} ${drillPatches[0].cy}`);
     };

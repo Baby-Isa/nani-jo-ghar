@@ -20,6 +20,8 @@
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
   const TEMPS = ["hot", "cold", "lukewarm"];
+  // the water's word by id (G26): Mum's garam and thundo; lukewarm is a data entry to record
+  const TEMP_ID = { hot: "feel-hot", cold: "feel-cold", lukewarm: "feel-lukewarm" };
   const K = { jugs: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4] }, halfW: { 1: 30, 2: 25, 3: 19 }, slackPx: 8, len: 44 };
   const TOES = ["big toe", "middle toe", "little toe"];
   const TOE_ID = { "big toe": "cl-big-toe", "middle toe": "foot-middle-toe", "little toe": "cl-little-toe" };
@@ -85,7 +87,7 @@
     // words, numbers and joins from data through the seam (R5)
     const Lg = HS.L;
     const say = (m, o) => Lg.show(m, o);
-    const steps = [{ id: "soak", kind: "soak", temp, jugs, row: Object.assign({ id: "soak" }, say(Lg.join([Lg.item("cook-paani"), temp, ",", Lg.item("cl-jugs", { n: jugs })]), { cap: true })) }];
+    const steps = [{ id: "soak", kind: "soak", temp, jugs, row: Object.assign({ id: "soak" }, say(Lg.join([Lg.item("cook-paani"), Lg.item(TEMP_ID[temp]), ",", Lg.item("cl-jugs", { n: jugs })]), { cap: true })) }];
     // the toe order (L3) is a sequence on the card (13h): pela [big toe], ne poi ...
     const pullRows = order ? order.map((t, i) => Object.assign({ id: `pull${i}`, seq: "toes" }, say(Lg.step(i, TOE_ID[t], { lower: true })))) : null;
     steps.push({ id: "pull", kind: "pull", order, row: pullRows ? pullRows[0] : Object.assign({ id: "pull" }, say(Lg.item("cl-splinters"), { cap: true })), rows: pullRows });
@@ -96,7 +98,7 @@
     ];
     if (order) rows.push({ id: "toe-order", seq: TOES, answer: order, placeholder: true });
     rows.push({ id: "pull-steady", skill: true }); // the hand: no words in it, so every player can get it
-    const words = [Lg.w("cook-paani"), Lg.num(jugs), HS.ph(temp), Lg.w("cl-splinters")];
+    const words = [Lg.w("cook-paani"), Lg.num(jugs), Lg.w(TEMP_ID[temp]), Lg.w("cl-splinters")];
     if (order) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), Lg.w("cl-big-toe"), Lg.w("foot-middle-toe"), Lg.w("cl-little-toe"));
     return { level: L, steps, rows, words, splinters, flip, halfW: K.halfW[L] };
   }

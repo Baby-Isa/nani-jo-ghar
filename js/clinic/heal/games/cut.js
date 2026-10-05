@@ -630,7 +630,7 @@
       // still English while a colour said has no Kutchi yet (yellow, blue: to record)
       { id: "plasters", options: seqs, answer: seq.map(key), placeholder: seq.some((o) => o.some((c) => !Lg.w(col(c)).kutchi)) },
     ];
-    const words = [Lg.w("cook-paani"), Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), num(dab), HS.ph("plaster")];
+    const words = [Lg.w("cook-paani"), Lg.w("lnk-pela"), Lg.w("lnk-nepoi"), num(dab), Lg.w("cl-plaster")];
     return { level: L, ailment: "scrape", steps, rows, words, upFront: false, key };
   }
 
