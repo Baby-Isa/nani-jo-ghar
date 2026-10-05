@@ -118,3 +118,4 @@
 2026-10-05T14:36Z step3-gate: run gate-20261005-1208 done (493 pages, all reached end); check FAILED, 17 new Cook findings; baseline untouched; report build/reports/step3-gate.md
 - 2026-10-05 15:50 UK · Check-in: gate done (493 pages all end; check FAILED on 17 new Cook findings: bataato 13.5 px, green pepper 12.8 px, Salamun bubble over play area at 800x360/1024x768, 9 spacing-grid); W2 done (samosa/daar guide keys, barabar, laal rename; ear/foot placeholders hardcoded in clinic code; lal marcha left); A1 done (3 phone card-scroll findings, G1's). Chrome 41 of 115 on main. Decisions put to Zafar; nothing launched.
 - 2026-10-05 16:05 UK · Decisions 35–37 (F1 go; laal marcha; close gate/W2/A1; rule G26 no words in code; the girl is enough to publish the clinic). Launching F1.
+- 2026-10-05 16:26 UK · Check-in: part B complete on main (B1, C2 landed; 62 of 115 total, part C under way). F1 starting (default permissions). A2 awaits Zafar's go.
