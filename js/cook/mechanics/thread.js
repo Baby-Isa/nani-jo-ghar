@@ -252,7 +252,7 @@
       const doneBtn = () => {
         doneShown = true;
         if (handoff) {
-          UI.go(handoff.label, { glow: false }).then(() => resolveStop());
+          UI.go(handoff.label, { glow: false, rec: !!handoff.rec }).then(() => resolveStop());
           SK.goIcon();
         }
         else UI.done({ glow: false }).then(() => resolveStop());

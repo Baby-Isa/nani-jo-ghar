@@ -50,7 +50,8 @@ require(path.join(ROOT, "js/dress/rack.js"));
 require(path.join(ROOT, "js/dress/grade.js"));
 const { Pick, Look, Rack, Grade } = globalThis.Dress;
 const data = JSON.parse(fs.readFileSync(path.join(ROOT, "data/dress.json"), "utf8"));
-const cook = JSON.parse(fs.readFileSync(path.join(ROOT, "data/cook.json"), "utf8"));
+// step 4d: Cook's words live in the engine's own source (data/lang/seed/cook.json); dress reads them through js/cook/lang.js
+const cook = JSON.parse(fs.readFileSync(path.join(ROOT, "data/lang/seed/cook.json"), "utf8"));
 // the real words are referenced by id from data/cook.json, never copied: check they're there
 const realIds = [...data.real.numbers, ...Object.values(data.real.sizes), data.real.no];
 const missing = realIds.filter((id) => !(cook.words[id] || {}).kutchi);

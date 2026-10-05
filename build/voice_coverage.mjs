@@ -17,6 +17,13 @@ const FV = require(path.join(ROOT, "js/shared/family-voice.js"));
 await FV.load();
 
 const cook = JSON.parse(fs.readFileSync(path.join(ROOT, "data/cook.json"), "utf8"));
+const COOK_SEED = JSON.parse(fs.readFileSync(path.join(ROOT, "data/lang/seed/cook.json"), "utf8"));
+// step 4d: Cook's words and lines live in the engine's own source; merged back as the parked pages see them (js/cook/lang.js)
+for (const [id, w] of Object.entries(COOK_SEED.words)) if (id !== "_about") cook.words[id] = Object.assign({}, cook.words[id], w);
+for (const st of Object.values(COOK_SEED.stations || {})) for (const [id, w] of Object.entries(st.words || {})) cook.words[id] = Object.assign({}, cook.words[id], w);
+cook.lines = Object.assign({}, COOK_SEED.lines, cook.lines);
+cook.grammar = cook.grammar || COOK_SEED.grammar;
+
 const words = cook.words || {};
 const lines = cook.lines || {};
 

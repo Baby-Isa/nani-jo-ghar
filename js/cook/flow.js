@@ -65,7 +65,7 @@
     if (!parts.length) return { segs: [{ t: String(n), lang: null }], en: String(n) };
     const ph = Lang.phrase(parts);
     if (!(n >= 1 && n <= 5)) ph.segs.unshift({ t: `${n} `, lang: null });
-    return { segs: ph.segs, en: ph.en };
+    return { segs: ph.segs, en: ph.en, plan: ph.plan };
   }
   const HELP_COST = { replay: 5, hint: 5, label: 5, help: 5, reveal: 8, translate: 8, shown: 8 };
 
@@ -1249,6 +1249,14 @@
 
   /* ---------------- test hooks ---------------- */
   global.__cook = {
+    /** Every station's first-time coach counts as seen (the grown-ups' skip, for every station at once): the sandbox's
+     * take-back path, so the coach's spotlight never holds back the take-back it tests (C3 leftover, 4d). */
+    coachesSeen() {
+      Cook.save.coached = Cook.save.coached || {};
+      Object.keys((Cook.data && Cook.data.onboard) || {}).forEach((k) => k[0] !== "_" && (Cook.save.coached[k] = true));
+      if (Cook.Coach && Cook.Coach.stop) Cook.Coach.stop(true);
+      return Object.keys(Cook.save.coached).length;
+    },
     expectation() {
       const e = Cook.expect;
       if (!e) return null;

@@ -65,7 +65,7 @@
       revealed: false,
       phrase,
       // on the card: just the words (the dot says how it links); "no X" as said
-      line: no ? (Lang.asRow ? Lang.asRow(r.line) : r.line) : { segs: cardPhrase.segs, en: cardPhrase.en },
+      line: no ? (Lang.asRow ? Lang.asRow(r.line) : r.line) : { segs: cardPhrase.segs, en: cardPhrase.en, plan: cardPhrase.plan },
       // as the recipe data says it (its own frame: "Ne be khun.")
       said: r.line,
       list: !!r.list,
@@ -259,26 +259,31 @@
     const inH = rows.filter((r) => inHead(head, r));
     const rest = rows.filter((r) => !inH.includes(r));
     const end = (k) => (k === rest.length - 1 ? "." : ",");
-    parts.push({ segs: cut(head.line.segs).concat(rest.length ? [{ t: ",", lang: null }] : [{ t: ".", lang: null }]), en: cutEn(head.line.en) + (rest.length ? "," : "."), row: head, rows: [head].concat(inH) });
+    // plan: each part keeps the engine's clip plan for what it says (the cut and the commas change no word)
+    parts.push({ plan: head.line.plan, segs: cut(head.line.segs).concat(rest.length ? [{ t: ",", lang: null }] : [{ t: ".", lang: null }]), en: cutEn(head.line.en) + (rest.length ? "," : "."), row: head, rows: [head].concat(inH) });
     let joined = false;
     rest.forEach((r, k) => {
       let segs;
       let en;
+      let plan;
       if (r.no) {
         const l = Lang.line(F.no, r.phrase);
         segs = lower(cut(l.segs));
         en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
+        plan = l.plan;
       } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join])) { // (parked pages only: their own lines)
         const l = Lang.line(join, r.phrase);
         // inside the sentence: no capital (the engine says a join it has no rule for as a sentence of its own)
         segs = lower(cut(l.segs));
         en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
+        plan = l.plan;
         joined = true;
       } else {
         segs = r.phrase.segs.slice();
         en = r.phrase.en;
+        plan = r.phrase.plan;
       }
-      parts.push({ segs: segs.concat({ t: end(k), lang: null }), en: en + end(k), row: r, rows: [r] });
+      parts.push({ plan, segs: segs.concat({ t: end(k), lang: null }), en: en + end(k), row: r, rows: [r] });
     });
     return Lang.join(parts);
   };

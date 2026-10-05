@@ -1,4 +1,5 @@
-// Layer 4: Cook (data/cook.json words, lines and guide; data/stations/*.json words and lines). Every word becomes
+// Layer 4: Cook (its words, lines, guide box and headlines, from the engine's own source data/lang/seed/cook.json since
+// step 4d; data/cook.json keeps only the item catalogue, the guide's and headlines' line keys). Every word becomes
 // (or merges into) a lexicon entry with Cook's id as an alias; every sentence frame is registered as the meaning the
 // game asks the engine for; every fixed line becomes a phrase entry; a line with no Kutchi becomes a to-record entry.
 // Source disagreements become open questions and clash-list rows (lib.mjs settle()). Re-run after Cook's data changes.
@@ -194,18 +195,19 @@ export function importLine(S, game, key, ln, { frames, src, okWords, rank, ask =
 }
 
 export function importCook(S) {
-  const cook = readJSON("data/cook.json");
+  const cook = readJSON("data/cook.json"); // the game's keys only (guide lines, headline lines)
+  const seed = readJSON("data/lang/seed/cook.json"); // Cook's words and lines (step 4d: the engine's own source)
   const okWords = mumOkWords();
   S.gameLines = S.gameLines || [];
   const rank = RANK.game;
   const stat = { words: 0, lines: 0, frames: 0, phrases: 0, toRecord: 0, guide: 0 };
-  stat.words += importWords(S, cook.words, { file: "data/cook.json", okWords, rank });
+  stat.words += importWords(S, seed.words, { file: "data/cook.json", okWords, rank });
   for (const f of ["mishkaki-grill", "maani-line", "chai-tray"]) {
-    const st = readJSON(`data/stations/${f}.json`);
+    const st = (seed.stations || {})[f] || {};
     if (st.words && Object.keys(st.words).length) stat.words += importWords(S, st.words, { file: `data/stations/${f}.json`, okWords, rank });
   }
   // Mum's pantry answer, and a few cross-source facts that only Cook's data shows
-  for (const [key, ln] of Object.entries(cook.lines)) {
+  for (const [key, ln] of Object.entries(seed.lines)) {
     const r = importLine(S, "cook", key, ln, { frames: FRAMES, src: "data/cook.json", okWords, rank });
     stat.lines++;
     if (r.kind === "frame") stat.frames++;
@@ -215,13 +217,13 @@ export function importCook(S) {
   // a recipe's card headline (the pantry's "bring me these for {dish}", step 4d): a frame Mum hasn't given, with the
   // dish in its slot (data/cook.json meanings names the meaning), and its plain form for a trip with no dish
   for (const [rid, r] of Object.entries(cook.recipes || {})) {
-    const hl = r && r.headline;
+    const hl = r && r.headline && Object.assign({}, (seed.headlines || {})[rid], r.headline);
     if (!hl || !hl.line) continue;
     importLine(S, "cook", hl.line, { e: String(hl.en).replace("{dish}", "{x}"), src: hl._about }, { frames: FRAMES, src: "data/cook.json", okWords, rank });
     if (hl.line_plain && hl.en_plain) importLine(S, "cook", hl.line_plain, { e: hl.en_plain, src: hl._about }, { frames: FRAMES, src: "data/cook.json", okWords, rank });
     stat.lines++;
   }
-  const stir = readJSON("data/stations/stir.json");
+  const stir = (seed.stations || {}).stir || {};
   for (const [key, ln] of Object.entries(stir.lines || {})) {
     const r = importLine(S, "cook", key === "stir-now" ? "now" : key, { ...ln }, { frames: FRAMES, src: "data/stations/stir.json", okWords, rank });
     r.alias = `cook.line.${key}`;
@@ -229,8 +231,9 @@ export function importCook(S) {
   }
   // Nani's guide box: each key says a line (a line key above) or is English "to record"
   const byEn = new Map();
-  for (const [key, g] of Object.entries(cook.guide || {})) {
-    if (key === "_about" || !g || typeof g !== "object") continue;
+  for (const [key, g0] of Object.entries(cook.guide || {})) {
+    if (key === "_about" || !g0 || typeof g0 !== "object") continue;
+    const g = Object.assign({}, g0, (seed.guide || {})[key]);
     stat.guide++;
     const rec = { game: "cook", key: `guide.${key}`, alias: `cook.guide.${key}`, en: g.en, kind: null, meaning: null };
     if (g.line) {

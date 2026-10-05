@@ -59,6 +59,13 @@ const MD = arg("md", null);
 Rel.load(read("data/relations.json"));
 Stars.load(read("data/shared/stars.json"));
 const cook = read("data/cook.json");
+const COOK_SEED = read("data/lang/seed/cook.json");
+// step 4d: Cook's words and lines live in the engine's own source; merged back as the parked pages see them (js/cook/lang.js)
+for (const [id, w] of Object.entries(COOK_SEED.words)) if (id !== "_about") cook.words[id] = Object.assign({}, cook.words[id], w);
+for (const st of Object.values(COOK_SEED.stations || {})) for (const [id, w] of Object.entries(st.words || {})) cook.words[id] = Object.assign({}, cook.words[id], w);
+cook.lines = Object.assign({}, COOK_SEED.lines, cook.lines);
+cook.grammar = cook.grammar || COOK_SEED.grammar;
+
 const fd = read("data/find.json");
 const W = Object.assign({}, cook.words);
 const content = {};

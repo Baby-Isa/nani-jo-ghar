@@ -270,7 +270,7 @@ test("every Cook and clinic word id resolves to a lexicon entry (as an alias or 
 
 test("every Cook and clinic line is registered with a meaning the engine can be asked", () => {
   const S = built.S;
-  const cookKeys = Object.keys(J("data/cook.json").lines);
+  const cookKeys = Object.keys(J("data/lang/seed/cook.json").lines);
   for (const k of cookKeys) assert.ok(S.gameLines.some((g) => g.game === "cook" && g.key === k && g.meaning), `cook line ${k} is not registered`);
   const clinicKeys = Object.keys(J("data/clinic.json").lines).filter((k) => k !== "_about");
   for (const k of clinicKeys) assert.ok(S.gameLines.some((g) => g.game === "clinic" && g.key === k && g.meaning), `clinic line ${k} is not registered`);

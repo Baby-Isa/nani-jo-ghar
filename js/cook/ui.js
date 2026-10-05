@@ -1868,7 +1868,7 @@
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {
     const ws = id && id !== "_" ? String(id).split("+") : [];
-    if (!ws.length || !ws.every((w) => Lang.known(w)) || ws.some((w) => Cook.isPlaceholder(w))) return { segs: Lang.num(n), en: String(n) };
+    if (!ws.length || !ws.every((w) => Lang.known(w)) || ws.some((w) => Cook.isPlaceholder(w))) return Lang.say({ fn: "Count", n }, { row: true });
     const parts = Lang.countParts(n, ws[ws.length - 1]);
     const at = parts.indexOf(ws[ws.length - 1]);
     parts.splice(at, 1, ...ws);
@@ -1938,7 +1938,10 @@
   UI.go = function (label, opts = {}) {
     const b = $("#go-btn");
     if (!b) return Promise.resolve();
-    (b.querySelector(".njg-next-t") || b.querySelector(".go-t")).textContent = label;
+    const t = b.querySelector(".njg-next-t") || b.querySelector(".go-t");
+    t.textContent = label;
+    // a label Mum hasn't given yet is the engine's English placeholder: italic, flagged to record (rule G2)
+    t.classList.toggle("ph", !!opts.rec);
     b.classList.remove("hidden");
     b.classList.toggle("glow", !!opts.glow);
     return new Promise((resolve) => (goResolve = resolve));

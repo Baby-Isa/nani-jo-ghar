@@ -37,6 +37,13 @@ const readJSON = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), "utf8"));
 
 const D = readJSON("data/monsoon.json");
 const COOK = readJSON("data/cook.json");
+const COOK_SEED = readJSON("data/lang/seed/cook.json");
+// step 4d: Cook's words and lines live in the engine's own source; merged back as the parked pages see them (js/cook/lang.js)
+for (const [id, w] of Object.entries(COOK_SEED.words)) if (id !== "_about") COOK.words[id] = Object.assign({}, COOK.words[id], w);
+for (const st of Object.values(COOK_SEED.stations || {})) for (const [id, w] of Object.entries(st.words || {})) COOK.words[id] = Object.assign({}, COOK.words[id], w);
+COOK.lines = Object.assign({}, COOK_SEED.lines, COOK.lines);
+COOK.grammar = COOK.grammar || COOK_SEED.grammar;
+
 const SCENE = readJSON("data/scenes/kitchen-monsoon.json");
 const AUDIO_PATH = "data/monsoon-audio.json";
 let AUDIO = fs.existsSync(path.join(ROOT, AUDIO_PATH)) ? readJSON(AUDIO_PATH) : { clips: {} };
