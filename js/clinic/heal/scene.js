@@ -604,6 +604,8 @@
     S.closeup = (key, standin) => {
       const a = ctx.data && ctx.data.art && ctx.data.art[key];
       if (!a || !a.on || !a.file) return null;
+      // A1: a close-up drawn for some patients only (the limb sets' cloth isn't tinted per patient yet)
+      if (a.kinds && !a.kinds.includes(S.kind)) return null;
       const [x, y, w, hh] = a.box || [0, 0, 800, 500];
       // A1: the @2x where the cut made one (a.has2x) and the screen is dense enough to want it
       const file = a.has2x && (global.devicePixelRatio || 1) > 1.25 ? String(a.file).replace(/\.webp$/, "@2x.webp") : a.file;

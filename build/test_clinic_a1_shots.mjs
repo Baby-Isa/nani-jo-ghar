@@ -10,7 +10,8 @@ const [W, H] = (process.argv[4] || "1366x768").split("x").map(Number);
 mkdirSync(out, { recursive: true });
 const srv = await startServer();
 const browser = await launch();
-for (const g of games) {
+for (const gp of games) {
+  const [g, part] = gp.split(":"); // "cut:knee": the scrape on the knee (the diagnosed part)
   const page = await browser.newPage({ viewport: { width: W, height: H } });
   const errs = [];
   page.on("pageerror", (e) => errs.push(String(e)));
@@ -27,22 +28,26 @@ for (const g of games) {
   // the lab has no zoom of its own (the pipeline stages it): load the stages' common module and the scenes, then mount
   await page.goto(`${BASE}/lab/clinic-heal-host.html?level=1&kind=girl&seed=7&quiet=1&onboard=0&src=js/clinic/stages/common.js`);
   await page.waitForFunction((g) => window.Clinic && Clinic.Stages && Clinic.Stages.fitScene && window.__heal && Clinic.Heal && Clinic.Heal.get(g), g, { timeout: 15000 });
-  await page.evaluate(async (g) => {
+  await page.evaluate(async ([g, part]) => {
+    if (part) {
+      const m = Clinic.HealHost.mount;
+      Clinic.HealHost.mount = (sc, id, o) => m(sc, id, Object.assign(o || {}, { part }));
+    }
     Clinic.Scenes = await Clinic.Kit.loadJSON("data/clinic/scenes-v2.json");
     document.getElementById("lab-game").value = g;
     document.getElementById("lab-kind").value = "girl";
     window.__heal.mount();
-  }, g);
+  }, [g, part]);
   // the wide shot: freeze the push-in at its start
   await page.waitForFunction(() => window.__a1.length >= 2, null, { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(600);
-  await page.screenshot({ path: `${out}/${g}-${W}-0wide.png` });
+  await page.screenshot({ path: `${out}/${g}${part ? "-" + part : ""}-${W}-0wide.png` });
   await page.evaluate(() => window.__a1.forEach((a) => (a.currentTime = 420)));
   await page.waitForTimeout(200);
-  await page.screenshot({ path: `${out}/${g}-${W}-1zoom.png` });
+  await page.screenshot({ path: `${out}/${g}${part ? "-" + part : ""}-${W}-1zoom.png` });
   await page.evaluate(() => { window.__a1go = true; window.__a1.forEach((a) => a.play()); });
   await page.waitForTimeout(2500);
-  await page.screenshot({ path: `${out}/${g}-${W}-2close.png` });
+  await page.screenshot({ path: `${out}/${g}${part ? "-" + part : ""}-${W}-2close.png` });
   if (errs.length) console.log(g, "errors:", errs.join(" | "));
   else console.log(g, "ok");
   await page.close();

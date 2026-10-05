@@ -686,7 +686,7 @@
       s("path", { d: `M24 ${Y - 74} Q54 ${Y} 24 ${Y + 74} L72 ${Y + 70} Q96 ${Y} 72 ${Y - 70}Z`, fill: HS.shade(S.clothes, -0.15) }, limb); // its rolled cuff
     }
 
-    S.closeup(legPart ? "knee-graze" : "forearm-graze", limb);
+    const limbArt = S.closeup(legPart ? "knee-graze" : "forearm-graze", limb);
 
     // the scrape: one red patch per plaster, each a soft irregular graze with scratch lines
     const patches = [];
@@ -802,8 +802,33 @@
     /* ---- CLN-74 (2 Oct): the hand ends left of the tool column on every screen ----
      * The wrist moves in (never onto the last plaster) and the hand foreshortens (down to 35 % long); where even that
      * can't clear the column (a short phone), the view slides right just enough (the sleeve still at the left edge). */
+    // A1 (5 Oct): with the cut arm (F1), the same rule moves the picture: it slides left until the fingertips clear
+    // the column, never so far that the wrist reaches the last plaster; past that the view slides, as above
+    const fa = limbArt && !legPart ? ctx.data.art["forearm-graze"] : null;
+    const placeArt = () => {
+      if (!fa || !fa.tip || !S.shelf) return;
+      const sr = S.shelf.getBoundingClientRect();
+      const m = S.svg.getScreenCTM();
+      if (!sr.width || !m) return;
+      const p = S.svg.createSVGPoint();
+      p.x = sr.left;
+      p.y = sr.top + sr.height / 2;
+      const E = p.matrixTransform(m.inverse()).x - 14;
+      const [x0, , w] = fa.box;
+      const k = w / fa.size[0];
+      const last = patches[patches.length - 1];
+      const lo = last.x + 50 - fa.wrist * k; // the leftmost the picture may go (the wrist past the last plaster)
+      const X = Math.max(lo, Math.min(x0, E - fa.tip * k));
+      limbArt.setAttribute("x", X.toFixed(1));
+      const over = X + fa.tip * k - E;
+      if (over > 0) {
+        const vb = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
+        if (vb.length === 4) S.svg.setAttribute("viewBox", `${(vb[0] + over).toFixed(1)} ${vb[1]} ${vb[2]} ${vb[3]}`);
+      }
+    };
     const placeHand = () => {
-      if (!handG || !armPath || !S.shelf) return;
+      placeArt();
+      if (limbArt || !handG || !armPath || !S.shelf) return;
       const sr = S.shelf.getBoundingClientRect();
       const m = S.svg.getScreenCTM();
       if (!sr.width || !m) return;

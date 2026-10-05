@@ -162,7 +162,8 @@
      0.0371,
      0.6354,
      1.0
-    ]
+    ],
+    "graze": "assets/clinic/closeups/child/knee-graze.webp"
    },
    "forearm": {
     "file": "assets/clinic/closeups/child/forearm.webp",
@@ -178,6 +179,23 @@
      0.2188,
      0.9785,
      0.7305
+    ]
+   },
+   "upperarm": {
+    "file": "assets/clinic/closeups/child/upperarm.webp",
+    "size": [
+     1536,
+     1024
+    ],
+    "exits": [
+     "left",
+     "bottom"
+    ],
+    "box": [
+     0.0,
+     0.0,
+     0.485,
+     1.0
     ]
    }
   },
@@ -203,11 +221,11 @@
   "auntie: no W1 yet",
   "child K: cut, exits left,bottom",
   "  kick: not landed",
-  "  graze: not landed",
+  "  graze: shift +0.0,-0.2 px",
   "child F: cut, exits left",
   "  graze: not landed",
   "  cut: not landed",
-  "child U: not landed",
+  "child U: cut, exits left,bottom",
   "child P: not landed",
   "adult K: not landed",
   "adult F: not landed",

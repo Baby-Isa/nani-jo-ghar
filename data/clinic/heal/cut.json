@@ -196,24 +196,40 @@
  "art": {
   "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
   "forearm-graze": {
-   "file": "assets/clinic/closeups/child/forearm-graze.webp",
-   "on": false,
+   "file": "assets/clinic/closeups/child/forearm.webp",
+   "on": true,
    "box": [
-    -160,
-    190,
-    1040,
-    330
-   ]
+    -60.0,
+    74.0,
+    921.6,
+    614.4
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): the plain F1 is the arm (the game draws the graze); its wrist (950, 460 in the source) at (510, 350), so the fingers end before the tool column (CLN-74), the sleeve off the left edge. kinds: as the knee. size, tip and wrist (source px) let the game slide it so the fingertips end before the tool column on every screen.",
+   "size": [
+    1536,
+    1024
+   ],
+   "tip": 1500,
+   "wrist": 950
   },
   "knee-graze": {
-   "file": "assets/clinic/closeups/child/knee-graze.webp",
-   "on": false,
+   "file": "assets/clinic/closeups/child/knee.webp",
+   "on": true,
    "box": [
-    -160,
-    150,
-    1040,
-    400
-   ]
+    -82.5,
+    135.5,
+    844.8,
+    563.2
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): the game draws its own graze, dirt and plasters, so the plain K1 is the limb (K3's graze would show twice); its knee's front (950, 390 in the source) at (440, 350), so both plaster patches (x 235 and 385) sit on bare skin. kinds: the child limbs' cloth is white (the girl's leggings) until the fabric tint is built."
   }
  }
 }
