@@ -322,6 +322,25 @@
       clearTimeout(faceT);
       if (ms) faceT = setTimeout(() => S.face(opts.rest || "neutral"), ms);
     };
+    // A1 (5 Oct): the patient's own corner face (the cut's 512 px head crops, D18) over the drawn one, by mood
+    const HH = global.Clinic && global.Clinic.HealHost;
+    const heads = HH && HH.healArt && HH.healArt.patients && HH.healArt.patients[kindId] && HH.healArt.patients[kindId].heads;
+    if (heads) {
+      const im = h("img", "hs-face-art", faceBox);
+      im.alt = "";
+      im.draggable = false;
+      const HEAD = { neutral: "neutral", happy: "happy", ouch: "pain", wince: "pain", sad: "sad", cold: "cold", hot: "hot", read: "neutral", drink: "happy" };
+      const draw = S.face;
+      S.face = (mood, ms) => {
+        draw(mood, ms);
+        const f = heads[HEAD[mood] || "neutral"] || heads.neutral;
+        if (f && im.dataset.src !== f) {
+          im.dataset.src = f;
+          im.src = Kit && Kit.url ? Kit.url(f) : f;
+        }
+        faceBox.classList.add("has-art");
+      };
+    }
     S.face(opts.rest || "neutral");
     // D16 (1 Oct, CLN-42): no 🩺 badge in the corner; the doctor speaks from his box in the sidebar
     const Voice = Kit && Kit.Voice;
