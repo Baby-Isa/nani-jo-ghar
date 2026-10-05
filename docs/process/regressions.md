@@ -300,18 +300,18 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | CLN-66 | No lollipop anywhere in the clinic: the boing tool list on the wide shot still shows 🍭 (the close-up shows the apple) | built, not re-played | eye: boing wide shot · CUL-02 | orchestrator review of R5's zoom sheets, 2 Oct |
 | CLN-67 | The patient's round face in the close-up matches the patient (a boy's face shows over the girl) | built, not re-played | eye: each heal close-up | orchestrator review of R5's zoom sheets, 2 Oct |
 | CLN-68 | Card rows join cleanly: no stray space before a comma ("Wipe , ba") | built, not re-played | eye: boing card | orchestrator review of R5's zoom sheets, 2 Oct |
-| CLN-69 | The results card sits over the scene (the room), never a bare cream stage | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-70 | Every heal game clears its own buttons on done (the scrape's ✓ lingered into the results) | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-71 | Speech bubbles stay inside the play area (the ear's sat off the top) | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-72 | The first-time help's light is a soft centred glow, never beige squares | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-73 | The word review never scrolls or clips at 800×360 | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-74 | The scrape's hand stays clear of the tool strip | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-75 | The foot's hot, cold and lukewarm jugs read at a glance (steam, ice) | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-76 | English lines the child sees are styled as flagged placeholders, never dark bold text | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-77 | The zoom never shows a full-screen smear or ghost close-up UI on the pull-out | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-78 | The ear's hearing check and the eye chart use scene-fitting pictures, not emoji | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-79 | The tick badge always reads (never '–') | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
-| CLN-80 | The eye test's haa/na pills are at least 48 px on phones | open | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-69 | The results card sits over the scene (the room), never a bare cream stage | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-70 | Every heal game clears its own buttons on done (the scrape's ✓ lingered into the results) | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-71 | Speech bubbles stay inside the play area (the ear's sat off the top) | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-72 | The first-time help's light is a soft centred glow, never beige squares | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-73 | The word review never scrolls or clips at 800×360 | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-74 | The scrape's hand stays clear of the tool strip | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-75 | The foot's hot, cold and lukewarm jugs read at a glance (steam, ice) | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-76 | English lines the child sees are styled as flagged placeholders, never dark bold text | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-77 | The zoom never shows a full-screen smear or ghost close-up UI on the pull-out | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-78 | The ear's hearing check and the eye chart use scene-fitting pictures, not emoji | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-79 | The tick badge always reads (never '–') | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-80 | The eye test's haa/na pills are at least 48 px on phones | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
 
 ## First launch and shell
 
