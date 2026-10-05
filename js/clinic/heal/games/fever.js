@@ -176,6 +176,7 @@
     ".fv-wave-fan{transform-box:fill-box;transform-origin:20% 90%;animation:fv-fan .45s ease-in-out infinite alternate}",
     ".fv-sweat{animation:fv-drip 1.6s ease-in infinite}",
     ".fv-fan-art{position:absolute;left:0;right:0;bottom:0;pointer-events:none}",
+    ".fv-thing.hang>img,.fv-thing.hang>svg{position:absolute;left:0;bottom:0;width:100%;height:calc(100% * var(--hang-k,1))}",
     ".fv-fan-art .fv-fan-body{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;object-position:50% 0}",
     ".fv-fan-tilt{position:absolute;transform:translate(-50%,-50%) perspective(600px) rotateX(74deg)}",
     ".fv-fan-tilt img{width:100%;height:100%;object-fit:contain}",
@@ -431,7 +432,7 @@
       b.dataset.ownArt = "1";
       // the button is the motor and the blades (what a child taps, always on screen); the downrod runs up from it
       const wrap = S.h("div", "fv-fan-art", b);
-      wrap.style.height = `${((AT["ceiling-fan"].art || AT["ceiling-fan"].h) / AT["ceiling-fan"].h) * 100}%`;
+      wrap.style.height = `calc(${((AT["ceiling-fan"].art || AT["ceiling-fan"].h) / AT["ceiling-fan"].h) * 100}% * var(--hang-k, 1))`;
       const body = S.h("img", "fv-fan-body", wrap);
       body.alt = "";
       body.src = Kit ? Kit.url(FAN.body) : FAN.body;
@@ -493,7 +494,15 @@
         const halfW = (a.w || 0.05) / 2;
         // A2: a thing registered on the room (the open window over the painted one, the fan from the ceiling) stays
         // exactly where it is; the screen's edge may crop it like the room
-        if (a.hang) return place(el, a.x, a.y, a.h, a.w);
+        if (a.hang) {
+          // the button stops at the screen's top (what can be tapped is on screen); the picture inside keeps its
+          // registered size and runs up past it, cropped by the screen like the room (--hang-k: picture / button)
+          const top = Math.max(a.y - a.h, v.y0 + 0.004);
+          const hh = Math.max(0.02, a.y - top);
+          el.classList.add("hang");
+          el.style.setProperty("--hang-k", (a.h / hh).toFixed(4));
+          return place(el, a.x, a.y, hh, a.w);
+        }
         let x = Math.max(v.x0 + halfW + pad, Math.min(v.x1 - halfW - pad, a.x));
         let y = a.y;
         let h = a.h;

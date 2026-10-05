@@ -120,7 +120,10 @@
 - 2026-10-05 16:05 UK · Decisions 35–37 (F1 go; laal marcha; close gate/W2/A1; rule G26 no words in code; the girl is enough to publish the clinic). Launching F1.
 - 2026-10-05 16:26 UK · Check-in: part B complete on main (B1, C2 landed; 62 of 115 total, part C under way). F1 starting (default permissions). A2 awaits Zafar's go.
 - 2026-10-05 16:40 UK · Zafar: go on A2. A2 launched (Opus high, stop 20:00, session_01HpATZUqu38HaMT1EfVzjpb): girl's remaining art, diagnosis/send-off on art, clinic words out of code (G26), touched-only proof at full matrix. Then orchestrator review of A2+F1 shots, bump, publish.
+- 2026-10-05 16:50 UK · F1 done: gate findings fixed (bataato/chana pop floor, pantry label floor, bubble off play area, cook spacing grid, order card at L2 phones), laal marcha renamed; final touched run 0 new; report build/reports/f1-gate-findings.md. Branch only, no publish.
 - 2026-10-05 16:55 UK · Decisions 38-39 (chapter plan; roadmap). 4a launched (Opus high, stop 21:00, session_018y5DMCTuxTv18UPuhzNzPw). C3 (Cook shims + gameplay rows) to launch when F1 ends.
 - 2026-10-05 17:03 UK · Check-in: F1 fixes pushed (008363a), proof run chunk 2 in progress; A2 wiring decay/props, screenshot drive; 4a schemas done, writing the linearizer; art 76 of 115 on main (part C under way).
 - 2026-10-05 17:16 UK · 4a: engine core pushed (js/core/lang/engine/, data/lang/ schema + cited test seed, build/lang/ gap reporter); node --test build/lang/ 29 pass; report build/reports/step4a-engine-core.md. 4b can start.
 - 2026-10-05 17:20 UK · 4a: decision 40 scope added (fixed expressions as parts, rule exceptions, notes/open/history per entry, where each kind goes in engine-spec); 33 pass; pushed.
+- 2026-10-05 17:23 UK · 4a done (engine core, 33 tests; fixed expressions, exceptions, notes/open/history). 4b launched (Sonnet high, ~$10-15, stop 00:30, session_01AuehJXVk7GdR1KnKKXbxV9). F1 asked to fix 4 hard-coded px in order-card.css (test_shared_frame).
+- 2026-10-05 17:23 UK · 4a: language-neutral ids (n.boy, not Kutchi), room for an English grammar/translation box/dictionary documented; 34 pass; pushed.
