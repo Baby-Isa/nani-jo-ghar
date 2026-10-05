@@ -38,8 +38,9 @@
   /** Hand the clinic an engine (the browser after ready(), a test with its own data). */
   E.use = (engine) => (E.engine = engine || null);
   /** The browser: load the engine module and data/lang/ once. loadJSON(path) is the kit's (stamped URLs). */
+  // (it resolves to true, never to E: E has a `then` builder, so awaiting E would wait for ever)
   E.ready = async function (loadJSON, root = "") {
-    if (E.engine) return E;
+    if (E.engine) return true;
     if (!E.loading)
       E.loading = (async () => {
         // through the core's seam (the import map stamps it); a page without the map loads the engine by path
@@ -55,7 +56,7 @@
         E.engine = mod.createEngine({ data, audio });
       })();
     await E.loading;
-    return E;
+    return true;
   };
   const EN = () => {
     if (!E.engine) throw new Error("ClinicLang: no engine yet (await ClinicLang.ready first)");
