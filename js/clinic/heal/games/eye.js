@@ -24,8 +24,9 @@
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
-  // the chart's pictures: words the child already knows from Cook, each by its lexicon id, with Cook's icon
-  const THINGS = ["fru-02", "veg-01", "veg-02", "veg-03", "veg-12", "veg-13", "veg-14", "cook-dudh", "cook-paani"].map((lex) => ({ id: lex, lex, icon: `assets/cook/items/icon-${lex}.webp` }));
+  // the chart's pictures: words the child already knows from Cook, each by its lexicon id (HS.pic: the clinic's art
+  // where it has the thing, CLN-78)
+  const THINGS = ["fru-02", "veg-01", "veg-02", "veg-03", "veg-12", "veg-13", "veg-14", "cook-dudh", "cook-paani"].map((lex) => ({ id: lex, lex, icon: HS.pic(lex) }));
   const BY = Object.fromEntries(THINGS.map((t) => [t.id, t]));
   const RID = (i) => `chart-${"abcdef"[i]}`; // a chart row's scored id (the review lists it under the eye-test row)
   const W = (t) => HS.L.w(t.lex);

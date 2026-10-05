@@ -637,7 +637,7 @@
   function mountScrape(stage, ctx) {
     const P = planScrape(ctx.level, ctx.rng);
     // the forearm is long and thin in the 800 x 500 drawing: push in on the scrape so it fills more of the screen
-    const S = HS.make(stage, ctx, { place: "limb", game: "cut", zoom: 1.35, focus: [355, 335], safe: [140, 560] });
+    const S = HS.make(stage, ctx, { place: "limb", game: "cut", zoom: 1.35, focus: [330, 335], safe: [120, 540] });
     const { s } = S;
     const doc = stage.ownerDocument;
     const n = P.steps[2].seq.length;
@@ -662,6 +662,10 @@
     s("stop", { offset: "1", "stop-color": S.skinDark }, grad);
     const limb = s("g", { class: "cut-limb" }, S.layer);
     const Y = 350; // the limb's middle line
+    // the forearm's outline for a wrist at x W (the drawing's own wrist is at 600)
+    const armD = (W) => `M-700 ${Y - 60} L${W - 40} ${Y - 46} Q${W} ${Y - 44} ${W + 18} ${Y - 40} L${W + 18} ${Y + 40} Q${W} ${Y + 46} ${W - 40} ${Y + 50} L-700 ${Y + 64}Z`;
+    let armPath = null;
+    let handG = null;
     s("ellipse", { cx: 330, cy: Y + 78, rx: 470, ry: 22, fill: "rgba(60,40,30,.16)" }, limb); // contact shadow on the bed
     if (legPart) {
       // the leg, stretched out: the thigh from the left edge, the knee, the shin, the foot up at the right
@@ -671,11 +675,13 @@
       s("path", { d: `M40 ${Y - 78} Q70 ${Y} 40 ${Y + 78} L84 ${Y + 74} Q108 ${Y} 84 ${Y - 74}Z`, fill: HS.shade(S.legs, -0.15) }, limb);
     } else {
       // the forearm held out, palm down: the sleeve at the left edge, the wrist, the hand
-      s("path", { d: `M-700 ${Y - 60} L560 ${Y - 46} Q600 ${Y - 44} 618 ${Y - 40} L618 ${Y + 40} Q600 ${Y + 46} 560 ${Y + 50} L-700 ${Y + 64}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3 }, limb);
-      // the hand, palm down: a soft mitten of fingers, the thumb tucked above (stand-in)
-      s("path", { d: `M600 ${Y - 44} Q640 ${Y - 58} 690 ${Y - 50} L770 ${Y - 44} Q800 ${Y - 40} 800 ${Y - 10} Q800 ${Y + 22} 770 ${Y + 30} L690 ${Y + 40} Q640 ${Y + 52} 600 ${Y + 44}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3, "stroke-linejoin": "round" }, limb);
-      [-22, -2, 18].forEach((dy) => s("path", { d: `M716 ${Y + dy} Q750 ${Y + dy - 2} 784 ${Y + dy + 2}`, fill: "none", stroke: S.skinDark, "stroke-width": 2.5, "stroke-linecap": "round", opacity: 0.6 }, limb));
-      s("path", { d: `M650 ${Y - 52} Q690 ${Y - 82} 728 ${Y - 70} Q738 ${Y - 58} 722 ${Y - 50} Q690 ${Y - 46} 668 ${Y - 44}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3, "stroke-linejoin": "round" }, limb); // the thumb
+      armPath = s("path", { d: armD(600), fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3 }, limb);
+      // the hand, palm down: a soft mitten of fingers, the thumb tucked above (stand-in). CLN-74: its own group, so it
+      // moves (and foreshortens) to end left of the tool column on every screen
+      handG = s("g", { class: "cut-hand" }, limb);
+      s("path", { d: `M600 ${Y - 44} Q640 ${Y - 58} 690 ${Y - 50} L770 ${Y - 44} Q800 ${Y - 40} 800 ${Y - 10} Q800 ${Y + 22} 770 ${Y + 30} L690 ${Y + 40} Q640 ${Y + 52} 600 ${Y + 44}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3, "stroke-linejoin": "round" }, handG);
+      [-22, -2, 18].forEach((dy) => s("path", { d: `M716 ${Y + dy} Q750 ${Y + dy - 2} 784 ${Y + dy + 2}`, fill: "none", stroke: S.skinDark, "stroke-width": 2.5, "stroke-linecap": "round", opacity: 0.6 }, handG));
+      s("path", { d: `M650 ${Y - 52} Q690 ${Y - 82} 728 ${Y - 70} Q738 ${Y - 58} 722 ${Y - 50} Q690 ${Y - 46} 668 ${Y - 44}Z`, fill: `url(#${gid})`, stroke: S.skinDark, "stroke-width": 3, "stroke-linejoin": "round" }, handG); // the thumb
       s("path", { d: `M-700 ${Y - 70} L40 ${Y - 66} Q62 ${Y} 40 ${Y + 70} L-700 ${Y + 74}Z`, fill: S.clothes }, limb); // the sleeve
       s("path", { d: `M24 ${Y - 74} Q54 ${Y} 24 ${Y + 74} L72 ${Y + 70} Q96 ${Y} 72 ${Y - 70}Z`, fill: HS.shade(S.clothes, -0.15) }, limb); // its rolled cuff
     }
@@ -685,7 +691,8 @@
     // the scrape: one red patch per plaster, each a soft irregular graze with scratch lines
     const patches = [];
     const patchG = s("g", { class: "cut-patches" }, S.layer);
-    const PX = n === 1 ? [330] : [250, 420];
+    // CLN-74: the scrape sits a little left of the old middle, so the wrist and hand have room before the tool column
+    const PX = n === 1 ? [310] : [235, 385];
     PX.forEach((x, k) => {
       const y = Y + (k % 2 ? 6 : -6);
       const R = SCRAPE.patch;
@@ -791,6 +798,37 @@
       // SH-40: picking a later step's tool closes the open counted step (no ✓ where a next action exists)
       if (c && want !== c.kind && c.kind === "dab" && P.steps.findIndex((x) => x.kind === want) > st.i) close();
     });
+
+    /* ---- CLN-74 (2 Oct): the hand ends left of the tool column on every screen ----
+     * The wrist moves in (never onto the last plaster) and the hand foreshortens (down to 35 % long); where even that
+     * can't clear the column (a short phone), the view slides right just enough (the sleeve still at the left edge). */
+    const placeHand = () => {
+      if (!handG || !armPath || !S.shelf) return;
+      const sr = S.shelf.getBoundingClientRect();
+      const m = S.svg.getScreenCTM();
+      if (!sr.width || !m) return;
+      const toSvgX = (cx) => {
+        const p = S.svg.createSVGPoint();
+        p.x = cx;
+        p.y = sr.top + sr.height / 2;
+        return p.matrixTransform(m.inverse()).x;
+      };
+      const E = toSvgX(sr.left) - 14; // where the fingertips may reach
+      const last = patches[patches.length - 1];
+      const wMin = last.x + 78; // clear of the last plaster
+      const k = Math.max(0.35, Math.min(1, (E - wMin) / 200));
+      const W = Math.max(wMin, Math.min(600, E - 200 * k));
+      const over = W + 200 * k - E; // still under the column: slide the view by that much
+      if (over > 0) {
+        const vb = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
+        if (vb.length === 4) S.svg.setAttribute("viewBox", `${(vb[0] + over).toFixed(1)} ${vb[1]} ${vb[2]} ${vb[3]}`);
+      }
+      armPath.setAttribute("d", armD(W));
+      handG.setAttribute("transform", `translate(${W.toFixed(1)} 0) scale(${k.toFixed(3)} 1) translate(-600 0)`);
+    };
+    placeHand();
+    ctx.on(root, "resize", placeHand);
+    if (root.requestAnimationFrame) root.requestAnimationFrame(placeHand);
 
     /* ---- 1. the wash: the jug's water swept over the scrape ---- */
     const jug = s("image", { href: url(ART + "water-jug.webp"), width: 110, height: 114, opacity: 0, class: "cut-jug" }, S.fx);

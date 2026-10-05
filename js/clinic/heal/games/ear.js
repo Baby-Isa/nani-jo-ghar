@@ -345,7 +345,7 @@
         const im = S.h("img", null, b);
         im.alt = "";
         im.draggable = false;
-        im.src = url(`assets/cook/items/icon-${id}.webp`);
+        im.src = url(HS.pic(id)); // CLN-78: the clinic's own art where it has the thing
         ctx.on(b, "click", (e) => {
           e.stopPropagation();
           if (st.over || cur() !== c) return;

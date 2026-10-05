@@ -68,13 +68,31 @@
     });
     return best;
   };
+  // CLN-75: the marks (viewBox 0 0 100 100 over the tool's box): rising steam (a white line edged warm, so it reads on
+  // any tint) and ice cubes (pale blue blocks, a darker edge) sitting in the jug's mouth
+  const steam = (x) => `<g class="rise"><path class="st-e" d="M${x} 34 q-7 -8 0 -15 t0 -15"/><path class="st" d="M${x} 34 q-7 -8 0 -15 t0 -15"/></g>`;
+  const cube = (x, y, r) => `<rect x="${x}" y="${y}" width="17" height="17" rx="3" transform="rotate(${r} ${x + 8} ${y + 8})" fill="#e6f5ff" stroke="#3f8fd8" stroke-width="3.5"/><path d="M${x + 4} ${y + 5} h6" stroke="#fff" stroke-width="3" stroke-linecap="round" transform="rotate(${r} ${x + 8} ${y + 8})"/>`;
+  const MARKS = {
+    steam: `<svg class="hs-mark" viewBox="0 0 100 100" aria-hidden="true">${steam(36)}${steam(50)}${steam(64)}</svg>`,
+    ice: `<svg class="hs-mark" viewBox="0 0 100 100" aria-hidden="true">${cube(30, 14, -12)}${cube(48, 10, 10)}${cube(40, 26, 4)}</svg>`,
+  };
   HS.CSS = [
     ".hs-tool .g.im{width:calc(var(--njg-tap) * 1.25);height:calc(var(--njg-tap) * .95);object-fit:contain;pointer-events:none;-webkit-user-drag:none}",
     ".hs-tool.drag-src{opacity:.4}",
+    // CLN-75: a drawn mark over a tool's art that reads at button size (the hot jug's steam, the cold jug's ice)
+    ".hs-tool{position:relative}",
+    ".hs-tool .hs-mark{position:absolute;inset:0;pointer-events:none;overflow:visible}",
+    ".hs-tool .hs-mark .st{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;opacity:.95}",
+    ".hs-tool .hs-mark .st-e{fill:none;stroke:#c9563f;stroke-width:8.5;stroke-linecap:round;opacity:.55}",
+    ".hs-tool .hs-mark .rise{animation:hs-rise 2.2s ease-in-out infinite}",
+    ".hs-tool .hs-mark .rise:nth-child(2n){animation-delay:-1.1s}",
+    "@keyframes hs-rise{0%,100%{transform:translateY(2px);opacity:.75}50%{transform:translateY(-3px);opacity:1}}",
+    "@media (prefers-reduced-motion: reduce){.hs-tool .hs-mark .rise{animation:none}}",
     ".hs-held{position:absolute;z-index:9;pointer-events:none;transform:translate(-50%,-50%);filter:drop-shadow(0 6px 6px rgba(0,0,0,.25))}",
     ".hs-held img{display:block;width:100%;height:100%;object-fit:contain}",
     ".hs-pics{position:absolute;left:50%;bottom:var(--njg-s3);transform:translateX(-50%);display:flex;gap:var(--njg-s3);z-index:8}",
-    ".hs-pic{width:calc(var(--njg-tap) * 2);height:calc(var(--njg-tap) * 2);border-radius:50%;border:4px solid #d8c6a8;background:#fffaf1;display:grid;place-items:center;padding:var(--njg-s1);cursor:pointer;box-shadow:var(--njg-shadow)}",
+    // CLN-78: the doctor's picture cards, in the eye chart's light-wood frame (scene things, not floating discs)
+    ".hs-pic{width:calc(var(--njg-tap) * 2);height:calc(var(--njg-tap) * 2);border-radius:var(--njg-radius);border:6px solid #c8a46e;outline:2px solid #a9824d;background:#fffefb;display:grid;place-items:center;padding:var(--njg-s1);cursor:pointer;box-shadow:var(--njg-shadow)}",
     ".hs-pic img{width:80%;height:80%;object-fit:contain;pointer-events:none}",
     ".hs-pic.picked{border-color:var(--njg-gold)}",
     ".hs-pic.pulse{animation:hs-pulse 1s ease-in-out infinite}",
@@ -88,6 +106,12 @@
     return "#" + ch.map((c) => Math.max(0, Math.min(255, c)).toString(16).padStart(2, "0")).join("");
   };
   /** An English placeholder word ("to record"). */
+  /**
+   * CLN-78 (2 Oct): a known word's picture in the clinic (the hearing check, the eye chart): the clinic's own item art
+   * where it has the thing (the scrape's water is this jug), else Cook's realistic render the child learned it with.
+   */
+  const CLINIC_PIC = { "cook-paani": "water-jug", "cook-dudh": "milk-jug", "fru-02": "lemon-half", "veg-14": "ginger" };
+  HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/items-v2/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
   HS.ph = (english) => ({ kutchi: null, english, placeholder: true });
   /** The colours: English placeholders until the doctor's recording (Section G). */
   HS.COLOURS = { red: "#d8433f", blue: "#3f6fd8", green: "#3fa35b", yellow: "#f0c43a", orange: "#f08a2c", purple: "#8a55c8", white: "#f7f4ee" };
@@ -336,6 +360,7 @@
 
     /* ---- the tool shelf ---- */
     const shelf = h("div", "hs-tools", root);
+    S.shelf = shelf; // the tool column (a game keeps its art clear of it: CLN-74)
     S.toolEls = {};
     S.sel = null;
     let onPick = null;
@@ -364,6 +389,7 @@
             d.style.setProperty("--sw", HS.COLOURS[c] || c);
           });
         } else h("span", "g", b, t.glyph || "•");
+        if (t.mark && MARKS[t.mark]) b.insertAdjacentHTML("beforeend", MARKS[t.mark]);
         if (t.label) h("span", "l", b, t.label);
         if (t.bg) b.style.background = t.bg;
         // what came from the pharmacy (13) is still known (S.fromTray), but D16 (1 Oct, CLN-42): no gold

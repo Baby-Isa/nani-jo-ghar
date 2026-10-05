@@ -271,7 +271,9 @@
 
     const TCOL = { hot: "#e8503a", cold: "#3f8fd8", lukewarm: "#9a7ad0" };
     const IMG = "assets/clinic/items-v2/";
-    S.tools(TEMPS.map((t) => ({ id: "jug-" + t, img: `${IMG}jug-${t}.webp`, glyph: "•", bg: TCOL[t] + "26" })).concat([{ id: "plaster", img: IMG + "plaster-skin.webp", glyph: "•" }]), () => {});
+    // CLN-75: steam on the hot jug, ice on the cold one, the lukewarm one plain: they read at a glance at button size
+    const MARK = { hot: "steam", cold: "ice" };
+    S.tools(TEMPS.map((t) => ({ id: "jug-" + t, img: `${IMG}jug-${t}.webp`, glyph: "•", bg: TCOL[t] + "26", mark: MARK[t] })).concat([{ id: "plaster", img: IMG + "plaster-skin.webp", glyph: "•" }]), () => {});
 
     let drag = null;
     const slack = () => K.slackPx * S.unit();

@@ -326,9 +326,21 @@
     const anchor = Voice.speakers[who] && Voice.speakers[who]();
     if (anchor) {
       b.classList.add("anchored");
-      Voice.place(b, anchor, layer);
+      // the other speakers in the play area (the close-up's round face) are never covered by this one's bubble
+      const others = () =>
+        Object.keys(Voice.speakers)
+          .filter((k) => k !== who)
+          .map((k) => {
+            try {
+              return Voice.speakers[k] && Voice.speakers[k]();
+            } catch (e) {
+              return null;
+            }
+          })
+          .filter((el) => el && el.isConnected && el.getBoundingClientRect);
+      Voice.place(b, anchor, layer, others());
       // the words can settle a frame later (fonts, fitting): place it again then
-      if (global.requestAnimationFrame) global.requestAnimationFrame(() => b.isConnected && Voice.place(b, anchor, layer));
+      if (global.requestAnimationFrame) global.requestAnimationFrame(() => b.isConnected && Voice.place(b, anchor, layer, others()));
     } else b.classList.add("top");
     return b;
   };
@@ -336,7 +348,7 @@
    * CLN-71 (2 Oct): a speaker's bubble always sits wholly inside the play area. Above the speaker when it fits;
    * else beside it (the close-up's round face, top left), else below it; then clamped to the layer with a margin.
    */
-  Voice.place = function (b, anchor, layer) {
+  Voice.place = function (b, anchor, layer, avoid = []) {
     const M = 8;
     const lr = layer.getBoundingClientRect();
     const r = anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : anchor;
@@ -362,6 +374,17 @@
     }
     x = Math.max(M, Math.min(W - bw - M, x));
     y = Math.max(M, Math.min(H - bh - M, y));
+    // CLN-71: a bubble clamped in from a speaker outside the play area (the doctor in the guide box) can land on
+    // another speaker (the patient's round face, top left): it moves beside that speaker, else under it
+    avoid.forEach((el) => {
+      const o = el.getBoundingClientRect();
+      if (!o.width || !o.height) return;
+      const ox = o.left - lr.left;
+      const oy = o.top - lr.top;
+      if (x >= ox + o.width + M / 2 || x + bw <= ox - M / 2 || y >= oy + o.height + M / 2 || y + bh <= oy - M / 2) return;
+      if (ox + o.width + M + bw <= W - M) x = ox + o.width + M;
+      else y = Math.min(H - bh - M, oy + o.height + M);
+    });
     b.style.left = `${Math.round(x)}px`;
     b.style.top = `${Math.round(y)}px`;
   };

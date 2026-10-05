@@ -162,6 +162,8 @@
 .rs-acc.tier-gold .rs-tick-gold { opacity: 1; }
 .rs-acc .rs-foot { font-size: var(--njg-end-foot); font-weight: 800; font-variant-numeric: tabular-nums; }
 .rs-acc .rs-foot .rs-of { opacity: 0.6; font-weight: 600; margin-left: var(--njg-line-2); }
+/* CLN-79: nothing judged: a gold tick, never a dash */
+.rs-acc .rs-foot .rs-of.rs-none { opacity: 1; margin-left: 0; color: var(--njg-gold); font-weight: 900; }
 
 /* ---------- hints: the bulb art for the hint count (0, 1, 2, 3+), cross-faded ---------- */
 .rs-lamp { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transform: scale(1.25); opacity: 0; transition: opacity 0.4s; }
