@@ -68,7 +68,7 @@
       const nm = num(n);
       const noun = `${D.colours[colour].english} ${n === 1 ? W.one.english : W.ones.english}`;
       const lead = i === 0 ? nm.kutchi : `${W.nepoi.kutchi} ${nm.kutchi.toLowerCase()}`;
-      rows.push({ id: "catch" + i, kutchi: `${lead} [${noun}]`, english: `${i === 0 ? cap(nm.english) : "And then " + nm.english} ${noun}`, who: "doctor", use: "jar" });
+      rows.push({ id: "catch" + i, kutchi: `${lead} [${noun}]`, english: `${i === 0 ? cap(nm.english) : `${cap(W.nepoi.english)} ${nm.english}`} ${noun}`, who: "doctor", use: "jar" });
       addNum(nm);
       return { n, colour };
     });
@@ -77,7 +77,7 @@
       shampoo = pick(rng, lv.shampoo);
       const nm = num(shampoo);
       const r = shampoo === 1 ? W.rub.english : W.rubs.english;
-      rows.push({ id: "shampoo", kutchi: `${W.nepoi.kutchi} [${W.shampoo.english}], ${nm.kutchi.toLowerCase()} [${r}]`, english: `And then ${W.shampoo.english}, ${nm.english} ${r}`, who: "doctor", use: "shampoo" });
+      rows.push({ id: "shampoo", kutchi: `${W.nepoi.kutchi} [${W.shampoo.english}], ${nm.kutchi.toLowerCase()} [${r}]`, english: `${cap(W.nepoi.english)} ${W.shampoo.english}, ${nm.english} ${r}`, who: "doctor", use: "shampoo" });
       addNum(nm);
     }
     if (catches.length > 1 || shampoo) words.push({ kutchi: W.nepoi.kutchi.toLowerCase(), english: W.nepoi.english });
@@ -223,7 +223,17 @@
   const Kit0 = root.Clinic && root.Clinic.Kit;
   if (Kit0 && Kit0.ITEMS) {
     if (!Kit0.ITEMS.shampoo) Kit0.ITEMS.shampoo = { kutchi: null, english: "shampoo", glyph: "🧴", placeholder: true };
-    if (!Kit0.ITEMS["bug-jar"]) Kit0.ITEMS["bug-jar"] = { kutchi: null, english: "the jar", glyph: "🫙", placeholder: true };
+    // (C4, G26: its English is the engine's to-record placeholder, data/lang/seed/clinic.json heal-the-jar; read when shown)
+    if (!Kit0.ITEMS["bug-jar"])
+      Kit0.ITEMS["bug-jar"] = {
+        kutchi: null,
+        get english() {
+          const L = root.ClinicLang || (root.Clinic && root.Clinic.Lang);
+          return L && L.engine ? L.w("heal-the-jar").english : "";
+        },
+        glyph: "🫙",
+        placeholder: true,
+      };
   }
 
   function mount(stage, ctx) {
@@ -677,7 +687,7 @@
       const g = grade(R, st);
       g.forEach((r) => ctx.log({ type: r.right ? "right" : "wrong", rowId: r.id }));
       const want = R.catches.reduce((a, c) => a + c.n, 0);
-      if (st.catches.length > want) ctx.log({ type: "extra", rowId: "catch0", detail: `${st.catches.length - want} more beetles` });
+      if (st.catches.length > want) ctx.log({ type: "extra", rowId: "catch0", detail: { extraBeetles: st.catches.length - want } });
       const right = g.filter((r) => r.right).length;
       mouth("smile");
       ctx.patient.react && ctx.patient.react("happy", 0);

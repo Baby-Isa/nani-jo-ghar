@@ -302,18 +302,6 @@
       "why": "the game host's labels and notes for Cook's labs (the labs page and host menus, for grown-ups); step 4d"
     },
     {
-      "file": "js/clinic/heal/games/hic.js",
-      "why": "PARKED heal game (lab only). G26 DEBT: its rows' English (the bulb's flip) and bracketed placeholders are still typed in code; they move into data/lang when the game is unparked. Step 4d"
-    },
-    {
-      "file": "js/clinic/heal/games/tummy.js",
-      "why": "PARKED heal game (lab only). G26 DEBT, as hic.js. Step 4d"
-    },
-    {
-      "file": "js/clinic/heal/games/hair.js",
-      "why": "PARKED heal game (lab only). G26 DEBT, as hic.js (and its placeholder items 'the jar', 'shampoo'). Step 4d"
-    },
-    {
       "file": "js/clinic/main.js",
       "why": "the game host's labels and notes for the clinic's labs (labs page and host menus, for grown-ups); step 4d"
     },

@@ -736,6 +736,25 @@
    ]
   },
   {
+   "id": "n.a-full-glass-of",
+   "pos": "N",
+   "gender": null,
+   "gloss": "a full glass of",
+   "glossPl": "a full glass ofs",
+   "status": "to-record",
+   "src": [
+    "data/clinic.json words.heal-glass-full: placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+   ],
+   "aliases": [
+    "heal-glass-full"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.a-while",
    "pos": "N",
    "gender": null,
@@ -3598,6 +3617,25 @@
    ]
   },
   {
+   "id": "n.half-a-glass-of",
+   "pos": "N",
+   "gender": null,
+   "gloss": "half a glass of",
+   "glossPl": "half a glass ofs",
+   "status": "to-record",
+   "src": [
+    "data/clinic.json words.heal-glass-half: placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+   ],
+   "aliases": [
+    "heal-glass-half"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.hammer",
    "pos": "N",
    "gender": null,
@@ -5989,6 +6027,25 @@
    }
   },
   {
+   "id": "n.sip-of",
+   "pos": "N",
+   "gender": null,
+   "gloss": "sip of",
+   "glossPl": "sip ofs",
+   "status": "to-record",
+   "src": [
+    "data/clinic.json words.heal-sip-of: placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+   ],
+   "aliases": [
+    "heal-sip-of"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.sips",
    "pos": "N",
    "gender": null,
@@ -6000,6 +6057,25 @@
    ],
    "aliases": [
     "sips"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.sips-of",
+   "pos": "N",
+   "gender": null,
+   "gloss": "sips of",
+   "glossPl": "sips ofs",
+   "status": "to-record",
+   "src": [
+    "data/clinic.json words.heal-sips-of: placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+   ],
+   "aliases": [
+    "heal-sips-of"
    ],
    "ask": {
     "word": [
@@ -6888,6 +6964,25 @@
    ],
    "aliases": [
     "bottle"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.the-jar",
+   "pos": "N",
+   "gender": null,
+   "gloss": "the jar",
+   "glossPl": "the jars",
+   "status": "to-record",
+   "src": [
+    "data/clinic.json words.heal-the-jar: placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+   ],
+   "aliases": [
+    "heal-the-jar"
    ],
    "ask": {
     "word": [
@@ -18851,6 +18946,23 @@
    "notes": [
     "gadi firai chad (turn the car round)"
    ]
+  },
+  {
+   "id": "phrase.up-and-out",
+   "pos": "Phrase",
+   "gloss": "up and out!",
+   "status": "to-record",
+   "src": [
+    "data/clinic.json words.heal-up-and-out: placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+   ],
+   "aliases": [
+    "heal-up-and-out"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.use-the-big-one",

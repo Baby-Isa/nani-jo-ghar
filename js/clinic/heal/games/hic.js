@@ -56,29 +56,33 @@
     const sN = numOf(sips);
     const hN = numOf(hold);
     const sipW = sips === 1 ? Wd.sip.english : Wd.sips.english;
+    // C4 (G26): the rows' English is the engine's (pela, ne poi) or its to-record placeholders (data/lang/seed/clinic.json)
+    const sipOfW = CL().w(sips === 1 ? "heal-sip-of" : "heal-sips-of").english;
+    const enFirst = `${cap(Wd.pela.english)},`;
+    const enThen = cap(Wd.nepoi.english);
     const holdK = `[${Wd.hold.english}] [${Wd.count.english}] ${low(hN.kutchi)}`;
     const holdE = `${Wd.hold.english} ${Wd.count.english} ${hN.english}`;
     const pela = Wd.pela;
     const nepoi = Wd.nepoi;
     const fillK = (lead) => `${lead}${fill === 1 ? `${lead ? Wd.adh.kutchi : cap(Wd.adh.kutchi)} ${Wd.paani.kutchi}` : lead ? Wd.paani.kutchi : cap(Wd.paani.kutchi)}`;
-    const fillE = fill === 1 ? "half a glass of water" : "a full glass of water";
+    const fillE = `${CL().w(fill === 1 ? "heal-glass-half" : "heal-glass-full").english} ${Wd.paani.english}`;
     const rows = [];
     const words = [];
     if (!lv.fill) {
       // level 1: a full glass is already there
-      rows.push({ id: "sips", kutchi: `${sN.kutchi} [${sipW} of] ${Wd.paani.kutchi}`, english: `${cap(sN.english)} ${sipW} of water`, who: "doctor", nepoi: false });
+      rows.push({ id: "sips", kutchi: `${sN.kutchi} [${sipOfW}] ${Wd.paani.kutchi}`, english: `${cap(sN.english)} ${sipOfW} ${Wd.paani.english}`, who: "doctor", nepoi: false });
       rows.push({ id: "hold", kutchi: holdK, english: holdE, who: "doctor", nepoi: false });
     } else if (!lv.order) {
-      rows.push({ id: "fill", kutchi: fillK(pela.kutchi + " "), english: `First, ${fillE}`, who: "doctor", nepoi: false });
-      rows.push({ id: "sips", kutchi: `${nepoi.kutchi} ${low(sN.kutchi)} [${sipW}]`, english: `And then ${sN.english} ${sipW}`, who: "doctor", nepoi: false });
+      rows.push({ id: "fill", kutchi: fillK(pela.kutchi + " "), english: `${enFirst} ${fillE}`, who: "doctor", nepoi: false });
+      rows.push({ id: "sips", kutchi: `${nepoi.kutchi} ${low(sN.kutchi)} [${sipW}]`, english: `${enThen} ${sN.english} ${sipW}`, who: "doctor", nepoi: false });
       rows.push({ id: "hold", kutchi: holdK, english: holdE, who: "doctor", nepoi: false });
     } else if (first === "drink") {
-      rows.push({ id: "fill", kutchi: fillK(pela.kutchi + " "), english: `First, ${fillE}`, who: "doctor", nepoi: false });
+      rows.push({ id: "fill", kutchi: fillK(pela.kutchi + " "), english: `${enFirst} ${fillE}`, who: "doctor", nepoi: false });
       rows.push({ id: "sips", kutchi: `${sN.kutchi} [${sipW}]`, english: `${cap(sN.english)} ${sipW}`, who: "doctor", nepoi: false });
-      rows.push({ id: "hold", kutchi: `${nepoi.kutchi} [${low(Wd.hold.english)}] [${low(Wd.count.english)}] ${low(hN.kutchi)}`, english: `And then ${low(holdE)}`, who: "doctor", nepoi: true });
+      rows.push({ id: "hold", kutchi: `${nepoi.kutchi} [${low(Wd.hold.english)}] [${low(Wd.count.english)}] ${low(hN.kutchi)}`, english: `${enThen} ${low(holdE)}`, who: "doctor", nepoi: true });
     } else {
-      rows.push({ id: "hold", kutchi: `${pela.kutchi} [${low(Wd.hold.english)}] [${low(Wd.count.english)}] ${low(hN.kutchi)}`, english: `First, ${low(holdE)}`, who: "doctor", nepoi: false });
-      rows.push({ id: "fill", kutchi: fillK(nepoi.kutchi + " "), english: `And then ${fillE}`, who: "doctor", nepoi: true });
+      rows.push({ id: "hold", kutchi: `${pela.kutchi} [${low(Wd.hold.english)}] [${low(Wd.count.english)}] ${low(hN.kutchi)}`, english: `${enFirst} ${low(holdE)}`, who: "doctor", nepoi: false });
+      rows.push({ id: "fill", kutchi: fillK(nepoi.kutchi + " "), english: `${enThen} ${fillE}`, who: "doctor", nepoi: true });
       rows.push({ id: "sips", kutchi: `${sN.kutchi} [${sipW}]`, english: `${cap(sN.english)} ${sipW}`, who: "doctor", nepoi: false });
     }
     words.push({ kutchi: low(sN.kutchi), english: sN.english });
@@ -556,7 +560,7 @@
           if (Date.now() - lastHic < 500) splash(GL.x, GL.y - 70);
         } else {
           st.slurps++;
-          ctx.log({ type: "extra", rowId: "sips", detail: "slurped an empty glass" });
+          ctx.log({ type: "extra", rowId: "sips", detail: "slurp-empty-glass" });
           mouth("slurp");
           ctx.after(600, restMouth);
           bubble("slurrrp!", GL.x, GL.y - 110, false, "glug");
@@ -565,7 +569,7 @@
       } else if (holding === "paani") {
         const over = units >= R.units;
         st.pours++;
-        if (R.full) ctx.log({ type: "extra", detail: "topped up the glass" });
+        if (R.full) ctx.log({ type: "extra", detail: "topped-up-glass" });
         else if (st.drinkAt == null) st.drinkAt = ++st.moves;
         units = Math.min(R.units, units + R.half);
         ctx.tally(trayId("paani"), st.pours);

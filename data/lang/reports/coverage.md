@@ -4,12 +4,12 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Lexicon
 
-937 entries (153 are fixed expressions made of other words).
+943 entries (153 are fixed expressions made of other words).
 
 | By part of speech | Entries |
 |---|---|
-| Phrase | 418 |
-| N | 325 |
+| Phrase | 419 |
+| N | 330 |
 | V | 56 |
 | A | 40 |
 | Post | 26 |
@@ -27,14 +27,14 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 | By status | Entries |
 |---|---|
-| to-record | 438 |
+| to-record | 444 |
 | confirmed | 336 |
 | draft | 163 |
 
 | By source (an entry can cite several) | Citations |
 |---|---|
 | grammar-notes | 487 |
-| data/clinic* | 451 |
+| data/clinic* | 457 |
 | parked modes | 166 |
 | data/cook.json | 110 |
 | lexicon.md §6 | 69 |

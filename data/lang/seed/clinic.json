@@ -1,6 +1,36 @@
 {
  "_about": "Step 4d (the orchestrator's 5 Oct addition; decision 40, rule G27): the clinic's word and line text as the language engine's own source. It used to live in data/clinic/lang.json (now deleted: all of it is here, under `lang`) and in data/clinic.json (each word's Kutchi, English, gender and sources; each tray item's English and its Cook word; each line's English). build/lang/import_clinic.mjs reads it here; the clinic's code reads none of it (js/clinic/lang.js asks the engine). data/clinic.json keeps the ids and the non-language fields (groups, sides, glyphs, colours, a line's meaning). data/clinic/pipeline.json's English words stay where they are for now: the clinic's code still reads them for its result rows and aria-labels (a js/clinic change, the clinic owner's).",
  "words": {
+  "heal-glass-half": {
+   "kutchi": null,
+   "english": "half a glass of",
+   "src": "placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+  },
+  "heal-glass-full": {
+   "kutchi": null,
+   "english": "a full glass of",
+   "src": "placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+  },
+  "heal-sip-of": {
+   "kutchi": null,
+   "english": "sip of",
+   "src": "placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+  },
+  "heal-sips-of": {
+   "kutchi": null,
+   "english": "sips of",
+   "src": "placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+  },
+  "heal-up-and-out": {
+   "kutchi": null,
+   "english": "up and out!",
+   "src": "placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+  },
+  "heal-the-jar": {
+   "kutchi": null,
+   "english": "the jar",
+   "src": "placeholder (C4, rule G26: the parked heal games' row English, moved out of js/clinic/heal/games/{hic,tummy,hair}.js)"
+  },
   "body-head": {
    "kutchi": null,
    "english": "head",

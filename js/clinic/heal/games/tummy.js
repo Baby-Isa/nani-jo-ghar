@@ -50,13 +50,15 @@
     const order = lv.bottle ? (rng() < 0.5 ? ["bottle", "drink"] : ["drink", "bottle"]) : ["drink"];
     const rows = [];
     const bw = count === 1 ? W.bubble.english : W.bubbles.english;
-    rows.push({ id: "bubbles", kutchi: `${cap(num.kutchi)} [${bw}]!`, english: `${cap(num.english)} ${bw}, up and out!`, who: "doctor" });
+    // C4 (G26): the rows' English is the engine's (pela, ne poi) or its to-record placeholders (data/lang/seed/clinic.json)
+    const en = (id) => CL().w(id).english;
+    rows.push({ id: "bubbles", kutchi: `${cap(num.kutchi)} [${bw}]!`, english: `${cap(num.english)} ${bw}, ${en("heal-up-and-out")}`, who: "doctor" });
     const dK = `${amount === HALF ? W.adh.kutchi + " " : ""}${dw.kutchi}`;
-    const dE = amount === HALF ? `half a glass of ${dw.english}` : amount === FULL ? `a full glass of ${dw.english}` : dw.english;
+    const dE = amount === HALF ? `${en("heal-glass-half")} ${dw.english}` : amount === FULL ? `${en("heal-glass-full")} ${dw.english}` : dw.english;
     order.forEach((step, k) => {
       const first = k === 0 && order.length > 1;
       const link = first ? W.pela : W.nepoi;
-      const enLink = first ? "First," : "And then";
+      const enLink = first ? `${cap(W.pela.english)},` : cap(W.nepoi.english);
       if (step === "drink") rows.push({ id: "drink", kutchi: `${link.kutchi} ${dK}`, english: `${enLink} ${dE}`, who: "doctor" });
       else rows.push({ id: "bottle", kutchi: `${link.kutchi} [${W.bottle.english}]`, english: `${enLink} ${W.bottle.english}`, who: "doctor" });
     });
@@ -542,7 +544,7 @@
       putDown();
       if ((use === "cup" && st.drunk) || (use === "bottle" && st.bottle)) {
         // that step is done: the dish is a tick now
-        ctx.log({ type: "extra", rowId: use === "cup" ? "drink" : "bottle", detail: "the dish again" });
+        ctx.log({ type: "extra", rowId: use === "cup" ? "drink" : "bottle", detail: "dish-again" });
         return;
       }
       holding = use;
