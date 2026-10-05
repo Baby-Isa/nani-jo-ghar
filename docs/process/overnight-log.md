@@ -120,3 +120,4 @@
 - 2026-10-05 16:05 UK · Decisions 35–37 (F1 go; laal marcha; close gate/W2/A1; rule G26 no words in code; the girl is enough to publish the clinic). Launching F1.
 - 2026-10-05 16:26 UK · Check-in: part B complete on main (B1, C2 landed; 62 of 115 total, part C under way). F1 starting (default permissions). A2 awaits Zafar's go.
 - 2026-10-05 16:40 UK · Zafar: go on A2. A2 launched (Opus high, stop 20:00, session_01HpATZUqu38HaMT1EfVzjpb): girl's remaining art, diagnosis/send-off on art, clinic words out of code (G26), touched-only proof at full matrix. Then orchestrator review of A2+F1 shots, bump, publish.
+- 2026-10-05 16:50 UK · F1 done: gate findings fixed (bataato/chana pop floor, pantry label floor, bubble off play area, cook spacing grid, order card at L2 phones), laal marcha renamed; final touched run 0 new; report build/reports/f1-gate-findings.md. Branch only, no publish.
