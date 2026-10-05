@@ -107,7 +107,10 @@
 .oc-card.closed.folded .oc-look { display: block; }
 /* SH-47: the headline (and a "to record" flag under it) keeps clear of the eye: the head leaves the eye's corner
    free, so a long line shrinks first, then wraps at the largest two-line size (js/shared/fit.js), never under it */
-.oc-card.closed.folded:has(> .oc-head > .oc-look) .oc-head { padding-right: calc(var(--njg-icon) * 0.85 + var(--njg-s1)); }
+.oc-card.closed.folded:has(> .oc-head > .oc-look) .oc-head { padding-right: var(--oc-look-room, calc(var(--njg-icon) * 0.85 + var(--njg-s1))); }
+/* G1 STUB (belongs in css/clinic.css, session C1's file): the clinic's closed card ends its head with its own "···",
+   which already keeps the headline clear of the eye (the eye sits under it), so it needs no extra room */
+.cl-card { --oc-look-room: 0px; }
 
 /* ---------- rows: an item row (tier 2) and a part (tier 3), one line (shrunk, then wrapped), a flat gold tick when done ---------- */
 .oc-card .oc-item { display: flex; flex-direction: column; min-width: 0; }
