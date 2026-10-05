@@ -1,13 +1,12 @@
 # A1: clinic heal art, part B cut and wired (5 Oct)
 
-No mechanic changed: only pictures, placement and placing data.
+No mechanic changed. Redo list: the fails and fixes below.
 
 ## Judged (plan §7, zoomed, flaws first)
 - **Pass:** S1–S6, W1–W9, K1–K3, F1, F2, F4, P1, E1, Y2, Y3, T2, O1. Skin is ΔE 1.5 from Ali's and Ma's approved renders.
 - **Fixed in the cut:** W10 refitted on the legs (head ~25 px higher). T1 mirrored, because she looked away from the chart.
 - **Fail, used:** M1, M2 and Y1 are framed too wide; scaled in the games, the edges fall off-screen. M2 also has rosy cheeks.
 - **Fail, not used:** U1 is sleeveless, with a bare shoulder, chin and plait in frame (I1).
-- **Redo list:** U1, M1, M2, Y1–Y3 framing, T1 gaze, W10 scale.
 
 ## Wired (girl only; other kinds keep stand-ins)
 - **All nine:** W1/W7 wide shot, faces by mood, the push-in landing on the close-up's part (`camera.target`), her head as the corner face.
@@ -26,8 +25,7 @@ No mechanic changed: only pictures, placement and placing data.
 
 ## Proof
 - `check_onboard` and all 10 clinic leak bots pass.
-- **Sandbox** (`--touched`, nine heal games and `clinic:patient`, 1366×768, 844×390, 800×360, 150 pages): every page ends, 0 page errors. `--check` reports 3 new card-scroll findings at L2 on phones. The same pages show them on the base commit 0af7011, so they are G1's, not mine.
-- **Shots looked at:** `build/screenshots/sandbox/a1-touched/` (start, mid and results for each game).
+- **Sandbox** (`build/screenshots/sandbox/a1-touched/`, all looked at; `--touched`, nine heal games and `clinic:patient`, 1366×768, 844×390, 800×360, 150 pages): every page ends, 0 page errors. `--check` reports 3 new card-scroll findings at L2 on phones. The same pages show them on the base commit 0af7011, so they are G1's, not mine.
 - **Mine, flaws first:**
   - At 800×360 the scrape's fingers sit under the two-wide tool column.
   - Her head jumps on the W10 swap.
