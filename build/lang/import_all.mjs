@@ -23,6 +23,7 @@ import { importSeed } from "./import_seed.mjs";
 import * as handWords from "./hand/words.mjs";
 import * as handRules from "./hand/rules.mjs";
 import * as handResolutions from "./hand/resolutions.mjs";
+import * as handLate from "./hand/late.mjs";
 import { importLexiconMd } from "./import_lexicon_md.mjs";
 import { importCook } from "./import_cook.mjs";
 import { importClinic } from "./import_clinic.mjs";
@@ -47,6 +48,7 @@ export function buildStore() {
   log.clinic = importClinic(S);
   log.content = importContent(S);
   log.modes = importModes(S);
+  handLate.apply(S);
   log.phrases = phrasify(S);
   log.audio = importAudio(S);
   log.clashes = S.settle();

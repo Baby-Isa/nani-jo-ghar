@@ -340,6 +340,34 @@ export function apply(S) {
   S.patch("pron.p3", { forms: { dat: { t: "inke", src: `${GN} §25 B15-B16 (inke hane kadh, inke chadi de: inke = it)` } } }, { source: "hand: grammar-notes prose" });
   S.patch("v.want", { forms: { "fut.he.sg": { t: "khapdo", status: "draft", src: `${GN} §33 S6 (Panke randhnu khapdo: we need to cook: ⚠), §37.4` } } }, { source: "hand: grammar-notes prose" });
 
+  /* ---------------- animals, clothes, body and food words from Mum's 28 Sept one-and-two list (§35, §36) ---------------- */
+  noun("bakri", "goat (a she-goat)", [`${GN} §35 C7 (hakri bakri, ba bakri)`, `${GN} §36 C17 (bakri sathe; the plural came out as bakra ⚠)`], { id: "n.she-goat", g: "she", pl: "she-goats", f: { "sg.*": "bakri", "pl.dir": { t: "bakri", src: `${GN} §35 C7 (ba bakri)` }, "pl.obl": { t: "bakra", status: "draft", src: `${GN} §36 C17 (bakra sathe ⚠: expected bakri or bakriyu)` } }, par: false, q: [{ q: "The she-goat's plural before sathe came out as bakra: right, or bakri / bakriyu?", ask: ["C17"], src: `${GN} §36 C17` }] });
+  noun("bakro", "goat (a billy goat)", [`${GN} §35 C7 (hakro bakro, ba bakra)`, `${GN} §36 C17 (bakro sathe, not bakre sathe)`, `${GN} §48 C58 (bakre jo kan)`], { id: "n.billy-goat", g: "he", pl: "billy goats", q: [{ q: "bakro sathe (Mum, C17: 'not bakre') or bakre sathe (the -e rule, decision 30)? Mum said bakre jo kan later (§48).", ask: ["C17"], src: `${GN} §36 C17, §48` }] });
+  noun("pacheri", "dupatta (the family says pacheri)", [`${GN} §35 C4 (hakri pacheri, ba pacheri; Mum: it can be hakro too ⚠)`, `${GN} §40 C27 (wadhi pacheri, wadhi pacheriyu)`], { g: "she", pl: "dupattas", n: ["Plural: ba pacheri (counted) and pacheriyu (spelling confirmed by Zafar 5 Oct): the -yu is optional when something else shows more than one (§54)."] });
+  noun("akh", "eye", [`${GN} §35 C10 (hakri akh, ba akhyu: ⚠ Mum first said ba akh)`], { g: "she", d: true, pl: "eyes", f: { "sg.*": "akh", "pl.dir": { t: "akhyu", status: "draft", src: `${GN} §35 C10 (ba akhyu ⚠)` }, "pl.obl": { t: "akhyu", status: "draft", src: `${GN} §35 C10 (ba akhyu ⚠)` } }, par: false });
+  noun("gutan", "knee", [`${GN} §35 C11 (hakro gutan, ba gutan: ⚠ a he-word; gutanyu is kneeling)`], { g: "he", d: true, pl: "knees", par: "noun.invariant" });
+  noun("tanki", "tank", [`${GN} §29 R4 (aaki tanki: a full tank)`], { g: "she", pl: "tanks" });
+  noun("mervan", "yoghurt starter culture", [`${GN} §24 B8 (a yoghurt starter culture is mervan)`], { ask: { gender: ["new"] }, par: false, f: { "*": "mervan" } });
+  w("N", "nair ji chutney", "coconut chutney", [`${GN} §26 B32 (coconut chutney is nair ji chutney)`], { g: "she", parts: [["n.coconut", "sg.obl"], ["gen.of", "she.sg.dir"], ["n.chutney", "sg.dir"]], q: [{ q: "A white chutney: needs new art if the game ever shows it (lexicon §1).", src: "lexicon.md § Decisions" }] });
+  w("Phrase", "aakhi mirchi", "a whole chilli (not powdered)", [`${GN} §34 P4 (aakhi mirchi; aakha marcha)`]);
+  w("Phrase", "kere karein", "who did it? (⚠: Zafar doesn't recognise it)", [`${GN} §23 (kere karein?: ⚠)`, `${GN} §29 R12 (said again, slowly: the final n is a half end)`], { d: true, n: ["Stays out of the game (Zafar, 26 Sept PM); re-ask Mum (A8.9, Round 5 Q10)."], q: [{ q: "Who did it?: how do you really ask the children? kere karein? is not recognised by Zafar.", ask: ["Q10"], src: `${GN} Zafar 26 Sept PM` }] });
+  noun("chips", "chips (the English word: the family says it too)", [`${GN} §26 B28 (chips, or tarela bataata)`], { id: "n.chips-english", par: "noun.invariant", ask: { gender: ["L45"] }, q: [{ q: "chips or tarela bataata: the family says both; which does Nani say in the game?", src: `${GN} §26 B28` }] });
+
+  /* ---------------- fixed lines from Mum's 5 Oct cooking recordings and her 28 Sept answers ---------------- */
+  w("PN", "Big Ma", "Big Ma (what the children call her)", [`${GN} §30 K14 (the children really just say Big Ma, in English)`, "docs/decisions.md 11 (Big Ma)"], { g: "she", par: false, f: { "*": "Big Ma" } });
+  w("Phrase", "alaikum salaam", "hello back (the way Mum said it: no 'wa')", [`${GN} §30 K2 (Alaikum salaam!: ⚠ no wa heard at the start)`], { d: true, n: ["Mum's recorded words; the sheet and the game have Wa alaikum salaam (see that entry)."] });
+  w("Phrase", "chai ke ukar, paani ke ukar", "boil the tea, boil the water", [`${GN} §38 I2`], { n: ["ke here marks the thing boiled (the object marker)."] });
+  w("Phrase", "tarelo kari chad", "fry it (make it fried)", [`${GN} §38 I14 (⚠; inke tarelo kari chad)`], { d: true });
+  w("Phrase", "dhui ginta ja glass dho, cup dho", "wash the glass, wash the cup", [`${GN} §38 I20 (⚠: the first words dhui ginta ja are unclear; glass dho, cup dho)`], { d: true });
+  w("Phrase", "thundo thai vyo", "it's gone cold", [`${GN} §39 I35`], {});
+  w("Phrase", "wadho ginech, nindho ginech", "buy the big one, buy the small one", [`${GN} §43, §46 (⚠ meaning of ginech)`], { d: true });
+  w("Phrase", "hi mare", "all of these", [`${GN} §53 C71`]);
+  w("Phrase", "hu mare", "all of those", [`${GN} §53 C71`]);
+  w("Phrase", "hi rasore me ain", "these are in the kitchen", [`${GN} §53 C69-C70`]);
+  w("Phrase", "hu rasore me ain", "those are in the kitchen", [`${GN} §53 C69-C70`]);
+  noun("kebab", "kebab", [`${GN} §39 I28 (kebab ji lakri: a kebab skewer)`], { ask: { gender: ["new"] }, par: false, f: { "*": "kebab" } });
+  noun("glass", "glass (the English word)", [`${GN} §38 I20 (glass dho, cup dho)`], { ask: { gender: ["L49"] }, par: false, f: { "*": "glass" } });
+
   /* ---------------- more words the fixed expressions are made of ---------------- */
   noun("table", "table (the English word)", [`${GN} §35 C6 (hakro table, ba table: a he-word that doesn't change)`, `${GN} §15 (cup table je mathe ai)`], { g: "he", par: "noun.invariant" });
   noun("watu", "chat, talk", [`${GN} §12 (watu na kar: don't chat)`], { ask: { gender: ["new"] } });

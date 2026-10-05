@@ -276,13 +276,25 @@ export function linearize(L, meaning, ctx = {}) {
     };
   }
 
-  function meaningKey(v) {
+  /**
+   * The canonical key of a meaning (the clip index's key for a whole phrase). A word given by a game's old id (an alias)
+   * is keyed by the entry's id, and a Person argument by the person actually said ("p2" to an elder is p2resp, rule G6),
+   * so a recording of a sentence said to an elder and one said to a child never share a key.
+   */
+  function meaningKey(v, decl) {
     if (v == null) return "";
-    if (Array.isArray(v)) return "[" + v.map(meaningKey).join(",") + "]";
-    if (typeof v !== "object") return String(v);
+    if (Array.isArray(v)) return "[" + v.map((x) => meaningKey(x, decl)).join(",") + "]";
+    if (typeof v !== "object") {
+      if (decl && decl.type === "Person") {
+        const c = L.classify(v, decl, ctx);
+        return c.ref || String(v);
+      }
+      const e = L.lexOf(String(v));
+      return e ? e.id : String(v);
+    }
     const abs = functions[v.fn] || { args: {} };
     const names = Object.keys(abs.args || {}).concat(Object.keys(v).filter((k) => k !== "fn" && !k.startsWith("$") && !(k in (abs.args || {}))).sort());
-    const parts = names.filter((k) => v[k] != null).map((k) => (k in (abs.args || {}) ? meaningKey(v[k]) : `${k}=${meaningKey(v[k])}`));
+    const parts = names.filter((k) => v[k] != null).map((k) => (k in (abs.args || {}) ? meaningKey(v[k], abs.args[k]) : `${k}=${meaningKey(v[k])}`));
     return `${v.fn}(${parts.join(",")})`;
   }
 

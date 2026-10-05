@@ -43,8 +43,9 @@ const ABSTRACT = [
   ["Times", "Utt", { n: { type: "Num" } }, "{n} times", ["once; twice; three times (stir it three times)"]],
   ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like daar first, and then maani."], { rows: ["a", "b"] }],
   ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like daar first, and then maani."], { rows: ["a", "rest"] }],
-  ["Lift", "Utt", { x: NP }, "Lift out the {x}.", ["Take the samosas out now."], { rows: ["x"] }],
-  ["Leave", "Utt", { x: NP }, "Leave the {x}.", ["Leave the chips in."], { rows: ["x"] }],
+  ["Place", "NP", { anchor: NP, rel: { type: "Post" } }, "{rel} {anchor}", ["on the table; behind the door; in the cupboard"]],
+  ["Lift", "Utt", { x: Opt(NP) }, "Lift out the {x}.", ["Take the samosas out now."], { rows: ["x"] }],
+  ["Leave", "Utt", { x: Opt(NP) }, "Leave the {x}.", ["Leave the chips in."], { rows: ["x"] }],
 ];
 
 const S = (arg, o = {}) => ({ arg, ...o });
@@ -113,6 +114,7 @@ const CONCRETE = {
     notes: ["Mum's own sentence was the polite one, with khapeti after ba khun (two sugars): a she-singular ending on a count of two, unexplained until the gender of khun is settled (L34)."],
     exceptions: [{ only: { register: ["polite"] }, status: "unknown", ask: ["L34", "L9"], english: "In my {container} I want {thing}", what: "the polite 'in my chai I want two sugars' (Mum said khapeti with ba khun)", src: `${GN} §6` }],
   },
+  Place: { slots: [S("anchor", { case: "obl" }), L("link.place"), S("rel")], status: "confirmed", src: `${GN} §15 (cup kabaat je andar, table je niche, darwaje je puthiya: the place belongs to the thing), §18, §49 (Nani je ambe je mathe; Nana je cup je andar)` },
   Lift: { slots: [S("x"), L("adv.now-in-steps"), L("v.take-out", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B15 (inke hane kadh: lift it out now); data/cook.json lines.lift names the thing where Mum said inke (it): Claude's extension, to check`, notes: ["hever kadh is the urgent one (§29 R6, §37.6); hane kadh is the gentle one in a sequence of steps (Cook keeps hane kadh)."] },
   Leave: { slots: [S("x"), L("v.leave", "conj"), L("v.give", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B16 (inke chadi de: leave it be); data/cook.json lines.leave names the thing where Mum said inke (it): Claude's extension, to check` },
   FirstThen: { slots: [L("adv.first"), S("a"), P(","), L("phrase.and-then"), S("b")], mark: ".", status: "draft", src: `${GN} §7 (Muke pela daar khape, ne poi maani: pela X, ne poi Y); pela is a draft in data/cook.json`, notes: ["Three steps (pela X, ne poi Y, ne poi Z) are not Mum's own sentence: only two steps were said."] },

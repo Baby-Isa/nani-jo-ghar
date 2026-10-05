@@ -50,6 +50,7 @@ export function builder(S, { source, rank }) {
     if (o.parts) {
       e.parts = o.parts.map((p) => (p === "," || p === "." || p === "!" || p === "?" ? { punct: p } : Array.isArray(p) ? (p[1] ? { lex: p[0], cell: p[1] } : { lex: p[0] }) : { lex: p }));
       delete e.lemma;
+      delete e.paradigm;
       if (lemma) e.lemmaKey = lemma;
     }
     for (const k of ["ref", "person", "number", "clusivity", "value", "say"]) if (o[k] != null) e[k] = o[k];
