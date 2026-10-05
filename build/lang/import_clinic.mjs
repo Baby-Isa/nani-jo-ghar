@@ -26,7 +26,7 @@ export function importClinic(S) {
   const clinic = readJSON("data/clinic.json");
   stat.words += importWords(S, clinic.words, { file: "data/clinic.json", ...opts });
 
-  // the tray nouns: one entry per English word; the ones the family has (paani, limu, loon, khun, dudh) keep Cook's entries
+  // the tray nouns: one entry per English word; the ones the family has (water, lemon, salt, sugar, milk) keep Cook's entries
   for (const [id, it] of Object.entries(clinic.items || {})) {
     if (id === "_about" || !it || typeof it !== "object") continue;
     const src = `data/clinic.json items.${id}: the pharmacy tray's ${it.placeholder ? "placeholder (English, to record)" : "word from Cook"}`;

@@ -6,7 +6,7 @@ The minimum for step 4c (decision 38 c). **No frequency ranking and no simulator
 |---|---|---|
 | Sentences and frames the engine cannot say yet | 4 | 42 |
 | Words with no Kutchi yet (English placeholders in the game today) | 20 | 167 |
-| A form of a word we know is missing (plural, 'with the …') | 3 | 2 |
+| A form of a word we know is missing (plural, 'with the …') | 7 | 2 |
 | Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 30 | 2 |
 | We know the word but have no recording of it | 87 | 34 |
 
@@ -16,7 +16,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 
 ## Cook
 
-144 things to ask or record, from the lines and words the game uses today.
+148 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (4)
 
@@ -26,7 +26,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: cook line "with {x}" (cook.line.with), with cook-dudh.
 3. Please say these the way you would at home: "I'd like two samosas with mince, and one with potato." Ask: L23, L26, L27.
    - Needed by: cook line "and {x}" (cook.line.and_join), with cook-maani.
-4. Please say these the way you would at home: "In my chai I want two sugars." Ask: L34, L9.
+4. Please say these the way you would at home: "In my tea I want two sugars." Ask: L34, L9.
    - Needed by: cook line "In my chai I want {x}." (cook.line.sugar) (polite).
 
 ### Words with no Kutchi yet (English placeholders in the game today) (20)
@@ -72,13 +72,21 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 20. Please say, the way you would at home: "Cook it the way they said" Ask: new.
    - Needed by: cook line "Cook it the way they said" (cook.guide.default).
 
-### A form of a word we know is missing (plural, 'with the …') (3)
+### A form of a word we know is missing (plural, 'with the …') (7)
 
-1. One tomato, three tomato. Ask: Q14.
+1. One millet chapati, three millet chapati. Ask: new.
+   - Needed by: Cook word "millet chapati" (cook-bajrmaani), more than one.
+2. One tomato, three tomato. Ask: Q14.
    - Needed by: Cook word "tomato" (veg-03), more than one.
-2. Please say "black (of tea: no milk)" in this sentence: "black (of tea: no milk)".
+3. One red chilli powder, three red chilli powder. Ask: new.
+   - Needed by: Cook word "red chilli powder" (spi-04), more than one.
+4. One tamarind chutney, three tamarind chutney. Ask: new.
+   - Needed by: Cook word "tamarind chutney" (ph-amli), more than one.
+5. One mint chutney, three mint chutney. Ask: new.
+   - Needed by: Cook word "mint chutney" (ph-lili), more than one.
+6. Please say "black (of tea: no milk)" in this sentence: "black (of tea: no milk)".
    - Needed by: Cook word "black (of tea: no milk)" (ph-kari).
-3. Please say "unsweetened (of tea)" in this sentence: "unsweetened (of tea)".
+7. Please say "unsweetened (of tea)" in this sentence: "unsweetened (of tea)".
    - Needed by: Cook word "unsweetened (of tea)" (ph-mori).
 
 ### Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) (30)
@@ -177,9 +185,9 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 15. Please record: "daar"
    - Needed by: Cook word "daal" (cook-daal), more than one.
 16. Please record: "bajr"
-   - Needed by: Cook word "millet chapati" (cook-bajrmaani); Cook word "millet chapati" (cook-bajrmaani), more than one.
+   - Needed by: Cook word "millet chapati" (cook-bajrmaani).
 17. Please record: "ji"
-   - Needed by: Cook word "millet chapati" (cook-bajrmaani); Cook word "millet chapati" (cook-bajrmaani), more than one; Cook word "tamarind chutney" (ph-amli) … (6 lines).
+   - Needed by: Cook word "millet chapati" (cook-bajrmaani); Cook word "tamarind chutney" (ph-amli); Cook word "mint chutney" (ph-lili).
 18. Please record: "bataato"
    - Needed by: Cook word "potato" (veg-01); cook line "And then {x}." (cook.line.then), with veg-01.
 19. Please record: "bataata"
@@ -213,7 +221,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 33. Please record: "loon"
    - Needed by: Cook word "salt" (spi-16), more than one.
 34. Please record: "marcha"
-   - Needed by: Cook word "red chilli powder" (spi-04); Cook word "red chilli powder" (spi-04), more than one.
+   - Needed by: Cook word "red chilli powder" (spi-04).
 35. Please record: "ba"
    - Needed by: Cook word "two" (num-02); cook line "In my chai I want {x}." (cook.line.sugar) (informal); cook line "In my chai I want {x}." (cook.line.sugar) (polite).
 36. Please record: "char"
@@ -221,9 +229,9 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 37. Please record: "panj"
    - Needed by: Cook word "five" (num-05).
 38. Please record: "chutney"
-   - Needed by: Cook word "tamarind chutney" (ph-amli); Cook word "tamarind chutney" (ph-amli), more than one; Cook word "mint chutney" (ph-lili) … (4 lines).
+   - Needed by: Cook word "tamarind chutney" (ph-amli); Cook word "mint chutney" (ph-lili).
 39. Please record: "fudino"
-   - Needed by: Cook word "mint chutney" (ph-lili); Cook word "mint chutney" (ph-lili), more than one.
+   - Needed by: Cook word "mint chutney" (ph-lili).
 40. Please record: "chunda"
    - Needed by: Cook word "mince" (ph-keema), more than one.
 41. Please record: "tarela"

@@ -35,10 +35,10 @@ The family, or two of our sources, give more than one word for the same thing. W
 The more cautious status is used (a draft shows flagged until Zafar ticks it). These are mostly a game's draft flag that has not caught up with a later answer from Mum, or the reverse.
 
 1. **two** (`num.2`): the engine uses confirmed (4a seed (grammar-notes, cited per entry)); the other source says draft (data/cook.json). **Settled:** two = ba (voiced ber) is settled; data/cook.json still flags it draft (rule G5 (settled words); grammar-notes §35 (two is ba, confirming §3)).
-2. **kitchen** (`n.kitchen`): the engine uses draft (4a seed (grammar-notes, cited per entry)); the other source says confirmed (lexicon.md §6).
-3. **with (mixed in)** (`post.mixed-in`): the engine uses draft (data/cook.json); the other source says confirmed (4a seed (grammar-notes, cited per entry)).
+2. **kitchen** (`n.kitchen`): the engine uses confirmed (lexicon.md §6); the other source says draft (4a seed (grammar-notes, cited per entry)). **Settled:** rasoro is Mum's own word (Aau rasore me aiya); only its -e form before a postposition is a draft, and that is the paradigm cell's status (grammar-notes §20, §51 C61).
+3. **with (mixed in)** (`post.mixed-in`): the engine uses confirmed (4a seed (grammar-notes, cited per entry)); the other source says draft (data/cook.json). **Settled:** Mum said waari in the 25 Sept recording (dudh waari chai, khun waari chai, kesar waari chai); data/cook.json's draft flag is about its frame lines, which stay drafts (grammar-notes §6).
 4. **put (down), place; keep** (`v.put`): the engine uses confirmed (hand: grammar-notes prose); the other source says draft (lexicon.md §6). **Settled:** rakh itself is confirmed by Mum's own sentences (thori war rakh, dhyan rakh, saani je agiya rakh); the warning in lexicon §6.1 is about rakhi chad, which stays a draft on its own form (grammar-notes §16, §25 B16, §27 B49, §38 I18).
-5. **skewer (a stick)** (`n.skewer`): the engine uses draft (data/cook.json); the other source says confirmed (hand: grammar-notes prose; lexicon.md §6).
+5. **skewer (a stick)** (`n.skewer`): the engine uses confirmed (hand: grammar-notes prose; lexicon.md §6); the other source says draft (data/cook.json). **Settled:** lakri is Mum's own word (hakri lakri, char lakri, mishkaki ji lakri); data/cook.json's draft flag is about using it with gos, boga and mixed, which is a draft on the Unit rule, not on the word (grammar-notes §25, §34 P8, §39 I28).
 6. **do you know who I am?** (`phrase.do-you-know-who-i-am`): the engine uses draft (hand: grammar-notes prose); the other source says confirmed (data/cook.json).
 7. **you're welcome (it's no trouble at all)** (`phrase.youre-welcome-its-no-trouble-at-all`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
 8. **will you help me cook?** (`phrase.will-you-help-me-cook`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
@@ -76,11 +76,13 @@ Cook's own flag on a line against the status the engine finds from its words and
 5. Cook line `hey` ("Hedo!"): Cook does not flag it draft; the engine says draft (hedo) for "Hedo!".
 6. Cook line `here` ("Ghan."): Cook does not flag it draft; the engine says draft (ghan) for "Ghan.".
 7. Cook line `canyou` ("Tu muke {x} banai dinda?"): Cook does not flag it draft; the engine says draft (dinda) for "Tu muke chai banai dinda?".
-8. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
-9. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
-10. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-11. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-12. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+8. Cook line `need_waari` ("Muke {x} waari chai khape."): Cook flags it draft; the engine says confirmed for "Muke dudh waari chai khape.".
+9. Cook line `waari` ("{x} waari chai."): Cook flags it draft; the engine says confirmed for "dudh waari chai".
+10. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
+11. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+12. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+13. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+14. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
 
 ## 6. Recordings that are not linked to any entry
 

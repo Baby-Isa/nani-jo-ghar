@@ -528,7 +528,7 @@
   },
   {
    "clip": "keema",
-   "lex": "n.mince-keema",
+   "lex": "n.mince-regional",
    "cell": "*"
   },
   {
@@ -548,7 +548,7 @@
   },
   {
    "clip": "sambusa",
-   "lex": "n.samosa-sambusa",
+   "lex": "n.samosa-nani",
    "cell": "*"
   },
   {
@@ -1194,7 +1194,7 @@
   },
   {
    "clip": "sambusa-r3",
-   "lex": "n.samosa-sambusa",
+   "lex": "n.samosa-nani",
    "cell": "*"
   },
   {

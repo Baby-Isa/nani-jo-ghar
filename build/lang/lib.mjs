@@ -280,10 +280,14 @@ export class Store {
     const list = Array.from(this.entries.values());
     list.sort((a, b) => order.indexOf(a.pos) - order.indexOf(b.pos) || a.id.localeCompare(b.id));
     return list.map((e) => {
+      // a noun carries its plural (G18): where none has been heard, say so as an unknown cell (a gap that asks Mum), never a guess
+      if ((e.pos === "N" || e.pos === "PN") && e.status !== "to-record" && !e.paradigm && e.number !== "pl" && !Object.keys(e.forms || {}).some((k) => k.startsWith("pl") || k === "*")) {
+        e.forms = { ...(e.forms || {}), "pl.*": { status: "unknown", ask: ["new"], src: "no plural heard yet (step 4b: nothing is guessed)" } };
+      }
       const o = {};
       const keys = ["id", "pos", "gender", "ref", "person", "number", "clusivity", "value", "paradigm", "lemma", "say", "gloss", "glossPl", "forms", "parts", "status", "src", "aliases", "ask", "notes", "open", "history"];
       for (const k of keys) if (e[k] !== undefined && !(Array.isArray(e[k]) && !e[k].length)) o[k] = e[k];
-      for (const k of Object.keys(e)) if (!(k in o) && e[k] !== undefined) o[k] = e[k];
+      for (const k of Object.keys(e)) if (!(k in o) && e[k] !== undefined && !(Array.isArray(e[k]) && !e[k].length)) o[k] = e[k];
       return o;
     });
   }

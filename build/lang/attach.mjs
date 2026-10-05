@@ -109,7 +109,7 @@ function* candidates(S) {
   for (const v of verbs) {
     yield { fn: "Command", verb: v };
     yield { fn: "DoIt", verb: v };
-    yield { fn: "Dont", verb: v };
+    yield { fn: "DontVerb", verb: v };
     yield { fn: "DontNow", verb: v };
   }
   for (const a of adjs) yield { fn: "Most", adj: a };

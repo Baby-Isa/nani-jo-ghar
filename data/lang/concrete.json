@@ -704,10 +704,21 @@
    ],
    "mark": "!",
    "status": "confirmed",
-   "src": "grammar-notes §12 (na next to the verb, after it: khun na wij, khun na wapur, ad na, hal na, bol na, watu na kar)",
-   "notes": [
-    "na before the verb is urgent or changes the meaning: see DontNow (§12)."
-   ]
+   "src": "grammar-notes §12 (khun na wij, khun na wapur, watu na kar: with a thing, na sits between the thing and the verb)"
+  },
+  "DontVerb": {
+   "slots": [
+    {
+     "arg": "verb",
+     "cell": "imp.informal"
+    },
+    {
+     "lex": "neg.not"
+    }
+   ],
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §12 (ad na, hal na, bol na, bhaj na: with no thing, na follows the verb; na first is the sharp warning, see DontNow)"
   },
   "DontNow": {
    "slots": [

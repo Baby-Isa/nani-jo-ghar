@@ -578,8 +578,7 @@
      "change": "status: two = ba (voiced ber) is settled; data/cook.json still flags it draft",
      "src": "rule G5 (settled words); grammar-notes §35 (two is ba, confirming §3)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "num.3",
@@ -737,7 +736,14 @@
    "lemma": "war",
    "gloss": "a while (thori war = a bit longer)",
    "forms": {
-    "sg.*": "war"
+    "sg.*": "war",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -765,8 +771,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.all-done",
@@ -784,8 +789,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.all-the",
@@ -821,8 +825,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.and-then-2",
@@ -847,8 +850,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.apple",
@@ -866,8 +868,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.apple-2",
@@ -907,8 +908,7 @@
     "word": [
      "G44"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.asafoetida",
@@ -992,8 +992,7 @@
     "word": [
      "G74"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.bangles",
@@ -1067,8 +1066,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.big",
@@ -1091,8 +1089,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.big-ma",
@@ -1129,8 +1126,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.billy-goat",
@@ -1203,6 +1199,15 @@
    "pos": "N",
    "gender": "she",
    "gloss": "black tea",
+   "forms": {
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
    "parts": [
     {
      "lex": "a.black",
@@ -1246,8 +1251,7 @@
     "word": [
      "G78"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.blue",
@@ -1283,8 +1287,7 @@
     "word": [
      "G117"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.board",
@@ -1336,8 +1339,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.bottle",
@@ -1460,8 +1462,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.bubbles",
@@ -1479,8 +1480,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.buttons",
@@ -1582,8 +1582,7 @@
     "gender": [
      "L44"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.cardigan",
@@ -1722,8 +1721,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-chaat: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B36): chaat is the mixture in the bowl"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.chair",
@@ -1826,8 +1824,7 @@
     "word": [
      "G60"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.chicken",
@@ -1866,8 +1863,7 @@
      "change": "was channa (Zafar 24 Sept draft)",
      "src": "data/cook.json words.ph-chana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B9)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.chilli",
@@ -1950,8 +1946,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-chips: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B28): tarela bataata = fried potatoes (the family also just says chips). A plural (bataato -> bataata)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.chips-english",
@@ -2122,6 +2117,15 @@
    "pos": "N",
    "gender": "she",
    "gloss": "coconut chutney",
+   "forms": {
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
    "parts": [
     {
      "lex": "n.coconut",
@@ -2199,8 +2203,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.cooking",
@@ -2209,7 +2212,14 @@
    "lemma": "randhan",
    "gloss": "cooking",
    "forms": {
-    "sg.*": "randhan"
+    "sg.*": "randhan",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "draft",
    "src": [
@@ -2240,8 +2250,7 @@
     "word": [
      "G75"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.coriander",
@@ -2268,8 +2277,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-dhana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B30): dhania = fresh coriander (mint is fudino)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.coriander-seeds",
@@ -2362,8 +2370,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.count-with-me",
@@ -2381,8 +2388,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.counter",
@@ -2477,8 +2483,7 @@
     "gender": [
      "L43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.cup",
@@ -2506,8 +2511,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.cupboard",
@@ -2604,8 +2608,7 @@
      "change": "was daal; Mum 25 Sept (A3 recording, docs/language/grammar-notes.md): daar ends in r",
      "src": "data/cook.json words.cook-daal: zafar-24sep"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.dabs",
@@ -2625,8 +2628,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.dear",
@@ -2766,8 +2768,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.dropper",
@@ -2785,8 +2786,7 @@
     "word": [
      "G116"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.drops",
@@ -2930,8 +2930,7 @@
     "word": [
      "G56"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.eye",
@@ -3128,8 +3127,7 @@
     "word": [
      "G58"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.fire",
@@ -3184,8 +3182,7 @@
     "gender": [
      "L35"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.flower",
@@ -3352,8 +3349,7 @@
     "gender": [
      "L42"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.ghee",
@@ -3380,8 +3376,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-ghee: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B35): ghee, the same word"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.ginger",
@@ -3402,8 +3397,7 @@
     "gender": [
      "L42"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.girl",
@@ -3549,8 +3543,7 @@
     "word": [
      "G117"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.green-peas",
@@ -3589,8 +3582,7 @@
     "word": [
      "B34"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.guests",
@@ -3631,8 +3623,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.hammer",
@@ -3695,8 +3686,7 @@
     "word": [
      "G42"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.headscarf",
@@ -3723,7 +3713,14 @@
    "lemma": "madad",
    "gloss": "help",
    "forms": {
-    "sg.*": "madad"
+    "sg.*": "madad",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "draft",
    "src": [
@@ -3769,8 +3766,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.honey",
@@ -3792,8 +3788,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.hot-water-bottle",
@@ -3811,8 +3806,7 @@
     "word": [
      "G77"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.house",
@@ -3842,8 +3836,7 @@
     "word": [
      "G76"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.jar",
@@ -3933,8 +3926,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.katori",
@@ -3998,7 +3990,7 @@
    "lemma": "rasoro",
    "gloss": "kitchen",
    "glossPl": "kitchens",
-   "status": "draft",
+   "status": "confirmed",
    "src": [
     "grammar-notes §51 (rasoro takes -e: rasore me)",
     "§33 S9",
@@ -4007,10 +3999,11 @@
    "notes": [
     "one / more than one: before me: rasore"
    ],
-   "open": [
+   "history": [
     {
-     "q": "Sources disagree on the status: \"draft\" (4a seed (grammar-notes, cited per entry)) vs \"confirmed\" (lexicon.md §6). Using \"draft\" for now.",
-     "src": "step 4b importers (clash list)"
+     "date": "2026-10-05",
+     "change": "status: rasoro is Mum's own word (Aau rasore me aiya); only its -e form before a postposition is a draft, and that is the paradigm cell's status",
+     "src": "grammar-notes §20, §51 C61"
     }
    ]
   },
@@ -4087,7 +4080,14 @@
    "lemma": "khabar",
    "gloss": "knowledge, news (Toke khabar ai: do you know)",
    "forms": {
-    "sg.*": "khabar"
+    "sg.*": "khabar",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "draft",
    "src": [
@@ -4191,8 +4191,7 @@
     "word": [
      "G45"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.lemon",
@@ -4239,8 +4238,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.lollipop",
@@ -4370,8 +4368,7 @@
      "change": "was ghos (Zafar 24 Sept draft)",
      "src": "data/cook.json words.ph-meat: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B10)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.middle",
@@ -4440,6 +4437,15 @@
    "pos": "N",
    "gender": "she",
    "gloss": "millet chapati",
+   "forms": {
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
    "parts": [
     {
      "lex": "n.millet",
@@ -4467,8 +4473,7 @@
      "change": "was bajr jo maani (Zafar 24 Sept draft)",
      "src": "data/cook.json words.cook-bajrmaani: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B11): ji, not jo, because maani is a she-word"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.mince",
@@ -4501,7 +4506,7 @@
    ]
   },
   {
-   "id": "n.mince-keema",
+   "id": "n.mince-regional",
    "pos": "N",
    "gender": null,
    "lemma": "keema",
@@ -4547,6 +4552,15 @@
    "pos": "N",
    "gender": "she",
    "gloss": "mint chutney",
+   "forms": {
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
    "parts": [
     {
      "lex": "n.mint",
@@ -4574,8 +4588,7 @@
      "change": "was the English placeholder green chutney",
      "src": "data/cook.json words.ph-lili: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B32): no general word for green chutney; mint chutney is fudino ji chutney, coconut chutney nair ji chutney. The game's is the bright green bowl (topping-lili-bowl-t, colour #5d9b3a), so mint"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.mishkaki",
@@ -4602,8 +4615,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-mishkaki: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B38; use Mum's recording)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.mixed",
@@ -4671,8 +4683,7 @@
     "word": [
      "G51"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.mud",
@@ -4711,8 +4722,7 @@
     "gender": [
      "L43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.my-left-arm",
@@ -4730,8 +4740,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.my-right-arm",
@@ -4749,8 +4758,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.neck",
@@ -4770,8 +4778,7 @@
     "word": [
      "G54"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.needle",
@@ -4809,8 +4816,7 @@
     "word": [
      "G50"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.not",
@@ -4830,8 +4836,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.nothing",
@@ -4922,8 +4927,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.onion",
@@ -5097,8 +5101,7 @@
     "word": [
      "G80"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.pin",
@@ -5163,8 +5166,7 @@
     "word": [
      "G73"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.plate",
@@ -5375,8 +5377,7 @@
     "word": [
      "G117"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.red-chilli-powder",
@@ -5384,6 +5385,15 @@
    "gender": null,
    "lemma": "laal marcha",
    "gloss": "red chilli powder",
+   "forms": {
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
    "parts": [
     {
      "lex": "a.red",
@@ -5406,8 +5416,7 @@
     "gender": [
      "L44"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.rolling-pin",
@@ -5442,8 +5451,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.rubs",
@@ -5461,8 +5469,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.rug",
@@ -5505,8 +5512,7 @@
     "gender": [
      "L34"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.samosa",
@@ -5539,24 +5545,7 @@
    ]
   },
   {
-   "id": "n.samosa-pastry",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.i-she",
-   "lemma": "chapri",
-   "gloss": "samosa pastry",
-   "status": "confirmed",
-   "src": [
-    "lexicon.md §6.2 (I1-I35 5:05)"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "n.samosa-sambusa",
+   "id": "n.samosa-nani",
    "pos": "N",
    "gender": null,
    "lemma": "sambusa",
@@ -5584,6 +5573,23 @@
    ]
   },
   {
+   "id": "n.samosa-pastry",
+   "pos": "N",
+   "gender": null,
+   "paradigm": "noun.i-she",
+   "lemma": "chapri",
+   "gloss": "samosa pastry",
+   "status": "confirmed",
+   "src": [
+    "lexicon.md §6.2 (I1-I35 5:05)"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.say-it-again",
    "pos": "N",
    "gender": null,
@@ -5599,8 +5605,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.scales",
@@ -5656,8 +5661,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sesame-seeds",
@@ -5704,8 +5708,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-sev: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B29): sev, the same word"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.shampoo",
@@ -5860,8 +5863,7 @@
     "word": [
      "G55"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.side",
@@ -5900,8 +5902,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sips",
@@ -5919,8 +5920,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.skewer",
@@ -5930,7 +5930,7 @@
    "lemma": "lakri",
    "gloss": "skewer (a stick)",
    "glossPl": "skewers",
-   "status": "draft",
+   "status": "confirmed",
    "src": [
     "grammar-notes §25 B-table (lakri = a stick; a she-word, so hakri lakri mishkaki)",
     "grammar-notes §34 P8 (hakri lakri, char lakri: no change)",
@@ -5946,10 +5946,11 @@
     "count: Mum 28 Sept (Round 3 P8; docs/language/grammar-notes.md §34): hakri lakri, char lakri, no change",
     "use: Said before a skewer's kind in the mishkaki order (the tally's `unit`, and data/stations/mishkaki-grill.json mechanic.skewer.unit): hakri lakri gos, ba lakri boga. Mum said it with mishkaki (hakri lakri mishkaki, ba lakri mishkaki); with gos, boga and mixed it's Claude's extension, to check."
    ],
-   "open": [
+   "history": [
     {
-     "q": "Sources disagree on the status: \"draft\" (data/cook.json) vs \"confirmed\" (hand: grammar-notes prose; lexicon.md §6). Using \"draft\" for now.",
-     "src": "step 4b importers (clash list)"
+     "date": "2026-10-05",
+     "change": "status: lakri is Mum's own word (hakri lakri, char lakri, mishkaki ji lakri); data/cook.json's draft flag is about using it with gos, boga and mixed, which is a draft on the Unit rule, not on the word",
+     "src": "grammar-notes §25, §34 P8, §39 I28"
     }
    ]
   },
@@ -5992,8 +5993,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sock",
@@ -6011,8 +6011,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.socks",
@@ -6121,8 +6120,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.spoon",
@@ -6180,8 +6178,7 @@
     "word": [
      "G110"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sticker",
@@ -6219,8 +6216,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.stove",
@@ -6257,8 +6253,7 @@
     "gender": [
      "L34"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sun-hat",
@@ -6311,8 +6306,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.t-shirt",
@@ -6411,6 +6405,15 @@
    "pos": "N",
    "gender": "she",
    "gloss": "tamarind chutney",
+   "forms": {
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
    "parts": [
     {
      "lex": "n.tamarind",
@@ -6438,8 +6441,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-amli: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B31): amli = tamarind. She-word: it takes ji (the jo/ji rule, §18 and B11)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.tank",
@@ -6470,8 +6472,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.taps",
@@ -6489,8 +6490,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tasting",
@@ -6499,7 +6499,14 @@
    "lemma": "chakhan",
    "gloss": "tasting (muke chakhan lai de: let me taste it)",
    "forms": {
-    "sg.*": "chakhan"
+    "sg.*": "chakhan",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -6552,8 +6559,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.teaspoon",
@@ -6600,8 +6606,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.the-basket",
@@ -6637,8 +6642,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.the-bottom-row",
@@ -6800,8 +6804,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.the-hot-water-bottle",
@@ -6819,8 +6822,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.the-middle-row",
@@ -6856,8 +6858,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.the-top-row",
@@ -6987,8 +6988,7 @@
     "word": [
      "G111"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.thing",
@@ -7055,8 +7055,7 @@
     "word": [
      "G53"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.time",
@@ -7092,8 +7091,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tissue",
@@ -7113,8 +7111,7 @@
     "word": [
      "G79"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.toe",
@@ -7136,8 +7133,7 @@
     "word": [
      "G59"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tomato",
@@ -7181,8 +7177,7 @@
      "q": "Sources disagree on the lemma: \"tameto\" (data/cook.json; data/content.json) vs \"tumata\" (grammar-notes §34 P3 (Whisper's hearing)). Using \"tameto\" for now.",
      "src": "step 4b importers (clash list)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.tooth",
@@ -7202,8 +7197,7 @@
     "word": [
      "G52"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.toothbrush",
@@ -7241,8 +7235,7 @@
     "word": [
      "G110"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tub",
@@ -7280,8 +7273,7 @@
     "word": [
      "G43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.turmeric",
@@ -7302,8 +7294,7 @@
     "gender": [
      "L43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.turner",
@@ -7321,8 +7312,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.turns",
@@ -7340,8 +7330,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tweezers",
@@ -7386,6 +7375,15 @@
    "pos": "N",
    "gender": "she",
    "gloss": "unsweetened tea",
+   "forms": {
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
    "parts": [
     {
      "lex": "a.unsweetened",
@@ -7490,8 +7488,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.wipe-it",
@@ -7509,8 +7506,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.with-the-baby",
@@ -7617,8 +7613,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.yes",
@@ -7656,8 +7651,7 @@
     "gender": [
      "L38"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.yoghurt-starter-culture",
@@ -7746,7 +7740,14 @@
    "lemma": "Eid",
    "gloss": "Eid (the festival)",
    "forms": {
-    "-": "Eid"
+    "-": "Eid",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -7828,8 +7829,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "pn.nani",
@@ -7979,8 +7979,7 @@
     "word": [
      "E62"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "a.closed",
@@ -8132,8 +8131,7 @@
     "word": [
      "E61"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "a.green-2",
@@ -8153,8 +8151,7 @@
     "green",
     "ph-green",
     "ph-col-green"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.half",
@@ -8217,8 +8214,7 @@
      "q": "koso (Sindhi-looking) vs garam for hot: Masi's tie-break.",
      "src": "grammar-notes §39 I34"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.left",
@@ -8251,8 +8247,7 @@
     {
      "q": "The she-form of dabo (and agreement with the patient's side): not said."
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.lukewarm",
@@ -8269,8 +8264,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "a.nice",
@@ -8400,8 +8394,7 @@
     "red",
     "ph-red",
     "ph-col-red"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.remaining",
@@ -8450,8 +8443,7 @@
      "q": "Sources disagree on the lemma: \"jamni\" (hand: grammar-notes prose) vs \"jamno\" (data/clinic/lang.json). Using \"jamni\" for now.",
      "src": "step 4b importers (clash list)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.sad",
@@ -8671,8 +8663,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "a.young",
@@ -8794,8 +8785,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.boil",
@@ -8894,8 +8884,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.buy",
@@ -8940,8 +8929,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.clean-it",
@@ -8958,8 +8946,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.close",
@@ -8976,8 +8963,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.come",
@@ -9081,8 +9067,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.drill-the-bad-bits",
@@ -9099,8 +9084,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.eat",
@@ -9175,8 +9159,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.fix-it",
@@ -9193,8 +9176,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.fold",
@@ -9300,8 +9282,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.hand-fan",
@@ -9318,8 +9299,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.heater",
@@ -9336,8 +9316,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.help",
@@ -9367,8 +9346,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.ice-pack",
@@ -9385,8 +9363,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.im-too-cold",
@@ -9403,8 +9380,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.im-too-hot",
@@ -9421,8 +9397,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.just-right",
@@ -9435,8 +9410,7 @@
    ],
    "aliases": [
     "fever-just-right"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "v.knead",
@@ -9598,8 +9572,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.middle-toe",
@@ -9616,8 +9589,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.open",
@@ -9634,8 +9606,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.ow",
@@ -9652,8 +9623,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.pop",
@@ -9670,8 +9640,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.pour",
@@ -9722,8 +9691,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.put",
@@ -9799,8 +9767,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.roll",
@@ -9877,8 +9844,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.speak",
@@ -9911,8 +9877,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.sprinkle",
@@ -9943,8 +9908,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.still-too-hot",
@@ -9961,8 +9925,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.switch-off",
@@ -9979,8 +9942,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.switch-on",
@@ -9997,8 +9959,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.take",
@@ -10040,8 +10001,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.take-it-yourself",
@@ -10083,8 +10043,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.take-out",
@@ -10126,8 +10085,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.take-the-wax-out",
@@ -10144,8 +10102,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.taste",
@@ -10188,8 +10145,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.to-cook",
@@ -10269,8 +10225,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.use",
@@ -10466,8 +10421,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.window",
@@ -10484,8 +10438,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.wipe",
@@ -10502,8 +10455,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "cop.be",
@@ -10777,7 +10729,7 @@
    "forms": {
     "-": "waari"
    },
-   "status": "draft",
+   "status": "confirmed",
    "src": [
     "grammar-notes §6 (dudh waari chai)",
     "data/cook.json words.cook-waari: Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, kesar waari chai"
@@ -10785,13 +10737,13 @@
    "aliases": [
     "cook-waari"
    ],
-   "open": [
+   "history": [
     {
-     "q": "Sources disagree on the status: \"draft\" (data/cook.json) vs \"confirmed\" (4a seed (grammar-notes, cited per entry)). Using \"draft\" for now.",
-     "src": "step 4b importers (clash list)"
+     "date": "2026-10-05",
+     "change": "status: Mum said waari in the 25 Sept recording (dudh waari chai, khun waari chai, kesar waari chai); data/cook.json's draft flag is about its frame lines, which stay drafts",
+     "src": "grammar-notes §6"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "post.next-to",
@@ -11155,8 +11107,7 @@
      "q": "Is pela confirmed? Mum said it in a sentence (§7); data/cook.json keeps it draft.",
      "src": "grammar-notes §7"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.joined-up",
@@ -11263,8 +11214,7 @@
    ],
    "aliases": [
     "ph-quickly"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.slow",
@@ -11300,8 +11250,7 @@
      "change": "was aastethi (Zafar 25 Sept, phonetic)",
      "src": "data/cook.json words.ph-slowly: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B2): aste = slow"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.then",
@@ -11335,8 +11284,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "adv.together",
@@ -11405,8 +11353,7 @@
    ],
    "aliases": [
     "cl-waaro"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.yesterday",
@@ -11910,8 +11857,7 @@
    ],
    "aliases": [
     "lnk-nepoi"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.and-what-else",
@@ -12190,8 +12136,7 @@
     "cl-achija",
     "clinic.line.goodbye-achija",
     "content.snt-14"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.can-you-help-me",
@@ -12862,8 +12807,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "phrase.eat",
@@ -13518,8 +13462,7 @@
     "cook.line.hey",
     "cl-hedo",
     "content.snt-03"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.hey-boy-calling-out-puts-e-before-the-word",
@@ -17254,8 +17197,7 @@
    "aliases": [
     "cook.line.welldone",
     "cl-shabash"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.well-done-dear",
@@ -17937,8 +17879,7 @@
      "q": "Sources disagree on the form -: \"ha\" (hand: grammar-notes prose) vs \"haa\" (data/clinic/lang.json; data/cook.json). Using \"ha\" for now.",
      "src": "step 4b importers (clash list)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.yes-i-want-daar-and-maani",

@@ -10,16 +10,16 @@ const Opt = (o) => ({ ...o, optional: true });
 
 /** [name, cat, args, en, elicit, extra] */
 const ABSTRACT = [
-  ["And", "Utt", { x: NP }, "And {x}.", ["I'd like chai. And milk. And two sugars."], { rows: ["x"] }],
-  ["Then", "Utt", { x: NP }, "And then {x}.", ["First daar, and then maani."], { rows: ["x"] }],
-  ["First", "Utt", { x: NP }, "First {x}.", ["First daar, and then maani."], { rows: ["x"] }],
+  ["And", "Utt", { x: NP }, "And {x}.", ["I'd like tea. And milk. And two sugars."], { rows: ["x"] }],
+  ["Then", "Utt", { x: NP }, "And then {x}.", ["First lentils, and then a chapati."], { rows: ["x"] }],
+  ["First", "Utt", { x: NP }, "First {x}.", ["First lentils, and then a chapati."], { rows: ["x"] }],
   ["NoItem", "Utt", { x: NP }, "No {x}.", ["No sugar. (the very short way)"], { rows: ["x"] }],
   ["Only", "Utt", { x: NP }, "Only {x}.", ["Only two onions."], { rows: ["x"] }],
   ["Now", "Utt", { x: NP }, "Now {x}!", ["Now the tomatoes! (in a gentle sequence of cooking steps)"], { rows: ["x"] }],
   ["GiveMe", "Utt", { x: NP }, "Give me {x}.", ["Give me a teaspoon. Pass me the salt."], { rows: ["x"] }],
   ["ForWho", "Utt", { x: NP }, "This is for {x}.", ["This is for Nana."]],
   ["For", "Utt", { x: NP }, "For {x}.", ["For Nana."], { rows: ["x"] }],
-  ["CanYouMake", "Utt", { who: { type: "Person" }, thing: NP }, "Can you make me {thing}?", ["Can you make me chai? (to a grandchild, and then to Nana)"]],
+  ["CanYouMake", "Utt", { who: { type: "Person" }, thing: NP }, "Can you make me {thing}?", ["Can you make me tea? (to a grandchild, and then to Nana)"]],
   ["HowAreYou", "Utt", { who: { type: "Person" } }, "How are you?", ["How are you? (to a child, to a cousin, to Nana)"]],
   ["ImFine", "Utt", {}, "I'm fine.", ["I'm fine."]],
   ["NotNeed", "Utt", { thing: NP }, "I don't want {thing}.", ["No, I don't want sugar. (polite, and the short way)"]],
@@ -28,7 +28,8 @@ const ABSTRACT = [
   ["LocatedAtShort", "Utt", { thing: NP, anchor: NP, rel: { type: "Post" } }, "{thing} is {rel} {anchor} (the everyday short way).", ["The cup is on the table. (the everyday way)"]],
   ["Command", "Utt", { verb: { type: "V" }, obj: Opt(NP) }, "{verb} {obj}!", ["Cut the onion. Knead the dough. Fry the samosa."]],
   ["DoIt", "Utt", { verb: { type: "V" }, obj: Opt(NP) }, "{verb} it {obj}!", ["Put it in. Take it out. Fill it with water."]],
-  ["Dont", "Utt", { verb: { type: "V" }, obj: Opt(NP) }, "Don't {verb} {obj}.", ["Don't put sugar in. Don't touch that. Don't run, walk."]],
+  ["Dont", "Utt", { verb: { type: "V" }, obj: NP }, "Don't {verb} {obj}.", ["Don't put sugar in. Don't use sugar."]],
+  ["DontVerb", "Utt", { verb: { type: "V" } }, "Don't {verb}.", ["Don't touch that. Don't run, walk. Don't speak."]],
   ["DontNow", "Utt", { verb: { type: "V" } }, "Don't {verb}! (urgent)", ["Don't touch! (it's hot, you'll burn!)"]],
   ["Point", "NP", { which: { type: "Dem" }, x: NP }, "{which} {x}", ["this big boy; that big boy"]],
   ["PossPron", "NP", { owner: { type: "Person" }, thing: NP }, "{owner}'s {thing}", ["my cup; your mango (to a child); his chair; our house"]],
@@ -37,12 +38,12 @@ const ABSTRACT = [
   ["Amt", "NP", { x: { type: "A" } }, "{x}", ["half; a whole cup"]],
   ["Exclaim", "Utt", { x: { type: "Phrase" } }, "{x}!", ["Well done! It's burning!"]],
   ["Ask", "Utt", { x: { type: "Phrase" } }, "{x}?", ["Where is it? Who's there?"]],
-  ["WantIn", "Utt", { container: NP, thing: NP }, "In my {container} I want {thing}.", ["In my chai I want two sugars."]],
-  ["AndKind", "Utt", { x: NP }, "and {x} (a second kind of the same dish)", ["I'd like two samosas with mince, and one with potato."], { rows: ["x"] }],
-  ["ButNo", "Utt", { head: NP, x: NP }, "{head}, but no {x}", ["I'd like daar, but no onion."]],
+  ["WantIn", "Utt", { container: NP, thing: NP }, "In my {container} I want {thing}.", ["In my tea I want two sugars."]],
+  ["AndKind", "Utt", { x: NP }, "and {x} (a second kind of one dish)", ["I'd like two samosas with mince, and one with potato."], { rows: ["x"] }],
+  ["ButNo", "Utt", { head: NP, x: NP }, "{head}, but no {x}", ["I'd like lentils, but no onion."]],
   ["Times", "Utt", { n: { type: "Num" } }, "{n} times", ["once; twice; three times (stir it three times)"]],
-  ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like daar first, and then maani."], { rows: ["a", "b"] }],
-  ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like daar first, and then maani."], { rows: ["a", "rest"] }],
+  ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "b"] }],
+  ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "rest"] }],
   ["OnShort", "PP", { x: NP }, "on {x} (the short way)", ["on the big mango (the everyday way)"]],
   ["Place", "NP", { anchor: NP, rel: { type: "Post" } }, "{rel} {anchor}", ["on the table; behind the door; in the cupboard"]],
   ["Lift", "Utt", { x: Opt(NP) }, "Lift out the {x}.", ["Take the samosas out now."], { rows: ["x"] }],
@@ -88,7 +89,8 @@ const CONCRETE = {
     exceptions: [{ only: { register: ["polite"] }, status: "unknown", ask: ["C142-C151", "N1-N23"], english: "{verb} {obj}", what: "a command to an elder (Mum has said only the bare command to a child)", src: `${GN} §38 (polite and 'for me' forms are still unknown), For Mum next time 11` }],
   },
   DoIt: { slots: [S("obj"), S("verb", { cell: "conj" }), L("v.leave", "imp.informal")], mark: "!", status: "confirmed", src: `${GN} §38 I4, I5, I11, I13, I16 (wiji chad, kadhi chad, kapi chad, bego kari chad, paani bhari chad: chad = leave it, finish it)`, exceptions: [{ only: { register: ["polite"] }, status: "unknown", ask: ["C142-C151"], english: "{verb} it {obj}", what: "a 'put it in' command to an elder", src: `${GN} §38 (polite forms unknown)` }] },
-  Dont: { slots: [S("obj"), L("neg.not"), S("verb", { cell: "imp.informal" })], mark: "!", status: "confirmed", src: `${GN} §12 (na next to the verb, after it: khun na wij, khun na wapur, ad na, hal na, bol na, watu na kar)`, notes: ["na before the verb is urgent or changes the meaning: see DontNow (§12)."] },
+  Dont: { slots: [S("obj"), L("neg.not"), S("verb", { cell: "imp.informal" })], mark: "!", status: "confirmed", src: `${GN} §12 (khun na wij, khun na wapur, watu na kar: with a thing, na sits between the thing and the verb)` },
+  DontVerb: { slots: [S("verb", { cell: "imp.informal" }), L("neg.not")], mark: "!", status: "confirmed", src: `${GN} §12 (ad na, hal na, bol na, bhaj na: with no thing, na follows the verb; na first is the sharp warning, see DontNow)` },
   DontNow: { slots: [L("neg.not"), S("verb", { cell: "imp.informal" })], mark: "!", status: "confirmed", src: `${GN} §12 (na ad is the sharp warning: it's hot, you'll burn!)` },
   Point: { feats: { gender: "{x.gender}", number: "{x.number|sg}", person: "p3", lex: "{x.lex}" }, slots: [S("which"), S("x", { case: "{case}" })], status: "confirmed", src: `${GN} §43 C36 (hi wadho chokro, hu wadho chokro: you either point or the describing word goes with a verb), §13` },
   PossPron: { feats: { gender: "{thing.gender}", number: "{thing.number|sg}", person: "p3", lex: "{thing.lex}" }, slots: [S("owner", { cell: "poss.{thing.gender}.{thing.number}.{case}" }), S("thing", { case: "{case}" })], status: "confirmed", src: `${GN} §54 C72-C78 (munjo cup, munji kursi, munja amba), §55 C79 (munje cup me, toje ambe mathe)`, notes: ["The ending follows the thing owned, not the owner (§54). The plural -yu on the thing is dropped when something else shows 'more than one' (hi mare munji kursi ain)."] },
@@ -128,6 +130,10 @@ const CONCRETE = {
 };
 
 export function apply(S_) {
+  // the 4a seed's examples for Mum are English only (the neutrality test: no Kutchi in abstract.json)
+  S_.functions.Without.elicit = ["tea without milk", "lentils without onion"];
+  S_.functions.MixedIn.elicit = ["tea with milk"];
+  S_.functions.WithoutFood.elicit = ["I'd like lentils, but no onion."];
   for (const [name, cat, args, en, elicit, extra] of ABSTRACT) {
     S_.functions[name] = { cat, args, en, elicit, ...(extra || {}) };
   }

@@ -1,6 +1,6 @@
 # Coverage: what the engine holds (step 4b)
 
-Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 14 warnings.
+Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
 
 ## Lexicon
 
@@ -28,8 +28,8 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 14 warnings
 | By status | Entries |
 |---|---|
 | to-record | 365 |
-| confirmed | 332 |
-| draft | 165 |
+| confirmed | 335 |
+| draft | 162 |
 
 | By source (an entry can cite several) | Citations |
 |---|---|
@@ -45,7 +45,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 14 warnings
 
 ## Grammar
 
-5 word classes (paradigms); 109 meanings; 108 rules (35 confirmed, 11 draft, 62 unknown, asking Mum); 5 exceptions.
+5 word classes (paradigms); 110 meanings; 109 rules (36 confirmed, 11 draft, 62 unknown, asking Mum); 5 exceptions.
 
 ## Recordings
 
