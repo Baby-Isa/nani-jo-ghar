@@ -84,7 +84,7 @@ Cook (`js/cook/main.js`) and the clinic (`js/clinic/main.js`) are the two real e
 
 ### Wrapping code that isn't a plug-in yet: adapters
 
-A thin layer that makes old code look like the new interface. Cook and the clinic no longer need one; the parked modes will move onto the host properly when their turn comes (decision 38). The demo keeps one of each as the worked example (`js/demo/`, not Cook's or the clinic's own code):
+A thin layer that makes old code look like the new interface. Cook and the clinic no longer need one; the parked modes will move onto the host properly when their turn comes (decision 38). The demo keeps one of each as the worked example (C4 note: the demo's Cook adapter still frames `cook.html` and waits for a `#panel h1` that no longer exists, so treat it as a pattern to rebuild on `js/cook/mount.js`, not a working path) (`js/demo/`, not Cook's or the clinic's own code):
 
 - `cookLab(key)` (`js/demo/cook-adapter.js`) runs a Cook Station-lab key ("fetch", "chai-tray", "recipe:chai") in `cook.html` inside a frame, through Cook's test hook, and catches Cook's end-of-round pop-up so the host shows the one end screen for the whole plan.
 - `healGame(id)` (`js/demo/heal-adapter.js`) mounts any registered healing game ("cut", "knee", "ear") on the clinic's own screen through the clinic's heal host, after the host has loaded the clinic's scripts and stylesheet (`needs`).

@@ -9,7 +9,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 ## Next chat
 
 **Where things stand (written by D1, 6 Oct 2026):** the docs rewrite is done on branch `docs-rewrite` (not merged, never pushed to `main`); the game is on branch `ccr-fcd9dddd-wnywzc`, and `main` is still the 1 Oct build plus art uploads. Sprint 1 ("remedial and engine", `docs/sprints/S01-remedial-and-engine.md`) closes at the next publish; Sprint 2 is "play and fix Cook and the clinic" (`S02-…`).
-- **Done:** step 3 and step 4 (Cook and the clinic on the core and the engine), C3, R7, E1, W1, W2, A1, A2, T1–T3, the Fable docs audit, D1 (reports in `build/reports/`). C4 (Cook mounted through the host): see its report `c4-cook-host.md` for what landed.
+- **Done:** step 3 and step 4 (Cook and the clinic on the core and the engine), C3, R7, E1, W1, W2, A1, A2, T1–T3, the Fable docs audit, D1 (reports in `build/reports/`). C4 (Cook mounted through the host, no iframes; title, days and shop not yet on shared screens: `c4-cook-host.md`).
 - **Art** is paused until after play (decision 43); 76 of 115 clinic images on `main`; the redo list is `docs/design-language/art-plans/clinic-heal-redo-list.yaml`.
 - **Zafar plays** only once it is live on `main` (decision 33).
 
@@ -32,7 +32,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 | 2a, 2b | The code target model; the language engine design | **Done** (1 Oct; decisions 17, 18) |
 | 3 | Refactor to the target model (R0–R7), gate 5 Oct | **Done** for Cook and the clinic; parked modes move when their turn comes (decision 38) |
 | 4 | The language engine built (4a, 4b), Cook and the clinic onto it (4d, 4e); 4c is the gap reporter only | **Done** (5 Oct) |
-| Remedial | Everything the refactor left (decision 45): C3, C4 (Cook through the shared host), R7, E1 | C4 finishing; see "Next chat" |
+| Remedial | Everything the refactor left (decision 45): C3, C4 (Cook through the shared host), R7, E1 | **Done** (C4 6 Oct) |
 | Docs | The docs rewrite and the sprint structure (D1; decisions 47, 49) | Done on branch `docs-rewrite`, Fable review next |
 | Sprint 1 → 2 | Sprint 1 ("remedial and engine") closes at the publish and Zafar's play; Sprint 2 is "play and fix Cook and the clinic" (`docs/sprints/`) | Next |
 | Then | Finish Cook and the clinic by play and feedback; then Arc 1's other modes, story glue, the beach trip as template, other trips, the sewing arc (decision 39) | After Sprint 2 |

@@ -33,6 +33,9 @@ None was set: sprints began with decision 49, at the end of this chapter. The ne
 - **45 (5 Oct):** all remedial work is done before play (Cook through the shared host, every step 3 leftover, every gap the new tools reported); gameplay redesigns (clinic D15a–i, bulb timing) and numbers Zafar must choose are not remedial.
 
 ## Outcome
+C4 (6 Oct): Cook is a host plug-in: its ~50 scripts are ES modules on one namespace, it mounts and unmounts in an element (five mounts in a row leave nothing behind) and no station iframe remains.
+Shared fixes it needed: `onboard.js` no longer blocks presses during its step pause (the daar smoke now passes), plus `frame.js` and `fit.js` unwatch.
+Not moved: Cook's title, days, day's end, shop and book onto shared shell screens (missing pieces named in `build/reports/c4-cook-host.md`); `bump_version.py` should map `js/cook/`.
 To fill at the close: the publish commit, the open rows by mode, the spend. At writing (5–6 Oct): everything above is done except C4's review, D1's Fable review and the publish. Open rows are in `docs/status.md`.
 
 ## Look back (three lines; a draft for Zafar to change at the close)

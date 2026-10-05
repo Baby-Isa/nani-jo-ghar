@@ -1,6 +1,6 @@
 # D1: the docs rewrite and the sprint structure
 
-Branch `docs-rewrite` (not merged, nothing on `main`). **Architecture and Cook/clinic docs were written before C4 finished; to be updated after the merge of `origin/ccr-fcd9dddd-wnywzc`.**
+Branch `docs-rewrite` (not merged, nothing on `main`). C4's integration branch is merged in (overnight-log conflict resolved, both sides kept); architecture and Cook docs updated for C4's final state: ES modules, mount/unmount, no iframes, `onboard.js`/`frame.js`/`fit.js` edits, title/days/shop not yet on shared screens, demo cook-adapter stale, `bump_version.py` not mapping `js/cook/`. S01 outcome has 3 lines for C4.
 
 ## Audit steps (commits)
 1. Baseline: `statuscounts` and `review.test` (6 pass) run first and last. ✅
@@ -12,7 +12,7 @@ Branch `docs-rewrite` (not merged, nothing on `main`). **Architecture and Cook/c
 7. CLAUDE.md: `a475f93`. ✅
 8. status.md, ideas, README: `ecce2c0`, `9602c8d`, `7bcc34e`. ✅
 9. Paradigms to `data/lang/seed/`: `6c26a44` (import_all 0 errors, 57 tests). ✅
-10. Architecture, Cook and clinic docs: `ee16b6f`, `fa57bdd`. ⏳ C4 state.
+10. Architecture, Cook and clinic docs: `ee16b6f`, `fa57bdd`. ✅ updated after the C4 merge.
 
 ## Sizes (tokens, bytes/3.8)
 CLAUDE.md ~2,950 → ~1,300 (16 non-negotiables identical). decisions.md ~18,800 → ~1,900. rules.md 12,250 → 9,600; sections 1–3 ~2,670 → ~2,760 (not cut; target 1,500 missed). status.md 3,580 → 3,330.
