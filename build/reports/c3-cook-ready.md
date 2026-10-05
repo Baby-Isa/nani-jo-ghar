@@ -1,27 +1,33 @@
 # C3: Cook ready to play (decisions 38d, 41)
 
-**Mechanics changed:** the pantry tray and the samosa fill take things back (tap); a skewer turned too soon or left to char goes back to the rack (SEK-09, decided 30 Sept); Nani no longer counts along at level 2 (chai's sugar did). **Old art reused:** all of it; nothing new.
+**Mechanics changed:** pantry tray and samosa fill take things back (tap); a mistimed skewer goes back to the rack (SEK-09); no counting along at L2 (chai's sugar had it). **Old art reused:** all; nothing new.
 
 ## 1. Shims
-- **Bulb:** Cook's UI builds on `Bulb.create` (`js/cook/ui.js`); `Bulb.cookShim` is no longer called (left in `js/shared/bulb.js`, read-only).
-- **Word stages:** read and written through core Progress (`js/cook/core.js`); Cook's own records only on parked pages.
-- **Voice:** every line plays through `core.voice.say` on one channel, with Cook's Web Audio player (`js/cook/boot.js`).
-- **Station iframes: not done.** Cook is one Phaser page with its own DOM (`#side`, `#mission`, `#panel`), ~50 global scripts and no teardown; mounting it in the host needs Cook to start and stop inside a given element. Too big for tonight.
-- **Legacy stars:** kept, marked; Find it, Dress up and Snap use them.
+- Done: bulb (`Bulb.create`; `cookShim` unused, left in read-only `bulb.js`), word stages (core Progress), voice (`core.voice.say`).
+- **Station iframes: not done.** Cook is one Phaser page with its own DOM, ~50 global scripts and no teardown; the host needs Cook to start and stop inside a given element. Too big for the stop time.
+- Legacy stars: kept, marked (Find it, Dress up, Snap).
 
-## 2. Counting rule
-PROOF_COUNTING
+## 2. Counting rule (order said at the start; the face replays it)
+- Pantry: no numbers; counted at L1.
+- Chai tray: sugar written L1–2, not from L3 (new); counted L1 only.
+- Maani: rows written L1–2; no counting at L1 (one maani).
+- Daar/chop: DAAR-08 fixed; Nani's line shows the number as •••; her card's face replays it; counted L1.
+- Stir: laps counted L1. Tadka: no counts. Chaat, sekelo: written L1–2.
+- Samosa: the headline drops its number from L3 too; counted L1.
 
 ## 3. Rows
-- **Built:** PAN-01, MAA-01, MAA-08, SEK-07 (rechecked, no change), SEK-09, SH-35 (rechecked), DAAR-08, SH-13; tap-small (bubble and choice speakers 48 px).
-- **Take-back:** pantry, samosa fill, maani (ball back to its pile, already there). Not possible, and the art shows it: chop (cut), tadka (in hot oil), stir (laps), daar (all three), chai tray and the chai recipe (liquids and sugar in the pan).
-- **Skipped:** CHAI-07/08, DAAR-02, PAN-09 (art), CHAI-01 (fun pass), PAN-02 (engine).
+- **Built:** PAN-01, MAA-01, MAA-08, SEK-07 and SH-35 (rechecked), SEK-09, DAAR-08, SH-13; speakers 48 px.
+- **Take-back:** pantry, samosa fill, maani (ball back to its pile). Impossible, shown in the art: chop, tadka, stir, daar, chai.
+- **Skipped:** CHAI-07/08, DAAR-02, PAN-09 (need art), CHAI-01 (fun pass), PAN-02 (needs the engine).
 
 ## 4. Proof
-PROOF_RUN
+- `c3-proof` (`--touched cook:`, 248 pages): every flow ends; 450 fixed; 4 new `covers-play-area` (bigger speakers grew the choices), fixed: `c3-proof2` and `c3-proof3` 0 new.
+- leak_cook, host, smoke, check_onboard, core, voice, lang pass. QA: `c3-cook-ready-qa.md`.
 
 ## Left
-- Samosa: Done stays up after every spoonful is taken back.
-- Maani L1 has no counting along (one maani; nothing counts up).
-- `build/test_cook.py` can't run here (no Python Playwright).
-- A second reviewer (orchestrator).
+- The sandbox take-back path runs under the first-time coach, which blocks it; checked by unguided probes.
+- Samosa: Done stays up on an emptied strip.
+- Chop knife shows a hand (ART-13, not new).
+- `test_cook.py` not run (no Python Playwright). Second reviewer needed.
+
+Shots: `build/screenshots/sandbox/c3-proof*/` (not committed).

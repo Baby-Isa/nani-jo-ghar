@@ -555,7 +555,8 @@
         z.progress({ unfilled: id, n: got[id] });
       };
       Cook.undoAt = () => {
-        if (Cook.paused) return null; // (Nani's "pass me" is up: nothing else takes a tap)
+        // (not while Nani's "pass me" or a first-time coach is up: only the thing they point at takes a tap)
+        if (Cook.paused || (Cook.Coach && Cook.Coach.active())) return null;
         const b = open && sheet.blobs.find((o) => o.active && o.tapReady);
         return b ? S.centre(b) : null;
       };

@@ -195,7 +195,8 @@
         });
       };
       Cook.undoAt = () => {
-        if (Cook.paused) return null; // (Nani's "pass me" is up: nothing else takes a tap)
+        // (not while Nani's "pass me" or a first-time coach is up: only the thing they point at takes a tap)
+        if (Cook.paused || (Cook.Coach && Cook.Coach.active())) return null;
         const e = fetching && tray.find((x) => !x.busy);
         return e ? S.centre(e.obj) : null;
       };

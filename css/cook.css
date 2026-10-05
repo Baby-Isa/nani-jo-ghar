@@ -351,6 +351,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #choices .choice .wp button { padding: 7px; min-height: 0; box-shadow: none; border: none; border-radius: 50%; background: #efe4d2; width: 36px; height: 36px; font-size: 0; }
 /* C3 (LAY-04, F1's tap-small): the bubble's and a choice's speaker are a full tap target; the icon stays 24 px */
 #bubble .wp .wp-say, #choices .choice .wp .wp-say { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: var(--njg-s3, 12px); }
+/* (the bigger target takes no room: the bubble and the choices keep their size, so they never reach into the play area) */
+#bubble .wp .wp-say { margin: -7px; }
+#choices .choice .wp .wp-say { margin: -6px; }
 #choices .choice.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }
 #choices .choice.wrong { animation: shake .35s; }
 #choices .choice.right { background: #e3f0dc; border-color: var(--sage); }

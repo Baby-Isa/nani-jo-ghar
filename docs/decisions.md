@@ -284,6 +284,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **44. Build all the token-saving scripts and skills now** (the 18-item list of 5 Oct): accept the short-term token cost for the long-term saving; choose models for efficiency.
   Source: Zafar, orchestrator chat, 5 Oct. Rule: B (sessions), C (quality)
 
+- **45. All remedial work is done now, before play:** nothing from the refactor is left for later. That includes Cook's stations mounted through the shared host (start and stop inside a given element, teardown, Cook's ~50 global scripts as modules; C3 found it too big for its stop time), every leftover in the step 3 reports (version mapping, lab into the frame, unstamped fetches, failing tests, the lint rounding, the old bulb shim), and every gap the new tools reported. Order: 4d (Cook onto the engine) and R7 (leftovers) now, then C4 (Cook stations in the host), then the review, publish and play; then the docs rewrite. Gameplay redesigns (clinic D15a-i, bulb timing) and numbers Zafar must choose (upgrade bonus coins) are not remedial.
+  Source: Zafar, orchestrator chat, 5 Oct ("I want all the remedial work done now so we can move on fully"). Rule: B18
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.
