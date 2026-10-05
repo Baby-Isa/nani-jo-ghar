@@ -54,7 +54,8 @@
   Cook.kutchi = Cook.display;
   Cook.english = (id) => {
     const e = entry(id);
-    return (e && e.gloss) || String(id);
+    // a gloss's note for grown-ups in brackets ("skewer (a stick)") stays out of the word's English
+    return ((e && e.gloss) || String(id)).replace(/\s*\([^)]*\)/g, "");
   };
   Cook.isPlaceholder = (id) => !Lang.phrase([id]).ok;
   /** A number's Cook id: the engine's number word for n, by the alias Cook's recipes and progress use. */
