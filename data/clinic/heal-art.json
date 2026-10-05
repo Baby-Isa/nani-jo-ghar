@@ -1,0 +1,212 @@
+{
+ "_about": "The clinic heal art (pack clinic-heal-v3), written by build/cut_clinic_heal_v3.py from sources/art/clinic-heal-v3/ (art plan section 8). patients: kind -> the wide poses on one canvas (front, faces = head layers on the same canvas, blanket/bottle whole figures, side = W7 with its happy face), the canvas size in source px and the 1x size, `feet` = the feet line, anchors = zoom anchors as canvas fractions (the patient's own sides). heads = the 512 px corner faces. closeups: set -> part -> file, states, source size, exit edges, the part's box (fractions). Every file has an @2x beside it except the heads and props.",
+ "patients": {
+  "girl": {
+   "canvas": [
+    860,
+    1470
+   ],
+   "src": [
+    87,
+    4
+   ],
+   "w": 259,
+   "h": 442,
+   "front": "assets/clinic/patients/girl/girl-front.webp",
+   "blanket": "assets/clinic/patients/girl/girl-front-blanket.webp",
+   "faces": {
+    "happy": "assets/clinic/patients/girl/girl-face-happy.webp",
+    "sad": "assets/clinic/patients/girl/girl-face-sad.webp",
+    "pain": "assets/clinic/patients/girl/girl-face-pain.webp",
+    "hot": "assets/clinic/patients/girl/girl-face-hot.webp",
+    "cold": "assets/clinic/patients/girl/girl-face-cold.webp"
+   },
+   "feet": 0.9626,
+   "anchors": {
+    "forehead": [
+     0.4942,
+     0.1605
+    ],
+    "eyes": [
+     0.4942,
+     0.2218
+    ],
+    "mouth": [
+     0.4942,
+     0.283
+    ],
+    "ear.left": [
+     0.7128,
+     0.2422
+    ],
+    "ear.right": [
+     0.2733,
+     0.2456
+    ],
+    "upperarm.left": [
+     0.7012,
+     0.4599
+    ],
+    "upperarm.right": [
+     0.2849,
+     0.4599
+    ],
+    "forearm.left": [
+     0.643,
+     0.5755
+    ],
+    "forearm.right": [
+     0.3453,
+     0.5755
+    ],
+    "hand": [
+     0.4942,
+     0.6095
+    ],
+    "tummy": [
+     0.4942,
+     0.5347
+    ],
+    "knee.left": [
+     0.6081,
+     0.7048
+    ],
+    "knee.right": [
+     0.3802,
+     0.7048
+    ],
+    "foot.left": [
+     0.6256,
+     0.9156
+    ],
+    "foot.right": [
+     0.3581,
+     0.9156
+    ],
+    "head": [
+     0.4942,
+     0.2218
+    ],
+    "seat": [
+     0.4942,
+     0.7048
+    ]
+   },
+   "heads": {
+    "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",
+    "happy": "assets/clinic/patients/girl/girl-head-happy.webp",
+    "sad": "assets/clinic/patients/girl/girl-head-sad.webp",
+    "pain": "assets/clinic/patients/girl/girl-head-pain.webp",
+    "hot": "assets/clinic/patients/girl/girl-head-hot.webp",
+    "cold": "assets/clinic/patients/girl/girl-head-cold.webp"
+   },
+   "side": {
+    "canvas": [
+     728,
+     1346
+    ],
+    "src": [
+     171,
+     30
+    ],
+    "w": 243,
+    "h": 449,
+    "feet": 0.9643,
+    "file": "assets/clinic/patients/girl/girl-side.webp",
+    "anchors": {
+     "ear": [
+      0.3352,
+      0.2563
+     ],
+     "eyes": [
+      0.5618,
+      0.2117
+     ],
+     "knee": [
+      0.7816,
+      0.6909
+     ],
+     "head": [
+      0.4245,
+      0.2155
+     ],
+     "foot": [
+      0.7541,
+      0.9287
+     ],
+     "seat": [
+      0.4245,
+      0.7429
+     ]
+    }
+   },
+   "age": "child"
+  }
+ },
+ "closeups": {
+  "child": {},
+  "adult": {}
+ },
+ "_report": [
+  "girl: wide poses",
+  "  skin girl W1 face: #F4965F ΔE 1.5 from the approved family render",
+  "  head band y 57..540",
+  "  W2 happy: shift +0.1,-2.0 px, leak outside the head 0.16%",
+  "  W3 sad: shift +0.5,+0.8 px, leak outside the head 0.02%",
+  "  W4 pain: shift +3.2,+0.6 px, leak outside the head 0.21%",
+  "  W5 hot: shift +0.9,+5.4 px, leak outside the head 1.31%",
+  "  W6 cold: shift +0.9,+2.3 px, leak outside the head 0.27%",
+  "  W9 blanket: shift -0.4,-0.5 px; leg-band alpha drift 0.11%",
+  "  W10 bottle: not landed",
+  "  W8 side happy: not landed",
+  "boy: no W1 yet",
+  "old-man: no W1 yet",
+  "old-woman: no W1 yet",
+  "uncle: no W1 yet",
+  "auntie: no W1 yet",
+  "child K: not landed",
+  "child F: not landed",
+  "child U: not landed",
+  "child P: not landed",
+  "adult K: not landed",
+  "adult F: not landed",
+  "adult U: not landed",
+  "adult P: not landed",
+  "girl E: not landed",
+  "girl M1: not landed",
+  "girl M2: not landed",
+  "girl Y: not landed",
+  "girl T1: not landed",
+  "girl T2: not landed",
+  "boy E: not landed",
+  "boy M1: not landed",
+  "boy M2: not landed",
+  "boy Y: not landed",
+  "boy T1: not landed",
+  "boy T2: not landed",
+  "old-man E: not landed",
+  "old-man M1: not landed",
+  "old-man M2: not landed",
+  "old-man Y: not landed",
+  "old-man T1: not landed",
+  "old-man T2: not landed",
+  "old-woman E: not landed",
+  "old-woman M1: not landed",
+  "old-woman M2: not landed",
+  "old-woman Y: not landed",
+  "old-woman T1: not landed",
+  "old-woman T2: not landed",
+  "uncle E: not landed",
+  "uncle M1: not landed",
+  "uncle M2: not landed",
+  "uncle Y: not landed",
+  "uncle T1: not landed",
+  "uncle T2: not landed",
+  "auntie E: not landed",
+  "auntie M1: not landed",
+  "auntie M2: not landed",
+  "auntie Y: not landed",
+  "auntie T1: not landed",
+  "auntie T2: not landed"
+ ]
+}
