@@ -49,7 +49,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Recordings
 
-417 distinct recordings in data/family-audio.json (395 with a file). 591 rows in clips.json: 158 word forms, 258 fixed phrases, 175 sentences the rules build. 32 recordings are not linked (clash list § 6).
+417 distinct recordings in data/family-audio.json (395 with a file). 593 rows in clips.json: 158 word forms, 258 fixed phrases, 177 sentences the rules build. 30 recordings are not linked (clash list § 6).
 
 ## Games
 

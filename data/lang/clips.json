@@ -2276,8 +2276,16 @@
    "meaning": "Item(n.dupatta,[a.big])"
   },
   {
+   "clip": "wadhi-pacheriyu",
+   "meaning": "Item(n.dupatta,[a.big],number=pl)"
+  },
+  {
    "clip": "laal-pacheri",
    "meaning": "Item(n.dupatta,[a.red])"
+  },
+  {
+   "clip": "laal-pacheriyu",
+   "meaning": "Item(n.dupatta,[a.red],number=pl)"
   },
   {
    "clip": "nana-ji-pacheri",

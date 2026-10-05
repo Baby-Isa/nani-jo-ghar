@@ -109,13 +109,11 @@ Every other recording in `data/family-audio.json` is linked in `clips.json`. The
 - `toji-kursi-ain`: *Toji kursi ain.* (They're your chairs. (to a child)). 'They're your chairs': a plain statement of what a thing is, with ain; no rule yet. Source: grammar-notes §54 C73. Recommendation: Add a Be rule when Round 5's C86+ are answered.
 - `toja-amba-ain`: *Toja amba ain.* (They're your mangoes. (to a child)). As toji kursi ain. Source: grammar-notes §54 C73. Recommendation: As above.
 
-### Something the engine cannot do yet (9)
+### Something the engine cannot do yet (7)
 
-- `wadhi-pacheriyu`: *wadhi pacheriyu* (the big dupattas). The optional -yu plural: Mum says -yu is dropped when something else shows 'more than one' (a count, hi mare), kept otherwise. The engine has one plural per noun. Source: grammar-notes §54. Recommendation: Teach the engine two plural cells (counted and uncounted) once the rule is settled (Round 5 Q13).
 - `wadhi-bakuliyu-je-andar`: *wadhi bakuliyu je andar* (in the big bowls). As wadhi pacheriyu: the optional -yu on a she-word plural. Source: grammar-notes §41 C30, §54. Recommendation: As above.
 - `wadhi-gadiyu-je-andar`: *wadhi gadiyu je andar* (in the big cars). As wadhi pacheriyu: the optional -yu. Source: grammar-notes §41 C30, §54. Recommendation: As above.
 - `cups-wadha-ain`: *Cups wadha ain.* (The cups are big.). Mum says cups with the English -s here ('not a native word'), but cup with a number (ba cup). One word, two plurals. Source: grammar-notes §42 C35. Recommendation: Record both on cup and let Zafar say which the game uses.
-- `laal-pacheriyu`: *laal pacheriyu* (the red dupattas). As wadhi pacheriyu: the optional -yu. Source: grammar-notes §54. Recommendation: As above.
 - `nana-ja-cups`: *Nana ja cups* (Nana's cups). As cups wadha ain: the English plural cups after Nana ja. Source: grammar-notes §47 C50. Recommendation: As above.
 - `nani-ja-cups`: *Nani ja cups* (Nani's cups). As cups wadha ain. Source: grammar-notes §47 C53. Recommendation: As above.
 - `chokriyu-jo-ambo`: *chokriyu jo ambo* (the girls' mango). The plural owner takes its -yu form before jo; the engine's plural owner form is not yet entered. Source: grammar-notes §48 C58. Recommendation: Enter the plural owner form once Mum confirms (the boys' version is still open).

@@ -2774,6 +2774,16 @@
    "lemma": "pacheri",
    "gloss": "dupatta (the family says pacheri)",
    "glossPl": "dupattas",
+   "forms": {
+    "pl.dir": {
+     "t": "pacheriyu",
+     "src": "grammar-notes §40 C27 (wadhi pacheriyu: Mum said it unprompted; spelling confirmed by Zafar 5 Oct, decision 31)"
+    },
+    "pl.obl": {
+     "t": "pacheriyu",
+     "src": "grammar-notes §40 C27, §54"
+    }
+   },
    "status": "confirmed",
    "src": [
     "grammar-notes §35 C4 (hakri pacheri, ba pacheri; Mum: it can be hakro too ⚠)",

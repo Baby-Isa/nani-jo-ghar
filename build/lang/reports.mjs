@@ -7,6 +7,8 @@ import { gapReport } from "../../js/core/lang/engine/gaps.js";
 import { createEngine } from "../../js/core/lang/engine/index.js";
 import { REASONS, PAIRS } from "./hand/contradictions.mjs";
 import { DECISION_CLASHES } from "./hand/clash-notes.mjs";
+import { NOT_LOADED } from "./hand/not-kutchi.mjs";
+import { readText } from "./lib.mjs";
 
 const OUT = "data/lang/reports/";
 
@@ -314,11 +316,49 @@ export function coverageMarkdown(S, log, data, validation, audio) {
   ].join("\n");
 }
 
+/* ---------------- source coverage: emphasised words in the notes the lexicon cannot say ---------------- */
+
+export function sourceCoverageMarkdown(data) {
+  const known = new Set();
+  const par = data.paradigms.paradigms;
+  for (const e of data.lexicon.entries) {
+    if (e.status === "to-record") continue;
+    for (const t of [e.lemma, ...Object.values(e.forms || {}).map((v) => (typeof v === "string" ? v : v && v.t))]) if (t) for (const w of norm(t).split(" ")) known.add(w);
+    const p = e.paradigm && par[e.paradigm];
+    if (p && e.lemma) {
+      const stem = p.stem && p.stem.drop && e.lemma.endsWith(p.stem.drop) ? e.lemma.slice(0, -p.stem.drop.length) : e.lemma;
+      for (const c of Object.values(p.cells)) if (c.make) known.add(norm(c.make.replace("{stem}", stem).replace("{lemma}", e.lemma)));
+    }
+  }
+  const files = ["docs/language/grammar-notes.md", "docs/language/lexicon.md", "build/reports/mum-2026-10-05.md"];
+  const ignore = new Map();
+  for (const [why, list] of Object.entries(NOT_LOADED)) for (const w of list.split(/\s+/)) if (w) ignore.set(w, why);
+  const missing = new Map();
+  for (const f of files) {
+    const text = readText(f);
+    for (const m of text.matchAll(/\*\*\*([^*\n]+?)\*\*\*|(?<![*\w])\*([^*\n]{1,60}?)\*(?![*\w])/g)) {
+      for (const w of norm(m[1] || m[2]).split(" ")) if (w && /^[a-z]+$/.test(w) && !known.has(w)) (missing.get(w) || missing.set(w, new Set()).get(w)).add(f.split("/").pop());
+    }
+  }
+  const out = ["# Source coverage: emphasised words in the notes that the lexicon cannot say", "", "Every word in bold or italic in `grammar-notes.md`, `lexicon.md` and the 5 Oct report that is not a form of some entry. Re-run `node build/lang/import_all.mjs` after adding Mum's next answers to the notes and the hand files: a word she gave that nobody loaded shows up under **to review**. Words are grouped by why they are not loaded (never a silent skip).", ""];
+  const byWhy = new Map();
+  const review = [];
+  for (const [w, fs] of missing) {
+    const why = ignore.get(w);
+    if (why) (byWhy.get(why) || byWhy.set(why, []).get(why)).push(w);
+    else review.push(w);
+  }
+  out.push(`## To review (${review.length})`, "", review.length ? review.sort().join(", ") : "Nothing: every emphasised word is loaded or accounted for below.", "");
+  for (const [why, list] of byWhy) out.push(`## ${why} (${list.length})`, "", list.sort().join(", "), "");
+  return out.join("\n");
+}
+
 export function writeReports({ S, log, data, audio, validation }) {
   const gl = buildGapList(S, data, audio);
   gl.engineTest = engineFor(data, audio, "test");
   writeText(OUT + "gap-list.md", gapListMarkdown(S, gl) + "\n");
   writeText(OUT + "clash-list.md", clashListMarkdown(S, log, gl) + "\n");
   writeText(OUT + "coverage.md", coverageMarkdown(S, log, data, validation, audio) + "\n");
+  writeText(OUT + "source-coverage.md", sourceCoverageMarkdown(data) + "\n");
   return gl;
 }
