@@ -140,6 +140,9 @@
 .oc-card .oc-row.reading { background: var(--oc-card) !important; border-color: var(--oc-gold) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--oc-gold) !important; }
 .oc-card .oc-item.tint > .oc-irow.reading { background: var(--oc-tint) !important; }
 .oc-card .oc-headline.reading { background: none !important; box-shadow: none !important; text-decoration: underline calc(var(--njg-line-2) * 1.5) var(--oc-gold); text-underline-offset: var(--njg-s1); text-decoration-skip-ink: none; }
+/* G1 (C1's review): a headline still to record underlines its line only, never its "to record" flag */
+.oc-card .oc-headline.rec.reading { text-decoration: none; }
+.oc-card .oc-headline.rec.reading .oc-rec-line { text-decoration: underline calc(var(--njg-line-2) * 1.5) var(--oc-gold); text-underline-offset: var(--njg-s1); text-decoration-skip-ink: none; }
 
 /* ---------- parts: under their item row, indented; an ordered list gets the thin sequence line ---------- */
 .oc-card .oc-fold { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.42s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.3s ease; }
