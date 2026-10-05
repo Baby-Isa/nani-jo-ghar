@@ -1,0 +1,37 @@
+{
+  "_note": "Tonight's 4e brief as a spec, rebuilt by T3 from docs/status.md, the overnight log and decisions 36, 40 and 42 (the launched text was not committed). Regenerate: node build/tools/ops/brief.mjs build/tools/ops/specs/4e-clinic-engine.json",
+  "name": "4e, the clinic onto the language engine (decision 42)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "moving every clinic word and line onto the engine needs judgement about grammar and gaps",
+  "cost": "about $15-20",
+  "stop": "6 Oct 2026, 03:00 UK",
+  "branch": "ccr-fcd9dddd-wnywzc",
+  "rules": ["2", "3", "5 (Clinic)", "8 (Language)"],
+  "read": [
+    "docs/game-design/modes/clinic.md",
+    "docs/language/engine-spec.md and build/reports/step4a-engine-core.md, step4b-engine-fill.md",
+    "data/lang/reports/gap-list.md (Clinic) and clash-list.md",
+    "docs/decisions.md 36, 40, 42"
+  ],
+  "owns": [
+    "js/clinic/** (js/clinic/lang.js becomes a thin call into the engine)",
+    "data/clinic/** (words and lines move to data/lang/ ids)",
+    "js/core/lang/index.js (4d builds on it after you)",
+    "data/lang/** entries the clinic needs (through build/lang importers only, never by hand)",
+    "build/reports/4e-clinic-engine.md"
+  ],
+  "readOnly": ["js/cook/**, data/cook.json (4d and C3)", "build/lang/*.mjs except adding a clinic importer case", "build/tools/** (T2, T3)"],
+  "stubs": "none expected; a missing engine piece is reported as a gap, never hand-written (non-negotiable 11)",
+  "tasks": [
+    { "do": "Every word and line the clinic shows or plays comes from data/lang/ through js/core/lang/index.js by id; no Kutchi or English literals left in js/clinic/ (G26, decision 36).", "accept": "`node build/lint/words.mjs --only a` reports 0 clinic literals; every clinic id resolves (fill.test.mjs)" },
+    { "do": "Lines are built by the engine from frames and word forms (G9-G13); where it can't say a line, the line shows the grey-italic 'to record' placeholder and the gap is in gap-list.md.", "accept": "gap list re-run; no hand-written fragments; leak bots for every heal game still pass" },
+    { "do": "Only family voices play: each line plays the recorded whole phrase if there is one, else the recorded words in order; nothing TTS.", "accept": "the sandbox's sound log shows only assets/audio/family/ files on clinic pages" },
+    { "do": "Nothing else changes: same mechanics, screens and art.", "accept": "shotdiff shows changes only where words changed; touched sandbox run at all 8 sizes ends on every page" }
+  ],
+  "flows": ["clinic:waiting", "clinic:diagnosis", "clinic:pharmacy", "clinic:sendoff", "clinic:heal-cut", "clinic:heal-ear"],
+  "shared": true,
+  "port": 8812,
+  "report": "4e-clinic-engine",
+  "publish": false
+}

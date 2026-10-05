@@ -1,0 +1,431 @@
+{
+ "pack": "clinic-heal-v3",
+ "about": "The clinic heal art (pack clinic-heal-v3), cut by build/tools/art/artcut.py from sources/art/clinic-heal-v3/ (art plan section 8). Same method as build/cut_clinic_heal_v3.py (kept).",
+ "src": "sources/art/clinic-heal-v3",
+ "out": "assets/clinic",
+ "data": "data/clinic/heal-art-v3-tool.json",
+ "skin_render": [
+  243,
+  152,
+  97
+ ],
+ "skin_limits": [
+  6,
+  12
+ ],
+ "failed": {
+  "child-u1-upperarm-v1.png": "sleeveless vest, bare shoulder; chin and plait in frame (modesty, I1)"
+ },
+ "jobs": [
+  {
+   "id": "<kind>-wide",
+   "type": "figure",
+   "each": [
+    {
+     "kind": "girl",
+     "p": "girl"
+    }
+   ],
+   "data": "<kind>",
+   "src": "<p>-w1-front-neutral-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 540,
+   "age": "child",
+   "faces": {
+    "happy": "<p>-w2-front-happy-v1.png",
+    "sad": "<p>-w3-front-sad-v1.png",
+    "pain": "<p>-w4-front-pain-v1.png",
+    "hot": "<p>-w5-front-hot-v1.png",
+    "cold": "<p>-w6-front-cold-v1.png"
+   },
+   "poses": {
+    "blanket": {
+     "src": "<p>-w9-blanket-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    },
+    "bottle": {
+     "src": "<p>-w10-bottle-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    }
+   },
+   "side": {
+    "src": "<p>-w7-side-neutral-v1.png",
+    "scale": 1.11,
+    "faces": {
+     "happy": "<p>-w8-side-happy-v1.png"
+    }
+   },
+   "anchors": {
+    "front": {
+     "forehead": [
+      512,
+      240
+     ],
+     "eyes": [
+      512,
+      330
+     ],
+     "mouth": [
+      512,
+      420
+     ],
+     "ear.left": [
+      700,
+      360
+     ],
+     "ear.right": [
+      322,
+      365
+     ],
+     "upperarm.left": [
+      690,
+      680
+     ],
+     "upperarm.right": [
+      332,
+      680
+     ],
+     "forearm.left": [
+      640,
+      850
+     ],
+     "forearm.right": [
+      384,
+      850
+     ],
+     "hand": [
+      512,
+      900
+     ],
+     "tummy": [
+      512,
+      790
+     ],
+     "knee.left": [
+      610,
+      1040
+     ],
+     "knee.right": [
+      414,
+      1040
+     ],
+     "foot.left": [
+      625,
+      1350
+     ],
+     "foot.right": [
+      395,
+      1350
+     ],
+     "head": [
+      512,
+      330
+     ],
+     "seat": [
+      512,
+      1040
+     ]
+    },
+    "side": {
+     "ear": [
+      415,
+      375
+     ],
+     "eyes": [
+      580,
+      315
+     ],
+     "knee": [
+      740,
+      960
+     ],
+     "head": [
+      480,
+      320
+     ],
+     "foot": [
+      720,
+      1280
+     ],
+     "seat": [
+      480,
+      1030
+     ]
+    }
+   },
+   "out": "patients/<kind>/<kind>"
+  },
+  {
+   "id": "child-knee",
+   "type": "closeup",
+   "src": "child-k1-knee-v1.png",
+   "exits": [
+    "left",
+    "bottom"
+   ],
+   "out": "closeups/child/knee.webp",
+   "states": {
+    "kick": {
+     "src": "child-k2-knee-kick-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       0.45
+      ]
+     }
+    },
+    "graze": {
+     "src": "child-k3-knee-graze-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "child-forearm",
+   "type": "closeup",
+   "src": "child-f1-forearm-v1.png",
+   "exits": [
+    "left"
+   ],
+   "out": "closeups/child/forearm.webp",
+   "states": {
+    "graze": {
+     "src": "child-f2-forearm-graze-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    },
+    "cut": {
+     "src": "child-f4-forearm-cut-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "child-upperarm",
+   "type": "closeup",
+   "src": "child-u1-upperarm-v1.png",
+   "exits": [
+    "left",
+    "bottom"
+   ],
+   "out": "closeups/child/upperarm.webp"
+  },
+  {
+   "id": "child-sole",
+   "type": "closeup",
+   "src": "child-p1-sole-v1.png",
+   "exits": [
+    "bottom"
+   ],
+   "out": "closeups/child/sole.webp"
+  },
+  {
+   "id": "<kind>-ear",
+   "type": "closeup",
+   "src": "<p>-e1-ear-v1.png",
+   "exits": [
+    "top",
+    "right",
+    "bottom"
+   ],
+   "out": "closeups/<kind>/ear.webp",
+   "each": [
+    {
+     "kind": "girl",
+     "p": "girl"
+    }
+   ]
+  },
+  {
+   "id": "<kind>-mouth",
+   "type": "closeup",
+   "src": "<p>-m1-mouth-v1.png",
+   "exits": [
+    "top"
+   ],
+   "out": "closeups/<kind>/mouth.webp",
+   "each": [
+    {
+     "kind": "girl",
+     "p": "girl"
+    }
+   ]
+  },
+  {
+   "id": "<kind>-tongue",
+   "type": "closeup",
+   "src": "<p>-m2-tongue-v1.png",
+   "exits": [
+    "top"
+   ],
+   "out": "closeups/<kind>/tongue.webp",
+   "each": [
+    {
+     "kind": "girl",
+     "p": "girl"
+    }
+   ]
+  },
+  {
+   "id": "<kind>-eyes",
+   "type": "closeup",
+   "src": "<p>-y1-eyes-v1.png",
+   "exits": [
+    "bottom"
+   ],
+   "out": "closeups/<kind>/eyes.webp",
+   "states": {
+    "sore": {
+     "src": "<p>-y2-eye-sore-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    },
+    "closed": {
+     "src": "<p>-y3-eyes-closed-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    }
+   },
+   "each": [
+    {
+     "kind": "girl",
+     "p": "girl"
+    }
+   ]
+  },
+  {
+   "id": "<kind>-eyetest-a",
+   "type": "closeup",
+   "src": "<p>-t1-eyetest-a-v1.png",
+   "exits": [
+    "bottom"
+   ],
+   "out": "closeups/<kind>/eyetest-a.webp",
+   "mirror": true,
+   "each": [
+    {
+     "kind": "girl",
+     "p": "girl"
+    }
+   ]
+  },
+  {
+   "id": "<kind>-eyetest-b",
+   "type": "closeup",
+   "src": "<p>-t2-eyetest-b-v1.png",
+   "exits": [
+    "bottom"
+   ],
+   "out": "closeups/<kind>/eyetest-b.webp",
+   "each": [
+    {
+     "kind": "girl",
+     "p": "girl"
+    }
+   ]
+  },
+  {
+   "id": "o1-ear-foot",
+   "type": "grid",
+   "src": "o1-ear-foot-bits-v1.png",
+   "rows": 3,
+   "outdir": "heal-v3",
+   "names": [
+    "wax-big",
+    "wax-mid",
+    "wax-small",
+    "seed",
+    "splinter-thin",
+    "splinter-thick",
+    "drop",
+    "tissue",
+    "dirt"
+   ],
+   "glass": [
+    "drop",
+    "dirt"
+   ]
+  },
+  {
+   "id": "o2-mouth",
+   "type": "grid",
+   "src": "o2-mouth-bits-v1.png",
+   "rows": 3,
+   "outdir": "heal-v3",
+   "names": [
+    "spot-red",
+    "spot-yellow",
+    "spot-blue",
+    "spot-green",
+    "decay-1",
+    "decay-2",
+    "decay-3",
+    "filling-patch"
+   ],
+   "failed": {
+    "spot-red": "O2's spots are round glossy discs that read as gumballs or sweets (I2, plan 3.3)",
+    "spot-yellow": "O2's spots are round glossy discs that read as gumballs or sweets (I2, plan 3.3)",
+    "spot-blue": "O2's spots are round glossy discs that read as gumballs or sweets (I2, plan 3.3)",
+    "spot-green": "O2's spots are round glossy discs that read as gumballs or sweets (I2, plan 3.3)"
+   }
+  },
+  {
+   "id": "o3-bud",
+   "type": "grid",
+   "src": "o3-bud-ointment-v1.png",
+   "rows": 1,
+   "outdir": "heal-v3",
+   "names": [
+    "bud",
+    "bud-ointment",
+    "bud-wax",
+    "ointment-pot"
+   ],
+   "registered": [
+    {
+     "names": [
+      "bud",
+      "bud-ointment",
+      "bud-wax"
+     ],
+     "align": "topleft"
+    }
+   ]
+  }
+ ]
+}
