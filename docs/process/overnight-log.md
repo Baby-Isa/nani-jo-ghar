@@ -100,3 +100,4 @@
 - 2026-10-05 12:20 UK · Decision 29: Zafar approves only real-people art; Chrome block rewritten to run hands-free (no downloads: raw.githubusercontent → ChatGPT, clipboard/paste → GitHub commit per image).
 - 2026-10-05 12:35 UK · C1 clinic polish done: CLN-69–80 built (results over the room, bubbles, glow, word review at 800×360, scrape hand, jugs, zoom, pictures, tick badge, eye pills), check_onboard clean; --touched heal games 108 pages, check passed. Report build/reports/c1-clinic-polish.md.
 - 2026-10-05 12:25 UK · Check-in: C1 done (all 12 clinic rows built, 9 heal games end clean, $8.60); its 3 order-card findings sent to G1. G1 on SH-47/48 and Cook day 6. Mum's session: grammar notes, lexicon, KB pushed; cutting clips.
+- 2026-10-05 12:53 UK · Mum's 5 Oct session done: Round 4 I1–I35 and C22–C79 written up (grammar-notes §38–§55, lexicon §6, grammar-kb, decision 30); 168 Mum clips cut, unchecked; report build/reports/mum-2026-10-05.md.
