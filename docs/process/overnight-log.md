@@ -115,3 +115,4 @@
 - 2026-10-05 15:25 UK · Decision 34: the pre-publish check covers only what changed since today's gate (the clinic, plus anything a shared-file change reaches).
 - 2026-10-05 15:28 UK · W2 done: samosa/daar guide now Mum's lines, fever 'just right' = barabar (ear/foot hardcoded in js/clinic: needs owner), red renamed lal → laal everywhere W1 wrote it, decision 32; sandbox 0 page errors.
 - 2026-10-05 15:35 UK · A1 done (wrapped up on the orchestrator's ask): the girl's part B art cut and wired in all nine heal games (wide shot, close-ups, corner face, fever bodies; boing's arm and foot L3 still stand-ins; U1 failed). Sandbox 150 pages all end; 3 card findings pre-existing. Report build/reports/a1-clinic-art.md.
+2026-10-05T14:36Z step3-gate: run gate-20261005-1208 done (493 pages, all reached end); check FAILED, 17 new Cook findings; baseline untouched; report build/reports/step3-gate.md
