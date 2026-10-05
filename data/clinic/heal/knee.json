@@ -276,7 +276,7 @@
     1013.8,
     675.8
    ],
-   "scale": 2.1,
+   "scale": 1.6,
    "split": 368.8,
    "has2x": true,
    "_a1": "A1 (5 Oct): K1 placed so its knee joint (730, 360 in the 1536 x 1024 source) sits on the game's knee (440, 250) at 0.66 (the knee about half the height, art plan 3.2); scale = how much bigger than the stand-in the knee is drawn (the dots, the wrap and the hammer follow it); split = the svg y where the shin starts (the kick swings K1's own shin until K2 is cut).",
@@ -286,13 +286,17 @@
   },
   "knee-kick": {
    "file": "assets/clinic/closeups/child/knee-kick.webp",
-   "on": false,
+   "on": true,
    "box": [
     -41.8,
     12.4,
     1013.8,
     675.8
-   ]
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true
   }
  }
 }

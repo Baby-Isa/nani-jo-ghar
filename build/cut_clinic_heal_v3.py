@@ -38,7 +38,16 @@ def log(*a):
     print(s)
 
 
+# judged a fail and not cut (the redo list in build/reports/a1-clinic-art.md): the stand-in stays for that piece
+FAILED = {
+    "child-u1-upperarm-v1.png": "sleeveless vest, bare shoulder; chin and plait in frame (modesty, I1)",
+}
+
+
 def src(name):
+    if name in FAILED:
+        log(f"  {name}: judged a fail, not cut ({FAILED[name]})")
+        return None
     p = os.path.join(SRC, name)
     return p if os.path.exists(p) else None
 

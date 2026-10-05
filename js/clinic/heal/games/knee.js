@@ -104,6 +104,8 @@
     // until the kicked picture (K2) is cut, the kick swings the shin of K1 itself: the picture split at the knee
     let artShin = null;
     const kickArt = art && ctx.data.art["knee-kick"];
+    // the kicked picture loads now, so the first kick never flashes empty
+    if (art && kickArt && kickArt.on && root.Image) new root.Image().src = art.getAttribute("href").replace(/knee(@2x)?\.webp/, (m, two) => `knee-kick${two || ""}.webp`);
     if (art && !(kickArt && kickArt.on) && KA.split) {
       const [x, y, w, hh] = KA.box;
       const cy = KA.split;
@@ -228,8 +230,10 @@
         // with the art: the kicked picture for a moment (K2, registered to K1)
         const kick = art && ctx.data.art["knee-kick"];
         if (kick && kick.on) {
-          art.setAttribute("href", (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)(kick.file));
-          ctx.after(420, () => art.setAttribute("href", (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)(ctx.data.art.knee.file)));
+          // the same picture's kicked twin (the @2x where the plain one is the @2x)
+          const plain = art.getAttribute("href");
+          art.setAttribute("href", plain.replace(/knee(@2x)?\.webp/, (m, two) => `knee-kick${two || ""}.webp`));
+          ctx.after(420, () => art.setAttribute("href", plain));
         }
         S.face("happy", 600);
         ctx.sfx("pop");
