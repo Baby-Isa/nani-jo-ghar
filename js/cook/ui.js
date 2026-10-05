@@ -1142,6 +1142,7 @@
       const st = folds[`x:${x.key}`] || (folds[`x:${x.key}`] = {});
       const e = OC.card(x.data, { fold: st, closed: !!x.closed, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el) });
       e.dataset.extra = x.key;
+      if ((mission.compact || 0) >= 3) e.classList.add("oc-pills");
       box.appendChild(e);
       return e;
     });
@@ -1180,8 +1181,8 @@
         return line.parts.map((l) => ({ row: l.row, line: l, els: elsOf(l, map).filter((e) => el.contains(e)) }));
       };
       el._rows = c.rows;
-      // G1, the third step: the person in progress's rows flow as pills, two to a line (decision 25's layout)
-      if (!big && (mission.compact || 0) >= 3 && c.who && !minis.has(c.key)) el.classList.add("oc-pills");
+      // G1, the third step: every open card's rows flow as pills, two to a line (decision 25's layout)
+      if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add("oc-pills");
       if (minis.has(c.key)) {
         // G1, the second step on a sidebar still too short: the people not in progress are their faces in one row
         // (each face still the replay; a tap beside it brings that person forward)
@@ -1237,14 +1238,18 @@
     // Nani's box growing (her English line, a flag) can tip the sidebar over too
     if (!fitWatched && global.ResizeObserver && $("#guide")) {
       fitWatched = true;
-      new ResizeObserver(() => checkFit()).observe($("#guide"));
+      const ro = new ResizeObserver(() => checkFit());
+      ro.observe($("#guide"));
+      // a peeked card opens without a redraw: the order growing can tip it over too
+      if ($("#mission")) ro.observe($("#mission"));
     }
     const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
     raf(() =>
       raf(() => {
         if (!mission || (mission.compact || 0) >= 3 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
         if (side.scrollHeight <= side.clientHeight + 1) return;
-        if (orderCards().filter((c) => c.who).length < 2) return;
+        // (with fewer than two people, steps 1 and 2 fold nothing: a station's card and one person go straight to pills)
+        if (orderCards().filter((c) => c.who).length + (mission.extra || []).length < 2) return;
         // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face,
         // 3 flows the open card's rows as pills
         mission.compact = (mission.compact || 0) + 1;
