@@ -262,29 +262,33 @@
    460,
    250
   ],
-  "size": 55,
+  "size": 140,
   "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
  },
  "art": {
   "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
   "knee": {
    "file": "assets/clinic/closeups/child/knee.webp",
-   "on": false,
+   "on": true,
    "box": [
-    -120,
-    -40,
-    1040,
-    600
-   ]
+    -41.8,
+    12.4,
+    1013.8,
+    675.8
+   ],
+   "scale": 2.1,
+   "split": 368.8,
+   "has2x": true,
+   "_a1": "A1 (5 Oct): K1 placed so its knee joint (730, 360 in the 1536 x 1024 source) sits on the game's knee (440, 250) at 0.66 (the knee about half the height, art plan 3.2); scale = how much bigger than the stand-in the knee is drawn (the dots, the wrap and the hammer follow it); split = the svg y where the shin starts (the kick swings K1's own shin until K2 is cut)."
   },
   "knee-kick": {
    "file": "assets/clinic/closeups/child/knee-kick.webp",
    "on": false,
    "box": [
-    -120,
-    -40,
-    1040,
-    600
+    -41.8,
+    12.4,
+    1013.8,
+    675.8
    ]
   }
  }

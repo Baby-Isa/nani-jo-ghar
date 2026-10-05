@@ -95,12 +95,37 @@
     const wrap = s("g", {}, g);
     const art = S.closeup("knee", body);
     if (art) g.insertBefore(art, wrap);
-    legs[P.side] = { g, glow, shin, wrap, x: KX };
+    // A1 (5 Oct): the cut knee (K1) is drawn at the art plan's size (the knee about half the height), bigger than the
+    // stand-in: KS scales the things drawn round the knee (the glow, the wrap's dots and turns, the hammer) to match
+    const KA = art ? ctx.data.art.knee : null;
+    const KS = (KA && KA.scale) || 1;
+    glow.setAttribute("rx", 96 * KS);
+    glow.setAttribute("ry", 92 * KS);
+    // until the kicked picture (K2) is cut, the kick swings the shin of K1 itself: the picture split at the knee
+    let artShin = null;
+    const kickArt = art && ctx.data.art["knee-kick"];
+    if (art && !(kickArt && kickArt.on) && KA.split) {
+      const [x, y, w, hh] = KA.box;
+      const cy = KA.split;
+      const defs2 = s("defs", {}, S.svg);
+      const top = s("clipPath", { id: `${gid}-top` }, defs2);
+      s("rect", { x: x - 10, y: y - 10, width: w + 20, height: cy - y + 10 }, top);
+      const bot = s("clipPath", { id: `${gid}-bot` }, defs2);
+      s("rect", { x: x - 10, y: cy, width: w + 20, height: y + hh - cy + 400 }, bot);
+      art.setAttribute("clip-path", `url(#${gid}-top)`);
+      artShin = s("g", { class: "knee-art-shin" }, g);
+      g.insertBefore(artShin, wrap);
+      const im = art.cloneNode();
+      im.removeAttribute("clip-path");
+      im.setAttribute("clip-path", `url(#${gid}-bot)`);
+      artShin.appendChild(im);
+    }
+    legs[P.side] = { g, glow, shin: artShin || shin, wrap, x: KX };
     const sore = legs[P.side];
     const glowOn = (on) => sore.glow.setAttribute("opacity", on ? 0.5 : 0);
     glowOn(true);
     const dotsG = s("g", {}, S.layer);
-    const dotPos = (d) => ({ x: sore.x + (d.s === "l" ? -78 : 92), y: KY - 40 + d.y * 40 });
+    const dotPos = (d) => ({ x: sore.x + (d.s === "l" ? -78 : 92) * KS, y: KY + (-40 + d.y * 40) * KS });
     const dots = [];
     const drawDots = () => {
       S.clear(dotsG);
@@ -180,7 +205,7 @@
       const c = cur();
       if (!c || st.over || st.busy) return;
       if (c.kind === "kick" && S.sel === "hammer") {
-        const leg = Object.values(legs).find((l) => Math.hypot(p.x - l.x - 20, p.y - KY) < 90);
+        const leg = Object.values(legs).find((l) => Math.hypot(p.x - l.x - 20, p.y - KY) < 90 * KS);
         if (!leg) return;
         if (leg !== sore) {
           ctx.log({ type: "wrong", rowId: "kick", detail: "the other knee" });
@@ -192,7 +217,7 @@
         ctx.tally("hammer", st.kicks, { next: true }); // SH-40: the bandage (the next action) closes this step
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (ctx.level === 1 && st.kicks >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
-        const hm = s("image", { href: (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)("assets/clinic/items-v2/reflex-hammer.webp"), x: KX + 40, y: KY + 10, width: 150, height: 100 }, S.fx);
+        const hm = s("image", { href: (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)("assets/clinic/items-v2/reflex-hammer.webp"), x: KX + 40 * KS, y: KY + 10 * KS, width: 150 * KS, height: 100 * KS }, S.fx);
         hm.style.transformBox = "fill-box";
         hm.style.transformOrigin = "100% 50%";
         hm.animate([{ transform: "rotate(-25deg)" }, { transform: "rotate(10deg)" }, { transform: "rotate(-15deg)" }], { duration: 300 });
@@ -226,8 +251,8 @@
           ctx.log({ type: "extra", rowId: "wrap", detail: "not the flashing dot" });
           return;
         }
-        const from = st.last || { x: sore.x + (d.s === "l" ? 70 : -70), yy: d.yy };
-        s("line", { x1: from.x, y1: from.yy, x2: d.x, y2: d.yy, stroke: "#fbfaf4", "stroke-width": 22, "stroke-linecap": "round", opacity: 0.95 }, sore.wrap);
+        const from = st.last || { x: sore.x + (d.s === "l" ? 70 : -70) * KS, yy: d.yy };
+        s("line", { x1: from.x, y1: from.yy, x2: d.x, y2: d.yy, stroke: "#fbfaf4", "stroke-width": 22 * KS, "stroke-linecap": "round", opacity: 0.95 }, sore.wrap);
         s("line", { x1: from.x, y1: from.yy, x2: d.x, y2: d.yy, stroke: "#d8d2c4", "stroke-width": 2, "stroke-dasharray": "4 6" }, sore.wrap);
         st.last = d;
         st.turns++;

@@ -273,7 +273,7 @@ def cut_wide(kind):
         log(f"  W{i + 2} {f}: shift {M[0, 2]:+.1f},{M[1, 2]:+.1f} px, leak outside the head {lk * 100:.2f}%" + (" REDO" if lk > 0.015 else ""))
         soft = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 6)
         kr, _ = key(r)
-        a = np.minimum(soft, k1[..., 3])
+        a = np.minimum(soft, kr[..., 3])
         faces[f] = np.dstack([r, a])
     for n, (tag, band) in {"blanket": ("w9", (0.74, 0.93)), "bottle": ("w10", (0.74, 0.93))}.items():
         fp = src(f"{p}-{tag}-{n}-v1.png")
@@ -282,6 +282,16 @@ def cut_wide(kind):
             continue
         e = load(fp)
         r, M = ecc(e, w1, band, cv2.MOTION_TRANSLATION)
+        # a fresh prompt can come back a little bigger or smaller: when the legs still drift, fit them by scale too
+        kr, _ = key(r)
+        lb = np.zeros((H, W), bool)
+        lb[int(band[0] * H):int(band[1] * H)] = True
+        if np.abs(kr[..., 3] - k1[..., 3])[lb].mean() > 0.02:
+            r2, M2 = ecc(e, w1, band, cv2.MOTION_AFFINE)
+            kr2, _ = key(r2)
+            if np.abs(kr2[..., 3] - k1[..., 3])[lb].mean() < np.abs(kr[..., 3] - k1[..., 3])[lb].mean():
+                log(f"  {tag.upper()}: fitted by scale {np.hypot(M2[0, 0], M2[1, 0]):.3f} on the legs (an interim; the redo list has it)")
+                r, M = r2, M2
         legs = np.zeros((H, W), bool)
         legs[int(band[0] * H):int(band[1] * H)] = True
         kr, _ = key(r)
@@ -365,7 +375,8 @@ def cut_wide(kind):
             lk = leak(r, w7, m > 0)
             log(f"  W8 side happy: leak {lk * 100:.2f}%" + (" REDO" if lk > 0.015 else ""))
             soft = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 6)
-            sd["happy"] = rel(save(to_img(np.dstack([r, np.minimum(soft, k7[..., 3])])[sy0:sy1, sx0:sx1]), f"{base}-side-face-happy.webp", 92, z1, z2)[0])
+            k8, _ = key(r)
+            sd["happy"] = rel(save(to_img(np.dstack([r, np.minimum(soft, k8[..., 3])])[sy0:sy1, sx0:sx1]), f"{base}-side-face-happy.webp", 92, z1, z2)[0])
         else:
             log("  W8 side happy: not landed")
         out["side"] = sd

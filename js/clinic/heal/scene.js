@@ -605,7 +605,9 @@
       const a = ctx.data && ctx.data.art && ctx.data.art[key];
       if (!a || !a.on || !a.file) return null;
       const [x, y, w, hh] = a.box || [0, 0, 800, 500];
-      const im = s("image", { href: Kit && Kit.url ? Kit.url(a.file) : a.file, x, y, width: w, height: hh, preserveAspectRatio: "xMidYMid slice", class: "hs-closeup" });
+      // A1: the @2x where the cut made one (a.has2x) and the screen is dense enough to want it
+      const file = a.has2x && (global.devicePixelRatio || 1) > 1.25 ? String(a.file).replace(/\.webp$/, "@2x.webp") : a.file;
+      const im = s("image", { href: Kit && Kit.url ? Kit.url(file) : file, x, y, width: w, height: hh, preserveAspectRatio: "xMidYMid slice", class: "hs-closeup" });
       S.layer.insertBefore(im, S.layer.firstChild);
       if (standin) standin.setAttribute("display", "none");
       return im;

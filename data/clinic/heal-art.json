@@ -14,6 +14,7 @@
    "h": 472,
    "front": "assets/clinic/patients/girl/girl-front.webp",
    "blanket": "assets/clinic/patients/girl/girl-front-blanket.webp",
+   "bottle": "assets/clinic/patients/girl/girl-front-bottle.webp",
    "faces": {
     "happy": "assets/clinic/patients/girl/girl-face-happy.webp",
     "sad": "assets/clinic/patients/girl/girl-face-sad.webp",
@@ -138,13 +139,48 @@
       0.4238,
       0.744
      ]
-    }
+    },
+    "happy": "assets/clinic/patients/girl/girl-side-face-happy.webp"
    },
    "age": "child"
   }
  },
  "closeups": {
-  "child": {},
+  "child": {
+   "knee": {
+    "file": "assets/clinic/closeups/child/knee.webp",
+    "size": [
+     1536,
+     1024
+    ],
+    "exits": [
+     "left",
+     "bottom"
+    ],
+    "box": [
+     0.0,
+     0.0371,
+     0.6354,
+     1.0
+    ]
+   },
+   "forearm": {
+    "file": "assets/clinic/closeups/child/forearm.webp",
+    "size": [
+     1536,
+     1024
+    ],
+    "exits": [
+     "left"
+    ],
+    "box": [
+     0.0,
+     0.2188,
+     0.9785,
+     0.7305
+    ]
+   }
+  },
   "adult": {}
  },
  "_report": [
@@ -157,15 +193,20 @@
   "  W5 hot: shift +0.9,+5.4 px, leak outside the head 1.31%",
   "  W6 cold: shift +0.9,+2.3 px, leak outside the head 0.27%",
   "  W9 blanket: shift -0.4,-0.5 px; leg-band alpha drift 0.11%",
-  "  W10 bottle: not landed",
-  "  W8 side happy: not landed",
+  "  W10: fitted by scale 0.995 on the legs (an interim; the redo list has it)",
+  "  W10 bottle: shift +1.1,-26.1 px; leg-band alpha drift 0.34%",
+  "  W8 side happy: leak 0.32%",
   "boy: no W1 yet",
   "old-man: no W1 yet",
   "old-woman: no W1 yet",
   "uncle: no W1 yet",
   "auntie: no W1 yet",
-  "child K: not landed",
-  "child F: not landed",
+  "child K: cut, exits left,bottom",
+  "  kick: not landed",
+  "  graze: not landed",
+  "child F: cut, exits left",
+  "  graze: not landed",
+  "  cut: not landed",
   "child U: not landed",
   "child P: not landed",
   "adult K: not landed",
