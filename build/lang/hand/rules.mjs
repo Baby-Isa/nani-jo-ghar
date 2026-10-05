@@ -41,6 +41,8 @@ const ABSTRACT = [
   ["AndKind", "Utt", { x: NP }, "and {x} (a second kind of the same dish)", ["I'd like two samosas with mince, and one with potato."], { rows: ["x"] }],
   ["ButNo", "Utt", { head: NP, x: NP }, "{head}, but no {x}", ["I'd like daar, but no onion."]],
   ["Times", "Utt", { n: { type: "Num" } }, "{n} times", ["once; twice; three times (stir it three times)"]],
+  ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like daar first, and then maani."], { rows: ["a", "b"] }],
+  ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like daar first, and then maani."], { rows: ["a", "rest"] }],
   ["Lift", "Utt", { x: NP }, "Lift out the {x}.", ["Take the samosas out now."], { rows: ["x"] }],
   ["Leave", "Utt", { x: NP }, "Leave the {x}.", ["Leave the chips in."], { rows: ["x"] }],
 ];
@@ -113,6 +115,8 @@ const CONCRETE = {
   },
   Lift: { slots: [S("x"), L("adv.now-in-steps"), L("v.take-out", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B15 (inke hane kadh: lift it out now); data/cook.json lines.lift names the thing where Mum said inke (it): Claude's extension, to check`, notes: ["hever kadh is the urgent one (§29 R6, §37.6); hane kadh is the gentle one in a sequence of steps (Cook keeps hane kadh)."] },
   Leave: { slots: [S("x"), L("v.leave", "conj"), L("v.give", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B16 (inke chadi de: leave it be); data/cook.json lines.leave names the thing where Mum said inke (it): Claude's extension, to check` },
+  FirstThen: { slots: [L("adv.first"), S("a"), P(","), L("phrase.and-then"), S("b")], mark: ".", status: "draft", src: `${GN} §7 (Muke pela daar khape, ne poi maani: pela X, ne poi Y); pela is a draft in data/cook.json`, notes: ["Three steps (pela X, ne poi Y, ne poi Z) are not Mum's own sentence: only two steps were said."] },
+  NeedFirstThen: { slots: [L("pron.p1", "dat"), L("adv.first"), S("a"), L("v.want", "informal"), P(","), L("phrase.and-then"), S("rest")], mark: ".", status: "draft", src: `${GN} §7 (Muke pela daar khape, ne poi maani: Mum's own sentence); pela is a draft in data/cook.json` },
   AndKind: { status: "unknown", ask: ["L23", "L26", "L27"], english: "and {x}", what: "joining a second kind of the same dish ('and one with potato')", src: "docs/feedback/cook-playtest-2026-09-29.md Q5 4; data/cook.json lines.and_join (to record)" },
   ButNo: { status: "unknown", ask: ["L19", "L24"], english: "{head}, but no {x}", what: "'but no onion' inside an order", src: "grammar-kb feature 19; Round 5 L19, L24" },
   Times: { status: "unknown", ask: ["L54"], english: "{n} times", what: "'three times' (stir it three times)", src: "data/clinic/lang.json lines.times (no Kutchi: gap Times); Round 5 L54" },

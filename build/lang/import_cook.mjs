@@ -8,6 +8,8 @@ import { POS, PARTS, SAME_AS, CLASH_NOTES, FRAMES } from "./hand/cook-map.mjs";
 import { GENDER_ASK } from "./hand/asks.mjs";
 
 const SOURCE = "data/cook.json";
+const ASK_DEFAULT = "to record with Mum (the game line has no Kutchi yet)";
+const LINE_SAME_AS = { "clinic.pipeline.haa": "phrase.yes" }; // the clinic spells yes haa, Mum said ha (a clash, kept)
 
 /** Single-word Mum clips Zafar has ticked OK in lab/family-audio.html: evidence that Mum said the word and it was heard right. */
 export function mumOkWords() {
@@ -30,12 +32,18 @@ export function statusOf(item, lemma, okWords) {
 
 const predictPlural = (lemma, gender) => (/o$/.test(lemma) && gender !== "she" ? lemma.slice(0, -1) + "a" : lemma);
 
-export function importWords(S, words, { file, okWords, rank = RANK.game }) {
+export function importWords(S, words, { file, okWords, rank = RANK.game, posOf = null, sameAsMap = SAME_AS, partsMap = PARTS }) {
   let n = 0;
   for (const [cid, w] of Object.entries(words)) {
-    if (cid === "_about" || !w || typeof w !== "object") continue;
-    const pos = POS[cid] || (cid.startsWith("num-") ? "Num" : "N");
-    const sameAs = SAME_AS[cid];
+    if (cid === "_about" || !w || typeof w !== "object" || w.from) continue; // `from`: a copy of a Cook word, already loaded
+    const pos = (posOf && posOf(cid, w)) || POS[cid] || (cid.startsWith("num-") ? "Num" : "N");
+    const sameAs = sameAsMap[cid];
+    // a copy of a word Cook already loaded (same id, same Kutchi): nothing to add but where else it is used
+    const have = S.find(cid);
+    if (have && w.kutchi && have.lemma && norm(w.kutchi) === norm(have.lemma) && !sameAs) {
+      S.patch(have.id, { src: `${file} words.${cid}: a copy of this word` }, { source: file, rank });
+      continue;
+    }
     const srcStr = `${file} words.${cid}: ${w.src || "no source given"}`;
     const english = w.english;
     const notes = [];
@@ -44,24 +52,42 @@ export function importWords(S, words, { file, okWords, rank = RANK.game }) {
     const history = w.src_change ? [{ date: "2026-09-26", change: String(w.src_change), src: srcStr }] : undefined;
     const open = CLASH_NOTES[cid] ? [{ q: CLASH_NOTES[cid], src: srcStr }] : undefined;
     const gender = w.gender === "he" || w.gender === "she" ? w.gender : null;
-    // no Kutchi yet: a to-record entry (or the entry the notes say already answers it)
+    // no Kutchi yet: the entry that already answers it, a known word under another id, or one to-record entry per English word
     if (!w.kutchi) {
-      if (sameAs) S.patch(sameAs, { aliases: [cid], notes, open, history, src: srcStr }, { source: SOURCE, rank });
-      else S.add({ pos, gloss: english, status: "to-record", src: srcStr, aliases: [cid], notes, open, history, ...(pos === "N" ? { gender: null, ask: { word: [w.qfm || "new"] } } : {}) }, { source: SOURCE, rank });
+      let target = sameAs ? S.find(sameAs) : null;
+      let viaGloss = false;
+      if (!target) {
+        target = S.findByGloss(english, pos === "Phrase" ? "Phrase" : null);
+        viaGloss = !!target;
+      }
+      if (target) {
+        S.patch(target.id, { aliases: [cid], notes: sameAs ? notes : undefined, open, history, src: srcStr }, { source: SOURCE, rank });
+        if (viaGloss || target.status !== "to-record") S.closable.push({ id: cid, file, entry: target.id, english, word: target.lemma || null });
+      } else {
+        const key = `${pos}|${norm(english)}`;
+        const known = S.recordIndex.get(key);
+        if (known) S.patch(known, { aliases: [cid], src: srcStr }, { source: SOURCE, rank });
+        else {
+          const e = S.add({ pos, gloss: english, status: "to-record", src: srcStr, aliases: [cid], notes, open, history, ...(pos === "N" ? { gender: null, ask: { word: [w.qfm || "new"] } } : { ask: { word: [w.qfm || "new"] } }) }, { source: SOURCE, rank });
+          S.recordIndex.set(key, e.id);
+        }
+      }
       n++;
       continue;
     }
-    const lemma = w.kutchi_one && sameAs ? w.kutchi_one : w.kutchi;
+    let lemma = w.kutchi_one && sameAs ? w.kutchi_one : w.kutchi;
+    if (pos === "Phrase") lemma = lemmaOfLine(lemma);
     const spec = { pos, lemma, gloss: english, ...statusOf(w, lemma, okWords), src: srcStr, aliases: [cid], notes, open, history };
-    if (sameAs) spec.id = sameAs;
+    if (sameAs && S.find(sameAs)) spec.id = S.find(sameAs).id;
+    else if (sameAs) spec.id = sameAs;
     if (pos === "Num") spec.id = `num.${parseInt(cid.split("-")[1], 10)}`;
     if (pos === "N" || pos === "PN") {
       spec.gender = gender;
       if (gender == null && pos === "N") spec.ask = { gender: [GENDER_ASK[english] || "new"] };
     }
     if (w.say) spec.say = w.say;
-    if (PARTS[cid]) {
-      const p = PARTS[cid];
+    if (partsMap[cid]) {
+      const p = partsMap[cid];
       spec.parts = p.parts.map(([lex, cell]) => ({ lex, cell }));
       spec.lemmaKey = lemma;
       delete spec.lemma;
@@ -73,14 +99,51 @@ export function importWords(S, words, { file, okWords, rank = RANK.game }) {
       if (w.kutchi_many && norm(w.kutchi_many) !== norm(predictPlural(lemma, gender)) && !sameAs) {
         spec.forms = { "pl.dir": { t: w.kutchi_many, src: srcStr }, "pl.obl": { t: w.kutchi_many, src: srcStr } };
       }
-    } else if (pos === "Adv" || pos === "Post") {
+    } else if (pos === "Adv" || pos === "Post" || pos === "Phrase") {
       spec.forms = { "-": lemma };
+    } else if (pos === "A" && /o$/.test(lemma) && !sameAs) {
+      spec.paradigm = "adj.o";
     }
     if (w.alt && w.alt.length) spec.notes = [...(spec.notes || []), `also accepted: ${w.alt.join(", ")} (alt)`];
-    S.add(spec, { source: SOURCE, rank });
+    S.add(spec, { source: file, rank });
     n++;
   }
   return n;
+}
+
+/** One to-record entry per English word: the engine's answer if it already knows the word (a closable gap), else a new entry. */
+export function recordWord(S, { pos, english, src, alias, file, ask = "new", rank = RANK.game, notes }) {
+  const target = S.findByGloss(english, pos === "Phrase" ? "Phrase" : null);
+  if (target) {
+    S.patch(target.id, { aliases: alias ? [alias] : undefined, src }, { source: SOURCE, rank });
+    S.closable.push({ id: alias || english, file, entry: target.id, english, word: target.lemma || null });
+    return target;
+  }
+  const key = `${pos}|${norm(english)}`;
+  const known = S.recordIndex.get(key);
+  if (known) return S.patch(known, { aliases: alias ? [alias] : undefined, src }, { source: SOURCE, rank });
+  const e = S.add({ pos, gloss: english, status: "to-record", src, aliases: alias ? [alias] : undefined, notes, ...(pos === "N" ? { gender: null, ask: { word: [ask] } } : { ask: { word: [ask] } }) }, { source: SOURCE, rank });
+  S.recordIndex.set(key, e.id);
+  return e;
+}
+
+const pascal = (s) => String(s).replace(/\{(\w+)\}/g, " $1 ").replace(/[^A-Za-z0-9\s]/g, " ").split(/\s+/).filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase()).join("");
+const SAMPLE_ARG = { part: "body-ear", x: "body-ear", side: "side-left", tool: "tool-torch", kind: "cook-maani", a: "cook-maani", b: "cook-dudh", c: "cook-khun", rest: "cook-dudh", n: 2, what: "body-ear", y: "cook-dudh", pela: "lnk-pela", nepoi: "lnk-nepoi" };
+
+/** A game frame Mum has not given: an abstract meaning with an unknown rule, asking for the questions that would settle it. */
+export function unknownFrame(S, { english, src, ask, key }) {
+  const args = Array.from(new Set(Array.from(String(english).matchAll(/\{(\w+)\}/g)).map((m) => m[1])));
+  let name = pascal(english) || "Line";
+  if (/^[0-9]/.test(name)) name = "L" + name;
+  const sig = JSON.stringify(args);
+  while (S.functions[name] && S.functions[name]._sig !== sig) name += "2";
+  if (!S.functions[name]) {
+    S.functions[name] = { cat: "Utt", args: Object.fromEntries(args.map((a) => [a, { type: a === "n" ? "Num" : "NP" }])), en: english, elicit: [english.replace(/\{(\w+)\}/g, (_, a) => ({ part: "knee", x: "knee", side: "left", tool: "torch", kind: "man", n: "two" }[a] || a))], _sig: sig };
+    S.lin[name] = { status: "unknown", ask: [ask], english, what: english, src };
+  }
+  const meaning = { fn: name };
+  for (const a of args) meaning[a] = SAMPLE_ARG[a] != null ? SAMPLE_ARG[a] : "cook-maani";
+  return { name, meaning };
 }
 
 /** the entry a fixed line becomes: lemma = the text without its final mark, first letter lower case */
@@ -95,36 +158,34 @@ const sayFn = (mark) => (mark === "!" ? "Exclaim" : mark === "?" ? "Ask" : "Say"
  * Register one line of a game. A frame (or a fixed line that is really a frame) is only a meaning; any other line
  * with Kutchi is a phrase entry; a line with no Kutchi is a to-record phrase. Returns the game-line record.
  */
-export function importLine(S, game, key, ln, { frames, src, okWords, rank }) {
+export function importLine(S, game, key, ln, { frames, src, okWords, rank, ask = ASK_DEFAULT }) {
   const alias = `${game}.line.${key}`;
   const text = ln.k || null;
   const en = ln.en || ln.e || key;
   const record = { game, key, alias, text, en, draft: !!ln.draft, kind: null, meaning: null, entry: null };
   const frame = frames[key];
-  const srcStr = `${src} lines.${key}: ${ln.src || "no source given"}`;
+  const srcStr = `${src} lines.${key}: ${ln.src || ln._src || "no source given"}`;
+  const finish = (kind, meaning, entry) => {
+    Object.assign(record, { kind, meaning, entry: entry || null });
+    S.gameLines.push(record);
+    return record;
+  };
   if (frame) {
-    record.kind = "frame";
-    record.meaning = frame.meaning;
     record.sample = frame.sample;
-    S.gameLines.push(record);
-    return record;
+    return finish("frame", frame.meaning);
   }
-  if (!text) {
-    const e = S.add({ pos: "Phrase", gloss: en, status: "to-record", src: srcStr, aliases: [alias], notes: ln._about ? [String(ln._about)] : undefined, ask: { word: [ln.record ? "to record" : "new"] } }, { source: SOURCE, rank });
-    record.kind = "torecord";
-    record.entry = e.id;
-    record.meaning = { fn: "Say", x: e.id };
-    S.gameLines.push(record);
-    return record;
+  const bracketed = !!text && /\[[^\]]+\]/.test(text); // an English placeholder inside the Kutchi frame: to record
+  const hasSlot = /\{\w+\}/.test(text || "") || (!text && /\{\w+\}/.test(en));
+  if (hasSlot) return finish("unknown-frame", unknownFrame(S, { english: en, src: srcStr, ask, key }).meaning);
+  if (!text || bracketed) {
+    const t = recordWord(S, { pos: "Phrase", english: en, src: srcStr, alias, file: src, ask: ln.record ? "to record" : "new", rank, notes: ln._about ? [String(ln._about)] : undefined });
+    return finish("torecord", { fn: "Say", x: t.id }, t.id);
   }
   const mark = markOf(text);
   const lemma = lemmaOfLine(text);
-  const e = S.add({ pos: "Phrase", lemma, gloss: en, forms: { "-": lemma }, ...statusOf(ln, lemma, okWords), src: srcStr, aliases: [alias], notes: ln.confirm ? [String(ln.confirm)] : undefined }, { source: SOURCE, rank });
-  record.kind = "phrase";
-  record.entry = e.id;
-  record.meaning = { fn: sayFn(mark), x: e.id };
-  S.gameLines.push(record);
-  return record;
+  const sameAs = (LINE_SAME_AS || {})[alias];
+  const e = S.add({ ...(sameAs ? { id: sameAs } : {}), pos: "Phrase", lemma, gloss: en, forms: { "-": lemma }, ...statusOf(ln, lemma, okWords), src: srcStr, aliases: [alias], notes: ln.confirm ? [String(ln.confirm)] : undefined }, { source: SOURCE, rank });
+  return finish("phrase", { fn: sayFn(mark), x: e.id }, e.id);
 }
 
 export function importCook(S) {

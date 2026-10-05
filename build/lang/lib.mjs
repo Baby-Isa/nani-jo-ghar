@@ -75,6 +75,9 @@ export class Store {
     this.byLemma = new Map(); // norm(lemma) -> [id]
     this.counts = {}; // source -> number of entries touched
     this.idNotes = [];
+    this.alternatives = []; // two words for one thing across sources: {id, mine, theirs, english}
+    this.closable = []; // a game's English placeholder for a word the engine already knows: {id, file, entry}
+    this.recordIndex = new Map(); // "pos|gloss" -> id of the to-record entry (so one word is one entry)
     this.gameLines = []; // every line a game says: {game, key, alias, kind, meaning, entry, ...}
     this.formOrigin = new Map(); // "id|cell" -> {source, rank}
   }
@@ -84,6 +87,19 @@ export class Store {
     this.resolutions.set(`${id}|${field}`, { chosen, why, src });
   }
 
+  /** the entry (with Kutchi) whose English is this gloss: a whole sentence must match whole; a word may drop my / the / a */
+  findByGloss(gloss, pos) {
+    const word = (x) => norm(String(x || "").split(/[,;(]/)[0]).replace(/^(my|the|a|an)\s+/, "");
+    const whole = (x) => norm(x);
+    const isPhrase = pos === "Phrase";
+    const want = isPhrase ? whole(gloss) : word(gloss);
+    if (!want) return null;
+    for (const e of this.entries.values()) {
+      if (e.status === "to-record") continue;
+      if (isPhrase ? e.pos === "Phrase" && whole(e.gloss) === want : (!pos || e.pos === pos) && e.pos !== "Phrase" && word(e.gloss) === want) return e;
+    }
+    return null;
+  }
   aliasOwner(id) {
     for (const e of this.entries.values()) if ((e.aliases || []).includes(id)) return e;
     return null;

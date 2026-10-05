@@ -99,7 +99,7 @@ export function apply(S) {
   w("A", "tarelo", "fried", [`${GN} §38 I14 (tarelo kari chad: make it fried: ⚠)`, `${GN} §26 B28 (tarela bataata)`], { d: true });
 
   /* ---------------- verbs: the forms Mum said (the bare commands are loaded from lexicon.md §6.1) ---------------- */
-  w("V", "khan", "take", [`${GN} §9 (hi ambo khan)`], { f: { "imp.informal": { t: "khan", src: `${GN} §9` } }, n: ["khan does not change with gender (§9)."] });
+  w("V", "khan", "take", [`${GN} §9 (hi ambo khan)`], { f: { "imp.informal": { t: "khan", src: `${GN} §9` }, conj: { t: "khani", src: `${GN} §20 (Simba khani vyo: Simba took it)` } }, n: ["khan does not change with gender (§9)."] });
   w("V", "khanigin", "take it yourself, pick one yourself", [`${GN} §9 (ambo khanigin)`], { f: { "imp.informal": { t: "khanigin", src: `${GN} §9` } }, d: true, q: [{ q: "khanigin (§9) or khanij (§37.8): the same word? Mum to confirm the spelling and meaning (bring along, take with you).", ask: ["Q9"], src: `${GN} §9, §37.8` }] });
   w("V", "khanij", "bring along, take with you", [`${GN} §37.8 (Zafar: Mum to confirm)`], { f: { "imp.informal": { t: "khanij", src: `${GN} §37.8` } }, d: true, q: [{ q: "khanij or khanigin (§9)? Same word?", ask: ["Q9"], src: `${GN} §9, §37.8` }] });
   w("V", "khanech", "bring", [`${GN} §43 (wadho cup khanech)`, `${GN} §33 S1 (khanechi dinde)`], { f: { "imp.informal": { t: "khanech", src: `${GN} §43 C36` }, conj: { t: "khanechi", status: "draft", src: `${GN} §33 S1 (khanechi dinde: ⚠)` } }, n: ["Spelling khanech confirmed by Zafar 5 Oct; khanechi (S1) is Whisper's hearing."], q: [{ q: "Is khanech the same family as khan (take) + achi (come)? S1's khanechi is ⚠.", src: `${GN} §36 (Claude's check, not evidence), §37.8` }] });
@@ -109,34 +109,34 @@ export function apply(S) {
       "imp.informal": { t: "de", src: `${GN} §9` },
       "fut.p2": { t: "dinda", status: "draft", src: `${GN} §27 B40, §30 K7-K9 (dinda, said by Mum with tu; sometimes dinde)` },
       "fut.p2resp": { t: "dinda", status: "draft", src: `${GN} §27 B40, §29 R10 (Aai muke chai banai dinda?)` },
+      "fut.p1.she": { t: "dis", status: "draft", src: `${GN} §32 S8 (Ha, aau randhan lai madad kar dis: a girl says it; heard)` },
+      "fut.p1.he": { t: "dos", status: "draft", src: `${GN} §32 S8 (… kar dos: a boy says it; heard)` },
     },
     q: [{ q: "dinda and dinde: one is for an elder, one for someone younger; which is which? Mum said dinda with both aai and tu, and dinde as Nani to a grandchild (S1).", ask: ["Q8"], src: `${GN} §37.7` }],
   });
   w("V", "banai", "make", [`${GN} §8 (Ma lai pan hakro banai)`, `${GN} §27 B40 (Tu muke chai banai dinda?)`, `${GN} §38 I21 (jhini maani banai)`], { f: { "imp.informal": { t: "banai", src: `${GN} §8` }, conj: { t: "banai", src: `${GN} §27 B40 (banai dinda)` } } });
   w("V", "wij", "put in, add", [`${GN} §9 (dungri wij; spelling confirmed)`, `${GN} §12 (khun na wij)`], { f: { "imp.informal": { t: "wij", src: `${GN} §9` }, conj: { t: "wiji", src: `${GN} §38 I4 (wiji chad); spelling confirmed by Zafar 5 Oct` } } });
-  w("V", "kadh", "take out", [`${GN} §25 B15 (hane kadh)`, `${GN} §29 R6 (hever kadh)`], { f: { "imp.informal": { t: "kadh", src: `${GN} §25 B15` }, conj: { t: "kadhi", src: `${GN} §38 I5 (kadhi chad); spelling confirmed by Zafar 5 Oct` } } });
+  w("V", "kadh", "take out", [`${GN} §25 B15 (hane kadh)`, `${GN} §29 R6 (hever kadh)`], { f: { "imp.informal": { t: "kadh", src: `${GN} §25 B15` }, "fut.p1": { t: "kadhu", src: `${GN} §25 B16 (Samosa kadhu ke na?: shall I take the samosa out?)` }, conj: { t: "kadhi", src: `${GN} §38 I5 (kadhi chad); spelling confirmed by Zafar 5 Oct` } } });
   w("V", "chad", "leave, finish (the helper in wiji chad, chadi de)", [`${GN} §38 I4 (chad is the 'leave it, finish it' helper)`, `${GN} §25 B16 (chadi de)`], { f: { "imp.informal": { t: "chad", src: `${GN} §38 I4` }, conj: { t: "chadi", src: `${GN} §25 B16 (inke chadi de: leave it be)` } } });
   w("V", "kap", "cut", [`${GN} §38 I10-I11 (kap, kapi chad: ⚠)`], { d: true, f: { "imp.informal": { t: "kap", src: `${GN} §38 I11` }, conj: { t: "kapi", src: `${GN} §38 I11 (kapi chad: spelling confirmed by Zafar 5 Oct)` } } });
   w("V", "bhar", "fill", [`${GN} §38 I16 (paani bhari chad)`], { f: { "imp.informal": { t: "bhar", src: `${GN} §38 I16` }, conj: { t: "bhari", src: `${GN} §38 I16` } }, n: ["bharelo = filled up (adjective, §24 B5)."] });
   w("V", "rakh", "put (down), place; keep", [`${GN} §16 (saani je agiya rakh)`, `${GN} §27 B49 (dhyan rakh: keep care)`, `${GN} §38 I18 (table mathe rakhi chad: ⚠)`], { f: { "imp.informal": { t: "rakh", src: `${GN} §16; a soft h (Zafar 26 Sept)` }, conj: { t: "rakhi", status: "draft", src: `${GN} §38 I18 (⚠)` } } });
   w("V", "kar", "do, make", [`${GN} §12 (watu na kar)`, `${GN} §27 B48 (Jaldi kar!)`, `${GN} §38 I3 (slow kar)`], { f: { "imp.informal": { t: "kar", src: `${GN} §27 B48` }, "imp.polite": { t: "karo", src: `${GN} §27 B48 (Jaldi karo! to an elder)` }, conj: { t: "kari", src: `${GN} §38 I13-I14 (bego kari chad, tarelo kari chad)` } } });
   w("V", "hal", "walk, come, go", [`${GN} §12 (hal na, hal mu saathe)`, `${GN} §33 S9 (Hal, rasore me winja)`], { f: { "imp.informal": { t: "hal", src: `${GN} §12` } }, n: ["Walk and come are the same verb (§12); na hal (don't come with me) has a different meaning."] });
-  w("V", "winja", "let's go", [`${GN} §33 S9 (⚠)`], { d: true, f: { "imp.informal": { t: "winja", src: `${GN} §33 S9` } }, n: ["Heard as winja (let's go) and winjanta (we are going, §52 ⚠)."] });
+  w("V", "winja", "let's go", [`${GN} §33 S9 (⚠)`], { d: true, f: { "imp.informal": { t: "winja", src: `${GN} §33 S9` }, "pres.p1.pl": { t: "winjanta", status: "draft", src: `${GN} §52 (pa bare winjanta: we are going out: ⚠ spelling)` } }, n: ["Heard as winja (let's go) and winjanta (we are going, §52 ⚠)."] });
   w("V", "bhaj", "run", [`${GN} §12 (bhaj na, hal: don't run, walk)`], { f: { "imp.informal": { t: "bhaj", src: `${GN} §12` } } });
   w("V", "bol", "speak", [`${GN} §12 (bol na: don't speak)`], { f: { "imp.informal": { t: "bol", src: `${GN} §12` } } });
   w("V", "wapur", "use", [`${GN} §12 (khun na wapur: don't use sugar)`, `${GN} §43 (wadho wapar: use the big one)`], { f: { "imp.informal": { t: "wapur", src: `${GN} §12` } }, q: [{ q: "wapur (§12) or wapar (§43, lexicon §6.1)? The same word spelled two ways.", src: `${GN} §12, §43` }] });
   w("V", "ad", "touch", [`${GN} §12 (ad na: don't touch; na ad is urgent)`], { f: { "imp.informal": { t: "ad", src: `${GN} §12` } } });
   w("V", "nar", "look", [`${GN} §20 (Simba ke rasore me nares: nares is Whisper's 'saw': ⚠)`, `${GN} header (nar is look, not no)`], { f: { "imp.informal": { t: "nar", src: `${GN} §20` } }, n: ["Takes different endings (§20); nares (saw) is Whisper's hearing, not entered."] });
   w("V", "we", "sit", [`${GN} §16 (munje same we: sit opposite me)`], { f: { "imp.informal": { t: "we", src: `${GN} §16` } } });
-  w("V", "ach", "come", [`${GN} §21 (hida ach / hida acho)`], { f: { "imp.informal": { t: "ach", src: `${GN} §21 (to a child or someone your own age)` }, "imp.polite": { t: "acho", src: `${GN} §21 (to an elder)` }, "fut.he.sg": { t: "achdo", src: `${GN} §21 (e achdo: child will come)` }, "fut.he.pl": { t: "achda", src: `${GN} §21 (e achda: elder will come)` } } });
-  w("V", "kha", "eat", [`${GN} §27 B45 (Kha!)`, `${GN} §20 (khai vyo: ate)`], { f: { "imp.informal": { t: "kha", src: `${GN} §27 B45` } }, n: ["khai vyo = ate (§20); khani vyo = took (from khan)."], q: [{ q: "The past with an object (khai vyo, khani vyo): how it agrees is the biggest structural risk (kb feature 16).", ask: ["C123-C136"], src: "grammar-kb feature 16" }] });
+  w("V", "ach", "come", [`${GN} §21 (hida ach / hida acho)`], { f: { "imp.informal": { t: "ach", src: `${GN} §21 (to a child or someone your own age)` }, "imp.polite": { t: "acho", src: `${GN} §21 (to an elder)` }, conj: { t: "achi", src: `${GN} §21 (e achi vyo: he / she came)` }, "pres.he.pl": { t: "achenta", status: "draft", src: `${GN} §33 S4 (Mageni achenta: guests are coming: ⚠)` }, "fut.he.sg": { t: "achdo", src: `${GN} §21 (e achdo: child will come)` }, "fut.he.pl": { t: "achda", src: `${GN} §21 (e achda: elder will come)` } } });
+  w("V", "kha", "eat", [`${GN} §27 B45 (Kha!)`, `${GN} §20 (khai vyo: ate)`], { f: { "imp.informal": { t: "kha", src: `${GN} §27 B45` }, conj: { t: "khai", src: `${GN} §20 (khai vyo: ate)` } }, n: ["khai vyo = ate (§20); khani vyo = took (from khan)."], q: [{ q: "The past with an object (khai vyo, khani vyo): how it agrees is the biggest structural risk (kb feature 16).", ask: ["C123-C136"], src: "grammar-kb feature 16" }] });
   w("V", "ukar", "boil", [`${GN} §38 I2 (chai ke ukar, paani ke ukar)`], { f: { "imp.informal": { t: "ukar", src: `${GN} §38 I2` }, "pres.he.sg": { t: "ukreto", src: `${GN} §25 B24 (ukreto: it's boiling)` } } });
-  w("V", "thai", "become, happen (thai vyo)", [`${GN} §19 (band thai vyo, khalas thai vyo)`, `${GN} §39 I35 (thundo thai vyo)`], {
-    f: { "past.he.sg": { t: "thai vyo", src: `${GN} §19 (warsaad band thai vyo)` }, "past.she.sg": { t: "thai vai", src: `${GN} Zafar's corrections to A5-A7 (film khalas thai vai)` } },
-    n: ["thai vyo (he-word thing), thai vai (she-word thing): film khalas thai vai (§28)."],
-  });
+  w("V", "thai", "become, happen (thai vyo)", [`${GN} §19 (band thai vyo, khalas thai vyo)`, `${GN} §39 I35 (thundo thai vyo)`], { f: { conj: { t: "thai", src: `${GN} §19, §39 I35 (thai + vyo / vai)` } } });
+  w("V", "vyo", "went, became (the helper after the 'having done' form: thai vyo, khai vyo, achi vyo)", [`${GN} §19 (thai vyo)`, `${GN} Zafar's corrections to A5-A7 (vyo for he-words, vai for she-words like khapeto / khapeti; vya for elders)`, `${GN} §28 (V may appear inside a word; vyo is Zafar's spelling)`], { id: "v.went", f: { "past.he.sg": { t: "vyo", src: `${GN} §19, §21` }, "past.she.sg": { t: "vai", src: `${GN} Zafar's corrections to A5-A7 (film khalas thai vai)` }, "past.he.pl": { t: "vya", src: `${GN} §21 (e achi vya: an elder), §19 (kam kari vya?)` } }, q: [{ q: "The plural and elder forms of vyo / vai (vya) and how they follow the thing: kb feature 15-16.", ask: ["C152", "C154"], src: "grammar-kb feature 15" }] });
   w("V", "wo", "was", [`${GN} §20 (kida wo? table je mathe wo: it's wo, not weo, Mum's correction)`], { f: { "past.he.sg": { t: "wo", src: `${GN} §20` } }, q: [{ q: "wo is the past of 'be' for a he-word; the she-word and plural forms were not said (kb feature 11).", src: "grammar-kb feature 11" }] });
-  w("V", "pati", "be over (pati vyo: that's enough, time's up)", [`${GN} §19 (pati vyo, time pati vyo)`], { f: { "past.he.sg": { t: "pati vyo", src: `${GN} §19` } }, d: true, n: ["Mum thinks it may come from Gujarati, but the family does use it (§19)."] });
+  w("V", "pati", "be over (pati vyo: that's enough, time's up)", [`${GN} §19 (pati vyo, time pati vyo)`], { d: true, f: { conj: { t: "pati", src: `${GN} §19 (pati + vyo)` } }, n: ["Mum thinks it may come from Gujarati, but the family does use it, with an 'enough now' feeling (§19)."] });
   w("V", "khobar", "wait", [`${GN} §27 B44 (Mu lai khobar!: ⚠)`, `${GN} §27 B46 (Khobar, aau chakha)`], { d: true, f: { "imp.informal": { t: "khobar", src: `${GN} §27 B44` } }, q: [{ q: "khobar (wait) and khabar (Toke khabar ai: you know): two words or one spelling?", src: `${GN} §27 B44, §30 K13` }] });
   w("N", "khabar", "knowledge, news (Toke khabar ai: do you know)", [`${GN} §30 K13 (⚠ the whole line; only Nani's version recorded)`, `${GN} §37.1`], { d: true, g: null, ask: { gender: ["new"] }, par: false, f: { "sg.*": "khabar" } });
   w("N", "madad", "help", [`${GN} §33 S7-S8 (heard)`], { d: true, g: null, par: false, f: { "sg.*": "madad" }, ask: { gender: ["new"] } });
@@ -335,6 +335,28 @@ export function apply(S) {
   noun("matar", "peas (green peas)", [`${GN} §34 P11 (green peas are matar)`], { id: "n.green-peas", par: false, f: { "*": "matar" }, ask: { gender: ["new"] } });
   w("PN", "Ma", "Ma (mother)", [`${GN} §7 (Ma lai pan hakro banai)`, "data/cook.json kin-ma (a customer)"], { g: "she", par: false, f: { "*": "Ma" }, a: ["kin-ma"] });
   w("PN", "Ali", "Ali (the cousin)", ["data/cook.json name-ali (a name)", `${GN} §30 K14 (Nana! Nani! Ali!)`], { g: "he", par: false, f: { "*": "Ali" }, a: ["name-ali"] });
+
+  S.patch("pron.p1", { forms: { obl: { t: "mu", status: "draft", src: `${GN} §12 (hal mu saathe: come along with me), §27 B44 (Mu lai khobar: ⚠)` } } }, { source: "hand: grammar-notes prose" });
+  S.patch("pron.p3", { forms: { dat: { t: "inke", src: `${GN} §25 B15-B16 (inke hane kadh, inke chadi de: inke = it)` } } }, { source: "hand: grammar-notes prose" });
+  S.patch("v.want", { forms: { "fut.he.sg": { t: "khapdo", status: "draft", src: `${GN} §33 S6 (Panke randhnu khapdo: we need to cook: ⚠), §37.4` } } }, { source: "hand: grammar-notes prose" });
+
+  /* ---------------- more words the fixed expressions are made of ---------------- */
+  noun("table", "table (the English word)", [`${GN} §35 C6 (hakro table, ba table: a he-word that doesn't change)`, `${GN} §15 (cup table je mathe ai)`], { g: "he", par: "noun.invariant" });
+  noun("watu", "chat, talk", [`${GN} §12 (watu na kar: don't chat)`], { ask: { gender: ["new"] } });
+  noun("dhyan", "care, attention", [`${GN} §27 B49 (Dhyan rakh!: keep care)`], { ask: { gender: ["new"] } });
+  noun("wich", "middle", [`${GN} §15 (chamchi ba cup je wich me ai), §17 (wich me: in the middle)`], { ask: { gender: ["new"] } });
+  w("A", "band", "closed", [`${GN} §19 (warsaad band thai vyo: the rain stopped: closed rather than finished)`], { inv: true });
+  w("A", "khalas", "finished, completely", [`${GN} §19 (film khalas thai vai)`], { inv: true });
+  w("A", "baki", "remaining, left over", [`${GN} §14 (ki baki nai: none left; Mum thinks it is more Kutchi than rei)`], { inv: true });
+  w("Adv", "bare", "out, outside", [`${GN} §52 (asa bare winjanta: we're going out: ⚠ spelling)`], { d: true });
+  w("Adv", "nai", "is not, there is none", [`${GN} §14 (ki baki nai), §19, §27 B42 (Jara e wandho nai), §33 S5 (kenjo nai)`], { id: "neg.is-not", n: ["The negative of ai (is): different from na (no, don't), which goes next to a verb (§12)."] });
+  w("Adv", "slow", "slow (the English word: slow kar, turn it down)", [`${GN} §38 I3 (slow kar: English slow + kar; not aste thi kar)`]);
+  w("Intj", "shabash", "well done!", [`${GN} §25 B25 (Shabash!)`, `${GN} §33 S2`]);
+  w("Intj", "mmm", "mmm (a pleased sound)", [`${GN} §33 S2 (Mmm, chai bo fine ai.)`], { d: true });
+  w("Intj", "oho", "oh no! (more dramatic than o)", [`${GN} §33 S5 (Oho, kenjo nai!)`], { d: true });
+  w("Intj", "o", "oh", [`${GN} §33 S5 (O, kenjo nai!)`], { d: true });
+  w("Phrase", "thank you", "thank you (the English words: the family says them)", [`${GN} Zafar, 26 Sept (Conversations decisions: thank you)`, `${GN} §23 (na, thank you)`, "rule G6"]);
+  noun("kenjo", "food (spelled kenjo in S5)", [`${GN} §33 S5 (kenjo nai: ⚠)`], { id: "n.food-s5", d: true, ask: { gender: ["new"] }, q: [{ q: "kenjo (S5) or khenjo (I18): the same word, food? Which spelling?", src: `${GN} §33 S5, §38 I18` }] });
 
   /* ---------------- a few patches and set phrases made of other words ---------------- */
   S.patch("neg.not", { forms: { he: { t: "nato", src: `${GN} §24 B1 (muke nato khape: nato for a he-word)` }, she: { t: "nati", src: `${GN} §11 (khun nati khape; spelling confirmed by Zafar)` } }, notes: ["na agrees with the thing wanted in the full refusal: nato (he), nati (she) (§24 B1, §11)."] }, { source: "hand: grammar-notes prose" });

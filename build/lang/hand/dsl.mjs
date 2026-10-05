@@ -28,6 +28,7 @@ export function autoParadigm(pos, lemma, gender, inv) {
  */
 export function builder(S, { source, rank }) {
   return function w(pos, lemma, gloss, src, o = {}) {
+    if (pos === "Phrase" && lemma) lemma = lemma.replace(/[.!?]+\s*$/, ""); // the mark belongs to the rule (Say, Exclaim, Ask)
     const e = { pos, gloss, src: arr(src) };
     if (o.id) e.id = o.id;
     if (!e.src.length) throw new Error(`hand entry "${gloss}" has no source`);
