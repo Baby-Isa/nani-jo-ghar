@@ -635,7 +635,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/C22-C49.md`. Mum says each phras
 **Rule (settled):** ***ai*** = is, ***ain*** = are (Mum: "like *is* and *are*"; "the *ain* tells you it's plural"). The word order is thing, describing word, *ai/ain*. Mum says *cups* with the English *-s* when speaking of cups ("not a native word"). Spelling of *ain* (Whisper: *ayin*, *aayn*) for Zafar to confirm.
 
 ### 43. C36: there is no "the big one" on its own
-Mum: "there's no concept of *a* and *the*". You either point (***hi wadho chokro***, this big boy; ***hu wadho chokro***, that big boy; ***hi wadhi chokri***, ***hu wadhi chokriyu***), or the describing word goes with a verb: ***wadho khan*** (take the big one), ***wadho wapar*** (use the big one), ***wadho cup khanech*** (bring the big cup), ***wadho gin*** (buy the big one). (8:02–9:56; clear.)
+Mum: "there's no concept of *a* and *the*". You either point (***hi wadho chokro***, this big boy; ***hu wadho chokro***, that big boy; ***hi wadhi chokri***, ***hu wadhi chokriyu***), or the describing word goes with a verb: ***wadho khan*** (take the big one), ***wadho wapar*** (use the big one), ***wadho cup khanech*** (bring the big cup), ***wadho ginech*** (buy the big one) ⚠. (8:02–9:56; clear.)
 - **The biggest:** ***wadho ma wadho***; the smallest ***nindho ma nindho*** (10:00–10:21; clear). Doubling for emphasis is common: ***jaldi jaldi***.
 - **"Tea and the things that go with it":** ***chai bai*** (an echo word; *chai bai banai*) (10:44–11:11; ⚠ spelling).
 
@@ -670,7 +670,7 @@ Mum: "there's no concept of *a* and *the*". You either point (***hi wadho chokro
 
 ### 46. C49: "the small one": *nindho / nindhi / nindha*
 - ***nindho chokro***, ***hu nindho chokro*** (that small boy), ***hu nindhi chokri*** (23:06–23:28; clear).
-- As with *wadho*, there's no "the small one" on its own: ***nindho*** alone as an answer, ***wadho ke nindho?*** (big or small?), ***nindho gin*** (buy the small one) (23:30–24:43).
+- As with *wadho*, there's no "the small one" on its own: ***nindho*** alone as an answer, ***wadho ke nindho?*** (big or small?), ***nindho ginech*** (buy the small one) ⚠ (23:30–24:43).
 - More than one: ***nindha***; ***wadha ke nindha amba?*** (the big mangoes or the small ones?) (24:53–25:22; clear).
 
 ## 5 Oct 2026: Mum and Zafar, Round 4 Section C50–C79 (whose is it; I, you, we; my, your; 30 min, `sources/audio/mum-2026-10-05/C79.m4a`)

@@ -19,22 +19,22 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 | # | Feature | Status | Priority | Settled by |
 |---|---|---|---|---|
 | 1 | Noun gender | Rule known; most Cook nouns unknown | P1 | L34–L50, M1–M9 |
-| 2 | Plural | Rule mostly known; -yu plural open | P1 | L46–L51, Q13 |
-| 3 | Oblique before postpositions | Tendency only | P2 | Q2, Q3, C28–C32, C59 |
+| 2 | Plural | Rule mostly known; -yu plural common on she-words, optional when the sentence shows the plural (5 Oct) | P1 | L46–L51, Q13 |
+| 3 | Oblique before postpositions | **Known for one thing** (5 Oct: he-word *-e*, also on its describing word and *jo*); plural open | P2 | Q2, Q3; plural still open |
 | 4 | Articles | Known: none | — | — |
-| 5 | Possession *jo / ji / je / ja* | Half known | P2 | C50–C55, C59, L41 |
-| 6 | Adjectives | Partly known | P1 (maani) / P2 | L25, C22–C35, L92 |
+| 5 | Possession *jo / ji / je / ja* | **Known** (5 Oct: agrees with the thing; *je* before a postposition; *munjo, tojo, anjo, injo, asanjo, panjo, iloka jo*) | P2 | — |
+| 6 | Adjectives | **Mostly known** (5 Oct: *wadho/wadha/wadhi/wadhe*; *lal* invariant; *dayo* vs *saro*) | P1 (maani) / P2 | L25, L92 |
 | 7 | Numbers and counting | 1–2 known, 3–5 heard, 6–10 unknown | P1 | L52, L53, L54, E119–E123 |
 | 8 | Measures and "a skewer of" | Partly known | P1 | M1–M9, L14, L27, L57 |
-| 9 | Pronouns and "to me" forms | Partly known | P2 | C86–C92, L93, L82 |
+| 9 | Pronouns and "to me" forms | Mostly known (5 Oct: *pa* / *asa* we, *iloka* they, *hi/hu mare*); "to him/them" open | P2 | C86–C92, L93, L82 |
 | 10 | Person and politeness (*tu / aai*) | Rule known; verb forms partial | P1 | Q8, C142–C150, L32 |
-| 11 | "Be" (*ai*, *wo*, *nai*) | Partly known | P2 | L73, L79, L90, C152 |
+| 11 | "Be" (*ai*, *wo*, *nai*) | Present known (5 Oct: *aiya, aiye, aayo, ai, ain*); past and negative partial | P2 | L73, L79, L90, C152 |
 | 12 | "I need" (*muke … khape*) | Known | P1 | L9–L33 (re-heard in context) |
 | 13 | Present tense | Unknown | P2 | C97–C103, C110–C114 |
 | 14 | Future | Partly known | P3 | C137–C140 |
 | 15 | Past, intransitive | Partly known | P3 | C152, C154 |
 | 16 | Past with an object (the agreement split) | Unknown; the biggest structural risk | P2 | C123–C136, L72, L74, L80–L82 |
-| 17 | Compound and helper verbs | Partly known | P1 | N-lines, L55–L61 |
+| 17 | Compound and helper verbs | Cooking verbs known as bare commands (5 Oct, Section I); polite and "for me" forms open | P1 | N-lines, L55–L61 |
 | 18 | Commands (child, elder, several) | Partly known | P1 | C142–C151, N1–N23, L55–L61, L76 |
 | 19 | Negation | Partly known | P1 | L10, L19, L24, L61, C148–C152 |
 | 20 | Questions | Partly known | P2 | C153, C154, L73, L77, L79 |
@@ -62,6 +62,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 2. Plural
 
+- **KNOWN (5 Oct, notes §40, §45, §54).** She-words often take ***-yu***: *chokriyu, pacheriyu, bakuliyu, pialiyu, gadiyu, kursiyu, chakliyu, shatiyu*. *maani*, *kan*, *pag*, *tawa* have none. Mum: the noun's plural can be dropped when something else in the sentence already shows it (*hi mare munji kursi ain*), but not when the word changes without getting longer (*amba*). English *cups* is used as is.
+
 - **KNOWN.** He-words in -o → -a (*ambo/amba, darwajo/darwaja, bateto/bateta, chamcho/chamcha, chokro/chokra, bakro/bakra*; notes §4, §34, §35). She-words in -i don't change (*maani, dungri, mirchi, chamchi, lakri, pacheri*). Words ending otherwise don't change (*cup, table, limu, gutan, samosa*). A counted noun takes the plural (*ba amba, trae bateta*; notes §34).
 - **Draft ⚠.** -yu plurals of she-words: *akh/akhyu, chokri/chokriyu* ("probably correctly … but we make it short"), *chiju* (notes §35, §37.3). *bakri → bakra* came out oddly (§36 C17).
 - **HYPOTHESIS.** [GF-Snd, Sindhi-gen] she-words -i → -iyun, consonant-final she-words → -un. Matches *akhyu*; the family usually shortens.
@@ -70,6 +72,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **Settled by.** L46, L47, Q13, Q14, C22–C27.
 
 ## 3. The oblique (a noun's form before a postposition)
+
+- **KNOWN (5 Oct, notes §41, §48, §49, §55).** Before *sathe*, *me* or *je …*, a he-word in *-o* takes ***-e*** and so does its describing word and its "of" word: *wadhe chokre sathe*, *wadhe ambe je mathe*, *wadhe cup me* (the adjective changes even on *cup*), *Nani je ambe je mathe*, *chokre je darwaje je puthiya*, *toje ambe mathe*. Owners take it before *jo* too: *chokre jo cup*, *bakre jo kan*. With a describing word in front, Mum said *ambe* without hesitating, so §36's *ambo je mathe* was the bare-noun exception, not the rule. **Still open:** the he-word plural (*wadha chokra sathe* or *-e*?) and plural owners (*chokra jo cup* ⚠).
 
 - **KNOWN.** *chokro → chokre sathe* (never *chokro sathe*, §36 C18), *darwajo → darwaje je puthiya* (§36 C14), *rasoro → rasore me* (§20, §33 S9). Other nouns don't change (*cup, table, maani, Nana, Nani, bakri*).
 - **Draft ⚠.** But *ambo je mathe* and *bakro sathe* didn't change (§36 C13, C17; Mum hesitated over *ambe*). So it's a tendency, not a rule (notes §36 "Rule, as far as it goes").
@@ -86,6 +90,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 5. Possession: *jo / ji / je / ja*
 
+- **KNOWN (5 Oct, notes §47–§50, §54, §55).** The "of" word agrees with the **thing owned** (gender and number), never the owner: *Nana jo cup, Nana ja cups, Nana ji maani, Nani jo ambo*. *ji* is also the she-word plural (*chokriyu ji ain*); an unknown thing takes *jo/ja* (*Nana jo ai*). Before a postposition, *jo* → ***je*** with a he-word thing (*Nana je cup je andar* ⚠, *Nani je ambe je mathe*); *ji* stays (*chokri ji bakri sathe*). Pronoun owners: *munjo* (my), *tojo* (your, child), *anjo* (your, elder), *injo* (his/her), *asanjo* (our, not you), *panjo* (our, with you), *iloka jo* (their), each changing like *jo*: *munji kursi, munja amba, munje cup me*.
+
 - **KNOWN.** One "of" word that agrees with the **owned** thing: *jo* for he-words (*munjo*, "mine"), *ji* for she-words (*bajr ji maani* §24 B11, *amli ji chutney*, *dudh wagar ji chai* §10), *je* before a place word (*table je niche*, *munje same*; §15, §16, §18). Mum: *je* means "belonging to" (§15).
 - **Draft ⚠.** *khanje jo kabaat* (§34 P13).
 - **HYPOTHESIS.** [Sindhi-gen] *jo / ji / ja* (he plural) / *jun* (she plural), *je* the oblique; pronoun forms *munjo/munji/munja, tunjo*.
@@ -94,6 +100,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **Settled by.** C50–C55, C59, L41.
 
 ## 6. Adjectives (describing words)
+
+- **KNOWN (5 Oct, notes §40–§46).** Agreeing adjectives have four forms: he one ***-o*** (*wadho*), he more than one ***-a*** (*wadha*, even with *cup*), she ***-i*** in both numbers (*wadhi chokriyu*), and ***-e*** before a postposition (*wadhe chokre sathe*). The same after "is": *chokro wadho ai, chokra wadha ain, chokriyu wadhi ain*. **Invariant:** *lal* (red), *fine*, *barabar* (right; goes after the noun). "Good" is ***dayo*** (well-behaved; people and animals) or ***saro*** (things), or the English *fine* (*bo fine*, very nice). No "the big one": point (*hi wadho chokro*) or add a verb (*wadho khan*). Superlative ***X ma X*** (*wadho ma wadho*). Still open: *saro*'s he plural, *nindhe*.
 
 - **KNOWN.** Agreeing pairs: *wadho/wadhi* (big), *nindho/nindhi* (small), *aako/aaki* (whole, full), *bharelo/bhareli* (heaped), *ardo/ardi* (half portion), *kari* / *mori* (black / unsweetened; she-forms only heard) (notes §4, §10, §24, §25). The adjective comes before the noun (*ba wadhi maani*, *aako cup*). Invariant: *kali* (only), *tayar* (ready), *theek* (fine), *mixed* (English) (notes §25, §27). *lilo* = green (§26 B34).
 - **HYPOTHESIS.** [GF-Snd] agreeing adjectives have 16 forms (number × gender × 4 cases); he plural -a, she plural -iyun.
@@ -120,6 +128,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 9. Pronouns and "to me" forms
 
+- **KNOWN (5 Oct, notes §51–§54).** *e* is both he and she. Two "we"s: ***pa*** (including the listener) and ***asa*** (not the listener); *pa mare / asa mare* = we all. ***iloka*** = they (people), said as one word ⚠. *hi / hu* = this, these / that, those; ***hi mare / hu mare*** = all of these / those (*mare* ⚠). *huda* = over there.
+
 - **KNOWN.** *aau* (I), *tu* (you, to a child or same age), *aai* (you, to an elder), *e* (he/she) (notes §21, §23). "To" forms: *muke, toke, anke* (spelling confirmed by Zafar: grammar-notes "Zafar, 26 Sept (afternoon)", after §28), *panke* (to us) (§23, §37.1). *inke* (it, as an object; §25 B15). *mu sathe* (with me; §12), *munje* (of me, before a place word; §16). *hi / hu* (this / that), *hida / huda / kida* (here / there / where).
 - **HYPOTHESIS.** [Sindhi-gen] two "we" (with or without the listener; *panke* fits the inclusive one); plural "you"; 3rd-person near/far (GF-Snd has `Pers3_Near | Pers3_Distant`).
 - **UNKNOWN.** "they", "to them", "we" (both kinds), "to him / her".
@@ -136,6 +146,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **Settled by.** Q8, C142–C150, L32, L78.
 
 ## 11. "Be": *ai*, *wo*, *nai*
+
+- **KNOWN (5 Oct, notes §42, §51–§53).** Present "be" by person and number, not gender: ***aau … aiya*** (I; man and woman alike), ***tu … aiye*** (you, child), ***aai … aayo*** (you, elder), ***e … ai*** (he, she, it), ***pa / asa … aayo*** (we), ***… ain*** (they, plural things). Spellings *aiya*, *aiye*, *ain* for Zafar.
 
 - **KNOWN.** *ai* (is; also "I'm fine", *aau theek ai*), *aiye* (you are, child), *aayo* (you are, elder), *wo* (was: *kida wo?*, *table je mathe wo*), *nai* (isn't: *ki baki nai*) (notes §8, §14, §20, §21). *ai* comes last (*cup table mathe ai*, §15).
 - **Draft ⚠.** *aiya* (I am, K13), *kenjo nai* (§33 S5).
@@ -183,6 +195,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 17. Compound and helper verbs
 
+- **KNOWN (5 Oct, notes §38).** Cooking commands (bare, to a child): *ukar* (boil), *slow kar* (turn down), *wij / wiji chad* (put in), *kadhi chad* (take out) ⚠, *gund* (knead) ⚠, *firai / firai chad* (flip, stir), *dabai* (press) ⚠, *kap / kapi chad* (cut) ⚠, *bego kari chad* (mix), *tar* (fry) ⚠, *waar* (fold), *bhar* (fill), *chakh* (taste), *dho* (wash) ⚠, *bar* (light), *rakhi chad* (put down) ⚠. ***chad*** (from *chadi de*) finishes many of them, like "… it". No word for pour, serve, roll, sprinkle (I1, I7, I17, I18).
+
 - **KNOWN.** *banai de* (make for me), *kar de* (do for me), *madad kar* (help), *chadi de* (leave it be), *lai de* (let me), *khai vyo / khani vyo / thai vyo* (§9, §19, §20, §25, §27, §33). *khanechi* ⚠ ("bring"; §33 S1, §37.8).
 - **UNKNOWN.** Every cooking verb (chop, stir, roll, fold, fill, fry, grill, pour, boil, flip, thread, light, knead): inv §2 "no Kutchi at all". *wij* (put in / add) is known (§9).
 - **Needed by.** All 30 guide-box lines (inv §5 Cook), the step form `Pela X {verb}, ne poi Y {verb}` (inv §7 item 6).
@@ -210,6 +224,8 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 - **Settled by.** C153, C154, Q10, L73, L77, L79.
 
 ## 21. Postpositions ("in", "for", "with" …)
+
+- **KNOWN (5 Oct, notes §41, §55).** Short ***me*** straight after the noun (*wadhe cup me*, *munje cup me*, *rasore me*); the fuller ***je andar*** (inside) adds *je* (*wadhi bakuli je andar*); *mathe* can follow the noun directly (*toje ambe mathe*) or after *je* (*Nani je ambe je mathe*).
 
 - **KNOWN.** *me* (in, into; also "to" in *rasore me winja*), *lai* (for), *sathe* (with a person), *je mathe / niche / andar / puthiya / bajume / agiya / same / wich me* (on, under, in, behind, beside, in front, facing, between), *waari* (mixed in: *dudh waari chai*), *wagar ji* (without), *pan* (also) (notes §6, §8, §15, §16, §36). The short form drops *je* (*cup table mathe ai*, §15).
 - **HYPOTHESIS.** [GF-Snd] "from" *khān*, "to" *ḍāṇhan*; Sindhi forms, not Kutchi.
