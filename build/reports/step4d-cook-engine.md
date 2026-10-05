@@ -19,7 +19,11 @@ Branch `ccr-fcd9dddd-wnywzc`, 5 Oct. No `bump_version`, no push to `main`.
 Cook: 5 frames ("with", "and", "times", the sugar sentence, the pantry headline), 24 words or lines, 1 form (*tameto*'s plural) (`gap-list.md`).
 
 ## Proof
-PROOF
+Decision 48 scope; full list in `step4d-qa.md`.
+- Tests: lang 56, core 45, Cook words/lang/voice 12, `checks.mjs` (229 unit tests; word gate strict on js/cook **and js/clinic**, 0 literals). Clinic literals were logs, aria, SVG and keys; the parked heal games hic/tummy/hair are a marked G26 debt.
+- check_onboard, leak_cook, `test_cook_host` and the parked and clinic leaks pass. Smoke passes for fetch, chai-tray and samosa. **Daar's smoke hit its 240 s limit in stir** (no page error); the sandbox's daar flows end.
+- Sandbox at 1366×768 (stopped early, as asked): 86 Cook pages, all end, 0 page errors. 7 pages each have 1 finding, not checked against the baseline. Parked pages: all 6 end, 0 new findings. The clinic pass was not run.
+- Looked at: pantry, chop card, samosa take-back (emptied strip, no Done), sekelo review (*hakri*), chaat at 800×360.
 
 ## Screenshots
 `build/screenshots/sandbox/d4-proof/` (not committed); QA: `step4d-qa.md`.

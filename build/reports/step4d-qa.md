@@ -7,7 +7,7 @@ Auto:
 - `import_all.mjs --check` ✅ (0 errors, 0 warnings; the engine's output is the same as before the seed move)
 - `check_onboard` ✅ · `leak_cook` ✅ · leak monsoon, find, who and dress ✅ · leak_clinic and the heal leaks ✅ · `check_clinic_kutchi` ✅
 - Smoke: fetch, chai-tray and samosa ✅. **daar ❌: hit the smoke's 240 s play limit in the stir phase, with no page error.** In the sandbox the daar flows reach their end (daar@L2#mistake, daar#takeback, L3, L4 and hint).
-- Sandbox, parked pages (`d4-parked2`): all 6 reach their end, 0 new findings · laptop pass `d4-laptop`: LAPTOP
+- Sandbox, parked pages (`d4-parked2`): all 6 reach their end, 0 new findings · laptop pass `d4-laptop` (stopped at the orchestrator's request): 86 Cook pages end, 0 page errors, 7 with 1 finding each (not checked against the baseline); clinic not run · `test_cook_host` ✅
 
 Screens (flaws first):
 - Pantry card @1366: the headline "Bring me these" is the engine's to-record placeholder (italic, flagged). On the word review, the "Served" stamp sits over the card's TO RECORD chip (older than 4d).
