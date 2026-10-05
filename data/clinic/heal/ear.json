@@ -235,13 +235,18 @@
   "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
   "ear": {
    "file": "assets/clinic/closeups/girl/ear.webp",
-   "on": false,
+   "on": true,
    "box": [
-    0,
-    -60,
-    800,
-    620
-   ]
+    -415.3,
+    -212.1,
+    1489.9,
+    993.3
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): E1's canal (822, 495 in the 1536 x 1024 source) on the game's canal (382, 268) at 0.97, the ear the stand-in's size (the wax spots, the sore skin and the drops keep their places); the head runs off the top, right and bottom."
   }
  },
  "hearing": {

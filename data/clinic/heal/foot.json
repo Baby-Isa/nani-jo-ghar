@@ -190,6 +190,23 @@
   "sole": {
    "child": "assets/clinic/closeups/child/sole.webp",
    "adult": "assets/clinic/closeups/adult/sole.webp"
+  },
+  "place": {
+   "box": [
+    104.2,
+    -35.0,
+    551.4,
+    827.1
+   ],
+   "levels": [
+    1,
+    2
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_about": "A1 (5 Oct): P1 placed so its big toe (360, 195 in the 1024 x 1536 source) and little toe (750, 397) land on the mirrored stand-in's (298, 70) and (508, 78): the sole's width and length match the stand-in's outline, so the channels and their clip still fit. The art's toes slope down to the little toe where the stand-in's are level, so level 3 (channels from the toes, toes named) keeps the stand-in until the toes are re-placed. Mirrored in code when the big toe is on the right."
   }
  }
 }

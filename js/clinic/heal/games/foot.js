@@ -124,8 +124,15 @@
     s("path", { d: "M318 520 C306 430 292 340 290 252 C288 186 300 146 330 128 C370 108 462 104 500 124 C524 140 522 190 514 252 C506 340 494 430 484 520 Z", fill: sole, opacity: 0.7 }, footG);
     s("path", { d: "M330 200 Q400 182 480 196 M318 380 Q400 368 492 382", stroke: edge, "stroke-width": 2, fill: "none", opacity: 0.35 }, footG);
     Object.values(TOE_AT).forEach(([x, y, rx, ry]) => s("ellipse", { cx: x, cy: y, rx, ry, fill: skin, stroke: edge, "stroke-width": 4 }, footG));
-    const soleF = ART.sole && (typeof ART.sole === "string" ? ART.sole : ART.sole[S.child === false ? "adult" : "child"]);
-    const art = soleF && Kit ? s("image", { href: Kit.url(soleF), x: 150, y: -40, width: 500, height: 600, preserveAspectRatio: "xMidYMax meet", opacity: 0 }, S.layer) : null;
+    let soleF = ART.sole && (typeof ART.sole === "string" ? ART.sole : ART.sole[S.child === false ? "adult" : "child"]);
+    // A1 (5 Oct): the cut sole (P1) where its placement is measured (art.place: box in svg units for the picture as
+    // drawn, big toe on the viewer's LEFT, i.e. the mirrored stand-in; the levels whose channels it fits; the kinds
+    // whose cloth it matches). Elsewhere the stand-in stays.
+    const AP = ART.place;
+    if (AP && ((AP.levels && !AP.levels.includes(P.level)) || (AP.kinds && !AP.kinds.includes(S.kind)))) soleF = null;
+    if (AP && soleF && AP.has2x && (root.devicePixelRatio || 1) > 1.25) soleF = soleF.replace(/\.webp$/, "@2x.webp");
+    const box = AP ? AP.box : [150, -40, 500, 600];
+    const art = soleF && Kit ? s("image", { href: Kit.url(soleF), x: box[0], y: box[1], width: box[2], height: box[3], preserveAspectRatio: "xMidYMax meet", opacity: 0, transform: AP && !P.flip ? "translate(800 0) scale(-1 1)" : null }, S.layer) : null;
     if (art) {
       S.layer.insertBefore(art, S.layer.firstChild);
       art.addEventListener("load", () => {
