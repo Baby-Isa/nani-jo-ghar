@@ -511,3 +511,16 @@ body.clinic button { font-family: inherit; color: inherit; }
 .hs-judge { position: absolute; left: 50%; bottom: var(--njg-s3); transform: translateX(-50%); display: flex; gap: var(--njg-s4); z-index: 8; }
 /* the tightest phones: the four feeling faces in one row, so the bubble above the head stays on the screen */
 @media (max-height: 420px) { .cl-thought { grid-template-columns: repeat(4, auto); padding: var(--njg-s2) var(--njg-s3); } }
+
+/* A1 (5 Oct): the patient's real art over the figure (Clinic.Figure useArt; data/clinic/heal-art.json). The greybox
+   stays underneath, invisible, so its marks and moods keep working; the art takes the clicks through the figure. */
+.cl-fig.has-art .cl-fig-svg { opacity: 0; }
+.cl-fig .fig-art { position: absolute; pointer-events: none; }
+.cl-fig .fig-art-in { position: absolute; inset: 0; }
+.cl-fig .fig-art img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; user-select: none; }
+.cl-fig .fig-art img[hidden] { display: none; }
+.cl-fig .fig-art-swirl { position: absolute; width: 14%; aspect-ratio: 1; transform: translate(-50%, -50%); }
+.cl-fig .fig-art-swirl svg { width: 100%; height: 100%; overflow: visible; }
+.cl-fig .fig-art-swirl .fig-swirl { animation: cl-spin 3s linear infinite; transform-box: fill-box; transform-origin: center; }
+.cl-fig.has-art.react .fig-art-in { animation: cl-wobble .35s; transform-origin: 50% 100%; }
+.cl-fig.has-art.pose-shake .fig-art-in { animation: cl-shiver .5s 2; }

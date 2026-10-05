@@ -61,6 +61,8 @@
       Object.entries(pj.items || {}).forEach(([id, it]) => id !== "_about" && (Kit.ITEMS[id] = Object.assign({}, Kit.ITEMS[id] || {}, it)));
     }
     if (Kit.art == null) await Kit.loadArt();
+    // the patients' real art and the close-ups (pack clinic-heal-v3, build/cut_clinic_heal_v3.py)
+    if (HOST.healArt == null) HOST.healArt = (await Kit.loadJSON("data/clinic/heal-art.json")) || {};
     return HOST;
   };
   HOST.gameData = async function (id) {
@@ -135,7 +137,14 @@
     box.style.backgroundImage = url;
     cap.style.backgroundImage = url;
     const layer = h("div", "cl-patient-layer v2", box);
-    Clinic.Stages.place(layer, { x: cfg.fig.x, y: cfg.fig.bottom, h: cfg.fig.h, w: (cfg.fig.h * (620 / 900)) / 1.5, z: 3 });
+    // A1 (5 Oct): the patient's real art when it's cut (heal-art.json), front-on or side-on by the game's camera
+    // (D2); side-on, the patient sits on the bed's right-hand end (scenes-v2 exam.side)
+    const view = wide.dataset.camera === "side" ? "side" : "front";
+    const spec = HOST.healArt && HOST.healArt.patients && HOST.healArt.patients[fig.kind];
+    const hadArt = !!fig.art;
+    const art = spec && fig.useArt ? fig.useArt(spec, { view, figH: cfg.fig.h }) : false;
+    const sideOn = art && fig.art.view === "side" && cfg.side;
+    Clinic.Stages.place(layer, { x: sideOn ? cfg.side.x : cfg.fig.x, y: cfg.fig.bottom, h: cfg.fig.h, w: (cfg.fig.h * (620 / 900)) / 1.5, z: 3 });
     const home = fig.el.parentNode;
     layer.appendChild(fig.el);
     fig.pose("sit");
@@ -143,9 +152,11 @@
     const seat = () => {
       if (cfg.seat == null || frozen || fig.el.parentNode !== layer) return;
       layer.style.top = `${cfg.fig.bottom * 100}%`;
-      const q = fig.hotspot("knee", "left", box);
+      // the art sits by its measured seat line (the backs of the thighs on the mattress); the greybox by its knee
+      const q = fig.hotspot(art ? "seat" : "knee", "left", box);
       const H = box.clientHeight || 1;
-      if (q && isFinite(q.y)) layer.style.top = `${(cfg.fig.bottom + (cfg.seat * H - q.y) / H) * 100}%`;
+      const y = sideOn && cfg.side.seat != null ? cfg.side.seat : cfg.seat;
+      if (q && isFinite(q.y)) layer.style.top = `${(cfg.fig.bottom + (y * H - q.y) / H) * 100}%`;
     };
     Clinic.Stages.fitScene(wide, box, cap, room, V.aspect || 1.5);
     seat();
@@ -157,8 +168,24 @@
       const bw = box.clientWidth || 1;
       const bh = box.clientHeight || 1;
       const H = stage.clientHeight || bh;
-      const k = Math.max(2.2, Math.min(5, (0.6 * H) / Math.max(24, 2.4 * (q.r || 30))));
-      return { ox: (100 * q.x) / bw, oy: (100 * q.y) / bh, k };
+      let k = Math.max(2.2, Math.min(5, (0.6 * H) / Math.max(24, 2.4 * (q.r || 30))));
+      let dx = 0;
+      let dy = 0;
+      // A1 (5 Oct), the match cut (art plan 2.1, 7.6): the game's data names where its close-up draws the part
+      // (camera.target [x, y] and camera.size, its radius, in the close-up's 800 x 500 units); the push-in then ends
+      // with the part at that place and size, so the close-up cross-fades in over the same knee, ear or mouth
+      const t = o.camera && o.camera.target;
+      const svg = t && stage.querySelector(".hs-root .hs-svg");
+      const m = svg && svg.getScreenCTM && svg.getScreenCTM();
+      if (m && fig.art) {
+        const br = box.getBoundingClientRect();
+        const tx = m.a * t[0] + m.c * t[1] + m.e - br.left;
+        const ty = m.b * t[0] + m.d * t[1] + m.f - br.top;
+        if (o.camera.size && q.r) k = Math.max(1.6, Math.min(9, (o.camera.size * m.a) / q.r));
+        dx = tx - q.x;
+        dy = ty - q.y;
+      }
+      return { ox: (100 * q.x) / bw, oy: (100 * q.y) / bh, k, dx, dy };
     };
     // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
     const healed = () => fig.el.querySelectorAll(".fig-swirl").forEach((n) => n.remove());
@@ -173,7 +200,7 @@
         z.top = layer.style.top; // the seated position, kept for the pull-out (the figure moves away in between)
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.add("on");
-        const zoom = play(box, [{ transform: "scale(1)", filter: "blur(0px)" }, { transform: `scale(${a.k})`, filter: "blur(4px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
+        const zoom = play(box, [{ transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }, { transform: `translate(${a.dx}px, ${a.dy}px) scale(${a.k})`, filter: "blur(4px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
         // CLN-77 (2 Oct): the room hands over to the close-up early (gone by 60 % of the push-in), so the
         // late frames are never a full-screen smear of a blurred, hugely scaled room
         const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.3 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }], { duration: ms, easing: "ease-in-out", fill: "forwards" });
@@ -206,7 +233,7 @@
         wide.classList.add("on");
         await Promise.all([
           play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
-          play(box, [{ transform: `scale(${k0})`, filter: "blur(2px)" }, { transform: "scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
+          play(box, [{ transform: `translate(${(a.dx || 0) * 0.55}px, ${(a.dy || 0) * 0.55}px) scale(${k0})`, filter: "blur(2px)" }, { transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
         ]);
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
@@ -238,6 +265,12 @@
       },
       destroy() {
         if (home && fig.el.parentNode === layer) home.appendChild(fig.el);
+        // the figure goes back as it came (the next stage may show it front-on or as the greybox)
+        if (art && !hadArt && fig.artBox) {
+          fig.artBox.remove();
+          fig.el.classList.remove("has-art");
+          fig.art = fig.artEl = fig.artBox = null;
+        }
         wide.remove();
       },
     };

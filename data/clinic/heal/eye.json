@@ -298,7 +298,13 @@
  },
  "camera": {
   "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
-  "wide": "front"
+  "wide": "front",
+  "target": [
+   400,
+   250
+  ],
+  "size": 240,
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
  },
  "test": {
   "version": "A",

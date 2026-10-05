@@ -177,7 +177,13 @@
  },
  "camera": {
   "_about": "D2 (1 Oct): the sole is seen from the front-on wide shot (the art plan §2.1).",
-  "wide": "front"
+  "wide": "front",
+  "target": [
+   400,
+   320
+  ],
+  "size": 190,
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
  },
  "art": {
   "_about": "The art plan's P1 (closeups/<set>/sole.webp, child and adult sets), swapped in by file name when it exists; the channels and splinters stay code.",

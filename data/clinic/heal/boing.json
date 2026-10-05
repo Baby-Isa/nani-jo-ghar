@@ -153,7 +153,13 @@
  },
  "camera": {
   "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
-  "wide": "front"
+  "wide": "front",
+  "target": [
+   280,
+   400
+  ],
+  "size": 70,
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
  },
  "art": {
   "_about": "The art plan's D1 and D2 (docs/design-language/art-plans/clinic-heal-art-plan.md §8), swapped in by file name when they exist; until then the code-drawn machine, levers, drops and syringe. The levers, drops and the two-layer syringe need their cut positions (tube, socket, spout) before they replace the drawn ones.",

@@ -213,6 +213,12 @@
       art,
       /** Where a part is: {x, y, r} in px relative to `frame` (default: the figure's parent). r ~ the part's radius. */
       hotspot(part, side, frame) {
+        const at = fig.artSpot && fig.artSpot(part, side);
+        if (at) {
+          const f = frame || root.parentElement || root;
+          const fr = f.getBoundingClientRect();
+          return { x: at.x - fr.left, y: at.y - fr.top, r: at.r };
+        }
         const pid = partId(part);
         const s = sideKey(side);
         const [dx, dy] = body.spot(pid, s ? `side-${s}` : null);
@@ -234,6 +240,7 @@
       react(m, ms) {
         mood = m || "idle";
         drawFace();
+        fig.artMood(mood);
         root.dataset.mood = mood;
         root.classList.remove("react");
         void root.offsetWidth;
@@ -255,6 +262,20 @@
         fig._pt = setTimeout(() => root.classList.remove(`pose-${name}`), 1200);
       },
       swirl(part, side, on = true) {
+        if (fig.art) {
+          // on the art: the same swirl as a small DOM layer at the part's anchor
+          fig.artEl.querySelectorAll(".fig-art-swirl").forEach((n) => n.remove());
+          fig._artSwirl = on ? [part, side] : null;
+          const at = on && fig.artAnchor(part, side);
+          if (!at) return;
+          const w = document.createElement("div");
+          w.className = "fig-art-swirl";
+          w.style.left = `${at.x * 100}%`;
+          w.style.top = `${at.y * 100}%`;
+          w.innerHTML = '<svg viewBox="-24 -24 48 48" aria-hidden="true"><path class="fig-swirl" d="M 0 0 m -4 0 a 4 4 0 1 1 8 0 a 9 9 0 1 1 -18 0 a 14 14 0 1 1 28 0 a 19 19 0 1 1 -38 0" fill="none" stroke="#e2557a" stroke-width="5" stroke-linecap="round" opacity="0.85"/></svg>';
+          fig.artEl.appendChild(w);
+          return;
+        }
         const key = `swirl:${partId(part)}:${sideKey(side) || ""}`;
         groups.fx.querySelectorAll(`[data-key^="swirl:${partId(part)}:"]`).forEach((n) => (!on || n.dataset.key === key) && n.remove());
         if (!on) return;
@@ -314,6 +335,116 @@
           };
           focusTo = requestAnimationFrame(step);
         });
+      },
+      /**
+       * The real art (pack clinic-heal-v3; data/clinic/heal-art.json, cut by build/cut_clinic_heal_v3.py): the
+       * patient's wide pose drawn over the figure in place of the greybox, the face swapped by mood, and the hotspots
+       * read from the art's measured anchors instead of the greybox polygons. spec = heal-art.json patients[kind];
+       * o.view "front" | "side"; o.figH = the figure box's height as a share of the room (scenes-v2 exam.fig.h), so
+       * the art is drawn at its own room size (art plan section 2.2). Returns false when there is no art.
+       */
+      useArt(spec, o = {}) {
+        const view = o.view === "side" && spec && spec.side ? "side" : "front";
+        const V = view === "side" ? spec.side : spec;
+        if (!spec || !V || !(view === "side" ? V.file : V.front)) return false;
+        const url = (p) => {
+          const Kit = global.Clinic && global.Clinic.Kit;
+          const two = String(p).replace(/\.webp$/, "@2x.webp"); // the zoom pushes in up to 5x: always the @2x
+          return Kit && Kit.url ? Kit.url(two) : two;
+        };
+        if (fig.artBox) fig.artBox.remove();
+        const box = document.createElement("div");
+        box.className = `fig-art view-${view}`;
+        const roomPx = 1024; // the room's own height in px: the art's 1x size is measured on it
+        const hFrac = V.h / roomPx / (o.figH || 0.56);
+        const feet = V.feet != null ? V.feet : 0.98;
+        const seat = (V.anchors && V.anchors.seat) || [0.5, 0.7];
+        box.style.height = `${hFrac * 100}%`;
+        box.style.bottom = `${-(1 - feet) * hFrac * 100}%`;
+        box.style.left = "50%";
+        box.style.aspectRatio = `${V.w} / ${V.h}`;
+        box.style.transform = `translateX(${-seat[0] * 100}%)`;
+        // the pictures in an inner layer, so the wobble and the shiver animate it without losing the placement
+        const inner = document.createElement("div");
+        inner.className = "fig-art-in";
+        box.appendChild(inner);
+        const img = (src, cls) => {
+          const i = document.createElement("img");
+          i.className = cls;
+          i.alt = "";
+          i.draggable = false;
+          i.src = url(src);
+          inner.appendChild(i);
+          return i;
+        };
+        const base = img(view === "side" ? V.file : V.front, "fig-art-base");
+        const face = img(view === "side" ? V.file : V.front, "fig-art-face");
+        face.hidden = true;
+        root.appendChild(box);
+        root.classList.add("has-art");
+        fig.artEl = inner;
+        fig.artBox = box;
+        fig.art = { spec, view, V, base, face, body: "front" };
+        fig.artMood(mood);
+        const sw = groups.fx.querySelector(".fig-swirl");
+        if (sw) {
+          const [, pk, sk] = sw.dataset.key.split(":");
+          fig.swirl(pk, sk || null, true);
+        }
+        return true;
+      },
+      /** The art's face for a mood (W2-W6 on the front; W8 happy on the side); the greybox's moods map onto them. */
+      artMood(m) {
+        const A = fig.art;
+        if (!A) return;
+        const F = { ouch: "pain", sour: "pain", yuck: "pain", salty: "pain", giggle: "happy", happy: "happy", relief: "happy", sad: "sad", scared: "sad", hot: "hot", cold: "cold" };
+        const f = F[m];
+        const src = A.view === "side" ? (f === "happy" ? A.V.happy : null) : f && A.spec.faces && A.spec.faces[f];
+        // the blanket and the bottle are whole figures with their own cosy face: only the bare front takes a face layer
+        if (src && A.body === "front") {
+          const Kit = global.Clinic && global.Clinic.Kit;
+          const two = String(src).replace(/\.webp$/, "@2x.webp");
+          const u = Kit && Kit.url ? Kit.url(two) : two;
+          if (A.face.dataset.src !== u) {
+            A.face.src = u;
+            A.face.dataset.src = u;
+          }
+          A.face.hidden = false;
+        } else A.face.hidden = true;
+      },
+      /** The whole front figure: "front" (bare), "blanket" (W9) or "bottle" (W10); false when that art isn't there. */
+      artBody(name) {
+        const A = fig.art;
+        if (!A || A.view !== "front") return false;
+        const src = name === "front" ? A.spec.front : A.spec[name];
+        if (!src) return false;
+        const Kit = global.Clinic && global.Clinic.Kit;
+        const two = String(src).replace(/\.webp$/, "@2x.webp");
+        A.base.src = Kit && Kit.url ? Kit.url(two) : two;
+        A.body = name;
+        fig.artMood(mood);
+        return true;
+      },
+      /** A part's place on the art, in client px ({x, y, r}), from the measured anchors; null without art or anchor. */
+      artAnchor(part, side) {
+        const A = fig.art;
+        if (!A || !A.V.anchors) return null;
+        const p = String(part || "").replace(/^body-/, "");
+        const sd = sideKey(side);
+        const N = { leg: "knee", shin: "knee", thigh: "knee", arm: "forearm", elbow: "forearm", wrist: "forearm", shoulder: "upperarm", sole: "foot", toe: "foot", eye: "eyes", tooth: "mouth", throat: "mouth", tongue: "mouth", nose: "eyes", cheek: "mouth", finger: "hand", belly: "tummy", chest: "tummy", back: "tummy" };
+        const q = N[p] || p;
+        const an = A.V.anchors;
+        const a = (sd && an[`${q}.${sd}`]) || an[q] || an[`${q}.left`] || null;
+        return a ? { x: a[0], y: a[1], q } : null;
+      },
+      artSpot(part, side) {
+        const a = fig.artAnchor(part, side);
+        if (!a) return null;
+        const r = fig.art.base.getBoundingClientRect();
+        if (!r.height) return null;
+        // the part's radius as a share of the figure's height (for the zoom's push-in: the part fills ~60 %)
+        const R = { eyes: 0.05, ear: 0.035, mouth: 0.035, forehead: 0.05, head: 0.12, knee: 0.05, forearm: 0.05, upperarm: 0.05, foot: 0.05, hand: 0.045, tummy: 0.08, seat: 0.05 };
+        return { x: r.left + a.x * r.width, y: r.top + a.y * r.height, r: (R[a.q] || 0.06) * r.height };
       },
       setScale(s) {
         scale = s;

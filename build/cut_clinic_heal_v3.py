@@ -201,7 +201,7 @@ def sharpen2x(img):
 
 # ---------------------------------------------------------------- the patients' wide poses
 
-FIG_H = {"child": 410, "adult": 575}  # the figure's drawn height on the room (1x), art plan section 2.2
+FIG_H = {"child": 440, "adult": 575}  # the drawn height on the room (1x): the plan says ~410 for a child; 440 measured by overlay so the feet reach the step stool
 FACES = ["happy", "sad", "pain", "hot", "cold"]
 KINDS = {  # kind id in the game -> run-list prefix, age group
     "girl": ("girl", "child"),
