@@ -4,16 +4,17 @@
  *   save (the one save, schema 2: the classic js/shared/save.js tag is gone), progress, score, wallet, voice,
  *   lang, settings, unlocks, play (how this page was started: story or free play, from its URL), data.
  * The save module also becomes window.Save at once (static import), so the classic kit and js/cook/app.js
- * find it while the rest loads. Cook's boot (flow.js, on load) awaits Cook.coreReady.
+ * find it while the rest loads. Cook's boot (flow.js Cook.boot, at mount) awaits Cook.coreReady. Loaded once per page
+ * (C4): every later mount reuses the same core.
  */
 import { Save } from "#core/save.js";
 import { loadCore } from "#core/index.js";
 import { loadJSON } from "#core/env.js";
 import { createEngine } from "#core/lang/index.js";
+import { Cook } from "./ns.js";
 
 const DATA_FILES = ["params", "lexicon", "paradigms", "abstract", "concrete", "clips"]; // data/lang/ (engine-spec § Files)
 
-const Cook = (window.Cook = window.Cook || {});
 Save.init();
 // C3 (decision 38d): the core's one voice plays every Cook line, through Cook's own Web Audio player (unlocked by the
 // first tap, test speed); looked up at play time, since js/cook/core.js and lang.js load after this module

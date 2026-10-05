@@ -26,8 +26,11 @@
  * Without the shared kit (a page that doesn't load it) it falls back to the
  * Wave 6 overlay (#coach), which never takes a tap.
  */
+import { Cook as CookNS } from "./ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const C = (Cook.Coach = {});
   const $ = (s) => document.querySelector(s);
   let live = null;
@@ -192,6 +195,17 @@
     }
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) a.skip();
+    draw(null);
+  };
+
+  /** C4: Cook is unmounted mid-coach: the overlay goes and its listeners with it, and the station is not marked seen. */
+  C.leave = function () {
+    if (!live) return;
+    const state = live;
+    clearInterval(state.timer);
+    live = null;
+    const a = OB() && OB().active();
+    if (state.kit && a && a.id === obId(state.key)) (a.leave || a.skip)();
     draw(null);
   };
 

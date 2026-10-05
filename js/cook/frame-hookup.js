@@ -7,9 +7,11 @@
  * (data/scenes/cook-views.json `views[<view>].safe`: what the child must reach in that view), so a tablet
  * grows that view's play items up to data/layout.json's itemScale; layout.json's "cook:<view>" wins over it.
  */
+import { Cook } from "./ns.js";
+
 (function () {
   "use strict";
-  var Scene = window.Cook && Cook.CookScene;
+  var Scene = Cook.CookScene;
   if (Scene && window.Stage) {
     Scene.prototype.fitView = function () {
       var gs = this.scale.gameSize, gw = Math.round(gs.width), gh = Math.round(gs.height);
@@ -33,7 +35,7 @@
     if (window.Frame) Frame.onChange(function () { if (Cook.scene && Cook.scene.fitView) Cook.scene.fitView(); });
   }
   // Cook's own scene data: a safe area per view (loaded with Cook's data, before the first view is fitted)
-  if (window.Cook && Cook.onLoad)
+  if (Cook.onLoad)
     Cook.onLoad.push(function () {
       return fetch(Cook.v("data/scenes/cook-views.json"))
         .then(function (r) { return r.ok ? r.json() : null; })

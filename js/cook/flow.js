@@ -13,8 +13,11 @@
  * wage, E29) and writes the best and the story log line. The order's rows are the accuracy marks; a
  * mistake with no row of its own is one more grey slot.
  */
+import { Cook as CookNS } from "./ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const St = Cook.Stations;
@@ -1211,7 +1214,7 @@
    * today (H15, H49; otherwise it resolves {skipped}). {dish, who}: one customer's order of that dish. {free: true}:
    * an open-kitchen customer (a dish already taught). Resolves when the order's end screen would open.
    */
-  Cook.hosted = new URLSearchParams(global.location.search).get("hosted") === "1";
+  Cook.hosted = false; // set by Cook.boot (inside the game host, js/cook/main.js)
   const today = () => new Date().toISOString().slice(0, 10);
   function fetchedToday(dish) {
     const f = Cook.save.fetched || {};
@@ -1247,8 +1250,10 @@
     return { tasks: card ? card.total : undefined };
   }
 
-  /* ---------------- test hooks ---------------- */
-  global.__cook = {
+  /* ---------------- test hooks ----------------
+   * C4: Cook's own test hook. cook.html (Cook's page, the sandbox's way in) publishes it as window.__cook; mounted in
+   * the game host, the host's window.njgTest is the only hook (target-model § 8.1). */
+  Cook.testHook = {
     /** Every station's first-time coach counts as seen, before a round starts (as after its first play): the sandbox's
      * take-back path, so the coach's spotlight never holds back the take-back it tests (C3 leftover, 4d). */
     coachesSeen() {
@@ -1306,8 +1311,22 @@
     },
   };
 
-  /* ---------------- boot ---------------- */
-  global.addEventListener("load", async () => {
+  /* ---------------- boot and halt (C4, decision 45: js/cook/mount.js) ----------------
+   * boot(parent, o) starts Cook inside Cook's screen (js/cook/dom.js, already made in the element the host gave it):
+   * the UI, the engine core, the save, the data, then the Phaser game in parent; the title shows when the scene is
+   * ready (as cook.html did on load). o.hosted: inside the game host (js/cook/main.js), which scores and pays the plan.
+   * halt() stops it: every round aborted (Cook.run), the coach, the patience timer, the end screen, the voice and
+   * the sound, the Phaser game destroyed; js/cook/mount.js then ends Cook's lifetime and removes its screen.
+   */
+  Cook.boot = async function (parent, o = {}) {
+    Cook.hosted = !!o.hosted;
+    Cook.run++;
+    Object.assign(state, { day: null, cards: [], dayCoins: 0, patience: null, free: false, kitchenOpen: false });
+    Cook.log = [];
+    Cook.inDay = false;
+    Cook.paused = false;
+    Cook.expect = Cook.gauge = Cook.undoAt = null;
+    closeKitchenBtn = null;
     UI.init();
     wireRail();
     // the engine core (js/cook/boot.js, a module): the one save, the purse, the badges. A failed load
@@ -1315,10 +1334,17 @@
     if (Cook.coreReady) await Cook.coreReady.catch(() => null);
     Cook.loadSave();
     await Cook.load();
-    Cook.onSceneReady = () => showTitle();
-    new Phaser.Game({
+    const run = Cook.run;
+    let ready;
+    const shown = new Promise((r) => (ready = r));
+    Cook.onSceneReady = () => {
+      if (run !== Cook.run) return;
+      showTitle();
+      ready();
+    };
+    Cook.game = new Phaser.Game({
       type: Phaser.AUTO,
-      parent: "game",
+      parent,
       width: 1600,
       height: 900,
       backgroundColor: "#e9dcc4",
@@ -1327,5 +1353,32 @@
       input: { activePointers: 1 },
       scene: [Cook.CookScene],
     });
-  });
+    return shown;
+  };
+  Cook.halt = function () {
+    Cook.run++;
+    Cook.inDay = false;
+    Cook.paused = false;
+    Cook.onSceneReady = null;
+    stopPatience();
+    hideCloseKitchenButton();
+    if (Cook.Coach) Cook.Coach.leave();
+    // a first-time script of Cook's still up: it goes, unseen (js/shared/onboard.js leave)
+    const ob = global.Onboard && global.Onboard.active && global.Onboard.active();
+    if (ob && String(ob.id || "").startsWith("cook/")) (ob.leave || ob.skip)();
+    closeResults();
+    if (Cook.stopVoice) Cook.stopVoice();
+    if (Cook.closeAudio) Cook.closeAudio();
+    UI.reset();
+    const game = Cook.game;
+    Cook.game = Cook.scene = Cook.ctx = null;
+    Cook.expect = Cook.gauge = Cook.undoAt = null;
+    if (game) {
+      // the WebGL context goes at once (a long free play mounts Cook round after round; browsers keep only a few)
+      const gl = game.renderer && game.renderer.gl;
+      game.destroy(true);
+      const lose = gl && gl.getExtension && gl.getExtension("WEBGL_lose_context");
+      if (lose) game.events.once("destroy", () => global.setTimeout(() => lose.loseContext(), 50));
+    }
+  };
 })(window);

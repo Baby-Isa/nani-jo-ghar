@@ -19,6 +19,8 @@
  * Nothing in Cook's own mechanics or levels changes; the hooks are one line in
  * flow.js (Cook.afterOrder) and Cook.startDay.
  */
+import { Cook } from "./ns.js";
+
 (function (global) {
   "use strict";
   const App = global.NjgApp;

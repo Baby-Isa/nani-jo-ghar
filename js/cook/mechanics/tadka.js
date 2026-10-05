@@ -15,8 +15,11 @@
  * shows Nani's order), burnSec (seconds of heat between spices),
  * guidedBurn (x burnSec the first time), burntScore.
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const D = Cook.D;

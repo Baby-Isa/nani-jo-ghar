@@ -33,8 +33,11 @@
  * assets/cook/items/chai-v2/ (positions in its meta.json); the pantry-v2 jars; the hob, burners, knobs, flames and heat ring are the shared
  * kitchen kit's (js/cook/kitchen-kit.js).
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const D = Cook.D;

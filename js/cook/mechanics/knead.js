@@ -3,8 +3,11 @@
  * Hands only: the fun break between listening.
  * Knobs (data.mechanics.knead): presses, auto (the mixer), special.
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const Lang = Cook.Lang;
   const D = Cook.D;
   const Mech = Cook.Mech;

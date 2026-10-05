@@ -38,8 +38,11 @@
  *   Hands.hide(S)                        every hand goes
  *   Hands.ghostImage()                   the onboarding overlay's see-through hand
  */
+import { Cook as CookNS } from "./ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const H = (Cook.Hands = {});
   const W = 1600;
   const HT = 900;

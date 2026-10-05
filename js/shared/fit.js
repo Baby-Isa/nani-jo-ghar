@@ -111,11 +111,13 @@
     if (mo) mo.observe(rootEl, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(again);
     // the frame's sizes changed (a rotate, a resize past a form factor)
-    if (root.Frame && root.Frame.onChange) root.Frame.onChange(again);
+    const off = root.Frame && root.Frame.onChange ? root.Frame.onChange(again) : null;
     again();
     return () => {
       if (ro) ro.disconnect();
       if (mo) mo.disconnect();
+      // (C4: and the frame's callback, so a mode unmounted from the page leaves nothing behind)
+      if (typeof off === "function") off();
     };
   };
 

@@ -26,6 +26,7 @@
  *   Frame.now                     the last compute() result
  *   Frame.onChange(fn)            fn(now) after every apply; returns an unsubscribe
  *   Frame.mount({app, side, play})  put a page's own grid inside the frame (classes njg-frame, njg-side, njg-play)
+ *   Frame.unwatchSide(el)         stop following it (a mode unmounted from the page; C4)
  *   Frame.fitSide(el)             keep a sidebar's content on screen: step its own sizes down while it overflows
  *                                 (layout.json `sidebar.fit`; every .njg-side is followed by itself, Frame.watchSide)
  *   Frame.tokens(L, ff, scale), Frame.sideTokens(L, ff, full, s), Frame.sideScales(L, full)   (pure: Node tests)
@@ -242,11 +243,11 @@
     return { scale: used, fits: !over() };
   };
 
-  const watched = new Set();
+  const watched = new Map(); // el -> stop()
   /** Follow a sidebar: refit it (once per frame) when its content, its classes or the screen change. */
   F.watchSide = function (el) {
     if (!el || watched.has(el) || !root.MutationObserver) return;
-    watched.add(el);
+    watched.set(el, () => {});
     let q = 0;
     let busy = false;
     const go = () => {
@@ -268,14 +269,29 @@
       if (recs.some((r) => !(r.target === el && r.attributeName === "style"))) soon();
     });
     mo.observe(el, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class", "hidden", "style"] });
+    let ro = null;
     if (root.ResizeObserver) {
-      const ro = new root.ResizeObserver(soon);
+      ro = new root.ResizeObserver(soon);
       ro.observe(el);
     }
-    F.onChange(soon);
+    const off = F.onChange(soon);
+    watched.set(el, () => {
+      mo.disconnect();
+      if (ro) ro.disconnect();
+      if (typeof off === "function") off();
+      if (q) root.cancelAnimationFrame(q);
+      q = 0;
+    });
     // web fonts change every line's height
     if (root.document.fonts && root.document.fonts.ready) root.document.fonts.ready.then(soon);
     soon();
+  };
+  /** C4: stop following a sidebar (a mode unmounted from the page, js/cook/mount.js). */
+  F.unwatchSide = function (el) {
+    const stop = watched.get(el);
+    if (!stop) return;
+    watched.delete(el);
+    stop();
   };
   const watchAll = () => {
     const doc = root.document;

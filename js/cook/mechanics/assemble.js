@@ -35,8 +35,11 @@
  * St.freePick (below) is the shared "tap anything, or Done" step that the fill mechanic uses too:
  * nothing is refused, so nothing gives the answer away; you're graded afterwards.
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const D = Cook.D;

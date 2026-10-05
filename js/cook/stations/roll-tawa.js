@@ -12,8 +12,11 @@
  * big/small, two tawas) is js/cook/stations/maani-line.js, next wave.
  * Levels: data/stations/roll-tawa.json (which level each zone runs at).
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const Mech = Cook.Mech;
 
   Mech.combined("roll-tawa", {

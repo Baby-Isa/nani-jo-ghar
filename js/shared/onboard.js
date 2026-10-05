@@ -509,7 +509,8 @@
       root.removeEventListener("pointerup", up, true);
       root.removeEventListener("keydown", key);
       const S = store();
-      if (S) S.set("onboarded", id, true);
+      // (C4: a script cut short because its game was unmounted, "left", isn't seen: it shows again next time)
+      if (S && how !== "left") S.set("onboarded", id, true);
       layer.classList.remove("on");
       setTimeout(() => layer.remove(), reduced() ? 0 : 300);
       if (active && active.layer === layer) active = null;
@@ -526,6 +527,8 @@
         if (m.signal(name)) advanced();
       },
       skip: () => finish("skipped"),
+      // C4: the game this script belongs to was unmounted (the child left): the overlay and its listeners go, unseen
+      leave: () => end("left"),
     };
     m.start();
     begin();

@@ -23,7 +23,10 @@
  *   Cook.display(id) .english(id) .isPlaceholder(id) .numId(n) .numWord(n)   one word, from the engine
  */
 (function (global) {
-  const Cook = (global.Cook = global.Cook || {});
+  // C4: Cook's namespace (js/cook/ns.js) when Cook loads as modules; the parked pages' and Node harnesses' marked window.Cook
+  // when this file runs as a classic script. Timers go through Cook's lifetime (js/cook/life.js) when it is there.
+  const Cook = global.__njgCookLoading || (global.Cook = global.Cook || {});
+  const { setTimeout, clearTimeout, setInterval, clearInterval } = Cook.life || global;
   const Lang = (Cook.Lang = {});
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   Cook.engineWords = true; // cook.html: Cook's words are the engine's (js/cook/core.js skips the parked pages' TTS table)

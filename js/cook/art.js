@@ -17,8 +17,11 @@
  * Every texture is a <canvas>. Cook.Art.register(scene) adds them to
  * Phaser; Cook.Art.url(key) gives a data URL for HTML (the "pass me" tray).
  */
+import { Cook as CookNS } from "./ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const Art = (Cook.Art = {});
   const cache = {};
 

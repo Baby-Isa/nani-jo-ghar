@@ -21,8 +21,11 @@
  *   ctx.result[...]      — what you actually made, for the customer
  * and it may call ctx.maybePassMe() at a safe moment (Nani interrupts).
  */
+import { Cook as CookNS } from "./ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const D = Cook.D;

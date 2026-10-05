@@ -12,7 +12,10 @@
  *    never leave angry. Being slow or wrong only shows in the end badges.
  */
 (function (global) {
-  const Cook = (global.Cook = global.Cook || {});
+  // C4: Cook's namespace (js/cook/ns.js) when Cook loads as modules; the parked pages' and Node harnesses' marked window.Cook
+  // when this file runs as a classic script. Timers go through Cook's lifetime (js/cook/life.js) when it is there.
+  const Cook = global.__njgCookLoading || (global.Cook = global.Cook || {});
+  const { setTimeout, clearTimeout, setInterval, clearInterval } = Cook.life || global;
   // cache-busting (js/version.js): Cook.v(url) adds ?v=<stamp>
   Cook.V = global.NJG_V || "";
   Cook.v = global.njgV || ((u) => u);
@@ -352,6 +355,14 @@
     } catch (e) {
       ctx = null;
     }
+  };
+  /** C4: Cook is unmounted: the voice stops and the sound goes (the next mount unlocks a new one on its first tap). */
+  Cook.closeAudio = function () {
+    Cook.stopVoice();
+    const c = ctx;
+    ctx = master = null;
+    Object.keys(bufCache).forEach((k) => delete bufCache[k]);
+    if (c && c.close) c.close().catch(() => {});
   };
   function tone(freq, dur, { type = "sine", gain = 0.3, when = 0, slide = 0 } = {}) {
     if (!ctx) return;

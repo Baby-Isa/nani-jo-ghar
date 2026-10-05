@@ -37,8 +37,11 @@
  * Speeds are real laps per second (the gesture isn't scaled by game speed).
  * Extra lines and tips: data/stations/stir.json.
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const D = Cook.D;

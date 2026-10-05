@@ -24,8 +24,11 @@
  *
  * Coordinates are the station's design px (the combined stations draw 1:1 on 1600x900).
  */
+import { Cook as CookNS } from "./ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const D = Cook.D;
 
   const V2 = "assets/cook/items/chai-v2/";

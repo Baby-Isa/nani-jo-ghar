@@ -38,8 +38,11 @@
  * by build/check_vessel_meta.py), the fry states from assets/cook/items/samosa-v2/, the kit's wide hob,
  * knob and flames (js/cook/kitchen-kit.js). Shots: build/shoot_samosa_v3.py.
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const D = Cook.D;

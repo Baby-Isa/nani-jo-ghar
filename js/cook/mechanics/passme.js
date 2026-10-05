@@ -6,8 +6,11 @@
  * mechanic can offer a moment with z.passMeAfter(ms).
  * Knobs (data.mechanics.passme): options (how many to choose from).
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const UI = Cook.UI;
   const Lang = Cook.Lang;
   const St = Cook.Stations;

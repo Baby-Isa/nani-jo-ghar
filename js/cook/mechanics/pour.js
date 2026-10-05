@@ -30,8 +30,11 @@
  * not a pour), instant (the chai machine pours for you).
  * Profiles: water, milk, cup.
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const Lang = Cook.Lang;
   const D = Cook.D;
   const St = Cook.Stations;

@@ -13,10 +13,16 @@
  * Images never contain words; every word is here.
  */
 (function (global) {
-  const Cook = global.Cook;
+  // C4: Cook's namespace (js/cook/ns.js) when Cook loads as modules; the parked pages' and Node harnesses' marked window.Cook
+  // when this file runs as a classic script. Timers go through Cook's lifetime (js/cook/life.js) when it is there.
+  const Cook = global.__njgCookLoading || (global.Cook = global.Cook || {});
+  const { setTimeout, clearTimeout, setInterval, clearInterval } = Cook.life || global;
   const Lang = Cook.Lang;
   const $ = (s) => document.querySelector(s);
   const UI = (Cook.UI = {});
+  // C4: a listener on the page itself goes through Cook's lifetime when Cook is mounted (js/cook/life.js: removed at
+  // unmount); on a parked page it is a plain listener. Returns the function that removes it.
+  const onPage = (t, type, fn, o) => (Cook.life ? Cook.life.on(t, type, fn, o) : (t.addEventListener(type, fn, o), () => t.removeEventListener(type, fn, o)));
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   UI.esc = esc;
 
@@ -222,7 +228,11 @@
     b.style.setProperty("--tail-x", `${Cook.clamp(p.x - left - 9, 14, w - 30)}px`);
   }
   UI.placeBubble = placeBubble;
-  global.addEventListener("resize", () => setTimeout(placeBubble, 60));
+  // the page-wide resize listeners (a parked page: at load; Cook mounted: at UI.init, through its lifetime)
+  const pageWide = () => {
+    onPage(global, "resize", () => setTimeout(placeBubble, 60));
+    onPage(global, "resize", () => tallyPt && placeTally());
+  };
 
   /**
    * Say a line. anchor {x, y} in world px (a bubble by a character) or
@@ -247,12 +257,13 @@
     else target.classList.add("talk");
     const token = Cook.run;
     let skip;
+    let offSkip = null;
     const skipped = new Promise((resolve) => {
       skip = (ev) => {
         if (ev.target.closest && ev.target.closest("button, a, #overlay, .wp")) return;
         resolve();
       };
-      document.addEventListener("pointerdown", skip, true);
+      offSkip = onPage(document, "pointerdown", skip, true);
     });
     try {
       const naniQuiet = (target === card() || opts.nani) && UI.naniMuted();
@@ -260,7 +271,7 @@
       const talk = voice ? Promise.all([queued(() => speakAlong(line, slot)), Cook.wait(700)]) : Cook.wait(opts.ms || Cook.readMs(Lang.plain(line)));
       await Promise.race([talk, skipped]);
     } finally {
-      document.removeEventListener("pointerdown", skip, true);
+      if (offSkip) offSkip();
       target.classList.remove("talk");
     }
     Cook.checkRun(token);
@@ -317,12 +328,13 @@
     }
     const token = Cook.run;
     let skip;
+    let offSkip = null;
     const skipped = new Promise((resolve) => {
       skip = (ev) => {
         if (ev.target.closest && ev.target.closest("button, a, #overlay")) return;
         resolve();
       };
-      document.addEventListener("pointerdown", skip, true);
+      offSkip = onPage(document, "pointerdown", skip, true);
     });
     try {
       // Nani muted (her box): she still shows the line, silently
@@ -330,7 +342,7 @@
       const talk = voice ? Promise.all([queued(() => speakAlong(line, guide ? guide.el : cap)), Cook.wait(700)]) : Cook.wait(opts.ms || Math.min(2600, Cook.readMs(Lang.plain(line))));
       await Promise.race([talk, skipped]);
     } finally {
-      document.removeEventListener("pointerdown", skip, true);
+      if (offSkip) offSkip();
       if (tok === voiceTok) {
         els.forEach((e) => e.classList.remove("throb"));
         cap.classList.add("hidden");
@@ -1259,11 +1271,12 @@
     if (!fitWatched && global.ResizeObserver && $("#guide")) {
       fitWatched = true;
       const ro = new ResizeObserver(() => checkFit());
+      if (Cook.life) Cook.life.onEnd(() => (ro.disconnect(), (fitWatched = false)));
       ro.observe($("#guide"));
       // a peeked card opens without a redraw: the order growing can tip it over too
       if ($("#mission")) ro.observe($("#mission"));
     }
-    const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
+    const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame || ((f) => setTimeout(f, 16));
     raf(() =>
       raf(() => {
         if (!mission || (mission.compact || 0) >= 3 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
@@ -1906,7 +1919,7 @@
     tallyPt = pt || null;
     placeTally();
   };
-  global.addEventListener("resize", () => tallyPt && placeTally());
+  if (!Cook.life) pageWide();
   UI.hideCount = () => {
     tally.clear();
     drawTally();
@@ -1993,6 +2006,32 @@
     UI.closeHelp();
   };
 
+  /**
+   * C4: back to how the page loaded, for the next mount (js/cook/mount.js unmounts Cook and may mount it again in
+   * the same page): the shared widgets this file made are destroyed and every handle on the old screen dropped.
+   */
+  UI.reset = function () {
+    if (guide && guide.destroy) {
+      try {
+        guide.destroy();
+      } catch (e) {
+        /* gone with the screen */
+      }
+    }
+    guide = guideKey = guideLine = null;
+    if (kitTally && kitTally.destroy) kitTally.destroy();
+    kitTally = null;
+    mission = null;
+    tallyPt = null;
+    tally.clear();
+    doneResolve = goResolve = null;
+    bubbleAnchor = null;
+    speechTail = Promise.resolve();
+    helpText = HELP_DEFAULT;
+    voiceTok++;
+    readToken++;
+  };
+
   UI.init = function () {
     // every page element here is optional (another page, like find.html, may not have all of them)
     const on = (sel, fn) => {
@@ -2018,21 +2057,23 @@
     else on("#done-btn", () => (Cook.sfx.click(), pressDone()));
     if (kit && stage && !$("#go-btn")) kit.next(stage, "", pressGo, { id: "go-btn" }).classList.add("hidden");
     else on("#go-btn", () => (Cook.sfx.click(), pressGo()));
-    document.addEventListener("pointerdown", () => Cook.unlockAudio(), { passive: true });
+    if (Cook.life) pageWide();
+    onPage(document, "pointerdown", () => Cook.unlockAudio(), { passive: true });
     // the "?": the goal pops out; any tap elsewhere puts it away
     on("#btn-help", () => {
       Cook.sfx.click();
       if (UI.helpOpen()) UI.closeHelp();
       else UI.openHelp();
     });
-    document.addEventListener(
+    onPage(
+      document,
       "pointerdown",
       (ev) => {
         if (UI.helpOpen() && !ev.target.closest("#btn-help, #help-pop")) UI.closeHelp();
       },
       true
     );
-    global.addEventListener("resize", () => UI.closeHelp());
+    onPage(global, "resize", () => UI.closeHelp());
     const tr = on("#mission .m-tr", () => UI.mission.translate());
     if (tr) tr.innerHTML = ICON.translate;
     // 28 Sept: Nani's guide box carries the light bulb (a page without it keeps its own #btn-bulb)
@@ -2058,7 +2099,11 @@
       UI.mission.sayCard();
     });
     // one line, always: headlines and pills shrink to fit (js/shared/fit.js)
-    if (global.FitText) ["#side", "#intro"].forEach((sel) => $(sel) && global.FitText.watch($(sel)));
+    if (global.FitText)
+      ["#side", "#intro"].forEach((sel) => {
+        const off = $(sel) && global.FitText.watch($(sel));
+        if (off && Cook.life) Cook.life.onEnd(off);
+      });
     const replay = on("#mission .m-replay", () => {
       Cook.unlockAudio();
       UI.mission.replay();

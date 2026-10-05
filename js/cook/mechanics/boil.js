@@ -16,8 +16,11 @@
  * knobR (the knob's size), instant/instantMs (the chai machine).
  * Profiles: tray (the Chai tray's slower back-burner boil).
  */
+import { Cook as CookNS } from "../ns.js";
+import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+
 (function (global) {
-  const Cook = global.Cook;
+  const Cook = CookNS;
   const D = Cook.D;
   const St = Cook.Stations;
   const Mech = Cook.Mech;
