@@ -4,10 +4,10 @@
   "features": {
     "gender": { "values": ["he", "she"], "default": "he", "defaultSrc": "Mum's rule for an unknown gender: grammar-notes §24 B4, §37.5, §50 (C60); decision 21, decision 30 (f)" },
     "number": { "values": ["sg", "pl"] },
-    "case": { "values": ["dir", "obl", "dat", "voc"], "notes": "dir = the plain form; obl = before a postposition (grammar-notes §41, §49); dat = the 'to me' form (§1, §9); voc = calling out (§36 C21)" },
+    "case": { "values": ["dir", "obl", "dat", "voc", "poss"], "notes": "dir = the plain form; obl = before a postposition (grammar-notes §41, §49); dat = the 'to me' form (§1, §9); voc = calling out (§36 C21); poss = a pronoun's 'my / your / his' stem, which then agrees with the thing owned (munjo, munji, munja: grammar-notes §54, §55; added by step 4b)" },
     "person": { "values": ["p1", "p2", "p2resp", "p3"], "hyp": ["p3near", "p3far"], "src": "grammar-notes §21 (respect), §51 (be by person), §13 (hi/hu point, not person: kept as hyp)" },
     "clusivity": { "values": ["incl", "excl"], "src": "grammar-notes §52 (two words for we), decision 30 (e)" },
-    "tense": { "values": ["pres", "fut", "past", "imp"], "hyp": ["prog", "hab"] },
+    "tense": { "values": ["pres", "fut", "past", "imp", "conj"], "hyp": ["prog", "hab"], "notes": "conj = the 'having done' form that goes before a helper (wiji chad, kadhi chad, kapi chad, bhari chad, rakhi chad, kari chad: grammar-notes §38, §39; added by step 4b, which found it in six of Mum's cooking verbs)" },
     "polarity": { "values": ["pos", "neg"] },
     "register": { "values": ["informal", "polite"], "src": "grammar-notes §1, §31" },
     "speaker": { "values": ["he", "she"], "src": "the speaker's own gender, grammar-notes §32" }
@@ -31,7 +31,9 @@
     "Conj": { "defaultCell": "-" },
     "Adv": { "defaultCell": "-" },
     "Intj": { "defaultCell": "-" },
-    "Phrase": { "defaultCell": "-" }
+    "Phrase": { "defaultCell": "-" },
+    "Dem": { "defaultCell": "-", "notes": "a pointing word (hi this, hu that, hida here, huda there): grammar-notes §13, §17, §43, §53; added by step 4b" },
+    "Q": { "defaultCell": "-", "notes": "a question word (ker who, kuro what, kida where, kitla how many, kyo which): grammar-notes §20, §23; added by step 4b" }
   },
   "addressee": {
     "p2": { "elder": "p2resp", "else": "p2", "src": "rule G6; grammar-notes §21, §51 (C62, C63)" }
