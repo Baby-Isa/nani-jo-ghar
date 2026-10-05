@@ -805,6 +805,23 @@
     // A1 (5 Oct): with the cut arm (F1), the same rule moves the picture: it slides left until the fingertips clear
     // the column, never so far that the wrist reaches the last plaster; past that the view slides, as above
     const fa = limbArt && !legPart ? ctx.data.art["forearm-graze"] : null;
+    // A2 (5 Oct): the slide is always from the game's own view, never added again on each re-layout (a tablet, where
+    // the hand can't clear the column, re-laid out until the graze left the screen and the round could not end)
+    const vb0 = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
+    const slideView = (over) => {
+      if (vb0.length !== 4) return;
+      // never so far that the first patch leaves the screen (a 4:3 tablet crops the close-up's sides): the round
+      // needs it; there the fingertips may reach under the tool column instead
+      let cap = Infinity;
+      const m = over > 0 && S.svg.getScreenCTM();
+      if (m) {
+        const q = S.svg.createSVGPoint();
+        q.x = Math.max(stage.getBoundingClientRect().left, S.svg.getBoundingClientRect().left);
+        q.y = 0;
+        cap = Math.max(0, patches[0].x - 70 - q.matrixTransform(m.inverse()).x);
+      }
+      S.svg.setAttribute("viewBox", `${(vb0[0] + Math.min(cap, Math.max(0, over))).toFixed(1)} ${vb0[1]} ${vb0[2]} ${vb0[3]}`);
+    };
     const placeArt = () => {
       if (!fa || !fa.tip || !S.shelf) return;
       const sr = S.shelf.getBoundingClientRect();
@@ -820,13 +837,10 @@
       const lo = last.x + 50 - fa.wrist * k; // the leftmost the picture may go (the wrist past the last plaster)
       const X = Math.max(lo, Math.min(x0, E - fa.tip * k));
       limbArt.setAttribute("x", X.toFixed(1));
-      const over = X + fa.tip * k - E;
-      if (over > 0) {
-        const vb = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
-        if (vb.length === 4) S.svg.setAttribute("viewBox", `${(vb[0] + over).toFixed(1)} ${vb[1]} ${vb[2]} ${vb[3]}`);
-      }
+      slideView(X + fa.tip * k - E);
     };
     const placeHand = () => {
+      slideView(0); // measure in the game's own view
       placeArt();
       if (limbArt || !handG || !armPath || !S.shelf) return;
       const sr = S.shelf.getBoundingClientRect();
@@ -843,11 +857,7 @@
       const wMin = last.x + 78; // clear of the last plaster
       const k = Math.max(0.35, Math.min(1, (E - wMin) / 200));
       const W = Math.max(wMin, Math.min(600, E - 200 * k));
-      const over = W + 200 * k - E; // still under the column: slide the view by that much
-      if (over > 0) {
-        const vb = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
-        if (vb.length === 4) S.svg.setAttribute("viewBox", `${(vb[0] + over).toFixed(1)} ${vb[1]} ${vb[2]} ${vb[3]}`);
-      }
+      slideView(W + 200 * k - E); // still under the column: slide the view by that much
       armPath.setAttribute("d", armD(W));
       handG.setAttribute("transform", `translate(${W.toFixed(1)} 0) scale(${k.toFixed(3)} 1) translate(-600 0)`);
     };
