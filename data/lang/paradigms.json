@@ -2,6 +2,7 @@
  "_about": "Word classes: how each form (cell) is made, with a status per cell (engine-design § 5.2). Built by build/lang/import_all.mjs.",
  "paradigms": {
   "noun.o-he": {
+   "gender": "he",
    "pos": "N",
    "stem": {
     "drop": "o"
@@ -40,6 +41,7 @@
    }
   },
   "noun.i-she": {
+   "gender": "she",
    "pos": "N",
    "cells": {
     "sg.*": {
