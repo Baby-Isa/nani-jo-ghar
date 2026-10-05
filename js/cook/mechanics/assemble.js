@@ -911,7 +911,7 @@
             t = S.add.text(0, 0, best.two.join("\n"), style(19)).setOrigin(0, 0.5);
           }
           // the floor is 14px as rendered, so the chip's own scale counts (z.k < 1 on a small canvas)
-          if (t.width > maxT) t.setScale(Math.max(14 / (parseFloat(t.style.fontSize) * z.k), maxT / t.width));
+          if (t.width > maxT) t.setScale(Math.max(floorK(parseFloat(t.style.fontSize)) / z.k, maxT / t.width));
           const tw = 22 + 8 + t.displayWidth;
           speaker(icon, -tw / 2 + 10, 0, 24);
           t.x = -tw / 2 + 30;
@@ -940,13 +940,17 @@
       }
 
       /* ---------- the word pop (§4): by the glass, with the family clip ---------- */
+      // the scale at which `px` text renders at 14 CSS px: the canvas is shown smaller than its game size on a phone
+      function floorK(px) {
+        return 14.2 / (px * (S.scale.displaySize.height / S.scale.gameSize.height) * S.cameras.main.zoom);
+      }
       const pop = (text, x, y, { speakId = null, line = null, ms = 1900 } = {}) => {
         const c = S.track(
           S.add
             .container(x, y)
             .setDepth(D.fx + 3)
             .setAlpha(0)
-            .setScale(z.k),
+            .setScale(Math.max(z.k, floorK(36))), // never under 14px as rendered
         );
         const t = S.add
           .text(0, 0, text, {
