@@ -1,0 +1,725 @@
+[
+ {
+  "qid": "I2",
+  "at": 57.33,
+  "items": [
+   {
+    "id": "chai-ke-ukar-paani-ke-ukar",
+    "kutchi": "Chai ke ukar, paani ke ukar.",
+    "english": "Boil the tea, boil the water.",
+    "mum": [
+     60.33,
+     62.44
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Chaike ukar, panike ukar.\""
+   },
+   {
+    "id": "ukar",
+    "kutchi": "ukar",
+    "english": "boil it",
+    "mum": [
+     60.86,
+     61.35
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take chai-ke-ukar-paani-ke-ukar for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Ukar.\" (as Swahili and unprompted), \"ukar\" (prompted with 23 words)), right speaker by pitch; not yet heard by Zafar"
+   }
+  ]
+ },
+ {
+  "qid": "I3",
+  "at": 62.5,
+  "items": [
+   {
+    "id": "slow-kar",
+    "kutchi": "slow kar",
+    "english": "turn it down (the flame)",
+    "mum": [
+     65.5,
+     66.28
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Shlokar.\""
+   },
+   {
+    "id": "slow",
+    "kutchi": "slow",
+    "english": "slow (in slow kar, turn it down)",
+    "mum": [
+     65.55,
+     65.98
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take slow-kar for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Slo.\" / \"Slow.\" / \"slow\"), right speaker by pitch; not yet heard by Zafar"
+   },
+   {
+    "id": "kar",
+    "kutchi": "kar",
+    "english": "do it (in slow kar)",
+    "mum": [
+     65.96,
+     66.26
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take slow-kar for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Kure.\" / \"Cool\" unprompted, \"Kar.\" prompted), right speaker by pitch; not yet heard by Zafar"
+   }
+  ]
+ },
+ {
+  "qid": "I4",
+  "at": 82.87,
+  "items": [
+   {
+    "id": "wiji-chad",
+    "kutchi": "wiji chad",
+    "english": "put it in",
+    "mum": [
+     85.87,
+     86.62
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"viji ched\""
+   },
+   {
+    "id": "andar-wiji-chad",
+    "kutchi": "andar wiji chad",
+    "english": "put it in (inside)",
+    "mum": [
+     87.12,
+     88.21
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Andaviji chad.\""
+   }
+  ]
+ },
+ {
+  "qid": "I5",
+  "at": 89.83,
+  "items": [
+   {
+    "id": "kadhi-chad",
+    "kutchi": "kadhi chad",
+    "english": "take it out",
+    "mum": [
+     92.83,
+     93.53
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Kadichid.\""
+   }
+  ]
+ },
+ {
+  "qid": "I6",
+  "at": 93.16,
+  "items": [
+   {
+    "id": "atto-gund",
+    "kutchi": "atto gund",
+    "english": "knead the dough",
+    "mum": [
+     96.16,
+     96.9
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); take chosen by hand; re-transcribed as \"Atoguntwa\""
+   },
+   {
+    "id": "atto",
+    "kutchi": "atto",
+    "english": "dough (in atto gund)",
+    "mum": [
+     96.18,
+     96.58
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take atto-gund for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Ato\" / \"अटो\" (ato)), right speaker by pitch; not yet heard by Zafar"
+   },
+   {
+    "id": "gund",
+    "kutchi": "gund",
+    "english": "knead (in atto gund)",
+    "mum": [
+     96.58,
+     96.9
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take atto-gund for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"und\" unprompted, \"Gund.\" prompted), right speaker by pitch; not yet heard by Zafar"
+   }
+  ]
+ },
+ {
+  "qid": "I9",
+  "at": 103.58,
+  "items": [
+   {
+    "id": "dabai",
+    "kutchi": "dabai",
+    "english": "press it",
+    "mum": [
+     106.58,
+     107.11
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Dabai.\""
+   }
+  ]
+ },
+ {
+  "qid": "I11",
+  "at": 106.09,
+  "items": [
+   {
+    "id": "kapi-chad",
+    "kutchi": "kapi chad",
+    "english": "cut it",
+    "mum": [
+     109.09,
+     109.74
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); take chosen by hand; re-transcribed as \"Kapiched.\""
+   }
+  ]
+ },
+ {
+  "qid": "I10",
+  "at": 110.69,
+  "items": [
+   {
+    "id": "nindha-nindha-kap",
+    "kutchi": "nindha nindha kap",
+    "english": "chop it small",
+    "mum": [
+     113.69,
+     114.73
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"\""
+   }
+  ]
+ },
+ {
+  "qid": "I8",
+  "at": 116.55,
+  "items": [
+   {
+    "id": "firai",
+    "kutchi": "firai",
+    "english": "turn it (flip, stir)",
+    "mum": [
+     119.55,
+     120.02
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Firae.\""
+   },
+   {
+    "id": "firai-chad",
+    "kutchi": "firai chad",
+    "english": "turn it over",
+    "mum": [
+     139.1,
+     140.13
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Kwa hivyo Richard.\""
+   }
+  ]
+ },
+ {
+  "qid": "I13",
+  "at": 147.92,
+  "items": [
+   {
+    "id": "bego-kari-chad",
+    "kutchi": "bego kari chad",
+    "english": "mix it (put it together)",
+    "mum": [
+     150.92,
+     152.01
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Begoka Richard\""
+   },
+   {
+    "id": "mix-kari-chad",
+    "kutchi": "mix kari chad",
+    "english": "mix it",
+    "mum": "skip: the take holds only 'kari chad'; 'mix' is inside English talk",
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "the take holds only 'kari chad'; 'mix' is inside English talk"
+   }
+  ]
+ },
+ {
+  "qid": "I14",
+  "at": 183.24,
+  "items": [
+   {
+    "id": "tarelo-kari-chad",
+    "kutchi": "tarelo kari chad",
+    "english": "fry it (make it fried)",
+    "mum": [
+     186.24,
+     187.3
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Tareloka Richard.\""
+   },
+   {
+    "id": "samosa-tar",
+    "kutchi": "samosa tar",
+    "english": "fry the samosa",
+    "mum": "skip: the take runs two phrases together (tari wij? samosa tar)",
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "the take runs two phrases together (tari wij? samosa tar)"
+   }
+  ]
+ },
+ {
+  "qid": "I16",
+  "at": 200.88,
+  "items": [
+   {
+    "id": "paani-bhari-chad",
+    "kutchi": "paani bhari chad",
+    "english": "fill it with water",
+    "mum": [
+     205.23,
+     206.18
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Anibarichid.\""
+   },
+   {
+    "id": "bhar",
+    "kutchi": "bhar",
+    "english": "fill it",
+    "mum": [
+     203.88,
+     204.34
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take paani-bhari-chad for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Barre.\" / \"Bye.\" unprompted, \"Bar.\" prompted (bh is lost on Whisper)), right speaker by pitch; not yet heard by Zafar"
+   }
+  ]
+ },
+ {
+  "qid": "I17",
+  "at": 219.57,
+  "items": [
+   {
+    "id": "thorok-wij",
+    "kutchi": "thorok wij",
+    "english": "put a little in",
+    "mum": [
+     222.57,
+     223.36
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum's stand-in for 'sprinkle'; FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Tore.\""
+   }
+  ]
+ },
+ {
+  "qid": "I18",
+  "at": 230.99,
+  "items": [
+   {
+    "id": "bakuli-me-wiji-chad",
+    "kutchi": "bakuli me wiji chad",
+    "english": "put it in the bowl",
+    "mum": [
+     233.99,
+     235.06
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Bukulimevitchar\""
+   },
+   {
+    "id": "table-mathe-rakhi-chad",
+    "kutchi": "table mathe rakhi chad",
+    "english": "put it on the table",
+    "mum": "skip: runs straight into Mum's English 'put it on the table'",
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "runs straight into Mum's English 'put it on the table'"
+   }
+  ]
+ },
+ {
+  "qid": "I19",
+  "at": 256.58,
+  "items": [
+   {
+    "id": "chakh",
+    "kutchi": "chakh",
+    "english": "taste it",
+    "mum": [
+     259.58,
+     260.06
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Chaku.\""
+   }
+  ]
+ },
+ {
+  "qid": "I20",
+  "at": 260.58,
+  "items": [
+   {
+    "id": "dhui-ginta-ja-glass-dho-cup-dho",
+    "kutchi": "Dhui ginta ja glass dho, cup dho.",
+    "english": "wash the glass, wash the cup",
+    "mum": [
+     263.58,
+     265.71
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); take chosen by hand; re-transcribed as \"Duigin tajaglas du, kapdu.\""
+   }
+  ]
+ },
+ {
+  "qid": "I21",
+  "at": 270.71,
+  "items": [
+   {
+    "id": "jhini-maani-banai",
+    "kutchi": "jhini maani banai",
+    "english": "make a thin maani",
+    "mum": [
+     273.71,
+     275.39
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); another voice within 0.12 s; re-transcribed as \"Jini Mani\""
+   },
+   {
+    "id": "jadi-maani-banai",
+    "kutchi": "jadi maani banai",
+    "english": "make a thick maani",
+    "mum": [
+     276.57,
+     277.63
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Jadi money bane.\""
+   },
+   {
+    "id": "barabar",
+    "kutchi": "barabar",
+    "english": "just right",
+    "mum": [
+     279.51,
+     280.13
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Barabara.\""
+   }
+  ]
+ },
+ {
+  "qid": "I22",
+  "at": 282.72,
+  "items": [
+   {
+    "id": "indo",
+    "kutchi": "indo",
+    "english": "egg (the Kutchi word)",
+    "mum": [
+     285.72,
+     286.55
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Kwa hivyo ndo?\""
+   },
+   {
+    "id": "mayai",
+    "kutchi": "mayai",
+    "english": "egg (the Swahili word the family uses)",
+    "mum": "skip: only inside English talk",
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "only inside English talk"
+   }
+  ]
+ },
+ {
+  "qid": "I25",
+  "at": 303.01,
+  "items": [
+   {
+    "id": "chapri",
+    "kutchi": "chapri",
+    "english": "samosa pastry",
+    "mum": [
+     306.01,
+     306.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); take chosen by hand; re-transcribed as \"Chapari\""
+   }
+  ]
+ },
+ {
+  "qid": "I27",
+  "at": 320.87,
+  "items": [
+   {
+    "id": "makai",
+    "kutchi": "makai",
+    "english": "corn on the cob",
+    "mum": [
+     323.87,
+     324.7
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Kulifu makai.\""
+   }
+  ]
+ },
+ {
+  "qid": "I28",
+  "at": 326.12,
+  "items": [
+   {
+    "id": "mishkaki-ji-lakri",
+    "kutchi": "mishkaki ji lakri",
+    "english": "a mishkaki skewer",
+    "mum": [
+     329.12,
+     330.27
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Mshkaki ji lakri.\""
+   },
+   {
+    "id": "kebab-ji-lakri",
+    "kutchi": "kebab ji lakri",
+    "english": "a kebab skewer",
+    "mum": [
+     334.44,
+     335.53
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Kama mchi lakri\""
+   }
+  ]
+ },
+ {
+  "qid": "I29",
+  "at": 342.78,
+  "items": [
+   {
+    "id": "tapelo",
+    "kutchi": "tapelo",
+    "english": "a pot",
+    "mum": [
+     345.78,
+     346.41
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Tapelo\""
+   }
+  ]
+ },
+ {
+  "qid": "I30",
+  "at": 359.44,
+  "items": [
+   {
+    "id": "tawa",
+    "kutchi": "tawa",
+    "english": "the tawa",
+    "mum": [
+     362.44,
+     363.13
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Ano tawa?\""
+   }
+  ]
+ },
+ {
+  "qid": "I31",
+  "at": 367.85,
+  "items": [
+   {
+    "id": "welan",
+    "kutchi": "welan",
+    "english": "rolling pin",
+    "mum": [
+     370.85,
+     371.71
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Swelen.\""
+   }
+  ]
+ },
+ {
+  "qid": "I32",
+  "at": 378.78,
+  "items": [
+   {
+    "id": "chamcho-oct5",
+    "kutchi": "chamcho",
+    "english": "ladle (the big spoon)",
+    "mum": [
+     381.78,
+     382.53
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Chumcho\""
+   },
+   {
+    "id": "wadho-chamcho",
+    "kutchi": "wadho chamcho",
+    "english": "the big spoon",
+    "mum": [
+     383.34,
+     384.17
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Wado chamcho.\""
+   }
+  ]
+ },
+ {
+  "qid": "I33",
+  "at": 397.47,
+  "items": [
+   {
+    "id": "aag",
+    "kutchi": "aag",
+    "english": "fire, flame",
+    "mum": [
+     400.47,
+     401.28
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Aga.\""
+   },
+   {
+    "id": "chulo-bar",
+    "kutchi": "chulo bar",
+    "english": "light the stove",
+    "mum": [
+     407.79,
+     409.22
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Pisto yutse chullo ba.\"; W1 5 Oct: Whisper hears English before it (\"...light the stove, you say chulo bar\"): don't link the whole take; its two words are cut as chulo and bar"
+   },
+   {
+    "id": "chulo",
+    "kutchi": "chulo",
+    "english": "the stove",
+    "mum": [
+     408.56,
+     408.85
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "W1 5 Oct: one word cut from Mum's take chulo-bar for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Chulo.\" (as Swahili), \"Chalo.\" prompted), right speaker by pitch; not yet heard by Zafar"
+   },
+   {
+    "id": "bar",
+    "kutchi": "bar",
+    "english": "light it (in chulo bar)",
+    "mum": [
+     408.83,
+     409.18
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take chulo-bar for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Mba.\" / \"Bye.\" unprompted, \"Baar.\" prompted), right speaker by pitch; not yet heard by Zafar"
+   }
+  ]
+ },
+ {
+  "qid": "I34",
+  "at": 412.34,
+  "items": [
+   {
+    "id": "garam",
+    "kutchi": "garam",
+    "english": "hot",
+    "mum": [
+     415.34,
+     415.96
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Karame.\""
+   }
+  ]
+ },
+ {
+  "qid": "I35",
+  "at": 444.14,
+  "items": [
+   {
+    "id": "thundo-thai-vyo",
+    "kutchi": "thundo thai vyo",
+    "english": "it's gone cold",
+    "mum": [
+     447.14,
+     448.03
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Tando tayo.\""
+   },
+   {
+    "id": "thundo",
+    "kutchi": "thundo",
+    "english": "cold",
+    "mum": [
+     447.16,
+     447.64
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take thundo-thai-vyo for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Tandoot\" / \"Tandoor\" unprompted, \"Thank you\" prompted: close, not exact), right speaker by pitch; not yet heard by Zafar"
+   }
+  ]
+ },
+ {
+  "qid": "I15",
+  "items": [
+   {
+    "id": "samosa-waar",
+    "kutchi": "samosa waar",
+    "english": "fold the samosa",
+    "mum": "skip: inside English talk ('like samosa waar')",
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "inside English talk ('like samosa waar')"
+   }
+  ]
+ },
+ {
+  "qid": "I23",
+  "items": [
+   {
+    "id": "murgi",
+    "kutchi": "murgi",
+    "english": "chicken",
+    "mum": "skip: only inside English talk ('a proper Kutchi word is murgi')",
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "only inside English talk ('a proper Kutchi word is murgi')"
+   }
+  ]
+ },
+ {
+  "qid": "I26",
+  "items": [
+   {
+    "id": "mogo",
+    "kutchi": "mogo",
+    "english": "cassava",
+    "mum": "skip: no clean take found",
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "no clean take found"
+   }
+  ]
+ }
+]

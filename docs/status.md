@@ -49,10 +49,10 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 8, including the end-screen word tile overflow and *hakro*/*hakri* | 13 |
-| Cook: pantry | 3, including **PAN-01 reopened** (headline and growing row clipped) and PAN-02 (lines are fragments; needs the engine) | 2 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 3 / 2 / 2 / 0 / 0 / 2 (incl. SEK-09, mistimed skewer) / 1 | 3 / 6 / 6 / 5 / 10 / 4 / 8 |
-| Clinic | 7 | 34 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 7, including the end-screen word tile overflow and *hakro*/*hakri* | 26 |
+| Cook: pantry | 2, including **PAN-01 reopened** (headline and growing row clipped) and PAN-02 (lines are fragments; needs the engine) | 3 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 3 / 0 / 1 / 0 / 0 / 0 (incl. SEK-09, mistimed skewer) / 3 | 3 / 8 / 7 / 5 / 10 / 6 / 8 |
+| Clinic | 8 | 72 |
 | First launch and shell | 1 | 0 |
 | Other modes | 2 | 0 |
 | Art | 5 | 2 |
