@@ -599,7 +599,8 @@
   /** A goodbye the child says, by its key (data goodbyes: `lex`, the engine's phrase; rule G6: khuda-fis, "thank you"). */
   P.goodbye = (data, key) => {
     const g = data.goodbyes[key] || {};
-    return Object.assign(g.lex ? L.show(L.phrase(g.lex)) : L.line(`goodbye-${key}`), { key });
+    // a pill or a review tile: no full stop (as the card rows, F10)
+    return Object.assign(g.lex ? L.show(L.phrase(g.lex), { row: true }) : L.line(`goodbye-${key}`, {}, { row: true }), { key });
   };
 
   /* ================= one patient, a morning ================= */
