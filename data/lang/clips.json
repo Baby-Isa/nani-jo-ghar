@@ -1,0 +1,1 @@
+{ "_about": "The clip index: which family recording (an id in data/family-audio.json) says which word form (lex + cell) or which whole meaning (a meaning key). Recordings never change the engine (rule G12). Filled by step 4b.", "clips": [] }
