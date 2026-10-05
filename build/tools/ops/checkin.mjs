@@ -1,18 +1,45 @@
 #!/usr/bin/env node
 // Check-in summary: what landed since the last check-in, the art count on main and the sessions status.md lists; --log appends the line.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, appendFileSync, mkdirSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, args, help, gitSoft, branch, ukStamp, fromUk, logLine, LOG, STATUS } from "./lib.mjs";
+
+// Days before today move out of the live log into docs/process/overnight-log/<date>.md (one file per day, appended to).
+function rotateLog() {
+  const today = ukStamp().slice(0, 10), dir = join(ROOT, "docs", "process", "overnight-log");
+  const keep = [], moved = {};
+  for (const l of readFileSync(LOG, "utf8").split("\n")) {
+    const d = (/^- (\d{4}-\d\d-\d\d) /.exec(l) || [])[1];
+    if (d && d < today) (moved[d] ||= []).push(l); else keep.push(l);
+  }
+  const days = Object.keys(moved).sort();
+  if (!days.length) return;
+  mkdirSync(dir, { recursive: true });
+  for (const d of days) {
+    const f = join(dir, `${d}.md`);
+    if (!existsSync(f)) writeFileSync(f, `# Overnight log, ${d} (times UK)\n\n`);
+    appendFileSync(f, moved[d].join("\n") + "\n");
+  }
+  writeFileSync(LOG, keep.join("\n"));
+  console.log(`Rotated ${days.join(", ")} to docs/process/overnight-log/.`);
+}
+// the last "Check-in" line: today's live log first, then the newest dated file
+function lastCheckin() {
+  const dir = join(ROOT, "docs", "process", "overnight-log"), re = /^- \d{4}-\d\d-\d\d \d\d:\d\d UK · Check-in/;
+  const files = [LOG, ...(existsSync(dir) ? readdirSync(dir).filter((f) => /^\d{4}-\d\d-\d\d\.md$/.test(f)).sort().reverse().map((f) => join(dir, f)) : [])];
+  for (const f of files) { const l = readFileSync(f, "utf8").split("\n").filter((x) => re.test(x)).pop(); if (l) return l; }
+  return null;
+}
 
 const HELP = `
 node build/tools/ops/checkin.mjs [--since "YYYY-MM-DD HH:MM"] [--art dir] [--art-target 115] [--log] [--note "text"] [--no-fetch]
   Prints, in a few lines:
-    - commits on this branch (after git fetch) since the last "Check-in" line of docs/process/overnight-log.md (or --since, UK time),
+    - commits on this branch (after git fetch) since the last "Check-in" line of the overnight log, docs/process/overnight-log.md or the newest dated file in docs/process/overnight-log/ (or --since, UK time),
       grouped by their session tag ("T2:", "4e:", ...)
     - reports added under build/reports/ in that time
     - art on main: images under --art (default sources/art/clinic-heal-v3) on origin/main, against --art-target (default 115)
     - the sessions docs/status.md "Next chat" lists (session id, what it is, and whether its report has landed)
-  --log appends one line to the overnight log ("Check-in: ..."), with --note added (your one-line judgement of the screenshots).
+  --log appends one line to the overnight log ("Check-in: ..."), first moving earlier days to docs/process/overnight-log/<date>.md; with --note added (your one-line judgement of the screenshots).
   Git only; no other network.`;
 const a = args(); help(HELP, a);
 const br = branch();
@@ -22,7 +49,7 @@ const ref = gitSoft("rev-parse", "--verify", "-q", `origin/${br}`) ? `origin/${b
 // since when
 let since = a.val("since") ? fromUk(a.val("since")) : null;
 if (!since) {
-  const last = readFileSync(LOG, "utf8").split("\n").filter((l) => /^- \d{4}-\d\d-\d\d \d\d:\d\d UK · Check-in/.test(l)).pop();
+  const last = lastCheckin();
   since = last ? fromUk(last.slice(2, 18)) : new Date(Date.now() - 3600e3);
 }
 const iso = since.toISOString();
@@ -62,6 +89,7 @@ console.log(`Sessions in status.md: ${seen.size}`);
 for (const s of seen.values()) console.log(`  ${s}`);
 
 if (a.has("log")) {
+  rotateLog();
   const parts = [`Check-in: ${commits.length} commits${commits.length ? ` (${Object.entries(tags).map(([t, l]) => `${t} ${l.length}`).join(", ")})` : ""}`,
     reports.length ? `reports ${reports.map((r) => r.replace("build/reports/", "")).join(", ")}` : "", `art ${art.length} of ${target}`, a.val("note") || ""].filter(Boolean);
   console.log(`Logged: ${logLine(parts.join("; ") + ".")}`);
