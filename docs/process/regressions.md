@@ -79,8 +79,8 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | SH-44 | The end review shows which step went wrong (asked vs done, pictured) | built, not re-played | eye: end review after a mistake · CMP-13 | `docs/feedback/clinic-playtest-2026-10-01.md` P18, 1:9:04–9:22 |
 | SH-45 | One instruction at a time in the heal games: each step's line and row appear as it opens; never the whole job read out up front (D8) | built, not re-played | ear: boing L1, scrape L3 · TXT-08 | `docs/feedback/clinic-playtest-2026-10-01.md` P14, P66, 2:6:49–8:13 |
 | SH-46 | A move the child hasn't managed yet (e.g. a drag) is shown again by the ghost finger after a pause, not only the first time ever | built, not re-played | eye: ear L1, second play | `docs/feedback/clinic-playtest-2026-10-01.md` P32, 1:17:42–17:47 |
-| SH-47 | Closed card on phones: the headline shrinks first, then wraps at the largest two-line size; the flag sits clear of the eye | open | eye: 800×360, 844×390 · TXT-02 | Fable's clinic review, 2 Oct |
-| SH-48 | Card rows stay on one line on phones, shrinking to the floor first | open | eye: 800×360, 844×390 · TXT-02 | Fable's clinic review, 2 Oct |
+| SH-47 | Closed card on phones: the headline shrinks first, then wraps at the largest two-line size; the flag sits clear of the eye | built, not re-played (G1, 5 Oct: the head leaves the eye's corner free) | eye: 800×360, 844×390 · TXT-02 | Fable's clinic review, 2 Oct |
+| SH-48 | Card rows stay on one line on phones, shrinking to the floor first | built, not re-played (G1, 5 Oct: no row wrapped above the floor in Cook's chai, daar and the clinic at 800×360 and 844×390; a busy sidebar flows rows as pills, one line each) | eye: 800×360, 844×390 · TXT-02 | Fable's clinic review, 2 Oct |
 
 ## Cook: pantry
 
