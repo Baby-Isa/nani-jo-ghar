@@ -15,7 +15,8 @@ node build/tools/ops/publish.mjs [--go] [--site URL] [--timeout 900] [--allow-di
     3. polls <site>/js/version.js every 20 s until it serves the new stamp (--timeout seconds, default 900)
     4. screenshots <site>/labs.html at 1366x768 into build/screenshots/publish/<stamp>-labs.png: look at it before telling Zafar
   --site     the Pages URL (default from the origin remote: https://<owner>.github.io/<repo>)
-  --trailer  the commit's closing lines (default: Co-Authored-By and this session's Claude-Session line)
+  --trailer  the commit's closing lines (default: Co-Authored-By, plus Claude-Session when
+             CLAUDE_CODE_REMOTE_SESSION_ID is set; pass the session's own lines to be sure)
   --log      append one line to docs/process/overnight-log.md
   If origin/main has commits this branch lacks, it stops: merge origin/main, take the real side of any ?v= conflict, re-run.
   If this container can't reach github.io, step 3 says so: check the pages-build-deployment run for the commit instead
@@ -57,7 +58,7 @@ const stamp = sh("python3", ["build/bump_version.py", "--check"]);
 git("add", "-A");
 // the attribution lines the session's system prompt gives (CLAUDE.md, Git and publishing)
 const sid = process.env.CLAUDE_CODE_REMOTE_SESSION_ID || process.env.CLAUDE_CODE_SESSION_ID || "";
-const trailer = a.val("trailer") || `Co-Authored-By: Claude <noreply@anthropic.com>${sid ? `\nClaude-Session: https://claude.ai/code/${sid.startsWith("session_") ? sid : `session_${sid}`}` : ""}`;
+const trailer = a.val("trailer") || `Co-Authored-By: Claude <noreply@anthropic.com>${sid.startsWith("session_") ? `\nClaude-Session: https://claude.ai/code/${sid}` : ""}`;
 git("commit", "-q", "-m", `Publish: version ${stamp}\n\n${trailer}`);
 const sha = git("rev-parse", "HEAD");
 say(`1. bumped to ${stamp}, commit ${sha.slice(0, 8)}`);
