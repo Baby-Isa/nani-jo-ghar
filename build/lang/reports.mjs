@@ -311,7 +311,7 @@ export function coverageMarkdown(S, log, data, validation, audio) {
     "",
     "Loaded: data/cook.json, data/stations/*.json, data/content.json, data/clinic.json, data/clinic/lang.json, data/clinic/pipeline.json, data/clinic/heal/*.json, data/conversations/lines.json, data/story/first-launch.json, the parked modes' data (dress, who, relations, monsoon, snap, tidy, find), docs/language/lexicon.md §6 (the tables), docs/language/grammar-notes.md and grammar-kb.md (by hand, each entry citing its section), the 5 Oct report, data/family-audio.json.",
     "",
-    "Not loaded as Kutchi (rule G1: two AIs agreeing is not evidence): the Gemini blueprints, Claude's grammar checklist, the Sindhi and Gujarati comparisons in grammar-notes, the 'Claude's check' paragraphs, the agreement paper, and `Mum yes-no list (2026-10-05).md`. They shaped the questions, never the data. Data/cook-tts.json and data/monsoon-audio.json are test-only text-to-speech indexes (rule G14): they are checked against the lexicon, not loaded.",
+    "Not loaded as Kutchi (rule G1: two AIs agreeing is not evidence): the Gemini blueprints, Claude's grammar checklist, the Sindhi and Gujarati comparisons in grammar-notes, the 'Claude's check' paragraphs, the agreement paper, and `Mum yes-no list (2026-10-05).md`. They shaped the questions, never the data. data/cook-tts.json and data/monsoon-audio.json (the same 186 keys) are test-only text-to-speech indexes (rule G14): they are checked against the lexicon, not loaded.",
     "",
   ].join("\n");
 }
