@@ -14,7 +14,7 @@ description: The 30-40 minute check-in while build sessions run. Use when a send
    Commits since the last check-in by session tag, reports landed, art on `main` (x of 115), and the sessions `docs/status.md` lists.
 2. Each running session: `get_session` (`updated_at`, `status_detail`). "Idle" isn't dead: wait 20-30 min before judging; never relaunch one that is running (B12). After a usage limit, relaunch stopped ones as continuations (B11).
 3. Look at any finished screenshots yourself (B13), flaws first (C3). For a landed report: read it, not the transcript.
-4. Write the line and log it (append only):
+4. Write the line and log it (append only; days before today move to `docs/process/overnight-log/<date>.md`):
    ```
    node build/tools/ops/checkin.mjs --log --note "<your one-line judgement>"
    ```

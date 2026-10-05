@@ -8,24 +8,19 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (5 Oct 2026, 20:45 UK):** all work is on branch `ccr-fcd9dddd-wnywzc`; `main` is still the 1 Oct build plus art uploads. Decisions 28–46 were made today.
-- **Done today** (reports in `build/reports/`): C1, G1, Mum's 5 Oct round, W1, W2, the step 3 gate, F1, A1, A2 (the girl's clinic art, all wired), C3 (Cook ready to play), 4a and 4b (the language engine built and filled), 4e (the clinic on the engine), T1–T3 (18 scripts, 8 project skills), the Fable docs audit (`docs/process/audits/2026-10-05-docs-audit.md`).
-- **Art:** paused after part B (decision 43); 76 of 115 on `main`; redo list in `docs/design-language/art-plans/clinic-heal-redo-list.yaml`.
-- **Zafar plays** only once it is all live on `main` (decision 33).
+**Where things stand (written by D1, 6 Oct 2026):** the docs rewrite is done on branch `docs-rewrite` (not merged, never pushed to `main`); the game is on branch `ccr-fcd9dddd-wnywzc`, and `main` is still the 1 Oct build plus art uploads. Sprint 1 ("remedial and engine", `docs/sprints/S01-remedial-and-engine.md`) closes at the next publish; Sprint 2 is "play and fix Cook and the clinic" (`S02-…`).
+- **Done:** step 3 and step 4 (Cook and the clinic on the core and the engine), C3, R7, E1, W1, W2, A1, A2, T1–T3, the Fable docs audit, D1 (reports in `build/reports/`). C4 (Cook mounted through the host): see its report `c4-cook-host.md` for what landed.
+- **Art** is paused until after play (decision 43); 76 of 115 clinic images on `main`; the redo list is `docs/design-language/art-plans/clinic-heal-redo-list.yaml`.
+- **Zafar plays** only once it is live on `main` (decision 33).
 
-**Next steps, in order (decisions 33-45):**
-1. Re-arm a 30-35 minute `send_later` check-in; `node build/tools/ops/checkin.mjs --log`; one line to Zafar.
-2. Running (5 Oct night): C4 Cook mounted through the shared host (`session_01Bx6Kz5A7XGcpaL5C2hizYS`, Opus high, auto, stop 05:00; brief `build/tools/ops/specs/c4-cook-host.brief.txt`), E1 engine marks guessed forms as drafts (`session_01GYAi5DP8sH3xR5MDok9ttq`, Sonnet). Done: 4d, 4e, R7 and all earlier sessions (reports in `build/reports/`).
-3. When C4 ends: the docs rewrite (decisions 47, 49: Fable audit plan + architecture and Cook/clinic mode docs + sprint structure; own branch; Sonnet high, then Fable review), alongside the orchestrator's review.
-4. When 4d, 4e, R7 and C4 are done: the orchestrator's `/review` (touched mapper → regression rows → sandbox full matrix → shotdiff, flaws first), then `/publish`, Pages check, send Zafar the link and what to play.
-5. Zafar plays → `/feedback` → fixes; clash list sheet for Zafar and Mum (`mumsheet.mjs`); the art redo list + part C in one faster run (`/art-run`; write the W11 standing pose prompt first).
-6. The docs rewrite (Fable reviews) closes the chapter.
-7. Open: Mum's 168 clips to ear-check; Round 5/6.
+**Next steps, in order:**
+1. Fable reviews the `docs-rewrite` diff against the audit (`docs/process/audits/2026-10-05-docs-audit.md`); on Zafar's go, merge `docs-rewrite` into the integration branch.
+2. The orchestrator's `/review` (touched mapper, regression rows, the sandbox full matrix, shotdiff, flaws first), then `/publish`, the Pages check, and the link and what to play for Zafar.
+3. Open Sprint 2 with Zafar (`/sprint`: goal, budget, sessions, one go at a time). He plays → `/feedback` → fixes; the clash-list sheet for Zafar and Mum (`mumsheet.mjs`); the art redo list plus part C in one faster run (`/art-run`; write the W11 standing pose prompt first).
+4. Open: Mum's 168 clips to ear-check; Round 5 and 6; the questions under "Waiting on Zafar" below.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first) and only the rulebook sections for the work at hand (§2 sessions, §3 quality). Work on branch `ccr-fcd9dddd-wnywzc`. Check the running sessions listed there, give me a one-paragraph update, then carry on with "Next steps" (check-ins, your look, then the play link). Tell me before launching anything new.
-
-**Keeping new chats cheap:** read only the rulebook sections a task needs (not all of `rules.md`); read reports, never transcripts; hand over at each step boundary or around 300k context.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first) and only the rulebook sections for the work at hand. Branch `ccr-fcd9dddd-wnywzc` (docs on `docs-rewrite` until merged). Give me a one-paragraph update, then carry on with "Next steps". Tell me before launching anything new.
 
 ---
 
