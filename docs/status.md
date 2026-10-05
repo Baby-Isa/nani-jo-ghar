@@ -15,15 +15,15 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
   2. **W2**: Cook's samosa/daar guide phases, the clinic words shown and heard, *lal* → ***laal*** everywhere, decision 32; Sonnet, `session_01JcvC7Umt9dTH9ZVUQ27aJc`, stop 17:30 → `w2-words.md`.
   3. **A1**: the girl's clinic art cut and wired into the nine heal games; told to wrap up (big context) → `a1-clinic-art.md` with a "left for the next art session" list. Opus, `session_01MX4oT85PhNCze8gryAZbNz`.
   4. **Chrome art run** (Zafar's browser): parts B–D still landing in `sources/art/clinic-heal-v3/` on `main` (30 of 115 at 14:50).
-- **Zafar wants Mum's words AND the art wired before he plays tonight.**
+- **Decision 33:** Zafar plays only after all the art is finished and wired, the full checks pass, and it is live on `main`. No play tonight.
 
-**Next steps, in order:**
+**Next steps, in order (decision 33, rule B20: art finished → wired → full checks → publish → Zafar plays → fixes; no play on the branch preview):**
 1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
-2. When the gate, W2 and A1 are done: read the three reports; your own look (sandbox `--flow` on clinic heal games + `clinic:patient` and `cook:samosa`, `cook:daar`, at 1366×768 and 800×360; flaws first).
-3. Check the preview loads: https://raw.githack.com/Baby-Isa/nani-jo-ghar/ccr-fcd9dddd-wnywzc/labs.html (raw.githack serves the branch; the repo is public). Hand Zafar that link and a short list of what to play (the clinic's nine heal games and one patient end to end; Cook chai, samosa, daar; Mum's new words in the guide box: tap its speaker).
-4. His feedback → a full report and regression rows the same day (CLAUDE.md).
-5. When Chrome finishes parts C and D: a fresh art session A2 (Opus, high) continues from `build/cut_clinic_heal_v3.py` and `data/clinic/heal-art.json` per A1's list.
-6. With Zafar's OK after play: `python3 build/bump_version.py`, merge to `main`, check the Pages build, send a screenshot (decision 28: one publish after the gate).
+2. When the gate, W2 and A1 are done: read the three reports; note their findings for A2's brief. No look or play link yet.
+3. When Chrome has finished parts B–D in ChatGPT: propose A2 to Zafar (Opus, high, with a cost estimate) and launch only on his go. A2 cuts and wires all remaining clinic heal art from `build/cut_clinic_heal_v3.py` and `data/clinic/heal-art.json` per A1's list, including A1's redo list once redone.
+4. Full checks on everything: full sandbox run + full QA matrix, a reviewer other than the builder, every regression row for touched screens.
+5. `python3 build/bump_version.py`, merge to `main`, check the Pages build, send Zafar a screenshot, the live link and what to play.
+6. His feedback → a full report and regression rows the same day; then art fixes and gameplay fixes.
 7. Open: Mum's 168 clips need ear-checking in `lab/family-audio.html`; the yes/no list for Mum; Round 5.
 
 **Starting prompt for a new chat:**

@@ -247,6 +247,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **31. Spellings from Mum's 5 Oct recordings:** all eleven in `build/reports/mum-2026-10-05.md` confirmed, except cold, which is ***thundo*** (not *thandu*). The clinic's "Ne poi cloth, ba dabs" may wrap at 800×360 for now (it is at the text floor). Before Zafar plays tonight: wire Mum's new words into Cook and the clinic, and wire the clinic heal art that has landed.
   Source: Zafar, orchestrator chat, 5 Oct. Rule: G3, D3
 
+- **33. The release cycle:** art finished in ChatGPT → wired in → full checks on everything → publish to `main` → Zafar plays and gives feedback → new art, art fixes and gameplay fixes from that feedback. So no play tonight on the branch preview: Zafar plays once the clinic heal art (parts B–D) is all landed and wired (A2), the full checks pass and it is live on `main`. Replaces the "play this evening" parts of decisions 28 and 31 and the orchestrator's proposal of a quick look now, full clinic check later.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: B20
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

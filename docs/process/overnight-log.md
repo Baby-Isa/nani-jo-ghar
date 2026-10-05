@@ -111,3 +111,4 @@
 - 2026-10-05 14:53 UK · Check-in: W1 done ($10.6; 11 Mum clips cut, Cook guide wired; samosa/daar guide bug and clinic words not shown → W2 launched, Sonnet, stop 17:30). Gate 234/493 pages. A1 has knee, scrape, ear, foot sole, tooth, tongue wired; 30 art images on main. Asked Zafar: red laal or lal.
 - 2026-10-05 15:00 UK · Zafar: red is laal (sent to W2, decision 32 there). A1 told to wrap up (470k context); a fresh A2 does parts C/D later. Handover written in docs/status.md for a new orchestrator chat.
 - 2026-10-05 15:13 UK · New orchestrator chat. Check-in: gate 441/493 pages (clinic heal games left, ~15 min); W2 running (stop 17:30); A1 report pushed, its last cut still writing, sandbox line pending; Chrome 33 of 115 images on main.
+- 2026-10-05 15:20 UK · Decision 33 (rule B20): art finished → wired → full checks → publish to main → Zafar plays → fixes. No play tonight; A2 waits for Chrome to finish parts B–D, then needs Zafar's go.
