@@ -4,16 +4,15 @@
 
 ## Images judged (plan §7, flaws first)
 - **Fail:** O2's four spots read as sweets (I2). They are not cut, and taste keeps its drawn spots. Needs a redo.
-- **Pass, with notes:** R2's blade crosses the midline (harmless once cut). R5's board is cream. R3 is slightly redrawn, so CB2b is kept in the middle. R4 is a re-render, registered by SIFT.
+- **Notes:** R3 is slightly redrawn, so CB2b is kept in its middle; R4 is registered by SIFT.
 - **Pass:** O3, R1, R3, R4, R5, C1, C2, B1, and O2's decay and filling. Cuts are clean on cream and black.
 
 ## Wired (girl)
-- **fever:** open window, fan (body and spinning disc), gauge, ice pack, hand fan, heater, bottle.
+- **fever:** window, fan, gauge, R1's things.
 - **tooth:** decay and filling in the drilled outline; B1 button and nozzle.
 - **taste and ear:** O3 bud.
 - **eye:** C1 rows on its ruled lines; C2 by its corners.
-- **diagnosis:** her W1 on the bed; taps, hints and the magnifier on the art.
-- **send-off:** her own face per feeling.
+- **diagnosis:** her W1 on the bed, taps and magnifier on the art. **Send-off:** her own face per feeling.
 - **G26:** grep finds no `HS.ph("…")` and no `kutchi: "…"`. Uses Mum's *kan*, *garam*, *thundo*; lukewarm, bandage and "To the counter" are to record.
 
 ## Stand-ins left
@@ -31,7 +30,7 @@
 ## Proof
 - `check_onboard` and 13 clinic leak scripts pass.
 - Sandbox `--touched` (nine games, patient, diagnosis, send-off; L1–L3, `#mistake`, `#hint`, all 8 sizes): every page ends, 0 page errors.
-- `--check`: cut and fever re-run after the fixes, and fever **passes**. The other new finding, `tap-small` on the waiting room's ticks, is known (moved).
+- `--check`: after the fixes, cut ends everywhere and fever passes; the waiting room's `tap-small` is known.
 - Rotate card passes.
 
 ## Flaws for the reviewer
