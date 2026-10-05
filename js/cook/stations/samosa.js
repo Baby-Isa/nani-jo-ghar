@@ -704,7 +704,7 @@
         glowOn = { poly, a: from, b: to };
         const offerGo = n > 0 && f === 0;
         const r = await swipe(z, S, {
-          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: phases.go || "fry them", expectGo: offerGo && n >= total, glowGo: offerGo && ctx.guided && n >= total, minLen: k.minLen || 0.45 });
+          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: Lang.label(phases.go || "go-fry").text, expectGo: offerGo && n >= total, glowGo: offerGo && ctx.guided && n >= total, minLen: k.minLen || 0.45 });
         glowOn = null;
         if (r === "go") {
           quit = true;

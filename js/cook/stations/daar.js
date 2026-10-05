@@ -236,11 +236,12 @@
     const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(parts(id))), done: false }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
-    no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.line("no", Lang.phrase([id])))), done: false, no: true }));
+    no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))))), done: false, no: true }));
+    // "Chop these": the engine's line (to record with Mum: a grey-italic placeholder until then)
+    const chopHead = Lang.line("chop-these");
     const data = () => ({
       person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
-      // "Chop these" is an English placeholder (§13), flagged to record
-      headline: { html: "Chop these", rec: true },
+      headline: { html: Lang.html(chopHead), rec: !chopHead.ok },
       // a "don't" row is the shared card's no-row style (dashed, the no-sign), never ticked here
       items: rows.map((r) => (r.no ? { label: null, parts: [{ label: r.label, done: false, no: true, key: r }] } : { label: r.label, count: 2, parts: [], done: r.done, key: r })),
     });

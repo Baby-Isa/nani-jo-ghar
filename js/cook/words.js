@@ -41,7 +41,7 @@
   Lang.known = (id) => !!entry(id);
   /** The engine's word result for a Cook id (its default form), or a placeholder for an id the engine doesn't know. */
   function wordR(id) {
-    if (!entry(id)) return { ok: false, text: String(id), en: String(id), tokens: [{ t: String(id), lang: "e" }], segments: [{ t: String(id), lang: "e", gap: "lexeme" }], clipPlan: [{ kind: "missing", source: "missing", lang: "e", text: String(id), tokens: [0, 0] }], gaps: [{ kind: "lexeme", lex: id, what: `no word "${id}"` }], drafts: [] };
+    if (!entry(id)) return { ok: false, text: String(id), en: String(id), tokens: [{ t: String(id), lang: "e" }], segments: [{ t: String(id), lang: "e", gap: "lexeme" }], clipPlan: [{ kind: "missing", source: "missing", lang: "e", text: String(id), tokens: [0, 0] }], gaps: [{ kind: "lexeme", lex: id }], drafts: [] };
     const r = EN().word(String(id), null, ctx);
     return withSay(Object.assign({}, r, { en: entry(id).gloss || String(id) }));
   }
@@ -145,7 +145,7 @@
         break;
       case "Count": {
         const id = Cook.numId(m.n);
-        r = entry(id) ? wordR(id) : Object.assign(empty(), { ok: false, text: String(m.n), en: String(m.n), segments: [{ t: String(m.n), lang: "e", gap: "number" }], gaps: [{ kind: "lexeme", what: `no number word for ${m.n}` }] });
+        r = entry(id) ? wordR(id) : Object.assign(empty(), { ok: false, text: String(m.n), en: String(m.n), segments: [{ t: String(m.n), lang: "e", gap: "number" }], gaps: [{ kind: "lexeme", lex: `num:${m.n}` }] });
         break;
       }
       case "Join": {
@@ -307,6 +307,19 @@
     return { segs, en: lines.map((l) => l.en).join(" "), parts: lines, plan, ok: lines.every((l) => l.ok !== false) };
   };
   Lang.plain = (line) => line.segs.map((s) => s.t).join("");
+  /** A line as a card row (F10, TXT-07): lower case, no final mark ("dungri na"). */
+  Lang.asRow = (line) => {
+    const segs = line.segs.slice();
+    while (segs.length && segs[segs.length - 1].lang == null && /^[.!?]$/.test(segs[segs.length - 1].t)) segs.pop();
+    const i = segs.findIndex((s) => s.lang);
+    if (i >= 0 && segs[i].lang === "k") segs[i] = Object.assign({}, segs[i], { t: segs[i].t.charAt(0).toLowerCase() + segs[i].t.slice(1) });
+    return Object.assign({}, line, { segs, en: String(line.en || "").replace(/[.!?]+$/, "") });
+  };
+  /** A label (a button's text): the engine's line as plain text, and whether it is a to-record placeholder. */
+  Lang.label = (key) => {
+    const l = Lang.line(key);
+    return { text: Lang.plain(l).replace(/[.!?]$/, ""), rec: !l.ok, line: l };
+  };
 
   /**
    * HTML for a line. opts.hide: a function (wordId) -> true to hide that word as dots (the mission card, for a word

@@ -763,6 +763,21 @@
    "en": "This is for {x}.",
    "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B39; A3 §8): Hi Nana lai ai"
   },
+  "chop-these": {
+   "e": "Chop these",
+   "record": true,
+   "_about": "Nani's chop card headline at the daar station (step 4d: was typed in js/cook/stations/daar.js); to record with Mum"
+  },
+  "go-fry": {
+   "e": "Fry them",
+   "record": true,
+   "_about": "The samosa station's button from folding to frying (step 4d: was data/stations/samosa.json phases.go); to record with Mum"
+  },
+  "go-grill": {
+   "e": "To the grill",
+   "record": true,
+   "_about": "The sekelo station's button from threading to the grill (step 4d: was data/stations/mishkaki-grill.json phases.go); to record with Mum"
+  },
   "pocket": {
    "e": "I'll give you pocket money for helping. Get it all right and be quick, and you get more!"
   },

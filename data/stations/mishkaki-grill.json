@@ -7,7 +7,7 @@
   "phases": {
    "thread": "Tap the bowls to thread each skewer the way they said. Then tap \"to the grill\".",
    "grill": "Tap a skewer on the rack to grill it. Turn it on the green, then lift it onto the plate.",
-   "go": "to the grill"
+   "go": "go-grill"
   }
  },
  "words": {

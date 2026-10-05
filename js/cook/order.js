@@ -65,7 +65,7 @@
       revealed: false,
       phrase,
       // on the card: just the words (the dot says how it links); "no X" as said
-      line: no ? r.line : { segs: cardPhrase.segs, en: cardPhrase.en },
+      line: no ? (Lang.asRow ? Lang.asRow(r.line) : r.line) : { segs: cardPhrase.segs, en: cardPhrase.en },
       // as the recipe data says it (its own frame: "Ne be khun.")
       said: r.line,
       list: !!r.list,
