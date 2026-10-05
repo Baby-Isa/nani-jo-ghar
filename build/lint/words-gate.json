@@ -1,5 +1,8 @@
 {
-  "_about": "The word lint's strict gate (R7, decision 45), run by build/tools/review/checks.mjs as `words.mjs --strict --only a --dirs <enforce>`: any string literal typed in game code (G26) in an enforced folder fails the check. `ready` folders are listed, reported and not yet enforced: move one to `enforce` when its engine step reports 0 literals (`node build/lint/words.mjs --only a --dirs js/clinic`).",
-  "enforce": ["js/cook"],
-  "ready": ["js/clinic"]
+  "_about": "The word lint's strict gate (R7, decision 45), run by build/tools/review/checks.mjs as `words.mjs --strict --only a --dirs <enforce>`: any string literal typed in game code (G26) in an enforced folder fails the check. `ready` folders are listed, reported and not yet enforced: move one to `enforce` when its engine step reports 0 literals (`node build/lint/words.mjs --only a --dirs js/clinic`). Step 4d: js/clinic enforced too (0 literals; the parked heal games hic, tummy and hair are allow-listed as a marked G26 debt in build/lint/words-allow.json).",
+  "enforce": [
+    "js/cook",
+    "js/clinic"
+  ],
+  "ready": []
 }
