@@ -315,7 +315,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-wp.walking { transform: translate(-50%, -100%) scale(.82); }
 .cl-wp.gone { opacity: 0; }
 .cl-wp .cl-ring { top: -8%; }
-.cl-wtick { width: clamp(44px, 4.6vw, 58px); height: clamp(44px, 4.6vw, 58px); padding: var(--njg-s2); border-radius: 50%; border: 4px solid #c9962e; background: rgba(255, 255, 255, .88); color: #fff !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
+.cl-wtick { width: clamp(48px, 4.6vw, 58px); height: clamp(48px, 4.6vw, 58px); padding: var(--njg-s2); border-radius: 50%; border: 4px solid #c9962e; background: rgba(255, 255, 255, .88); color: #fff !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .18); cursor: pointer; }
 .cl-wtick svg { width: 100%; height: 100%; display: block; opacity: 0; }
 .cl-wtick.locked svg { opacity: 1; }
 .cl-wtick.locked { background: #3fa35b; border-color: #fff; animation: cl-lock .35s ease-out; }
