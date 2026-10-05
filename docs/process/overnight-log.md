@@ -151,3 +151,4 @@
 - 2026-10-05 21:05 UK · R7 done (build/reports/r7-leftovers.md): all 12 leftovers closed or explained; flagged: find.html broken by 4d's Lang.known (parked pages still load js/cook/lang.js); js/clinic word gate waits on 72 literals.
 - 20:56 UK · 4d: Cook's and the clinic's words in data/lang/seed/ (the importer's own source; engine output unchanged; data/clinic/lang.json deleted); parked pages fixed (find, who) and pass; Cook quick sandbox: every page ends, 0 page errors. Next: full proof at four sizes, sound run, report.
 - 2026-10-05 21:00 UK · R7 done ($4.42; 11 of 12 done, clinic word gate ready; found find.html broken by 4d). Decisions 47 (docs rewrite after C4) and 48 (one consolidated check). 4d told to cut its proof, fix find.html, clear clinic's 72 literals.
+- 2026-10-05 21:40 UK · Decision 49: sprints (one file per sprint, small decisions there, lasting ones as rules); this chapter = Sprint 1; set up in the docs rewrite.
