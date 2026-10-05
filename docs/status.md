@@ -11,17 +11,18 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 **Where things stand (5 Oct 2026, 15:00 UK):** handover from the 5 Oct orchestrator chat. All work is on branch `ccr-fcd9dddd-wnywzc`; `main` is still the 1 Oct build.
 - **Done today:** C1 clinic polish (`build/reports/c1-clinic-polish.md`), G1 gate fixes (`g1-gate-fixes.md`), Mum's 5 Oct recordings processed (`mum-2026-10-05.md`: Round 4, grammar §38–55, 168 clips not yet ear-checked), W1 Mum's words into Cook's guide box and the clinic data (`w1-words.md`), the Keine et al. paper + Gemini excerpts analysed (`docs/language/sources/kutchi-findings-summary-2026-10-05.md`, a 67-item yes/no list for Mum in `docs/language/mum-questions/`). Decisions 28–31 (and 32 when W2 lands: red is ***laal***).
 - **Done 15:50:** the gate (`step3-gate.md`: 493 pages end; 17 new Cook findings), W2 (`w2-words.md`), A1 (`a1-clinic-art.md`); all three sessions closed.
-- **Running:** F1, Sonnet, `session_01Ldnd6WKRk1vAFSApXimuWs`, stop 18:00 → `f1-gate-findings.md`. Chrome art run: part B 35 of 37 on `main` (C2, B1 to come), then parts C and D.
+- **Running:** F1, Sonnet, `session_01Ldnd6WKRk1vAFSApXimuWs`, stop 18:00 → `f1-gate-findings.md`. A2, Opus high, `session_01HpATZUqu38HaMT1EfVzjpb`, stop 20:00 → `a2-clinic-art.md` (Zafar said go 16:40). 4a, Opus high, `session_018y5DMCTuxTv18UPuhzNzPw`, stop 21:00 → `step4a-engine-core.md`. Chrome art run: part B 35 of 37 on `main` (C2, B1 to come), then parts C and D.
 - **Decision 33:** Zafar plays only after all the art is finished and wired, the full checks pass, and it is live on `main`. No play tonight.
 
-**Next steps, in order (decisions 33–37, rule B20: art finished → wired → checks on what changed → publish → Zafar plays → fixes):**
+**Next steps, in order (decisions 33-39):**
 1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
-2. F1 (Sonnet, medium) fixes the gate's 17 Cook findings, the 3 phone card-scroll slips and *laal marcha* → `build/reports/f1-gate-findings.md`.
-3. A2 (Opus, high; needs Zafar's go): wire the rest of part B for the girl (props O2, O3, R1–R5, C1, C2, B1, diagnosis on the art), and move the clinic's hard-coded stand-in words into the language data (decision 36, rule G26). Part B is 35 of 37 on `main` (C2 and B1 to come).
-4. Checks on what changed only (decision 34): the clinic plus F1's Cook screens, full QA matrix, an outside reviewer, the regression rows.
-5. `python3 build/bump_version.py`, merge to `main`, check the Pages build, send Zafar a screenshot, the live link and what to play.
-6. His feedback → a full report and regression rows the same day; then fixes. Part C (other patients), part D (drop machine) and A1's redo list are stitched in as they land.
-7. Open: Mum's 168 clips need ear-checking in `lab/family-audio.html`; the yes/no list for Mum; Round 5.
+2. Running: F1 (Cook gate findings, stop 18:00), A2 (the girl's clinic art + words out of code, stop 20:00), 4a (engine core, stop 21:00).
+3. When F1 ends: launch C3, Cook's workarounds (shims) removed + every open Cook gameplay row fixable now (decision 38d).
+4. When 4a ends: launch 4b (fill the engine from what's known, Cook and clinic first, plus the gap list). 4c is the gap reporter only (in 4a).
+5. When A2 and C3 are done: orchestrator reviews their shots (changed screens only, full matrix), then bump, publish to `main`, check Pages, send Zafar the link and what to play.
+6. Zafar plays Cook and the clinic → full report + regression rows → feedback fixes together with 4d (Cook onto the engine) and 4e (the clinic onto the engine). If 4a/4b finish early, 4d/4e may go before he plays.
+7. Docs rewrite; the refactor chapter closes. Then the roadmap (decision 39).
+8. Open: Mum's 168 clips to ear-check in `lab/family-audio.html`; the yes/no list for Mum; Round 5.
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first) and only the rulebook sections for the work at hand (§2 sessions, §3 quality). Work on branch `ccr-fcd9dddd-wnywzc`. Check the running sessions listed there, give me a one-paragraph update, then carry on with "Next steps" (check-ins, your look, then the play link). Tell me before launching anything new.
@@ -36,11 +37,11 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 |---|---|---|
 | 1 | The brain: rulebook, `CLAUDE.md`, QA checklist, regression list, decisions log, docs reorganised | **Done** (merged 1 Oct) |
 | 2a | Code target operating model: engine core, one scoring model (the three badges), shared UI kit, content as data, modes as plug-ins, a sandbox that plays the real flows, layout lint; then a gap analysis with a sequenced refactor plan and estimates | **Done** (approved 1 Oct) |
-| 2b | Language engine design: Grammatical Framework style, the Sindhi resource grammar as template, Mum's answers as the only evidence; the grammar knowledge base; the fill-the-engine rulebook and questionnaire | **Drafted and reviewed** (1 Oct); awaiting Zafar's decisions. Round 5 for Mum written |
-| 3 | Refactor to the target model: the lean plan (R0–R5), checked by flow tests and layout lint; parked modes move when their turn comes | **Running** (1 Oct) |
-| 4 | Build the language engine, fill it with everything known, use it everywhere | After 3 |
-| Docs | The shared design docs are rewritten clean after the target model is approved; each mode's doc is rewritten when that mode is refactored (its "Stale points" box then goes) | With 2a / 3 |
-| Then | Finish Cook fully (open regression rows, SEK-09 and the rest), then the clinic games | After 4 |
+| 2b | Language engine design: Grammatical Framework style, the Sindhi resource grammar as template, Mum's answers as the only evidence; the grammar knowledge base; the fill-the-engine rulebook and questionnaire | **Done** (decided 1 Oct, decisions 17, 26, 30) |
+| 3 | Refactor to the target model: the lean plan (R0–R5), checked by flow tests and layout lint; parked modes move when their turn comes | **Done** for Cook and the clinic (R0–R6, gate 5 Oct; F1 fixes its findings). Cook's shims go in C3 before play. Parked modes move when their turn comes (decision 38) |
+| 4 | Build the language engine, fill it with everything known, use it everywhere | **4a running** (5 Oct); 4b next; 4c = gap reporter only (simulator later); 4d/4e (Cook, clinic onto it) with Zafar's feedback fixes |
+| Docs | The shared design docs are rewritten clean after the target model is approved; each mode's doc is rewritten when that mode is refactored (its "Stale points" box then goes) | After 4d/4e; closes the chapter (decision 38) |
+| Then | Finish Cook and the clinic by play and feedback; then Arc 1's other modes, story glue, beach trip as template, other trips, sewing arc (decision 39) | After the chapter closes |
 
 ---
 

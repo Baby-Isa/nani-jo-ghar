@@ -390,7 +390,7 @@
       "english": "red chilli powder",
       "category": "spice",
       "kutchi": {
-        "text": "lal marcha",
+        "text": "laal marcha",
         "is_draft": true,
         "source": "sindhi-cognate"
       },
@@ -1000,7 +1000,7 @@
     },
     "spi-04": {
       "english": "I need red chilli powder",
-      "kutchi_singular": "Muke lal marcha khape",
+      "kutchi_singular": "Muke laal marcha khape",
       "kutchi_plural_example": null,
       "is_draft": true
     },

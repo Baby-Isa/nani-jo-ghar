@@ -231,3 +231,17 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 /* (important: a mode may set its own .fit display with an id, e.g. Cook's #side) */
 .oc-card.oc-mini .oc-headline, .oc-card.oc-mini .oc-body, .oc-card.oc-mini .oc-look { display: none !important; }
 .oc-card.oc-mini .oc-done-tk { position: absolute; top: calc(var(--njg-s1) * -1); right: calc(var(--njg-s1) * -1); }
+
+/* F1: a card on the tightest phones (800x360, 844x390) must never scroll inside its sidebar (level 2 clinic cards: a
+   headline of three lines and six rows). Rows give back their padding and 4 px of height: the words stay at the floor. */
+@media (max-height: 400px) {
+  html[data-ff="phone"] .oc-card:not(.oc-big) { --oc-part-h: 20px; }
+  html[data-ff="phone"] .oc-card:not(.oc-big) .oc-row .oc-t { padding-block: 0; }
+  html[data-ff="phone"] .oc-card:not(.oc-big) .oc-tk { width: 14px; height: 14px; }
+}
+/* ... and on the shortest (800x360) the head and the gaps between rows tighten a little more */
+@media (max-height: 370px) {
+  html[data-ff="phone"] .oc-card:not(.oc-big) .oc-headline { line-height: 1.15; }
+  html[data-ff="phone"] .oc-card:not(.oc-big) .oc-headline.rec .oc-rec { margin-top: 0; }
+  html[data-ff="phone"] .oc-card:not(.oc-big) .oc-items, html[data-ff="phone"] .oc-card:not(.oc-big) .oc-parts { gap: 2px; }
+}

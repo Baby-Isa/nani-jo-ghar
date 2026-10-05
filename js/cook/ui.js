@@ -206,7 +206,11 @@
       const stageH = p.stage ? p.stage.height : 700;
       const h = b.offsetHeight;
       const left = Cook.clamp(p.x + 10, 8, stageW - w - 8);
-      const top = Cook.clamp(p.y - h / 2, 8, stageH - h - 8);
+      let top = Cook.clamp(p.y - h / 2, 8, stageH - h - 8);
+      // LAY-06: nothing sits on the middle of the play area (its 40-70% by 30% grid): a bubble that would reach it
+      // rides up beside the head instead
+      const reach = [0.4, 0.55, 0.7].some((f) => f * stageW >= left - 2 && f * stageW <= left + w + 2);
+      if (reach && top + h > stageH * 0.3 - 6) top = Math.max(8, stageH * 0.3 - 6 - h);
       b.style.left = `${left}px`;
       b.style.top = `${top}px`;
       b.style.setProperty("--tail-y", `${Cook.clamp(p.y - top - 9, 12, h - 30)}px`);

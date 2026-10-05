@@ -910,7 +910,8 @@
             t.destroy();
             t = S.add.text(0, 0, best.two.join("\n"), style(19)).setOrigin(0, 0.5);
           }
-          if (t.width > maxT) t.setScale(Math.max(14 / 25, maxT / t.width));
+          // the floor is 14px as rendered, so the chip's own scale counts (z.k < 1 on a small canvas)
+          if (t.width > maxT) t.setScale(Math.max(14 / (parseFloat(t.style.fontSize) * z.k), maxT / t.width));
           const tw = 22 + 8 + t.displayWidth;
           speaker(icon, -tw / 2 + 10, 0, 24);
           t.x = -tw / 2 + 30;
