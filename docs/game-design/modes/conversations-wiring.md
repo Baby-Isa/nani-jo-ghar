@@ -1,7 +1,5 @@
 # Conversations: wiring the 15 MVP placements (for the orchestrator, after merge)
 
-> **Stale points** (the rulebook wins): the voice star and `Stars.voice` → gone; correct speaking earns more pocket money (decisions 1–2, rule H5). Line numbers in this file date from 26 Sept. Archive this file once the 15 placements are wired.
-
 **Status:** the module is built and tested on `claude/conversations-mvp` (`js/shared/conversations.js`, `css/shared/conversations.css`, `data/conversations/*.json`, `lab/conversations.html`). **Nothing is wired into `first.html`, `cook.html` or `clinic.html`**: other sessions were editing them. This doc gives the exact hook point and the code for each placement. Line numbers are from `claude/nifty-rubin-c0d431` at `2d1db16`; check them again after merging, since those files are moving.
 
 Design: `docs/game-design/modes/conversations.md` (§10a wins). The placements are rows in `data/conversations/placements.json`.
@@ -150,7 +148,7 @@ Replace the three random `exchange()` calls:
     const c1 = await Conversations.maybe(conv(who, ctx, { placement: "CK1" }));      // salaam (first meeting today) or how are you
     if (!c1.ran) await Conversations.maybe(conv(who, ctx, { placement: "CK2", x: { dish: dishWordId(order.dishes[0].recipe) } }));
 ```
-- `dishWordId` maps a recipe to the noun ids in `lines.json` `nouns`: `chai → "cook-chai"`, `samosa → "ph-samosa"`, `chaat → "ph-chaat"`, `mishkaki → "ph-mishkaki"`, `maani → "cook-maani"`, `daar → "cook-daar"`. `R.dishWord(recipe)` already returns Cook's word id, so check it matches.
+- `dishWordId` maps a recipe to the noun ids in `lines.json` `nouns`: `chai → "cook-chai"`, `samosa → "ph-samosa"`, `chaat → "ph-chaat"`, `sekelo → "ph-mishkaki"` (the meat cubes keep the id), `maani → "cook-maani"`, `daar → "cook-daar"`. `R.dishWord(recipe)` already returns Cook's word id, so check it matches.
 - **Only chai has Mum's whole-line clip.** The other dishes show the built line, text only, until Mum records them (§9.2 items 10-12).
 - The cap is one per round, so CK2 runs only when CK1 didn't. **Retire `exchange()`, `EX()` and `data/cook.json` `exchanges` once this is in.** Migrate the old counts once, on load:
   ```js
@@ -191,7 +189,7 @@ Replace the three random `exchange()` calls:
     await roundEnd(ctx, { ... });
 ```
 - In `roundEnd` (flow.js:433-439), pass `words: words.concat(Conversations.roundWords(round))` to `R.show`.
-- For the voice star, pass `Stars.voice(hostMoments.concat(Conversations.roundMoments(round)), "cook")`. It's empty in the MVP: speaking (R4) isn't on yet.
+- For the speaking bonus (correct speaking earns more pocket money; there is no voice star, decision 2), pass the round's speaking moments to the scoring model (`js/core/score` or `js/shared/results.js`, as built). It is empty in the MVP: speaking (R4) isn't on yet.
 
 ---
 
@@ -261,7 +259,7 @@ After the patient's salaam to the doctor (their salaam stays heard, as designed)
       } else if (plan.variant === "E3") { /* the clinic's spoken goodbye, unchanged (below) */ }
 ```
 - **E3 "Say goodbye"** stays on the clinic's own `S.moment` (a speaking moment) for now. The MVP bubbles stop at R3 (tap); spoken R4 needs `Say.moment` and family speech templates for *Khuda-fis*, which has no clip yet.
-- **§10a:** the clinic's `data.goodbyes` should use *Khuda-fis*, not *achija*. Its yes/no should be `ha` / `na`, not *haa / nar* (design §4, the spelling flag).
+- **§10a:** the clinic's `data.goodbyes` use *Khuda-fis* and its yes/no is `ha` / `na` (done in the clinic's language data; design §4, the spelling flag).
 
 ---
 

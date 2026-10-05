@@ -1,12 +1,5 @@
 # Audio: recording, voices and sound
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - "There is no Kutchi speech recognition... from any vendor" and the staged speaking table → the speaking ramp is in rules E32 and `docs/game-design/speaking.md`; recognition work is in `docs/architecture/speech-recognition-plan.md`. Children's takes never ship and stay on the device (I15)
-> - "Placeholder TTS in the nearest available voice" (Technical Plan audio pipeline) → TTS is test-only and never ships; only real family voices ship (G14, non-negotiable 10)
-> - "Forty words takes about fifteen minutes" and "one take, each word twice" → recording practice now: Mum records long takes saying section IDs, split by silence; Zafar marks every clip OK/?? in `lab/family-audio.html`; only OK clips ship (G16)
-> - Whole-sentence or hand-made fragments → the most frequent phrases are recorded whole, the rest assembled from recorded words by the language engine (G9, G12, non-negotiable 11)
-> - "Reward chime on correct" is fine; "never a buzzer" is E10
-
 Rules, by ID (the rulebook wins): **G14** every voice is a real family member, TTS test-only and replaced file for file; **G16** recording practice and OK/?? marking; **G17** the child's model reply is Zafar's (boy) or Mum's (girl) for now; **I15** consent, and children's voices never ship; **G12** record the most frequent phrases whole; **E10** no buzzes; **E5** never make the child wait for speech.
 
 ---

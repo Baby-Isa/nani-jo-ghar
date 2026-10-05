@@ -1,12 +1,5 @@
 # Language engine: specification (Zafar's requirements, and what step 4a built)
 
-> **Stale points (the rulebook, `docs/process/rules.md`, wins).**
-> - This file holds Zafar's **requirements** for the engine, copied from the 30 Sept handover, and (at the end) **what step 4a built**: the API, the data schema and the tests. The design is `engine-design.md` (step 2b, 1 Oct; approved as decision 17).
-> - "Decide the Excel's role" is still an open question: see `language/lexicon.md` § The Excel's role.
-> - Where the handover says "use GF as the template", outside grammars and the Gemini/Claude research in `language/sources/` are **hypotheses, not evidence**: Mum is the authority and two AIs agreeing is not evidence (G1, non-negotiable 4).
-> - Rules that govern the engine: G9–G13, G18 (every line a full natural sentence; engine built the standard way; filled from Mum's natural sentences; whole-phrase recordings for the most frequent lines; no Kutchi grammar in game code; nouns carry gender, singular and plural).
-> - "Step 4" below means the build step of the 30 Sept plan; its place in the current plan is in `docs/status.md`.
-
 ## Sources and where things live
 
 - Known grammar: `docs/language/grammar-notes.md`; the words: `docs/language/lexicon.md`; the answered and open rounds: `docs/language/mum-questions/` (see its README); the family recordings: `data/family-audio.json`.
@@ -25,7 +18,7 @@
 - **A companion rulebook covers "how to fill the engine".** When it lacks a rule or word, the engine outputs what's needed: a list of phrases for Mum to say, such as "one boy / two boys, one girl / two girls", "big boy / big girl", "bring me / give me". She fills in the grammar without ever seeing a table (field-linguistics paradigm elicitation). Needed verbs and nouns are listed the same way. Cover gender, number, possession (*jo/ji/ja*), polite forms, numbers and counting, negation (*na*), lists and "with", postpositions and word order.
 - **Recording is separate and never changes the engine.** Near the end, simulated play-throughs give frequency statistics, and the most frequent lines get recorded whole so they sound human. Everything else is assembled from recorded parts (the fallback).
 - **Inventory first:** which verbs, frames and word classes the game actually uses today (probably a small set).
-- **Decide the Excel's role** (`content/Nani jo Ghar - Content Master.xlsx`: scene word lists, a draft vs a mostly-empty confirmed column, carrier-sentence formulas). The game doesn't read it today. Should it become the editable source for the lexicon and paradigms?
+- **The Excel's role is decided: retired as a source** (decision 17); its rows were imported once as words still wanted. Original note: decide the Excel's role (`content/Nani jo Ghar - Content Master.xlsx`: scene word lists, a draft vs a mostly-empty confirmed column, carrier-sentence formulas). The game doesn't read it today. Should it become the editable source for the lexicon and paradigms?
 - Known grammar lives in `docs/language/grammar-notes.md`, the four "Questions for Mum" rounds and the family recordings (`data/family-audio.json`).
 - **Output:**
   - the engine design;

@@ -1,12 +1,5 @@
 # Nani jo Ghar — Speech recognition plan
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - "Voice star rules" → remove: no voice star, no ear star (decision 2, H5); speaking is judged inside the three badges
-> - Examples *nar*, *bo*, *hikdo*, *aastethi* → *nar* is wrong (no = *na*, G5); use the confirmed spellings in `docs/language/lexicon.md`
-> - "Children's takes kept in the family, never shipped" is consistent with I15: children's voices never ship and stay on the device
-> - Where speaking happens → only inside a real two-person exchange (`docs/game-design/speaking.md`, rules E32)
-> - Never make the child wait for speech (E5) and nothing makes a child feel bad (E30): recognition results are never shown as verdicts
-
 *Closed-set spoken-word recognition: at a speaking moment the game knows the 3–8 Kutchi words the child could mean, and must pick the one said, or say "didn't catch that". Companion to the Deep-dive brief (principle 3) and the Game Design's "Speaking, staged" table (stage two). 25 Sept 2026.*
 
 ## Recommendation in one paragraph
@@ -81,10 +74,10 @@ Enrolment turns the template set from "Mum's voice" into "Mum's voice and this c
 
 | Outcome | Rule | What the child sees |
 |---|---|---|
-| Named, confidence ≥ 0.5 | Act on it | The character does it; the voice star fills |
+| Named, confidence ≥ 0.5 | Act on it | The character does it; the speaking bonus counts (a pocket-money bonus, decision 2) |
 | Named, confidence 0.2–0.5 | Act on it, and enrol the take if a family template agrees | Same |
 | Null (first time) | One "say it again", with the character leaning in | Nani's "Hmm?" recording and a bigger microphone; pills fade in behind |
-| Null (second) or timeout | Fallback | The pills are live; tapping one is a full success for the errand; the voice star stays open, not lost |
+| Null (second) or timeout | Fallback | The pills are live; tapping one is a full success for the errand; the speaking bonus is not earned, and nothing else is lost |
 | Mic refused or absent | `listen()` returns null at once | Pills from the start; the microphone button is hidden for the session |
 
 Nothing is ever marked wrong. Confidence is for the parent log and the enrolment rule, never shown to the child. A wrong recognition (dudh brought when chai was said) is handled like a wrong cup at the tray: a recast, and the child tries again or taps. The margin test exists so that a *wrong* answer is rarer than a null, and the test bears that out (0 wrong in 132 in-set queries; the cloud route managed one).
@@ -112,16 +105,16 @@ Words first: the chai tray's set, then Cook's other speaking moments, then each 
 
 **The UI, one moment:** the character turns to the child and the gist caption sets it up ("Nana wants his chai. Tell the cook what to make"). A big round microphone button, the choices as faint pills beneath it. Tap: the button pulses (`onState: "listening"`), swells with the child's voice (`"speaking"`), the character cups an ear. On a result the character acts at once and says the word back from the family recording, so a recognised word is heard again in a proper voice. On a null, Nani's "Hmm?" and the pills brighten; on the second null or a timer, the pills are simply live. A small parent button ("they said it") in the sidebar counts as a success and an enrolment.
 
-**Voice star rules (data, in `star_sets`):** earned when every speaking moment in the errand ended in a recognised word or a parent's confirmation; a pill tap leaves it unfilled but removes nothing else; nulls and retries don't count against it; modes with no speaking moment at that level don't show it. A shy child, or one in a library, still gets every other star.
+**Speaking bonus (data):** correct speaking earns more pocket money (decision 2; there is no voice star). A speaking moment counts when it ends in a recognised word or a parent's confirmation; a pill tap earns no bonus but removes nothing else; nulls and retries never count against the child; modes with no speaking moment at that level pay nothing extra. A shy child, or one in a library, still earns all three badges.
 
 **Logged for the parent (device only, no audio):** per moment, the choices, result, confidence, margin, whether a retry or fallback happened, whether the take was enrolled. The notebook shows it per word as "said it: 3 of 4 times this week", the evidence the Technical Plan's `produce_stage` needs.
 
 **Cook's first speaking moments, in order of value:**
 
-1. **Chai tray, ordering for Nana.** Nana holds out his cup; the child says what goes in. Set: {chai, dudh, khun, paani} at level 1; {nar khun / nar dudh, elchi, aadu} at level 2. Role reversal of the tray's ear test, so the words are already known. Build first.
+1. **Chai tray, ordering for Nana.** Nana holds out his cup; the child says what goes in. Set: {chai, dudh, khun, paani} at level 1; {khun na / dudh na, elchi, aadu} at level 2. Role reversal of the tray's ear test, so the words are already known. Build first.
 2. **Pass me.** The child is the cook and Nani the helper: "loon" and she passes the salt. Set: the shelf's 4–6 items.
-3. **Counting maani.** "bo" or "trae" and the helper plates that many. Set: {hikdo, bo, trae, char, panj}.
-4. **Stir speed.** "aastethi" / "jaldi". A set of two, the easiest for the margin rule; a good first success for a five-year-old.
+3. **Counting maani.** "ba" or "trae" and the helper plates that many. Set: {hakro, ba, trae, char, panj}.
+4. **Stir speed.** "aste thi" / "jaldi". A set of two, the easiest for the margin rule; a good first success for a five-year-old.
 
 ## Privacy and consent, stated plainly
 

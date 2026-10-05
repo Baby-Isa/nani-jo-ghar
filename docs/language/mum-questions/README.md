@@ -1,10 +1,6 @@
 # Questions for Mum: which rounds are answered, and where the answers live
 
-> **Stale points (the rulebook, `docs/process/rules.md`, wins).**
-> - Older rounds say "Claude drafts Kutchi from the handouts and dictionary for you to confirm": drafts are only ever flagged unconfirmed; Mum is the authority and two AIs agreeing is not evidence (G1, G21, non-negotiable 4).
-> - Older rounds mention an ear star or voice star, TTS placeholders or English on screen: those are overridden (decisions 1–2, G14, E1).
-> - Round 4 and the others are a **record**: don't edit their questions. Answers are written into `grammar-notes.md`, `lexicon.md` and `data/family-audio.json`; since 5 Oct each answered row's Notes column only says answered / partly / not answered, with a pointer to the notes.
-> - Round 5 (1 Oct) is the step 2b elicitation questionnaire, ordered by what each answer unlocks for the engine; its plan notes are `../sources/round5-plan-notes.md`.
+**How to read the rounds.** Every round is a **record**: don't edit its questions. Answers are written into `grammar-notes.md`, `lexicon.md` and `data/family-audio.json` and then into the engine's data (`data/lang/`, decision 40); since 5 Oct each answered row's Notes column only says answered / partly / not answered, with a pointer to the notes. Older rounds said "Claude drafts Kutchi from the handouts and dictionary for you to confirm": a draft is only ever flagged unconfirmed, because Mum is the authority and two AIs agreeing is not evidence (G1, G21). Round 5 (1 Oct) is the step 2b elicitation questionnaire, ordered by what each answer unlocks for the engine; its plan notes are `../sources/round5-plan-notes.md`. The `/mum-round` skill processes each new batch of recordings.
 
 Recordings are cut into clips and indexed in `data/family-audio.json` (question ids such as R1, K1, S1, P1, C1). Zafar marks each line heard / clear / ⚠ in the right-hand columns of the round.
 

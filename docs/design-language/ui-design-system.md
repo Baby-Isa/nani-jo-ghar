@@ -1,15 +1,5 @@
 # Cook design system v1, and the chai station v2 (28 Sept 2026)
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written; the Cook station specs (§1, 5, 9–11, 13–15) now live in `docs/game-design/modes/cook.md`.
-> - "One line per pill (shrink to fit, down to 14 px)" → headlines shrink, then wrap; never clipped or ellipsised (F7, non-negotiable 9)
-> - Stars or star badges on result cards → three badges: time, accuracy, hints (H5, decisions 1–2)
-> - *marcha* and "Marcha na." in Nani's chop card → *mirchi* only, no plural, for now (G25, decision 5)
-> - An English headline placeholder ("Chop these") for the child → no written English for the child (E1, F23); missing Kutchi is a grey-italic placeholder flagged "to record"
-> - "Front-on inventory bowls" (§4) vs top-down prep bowls in Sekelo and samosa → camera chosen per station (H14)
-> - Hands in Cook → none (H13)
-> - Sidebar on the right in older sketches → left, about 22% (F4); no letterbox or cream strip (F18)
-> - Digits or dots for quantities → none for the child (E12, F25)
-
 The single source of truth for how Cook looks and behaves. It merges Zafar's feedback (and his wife's), two external reviews (`external-review-*.md` in this folder), and Claude's own review. Where it disagrees with an older doc, this wins. **Status: §8 answered by Zafar (28 Sept): one pan per person YES; masala dabba NO; tap object = use, tap chip = hear YES. Mock-up (§9) next.**
 
 *§1 Moved to `docs/game-design/modes/cook.md` (Part 1: station specs).*
@@ -79,7 +69,7 @@ The same camera for everything in a scene (top-down for the counter and hob; fro
 
 ## 12. The order model for cards and pop-ups (Zafar approved, 28 Sept, late). Every station.
 Person → items → parts. At most three tiers, and a word is never repeated across tiers.
-1. **Headline:** the request, always shown (it's what the person says): *Muke mishkaki khape.*
+1. **Headline:** the request, always shown (it's what the person says): *Muke sekelo khape.*
 2. **Item rows:** one per distinct item, all on the same visual level, each with its Kutchi number: *ba lakri gos*, *hakri lakri mixed*, *hakri maani*, *ba bajr ji maani*.
    - **No pips, no digits:** the child must understand the number word.
    - A row ticks when that item is complete, i.e. when its step closes (UX §11); the count is judged in the end review. The tally shows only what has been made so far, never the target.
@@ -116,13 +106,6 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 
 
 ## Layout contract v2 (23 Sept, from the Roadmap)
-
-> **Stale points (what `docs/process/rules.md` and later decisions now override; the text below is left as written).**
-> - Sidebar as its own column beside the game, unspecified side → left, about 22% (F4)
-> - The carried container as "the shopping basket" (Errand 1) and a "basket handle" list → the basket became the pantry tray (H52)
-> - Letterbox "filled with the scene's dominant colour or a blurred copy of the background" → no letterbox or cream strip (F18)
-> - Speech bubble with "English one tap away", and a gist caption → no written English for the child (non-negotiable 5)
-> - The "Background art brief (every new background)" part of this section is in `art-pipeline.md` §14
 
 > from: docs/archive/design-v1/Roadmap and Story Structure.md § Layout contract v2
 
@@ -175,7 +158,7 @@ Supersedes the layout contract in the Image Prompt Sheets doc and the "Screen la
 | **Spice cupboard** | A separate close-up scene opened from the kitchen | The spice vocabulary | **3 shelves × 6 = 18 slots** for the 16 spices |
 | **Dastarkhwan** | The "put it there" surface for laying the table | One meal for the family and guests | Hotspots measured onto the cloth: places, cups, serving dishes |
 
-The spice cupboard is in the MVP because Chapter 1's daal needs spices. Buying spices at a separate spice seller is deferred: in Chapter 1 the spices are already in Nani's cupboard.
+The spice cupboard is in the MVP because Chapter 1's daar needs spices. Buying spices at a separate spice seller is deferred: in Chapter 1 the spices are already in Nani's cupboard.
 
 ### Sidebar (the recipe list)
 

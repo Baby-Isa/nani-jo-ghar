@@ -1,15 +1,4 @@
-# UX principles for every mode (Zafar's playtest of the Mishkaki grill, 25 Sept 2026)
-
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - Ear star, "costs the ear star", "costs the no-help star", badges "mapped to the existing stars (craft, ear, no-help)" (§4, §8, §9) → three badges (time, accuracy, hints), no ear or voice star; hints cost lightbulbs; legacy star code to be removed (H5, decisions 1–3)
-> - "Stars fade in over the first rounds" (§8) → badges, not stars (H5)
-> - Accuracy as slots filling "green for right and red for wrong" and "red for the share wrong" (§9, §9a) → gold tick for right, grey for the rest; red only for wrong words in the word review (F13, F14)
-> - "Green outline" on right words in the review (§9a) → see F13/F14 (gold for right)
-> - "One speaker in each card's top-right corner" (§4) → the face is the replay (UI28; E25, F8)
-> - "A tally with pictures" top-right (§11) → flat tallies only where kept, such as chai sugar (E12, F25)
-> - "A skewer card always has four dots" (§3) → check against no step counters and sequences never numbered (F9, F23)
-> - "Known differences today (29 Sept)" (§15) → time-bound; most fixed by the shared button kit; re-check and drop
-> - "Mishkaki grill" in the header → the mode is now Sekelo
+# UX principles for every mode (Zafar's playtest of the Sekelo grill, 25 Sept 2026)
 
 Zafar: "I was concerned the games would be too easy, but they're very addictive and fun. They're way too overwhelming at the beginning, with lots of information." These rules apply to Cook and to every new mode. Build sessions follow them from their next phase; Cook gets them in Wave 6.
 
@@ -24,13 +13,13 @@ People read left to right. Keep the big action buttons (Done, "Go to the barbecu
 
 ## 3. One card per item, with a fixed shape
 - One card per thing being made: one card per skewer, per cup, per bowl.
-- A card always shows the **same number of slots** for that dish. A skewer card always has **four dots**, even when all four are meat, so a mixed skewer later is the same picture with different dots.
+- A card always shows the **same number of slots** for that dish. A skewer card always has the **same number of slots**, even when all are meat, so a mixed skewer later is the same picture with different pieces (no step counters, F23).
 
-## 4. Help: one light bulb, one speaker per card
+## 4. Help: one light bulb; the face is the replay
 - **Remove the per-line translate and 👁 buttons.** At the top of the sidebar, a **light bulb**: press it and everything flips to English for a few seconds, then back to Kutchi.
   - The time shrinks with difficulty: about 5 s at level 1, 3 s at level 2, 2 s at level 3, 1 s at level 4.
-  - It still costs the ear star (existing help-cost rule).
-- **Remove the per-line speaker.** Each card has **one speaker in its top-right corner**. It reads the card's words in order, highlighting each as it's spoken. Hearing it again costs the no-help star, as now.
+  - It costs a lightbulb on the hints badge (decision 1; E25).
+- **Remove the per-line speaker.** The card's face is the one replay: it reads the card's words in order, highlighting each as it's spoken (F8, E25). Hearing it again costs nothing.
 
 ## 5. One job at a time
 - Split stations that combine two jobs into **phases**, with a big button between them.
@@ -55,7 +44,7 @@ People read left to right. Keep the big action buttons (Done, "Go to the barbecu
   - show a ghost finger doing the action once;
   - let the child do it;
   - then reveal the next thing.
-- UI appears only when it's first needed. The sidebar, stars and light bulb fade in over the first rounds, not all at once.
+- UI appears only when it's first needed. The sidebar, badges and light bulb fade in over the first rounds, not all at once.
 - After the first time, the overlay is gone; the light bulb is the help.
 - **No English instructions for the child, ever** (Zafar, 29 Sept, restated after the clinic heal games broke it): no English sentences in bubbles and no device voice reading them. The child gets the ghost finger plus the Kutchi line with its read-along. The English goal for grown-ups lives only in the "?" pop. `build/check_onboard.mjs` enforces it in every mode that has first-time help.
 
@@ -70,20 +59,20 @@ Two pages, big and visual, the same in every mode (one shared component).
 
 **Page 1: three big badges, side by side.**
 1. **Time.** A stopwatch with big numbers (seconds) for this round. Each mode and level keeps its own personal best. A new personal best gets a "bing", a sparkle and "New best!", with the time shown inside the stopwatch, so the child tries to beat it next time.
-2. **Accuracy.** A clear picture of right out of total: e.g. a row of slots that fill green for right and red for wrong, or a jar that fills. Not a pie chart. All right turns the badge **gold**, with a satisfying sound.
+2. **Accuracy.** A clear picture of right out of total: a chunky tick that fills **gold** for right and grey for the rest (F13). Not a pie chart. All right turns the whole badge gold, with a satisfying sound.
 3. **Hints.** The number of hints used, shown big: 0 hints turns it **gold**, 1 is a middling badge, 2 or more is a plain "not so good" one. The light bulb counts as a hint.
 Then a big **Next** button.
 
 **Page 2: the word review.** Just the key Kutchi words heard in the round, each with its English (and a tap to hear it). Nothing else.
 
-These three badges replace the old star labels in the result card. They stay mapped to the existing stars (craft, ear, no-help) underneath, so progress and word stages are unchanged.
+These three badges are the whole score (H5): time, accuracy and hints. There are no stars, no ear star and no voice star.
 
 ## 10. When onboarding gets built
 - The **onboarding kit** (dim, spotlight, ghost finger, "do it now", fade-in of UI) is a shared component, built now.
 - Each mini-game's **onboarding script** (which thing to spotlight, what the ghost finger does) is written at the end of that mini-game's build, once its mechanics have stopped changing, so it isn't redone after every playtest. Cook's stations get theirs first, since they're the most settled.
 
 ## 11. Show progress, not verdicts (Zafar, 25 Sept, late)
-- **A tally with pictures.** Stations where you make several things show a small tally in the top-right corner: a picture of each item with how many you've done so far (e.g. 🧅 3, 🍅 2 in the chop game). It shows what *you* did, never the target (the existing rule). Applies to every mode where you collect, chop, count, fetch or place several things.
+- **Flat tallies only where kept** (chai's sugar): a small tally shows what *you* did, never the target, and never takes a tap (E12, F25). Other stations show no tally.
 - **Tick off the instruction card, automatically, at every level** (Zafar, 25 Sept, late: final). **Count rows tick when that step closes** (the item is put down, finished or served), never the moment the number is reached, so a tick can't give the count away; the count is judged in the end review (Zafar agreed, 26 Sept). A line ticks when that part is done right (the right amount chopped, in the bowl, fried…). The challenge is doing the right things: wrong items, extra ones or the wrong order count against you in the end review.
 - **No negative feedback during play.** No red crosses or "wrong" buzzes mid-round (at least from level 2). Mistakes are shown in the end-of-round review (§9 accuracy badge, then the word review). Level 1 keeps its gentle, one-time correction as part of onboarding.
 
@@ -109,7 +98,7 @@ In a conversation, a wrong reply pill **shakes** (with a short vibration where s
    - **New personal best:** bright gold, buzzing, with party lines.
    - **Good time** (within about 25% of the best): dim gold.
    - **Average or slower:** grey.
-2. **Accuracy: a big chunky tick** (no circle, no numbers inside). It fills up like a gauge: green for the share right, **red** for the share wrong (Zafar is deliberately allowing red here: children want to fix red things). **All right:** the whole tick turns gold and vibrates or shimmers. Caption underneath: "7/10".
+2. **Accuracy: a big chunky tick** (no circle, no numbers inside). It fills up like a gauge: **gold** for the share right, grey for the rest (decision 3). **All right:** the whole tick turns gold and vibrates or shimmers. Caption underneath: "7/10".
 3. **Hints: a big light bulb** (no number inside).
    - **0 hints:** bright, gold and shining, glowing and buzzing with electricity.
    - **1 hint:** duller; you can see the filament, a faint glow, and a slight crack.
@@ -117,7 +106,7 @@ In a conversation, a wrong reply pill **shakes** (with a short vibration where s
    - **3 or more:** off.
    Caption underneath, in the same style as the stopwatch's crown: a small bulb icon "× N".
 
-**Page 2: the word review.** Each word is a card with the Kutchi and the English underneath. Words you got **right** have a **green** outline or glow and are grouped on the **right**. Words you got **wrong** have a **red** outline and are grouped on the **left**, so the child can see at a glance what to work on.
+**Page 2: the word review.** Each word is a card with the Kutchi and the English underneath. Words you got **right** have a **gold** outline and are grouped on the **right**. Words you got **wrong** have a **red** outline and are grouped on the **left**, so the child can see at a glance what to work on.
 
 ## 15. The same screens and buttons in every game mode (Zafar, 29 Sept)
 **The rule:** everything around the play looks and behaves the same in every mode (Cook's stations, the clinic, Find it, Put it there, and every mode after): the end-of-round screen (§9a: the three badges, then the word review), the actions after it (again, next, back to the choice of stations/patients/rooms), the "done" and "next" buttons during play, the "?" help, Nani's box, the order card and the light bulb. A child learns them once.
@@ -131,7 +120,7 @@ In a conversation, a wrong reply pill **shakes** (with a short vibration where s
   - **the answer pills** (haa / na, the speaking fallbacks): one pill style.
 - **VISUAL-QA checks it:** a mode's shots are compared side by side with Cook's end screen and buttons, and any difference is a flaw.
 
-**Known differences today (29 Sept):** the clinic's "Found it" / "Next" pills and its bottom-right button (cut off on the pharmacy screen), sekelo's "to the grill" pill, the results words card overflowing on phone at level 4 and writing *hakro* where the order said *hakri* (the shared results card), and chaat's chop timer ring in its old colours. Find it, Tidy up, Who did it?, Snap, Monsoon rush, Dress up and the first launch don't use the shared pieces yet; each adopts them when it's rebuilt.
+Cook and the clinic use the shared pieces; Find it, Tidy up, Who did it?, Snap, Monsoon rush, Dress up and the first launch adopt them when each is rebuilt (decision 38). Open defects are rows in `docs/process/regressions.md`.
 
 ## 16. Stage it like a play: characters turn to the player when it's their turn (Zafar, 29 Sept)
 When two characters talk (the doctor and a patient, Nani and a guest, a customer and the cook), they stand **three-quarter turned toward each other and partly to the front**, like actors on a stage, so the child watches a real exchange. When the child becomes part of the dialogue and has to act (pick the item, answer, speak), the characters **turn to face the player**. That turn is the "your turn" cue, so no written instruction is needed.

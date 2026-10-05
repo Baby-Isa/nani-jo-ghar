@@ -1,16 +1,5 @@
 # Nani jo Ghar — Technical Plan
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - Phaser (older briefs and the alive-Nani lab pages use a vendored Phaser) → Cook runs on Phaser (cook.html loads js/vendor/phaser.min.js); the other modes are DOM/SVG; Phaser's future is a step-2a decision.
-> - "Patch" / the quilt as a list of earned patches (§ data model) → bookshelf (decision 4)
-> - `chunk_type` on Sentence (§ Chunked recording) → the language engine builds lines from recorded words; the most frequent phrases are recorded whole (G9, G12); frames and word forms live in data, no Kutchi grammar in game code (G13, G18). Treat `chunk_type` as superseded until the engine spec (step 2b) replaces it
-> - Device profile in a store on the device, IndexedDB `njg_shell` (`js/storage.js`) → that is the legacy bowl page only; the live save is `js/shared/save.js` (localStorage `njg-save`, see `shared-api.md` §11)
-> - Touch targets "minimum 44px" → tap targets ≥48 px (F2)
-> - "Home screen PWA, works offline" → there is no `manifest` or service worker in the repo today; the PWA and store wrap are still to do (see `docs/status.md`)
-> - MVP: "Story 1, *Eid at Nani's*, is the release candidate; the other four arcs conditional" → Arc 1 is the Birthday; store launch with Arcs 1–5 (H36–H41)
-> - Audio pipeline: placeholder TTS "in the nearest available voice" → TTS is test-only and never ships; only real family voices ship (G14, non-negotiable 10)
-> - Stars and star-based progression anywhere in the data model → three badges (H5, decisions 1–2)
-
 *How the app is built. Companion to the Brief and the Game Design doc.*
 
 Sep 22, 2026 · @Someone
@@ -86,10 +75,10 @@ flowchart TD
 | --- | --- | --- |
 | Profile | name, avatar, reads, writes | reads and writes are new, see below |
 | PlayerWordProgress | profile_id, word_id, understand_stage 1 to 5, produce_stage 1 to 5, last_seen | understand_stage and produce_stage replace the single stage field, see below |
-| Patch | profile_id, errand_id, motif | the quilt, as a list of earned patches |
+| Book | profile_id, arc_id, title | the bookshelf: one named book per finished arc (decision 4) |
 | ChildRecording | word_id, file | the record-and-compare feature, never leaves the device |
 
-**Why the sentence is its own entity, not assembled from words.** A carrier sentence like *Muke bo limu khape* has to be recorded whole, because splicing separate word recordings together sounds robotic and breaks the immersion the whole design depends on. For the bazaar's roughly 16 items that means about 16 short sentence recordings alongside the isolated word recordings, which is a small addition to the recording session and worth it for how natural it sounds.
+**Why the sentence is its own entity, not assembled from words.** A carrier sentence like *Muke ba limu khape* has to be recorded whole, because splicing separate word recordings together sounds robotic and breaks the immersion the whole design depends on. For the bazaar's roughly 16 items that means about 16 short sentence recordings alongside the isolated word recordings, which is a small addition to the recording session and worth it for how natural it sounds.
 
 **Why progress is per word, not per level.** This is the field the design principle actually runs on. A word's stage is read every time it appears anywhere in the game, and it is the main thing deciding how much help that word gets. Splitting it into `understand_stage` and `produce_stage` (below) is the only refinement needed; no other progress field is required.
 
@@ -141,7 +130,7 @@ Three separate conveyor belts, each turning family-made raw material into bundle
 
 **Apple's thin-wrapper rejection** does not apply here, because the images, audio and logic are bundled inside the app and it works with no internet. That is the bar, and it is already met.
 
-**MVP scope for the first submission**, per the Roadmap doc: Story 1, *Eid at Nani's*, finished end to end, is the release candidate. The other four arcs are conditional on that one landing well with the family and the target audience.
+**MVP scope for the first submission**, per the Roadmap doc: Arc 1, *The Birthday*, finished end to end, is the release candidate; the store launch carries Arcs 1–5 (H36–H41).
 
 ## Open decisions and your next steps
 

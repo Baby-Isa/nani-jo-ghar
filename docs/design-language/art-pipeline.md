@@ -1,16 +1,5 @@
 # Art pipeline: how art is made, cut, named and checked
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - Image-API transparent backgrounds ("Default: the image API's native transparent background", "Transparent background" in the templates) → art is made in ChatGPT via Claude in Chrome from one ready-to-paste block; ChatGPT gives no alpha, so batches use magenta `#FF00FF` for food and grey `#808080` for steel, glass, wood, tools, characters and badges, then key it (D1, D3, D22). A paid API is only for a rapid prototype under $2 (non-negotiable 13)
-> - Magenta sheets "legacy" (Art Bible §5) → magenta is the current ground for food; grey for everything metal, glass, wood and tools (D22)
-> - Hands sections (Asset Building Plan §1, templates (e) and (f), QA rows 14–17) → parked, none in Cook (H13)
-> - "Liquids as discs" in item art → pre-rendered pictures, cross-faded (D11)
-> - "No private photos" wording in older batches → decision 9
-> - "Thick outlines / cel shading" in batch 1 and Chapter 1 prompts → retired; the 3D-film look in `art-bible.md` stands
-> - Gemini / image-API editing pipelines (alive Nani, `build/expressions.py`, `build/gen_assets.py`) → API only for a rapid prototype under $2; Claude in Chrome otherwise (non-negotiable 13)
-> - Naming Convention's `assets/backgrounds/`, `assets/characters/` paths and the slicing method describe the old cel-shaded sheets (the Art Bible's anti-references) → kept here as "legacy magenta method"; current names are `sources/art/<pack>/`, `shelf-<id>-f.webp`, `icon-<id>.webp`
-> - Nothing for a child carries written English or AI-made Kutchi (non-negotiables 5, 10); images never carry text
-
 How art is made. The look is `art-bible.md`; the method for each batch is here. Sections are copied word for word from the old docs (each headed by where it came from).
 
 ---
@@ -29,7 +18,7 @@ How art is made. The look is `art-bible.md`; the method for each batch is here. 
 | The station surface (board, chakla, hob) **only if it never moves** in that station | Hob knobs (they turn), flame rings, pans and pots |
 | | Occluders cut from the background: the island front, a cushion, the stall counter front |
 | | Ambient motion: curtain, fan blades, plants and leaf shadows, bunting flags, lanterns, clock hands, birds, steam wisps, dust motes |
-| | Story dressing (Eid decorations) |
+| | Story dressing (Birthday decorations; Eid decorations wait for the Eid arc) |
 
 **No doubled surfaces:** a surface is either baked or a sprite, never both. No board drawn on a background that already has one; no chakla on a chopping board.
 
@@ -54,18 +43,17 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 
 ### Export
 
-- **Transparent PNG from the generator**, stored as **WebP with alpha** in `assets/` (lossless for hands and anything with fine edges; quality about 90 otherwise).
+- **A cut-out from a keyed sheet** (ChatGPT gives no alpha: see below), stored as **WebP with alpha** in `assets/` (lossless for anything with fine edges; quality about 90 otherwise).
 - **Trim** to the item's own bounding box, then **pad 16 px** of transparency on every side.
 - **Stored size:** the largest size the sprite appears on the 1600×900 stage, times 1.5 for sharp phones. Backgrounds are exactly 1600×900.
 - **Backgrounds are 16:9.** If the generator can't output 16:9, ask for the nearest landscape size with the scene kept inside a central 16:9 band, then crop. Never stretch.
-- **Naming:** as in `docs/archive/art/Asset Naming Convention.md`, with the view and state as suffixes: `<item>-<view>-<state>`, e.g. `onion-t-chopped.webp`, `milk-jug-f.webp`, `hand-b1-t.webp`, `hand-b1-t-girl.webp`. **(provisional)**
+- **Naming:** as in `docs/archive/art/Asset Naming Convention.md`, with the view and state as suffixes: `<item>-<view>-<state>`, e.g. `onion-t-chopped.webp`, `milk-jug-f.webp` (current names: `sources/art/<pack>/`, `shelf-<id>-f.webp`, `icon-<id>.webp`). **(provisional)**
 
-### Transparent backgrounds vs the magenta sheet
+### Grounds: magenta for food, grey for everything else
 
-- **Default: the image API's native transparent background**, one item per image.
-- **Magenta sheets (`#FF00FF`) are legacy**, for ChatGPT-web batch sheets only. Slice them with the method in the Naming Convention doc (hard key, whole blobs by centroid, 2 px erode).
-- **Never use magenta for steel, brass, glass, glowing or wispy items:** the 3D look makes metal and glass pick up a magenta tint in their reflections. Those must use native transparency or a neutral mid-grey background.
-- **Glass and steam need partial alpha,** so they always come from native transparency, never from a key.
+- **Art is made in ChatGPT via Claude in Chrome (D1, D3), which gives no alpha.** Every prompt asks for a flat ground, which is then keyed out (D22): magenta `#FF00FF` for food, neutral grey `#808080` for steel, brass, glass, wood, tools, characters and badges. A paid image API is only for a rapid prototype under $2 when Zafar can't respond (non-negotiable 13).
+- **Never use magenta for steel, brass, glass, glowing or wispy items:** the 3D look makes metal and glass pick up a magenta tint in their reflections. Use the grey ground.
+- **Glass and steam need partial alpha,** so they are cut with colour-to-alpha against the measured grey ground, never a hard key. Slice sheets with the method in the Naming Convention (`build/cut_tick_v2.py`; whole blobs by centroid, 2 px erode).
 
 ---
 
@@ -118,13 +106,13 @@ Attach: the empty station background; a mask covering only the placement area if
 
 **Cut-out:** align, diff against the empty background, keep the largest changed blob, then split it into the **item** (opaque) and its **shadow** (pixels that are only darker, kept as a separate semi-transparent layer). Reject if anything outside the item and its shadow changed.
 
-### (e) A hand pose
+### (e) A hand pose (parked, H13)
 
 Attach: the signed-off reference hand (after it exists); before that, the style reference.
 
 > The right hand and forearm of a child of about 7, {skin tone}, entering from the bottom edge of the frame, {T: "seen from directly above, back of the hand up, over a worktop" | E: "at eye level, back of the hand towards the viewer"}. Pose: {grip description, e.g. "fingers curled around an invisible horizontal handle, as if holding a knife, thumb along the top"}. No tool or object in the hand. Slender hand, long fingers relative to the palm, smooth, no visible bones, knuckle ridges or veins. Sleeve: a plain white linen shirt sleeve rolled back to between the elbow and the wrist, bare forearm below, the roll just showing at the frame edge (or cropped out); no embroidery. Same hand, skin, size and sleeve as the attached reference hand. Transparent background.
 
-### (f) A reskin (sleeve and accessories only)
+### (f) A reskin (sleeve and accessories only; parked, H13)
 
 Attach: the master hand image.
 
@@ -158,10 +146,10 @@ Review every contact sheet on **both a black and a white backing**, and every pl
 | 11 | **Sleeve consistent** | Sleeve, colour, bangles or hand outline differ from the master |
 | 12 | **No text** | Any letters or numbers, even fake ones |
 | 13 | **Cultural accuracy** | See below |
-| 14 | **Finger count (hands)** | Count every digit, at full size, and write the count down for each hand. Five per hand (thumb and four fingers) unless the pose hides some behind the palm; hidden digits must be where the pose puts them, not missing. Counting frames E3 raise exactly 1, 2, 3, 4, 5 (in "4" the thumb is folded and must not stick out). Reject: a missing or extra digit, two fingers merged, two hands fused into one shape |
-| 15 | **Hand scale matches (hands)** | Forearm width just above the sleeve differs from the reference by more than about 5% after the scale normaliser (`build/gen_assets.py`, `forearm_widths()`); the hand looks bigger or smaller than its neighbours on the contact sheet; the normaliser had no room to grow it (flagged in its log) |
-| 16 | **Hand camera, light and skin (hands)** | T poses not seen from straight above; E poses showing the palm when the pose says the back of the hand; a forearm entering from the side when the pose doesn't need it; light not from the upper left like the reference; skin not matching the reference after the skin normaliser (orange palms, pale or pink hands) |
-| 17 | **Tool gaps (grips)** | A tool drawn in the hand (tools are separate sprites); no clear gap where the tool goes; a keyed-out gap that slices through a finger or leaves a red rim |
+| 14 | **Finger count (hands; parked)** | Count every digit, at full size, and write the count down for each hand. Five per hand (thumb and four fingers) unless the pose hides some behind the palm; hidden digits must be where the pose puts them, not missing. Counting frames E3 raise exactly 1, 2, 3, 4, 5 (in "4" the thumb is folded and must not stick out). Reject: a missing or extra digit, two fingers merged, two hands fused into one shape |
+| 15 | **Hand scale matches (hands; parked)** | Forearm width just above the sleeve differs from the reference by more than about 5% after the scale normaliser (`build/gen_assets.py`, `forearm_widths()`); the hand looks bigger or smaller than its neighbours on the contact sheet; the normaliser had no room to grow it (flagged in its log) |
+| 16 | **Hand camera, light and skin (hands; parked)** | T poses not seen from straight above; E poses showing the palm when the pose says the back of the hand; a forearm entering from the side when the pose doesn't need it; light not from the upper left like the reference; skin not matching the reference after the skin normaliser (orange palms, pale or pink hands) |
+| 17 | **Tool gaps (grips; parked)** | A tool drawn in the hand (tools are separate sprites); no clear gap where the tool goes; a keyed-out gap that slices through a finger or leaves a red rim |
 
 
 ---
@@ -249,7 +237,7 @@ A first version of the script assumed each item sat inside an equal-sized grid b
 2. Find every connected blob of non-magenta pixels across the *whole* sheet (not per assumed cell).
 3. Assign each whole blob — not pixel-by-pixel — to whichever expected grid position its centroid is nearest to. This is what fixes overflow: a shoe that pokes past the midline between two cells is one connected blob, so it moves as a unit to the cell its centre belongs to, rather than being sliced in half at the midline. A multi-part item (three separate lychees, a pile of cloves) still ends up under one label even though its pieces don't touch, as long as each piece's centroid is closer to that cell than any other. A handful of stray pixels (compression noise) too small to be a real fragment is dropped rather than assigned anywhere.
 4. Erode the mask by ~2px to remove the anti-aliased rim entirely, then crop to that blob's own bounding box — never a shared fixed box — with a small pad.
-5. Alpha is binary (fully opaque or fully transparent), not blended, which is the right call for flat cel-shaded art with thick outlines and avoids the soft-edge amplification that caused the magenta rim.
+5. Alpha is binary (fully opaque or fully transparent), not blended: this is the **legacy magenta method** from the old cel-shaded sheets; the current 3D look uses colour-to-alpha cuts with soft edges (D7, D22).
 6. Build a black-backed and white-backed contact sheet per category and check every item against both before delivery — the rim was invisible on white and obvious on black, so checking only one background misses it.
 
 **Known residual cases, not yet fixed:**

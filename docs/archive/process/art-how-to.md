@@ -1,3 +1,5 @@
+> Archived 5 Oct 2026 (D1). This is the manual 26–30 Sept method (downloads, zips, drag-and-drop). The current method is `docs/design-language/art-pipeline.md` and the `/art-run` skill.
+
 # Art how-to: running art through ChatGPT via Claude in Chrome
 
 > **Stale points (the rulebook, `docs/process/rules.md`, wins).** Blocks below are copied word for word from the 26–30 Sept packs; read them with these overrides:

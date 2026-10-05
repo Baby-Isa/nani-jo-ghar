@@ -1,15 +1,5 @@
 # Story and arcs
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Source blocks are copied word for word and not corrected.
-> - Eid arc, "Eid morning", "The spill", the wedding, the shoe mountain and the five-arc plan → the Birthday arc, day-out trips, clinic, Making clothes with Big Ma, Monsoon, Who did it (H36–H39)
-> - Quilt, patches and "the finished quilt = the finished game" → a bookshelf, one named book per finished arc (decision 4); quilt-making becomes a Big Ma arc
-> - Stars and the ear/voice star → three badges (H5, decisions 1–2)
-> - Pocket money "given at Eid", functional purchases, shop prices → decision 10
-> - "English one tap away", gist captions and subtitles → no English for the child (E1, F23); the light bulb is the help (decision 1)
-> - *hikdo/bo/trae* as the tap counts → *hakro/hakri* by gender, *ba*, *trae* (G4, G5); *daal* → *daar*; *mishkaki* as the dish → *sekelo* (H20)
-> - "Platform decisions: move to a private host before recordings go in" → everything stays public until launch (decision 6)
-> - Chapter 1 Eid dressing (lantern, bunting, fairy lights, crescent and star) → re-home to the Birthday arc (H36)
-
 The story spine for every mode: Nani's role, how the story is told, the arcs, and the syllabus that decides which language each stage teaches. Modes' own story homes live in their files in `docs/game-design/modes/`; scoring and unlocks are in `progression-and-scoring.md`.
 
 ## Part 1. Story structure (Roadmap and Story Structure)
@@ -28,13 +18,13 @@ The story spine for every mode: Nani's role, how the story is told, the arcs, an
 
 | Level | What it is | Example | Progress object |
 |---|---|---|---|
-| **Story** (arc) | A whole season with a finale | *The Birthday*: guests arrive, food is cooked, the table is set, the sweets are found and packed, the candles are blown out | Finishing it completes a quilt |
-| **Chapter** | One event in the story with its own goal, complication and payoff | *The guests are coming*, then *The cat and the sweets* | One quilt patch per chapter |
+| **Story** (arc) | A whole season with a finale | *The Birthday*: guests arrive, food is cooked, the table is set, the sweets are found and packed, the candles are blown out | Finishing it puts its book on the bookshelf (decision 4) |
+| **Chapter** | One event in the story with its own goal, complication and payoff | *The guests are coming*, then *The cat and the sweets* | One chapter of the arc's book |
 | **Errand** | One play session, 5–8 minutes. This is "the level" | *Cook each guest's order*, *Set the table*, *Find the sweets* | Words mastered go into their container |
 | **Game mode** | A reusable mechanic that errands are built from | Shopping, put-it-there, hide and seek, cook-along, at-the-door, ask-around, spot-it, body/dress | None of its own, see Game modes below |
 | **Container** | A long-running collection that fills as words are mastered | Nani's pantry (food), the spice cupboard, the sewing kit (colours/threads), the wardrobe (clothes) | Is the progress |
 
-**Two kinds of progress, deliberately split:** containers track **words** (a mastered word stays on the shelf for good), the quilt tracks **story** (one patch per chapter).
+**Two kinds of progress, deliberately split:** containers track **words** (a mastered word stays on the shelf for good), the bookshelf tracks **story** (one named book per finished arc; each book opens to its chapters).
 
 **Learning tree:** each domain has its own levels (Kitchen 1–5, Sewing 1–5, Wardrobe 1–5, Family 1–5), driven by the per-word stages of the words in it. Long term: the player composes their own recipe from ingredients they know, and later says what they like to eat.
 
@@ -55,13 +45,13 @@ Many players can't read, and the Brief rules out cutscenes, so the story is carr
 | --- | --- | --- |
 | **Picture and action** | What changes in the world: a lantern goes up, the empty bowl on the island, the pot on the stove, the guests' shoes piling up by the door. Nani points and gestures | Everyone, including a four-year-old |
 | **Sound** | Nani's voice in Kutchi, a knock at the door, a bubbling pot, market chatter | Everyone; the Kutchi is the teaching |
-| **Text** | A short English gist caption ("Eid is tomorrow and the guests are coming!") and the Kutchi subtitle, in the speech bubble | Readers only, and the adult sitting with a child |
+| **Text** | The Kutchi line, written and underlined as it is spoken. Written English is for grown-ups only, in the "?" pop-up (E1) | Readers, and the adult sitting with a child |
 
 #### Story beats
 
-Each errand opens and closes with a **beat**: 3 to 5 seconds, one visual moment, one Kutchi line from Nani, one gist caption. Skippable with a tap, skipped automatically on replay. It's a moment inside the scene, not a cutscene: the player is already in the kitchen, and Nani does something.
+Each errand opens and closes with a **beat**: 3 to 5 seconds, one visual moment, one Kutchi line from Nani (spoken English first in story mode where a longer idea needs it, G15). Skippable with a tap, skipped automatically on replay. It's a moment inside the scene, not a cutscene: the player is already in the kitchen, and Nani does something.
 
-Story lines are recorded like any other sentence. Until the family has given the Kutchi, a beat shows the gist caption only, with no audio. Never invented Kutchi.
+Story lines are recorded like any other sentence. Until the family has given the Kutchi, the line is a grey-italic English placeholder flagged "to record", with no audio. Never invented Kutchi (G2).
 
 #### The hub fills up with the story
 
@@ -102,7 +92,7 @@ Each arc from here is a trip, built mostly from existing modes, with new words e
 2. **Cook your packed lunch** — Cook, reusing its stations.
 3. **Travel** — by bus, car or motorbike. One new game: **spot it out of the window**. The only new art is the view out of the window; Nani says "spot the …", and the child taps things as they pass. **Decided 29 Sept (Zafar):** keep it simple, like the clinic's pharmacy belt (the window is the belt): no camera and no aiming here.
    - **Snap at every destination (decided 29 Sept, Zafar).** At each place, the child is first shown a few items with their words (the shot list), then finds and snaps them in the scene with Snap's viewfinder (`docs/game-design/modes/snap.md`, engine and greybox built). The photos feed the album and the Story by the Fire. This is Snap's home now, replacing the old village arc.
-4. **A food stall at the place** — three Cook-style mini-games (for example, at the beach: corn on the cob, mishkaki, fried doughnuts).
+4. **A food stall at the place** — three Cook-style mini-games (for example, at the beach: corn on the cob, sekelo, fried doughnuts).
 5. **One or two place-specific games** — for example the beach's sandcastle and kite.
 6. **The Story by the Fire** — every arc's ending (see below and `docs/game-design/modes/story-by-the-fire.md`).
 
@@ -110,7 +100,7 @@ Each arc from here is a trip, built mostly from existing modes, with new words e
 
 | Trip | The stall (3 Cook-style games) | Place games | Vocabulary (English; all Kutchi to record) | Art needed |
 | --- | --- | --- | --- | --- |
-| **The beach** | Corn on the cob, mishkaki (already in the game), fried doughnuts | Build a sandcastle; fly a kite; collect shells | sand, sea, wave, shell, bucket, spade, kite, sun hat, towel, swim | New background(s); sandcastle and kite art; the beach stall's three dishes |
+| **The beach** | Corn on the cob, sekelo (already in the game), fried doughnuts | Build a sandcastle; fly a kite; collect shells | sand, sea, wave, shell, bucket, spade, kite, sun hat, towel, swim | New background(s); sandcastle and kite art; the beach stall's three dishes |
 | **The garden / farm** | Fresh vegetables from the patch; a farm lunch; fresh milk | Feed the hens and goats; find the chicks | hen, goat, chick, egg, feed, fence, vegetable patch, watering can, dig, plant | Reuses the existing hen/goat/chick character art; new background(s) |
 | **The safari** | Local food-stall snacks (TBC with the family) | Spot the animals from the jeep (the trip's own "spot it" moment, doubled up with travel); a photo game | jeep, binoculars, lion, elephant, giraffe, zebra, watering hole, camera | New animal art, a safari background, a jeep |
 | **The boat** | Fresh fish, coconut water, a stall snack (TBC) | Fishing; spot things in the water | boat, oar, life jacket, fish, net, jetty, wave | A boat, a jetty/harbour background, fish art |
@@ -246,14 +236,14 @@ Two scenes deserve spelling out.
 
 **The bazaar** is the first build. Nani names what is missing, the pantry turns it into a list, you go to the stall, the seller asks what you want and how many, and you come home and hand each thing over. It teaches food, numbers and the shape of a transaction, and it is the template every other scene is a variation on.
 
-**The blanket quest** is the second build, and it is the most complete idea in the design.
+**The blanket quest** is the second build, and it is the most complete idea in the design. It is now Big Ma's quilt-making arc (decision 4); the last step ends in a book on the bookshelf, not a patch.
 
 1. Nani is making a quilt and needs coloured thread. She does not know which colours.
 2. You go round the family asking each person their favourite colour. Masi, Mama, Fui, Dada. Each answers in Kutchi and shows you the colour.
 3. Each answer writes itself into your notebook, next to that person's face.
 4. You take the notebook to the bazaar and buy the threads, which means reading back what you wrote.
 5. You bring them home and Nani asks for each colour in turn. You pick from your basket.
-6. The quilt gains a patch made from those colours.
+6. The finished quilt becomes a chapter of the arc's book.
 
 One quest, and it carries kinship terms, colours, asking a question, reading back, and a recall drill at the end. The reward is an object that stays on the wall, made of the colours the player's own relatives chose. It is worth building early because it proves the whole design: teaching by doing, spaced repetition disguised as a task, and progress you can see.
 
@@ -281,6 +271,8 @@ One quest, and it carries kinship terms, colours, asking a question, reading bac
 
 
 ## Part 4. Chapter 1 Eid dressing: the story mapping (Chapter 1 Art Prompts)
+
+The Eid dressing is re-homed: the hub is dressed for the Birthday (H36) and the Eid decorations wait for the Eid arc (decision 39). The mapping below is kept as the model for dressing a hub as an arc progresses; "patch" means "chapter".
 
 
 > from: docs/archive/art-prompts/Chapter 1 Art Prompts.md § 7 Eid decorations sheet (the story-mapping part)

@@ -1,12 +1,5 @@
 # Cook with Nani: how to add ingredients, recipes, levels and stations
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - §6 "one set of ear, hand and lightning stars" and any star bookkeeping → three badges (time, accuracy, hints) and the pocket-money model (H5, decisions 1, 2, 10)
-> - "Knead" as a mechanic → cut from the playable stations
-> - First-person hands → parked, none in Cook (H13)
-> - Liquids drawn as discs or dots → pre-rendered pictures, cross-faded (D11)
-> - Pour as press-and-hold → pour is a tap-measure
-
 **Updated:** 26 Sept 2026 (Wave 6). For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
 
 Never invent Kutchi. A new word goes in with `"kutchi": null` and its English, and shows as a grey English placeholder until the family gives the Kutchi.
@@ -77,7 +70,7 @@ A recipe is an entry in `recipes` with five parts. Every choice the player makes
 | "no X" | `{"type": "no", "else": {"chance": 0.5, "from": ["veg-12"]}}` | the customer's dislikes, else maybe one |
 | per person | `{"type": "people", "count": 2, "tastes": "chai", "each": {"khun": {"int": [1, 3], "taste": "khun"}}}` | `[{"who": "nana", "khun": 3}, {"who": "ma", "khun": 1}]` |
 | how many of each kind | `{"type": "tally", "kinds": ["ph-meat", "ph-pepper"], "total": {"int": [2, 3]}, "min": {"ph-meat": 1}}` | `{"ph-meat": 2, "ph-pepper": 1}` |
-| a kind with a describing word | tally kinds like `"ph-big+cook-maani"` | said "bo big maani" (the Maani line, level 3) |
+| a kind with a describing word | tally kinds like `"ph-big+cook-maani"` | said "ba wadha maani" (the Maani line, level 3) |
 | different by level | `{"byLevel": [{"int": [2, 3]}, {"int": [3, 4]}]}` | the value for the order's level (past the end: the last); works at any depth in a slot |
 
 Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`. Any value in a slot, at any depth, can be `{"byLevel": [level 1, level 2, level 3]}`: the order's level picks one (the last repeats). **Level 1 is gentle on the hand, not on the ear:** from the first order, what's asked varies (the owner's rule). Chai's `cups` has two people at level 1, each with their own milk, sugar and plain/elchi/aadu, three at 2, and half/full at 3; mishkaki's `skewers` is two skewers at level 1 (two meat, two veg or one of each), two or three with at most one mixed at 2, then three or four (`"total": {"byLevel": [2, {"int": [2, 3]}, {"int": [3, 4]}]}`); maani asks for both doughs at level 1 (`"min"`); daal names several vegetables to chop. The hand gets harder through `mechanics.<id>.levels` (section 5). Rows said `"for"` one person (`"forEach": "$cups", "for": "$it.who"`) become that person's own part of the mission card, with their face.
@@ -159,7 +152,7 @@ Cook.Mech.lab("roll-tawa", { name: "Roll → Tawa", verb: "Combined", async run(
 - **Zones:** `region` is the rectangle on screen; the mechanic's own layout is fitted into it (`footprint` says which part of the full-screen design to fit; the mechanic's params can move its parts). `backdrop` gives the zone its own worktop.
 - **Routing:** a zone with `out: "x"` sends each finished item (roll sends each maani, thread each skewer); a zone with `in: "x"` takes them as they come and stops when the senders are done. Items carry their sprite, so they fly across.
 - **Several at once:** the tawa runs `tawas` tawas and the grill `skewers` skewers, each with its own ring and timer; a mechanic makes one child zone per instance with `z.child()`.
-- **Stars:** every zone reports into the same order, so there is one set of ear, hand and lightning stars; the host also keeps each zone's scores (`host.scores`).
+- **Badges:** every zone reports into the same order, so there is one set of three badges (time, accuracy, hints); the host also keeps each zone's scores (`host.scores`).
 - **Custom logic:** give the definition `run: async (host, params) => …` to drive the zones yourself (for example, "roll them all first" versus a production line).
 - **Files:** the Maani line, Chai tray and Mishkaki grill already have their files in `js/cook/stations/`, loaded by `cook.html`. Give each its own `data/stations/<id>.json` so parallel work never touches the same file.
 
