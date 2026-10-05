@@ -3956,6 +3956,26 @@
   "grill": {
    "en": "Grill the skewers"
   },
+  "samosa:fill": {
+   "en": "Fill the samosa",
+   "line": "guide-fill"
+  },
+  "samosa:fold": {
+   "en": "Fold the samosa",
+   "line": "guide-fold"
+  },
+  "samosa:fry": {
+   "en": "Fry them, then lift them out",
+   "line": "guide-fry"
+  },
+  "daar:chop": {
+   "en": "Chop what they said",
+   "line": "guide-chop"
+  },
+  "daar:cook": {
+   "en": "Put it in the pan",
+   "line": "guide-add"
+  },
   "chai-tray": {
    "en": "Make each cup the way they said"
   },
