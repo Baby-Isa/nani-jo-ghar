@@ -1,22 +1,265 @@
 {
-  "_about": "TEST SEED ONLY (step 4a): a few meanings, language-neutral, for the engine's tests. GF-style: cat is the category, args are typed; `core` expands a domain meaning into a core one; `en` is the English for grown-ups; `elicit` is how Mum is asked when the rule is missing; `rows` names the arguments that are the order card's rows.",
-  "functions": {
-    "Item": { "cat": "NP", "args": { "kind": { "type": "N" }, "n": { "type": "Num", "optional": true }, "mods": { "type": "A", "list": true, "optional": true }, "with": { "type": "NP", "list": true, "optional": true }, "without": { "type": "NP", "list": true, "optional": true } },
-      "en": "{n} {mods} {kind} {with} {without}", "elicit": ["two big mangoes", "one red door"] },
-    "Of": { "cat": "NP", "args": { "owner": { "type": "NP" }, "thing": { "type": "NP" } }, "en": "{owner}'s {thing}", "elicit": ["Nana's cup", "Nani's mangoes"] },
-    "With": { "cat": "PP", "args": { "x": { "type": "NP" } }, "en": "with {x}", "elicit": ["with the big boy"] },
-    "In": { "cat": "PP", "args": { "x": { "type": "NP" } }, "en": "in {x}", "elicit": ["in the big cup"] },
-    "On": { "cat": "PP", "args": { "x": { "type": "NP" } }, "en": "on {x}", "elicit": ["on the big mango"] },
-    "MixedIn": { "cat": "NP", "args": { "head": { "type": "NP" }, "x": { "type": "NP" } }, "en": "{head} with {x} in it", "elicit": ["chai with milk"] },
-    "Without": { "cat": "NP", "args": { "head": { "type": "NP" }, "x": { "type": "NP" } }, "en": "{head} without {x}", "elicit": ["chai without milk", "daar without onion"] },
-    "WithFood": { "cat": "Mod", "args": { "x": { "type": "NP" } }, "en": "with {x}", "elicit": ["I'd like two samosas with mince.", "I'd like one samosa with potato and one with mince."] },
-    "WithoutFood": { "cat": "Mod", "args": { "x": { "type": "NP" } }, "en": "without {x}", "elicit": ["I'd like daar, but no onion."] },
-    "Need": { "cat": "Utt", "args": { "who": { "type": "Person" }, "thing": { "type": "NP" } }, "rows": ["thing"],
-      "core": { "fn": "PredDat", "who": "$who", "thing": "$thing", "verb": "v.khap" }, "en": "I'd like {thing}.", "elicit": ["I'd like chai.", "I'd like two samosas."] },
-    "PredDat": { "cat": "Utt", "args": { "who": { "type": "Person" }, "thing": { "type": "NP" }, "verb": { "type": "V" } }, "en": "{thing} is wanted" },
-    "IsA": { "cat": "Utt", "args": { "thing": { "type": "NP" }, "quality": { "type": "A" } }, "en": "{thing} is {quality}.", "elicit": ["The boy is big.", "The girls are big."] },
-    "BeIn": { "cat": "Utt", "args": { "who": { "type": "Person" }, "place": { "type": "NP" } }, "en": "{who} in {place}.", "elicit": ["I'm in the kitchen.", "We're in the kitchen."] },
-    "BelongsTo": { "cat": "Utt", "args": { "owner": { "type": "NP" }, "thing": { "type": "NP", "optional": true } }, "en": "It's {owner}'s.", "elicit": ["It's Nana's.", "It's the boy's."] },
-    "Fetch": { "cat": "Utt", "args": { "to": { "type": "Person" }, "things": { "type": "NP", "list": true } }, "rows": ["things"], "en": "Bring me {things}.", "elicit": ["Bring me flour, sugar and milk."] }
+ "_about": "TEST SEED ONLY (step 4a): a few meanings, language-neutral, for the engine's tests. GF-style: cat is the category, args are typed; `core` expands a domain meaning into a core one; `en` is the English for grown-ups; `elicit` is how Mum is asked when the rule is missing; `rows` names the arguments that are the order card's rows.",
+ "functions": {
+  "Item": {
+   "cat": "NP",
+   "args": {
+    "kind": {
+     "type": "N"
+    },
+    "n": {
+     "type": "Num",
+     "optional": true
+    },
+    "mods": {
+     "type": "A",
+     "list": true,
+     "optional": true
+    },
+    "with": {
+     "type": "NP",
+     "list": true,
+     "optional": true
+    },
+    "without": {
+     "type": "NP",
+     "list": true,
+     "optional": true
+    }
+   },
+   "en": "{n} {mods} {kind} {with} {without}",
+   "elicit": [
+    "two big mangoes",
+    "one red door"
+   ]
+  },
+  "Of": {
+   "cat": "NP",
+   "args": {
+    "owner": {
+     "type": "NP"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "{owner}'s {thing}",
+   "elicit": [
+    "Nana's cup",
+    "Nani's mangoes"
+   ]
+  },
+  "With": {
+   "cat": "PP",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "with {x}",
+   "elicit": [
+    "with the big boy"
+   ]
+  },
+  "In": {
+   "cat": "PP",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "in {x}",
+   "elicit": [
+    "in the big cup"
+   ]
+  },
+  "On": {
+   "cat": "PP",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "on {x}",
+   "elicit": [
+    "on the big mango"
+   ]
+  },
+  "MixedIn": {
+   "cat": "NP",
+   "args": {
+    "head": {
+     "type": "NP"
+    },
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{head} with {x} in it",
+   "elicit": [
+    "chai with milk"
+   ]
+  },
+  "Without": {
+   "cat": "NP",
+   "args": {
+    "head": {
+     "type": "NP"
+    },
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{head} without {x}",
+   "elicit": [
+    "chai without milk",
+    "daar without onion"
+   ]
+  },
+  "WithFood": {
+   "cat": "Mod",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "with {x}",
+   "elicit": [
+    "I'd like two samosas with mince.",
+    "I'd like one samosa with potato and one with mince."
+   ]
+  },
+  "WithoutFood": {
+   "cat": "Mod",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "without {x}",
+   "elicit": [
+    "I'd like daar, but no onion."
+   ]
+  },
+  "Need": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "rows": [
+    "thing"
+   ],
+   "core": {
+    "fn": "PredDat",
+    "who": "$who",
+    "thing": "$thing",
+    "verb": "v.want"
+   },
+   "en": "I'd like {thing}.",
+   "elicit": [
+    "I'd like chai.",
+    "I'd like two samosas."
+   ]
+  },
+  "PredDat": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{thing} is wanted"
+  },
+  "IsA": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP"
+    },
+    "quality": {
+     "type": "A"
+    }
+   },
+   "en": "{thing} is {quality}.",
+   "elicit": [
+    "The boy is big.",
+    "The girls are big."
+   ]
+  },
+  "BeIn": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "place": {
+     "type": "NP"
+    }
+   },
+   "en": "{who} in {place}.",
+   "elicit": [
+    "I'm in the kitchen.",
+    "We're in the kitchen."
+   ]
+  },
+  "BelongsTo": {
+   "cat": "Utt",
+   "args": {
+    "owner": {
+     "type": "NP"
+    },
+    "thing": {
+     "type": "NP",
+     "optional": true
+    }
+   },
+   "en": "It's {owner}'s.",
+   "elicit": [
+    "It's Nana's.",
+    "It's the boy's."
+   ]
+  },
+  "Fetch": {
+   "cat": "Utt",
+   "args": {
+    "to": {
+     "type": "Person"
+    },
+    "things": {
+     "type": "NP",
+     "list": true
+    }
+   },
+   "rows": [
+    "things"
+   ],
+   "en": "Bring me {things}.",
+   "elicit": [
+    "Bring me flour, sugar and milk."
+   ]
+  },
+  "Say": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "Phrase"
+    }
+   },
+   "en": "{x}",
+   "elicit": [
+    "No, I don't want it, thank you."
+   ]
   }
+ }
 }

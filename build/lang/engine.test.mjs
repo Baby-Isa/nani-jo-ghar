@@ -55,7 +55,7 @@ test("the data check rejects an English-only word not flagged to-record, and a t
 
 test("the data check rejects reserved feature values, bad keys, free text in rules, unknown rules with no question, and clips that say something else", () => {
   assert.ok(has(withEntry((d) => (d.lexicon.entries.find((e) => e.id === "pron.p3").person = "p3far")), /reserved/));
-  assert.ok(has(withEntry((d) => (d.lexicon.entries.find((e) => e.id === "v.khap").forms["pres.it.sg"] = "x")), /"it" is not a value/));
+  assert.ok(has(withEntry((d) => (d.lexicon.entries.find((e) => e.id === "v.want").forms["pres.it.sg"] = "x")), /"it" is not a value/));
   assert.ok(has(withEntry((d) => d.concrete.lin.With.slots.push({ word: "x" })), /may not hold text|no free text/));
   assert.ok(has(withEntry((d) => delete d.concrete.lin.WithFood.ask), /must name the questions/));
   assert.ok(has(withEntry((d) => d.concrete.lin.With.slots.push({ lex: "post.nothing" })), /unknown word "post.nothing"/));
@@ -68,17 +68,17 @@ test("the data check rejects reserved feature values, bad keys, free text in rul
 
 const GOLDEN = [
   // [meaning, ctx, Mum's words, source]
-  [{ fn: "Need", who: "p1", thing: Item("n.maani", { n: 1 }) }, {}, "Muke hakri maani khape.", "grammar-notes §1 (informal)"],
-  [{ fn: "Need", who: "p1", thing: Item("n.maani", { n: 1 }) }, { register: "polite" }, "Muke hakri maani khapeti.", "§1 (polite, she one)"],
-  [{ fn: "Need", who: "p1", thing: Item("n.ambo", { n: 1 }) }, { register: "polite" }, "Muke hakro ambo khapeto.", "§1 (polite, he one)"],
-  [{ fn: "Need", who: "p1", thing: Item("n.ambo", { n: 2 }) }, { register: "polite" }, "Muke ba amba khapanta.", "§1 (polite, he more; ba §3)"],
-  [{ fn: "Need", who: "p1", thing: Item("n.ambo", { n: 2 }) }, {}, "Muke ba amba khape.", "§1 (informal, any word)"],
-  [Item("n.ambo", { n: 2 }), {}, "ba amba", "§2, §4, §35 C2"],
-  [Item("n.darwajo", { n: 1 }), {}, "hakro darwajo", "§35 C3"],
+  [{ fn: "Need", who: "p1", thing: Item("n.chapati", { n: 1 }) }, {}, "Muke hakri maani khape.", "grammar-notes §1 (informal)"],
+  [{ fn: "Need", who: "p1", thing: Item("n.chapati", { n: 1 }) }, { register: "polite" }, "Muke hakri maani khapeti.", "§1 (polite, she one)"],
+  [{ fn: "Need", who: "p1", thing: Item("n.mango", { n: 1 }) }, { register: "polite" }, "Muke hakro ambo khapeto.", "§1 (polite, he one)"],
+  [{ fn: "Need", who: "p1", thing: Item("n.mango", { n: 2 }) }, { register: "polite" }, "Muke ba amba khapanta.", "§1 (polite, he more; ba §3)"],
+  [{ fn: "Need", who: "p1", thing: Item("n.mango", { n: 2 }) }, {}, "Muke ba amba khape.", "§1 (informal, any word)"],
+  [Item("n.mango", { n: 2 }), {}, "ba amba", "§2, §4, §35 C2"],
+  [Item("n.door", { n: 1 }), {}, "hakro darwajo", "§35 C3"],
   [Item("n.cup", { n: 2 }), {}, "ba cup", "§35 C1"],
-  [{ fn: "MixedIn", head: "n.chai", x: "n.dudh" }, {}, "dudh waari chai", "§6"],
-  [{ fn: "Without", head: "n.chai", x: "n.dudh" }, {}, "dudh wagar ji chai", "§10"],
-  [{ fn: "With", x: "n.chokro" }, {}, "chokre sathe", "§36 C18"],
+  [{ fn: "MixedIn", head: "n.tea", x: "n.milk" }, {}, "dudh waari chai", "§6"],
+  [{ fn: "Without", head: "n.tea", x: "n.milk" }, {}, "dudh wagar ji chai", "§10"],
+  [{ fn: "With", x: "n.boy" }, {}, "chokre sathe", "§36 C18"],
   [{ fn: "On", x: "n.table_" }, {}, null, "(unknown word: see the gap tests)"],
 ];
 
@@ -96,24 +96,24 @@ test("golden sentences: meaning in, exactly Mum's words out", () => {
 
 test("30 (a) describing words agree in four forms; laal never changes (grammar-notes §40, §41, §44)", () => {
   const cases = [
-    [Item("n.chokro", { mods: ["a.wadho"] }), "wadho chokro", "§40 C22"],
-    [Item("n.chokro", { mods: ["a.wadho"], number: "pl" }), "wadha chokra", "§40 C22"],
-    [Item("n.chokri", { mods: ["a.wadho"] }), "wadhi chokri", "§40 C23"],
-    [Item("n.chokri", { mods: ["a.wadho"], number: "pl" }), "wadhi chokriyu", "§40 C23"],
-    [Item("n.cup", { mods: ["a.wadho"], number: "pl" }), "wadha cup", "§40 C24: the noun doesn't change, the describing word does"],
-    [Item("n.ambo", { mods: ["a.wadho"], number: "pl" }), "wadha amba", "§40 C25"],
-    [{ fn: "With", x: Item("n.chokro", { mods: ["a.wadho"] }) }, "wadhe chokre sathe", "§41 C28"],
-    [{ fn: "With", x: Item("n.chokri", { mods: ["a.wadho"], number: "pl" }) }, "wadhi chokriyu sathe", "§41 C29"],
-    [{ fn: "In", x: Item("n.cup", { mods: ["a.wadho"] }) }, "wadhe cup me", "§41 C30: cup doesn't change, wadho does"],
-    [{ fn: "On", x: Item("n.ambo", { mods: ["a.wadho"] }) }, "wadhe ambe je mathe", "§41 C31"],
-    [Item("n.ambo", { mods: ["a.laal"], number: "pl" }), "laal amba", "§44 C38"],
-    [Item("n.cup", { mods: ["a.laal"] }), "laal cup", "§44 C37"],
-    [{ fn: "On", x: Item("n.ambo", { mods: ["a.laal"] }) }, "laal ambe je mathe", "§44 C41: the noun still changes"],
-    [{ fn: "IsA", thing: "n.chokro", quality: "a.wadho" }, "Chokro wadho ai.", "§42 C33"],
-    [{ fn: "IsA", thing: Item("n.chokro", { number: "pl" }), quality: "a.wadho" }, "Chokra wadha ain.", "§42 C33"],
-    [{ fn: "IsA", thing: Item("n.chokri", { number: "pl" }), quality: "a.wadho" }, "Chokriyu wadhi ain.", "§42 C34"],
-    [{ fn: "IsA", thing: "n.ambo", quality: "a.laal" }, "Ambo laal ai.", "§44 C42"],
-    [{ fn: "IsA", thing: Item("n.ambo", { number: "pl" }), quality: "a.laal" }, "Amba laal ain.", "§44 C42"],
+    [Item("n.boy", { mods: ["a.big"] }), "wadho chokro", "§40 C22"],
+    [Item("n.boy", { mods: ["a.big"], number: "pl" }), "wadha chokra", "§40 C22"],
+    [Item("n.girl", { mods: ["a.big"] }), "wadhi chokri", "§40 C23"],
+    [Item("n.girl", { mods: ["a.big"], number: "pl" }), "wadhi chokriyu", "§40 C23"],
+    [Item("n.cup", { mods: ["a.big"], number: "pl" }), "wadha cup", "§40 C24: the noun doesn't change, the describing word does"],
+    [Item("n.mango", { mods: ["a.big"], number: "pl" }), "wadha amba", "§40 C25"],
+    [{ fn: "With", x: Item("n.boy", { mods: ["a.big"] }) }, "wadhe chokre sathe", "§41 C28"],
+    [{ fn: "With", x: Item("n.girl", { mods: ["a.big"], number: "pl" }) }, "wadhi chokriyu sathe", "§41 C29"],
+    [{ fn: "In", x: Item("n.cup", { mods: ["a.big"] }) }, "wadhe cup me", "§41 C30: cup doesn't change, wadho does"],
+    [{ fn: "On", x: Item("n.mango", { mods: ["a.big"] }) }, "wadhe ambe je mathe", "§41 C31"],
+    [Item("n.mango", { mods: ["a.red"], number: "pl" }), "laal amba", "§44 C38"],
+    [Item("n.cup", { mods: ["a.red"] }), "laal cup", "§44 C37"],
+    [{ fn: "On", x: Item("n.mango", { mods: ["a.red"] }) }, "laal ambe je mathe", "§44 C41: the noun still changes"],
+    [{ fn: "IsA", thing: "n.boy", quality: "a.big" }, "Chokro wadho ai.", "§42 C33"],
+    [{ fn: "IsA", thing: Item("n.boy", { number: "pl" }), quality: "a.big" }, "Chokra wadha ain.", "§42 C33"],
+    [{ fn: "IsA", thing: Item("n.girl", { number: "pl" }), quality: "a.big" }, "Chokriyu wadhi ain.", "§42 C34"],
+    [{ fn: "IsA", thing: "n.mango", quality: "a.red" }, "Ambo laal ai.", "§44 C42"],
+    [{ fn: "IsA", thing: Item("n.mango", { number: "pl" }), quality: "a.red" }, "Amba laal ain.", "§44 C42"],
   ];
   for (const [m, want, src] of cases) {
     const r = E.say(m);
@@ -123,17 +123,17 @@ test("30 (a) describing words agree in four forms; laal never changes (grammar-n
 });
 
 test("30 (b) the oblique -e: a he-word in -o, its describing word and its 'of' word (grammar-notes §41, §48, §49)", () => {
-  assert.equal(E.say({ fn: "With", x: "n.chokro" }).text, "chokre sathe", "§36 C18");
-  assert.equal(E.say({ fn: "In", x: "n.rasoro" }).text, "rasore me", "§51");
-  assert.equal(E.say({ fn: "On", x: { fn: "Of", owner: "pn.nani", thing: "n.ambo" } }).text, "Nani je ambe je mathe", "§49 C59");
+  assert.equal(E.say({ fn: "With", x: "n.boy" }).text, "chokre sathe", "§36 C18");
+  assert.equal(E.say({ fn: "In", x: "n.kitchen" }).text, "rasore me", "§51");
+  assert.equal(E.say({ fn: "On", x: { fn: "Of", owner: "pn.nani", thing: "n.mango" } }).text, "Nani je ambe je mathe", "§49 C59");
   assert.equal(E.say({ fn: "In", x: { fn: "Of", owner: "pn.nana", thing: "n.cup" } }).text, "Nana je cup me", "§49 C59 (short postposition, §55)");
-  assert.equal(E.say({ fn: "On", x: "n.darwajo" }).text, "darwaje je mathe", "§36 C14 pattern");
-  assert.equal(E.say({ fn: "With", x: { fn: "Of", owner: "n.chokri", thing: "n.chokri" } }).text, "chokri ji chokri sathe", "§49: a she-word thing keeps ji");
+  assert.equal(E.say({ fn: "On", x: "n.door" }).text, "darwaje je mathe", "§36 C14 pattern");
+  assert.equal(E.say({ fn: "With", x: { fn: "Of", owner: "n.girl", thing: "n.girl" } }).text, "chokri ji chokri sathe", "§49: a she-word thing keeps ji");
   // she-words and invariant words don't change before a postposition
-  assert.equal(E.say({ fn: "With", x: "n.chokri" }).text, "chokri sathe", "§36 C19");
+  assert.equal(E.say({ fn: "With", x: "n.girl" }).text, "chokri sathe", "§36 C19");
   assert.equal(E.say({ fn: "In", x: "n.cup" }).text, "cup me", "§36 C12");
   // the -e cell is a draft until Zafar ticks it (decision 30): shown flagged
-  const r = E.say({ fn: "With", x: "n.chokro" });
+  const r = E.say({ fn: "With", x: "n.boy" });
   assert.equal(r.drafts.length, 1);
   assert.equal(r.drafts[0].t, "chokre");
   assert.equal(r.segments.find((s) => s.t === "chokre").draft, true);
@@ -143,28 +143,28 @@ test("30 (c) 'of' agrees with the thing owned, never the owner (grammar-notes §
   const cases = [
     [{ fn: "Of", owner: "pn.nana", thing: "n.cup" }, "Nana jo cup", "§47 C50"],
     [{ fn: "Of", owner: "pn.nani", thing: "n.cup" }, "Nani jo cup", "§47 C53: Nani, still jo"],
-    [{ fn: "Of", owner: "pn.nana", thing: Item("n.ambo", { number: "pl" }) }, "Nana ja amba", "§47 C51"],
-    [{ fn: "Of", owner: "pn.nana", thing: "n.maani" }, "Nana ji maani", "§47 C52"],
-    [{ fn: "Of", owner: "pn.nani", thing: "n.darwajo" }, "Nani jo darwajo", "§47 C55"],
-    [{ fn: "Of", owner: "n.chokro", thing: "n.cup" }, "chokre jo cup", "§48 C56: the owner takes -e"],
-    [{ fn: "Of", owner: "n.chokri", thing: "n.ambo" }, "chokri jo ambo", "§48 C57"],
-    [{ fn: "Of", owner: "n.chokro", thing: Item("n.ambo", { number: "pl" }) }, "chokre ja amba", "§48 C58 pattern (bakre ja amba)"],
+    [{ fn: "Of", owner: "pn.nana", thing: Item("n.mango", { number: "pl" }) }, "Nana ja amba", "§47 C51"],
+    [{ fn: "Of", owner: "pn.nana", thing: "n.chapati" }, "Nana ji maani", "§47 C52"],
+    [{ fn: "Of", owner: "pn.nani", thing: "n.door" }, "Nani jo darwajo", "§47 C55"],
+    [{ fn: "Of", owner: "n.boy", thing: "n.cup" }, "chokre jo cup", "§48 C56: the owner takes -e"],
+    [{ fn: "Of", owner: "n.girl", thing: "n.mango" }, "chokri jo ambo", "§48 C57"],
+    [{ fn: "Of", owner: "n.boy", thing: Item("n.mango", { number: "pl" }) }, "chokre ja amba", "§48 C58 pattern (bakre ja amba)"],
   ];
   for (const [m, want, src] of cases) assert.equal(E.say(m).text, want, src);
 });
 
 test("30 (d) 'be' by person and number; 'you' follows who is spoken to (grammar-notes §51, rule G6)", () => {
-  const be = (who, ctx = {}) => E.say({ fn: "BeIn", who, place: "n.rasoro" }, ctx).text;
+  const be = (who, ctx = {}) => E.say({ fn: "BeIn", who, place: "n.kitchen" }, ctx).text;
   assert.equal(be("p1"), "Aau rasore me aiya.", "§51 C61");
   assert.equal(be("p2"), "Tu rasore me aiye.", "§51 C62 (to a child)");
   assert.equal(be("p2", { addressee: { elder: true } }), "Aai rasore me aayo.", "§51 C63 (to Nana)");
   assert.equal(be("p3"), "E rasore me ai.", "§51 C64");
-  assert.equal(E.say({ fn: "IsA", thing: Item("n.cup", { number: "pl" }), quality: "a.wadho" }).text, "Cup wadha ain.", "§42 C35 (ain = are)");
+  assert.equal(E.say({ fn: "IsA", thing: Item("n.cup", { number: "pl" }), quality: "a.big" }).text, "Cup wadha ain.", "§42 C35 (ain = are)");
 });
 
 test("30 (e) two words for 'we': pa (with you), asa (without you) (grammar-notes §52)", () => {
-  assert.equal(E.say({ fn: "BeIn", who: "p1pl.incl", place: "n.rasoro" }).text, "Pa rasore me aayo.");
-  assert.equal(E.say({ fn: "BeIn", who: "p1pl.excl", place: "n.rasoro" }).text, "Asa rasore me aayo.");
+  assert.equal(E.say({ fn: "BeIn", who: "p1pl.incl", place: "n.kitchen" }).text, "Pa rasore me aayo.");
+  assert.equal(E.say({ fn: "BeIn", who: "p1pl.excl", place: "n.kitchen" }).text, "Asa rasore me aayo.");
 });
 
 test("30 (f) an unknown thing takes the he-form, by rule, with no gap (grammar-notes §50)", () => {
@@ -172,19 +172,19 @@ test("30 (f) an unknown thing takes the he-form, by rule, with no gap (grammar-n
   assert.equal(r.text, "Nana jo ai.");
   assert.equal(r.ok, true);
   assert.deepEqual(kinds(r), []);
-  assert.equal(E.say({ fn: "BelongsTo", owner: "n.chokro" }).text, "Chokre jo ai.", "§50 (chokre jo ai)");
-  assert.equal(E.say({ fn: "BelongsTo", owner: "pn.nana", thing: "n.maani" }).text, "Nana ji ai.", "a known she-thing: ji (§47)");
+  assert.equal(E.say({ fn: "BelongsTo", owner: "n.boy" }).text, "Chokre jo ai.", "§50 (chokre jo ai)");
+  assert.equal(E.say({ fn: "BelongsTo", owner: "pn.nana", thing: "n.chapati" }).text, "Nana ji ai.", "a known she-thing: ji (§47)");
 });
 
 /* ---------------- an unknown noun gender (decision 21, rule G2) ---------------- */
 
 test("a noun of unknown gender takes the he-form, flagged 'to check', and tops Mum's list, only when a form depends on it", () => {
-  const polite = E.say({ fn: "Need", who: "p1", thing: Item("n.khun", { n: 1 }) }, { register: "polite" });
+  const polite = E.say({ fn: "Need", who: "p1", thing: Item("n.sugar", { n: 1 }) }, { register: "polite" });
   assert.equal(polite.text, "Muke hakro khun khapeto.");
   assert.equal(polite.ok, true, "a defaulted gender is Mum's rule, so the line can still be said");
   const g = polite.gaps.find((x) => x.kind === "feature");
   assert.ok(g, "a feature gap is always reported");
-  assert.equal(g.lex, "n.khun");
+  assert.equal(g.lex, "n.sugar");
   assert.equal(g.feature, "gender");
   assert.equal(g.defaulted, "he");
   assert.deepEqual(g.ask, ["L34"]);
@@ -193,9 +193,9 @@ test("a noun of unknown gender takes the he-form, flagged 'to check', and tops M
     ["hakro", "khapeto"],
     "the words whose form rests on the guess are flagged",
   );
-  assert.deepEqual(polite.drafts[0].defaulted, { gender: ["n.khun"] });
+  assert.deepEqual(polite.drafts[0].defaulted, { gender: ["n.sugar"] });
   // informal: nothing depends on the gender, so nothing is guessed and nothing is flagged
-  const plain = E.say({ fn: "Need", who: "p1", thing: Item("n.khun") });
+  const plain = E.say({ fn: "Need", who: "p1", thing: Item("n.sugar") });
   assert.equal(plain.text, "Muke khun khape.");
   assert.deepEqual(kinds(plain), []);
   assert.equal(plain.drafts.length, 0);
@@ -204,7 +204,7 @@ test("a noun of unknown gender takes the he-form, flagged 'to check', and tops M
 /* ---------------- gaps: never a made-up word (rule G9) ---------------- */
 
 test("a missing rule is a gap with its questions and an honest English placeholder (WithFood)", () => {
-  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.ambo", { n: 2, with: [Item("n.cup")] }) });
+  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.mango", { n: 2, with: [Item("n.cup")] }) });
   assert.equal(r.ok, false);
   const g = r.gaps.find((x) => x.kind === "rule");
   assert.equal(g.id, "WithFood");
@@ -217,9 +217,9 @@ test("a missing rule is a gap with its questions and an honest English placehold
 });
 
 test("a missing form is a gap, never a guess: the he-word plural before a postposition (grammar-notes §41, open)", () => {
-  const r = E.say({ fn: "With", x: Item("n.chokro", { mods: ["a.wadho"], number: "pl" }) });
+  const r = E.say({ fn: "With", x: Item("n.boy", { mods: ["a.big"], number: "pl" }) });
   assert.equal(r.ok, false);
-  assert.deepEqual(kinds(r), ["form:a.wadho:he.pl.obl"]);
+  assert.deepEqual(kinds(r), ["form:a.big:he.pl.obl"]);
   assert.deepEqual(r.gaps[0].ask, ["C28", "C30", "C31", "C32"]);
   assert.equal(r.segments.find((s) => s.lang === "e").t, "big", "the English placeholder, not wadha or wadhe");
   assert.ok(!/wadh[ae] chokra/.test(r.text));
@@ -244,51 +244,51 @@ test("a word with no Kutchi yet (to-record), an unknown word id and an unknown m
 });
 
 test("a rule that holds only in some cases is a gap outside them (wagar ji: she-word dishes only, L36)", () => {
-  const r = E.say({ fn: "Without", head: "n.cup", x: "n.dudh" });
+  const r = E.say({ fn: "Without", head: "n.cup", x: "n.milk" });
   assert.equal(r.ok, false);
   assert.deepEqual(r.gaps.filter((g) => g.kind === "rule").map((g) => [g.id, g.ask]), [["Without", ["L36"]]]);
-  const mixed = E.say({ fn: "MixedIn", head: "n.cup", x: "n.dudh" });
+  const mixed = E.say({ fn: "MixedIn", head: "n.cup", x: "n.milk" });
   assert.equal(mixed.ok, false, "waari is said of chai only (§6)");
 });
 
 test("gaps are collected, not stopped at the first one", () => {
-  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.oil", { with: [Item("n.khun", { n: 1 })] }) }, { register: "polite" });
+  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.oil", { with: [Item("n.sugar", { n: 1 })] }) }, { register: "polite" });
   const k = kinds(r);
   assert.ok(k.includes("lexeme:n.oil") && k.includes("rule:WithFood"), k.join(" "));
 });
 
 test("check() gives the same verdict as say() without building text", () => {
-  const m = { fn: "Need", who: "p1", thing: Item("n.ambo", { n: 2, with: [Item("n.cup")] }) };
+  const m = { fn: "Need", who: "p1", thing: Item("n.mango", { n: 2, with: [Item("n.cup")] }) };
   const c = E.check(m);
   assert.equal(c.ok, false);
   assert.deepEqual(
     c.gaps.map((g) => g.key),
     E.say(m).gaps.filter((g) => g.kind !== "audio").map((g) => g.key),
   );
-  assert.equal(E.check({ fn: "MixedIn", head: "n.chai", x: "n.dudh" }).ok, true);
+  assert.equal(E.check({ fn: "MixedIn", head: "n.tea", x: "n.milk" }).ok, true);
 });
 
 /* ---------------- rows, word, explain, play ---------------- */
 
 test("card rows come from the same source as the sentence (rule F10): lower case, no full stop", () => {
-  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.maani", { n: 1 }) });
+  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.chapati", { n: 1 }) });
   assert.deepEqual(r.rows, ["hakri maani"]);
-  const rows = E.rows({ fn: "Fetch", to: "p1", things: [Item("n.cup", { n: 2 }), "n.dudh"] });
+  const rows = E.rows({ fn: "Fetch", to: "p1", things: [Item("n.cup", { n: 2 }), "n.milk"] });
   assert.deepEqual(rows.map((x) => x.text), ["ba cup", "dudh"]);
-  assert.deepEqual(E.rows({ fn: "IsA", thing: "n.chokro", quality: "a.wadho" }).map((x) => x.text), ["chokro wadho ai"]);
+  assert.deepEqual(E.rows({ fn: "IsA", thing: "n.boy", quality: "a.big" }).map((x) => x.text), ["chokro wadho ai"]);
 });
 
 test("word(): one word in one cell, or its default", () => {
   assert.equal(E.word("num.1", "she").text, "hakri");
-  assert.equal(E.word("n.ambo").text, "ambo");
-  assert.equal(E.word("n.ambo", "pl.dir").text, "amba");
-  assert.equal(E.word("n.maani").clipPlan[0].source, "family-ok");
+  assert.equal(E.word("n.mango").text, "ambo");
+  assert.equal(E.word("n.mango", "pl.dir").text, "amba");
+  assert.equal(E.word("n.chapati").clipPlan[0].source, "family-ok");
   assert.equal(E.word("n.oil").ok, false);
 });
 
 test("explain() names the rule, cell and source of every word", () => {
-  const t = E.explain({ fn: "With", x: "n.chokro" });
-  const w = t.find((x) => x.word === "n.chokro");
+  const t = E.explain({ fn: "With", x: "n.boy" });
+  const w = t.find((x) => x.word === "n.boy");
   assert.equal(w.cell, "sg.obl");
   assert.equal(w.from, "paradigm");
   assert.match(w.src.join(" "), /§41/);
@@ -296,13 +296,13 @@ test("explain() names the rule, cell and source of every word", () => {
 });
 
 test("the English for grown-ups comes from the data's glosses", () => {
-  assert.equal(E.say({ fn: "Need", who: "p1", thing: Item("n.ambo", { n: 2 }) }).en, "I'd like two mangoes.");
+  assert.equal(E.say({ fn: "Need", who: "p1", thing: Item("n.mango", { n: 2 }) }).en, "I'd like two mangoes.");
 });
 
 test("play() hands the result to the core voice and never blocks", async () => {
   const said = [];
   const voice = { say: (r, o) => (said.push([r.text, o.channel]), Promise.resolve({ done: true })) };
-  const r = E.say({ fn: "MixedIn", head: "n.chai", x: "n.dudh" });
+  const r = E.say({ fn: "MixedIn", head: "n.tea", x: "n.milk" });
   assert.deepEqual(await E.play(r, { voice, channel: "main" }), { done: true });
   assert.deepEqual(said, [["dudh waari chai", "main"]]);
   assert.equal((await E.play(r)).done, false, "no voice: nothing plays, nothing throws");
@@ -311,7 +311,7 @@ test("play() hands the result to the core voice and never blocks", async () => {
 /* ---------------- clip plans (decision 26: stitched from words) ---------------- */
 
 test("clip plan: per-word family recordings, store path only OK clips, the rest missing and reported", () => {
-  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.maani", { n: 1 }) });
+  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.chapati", { n: 1 }) });
   const maani = r.clipPlan.find((c) => c.text === "maani");
   assert.equal(maani.kind, "word");
   assert.equal(maani.source, "family-ok");
@@ -325,8 +325,8 @@ test("clip plan: per-word family recordings, store path only OK clips, the rest 
   const cup = E.say(Item("n.cup", { n: 2 })).clipPlan.find((c) => c.text === "cup");
   assert.match(cup.file, /zafar\/cup\.mp3$/);
   // laal: unchecked; the store path never plays it, the test path may
-  assert.equal(E.say(Item("n.cup", { mods: ["a.laal"] })).clipPlan[0].source, "missing");
-  const test = engine({ path: "test" }).say(Item("n.cup", { mods: ["a.laal"] }));
+  assert.equal(E.say(Item("n.cup", { mods: ["a.red"] })).clipPlan[0].source, "missing");
+  const test = engine({ path: "test" }).say(Item("n.cup", { mods: ["a.red"] }));
   assert.equal(test.clipPlan[0].source, "family-unchecked");
   // an English placeholder is never a family clip
   const gap = E.say({ fn: "Need", who: "p1", thing: Item("n.oil") });
@@ -339,13 +339,13 @@ test("whole-phrase clips are off until the pre-publish pass, and never cover a g
     { id: "test-khun", kutchi: "hakro khun", speaker: "mum", file: "x/khun.mp3", checked: "ok" },
   ]);
   const data = seed();
-  data.clips.clips.push({ clip: "test-whole", meaning: "MixedIn(n.chai,n.dudh)" }, { clip: "test-khun", meaning: "Item(n.khun,1)" });
-  const m = { fn: "MixedIn", head: "n.chai", x: "n.dudh" };
+  data.clips.clips.push({ clip: "test-whole", meaning: "MixedIn(n.tea,n.milk)" }, { clip: "test-khun", meaning: "Item(n.sugar,1)" });
+  const m = { fn: "MixedIn", head: "n.tea", x: "n.milk" };
   const off = createEngine({ data, audio, path: "store", phrases: false }).say(m);
   assert.ok(!off.clipPlan.some((c) => c.kind === "whole"), "decision 26: stitched by default");
   const on = createEngine({ data, audio, path: "store", phrases: true }).say(m);
   assert.deepEqual(on.clipPlan.map((c) => [c.kind, c.file]), [["whole", "x/whole.mp3"]]);
-  const guessed = createEngine({ data, audio, path: "store", phrases: true }).say(Item("n.khun", { n: 1 }));
+  const guessed = createEngine({ data, audio, path: "store", phrases: true }).say(Item("n.sugar", { n: 1 }));
   assert.ok(!guessed.clipPlan.some((c) => c.kind === "whole"), "decision 21: a guessed gender is never said by a whole recording");
 });
 
@@ -389,4 +389,62 @@ test("no Kutchi in the engine's code: no seed word appears in js/core/lang/engin
     const src = readFileSync(dir + file, "utf8").toLowerCase();
     for (const f of forms) assert.ok(!new RegExp(`\\b${f}\\b`).test(src), `"${f}" appears in ${file}`);
   }
+});
+
+test("meaning keys are canonical (argument order from the abstract syntax; internal fields left out)", () => {
+  const a = E.say({ fn: "Need", thing: Item("n.chapati", { n: 1 }), who: "p1" });
+  assert.equal(a.key, "Need(p1,Item(n.chapati,1))");
+  const b = E.say({ fn: "Need", who: "p1", thing: Item("n.mango", { n: 2, with: [Item("n.cup")] }) });
+  assert.equal(b.key, "Need(p1,Item(n.mango,2,[Item(n.cup)]))");
+  assert.ok(!b.trace.some((t) => /\$parent|object Object/.test(JSON.stringify(t))));
+});
+
+/* ---------------- fixed expressions, set phrases, rule exceptions (decision 40, rule G27) ---------------- */
+
+test("a fixed expression is one entry made of other words, each agreeing (kari chai, mori chai: grammar-notes §10)", () => {
+  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.black-tea", { n: 1 }) }, { register: "polite" });
+  assert.equal(r.text, "Muke hakri kari chai khapeti.", "she-word: hakri, khapeti");
+  assert.deepEqual(r.tokens.filter((t) => t.of === "n.black-tea").map((t) => [t.t, t.lex]), [["kari", "a.black"], ["chai", "n.tea"]]);
+  assert.equal(E.say(Item("n.unsweetened-tea")).text, "mori chai");
+  assert.equal(E.word("a.black", "he.sg.dir").ok, false, "the he-form karo is a guess: not entered, so a gap");
+  const e = E.linearizer.lexOf("a.black");
+  assert.ok(e.open.length && e.notes.length, "notes and open questions live on the entry");
+});
+
+test("a set phrase is built from known words, so each word stitches from its own recording (na, na khape: §11)", () => {
+  const r = E.say({ fn: "Say", x: "phrase.no-thanks" });
+  assert.equal(r.text, "Na, na khape.");
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.clipPlan.map((c) => c.text), ["na", "na", "khape"]);
+});
+
+test("a rule exception is tried first and carries its own source (§6: a counted sugar is not 'waari')", () => {
+  const ok = E.say({ fn: "MixedIn", head: "n.tea", x: "n.sugar" });
+  assert.equal(ok.text, "khun waari chai", "§6");
+  const ex = E.say({ fn: "MixedIn", head: "n.tea", x: Item("n.sugar", { n: 2 }) });
+  assert.equal(ex.ok, false);
+  const g = ex.gaps.find((x) => x.kind === "rule");
+  assert.equal(g.id, "MixedIn");
+  assert.deepEqual(g.ask, ["L9"]);
+  assert.ok(!/ba khun waari/.test(ex.text), "never the form Mum corrected");
+});
+
+test("the data check covers parts, notes, open questions, history and exceptions", () => {
+  assert.ok(has(withEntry((d) => d.lexicon.entries.find((e) => e.id === "n.black-tea").parts.push({ lex: "a.nothing" })), /part names the unknown word/));
+  assert.ok(has(withEntry((d) => (d.lexicon.entries.find((e) => e.id === "a.black").history = [{ date: "2026-10-05", change: "x" }])), /history row/));
+  assert.ok(has(withEntry((d) => delete d.concrete.lin.MixedIn.exceptions[0].src), /exception 1: no source|no source/));
+  assert.ok(has(withEntry((d) => delete d.concrete.lin.MixedIn.exceptions[0].ask), /must name the questions/));
+});
+
+test("meanings are language-neutral: no Kutchi in abstract.json, and word ids name concepts, not Kutchi words", () => {
+  const d = seed();
+  const forms = new Set();
+  for (const e of d.lexicon.entries) {
+    const english = new Set([String(e.gloss || "").toLowerCase(), String(e.glossPl || "").toLowerCase()]);
+    for (const f of [e.lemma, ...Object.values(e.forms || {}).map((v) => (typeof v === "string" ? v : v && v.t))])
+      if (f && f.length >= 3 && !english.has(f.toLowerCase())) forms.add(f.toLowerCase());
+  }
+  const abs = JSON.stringify(d.abstract.functions).toLowerCase();
+  for (const f of forms) assert.ok(!new RegExp(`\\b${f}\\b`).test(abs), `"${f}" in abstract.json`);
+  for (const e of d.lexicon.entries) for (const f of forms) assert.ok(!new RegExp(`\\.${f}$`).test(e.id), `id ${e.id} is a Kutchi word`);
 });

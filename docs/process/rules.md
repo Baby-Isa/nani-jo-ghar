@@ -165,7 +165,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Difficulty is per word:** up a stage on correct recall from the Kutchi, down after two misses. (G23)
 
 ### Counting
-- **The counting rule:** L1 the quantity is written in Kutchi words and counted aloud; L2 written only; L3+ heard only; say the number with the item; no tallies except chai's sugar. (E12)
+- **The counting rule:** at every level Nani says the order at the start and the speaker replays it on demand. L1: the card writes the quantity in Kutchi words and Nani counts along aloud as the child works; L2: the card still writes it, no counting along; L3+: nothing written and no counting along, only the spoken order (replayable). Say the number with the item; no tallies except chai's sugar. Every station follows it, daar's chop card included. (E12, decision 41)
 - **Rows tick when that step closes** (put down, finished, served), never when a number is reached; the count is judged at the end. (E11)
 
 ### Interaction

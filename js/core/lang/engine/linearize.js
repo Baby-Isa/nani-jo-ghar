@@ -69,7 +69,7 @@ export function createLinearizer(data) {
     if (e.pos === "Num" && e.value != null) byValue.set(Number(e.value), e);
   }
   const lexOf = (id) => byId.get(id) || null;
-  const hasKutchi = (e) => !!(e && (e.lemma || (e.forms && Object.keys(e.forms).length)));
+  const hasKutchi = (e) => !!(e && (e.lemma || (e.forms && Object.keys(e.forms).length) || (e.parts && e.parts.length)));
 
   /* ---------- forms ---------- */
 
@@ -281,7 +281,7 @@ export function linearize(L, meaning, ctx = {}) {
     if (Array.isArray(v)) return "[" + v.map(meaningKey).join(",") + "]";
     if (typeof v !== "object") return String(v);
     const abs = functions[v.fn] || { args: {} };
-    const names = Object.keys(abs.args || {}).concat(Object.keys(v).filter((k) => k !== "fn" && !(k in (abs.args || {}))).sort());
+    const names = Object.keys(abs.args || {}).concat(Object.keys(v).filter((k) => k !== "fn" && !k.startsWith("$") && !(k in (abs.args || {}))).sort());
     const parts = names.filter((k) => v[k] != null).map((k) => (k in (abs.args || {}) ? meaningKey(v[k]) : `${k}=${meaningKey(v[k])}`));
     return `${v.fn}(${parts.join(",")})`;
   }
@@ -299,6 +299,27 @@ export function linearize(L, meaning, ctx = {}) {
     const own = e ? L.lexFeats(e.id) : { $def: {} };
     const ownScope = alone && !cellTpl ? { number: "sg", ...own, $def: own.$def } : mergeOwn(own, scope.own);
     const filled = fill(tpl, { ...scope, own: ownScope });
+    // a set phrase or a fixed expression (a word that is two words, a polite refusal) is made of other words: each is its own
+    // token (its own form, status and clip), and the whole carries the entry's own status and meaning
+    if (e && e.parts && e.parts.length && !filled.unresolved.length && !(e.forms && Object.keys(e.forms).some((k) => keyCovers(k, filled.cell) >= 0)) && e.status !== "to-record") {
+      const start = st.tokens.length;
+      for (const part of e.parts) {
+        if (part.punct) st.tokens.push({ t: part.punct, lang: null, punct: true });
+        else pushWord(part.lex, String(part.cell || "").replace(/\{cell\}/g, filled.cell) || null, scope);
+      }
+      for (let i = start; i < st.tokens.length; i++) {
+        const tk = st.tokens[i];
+        if (tk.punct) continue;
+        tk.of = e.id;
+        if (tk.lang === "k") tk.status = L.worst(tk.status, e.status || "confirmed");
+        if (filled.def.length && tk.lang === "k") {
+          tk.defaulted = { gender: Array.from(new Set([...((tk.defaulted && tk.defaulted.gender) || []), ...filled.def])) };
+          tk.status = L.worst(tk.status, "draft");
+        }
+      }
+      st.trace.push({ word: e.id, parts: e.parts.length, cell: filled.cell, status: e.status, src: e.src });
+      return;
+    }
     const r = filled.unresolved.length ? { gap: { kind: "rule", id: scope.meaning ? scope.meaning.fn : "?", what: `cannot work out ${filled.unresolved.join(", ")} for "${id}"` }, entry: e } : L.inflect(id, filled.cell);
     if (r.gap) {
       const g = addGap(r.gap);
@@ -420,9 +441,18 @@ export function linearize(L, meaning, ctx = {}) {
       placeholder(m0.fn, g);
       return;
     }
-    const { m, rule } = ruleFor(m0);
+    const found = ruleFor(m0);
+    const m = found.m;
+    let rule = found.rule;
     const own = featsOf(m0) || { $def: {} };
     const scope = { ...scopeFor(m, own, inh), ruleDraft: rule && rule.status === "draft" };
+    // a rule's exceptions (each with its own `only` condition and source) are tried first, in order
+    const ex = rule && (rule.exceptions || []).find((x) => onlyHolds(x, scope));
+    if (ex) {
+      rule = { ...rule, ...ex, only: undefined, exceptions: undefined, onlyAsk: undefined, exception: true };
+      if (ex.slots && !ex.variants) delete rule.variants;
+      scope.ruleDraft = rule.status === "draft";
+    }
     if (m0.$parent) scope.argFeats = ((base) => (name) => (name === "parent" ? m0.$parent : base(name)))(scope.argFeats);
     const unknown = !rule || rule.status === "unknown" || !onlyHolds(rule, scope);
     if (unknown) {
