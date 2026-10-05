@@ -1,0 +1,551 @@
+# The run spec for pack clinic-heal-v3: the ChatGPT run, as data. Read by build/tools/art/artblock.py (the paste
+# block) and build/tools/art/artjudge.py (the first-pass judge). The prompts themselves stay in the art plan
+# (section 5); its PEOPLE table gives the slots. Edit this file, then regenerate the block; never hand-edit the block.
+pack: clinic-heal-v3
+title: clinic heal games
+plan: docs/design-language/art-plans/clinic-heal-art-plan.md
+plan_branch: ccr-fcd9dddd-wnywzc      # the block reads the plan from this branch until it reaches main
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: main
+dest: sources/art/clinic-heal-v3
+real_people: false                     # true: the runner stops for Zafar's approval of likenesses (decision 29)
+# runner knobs (art-pipeline.md "The fast runner"): windows = ChatGPT chats generating at once
+runner:
+  windows: 3
+  send_gap_seconds: 60
+  stall_minutes: 6                     # no progress this long: reload the chat once
+  hard_minutes: 10                     # still nothing: retry once in a fresh chat, then skip and log
+  redos: 2
+  commit_batch: 6                      # kept images per GitHub commit (flush at the end of a part)
+  flush_minutes: 25                    # never leave a kept image uncommitted longer than this
+refs:                                  # reference images by the name the run order uses
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+  char-clinic-girl-v1.png: sources/art/chatgpt-batch3/char-clinic-girl-v1.png
+  char-clinic-boy-v1.png: sources/art/chatgpt-batch3/char-clinic-boy-v1.png
+  char-clinic-oldman-v1.png: sources/art/chatgpt-batch3/char-clinic-oldman-v1.png
+  char-clinic-oldwoman-v1.png: sources/art/chatgpt-batch3/char-clinic-oldwoman-v1.png
+  char-clinic-dad-baby-v1.png: sources/art/chatgpt-batch3/char-clinic-dad-baby-v1.png
+  char-clinic-lineup-v1.png: sources/art/chatgpt-batch3/char-clinic-lineup-v1.png
+  char-ali-hurts-v1.png: sources/art/chatgpt-batch3/char-ali-hurts-v1.png
+  cb2b-exam-bed-close-v1.png: sources/art/clinic-v2/cb2b-exam-bed-close-v1.png
+  ci1-care-kit-v1.png: sources/art/clinic-v2/items/ci1-care-kit-v1.png
+  ci2-tools-comfort-v1.png: sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+# who is in the run: prefix (as in the plan's PEOPLE table) -> the sheet that identifies them and their limb set
+people:
+  girl: {sheet: S1, set: child}
+  boy: {sheet: S2, set: child}
+  oldman: {sheet: S3, set: adult}
+  oldwoman: {sheet: S4, set: adult}
+  man: {sheet: S5, set: adult}
+  woman: {sheet: S6, set: adult}
+limb_sets:                             # the limb close-ups' sheet (the {LIMB_WHO} slot is in the plan)
+  child: S1
+  adult: S5
+# per-ID line templates. <p> the person's prefix, <sheet> their sheet's ID, <set> the limb set. attach: a reference
+# image name, kept:<ID> (a kept image of that run line), or edit: kept:<ID> (attach only that one; an edit is always of
+# a fresh picture). A trailing ? makes an attachment optional (left out if that line was skipped).
+templates:
+  W1:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-w1-front-neutral-v1.png", check: W1}
+  W2:  {attach: ["edit: kept:<p>-W1"], save: "<p>-w2-front-happy-v1.png", check: FACE}
+  W3:  {attach: ["edit: kept:<p>-W1"], save: "<p>-w3-front-sad-v1.png", check: FACE}
+  W4:  {attach: ["edit: kept:<p>-W1"], save: "<p>-w4-front-pain-v1.png", check: FACE}
+  W5:  {attach: ["edit: kept:<p>-W1"], save: "<p>-w5-front-hot-v1.png", check: FACE}
+  W6:  {attach: ["edit: kept:<p>-W1"], save: "<p>-w6-front-cold-v1.png", check: FACE}
+  W7:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-w7-side-neutral-v1.png", check: W7}
+  W8:  {attach: ["edit: kept:<p>-W7"], save: "<p>-w8-side-happy-v1.png", check: FACE, note: "compare with <p>-W7"}
+  W9:  {attach: ["kept:<p>-W1", "kept:<sheet>"], save: "<p>-w9-blanket-v1.png", check: W9}
+  W10: {attach: ["kept:<p>-W1", "kept:<sheet>"], save: "<p>-w10-bottle-v1.png", check: W10}
+  E1:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-e1-ear-v1.png", check: E1}
+  M1:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-m1-mouth-v1.png", check: M1}
+  M2:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-m2-tongue-v1.png", check: M2}
+  Y1:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-y1-eyes-v1.png", check: Y1}
+  Y2:  {attach: ["edit: kept:<p>-Y1"], save: "<p>-y2-eye-sore-v1.png", check: Y2}
+  Y3:  {attach: ["edit: kept:<p>-Y1"], save: "<p>-y3-eyes-closed-v1.png", check: Y3}
+  T1:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-t1-eyetest-a-v1.png", check: T1}
+  T2:  {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<p>-t2-eyetest-b-v1.png", check: T2}
+limb_templates:
+  K1: {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<set>-k1-knee-v1.png", check: K1}
+  K2: {attach: ["kept:<set>-K1", "kept:<sheet>"], save: "<set>-k2-knee-kick-v1.png", check: K2}
+  K3: {attach: ["edit: kept:<set>-K1"], save: "<set>-k3-knee-graze-v1.png", check: K3}
+  F1: {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<set>-f1-forearm-v1.png", check: F1}
+  F2: {attach: ["edit: kept:<set>-F1"], save: "<set>-f2-forearm-graze-v1.png", check: F2}
+  F4: {attach: ["edit: kept:<set>-F1"], save: "<set>-f4-forearm-cut-v1.png", check: F4}
+  U1: {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<set>-u1-upperarm-v1.png", check: U1}
+  P1: {attach: [style-anchor-v1.png, "kept:<sheet>"], save: "<set>-p1-sole-v1.png", check: P1}
+# lines that are not per person
+lines:
+  S1: {person: girl, attach: [style-anchor-v1.png, char-clinic-girl-v1.png, char-ali-hurts-v1.png], save: s1-girl-sheet-v2.png, check: SHEET,
+       note: "the girl as v1: two short plaits, white ribbons, yellow dress, white leggings, white sandals; about five"}
+  S2: {person: boy, attach: [style-anchor-v1.png, char-clinic-boy-v1.png, char-ali-hurts-v1.png], save: s2-boy-sheet-v2.png, check: SHEET,
+       note: "the boy as v1: gap-toothed grin, red long-sleeved T-shirt, dark blue trousers; about six; not like the boy in orange"}
+  S3: {person: oldman, attach: [style-anchor-v1.png, char-clinic-oldman-v1.png, char-ali-hurts-v1.png], save: s3-oldman-sheet-v2.png, check: SHEET,
+       note: "the old man as v1: grey moustache, no beard, no cap, no glasses, blue kurta; no stick anywhere"}
+  S4: {person: oldwoman, attach: [style-anchor-v1.png, char-clinic-oldwoman-v1.png, char-ali-hurts-v1.png], save: s4-oldwoman-sheet-v2.png, check: SHEET,
+       note: "the old woman as v1: white headscarf covering hair, ears and neck in every panel, green shawl, cream kurta; no glasses; no red"}
+  S5: {person: man, attach: [style-anchor-v1.png, char-clinic-dad-baby-v1.png, char-clinic-lineup-v1.png], save: s5-man-sheet-v1.png, check: SHEET,
+       note: "the young father as in the line-up: short beard, white shirt, navy trousers; no baby anywhere; panel 6 is a forearm with the sleeve rolled to the elbow"}
+  S6: {person: woman, attach: [style-anchor-v1.png, char-clinic-lineup-v1.png], save: s6-woman-sheet-v1.png, check: SHEET,
+       note: "a new woman, not like anyone in the line-up and not like a woman in a green dupatta and maroon kurta; dusty-blue headscarf covering hair, ears and neck in every panel; purple tunic; no jewellery"}
+  O1: {attach: [style-anchor-v1.png], save: o1-ear-foot-bits-v1.png, check: O1}
+  O2: {attach: [style-anchor-v1.png], save: o2-mouth-bits-v1.png, check: O2}
+  O3: {attach: [style-anchor-v1.png, ci1-care-kit-v1.png], save: o3-bud-ointment-v1.png, check: O3}
+  R3: {attach: [cb2b-exam-bed-close-v1.png], save: r3-exam-room-square-v1.png, check: R3}
+  R4: {attach: ["edit: cb2b-exam-bed-close-v1.png"], save: r4-exam-window-open-v1.png, check: R4}
+  R1: {attach: [style-anchor-v1.png, ci2-tools-comfort-v1.png, "kept:girl-W10?"], save: r1-fever-things-v1.png, check: R1}
+  R5: {attach: [style-anchor-v1.png, ci2-tools-comfort-v1.png], save: r5-thermo-gauge-v1.png, check: R5}
+  R2: {attach: [style-anchor-v1.png, ci2-tools-comfort-v1.png], save: r2-ceiling-fan-v1.png, check: R2}
+  C1: {attach: [style-anchor-v1.png], save: c1-eye-chart-front-v1.png, check: C1}
+  C2: {attach: [style-anchor-v1.png, "kept:C1"], save: c2-eye-chart-turned-v1.png, check: C2}
+  B1: {attach: [style-anchor-v1.png, ci1-care-kit-v1.png], save: b1-filling-button-v1.png, check: B1}
+  D1: {attach: [style-anchor-v1.png, ci2-tools-comfort-v1.png], save: d1-drop-machine-v1.png, check: D1}
+  D2: {attach: [style-anchor-v1.png, ci2-tools-comfort-v1.png, "kept:D1"], save: d2-levers-drops-v1.png, check: D2}
+# the run order. Parts are priorities, not barriers: a free window takes the next READY line, even from a later part.
+parts:
+  - id: A
+    title: THE SIX PATIENT SHEETS
+    intro: "Judge them yourself like every other image. Run S1 first: every girl prompt needs it."
+    items: [{lines: [S1, S2, S3, S4, S5, S6]}]
+  - id: B
+    title: THE GIRL AND HER GAMES
+    intro: "Person: girl. Limb set: child."
+    items:
+      - {who: girl, ids: [W1, W2, W3, W4, W5, W6, W7, W8, W9, W10]}
+      - {set: child, ids: [K1, K2, K3, F1, F2, F4, U1, P1]}
+      - {who: girl, ids: [E1, M1, M2, Y1, Y2, Y3, T1, T2]}
+      - {lines: [O1, O2, O3, R3, R4, R1, R5, R2, C1, C2, B1]}
+  - id: C
+    title: THE OTHER PATIENTS
+    compact: true
+    intro: "For each person, run these lines with that person's prefix and sheet (their items are listed below the templates):"
+    items:
+      - {who: boy, ids: [W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, E1, M1]}
+      - {who: oldman, ids: [W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, Y1, Y2, Y3, T1, T2]}
+      - {who: oldwoman, ids: [W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, Y1, Y2, Y3, T1, T2]}
+      - {who: man, ids: [W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, M1]}
+      - {who: woman, ids: [W1, W2, W3, W4, W5, W6, W9, W10, M2], note: "no W7, no W8"}
+      - {set: adult, ids: [K1, K2, K3, F1, F2, F4, U1, P1]}
+  - id: D
+    title: THE DROP MACHINE
+    items: [{lines: [D1, D2]}]
+# the checks, by check ID: text = the words in the block; judge = what the first-pass judge measures
+checks:
+  SHEET:
+    text: eight panels in two rows of four, nothing touching, no borders or labels · the same person in every panel · panel 1 sitting front-on, thighs level, feet flat on one level · panel 2 exactly side-on facing right · panel 4 side-on head (the whole ear shows, unless a headscarf covers it) · panel 5 happy · panel 7 the sole of a bare foot, toes up · skin a warm light tan, not orange, pink or grey · no bed, bench or chair drawn
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces_min: 8
+      no_touch: true
+  W1:
+    text: the same person as their sheet · front-on, facing us · thighs level, both feet flat at one level · hands on the lap, neutral face, mouth closed · fills about 85% of the height, touches no edge · no bed or stool drawn
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      fill_h:
+      - 0.75
+      - 0.95
+      skin_face:
+      - 0.25
+      - 0.0
+      - 0.75
+      - 0.24
+      no_touch: true
+  FACE:
+    text: only the face changed (body, hands, clothes, hair, size and position identical to the original) · the expression asked for, readable at thumbnail size · nothing upsetting, no tears, sweat drops or symbols
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      edit:
+        allowed:
+        - 0
+        - 0
+        - 1
+        - 0.45
+  W7:
+    text: 'exactly side-on, facing right · legs as the prompt says (child: hanging free; adult: feet flat on an invisible floor) · the same person · touches no edge'
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      fill_h:
+      - 0.7
+      - 0.95
+      no_touch: true
+  W9:
+    text: the same person, size and framing as the attached front picture · a plain deep-red blanket round the shoulders, held at the chest · legs and feet in the same place as in the front picture · a cosy, relieved face · touches no edge
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      like: W1
+      no_touch: true
+  W10:
+    text: the same person, size and framing as the attached front picture · a teal knitted hot-water bottle hugged against the tummy · legs and feet in the same place as in the front picture · a comforted face · touches no edge
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      like: W1
+      no_touch: true
+  K1:
+    text: three-quarter side view of a knee · plain white cloth rolled just above the knee · the thigh enters from the left edge, the shin leaves the bottom edge, no foot · the knee about half the height · clean skin, no marks
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - bottom
+      skin_obj: true
+  K2:
+    text: 'the same framing as the attached K1: thigh in from the left, the knee at the same size and place · the shin kicked forward to the right · no foot, no motion lines'
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - bottom
+      like: K1
+      skin_obj: true
+  K3:
+    text: one gentle pink graze on the kneecap, no blood · nothing else changed
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - bottom
+      edit:
+        allowed:
+        - 0.2
+        - 0.2
+        - 0.8
+        - 0.8
+      skin_obj: true
+  F1:
+    text: the forearm held out palm down, in from the left edge · white sleeve rolled below the elbow · the whole hand inside the image, five fingers · clean skin
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      skin_obj: true
+  F2:
+    text: one gentle pink graze mid-forearm, no blood · nothing else changed
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      edit:
+        allowed:
+        - 0.1
+        - 0.1
+        - 0.9
+        - 0.9
+      skin_obj: true
+  F4:
+    text: one short, thin pink line, no blood, nothing open · nothing else changed
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      edit:
+        allowed:
+        - 0.1
+        - 0.1
+        - 0.9
+        - 0.9
+      skin_obj: true
+  U1:
+    text: a bare upper arm, sleeve pushed up to the shoulder · the arm leaves the bottom edge · clean skin
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+      sleeve: true
+  P1:
+    text: the sole straight on, toes at the top · five separate toes · smooth and clean, no lines or marks · the leg leaves the bottom edge
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+  E1:
+    text: exactly side-on, facing right · a big, clean ear a little left of centre, its opening visible · head off the top and right edges, neck off the bottom
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - top
+      - right
+      - bottom
+      skin_obj: true
+  M1:
+    text: mouth wide open, top and bottom teeth clear, white and healthy · the cheeks run off the left and right edges
+    judge:
+      allow_touch: [top, bottom]
+      side_hair: 0.08
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      skin_obj: true
+  M2:
+    text: tongue out and down, plain pink, no spots · the cheeks run off the left and right edges
+    judge:
+      allow_touch: [top, bottom]
+      side_hair: 0.08
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      skin_obj: true
+  Y1:
+    text: both eyes open, clear, looking at us · the head runs off the left and right edges
+    judge:
+      allow_touch: [top, bottom]
+      side_hair: 0.08
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      skin_obj: true
+  Y2:
+    text: only the eye on the viewer's right is sore (pink) · the other eye unchanged · no tears
+    judge:
+      allow_touch: [top, bottom]
+      side_hair: 0.08
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      edit:
+        allowed:
+        - 0.05
+        - 0.2
+        - 0.95
+        - 0.8
+      skin_obj: true
+  Y3:
+    text: both eyes gently closed · nothing else changed
+    judge:
+      allow_touch: [top, bottom]
+      side_hair: 0.08
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      edit:
+        allowed:
+        - 0.05
+        - 0.2
+        - 0.95
+        - 0.8
+      skin_obj: true
+  T1:
+    text: head and shoulders front-on, the shoulders running off the bottom edge · one hand covering the eye on the viewer's right · the other eye looking a little to our right, past us · five fingers
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+  T2:
+    text: waist up, exactly side-on facing right, the body running off the bottom edge · looking ahead and slightly up · hands on the lap
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+  O1:
+    text: 'nine things in a 3 by 3 grid, in order: three wax blobs (big, medium, small; friendly, not gross), a seed, two splinters, one clear drop, a tissue, a soft patch of dust and grit (no blood)'
+    judge:
+      soft_edges: true
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 9
+      no_touch: true
+  O2:
+    text: four round spots, the same size, in red, yellow, blue and green; three jagged decay patches; one white filling patch
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 8
+      no_touch: true
+      sweets: true
+  O3:
+    text: the same bud three times at the same size and place (plain, green ointment, wax), then a pot of green ointment with no label
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 4
+      no_touch: true
+  R3:
+    text: the original room unchanged across the middle (window, cabinet, desk, bed, stool, toys, door all in place) · a plain ceiling above with nothing on it · empty terrazzo floor below, its speckles the same size as the original's · no visible seams
+    judge:
+      aspect:
+      - 1
+      - 1
+      bg: none
+  R4:
+    text: only the window changed and it reads as open · everything else identical
+    judge:
+      aspect:
+      - 4
+      - 3
+      bg: none
+      edit:
+        allowed:
+        - 0
+        - 0
+        - 0.4
+        - 0.5
+  R1:
+    text: 'five things in order: ice pack, the teal hot-water bottle, a woven hand fan, the heater off, the same heater on (glowing bars); the last cell empty · no dials or numbers anywhere'
+    judge:
+      soft_edges: true
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 5
+      no_touch: true
+  R5:
+    text: one tall empty glass thermometer on a plain white board, straight on · no markings, scale, numbers or liquid
+    judge:
+      soft_edges: true
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      pieces: 1
+      no_touch: true
+  R2:
+    text: left, the fan body (downrod and motor) with no blades · right, four blades seen from directly below, a perfect cross fitting an imaginary circle, no circle drawn
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 2
+      no_touch: true
+  C1:
+    text: a straight-on blank white picture board like an eye chart, one small eye picture at the top, six EMPTY rows getting less tall · NO letters, numbers or pictures in the rows
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      pieces: 1
+      no_touch: true
+  C2:
+    text: the same chart on a three-legged stand, turned about 30 degrees to the left (left edge further away) · rows still empty, no letters
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      pieces: 1
+      no_touch: true
+  B1:
+    text: blue button up and the same button down, same place · nozzle idle and the same nozzle squeezing white paste, same place · no symbols
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 4
+      no_touch: true
+  D1:
+    text: a white and steel machine, four tall tubes of red, yellow, blue and green LIQUID (no balls or beads), a drip spout under each, a chute to one opening at the bottom, empty lever sockets, no levers · looks like a medicine dispenser, not a sweet, gumball or jelly-bean machine
+    judge:
+      soft_edges: true
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      pieces: 1
+      no_touch: true
+      sweets: true
+  D2:
+    text: lever up and the same lever down · four identical TEARDROP-shaped drops, matte and softly see-through, in red, yellow, blue and green, never glossy balls · the syringe upright, open at the top, empty, no needle · last cell empty
+    judge:
+      soft_edges: true
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: null
+      no_touch: true
+      sweets: true
+passfail:
+- Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare.
+- The background isn't one flat mid-grey (R3 and R4 excepted); there's a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head or body runs off that edge (R3 and R4 fill the whole image).
+- The wrong number of things, things in the wrong order, or extra objects, people or animals.
+- 'Hands: not five fingers on each visible hand, fused or extra fingers. Feet: not five toes where a sole shows.'
+- A person who doesn't match their sheet (face, hair, headscarf, beard, clothes, colours), or looks older or younger than the sheet.
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest clothes (bare shoulders on a woman, short or tight clothes), or any religious marker (bindi, tilak, sindoor, deities, temple items).
+- Anything scary, bloody, gory or gross, or a face a small child would find upsetting; real distress instead of a mild, comic wince.
+- Anything that looks like sweets, lollies, jelly beans, gumballs or a sweet machine; medicine drops drawn as glossy balls.
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left; a second light; "seen exactly side-on" or "from directly below" drawn at an angle; circles drawn as ovals where "straight on" or "from directly below" was asked.

@@ -1,0 +1,20 @@
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep {{WINDOWS}} windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (committing to GitHub, fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (saved in your workspace, not yet committed) · COMMITTED · SKIPPED or STALLED (why). Two queues: READY (redos at the front, then run order) and SAVE (kept, not yet committed).
+
+THE TICK. Repeat until every line is COMMITTED or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: save it into your workspace under its save-as name (move 2 below, steps a and b only), mark it KEPT and add it to SAVE. Every WAITING prompt that needed it becomes READY now: attach your local copy; never wait for the GitHub commit.
+   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than {{WINDOWS}} windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave {{GAP}} seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) commit SAVE (all queued files in one upload) when {{BATCH}} files are queued, or the oldest has waited {{FLUSH}} minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for {{STALL}} minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing {{HARD}} minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.

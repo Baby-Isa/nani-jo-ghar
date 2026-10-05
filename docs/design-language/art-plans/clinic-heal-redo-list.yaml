@@ -1,0 +1,44 @@
+# The art redo list for pack clinic-heal-v3: what the next run starts from (T2, 5 Oct).
+# Input to: python3 build/tools/art/artblock.py --redo docs/design-language/art-plans/clinic-heal-redo-list.yaml
+# id = a line of the run (build/tools/art/specs/clinic-heal-v3.run.yaml). The edits that follow a redone picture
+# (Y2, Y3 after Y1) are added by the generator. A redo saves as -v2 (the old -v1 stays in the repo until the cut moves).
+# `why` is what failed, from the build reports; the runner judges for that first.
+pack: clinic-heal-v3
+redo:
+  - id: child-U1
+    why: "sleeveless vest and a bare shoulder, with the chin and a plait in frame; wanted: a sleeve pushed up to the shoulder, nothing of the head in shot (modesty, I1)"
+    source: "build/reports/a1-clinic-art.md"
+  - id: girl-M1
+    why: "framed too wide: ears, plaits and the collar in shot; wanted: the cheeks run off the left and right edges, nothing but the face"
+    source: "build/reports/a1-clinic-art.md; artjudge hair-at-sides 42%"
+  - id: girl-M2
+    why: "framed too wide as M1, and rosy cheeks (the tongue should be the only pink); wanted: cheeks run off both sides, plain skin"
+    source: "build/reports/a1-clinic-art.md; artjudge hair-at-sides 18%"
+  - id: girl-Y1
+    why: "framed too wide: the head's sides, ears and plaits in shot; wanted: the head runs off the left and right edges, both eyes across the middle"
+    source: "build/reports/a1-clinic-art.md; artjudge: does not reach the left or right edge"
+  - id: girl-T1
+    why: "the gaze: she came back looking away from the chart, so the cut mirrors it as a stop-gap; wanted: as the T1 check says, the other eye looking a little to our right, past us, towards the chart"
+    source: "build/reports/a1-clinic-art.md"
+  - id: girl-W10
+    why: "scale: the figure came back about 2.4% smaller than W1 with its feet 2% off W1's line, so the cut refits it on the legs and the head ends ~25 px high; wanted: the same size, framing and feet as W1"
+    source: "build/reports/a1-clinic-art.md; artjudge: feet 2.1% off, height x0.976"
+  - id: O2
+    why: "the four spots read as sweets or gumballs (round glossy discs); wanted: matte, softly irregular sore spots, never glossy balls (I2, plan 3.3); decay and the filling patch passed"
+    source: "build/reports/a2-clinic-art.md; artjudge: 4 round glossy discs"
+# lines that don't exist yet. They run only when the plan has the prompt (a '#### <tid>.' heading with a code box) and the
+# check is in the run spec or under `checks` here; until then the generator lists them as NOT READY and leaves them out.
+new:
+  - id: girl-W11
+    tid: W11
+    title: "the girl standing, for the send-off (her art has no standing pose)"
+    person: girl
+    template: {attach: [style-anchor-v1.png, "kept:S1", "kept:girl-W1"], save: girl-w11-standing-v1.png, check: W11}
+checks:
+  W11:
+    text: "the same person as the sheet and as the attached front picture, standing upright, facing us, both feet flat on one level, arms relaxed at the sides or one hand lifted in a small wave · fills about 85% of the height, touches no edge · no floor, bed or stool drawn"
+    judge: {aspect: [2, 3], bg: flat, fill_h: [0.75, 0.95], no_touch: true, skin_face: [0.25, 0.0, 0.75, 0.24]}
+# looked at and left out: nobody commented, so it stays (rule: if Zafar didn't comment on it, leave it)
+considered:
+  - id: child-P1
+    why: "the sole's toes slope, so foot level 3 keeps a stand-in (a2-clinic-art.md); not in the redo list as given. Add it if foot L3 is wanted before the next play"
