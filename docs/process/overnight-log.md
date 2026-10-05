@@ -127,3 +127,4 @@
 - 2026-10-05 17:20 UK · 4a: decision 40 scope added (fixed expressions as parts, rule exceptions, notes/open/history per entry, where each kind goes in engine-spec); 33 pass; pushed.
 - 2026-10-05 17:23 UK · 4a done (engine core, 33 tests; fixed expressions, exceptions, notes/open/history). 4b launched (Sonnet high, ~$10-15, stop 00:30, session_01AuehJXVk7GdR1KnKKXbxV9). F1 asked to fix 4 hard-coded px in order-card.css (test_shared_frame).
 - 2026-10-05 17:23 UK · 4a: language-neutral ids (n.boy, not Kutchi), room for an English grammar/translation box/dictionary documented; 34 pass; pushed.
+- 2026-10-05 17:41 UK · Check-in: F1 done ($2.87, 0 new findings, order-card px fixed); C3 launched (Opus high, ~$20-30, stop 22:30, session_01SWTAcuq152o9XrXTKptA8j); A2 told about the clinic waiting L4 tick off-screen; A2 $16.5 so far, fixing tablet/fever-room cases; 4b loading importers; art 76 of 115.
