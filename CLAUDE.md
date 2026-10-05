@@ -20,6 +20,10 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 - During runs, post a one-line update to Zafar at every check-in.
 - New mode work runs: audit (screenshots of every screen) → Claude's feedback draft → Zafar approves → build. Before calling a mode finished, go through its open ideas in `docs/ideas.md` with him.
 
+## Tools and skills (use them by default)
+
+Zafar never has to ask for these. The orchestrator and every session use the project skills in `.claude/skills/` and the scripts in `build/tools/` whenever the task matches, instead of doing the work by hand: `/checkin` at every check-in, `/brief` for every launch, `/review` before anything reaches Zafar or `main`, `/publish` to go live, `/feedback` for every voice note, `/mum-round` for every batch of Mum's recordings, `/art-run` for every art run, `/handover` at every step end. If a tool is missing or broken, fix or extend it rather than working round it. The tool list is in `docs/architecture/testing.md` (Tools).
+
 ## Non-negotiables
 
 1. **Discuss first; act only when told.** (above)

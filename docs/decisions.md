@@ -287,6 +287,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **45. All remedial work is done now, before play:** nothing from the refactor is left for later. That includes Cook's stations mounted through the shared host (start and stop inside a given element, teardown, Cook's ~50 global scripts as modules; C3 found it too big for its stop time), every leftover in the step 3 reports (version mapping, lab into the frame, unstamped fetches, failing tests, the lint rounding, the old bulb shim), and every gap the new tools reported. Order: 4d (Cook onto the engine) and R7 (leftovers) now, then C4 (Cook stations in the host), then the review, publish and play; then the docs rewrite. Gameplay redesigns (clinic D15a-i, bulb timing) and numbers Zafar must choose (upgrade bonus coins) are not remedial.
   Source: Zafar, orchestrator chat, 5 Oct ("I want all the remedial work done now so we can move on fully"). Rule: B18
 
+- **46. The tools are used automatically:** Zafar won't know when to prompt a script or skill, so the orchestrator and every session use them by default whenever the task matches (CLAUDE.md "Tools and skills", rule B21).
+  Source: Zafar, orchestrator chat, 5 Oct ("will you automatically use the scripts where needed? I won't know when to prompt them"). Rule: B21
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.
