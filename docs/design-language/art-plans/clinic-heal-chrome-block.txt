@@ -1,7 +1,7 @@
 You're making 115 images in ChatGPT for a children's game called Nani jo Ghar and putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
 
 THE PAGE
-Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-fcd9dddd-wnywzc/docs/design-language/art-plans/clinic-heal-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-fcd9dddd-wnywzc/docs/design-language/art-plans/clinic-heal-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
 
 WHERE FILES LIVE (all public; open nothing locally)
 RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/
@@ -22,20 +22,44 @@ The upload page: https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/ar
 The folder (to check and to resume): https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/clinic-heal-v3
 
 MOVING IMAGES WITHOUT DOWNLOADING (no Chrome downloads, no file pickers, nothing for Zafar to do)
-Use your cloud workspace and your browser file-upload tool. Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. Test both moves on S1 first and log that they worked.
+Use your cloud workspace and your browser file-upload tool. Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. Test both moves on the first image that finishes and log that they worked.
 
-1. INTO CHATGPT (attaching). Fetch the prompt's RAW URLs into your cloud workspace (with their file names), then in a fresh ChatGPT chat use your file-upload tool to attach exactly those files to the message box. Take a screenshot and check the composer shows exactly that many thumbnails before you paste the prompt text.
+1. INTO CHATGPT (attaching). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run; a kept image is attached from your workspace copy, not fetched again. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, and check the composer shows exactly that many thumbnails before you paste.
 
 2. OUT OF CHATGPT, INTO GITHUB (saving a kept image). Never use ChatGPT's download button.
-   a) Find the new image's address: read the src of the newest large image in the reply (read it from the page, e.g. document.querySelectorAll('main img'), the last one at least 512 px wide; reading an attribute is fine, fetching isn't). Make sure it's the NEW image, not one you attached.
+   a) Find the new image's address: read the src of the newest large image in the reply (e.g. document.querySelectorAll('main img'), the last one at least 512 px wide; reading an attribute is fine, fetching isn't). Make sure it's the NEW image, not one you attached.
    b) Fetch that address into your cloud workspace and save it under the prompt's save-as name. Check it's the full image (1024 px or more on its long side), not a thumbnail. If the workspace can't fetch it, open the image full-size in ChatGPT and try its address from there.
-   c) Open the upload page and use your file-upload tool to put that file into the page's file input. Check it appears in the list with the right name.
-   d) In "Commit changes", put the image's log line (see THE LOG) as the commit message, choose "Commit directly to the main branch", commit, and check the folder page now lists the file. Do this for every kept image straight away, so a later prompt can attach it from RAW and nothing is lost if the run stops.
+   c) Commit in batches (see the loop, step 4a): open the upload page, put every queued file into the page's file input in one go, check they all appear with the right names.
+   d) In "Commit changes", write "clinic-heal-v3: <the IDs>" as the message and the log lines (see THE LOG), one per file, in the extended description; choose "Commit directly to the main branch", commit, and check the folder page lists every file.
    If an image can't be saved, leave it in its ChatGPT chat, log "NOT SAVED: <chat title>" and carry on; Claude collects those afterwards. Never fall back to downloading, and never ask Zafar to do it.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (committing to GitHub, fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (saved in your workspace, not yet committed) · COMMITTED · SKIPPED or STALLED (why). Two queues: READY (redos at the front, then run order) and SAVE (kept, not yet committed).
+
+THE TICK. Repeat until every line is COMMITTED or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). If the prompt you start needs this very picture, fetch and save it first (move 2, steps a and b only, into your workspace under its save-as name) and attach that local copy, never waiting for the GitHub commit; otherwise send first, then fetch and save it while the new prompt generates, and add it to SAVE.
+   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) commit SAVE (all queued files in one upload) when 6 files are queued, or the oldest has waited 25 minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+FIRST-PASS NUMBERS (optional)
+If your workspace has python and a clone of https://github.com/Baby-Isa/nani-jo-ghar, run `python3 build/tools/art/artjudge.py --dir <the folder of your saved images> --only <ID>` on each kept image before your own look: a FAIL line is a redo, a FLAG line names what to look at hardest. It never replaces looking.
 
 APPROVALS
 - Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.
-- Everything else (these six patients, limbs, close-ups, props, rooms) is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log "needs Zafar: likeness" and carry on.
+- Everything else is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log "needs Zafar: likeness" and carry on.
 
 SAFETY RULES (always)
 - Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
@@ -43,26 +67,29 @@ SAFETY RULES (always)
 - Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.
 - Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table.
 - If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
-- Pace yourself: at most 3 images generating at once (3 ChatGPT chats); start the next one only when one of those has finished, and leave at least a minute between sends. A prompt that attaches "kept:X" waits until X is committed.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
 
 HOW TO RUN EACH PROMPT
-1. Start a fresh ChatGPT chat (never continue another prompt's chat).
-2. Attach exactly the files on its line (move 1). For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
-3. Paste the text of its code box from the page, with the slots filled for that line's person, and send.
-4. Judge the image against its check (the CHECKS list below) and then the PASS/FAIL LIST below, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with the slots filled for that line's person, and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
 5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most 2 redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
-6. Save the kept image to GitHub straight away (move 2), with its log line as the commit message, then move on.
+6. Save the kept image (move 2 a and b) and queue it for the next batch commit.
 
 RUN ORDER. Line format: ID (person) | attach | save as | check
-PART A: THE SIX PATIENT SHEETS (6). Judge them yourself like every other image. Run S1 first: every girl prompt needs it.
+PART A: THE SIX PATIENT SHEETS (6)
+Judge them yourself like every other image. Run S1 first: every girl prompt needs it.
 S1 | style-anchor-v1.png, char-clinic-girl-v1.png, char-ali-hurts-v1.png | s1-girl-sheet-v2.png | SHEET + the girl as v1: two short plaits, white ribbons, yellow dress, white leggings, white sandals; about five
 S2 | style-anchor-v1.png, char-clinic-boy-v1.png, char-ali-hurts-v1.png | s2-boy-sheet-v2.png | SHEET + the boy as v1: gap-toothed grin, red long-sleeved T-shirt, dark blue trousers; about six; not like the boy in orange
 S3 | style-anchor-v1.png, char-clinic-oldman-v1.png, char-ali-hurts-v1.png | s3-oldman-sheet-v2.png | SHEET + the old man as v1: grey moustache, no beard, no cap, no glasses, blue kurta; no stick anywhere
 S4 | style-anchor-v1.png, char-clinic-oldwoman-v1.png, char-ali-hurts-v1.png | s4-oldwoman-sheet-v2.png | SHEET + the old woman as v1: white headscarf covering hair, ears and neck in every panel, green shawl, cream kurta; no glasses; no red
 S5 | style-anchor-v1.png, char-clinic-dad-baby-v1.png, char-clinic-lineup-v1.png | s5-man-sheet-v1.png | SHEET + the young father as in the line-up: short beard, white shirt, navy trousers; no baby anywhere; panel 6 is a forearm with the sleeve rolled to the elbow
 S6 | style-anchor-v1.png, char-clinic-lineup-v1.png | s6-woman-sheet-v1.png | SHEET + a new woman, not like anyone in the line-up and not like a woman in a green dupatta and maroon kurta; dusty-blue headscarf covering hair, ears and neck in every panel; purple tunic; no jewellery
+Part A done: post the part A summary (see AT THE END) and carry on.
 
-PART B: THE GIRL AND HER GAMES (37). Person: girl. Limb set: child.
+PART B: THE GIRL AND HER GAMES (37)
+Person: girl. Limb set: child.
 girl-W1 | style-anchor-v1.png, kept:S1 | girl-w1-front-neutral-v1.png | W1
 girl-W2 | edit: kept:girl-W1 | girl-w2-front-happy-v1.png | FACE
 girl-W3 | edit: kept:girl-W1 | girl-w3-front-sad-v1.png | FACE
@@ -94,7 +121,7 @@ O2 | style-anchor-v1.png | o2-mouth-bits-v1.png | O2
 O3 | style-anchor-v1.png, ci1-care-kit-v1.png | o3-bud-ointment-v1.png | O3
 R3 | cb2b-exam-bed-close-v1.png | r3-exam-room-square-v1.png | R3
 R4 | edit: cb2b-exam-bed-close-v1.png | r4-exam-window-open-v1.png | R4
-R1 | style-anchor-v1.png, ci2-tools-comfort-v1.png, kept:girl-W10 (leave it out if girl-W10 was skipped) | r1-fever-things-v1.png | R1
+R1 | style-anchor-v1.png, ci2-tools-comfort-v1.png, kept:girl-W10 (leave it out if it was skipped) | r1-fever-things-v1.png | R1
 R5 | style-anchor-v1.png, ci2-tools-comfort-v1.png | r5-thermo-gauge-v1.png | R5
 R2 | style-anchor-v1.png, ci2-tools-comfort-v1.png | r2-ceiling-fan-v1.png | R2
 C1 | style-anchor-v1.png | c1-eye-chart-front-v1.png | C1
@@ -102,21 +129,32 @@ C2 | style-anchor-v1.png, kept:C1 | c2-eye-chart-turned-v1.png | C2
 B1 | style-anchor-v1.png, ci1-care-kit-v1.png | b1-filling-button-v1.png | B1
 Part B done: post the part B summary (see AT THE END) and carry on.
 
-PART C: THE OTHER PATIENTS (70). For each person, run these lines with that person's prefix and sheet:
+PART C: THE OTHER PATIENTS (70)
+For each person, run these lines with that person's prefix and sheet (their items are listed below the templates):
  <p>-W1 | style-anchor-v1.png, kept:<sheet> | <p>-w1-front-neutral-v1.png | W1
- <p>-W2 to <p>-W6 | edit: kept:<p>-W1 | <p>-w2-front-happy-v1.png, <p>-w3-front-sad-v1.png, <p>-w4-front-pain-v1.png, <p>-w5-front-hot-v1.png, <p>-w6-front-cold-v1.png | FACE
+ <p>-W2 | edit: kept:<p>-W1 | <p>-w2-front-happy-v1.png | FACE
+ <p>-W3 | edit: kept:<p>-W1 | <p>-w3-front-sad-v1.png | FACE
+ <p>-W4 | edit: kept:<p>-W1 | <p>-w4-front-pain-v1.png | FACE
+ <p>-W5 | edit: kept:<p>-W1 | <p>-w5-front-hot-v1.png | FACE
+ <p>-W6 | edit: kept:<p>-W1 | <p>-w6-front-cold-v1.png | FACE
  <p>-W7 | style-anchor-v1.png, kept:<sheet> | <p>-w7-side-neutral-v1.png | W7
  <p>-W8 | edit: kept:<p>-W7 | <p>-w8-side-happy-v1.png | FACE (compare with <p>-W7)
  <p>-W9 | kept:<p>-W1, kept:<sheet> | <p>-w9-blanket-v1.png | W9
  <p>-W10 | kept:<p>-W1, kept:<sheet> | <p>-w10-bottle-v1.png | W10
- <p>-<head prompt> | style-anchor-v1.png, kept:<sheet> | <p>-<id>-<name>-v1.png, named like the girl's (e1-ear, m1-mouth, m2-tongue, y1-eyes, t1-eyetest-a, t2-eyetest-b) | the same check ID
- <p>-Y2, <p>-Y3 | edit: kept:<p>-Y1 | <p>-y2-eye-sore-v1.png, <p>-y3-eyes-closed-v1.png | Y2, Y3
+ <p>-E1 | style-anchor-v1.png, kept:<sheet> | <p>-e1-ear-v1.png | E1
+ <p>-M1 | style-anchor-v1.png, kept:<sheet> | <p>-m1-mouth-v1.png | M1
+ <p>-Y1 | style-anchor-v1.png, kept:<sheet> | <p>-y1-eyes-v1.png | Y1
+ <p>-Y2 | edit: kept:<p>-Y1 | <p>-y2-eye-sore-v1.png | Y2
+ <p>-Y3 | edit: kept:<p>-Y1 | <p>-y3-eyes-closed-v1.png | Y3
+ <p>-T1 | style-anchor-v1.png, kept:<sheet> | <p>-t1-eyetest-a-v1.png | T1
+ <p>-T2 | style-anchor-v1.png, kept:<sheet> | <p>-t2-eyetest-b-v1.png | T2
+ <p>-M2 | style-anchor-v1.png, kept:<sheet> | <p>-m2-tongue-v1.png | M2
 People, in this order:
- boy (sheet S2): W1 to W10, then E1, M1 (12 images)
- oldman (sheet S3): W1 to W10, then Y1, Y2, Y3, T1, T2 (15)
- oldwoman (sheet S4): W1 to W10, then Y1, Y2, Y3, T1, T2 (15)
+ boy (sheet S2): W1 to W10, then E1, M1 (12)
+ oldman (sheet S3): W1 to W10, then Y1 to Y3, T1, T2 (15)
+ oldwoman (sheet S4): W1 to W10, then Y1 to Y3, T1, T2 (15)
  man (sheet S5): W1 to W10, then M1 (11)
- woman (sheet S6): W1 to W6, W9, W10 (no W7, no W8), then M2 (9)
+ woman (sheet S6): W1 to W6, W9, W10, then M2 (9) (no W7, no W8)
 Then the adult limbs. Limb set: adult; sheet S5:
  adult-K1 | style-anchor-v1.png, kept:S5 | adult-k1-knee-v1.png | K1
  adult-K2 | kept:adult-K1, kept:S5 | adult-k2-knee-kick-v1.png | K2
@@ -133,7 +171,6 @@ PART D: THE DROP MACHINE (2)
 D1 | style-anchor-v1.png, ci2-tools-comfort-v1.png | d1-drop-machine-v1.png | D1
 D2 | style-anchor-v1.png, ci2-tools-comfort-v1.png, kept:D1 | d2-levers-drops-v1.png | D2
 Part D done.
-
 
 CHECKS (by check ID)
 SHEET: eight panels in two rows of four, nothing touching, no borders or labels · the same person in every panel · panel 1 sitting front-on, thighs level, feet flat on one level · panel 2 exactly side-on facing right · panel 4 side-on head (the whole ear shows, unless a headscarf covers it) · panel 5 happy · panel 7 the sole of a bare foot, toes up · skin a warm light tan, not orange, pink or grey · no bed, bench or chair drawn
@@ -187,17 +224,16 @@ PASS/FAIL LIST (every image; any one of these is a fail)
 - An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
 - Light from anywhere but the upper left; a second light; "seen exactly side-on" or "from directly below" drawn at an angle; circles drawn as ovals where "straight on" or "from directly below" was asked.
 
-
 THE LOG
-One line per kept image, used as that image's commit message:
+One line per kept image, used in its batch commit's description:
  <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | <notes>
-Also log every skipped prompt (and why), every image-limit message with its time, every "NOT SAVED" image, and anything odd (a refusal, an error, a missing attachment). Post each line in this chat as you write it, and after every 10 images post the whole log so far as one block.
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, every "NOT SAVED" image, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
 
 IMAGE LIMITS
-If ChatGPT says you've hit the image limit, log the time and its exact words. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
 
 RESUMING
-If this message is pasted again later with the word "resume", open the folder page: every committed file is a kept image (its commit message is its log line). Carry on from the first prompt in the run order whose save-as file isn't there.
+If this message is pasted again later with the word "resume", open the folder page: every committed file is a kept image (its commit's description holds its log line). Carry on from the first prompt in the run order whose save-as file isn't there.
 
 AT THE END (and after each part)
-After each part, post a short list: passed, failed (and why), skipped (and why), not saved. At the very end, also commit the whole log as sources/art/clinic-heal-v3/art-run-log.txt: on the folder page use "Add file" > "Create new file", paste the log, commit directly to main.
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), not saved. Flush the SAVE queue before you post it. At the very end, also commit the whole log as sources/art/clinic-heal-v3/art-run-log.txt: on the folder page use "Add file" > "Create new file", paste the log, commit directly to main.

@@ -212,7 +212,7 @@
           }
           else {
             const want = r.want ? plan.asked.find((a) => PL().beltKey(a) === r.want) : null;
-            await S.say(S.line(env, "handover-no", { x: it ? wordOf(it) : { english: "empty" }, y: want ? wordOf(want) : { english: "that" } }), "doctor");
+            await S.say(S.line(env, "handover-no", { x: it ? wordOf(it) : "clinic.line.pipeline.w-empty", y: want ? wordOf(want) : "clinic.line.pipeline.w-that" }), "doctor");
             tray.fill(r.dish, null);
             if (it) screen.tally.set(it.id, 0);
           }

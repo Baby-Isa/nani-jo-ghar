@@ -42,13 +42,41 @@
     "bottle": { "id": "care-bottle", "english": "the hot-water bottle", "placeholder": true }
   },
   "lines": {
-    "burp": { "who": "patient", "kutchi": "[EN: Burp!]", "english": "Burp!", "placeholder": true },
-    "giggle": { "who": "patient", "kutchi": "[EN: Hee hee!]", "english": "Hee hee! That tickles!", "placeholder": true },
-    "gurgle": { "who": "patient", "kutchi": "[EN: My tummy!]", "english": "Ooh, my tummy! Too many sweets!", "placeholder": true },
-    "glug": { "who": "patient", "kutchi": "[EN: Glug glug... ahh!]", "english": "Glug glug... ahh!", "placeholder": true },
-    "splash": { "who": "patient", "kutchi": "[EN: Whoops!]", "english": "Whoops! It's spilling!", "placeholder": true },
-    "ahh": { "who": "patient", "kutchi": "[EN: Ahhh, warm...]", "english": "Ahhh, that's warm...", "placeholder": true },
-    "better": { "who": "patient", "kutchi": "[EN: Much better!]", "english": "Much better!", "placeholder": true }
+    "burp": {
+      "who": "patient",
+      "e": "Burp!",
+      "placeholder": true
+    },
+    "giggle": {
+      "who": "patient",
+      "e": "Hee hee! That tickles!",
+      "placeholder": true
+    },
+    "gurgle": {
+      "who": "patient",
+      "e": "Ooh, my tummy! Too many sweets!",
+      "placeholder": true
+    },
+    "tummy-glug": {
+      "who": "patient",
+      "e": "Glug glug... ahh!",
+      "placeholder": true
+    },
+    "tummy-splash": {
+      "who": "patient",
+      "e": "Whoops! It's spilling!",
+      "placeholder": true
+    },
+    "tummy-ahh": {
+      "who": "patient",
+      "e": "Ahhh, that's warm...",
+      "placeholder": true
+    },
+    "better": {
+      "who": "patient",
+      "e": "Much better!",
+      "placeholder": true
+    }
   },
   "levels": {
     "1": {

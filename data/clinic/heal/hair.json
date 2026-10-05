@@ -45,11 +45,31 @@
     "nepoi": { "id": "lnk-nepoi", "kutchi": "Ne poi", "english": "and then" }
   },
   "lines": {
-    "itchy": { "who": "patient", "kutchi": "[EN: Itchy, itchy!]", "english": "Itchy, itchy! Something's in my hair!", "placeholder": true },
-    "tickle": { "who": "patient", "kutchi": "[EN: Hee hee!]", "english": "Hee hee! That tickles!", "placeholder": true },
-    "boing": { "who": "patient", "kutchi": "[EN: Boing!]", "english": "Boing! In you go!", "placeholder": true },
-    "bubbles": { "who": "patient", "kutchi": "[EN: Bubbles!]", "english": "Bubbles! Hee hee!", "placeholder": true },
-    "wave": { "who": "patient", "kutchi": "[EN: Bye bye, beetle!]", "english": "Bye bye, beetle!", "placeholder": true }
+    "itchy": {
+      "who": "patient",
+      "e": "Itchy, itchy! Something's in my hair!",
+      "placeholder": true
+    },
+    "tickle": {
+      "who": "patient",
+      "e": "Hee hee! That tickles!",
+      "placeholder": true
+    },
+    "boing": {
+      "who": "patient",
+      "e": "Boing! In you go!",
+      "placeholder": true
+    },
+    "bubbles": {
+      "who": "patient",
+      "e": "Bubbles! Hee hee!",
+      "placeholder": true
+    },
+    "wave": {
+      "who": "patient",
+      "e": "Bye bye, beetle!",
+      "placeholder": true
+    }
   },
   "levels": {
     "1": {

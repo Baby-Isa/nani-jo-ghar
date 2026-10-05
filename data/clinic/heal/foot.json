@@ -103,45 +103,48 @@
  "lines": {
   "ahh": {
    "who": "patient",
-   "kutchi": "[EN: Ahhh...]",
-   "english": "Ahhh...",
+   "e": "Ahhh...",
    "placeholder": true
   },
   "brr": {
    "who": "patient",
-   "kutchi": "[EN: Brrr!]",
-   "english": "Brrr!",
+   "e": "Brrr!",
    "placeholder": true
   },
   "tickle": {
    "who": "patient",
-   "kutchi": "[EN: Hee hee!]",
-   "english": "Hee hee! That tickles!",
+   "e": "Hee hee! That tickles!",
    "placeholder": true
   },
   "ow": {
    "who": "patient",
-   "kutchi": "[EN: Ow!]",
-   "english": "Ow! There's a thorn!",
+   "e": "Ow! There's a thorn!",
    "placeholder": true
   },
   "phew": {
    "who": "patient",
-   "kutchi": "[EN: Phew!]",
-   "english": "Phew!",
+   "e": "Phew!",
    "placeholder": true
   },
   "side-left": {
    "who": "patient",
-   "kutchi": "[EN: My left,]",
-   "english": "My left",
+   "e": "My left",
    "placeholder": true
   },
   "side-right": {
    "who": "patient",
-   "kutchi": "[EN: My right,]",
-   "english": "My right",
+   "e": "My right",
    "placeholder": true
+  },
+  "foot-why": {
+   "e": "Ow, something's in my foot!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "foot-goal": {
+   "e": "Let's take the splinters out.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
  },
  "levels": {

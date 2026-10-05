@@ -28,7 +28,7 @@
     drillMs: { 3: 16000 },
     fill: { ms: { 1: 3400, 2: 2600, 3: 2000 }, zone: { 1: [0.55, 0.86], 2: [0.62, 0.82], 3: [0.67, 0.8] }, max: 1.15 },
   };
-  const WHY = { problem: "My tooth hurts.", goal: "Let's brush, fix it and fill it." };
+  const WHY = { problem: "tooth-why", goal: "tooth-goal" }; // line keys in data/clinic/heal/tooth.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     brush: { gesture: "swipe" },
@@ -36,7 +36,7 @@
     fill: { gesture: "hold" },
   };
   const DIRS = ["up", "down", "left", "right"];
-  // the direction words by id (data/clinic/lang.json): English placeholders to record; dabo / jamno at L3
+  // the direction words by id (the engine, data/lang/lexicon.json): English placeholders to record; dabo / jamno at L3
   const DIR_ID = { up: "tooth-up", down: "tooth-down", left: "tooth-left", right: "tooth-right" };
   // the patient's own left is on our right
   const SCREEN = { up: [0, -1], down: [0, 1], left: [1, 0], right: [-1, 0] };
@@ -424,7 +424,7 @@
       ctx.card.now(null);
       await pullOut();
       S.face("happy");
-      S.say("It doesn't hurt now!", "patient");
+      S.say("tooth-better", "patient");
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 
@@ -526,7 +526,7 @@
             st.chipped = true;
             chipEl.setAttribute("opacity", 1);
             S.face("ouch", 900);
-            S.say("Ow! A chip!", "patient");
+            S.say("tooth-chip", "patient");
           }
         }
       }
@@ -569,7 +569,7 @@
       if (!c || c.kind !== "fill") return;
       // below the green: nothing is judged yet; press again to add more (never stuck, E29)
       if (st.fill < zone[0]) return;
-      if (st.fill > zone[1]) S.say("Too much!", "patient");
+      if (st.fill > zone[1]) S.say("tooth-toomuch", "patient");
       else S.face("happy", 700);
       st.busy = true;
       ctx.after(fast() ? 150 : 600, () => {

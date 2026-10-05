@@ -1,0 +1,62 @@
+SESSION NAME / MODE:  4e, the clinic onto the language engine (decision 42)
+MODEL AND EFFORT:     Opus, high effort (moving every clinic word and line onto the engine needs judgement about grammar and gaps)
+COST ESTIMATE:        about $15-20
+HARD STOP:            6 Oct 2026, 03:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-fcd9dddd-wnywzc. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 5 (Clinic), 8 (Language) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/game-design/modes/clinic.md
+  6. docs/language/engine-spec.md and build/reports/step4a-engine-core.md, step4b-engine-fill.md
+  7. data/lang/reports/gap-list.md (Clinic) and clash-list.md
+  8. docs/decisions.md 36, 40, 42
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/** (js/clinic/lang.js becomes a thin call into the engine)
+  - data/clinic/** (words and lines move to data/lang/ ids)
+  - js/core/lang/index.js (4d builds on it after you)
+  - data/lang/** entries the clinic needs (through build/lang importers only, never by hand)
+  - build/reports/4e-clinic-engine.md
+READ-ONLY (never edit):
+  - js/cook/**, data/cook.json (4d and C3)
+  - build/lang/*.mjs except adding a clinic importer case
+  - build/tools/** (T2, T3)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none expected; a missing engine piece is reported as a gap, never hand-written (non-negotiable 11)
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Every word and line the clinic shows or plays comes from data/lang/ through js/core/lang/index.js by id; no Kutchi or English literals left in js/clinic/ (G26, decision 36).
+     Accept: `node build/lint/words.mjs --only a` reports 0 clinic literals; every clinic id resolves (fill.test.mjs)
+  2. Lines are built by the engine from frames and word forms (G9-G13); where it can't say a line, the line shows the grey-italic 'to record' placeholder and the gap is in gap-list.md.
+     Accept: gap list re-run; no hand-written fragments; leak bots for every heal game still pass
+  3. Only family voices play: each line plays the recorded whole phrase if there is one, else the recorded words in order; nothing TTS.
+     Accept: the sandbox's sound log shows only assets/audio/family/ files on clinic pages
+  4. Nothing else changes: same mechanics, screens and art.
+     Accept: shotdiff shows changes only where words changed; touched sandbox run at all 8 sizes ends on every page
+
+REGRESSION ROWS TO RECHECK (100 rows of docs/process/regressions.md; * = open or reopened):
+  every flow here (3): CLN-02, CLN-03, CLN-08*
+  clinic:waiting (12): CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-09*
+  clinic:diagnosis (9): CLN-16, CLN-17, CLN-18, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-09*
+  clinic:pharmacy (12): CLN-19, CLN-20, CLN-21, CLN-22, CLN-23*, CLN-24, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-09*
+  clinic:sendoff (11): CLN-25, CLN-26, CLN-27, CLN-28, CLN-29, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-09*
+  clinic:heal-cut (18): CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-45, CLN-46, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79
+  clinic:heal-ear (20): CLN-30, CLN-34, CLN-42, CLN-43, CLN-44, CLN-45, CLN-49, CLN-50, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-71, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79
+  shared components (48): SH-01*, SH-02*, SH-03, SH-04, SH-05, SH-06, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-18, SH-19, SH-20, SH-21, SH-22, SH-23, SH-24, SH-25, SH-26, SH-27*, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C, done means looked at):
+  - Map what you changed: `node build/tools/review/touched.mjs` and run the sandbox command it prints.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs 4e-clinic-engine` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8812.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/4e-clinic-engine.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

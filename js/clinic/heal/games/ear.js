@@ -28,7 +28,7 @@
     sore: { 1: 1, 2: 2, 3: 3 }, // sore pink patches the bud must miss
     budR: 20, // the bud's tip, svg units
   };
-  // D15c: the whispered-word check. Words the child knows from Cook (lexicon ids in data/clinic/lang.json; their
+  // D15c: the whispered-word check. Words the child knows from Cook (ids the engine knows, data/lang/lexicon.json; their
   // pictures are Cook's icons). The data file can switch it off (hearing.on) or change the words.
   const HEAR = { on: true, words: ["fru-02", "veg-02", "veg-03", "cook-paani"], choices: { 1: 3, 2: 3, 3: 4 } };
   const hearDefaults = () => {
@@ -43,7 +43,7 @@
     }
     return HEAR;
   };
-  const WHY = { problem: "My ear feels blocked.", goal: "Let's clean it." };
+  const WHY = { problem: "ear-why", goal: "ear-goal" }; // line keys in data/clinic/heal/ear.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice); one gesture
   // per thing (P32): the wax is a drag, the wipe a drag, the drops a tap, the check a tap
   const CUES = {
@@ -346,7 +346,7 @@
       S.uncue();
       ctx.card.now(null);
       S.face("happy");
-      S.say("I can hear again!", "patient");
+      S.say("ear-better", "patient");
       S.markSeen();
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
@@ -357,7 +357,7 @@
       const Lg = HS.L;
       const w = Lg.w(c.word);
       // the word alone, softly, in the doctor's (family) voice; never written: the task is hearing it (G22)
-      ctx.say({ kutchi: w.kutchi, english: w.english, placeholder: w.placeholder }, { who: "doctor", noBubble: true, soft: true });
+      ctx.say(Object.assign({}, w), { who: "doctor", noBubble: true, soft: true });
     };
     const startHear = (c) => {
       ctx.say(c.row);

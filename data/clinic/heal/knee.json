@@ -90,6 +90,11 @@
    "kutchi": null,
    "english": "Cast",
    "placeholder": true
+  },
+  "turns": {
+   "english": "turns",
+   "placeholder": true,
+   "src": "English placeholder (to record): the bandage's count word (heal/games/knee.js wrap row); was an id the clinic's old lookup showed as its own English, now in data so the engine holds it (step 4e)"
   }
  },
  "lines": {
@@ -122,6 +127,21 @@
    "voice": "patient",
    "k": "{side} {part}",
    "e": "{side} {part}"
+  },
+  "knee-why": {
+   "e": "My knee hurts.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "knee-goal": {
+   "e": "Let's check it and bandage it.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "knee-better": {
+   "e": "That feels better!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
  },
  "ailments": {

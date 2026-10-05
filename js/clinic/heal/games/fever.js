@@ -21,7 +21,7 @@
  * The body's state is a stand-in until the art (W5, W6, W9, W10): hot = flushed with sweat drops, cold = shivering;
  * the blanket goes over the SHOULDERS (CLN-56), the hot-water bottle is hugged, the hand fan fans the face.
  * The art swaps in by file name (fever.json `art`; the art plan's R1, R2, R4, R5): a missing file keeps the stand-in.
- * Every word through the seam (data/clinic/lang.json fever-*): all English placeholders, flagged to record.
+ * Every word through the engine (data/lang/lexicon.json, aliases fever-*): all English placeholders, flagged to record.
  */
 (function (root) {
   "use strict";
@@ -39,7 +39,7 @@
     blanket: { side: "warm", size: 1, verbs: ["fever-put-on", "fever-take-off"], word: "fever-blanket" },
   };
   const K = { zone: 1, max: 6, exchanges: { 1: [3], 2: [3, 4], 3: [4] }, fixFrom: 3, fixLast: { 3: 1 }, gaps: { 1: [2], 2: [1, 2, 3], 3: [1, 2, 3] }, fixGaps: [2, 3, 4], icePack: false };
-  const WHY = { problem: "I feel hot... no, cold!", goal: "Let's get you just right." };
+  const WHY = { problem: "fever-why", goal: "fever-goal" }; // line keys in data/clinic/heal/fever.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     temp: { gesture: "tap", then: "tap" },

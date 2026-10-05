@@ -1209,19 +1209,6 @@
    ],
    "_sig": "[\"side\",\"part\"]"
   },
-  "MyPart": {
-   "cat": "Utt",
-   "args": {
-    "part": {
-     "type": "NP"
-    }
-   },
-   "en": "My {part}",
-   "elicit": [
-    "My knee"
-   ],
-   "_sig": "[\"part\"]"
-  },
   "ToolThePart": {
    "cat": "Utt",
    "args": {
@@ -1266,6 +1253,19 @@
     "This is knee. Bring me y"
    ],
    "_sig": "[\"x\",\"y\"]"
+  },
+  "MyPart": {
+   "cat": "Utt",
+   "args": {
+    "part": {
+     "type": "NP"
+    }
+   },
+   "en": "My {part}",
+   "elicit": [
+    "My knee"
+   ],
+   "_sig": "[\"part\"]"
   },
   "BringMeA": {
    "cat": "Utt",

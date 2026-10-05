@@ -275,6 +275,15 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **41. The counting rule, made clear (and DAAR-08):** at every level the order is spoken at the start and replayable by the speaker. L1: written on the card, and Nani counts along as the child works. L2: written, no counting along. L3+: not written, no counting along; the child listens (and can replay). Daar's chop card follows it: no written quantity at L3+ (built in C3).
   Source: Zafar, orchestrator chat, 5 Oct. Rule: E12
 
+- **42. 4d and 4e now, before Zafar plays:** 4a and 4b finished early, so Cook (4d) and the clinic (4e) move onto the language engine now: their words and lines come from `data/lang/` through the engine instead of `js/cook/lang.js` and `js/clinic/lang.js` (both are already on the new core). The engine's data stays in `data/lang/` (not `data/lang/kutchi/`). The 42-row clash list becomes one sheet for Zafar and Mum after play.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: G26, G27
+
+- **43. The art run pauses until after play:** no more ChatGPT art until Zafar has played the girl's clinic and Cook on the engine; changes from play are bundled into the next run. That run must be faster: the moment an image lands it is judged and the next prompt or edit goes in straight away, and uploads, downloads and paperwork happen while ChatGPT is generating, never while a window sits idle. The Chrome block is rewritten for this before the next run.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: D12
+
+- **44. Build all the token-saving scripts and skills now** (the 18-item list of 5 Oct): accept the short-term token cost for the long-term saving; choose models for efficiency.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: B (sessions), C (quality)
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

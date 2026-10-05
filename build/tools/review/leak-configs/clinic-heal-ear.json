@@ -1,0 +1,1 @@
+{ "id": "clinic-heal-ear", "adapter": "heal-registry", "registry": "js/clinic/heal/registry.js", "load": ["js/clinic/heal/games/ear.js"], "games": ["ear"], "blindMax": 0.1, "accepted": {} }

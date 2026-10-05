@@ -7396,10 +7396,12 @@
    "glossPl": "turns",
    "status": "to-record",
    "src": [
-    "data/clinic/heal/knee.json words.w-turns: no source given"
+    "data/clinic/heal/knee.json words.w-turns: no source given",
+    "data/clinic/heal/knee.json words.turns: English placeholder (to record): the bandage's count word (heal/games/knee.js wrap row); was an id the clinic's old lookup showed as its own English, now in data so the engine holds it (step 4e)"
    ],
    "aliases": [
-    "w-turns"
+    "w-turns",
+    "turns"
    ],
    "ask": {
     "word": [
@@ -11355,6 +11357,23 @@
    ]
   },
   {
+   "id": "phrase.a-bow-like-a-shoelace",
+   "pos": "Phrase",
+   "gloss": "A bow, like a shoelace!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/cut.json lines.bow: no source given"
+   ],
+   "aliases": [
+    "clinic.line.bow"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.a-break-clonk",
    "pos": "Phrase",
    "gloss": "A break. Clonk!",
@@ -11635,6 +11654,40 @@
    }
   },
   {
+   "id": "phrase.ahhh",
+   "pos": "Phrase",
+   "gloss": "Ahhh...",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.ahh: no source given"
+   ],
+   "aliases": [
+    "clinic.line.ahh"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.ahhh-thats-warm",
+   "pos": "Phrase",
+   "gloss": "Ahhh, that's warm...",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tummy.json lines.tummy-ahh: no source given"
+   ],
+   "aliases": [
+    "clinic.line.tummy-ahh"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.ali",
    "pos": "Phrase",
    "lemma": "ali",
@@ -11777,6 +11830,43 @@
    }
   },
   {
+   "id": "phrase.arrr-a-pirate",
+   "pos": "Phrase",
+   "gloss": "Arrr! A pirate!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.arr: no source given"
+   ],
+   "aliases": [
+    "clinic.line.arr"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.ask-them",
+   "pos": "Phrase",
+   "gloss": "Ask them",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.cap-askthem: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.cap-askthem"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the speaking moment's caption, asking how they feel (was a string in js/clinic/stages/sendoff.js, G26); step 4e"
+   ]
+  },
+  {
    "id": "phrase.ask-them-how-they-feel",
    "pos": "Phrase",
    "gloss": "Ask them how they feel",
@@ -11915,6 +12005,40 @@
    }
   },
   {
+   "id": "phrase.boing-in-you-go",
+   "pos": "Phrase",
+   "gloss": "Boing! In you go!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hair.json lines.boing: no source given"
+   ],
+   "aliases": [
+    "clinic.line.boing"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.boo",
+   "pos": "Phrase",
+   "gloss": "Boo!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.boo: no source given"
+   ],
+   "aliases": [
+    "clinic.line.boo"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.bring-me",
    "pos": "Phrase",
    "gloss": "Bring me...",
@@ -11965,6 +12089,57 @@
    ],
    "aliases": [
     "cook.guide.fetch"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.brrr",
+   "pos": "Phrase",
+   "gloss": "Brrr!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.brr: no source given"
+   ],
+   "aliases": [
+    "clinic.line.brr"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.bubbles-hee-hee",
+   "pos": "Phrase",
+   "gloss": "Bubbles! Hee hee!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hair.json lines.bubbles: no source given"
+   ],
+   "aliases": [
+    "clinic.line.bubbles"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.burp",
+   "pos": "Phrase",
+   "gloss": "Burp!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tummy.json lines.burp: no source given"
+   ],
+   "aliases": [
+    "clinic.line.burp"
    ],
    "ask": {
     "word": [
@@ -12053,6 +12228,43 @@
     "cl-achija",
     "clinic.line.goodbye-achija",
     "content.snt-14"
+   ]
+  },
+  {
+   "id": "phrase.bye-bye-beetle",
+   "pos": "Phrase",
+   "gloss": "Bye bye, beetle!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hair.json lines.wave: no source given"
+   ],
+   "aliases": [
+    "clinic.line.wave"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.call-them-in",
+   "pos": "Phrase",
+   "gloss": "Call them in",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.cap-callthem: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.cap-callthem"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the speaking moment's caption in the waiting room (was a string in js/clinic/stages/waiting.js, G26); step 4e"
    ]
   },
   {
@@ -12245,6 +12457,23 @@
    }
   },
   {
+   "id": "phrase.cold",
+   "pos": "Phrase",
+   "gloss": "Cold!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/cut.json lines.cold: no source given"
+   ],
+   "aliases": [
+    "clinic.line.cold"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.comb-it",
    "pos": "Phrase",
    "gloss": "Comb it",
@@ -12424,6 +12653,23 @@
    ],
    "aliases": [
     "count"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.cover-the-other-eye",
+   "pos": "Phrase",
+   "gloss": "Cover the other eye",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.patch: no source given"
+   ],
+   "aliases": [
+    "clinic.line.patch"
    ],
    "ask": {
     "word": [
@@ -12778,6 +13024,23 @@
    }
   },
   {
+   "id": "phrase.drops-first-then-lets-test-your-eyes",
+   "pos": "Phrase",
+   "gloss": "Drops first, then let's test your eyes.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.eye-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.eye-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.drops-please",
    "pos": "Phrase",
    "gloss": "drops, please",
@@ -12808,6 +13071,43 @@
    ],
    "aliases": [
     "cook.line.eat"
+   ]
+  },
+  {
+   "id": "phrase.eeek",
+   "pos": "Phrase",
+   "gloss": "Eeek!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.eek: no source given"
+   ],
+   "aliases": [
+    "clinic.line.eek"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.empty",
+   "pos": "Phrase",
+   "gloss": "empty",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.w-empty: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.w-empty"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the pharmacy's handover when the tray is empty (was a string in js/clinic/stages/pharmacy.js, G26); step 4e"
    ]
   },
   {
@@ -12977,6 +13277,40 @@
    ]
   },
   {
+   "id": "phrase.glug",
+   "pos": "Phrase",
+   "gloss": "Glug!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.glug: no source given"
+   ],
+   "aliases": [
+    "clinic.line.glug"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.glug-glug-ahh",
+   "pos": "Phrase",
+   "gloss": "Glug glug... ahh!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tummy.json lines.tummy-glug: no source given"
+   ],
+   "aliases": [
+    "clinic.line.tummy-glug"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.go-to-the-market",
    "pos": "Phrase",
    "lemma": "bajaar mai vaan",
@@ -13055,6 +13389,23 @@
     "story.everyone-coming",
     "story.line.everyone-coming"
    ]
+  },
+  {
+   "id": "phrase.ha-ha-ha-all-gone",
+   "pos": "Phrase",
+   "gloss": "Ha ha ha! All gone!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.laugh: no source given"
+   ],
+   "aliases": [
+    "clinic.line.laugh"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.have-you-finished-work-said-one-way",
@@ -13196,6 +13547,26 @@
    "src": [
     "grammar-notes §21"
    ]
+  },
+  {
+   "id": "phrase.hee-hee-that-tickles",
+   "pos": "Phrase",
+   "gloss": "Hee hee! That tickles!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.tickle: no source given",
+    "data/clinic/heal/hair.json lines.tickle: no source given",
+    "data/clinic/heal/tummy.json lines.giggle: no source given"
+   ],
+   "aliases": [
+    "clinic.line.tickle",
+    "clinic.line.giggle"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.hello-back-and-peace-be-upon-you",
@@ -13558,6 +13929,40 @@
    ]
   },
   {
+   "id": "phrase.hic",
+   "pos": "Phrase",
+   "gloss": "Hic!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.hic: no source given"
+   ],
+   "aliases": [
+    "clinic.line.hic"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.hic-still-there",
+   "pos": "Phrase",
+   "gloss": "...hic! Still there!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.back: no source given"
+   ],
+   "aliases": [
+    "clinic.line.back"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.hm-nobodys-left",
    "pos": "Phrase",
    "gloss": "Hm, nobody's left!",
@@ -13588,6 +13993,40 @@
    "ask": {
     "word": [
      "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.hmm-not-that-one",
+   "pos": "Phrase",
+   "gloss": "Hmm, not that one.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/taste.json lines.taste-notthat: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.taste-notthat"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.hmmm-squints",
+   "pos": "Phrase",
+   "gloss": "Hmmm... (squints)",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.squint: no source given"
+   ],
+   "aliases": [
+    "clinic.line.squint"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -13746,6 +14185,57 @@
    "src": [
     "grammar-notes §27 B48 (Jaldi kar! to a child, Jaldi karo! to an elder)"
    ]
+  },
+  {
+   "id": "phrase.i-can-hear-again",
+   "pos": "Phrase",
+   "gloss": "I can hear again!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/ear.json lines.ear-better: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.ear-better"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.i-can-see",
+   "pos": "Phrase",
+   "gloss": "I can see!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.eye-better: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.eye-better"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.i-cant-see-well",
+   "pos": "Phrase",
+   "gloss": "I can't see well.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.eye-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.eye-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.i-dont-feel-well",
@@ -13942,6 +14432,23 @@
    }
   },
   {
+   "id": "phrase.i-feel-hot-no-cold",
+   "pos": "Phrase",
+   "gloss": "I feel hot... no, cold!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/fever.json lines.fever-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.fever-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.i-feel-sad",
    "pos": "Phrase",
    "gloss": "I feel sad.",
@@ -13955,6 +14462,23 @@
    "ask": {
     "word": [
      "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.i-fell-over-and-scraped-my-arm",
+   "pos": "Phrase",
+   "gloss": "I fell over and scraped my arm.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/cut.json lines.cut-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.cut-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -13973,6 +14497,23 @@
    "notes": [
     "not analysed into words yet: nares is not in the lexicon (build/lang/phrases.mjs)"
    ]
+  },
+  {
+   "id": "phrase.ill-do-it-you-count",
+   "pos": "Phrase",
+   "gloss": "I'll do it. You count!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json lines.boing-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.boing-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.ill-give-you-pocket-money-for-helping-get-it-all-right-and",
@@ -14218,6 +14759,23 @@
    }
   },
   {
+   "id": "phrase.it-doesnt-hurt-now",
+   "pos": "Phrase",
+   "gloss": "It doesn't hurt now!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tooth.json lines.tooth-better: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.tooth-better"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.it-stopped-raining",
    "pos": "Phrase",
    "gloss": "it stopped raining",
@@ -14276,6 +14834,23 @@
    "ask": {
     "word": [
      "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.itchy-itchy-somethings-in-my-hair",
+   "pos": "Phrase",
+   "gloss": "Itchy, itchy! Something's in my hair!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hair.json lines.itchy: no source given"
+   ],
+   "aliases": [
+    "clinic.line.itchy"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -14619,6 +15194,23 @@
    ]
   },
   {
+   "id": "phrase.lets-brush-fix-it-and-fill-it",
+   "pos": "Phrase",
+   "gloss": "Let's brush, fix it and fill it.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tooth.json lines.tooth-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.tooth-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.lets-check-everything",
    "pos": "Phrase",
    "gloss": "Let's check everything.",
@@ -14632,6 +15224,57 @@
    "ask": {
     "word": [
      "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-check-it-and-bandage-it",
+   "pos": "Phrase",
+   "gloss": "Let's check it and bandage it.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/knee.json lines.knee-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.knee-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-clean-it",
+   "pos": "Phrase",
+   "gloss": "Let's clean it.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/ear.json lines.ear-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.ear-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-clean-it-and-put-plasters-on",
+   "pos": "Phrase",
+   "gloss": "Let's clean it and put plasters on.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/cut.json lines.cut-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.cut-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -14652,6 +15295,23 @@
    ]
   },
   {
+   "id": "phrase.lets-get-you-just-right",
+   "pos": "Phrase",
+   "gloss": "Let's get you just right.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/fever.json lines.fever-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.fever-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.lets-have-a-look",
    "pos": "Phrase",
    "gloss": "Let's have a look",
@@ -14667,6 +15327,80 @@
      "to record"
     ]
    }
+  },
+  {
+   "id": "phrase.lets-soothe-the-sore-spots",
+   "pos": "Phrase",
+   "gloss": "Let's soothe the sore spots.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/taste.json lines.taste-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.taste-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.lets-take-the-splinters-out",
+   "pos": "Phrase",
+   "gloss": "Let's take the splinters out.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.foot-goal: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.foot-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.listen-the-stethoscope",
+   "pos": "Phrase",
+   "gloss": "Listen: the stethoscope.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.cue-tool-stethoscope: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.cue-tool-stethoscope"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the first-time cue for the stethoscope; step 4e"
+   ]
+  },
+  {
+   "id": "phrase.listen-to",
+   "pos": "Phrase",
+   "gloss": "Listen to",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.do-stethoscope: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.do-stethoscope"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the check-up's verb for the stethoscope; step 4e"
+   ]
   },
   {
    "id": "phrase.look",
@@ -14686,6 +15420,63 @@
    }
   },
   {
+   "id": "phrase.look-at",
+   "pos": "Phrase",
+   "gloss": "Look at",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.do-hand: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.do-hand"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the check-up's verb for the hand (stages.diagnosis.tools.hand); moved here so the engine holds it (step 4e)"
+   ]
+  },
+  {
+   "id": "phrase.look-at-that",
+   "pos": "Phrase",
+   "gloss": "Look at that!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/cut.json lines.look: no source given"
+   ],
+   "aliases": [
+    "clinic.line.look"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.look-at-your-hand",
+   "pos": "Phrase",
+   "gloss": "Look at: your hand.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.cue-tool-hand: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.cue-tool-hand"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the first-time cue for the hand (was stages.diagnosis.tools.hand.cue, read by js/clinic/stages/diagnosis.js); step 4e"
+   ]
+  },
+  {
    "id": "phrase.look-closer",
    "pos": "Phrase",
    "gloss": "Look closer!",
@@ -14701,6 +15492,46 @@
      "to record"
     ]
    }
+  },
+  {
+   "id": "phrase.look-in",
+   "pos": "Phrase",
+   "gloss": "Look in",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.do-torch: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.do-torch"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the check-up's verb for the torch (stages.diagnosis.tools.torch); step 4e"
+   ]
+  },
+  {
+   "id": "phrase.look-in-the-torch",
+   "pos": "Phrase",
+   "gloss": "Look in: the torch.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.cue-tool-torch: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.cue-tool-torch"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the first-time cue for the torch; step 4e"
+   ]
   },
   {
    "id": "phrase.lovely",
@@ -14911,6 +15742,23 @@
    ]
   },
   {
+   "id": "phrase.mmmph-cheeks-full",
+   "pos": "Phrase",
+   "gloss": "Mmmph! (cheeks full)",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.mmph: no source given"
+   ],
+   "aliases": [
+    "clinic.line.mmph"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.more",
    "pos": "Phrase",
    "lemma": "wadhare",
@@ -14925,6 +15773,176 @@
    "aliases": [
     "cook.line.more"
    ]
+  },
+  {
+   "id": "phrase.much-better",
+   "pos": "Phrase",
+   "gloss": "Much better!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tummy.json lines.better: no source given"
+   ],
+   "aliases": [
+    "clinic.line.better"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-ear-feels-blocked",
+   "pos": "Phrase",
+   "gloss": "My ear feels blocked.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/ear.json lines.ear-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.ear-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-knee-hurts",
+   "pos": "Phrase",
+   "gloss": "My knee hurts.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/knee.json lines.knee-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.knee-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-left",
+   "pos": "Phrase",
+   "gloss": "My left",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.side-left: no source given"
+   ],
+   "aliases": [
+    "clinic.line.side-left"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-left-eye",
+   "pos": "Phrase",
+   "gloss": "My left eye",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.side-left: no source given"
+   ],
+   "aliases": [
+    "clinic.line.side-left"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-right",
+   "pos": "Phrase",
+   "gloss": "My right",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.side-right: no source given"
+   ],
+   "aliases": [
+    "clinic.line.side-right"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-right-eye",
+   "pos": "Phrase",
+   "gloss": "My right eye",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.side-right: no source given"
+   ],
+   "aliases": [
+    "clinic.line.side-right"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-tongue-feels-better",
+   "pos": "Phrase",
+   "gloss": "My tongue feels better!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/taste.json lines.taste-better: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.taste-better"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-tongue-is-sore",
+   "pos": "Phrase",
+   "gloss": "My tongue is sore.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/taste.json lines.taste-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.taste-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.my-tooth-hurts",
+   "pos": "Phrase",
+   "gloss": "My tooth hurts.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tooth.json lines.tooth-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.tooth-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.nana",
@@ -15527,6 +16545,74 @@
    }
   },
   {
+   "id": "phrase.ooh-cold",
+   "pos": "Phrase",
+   "gloss": "Ooh, cold!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.blink: no source given"
+   ],
+   "aliases": [
+    "clinic.line.blink"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.ooh-my-tummy-too-many-sweets",
+   "pos": "Phrase",
+   "gloss": "Ooh, my tummy! Too many sweets!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tummy.json lines.gurgle: no source given"
+   ],
+   "aliases": [
+    "clinic.line.gurgle"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.oop",
+   "pos": "Phrase",
+   "gloss": "Oop!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/cut.json lines.oop: no source given"
+   ],
+   "aliases": [
+    "clinic.line.oop"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.oops-splash",
+   "pos": "Phrase",
+   "gloss": "Oops! Splash!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.splash: no source given"
+   ],
+   "aliases": [
+    "clinic.line.splash"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.ow",
    "pos": "Phrase",
    "gloss": "Ow!",
@@ -15544,6 +16630,57 @@
    }
   },
   {
+   "id": "phrase.ow-a-chip",
+   "pos": "Phrase",
+   "gloss": "Ow! A chip!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tooth.json lines.tooth-chip: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.tooth-chip"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.ow-somethings-in-my-foot",
+   "pos": "Phrase",
+   "gloss": "Ow, something's in my foot!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.foot-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.foot-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.ow-theres-a-thorn",
+   "pos": "Phrase",
+   "gloss": "Ow! There's a thorn!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.ow: no source given"
+   ],
+   "aliases": [
+    "clinic.line.ow"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.pass-me-that-one",
    "pos": "Phrase",
    "gloss": "Pass me that one",
@@ -15553,6 +16690,23 @@
    ],
    "aliases": [
     "cook.guide.passme"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.phew",
+   "pos": "Phrase",
+   "gloss": "Phew!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/foot.json lines.phew: no source given"
+   ],
+   "aliases": [
+    "clinic.line.phew"
    ],
    "ask": {
     "word": [
@@ -15917,19 +17071,24 @@
   {
    "id": "phrase.say-it",
    "pos": "Phrase",
-   "gloss": "Say it!",
+   "gloss": "Say it",
    "status": "to-record",
    "src": [
+    "data/clinic/pipeline.json lines.pipeline.cap-sayit: data/clinic/pipeline.json",
     "data/snap.json lines.snap-sayit: an English placeholder, to record"
    ],
    "aliases": [
+    "clinic.line.pipeline.cap-sayit",
     "snap.line.snap-sayit"
    ],
    "ask": {
     "word": [
      "to record"
     ]
-   }
+   },
+   "notes": [
+    "English placeholder (to record): the speaking moment's caption in the send-off (was a string in js/clinic/stages/sendoff.js, G26); step 4e"
+   ]
   },
   {
    "id": "phrase.say-it-again",
@@ -16117,6 +17276,23 @@
    ]
   },
   {
+   "id": "phrase.slurrrp-its-empty",
+   "pos": "Phrase",
+   "gloss": "Slurrrp... it's empty!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json lines.slurp: no source given"
+   ],
+   "aliases": [
+    "clinic.line.slurp"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.something-in-the-ear",
    "pos": "Phrase",
    "gloss": "Something in the ear!",
@@ -16208,6 +17384,23 @@
    "notes": [
     "stand-in; Mum to find the real word"
    ]
+  },
+  {
+   "id": "phrase.squawk",
+   "pos": "Phrase",
+   "gloss": "Squawk!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.squawk: no source given"
+   ],
+   "aliases": [
+    "clinic.line.squawk"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.still-too-cold",
@@ -16549,6 +17742,43 @@
    ]
   },
   {
+   "id": "phrase.that",
+   "pos": "Phrase",
+   "gloss": "that",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.w-that: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.w-that"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the pharmacy's handover, what the doctor wants (was a string in js/clinic/stages/pharmacy.js, G26); step 4e"
+   ]
+  },
+  {
+   "id": "phrase.that-feels-better",
+   "pos": "Phrase",
+   "gloss": "That feels better!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/knee.json lines.knee-better: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.knee-better"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.that-girl-is-in-the-kitchen",
    "pos": "Phrase",
    "lemma": "hu chokri rasore me ai",
@@ -16603,10 +17833,12 @@
    "gloss": "That tickles!",
    "status": "to-record",
    "src": [
-    "data/clinic.json lines.cl-tickles: the clinic's own line, no Kutchi yet"
+    "data/clinic.json lines.cl-tickles: the clinic's own line, no Kutchi yet",
+    "data/clinic/heal/cut.json lines.tickles: no source given"
    ],
    "aliases": [
-    "clinic.line.cl-tickles"
+    "clinic.line.cl-tickles",
+    "clinic.line.tickles"
    ],
    "ask": {
     "word": [
@@ -16796,6 +18028,23 @@
    "src": [
     "grammar-notes §42 C35 (⚠)"
    ]
+  },
+  {
+   "id": "phrase.the-chart",
+   "pos": "Phrase",
+   "gloss": "The chart.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/eye.json lines.chart: no source given"
+   ],
+   "aliases": [
+    "clinic.line.chart"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.the-film-has-finished-completely",
@@ -17013,6 +18262,46 @@
      "G1-G14"
     ]
    }
+  },
+  {
+   "id": "phrase.the-temperature",
+   "pos": "Phrase",
+   "gloss": "The temperature:",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.do-thermometer: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.do-thermometer"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the check-up's verb for the thermometer; step 4e"
+   ]
+  },
+  {
+   "id": "phrase.the-temperature-the-thermometer",
+   "pos": "Phrase",
+   "gloss": "The temperature: the thermometer.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.cue-tool-thermometer: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.cue-tool-thermometer"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record): the first-time cue for the thermometer; step 4e"
+   ]
   },
   {
    "id": "phrase.the-woman",
@@ -17317,6 +18606,23 @@
    }
   },
   {
+   "id": "phrase.time-for-my-jab",
+   "pos": "Phrase",
+   "gloss": "Time for my jab.",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json lines.boing-why: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.boing-why"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.times-up",
    "pos": "Phrase",
    "lemma": "time pati vyo",
@@ -17400,6 +18706,23 @@
     "story.eid-tomorrow",
     "story.line.eid-tomorrow"
    ]
+  },
+  {
+   "id": "phrase.too-much",
+   "pos": "Phrase",
+   "gloss": "Too much!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tooth.json lines.tooth-toomuch: moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+   ],
+   "aliases": [
+    "clinic.line.tooth-toomuch"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.turn-it-down-the-flame",
@@ -18095,6 +19418,23 @@
      "src": "grammar-notes Zafar 26 Sept PM"
     }
    ]
+  },
+  {
+   "id": "phrase.whoops-its-spilling",
+   "pos": "Phrase",
+   "gloss": "Whoops! It's spilling!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/tummy.json lines.tummy-splash: no source given"
+   ],
+   "aliases": [
+    "clinic.line.tummy-splash"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.whos-next",

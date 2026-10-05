@@ -252,7 +252,7 @@
           choices: whos,
           expected: target,
           word,
-          caption: "Call them in",
+          caption: Kit.plain(S.line(env, "cap-callthem")),
           character: {
             act: async (k) => {
               const s = seats.find((x) => x.b.who === k && !x.gone);
@@ -285,7 +285,7 @@
       S.current = null;
       S.endOnboard();
       await S.button(screen, S.line(env, "where"));
-      res.words.push({ kutchi: null, english: plan.calls[plan.calls.length - 1].say.english.replace(/^the /, "") });
+      res.words.push(plan.calls[plan.calls.length - 1].say);
       return res;
     },
   };

@@ -1,0 +1,45 @@
+# Transcript: 55a189f3-Kutchi_clinic_feedback_1.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** Starting with the heal, Kut, L1 in the pipeline, there's a stethoscope icon in the bottom left corner which I don't know what it does, it's not clickable, and then we need to figure out the artwork, at the moment the backgrounds are very blurred, and then the arms just sitting,
+- **0:26** I think it's an arm, I don't know, anyway, some artwork needs to be thought about, I
+- **0:32** thought, actually I don't know what I thought when we were doing it, for some reason in my
+- **0:37** mind I envisioned like, they're sitting on the edge of a bed and you're not
+- **0:44** looking at them straight on but maybe like at a 45 degree angle, so you can
+- **0:49** kind of see the front and side of them, but I don't think that's, I'm not sure that's a
+- **0:53** good idea, to be honest.
+- **0:55** But yeah, then you could like, see the injection going into their arm, you could then zoom in
+- **1:03** in that position, go closer to their ear, maybe that is better, yeah.
+- **1:19** It just makes it seem more like a 3D real game, because you see them...
+- **1:24** if you like, as a 3D person sitting on the edge of a bed, and the screen kind of just then zooms in and maybe secretly changes the image once it zooms in to the zoomed-in game state.
+- **1:35** But it zooms in to the knee, or the foot, or the arm, and zooms in enough that that thing becomes the main thing and everything else becomes blurry.
+- **1:46** And then you focus on that, but I think that would look better than a limb just sitting there.
+- **1:51** By itself on a table.
+- **1:53** Okay, pela pani. So first water. I click on the water. Then I click on that. I guess that's fine. Maybe a drag is better for that. I'm not sure.
+- **2:11** I'm not sure. Give me your opinion. And then the cloth, and then three. I mean, the instructions are good.
+- **2:19** So they're clicking once, then the other, then the second time is just, also you can't really do that with a,
+- **2:25** I guess you can do it on a tablet or a phone. Okay, and then three dabs.
+- **2:36** Oh, I get it. You kind of select it and then you tap each time. So that's probably fine.
+- **2:40** Yeah, this is one level one. I think if you've just done it three times, I've probably gone back and forth on this so many times. It's hard because I,
+- **2:51** know the games and find them easy and boring. And then I go to my mum, who's actually quite a good representative of probably a kid or just someone that actually does like playing games, but hasn't played them in years.
+- **3:05** She gets a little bit confused. And then I'm reminded that actually,
+- **3:10** we do need to, we're more likely to lose people because they don't know how to play the game at the beginning.
+- **3:17** Rather than it's too easy, because it's still kind of new and fun for them, right?
+- **3:24** They've never played this game before. It's exciting and they're focused on the
+- **3:28** Kutchi element as well. So, so anyway, I like the counting of three, even though
+- **3:33** it's, hmm, maybe that three needs to go somewhere else. I don't know.
+- **3:44** Or maybe it's fine. I don't know, but it doesn't turn green, though. I think it should, sorry, this was the part, it should probably turn green, I think, at some point.
+- **3:53** Or not green, but it should, like, tick off that you've done it, when you've done it three times, as requested. At least for level one.
+- **4:03** And maybe all the levels, I don't know. I mean, I guess at some point you will end up learning.
+- **4:09** I think I'm just trying to be very strict, because I know, like, certain games you just don't end up learning, but...
+- **4:14** Did I? If a hundred times in the cost of a game mode you've been told to do
+- **4:18** something three times, and you're not gonna keep clicking each time or looking
+- **4:24** at the sidebar, eventually you're gonna go, oh, I know what three is. So, yes, in
+- **4:33** conclusion, I think, subject to your feedback, that we just tick it off when
+- **4:38** you've done it. I mean, the game has to be simple.
+- **4:41** And consistent. So, yeah, it should be ticked off, I think, when you've done it three times.
+- **4:47** Red blaster.
+- **4:49** And I think that should be probably across all game modes, unless there's a clever way of taking it out, I don't know.
+- **4:55** Okay, and then red blaster.
+- **4:59** You click it and you apply it, then you're done.

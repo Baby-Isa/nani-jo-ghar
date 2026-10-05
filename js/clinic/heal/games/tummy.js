@@ -25,6 +25,7 @@
   "use strict";
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const ID = "tummy";
+  const CL = () => root.ClinicLang || (typeof require === "function" ? require("../../lang.js") : null); // the engine (js/clinic/lang.js)
   const nodeData = () => {
     const fs = require("fs");
     const path = require("path");
@@ -40,9 +41,9 @@
 
   function makeRound(D, level, rng) {
     const lv = D.levels[String(level)] || D.levels["1"];
-    const W = D.words;
+    const W = CL().words(D.words);
     const count = pick(rng, lv.bubbles);
-    const num = D.numbers.find((n) => n.n === count);
+    const num = CL().numbers(D.numbers).find((n) => n.n === count);
     const dk = pick(rng, D.drinks);
     const dw = W[dk.word];
     const amount = lv.amount ? (rng() < 0.5 ? HALF : FULL) : null;
@@ -293,7 +294,7 @@
     const oldSpeaker = speakers && speakers.patient;
     if (speakers) speakers.patient = () => els.head || wrap;
 
-    const line = (id) => Object.assign({}, (D.lines || {})[id] || { english: id });
+    const line = (id) => ctx.line(id); // the engine says it (data/clinic/heal/tummy.json names it)
     const say = (l) => ctx.say(l, { who: l.who || "doctor" });
     const rowOf = (id) => R.rows.find((r) => r.id === id);
     const cardRow = (r) => ({ id: r.id, kutchi: r.kutchi, english: r.english, audio: r.audio, who: r.who });
@@ -683,7 +684,7 @@
       drawFill();
       if (st.pours.length > FULL) {
         // it overflows: a comic splash (counted as extra in the review)
-        say(line("splash"));
+        say(line("tummy-splash"));
         for (let k = 0; k < 7; k++) {
           const dx = (k - 3) * 16;
           const drop = S("circle", { cx: G.x + dx * 0.4, cy: G.y - 50, r: 7, fill: glassColour(), stroke: "#7a8c96", "stroke-width": 1 }, els.splash);
@@ -703,7 +704,7 @@
       const dy = F.y + F.r * 0.5 - G.y;
       anim(els.glassBody, [{ transform: "translate(0,0) rotate(0)" }, { transform: `translate(${dx}px, ${dy}px) rotate(-40deg)`, offset: 0.3 }, { transform: `translate(${dx}px, ${dy}px) rotate(-60deg)`, offset: 0.8 }, { transform: "translate(0,0) rotate(0)" }], { duration: dur(1500) });
       mouth("o");
-      say(line("glug"));
+      say(line("tummy-glug"));
       setTimeout(() => {
         if (dead) return;
         els.fill.setAttribute("height", 0);
@@ -729,7 +730,7 @@
         anim(els.bottle, [{ transform: "translateY(-60px)", opacity: 0 }, { transform: "translateY(0)", opacity: 1 }], { duration: 350 });
         els.warm.setAttribute("opacity", 0.35);
         anim(els.warm, [{ opacity: 0.15 }, { opacity: 0.45 }, { opacity: 0.15 }], { duration: 1800, iterations: Infinity });
-        say(line("ahh"));
+        say(line("tummy-ahh"));
         mouth("smile");
         react("relief", 1400);
         return;

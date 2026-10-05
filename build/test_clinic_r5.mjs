@@ -21,8 +21,13 @@ test("no Kutchi left in the clinic's code (build/check_clinic_kutchi.mjs)", () =
   assert.match(out, /^OK: no Kutchi in js\/clinic/);
 });
 
-test("the clinic's words and joins come from data through the seam", () => {
-  assert.deepEqual(L.show(L.first("cook-paani")), { kutchi: "Pela paani", english: "First water", placeholder: false, ids: ["cook-paani"], check: undefined });
+test("the clinic's words and joins come from the language engine (step 4e)", () => {
+  const first = L.show(L.first("cook-paani"));
+  assert.equal(first.kutchi, "Pela paani");
+  assert.equal(first.english, "First water");
+  assert.equal(first.placeholder, false);
+  assert.deepEqual(first.ids, ["adv.first", "n.water"]); // the engine's ids (the clinic's are its aliases)
+  assert.ok(Array.isArray(first.plan) && first.plan.length === 2); // the engine's clip plan, one clip per word
   assert.equal(L.show(L.then("cl-cloth")).kutchi, "Ne poi [cloth]");
   assert.equal(L.num(3).kutchi, "trae");
   // a describing word with a noun of unknown gender: the he-form, flagged "to check" (decision 21)

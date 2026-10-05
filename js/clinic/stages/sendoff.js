@@ -26,6 +26,9 @@
   const Kit = Clinic.Kit;
   const S = Clinic.Stages;
   const h = Kit.h;
+  const PL = () => global.ClinicPipeline;
+  // the patient's "I feel …" line, through the engine (data/clinic/pipeline.json feelings: clinic.line.feeling-<f>)
+  const feelLine = (f) => global.ClinicLang.line(`feeling-${f}`, {}, { def: {} });
 
   S.sendoff = {
     async run(env, plan, patient) {
@@ -103,7 +106,7 @@
           choices: r.options,
           expected: "howfeel",
           word: (id) => S.line(env, id),
-          caption: "Ask them",
+          caption: Kit.plain(S.line(env, "cap-askthem")),
           character: { act: async (id) => fig.react(id === "howfeel" ? "relief" : "idle") },
           accept: (id) => {
             res.judge(r, id === "howfeel");
@@ -120,7 +123,8 @@
       const moodOf = (f) => (f === "happy" ? "happy" : data.feelings[f].mood);
       fig.react(moodOf(plan.feeling), 0);
       if (plan.mode !== "said") showFeel(plan.feeling);
-      S.say(Object.assign({ kutchi: `[${feel.line.english}]` }, feel.line), "patient");
+      void feel;
+      S.say(feelLine(plan.feeling), "patient");
       // the child's turn: they turn to face the player (UX 16), and the choice opens at once (13i)
       S.stage(docEl, layer, "player");
       // levels 1-2: the four feeling cards in a thought bubble rising from the patient's head, opening out to
@@ -168,7 +172,7 @@
         fig.react("happy", 0);
         fig.pose("jump");
         if (plan.mode !== "said") showFeel("happy");
-        await S.say(Object.assign({ kutchi: `[${data.feelings.happy.line.english}]` }, data.feelings.happy.line), "patient");
+        await S.say(feelLine("happy"), "patient");
       };
 
       if (plan.mode === "helps") {
@@ -235,7 +239,7 @@
               if (plan.level <= 1 && !corrected) {
                 corrected = true;
                 busy = true;
-                await S.say(Object.assign({ kutchi: `[${data.feelings[answer].line.english}]` }, data.feelings[answer].line), "patient");
+                await S.say(feelLine(answer), "patient");
                 busy = false;
               }
               return;
@@ -284,9 +288,9 @@
         const out = await S.moment(env, {
           choices: r.options,
           expected: plan.goodbye,
-          word: (id) => ({ kutchi: data.goodbyes[id].kutchi, english: data.goodbyes[id].english }),
-          caption: "Say it",
-          character: { act: async (id) => { fig.pose("wave"); await S.say({ kutchi: data.goodbyes[id].kutchi, english: data.goodbyes[id].english }, "patient"); } },
+          word: (id) => PL().goodbye(data, id),
+          caption: Kit.plain(S.line(env, "cap-sayit")),
+          character: { act: async (id) => { fig.pose("wave"); await S.say(PL().goodbye(data, id), "patient"); } },
           accept: (id) => {
             res.judge(r, id === plan.goodbye);
             return true;
@@ -306,8 +310,8 @@
       sticker.appendChild(S.personFace(patient.kind, "happy"));
       if (global.Sfx && global.Sfx.gold) try { global.Sfx.gold(); } catch (e) { /* no sound */ }
       await Kit.wait(Kit.fast ? 60 : 1100);
-      res.words.push({ kutchi: null, english: data.feelings[plan.feeling].english });
-      if (plan.goodbye) res.words.push({ kutchi: data.goodbyes[plan.goodbye].kutchi, english: data.goodbyes[plan.goodbye].english });
+      res.words.push(global.ClinicLang.w(PL().pword("feeling", plan.feeling)));
+      if (plan.goodbye) res.words.push(PL().goodbye(data, plan.goodbye));
       return res;
     },
   };

@@ -1,0 +1,27 @@
+{
+  "_about": "Allow-list for build/lint/words.mjs (report-only). Add an exact string, a regex, or a file to skip, each with its reason. Ids and keys that look like words belong here, not in the game code's text.",
+  "literals": [
+    {
+      "text": "Done",
+      "why": "example entry: an id passed to the shared buttons, never shown (delete or edit)"
+    }
+  ],
+  "patterns": [
+    {
+      "re": "^(Cook|Clinic|Nani|Zafar)\\b",
+      "why": "names used as ids and in comments"
+    }
+  ],
+  "files": [
+    {
+      "file": "js/shared/guide.js",
+      "why": "placeholder: the grown-ups' \"?\" pop-up may hold written English for grown-ups (non-negotiable 5); confirm and narrow this to the pop-up's own strings"
+    }
+  ],
+  "variantsIgnore": [
+    {
+      "word": "marcha",
+      "why": "decision 35b: Cook's pepper is laal marcha; the clash list's mirchi is out of date"
+    }
+  ]
+}

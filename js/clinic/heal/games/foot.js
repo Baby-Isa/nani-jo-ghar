@@ -25,7 +25,7 @@
   const K = { jugs: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4] }, halfW: { 1: 30, 2: 25, 3: 19 }, slackPx: 8, len: 44 };
   const TOES = ["big toe", "middle toe", "little toe"];
   const TOE_ID = { "big toe": "cl-big-toe", "middle toe": "foot-middle-toe", "little toe": "cl-little-toe" };
-  const WHY = { problem: "Ow, something's in my foot!", goal: "Let's take the splinters out." };
+  const WHY = { problem: "foot-why", goal: "foot-goal" }; // line keys in data/clinic/heal/foot.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     soak: { gesture: "tap", then: "tap" },

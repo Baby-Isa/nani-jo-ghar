@@ -92,7 +92,7 @@
       zoom.need = (part) => (zoom.el && FACE.includes(part) !== zoom.on ? { kind: "tap", target: ".cl-mag" } : null);
       env.zoom = zoom;
       const tapPart = (e, active) => (e.target.closest && e.target.closest(".cl-mag, .cl-kit") ? null : fig.partAt(e.clientX, e.clientY, { active: active || levelParts, closeup: zoom.on, prefer: plan.part }));
-      const partW = (p) => ({ english: data.part_words[p] || p });
+      const partW = (p) => PL().partWord(data, p);
 
       if (plan.variant === "D1" || plan.variant === "D1b") await d1(env, plan, res, { stage, top, fig, at });
       else if (plan.variant === "D2") await d2(env, plan, res, { stage, fig, tapPart, partW });
@@ -106,7 +106,7 @@
       S.say(plan.name, "doctor");
       const btn = await S.button(screen, S.line(env, "tocounter"));
       void btn;
-      res.words.push({ kutchi: null, english: data.part_words[plan.part] || plan.part });
+      res.words.push(PL().partWord(data, plan.part));
       void h;
       return res;
     },
@@ -209,7 +209,7 @@
         if (yes) {
           if (global.Sfx && global.Sfx.bing) try { global.Sfx.bing(); } catch (e) { /* no sound */ }
           fig.swirl(plan.part, plan.side, true);
-          await S.say(S.line(env, "mypart", { part: { english: data.part_words[plan.part] } }), "patient");
+          await S.say(S.line(env, "mypart", { part: PL().pword("part", plan.part) }), "patient");
         }
         busy = false;
         if (graded || yes) armButtons(true);
@@ -304,7 +304,7 @@
         /* no storage */
       }
       btns[c.tool].classList.add("cue");
-      await S.say(Object.assign({ kutchi: `[${tools[c.tool].cue.english}]` }, tools[c.tool].cue), "doctor");
+      await S.say(S.line(env, `cue-tool-${c.tool}`), "doctor");
       S.onboard(env, `diagnosis-tool-${c.tool}`, [{ spotlight: btns[c.tool], ghost: { gesture: "tap" }, wait: "clinic-tool" }]);
     };
     let i = 0;

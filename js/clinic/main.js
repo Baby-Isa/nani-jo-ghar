@@ -96,16 +96,7 @@ async function ensureScreen(el, ctx) {
       // every healing game that exists (clinic.html loads them itself; lab.html through here)
       await Promise.all(HEAL.concat(PARKED).map((id) => (Clinic.Heal.has(id) ? true : loadScript(el.ownerDocument, `${Kit.root}js/clinic/heal/games/${id}.js`))));
       await Clinic.Run.load();
-      // the clinic's words go through the core's language seam: its Lang over the clinic's source (js/clinic/lang.js)
-      const CL = G().ClinicLang;
-      if (CL && !CL.seam) {
-        try {
-          const { createLang } = await import("#core/lang/index.js");
-          CL.use(createLang({ cook: CL.source }));
-        } catch (e) {
-          /* a page without the core's import map: the same build in js/clinic/lang.js */
-        }
-      }
+      // the clinic's words: the language engine, loaded by Run.load (Clinic.HealHost.loadBase -> ClinicLang.ready; step 4e)
     })();
   }
   await session.loading;
@@ -218,7 +209,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           // the round had a closed card: the end screen shows the eye badge (D12)
           if (screen.card.closedSeen) ctx.lookable();
           ctx.done({
-            words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right })),
+            words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right, plan: w.plan || [] })),
             steps: hl && hl.steps ? hl.steps : undefined, // D14: the heal game's steps, for "what went wrong"
           });
         },
