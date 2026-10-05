@@ -65,3 +65,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-05 E1 done: guessed-gender plurals (chunda, bataata) now draft; potato gap +2 Cook lines, clinic 0; tests/checks/leaks pass. Report build/reports/e1-engine-drafts.md
 - 2026-10-05 22:10 UK · E1 done (guessed-gender plurals now drafts; 57 lang tests; 4 Cook lines now flagged). Follow-up for the docs-rewrite/cleanup: the importer copies real paradigms from data/lang/test-seed/ — move them into the real seed so production data doesn't live in a test folder.
 
+- 2026-10-05 23:30 UK · D1 · docs rewrite pushed on docs-rewrite; report written; waiting for C4 to land, then update architecture and Cook docs.
