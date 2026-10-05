@@ -61,8 +61,8 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | SH-28 | **KNOWN BUG.** Chip words on phone are tiny | **open** | eye: 390×844 · TXT-05 | `docs/archive/handovers/NEXT-CHAT-START.md` §5 |
-| SH-29 | Stage fills the screen: no black bars, no dead cream band above the counter | fixed | eye: 1440×900, wide, tall · LAY-01; auto: `build/test_e2e.py` | `docs/feedback/playtest-2026-09-23.md` §1, README |
-| SH-30 | At 16:10 (1440×900, 1280×800) the sidebar never hides a tappable item or becomes an undismissable drawer | fixed | auto: `build/test_e2e.py` six viewports · LAY-02 | `docs/feedback/playtest-2026-09-23.md` §1 #1 |
+| SH-29 | Stage fills the screen: no black bars, no dead cream band above the counter | fixed | eye: 1440×900, wide, tall · LAY-01; auto: the sandbox (`build/sandbox/run.mjs`, all sizes) | `docs/feedback/playtest-2026-09-23.md` §1, README |
+| SH-30 | At 16:10 (1440×900, 1280×800) the sidebar never hides a tappable item or becomes an undismissable drawer | fixed | auto: the sandbox (`build/sandbox/run.mjs`, all sizes) six viewports · LAY-02 | `docs/feedback/playtest-2026-09-23.md` §1 #1 |
 | SH-31 | Nothing on the page covers a tappable item | fixed | auto: `build/test_cook.py` topmost-element check · LAY-06 | `docs/archive/design-v1/Roadmap and Story Structure.md` Lessons 2 |
 | SH-32 | Collected things are visible where they go (no invisible counters) | open | eye: each station | `docs/archive/design-v1/Roadmap and Story Structure.md` Lessons 3 |
 | SH-33 | Items are sized by width and height, never overflow their box | open | auto: `build/check_vessel_meta.py`; eye | `docs/feedback/playtest-2026-09-23.md` §1 #9 |
@@ -361,7 +361,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | PRC-01 | Tested only headless while the game was unplayable on a real device; review on phone and 16:10 laptop | fixed | eye: 390×844 and 1440×900 | `docs/archive/design-v1/Roadmap and Story Structure.md` Lessons 1, 12 |
-| PRC-02 | Tests had no 16:10 viewport | fixed | auto: `build/test_e2e.py` six viewports | `docs/feedback/playtest-2026-09-23.md` §1 #2 |
+| PRC-02 | Tests had no 16:10 viewport | fixed | auto: the sandbox (`build/sandbox/run.mjs`, all sizes) six viewports | `docs/feedback/playtest-2026-09-23.md` §1 #2 |
 | PRC-03 | Reported "live" before the Pages build had run (old badges on the live site) | fixed | eye: hard refresh on the live URL · REL-02 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §7 |
 | PRC-04 | Overnight run went off script: swipe chop replaced by tap crate and knife; sekelo v2 reused old art and was reported done | fixed | eye: report's "mechanics changed" section | `docs/feedback/cook-playtest-2026-09-29.md` X15 |
 | PRC-05 | Tests switched first-time help off, so help bugs went unseen | built, not re-played | auto: `build/check_onboard.mjs` · INT-04 | `docs/game-design/modes/clinic.md` G8 (builder) |

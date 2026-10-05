@@ -1,14 +1,14 @@
 # Clinic play-test, 1 Oct 2026: the heal games, every point, analysis and the plan
 
 **Source:** Zafar's two voice notes from playing the nine v2 heal games "in the pipeline" (`lab/clinic-core.html` → heal rows, levels 1 and 3). Transcripts (Whisper drafts; Kutchi spellings are guesses):
-- `docs/feedback/clinic-playtest-2026-10-01-transcript-part1.md` (30 min: scrape, knee, ear, tooth, drinks);
+- `docs/archive/feedback-transcripts/clinic-playtest-2026-10-01-transcript-part1.md` (30 min: scrape, knee, ear, tooth, drinks);
 - `…-part2.md` (21 min: fever, boing, eye, foot, and a closing thought).
 
 Times are **1:m:ss** (part 1) and **2:m:ss** (part 2). The coverage check at the end (§14) maps every transcript line to a point.
 
 **What this builds on:** the 29 Sept report (`docs/feedback/clinic-playtest-2026-09-29.md`, its §13–13l) and the fix session that carried it out (`build/reports/clinic-v2-fixes.md`). Where Zafar now says something different from §13, it's marked **⟲ newer** below: the newer word wins once he confirms it in §10.
 
-**Where fixes land** (the code moves to the new framework this week: `docs/architecture/gap-analysis.md` §4 "Revised 1 Oct", `docs/architecture/target-model.md` §4 and §6, decisions 19–25):
+**Where fixes land** (the code moves to the new framework this week: `docs/archive/architecture/gap-analysis.md` §4 "Revised 1 Oct", `docs/architecture/target-model.md` §4 and §6, decisions 19–25):
 - **[R3a]** the shared frame and kit: tokens, text fitting, sizes that scale, the bulb, buttons and card built once;
 - **[R3b]** one game host and the mini-game interface (`js/shared/host.js`), the shelf, tally, onboarding and end screen components;
 - **[R5]** the clinic moved onto the framework (a move: no mechanic changes, only the deletions and plumbing listed);
