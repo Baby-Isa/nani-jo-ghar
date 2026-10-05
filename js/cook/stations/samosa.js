@@ -481,7 +481,7 @@
       if (!quiet) Cook.sfx.pop();
       await S.fly(b, at.x, at.y - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
       await new Promise((r) => S.tweens.add({ targets: b, y: at.y, displayWidth: at.size * 0.9, displayHeight: at.size * 0.86, duration: 140, ease: "Quad.easeIn", onComplete: r }));
-      if (!quiet) S.puff(at.x, at.y, St.color(((Cook.data.words[id] || {}).layer || {}).color || "#f3e3b0"), z.L(26));
+      if (!quiet) S.puff(at.x, at.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#f3e3b0"), z.L(26));
       if (own) {
         // the spoonful joins its own mound, which grows a little
         b.destroy();

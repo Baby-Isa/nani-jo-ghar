@@ -12056,6 +12056,23 @@
    }
   },
   {
+   "id": "phrase.bring-me-these",
+   "pos": "Phrase",
+   "gloss": "Bring me these",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.headline-pantry-plain: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+   ],
+   "aliases": [
+    "cook.line.headline-pantry-plain"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.bring-the-big-cup",
    "pos": "Phrase",
    "lemma": "wadho cup khanech",

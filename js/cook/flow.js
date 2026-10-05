@@ -31,9 +31,9 @@
   const wordsOf = (why) =>
     String(why)
       // a compound kind in agreement ("ph-big+cook-maani" -> "wadhi maani": maani is a she-word)
-      .replace(new RegExp(COMPOUND_RE.source, "g"), (m) => Lang.plain(Lang.phrase(m.split("+").filter((id) => Cook.data.words[id]))))
+      .replace(new RegExp(COMPOUND_RE.source, "g"), (m) => Lang.plain(Lang.phrase(m.split("+").filter((id) => Lang.known(id)))))
       .replace(/\+(?=(?:cook|veg|spi|fru|ph|num|lnk)-)/g, " ")
-      .replace(ID_RE, (id) => (Cook.data.words[id] ? Cook.display(id) : id));
+      .replace(ID_RE, (id) => (Lang.known(id) ? Cook.display(id) : id));
   /**
    * What a mistake report means, read from the station's own words
    * ("added X (they said no)", "tadka X before Y", "3 X, they asked for 2"),
@@ -843,7 +843,7 @@
   /** Nani's recipe book: the dishes learned and the words met, in Kutchi (tap to hear); the English is behind the "?" (E1). */
   function showBook() {
     const taught = Object.keys(Cook.data.recipes).filter((k) => Cook.save.taught[k]);
-    const met = Cook.metWords().filter((id) => Cook.data.words[id]);
+    const met = Cook.metWords().filter((id) => Lang.known(id));
     const p = UI.panel(`
       ${taught.length ? `<div class="chips">${taught.map((k) => `<button class="chip" type="button" data-w="${UI.esc(Cook.data.recipes[k].name)}">${UI.esc(Cook.display(Cook.data.recipes[k].name))}</button>`).join("")}</div>` : ""}
       <div class="cards">${Object.keys(Cook.data.customers).map((who) => `<div class="ccard book-face"><img src="${face(who)}" alt=""></div>`).join("")}</div>

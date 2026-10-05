@@ -361,19 +361,23 @@
   let guideKey = null;
   let guideLine = null; // what the box shows now: a line (Kutchi) or null (the instruction)
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
-  const guideEntry = () => {
+  // which data.guide key the box shows now (the station:phase, else the station, else the default)
+  const guideEntryKey = () => {
     const G = (Cook.data && Cook.data.guide) || {};
     const k = guideKey || "";
-    return G[k] || G[k.split(":")[0]] || G.default || null;
+    return [k, k.split(":")[0], "default"].find((x) => x && G[x]) || null;
   };
   function showGuide() {
     if (!guide) return;
     guideLine = null;
-    const g = guideEntry();
-    if (g && g.line && Cook.data.lines[g.line]) {
-      guideLine = Lang.line(g.line);
+    const key = guideEntryKey();
+    if (!key) return guide.set("");
+    // step 4d: the engine's line (a line Mum gave), else the engine's to-record placeholder (grey italic)
+    const line = Lang.guideLine(key, Cook.data.guide[key]);
+    if (line.ok) {
+      guideLine = line;
       guide.set(raHtml(guideLine));
-    } else guide.set(esc((g && g.en) || ""), { rec: !!(g && g.en) });
+    } else guide.set(esc(Lang.plain(line)), { rec: true });
   }
   /** The station (or station:phase) whose instruction the box shows. */
   UI.guideFor = function (key) {
@@ -558,7 +562,7 @@
   function passMeOptions(want, options) {
     const groups = ((Cook.data.lookalike_groups || {}).groups || []).filter((g) => g.includes(want));
     const drawable = (id) => {
-      const w = Cook.data.words[id];
+      const w = Cook.item(id);
       return !!(w && (w.heap || w.image));
     };
     // how many to choose from is the mechanic's knob (data.mechanics.passme)
@@ -1739,7 +1743,7 @@
    */
   UI.orderWords = function (ladders) {
     const out = [];
-    const add = (id) => id && Cook.data.words[id] && !Cook.isPlaceholder(id) && !out.includes(id) && out.push(id);
+    const add = (id) => id && Lang.known(id) && !Cook.isPlaceholder(id) && !out.includes(id) && out.push(id);
     (ladders || []).forEach((L) => {
       Order()
         .rows(L, { all: true })
@@ -1808,7 +1812,7 @@
       const u = url && url(`${id}.${st}`);
       if (u) return u;
     }
-    return Cook.data.words[id] ? Cook.Art.wordUrl(id) : null;
+    return Cook.item(id) ? Cook.Art.wordUrl(id) : null;
   }
   UI.tallyIcon = iconFor;
   /*
@@ -1864,7 +1868,7 @@
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {
     const ws = id && id !== "_" ? String(id).split("+") : [];
-    if (!ws.length || !ws.every((w) => Cook.data.words[w]) || ws.some((w) => Cook.isPlaceholder(w))) return { segs: Lang.num(n), en: String(n) };
+    if (!ws.length || !ws.every((w) => Lang.known(w)) || ws.some((w) => Cook.isPlaceholder(w))) return { segs: Lang.num(n), en: String(n) };
     const parts = Lang.countParts(n, ws[ws.length - 1]);
     const at = parts.indexOf(ws[ws.length - 1]);
     parts.splice(at, 1, ...ws);

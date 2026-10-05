@@ -83,8 +83,7 @@
       ];
       // plus any prop named in the data (a word's `image`, data.art.props), so
       // new art is a file in assets/cook/props/ and a name in the data
-      const W = (Cook.data && Cook.data.words) || {};
-      const more = Object.values(W).map((w) => w.image).concat(((Cook.data && Cook.data.art) || {}).props || []);
+      const more = Cook.items().map((id) => Cook.item(id).image).concat(((Cook.data && Cook.data.art) || {}).props || []);
       // a prop that has a painted sprite (data.art.sprites.props) loads the sprite under the
       // prop's name instead (the same width, so it draws the same size); if that fails, the prop
       const swap = Cook.Art.propSprites();

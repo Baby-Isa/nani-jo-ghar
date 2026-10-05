@@ -8,8 +8,10 @@
  */
 import { Save } from "#core/save.js";
 import { loadCore } from "#core/index.js";
-import { clipIndex, planClips, voicePath } from "#core/voice.js";
 import { loadJSON } from "#core/env.js";
+import { createEngine } from "#core/lang/index.js";
+
+const DATA_FILES = ["params", "lexicon", "paradigms", "abstract", "concrete", "clips"]; // data/lang/ (engine-spec § Files)
 
 const Cook = (window.Cook = window.Cook || {});
 Save.init();
@@ -20,19 +22,22 @@ const player = {
   stop: () => Cook.stopVoice && Cook.stopVoice(),
   synth: (text) => (Cook.synthSay ? Cook.synthSay(text) : Promise.resolve(false)),
 };
+// a load cut short by leaving the page (a reload) isn't a failure worth reporting
+let leaving = false;
+window.addEventListener("pagehide", () => (leaving = true));
 Cook.coreReady = loadCore({ base: "", save: Save, cook: Cook, player })
   .then(async (core) => {
     Cook.core = core;
-    // G1 (decision 26, G12): Cook's voice plans every line with the core's planClips (whole phrases off until the
-    // pre-publish pass), on the test path too; js/cook/lang.js Lang.speak hands the plan to the core's voice (core.voice.say), which plays it through Cook's player above
-    const [fam, tts] = await Promise.all([loadJSON("data/family-audio.json").catch(() => []), loadJSON("data/cook-tts.json").catch(() => ({ lines: {} }))]);
-    const index = clipIndex(fam, { tts: (tts && tts.lines) || {} });
-    const sayOf = (id) => (id && Cook.data && Cook.data.words[id] && Cook.data.words[id].say) || null;
-    Cook.voicePlan = (segs) => planClips(segs, index, { path: voicePath(), sayOf });
+    // step 4d (decision 42): every word and line Cook shows or plays is the language engine's (js/cook/words.js), and
+    // its clip plan (stitched from the family's word recordings, decision 26) plays through the core's voice
+    const data = {};
+    await Promise.all(DATA_FILES.map(async (f) => (data[f] = await loadJSON(`data/lang/${f}.json`))));
+    const audio = await loadJSON("data/family-audio.json").catch(() => []);
+    Cook.langEngine = createEngine({ data, audio: audio || [] });
     return core;
   })
   .catch((e) => {
-    console.error("Cook: the engine core didn't load", e);
+    if (!leaving) console.error("Cook: the engine core didn't load", e);
     Cook.core = null;
     return null;
   });

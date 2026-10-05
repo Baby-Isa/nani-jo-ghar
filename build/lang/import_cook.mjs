@@ -212,6 +212,15 @@ export function importCook(S) {
     else if (r.kind === "phrase") stat.phrases++;
     else stat.toRecord++;
   }
+  // a recipe's card headline (the pantry's "bring me these for {dish}", step 4d): a frame Mum hasn't given, with the
+  // dish in its slot (data/cook.json meanings names the meaning), and its plain form for a trip with no dish
+  for (const [rid, r] of Object.entries(cook.recipes || {})) {
+    const hl = r && r.headline;
+    if (!hl || !hl.line) continue;
+    importLine(S, "cook", hl.line, { e: String(hl.en).replace("{dish}", "{x}"), src: hl._about }, { frames: FRAMES, src: "data/cook.json", okWords, rank });
+    if (hl.line_plain && hl.en_plain) importLine(S, "cook", hl.line_plain, { e: hl.en_plain, src: hl._about }, { frames: FRAMES, src: "data/cook.json", okWords, rank });
+    stat.lines++;
+  }
   const stir = readJSON("data/stations/stir.json");
   for (const [key, ln] of Object.entries(stir.lines || {})) {
     const r = importLine(S, "cook", key === "stir-now" ? "now" : key, { ...ln }, { frames: FRAMES, src: "data/stations/stir.json", okWords, rank });

@@ -443,7 +443,8 @@
           data.mechanics = data.mechanics || {};
           data.mechanics[id] = Object.assign({}, extra.mechanic || {}, data.mechanics[id] || {});
           if (extra.station) data.stations[id] = Object.assign({}, extra.station, data.stations[id] || {});
-          if (extra.words) Object.keys(extra.words).forEach((w) => (data.words[w] = data.words[w] || extra.words[w]));
+          // a station's own things (its item catalogue: pictures, heaps); their words are the engine's (aliases)
+          if (extra.words) Object.keys(extra.words).forEach((w) => Cook.item(w) || (Cook.data.words[w] = extra.words[w])); // item catalogue
         }
       });
     }

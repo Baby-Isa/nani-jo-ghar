@@ -25,12 +25,13 @@
     const [data, manifest, tts] = await Promise.all([
       fetch(Cook.v("data/cook.json")).then((r) => r.json()),
       fetch(Cook.v("data/audio-manifest.json")).then((r) => r.json()).catch(() => ({})),
-      fetch(Cook.v("data/cook-tts.json")).then((r) => r.json()).catch(() => ({ lines: {} })),
+      // the parked pages' placeholder voice table (Cook's own words are the engine's: js/cook/words.js)
+      Cook.engineWords ? null : fetch(Cook.v("data/cook-tts.json")).then((r) => r.json()).catch(() => ({ lines: {} })), // parked pages only
       global.FamilyVoice ? global.FamilyVoice.load() : Promise.resolve(),
     ]);
     Cook.data = data;
     Cook.audioManifest = manifest || {};
-    Cook.tts = (tts && tts.lines) || {};
+    Cook.tts = (tts && tts.lines) || {}; // parked pages only
     // modules that build themselves from the data (recipes, a combined
     // station's own data file) run here, in the order they registered
     for (const fn of Cook.onLoad) await fn(data);
@@ -38,12 +39,10 @@
   };
   Cook.onLoad = [];
 
-  Cook.word = (id) => Cook.data.words[id];
-  Cook.kutchi = (id) => (Cook.data.words[id] || {}).kutchi || id;
-  Cook.english = (id) => (Cook.data.words[id] || {}).english || id;
-  // number words: data.grammar.numbers maps 1 -> "num-01" (lang.js)
-  Cook.numId = (n) => (((Cook.data && Cook.data.grammar) || {}).numbers || {})[n] || `num-0${n}`;
-  Cook.numWord = (n) => Cook.kutchi(Cook.numId(n));
+  // the item catalogue (data/cook.json `words`: a thing's picture, heap, layer colour, shelf): never a word's text,
+  // which is the language engine's (js/cook/words.js; the parked pages' js/cook/lang.js keeps their old lookups)
+  Cook.item = (id) => (id != null && Cook.data && Cook.data.words && Cook.data.words[id]) || null; // item catalogue
+  Cook.items = () => Object.keys((Cook.data && Cook.data.words) || {}).filter((k) => k !== "_about"); // item catalogue
   Cook.hasAudio = (id) => !!id && (Cook.audioManifest.word || []).includes(id);
 
   /* ---------------- save ---------------- */
@@ -243,11 +242,11 @@
    * romanised text (build/build_cook_tts.py). A family recording replaces
    * the file of the same name. Played through Web Audio, which is unlocked
    * by the first tap and works on phones where <audio> autoplay doesn't. */
-  Cook.tts = {};
+  Cook.tts = {}; // parked pages only
   // letters, marks and digits of any script (romanised Kutchi today, Gujarati
   // script later); must match norm() in build/build_cook_tts.py
   Cook.norm = (s) => String(s || "").toLowerCase().normalize("NFC").replace(/[^\p{L}\p{M}\p{N} ]/gu, "").replace(/\s+/g, " ").trim();
-  Cook.hasVoice = (plain) => !!Cook.tts[Cook.norm(plain)];
+  Cook.hasVoice = (plain) => !!Cook.tts[Cook.norm(plain)]; // parked pages only
   const bufCache = {};
   let currentSrc = null;
   async function loadBuffer(url) {
@@ -260,7 +259,7 @@
     return bufCache[url];
   }
   Cook.preloadVoice = (plain) => {
-    const url = Cook.tts[Cook.norm(plain)];
+    const url = Cook.tts[Cook.norm(plain)]; // parked pages only
     if (url && ctx) loadBuffer(url);
   };
   Cook.stopVoice = () => {
@@ -297,9 +296,9 @@
     });
   }
   /** Speak a line; resolves when it ends (or at once if there's no file). */
-  Cook.speak = (plain) => playURL(Cook.tts[Cook.norm(plain)]);
+  Cook.speak = (plain) => playURL(Cook.tts[Cook.norm(plain)]); // parked pages only
   /** Speak a voice file by its manifest key (see lang.js). */
-  Cook.speakKey = (key) => playURL(Cook.tts[key]);
+  Cook.speakKey = (key) => playURL(Cook.tts[key]); // parked pages only
   /** Speak a family recording by its own URL (js/shared/family-voice.js), relative to the game root. */
   Cook.speakFile = (url) => playURL(url);
   /** Speak several lines in a row (an order is "Muke chai khape." then "Ne ba khun."). */

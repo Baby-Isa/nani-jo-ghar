@@ -238,7 +238,7 @@
   const inHead = (head, r) => !!head && !r.no && r.ids.length > 0 && r.ids.every((id) => (head.ids || []).includes(id));
   // 30 Sept (chai C5): a word marked `joinless` (the Chai tray's adh / aako) is never the one the join
   // word goes before ("khun na, with aako" read "no sugar, with full"): it's said bare, and the join waits
-  const joinless = (r) => r.ids.length > 0 && r.ids.every((id) => ((Cook.data.words || {})[id] || {}).joinless);
+  const joinless = (r) => r.ids.length > 0 && r.ids.every((id) => ((Cook.item ? Cook.item(id) : Cook.data.words[id]) || {}).joinless); // (the parked pages: no item catalogue)
   /**
    * One person's order as ONE sentence, in card order (29 Sept, X1): the headline ("Muke aadu waari
    * chai khape"), then the card's other rows as their bare words ("dudh, ba khun"), a leave-it-out
@@ -268,10 +268,11 @@
         const l = Lang.line(F.no, r.phrase);
         segs = lower(cut(l.segs));
         en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
-      } else if (!joined && !joinless(r) && Cook.data.lines[join]) {
+      } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join])) { // (the parked pages: their own lines)
         const l = Lang.line(join, r.phrase);
-        segs = cut(l.segs);
-        en = cutEn(l.en);
+        // inside the sentence: no capital (the engine says a join it has no rule for as a sentence of its own)
+        segs = lower(cut(l.segs));
+        en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
         joined = true;
       } else {
         segs = r.phrase.segs.slice();
@@ -290,12 +291,18 @@
    * `{dish}` is the English of the dish it's for (d.for), or the plain form without one.
    */
   O.headline = function (hl, d) {
-    if (hl.line && Cook.data.lines[hl.line]) {
-      const line = Lang.line(hl.line);
-      return { parts: [], ids: [], head: true, rec: false, done: false, need: 1, got: 0, line, said: line };
+    // step 4d: the headline is the engine's line for its frame key (data/cook.json meanings), the dish it's for in its
+    // slot; a frame Mum hasn't given comes back as the engine's own placeholder (grey-italic English, to record)
+    const dish = d && d.for && Cook.data.recipes[d.for] ? Cook.data.recipes[d.for].name : null;
+    const key = dish ? hl.line : hl.line_plain || hl.line;
+    if (Lang.hasLine && Lang.hasLine(key)) {
+      const line = Lang.line(key, dish ? Lang.phrase([dish]) : undefined);
+      const rec = !line.ok;
+      return { parts: [], ids: [], head: true, rec, done: false, need: 1, got: 0, line, said: rec ? undefined : line };
     }
-    const dish = d && d.for && Cook.data.recipes[d.for] ? Cook.data.recipes[d.for].english : null;
-    const t = dish ? hl.en.replace("{dish}", dish.toLowerCase()) : hl.en_plain || hl.en.replace(/\s*for \{dish\}/, "");
+    // the parked pages (js/cook/lang.js, no engine): the recipe's English, flagged to record, as before
+    const en = d && d.for && Cook.data.recipes[d.for] ? Cook.data.recipes[d.for].english : null;
+    const t = en ? hl.en.replace("{dish}", en.toLowerCase()) : hl.en_plain || hl.en.replace(/\s*for \{dish\}/, "");
     return { parts: [], ids: [], head: true, rec: true, done: false, need: 1, got: 0, line: { segs: [{ t, lang: "e" }], en: t } };
   };
   /** A ladder from plain lines (Station lab cards with no dish): one simple row per line. */

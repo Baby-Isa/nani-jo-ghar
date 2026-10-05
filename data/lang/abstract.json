@@ -856,6 +856,19 @@
     "x"
    ]
   },
+  "BringMeTheseForX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Bring me these for {x}",
+   "elicit": [
+    "Bring me these for knee"
+   ],
+   "_sig": "[\"x\"]"
+  },
   "MyXHurts": {
    "cat": "Utt",
    "args": {

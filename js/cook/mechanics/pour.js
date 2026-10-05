@@ -402,7 +402,7 @@
     color = St.color(color);
     if (from != null && !fromLevel) vessel.setLiquid(from, vessel.color);
     const at = St.pt(jugAt, { x: 1300, y: St.STRIP_Y });
-    const jugKey = Cook.data.words[liquid] && Cook.data.words[liquid].image ? Cook.data.words[liquid].image : "water-jug";
+    const jugKey = Cook.item(liquid) && Cook.item(liquid).image ? Cook.item(liquid).image : "water-jug";
     let jug = icon;
     if (!jug) {
       jug = S.prop(jugKey, z.X(at.x), z.Y(at.y + 60), z.L(170), z.L(200), { depth: D.item + 1 });

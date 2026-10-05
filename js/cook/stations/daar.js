@@ -774,7 +774,7 @@
       },
       laps(n) {
         // (past the numbers the words have, the last word stays: never an id on screen)
-        if (n === shown || !Cook.data.words[Cook.numId(n)]) return;
+        if (n === shown || !Lang.known(Cook.numId(n))) return;
         shown = n;
         ct.setText(Lang.plain({ segs: Lang.num(n) }));
         const w = Math.max(110, ct.width + 52);
