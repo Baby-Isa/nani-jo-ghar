@@ -247,6 +247,29 @@
    ],
    "has2x": true,
    "_a1": "A1 (5 Oct): E1's canal (822, 495 in the 1536 x 1024 source) on the game's canal (382, 268) at 0.97, the ear the stand-in's size (the wax spots, the sore skin and the drops keep their places); the head runs off the top, right and bottom."
+  },
+  "bits": {
+   "wax-big": {
+    "file": "assets/clinic/heal-v3/wax-big.webp",
+    "w": 349,
+    "h": 281
+   },
+   "wax-mid": {
+    "file": "assets/clinic/heal-v3/wax-mid.webp",
+    "w": 256,
+    "h": 220
+   },
+   "wax-small": {
+    "file": "assets/clinic/heal-v3/wax-small.webp",
+    "w": 189,
+    "h": 164
+   },
+   "tissue": {
+    "file": "assets/clinic/heal-v3/tissue.webp",
+    "w": 407,
+    "h": 335
+   },
+   "_a1": "A1 (5 Oct): O1's wax (drawn at 2.5 x the blob's radius, so the sizes keep their ratios) and the tissue; any patient."
   }
  },
  "hearing": {

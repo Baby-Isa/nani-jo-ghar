@@ -67,7 +67,7 @@ def bg_of(a):
     return np.median(edge, 0)
 
 
-def key(a, multi=400, exits=(), tol=10, glass=None):
+def key(a, multi=400, exits=(), tol=10, glass=None, soft=False):
     """RGBA float array (alpha 0..1) of the object on the flat grey. exits: the edges the object leaves by
     ('left', 'right', 'top', 'bottom'): there the border is not background. glass: an optional bool mask kept at
     its colour-to-alpha value (never a solid core)."""
@@ -120,7 +120,11 @@ def key(a, multi=400, exits=(), tol=10, glass=None):
     alpha = np.clip(up.max(2), 0, 1)
     alpha = np.where(ndi.binary_dilation(obj, iterations=2), alpha, 0)
     alpha = np.clip((alpha - 0.04) / 0.5, 0, 1)  # a strong ramp: soft antialiasing, no grey halo
-    alpha = np.where(core, 1.0, alpha)
+    if soft:
+        # glass, a drop, dust: partial alpha everywhere (the colour-to-alpha value, a gentler ramp), never a solid core
+        alpha = np.where(ndi.binary_dilation(obj, iterations=2), np.clip(up.max(2) * 2.2, 0, 1), 0)
+    else:
+        alpha = np.where(core, 1.0, alpha)
     if glass is not None:
         g = np.clip(up.max(2) * 1.6, 0, 1)
         alpha = np.where(glass & obj, g, alpha)
@@ -448,7 +452,7 @@ def save_closeup(k, path):
 
 # ---------------------------------------------------------------- props (grid sheets)
 
-def cut_grid(srcname, names, outdir, min_area=1500, glass=()):
+def cut_grid(srcname, names, outdir, min_area=1500, glass=(), out=None, rows=3):
     """Cut a prop sheet by its gutters: each separate piece, left to right, top to bottom, trimmed with a 16 px pad,
     at most 512 px. names: the file names in reading order (None skips a piece)."""
     p = src(srcname)
@@ -465,14 +469,17 @@ def cut_grid(srcname, names, outdir, min_area=1500, glass=()):
             continue
         pieces.append((ys.min(), xs.min(), ys.max() + 1, xs.max() + 1, i))
     # reading order: rows by the top, then left to right
-    pieces.sort(key=lambda t: (round(((t[0] + t[2]) / 2) / (a.shape[0] / 3)), t[1]))
+    pieces.sort(key=lambda t: (int(((t[0] + t[2]) / 2) // (a.shape[0] / rows)), t[1]))
     log(f"{srcname}: {len(pieces)} pieces for {len(names)} names")
-    out = {}
+    out = {} if out is None else out
     for (y0, x0, y1, x1, i), nm in zip(pieces, names):
         if not nm:
             continue
         m = lb[y0:y1, x0:x1] == i
         piece = k[y0:y1, x0:x1].copy()
+        if nm in glass:
+            ks, _ = key(a, multi=min_area, soft=True)
+            piece = ks[y0:y1, x0:x1].copy()
         piece[..., 3] *= m
         img = to_img(piece)
         pad = Image.new("RGBA", (img.width + 32, img.height + 32), (0, 0, 0, 0))
@@ -545,6 +552,11 @@ def main():
         if r: d["eyetest-b"] = r
         if not d:
             del cl[kind]
+    props = data.setdefault("props", {})
+    cut_grid("o1-ear-foot-bits-v1.png", ["wax-big", "wax-mid", "wax-small", "seed", "splinter-thin", "splinter-thick", "drop", "tissue", "dirt"],
+             f"{OUT}/heal-v3", glass=("drop", "dirt"), out=props)
+    cut_grid("o2-mouth-bits-v1.png", ["spot-red", "spot-yellow", "spot-blue", "spot-green", "decay-1", "decay-2", "decay-3", "filling-patch"],
+             f"{OUT}/heal-v3", out=props)
     data["_report"] = REPORT
     with open(DATA, "w") as f:
         json.dump(data, f, indent=1, ensure_ascii=False)

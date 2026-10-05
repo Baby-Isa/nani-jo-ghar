@@ -148,8 +148,17 @@
       });
     // the tissue beside the ear: where the wax goes
     const tissue = s("g", { class: "ear-tissue" }, S.layer);
-    s("path", { d: `M${TISSUE.x - 58} ${TISSUE.y - 34} Q${TISSUE.x} ${TISSUE.y - 52} ${TISSUE.x + 58} ${TISSUE.y - 34} L${TISSUE.x + 50} ${TISSUE.y + 38} Q${TISSUE.x} ${TISSUE.y + 50} ${TISSUE.x - 50} ${TISSUE.y + 38}Z`, fill: "#fbfbf6", stroke: "#cfc6b6", "stroke-width": 3 }, tissue);
-    s("path", { d: `M${TISSUE.x - 30} ${TISSUE.y - 8} Q${TISSUE.x} ${TISSUE.y + 4} ${TISSUE.x + 30} ${TISSUE.y - 8}`, fill: "none", stroke: "#e2dbcd", "stroke-width": 3 }, tissue);
+    // A1 (5 Oct): the art's bits (O1: wax big, mid, small and the tissue) where they're cut; drawn shapes otherwise
+    const BITS = (ctx.data && ctx.data.art && ctx.data.art.bits) || null;
+    const bit = (name, cx, cy, w, parent) => {
+      const f = BITS && BITS[name];
+      if (!f) return null;
+      const h = w * (f.h / f.w);
+      return s("image", { href: url(f.file), x: cx - w / 2, y: cy - h / 2, width: w, height: h }, parent);
+    };
+    if (bit("tissue", TISSUE.x, TISSUE.y + 4, 150, tissue)) tissue.setAttribute("data-art", "1");
+    else s("path", { d: `M${TISSUE.x - 58} ${TISSUE.y - 34} Q${TISSUE.x} ${TISSUE.y - 52} ${TISSUE.x + 58} ${TISSUE.y - 34} L${TISSUE.x + 50} ${TISSUE.y + 38} Q${TISSUE.x} ${TISSUE.y + 50} ${TISSUE.x - 50} ${TISSUE.y + 38}Z`, fill: "#fbfbf6", stroke: "#cfc6b6", "stroke-width": 3 }, tissue);
+    if (!tissue.hasAttribute("data-art")) s("path", { d: `M${TISSUE.x - 30} ${TISSUE.y - 8} Q${TISSUE.x} ${TISSUE.y + 4} ${TISSUE.x + 30} ${TISSUE.y - 8}`, fill: "none", stroke: "#e2dbcd", "stroke-width": 3 }, tissue);
     const onTissue = s("g", {}, S.layer);
     const smearG = s("g", { class: "ear-smears" }, S.layer);
     const waxG = s("g", { class: "ear-wax" }, S.layer);
@@ -164,6 +173,7 @@
     const drawBlob = (b) => {
       if (b.el) b.el.remove();
       b.el = s("g", { class: `ear-blob ${b.size}`, "data-size": b.size }, waxG);
+      if (bit(`wax-${b.size}`, b.x, b.y, b.r * 2.5, b.el)) return;
       s("circle", { cx: b.x, cy: b.y, r: b.r, fill: `url(#ear-wax-${uid})`, stroke: "#8a6010", "stroke-width": 2.5 }, b.el);
       s("ellipse", { cx: b.x - b.r * 0.35, cy: b.y - b.r * 0.38, rx: b.r * 0.3, ry: b.r * 0.2, fill: "#fff6d0", opacity: 0.8 }, b.el);
     };
@@ -396,7 +406,7 @@
         if (!b) return;
         if (S.sel !== "tweezers") S.pick("tweezers");
         st.drag = { b, el: s("g", { class: "ear-held" }, S.fx) };
-        s("circle", { cx: 0, cy: 0, r: b.r, fill: `url(#ear-wax-${uid})`, stroke: "#8a6010", "stroke-width": 2.5 }, st.drag.el);
+        if (!bit(`wax-${b.size}`, 0, 0, b.r * 2.5, st.drag.el)) s("circle", { cx: 0, cy: 0, r: b.r, fill: `url(#ear-wax-${uid})`, stroke: "#8a6010", "stroke-width": 2.5 }, st.drag.el);
         s("image", { href: url("assets/clinic/items-v2/tweezers.webp"), x: -8, y: -60, width: 110, height: 52, transform: "rotate(-30)" }, st.drag.el);
         st.drag.el.setAttribute("transform", `translate(${p.x} ${p.y})`);
         b.el.setAttribute("opacity", 0.25);
