@@ -19,3 +19,6 @@ All on branch `ccr-fcd9dddd-wnywzc`; not published (no bump, no push to main).
 Assemble L3 `04-view-marble`, day2 `03-kind-click` and the tooth L2 mid card, all at 800x360.
 - **Flaws:** the card's rows now sit very tight (2 px apart). The bubble is higher than the mouth.
 - **Not looked at:** the 1366x768 shots and the 844x390 card.
+
+## Follow-up (orchestrator: `build/test_shared_frame.mjs`)
+The 4 hard-coded px in my `order-card.css` rule are now tokens (`--njg-s*` calc and `--oc-part-h` ratios). `node build/test_shared_frame.mjs` passes 11/11. Re-run of clinic heal-cut, heal-tooth and patient at L2, 844x390 and 800x360: 0 new findings.
