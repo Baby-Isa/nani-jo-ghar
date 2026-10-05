@@ -1,11 +1,5 @@
 # Testing: how we check the code
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - Mode test ports (Find it 8801 … Foundation 8800) were set for the 25 Sept wave of sessions → still one browser test at a time with your own `COOK_TEST_PORT`; at most ~4 sessions at once, no helper sessions (B1, B16, non-negotiable 14)
-> - "Browser tests only if cheap" → done means looked at, not tests passed: every state screenshotted and judged by someone other than the builder (non-negotiable 7; QA checklist)
-> - "Leak-bot numbers" in the build report → the Kutchi leak test still applies (non-negotiable 6)
-> - Alive-Nani test lessons mention Phaser's clock in headless Chromium → Cook runs on Phaser (cook.html loads js/vendor/phaser.min.js); the other modes are DOM/SVG; Phaser's future is a step-2a decision. The lesson about wall-clock timing versus throttled `requestAnimationFrame` still holds for any headless test
-
 The definition of done is `docs/process/qa-checklist.md`. This file is the practical side: ports, commands and lessons.
 
 ## The rule on browser tests (by ID)
@@ -16,26 +10,19 @@ The quick (non-browser) tests for the shared modules are `build/test_shared_*.mj
 
 ---
 
-## Test ports and the test rules from the mode build brief
+## Ports and the rules for browser tests
 
-> from: docs/archive/mode-briefs/BUILD-COMMON.md § Tests (and Git, Finish)
-
-## Tests
-- A Node leak bot (no browser) proving level 1 of each first-set mini-game can't be won blind, with the numbers in your build log.
-- Browser tests only if cheap: one at a time, `--canvas`, your own `COOK_TEST_PORT` (Find it 8801, Tidy up 8802, Who did it 8803, Dress up 8804, Monsoon 8805, Clinic 8806, Snap 8807, Foundation 8800).
-
-## Git
-- Work on the branch your session was given; commit small and often; push after every meaningful step (`git push -u origin <branch>`, retry on network errors). Never push to `main` or any other branch; never force-push.
-- Commit messages end with the Co-Authored-By and Claude-Session lines your system prompt gives.
-
-## Finish
-Write `build/reports/<mode>-build.md` (under 400 words): what's built and where, how to open it (the lab URL), the leak-bot numbers, the stubs to swap for shared pieces, what's left for the next phase, and any decision you had to take. Commit, push, and end your turn with the same summary.
+- **One browser test at a time**, under `flock -w 1800 /tmp/njg-browser.lock timeout <seconds> …` (B16). At most about four sessions run at once and none spawns helpers (B1, B3).
+- **Each session sets its own `COOK_TEST_PORT`**, named in its brief. The sandbox's default is 8812 (`build/sandbox/lib/env.mjs`); the 25 Sept per-mode ports (8800–8807) are retired. Ports in use by recent sessions: 8810, 8812, 8814, 8820, 8823. When a new session needs one, pick the next free number above 8823 and add it here.
+- **Done means looked at, not tests passed** (non-negotiable 7): every state is screenshotted and judged by someone other than the builder; the QA checklist says how.
+- **The Kutchi leak test applies to every game** (non-negotiable 6): `node build/tools/review/leak.mjs <game>` (`--list` names them), plus `build/leak_*.mjs`.
+- **Reports** are `build/reports/<id>-<topic>.md`, under 300 words (B6); `skeleton.mjs` starts the proof section.
 
 ---
 
 ## Testing lessons from the alive-Nani test
 
-> from: docs/archive/art/alive-nani-test-2026-09-23.md § LEARNING sections on the headless browser clock and audio thresholds
+From `docs/archive/art/alive-nani-test-2026-09-23.md`. Cook still runs on Phaser (`js/vendor/phaser.min.js`); the other modes are DOM/SVG. The wall-clock lesson holds for any headless test.
 
 ## LEARNING — Phaser's internal clock drifts badly in headless Chromium
 
@@ -94,10 +81,10 @@ Same principles as the review tools: short summaries, `--help`, re-runnable, no 
 | Mum-round pipeline | `node build/tools/ops/mumround.mjs <folder> [--go] [--draft-items]` | Transcribe (Whisper, `--go` only) → item list (draft from the transcript's question ids) → cut and normalise (`cut_family_clips.py`) → loudness check (EBU R128, ±3 LU of -16) → `import_all.mjs` (`--check` on a dry run) → gap counts. |
 | Voice-note feedback | `node build/tools/ops/feedback.mjs <transcript> [part2] --name n` | The CLAUDE.md report skeleton: mechanics changed, every point with its time, draft regression rows with the next free ids, coverage of every line. |
 | Publish | `node build/tools/ops/publish.mjs [--go]` | Preflight (branch, tree, `origin/main` ahead, bump size); `--go`: bump → commit → push branch and `HEAD:main` → wait for Pages to serve the stamp → screenshot `labs.html`. |
-| Check-in summary | `node build/tools/ops/checkin.mjs [--log --note t]` | Commits by session since the last check-in, reports landed, art on `main`, sessions in `status.md`; `--log` appends the overnight-log line. |
+| Check-in summary | `node build/tools/ops/checkin.mjs [--log --note t]` | Commits by session since the last check-in, reports landed, art on `main`, sessions in `status.md`; `--log` appends the overnight-log line and moves earlier days to `docs/process/overnight-log/<date>.md`. |
 | Mum question sheet | `node build/tools/ops/mumsheet.mjs [--out f.md --docx]` | The next round's sheet from `gap-list.md` and `clash-list.md`: quick checks, then Cook, then the clinic, capped per part. |
 
-Skills (load only when needed; each points at the rulebook IDs): `/brief`, `/checkin`, `/review`, `/publish`, `/mum-round`, `/feedback`, `/art-run`, `/handover`.
+Skills (load only when needed; each points at the rulebook IDs): `/sprint`, `/brief`, `/checkin`, `/review`, `/publish`, `/mum-round`, `/feedback`, `/art-run`, `/handover`.
 
 ## Tools: R7 additions (leftovers closed, decision 45)
 
