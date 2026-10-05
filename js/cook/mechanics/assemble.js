@@ -259,7 +259,7 @@
       return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
     };
   }
-  const colourOf = (id) => ((Cook.data.words[id] || {}).layer || {}).color || "#d8c49a";
+  const colourOf = (id) => ((Cook.item(id) || {}).layer || {}).color || "#d8c49a";
 
   /**
    * A topping's "stamps": a dozen pieces cut at random from its strip art, each with feathered edges,
@@ -1123,7 +1123,7 @@
         // the pill ticks now (UX 11: its step has closed, right or not; the serve judges the order)
         ticked.push(UI.mission.tickItem(id, dishNo()));
         if (UI.mission.advance) UI.mission.advance(dishNo());
-        S.puff(p.x, p.y, St.color(((Cook.data.words[id] || {}).layer || {}).color || "#ffffff"), z.L(34));
+        S.puff(p.x, p.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#ffffff"), z.L(34));
         const settle = bowl.add(id);
         const r = bowl.rimAt();
         pop(Cook.display(id), r.x + z.L(GLASS_W * 0.36), r.y - z.L(40), {

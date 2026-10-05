@@ -158,14 +158,14 @@
   };
   function lookalikes(id, n = 2) {
     const L = (Cook.data.lookalikes || {})[id] || [];
-    const pool = L.concat(Cook.shuffle(Object.keys(Cook.data.words).filter((w) => w !== id && !w.startsWith("num-") && (Cook.data.words[w].heap || Cook.data.words[w].image))));
+    const pool = L.concat(Cook.shuffle(Cook.items().filter((w) => w !== id && !w.startsWith("num-") && (Cook.item(w).heap || Cook.item(w).image))));
     return [...new Set(pool)].filter((w) => w !== id).slice(0, n);
   }
   S$.lookalikes = lookalikes;
   /** "#9fd3f0" (data) or 0x9fd3f0 (code) -> a number. */
   S$.color = (c) => (typeof c === "string" ? parseInt(c.replace("#", ""), 16) : c);
   S$.heapColor = (id, fallback = 0x996633) => {
-    const h = (Cook.data.words[id] || {}).heap;
+    const h = (Cook.item(id) || {}).heap;
     return h ? Phaser.Display.Color.HexStringToColor(h.color).color : fallback;
   };
   /**

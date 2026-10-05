@@ -19,8 +19,8 @@
       const ctx = z.ctx;
       if (!want) {
         // anything the player has met (spaced review), weakest first
-        const met = Object.keys(Cook.save.words).filter((id) => Cook.data.words[id] && !id.startsWith("num-") && (Cook.data.words[id].heap || Cook.data.words[id].image));
-        const pool = met.length >= 3 ? met : Object.keys(Cook.data.words).filter((id) => Cook.data.words[id].heap);
+        const met = Object.keys(Cook.save.words).filter((id) => Cook.item(id) && !id.startsWith("num-") && (Cook.item(id).heap || Cook.item(id).image));
+        const pool = met.length >= 3 ? met : Cook.items().filter((id) => Cook.item(id).heap);
         pool.sort((a, b) => Cook.wordStage(a) - Cook.wordStage(b) + (Math.random() - 0.5));
         want = pool[0];
       }

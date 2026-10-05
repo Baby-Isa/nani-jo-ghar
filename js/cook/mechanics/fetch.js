@@ -26,14 +26,13 @@
     const out = new Set();
     const dish = ctx.order && ctx.order.dishes && ctx.order.dishes[ctx.dishAt || 0];
     const def = dish && Cook.data.recipes[dish.recipe];
-    const words = Cook.data.words;
     const walk = (v, opt) => {
       if (v == null) return;
       if (typeof v === "string") {
         if (v[0] === "$") {
           const slot = ((def && def.slots) || {})[v.slice(1)] || {};
           [].concat(slot.pick || [], (slot.else || {}).pick || []).forEach((x) => walk(x, true));
-        } else if (opt && words[v]) out.add(v);
+        } else if (opt && Cook.item(v)) out.add(v);
         return;
       }
       if (Array.isArray(v)) return v.forEach((x) => walk(x, opt));
@@ -41,7 +40,7 @@
     };
     if (def) walk(def.need, false);
     const L = (ctx.ladders || [])[ctx.dishAt || 0];
-    if (L && Cook.Order) Cook.Order.rows(L, { all: true }).forEach((r) => r.no && r.ids.forEach((id) => words[id] && out.add(id)));
+    if (L && Cook.Order) Cook.Order.rows(L, { all: true }).forEach((r) => r.no && r.ids.forEach((id) => Cook.item(id) && out.add(id)));
     return [...out];
   }
   /** Every word in the current order (pass me in the pantry never asks for one). */
@@ -116,8 +115,9 @@
         const [fx, fy, fw, fh] = T.front;
         S.track(S.add.image(S.bg.x, S.bg.y, S.bg.texture.key).setOrigin(0).setScale(S.bg.scaleX, S.bg.scaleY).setCrop(fx, fy, fw, fh).setDepth(D.front + 3));
       }
-      // Nani's list: "Muke atto de." (give me: the family's words), then "Ne khun."
-      const ask = (id, first) => Lang.line(first && Cook.data.lines.give ? "give" : Lang.orderFrame(1), Lang.phrase([id]));
+      // Nani's list (PAN-02, step 4d): every thing its own full sentence, "Muke atto de. Muke khun de." (give me: the
+      // family's words); one sentence with a list waits for Mum's list rule (the engine's gap list: Fetch, L29)
+      const ask = (id) => Lang.line("give", Lang.phrase([id]));
       if (ctx.guided && askLines) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
       const remaining = need.slice();
       const fetched = new Set();

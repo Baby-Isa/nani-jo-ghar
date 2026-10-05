@@ -46,14 +46,8 @@
   const Mech = Cook.Mech;
   const TAU = Math.PI * 2;
 
-  // the stir station's own lines (data, not code)
-  Cook.onLoad.push(async (data) => {
-    const extra = await fetch(Cook.v("data/stations/stir.json"))
-      .then((r) => r.json())
-      .catch(() => null);
-    if (!extra) return;
-    Object.keys(extra.lines || {}).forEach((key) => (data.lines[key] = data.lines[key] || extra.lines[key]));
-  });
+  // the stir station's own line ("Hane {x}!", data/stations/stir.json) is the engine's Now meaning (data/cook.json
+  // meanings["stir-now"], step 4d); the station file stays a source the engine's importer reads
 
   /** The top-down pot as a texture (so it can be tinted "special"). */
   function potTexture(S, R) {

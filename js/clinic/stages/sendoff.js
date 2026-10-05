@@ -106,7 +106,7 @@
           choices: r.options,
           expected: "howfeel",
           word: (id) => S.line(env, id),
-          caption: Kit.plain(S.line(env, "cap-askthem")),
+          caption: Kit.plain(S.line(env, "cap-askthem")).replace(/[.!?]$/, ""), // a caption, no full stop
           character: { act: async (id) => fig.react(id === "howfeel" ? "relief" : "idle") },
           accept: (id) => {
             res.judge(r, id === "howfeel");
@@ -289,7 +289,7 @@
           choices: r.options,
           expected: plan.goodbye,
           word: (id) => PL().goodbye(data, id),
-          caption: Kit.plain(S.line(env, "cap-sayit")),
+          caption: Kit.plain(S.line(env, "cap-sayit")).replace(/[.!?]$/, ""), // a caption, no full stop
           character: { act: async (id) => { fig.pose("wave"); await S.say(PL().goodbye(data, id), "patient"); } },
           accept: (id) => {
             res.judge(r, id === plan.goodbye);

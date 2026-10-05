@@ -763,6 +763,21 @@
    "en": "This is for {x}.",
    "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B39; A3 §8): Hi Nana lai ai"
   },
+  "chop-these": {
+   "e": "Chop these",
+   "record": true,
+   "_about": "Nani's chop card headline at the daar station (step 4d: was typed in js/cook/stations/daar.js); to record with Mum"
+  },
+  "go-fry": {
+   "e": "Fry them",
+   "record": true,
+   "_about": "The samosa station's button from folding to frying (step 4d: was data/stations/samosa.json phases.go); to record with Mum"
+  },
+  "go-grill": {
+   "e": "To the grill",
+   "record": true,
+   "_about": "The sekelo station's button from threading to the grill (step 4d: was data/stations/mishkaki-grill.json phases.go); to record with Mum"
+  },
   "pocket": {
    "e": "I'll give you pocket money for helping. Get it all right and be quick, and you get more!"
   },
@@ -955,6 +970,41 @@
   "no": "no",
   "then_word": "lnk-nepoi"
  },
+ "meanings": {
+  "_about": "Step 4d (decision 42): which language-engine meaning each of Cook's frame keys asks for (data/lang/abstract.json; the same map as build/lang/hand/cook-map.mjs FRAMES). \"$x\" is the thing the game fills in. The engine builds the words, their agreement and the clip plan (js/cook/words.js); a frame the engine has no rule for comes back as its gap (grey-italic English, flagged to record). Fixed lines need no row here: the engine knows them by the alias cook.line.<key>. `lines` and `grammar` above are no longer read by the game: they stay as a source the engine's importers read (build/lang/import_cook.mjs).",
+  "need": {"fn": "Need", "who": "p1", "thing": "$x"},
+  "and": {"fn": "And", "x": "$x"},
+  "give": {"fn": "GiveMe", "x": "$x"},
+  "no": {"fn": "NoItem", "x": "$x"},
+  "only": {"fn": "Only", "x": "$x"},
+  "then": {"fn": "Then", "x": "$x"},
+  "first": {"fn": "First", "x": "$x"},
+  "now": {"fn": "Now", "x": "$x"},
+  "stir-now": {"fn": "Now", "x": "$x"},
+  "for": {"fn": "For", "x": "$x"},
+  "forwho": {"fn": "ForWho", "x": "$x"},
+  "waari": {"fn": "MixedIn", "head": "cook-chai", "x": "$x"},
+  "need_waari": {"fn": "Need", "who": "p1", "thing": {"fn": "MixedIn", "head": "cook-chai", "x": "$x"}},
+  "sugar": {"fn": "WantIn", "container": "cook-chai", "thing": "$x"},
+  "lift": {"fn": "Lift", "x": "$x"},
+  "leave": {"fn": "Leave", "x": "$x"},
+  "canyou": {"fn": "CanYouMake", "who": "p2", "thing": "$x"},
+  "howareyou": {"fn": "HowAreYou", "who": "p2"},
+  "fine": {"fn": "ImFine"},
+  "with": {"fn": "WithFood", "x": "$x"},
+  "and_join": {"fn": "AndKind", "x": "$x"},
+  "times": {"fn": "Times", "n": "$x"},
+  "guide-add": {"fn": "DoIt", "verb": "v.put-in"},
+  "guide-knead": {"fn": "Command", "verb": "v.knead", "obj": "cook-atto"},
+  "guide-firai": {"fn": "Command", "verb": "v.turn"},
+  "guide-fold": {"fn": "Command", "verb": "v.fold", "obj": "ph-samosa"},
+  "guide-fry": {"fn": "Command", "verb": "v.fry"},
+  "guide-fill": {"fn": "Command", "verb": "v.fill"},
+  "guide-fire": {"fn": "Command", "verb": "v.light", "obj": "n.stove"},
+  "headline-pantry": {"fn": "BringMeTheseForX", "x": "$x"},
+  "thanks": {"fn": "Exclaim", "x": "phrase.thank-you-the-english-words-the-family-says-them"},
+  "bye": {"fn": "Exclaim", "x": "phrase.goodbye-khuda-hafiz"}
+ },
  "verdicts": {
   "_about": "Words shown over the action after a timing or a pour (English UI). Mechanics name them by key.",
   "perfect": "Perfect!",
@@ -1114,6 +1164,8 @@
    "free": false,
    "how": "Listen to what Nani needs, then tap each one into the basket.",
    "headline": {
+    "line": "headline-pantry",
+    "line_plain": "headline-pantry-plain",
     "en": "Bring me these for {dish}",
     "en_plain": "Bring me these",
     "record": true,
@@ -1200,7 +1252,8 @@
     },
     {
      "forEach": "$rest",
-     "frame": "and",
+     "frame": "give",
+     "_frame": "PAN-02 (step 4d): every thing Nani asks for is its own full sentence (Muke atto de.), never the verbless Ne atto.; one sentence with a list waits for Mum's list rule (gap list: Fetch, L29)",
      "x": [
       "$it"
      ]

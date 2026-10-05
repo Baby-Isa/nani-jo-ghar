@@ -83,7 +83,7 @@
       const sliced = {};
       let wrong = 0;
       const texFor = (id) => {
-        const w = Cook.data.words[id] || {};
+        const w = Cook.item(id) || {};
         const painted = Cook.Art.sprite(S, `${id}.whole`); // data.art.sprites (loaded by the station)
         if (painted) return painted;
         if (w.image && S.textures.exists(w.image)) return w.image;
@@ -118,7 +118,7 @@
         const others = ids.filter((x) => !tg.includes(x));
         const rest = Cook.shuffle(pool.filter((x) => !L.includes(x) && !others.includes(x)).concat(no));
         const nDecoys = Math.max(k.decoys, tg.length);
-        const decoys = [...new Set(L.concat(Cook.shuffle(others), rest))].filter((x) => !tg.includes(x) && Cook.data.words[x]).slice(0, nDecoys);
+        const decoys = [...new Set(L.concat(Cook.shuffle(others), rest))].filter((x) => !tg.includes(x) && Cook.item(x)).slice(0, nDecoys);
         const kinds = tg.concat(decoys);
         // every kind once per cycle, so a wanted one never flies more often than a decoy
         const cycles = Math.max(...tg.map((t) => want[t])) + k.spare;

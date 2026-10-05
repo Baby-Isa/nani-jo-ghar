@@ -252,7 +252,7 @@
           choices: whos,
           expected: target,
           word,
-          caption: Kit.plain(S.line(env, "cap-callthem")),
+          caption: Kit.plain(S.line(env, "cap-callthem")).replace(/[.!?]$/, ""), // a caption, no full stop
           character: {
             act: async (k) => {
               const s = seats.find((x) => x.b.who === k && !x.gone);

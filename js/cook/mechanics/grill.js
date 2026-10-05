@@ -258,7 +258,7 @@
     const c = cv(PIECE, PIECE);
     const ctx = c.getContext("2d");
     const art = (SK.cfg().art || {})[id] || {};
-    const w = Cook.data.words[id] || {};
+    const w = Cook.item(id) || {};
     const col = art.color || (w.piece || w.heap || {}).color || "#bbbbbb";
     const style = art.style || "chunk";
     const rand = rng(7 + id.length * 31 + id.charCodeAt(id.length - 1));

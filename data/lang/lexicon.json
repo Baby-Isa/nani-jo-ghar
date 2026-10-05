@@ -12056,6 +12056,23 @@
    }
   },
   {
+   "id": "phrase.bring-me-these",
+   "pos": "Phrase",
+   "gloss": "Bring me these",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.headline-pantry-plain: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+   ],
+   "aliases": [
+    "cook.line.headline-pantry-plain"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.bring-the-big-cup",
    "pos": "Phrase",
    "lemma": "wadho cup khanech",
@@ -12437,6 +12454,26 @@
     "cook.line.guide-chop",
     "cook.guide.chop",
     "cook.guide.daar:chop"
+   ]
+  },
+  {
+   "id": "phrase.chop-these",
+   "pos": "Phrase",
+   "gloss": "Chop these",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.chop-these: no source given"
+   ],
+   "aliases": [
+    "cook.line.chop-these"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "Nani's chop card headline at the daar station (step 4d: was typed in js/cook/stations/daar.js); to record with Mum"
    ]
   },
   {
@@ -13199,6 +13236,26 @@
    "status": "draft",
    "src": [
     "grammar-notes §38 I14 (⚠; inke tarelo kari chad)"
+   ]
+  },
+  {
+   "id": "phrase.fry-them",
+   "pos": "Phrase",
+   "gloss": "Fry them",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.go-fry: no source given"
+   ],
+   "aliases": [
+    "cook.line.go-fry"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "The samosa station's button from folding to frying (step 4d: was data/stations/samosa.json phases.go); to record with Mum"
    ]
   },
   {
@@ -18676,6 +18733,26 @@
    },
    "notes": [
     "English placeholder (to record): the diagnosis's button to the pharmacy counter; moved out of js/clinic/stages/diagnosis.js (G26, decision 36)"
+   ]
+  },
+  {
+   "id": "phrase.to-the-grill",
+   "pos": "Phrase",
+   "gloss": "To the grill",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.go-grill: no source given"
+   ],
+   "aliases": [
+    "cook.line.go-grill"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "The sekelo station's button from threading to the grill (step 4d: was data/stations/mishkaki-grill.json phases.go); to record with Mum"
    ]
   },
   {

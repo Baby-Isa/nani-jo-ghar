@@ -42,7 +42,7 @@
         onLand: (key, obj) => flyIn(key, obj),
       });
       await flyIn(r.key, items[r.key]);
-      if (!z.guided && Cook.data.words[r.key]) Cook.markRight(r.key);
+      if (!z.guided && Lang.known(r.key)) Cook.markRight(r.key);
       z.progress({ added: r.key });
       return r.key;
     },

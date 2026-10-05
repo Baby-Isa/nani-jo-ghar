@@ -24,6 +24,13 @@
 (function (global) {
   const Cook = global.Cook;
   const Lang = (Cook.Lang = {});
+  // moved here from js/cook/core.js in step 4d: only the parked pages read Cook's own word table
+  Cook.word = (id) => Cook.data.words[id];
+  Cook.kutchi = (id) => (Cook.data.words[id] || {}).kutchi || id;
+  Cook.english = (id) => (Cook.data.words[id] || {}).english || id;
+  // number words: data.grammar.numbers maps 1 -> "num-01"
+  Cook.numId = (n) => (((Cook.data && Cook.data.grammar) || {}).numbers || {})[n] || `num-0${n}`;
+  Cook.numWord = (n) => Cook.kutchi(Cook.numId(n));
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   Cook.isPlaceholder = (id) => !(Cook.data.words[id] || {}).kutchi;

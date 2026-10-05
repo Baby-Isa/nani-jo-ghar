@@ -860,7 +860,7 @@
     let c = null;
     if (type === "bg") c = worktop(1600, 900, { hob: arg === "hob", wood: arg === "wood" });
     else if (type === "bowl") {
-      const w = Cook.data.words[arg];
+      const w = Cook.item(arg);
       const spec = w && w.heap;
       c = bowl(spec, { style: (w && w.bowl) || "ceramic" });
     } else if (type === "vessel") c = vessel(arg);
@@ -883,10 +883,10 @@
       ctx.fillRect(0, 0, 128, 128);
     }
     else if (type === "piece") {
-      const w = Cook.data.words[arg];
+      const w = Cook.item(arg);
       c = piece((w && (w.piece || w.heap)) || { color: "#ccc", kind: "balls" });
     } else if (type === "layer") {
-      const w = Cook.data.words[arg];
+      const w = Cook.item(arg);
       c = layer((w && (w.layer || w.heap)) || { color: "#ccc", kind: "balls" });
     }
     cache[key] = c;
@@ -923,7 +923,7 @@
    * else a prop or a drawn bowl. state null: never a sprite.
    */
   Art.wordTex = function (scene, id, state = "bowl") {
-    const w = Cook.data.words[id];
+    const w = Cook.item(id);
     if (state === "pieces") return katori(scene, id) || Art.tex(scene, `bowl:${id}`);
     if (state && scene.viewName === "pantry") {
       const k = Art.sprite(scene, `${id}.shelf`);
@@ -940,7 +940,7 @@
   };
   /** The same for HTML (the "pass me" tray, over a station): the bowl sprite, a prop, a drawn bowl. */
   Art.wordUrl = function (id) {
-    const w = Cook.data.words[id];
+    const w = Cook.item(id);
     const u = refUrl(`${id}.bowl`);
     if (u) return u;
     if (w && w.image) return Cook.v(`assets/cook/props/${w.image}.webp`);

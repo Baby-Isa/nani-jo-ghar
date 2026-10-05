@@ -8,20 +8,19 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (5 Oct 2026, 15:00 UK):** handover from the 5 Oct orchestrator chat. All work is on branch `ccr-fcd9dddd-wnywzc`; `main` is still the 1 Oct build.
-- **Done today:** C1 clinic polish (`build/reports/c1-clinic-polish.md`), G1 gate fixes (`g1-gate-fixes.md`), Mum's 5 Oct recordings processed (`mum-2026-10-05.md`: Round 4, grammar §38–55, 168 clips not yet ear-checked), W1 Mum's words into Cook's guide box and the clinic data (`w1-words.md`), the Keine et al. paper + Gemini excerpts analysed (`docs/language/sources/kutchi-findings-summary-2026-10-05.md`, a 67-item yes/no list for Mum in `docs/language/mum-questions/`). Decisions 28–31 (and 32 when W2 lands: red is ***laal***).
-- **Done 15:50:** the gate (`step3-gate.md`: 493 pages end; 17 new Cook findings), W2 (`w2-words.md`), A1 (`a1-clinic-art.md`); all three sessions closed.
-- **Done 17:24:** F1 (`f1-gate-findings.md`, \$2.87; 0 new findings; its shots not committed, so the orchestrator's own review covers them). **Running:** C3, Opus high, `session_01SWTAcuq152o9XrXTKptA8j`, stop 22:30 → `c3-cook-ready.md`. A2, Opus high, `session_01HpATZUqu38HaMT1EfVzjpb`, stop 20:00 → `a2-clinic-art.md` (Zafar said go 16:40). 4a done 17:21 (`step4a-engine-core.md`, 33 tests pass). 4b, Sonnet high, `session_01AuehJXVk7GdR1KnKKXbxV9`, stop 00:30 → `step4b-engine-fill.md` (decision 40 scope). Chrome art run: part B 35 of 37 on `main` (C2, B1 to come), then parts C and D.
-- **Decision 33:** Zafar plays only after all the art is finished and wired, the full checks pass, and it is live on `main`. No play tonight.
+**Where things stand (5 Oct 2026, 20:45 UK):** all work is on branch `ccr-fcd9dddd-wnywzc`; `main` is still the 1 Oct build plus art uploads. Decisions 28–46 were made today.
+- **Done today** (reports in `build/reports/`): C1, G1, Mum's 5 Oct round, W1, W2, the step 3 gate, F1, A1, A2 (the girl's clinic art, all wired), C3 (Cook ready to play), 4a and 4b (the language engine built and filled), 4e (the clinic on the engine), T1–T3 (18 scripts, 8 project skills), the Fable docs audit (`docs/process/audits/2026-10-05-docs-audit.md`).
+- **Art:** paused after part B (decision 43); 76 of 115 on `main`; redo list in `docs/design-language/art-plans/clinic-heal-redo-list.yaml`.
+- **Zafar plays** only once it is all live on `main` (decision 33).
 
-**Next steps, in order (decisions 33-44):**
-1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
-2. Running (5 Oct evening): C3 Cook ready to play (`session_01SWTAcuq152o9XrXTKptA8j`, proof run), 4e the clinic onto the engine (`session_01EvLeEZ6dW2FsyiCv1Dh463`, Opus high, stop 03:00), T1 review/check scripts (`session_013vbisvEXZuNrniTVPi3Lx1`, Sonnet high), T2 art scripts + faster Chrome runner (`session_01RZJ971PVcSi1E5G6sZRZ1r`, Sonnet high), T3 ops scripts + project skills (`session_01Q2rYgaJ2ff3h8YCiix1CyE`, Opus medium). T1 done (`t1-review-tools.md`). Done today: F1, A2, 4a, 4b (all reports in `build/reports/`).
-3. When C3 ends: launch 4d, Cook onto the engine (Opus high, ~$15-20; 4e owns `js/core/lang/index.js`, 4d builds on it).
-4. When T1 or T2 ends: launch T3 (brief generator, Mum-round pipeline, voice-note feedback pipeline, publish, check-in summary, Mum question sheets, and project skills wrapping all tools; Opus medium).
-5. When 4d and 4e are done: orchestrator review (T1's touched mapper + screenshot diff if ready; changed screens, full matrix, flaws first, regression rows), bump, publish to `main`, Pages check, send Zafar the link and what to play.
-6. Zafar plays Cook and the clinic → full report + regression rows → fixes; the clash list as one sheet for Zafar and Mum; then the art redo list and part C in one faster run (decision 43); then the docs rewrite closes the chapter.
-7. Open: Mum's 168 clips to ear-check in `lab/family-audio.html`; the yes/no list for Mum; Round 5.
+**Next steps, in order (decisions 33-45):**
+1. Re-arm a 30-35 minute `send_later` check-in; `node build/tools/ops/checkin.mjs --log`; one line to Zafar.
+2. Running (5 Oct night, all stop by 03:00): 4e the clinic onto the engine (`session_01EvLeEZ6dW2FsyiCv1Dh463`), 4d Cook onto the engine (`session_01FEBF4MPUvkRBi7NJD9fJdC`, auto), R7 every leftover outside Cook/clinic (`session_01N7s9C8VqmN22RLcwwGzBB4`, auto). Done today: F1, A2, C3, 4a, 4b, T1, T2, T3 (reports in `build/reports/`).
+3. When 4d ends: launch C4, Cook's stations mounted through the shared host (Opus high, auto): start/stop in a given element, teardown, globals into modules, Cook's own title/days/shop onto the shell if feasible.
+4. When 4d, 4e, R7 and C4 are done: the orchestrator's `/review` (touched mapper → regression rows → sandbox full matrix → shotdiff, flaws first), then `/publish`, Pages check, send Zafar the link and what to play.
+5. Zafar plays → `/feedback` → fixes; clash list sheet for Zafar and Mum (`mumsheet.mjs`); the art redo list + part C in one faster run (`/art-run`; write the W11 standing pose prompt first).
+6. The docs rewrite (Fable reviews) closes the chapter.
+7. Open: Mum's 168 clips to ear-check; Round 5/6.
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first) and only the rulebook sections for the work at hand (§2 sessions, §3 quality). Work on branch `ccr-fcd9dddd-wnywzc`. Check the running sessions listed there, give me a one-paragraph update, then carry on with "Next steps" (check-ins, your look, then the play link). Tell me before launching anything new.
