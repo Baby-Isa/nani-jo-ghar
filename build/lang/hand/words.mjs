@@ -373,6 +373,14 @@ export function apply(S) {
   w("Phrase", "ki aiye", "how are you? (informal: tu ki aiye without the tu)", [`${GN} §30 K4 (⚠ the sheet had Ki ai?; Mum and Zafar both said ki aiye)`, `${GN} §21 (to anyone, informally: ki ai?)`], { d: true });
   w("Phrase", "ki ai", "how are you? (casual)", [`${GN} §21 (to anyone, informally: ki ai?)`]);
 
+  noun("kesar", "saffron", [`${GN} §6 (kesar waari chai: chai with saffron)`], { ask: { gender: ["new"] }, par: false, f: { "*": "kesar" } });
+  noun("bhajiya", "bhajiya (a fried snack)", [`${GN} §38 I14 (samosa tar, bhajiya tar: ⚠)`], { d: true, ask: { gender: ["new"] }, par: false, f: { "*": "bhajiya" } });
+  noun("chando", "drops (not sprinkle)", [`${GN} §38 I17 (chando is drops, not sprinkle)`], { ask: { gender: ["new"] }, par: false, f: { "*": "chando" } });
+  w("V", "dhor", "spill", [`${GN} §38 I1 (Zafar offered dhor for pour: Mum said dhor is closer to spill)`], { d: true, f: { "imp.informal": { t: "dhor", src: `${GN} §38 I1 (Mum: closer to spill)` } } });
+  w("V", "mix", "mix (the English word: mix kari chad)", [`${GN} §38 I13 (people also say mix kari chad with the English word)`], { f: { "-": "mix" } });
+  w("Phrase", "mix kari chad", "mix it (with the English word mix)", [`${GN} §38 I13`]);
+  w("Phrase", "gadi ke ubhi rakh", "stop the car (keep it standing)", [`${GN} §25 B19 ('stop' is the English stop, or gadi ke ubhi rakh)`]);
+
   /* ---------------- more words the fixed expressions are made of ---------------- */
   noun("table", "table (the English word)", [`${GN} §35 C6 (hakro table, ba table: a he-word that doesn't change)`, `${GN} §15 (cup table je mathe ai)`], { g: "he", par: "noun.invariant" });
   noun("watu", "chat, talk", [`${GN} §12 (watu na kar: don't chat)`], { ask: { gender: ["new"] } });

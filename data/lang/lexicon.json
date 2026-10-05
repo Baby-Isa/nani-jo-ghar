@@ -567,6 +567,12 @@
     "num-02",
     "n2"
    ],
+   "open": [
+    {
+     "q": "Whisper wrote 'two' as bha in the first notes (muke bha kursi khapanti, §1); Zafar's spelling is ba, voiced ber. Same word, three spellings (ba, bha, ber).",
+     "src": "grammar-notes §1, §3, §35"
+    }
+   ],
    "history": [
     {
      "date": "2026-10-05",
@@ -1064,6 +1070,25 @@
    ],
    "ask": {
     "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.bhajiya",
+   "pos": "N",
+   "gender": null,
+   "lemma": "bhajiya",
+   "gloss": "bhajiya (a fried snack)",
+   "forms": {
+    "*": "bhajiya"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §38 I14 (samosa tar, bhajiya tar: ⚠)"
+   ],
+   "ask": {
+    "gender": [
      "new"
     ]
    }
@@ -1836,6 +1861,15 @@
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 4:57)"
+   ],
+   "open": [
+    {
+     "q": "The Swahili word for chicken (Whisper heard kukro; Swahili kuku?) and which one Nani says in the game.",
+     "ask": [
+      "I23"
+     ],
+     "src": "grammar-notes §38 I23, For Mum next time 2"
+    }
    ]
   },
   {
@@ -2792,9 +2826,14 @@
    "id": "n.drops",
    "pos": "N",
    "gender": null,
-   "gloss": "drops",
-   "status": "to-record",
+   "lemma": "chando",
+   "gloss": "drops (not sprinkle)",
+   "forms": {
+    "*": "chando"
+   },
+   "status": "confirmed",
    "src": [
+    "grammar-notes §38 I17 (chando is drops, not sprinkle)",
     "data/clinic.json items.drops: the pharmacy tray's placeholder (English, to record)",
     "data/clinic/lang.json words.cl-drops: English placeholder (to record): a word the clinic's lines use with no Kutchi yet",
     "data/clinic/heal/ear.json words.w-drops: no source given",
@@ -2807,7 +2846,7 @@
     "drops"
    ],
    "ask": {
-    "word": [
+    "gender": [
      "new"
     ]
    }
@@ -4071,6 +4110,9 @@
    "aliases": [
     "body-knee",
     "clinic.pipeline.part.knee"
+   ],
+   "notes": [
+    "gutanyu is 'kneeling' (§35 C11), not the plural."
    ]
   },
   {
@@ -5485,6 +5527,25 @@
    ],
    "ask": {
     "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.saffron",
+   "pos": "N",
+   "gender": null,
+   "lemma": "kesar",
+   "gloss": "saffron",
+   "forms": {
+    "*": "kesar"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §6 (kesar waari chai: chai with saffron)"
+   ],
+   "ask": {
+    "gender": [
      "new"
     ]
    }
@@ -8800,6 +8861,13 @@
     "pres.he.sg": {
      "t": "ukreto",
      "src": "grammar-notes §25 B24 (ukreto: it's boiling)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -8825,6 +8893,13 @@
      "t": "khanechi",
      "status": "draft",
      "src": "grammar-notes §33 S1 (khanechi dinde: ⚠)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -8853,6 +8928,13 @@
     "imp.informal": {
      "t": "khanij",
      "src": "grammar-notes §37.8"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -8895,6 +8977,13 @@
     "imp.informal": {
      "t": "ginech",
      "src": "grammar-notes §43"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -8905,7 +8994,8 @@
    ],
    "notes": [
     "Spelling confirmed by Zafar 5 Oct; the meaning (buy or fetch) is ⚠. gin (laal gin) and ginje (laal na ginje) were heard too.",
-    "wadho khan, wadho wapar, wadho ginech (take / use / buy the big one)"
+    "wadho khan, wadho wapar, wadho ginech (take / use / buy the big one)",
+    "Also heard: gin (laal gin: buy the red one) and ginje (laal na ginje: don't buy the red one), both ⚠ (§44 C43)."
    ],
    "open": [
     {
@@ -9015,6 +9105,13 @@
     "conj": {
      "t": "kapi",
      "src": "grammar-notes §38 I11 (kapi chad: spelling confirmed by Zafar 5 Oct)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9023,7 +9120,8 @@
     "lexicon.md §6.1 (I1-I35 1:48–1:56)"
    ],
    "notes": [
-    "chop = nindha nindha kap (cut it small)"
+    "chop = nindha nindha kap (cut it small)",
+    "'kat kat kat' is Mum's sound for the action of chopping, not a word (§38 I10)."
    ]
   },
   {
@@ -9099,6 +9197,13 @@
     "conj": {
      "t": "khai",
      "src": "grammar-notes §20 (khai vyo: ate)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9132,6 +9237,13 @@
     "conj": {
      "t": "bhari",
      "src": "grammar-notes §38 I16"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9187,6 +9299,13 @@
     "imp.informal": {
      "t": "waar",
      "src": "grammar-notes §38 I15"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9207,6 +9326,13 @@
     "imp.informal": {
      "t": "tar",
      "src": "grammar-notes §38 I14"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9247,6 +9373,13 @@
      "t": "dos",
      "status": "draft",
      "src": "grammar-notes §32 S8 (… kar dos: a boy says it; heard)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9421,6 +9554,13 @@
     "imp.informal": {
      "t": "gund",
      "src": "grammar-notes §38 I6"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9445,6 +9585,13 @@
     "conj": {
      "t": "chadi",
      "src": "grammar-notes §25 B16 (inke chadi de: leave it be)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9467,6 +9614,13 @@
      "t": "winjanta",
      "status": "draft",
      "src": "grammar-notes §52 (pa bare winjanta: we are going out: ⚠ spelling)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9486,6 +9640,13 @@
     "imp.informal": {
      "t": "bar",
      "src": "grammar-notes §39 I33"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9516,6 +9677,13 @@
     "imp.informal": {
      "t": "nar",
      "src": "grammar-notes §20"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9540,6 +9708,13 @@
     "conj": {
      "t": "banai",
      "src": "grammar-notes §27 B40 (banai dinda)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9590,6 +9765,19 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "v.mix",
+   "pos": "V",
+   "lemma": "mix",
+   "gloss": "mix (the English word: mix kari chad)",
+   "forms": {
+    "-": "mix"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §38 I13 (people also say mix kari chad with the English word)"
+   ]
   },
   {
    "id": "v.open",
@@ -9668,6 +9856,13 @@
     "imp.informal": {
      "t": "dabai",
      "src": "grammar-notes §38 I9"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9707,6 +9902,13 @@
      "t": "rakhi",
      "status": "draft",
      "src": "grammar-notes §38 I18 (⚠)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9740,6 +9942,13 @@
     "conj": {
      "t": "wiji",
      "src": "grammar-notes §38 I4 (wiji chad); spelling confirmed by Zafar 5 Oct"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9792,6 +10001,13 @@
     "imp.informal": {
      "t": "bhaj",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9822,6 +10038,13 @@
     "imp.informal": {
      "t": "we",
      "src": "grammar-notes §16"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9855,11 +10078,41 @@
     "imp.informal": {
      "t": "bol",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
    "src": [
     "grammar-notes §12 (bol na: don't speak)"
+   ]
+  },
+  {
+   "id": "v.spill",
+   "pos": "V",
+   "lemma": "dhor",
+   "gloss": "spill",
+   "forms": {
+    "imp.informal": {
+     "t": "dhor",
+     "src": "grammar-notes §38 I1 (Mum: closer to spill)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §38 I1 (Zafar offered dhor for pour: Mum said dhor is closer to spill)"
    ]
   },
   {
@@ -9974,6 +10227,13 @@
     "conj": {
      "t": "khani",
      "src": "grammar-notes §20 (Simba khani vyo: Simba took it)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10012,6 +10272,13 @@
     "imp.informal": {
      "t": "khanigin",
      "src": "grammar-notes §9"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -10062,6 +10329,13 @@
     "conj": {
      "t": "kadhi",
      "src": "grammar-notes §38 I5 (kadhi chad); spelling confirmed by Zafar 5 Oct"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10118,6 +10392,13 @@
      "t": "chakha",
      "status": "draft",
      "src": "grammar-notes §27 B46 (Khobar, aau chakha: I'll taste it)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10178,6 +10459,13 @@
     "imp.informal": {
      "t": "ad",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10198,6 +10486,13 @@
     "conj": {
      "t": "firai",
      "src": "grammar-notes §38 I8 (firai chad)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10236,6 +10531,13 @@
     "imp.informal": {
      "t": "wapur",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10271,6 +10573,13 @@
     "imp.informal": {
      "t": "khobar",
      "src": "grammar-notes §27 B44"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -10294,6 +10603,13 @@
     "imp.informal": {
      "t": "hal",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10359,6 +10675,13 @@
     "imp.informal": {
      "t": "dho",
      "src": "grammar-notes §38 I20"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -10981,7 +11304,7 @@
    ]
   },
   {
-   "id": "conj.word",
+   "id": "conj.or",
    "pos": "Conj",
    "lemma": "ke",
    "gloss": "or",
@@ -11942,7 +12265,7 @@
      "cell": "he.sg.dir"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -11966,7 +12289,7 @@
      "cell": "sg.dir"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -11981,7 +12304,7 @@
      "cell": "-"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -14683,6 +15006,30 @@
    }
   },
   {
+   "id": "phrase.mix-it-with-the-english-word-mix",
+   "pos": "Phrase",
+   "lemma": "mix kari chad",
+   "gloss": "mix it (with the English word mix)",
+   "parts": [
+    {
+     "lex": "v.mix",
+     "cell": "-"
+    },
+    {
+     "lex": "a.black",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "v.leave",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §38 I13"
+   ]
+  },
+  {
    "id": "phrase.mix-put-it-together",
    "pos": "Phrase",
    "lemma": "bego kari chad",
@@ -15802,7 +16149,7 @@
      "cell": "fut.p1"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -16027,6 +16374,22 @@
    ],
    "notes": [
     "stand-in; Mum to find the real word"
+   ]
+  },
+  {
+   "id": "phrase.stop-the-car-keep-it-standing",
+   "pos": "Phrase",
+   "lemma": "gadi ke ubhi rakh",
+   "gloss": "stop the car (keep it standing)",
+   "forms": {
+    "-": "gadi ke ubhi rakh"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §25 B19 ('stop' is the English stop, or gadi ke ubhi rakh)"
+   ],
+   "notes": [
+    "not analysed into words yet: ubhi is not in the lexicon (build/lang/phrases.mjs)"
    ]
   },
   {
@@ -16366,7 +16729,7 @@
      "cell": "he.pl.dir"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {

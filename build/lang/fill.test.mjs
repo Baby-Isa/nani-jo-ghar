@@ -134,6 +134,10 @@ const GOLDEN = [
   [{ fn: "In", x: { fn: "PossPron", owner: "p1", thing: "n.cup" } }, {}, "munje cup me", "§55 C79", "munje-cup-me"],
   [{ fn: "OnShort", x: { fn: "PossPron", owner: "p2", thing: "n.mango" } }, {}, "toje ambe mathe", "§55 C79", "toje-ambe-mathe"],
   [{ fn: "PossPron", owner: "p2resp", thing: "n.mango" }, {}, "anjo ambo", "§54 C74"],
+  [{ fn: "PutAt", anchor: "n.plate", rel: "post.in-front-of" }, {}, "Saani je agiya rakh!", "§16 (saani je agiya rakh)"],
+  [{ fn: "Or", a: { fn: "Point", which: "dem.this", x: "n.mango" }, b: { fn: "Point", which: "dem.this", x: "n.chapati" } }, {}, "hi ambo ke hi maani", "§9"],
+  [{ fn: "Call", x: item("n.boy") }, {}, "E chokro!", "§36 C21 (⚠)"],
+  [{ fn: "Call", x: "pn.nana" }, {}, "Nana!", "§36 C21"],
   [{ fn: "Place", anchor: { fn: "Of", owner: "pn.nani", thing: "n.mango" }, rel: "post.on" }, {}, "Nani je ambe je mathe", "§49 C59", "nani-je-ambe-je-mathe"],
   [{ fn: "Place", anchor: { fn: "Of", owner: "pn.nana", thing: "n.cup" }, rel: "post.inside" }, {}, "Nana je cup je andar", "§49 C59 (spelling confirmed 5 Oct)", "nana-je-cup-je-andar"],
   [{ fn: "LocatedAt", thing: "n.cup", anchor: "n.table", rel: "post.on" }, {}, "Cup table je mathe ai.", "§15"],
@@ -213,10 +217,12 @@ test("a rule Mum gave only with one word is a draft for the others (a skewer of 
   assert.ok(ext.drafts.length > 0, "Claude's extension is flagged");
 });
 
-test("a command to an elder is a gap, not the child's form said again (Mum has said only the bare commands)", () => {
+test("a command to an elder is a gap, not the child's form said again (Mum has said only the bare commands); karo and acho are known", () => {
   const r = E.say({ fn: "Command", verb: "v.knead", obj: "cook-atto" }, { register: "polite" });
   assert.equal(r.ok, false);
-  assert.ok(r.gaps.some((g) => g.kind === "rule" && g.id === "Command" && g.ask.includes("C142-C151")));
+  assert.ok(r.gaps.some((g) => g.kind === "form" && g.lex === "v.knead" && g.cell === "imp.polite" && g.ask.includes("C142-C151")));
+  assert.equal(E.say({ fn: "Command", verb: "v.come" }, { register: "polite" }).text, "Acho!");
+  assert.equal(E.say({ fn: "Command", verb: "v.come" }).text, "Ach!");
 });
 
 test("what Mum has not said stays a gap: no guess, an English placeholder 'to record'", () => {

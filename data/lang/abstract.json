@@ -763,6 +763,52 @@
     "on the big mango (the everyday way)"
    ]
   },
+  "Or": {
+   "cat": "NP",
+   "args": {
+    "a": {
+     "type": "NP"
+    },
+    "b": {
+     "type": "NP"
+    }
+   },
+   "en": "{a} or {b}",
+   "elicit": [
+    "this mango or this chapati; the big one or the small one"
+   ]
+  },
+  "PutAt": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP",
+     "optional": true
+    },
+    "anchor": {
+     "type": "NP"
+    },
+    "rel": {
+     "type": "Post"
+    }
+   },
+   "en": "Put {thing} {rel} {anchor}.",
+   "elicit": [
+    "Put the cup in front of the plate."
+   ]
+  },
+  "Call": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x}! (calling out)",
+   "elicit": [
+    "Hey, boy! Nana! Nani!"
+   ]
+  },
   "Place": {
    "cat": "NP",
    "args": {
