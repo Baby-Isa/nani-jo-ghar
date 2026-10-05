@@ -106,13 +106,18 @@
   "_about": "art plan pack clinic-heal-v3: each slot is used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; tip = the nozzle's tip in its own drawn size. Until then the game draws stand-ins.",
   "mouth": {
    "src": "assets/clinic/closeups/{kind}/mouth.webp",
-   "ready": false,
+   "ready": true,
    "box": [
-    -150,
-    -60,
-    1100,
-    620
-   ]
+    -131.3,
+    -44.3,
+    1059.8,
+    706.6
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): M1's upper teeth (centre 770, 312 in the 1536 x 1024 source, about 480 wide) on the game's upper row (centre 400, 171, 330 wide) at 0.69; the ears and plaits fall off screen, the cheeks fill the sides. The drill view stays drawn."
   },
   "decay1": {
    "src": "assets/clinic/heal-v3/decay-1.webp",

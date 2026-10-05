@@ -83,9 +83,12 @@ def key(a, multi=400, exits=(), tol=10, glass=None):
             parts.append(a[:, :6].reshape(-1, 3))
         if "right" not in exits:
             parts.append(a[:, -6:].reshape(-1, 3))
-        bg = np.median(np.concatenate(parts), 0)
+        e = np.concatenate(parts)
     else:
-        bg = bg_of(a)
+        e = np.concatenate([a[:6].reshape(-1, 3), a[-6:].reshape(-1, 3), a[:, :6].reshape(-1, 3), a[:, -6:].reshape(-1, 3)])
+    # the grey is measured on the edge pixels that ARE grey (an edge can carry skin, hair or a collar)
+    g = e[(e.max(1) - e.min(1) < 14) & (e.mean(1) > 90) & (e.mean(1) < 170)]
+    bg = np.median(g if len(g) > 200 else e, 0)
     d = np.abs(a - bg).max(2)
     flat = d < tol
     lab, _ = ndi.label(flat)
@@ -520,9 +523,11 @@ def main():
         d = cl.setdefault(kind, {})
         r = cut_closeup(f"{kind} E", f"{p}-e1-ear-v1.png", ("top", "right", "bottom"), f"{OUT}/closeups/{kind}/ear.webp")
         if r: d["ear"] = r
-        r = cut_closeup(f"{kind} M1", f"{p}-m1-mouth-v1.png", ("left", "right"), f"{OUT}/closeups/{kind}/mouth.webp")
+        # the run framed the girl's M1 and M2 wider than asked (ears and plaits at the sides): the face leaves only
+        # by the top; the games place them so the sides are off screen
+        r = cut_closeup(f"{kind} M1", f"{p}-m1-mouth-v1.png", ("top",), f"{OUT}/closeups/{kind}/mouth.webp")
         if r: d["mouth"] = r
-        r = cut_closeup(f"{kind} M2", f"{p}-m2-tongue-v1.png", ("left", "right"), f"{OUT}/closeups/{kind}/tongue.webp")
+        r = cut_closeup(f"{kind} M2", f"{p}-m2-tongue-v1.png", ("top",), f"{OUT}/closeups/{kind}/tongue.webp")
         if r: d["tongue"] = r
         r = cut_closeup(f"{kind} Y", f"{p}-y1-eyes-v1.png", ("left", "right"), f"{OUT}/closeups/{kind}/eyes.webp",
                         {"sore": (f"{p}-y2-eye-sore-v1.png", (0.0, 1.0)), "closed": (f"{p}-y3-eyes-closed-v1.png", (0.0, 1.0))})
