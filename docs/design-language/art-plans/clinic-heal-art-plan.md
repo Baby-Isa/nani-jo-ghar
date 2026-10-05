@@ -920,53 +920,24 @@ Kept images: "kept:X" is the image you kept for prompt X, already committed by y
 The upload page: https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/clinic-heal-v3
 The folder (to check and to resume): https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/clinic-heal-v3
 
-MOVING IMAGES WITHOUT DOWNLOADING (use your JavaScript tool; test both moves on S1 first and log which way worked, then always use that way)
+MOVING IMAGES WITHOUT DOWNLOADING (no Chrome downloads, no file pickers, nothing for Zafar to do)
+Use your cloud workspace and your browser file-upload tool. Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. Test both moves on S1 first and log that they worked.
 
-1. INTO CHATGPT (attaching). In a fresh ChatGPT chat, run this in the page, with the prompt's attachment URLs filled in:
-   (async () => {
-     const urls = [/* the RAW URLs for this prompt */];
-     const dt = new DataTransfer();
-     for (const u of urls) { const r = await fetch(u); if (!r.ok) throw new Error(u + ' ' + r.status);
-       dt.items.add(new File([await r.blob()], u.split('/').pop(), { type: 'image/png' })); }
-     const box = document.querySelector('#prompt-textarea') || document.querySelector('[contenteditable="true"]');
-     const input = [...document.querySelectorAll('input[type=file]')].find(i => !i.accept || /image|\*/.test(i.accept));
-     if (input) { input.files = dt.files; input.dispatchEvent(new Event('change', { bubbles: true })); }
-     else { box.focus(); box.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); }
-     return dt.files.length + ' files';
-   })()
-   Then take a screenshot and check the composer shows exactly that many thumbnails before you paste the prompt text. If the thumbnails don't appear, try the paste route instead of the file input (swap the two branches). If fetch itself is blocked on chatgpt.com, use the clipboard route, one file at a time: open the RAW URL in a new tab, click the image once, run
-     (async () => { const b = await (await fetch(location.href)).blob(); await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]); return 'copied'; })()
-   then switch back to the ChatGPT tab, click in the message box and press Ctrl+V (Cmd+V on a Mac). Repeat per file.
+1. INTO CHATGPT (attaching). Fetch the prompt's RAW URLs into your cloud workspace (with their file names), then in a fresh ChatGPT chat use your file-upload tool to attach exactly those files to the message box. Take a screenshot and check the composer shows exactly that many thumbnails before you paste the prompt text.
 
 2. OUT OF CHATGPT, INTO GITHUB (saving a kept image). Never use ChatGPT's download button.
-   a) Copy the image: in the ChatGPT tab, click the new image once, then run
-      (async () => { const imgs = [...document.querySelectorAll('main img')].filter(i => i.naturalWidth >= 512);
-        const img = imgs[imgs.length - 1]; let b;
-        try { b = await (await fetch(img.src, { credentials: 'include' })).blob(); }
-        catch (e) { return 'FETCH-BLOCKED ' + img.src; }
-        if (b.type !== 'image/png') { const bm = await createImageBitmap(b); const c = new OffscreenCanvas(bm.width, bm.height);
-          c.getContext('2d').drawImage(bm, 0, 0); b = await c.convertToBlob({ type: 'image/png' }); }
-        await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]);
-        return 'copied ' + img.naturalWidth + 'x' + img.naturalHeight; })()
-      Check the size it reports is the full image (1024 or more on its long side), not a thumbnail. Make sure it's the NEW image, not one you attached. If it says FETCH-BLOCKED, open that src URL in a new tab, click the image there and run the clipboard snippet from move 1 in that tab.
-   b) Paste it into GitHub with its save-as name: open the upload page in a tab (keep one tab for it), and run there, with the save-as name filled in:
-      (() => { const name = 'SAVE-AS-NAME.png';
-        document.addEventListener('paste', e => { const f = e.clipboardData && e.clipboardData.files[0]; if (!f) return;
-          e.preventDefault(); e.stopImmediatePropagation();
-          const dt = new DataTransfer(); dt.items.add(new File([f], name, { type: 'image/png' }));
-          const input = document.querySelector('input[type=file]'); input.files = dt.files;
-          input.dispatchEvent(new Event('change', { bubbles: true })); }, { once: true, capture: true });
-        return 'ready for ' + name; })()
-      then click an empty part of the page and press Ctrl+V (Cmd+V on a Mac). Check the file appears in the list with the right name.
-   c) In "Commit changes", put the image's log line (see THE LOG) as the commit message, choose "Commit directly to the main branch", commit, and check the folder page now lists the file. Do this for every kept image straight away, so a later prompt can attach it from RAW and nothing is lost if the run stops.
-   If both ways fail for an image, leave it in its ChatGPT chat, log "NOT SAVED: <chat title>" and carry on; Claude collects those afterwards. Never fall back to downloading.
+   a) Find the new image's address: read the src of the newest large image in the reply (read it from the page, e.g. document.querySelectorAll('main img'), the last one at least 512 px wide; reading an attribute is fine, fetching isn't). Make sure it's the NEW image, not one you attached.
+   b) Fetch that address into your cloud workspace and save it under the prompt's save-as name. Check it's the full image (1024 px or more on its long side), not a thumbnail. If the workspace can't fetch it, open the image full-size in ChatGPT and try its address from there.
+   c) Open the upload page and use your file-upload tool to put that file into the page's file input. Check it appears in the list with the right name.
+   d) In "Commit changes", put the image's log line (see THE LOG) as the commit message, choose "Commit directly to the main branch", commit, and check the folder page now lists the file. Do this for every kept image straight away, so a later prompt can attach it from RAW and nothing is lost if the run stops.
+   If an image can't be saved, leave it in its ChatGPT chat, log "NOT SAVED: <chat title>" and carry on; Claude collects those afterwards. Never fall back to downloading, and never ask Zafar to do it.
 
 APPROVALS
 - Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.
 - Everything else (these six patients, limbs, close-ups, props, rooms) is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log "needs Zafar: likeness" and carry on.
 
 SAFETY RULES (always)
-- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no and use the other route.
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
 - Sign nothing in or out. Delete no chats.
 - Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.
 - Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table.
