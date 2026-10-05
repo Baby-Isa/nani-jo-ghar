@@ -213,6 +213,7 @@ def sharpen2x(img):
 
 # ---------------------------------------------------------------- the patients' wide poses
 
+MIRROR_T1 = {"girl"}
 FIG_H = {"child": 440, "adult": 575}  # the drawn height on the room (1x): the plan says ~410 for a child; 440 measured by overlay so the feet reach the step stool
 FACES = ["happy", "sad", "pain", "hot", "cold"]
 KINDS = {  # kind id in the game -> run-list prefix, age group
@@ -529,10 +530,16 @@ def main():
         if r: d["mouth"] = r
         r = cut_closeup(f"{kind} M2", f"{p}-m2-tongue-v1.png", ("top",), f"{OUT}/closeups/{kind}/tongue.webp")
         if r: d["tongue"] = r
-        r = cut_closeup(f"{kind} Y", f"{p}-y1-eyes-v1.png", ("left", "right"), f"{OUT}/closeups/{kind}/eyes.webp",
+        r = cut_closeup(f"{kind} Y", f"{p}-y1-eyes-v1.png", ("bottom",), f"{OUT}/closeups/{kind}/eyes.webp",
                         {"sore": (f"{p}-y2-eye-sore-v1.png", (0.0, 1.0)), "closed": (f"{p}-y3-eyes-closed-v1.png", (0.0, 1.0))})
         if r: d["eyes"] = r
         r = cut_closeup(f"{kind} T1", f"{p}-t1-eyetest-a-v1.png", ("bottom",), f"{OUT}/closeups/{kind}/eyetest-a.webp")
+        if r and kind in MIRROR_T1:
+            # the girl's T1 came back looking away from the chart: mirrored (her face is symmetric), she looks at it
+            for f in (f"{OUT}/closeups/{kind}/eyetest-a.webp", f"{OUT}/closeups/{kind}/eyetest-a@2x.webp"):
+                Image.open(f).transpose(Image.FLIP_LEFT_RIGHT).save(f, quality=90, method=6)
+            r["mirrored"] = True
+            log(f"  {kind} T1: mirrored (the gaze)")
         if r: d["eyetest-a"] = r
         r = cut_closeup(f"{kind} T2", f"{p}-t2-eyetest-b-v1.png", ("bottom",), f"{OUT}/closeups/{kind}/eyetest-b.webp")
         if r: d["eyetest-b"] = r

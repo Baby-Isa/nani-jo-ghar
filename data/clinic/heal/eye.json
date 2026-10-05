@@ -314,14 +314,24 @@
   "_about": "art plan pack clinic-heal-v3: used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; eye = where the open eye is (the redrop)",
   "eyesSore": {
    "src": "assets/clinic/closeups/{kind}/eyes-sore.webp",
-   "ready": false,
+   "ready": true,
    "box": [
-    -150,
-    -40,
-    1100,
-    620
+    -222.9,
+    -313.0,
+    1244.2,
+    829.4
    ],
-   "_note": "Y2: the sore eye on the viewer's right (the patient's left): the code mirrors it for the other side"
+   "_note": "Y2: the sore eye on the viewer's right (the patient's left): the code mirrors it for the other side",
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): Y2 at 0.81, its eyes' midpoint (769, 695 in the 1536 x 1024 source) on (400, 250), so the face leaves by the bottom too; eyes = where that puts the patient's right and left eye ([right x, left x, y]: the game's drops and dropper follow). The run framed Y1/Y2 wider than asked (redo list). The blink waits for Y3.",
+   "eyes": [
+    218,
+    582,
+    250
+   ]
   },
   "eyesClosed": {
    "src": "assets/clinic/closeups/{kind}/eyes-closed.webp",
@@ -329,7 +339,7 @@
   },
   "testA": {
    "src": "assets/clinic/closeups/{kind}/eyetest-a.webp",
-   "ready": false,
+   "ready": true,
    "box": [
     0,
     0,
@@ -337,13 +347,18 @@
     500
    ],
    "eye": [
-    160,
-    205
-   ]
+    243,
+    194
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): T1, mirrored in the cut so she looks at the chart (the run's picture looked away); slice-fitted into the left panel; eye = her open eye there."
   },
   "testB": {
    "src": "assets/clinic/closeups/{kind}/eyetest-b.webp",
-   "ready": false,
+   "ready": true,
    "box": [
     0,
     0,
@@ -351,9 +366,14 @@
     500
    ],
    "eye": [
-    238,
-    166
-   ]
+    232,
+    161
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): T2 meet-fitted into the left of the scene; eye = her eye there."
   },
   "chartFront": {
    "src": "assets/clinic/heal-v3/eye-chart-front.webp",
@@ -362,6 +382,15 @@
   "chartTurned": {
    "src": "assets/clinic/heal-v3/eye-chart-turned.webp",
    "ready": false
+  },
+  "eyes": {
+   "src": "assets/clinic/closeups/{kind}/eyes.webp",
+   "ready": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): Y1, the clear eyes on Y2's canvas: fades in over the sore eye with each drop."
   }
  }
 }

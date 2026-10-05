@@ -138,12 +138,24 @@
     /* ---------------- 1. the drops: the eyes, front on (Y1/Y2/Y3; a drawn stand-in until ready) ---------------- */
     const dropsG = s("g", {}, S.layer);
     const EY = { right: { x: 255, y: 250 }, left: { x: 545, y: 250 } }; // the patient's own sides (facing us)
+    // A1: with the cut eyes, where the picture puts them (art eyesSore.eyes: [right x, left x, y], measured in the cut)
+    const EYA = art("eyesSore");
+    if (EYA && EYA.eyes) {
+      EY.right = { x: EYA.eyes[0], y: EYA.eyes[2] };
+      EY.left = { x: EYA.eyes[1], y: EYA.eyes[2] };
+    }
     const sore = EY[soreSide];
     // Y2 has the sore eye on the viewer's right (the patient's left): mirrored for the patient's right
     const eyesArt = art("eyesSore");
     let soreEl = null;
     let blinkEls = [];
-    if (eyesArt) s("image", { href: url(eyesArt.src), x: eyesArt.box[0], y: eyesArt.box[1], width: eyesArt.box[2], height: eyesArt.box[3], preserveAspectRatio: "xMidYMid slice", transform: soreSide === "right" ? "translate(800 0) scale(-1 1)" : null }, dropsG);
+    if (eyesArt) {
+      const at = { x: eyesArt.box[0], y: eyesArt.box[1], width: eyesArt.box[2], height: eyesArt.box[3], preserveAspectRatio: "xMidYMid slice", transform: soreSide === "right" ? "translate(800 0) scale(-1 1)" : null };
+      s("image", Object.assign({ href: url(eyesArt.src) }, at), dropsG);
+      // A1: the clear eyes (Y1, registered to Y2) over them, coming in with each drop as the stand-in's red fades
+      const clear = art("eyes");
+      if (clear) soreEl = s("image", Object.assign({ href: url(clear.src), opacity: 0 }, at), dropsG);
+    }
     else {
       s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: skin }, dropsG);
       s("path", { d: "M-400 -300 L1200 -300 L1200 40 Q400 -20 -400 40Z", fill: hair }, dropsG); // the hairline
@@ -518,7 +530,8 @@
       ctx.tally("drops", st.drops);
       if (ctx.level >= 3) S.count(st.drops);
       dropIn(sore);
-      if (soreEl) soreEl.setAttribute("opacity", Math.max(0.08, 0.55 - 0.18 * st.drops));
+      if (soreEl && eyesArt) soreEl.setAttribute("opacity", Math.min(1, 0.34 * st.drops));
+      else if (soreEl) soreEl.setAttribute("opacity", Math.max(0.08, 0.55 - 0.18 * st.drops));
       // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
       if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900);
       if (P.level >= 2 && !miniOn) {
