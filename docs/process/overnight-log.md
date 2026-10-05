@@ -114,3 +114,4 @@
 - 2026-10-05 15:20 UK · Decision 33 (rule B20): art finished → wired → full checks → publish to main → Zafar plays → fixes. No play tonight; A2 waits for Chrome to finish parts B–D, then needs Zafar's go.
 - 2026-10-05 15:25 UK · Decision 34: the pre-publish check covers only what changed since today's gate (the clinic, plus anything a shared-file change reaches).
 - 2026-10-05 15:28 UK · W2 done: samosa/daar guide now Mum's lines, fever 'just right' = barabar (ear/foot hardcoded in js/clinic: needs owner), red renamed lal → laal everywhere W1 wrote it, decision 32; sandbox 0 page errors.
+- 2026-10-05 15:35 UK · A1 done (wrapped up on the orchestrator's ask): the girl's part B art cut and wired in all nine heal games (wide shot, close-ups, corner face, fever bodies; boing's arm and foot L3 still stand-ins; U1 failed). Sandbox 150 pages all end; 3 card findings pre-existing. Report build/reports/a1-clinic-art.md.
