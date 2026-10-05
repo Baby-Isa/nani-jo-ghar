@@ -335,7 +335,12 @@
   },
   "eyesClosed": {
    "src": "assets/clinic/closeups/{kind}/eyes-closed.webp",
-   "ready": false
+   "ready": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): Y3 on Y2's canvas: the blink after each drop."
   },
   "testA": {
    "src": "assets/clinic/closeups/{kind}/eyetest-a.webp",

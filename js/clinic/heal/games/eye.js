@@ -155,6 +155,9 @@
       // A1: the clear eyes (Y1, registered to Y2) over them, coming in with each drop as the stand-in's red fades
       const clear = art("eyes");
       if (clear) soreEl = s("image", Object.assign({ href: url(clear.src), opacity: 0 }, at), dropsG);
+      // the blink after a drop: Y3, both eyes closed, on the same canvas
+      const shut = art("eyesClosed");
+      if (shut) blinkEls.push(s("image", Object.assign({ href: url(shut.src), opacity: 0 }, at), dropsG));
     }
     else {
       s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: skin }, dropsG);
