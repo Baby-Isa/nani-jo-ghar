@@ -31,7 +31,7 @@
     for (const id of choices) {
       if (loaded[id] || !Cook.hasAudio(id)) continue;
       loaded[id] = true;
-      await S.loadTemplates(id, [`assets/audio/word/${id}.mp3`]).catch(() => 0);
+      await S.loadTemplates(id, [Cook.v(`assets/audio/word/${id}.mp3`)]).catch(() => 0);
     }
     return S.hasTemplates(choices);
   }

@@ -249,7 +249,7 @@
     if (!on) return null;
     const d = el("div", "w-actor", layers.fx);
     Object.assign(d.style, { left: `${x - w / 2}px`, top: `${top}px`, width: `${w}px` });
-    d.innerHTML = `<img alt="" draggable="false" src="${img}"><b>${name}</b>`;
+    d.innerHTML = `<img alt="" draggable="false" src="${Cook.v(img)}"><b>${name}</b>`;
     V.actorEl = d;
     return d;
   };

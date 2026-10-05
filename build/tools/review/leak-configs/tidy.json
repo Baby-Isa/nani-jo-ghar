@@ -1,0 +1,1 @@
+{"id": "tidy", "adapter": "script", "script": "build/tools/review/leak-games/tidy.mjs", "about": "Tidy up: generator checks (--gen) and the bot (--bot) (Node)", "args": ["--gen", "1000", "--bot", "500"]}

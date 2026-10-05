@@ -66,7 +66,7 @@
     let n = 0;
     for (const id of choices) {
       const k = Cook.norm((M.words[id] || {}).kutchi || "");
-      const urls = [Cook.tts[k], Cook.tts["ne " + k], Cook.hasAudio(id) ? `assets/audio/word/${id}.mp3` : null].filter(Boolean);
+      const urls = [Cook.tts[k], Cook.tts["ne " + k], Cook.hasAudio(id) ? `assets/audio/word/${id}.mp3` : null].filter(Boolean).map((u) => Cook.v(u));
       if (global.Speech.hasTemplates([id])) continue;
       n += await global.Speech.loadTemplates(id, urls);
     }

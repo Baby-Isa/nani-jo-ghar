@@ -14,7 +14,6 @@
  *   b.use([btn]) -> true if it turned on      b.off()      b.on      b.uses      b.level      b.destroy()
  *   Bulb.MS                                     the level table (E25)
  *   Bulb.KitBulb(Kit)                           a drop-in for the clinic's Kit.Bulb(btn, opts) (thin shim, until R5)
- *   Bulb.cookShim(UI, Cook)                     routes Cook's UI.bulb / UI.bulbOff through one shared bulb (until R4)
  *
  * Plain <script>: window.Bulb (and Shared.bulb).
  */
@@ -123,31 +122,6 @@
       this._b.destroy();
     };
     return KitBulb;
-  };
-
-  /** Cook's UI.bulb / UI.bulbOff through one shared bulb (its English switch and hint counting stay Cook's own until R4). */
-  B.cookShim = function (UI, Cook) {
-    if (!UI || UI.bulb && UI.bulb.shared) return null;
-    const own = UI.bulb;
-    const ownOff = UI.bulbOff;
-    const b = B.create(null, {
-      click: false,
-      ms: () => (UI.bulbMs ? UI.bulbMs() : B.MS[0]),
-      speed: () => (Cook && Cook.speed) || 1,
-      onOn: () => own && own(),
-      onOff: () => ownOff && ownOff(),
-    });
-    UI.bulb = function () {
-      const btn = root.document.getElementById("btn-bulb");
-      if (!btn) return false;
-      return b.use(btn);
-    };
-    UI.bulb.shared = b;
-    UI.bulbOff = function () {
-      if (b.on) b.off();
-      else if (ownOff) ownOff();
-    };
-    return b;
   };
   return B;
 });

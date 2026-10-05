@@ -75,7 +75,7 @@
   };
   Dress.nameLine = (who) => Lang.line("dress-for", { segs: [{ t: Dress.name(who), lang: null }], en: Dress.name(who) });
   Dress.name = (who) => (who === "bigma" ? "Big Ma" : who === "nani" ? "Nani" : (Dress.data.people[who] || {}).name || who);
-  Dress.face = (who) => (who === "bigma" ? "" : `assets/cook/characters/${who}-badge.webp`);
+  Dress.face = (who) => (who === "bigma" ? "" : Cook.v(`assets/cook/characters/${who}-badge.webp`));
 
   /**
    * The spoken instruction, one entry per card row: [{row, line}] in the

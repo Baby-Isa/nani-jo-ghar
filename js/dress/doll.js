@@ -166,7 +166,7 @@
       .sort((p, q) => (LAYER[p.slot] || 0) - (LAYER[q.slot] || 0))
       .map((it) => Doll.overlay(who, it))
       .join("");
-    return `<g id="${id}" transform="translate(${x} ${y}) scale(${k})"><image href="assets/cook/characters/${who}-${mood}.webp" width="${a.img.w}" height="${a.img.h}" class="base" filter="url(#grey)"/>${ovs}</g>`;
+    return `<g id="${id}" transform="translate(${x} ${y}) scale(${k})"><image href="${Cook.v(`assets/cook/characters/${who}-${mood}.webp`)}" width="${a.img.w}" height="${a.img.h}" class="base" filter="url(#grey)"/>${ovs}</g>`;
   };
   /** The mirror: a flipped, smaller copy of the figure (a <use>), in a frame. */
   Doll.mirror = function () {

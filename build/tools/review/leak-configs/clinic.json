@@ -1,0 +1,1 @@
+{"id": "clinic", "adapter": "script", "script": "build/tools/review/leak-games/clinic.mjs", "about": "the clinic's pipeline: every stage, level and strategy, every healing game, the whole patient"}

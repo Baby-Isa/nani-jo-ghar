@@ -47,7 +47,7 @@ test("finds every known violation, and no clean element", async () => {
   assert.match(find(fs, "text-small", "small-text").measured, /^11\.0px$/);
   assert.match(find(fs, "tap-small", "small-btn").measured, /^30x30px$/);
   // the clean elements stay clean
-  for (const id of ["ok-btn", "ok-text", "ellipsis-fits", "hidden-none", "hidden-opacity", "hidden-vis", "parked", "parked-btn", "wraps", "scaled-ok", "moving-off"]) {
+  for (const id of ["ok-btn", "ok-text", "ellipsis-fits", "hidden-none", "hidden-opacity", "hidden-vis", "parked", "parked-btn", "wraps", "scaled-ok", "scaled-14", "moving-off"]) {
     const bad = fs.filter((f) => f.selector.includes("#" + id));
     assert.deepEqual(bad, [], `#${id} should be clean but got ${JSON.stringify(bad)}`);
   }

@@ -30,7 +30,7 @@
     for (const id of choices) {
       if (loaded.has(id) || !(global.Cook && Cook.hasAudio(id))) continue;
       loaded.add(id);
-      await Speech.loadTemplates(id, [`assets/audio/word/${id}.mp3`]);
+      await Speech.loadTemplates(id, [Cook.v(`assets/audio/word/${id}.mp3`)]);
     }
   }
 

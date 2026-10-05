@@ -1,0 +1,1 @@
+{"id": "clinic-heal-c", "adapter": "heal-registry", "registry": "js/clinic/heal/registry.js", "load": ["js/clinic/heal/games/eye.js", "js/clinic/heal/games/foot.js", "js/clinic/heal/games/tummy.js", "js/clinic/heal/games/hic.js", "js/clinic/heal/games/hair.js"], "games": ["eye", "foot", "tummy", "hic", "hair"], "blindMax": 0.1, "accepted": {}}

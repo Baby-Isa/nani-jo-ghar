@@ -1,0 +1,1 @@
+{"id": "snap", "adapter": "script", "script": "build/tools/review/leak-games/snap.mjs", "about": "Snap: unit, fair and leak bot (Node)"}
