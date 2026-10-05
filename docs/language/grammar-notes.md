@@ -544,6 +544,8 @@ Still open from this list: whether *randhnu no khapdo* (Zafar's try in S6) is a 
 
 ## 5 Oct 2026: Mum and Zafar, Round 4 Section I, Questions I1–I35 (cooking words; 8 min, `sources/audio/mum-2026-10-05/I1-I35.m4a`)
 
+**Spellings confirmed by Zafar, 5 Oct (decision 31):** all eleven items in `build/reports/mum-2026-10-05.md` ("Spellings to confirm"): *wadho / wadha / wadhi / wadhe*, *nindho*; *ain*, *aiya*, *aiye*; *pa*, *asa*, *asanjo*, *panjo*; *iloka*, *mare*; *chokriyu, kursiyu, pacheriyu*; *firai*, *bego kari chad*, *wiji chad*, *kadhi chad*, *kapi chad*; *jhino / jhini*, *jadi*, ***thundo*** (cold, not *thandu*); *chapri*, *welan*, *chulo*; *dayo / dayi*, *saro / sari*; *ginech*, *khanech*; *Nana je cup je andar*. They apply to §38–§55 below; a ⚠ left there is about the meaning or a word not on that list.
+
 **Which round:** Round 4. Section I exists only in the Round 4 sheet (Round 5 has no I-numbers), and on the tape Zafar opens with "This is I, cooking words. I1, pour" and reads the Round 4 English line by line (I21 "thin, like a maani", I26 "cassava (mogo)", I28 "skewer"). The same check was done for the other two files below.
 
 Rough transcript: `sources/audio/mum-2026-10-05/I1-I35.md`. Whisper turned most of the Kutchi into English words ("bagel curry ched" for *bego kari chad*), so every answer below was re-heard in short windows (each take on its own, transcribed phonetically and in English). Spellings follow Zafar's rules (w not v, doubled long vowels, the lexicon's settled spellings). The section was a quick chat, not a three-times list, so most answers are said once or twice, often inside a sentence.
@@ -557,7 +559,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/I1-I35.md`. Whisper turned most 
 | I2 | boil | ***ukar***: ***chai ke ukar, paani ke ukar*** (boil the tea, boil the water) | clear (0:54–1:01). Same root as *ukreto* (it's boiling, §25) |
 | I3 | turn it down (the flame) | ***slow kar*** (English *slow* + *kar*, "make it slow"). Zafar's *aste thi kar* — "no, slow kar". Literally "make the fire less" is possible but not what people say | clear for *slow kar* (1:03–1:20) |
 | I4 | add / put it in | ***wiji chad***, ***andar wiji chad*** (put it in) | clear (1:22–1:31). *wij* = put in (§9); *chad* is the "leave it, finish it" helper (§27 *chadi de*) |
-| I5 | take it out | ***kadhi chad*** | ⚠ (1:31–1:33). *kadh* = take out (§25, §29 R6) |
+| I5 | take it out | ***kadhi chad*** | spelling ✓ Zafar 5 Oct (1:31–1:33). *kadh* = take out (§25, §29 R6) |
 | I6 | knead | ***gund***: ***atto gund*** (knead the dough) | ⚠ (1:35–1:37) |
 | I7 | roll (it out) | **not answered** (Mum: "Roll out the maani? What?") | not answered (1:37–1:41) |
 | I8 | flip it | ***firai*** / ***firai chad*** (turn it over; *firai* is short, *firai chad* is "turn it"). Turning a car round is the same word: ***gadi firai chad*** | clear (1:42–2:20) |
@@ -573,7 +575,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/I1-I35.md`. Whisper turned most 
 | I18 | serve / put it on the plate | No word for "serve". ***bakuli me wiji chad*** (put it in the bowl), ***table mathe rakhi chad*** (put it on the table), ***khenjo tayar karyo*** (let's get the food ready), and for serving guests chai: ***chai khani win, mare lai*** (take the chai, for everyone) | ⚠ (3:47–4:18): each heard once |
 | I19 | taste it | ***chakh*** | clear (4:18–4:20). Matches *chakhan lai de* (§27 B46) |
 | I20 | wash | ***dho***: ***glass dho, cup dho*** | ⚠ (4:20–4:25) |
-| I21 | thin (a maani) · just right | thin ***jhino*** (he) / ***jhini*** (she): ***jhini maani banai***. Thick: ***jadi maani banai*** (she-form; he-form *jado* not said). Just right: ***barabar*** | ⚠ spelling of *jhino* (Whisper "jeeno") and *jadi* (4:26–4:40) |
+| I21 | thin (a maani) · just right | thin ***jhino*** (he) / ***jhini*** (she): ***jhini maani banai***. Thick: ***jadi maani banai*** (she-form; he-form *jado* not said). Just right: ***barabar*** | spelling of *jhino* (Whisper "jeeno") and *jadi* ✓ Zafar 5 Oct (4:26–4:40) |
 
 ### 39. I22–I35: more kitchen things
 | ID | English | What Mum said | Confidence (time) |
@@ -581,7 +583,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/I1-I35.md`. Whisper turned most 
 | I22 | egg | The proper Kutchi word is ***indo***; most East African families say ***mayai*** (Swahili) | clear (4:40–4:52) |
 | I23 | chicken | The proper Kutchi word is ***murgi***; the East African word is Swahili (Whisper: "kukro"; Swahili *kuku*) | *murgi* clear; the Swahili word ⚠ (4:52–5:00) |
 | I24 | oil | **not answered clearly** (only "oil?" on the tape; the first pass guessed "daal") | not answered (5:00) |
-| I25 | pastry (samosa) | ***chapri*** (samosa pastry). There's no puff pastry | ⚠ spelling (5:05–5:11) |
+| I25 | pastry (samosa) | ***chapri*** (samosa pastry). There's no puff pastry | spelling ✓ Zafar 5 Oct (5:05–5:11) |
 | I26 | cassava (mogo) | ***mogo*** ("a Swahili food, you don't get it in India") | clear (5:11–5:17) |
 | I27 | corn (on the cob) | ***makai*** | clear (5:17–5:26) |
 | I28 | a skewer | ***mishkaki ji lakri***; for kebabs ***kebab ji lakri***. ***lakri*** is just "stick" | clear (5:26–5:40) |
@@ -591,7 +593,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/I1-I35.md`. Whisper turned most 
 | I32 | ladle | ***chamcho*** (the big spoon); "there are special words for teaspoon and tablespoon, but not the other ones" | clear (6:18–6:28) |
 | I33 | flame / the stove | flame = fire = ***aag*** (no difference). Stove: ***chulo***. Light the stove: ***chulo bar*** (*bar* = light it) | clear (6:28–6:52) |
 | I34 | hot (to touch) | ***garam***, ***garam ai***. Zafar asked about *koso*: Mum thinks it's Gujarati taken into Kutchi, and asked Claude to check (below) | *garam* clear; *koso* ⚠ (6:53–7:17) |
-| I35 | cold (food gone cold) | ***thundo thai vyo*** (it's gone cold). Dad says ***thadhu***: "a different dialect of Kutchi; I would never say *thadhu*" | ⚠ spelling (7:18–7:35) |
+| I35 | cold (food gone cold) | ***thundo thai vyo*** (it's gone cold). Dad says ***thadhu***: "a different dialect of Kutchi; I would never say *thadhu*" | spelling ***thundo*** ✓ Zafar 5 Oct, decision 31 (7:18–7:35) |
 
 ### Claude's check (Mum asked at 7:14: "which is Gujarati and which is more Sindhi?")
 Not evidence: a lead for Masi. Gujarati has *garam* and *ūnũ* for hot; Sindhi has *garm* and ***kosō*** (warm, hot). So *koso* looks **Sindhi**, not Gujarati, which would make it the older Kutchi word and *garam* the shared one. For cold, Gujarati is *ṭhaṇḍũ* and Sindhi ***thadho***: Dad's *thadhu* is the Sindhi-side form, Mum's *thandu* the Gujarati-side one. *tapelo* is Gujarati *tapeli*; *welan* is Gujarati *veḷaṇ*; *firai* fits Gujarati *pherav-* (turn); *tar* fits Gujarati *taḷ-* (fry); *chakh* is both. *mayai*, *sufuria*, *bakuli*, *mogo* are Swahili.
@@ -703,7 +705,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/C79.md`.
 ### 49. C59: "in Nana's cup": *jo* becomes *je* too
 | English | What Mum said | Confidence (time) |
 |---|---|---|
-| in Nana's cup | ***Nana je cup je andar*** | ⚠ (5:20–5:27: Whisper hears *ja*; the pattern below says *je*) |
+| in Nana's cup | ***Nana je cup je andar*** | *je* ✓ Zafar 5 Oct (5:20–5:27: Whisper hears *ja*; the pattern below says *je*) |
 | on Nani's mango | ***Nani je ambe je mathe*** | clear (5:27–5:33) |
 | behind the boy's door | ***chokre je darwaje je puthiya*** ("belonging to the boy, belonging to the door, behind it") | clear (5:33–5:45) |
 | with the girl's goat (all four) | girl + she-goat ***chokri ji bakri sathe*** · girl + billy goat ***chokri je bakre sathe*** · boy + billy goat ***chokre je bakre sathe*** · boy + she-goat ***chokre ji bakri sathe*** | clear (6:00–8:15, said several times) |
@@ -717,8 +719,8 @@ Rough transcript: `sources/audio/mum-2026-10-05/C79.md`.
 ### 51. C61–C67: "I am", "you are", "he/she is": *aiya, aiye, aayo, ai*
 | ID | English | What Mum said | Confidence (time) |
 |---|---|---|---|
-| C61 | I'm in the kitchen (a man; a woman) | ***Aau rasore me aiya.*** The same for a man and a woman | ⚠ spelling of *aiya* (9:52–12:01; Whisper *aaya*, *aanya*); clear that it doesn't change |
-| C62 | You're in the kitchen (to a child) | ***Tu rasore me aiye.*** | ⚠ (12:03–12:16) |
+| C61 | I'm in the kitchen (a man; a woman) | ***Aau rasore me aiya.*** The same for a man and a woman | spelling *aiya* ✓ Zafar 5 Oct (9:52–12:01; Whisper *aaya*, *aanya*); clear that it doesn't change |
+| C62 | You're in the kitchen (to a child) | ***Tu rasore me aiye.*** | spelling ✓ Zafar 5 Oct (12:03–12:16) |
 | C63 | You're in the kitchen (to Nana) | ***Aai rasore me aayo.*** | clear (12:18–12:28) |
 | C64 | He's in the kitchen (this boy) | ***E rasore me ai.*** | clear (12:29–12:41) |
 | C65 | He's in the kitchen (that boy) | ***E huda rasore me ai*** (he's over there in the kitchen) — only to make a point; normally the same as C64. In the same room: just ***huda*** | clear (12:41–14:26) |
@@ -735,7 +737,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/C79.md`.
 ### 53. C69–C71: "they", "these", "those"; *mare* = all
 - Where are the mangoes? They're in the kitchen: ***rasore me ain*** (no word for "they" needed) (17:39–17:55).
 - ***Hi rasore me ain*** (these are in the kitchen), ***hu rasore me ain*** (those are) (18:03–18:12; clear).
-- ***hi mare*** = all of these, ***hu mare*** = all of those: ***hi mare rasore me ain, ne hu mare rasore me ain*** (18:12–18:26; ⚠ spelling of *mare*).
+- ***hi mare*** = all of these, ***hu mare*** = all of those: ***hi mare rasore me ain, ne hu mare rasore me ain*** (18:12–18:26; spelling *mare* ✓ Zafar 5 Oct).
 - C71: ***hi*** (this one, these), ***hu*** (that one, those), ***hi mare / hu mare*** (all these / all those). The same for cups and mangoes (18:26–18:54; clear).
 
 ### 54. C72–C78: my, your, his, her, our, their
