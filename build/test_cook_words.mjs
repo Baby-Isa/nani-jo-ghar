@@ -114,3 +114,12 @@ test("no word lookups in Cook's code (G26)", () => {
   }
   assert.deepEqual(hits, []);
 });
+
+test("SH-02: the end review says the very form the order used (hakri lakri, not hakro)", () => {
+  const p = L.phrase([1, "ph-lakri", "veg-02"]);
+  assert.equal(text(p), "hakri lakri dungri");
+  const s = p.segs.find((x) => x.w === C.numId(1));
+  const f = L.formLine(s.w, s.t, s.cell);
+  assert.equal(text(f), "hakri");
+  assert.ok(f.plan.every((c) => c.text === "hakri"), JSON.stringify(f.plan));
+});

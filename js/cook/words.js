@@ -199,7 +199,7 @@
     if (Array.isArray(m)) return m.forEach((x) => idsOf(x, out)), out;
     if (typeof m !== "object") return out;
     if (m.fn === "Count") return idsOf(Cook.numId(m.n), out);
-    if (m.fn === "Item" && m.n != null) idsOf(Cook.numId(m.n), out);
+    if ((m.fn === "Item" || m.fn === "Unit") && m.n != null) idsOf(Cook.numId(m.n), out);
     for (const k of Object.keys(m)) if (k !== "fn") idsOf(m[k], out);
     return out;
   }
@@ -225,6 +225,7 @@
     segs.forEach((s) => {
       if (!s.lang) return;
       const t = toks[k++];
+      if (t && t.cell && s.w) s.cell = t.cell; // the form's cell (the end review says that very form)
       const noun = t && t.defaulted && [].concat(t.defaulted.gender || [])[0];
       // only a form that changes with the gender ("hakro", not "ba"): the form's key names the gender used
       const dflt = (LX().features.gender || {}).default;
@@ -250,8 +251,12 @@
   /* ---------------- Cook's calls (the old js/cook/lang.js names) ---------------- */
   Lang.word = (id) => Lang.wordLine(id).segs;
   Lang.wordLine = (id) => Lang.say({ fn: "Word", id });
-  /** One word in the exact form the order used (the end review's "hakri", SH-02): the engine's own token, kept. */
-  Lang.formLine = (id, text) => {
+  /** One word in the exact form the order used (the end review's "hakri", SH-02): the engine's word in that cell. */
+  Lang.formLine = (id, text, cell) => {
+    if (cell && entry(id)) {
+      const r = withSay(EN().word(String(id), cell, ctx));
+      if (r.ok && (!text || r.text === text)) return lineOf(Object.assign({}, r, { en: entry(id).gloss || String(id) }), { fn: "Word", id });
+    }
     const l = Lang.wordLine(id);
     if (!text || !l.ok || text === l.segs.map((s) => s.t).join("")) return l;
     // the form came from an engine line (a word tile keeps its line's segment): the same word in that form

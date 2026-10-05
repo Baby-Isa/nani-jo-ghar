@@ -483,7 +483,7 @@
    */
   function reviewWords(ctx) {
     const missed = missedWordIds(ctx);
-    return UI.orderWordForms(ctx.ladders).map((w) => ({ id: w.id, kutchi: w.kutchi, english: Cook.english(w.id), right: !missed.has(w.id), toCheck: !!w.check || undefined }));
+    return UI.orderWordForms(ctx.ladders).map((w) => ({ id: w.id, kutchi: w.kutchi, cell: w.cell, english: Cook.english(w.id), right: !missed.has(w.id), toCheck: !!w.check || undefined }));
   }
   async function roundEnd(ctx, { scored, actions }) {
     const R = global.Results;
@@ -502,7 +502,7 @@
       marks: round.marks,
       hints: round.hints,
       words: reviewWords(ctx),
-      speak: (w) => (w.kutchi ? Lang.speak(Lang.formLine(w.id, w.kutchi)) : Lang.speakWord(w.id)),
+      speak: (w) => (w.kutchi ? Lang.speak(Lang.formLine(w.id, w.kutchi, w.cell)) : Lang.speakWord(w.id)),
       sound: true,
       store,
       actions,

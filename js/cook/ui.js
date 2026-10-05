@@ -1768,7 +1768,7 @@
       if (k && base && base.charAt(0) === base.charAt(0).toLowerCase()) k = k.charAt(0).toLowerCase() + k.slice(1);
       return k || base;
     };
-    const look = (segs) => (segs || []).forEach((s) => s.w && s.lang === "k" && !form.has(s.w) && form.set(s.w, { kutchi: clean(s.w, s.t), check: !!s.check }));
+    const look = (segs) => (segs || []).forEach((s) => s.w && s.lang === "k" && !form.has(s.w) && form.set(s.w, { kutchi: clean(s.w, s.t), check: !!s.check, cell: s.cell }));
     (ladders || []).forEach((L) => Order().rows(L, { all: true }).forEach((r) => look((r.phrase ? r.phrase.segs : r.line.segs).concat(r.line.segs))));
     return ids.map((id) => Object.assign({ id, kutchi: Cook.display(id), check: false }, form.get(id) || {}));
   };
