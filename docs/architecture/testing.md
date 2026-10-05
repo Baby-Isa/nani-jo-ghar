@@ -63,3 +63,21 @@ clips: `assets/audio/word/snt-01.mp3`'s smoothed RMS peaks around
 
 If a future character's audio is louder/quieter, re-measure — don't assume
 these exact numbers carry over.
+
+---
+
+## Tools: review and check scripts (`build/tools/review/`, T1, decision 44)
+
+Anything done the same way twice is a script. Each prints a short summary (counts, paths, top items), never a dump; each has `--help`; none uses the network. `node --test build/tools/review/review.test.mjs` tests them (synthetic shots, the repo's own docs).
+
+| Tool | Command | Saves |
+|---|---|---|
+| Screenshot diff | `node build/tools/review/shotdiff.mjs [--run id] [--vs id] [--approve [--also id,id]]` | Compares a sandbox run's shots with the approved manifest (`build/tools/review/approved-shots.json`: size, pixel hash and a 16x9 thumbnail per shot, never images, B19) or another run; prints only changed and new shots and writes `<run>/sheets/changed.png` of just those. Approve a run only after its screenshots were looked at; approve from two runs of the same code (`--also`) so a state that wobbles with timing (Cook hints) keeps both variants. |
+| Touched-flow mapper | `node build/tools/review/touched.mjs [--base ref] [--files a,b] [--json]` | From `git diff` lists the sandbox flows (decision 34), through what each page loads and the rules for `js/core`, `data/lang`, stations and heal games; prints the `--touched` command. |
+| Regression lookup | `node build/tools/review/regress.mjs <flows> [--shared]` or `touched.mjs --json \| regress.mjs --stdin` | The `regressions.md` rows to recheck for those flows (id, status, check, one line); a shared-file change adds the Shared components rows. |
+| Word checks (report-only) | `node build/lint/words.mjs [--only a,b,c,d]` | G26 literals in game code, English a child may see, misspelt variants from the engine's clash list, lines with no family recording. Allow-list `build/lint/words-allow.json`. Findings use the layout lint's shape so the sandbox can adopt them. |
+| Status counts | `node build/tools/review/statuscounts.mjs [--write]` | Rebuilds the numbers of the "Open feedback" table in `docs/status.md` from `regressions.md` and lists prose to fix by hand. |
+| Report skeleton | `node build/tools/review/skeleton.mjs <name> [--run id]` | Writes `build/reports/<name>.md`: proof section filled from the run (pages, end reached, findings vs baseline, sound gaps, shot diff, word counts), the QA results template and the regression rows. |
+| Leak harness | `node build/tools/review/leak.mjs <config>` (`--list`) | One bot loop and a config per game in `build/tools/review/leak-configs/`; proven to give the same numbers and verdict as `build/leak_clinic_heal_cut.mjs` and `_knee.mjs` (which stay). |
+
+A review in short: `touched.mjs` → run its command → `shotdiff.mjs` → look at `changed.png` → `regress.mjs --stdin` → `skeleton.mjs <name>`.

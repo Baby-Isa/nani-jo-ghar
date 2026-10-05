@@ -1,0 +1,2 @@
+{ "id": "clinic-heal-knee", "adapter": "heal-registry", "registry": "js/clinic/heal/registry.js", "load": ["js/clinic/heal/games/knee.js"], "games": ["knee"], "blindMax": 0.1,
+  "accepted": { "knee": { "under": 0.3, "why": "13i: the flashing stops at the last turn (Zafar), so the turns are a hand-skill row; open for Zafar" } } }

@@ -1,0 +1,1 @@
+{ "id": "clinic-heal-fever", "adapter": "heal-registry", "registry": "js/clinic/heal/registry.js", "load": ["js/clinic/heal/games/fever.js"], "games": ["fever"], "blindMax": 0.1, "accepted": {} }
