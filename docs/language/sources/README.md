@@ -4,6 +4,9 @@ Outside material about Kutchi grammar, kept for reference. **Nothing here is evi
 
 | File | What it is | Status |
 |---|---|---|
+| `kutchi-findings-summary-2026-10-05.md` | **Start here.** A warm, plain summary for Mum of what the agreement paper and Gemini's excerpts show, next to her own answers | Research; not evidence |
+| `research-2026-10-05-agreement-paper.md` | Claude's full reading of Keine, Nisar and Bhatt (2014): what the paper's Kutchi is, a comparison with Mum's answers, and recommendations for the engine | Research; not evidence |
+| `gemini-excerpts-2026-10-05.md` | Gemini's five "written Kutchi" excerpts respelled into our conventions, with a vocabulary table and grammar check against the family's words | Research; not evidence |
 | `gemini-blueprint-v1-2026-09-30.md` | Gemini's "Kutchi NLP engine blueprint": agreement paths, pronoun and verb-suffix tables, a Python sketch | AI-generated, unverified |
 | `gemini-blueprint-v2-2026-09-30.md` | Gemini's v2: the same paths, plus negation, postpositions, implosives, differential object marking, echo words and a 200-entry lexicon | AI-generated, unverified |
 | `research-2026-09-30-grammar-checklist.md` | Claude's research pass: 21 grammar categories with what Mum confirmed, what Sindhi sources predict, and test sentences | Research; forms from outside sources are hypotheses |
@@ -28,7 +31,7 @@ Outside material about Kutchi grammar, kept for reference. **Nothing here is evi
 - *-o* he-words become *-a* in the plural (*bateto → bataata*);
 - *me* "in";
 - *vyo* in *band thai vyo* ("went" as a past form);
-- *aayo* "came";
+- *aayo* (the blueprint says "came"; for the family it is "are", to an elder: grammar-notes §42, 5 Oct);
 - the future "I will" ending changes for a boy or girl speaker (*kar dos* / *kar dis*; blueprint *-ndos* / *-ndis*);
 - *na* before the verb for "don't";
 - *mori chai*;
