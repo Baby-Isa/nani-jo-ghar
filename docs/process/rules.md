@@ -340,6 +340,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Record the most frequent phrases whole** after a simulated run; assembling from words is the fallback; recordings never change the engine. **Until the pre-publish quality pass, every line is stitched from recorded words** (whole-phrase clips switched off), so the engine is tested everywhere. (G12, decision 26)
 - **No Kutchi grammar in game code:** frames live in data; nouns carry gender, singular and plural. (G13, G18)
 - **No words in game code at all:** every word or line a game shows or plays, placeholders included, is looked up by id from the one central language data; a missing word is a data entry flagged "to record", never an English string typed into code. (G26, decision 36)
+- **The engine is the one home of Kutchi knowledge:** every word, form, rule and exception lives in the engine's data; all new information (Mum's answers, recordings, corrections) is fed into it first, and nothing about Kutchi is kept anywhere else. (G27, decision 40)
 
 ### Voices and recordings
 - **Every voice in the product is a real family member;** TTS is test-only, replaced file for file. The child's model reply is Zafar's (boy) or Mum's (girl) for now. (G14, G17)
