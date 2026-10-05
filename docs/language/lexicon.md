@@ -329,3 +329,92 @@ Nouns need a singular and a plural form in the data, and the game should say the
 - -i she-words don't change.
 
 `veg-12` already carries `kutchi_one: "mirchi"`. Add a `plural` field (or a `kutchi_one`) across the nouns, and use it wherever a count of 1 is spoken or shown.
+
+## 6. Words from Mum's 5 Oct recordings (Round 4: I1–I35, C22–C79)
+
+Source: `grammar-notes.md` §38–§55; recordings in `sources/audio/mum-2026-10-05/` (file, then mm:ss). **Status:** *confirmed* = Mum said it clearly (spelling still Zafar's to tick where marked ⚠); ⚠ = heard once or unclear, a draft (G2, G3). Gender: **he** / **she** / – (doesn't apply). Clips: `data/family-audio.json` (source `sources/audio/mum-2026-10-05/…`), unchecked.
+
+### 6.1 Cooking verbs (bare command to a child)
+| Kutchi | English | Notes | Source | Status |
+|---|---|---|---|---|
+| ***ukar*** | boil | *chai ke ukar, paani ke ukar*; same root as *ukreto* (§25) | I1-I35 0:54 | confirmed |
+| ***slow kar*** | turn it down (the flame) | English *slow* + *kar*; not *aste thi kar* | I1-I35 1:03 | confirmed |
+| ***wij***, ***wiji chad***, ***andar wiji chad*** | put it in, add | *wij* already in §9; *chad* = "leave it / finish it" helper | I1-I35 1:22 | confirmed |
+| ***kadhi chad*** | take it out | *kadh* (§25) + *chad* | I1-I35 1:32 | ⚠ |
+| ***gund*** | knead | *atto gund* | I1-I35 1:35 | ⚠ |
+| ***firai***, ***firai chad*** | flip, turn over; also stir | *gadi firai chad* (turn the car round) | I1-I35 1:59–2:20 | confirmed |
+| ***dabai*** | press | | I1-I35 1:46 | ⚠ |
+| ***kap***, ***kapi chad*** | cut | chop = ***nindha nindha kap*** (cut it small) | I1-I35 1:48–1:56 | ⚠ |
+| ***bego kari chad*** | mix (put it together) | also ***mix kari chad*** (English *mix*) | I1-I35 2:31 | confirmed |
+| ***tar*** | fry | *samosa tar*, *bhajiya tar*; "make it fried" ***tarelo kari chad*** | I1-I35 2:52–3:11 | ⚠ |
+| ***waar*** | fold | *samosa waar* | I1-I35 3:13 | confirmed |
+| ***bhar*** | fill | *paani bhari chad* | I1-I35 3:23 | confirmed |
+| ***thorok wij*** | (sprinkle) put a little in | stand-in; Mum to find the real word | I1-I35 3:34 | ⚠ |
+| ***chakh*** | taste | | I1-I35 4:18 | confirmed |
+| ***dho*** | wash | *glass dho, cup dho* | I1-I35 4:22 | ⚠ |
+| ***bar*** | light (a fire) | *chulo bar* (light the stove) | I1-I35 6:46 | confirmed |
+| ***rakh*** | put (down) | *table mathe rakhi chad* (put it on the table) | I1-I35 3:57 | ⚠ |
+| ***banai*** | make | *jhini maani banai* | I1-I35 4:31 | confirmed (§8) |
+| ***khan***, ***wapar***, ***ginech*** | take, use, buy/fetch | *wadho khan*, *wadho wapar*, *wadho ginech* (take / use / buy the big one) | C22-C49 9:15–9:26, 24:34 | *khan*, *wapar* confirmed (§9, §12); *ginech* ⚠ |
+| ***khanech*** | bring | *wadho cup khanech* (bring the big cup); cf. *khanechi* (§33 S1) | C22-C49 9:56 | ⚠ |
+| no word | pour, serve, roll, sprinkle | pour: *bakuli me wij*; serve: *bakuli me wiji chad*; roll and sprinkle: to ask | I1-I35 | gap |
+
+### 6.2 Kitchen things and food
+| Kutchi | English | Gender | One / more than one | Source | Status |
+|---|---|---|---|---|---|
+| ***indo*** (Kutchi), ***mayai*** (Swahili, what most East African families say) | egg | ? | ? | I1-I35 4:40 | confirmed; which one the game uses: Zafar |
+| ***murgi*** | chicken | she? (-i) | ? | I1-I35 4:57 | confirmed; gender unheard |
+| ***chapri*** | samosa pastry | ? | ? | I1-I35 5:05 | ⚠ |
+| ***mogo*** | cassava | ? | ? | I1-I35 5:11 | confirmed |
+| ***makai*** | corn on the cob | ? | ? | I1-I35 5:20 | confirmed |
+| ***lakri*** | stick, skewer | she | *lakri* (no change, §34) | I1-I35 5:28 (*mishkaki ji lakri*, *kebab ji lakri*) | confirmed |
+| ***tapelo*** (Kutchi), ***sufuria*** (Swahili, common) | pot | he (-o) | *tapela*? | I1-I35 5:40 | confirmed; which one the game uses: Zafar |
+| ***tawa*** | tawa | ? | *tawa* (no change) | I1-I35 5:56 | confirmed |
+| ***welan*** | rolling pin | ? | ? | I1-I35 6:08 | ⚠ |
+| ***chamcho*** | ladle (the big spoon); also *wadho chamcho* | he | *chamcha* (§34) | I1-I35 6:21 | confirmed |
+| ***aag*** | fire, flame | ? | – | I1-I35 6:39 | confirmed |
+| ***chulo*** | stove | he (-o) | ? | I1-I35 6:43 | confirmed |
+| ***bakuli*** | bowl | she | ***bakuliyu*** | C22-C49 3:20–3:40 | confirmed (Mum: maybe Swahili) |
+| ***piali*** | bowl, small cup | she | ***pialiyu*** | C22-C49 4:11 | ⚠ ("not a word I often use") |
+| ***gadi*** | car | she | ***gadiyu*** | C22-C49 4:26 | confirmed |
+| ***kobi*** | cabbage | ? | ? | C22-C49 7:37 | ⚠ |
+| ***limu*** | lemon | he (*limu wadho ai*) | *limu* | C22-C49 7:27 | confirmed (gender new) |
+| ***kursi*** | chair | she | ***kursiyu*** (dropped when *hi mare … ain* shows the plural) | C79 19:03–20:54 | confirmed |
+| ***chakli*** | (small) bird | she | ***chakliyu*** | C22-C49 17:32, 21:49 | confirmed |
+| ***kutro*** | dog | he | *kutra*? | C22-C49 17:39 | confirmed |
+| ***shati*** | shirt | she | ***shatiyu*** | C22-C49 22:13 | ⚠ spelling |
+| ***kan*** | ear | ? | *kan* ("doesn't become plural") | C79 4:30–4:53 | confirmed |
+| ***pag*** | foot | ? | *pag* | C79 4:53 | ⚠ |
+| ***ghar*** | house, home | he (*panjo ghar*) | – | C79 24:10 | confirmed |
+| ***rasoro*** | kitchen | he | before *me*: ***rasore*** | C79 9:58 | confirmed (§20) |
+| ***maani*** | chapati | she | ***maani*** (never *maanu*) | C22-C49 21:00–22:52 | confirmed |
+
+### 6.3 Describing words
+| Kutchi (he · he, more · she) | English | Before a postposition (he) | Source | Status |
+|---|---|---|---|---|
+| ***wadho · wadha · wadhi*** | big | ***wadhe*** (*wadhe chokre sathe*) | C22-C49 0:14–5:52 | confirmed (spelling: Zafar's *wadho*) |
+| ***nindho · nindha · nindhi*** | small | *nindhe*? (not said) | C22-C49 23:06–25:22 | confirmed |
+| ***dayo · daya · dayi*** | good = well-behaved (people and animals only) | – | C22-C49 16:16–17:59 | confirmed |
+| ***saro · sara? · sari*** | good (things) | – | C22-C49 20:00–21:56 | confirmed; *sara* unheard |
+| ***fine*** (English), ***bo fine*** | nice, very nice | invariant | C22-C49 18:14, 19:46 | confirmed |
+| ***khaso*** | nice, special | ? | C22-C49 18:14 | ⚠ |
+| ***barabar*** | right, proper, just right (after the noun: *cup barabar ai*) | invariant | C22-C49 19:08; I1-I35 4:38 | confirmed |
+| ***lal*** | red | invariant | C22-C49 12:35–14:21 | confirmed |
+| ***jhino · jhini*** | thin | ? | I1-I35 4:28 | ⚠ |
+| ***jadi*** (she) | thick | ? | I1-I35 4:35 | ⚠ |
+| ***garam*** | hot (to touch); *koso* discussed | invariant? | I1-I35 6:54 | confirmed |
+| ***thandu*** (*thandu thai vyo*, gone cold); Dad: *thadhu* | cold | ? | I1-I35 7:20 | ⚠ |
+| ***X ma X*** | the most X: *wadho ma wadho*, *nindho ma nindho* | – | C22-C49 10:00 | confirmed |
+| ***bo*** | very | – | C22-C49 19:46 | confirmed |
+
+### 6.4 Pronouns, "of", "be"
+| Kutchi | English | Source | Status |
+|---|---|---|---|
+| ***jo · ji · ja*** (*je* before a postposition with a he-word thing) | of, 's (agrees with the thing owned) | C79 0:25–9:24, 28:12 | confirmed |
+| ***munjo / tojo / anjo / injo / asanjo / panjo / iloka jo*** (+ *-i*, *-a*, *-e* as *jo*) | my / your (child) / your (elder) / his, her / our (not you) / our (with you) / their | C79 18:56–28:06 | confirmed |
+| ***pa*** · ***asa*** | we (including you) · we (not you) | C79 15:10–17:30 | confirmed (spellings ⚠) |
+| ***iloka*** | they, them (those people) | C79 25:00 | ⚠ one word or two |
+| ***hi · hu*** + ***mare*** | this/these · that/those; *hi mare* all of these | C79 18:03–18:54 | confirmed (*mare* ⚠) |
+| ***huda*** | over there | C79 12:41 | confirmed (§23) |
+| ***aau … aiya · tu … aiye · aai … aayo · e … ai · pa/asa … aayo · … ain*** | I am · you are (child) · you are (elder) · he/she is · we are · they are | C79 9:52–15:59; C22-C49 6:00–7:54 | confirmed (*aiya*, *aiye*, *ain* spellings ⚠) |
+| ***winjanta*** | (we) are going | C79 17:21, 24:25 | ⚠ |
