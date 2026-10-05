@@ -17,7 +17,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 **Next steps, in order (decisions 33-39):**
 1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
 2. Running: F1 (Cook gate findings, stop 18:00), A2 (the girl's clinic art + words out of code, stop 20:00), 4a (engine core, stop 21:00).
-3. When F1 ends: launch C3, Cook's workarounds (shims) removed + every open Cook gameplay row fixable now (decision 38d).
+3. When F1 ends: launch C3, Cook's workarounds (shims) removed + every open Cook gameplay row fixable now (decision 38d), incl. DAAR-08 per decision 41.
 4. When 4a ends: launch 4b (decision 40: every known word from every file and mode, every grammar and syntax rule and exception, plus the gap list). 4c is the gap reporter only (in 4a).
 5. When A2 and C3 are done: orchestrator reviews their shots (changed screens only, full matrix), then bump, publish to `main`, check Pages, send Zafar the link and what to play.
 6. Zafar plays Cook and the clinic → full report + regression rows → feedback fixes together with 4d (Cook onto the engine) and 4e (the clinic onto the engine). If 4a/4b finish early, 4d/4e may go before he plays.

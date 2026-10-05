@@ -272,6 +272,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **40. The engine holds all Kutchi knowledge:** 4b fills the engine with every known word from anywhere in the repo (every mode, parked ones included, the recordings, the lexicon, grammar notes and knowledge base, Mum's rounds) and every known grammar and syntax rule and exception (e.g. *mori chai*, *kari chai*). Everything the game or Claude knows about Kutchi comes from the engine, and every new piece of information (Mum's answers, recordings, corrections) is fed into the engine first.
   Source: Zafar, orchestrator chat, 5 Oct. Rule: G26, G11
 
+- **41. The counting rule, made clear (and DAAR-08):** at every level the order is spoken at the start and replayable by the speaker. L1: written on the card, and Nani counts along as the child works. L2: written, no counting along. L3+: not written, no counting along; the child listens (and can replay). Daar's chop card follows it: no written quantity at L3+ (built in C3).
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: E12
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.
