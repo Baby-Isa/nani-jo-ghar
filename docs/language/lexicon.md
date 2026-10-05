@@ -403,7 +403,7 @@ Source: `grammar-notes.md` §38–§55; recordings in `sources/audio/mum-2026-10
 | ***jhino · jhini*** | thin | ? | I1-I35 4:28 | ⚠ |
 | ***jadi*** (she) | thick | ? | I1-I35 4:35 | ⚠ |
 | ***garam*** | hot (to touch); *koso* discussed | invariant? | I1-I35 6:54 | confirmed |
-| ***thandu*** (*thandu thai vyo*, gone cold); Dad: *thadhu* | cold | ? | I1-I35 7:20 | ⚠ |
+| ***thundo*** (*thundo thai vyo*, gone cold); Dad: *thadhu* | cold | ? | I1-I35 7:20 | ⚠ |
 | ***X ma X*** | the most X: *wadho ma wadho*, *nindho ma nindho* | – | C22-C49 10:00 | confirmed |
 | ***bo*** | very | – | C22-C49 19:46 | confirmed |
 

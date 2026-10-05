@@ -103,7 +103,7 @@ Not needed for step 1; each has Claude's recommendation. Answer any time with "y
 1. **The words and forms in Round 5 / Round 4:**
    - "with" for food, and "and" between two kinds of one dish (Cook's biggest gap);
    - the cooking verbs: **mostly answered 5 Oct** (Round 4 I1–I21, `docs/language/grammar-notes.md` §38); still missing: roll, pour, sprinkle, serve, oil, a board, and each verb's polite / "for me" form;
-   - from the 5 Oct answers: the he-word plural with "with / in / on" (*wadha chokra sathe* or *wadhe chokre sathe*), "the boys' cup", *iloka* and *mare*, *tapelo* or *sufuria* and *indo* or *mayai* for the game, *koso*/*garam* and *thandu*/*thadhu* (Masi) (grammar-notes §55 "For Mum next time");
+   - from the 5 Oct answers: the he-word plural with "with / in / on" (*wadha chokra sathe* or *wadhe chokre sathe*), "the boys' cup", *iloka* and *mare*, *tapelo* or *sufuria* and *indo* or *mayai* for the game, *koso*/*garam* and *thundo*/*thadhu* (Masi) (grammar-notes §55 "For Mum next time");
    - *kere karein*, green pepper, *moikyo*, *Muke sekelo khape*, the *mirchi* plural, *watana*/*matar*, *sambusa*, *dinda*/*dinde*, *khan*/*khanij*;
    - the handout words never confirmed (*atto, lasan, aadu, hardar, jeeru, rai, elchi, loon, trae, char, panj*).
 

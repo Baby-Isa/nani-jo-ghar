@@ -244,6 +244,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **30. What Mum's 5 Oct answers settle for the language engine** (engine docs updated; game code unchanged): (a) describing words agree in four forms, *wadho / wadha / wadhi* and *wadhe* before "with / in / on" (*wadhe chokre sathe*); *lal* (red) never changes; (b) a he-word in *-o* takes *-e* before a postposition, and so do its describing word and its "of" word (*Nani je ambe je mathe*): `noun.o-he` `sg.obl` moves from `unknown` to a `draft` default `{stem}e`; (c) "of" (*jo / ji / ja / je*) agrees with the thing owned, never the owner; (d) "be" is *aiya / aiye / aayo / ai / ain* by person and number; (e) two "we"s, *pa* (with you) and *asa* (without you); (f) an unknown thing takes the he-form (*Nana jo ai*), as rule G2's default already says. Spellings stay drafts until Zafar ticks them.
   Source: Mum, recordings of 5 Oct, `sources/audio/mum-2026-10-05/C22-C49.m4a` 0:14–7:54 and `C79.m4a` 0:25–29:31 (grammar-notes §40–§55). Rule: G2, G9–G13
 
+- **31. Spellings from Mum's 5 Oct recordings:** all eleven in `build/reports/mum-2026-10-05.md` confirmed, except cold, which is ***thundo*** (not *thandu*). The clinic's "Ne poi cloth, ba dabs" may wrap at 800×360 for now (it is at the text floor). Before Zafar plays tonight: wire Mum's new words into Cook and the clinic, and wire the clinic heal art that has landed.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: G3, D3
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

@@ -591,7 +591,7 @@ Rough transcript: `sources/audio/mum-2026-10-05/I1-I35.md`. Whisper turned most 
 | I32 | ladle | ***chamcho*** (the big spoon); "there are special words for teaspoon and tablespoon, but not the other ones" | clear (6:18–6:28) |
 | I33 | flame / the stove | flame = fire = ***aag*** (no difference). Stove: ***chulo***. Light the stove: ***chulo bar*** (*bar* = light it) | clear (6:28–6:52) |
 | I34 | hot (to touch) | ***garam***, ***garam ai***. Zafar asked about *koso*: Mum thinks it's Gujarati taken into Kutchi, and asked Claude to check (below) | *garam* clear; *koso* ⚠ (6:53–7:17) |
-| I35 | cold (food gone cold) | ***thandu thai vyo*** (it's gone cold). Dad says ***thadhu***: "a different dialect of Kutchi; I would never say *thadhu*" | ⚠ spelling (7:18–7:35) |
+| I35 | cold (food gone cold) | ***thundo thai vyo*** (it's gone cold). Dad says ***thadhu***: "a different dialect of Kutchi; I would never say *thadhu*" | ⚠ spelling (7:18–7:35) |
 
 ### Claude's check (Mum asked at 7:14: "which is Gujarati and which is more Sindhi?")
 Not evidence: a lead for Masi. Gujarati has *garam* and *ūnũ* for hot; Sindhi has *garm* and ***kosō*** (warm, hot). So *koso* looks **Sindhi**, not Gujarati, which would make it the older Kutchi word and *garam* the shared one. For cold, Gujarati is *ṭhaṇḍũ* and Sindhi ***thadho***: Dad's *thadhu* is the Sindhi-side form, Mum's *thandu* the Gujarati-side one. *tapelo* is Gujarati *tapeli*; *welan* is Gujarati *veḷaṇ*; *firai* fits Gujarati *pherav-* (turn); *tar* fits Gujarati *taḷ-* (fry); *chakh* is both. *mayai*, *sufuria*, *bakuli*, *mogo* are Swahili.
@@ -787,7 +787,7 @@ Much more of it. **Settled from these three files:** describing words agree (*wa
 1. I7 **roll** (rolling out a maani), I24 **oil**, I31 **board** (chopping or rolling), I17 **sprinkle** (she said she'd think of the word).
 2. I23: the Swahili word for chicken (*kuku*?), and which one Nani would say in the game.
 3. I29: *tapelo* or *sufuria* for the game ("we'll have to decide").
-4. I34–I35: *koso* (Sindhi-looking) vs *garam*; *thandu* vs Dad's *thadhu*: Masi's tie-break.
+4. I34–I35: *koso* (Sindhi-looking) vs *garam*; *thundo* vs Dad's *thadhu*: Masi's tie-break.
 5. C28, C30–C32: the he-word plural with "with / in / on / behind": *wadha chokra sathe* or *wadhe chokre sathe*? *wadha amba je mathe* or *wadhe ambe je mathe*?
 6. C58: "the boys' cup": *chokra jo cup* or *chokre jo cup*?
 7. C43: the short word after *je lal ai …* ("the one that is red, …").
