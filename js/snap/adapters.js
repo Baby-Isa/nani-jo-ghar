@@ -35,7 +35,7 @@
       if ((Cook.audioManifest.word || []).includes(id)) urls.push(`assets/audio/word/${id}.mp3`);
       const k = Cook.norm(Cook.kutchi(id));
       if (Cook.tts[k] && !urls.includes(Cook.tts[k])) urls.push(Cook.tts[k]);
-      if (urls.length) await S.loadTemplates(id, urls).catch(() => 0);
+      if (urls.length) await S.loadTemplates(id, urls.map((u) => Cook.v(u))).catch(() => 0);
     }
   }
 

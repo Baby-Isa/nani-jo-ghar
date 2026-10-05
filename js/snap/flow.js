@@ -130,7 +130,7 @@
     const p = UI.panel(`
       <h2>${esc(g.name)} · level ${card.level}${card.lab ? ` <small class="seed">seed ${card.seed}</small>` : ""}</h2>
       <div class="cards"><div class="ccard rcard res-card"><div class="rc-left">
-        <div class="cc-head"><img src="assets/cook/characters/nani-badge.webp" alt="">Nani's photos</div>
+        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="">Nani's photos</div>
         <span class="cc-coins"><i class="coin-dot"></i>+${card.coins}</span>
         <div class="cc-stars">${starsHtml(card.stars)}</div>
         <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>Pocket money</span><b>${card.coins}</b></div></div>

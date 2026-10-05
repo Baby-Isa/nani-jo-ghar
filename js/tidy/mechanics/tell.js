@@ -16,7 +16,7 @@
     run(z, p, k) {
       const H = z.host;
       const ali = Tidy.el("div", "ali", z.el);
-      ali.style.backgroundImage = "url(assets/cook/characters/cousin-happy.webp)";
+      ali.style.backgroundImage = `url(${Cook.v("assets/cook/characters/cousin-happy.webp")})`;
       Object.assign(ali.style, { left: "1450px", top: "560px" });
       const walk = async (x, y) => {
         ali.style.left = `${x - 75}px`;

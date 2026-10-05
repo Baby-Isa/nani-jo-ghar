@@ -89,7 +89,7 @@
   /* ---------------- small helpers ---------------- */
   Find.rint = (a, b) => (b == null ? (Array.isArray(a) ? Find.rint(a[0], a[1]) : a) : a + Math.floor(Math.random() * (b - a + 1)));
   Find.now = () => performance.now();
-  Find.picture = (id) => (Cook.data.words[id] || {}).picture || null;
+  Find.picture = (id) => Cook.v((Cook.data.words[id] || {}).picture || null);
   Find.groups = () => Find.data.lookalike_groups.groups;
   Find.groupOf = (id) => Find.groups().find((g) => g.includes(id)) || null;
   Find.sameGroup = (a, b) => {

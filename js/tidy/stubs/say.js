@@ -28,7 +28,7 @@
       choices.map((id) => {
         if (Say.loaded[id] || !global.Cook.hasAudio(id)) return null;
         Say.loaded[id] = true;
-        return S.loadTemplates(id, [`assets/audio/word/${id}.mp3`]).catch(() => null);
+        return S.loadTemplates(id, [global.Cook.v(`assets/audio/word/${id}.mp3`)]).catch(() => null);
       })
     );
   };

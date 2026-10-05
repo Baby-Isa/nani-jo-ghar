@@ -1,0 +1,1 @@
+{"id": "monsoon", "adapter": "script", "script": "build/tools/review/leak-games/monsoon.mjs", "about": "Monsoon rush: calls, timing and the voice bots (Node)"}

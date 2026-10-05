@@ -1,0 +1,1 @@
+{"id": "who", "adapter": "script", "script": "build/tools/review/leak-games/who.mjs", "about": "Who did it?: the blind strategies and the rules (Node)"}

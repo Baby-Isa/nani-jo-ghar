@@ -96,7 +96,7 @@
   Tidy.stageOverride = null; // the lab's word-stage override (1-4)
   Tidy.stage = (id) => Tidy.stageOverride || Cook.wordStage(id);
   Tidy.english = (id) => Cook.english(id);
-  Tidy.picture = (id) => (Cook.data.words[id] || {}).picture || null;
+  Tidy.picture = (id) => Cook.v((Cook.data.words[id] || {}).picture || null);
   /** A row as a Cook line {segs, en}; a count shows its digit while the number word is at stage 1-2 (G7). */
   Tidy.line = function (parts) {
     const segs = [];

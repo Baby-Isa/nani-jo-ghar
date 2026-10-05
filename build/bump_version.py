@@ -94,6 +94,24 @@ def import_map(page, v):
     return json.dumps({"imports": imports}, indent=1)
 
 
+def coverage(v):
+    """What a stamp reaches, by group (shown on --dry-run and --list): the import map's modules, the stylesheets, the data."""
+    mods = module_files()
+    groups = {}
+    for m in mods:
+        parts = m.split("/")
+        key = "/".join(parts[:4]) + "/" if m.startswith("js/core/lang/engine/") else ("js/shared/" if parts[1] == "shared" else parts[1] + "/")
+        groups.setdefault(key, []).append(parts[-1])
+    out = [f"import map: {len(mods)} modules"]
+    for k in sorted(groups):
+        out.append(f"  js/{k.replace('js/', '')}: " + ", ".join(sorted(groups[k])))
+    css_n = len(glob.glob(os.path.join(ROOT, "css", "**", "*.css"), recursive=True))
+    tokens = [p for p in PAGES if "css/shared/tokens.css" in open(os.path.join(ROOT, p), encoding="utf-8").read()]
+    out.append(f"stylesheets: {css_n} files under css/ (url() and @import), css/shared/tokens.css: stamped by the tag on {len(tokens)} pages and by the @import in css/shared/app.css")
+    out.append("data/lang/** and every data fetch: no tag to stamp; code builds the URL and routes it through Cook.v() / njgV() (build/check_stamps.mjs proves it in a browser)")
+    return "\n".join(out)
+
+
 def write(path, text, dry):
     if not dry:
         open(path, "w", encoding="utf-8").write(text)
@@ -140,6 +158,8 @@ def main():
             changed.append(os.path.relpath(p, ROOT))
 
     print(f"{'dry run, would stamp ' if dry else ''}version {v}: " + ", ".join(changed))
+    if dry or "--list" in sys.argv:
+        print(coverage(v))
 
 
 if __name__ == "__main__":

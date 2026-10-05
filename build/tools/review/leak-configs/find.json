@@ -1,0 +1,1 @@
+{"id": "find", "adapter": "script", "script": "build/tools/review/leak-games/find.mjs", "about": "Find it: generator checks and strategies per game, level and stage (Node)"}

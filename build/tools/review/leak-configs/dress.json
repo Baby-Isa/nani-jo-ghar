@@ -1,0 +1,1 @@
+{"id": "dress", "adapter": "script", "script": "build/tools/review/leak-games/dress.mjs", "about": "Dress up: every strategy per stage and route (Node)"}

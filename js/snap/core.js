@@ -71,7 +71,7 @@
   };
   Snap.knobs = (game, level) => Snap.Req.knobs(Snap.data, game, level);
   Snap.now = () => performance.now();
-  Snap.picture = (id) => (Cook.data.words[id] || {}).picture || `assets/items/fruit/${id}.png`;
+  Snap.picture = (id) => Cook.v((Cook.data.words[id] || {}).picture || `assets/items/fruit/${id}.png`);
 
   /* ---------------- a row's words ---------------- */
   /** The words of a row as a phrase: "trae aamo", "vadho aamo". */

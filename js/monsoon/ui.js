@@ -204,7 +204,7 @@
         return `<div class="ic-word"><button type="button" class="ic-hear" data-w="${esc(id)}" aria-label="Hear it">${ICON.speaker}</button>${w.kutchi ? `<span class="k">${esc(w.kutchi)}</span>` : `<span class="ph">${esc(w.english || id)}</span>`}</div>`;
       });
       box.querySelector(".ic-card").innerHTML = `
-        <div class="ic-head"><img class="ic-face" src="assets/cook/characters/nani-badge.webp" alt="Nani"><div class="ic-name">${esc(game.name)}</div></div>
+        <div class="ic-head"><img class="ic-face" src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="Nani"><div class="ic-name">${esc(game.name)}</div></div>
         <div class="ic-seq">${seq.map((k) => `<span class="ic-step">${ICON[k]}</span>`).join('<span class="ic-arrow">→</span>')}</div>
         ${newLines.length ? `<div class="ic-new">${newLines.join("")}</div>` : ""}
         ${storm.placeholder ? `<div class="ic-ph">Some words are English placeholders: not yet a Kutchi test</div>` : ""}

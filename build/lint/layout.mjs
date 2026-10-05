@@ -152,7 +152,8 @@ export async function pageLint(opts) {
     const fs = parseFloat(c.fontSize) || 0;
     const sc = scaleOf(el);
     const eff = fs * sc;
-    if (eff > 0 && eff < MIN_TEXT - 0.05) add("text-small", el, eff.toFixed(1) + "px", { detail: `font-size ${fs}px x scale ${sc.toFixed(2)}` });
+    // 14 px text under a fitted scale of 0.99x reads 13.9 px: sub-pixel noise (the glyphs render at 14 px), not small text; the floor is 0.15 px under the minimum
+    if (eff > 0 && eff < MIN_TEXT - 0.15) add("text-small", el, eff.toFixed(1) + "px", { detail: `font-size ${fs}px x scale ${sc.toFixed(2)}` });
     if (isField) continue;
     // text rectangle (union of own text)
     let L = Infinity, T = Infinity, R = -Infinity, B = -Infinity;

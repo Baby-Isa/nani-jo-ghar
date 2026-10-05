@@ -1,0 +1,1 @@
+{"id": "cook", "adapter": "script", "script": "build/tools/review/leak-games/cook.mjs", "about": "Cook in cook.html: count the cards, tap till it ticks (a browser: one at a time under the lock)"}

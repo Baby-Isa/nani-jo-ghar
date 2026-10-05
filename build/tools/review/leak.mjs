@@ -3,7 +3,7 @@
  * One generic leak harness (C10, non-negotiable 6): the Sceptic as code. A bot that knows no Kutchi plays a game with strategies that see
  * only what is on screen (pictures, order, what it already tried), never the words. Pass: "fair" wins 100% at every level; every other
  * strategy wins under the limit (10%) at level 1. A game needs only a small config in build/tools/review/leak-configs/<name>.json;
- * the old per-game scripts (build/leak_*.mjs) stay as they are.
+ * the old per-game scripts (build/leak_*.mjs) are thin wrappers that run this with their config.
  *
  *   node build/tools/review/leak.mjs <name|path.json> [--rounds 1000] [--l1 5000] [--seed 1] [--json out.json]
  *   node build/tools/review/leak.mjs --list
@@ -11,6 +11,9 @@
  * Config: { "id": "clinic-heal-knee", "adapter": "heal-registry",
  *           "registry": "js/clinic/heal/registry.js", "load": ["js/clinic/heal/games/knee.js"], "games": ["knee"],
  *           "blindMax": 0.1, "accepted": { "knee": { "under": 0.3, "why": "..." } } }
+ * A game with its own bot (Cook in a browser, the clinic pipeline, the modes' generators and chi-square checks) has a "script" config:
+ *   { "id": "find", "adapter": "script", "script": "build/tools/review/leak-games/find.mjs", "args": ["--bot", "500"], "about": "..." }
+ * leak.mjs runs that script with the flags after the config name (or "args" when none) and takes its output and exit code as the verdict.
  * Adapters (the small contract a game's bot has to give): "heal-registry" is built in. Another game names its own module:
  *   "adapter": "path/to/adapter.mjs" exporting default (config, require) => { games, def(id) -> {levels, problems?, part?, gestures?},
  *   strategies(id, level), run(id, level, strategy, rng) -> {win, right, total}, rows(id, level, rng) -> [{placeholder?}] }.
@@ -24,13 +27,21 @@ import { args, help, ROOT, TOOLS, die } from "./lib/common.mjs";
 const HELP = fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, "");
 const a = args(); help(HELP, a);
 const CONF = path.join(TOOLS, "leak-configs");
-if (a.has("list")) { for (const f of fs.readdirSync(CONF).filter((x) => x.endsWith(".json"))) { const c = JSON.parse(fs.readFileSync(path.join(CONF, f), "utf8")); console.log(`${f.replace(/\.json$/, "").padEnd(28)} ${c.games.join(", ")}${c.accepted ? "  (accepted: " + Object.keys(c.accepted).join(", ") + ")" : ""}`); } process.exit(0); }
+if (a.has("list")) { for (const f of fs.readdirSync(CONF).filter((x) => x.endsWith(".json"))) { const c = JSON.parse(fs.readFileSync(path.join(CONF, f), "utf8")); console.log(`${f.replace(/\.json$/, "").padEnd(28)} ${c.adapter === "script" ? "script: " + c.about : c.games.join(", ")}${c.accepted ? "  (accepted: " + Object.keys(c.accepted).join(", ") + ")" : ""}`); } process.exit(0); }
 const which = a.pos[0];
 if (!which) die("Name a config (--list shows them): leak.mjs clinic-heal-cut");
 const cfgPath = fs.existsSync(which) ? which : path.join(CONF, which.replace(/\.json$/, "") + ".json");
 if (!fs.existsSync(cfgPath)) die(`No config ${which}. --list shows them.`);
 const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
 const require = createRequire(import.meta.url);
+
+// ---- a game with its own bot: run its script, its output and exit code are the verdict ----
+if (cfg.adapter === "script") {
+  const { spawnSync } = await import("child_process");
+  const rest = process.argv.slice(process.argv.indexOf(which) + 1);
+  const r = spawnSync(process.execPath, [path.join(ROOT, cfg.script), ...(rest.length ? rest : cfg.args || [])], { stdio: "inherit", cwd: ROOT });
+  process.exit(r.status === null ? 1 : r.status);
+}
 
 // ---- adapters ----
 const ADAPTERS = {

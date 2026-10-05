@@ -30,9 +30,9 @@
       $("#live").prepend(card);
     }
     card.innerHTML =
-      `<div class="ac-head"><img class="ac-face" src="assets/cook/characters/nani-badge.webp" alt=""><b>Your list: tell Ali</b></div>` +
+      `<div class="ac-head"><img class="ac-face" src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt=""><b>Your list: tell Ali</b></div>` +
       `<div class="ali-list">${wants
-        .map((w, i) => `<div class="ali-pic${w.size ? ` ap-${w.size === "ph-big" ? "big" : "small"}` : ""}${i < now ? " done" : i === now ? " now" : ""}" title="${esc(Cook.data.words[w.noun].english)}"><img alt="" src="${esc(Find.picture(w.noun))}">${w.count > 1 || Find.data.mechanics.ali.showOne ? `<span class="ap-n">${w.count}</span>` : ""}</div>`)
+        .map((w, i) => `<div class="ali-pic${w.size ? ` ap-${w.size === "ph-big" ? "big" : "small"}` : ""}${i < now ? " done" : i === now ? " now" : ""}" title="${esc(Cook.data.words[w.noun].english)}"><img alt="" src="${esc(Cook.v(Find.picture(w.noun)))}">${w.count > 1 || Find.data.mechanics.ali.showOne ? `<span class="ap-n">${w.count}</span>` : ""}</div>`)
         .join("")}</div>`;
     return card;
   }

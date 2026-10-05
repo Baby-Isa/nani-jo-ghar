@@ -24,9 +24,10 @@
 <link rel="stylesheet" href="css/shared/order-card.css?v=20261001T045807Z">
 <link rel="stylesheet" href="css/shared/buttons.css?v=20261001T045807Z">
 <style>
-  /* the lab page's own chrome only: the stage fills the screen; the shared frame (R3a) goes round it when it lands */
+  /* the lab page's own chrome only: the host's frame ({root, play, own}, R3a) fills the screen; the play area is where a stage draws */
   html, body { margin: 0; height: 100%; background: #f3e7d3; }
-  #lab-stage { position: fixed; inset: 0; overflow: hidden; }
+  #lab-app { position: fixed; inset: 0; overflow: hidden; }
+  #lab-stage { position: absolute; inset: 0; overflow: hidden; }
   .lab-note { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; font: 700 18px/1.4 "Nunito", system-ui, sans-serif; color: #3a2e28; }
   .lab-note > div { max-width: 560px; background: #fffaf1; border-radius: 16px; padding: 24px; box-shadow: 0 6px 18px rgba(58, 46, 40, .14); text-align: center; }
   .lab-note .lock { font-size: 48px; line-height: 1; }
@@ -69,7 +70,7 @@
 </script>
 </head>
 <body>
-<div id="lab-stage"></div>
+<div id="lab-app"><div id="lab-stage"></div></div>
 
 <script src="js/version.js?v=20261001T045807Z"></script>
 <!-- the shared kit, as every game page loads it (the one save is the core's, js/core/save.js: no classic save.js here) -->
@@ -87,7 +88,10 @@
 <script type="module">
   const q = new URLSearchParams(location.search);
   if (!q.has("play")) q.set("play", q.has("arc") ? "story" : "lab");
+  const appEl = document.getElementById("lab-app");
   const stageEl = document.getElementById("lab-stage");
+  // the host's frame: root = what a stage owns when its screen is "own", play = where a stage draws; the lab has no sidebar of its own
+  const frame = { root: appEl, play: stageEl, own: (on) => appEl.classList.toggle("own", !!on) };
   const note = (html) => {
     const d = document.createElement("div");
     d.className = "lab-note";
@@ -129,6 +133,7 @@
     };
     const host = M.createHost({
       root: stageEl,
+      frame,
       core,
       kit: { Results: window.Results, Onboard: window.Onboard },
       hook: true,

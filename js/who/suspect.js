@@ -68,7 +68,7 @@
   // a held item: the existing item art when there is one, else a drawn swatch
   S.heldHTML = function (a, cls) {
     if (!a) return "";
-    if (a.img) return `<img class="held ${cls || ""}" src="${a.img}" alt="" draggable="false" onerror="this.outerHTML='<div class=&quot;held drawn ${cls || ""}&quot; style=&quot;background:${a.colour}&quot;></div>'">`;
+    if (a.img) return `<img class="held ${cls || ""}" src="${Cook.v(a.img)}" alt="" draggable="false" onerror="this.outerHTML='<div class=&quot;held drawn ${cls || ""}&quot; style=&quot;background:${a.colour}&quot;></div>'">`;
     return `<div class="held drawn ${cls || ""}" style="background:${a.colour}"></div>`;
   };
 
