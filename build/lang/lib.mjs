@@ -137,8 +137,15 @@ export class Store {
     if (!id) {
       // the same word from another source: the same pos and the same spelling is the same entry
       const same = lemmaKey ? (this.byLemma.get(norm(lemmaKey)) || []).find((i) => this.entries.get(i) && this.entries.get(i).pos === e0.pos) : null;
+      // a placeholder waiting for exactly this word (same part of speech, same English): the word fills it in
+      const hasKutchi = !!(e0.lemma || lemmaKey || e0.parts || (e0.forms && Object.keys(e0.forms).length));
+      const waiting = !same && hasKutchi && e0.status !== "to-record" && e0.gloss ? Array.from(this.entries.values()).find((x) => x.status === "to-record" && x.pos === e0.pos && norm(String(x.gloss).split(/[,;(]/)[0]) === norm(String(e0.gloss).split(/[,;(]/)[0])) : null;
       if (same) id = same;
-      else {
+      else if (waiting) {
+        id = waiting.id;
+        waiting.status = e0.status || "draft";
+        waiting.history = [...(waiting.history || []), { date: "2026-10-05", change: "was an English placeholder, to record", src: [].concat(e0.src || [])[0] || "step 4b" }];
+      } else {
         const base = conceptId(e0.pos, e0.gloss || e0.en);
         id = base;
         for (let n = 2; this.entries.has(id) || this.aliasOwner(id); n++) id = `${base}-${n}`;
@@ -236,7 +243,10 @@ export class Store {
       if (!e) continue;
       const byField = new Map();
       for (const c of cl) (byField.get(c.field) || byField.set(c.field, []).get(c.field)).push(c);
-      for (const [field, cs] of byField) {
+      for (let [field, cs] of byField) {
+        // a placeholder's "to record" is not a claim against a word that has since been given (it was filled in)
+        if (field === "status" && (e.lemma || (e.forms && Object.keys(e.forms).length) || (e.parts && e.parts.length))) cs = cs.filter((c) => c.value !== "to-record");
+        if (!cs.length) continue;
         const distinct = new Map();
         for (const c of cs) {
           const k = field === "status" ? c.value : norm(c.value);

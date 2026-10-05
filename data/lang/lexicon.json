@@ -834,50 +834,7 @@
    }
   },
   {
-   "id": "n.and-then-2",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.i-she",
-   "lemma": "ne poi",
-   "gloss": "and then",
-   "status": "confirmed",
-   "src": [
-    "data/clinic/heal/cut.json words.ne-poi: no source given",
-    "data/clinic/heal/foot.json words.nepoi: no source given",
-    "data/clinic/heal/hair.json words.nepoi: no source given",
-    "data/clinic/heal/hic.json words.nepoi: no source given",
-    "data/clinic/heal/tummy.json words.nepoi: no source given"
-   ],
-   "aliases": [
-    "ne-poi",
-    "nepoi"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   }
-  },
-  {
    "id": "n.apple",
-   "pos": "N",
-   "gender": null,
-   "gloss": "apple",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.cl-apple: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
-   ],
-   "aliases": [
-    "cl-apple"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "n.apple-2",
    "pos": "N",
    "gender": null,
    "paradigm": "noun.invariant",
@@ -885,16 +842,28 @@
    "gloss": "apple",
    "status": "draft",
    "src": [
+    "data/clinic/lang.json words.cl-apple: English placeholder (to record): a word the clinic's lines use with no Kutchi yet",
     "data/content.json words.fru-08: handout (class handout / content master; never confirmed by Mum)"
    ],
    "aliases": [
+    "cl-apple",
     "fru-08"
    ],
    "ask": {
+    "word": [
+     "new"
+    ],
     "gender": [
      "new"
     ]
-   }
+   },
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "data/content.json words.fru-08: handout (class handout / content master; never confirmed by Mum)"
+    }
+   ]
   },
   {
    "id": "n.arm",
@@ -1086,29 +1055,6 @@
    "status": "draft",
    "src": [
     "grammar-notes §38 I14 (samosa tar, bhajiya tar: ⚠)"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "n.big",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.o-he",
-   "lemma": "wadho",
-   "gloss": "big",
-   "status": "draft",
-   "src": [
-    "data/clinic/heal/cut.json words.wadho: no source given",
-    "data/clinic/heal/eye.json words.big: no source given",
-    "data/clinic/heal/foot.json words.big: a copy of this word"
-   ],
-   "aliases": [
-    "wadho",
-    "big"
    ],
    "ask": {
     "gender": [
@@ -3644,27 +3590,6 @@
    ]
   },
   {
-   "id": "n.half",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.invariant",
-   "lemma": "adh",
-   "gloss": "half",
-   "status": "draft",
-   "src": [
-    "data/clinic/heal/hic.json words.adh: no source given",
-    "data/clinic/heal/tummy.json words.adh: a copy of this word"
-   ],
-   "aliases": [
-    "adh"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   }
-  },
-  {
    "id": "n.hammer",
    "pos": "N",
    "gender": null,
@@ -4861,26 +4786,6 @@
    }
   },
   {
-   "id": "n.not",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.invariant",
-   "lemma": "na",
-   "gloss": "not",
-   "status": "draft",
-   "src": [
-    "data/clinic/heal/eye.json words.no: no source given"
-   ],
-   "aliases": [
-    "no"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   }
-  },
-  {
    "id": "n.nothing",
    "pos": "N",
    "gender": null,
@@ -6029,29 +5934,6 @@
    ],
    "ask": {
     "word": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "n.small",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.o-he",
-   "lemma": "nindho",
-   "gloss": "small",
-   "status": "confirmed",
-   "src": [
-    "data/clinic/heal/cut.json words.nindho: no source given",
-    "data/clinic/heal/eye.json words.small: no source given",
-    "data/clinic/heal/foot.json words.small: a copy of this word"
-   ],
-   "aliases": [
-    "nindho",
-    "small"
-   ],
-   "ask": {
-    "gender": [
      "new"
     ]
    }
@@ -7956,16 +7838,25 @@
    "lemma": "adh",
    "say": "udd",
    "gloss": "half (of an amount: adh cup)",
-   "status": "confirmed",
+   "status": "draft",
    "src": [
     "grammar-notes §24 B4",
-    "data/cook.json words.ph-half: Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet"
+    "data/cook.json words.ph-half: Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet",
+    "data/clinic/heal/hic.json words.adh: no source given",
+    "data/clinic/heal/tummy.json words.adh: a copy of this word"
    ],
    "aliases": [
-    "ph-half"
+    "ph-half",
+    "adh"
    ],
    "notes": [
     "adh for amounts (half a cup of milk); ardo / ardi for a half portion."
+   ],
+   "open": [
+    {
+     "q": "Sources disagree on the status: \"draft\" (data/clinic/heal/hic.json) vs \"confirmed\" (hand: grammar-notes prose; data/cook.json). Using \"draft\" for now.",
+     "src": "step 4b importers (clash list)"
+    }
    ]
   },
   {
@@ -7980,10 +7871,15 @@
     "grammar-notes §40, §41",
     "decision 30 (a)",
     "lexicon.md §6.3 (C22-C49 0:14–5:52)",
-    "data/cook.json words.ph-big: Zafar 25 Sept, phonetic; wadho / wadhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B6)"
+    "data/cook.json words.ph-big: Zafar 25 Sept, phonetic; wadho / wadhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B6)",
+    "data/clinic/heal/cut.json words.wadho: no source given",
+    "data/clinic/heal/eye.json words.big: no source given",
+    "data/clinic/heal/foot.json words.big: a copy of this word"
    ],
    "aliases": [
-    "ph-big"
+    "ph-big",
+    "wadho",
+    "big"
    ],
    "notes": [
     "forms: A describing word agrees with its noun: wadho for he-words, wadhi for she-words like maani (both confirmed). No V at the start of a Kutchi word: was vadho.",
@@ -8180,28 +8076,12 @@
   {
    "id": "a.green",
    "pos": "A",
-   "gloss": "green",
-   "status": "to-record",
-   "src": [
-    "data/clinic.json words.col-green: placeholder"
-   ],
-   "aliases": [
-    "col-green"
-   ],
-   "ask": {
-    "word": [
-     "E61"
-    ]
-   }
-  },
-  {
-   "id": "a.green-2",
-   "pos": "A",
    "paradigm": "adj.o",
    "lemma": "lilo",
    "gloss": "green",
    "status": "confirmed",
    "src": [
+    "data/clinic.json words.col-green: placeholder",
     "data/clinic/lang.json words.col-green: Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct",
     "data/clinic/lang.json words.green: the same word as col-green, for games that name a colour by its plain id (the boing): Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct",
     "data/dress.json words.ph-green: an English placeholder, to record",
@@ -8212,6 +8092,18 @@
     "green",
     "ph-green",
     "ph-col-green"
+   ],
+   "ask": {
+    "word": [
+     "E61"
+    ]
+   },
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "data/clinic/lang.json words.col-green: Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct"
+    }
    ]
   },
   {
@@ -8550,10 +8442,15 @@
    "status": "confirmed",
    "src": [
     "lexicon.md §6.3 (C22-C49 23:06–25:22)",
-    "data/cook.json words.ph-small: Zafar 25 Sept, phonetic; nindho / nindhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B7)"
+    "data/cook.json words.ph-small: Zafar 25 Sept, phonetic; nindho / nindhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B7)",
+    "data/clinic/heal/cut.json words.nindho: no source given",
+    "data/clinic/heal/eye.json words.small: no source given",
+    "data/clinic/heal/foot.json words.small: a copy of this word"
    ],
    "aliases": [
-    "ph-small"
+    "ph-small",
+    "nindho",
+    "small"
    ],
    "notes": [
     "forms: As ph-big: nindho (he-words), nindhi (she-words like maani), both confirmed.",
@@ -11730,17 +11627,25 @@
      "src": "grammar-notes §11 (khun nati khape; spelling confirmed by Zafar)"
     }
    },
-   "status": "confirmed",
+   "status": "draft",
    "src": [
     "grammar-notes §11, §12",
     "rule G5 (no = na)",
-    "data/cook.json words.ph-no: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na, not nar (nar = look). The polite whole sentence is muke na khape (nato / nati agree)"
+    "data/cook.json words.ph-no: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na, not nar (nar = look). The polite whole sentence is muke na khape (nato / nati agree)",
+    "data/clinic/heal/eye.json words.no: no source given"
    ],
    "aliases": [
-    "ph-no"
+    "ph-no",
+    "no"
    ],
    "notes": [
     "na agrees with the thing wanted in the full refusal: nato (he), nati (she) (§24 B1, §11)."
+   ],
+   "open": [
+    {
+     "q": "Sources disagree on the status: \"draft\" (data/clinic/heal/eye.json) vs \"confirmed\" (4a seed (grammar-notes, cited per entry); data/cook.json). Using \"draft\" for now.",
+     "src": "step 4b importers (clash list)"
+    }
    ],
    "history": [
     {
@@ -12176,10 +12081,17 @@
    "src": [
     "grammar-notes §7 (ne poi = and then, confirmed)",
     "grammar-notes §24 B12",
-    "data/cook.json words.lnk-nepoi: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B12): ne poi confirmed"
+    "data/cook.json words.lnk-nepoi: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B12): ne poi confirmed",
+    "data/clinic/heal/cut.json words.ne-poi: no source given",
+    "data/clinic/heal/foot.json words.nepoi: no source given",
+    "data/clinic/heal/hair.json words.nepoi: a copy of this word",
+    "data/clinic/heal/hic.json words.nepoi: a copy of this word",
+    "data/clinic/heal/tummy.json words.nepoi: a copy of this word"
    ],
    "aliases": [
-    "lnk-nepoi"
+    "lnk-nepoi",
+    "ne-poi",
+    "nepoi"
    ]
   },
   {
@@ -12937,7 +12849,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -12957,7 +12869,7 @@
    "gloss": "don't come with me (a different meaning)",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -13000,7 +12912,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -13027,7 +12939,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -13047,7 +12959,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -13063,7 +12975,7 @@
    "gloss": "don't touch! (urgent: it's hot)",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -13106,7 +13018,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -14086,7 +13998,7 @@
      "cell": "dat"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15261,14 +15173,14 @@
    "gloss": "No, I don't want any.",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
      "punct": ","
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15295,7 +15207,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -15311,7 +15223,7 @@
    "gloss": "no, thank you",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15365,7 +15277,7 @@
    "gloss": "no, I don't want it (polite)",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15456,7 +15368,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -15476,7 +15388,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -15497,7 +15409,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15524,7 +15436,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -16153,7 +16065,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],

@@ -30,19 +30,21 @@ The family, or two of our sources, give more than one word for the same thing. W
 5. **pot** (`n.pot`): Two words for the same thing (tapelo / sufuria): which one does the game use?
 6. **pot** (`n.pot-2`): Two words for the same thing (tapelo / sufuria): which one does the game use?
 
-## 3. Status only: one source says confirmed, another draft (9)
+## 3. Status only: one source says confirmed, another draft (11)
 
 The more cautious status is used (a draft shows flagged until Zafar ticks it). These are mostly a game's draft flag that has not caught up with a later answer from Mum, or the reverse.
 
 1. **two** (`num.2`): the engine uses confirmed (4a seed (grammar-notes, cited per entry)); the other source says draft (data/cook.json). **Settled:** two = ba (voiced ber) is settled; data/cook.json still flags it draft (rule G5 (settled words); grammar-notes §35 (two is ba, confirming §3)).
 2. **kitchen** (`n.kitchen`): the engine uses confirmed (lexicon.md §6); the other source says draft (4a seed (grammar-notes, cited per entry)). **Settled:** rasoro is Mum's own word (Aau rasore me aiya); only its -e form before a postposition is a draft, and that is the paradigm cell's status (grammar-notes §20, §51 C61).
 3. **with (mixed in)** (`post.mixed-in`): the engine uses confirmed (4a seed (grammar-notes, cited per entry)); the other source says draft (data/cook.json). **Settled:** Mum said waari in the 25 Sept recording (dudh waari chai, khun waari chai, kesar waari chai); data/cook.json's draft flag is about its frame lines, which stay drafts (grammar-notes §6).
-4. **put (down), place; keep** (`v.put`): the engine uses confirmed (hand: grammar-notes prose); the other source says draft (lexicon.md §6). **Settled:** rakh itself is confirmed by Mum's own sentences (thori war rakh, dhyan rakh, saani je agiya rakh); the warning in lexicon §6.1 is about rakhi chad, which stays a draft on its own form (grammar-notes §16, §25 B16, §27 B49, §38 I18).
-5. **skewer (a stick)** (`n.skewer`): the engine uses confirmed (hand: grammar-notes prose; lexicon.md §6); the other source says draft (data/cook.json). **Settled:** lakri is Mum's own word (hakri lakri, char lakri, mishkaki ji lakri); data/cook.json's draft flag is about using it with gos, boga and mixed, which is a draft on the Unit rule, not on the word (grammar-notes §25, §34 P8, §39 I28).
-6. **do you know who I am?** (`phrase.do-you-know-who-i-am`): the engine uses draft (hand: grammar-notes prose); the other source says confirmed (data/cook.json).
-7. **you're welcome (it's no trouble at all)** (`phrase.youre-welcome-its-no-trouble-at-all`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
-8. **will you help me cook?** (`phrase.will-you-help-me-cook`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
-9. **mmm, lovely chai! well done, dear.** (`phrase.mmm-lovely-chai-well-done-dear`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
+4. **no / not** (`neg.not`): the engine uses draft (data/clinic/heal/eye.json); the other source says confirmed (4a seed (grammar-notes, cited per entry); data/cook.json).
+5. **half (of an amount: adh cup)** (`a.adh`): the engine uses draft (data/clinic/heal/hic.json); the other source says confirmed (hand: grammar-notes prose; data/cook.json).
+6. **put (down), place; keep** (`v.put`): the engine uses confirmed (hand: grammar-notes prose); the other source says draft (lexicon.md §6). **Settled:** rakh itself is confirmed by Mum's own sentences (thori war rakh, dhyan rakh, saani je agiya rakh); the warning in lexicon §6.1 is about rakhi chad, which stays a draft on its own form (grammar-notes §16, §25 B16, §27 B49, §38 I18).
+7. **skewer (a stick)** (`n.skewer`): the engine uses confirmed (hand: grammar-notes prose; lexicon.md §6); the other source says draft (data/cook.json). **Settled:** lakri is Mum's own word (hakri lakri, char lakri, mishkaki ji lakri); data/cook.json's draft flag is about using it with gos, boga and mixed, which is a draft on the Unit rule, not on the word (grammar-notes §25, §34 P8, §39 I28).
+8. **do you know who I am?** (`phrase.do-you-know-who-i-am`): the engine uses draft (hand: grammar-notes prose); the other source says confirmed (data/cook.json).
+9. **you're welcome (it's no trouble at all)** (`phrase.youre-welcome-its-no-trouble-at-all`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
+10. **will you help me cook?** (`phrase.will-you-help-me-cook`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
+11. **mmm, lovely chai! well done, dear.** (`phrase.mmm-lovely-chai-well-done-dear`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
 
 ## 4. The game's data and a decision or an answer disagree
 
