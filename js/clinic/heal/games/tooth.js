@@ -117,7 +117,10 @@
     const kind = S.kind || (ctx.patient && ctx.patient.kind) || "girl";
     const art = (key) => {
       const a = data.art && data.art[key];
-      return a && a.ready && a.src ? Object.assign({}, a, { src: a.src.replace("{kind}", kind) }) : null;
+      // A1: a {kind} picture only for the kinds that have it cut (a.kinds); the @2x on dense screens (a.has2x)
+      if (!a || !a.ready || !a.src || (a.kinds && a.src.includes("{kind}") && !a.kinds.includes(kind))) return null;
+      const two = a.has2x && (root.devicePixelRatio || 1) > 1.25;
+      return Object.assign({}, a, { src: a.src.replace("{kind}", kind).replace(two ? /\.webp$/ : /$^/, "@2x.webp") });
     };
     const FILL = Object.assign({}, K.fill, data.fill || {});
     const zone = (FILL.zone && FILL.zone[P.level]) || K.fill.zone[P.level];
