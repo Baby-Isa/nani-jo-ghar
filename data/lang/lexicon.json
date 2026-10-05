@@ -1,0 +1,1 @@
+{ "_about": "The one source of words (engine-design § 5.1; rules G13, G18, G26). Step 4b fills it from data/cook.json, data/clinic.json and grammar-notes; the schema is docs/language/engine-spec.md § Data. Every entry needs a source; a word with no known Kutchi is status to-record.", "entries": [] }

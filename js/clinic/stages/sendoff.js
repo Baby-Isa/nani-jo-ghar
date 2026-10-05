@@ -39,6 +39,11 @@
       const docEl = S.place(Kit.doctorFigure(box, "cl-doc-door"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
       const layer = S.place(h("div", "cl-patient-layer v2", box), { x: cfg.patient.x, y: cfg.patient.y, h: cfg.patient.h, w: cfg.patient.h * (620 / 900) / 1.5, z: 3 });
       const fig = env.fig;
+      // A2 (5 Oct): the art has sitting poses only (part B): standing at the door is still the stand-in body, with
+      // the patient's own face for each feeling in the circle (W2-W6's head crops, heal-art.json heads)
+      if (fig.dropArt) fig.dropArt();
+      const artSpec = await S.artFor(fig.kind);
+      const heads = (artSpec && artSpec.heads) || null;
       layer.appendChild(fig.el);
       fig.focus(null, null, 1, 0);
       fig.pose("stand");
@@ -52,7 +57,13 @@
       const circle = h("div", "cl-feel-circle on-face", layer);
       const showFeel = (f) => {
         circle.innerHTML = "";
-        if (f) Kit.feelingFace(f, circle);
+        const own = f && heads && (heads[f] || heads[(data.feelings[f] && data.feelings[f].mood) || ""]);
+        if (own) {
+          const im = h("img", "cl-feel-own", circle);
+          im.alt = "";
+          im.src = Kit.url(own);
+        } else if (f) Kit.feelingFace(f, circle);
+        circle.classList.toggle("own", !!own);
         circle.classList.toggle("on", !!f);
         const head = fig.el.querySelector(".fig-head");
         if (head) {

@@ -95,17 +95,21 @@
   },
   "at": {
    "window": {
-    "x": 0.034,
-    "y": 0.43,
-    "h": 0.42,
-    "w": 0.066
+    "x": 0.0677,
+    "y": 0.4619,
+    "h": 0.4619,
+    "w": 0.1354,
+    "hang": true,
+    "_a2": "A2 (5 Oct): R4's open window, registered on the painted one (heal-art.json rooms.window-open): it stays exactly there (hang)"
    },
    "ceiling-fan": {
-    "x": 0.33,
-    "y": 0.22,
-    "h": 0.13,
-    "w": 0.17,
-    "top": true
+    "x": 0.34,
+    "y": 0.15,
+    "h": 0.1,
+    "w": 0.1,
+    "art": 0.3,
+    "hang": true,
+    "_a2": "A2 (5 Oct): R2 hangs from the ceiling (on the square room's band), the blades at about y 0.13 (art plan 3.4). The button (h) is the motor and blades, always on screen; art = the whole picture's height, the downrod running up off a phone's crop (hang: never pushed down)"
    },
    "hand-fan": {
     "x": 0.668,
@@ -120,10 +124,11 @@
     "w": 0.06
    },
    "heater": {
-    "x": 0.215,
-    "y": 0.84,
+    "x": 0.37,
+    "y": 0.92,
     "h": 0.16,
-    "w": 0.11
+    "w": 0.11,
+    "_a2": "A2 (5 Oct): R1's heater on the open floor in front of the bed's left leg, clear of the toys and the rug (it stood on them at x 0.215)"
    },
    "bottle": {
     "x": 0.722,
@@ -145,9 +150,10 @@
    },
    "gauge": {
     "x": 0.8,
-    "y": 0.42,
-    "h": 0.3,
-    "w": 0.06
+    "y": 0.4,
+    "h": 0.28,
+    "w": 0.0529,
+    "_a2": "A2 (5 Oct): R5 on the wall at x 0.76-0.84, y 0.12-0.40 (art plan 3.4), at the picture's own shape"
    }
   }
  },
@@ -160,7 +166,27 @@
   "heater-on": "assets/clinic/room-items/heater-on.webp",
   "bottle": "assets/clinic/room-items/hot-water-bottle.webp",
   "blanket": "assets/clinic/items-v2/blanket-red.webp",
-  "thermometer": "assets/clinic/items-v2/thermometer.webp"
+  "thermometer": "assets/clinic/items-v2/thermometer.webp",
+  "fan": {
+   "body": "assets/clinic/room-items/fan-body.webp",
+   "blades": "assets/clinic/room-items/fan-blades.webp",
+   "foot": 0.93,
+   "disc": 2.2,
+   "_a2": "A2 (5 Oct): R2, the body (downrod and motor) and the blade disc from below; foot = where the motor's cap is, as a share of the body's height; disc = the blades' width against the body's. The code tilts the disc into view and spins it when on."
+  },
+  "gauge": {
+   "file": "assets/clinic/room-items/thermo-gauge.webp",
+   "w": 145,
+   "h": 512,
+   "tube": [
+    0.3724,
+    0.0391,
+    0.6207,
+    0.9551
+   ],
+   "bulb": 2.167,
+   "_a2": "A2 (5 Oct): R5, the empty gauge; tube = the glass from its top to the bulb's foot (x0, y0, x1, y1 as shares of the picture), bulb = the bulb's width against the tube's. The level and the zones stay code."
+  }
  },
  "throbMs": 8000
 }

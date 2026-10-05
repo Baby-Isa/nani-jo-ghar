@@ -1,0 +1,13 @@
+{
+  "_about": "TEST SEED ONLY: an example of the list a game hands the gap reporter (build/lang/gap-report.mjs --seed). Each need: label (for Mum's list), meaning, optional ctx.",
+  "needs": [
+    { "label": "order: one maani", "meaning": { "fn": "Need", "who": "p1", "thing": { "fn": "Item", "kind": "n.maani", "n": 1 } } },
+    { "label": "order: two mangoes (polite)", "ctx": { "register": "polite" }, "meaning": { "fn": "Need", "who": "p1", "thing": { "fn": "Item", "kind": "n.ambo", "n": 2 } } },
+    { "label": "order: sugar (polite)", "ctx": { "register": "polite" }, "meaning": { "fn": "Need", "who": "p1", "thing": { "fn": "Item", "kind": "n.khun" } } },
+    { "label": "order: oil", "meaning": { "fn": "Need", "who": "p1", "thing": { "fn": "Item", "kind": "n.oil" } } },
+    { "label": "order: two mangoes with a cup", "meaning": { "fn": "Need", "who": "p1", "thing": { "fn": "Item", "kind": "n.ambo", "n": 2, "with": [{ "fn": "Item", "kind": "n.cup" }] } } },
+    { "label": "with the big boys", "meaning": { "fn": "With", "x": { "fn": "Item", "kind": "n.chokro", "number": "pl", "mods": ["a.wadho"] } } },
+    { "label": "chai with milk", "meaning": { "fn": "MixedIn", "head": "n.chai", "x": "n.dudh" } },
+    { "label": "Nana's cup", "meaning": { "fn": "Of", "owner": "pn.nana", "thing": "n.cup" } }
+  ]
+}

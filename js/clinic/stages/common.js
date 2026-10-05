@@ -76,6 +76,43 @@
     }
     return stage;
   };
+  /**
+   * A2 (5 Oct), the square exam room (art plan R3, 2.2): a room with `square` (scenes-v2 rooms.exam.square, the
+   * 1536 x 1536 picture with CB2b kept pixel for pixel in rows 256-1280) shows its whole width on a screen taller
+   * than the room (a tablet), with the new ceiling and floor bands above and below, instead of cropping the sides.
+   * The scene box stays the 1536 x 1024 room, so every position in the scene's data keeps its meaning; the square
+   * picture is a layer inside the box that runs past its top and bottom, so it zooms with the box.
+   */
+  const squareFit = function (m, W, H, room, A) {
+    const sq = room && room.square;
+    if (!sq || W / H >= A) return m;
+    const need = room.need || [0, 1];
+    const w = Math.max(W, H); // the square must cover the height
+    const h2 = w / A;
+    const band = (sq.middle ? sq.middle[0] / (sq.size || 1536) : 1 / 6) * w; // the ceiling band's height on screen
+    const st = Math.min(0, Math.max(H - w, (H - w) * 0.5)); // the square's top
+    const left = w > W ? Math.min(0, Math.max(W - w, W / 2 - ((need[0] + need[1]) / 2) * w)) : 0;
+    return { w, h: h2, left, top: st + band };
+  };
+  const squareLayer = function (box, room) {
+    const sq = room && room.square;
+    let el = box.querySelector(":scope > .cl-scene-sq");
+    if (!sq) {
+      if (el) el.remove();
+      return;
+    }
+    if (!el) {
+      el = h("div", "cl-scene-sq");
+      box.insertBefore(el, box.firstChild);
+      el.style.backgroundImage = `url("${Kit.url(sq.src)}")`;
+    }
+    const size = sq.size || 1536;
+    const mid = sq.middle || [256, 1280];
+    const k = 100 / (mid[1] - mid[0]); // % of the box per source px
+    Object.assign(el.style, { top: `${-mid[0] * k}%`, height: `${size * k}%` });
+  };
+  S.squareFit = squareFit;
+
   /** Size the scene box: cover the stage when `need` fits, else fit `need`'s width, on the bottom. */
   S.fitScene = function (stage, box, cap, room, A) {
     const fit = () => {
@@ -106,9 +143,12 @@
         left = -need[0] * w;
         top = H - h2;
       }
+      const q = squareFit({ w, h: h2, left, top }, W, H, room, A);
+      (w = q.w), (h2 = q.h), (left = q.left), (top = q.top);
+      squareLayer(box, room);
       Object.assign(box.style, { width: `${w}px`, height: `${h2}px`, left: `${left}px`, top: `${top}px` });
       // the picture's top rows stretched up (the edge carried on), softened: no mirrored ghosts of the wall's pictures
-      if (top > 0) Object.assign(cap.style, { display: "block", left: `${left}px`, width: `${w}px`, top: "0px", height: `${top + 2}px`, backgroundSize: `100% ${h2 * 40}px`, backgroundPosition: "0 0" });
+      if (top > 0 && !room.square) Object.assign(cap.style, { display: "block", left: `${left}px`, width: `${w}px`, top: "0px", height: `${top + 2}px`, backgroundSize: `100% ${h2 * 40}px`, backgroundPosition: "0 0" });
       else cap.style.display = "none";
       stage.style.setProperty("--scene-w", `${w}px`);
       stage.style.setProperty("--scene-h", `${h2}px`);
@@ -137,9 +177,10 @@
         const W = stage.clientWidth;
         const H = stage.clientHeight;
         if (!W || !H) return;
-        const m = Stage.fit({ box: { w: W, h: H }, scene: spec });
+        const m = squareFit(Stage.fit({ box: { w: W, h: H }, scene: spec }), W, H, room, A_);
+        squareLayer(box, room);
         Object.assign(box.style, { width: `${m.w}px`, height: `${m.h}px`, left: `${m.left}px`, top: `${m.top}px` });
-        if (m.top > 0) Object.assign(cap.style, { display: "block", left: `${m.left}px`, width: `${m.w}px`, top: "0px", height: `${m.top + 2}px`, backgroundSize: `100% ${m.h * 40}px`, backgroundPosition: "0 0" });
+        if (m.top > 0 && !room.square) Object.assign(cap.style, { display: "block", left: `${m.left}px`, width: `${m.w}px`, top: "0px", height: `${m.top + 2}px`, backgroundSize: `100% ${m.h * 40}px`, backgroundPosition: "0 0" });
         else cap.style.display = "none";
         stage.style.setProperty("--scene-w", `${m.w}px`);
         stage.style.setProperty("--scene-h", `${m.h}px`);
@@ -150,6 +191,16 @@
       else global.addEventListener("resize", fit);
       return fit;
     };
+  };
+  /**
+   * A2 (5 Oct): a patient kind's real art (data/clinic/heal-art.json patients[kind], cut by
+   * build/cut_clinic_heal_v3.py), loaded once and shared with the heal host; null when that kind has none yet.
+   */
+  S.artFor = async function (kind) {
+    const HH = Clinic.HealHost;
+    if (!S._healArt) S._healArt = (HH && HH.healArt) || (await Kit.loadJSON("data/clinic/heal-art.json")) || {};
+    if (HH && HH.healArt == null) HH.healArt = S._healArt;
+    return (kind && S._healArt.patients && S._healArt.patients[kind]) || null;
   };
   /** Place an element in the scene box: x centre, y = its bottom (feet), h = height (shares of the picture). */
   S.place = function (el, { x, y, h: ht, z, w }) {

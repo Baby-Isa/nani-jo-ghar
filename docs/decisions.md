@@ -263,6 +263,18 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **37. The girl is enough to publish the clinic:** once every heal game and the patient flow run on the girl's finished art (part B, with its props), the clinic goes through the checks, is published and Zafar plays it. The other five patients (part C) and the drop machine (part D) are stitched in when they land. Refines decision 33's "art finished".
   Source: Zafar, orchestrator chat, 5 Oct. Rule: B20
 
+- **38. Closing the refactor chapter:** (a) Cook and the clinic on the new core is enough; the parked modes move onto it when their turn comes. (b) Step 4a (engine core) and 4b (fill from what's known) run now. (c) 4c is the minimum only: a gap reporter; the simulator and most-frequent-phrase analysis wait until whole arcs (or the first release) are settled, because recorded phrases must not change. (d) Before Zafar plays: remove Cook's workarounds (shims) and fix every Cook gameplay item that can be fixed now. (e) Zafar plays Cook and the clinic; his feedback fixes run together with 4d (Cook onto the engine) and 4e (the clinic onto the engine), unless 4a/4b finish early enough to do 4d/4e before he plays. (f) After 4d/4e: the docs rewrite. That closes the chapter.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: G12 (timing of whole-phrase recording)
+
+- **39. The roadmap after this chapter:** finish Cook and the clinic through play and feedback; choose with Zafar the next mode to finish Arc 1, and finish all of Arc 1's modes; put the story glue round Arc 1; build the beach trip first as the template, then the other destination trips; then the sewing arc with Big Ma. A release could run Arc 1 → Destination 1 → Clinic 1 → Destination 2 → Sewing 1 → Destination 3 → Clinic 2 → Destination 4 → Sewing 2.
+  Source: Zafar, orchestrator chat, 5 Oct.
+
+- **40. The engine holds all Kutchi knowledge:** 4b fills the engine with every known word from anywhere in the repo (every mode, parked ones included, the recordings, the lexicon, grammar notes and knowledge base, Mum's rounds) and every known grammar and syntax rule and exception (e.g. *mori chai*, *kari chai*). Everything the game or Claude knows about Kutchi comes from the engine, and every new piece of information (Mum's answers, recordings, corrections) is fed into the engine first.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: G26, G11
+
+- **41. The counting rule, made clear (and DAAR-08):** at every level the order is spoken at the start and replayable by the speaker. L1: written on the card, and Nani counts along as the child works. L2: written, no counting along. L3+: not written, no counting along; the child listens (and can replay). Daar's chop card follows it: no written quantity at L3+ (built in C3).
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: E12
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

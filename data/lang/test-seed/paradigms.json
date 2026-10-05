@@ -1,0 +1,42 @@
+{
+  "_about": "TEST SEED ONLY (step 4a): a few word classes from grammar-notes, for the engine's golden tests. Step 4b writes the real data/lang/paradigms.json.",
+  "paradigms": {
+    "noun.o-he": {
+      "pos": "N",
+      "stem": { "drop": "o" },
+      "cells": {
+        "sg.dir": { "make": "{stem}o", "status": "confirmed", "src": "grammar-notes §4, §35" },
+        "pl.dir": { "make": "{stem}a", "status": "confirmed", "src": "grammar-notes §4, §35 (ambo/amba, darwajo/darwaja, chokro/chokra)" },
+        "sg.obl": { "make": "{stem}e", "status": "draft", "src": "grammar-notes §41, §48, §49, §51 (5 Oct: chokre, ambe, darwaje, bakre, rasore); decision 30 (b)" },
+        "pl.obl": { "make": "{stem}a", "status": "draft", "src": "grammar-notes §36 C18, §41 C28 (chokra sathe ⚠: Mum wavers)" }
+      }
+    },
+    "noun.invariant": {
+      "pos": "N",
+      "cells": { "*": { "make": "{lemma}", "status": "confirmed", "src": "grammar-notes §35 (cup, table, limu), §36 C12, C16" } }
+    },
+    "noun.i-she": {
+      "pos": "N",
+      "cells": {
+        "sg.*": { "make": "{lemma}", "status": "confirmed", "src": "grammar-notes §4, §41 C29 (wadhi chokri sathe)" },
+        "pl.*": { "make": "{lemma}", "status": "confirmed", "src": "grammar-notes §4, §34, §35 (maani, dungri, mirchi stay the same)" }
+      }
+    },
+    "adj.o": {
+      "pos": "A",
+      "stem": { "drop": "o" },
+      "cells": {
+        "he.sg.dir": { "make": "{stem}o", "status": "confirmed", "src": "grammar-notes §40 C22-C26" },
+        "he.pl.dir": { "make": "{stem}a", "status": "confirmed", "src": "grammar-notes §40 C22, C24-C26" },
+        "she.*.dir": { "make": "{stem}i", "status": "confirmed", "src": "grammar-notes §40 C23, C27" },
+        "he.sg.obl": { "make": "{stem}e", "status": "confirmed", "src": "grammar-notes §41 C28, C30-C32 (wadhe chokre sathe); decision 30 (a)" },
+        "she.*.obl": { "make": "{stem}i", "status": "confirmed", "src": "grammar-notes §41 C29, C30 (wadhi chokriyu sathe)" },
+        "he.pl.obl": { "status": "unknown", "ask": ["C28", "C30", "C31", "C32"], "src": "grammar-notes §41 (the he-word plural before a postposition is open), § For Mum next time 5" }
+      }
+    },
+    "adj.invariant": {
+      "pos": "A",
+      "cells": { "*": { "make": "{lemma}", "status": "confirmed", "src": "grammar-notes §44 (laal never changes); decision 30 (a)" } }
+    }
+  }
+}

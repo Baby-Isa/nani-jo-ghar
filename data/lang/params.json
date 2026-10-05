@@ -1,0 +1,40 @@
+{
+  "_about": "The language engine's feature model (engine-design § 4; RGL Sindhi's feature set as a checklist, the values the family's Kutchi shows). No Kutchi words here. A value in a feature's `hyp` list is a reserved slot that no data may use until Mum confirms it (the validator rejects it). `defaultCell` is the form a word takes when a rule names no cell; `{x}` reads a feature from the word itself, then from the phrase it sits in, then from the slot's case. `addressee` maps an abstract person to the one said, by who is spoken to (rule G6).",
+  "version": 1,
+  "features": {
+    "gender": { "values": ["he", "she"], "default": "he", "defaultSrc": "Mum's rule for an unknown gender: grammar-notes §24 B4, §37.5, §50 (C60); decision 21, decision 30 (f)" },
+    "number": { "values": ["sg", "pl"] },
+    "case": { "values": ["dir", "obl", "dat", "voc"], "notes": "dir = the plain form; obl = before a postposition (grammar-notes §41, §49); dat = the 'to me' form (§1, §9); voc = calling out (§36 C21)" },
+    "person": { "values": ["p1", "p2", "p2resp", "p3"], "hyp": ["p3near", "p3far"], "src": "grammar-notes §21 (respect), §51 (be by person), §13 (hi/hu point, not person: kept as hyp)" },
+    "clusivity": { "values": ["incl", "excl"], "src": "grammar-notes §52 (two words for we), decision 30 (e)" },
+    "tense": { "values": ["pres", "fut", "past", "imp"], "hyp": ["prog", "hab"] },
+    "polarity": { "values": ["pos", "neg"] },
+    "register": { "values": ["informal", "polite"], "src": "grammar-notes §1, §31" },
+    "speaker": { "values": ["he", "she"], "src": "the speaker's own gender, grammar-notes §32" }
+  },
+  "statuses": {
+    "entry": ["confirmed", "draft", "to-record"],
+    "cell": ["confirmed", "draft", "unknown"],
+    "rule": ["confirmed", "draft", "unknown"]
+  },
+  "pos": {
+    "N": { "feats": ["gender"], "defaultCell": "{number}.{case}" },
+    "PN": { "feats": ["gender"], "defaultCell": "{number}.{case}", "notes": "a name (Nana, Nani)" },
+    "A": { "defaultCell": "{gender}.{number}.{case}" },
+    "Num": { "feats": ["number"], "defaultCell": "{gender}" },
+    "Pron": { "feats": ["person", "number", "clusivity"], "defaultCell": "{case}" },
+    "Gen": { "defaultCell": "{gender}.{number}.{case}", "notes": "the 'of' word: agrees with the thing owned (grammar-notes §47)" },
+    "Post": { "defaultCell": "-" },
+    "Link": { "defaultCell": "-" },
+    "V": { "defaultCell": "{register}" },
+    "Cop": { "defaultCell": "{person}.{number}" },
+    "Conj": { "defaultCell": "-" },
+    "Adv": { "defaultCell": "-" },
+    "Intj": { "defaultCell": "-" },
+    "Phrase": { "defaultCell": "-" }
+  },
+  "addressee": {
+    "p2": { "elder": "p2resp", "else": "p2", "src": "rule G6; grammar-notes §21, §51 (C62, C63)" }
+  },
+  "punctuation": [".", ",", "!", "?", ";"]
+}

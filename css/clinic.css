@@ -292,6 +292,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-room.v2 { background: #efe5d6; overflow: hidden; }
 .cl-scene { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; }
 .cl-scene-cap { position: absolute; display: none; background-repeat: no-repeat; filter: blur(2px); }
+/* A2: the square exam room (R3): the whole picture, running past the room box's top and bottom (stages/common.js) */
+.cl-scene-sq { position: absolute; left: 0; width: 100%; z-index: 0; background-size: 100% 100%; background-repeat: no-repeat; pointer-events: none; }
 .cl-placed { position: absolute; transform: translate(-50%, -100%); }
 
 /* W: the waiting room on CB1b */
@@ -462,6 +464,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* level 1's hint sits on the patient's own face (13d): the stand-in circle over the head */
 .cl-feel-circle.on-face { top: 1%; width: 30%; transform: translate(-50%, 0); opacity: 0; pointer-events: none; }
 .cl-feel-circle.on-face.on { opacity: 1; }
+/* A2: the patient's own face for the feeling (the art's head crops) fills the circle */
+.cl-feel-circle.own { overflow: hidden; background: #f1e3cc; }
+.cl-feel-own { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* 13a, 13b: the lab's debug log sits over the sidebar, clear of the play area (lab only) */
 .cl-lab-out { left: 8px; bottom: 66px; max-width: calc(var(--cl-side-w) - 16px); max-height: 28vh; font-size: 11px; opacity: .92; }
 .cl-lab-bar { right: 0; }

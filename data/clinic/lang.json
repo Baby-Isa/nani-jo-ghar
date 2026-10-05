@@ -582,6 +582,16 @@
    "kutchi": null,
    "english": "blue",
    "src": "English placeholder (to record): no Kutchi for blue on record yet; the same as data/clinic.json col-blue, here so the seam finds it in Node too (heal-A 2 Oct)"
+  },
+  "cl-bandage": {
+   "kutchi": null,
+   "english": "bandage",
+   "src": "English placeholder (to record): the knee's wrap; moved out of js/clinic/heal/games/knee.js (G26, decision 36)"
+  },
+  "feel-lukewarm": {
+   "kutchi": null,
+   "english": "lukewarm",
+   "src": "English placeholder (to record): the foot's soak water; moved out of js/clinic/heal/games/foot.js (G26, decision 36). Hot and cold are Mum's garam and thundo (data/clinic.json feel-hot, feel-cold)"
   }
  }
 }

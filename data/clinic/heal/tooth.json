@@ -121,39 +121,46 @@
   },
   "decay1": {
    "src": "assets/clinic/heal-v3/decay-1.webp",
-   "ready": false
+   "ready": true
   },
   "decay2": {
    "src": "assets/clinic/heal-v3/decay-2.webp",
-   "ready": false
+   "ready": true
   },
   "decay3": {
    "src": "assets/clinic/heal-v3/decay-3.webp",
-   "ready": false
+   "ready": true
   },
   "buttonUp": {
    "src": "assets/clinic/heal-v3/filling-button-up.webp",
-   "ready": false
+   "ready": true,
+   "_a2": "A2 (5 Oct): B1's button, up and down on one canvas"
   },
   "buttonDown": {
    "src": "assets/clinic/heal-v3/filling-button-down.webp",
-   "ready": false
+   "ready": true
   },
   "nozzle": {
    "src": "assets/clinic/heal-v3/filling-nozzle.webp",
-   "ready": false,
+   "ready": true,
    "size": [
-    180,
-    180
+    200,
+    125.0
    ],
    "tip": [
-    20,
-    170
-   ]
+    7.8,
+    117.6
+   ],
+   "_a2": "A2 (5 Oct): B1's nozzle drawn 200 wide, its needle's tip (20, 301 in the 512 x 320 cut) on the hole"
   },
   "nozzlePaste": {
    "src": "assets/clinic/heal-v3/filling-nozzle-paste.webp",
-   "ready": false
+   "ready": true
+  },
+  "fillingPatch": {
+   "src": "assets/clinic/heal-v3/filling-patch.webp",
+   "ready": true,
+   "_a2": "A2 (5 Oct): O2's white filling, laid inside each drilled patch's outline as the paste goes in"
   }
  },
  "camera": {

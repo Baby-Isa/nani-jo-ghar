@@ -105,19 +105,27 @@
   },
   "spot-red": {
    "src": "assets/clinic/heal-v3/spot-red.webp",
-   "ready": false
+   "ready": false,
+   "_a2": "A2 (5 Oct): O2's spots failed (round glossy discs that read as sweets, I2): not cut, the drawn spots stay until a redo"
   },
   "spot-green": {
    "src": "assets/clinic/heal-v3/spot-green.webp",
-   "ready": false
+   "ready": false,
+   "_a2": "A2 (5 Oct): O2's spots failed (round glossy discs that read as sweets, I2): not cut, the drawn spots stay until a redo"
   },
   "spot-blue": {
    "src": "assets/clinic/heal-v3/spot-blue.webp",
-   "ready": false
+   "ready": false,
+   "_a2": "A2 (5 Oct): O2's spots failed (round glossy discs that read as sweets, I2): not cut, the drawn spots stay until a redo"
   },
   "budOintment": {
    "src": "assets/clinic/heal-v3/bud-ointment.webp",
-   "ready": false
+   "ready": true,
+   "size": [
+    359,
+    117
+   ],
+   "_a2": "A2 (5 Oct): O3's bud with the ointment (malam) on its right-hand swab"
   }
  },
  "camera": {

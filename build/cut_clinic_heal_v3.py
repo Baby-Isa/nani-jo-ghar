@@ -10,6 +10,7 @@ skipped and listed, so the script can be re-run as the run uploads more.
 
   python3 build/cut_clinic_heal_v3.py            # cut everything that's there, write the data, print a report
   python3 build/cut_clinic_heal_v3.py --sheets D # also write judging contact sheets into folder D
+  python3 build/cut_clinic_heal_v3.py --props-only  # only the props and rooms (O, R, C, B), keeping the rest
 """
 import json
 import os
@@ -41,6 +42,11 @@ def log(*a):
 # judged a fail and not cut (the redo list in build/reports/a1-clinic-art.md): the stand-in stays for that piece
 FAILED = {
     "child-u1-upperarm-v1.png": "sleeveless vest, bare shoulder; chin and plait in frame (modesty, I1)",
+}
+# pieces of a passed sheet judged a fail (A2, 5 Oct): the sheet is cut, these pieces are not
+FAILED_PIECES = {
+    "spot-red": "O2's spots are round glossy discs that read as gumballs or sweets (I2, plan 3.3); the game keeps its drawn sore spots",
+    "spot-yellow": "as spot-red", "spot-blue": "as spot-red", "spot-green": "as spot-red",
 }
 
 
@@ -450,9 +456,32 @@ def save_closeup(k, path):
     return [path, p2]
 
 
+# The diagnosis's tap areas on the front pose (W1), A2 (5 Oct): part[.side] -> [x, y, r] as shares of the canvas (r of
+# its height), measured on the gridded W1; the patient's own sides (her left on our right). The smallest area that
+# holds the tap wins (an eye over the head), as the greybox's polygons do. Her mouth is closed, so the tooth is the
+# mouth's spot.
+TAPS = {
+    "girl": {
+        "head": [0.494, 0.13, 0.11], "ear.left": [0.714, 0.241, 0.04], "ear.right": [0.272, 0.245, 0.04],
+        "eye.left": [0.575, 0.215, 0.03], "eye.right": [0.405, 0.215, 0.03], "nose": [0.494, 0.255, 0.022],
+        "mouth": [0.494, 0.284, 0.025], "tooth": [0.494, 0.284, 0.025], "throat": [0.494, 0.33, 0.025],
+        "neck": [0.494, 0.355, 0.03], "chest": [0.494, 0.44, 0.06], "tummy": [0.494, 0.53, 0.05],
+        "shoulder.left": [0.68, 0.40, 0.045], "shoulder.right": [0.31, 0.40, 0.045],
+        "arm.left": [0.70, 0.47, 0.05], "arm.right": [0.29, 0.47, 0.05],
+        "elbow.left": [0.69, 0.535, 0.035], "elbow.right": [0.30, 0.535, 0.035],
+        "hand.left": [0.56, 0.60, 0.04], "hand.right": [0.43, 0.60, 0.04],
+        "finger.left": [0.53, 0.64, 0.025], "finger.right": [0.46, 0.64, 0.025],
+        "knee.left": [0.61, 0.70, 0.05], "knee.right": [0.38, 0.70, 0.05],
+        "leg.left": [0.62, 0.80, 0.05], "leg.right": [0.37, 0.80, 0.05],
+        "foot.left": [0.63, 0.91, 0.04], "foot.right": [0.36, 0.91, 0.04],
+        "toe.left": [0.62, 0.955, 0.022], "toe.right": [0.38, 0.955, 0.022],
+    },
+}
+
+
 # ---------------------------------------------------------------- props (grid sheets)
 
-def cut_grid(srcname, names, outdir, min_area=1500, glass=(), out=None, rows=3):
+def cut_grid(srcname, names, outdir, min_area=1500, glass=(), out=None, rows=3, big=512):
     """Cut a prop sheet by its gutters: each separate piece, left to right, top to bottom, trimmed with a 16 px pad,
     at most 512 px. names: the file names in reading order (None skips a piece)."""
     p = src(srcname)
@@ -475,6 +504,9 @@ def cut_grid(srcname, names, outdir, min_area=1500, glass=(), out=None, rows=3):
     for (y0, x0, y1, x1, i), nm in zip(pieces, names):
         if not nm:
             continue
+        if nm in FAILED_PIECES:
+            log(f"  {nm}: judged a fail, not cut ({FAILED_PIECES[nm]})")
+            continue
         m = lb[y0:y1, x0:x1] == i
         piece = k[y0:y1, x0:x1].copy()
         if nm in glass:
@@ -484,7 +516,7 @@ def cut_grid(srcname, names, outdir, min_area=1500, glass=(), out=None, rows=3):
         img = to_img(piece)
         pad = Image.new("RGBA", (img.width + 32, img.height + 32), (0, 0, 0, 0))
         pad.alpha_composite(img, (16, 16))
-        s = min(1, 512 / max(pad.size))
+        s = min(1, big / max(pad.size))
         if s < 1:
             pad = pad.resize((round(pad.width * s), round(pad.height * s)), Image.LANCZOS)
         path = f"{outdir}/{nm}.webp"
@@ -492,6 +524,154 @@ def cut_grid(srcname, names, outdir, min_area=1500, glass=(), out=None, rows=3):
         pad.save(path, quality=90, method=6)
         out[nm] = {"file": rel(path), "w": pad.width, "h": pad.height}
     return out
+
+
+def register_set(props, names, align="topleft"):
+    """Registered states (D8): pad the pieces of one object (cut from one sheet, drawn at one size) onto one shared
+    canvas, aligned by their top-left (or bottom-centre for things standing on a base), so a swap never jumps."""
+    ims = {n: Image.open(os.path.join(REPO, props[n]["file"])) for n in names if n in props}
+    if len(ims) < 2:
+        return
+    W = max(i.width for i in ims.values())
+    H = max(i.height for i in ims.values())
+    for n, im in ims.items():
+        c = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        c.alpha_composite(im, ((W - im.width) // 2, H - im.height) if align == "base" else (0, (H - im.height) // 2))
+        c.save(os.path.join(REPO, props[n]["file"]), quality=90, method=6)
+        props[n].update({"w": W, "h": H})
+    log(f"  registered on one canvas {W}x{H}: {', '.join(ims)}")
+
+
+def measure_gauge(props):
+    """R5: the glass's outline (darker than the cream board) gives the tube's box, from its top to the bulb's foot,
+    and the bulb's width against the tube's (shares of the trimmed sprite)."""
+    if "thermo-gauge" not in props:
+        return
+    a = np.asarray(Image.open(os.path.join(REPO, props["thermo-gauge"]["file"])).convert("RGBA")).astype(float)
+    h, w = a.shape[:2]
+    lum = np.where(a[..., 3] > 200, a[..., :3].mean(2), 255)
+    lo, hi = int(w * 0.2), int(w * 0.8)
+    edge = lambda row: np.nonzero(row[lo:hi] < 190)[0] + lo
+    e = edge(lum[h // 2])
+    x0, x1 = int(e.min()), int(e.max())
+    c = np.nonzero(lum[12:h - 12, (x0 + x1) // 2] < 190)[0] + 12
+    t0, t1 = int(c.min()), int(c.max())
+    bw = max(len(edge(lum[y])) and (edge(lum[y]).max() - edge(lum[y]).min()) for y in range(t1 - 60, t1 - 10))
+    props["thermo-gauge"]["tube"] = [round(x0 / w, 4), round(t0 / h, 4), round(x1 / w, 4), round(t1 / h, 4)]
+    props["thermo-gauge"]["bulb"] = round(bw / max(1, x1 - x0), 3)
+    log(f"  thermo-gauge: tube x {x0}-{x1}, y {t0}-{t1} of {w}x{h}; the bulb {bw} px wide")
+
+
+def measure_chart(props, name, corners=False):
+    """C1/C2: the white board's corners (C2, for the perspective of the row pictures) and its six ruled rows."""
+    if name not in props:
+        return
+    a = np.asarray(Image.open(os.path.join(REPO, props[name]["file"])).convert("RGBA")).astype(float)
+    h, w = a.shape[:2]
+    white = (a[..., :3].min(2) > 228) & (a[..., 3] > 250)
+    lb, n = ndi.label(white)
+    if not n:
+        return
+    sz = np.bincount(lb.ravel()); sz[0] = 0
+    board = ndi.binary_fill_holes(lb == int(np.argmax(sz)))
+    cs, _ = cv2.findContours(board.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    c = max(cs, key=cv2.contourArea)
+    q = cv2.approxPolyDP(c, 0.02 * cv2.arcLength(c, True), True).reshape(-1, 2)
+    if len(q) != 4:
+        q = cv2.boxPoints(cv2.minAreaRect(c))
+    # order: top-left, top-right, bottom-right, bottom-left
+    q = sorted(q.tolist(), key=lambda p: p[1])
+    top = sorted(q[:2]); bot = sorted(q[2:])
+    quad = [top[0], top[1], bot[1], bot[0]]
+    props[name]["board"] = [[round(x / w, 4), round(y / h, 4)] for x, y in quad]
+    # the ruled lines (C1 only; C2 is the same chart turned, so it takes C1's): grey runs down two columns of the
+    # board, below the eye, as shares of the board's height (v = 0 its top edge, 1 its bottom)
+    lines = []
+    if not corners:
+        bx0, by0 = quad[0]
+        bx1, by1 = quad[2]
+        lum = a[..., :3].mean(2)
+        cx = int((bx0 + bx1) / 2)
+        hit = [y for y in range(int(by0 + 0.3 * (by1 - by0)), int(by1) - 6) if lum[y, cx] < 215 and lum[y, cx - int(0.06 * w)] < 215]
+        for y in hit:
+            if lines and y - lines[-1][-1] <= 2:
+                lines[-1].append(y)
+            else:
+                lines.append([y])
+        props[name]["lines"] = [round((float(np.mean(l)) - by0) / (by1 - by0), 4) for l in lines]
+    elif "eye-chart-front" in props and "lines" in props["eye-chart-front"]:
+        props[name]["lines"] = props["eye-chart-front"]["lines"]
+    log(f"  {name}: board {props[name]['board']}, {len(lines)} ruled lines")
+
+
+CB2B = os.path.join(OUT, "rooms/bg-clinic-exam-cb2b-v1.webp")
+
+
+def room_warp(srcname):
+    """R3/R4 against the exam room CB2b: SIFT matches, a similarity transform by RANSAC (the run redrew the room a
+    little, so features, not ECC). Returns the source and the 2x3 matrix that maps it into CB2b's pixels."""
+    p = src(srcname)
+    if not p or not os.path.exists(CB2B):
+        return None, None, None
+    ref = np.asarray(Image.open(CB2B).convert("RGB"))
+    mov = np.asarray(Image.open(p).convert("RGB"))
+    g = lambda x: cv2.cvtColor(x, cv2.COLOR_RGB2GRAY)
+    sift = cv2.SIFT_create(4000)
+    k1, d1 = sift.detectAndCompute(g(ref), None)
+    k2, d2 = sift.detectAndCompute(g(mov), None)
+    good = [m for m, n in cv2.BFMatcher().knnMatch(d2, d1, k=2) if m.distance < 0.7 * n.distance]
+    M, inl = cv2.estimateAffinePartial2D(np.float32([k2[m.queryIdx].pt for m in good]), np.float32([k1[m.trainIdx].pt for m in good]), ransacReprojThreshold=3)
+    log(f"{srcname}: registered to CB2b, scale {M[0, 0]:.4f}, offset {M[0, 2]:+.1f},{M[1, 2]:+.1f} ({int(inl.sum())} of {len(good)} matches)")
+    return ref, mov, M
+
+
+def cut_rooms(data):
+    """R3: the square exam room. CB2b kept pixel for pixel in the middle (y 256-1280 of 1536); only the new ceiling
+    and floor bands come from R3, registered and feathered over 24 px. R4: the open window, the part of R4 that
+    differs from CB2b around the window, as an overlay in CB2b's own fractions."""
+    rooms = data.setdefault("rooms", {})
+    ref, mov, M = room_warp("r3-exam-room-square-v1.png")
+    if M is not None:
+        T = M.copy(); T[1, 2] += 256
+        sq = cv2.warpAffine(mov, T, (1536, 1536), flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_REPLICATE).astype(float)
+        out = sq.copy()
+        wgt = np.zeros((1536, 1), float)
+        wgt[256 + 24:1280 - 24] = 1
+        for i in range(24):
+            wgt[256 + i] = wgt[1279 - i] = (i + 0.5) / 24
+        mid = np.zeros_like(sq); mid[256:1280] = ref
+        out = mid * wgt[..., None] + sq * (1 - wgt[..., None])
+        # the seam: R3's bands are a touch lighter or darker than CB2b; match each band's mean to the CB2b rows it meets
+        for y0, y1, r0, r1 in [(0, 280, 256, 300), (1256, 1536, 1236, 1280)]:
+            d = ref[r0 - 256:r1 - 256].reshape(-1, 3).mean(0) - sq[r0:r1].reshape(-1, 3).mean(0)
+            ramp = np.ones((y1 - y0, 1, 1))
+            band = (out[y0:y1] + d * ramp * (1 - wgt[y0:y1][..., None]))
+            out[y0:y1] = band
+        out[256 + 24:1280 - 24] = ref[24:1024 - 24]
+        path = os.path.join(OUT, "rooms/bg-clinic-exam-cb2b-sq-v1.webp")
+        Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)).save(path, quality=88, method=6)
+        rooms["exam-square"] = {"file": rel(path), "size": [1536, 1536], "middle": [256, 1280],
+                                "_about": "R3: CB2b exactly in rows 256-1280; the ceiling and floor bands are R3's. No @2x (CB2b has none)."}
+        log("  R3: square room written")
+    ref, mov, M = room_warp("r4-exam-window-open-v1.png")
+    if M is not None:
+        w4 = cv2.warpAffine(mov, M, (1536, 1024), flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_REPLICATE).astype(float)
+        diff = np.abs(cv2.GaussianBlur(w4, (7, 7), 0) - cv2.GaussianBlur(ref.astype(float), (7, 7), 0)).sum(2) > 60
+        zone = np.zeros(diff.shape, bool); zone[:455, :190] = True  # the window and its open sash, above the sill (not the desk)
+        m = cv2.morphologyEx((diff & zone).astype(np.uint8), cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
+        lb, n = ndi.label(ndi.binary_dilation(m, iterations=10))
+        sz = np.bincount(lb.ravel()); sz[0] = 0
+        keep = ndi.binary_fill_holes(np.isin(lb, [i for i in range(1, n + 1) if sz[i] > 3000]))
+        alpha = cv2.GaussianBlur(keep.astype(np.float32), (0, 0), 4)
+        ys, xs = np.nonzero(alpha > 0.02)
+        x0, y0, x1, y1 = 0, 0, int(xs.max()) + 1, int(ys.max()) + 1
+        img = Image.fromarray(np.dstack([w4[y0:y1, x0:x1], alpha[y0:y1, x0:x1] * 255]).astype(np.uint8), "RGBA")
+        path = os.path.join(OUT, "room-items/window-open.webp")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        img.save(path, quality=90, method=6)
+        rooms["window-open"] = {"file": rel(path), "box": [0, 0, round(x1 / 1536, 4), round(y1 / 1024, 4)],
+                                "_about": "R4: the open window over CB2b, box = x0, y0, x1, y1 in CB2b's fractions (the room's own pixels)"}
+        log(f"  R4: window overlay {x1}x{y1} px at the room's top-left")
 
 
 # ---------------------------------------------------------------- run
@@ -509,13 +689,21 @@ def main():
                       "closeups: set -> part -> file, states, source size, exit edges, the part's box (fractions). "
                       "Every file has an @2x beside it except the heads and props.")
     data.setdefault("patients", {})
-    for kind in KINDS:
+    only_props = "--props-only" in sys.argv  # re-cut the props and rooms only, keeping the patients and close-ups
+    for kind in ([] if only_props else KINDS):
+        if kind not in ANCHORS:
+            log(f"{kind}: wide poses not cut until its ANCHORS are measured (part C)")
+            continue
         r = cut_wide(kind)
         if r:
             data["patients"][kind] = r
-    data["closeups"] = {}  # rebuilt every run: only what's cut now (a failed or removed piece drops out)
-    cl = data["closeups"]
-    for st, who in [("child", "child"), ("adult", "adult")]:
+    for kind, t in TAPS.items():
+        if kind in data["patients"]:
+            data["patients"][kind]["taps"] = t
+    if not only_props:
+        data["closeups"] = {}  # rebuilt every run: only what's cut now (a failed or removed piece drops out)
+    cl = data.setdefault("closeups", {})
+    for st, who in ([] if only_props else [("child", "child"), ("adult", "adult")]):
         d = cl.setdefault(st, {})
         r = cut_closeup(f"{st} K", f"{who}-k1-knee-v1.png", ("left", "bottom"), f"{OUT}/closeups/{st}/knee.webp",
                         {"kick": (f"{who}-k2-knee-kick-v1.png", (0.0, 0.45)), "graze": (f"{who}-k3-knee-graze-v1.png", (0.0, 1.0))})
@@ -527,7 +715,9 @@ def main():
         if r: d["upperarm"] = r
         r = cut_closeup(f"{st} P", f"{who}-p1-sole-v1.png", ("bottom",), f"{OUT}/closeups/{st}/sole.webp")
         if r: d["sole"] = r
-    for kind, (p, age) in KINDS.items():
+    for kind, (p, age) in ([] if only_props else KINDS.items()):
+        if kind not in ANCHORS:
+            continue  # part C: its close-ups land with its wide poses
         d = cl.setdefault(kind, {})
         r = cut_closeup(f"{kind} E", f"{p}-e1-ear-v1.png", ("top", "right", "bottom"), f"{OUT}/closeups/{kind}/ear.webp")
         if r: d["ear"] = r
@@ -555,6 +745,21 @@ def main():
     props = data["props"] = {}
     cut_grid("o1-ear-foot-bits-v1.png", ["wax-big", "wax-mid", "wax-small", "seed", "splinter-thin", "splinter-thick", "drop", "tissue", "dirt"],
              f"{OUT}/heal-v3", glass=("drop", "dirt"), out=props)
+    cut_grid("o3-bud-ointment-v1.png", ["bud", "bud-ointment", "bud-wax", "ointment-pot"], f"{OUT}/heal-v3", out=props, rows=1)
+    register_set(props, ["bud", "bud-ointment", "bud-wax"])
+    cut_grid("r1-fever-things-v1.png", ["ice-pack", "hot-water-bottle", "hand-fan", "heater-off", "heater-on"], f"{OUT}/room-items", out=props, rows=2)
+    register_set(props, ["heater-off", "heater-on"], align="base")
+    cut_grid("r2-ceiling-fan-v1.png", ["fan-body", "fan-blades"], f"{OUT}/room-items", out=props, rows=1)
+    cut_grid("r5-thermo-gauge-v1.png", ["thermo-gauge"], f"{OUT}/room-items", out=props, rows=1)
+    measure_gauge(props)
+    cut_grid("b1-filling-button-v1.png", ["filling-button-up", "filling-button-down", "filling-nozzle", "filling-nozzle-paste"], f"{OUT}/heal-v3", out=props, rows=2)
+    register_set(props, ["filling-button-up", "filling-button-down"], align="base")
+    register_set(props, ["filling-nozzle", "filling-nozzle-paste"])
+    cut_grid("c1-eye-chart-front-v1.png", ["eye-chart-front"], f"{OUT}/heal-v3", out=props, rows=1, big=1024)
+    cut_grid("c2-eye-chart-turned-v1.png", ["eye-chart-turned"], f"{OUT}/heal-v3", out=props, rows=1, big=1024)
+    measure_chart(props, "eye-chart-front")
+    measure_chart(props, "eye-chart-turned", corners=True)
+    cut_rooms(data)
     cut_grid("o2-mouth-bits-v1.png", ["spot-red", "spot-yellow", "spot-blue", "spot-green", "decay-1", "decay-2", "decay-3", "filling-patch"],
              f"{OUT}/heal-v3", out=props)
     data["_report"] = REPORT

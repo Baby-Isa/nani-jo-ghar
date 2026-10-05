@@ -150,6 +150,8 @@
     "handover-ok": { "kutchi": "[{x}.] Achija.", "english": "{x}. Good." },
     "handover-no": { "kutchi": "[This is {x}.] [Bring me] {y}", "english": "This is {x}. Bring me {y}" },
     "tobench": { "kutchi": "[To the bench]", "english": "To the bench" },
+    "tocounter": { "kutchi": "[To the counter]", "english": "To the counter", "_src": "English placeholder (to record): the diagnosis's button to the pharmacy counter; moved out of js/clinic/stages/diagnosis.js (G26, decision 36)" },
+    "mypart": { "kutchi": "[My {part}]", "english": "My {part}", "_src": "English placeholder (to record): the patient names the sore part in the diagnosis; moved out of js/clinic/stages/diagnosis.js (G26, decision 36)" },
     "okay-now": { "kutchi": "[Is everything okay now?]", "english": "Is everything okay now?" },
     "helps": { "kutchi": "[What will help?]", "english": "What will help?" },
     "whisper-ask": { "kutchi": "[Ask them how they feel]", "english": "Ask them how they feel", "who": "nani" },
