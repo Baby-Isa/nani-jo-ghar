@@ -873,6 +873,54 @@
    "k": "Muke chakhan lai de.",
    "en": "Let me taste it.",
    "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B46). Also Khobar, aau chakha (wait, I'll taste it)"
+  },
+  "guide-add": {
+   "k": "Wiji chad!",
+   "en": "Put it in!",
+   "src": "Mum 5 Oct (Round 4 I1-I35 1:22, docs/language/lexicon.md §6.1): wiji chad, put it in; spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (add)"
+  },
+  "guide-slow": {
+   "k": "Slow kar!",
+   "en": "Turn it down!",
+   "src": "Mum 5 Oct (Round 4 I1-I35 1:03, lexicon §6.1): slow kar, turn the flame down (English slow + kar; not aste thi kar). Nani's guide box (watch)"
+  },
+  "guide-knead": {
+   "k": "Atto gund!",
+   "en": "Knead the dough!",
+   "draft": true,
+   "src": "Mum 5 Oct (Round 4 I6, I1-I35 1:35, lexicon §6.1): atto gund; gund heard once (⚠). Nani's guide box (knead)"
+  },
+  "guide-firai": {
+   "k": "Firai!",
+   "en": "Turn it! (flip it over, stir it round)",
+   "src": "Mum 5 Oct (Round 4 I1-I35 1:59-2:20, lexicon §6.1): firai is flip and also stir; spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (flip, stir)"
+  },
+  "guide-chop": {
+   "k": "Nindha nindha kap!",
+   "en": "Chop it small!",
+   "draft": true,
+   "src": "Mum 5 Oct (Round 4 I10, I1-I35 1:51-1:56, lexicon §6.1): nindha nindha kap, cut it small (⚠). Nani's guide box (chop)"
+  },
+  "guide-fold": {
+   "k": "Samosa waar!",
+   "en": "Fold the samosa!",
+   "src": "Mum 5 Oct (Round 4 I15, I1-I35 3:13, lexicon §6.1): waar, like samosa waar. Nani's guide box (fold)"
+  },
+  "guide-fry": {
+   "k": "Tar!",
+   "en": "Fry it!",
+   "draft": true,
+   "src": "Mum 5 Oct (Round 4 I14, I1-I35 2:52, lexicon §6.1): tar (samosa tar, bhajiya tar) (⚠). Nani's guide box (fry)"
+  },
+  "guide-fill": {
+   "k": "Bhar!",
+   "en": "Fill it!",
+   "src": "Mum 5 Oct (Round 4 I16, I1-I35 3:23, lexicon §6.1): bhar, fill (paani bhari chad). Nani's guide box (fill)"
+  },
+  "guide-fire": {
+   "k": "Chulo bar!",
+   "en": "Light the stove!",
+   "src": "Mum 5 Oct (Round 4 I33, I1-I35 6:46, lexicon §6.1-6.2): chulo bar; chulo spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (chai-tray:knob)"
   }
  },
  "grammar": {
@@ -3844,7 +3892,7 @@
   }
  },
  "guide": {
-  "_about": "28 Sept (Zafar): Nani's guide box at the top of the sidebar says what to do NOW, in Kutchi. None of these instructions is recorded yet, so each shows as an English placeholder flagged 'to record' (build/reports/cook-ui-28sept.md lists them). Once Mum records one, give it a `line` (a key in `lines`) and the box shows and says that instead. Keys: a station (data.stations), or station:phase. While Nani says one of her own lines at a station (Hane …!, Bareto!, Jaldi kar!), the box shows that line.",
+  "_about": "28 Sept (Zafar): Nani's guide box at the top of the sidebar says what to do NOW, in Kutchi. Until 5 Oct none was recorded, so each showed as an English placeholder flagged 'to record' (build/reports/cook-ui-28sept.md lists them). W1, 5 Oct: Mum's Round 4 answers give ten of them a `line` (guide-*: add, watch, knead, flip, stir, chop, fold, fry, fill, chai-tray:knob; build/reports/w1-words.md); the rest stay flagged placeholders (pour, roll, the pantry headline and others Mum hasn't answered). Once Mum records one, give it a `line` (a key in `lines`) and the box shows and says that instead. Keys: a station (data.stations), or station:phase. While Nani says one of her own lines at a station (Hane …!, Bareto!, Jaldi kar!), the box shows that line.",
   "fetch": {
    "en": "Bring these from the pantry"
   },
@@ -3855,43 +3903,52 @@
    "en": "Pour it up to the line"
   },
   "add": {
-   "en": "Put it in the pan"
+   "en": "Put it in the pan",
+   "line": "guide-add"
   },
   "watch": {
-   "en": "Watch it; turn it down before it boils over"
+   "en": "Watch it; turn it down before it boils over",
+   "line": "guide-slow"
   },
   "count": {
    "en": "Put in as many spoons as they said"
   },
   "knead": {
-   "en": "Press the dough"
+   "en": "Press the dough",
+   "line": "guide-knead"
   },
   "roll": {
    "en": "Roll the maani round"
   },
   "flip": {
-   "en": "Turn it over on the tawa"
+   "en": "Turn it over on the tawa",
+   "line": "guide-firai"
   },
   "chop": {
-   "en": "Chop what they said"
+   "en": "Chop what they said",
+   "line": "guide-chop"
   },
   "tadka": {
    "en": "Add the spices, in order"
   },
   "stir": {
-   "en": "Stir it round"
+   "en": "Stir it round",
+   "line": "guide-firai"
   },
   "assemble": {
    "en": "Make the bowl, in order"
   },
   "fill": {
-   "en": "Fill the samosa"
+   "en": "Fill the samosa",
+   "line": "guide-fill"
   },
   "fold": {
-   "en": "Fold the samosa"
+   "en": "Fold the samosa",
+   "line": "guide-fold"
   },
   "fry": {
-   "en": "Fry them, then lift them out"
+   "en": "Fry them, then lift them out",
+   "line": "guide-fry"
   },
   "thread": {
    "en": "Thread the skewers"
@@ -3909,7 +3966,8 @@
    "en": "Put the chai in the pan"
   },
   "chai-tray:knob": {
-   "en": "Light the fire"
+   "en": "Light the fire",
+   "line": "guide-fire"
   },
   "chai-tray:cups": {
    "en": "Make each pan the way they said"

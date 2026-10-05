@@ -40,11 +40,12 @@
    "qfm": "G46"
   },
   "body-foot": {
-   "kutchi": null,
+   "kutchi": "pag",
    "english": "foot",
    "group": "big",
    "sided": true,
-   "src": "placeholder",
+   "src": "Mum 5 Oct (Round 4, C79.m4a 4:53; lexicon §6.2): pag, foot; no plural; heard once (⚠), gender unheard. No clean clip of Mum saying it on its own yet (W1)",
+   "draft": true,
    "qfm": "G47"
   },
   "body-eye": {
@@ -56,11 +57,11 @@
    "qfm": "G48"
   },
   "body-ear": {
-   "kutchi": null,
+   "kutchi": "kan",
    "english": "ear",
    "group": "face",
    "sided": true,
-   "src": "placeholder",
+   "src": "Mum 5 Oct (Round 4 C58, C79.m4a 4:30-4:53; docs/language/lexicon.md §6.2): kan, ear; the same for one and two (\"doesn't become plural\"); gender unheard. Clip: kan (W1)",
    "qfm": "G49"
   },
   "body-nose": {
@@ -274,21 +275,21 @@
    "qfm": "G111"
   },
   "feel-hot": {
-   "kutchi": null,
+   "kutchi": "garam",
    "english": "hot",
-   "src": "placeholder",
+   "src": "Mum 5 Oct (Round 4 I34, I1-I35.m4a 6:54; lexicon §6.3): garam, hot to touch (garam ai); koso discussed, Masi to tie-break. Clip: garam",
    "qfm": "Round 1 Q11"
   },
   "feel-cold": {
-   "kutchi": null,
+   "kutchi": "thundo",
    "english": "cold",
-   "src": "placeholder",
+   "src": "Mum 5 Oct (Round 4 I35, I1-I35.m4a 7:20; lexicon §6.3): thundo (thundo thai vyo, it's gone cold); spelling confirmed by Zafar 5 Oct (decision 31); Dad's thadhu is another dialect. Forms for she / more than one unheard. Clip: thundo (W1)",
    "qfm": "Round 1 Q11"
   },
   "feel-right": {
-   "kutchi": null,
+   "kutchi": "barabar",
    "english": "just right",
-   "src": "placeholder",
+   "src": "Mum 5 Oct (Round 4 I21, C22-C49.m4a 19:08, I1-I35.m4a 4:38; lexicon §6.3): barabar, just right; never changes; goes after the noun (cup barabar ai). Clip: barabar",
    "qfm": "G83"
   },
   "side-left": {
@@ -304,10 +305,10 @@
    "qfm": "new (R3.6 priority 3)"
   },
   "col-red": {
-   "kutchi": null,
+   "kutchi": "lal",
    "english": "red",
    "hex": "#c9483b",
-   "src": "placeholder",
+   "src": "Mum 5 Oct (Round 4 C37-C43, C22-C49.m4a 12:35-14:21; lexicon §6.3): lal, red; never changes. Clip: lal (W1). data/clinic/lang.json still spells it laal (col-red, red): see build/reports/w1-words.md",
    "qfm": "E60"
   },
   "col-green": {
