@@ -30,6 +30,8 @@
       global.FamilyVoice ? global.FamilyVoice.load() : Promise.resolve(),
     ]);
     Cook.data = data;
+    // parked pages only (step 4d): their words, from the engine's own source (cook.html's are the engine's: words.js)
+    if (!Cook.engineWords) await mergeParkedWords(data);
     Cook.audioManifest = manifest || {};
     Cook.tts = (tts && tts.lines) || {}; // parked pages only
     // modules that build themselves from the data (recipes, a combined
@@ -37,6 +39,28 @@
     for (const fn of Cook.onLoad) await fn(data);
     return data;
   };
+  /*
+   * Step 4d: PARKED PAGES ONLY (dress, find, snap, tidy, monsoon, who; cook.html loads js/cook/words.js, the engine).
+   * Cook's words and lines moved to the language engine's own source, data/lang/seed/cook.json; the parked pages get
+   * them back here, merged over the item catalogue (data/cook.json) in the old shape, with the station words and the
+   * stir line the page used to merge, so they keep working unchanged until each moves onto the engine.
+   */
+  async function mergeParkedWords(data) {
+    const seed = await fetch(Cook.v("data/lang/seed/cook.json")) // parked pages only
+      .then((r) => r.json())
+      .catch(() => null);
+    if (!seed) return;
+    const add = (ws) => Object.keys(ws || {}).forEach((id) => id !== "_about" && (data.words[id] = Object.assign({}, data.words[id], ws[id]))); // parked pages only
+    add(seed.words);
+    data.lines = Object.assign({}, seed.lines, data.lines); // parked pages only
+    data.grammar = data.grammar || seed.grammar; // parked pages only
+    Object.values(seed.stations || {}).forEach((st) => {
+      add(st.words);
+      Object.keys(st.lines || {}).forEach((k) => (data.lines[k] = data.lines[k] || st.lines[k])); // parked pages only
+    });
+    Object.keys(seed.guide || {}).forEach((k) => data.guide && data.guide[k] && Object.assign(data.guide[k], seed.guide[k]));
+    Object.keys(seed.headlines || {}).forEach((r) => data.recipes[r] && data.recipes[r].headline && Object.assign(data.recipes[r].headline, seed.headlines[r]));
+  }
   Cook.onLoad = [];
 
   // the item catalogue (data/cook.json `words`: a thing's picture, heap, layer colour, shelf): never a word's text,

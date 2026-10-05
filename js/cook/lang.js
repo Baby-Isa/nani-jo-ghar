@@ -24,28 +24,6 @@
 (function (global) {
   const Cook = global.Cook;
   const Lang = (Cook.Lang = {});
-  /*
-   * Step 4d: PARKED PAGES ONLY (dress, find, snap, tidy, monsoon; cook.html loads js/cook/words.js, the engine, instead).
-   * Cook's words and lines moved to the language engine's own source, data/lang/seed/cook.json; this adapter merges
-   * them back over the item catalogue (data/cook.json) as the old shape, with the station words and the stir line the
-   * page used to merge, so these pages keep working unchanged until each moves onto the engine.
-   */
-  Cook.onLoad.unshift(async (data) => {
-    const seed = await fetch(Cook.v("data/lang/seed/cook.json"))
-      .then((r) => r.json())
-      .catch(() => null);
-    if (!seed) return;
-    const words = (ws) => Object.keys(ws || {}).forEach((id) => id !== "_about" && (data.words[id] = Object.assign({}, data.words[id], ws[id])));
-    words(seed.words);
-    data.lines = Object.assign({}, seed.lines, data.lines);
-    data.grammar = data.grammar || seed.grammar;
-    Object.values(seed.stations || {}).forEach((st) => {
-      words(st.words);
-      Object.keys(st.lines || {}).forEach((k) => (data.lines[k] = data.lines[k] || st.lines[k]));
-    });
-    Object.keys(seed.guide || {}).forEach((k) => data.guide && data.guide[k] && Object.assign(data.guide[k], seed.guide[k]));
-    Object.keys(seed.headlines || {}).forEach((r) => data.recipes[r] && data.recipes[r].headline && Object.assign(data.recipes[r].headline, seed.headlines[r]));
-  });
   // moved here from js/cook/core.js in step 4d: only the parked pages read Cook's own word table
   Cook.word = (id) => Cook.data.words[id];
   Cook.kutchi = (id) => (Cook.data.words[id] || {}).kutchi || id;
@@ -441,4 +419,12 @@
     return true;
   };
   Lang.speakWord = (id) => Lang.speak(Lang.wordLine(id));
+
+  /* the calls Cook's shared files (ui.js, order.js) make since step 4d, answered the old way for the parked pages */
+  Lang.known = (id) => !!Cook.data.words[id];
+  Lang.hasLine = (key) => !!Cook.data.lines[key];
+  Lang.asRow = (line) => line;
+  Lang.say = (m, o) => (m && m.fn === "Count" ? { segs: Lang.num(m.n), en: String(m.n) } : Lang.phrase([]));
+  Lang.guideLine = (key, g) => (g && g.line && Cook.data.lines[g.line] ? Object.assign(Lang.line(g.line), { ok: true }) : { segs: [{ t: (g && g.en) || "", lang: "e" }], en: (g && g.en) || "", ok: false });
+  Lang.label = (key) => ({ text: (Cook.data.lines[key] || {}).e || key, rec: true });
 })(window);
