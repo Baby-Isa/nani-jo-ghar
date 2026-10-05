@@ -426,6 +426,7 @@
         root.classList.add("has-art");
         fig.artEl = inner;
         fig.artBox = box;
+        fig.tapAnchors = false; // the diagnosis turns it on (its tap areas); a heal game's zoom uses the anchors
         fig.art = { spec, view, V, base, face, body: "front" };
         fig.artMood(mood);
         const sw = groups.fx.querySelector(".fig-swirl");
@@ -442,6 +443,7 @@
         root.classList.remove("has-art");
         groups.marks.removeAttribute("transform");
         root.style.transform = "";
+        fig.tapAnchors = false;
         fig.art = fig.artEl = fig.artBox = null;
       },
       /** The art's face for a mood (W2-W6 on the front; W8 happy on the side); the greybox's moods map onto them. */
@@ -483,6 +485,11 @@
         const p = String(part || "").replace(/^body-/, "");
         const sd = sideKey(side);
         const N = { leg: "knee", shin: "knee", thigh: "knee", arm: "forearm", elbow: "forearm", wrist: "forearm", shoulder: "upperarm", sole: "foot", toe: "foot", eye: "eyes", tooth: "mouth", throat: "mouth", tongue: "mouth", nose: "eyes", cheek: "mouth", finger: "hand", belly: "tummy", chest: "tummy", back: "tummy" };
+        // A2 (5 Oct): in the diagnosis (fig.tapAnchors), the parts' spots are its tap areas, so a hint, a swirl and
+        // a tap all agree (the heal games keep the zoom anchors: their match cuts are measured on them)
+        const T = fig.tapAnchors && A.view === "front" && A.spec.taps;
+        const t = T && ((sd && T[`${p}.${sd}`]) || T[p] || T[`${p}.left`]);
+        if (t) return { x: t[0], y: t[1], q: p, r: t[2] };
         const q = N[p] || p;
         const an = A.V.anchors;
         const a = (sd && an[`${q}.${sd}`]) || an[q] || an[`${q}.left`] || null;
@@ -495,7 +502,7 @@
         if (!r.height) return null;
         // the part's radius as a share of the figure's height (for the zoom's push-in: the part fills ~60 %)
         const R = { eyes: 0.05, ear: 0.035, mouth: 0.035, forehead: 0.05, head: 0.12, knee: 0.05, forearm: 0.05, upperarm: 0.05, foot: 0.05, hand: 0.045, tummy: 0.08, seat: 0.05 };
-        return { x: r.left + a.x * r.width, y: r.top + a.y * r.height, r: (R[a.q] || 0.06) * r.height };
+        return { x: r.left + a.x * r.width, y: r.top + a.y * r.height, r: (a.r || R[a.q] || 0.06) * r.height };
       },
       /**
        * With the art on, the greybox's marks layer (plasters, bandages, the fever room's worn things) is fitted onto the

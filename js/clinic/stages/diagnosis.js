@@ -55,6 +55,7 @@
       layer.appendChild(fig.el);
       fig.pose(standing ? "stand" : "sit");
       const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(artSpec, { view: "front", figH: cfg.fig.h }));
+      if (art) fig.tapAnchors = true;
       // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher); the art
       // sits by its measured seat line (the backs of the thighs on the mattress), as in the heal games
       const seat = () => {
