@@ -20,7 +20,7 @@ No mechanic removed. A busy phone sidebar now folds in steps (item 1).
 
 ## Left
 - **Daar at 800×360 during a 3.5 s peek:** the sidebar is 19 px over (was 44).
-- **C1's "ne laal" at 8 px (taste L2):** not reproduced. The row sits at its 16.67 px minimum.
+- **C1's "ne laal" at 8 px (taste L2):** a lint false positive (`font-size 16.67px x scale 0.48`: `build/lint/layout.mjs` scaleOf divides the rect width by offsetWidth, wrong for a wrapped inline). A step-by-step probe found no text under 14 px and no transform. The lint needs fixing (not my file).
 - **Not mine:**
   - `lab/order-card.html` loads without its CSS.
   - The day-6 Eid rug looks cut at the bottom.
