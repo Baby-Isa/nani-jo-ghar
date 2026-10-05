@@ -250,6 +250,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **33. The release cycle:** art finished in ChatGPT → wired in → full checks on everything → publish to `main` → Zafar plays and gives feedback → new art, art fixes and gameplay fixes from that feedback. So no play tonight on the branch preview: Zafar plays once the clinic heal art (parts B–D) is all landed and wired (A2), the full checks pass and it is live on `main`. Replaces the "play this evening" parts of decisions 28 and 31 and the orchestrator's proposal of a quick look now, full clinic check later.
   Source: Zafar, orchestrator chat, 5 Oct. Rule: B20
 
+- **34. The checks before a publish cover only what changed since the last gate:** after today's gate, the pre-publish check runs on the newly changed items only (the clinic, most likely), at the full QA matrix and with an outside reviewer; anything a shared-file change reaches is included; the gate is not repeated where nothing changed.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: B20
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

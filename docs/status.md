@@ -21,7 +21,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
 2. When the gate, W2 and A1 are done: read the three reports; note their findings for A2's brief. No look or play link yet.
 3. When Chrome has finished parts B–D in ChatGPT: propose A2 to Zafar (Opus, high, with a cost estimate) and launch only on his go. A2 cuts and wires all remaining clinic heal art from `build/cut_clinic_heal_v3.py` and `data/clinic/heal-art.json` per A1's list, including A1's redo list once redone.
-4. Full checks on everything: full sandbox run + full QA matrix, a reviewer other than the builder, every regression row for touched screens.
+4. Full checks on what changed since today's gate only (decision 34): sandbox `--touched` on the clinic (heal games, patient flow) at the full QA matrix, a reviewer other than the builder, the clinic regression rows. Screens using any shared file A2 or W2 touched are added; nothing else is re-run.
 5. `python3 build/bump_version.py`, merge to `main`, check the Pages build, send Zafar a screenshot, the live link and what to play.
 6. His feedback → a full report and regression rows the same day; then art fixes and gameplay fixes.
 7. Open: Mum's 168 clips need ear-checking in `lab/family-audio.html`; the yes/no list for Mum; Round 5.

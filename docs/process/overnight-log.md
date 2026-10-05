@@ -112,3 +112,4 @@
 - 2026-10-05 15:00 UK · Zafar: red is laal (sent to W2, decision 32 there). A1 told to wrap up (470k context); a fresh A2 does parts C/D later. Handover written in docs/status.md for a new orchestrator chat.
 - 2026-10-05 15:13 UK · New orchestrator chat. Check-in: gate 441/493 pages (clinic heal games left, ~15 min); W2 running (stop 17:30); A1 report pushed, its last cut still writing, sandbox line pending; Chrome 33 of 115 images on main.
 - 2026-10-05 15:20 UK · Decision 33 (rule B20): art finished → wired → full checks → publish to main → Zafar plays → fixes. No play tonight; A2 waits for Chrome to finish parts B–D, then needs Zafar's go.
+- 2026-10-05 15:25 UK · Decision 34: the pre-publish check covers only what changed since today's gate (the clinic, plus anything a shared-file change reaches).
