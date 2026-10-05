@@ -65,7 +65,7 @@
      "case": "obl"
     },
     {
-     "lex": "post.sathe"
+     "lex": "post.with"
     }
    ],
    "status": "confirmed",
@@ -78,7 +78,7 @@
      "case": "obl"
     },
     {
-     "lex": "post.me"
+     "lex": "post.in"
     }
    ],
    "status": "confirmed",
@@ -91,10 +91,10 @@
      "case": "obl"
     },
     {
-     "lex": "link.je"
+     "lex": "link.place"
     },
     {
-     "lex": "post.mathe"
+     "lex": "post.on"
     }
    ],
    "status": "confirmed",
@@ -109,7 +109,7 @@
    },
    "only": {
     "head.lex": [
-     "n.chai"
+     "n.tea"
     ]
    },
    "onlyAsk": [
@@ -121,7 +121,7 @@
      "arg": "x"
     },
     {
-     "lex": "post.waari"
+     "lex": "post.mixed-in"
     },
     {
      "arg": "head",
@@ -167,7 +167,7 @@
      "arg": "x"
     },
     {
-     "lex": "post.wagar"
+     "lex": "post.without"
     },
     {
      "lex": "gen.of",
@@ -269,7 +269,7 @@
      "case": "obl"
     },
     {
-     "lex": "post.me"
+     "lex": "post.in"
     },
     {
      "lex": "cop.be",

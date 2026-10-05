@@ -158,7 +158,7 @@
     "fn": "PredDat",
     "who": "$who",
     "thing": "$thing",
-    "verb": "v.khap"
+    "verb": "v.want"
    },
    "en": "I'd like {thing}.",
    "elicit": [

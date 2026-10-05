@@ -1,10 +1,10 @@
 {
   "_about": "TEST SEED ONLY (step 4a): a few rows linking real recordings in data/family-audio.json to seed words.",
   "clips": [
-    { "clip": "maani", "lex": "n.maani", "cell": "*" },
+    { "clip": "maani", "lex": "n.chapati", "cell": "*" },
     { "clip": "cup", "lex": "n.cup", "cell": "*" },
     { "clip": "nana", "lex": "pn.nana", "cell": "*" },
     { "clip": "nani", "lex": "pn.nani", "cell": "*" },
-    { "clip": "laal", "lex": "a.laal", "cell": "*" }
+    { "clip": "laal", "lex": "a.red", "cell": "*" }
   ]
 }
