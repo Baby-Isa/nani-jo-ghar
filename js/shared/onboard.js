@@ -180,6 +180,24 @@
     }
     return k;
   };
+  /**
+   * The light's shape round a box (F17: a centred soft circular glow): an ellipse centred on the box whose solid
+   * part (72 % of its radius; the rest feathers out) holds the box and PAD round it. Squarish boxes (up to 1.6:1)
+   * get a circle; long ones (a shelf, a strip) a rounder ellipse, never a box.
+   */
+  Onboard.glowShape = function (r, pad) {
+    pad = pad == null ? 12 : pad;
+    // the solid core is an ellipse through the box's corners (a = w√2, b = h√2 puts the corner (w, h) on it), and
+    // never closer than PAD to an edge's middle; the feather (the outer 28 %) is outside that
+    const core = (half) => Math.max(half * Math.SQRT2, half + pad);
+    let rx = core(r.w / 2) / 0.72;
+    let ry = core(r.h / 2) / 0.72;
+    const ratio = Math.max(rx, ry) / Math.max(1, Math.min(rx, ry));
+    if (ratio <= 1.6) rx = ry = Math.max(rx, ry);
+    else if (rx > ry) ry = Math.max(ry, rx / 2.2);
+    else rx = Math.max(rx, ry / 2.2);
+    return { cx: r.x + r.w / 2, cy: r.y + r.h / 2, rx, ry };
+  };
   /* ---------------- the overlay ---------------- */
   if (typeof document === "undefined") return Onboard;
 
@@ -263,7 +281,10 @@
     const layer = document.createElement("div");
     layer.className = "njg-onboard";
     layer.innerHTML = `
-      <svg class="ob-dim" aria-hidden="true"><defs><mask id="ob-mask-${id}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes"></g></mask></defs>
+      <svg class="ob-dim" aria-hidden="true"><defs>
+          <radialGradient id="ob-soft-${id}"><stop offset="0" stop-color="#000"/><stop offset="0.72" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+          <radialGradient id="ob-halo-${id}"><stop offset="0.6" stop-color="#ffe7a3" stop-opacity="0"/><stop offset="0.8" stop-color="#ffe7a3" stop-opacity="0.38"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></radialGradient>
+          <mask id="ob-mask-${id}"><rect width="100%" height="100%" fill="#fff"/><g class="ob-holes"></g></mask></defs>
         <rect width="100%" height="100%" fill="rgba(30,18,10,0.62)" mask="url(#ob-mask-${id})"/><g class="ob-rings"></g></svg>
       <div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${opts.hand ? `<img alt="" src="${opts.hand.src}">` : HAND}</div>
       ${opts.skipButton ? SKIP_HTML : ""}`;
@@ -299,12 +320,26 @@
     const draw = () => {
       const st = m.state().step;
       lit = st ? rectsOf(st.spotlight) : [];
+      // the light (F17, CLN-72, 2 Oct): a soft round glow centred on the thing, never a rounded box: the hole in the dim
+      // is an ellipse (a circle for anything squarish) whose edge feathers into the dark, ringed by a faint warm halo.
+      // It is big enough that the whole box (and PAD round it, where a tap counts) sits inside its solid part.
       while (holes.childNodes.length < lit.length) {
-        const r = document.createElementNS(NS, "rect");
-        r.setAttribute("fill", "#000");
+        const r = document.createElementNS(NS, "ellipse");
+        r.setAttribute("fill", `url(#ob-soft-${id})`);
         holes.appendChild(r);
-        const g = document.createElementNS(NS, "rect");
-        g.setAttribute("class", "ob-ring");
+        const g = document.createElementNS(NS, "ellipse");
+        g.setAttribute("class", "ob-ring ob-halo");
+        g.setAttribute("fill", `url(#ob-halo-${id})`);
+        g.style.stroke = "none";
+        if (!reduced()) {
+          // the gentle pulse of the focal rule (F17), on the halo only
+          const an = document.createElementNS(NS, "animate");
+          an.setAttribute("attributeName", "fill-opacity");
+          an.setAttribute("values", "0.55;1;0.55");
+          an.setAttribute("dur", "1.8s");
+          an.setAttribute("repeatCount", "indefinite");
+          g.appendChild(an);
+        }
         rings.appendChild(g);
       }
       [...holes.childNodes].forEach((h, i) => {
@@ -312,13 +347,16 @@
         const g = rings.childNodes[i];
         h.style.display = g.style.display = r ? "" : "none";
         if (!r) return;
-        for (const el of [h, g]) {
-          el.setAttribute("x", r.x - PAD);
-          el.setAttribute("y", r.y - PAD);
-          el.setAttribute("width", r.w + 2 * PAD);
-          el.setAttribute("height", r.h + 2 * PAD);
-          el.setAttribute("rx", 18);
-        }
+        const e = Onboard.glowShape(r, PAD);
+        h.setAttribute("cx", e.cx);
+        h.setAttribute("cy", e.cy);
+        h.setAttribute("rx", e.rx);
+        h.setAttribute("ry", e.ry);
+        // the halo sits just outside the feathered edge
+        g.setAttribute("cx", e.cx);
+        g.setAttribute("cy", e.cy);
+        g.setAttribute("rx", e.rx * 1.22);
+        g.setAttribute("ry", e.ry * 1.22);
       });
       raf = requestAnimationFrame(draw);
     };

@@ -317,21 +317,53 @@
     const layer = opts.layer || Voice.layer || document.body;
     const b = h("div", `cl-bubble who-${who}`, layer);
     Kit.text(w, b);
+    // CLN-76 (E1, G2): a line with no Kutchi yet is a flagged placeholder (grey italic, "to record"), never dark text
+    // the child is meant to read
+    if (w && (!w.kutchi || w.placeholder === true)) {
+      b.classList.add("rec");
+      h("small", "cl-rec", b, "to record");
+    }
     const anchor = Voice.speakers[who] && Voice.speakers[who]();
-    const lr = layer.getBoundingClientRect();
     if (anchor) {
-      const r = anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : anchor;
-      const x = (r.left + r.width / 2 - lr.left) / Math.max(1, lr.width);
-      b.style.left = `${Math.max(4, Math.min(70, x * 100 - 12))}%`;
-      b.style.top = `${Math.max(2, r.top - lr.top - 8)}px`;
       b.classList.add("anchored");
-      // group B's proposal (2 Oct): a bubble by a speaker near the top (the close-up's round face) stays on screen:
-      // if it would start above the layer, it moves down by the overhang
-      const br = b.getBoundingClientRect();
-      if (br.height && br.top < lr.top + 2) b.style.top = `${parseFloat(b.style.top) + (lr.top + 2 - br.top)}px`;
-      if (br.width && br.right > lr.right - 2) b.style.left = `${Math.max(0, br.left - lr.left - (br.right - lr.right + 2))}px`;
+      Voice.place(b, anchor, layer);
+      // the words can settle a frame later (fonts, fitting): place it again then
+      if (global.requestAnimationFrame) global.requestAnimationFrame(() => b.isConnected && Voice.place(b, anchor, layer));
     } else b.classList.add("top");
     return b;
+  };
+  /**
+   * CLN-71 (2 Oct): a speaker's bubble always sits wholly inside the play area. Above the speaker when it fits;
+   * else beside it (the close-up's round face, top left), else below it; then clamped to the layer with a margin.
+   */
+  Voice.place = function (b, anchor, layer) {
+    const M = 8;
+    const lr = layer.getBoundingClientRect();
+    const r = anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : anchor;
+    b.style.transform = "none";
+    b.style.left = "0px";
+    b.style.top = "0px";
+    const bw = b.offsetWidth;
+    const bh = b.offsetHeight;
+    const W = lr.width;
+    const H = lr.height;
+    const ax = r.left - lr.left;
+    const ay = r.top - lr.top;
+    let x = ax + r.width / 2 - bw * 0.3; // the tail end of the bubble near the speaker's middle
+    let y = ay - M - bh; // above
+    if (y < M) {
+      if (ax + r.width + M + bw <= W - M) {
+        x = ax + r.width + M; // beside, to the right
+        y = ay + Math.min(r.height / 2, Math.max(0, r.height - bh) / 2);
+      } else if (ax - M - bw >= M) {
+        x = ax - M - bw; // beside, to the left
+        y = ay;
+      } else y = ay + r.height + M; // below
+    }
+    x = Math.max(M, Math.min(W - bw - M, x));
+    y = Math.max(M, Math.min(H - bh - M, y));
+    b.style.left = `${Math.round(x)}px`;
+    b.style.top = `${Math.round(y)}px`;
   };
 
   /* ---------------- the instruction card ---------------- */

@@ -171,8 +171,10 @@
         z.top = layer.style.top; // the seated position, kept for the pull-out (the figure moves away in between)
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.add("on");
-        const zoom = play(box, [{ transform: "scale(1)", filter: "blur(0px)" }, { transform: `scale(${a.k})`, filter: "blur(6px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
-        const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.7 }, { opacity: 0 }], { duration: ms, easing: "ease-in", fill: "forwards" });
+        const zoom = play(box, [{ transform: "scale(1)", filter: "blur(0px)" }, { transform: `scale(${a.k})`, filter: "blur(4px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
+        // CLN-77 (2 Oct): the room hands over to the close-up early (gone by 60 % of the push-in), so the
+        // late frames are never a full-screen smear of a blurred, hugely scaled room
+        const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.3 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }], { duration: ms, easing: "ease-in-out", fill: "forwards" });
         await Promise.all([zoom, fade]);
         if (z.leaving) return; // the game already ended (a very quick round): the pull-out owns the layer now
         wide.classList.remove("on");
@@ -183,6 +185,9 @@
       async out() {
         if (!wide.isConnected) return;
         z.leaving = true;
+        // CLN-77: the close-up's own UI (the tool column, the face, panels, pills, counts) goes before the pull-out,
+        // so it never shows through the room as ghost rectangles; the close-up's drawing stays for the cross-fade
+        stage.classList.add("cl-outro");
         // measure on the unscaled room: the push-in's last frame (scaled, blurred) is still held
         [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
         layer.appendChild(fig.el);
@@ -195,9 +200,34 @@
         wide.classList.add("on");
         await Promise.all([
           play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
-          play(box, [{ transform: `scale(${a.k})`, filter: "blur(6px)" }, { transform: "scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
+          play(box, [{ transform: `scale(${a.k})`, filter: "blur(4px)" }, { transform: "scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
         ]);
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
+      },
+      /**
+       * CLN-69 (2 Oct): the results card sits over the scene, never a bare stage: the wide shot stays, at rest, with
+       * a still copy of the (happy) patient; the figure itself goes home (the round may destroy it). The next stage's
+       * clearStage() takes the room away.
+       */
+      keep() {
+        [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
+        box.style.transform = box.style.filter = "";
+        wide.classList.remove("gone");
+        wide.classList.add("on", "kept");
+        if (fig.el.parentNode !== layer) {
+          layer.appendChild(fig.el);
+          fig.pose("sit");
+          fig.react("happy", 0);
+          if (z.top) layer.style.top = z.top;
+        }
+        const still = fig.el.cloneNode(true);
+        still.classList.add("cl-still");
+        still.setAttribute("aria-hidden", "true");
+        layer.appendChild(still);
+        if (home) home.appendChild(fig.el);
+        else fig.el.remove();
+        layer.insertBefore(still, layer.firstChild);
+        z.kept = true;
       },
       destroy() {
         if (home && fig.el.parentNode === layer) home.appendChild(fig.el);
@@ -260,6 +290,7 @@
     const t0 = Date.now();
     let hintsAtStart = screen.hints;
     let finished = false;
+    let ended = false; // the game called done() (not a destroy from outside)
     let resolveResult;
     const result = new Promise((r) => (resolveResult = r));
 
@@ -433,6 +464,12 @@
       done(r = {}) {
         if (finished) return;
         finished = true;
+        ended = true;
+        // CLN-70 (E17, INT-03): every game clears its own buttons and counts when it ends: the ✓ never lingers into
+        // the zoom-out or the results card
+        screen.clearActions();
+        done.btn = null;
+        clearCounts();
         // D14 (1 Oct, SH-44): which step went wrong, for the end review: each judged row's line, right or not, and
         // what was done (the game's own detail, e.g. "2 of 3")
         const rowFor = (id) => {
@@ -551,7 +588,22 @@
         } catch (e) {
           console.error(e);
         }
-        if (staging) staging.destroy();
+        // CLN-69: a round that ended keeps the room under the results card (the wide shot at rest); a game with no
+        // zoom (the fever room, the parked games) gets the same still wide shot, so the card never sits on bare cream
+        let kept = false;
+        if (ended && opts.backdrop !== false) {
+          try {
+            const z = staging || HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
+            if (z && z.keep) {
+              if (!staging) fig.react("happy", 0);
+              z.keep();
+              kept = true;
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        if (staging && !kept) staging.destroy();
         if (!opts.patient) fig.destroy();
         Kit.Voice.clear();
         // the card is the screen's: the next stage gets it whole again (D8 is the heal games' rule)
