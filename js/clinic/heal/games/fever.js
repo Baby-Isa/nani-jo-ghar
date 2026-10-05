@@ -340,10 +340,14 @@
     layer.style.zIndex = "3";
     layer.appendChild(fig.el);
     fig.pose("sit");
+    // A1 (5 Oct): the patient's real art (W1, the faces W5/W6, the blanket W9 and the bottle W10) when it's cut
+    const HH = root.Clinic && root.Clinic.HealHost;
+    const artSpec = HH && HH.healArt && HH.healArt.patients && HH.healArt.patients[fig.kind];
+    const artOn = !!(artSpec && fig.useArt && fig.useArt(artSpec, { view: "front", figH: ec.fig.h }));
     const seat = () => {
       if (ec.seat == null) return;
       layer.style.top = `${ec.fig.bottom * 100}%`;
-      const q = fig.hotspot("knee", "left", box);
+      const q = fig.hotspot(artOn ? "seat" : "knee", "left", box);
       const H = box.clientHeight || 1;
       if (q && isFinite(q.y)) layer.style.top = `${(ec.fig.bottom + (ec.seat * H - q.y) / H) * 100}%`;
     };
@@ -436,6 +440,7 @@
 
     const layout = () => {
       seat();
+      if (artOn) fig.artFit();
       const v = visible();
       const pad = 0.012;
       const put = (el, a) => {
@@ -467,11 +472,18 @@
     /* ---- the patient's body state (stand-ins until W5, W6, W9, W10) ---- */
     const drawWear = () => {
       S.clear(wear);
+      // with the art: the blanket and the bottle are whole figures (W9, W10), the rest is drawn on the fitted marks layer
+      let artBody = null;
+      if (artOn) {
+        artBody = on.blanket && artSpec.blanket ? "blanket" : on.bottle && artSpec.bottle ? "bottle" : null;
+        fig.artBody(artBody || "front");
+        fig.artFit();
+      }
       const head = [640, 135];
       const shL = sp("shoulder", "left");
       const shR = sp("shoulder", "right");
       const tum = sp("tummy");
-      if (on.blanket) {
+      if (on.blanket && artBody !== "blanket") {
         // over the SHOULDERS and down the upper arms, like a cape, open at the front; never the face (CLN-56)
         const cape = (k) => {
           const sh = k < 0 ? shR : shL; // the patient's right is on our left
@@ -482,7 +494,7 @@
         s("path", { d: `M${640 - 40} 244 Q640 232 ${640 + 40} 244 L${640 + 40} 262 L${640 - 40} 262Z`, fill: "#9e2a32" }, wear);
         [-1, 1].forEach((k) => s("path", { d: cape(k), fill: "#b8323a", stroke: "#82222a", "stroke-width": 6, "stroke-linejoin": "round" }, wear));
       }
-      if (on.bottle) {
+      if (on.bottle && artBody !== "bottle") {
         s("rect", { x: 640 - 18, y: tum[1] - 98, width: 36, height: 26, rx: 6, fill: "#efe2c2", stroke: "#b9a77d", "stroke-width": 4 }, wear);
         s("rect", { x: 640 - 62, y: tum[1] - 76, width: 124, height: 120, rx: 36, fill: "#2f9c94", stroke: "#1f6f69", "stroke-width": 5 }, wear);
         // the arms round it: two sleeves across the front (the hug)

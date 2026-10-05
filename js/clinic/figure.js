@@ -289,6 +289,7 @@
         const s = side ? `side-${sideKey(side)}` : null;
         const [x, y] = body.spot(pid, s);
         const col = COLOURS[o.colour] || o.colour;
+        if (fig.art) fig.artFit();
         const gg = el("g", { class: `fig-mark mark-${kind}`, transform: `translate(${x} ${y}) rotate(${o.rotate || 0})` }, groups.marks);
         if (kind === "plaster") {
           el("rect", { x: -34, y: -13, width: 68, height: 26, rx: 12, fill: col || "#f2c9a0", stroke: "#b88a64", "stroke-width": 2 }, gg);
@@ -445,6 +446,31 @@
         // the part's radius as a share of the figure's height (for the zoom's push-in: the part fills ~60 %)
         const R = { eyes: 0.05, ear: 0.035, mouth: 0.035, forehead: 0.05, head: 0.12, knee: 0.05, forearm: 0.05, upperarm: 0.05, foot: 0.05, hand: 0.045, tummy: 0.08, seat: 0.05 };
         return { x: r.left + a.x * r.width, y: r.top + a.y * r.height, r: (R[a.q] || 0.06) * r.height };
+      },
+      /**
+       * With the art on, the greybox's marks layer (plasters, bandages, the fever room's worn things) is fitted onto the
+       * art: the greybox head and tummy are mapped onto the art's measured head and tummy (a scale and a shift), so
+       * what the games draw on the body lands on the picture. Call after layout; returns false without art.
+       */
+      artFit() {
+        const A = fig.art;
+        if (!A || A.view !== "front") {
+          groups.marks.removeAttribute("transform");
+          return false;
+        }
+        const h1 = body.spot("body-head");
+        const t1 = body.spot("body-tummy");
+        const ha = fig.artSpot("head");
+        const ta = fig.artSpot("tummy");
+        if (!h1 || !t1 || !ha || !ta) return false;
+        const h2 = toDesign(ha.x, ha.y);
+        const t2 = toDesign(ta.x, ta.y);
+        const k = Math.abs(t2[1] - h2[1]) / Math.max(1, Math.abs(t1[1] - h1[1]));
+        if (!isFinite(k) || k <= 0) return false;
+        const dx = h2[0] - h1[0] * k;
+        const dy = h2[1] - h1[1] * k;
+        groups.marks.setAttribute("transform", `translate(${dx.toFixed(1)} ${dy.toFixed(1)}) scale(${k.toFixed(4)})`);
+        return true;
       },
       setScale(s) {
         scale = s;

@@ -514,8 +514,10 @@ body.clinic button { font-family: inherit; color: inherit; }
 
 /* A1 (5 Oct): the patient's real art over the figure (Clinic.Figure useArt; data/clinic/heal-art.json). The greybox
    stays underneath, invisible, so its marks and moods keep working; the art takes the clicks through the figure. */
-.cl-fig.has-art .cl-fig-svg { opacity: 0; }
-.cl-fig .fig-art { position: absolute; pointer-events: none; }
+/* only the marks layer of the greybox shows (fitted onto the art by Figure.artFit) */
+.cl-fig.has-art .fig-root > g:not(.fig-marks) { visibility: hidden; }
+.cl-fig .fig-art { position: absolute; z-index: -1; }
+.cl-fig.has-art { isolation: isolate; }
 .cl-fig .fig-art-in { position: absolute; inset: 0; }
 .cl-fig .fig-art img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; user-select: none; }
 .cl-fig .fig-art img[hidden] { display: none; }
