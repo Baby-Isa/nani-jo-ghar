@@ -1,4 +1,5 @@
-// Layer 5: the clinic (data/clinic.json, clinic/lang.json, clinic/pipeline.json, clinic/heal/*.json). Almost all of it
+// Layer 5: the clinic (its word and line text from the engine's own source data/lang/seed/clinic.json since step 4d,
+// with data/clinic.json's ids and line meanings; clinic/pipeline.json, clinic/heal/*.json). Almost all of it
 // is English placeholders: each becomes one to-record entry per English word (or an alias of the word the engine already
 // knows: a "closable" gap), and each line the doctor or patient says becomes an engine meaning whose rule is unknown
 // (with the questions that would settle it) unless Mum has already given the shape. The words the clinic shares
@@ -31,7 +32,11 @@ export function importClinic(S) {
   const okWords = mumOkWords();
   const stat = { words: 0, items: 0, lines: 0, frames: 0, unknown: 0, toRecord: 0, phrases: 0, ladder: 0 };
   const opts = { okWords, rank, posOf, sameAsMap: SAME_AS, partsMap: {} };
-  const clinic = readJSON("data/clinic.json");
+  // step 4d: the text lives in data/lang/seed/clinic.json; data/clinic.json keeps the ids and the non-language fields
+  const seed = readJSON("data/lang/seed/clinic.json");
+  const game = readJSON("data/clinic.json");
+  const merge = (a, b) => Object.fromEntries(Array.from(new Set([...Object.keys(a || {}), ...Object.keys(b || {})])).map((k) => [k, a && b && typeof a[k] === "object" && typeof b[k] === "object" ? Object.assign({}, a[k], b[k]) : (b || {})[k] !== undefined ? b[k] : a[k]]));
+  const clinic = Object.assign({}, game, { words: merge(game.words, seed.words), items: merge(game.items, seed.items), lines: merge(game.lines, seed.lines) });
   stat.words += importWords(S, clinic.words, { file: "data/clinic.json", ...opts });
 
   // the tray nouns: one entry per English word; the ones the family has (water, lemon, salt, sugar, milk) keep Cook's entries
@@ -54,7 +59,7 @@ export function importClinic(S) {
   }
 
   // clinic/lang.json: the words the clinic's code used to hold, and the four join lines
-  const lang = readJSON("data/clinic/lang.json");
+  const lang = seed.lang; // (was data/clinic/lang.json)
   stat.words += importWords(S, lang.words, { file: "data/clinic/lang.json", ...opts });
   for (const [key, ln] of Object.entries(lang.lines || {})) {
     if (!ln || typeof ln !== "object") continue;

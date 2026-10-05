@@ -320,7 +320,7 @@
   "ph-pantry": {}
  },
  "meanings": {
-  "_about": "Step 4d (decision 42): which language-engine meaning each of Cook's frame keys asks for (data/lang/abstract.json; the same map as build/lang/hand/cook-map.mjs FRAMES). \"$x\" is the thing the game fills in. The engine builds the words, their agreement and the clip plan (js/cook/words.js); a frame the engine has no rule for comes back as its gap (grey-italic English, flagged to record). Fixed lines need no row here: the engine knows them by the alias cook.line.<key>. Cook's lines, grammar and words moved to the engine's own source, data/lang/seed/cook.json (build/lang/import_cook.mjs reads them there).",
+  "_about": "Step 4d (decision 42): which language-engine meaning each of Cook's frame keys asks for (data/lang/abstract.json; the same map as build/lang/hand/cook-map.mjs FRAMES). \"$x\" is the thing the game fills in. The engine builds the words, their agreement and the clip plan (js/cook/words.js); a frame the engine has no rule for comes back as its gap (grey-italic English, flagged to record). Fixed lines need no row here: the engine knows them by the alias cook.line.<key>. Cook's lines, grammar and words moved to the engine's own source, data/lang/seed/cook.json (build/lang/import_cook.mjs reads them there). A fixed line said as a call (Salamun alaykum!, Shabash!) names its Exclaim / Ask here, as Cook says it; the engine knows the words by the alias.",
   "need": {
    "fn": "Need",
    "who": "p1",
@@ -459,6 +459,74 @@
   "bye": {
    "fn": "Exclaim",
    "x": "phrase.goodbye-khuda-hafiz"
+  },
+  "greet": {
+   "fn": "Exclaim",
+   "x": "cook.line.greet"
+  },
+  "greet-reply": {
+   "fn": "Exclaim",
+   "x": "cook.line.greet-reply"
+  },
+  "oops": {
+   "fn": "Exclaim",
+   "x": "cook.line.oops"
+  },
+  "hey": {
+   "fn": "Exclaim",
+   "x": "cook.line.hey"
+  },
+  "enough": {
+   "fn": "Exclaim",
+   "x": "cook.line.enough"
+  },
+  "more": {
+   "fn": "Exclaim",
+   "x": "cook.line.more"
+  },
+  "yes": {
+   "fn": "Exclaim",
+   "x": "cook.line.yes"
+  },
+  "ofcourse": {
+   "fn": "Exclaim",
+   "x": "cook.line.ofcourse"
+  },
+  "wait": {
+   "fn": "Exclaim",
+   "x": "cook.line.wait"
+  },
+  "welldone": {
+   "fn": "Exclaim",
+   "x": "cook.line.welldone"
+  },
+  "burning": {
+   "fn": "Exclaim",
+   "x": "cook.line.burning"
+  },
+  "boiling": {
+   "fn": "Exclaim",
+   "x": "cook.line.boiling"
+  },
+  "careful": {
+   "fn": "Exclaim",
+   "x": "cook.line.careful"
+  },
+  "hurry": {
+   "fn": "Exclaim",
+   "x": "cook.line.hurry"
+  },
+  "eat": {
+   "fn": "Exclaim",
+   "x": "cook.line.eat"
+  },
+  "guide-slow": {
+   "fn": "Exclaim",
+   "x": "cook.line.guide-slow"
+  },
+  "guide-chop": {
+   "fn": "Exclaim",
+   "x": "cook.line.guide-chop"
   }
  },
  "verdicts": {

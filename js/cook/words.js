@@ -42,16 +42,21 @@
   /** The engine's word result for a Cook id (its default form), or a placeholder for an id the engine doesn't know. */
   function wordR(id) {
     if (!entry(id)) return { ok: false, text: String(id), en: String(id), tokens: [{ t: String(id), lang: "e" }], segments: [{ t: String(id), lang: "e", gap: "lexeme" }], clipPlan: [{ kind: "missing", source: "missing", lang: "e", text: String(id), tokens: [0, 0] }], gaps: [{ kind: "lexeme", lex: id }], drafts: [] };
-    const r = EN().word(String(id), null, ctx);
+    let r = EN().word(String(id), null, ctx);
+    // a describing word Mum gave in one form only (kari, mori: kari chai), said on its own: that form, not a gap
+    const e = entry(id);
+    const cells = Object.keys((e && e.forms) || {});
+    if (!r.ok && e.pos === "A" && cells.length === 1) r = EN().word(String(id), cells[0], ctx);
     return withSay(Object.assign({}, r, { en: entry(id).gloss || String(id) }));
   }
-  Cook.display = (id) => wordR(id).text;
+  // a noun through the engine's Item (a fixed expression such as bajr ji maani is built from its parts)
+  Cook.display = (id) => Lang.plain(Lang.phrase([id]));
   Cook.kutchi = Cook.display;
   Cook.english = (id) => {
     const e = entry(id);
     return (e && e.gloss) || String(id);
   };
-  Cook.isPlaceholder = (id) => !wordR(id).ok;
+  Cook.isPlaceholder = (id) => !Lang.phrase([id]).ok;
   /** A number's Cook id: the engine's number word for n, by the alias Cook's recipes and progress use. */
   Cook.numId = (n) => {
     const c = LX().classify(Number(n), { type: "Num" }, {});
@@ -226,11 +231,16 @@
       const dep = noun && t.lex && t.cell && String(LX().inflect(t.lex, t.cell).key || "").split(".").includes(dflt);
       if (dep && t.lex !== noun) s.check = ids.get(noun) || noun;
     });
+    // a placeholder that already ends with its mark gets no second one ("… you get more!")
+    const last = segs.length - 1;
+    if (last > 0 && segs[last].lang == null && /^[.!?]$/.test(segs[last].t) && /[.!?]$/.test(segs[last - 1].t || "")) segs = segs.slice(0, last);
     let en = r.en || "";
     if (row) {
       while (segs.length && segs[segs.length - 1].lang == null && /^[.!?]$/.test(segs[segs.length - 1].t)) segs.pop();
       const i = segs.findIndex((s) => s.lang);
-      if (i >= 0 && segs[i].lang === "k") segs[i] = Object.assign({}, segs[i], { t: segs[i].t.charAt(0).toLowerCase() + segs[i].t.slice(1) });
+      // lower case (F10), but a name keeps its capital (Nana, Ali)
+      const pn = i >= 0 && entry(segs[i].lex) && entry(segs[i].lex).pos === "PN";
+      if (i >= 0 && segs[i].lang === "k" && !pn) segs[i] = Object.assign({}, segs[i], { t: segs[i].t.charAt(0).toLowerCase() + segs[i].t.slice(1) });
       en = en.replace(/[.!?]+$/, "");
     }
     return { segs, en, plan: r.clipPlan || [], r, m, ok: r.ok };
@@ -322,7 +332,8 @@
     const segs = line.segs.slice();
     while (segs.length && segs[segs.length - 1].lang == null && /^[.!?]$/.test(segs[segs.length - 1].t)) segs.pop();
     const i = segs.findIndex((s) => s.lang);
-    if (i >= 0 && segs[i].lang === "k") segs[i] = Object.assign({}, segs[i], { t: segs[i].t.charAt(0).toLowerCase() + segs[i].t.slice(1) });
+    const pn = i >= 0 && entry(segs[i].lex) && entry(segs[i].lex).pos === "PN";
+    if (i >= 0 && segs[i].lang === "k" && !pn) segs[i] = Object.assign({}, segs[i], { t: segs[i].t.charAt(0).toLowerCase() + segs[i].t.slice(1) });
     return Object.assign({}, line, { segs, en: String(line.en || "").replace(/[.!?]+$/, "") });
   };
   /** A label (a button's text): the engine's line as plain text, and whether it is a to-record placeholder. */

@@ -73,10 +73,10 @@ function cookWordIds(S) {
 function clinicWordIds(S) {
   const ids = new Set();
   const add = (o) => Object.keys(o || {}).forEach((k) => k !== "_about" && ids.add(k));
-  const c = readJSON("data/clinic.json");
+  const c = readJSON("data/clinic.json"); // ids (the text is in data/lang/seed/clinic.json since 4d)
   add(c.words);
   for (const k of Object.keys(c.items || {})) if (k !== "_about") ids.add(`clinic.item.${k}`);
-  const lang = readJSON("data/clinic/lang.json");
+  const lang = readJSON("data/lang/seed/clinic.json").lang; // (was data/clinic/lang.json)
   add(lang.words);
   return Array.from(ids).filter((id) => {
     const e = S.find(id);

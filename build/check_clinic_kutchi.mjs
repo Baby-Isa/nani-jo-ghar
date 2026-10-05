@@ -20,8 +20,9 @@ const walk = (o) => {
     else walk(v);
   }
 };
-walk(J("data/clinic/lang.json"));
-walk(J("data/cook.json").words);
+// step 4d: the clinic's and Cook's words live in the engine's own source (data/lang/seed/)
+walk(J("data/lang/seed/clinic.json"));
+walk(J("data/lang/seed/cook.json").words);
 walk(J("data/clinic/pipeline.json"));
 const nums = J("data/clinic/heal/cut.json").numbers || {};
 Object.values(nums).forEach(addText);

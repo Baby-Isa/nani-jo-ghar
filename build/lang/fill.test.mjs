@@ -262,7 +262,7 @@ test("every Cook and clinic word id resolves to a lexicon entry (as an alias or 
   for (const f of ["mishkaki-grill", "maani-line"]) ids.push(...Object.keys(J(`data/stations/${f}.json`).words || {}));
   const clinic = J("data/clinic.json");
   ids.push(...Object.keys(clinic.words));
-  const lang = J("data/clinic/lang.json");
+  const lang = J("data/lang/seed/clinic.json").lang; // (was data/clinic/lang.json; step 4d)
   ids.push(...Object.keys(lang.words).filter((k) => !lang.words[k].from));
   const missing = ids.filter((id) => !L.lexOf(id));
   assert.deepEqual(missing, []);

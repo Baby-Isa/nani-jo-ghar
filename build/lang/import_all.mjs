@@ -12,7 +12,7 @@
 //   2 hand/*            what lives only in prose: grammar-notes sections, decisions (each entry cites its section)
 //   3 import_lexicon_md the tables in lexicon.md §6 (Mum's 5 Oct words)
 //   4 import_cook       data/cook.json, stations, conversations, story
-//   5 import_clinic     data/clinic.json, clinic/lang.json, clinic/pipeline.json, clinic/heal/*
+//   5 import_clinic     data/lang/seed/clinic.json (+ data/clinic.json's ids), clinic/pipeline.json, clinic/heal/*
 //   6 import_content    data/content.json (the class handout words: always draft)
 //   7 import_modes      the parked modes' placeholders (dress, who, relations, monsoon, snap, tidy, find)
 //   8 phrases           fixed expressions are made of other words (parts) wherever every word is an entry

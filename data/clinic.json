@@ -2,509 +2,238 @@
  "_about": "The clinic (the doctor's clinic), phase 1 data. docs/archive/clinic/clinic-design-v1.md (Revision 3, then Revision 2). No Kutchi exists yet for any body part, care item, instrument or frame: every word and line here is an English placeholder (kutchi: null, lines with `e` only), shown in grey italics. Never invent Kutchi. This file is merged into Cook.data at load (js/clinic/flow.js) under clinic-only ids (body-, care-, tool-, feel-, side-, cl-), so Cook's mechanics (fetch, count, stir, pour, passme) run on it unchanged; data/cook.json is never edited. The pure visit engine (js/clinic/visit.js) reads the same file in Node for build/leak_clinic.mjs.",
  "words": {
   "body-head": {
-   "kutchi": null,
-   "english": "head",
-   "group": "big",
-   "src": "placeholder",
-   "qfm": "G42"
+   "group": "big"
   },
   "body-tummy": {
-   "kutchi": null,
-   "english": "tummy",
-   "group": "big",
-   "src": "placeholder",
-   "qfm": "G43"
+   "group": "big"
   },
   "body-arm": {
-   "kutchi": null,
-   "english": "arm",
    "group": "big",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G44"
+   "sided": true
   },
   "body-leg": {
-   "kutchi": null,
-   "english": "leg",
    "group": "big",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G45"
+   "sided": true
   },
   "body-hand": {
-   "kutchi": null,
-   "english": "hand",
    "group": "big",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G46"
+   "sided": true
   },
   "body-foot": {
-   "kutchi": "pag",
-   "english": "foot",
    "group": "big",
-   "sided": true,
-   "src": "Mum 5 Oct (Round 4, C79.m4a 4:53; lexicon §6.2): pag, foot; no plural; heard once (⚠), gender unheard. No clean clip of Mum saying it on its own yet (W1)",
-   "draft": true,
-   "qfm": "G47"
+   "sided": true
   },
   "body-eye": {
-   "kutchi": null,
-   "english": "eye",
    "group": "face",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G48"
+   "sided": true
   },
   "body-ear": {
-   "kutchi": "kan",
-   "english": "ear",
    "group": "face",
-   "sided": true,
-   "src": "Mum 5 Oct (Round 4 C58, C79.m4a 4:30-4:53; docs/language/lexicon.md §6.2): kan, ear; the same for one and two (\"doesn't become plural\"); gender unheard. Clip: kan (W1)",
-   "qfm": "G49"
+   "sided": true
   },
   "body-nose": {
-   "kutchi": null,
-   "english": "nose",
-   "group": "face",
-   "src": "placeholder",
-   "qfm": "G50"
+   "group": "face"
   },
   "body-mouth": {
-   "kutchi": null,
-   "english": "mouth",
-   "group": "face",
-   "src": "placeholder",
-   "qfm": "G51"
+   "group": "face"
   },
   "body-tooth": {
-   "kutchi": null,
-   "english": "tooth",
-   "group": "face",
-   "src": "placeholder",
-   "qfm": "G52"
+   "group": "face"
   },
   "body-throat": {
-   "kutchi": null,
-   "english": "throat",
-   "group": "face",
-   "src": "placeholder",
-   "qfm": "G53"
+   "group": "face"
   },
   "body-chest": {
-   "kutchi": null,
-   "english": "chest",
-   "group": "kit",
-   "src": "placeholder",
-   "qfm": "G60"
+   "group": "kit"
   },
   "body-neck": {
-   "kutchi": null,
-   "english": "neck",
-   "group": "near",
-   "src": "placeholder",
-   "qfm": "G54"
+   "group": "near"
   },
   "body-shoulder": {
-   "kutchi": null,
-   "english": "shoulder",
    "group": "near",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G55"
+   "sided": true
   },
   "body-elbow": {
-   "kutchi": null,
-   "english": "elbow",
    "group": "near",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G56"
+   "sided": true
   },
   "body-knee": {
-   "kutchi": null,
-   "english": "knee",
    "group": "near",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G57"
+   "sided": true
   },
   "body-finger": {
-   "kutchi": null,
-   "english": "finger",
    "group": "near",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G58"
+   "sided": true
   },
   "body-toe": {
-   "kutchi": null,
-   "english": "toe",
    "group": "near",
-   "sided": true,
-   "src": "placeholder",
-   "qfm": "G59"
+   "sided": true
   },
   "care-plaster": {
-   "kutchi": null,
-   "english": "plaster",
    "gesture": "stick",
    "heap": {
     "kind": "cubes",
     "color": "#e8b98f"
-   },
-   "src": "placeholder",
-   "qfm": "G73"
+   }
   },
   "care-bandage": {
-   "kutchi": null,
-   "english": "bandage",
    "gesture": "wrap",
    "heap": {
     "kind": "balls",
     "color": "#f4f1ea"
-   },
-   "src": "placeholder",
-   "qfm": "G74"
+   }
   },
   "care-cloth": {
-   "kutchi": null,
-   "english": "cool cloth",
    "gesture": "lift",
    "heap": {
     "kind": "pieces",
     "color": "#a9d4e8"
    },
-   "temp": "cold",
-   "src": "placeholder",
-   "qfm": "G75"
+   "temp": "cold"
   },
   "care-ice": {
-   "kutchi": null,
-   "english": "ice pack",
    "gesture": "lift",
    "heap": {
     "kind": "cubes",
     "color": "#d9f0fb"
    },
-   "temp": "cold",
-   "src": "placeholder",
-   "qfm": "G76"
+   "temp": "cold"
   },
   "care-bottle": {
-   "kutchi": null,
-   "english": "hot-water bottle",
    "gesture": "lift",
    "heap": {
     "kind": "balls",
     "color": "#d9674f"
    },
-   "temp": "hot",
-   "src": "placeholder",
-   "qfm": "G77"
+   "temp": "hot"
   },
   "care-blanket": {
-   "kutchi": null,
-   "english": "blanket",
    "gesture": "tuck",
    "heap": {
     "kind": "pieces",
     "color": "#c9a24a"
    },
-   "temp": "hot",
-   "src": "placeholder",
-   "qfm": "G78"
+   "temp": "hot"
   },
   "care-tissue": {
-   "kutchi": null,
-   "english": "tissue",
    "gesture": "lift",
    "heap": {
     "kind": "pieces",
     "color": "#ffffff"
    },
-   "decoy": true,
-   "src": "placeholder",
-   "qfm": "G79"
+   "decoy": true
   },
   "care-pillow": {
-   "kutchi": null,
-   "english": "pillow",
    "gesture": "tuck",
    "heap": {
     "kind": "balls",
     "color": "#e9e2f5"
    },
-   "decoy": true,
-   "src": "placeholder",
-   "qfm": "G80"
+   "decoy": true
   },
   "care-drops": {
-   "kutchi": null,
-   "english": "dropper",
    "gesture": "drops",
    "heap": {
     "kind": "pods",
     "color": "#8fc3a9"
-   },
-   "src": "placeholder",
-   "qfm": "G116"
+   }
   },
-  "tool-hand": {
-   "kutchi": null,
-   "english": "hand (look)",
-   "src": "placeholder"
-  },
-  "tool-stethoscope": {
-   "kutchi": null,
-   "english": "stethoscope",
-   "src": "placeholder",
-   "qfm": "G110"
-  },
-  "tool-torch": {
-   "kutchi": null,
-   "english": "torch",
-   "src": "placeholder",
-   "qfm": "G110"
-  },
-  "tool-strip": {
-   "kutchi": null,
-   "english": "thermometer",
-   "src": "placeholder",
-   "qfm": "G111"
-  },
-  "feel-hot": {
-   "kutchi": "garam",
-   "english": "hot",
-   "src": "Mum 5 Oct (Round 4 I34, I1-I35.m4a 6:54; lexicon §6.3): garam, hot to touch (garam ai); koso discussed, Masi to tie-break. Clip: garam",
-   "qfm": "Round 1 Q11"
-  },
-  "feel-cold": {
-   "kutchi": "thundo",
-   "english": "cold",
-   "src": "Mum 5 Oct (Round 4 I35, I1-I35.m4a 7:20; lexicon §6.3): thundo (thundo thai vyo, it's gone cold); spelling confirmed by Zafar 5 Oct (decision 31); Dad's thadhu is another dialect. Forms for she / more than one unheard. Clip: thundo (W1)",
-   "qfm": "Round 1 Q11"
-  },
-  "feel-right": {
-   "kutchi": "barabar",
-   "english": "just right",
-   "src": "Mum 5 Oct (Round 4 I21, C22-C49.m4a 19:08, I1-I35.m4a 4:38; lexicon §6.3): barabar, just right; never changes; goes after the noun (cup barabar ai). Clip: barabar",
-   "qfm": "G83"
-  },
-  "side-left": {
-   "kutchi": null,
-   "english": "left",
-   "src": "placeholder",
-   "qfm": "new (R3.6 priority 3)"
-  },
-  "side-right": {
-   "kutchi": null,
-   "english": "right",
-   "src": "placeholder",
-   "qfm": "new (R3.6 priority 3)"
-  },
+  "tool-hand": {},
+  "tool-stethoscope": {},
+  "tool-torch": {},
+  "tool-strip": {},
+  "feel-hot": {},
+  "feel-cold": {},
+  "feel-right": {},
+  "side-left": {},
+  "side-right": {},
   "col-red": {
-   "kutchi": "laal",
-   "english": "red",
-   "hex": "#c9483b",
-   "src": "Mum 5 Oct (Round 4 C37-C43, C22-C49.m4a 12:35-14:21; lexicon §6.3): laal, red; never changes. Clip: laal (W1).",
-   "qfm": "E60"
+   "hex": "#c9483b"
   },
   "col-green": {
-   "kutchi": null,
-   "english": "green",
-   "hex": "#4f9a58",
-   "src": "placeholder",
-   "qfm": "E61"
+   "hex": "#4f9a58"
   },
   "col-blue": {
-   "kutchi": null,
-   "english": "blue",
-   "hex": "#3f76b8",
-   "src": "placeholder",
-   "qfm": "E62"
+   "hex": "#3f76b8"
   },
   "med-green": {
-   "kutchi": null,
-   "english": "green bottle",
    "heap": {
     "kind": "balls",
     "color": "#4f9a58"
-   },
-   "src": "placeholder",
-   "qfm": "G117"
+   }
   },
   "med-red": {
-   "kutchi": null,
-   "english": "red bottle",
    "heap": {
     "kind": "balls",
     "color": "#c9483b"
-   },
-   "src": "placeholder",
-   "qfm": "G117"
+   }
   },
   "med-blue": {
-   "kutchi": null,
-   "english": "blue bottle",
    "heap": {
     "kind": "balls",
     "color": "#3f76b8"
-   },
-   "src": "placeholder",
-   "qfm": "G117"
+   }
   },
   "med-syrup": {
-   "kutchi": null,
-   "english": "syrup",
    "heap": {
     "kind": "powder",
     "color": "#b8663a"
-   },
-   "src": "placeholder"
+   }
   },
   "med-honey": {
-   "kutchi": null,
-   "english": "honey",
    "heap": {
     "kind": "powder",
     "color": "#e5b33d"
-   },
-   "src": "placeholder"
+   }
   }
  },
  "lines": {
-  "thanks-better": {"e": "Thank you, I feel better!", "who": "patient", "_about": "D1 (1 Oct): the patient's line after the zoom back out of every heal game. To record."},
-  "cl-hurts": {
-   "e": "My {x} hurts."
+  "thanks-better": {
+   "who": "patient"
   },
-  "cl-check": {
-   "e": "The {x}."
-  },
-  "cl-checkfull": {
-   "e": "Check the {x}."
-  },
-  "cl-all": {
-   "e": "Let's check everything."
-  },
-  "cl-now": {
-   "e": "Now the {x}."
-  },
-  "cl-again": {
-   "e": "The {x} again."
-  },
-  "cl-listen": {
-   "e": "Listen to the {x}."
-  },
-  "cl-look": {
-   "e": "Look in the {x}."
-  },
-  "cl-temp": {
-   "e": "Take the temperature: the {x}."
-  },
-  "cl-fine": {
-   "e": "Nothing wrong there."
-  },
-  "cl-found": {
-   "e": "That's it!"
-  },
-  "cl-unwell": {
-   "e": "I don't feel well."
-  },
-  "cl-dunno": {
-   "e": "I don't know why."
-  },
-  "cl-where": {
-   "e": "Where does it hurt?"
-  },
-  "cl-whereq": {
-   "e": "Where?"
-  },
-  "cl-this": {
-   "e": "Ahh, this one."
-  },
-  "cl-here": {
-   "e": "Here?"
-  },
-  "cl-nothere": {
-   "e": "Nothing there. Where?"
-  },
-  "cl-sayagain": {
-   "e": "Say it again?"
-  },
-  "cl-whatsthis": {
-   "e": "What's this?"
-  },
-  "cl-wrong": {
-   "e": "{x}? No, my {y} hurts."
-  },
-  "cl-notool": {
-   "e": "No, the {x}."
-  },
-  "cl-tickles": {
-   "e": "That tickles!"
-  },
-  "cl-side": {
-   "e": "My {x} one."
-  },
-  "cl-other": {
-   "e": "Not that one. My other {x}."
-  },
-  "cl-treat": {
-   "e": "{x}."
-  },
-  "cl-colour": {
-   "e": "The {x}."
-  },
-  "cl-round": {
-   "e": "Round {x} times."
-  },
-  "cl-roundpath": {
-   "e": "Round the {x}."
-  },
-  "cl-drops": {
-   "e": "{x} drops."
-  },
-  "cl-bring": {
-   "e": "Bring me the {x}."
-  },
-  "cl-review": {
-   "e": "{x}."
-  },
-  "cl-isthis": {
-   "e": "This is the {x}. The {y}, please."
-  },
-  "cl-ask": {
-   "e": "Is it the {x}, or the {y}?"
-  },
-  "cl-yourask": {
-   "e": "Is it your {x}, or your {y}?"
-  },
-  "cl-whatwrong": {
-   "e": "What's wrong with {x}?"
-  },
-  "cl-nothingwrong": {
-   "e": "Nothing wrong there. What else?"
-  },
-  "cl-thatsit": {
-   "e": "That's it. Will you help me?"
-  },
-  "cl-youfirst": {
-   "e": "You first."
-  },
-  "cl-letmesee": {
-   "e": "Let me see."
-  },
-  "cl-allbetter": {
-   "e": "All better!"
-  },
-  "cl-welldone": {
-   "e": "Well done, my helper."
-  },
-  "cl-feel": {
-   "e": "I'm {x}."
-  }
+  "cl-hurts": {},
+  "cl-check": {},
+  "cl-checkfull": {},
+  "cl-all": {},
+  "cl-now": {},
+  "cl-again": {},
+  "cl-listen": {},
+  "cl-look": {},
+  "cl-temp": {},
+  "cl-fine": {},
+  "cl-found": {},
+  "cl-unwell": {},
+  "cl-dunno": {},
+  "cl-where": {},
+  "cl-whereq": {},
+  "cl-this": {},
+  "cl-here": {},
+  "cl-nothere": {},
+  "cl-sayagain": {},
+  "cl-whatsthis": {},
+  "cl-wrong": {},
+  "cl-notool": {},
+  "cl-tickles": {},
+  "cl-side": {},
+  "cl-other": {},
+  "cl-treat": {},
+  "cl-colour": {},
+  "cl-round": {},
+  "cl-roundpath": {},
+  "cl-drops": {},
+  "cl-bring": {},
+  "cl-review": {},
+  "cl-isthis": {},
+  "cl-ask": {},
+  "cl-yourask": {},
+  "cl-whatwrong": {},
+  "cl-nothingwrong": {},
+  "cl-thatsit": {},
+  "cl-youfirst": {},
+  "cl-letmesee": {},
+  "cl-allbetter": {},
+  "cl-welldone": {},
+  "cl-feel": {}
  },
  "people": {
   "_about": "Greybox patients. All use the grey silhouette (data/patients/grey-adult.json) until the art exists. `name` is English-only UI text, never Kutchi.",
@@ -1264,395 +993,227 @@
  "items": {
   "_about": "The tray nouns (P4, P10): what rides the pharmacy belt and fills the tray. `kutchi` only where the family word exists (paani, limu, loon, khun, dudh from data/cook.json); everything else is an English placeholder. `glyph` is the greybox picture until data/clinic/rough-art.json names a sprite. `group` is the look-alike group (the belt draws a decoy from the same group only from level 2). Healing games may use ids not listed here: the kit then shows the id as English. `same` names the item an id stands for (the healing games use Cook's ids for the real food words and care-/tool- ids): the belt, the tray and the review show it as that item; `sprite` names its rough-art sprite.",
   "paani": {
-   "kutchi": "paani",
-   "english": "water",
    "glyph": "🫗",
-   "placeholder": false,
-   "cook": "cook-paani",
    "group": "liquid"
   },
   "cloth": {
-   "kutchi": null,
-   "english": "cloth",
    "glyph": "🧽",
-   "placeholder": true,
    "group": "cloth"
   },
   "plaster": {
-   "kutchi": null,
-   "english": "plaster",
    "glyph": "🩹",
-   "placeholder": true,
    "group": "plaster"
   },
   "bandage": {
-   "kutchi": null,
-   "english": "bandage",
    "glyph": "🧻",
-   "placeholder": true,
    "group": "plaster"
   },
   "thread": {
-   "kutchi": null,
-   "english": "thread",
    "glyph": "🧵",
-   "placeholder": true,
    "group": "thread"
   },
   "needle": {
-   "kutchi": null,
-   "english": "needle",
    "glyph": "🪡",
-   "placeholder": true,
    "group": "thread"
   },
   "hammer": {
-   "kutchi": null,
-   "english": "hammer",
    "glyph": "🔨",
-   "placeholder": true,
    "group": "tool"
   },
   "xray": {
-   "kutchi": null,
-   "english": "X-ray",
    "glyph": "🩻",
-   "placeholder": true,
    "group": "tool"
   },
   "cast": {
-   "kutchi": null,
-   "english": "cast",
    "glyph": "🦴",
-   "placeholder": true,
    "group": "plaster"
   },
   "crutches": {
-   "kutchi": null,
-   "english": "crutches",
    "glyph": "🩼",
-   "placeholder": true,
    "group": "tool"
   },
   "torch": {
-   "kutchi": null,
-   "english": "torch",
    "glyph": "🔦",
-   "placeholder": true,
    "group": "tool"
   },
   "tweezers": {
-   "kutchi": null,
-   "english": "tweezers",
    "glyph": "🥢",
-   "placeholder": true,
    "group": "tool"
   },
   "cotton-bud": {
-   "kutchi": null,
-   "english": "cotton bud",
    "glyph": "🦯",
-   "placeholder": true,
    "group": "cotton"
   },
   "cotton": {
-   "kutchi": null,
-   "english": "cotton",
    "glyph": "☁️",
-   "placeholder": true,
    "group": "cotton"
   },
   "drops": {
-   "kutchi": null,
-   "english": "drops",
    "glyph": "💧",
-   "placeholder": true,
    "group": "bottle"
   },
   "bottle": {
-   "kutchi": null,
-   "english": "bottle",
    "glyph": "🧴",
-   "placeholder": true,
    "group": "bottle"
   },
   "toothbrush": {
-   "kutchi": null,
-   "english": "toothbrush",
    "glyph": "🪥",
-   "placeholder": true,
    "group": "brush"
   },
   "comb": {
-   "kutchi": null,
-   "english": "comb",
    "glyph": "🪮",
-   "placeholder": true,
    "group": "brush"
   },
   "drill": {
-   "kutchi": null,
-   "english": "drill",
    "glyph": "🔩",
-   "placeholder": true,
    "group": "tool"
   },
   "paste": {
-   "kutchi": null,
-   "english": "filling",
    "glyph": "🦷",
-   "placeholder": true,
    "group": "bottle"
   },
   "limu": {
-   "kutchi": "limu",
-   "english": "lemon",
    "glyph": "🍋",
-   "placeholder": false,
-   "cook": "fru-02",
    "group": "dropper"
   },
   "loon": {
-   "kutchi": "loon",
-   "english": "salt",
    "glyph": "🧂",
-   "placeholder": false,
-   "cook": "spi-16",
    "group": "dropper"
   },
   "khun": {
-   "kutchi": "khun",
-   "english": "sugar",
    "glyph": "🍬",
-   "placeholder": false,
-   "cook": "cook-khun",
    "group": "dropper"
   },
   "dudh": {
-   "kutchi": "dudh",
-   "english": "milk",
    "glyph": "🥛",
-   "placeholder": false,
-   "cook": "cook-dudh",
    "group": "liquid"
   },
   "cup": {
-   "kutchi": null,
-   "english": "cup",
    "glyph": "🥤",
-   "placeholder": true,
    "group": "liquid"
   },
   "thermometer": {
-   "kutchi": null,
-   "english": "thermometer",
    "glyph": "🌡️",
-   "placeholder": true,
    "group": "tool"
   },
   "blanket": {
-   "kutchi": null,
-   "english": "blanket",
    "glyph": "🛏️",
-   "placeholder": true,
    "group": "cloth"
   },
   "fan": {
-   "kutchi": null,
-   "english": "fan",
    "glyph": "🪭",
-   "placeholder": true,
    "group": "tool"
   },
   "syringe": {
-   "kutchi": null,
-   "english": "the doctor’s syringe",
    "glyph": "💉",
-   "placeholder": true,
    "group": "tool"
   },
   "lollipop": {
-   "kutchi": null,
-   "english": "lollipop",
    "glyph": "🍭",
-   "placeholder": true,
    "group": "sweet"
   },
   "pointer": {
-   "kutchi": null,
-   "english": "pointer",
    "glyph": "👆",
-   "placeholder": true,
    "group": "tool"
   },
   "patch": {
-   "kutchi": null,
-   "english": "eye patch",
    "glyph": "🏴‍☠️",
-   "placeholder": true,
    "group": "plaster"
   },
   "tub": {
-   "kutchi": null,
-   "english": "tub",
    "glyph": "🛁",
-   "placeholder": true,
    "group": "liquid"
   },
   "spoon": {
-   "kutchi": null,
-   "english": "spoon",
    "glyph": "🥄",
-   "placeholder": true,
    "group": "tool"
   },
   "honey": {
-   "kutchi": null,
-   "english": "honey",
    "glyph": "🍯",
-   "placeholder": true,
    "group": "bottle"
   },
   "tissue": {
-   "kutchi": null,
-   "english": "tissue",
    "glyph": "🤧",
-   "placeholder": true,
    "group": "cloth"
   },
   "stethoscope": {
-   "kutchi": null,
-   "english": "stethoscope",
    "glyph": "🩺",
-   "placeholder": true,
    "group": "tool"
   },
   "sticker": {
-   "kutchi": null,
-   "english": "sticker",
    "glyph": "⭐",
-   "placeholder": true,
    "group": "sweet"
   },
   "fru-02": {
-   "kutchi": "limu",
-   "english": "lemon",
    "glyph": "🍋",
-   "placeholder": false,
-   "cook": "fru-02",
    "group": "dropper",
    "same": "limu"
   },
   "spi-16": {
-   "kutchi": "loon",
-   "english": "salt",
    "glyph": "🧂",
-   "placeholder": false,
-   "cook": "spi-16",
    "group": "dropper",
    "same": "loon"
   },
   "cook-khun": {
-   "kutchi": "khun",
-   "english": "sugar",
    "glyph": "🍬",
-   "placeholder": false,
-   "cook": "cook-khun",
    "group": "dropper",
    "same": "khun"
   },
   "cook-paani": {
-   "kutchi": "paani",
-   "english": "water",
    "glyph": "🫗",
-   "placeholder": false,
-   "cook": "cook-paani",
    "group": "liquid",
    "same": "paani"
   },
   "care-drops": {
-   "kutchi": null,
-   "english": "eye drops",
    "glyph": "💧",
-   "placeholder": true,
    "group": "bottle",
    "same": "drops"
   },
   "tool-pointer": {
-   "kutchi": null,
-   "english": "pointer",
    "glyph": "👆",
-   "placeholder": true,
    "group": "tool",
    "same": "pointer"
   },
   "care-patch": {
-   "kutchi": null,
-   "english": "eye patch",
    "glyph": "🏴‍☠️",
-   "placeholder": true,
    "group": "plaster",
    "same": "patch"
   },
   "care-plaster": {
-   "kutchi": null,
-   "english": "plaster",
    "glyph": "🩹",
-   "placeholder": true,
    "group": "plaster",
    "same": "plaster"
   },
   "tool-tweezers": {
-   "kutchi": null,
-   "english": "tweezers",
    "glyph": "🥢",
-   "placeholder": true,
    "group": "tool",
    "same": "tweezers"
   },
   "jug-hot": {
-   "kutchi": null,
-   "english": "jug of hot water",
    "glyph": "🫖",
-   "placeholder": true,
    "group": "liquid",
    "sprite": "jug-water"
   },
   "jug-cold": {
-   "kutchi": null,
-   "english": "jug of cold water",
    "glyph": "🫗",
-   "placeholder": true,
    "group": "liquid",
    "sprite": "jug-water"
   },
   "strip": {
-   "kutchi": null,
-   "english": "thermometer",
    "glyph": "🌡️",
-   "placeholder": true,
    "group": "tool",
    "same": "thermometer"
   },
   "tool-hand": {
-   "kutchi": null,
-   "english": "hand",
    "glyph": "✋",
-   "placeholder": true,
    "group": "tool"
   },
   "shampoo": {
-   "kutchi": null,
-   "english": "shampoo",
    "glyph": "🧴",
-   "placeholder": true,
    "group": "bottle"
   },
   "bug-jar": {
-   "kutchi": null,
-   "english": "jar",
    "glyph": "🫙",
-   "placeholder": true,
    "group": "bottle"
   }
  }
