@@ -402,6 +402,8 @@
         if (sel.poured > 0) closePan(sel);
       }
       sel = pan;
+      // G1: the person whose pan is in hand keeps their card open on a short sidebar (the others fold to their headline)
+      if (UI.mission.focus) UI.mission.focus(pan.who);
       drawSel();
       UI.hideCount();
       if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });

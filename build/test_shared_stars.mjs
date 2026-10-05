@@ -1,4 +1,5 @@
-// Node tests for js/shared/stars.js and data/shared/stars.json: the merged
+// Node tests for js/shared/stars.js and data/shared/stars.json (the parked modes' legacy stars; Cook has none since
+// decisions 1-2 and H5): the merged
 // rules per mode and variant, the ear star (Cook's first-miss rule,
 // Monsoon's 80% over >= 6, taught / retry / menu / placeholder rows left
 // out), the voice star (pills leave it open; the clinic's first-try rule),
@@ -19,8 +20,13 @@ test("data: every mode has a full star set with a voice slot and valid rules", (
     for (const k of ["ear", "hand", "relaxed", "busy", "voice"]) assert.ok(set[k] && set[k].icon && set[k].name, `${m}.${k}`);
     assert.ok(DATA.rules[m], `rules for ${m}`);
   }
-  const cook = require("../data/cook.json").star_sets;
-  for (const m of ["cook", "find"]) for (const k of ["ear", "hand", "relaxed", "busy"]) assert.deepEqual(DATA.star_sets[m][k], cook[m][k], `${m}.${k} matches cook.json`);
+  // Cook's own stars are gone (decisions 1-2, H5: the end card's three badges, js/shared/results.js and the core's
+  // Score); only the parked modes (Find it, Snap, Dress up, Monsoon) still read their sets from this file until
+  // they move onto the framework. Stars.installInto still hands them to a page that loads Cook's data.
+  assert.equal(require("../data/cook.json").star_sets, undefined, "cook.json carries no star sets");
+  const into = {};
+  Stars.installInto(into);
+  for (const m of ["find", "snap"]) for (const k of ["ear", "hand", "relaxed", "busy"]) assert.deepEqual(into.star_sets[m][k], DATA.star_sets[m][k], `${m}.${k} installed`);
   for (const set of Object.values(DATA.star_sets)) for (const s of Object.values(set)) if (!["ear", "tick", "bolt", "chefhat", "magnifier"].includes(s.icon)) assert.ok(Stars.ICONS[s.icon], `icon ${s.icon}`);
 });
 

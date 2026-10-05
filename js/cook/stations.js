@@ -632,7 +632,8 @@
       const prev = img.mood;
       img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : `${who}-happy`);
       const bob = this.tweens.add({ targets: img, y: img.baseY - 6, angle: who === "nani" ? -1.2 : 1.2, duration: 220, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
-      const anchor = who === "nani" ? { x: img.x + 150, y: img.baseY + 160 } : { x: img.x + 175, y: img.baseY + 150 };
+      // G1: the bubble sits beside the face at eye level, its tail at the mouth (not under the chin, over the body)
+      const anchor = who === "nani" ? { x: img.x + 110, y: img.baseY + 110, side: "left" } : { x: img.x + 120, y: img.baseY + 100, side: "left" };
       try {
         await UI.say(line, anchor, who === "nani" ? Object.assign({ nani: true }, opts) : opts);
       } finally {

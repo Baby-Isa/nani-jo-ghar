@@ -177,7 +177,7 @@
     const D = Dress.data;
     const people = ["", "nana", "ma", "cousin"];
     const p = UI.panel(
-      `<div class="title-wrap"><img src="assets/cook/characters/ma-happy.webp" alt="">
+      `<div class="title-wrap"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="">
       <div><h1>Dress up</h1>
       <p>Someone says in Kutchi what they want to wear; you put it on them, lay it out, or sew it on. <b>Greybox</b>: shapes and colours only, every clothes and colour word an English placeholder until the family gives it.</p></div></div>
       <h2>Dress lab</h2>

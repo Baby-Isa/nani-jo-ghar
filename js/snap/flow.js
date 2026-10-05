@@ -168,7 +168,7 @@
     UI.mission.close();
     const p = UI.panel(
       `<div class="title-wrap">
-        <img src="assets/cook/characters/nani-happy.webp" alt="Nani">
+        <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
         <div>
           <h1>Snap with Nani</h1>
           <p>Nani's old camera! She tells you, in Kutchi, what she wants a photo of. Frame exactly that, shoot, then show her your photos: she'll ask for each one again.</p>

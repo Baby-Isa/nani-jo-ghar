@@ -333,6 +333,9 @@
   /** Does the whole line have a recording of its own (family clip or TTS file)? Then it's heard whole. */
   Lang.hasWhole = (line) => {
     if (!line || !line.segs.every((s) => s.lang !== "e")) return false;
+    // the core's plan (decision 26): heard whole only when it is one clip (a one-word line, or a stand-in file)
+    const plan = corePlan(line);
+    if (plan) return plan.length === 1 && !!plan[0].file;
     const whole = Lang.plain(line).trim();
     return !!fileFor(whole, "k") || !!famMatch(whole);
   };
@@ -363,12 +366,36 @@
     const V = Cook.core && Cook.core.voice;
     return V && V.path && V.path() === "store" ? V : null;
   };
+  /*
+   * The core's clip plan for a line (js/core/voice.js planClips; js/cook/boot.js hands it over as Cook.voicePlan once
+   * the core has loaded), or null without the core (Node tools, a core that failed to load): then Cook's own search
+   * below runs, which is the same plan with whole phrases on (R2's voice-parity test).
+   */
+  function corePlan(line) {
+    if (typeof Cook.voicePlan !== "function" || !line || !line.segs) return null;
+    try {
+      return Cook.voicePlan(line.segs);
+    } catch (e) {
+      return null;
+    }
+  }
   Lang.speak = async (line) => {
     // R4: in the store app (or ?voice=store on the test site) every line goes through the core's Voice, which plays
-    // OK family clips only; on the test site Cook's own search below is the same plan (R2's voice-parity test)
+    // OK family clips only
     const SV = storeVoice();
     if (SV) {
       await SV.say({ segments: line.segs }, { channel: "cook" });
+      return true;
+    }
+    // G1 (decision 26, G12): the test path plans through the core too, so whole-phrase clips are off here as well
+    // (stitched word by word until the pre-publish pass); Cook's own player plays it (test speed, Web Audio unlock)
+    const plan = corePlan(line);
+    if (plan) {
+      for (const c of plan) {
+        if (c.file) await Cook.speakFile(c.file);
+        else if (c.source === "device") await synth(saySpelling(Cook.norm(c.text)));
+        if (plan.length > 1) await new Promise((r) => setTimeout(r, 120 / Cook.speed));
+      }
       return true;
     }
     const whole = Lang.plain(line).trim();

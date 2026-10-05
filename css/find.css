@@ -67,8 +67,10 @@ body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y:
 }
 .find-foot { flex: none; display: flex; flex-direction: column; gap: 8px; position: sticky; bottom: 0; background: var(--paper); z-index: 2; }
 #find-done { flex: none; width: 100%; min-height: 48px; font-size: clamp(16px, 1.8vw, 21px); }
-.find-foot .side-rail { flex-wrap: nowrap; gap: 6px; justify-content: space-between; }
-.find-foot .rail-btn { flex: 0 1 var(--njg-rail); min-width: 32px; } /* R6: the shared dock size (R3a made it 48 px; a 46 px basis left these under the tap floor) */
+/* G1: five buttons at the full tap size can't share one row of a 260 px sidebar: the rail wraps to a second row
+   (never shrinks a button under the 48 px tap floor, LAY-04) */
+.find-foot .side-rail { flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
+.find-foot .rail-btn { flex: 0 0 var(--njg-rail); width: var(--njg-rail); height: var(--njg-rail); min-width: var(--njg-rail); }
 #btn-zoom-in, #btn-zoom-out { font-weight: 800; font-size: 26px; line-height: 1; }
 .rail-btn:disabled { opacity: .4; }
 #btn-warmer { padding: 10px; }
@@ -94,7 +96,7 @@ body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y:
 @media (max-height: 430px) {
   .find-foot { gap: 5px; }
   #find-done { min-height: 36px; padding: 6px 10px; font-size: 15px; }
-  .find-foot .rail-btn { height: 36px; font-size: 18px; }
+  .find-foot .rail-btn { font-size: 18px; }
   #btn-zoom-in, #btn-zoom-out { font-size: 22px; }
   #btn-warmer { padding: 7px; }
   .w-combo { font-size: 64px; }

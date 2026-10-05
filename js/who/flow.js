@@ -128,8 +128,8 @@
 
   async function init() {
     const [who, scene] = await Promise.all([
-      fetch("data/who.json").then((r) => r.json()),
-      fetch("data/scenes/sofa.json").then((r) => r.json()),
+      fetch(Cook.v("data/who.json")).then((r) => r.json()),
+      fetch(Cook.v("data/scenes/sofa.json")).then((r) => r.json()),
       Cook.load(),
     ]);
     F.P = Who.Case.prepare(who, Cook.data.words);

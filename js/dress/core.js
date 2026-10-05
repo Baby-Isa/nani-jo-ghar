@@ -26,7 +26,7 @@
   /* ---------------- data ---------------- */
   Dress.load = async function () {
     await Cook.load();
-    const [data, fitting, table] = await Promise.all(["data/dress.json", "data/scenes/bigma-fitting.json", "data/scenes/bigma-table.json"].map((u) => fetch(u).then((r) => r.json())));
+    const [data, fitting, table] = await Promise.all(["data/dress.json", "data/scenes/bigma-fitting.json", "data/scenes/bigma-table.json"].map((u) => fetch(Cook.v(u)).then((r) => r.json())));
     Dress.data = data;
     Dress.scene = { fitting, table };
     Object.keys(data.words).forEach((id) => {

@@ -26,9 +26,9 @@
   Snap.load = async function () {
     await Cook.load();
     const [sd, content, scene] = await Promise.all([
-      fetch("data/snap.json").then((r) => r.json()),
-      fetch("data/content.json").then((r) => r.json()).catch(() => ({ words: [] })),
-      fetch("data/scenes/orchard.json").then((r) => r.json()),
+      fetch(Cook.v("data/snap.json")).then((r) => r.json()),
+      fetch(Cook.v("data/content.json")).then((r) => r.json()).catch(() => ({ words: [] })),
+      fetch(Cook.v("data/scenes/orchard.json")).then((r) => r.json()),
     ]);
     Snap.data = sd;
     Snap.scene = scene;

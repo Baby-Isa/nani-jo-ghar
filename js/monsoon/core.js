@@ -28,7 +28,7 @@
   M.muted = M.virtual || params.get("mute") === "1";
 
   /* ---------------- data ---------------- */
-  const getJSON = (url) => fetch(url).then((r) => r.json());
+  const getJSON = (url) => fetch(Cook.v(url)).then((r) => r.json());
   M.load = async function () {
     await Cook.load();
     const [data, audio, scene] = await Promise.all([getJSON("data/monsoon.json"), getJSON("data/monsoon-audio.json").catch(() => ({ clips: {} })), getJSON("data/scenes/kitchen-monsoon.json")]);

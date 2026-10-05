@@ -81,7 +81,7 @@
     const base = M.base;
     const sc = M.scene;
     els.bg = el("img", "bg", world);
-    els.bg.src = base.background;
+    els.bg.src = Cook.v(base.background);
     els.bg.alt = "";
     els.bg.draggable = false;
     els.ceiling = el("div", "ceiling", world, { height: px(sc.ceiling.y1) });

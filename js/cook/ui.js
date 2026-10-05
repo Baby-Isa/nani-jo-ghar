@@ -196,7 +196,22 @@
     if (!bubbleAnchor || bubbleAnchor.badge || b.classList.contains("hidden")) return;
     const p = UI.worldToStage(bubbleAnchor.x, bubbleAnchor.y);
     const stageW = p.stage ? p.stage.width : 1000;
+    // G1: beside the speaker's face (side "left": the tail points back at the mouth), never hanging over their
+    // body in the middle of the play area; a line too long for the room beside the face wraps instead of sliding over it
+    const side = bubbleAnchor.side === "left";
+    b.classList.toggle("tail-left", side);
+    b.style.maxWidth = side ? `${Math.max(160, Math.round(stageW - p.x - 18))}px` : "";
     const w = b.offsetWidth;
+    if (side) {
+      const stageH = p.stage ? p.stage.height : 700;
+      const h = b.offsetHeight;
+      const left = Cook.clamp(p.x + 10, 8, stageW - w - 8);
+      const top = Cook.clamp(p.y - h / 2, 8, stageH - h - 8);
+      b.style.left = `${left}px`;
+      b.style.top = `${top}px`;
+      b.style.setProperty("--tail-y", `${Cook.clamp(p.y - top - 9, 12, h - 30)}px`);
+      return;
+    }
     let left = Cook.clamp(p.x - 26, 8, stageW - w - 8);
     b.style.left = `${left}px`;
     b.style.top = `${p.y}px`;
@@ -1131,13 +1146,19 @@
       return e;
     });
     const closed = mission.closed || null;
-    return extra.concat(orderCards().map((c) => {
+    const cards = orderCards();
+    const idle = big ? new Set() : idlePeople(cards);
+    const minis = big ? new Set() : miniPeople(cards);
+    return extra.concat(cards.map((c) => {
+      const phase = !big && !!closed && (!closed.who || closed.who === c.who);
       const el = OC.card(c.data, {
         big,
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
         // the phase fold / a start-folded card (M.closeCards): face + headline; a peek may cost a hint
-        closed: !big && !!closed && (!closed.who || closed.who === c.who),
-        onPeek: closed && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
+        // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress
+        // fold to face + headline too (a tap opens one; the face is still the replay)
+        closed: phase || idle.has(c.key),
+        onPeek: phase && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
         peekMs: 3500 / (Cook.speed || 1),
         foldAfter: 700 / (Cook.speed || 1),
         onEl: (key, e) => addEl(map, key, e),
@@ -1159,9 +1180,74 @@
         return line.parts.map((l) => ({ row: l.row, line: l, els: elsOf(l, map).filter((e) => el.contains(e)) }));
       };
       el._rows = c.rows;
-      box.appendChild(el);
+      if (minis.has(c.key)) {
+        // G1, the second step on a sidebar still too short: the people not in progress are their faces in one row
+        // (each face still the replay; a tap beside it brings that person forward)
+        el.classList.add("oc-mini");
+        el.addEventListener("click", (ev) => !ev.target.closest(".oc-face") && M.focus(c.who));
+        let row = box.querySelector(":scope > .oc-minis");
+        if (!row) row = box.appendChild(Object.assign(document.createElement("div"), { className: "oc-minis" }));
+        row.appendChild(el);
+      } else box.appendChild(el);
       return el;
     }));
+  }
+  /**
+   * G1 (F8 "only the current need"; R6's phones): a round with several people's cards that doesn't fit the sidebar
+   * (still overflowing at the frame's smallest fit, js/shared/frame.js fitSide) folds the people not in progress to
+   * face + headline. In progress: the person a station is on (M.focus, e.g. the chai pan in hand), else the first
+   * person not yet done. A screen where everything fits keeps every card open (laptops and tablets unchanged).
+   */
+  function curPerson(cards) {
+    const OC = OCard();
+    const open = cards.filter((c) => c.who && !OC.shape(c.data).done);
+    return { open, cur: open.find((c) => c.who === mission.focusWho) || open[0] || null };
+  }
+  function idlePeople(cards) {
+    const out = new Set();
+    if (!mission.compact) return out;
+    const { open, cur } = curPerson(cards);
+    if (open.length < 2) return out;
+    open.forEach((c) => c !== cur && out.add(c.key));
+    return out;
+  }
+  /** The second step (compact 2): everyone but the person in progress, done or not, is just their face. */
+  function miniPeople(cards) {
+    const out = new Set();
+    if ((mission.compact || 0) < 2) return out;
+    const people = cards.filter((c) => c.who);
+    if (people.length < 2) return out;
+    const { cur } = curPerson(cards);
+    people.forEach((c) => c !== cur && out.add(c.key));
+    return out;
+  }
+  /** A station names the person it's working on now (their card stays open when the sidebar is too short). */
+  M.focus = function (who) {
+    if (!mission || mission.focusWho === who) return;
+    mission.focusWho = who || null;
+    if (mission.compact) renderOrder();
+  };
+  /** After a redraw (once the frame has fitted the sidebar): still overflowing with several people open? Fold the idle ones. */
+  let fitWatched = false;
+  function checkFit() {
+    const side = $("#side");
+    if (!side) return;
+    // Nani's box growing (her English line, a flag) can tip the sidebar over too
+    if (!fitWatched && global.ResizeObserver && $("#guide")) {
+      fitWatched = true;
+      new ResizeObserver(() => checkFit()).observe($("#guide"));
+    }
+    const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
+    raf(() =>
+      raf(() => {
+        if (!mission || (mission.compact || 0) >= 2 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
+        if (side.scrollHeight <= side.clientHeight + 1) return;
+        if (orderCards().filter((c) => c.who).length < 2) return;
+        // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face
+        mission.compact = (mission.compact || 0) + 1;
+        renderOrder();
+      })
+    );
   }
   /**
    * The phase fold (design system 13) and the start-folded card (14a): the order's cards fold to face +
@@ -1214,15 +1300,27 @@
    * it's said; false when there's no card for them.
    */
   M.sayPerson = async function (who, rows) {
+    // G1: on a short sidebar the person speaking is the one in progress: their card opens to be read along
+    const was = mission ? mission.focusWho : null;
+    if (mission && mission.compact) M.focus(who);
+    try {
+      return await sayPersonCard(who, rows);
+    } finally {
+      // back to the person in progress (unless a station moved on to someone else meanwhile)
+      if (mission && mission.focusWho === who && was !== who) M.focus(was);
+    }
+  };
+  async function sayPersonCard(who, rows) {
     const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
     if (!c || !c._parts || $("#mission").classList.contains("hidden")) return false;
     if (c.scrollIntoView) c.scrollIntoView({ block: "nearest" });
     await sayCardEl(c, rows || null);
     return true;
-  };
+  }
   function renderOrder6() {
     const box = $("#mission .m-order");
     drawCards(box, sideEls);
+    checkFit();
     // the request card steps back: its cards are the order card component's (the shared head goes)
     $("#mission").classList.add("people");
     $("#side").classList.toggle("english", !!mission.english);

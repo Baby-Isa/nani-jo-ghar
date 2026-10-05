@@ -60,11 +60,11 @@
     // the shared layer (js/shared/): relations, stars (the voice star), speaking moments
     const G = global;
     if (G.Rel) {
-      await G.Rel.loadJSON().catch(() => null);
+      await G.Rel.loadJSON(G.Cook.v("data/relations.json")).catch(() => null);
       G.Rel.mergeWords(W);
     }
     if (G.Stars) {
-      await G.Stars.loadJSON().catch(() => null);
+      await G.Stars.loadJSON(G.Cook.v("data/shared/stars.json")).catch(() => null);
       G.Stars.installInto(Cook.data);
     }
     // a family recording of a word (assets/audio/word/<id>.mp3) is its voice

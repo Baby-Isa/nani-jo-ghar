@@ -58,7 +58,7 @@
   Tidy.load = async function () {
     if (Tidy.data) return Tidy.data;
     await Cook.load();
-    const get = (p) => fetch(p).then((r) => r.json());
+    const get = (p) => fetch(Cook.v(p)).then((r) => r.json());
     const [td, content, k, sr, w] = await Promise.all([
       get("data/tidy.json"),
       get("data/content.json").catch(() => ({ words: [] })),
@@ -412,7 +412,7 @@
       const pic = Tidy.picture(it.word);
       if (pic) {
         const img = el("img", "", n);
-        img.src = pic;
+        img.src = Cook.v(pic);
         img.alt = ""; // never a label (6.3)
         img.draggable = false;
       } else n.innerHTML = Tidy.shape(it.word, it.attrs.colour);

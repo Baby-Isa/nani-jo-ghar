@@ -8,12 +8,20 @@
  */
 import { Save } from "#core/save.js";
 import { loadCore } from "#core/index.js";
+import { clipIndex, planClips, voicePath } from "#core/voice.js";
+import { loadJSON } from "#core/env.js";
 
 const Cook = (window.Cook = window.Cook || {});
 Save.init();
 Cook.coreReady = loadCore({ base: "", save: Save, cook: Cook })
-  .then((core) => {
+  .then(async (core) => {
     Cook.core = core;
+    // G1 (decision 26, G12): Cook's voice plans every line with the core's planClips (whole phrases off until the
+    // pre-publish pass), on the test path too; js/cook/lang.js Lang.speak plays the plan through Cook's own player
+    const [fam, tts] = await Promise.all([loadJSON("data/family-audio.json").catch(() => []), loadJSON("data/cook-tts.json").catch(() => ({ lines: {} }))]);
+    const index = clipIndex(fam, { tts: (tts && tts.lines) || {} });
+    const sayOf = (id) => (id && Cook.data && Cook.data.words[id] && Cook.data.words[id].say) || null;
+    Cook.voicePlan = (segs) => planClips(segs, index, { path: voicePath(), sayOf });
     return core;
   })
   .catch((e) => {
