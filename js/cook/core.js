@@ -125,23 +125,21 @@
    * stage 3 prompted  (4-8 right)      -> hints after 8 s
    * stage 4 known     (9+ right)       -> hints after 12 s
    * Two misses in a row drop a word a stage (right count pulled back). */
-  Cook.wordStage = function (id) {
+  // C3 (decision 38d): on the engine core, a word's stage is the core's per-word progress (js/core/progress.js,
+  // rule G23; Cook's four stages are its understand_stage, capped at 4). Cook's own records (Cook.save.words) are
+  // only for the parked pages that load Cook without the core (Find it, Dress up, Snap); the core brought the
+  // old records over when it first read them (Progress followCook), so nothing a child learned is lost.
+  const P = () => (Cook.core && Cook.core.progress) || null;
+  const ownStage = function (id) {
     const w = Cook.save.words[id];
     if (!w || !w.seen) return 1;
     if (w.right >= 9) return 4;
     if (w.right >= 4) return 3;
     return 2;
   };
-  /* How a word is shown as it's learned (docs/archive/cook/cook-with-nani-phase-a-design.md
-   * section 4). A word shows as text in only one place at a time, so
-   * players can't just match letter shapes:
-   *   stage 1 new:      mission card text,  item label text (+ glow)
-   *   stage 2 learning: mission card text,  item label speaker only
-   *   stage 3 nearly:   mission card dots,  item label speaker only
-   *   stage 4 known:    mission card dots (replaying costs a hint), item label speaker only
-   * Every item always keeps at least a speaker button, so it's never a
-   * mystery blob with nothing to tap. English placeholders are never
-   * "known" Kutchi and are never dotted out on the card. */
+  Cook.wordStage = (id) => (P() ? P().cookStage(id) : ownStage(id));
+  /** Every word id met so far (the recipe book). */
+  Cook.metWords = () => (P() ? Object.keys(P().all()).filter((id) => P().get(id).seen > 0) : Object.keys(Cook.save.words));
   Cook.labelMode = (id) => ["", "text", "speaker", "speaker", "speaker"][Cook.wordStage(id)];
   Cook.cardHidden = (id) => Cook.wordStage(id) >= 3 && !Cook.isPlaceholder(id);
   Cook.paused = false;
@@ -151,19 +149,24 @@
     const ms = ((Cook.data && Cook.data.calm) || {}).hintMs || [4000, 5000, 8000, 12000];
     return ms[Cook.wordStage(id) - 1] + Math.max(0, (Cook.quietUntil || 0) - Date.now());
   };
+  const own = (id) => (Cook.save.words[id] = Cook.save.words[id] || { seen: 0, right: 0, miss: 0, streakMiss: 0 });
   Cook.markSeen = function (id) {
-    const w = (Cook.save.words[id] = Cook.save.words[id] || { seen: 0, right: 0, miss: 0, streakMiss: 0 });
+    if (P()) return void P().meet(id);
+    const w = own(id);
     w.seen++;
     w.last = Date.now();
   };
+  // a right or a miss in Cook is the child acting on the Kutchi alone: recall evidence (cue "kutchi")
   Cook.markRight = function (id) {
-    const w = (Cook.save.words[id] = Cook.save.words[id] || { seen: 0, right: 0, miss: 0, streakMiss: 0 });
+    if (P()) return void P().heard(id, { ok: true, cue: "kutchi" });
+    const w = own(id);
     w.right++;
     w.streakMiss = 0;
     w.seen = Math.max(1, w.seen);
   };
   Cook.markMiss = function (id) {
-    const w = (Cook.save.words[id] = Cook.save.words[id] || { seen: 0, right: 0, miss: 0, streakMiss: 0 });
+    if (P()) return void P().heard(id, { ok: false, cue: "kutchi" });
+    const w = own(id);
     w.miss++;
     w.streakMiss++;
     if (w.streakMiss >= 2) {

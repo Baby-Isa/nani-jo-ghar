@@ -13,11 +13,18 @@ import { loadJSON } from "#core/env.js";
 
 const Cook = (window.Cook = window.Cook || {});
 Save.init();
-Cook.coreReady = loadCore({ base: "", save: Save, cook: Cook })
+// C3 (decision 38d): the core's one voice plays every Cook line, through Cook's own Web Audio player (unlocked by the
+// first tap, test speed); looked up at play time, since js/cook/core.js and lang.js load after this module
+const player = {
+  play: (url) => (Cook.speakFile ? Cook.speakFile(url) : Promise.resolve(false)),
+  stop: () => Cook.stopVoice && Cook.stopVoice(),
+  synth: (text) => (Cook.synthSay ? Cook.synthSay(text) : Promise.resolve(false)),
+};
+Cook.coreReady = loadCore({ base: "", save: Save, cook: Cook, player })
   .then(async (core) => {
     Cook.core = core;
     // G1 (decision 26, G12): Cook's voice plans every line with the core's planClips (whole phrases off until the
-    // pre-publish pass), on the test path too; js/cook/lang.js Lang.speak plays the plan through Cook's own player
+    // pre-publish pass), on the test path too; js/cook/lang.js Lang.speak hands the plan to the core's voice (core.voice.say), which plays it through Cook's player above
     const [fam, tts] = await Promise.all([loadJSON("data/family-audio.json").catch(() => []), loadJSON("data/cook-tts.json").catch(() => ({ lines: {} }))]);
     const index = clipIndex(fam, { tts: (tts && tts.lines) || {} });
     const sayOf = (id) => (id && Cook.data && Cook.data.words[id] && Cook.data.words[id].say) || null;

@@ -246,14 +246,20 @@
     });
     // the sidebar's own calls (order-card follow-ups): Nani's card above the order's, and the phase fold
     // (only cards you can act on stay open: Nana's daar card folds to face + headline while chopping)
-    M.addCard("daar-chop", data());
+    // C3 (decision 41, E12): her face replays what to chop, the numbers always said (from level 3 they're not written)
+    const kinds = Object.keys(want);
+    const line = kinds.length
+      ? Lang.join(kinds.map((id, j) => Lang.line(j === 0 ? "only" : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))))
+      : null;
+    const opts = { say: line ? () => Lang.speak(line) : null };
+    M.addCard("daar-chop", data(), opts);
     M.closeCards(true);
     return {
       rows,
       // the rows she asked for tick; her "don't" row stays neutral (nothing was added)
       tickAll() {
         rows.forEach((r) => !r.no && (r.done = true));
-        M.addCard("daar-chop", data());
+        M.addCard("daar-chop", data(), opts);
       },
       close() {
         M.removeCard("daar-chop");

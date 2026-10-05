@@ -361,11 +361,6 @@
       else await synth(saySpelling(w));
     }
   }
-  /** The store app's voice (G14, AUD-02): only OK family clips, through the core's one player (js/core/voice.js). */
-  const storeVoice = () => {
-    const V = Cook.core && Cook.core.voice;
-    return V && V.path && V.path() === "store" ? V : null;
-  };
   /*
    * The core's clip plan for a line (js/core/voice.js planClips; js/cook/boot.js hands it over as Cook.voicePlan once
    * the core has loaded), or null without the core (Node tools, a core that failed to load): then Cook's own search
@@ -379,25 +374,20 @@
       return null;
     }
   }
+  // the core's player speaks a device-voice stand-in (test path only) with the word's own voice spelling
+  Cook.synthSay = (text) => synth(saySpelling(Cook.norm(text)));
   Lang.speak = async (line) => {
-    // R4: in the store app (or ?voice=store on the test site) every line goes through the core's Voice, which plays
-    // OK family clips only
-    const SV = storeVoice();
-    if (SV) {
-      await SV.say({ segments: line.segs }, { channel: "cook" });
+    // C3 (decision 38d): every line goes through the core's one voice (js/core/voice.js), on one channel, so a new
+    // line replaces the one playing (PAN-04). In the store app (or ?voice=store) it plays OK family clips only.
+    const V = Cook.core && Cook.core.voice;
+    if (V) {
+      // the plan with Cook's voice spellings (planClips' sayOf); without one, the core plans the segments itself
+      const plan = V.path && V.path() === "store" ? null : corePlan(line);
+      await V.say(plan ? { clipPlan: plan } : { segments: line.segs }, { channel: "cook" });
       return true;
     }
-    // G1 (decision 26, G12): the test path plans through the core too, so whole-phrase clips are off here as well
-    // (stitched word by word until the pre-publish pass); Cook's own player plays it (test speed, Web Audio unlock)
-    const plan = corePlan(line);
-    if (plan) {
-      for (const c of plan) {
-        if (c.file) await Cook.speakFile(c.file);
-        else if (c.source === "device") await synth(saySpelling(Cook.norm(c.text)));
-        if (plan.length > 1) await new Promise((r) => setTimeout(r, 120 / Cook.speed));
-      }
-      return true;
-    }
+    // no core (a Node tool, a parked page that loads Cook's files without it): Cook's own search below, the same
+    // plan with whole phrases on (R2's voice-parity test)
     const whole = Lang.plain(line).trim();
     if (line.segs.every((s) => s.lang !== "e")) {
       const fam = famMatch(whole);

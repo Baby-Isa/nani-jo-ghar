@@ -31,10 +31,21 @@
   /**
    * 29 Sept (X12 / Q7, Zafar): the counting rule, for a recipe with `countRule`. Level 1 and 2: the
    * card row writes the quantity in Kutchi ("ba dungri", never a digit); level 3 and up: the card
-   * says only the thing, and how many is heard in the order (remember it). Chai keeps its own
-   * (its sugar is the listening test).
+   * says only the thing, and how many is heard in the order (remember it). C3 (decision 41): every
+   * station follows it, the Chai tray's sugar included (data/cook.json countRule on every counted recipe).
    */
   const cardParts = (parts, level, rule) => (rule && level >= 3 ? parts.filter((p) => typeof p !== "number") : parts);
+  /**
+   * C3 (decision 41, E12): a headline that says a quantity ("Muke trae samosa khape.") follows the rule too: from
+   * level 3 the card writes its sentence without the number ("Muke samosa khape."), built from the same frame; the
+   * full line is still what's said (and replayed from the face).
+   */
+  function headCard(r, level, rule) {
+    const parts = r.parts || [];
+    const shown = cardParts(parts, level, rule);
+    if (!r.frame || shown.length === parts.length || !shown.length) return null;
+    return Lang.line(r.frame, Lang.phrase(shown));
+  }
   /** A card row from a recipe ladder row (recipes.js). */
   function row(r, { level = 1, rule = false } = {}) {
     const parts = r.parts || r.ids;
@@ -101,7 +112,7 @@
     const row = (r) => rowOf(r, rule);
     Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
       if (r.kind === "dish" && !L.head) {
-        L.head = Object.assign(row(r), { head: true, line: r.line });
+        L.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule) });
         return;
       }
       // a person's own headline (the Chai tray's "Muke kari chai khape."): heads their card, not a row
@@ -109,7 +120,7 @@
         const key = `for:${r.for}`;
         let s = L.sections.find((y) => y.key === key);
         if (!s) L.sections.push((s = { key, for: r.for, seq: false, when: r.when || null, groups: [[]] }));
-        s.head = Object.assign(row(r), { head: true, line: r.line });
+        s.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule) });
         return;
       }
       // 30 Sept: a second block of the dish (samosa's second kind): its own section, headed by its own line
@@ -196,7 +207,10 @@
       const firstAny = first || any.groups[0].find((r) => !r.no);
       if (firstAny) {
         const line = Lang.line(Lang.orderFrame(i, d.level), firstAny.phrase);
-        Object.assign(L.head, { line, said: line, ids: firstAny.ids.slice(), parts: firstAny.parts, phrase: firstAny.phrase });
+        // C3 (MAA-01): the card's headline keeps the dish's own line ("Muke maani khape."), so it never repeats
+        // the row under it; the kind is said in the headline and written (and ticked) on its row
+        const cardLine = L.head.cardLine || L.head.line;
+        Object.assign(L.head, { line, said: line, cardLine, ids: firstAny.ids.slice(), parts: firstAny.parts, phrase: firstAny.phrase });
       }
     }
     return L;

@@ -846,7 +846,7 @@
     shape().forEach(({ L, sections }) => {
       const lad = document.createElement("div");
       lad.className = "ladder";
-      if (L.head) lad.insertAdjacentHTML("beforeend", `<div class="ir head"><span class="ir-text">${Lang.html(L.head.line, { hide: rowHide(L.head) })}</span></div>`);
+      if (L.head) lad.insertAdjacentHTML("beforeend", `<div class="ir head"><span class="ir-text">${Lang.html(L.head.cardLine || L.head.line, { hide: rowHide(L.head) })}</span></div>`);
       sections.forEach(({ s, rows }) => {
         const sec = document.createElement("div");
         sec.className = ["lsec", s.for ? "lfor" : ""].filter(Boolean).join(" ");
@@ -1064,7 +1064,7 @@
     if (r.rec) return { html: esc(r.line.en || Lang.plain(r.line)), rec: true, key: r };
     // the headline is what the person says, always shown (design system 12): its words never fade to
     // dots ("Muke ••• khape." at the grill); the rows below carry the listening
-    return { html: text6(r.line, () => false), key: r };
+    return { html: text6(r.cardLine || r.line, () => false), key: r };
   }
   /** Every card of the order: [{data, key, who, rows}] (rows: the ladder rows it shows, for read-along). */
   function orderCards() {
@@ -1144,7 +1144,19 @@
     // a station's own person cards (Nani's chop card, design system 13), above the order's, sidebar only
     const extra = big ? [] : (mission.extra || []).map((x) => {
       const st = folds[`x:${x.key}`] || (folds[`x:${x.key}`] = {});
-      const e = OC.card(x.data, { fold: st, closed: !!x.closed, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el) });
+      // C3 (E12): a station's own card (daar's chop card) replays its line from its face, like every card
+      const onFace = x.say
+        ? (ev, cardEl) => {
+            ev.stopPropagation();
+            Cook.unlockAudio();
+            const face = cardEl && cardEl.querySelector(".oc-face");
+            if (face) face.classList.add("on");
+            Promise.resolve(x.say())
+              .catch(() => {})
+              .then(() => face && face.classList.remove("on"));
+          }
+        : null;
+      const e = OC.card(x.data, { fold: st, closed: !!x.closed, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace });
       e.dataset.extra = x.key;
       if ((mission.compact || 0) >= 3) e.classList.add("oc-pills");
       box.appendChild(e);
@@ -1281,7 +1293,7 @@
   M.addCard = function (key, data, opts = {}) {
     if (!mission) return;
     const list = (mission.extra = (mission.extra || []).filter((x) => x.key !== key));
-    list.push({ key, data, closed: !!opts.closed });
+    list.push({ key, data, closed: !!opts.closed, say: opts.say || null });
     renderOrder();
   };
   M.removeCard = function (key) {
@@ -1357,34 +1369,15 @@
       .then(() => btns.forEach((b) => b.classList.remove("on")));
   };
 
-  /* ---- the light bulb ---- */
-  let bulbTimer = null;
-  UI.bulbOff = function () {
-    clearTimeout(bulbTimer);
-    bulbTimer = null;
-    const b = $("#btn-bulb");
-    if (b) b.classList.remove("on");
-    const side = $("#side");
-    if (side) side.classList.remove("english");
-    if (mission && mission.english) {
-      mission.english = false;
-      renderOrder();
-    }
-  };
+  /* ---- the light bulb: the shared one (js/shared/bulb.js; C3, decision 38d: no Cook shim) ---- */
   UI.bulbMs = () => {
     const ms = ((Cook.data && Cook.data.calm) || {}).bulbMs || [5000, 3000, 2000, 1000];
     const lv = mission ? mission.level : orderLevel();
     return ms[Math.min(ms.length, Math.max(1, lv)) - 1];
   };
-  UI.bulb = function () {
-    const b = $("#btn-bulb");
-    if (!b || bulbTimer) return;
+  // English while it's on: the sidebar, and the order card's rows still to do
+  function bulbOn() {
     Cook.sfx.click();
-    const ms = UI.bulbMs();
-    b.style.setProperty("--bulb-ms", `${ms}ms`);
-    b.classList.remove("on");
-    void b.offsetWidth;
-    b.classList.add("on");
     $("#side").classList.add("english");
     if (mission && !$("#mission").classList.contains("stamped")) {
       mission.english = true;
@@ -1396,7 +1389,56 @@
       }
       renderOrder();
     } else if (Cook.onHelp) Cook.onHelp("help");
-    bulbTimer = setTimeout(() => UI.bulbOff(), ms / Cook.speed);
+  }
+  function bulbOffOwn() {
+    const side = $("#side");
+    if (side) side.classList.remove("english");
+    if (mission && mission.english) {
+      mission.english = false;
+      renderOrder();
+    }
+  }
+  // a parked page that loads Cook's UI without js/shared/bulb.js (Find it, Dress up, Snap) gets the same
+  // behaviour from a minimal stand-in with the shared bulb's API (until those modes move onto the core)
+  const parkedBulb = (o) => {
+    const b = { on: false, timer: null };
+    b.use = (btn) => {
+      if (b.on) return false;
+      b.on = true;
+      b.btn = btn;
+      const ms = o.ms() / o.speed();
+      btn.style.setProperty("--bulb-ms", `${ms}ms`);
+      btn.classList.remove("on");
+      void btn.offsetWidth;
+      btn.classList.add("on");
+      o.onOn(ms);
+      b.timer = setTimeout(() => b.off(), ms);
+      return true;
+    };
+    b.off = () => {
+      clearTimeout(b.timer);
+      const was = b.on;
+      b.on = false;
+      if (b.btn) b.btn.classList.remove("on");
+      if (was) o.onOff();
+    };
+    return b;
+  };
+  const bulbOpts = { click: false, ms: () => UI.bulbMs(), speed: () => Cook.speed || 1, onOn: bulbOn, onOff: bulbOffOwn };
+  const sharedBulb = global.Bulb ? global.Bulb.create(null, bulbOpts) : parkedBulb(bulbOpts);
+  UI.bulbOff = function () {
+    if (sharedBulb && sharedBulb.on) sharedBulb.off();
+    else {
+      const b = $("#btn-bulb");
+      if (b) b.classList.remove("on", "lit");
+      bulbOffOwn();
+    }
+  };
+  /** One use of the bulb (one at a time: a tap while it's on does nothing). */
+  UI.bulb = function () {
+    const b = $("#btn-bulb");
+    if (!b) return false;
+    return sharedBulb.use(b);
   };
 
 
@@ -1801,10 +1843,10 @@
     // 28 Sept (Zafar): the voice says the count AND the thing ("hakri dungri", "ba dungri"), the number
     // agreeing with the noun (hakro/hakri). A later level (3+) or Nani on mute stays silent.
     const lv = mission ? mission.level : orderLevel();
-    // 29 Sept (Q7): counting is heard as you add at level 1 only (level 2: written; 3+: heard in the order);
-    // chai's sugar keeps its own (level 2 too: it's the listening test there)
-    const heard = lv <= 1 || (lv <= 2 && id === "cook-khun");
-    if (speak && n >= 1 && n <= 5 && Cook.wordStage(`num-0${n}`) < 3 && heard && !UI.naniMuted()) queued(() => Lang.speak(tallyLine(n, id)));
+    // C3 (decision 41, E12): Nani counts along at level 1 only, in every station (the Chai tray's sugar too);
+    // level 2: written on the card, no counting along; level 3+: heard in the order only (the face replays it)
+    const heard = lv <= 1;
+    if (speak && n >= 1 && n <= 5 && heard && !UI.naniMuted()) queued(() => Lang.speak(tallyLine(n, id)));
   };
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {

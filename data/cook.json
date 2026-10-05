@@ -1232,6 +1232,7 @@
   "chai": {
    "name": "cook-chai",
    "english": "Chai",
+   "countRule": true,
    "price": 4,
    "stations": [
     "pour",
