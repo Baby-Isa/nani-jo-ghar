@@ -398,3 +398,40 @@ test("meaning keys are canonical (argument order from the abstract syntax; inter
   assert.equal(b.key, "Need(p1,Item(n.ambo,2,[Item(n.cup)]))");
   assert.ok(!b.trace.some((t) => /\$parent|object Object/.test(JSON.stringify(t))));
 });
+
+/* ---------------- fixed expressions, set phrases, rule exceptions (decision 40, rule G27) ---------------- */
+
+test("a fixed expression is one entry made of other words, each agreeing (kari chai, mori chai: grammar-notes §10)", () => {
+  const r = E.say({ fn: "Need", who: "p1", thing: Item("n.kari-chai", { n: 1 }) }, { register: "polite" });
+  assert.equal(r.text, "Muke hakri kari chai khapeti.", "she-word: hakri, khapeti");
+  assert.deepEqual(r.tokens.filter((t) => t.of === "n.kari-chai").map((t) => [t.t, t.lex]), [["kari", "a.karo"], ["chai", "n.chai"]]);
+  assert.equal(E.say(Item("n.mori-chai")).text, "mori chai");
+  assert.equal(E.word("a.karo", "he.sg.dir").ok, false, "the he-form karo is a guess: not entered, so a gap");
+  const e = E.linearizer.lexOf("a.karo");
+  assert.ok(e.open.length && e.notes.length, "notes and open questions live on the entry");
+});
+
+test("a set phrase is built from known words, so each word stitches from its own recording (na, na khape: §11)", () => {
+  const r = E.say({ fn: "Say", x: "phrase.no-thanks" });
+  assert.equal(r.text, "Na, na khape.");
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.clipPlan.map((c) => c.text), ["na", "na", "khape"]);
+});
+
+test("a rule exception is tried first and carries its own source (§6: a counted sugar is not 'waari')", () => {
+  const ok = E.say({ fn: "MixedIn", head: "n.chai", x: "n.khun" });
+  assert.equal(ok.text, "khun waari chai", "§6");
+  const ex = E.say({ fn: "MixedIn", head: "n.chai", x: Item("n.khun", { n: 2 }) });
+  assert.equal(ex.ok, false);
+  const g = ex.gaps.find((x) => x.kind === "rule");
+  assert.equal(g.id, "MixedIn");
+  assert.deepEqual(g.ask, ["L9"]);
+  assert.ok(!/ba khun waari/.test(ex.text), "never the form Mum corrected");
+});
+
+test("the data check covers parts, notes, open questions, history and exceptions", () => {
+  assert.ok(has(withEntry((d) => d.lexicon.entries.find((e) => e.id === "n.kari-chai").parts.push({ lex: "a.nothing" })), /part names the unknown word/));
+  assert.ok(has(withEntry((d) => (d.lexicon.entries.find((e) => e.id === "a.karo").history = [{ date: "2026-10-05", change: "x" }])), /history row/));
+  assert.ok(has(withEntry((d) => delete d.concrete.lin.MixedIn.exceptions[0].src), /exception 1: no source|no source/));
+  assert.ok(has(withEntry((d) => delete d.concrete.lin.MixedIn.exceptions[0].ask), /must name the questions/));
+});

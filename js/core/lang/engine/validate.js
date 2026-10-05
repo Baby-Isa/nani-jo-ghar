@@ -61,7 +61,7 @@ export function validate(data, { audio = null } = {}) {
     if (!posInfo[e.pos]) err(where, `unknown part of speech "${e.pos}"`);
     if (!(statuses.entry || []).includes(e.status)) err(where, `status must be one of ${(statuses.entry || []).join(", ")} (has "${e.status}")`);
     if (!srcOk(e.src)) err(where, "no source: every entry must cite where it came from (grammar-notes §, a recording, a question ID)");
-    const hasKutchi = !!(e.lemma || (e.forms && Object.keys(e.forms).length));
+    const hasKutchi = !!(e.lemma || (e.forms && Object.keys(e.forms).length) || (e.parts && e.parts.length));
     if (!hasKutchi && e.status !== "to-record") err(where, "English only (no Kutchi) but not flagged to-record");
     if (e.status === "to-record" && hasKutchi) err(where, "flagged to-record but carries Kutchi: a word is either known (with a source) or to record, never a guess");
     if (e.status === "to-record" && !e.gloss && !e.en) err(where, "a to-record word needs its English (gloss) for the placeholder");
@@ -96,6 +96,20 @@ export function validate(data, { audio = null } = {}) {
         if (v.status !== "unknown" && !v.t) err(`${where} forms.${key}`, "a form with no text must be status unknown");
       }
     }
+  }
+  // set phrases and fixed expressions are made of other entries; notes, open questions and history are kept per entry
+  for (const e of entries) {
+    if (!e) continue;
+    const where = `lexicon ${e.id}`;
+    for (const part of e.parts || []) {
+      if (part.punct) {
+        if (!(params.punctuation || []).includes(part.punct)) err(where, `part punctuation "${part.punct}" is not in params.punctuation`);
+      } else if (!part.lex || !ids.has(part.lex)) err(where, `part names the unknown word "${part.lex}"`);
+      else if (part.lex === e.id) err(where, "a part can't be the entry itself");
+    }
+    if (e.notes != null && !(Array.isArray(e.notes) && e.notes.every((n) => typeof n === "string"))) err(where, "notes is a list of strings");
+    for (const q of e.open || []) if (!q || typeof q.q !== "string") err(where, "each open question is {q, ask?, src?}");
+    for (const h of e.history || []) if (!h || !h.date || !h.change || !srcOk(h.src)) err(where, "each history row is {date, change, src}");
   }
   for (const e of entries) for (const a of (e && e.aliases) || []) if (ids.has(a) && ids.get(a) !== e) err(`lexicon ${e.id}`, `alias "${a}" is another entry's id`);
 
@@ -170,7 +184,15 @@ export function validate(data, { audio = null } = {}) {
     Object.values(r.feats || {}).forEach((t) => checkRefs(`${where} feats`, t));
     for (const k of Object.keys(r.only || {})) checkRefs(`${where} only`, `{${k}}`);
     if (r.variants) for (const v of Object.keys(r.variants)) if (!(features.register && features.register.values.includes(v))) err(where, `variant "${v}" is not a register`);
-    const allSlots = r.variants ? Object.values(r.variants).flat() : r.slots || [];
+    for (const [n, x] of (r.exceptions || []).entries()) {
+      const w = `${where} exception ${n + 1}`;
+      if (!x.only || !Object.keys(x.only).length) err(w, "an exception needs its `only` condition");
+      if (!srcOk(x.src)) err(w, "no source");
+      if (x.status && !(statuses.rule || []).includes(x.status)) err(w, `status "${x.status}" is not a rule status`);
+      if (x.status === "unknown" && !(x.ask && x.ask.length)) err(w, "an unknown exception must name the questions that settle it (ask)");
+      for (const k of Object.keys(x.only || {})) checkRefs(w, `{${k}}`);
+    }
+    const allSlots = (r.variants ? Object.values(r.variants).flat() : r.slots || []).concat(...(r.exceptions || []).map((x) => (x.variants ? Object.values(x.variants).flat() : x.slots || [])));
     if (!allSlots.length) err(where, "no slots");
     for (const s of allSlots) {
       if (s.punct) {

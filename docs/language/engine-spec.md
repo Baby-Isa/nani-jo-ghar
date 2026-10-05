@@ -76,11 +76,26 @@ No Kutchi word or rule is in the code (G13, G26; a test checks it).
 - **clipPlan:** `[{kind: "whole"|"word"|"missing", source, file?, clip?, text, tokens, segs}]`. Whole phrases only with `phrases` on (decision 26), and never over a guessed gender.
 
 ### The data schema
-- **lexicon** `entries[]`: `id` (`n.chokro`), `pos` (a key of `params.pos`), `gloss` (+ `glossPl`, English for grown-ups and placeholders), `lemma`, `gender` (`he`/`she`/`null`; nouns must carry it), `number`/`person`/`clusivity` (pronouns, number words), `ref` (a pronoun's person: `p1`, `p1pl.incl` …), `value` (number words), `paradigm`, `forms` (`{cell: "text" | {t, status, src, ask}}`, overriding the paradigm), `status` (`confirmed`/`draft`/`to-record`), `src` (required), `ask` (`{gender: [...], word: [...], "<cell>": [...]}`), `say`, `aliases`.
+- **lexicon** `entries[]`: `id` (`n.chokro`), `pos` (a key of `params.pos`), `gloss` (+ `glossPl`, English for grown-ups and placeholders), `lemma`, `gender` (`he`/`she`/`null`; nouns must carry it), `number`/`person`/`clusivity` (pronouns, number words), `ref` (a pronoun's person: `p1`, `p1pl.incl` …), `value` (number words), `paradigm`, `forms` (`{cell: "text" | {t, status, src, ask}}`, overriding the paradigm), `parts` (a fixed expression or set phrase made of other entries: `[{lex, cell: "she.{cell}"} | {punct}]`, e.g. *kari chai*, each word agreeing and stitched from its own clip), `status` (`confirmed`/`draft`/`to-record`), `src` (required), `ask` (`{gender: [...], word: [...], "<cell>": [...]}`), `notes` (strings), `open` (`[{q, ask?, src?}]`: open questions), `history` (`[{date, change, src}]`: what changed when), `say`, `aliases`. One entry is the one place for everything known about a word (G27).
 - **paradigms** `{id: {pos, stem: {drop}, cells: {key: {make: "{stem}e", status, src, ask}}}}`; a key is feature values joined by dots, `*` matches any one part, `"*"` alone matches everything.
 - **abstract** `functions: {Fn: {cat, args: {name: {type, optional, list}}, core?, rows?, en, elicit}}`; `type: "Person"` takes `p1`, `p2` …; `core` is a meaning template with `$arg`.
-- **concrete** `lin: {Fn: {feats?, slots | variants (by register), defaultVariant?, only?, onlyAsk?, mark?, status, src, ask?, english?}}`. Slots: `{arg, case?, cell?, each?, via?, list?}`, `{lex, cell?}`, `{punct}`; no free text. Templates: `{arg.feature}`, `{feature}`, `$field`, a literal, with `|` for fallbacks.
+- **concrete** `lin: {Fn: {feats?, slots | variants (by register), defaultVariant?, only?, onlyAsk?, mark?, status, src, ask?, english?}}`. `exceptions: [{only, slots | status: "unknown", ask, english, what, src}]` are tried first (e.g. a counted sugar is not *waari*, grammar-notes §6). Slots: `{arg, case?, cell?, each?, via?, list?}`, `{lex, cell?}`, `{punct}`; no free text. Templates: `{arg.feature}`, `{feature}`, `$field`, a literal, with `|` for fallbacks.
 - **clips** `clips[]`: `{clip, lex, cell}` or `{clip, meaning}`; the check fails if the recording doesn't say that form.
 
 ### What the data check rejects
 An entry with no source; an English-only word not flagged to-record; a to-record word carrying Kutchi; reserved (`hyp`) values; form keys with unknown values; known cells with no `make` or source; rules naming missing words, arguments or meanings; free text in a rule; an unknown rule with no questions; a clip that says something else.
+
+### Where each kind of knowledge goes (G27: one home)
+| Knowledge | Goes in |
+|---|---|
+| a word, its gender, plural and forms | a lexicon entry (`forms` only for what differs from its paradigm) |
+| a word class's regular forms | a paradigm cell, with its status and source |
+| an irregular form | the entry's `forms` cell, with its own `src` |
+| a fixed expression (*kari chai*), a set phrase or greeting | an entry with `parts` (pos `N` or `Phrase`) |
+| a sentence pattern | an abstract meaning plus its concrete rule |
+| an exception to a pattern | the rule's `exceptions`, with its source |
+| a word known only in English | an entry with status `to-record` |
+| a guess, a doubt, a question for Mum | `status: "draft"`, `open`, `ask` on the entry or cell |
+| a recording | `data/family-audio.json` as today, plus a `clips.json` row |
+| a correction or a new answer | edit that one entry or rule, add a `history` row, re-run `node --test build/lang/` |
+
