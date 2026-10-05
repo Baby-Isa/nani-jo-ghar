@@ -71,7 +71,7 @@
    ]
   },
   {
-   "id": "pron.pa",
+   "id": "pron.we-incl",
    "pos": "Pron",
    "ref": "p1pl.incl",
    "person": "p1",
@@ -89,7 +89,7 @@
    ]
   },
   {
-   "id": "pron.asa",
+   "id": "pron.we-excl",
    "pos": "Pron",
    "ref": "p1pl.excl",
    "person": "p1",
@@ -141,7 +141,7 @@
    ]
   },
   {
-   "id": "n.chokro",
+   "id": "n.boy",
    "pos": "N",
    "gender": "he",
    "paradigm": "noun.o-he",
@@ -156,7 +156,7 @@
    ]
   },
   {
-   "id": "n.chokri",
+   "id": "n.girl",
    "pos": "N",
    "gender": "she",
    "paradigm": "noun.i-she",
@@ -175,7 +175,7 @@
    ]
   },
   {
-   "id": "n.ambo",
+   "id": "n.mango",
    "pos": "N",
    "gender": "he",
    "paradigm": "noun.o-he",
@@ -190,7 +190,7 @@
    ]
   },
   {
-   "id": "n.darwajo",
+   "id": "n.door",
    "pos": "N",
    "gender": "he",
    "paradigm": "noun.o-he",
@@ -205,7 +205,7 @@
    ]
   },
   {
-   "id": "n.rasoro",
+   "id": "n.kitchen",
    "pos": "N",
    "gender": "he",
    "paradigm": "noun.o-he",
@@ -234,7 +234,7 @@
    ]
   },
   {
-   "id": "n.maani",
+   "id": "n.chapati",
    "pos": "N",
    "gender": "she",
    "paradigm": "noun.i-she",
@@ -249,19 +249,19 @@
    ]
   },
   {
-   "id": "n.chai",
+   "id": "n.tea",
    "pos": "N",
    "gender": "she",
    "paradigm": "noun.i-she",
    "lemma": "chai",
-   "gloss": "tea",
+   "gloss": "chai",
    "status": "confirmed",
    "src": [
     "grammar-notes §1, §5, §6"
    ]
   },
   {
-   "id": "n.dudh",
+   "id": "n.milk",
    "pos": "N",
    "gender": "he",
    "paradigm": "noun.invariant",
@@ -274,7 +274,7 @@
    ]
   },
   {
-   "id": "n.khun",
+   "id": "n.sugar",
    "pos": "N",
    "gender": null,
    "paradigm": "noun.invariant",
@@ -334,7 +334,7 @@
    ]
   },
   {
-   "id": "a.wadho",
+   "id": "a.big",
    "pos": "A",
    "paradigm": "adj.o",
    "lemma": "wadho",
@@ -346,7 +346,7 @@
    ]
   },
   {
-   "id": "a.laal",
+   "id": "a.red",
    "pos": "A",
    "paradigm": "adj.invariant",
    "lemma": "laal",
@@ -410,7 +410,7 @@
    ]
   },
   {
-   "id": "link.je",
+   "id": "link.place",
    "pos": "Link",
    "gloss": "(links a thing to a place word)",
    "lemma": "je",
@@ -424,7 +424,7 @@
    ]
   },
   {
-   "id": "post.sathe",
+   "id": "post.with",
    "pos": "Post",
    "gloss": "with (a person)",
    "lemma": "sathe",
@@ -438,7 +438,7 @@
    ]
   },
   {
-   "id": "post.me",
+   "id": "post.in",
    "pos": "Post",
    "gloss": "in",
    "lemma": "me",
@@ -453,7 +453,7 @@
    ]
   },
   {
-   "id": "post.mathe",
+   "id": "post.on",
    "pos": "Post",
    "gloss": "on",
    "lemma": "mathe",
@@ -466,7 +466,7 @@
    ]
   },
   {
-   "id": "post.waari",
+   "id": "post.mixed-in",
    "pos": "Post",
    "gloss": "with (mixed in)",
    "lemma": "waari",
@@ -479,7 +479,7 @@
    ]
   },
   {
-   "id": "post.wagar",
+   "id": "post.without",
    "pos": "Post",
    "gloss": "without",
    "lemma": "wagar",
@@ -492,7 +492,7 @@
    ]
   },
   {
-   "id": "v.khap",
+   "id": "v.want",
    "pos": "V",
    "gloss": "be wanted (by someone)",
    "lemma": "khape",
@@ -547,7 +547,7 @@
    ]
   },
   {
-   "id": "neg.na",
+   "id": "neg.not",
    "pos": "Adv",
    "gloss": "no / not",
    "lemma": "na",
@@ -561,7 +561,7 @@
    ]
   },
   {
-   "id": "a.karo",
+   "id": "a.black",
    "pos": "A",
    "gloss": "black (of tea: no milk)",
    "forms": {
@@ -585,7 +585,7 @@
    ]
   },
   {
-   "id": "a.moro",
+   "id": "a.unsweetened",
    "pos": "A",
    "gloss": "unsweetened (of tea)",
    "forms": {
@@ -606,17 +606,17 @@
    ]
   },
   {
-   "id": "n.kari-chai",
+   "id": "n.black-tea",
    "pos": "N",
    "gender": "she",
    "gloss": "black tea",
    "parts": [
     {
-     "lex": "a.karo",
+     "lex": "a.black",
      "cell": "she.{cell}"
     },
     {
-     "lex": "n.chai",
+     "lex": "n.tea",
      "cell": "{cell}"
     }
    ],
@@ -636,17 +636,17 @@
    ]
   },
   {
-   "id": "n.mori-chai",
+   "id": "n.unsweetened-tea",
    "pos": "N",
    "gender": "she",
    "gloss": "unsweetened tea",
    "parts": [
     {
-     "lex": "a.moro",
+     "lex": "a.unsweetened",
      "cell": "she.{cell}"
     },
     {
-     "lex": "n.chai",
+     "lex": "n.tea",
      "cell": "{cell}"
     }
    ],
@@ -661,16 +661,16 @@
    "gloss": "no, I don't want it (polite)",
    "parts": [
     {
-     "lex": "neg.na"
+     "lex": "neg.not"
     },
     {
      "punct": ","
     },
     {
-     "lex": "neg.na"
+     "lex": "neg.not"
     },
     {
-     "lex": "v.khap",
+     "lex": "v.want",
      "cell": "informal"
     }
    ],

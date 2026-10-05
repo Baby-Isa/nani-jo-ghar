@@ -126,3 +126,4 @@
 - 2026-10-05 17:16 UK · 4a: engine core pushed (js/core/lang/engine/, data/lang/ schema + cited test seed, build/lang/ gap reporter); node --test build/lang/ 29 pass; report build/reports/step4a-engine-core.md. 4b can start.
 - 2026-10-05 17:20 UK · 4a: decision 40 scope added (fixed expressions as parts, rule exceptions, notes/open/history per entry, where each kind goes in engine-spec); 33 pass; pushed.
 - 2026-10-05 17:23 UK · 4a done (engine core, 33 tests; fixed expressions, exceptions, notes/open/history). 4b launched (Sonnet high, ~$10-15, stop 00:30, session_01AuehJXVk7GdR1KnKKXbxV9). F1 asked to fix 4 hard-coded px in order-card.css (test_shared_frame).
+- 2026-10-05 17:23 UK · 4a: language-neutral ids (n.boy, not Kutchi), room for an English grammar/translation box/dictionary documented; 34 pass; pushed.
