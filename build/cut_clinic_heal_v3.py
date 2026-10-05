@@ -513,7 +513,7 @@ def main():
         r = cut_wide(kind)
         if r:
             data["patients"][kind] = r
-    data.setdefault("closeups", {})
+    data["closeups"] = {}  # rebuilt every run: only what's cut now (a failed or removed piece drops out)
     cl = data["closeups"]
     for st, who in [("child", "child"), ("adult", "adult")]:
         d = cl.setdefault(st, {})
@@ -552,7 +552,7 @@ def main():
         if r: d["eyetest-b"] = r
         if not d:
             del cl[kind]
-    props = data.setdefault("props", {})
+    props = data["props"] = {}
     cut_grid("o1-ear-foot-bits-v1.png", ["wax-big", "wax-mid", "wax-small", "seed", "splinter-thin", "splinter-thick", "drop", "tissue", "dirt"],
              f"{OUT}/heal-v3", glass=("drop", "dirt"), out=props)
     cut_grid("o2-mouth-bits-v1.png", ["spot-red", "spot-yellow", "spot-blue", "spot-green", "decay-1", "decay-2", "decay-3", "filling-patch"],

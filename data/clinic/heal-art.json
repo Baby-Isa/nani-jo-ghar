@@ -163,6 +163,7 @@
      0.6354,
      1.0
     ],
+    "kick": "assets/clinic/closeups/child/knee-kick.webp",
     "graze": "assets/clinic/closeups/child/knee-graze.webp"
    },
    "forearm": {
@@ -179,27 +180,130 @@
      0.2188,
      0.9785,
      0.7305
-    ]
+    ],
+    "graze": "assets/clinic/closeups/child/forearm-graze.webp",
+    "cut": "assets/clinic/closeups/child/forearm-cut.webp"
    },
-   "upperarm": {
-    "file": "assets/clinic/closeups/child/upperarm.webp",
+   "sole": {
+    "file": "assets/clinic/closeups/child/sole.webp",
+    "size": [
+     1024,
+     1536
+    ],
+    "exits": [
+     "bottom"
+    ],
+    "box": [
+     0.2461,
+     0.0742,
+     0.7832,
+     1.0
+    ]
+   }
+  },
+  "girl": {
+   "ear": {
+    "file": "assets/clinic/closeups/girl/ear.webp",
     "size": [
      1536,
      1024
     ],
     "exits": [
-     "left",
+     "top",
+     "right",
      "bottom"
+    ],
+    "box": [
+     0.0671,
+     0.0,
+     1.0,
+     1.0
+    ]
+   },
+   "mouth": {
+    "file": "assets/clinic/closeups/girl/mouth.webp",
+    "size": [
+     1536,
+     1024
+    ],
+    "exits": [
+     "top"
     ],
     "box": [
      0.0,
      0.0,
-     0.485,
+     1.0,
+     1.0
+    ]
+   },
+   "tongue": {
+    "file": "assets/clinic/closeups/girl/tongue.webp",
+    "size": [
+     1536,
+     1024
+    ],
+    "exits": [
+     "top"
+    ],
+    "box": [
+     0.0,
+     0.0,
+     1.0,
+     1.0
+    ]
+   },
+   "eyes": {
+    "file": "assets/clinic/closeups/girl/eyes.webp",
+    "size": [
+     1536,
+     1024
+    ],
+    "exits": [
+     "bottom"
+    ],
+    "box": [
+     0.0247,
+     0.0,
+     0.9792,
+     1.0
+    ],
+    "sore": "assets/clinic/closeups/girl/eyes-sore.webp",
+    "closed": "assets/clinic/closeups/girl/eyes-closed.webp"
+   },
+   "eyetest-a": {
+    "file": "assets/clinic/closeups/girl/eyetest-a.webp",
+    "size": [
+     1024,
+     1536
+    ],
+    "exits": [
+     "bottom"
+    ],
+    "box": [
+     0.0352,
+     0.1165,
+     0.9707,
+     1.0
+    ],
+    "mirrored": true
+   },
+   "eyetest-b": {
+    "file": "assets/clinic/closeups/girl/eyetest-b.webp",
+    "size": [
+     1024,
+     1536
+    ],
+    "exits": [
+     "bottom"
+    ],
+    "box": [
+     0.0889,
+     0.1113,
+     0.9746,
      1.0
     ]
    }
-  },
-  "adult": {}
+  }
  },
  "_report": [
   "girl: wide poses",
@@ -220,52 +324,69 @@
   "uncle: no W1 yet",
   "auntie: no W1 yet",
   "child K: cut, exits left,bottom",
-  "  kick: not landed",
+  "  kick: shift +0.1,-0.3 px",
   "  graze: shift +0.0,-0.2 px",
   "child F: cut, exits left",
-  "  graze: not landed",
-  "  cut: not landed",
-  "child U: cut, exits left,bottom",
-  "child P: not landed",
-  "adult K: not landed",
-  "adult F: not landed",
-  "adult U: not landed",
-  "adult P: not landed",
-  "girl E: not landed",
-  "girl M1: not landed",
-  "girl M2: not landed",
-  "girl Y: not landed",
-  "girl T1: not landed",
-  "girl T2: not landed",
-  "boy E: not landed",
-  "boy M1: not landed",
-  "boy M2: not landed",
-  "boy Y: not landed",
-  "boy T1: not landed",
-  "boy T2: not landed",
-  "old-man E: not landed",
-  "old-man M1: not landed",
-  "old-man M2: not landed",
-  "old-man Y: not landed",
-  "old-man T1: not landed",
-  "old-man T2: not landed",
-  "old-woman E: not landed",
-  "old-woman M1: not landed",
-  "old-woman M2: not landed",
-  "old-woman Y: not landed",
-  "old-woman T1: not landed",
-  "old-woman T2: not landed",
-  "uncle E: not landed",
-  "uncle M1: not landed",
-  "uncle M2: not landed",
-  "uncle Y: not landed",
-  "uncle T1: not landed",
-  "uncle T2: not landed",
-  "auntie E: not landed",
-  "auntie M1: not landed",
-  "auntie M2: not landed",
-  "auntie Y: not landed",
-  "auntie T1: not landed",
-  "auntie T2: not landed"
- ]
+  "  graze: shift +0.0,-0.5 px",
+  "  cut: shift +0.0,-0.4 px",
+  "  child-u1-upperarm-v1.png: judged a fail, not cut (sleeveless vest, bare shoulder; chin and plait in frame (modesty, I1))",
+  "child P: cut, exits bottom",
+  "girl E: cut, exits top,right,bottom",
+  "girl M1: cut, exits top",
+  "girl M2: cut, exits top",
+  "girl Y: cut, exits bottom",
+  "  sore: shift -0.1,-0.0 px",
+  "  closed: shift -0.3,+1.0 px",
+  "girl T1: cut, exits bottom",
+  "  girl T1: mirrored (the gaze)",
+  "girl T2: cut, exits bottom",
+  "o1-ear-foot-bits-v1.png: 9 pieces for 9 names"
+ ],
+ "props": {
+  "wax-big": {
+   "file": "assets/clinic/heal-v3/wax-big.webp",
+   "w": 349,
+   "h": 281
+  },
+  "wax-mid": {
+   "file": "assets/clinic/heal-v3/wax-mid.webp",
+   "w": 256,
+   "h": 220
+  },
+  "wax-small": {
+   "file": "assets/clinic/heal-v3/wax-small.webp",
+   "w": 189,
+   "h": 164
+  },
+  "seed": {
+   "file": "assets/clinic/heal-v3/seed.webp",
+   "w": 225,
+   "h": 197
+  },
+  "splinter-thin": {
+   "file": "assets/clinic/heal-v3/splinter-thin.webp",
+   "w": 324,
+   "h": 235
+  },
+  "splinter-thick": {
+   "file": "assets/clinic/heal-v3/splinter-thick.webp",
+   "w": 297,
+   "h": 239
+  },
+  "drop": {
+   "file": "assets/clinic/heal-v3/drop.webp",
+   "w": 211,
+   "h": 281
+  },
+  "tissue": {
+   "file": "assets/clinic/heal-v3/tissue.webp",
+   "w": 407,
+   "h": 335
+  },
+  "dirt": {
+   "file": "assets/clinic/heal-v3/dirt.webp",
+   "w": 366,
+   "h": 306
+  }
+ }
 }
