@@ -233,6 +233,11 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
   - **D19, before the doctor's visit:** the clinic must look really good, better than Cook today, and work first time (he's about 80). He plays **every heal game**, and everything is recorded and shown to him. So all the redesigns and the art land before the visit, not tiers.
   Source: Zafar's voice answers, orchestrator chat, 1 Oct (evening). Rule: H25–H35, decision 27
 
+## 2026-10-05
+
+- **28. Finishing step 3:** C1 (clinic polish) and G1 (gate fixes) run side by side, both on the top model; neither publishes to `main`. One publish after the gate (full sandbox run on the mid-tier model, then one Fable review) and Zafar's play. This deliberately replaces "every session ends with one push to `main`" (B6) for these two sessions. Upgrade bonus coins (no numbers yet) and Cook's tablet layouts (CK-TAB-01) wait. Zafar wants to play both the clinic and Cook this evening.
+  Source: Zafar, orchestrator chat, 5 Oct ("yes to all"). Rule: B6 (exception for this gate)
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.
