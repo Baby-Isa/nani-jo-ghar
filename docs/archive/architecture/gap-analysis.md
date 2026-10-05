@@ -1,3 +1,5 @@
+> Archived 5 Oct 2026 (D1). The plan for step 3, which is done (R0–R7, gate 5 Oct). It describes the code as of 1 Oct, before the refactor; the architecture as built is `docs/architecture/target-model.md` and `code-map.md`.
+
 # Gap analysis and the step 3 refactor plan
 
 Step 2a, 1 Oct 2026, for Zafar's approval. It compares today's code (commit `a57a3a6`) with the target in [`target-model.md`](target-model.md) and orders the work for step 3. Rule IDs point to `docs/process/rules.md`; row IDs (SH-01…) to `docs/process/regressions.md`.
