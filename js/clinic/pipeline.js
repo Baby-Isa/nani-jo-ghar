@@ -84,7 +84,7 @@
   P.pword = (kind, key) => (key == null ? null : L.lex(`${kind}.${key}`, ["clinic.pipeline."]));
   const itemLex = (id) => L.lex(id, ["clinic.item.", ""]);
   const colourLex = (c) => L.lex(`col-${c}`) || L.lex(c);
-  const slotOf = (v) => (v && typeof v === "object" ? v.m || v.id : v);
+  const slotOf = (v) => (v && typeof v === "object" && !v.fn ? v.m || v.id : v);
   const shown = (m, o) => Object.assign(L.show(m, o), { m });
   /** A line from data.lines, through the engine: vars fill its slots (display words, meanings or word ids). */
   P.line = function (data, id, vars = {}) {

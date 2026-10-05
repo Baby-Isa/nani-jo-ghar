@@ -304,7 +304,9 @@
     close();
     const hasK = segs.some((s) => s.lang === "k");
     let kutchi = hasK ? out.replace(/\s+([,.!?:;])/g, "$1") : null;
-    let en = plain(r.en || "").replace(/([.!?])\1+$/, "$1");
+    // a line with no Kutchi at all shows its placeholder words as the engine built them (the grown-ups' English template
+    // joins describing words with commas: "short, old man")
+    let en = (hasK ? plain(r.en || "") : plain(segs.map((x) => x.t).join("")).replace(/\s+([,.!?:;])/g, "$1") || plain(r.en || "")).replace(/([.!?])\1+$/, "$1");
     if (o.cap) {
       if (kutchi) kutchi = kutchi.replace(/^(\[?)(\S)/, (a, b, c) => b + c.toUpperCase());
       en = en.charAt(0).toUpperCase() + en.slice(1);
