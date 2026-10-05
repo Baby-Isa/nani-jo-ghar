@@ -106,34 +106,39 @@
  },
  "lines": {
   "cold": {
-   "kutchi": null,
-   "english": "Cold!",
+   "e": "Cold!",
    "who": "patient",
    "placeholder": true
   },
   "oop": {
-   "kutchi": null,
-   "english": "Oop!",
+   "e": "Oop!",
    "who": "patient",
    "placeholder": true
   },
   "tickles": {
-   "kutchi": null,
-   "english": "That tickles!",
+   "e": "That tickles!",
    "who": "patient",
    "placeholder": true
   },
   "bow": {
-   "kutchi": null,
-   "english": "A bow, like a shoelace!",
+   "e": "A bow, like a shoelace!",
    "who": "doctor",
    "placeholder": true
   },
   "look": {
-   "kutchi": null,
-   "english": "Look at that!",
+   "e": "Look at that!",
    "who": "patient",
    "placeholder": true
+  },
+  "cut-why": {
+   "e": "I fell over and scraped my arm.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "cut-goal": {
+   "e": "Let's clean it and put plasters on.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
  },
  "words": {

@@ -135,12 +135,17 @@
     const { base, colour } = Kit.itemParts(it.id);
     let d = Kit.ITEMS[it.id] || Kit.ITEMS[base] || {};
     if (d.same && Kit.ITEMS[d.same]) d = Object.assign({}, Kit.ITEMS[d.same], d);
-    return Object.assign({ english: String(base).replace(/-/g, " "), kutchi: null, glyph: "•" }, d, {
+    const out = Object.assign({ glyph: "•" }, d, {
       id: it.id,
       base,
       colour: it.colour || d.colour || colour || null,
       size: it.size || d.size || null,
     });
+    // the item's name is the language engine's (js/clinic/lang.js; step 4e): its word, or its gap's placeholder
+    const CL = global.ClinicLang;
+    const lex = CL && CL.engine && (CL.lex(it.id, ["clinic.item.", ""]) || CL.lex(d.same || base, ["clinic.item.", ""]));
+    const w = lex ? CL.w(lex) : { kutchi: null, english: String(base).replace(/-/g, " "), placeholder: true, plan: [] };
+    return Object.assign(out, { kutchi: w.kutchi, english: w.english, placeholder: w.placeholder, plan: w.plan });
   };
   /**
    * Clinic v2 stand-ins (flat shapes, no new art: docs/game-design/modes/clinic.md "Prototype first"):
@@ -255,6 +260,29 @@
    * placeholder). opts.who: "doctor" | "patient" | "nani" | "kasuku".
    * Shows a bubble by the speaker for as long as it plays. Resolves when done.
    */
+  /**
+   * Play the engine's clip plan for a line (js/core/lang/engine/clips.js; decision 26: stitched from the family's word
+   * recordings): each piece's family clip in order, and a piece with no recording yet by the device voice (test build
+   * only; TTS never ships, rule 10). Resolves true when anything played.
+   */
+  Voice.plan = async function (plan, o = {}) {
+    if (!plan || !plan.length) return false;
+    let any = false;
+    for (let i = 0; i < plan.length; i++) {
+      const c = plan[i];
+      let ok = false;
+      if (c.file) ok = await Voice.audio(c.file, o);
+      if (!ok) ok = await Voice.tts(c.text, o);
+      any = any || ok;
+      if (i < plan.length - 1 && !Kit.fast) await new Promise((r) => setTimeout(r, 120));
+    }
+    return any;
+  };
+  /**
+   * Say a line. line: a display word {kutchi, english, plan, audio?, who?} (js/clinic/lang.js) or a string (English
+   * placeholder). opts.who: "doctor" | "patient" | "nani" | "kasuku".
+   * Shows a bubble by the speaker for as long as it plays. Resolves when done.
+   */
   Voice.say = function (line, opts = {}) {
     const w = typeof line === "string" ? { english: line, kutchi: null } : line || {};
     const who = opts.who || w.who || "doctor";
@@ -266,12 +294,8 @@
       let played = false;
       const ao = { soft: !!opts.soft };
       if (w.audio) played = await Voice.audio(w.audio, ao);
-      // a family recording of this Kutchi line (js/shared/family-voice.js), else the device voice
-      if (!played && w.kutchi && w.placeholder !== true && global.FamilyVoice) {
-        await global.FamilyVoice.load(Kit.root);
-        const fam = global.FamilyVoice.match(w.kutchi);
-        if (fam) played = await Voice.audio(fam.file, ao);
-      }
+      // the engine's clip plan: the family's recordings of each word (a placeholder piece has none)
+      if (!played && w.kutchi && w.placeholder !== true && w.plan && w.plan.length) played = await Voice.plan(w.plan, ao);
       if (!played) await Voice.tts(Kit.plain(w), ao);
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
       if (left > 0) await new Promise((r) => setTimeout(r, left));
@@ -284,15 +308,8 @@
   /** Say a short word at once, outside the queue (a count as you tap: it never holds up the lines). */
   Voice.now = async function (w) {
     let played = false;
-    if (w.kutchi && global.FamilyVoice) {
-      try {
-        await global.FamilyVoice.load(Kit.root);
-        const fam = global.FamilyVoice.match(w.kutchi);
-        if (fam) played = await Voice.audio(fam.file);
-      } catch (e) {
-        /* no family voice */
-      }
-    }
+    const c = w && w.plan && w.plan.length === 1 ? w.plan[0] : null;
+    if (c && c.file) played = await Voice.audio(c.file);
     if (!played && !Voice.quiet && global.speechSynthesis) {
       try {
         const u = new global.SpeechSynthesisUtterance(Kit.plain(w));
@@ -612,8 +629,8 @@
    * G6 (the Cook counting rule, Q7): at level 1 a row counts up as you tap, written as the
    * Kutchi number word and said aloud, instead of showing nothing until the step closes.
    */
-  /** A number word from data (js/clinic/lang.js; R5: no number table in code). */
-  Kit.num = (n) => (global.ClinicLang && global.ClinicLang.numId(n) ? global.ClinicLang.num(n).kutchi : String(n));
+  /** A number word: the language engine's (js/clinic/lang.js); a number it has no word for shows as the digit. */
+  Kit.num = (n) => (global.ClinicLang && global.ClinicLang.engine && global.ClinicLang.numId(n) ? global.ClinicLang.num(n).kutchi : String(n));
   Kit.Card.prototype.count = function (id, n) {
     const r = id ? this.row(id) : this.row(this.st.now) || this.rows.find((x) => !this.st.done.has(x.id));
     if (!r) return null;

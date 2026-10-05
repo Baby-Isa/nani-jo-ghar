@@ -39,7 +39,7 @@
     blanket: { side: "warm", size: 1, verbs: ["fever-put-on", "fever-take-off"], word: "fever-blanket" },
   };
   const K = { zone: 1, max: 6, exchanges: { 1: [3], 2: [3, 4], 3: [4] }, fixFrom: 3, fixLast: { 3: 1 }, gaps: { 1: [2], 2: [1, 2, 3], 3: [1, 2, 3] }, fixGaps: [2, 3, 4], icePack: false };
-  const WHY = { problem: "I feel hot... no, cold!", goal: "Let's get you just right." };
+  const WHY = { problem: "fever-why", goal: "fever-goal" }; // line keys in data/clinic/heal/fever.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     temp: { gesture: "tap", then: "tap" },

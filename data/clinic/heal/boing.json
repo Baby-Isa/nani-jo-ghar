@@ -164,5 +164,17 @@
  "art": {
   "_about": "The art plan's D1 and D2 (docs/design-language/art-plans/clinic-heal-art-plan.md §8), swapped in by file name when they exist; until then the code-drawn machine, levers, drops and syringe. The levers, drops and the two-layer syringe need their cut positions (tube, socket, spout) before they replace the drawn ones.",
   "machine": "assets/clinic/heal-v3/drop-machine.webp"
+ },
+ "lines": {
+  "boing-why": {
+   "e": "Time for my jab.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "boing-goal": {
+   "e": "I'll do it. You count!",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  }
  }
 }

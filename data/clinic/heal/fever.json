@@ -188,5 +188,17 @@
    "_a2": "A2 (5 Oct): R5, the empty gauge; tube = the glass from its top to the bulb's foot (x0, y0, x1, y1 as shares of the picture), bulb = the bulb's width against the tube's. The level and the zones stay code."
   }
  },
- "throbMs": 8000
+ "throbMs": 8000,
+ "lines": {
+  "fever-why": {
+   "e": "I feel hot... no, cold!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "fever-goal": {
+   "e": "Let's get you just right.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  }
+ }
 }

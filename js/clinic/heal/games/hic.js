@@ -272,7 +272,7 @@
     const oldSpeaker = speakers && speakers.patient;
     if (speakers) speakers.patient = () => els.head || wrap;
 
-    const line = (id) => Object.assign({}, (D.lines || {})[id] || { english: id });
+    const line = (id) => ctx.line(id); // the engine says it (data/clinic/heal/hic.json names it)
     const say = (l) => ctx.say(l, { who: l.who || "doctor" });
     const sayOnce = (id) => {
       if (said.has(id)) return;

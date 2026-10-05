@@ -586,7 +586,7 @@
     const b = `${o[1]}-${o[0]}`;
     return `${ART}plaster-${PAIRS.includes(a) ? a : PAIRS.includes(b) ? b : o[0]}.webp`;
   };
-  const WHY = { problem: "I fell over and scraped my arm.", goal: "Let's clean it and put plasters on." };
+  const WHY = { problem: "cut-why", goal: "cut-goal" }; // line keys in data/clinic/heal/cut.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice); the wash and the
   // plasters are drags, shown as drags (one gesture per thing, P32)
   const CUES = {
@@ -783,7 +783,7 @@
       // D14: logged against the first plaster's row, so the end review can show which step it was
       st.judged.plasters = okP;
       ctx.log({ type: okP ? "right" : "wrong", rowId: "plaster0-order", detail: first.join(" ") });
-      S.say("Look at that!", "patient");
+      S.say("look", "patient");
       S.markSeen();
       ctx.after(fast() ? 200 : 1600, () => {
         const right = P.rows.filter((r) => st.judged[r.id]).length;
@@ -899,7 +899,7 @@
         specks.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" })));
         wetG.setAttribute("opacity", 1);
         S.face("ouch", 900);
-        S.say("Cold!", "patient");
+        S.say("cold", "patient");
         ctx.sfx("pop");
         ctx.after(fast() ? 150 : 600, () => {
           st.busy = false;
