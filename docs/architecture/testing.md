@@ -81,3 +81,18 @@ Anything done the same way twice is a script. Each prints a short summary (count
 | Leak harness | `node build/tools/review/leak.mjs <config>` (`--list`) | One bot loop and a config per game in `build/tools/review/leak-configs/`; proven to give the same numbers and verdict as `build/leak_clinic_heal_cut.mjs` and `_knee.mjs` (which stay). |
 
 A review in short: `touched.mjs` → run its command → `shotdiff.mjs` → look at `changed.png` → `regress.mjs --stdin` → `skeleton.mjs <name>`.
+
+## Tools: ops scripts and project skills (`build/tools/ops/`, `.claude/skills/`, T3, decision 44)
+
+Same principles as the review tools: short summaries, `--help`, re-runnable, no network except git (the two exceptions are flagged: `mumround.mjs --go` calls Whisper through the existing Python scripts, `publish.mjs --go` polls the Pages site). Anything that writes or pushes is a dry run unless given `--go` (or `--out`, `--log`).
+
+| Tool | Command | Saves |
+|---|---|---|
+| Brief generator | `node build/tools/ops/brief.mjs <spec.json> [--out f]` | The session brief from a JSON spec, with the standing lines and the regression rows (`regress.mjs`) for its flows. Example spec `build/tools/ops/specs/4e-clinic-engine.json`. |
+| Mum-round pipeline | `node build/tools/ops/mumround.mjs <folder> [--go] [--draft-items]` | Transcribe (Whisper, `--go` only) → item list (draft from the transcript's question ids) → cut and normalise (`cut_family_clips.py`) → loudness check (EBU R128, ±3 LU of -16) → `import_all.mjs` (`--check` on a dry run) → gap counts. |
+| Voice-note feedback | `node build/tools/ops/feedback.mjs <transcript> [part2] --name n` | The CLAUDE.md report skeleton: mechanics changed, every point with its time, draft regression rows with the next free ids, coverage of every line. |
+| Publish | `node build/tools/ops/publish.mjs [--go]` | Preflight (branch, tree, `origin/main` ahead, bump size); `--go`: bump → commit → push branch and `HEAD:main` → wait for Pages to serve the stamp → screenshot `labs.html`. |
+| Check-in summary | `node build/tools/ops/checkin.mjs [--log --note t]` | Commits by session since the last check-in, reports landed, art on `main`, sessions in `status.md`; `--log` appends the overnight-log line. |
+| Mum question sheet | `node build/tools/ops/mumsheet.mjs [--out f.md --docx]` | The next round's sheet from `gap-list.md` and `clash-list.md`: quick checks, then Cook, then the clinic, capped per part. |
+
+Skills (load only when needed; each points at the rulebook IDs): `/brief`, `/checkin`, `/review`, `/publish`, `/mum-round`, `/feedback`, `/art-run`, `/handover`.
