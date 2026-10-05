@@ -114,21 +114,21 @@ Now "big" on different people and things. Say the whole little phrase each time.
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C22 | the big boy · the big boys | | |
-| C23 | the big girl · the big girls | | |
-| C24 | the big cup · the big cups | | |
-| C25 | the big mango · the big mangoes | | |
-| C26 | the big door · the big doors | | |
-| C27 | the big dupatta · the big dupattas | | |
-| C28 | with the big boy · with the big boys | | |
-| C29 | with the big girl · with the big girls | | |
-| C30 | in the big cup · in the big cups | | |
-| C31 | on the big mango · on the big mangoes | | |
-| C32 | behind the big door · behind the big doors | | |
-| C33 | The boy is big. · The boys are big. | | |
-| C34 | The girl is big. · The girls are big. | | |
-| C35 | The cup is big. · The mango is big. · The door is big. · The cups are big. | | |
-| C36 | the big one (pointing at a boy) · the big one (a girl) · the big one (a cup) · the big one (a mango) · the big ones (several cups) | | |
+| C22 | the big boy · the big boys | | answered, 5 Oct: `grammar-notes.md` §40 |
+| C23 | the big girl · the big girls | | answered, 5 Oct: `grammar-notes.md` §40 |
+| C24 | the big cup · the big cups | | answered, 5 Oct: `grammar-notes.md` §40 |
+| C25 | the big mango · the big mangoes | | answered, 5 Oct: `grammar-notes.md` §40 |
+| C26 | the big door · the big doors | | answered, 5 Oct: `grammar-notes.md` §40 |
+| C27 | the big dupatta · the big dupattas | | answered, 5 Oct: `grammar-notes.md` §40 |
+| C28 | with the big boy · with the big boys | | partly (the he-word plural open), 5 Oct: `grammar-notes.md` §41 |
+| C29 | with the big girl · with the big girls | | answered, 5 Oct: `grammar-notes.md` §41 |
+| C30 | in the big cup · in the big cups | | partly (the he-word plural open), 5 Oct: `grammar-notes.md` §41 |
+| C31 | on the big mango · on the big mangoes | | partly (the he-word plural open), 5 Oct: `grammar-notes.md` §41 |
+| C32 | behind the big door · behind the big doors | | partly (the he-word plural open), 5 Oct: `grammar-notes.md` §41 |
+| C33 | The boy is big. · The boys are big. | | answered, 5 Oct: `grammar-notes.md` §42 |
+| C34 | The girl is big. · The girls are big. | | answered, 5 Oct: `grammar-notes.md` §42 |
+| C35 | The cup is big. · The mango is big. · The door is big. · The cups are big. | | answered, 5 Oct: `grammar-notes.md` §42 |
+| C36 | the big one (pointing at a boy) · the big one (a girl) · the big one (a cup) · the big one (a mango) · the big ones (several cups) | | answered (no "the big one" in Kutchi), 5 Oct: `grammar-notes.md` §43 |
 
 ### C37–C43. "Red"
 
@@ -136,13 +136,13 @@ The same with "red", on things only.
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C37 | the red cup · the red cups | | |
-| C38 | the red mango · the red mangoes | | |
-| C39 | the red door · the red doors | | |
-| C40 | the red dupatta · the red dupattas | | |
-| C41 | in the red cup · on the red mango · behind the red door | | |
-| C42 | The cup is red. · The mango is red. · The door is red. · The cups are red. | | |
-| C43 | the red one (a cup) · the red one (a mango) · the red ones · not the red one | | |
+| C37 | the red cup · the red cups | | answered, 5 Oct: `grammar-notes.md` §44 |
+| C38 | the red mango · the red mangoes | | answered, 5 Oct: `grammar-notes.md` §44 |
+| C39 | the red door · the red doors | | answered, 5 Oct: `grammar-notes.md` §44 |
+| C40 | the red dupatta · the red dupattas | | answered, 5 Oct: `grammar-notes.md` §44 |
+| C41 | in the red cup · on the red mango · behind the red door | | answered, 5 Oct: `grammar-notes.md` §44 |
+| C42 | The cup is red. · The mango is red. · The door is red. · The cups are red. | | answered, 5 Oct: `grammar-notes.md` §44 |
+| C43 | the red one (a cup) · the red one (a mango) · the red ones · not the red one | | partly (*lal na* clear; "the red one" unclear), 5 Oct: `grammar-notes.md` §44 |
 
 ### C44–C49. "Good", and "the small one"
 
@@ -150,12 +150,12 @@ The same with "red", on things only.
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C44 | a good boy · good boys | | |
-| C45 | a good girl · good girls | | |
-| C46 | a good mango · good mangoes | | |
-| C47 | a good cup · a good door · good maani | | |
-| C48 | The boy is good. · The girl is good. · The mango is good. · The maani are good. | | |
-| C49 | the small one (a boy) · the small one (a girl) · the small one (a cup) · the small one (a mango) · the small ones | | |
+| C44 | a good boy · good boys | | answered, 5 Oct: `grammar-notes.md` §45 |
+| C45 | a good girl · good girls | | answered, 5 Oct: `grammar-notes.md` §45 |
+| C46 | a good mango · good mangoes | | answered, 5 Oct: `grammar-notes.md` §45 |
+| C47 | a good cup · a good door · good maani | | answered, 5 Oct: `grammar-notes.md` §45 |
+| C48 | The boy is good. · The girl is good. · The mango is good. · The maani are good. | | answered, 5 Oct: `grammar-notes.md` §45 |
+| C49 | the small one (a boy) · the small one (a girl) · the small one (a cup) · the small one (a mango) · the small ones | | answered, 5 Oct: `grammar-notes.md` §46 |
 
 ### C50–C60. Whose is it?
 
@@ -163,17 +163,17 @@ Who owns what. (In *Nani jo Ghar* the joining word is *jo*; we're listening for 
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C50 | Nana's cup · Nana's cups | | |
-| C51 | Nana's mango · Nana's mangoes | | |
-| C52 | Nana's door · Nana's dupatta · Nana's maani | | |
-| C53 | Nani's cup · Nani's cups | | |
-| C54 | Nani's mango · Nani's mangoes | | |
-| C55 | Nani's door · Nani's dupatta · Nani's goat | | |
-| C56 | the boy's cup · the boy's mango | | |
-| C57 | the girl's cup · the girl's mango | | |
-| C58 | the boys' cup · the girls' mango · the goat's ear · the goat's ears | | |
-| C59 | in Nana's cup · on Nani's mango · behind the boy's door · with the girl's goat | | |
-| C60 | It's Nana's. · It's Nani's. · It's the boy's. · They're the girls'. (pointing at something, without naming it) | | |
+| C50 | Nana's cup · Nana's cups | | answered, 5 Oct: `grammar-notes.md` §47 |
+| C51 | Nana's mango · Nana's mangoes | | answered, 5 Oct: `grammar-notes.md` §47 |
+| C52 | Nana's door · Nana's dupatta · Nana's maani | | answered, 5 Oct: `grammar-notes.md` §47 |
+| C53 | Nani's cup · Nani's cups | | answered, 5 Oct: `grammar-notes.md` §47 |
+| C54 | Nani's mango · Nani's mangoes | | answered, 5 Oct: `grammar-notes.md` §47 |
+| C55 | Nani's door · Nani's dupatta · Nani's goat | | answered, 5 Oct: `grammar-notes.md` §47 |
+| C56 | the boy's cup · the boy's mango | | answered, 5 Oct: `grammar-notes.md` §48 |
+| C57 | the girl's cup · the girl's mango | | answered, 5 Oct: `grammar-notes.md` §48 |
+| C58 | the boys' cup · the girls' mango · the goat's ear · the goat's ears | | partly (the boys' cup ⚠), 5 Oct: `grammar-notes.md` §48 |
+| C59 | in Nana's cup · on Nani's mango · behind the boy's door · with the girl's goat | | answered, 5 Oct: `grammar-notes.md` §49 |
+| C60 | It's Nana's. · It's Nani's. · It's the boy's. · They're the girls'. (pointing at something, without naming it) | | answered, 5 Oct: `grammar-notes.md` §50 |
 
 ### C61–C71. I, you, he, she, we, they
 
@@ -181,30 +181,30 @@ Who's in the kitchen. Say each one as it's written. "This boy, right here" means
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C61 | I'm in the kitchen. (a man says it) · I'm in the kitchen. (a woman says it) | | |
-| C62 | You're in the kitchen. (to a child) | | |
-| C63 | You're in the kitchen. (to Nana) | | |
-| C64 | He's in the kitchen. (this boy, right here) | | |
-| C65 | He's in the kitchen. (that boy, over there) | | |
-| C66 | She's in the kitchen. (this girl, right here) | | |
-| C67 | She's in the kitchen. (that girl, over there) | | |
-| C68 | We're in the kitchen. | | |
-| C69 | They're in the kitchen. (these ones, right here) | | |
-| C70 | They're in the kitchen. (those ones, over there) | | |
-| C71 | this one · that one · these ones · those ones (pointing at cups) · this one · that one (pointing at mangoes) | | |
+| C61 | I'm in the kitchen. (a man says it) · I'm in the kitchen. (a woman says it) | | answered, 5 Oct: `grammar-notes.md` §51 |
+| C62 | You're in the kitchen. (to a child) | | answered, 5 Oct: `grammar-notes.md` §51 |
+| C63 | You're in the kitchen. (to Nana) | | answered, 5 Oct: `grammar-notes.md` §51 |
+| C64 | He's in the kitchen. (this boy, right here) | | answered, 5 Oct: `grammar-notes.md` §51 |
+| C65 | He's in the kitchen. (that boy, over there) | | answered, 5 Oct: `grammar-notes.md` §51 |
+| C66 | She's in the kitchen. (this girl, right here) | | answered, 5 Oct: `grammar-notes.md` §51 |
+| C67 | She's in the kitchen. (that girl, over there) | | answered, 5 Oct: `grammar-notes.md` §51 |
+| C68 | We're in the kitchen. | | answered, 5 Oct: `grammar-notes.md` §52 |
+| C69 | They're in the kitchen. (these ones, right here) | | answered, 5 Oct: `grammar-notes.md` §53 |
+| C70 | They're in the kitchen. (those ones, over there) | | answered, 5 Oct: `grammar-notes.md` §53 |
+| C71 | this one · that one · these ones · those ones (pointing at cups) · this one · that one (pointing at mangoes) | | answered, 5 Oct: `grammar-notes.md` §53 |
 
 ### C72–C79. My, your, his, her
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| C72 | my cup · my mango · my cups · my mangoes | | |
-| C73 | your cup · your mango (to a child) | | |
-| C74 | your cup · your mango (to Nana) | | |
-| C75 | his cup · his mango | | |
-| C76 | her cup · her mango | | |
-| C77 | our cup · our mango | | |
-| C78 | their cup · their mango | | |
-| C79 | in my cup · on your mango (to a child) · with his goat · in her cup | | |
+| C72 | my cup · my mango · my cups · my mangoes | | answered, 5 Oct: `grammar-notes.md` §54 |
+| C73 | your cup · your mango (to a child) | | answered, 5 Oct: `grammar-notes.md` §54 |
+| C74 | your cup · your mango (to Nana) | | answered, 5 Oct: `grammar-notes.md` §54 |
+| C75 | his cup · his mango | | answered, 5 Oct: `grammar-notes.md` §54 |
+| C76 | her cup · her mango | | answered, 5 Oct: `grammar-notes.md` §54 |
+| C77 | our cup · our mango | | answered, 5 Oct: `grammar-notes.md` §54 |
+| C78 | their cup · their mango | | answered, 5 Oct: `grammar-notes.md` §54 |
+| C79 | in my cup · on your mango (to a child) · with his goat · in her cup | | answered, 5 Oct: `grammar-notes.md` §55 |
 
 ### C80–C85. To me, to you, to him; and "saw me"
 
@@ -385,46 +385,46 @@ Quick list first, so they can be clipped out: say each one as you'd say it to a 
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| I1 | pour | | |
-| I2 | boil | | |
-| I3 | turn it down (the flame) | | |
-| I4 | add / put it in | | |
-| I5 | take it out | | |
-| I6 | knead | | |
-| I7 | roll (it out) | | |
-| I8 | flip it | | |
-| I9 | press | | |
-| I10 | chop | | |
-| I11 | cut | | |
-| I12 | stir | | |
-| I13 | mix | | |
-| I14 | fry | | |
-| I15 | fold | | |
-| I16 | fill | | |
-| I17 | sprinkle | | |
-| I18 | serve / put it on the plate | | |
-| I19 | taste it | | |
-| I20 | wash | | |
-| I21 | thin (a maani) · just right | | |
+| I1 | pour | | partly (no single word), 5 Oct: `grammar-notes.md` §38 |
+| I2 | boil | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I3 | turn it down (the flame) | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I4 | add / put it in | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I5 | take it out | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I6 | knead | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I7 | roll (it out) | | not answered, 5 Oct: `grammar-notes.md` §38 |
+| I8 | flip it | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I9 | press | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I10 | chop | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I11 | cut | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I12 | stir | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I13 | mix | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I14 | fry | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I15 | fold | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I16 | fill | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I17 | sprinkle | | partly (no single word), 5 Oct: `grammar-notes.md` §38 |
+| I18 | serve / put it on the plate | | partly (no single word), 5 Oct: `grammar-notes.md` §38 |
+| I19 | taste it | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I20 | wash | | answered, 5 Oct: `grammar-notes.md` §38 |
+| I21 | thin (a maani) · just right | | answered, 5 Oct: `grammar-notes.md` §38 |
 
 ### I22–I35. More kitchen things
 
 | ID | English | Kutchi (Zafar's rough spelling) | Notes |
 |---|---|---|---|
-| I22 | egg | | |
-| I23 | chicken | | |
-| I24 | oil | | |
-| I25 | pastry (samosa) | | |
-| I26 | cassava (mogo) | | |
-| I27 | corn (on the cob) | | |
-| I28 | a skewer | | |
-| I29 | a pot | | |
-| I30 | the tawa | | |
-| I31 | rolling pin · board | | |
-| I32 | ladle | | |
-| I33 | flame / the stove | | |
-| I34 | hot (to touch) | | |
-| I35 | cold (food gone cold) | | |
+| I22 | egg | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I23 | chicken | | answered (*murgi*; Swahili word unclear), 5 Oct: `grammar-notes.md` §39 |
+| I24 | oil | | not answered (unclear on the tape), 5 Oct: `grammar-notes.md` §39 |
+| I25 | pastry (samosa) | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I26 | cassava (mogo) | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I27 | corn (on the cob) | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I28 | a skewer | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I29 | a pot | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I30 | the tawa | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I31 | rolling pin · board | | partly (rolling pin only), 5 Oct: `grammar-notes.md` §39 |
+| I32 | ladle | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I33 | flame / the stove | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I34 | hot (to touch) | | answered, 5 Oct: `grammar-notes.md` §39 |
+| I35 | cold (food gone cold) | | answered, 5 Oct: `grammar-notes.md` §39 |
 
 ### I36. Which dishes are really ours?
 
