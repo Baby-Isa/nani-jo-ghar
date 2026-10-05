@@ -232,8 +232,9 @@
   function naniCard(want, no, level = 1) {
     const M = UI.mission;
     // 30 Sept (Zafar, Q7): from level 3 the chop card is words only ("dungri"); how many is heard, as on the order card
-    const parts = (id) => (level >= 3 ? [id] : Lang.countParts(want[id], id));
-    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(parts(id))), done: false }));
+    const parts = (id) => Lang.countParts(want[id], id);
+    // (from level 3 the noun keeps the form its count gave it: "trae dungri" is written "dungri")
+    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(level >= 3 ? Lang.phraseUncounted(parts(id)) : Lang.phrase(parts(id))), done: false }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
     no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))))), done: false, no: true }));

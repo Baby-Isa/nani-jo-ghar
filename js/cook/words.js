@@ -269,6 +269,19 @@
   /** How many of a thing, as phrase parts (the engine puts them in the language's order). */
   Lang.countParts = (n, id, { one = true } = {}) => (n == null || (n === 1 && !one) ? [id] : [n, id]);
   Lang.phrase = (parts) => Lang.say(itemOf(parts), { row: true });
+  /**
+   * The same phrase with its count left unsaid (the counting rule, E12: from level 3 the card writes the thing, the
+   * count is only heard): the thing in its plural, whatever the count ("bataata" for one potato or three), so the
+   * word's form never tells one from many (the leak test, C10).
+   */
+  Lang.phraseUncounted = (parts) => {
+    const m = itemOf(parts);
+    if ((m.fn === "Item" || m.fn === "Unit") && m.n != null) {
+      m.number = "pl";
+      delete m.n;
+    } else if (m.fn === "Join") m.parts = m.parts.filter((p) => p.fn !== "Count");
+    return Lang.say(m, { row: true });
+  };
   /** Cook's frame keys, by role (the meanings are data: data/cook.json `meanings`). */
   Lang.frames = () => ({ first: "need", more: "and", any: "and", seq: "then", seqFirst: "first", no: "no", seq_word: "lnk-nepoi", for: "for" });
   Lang.orderFrame = (i) => (i === 0 ? "need" : "and");

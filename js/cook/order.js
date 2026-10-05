@@ -44,14 +44,15 @@
     const parts = r.parts || [];
     const shown = cardParts(parts, level, rule);
     if (!r.frame || shown.length === parts.length || !shown.length) return null;
-    return Lang.line(r.frame, Lang.phrase(shown));
+    // the noun keeps the form its count gave it (Lang.phraseUncounted; the parked pages: the words as they are)
+    return Lang.line(r.frame, Lang.phraseUncounted ? Lang.phraseUncounted(parts) : Lang.phrase(shown));
   }
   /** A card row from a recipe ladder row (recipes.js). */
   function row(r, { level = 1, rule = false } = {}) {
     const parts = r.parts || r.ids;
     const phrase = Lang.phrase(parts);
     const shown = cardParts(parts, level, rule);
-    const cardPhrase = shown.length === parts.length ? phrase : Lang.phrase(shown);
+    const cardPhrase = shown.length === parts.length ? phrase : Lang.phraseUncounted ? Lang.phraseUncounted(parts) : Lang.phrase(shown);
     const no = r.kind === "no";
     return {
       parts,
