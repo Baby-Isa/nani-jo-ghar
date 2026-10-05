@@ -271,15 +271,13 @@
   Lang.phrase = (parts) => Lang.say(itemOf(parts), { row: true });
   /**
    * The same phrase with its count left unsaid (the counting rule, E12: from level 3 the card writes the thing, the
-   * count is only heard): the thing in its plural, whatever the count ("bataata" for one potato or three), so the
-   * word's form never tells one from many (the leak test, C10).
+   * count is only heard): the thing in its one-form whatever the count ("bataato" for one potato or three), so the
+   * word's form never tells one from many (the leak test, C10), and a plural Mum hasn't given (tomatoes) is never needed.
    */
   Lang.phraseUncounted = (parts) => {
     const m = itemOf(parts);
-    if ((m.fn === "Item" || m.fn === "Unit") && m.n != null) {
-      m.number = "pl";
-      delete m.n;
-    } else if (m.fn === "Join") m.parts = m.parts.filter((p) => p.fn !== "Count");
+    if ((m.fn === "Item" || m.fn === "Unit") && m.n != null) delete m.n;
+    else if (m.fn === "Join") m.parts = m.parts.filter((p) => p.fn !== "Count");
     return Lang.say(m, { row: true });
   };
   /** Cook's frame keys, by role (the meanings are data: data/cook.json `meanings`). */
