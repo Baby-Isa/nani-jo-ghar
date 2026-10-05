@@ -32,7 +32,8 @@
   const P = {};
   const STAGES = (P.STAGES = ["waiting", "diagnosis", "pharmacy", "heal", "sendoff"]);
   // every Kutchi word, number and join comes from data through the language seam (js/clinic/lang.js, R5)
-  const L = P.Lang = (typeof self !== "undefined" && self.ClinicLang) || (typeof globalThis !== "undefined" && globalThis.ClinicLang) || (typeof require === "function" ? require("./lang.js") : null);
+  const L = (P.Lang = (typeof self !== "undefined" && self.ClinicLang) || (typeof globalThis !== "undefined" && globalThis.ClinicLang) || (typeof require === "function" ? require("./lang.js") : null));
+  const LANG = L; // the language (inside a stage, L is the level)
 
   /* ---------------- randomness ---------------- */
   P.rng = function (seed) {
@@ -76,65 +77,52 @@
   };
 
   /* ---------------- words ---------------- */
-  // A word is {kutchi, english}. kutchi may mix real Kutchi and [placeholders].
-  const ph = (english) => `[${english}]`;
-  P.fill = function (tpl, vars) {
-    return String(tpl || "").replace(/\{(\w+)\}/g, (m, k) => (vars[k] != null ? vars[k] : m));
-  };
-  /** A line from data.lines, filled: vars are {key: {kutchi, english}}. */
+  // Every word and line is the language engine's (step 4e; js/clinic/lang.js). A display word is
+  // {kutchi, english, placeholder, plan, m}: its Kutchi may hold [placeholders] (the engine's gaps, grey italic), `plan`
+  // is the engine's clip plan for the voice, and `m` is the meaning it was built from, so it can fill a line's slot.
+  // The pipeline's own words are the engine's aliases clinic.pipeline.<kind>.<key> (build/lang/import_clinic.mjs).
+  P.pword = (kind, key) => (key == null ? null : L.lex(`${kind}.${key}`, ["clinic.pipeline."]));
+  const itemLex = (id) => L.lex(id, ["clinic.item.", ""]);
+  const colourLex = (c) => L.lex(`col-${c}`) || L.lex(c);
+  const slotOf = (v) => (v && typeof v === "object" ? v.m || v.id : v);
+  const shown = (m, o) => Object.assign(L.show(m, o), { m });
+  /** A line from data.lines, through the engine: vars fill its slots (display words, meanings or word ids). */
   P.line = function (data, id, vars = {}) {
-    const l = (data.lines && data.lines[id]) || { english: id };
-    const kv = {};
-    const ev = {};
-    Object.entries(vars).forEach(([k, v]) => {
-      kv[k] = v && typeof v === "object" ? v.kutchi || ph(v.english) : v;
-      ev[k] = v && typeof v === "object" ? v.english : v;
-    });
-    return { id, kutchi: l.kutchi ? P.fill(l.kutchi, kv) : null, english: P.fill(l.english, ev), who: l.who };
+    const v = {};
+    Object.entries(vars).forEach(([k, x]) => (v[k] = slotOf(x)));
+    return Object.assign(L.line(id, v, { def: (data.lines && data.lines[id]) || {}, pipeline: true }), { id });
   };
   P.itemBase = function (data, id) {
     const it = data.items[id];
     return it && it.same ? it.same : id;
   };
   P.itemWord = function (data, id, o = {}) {
-    const it = data.items[id] || data.items[P.itemBase(data, id)] || { english: String(id).replace(/-/g, " ") };
-    let english = (it.english || String(id)).replace(/^the /, "");
-    let kutchi = it.kutchi || null;
-    let k = kutchi || ph(english);
-    let e = english;
-    if (o.colour) {
-      k = `${ph(o.colour)} ${k}`;
-      e = `${o.colour} ${e}`;
-    }
-    if (o.count > 1) {
-      k = `${L.num(o.count).kutchi} ${kutchi ? k : k.replace(/\]$/, "s]")}`;
-      e = `${o.count} ${e}${kutchi ? "" : "s"}`;
-    }
-    return { id, kutchi: k, english: e, placeholder: !kutchi && !o.count, word: { kutchi, english: it.english || english, id } };
+    const kind = itemLex(id) || itemLex(P.itemBase(data, id)) || id;
+    const m = L.item(kind, { n: o.count > 1 ? o.count : undefined, mods: o.colour ? [colourLex(o.colour)] : undefined });
+    return Object.assign(shown(m), { id, word: Object.assign(L.w(kind), { id }) });
   };
   P.kindWord = function (data, kind, o = {}) {
-    const k = data.kinds[kind] || { english: kind };
-    const noun = k.english.replace(/^the /, "");
-    // the describing word agrees with the noun (a kind of unknown gender: the he-form, flagged; decision 21)
-    if (o.size) return { kutchi: `${L.w(L.sizeId(o.size)).kutchi} ${ph(noun)}`, english: `the ${o.size} ${noun}`, word: k.english };
-    if (o.colour) return { kutchi: `${ph(k.english)} ${ph(data.colour_words[o.colour].english)}`, english: `${k.english} ${data.colour_words[o.colour].english}` };
-    return { kutchi: ph(k.english), english: k.english };
+    const k = data.kinds[kind] || { who: kind };
+    const head = P.pword("ladder", k.who || kind);
+    const mods = (o.size ? [L.sizeId(o.size)] : []).concat(k.age === "old" ? [P.pword("ladder", "old")] : []);
+    const item = L.item(head, { mods: mods.length ? mods : undefined });
+    const m = o.colour ? L.join([item, P.pword("colour", o.colour)]) : item;
+    return Object.assign(shown(m), { word: L.w(head).english });
   };
+  /** A body part; with a side, the patient's own ("my left knee": rule G19). */
   P.partWord = function (data, part, side) {
-    const w = data.part_words[part] || part;
-    if (side) return { kutchi: ph(`my ${side} ${w}`), english: `my ${side} ${w}` };
-    return { kutchi: ph(w), english: w };
+    const item = L.item(P.pword("part", part) || part, side ? { mods: [L.sideId(side)] } : {});
+    return shown(side ? { fn: "PossPron", owner: "p1", thing: item } : item);
   };
 
   /**
-   * A row joined to the ones before it, by the data's frames (the seam): ordered, "pela {x}" then "ne poi {x}";
-   * any order, "{x}" then "ne {x}". w is a display word {kutchi, english} (its Kutchi may hold [placeholders]).
+   * A row joined to the ones before it, by the engine's frames: ordered, "first {x}" then "and then {x}"; any order,
+   * "{x}" then "and {x}". w is a display word carrying its meaning (m).
    */
   P.joined = function (i, w, { ordered = false, lower = false } = {}) {
-    if (!ordered && i === 0) return { kutchi: w.kutchi || ph(w.english), english: w.english };
-    const frame = ordered ? L.show(L.step(i, "\u0001", { lower })) : L.show(L.also("\u0001"));
-    const swap = (t, by) => String(t).replace(/\[?\u0001\]?/, by);
-    return { kutchi: swap(frame.kutchi, w.kutchi || ph(w.english)), english: swap(frame.english, w.english) };
+    const m = slotOf(w);
+    if (!ordered && i === 0) return shown(m);
+    return shown(ordered ? L.step(i, m, { lower }) : L.also(m));
   };
 
   /* ================= stage 1: the waiting room ================= */
@@ -157,15 +145,14 @@
   P.personKind = (p) => (WHO_KINDS[p.who] || {})[p.age || "young"] || (WHO_KINDS[p.who] || {}).young || p.who;
   /** The English words of a person under a description (a list of attribute names). */
   P.describe = function (data, p, attrs) {
-    const W = data.ladder_words || {};
-    const w = [];
-    if (attrs.includes("height") && p.height) w.push(W[p.height] || p.height);
-    if (attrs.includes("age") && p.age) w.push(W[p.age] || p.age);
-    w.push(W[p.who] || p.who);
-    if (attrs.includes("colour") && p.colour) w.push((data.colour_words[p.colour] || { english: `in ${p.colour}` }).english);
-    if (attrs.includes("with") && p.with) w.push(W[p.with] || `with the ${p.with}`);
-    const english = `the ${w.join(" ")}`;
-    return { kutchi: ph(english), english, attrs: attrs.slice() };
+    const mods = [];
+    if (attrs.includes("height") && p.height) mods.push(P.pword("ladder", p.height));
+    if (attrs.includes("age") && p.age) mods.push(P.pword("ladder", p.age));
+    const parts = [L.item(P.pword("ladder", p.who), { mods: mods.length ? mods : undefined })];
+    if (attrs.includes("colour") && p.colour) parts.push(P.pword("colour", p.colour));
+    if (attrs.includes("with") && p.with) parts.push(P.pword("ladder", p.with));
+    const m = parts.length > 1 ? L.join(parts) : parts[0];
+    return Object.assign(shown(m), { attrs: attrs.slice() });
   };
   const matches = (p, q, attrs) => p.who === q.who && attrs.every((a) => a === "kind" || (p[a] || null) === (q[a] || null));
   P.waitingRungs = (data, L) => (data.stages.waiting.rungs || ["kind"]).slice(0, Math.max(1, Math.min(5, L)));
@@ -283,7 +270,7 @@
       options: bench.map((b) => b.i),
       tested: true,
       voice: variant === "W3",
-      word: c.say.english.replace(/^the /, ""),
+      word: c.say.english,
       rung: focus,
     }));
     let card;
@@ -352,9 +339,7 @@
       card = [Object.assign(P.line(data, "here"), { id: "probe" })];
       if (graded) rows.push({ id: "probe", stage: "diagnosis", kind: "probe", answer: part, options: probes, tested: true, word: data.part_words[part] });
     } else if (variant === "D2") {
-      const say = L >= 3 && side ? P.line(data, "hurts-side", { side: { english: side }, part: { english: data.part_words[part] } }) : P.line(data, "hurts", { part: { english: data.part_words[part] } });
-      // the placeholder frame: the whole line is English for now
-      say.kutchi = `[${say.english}]`;
+      const say = L >= 3 && side ? P.line(data, "hurts-side", { side: LANG.sideId(side), part: P.pword("part", part) }) : P.line(data, "hurts", { part: P.pword("part", part) });
       card = [Object.assign(P.line(data, "where"), { id: "where" })];
       rows.push({ id: "where", stage: "diagnosis", kind: "part", answer: { part, side: L >= 3 ? side : null }, options: data.parts[L] || data.parts[3], tested: true, patientSays: say, word: data.part_words[part] });
     } else if (variant === "D3") {
@@ -366,10 +351,10 @@
       calls = parts.map((p, i) => {
         const tool = toolFor(p);
         const sd = L >= 3 && data.sided.includes(p) ? (p === part ? side : rng() < 0.5 ? "left" : "right") : null;
-        const w = sd ? `the ${sd} ${data.part_words[p]}` : `the ${data.part_words[p]}`;
-        return { id: `check${i}`, part: p, side: sd, tool, sore: p === part, say: { kutchi: `[${S.tools[tool].english}] [${w}]`, english: `${S.tools[tool].english} ${w}` } };
+        const where = LANG.item(P.pword("part", p) || p, sd ? { mods: [LANG.sideId(sd)] } : {});
+        return { id: `check${i}`, part: p, side: sd, tool, sore: p === part, say: P.line(data, "check", { tool: `clinic.line.pipeline.do-${tool}`, part: where }) };
       });
-      card = calls.map((c) => ({ id: c.id, kutchi: c.say.kutchi, english: c.say.english }));
+      card = calls.map((c) => Object.assign({}, c.say, { id: c.id }));
       // level 1: only the right tool plus one other (v2 D3); the kit keeps the data's order
       if (L === 1) {
         const keep = new Set(calls.map((c) => c.tool));
@@ -380,7 +365,7 @@
     }
     const said = P.prescription(data, ailmentId);
     const pose = o.pose || (variant === "D3" ? "stand" : "sit");
-    return { stage: "diagnosis", variant, level: L, graded, ailment: ailmentId, part, side, probes, calls, tools, rows, card, pose, name: ail.say, prescription: said };
+    return { stage: "diagnosis", variant, level: L, graded, ailment: ailmentId, part, side, probes, calls, tools, rows, card, pose, name: LANG.line(`ailment-${ailmentId}`), prescription: said };
   };
   /** D1 (level 2+): the right act for a probe's answer: "yes" or "no" (said with the data's words: haa / na, G9). */
   P.probeAnswer = (plan, probed) => (probed === plan.part ? "yes" : "no");
@@ -457,9 +442,7 @@
     const words = asked.map((a) => P.itemWord(data, a.id, a));
     const ordered = !!(K.order && words.length > 1);
     const card = words.map((w, i) => Object.assign({ id: `grab${i}` }, P.joined(i, w, { ordered, lower: true }), ordered ? { seq: "need" } : {}));
-    const cardHead = P.line(data, "bringme", { a: { kutchi: "", english: "" } });
-    cardHead.kutchi = cardHead.kutchi.trim();
-    cardHead.english = cardHead.english.trim();
+    const cardHead = P.line(data, "bringme");
     const rows = asked.map((a, i) => ({ id: `grab${i}`, stage: "pharmacy", kind: "grab", answer: keyOf(a), options: loop.map(keyOf), tested: true, word: words[i].word.english }));
     if (K.order && asked.length > 1) rows.push({ id: "order", stage: "pharmacy", kind: "order", answer: asked.map(keyOf), tested: true });
     asked.forEach((a, i) => a.count && rows.push({ id: `count${i}`, stage: "pharmacy", kind: "count", answer: a.count, item: keyOf(a), tested: true }));
@@ -598,7 +581,7 @@
     }
     if (mode === "helps") {
       card.push(Object.assign(P.line(data, "helps"), { id: "help" }));
-      rows.push({ id: "help", stage: "sendoff", kind: "help", answer: S.helps[feeling], feeling, options: shuffle(S.helpCards, rng), tested: true, word: (data.items[S.helps[feeling]] || {}).english || S.helps[feeling] });
+      rows.push({ id: "help", stage: "sendoff", kind: "help", answer: S.helps[feeling], feeling, options: shuffle(S.helpCards, rng), tested: true, word: P.itemWord(data, S.helps[feeling]).word.english });
     } else {
       rows.push({ id: "feel", stage: "sendoff", kind: "face", answer: feeling, options: shuffle(S.cards, rng), tested: mode !== "face", taught: mode === "face", word: feeling });
     }
@@ -606,13 +589,18 @@
     if (L >= (S.goodbyeFrom || 2)) {
       goodbye = pick(Object.keys(data.goodbyes), rng);
       const g = data.goodbyes[goodbye];
-      card.push({ id: "bye", kutchi: `[${g.cue.english}]`, english: g.cue.english });
+      card.push(Object.assign(LANG.line(`cue-${goodbye}`, {}, { def: g.cue || {} }), { id: "bye" }));
       rows.push({ id: "bye", stage: "sendoff", kind: "say-bye", answer: goodbye, options: Object.keys(data.goodbyes), tested: true, voice: true });
     }
     const main = rows.find((r) => r.id === "feel" || r.id === "help");
-    return { stage: "sendoff", variant, mode, level: L, feeling, faces: main.kind === "face" ? main.options : S.cards.slice(), helps: main.kind === "help" ? main.options : null, extra: S.helps[feeling] || null, goodbye, rows, card, line: data.feelings[feeling].line };
+    return { stage: "sendoff", variant, mode, level: L, feeling, faces: main.kind === "face" ? main.options : S.cards.slice(), helps: main.kind === "help" ? main.options : null, extra: S.helps[feeling] || null, goodbye, rows, card, line: LANG.line(`feeling-${feeling}`, {}, { def: data.feelings[feeling].line || {} }) };
   };
   P.judgeFace = (row, face) => row.answer === face;
+  /** A goodbye the child says, by its key (data goodbyes: `lex`, the engine's phrase; rule G6: khuda-fis, "thank you"). */
+  P.goodbye = (data, key) => {
+    const g = data.goodbyes[key] || {};
+    return Object.assign(g.lex ? L.show(L.phrase(g.lex)) : L.line(`goodbye-${key}`), { key });
+  };
 
   /* ================= one patient, a morning ================= */
   /**
@@ -716,19 +704,15 @@
       const key = (x.kutchi || "") + "|" + (x.english || "");
       if (seen.has(key)) return;
       seen.add(key);
-      w.push({ kutchi: x.kutchi || null, english: x.english || "", placeholder: !x.kutchi });
+      w.push({ kutchi: x.kutchi || null, english: x.english || "", placeholder: !x.kutchi, plan: x.plan || [] });
     };
     const k = data.kinds[plan.kind];
-    add({ kutchi: null, english: k ? k.english.replace(/^the /, "") : plan.kind });
-    add({ kutchi: null, english: data.part_words[plan.stages.diagnosis.part] || plan.stages.diagnosis.part });
+    add(L.w(P.pword("ladder", (k && k.who) || plan.kind) || plan.kind));
+    add(L.w(P.pword("part", plan.stages.diagnosis.part) || plan.stages.diagnosis.part));
     plan.stages.pharmacy.words.forEach((x) => add(x.word));
     (healWords || []).slice(0, 6).forEach(add);
-    const f = data.feelings[plan.stages.sendoff.feeling];
-    add({ kutchi: null, english: f ? f.english : plan.stages.sendoff.feeling });
-    if (plan.stages.sendoff.goodbye) {
-      const g = data.goodbyes[plan.stages.sendoff.goodbye];
-      add({ kutchi: g.kutchi, english: g.english });
-    }
+    add(L.w(P.pword("feeling", plan.stages.sendoff.feeling) || plan.stages.sendoff.feeling));
+    if (plan.stages.sendoff.goodbye) add(P.goodbye(data, plan.stages.sendoff.goodbye));
     return w;
   };
 

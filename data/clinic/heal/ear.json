@@ -122,6 +122,21 @@
    "voice": "patient",
    "k": "{n} {drops}",
    "e": "{n} drops, please"
+  },
+  "ear-why": {
+   "e": "My ear feels blocked.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "ear-goal": {
+   "e": "Let's clean it.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "ear-better": {
+   "e": "I can hear again!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
  },
  "things": {

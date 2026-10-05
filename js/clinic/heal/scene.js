@@ -350,7 +350,7 @@
     }
 
     /* ---- lines ---- */
-    const asLine = (l) => (typeof l === "string" ? HS.ph(l) : l);
+    const asLine = (l) => (typeof l === "string" ? ctx.line(l) : l); // a key: the line through the engine
     S.say = (line, who = "doctor") => ctx.say(asLine(line), { who });
     /**
      * The "why" beat (13g, 13i): shown, not told: the patient's pained face, then the doctor's line (his goal:

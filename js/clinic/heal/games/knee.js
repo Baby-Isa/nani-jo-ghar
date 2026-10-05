@@ -22,7 +22,7 @@
     kicks: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
     turns: { 1: [2, 3, 4], 2: [3, 4, 5], 3: [3, 4, 5] },
   };
-  const WHY = { problem: "My knee hurts.", goal: "Let's check it and bandage it." };
+  const WHY = { problem: "knee-why", goal: "knee-goal" }; // line keys in data/clinic/heal/knee.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     kick: { gesture: "tap", then: "tap" },
@@ -179,7 +179,7 @@
       glowOn(false);
       ctx.card.now(null);
       S.face("happy");
-      S.say("That feels better!", "patient");
+      S.say("knee-better", "patient");
       S.markSeen();
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };

@@ -137,5 +137,27 @@
   ],
   "size": 220,
   "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
+ },
+ "lines": {
+  "taste-why": {
+   "e": "My tongue is sore.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "taste-goal": {
+   "e": "Let's soothe the sore spots.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "taste-notthat": {
+   "e": "Hmm, not that one.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "taste-better": {
+   "e": "My tongue feels better!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  }
  }
 }

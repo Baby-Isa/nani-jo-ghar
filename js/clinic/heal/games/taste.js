@@ -56,7 +56,7 @@
     maxUp: { 1: 3, 2: 4, 3: 4 },
     counts: { 2: [1, 2, 3], 3: [1, 2, 3] },
   };
-  const WHY = { problem: "My tongue is sore.", goal: "Let's soothe the sore spots." };
+  const WHY = { problem: "taste-why", goal: "taste-goal" }; // line keys in data/clinic/heal/taste.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     pop: { gesture: "tap", then: "tap" },
@@ -473,7 +473,7 @@
         finish();
       } else {
         S.face("sour", 900);
-        S.say("Hmm, not that one.", "patient");
+        S.say("taste-notthat", "patient");
         st.busy = false;
         ctx.after(fast() ? 50 : 900, () => cur() === c && S.cue("drink", CUES.pour, S.toolEls[DRINKS[c.drink].liquid]));
       }
@@ -483,7 +483,7 @@
       st.over = true;
       S.uncue();
       ctx.card.now(null);
-      S.say("My tongue feels better!", "patient");
+      S.say("taste-better", "patient");
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 

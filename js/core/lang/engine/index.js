@@ -169,14 +169,28 @@ export function createEngine({ data, audio = [], voice = null, path = null, phra
     const e = L.lexOf(lexId);
     const pos = e && L.posInfo[e.pos];
     let c = cell;
+    const defaulted = [];
     if (!c) {
       const f = L.lexFeats(lexId);
       const vals = { number: "sg", case: "dir", register: "informal", ...f };
-      c = String((pos && pos.defaultCell) || "-").replace(/\{(\w+)\}/g, (_, k) => vals[k] || "*");
+      // a describing word said on its own has no noun to take its gender from: the language's default gender (Mum's
+      // rule, decision 21), flagged like any defaulted gender (step 4e)
+      const dflt = (k) => {
+        const d = L.features[k] && L.features[k].default;
+        if (d && k === "gender") defaulted.push(d);
+        return d;
+      };
+      c = String((pos && pos.defaultCell) || "-").replace(/\{(\w+)\}/g, (_, k) => vals[k] || dflt(k) || "*");
     }
     const r = L.inflect(lexId, c);
     const tok = r.gap ? { t: (r.entry && (r.entry.en || r.entry.gloss)) || lexId, lang: "e", lex: lexId, cell: c, status: "to-record", gap: r.gap.kind, placeholder: true } : { t: r.t, lang: "k", lex: r.entry.id, cell: c, status: r.status, src: r.src };
     const lin = { tokens: [tok], nodes: [], gaps: r.gap ? [r.gap] : [] };
+    // reported only when the form found depends on the defaulted gender (its key names it), as in linearize
+    if (!r.gap && defaulted.length && String(r.key || "").split(".").includes(defaulted[0])) {
+      tok.defaulted = { gender: [lexId] };
+      tok.status = L.worst(tok.status, "draft");
+      lin.gaps.push({ kind: "feature", lex: lexId, feature: "gender", defaulted: defaulted[0], key: ["feature", "", lexId, "", "gender"].join("|"), what: `"${(e && e.gloss) || lexId}" said on its own: no noun to agree with, so the ${defaulted[0]}-form was used (Mum's rule)`, ask: [] });
+    }
     const p = planClips(lin, index, Object.fromEntries(Object.entries(settings(ctx)).filter(([, v]) => v !== undefined)));
     const gaps = lin.gaps.concat(p.gaps);
     return { ok: !r.gap, text: tok.t, tokens: [tok], segments: [{ t: tok.t, lang: tok.lang, w: lexId, ...(tok.gap ? { gap: tok.gap } : {}) }], clipPlan: p.plan.map((x) => ({ ...x, segs: x.tokens })), drafts: tok.lang === "k" && tok.status !== "confirmed" ? [tok] : [], gaps, rows: [tok.t] };

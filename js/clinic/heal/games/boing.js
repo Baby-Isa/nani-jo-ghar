@@ -21,7 +21,7 @@
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
   const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, drops: { 1: [2, 3, 4], 2: [3, 4, 5] }, colours: ["red", "yellow", "blue", "green"], tubes: { 3: 4 }, one: "purple", maxDrops: 5 };
-  const WHY = { problem: "Time for my jab.", goal: "I'll do it. You count!" };
+  const WHY = { problem: "boing-why", goal: "boing-goal" }; // line keys in data/clinic/heal/boing.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     wipe: { gesture: "tap", then: "tap" },

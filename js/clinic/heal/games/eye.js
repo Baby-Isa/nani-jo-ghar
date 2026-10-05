@@ -32,7 +32,7 @@
   const W = (t) => HS.L.w(t.lex);
   const word = (t) => W(t).kutchi || `[${W(t).english}]`;
   const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4 }, per: { 1: [1], 2: [1], 3: [2, 3] }, wrongP: 0.45 };
-  const WHY = { problem: "I can't see well.", goal: "Drops first, then let's test your eyes." };
+  const WHY = { problem: "eye-why", goal: "eye-goal" }; // line keys in data/clinic/heal/eye.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     drops: { gesture: "tap", then: "tap" },
@@ -467,7 +467,7 @@
     const readRow = async (i, again) => {
       const c = P.chart[i];
       const said = again ? c.pics : c.said;
-      const line = { kutchi: said.map((id) => word(BY[id])).join(", "), english: said.map((id) => W(BY[id]).english).join(", ") };
+      const line = HS.L.show(HS.L.join(said.flatMap((id, k) => (k ? [",", BY[id].lex] : [BY[id].lex]))));
       showJudge(false);
       S.face("read");
       if (P.level === 1) S.said(said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", "));
@@ -543,7 +543,7 @@
       ctx.card.tick("chart");
       ctx.card.now(null);
       S.face("happy");
-      S.say("I can see!", "patient");
+      S.say("eye-better", "patient");
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 

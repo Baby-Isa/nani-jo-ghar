@@ -39,18 +39,17 @@
   HOST.loadBase = async function () {
     if (!HOST.bodyFile) HOST.bodyFile = await Kit.loadJSON("data/patients/grey-adult.json");
     if (!HOST.clinic) HOST.clinic = (await Kit.loadJSON("data/clinic.json")) || {};
-    // the clinic's words and frames (R5: the language seam's data; js/clinic/lang.js)
+    // the clinic's words and lines: the language engine (js/core/lang/engine/ over data/lang/; step 4e, js/clinic/lang.js)
     if (!HOST.lang) {
-      // a page that didn't load the seam's clinic half itself (the demo's adapter): load it now
+      // a page that didn't load the clinic's half itself (the demo's adapter): load it now
       if (!global.ClinicLang) await new Promise((res) => {
         const sc = document.createElement("script");
         sc.src = (global.njgV || ((u) => u))(`${Kit.root || ""}js/clinic/lang.js`);
         sc.onload = sc.onerror = () => res();
         document.body.appendChild(sc);
       });
-      HOST.lang = (await Kit.loadJSON("data/clinic/lang.json")) || {};
-      global.ClinicLang.load(HOST.lang);
-      global.ClinicLang.resolve = (id) => Kit.ITEMS[id] || (HOST.clinic.words || {})[id] || null;
+      await global.ClinicLang.ready((p) => Kit.loadJSON(p), Kit.root || "");
+      HOST.lang = global.ClinicLang;
     }
     // the items, once: data/clinic.json's, then the clinic v2 overrides in data/clinic/pipeline.json on top (the apple,
     // the tube, the torch). CLN-66: merging clinic.json's items again on every mount put the 🍭 back over the apple.
@@ -70,26 +69,30 @@
     return HOST.dataCache[id];
   };
 
-  /** Look a line up: the game's data, then data/clinic.json; an object passes through; a bare string is an English placeholder. */
-  HOST.line = function (lineId, gameData) {
+  /**
+   * A line by key, through the engine (js/clinic/lang.js line): the game's data names the line (and, for a line with
+   * slots, its engine meaning `fn`); the words are the engine's. A display word passes through; a bare key the data
+   * doesn't hold is the engine's phrase for it, or a placeholder.
+   */
+  HOST.line = function (lineId, gameData, vars) {
     if (lineId && typeof lineId === "object") return lineId;
     const pools = [gameData && gameData.lines, HOST.clinic && HOST.clinic.lines];
-    for (const p of pools) {
-      if (p && p[lineId]) {
-        const l = p[lineId];
-        if (typeof l === "string") return { kutchi: null, english: l };
-        return { kutchi: l.kutchi || l.k || null, english: l.english || l.e || String(lineId), audio: l.audio, who: l.who, placeholder: l.placeholder };
-      }
-    }
-    return { kutchi: null, english: String(lineId), placeholder: true };
+    let def = null;
+    for (const p of pools) if (p && p[lineId] && typeof p[lineId] === "object") def = def || p[lineId];
+    return global.ClinicLang.line(lineId, vars || {}, { def: def || {} });
   };
+  /** A word by id, through the engine: the display word, plus the data's non-language fields (art, colour, glyph). */
   HOST.word = function (id, gameData) {
     const pools = [gameData && gameData.words, HOST.clinic && HOST.clinic.words, HOST.clinic && HOST.clinic.items];
-    for (const p of pools) if (p && p[id]) return Object.assign({ id }, p[id]);
-    return null;
+    let info = null;
+    for (const p of pools) if (p && p[id]) info = info || p[id];
+    if (!info && !global.ClinicLang.lex(id)) return null;
+    const rest = {};
+    Object.keys(info || {}).forEach((k) => !/^(kutchi|kutchi_one|kutchi_many|english|k|e|forms|say|say_forms|src|draft|gender|from)$/.test(k) && (rest[k] = info[k]));
+    return Object.assign(rest, global.ClinicLang.w(id), { id });
   };
 
-  // the doctor's short interjections (E27): word ids in data/clinic/lang.json, said through the seam
+  // the doctor's short interjections (E27): the engine's phrases, by the clinic's old ids (its aliases)
   const INTERJECT = { shabash: "cl-shabash", arre: "cl-arre", achija: "cl-achija", hedo: "cl-hedo" };
   const LANG = () => global.ClinicLang;
 
@@ -375,9 +378,9 @@
     // the 1 Oct play rules are the nine v2 games' (they declare their cues); the parked ones (tummy, hic, hair) run as
     // they were: the goal in the doctor's box, the whole card at once, no zoom, the ✓ always there
     const v2 = !!def.cues;
-    const goal = def.why && def.why.goal ? { kutchi: null, english: def.why.goal, placeholder: true } : "";
+    const goal = def.why && def.why.goal ? HOST.line(def.why.goal, data) : "";
     card.setTitle(v2 ? goal : "", face);
-    if (screen.setGuide) screen.setGuide(v2 ? null : goal ? { kutchi: `[${goal.english}]`, english: goal.english } : null);
+    if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
     card.setProgressive(v2, (ids) => {
@@ -469,7 +472,7 @@
       onboardOn: opts.onboard !== false,
       taught, // D13: the guided first round (nothing scored)
       interject(k) {
-        const l = INTERJECT[k] ? LANG().w(INTERJECT[k]) : HOST.line(k, data);
+        const l = INTERJECT[k] ? LANG().show(LANG().phrase(INTERJECT[k])) : HOST.line(k, data);
         return Kit.Voice.say(l, { who: "doctor" });
       },
       /** group C (2 Oct): a running count that sits on something other than a shelf tool (an element in the close-up). */
@@ -527,7 +530,7 @@
           seen.add(e.rowId);
           const row = rowFor(e.rowId);
           if (!row) return;
-          steps.push({ id: e.rowId, label: { kutchi: row.kutchi || null, english: row.english || "" }, ok: e.type === "right", done: e.detail != null && typeof e.detail !== "object" ? String(e.detail).replace(/^(\d+) of \d+$/, "$1") : null });
+          steps.push({ id: e.rowId, label: { kutchi: row.kutchi || null, english: row.english || "", plan: row.plan }, ok: e.type === "right", done: e.detail != null && typeof e.detail !== "object" ? String(e.detail).replace(/^(\d+) of \d+$/, "$1") : null });
         });
         if (taught && US) US.set("clinic-taught", def.id, true);
         if (taught) r = Object.assign({}, r, { right: 0, total: 0, taught: true });
