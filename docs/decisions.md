@@ -254,6 +254,15 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **34. The checks before a publish cover only what changed since the last gate:** after today's gate, the pre-publish check runs on the newly changed items only (the clinic, most likely), at the full QA matrix and with an outside reviewer; anything a shared-file change reaches is included; the gate is not repeated where nothing changed.
   Source: Zafar, orchestrator chat, 5 Oct. Rule: B20
 
+- **35. After the gate:** (a) fix all 17 of the gate's new Cook findings and the 3 phone card-scroll slips now, checking only those screens (session F1); (b) red in Cook's pepper is ***laal marcha*** too (files and ids renamed, nothing re-recorded); old question sheets and sources keep their original spelling as a record; (c) the finished gate, W2 and A1 sessions are closed.
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: G3
+
+- **36. Words come from one central language place, never game code:** every word or line a game shows or plays, placeholders included, is looked up from the language data by id; a missing word is a data entry flagged "to record", never an English string typed into code. The clinic's ear, wax, plaster, bandage, hot/cold and "To the counter" stand-ins move into the data. The split of words across several data files ends with the language engine (step 4).
+  Source: Zafar, orchestrator chat, 5 Oct ("shouldn't everything come from one centralised language place?"). Rule: G26
+
+- **37. The girl is enough to publish the clinic:** once every heal game and the patient flow run on the girl's finished art (part B, with its props), the clinic goes through the checks, is published and Zafar plays it. The other five patients (part C) and the drop machine (part D) are stitched in when they land. Refines decision 33's "art finished".
+  Source: Zafar, orchestrator chat, 5 Oct. Rule: B20
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

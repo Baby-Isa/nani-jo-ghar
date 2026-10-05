@@ -96,7 +96,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Every brief is complete:** owned files, a hard stop time, links to `CLAUDE.md`, the rulebook, `docs/design-language/ux-principles.md` and `docs/process/qa-checklist.md`, "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
 
 ### Git and publishing
-- **The release cycle runs in this order:** art finished in ChatGPT → wired in → full checks on everything (the full QA matrix) → publish to `main` → Zafar plays and gives feedback → new art, art fixes and gameplay fixes from that feedback, then round again. Zafar plays only what is live on `main`, never a half-wired branch preview. The full checks cover only what changed since the last gate (plus screens reached by any shared-file change), never a repeat of unchanged screens. (B20, decisions 33–34)
+- **The release cycle runs in this order:** art finished in ChatGPT → wired in → full checks on everything (the full QA matrix) → publish to `main` → Zafar plays and gives feedback → new art, art fixes and gameplay fixes from that feedback, then round again. Zafar plays only what is live on `main`, never a half-wired branch preview. The full checks cover only what changed since the last gate (plus screens reached by any shared-file change), never a repeat of unchanged screens. For the clinic, the girl's finished art (part B with its props) is enough; other patients are stitched in later. (B20, decisions 33, 34, 37)
 - **Check `git log origin/main` before redoing work;** during a run, log a timestamped line in `docs/process/overnight-log.md` and push the branch every 20–30 minutes. (B6, B14)
 - **End every session with** a report in `build/reports/<name>.md`, the QA checklist results (`docs/process/qa-checklist.md`), `bump_version` and ONE push to `main`. (B6)
 - **Run `python3 build/bump_version.py` before every push to `main`;** every asset URL built in code goes through `Cook.v()` / `njgV()`. (B7)
@@ -339,6 +339,7 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Fill it from Mum's natural example sentences,** not grammar tables; the engine outputs the prioritised list of what to record. (G11)
 - **Record the most frequent phrases whole** after a simulated run; assembling from words is the fallback; recordings never change the engine. **Until the pre-publish quality pass, every line is stitched from recorded words** (whole-phrase clips switched off), so the engine is tested everywhere. (G12, decision 26)
 - **No Kutchi grammar in game code:** frames live in data; nouns carry gender, singular and plural. (G13, G18)
+- **No words in game code at all:** every word or line a game shows or plays, placeholders included, is looked up by id from the one central language data; a missing word is a data entry flagged "to record", never an English string typed into code. (G26, decision 36)
 
 ### Voices and recordings
 - **Every voice in the product is a real family member;** TTS is test-only, replaced file for file. The child's model reply is Zafar's (boy) or Mum's (girl) for now. (G14, G17)

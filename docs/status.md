@@ -17,13 +17,13 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
   4. **Chrome art run** (Zafar's browser): parts B–D still landing in `sources/art/clinic-heal-v3/` on `main` (30 of 115 at 14:50).
 - **Decision 33:** Zafar plays only after all the art is finished and wired, the full checks pass, and it is live on `main`. No play tonight.
 
-**Next steps, in order (decision 33, rule B20: art finished → wired → full checks → publish → Zafar plays → fixes; no play on the branch preview):**
+**Next steps, in order (decisions 33–37, rule B20: art finished → wired → checks on what changed → publish → Zafar plays → fixes):**
 1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
-2. When the gate, W2 and A1 are done: read the three reports; note their findings for A2's brief. No look or play link yet.
-3. When Chrome has finished parts B–D in ChatGPT: propose A2 to Zafar (Opus, high, with a cost estimate) and launch only on his go. A2 cuts and wires all remaining clinic heal art from `build/cut_clinic_heal_v3.py` and `data/clinic/heal-art.json` per A1's list, including A1's redo list once redone.
-4. Full checks on what changed since today's gate only (decision 34): sandbox `--touched` on the clinic (heal games, patient flow) at the full QA matrix, a reviewer other than the builder, the clinic regression rows. Screens using any shared file A2 or W2 touched are added; nothing else is re-run.
+2. F1 (Sonnet, medium) fixes the gate's 17 Cook findings, the 3 phone card-scroll slips and *laal marcha* → `build/reports/f1-gate-findings.md`.
+3. A2 (Opus, high; needs Zafar's go): wire the rest of part B for the girl (props O2, O3, R1–R5, C1, C2, B1, diagnosis on the art), and move the clinic's hard-coded stand-in words into the language data (decision 36, rule G26). Part B is 35 of 37 on `main` (C2 and B1 to come).
+4. Checks on what changed only (decision 34): the clinic plus F1's Cook screens, full QA matrix, an outside reviewer, the regression rows.
 5. `python3 build/bump_version.py`, merge to `main`, check the Pages build, send Zafar a screenshot, the live link and what to play.
-6. His feedback → a full report and regression rows the same day; then art fixes and gameplay fixes.
+6. His feedback → a full report and regression rows the same day; then fixes. Part C (other patients), part D (drop machine) and A1's redo list are stitched in as they land.
 7. Open: Mum's 168 clips need ear-checking in `lab/family-audio.html`; the yes/no list for Mum; Round 5.
 
 **Starting prompt for a new chat:**
