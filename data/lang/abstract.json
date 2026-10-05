@@ -1,1 +1,1567 @@
-{ "_about": "The meanings game code asks for, language-neutral (engine-design § 5.3). `core` expands a meaning into other meanings; `elicit` is how Mum is asked when a rule is missing. Filled by step 4b.", "functions": {} }
+{
+ "_about": "The meanings game code asks for, language-neutral (engine-design § 5.3). `core` expands a meaning into other meanings; `elicit` is how Mum is asked when a rule is missing. Built by build/lang/import_all.mjs.",
+ "functions": {
+  "Item": {
+   "cat": "NP",
+   "args": {
+    "kind": {
+     "type": "N"
+    },
+    "n": {
+     "type": "Num",
+     "optional": true
+    },
+    "mods": {
+     "type": "A",
+     "list": true,
+     "optional": true
+    },
+    "with": {
+     "type": "NP",
+     "list": true,
+     "optional": true
+    },
+    "without": {
+     "type": "NP",
+     "list": true,
+     "optional": true
+    }
+   },
+   "en": "{n} {mods} {kind} {with} {without}",
+   "elicit": [
+    "two big mangoes",
+    "one red door"
+   ]
+  },
+  "Of": {
+   "cat": "NP",
+   "args": {
+    "owner": {
+     "type": "NP"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "{owner}'s {thing}",
+   "elicit": [
+    "Nana's cup",
+    "Nani's mangoes"
+   ]
+  },
+  "With": {
+   "cat": "PP",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "with {x}",
+   "elicit": [
+    "with the big boy"
+   ]
+  },
+  "In": {
+   "cat": "PP",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "in {x}",
+   "elicit": [
+    "in the big cup"
+   ]
+  },
+  "On": {
+   "cat": "PP",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "on {x}",
+   "elicit": [
+    "on the big mango"
+   ]
+  },
+  "MixedIn": {
+   "cat": "NP",
+   "args": {
+    "head": {
+     "type": "NP"
+    },
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{head} with {x} in it",
+   "elicit": [
+    "chai with milk"
+   ]
+  },
+  "Without": {
+   "cat": "NP",
+   "args": {
+    "head": {
+     "type": "NP"
+    },
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{head} without {x}",
+   "elicit": [
+    "chai without milk",
+    "daar without onion"
+   ]
+  },
+  "WithFood": {
+   "cat": "Mod",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "with {x}",
+   "elicit": [
+    "I'd like two samosas with mince.",
+    "I'd like one samosa with potato and one with mince."
+   ]
+  },
+  "WithoutFood": {
+   "cat": "Mod",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "without {x}",
+   "elicit": [
+    "I'd like daar, but no onion."
+   ]
+  },
+  "Need": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "rows": [
+    "thing"
+   ],
+   "core": {
+    "fn": "PredDat",
+    "who": "$who",
+    "thing": "$thing",
+    "verb": "v.want"
+   },
+   "en": "I'd like {thing}.",
+   "elicit": [
+    "I'd like chai.",
+    "I'd like two samosas."
+   ]
+  },
+  "PredDat": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    },
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "{thing} is wanted"
+  },
+  "IsA": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP"
+    },
+    "quality": {
+     "type": "A"
+    }
+   },
+   "en": "{thing} is {quality}.",
+   "elicit": [
+    "The boy is big.",
+    "The girls are big."
+   ]
+  },
+  "BeIn": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "place": {
+     "type": "NP"
+    }
+   },
+   "en": "{who} in {place}.",
+   "elicit": [
+    "I'm in the kitchen.",
+    "We're in the kitchen."
+   ]
+  },
+  "BelongsTo": {
+   "cat": "Utt",
+   "args": {
+    "owner": {
+     "type": "NP"
+    },
+    "thing": {
+     "type": "NP",
+     "optional": true
+    }
+   },
+   "en": "It's {owner}'s.",
+   "elicit": [
+    "It's Nana's.",
+    "It's the boy's."
+   ]
+  },
+  "Fetch": {
+   "cat": "Utt",
+   "args": {
+    "to": {
+     "type": "Person"
+    },
+    "things": {
+     "type": "NP",
+     "list": true
+    }
+   },
+   "rows": [
+    "things"
+   ],
+   "en": "Bring me {things}.",
+   "elicit": [
+    "Bring me flour, sugar and milk."
+   ]
+  },
+  "Say": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "Phrase"
+    }
+   },
+   "en": "{x}",
+   "elicit": [
+    "No, I don't want it, thank you."
+   ]
+  },
+  "And": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "And {x}.",
+   "elicit": [
+    "I'd like chai. And milk. And two sugars."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "Then": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "And then {x}.",
+   "elicit": [
+    "First daar, and then maani."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "First": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "First {x}.",
+   "elicit": [
+    "First daar, and then maani."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "NoItem": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "No {x}.",
+   "elicit": [
+    "No sugar. (the very short way)"
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "Only": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Only {x}.",
+   "elicit": [
+    "Only two onions."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "Now": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Now {x}!",
+   "elicit": [
+    "Now the tomatoes! (in a gentle sequence of cooking steps)"
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "GiveMe": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Give me {x}.",
+   "elicit": [
+    "Give me a teaspoon. Pass me the salt."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "ForWho": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "This is for {x}.",
+   "elicit": [
+    "This is for Nana."
+   ]
+  },
+  "For": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "For {x}.",
+   "elicit": [
+    "For Nana."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "CanYouMake": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "Can you make me {thing}?",
+   "elicit": [
+    "Can you make me chai? (to a grandchild, and then to Nana)"
+   ]
+  },
+  "HowAreYou": {
+   "cat": "Utt",
+   "args": {
+    "who": {
+     "type": "Person"
+    }
+   },
+   "en": "How are you?",
+   "elicit": [
+    "How are you? (to a child, to a cousin, to Nana)"
+   ]
+  },
+  "ImFine": {
+   "cat": "Utt",
+   "args": {},
+   "en": "I'm fine.",
+   "elicit": [
+    "I'm fine."
+   ]
+  },
+  "NotNeed": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "I don't want {thing}.",
+   "elicit": [
+    "No, I don't want sugar. (polite, and the short way)"
+   ]
+  },
+  "Where": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "Where is {thing}?",
+   "elicit": [
+    "Where is the teaspoon? Where is the cup?"
+   ]
+  },
+  "LocatedAt": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP"
+    },
+    "anchor": {
+     "type": "NP"
+    },
+    "rel": {
+     "type": "Post"
+    }
+   },
+   "en": "{thing} is {rel} {anchor}.",
+   "elicit": [
+    "The cup is on the table. The key is behind the door."
+   ]
+  },
+  "LocatedAtShort": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP"
+    },
+    "anchor": {
+     "type": "NP"
+    },
+    "rel": {
+     "type": "Post"
+    }
+   },
+   "en": "{thing} is {rel} {anchor} (the everyday short way).",
+   "elicit": [
+    "The cup is on the table. (the everyday way)"
+   ]
+  },
+  "Command": {
+   "cat": "Utt",
+   "args": {
+    "verb": {
+     "type": "V"
+    },
+    "obj": {
+     "type": "NP",
+     "optional": true
+    }
+   },
+   "en": "{verb} {obj}!",
+   "elicit": [
+    "Cut the onion. Knead the dough. Fry the samosa."
+   ]
+  },
+  "DoIt": {
+   "cat": "Utt",
+   "args": {
+    "verb": {
+     "type": "V"
+    },
+    "obj": {
+     "type": "NP",
+     "optional": true
+    }
+   },
+   "en": "{verb} it {obj}!",
+   "elicit": [
+    "Put it in. Take it out. Fill it with water."
+   ]
+  },
+  "Dont": {
+   "cat": "Utt",
+   "args": {
+    "verb": {
+     "type": "V"
+    },
+    "obj": {
+     "type": "NP",
+     "optional": true
+    }
+   },
+   "en": "Don't {verb} {obj}.",
+   "elicit": [
+    "Don't put sugar in. Don't touch that. Don't run, walk."
+   ]
+  },
+  "DontNow": {
+   "cat": "Utt",
+   "args": {
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "Don't {verb}! (urgent)",
+   "elicit": [
+    "Don't touch! (it's hot, you'll burn!)"
+   ]
+  },
+  "Point": {
+   "cat": "NP",
+   "args": {
+    "which": {
+     "type": "Dem"
+    },
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{which} {x}",
+   "elicit": [
+    "this big boy; that big boy"
+   ]
+  },
+  "PossPron": {
+   "cat": "NP",
+   "args": {
+    "owner": {
+     "type": "Person"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "{owner}'s {thing}",
+   "elicit": [
+    "my cup; your mango (to a child); his chair; our house"
+   ]
+  },
+  "Most": {
+   "cat": "Utt",
+   "args": {
+    "adj": {
+     "type": "A"
+    }
+   },
+   "en": "the most {adj}",
+   "elicit": [
+    "the biggest; the smallest"
+   ]
+  },
+  "Unit": {
+   "cat": "NP",
+   "args": {
+    "n": {
+     "type": "Num",
+     "optional": true
+    },
+    "unit": {
+     "type": "N"
+    },
+    "of": {
+     "type": "NP"
+    }
+   },
+   "en": "{n} {unit} of {of}",
+   "elicit": [
+    "one skewer of mishkaki; two skewers of meat"
+   ]
+  },
+  "Amt": {
+   "cat": "NP",
+   "args": {
+    "x": {
+     "type": "A"
+    }
+   },
+   "en": "{x}",
+   "elicit": [
+    "half; a whole cup"
+   ]
+  },
+  "Exclaim": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "Phrase"
+    }
+   },
+   "en": "{x}!",
+   "elicit": [
+    "Well done! It's burning!"
+   ]
+  },
+  "Ask": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "Phrase"
+    }
+   },
+   "en": "{x}?",
+   "elicit": [
+    "Where is it? Who's there?"
+   ]
+  },
+  "WantIn": {
+   "cat": "Utt",
+   "args": {
+    "container": {
+     "type": "NP"
+    },
+    "thing": {
+     "type": "NP"
+    }
+   },
+   "en": "In my {container} I want {thing}.",
+   "elicit": [
+    "In my chai I want two sugars."
+   ]
+  },
+  "AndKind": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "and {x} (a second kind of the same dish)",
+   "elicit": [
+    "I'd like two samosas with mince, and one with potato."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "ButNo": {
+   "cat": "Utt",
+   "args": {
+    "head": {
+     "type": "NP"
+    },
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{head}, but no {x}",
+   "elicit": [
+    "I'd like daar, but no onion."
+   ]
+  },
+  "Times": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "{n} times",
+   "elicit": [
+    "once; twice; three times (stir it three times)"
+   ]
+  },
+  "FirstThen": {
+   "cat": "Utt",
+   "args": {
+    "a": {
+     "type": "NP"
+    },
+    "b": {
+     "type": "NP"
+    }
+   },
+   "en": "First {a}, and then {b}.",
+   "elicit": [
+    "I'd like daar first, and then maani."
+   ],
+   "rows": [
+    "a",
+    "b"
+   ]
+  },
+  "NeedFirstThen": {
+   "cat": "Utt",
+   "args": {
+    "a": {
+     "type": "NP"
+    },
+    "rest": {
+     "type": "NP"
+    }
+   },
+   "en": "I'd like {a} first, and then {rest}.",
+   "elicit": [
+    "I'd like daar first, and then maani."
+   ],
+   "rows": [
+    "a",
+    "rest"
+   ]
+  },
+  "OnShort": {
+   "cat": "PP",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "on {x} (the short way)",
+   "elicit": [
+    "on the big mango (the everyday way)"
+   ]
+  },
+  "Place": {
+   "cat": "NP",
+   "args": {
+    "anchor": {
+     "type": "NP"
+    },
+    "rel": {
+     "type": "Post"
+    }
+   },
+   "en": "{rel} {anchor}",
+   "elicit": [
+    "on the table; behind the door; in the cupboard"
+   ]
+  },
+  "Lift": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP",
+     "optional": true
+    }
+   },
+   "en": "Lift out the {x}.",
+   "elicit": [
+    "Take the samosas out now."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "Leave": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP",
+     "optional": true
+    }
+   },
+   "en": "Leave the {x}.",
+   "elicit": [
+    "Leave the chips in."
+   ],
+   "rows": [
+    "x"
+   ]
+  },
+  "MyXHurts": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "My {x} hurts.",
+   "elicit": [
+    "My knee hurts."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "The {x}.",
+   "elicit": [
+    "The knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "CheckTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Check the {x}.",
+   "elicit": [
+    "Check the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "NowTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Now the {x}.",
+   "elicit": [
+    "Now the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TheXAgain": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "The {x} again.",
+   "elicit": [
+    "The knee again."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ListenToTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Listen to the {x}.",
+   "elicit": [
+    "Listen to the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "LookInTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Look in the {x}.",
+   "elicit": [
+    "Look in the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TakeTheTemperatureTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Take the temperature: the {x}.",
+   "elicit": [
+    "Take the temperature: the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XNoMyYHurts": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "{x}? No, my {y} hurts.",
+   "elicit": [
+    "knee? No, my y hurts."
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "NoTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "No, the {x}.",
+   "elicit": [
+    "No, the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "MyXOne": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "My {x} one.",
+   "elicit": [
+    "My knee one."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "NotThatOneMyOtherX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Not that one. My other {x}.",
+   "elicit": [
+    "Not that one. My other knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "X": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x}.",
+   "elicit": [
+    "knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "RoundXTimes": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Round {x} times.",
+   "elicit": [
+    "Round knee times."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "RoundTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Round the {x}.",
+   "elicit": [
+    "Round the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XDrops": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} drops.",
+   "elicit": [
+    "knee drops."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "BringMeTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Bring me the {x}.",
+   "elicit": [
+    "Bring me the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ThisIsTheXTheYPlease": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "This is the {x}. The {y}, please.",
+   "elicit": [
+    "This is the knee. The y, please."
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "IsItTheXOrTheY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "Is it the {x}, or the {y}?",
+   "elicit": [
+    "Is it the knee, or the y?"
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "IsItYourXOrYourY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "Is it your {x}, or your {y}?",
+   "elicit": [
+    "Is it your knee, or your y?"
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "WhatSWrongWithX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "What's wrong with {x}?",
+   "elicit": [
+    "What's wrong with knee?"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "IMX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "I'm {x}.",
+   "elicit": [
+    "I'm knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "BringInKind": {
+   "cat": "Utt",
+   "args": {
+    "kind": {
+     "type": "NP"
+    }
+   },
+   "en": "Bring in {kind}",
+   "elicit": [
+    "Bring in man"
+   ],
+   "_sig": "[\"kind\"]"
+  },
+  "KindCome": {
+   "cat": "Utt",
+   "args": {
+    "kind": {
+     "type": "NP"
+    }
+   },
+   "en": "{kind}, come",
+   "elicit": [
+    "man, come"
+   ],
+   "_sig": "[\"kind\"]"
+  },
+  "MyPartHurts": {
+   "cat": "Utt",
+   "args": {
+    "part": {
+     "type": "NP"
+    }
+   },
+   "en": "My {part} hurts",
+   "elicit": [
+    "My knee hurts"
+   ],
+   "_sig": "[\"part\"]"
+  },
+  "MySidePart": {
+   "cat": "Utt",
+   "args": {
+    "side": {
+     "type": "NP"
+    },
+    "part": {
+     "type": "NP"
+    }
+   },
+   "en": "My {side} {part}",
+   "elicit": [
+    "My left knee"
+   ],
+   "_sig": "[\"side\",\"part\"]"
+  },
+  "MyPart": {
+   "cat": "Utt",
+   "args": {
+    "part": {
+     "type": "NP"
+    }
+   },
+   "en": "My {part}",
+   "elicit": [
+    "My knee"
+   ],
+   "_sig": "[\"part\"]"
+  },
+  "ToolThePart": {
+   "cat": "Utt",
+   "args": {
+    "tool": {
+     "type": "NP"
+    },
+    "part": {
+     "type": "NP"
+    }
+   },
+   "en": "{tool} the {part}",
+   "elicit": [
+    "torch the knee"
+   ],
+   "_sig": "[\"tool\",\"part\"]"
+  },
+  "XGood": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x}. Good.",
+   "elicit": [
+    "knee. Good."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ThisIsXBringMeY": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    },
+    "y": {
+     "type": "NP"
+    }
+   },
+   "en": "This is {x}. Bring me {y}",
+   "elicit": [
+    "This is knee. Bring me y"
+   ],
+   "_sig": "[\"x\",\"y\"]"
+  },
+  "BringMeA": {
+   "cat": "Utt",
+   "args": {
+    "a": {
+     "type": "NP"
+    }
+   },
+   "en": "Bring me {a}",
+   "elicit": [
+    "Bring me a"
+   ],
+   "_sig": "[\"a\"]"
+  },
+  "SidePart": {
+   "cat": "Utt",
+   "args": {
+    "side": {
+     "type": "NP"
+    },
+    "part": {
+     "type": "NP"
+    }
+   },
+   "en": "{side} {part}",
+   "elicit": [
+    "left knee"
+   ],
+   "_sig": "[\"side\",\"part\"]"
+  },
+  "FirstAThenBThenC": {
+   "cat": "Utt",
+   "args": {
+    "a": {
+     "type": "NP"
+    },
+    "b": {
+     "type": "NP"
+    },
+    "c": {
+     "type": "NP"
+    }
+   },
+   "en": "First {a}, then {b}, then {c}",
+   "elicit": [
+    "First a, then b, then c"
+   ],
+   "_sig": "[\"a\",\"b\",\"c\"]"
+  },
+  "CleanItNTimes": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "Clean it {n} times",
+   "elicit": [
+    "Clean it two times"
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "NDrops": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "{n} drops",
+   "elicit": [
+    "two drops"
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "NDropsPlease": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "{n} drops, please",
+   "elicit": [
+    "two drops, please"
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "TapTheKneeNTimes": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "Tap the knee {n} times",
+   "elicit": [
+    "Tap the knee two times"
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "BandageNTurns": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "Bandage: {n} turns",
+   "elicit": [
+    "Bandage: two turns"
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "BandageFirstTheAThenTheBThenTheC": {
+   "cat": "Utt",
+   "args": {
+    "a": {
+     "type": "NP"
+    },
+    "b": {
+     "type": "NP"
+    },
+    "c": {
+     "type": "NP"
+    }
+   },
+   "en": "Bandage: first the {a}, then the {b}, then the {c}",
+   "elicit": [
+    "Bandage: first the a, then the b, then the c"
+   ],
+   "_sig": "[\"a\",\"b\",\"c\"]"
+  },
+  "XRayTheLegThenClonkTheBoneNTimes": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "X-ray the leg, then clonk the bone {n} times",
+   "elicit": [
+    "X-ray the leg, then clonk the bone two times"
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "CastNTurns": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "Cast: {n} turns",
+   "elicit": [
+    "Cast: two turns"
+   ],
+   "_sig": "[\"n\"]"
+  },
+  "ForX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "For {x}:",
+   "elicit": [
+    "For knee:"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "SewOnX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Sew on {x}.",
+   "elicit": [
+    "Sew on knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "OnTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "on the {x}",
+   "elicit": [
+    "on the knee"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TheOneWithTheX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "The one with the {x}.",
+   "elicit": [
+    "The one with the knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ItHadXOnItsPaws": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "It had {x} on its paws.",
+   "elicit": [
+    "It had knee on its paws."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ItWasTheXOne": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "It was the {x} one.",
+   "elicit": [
+    "It was the knee one."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ItWasnTTheXOne": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "It wasn't the {x} one.",
+   "elicit": [
+    "It wasn't the knee one."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "XAteTheSweets": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x} ate the sweets!",
+   "elicit": [
+    "knee ate the sweets!"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TheXOneRight": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "The {x} one? Right.",
+   "elicit": [
+    "The knee one? Right."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "DoesYoursHaveX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Does yours have {x}?",
+   "elicit": [
+    "Does yours have knee?"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "IsYoursX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Is yours {x}?",
+   "elicit": [
+    "Is yours knee?"
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "TakeAPhotoOfX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Take a photo of {x}.",
+   "elicit": [
+    "Take a photo of knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ShowMeX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Show me {x}.",
+   "elicit": [
+    "Show me knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "ItSX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "It's {x}.",
+   "elicit": [
+    "It's knee."
+   ],
+   "_sig": "[\"x\"]"
+  },
+  "YouSaidX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "You said {x}.",
+   "elicit": [
+    "You said knee."
+   ],
+   "_sig": "[\"x\"]"
+  }
+ }
+}
